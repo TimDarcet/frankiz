@@ -26,6 +26,7 @@
 		<div class="fkz_titre"><span id="serveurs_logo"><xsl:text> </xsl:text></span><span id="serveurs">État des serveurs :</span></div>
 		<div class="fkz_module_corps">
 			<ul class="fkz_stats">
+				<xsl:text> </xsl:text><!-- bug catch -->
 				<xsl:for-each select="statistiques/serveur">
 					<li class="fkz_stats">
 						<span class="serveur_nom"><xsl:value-of select="@nom"/></span>
