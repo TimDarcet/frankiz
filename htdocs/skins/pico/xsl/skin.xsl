@@ -137,7 +137,6 @@
 		<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 		<xsl:value-of select="@titre"/>
 	</h2>
-	<xsl:if test="count(image)"><div style="text-align: center"><xsl:apply-templates select="image"/></div></xsl:if>
 	<xsl:apply-templates/>
 </xsl:template>
 

@@ -19,9 +19,13 @@
 */
 /*
 	$Log$
+	Revision 1.3  2004/11/27 23:30:34  pico
+	Passage des xshare et faq en wiki
+	Ajout des images dans l'aide du wiki
+
 	Revision 1.2  2004/11/25 12:45:36  pico
 	Duble emploi de htmlspecialchar vu que les entrées dans la bdd sont déjà transformées
-
+	
 	Revision 1.1  2004/11/25 00:10:30  schmurtz
 	Suppression des dossiers ne contenant qu'un unique fichier index.php
 	
@@ -73,7 +77,7 @@
 	
 */
 require_once "include/global.inc.php";
-
+require_once "include/wiki.inc.php";
 // Vérification des droits
 // demande_authentification(AUTH_MINIMUM);
 
@@ -299,7 +303,7 @@ echo "<br/>" ;
 			echo "<p>Dernière modification le ".substr($date, 6, 2)."/".substr($date, 4, 2)."/".substr($date, 0, 4)."</p>" ;
 			if($version != '') echo "<p>Version: ".$version."</p>";
 			if($licence != '') echo "<p>Licence: ".$licence."</p>";
-			echo "<p>Description: ".$descript."</p>";
+			echo "<p>Description: ".wikiVersXML($descript)."</p>";
 
 	
 		} else {

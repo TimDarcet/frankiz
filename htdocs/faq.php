@@ -19,9 +19,13 @@
 */
 /*
 		$Log$
+		Revision 1.5  2004/11/27 23:30:34  pico
+		Passage des xshare et faq en wiki
+		Ajout des images dans l'aide du wiki
+
 		Revision 1.4  2004/11/26 16:12:47  pico
 		La Faq utilise la $DB_faq au lieu de $DB_web
-
+		
 		Revision 1.3  2004/11/25 12:45:36  pico
 		Duble emploi de htmlspecialchar vu que les entrées dans la bdd sont déjà transformées
 		
@@ -105,7 +109,7 @@
 		
 */
 require_once "include/global.inc.php";
-
+require_once "include/wiki.inc.php";
 // Vérification des droits
 //demande_authentification(AUTH_MINIMUM);
 
@@ -329,21 +333,20 @@ echo "<br/>" ;
 
 	$repfaq = "../../data/faq/".$reponse;
 	echo "<cadre titre=\"Q: ".$question."\" id=\"reponse\">\n";
-	echo "<html>";
 	if(file_exists($repfaq)){
  		if($texte = fopen($repfaq,"r")){
  	 		while(!feof($texte))
    			{
-   	 			$ligne = fgets($texte,255);
+   	 			$ligne = wikiVersXML(fgets($texte,255));
 				// Remplace les liens locaux pour les images et les liens, car sinon conflit avec le BASE_HREF
 				$patterns[0] = '(<html>|</html>)';
-				$patterns[1] = '(src="(?!http://)(?!ftp://))';
-				$patterns[2] ='(href="(?!http://)(?!ftp://)(?!#))';
-				$patterns[3] ='(href="#)';
+				$patterns[1] = '(source="(?!http://)(?!ftp://))';
+				$patterns[2] ='(url="(?!http://)(?!ftp://)(?!#))';
+				$patterns[3] ='(url="#)';
 				$replacements[3] = '';
-				$replacements[2] = 'src="'.dirname("../data/faq/$reponse")."/";
-				$replacements[1] = 'href="'.dirname("../data/faq/$reponse")."/";
-				$replacements[0] = 'href="'.getenv('SCRIPT_NAME')."?".getenv('QUERY_STRING')."#";
+				$replacements[2] = 'source="'.dirname("../data/faq/$reponse")."/";
+				$replacements[1] = 'url="'.dirname("../data/faq/$reponse")."/";
+				$replacements[0] = 'url="'.getenv('SCRIPT_NAME')."?".getenv('QUERY_STRING')."#";
 				$ligne = preg_replace($patterns,$replacements, $ligne);
    	 			print(htmlspecialchars($ligne,ENT_QUOTES));
    			}
@@ -355,7 +358,7 @@ echo "<br/>" ;
 	<warning>Erreur : Impossible de trouver cette question </warning>
 	<?
 	}
-	echo "</html>\n</cadre>";
+	echo "\n</cadre>";
 	
 	} else {
 	?>

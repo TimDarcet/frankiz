@@ -19,9 +19,13 @@
 */
 /*
 		$Log$
+		Revision 1.29  2004/11/27 23:30:34  pico
+		Passage des xshare et faq en wiki
+		Ajout des images dans l'aide du wiki
+
 		Revision 1.28  2004/11/27 15:16:42  pico
 		Corrections
-
+		
 		Revision 1.27  2004/11/27 15:02:17  pico
 		Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
 		
@@ -342,6 +346,7 @@ echo "<br/>" ;
 	</choix>
 	<champ id="site" titre="Site de l'éditeur" valeur="<? echo $site ?>" />
 	<champ id="licence" titre="Licence" valeur="<? echo $licence ?>" />
+	<note>La syntaxe est la syntaxe wiki... si tu ne sais pas taper correctement du texte wiki, va sur notre page <lien titre="d'aide WIKI" url="helpwiki.php"/></note>
 	<zonetext id="descript" titre="Description"><?=$descript?></zonetext>
 	<fichier id="file" titre="Nouveau fichier" taille="1000000000"/>
 	<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
@@ -381,6 +386,7 @@ echo "<br/>" ;
 	
 	<!-- Ajouter un fichier -->
 	<formulaire id="xshare_<? echo $dir_id ?>" titre="Ajouter un logiciel" action="admin/xshare.php">
+	<note>La syntaxe est la syntaxe wiki... si tu ne sais pas taper correctement du texte wiki, va sur notre page <lien titre="d'aide WIKI" url="helpwiki.php"/></note>
 	<champ id="nom" titre="Nom du logiciel" valeur="" />
 	<champ id="version" titre="Version" valeur="" />
 	<choix titre="Importance" id="importance" type="combo" valeur="0">

@@ -21,10 +21,14 @@
 	Help WIKI
 	
 	$Log$
+	Revision 1.5  2004/11/27 23:30:34  pico
+	Passage des xshare et faq en wiki
+	Ajout des images dans l'aide du wiki
+
 	Revision 1.4  2004/11/24 22:56:18  schmurtz
 	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
 	globale pour tous les fichiers.
-
+	
 	Revision 1.3  2004/11/24 13:48:17  kikx
 	Met un lien vers la page bac a sable a partir de la page d'aide wiki
 	
@@ -80,6 +84,11 @@ Le nom Wiki provient d'un adjectif hawaiien wikiwiki, qui signifie rapide. C'est
 			<colonne id="type">Lien</colonne>
 			<colonne id="syntaxe"><p>http://frankiz/</p><p>[http://frankiz|Ici c'est le site élève]</p><p>[mailto://moi@moi|Mon email]</p></colonne>";
 			<colonne id="exemple"><?="<p>".wikiVersXML("http://frankiz/")."</p><p>".wikiVersXML("[http://frankiz/|Ici c'est le site élève]")."</p><p>".wikiVersXML("[mailto://moi@moi|Mon email]")."</p>"?></colonne>";
+		</element>
+		<element id="">
+			<colonne id="type">Image</colonne>
+			<colonne id="syntaxe"><p>[http://binets/icones/reseau.png]</p></colonne>";
+			<colonne id="exemple"><?="<p>".wikiVersXML("[http://binets/icones/reseau.png]")."</p>"?></colonne>";
 		</element>
 </liste>
 
