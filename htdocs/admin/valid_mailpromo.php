@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.23  2004/12/15 19:26:09  kikx
+	Les mails promo devrait fonctionner now ...
+
 	Revision 1.22  2004/12/14 14:18:12  schmurtz
 	Suppression de la page de doc wiki : doc directement dans les pages concernees.
-
+	
 	Revision 1.21  2004/12/08 13:11:42  kikx
 	Protection de la validation des mailpromo
 	
@@ -94,7 +97,7 @@
 	Page pas tout a fait fonctionnel pour l'instant
 	
 */
-set_time_limit(0) ;
+
 require_once "../include/global.inc.php";
 require_once "../include/wiki.inc.php";
 
@@ -102,16 +105,11 @@ require_once "../include/wiki.inc.php";
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
 	rediriger_vers("/gestion/");
+	
+$message ="" ;
 
 // Génération de la page
 //===============
-require_once BASE_LOCAL."/include/page_header.inc.php";
-
-?>
-<page id="valid_mailpromo" titre="Frankiz : Valide un mail promo">
-<h1>Validation des mails promos</h1>
-
-<?
 
 if ((isset($_POST['promo']))&&($_POST['promo'] == "")) {
 	$titre_mail = "Mail Bi-Promo :" ;
@@ -135,14 +133,10 @@ foreach ($_POST AS $keys => $val){
 
 			$DB_valid->query("UPDATE valid_mailpromo SET titre='{$_POST['titre']}', mail='{$_POST['mail']}', promo='{$_POST['promo']}' WHERE mail_id='{$temp[1]}'");	
 			if ($temp[0]!='valid') {
-		?>
-				<commentaire>Modification effectuée</commentaire>
-		<?
+				$message .= "<commentaire>Modification effectuée</commentaire>" ;
 			}
 		} else {
-	?>
-			<warning>Requête deja traitée par un autre administrateur</warning>
-	<?		
+			$message .= "<warning>Requête deja traitée par un autre administrateur</warning>" ;		
 		}	
 	}
 	
@@ -158,52 +152,18 @@ foreach ($_POST AS $keys => $val){
 						"L'automate :)<br>"  ;
 			couriel($eleve_id,"[Frankiz] Ton mail promo a été validé par le BR",$contenu);
 			
-		//====================================================
-		// Procedure d'envoie de masse
-		//---------------------------------------------------------------------------------------------------------------------
-			
-			$log = "" ;
-			$cnt = 0 ;
-			
-			$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
-			list($promo_temp) = $DB_web->next_row() ;
-	
-			if ($_POST['promo'] == "") {
-				$to = " promo=$promo_temp OR promo=".($promo_temp-1) ;
+			if ((isset($_POST['promo']))&&($_POST['promo'] == "")) {
+				$promo = 2 ;
 			} else {
-				$to = " promo=".$_POST['promo'] ;
+				$promo = 1 ;
 			}
-			
-			$mail_contenu = wikiVersXML($_POST['mail'],true)  ; // On met true pour dire que c'est du HTML qu'on récupere
-	
-		//
-		// Envoi du mail à propremeent parler ...
-		//-------------------------------------------------------------------------
-		
-			$DB_trombino->query("SELECT eleve_id,nom,prenom FROM eleves WHERE ".$to) ;
-			
-			// On crée le fichier de log qui va bien
-			$fich_log = BASE_DATA."mailpromo/mail.log.".$temp[1] ; 
-			touch($fich_log) ;
-			$from = str_replace("&gt;",">",str_replace("&lt;","<",$_POST['from'])) ;
-			exec("echo \"".$mail_contenu."\" >>".$fich_log) ;
-			
-			while(list($eleve_id,$nom,$prenom) = $DB_trombino->next_row() ) {
-				//couriel($eleve_id, $titre_mail." ".$_POST['titre'],$mail_contenu) ;
-				couriel("2131", $titre_mail." ".$_POST['titre'],$mail_contenu,$from) ;
-				$cnt ++ ;
-				exec("echo \"Mail envoyé à $nom $prenom ($eleve_id)\n\" >>".$fich_log) ;
-				usleep(100000); // Attends 100 millisecondes
-				break ;////////////////////////////////////////////////////////////////////////////////////
-			}
-		
-			// fin de la procédure
-			
-			
-			$DB_valid->query("DELETE FROM valid_mailpromo WHERE mail_id='{$temp[1]}'") ;
-		?>
-			<commentaire>Validation effectuée</commentaire>
-		<?	
+			if (!isset($_POST['from']))
+				$sender = "$prenom $nom &lt;$mail&gt; " ;
+			else
+				$sender = base64_encode($_POST['from']) ;
+				
+			rediriger_vers("/admin/valid_mailpromo_envoi.php?id={$temp[1]}&promo=$promo&sender=$sender") ;
+
 		}
 	}
 	if ($temp[0]=='suppr') {
@@ -221,13 +181,11 @@ foreach ($_POST AS $keys => $val){
 	
 			$DB_valid->query("DELETE FROM valid_mailpromo WHERE mail_id='{$temp[1]}'") ;
 	
-		?>
-			<warning>Suppression d'un mail promo</warning>
-		<?
+		
+			$message .= "<warning>Suppression d'un mail promo</warning>" ;
+		
 		} else {
-	?>
-			<warning>Requête deja traitée par un autre administrateur</warning>
-	<?		
+			$message .= "<warning>Requête deja traitée par un autre administrateur</warning>" ;		
 		}	
 	}
 }
@@ -235,6 +193,15 @@ $DB_valid->query("COMMIT");
 $DB_valid->query("UNLOCK TABLES");
 
 //===============================
+
+require_once BASE_LOCAL."/include/page_header.inc.php";
+
+?>
+<page id="valid_mailpromo" titre="Frankiz : Valide un mail promo">
+<h1>Validation des mails promos</h1>
+
+<?
+echo $message ;
 
 $DB_valid->query("SELECT v.mail_id,v.stamp, v.titre,v.promo, v.mail, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_mailpromo as v INNER JOIN trombino.eleves as e USING(eleve_id)");
 while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {

@@ -22,11 +22,14 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.4  2004/12/15 19:26:08  kikx
+	Les mails promo devrait fonctionner now ...
+
 	Revision 1.3  2004/12/15 15:44:34  fruneau
 	Reste des trucs qui diffèrent avec la conf de prod actuelle
-
+	
 	Kikx, Schmurtz, pico, je vous laisse regarder...
-
+	
 	Revision 1.2  2004/12/15 15:40:16  fruneau
 	Synchronisation de config.php avec celui qui était utilisé
 	
@@ -111,6 +114,8 @@ define('MAIL_FAQMESTRE',"faq@frankiz.polytechnique.fr");
 define('FAQMESTRE_ID',$i--);
 define('MAIL_TROMBINOMEN',"trombino@frankiz.polytechnique.fr");
 define('TROMBINOMEN_ID',$i--);
+
+define('STRINGMAIL_ID',$i--);
 
 // Nombres de jours affichés dans la page des annonces 
 define('MAX_PEREMPTION',8);

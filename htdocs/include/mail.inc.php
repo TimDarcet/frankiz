@@ -22,9 +22,12 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.14  2004/12/15 19:26:09  kikx
+	Les mails promo devrait fonctionner now ...
+
 	Revision 1.13  2004/12/15 13:03:32  pico
 	Ajout mail trombinomen
-
+	
 	Revision 1.12  2004/12/14 22:17:32  kikx
 	Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
 	
@@ -64,7 +67,7 @@
 */
 
 // envoi d'un mail à un élève
-function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID) {
+function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID,$sender_string="") {
 
 	// On gère l'envoyeur !
 	
@@ -82,6 +85,8 @@ function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID) {
 		$sender = "Root du BR <".MAIL_ROOT.">" ;
 	} else if ($sender_id==TROMBINOMEN_ID) {
 	                 $sender = "Trombino <".MAIL_TROMBINOMEN.">" ;
+	} else if ($sender_id==STRINGMAIL_ID) {
+	                 $sender = $sender_string ;
 	} else { // C'est une personne physique
 		global $DB_trombino;
 		$DB_trombino->query("SELECT nom,prenom,mail,login FROM eleves WHERE eleve_id=$sender_id") ;

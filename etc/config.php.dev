@@ -22,12 +22,15 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.2  2004/12/15 19:26:08  kikx
+	Les mails promo devrait fonctionner now ...
+
 	Revision 1.1  2004/12/15 15:31:17  fruneau
 	Donne une structure
 	config.php.prod
 	config.php.dev
 	en remplacement du config.php...
-
+	
 	Revision 1.11  2004/12/15 13:03:22  pico
 	Ajout mail trombinomen
 	
@@ -103,6 +106,8 @@ define('MAIL_FAQMESTRE',"gruson@poly");
 define('FAQMESTRE_ID',$i--);
 define('MAIL_TROMBINOMEN',"pico@melix.net");
 define('TROMBINOMEN_ID',$i--);
+
+define('STRINGMAIL_ID',$i--);
 
 // Nombres de jours affichés dans la page des annonces 
 define('MAX_PEREMPTION',8);
