@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un sondage
 	
 	$Log$
+	Revision 1.2  2004/11/17 21:17:21  kikx
+	Validation d'un sondage par l'admin
+
 	Revision 1.1  2004/11/17 13:49:49  kikx
 	Preparation de la page de validation des sondages
-
+	
 
 */
 	
@@ -49,25 +52,63 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 // Enregistrer ...
 
 foreach ($_POST AS $keys => $val){
+	$temp = explode("_",$keys) ;
+	
+	// On refuse le sondage
+	//==========================
+	if ($temp[0] == "suppr") {
+		$DB_valid->query("DELETE FROM valid_sondages WHERE sondage_id='{$temp[1]}'");
+		
+		$bla = "refus_".$temp[1] ;
+		$contenu = "<strong>Bonjour</strong>, <br><br>".
+					"Nous sommes désolé mais ton sondage n'a pas été validé par le BR pour la raison suivante : <br>".
+					$_POST[$bla]."<br>".
+					"<br>" .
+					"Très Cordialement<br>" .
+					"Le BR<br>"  ;
+	
+		couriel($temp[2],"[Frankiz] Ton sondage a été refusé ",$contenu);
+		echo "<warning><p>Envoie d'un mail </p><p>Le prévient que sa demande n'est pas acceptée</p></warning>" ;
+	}
+	// On accepte le sondage
+	//==========================
+	if ($temp[0] == "valid") {
+		$DB_valid->query("SELECT v.perime,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM valid_sondages as v INNER JOIN trombino.eleves as e USING(eleve_id) WHERE sondage_id={$temp[1]}");
+		list($date,$questions,$titre,$eleve_id,$nom, $prenom, $promo) = $DB_valid->next_row() ;
+
+		$DB_web->query("INSERT INTO sondage_question SET eleve_id=$eleve_id, questions='$questions', titre='$titre', perime='$date'") ;
+	
+		$DB_valid->query("DELETE FROM valid_sondages WHERE sondage_id='{$temp[1]}'");
+		
+		$contenu = "<strong>Bonjour</strong>, <br><br>".
+					"Ton sondage vient d'être mis en ligne par le BR <br>".
+					"<br>" .
+					"Très Cordialement<br>" .
+					"Le BR<br>"  ;
+	
+		couriel($temp[2],"[Frankiz] Ton sondage a été validé ",$contenu);
+		echo "<commentaire><p>Envoie d'un mail </p><p>Prévient $prenom $nom que sa demande est acceptée</p></commentaire>" ;
+	}
 
 }
 
 //===============================
 
-	$DB_valid->query("SELECT v.sondage_id,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.surnom, e.promo FROM valid_sondages as v INNER JOIN trombino.eleves as e USING(eleve_id)");
-	while(list($id,$questions,$titre,$eleve_id,$nom, $prenom, $surnom, $promo) = $DB_valid->next_row()) {
+	$DB_valid->query("SELECT v.perime, v.sondage_id,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM valid_sondages as v INNER JOIN trombino.eleves as e USING(eleve_id)");
+	while(list($date,$id,$questions,$titre,$eleve_id,$nom, $prenom, $promo) = $DB_valid->next_row()) {
 	?>
-		<formulaire id="form" titre="<?=$titre?>">	
+		<formulaire id="form" titre="<?=$titre?> (<?=date("d/m",strtotime($date))?>)">	
 	<?
 		decode_sondage($questions) ;
 	?>
 		</formulaire>
 		
 		<formulaire id="sond_<? echo $id ?>" titre="Validation de '<?=$titre?>'" action="admin/valid_sondages.php">
-			<zonetext titre="Raison du Refus si refus" id="refus_<? echo $eleve_id ;?>" valeur=""/>
+			<note>Sondage proposé par <?=$prenom?> <?=$nom?> (<?=$promo?>)</note>
+			<zonetext titre="Raison du Refus si refus" id="refus_<? echo $id ;?>" valeur=""/>
 			
-			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider ce sondage ?')"/>
-			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce sondage ?!!!!!')"/>
+			<bouton id='valid_<? echo $id ?>_<? echo $eleve_id ?>' titre='Valider' onClick="return window.confirm('Valider ce sondage ?')"/>
+			<bouton id='suppr_<? echo $id ?>_<? echo $eleve_id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce sondage ?!!!!!')"/>
 		</formulaire>
 	<?
 	}
