@@ -40,59 +40,60 @@
 			<span> Sommaire </span>	
 		</dt>
 		<dd class="contenu">
-			<div class="sommaire">
+			<table class="sommaire" >
 			<xsl:if test="last() != 0">
 				<xsl:if test="count(annonce[@categorie='important']) != 0">
-					<div class="center">
-						<strong><span class="flag_important"><xsl:text> </xsl:text></span> Important</strong><br/>
-						<ul>
-							<xsl:apply-templates select="annonce[@categorie='important']" mode="sommaire"/>
-							<xsl:if test="count(annonce[@categorie='important']) mod 2 = 1">
-								<li class="droite"><xsl:text> </xsl:text></li>
-							</xsl:if>
-						</ul>
-					</div>
+					<tr>
+						<td colspan="2" class="center">
+							<strong><span class="flag_important"><xsl:text> </xsl:text></span> Important</strong><br/>
+						</td>
+					</tr>
+						<xsl:apply-templates select="annonce[@categorie='important']" mode="sommaire"/>
+						<xsl:if test="count(annonce[@categorie='important']) mod 2 = 1">
+							<td class="droite"><xsl:text> </xsl:text></td>
+						</xsl:if>
 				</xsl:if>
 				<xsl:if test="count(annonce[@categorie='nouveau']) != 0">
-					<div class="center">
-						<strong><span class="flag_nouveau"><xsl:text> </xsl:text></span> Nouvelles Fraîches</strong><br/>
-						<ul>
-							<xsl:apply-templates select="annonce[@categorie='nouveau']" mode="sommaire"/>
-							<xsl:if test="count(annonce[@categorie='nouveau']) mod 2 = 1">
-								<li class="droite"><xsl:text> </xsl:text></li>
-							</xsl:if>
-						</ul>
-					</div>
+					<tr>
+						<td colspan="2" class="center">
+							<strong><span class="flag_nouveau"><xsl:text> </xsl:text></span> Nouvelles Fraîches</strong><br/>
+						</td>
+					</tr>
+					
+						<xsl:apply-templates select="annonce[@categorie='nouveau']" mode="sommaire"/>
+						<xsl:if test="count(annonce[@categorie='nouveau']) mod 2 = 1">
+							<td class="droite"><xsl:text> </xsl:text></td>
+						</xsl:if>
+					
 				</xsl:if>
 				<xsl:if test="count(annonce[@categorie='vieux']) != 0">
-					<div class="center">
-						<strong><span class="flag_vieux"><xsl:text> </xsl:text></span> Demain c'est fini</strong><br/>
-						<ul>
-							<xsl:apply-templates select="annonce[@categorie='vieux']" mode="sommaire"/>
-							<xsl:if test="count(annonce[@categorie='vieux']) mod 2 = 1">
-								<li class="droite"><xsl:text> </xsl:text></li>
-							</xsl:if>
-						</ul>
-					</div>
+					<tr>
+						<td colspan="2" class="center">
+							<strong><span class="flag_vieux"><xsl:text> </xsl:text></span> Demain c'est fini</strong><br/>
+						</td>
+					</tr>
+					
+						<xsl:apply-templates select="annonce[@categorie='vieux']" mode="sommaire"/>
+						<xsl:if test="count(annonce[@categorie='vieux']) mod 2 = 1">
+							<td class="droite"><xsl:text> </xsl:text></td>
+						</xsl:if>
+					
 				</xsl:if>
 				<xsl:if test="count(annonce[@categorie='reste']) != 0">
-					<div class="center">
-						<strong><span class="flag_reste"><xsl:text> </xsl:text></span> En attendant...</strong><br/>
-						<ul>
-							<xsl:apply-templates select="annonce[@categorie='reste']" mode="sommaire"/>
-							<xsl:if test="count(annonce[@categorie='reste']) mod 2 = 1">
-								<li class="droite"><xsl:text> </xsl:text></li>
-							</xsl:if>
-						</ul>
-					</div>
+					<tr>
+						<td colspan="2" class="center">
+							<strong><span class="flag_reste"><xsl:text> </xsl:text></span> En attendant...</strong><br/>
+						</td>
+					</tr>
+					
+						<xsl:apply-templates select="annonce[@categorie='reste']" mode="sommaire"/>
+						<xsl:if test="count(annonce[@categorie='reste']) mod 2 = 1">
+							<td class="droite"><xsl:text> </xsl:text></td>
+						</xsl:if>
+					
 				</xsl:if>
 			</xsl:if>
-			</div>
-			<p class="center">
-				<xsl:text> </xsl:text>
-				<xsl:apply-templates select="lien[@id='lire_tout']"/>
-				<xsl:apply-templates select="lien[@id='lire_nonlu']"/>
-			</p> 
+			</table>
 		</dd>
 		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>
@@ -137,27 +138,42 @@
 </xsl:template>
 
 <xsl:template match="annonce" mode="sommaire">
-	<li>
-		<xsl:attribute name="class">
-			<xsl:choose>
-				<xsl:when test="number(position() mod 2 )= 1">
-					<xsl:text>gauche</xsl:text>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text>droite</xsl:text>
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:attribute>
-		<a>
-			<xsl:attribute name="href">
-				<xsl:if test="@visible='non'">
-					<xsl:text>?nonlu=</xsl:text><xsl:value-of select="@id"/>
-				</xsl:if>
-				<xsl:text>#a</xsl:text><xsl:value-of select="@id"/>
-			</xsl:attribute>
-			<xsl:value-of select="@titre"/>
-		</a>
-	</li>
+	<xsl:choose>
+		<xsl:when test="number(position() mod 2 ) = 1">
+			<xsl:text disable-output-escaping="yes">&lt;tr&gt;</xsl:text>
+			<td>
+				<xsl:attribute name="class">
+					<xsl:text>gauche</xsl:text>	
+				</xsl:attribute>
+				<a>
+					<xsl:attribute name="href">
+						<xsl:if test="@visible='non'">
+							<xsl:text>?nonlu=</xsl:text><xsl:value-of select="@id"/>
+						</xsl:if>
+						<xsl:text>#a</xsl:text><xsl:value-of select="@id"/>
+					</xsl:attribute>
+					<xsl:value-of select="@titre"/>
+				</a>
+			</td>	
+		</xsl:when>
+		<xsl:otherwise>
+			<td>
+				<xsl:attribute name="class">
+					<xsl:text>droite</xsl:text>	
+				</xsl:attribute>
+				<a>
+					<xsl:attribute name="href">
+						<xsl:if test="@visible='non'">
+							<xsl:text>?nonlu=</xsl:text><xsl:value-of select="@id"/>
+						</xsl:if>
+						<xsl:text>#a</xsl:text><xsl:value-of select="@id"/>
+					</xsl:attribute>
+					<xsl:value-of select="@titre"/>
+				</a>
+			</td>
+			<xsl:text disable-output-escaping="yes">&lt;/tr&gt;</xsl:text>
+		</xsl:otherwise>
+	</xsl:choose>
 </xsl:template>
 
 <xsl:template match="lien" mode="sansbr">

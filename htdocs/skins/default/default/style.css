@@ -545,27 +545,20 @@ div#recherchearbre {
 }
 
 /* -------- Sommaires page d'annonce ----------*/
-dl#annonces_sommaire div.sommaire {
+dl#annonces_sommaire table.sommaire {
 	margin:0 auto;
 	width:100%;
 }
 
-dl#annonces_sommaire  p.center {
-	display:block;
-	position:relative;
-}
-
-dl#annonces_sommaire ul li{
-	float:left;
+dl#annonces_sommaire tr td{
 	width:48%;
-	margin:0 1%;
 	height:18px;
-	padding:1px 0;
+	padding:1px 5px;
 }
-dl#annonces_sommaire ul li.gauche{
+dl#annonces_sommaire td.gauche{
 	text-align:right;
 }
-dl#annonces_sommaire ul li.droite{
+dl#annonces_sommaire td.droite{
 	text-align:left;
 }
 /* ################# MENU/LISTE ####################*/
