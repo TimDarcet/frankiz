@@ -6,11 +6,16 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.21  2004/10/16 01:18:00  schmurtz
+	Utilisation d'un chemin d'acces absolu pour partager les images et les caches entre
+	tous les developpeurs. Cela suppose que tout le monde test ce qu'il developpe sur
+	gwennoz, et permet de disposer de toutes les images actuelles (photos, annonces...)
+
 	Revision 1.20  2004/10/15 23:28:00  schmurtz
 	Suppression du dossier data de la CVS pour le remplacer par un lien symbolique
 	Tous les developpeurs partage alors les memes data (photos du trombino, images des
 	annonces...)
-
+	
 	Revision 1.19  2004/10/15 22:03:07  kikx
 	Mise en place d'une page pour la gestion des sites des binets
 	
@@ -63,16 +68,16 @@ define('BASE_URL','http://'.$_SERVER['HTTP_HOST'].'/'.substr((dirname($_SERVER['
 
 // Configuration du site
 define('AFFICHER_LES_ERREURS',$_SERVER["SERVER_ADDR"] == "129.104.201.52");	// seulement sur gwennoz
-define('BASE_DATA',BASE_LOCAL."/../data");
-define('BASE_PHOTOS',BASE_DATA."/photos/");
-define('BASE_CACHE',BASE_LOCAL."/../cache/");
+define('BASE_DATA',"/home/frankiz2/data/");				// TODO Gérer le truc proprement.
+define('BASE_PHOTOS',"/home/frankiz2/data/photos/");
+define('BASE_CACHE',"/home/frankiz2/cache/");
+define('URL_DATA','http://'.$_SERVER['HTTP_HOST'].'/frankiz2/data/');
+
+define('DATA_DIR_LOCAL',BASE_DATA);	// pour compatibilité
+define('DATA_DIR_URL',URL_DATA);
 
 define('MAIL_WEBMESTRE',"kikx@frankiz.polytechnique.fr");
 define('MAX_PEREMPTION',8);
-
-
-define('DATA_DIR_LOCAL',BASE_LOCAL."/../data/" );
-define('DATA_DIR_URL',BASE_URL."/../data/" );
 
 // Gestion des erreurs PHP et MySQL
 // Il est important d'inclure ce fichier le plus tôt possible, mais comme il a besoin
