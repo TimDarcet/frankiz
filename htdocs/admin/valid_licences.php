@@ -21,9 +21,12 @@
 	Page qui permet l'administration des licences windows.
 	
 	$Log$
+	Revision 1.20  2005/02/16 21:20:23  dei
+	ajout de la gestion des clés uniques, sans trop "pourrir" la page
+
 	Revision 1.19  2005/02/16 20:41:24  dei
 	gestion autres logiciels (Access...)
-
+	
 	Revision 1.18  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
 	
@@ -100,7 +103,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="valid_licences" titre="Frankiz : gestion des licences Microsoft">
 <?
-$log=array('winxp' => 'Windows XP Professionnel','2k3serv' => 'Windows Serveur 2003','2k3access'=>'Access 2003','2k3onenote'=>'One Note 2003','2k3visiopro'=>'Visio Professionnel 2003','win2k'=>'Windows 2000 Professionnel');
+$log=array('visualstudio' => 'Visual Studio .NET','winxp' => 'Windows XP Professionnel','2k3serv' => 'Windows Serveur 2003','2k3access'=>'Access 2003','2k3onenote'=>'One Note 2003','2k3visiopro'=>'Visio Professionnel 2003','win2k'=>'Windows 2000 Professionnel');
 //on teste si la cle entrée à la main a une forme standard...
 function test_cle($key){
 	$key=explode("-",$key);
@@ -117,7 +120,7 @@ function test_cle($key){
 	return false;
 }
 
-$DB_msdnaa->query("LOCK TABLES valid_licence WRITE ,cles_winxp WRITE,cles_2k3serv WRITE,cles_libres WRITE");
+$DB_msdnaa->query("LOCK TABLES valid_licence WRITE ,cles_winxp WRITE,cles_2k3serv WRITE,cles_libres WRITE,cles_2k3access WRITE, cles_2k3onenote WRITE, cles_2k3visiopro WRITE, cles_admin WRITE, cles_win2k WRITE, cles_visualstudio WRITE");
 $DB_msdnaa->query("SET AUTOCOMMIT=0");
 
 foreach ($_POST AS $keys => $val){
@@ -153,6 +156,29 @@ $temp = explode("_",$keys) ;
 			//on vérifie que la requete existe encore...
 			$DB_msdnaa->query("SELECT 0 FROM valid_licence WHERE eleve_id='{$temp[1]}'");
 			if($DB_msdnaa->num_rows()!=0){
+				//on regarde si le logiciel a pas une clé unique
+				$DB_msdnaa->query("SELECT 0 FROM cles_admin WHERE log='{$temp[2]}'");
+				if($DB_msdnaa->num_rows()!=0){
+					$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
+					list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
+					//Log l'action de l'admin
+					log_admin($_SESSION['user']->uid," accepté la licence de $prenom $nom ($promo) ") ;
+					
+					echo "<note>c'est bon</note>";
+					$DB_msdnaa->query("DELETE FROM valid_licence WHERE eleve_id='{$temp[1]}'");
+					//on l'ajoute à la base concernée...
+					$DB_msdnaa->query("INSERT cles_$temp[2] SET eleve_id='{$temp[1]}', attrib='1', cle='$_POST[$temp2]'");
+					$contenu = "Bonjour, <br><br>".
+							"Nous t'avons attribué la licence suivante :<br>".
+							$_POST[$temp2]."<br>".
+							"<br>" .
+							"Très Cordialement<br>" .
+							"Le BR<br>";
+			
+					couriel($temp[1],"[Frankiz] Ta demande a été acceptée",$contenu,WINDOWS_ID);
+					couriel(WINDOWS_ID,"[Frankiz] Ta demande a été acceptée",$contenu,$temp[1]);
+					echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande a été acceptée (nouvelle licence : ".$_POST[$temp2].")</commentaire>" ;
+				}else{
 				//on cherche ds les clés attribuées au logiciel..
 				$DB_msdnaa->query("SELECT 0 FROM cles_$temp[2] WHERE cle='{$_POST[$temp2]}'");
 				// S'il n'y a aucune entrée avec cette licence dans la base
@@ -182,6 +208,7 @@ $temp = explode("_",$keys) ;
 					echo "<warning>La clé ".$_POST[$temp2]." existe déjà et est attribuée. Elle a été supprimée de la base des clés libres.</warning>";
 					$DB_msdnaa->query("DELETE FROM cles_libres WHERE cle='{$_POST[$temp2]}' AND logiciel='{$temp[2]}'");
 				}
+				}
 			}else{
 				echo "<warning>La demande a déjà été traitée par un autre administrateur du systeme</warning>";
 			}
@@ -204,8 +231,14 @@ $DB_msdnaa->query("UNLOCK TABLES");
 		$DB_msdnaa->query("SELECT v.raison,v.logiciel,e.nom,e.prenom,e.eleve_id FROM valid_licence as v LEFT JOIN trombino.eleves as e ON e.eleve_id=v.eleve_id");
 		while(list($raison,$logiciel,$nom,$prenom,$eleve_id) = $DB_msdnaa->next_row()) {
 			$DB_msdnaa->push_result();
-			$DB_msdnaa->query("SELECT cle FROM cles_libres WHERE logiciel='{$logiciel}' LIMIT 1");
-			list($cle_libre)=$DB_msdnaa->next_row();
+			//on regarde si le logiciel a pas une clé unique
+			$DB_msdnaa->query("SELECT cle FROM cles_admin WHERE log='{$logiciel}'");
+			if($DB_msdnaa->num_rows()!=0){
+				list($cle_libre)=$DB_msdnaa->next_row();
+			}else{
+				$DB_msdnaa->query("SELECT cle FROM cles_libres WHERE logiciel='{$logiciel}' LIMIT 1");
+				list($cle_libre)=$DB_msdnaa->next_row();
+			}
 			$DB_msdnaa->pop_result();
 			if($cle_libre==""){
 				echo "<warning>Plus de clés libres pour $logiciel</warning>";
@@ -313,6 +346,7 @@ if(isset($_POST['effacer'])&&$_POST['login']!=""){
 			<option titre="Access 2003" id="2k3access"/>
 			<option titre="One Note 2003" id="2k3onenote"/>
 			<option titre="Visio 2003 Professionnel" id="2k3visiopro"/>
+			<option titre="Visual Studio .NET" id="visualstudio"/>
 		</choix>
 		<bouton id='chercher' titre='Rechercher'/>
 		<bouton id='ajout' titre="Ajouter"/>
@@ -404,6 +438,7 @@ if(isset($_POST['update'])&&is_readable($_FILES['file']['tmp_name'])){
 			<option titre="Access 2003" id="2k3access"/>
 			<option titre="One Note 2003" id="2k3onenote"/>
 			<option titre="Visio 2003 Professionnel" id="2k3visiopro"/>
+			<option titre="Visual Studio .NET" id="visualstudio"/>
 		</choix>
 		<bouton id='update' titre="Ajouter"/>
 	</formulaire>
