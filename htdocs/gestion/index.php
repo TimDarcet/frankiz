@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.4  2004/10/21 22:52:19  kikx
+	C'est plus bo
+
 	Revision 1.3  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.2  2004/10/21 20:37:59  kikx
 	C'est moche mais c'est achement pratique
 	
@@ -105,18 +108,21 @@ $permissions_user = ses_permissions() ;
 <page id="admin" titre="Frankiz : administration">
 	<? if (verifie_permission('admin')){?>
 	<h2>Administration frankiz</h2>
+	<h3>Gestion de l'utilisateur</h3>
 		<lien titre="Modifier un utilisateur" url="<?php echo BASE_URL?>/trombino"/>
-		<lien titre="Liste des Binets" url="<?php echo BASE_URL?>/admin/binets.php"/>
-		<lien titre="Liste des Binets qui ont un site WEB" url="<?php echo BASE_URL?>/admin/binets_web.php"/>
 		<lien titre="Gestion des webmestres et des prez" url="<?php echo BASE_URL?>/admin/binet_web_prez.php"/>
-		<lien titre="Liste des sections" url="<?php echo BASE_URL?>/admin/sections.php"/>
 		<lien titre="Liste des IPs" url="<?php echo BASE_URL?>/admin/ip.php"/>
+	<h3>Validations Variées</h3>
 		<lien titre="Gerer les demandes d'ajout d'ips" url="<?php echo BASE_URL?>/admin/valid_ip.php"/>
-		<lien titre="Changer les variables globales" url="<?php echo BASE_URL?>/admin/parametre.php"/>
 		<lien titre="Valider les annonces" url="<?php echo BASE_URL?>/admin/valid_annonces.php"/>
 		<lien titre="Valider les activités" url="<?php echo BASE_URL?>/admin/valid_affiches.php"/>
 		<lien titre="Valider les mails promos" url="<?php echo BASE_URL?>/admin/valid_mailpromo.php"/>
 		<lien titre="Valider les qdj" url="<?php echo BASE_URL?>/admin/valid_qdj.php"/>
+	<h3>Administration des données de Frankiz</h3>
+		<lien titre="Liste des Binets" url="<?php echo BASE_URL?>/admin/binets.php"/>
+		<lien titre="Liste des Binets qui ont un site WEB" url="<?php echo BASE_URL?>/admin/binets_web.php"/>
+		<lien titre="Liste des sections" url="<?php echo BASE_URL?>/admin/sections.php"/>
+		<lien titre="Changer les variables globales" url="<?php echo BASE_URL?>/admin/parametre.php"/>
 		<lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/>
 		<lien titre="Gestion xshare" url="<?php echo BASE_URL?>/admin/xshare.php"/>
 		<lien titre="Gestion FAQ" url="<?php echo BASE_URL?>/admin/faq.php"/>
