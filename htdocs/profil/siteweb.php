@@ -21,9 +21,12 @@
 	Pour gerer son site web perso
 		
 	$Log$
+	Revision 1.12  2005/01/06 19:41:35  pico
+	Commentaire précisé
+
 	Revision 1.11  2005/01/06 17:32:33  pico
 	Pb de taille d'upload...
-
+	
 	Revision 1.10  2005/01/06 17:31:33  pico
 	Mise à jour de l'explication
 	
@@ -129,7 +132,8 @@ require "../include/page_header.inc.php";
 	<? echo $message ?>
 	
 	<formulaire id="mod_pageperso" titre="Ton site web" action="profil/siteweb.php">
-		<note>Tu peux soumettre des .zip, des .tar.gz, .tar, .tar.bz2. Tu remplaceras ainsi l'intégralité de ton site perso. Attention tu es limité à 10Mo.</note>
+		<note>Tu peux soumettre des archives .zip, .tar.gz, .tar ou .tar.bz2 qui seront décompressés (ou tout autre fichier qui sera mis tel quel) <br/>
+		Tu remplaceras l'intégralité de ton site perso. <br/>Attention tu es limité à 10Mo.</note>
 		<fichier id="file" titre="Ton site" taille="10000000"/>
 		<?
 		if (is_dir(BASE_PAGESPERSOS.$login."-".$promo)){
