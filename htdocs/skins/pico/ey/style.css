@@ -240,6 +240,10 @@ div.fkz_annonces_corps:hover {
     border-top: none;
 }
 
+.fkz_annonces_corps div.image {
+	text-align: center;
+}
+
 div.fkz_anniversaire:hover {
     border: 1px dashed #c0c0c0;
     border-top: none;
