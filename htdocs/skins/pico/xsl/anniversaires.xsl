@@ -36,7 +36,7 @@
 				</xsl:if>
  				<xsl:value-of select="@prenom" />
  				<xsl:text> </xsl:text>
- 				<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzéèàçê','ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊ')" />
+ 				<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzéèàçêëù','ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊËÙ')" />
 				<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
 			</xsl:for-each>
 		</div>

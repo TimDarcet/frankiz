@@ -26,7 +26,7 @@
 	<h3 class="nom">
 		<xsl:value-of select="@prenom" />
 		<xsl:text> </xsl:text>
-		<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
+		<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzéèàçêëù','ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊËÙ')" />
 	</h3>
 	<div class="fkz_trombino_photo">
 		<a>
