@@ -32,6 +32,34 @@
 	</xsl:if>
 </xsl:template>
 
+
+<xsl:template match="annonce[../@id='activites']">
+		<div style="text-align:center">
+			<strong>
+				<span><xsl:value-of select="@titre"/></span>
+			</strong>
+		</div>
+		<div style="text-align:center">
+			<xsl:if test="@date!=''">A <xsl:value-of select='substring(@date,12,5)'/><br/></xsl:if>
+			<xsl:apply-templates select="*[name()!='eleve']"/>
+			<xsl:if test="count(eleve)">
+				<p class="fkz_signature">
+					<xsl:choose>
+						<xsl:when test="eleve/@surnom != ''">
+							<xsl:value-of select="eleve/@surnom"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="eleve/@prenom"/><xsl:text>  </xsl:text><xsl:value-of select="eleve/@nom"/>
+						</xsl:otherwise>
+					</xsl:choose>
+					(<xsl:value-of select="eleve/@promo"/>)
+				</p>
+			</xsl:if>
+			<xsl:text> </xsl:text> <!-- Pas de div vide -->
+		</div>
+	<br/>
+</xsl:template>
+
 <xsl:template match="annonce" mode="activites">
 		<div style="text-align:center">
 			<strong>

@@ -114,9 +114,11 @@
 		</div>
 		<div>
 			<xsl:apply-templates/>
+			<xsl:text> </xsl:text> <!-- Pas de div vide -->
 		</div>
 	<br/>
 </xsl:template>
+
 
 <xsl:template match="annonce" mode="sommaire">
 	<div class="fkz_sommaire_corps">
