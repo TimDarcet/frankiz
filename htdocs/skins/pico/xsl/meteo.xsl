@@ -91,8 +91,9 @@
 	<div class="fkz_module"  id='mod_meteo'>
 		<div class="fkz_titre"><span id="meteo_logo"><xsl:text> </xsl:text></span><span id="meteo">La météo</span></div>
 		<div class="fkz_module_corps">
+			<span  class="meteo">
 			<xsl:value-of select="meteo/now/temperature"/>°C<br />
-			<span  class="meteo"><img alt="meteo" width="64" height="64">
+			<img alt="meteo" width="64" height="64">
 				<xsl:choose>
 					<xsl:when test="meteo/now/image!='-'">
 						<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="meteo/now/image"/>.png</xsl:attribute>

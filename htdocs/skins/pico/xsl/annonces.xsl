@@ -98,7 +98,6 @@
 		</div>
 		<div class="fkz_annonces_corps">
 			<xsl:apply-templates/>
-
 		</div>
 	</div>
 	<br/>

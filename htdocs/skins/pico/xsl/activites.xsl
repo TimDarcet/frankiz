@@ -38,7 +38,7 @@
 				<span><xsl:value-of select="@titre"/></span>
 			</b>
 		</div>
-		<div>
+		<div style="text-align:center">
 			<xsl:if test="@date!=''">A <xsl:value-of select='substring(@date,12,5)'/><br/></xsl:if>
 			<xsl:apply-templates select="*[name()!='eleve']"/>
 			<xsl:if test="count(eleve)">

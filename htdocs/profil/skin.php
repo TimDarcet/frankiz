@@ -39,9 +39,12 @@
 	)
 	
 	$Log$
+	Revision 1.23  2004/12/14 23:54:41  pico
+	Modifs visuelles
+
 	Revision 1.22  2004/12/14 23:31:07  pico
 	Affichage des skins
-
+	
 	Revision 1.21  2004/12/14 17:14:53  schmurtz
 	modification de la gestion des annonces lues :
 	- toutes les annonces sont envoyees dans le XML
@@ -186,7 +189,6 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 						echo "<option titre=\"$file_css: $description_css\" id=\"$file_xsl/$file_css\"/>";
 				}
 				closedir($dir_css);
-			
 			}
 			closedir($dir_xsl);
 ?>
