@@ -21,9 +21,12 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.10  2004/10/25 19:41:58  kikx
+	Rend clair la page d'accueil et les annonces
+
 	Revision 1.9  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.8  2004/10/20 21:45:01  kikx
 	Pour que ca soit propre
 	
@@ -46,7 +49,7 @@
 */
 ?>
 <module id="liens_navigation" titre="Frankiz">
-	<lien titre="Annonces" url="annonces.php" />
+	<lien titre="Annonces" url="index.php" />
 	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
 		<lien titre="Se déconnecter" url="index.php?logout=1" />
 		<lien titre="Profil" url="profil/profil.php" />

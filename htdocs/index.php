@@ -21,9 +21,12 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.10  2004/10/25 19:41:58  kikx
+	Rend clair la page d'accueil et les annonces
+
 	Revision 1.9  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.8  2004/09/15 23:19:45  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
@@ -33,8 +36,13 @@
 */
 
 require_once "include/global.inc.php";
-if (est_authentifie(AUTH_COOKIE)) 
-	rediriger_vers("/annonces.php");
+
+function get_categorie($en_haut,$stamp,$perime) {
+	if($en_haut==1) return "important";
+	elseif($stamp > date("Y-m-d H:i:s",time()-12*3600)) return "nouveau";
+	elseif($perime < date("Y-m-d H:i:s",time()+24*3600)) return "vieux";
+	else return "reste";
+}
 
 // génération de la page
 require "include/page_header.inc.php";
@@ -42,12 +50,39 @@ echo "<page id='accueil' titre='Frankiz : accueil'>\n";
 ?>
 
 <h2>Bienvenue sur Frankiz</h2>
-
-<p>&nbsp;</p>
-<p>Voici la nouvelle page élève qui est en construction...</p>
-<p>Si tu veux te connecter et accéder à la partie réservée aux élèves alors clique sur ce <a href="login.php">lien</a></p>
-<p>Sinon navigue sur cette page en utilisant les liens qui se situe un peu partout sur cette page :)</p>
 <?
+if (!est_authentifie(AUTH_COOKIE))  {
+?>
+	<p>&nbsp;</p>
+	<p>Voici la nouvelle page élève qui est en construction...</p>
+	<p>Si tu veux te connecter et accéder à la partie réservée aux élèves alors clique sur ce <a href="login.php">lien</a></p>
+	<p>Sinon navigue sur cette page en utilisant les liens qui se situe un peu partout sur cette page :)</p>
+<?
+}
+$DB_web->query("SELECT annonce_id,stamp,perime,titre,contenu,en_haut,exterieur,nom,prenom,surnom,promo,"
+					 ."IFNULL(mail,CONCAT(login,'@poly.polytechnique.fr')) as mail "
+					 ."FROM annonces LEFT JOIN trombino.eleves USING(eleve_id) "
+					 ."WHERE (perime>=".date("Ymd000000",time()).") ORDER BY perime DESC");
+while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail)=$DB_web->next_row()) {
+	if(!$exterieur && !est_authentifie(AUTH_MINIMUM)) continue;
+?>
+	<annonce id="<?php echo $id ?>" 
+			titre="<?php echo $titre ?>"
+			categorie="<?php echo get_categorie($en_haut, $stamp, $perime) ?>"
+			date="<?php echo substr($stamp,8,2)."/".substr($stamp,5,2)."/".substr($stamp,0,4) ?>">
+<?php
+		echo "<html>$contenu</html>";
+
+			if (file_exists(DATA_DIR_LOCAL."annonces/$id")) {
+			?>
+				<image source="<?echo DATA_DIR_URL."annonces/$id" ; ?>" texte=""/>
+			<? 
+			}
+?>
+		<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
+	</annonce>
+<?php }
+
 echo "</page>\n";
 require_once "include/page_footer.inc.php";
 ?>
