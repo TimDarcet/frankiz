@@ -5,11 +5,15 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.9  2004/09/16 13:44:34  schmurtz
+	AmeÃÅlioration de l'affichage de la page des binets (avec le classement par categorie mais pas le trie).
+	Passage de la sortie de la skin basic en xhtml avec doctype.
+
 	Revision 1.8  2004/09/16 11:09:38  kikx
 	C'est les vacances maintenant ...
 	Bon bref .. c'est dur aussi
 	Bon j'ai un peu arrangÈ la page des binets
-
+	
 	Revision 1.7  2004/09/15 23:19:56  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
@@ -18,7 +22,9 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:include href="html.xsl"/>
 <xsl:include href="form.xsl"/>
-<xsl:output method="html" encoding="ISO-8859-1"/>
+<xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
+	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
+	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"/>
 
 <xsl:template match="/frankiz"> 
 	<xsl:apply-templates select="page"/>
@@ -45,7 +51,7 @@
 			<tr><td id="frankiz" colspan="2">
 				Frankiz, le serveur des ÈlËves
 				
-			</td></tr> <tr><td id="cadres">
+			</td></tr><tr><td id="modules">
 				<table cellspacing="0" cellpadding="0">
 					<xsl:apply-templates select="/frankiz/module"/>
 				</table>
@@ -73,16 +79,16 @@
 <!-- DÈfinition des modules -->
 <xsl:template match="/frankiz/module">
 	<xsl:if test="(boolean(@visible) = false) or (@visible = 'true')">
-		<tr><th class="cadre"><xsl:value-of select="@titre"/></th></tr>
-		<tr><td class="cadre"><xsl:apply-templates/></td></tr>
+		<tr><th><xsl:value-of select="@titre"/></th></tr>
+		<tr><td><xsl:apply-templates/></td></tr>
 	</xsl:if>
 </xsl:template>
 
 <!-- Annonces (une annonce dans un module correspond ‡ une activitÈ) -->
 <xsl:template match="page/annonce">
 	<table class="annonce" cellspacing="0" cellpadding="0">
-		<tr><th class="annonce"><xsl:value-of select="@titre"/> (<xsl:value-of select="@date"/>)</th></tr>
-		<tr><td class="annonce">
+		<tr><th><xsl:value-of select="@titre"/> (<xsl:value-of select="@date"/>)</th></tr>
+		<tr><td>
 			<xsl:apply-templates/>
 			<p class="signature"><xsl:value-of select="@auteur"/></p>
 		</td></tr>
@@ -179,41 +185,32 @@
 	</table>
 </xsl:template>
 
-<xsl:template match="page/binet[position() > 1]">
-</xsl:template>
-
-<xsl:template match="page/binet[1]">
-	<xsl:for-each select="../binet">
-	<xsl:sort select="@catego"/>
-	<xsl:sort select="@nom"/>
-	<xsl:if test="position() = 1">
-		<xsl:text disable-output-escaping="yes">&lt;table cellpadding="0" cellspacing="0"&gt;</xsl:text>
-		<tr><td class="titre"><xsl:value-of select="@catego"/></td></tr>
-	</xsl:if>
-
-	<tr><td width="120">
-		<xsl:text disable-output-escaping="yes">&lt;a href="</xsl:text>
-		<xsl:value-of select="url"/>"<xsl:text disable-output-escaping="yes">&gt;</xsl:text>
-		<xsl:apply-templates select="image"/><xsl:text disable-output-escaping="yes">&lt;/a&gt;</xsl:text>
-	</td><td width="100%">
-		<span class="binet_nom">
-			<xsl:text disable-output-escaping="yes">&lt;h3&gt;</xsl:text>
-			<xsl:value-of select="@nom"/> 
-			<xsl:text disable-output-escaping="yes">&lt;/h3&gt;</xsl:text>
-		</span>
-		<span class="binet_descript">
-			<xsl:value-of select="description"/>
-		</span>
-	</td></tr>
-	<xsl:if test="position() = last()">
-		<xsl:text disable-output-escaping="yes">&lt;/table&gt;</xsl:text>
-	</xsl:if>
-	</xsl:for-each>
-</xsl:template>
-
 <xsl:template match="page/eleve/binet">
 	<xsl:value-of select="@nom"/><xsl:text> (</xsl:text><xsl:value-of select="."/><xsl:text>) </xsl:text>
 </xsl:template>
 
-</xsl:stylesheet>
+<!-- Page des binets -->
 
+<xsl:template match="page/binet">
+	<xsl:if test="preceding-sibling::binet[1]/@categorie != @categorie or position() = 2">
+		<!-- TODO comprendre pourquoi postion() = 2 et pas 1 :) -->
+		<xsl:text disable-output-escaping="yes">&lt;table class="binets" cellpadding="0" cellspacing="0"&gt;</xsl:text>
+		<tr><th colspan="2"><h2><xsl:value-of select="@categorie"/></h2></th></tr>
+	</xsl:if>
+	
+	<tr><td width="120">
+		<a><xsl:attribute name="href"><xsl:value-of select="url"/></xsl:attribute>
+			<xsl:apply-templates select="image"/>
+		</a>
+	</td><td width="100%">
+		<h3><xsl:value-of select="@nom"/></h3>
+		<p><xsl:value-of select="description"/></p>
+	</td></tr>
+	
+	<xsl:if test="following-sibling::binet[1]/@categorie != @categorie or position() = last()-1">
+		<!-- TODO comprendre pourquoi postion() = last()-1 et pas last() :) -->
+		<xsl:text disable-output-escaping="yes">&lt;/table&gt;</xsl:text>
+	</xsl:if>
+</xsl:template>
+
+</xsl:stylesheet>
