@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.28  2005/01/10 07:55:04  pico
+	Tjs bug #21
+
 	Revision 1.27  2005/01/10 07:48:58  pico
 	Bug #21
-
+	
 	Revision 1.26  2005/01/02 20:36:32  pico
 	Bug
 	
@@ -174,14 +177,16 @@ $DB_admin->query("UNLOCK TABLES");
 
 <h2>Liste des personnes demandant</h2>
 	<liste id="liste" selectionnable="non" action="admin/valid_ip.php">
+		<entete id="prise" titre="Prise"/>
 		<entete id="eleve" titre="Élève"/>
 		<entete id="raison" titre="Raison"/>
 		<entete id="ip" titre="IP"/>
 <?
-		$DB_valid->query("SELECT v.raison,e.nom,e.prenom,e.piece_id,e.eleve_id FROM valid_ip as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
-		while(list($raison,$nom,$prenom,$piece,$eleve_id) = $DB_valid->next_row()) {
+		$DB_valid->query("SELECT v.raison,e.nom,e.prenom,e.piece_id,e.eleve_id,p.prise_id FROM valid_ip as v LEFT JOIN trombino.eleves as e USING(eleve_id) LEFT JOIN admin.prises AS p USING(piece_id)");
+		while(list($raison,$nom,$prenom,$piece,$eleve_id,$prise) = $DB_valid->next_row()) {
 ?>
 			<element id="<? echo $eleve_id ;?>">
+				<colonne id="prise"><? echo "$prise" ?></colonne>
 				<colonne id="eleve"><? echo "$nom $prenom" ?></colonne>
 				<colonne id="raison">
 					<p><textsimple titre="" id="raison_<? echo $eleve_id ;?>" valeur="Raison = <? echo $raison ;?>"/></p>
