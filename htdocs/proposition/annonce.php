@@ -21,11 +21,14 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.43  2005/01/27 17:27:50  pico
+	/me vérifiera ses parenthèses la prochaine fois
+
 	Revision 1.42  2005/01/27 15:23:17  pico
 	La boucle locale est considérée comme interne
 	Tests de photos normalement plus cools.
 	Après le reste.... je sais plus
-
+	
 	Revision 1.41  2005/01/22 17:58:39  pico
 	Modif des images
 	
@@ -168,7 +171,7 @@ list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_ro
 
 $erreur_upload = 0 ;
 if ((isset($_FILES['file']))&&($_FILES['file']['size']!=0))  {
-	if($original_size = getimagesize($_FILES['file']['tmp_name'])){
+	if($original_size = getimagesize($_FILES['file']['tmp_name'])) {
 		$larg = $original_size[0];
 		$haut = $original_size[1];
 		if (($larg>400)||($haut>300)) {

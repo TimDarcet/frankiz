@@ -21,11 +21,14 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une activité
 	
 	$Log$
+	Revision 1.22  2005/01/27 17:27:50  pico
+	/me vérifiera ses parenthèses la prochaine fois
+
 	Revision 1.21  2005/01/27 15:23:17  pico
 	La boucle locale est considérée comme interne
 	Tests de photos normalement plus cools.
 	Après le reste.... je sais plus
-
+	
 	Revision 1.20  2005/01/25 14:18:07  pico
 	Pour le lien des activites
 	
@@ -138,7 +141,7 @@ else $_POST['heure']="00:00";
 
 $erreur_upload = 0 ;
 if ((isset($_FILES['file']))&&($_FILES['file']['size']!=0))  {
-	if($original_size = getimagesize($_FILES['file']['tmp_name']){
+	if($original_size = getimagesize($_FILES['file']['tmp_name'])) {
 		$larg = $original_size[0];
 		$haut = $original_size[1];
 		if (($larg>=200)||($haut>=300)) {
