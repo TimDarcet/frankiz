@@ -22,9 +22,12 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.28  2004/11/19 17:14:31  kikx
+	Gestion complete et enfin FINIIIIIIIIIIIIIIII des sondages !!! bon ok c'est assez moche l'affichage des resultats mais .... j'en ai marrrrrrrrrrre
+
 	Revision 1.27  2004/11/17 22:19:15  kikx
 	Pour avoir un module sondage
-
+	
 	Revision 1.26  2004/11/17 13:27:06  kikx
 	Mise ne place d'un titre dan sles sondages
 	
@@ -227,34 +230,34 @@ function decode_sondage($string) {
 	for ($i=1 ; $i<count($string) ; $i++) {
 		$temp = explode("///",$string[$i]) ;
 		if ($temp[0]=="expli") {
-			echo "<note>$temp[1]</note>" ;
+			echo "<note>$temp[1]</note>\n" ;
 		}
 		if ($temp[0]=="champ") {
-			echo "<champ id=\"$i\" titre=\"$temp[1]\" valeur=\"\"/>" ;
+			echo "<champ id=\"$i\" titre=\"$temp[1]\" valeur=\"\"/>\n" ;
 		}
 		if ($temp[0]=="text") {
-			echo "<zonetext id=\"$i\" titre=\"$temp[1]\" valeur=\"\"/>" ;
+			echo "<zonetext id=\"$i\" titre=\"$temp[1]\" valeur=\"\"/>\n" ;
 		}
 		if ($temp[0]=="radio") {
-			echo "<choix titre=\"$temp[1]\" id=\"$i\" type=\"radio\" valeur=\"\">" ;
+			echo "<choix titre=\"$temp[1]\" id=\"$i\" type=\"radio\" valeur=\"\">\n" ;
 			for ($j=2 ; $j<count($temp) ; $j++) {
-				echo "<option titre=\"".$temp[$j]."\" id=\"$j\"/>";
+				echo "\t<option titre=\"".$temp[$j]."\" id=\"".($j-1)."\"/>\n";
 			}	
-			echo "</choix>" ;
+			echo "</choix>\n" ;
 		}
 		if ($temp[0]=="combo") {
-			echo "<choix titre=\"$temp[1]\" id=\"$i\" type=\"combo\" valeur=\"\">" ;
+			echo "<choix titre=\"$temp[1]\" id=\"$i\" type=\"combo\" valeur=\"\">\n" ;
 			for ($j=2 ; $j<count($temp) ; $j++) {
-				echo "<option titre=\"".$temp[$j]."\" id=\"$j\"/>";
+				echo "\t<option titre=\"".$temp[$j]."\" id=\"".($j-1)."\"/>\n";
 			}	
-			echo "</choix>" ;
+			echo "</choix>\n" ;
 		}
 		if ($temp[0]=="check") {
-			echo "<choix titre=\"$temp[1]\" id=\"$i\" type=\"checkbox\" valeur=\"\">" ;
+			echo "<choix titre=\"$temp[1]\" id=\"$i\" type=\"checkbox\" valeur=\"\">\n" ;
 			for ($j=2 ; $j<count($temp) ; $j++) {
-				echo "<option titre=\"".$temp[$j]."\" id=\"$j\"/>";
+				echo "\t<option titre=\"".$temp[$j]."\" id=\"{$i}_".($j-1)."\"/>\n";
 			}	
-			echo "</choix>" ;
+			echo "</choix>\n" ;
 		}
 	}
 }
