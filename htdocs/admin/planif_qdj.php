@@ -21,10 +21,13 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.16  2004/12/07 08:45:13  pico
+	Nettoyage des qdj
+
 	Revision 1.15  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
-
+	
 	Revision 1.14  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
 	
@@ -100,7 +103,7 @@ foreach ($_POST AS $keys => $val){
 	// Fixe une date de parution à la QDJ
 	
 	if ($temp[0]=='valid') {
-		if((strtotime($_REQUEST['date']) <=(time()-3025 ))&&($_REQUEST['date']!="0000-00-00"))
+		if((strtotime($_REQUEST['date']) <(time()-3025 ))&&($_REQUEST['date']!="0000-00-00"))
 		{ ?>
 			<warning>ERREUR: Veuillez choisir une date supérieure à aujourd'hui</warning>
 		<?

@@ -21,9 +21,12 @@
 	Page qui permet aux admins de vider la bdd des activités périmées
 	
 	$Log$
+	Revision 1.2  2004/12/07 08:45:13  pico
+	Nettoyage des qdj
+
 	Revision 1.1  2004/12/07 08:36:39  pico
 	Ajout d'une page pour pouvoir vider un peu les bases de données (genre pas garder les news qui datent de vieux)
-	
+		
 */
 	
 require_once "../include/global.inc.php";
@@ -78,11 +81,21 @@ foreach ($_REQUEST AS $keys => $val){
 		<warning>Suppression de <? echo $compteur?> affiches périmées</warning>
 	<?
 	}
+	
+	if ($temp[0]=='qdj') {
+		$DB_web->query("SELECT qdj_id FROM qdj WHERE date<'".date("Y-m-d", time()-3025 - 5 * 24 * 3600)."' AND date>'0000-00-00'");
+		$compteur = $DB_web->num_rows();
+		$DB_web->query("DELETE FROM qdj WHERE date<'".date("Y-m-d", time()-3025 - 5 * 24 * 3600)."' AND date>'0000-00-00'");
+	?>
+		<warning>Suppression de <? echo $compteur?> qdj périmées</warning>
+	<?
+	}
 }
 
 
 echo "<lien titre=\"Supprimer les annonces périmées depuis plus de 5 jours\" url=\"admin/nettoyage.php?annonces\"/>" ;
 echo "<lien titre=\"Supprimer les affiches périmées depuis plus de 5 jours\" url=\"admin/nettoyage.php?affiches\"/>" ;
+echo "<lien titre=\"Supprimer les qdj périmées depuis plus de 5 jours\" url=\"admin/nettoyage.php?qdj\"/>" ;
 	
 ?>
 </page>
