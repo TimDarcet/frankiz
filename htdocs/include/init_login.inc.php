@@ -36,11 +36,14 @@
 	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
 
 	$Log$
+	Revision 1.11  2005/01/21 16:48:29  pico
+	Modifs de chemins
+
 	Revision 1.10  2005/01/18 19:30:34  pico
 	Place la boite du sudo dans la boite avec les infos de connection.
 	Pbs d'encodage des variables passées à sablotron réglés
 	Pb du su quand on est pas loggué par mot de passe réglé
-
+	
 	Revision 1.9  2005/01/11 17:42:25  pico
 	coquille
 	
@@ -214,7 +217,7 @@ function demande_authentification($minimum) {
 			dans le login ou le mot de passe.</warning>
 		<?php endif; ?>
 		<note>Ton login est loginpoly.promo</note>
-		<formulaire id="login" titre="Connexion" action="<?php echo 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']?>">
+		<formulaire id="login" titre="Connexion" action="/">
 		<?  foreach ($_REQUEST AS $keys => $val){
 			echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 			}

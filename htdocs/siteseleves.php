@@ -21,9 +21,12 @@
 	Sites Eleves
 	
 	$Log$
+	Revision 1.6  2005/01/21 16:48:29  pico
+	Modifs de chemins
+
 	Revision 1.5  2004/12/17 14:26:20  pico
 	Pas d'action pour les listes non sélectionnables
-
+	
 	Revision 1.4  2004/12/16 13:00:41  pico
 	INNER en LEFT
 	
@@ -53,7 +56,10 @@ require "include/page_header.inc.php";
 		$DB_web->query("SELECT e.eleve_id,e.nom,e.prenom,e.promo,commentaires,e.login FROM sites_eleves LEFT JOIN trombino.eleves as e USING(eleve_id) ORDER BY promo DESC") ;
 		while(list($id,$nom,$prenom,$promo,$commentaire,$login) = $DB_web->next_row()) {
 			echo "\t\t<element id=\"$id\">\n";
-				echo "\t\t\t<colonne id=\"eleves\"><lien id='$id' titre='$prenom $nom ($promo)' url='".URL_PAGEPERSO."/$login-$promo/'/></colonne>\n";
+				echo "\t\t\t<colonne id=\"eleves\"><lien id='$id' titre='$prenom $nom ($promo)' url='";
+				if($_SESSION['user']->est_authentifie(AUTH_INTERNE)) echo URL_PAGEPERSO;
+				else echo "/webperso";
+				echo "/$login-$promo/'/></colonne>\n";
 			echo "\t\t</element>\n";
 		}
 ?>
