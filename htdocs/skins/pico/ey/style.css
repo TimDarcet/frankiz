@@ -188,7 +188,7 @@ span.fkz_logo {
     text-align: center;
 }
 
-.fkz_liens,.fkz_contact,.fkz_stats,.fkz_liens_nav {
+.fkz_liens,.fkz_contact,.fkz_liens_nav {
     margin-top: 0;
     margin-bottom: 0;
 	list-style-type:none;
@@ -443,28 +443,26 @@ span.valid_css:before {
 
 /* Stats */
  
-.fkz_stats{list-style-type:  none;}
+.fkz_stats{list-style-type:  none; padding-left: -10px}
+
 
 .serveur_nom {
-	display: block;
-	color: inherit;
+        color: inherit;
+            position: relative;
+                left: 10px;
 }
 
 .serveur_up {
-	color: inherit;
-	background: lime;
-	position: relative;
-	left: 80px;
-	top: -16px;
+        color: inherit;
+            background: lime;
 }
 
 .serveur_down {
-	color: inherit;
-	background: red;
-	position: relative;
-	left: 80px;
-	top: -16px;
+        color: inherit;
+            background: red;
 }
+
+
 
 /* FAQ et Xshare */
 /* 
@@ -601,67 +599,52 @@ div.fkz_trombino_eleve {
     border: 1px solid #c0c0c0;
     background-color: #f0f0f0;
     font-size: 9pt;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 div.fkz_trombino_eleve:hover {
     border: 1px dashed #c0c0c0;
 }
 
-.fkz_trombino_eleve p.nom {
-    text-align: left;
-    background-color: #e0e0e0;
-    padding: 2px;
-    padding-left: 20px;
-    font-size: 120%;
-    font-weight: bold;
+.fkz_trombino_eleve h3 {
+    margin-top: -1px;
+    margin-left: -6px;
+    margin-right: -6px;
+    text-align: center;
     border: 1px solid #a0a0a0;
-    margin: -1px;
+    background-color: #e0e0e0;
 }
 
-.fkz_trombino_eleve p.surnom {
-    float: left;
-    width: 50%;
-    text-align: left;
-    font-style: italic;
+.fkz_trombino_eleve .fkz_trombino_photo {
+        float: left;
+            padding-right: 10px;
 }
 
-.fkz_trombino_eleve p.promo {
-    font-weight: bold;
-    text-align: left;
+.fkz_trombino_eleve .fkz_trombino_section {
+        float: right;
 }
 
-.fkz_trombino_eleve p.telephone {
+.fkz_trombino_eleve .fkz_trombino_infos2 {
+        float: right;
+            padding-right: 10px;
+                text-align: right;
+}
+
+.fkz_trombino_eleve .fkz_trombino_infos {
+        float: left;
+}
+
+
+
+.fkz_trombino_eleve div.binets {
     clear: both;
-    text-align: left;
-    float: left;
-    width: 50%;
-}
-
-.fkz_trombino_eleve p.casert {
-    text-align: left;
-}
-
-.fkz_trombino_eleve p.section {
-    text-align: left;
-    clear: both;
-}
-
-.fkz_trombino_eleve p, .fkz_trombino_eleve div.binets {
     padding-left: 5px;
     padding-right: 5px;
     margin: 2px;
-}
-
-.fkz_trombino_eleve div.binets {
     text-align: left;
     margin-top: 10px;
 }
 
-.fkz_trombino_eleve p {
-    text-align: center;
-}
-
-.fkz_trombino_eleve a {
-}
 
 
