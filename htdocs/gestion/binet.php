@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.34  2005/01/27 16:13:39  pico
+	Tiens, j'avais oublié celui là
+
 	Revision 1.33  2005/01/27 06:33:22  pico
 	Pour éviter que quand un prez vire quelqu'un de son binet, tous les binets du gars soient effacés !
-
+	
 	Revision 1.32  2005/01/22 17:58:38  pico
 	Modif des images
 	
@@ -277,8 +280,6 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 		//--------------------------------------------------------
 		if (($_FILES['file']['tmp_name']!='none')&&($_FILES['file']['tmp_name']!='')) {
 			$img = $_FILES['file']['tmp_name'] ;
-			$image_types = Array ("image/bmp","image/jpeg","image/pjpeg","image/gif","image/x-png","image/png");
-		
 				//récupere les données de l'images
 				//--------------------------------------
 				
@@ -286,7 +287,6 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 			
 			$fp = fopen($img,"rb"); // (b est pour lui dire que c'est bineaire !)
 			$size = filesize($img) ;
-			$dim = getimagesize($img) ;
 			$data = fread($fp,$size);
 			fclose($fp);
 			$data = addslashes($data);
@@ -295,7 +295,7 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 				// On verifie que le truc télécharger est une image ...
 				//--------------------------------------
 			//echo $dim[0]."x".$dim[1] ;
-			if ((in_array (strtolower ($type_img), $image_types))&&($dim[0]<=100)&&($dim[1]<=100)) {
+			if ($dim = getimagesize($img))&&($dim[0]<=100)&&($dim[1]<=100)) {
 				$DB_valid->query("UPDATE valid_binet SET image=\"$data\", format='$type_img' WHERE  binet_id={$_POST['id']}") ;
 				$texte_image = " et de son image " ;
 			} else {
