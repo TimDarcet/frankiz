@@ -272,6 +272,11 @@ div.fkz_page_titre {
 	margin:10px;
 }
 
+.fkz_trombino_eleve{
+	border:1px solid #1F118C;
+	background-color:#eef1f2;
+}
+
 .fkz_signature{
 	text-align:right;
 	font-weight: bold;

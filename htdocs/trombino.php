@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.24  2004/11/27 20:49:10  pico
+	Affichage des liens du trombino
+
 	Revision 1.23  2004/11/27 15:39:54  pico
 	Ajout des droits trombino
-
+	
 	Revision 1.22  2004/11/25 02:22:02  schmurtz
 	esthetisme (trop long)
 	
@@ -163,11 +166,12 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_RE
 			
 			// Liens d'administration
 			if(verifie_permission('admin')||verifie_permission('trombino')) {
-				echo "<a href='".BASE_URL."/admin/user.php?id=$eleve_id'>Administrer $prenom $nom</a>\n" ;
+				echo "<lien url='".BASE_URL."/admin/user.php?id=$eleve_id' titre='Administrer $prenom $nom'/>\n" ;
 			}
 			if(verifie_permission('admin')) {
-				echo "<a href='".BASE_URL."/?su=$eleve_id'>Prendre l&apos;identité de $prenom $nom</a>\n" ;
+				echo "<lien url='".BASE_URL."/?su=$eleve_id' titre='Prendre l&apos;identité de $prenom $nom'/>\n" ;
 			}
+			echo "<br/>";
 		}
 	}
 }

@@ -21,49 +21,51 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+<xsl:template match="eleve">
+	<div class="fkz_trombino_eleve">
+	<p class="nom">
+		<xsl:value-of select="@prenom" />
+		<xsl:text> </xsl:text>
+		<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
+	</p>
+	<p class="surnom">
+		<xsl:value-of select="@surnom" />
+	</p>
+	<p class="promo">
+		<xsl:value-of select="@promo" />
+	</p>
+	<p class="telephone">Tel:
+		<xsl:value-of select="@phone"/>
+	</p>
+	<p class="casert">
+		Casert:
+	<xsl:value-of select="@casert"/>
+	</p>
+	<p class="section">Section: <xsl:value-of select="@section"/>
+	</p>
+	<div class="binets">Binets:
+		<ul>
+		<xsl:for-each select="binet">
+			<li><xsl:value-of select="@nom"/><xsl:text>  </xsl:text><em>(<xsl:value-of select="text()"/>)</em></li>
+		</xsl:for-each>
+		</ul>
+	</div>
+	<p>
+		<a>
+			<xsl:attribute name="href"><xsl:text>trombino/index.php?image=true&amp;login=</xsl:text><xsl:value-of select="@login"/><xsl:text>&amp;promo=</xsl:text><xsl:value-of select="@promo"/></xsl:attribute>
+			<img height="95" width="80">
+			<xsl:attribute name="src"><xsl:text>trombino/index.php?image=true&amp;login=</xsl:text><xsl:value-of select="@login"/><xsl:text>&amp;promo=</xsl:text><xsl:value-of select="@promo"/></xsl:attribute>
+			<xsl:attribute name="alt"><xsl:value-of select="@login"/> (<xsl:value-of select="@promo"/>)</xsl:attribute>
+			</img>
+		</a>
+	</p>
+	<xsl:apply-templates select="*[name()!='binet']"/>
+	</div>
+</xsl:template>
+
 <xsl:template match="page[@id='trombino']">
 	<div class="fkz_trombino">
-		<xsl:for-each select="eleve">
-			<p class="nom">
-				<xsl:value-of select="@prenom" />
-				<xsl:text> </xsl:text>
-				<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
-			</p>
-			<p class="surnom">
-				<xsl:value-of select="@surnom" />
-			</p>
-			<p class="promo">
-				<xsl:value-of select="@promo" />
-			</p>
-			<p class="telephone">Tel:
-				<xsl:value-of select="@phone"/>
-			</p>
-			<p class="casert">
-				Casert:
-			<xsl:value-of select="@casert"/>
-			</p>
-			<p class="section">Section: <xsl:value-of select="@section"/>
-			</p>
-			<div class="binets">Binets:
-				<ul>
-				<xsl:for-each select="binet">
-					<li><xsl:value-of select="@nom"/><xsl:text>  </xsl:text><em>(<xsl:value-of select="text()"/>)</em></li>
-				</xsl:for-each>
-				</ul>
-			</div>
-			<p>
-				<a>
-					<xsl:attribute name="href"><xsl:text>trombino/index.php?image=true&amp;login=</xsl:text><xsl:value-of select="@login"/><xsl:text>&amp;promo=</xsl:text><xsl:value-of select="@promo"/></xsl:attribute>
-					<img height="95" width="80">
-					<xsl:attribute name="src"><xsl:text>trombino/index.php?image=true&amp;login=</xsl:text><xsl:value-of select="@login"/><xsl:text>&amp;promo=</xsl:text><xsl:value-of select="@promo"/></xsl:attribute>
-					<xsl:attribute name="alt"><xsl:value-of select="@login"/> (<xsl:value-of select="@promo"/>)</xsl:attribute>
-					</img>
-				</a>
-			</p>
-			<xsl:apply-templates select="*[name()!='binet']"/>
-			<hr/>
-		</xsl:for-each>
-		<xsl:apply-templates select="*[name()!='eleve']"/>
+		<xsl:apply-templates/>
 	</div>
 </xsl:template>
 
