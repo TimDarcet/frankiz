@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.6  2004/10/29 15:10:27  kikx
+	Passage de la page de validation des activité en HTML (pour l'envoie des mail) et rajout du champs pour mettre la raison du refus de validation
+
 	Revision 1.5  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.4  2004/10/10 22:31:41  kikx
 	Voilà ... Maintenant le webmestre prut ou non valider des activité visibles de l'exterieur
 	
@@ -81,9 +84,10 @@ foreach ($_POST AS $keys => $val){
 		$DB_valid->query("SELECT eleve_id FROM valid_affiches WHERE affiche_id='{$temp[1]}'");
 		list($eleve_id) = $DB_valid->next_row() ;
 		// envoi du mail
-		$contenu = "Merci de ta participation \n\n".
-			"Très BR-ement\n" .
-			"L'automate :)\n"  ;
+		$contenu = 	"Ton activité vient d'être validé par le BR... Elle est dès à present visible sur le site<br><br> ".
+					"Merci de ta participation <br><br>".
+					"Très BR-ement<br>" .
+					"Le Webmestre de Frankiz<br>"  ;
 		couriel($eleve_id,"[Frankiz] Ton activité a été validé par le BR",$contenu);
 
 		if (isset($_REQUEST['ext_auth']))
@@ -109,11 +113,13 @@ foreach ($_POST AS $keys => $val){
 		$DB_valid->query("SELECT eleve_id FROM valid_affiches WHERE affiche_id='{$temp[1]}'");
 		list($eleve_id) = $DB_valid->next_row() ;
 		// envoi du mail
-		$contenu = "Désolé \n\n".
-			"Très BR-ement\n" .
-			"L'automate :)\n"  ;
-		couriel($eleve_id,"[Frankiz] Ton affiche n'a pas été validé par le BR",$contenu);
-
+		$contenu = 	"Ton activité n'a pas été validé par le BR pour la raison suivante :<br>".
+					$_POST['refus']."<br>".
+					"Désolé <br><br>".
+					"Très BR-ement<br>" .
+					"Le Webmestre de frankiz<br>"  ;
+		couriel($eleve_id,"[Frankiz] Ton activité n'a pas été validé par le BR",$contenu);
+		
 		$DB_valid->query("DELETE FROM valid_affiches WHERE affiche_id='{$temp[1]}'") ;
 		//On supprime aussi l'image si elle existe ...
 		
@@ -173,6 +179,7 @@ foreach ($_POST AS $keys => $val){
 				<option id="ext" titre="Demande de l'utilisateur" modifiable='non'/>
 				<option id="ext_auth" titre="Décision du Webmestre"/>
 			</choix>
+			<zonetext id="refus" titre="La raison du refus si refus" valeur=""/>
 
 			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
 			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider cette affiche ?')"/>
