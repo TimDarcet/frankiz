@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une activité
 	
 	$Log$
+	Revision 1.23  2005/01/31 11:11:45  pico
+	Corrige la taille maxi des images pour une activité (celle affichée n'était pas celle appliquée)
+
 	Revision 1.22  2005/01/27 17:27:50  pico
 	/me vérifiera ses parenthèses la prochaine fois
-
+	
 	Revision 1.21  2005/01/27 15:23:17  pico
 	La boucle locale est considérée comme interne
 	Tests de photos normalement plus cools.
@@ -273,7 +276,7 @@ if ((isset($_POST['valid']))&&(isset($index))&&file_exists(DATA_DIR_LOCAL."affic
 		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
 		<champ id="url" titre="Lien vers une page décrivant l'activité" valeur="<? if (isset($_POST['url'])) echo $_POST['url'] ;?>"/>
 		<zonetext id="text" titre="Description plus détaillée"><? if (isset($_POST['text'])) echo $_POST['text'];?></zonetext>
-		<note>L'image doit être un fichier gif, png ou jpeg ne dépassant pas 400x300 pixels et 250Ko.</note>
+		<note>L'image doit être un fichier gif, png ou jpeg ne dépassant pas 200x300 pixels et 250Ko.</note>
 		<fichier id="file" titre="Ton image" taille="100000"/>
 
 		<note>Si tu souhaites que ton activité soit visible de l'extérieur, clique ici.</note>
