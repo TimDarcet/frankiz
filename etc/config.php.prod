@@ -22,9 +22,12 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.11  2005/01/11 13:34:25  pico
+	Sites persos visibles depuis l'extérieur
+
 	Revision 1.10  2004/12/17 20:54:13  pico
 	Changement des alias mail
-
+	
 	Revision 1.9  2004/12/17 18:36:34  pico
 	Ajout mail admin@windows
 	
@@ -77,7 +80,9 @@ define('BASE_DATA',"/home/frankiz2/data/");
 define('BASE_PHOTOS',"/home/frankiz2/data/photos/");
 define('BASE_CACHE',"/home/frankiz2/cache/");
 define('BASE_BINETS',"/home/frankiz2/binets/");
+define('BASE_BINETS_EXT',"/home/frankiz2/htdocs/binets/");
 define('BASE_PAGESPERSOS',"/home/frankiz2/webperso/");
+define('BASE_PAGESPERSOS_EXT',"/home/frankiz2/htdocs/webperso/");
 
 define('URL_DATA','http://'.$_SERVER['HTTP_HOST'].'/data/');
 define('URL_PAGEPERSO','http://perso.frankiz.eleves.polytechnique.fr/');
