@@ -21,10 +21,13 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.9  2004/11/25 10:40:08  pico
+	Correction activités (sinon l'image était tjs écrite en tant que 0 et ct pas glop du coup)
+
 	Revision 1.8  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
-
+	
 	Revision 1.7  2004/10/29 15:14:40  kikx
 	Correction mineur
 	
@@ -106,9 +109,9 @@ foreach ($_POST AS $keys => $val){
 		
 		
 		// On déplace l'image si elle existe dans le répertoire prevu à cette effet
-		$index = mysql_insert_id() ;
+		$index = mysql_insert_id($DB_web->link) ;
 		if (file_exists(DATA_DIR_LOCAL."affiches/a_valider_{$temp[1]}")){
-			rename(DATA_DIR_LOCAL."affiches/a_valider_{$temp[1]}",DATA_DIR_LOCAL."affiches/$index") ;
+			rename(DATA_DIR_LOCAL."affiches/a_valider_{$temp[1]}",DATA_DIR_LOCAL."affiches/{$index}") ;
 		}
 		$DB_valid->query("DELETE FROM valid_affiches WHERE affiche_id='{$temp[1]}'") ;
 	?>

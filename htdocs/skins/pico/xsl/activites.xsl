@@ -22,7 +22,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="module[@id='activites']">
-	<xsl:if test="count(element) !=0">
+	<xsl:if test="count(annonce) !=0">
 		<div style="text-align: center">
 			<div class="fkz_module" id='mod_activites'>
 				<div class="fkz_titre">Activités</div>
