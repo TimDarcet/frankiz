@@ -22,9 +22,12 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.6  2004/11/24 17:29:29  kikx
+	Permet de ne pas faire 1000 requete sur le serveur de la DSI et de plus permet de rendre la page fonctionnel
+
 	Revision 1.5  2004/11/22 23:07:28  kikx
 	Rajout de lines vers les pages perso
-
+	
 	Revision 1.4  2004/11/22 18:59:31  kikx
 	Pour gérer son site perso
 	
@@ -60,6 +63,7 @@ define('URL_PAGEPERSO','http://'.$_SERVER['HTTP_HOST'].'/frankiz2/webperso/');
 define('DATA_DIR_LOCAL',BASE_DATA);	// pour compatibilité
 define('DATA_DIR_URL',URL_DATA);
 
+define('DSI_URL',"http://reseaux.polytechnique.fr/SMAC/") ;
 // Emails
 $i = -1 ;
 define('MAIL_WEBMESTRE',"kikx@frankiz.polytechnique.fr");

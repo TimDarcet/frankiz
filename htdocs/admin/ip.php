@@ -22,9 +22,12 @@
 	Permet aussi de supprimer des IPs.
 	
 	$Log$
+	Revision 1.25  2004/11/24 17:29:30  kikx
+	Permet de ne pas faire 1000 requete sur le serveur de la DSI et de plus permet de rendre la page fonctionnel
+
 	Revision 1.24  2004/10/28 11:42:16  kikx
 	Bug de ma part que je viens de corriger
-
+	
 	Revision 1.23  2004/10/28 11:29:07  kikx
 	Mise en place d'un cache pour 30 min pour la météo
 	
@@ -75,22 +78,29 @@ $blabla = "" ;
 	if ($temp[0] == "detail")
 		rediriger_vers("/trombino/?chercher=1&loginpoly=$temp[1]");
 }
-
-function mac($id_prise){
+function toutes_macs(){
 	$proxy = "kuzh.polytechnique.fr" ;
 	$port = 8080 ;
-	$url = "http://intranet.polytechnique.fr/SYSRES/SMAC/search.php?id_prise=$id_prise" ;
+	$url = DSI_URL."search.php" ;
 	$fp = fsockopen($proxy, $port);
 	fputs($fp, "GET $url HTTP/1.0\r\nHost: $proxy\r\n\r\n");
 	$line = "" ;
 	while(!feof($fp)){
-		$line = fgets($fp,4000);
-		$line = explode("-",$line) ;
-		if (count($line)==6) {
-			fclose($fp);
-			return ($line[0].":".$line[1].":".$line[2].":".$line[3].":".$line[4].":".$line[5]) ;
-		}
+		$line .= fgets($fp,4000);
 	}
+	return $line ;
+}
+
+function mac($id_prise,$fich){
+	$resultat = "" ;
+	$fich = spliti("<tr>",$fich) ;
+	for($i=1 ; $i<count($fich) ; $i++) {
+		if (eregi("$id_prise",$fich[$i])) {
+			$fich[$i] = spliti("<td>",$fich[$i]) ; 
+			$resultat .= "<p>".strip_tags($fich[$i][2])."</p>" ;
+		} 
+	}
+	return $resultat ;
 }
 
 
@@ -102,7 +112,6 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="admin_arp" titre="Frankiz : gestion des logs ip">
 <?
-
 	if(!empty($message))
 		echo "<commentaire>$message</commentaire>\n";
 		
@@ -118,7 +127,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 
 ?>
-<commentaire>Evitez de faire des recherches globales sur tout le monde car ça fait 1000 requêtes sur le serveur de la DSI :)</commentaire>
+<note>Si la page ne marche pas trop, allez sur la page de la <lien titre="DSI" url="<?=DSI_URL?>main.php"/></note>
 	<formulaire id="recherche" titre="Recherche" action="admin/ip.php">
 		<champ titre="Login" id="rech_login" valeur="<? if (isset($_POST['rech_login'])) echo $_POST['rech_login']?>" />
 		<champ titre="Pièce" id="rech_kzert" valeur="<? if (isset($_POST['rech_kzert'])) echo $_POST['rech_kzert']?>" />
@@ -130,6 +139,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 echo $message ;
 
 if (isset($_POST['recherche']) ) {
+	$toutes_macs = toutes_macs() ;
 
 	$DB_admin->query("SELECT e.login, e.promo, p.prise_id, p.piece_id, p.ip,p.type FROM prises as p "
 					."LEFT JOIN trombino.eleves as e $on  $where ORDER BY p.piece_id ASC");
@@ -180,7 +190,7 @@ if (isset($_POST['recherche']) ) {
 				echo "\t\t\t<colonne id=\"piece\">$id_piece</colonne>\n";
 				echo "\t\t\t<colonne id=\"prise\">$id_prise</colonne>\n";
 				echo "\t\t\t<colonne id=\"ip\">$ip_theorique</colonne>\n";
-				echo "\t\t\t<colonne id=\"mac\">".mac($id_prise)."</colonne>\n";
+				echo "\t\t\t<colonne id=\"mac\">".mac($id_prise,$toutes_macs)."</colonne>\n";
 			}
 			
 
