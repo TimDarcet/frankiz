@@ -24,9 +24,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.24  2004/11/07 22:41:03  pico
+	Ne cherche plus à uploader d'image qd on lui demande pas
+
 	Revision 1.23  2004/10/29 16:12:53  kikx
 	Diverse correction sur les envoie des mail en HTML
-
+	
 	Revision 1.22  2004/10/25 10:35:50  kikx
 	Page de validation (ou pas) des modif de trombi
 	
@@ -143,8 +146,7 @@ if(isset($_POST['changer_frankiz'])) {
 	//===================================
 	// Modification de l'image trombino
 	//--------------------------------------------
-	
-	if ($_FILES['file']['tmp_name']!='none') {
+	if ($_FILES['file']['tmp_name']!='') {
 
 		// On verifie d'abord que la personne n'a pas demander le changement de sa photo trombino
 		//------------------------------------
