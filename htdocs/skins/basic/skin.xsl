@@ -5,10 +5,13 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.14  2004/09/20 07:16:31  kikx
+	J'aimais pas la signature qui est pas en bold :)
+
 	Revision 1.13  2004/09/18 00:51:41  kikx
 	Permet d'uploader des fichiers
 	rajout d'un cahmp image dan sles annonces car on a le droit qu'a une seule image ...
-
+	
 	Revision 1.12  2004/09/17 16:27:13  schmurtz
 	Simplification de l'affichage des anniversaires et correction d'un bug d'affichage.
 	
@@ -106,7 +109,7 @@
 		</td></tr>
 		<tr><td>
 			<xsl:value-of disable-output-escaping="yes" select="text()"/>
-			<p class="signature"><xsl:apply-templates select="eleve"/></p>
+			<p class="signature"><b><xsl:apply-templates select="eleve"/></b></p>
 		</td></tr>
 	</table><br/>
 </xsl:template>
