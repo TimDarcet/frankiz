@@ -6,10 +6,14 @@
 	skin.inc.phpÖ mais pas user.inc.php, xml.inc.phpÖ
 	
 	$Log$
+	Revision 1.14  2004/09/18 16:04:52  kikx
+	Beaucoup de modifications ...
+	AmÈlioration des pages qui gËrent les annonces pour les rendre compatible avec la nouvelle norme de formatage xml -> balise web et balise image qui permette d'afficher une image et la signature d'une personne
+
 	Revision 1.13  2004/09/17 14:19:58  kikx
 	Page de demande d'annonce terminÈ
 	Ajout d'une page de validations d'annonces
-
+	
 	Revision 1.12  2004/09/17 13:12:18  schmurtz
 	Suppression des <![CDATA[...]>> car les donneÃÅes des GET et POST (et donc de la base de donneÃÅes) sont maintenant eÃÅchappeÃÅes avec des &amp; &lt; &apos;...
 	
@@ -35,6 +39,7 @@ if(file_exists("$dir/frankiz.dtd"))
 	$href = $dir;
 
 define('BASE_LOCAL',realpath(dirname(__FILE__)."/.."));
+define('BASE_LOCAL2',realpath(dirname(__FILE__)."/"));
 define('BASE_URL','http://'.$_SERVER['HTTP_HOST'].'/'.substr((dirname($_SERVER['PHP_SELF']).'/'.$href), 1));
 
 // Configuration du site
@@ -42,6 +47,7 @@ define('AFFICHER_LES_ERREURS',$_SERVER["SERVER_ADDR"] == "129.104.201.52");	// s
 define('BASE_PHOTOS',"http://gwennoz/~pico/photos/");
 define('MAIL_WEBMESTRE',"webmestre@frankiz.polytechnique.fr");
 define('MAX_PEREMPTION',8);
+define('UPLOAD_WEB_DIR',"upload_web/");
 
 // Gestion des erreurs PHP et MySQL
 // Il est important d'inclure ce fichier le plus tÙt possible, mais comme il a besoin
@@ -81,6 +87,7 @@ $DB_valid = new DB("frankiz","a_valider","web","kokouije?.");
 
 // divers fichiers inclus
 require_once "global_func.inc.php";
+require_once "mail.inc.php";
 require_once "login.inc.php";
 require_once "skin.inc.php";
 

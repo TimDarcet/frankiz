@@ -4,9 +4,13 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.16  2004/09/18 16:04:52  kikx
+	Beaucoup de modifications ...
+	Amélioration des pages qui gèrent les annonces pour les rendre compatible avec la nouvelle norme de formatage xml -> balise web et balise image qui permette d'afficher une image et la signature d'une personne
+
 	Revision 1.15  2004/09/17 17:41:23  kikx
 	Bon ct plein de bugs partout et ca ressemblait  a rien mais bon c'est certainement la faute de Schmurtz :))))))
-
+	
 	Revision 1.12  2004/09/17 15:27:08  schmurtz
 	Suppression de la fonction suppression qui ne sert pas.
 	
@@ -52,16 +56,7 @@ function nouveau_hash() {
     return $hash;
 }
 
-/*
-	envoie un mail
-*/
-function couriel($eleve_id,$titre,$contenu) {
-	global $DB_trombino ;
-	$DB_trombino->query("SELECT nom,prenom,mail,login FROM eleves WHERE eleve_id='$eleve_id'") ;
-	list($nom, $prenom, $mail, $login) = $DB_trombino->next_row()  ;
-	if (empty($mail)) $mail=$login."@poly.polytechnique.fr" ;
-	mail("$prenom $nom <$mail>",$titre,$contenu) ;
-}
+
 
 /*
 	Envoi les données nécessaire pour faire une redirection vers la page donnée.

@@ -3,9 +3,13 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.6  2004/09/18 16:04:52  kikx
+	Beaucoup de modifications ...
+	Amélioration des pages qui gèrent les annonces pour les rendre compatible avec la nouvelle norme de formatage xml -> balise web et balise image qui permette d'afficher une image et la signature d'une personne
+
 	Revision 1.5  2004/09/17 22:49:29  kikx
 	Rajout de ce qui faut pour pouvoir faire des telechargeement de fichiers via des formulaires (ie des champs 'file' des champ 'hidden') de plus maintenant le formulaire sont en enctype="multipart/form-data" car sinon il parait que ca marche pas !
-
+	
 	
 */
 	
@@ -15,6 +19,10 @@ require_once "../include/global.inc.php";
 demande_authentification(AUTH_FORT);
 
 
+
+$temp = explode("admin",$_SERVER['SCRIPT_FILENAME']) ;
+$racine = $temp[0] ;
+$uploaddir  =  $racine."/proposition/image_temp/" ;
 
 
 // Génération de la page
@@ -48,9 +56,16 @@ foreach ($_POST AS $keys => $val){
 		$contenu = "Merci de ta participation \n\n".
 			"Très BR-ement\n" .
 			"L'automate :)\n"  ;
-		couriel($eleve_id,"[Frankiz] Ton annonce a pas été validé par le BR",$contenu);
+		couriel($eleve_id,"[Frankiz] Ton annonce a été validé par le BR",$contenu);
 
-		$DB_web->query("INSERT annonces SELECT 0 as annonce_id, NOW() as stamp,perime, titre,contenu,eleve_id,0 as en_haut FROM a_valider.valid_annonces");
+		$DB_web->query("INSERT annonces SELECT 0 as annonce_id, NOW() as stamp,perime, titre,contenu,eleve_id,0 as en_haut FROM a_valider.valid_annonces WHERE annonce_id='{$temp[1]}'");
+		
+		
+		// On déplace l'image si elle existe dans le répertoire prevu à cette effet
+		$index = mysql_insert_id() ;
+		if (file_exists($uploaddir."/{$temp[1]}_annonce")){
+			rename($uploaddir."/{$temp[1]}_annonce",$racine.UPLOAD_WEB_DIR."annonce_$index") ;
+		}
 		$DB_valid->query("DELETE FROM valid_annonces WHERE annonce_id='{$temp[1]}'") ;
 	?>
 		<commentaire><p>Validation effectuée</p></commentaire>
@@ -67,26 +82,41 @@ foreach ($_POST AS $keys => $val){
 		couriel($eleve_id,"[Frankiz] Ton annonce n'a pas été validé par le BR",$contenu);
 
 		$DB_valid->query("DELETE FROM valid_annonces WHERE annonce_id='{$temp[1]}'") ;
+		//On supprime aussi l'image si elle existe ...
+		
+		$supp_image = "" ;
+		if (file_exists($uploaddir."/{$temp[1]}_annonce")){
+			unlink($uploaddir."/{$temp[1]}_annonce") ;
+			$supp_image = " et de son image associée" ;
+		}
 		
 
 	?>
-		<warning><p>Suppression d'une annonce</p></warning>
+		<warning><p>Suppression d'une annonce<? echo $supp_image?></p></warning>
 	<?
 	}
 	
 	
 }
 
+
 //===============================
 
-	$DB_valid->query("SELECT v.annonce_id,v.perime, v.titre, v.contenu, e.nom, e.prenom, e.surnom, e.promo FROM valid_annonces as v INNER JOIN trombino.eleves as e USING(eleve_id)");
-	while(list($id,$date,$titre,$contenu,$nom, $prenom, $surnom, $promo) = $DB_valid->next_row()) {
+	$DB_valid->query("SELECT v.annonce_id,v.perime, v.titre, v.contenu, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_annonces as v INNER JOIN trombino.eleves as e USING(eleve_id)");
+	while(list($id,$date,$titre,$contenu,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
 ?>
 		<annonce titre="<?php  echo $titre ?>" 
 				categorie=""
 				auteur="<?php echo empty($surnom) ? $prenom.' '.$nom : $surnom .' (X'.$promo.')'?>"
 				date="<? echo $date?>">
-				<? echo $contenu ;?>
+				<? echo $contenu ;
+				if (file_exists($uploaddir."/{$id}_annonce")){
+				?>
+					<image source="<? echo "proposition/image_temp/{$id}_annonce" ; ?>"/>
+				<?
+				}
+				?>
+				<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
 		</annonce>
 <?
 // Zone de saisie de l'annonce
