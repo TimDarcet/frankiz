@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.7  2004/10/29 15:47:34  kikx
+	Ca ne sert a rien d'envoyer des mails qd on valide ou qu'on refuse les qdj ...
+
 	Revision 1.6  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.5  2004/10/14 19:59:37  pico
 	Correction de bug
 	
@@ -77,11 +80,6 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0]=='valid') {
 		$DB_valid->query("SELECT eleve_id FROM valid_qdj WHERE qdj_id='{$temp[1]}'");
 		list($eleve_id) = $DB_valid->next_row() ;
-		// envoi du mail
-		$contenu = "Merci de ta participation \n\n".
-			"Très BR-ement\n" .
-			"L'automate :)\n"  ;
-		couriel($eleve_id,"[Frankiz] Ta QDJ a été retenue par le BR",$contenu);
 			
 		$DB_web->query("INSERT INTO qdj SET question='{$_POST['question']}', reponse1='{$_POST['reponse1']}', reponse2='{$_POST['reponse2']}'");
 
@@ -95,11 +93,6 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0]=='suppr') {
 		$DB_valid->query("SELECT eleve_id FROM valid_qdj WHERE qdj_id='{$temp[1]}'");
 		list($eleve_id) = $DB_valid->next_row() ;
-		// envoi du mail
-		$contenu = "Désolé \n\n".
-			"Très BR-ement\n" .
-			"L'automate :)\n"  ;
-		couriel($eleve_id,"[Frankiz] Ta QDJ n'a pas été retenue par le BR",$contenu);
 
 		$DB_valid->query("DELETE FROM valid_qdj WHERE qdj_id='{$temp[1]}'") ;
 	
@@ -131,8 +124,6 @@ foreach ($_POST AS $keys => $val){
 ?>
 
 		<formulaire id="qdj_<? echo $id ?>" titre="La QDJ" action="admin/valid_qdj.php">
-
-
 			<champ id="question" titre="La question" valeur="<? echo $question ;?>"/>
 			<champ id="reponse1" titre="Réponse1" valeur="<? echo $reponse1 ;?>"/>
 			<champ id="reponse2" titre="Réponse2" valeur="<? echo $reponse2 ;?>"/>
