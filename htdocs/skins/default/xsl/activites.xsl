@@ -29,6 +29,7 @@
 			<p class="titre">Activités</p>
 				<xsl:for-each select="annonce">
 					<div class="activité center">
+						<xsl:if test="@titre!=''"><b><xsl:value-of select='@titre'/></b><br/></xsl:if> 
 						<xsl:if test="@date!=''">A <xsl:value-of select='substring(@date,12,5)'/><br/></xsl:if>
 						<xsl:apply-templates select="*[name()!='eleve']"/>
 						<xsl:if test="count(eleve)">
