@@ -30,17 +30,17 @@
 				<xsl:for-each select="eleve[@promo='2002']">
 					<xsl:value-of select="@prenom" />
 					<xsl:text> </xsl:text>
-					<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
+					<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzéèàçê','ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊ')" />
 					<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
 				</xsl:for-each>
+				<br />
 			</xsl:if>
-			<br />
 			<xsl:if test="count(eleve[@promo='2003'])">
 				2003: 
 				<xsl:for-each select="eleve[@promo='2003']">
 					<xsl:value-of select="@prenom" />
 					<xsl:text> </xsl:text>
-					<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
+					<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzéèàçê','ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊ')" />
 					<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
 				</xsl:for-each>
 			</xsl:if>
