@@ -21,9 +21,12 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.13  2004/11/11 15:02:59  kikx
+	Legere modif
+
 	Revision 1.12  2004/11/08 15:26:44  kikx
 	bla
-
+	
 	Revision 1.11  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -77,8 +80,8 @@ if(isset($_POST['nouveau'])) {
 // Génération de la page
 require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
-<page id="admin_binets" titre="Frankiz : liste des binets">
-	<h2>Liste des binets</h2>
+<page id="admin_binets" titre="Frankiz : liste des binets (sans page web)">
+	<h2>Liste des binets sans page web</h2>
 <?php
 	if(!empty($message))
 		echo "<p>$message</p>\n";
@@ -91,7 +94,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<entete id="nom" titre="Nom"/>
 		<entete id="description" titre="Description"/>
 <?php
-		$DB_trombino->query("SELECT nom,description,binet_id FROM binets ORDER BY nom ASC");
+		$DB_trombino->query("SELECT nom,description,binet_id FROM binets WHERE http IS NULL ORDER BY nom ASC");
 		while(list($nom,$desc,$id) = $DB_trombino->next_row()) {
 			echo "\t\t<element id=\"$id\">\n";
 			echo "\t\t\t<colonne id=\"nom\">$nom</colonne>\n";

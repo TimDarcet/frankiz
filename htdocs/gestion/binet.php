@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.20  2004/11/11 15:02:59  kikx
+	Legere modif
+
 	Revision 1.19  2004/11/08 18:26:40  kikx
 	Coorige des bugs
-
+	
 	Revision 1.18  2004/11/08 15:56:15  kikx
 	Micro bug dans la page des binets pour les webmestre
 	
@@ -193,20 +196,6 @@ if(verifie_permission_prez($_GET['binet'])){
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 if(verifie_permission_webmestre($_GET['binet'])){
-	// On demande l'upload du site sur le serveur
-	//==========================
-
-	if (isset($_POST['fileweb_up'])) {
-		if (($_FILES['file']['tmp_name']!='none')&&($_FILES['file']['tmp_name']!='')) {
-			$DB_trombino->query("SELECT folder FROM binets WHERE binet_id=".$_GET['binet']);
-			list($folder) = $DB_trombino->next_row() ;
-			deldir(BASE_BINETS.$folder) ;// On supprime tout
-			mkdir(BASE_BINETS.$folder) ;// On crée le repertopire qui va bien
-			unzip($_FILES['file']['tmp_name'],BASE_BINETS.$folder,true) ;
-		} else {
-			$message2 .= "<warning>Tu n'as pas soumis de telechargement</warning>" ;
-		}
-	}
 	
 	// On demande la validation du changement
 	//==========================
@@ -340,14 +329,6 @@ if(verifie_permission_webmestre($_GET['binet'])){
 	}
 	
 	echo "<h2>Gestion des fichiers du site $nom_binet</h2>";
-?>
-			<formulaire id="binet_download" titre="Telecharger le site" action="gestion/binet.php?binet=<?=$_GET['binet']?>">
-			<hidden id="id" titre="" valeur="<? echo $id?>"/>
-			<fichier id="file" titre="Un fichier 'archive' du site (1Mo max)" taille="1000000"/>
-			<bouton id='fileweb_up' titre="Upload" onClick="return window.confirm('Souhaitez vous mettre à jour votre site ? Ceci effacera tous les fichiers du site pour les remplacer par ceux de l'archive')"/>
-			<bouton id='fileweb_down' titre="Download"/>
-		</formulaire>
-<?
 	
 	echo "<arbre>";
 	echo "<noeud titre=\"/$folder\">" ;
@@ -357,11 +338,6 @@ if(verifie_permission_webmestre($_GET['binet'])){
 	echo "</arbre>";
 
 }
-
-
-
-
-
 
 ?>
 </page>
