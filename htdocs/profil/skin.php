@@ -39,9 +39,12 @@
 	)
 	
 	$Log$
+	Revision 1.19  2004/12/07 14:39:26  schmurtz
+	Bugs et orthographe
+
 	Revision 1.18  2004/11/24 23:38:38  schmurtz
 	Gestion des skins perso + corrections dans la skin default
-
+	
 	Revision 1.17  2004/11/24 20:26:38  schmurtz
 	Reorganisation des skins (affichage melange skin/css + depacement des css)
 	
@@ -154,7 +157,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 				
 				// Si c'est une skin sans CSS
 				if($description['chemin'] == ".") {
-					echo "<option titre=\"{$description['nom']} ({$description['description']})\" id=\"$file_xsl/\"/>";
+					echo "<option titre=\"{$description['description']} ({$description['nom']})\" id=\"$file_xsl/\"/>";
 					continue;
 				}
 				
@@ -166,7 +169,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 						$file_css == "CVS" || $file_css{0} == "#" || $file_css == $description['chemin']) continue;
 					
 					$description_css = lire_description_css(BASE_LOCAL."/skins/$file_xsl/$file_css");
-					echo "<option titre=\"{$description['nom']}/$file_css ($description_css)\" id=\"$file_xsl/$file_css\"/>";
+					echo "<option titre=\"$description_css ({$description['nom']}/$file_css)\" id=\"$file_xsl/$file_css\"/>";
 				}
 				closedir($dir_css);
 			
@@ -195,8 +198,8 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		}*/
 ?>
 
-		<note>Tu peux aussi ne pas faire apparaître tous les élément de la skin. Tu gagneras ainsi de la
-			  place :). Choisis donc les éléments que tu veux afficher</note>
+		<note>Tu peux aussi ne pas faire apparaître tous les élément de la skin histoire de gagner de la
+			  place. Choisis ici les éléments que tu veux afficher :</note>
 		<choix titre="Eléments" id="newskin" type="checkbox" valeur="<?php
 			foreach(liste_modules() as $module => $nom)
 				if($nom != "" && (!isset($_SESSION['skin']['skin_visible'][$module])
@@ -209,8 +212,8 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 		</choix>
 
-		<note>Si tu veux personnaliser encore plus ta skin, tu peux créer ta propre feuille de style. Ceci
-			  s'adresse aux experts.</note>
+		<note>Si tu souhaites personnaliser ta skin plus en profondeur, tu peux créer ta propre feuille de style CSS
+			(Ceci s'adresse aux experts).</note>
 		<champ titre="CSS perso" id="newcss_perso" valeur="<?php if(isset($_SESSION['skin']['skin_css_perso'])) echo $_SESSION['skin']['skin_css_perso'];?>"/>
 		<bouton titre="Appliquer" id="OK_param" />
 	</formulaire>

@@ -21,9 +21,12 @@
 	Pour gerer son site web perso
 		
 	$Log$
+	Revision 1.4  2004/12/07 14:39:26  schmurtz
+	Bugs et orthographe
+
 	Revision 1.3  2004/11/24 22:29:52  kikx
 	blu
-
+	
 	Revision 1.2  2004/11/24 22:12:57  schmurtz
 	Regroupement des fonctions zip unzip deldir et download dans le meme fichier
 	
@@ -55,7 +58,7 @@ if (isset($_POST['up_page'])) {
 		$filename = $chemin.$_FILES['file']['name'];
 		move_uploaded_file($_FILES['file']['tmp_name'], BASE_PAGESPERSOS.$_FILES['file']['name']);
 		unzip(BASE_PAGESPERSOS.$_FILES['file']['name'] , $chemin , true);
-		$message .= "<commentaire>Ton site personnel vient d'être mis à jour</commentaire>" ;
+		$message .= "<commentaire>Ton site personnel vient d'être mis à jour.</commentaire>" ;
 	}
 }
 if(isset($_REQUEST['download_type'])){
@@ -64,18 +67,18 @@ if(isset($_REQUEST['download_type'])){
 		download($chemin,$_REQUEST['download_type'],"PERSO-$login-$promo-".time());
 		exit();
 	} else {
-		$message .= "<warning>Tu n'as jamais upoadé de site personnel</warning>" ;
+		$message .= "<warning>Il n'y a aucun fichier sur ton site web.</warning>" ;
 	}
 }
 if(isset($_POST['ext'])){
-	$DB_valid->query("SELECT id FROM valid_pageperso WHERE eleve_id='".$_SESSION['user']->uid."'") ;
+	$DB_valid->query("SELECT id FROM valid_pageperso WHERE eleve_id='{$_SESSION['user']->uid}'") ;
 	$un = $DB_valid->num_rows() ;
-	$DB_web->query("SELECT site_id FROM sites_eleves WHERE eleve_id='".$_SESSION['user']->uid."'") ;
+	$DB_web->query("SELECT site_id FROM sites_eleves WHERE eleve_id='{$_SESSION['user']->uid}'") ;
 	$deux = $DB_valid->num_rows() ;
 	
 	// On verifie que la personne n'a pas dejà demandé d'avoir un site accessible de l'ext
-	if (($un==0)&&($deux==0)) {
-		$DB_valid->query("INSERT INTO valid_pageperso SET eleve_id='".$_SESSION['user']->uid."'") ;
+	if( $un==0 && $deux==0 ) {
+		$DB_valid->query("INSERT INTO valid_pageperso SET eleve_id='{$_SESSION['user']->uid}'") ;
 		
 		$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
 
@@ -87,10 +90,12 @@ if(isset($_POST['ext'])){
 			"L'automate :)<br>"  ;
 			
 		couriel(WEBMESTRE_ID,"[Frankiz] Demande de page perso de $nom $prenom",$contenu);
-		$message .= "<commentaire>Ta demande a été prise en compte et sera validée dans les meilleurs délai... Merci</commentaire>" ;
+		$message .= "<commentaire>Ta demande d'accessibilité depuis l'extérieur a été prise en compte et sera validée dans les meilleurs délai.</commentaire>" ;
 
+	} else if($un != 0) {
+		$message .="<warning>Tu as déjà demandé que ton site soit accessible depuis l'extérieur. Ta demande sera validée dans les meilleurs délai.</warning>" ;
 	} else {
-		$message .="<warning>Tu as déjà demandé d'être sur cette liste</warning>" ;
+		$message .="<warning>Ton site est déjà accessible depuis l'extérieur.</warning>" ;
 	}
 }
 
@@ -109,10 +114,10 @@ require "../include/page_header.inc.php";
 		if (is_dir(BASE_PAGESPERSOS.$login."-".$promo)){
 		?>
 			<note>Nous te conseillons de sauvegarder ton site avant d'uploader le nouveau en cas de problème.</note>
-			<lien titre="Télécharger en .zip" url="profil/profil.php?download_type=zip" />
-			<lien titre="Télécharger en .tar.gz" url="profil/profil.php?download_type=tar.gz" />
-			<note>Si tu souhaites que ton site apparaisse sur la liste des sites élèves, clique sur le bouton "Exterieur"</note>
-			<bouton id="ext" titre="Exterieur"/>
+			<lien titre="Télécharger en .zip" url="profil/siteweb.php?download_type=zip" />
+			<lien titre="Télécharger en .tar.gz" url="profil/siteweb.php?download_type=tar.gz" />
+			<note>Si tu souhaites que ton site apparaisse sur la liste des sites élèves, clique sur le bouton "Extérieur"</note>
+			<bouton id="ext" titre="Extérieur"/>
 		<?
 		}
 		?>
@@ -140,7 +145,6 @@ require "../include/page_header.inc.php";
 		
 		echo "<arbre>";
 		echo "<noeud titre=\"/\">" ;
-		
 		$arbo = parcours_arbo1(BASE_PAGESPERSOS.$login."-".$promo);
 		echo "</noeud>" ;
 		echo "</arbre>";

@@ -24,10 +24,13 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.33  2004/12/07 14:39:26  schmurtz
+	Bugs et orthographe
+
 	Revision 1.32  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
-
+	
 	Revision 1.31  2004/11/27 08:03:53  pico
 	/tmp/cvsh9cLqQ
 	
@@ -166,7 +169,7 @@ if(isset($_POST['changer_frankiz'])) {
 		$surnom = $_POST['surnom'];
 		$mail = $_POST['email'];
 		$DB_trombino->query("UPDATE eleves SET surnom='$surnom',mail=".(empty($mail)?"NULL":"'$mail'")." WHERE eleve_id='{$_SESSION['user']->uid}'");
-		$message.="<commentaire>L'email et le surnom ont été modifié.</commentaire>";
+		$message.="<commentaire>L'email et le surnom ont été modifiés.</commentaire>";
 	}
 	
 	//===================================
@@ -178,7 +181,7 @@ if(isset($_POST['changer_frankiz'])) {
 		//------------------------------------
 	
 		if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$_SESSION['user']->uid}")) {
-			$message .= "<warning>Vous aviez déjà demandé une modification de photo, seule la demande que vous venez de poster sera prise en compte.</warning>";
+			$message .= "<warning>Tu avais déjà demandé une modification de photo, seule la demande que tu viens de poster sera prise en compte.</warning>";
 		} else {
 			$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
 
@@ -216,7 +219,7 @@ if(isset($_POST['changer_frankiz'])) {
 			$filename =$_SESSION['user']->uid ;
 			move_uploaded_file($_FILES['file']['tmp_name'], DATA_DIR_LOCAL.'trombino/a_valider_'.$filename) ;
 		} else {
-			$message .= "<warning>Ton image n'est pas une image au bon format.</warning>" ;
+			$message .= "<warning>Ton image n'est pas au bon format, ou est trop grande.</warning>" ;
 		}
 	}
 }
@@ -225,7 +228,7 @@ if(isset($_POST['changer_frankiz'])) {
 if (isset($_POST['mod_binet'])) {
 	foreach($_POST['commentaire'] as $key=>$val)
 		$DB_trombino->query("UPDATE membres SET remarque='$val' WHERE eleve_id='{$_SESSION['user']->uid}' AND binet_id='$key'");
-	$message .= "<commentaire>Modification de la partie binets faite avec succès.</commentaire>";
+	$message .= "<commentaire>Modification de la partie binets effectuée avec succès.</commentaire>";
 }
 
 // Suppression d'un binet
@@ -242,7 +245,7 @@ if (isset($_POST['suppr_binet'])) {
 		$DB_trombino->query("DELETE FROM membres WHERE binet_id IN ($ids) AND  eleve_id='{$_SESSION['user']->uid}'");
 		$message .= "<commentaire>Suppression de $count binet(s).</commentaire>";
 	} else {
-		$message .= "<warning>Aucun binet séléctionné.</warning>";
+		$message .= "<warning>Aucun binet n'est séléctionné. Aucun binet n'a donc été supprimé de la liste de tes binets.</warning>";
 	}
 }
 
@@ -252,7 +255,7 @@ if (isset($_POST['add_binet'])) {
 		$DB_trombino->query("INSERT INTO membres SET eleve_id='{$_SESSION['user']->uid}',binet_id='{$_POST['liste_binet']}'");
 		$message .= "<commentaire>Binet correctement ajouté</commentaire>";
 	} else {
-		$message .= "<warning>Aucun binet séléctionné.</warning>";
+		$message .= "<warning>Aucun binet séléctionné. Aucun binet n'a donc été ajouté à la liste de tes binets.</warning>";
 	}
 }
 
@@ -267,25 +270,25 @@ require "../include/page_header.inc.php";
 		if(!empty($message))
 			echo "$message\n";
 		if(a_erreur(ERR_MDP_DIFFERENTS))
-			echo "<warning>Les valeurs des deux champs de mot de passe n'étaient pas identiques.</warning>\n";
+			echo "<warning>Les valeurs des deux champs de mot de passe n'étaient pas identiques. Le mot de passe n'a pas été modifié.</warning>\n";
 		if(a_erreur(ERR_MDP_TROP_PETIT))
-			echo "<warning>Il faut mettre un mot de passe plus long (au moins 8 caractères).</warning>\n";
+			echo "<warning>Il faut mettre un mot de passe plus long (au moins 8 caractères). Le mot de passe n'a pas été modifié.</warning>\n";
 		if(a_erreur(ERR_SURNOM_TROP_PETIT))
-			echo "<warning>Il faut mettre un surnom plus long (au moins 2 caractères).</warning>\n";
+			echo "<warning>Il faut mettre un surnom plus long (au moins 2 caractères). Le surnom n'a pas été modifié.</warning>\n";
 		if(a_erreur(ERR_EMAIL_NON_VALIDE))
-			echo "<warning>L'email n'est pas valide.</warning>\n";
+			echo "<warning>L'email n'est pas valide. L'adresse email n'a pas été modifié.</warning>\n";
 ?>
 	<formulaire id="mod_frankiz" titre="Modification du compte Frankiz" action="profil/profil.php">
 		<note>Ne pas toucher ou laisser vide pour conserver l'ancien mot de passe</note>
 		<champ id="passwd" titre="Mot de passe" valeur="12345678"/>
 		<champ id="passwd2" titre="Retaper le mot de passe" valeur="87654321"/>
-		<note>L'authentification par cookie te permet de ne pas retaper ton mot de passe à chaque fois que tu te connecte sur frankiz. N'active pas cette authentification si tu te connecte sur un ordinateur qui n'est pas le tien</note>
+		<note>L'authentification par cookie permet de se connecter automatiquement lorsque tu te accèdes à frankiz. N'active pas cette authentification si tu te connectes sur un ordinateur qui n'est pas le tien.</note>
 		<choix id="cookie" titre="Utiliser l'authentification par cookie" type="combo"
 				valeur="<?php echo empty($_COOKIE['auth'])? 'non' : 'oui' ?>">
 			<option titre="Activé" id="oui"/>
 			<option titre="Désactivé" id="non"/>
 		</choix>
-		<bouton id="changer_frankiz" titre="Changer"/>
+		<bouton id="changer_frankiz" titre="Enregistrer"/>
 	</formulaire>
 	
 	<formulaire id="mod_trombino" titre="Changement de la fiche trombino" action="profil/profil.php">
@@ -300,9 +303,9 @@ require "../include/page_header.inc.php";
 			<note>Cette image trombino n'a pas encore été validé par le BR</note>
 			<image source="profil/profil.php?image=true&amp;id=<?=$_SESSION['user']->uid?>" texte="photo" height="95" width="80"/>
 		<?php else: ?>
-			<image source="trombino/?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>" texte="photo" height="95" width="80"/>
+			<image source="trombino.php?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>" texte="photo" height="95" width="80"/>
 		<?php endif; ?>
-		<note>Tu peux personnaliser le trombino en changeant ta photo (elle ne doit pas dépasser 200ko)</note>
+		<note>Tu peux personnaliser le trombino en changeant ta photo (elle ne doit pas dépasser 200Ko)</note>
 		<fichier id="file" titre="Nouvelle photo" taille="200000"/>
 
 		<bouton id="changer_trombino" titre="Changer"/>
@@ -337,8 +340,8 @@ require "../include/page_header.inc.php";
 			</colonne>
 		</element>
 		
-		<bouton id='suppr_binet' titre='Supprimer' onClick="return window.confirm('Voulez vous vraiment supprimer ce binet ?')"/>
-		<bouton id='mod_binet' titre='Changer'/>
+		<bouton id='suppr_binet' titre='Supprimer' onClick="return window.confirm('Es-tu sûr de vouloir supprimer ce binet ?')"/>
+		<bouton id='mod_binet' titre='Enregistrer les commentaires'/>
 	</liste>
 </page>
 <?php
