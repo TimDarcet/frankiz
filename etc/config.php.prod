@@ -22,9 +22,12 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.8  2004/12/17 15:50:41  schmurtz
+	Desactivation de l'affichage des erreurs
+
 	Revision 1.7  2004/12/17 12:45:50  pico
 	Mal prez
-
+	
 	Revision 1.6  2004/12/16 16:54:58  schmurtz
 	Installation du lien symbolique config.php -> config.php.prod sur frankiz
 	
@@ -63,7 +66,7 @@ define('WEATHER_DOT_COM',"http://xoap.weather.com/weather/local/FRXX0076?prod=xo
 
 // Configuration du site
 
-define('AFFICHER_LES_ERREURS',1); 
+define('AFFICHER_LES_ERREURS',0); 
 define('BASE_DATA',"/home/frankiz2/data/");
 define('BASE_PHOTOS',"/home/frankiz2/data/photos/");
 define('BASE_CACHE',"/home/frankiz2/cache/");
