@@ -21,9 +21,12 @@
 	Pour gerer son site web perso
 		
 	$Log$
+	Revision 1.11  2005/01/06 17:32:33  pico
+	Pb de taille d'upload...
+
 	Revision 1.10  2005/01/06 17:31:33  pico
 	Mise à jour de l'explication
-
+	
 	Revision 1.9  2005/01/06 17:22:17  pico
 	Pour que ce soient les root qui recoivent les mails d'acces externe aux sites des élèves.
 	
@@ -127,7 +130,7 @@ require "../include/page_header.inc.php";
 	
 	<formulaire id="mod_pageperso" titre="Ton site web" action="profil/siteweb.php">
 		<note>Tu peux soumettre des .zip, des .tar.gz, .tar, .tar.bz2. Tu remplaceras ainsi l'intégralité de ton site perso. Attention tu es limité à 10Mo.</note>
-		<fichier id="file" titre="Ton site" taille="10000000000"/>
+		<fichier id="file" titre="Ton site" taille="10000000"/>
 		<?
 		if (is_dir(BASE_PAGESPERSOS.$login."-".$promo)){
 		?>
