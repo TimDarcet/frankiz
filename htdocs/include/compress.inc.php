@@ -21,9 +21,12 @@
 	Fonctions permettant de zipper/dezipper un fichier
 	
 	$Log$
+	Revision 1.4  2004/11/08 11:48:26  pico
+	Modif fonction deldir
+
 	Revision 1.3  2004/11/08 10:27:13  pico
 	Ajout fonction pour supprimer tout un repertoire
-
+	
 	Revision 1.2  2004/11/07 09:03:09  pico
 	Fonction pour zipper
 	
@@ -62,6 +65,12 @@ function zip($file,$dir,$type){
 }
 
 function deldir($dir) {
+	if (!file_exists($dirname)) {
+		return false;
+	}
+	if (is_file($dirname)) {
+		return unlink($dirname);
+	}
 	$dh=opendir($dir);
 	while ($file=readdir($dh)) {
 		if($file!="." && $file!="..") {
@@ -73,9 +82,7 @@ function deldir($dir) {
 			}
 		}
 	}
-	
 	closedir($dh);
-	
 	if(rmdir($dir)) {
 		return true;
 	} else {
