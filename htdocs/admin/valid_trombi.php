@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.9  2004/12/15 17:23:59  pico
+	On affiche la photo a sa vraie taille pour valider un changement trombi
+
 	Revision 1.8  2004/12/15 12:33:19  pico
 	quand on déplace un fichier, on vérifie que ça fout pas la merde ailleurs :(
-
+	
 	Revision 1.7  2004/12/13 16:47:07  kikx
 	oups !
 	
@@ -130,9 +133,9 @@ foreach ($_POST AS $keys => $val){
 
 ?>
 			<formulaire id="trombi_<? echo $id ?>" titre="<? echo "$prenom $nom (X$promo)"?>" action="admin/valid_trombi.php">
-				<image source="trombino.php?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>&amp;original=1" texte="photo" height="95" width="80"/>
-				<image source="trombino.php?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>" texte="photo" height="95" width="80"/>
-				<image source="profil/profil.php?image=true&amp;id=<?=$id ?>" texte="photo" height="95" width="80"/>
+				<image source="trombino.php?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>&amp;original=1" texte="photo"/>
+				<image source="trombino.php?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>" texte="photo"/>
+				<image source="profil/profil.php?image=true&amp;id=<?=$id ?>" texte="photo"/>
 				<zonetext id="refus" titre="La raison du refus si refus"></zonetext>
 				<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider cette photo ?')"/>
 				<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Supprimer cette photo ?!)"/>
