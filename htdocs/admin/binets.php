@@ -21,9 +21,12 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.20  2004/11/25 02:10:26  kikx
+	je sais pas
+
 	Revision 1.19  2004/11/25 02:03:29  kikx
 	Bug d'administration des binets
-
+	
 	Revision 1.18  2004/11/25 00:35:19  schmurtz
 	une image de plus dans htdocs/image
 	
@@ -129,6 +132,7 @@ if (isset($_POST['modif'])) {
 	if ($_POST['webmestre']!= $web_login) {
 		// on supprime les droit de l'ancien web (si il existe bien sur)
 		if ($web_login!="") {
+                        $web_login = explode(",",$web_login) ;
 			$DB_web->query("SELECT perms,e.eleve_id FROM compte_frankiz LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE login='$web_login'" );
 			while(list($perms,$eleve_id) = $DB_web->next_row()) {
 				$perms = str_replace("prez_".$binet_id.",","",$perms) ;
@@ -136,7 +140,7 @@ if (isset($_POST['modif'])) {
 				$message .= "<commentaire>$web_login n'a plus ses droit de webmestre du binet $nomdubinet</commentaire>\n";
 			}
 		}
-		// on donne les droits au nouveau prez
+		// on donne les droits au nouveau webmestre
 		if ($_POST['webmestre']!="") {
 			$DB_web->query("SELECT perms,e.eleve_id FROM compte_frankiz LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE login='".$_POST['webmestre']."' " );
 			if ($DB_web->num_rows()==0) 
