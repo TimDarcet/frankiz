@@ -28,11 +28,14 @@
 
 	
 	$Log$
+	Revision 1.3  2005/04/06 23:14:34  schmurtz
+	On force la skin SDBR
+
 	Revision 1.2  2004/11/25 00:44:35  schmurtz
 	Ajout de init_ devant les fichier d'include servant d'initialisation de page
 	Permet de mieux les distinguer des autres fichiers d'include ne faisant que definir
 	des fonctions.
-
+	
 	Revision 1.1  2004/11/24 20:26:38  schmurtz
 	Reorganisation des skins (affichage melange skin/css + depacement des css)
 	
@@ -94,6 +97,14 @@ if( !isset($_SESSION['skin']) || nouveau_login() ) {
 	if(!isset($_SESSION['skin'])) {
 		ajouter_debug_log("Chargement de la skin depuis les valeurs par défaut.");
 		unset($_SESSION['skin']);
+		skin_valider();
+	}
+	
+	// SMDBR : on force une skin si la personne est loguée ou vient de l'intérieur
+	if(est_authentifie(AUTH_INTERNE)) {
+		$_SESSION['skin']['skin_nom'] = 'pico';
+		$_SESSION['skin']['skin_css'] = 'sdbr2k3';
+		unset($_SESSION['skin']['skin_css_perso']);
 		skin_valider();
 	}
 }
