@@ -64,27 +64,35 @@
 </xsl:template>
 
 <xsl:template match="commentaire">
-	<div class="commentaire"><xsl:apply-templates/></div>
+	<span class="commentaire"><xsl:apply-templates/></span>
 </xsl:template>
 
 <xsl:template match="warning">
-	<div class="warning"><xsl:apply-templates/></div>
+	<span class="warning"><xsl:apply-templates/></span>
 </xsl:template>
 
 <xsl:template match="note">
-	<div class="note"><xsl:apply-templates/></div>
+	<span class="note"><xsl:apply-templates/></span>
 </xsl:template>
 
 <!--texte simple dans un formulaire -->
 <xsl:template match="textsimple">
-	<xsl:value-of select="@valeur"/>
+	<span>
+		<xsl:attribute name="id"><xsl:value-of select="concat('form_',@id)"/></xsl:attribute>
+		<xsl:value-of select="@valeur"/>
+	</span>
 </xsl:template>
 
 <!-- champs contenant du texte -->
 <xsl:template match="zonetext">
-	<xsl:choose><xsl:when test="@modifiable='non'">
-		<xsl:value-of select="@valeur"/>
-	</xsl:when><xsl:otherwise>
+	<xsl:choose>
+	<xsl:when test="@modifiable='non'">
+		<span>
+			<xsl:attribute name="id"><xsl:value-of select="concat('form_',@id)"/></xsl:attribute>
+			<xsl:value-of select="@valeur"/>
+		</span>
+	</xsl:when>
+	<xsl:otherwise>
 		<textarea>
 			<xsl:attribute name="id"><xsl:value-of select="concat('form_',@id)"/></xsl:attribute>
 			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
@@ -96,9 +104,14 @@
 </xsl:template>
 
 <xsl:template match="champ">
-	<xsl:choose><xsl:when test="@modifiable='non'">
-		<xsl:value-of select="@valeur"/>
-	</xsl:when><xsl:otherwise>
+	<xsl:choose>
+	<xsl:when test="@modifiable='non'">
+		<span>
+			<xsl:attribute name="id"><xsl:value-of select="concat('form_',@id)"/></xsl:attribute>
+			<xsl:value-of select="@valeur"/>
+		</span>
+	</xsl:when>
+	<xsl:otherwise>
 		<input>
 			<xsl:choose>
 				<xsl:when test="starts-with(@id,'passwd')"><xsl:attribute name="type">password</xsl:attribute></xsl:when>
@@ -152,9 +165,9 @@
 
 <!-- autres -->
 <xsl:template match="fichier">
-	<hidden id="MAX_FILE_SIZE">
-		<xsl:attribute name="valeur"><xsl:value-of select="@taille"/></xsl:attribute>
-	</hidden>
+	<input type="hidden" id="MAX_FILE_SIZE">
+		<xsl:attribute name="value"><xsl:value-of select="@taille"/></xsl:attribute>
+	</input>
 	<input type="file">
 		<xsl:attribute name="id"><xsl:value-of select="concat('form_',@id)"/></xsl:attribute>
 		<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
