@@ -19,7 +19,8 @@ if(file_exists($fichier_cache) && date("Y-m-d", filemtime($fichier_cache)) == da
 } else {
 	connecter_mysql_frankiz();
 	$resultat = mysql_query("SELECT nom,prenom,surnom,section,cie,promo,login,mail FROM eleves "
-						   ."WHERE DAYOFYEAR(date_nais)=DAYOFYEAR(NOW()) AND (promo='2002' OR promo='2003')");
+						   ."WHERE MONTH(date_nais)=MONTH(NOW()) AND DAYOFMONTH(date_nais)=DAYOFMONTH(NOW()) "
+						   ."AND (promo='2002' OR promo='2003')");
 	$contenu = "";
 	while(list($nom,$prenom,$surnom,$section,$cie,$promo,$login,$mail) = mysql_fetch_row($resultat)) {
 		$contenu .= "<eleve nom='$nom' prenom='$prenom' surnom='$surnom' section='$section' cie='$cie'"
