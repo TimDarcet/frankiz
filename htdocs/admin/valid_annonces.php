@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.27  2004/12/17 17:25:08  schmurtz
+	Ajout d'une belle page d'erreur.
+
 	Revision 1.26  2004/12/16 13:00:41  pico
 	INNER en LEFT
-
+	
 	Revision 1.25  2004/12/15 05:09:00  kikx
 	oups
 	
@@ -104,7 +107,7 @@ require_once "../include/wiki.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('web'))
-	rediriger_vers("/gestion/");
+	acces_interdit();
 
 
 

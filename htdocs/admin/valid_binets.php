@@ -21,9 +21,12 @@
 	Page de validation d'une modification d'un binet
 	
 	$Log$
+	Revision 1.11  2004/12/17 17:25:08  schmurtz
+	Ajout d'une belle page d'erreur.
+
 	Revision 1.10  2004/12/13 20:03:25  pico
 	Les liens ne forment pas de blocs, il faut donc le spécifier
-
+	
 	Revision 1.9  2004/12/08 12:48:07  kikx
 	oups
 	
@@ -57,7 +60,7 @@ require_once "../include/global.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
-	rediriger_vers("/gestion/");
+	acces_interdit();
 
 // Génération de la page
 //===============

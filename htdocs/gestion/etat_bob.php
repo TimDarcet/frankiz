@@ -21,9 +21,12 @@
 	Cette page permet de déterminer si le Bôb est ouvert ou non.
 	
 	$Log$
+	Revision 1.3  2004/12/17 17:25:08  schmurtz
+	Ajout d'une belle page d'erreur.
+
 	Revision 1.2  2004/12/16 13:00:41  pico
 	INNER en LEFT
-
+	
 	Revision 1.1  2004/12/15 01:44:15  schmurtz
 	deplacement de la page d'admin du bob de admin vers gestion
 	
@@ -46,7 +49,7 @@ require_once "../include/global.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!(verifie_permission('admin')||verifie_permission('bob')))
-	rediriger_vers("/gestion/");
+	acces_interdit();
 
 // Génération de la page
 //===============

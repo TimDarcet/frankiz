@@ -22,9 +22,12 @@
 	
 
 	$Log$
+	Revision 1.9  2004/12/17 17:25:08  schmurtz
+	Ajout d'une belle page d'erreur.
+
 	Revision 1.8  2004/12/16 16:53:37  falco
 	typo
-
+	
 	Revision 1.7  2004/12/16 13:00:41  pico
 	INNER en LEFT
 	
@@ -52,7 +55,7 @@ require_once "../include/wiki.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin') && !verifie_permission('faq'))
-	rediriger_vers("/gestion/");
+	acces_interdit();
 
 // Génération de la page
 //===============

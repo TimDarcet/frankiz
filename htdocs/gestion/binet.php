@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.28  2004/12/17 17:25:08  schmurtz
+	Ajout d'une belle page d'erreur.
+
 	Revision 1.27  2004/12/17 14:00:32  kikx
 	hum
-
+	
 	Revision 1.26  2004/12/16 13:00:41  pico
 	INNER en LEFT
 	
@@ -132,7 +135,7 @@ if(isset($_REQUEST['image'])){
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if ((empty($_REQUEST['binet'])) || ((!verifie_permission_webmestre($_REQUEST['binet'])) && (!verifie_permission_prez($_REQUEST['binet']))))
-	rediriger_vers("/gestion/");
+	acces_interdit();
 	
 $DB_trombino->query("SELECT nom FROM binets WHERE binet_id=".$_REQUEST['binet']);
 list($nom_binet) = $DB_trombino->next_row() ;

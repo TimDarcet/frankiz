@@ -21,13 +21,14 @@
 	Modif du vocabulaire
 	
 	$Log$
+	Revision 1.4  2004/12/17 17:25:08  schmurtz
+	Ajout d'une belle page d'erreur.
+
 	Revision 1.3  2004/12/17 14:34:18  pico
 	J'avais fait de la merde...
-
-	Revision 1.1  2004/12/15 23:40:35  kikx
-	Pour gerer les mots de vocabulaires
 	
-
+	Revision 1.1  2004/12/15 23:40:35  kikx
+	Pour gérer les mots de vocabulaires
 */
 
 require_once "../include/global.inc.php";
@@ -35,7 +36,7 @@ require_once "../include/global.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if (!verifie_permission('admin'))
-	rediriger_vers("/gestion/");
+	acces_interdit();
 
 	
 foreach ($_POST AS $keys => $val){

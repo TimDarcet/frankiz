@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.10  2004/12/17 17:25:08  schmurtz
+	Ajout d'une belle page d'erreur.
+
 	Revision 1.9  2004/12/15 17:23:59  pico
 	On affiche la photo a sa vraie taille pour valider un changement trombi
-
+	
 	Revision 1.8  2004/12/15 12:33:19  pico
 	quand on déplace un fichier, on vérifie que ça fout pas la merde ailleurs :(
 	
@@ -57,7 +60,7 @@ require_once "../include/global.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('trombino'))
-	rediriger_vers("/gestion/");
+	acces_interdit();
 
 // Génération de la page
 //===============

@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.26  2004/12/17 17:25:08  schmurtz
+	Ajout d'une belle page d'erreur.
+
 	Revision 1.25  2004/12/16 13:00:41  pico
 	INNER en LEFT
-
+	
 	Revision 1.24  2004/12/15 20:07:01  kikx
 	Correction
 	
@@ -110,7 +113,7 @@ require_once "../include/wiki.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
-	rediriger_vers("/gestion/");
+	acces_interdit();
 	
 $message ="" ;
 

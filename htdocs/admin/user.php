@@ -29,9 +29,12 @@
 	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
 	
 	$Log$
+	Revision 1.21  2004/12/17 17:25:08  schmurtz
+	Ajout d'une belle page d'erreur.
+
 	Revision 1.20  2004/12/16 13:00:41  pico
 	INNER en LEFT
-
+	
 	Revision 1.19  2004/12/16 12:52:57  pico
 	Passage des paramètres lors d'un login
 	
@@ -81,7 +84,7 @@ require_once "../include/global.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('trombino'))
-	rediriger_vers("/gestion/");
+	acces_interdit();
 
 // On vérifie que la personne envoie bien l'id sinon ca sert a rien ...
 if(!isset($_REQUEST['id']))

@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.10  2004/12/17 17:25:08  schmurtz
+	Ajout d'une belle page d'erreur.
+
 	Revision 1.9  2004/12/07 13:10:56  pico
 	Passage du nettoyage en formulaire
-
+	
 	Revision 1.8  2004/12/07 08:36:39  pico
 	Ajout d'une page pour pouvoir vider un peu les bases de données (genre pas garder les news qui datent de vieux)
 	
@@ -63,7 +66,7 @@ if(verifie_permission('admin')||verifie_permission('web'))
 else if(verifie_permission('affiches'))
 	$user_id = $_SESSION['user']->uid;
 else
-	rediriger_vers("/gestion/");
+	acces_interdit();
 
 
 

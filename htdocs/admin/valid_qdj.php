@@ -22,9 +22,12 @@
 	
 
 	$Log$
+	Revision 1.15  2004/12/17 17:25:08  schmurtz
+	Ajout d'une belle page d'erreur.
+
 	Revision 1.14  2004/12/16 13:00:41  pico
 	INNER en LEFT
-
+	
 	Revision 1.13  2004/12/13 20:03:25  pico
 	Les liens ne forment pas de blocs, il faut donc le spécifier
 	
@@ -67,7 +70,7 @@ require_once "../include/global.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin') && !verifie_permission('qdjmaster'))
-	rediriger_vers("/gestion/");
+	acces_interdit();
 
 // Génération de la page
 //===============

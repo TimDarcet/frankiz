@@ -22,11 +22,14 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.40  2004/12/17 17:25:08  schmurtz
+	Ajout d'une belle page d'erreur.
+
 	Revision 1.39  2004/12/14 01:02:43  paxal
 	Ajout d'un random pour portage de la skin aubade et celio
-
+	
 	Si je me suis planté n'hésitez pas à me blatter
-
+	
 	Revision 1.38  2004/12/14 00:30:22  kikx
 	Pour preparer le terrain a la modification de la FAQ
 	
@@ -159,7 +162,17 @@ function nouveau_hash() {
 */
 function rediriger_vers($page) {
 	header("Location: ".BASE_URL.$page);
-	echo "<p>Si ton navigateur n'est pas automatiquement redirigé, <a href=\"".BASE_URL.$page."\">cliques ici</a>.</p>";
+	echo "<p>Si ton navigateur n'est pas automatiquement redirigé, <a href=\"".BASE_URL.$page."\">clique ici</a>.</p>";
+	exit;
+}
+
+/*
+	Simule une erreur 403
+*/
+function acces_interdit() {
+	header("HTTP/1.1 403 Forbidden");
+	$_GET['erreur'] = 403;
+	require BASE_LOCAL."/erreur.php";
 	exit;
 }
 

@@ -21,9 +21,12 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.26  2004/12/17 17:25:08  schmurtz
+	Ajout d'une belle page d'erreur.
+
 	Revision 1.25  2004/12/16 12:52:57  pico
 	Passage des paramètres lors d'un login
-
+	
 	Revision 1.24  2004/12/15 22:25:47  kikx
 	Verification que le prez et le webmestre sont d'une promo sur le campus
 	
@@ -88,7 +91,7 @@ require_once "../include/global.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
-	rediriger_vers("/gestion/");
+	acces_interdit();
 
 $message = "";
 $texte_image ="" ;

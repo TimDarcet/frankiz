@@ -24,9 +24,12 @@
 	# la dernière promo qui est dans le trombi (qui normalment devrait être mis a jour automatiquement)
 	
 	$Log$
+	Revision 1.12  2004/12/17 17:25:08  schmurtz
+	Ajout d'une belle page d'erreur.
+
 	Revision 1.11  2004/12/17 14:34:18  pico
 	J'avais fait de la merde...
-
+	
 	Revision 1.9  2004/11/29 20:57:31  kikx
 	Mise en forme
 	
@@ -56,7 +59,7 @@ require_once "../include/global.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
-	rediriger_vers("/gestion/");
+	acces_interdit();
 
 	
 foreach ($_POST AS $keys => $val){

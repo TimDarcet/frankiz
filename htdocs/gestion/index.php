@@ -22,11 +22,14 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.31  2004/12/17 17:25:08  schmurtz
+	Ajout d'une belle page d'erreur.
+
 	Revision 1.30  2004/12/17 16:29:29  kikx
 	Dans le trombino maintenant les promo sont dynamiques
 	Je limit aussi le changement des images (selon leur dimension200x200 dans le trombino)
 	Dans les annonces maintenant c'est 400x300 mais < ou egal
-
+	
 	Revision 1.29  2004/12/17 13:18:47  kikx
 	Rajout des numéros utiles car c'est une demande importante
 	
@@ -180,7 +183,7 @@ require_once "../include/global.inc.php";
 demande_authentification(AUTH_FORT);
 
 if (count($_SESSION['user']->perms)<=1)
-	rediriger_vers("/");
+	acces_interdit();
 
 // Génération de la page
 require_once BASE_LOCAL."/include/page_header.inc.php";

@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.36  2004/12/17 17:25:08  schmurtz
+		Ajout d'une belle page d'erreur.
+
 		Revision 1.35  2004/12/16 12:52:57  pico
 		Passage des paramètres lors d'un login
-
+		
 		Revision 1.34  2004/12/14 18:29:53  pico
 		Là, les modifs marchent mieux
 		
@@ -113,7 +116,7 @@ require_once "../include/wiki.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!(verifie_permission('admin')||verifie_permission('xshare')))
-	rediriger_vers("/gestion/");
+	acces_interdit();
 
 // Génération de la page
 //===============

@@ -22,9 +22,12 @@
 	Permet aussi de supprimer des IPs.
 	
 	$Log$
+	Revision 1.30  2004/12/17 17:25:08  schmurtz
+	Ajout d'une belle page d'erreur.
+
 	Revision 1.29  2004/12/17 14:26:20  pico
 	Pas d'action pour les listes non sélectionnables
-
+	
 	Revision 1.28  2004/12/13 16:15:22  kikx
 	legere modif sur la page des ips
 	
@@ -80,7 +83,7 @@ require_once "../include/global.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
-	rediriger_vers("/gestion/");
+	acces_interdit();
 	
 $message = "" ;
 $blabla = "" ;

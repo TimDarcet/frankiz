@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.33  2004/12/17 17:25:08  schmurtz
+		Ajout d'une belle page d'erreur.
+
 		Revision 1.32  2004/12/16 12:52:57  pico
 		Passage des paramètres lors d'un login
-
+		
 		Revision 1.31  2004/12/13 20:03:25  pico
 		Les liens ne forment pas de blocs, il faut donc le spécifier
 		
@@ -115,7 +118,7 @@ require_once "../include/transferts.inc.php";
 
 // Vérification des droits
 if(!(verifie_permission('admin')||verifie_permission('faq')))
-	rediriger_vers("/gestion/");
+	acces_interdit();
 
 if(isset($_REQUEST['download'])&&isset($_REQUEST['download_type'])){
 	download(BASE_DATA."faq/".base64_decode($_REQUEST['download']),$_REQUEST['download_type'],"FAQ-".strtr(base64_decode($_REQUEST['download']),"/","-")."-".time());

@@ -21,9 +21,12 @@
 	Page qui permet aux admins de vider la bdd des activités périmées
 	
 	$Log$
+	Revision 1.6  2004/12/17 17:25:08  schmurtz
+	Ajout d'une belle page d'erreur.
+
 	Revision 1.5  2004/12/10 20:23:50  kikx
 	Pour supprimer les entrées des annonces non lues si celle ci n'existe plus ... evite d'exploser les tables
-
+	
 	Revision 1.4  2004/12/07 19:53:05  pico
 	Remise en place des paramètres de skin
 	Mise à jour css classique
@@ -45,7 +48,7 @@ require_once "../include/global.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('web'))
-	rediriger_vers("/gestion/");
+	acces_interdit();
 
 
 

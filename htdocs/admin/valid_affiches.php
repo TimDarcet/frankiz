@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.18  2004/12/17 17:25:08  schmurtz
+	Ajout d'une belle page d'erreur.
+
 	Revision 1.17  2004/12/16 13:00:41  pico
 	INNER en LEFT
-
+	
 	Revision 1.16  2004/12/08 12:22:40  kikx
 	Protection de la validation des activités
 	
@@ -92,7 +95,7 @@ if(verifie_permission('admin')||verifie_permission('web'))
 else if(verifie_permission('affiches'))
 	$user_id = $_SESSION['user']->uid;
 else
-	rediriger_vers("/gestion/");
+	acces_interdit();
 	
 // Génération de la page
 //===============
