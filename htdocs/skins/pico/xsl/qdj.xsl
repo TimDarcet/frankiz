@@ -69,7 +69,7 @@
 								<xsl:value-of select="eleve/@surnom"/>
 							</xsl:if>
 							<xsl:if test="eleve/@surnom=''">
-								<xsl:value-of select="eleve/@prenom"/> <xsl:value-of select="eleve/@nom"/>
+								<xsl:value-of select="eleve/@prenom"/><xsl:text> </xsl:text><xsl:value-of select="eleve/@nom"/>
 							</xsl:if>
 							</li>
 						</xsl:for-each>
