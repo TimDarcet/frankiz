@@ -1,4 +1,4 @@
-
+/* XSL : default   |   CSS : default
 /* ###################### GENERAL #################### */
 
 * 
@@ -6,8 +6,6 @@
 	margin: 0px;
 	padding: 0px;
 }
-
-
 
 img {
 	border:0;
@@ -25,24 +23,29 @@ body
 
 div#conteneur
 {
-	width: 98% ;
-	margin: 30px auto 10px 13px ;
+	margin: 30px 10px 10px 13px ;
 	text-align: left ;
-	background: #fff ;
-	background: url('./images/Bar_cote.png') repeat-y left top ;
 }
 
 div#header
 {
 	height: 96px ;
 	background: url('./images/Bar_haut_2.png') repeat-x left top ;
+	overflow:hidden;
 }
 
+div#contenu {
+	position:absolute;
+	top:121px;
+	left:13px;
+	width:97%;
+	background: #fff ;
+	background: url('./images/Bar_cote.png') repeat-y left top ;
+}
 
 div#gauche {
 	float:left;
 	width:125px;
-	position: relative;
 }
 
 div#centre
@@ -69,12 +72,6 @@ div#footer
 
 /* ############################## TITRE #################### */
 
-div#header h1 
-{
-	float:left;
-	z-index:20;
-}
-
 div#header  h1 a
 {
 	width: 666px;
@@ -95,7 +92,12 @@ div#header h2 span
 
 div#header h3 
 {
-	float:right;
+	position:absolute;
+	top:30px !important;
+	top:0px; 
+	z-index:20;
+	right:10px !important;
+	right:0px;
 }
 
 div#header h3 a
@@ -229,41 +231,51 @@ dl.boite  span.hidenews a span {
 
 /* ############# BOITE MODULE GAUCHE ################*/
 
-dl.cadrecote {
-	margin:20px 0 0 0 ;
+div#gauche dl.boite {
+	margin: 20px 0 0 0 ;
 	width:120px;
 }
-dl.cadrecote dt.top {
+
+div#gauche dl.boite dt.titre {
 	line-height:6px;
 	height: 6px;
 	background: url('./images/Bar_cote_cadre_haut.png') bottom left no-repeat;
 	text-align: center;
 }
-dl.cadrecote p.titre {
+div#gauche dl.boite dt.titre span {
+	background-color:transparent;
 	text-align:center;
 	font-weight:bold;
-	line-height: 16px ;
-	font-size: 1.2em ;
+	line-height: 16px;
+	font-size: 1.2em;
 	color: #FFA200 ;
 	position:relative;
-	top:-4px;
+	top:5px !important;
+	top:15px;
 }
-
-dl.cadrecote dd.milieu {
-	padding:2px 9px 2px 9px;
+div#gauche dl.boite dd.contenu {
+	padding:18px 9px 2px 9px;
 	background: url('./images/Bar_cote_cadre_milieu.png') top left repeat-y;
+	text-align:center;
+	border:none;
 }
-dl.cadrecote dd.bas {
+div#gauche dl.boite dd.bas {
 	height: 6px;
 	background: url('./images/Bar_cote_cadre_bas.png') top left no-repeat;
 	border: 0 none; 
+}
+div#gauche dl.boite dd.bas span.droitebas {
+	display:none;
+}
+div#gauche dl.boite dt.titre span.droitehaut {
+	display:none;
 }
 
 span.tour_kawa {
 	padding-left:20px;
 }
 
-dl#activités div.activité p.image img {
+dl#activites div.activite p.image img {
 	width:90px;
 }
 
@@ -548,7 +560,6 @@ table.reponse_qdj td div.col span.rouje {
 dl#stats ul.serveurs {
 	width:95%;
 	margin:0 auto;
-
 }
 
 dl#stats ul.serveurs li.nom {
@@ -657,7 +668,14 @@ ul#menu li#annonces a:hover
 {
 	background: url('./images/annonces.png') no-repeat 0 0 ;
 }
-
+ul#menu li#activites a 
+{
+	background: url('./images/activites.png') no-repeat 0 -32px ;
+}
+ul#menu li#activites a:hover
+{
+	background: url('./images/activites.png') no-repeat 0 0 ;
+}
 ul#menu li#meteo a 
 {
 	background: url('./images/meteo.png') no-repeat 0 -32px ;
@@ -860,21 +878,27 @@ td.boutons {
 /*--------- FAQ et Xshare ---------*/
 li.noeud_ferme
 {
-	list-style-image:url('images/fold_close.gif');
+	list-style-image:url('../images/fold_close.gif');
 	margin-left:40px;
 }
 li.noeud_ouvert
 {
-	list-style-image:url('images/fold_open.gif');
+	list-style-image:url('../images/fold_open.gif');
 	margin-left:40px;
 }
 ul.feuille
 {
-	list-style-image:url('images/question.gif');
+	list-style-image:url('../images/question.gif');
 }
 
 ul.feuille li {
 	margin-left:40px;
+}
+
+li.feuille {
+	border:1px dashed grey;
+	margin:10px;
+	padding:5px;
 }
 
 /* ---------- HR -----------*/

@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.11  2005/01/18 15:50:21  psycow
+	Modif sur la skin default, ajout d'activites, nettoyage
+
 	Revision 1.10  2004/12/17 01:25:52  psycow
 	Ajout des date de naissance
-
+	
 	Revision 1.9  2004/12/17 00:52:23  psycow
 	Correction minime
 	
@@ -79,6 +82,7 @@
 <xsl:include href="form.xsl"/>
 
 <xsl:include href="admin.xsl"/>
+<xsl:include href="arbre.xsl"/>
 <xsl:include href="liens.xsl"/>
 <xsl:include href="meteo.xsl"/>
 <xsl:include href="anniversaires.xsl"/>
@@ -120,37 +124,39 @@
 				<h3><a href="http://www.polytechnique.fr" title="Ecole Polytechnique"><span> Site de l'Ecole Polytechnique</span></a></h3>
 			</div>
 			
-			<div id="gauche">
-				<xsl:apply-templates select="module[@id='liens_navigation']" />
-				<xsl:apply-templates select="module[@id='meteo']"/>
-				<xsl:apply-templates select="module[@id='lien_tol']"/>
-				<xsl:apply-templates select="module[@id='tour_kawa']"/>
-				<xsl:apply-templates select="module[@id='activites']"/>
-				
-			</div>
+			<div id="contenu">
+			
+				<div id="gauche">
+					<xsl:apply-templates select="module[@id='liens_navigation']" />
+					<xsl:apply-templates select="module[@id='meteo']"/>
+					<xsl:apply-templates select="module[@id='lien_tol']"/>
+					<xsl:apply-templates select="module[@id='liens_perso']"/>
+					<xsl:apply-templates select="module[@id='tour_kawa']"/>
+					<xsl:apply-templates select="module[@id='activites']"/>	
+				</div>
+			
+				<div id="droite">
+					<xsl:apply-templates select="module[@id='qdj']"/>
+					<xsl:apply-templates select="module[@id='qdj_hier']"/>
+					<xsl:apply-templates select="module[@id='liens_contacts']"/>
+					<xsl:apply-templates select="module[@id='liens_ecole']"/>
+					<xsl:apply-templates select="module[@id='stats']"/>
+					<xsl:apply-templates select="module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id!='activites' and @id!='liens_navigation' and @id!='liens_perso' and @id!='anniversaires' and @id!='liste_css' and @id!='lien_tol']"/>
+				</div><!--fin #droite -->
+			
+				<div id="centre">
+					<xsl:apply-templates select="page[@id='annonces']" mode="sommaire"/>
+					<xsl:apply-templates select="page[@id='annonces']" mode="complet"/>
+					<xsl:apply-templates select="page[@id='trombino']"/>
+					<xsl:apply-templates select="page[@id='faq']"/>
+					<xsl:apply-templates select="page[@id='xshare']"/>
+					<xsl:apply-templates select="page[@id='binets']"/>
+					<xsl:apply-templates select="page[@id='vocabulaire']"/>
+					<xsl:apply-templates select="page[@id='meteo']"/>
+					<xsl:apply-templates select="page[@id!='annonces' and @id!='trombino' and @id!='faq' and @id!='xshare' and @id!='binets' and @id!='meteo' and @id!='vocabulaire']"/>
+				</div><!--fin #centre -->
 
 			
-			<div id="droite">
-				<xsl:apply-templates select="module[@id='qdj']"/>
-				<xsl:apply-templates select="module[@id='qdj_hier']"/>
-				<xsl:apply-templates select="module[@id='liens_perso']"/>
-				<xsl:apply-templates select="module[@id='liens_contacts']"/>
-				<xsl:apply-templates select="module[@id='liens_ecole']"/>
-				<xsl:apply-templates select="module[@id='stats']"/>
-				<xsl:apply-templates select="module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id!='activites' and @id!='liens_navigation' and @id!='liens_perso' and @id!='anniversaires' and @id!='liste_css' and @id!='lien_tol']"/>
-			</div><!--fin #droite -->
-			
-			<div id="centre">
-				<xsl:apply-templates select="page[@id='annonces']" mode="sommaire"/>
-				<xsl:apply-templates select="page[@id='annonces']" mode="complet"/>
-				<xsl:apply-templates select="page[@id='trombino']"/>
-				<xsl:apply-templates select="page[@id='faq']"/>
-				<xsl:apply-templates select="page[@id='xshare']"/>
-				<xsl:apply-templates select="page[@id='binets']"/>
-				<xsl:apply-templates select="page[@id='vocabulaire']"/>
-				<xsl:apply-templates select="page[@id='meteo']"/>
-				<xsl:apply-templates select="page[@id!='annonces' and @id!='trombino' and @id!='faq' and @id!='xshare' and @id!='binets' and @id!='meteo' and @id!='vocabulaire']"/>
-			</div><!--fin #centre -->
 			
 			<div id="footer">
 				<span id="bas_gauche"><xsl:text> </xsl:text></span>
@@ -161,6 +167,7 @@
 					</a>
 				</h5>
 			</div>
+			</div><!--fin #contenu -->
 		</div><!--fin #conteneur -->
 		
 	</body>

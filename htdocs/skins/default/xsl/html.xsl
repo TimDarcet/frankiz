@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.14  2005/01/18 15:50:21  psycow
+	Modif sur la skin default, ajout d'activites, nettoyage
+
 	Revision 1.13  2004/12/15 22:11:37  psycow
 	Gestion anniversaire et activités
-
+	
 	Revision 1.12  2004/12/15 07:04:35  schmurtz
 	epsilon
 	
@@ -179,50 +182,6 @@
 			<td class="element"><xsl:apply-templates/></td>
 		</xsl:for-each>
 	</tr>
-</xsl:template>
-
-<!-- Arbres -->
-<xsl:template match="arbre">
-	<xsl:if test="boolean(@titre)"><h2><xsl:value-of select="@titre"/></h2></xsl:if>
-	<ul>
-		<xsl:apply-templates select="noeud|feuille"/>
-	</ul>
-</xsl:template>
-
-<xsl:template match="noeud">
-	<li>
-		<xsl:choose><xsl:when test="count(noeud|feuille)">
-			<xsl:attribute name="class">noeud_ouvert</xsl:attribute>
-		</xsl:when><xsl:otherwise>
-			<xsl:attribute name="class">noeud_ferme</xsl:attribute>
-		</xsl:otherwise></xsl:choose>
-		
-		<xsl:choose><xsl:when test="boolean(@lien)">
-			<a><xsl:attribute name="href"><xsl:value-of select="@lien"/></xsl:attribute>
-				<xsl:value-of select="@titre"/>
-			</a>
-		</xsl:when><xsl:otherwise>
-			<xsl:value-of select="@titre"/>
-		</xsl:otherwise></xsl:choose>
-		
-		<xsl:if test="count(noeud|feuille)">
-			<ul class="feuille">
-				<xsl:apply-templates select="noeud|feuille"/>
-			</ul>
-		</xsl:if>
-	</li>
-</xsl:template>
-
-<xsl:template match="feuille">
-	<li>
-		<xsl:choose><xsl:when test="boolean(@lien)">
-			<a><xsl:attribute name="href"><xsl:value-of select="@lien"/></xsl:attribute>
-				<xsl:value-of select="@titre"/>
-			</a>
-		</xsl:when><xsl:otherwise>
-			<xsl:value-of select="@titre"/>
-		</xsl:otherwise></xsl:choose>
-	</li>
 </xsl:template>
 
 <!-- Formatage HTML -->

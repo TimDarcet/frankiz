@@ -23,13 +23,14 @@
 
 <xsl:template match="module[@id='activites']">
     <xsl:if test="count(annonce) !=0">
-	<dl id="activités" class="cadrecote">
-		<dt class="top"><xsl:text> </xsl:text></dt>
-		<dd class="milieu">
-			<p class="titre">Activités</p>
+	<dl id="activites" class="boite">
+		<dt class="titre">
+			<span class="droitehaut"><xsl:text> </xsl:text> </span><span>Activités</span>
+        </dt>
+		<dd class="contenu">
 				<xsl:for-each select="annonce">
-					<div class="activité center">
-						<xsl:if test="@titre!=''"><b><xsl:value-of select='@titre'/></b><br/></xsl:if> 
+					<div class="activite center">
+						<xsl:if test="@titre!=''"><b><xsl:value-of select='@titre'/></b><br/></xsl:if>
 						<xsl:if test="@date!=''">A <xsl:value-of select='substring(@date,12,5)'/><br/></xsl:if>
 						<xsl:apply-templates select="*[name()!='eleve']"/>
 						<xsl:if test="count(eleve)">
@@ -41,7 +42,7 @@
 					</div>
 				</xsl:for-each>
 		</dd>
-		<dd class="bas"><xsl:text> </xsl:text></dd>
+		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>
   </xsl:if>
 </xsl:template>

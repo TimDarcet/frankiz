@@ -22,25 +22,28 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="module[@id='lien_tol']">
-	<dl id="lien_tol" class="cadrecote">
-		<dt class="top"><xsl:text> </xsl:text></dt>
-		<dd class="milieu">
-			<p class="titre">TOL</p>
+	<dl id="lien_tol" class="boite">
+          <dt class="titre">
+            <span class="droitehaut"><xsl:text> </xsl:text></span><span>TOL</span>
+          </dt>
+		<dd class="contenu">
 			<form enctype="multipart/form-data" method="post" class="cadretol">
 				<xsl:attribute name="action"><xsl:value-of select="formulaire/@action"/></xsl:attribute>
 				<div class="center">
 					<input>
+						<xsl:attribute name="class">champ</xsl:attribute>
 						<xsl:attribute name="name"><xsl:value-of select="formulaire/champ/@id"/></xsl:attribute>
 						<xsl:attribute name="value"><xsl:value-of select="formulaire/champ/@valeur"/></xsl:attribute>
 					</input>
 					<input type="submit">
+						<xsl:attribute name="class">bouton</xsl:attribute>
 						<xsl:attribute name="name"><xsl:value-of select="formulaire/bouton/@id"/></xsl:attribute>
 						<xsl:attribute name="value">Chercher</xsl:attribute>
 					</input>	
 				</div>
 			</form>
 		</dd>
-		<dd class="bas"><xsl:text> </xsl:text></dd>
+		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>
 </xsl:template>
 

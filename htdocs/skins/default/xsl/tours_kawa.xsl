@@ -23,10 +23,11 @@
 
 <xsl:template match="module[@id='tour_kawa']">
 	<xsl:if test="count(liste/element) !=0">
-		<dl id="tour_kawa" class="cadrecote">
-			<dt class="top"><xsl:text> </xsl:text></dt>
-			<dd class="milieu">
-				<p class="titre">Tour Kawa</p>
+		<dl id="tour_kawa" class="boite">
+          <dt class="titre">
+            <span class="droitehaut"> </span><span>Tour Kawa</span>
+          </dt>
+			<dd class="contenu">
 				<ul class="none">
 				<xsl:for-each select="liste/element">
 					<li><strong><xsl:value-of select="colonne[@id='jour']"/>: </strong><br/>
@@ -34,7 +35,7 @@
 				</xsl:for-each>
 				</ul>
 			</dd>
-			<dd class="bas"></dd>
+			<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 		</dl>
 	</xsl:if>
 </xsl:template>

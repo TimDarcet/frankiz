@@ -23,20 +23,19 @@
 <!-- Meteo de l'X -->
 
 <xsl:template match="module[@id='meteo']">
-	<dl id="meteo" class="cadrecote">
-		<dt class="top"><xsl:text> </xsl:text></dt>
-		<dd class="milieu">
-			<p class="titre"><xsl:value-of select="@titre"/></p>
-			<p class="image">
+	<dl id="meteo" class="boite">
+          <dt class="titre">
+            <span class="droitehaut"><xsl:text> </xsl:text></span><span><xsl:value-of select="@titre"/></span>
+          </dt>
+		<dd class="contenu">
 				<strong><xsl:value-of select="meteo/now/temperature"/>°C</strong><br />
 				<a href="meteo.php">
 					<img alt="meteo" width="64" height="64">
 						<xsl:attribute name="src">skins/default/xsl/meteo/<xsl:value-of select="meteo/now/image"/>.gif</xsl:attribute>
 					</img>
 				</a>
-			</p>
 		</dd>
-		<dd class="bas"><xsl:text> </xsl:text></dd>
+		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>
 </xsl:template>
 
