@@ -25,7 +25,7 @@ if(est_authentifie(AUTH_MINIMUM)) {
 	$a_vote = mysql_num_rows($result) != 0;
 
 	// Gestion du vote
-	if($date_aujourdhui==$_GET['qdj'] && !$a_vote && ($_GET['vote']==1 || $_GET['vote']==2)) {
+	if(isset($_GET['qdj']) && date_aujourdhui==$_GET['qdj'] && !$a_vote && ($_GET['vote']==1 || $_GET['vote']==2)) {
 		unlink(BASE_LOCAL."/cache/qdj_courante");
 		mysql_query("LOCK TABLE qdj_votes WRITE");
 		mysql_query("SELECT @max:=IFNULL(MAX(ordre),0) FROM qdj_votes WHERE date='$date_aujourdhui'");
