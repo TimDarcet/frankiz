@@ -181,6 +181,11 @@ table.trombino img {
 	margin-right: 20px;
 }
 
+/* FAQ et Xshare */
+li.foldheader1{list-style-image:url('fold_close.gif')}
+li.foldheader2{list-style-image:url('fold_open.gif')}
+ul.foldinglist{list-style-image:url('question.gif')}
+
 /* Balises HTML */
 H1 {
 	text-align: center;

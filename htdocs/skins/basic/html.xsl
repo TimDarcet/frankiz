@@ -3,9 +3,13 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.8  2004/10/17 17:09:43  pico
+	Gestion des listes
+	Classes FAQ pour affichage graphique
+
 	Revision 1.7  2004/09/20 22:19:28  kikx
 	test
-
+	
 	Revision 1.6  2004/09/20 20:31:20  schmurtz
 	Rajout de la balise html <em>
 	
@@ -118,6 +122,12 @@
 </xsl:template>
 <xsl:template match="code">
 	<code><xsl:apply-templates/></code>
+</xsl:template>
+<xsl:template match="ul">
+	<ul><xsl:attribute name="class"><xsl:value-of select="@class"/></xsl:attribute><xsl:apply-templates/></ul>
+</xsl:template>
+<xsl:template match="li">
+	<li><xsl:attribute name="class"><xsl:value-of select="@class"/></xsl:attribute><xsl:apply-templates/></li>
 </xsl:template>
 <xsl:template match="a">
 	<a><xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute><xsl:attribute name="href"><xsl:value-of select="@href"/></xsl:attribute><xsl:apply-templates/></a>
