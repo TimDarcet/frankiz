@@ -21,10 +21,13 @@
 	Moteur Wiki (TipiWiki)
 	
 	$Log$
+	Revision 1.6  2004/11/28 00:06:32  pico
+	Ajout des images avec légende (et donc "alt") dans le wiki
+
 	Revision 1.5  2004/11/27 23:30:34  pico
 	Passage des xshare et faq en wiki
 	Ajout des images dans l'aide du wiki
-
+	
 	Revision 1.4  2004/11/27 18:46:50  pico
 	Correction wiki: gestion des liens (génère du xml et plus des balises <a>)
 	Correction des skins pour validité xhtml
@@ -47,12 +50,15 @@ function wikiVersXML($filtered,$enhtml=false) {
 	
 	// php-specific
 	$filtered = "\n".str_replace("\r\n","\n",$filtered)."\n";
-
-	// [ url | link ] external links
-	$filtered = preg_replace("/\[$regexURL\|$regexURLText\]/i",$enhtml?"<a href=\"\\1\">\\3</a>":"<lien url=\"\\1\">\\3</lien>", $filtered);
-
+	
 	// pictures [ url ]
 	$filtered = preg_replace("/\[($regexURL\.(png|gif|jpg))\]/i",$enhtml?"<img src=\"\\1\"/>":"<image source=\"\\1\"/>",$filtered);
+	
+	// pictures [ url | alt ]
+	$filtered = preg_replace("/\[($regexURL\.(png|gif|jpg))\|$regexURLText\]/i",$enhtml?"<img src=\"\\1\"alt=\"\\5\"/>":"<image source=\"\\1\" legende=\"\\5\"/>",$filtered);
+	
+	// [ url | link ] external links
+	$filtered = preg_replace("/\[$regexURL\|$regexURLText\]/i",$enhtml?"<a href=\"\\1\">\\3</a>":"<lien url=\"\\1\">\\3</lien>", $filtered);
 	
 	// plain urls in the text
 	$filtered = preg_replace("/(?<![\"\[])$regexURL(?!\")/",$enhtml?"<a href=\"\\0\">\\0</a>":"<lien url=\"\\0\">\\0</lien>",$filtered);

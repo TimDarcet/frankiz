@@ -21,10 +21,13 @@
 	Help WIKI
 	
 	$Log$
+	Revision 1.6  2004/11/28 00:06:32  pico
+	Ajout des images avec légende (et donc "alt") dans le wiki
+
 	Revision 1.5  2004/11/27 23:30:34  pico
 	Passage des xshare et faq en wiki
 	Ajout des images dans l'aide du wiki
-
+	
 	Revision 1.4  2004/11/24 22:56:18  schmurtz
 	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
 	globale pour tous les fichiers.
@@ -87,8 +90,8 @@ Le nom Wiki provient d'un adjectif hawaiien wikiwiki, qui signifie rapide. C'est
 		</element>
 		<element id="">
 			<colonne id="type">Image</colonne>
-			<colonne id="syntaxe"><p>[http://binets/icones/reseau.png]</p></colonne>";
-			<colonne id="exemple"><?="<p>".wikiVersXML("[http://binets/icones/reseau.png]")."</p>"?></colonne>";
+			<colonne id="syntaxe"><p>[http://binets/icones/reseau.png]</p><p>[http://binets/icones/reseau.png|Logo binet réseau]</p></colonne>";
+			<colonne id="exemple"><?="<p>".wikiVersXML("[http://binets/icones/reseau.png]")."</p><p>".wikiVersXML("[http://binets/icones/reseau.png|Logo binet réseau]")."</p>"?></colonne>";
 		</element>
 </liste>
 
