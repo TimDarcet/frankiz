@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.40  2005/01/18 13:45:31  pico
+		Plus de droits pour les web
+
 		Revision 1.39  2005/01/11 16:47:10  pico
 		Bug #26
-
+		
 		Revision 1.38  2005/01/10 22:33:13  pico
 		Correction pour le xshare aussi
 		
@@ -124,7 +127,7 @@ require_once "../include/wiki.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-if(!(verifie_permission('admin')||verifie_permission('xshare')))
+if(!(verifie_permission('admin')||verifie_permission('xshare')||verifie_permission('web')))
 	acces_interdit();
 
 // Génération de la page

@@ -21,9 +21,12 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.28  2005/01/18 13:45:31  pico
+	Plus de droits pour les web
+
 	Revision 1.27  2005/01/11 14:36:42  pico
 	Binets triés ext/int + url auto si binet sur le serveur
-
+	
 	Revision 1.26  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
 	
@@ -93,7 +96,7 @@ require_once "../include/global.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-if(!verifie_permission('admin'))
+if(!verifie_permission('admin')&&!verifie_permission('web'))
 	acces_interdit();
 
 $message = "";

@@ -94,11 +94,10 @@
 	 <div class="fkz_module" id='mod_liens_nav'>
 	 	<div class="fkz_titre">
 			<span id="navigation_logo"><xsl:text> </xsl:text></span>
-			<span id="navigation">Profil</span>
+			<span id="navigation">Profil: <xsl:value-of select="$user_prenom"/> <xsl:text> </xsl:text> <xsl:value-of select="$user_nom"/></span>
 		</div>
 		<div class="fkz_module_corps">
-			<div style="text-align:center;"><xsl:value-of select="$date"/> <xsl:text> </xsl:text> <xsl:value-of select="$heure"/><br/>
-			Connecté en tant que: <br/><xsl:value-of select="$user_prenom"/> <xsl:text> </xsl:text> <xsl:value-of select="$user_nom"/></div>
+			<div style="text-align:center;"><xsl:value-of select="$date"/> <xsl:text> </xsl:text> <xsl:value-of select="$heure"/><br/></div>
 			<ul class="fkz_liens_nav">
 				
 				<xsl:for-each select="lien">

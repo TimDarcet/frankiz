@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.37  2005/01/18 13:45:31  pico
+	Plus de droits pour les web
+
 	Revision 1.36  2005/01/18 12:11:49  pico
 	Etat de la kès + validation des mails promos dans l'interface de la Kès
-
+	
 	Revision 1.35  2005/01/17 23:46:28  pico
 	Bug fix
 	
@@ -268,21 +271,21 @@ $permissions_user = $_SESSION['user']->perms ;
 		<lien titre="Valider les qdj (<?=$nb?>)" url="admin/valid_qdj.php"/><br/>
 	<?
 	}
-	if (verifie_permission('admin')){
+	if (verifie_permission('admin')||verifie_permission('web')){
 		$DB_valid->query("SELECT id FROM valid_pageperso") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
 		<lien titre="Valider les page persos (<?=$nb?>)" url="admin/valid_pageperso.php"/><br/>
 	<?
 	}
-	if (verifie_permission('admin')||verifie_permission('trombino')){
+	if (verifie_permission('admin')||verifie_permission('trombino')||verifie_permission('web')){
 		$DB_valid->query("SELECT binet_id FROM valid_binet") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
 		<lien titre="Valider les changements des Binets (<?=$nb?>)" url="admin/valid_binets.php"/><br/>
 	<?
 	}
-	if (verifie_permission('admin')||verifie_permission('faq')){
+	if (verifie_permission('admin')||verifie_permission('faq')||verifie_permission('web')){
 		$DB_valid->query("SELECT 0 FROM valid_modiffaq") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
@@ -296,7 +299,7 @@ $permissions_user = $_SESSION['user']->perms ;
 	<h3>Administration des données validées</h3>
 	<?
 	}
-	if (verifie_permission('admin')||verifie_permission('qdjmaster')||verifie_permission('web')){
+	if (verifie_permission('admin')||verifie_permission('qdjmaster')){
 	?>
 		<lien titre="Planifier les qdj" url="admin/planif_qdj.php"/><br/>
 		<lien titre="Historique des qdj" url="admin/histo_qdj.php"/><br/>
@@ -315,7 +318,7 @@ $permissions_user = $_SESSION['user']->perms ;
 	}
 	
 	
-	if (verifie_permission('admin')||verifie_permission('xshare')||verifie_permission('faq')||verifie_permission('trombino')){
+	if (verifie_permission('admin')||verifie_permission('web')||verifie_permission('xshare')||verifie_permission('faq')||verifie_permission('trombino')){
 	?>
 	<h3>Administration des données de Frankiz</h3>
 	<?
@@ -326,28 +329,28 @@ $permissions_user = $_SESSION['user']->perms ;
 		<lien titre="Changer les variables globales" url="admin/parametre.php"/><br/>
 	<?
 	}
-	if (verifie_permission('admin')||verifie_permission('trombino')){
+	if (verifie_permission('admin')||verifie_permission('trombino')||verifie_permission('web')){
 	?>
 		<lien titre="Liste des Binets" url="admin/binets_liste.php"/><br/>
 		<lien titre="Liste des sections" url="admin/sections.php"/><br/>
 	<?
 	}
-	if (verifie_permission('admin')||verifie_permission('xshare')){
+	if (verifie_permission('admin')||verifie_permission('xshare')||verifie_permission('web')){
 	?>
 		<lien titre="Gestion xshare" url="admin/xshare.php"/><br/>
 	<?
 	}
-	if (verifie_permission('admin')||verifie_permission('faq')){
+	if (verifie_permission('admin')||verifie_permission('faq')||verifie_permission('web')){
 	?>
 		<lien titre="Gestion FAQ" url="admin/faq.php"/><br/>
 	<?
 	}
-	if (verifie_permission('admin')){
+	if (verifie_permission('admin')||verifie_permission('web')){
 	?>
 		<lien titre="Gestion du Vocabulaire" url="admin/vocabulaire.php"/><br/>
 	<?
 	}
-	if (verifie_permission('admin')){
+	if (verifie_permission('admin')||verifie_permission('trombino')){
 	?>
 		<lien titre="Gestion des num utiles" url="admin/num_utiles.php"/><br/>
 	<?

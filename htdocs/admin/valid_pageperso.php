@@ -23,12 +23,15 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.17  2005/01/18 13:45:31  pico
+	Plus de droits pour les web
+
 	Revision 1.16  2005/01/14 09:19:31  pico
 	Corrections bug mail
 	+
 	Sondages maintenant public ou privé (ne s'affichant pas dans le cadre)
 	Ceci sert pour les sondages section par exemple
-
+	
 	Revision 1.15  2005/01/13 17:10:58  pico
 	Mails de validations From le validateur qui va plus ou moins bien
 	
@@ -79,7 +82,7 @@ require_once "../include/global.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-if(!verifie_permission('admin'))
+if(!verifie_permission('admin')&&!verifie_permission('web'))
 	acces_interdit();
 
 // Génération de la page

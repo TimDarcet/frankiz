@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.40  2005/01/18 13:45:31  pico
+		Plus de droits pour les web
+
 		Revision 1.39  2005/01/11 16:47:10  pico
 		Bug #26
-
+		
 		Revision 1.38  2005/01/10 22:44:01  pico
 		Autre fix
 		
@@ -135,7 +138,7 @@ require_once "../include/global.inc.php";
 require_once "../include/transferts.inc.php";
 
 // Vérification des droits
-if(!(verifie_permission('admin')||verifie_permission('faq')))
+if(!(verifie_permission('admin')||verifie_permission('faq')||verifie_permission('web')))
 	acces_interdit();
 
 if(isset($_REQUEST['download'])&&isset($_REQUEST['download_type'])){

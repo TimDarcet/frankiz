@@ -21,9 +21,12 @@
 	Modif du vocabulaire
 	
 	$Log$
+	Revision 1.5  2005/01/18 13:45:31  pico
+	Plus de droits pour les web
+
 	Revision 1.4  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 	Revision 1.3  2004/12/17 14:34:18  pico
 	J'avais fait de la merde...
 	
@@ -35,7 +38,7 @@ require_once "../include/global.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-if (!verifie_permission('admin'))
+if (!verifie_permission('admin')&&!verifie_permission('web'))
 	acces_interdit();
 
 	
