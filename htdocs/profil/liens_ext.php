@@ -21,9 +21,12 @@
 	Gestions des liens perso / des flux rss.
 
 	$Log$
+	Revision 1.13  2005/01/04 23:32:22  pico
+	hum hum hum
+
 	Revision 1.12  2005/01/04 23:30:37  pico
 	gni²
-
+	
 	Revision 1.11  2005/01/04 23:25:06  pico
 	oups
 	
@@ -88,7 +91,7 @@ if(isset($_REQUEST['OK_rss'])) {
 		if(!empty($_REQUEST['rss_perso_'.$mode]))
 			$rss['m_'.$_REQUEST['rss_perso_'.$mode]] = $mode;
 	// Mise à jour des infos de session et de la base de données
-	$_SESSION['rss'] = unserialize($rss);
+	$_SESSION['rss'] = $rss;
 	$rss = serialize($rss);
 	$DB_web->query("UPDATE compte_frankiz SET liens_rss='$rss' WHERE eleve_id='{$_SESSION['user']->uid}'");	
 }
@@ -159,6 +162,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	<formulaire id="form_rss" titre="Choix des RSS" action="profil/liens_ext.php">
 		<note>Choisis quelles infos tu veux avoir sur ta page de news externes</note>
 <?
+		$liens = array();
 		$liens = $_SESSION['rss'];
  		foreach(array('sommaire','complet') as $mode){ 
 				echo "<choix titre=\"Affichage $mode\" id=\"newrss\" type=\"checkbox\" valeur=\"";
