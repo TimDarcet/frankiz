@@ -4,12 +4,15 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.3  2004/10/16 01:47:45  schmurtz
+	Bug dans l'envoi d'un mail
+
 	Revision 1.2  2004/10/16 01:20:12  schmurtz
 	Utilisation d'une classe dediee a l'envoie de mails et permettant de gerer un
 	peu les contenus MIME.
 	TODO : inclure dans ce fichier le code de kikx actuellement situe dans la
 	gestion des mails promos
-
+	
 */
 
 // envoi d'un mail à un élève
@@ -44,7 +47,7 @@ class Mail {
 	var $subject, $boundary;
 	
 	// Création d'un nouveau mail
-	function mailer($from, $to, $subject, $multipart=false, $cc="", $bcc="") {
+	function Mail($from, $to, $subject, $multipart=false, $cc="", $bcc="") {
 		$this->from = $from;
 		$this->to = $to;
 		$this->cc = $cc;

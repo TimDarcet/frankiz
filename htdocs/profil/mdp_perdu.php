@@ -3,15 +3,19 @@
 	Gestion de la création d'un compte et de la perte de mot de passe.
 	
 	$Log$
+	Revision 1.13  2004/10/16 01:47:44  schmurtz
+	Bug dans l'envoi d'un mail
+
 	Revision 1.12  2004/09/15 23:20:07  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 	Revision 1.11  2004/09/15 21:42:21  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
 	
 */
 
 require "../include/global.inc.php";
+require_once "../include/mail.inc.php";
 
 $mail_envoye = false;
 
@@ -39,7 +43,11 @@ if(!empty($_REQUEST['loginpoly'])) {
 				   "	[ http://".$_SERVER['SERVER_NAME'].$tempo[0]."profil/profil.php?uid=${id}&hash=${hash} ]\n\n".
 				   "N'oublie pas ensuite de modifier ton mot de passe.";
 		if (($mail=="")||($mail=="NULL")) $mail = $login."@poly.polytechnique.fr" ;
-		mail("$nom $prenom <$mail>","[Frankiz] Création de compte/perte de mot de passe",$contenu);
+		
+		$message = new Mail("Binet Réseau <br@frankiz.polytechnique.fr>","$nom $prenom <$mail>","[Frankiz] Création de compte/perte de mot de passe");
+		$message->SetBody($contenu);
+		$message->Send();
+		
 		$mail_envoye = true;
 		
 	} else {
