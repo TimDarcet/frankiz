@@ -3,11 +3,14 @@
 	Mail promo permettant l'envoie de pièce jointes et de formatage HTML
 	
 	$Log$
+	Revision 1.4  2004/10/06 21:07:17  kikx
+	Micro correction car on abandonne pour le moment l'idee de piece jointe
+
 	Revision 1.3  2004/10/06 14:12:27  kikx
 	Page de mail promo quasiment en place ...
 	envoie en HTML ...
 	Page pas tout a fait fonctionnel pour l'instant
-
+	
 	Revision 1.2  2004/10/04 22:55:25  kikx
 	Modification pour permettre aux personnes de poster des mails promos
 	
@@ -44,8 +47,6 @@ if (!isset($_REQUEST['envoie'])) {
 	<formulaire id="mail_promo" titre="Mail Promo" action="proposition/mail_promo.php">
 		<champ titre="Sujet" id="sujet" valeur="<? if (isset($_REQUEST['sujet'])) echo $_REQUEST['sujet']?>" />
 		<zonetext titre="Mail" id="mail" valeur="<? if (isset($_REQUEST['mail'])) echo $_REQUEST['mail']?>" />
-		<textsimple valeur="Ton fichier ne doit pas dépasser 500ko car sinon elle ne sera pas téléchargée"/>
-<!---		<champ id="file" titre="Pièce jointe" valeur="" taille="500000"/>-->
 		<bouton titre="Mise à jour" id="upload"/>
 		<bouton titre="Valider" id="envoie"  onClick="return window.confirm('Voulez vous vraiment envoyer ce mail ?')"/>
 	</formulaire>
