@@ -25,9 +25,12 @@
 	TODO traiter le cas ou le qdj master est à la bourre (garder l'ancienne qdj par exemple).
 	
 	$Log$
+	Revision 1.14  2004/12/14 17:36:33  pico
+	Correction action
+
 	Revision 1.13  2004/11/02 17:46:39  pico
 	Modification de la gestion des caches de la qdj
-
+	
 	Revision 1.12  2004/11/02 17:29:22  pico
 	Ne crée plus de qdj qd il n'y en a pas.
 	
@@ -62,7 +65,7 @@ function qdj_affiche($hier,$deja_vote) {
 ?>
 	
 			<module id="<?php echo $hier ? 'qdj_hier' : 'qdj' ?>" titre="QDJ<?php if($hier) echo ' d\'hier' ?>">
-				<qdj type="<?php echo $hier ? 'aujourdhui' : 'hier' ?>" id="<?php echo $date?>" <?php if(!$deja_vote && !$hier) echo " action=\"{$_SERVER['PHP_SELF']}?qdj=$date&amp;vote=\""; ?>>
+				<qdj type="<?php echo $hier ? 'aujourdhui' : 'hier' ?>" id="<?php echo $date?>" <?php if(!$deja_vote && !$hier) echo " action=\"?qdj=$date&amp;vote=\""; ?>>
 					<question><?php echo $question ?></question>
 					<reponse id="1" votes="<?php echo $compte1?>"><?php echo $reponse1?></reponse>
 					<reponse id="2" votes="<?php echo $compte2?>"><?php echo $reponse2?></reponse>
