@@ -1,9 +1,12 @@
 <? 
 /*
 		$Log$
+		Revision 1.19  2004/10/21 12:18:52  pico
+		Gestion des recherches
+
 		Revision 1.18  2004/10/20 23:18:49  pico
 		Derniers fixes, ça marche !!
-
+		
 		Revision 1.17  2004/10/20 23:04:06  pico
 		Affichage de l'arbre mieux respecté
 		
@@ -157,12 +160,13 @@ function all_elt_affich($idfold){
 
 function rech_parent($id) {
 		global $DB_web;
-		$liste = $id."/" ;
+		$liste = "" ;
 		while ($id != 0) {
 			$DB_web->query("SELECT id_parent FROM xshare WHERE id='{$id}'") ;
-			$id = $DB_web->next_row() ;
-			if (($id != "")&&($id != 0)){ // on rajoute ssi c'est pas le racine
-				$liste .= $id."/";		  // car on la deja rajouté !
+			while(list($id) = $DB_web->next_row()){
+				if (($id != "")&&($id != 0)){ // on rajoute ssi c'est pas le racine
+					$liste .= "/".$id;		  // car on la deja rajouté !
+				}
 			}
 		}
 		return $liste ; 
@@ -202,14 +206,14 @@ if ($mots!="") {
 	$DB_web->query("SELECT id,nom,descript FROM xshare") ;
 	$recherche = 0 ;
 	$a_marquer = "/" ;			// liste des elements qui contiendront les mots
-	$a_afficher = "0/" ;		// liste des elements à afficher
+	$affich_elt = "1/" ;		// liste des elements à afficher
 	while(list($id,$nom,$descript) = $DB_web->next_row()) {
 		$result = explode(" ",$mots) ;
 		$n = count($result) ;
 		for ($i=0 ; $i<$n ; $i++){ 			// on regarde dans chaque dl si il y a les mots ...
 			if ((eregi($result[$i],$descript))||(eregi($result[$i],$nom))) {
 				$DB_web->push_result();
-				$a_afficher = $a_afficher.rech_parent($id) ;
+				$affich_elt = $affich_elt.rech_parent($id) ;
 				$DB_web->pop_result();
 				$a_marquer = $a_marquer.$id."/" ;
 				$recherche = 1 ;
@@ -226,7 +230,9 @@ essayer avec d'autres crit&egrave;res
 	} else {
 		define ("$affich_elt", $a_afficher) ;
 		define ("$a_marquer",$a_marquer);
+		echo "<arbre>";
 		rech_fils(0) ; 
+		echo "</arbre>";
 	}
 } else {
 

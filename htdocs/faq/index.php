@@ -1,9 +1,12 @@
 <? 
 /*
 		$Log$
+		Revision 1.19  2004/10/21 12:18:52  pico
+		Gestion des recherches
+
 		Revision 1.18  2004/10/21 08:33:07  pico
 		Chgts divers pour matcher avec la balise <html>
-
+		
 		Revision 1.17  2004/10/20 23:04:06  pico
 		Affichage de l'arbre mieux respecté
 		
@@ -80,7 +83,9 @@ function rech_fils($parent) {
 		$DB_web->query("SELECT faq_id,question FROM faq WHERE parent='{$parent}' AND reponse NOT LIKE '%index.php' ") ;
 		while(list($id,$question) = $DB_web->next_row()) {
 			echo "<noeud id='".$id."' ";
+			$DB_web->push_result();
 			echo "lien='faq/index.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
+			$DB_web->pop_result();
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "' titre='".htmlspecialchars($question,ENT_QUOTES)."'>" ;
 			if (eregi("/".$id."/",$a_marquer)) {
@@ -97,7 +102,9 @@ function rech_fils($parent) {
 		
 		$DB_web->query("SELECT faq_id,question FROM faq WHERE parent='{$parent}' AND reponse LIKE '%index.php'" ) ;
 		while(list($id,$question) = $DB_web->next_row()) {
+			$DB_web->push_result();
 			echo "\n\r<feuille lien='faq/index.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
+			$DB_web->pop_result();
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#reponse' titre='".htmlspecialchars($question,ENT_QUOTES)."'>" ;
 			if (eregi("/".$id."/",$a_marquer)) {
@@ -162,13 +169,14 @@ function all_elt_affich($idfold){
 //------------------------------
 
 function rech_parent($id) {
-		global $DB_web;
-		$liste = $id."/" ;
+		global $DB_web,$affich_elt;
+		$liste="";
 		while ($id != 0) {
 			$DB_web->query("SELECT parent FROM faq WHERE faq_id='{$id}'") ;
-			$id = $DB_web->next_row() ;
-			if (($id != "")&&($id != 0)){ // on rajoute ssi c'est pas le racine
-				$liste .= $id."/";		  // car on la deja rajouté !
+			while(list($id) = $DB_web->next_row()){
+				if (($id != "")&&($id != 0)){ // on rajoute ssi c'est pas le racine
+					$liste .= "/".$id;		  // car on la deja rajouté !
+				}
 			}
 		}
 		return $liste ; 
@@ -208,14 +216,14 @@ if ($mots!="") {
 	$DB_web->query("SELECT faq_id,question,reponse FROM faq") ;
 	$recherche = 0 ;
 	$a_marquer = "/" ;			// liste des elements qui contiendront les mots
-	$a_afficher = "0/" ;		// liste des elements à afficher
+	$affich_elt = "1" ;		// liste des elements à afficher
 	$result = explode(" ",$mots) ;
 	$n = count($result) ;
 	while(list($id,$question,$reponse) = $DB_web->next_row()) {
 		for ($i=0 ; $i<$n ; $i++){ 			// on regarde dans chaque FAQ si il y a les mots ...
 			if ((eregi($result[$i],$reponse))||(eregi($result[$i],$question))) {
 				$DB_web->push_result();
-				$a_afficher = $a_afficher.rech_parent($id) ;
+				$affich_elt = $affich_elt.rech_parent($id) ;
 				$DB_web->pop_result();
 				$a_marquer = $a_marquer.$id."/" ;
 				$recherche = 1 ;
@@ -228,7 +236,9 @@ if ($mots!="") {
 essayer avec d'autres critères 
   <?
 	} else {
+		echo "<arbre>";
 		rech_fils(0) ; 
+		echo "</arbre>";
 	}
 } else {
 
@@ -236,7 +246,6 @@ essayer avec d'autres critères
 // on affiche  l'arbre 
 // simple maintenant
 //----------------------
-
 echo "<arbre>";
 rech_fils(0) ;
 echo "</arbre>";
