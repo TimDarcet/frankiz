@@ -22,9 +22,12 @@
 	Permet aussi de supprimer des IPs.
 	
 	$Log$
+	Revision 1.32  2005/02/03 17:41:22  nc
+	Correction du lien vers la page d'admin SMAC
+
 	Revision 1.31  2005/01/20 08:50:42  pico
 	Wish #42
-
+	
 	Revision 1.30  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
 	
@@ -146,7 +149,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 
 ?>
-<note>Si la page ne marche pas trop, allez sur la page de la <lien titre="DSI" url="http://<?=DSI_URL?>/SMAC/main.php"/></note>
+<note>Si la page ne marche pas trop, allez sur la page de la <lien titre="DSI" url="http://<?=DSI_URL?>/SMAC/"/></note>
 	<formulaire id="recherche" titre="Recherche" action="admin/ip.php">
 		<champ titre="Login" id="rech_login" valeur="<? if (isset($_POST['rech_login'])) echo $_POST['rech_login']?>" />
 		<champ titre="Pièce" id="rech_kzert" valeur="<? if (isset($_POST['rech_kzert'])) echo $_POST['rech_kzert']?>" />
