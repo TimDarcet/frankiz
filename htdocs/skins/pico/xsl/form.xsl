@@ -25,12 +25,15 @@
 <xsl:template match="formulaire[@type='discret']">
 	<!-- le formulaire lui même, mis en page avec une table -->
 	<form enctype="multipart/form-data" method="post">
+		<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 		<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<div class="formulaire">
 		<!-- les options du formulaire -->
-		<xsl:apply-templates select="*[not (self::bouton or self::commentaire or self::warning)]"/>
+		<xsl:apply-templates select="*[name()!='bouton']"/>
 		<!-- les boutons gérant les actions du formulaire -->
-		<xsl:apply-templates select="bouton"/>
+			<span class="boutons">
+				<xsl:apply-templates select="bouton"/>
+			</span>
 		</div>
 	</form>
 </xsl:template>
