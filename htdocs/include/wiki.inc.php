@@ -21,9 +21,12 @@
 	Moteur Wiki (TipiWiki)
 	
 	$Log$
+	Revision 1.9  2004/12/01 12:06:14  pico
+	Gestion des listes à 2 niveaux en wiki
+
 	Revision 1.8  2004/11/29 16:51:26  schmurtz
 	Correction d'un bug de traduction wiki => xml avec un texte du genre "=== blah ="
-
+	
 	Revision 1.7  2004/11/28 01:33:32  pico
 	Gestion des listes sur le wiki (arbre + feuille)
 	
@@ -80,12 +83,22 @@ function wikiVersXML($filtered,$enhtml=false) {
 	$filtered = preg_replace("/\|(.+)\|/U","<code>\\1</code>", $filtered);
 
 	// lists <ul>
-	$filtered = preg_replace("/(?<=[\n>])\* (.+)\n/","<feuille>\\1</feuille>",$filtered);
-	$filtered = preg_replace("/<feuille>(.+)\<\/feuille>/","</p><arbre><noeud>\\0</noeud></arbre><p>",$filtered);
+	// Listes à 2 niveau
+	$filtered = preg_replace("/(?<=[\n>])\* \*(.+)\n/","<noeud><feuille>$1</feuille></noeud>",$filtered);
+	$filtered = preg_replace("(</noeud><noeud>)","",$filtered);
+	// Légende liste 2 niveau
+	$filtered = preg_replace("/(?<=[\n>])\* (.+)\n<noeud>/","<noeud titre=\"$1\">",$filtered);
+	// Liste simple
+	$filtered = preg_replace("/(?<=[\n>])\* (.+)\n/","<feuille>$1</feuille>",$filtered);
+	// Structure d'arbre
+	$filtered = preg_replace("(\n<feuille)","</p><arbre><feuille",$filtered);
+	$filtered = preg_replace("(</feuille>\n)","</feuille></arbre><p>",$filtered);
+	$filtered = preg_replace("(\n<noeud)","</p><arbre><noeud",$filtered);
+	$filtered = preg_replace("(</noeud>\n)","</noeud></arbre><p>",$filtered);
 	
 	// strip leading and ending line breaks
 	$filtered = preg_replace("/^(\n+)/","",$filtered); 
-	$filtered = preg_replace("/\n{3,}/","<p> </p>",$filtered); 
+	$filtered = preg_replace("/\n{3,}/","</p> <p>",$filtered); 
 	
 	
 	// <pre> blocks
@@ -101,7 +114,7 @@ function wikiVersXML($filtered,$enhtml=false) {
 	$filtered = str_replace("</p><p>\n<h","\n<h", $filtered);
 	$filtered = preg_replace("/(<\/h[1-6]>)<\/p><p>\n/","\\1\n", $filtered);
 	$filtered = preg_replace("/<p>\n*<\/p>/","",$filtered);
-	
+
 	return $filtered;
 }
 
