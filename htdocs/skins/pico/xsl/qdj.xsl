@@ -21,7 +21,7 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	
-<xsl:template match="module[@id='qdj'] | module[@id='qdj_hier'] ">
+<xsl:template match="module[@id='qdj'] | module[@id='qdj_hier']">
 	<div class="fkz_module">
 		<div class="fkz_titre"><span><xsl:attribute name="id"><xsl:value-of select="@id"/>_logo</xsl:attribute><xsl:text> </xsl:text></span><span><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute><xsl:value-of select="@titre"/></span></div>
 		<div class="fkz_module_corps">
@@ -78,6 +78,23 @@
 			</div>
 		</div>
 	</div>
+</xsl:template>
+
+<xsl:template match="qdj">
+	<div class="fkz_qdj_question"><xsl:value-of select="question"/></div>
+	<div>
+		<div class="fkz_qdj_rouje_reponse">
+			<xsl:value-of select="reponse[@id='1']"/>
+			<br/>
+			<xsl:value-of select="reponse[@id='1']/@votes"/> soit <xsl:value-of select="round((reponse[@id='1']/@votes * 100) div sum(reponse/@votes))"/>%<br/>
+		</div>
+		<div class="fkz_qdj_jone_reponse">
+			<xsl:value-of select="reponse[@id='2']"/>
+			<br/>
+			<xsl:value-of select="reponse[@id='2']/@votes"/> soit <xsl:value-of select="round((reponse[@id='2']/@votes * 100) div sum(reponse/@votes))"/>%<br/>
+		</div>
+	</div>
+	<div class="fkz_end_page" ><br/></div>
 </xsl:template>
 
 </xsl:stylesheet>

@@ -21,9 +21,12 @@
 	Page qui permet aux admins de vider la bdd des activités périmées
 	
 	$Log$
+	Revision 1.7  2004/12/17 19:55:44  pico
+	Ajout d'une page pour voir l'historique des qdj
+
 	Revision 1.6  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 	Revision 1.5  2004/12/10 20:23:50  kikx
 	Pour supprimer les entrées des annonces non lues si celle ci n'existe plus ... evite d'exploser les tables
 	
@@ -98,9 +101,9 @@ foreach ($_POST AS $keys => $val){
 	}
 	
 	if ($temp[0]=='qdj') {
-		$DB_web->query("SELECT qdj_id FROM qdj WHERE date<'".date("Y-m-d", time()-3025 - 5 * 24 * 3600)."' AND date>'0000-00-00'");
+		$DB_web->query("SELECT qdj_id FROM qdj WHERE date<'".date("Y-m-d", time()-3025 - 365 * 24 * 3600)."' AND date>'0000-00-00'");
 		$compteur = $DB_web->num_rows();
-		$DB_web->query("DELETE FROM qdj WHERE date<'".date("Y-m-d", time()-3025 - 5 * 24 * 3600)."' AND date>'0000-00-00'");
+		$DB_web->query("DELETE FROM qdj WHERE date<'".date("Y-m-d", time()-3025 - 365 * 24 * 3600)."' AND date>'0000-00-00'");
 	?>
 		<warning>Suppression de <? echo $compteur?> qdj périmées</warning>
 	<?
@@ -124,7 +127,7 @@ foreach ($_POST AS $keys => $val){
 		<choix titre="Eléments à vider" id="element" type="checkbox">
 			<option  titre="Supprimer les annonces périmées depuis plus de 5 jours" id="annonces"/>
 			<option  titre="Supprimer les affiches périmées depuis plus de 5 jours" id="affiches"/>
-			<option  titre="Supprimer les qdj périmées depuis plus de 5 jours" id="qdj"/>
+			<option  titre="Supprimer les qdj périmées depuis plus de 365 jours" id="qdj"/>
 			<option  titre="Supprimer les sondages périmés depuis plus de 60 jours" id="sondage"/>
 		</choix>
 		<bouton id='mod_compte_fkz' titre='Changer'/>
