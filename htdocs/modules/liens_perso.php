@@ -21,9 +21,12 @@
 	Affichage des liens personnels.
 
 	$Log$
+	Revision 1.6  2004/11/24 22:08:09  pico
+	Ajout lien vers page feed RSS dans le cadre liens_perso
+
 	Revision 1.5  2004/11/24 21:09:04  pico
 	Sauvegarde avant mise à jour skins
-
+	
 	Revision 1.4  2004/11/24 19:00:32  pico
 	Bon, là ça devrait être bon...
 	
@@ -41,14 +44,12 @@
 	
 
 */
-
+echo "<module id=\"liens_perso\" titre=\"Liens Perso\">";
+echo"<lien titre=\"News de sites externes\" url=\"rss.php\" />";
 if(isset($_SESSION['liens_perso']) && !empty($_SESSION['liens_perso']) && count($_SESSION['liens_perso'])>0){
-	echo "<module id=\"liens_perso\" titre=\"Liens Perso\">";
-	
 	foreach($_SESSION['liens_perso'] as $titre => $url){
 		echo "<lien titre=\"$titre\" url=\"$url\" />";
 	}
-	
-	echo "</module>";
 }
+echo "</module>";
 ?>
