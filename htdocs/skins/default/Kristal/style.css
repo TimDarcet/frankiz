@@ -604,11 +604,11 @@ dl#qdj table.qdj td span{
 }
 
 dl#qdj table.qdj td span.rouje {
-	background:url(images/pointrouje.jpg) no-repeat top center;
+	background:url('./images/pointrouje.jpg') no-repeat top center;
 }
 
 dl#qdj table.qdj td span.jone {
-	background:url(images/pointjone.jpg) no-repeat top center;
+	background:url('./images/pointjone.jpg') no-repeat top center;
 }
 
 table.reponse_qdj {
@@ -626,10 +626,10 @@ table.reponse_qdj td div.col span {
 	height:50px;
 }
 table.reponse_qdj td div.col span.jone {
-	background:url(images/jaune.jpg) repeat-y top center;
+	background:url('./images/jaune.gif') repeat-y top center;
 }
 table.reponse_qdj td div.col span.rouje {
-	background:url(images/rouge.jpg) repeat-y top center;
+	background:url('./images/rouge.gif') repeat-y top center;
 }
 /*--------- Etat des serveur-----------*/
 
