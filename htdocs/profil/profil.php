@@ -24,9 +24,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.34  2004/12/14 00:52:02  kikx
+	Envoie les demandes de changement au nom du mec qui demande ... pour faire plaisir au gens ...
+
 	Revision 1.33  2004/12/07 14:39:26  schmurtz
 	Bugs et orthographe
-
+	
 	Revision 1.32  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
@@ -192,7 +195,7 @@ if(isset($_POST['changer_frankiz'])) {
 				"Très BR-ement<br>" .
 				"L'automate :)<br>"  ;
 				
-			couriel(WEBMESTRE_ID,"[Frankiz] Modification de l'image trombi de $nom $prenom",$contenu);
+			couriel(WEBMESTRE_ID,"[Frankiz] Modification de l'image trombi de $nom $prenom",$contenu,$_SESSION['user']->uid);
 			$message .= "<commentaire>Ta demande de changement de photo a été prise en compte et sera validée dans les meilleurs délais.</commentaire>";
 
 		}

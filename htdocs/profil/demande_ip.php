@@ -22,10 +22,13 @@
 	une seconde machine dans son casert.
 	
 	$Log$
+	Revision 1.14  2004/12/14 00:52:02  kikx
+	Envoie les demandes de changement au nom du mec qui demande ... pour faire plaisir au gens ...
+
 	Revision 1.13  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
-
+	
 	Revision 1.12  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
@@ -92,7 +95,7 @@ if ($DB_valid->num_rows()>0) { ?>
 				"Très BR-ement<br>" .
 				"L'automate :)<br>";
 				
-	couriel(ROOT_ID,"[Frankiz] Demande d'une nouvelle adresse IP",$contenu);
+	couriel(ROOT_ID,"[Frankiz] Demande d'une nouvelle adresse IP",$contenu,$_SESSION['user']->uid);
 	
 	// Affichage d'un message d'information
 ?>
