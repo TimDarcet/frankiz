@@ -29,9 +29,12 @@
 	de bande passante, de cpu). 
 	
 	$Log$
+	Revision 1.15  2005/01/04 12:28:06  pico
+	Plus de stats
+
 	Revision 1.14  2005/01/04 12:09:18  pico
 	Retour des stats de frankiz !
-
+	
 	Revision 1.13  2005/01/03 23:27:05  pico
 	Petites modifs
 	
@@ -67,7 +70,9 @@ if(est_authentifie(AUTH_MINIMUM)) { ?>
 	<module id="stats" titre="Statistiques">
 		<statistiques>
 			<service nom="web frankiz" stat="http://frankiz.polytechnique.fr/webalizer/" />
-			<service nom="web binets" stat="http://gwennoz.polytechnique.fr/webalizer/" />
+			<service nom="web perso" stat="http://perso.frankiz.eleves.polytechnique.fr/webalizer/" />
+			<service nom="web binets" stat="http://binets.frankiz.eleves.polytechnique.fr/webalizer/" />
+			<service nom="web binets (old)" stat="http://gwennoz.polytechnique.fr/webalizer/" />
 			<!--<service nom="news" stat="http://frankiz.polytechnique.fr/news/" />
 			<service nom="xnet" stat="http://frankiz.polytechnique.fr/accueil/xnetstatquick.php" />-->
 		<? if(file_exists(BASE_CACHE."status")) include BASE_CACHE."status"; else echo "<serveur nom='status' etat='down'/>\n"?>
