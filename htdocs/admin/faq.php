@@ -19,11 +19,14 @@
 */
 /*
 		$Log$
+		Revision 1.15  2004/11/05 14:08:22  pico
+		BugFix
+
 		Revision 1.14  2004/11/05 13:50:22  pico
 		Admin FAQ:
 		On peut maintenant uploader un fichier html, une archive tar.gz (ou .tgz) ou un fichier .zip
 		Le fichier est décompressé, on cherche dedans un fichier index, si il n'y en a pas, on refuse et on supprime les fichiers pour pas laisser es traces.
-
+		
 		Revision 1.13  2004/10/21 22:19:37  schmurtz
 		GPLisation des fichiers du site
 		
@@ -125,12 +128,12 @@ foreach ($_POST AS $keys => $val){
 		}
 		else
 			echo $_FILES['file']['type'];
-		if(file_exists($dir."/".$_REQUEST['nom']."/index.php")){
+		if(file_exists(BASE_DATA."faq/".$dir."/".$_REQUEST['nom']."/index.php")){
 			 $filename = $dir."/".$_REQUEST['nom']."/index.php";
 			 $DB_web-> query("INSERT INTO faq SET parent='{$temp[1]}' , question='{$question}' , reponse='{$filename}'");
 			 echo "<commentaire>FAQ ajoutée</commentaire>";
 		}
-		else if(file_exists($dir."/".$_REQUEST['nom']."/index.html")){
+		else if(file_exists(BASE_DATA."faq/".$dir."/".$_REQUEST['nom']."/index.html")){
 			$filename = $dir."/".$_REQUEST['nom']."/index.html";
 			$DB_web-> query("INSERT INTO faq SET parent='{$temp[1]}' , question='{$question}' , reponse='{$filename}'");
 			echo "<commentaire>FAQ ajoutée</commentaire>";
@@ -178,7 +181,7 @@ function rech_fils($parent) {
 		$DB_web->query("SELECT faq_id,question FROM faq WHERE parent='{$parent}' AND reponse NOT LIKE '%index.php' ") ;
 		while(list($id,$question) = $DB_web->next_row()) {
 			echo "<noeud id='".$id."' ";
-			echo "lien='admin/faq.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
+			echo "lien='admin/faq.php?dir_id=".$id."&amp;affich_elt=".base64_encode(all_elt_affich($id)) ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "' titre='".htmlspecialchars($question,ENT_QUOTES)."'>\n\r" ;
 			if (eregi("/".$id."/",$a_marquer)) {
@@ -309,7 +312,6 @@ echo "<br/>" ;
 		$DB_web->query("SELECT * FROM faq WHERE faq_id='{$id}'") ;
 		if (list($id,$parent,$question,$reponse) = $DB_web->next_row()) {
 	?>
-	<a name='descript' />
 	<formulaire id="faq_<? echo $id ?>" titre="La réponse" action="admin/faq.php">
 	<champ id="question" titre="Question" valeur="<? echo $question ?>" />
 	<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
