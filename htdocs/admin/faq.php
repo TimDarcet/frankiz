@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.36  2005/01/10 22:24:37  pico
+		Voilà l'erreur
+
 		Revision 1.35  2005/01/10 22:17:03  pico
 		Amélioration ?
-
+		
 		Revision 1.34  2005/01/10 21:58:49  pico
 		Blindage pour les faqmestres qui font de nombreuses bétises...
 		
@@ -408,7 +411,7 @@ echo "</arbre>";
 		$DB_faq->query("SELECT * FROM faq WHERE faq_id='{$id}'") ;
 		if (list($id,$parent,$question,$reponse) = $DB_faq->next_row()) {
 	?>
-	<formulaire id="faq_<? echo $id ?>" titre="La réponse" action="admin/faq.php">
+	<formulaire id="mod_faq_<? echo $id ?>" titre="La réponse" action="admin/faq.php">
 	<champ id="question" titre="Question" valeur="<? echo $question ?>" />
 	<champ id="nom" titre="Nom du sous-dossier de la faq" valeur="<? echo dirname($reponse) ?>" />
 	<fichier id="file" titre="Changer fichier réponse (fichier .html, .zip ou .tar)" taille="1000000000"/>
@@ -430,7 +433,7 @@ echo "</arbre>";
 	?>
 	<!-- Supprimer le dossier en cours -->
 	<? if(isset($_REQUEST['dir_id'])) $dir_id = $_REQUEST['dir_id']; else $dir_id="1"; ?>
-	<formulaire id="faq_<? echo $dir_id ?>" titre="Supprimer ce dossier" action="admin/faq.php">
+	<formulaire id="del_dir_faq_<? echo $dir_id ?>" titre="Supprimer ce dossier" action="admin/faq.php">
 	<? foreach ($_REQUEST AS $keys => $val){
 		if((!strstr($keys,"rmdir"))&&(!strstr($keys,"rmdir"))) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 		}
@@ -439,7 +442,7 @@ echo "</arbre>";
 	</formulaire>
 	
 	<!-- Ajouter un sous-dossier -->
-	<formulaire id="faq_<? echo $dir_id ?>" titre="Ajouter un sous-dossier" action="admin/faq.php">
+	<formulaire id="add_sub_faq_<? echo $dir_id ?>" titre="Ajouter un sous-dossier" action="admin/faq.php">
 	<champ id="nom" titre="Nom du sous-dossier" valeur="" />
 	<champ id="desc" titre="Description du sous-dossier" valeur="" />
 	<? foreach ($_REQUEST AS $keys => $val){
@@ -450,11 +453,11 @@ echo "</arbre>";
 	</formulaire>
 	
 	<!-- Ajouter un fichier -->
-	<formulaire id="faq_<? echo $dir_id ?>" titre="Nouvelle FAQ" action="admin/faq.php">
+	<formulaire id="add_faq_<? echo $dir_id ?>" titre="Nouvelle FAQ" action="admin/faq.php">
 	<champ id="question" titre="Question" valeur="" />
 	<champ id="nom" titre="Nom du sous-dossier de la faq" valeur="" />
 	<? foreach ($_REQUEST AS $keys => $val){
-		if(!strstr($keys,"ajout")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
+		if(!strstr($keys,"ajout") && !strstr($keys,"question") && !strstr($keys,"nom")&& !strstr($keys,"file")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 	}
 	?>
 	<fichier id="file" titre="Fichier réponse (fichier .html, .zip ou .tar)" taille="1000000000"/>
