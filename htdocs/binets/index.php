@@ -3,9 +3,12 @@
 	Affichage de la liste des binets ayant un site web.
 
 	$Log$
+	Revision 1.9  2004/10/19 13:45:00  schmurtz
+	Classement des binets par categorie puis par nom
+
 	Revision 1.8  2004/10/18 20:29:44  kikx
 	Enorme modification pour la fusion des bases des binets (Merci Schmurtz)
-
+	
 	Revision 1.7  2004/09/16 13:56:32  kikx
 	Modification de skins (détails)
 	
@@ -36,7 +39,10 @@ require BASE_LOCAL."/include/page_header.inc.php";
 <page id="binets" titre="Frankiz : Binets">
 <?php
 	$categorie_precedente = -1;
-	$DB_trombino->query("SELECT binet_id,nom,description,http,b.catego_id,categorie FROM binets as b LEFT JOIN binets_categorie as c USING(catego_id) WHERE http IS NOT NULL");
+	$DB_trombino->query("SELECT binet_id,nom,description,http,b.catego_id,categorie ".
+						"FROM binets as b LEFT JOIN binets_categorie as c USING(catego_id) ".
+						"WHERE http IS NOT NULL ".
+						"ORDER BY b.catego_id ASC, b.nom ASC");
 	while(list($id,$nom,$description,$http,$cat_id,$categorie) = $DB_trombino->next_row()) {
 
 ?>
