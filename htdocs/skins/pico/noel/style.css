@@ -418,3 +418,13 @@ table.liste .element{
 #choix_skin h1, #profil h1,.fkz_page_meteo h1,#xshare  h1,#faq  h1,#vocabulaire  h1{
 	display:none;
 }
+
+span.meteo{
+	display: block;
+	text-align:center;
+}
+
+div.meteo{
+	display: block;
+	border-top: 2px solid #E9D2FF;
+}

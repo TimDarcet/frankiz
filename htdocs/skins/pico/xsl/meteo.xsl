@@ -31,15 +31,16 @@
 		Pour ce qui est du vent <xsl:value-of select="now/vent"/><br />
 		Et l'humidité s'élève à <xsl:value-of select="now/humidite"/>%<br />
 		L'état du ciel : <xsl:value-of select="now/ciel"/><br />
-		<img alt="meteo" width="64" height="64">
+		<span  class="meteo"><img alt="meteo" width="64" height="64">
 			<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="now/image"/>.png</xsl:attribute>
-		</img>
+		</img></span>
 	<h2>Prévisions météo :</h2><br />
 		<xsl:for-each select="jour">
+			<xsl:if test="@date &lt;= '2'">
+			<div class="meteo">
 			<xsl:if test="@date = '0'"><h3>Aujourd'hui</h3></xsl:if>
 			<xsl:if test="@date = '1'"><h3>Demain</h3></xsl:if>
 			<xsl:if test="@date = '2'"><h3>Après demain</h3></xsl:if>
-			<xsl:if test="@date &lt;= '2'">
 			<dl>
 				<dt>La température : </dt>
 				<dd>
@@ -48,18 +49,19 @@
 				<dt>Etat du ciel le jour : </dt>
 				<dd>
 					<xsl:value-of select="cieljour"/>
-					<img alt="meteo" width="32" height="32">
+					<span  class="meteo"><img alt="meteo" width="32" height="32">
 						<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="imagejour"/>.png</xsl:attribute>
-					</img>
+					</img></span>
 				</dd>
 				<dt>Etat du ciel la nuit : </dt>
 				<dd>
 					<xsl:value-of select="cielnuit"/>
-					<img alt="meteo" width="32" height="32">
+					<span  class="meteo"><img alt="meteo" width="32" height="32">
 						<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="imagenuit"/>.png</xsl:attribute>
-					</img>
+					</img></span>
 				</dd>
 			</dl>
+			</div>
 			</xsl:if>
 		</xsl:for-each>
 </xsl:template>
@@ -69,9 +71,9 @@
 		<div class="fkz_titre"><span id="meteo_logo"><xsl:text> </xsl:text></span><span id="meteo">La météo</span></div>
 		<div class="fkz_module_corps">
 			<xsl:value-of select="meteo/now/temperature"/>°C<br />
-			<img alt="meteo" width="64" height="64">
+			<span  class="meteo"><img alt="meteo" width="64" height="64">
 				<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="meteo/now/image"/>.png</xsl:attribute>
-			</img>
+			</img></span>
 		</div>
 	</div>
 </xsl:template>
