@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.40  2004/12/16 14:30:10  pico
+	Recherche trombi par ordre alphabétique
+
 	Revision 1.39  2004/12/16 13:00:41  pico
 	INNER en LEFT
-
+	
 	Revision 1.38  2004/12/15 23:57:35  pico
 	On fait comme ça, c'est décidé une fois pour toutes (Kikx + psycow + pico)
 	
@@ -190,7 +193,7 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['anniversaire'])&&isset($_REQU
 	// Génération de la page si il y a au moins un critère.
 	if(!empty($where)) {	
 		
-		$DB_trombino->query("SELECT $champs FROM eleves $join WHERE $where");
+		$DB_trombino->query("SELECT $champs FROM eleves $join WHERE $where ORDER BY eleves.nom,prenom ASC");
 		
 		// Génération d'un message d'erreur si aucun élève ne correspond
 		if($DB_trombino->num_rows()==0)

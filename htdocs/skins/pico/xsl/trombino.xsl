@@ -66,7 +66,7 @@
 		Binets:
 			<ul>
 			<xsl:for-each select="binet">
-				<li><xsl:value-of select="@nom"/><xsl:text>  </xsl:text><em>(<xsl:value-of select="text()"/>)</em></li>
+				<li><xsl:value-of select="@nom"/><xsl:text>  </xsl:text><xsl:if test="text()!=''"><em>(<xsl:value-of select="text()"/>)</em></xsl:if></li>
 			</xsl:for-each>
 			</ul>
 		</xsl:if>
