@@ -36,6 +36,8 @@
 	</p>
 	<p class="telephone">Tel: <xsl:value-of select="@tel"/>
 	</p>
+	<p class="mail">Mail: <a><xsl:attribute name="href">mailto:<xsl:value-of select="@mail"/></xsl:attribute><xsl:value-of select="@mail"/></a>
+	</p>
 	<p class="casert">Casert: <xsl:value-of select="@casert"/>
 	</p>
 	<p class="section">Section: <xsl:value-of select="@section"/>
