@@ -3,9 +3,12 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.3  2004/10/06 21:29:29  kikx
+	Mail promo != mail bi-promo
+
 	Revision 1.2  2004/10/06 19:29:53  kikx
 	La page d'envoi de mail promo est terminéééééééééééééééééééééééé
-
+	
 	Revision 1.1  2004/10/06 14:12:27  kikx
 	Page de mail promo quasiment en place ...
 	envoie en HTML ...
@@ -16,6 +19,9 @@
 */
 	
 require_once "../include/global.inc.php";
+
+
+
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
@@ -31,6 +37,13 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <h1>Validation des mails promos</h1>
 
 <?
+
+if ((isset($_POST['promo']))&&($_POST['promo'] == "")) {
+	$titre_mail = "Mail Bi-Promo :" ;
+} else {
+	$titre_mail = "Mail Promo :" ;
+}
+		
 // On traite les différents cas de figure d'enrigistrement et validation d'affiche :)
 
 // Enregistrer ...
@@ -40,7 +53,7 @@ foreach ($_POST AS $keys => $val){
 
 
 	if (($temp[0]=='modif')||($temp[0]=='valid')) {
-		$DB_valid->query("UPDATE valid_mailpromo SET titre='{$_POST['titre']}', mail='{$_POST['mail']}' WHERE mail_id='{$temp[1]}'");	
+		$DB_valid->query("UPDATE valid_mailpromo SET titre='{$_POST['titre']}', mail='{$_POST['mail']}', promo='{$_POST['promo']}' WHERE mail_id='{$temp[1]}'");	
 	?>
 		<commentaire><p>Modif effectuée</p></commentaire>
 	<?	
@@ -142,7 +155,8 @@ foreach ($_POST AS $keys => $val){
 		while(list($login) = $DB_trombino->next_row() ) {
 			$mail_envoie = $login."@poly" ;
 			
-			if (mail($mail_envoie, $_POST['titre'],$texte , $headers)){
+			if (mail($mail_envoie, $titre_mail." ".$_POST['titre'],$texte , $headers)){
+//			if (true){
 				$cnt ++ ;
  				usleep(500000); // Attends 1/2 secondes
 			} else {
@@ -181,8 +195,8 @@ foreach ($_POST AS $keys => $val){
 
 //===============================
 
-$DB_valid->query("SELECT v.mail_id,v.stamp, v.titre, v.mail, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_mailpromo as v INNER JOIN trombino.eleves as e USING(eleve_id)");
-while(list($id,$date,$titre,$mailpromo,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
+$DB_valid->query("SELECT v.mail_id,v.stamp, v.titre,v.promo, v.mail, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_mailpromo as v INNER JOIN trombino.eleves as e USING(eleve_id)");
+while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
 	if (empty($mail)) $mail="$login@poly" ;
 ?>
 	<commentaire>
@@ -191,7 +205,7 @@ while(list($id,$date,$titre,$mailpromo,$nom, $prenom, $surnom, $promo,$mail,$log
 			<?php  echo substr($date,6,2) ."/".substr($date,4,2) ."/".substr($date,2,2)." à ".substr($date,8,2).":".substr($date,10,2) ?>
 		</p>
 	</commentaire>
-	<cadre titre="Mail Promo : <?php  echo $titre ?>">
+	<cadre titre="<?php  echo $titre_mail." ".$titre ?>">
 			<?php echo $mailpromo ?>
 	</cadre>
 <?
@@ -203,7 +217,7 @@ while(list($id,$date,$titre,$mailpromo,$nom, $prenom, $surnom, $promo,$mail,$log
 		<champ id="titre" titre="Sujet " valeur="<?  echo $titre ;?>"/>
 		<hidden id="from"  valeur="<? echo "$prenom $nom &lt;$mail&gt; " ?>"/>
 		<zonetext id="mail" titre="Mail " valeur="<?  echo $mailpromo ;?>"/>
-		<choix titre="Promo" id="promo" type="combo" valeur="<? if (isset($_POST['promo'])) echo  $_POST['promo'] ;?>">
+		<choix titre="Promo" id="promo" type="combo" valeur="<?echo  $promo_mail ;?>">
 		<?
 			$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
 			list($promo_temp) = $DB_web->next_row() ;

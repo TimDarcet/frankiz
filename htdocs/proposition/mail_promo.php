@@ -3,9 +3,12 @@
 	Mail promo permettant l'envoie de pièce jointes et de formatage HTML
 	
 	$Log$
+	Revision 1.5  2004/10/06 21:29:29  kikx
+	Mail promo != mail bi-promo
+
 	Revision 1.4  2004/10/06 21:07:17  kikx
 	Micro correction car on abandonne pour le moment l'idee de piece jointe
-
+	
 	Revision 1.3  2004/10/06 14:12:27  kikx
 	Page de mail promo quasiment en place ...
 	envoie en HTML ...
@@ -45,6 +48,18 @@ list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_ro
 if (!isset($_REQUEST['envoie'])) {
 ?>
 	<formulaire id="mail_promo" titre="Mail Promo" action="proposition/mail_promo.php">
+		<choix titre="Promo" id="promo" type="combo" valeur="<? if (isset($_POST['promo'])) echo  $_POST['promo'] ;?>">
+		<?
+			$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
+			list($promo_temp) = $DB_web->next_row() ;
+			$promo1 = $promo_temp ;
+			$promo2 = $promo_temp-1 ;
+				echo "<option titre='$promo1 et $promo2' id='' />" ;
+				echo "<option titre='$promo1' id='$promo1' />" ;
+				echo "<option titre='$promo2' id='$promo2' />" ;
+		?>
+		</choix>
+
 		<champ titre="Sujet" id="sujet" valeur="<? if (isset($_REQUEST['sujet'])) echo $_REQUEST['sujet']?>" />
 		<zonetext titre="Mail" id="mail" valeur="<? if (isset($_REQUEST['mail'])) echo $_REQUEST['mail']?>" />
 		<bouton titre="Mise à jour" id="upload"/>
@@ -76,7 +91,7 @@ if (!isset($_REQUEST['envoie'])) {
 	</commentaire>
 <?
 	// Stockage dans la base SQL
-	$DB_valid->query("INSERT INTO valid_mailpromo SET mail='{$_REQUEST['mail']}', titre='{$_REQUEST['sujet']}',eleve_id={$_SESSION['user']->uid} ") ;
+	$DB_valid->query("INSERT INTO valid_mailpromo SET mail='{$_REQUEST['mail']}', titre='{$_REQUEST['sujet']}',eleve_id={$_SESSION['user']->uid}, promo='{$_REQUEST['promo']}'") ;
 
 	//Envoie du mail à l'admin pour la validation
 	$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
