@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.19  2004/11/27 15:29:22  pico
+	Mise en place des droits web (validation d'annonces + sondages)
+
 	Revision 1.18  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-
+	
 	Revision 1.17  2004/11/27 13:58:50  pico
 	Correction: include du wiki
 	
@@ -82,7 +85,7 @@ require_once "../include/wiki.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-if(!verifie_permission('admin'))
+if(!verifie_permission('admin')&&!verifie_permission('web'))
 	rediriger_vers("/gestion/");
 
 

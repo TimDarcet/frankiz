@@ -21,10 +21,13 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.4  2004/11/27 15:29:22  pico
+	Mise en place des droits web (validation d'annonces + sondages)
+
 	Revision 1.3  2004/11/27 14:12:31  pico
 	Ajout d'un lien pour supprimmer les annonces périmées depuis plus de 5 jours
 	(histoire de pas garder des archives inutiles)
-
+	
 	Revision 1.2  2004/11/26 22:51:21  pico
 	Correction du SU dans les pages d'admin
 	Les utilisateurs avec le droit 'affiches' peuvent changer les dates des activités qu'ils ont postées, si celles ci ont été préalablement validées par le br
@@ -44,7 +47,7 @@ if(verifie_permission('admin'))
 else if(verifie_permission('affiches'))
 	$user_id = $_SESSION['user']->uid;
 else
-	rediriger_vers("/admin/");
+	rediriger_vers("/gestion/");
 
 
 

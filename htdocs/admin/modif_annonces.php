@@ -21,10 +21,13 @@
 	Page qui permet aux admins de modifier une annonce validée
 	
 	$Log$
+	Revision 1.4  2004/11/27 15:29:22  pico
+	Mise en place des droits web (validation d'annonces + sondages)
+
 	Revision 1.3  2004/11/27 14:56:15  pico
 	Debut de mise en place de droits spéciaux (qdj + affiches)
 	+ génération de la page d'admin qui va bien
-
+	
 	Revision 1.2  2004/11/27 14:12:31  pico
 	Ajout d'un lien pour supprimmer les annonces périmées depuis plus de 5 jours
 	(histoire de pas garder des archives inutiles)
@@ -41,8 +44,8 @@ require_once "../include/wiki.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-if(!verifie_permission('admin'))
-	rediriger_vers("/admin/");
+if(!verifie_permission('admin')&&!verifie_permission('web'))
+	rediriger_vers("/gestion/");
 
 
 

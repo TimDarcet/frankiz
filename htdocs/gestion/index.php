@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.19  2004/11/27 15:29:22  pico
+	Mise en place des droits web (validation d'annonces + sondages)
+
 	Revision 1.18  2004/11/27 15:16:42  pico
 	Corrections
-
+	
 	Revision 1.17  2004/11/27 15:14:46  pico
 	Gestion desdrits dans l'index des pages admin
 	
@@ -152,7 +155,7 @@ $permissions_user = $_SESSION['user']->perms ;
 ?>
 <page id="admin" titre="Frankiz : administration">
 	<? 
-	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('xshare')||verifie_permission('faq')){
+	if (verifie_permission('admin')||verifie_permission('web')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('xshare')||verifie_permission('faq')){
 	?>
 		<h2>Administration frankiz</h2>
 	<? 
@@ -163,7 +166,7 @@ $permissions_user = $_SESSION['user']->perms ;
 			<lien titre="Modifier un utilisateur" url="trombino.php"/>
 	<?
 	}
-	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')){
+	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('web')){
 	?>
 	<h3>Validations Variées</h3>
 	<?
@@ -181,6 +184,9 @@ $permissions_user = $_SESSION['user']->perms ;
 		}
 		?>
 		<lien titre="Valider les changements de photo trombino (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_trombi.php"/>
+	<?
+	}
+	if (verifie_permission('admin')||verifie_permission('web')){
 		<?
 		$DB_valid->query("SELECT eleve_id FROM valid_annonces") ;
 		$nb = $DB_valid->num_rows() ;
@@ -195,15 +201,17 @@ $permissions_user = $_SESSION['user']->perms ;
 		<lien titre="Valider les activités (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_affiches.php"/>
 	<?
 	}
-	if (verifie_permission('admin')){
+	if (verifie_permission('admin')||verifie_permission('web')){
 		$DB_valid->query("SELECT eleve_id FROM valid_sondages") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
 		<lien titre="Valider les sondages (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_sondages.php"/>
-		<?
+	<?
+	}
+	if (verifie_permission('admin')){
 		$DB_valid->query("SELECT eleve_id FROM valid_mailpromo") ;
 		$nb = $DB_valid->num_rows() ;
-		?>
+	?>
 		<lien titre="Valider les mails promos (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_mailpromo.php"/>
 	<?
 	}
@@ -228,7 +236,7 @@ $permissions_user = $_SESSION['user']->perms ;
 	}
 	
 	
-	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')){
+	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('web')){
 	?>
 	<h3>Administration des données validées</h3>
 	<?
@@ -243,7 +251,7 @@ $permissions_user = $_SESSION['user']->perms ;
 		<lien titre="Planifier les activités" url="<?php echo BASE_URL?>/admin/planif_affiches.php"/>
 	<?
 	}
-	if (verifie_permission('admin')){
+	if (verifie_permission('admin')||verifie_permission('web')){
 	?>
 		<lien titre="Modifier les annonces" url="<?php echo BASE_URL?>/admin/modif_annonces.php"/>
 	<?
