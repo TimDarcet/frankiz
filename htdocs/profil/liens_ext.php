@@ -21,9 +21,12 @@
 	Gestions des liens perso / des flux rss.
 
 	$Log$
+	Revision 1.4  2004/11/24 20:07:12  pico
+	Ajout des liens persos
+
 	Revision 1.3  2004/11/24 19:02:37  pico
 	Applique les changements tout de suite
-
+	
 	Revision 1.2  2004/11/24 18:48:01  pico
 	Encore un warning
 	
@@ -48,7 +51,7 @@ while(list($value,$description)=$DB_web->next_row())
 	$array[$value] = $description;
 	
 	
-if(!empty($_REQUEST['OK_param'])) {
+if(!empty($_REQUEST['OK_rss'])) {
 	$rss = array();
 	if(!empty($_REQUEST['vis']))
 		foreach($_REQUEST['vis'] as $temp => $null){
@@ -61,7 +64,31 @@ if(!empty($_REQUEST['OK_param'])) {
 }
 
 
+if(!empty($_REQUEST['OK_liens'])) {
+	$liens = array();
+	$liens = $_SESSION['liens_perso'];
+	if(!empty($_REQUEST['newlien'])) {
+		foreach($_REQUEST['newlien'] as $var => $value)
+			$$var= $value;
+		$liens[$titre] = $url;
+	}
+	$_SESSION['liens_perso'] = $liens;
+	$liens = serialize($liens);
+	$DB_web->query("UPDATE compte_frankiz SET liens_perso='$liens' WHERE eleve_id='{$_SESSION['user']->uid}'");
+}
 
+if(!empty($_REQUEST['del_lien'])) {
+	$liens = array();
+	$url_suppr = base64_decode($_REQUEST['del_lien']);
+	if(!empty($_SESSION['liens_perso'])) {
+		foreach($_SESSION['liens_perso'] as $titre => $url)
+			if($url != $url_suppr) $liens[$titre] = $url;
+	}
+	$_SESSION['liens_perso'] = $liens;
+	$liens = serialize($liens);
+	$DB_web->query("UPDATE compte_frankiz SET liens_perso='$liens' WHERE eleve_id='{$_SESSION['user']->uid}'");
+}
+	
 // Génération de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
@@ -69,8 +96,18 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="profil_liens_ext" titre="Frankiz : Gestion des liens externes">
 
+	<formulaire id="form_liens" titre="Choix des Liens perso" action="profil/liens_ext.php">
+<?
+	if(isset($_SESSION['liens_perso']) && !empty($_SESSION['liens_perso']) && count($_SESSION['liens_perso'])>0)
+		foreach($_SESSION['liens_perso'] as $titre => $url)
+			echo "<note>$titre: $url <lien titre=\"supprimer\" url=\"profil/liens_ext.php?del_lien=".base64_encode($url)."\"/></note>";
+	echo "\t\t\t<champ id=\"newlien[titre]\" titre=\"Titre\"/>\n\t\t\t<champ id=\"newlien[url]\" titre=\"Url\"/>";
+?>
+		<bouton titre="Ajouter" id="OK_liens" />
+</formulaire>
 
-	<formulaire id="form_param_rss" titre="Choix des RSS" action="profil/liens_ext.php">
+
+	<formulaire id="form_rss" titre="Choix des RSS" action="profil/liens_ext.php">
 		<note>Choisis quelles infos tu veux avoir sur ta page de news externes</note>
 <?
  		foreach(array('sommaire','complet') as $mode){ 
@@ -82,7 +119,9 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 						foreach($array as $value => $description)
 							if($value != "")
 								echo "\t\t\t<option titre=\"$description\" id=\"vis[".$mode."_".$value."]\"/>\n";
+								
 				echo "</choix>";
+				echo "\t\t\t<champ id=\"rss_perso_".$mode."\" titre=\"Nouvelle rss perso\"/><br/><br/>";
 		} 
 ?>
 		<note>Choisis quelles infos tu veux avoir sur toutes tes pages Frankiz</note>
@@ -97,9 +136,10 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 							if($value != "")
 								echo "\t\t\t<option titre=\"$description\" id=\"vis[".$mode."_m_".$value."]\"/>\n";
 				echo "</choix>";
+				echo "\t\t\t<champ id=\"rss_perso_module\" titre=\"Nouvelle rss perso\"/>";
 		} 
 ?>
-		<bouton titre="Appliquer" id="OK_param" />
+		<bouton titre="Appliquer" id="OK_rss" />
 	</formulaire>
 </page>
 <?

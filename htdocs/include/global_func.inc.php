@@ -22,9 +22,12 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.33  2004/11/24 20:07:12  pico
+	Ajout des liens persos
+
 	Revision 1.32  2004/11/24 16:37:09  pico
 	Ajout des news externes en tant que module
-
+	
 	Revision 1.31  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
@@ -159,7 +162,8 @@ function liste_modules() {
 		"stats"			=> "Statistiques",
 		"sondages"		=> "Sondages",
 		"lien_tol"			=> "Lien rapide vers le tol",
-		"rss"				=> "News Extérieures"
+		"rss"				=> "News Extérieures",
+		"liens_perso"				=> "Liens Perso"
 		);
 }
 
