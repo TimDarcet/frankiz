@@ -3,10 +3,13 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.6  2004/10/15 20:32:01  pico
+	Reorganisation de la page
+
 	Revision 1.5  2004/10/14 22:15:24  pico
 	- Ajout de boutons "un jour plus tôt" "un jour plus tard"
 	- Empèche de définir une date passée pour la qdj
-
+	
 	Revision 1.4  2004/10/14 19:59:37  pico
 	Correction de bug
 	
@@ -140,35 +143,56 @@ foreach ($_POST AS $keys => $val){
 	<?
 	}
 }
-	// Affiche la planification existante
-	
-	if(isset($_REQUEST['show'])) {
-		?>
-		<h2>Prévisions</h2>
-		<?
-	
-		$date = date("Y-m-d", time()-3025 + 24*3600);
-		$DB_web->query("SELECT qdj_id,date,question,reponse1,reponse2 FROM qdj WHERE date>='$date'  ORDER BY date ASC");
-		while(list($id,$date,$question,$reponse1,$reponse2) = $DB_web->next_row()){
 
+//nb de qdj planifiées
+$date = date("Y-m-d", time()-3025);
+?>
+<commentaire>
+	<p>Nous sommes le: <? echo $date ?></p>
+<?
+//Cherche la date de la prochaine qdj libre
+for ($i = 1; ; $i++) 
+{
+	$date = date("Y-m-d", time()-3025 + $i*24*3600);
+	$DB_web->query("SELECT qdj_id FROM qdj WHERE date='$date' LIMIT 1");
+	if(!$DB_web->num_rows()) break;
+}
+?>
+	<p>La planification est faite jusqu'au: <? echo $date ?></p>
+<? $DB_web->query("SELECT qdj_id FROM qdj WHERE date>'$date' "); ?>
+	<p>Nb de QDJ planifiées: <? echo $DB_web->num_rows() ?></p>
+<? $DB_web->query("SELECT qdj_id FROM qdj WHERE date='0000-00-00' "); ?>
+	<p>Nb de QDJ disponibles: <? echo $DB_web->num_rows() ?></p>
+</commentaire>
+	
+<?
+// Affiche la planification existante
+if(isset($_REQUEST['show'])) {
 	?>
-			<formulaire id="<? echo $id ?>" action="admin/planif_qdj.php">
-			<commentaire>
-				<p><? echo $date ?></p>
-				<p><? echo $question ?></p>
-				<p><? echo $reponse1 ?></p>
-				<p><? echo $reponse2 ?></p>
-			</commentaire>
-				<? if(strtotime($date) >time()-3025 + 24*3600){ ?><bouton titre="Un jour plus tôt" id="reddate_<? echo $id ?>_<? echo $date ?>"/><? } ?>
-				<bouton titre="Un jour plus tard" id="augdate_<? echo $id ?>_<? echo $date ?>"/>
-				<bouton id='modif_<? echo $id ?>_<? echo $date ?>' titre='Modifier la date manuellement'/>
-				<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette qdj ?!!!!!')"/>
-				<hidden id="show"/>
-			
-			</formulaire>
-	<? 
-		}
+	<h2>Prévisions</h2>
+	<?
+
+	$date = date("Y-m-d", time()-3025 + 24*3600);
+	$DB_web->query("SELECT qdj_id,date,question,reponse1,reponse2 FROM qdj WHERE date>='$date'  ORDER BY date ASC");
+	while(list($id,$date,$question,$reponse1,$reponse2) = $DB_web->next_row()){
+
+?>
+		<formulaire id="<? echo $id ?>" action="admin/planif_qdj.php">
+			<textsimple valeur="<? echo $date ?>"/>
+			<textsimple valeur="<? echo $question ?>"/>
+			<textsimple valeur="<? echo $reponse1 ?>"/>
+			<textsimple valeur="<? echo $reponse2 ?>"/>
+		
+			<? if(strtotime($date) >time()-3025 + 24*3600){ ?><bouton titre="Un jour plus tôt" id="reddate_<? echo $id ?>_<? echo $date ?>"/><? } ?>
+			<bouton titre="Un jour plus tard" id="augdate_<? echo $id ?>_<? echo $date ?>"/>
+			<bouton id='modif_<? echo $id ?>_<? echo $date ?>' titre='Modifier la date manuellement'/>
+			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette qdj ?!!!!!')"/>
+			<hidden id="show"/>
+		
+		</formulaire>
+<? 
 	}
+}
 
 
 // Afficher le bouton pour montrer la plaification déjà établie
@@ -179,7 +203,7 @@ if(!isset($_REQUEST['show']))
 			<bouton id='show' titre='Voir la planification existante' />
 	</formulaire>
 <?
-}
+
 
 
 //===============================
@@ -211,23 +235,12 @@ if(!isset($_REQUEST['show']))
 				<reponse id="2"><?php echo $reponse2?></reponse>
 			</qdj>
 		</module>
-		
-<? 
-//nb de qdj planifiées
-$date = date("Y-m-d", time()-3025);
-$DB_web->query("SELECT qdj_id FROM qdj WHERE date>'$date' ");
-?>
-<commentaire><p>Nb de QDJ planifiées: <? echo $DB_web->num_rows() ?></p>
+
 <?
-//Cherche la date de la prochaine qdj libre
-	for ($i = 1; ; $i++) 
-	{
-	$date = date("Y-m-d", time()-3025 + $i*24*3600);
-	$DB_web->query("SELECT qdj_id FROM qdj WHERE date='$date' LIMIT 1");
-	if(!$DB_web->num_rows()) break;
-	}
-	?>
-	<p>Prochaine date disponible: <? echo $date ?></p></commentaire>
+}
+?>
+ 
+
 		
 <!-- Affiche les QDJ à planifier -->
 		<h2>Disponibles</h2>
