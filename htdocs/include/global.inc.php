@@ -6,9 +6,14 @@
 	skin.inc.php… mais pas user.inc.php, xml.inc.php…
 	
 	$Log$
+	Revision 1.10  2004/09/17 09:05:32  kikx
+	La personne peut maintenant rajouter une annonce
+	Ceci dit je ne comprend pas trop comment on protège les champs avec les <!CDATA
+	-> j'ai laisser ca comme ca mais faudra modifier
+
 	Revision 1.9  2004/09/15 23:19:31  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 	Revision 1.8  2004/09/15 21:42:08  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
 	
@@ -49,6 +54,7 @@ require_once "mysql.inc.php";
 $DB_web = new DB("frankiz","frankiz2_tmp","web","kokouije?.");
 $DB_admin = new DB("frankiz","admin","web","kokouije?.");
 $DB_trombino = new DB("frankiz","trombino","web","kokouije?.");
+$DB_valid = new DB("frankiz","a_valider","web","kokouije?.");
 
 // divers fichiers inclus
 require_once "global_func.inc.php";

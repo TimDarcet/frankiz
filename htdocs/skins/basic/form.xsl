@@ -3,9 +3,14 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.10  2004/09/17 09:05:32  kikx
+	La personne peut maintenant rajouter une annonce
+	Ceci dit je ne comprend pas trop comment on protège les champs avec les <!CDATA
+	-> j'ai laisser ca comme ca mais faudra modifier
+
 	Revision 1.9  2004/09/15 23:19:56  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
@@ -20,7 +25,7 @@
 			<xsl:if test="boolean(@titre)">
 				<tr><td class="titre" colspan="2"><xsl:value-of select="@titre"/></td></tr>
 			</xsl:if>
-			<xsl:apply-templates select="champ|choix|zonetext"/>
+			<xsl:apply-templates select="champ|choix|zonetext|textsimple"/>
 			<tr><td class="boutons" colspan="2"><center><xsl:apply-templates select="bouton"/></center></td></tr>
 		</table>
 	</form>
@@ -36,6 +41,16 @@
 
 <xsl:template match="note">
 	<p class="note"><xsl:apply-templates/></p>
+</xsl:template>
+
+<!--texte simple dans un formulaire -->
+<xsl:template match="formulaire/textsimple">
+	<tr>
+		<td class="gauche"></td>
+		<td class="droite">
+			<xsl:value-of select="@valeur"/>
+		</td>
+	</tr>
 </xsl:template>
 
 <!-- champs contenant du texte -->
@@ -162,6 +177,7 @@
 	<input type="submit">
 		<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 		<xsl:attribute name="value"><xsl:value-of select="@titre"/></xsl:attribute>
+		<xsl:when test="onClick"><xsl:attribute name="onClick"><xsl:value-of select="@onClick"/></xsl:attribute></xsl:when>
 	</input>
 </xsl:template>
 
