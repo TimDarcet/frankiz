@@ -1,0 +1,320 @@
+<!DOCTYPE frankiz [
+<!--
+	DTD pour le sous ensemble XML utilisé dans la génération des pages du site web
+	de frankiz. Personne n'a jamais vérifié si la syntaxe est bonne, mais si ce n'est
+	pas le cas ça à au moins l'intérêt de donner une définition précise du format XML
+	utilisé.
+
+	$Log$
+	Revision 1.1  2004/10/19 22:35:51  schmurtz
+	Mise à jour des documentations :
+	- Déplacement des docs dans ./doc
+	- Commentage de la DTD
+	- Réécriture du fichier d'exemple
+	- Ajout d'un fichier expliquant la structure du site
+
+	Revision 1.10  2004/09/20 20:31:20  schmurtz
+	Rajout de la balise html <em>
+	
+	Revision 1.9  2004/09/17 15:28:27  schmurtz
+	Utilisation de la balise <eleve> pour les derniers votants aÌ€ la qdj, les anniversaires, la signature des annoncesâ€¦
+	
+	Revision 1.8  2004/09/15 23:19:45  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+	
+	Revision 1.7  2004/09/15 21:42:15  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+	
+-->
+
+<!ENTITY texte.formate "(#PCDATA|strong|em|a|image)*">
+<!ENTITY texte.misenpage "(h1|h2|h3|h4|h5|p|code|image|arbre|liste|formulaire)*">
+
+<!-- ------------------------------------------------------------------------------------------
+	
+		LAYOUT D'UNE "PAGE"
+	
+	La sortie XML peut contenir plusieurs pages (ce n'est pas le cas pour l'instant,
+	on se réserve cette possibilité pour plus tard). Les informations indépendantes 
+	des pages sont données en attribut dans la balise <frankiz>, celle dépendante des
+	pages sont bien sûr données dans la balise <page>.
+	
+	Le site est organisé par "pages", chaque page contenant un seul bloc d'information
+	(en terme de formatage html, on pourrait dire un seul "div" et en termes de l'ancien
+	frankiz, un seul un cadre).
+	
+	Un dispose cependant d'un poll de "modules", les modules étant des petits éléments
+	d'informations pouvant apparaître par exemple sous forme de cadre positionné sur le
+	côté dans une page HTML.
+	
+------------------------------------------------------------------------------------------ -->
+
+<!ELEMENT frankiz (module*|page+)>
+<!ATTLIST frankiz
+		base	CDATA   #REQUIRED	
+		css		CDATA   #IMPLIED>
+		<!-- "base" pour les urls relatives contenues dans la page
+			 "css" est l'url du fichier de style css -->
+
+<!ELEMENT page &texte.misenpage;>
+<!ATTLIST page
+		id		ID		#REQUIRED
+		titre   CDATA   #IMPLIED>
+		<!-- "id" est un id qui permet de repérer de manière unique la page
+			 contrairement à l'id, le "titre" peut être modifier à tout moment sans cassé les
+			 skins XSL/CSS
+			 Pour les pages d'administration, l'id doit commencer par "admin" -->
+
+<!ELEMENT module (&texte.misenpage;|statistique|qdj|annonce|eleve)*>
+<!ATTLIST module
+		id		ID		#REQUIRED
+		titre   CDATA   #IMPLIED
+		visible (true|false) "true">
+		<!-- même remarque sur la différence id/titre que pour les pages
+			 Pour les modules ne contenant que des liens, l'id doit commencer par "liens" -->
+
+<!-- ------------------------------------------------------------------------------------------
+
+		FORMATAGE GENERIQUE
+
+	Pour écrire le contenu des "modules" ou des "pages", l'auteur d'une page à besoin
+	de donner un minimum d'informations de formatage. Pour cela, on utilisera quelques
+	balises très classique du html (p, h1, h2, strong), mais par contre aucune balise
+	donnant des informations de style (i, b, font).
+	
+	S'ajoute à ça des balises spécifique à frankiz, permettant d'abstraire encore plus
+	le style dans lequel l'information sera affichée que les balises équivalente du
+	HTML : lien, image, arbre, liste.
+	
+------------------------------------------------------------------------------------------ -->
+
+<!ELEMENT h1 &texte.formate;>
+<!ELEMENT h2 &texte.formate;>
+<!ELEMENT h3 &texte.formate;>
+<!ELEMENT h4 &texte.formate;>
+<!ELEMENT h5 &texte.formate;>
+<!ELEMENT p &texte.formate;>
+<!ELEMENT code &texte.formate;>
+<!ELEMENT strong &texte.formate;>
+<!ELEMENT em &texte.formate;>
+
+<!ELEMENT a (#PCDATA|strong)*>
+<!ATTLIST a
+		href	CDATA   #REQUIRED>
+		<!-- pour des liens dans un texte -->
+
+<!ELEMENT lien EMPTY>
+<!ATTLIST lien
+		url		CDATA   #REQUIRED
+		titre   CDATA   #IMPLIED>
+		<!-- "url" de l'élément pointé par le lien
+			 le "titre" est le nom du lien affiché à l'utilisateur à la place de l'url
+			 À utiliser pour des liens dans une liste de liens -->
+	
+<!ELEMENT image EMPTY>
+<!ATTLIST image
+		source  CDATA   #REQUIRED
+		texte   CDATA   #REQUIRED
+		legende CDATA   #IMPLIED>
+		<!-- la "source" est l'url du fichier contenant l'image
+			 "texte" est un texte alternatif affiché à la place de l'image si besoin
+			 "legende", texte traditionnellement affichée juste sous l'image -->
+
+<!-- ------------------------------------------------------------------------------------------
+	
+		ARBRES
+
+	L'arbre à pour but d'afficher un ensemble de liens organisé, comme c'est le cas pour les FAQs
+	
+------------------------------------------------------------------------------------------ -->
+
+<!ELEMENT arbre (noeud|feuille)+>
+<!ATTLIST arbre
+		id		ID		#REQUIRED
+		titre   CDATA   #IMPLIED>
+<!ELEMENT noeud (noeud|feuille)+>
+<!ATTLIST noeud
+		titre   CDATA   #REQUIRED
+		lien	CDATA   #IMPLIED>
+<!ELEMENT feuille &texte.formate;>
+<!ATTLIST feuille
+		titre   CDATA   #REQUIRED
+		lien	CDATA   #IMPLIED>
+
+<!-- ------------------------------------------------------------------------------------------
+	
+		LISTES ET FORMULAIRES
+		
+	Les listes ont été conçue pour l'affichage des résultats des requètes mysql dans les pages
+	d'administration. Une liste est donc une suite de ligne contenant plusieurs champs d'information
+	triables. Il est possible de définir une liste comme étant sélectionnable (ie. on peut séletionner
+	des lignes) avec un ou plusieurs boutons permettant d'effectuer des actions sur les lignes
+	sélectionnées.
+	
+	Une liste est un formulaire si l'une des deux conditions est réalisée :
+	- la liste est sélectionnable
+	- la liste à une action
+
+	L'utilisation de balises différentes du HTML pour les formulaires à pour but de rendre
+	la sortie encore plus skinnable : par exemple, aucun texte n'apparaît hors des balises
+	(comme c'est le cas en HTML pour afficher le titre des cases à cocher).
+
+------------------------------------------------------------------------------------------ -->
+
+<!-- listes -->
+<!ELEMENT liste (commentaire?,entete*,element*,bouton*)>
+<!ATTLIST liste
+		id		ID		#REQUIRED
+		titre   CDATA   #REQUIRED
+		selectionnable (oui|non) "non"
+		action  CDATA   #IMPLIED>
+		<!-- si la liste est sélectionnable, il doit y avoir un attribut "action" (la liste est
+		alors un formulaire) ainsi qu'au moins un élément "bouton" -->
+<!ELEMENT entete EMPTY>
+<!ATTLIST entete
+		id		CDATA   #REQUIRED
+		titre   CDATA   #REQUIRED
+		action  CDATA   #IMPLIED>
+		<!-- l'action est l'url à lancer si on clique sur l'entête de la colonne -->
+<!ELEMENT element (colonne+)>
+<!ATTLIST element
+		id		CDATA   #IMPLIED>   <!-- l'id doit exister si la liste est sélectionnable -->
+<!ELEMENT colonne (&texte.formate;|champ|choix|bouton)>
+<!ATTLIST colonne
+		id		CDATA   #REQUIRED>  <!-- un id de colonne doit correspondre à un id d'entête -->
+
+<!-- formulaires -->
+<!ELEMENT formulaire (commentaire?,(champ|choix)*,bouton+)>
+<!ATTLIST formulaire
+		id		ID		#REQUIRED
+		titre   CDATA   #REQUIRED
+		action  CDATA   #REQUIRED>
+		
+<!ELEMENT commentaire (&texte.formate;)>
+			<!-- commentaire, explication sur ce que permet de faire ce formulaire -->
+
+<!ELEMENT champ EMPTY>
+<!ATTLIST champ
+		id		ID		#REQUIRED
+		titre   CDATA   #IMPLIED
+		valeur  CDATA   #IMPLIED
+		modifiable (oui|non) "oui">
+			<!-- si l'id commence par 'passwd', un champ de mot de passe doit être utilisé -->
+
+<!-- élément de formulaire -->
+<!ELEMENT zonetext EMPTY>
+<!ATTLIST zonetext
+		id		ID		#REQUIRED
+		titre   CDATA   #IMPLIED
+		valeur  CDATA   #IMPLIED>
+			<!-- comme un champ, mais sur plusieurs lignes -->
+
+<!ELEMENT choix (option)+>
+<!ATTLIST choix
+		id		ID		#REQUIRED
+		titre   CDATA   #IMPLIED
+		type	(combo|radio|checkbox) "combo"
+		valeur  CDATA   #IMPLIED>
+			<!-- valeur indique la valeur par défaut du (des) choix. Contient la liste séparée
+				 par des virgules des id des options sélectionnées -->
+<!ELEMENT option EMPTY>
+<!ATTLIST option
+		id		CDATA   #REQUIRED
+		titre   CDATA   #IMPLIED>
+
+<!ELEMENT bouton EMPTY>
+<!ATTLIST bouton
+		id		CDATA   #REQUIRED
+		type	CDATA	#IMPLIED
+		titre   CDATA   #IMPLIED>
+		<!-- le type permet de spécifier un traitement spécial du bouton (ex, type="detail"
+			 pour avoir un bouton avec une image de loupe)
+			 si l'id est "reset", il faut créer un bouton reset et non un bouton submit -->
+
+<!-- textsimple permet d'insérer des commentaires dans un formulaire. C'est une méthode assez moche
+	 qu'il faudra modifier -->
+<!ELEMENT textsimple EMPTY>
+<!ATTLIST textsimple
+		valeur	CDATA #REQUIRED>
+		<!-- valeur contient le texte à afficher -->
+
+<!-- ------------------------------------------------------------------------------------------
+
+		BALISES PROPRE A FRANKIZ
+		
+	Balises propre à frankiz (les balises précédement définies sont totalement génériques
+	et peuvent être utilisées dans n'importe quel site web). Une telle balise est définie
+	uniquement lorsque l'utilisation des balises précédantes ne permet pas de rendre le XML
+	facilement skinnable : ça arrive lorsque les données sont très spécifiques comme dans le
+	cas de la qdj ou des statistiques.
+	
+------------------------------------------------------------------------------------------ -->
+
+<!-- état des serveurs. Mal foutu, à modifier -->
+<!ELEMENT statistiques (serveur|service)+>
+<!ELEMENT serveur EMPTY>
+<!ATTLIST serveur
+		nom		CDATA   #REQUIRED
+		etat	CDATA   #REQUIRED>
+<!ELEMENT service EMPTY>
+<!ATTLIST service
+		nom		CDATA   #REQUIRED
+		etat	CDATA   #REQUIRED>
+
+<!-- gestion de la qdj -->
+<!ELEMENT qdj (reponse+,dernier*)>
+<!ATTLIST qdj
+		id		CDATA   #REQUIRED
+		type	(hier|aujourdhui) "aujourdhui"
+		action  CDATA   #REQUIRED>
+		<!-- action : si cet attribu existe, il ne doit pas y avoir d'attribut "votes" dans les <reponse> -->
+<!ELEMENT question &texte.formate;>
+<!ELEMENT reponse &texte.formate;>
+<!ATTLIST reponse
+		id		CDATA   #REQUIRED
+		votes   CDATA   #IMPLIED>
+<!ELEMENT dernier (#PCDATA)>
+<!ATTLIST dernier
+		ordre   CDATA   #REQUIRED>
+
+<!-- une annonce ou une affiche.
+	 Pour les annonces, contient une <image> puis du html échappé avec des &lt;... puis une balise <eleve>
+	 Pour les affiches, contient juste une <image> -->
+<!ELEMENT annonce &texte.misenpage;>
+<!ATTLIST annonce
+		titre		CDATA   #IMPLIED
+		auteur		CDATA   #IMPLIED
+		date		CDATA   #IMPLIED
+		categorie   CDATA   #IMPLIED>
+
+<!-- eleve, utilisé de manière complète dans le trombino,et partielle dans les autres cas
+	 (uniquement les attributs nom, prenom, promo, surnom  et mail) -->
+<!ELEMENT eleve (binet)*>
+<!ATTLIST eleve
+		nom			CDATA   #REQUIRED
+		prenom		CDATA   #REQUIRED
+		promo		CDATA   #IMPLIED
+		login		CDATA   #IMPLIED
+		surnom		CDATA   #IMPLIED
+		tel			CDATA   #IMPLIED
+		mail		CDATA   #IMPLIED
+		casert		CDATA   #IMPLIED
+		naissance   CDATA   #IMPLIED
+		section		CDATA   #IMPLIED
+		cie			CDATA   #IMPLIED>
+<!ELEMENT binet (#PCDATA)>
+<!ATTLIST binet
+		nom			CDATA   #REQUIRED
+		id			CDATA   #REQUIRED>
+
+<!-- page des binets (Mal foutu car utilise une deuxième fois la balise binet,
+	 faudrait peut-être utiliser une liste) -->
+<!--
+<binet id="6745" categorie="Soirées" nom="Styx">
+	<image source="binets/?image=1&amp;id=6745"/>
+	<description>Les plus petites soirées.</description>
+	<url>http://binets/styx/</url>
+</binet>
+-->
+
+]>

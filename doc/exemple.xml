@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Id$ -->
+<!--
+
+	Exemple de page XML mettant en oeuvre la totalité des balises pouvant être utilisées sur les pages de
+	frankiz. L'intérêt d'un tel exemple est d'être beaucoup plus clair et lisible qu'une DTD
+	(bien qu'un exemple reste moins précis), et permet de tester des skins en XSL sans avoir à disposer
+	de tout le code PHP du site web de frankiz.
+	
+	L'utilisation d'une DTD est tout de même utile : comme document de référence et pour valider
+	automatiquement le code XML sortant de nos scripts PHP.
+
+-->
+
+<frankiz base="http://frankiz/" css="style.css">
+
+<!-- Un module de base contenant une liste de liens -->
+<module id="liens_navigation" titre="Frankiz">
+	<lien titre="frankiz" lien="/index.php" />
+	<lien titre="Skins" lien="/choix_skin.php" />
+	<lien titre="Docs/Manuels" lien="/documentation/" />
+	<lien titre="InfoBr" lien="/documentation/infobr.pdf" />
+	<lien titre="FAQ" lien="/faq/" />
+	<lien titre="Télécharger" lien="/xshare" />
+	<lien titre="Binets" lien="http://binets.polytechnique.fr/" />
+	<lien titre="Trombino" lien="/trombino/" />
+	<lien titre="Xplorateur" lien="/xplorateur/" />	
+</module>
+
+<!-- Un module non affiché -->
+<module id="liens_contacts" titre="Contacts" visible="off">
+	<lien titre="Écrire aux webmasters" lien="mailto:web@frankiz" />
+	<lien titre="Proposer une annonce" lien="/gestion/annonce.php" />
+	<lien titre="Proposer une activité" lien="/gestion/activite.php" />
+	<lien titre="Mise à jour d'un binet" lien="/gestion/majbinet.php" />
+	<lien titre="Demander un mail promo" lien="/gestion/mailpromo.php" />
+	<lien titre="Proposer un sondage" lien="/gestion/sondage.php/" />
+</module>
+
+<!-- Liste des CSS disponible pour cette page -->
+<module id="liste_css" titre="Styles CSS" visible="false">
+	<lien titre='pico-sobre' url='http://gwennoz.polytechnique.fr/~schmurtz/htdocs/./css/pico-sobre.css'/>
+	<lien titre='basic' url='http://gwennoz.polytechnique.fr/~schmurtz/htdocs/./css/basic.css'/>
+	<lien titre='pico' url='http://gwennoz.polytechnique.fr/~schmurtz/htdocs/./css/pico.css'/>
+</module>
+
+<!-- Affichage des activitées -->
+<module id="activites" titre="Activités" visible="on">
+	<annonce titre="BRC" auteur="264" date="20H30">
+		<image source="http://binets/brc/affiches/lestontonsflingeurs.jpg" texte="Affiche"
+			lien="http://www.imdb.com/?movie=17653" legende="Les tontons flingeurs"/>
+	</annonce>
+	<annonce titre="Soirée Breizh" auteur="1465" date="20H00">
+		<image source="http://binets/breizh/affiche.jpg" texte="Affiche"
+			lien="http://binets/breizh/"/>
+	</annonce>
+</module>
+
+<!-- Affichage des stats (ça devrait évoluer) -->
+<module id="stats" titre="Statistiques">
+	<statistiques>
+		<serveur nom="frankiz" etat="up" />
+		<service nom="web frankiz" etat="up" />
+		<service nom="news frankiz" etat="down" />
+		<serveur nom="kuzh" etat="down" />
+	</statistiques>
+</module>
+
+<!-- balise <eleve> utilisé pour les anniversaires -->
+<module id="anniversaires" titre="Anniversaires">
+	<eleve nom="Bobillot" prenom="Damien" promo="2002" surnom="Schmurtz"/>
+	<eleve nom="Gruson" prenom="Éric" promo="2002" surnom="Kikx"/>
+	<eleve nom="Porcher" prenom="Guillaume" promo="2003" surnom="Pico"/>
+</module>
+
+<!-- QDJ non déjà votée -->
+<module id="qdj" titre="QDJ">
+	<qdj type="aujourdhui" id="2004-10-19" action="/annonces.php?qdj=2004-10-19&amp;vote=">
+		<question>Frankiz II, c'est</question>
+		<reponse id="1">Super bien</reponse>
+		<reponse id="2">Un projet sans fin</reponse>
+	</qdj>
+</module>
+
+<!-- DQJ déjà votée : résultats -->
+<module id="qdj_hier" titre="QDJ d'hier">
+	<qdj type="hier" id="2004-10-18">
+		<question>Le BR, c'est des geeks qui</question>
+		<reponse id="1" votes="217">pensent qu'à eux</reponse>
+		<reponse id="2" votes="20">bossent en continu pour nous</reponse>
+		<dernier ordre="237"><eleve nom="Chombier" prenom="Arnaud" promo="2007" surnom="Blah"/></dernier>
+		<dernier ordre="236"><eleve nom="Moi" prenom="Lui" promo="118" surnom=""/></dernier> <!-- pas de surnom 1 -->
+		<dernier ordre="235"><eleve nom="Lui" prenom="Moi" promo="119"/></dernier> <!-- pas de surnom 2 -->
+	</qdj>
+</module>
+
+<!-- Diverses balises spécifique à frankiz -->
+<page id="element_divers" titre="Frankiz : Binets, Trombino, Annonces" javascript="accueil.js">
+		<!-- sans CSS spécifique mais avec du javascript -->
+	
+	<!-- annonces -->
+	<annonce titre="Viendez à mon binet" categorie="nouveau" date="10 juin">
+		<image source="/data/annonce234.jpg" texte="Viendez à mon binet"/>
+		C&apos;est le plus beau ! <!-- peut contenir n'importe quoi -->
+		<eleve nom="Chombier" prenom="Arnaud" promo="2007" surnom="Blah" mail="arnaud.chombier@m4x.org"/>
+	</annonce>
+	<annonce titre="C&apos;est une annonce" categorie="vieux" date="18/09/2004">
+		&lt;b&gt;Une annonce avec du HTML &amp; sans images.&lt;/b&gt;
+		<eleve nom="Un" prenom="Grand" promo="1794" surnom="Ancien" mail="lui@paradis.ciel"/>
+	</annonce>
+	
+	<!-- binets -->
+	<binet id="12354" categorie="Soirées" nom="Point Gamma">
+		<image source="binets/?image=1&amp;id=12345"/>
+		<description>La plus grande soirée.</description>
+		<url>http://binets/pointgamma/</url>
+	</binet>
+	<binet id="1" categorie="Campus" nom="BR">
+		<image source="binets/?image=1&amp;id=1"/>
+		<description>Le binet le plus utilisé.</description>
+		<url>http://binets/br/</url>
+	</binet>
+	<binet id="6745" categorie="Soirées" nom="Styx">
+		<image source="binets/?image=1&amp;id=6745"/>
+		<description>Les plus petites soirées.</description>
+		<url>http://binets/styx/</url>
+	</binet>
+	
+	<!-- trombino -->
+	<eleve>
+	</eleve>
+
+</page>
+
+<!-- utilisation de formulaires, listes et arbres -->
+<page id="admin_test" titre="Frankiz : administration" css="test.css"> <!-- avec une CSS spécifique -->
+
+	<!-- permet de modifier une ensemble de paramètre d'un unique enregistrement à la fois -->
+	<formulaire id="test" titre="Ton annonce" action="proposition/annonce.php">
+		<commentaire>Formulaire montrant ce qu'il est possible de faire</commentaire>
+		
+		<champ id="champ1" titre="Champ de texte" valeur="Valeur par défaut"/>
+		<champ id="champ2" titre="Champ de texte non modifiable" valeur="Tu peux pas me changer" modifiable="non"/>
+		<zonetext id="champ3" titre="Grande zone de texte" valeur="Valeur par défaut"/>
+		
+		<fichier id="fichier" titre="Ton image" taille="250000"/>
+
+		<textsimple valeur="Commentaire, information"/>
+
+		<choix titre="Menu" id="choix1" type="combo" valeur="17">
+			<option titre="trois" id="3"/>
+			<option titre="dix-sept" id="17"/>
+			<option titre="vingt quatre" id="24"/>
+		</choix>
+		<choix titre="Boutons radios" id="choix2" type="radio" valeur="17">
+			<option titre="trois" id="3"/>
+			<option titre="dix-sept" id="17"/>
+			<option titre="vingt quatre" id="24"/>
+		</choix>
+		<choix titre="Case à cocher" id="choix3" type="checkbox" valeur="17,24">
+			<option titre="trois" id="3"/>
+			<option titre="dix-sept" id="17"/>
+			<option titre="vingt quatre" id="24"/>
+		</choix>
+
+		<bouton id='reset' titre="Effacer"/> <!-- contrairement aux autres boutons, si l'id est "reset", il faut créer un bouton reset et non un bouton submit -->
+		<bouton id='test' titre="Tester"/>
+		<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider votre annonce ?')"/>
+	</formulaire>
+
+	<!-- comme un formulaire, mais pouvant traiter plusieur enregistrement en même temps.
+	     Idéal pour permettre des modifications d'enregistrement d'une table d'une base de données. -->
+	<liste id="users" selectionnable="oui">
+		<entete id="nom" titre="Nom" action="afficher_fiche.php?id="/>
+		<entete id="prenom" titre="Prénom"/>
+		<element id="2956">
+			<colonne id="nom">Bon</colonne>
+			<colonne id="prenom">Jean</colonne>
+		</element>
+	</liste>
+	
+	<!-- utilisation d'une liste juste en présentation -->
+	<liste id="users" selectionnable="oui">
+		<entete id="nom" titre="Nom" action="afficher_fiche.php?id="/>
+		<entete id="prenom" titre="Prénom"/>
+		<element id="2956">
+			<colonne id="nom">Bon</colonne>
+			<colonne id="prenom">Jean</colonne>
+		</element>
+	</liste>
+
+	<!-- arbres -->
+	<arbre id="faq">
+		<noeud titre="Section1" lien="/faq/?sec=1">
+			<noeud titre="Sous-section1" lien="/faq/?ssec=1">
+				<feuille titre="Question 26" lien="/faq/?q=26" />
+				<feuille titre="Question 18" lien="/faq/?q=18" />
+				<feuille titre="Question 52" lien="/faq/?q=52" />
+			</noeud>
+		</noeud>
+	</arbre>
+</page>
+
+</frankiz>
