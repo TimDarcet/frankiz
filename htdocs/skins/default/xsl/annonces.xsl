@@ -28,6 +28,23 @@
 			<xsl:apply-templates select="annonce[@categorie='vieux']" mode="complet"/>
 			<xsl:apply-templates select="annonce[@categorie='reste']" mode="complet"/>  
 	</xsl:if>
+	<xsl:if test="count(annonce)=0">
+		<xsl:apply-templates select="annonce" mode="vide"/>  
+	</xsl:if>
+</xsl:template>
+
+<xsl:template match="page[@id='annonces']" mode="sommaire">
+	<dl class="boite">
+		<xsl:attribute name="id"><xsl:value-of select="@id"/>_sommaire</xsl:attribute>
+		<dt class="titre">
+			<span class="droitehaut"><xsl:text> </xsl:text></span>
+			<span> Sommaire </span>	
+		</dt>
+		<dd class="contenu">
+			<xsl:apply-templates/>
+		</dd>
+		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
+	</dl>
 </xsl:template>
 
 

@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.8  2004/12/16 00:29:13  psycow
+	bug page deconnecter
+
 	Revision 1.7  2004/12/14 14:40:56  psycow
 	Modification de la qdj et du sommaire de la page annonces, suite des test IE
-
+	
 	Revision 1.6  2004/12/14 01:34:14  psycow
 	Gestion IE, modifications diverses de compatibilité
 		
