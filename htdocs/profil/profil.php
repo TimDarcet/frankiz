@@ -24,11 +24,14 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.47  2005/01/28 21:17:21  pico
+	Correction bug affichage photo
+
 	Revision 1.46  2005/01/27 15:23:17  pico
 	La boucle locale est considérée comme interne
 	Tests de photos normalement plus cools.
 	Après le reste.... je sais plus
-
+	
 	Revision 1.45  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
 	
@@ -158,8 +161,9 @@ demande_authentification(AUTH_MAIL);
 // Récupération d'une image
 if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "true") && ($_REQUEST['image'] != "")){
 	require_once("../include/global.inc.php");
-	header('content-type: image/jpeg');
-	readfile(BASE_DATA."trombino/a_valider_".$_REQUEST['id']);	
+	$size = getimagesize(BASE_DATA."trombino/a_valider_".$_REQUEST['id']);
+	header("Content-type: {$size['mime']}");
+	readfile(BASE_DATA."trombino/a_valider_".$_REQUEST['id']);
 	exit;
 }
 
