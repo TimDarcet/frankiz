@@ -21,10 +21,13 @@
 	Mail promo permettant l'envoie de pièce jointes et de formatage HTML
 	
 	$Log$
+	Revision 1.11  2004/11/25 00:17:12  kikx
+	Passage des mails promo en wiki
+
 	Revision 1.10  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
-
+	
 	Revision 1.9  2004/10/29 14:38:37  kikx
 	Mise en format HTML des mails pour les validation de la qdj, des mails promos, et des annonces
 	
@@ -73,6 +76,7 @@ demande_authentification(AUTH_MINIMUM);
 // Génération de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
+require_once BASE_LOCAL."/include/wiki.inc.php";
 
 $DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM eleves WHERE eleve_id='".$_SESSION['user']->uid."'");
 list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_row();
@@ -82,6 +86,7 @@ list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_ro
 <?
 if (!isset($_REQUEST['envoie'])) {
 ?>
+	<note>La syntaxe est la syntaxe wiki... si tu ne sais pas taper correctement du texte wiki, va sur notre page <lien titre="d'aide WIKI" url="helpwiki.php"/></note>
 	<formulaire id="mail_promo" titre="Mail Promo" action="proposition/mail_promo.php">
 		<choix titre="Promo" id="promo" type="combo" valeur="<? if (isset($_POST['promo'])) echo  $_POST['promo'] ;?>">
 		<?
@@ -109,7 +114,7 @@ if (!isset($_REQUEST['envoie'])) {
 	if (isset($_REQUEST['upload'])) {
 ?>
 		<cadre  titre="Mail Promo : <? if (isset($_REQUEST['sujet'])) echo $_REQUEST['sujet']?>" >
-			<html><? if (isset($_REQUEST['mail'])) echo $_REQUEST['mail']?></html>
+			<? echo wikiVersXML($_REQUEST['mail']) ; ?>
 		</cadre>
 <?
 	}
