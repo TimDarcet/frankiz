@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.24  2004/11/22 23:38:42  kikx
+	Ajout de <note></note> un peu partout pour plus de compréhension !
+
 	Revision 1.23  2004/11/07 22:43:10  pico
 	correction faute d'orthograffe
-
+	
 	Revision 1.22  2004/10/29 14:40:48  kikx
 	Erreur mineur dans le lien
 	
@@ -239,11 +242,11 @@ if (isset($_POST['valid'])) {
 	<formulaire id="propoz_annonce" titre="Ton annonce" action="proposition/annonce.php">
 		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
 		<zonetext id="text" titre="Le texte" valeur="<? if (isset($_POST['text'])) echo $_POST['text'] ;?>"/>
-		<textsimple valeur="Ton image doit être un fichier gif, png ou jpg, ne doit pas dépasser 400x300 pixels et 250ko car sinon elle ne sera pas téléchargée"/>
+		<note>Ton image doit être un fichier gif, png ou jpg, ne doit pas dépasser 400x300 pixels et 250ko car sinon elle ne sera pas téléchargée</note>
 		<fichier id="file" titre="Ton image" taille="250000"/>
 		<bouton id='suppr_img' titre="Supprimer l'image"/>
 
-		<textsimple valeur="Ta signature sera automatiquement générée"/>
+		<note>Ton annonce disparaitra le lendemain de la date de péremption</note>
 		<choix titre="Date de péremption" id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
 <?		for ($i=0 ; $i<MAX_PEREMPTION ; $i++) {
 			$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
@@ -255,10 +258,11 @@ if (isset($_POST['valid'])) {
 ?>
 		</choix>
 		
-		<textsimple valeur="Si tu veux que ton annonce soit visible de l'exterieur, clique ici"/>
+		<note>Si tu veux que ton annonce soit visible de l'exterieur, clique ici</note>
 		<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if (isset($_REQUEST['ext'])) echo 'ext' ;?>">
 			<option id="ext" titre=""/>
 		</choix>
+		<note>Ta signature sera automatiquement générée</note>
 
 		<bouton id='test' titre="Tester"/>
 		<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider votre annonce ?')"/>

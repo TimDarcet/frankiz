@@ -22,9 +22,12 @@
 	ses machines, son compte xnet.
 	
 	$Log$
+	Revision 1.19  2004/11/22 23:38:42  kikx
+	Ajout de <note></note> un peu partout pour plus de compréhension !
+
 	Revision 1.18  2004/11/08 23:19:17  pico
 	Modification des titres pour pouvoir les reperer dans le code (avec un id)
-
+	
 	Revision 1.17  2004/11/07 16:56:46  pico
 	Indique le nb de caractères mini pour le mdp xnet
 	
@@ -127,6 +130,7 @@ require "../include/page_header.inc.php";
 ?>
 	</p>
 	<h2 id="nom_machine">Nom de tes machines</h2>
+	<note>Ceci est la liste de tes ordinateurs</note>
 <div>
 <? 
 for ($i = 0; $i < $id_ip; $i++) {
@@ -139,8 +143,9 @@ for ($i = 0; $i < $id_ip; $i++) {
 ?>
 	<formulaire id="mod_xnet_<? echo $i ?>" titre="Modification du mot de passe Xnet (<? echo $ip{$i} ?>)" action="profil/reseau.php">
 		<hidden id="ip_xnet" valeur="<? echo $ip{$i} ?>"/>
-		<champ id="passwd" titre="Mot de passe (au moins 6 caractères)" valeur="12345678"/>
-		<champ id="passwd2" titre="Retaper le mot de passe" valeur="87654321"/>
+		<note>Il faut que ton mot de passe fasse au moins 6 caractères</note>
+		<champ id="passwd" titre="Mot de passe" valeur="12345678"/>
+		<champ id="passwd2" titre="Retaper le" valeur="87654321"/>
 		<bouton id="changer_xnet" titre="Changer"/>
 	</formulaire>
 <? } ?>

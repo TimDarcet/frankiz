@@ -39,9 +39,12 @@
 	)
 	
 	$Log$
+	Revision 1.16  2004/11/22 23:38:42  kikx
+	Ajout de <note></note> un peu partout pour plus de compréhension !
+
 	Revision 1.15  2004/11/16 12:17:26  schmurtz
 	Deplacement des skins de trombino.eleves vers frankiz.compte_frankiz
-
+	
 	Revision 1.14  2004/11/13 00:12:24  schmurtz
 	Ajout du su
 	
@@ -254,7 +257,8 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	</formulaire>
 	
 	<formulaire id="form_param_skin" titre="Paramètres de la skin <? echo $_SESSION['skin']['skin_nom'] ?>" action="profil/skin.php">
-		<choix titre="CSS" id="newcss" type="combo" valeur="<?php echo $_SESSION['skin']['skin_css']?>">
+		<note>Pour chaque skin, il existe plusieurs version disponible grâce à des feuilles de style (CSS) : Choisis en une ...</note>
+		<choix titre="Version CSS" id="newcss" type="combo" valeur="<?php echo $_SESSION['skin']['skin_css']?>">
 <?php
 			// Choix de la feuille de style CSS
 			if(is_dir(BASE_LOCAL."/css/".$_SESSION['skin']['skin_nom'])) {
@@ -271,6 +275,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			echo "<option titre=\"CSS par défaut de la skin\" id=\"".BASE_URL."/skins/{$_SESSION['skin']['skin_nom']}/style.css\"/>";
 ?>
 		</choix>
+		<note>Si tu veux personnaliser encore plus ta skin, tu peux créer ta propre feuille de style. Ceci s'adresse aux experts :)</note>
 		<champ titre="CSS perso" id="newcss_perso" valeur="<?php
 			if ((dirname($_SESSION['skin']['skin_css']) != BASE_URL."/css/".$_SESSION['skin']['skin_nom'])&&(dirname($_SESSION['skin']['skin_css']) != BASE_URL."/skins/".$_SESSION['skin']['skin_nom'])){
 				echo $_SESSION['skin']['skin_css']; }?>"/>
@@ -290,6 +295,8 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			}
 		}
 ?>
+		<note>Tu peux aussi ne pas faire apparaître tous les élément de la skin. Tu gagneras ainsi de la place :) Choisis donc les éléments que tu veux afficher</note>
+
 		<choix titre="Eléments" id="newskin" type="checkbox" valeur="<?php
 			foreach(liste_modules() as $module => $nom)
 				if($nom != "" && (!isset($_SESSION['skin']['skin_visible'][$module])

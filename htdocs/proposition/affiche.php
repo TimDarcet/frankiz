@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une activité
 	
 	$Log$
+	Revision 1.9  2004/11/22 23:38:42  kikx
+	Ajout de <note></note> un peu partout pour plus de compréhension !
+
 	Revision 1.8  2004/11/16 18:32:34  schmurtz
 	Petits problemes d'interpretation de <note> et <commentaire>
-
+	
 	Revision 1.7  2004/10/29 14:09:10  kikx
 	Envoie des mail en HTML pour la validation des affiche
 	
@@ -226,13 +229,15 @@ if ((isset($_POST['valid']))&&(isset($index))&&file_exists(DATA_DIR_LOCAL."affic
 	<formulaire id="propoz_activite" titre="Ton activité" action="proposition/affiche.php">
 		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
 		<champ id="url" titre="URL du lien" valeur="<? if (isset($_POST['url'])) echo $_POST['url'] ;?>"/>
-		<textsimple valeur="Ton image doit être un fichier gif, png ou jpg, ne doit pas dépasser 200x300 pixels et 100ko car sinon elle ne sera pas téléchargée"/>
+		<note>Ton image doit être un fichier gif, png ou jpg, ne doit pas dépasser 200x300 pixels et 100ko car sinon elle ne sera pas téléchargée</note>
 		<fichier id="file" titre="Ton image" taille="100000"/>
-		<textsimple valeur="Si tu veux que ton activité soit visible de l'exterieur, clique ici"/>
+		<note>Si tu veux que ton activité soit visible de l'exterieur, clique ici</note>
 		<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if (isset($_REQUEST['ext'])) echo 'ext' ;?>">
 			<option id="ext" titre=""/>
 		</choix>
 		<bouton id='suppr_img' titre="Supprimer l'image"/>
+		
+		<note>Ton activité sera affiché qu'un unique jour. Choisis donc la date de ton événement</note>
 
 		<choix titre="Date de l'activité" id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
 <?		for ($i=0 ; $i<MAX_PEREMPTION ; $i++) {
