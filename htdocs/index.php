@@ -21,9 +21,12 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.40  2005/02/15 09:03:35  pico
+	Version qui va ptèt mieux marcher
+
 	Revision 1.39  2005/02/10 22:25:42  pico
 	On revient à une version précédente
-
+	
 	Revision 1.31  2005/02/10 21:37:53  pico
 	- Pour les ids de news, fait en fonction de la date de péremption, c'est mieux que seulement par id, mais y'a tjs un pb avec les nouvelles fraiches
 	- Correction pour éviter que des gens postent des annonces qui sont déjà périmées
@@ -166,31 +169,33 @@ $DB_web->query("SELECT annonces.annonce_id,stamp,perime,titre,contenu,en_haut,ex
 					 ."FROM annonces LEFT JOIN trombino.eleves USING(eleve_id) $annonces_lues1"
 					 ."WHERE (perime>'".date("Y-m-d H:i:s",time())."') ORDER BY perime DESC");
 $nb =$DB_web->num_rows();
-$cpt =0;
+$ouvert = false;
 while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail,$visible)=$DB_web->next_row()) {
 	if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
-	if($cpt > 0){
+	if($ouvert){
 			if(est_authentifie(AUTH_MINIMUM))
 			echo "<lien url=\"?lu=$idprec#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
 			echo "</annonce>";
+			$ouvert = false;
 	}
 	$idprec=$id;
-	$cpt++;
 ?>
 	<annonce id="<?php echo $id ?>" 
 		titre="<?php echo $titre ?>" visible="<?=$visible?"oui":"non" ?>"
 		categorie="<?php echo get_categorie($en_haut, $stamp, $perime) ?>"
 		date="<?php echo substr($stamp,8,2)."/".substr($stamp,5,2)."/".substr($stamp,0,4) ?>">
 <?php
+		$ouvert = true;
 		if (file_exists(DATA_DIR_LOCAL."annonces/$id"))
 			echo "<image source=\"".DATA_DIR_URL."annonces/$id\" texte=\"logo\"/>\n";
 		echo wikiVersXML($contenu);
 		echo "<eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"$promo\" surnom=\"$surnom\" mail=\"$mail\"/>\n";
-	if($nb==$cpt){
+}
+if($ouvert){
 		if(est_authentifie(AUTH_MINIMUM))
-		echo "<lien url=\"?lu=$idprec#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
+		echo "<lien url=\"?lu=$idprec\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
 		echo "</annonce>";
-	}
+		$ouvert = false;
 }
 echo "</page>\n";
 require_once "include/page_footer.inc.php";
