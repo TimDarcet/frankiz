@@ -165,6 +165,7 @@
 			Tel : <xsl:value-of select="@tel"/><br/>
 			Kazert : <xsl:value-of select="@casert"/><br/>
 			Mail : <xsl:value-of select="@mail"/><br/>
+			Section : <xsl:value-of select="@section"/> (<xsl:value-of select="@cie"/>e Cie)<br/>
 			Binets : <xsl:apply-templates select="binet"/><br/>
 		</td></tr>
 	</table>

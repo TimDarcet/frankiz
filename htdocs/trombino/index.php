@@ -22,18 +22,18 @@ if(isset($_REQUEST['chercher'])) {
 
 	// Création de la requète
 	$where = "";
-	$join = "";
-	$champs = "eleves.eleve_id,nom,prenom,surnom,piece_id,section,cie,promo,login,mail,0";
+	$join = "INNER JOIN sections ON eleves.section_id=sections.section_id";
+	$champs = "eleves.eleve_id,eleves.nom,prenom,surnom,piece_id,sections.nom,eleves.section_id,cie,promo,login,mail,0";
 	
 	$where_exact = array(
-			'section' => 'section', 'cie' => 'cie',			/*'type' => '',*/
+			'section' => 'eleves.section_id',	'cie' => 'cie',			/*'type' => '',*/
 			'promo' => 'promo');
 	foreach($where_exact as $post_arg => $db_field)
 		if(!empty($_REQUEST[$post_arg]))
 			$where .= (empty($where) ? "" : " AND") . " $db_field='".$_REQUEST[$post_arg]."'";
 
 	$where_like = array(
-			'nom' => 'nom',			'prenom' => 'prenom',   'casert' => 'piece_id',
+			'nom' => 'eleves.nom',	'prenom' => 'prenom',   'casert' => 'piece_id',
 			/*'phone' => '',*/		'surnom' => 'surnom',   'mail' => 'mail',
 			'loginpoly' => 'login');
 	foreach($where_like as $post_arg => $db_field)
@@ -41,7 +41,7 @@ if(isset($_REQUEST['chercher'])) {
 			$where .= (empty($where) ? "" : " AND") . " $db_field LIKE '%".$_REQUEST[$post_arg]."%'";
 		
 	if(!empty($_REQUEST['binet'])) {
-		$join = "INNER JOIN membres USING(eleve_id)";
+		$join = "INNER JOIN membres USING(eleve_id) " . $join;
 		$where .= (empty($where) ? "" : " AND") . " binet_id='".$_REQUEST['binet']."'";
 	}
 	
@@ -53,7 +53,7 @@ if(isset($_REQUEST['chercher'])) {
 		connecter_mysql_frankiz();
 		
 		$result = mysql_query("SELECT $champs FROM eleves $join WHERE $where");
-		while(list($eleve_id,$nom,$prenom,$surnom,$piece_id,$section,$cie,$promo,$login,$mail,$tel) = mysql_fetch_row($result)) {
+		while(list($eleve_id,$nom,$prenom,$surnom,$piece_id,$section,$section_id,$cie,$promo,$login,$mail,$tel) = mysql_fetch_row($result)) {
 			echo "<eleve nom='$nom' prenom='$prenom' promo='$promo' login='$login' surnom='$surnom' "
 				."tel='$tel' mail='".(empty($mail)?"$login@poly.polytechnique.fr":$mail)."' casert='$piece_id' "
 				."section='$section' cie='$cie'>\n";
@@ -97,29 +97,18 @@ require "../include/page_header.inc.php";
 		
 		<choix titre="Section" id="section" type="combo" valeur="">
 			<option titre="Toutes" id=""/>
-			<option titre="Judo" id="judo"/>
-			<option titre="Athle" id="athle"/>
-			<option titre="Aviron" id="aviron"/>
-			<option titre="Basket" id="basket"/>
-			<option titre="Cadre" id="cadre"/>
-			<option titre="Co" id="co"/>
-			<option titre="Equitation" id="equitation"/>
-			<option titre="Escalade" id="escalade"/>
-			<option titre="Escrime" id="escrime"/>
-			<option titre="Foot" id="foot"/>
-			<option titre="Golf" id="golf"/>
-			<option titre="Hand" id="hand"/>
-			<option titre="Natation" id="natation"/>
-			<option titre="Rugby" id="rugby"/>
-			<option titre="Tennis" id="tennis"/>
-			<option titre="Voile" id="voile"/>
-			<option titre="Volley" id="volley"/>
+<?php
+			connecter_mysql_frankiz();
+			$result = mysql_query("SELECT section_id,nom FROM sections ORDER BY nom ASC");
+			while( list($section_id,$section_nom) = mysql_fetch_row($result) )
+				echo "\t\t\t<option titre=\"$section_nom\" id=\"$section_id\"/>\n";
+			mysql_free_result($result);
+?>
 		</choix>
 			
 		<choix titre="Binet" id="binet" type="combo" valeur="">
 			<option titre="Tous" id=""/>
 <?php
-			connecter_mysql_frankiz();
 			$result = mysql_query("SELECT binet_id,nom FROM binets ORDER BY nom ASC");
 			while( list($binet_id,$binet_nom) = mysql_fetch_row($result) )
 				echo "\t\t\t<option titre=\"$binet_nom\" id=\"$binet_id\"/>\n";
@@ -131,13 +120,6 @@ require "../include/page_header.inc.php";
 		<champ titre="Login poly" id="loginpoly" valeur="" />
 		<champ titre="Téléphone" id="phone" valeur="" />
 		<champ titre="Casert" id="casert" valeur="" />
-		
-		<choix titre="Type" id="type" type="combo" valeur="">
-			<option titre="Tous" id=""/>
-			<option titre="Eleves" id="0"/>
-			<option titre="Bar" id="1"/>
-			<option titre="Cadres" id="2"/>
-		</choix>
 		
 		<bouton titre="Effacer" id="reset" />
 		<bouton titre="Chercher" id="chercher" />
