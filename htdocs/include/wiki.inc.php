@@ -21,9 +21,12 @@
 	Moteur Wiki (TipiWiki)
 	
 	$Log$
+	Revision 1.8  2004/11/29 16:51:26  schmurtz
+	Correction d'un bug de traduction wiki => xml avec un texte du genre "=== blah ="
+
 	Revision 1.7  2004/11/28 01:33:32  pico
 	Gestion des listes sur le wiki (arbre + feuille)
-
+	
 	Revision 1.6  2004/11/28 00:06:32  pico
 	Ajout des images avec légende (et donc "alt") dans le wiki
 	
@@ -67,9 +70,9 @@ function wikiVersXML($filtered,$enhtml=false) {
 	$filtered = preg_replace("/(?<![\"\[])$regexURL(?!\")/",$enhtml?"<a href=\"\\0\">\\0</a>":"<lien url=\"\\0\">\\0</lien>",$filtered);
 	
 	// Headlines <h1><h2><h3>
-	$filtered = preg_replace("/\n===(.+)===[\t  ]*\n/","</p>\n<h2>\\1</h2>\n<p>",$filtered);
-	$filtered = preg_replace("/\n==(.+)==[\t  ]*\n/","</p>\n<h3>\\1</h3>\n<p>",$filtered);
-	$filtered = preg_replace("/\n=(.+)=[\t  ]*\n/","</p>\n<h4>\\1</h4>\n<p>",$filtered);
+	$filtered = preg_replace("/\n===([^=].*[^=])===[\t  ]*\n/","</p>\n<h2>\\1</h2>\n<p>",$filtered);
+	$filtered = preg_replace("/\n==([^=].*[^=])==[\t  ]*\n/","</p>\n<h3>\\1</h3>\n<p>",$filtered);
+	$filtered = preg_replace("/\n=([^=].*[^=])=[\t  ]*\n/","</p>\n<h4>\\1</h4>\n<p>",$filtered);
 
 	// text decorations (bold,italic,underline,boxed)
 	$filtered = preg_replace("/\*\*(.+)\*\*/U","<strong>\\1</strong>", $filtered);
