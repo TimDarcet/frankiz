@@ -246,19 +246,19 @@ span.fkz_annonces_vieux,span.fkz_annonces_nouveau, span.fkz_annonces_important,s
  }
 
 span.fkz_annonces_vieux {
-	background-image:url("../default/images/vieux.gif");
+	background-image:url("../noel/images/vieux.gif");
 }
 
  span.fkz_annonces_nouveau {
-	background-image:url("../default/images/nouveau.gif");
+	background-image:url("../noel/images/nouveau.gif");
 }
  
  span.fkz_annonces_important {
-	background-image:url("../default/images/important.gif");
+	background-image:url("../noel/images/important.gif");
  } 
  
  span.fkz_annonces_reste {
-	background-image:url("../default/images/reste.gif");
+	background-image:url("../noel/images/reste.gif");
  } 
   
  span.fkz_annonces_cat {display:none;}
