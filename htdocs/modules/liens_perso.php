@@ -21,7 +21,7 @@
 	Affichage de flux rss externes sous forme de module.
 
 	$Log$
-	Revision 1.2  2004/11/24 17:34:23  pico
+	Revision 1.1  2004/11/24 17:34:23  pico
 	Module liens perso + bugfix
 
 	Revision 1.1  2004/11/24 16:37:09  pico
@@ -29,15 +29,14 @@
 	
 
 */
-
-
-$liens = $_SESSION['rss'];
-if(count($liens)){
-	foreach($liens as $value => $mode){
-		if($mode == 'module'){
-			list($mode,$value) = explode("_",$value,2);
-			rss_xml($value,"sommaire");
-		}
+$liens = $_SESSION['liens_perso'];
+if(count($liens){
+	echo "<module id=\"liens_perso\" titre=\"Liens Perso\">";
+	
+	foreach($liens as $titre => $url){
+		echo "<lien titre=\"$titre\" url=\"$url\" />";
 	}
+	
+	echo "</module>";
 }
 ?>
