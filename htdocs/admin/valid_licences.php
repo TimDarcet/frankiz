@@ -21,9 +21,12 @@
 	Page qui permet l'administartion des licences windows.
 	
 	$Log$
+	Revision 1.7  2005/01/18 22:40:44  dei
+	ajout d'une fonction pour mettre des clés dans la base à la main
+
 	Revision 1.6  2005/01/18 21:38:41  dei
 	ajout de fonctionnalité de recherche et correction test des clés
-
+	
 	Revision 1.5  2005/01/18 12:52:31  pico
 	Page d'admin windows (debug)
 	
@@ -62,7 +65,16 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <?
 //on teste si la cle entrée à la main a une forme standard...
 function test_cle($key){
-	if(ereg("([0-9][A-Z]){5}-([0-9][A-Z]){5}-([0-9][A-Z]){5}-([0-9][A-Z]){5}-([0-9][A-Z]){5}",$str)){
+	$key=explode("-",$key);
+	if(sizeof($key)==5){
+		echo "size";
+		for($i=0;$i<sizeof($key);$i++){
+			if(!ereg('^[[:alnum:]]+$', $key[$i])){
+				echo "$i";
+				return false;
+			}
+		}
+		echo "ok";
 		return true;
 	}
 	return false;
@@ -195,23 +207,55 @@ if(isset($_POST['chercher'])){
 ?>
 <h2>Rechercher un utilisateur dans la base</h2>
 	<formulaire id="chercher" action="admin/valid_licences.php">
-	<champ titre="Login poly" id="login" valeur="" />
-	<champ titre="Licence" id="licence" valeur="" />
-		<choix titre="Promo" id="promo" type="combo" valeur="">
+		<champ titre="Login poly" id="login" valeur="" />
+		<champ titre="Licence" id="licence" valeur="" />
+			<choix titre="Promo" id="promo" type="combo" valeur="">
 <?php
 			$DB_trombino->query("SELECT DISTINCT promo FROM eleves ORDER BY promo DESC");
 			while( list($promo) = $DB_trombino->next_row() )
 				echo "\t\t\t<option titre=\"$promo\" id=\"$promo\"/>\n";
 ?>
+			</choix>
+		<choix titre="Logiciel" id="logiciel" type="combo" valeur="">
+			<option titre="Windows XP Pro" id="winxp"/>
+			<option titre="Windows 2003 Serveur" id="2k3serv"/>
 		</choix>
-	<choix titre="Logiciel" id="logiciel" type="combo" valeur="">
-		<option titre="Windows XP Pro" id="winxp"/>
-		<option titre="Windows 2003 Serveur" id="2k3serv"/>
-	</choix>
-	<bouton id='chercher' titre='Rechercher'/>
+		<bouton id='chercher' titre='Rechercher'/>
 	</formulaire>
-</page>
 
+<?php
+//a faire évoluer pour faire entrer les clés depuisun fichier texte...
+if(isset($_POST['ajout'])&&test_cle($_POST['cle'])&&$_POST['login']!=""){
+	$DB_msdnaa->query("SELECT 0 FROM cles_{$_POST['logiciel']} WHERE cle='{$_POST['cle']}'");
+	if($DB_msdnaa->num_rows()==0){
+		$DB_trombino->query("SELECT eleve_id FROM eleves WHERE login='{$_POST['login']}' AND promo='{$_POST['promo']}' LIMIT 1");
+		list($eleve_id)=$DB_trombino->next_row();
+		$DB_msdnaa->query("INSERT cles_{$_POST['logiciel']} SET eleve_id='{$eleve_id}', attrib='1', cle='{$_POST['cle']}'");
+		echo "La clé a été bien ajoutée";
+	} else {
+		echo "une erreur s'est produite";
+	}
+}
+?>
+<h2>Ajout d'une clé dans la base</h2>
+	<formulaire id="ajout" action="admin/valid_licences.php">
+		<champ titre="login" id="login" valeur=""/>
+			<choix titre="Promo" id="promo" type="combo" valeur="">
+<?php
+			$DB_trombino->query("SELECT DISTINCT promo FROM eleves ORDER BY promo DESC");
+			while( list($promo) = $DB_trombino->next_row() )
+				echo "\t\t\t<option titre=\"$promo\" id=\"$promo\"/>\n";
+?>
+			</choix>
+		<champ titre="Licence" id="cle" valeur=""/>
+		<choix titre="Logiciel" id="logiciel" type="combo" valeur="">
+			<option titre="Windows XP Pro" id="winxp"/>
+			<option titre="Windows 2003 Serveur" id="2k3serv"/>
+		</choix>
+		<bouton id='ajout' titre="Ajouter"/>
+	</formulaire>
+
+</page>		
 <?php
 require_once BASE_LOCAL."/include/page_footer.inc.php";
 ?>
