@@ -103,7 +103,7 @@
 				<span class="droitehaut"><xsl:text> </xsl:text></span>
 			</dt>
 			<dd class="contenu">
-					<p class="image"><img src="skins/basic/images/trombino.png"/></p>
+					<p class="image"><img src="skins/default/images/trombino.gif"/></p>
 					<br/>
 					<xsl:apply-templates select="formulaire" mode="trombino"/>
 			</dd>
