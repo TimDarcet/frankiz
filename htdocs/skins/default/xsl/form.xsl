@@ -21,9 +21,12 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.3  2004/12/10 03:04:31  psycow
+	Resolution du probleme des boites sous Firefox, reste un probleme sur le positionnement des formulaires dans les boites...
+
 	Revision 1.2  2004/12/09 14:00:07  psycow
 	Bonne modification et resolutions des principaux problemes de versions... et oui je suis un boulet qui ecrase les bons fichier et mets les mauvais en commit...
-
+	
 	Revision 1.1  2004/11/24 20:26:40  schmurtz
 	Reorganisation des skins (affichage melange skin/css + depacement des css)
 	
@@ -51,6 +54,7 @@
 <!-- Formulaires -->
 <xsl:template match="formulaire">
 	<!-- la déco -->
+	<div class="center">
 	<form enctype="multipart/form-data" method="post">
 			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
@@ -66,9 +70,8 @@
 		</xsl:if>
 		<div class="formulaire">
 			<!-- les options du formulaire -->
-			<xsl:for-each select="*[name()!='bouton']">
+			<xsl:for-each select="*[name()!='bouton' and name()!='hidden']">
 				<div>
-
 				<span class="droite">
 					<xsl:apply-templates select="."/>
 				</span>
@@ -87,7 +90,9 @@
 			</span>
 			</div>
 		</div>
+		<div class="clear"><xsl:text> </xsl:text></div>
 	</form>
+	</div>
 </xsl:template>
 
 

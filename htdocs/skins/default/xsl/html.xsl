@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.5  2004/12/10 03:04:31  psycow
+	Resolution du probleme des boites sous Firefox, reste un probleme sur le positionnement des formulaires dans les boites...
+
 	Revision 1.4  2004/11/30 21:33:18  pico
 	Rajout des feuilles à la base d'un arbre
-
+	
 	Revision 1.3  2004/11/28 01:33:33  pico
 	Gestion des listes sur le wiki (arbre + feuille)
 	
@@ -152,7 +155,7 @@
 <!-- Arbres -->
 <xsl:template match="arbre">
 	<xsl:if test="boolean(@titre)"><h2><xsl:value-of select="@titre"/></h2></xsl:if>
-	<ul><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+	<ul>
 		<xsl:apply-templates select="noeud|feuille"/>
 	</ul>
 </xsl:template>

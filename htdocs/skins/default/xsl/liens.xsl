@@ -21,8 +21,9 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:template match="module[@id='liens_contacts']">
-	<dl id="liens_contacts" class="boite">
+<xsl:template match="module[@id='liens_perso' or @id='liens_contacts' or @id='liens_ecole']">
+	<dl class="boite">
+		<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 		<dt class="titre">
 			<span class="droitehaut"><xsl:text> </xsl:text></span>
 			<span><xsl:value-of select="@titre"/></span>	
@@ -36,20 +37,6 @@
 	</dl>
 </xsl:template>
 
-<xsl:template match="module[@id='liens_ecole']">
-	<dl id="liens_ecole" class="boite">
-		<dt class="titre">
-			<span class="droitehaut"><xsl:text> </xsl:text></span>
-			<span><xsl:value-of select="@titre"/></span>	
-		</dt>
-		<dd class="contenu">
-			<ul id="ecole">
-				<xsl:apply-templates select="lien" mode="liste"/>
-			</ul>
-		</dd>
-		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
-	</dl>
-</xsl:template>
 
 <xsl:template match="module[@id='liens_navigation']">
 	<dl id="menu">
@@ -59,7 +46,7 @@
 		</dt>
 		<dd class="contenu">
 			<ul id="menu">
-				<xsl:apply-templates select="lien" mode="liste"/>
+				<xsl:apply-templates select="lien[@id!='meteo']" mode="liste"/>
 			</ul>
 		</dd>
 		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>

@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.5  2004/12/10 03:04:31  psycow
+	Resolution du probleme des boites sous Firefox, reste un probleme sur le positionnement des formulaires dans les boites...
+
 	Revision 1.4  2004/12/09 14:00:07  psycow
 	Bonne modification et resolutions des principaux problemes de versions... et oui je suis un boulet qui ecrase les bons fichier et mets les mauvais en commit...
-
+	
 	Revision 1.3  2004/11/24 23:38:38  schmurtz
 	Gestion des skins perso + corrections dans la skin default
 	
@@ -100,12 +103,11 @@
 				<h2><span>Serveur des Eleves</span></h2>
 				<h3><a href="http://www.polytechnique.fr" title="Ecole Polytechnique"><span> Site de l'Ecole Polytechnique</span></a></h3>
 			</div>
-		
+			
 			<div id="gauche">
 				<xsl:apply-templates select="module[@id='liens_navigation']" />
 				<xsl:apply-templates select="module[@id='tour_kawa']"/>
 				<xsl:apply-templates select="module[@id='meteo']"/>
-				<xsl:apply-templates select="module[@id='liens_perso']"/>
 				<xsl:apply-templates select="module[@id='activites']"/>
 				<xsl:apply-templates select="module[@id='lien_tol']"/>
 			</div>
@@ -114,6 +116,7 @@
 			<div id="droite">
 				<xsl:apply-templates select="module[@id='qdj']"/>
 				<xsl:apply-templates select="module[@id='qdj_hier']"/>
+				<xsl:apply-templates select="module[@id='liens_perso']"/>
 				<xsl:apply-templates select="module[@id='liens_contacts']"/>
 				<xsl:apply-templates select="module[@id='liens_ecole']"/>
 				<xsl:apply-templates select="module[@id='stats']"/>
@@ -131,10 +134,7 @@
 				<span id="bas_gauche"><xsl:text> </xsl:text></span>
 				<span id="bas_droit"><xsl:text> </xsl:text></span>
 				<h5>
-					<a href="#">
-						<xsl:attribute name="title">
-							<xsl:text>Retour en haut</xsl:text>
-						</xsl:attribute>
+					<a href="#" title="Retour en haut">
 						<span>Retour en Haut</span>
 					</a>
 				</h5>
@@ -147,27 +147,14 @@
 </xsl:template>
 
 
-<xsl:template match="page[@id!='accueil' and @id!='trombino' and @id!='binets' and @id!='meteo' and @id!='vocabulaire']">
+<xsl:template match="page[@id!='annonces' and @id!='trombino' and @id!='binets' and @id!='meteo' and @id!='vocabulaire']">
 	<dl class="boite">
 		<dt class="titre">
 			<span class="droitehaut"><xsl:text> </xsl:text></span>
-			<span><xsl:value-of select="@titre"/></span>	
+			<span><xsl:value-of select="h1"/></span>	
 		</dt>
 		<dd  class="contenu">
-			<xsl:apply-templates/>
-		</dd>
-		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
-	</dl>
-</xsl:template>
-
-<xsl:template match="page" mode="autre"><!-- Affichage d'une page générique, en tout html-->
-	<dl class="boite">
-		<dt class="titre">
-			<span class="droitehaut"><xsl:text> </xsl:text></span>
-			<span><xsl:value-of select="@titre"/></span>	
-		</dt>
-		<dd  class="contenu">
-			<xsl:apply-templates/>
+			<xsl:apply-templates select="*[not(self::h1)]"/>
 		</dd>
 		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>

@@ -618,7 +618,14 @@ ul#menu li#skins a:hover
 {
 	background: url('./images/skins.png') no-repeat 0 0 ;
 }
-
+ul#menu li#siteseleves a
+{
+	background: url('./images/siteseleves.png') no-repeat 0 -32px ;
+}
+ul#menu li#siteseleves a:hover
+{
+	background: url('./images/siteseleves.png') no-repeat 0 0 ;
+}
 
 /* ###############" BARRE DE NAVIGATION "######################*/
 
@@ -708,8 +715,8 @@ form {
 
 /* -- formulaire simple (trombi,skin,etc...) -- */
 
-div.formulaire{
-	display:block;
+div.formulaire {
+	float:left;
 }
 
 div.formulaire span.droite{
@@ -735,6 +742,9 @@ div.formulaire span.boutons{
 
 
 /* -- formulaires plus chiants, basés sur les listes (gestion par tableau) -- */
+table.liste {
+	margin:0 auto;
+}
 
 table.liste thead {
 	background-color : #ccc;
@@ -797,7 +807,14 @@ div.hr hr {
 	display:none;
 }
 
-
 dl.boite h3, dl.boite h2 {
-	margin:5px;
+	margin-bottom:5px;
+}
+
+.center {
+	margin:0 auto;
+}
+.clear {
+	border:red 1px solid;
+	clear:left;
 }

@@ -29,9 +29,11 @@
 			<p class="titre"><xsl:value-of select="@titre"/></p>
 			<p class="image">
 				<strong><xsl:value-of select="meteo/now/temperature"/>°C</strong><br />
-				<img alt="meteo" width="64" height="64">
-					<xsl:attribute name="src">skins/default/xsl/meteo/<xsl:value-of select="meteo/now/image"/>.gif</xsl:attribute>
-				</img>
+				<a href="meteo.php">
+					<img alt="meteo" width="64" height="64">
+						<xsl:attribute name="src">skins/default/xsl/meteo/<xsl:value-of select="meteo/now/image"/>.gif</xsl:attribute>
+					</img>
+				</a>
 			</p>
 		</dd>
 		<dd class="bas"><xsl:text> </xsl:text></dd>

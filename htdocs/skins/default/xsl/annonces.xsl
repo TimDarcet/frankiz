@@ -73,18 +73,21 @@
 	<dl class="boite">
 		<dt class="titre">
 			<span class="droitehaut"><xsl:text> </xsl:text></span>
-			<a><xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute></a>      
+			<a><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute><xsl:text> </xsl:text></a>      
 <!-- 			<span><xsl:attribute name="class"><xsl:value-of select="@categorie"/></xsl:attribute><xsl:text> </xsl:text></span> -->
 			<span><xsl:value-of select="@titre"/></span> 
 		</dt>
 		<dd class="contenu">
 		<p class="image">
+			<xsl:text> </xsl:text>
 			<xsl:apply-templates select="image"/>
 		</p>
 		<p class="news">
-		      <xsl:apply-templates/>
+			<xsl:text> </xsl:text>
+			<xsl:apply-templates/>
 		</p>
 		<p class="signature">
+			<xsl:text> </xsl:text>
 			<xsl:choose>
 			<xsl:when test="eleve/@surnom != ''">
 					<xsl:value-of select="eleve/@surnom"/>

@@ -26,7 +26,7 @@
 		<dl id="anniversaires" class="boite">
 			<dt class="titre">
 				<span class="droitehaut"><xsl:text> </xsl:text></span>
-				<span>Joyeux anniversaire: </span>	
+				<span> Joyeux anniversaire </span>	
 			</dt>
 			<dd class="contenu">
 				<xsl:apply-templates select="eleve" mode="anniversaire"/>

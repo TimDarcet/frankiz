@@ -28,14 +28,16 @@
 			<p class="titre">TOL</p>
 			<form enctype="multipart/form-data" method="post">
 				<xsl:attribute name="action"><xsl:value-of select="formulaire/@action"/></xsl:attribute>
-				<input size="12">
-					<xsl:attribute name="name"><xsl:value-of select="formulaire/champ/@id"/></xsl:attribute>
-					<xsl:attribute name="value"><xsl:value-of select="formulaire/champ/@valeur"/></xsl:attribute>
-				</input>
- 				<input type="submit">
-					<xsl:attribute name="name"><xsl:value-of select="formulaire/bouton/@id"/></xsl:attribute>
-					<xsl:attribute name="value">Chercher</xsl:attribute>
-				</input>	
+				<div class="center">
+					<input size="9">
+						<xsl:attribute name="name"><xsl:value-of select="formulaire/champ/@id"/></xsl:attribute>
+						<xsl:attribute name="value"><xsl:value-of select="formulaire/champ/@valeur"/></xsl:attribute>
+					</input>
+					<input type="submit">
+						<xsl:attribute name="name"><xsl:value-of select="formulaire/bouton/@id"/></xsl:attribute>
+						<xsl:attribute name="value">Chercher</xsl:attribute>
+					</input>	
+				</div>
 			</form>
 		</dd>
 		<dd class="bas"><xsl:text> </xsl:text></dd>
