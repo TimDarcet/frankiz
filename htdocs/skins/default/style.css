@@ -14,11 +14,11 @@ body
 
 div#conteneur
 {
-	width: 100% ;
+	width: 98% ;
 	margin: 30px auto ;
 	text-align: left ;
 	background: #fff ;
-	background: url(images/Bar_cote.png) repeat-y left top ;
+	background: url('./images/Bar_cote.png') repeat-y left top ;
 }
 
 
@@ -27,7 +27,7 @@ div#conteneur
 div#header
 {
 	height: 96px ;
-	background: url(images/Bar_haut_2.png) repeat-x left top ;
+	background: url('./images/Bar_haut_2.png') repeat-x left top ;
 }
 
 div#header h1 
@@ -41,7 +41,7 @@ div#header  h1 a
 	width: 666px;
 	height: 96px ;
 	display: block ;
-	background: url(images/Bar_haut_1.png) no-repeat left top ;
+	background: url('./images/Bar_haut_1.png') no-repeat left top ;
 }
 
 div#header h1 a span
@@ -64,7 +64,7 @@ div#header h3 a
 	width: 69px ;
 	height: 96px ;
 	display: block ;
-	background: url(images/Bar_haut_3.png) no-repeat top left ;
+	background: url('./images/Bar_haut_3.png') no-repeat top left ;
 }
 
 div#header h3 a span
@@ -82,11 +82,20 @@ div#centre
 
 div#droite
 {
-	position:absolute;
-	right:2%;
+	float:right;
 	width:200px;
+	position: relative;
 }
 
+ul#menu
+{
+	float:left;
+	height:537px;
+	list-style-type: none ;
+	margin:0;
+	padding:0;
+	position: relative;
+}
 
 p.news
 {
@@ -123,7 +132,7 @@ dl {
 
 dt {
 	height: 25px;
-	background: #fff url(images/cadre-haut.gif) top left no-repeat;
+	background: #fff url('./images/cadre-haut.gif') top left no-repeat;
 	text-align: center;
 }
 dt span {
@@ -143,18 +152,18 @@ dd {
 
 dd.bas {
 	height: 9px;
-	background: #fff url(images/cadre-bas.gif) bottom left no-repeat;
+	background: #fff url('./images/cadre-bas.gif') bottom left no-repeat;
 	border: 0 none; 
 	padding: 0; 
 }
 dd.bas span.cadrebd 
 {
 	float:right;
-	background: url(images/cadre-basd.gif) no-repeat top left;
+	background: url('./images/cadre-basd.gif') no-repeat top left;
 }
 
 
-#droitehaut, #droitebas { /* placement des coin droits en flottants */
+.droitehaut, .droitebas {
 float: right;
 }
 
@@ -163,16 +172,7 @@ float: right;
 
 /* ################### MENU ###################*/
 
-ul#menu
-{
-	position:absolute;
-	left:12px;
-	width:120px;
-	height:537px;
-	list-style-type: none ;
-	margin:0;
-	padding:0;
-}
+
 
 html>body ul#menu {
 	position:absolute;
@@ -182,18 +182,15 @@ html>body ul#menu {
 ul#menu li {
 	margin:0;
 	padding:0;
-	margin-top:-7px;
-}
-html>body ul#menu li 
-{
-	margin-top:-3px;
+	margin-top:-0px !important;
+	margin-top:-4px;
 }
 
 ul#menu li a
 {
 	display:block;
 	width: 115px ;
-	height:35px;
+	height:32px;
 
 }
 
@@ -209,8 +206,8 @@ ul#menu li#top {
 	display:block;
 	width: 115px ;
 	height:11px;
-	background: url(images/Bar_cote_top.png) no-repeat 0 0 !important;
-	background: url(images/Bar_cote_top.png) no-repeat 0 3px ;
+	background: url('./images/Bar_cote_top.png') no-repeat 0 0 !important;
+	background: url('./images/Bar_cote_top.png') no-repeat 0 3px ;
 }
 
 
@@ -218,124 +215,124 @@ ul#menu li#bottom {
 	display:block;
 	width: 115px ;
 	height:10px;
-	background: url(images/Bar_cote_bottom.png) no-repeat 0 0 ;
+	background: url('./images/Bar_cote_bottom.png') no-repeat 0 0 ;
 }
 
-ul#menu li#accueil a 
+ul#menu li#annonces a 
 {
-	background: url(images/Bar_cote_Accueil.png) no-repeat 0 -32px ;
+	background: url('./images/Bar_cote_Accueil.png') no-repeat 0 -32px ;
 }
-ul#menu li#accueil a:hover
+ul#menu li#annonces a:hover
 {
-	background: url(images/Bar_cote_Accueil.png) no-repeat 0 0 ;
+	background: url('./images/Bar_cote_Accueil.png') no-repeat 0 0 ;
 }
 
 ul#menu li#meteo a 
 {
-	background: url(images/Bar_cote_Meteo.png) no-repeat 0 -32px ;
+	background: url('./images/Bar_cote_Meteo.png') no-repeat 0 -32px ;
 }
 ul#menu li#meteo a:hover
 {
-	background: url(images/Bar_cote_Meteo.png) no-repeat 0 0 ;
+	background: url('./images/Bar_cote_Meteo.png') no-repeat 0 0 ;
 }
 
-ul#menu li#docs a
+ul#menu li#doc a
 {
-	background: url(images/Bar_cote_Docs.png) no-repeat 0 -32px ;
+	background: url('./images/Bar_cote_Docs.png') no-repeat 0 -32px ;
 }
-ul#menu li#docs a:hover
+ul#menu li#doc a:hover
 {
-	background: url(images/Bar_cote_Docs.png) no-repeat 0 0 ;
+	background: url('./images/Bar_cote_Docs.png') no-repeat 0 0 ;
 }
 
 ul#menu li#faq a
 {
-	background: url(images/Bar_cote_FAQ.png) no-repeat 0 -32px ;
+	background: url('./images/Bar_cote_FAQ.png') no-repeat 0 -32px ;
 }
 ul#menu li#faq a:hover
 {
-	background: url(images/Bar_cote_FAQ.png) no-repeat 0 0 ;
+	background: url('./images/Bar_cote_FAQ.png') no-repeat 0 0 ;
 }
 
 ul#menu li#xshare a 
 {
-	background: url(images/Bar_cote_xshare.png) no-repeat 0 -32px ;
+	background: url('./images/Bar_cote_xshare.png') no-repeat 0 -32px ;
 }
 ul#menu li#xshare a:hover
 {
-	background: url(images/Bar_cote_xshare.png) no-repeat 0 0 ;
+	background: url('./images/Bar_cote_xshare.png') no-repeat 0 0 ;
 }
 
-ul#menu li#reseau a 
+ul#menu li#profil_rezal a 
 {
-	background: url(images/Bar_cote_reseau.png) no-repeat 0 -32px ;
+	background: url('./images/Bar_cote_reseau.png') no-repeat 0 -32px ;
 }
-ul#menu li#reseau a:hover
+ul#menu li#profil_rezal a:hover
 {
-	background: url(images/Bar_cote_reseau.png) no-repeat 0 0 ;
+	background: url('./images/Bar_cote_reseau.png') no-repeat 0 0 ;
 }
 
-ul#menu li#ibr a
+ul#menu li#infobr a
 {
-	background: url(images/Bar_cote_IBR.png) no-repeat 0 -32px ;
+	background: url('./images/Bar_cote_IBR.png') no-repeat 0 -32px ;
 }
-ul#menu li#ibr a:hover
+ul#menu li#infobr a:hover
 {
-	background: url(images/Bar_cote_IBR.png) no-repeat 0 0 ;
+	background: url('./images/Bar_cote_IBR.png') no-repeat 0 0 ;
 }
 
 ul#menu li#admin a
 {
-	background: url(images/Bar_cote_Admin.png) no-repeat 0 -32px ;
+	background: url('./images/Bar_cote_Admin.png') no-repeat 0 -32px ;
 }
 ul#menu li#admin a:hover
 {
-	background: url(images/Bar_cote_Admin.png) no-repeat 0 0 ;
+	background: url('./images/Bar_cote_Admin.png') no-repeat 0 0 ;
 }
 
 ul#menu li#profil a
 {
-	background: url(images/Bar_cote_Profil.png) no-repeat 0 -32px ;
+	background: url('./images/Bar_cote_Profil.png') no-repeat 0 -32px ;
 }
 ul#menu li#profil a:hover
 {
-	background: url(images/Bar_cote_Profil.png) no-repeat 0 0 ;
+	background: url('./images/Bar_cote_Profil.png') no-repeat 0 0 ;
 }
 
-ul#menu li#connection a
+ul#menu li#connect a
 {
-	background: url(images/Bar_cote_Connect.png) no-repeat 0 -32px ;
+	background: url('./images/Bar_cote_Connect.png') no-repeat 0 -32px ;
 }
-ul#menu li#connection a:hover
+ul#menu li#connect a:hover
 {
-	background: url(images/Bar_cote_Connect.png) no-repeat 0 0 ;
+	background: url('./images/Bar_cote_Connect.png') no-repeat 0 0 ;
 }
 
-ul#menu li#disconnect a
+ul#menu li#deconnect a
 {
-	background: url(images/Bar_cote_Deconnect.png) no-repeat 0 -32px ;
+	background: url('./images/Bar_cote_Deconnect.png') no-repeat 0 -32px ;
 }
-ul#menu li#disconnect a:hover
+ul#menu li#deconnect a:hover
 {
-	background: url(images/Bar_cote_Deconnect.png) no-repeat 0 0 ;
+	background: url('./images/Bar_cote_Deconnect.png') no-repeat 0 0 ;
 }
 
 ul#menu li#binets a
 {
-	background: url(images/Bar_cote_Binets.png) no-repeat 0 -32px ;
+	background: url('./images/Bar_cote_Binets.png') no-repeat 0 -32px ;
 }
 ul#menu li#binets a:hover
 {
-	background: url(images/Bar_cote_Binets.png) no-repeat 0 0 ;
+	background: url('./images/Bar_cote_Binets.png') no-repeat 0 0 ;
 }
 
 ul#menu li#skins a
 {
-	background: url(images/Bar_cote_Skins.png) no-repeat 0 -32px ;
+	background: url('./images/Bar_cote_Skins.png') no-repeat 0 -32px ;
 }
 ul#menu li#skins a:hover
 {
-	background: url(images/Bar_cote_Skins.png) no-repeat 0 0 ;
+	background: url('./images/Bar_cote_Skins.png') no-repeat 0 0 ;
 }
 
 
@@ -346,7 +343,7 @@ div#footer
 	clear:both;
 	width:100%;
 	height:37px;
-	background: url(images/Bar_bas_milieu.png) repeat-x left top ;
+	background: url('./images/Bar_bas_milieu.png') repeat-x left top ;
 }
 
 div#footer span#bas_gauche
@@ -354,7 +351,7 @@ div#footer span#bas_gauche
 	float:left;
 	width:117px;
 	height:37px;
-	background: url(images/Bar_bas_gauche.png) no-repeat left bottom ;
+	background: url('./images/Bar_bas_gauche.png') no-repeat left bottom ;
 }
 
 div#footer span#bas_droit
@@ -364,7 +361,7 @@ div#footer span#bas_droit
 	margin-right:-3px;
 	height:37px;	
 	width:19px;
-	background: url(images/Bar_bas_droit.png) no-repeat top right ;
+	background: url('./images/Bar_bas_droit.png') no-repeat top right ;
 }
 
 div#footer h5 
@@ -381,7 +378,7 @@ div#footer h5 a
 	display:block;
 	width:60px;
 	height:37px;
-	background: url(images/bottom_arrow_top.gif) no-repeat top center;
+	background: url('./images/bottom_arrow_top.gif') no-repeat top center;
 }
 
 div#footer h5 a span
@@ -466,3 +463,9 @@ ul#barre_nav
 {
 	display:block;
 }
+
+
+/* FAQ et Xshare */
+li.noeud_ouvert{list-style-image:url('fold_close.gif')}
+li.noeud_ferme{list-style-image:url('fold_open.gif')}
+ul.feuille{list-style-image:url('question.gif')}

@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.4  2004/11/03 23:38:39  psycow
+	Un bon début
+
 	Revision 1.3  2004/11/03 21:23:03  psycow
 	auvegarde de mon debut dans les xsl
-
+	
 	Revision 1.1  2004/11/03 18:21:32  psycow
 	*** empty log message ***
 	
@@ -66,23 +69,22 @@
 				<h3><a href="http://www.polytechnique.fr" title="Ecole Polytechnique"><span> Site de l'Ecole Polytechnique</span></a></h3>
 			</div>
 		
-		
-			<xsl:apply-templates select="/frankiz/module[@id='liens_navigation']"/>
+			<xsl:apply-templates select="/frankiz/module[@id='liens_navigation']" />
 	
 			<div id="droite">
-				<xsl:apply-templates select="/frankiz/module[@id!='liens_navigation']"/>
-			</div>
+				<xsl:apply-templates select="/frankiz/module[@id!='liens_navigation']" />
+			</div><!--fin #droite -->
 			
 			<div id="centre">
-				<xsl:apply-templates/>
-			</div>
+				<xsl:apply-templates />
+			</div><!--fin #centre -->
 			
 			<div id="footer">
-				<span id="bas_gauche"></span>
-				<span id="bas_droit"></span>
+				<span id="bas_gauche"><b/></span>
+				<span id="bas_droit"><b/></span>
 				<h5><a href="" title="Retour en haut"><span>Retour en Haut</span></a></h5>
 			</div>
-		</div>
+		</div><!--fin #conteneur -->
 		
 	</body>
 	</html>
@@ -93,34 +95,41 @@
 <xsl:template match="/frankiz/module[@id='liste_css']" mode="css">
 	<xsl:for-each select="lien">
 		<link rel="alternate stylesheet" type="text/css">
-			
 			<xsl:attribute name="title"><xsl:value-of select="@titre"/></xsl:attribute>
 		</link>
     </xsl:for-each>
 </xsl:template>
 
-<xsl:template match="/frankiz/module[@id='liens_navigation']" mode="css">
+
+<xsl:template match="/frankiz/module[@id='liens_navigation']">
 	<ul id="menu">
 		<li id="top"></li>
 		<xsl:for-each select="lien">
-		<li>
-			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
-			<a>
-				<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
-				<span><xsl:value-of select="@titre"/></span>
-			</a>
-		</li>
+		<li><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute><a><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute><span><xsl:value-of select="@titre"/></span></a></li>
 		</xsl:for-each>
     		<li id="bottom"></li>
 	</ul>
 </xsl:template>
 
-
 <!-- Définition des modules -->
-<xsl:template match="/frankiz/module">
+<xsl:template match="/frankiz/module[@id!='liens_navigation']">
 	<xsl:if test="(boolean(@visible) = false) or (@visible = 'true')">
-		<xsl:value-of select="@titre"/>
-		<xsl:apply-templates/>
+	<dl>
+		<dt>
+			<img class="droitehaut" src="images/cadre-hautd.gif" alt="" />
+			<span><xsl:value-of select="@titre"/></span>	
+		</dt>
+		<dd>
+			<p class="news">
+				<xsl:apply-templates/>
+			</p>
+		</dd>
+		<dd class="bas">
+			<img class="droitebas" src="images/cadre-basd.gif" alt="" />
+		</dd>
+	</dl>
+	<br />
+	<br />
 	</xsl:if>
 </xsl:template>
 
@@ -128,7 +137,7 @@
 <xsl:template match="page/annonce">
 	<dl>
 		<dt>
-			<img id="droitehaut" src="images/cadre-hautd.gif" alt="" />
+			<img class="droitehaut" src="images/cadre-hautd.gif" alt="" />
 			<span><xsl:value-of select="@titre"/> (<xsl:value-of select="@date"/>)</span>	
 		</dt>
 		<dd>
@@ -143,15 +152,17 @@
 			</p>
 		</dd>
 		<dd class="bas">
-			<img id="droitebas" src="images/cadre-basd.gif" alt="" />
+			<img class="droitebas" src="images/cadre-basd.gif" alt="" />
 		</dd>
 	</dl>
+	<br />
+	<br />
 </xsl:template>
 
 <xsl:template match="cadre">
 	<dl>
 		<dt>
-			<img id="droitehaut" src="images/cadre-hautd.gif" alt="" />
+			<img class="droitehaut" src="images/cadre-hautd.gif" alt="" />
 			<span><xsl:value-of select="@titre"/> (<xsl:value-of select="@date"/>)</span>	
 		</dt>
 		<dd>
@@ -163,9 +174,11 @@
 			</p>
 		</dd>
 		<dd class="bas">
-			<img id="droitebas" src="images/cadre-basd.gif" alt="" />
+			<img class="droitebas" src="images/cadre-basd.gif" alt="" />
 		</dd>
 	</dl>
+	<br />
+	<br />
 </xsl:template>
 
 <xsl:template match="module/annonce">

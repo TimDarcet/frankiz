@@ -21,11 +21,9 @@
 	Balises de formatage.
 	
 	$Log$
-	Revision 1.2  2004/11/03 21:23:03  psycow
-	auvegarde de mon debut dans les xsl
+	Revision 1.3  2004/11/03 23:38:39  psycow
+	Un bon début
 
-	Revision 1.1  2004/11/03 18:21:32  psycow
-	*** empty log message ***
 	
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -49,7 +47,6 @@
 		<a class="lien"><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
 		<xsl:value-of select="@titre"/><xsl:apply-templates/>
 		</a><br />
-	</xsl:choose>
 	</xsl:when><xsl:otherwise>
 		<a class="lien"><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
 		<xsl:value-of select="@titre"/><xsl:apply-templates/>
@@ -62,7 +59,6 @@
 		<xsl:value-of select="@titre"/><xsl:apply-templates/>
 	</a><br />
 </xsl:template>
-
 
 <!-- Listes -->
 <xsl:template match="liste">
