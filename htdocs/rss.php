@@ -21,10 +21,13 @@
 	Affichage de flux rss externes.
 
 	$Log$
+	Revision 1.19  2005/01/02 22:14:33  pico
+	Devrait fixer les pbs concernant les flux rss
+
 	Revision 1.18  2004/11/24 22:56:18  schmurtz
 	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
 	globale pour tous les fichiers.
-
+	
 	Revision 1.17  2004/11/24 16:37:09  pico
 	Ajout des news externes en tant que module
 	
@@ -70,10 +73,11 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <?
 
 $liens = $_SESSION['rss'];
-foreach($liens as $value => $mode){
-	if($mode == 'complet' || $mode == 'sommaire') rss_xml($value,$mode);
+if(is_array($liens)){
+	foreach($liens as $value => $mode){
+		if($mode == 'complet' || $mode == 'sommaire') rss_xml($value,$mode);
+	}
 }
-
 ?>
 </page>
 <?

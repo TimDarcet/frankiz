@@ -21,9 +21,12 @@
 	Page permettant de modifier son profil 
 	
 	$Log$
+	Revision 1.7  2005/01/02 22:14:33  pico
+	Devrait fixer les pbs concernant les flux rss
+
 	Revision 1.6  2004/12/17 21:52:50  pico
 	Ne buggue plus si pas de kazert
-
+	
 	Revision 1.5  2004/12/16 16:45:14  schmurtz
 	Correction d'un bug dans la gestion des authentifications par cookies
 	Ajout de fonctionnalitees de log d'erreur de connections ou lors des bugs
@@ -63,7 +66,7 @@ require "../include/page_header.inc.php";
 	<h2>Changer l'apparence du site</h2>
 		<lien titre="Changer de skin" url="profil/skin.php"/><br/>
 		<lien titre="Gérer mes liens perso" url="profil/liens_ext.php"/><br/>
-		<!--<lien titre="Gérer mes annonces externes" url="profil/liens_ext.php#form_rss"/><br/>-->
+		<lien titre="Gérer mes annonces externes" url="profil/liens_ext.php#form_rss"/><br/>
 
 	<h2>Changer mon profil sur le réseau</h2>
 		<lien titre="Gérer mes données réseau" url="profil/reseau.php"/><br/>

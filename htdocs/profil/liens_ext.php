@@ -21,10 +21,13 @@
 	Gestions des liens perso / des flux rss.
 
 	$Log$
+	Revision 1.8  2005/01/02 22:14:33  pico
+	Devrait fixer les pbs concernant les flux rss
+
 	Revision 1.7  2004/12/15 06:13:30  kikx
 	Ct trop la merde ....
 	pico tu le remettra qd tu auras debuggué car la moi je peux plus :(
-
+	
 	Revision 1.6  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
@@ -139,7 +142,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 </formulaire>
 
 <?
-/*
+
 ?>
 	<formulaire id="form_rss" titre="Choix des RSS" action="profil/liens_ext.php">
 		<note>Choisis quelles infos tu veux avoir sur ta page de news externes</note>
@@ -190,7 +193,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<bouton titre="Appliquer" id="OK_rss" />
 	</formulaire>
 <?
-*/
+
 ?>
 </page>
 <?
