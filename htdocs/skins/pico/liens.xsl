@@ -63,7 +63,7 @@
 </xsl:template>
 
 <xsl:template match="module[@id='liens_navigation']">
-	 <div class="fkz_titre"><span id="contacts_logo"><span id="contacts">Contribuer</span></span></div>
+	 <div class="fkz_titre"><span id="navigation_logo"><span id="navigation">Navigation dans le site</span></span></div>
 	 <div class="fkz_liens_nav">
 		<ul class="fkz_liens_nav">
 			<xsl:for-each select="lien">

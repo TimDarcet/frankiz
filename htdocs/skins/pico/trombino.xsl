@@ -24,28 +24,33 @@
 <xsl:template match="page[@id='trombino']">
 	<div class="fkz_trombino">
 		<xsl:for-each select="eleve">
-			<p>
+			<p class="nom">
 				<xsl:value-of select="@prenom" />
 				<xsl:text> </xsl:text>
 				<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
 			</p>
-			<p>
+			<p class="surnom">
 				<xsl:value-of select="@surnom" />
 			</p>
-			<p>
+			<p class="promo">
 				<xsl:value-of select="@promo" />
 			</p>
-			<p>Tel:
-				<xsl:value-of select="@phone"/>  Casert:
+			<p class="telephone">Tel:
+				<xsl:value-of select="@phone"/>
+			</p>
+			<p class="casert">
+				Casert:
 			<xsl:value-of select="@casert"/>
 			</p>
-			<p>Section: <xsl:value-of select="@section"/>
+			<p class="section">Section: <xsl:value-of select="@section"/>
 			</p>
-			<p>Binets:
-				<xsl:for-each select="liste[@id='binets']/element">
-					<xsl:value-of select="current()"/>, 
+			<div class="binets">Binets:
+				<ul>
+				<xsl:for-each select="binet">
+					<li><xsl:value-of select="@nom"/><xsl:text>  </xsl:text><em>(<xsl:value-of select="text()"/>)</em></li>
 				</xsl:for-each>
-			</p>
+				</ul>
+			</div>
 			<p>
 				<a>
 					<xsl:attribute name="href"><xsl:text>trombino/index.php?image=true&amp;login=</xsl:text><xsl:value-of select="@login"/><xsl:text>&amp;promo=</xsl:text><xsl:value-of select="@promo"/></xsl:attribute>

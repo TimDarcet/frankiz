@@ -60,39 +60,42 @@
 		<xsl:apply-templates select="frankiz/module[@id='liste_css']" mode="css"/>
 	</head>
 	<body>
-		<div class="fkz_logo"><a href="index.php"><span class="fkz_logo">Frankiz, le site Web des élèves</span></a></div>
-
-	<xsl:apply-templates select="frankiz/module[@id='liens_navigation']"/>
-	<div class="fkz_page">
-		<div class="fkz_centre">
-			<xsl:apply-templates select="frankiz/module[@id='anniversaires']"/>
-			<xsl:apply-templates select="frankiz/page[@id='accueil']" mode="sommaire"/>
-			<xsl:apply-templates select="frankiz/page[@id='accueil']" mode="complet"/>
-			<xsl:apply-templates select="frankiz/page[@id='trombino']"/>
-			<xsl:apply-templates select="frankiz/page[@id!='accueil' and @id!='trombino']"/>
+		<div class="fkz_entetes">
+			<a href="index.php"><div class="fkz_logo"><span class="fkz_logo">Frankiz,</span></div></a>
+			<div  class="fkz_logo_eleves"><span class="fkz_logo_eleves">le site Web des élèves</span></div>
 		</div>
-		<div class="fkz_gauche">
-			<xsl:apply-templates select="frankiz/module[@id='activites']"/>
-			<xsl:apply-templates select="frankiz/module[@id='liens_contacts']"/>
-			<xsl:apply-templates select="frankiz/module[@id='liens_ecole']"/>
-			<xsl:apply-templates select="frankiz/module[@id='meteo']"/>
-			<xsl:apply-templates select="frankiz/module[@id='stats']"/>
+		<div class="fkz_page">
+			<div class="fkz_centre">
+				<xsl:apply-templates select="frankiz/module[@id='anniversaires']"/>
+				<xsl:apply-templates select="frankiz/page[@id='accueil']" mode="sommaire"/>
+				<xsl:apply-templates select="frankiz/page[@id='accueil']" mode="complet"/>
+				<xsl:apply-templates select="frankiz/page[@id='trombino']"/>
+				<xsl:apply-templates select="frankiz/page[@id!='accueil' and @id!='trombino']"/>
+			</div>
+			<div class="fkz_gauche">
+				<xsl:apply-templates select="frankiz/module[@id='liens_navigation']"/>
+				<xsl:apply-templates select="frankiz/module[@id='activites']"/>
+				<xsl:apply-templates select="frankiz/module[@id='liens_contacts']"/>
+				<xsl:apply-templates select="frankiz/module[@id='liens_ecole']"/>
+				<xsl:apply-templates select="frankiz/module[@id='stats']"/>
+			</div>
+	
+			<div class="fkz_droite">
+				<xsl:apply-templates select="frankiz/module[@id='tour_kawa']"/>
+				<xsl:apply-templates select="frankiz/module[@id='qdj']"/>
+				<xsl:apply-templates select="frankiz/module[@id='qdj_hier']"/>
+				<xsl:apply-templates select="frankiz/module[@id='meteo']"/>
+				<xsl:if test="count(frankiz/module[@id='qdj']|frankiz/module[@id='qdj_hier']|frankiz/module[@id='tour_kawa'])">
+					<p class="valid">
+						<a href="http://validator.w3.org/check?uri=referer">
+							<span class="valid_xhtml"><xsl:text> </xsl:text></span>
+						</a>
+						<span class="valid_css"><xsl:text> </xsl:text></span>
+					</p>
+				</xsl:if>
+			</div>
 		</div>
-
-		<div class="fkz_droite">
-			<xsl:apply-templates select="frankiz/module[@id='tour_kawa']"/>
-			<xsl:apply-templates select="frankiz/module[@id='qdj']"/>
-			<xsl:apply-templates select="frankiz/module[@id='qdj_hier']"/>
-			<xsl:if test="count(frankiz/module[@id='qdj']|frankiz/module[@id='qdj_hier']|frankiz/module[@id='tour_kawa'])">
-				<p class="valid">
-					<a href="http://validator.w3.org/check?uri=referer">
-						<span class="valid_xhtml"><xsl:text> </xsl:text></span>
-					</a>
-					<span class="valid_css"><xsl:text> </xsl:text></span>
-				</p>
-			</xsl:if>
-		</div>
-	</div>
+		<div class="fkz_end_page"><xsl:text> </xsl:text></div>
 	</body>
 	</html>
 </xsl:template>

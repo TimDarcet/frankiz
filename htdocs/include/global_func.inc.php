@@ -22,9 +22,12 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.24  2004/11/10 21:39:44  pico
+	Corrections skin + fonction deldir + faq
+
 	Revision 1.23  2004/11/08 11:57:58  pico
 	Déplacement de la fonction deldir (pas une fonction de compression)
-
+	
 	Revision 1.22  2004/11/06 20:52:08  kikx
 	Reordonnancement des liens
 	
@@ -172,11 +175,11 @@ function cache_sauver($cache_id) {
 
 /* Supprime un répertoire complet et renvoit true lorsque tout c'est bien passé */
 function deldir($dir) {
-	if (!file_exists($dirname)) {
+	if (!file_exists($dir)) {
 		return false;
 	}
-	if (is_file($dirname)) {
-		return unlink($dirname);
+	if (is_file($dir)) {
+		return unlink($dir);
 	}
 	$dh=opendir($dir);
 	while ($file=readdir($dh)) {

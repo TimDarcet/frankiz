@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.20  2004/11/10 21:39:44  pico
+		Corrections skin + fonction deldir + faq
+
 		Revision 1.19  2004/11/08 11:46:27  pico
 		Modif pour utiliser la fonction deldir
-
+		
 		Revision 1.18  2004/11/07 00:07:47  pico
 		Utilisation de la fonction unzip pour dezipper une archive
 		
@@ -89,76 +92,74 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
 
-	// Supprimer le répertoire
-	if($val == "submit"){
-		if ($temp[0]=='rmdir') {
-			$DB_web->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
-			list($dir) = $DB_web->next_row();
-			$dir = BASE_DATA."faq/".$dir;
+// Supprimer le répertoire
+	if ($temp[0]=='rmdir') {
+		$DB_web->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
+		list($dir) = $DB_web->next_row();
+		$dir = BASE_DATA."faq/".$dir;
+		deldir($dir);
+		$DB_web->query("DELETE FROM faq WHERE faq_id='{$temp[1]}'");
+		$DB_web->query("DELETE FROM faq WHERE parent='{$temp[1]}'");
+		echo "<warning>Repertoire Supprimé</warning>";
+	}
+	
+	if (($temp[0]=='adddir') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='')) {
+		$nom = $_REQUEST['nom'];
+		if(isset($_REQUEST['desc'])) $desc = $_REQUEST['desc']; else $desc = $nom;
+		$DB_web->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
+		list($dir) = $DB_web->next_row();
+		$dir=$dir."/".strtolower(str_replace(" ","",$nom));
+		$DB_web-> query("INSERT INTO faq SET parent='{$temp[1]}',question='{$desc}',reponse='{$dir}'");
+		mkdir(BASE_DATA."faq/".$dir);
+		echo "<commentaire>Repertoire crée".BASE_DATA."faq/".$dir."</commentaire>";
+	}
+	
+	if (($temp[0]=='ajout') && isset($_REQUEST['question']) && ($_REQUEST['question']!='') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='') && (isset($_FILES['file']))) {
+		$question = $_REQUEST['question'];
+		$DB_web->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
+		list($dir) = $DB_web->next_row();
+		mkdir(BASE_DATA."faq/".$dir."/".$_REQUEST['nom']);
+		if($_FILES['file']['type'] == "text/html"){
+			$filename = $dir."/".$_REQUEST['nom']."/index.php";
+			move_uploaded_file($_FILES['file']['tmp_name'], BASE_DATA."faq/".$filename);
+		}
+		else {
+			$filename = $dir."/".$_REQUEST['nom']."/".$_FILES['file']['name'];
+			move_uploaded_file($_FILES['file']['tmp_name'], BASE_DATA."faq/".$filename);
+			unzip(BASE_DATA."faq/".$filename , BASE_DATA."faq/".$dir."/".$_REQUEST['nom'] , true);
+		}
+		
+		if(file_exists(BASE_DATA."faq/".$dir."/".$_REQUEST['nom']."/index.php")){
+			$filename = $dir."/".$_REQUEST['nom']."/index.php";
+			$DB_web-> query("INSERT INTO faq SET parent='{$temp[1]}' , question='{$question}' , reponse='{$filename}'");
+			echo "<commentaire>FAQ ajoutée</commentaire>";
+		}
+		else if(file_exists(BASE_DATA."faq/".$dir."/".$_REQUEST['nom']."/index.html")){
+			$filename = $dir."/".$_REQUEST['nom']."/index.html";
+			$DB_web-> query("INSERT INTO faq SET parent='{$temp[1]}' , question='{$question}' , reponse='{$filename}'");
+			echo "<commentaire>FAQ ajoutée</commentaire>";
+		}
+		else{
+			echo "<warning>Impossible de trouver un fichier index.html ou index.php dans la FAQ soumise<br/> opération annulée</warning>";
+			$dir = BASE_DATA."faq/".$dir."/".$_REQUEST['nom'];
 			deldir($dir);
-			$DB_web->query("DELETE FROM faq WHERE faq_id='{$temp[1]}'");
-			$DB_web->query("DELETE FROM faq WHERE parent='{$temp[1]}'");
-			echo "<warning>Repertoire Supprimé</warning>";
 		}
+	}
+	
+	if (($temp[0]=='modif') && isset($_REQUEST['question']) && ($_REQUEST['question']!='')) {
+		$question = $_REQUEST['question'];
+		$DB_web-> query("UPDATE faq SET question='{$question}' WHERE faq_id='{$temp[1]}' ");
+		echo "<commentaire>FAQ modifiée</commentaire>";
+	}
+	
+	if ($temp[0]=='suppr') {
+		$DB_web->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
+		list($dir) = $DB_web->next_row();
+		unlink(BASE_DATA."faq/".$dir);
+		rmdir(substr(BASE_DATA."faq/".$dir, 0, -10));
+		$DB_web->query("DELETE FROM faq WHERE faq_id='{$temp[1]}' ");
 		
-		if (($temp[0]=='adddir') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='')) {
-			$nom = $_REQUEST['nom'];
-			if(isset($_REQUEST['desc'])) $desc = $_REQUEST['desc']; else $desc = $nom;
-			$DB_web->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
-			list($dir) = $DB_web->next_row();
-			$dir=$dir."/".strtolower(str_replace(" ","",$nom));
-			$DB_web-> query("INSERT INTO faq SET parent='{$temp[1]}',question='{$desc}',reponse='{$dir}'");
-			mkdir(BASE_DATA."faq/".$dir);
-			echo "<commentaire>Repertoire crée".BASE_DATA."faq/".$dir."</commentaire>";
-		}
-		
-		if (($temp[0]=='ajout') && isset($_REQUEST['question']) && ($_REQUEST['question']!='') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='') && (isset($_FILES['file']))) {
-			$question = $_REQUEST['question'];
-			$DB_web->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
-			list($dir) = $DB_web->next_row();
-			mkdir(BASE_DATA."faq/".$dir."/".$_REQUEST['nom']);
-			if($_FILES['file']['type'] == "text/html"){
-				$filename = $dir."/".$_REQUEST['nom']."/index.php";
-				move_uploaded_file($_FILES['file']['tmp_name'], BASE_DATA."faq/".$filename);
-			}
-			else {
-				$filename = $dir."/".$_REQUEST['nom']."/".$_FILES['file']['name'];
-				move_uploaded_file($_FILES['file']['tmp_name'], BASE_DATA."faq/".$filename);
-				unzip(BASE_DATA."faq/".$filename , BASE_DATA."faq/".$dir."/".$_REQUEST['nom'] , true);
-			}
-			
-			if(file_exists(BASE_DATA."faq/".$dir."/".$_REQUEST['nom']."/index.php")){
-				$filename = $dir."/".$_REQUEST['nom']."/index.php";
-				$DB_web-> query("INSERT INTO faq SET parent='{$temp[1]}' , question='{$question}' , reponse='{$filename}'");
-				echo "<commentaire>FAQ ajoutée</commentaire>";
-			}
-			else if(file_exists(BASE_DATA."faq/".$dir."/".$_REQUEST['nom']."/index.html")){
-				$filename = $dir."/".$_REQUEST['nom']."/index.html";
-				$DB_web-> query("INSERT INTO faq SET parent='{$temp[1]}' , question='{$question}' , reponse='{$filename}'");
-				echo "<commentaire>FAQ ajoutée</commentaire>";
-			}
-			else{
-				echo "<warning>Impossible de trouver un fichier index.html ou index.php dans la FAQ soumise<br/> opération annulée</warning>";
-				$dir = BASE_DATA."faq/".$dir."/".$_REQUEST['nom'];
-				deldir($dir);
-			}
-		}
-		
-		if (($temp[0]=='modif') && isset($_REQUEST['question']) && ($_REQUEST['question']!='')) {
-			$question = $_REQUEST['question'];
-			$DB_web-> query("UPDATE faq SET question='{$question}' WHERE faq_id='{$temp[1]}' ");
-			echo "<commentaire>FAQ modifiée</commentaire>";
-		}
-		
-		if ($temp[0]=='suppr') {
-			$DB_web->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
-			list($dir) = $DB_web->next_row();
-			unlink(BASE_DATA."faq/".$dir);
-			rmdir(substr(BASE_DATA."faq/".$dir, 0, -10));
-			$DB_web->query("DELETE FROM faq WHERE faq_id='{$temp[1]}' ");
-			
-			echo "<warning>Fichier supprimé</warning>";
-		}
+		echo "<warning>Fichier supprimé</warning>";
 	}
 }
 
@@ -336,7 +337,7 @@ echo "<br/>" ;
 	{
 	?>
 	<!-- Supprimer le dossier en cours -->
-	<? if(isset($_REQUEST['dir_id'])) $dir_id = $_REQUEST['dir_id']; else $dir_id="0"; ?>
+	<? if(isset($_REQUEST['dir_id'])) $dir_id = $_REQUEST['dir_id']; else $dir_id="1"; ?>
 	<formulaire id="faq_<? echo $dir_id ?>" titre="Supprimer ce dossier" action="admin/faq.php">
 	<? foreach ($_GET AS $keys => $val){
 		if((!strstr($keys,"rmdir"))&&(!strstr($keys,"rmdir"))) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
