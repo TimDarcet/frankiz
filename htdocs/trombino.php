@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.36  2004/12/15 23:07:05  pico
+	Correction recherche tel sur le trombi
+
 	Revision 1.35  2004/12/15 21:09:51  pico
 	On peut rechercher les gens dont c'est l'anniversaire dans le trombi
-
+	
 	Revision 1.34  2004/12/15 04:32:44  falco
 	Bugfix TOL #2 : " " converts into "-"
 	
@@ -163,7 +166,7 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['anniversaire'])&&isset($_REQU
 
 		$where_like = array(
 				'nom' => 'eleves.nom',	'prenom' => 'prenom',   'casert' => 'piece_id',
-				/*'phone' => '',*/		'surnom' => 'surnom',   'mail' => 'mail',
+				'phone' => 'pieces.tel',		'surnom' => 'surnom',   'mail' => 'mail',
 				'loginpoly' => 'login');
 		foreach($where_like as $post_arg => $db_field)
 			if(!empty($_REQUEST[$post_arg]))
