@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.50  2005/01/12 21:34:42  pico
+	Change l'affichage des photos du trombi, par contre, on ne peut pas ouvrir dans une nouvelle fenetre, car ce n'est pas valide xhtml strict
+
 	Revision 1.49  2005/01/05 20:56:35  pico
 	Pour un blattage injustifié dans l'IK, la modif est sortie avant la parution officielle :)
-
+	
 	Revision 1.48  2005/01/02 10:50:25  pico
 	Passage de certaines pages en visibles de l'intérieur (non loggué)
 	
@@ -167,8 +170,16 @@ if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "true") && ($_REQUEST['im
 	exit;
 }
 
+
+
 require "include/page_header.inc.php";
 echo "<page id='trombino' titre='Frankiz : Trombino'>\n";
+
+// Récupération d'une image dans une page
+if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "show") && ($_REQUEST['image'] != "")){
+	echo "<image source=\"trombino.php?image=true&amp;login={$_REQUEST['login']}&amp;promo={$_REQUEST['promo']}\" legende=\"{$_REQUEST['login']} ({$_REQUEST['promo']})\"/>";
+	echo "<image source=\"trombino.php?original&amp;image=true&amp;login={$_REQUEST['login']}&amp;promo={$_REQUEST['promo']}\" legende=\"{$_REQUEST['login']} ({$_REQUEST['promo']}) - originale\"/>";
+}
 
 // Affichage des réponses
 if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['binets'])||(isset($_REQUEST['anniversaire'])&&isset($_REQUEST['promo']))||isset($_REQUEST['anniversaire_week'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_REQUEST['q_search']))))) {
