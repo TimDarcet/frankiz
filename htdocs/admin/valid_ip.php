@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.32  2005/01/10 08:25:40  pico
+	Plus sûr
+
 	Revision 1.31  2005/01/10 08:20:57  pico
 	Ajoute le numero de prise
-
+	
 	Revision 1.30  2005/01/10 08:16:39  pico
 	Correction bug #21 aussi (on pouvait pas virer les ip des gens)
 	
@@ -136,7 +139,7 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0] == "ok") {
 		$temp2 = "ajout_ip_".$temp[1] ;
 		$temp3 = "raison_".$temp[1] ;
-		$DB_trombino->query("SELECT piece_id,p.prise_id FROM eleves LEFT JOIN admin.prises AS p USING(piece_id) WHERE eleve_id='{$temp[1]}' AND p.type='principale'") ;
+		$DB_trombino->query("SELECT e.piece_id,p.prise_id FROM eleves as e LEFT JOIN admin.prises AS p USING(piece_id) WHERE e.eleve_id='{$temp[1]}' AND p.type='principale'") ;
 		list($kzert,$id_prise) = $DB_trombino->next_row();
 		
 		$DB_admin->query("SELECT 0 FROM prises WHERE ip='{$_POST[$temp2]}'");
