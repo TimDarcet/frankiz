@@ -3,9 +3,12 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.20  2004/10/21 08:33:07  pico
+	Chgts divers pour matcher avec la balise <html>
+
 	Revision 1.19  2004/10/20 23:45:48  schmurtz
 	<br/> ==> <br /> pour compatibilite avec IE
-
+	
 	Revision 1.18  2004/10/20 20:16:00  schmurtz
 	Correction d'un bug de la skin basic : dans une liste, les boutons/champs
 	s'affichaient dans la mauvaise colonne.
@@ -53,7 +56,7 @@
 	<xsl:apply-templates select="commentaire"/>
 
 	<!-- le formulaire lui même, mis en page avec une table -->
-	<form enctype="multipart/form-data" method="POST">
+	<form enctype="multipart/form-data" method="post">
 			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<table class="formulaire" cellspacing="0" cellpadding="0">
 			<!-- le titre du formulaire -->

@@ -77,7 +77,7 @@
 	<xsl:value-of select="@titre"/>
       </b></div>
       <br/>
-      <xsl:value-of select="current()"/>
+      <xsl:apply-templates select="html"/>
       <p style="text-align: right">
       <xsl:choose>
       <xsl:when test="eleve/@surnom != ''">

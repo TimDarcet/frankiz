@@ -1,9 +1,12 @@
 <? 
 /*
 		$Log$
+		Revision 1.18  2004/10/21 08:33:07  pico
+		Chgts divers pour matcher avec la balise <html>
+
 		Revision 1.17  2004/10/20 23:04:06  pico
 		Affichage de l'arbre mieux respecté
-
+		
 		Revision 1.16  2004/10/20 22:41:01  pico
 		Encore un ptit truc
 		
@@ -263,7 +266,8 @@ echo "<br/>" ;
 	<a name='reponse' />
 	<? 
 	$repfaq = "../../data/faq/".$reponse;
-	echo "<cadre titre=\"Q: ".$question."\">";
+	echo "<cadre titre=\"Q: ".$question."\">\n";
+	echo "<html>";
 	if(file_exists($repfaq)){
  		if($texte = fopen($repfaq,"r")){
  	 		while(!feof($texte))
@@ -273,7 +277,7 @@ echo "<br/>" ;
    			}
  	 		fclose($texte);
 		}
-	echo "</cadre>";
+	echo "</html>\n</cadre>";
 	} else {
 	?>
 	<warning>Erreur : Impossible de trouver cette question </warning>

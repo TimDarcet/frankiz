@@ -3,9 +3,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.2  2004/10/21 08:33:07  pico
+	Chgts divers pour matcher avec la balise <html>
+
 	Revision 1.1  2004/10/20 22:18:03  pico
 	Mise à jour skin
-
+	
 	Revision 1.11  2004/10/20 19:58:02  pico
 	Changement skin pico -> valide html strict
 	Changement des balises qui étaient pas valides
@@ -149,6 +152,8 @@
 <xsl:template match="a">
 	<a><xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute><xsl:attribute name="href"><xsl:value-of select="@href"/></xsl:attribute><xsl:apply-templates/></a>
 </xsl:template>
-
+<xsl:template match="html"><!-- très moche car impossible à skinner, mais parfois indispensable -->
+	<xsl:value-of disable-output-escaping="yes" select="text()"/>
+</xsl:template>
 
 </xsl:stylesheet>

@@ -7,7 +7,7 @@
 		<xsl:choose>
 		<xsl:when test="boolean(qdj[@action])">
 			<div class="qdj_question"><xsl:value-of select="qdj/question"/></div><br/>
-			<div class="fkz_qdj_rouje" width="50%">
+			<div class="fkz_qdj_rouje">
 			<a>
 			<xsl:attribute name="href"><xsl:value-of select="qdj/@action"/>1</xsl:attribute>
 			<img src="skins/pico/pointrouje.gif" border="0"/><br/>
