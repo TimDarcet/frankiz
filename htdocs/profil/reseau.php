@@ -22,9 +22,12 @@
 	ses machines, son compte xnet.
 	
 	$Log$
+	Revision 1.16  2004/11/04 23:31:44  pico
+	Erreur d'incrémentation -> pas de changement de mdp xnet possible si on n'avait qu'une seule ip
+
 	Revision 1.15  2004/11/01 19:23:56  pico
 	Affiche les messages d'erreur
-
+	
 	Revision 1.14  2004/10/31 18:20:24  kikx
 	Rajout d'une page pour les plan (venir à l'X)
 	
@@ -97,10 +100,9 @@ require "../include/page_header.inc.php";
 	<note>Si tu souhaite une nouvelle ip clique <lien titre='ici' url='profil/demande_ip.php'/>
 <?
 		$bool_ip = $ip{$id_ip}!=$_SERVER['REMOTE_ADDR'];
-		
+		$id_ip++;
 		if($DB_admin->num_rows()>1) {
 			echo "<p>&nbsp;</p><p>Tu as en plus fait rajouter ces ips à tes ip autorisées :</p>" ;
-			$id_ip++;
 			while(list($kzert,$prise,$ip{$id_ip},$type) = $DB_admin->next_row()) { 
 				echo "<p>".$ip{$id_ip}."</p>" ;
 				$bool_ip = $bool_ip&&($ip{$id_ip}!=$_SERVER['REMOTE_ADDR']) ;
