@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.37  2005/01/10 09:49:11  pico
+	Erreur
+
 	Revision 1.36  2005/01/10 09:15:19  pico
 	Grr
-
+	
 	Revision 1.34  2005/01/10 09:06:02  pico
 	Pb de lock sur les tables mysql
 	
@@ -155,7 +158,7 @@ foreach ($_POST AS $keys => $val){
 		// S'il n'y a aucune entrée avec cette ip dans la base
 		if ($DB_admin->num_rows()==0){
 			$DB_valid->query("DELETE FROM valid_ip WHERE eleve_id='{$temp[1]}'");
-			$DB_admin->query("INSERT prises AS p SET prise_id='$id_prise',piece_id='$kzert',ip='{$_POST[$temp2]}',type='secondaire'");
+			$DB_admin->query("INSERT prises SET prise_id='$id_prise',piece_id='$kzert',ip='{$_POST[$temp2]}',type='secondaire'");
 			
 			$contenu = "Bonjour, <br><br>".
 						"Nous t'avons attribué l'adresse IP suivante :<br>".
