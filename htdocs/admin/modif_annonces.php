@@ -21,9 +21,12 @@
 	Page qui permet aux admins de modifier une annonce validée
 	
 	$Log$
+	Revision 1.14  2005/01/04 21:44:40  pico
+	Remise en place du lien vers l'helpwiki parce que le résumé en bas de page est incomprehensible
+
 	Revision 1.13  2005/01/04 21:23:37  pico
 	Pour pouvoir remettre une annonce périmée depuis moins de 2 jours
-
+	
 	Revision 1.12  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
 	
@@ -147,7 +150,9 @@ $DB_valid->query("UNLOCK TABLES");
 ?>
 
 		<formulaire id="annonce_<? echo $id ?>" titre="L'annonce" action="admin/modif_annonces.php">
-
+			<note>
+				Le texte de l'annonce utilise le format wiki rappelé en bas de la page et décrit dans l'<lien url="helpwiki.php" titre="aide wiki"/><br/>
+			</note>
 			<champ id="titre" titre="Le titre" valeur="<? echo $titre ;?>"/>
 			<zonetext id="text" titre="Le texte"><?=$contenu?></zonetext>
 			<champ id="date" titre="Date de péremption" valeur="<? echo $date ;?>"/>

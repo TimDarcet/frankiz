@@ -21,9 +21,12 @@
 	Mail promo permettant l'envoie de pièce jointes et de formatage HTML
 	
 	$Log$
+	Revision 1.18  2005/01/04 21:44:40  pico
+	Remise en place du lien vers l'helpwiki parce que le résumé en bas de page est incomprehensible
+
 	Revision 1.17  2004/12/15 03:37:42  kikx
 	Photo d'ortho
-
+	
 	Revision 1.16  2004/12/15 00:05:04  schmurtz
 	Plus beau
 	
@@ -106,6 +109,10 @@ list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_ro
 if (!isset($_REQUEST['envoie'])) {
 ?>
 	<formulaire id="mail_promo" titre="Mail Promo" action="proposition/mail_promo.php">
+		<note>
+			Le texte du mail promo utilise le format wiki rappelé en bas de la page et décrit dans l'<lien url="helpwiki.php" titre="aide wiki"/><br/>
+			Pour toute remarque particulière, envoyer un mail à <lien url="mailto:prez@frankiz.polytechnique.fr" titre="prez@frankiz"/>
+		</note>
 		<choix titre="Promo" id="promo" type="combo" valeur="<? if (isset($_POST['promo'])) echo  $_POST['promo'] ;?>">
 		<?
 			$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");

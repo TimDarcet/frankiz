@@ -19,10 +19,13 @@
 */
 /*
 	$Log$
+	Revision 1.4  2005/01/04 21:44:40  pico
+	Remise en place du lien vers l'helpwiki parce que le résumé en bas de page est incomprehensible
+
 	Revision 1.3  2004/12/14 22:16:06  schmurtz
 	Correction de bug du moteur wiki.
 	Simplication du code.
-
+	
 	Revision 1.2  2004/12/14 14:18:11  schmurtz
 	Suppression de la page de doc wiki : doc directement dans les pages concernees.
 	
@@ -45,6 +48,9 @@ require "include/page_header.inc.php";
 		<?php echo wikiVersXML($_POST['contenu']) ?>
 	</cadre>
 	<formulaire id="bacasable" titre="Bac à sable" action="bacasable.php">
+		<note>
+			Le texte utilise le format wiki rappelé en bas de la page et décrit dans l'<lien url="helpwiki.php" titre="aide wiki"/>
+		</note>
 		<zonetext id="contenu" titre="contenu" type="grand"><?=$_POST['contenu']?></zonetext>
 		<bouton id="tester" titre="Tester"/>
 	</formulaire>

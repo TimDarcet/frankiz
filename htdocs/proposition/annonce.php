@@ -21,11 +21,14 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.38  2005/01/04 21:44:40  pico
+	Remise en place du lien vers l'helpwiki parce que le résumé en bas de page est incomprehensible
+
 	Revision 1.37  2004/12/17 16:29:29  kikx
 	Dans le trombino maintenant les promo sont dynamiques
 	Je limit aussi le changement des images (selon leur dimension200x200 dans le trombino)
 	Dans les annonces maintenant c'est 400x300 mais < ou egal
-
+	
 	Revision 1.36  2004/12/15 00:05:04  schmurtz
 	Plus beau
 	
@@ -268,7 +271,10 @@ if (isset($_POST['valid'])) {
 	<formulaire id="propoz_annonce" titre="Ton annonce" action="proposition/annonce.php">
 		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
 
-		<note>Le texte de l'annonce utilise le format wiki décrit en bas de la page.</note>
+		<note>
+			Le texte de l'annonce utilise le format wiki rappelé en bas de la page et décrit dans l'<lien url="helpwiki.php" titre="aide wiki"/><br/>
+			Pour toute remarque particulière, envoyer un mail à <lien url="mailto:web@frankiz.polytechnique.fr" titre="web@frankiz"/>
+		</note>
 		<zonetext id="text" titre="Le texte" type="grand"><? if (isset($_POST['text'])) echo $_POST['text'];?></zonetext>
 
 		<note>L'image doit être un fichier gif, png ou jpeg ne dépassant pas 400x300 pixels et 250Ko.</note>
