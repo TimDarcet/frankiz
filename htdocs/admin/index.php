@@ -20,14 +20,12 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="admin" titre="Frankiz : administration">
 	<h2>Administration frankiz</h2>
-	<p>En construction…</p>
+		<lien titre="Modifier un utilisateur" url="<?php echo BASE_URL?>/trombino"/>
+		<lien titre="Liste des Binets" url="<?php echo BASE_URL?>/admin/binets.php"/>
+		<lien titre="Liste des sections" url="<?php echo BASE_URL?>/admin/sections.php"/>
 	<h2>Webmestre binet X</h2>
 	<p>En construction…</p>
 	<h2>Prez binet X</h2>
 	<p>En construction…</p>
-	<h2>Site web perso</h2>
-	<p>En construction…</p>
-	<h2>Gestion des utilisateurs</h2>
-	<p><a href="<? echo BASE_URL?>/trombino">Chercher</a>…</p>
 </page>
 <?php require_once BASE_LOCAL."/include/page_footer.inc.php"; ?>
