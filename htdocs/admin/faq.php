@@ -1,9 +1,12 @@
 <? 
 /*
 		$Log$
+		Revision 1.6  2004/10/19 07:56:56  pico
+		Corrections diverses
+
 		Revision 1.5  2004/10/18 22:17:45  pico
 		Ajout des logs dans le fichier
-
+		
 */
 require_once "../include/global.inc.php";
 
@@ -82,7 +85,6 @@ foreach ($_POST AS $keys => $val){
 //---------------------------------------------------
 
 if(isset($_REQUEST['affich_elt'])) define("AFFICH_ELT",base64_decode($_REQUEST['affich_elt'])) ; else define("AFFICH_ELT",'');
-if(isset($_REQUEST['a_marquer'])) define("A_MARQUER",base64_decode($_REQUEST['a_marquer'])) ; else define("A_MARQUER","");
 
 
 
@@ -115,11 +117,7 @@ function rech_fils($parent) {
 			}
 			echo "<a name=\"".$id."\"/>" ;
 			echo "<lien titre='".htmlspecialchars($question,ENT_QUOTES)."' url='admin/faq.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
-			if (A_MARQUER != "") echo "&amp;a_marquer=".base64_encode(A_MARQUER) ;
 			echo "&amp;dir_id=".$id."#".$id."' />" ;
-			if (eregi("/".$id."/",A_MARQUER)) {
-				echo "<image source='./faq_fleche_folder.gif'/>" ;
-			}
 			echo "\n\r</feuille>\n\r " ;
 			rech_fils($id) ;
 		}
@@ -131,11 +129,7 @@ function rech_fils($parent) {
 		while(list($id,$question) = $DB_web->next_row()) {
 			echo "\n\r<feuille class='question'>\n\r" ;
 			echo "<lien titre='".htmlspecialchars($question,ENT_QUOTES)."' url='admin/faq.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
-			if (A_MARQUER != "") echo "&amp;a_marquer=".base64_encode(A_MARQUER) ;
 			echo "#descript'/>" ;
-			if (eregi("/".$id."/",A_MARQUER)) {
-				echo "<image source='./faq_fleche.gif'/>" ;
-			}
 			echo "</feuille>\n\r" ;
 		}
 		echo "</noeud>\n\r" ;

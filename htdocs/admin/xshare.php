@@ -1,9 +1,12 @@
 <? 
 /*
 		$Log$
+		Revision 1.10  2004/10/19 07:56:56  pico
+		Corrections diverses
+
 		Revision 1.9  2004/10/18 22:18:11  pico
 		Ajout des logs
-
+		
 */
 require_once "../include/global.inc.php";
 
@@ -82,9 +85,6 @@ foreach ($_POST AS $keys => $val){
 //---------------------------------------------------
 
 if(isset($_REQUEST['affich_elt'])) define("AFFICH_ELT",base64_decode($_REQUEST['affich_elt'])) ; else define("AFFICH_ELT",'');
-if(isset($_REQUEST['a_marquer'])) define("A_MARQUER",base64_decode($_REQUEST['a_marquer'])) ; else define("A_MARQUER","");
-
-
 
 //
 //Petit programme recursif
@@ -115,11 +115,7 @@ function rech_fils($id_parent) {
 			}
 			echo "<a name=\"".$id."\"/>" ;
 			echo "<lien titre='".htmlspecialchars($nom,ENT_QUOTES)."' url='admin/xshare.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
-			if (A_MARQUER != "") echo "&amp;a_marquer=".base64_encode(A_MARQUER) ;
 			echo "&amp;dir_id=".$id."#".$id."' />" ;
-			if (eregi("/".$id."/",A_MARQUER)) {
-				echo "<image source='./xshare_fleche_folder.gif'/>" ;
-			}
 			echo "\n\r</feuille>\n\r " ;
 			rech_fils($id) ;
 		}
@@ -131,11 +127,7 @@ function rech_fils($id_parent) {
 		while(list($id,$nom) = $DB_web->next_row()) {
 			echo "\n\r<feuille class='question'>\n\r" ;
 			echo "<lien titre='".htmlspecialchars($nom,ENT_QUOTES)."' url='admin/xshare.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
-			if (A_MARQUER != "") echo "&amp;a_marquer=".base64_encode(A_MARQUER) ;
 			echo "#descript'/>" ;
-			if (eregi("/".$id."/",A_MARQUER)) {
-				echo "<image source='./xshare_fleche.gif'/>" ;
-			}
 			echo "</feuille>\n\r" ;
 		}
 		echo "</noeud>\n\r" ;
@@ -218,7 +210,7 @@ function rech_parent($id) {
 
       
 
-<p><strong>Visualisation des diff&eacute;rents téléchargements : </strong> </p>
+<p><strong>Visualisation des différents téléchargements : </strong> </p>
 <?
 
 //

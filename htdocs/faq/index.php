@@ -1,9 +1,12 @@
 <? 
 /*
 		$Log$
+		Revision 1.8  2004/10/19 07:56:56  pico
+		Corrections diverses
+
 		Revision 1.7  2004/10/18 23:37:03  pico
 		BugFix Recherche (pas 2 requetes sql en même temps !)
-
+		
 		Revision 1.6  2004/10/18 22:17:45  pico
 		Ajout des logs dans le fichier
 		
@@ -171,7 +174,7 @@ if (($mots!="")||($a_marquer!="")) {
 <?
 } else {
 ?>
-<p><strong>Visualisation des diff&eacute;rentes FAQ : </strong> </p>
+<p><strong>Visualisation des différentes FAQ : </strong> </p>
 <?
 }
 
