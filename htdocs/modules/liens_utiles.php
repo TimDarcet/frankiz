@@ -21,9 +21,12 @@
 	Liens permettants d'accéder aux autres sites de l'école.
 	
 	$Log$
+	Revision 1.2  2004/11/06 20:57:13  kikx
+	correction pour etre plus clair
+
 	Revision 1.1  2004/11/06 20:52:08  kikx
 	Reordonnancement des liens
-
+	
 	Revision 1.7  2004/11/06 20:07:01  kikx
 	Id des liens pour les liens ecole
 	
@@ -46,7 +49,7 @@
 */
 ?>
 <module id="liens_ecole" titre="Liens utiles">
-	<lien id="utile_contact" titre="Contact" url="contact.php" />
+	<lien id="utile_contact" titre="Contacter les élèves" url="contact.php" />
 	<?php if(!est_authentifie(AUTH_MINIMUM)): ?>
 		<lien id="utile_plan" titre="Venir à l'X" url="plan.php" />
 	<?php endif; ?>
