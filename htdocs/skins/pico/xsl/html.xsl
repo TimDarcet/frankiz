@@ -120,7 +120,7 @@
 			</td>
 		</xsl:if>
 		<xsl:for-each select="colonne">
-			<td class="element"><xsl:apply-templates/></td>
+			<td class="element" valign="top"><xsl:apply-templates/></td>
 		</xsl:for-each>
 	</tr>
 </xsl:template>
