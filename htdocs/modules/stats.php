@@ -9,7 +9,7 @@
 
 */
 if(est_authentifie(AUTH_MINIMUM)) { ?>
-	<module id="stats" titre="Statistiques" visible="<?php echo skin_visible("stats"); ?>">
+	<module id="stats" titre="Statistiques">
 		<statistiques>
 			<serveur nom="frankiz" etat="up" uptime="<?php @include 'http://frankiz.polytechnique.fr/uptimefkz' ?>" />
 			<serveur nom="gwennoz" etat="up" uptime="<?php @include 'http://gwennoz.polytechnique.fr/uptimegwz' ?>" />

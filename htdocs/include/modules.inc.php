@@ -2,15 +2,22 @@
 /*
 	$Id$
 	
-	Inclu tous les modules.
+	Inclu les modules nécessaires.
+	
+	Il est possible d'en modifier le comportement à l'aide de variables GET :
+	- 'modules[blahblah]' :  'on' pour forcé l'affichage du module 'blahblah',
+							'off' pour forcer le non affichage
+	- 'modules[tous]' :		valeur par défaut pour l'affichage des modules
 */
 
-require BASE_LOCAL."/include/css.inc.php";
-require BASE_LOCAL."/modules/liens.php";
-require BASE_LOCAL."/modules/qdj.php";
-require BASE_LOCAL."/modules/tour_kawa.php";
-require BASE_LOCAL."/modules/activites.php";
-require BASE_LOCAL."/modules/anniversaires.php";
-require BASE_LOCAL."/modules/stats.php";
+$modules = array('css','liens_navigation','liens_contacts','liens_ecole','qdj','qdj_hier',
+				 'activites','tour_kawa','anniversaires','stats');
 
+if(!isset($_GET['modules']))
+	$_GET['modules'] = array();
+
+foreach($modules as $module)
+	if(		$_GET['modules']['tous']!='off' && ($module == 'css' || $module == 'liens_navigation' || skin_visible($module)=='true')
+		 || $_GET['modules']['tous']=='on' && $_GET['modules'][$module]!='off')
+		require BASE_LOCAL."/modules/$module.php";
 ?>

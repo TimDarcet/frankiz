@@ -228,12 +228,12 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 		<choix titre="Eléments" id="newskin" type="checkbox" valeur="<?php foreach($_SESSION['skin']['skin_visible'] as $module => $visible) if($visible) echo "vis[$module] "; ?>">
 			<option titre="Activités" id="vis[activites]"/>
-			<option titre="Question du jour" id="vis[qdj_aujourdhui]"/>
+			<option titre="Question du jour" id="vis[qdj]"/>
 			<option titre="QDJ de la veille" id="vis[qdj_hier]"/>
 			<option titre="Anniversaires" id="vis[anniversaires]"/>
 			<option titre="Liens contacts" id="vis[liens_contacts]"/>
 			<option titre="Liens école" id="vis[liens_ecole]"/>
-			<option titre="Tours kawa" id="vis[tours_kawa]"/>
+			<option titre="Tours kawa" id="vis[tour_kawa]"/>
 			<option titre="Statistiques" id="vis[stats]"/>
 		</choix>
 		<bouton titre="Appliquer" id="OK_param" />

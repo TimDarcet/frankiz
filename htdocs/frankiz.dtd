@@ -209,5 +209,9 @@
 		naissance   CDATA   #IMPLIED
 		section		CDATA   #IMPLIED
 		cie			CDATA   #IMPLIED>
-]>
 <!ELEMENT binet (#PCDATA)>
+<!ATTLIST binet
+		nom			CDATA   #REQUIRED
+		id			CDATA   #REQUIRED>
+
+]>

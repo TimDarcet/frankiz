@@ -6,7 +6,6 @@
 */
 
 if(est_authentifie(AUTH_MINIMUM)) {
-	// Connection à la base du tour Kawa
 	connecter_mysql_frankiz();
 
 	// Génération des tours kawa
@@ -23,7 +22,7 @@ if(est_authentifie(AUTH_MINIMUM)) {
 
 	$jour = array("Aujourd'hui","Demain");
 	if ($kawa[0] != "" || $kawa[1] != "") {
-		echo "<module id=\"tours_kawa\" titre=\"Tours Kawa\" visible=\"".skin_visible("tours_kawa")."\">\n";
+		echo "<module id=\"tour_kawa\" titre=\"Tour Kawa\">\n";
 		
 		for ($i = 0; $i <= 1; $i++)
 			if ($kawa[$i] != "")

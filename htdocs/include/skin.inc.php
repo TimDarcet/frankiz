@@ -30,12 +30,12 @@ function skin_parse($skin_str) {
 	if( !array_key_exists('skin_visible',$_SESSION['skin']) )
 		$_SESSION['skin']['skin_visible'] = array(
 			"activites" => TRUE, // visible par défaut
-			"qdj_aujourdhui" => TRUE,
+			"qdj" => TRUE,
 			"qdj_hier" => TRUE,
 			"anniversaires" => TRUE,
 			"liens_contacts" => TRUE,
 			"liens_ecole" => TRUE,
-			"tours_kawa" => TRUE,
+			"tour_kawa" => TRUE,
 			"stats" => TRUE
 		);
 		

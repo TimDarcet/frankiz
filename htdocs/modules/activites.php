@@ -6,7 +6,7 @@
 */
 
 if(est_authentifie(AUTH_MINIMUM)) {
-	echo "<module id=\"activites\" titre=\"Activités\" visible=\"".skin_visible("activites")."\">\n";
+	echo "<module id=\"activites\" titre=\"Activités\">\n";
 
 	connecter_mysql_frankiz();
 	$result=mysql_query("SELECT affiche_id,titre,url,DATE_FORMAT(date,'%H:%i')"

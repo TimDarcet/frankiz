@@ -6,10 +6,7 @@
 */
 
 if(est_authentifie(AUTH_MINIMUM)) {
-?>
-
-	<module id="anniversaires" titre="Anniversaires" visible="<?php echo skin_visible("anniversaires"); ?>">
-<?php
+	echo "<module id=\"anniversaires\" titre=\"Anniversaires\">\n";
 
 	$fichier_cache = BASE_LOCAL."/cache/anniversaires";
 
@@ -23,7 +20,7 @@ if(est_authentifie(AUTH_MINIMUM)) {
 							   ."AND (promo='2002' OR promo='2003')");
 		$contenu = "";
 		while(list($nom,$prenom,$surnom,$section,$cie,$promo,$login,$mail) = mysql_fetch_row($resultat)) {
-			$contenu .= "<eleve nom='$nom' prenom='$prenom' surnom='$surnom' section='$section' cie='$cie'"
+			$contenu .= "\t<eleve nom='$nom' prenom='$prenom' surnom='$surnom' section='$section' cie='$cie'"
 					   ." promo='$promo' login='$login' mail='$mail'/>\n";
 		}
 		mysql_free_result($resultat);
