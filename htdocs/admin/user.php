@@ -29,9 +29,12 @@
 	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
 	
 	$Log$
+	Revision 1.18  2004/12/15 17:03:06  pico
+	2vite les renvois sur /trombino/
+
 	Revision 1.17  2004/11/29 20:57:31  kikx
 	Mise en forme
-
+	
 	Revision 1.16  2004/11/29 20:48:45  kikx
 	Simplification des rajouts des droits des personnes ... ce fait grace a des cases a cocher ... (pour les autistes ca devrait etre bon ...) Comme ca pas d'erreur de syntaxe possibles...
 	
@@ -76,7 +79,7 @@ if(!verifie_permission('admin')&&!verifie_permission('trombino'))
 
 // On vérifie que la personne envoie bien l'id sinon ca sert a rien ...
 if(!isset($_GET['id']))
-	rediriger_vers("/trombino/");
+	rediriger_vers("trombino.php");
 
 
 // Génération de la page
