@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.18  2004/11/08 15:56:15  kikx
+	Micro bug dans la page des binets pour les webmestre
+
 	Revision 1.17  2004/11/08 15:46:46  kikx
 	Correction pour les telechargement des fichiers (visiblement ca depend de la version de php)
-
+	
 	Revision 1.16  2004/11/08 11:55:13  pico
 	Maintenant ça supprime bien tous les fichiers
 	
@@ -241,8 +244,6 @@ if(verifie_permission_webmestre($_GET['binet'])){
 			
 		// si on demande la modification de l'image
 		//--------------------------------------------------------
-		$message2 .= "<warning>".$_FILES['file']['tmp_name']."</warning>" ;
-
 		if (($_FILES['file']['tmp_name']!='none')&&($_FILES['file']['tmp_name']!='')) {
 			$img = $_FILES['file']['tmp_name'] ;
 			$image_types = Array ("image/bmp","image/jpeg","image/pjpeg","image/gif","image/x-png","image/png");
@@ -280,9 +281,8 @@ if(verifie_permission_webmestre($_GET['binet'])){
 	while( list($catego_id,$catego_nom) = $DB_trombino->next_row() )
 		$liste_catego .= "\t\t\t<option titre=\"$catego_nom\" id=\"$catego_id\"/>\n";
 
-		
+	$DB_valid->query("SELECT binet_id,nom,description,http,catego_id,exterieur,folder FROM valid_binet WHERE binet_id=".$_GET['binet']);
 	if ($DB_valid->num_rows()!=0) {
-		$DB_valid->query("SELECT binet_id,nom,description,http,catego_id,exterieur,folder FROM valid_binet WHERE binet_id=".$_GET['binet']);
 		list($id,$nom,$descript,$http,$cat_id,$exterieur,$folder) = $DB_valid->next_row() ;
 		$message2 .= "<commentaire>L'aperçu que vous avez maintenant n'a pas encore été validé par le BR. Il faut encore attendre pour que celui ci soit pris en compte</commentaire>" ;
 		$image_link = "<image source=\"gestion/binet.php?image=1&amp;id=$id\"/>" ;
