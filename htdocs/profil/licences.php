@@ -106,7 +106,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 		<p>Si vous contrevenez aux termes et conditions stipulés dans le CLUF et l'Amendement du Contrat de Licence, l'administrateur du programme MSDNAA exigera la confirmation de la désinstallation des logiciels de votre ordinateur personnel.</p>
 		<bouton id='accord' titre="J'accepte" /> 
 		<bouton id='refus' titre="Je refuse" onClick="return window.confirm('Tu refuses ta clé gratuite ?')"/>
-		<? if(isset($_POST['xp_pro']){ echo "<hidden id=\"xp_pro\" valeur=\"1\" />"; } ?>
+		<? if(isset($_POST['xp_pro'])){ echo "<hidden id=\"xp_pro\" valeur=\"1\" />"; } ?>
 		</formulaire>
 	<?php
 	} else {
