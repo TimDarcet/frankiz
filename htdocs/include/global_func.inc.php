@@ -22,9 +22,13 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.25  2004/11/16 14:02:37  pico
+	- Nouvelle fonction qui permet de dl le contenu d'un répertoire
+	- Mise en place sur la page de la FAQ
+
 	Revision 1.24  2004/11/10 21:39:44  pico
 	Corrections skin + fonction deldir + faq
-
+	
 	Revision 1.23  2004/11/08 11:57:58  pico
 	Déplacement de la fonction deldir (pas une fonction de compression)
 	
@@ -198,6 +202,15 @@ function deldir($dir) {
 	} else {
 		return false;
 	}
+}
+
+/* Zippe et envoit le contenu d'un répertoire */
+function download($dir,$type = 'zip', $filename = "temp"){
+	$file = "/tmp/".$filename;
+	zip($file,$dir,$type);
+	header("Content-type: application/force-download");
+	header("Content-Disposition: attachment; filename=$filename.$type");
+	readfile($file.".".$type);
 }
 
 ?>

@@ -19,9 +19,13 @@
 */
 /*
 		$Log$
+		Revision 1.23  2004/11/16 14:02:37  pico
+		- Nouvelle fonction qui permet de dl le contenu d'un répertoire
+		- Mise en place sur la page de la FAQ
+
 		Revision 1.22  2004/11/15 22:59:53  pico
 		Affiche correctement les faq/folder + possibilité de modifier des faq
-
+		
 		Revision 1.21  2004/11/15 22:17:24  pico
 		On doit pouvoir changer le texte d'une faq à présent
 		TODO: script pour dl le contenu de la faq existante
@@ -83,6 +87,10 @@ require_once "../include/global.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_MINIMUM);
 
+if(isset($_REQUEST['download'])&&isset($_REQUEST['download_type'])){
+	download(BASE_DATA."faq/".base64_decode($_REQUEST['download']),$_REQUEST['download_type'],"FAQ-".strtr(base64_decode($_REQUEST['download']),"/","-")."-".time());
+	exit();
+}
 
 // Génération de la page
 //===============
@@ -360,6 +368,8 @@ echo "<br/>" ;
 	<champ id="question" titre="Question" valeur="<? echo $question ?>" />
 	<textsimple id="nom" titre="Nom du sous-dossier de la faq" valeur="<? echo dirname($reponse) ?>" />
 	<fichier id="file" titre="Changer fichier réponse (fichier .html, .zip ou .tar)" taille="1000000000"/>
+	<lien titre="Télécharger la faq en .zip" url="admin/faq.php?download=<? echo base64_encode(dirname($reponse)) ?>&amp;download_type=zip" />
+	<lien titre="Télécharger la faq en .tar" url="admin/faq.php?download=<? echo base64_encode(dirname($reponse)) ?>&amp;download_type=tar" />
 	<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
 	<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette FAQ ?!!!!!')"/>
 	</formulaire>
