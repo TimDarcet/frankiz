@@ -39,9 +39,12 @@
 	)
 	
 	$Log$
+	Revision 1.25  2004/12/17 19:15:24  pico
+	Pour ne plus avoir 2 skins default....
+
 	Revision 1.24  2004/12/15 05:14:26  falco
 	typo
-
+	
 	Revision 1.23  2004/12/14 23:54:41  pico
 	Modifs visuelles
 	
@@ -176,7 +179,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 				
 				// Si c'est une skin sans CSS
 				if($description['chemin'] == ".") {
-					echo "<option titre=\"{$description['description']} ({$description['nom']})\" id=\"$file_xsl/\"/>";
+					echo "<option titre=\"{$description['nom']}: {$description['description']}\" id=\"$file_xsl/\"/>";
 					continue;
 				}
 				
@@ -189,7 +192,10 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 					
 					$description_css = lire_description_css(BASE_LOCAL."/skins/$file_xsl/$file_css");
 					if($description_css!="")
-						echo "<option titre=\"$file_css: $description_css\" id=\"$file_xsl/$file_css\"/>";
+						if($file_css!="default")
+							echo "<option titre=\"$file_css: $description_css\" id=\"$file_xsl/$file_css\"/>";
+						else
+							echo "<option titre=\"$file_xsl: $description_css\" id=\"$file_xsl/$file_css\"/>";
 				}
 				closedir($dir_css);
 			}
