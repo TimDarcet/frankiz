@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.34  2004/12/14 18:29:53  pico
+		Là, les modifs marchent mieux
+
 		Revision 1.33  2004/12/14 18:23:38  pico
 		Gros bug...
-
+		
 		Revision 1.32  2004/12/14 14:18:12  schmurtz
 		Suppression de la page de doc wiki : doc directement dans les pages concernees.
 		
@@ -172,7 +175,7 @@ foreach ($_POST AS $keys => $val){
 			$DB_web->query("SELECT lien FROM xshare WHERE id='{$temp[1]}' ");
 			list($dir) = $DB_web->next_row();
 			unlink(BASE_DATA."xshare/".$dir);
-			$filename = $dir."/".$_FILES['file']['name'];
+			$filename = dirname($dir)."/".$_FILES['file']['name'];
 			move_uploaded_file($_FILES['file']['tmp_name'], BASE_DATA."xshare/".$filename);
 			$lien = ", lien='{$filename}'"; 
 		}
