@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.58  2005/01/28 21:41:23  pico
+	BugFix /me boulet
+
 	Revision 1.57  2005/01/28 21:21:53  pico
 	Idem, on peut afficher plus d'images
-
+	
 	Revision 1.56  2005/01/26 14:39:44  pico
 	Résolution du pb du cookie poly.fr (toutes les photos étaient celles du propriétaire du cookie, pas top..)
 	
@@ -184,11 +187,11 @@ demande_authentification(AUTH_INTERNE);
 if((isset($_GET['image']))&&($_GET['image'] == "true") && ($_GET['image'] != "")){
 	require_once "include/global.inc.php";
 	if (!isset($_GET['original'])) {
-		$size = getimagesize(BASE_PHOTOS.$_GET['promo']."/".$_GET['login'].".jpg"]);
+		$size = getimagesize(BASE_PHOTOS.$_GET['promo']."/".$_GET['login'].".jpg");
 		header("Content-type: {$size['mime']}");
 		readfile(BASE_PHOTOS.$_GET['promo']."/".$_GET['login'].".jpg");	
 	} else {
-		$size = getimagesize(BASE_PHOTOS.$_GET['promo']."/".$_GET['login']."_original.jpg"]);
+		$size = getimagesize(BASE_PHOTOS.$_GET['promo']."/".$_GET['login']."_original.jpg");
 		header("Content-type: {$size['mime']}");
 		readfile(BASE_PHOTOS.$_GET['promo']."/".$_GET['login']."_original.jpg");		
 	}
