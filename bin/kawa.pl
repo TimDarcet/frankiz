@@ -86,10 +86,14 @@ sub selection {
 	my $name = "Tour kawa";
 	my @subject = ("Au Bôb à 12h15","Un petit café demain?","Dans trois jours tour kawa");
 	my $body = "";
-	$tm=localtime;
 	my $date;
 	for ($i=0; $i<3; $i++) {
-		$date=($tm->year) . "-" . $tm->mon . "-" . ($tm->mday - $i);
+		$tm=localtime(time - $i * 24 *3600);
+		$year = ($tm->year+ 1900);
+		$month = ($tm->mon + 1);
+		$day = ($tm->mday - $i);
+		if($day < 10){   $day = "0" . $day; }
+		$date=$year . "-" . $month . "-" . $day;
 		traiter_jour($date,$name,$subject[$i],$body);
 	}
 }
