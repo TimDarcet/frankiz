@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.27  2005/01/11 17:07:40  pico
+	Correction bug #25
+
 	Revision 1.26  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 	Revision 1.25  2004/12/16 13:00:41  pico
 	INNER en LEFT
 	
@@ -166,10 +169,10 @@ foreach ($_POST AS $keys => $val){
 			} else {
 				$promo = $_POST['promo'] ;
 			}
-			if (!isset($_POST['from']))
+			if (!isset($_POST["from_{$temp[1]}"]))
 				$sender = "$prenom $nom &lt;$mail&gt; " ;
 			else
-				$sender = base64_encode($_POST['from']) ;
+				$sender = base64_encode($_POST["from_{$temp[1]}"]) ;
 				
 			rediriger_vers("/admin/valid_mailpromo_envoi.php?id={$temp[1]}&promo=$promo&sender=$sender") ;
 
@@ -232,10 +235,10 @@ while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $prom
 	<formulaire id="mailpromo_<? echo $id ?>" titre="Mail Promo" action="admin/valid_mailpromo.php">
 		<champ id="titre" titre="Sujet " valeur="<?  echo $titre ;?>"/>
 		<?
-			if ((!isset($_POST['from']))||((isset($temp))&&($temp[1]!=$id)))
-				$_POST['from'] = "$prenom $nom &lt;$mail&gt; " ;
+			if ((!isset($_POST["from_$id"]))||((isset($temp))&&($temp[1]!=$id)))
+				$_POST["from_$id"] = "$prenom $nom &lt;$mail&gt; " ;
 		?>
-		<champ titre="From " id="from"  valeur="<? echo  $_POST['from'] ?>"/>
+		<champ titre="From " id="from_<?=$id?>"  valeur="<? echo  $_POST["from_$id"] ?>"/>
 		<zonetext id="mail" titre="Mail"><?=$mailpromo?></zonetext>
 		<choix titre="Promo" id="promo" type="combo" valeur="<?echo $promo_mail ;?>">
 		<?
