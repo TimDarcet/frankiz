@@ -1,5 +1,5 @@
 <?
-require_once "../include/global.inc.php";
+require_once "include/global.inc.php";
 
 // Vérification des droits
 //demande_authentification(AUTH_MINIMUM);
@@ -8,7 +8,7 @@ require_once "../include/global.inc.php";
 // Génération de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
-require_once "../include/rss_func.inc.php";
+require_once BASE_LOCAL."/include/rss_func.inc.php";
 ?>
 <page id="rss" titre="Frankiz : News Externes">
 

@@ -1,5 +1,5 @@
 <?
-require_once "../include/global.inc.php";
+require_once "include/global.inc.php";
 
 function get_categorie($en_haut,$stamp,$perime) {
 	if($en_haut==1) return "important";
