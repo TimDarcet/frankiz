@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.2  2004/11/03 18:44:08  pico
+	Utilise le bon fichier css
+
 	Revision 1.1  2004/11/03 18:21:32  psycow
 	*** empty log message ***
-
+	
 	Revision 1.22  2004/10/29 16:25:12  kikx
 	bug
 	
@@ -104,7 +107,7 @@
 				<xsl:value-of select="../@base"/>
 			</xsl:attribute>
 		</base>
-		<link rel="stylesheet" type="text/css" href="skins/basic/style.css"/>
+		<link rel="stylesheet" type="text/css" href="skins/default/style.css"/>
 		<xsl:apply-templates select="/frankiz/module[@id='liste_css']" mode="css"/>
 	</head>
 
