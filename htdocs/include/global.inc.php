@@ -6,11 +6,14 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.22  2004/10/17 17:27:07  pico
+	Ajout bdd de la faq
+
 	Revision 1.21  2004/10/16 01:18:00  schmurtz
 	Utilisation d'un chemin d'acces absolu pour partager les images et les caches entre
 	tous les developpeurs. Cela suppose que tout le monde test ce qu'il developpe sur
 	gwennoz, et permet de disposer de toutes les images actuelles (photos, annonces...)
-
+	
 	Revision 1.20  2004/10/15 23:28:00  schmurtz
 	Suppression du dossier data de la CVS pour le remplacer par un lien symbolique
 	Tous les developpeurs partage alors les memes data (photos du trombino, images des
@@ -110,6 +113,7 @@ $_REQUEST = nettoyage_balise($_REQUEST);
 
 // Connexions aux bases mysql
 require_once "mysql.inc.php";
+$DB_faq = new DB("frankiz","faq","web","kokouije?.");
 $DB_web = new DB("frankiz","frankiz2_tmp","web","kokouije?.");
 $DB_admin = new DB("frankiz","admin","web","kokouije?.");
 $DB_trombino = new DB("frankiz","trombino","web","kokouije?.");
