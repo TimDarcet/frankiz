@@ -21,9 +21,12 @@
 	Gestions des liens perso / des flux rss.
 
 	$Log$
+	Revision 1.9  2005/01/04 23:15:23  pico
+	oubli
+
 	Revision 1.8  2005/01/02 22:14:33  pico
 	Devrait fixer les pbs concernant les flux rss
-
+	
 	Revision 1.7  2004/12/15 06:13:30  kikx
 	Ct trop la merde ....
 	pico tu le remettra qd tu auras debuggué car la moi je peux plus :(
@@ -176,8 +179,9 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 		<note>Liste des flux RSS perso</note>
 <?
-		if(!empty($_SESSION['rss'])) {
-			foreach($_SESSION['rss'] as $url => $mode){
+		$liens = $_SESSION['rss'];
+		if(is_array($liens)){
+			foreach($liens as $url => $mode){
 				if($mode == 'module') $url = substr($url, 2);
 				if(!array_key_exists($url,$array))
 					echo "<note>$url ($mode) <lien titre=\"supprimer\" url=\"profil/liens_ext.php?del_rss=".base64_encode($url)."\"/></note>";
