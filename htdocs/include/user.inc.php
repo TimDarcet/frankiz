@@ -26,10 +26,13 @@
 	informations provenant des tables du trombino (avec jointure sur l'uid).
 
 	$Log$
+	Revision 1.14  2004/11/22 07:59:00  pico
+	Correction du login pour le su.
+
 	Revision 1.13  2004/11/17 22:40:50  schmurtz
 	Bug lors du login par mdp si l'utilisateur ne mets pas son login sous la forme
 	loginpoly.promo
-
+	
 	Revision 1.12  2004/11/16 15:09:15  kikx
 	Le login est now login.promo
 	
@@ -98,7 +101,7 @@ class User {
 			$promo = $value[1] ;
 		}
 		
-		$condition = $islogin ? "WHERE login='$login' AND promo='$promo' ORDER BY promo DESC LIMIT 1" : "WHERE eleves.eleve_id='$value'"; 
+		$condition = $islogin ? "WHERE login='$login' AND promo='$promo' ORDER BY promo DESC LIMIT 1" : "WHERE eleves.eleve_id='$value[0]'"; 
 		$DB_web->query("SELECT eleves.eleve_id,login,perms,nom,prenom,passwd,IF(hashstamp>NOW(),hash,''),hash FROM trombino.eleves INNER JOIN compte_frankiz USING(eleve_id) $condition");
 		if($DB_web->num_rows() == 0) {
 			// l'utilisateur n'existe pas.
