@@ -183,9 +183,9 @@ table.trombino img {
 }
 
 /* FAQ et Xshare */
-li.foldheader1{list-style-image:url('fold_close.gif')}
-li.foldheader2{list-style-image:url('fold_open.gif')}
-ul.foldinglist{list-style-image:url('question.gif')}
+li.noeud_ouvert{list-style-image:url('fold_close.gif')}
+li.noeud_ferme{list-style-image:url('fold_open.gif')}
+li.feuille{list-style-image:url('question.gif')}
 
 /* Balises HTML */
 H1 {

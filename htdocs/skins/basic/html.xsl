@@ -3,10 +3,13 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.12  2004/10/20 22:05:36  schmurtz
+	Juste pour pico, qu'il puisse y voir quelque chose
+
 	Revision 1.11  2004/10/20 19:58:02  pico
 	Changement skin pico -> valide html strict
 	Changement des balises qui étaient pas valides
-
+	
 	Revision 1.10  2004/10/20 18:47:07  kikx
 	Pour rajouter des lignes non selectionnables dans une liste
 	
@@ -113,7 +116,48 @@
 </xsl:template>
 
 <!-- Arbres -->
+<xsl:template match="arbre">
+	<xsl:if test="boolean(@titre)"><h2><xsl:value-of select="@titre"/></h2></xsl:if>
+	<ul><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+		<xsl:apply-templates select="noeud"/>
+	</ul>
+</xsl:template>
 
+<xsl:template match="noeud">
+	<li>
+		<xsl:choose><xsl:when test="count(noeud|feuille)">
+			<xsl:attribute name="class">noeud_ouvert</xsl:attribute>
+		</xsl:when><xsl:otherwise>
+			<xsl:attribute name="class">noeud_ferme</xsl:attribute>
+		</xsl:otherwise></xsl:choose>
+		
+		<xsl:choose><xsl:when test="boolean(@lien)">
+			<a><xsl:attribute name="href"><xsl:value-of select="@lien"/></xsl:attribute>
+				<xsl:value-of select="@titre"/>
+			</a>
+		</xsl:when><xsl:otherwise>
+			<xsl:value-of select="@titre"/>
+		</xsl:otherwise></xsl:choose>
+		
+		<xsl:if test="count(noeud|feuille)">
+			<ul>
+				<xsl:apply-templates select="noeud|feuille"/>
+			</ul>
+		</xsl:if>
+	</li>
+</xsl:template>
+
+<xsl:template match="feuille">
+	<li class="feuille">
+		<xsl:choose><xsl:when test="boolean(@lien)">
+			<a><xsl:attribute name="href"><xsl:value-of select="@lien"/></xsl:attribute>
+				<xsl:value-of select="@titre"/>
+			</a>
+		</xsl:when><xsl:otherwise>
+			<xsl:value-of select="@titre"/>
+		</xsl:otherwise></xsl:choose>
+	</li>
+</xsl:template>
 
 <!-- Formatage HTML -->
 <xsl:template match="p">
@@ -142,12 +186,6 @@
 </xsl:template>
 <xsl:template match="code">
 	<code><xsl:apply-templates/></code>
-</xsl:template>
-<xsl:template match="noeud">
-	<ul><xsl:attribute name="class"><xsl:value-of select="@class"/></xsl:attribute><xsl:apply-templates/></ul>
-</xsl:template>
-<xsl:template match="feuille">
-	<li><xsl:attribute name="class"><xsl:value-of select="@class"/></xsl:attribute><xsl:apply-templates/></li>
 </xsl:template>
 <xsl:template match="a">
 	<a><xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute><xsl:attribute name="href"><xsl:value-of select="@href"/></xsl:attribute><xsl:apply-templates/></a>
