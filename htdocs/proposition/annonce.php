@@ -3,8 +3,9 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
-	Revision 1.6  2004/09/17 13:13:23  schmurtz
-	Ajout de la variable cvs "Log"
+	Revision 1.7  2004/09/17 14:19:58  kikx
+	Page de demande d'annonce terminé
+	Ajout d'une page de validations d'annonces
 
 */
 	
@@ -28,7 +29,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 // On teste l'affichage de l'annonce pour voir à quoi ça ressemble
 
-if ((isset($_POST['test'])||(isset($_POST['valid'])))) {
+if ((isset($_REQUEST['test'])||(isset($_POST['valid'])))) {
 ?>
 	<annonce titre="<?php  if (isset($_POST['titre'])) echo $_POST['titre'] ; ?>" 
 			categorie=""
@@ -44,7 +45,7 @@ if (isset($_POST['valid'])) {
 
 	$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
 
-	$DB_valid->query("INSERT INTO valid_annonces SET eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',contenu='".$_POST['text']."'");
+	$DB_valid->query("INSERT INTO valid_annonces SET perime=FROM_UNIXTIME({$_POST['date']}), eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',contenu='".$_POST['text']."'");
 	
 	$contenu = "$prenom $nom a demandé la validation d'une annonce : \n".
 				$_POST['titre']."\n\n".
@@ -73,7 +74,20 @@ if (isset($_POST['valid'])) {
 		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
 		<zonetext id="text" titre="Le texte" valeur="<? if (isset($_POST['text'])) echo $_POST['text'] ;?>"/>
 		<textsimple valeur="Ta signature sera automatiquement généré"/>
-		<bouton id='test' titre='Tester'/>
+		
+		<choix titre="Date de péremption" id="date" type="combo" valeur="<? if (isset($_REQUEST['time'])) echo $_REQUEST['date'] ;?>">
+<?		for ($i=0 ; $i<MAX_PEREMPTION ; $i++) {
+			$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
+			$date_value = date("d/m/y" , $date_id);
+?>
+			<option titre="<? echo $date_value?>" id="<? echo $date_id?>" />
+<?
+		}
+?>
+		</choix>
+		
+		
+		<bouton id='test' titre="Tester"/>
 		<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider votre annonce ?')"/>
 	</formulaire>
 <?

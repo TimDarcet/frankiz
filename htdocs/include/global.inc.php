@@ -6,9 +6,13 @@
 	skin.inc.phpÖ mais pas user.inc.php, xml.inc.phpÖ
 	
 	$Log$
+	Revision 1.13  2004/09/17 14:19:58  kikx
+	Page de demande d'annonce terminÈ
+	Ajout d'une page de validations d'annonces
+
 	Revision 1.12  2004/09/17 13:12:18  schmurtz
 	Suppression des <![CDATA[...]>> car les donneÃÅes des GET et POST (et donc de la base de donneÃÅes) sont maintenant eÃÅchappeÃÅes avec des &amp; &lt; &apos;...
-
+	
 	Revision 1.11  2004/09/17 11:15:21  schmurtz
 	Echappement des caracteres < > & dans les variables $_POST $_GET $_REQUEST
 	
@@ -37,6 +41,7 @@ define('BASE_URL','http://'.$_SERVER['HTTP_HOST'].'/'.substr((dirname($_SERVER['
 define('AFFICHER_LES_ERREURS',$_SERVER["SERVER_ADDR"] == "129.104.201.52");	// seulement sur gwennoz
 define('BASE_PHOTOS',"http://gwennoz/~pico/photos/");
 define('MAIL_WEBMESTRE',"webmestre@frankiz.polytechnique.fr");
+define('MAX_PEREMPTION',8);
 
 // Gestion des erreurs PHP et MySQL
 // Il est important d'inclure ce fichier le plus tÙt possible, mais comme il a besoin
