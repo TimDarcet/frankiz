@@ -6,9 +6,12 @@
 	skin.inc.php… mais pas user.inc.php, xml.inc.php…
 	
 	$Log$
+	Revision 1.12  2004/09/17 13:12:18  schmurtz
+	Suppression des <![CDATA[...]>> car les donneÌes des GET et POST (et donc de la base de donneÌes) sont maintenant eÌchappeÌes avec des &amp; &lt; &apos;...
+
 	Revision 1.11  2004/09/17 11:15:21  schmurtz
 	Echappement des caracteres < > & dans les variables $_POST $_GET $_REQUEST
-
+	
 	Revision 1.10  2004/09/17 09:05:32  kikx
 	La personne peut maintenant rajouter une annonce
 	Ceci dit je ne comprend pas trop comment on protège les champs avec les <!CDATA
@@ -56,7 +59,7 @@ define('ERR_SELECTION_VIDE',$i++);
 function nettoyage_balise($tableau) {
 	foreach($tableau as $cle => $valeur)
 		if(is_array($valeur)) $tableau[$cle] = nettoyage_balise($valeur);
-		else $tableau[$cle] = str_replace(array('&','<','>'),array('&amp;','&lt;','&gt;'),$valeur);
+		else $tableau[$cle] = str_replace(array('&','<','>','\'','"','\\'),array('&amp;','&lt;','&gt;','&apos;','&quot;',''),$valeur);
 	return $tableau;
 }
 

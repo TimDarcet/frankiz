@@ -29,7 +29,7 @@ if ((isset($_POST['test'])||(isset($_POST['valid'])))) {
 			categorie=""
 			auteur="<?php echo empty($surnom) ? $prenom.' '.$nom : $surnom .' (X'.$promo.')'?>"
 			date="">
-			<? if (isset($_POST['text'])) echo "<![CDATA[".$_POST['text']."]]>" ;?>
+			<? if (isset($_POST['text'])) echo $_POST['text'] ;?>
 	</annonce>
 <?
 }

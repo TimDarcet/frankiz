@@ -3,9 +3,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.13  2004/09/17 13:12:07  schmurtz
+	Suppression des <![CDATA[...]>> car les données des GET et POST (et donc de la base de données) sont maintenant échappées avec des &amp; &lt; &apos;...
+
 	Revision 1.12  2004/09/16 15:32:49  schmurtz
 	Suppression de la fonction afficher_identifiant(), utilisation de <![CDATA[......]]> à la place.
-
+	
 	Revision 1.11  2004/09/15 23:19:17  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
@@ -70,7 +73,7 @@ if(isset($_REQUEST['chercher'])) {
 			$DB_trombino->query("SELECT remarque,nom,membres.binet_id FROM membres "
 							   ."LEFT JOIN binets USING(binet_id) WHERE eleve_id='$eleve_id'");
 			while(list($remarque,$binet_nom,$binet_id) = $DB_trombino->next_row())
-				echo "<binet nom='$binet_nom' id='$binet_id'><![CDATA["$remarque."]]></binet>\n";
+				echo "<binet nom='$binet_nom' id='$binet_id'>$remarque</binet>\n";
 			$DB_trombino->pop_result();
 			
 			echo "</eleve>\n";

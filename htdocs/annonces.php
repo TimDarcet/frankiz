@@ -3,9 +3,12 @@
 	Annonces de frankiz. Page d'acceuil pour les personnes déjà loguées.
 	
 	$Log$
+	Revision 1.7  2004/09/17 13:12:24  schmurtz
+	Suppression des <![CDATA[...]>> car les donneÌes des GET et POST (et donc de la base de donneÌes) sont maintenant eÌchappeÌes avec des &amp; &lt; &apos;...
+
 	Revision 1.6  2004/09/17 10:49:40  kikx
 	Petite erreur ou plutot oubli suite a la suppression du champ valid dans les annonces
-
+	
 	Revision 1.5  2004/09/16 15:33:50  schmurtz
 	Orthographe
 	
@@ -43,7 +46,7 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$nom,$prenom)=$DB_web->ne
 			categorie="<?php echo get_categorie($en_haut, $stamp, $perime) ?>"
 			auteur="<?php echo "$prenom $nom" ?>"
 			date="<?php echo substr($stamp,8,2)."/".substr($stamp,5,2)."/".substr($stamp,0,4) ?>">
-		<![CDATA[<?php echo $contenu ?>]]>
+		<?php echo $contenu ?>
 	</annonce>
 <?php }
 
