@@ -3,8 +3,8 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
-	Revision 1.1  2004/10/13 21:13:24  pico
-	Validation des qdj (pbs encore mais je vais régler ça)
+	Revision 1.2  2004/10/13 21:19:02  pico
+	Oubié d'enlever ça
 
 
 	
@@ -54,7 +54,7 @@ foreach ($_POST AS $keys => $val){
 		couriel($eleve_id,"[Frankiz] Ta QDJ a été validé par le BR",$contenu);
 			
 		$DB_web->query("INSERT INTO qdj SET question='{$_POST['question']}', reponse1='{$_POST['reponse1']}', reponse2='{$_POST['reponse2']}'");
-echo "INSERT INTO qdj SET question='{$_POST['question']}', reponse1='{$_POST['reponse1']}', reponse2='{$_POST['reponse2']}'";
+
 
 		$DB_valid->query("DELETE FROM valid_qdj WHERE qdj_id='{$temp[1]}'") ;
 	?>
