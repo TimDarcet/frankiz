@@ -11,9 +11,12 @@
 	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
 	
 	$Log$
+	Revision 1.10  2004/10/19 20:15:24  kikx
+	Pour Schmurtz
+
 	Revision 1.9  2004/10/19 20:01:54  kikx
 	Car ca ne sert a rien si on met en place un 'su'
-
+	
 	Revision 1.8  2004/09/15 23:20:18  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
@@ -132,6 +135,16 @@ if (isset($_POST['mod_compte_fkz'])) {
 	
 <?
 */
+
+// Modification de ses binets et des commentaires sur les binets  
+
+?>
+	<formulaire id="user_su" titre="Se Logguer en tant que cet utilisateur" action="admin/user.php?id=<? echo $id?>">
+		<bouton id='su' titre='SU'/>
+	</formulaire>
+<?
+
+
 // Modification de ses préferences FrankizII
 ?>
 	<formulaire id="user_compt_fkz" titre="Compte Frankiz" action="admin/user.php?id=<? echo $id?>">
