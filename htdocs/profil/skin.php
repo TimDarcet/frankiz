@@ -39,9 +39,12 @@
 	)
 	
 	$Log$
+	Revision 1.26  2005/02/15 11:17:21  pico
+	Test bug #51
+
 	Revision 1.25  2004/12/17 19:15:24  pico
 	Pour ne plus avoir 2 skins default....
-
+	
 	Revision 1.24  2004/12/15 05:14:26  falco
 	typo
 	
@@ -179,7 +182,9 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 				
 				// Si c'est une skin sans CSS
 				if($description['chemin'] == ".") {
-					echo "<option titre=\"{$description['nom']}: {$description['description']}\" id=\"$file_xsl/\"/>";
+					$DB_web->query("SELECT COUNT(*) FROM compte_frankiz WHERE skin LIKE '%$file_xsl%$file_css%'");
+					list($nbutilisateur) = $DB_web->next_row();
+					echo "<option titre=\"{$description['nom']}: {$description['description']} ($nbutilisateur)\" id=\"$file_xsl/\"/>";
 					continue;
 				}
 				
@@ -191,11 +196,14 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 						$file_css == "CVS" || $file_css{0} == "#" || $file_css == $description['chemin']) continue;
 					
 					$description_css = lire_description_css(BASE_LOCAL."/skins/$file_xsl/$file_css");
-					if($description_css!="")
+					if($description_css!=""){
+						$DB_web->query("SELECT COUNT(*) FROM compte_frankiz WHERE skin LIKE '%$file_xsl%$file_css%'");
+						list($nbutilisateur) = $DB_web->next_row();
 						if($file_css!="default")
-							echo "<option titre=\"$file_css: $description_css\" id=\"$file_xsl/$file_css\"/>";
+							echo "<option titre=\"$file_css: $description_css ($nbutilisateur)\" id=\"$file_xsl/$file_css\"/>";
 						else
-							echo "<option titre=\"$file_xsl: $description_css\" id=\"$file_xsl/$file_css\"/>";
+							echo "<option titre=\"$file_xsl: $description_css ($nbutilisateur)\" id=\"$file_xsl/$file_css\"/>";
+					}
 				}
 				closedir($dir_css);
 			}
