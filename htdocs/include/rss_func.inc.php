@@ -21,9 +21,12 @@
 		Fonction pour parser des rss
 		
 		$Log$
+		Revision 1.14  2005/01/19 18:29:15  pico
+		Parce que wget c'est quand même mieux que lynx
+
 		Revision 1.13  2005/01/19 17:47:46  pico
 		Pour que les rss marchent même quand l'entrée est gzippée
-
+		
 		Revision 1.12  2005/01/11 13:13:36  pico
 		Histoire d'avoir un cache des flux rss
 		
@@ -72,7 +75,7 @@ function rss_xml($site,$mode = 'complet') {
 	$port = 8080;
 	$date_valide = time()-600; //cache 10min
 	if(!(file_exists(BASE_CACHE."rss/".base64_encode($site)) && filemtime(BASE_CACHE."rss/".base64_encode($site)) > $date_valide)) {
-		exec("http_proxy=\"$proxy:$port\" lynx --dump $site > ".BASE_CACHE."rss/".base64_encode($site));
+		exec("http_proxy=\"$proxy:$port\" wget -O ".BASE_CACHE."rss/".base64_encode($site)." $site");
 	}
 	
 	$fp=fopen(BASE_CACHE."rss/".base64_encode($site),'r');
