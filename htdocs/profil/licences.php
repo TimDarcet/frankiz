@@ -17,7 +17,16 @@
 	along with this program; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
+/*
+	Page qui permet de demander une clé windows
+	
+	$Log$
+	Revision 1.8  2004/12/17 20:25:20  pico
+	Ajout des logs
 
+	
+*/
+	
 
 require_once "../include/global.inc.php";
 
