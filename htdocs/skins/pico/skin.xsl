@@ -106,6 +106,13 @@
 	</div>
 </xsl:template>
 
+<xsl:template match="/frankiz/page[@id='meteo']">
+	<div class="fkz_page_meteo">
+		<xsl:apply-templates/>
+	</div>
+</xsl:template>
+
+
 <xsl:template match="cadre">
 	<h2><xsl:value-of select="@titre"/></h2>
 	<xsl:if test="count(image)"><div style="text-align: center"><xsl:apply-templates select="image"/></div></xsl:if>

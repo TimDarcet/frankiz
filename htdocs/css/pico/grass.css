@@ -75,11 +75,11 @@ span.fkz_logo {
 	display:none;
 }
 
-#contacts, #liens_ecole, #meteo,#stats,#serveurs,#tour_kawa,#qdj_hier,#qdj,#anniversaires{
+span#contacts,span#liens_ecole,span#meteo,span#stats,span#serveurs,span#tour_kawa,span#qdj_hier, span#qdj, span#anniversaires{
 	display:none;
  }
 
-#contacts_logo,#liens_ecole_logo,#meteo_logo,#stats_logo,#serveurs_logo,#tour_kawa_logo,#qdj_hier_logo,#qdj_logo,#anniversaires_logo{
+span#contacts_logo,span#liens_ecole_logo,span#meteo_logo,span#stats_logo,span#serveurs_logo,span#tour_kawa_logo,span#qdj_hier_logo,span#qdj_logo,span#anniversaires_logo{
 	background-repeat:no-repeat;
 	background-position: center;
 	height: 22px;
@@ -87,39 +87,39 @@ span.fkz_logo {
 	display:block;
  }
 
-#contacts_logo {
+span#contacts_logo {
 	background-image:url("grass/contact.png");
  }
 
-#liens_ecole_logo {
+span#liens_ecole_logo {
 	background-image:url("grass/ecole.png");
  }
  
-#meteo_logo {
+span#meteo_logo {
 	background-image:url("grass/meteo.png");
  }
  
-#stats_logo {
+span#stats_logo {
 	background-image:url("grass/stats.png");
  }
  
-#serveurs_logo {
+span#serveurs_logo {
 	background-image:url("grass/serveurs.png");
  }
  
-#tour_kawa_logo {
+span#tour_kawa_logo {
 	background-image:url("grass/tour_kawa.png");
  }
  
-#qdj_hier_logo {
+span#qdj_hier_logo {
 	background-image:url("grass/qdj_hier.png");
  }
  
-#qdj_logo{
+span#qdj_logo{
 	background-image:url("grass/qdj.png");
  }
  
-#anniversaires_logo {
+span#anniversaires_logo {
 	background-image:url("grass/anniversaire.png");
  }
  
@@ -181,7 +181,7 @@ text-align:left;
 
 
 
-div.fkz_liens_nav, .fkz_anniversaire_titre,.fkz_titre,.fkz_annonces,.fkz_page_divers,.fkz_trombino{
+div.fkz_liens_nav, .fkz_anniversaire_titre,.fkz_titre,.fkz_annonces,.fkz_page_divers,.fkz_page_meteo,.fkz_trombino{
 	border-bottom: 1px solid #888888;
 	border-right: 1px solid #888888;
 	border-left: 1px solid #888888;
@@ -266,7 +266,7 @@ li.fkz_liens_nav a:hover{
 	padding: 0;
 }
 
-.fkz_trombino,.fkz_annonces,.fkz_page_divers {
+.fkz_trombino,.fkz_annonces,.fkz_page_divers,.fkz_page_meteo{
 	background-image:url("grass/grassdark.jpg");
 	font-size: 9pt;
 	text-align: left;
