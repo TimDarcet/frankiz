@@ -1,10 +1,13 @@
 <? 
 /*
 		$Log$
+		Revision 1.8  2004/10/20 19:58:46  pico
+		BugFix: génération des balises plus conforme
+
 		Revision 1.7  2004/10/19 14:58:42  schmurtz
 		Creation d'un champ de formulaire specifique pour les fichiers (sans passer
 		l'element champ, qui actuellement est un peu acrobatique).
-
+		
 		Revision 1.6  2004/10/19 07:56:56  pico
 		Corrections diverses
 		
@@ -122,8 +125,8 @@ function rech_fils($parent) {
 			echo "<a name=\"".$id."\"/>" ;
 			echo "<lien titre='".htmlspecialchars($question,ENT_QUOTES)."' url='admin/faq.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
 			echo "&amp;dir_id=".$id."#".$id."' />" ;
-			echo "\n\r</feuille>\n\r " ;
 			rech_fils($id) ;
+			echo "\n\r</feuille>\n\r " ;
 		}
 		
 		// affichage des vrais fichiers !
