@@ -21,9 +21,12 @@
 	Script de création de la partie activités contenant des images type "affiche".
 	
 	$Log$
+	Revision 1.12  2004/11/27 18:23:53  pico
+	Ajout de l'annonce: 'le bob est ouvert' dans les activités + page de gestion du bob
+
 	Revision 1.11  2004/11/25 10:40:08  pico
 	Correction activités (sinon l'image était tjs écrite en tant que 0 et ct pas glop du coup)
-
+	
 	Revision 1.10  2004/10/29 16:30:56  kikx
 	Ca evite que les activité apparaissent si il n'y a rein dedans ...
 	
@@ -49,11 +52,14 @@
 */
 
 if(est_authentifie(AUTH_MINIMUM)) {
-
+	// Etat du bôb
+	$DB_web->query("SELECT valeur FROM parametres WHERE nom='bob'");
+	list($valeur) = $DB_web->next_row();
+	
 	$DB_web->query("SELECT affiche_id,titre,url,date FROM affiches WHERE TO_DAYS(date)=TO_DAYS(NOW())");
-	if ($DB_web->num_rows()!=0){
+	if ($DB_web->num_rows()!=0 || $valeur=='1'){
 		echo "<module id=\"activites\" titre=\"Activités\">\n";
-
+		if($valeur == 1) echo "<annonce titre=\"Le BôB est ouvert\"/>";
 		while (list($id,$titre,$url,$date)=$DB_web->next_row()) { ?>
 			<annonce date="<? echo $date ?>">
 			<lien url="<?php echo $url?>"><image source="<?php echo DATA_DIR_URL.'affiches/'.$id?>" texte="Affiche" legende="<?php echo $titre?>"/></lien>

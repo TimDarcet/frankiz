@@ -41,7 +41,7 @@
 			</b>
 		</div>
 		<div>
-			A <xsl:value-of select='substring(@date,12,5)'/><br/>
+			<xsl:if test="@date!=''">A <xsl:value-of select='substring(@date,12,5)'/><br/></xsl:if>
 			<xsl:apply-templates select="*[name()!='eleve']"/>
 			<xsl:if test="count(eleve)">
 				<p class="fkz_signature">
@@ -56,6 +56,7 @@
 					(<xsl:value-of select="eleve/@promo"/>)
 				</p>
 			</xsl:if>
+			<xsl:text> </xsl:text> <!-- Pas de div vide -->
 		</div>
 	<br/>
 </xsl:template>
