@@ -1,6 +1,6 @@
 <?php
 require_once "../include/global.inc.php";
-
+demande_authentification(AUTH_MINIMUM);
 
 $DB_xnet->query("select sum(isconnected) from clients");
 list($nb_connect)=$DB_xnet->next_row();

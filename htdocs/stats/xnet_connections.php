@@ -1,5 +1,6 @@
 <?php
 require_once "../include/global.inc.php";
+demande_authentification(AUTH_MINIMUM);
 
 $fp=fopen(BASE_CACHE."stats-xnet",'r');
 while(!feof($fp)){
