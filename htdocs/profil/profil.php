@@ -24,9 +24,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.38  2004/12/15 13:03:38  pico
+	Ajout mail trombinomen
+
 	Revision 1.37  2004/12/15 06:06:08  kikx
 	/me tres fatigué
-
+	
 	Revision 1.36  2004/12/15 06:04:46  kikx
 	Pour ne pas avoir des messages de commentaires ambigué
 	
@@ -204,7 +207,7 @@ if(isset($_POST['changer_frankiz'])) {
 				"Très BR-ement<br>" .
 				"L'automate :)<br>"  ;
 				
-			couriel(WEBMESTRE_ID,"[Frankiz] Modification de l'image trombi de $nom $prenom",$contenu,$_SESSION['user']->uid);
+			couriel(TROMBINOMEN_ID,"[Frankiz] Modification de l'image trombi de $nom $prenom",$contenu,$_SESSION['user']->uid);
 			$message .= "<commentaire>Ta demande de changement de photo a été prise en compte et sera validée dans les meilleurs délais.</commentaire>";
 
 		}

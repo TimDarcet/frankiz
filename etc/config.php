@@ -22,9 +22,12 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.11  2004/12/15 13:03:22  pico
+	Ajout mail trombinomen
+
 	Revision 1.10  2004/12/14 22:17:32  kikx
 	Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
-
+	
 	Revision 1.9  2004/12/14 00:29:22  kikx
 	oubli
 	
@@ -92,6 +95,8 @@ define('MAIL_CONTACT',"eleves@polytechnique.fr");
 define('CONTACT_ID',$i--);
 define('MAIL_FAQMESTRE',"gruson@poly");
 define('FAQMESTRE_ID',$i--);
+define('MAIL_TROMBINOMEN',"pico@melix.net");
+define('TROMBINOMEN_ID',$i--);
 
 // Nombres de jours affichés dans la page des annonces 
 define('MAX_PEREMPTION',8);

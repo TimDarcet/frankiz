@@ -22,9 +22,12 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.13  2004/12/15 13:03:32  pico
+	Ajout mail trombinomen
+
 	Revision 1.12  2004/12/14 22:17:32  kikx
 	Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
-
+	
 	Revision 1.11  2004/12/14 00:27:40  kikx
 	Pour que le FROM des mails de validation soit au nom du mec qui demande la validation... (qu'est ce que je ferai pas pour les TOS :))
 	
@@ -77,6 +80,8 @@ function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID) {
 		$sender = "Président du BR <".MAIL_PREZ.">" ;
 	} else if ($sender_id==ROOT_ID) {
 		$sender = "Root du BR <".MAIL_ROOT.">" ;
+	} else if ($sender_id==TROMBINOMEN_ID) {
+	                 $sender = "Trombino <".MAIL_TROMBINOMEN.">" ;
 	} else { // C'est une personne physique
 		global $DB_trombino;
 		$DB_trombino->query("SELECT nom,prenom,mail,login FROM eleves WHERE eleve_id=$sender_id") ;
@@ -107,6 +112,10 @@ function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID) {
 		$prenom = "Root du BR" ;
 		$nom = "" ;
 		$adresse = MAIL_ROOT ;
+	} else if ($eleve_id==TROMBINOMEN_ID) {
+                $prenom = "Trombino" ;
+                $nom = "" ;
+                $adresse = MAIL_TROMBINOMEN ;		
 	} else {
 		global $DB_trombino;
 		$DB_trombino->query("SELECT nom,prenom,mail,login FROM eleves WHERE eleve_id=$eleve_id") ;
