@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.17  2004/11/27 13:58:50  pico
+	Correction: include du wiki
+
 	Revision 1.16  2004/11/25 11:52:10  pico
 	Correction des liens mysql_id
-
+	
 	Revision 1.15  2004/11/24 13:32:23  kikx
 	Passage des annonces en wiki !
 	
@@ -72,6 +75,7 @@
 */
 	
 require_once "../include/global.inc.php";
+require_once "../include/wiki.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
