@@ -24,9 +24,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.37  2004/12/15 06:06:08  kikx
+	/me tres fatigué
+
 	Revision 1.36  2004/12/15 06:04:46  kikx
 	Pour ne pas avoir des messages de commentaires ambigué
-
+	
 	Revision 1.35  2004/12/15 05:12:28  falco
 	typo
 	
@@ -289,7 +292,7 @@ require "../include/page_header.inc.php";
 ?>
 	<formulaire id="mod_frankiz" titre="Modification du compte Frankiz" action="profil/profil.php">
 		<?
-		if (isset($_REQUEST['hash')) {
+		if (isset($_REQUEST['hash'])) {
 		?>
 			<note>Remplace vite ton mot de passe</note>
 		<?	
