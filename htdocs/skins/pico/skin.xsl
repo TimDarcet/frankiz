@@ -24,7 +24,7 @@
 <xsl:template match="/">
   <html>
   <head>
-      <title>Frankiz II</title>
+      <title><xsl:value-of select="frankiz/page/@titre"/></title>
     <base>
     <xsl:attribute name="href">
        <xsl:value-of select="frankiz/@base"/>
@@ -38,7 +38,7 @@
     <xsl:apply-templates select="frankiz/module[@id='liste_css']" mode="css"/>
   </head>
   <body>
-	<a href="index.php"><img src="skins/pico/frankiz.png" alt="Frankiz, le site Web des élèves"/></a>
+	<div><a href="index.php"><img src="skins/pico/frankiz.png" alt="Frankiz, le site Web des élèves"/></a></div>
 
   <xsl:apply-templates select="frankiz/module[@id='liens_navigation']"/>
       <div class="fkz_page">
@@ -84,7 +84,7 @@
 <!-- Arbres -->
 <xsl:template match="arbre">
 	<xsl:if test="boolean(@titre)"><h2><xsl:value-of select="@titre"/></h2></xsl:if>
-	<ul><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+	<ul>
 		<xsl:apply-templates select="noeud"/>
 	</ul>
 </xsl:template>
