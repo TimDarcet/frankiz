@@ -23,9 +23,13 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.40  2005/03/04 12:06:55  pico
+	Fixe bug #66
+	On propose automatiquement une 2 eme ip
+
 	Revision 1.39  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
-
+	
 	Revision 1.38  2005/01/13 17:10:58  pico
 	Mails de validations From le validateur qui va plus ou moins bien
 	
@@ -226,8 +230,8 @@ $DB_admin->query("UNLOCK TABLES");
 		<entete id="raison" titre="Raison"/>
 		<entete id="ip" titre="IP"/>
 <?
-		$DB_valid->query("SELECT v.raison,e.nom,e.prenom,e.piece_id,e.eleve_id,p.prise_id FROM valid_ip as v LEFT JOIN trombino.eleves as e USING(eleve_id) LEFT JOIN admin.prises AS p USING(piece_id) WHERE p.type='principale'");
-		while(list($raison,$nom,$prenom,$piece,$eleve_id,$prise) = $DB_valid->next_row()) {
+		$DB_valid->query("SELECT v.raison,e.nom,e.prenom,e.piece_id,e.eleve_id,p.prise_id,p.ip FROM valid_ip as v LEFT JOIN trombino.eleves as e USING(eleve_id) LEFT JOIN admin.prises AS p USING(piece_id) WHERE p.type='principale'");
+		while(list($raison,$nom,$prenom,$piece,$eleve_id,$prise,$ip0) = $DB_valid->next_row()) {
 ?>
 			<element id="<? echo $eleve_id ;?>">
 				<colonne id="prise"><? echo "$prise" ?></colonne>
@@ -245,9 +249,20 @@ $DB_admin->query("UNLOCK TABLES");
 							echo $ip ;
 						echo "</p>" ;
 					}
+					$new_ip="129.104.";
+					$ssrezo=substr($ip0, 8, 3);
+					$new_ip.=$ssrezo.".";
+					if($ssrezo==203)
+						$new_ip.=(substr($ip0, 12, 3)+50);
+					else if($ssrezo==204)
+						$new_ip.=(substr($ip0, 12, 3)+25);
+					else if($ssrezo==214)
+						$new_ip.=(substr($ip0, 12, 3)+110);
+					else if(($ssrezo<=222)&&($ssrezo>=203)&&($ssrezo!=213))
+						$new_ip.=(substr($ip0, 12, 3)+70);
 ?>					
 					<p>
-						<champ titre="" id="ajout_ip_<? echo $eleve_id ;?>" valeur="129.104." /> 
+						<champ titre="" id="ajout_ip_<? echo $eleve_id ;?>" valeur="<? echo $new_ip ?>" /> 
 						<bouton titre="Ok" id="ok_<? echo $eleve_id ;?>" />
 						<bouton titre="Vtff" id="vtff_<? echo $eleve_id ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette ip ?')"/>
 					</p>
