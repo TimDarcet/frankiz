@@ -103,8 +103,12 @@
 
 <!-- Formatage HTML -->
 <xsl:template match="p">
-	<xsl:apply-templates/><br/>
+	<p><xsl:apply-templates/></p>
 </xsl:template>
+<xsl:template match="p[@id='selected']">
+	<img src="skins/pico/fleche.gif" alt=" [selected]"/>
+</xsl:template>
+
 <xsl:template match="h1">
 	<h1><xsl:apply-templates/></h1>
 </xsl:template>
