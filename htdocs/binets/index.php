@@ -1,38 +1,45 @@
 <?php
+/*
+	$Id$
+	
+	Affichage de la liste des binets ayant un site web.
+*/
 require_once "../include/global.inc.php";
-require_once "../include/binets.inc.php";
 
 // demande_authentification(AUTH_MINIMUM);
 
 // Récupération d'une image
-if(isset($_REQUEST['image']) && ($_REQUEST['image'] == "true") && ($_REQUEST['image'] != "")){
-  $is_image = true;
+if(isset($_REQUEST['image'])){
+	$DB_web->query("SELECT image,format FROM binets WHERE id='{$_GET['id']}'");
+	list($image,$format) = $DB_web->next_row() ;
+	header("content-type: $format");
+	echo $image;
+	exit;
 }
 
 
 // Affichage de la liste des binets
-require "../include/page_header.inc.php";
+require BASE_LOCAL."/include/page_header.inc.php";
 ?>
-<page id="binets" titre="Frankiz : Binets" image="true">
-
-  <?PHP
-
-  connecter_binets();
-  $query = "SELECT id,catego FROM categ_binet ORDER BY id";
-  $categos = mysql_query($query,$db_binets);
-
-  while($cat = mysql_fetch_assoc($categos)) {
-  echo $cat['catego'];
-    
-    $query = "SELECT id FROM binets WHERE catego=".$cat['id'];
-    $ids_binets = mysql_query($query, $db_binets);
-
-    while($binet=mysql_fetch_assoc($ids_binets))
-      affiche_binet($binet['id']);
-
-  }
-  deconnecter_binets();
-  
-  ?>
+<page id="binets" titre="Frankiz : Binets">
+<?php
+	$categorie_precedente = -1;
+	$DB_web->query("SELECT b.id,login,date,nom,descript,http,c.id,c.catego FROM binets as b INNER JOIN categ_binet as c ON(b.catego=c.id) ORDER BY c.id ASC, b.nom ASC");
+	while(list($id,$login,$date,$nom,$description,$http,$cat_id,$categorie) = $DB_web->next_row()) {
+		if($cat_id != $categorie_precedente) {
+			echo "<h2>$categorie</h2>\n";
+			$categorie_precedente = $cat_id;
+		}
+?>
+		<binet id="<?=$id?>" catego="<?=$categorie?>" nom="<?=$nom?>">
+			<image source="binets/?image=1&amp;id=<?=$id?>"/>
+			<login><?=$login?></login>
+			<date><?=$date?></date>
+			<description><?=$description?></description>
+			<url><?=$http?></url>
+		</binet>
+<?php
+	}
+?>
 </page>
-<? require "../include/page_footer.inc.php" ?>
+<?php require "../include/page_footer.inc.php" ?>

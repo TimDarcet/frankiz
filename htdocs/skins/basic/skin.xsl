@@ -184,10 +184,7 @@
 	</xsl:if>
 
 	<tr><td width="120">
-		<img>
-			<xsl:attribute name="src">binets/image.php?id=<xsl:value-of select="@id"/>
-			</xsl:attribute>
-		</img>
+		<xsl:apply-templates select="image"/>
 	</td><td width="100%">
 		<span class="binet_nom">
 			<xsl:value-of select="@nom"/>
