@@ -21,9 +21,12 @@
 	Moteur Wiki (TipiWiki)
 	
 	$Log$
+	Revision 1.17  2004/12/13 20:42:36  pico
+	Passage du wiki en <br/> (bcp plus simple)
+
 	Revision 1.16  2004/12/01 19:28:47  pico
 	Format du wiki: - pour les listes
-
+	
 	Revision 1.15  2004/12/01 18:56:37  pico
 	Nettoyage
 	
@@ -113,13 +116,13 @@ function wikiVersXML($filtered,$enhtml=false) {
 	$filtered = preg_replace("/(?<=[\n>])-(.+)\n/","<li>\\1</li>",$filtered); // Liste 1er niveau
 	$filtered = preg_replace("(</ul></li><li><ul>)","",$filtered);  
 	$filtered = preg_replace("(</li><li><ul>)","<ul>",$filtered);
-	$filtered = preg_replace("/<li>(.+)\<\/li>/","</p><ul>\\0</ul><p>\n",$filtered);
+	$filtered = preg_replace("/<li>(.+)\<\/li>/","<br/><ul>\\0</ul><br/>\n",$filtered);
 	}
 	
 	// Headlines <h1><h2><h3>
-	$filtered = preg_replace("/\n===([^=].*[^=])===[\t  ]*\n/","</p>\n<h2>\\1</h2>\n<p>\n",$filtered);
-	$filtered = preg_replace("/\n==([^=].*[^=])==[\t  ]*\n/","</p>\n<h3>\\1</h3>\n<p>\n",$filtered);
-	$filtered = preg_replace("/\n=([^=].*[^=])=[\t  ]*\n/","</p>\n<h4>\\1</h4>\n<p>\n",$filtered);
+	$filtered = preg_replace("/\n===([^=].*[^=])===[\t  ]*\n/","<h2>\\1</h2>\n",$filtered);
+	$filtered = preg_replace("/\n==([^=].*[^=])==[\t  ]*\n/","<h3>\\1</h3>\n",$filtered);
+	$filtered = preg_replace("/\n=([^=].*[^=])=[\t  ]*\n/","<h4>\\1</h4>\n",$filtered);
 
 	// text decorations (bold,italic,underline,boxed)
 	$filtered = preg_replace("/\*\*(.+)\*\*/U","<strong>\\1</strong>", $filtered);
@@ -130,14 +133,14 @@ function wikiVersXML($filtered,$enhtml=false) {
 	
 	// strip leading and ending line breaks
 	$filtered = preg_replace("/^(\n+)/","",$filtered); 
-	$filtered = preg_replace("/\n{3,}/","</p> <p>",$filtered); 
+	$filtered = preg_replace("/\n{3,}/","<br/>",$filtered); 
 	
 	
 	// <pre> blocks
 	//$filtered = preg_replace("/(?<=\n) (.*)(\n)/","<pre>\\1</pre>", $filtered);
 	
 	// ad html line breaks
-	$filtered = str_replace("\n","</p><p>\n",$filtered);
+	$filtered = str_replace("\n","<br/>\n",$filtered);
 	
 	// html beauty
 	$filtered = "<p>".$filtered."</p>\n";
@@ -146,9 +149,7 @@ function wikiVersXML($filtered,$enhtml=false) {
 	$filtered = str_replace("</feuille>","</feuille>\n",$filtered);
 	$filtered = str_replace("</noeud>","</noeud>\n",$filtered);
 	$filtered = str_replace("arbre>","arbre>\n",$filtered);
-	$filtered = str_replace("</p><p>\n<h","\n<h", $filtered);
-	$filtered = preg_replace("/(<\/h[1-6]>)<\/p><p>\n/","\\1\n", $filtered);
-	$filtered = preg_replace("/<p>\n*<\/p>/","",$filtered);
+	$filtered = str_replace("<br/>\n<h","\n<h", $filtered);
 	
 	return $filtered;
 }
