@@ -24,9 +24,12 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.45  2004/11/26 16:12:47  pico
+	La Faq utilise la $DB_faq au lieu de $DB_web
+
 	Revision 1.44  2004/11/25 01:33:45  schmurtz
 	re
-
+	
 	Revision 1.43  2004/11/25 01:31:55  schmurtz
 	Pour debuguer
 	
@@ -71,12 +74,13 @@ define('BASE_URL','http://'.$_SERVER['HTTP_HOST'].'/'.substr((dirname($_SERVER['
 // Connexions aux bases mysql
 require_once "mysql.inc.php";
 
-require_once BASE_LOCAL."/../etc/config.php";
-
 // Gestion des erreurs PHP et MySQL
 // Il est important d'inclure ce fichier le plus tôt possible, mais comme il a besoin
 // des paramètres du site on ne l'inclu que maintenant.
 require_once "init_erreurs.inc.php";	// TODO : mettre avant l'ouverture des connexions aux bases mysql
+
+require_once BASE_LOCAL."/../etc/config.php";
+
 
 // Gestion des erreurs dans les formulaires
 $i=1;

@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.4  2004/11/26 16:12:47  pico
+		La Faq utilise la $DB_faq au lieu de $DB_web
+
 		Revision 1.3  2004/11/25 12:45:36  pico
 		Duble emploi de htmlspecialchar vu que les entrées dans la bdd sont déjà transformées
-
+		
 		Revision 1.2  2004/11/25 00:58:08  kikx
 		faqs-> faq
 		
@@ -130,37 +133,37 @@ if(isset($_REQUEST['a_marquer'])) $a_marquer = base64_decode($_REQUEST['a_marque
 //------------------------------
 
 function rech_fils($parent) {
-	global $DB_web,$a_marquer ; 
+	global $DB_faq,$a_marquer ; 
 
 	if (affiche_element_faq($parent)) {			// on continue l'affichage ssi on demande l'affichage
 	
 		// affichage des folders et recherche de leurs fils 
 		//----------------------------------
-		$DB_web->query("SELECT faq_id,question FROM faq WHERE (parent='{$parent}' AND NOT  (reponse LIKE '%index.php' OR reponse LIKE '%index.html'))") ;
-		while(list($id,$question) = $DB_web->next_row()) {
+		$DB_faq->query("SELECT faq_id,question FROM faq WHERE (parent='{$parent}' AND NOT  (reponse LIKE '%index.php' OR reponse LIKE '%index.html'))") ;
+		while(list($id,$question) = $DB_faq->next_row()) {
 			echo "<noeud id='".$id."' ";
-			$DB_web->push_result();
+			$DB_faq->push_result();
 			echo "lien='faq.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
-			$DB_web->pop_result();
+			$DB_faq->pop_result();
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "' titre='".$question."'>" ;
 			if (eregi("/".$id."/",$a_marquer)) {
 				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche_folder.gif'/>" ;
 			}
-			$DB_web->push_result();
+			$DB_faq->push_result();
 			rech_fils($id) ;
-			$DB_web->pop_result();
+			$DB_faq->pop_result();
 			echo "\n\r</noeud>\n\r " ;
 		}
 		
 		// affichage des vrais questions !
 		//------------------------------------
 		
-		$DB_web->query("SELECT faq_id,question FROM faq WHERE ((parent='{$parent}') AND (reponse LIKE '%index.php' OR reponse LIKE '%index.html'))" ) ;
-		while(list($id,$question) = $DB_web->next_row()) {
-			$DB_web->push_result();
+		$DB_faq->query("SELECT faq_id,question FROM faq WHERE ((parent='{$parent}') AND (reponse LIKE '%index.php' OR reponse LIKE '%index.html'))" ) ;
+		while(list($id,$question) = $DB_faq->next_row()) {
+			$DB_faq->push_result();
 			echo "\n\r<feuille lien='faq.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
-			$DB_web->pop_result();
+			$DB_faq->pop_result();
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#reponse' titre='".$question."'>" ;
 			if (eregi("/".$id."/",$a_marquer)) {
@@ -225,11 +228,11 @@ function all_elt_affich($idfold){
 //------------------------------
 
 function rech_parent($id) {
-		global $DB_web,$affich_elt;
+		global $DB_faq,$affich_elt;
 		$liste="";
 		while ($id != 0) {
-			$DB_web->query("SELECT parent FROM faq WHERE faq_id='{$id}'") ;
-			while(list($id) = $DB_web->next_row()){
+			$DB_faq->query("SELECT parent FROM faq WHERE faq_id='{$id}'") ;
+			while(list($id) = $DB_faq->next_row()){
 				if (($id != "")&&($id != 0)){ // on rajoute ssi c'est pas le racine
 					$liste .= "/".$id;		  // car on la deja rajouté !
 				}
@@ -269,18 +272,18 @@ if (($mots!="")||($a_marquer!="")) {
 ////////////////////////////////////////////////
 
 if ($mots!="") {
-	$DB_web->query("SELECT faq_id,question,reponse FROM faq") ;
+	$DB_faq->query("SELECT faq_id,question,reponse FROM faq") ;
 	$recherche = 0 ;
 	$a_marquer = "/" ;			// liste des elements qui contiendront les mots
 	$affich_elt = "1" ;		// liste des elements à afficher
 	$result = explode(" ",$mots) ;
 	$n = count($result) ;
-	while(list($id,$question,$reponse) = $DB_web->next_row()) {
+	while(list($id,$question,$reponse) = $DB_faq->next_row()) {
 		for ($i=0 ; $i<$n ; $i++){ 			// on regarde dans chaque FAQ si il y a les mots ...
 			if ((eregi($result[$i],$reponse))||(eregi($result[$i],$question))) {
-				$DB_web->push_result();
+				$DB_faq->push_result();
 				$affich_elt = $affich_elt.rech_parent($id);
-				$DB_web->pop_result();
+				$DB_faq->pop_result();
 				$a_marquer = $a_marquer.$id."/" ;
 				$recherche = 1 ;
 			}
@@ -321,8 +324,8 @@ echo "<br/>" ;
 
   	if(isset($_REQUEST['idpopup'])) $id = $_REQUEST['idpopup'] ; else $id = "";
   	if ($id != "") {
-		$DB_web->query("SELECT question,reponse FROM faq WHERE faq_id='{$id}'") ;
-		if (list($question,$reponse) = $DB_web->next_row()) {
+		$DB_faq->query("SELECT question,reponse FROM faq WHERE faq_id='{$id}'") ;
+		if (list($question,$reponse) = $DB_faq->next_row()) {
 
 	$repfaq = "../../data/faq/".$reponse;
 	echo "<cadre titre=\"Q: ".$question."\" id=\"reponse\">\n";

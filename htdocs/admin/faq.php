@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.27  2004/11/26 16:12:47  pico
+		La Faq utilise la $DB_faq au lieu de $DB_web
+
 		Revision 1.26  2004/11/25 12:45:36  pico
 		Duble emploi de htmlspecialchar vu que les entrées dans la bdd sont déjà transformées
-
+		
 		Revision 1.25  2004/11/24 22:12:57  schmurtz
 		Regroupement des fonctions zip unzip deldir et download dans le meme fichier
 		
@@ -119,30 +122,30 @@ foreach ($_POST AS $keys => $val){
 
 // Supprimer le répertoire
 	if ($temp[0]=='rmdir') {
-		$DB_web->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
-		list($dir) = $DB_web->next_row();
+		$DB_faq->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
+		list($dir) = $DB_faq->next_row();
 		$dir = BASE_DATA."faq/".$dir;
 		deldir($dir);
-		$DB_web->query("DELETE FROM faq WHERE faq_id='{$temp[1]}'");
-		$DB_web->query("DELETE FROM faq WHERE parent='{$temp[1]}'");
+		$DB_faq->query("DELETE FROM faq WHERE faq_id='{$temp[1]}'");
+		$DB_faq->query("DELETE FROM faq WHERE parent='{$temp[1]}'");
 		echo "<warning>Repertoire Supprimé</warning>";
 	}
 	
 	if (($temp[0]=='adddir') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='')) {
 		$nom = $_REQUEST['nom'];
 		if(isset($_REQUEST['desc'])) $desc = $_REQUEST['desc']; else $desc = $nom;
-		$DB_web->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
-		list($dir) = $DB_web->next_row();
+		$DB_faq->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
+		list($dir) = $DB_faq->next_row();
 		$dir=$dir."/".strtolower(str_replace(" ","",$nom));
-		$DB_web-> query("INSERT INTO faq SET parent='{$temp[1]}',question='{$desc}',reponse='{$dir}'");
+		$DB_faq-> query("INSERT INTO faq SET parent='{$temp[1]}',question='{$desc}',reponse='{$dir}'");
 		mkdir(BASE_DATA."faq/".$dir);
 		echo "<commentaire>Repertoire crée".BASE_DATA."faq/".$dir."</commentaire>";
 	}
 	
 	if (($temp[0]=='ajout') && isset($_REQUEST['question']) && ($_REQUEST['question']!='') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='') && (isset($_FILES['file'])) &&($_FILES['file']['name']!='') ) {
 		$question = $_REQUEST['question'];
-		$DB_web->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
-		list($dir) = $DB_web->next_row();
+		$DB_faq->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
+		list($dir) = $DB_faq->next_row();
 		mkdir(BASE_DATA."faq/".$dir."/".$_REQUEST['nom']);
 		if($_FILES['file']['type'] == "text/html"){
 			$filename = $dir."/".$_REQUEST['nom']."/index.php";
@@ -156,12 +159,12 @@ foreach ($_POST AS $keys => $val){
 		
 		if(file_exists(BASE_DATA."faq/".$dir."/".$_REQUEST['nom']."/index.php")){
 			$filename = $dir."/".$_REQUEST['nom']."/index.php";
-			$DB_web-> query("INSERT INTO faq SET parent='{$temp[1]}' , question='{$question}' , reponse='{$filename}'");
+			$DB_faq-> query("INSERT INTO faq SET parent='{$temp[1]}' , question='{$question}' , reponse='{$filename}'");
 			echo "<commentaire>FAQ ajoutée</commentaire>";
 		}
 		else if(file_exists(BASE_DATA."faq/".$dir."/".$_REQUEST['nom']."/index.html")){
 			$filename = $dir."/".$_REQUEST['nom']."/index.html";
-			$DB_web-> query("INSERT INTO faq SET parent='{$temp[1]}' , question='{$question}' , reponse='{$filename}'");
+			$DB_faq-> query("INSERT INTO faq SET parent='{$temp[1]}' , question='{$question}' , reponse='{$filename}'");
 			echo "<commentaire>FAQ ajoutée</commentaire>";
 		}
 		else{
@@ -174,8 +177,8 @@ foreach ($_POST AS $keys => $val){
 	if (($temp[0]=='modif') && isset($_REQUEST['question']) && ($_REQUEST['question']!='')) {
 		$reponse = "";
 		if((isset($_FILES['file']))&&($_FILES['file']['name']!='')){
-			$DB_web->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
-			list($dir) = $DB_web->next_row();
+			$DB_faq->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
+			list($dir) = $DB_faq->next_row();
 			$dir = dirname($dir);
 			deldir(BASE_DATA."faq/".$dir);
 			mkdir(BASE_DATA."faq/".$dir);
@@ -203,16 +206,16 @@ foreach ($_POST AS $keys => $val){
 			}
 		}
 		$question = $_REQUEST['question'];
-		$DB_web-> query("UPDATE faq SET question='{$question}' {$reponse}  WHERE faq_id='{$temp[1]}' ");
+		$DB_faq-> query("UPDATE faq SET question='{$question}' {$reponse}  WHERE faq_id='{$temp[1]}' ");
 		echo "<commentaire>FAQ modifiée</commentaire>";
 	}
 	
 	if ($temp[0]=='suppr') {
-		$DB_web->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
-		list($dir) = $DB_web->next_row();
+		$DB_faq->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
+		list($dir) = $DB_faq->next_row();
 		unlink(BASE_DATA."faq/".$dir);
 		rmdir(substr(BASE_DATA."faq/".$dir, 0, -10));
-		$DB_web->query("DELETE FROM faq WHERE faq_id='{$temp[1]}' ");
+		$DB_faq->query("DELETE FROM faq WHERE faq_id='{$temp[1]}' ");
 		
 		echo "<warning>Fichier supprimé</warning>";
 	}
@@ -234,14 +237,14 @@ if(isset($_REQUEST['affich_elt'])) define("AFFICH_ELT",base64_decode($_REQUEST['
 //------------------------------
 
 function rech_fils($parent) {
-	global $DB_web,$a_marquer ; 
+	global $DB_faq,$a_marquer ; 
 
 	if (affiche_element_faq($parent)) {			// on continue l'affichage ssi on demande l'affichage
 	
 		// affichage des folders et recherche de leurs fils 
 		//----------------------------------
-		$DB_web->query("SELECT faq_id,question FROM faq WHERE (parent='{$parent}' AND NOT  (reponse LIKE '%index.php' OR reponse LIKE '%index.html')) ") ;
-		while(list($id,$question) = $DB_web->next_row()) {
+		$DB_faq->query("SELECT faq_id,question FROM faq WHERE (parent='{$parent}' AND NOT  (reponse LIKE '%index.php' OR reponse LIKE '%index.html')) ") ;
+		while(list($id,$question) = $DB_faq->next_row()) {
 			echo "<noeud id='".$id."' ";
 			echo "lien='admin/faq.php?dir_id=".$id."&amp;affich_elt=".base64_encode(all_elt_affich($id)) ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
@@ -249,17 +252,17 @@ function rech_fils($parent) {
 			if (isset($_REQUEST['dir_id']) && ($id == $_REQUEST['dir_id'])) {
 				echo "<p id='selected'>[séléctionné]</p>\n\r" ;
 			}
-			$DB_web->push_result();
+			$DB_faq->push_result();
 			rech_fils($id) ;
-			$DB_web->pop_result();
+			$DB_faq->pop_result();
 			echo "\n\r</noeud>\n\r " ;
 		}
 		
 		// affichage des vrais questions !
 		//------------------------------------
 		
-		$DB_web->query("SELECT faq_id,question FROM faq WHERE  ((parent='{$parent}') AND (reponse LIKE '%index.php' OR reponse LIKE '%index.html'))" ) ;
-		while(list($id,$question) = $DB_web->next_row()) {
+		$DB_faq->query("SELECT faq_id,question FROM faq WHERE  ((parent='{$parent}') AND (reponse LIKE '%index.php' OR reponse LIKE '%index.html'))" ) ;
+		while(list($id,$question) = $DB_faq->next_row()) {
 			echo "\n\r<feuille id='".$id."' lien='admin/faq.php?dir_id=".$id."&amp;affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#reponse' titre='".$question."'>" ;
@@ -325,11 +328,11 @@ function all_elt_affich($idfold){
 //------------------------------
 
 function rech_parent($id) {
-		global $DB_web;
+		global $DB_faq;
 		$liste = $id."/" ;
 		while ($id != 0) {
-			$DB_web->query("SELECT parent FROM faq WHERE faq_id='{$id}'") ;
-			$id = $DB_web->next_row() ;
+			$DB_faq->query("SELECT parent FROM faq WHERE faq_id='{$id}'") ;
+			$id = $DB_faq->next_row() ;
 			if (($id != "")&&($id != 0)){ // on rajoute ssi c'est pas le racine
 				$liste .= $id."/";		  // car on la deja rajouté !
 			}
@@ -371,8 +374,8 @@ echo "<br/>" ;
 
   	if(isset($_REQUEST['idpopup'])) $id = $_REQUEST['idpopup'] ; else $id ="";
   	if ($id != "") {
-		$DB_web->query("SELECT * FROM faq WHERE faq_id='{$id}'") ;
-		if (list($id,$parent,$question,$reponse) = $DB_web->next_row()) {
+		$DB_faq->query("SELECT * FROM faq WHERE faq_id='{$id}'") ;
+		if (list($id,$parent,$question,$reponse) = $DB_faq->next_row()) {
 	?>
 	<formulaire id="faq_<? echo $id ?>" titre="La réponse" action="admin/faq.php">
 	<champ id="question" titre="Question" valeur="<? echo $question ?>" />

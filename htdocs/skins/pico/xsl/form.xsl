@@ -28,7 +28,14 @@
 			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<xsl:if test="boolean(@titre)">
-			<h2><span><xsl:value-of select="@titre"/></span></h2>
+			<xsl:choose>
+				<xsl:when test="starts-with(@id,'mod_xnet_')">
+					<h2><span>Modification du mot de passe Xnet </span><span class="adresse_ip"><xsl:value-of select="substring-after(@titre,'Modification du mot de passe Xnet')"/></span></h2>
+				</xsl:when>
+				<xsl:otherwise>
+					<h2><span><xsl:value-of select="@titre"/></span></h2>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:if>
 		<div class="formulaire">
 			<!-- les options du formulaire -->
@@ -43,38 +50,6 @@
 						<xsl:value-of select="@titre"/> :
 					</label>
 				</xsl:if>
-				</div>
-			</xsl:for-each>
-			<!-- les boutons gérant les actions du formulaire -->
-			<div>
-			<span class="boutons">
-				<xsl:apply-templates select="bouton"/>
-			</span>
-			</div>
-		</div>
-	</form>
-</xsl:template>
-
-
-<xsl:template match="formulaire[starts-with(@id,'mod_xnet_')]">
-	<form enctype="multipart/form-data" method="post">
-			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
-			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
-		<xsl:if test="boolean(@titre)">
-			<h2><span>Modification du mot de passe Xnet </span><span class="adresse_ip"><xsl:value-of select="substring-after(@titre,'Modification du mot de passe Xnet')"/></span></h2>
-		</xsl:if>
-	<div class="formulaire">
-			<!-- les options du formulaire -->
-			<xsl:for-each select="*[name()!='bouton']">
-				<div>
-				<xsl:if test="boolean(@titre)">
-					<span class="gauche">
-						<xsl:value-of select="@titre"/> :
-					</span>
-				</xsl:if>
-				<span class="droite">
-					<xsl:apply-templates select="."/>
-				</span>
 				</div>
 			</xsl:for-each>
 			<!-- les boutons gérant les actions du formulaire -->
