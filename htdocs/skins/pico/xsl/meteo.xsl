@@ -93,6 +93,7 @@
 		<div class="fkz_module_corps">
 			<span  class="meteo">
 			<xsl:value-of select="meteo/now/temperature"/>°C<br />
+			<a href="meteo.php">
 			<img alt="meteo" width="64" height="64">
 				<xsl:choose>
 					<xsl:when test="meteo/now/image!='-'">
@@ -102,7 +103,9 @@
 						<xsl:attribute name="src">skins/pico/xsl/meteo/na.gif</xsl:attribute>
 					</xsl:otherwise>
 				</xsl:choose>
-			</img></span>
+			</img>
+			</a>
+			</span>
 		</div>
 	</div>
 </xsl:template>
