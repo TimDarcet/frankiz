@@ -23,8 +23,8 @@
 	ou refuse la demande ici.
 	
 	$Log$
-	Revision 1.35  2005/01/10 09:09:10  pico
-	Hum..
+	Revision 1.36  2005/01/10 09:15:19  pico
+	Grr
 
 	Revision 1.34  2005/01/10 09:06:02  pico
 	Pb de lock sur les tables mysql
@@ -173,9 +173,7 @@ foreach ($_POST AS $keys => $val){
 		}
 		
 	}
-	
-$DB_admin->query("LOCK TABLE prises WRITE");
-$DB_admin->query("SET AUTOCOMMIT=0");
+
 	// On vire une ip qu'on avait validé
 	//===========================
 	if ($temp[0] == "suppr") {
