@@ -3,9 +3,12 @@
 	Annonces de frankiz. Page d'acceuil pour les personnes déjà loguées.
 	
 	$Log$
+	Revision 1.5  2004/09/16 15:33:50  schmurtz
+	Orthographe
+
 	Revision 1.4  2004/09/16 15:33:03  schmurtz
 	Suppression de la fonction afficher_identifiant(), utilisation de <![CDATA[......]]> aÌ€ la place.
-
+	
 	Revision 1.3  2004/09/15 23:19:45  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
@@ -26,7 +29,7 @@ function get_categorie($en_haut,$stamp,$perime) {
 
 // génération de la page
 require "include/page_header.inc.php";
-echo "<page id='annoncesl' titre='Frankiz : annonces'>\n";
+echo "<page id='annonces' titre='Frankiz : annonces'>\n";
 
 
 $DB_web->query("SELECT annonce_id,stamp,perime,titre,contenu,en_haut,nom,prenom "
