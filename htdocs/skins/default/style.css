@@ -689,18 +689,27 @@ dt.entete {
 }
 
 dd.row {
-
+	padding:5px 0px;
 }
 
 dd.row span.gauche {
 	float:left;
 	width:200px;
 }
+dd.row span.droite {
+}
+
+dd.pair {
+	background-color : #eee;
+}
+dd.impair {
+	background-color : #ddd;
+}
 
 dd.boutons {
 	text-align:center;
+	background-color : #eee;
 }
-
 
 /* ################### DIVERS #################*/
 

@@ -21,9 +21,12 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.4  2004/11/09 01:50:48  psycow
+	Commit predodo, debut de modification des formulaires...
+
 	Revision 1.3  2004/11/08 12:00:37  psycow
 	Grosse Modification du WE
-
+	
 	Revision 1.2  2004/11/03 21:23:03  psycow
 	auvegarde de mon debut dans les xsl
 	
@@ -49,22 +52,23 @@
 				</xsl:if>
 			</dt>
 			<!-- les options du formulaire -->
-			<xsl:for-each select="*[not (self::bouton or self::commentaire or self::warning)]">
-				<dd class="row">
-					<span class="gauche"><xsl:text> </xsl:text>
-						<xsl:if test="boolean(@titre)"><xsl:value-of select="@titre"/> :</xsl:if>
-					</span>
-					<span class="droite"><xsl:text> </xsl:text>
+			<xsl:for-each select="*[not (self::bouton or self::commentaire or self::warning or self::hidden)]">
+				<dd><xsl:attribute name="class">row<xsl:text> </xsl:text><xsl:if test="(position() mod 2)=0">pair</xsl:if><xsl:if test="(position() mod 2)=1">impair</xsl:if></xsl:attribute>
+					<span class="gauche"><xsl:value-of select="@titre"/></span>
+					<span class="droite">
 						<xsl:apply-templates select="."/>
 					</span>
+					
 				</dd>
 			</xsl:for-each>
 			<!-- les boutons gérant les actions du formulaire -->
-			<dd class="boutons"><br/>
+			<dd class="boutons">
+				<xsl:apply-templates select="hidden"/>
 				<xsl:apply-templates select="bouton"/>
 			</dd>
 		</dl>
 	</form>
+	<br/>
 </xsl:template>
 
 <xsl:template match="commentaire">
@@ -86,66 +90,66 @@
 
 <!-- champs contenant du texte -->
 <xsl:template match="zonetext">
-	<xsl:choose><xsl:when test="@modifiable='non'">
-		<xsl:value-of select="@valeur"/>
-	</xsl:when><xsl:otherwise>
-		<textarea>
-			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-			<xsl:attribute name="rows">7</xsl:attribute>
-			<xsl:attribute name="cols">50</xsl:attribute>
+		<xsl:choose><xsl:when test="@modifiable='non'">
 			<xsl:value-of select="@valeur"/>
-		</textarea>
-	</xsl:otherwise></xsl:choose>
+		</xsl:when><xsl:otherwise>
+			<textarea>
+				<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+				<xsl:attribute name="rows">7</xsl:attribute>
+				<xsl:attribute name="cols">50</xsl:attribute>
+				<xsl:value-of select="@valeur"/>
+			</textarea>
+		</xsl:otherwise></xsl:choose>
 </xsl:template>
 
 <xsl:template match="champ">
-	<xsl:choose><xsl:when test="@modifiable='non'">
-		<xsl:value-of select="@valeur"/>
-	</xsl:when><xsl:otherwise>
-		<input>
-			<xsl:choose>
-				<xsl:when test="starts-with(@id,'passwd')"><xsl:attribute name="type">password</xsl:attribute></xsl:when>
-				<xsl:otherwise><xsl:attribute name="type">text</xsl:attribute></xsl:otherwise>
-			</xsl:choose>
-			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-			<xsl:attribute name="value"><xsl:value-of select="@valeur"/></xsl:attribute>
-		</input>
-	</xsl:otherwise></xsl:choose>
+		<xsl:choose><xsl:when test="@modifiable='non'">
+			<xsl:value-of select="@valeur"/>
+		</xsl:when><xsl:otherwise>
+			<input>
+				<xsl:choose>
+					<xsl:when test="starts-with(@id,'passwd')"><xsl:attribute name="type">password</xsl:attribute></xsl:when>
+					<xsl:otherwise><xsl:attribute name="type">text</xsl:attribute></xsl:otherwise>
+				</xsl:choose>
+				<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+				<xsl:attribute name="value"><xsl:value-of select="@valeur"/></xsl:attribute>
+			</input>
+		</xsl:otherwise></xsl:choose>
 </xsl:template>
 
 <!-- choix multiples (radio, combo ou checkbox) -->
 <xsl:template match="choix[@type='combo']">
-	<select><xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-		<xsl:for-each select="option">
-			<option>
-				<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
-				<xsl:if test="../@valeur = @id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-				<xsl:value-of select="@titre"/>
-			</option>
-		</xsl:for-each>
-	</select>
+		<select><xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+			<xsl:for-each select="option">
+				<option>
+					<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
+					<xsl:if test="../@valeur = @id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+					<xsl:value-of select="@titre"/>
+				</option>
+			</xsl:for-each>
+		</select>
 </xsl:template>
 
 <xsl:template match="choix[@type='radio']">
-	<xsl:for-each select="option">
-		<input type="radio">
-			<xsl:attribute name="name"><xsl:value-of select="../@id"/></xsl:attribute>
-			<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
-			<xsl:if test="../@valeur = @id"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-		</input>
-		<xsl:value-of select="@titre"/><br />
-	</xsl:for-each>
+		<xsl:for-each select="option">
+			<input type="radio">
+				<xsl:attribute name="name"><xsl:value-of select="../@id"/></xsl:attribute>
+				<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
+				<xsl:if test="../@valeur = @id"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+			</input>
+			<xsl:value-of select="@titre"/><br />
+		</xsl:for-each>
 </xsl:template>
 
 <xsl:template match="choix[@type='checkbox']">
-	<xsl:for-each select="option">
-		<input type="checkbox">
-			<xsl:if test="@modifiable='non'"><xsl:attribute name="disabled"/></xsl:if>
-			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-			<xsl:if test="contains(../@valeur,@id)"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-		</input>
-		<xsl:value-of select="@titre"/><br />
-	</xsl:for-each>
+		<xsl:for-each select="option">
+			<input type="checkbox">
+				<xsl:if test="@modifiable='non'"><xsl:attribute name="disabled"/></xsl:if>
+				<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+				<xsl:if test="contains(../@valeur,@id)"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+			</input>
+			<xsl:value-of select="@titre"/><br />
+		</xsl:for-each>
 </xsl:template>
 
 <!-- autres -->

@@ -28,38 +28,43 @@
 			<span><xsl:value-of select="@titre"/></span>	
 		</dt>
 		<dd class="contenu">
-
-			<xsl:variable name="cat" select="Z"/>
-			<xsl:for-each select="binet">
-				<xsl:sort select="@categorie" order="ascending" data-type="texte"/>
-				<xsl:if test="$cat!=@categorie">
-					<xsl:variable name="cat" select="@categorie"/>
-					<br/>
-	        			<dl class="binets top">
-                				<dt class="icon"></dt>
-						<dd class="categorie"><xsl:value-of select="@categorie"/></dd>
-					</dl>
-				</xsl:if>
-				<dl>
-					<xsl:attribute name="class">binets<xsl:text> </xsl:text><xsl:if test="(position() mod 2)=0">pair</xsl:if><xsl:if test="(position() mod 2)=1">impair</xsl:if></xsl:attribute>
-					<dt class="icon">
-						<a>
-							<xsl:attribute name="href"><xsl:apply-templates select="url"/></xsl:attribute>
-							<xsl:apply-templates select="image"/>
-						</a>
-					</dt>
-					<dd class="description">
-						<a>
-							<xsl:attribute name="href"><xsl:apply-templates select="url"/></xsl:attribute>
-							<strong><xsl:value-of select="@nom"/></strong>
-						</a><br/>
-						<xsl:apply-templates select="description"/>
-					</dd>	
-				</dl>
-			</xsl:for-each>
-
+		<br/>
+        		<dl class="binets top">
+				<dt class="objet"></dt>
+				<dd class="categorie">Art</dd>
+			</dl>
+			<xsl:apply-templates select="binet[@categorie='Art']"/>
+        		<dl class="binets top">
+				<dt class="objet"></dt>
+				<dd class="categorie">Association Humanitaire</dd>
+			</dl>
+			<xsl:apply-templates select="binet[@categorie='Association Humanitaire']"/>
+        		<dl class="binets top">
+				<dt class="objet"></dt>
+				<dd class="categorie">Divers</dd>
+			</dl>
+			<xsl:apply-templates select="binet[@categorie='Divers']"/>
 		</dd>
 		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
+	</dl>
+</xsl:template>
+
+<xsl:template match="binet">
+	<dl>
+		<xsl:attribute name="class">binets<xsl:text> </xsl:text><xsl:if test="(position() mod 2)=0">pair</xsl:if><xsl:if test="(position() mod 2)=1">impair</xsl:if></xsl:attribute>
+		<dt class="icon">
+			<a>
+				<xsl:attribute name="href"><xsl:apply-templates select="url"/></xsl:attribute>
+				<xsl:apply-templates select="image"/>
+			</a>
+		</dt>
+		<dd class="description">
+			<a>
+				<xsl:attribute name="href"><xsl:apply-templates select="url"/></xsl:attribute>
+				<strong><xsl:value-of select="@nom"/></strong>
+			</a><br/>
+			<xsl:apply-templates select="description"/>
+		</dd>	
 	</dl>
 </xsl:template>
 

@@ -68,7 +68,7 @@
 		<dt class="titre">
 			<span class="droitehaut"><xsl:text> </xsl:text></span>
 			<a><xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute></a>      
-			<span><xsl:attribute name="class">fkz_annonces_<xsl:value-of select="@categorie"/></xsl:attribute><xsl:text> </xsl:text></span>
+			<span><xsl:attribute name="class"><xsl:value-of select="@categorie"/></xsl:attribute><xsl:text> </xsl:text></span>
 			<span><xsl:value-of select="@titre"/></span> 
 		</dt>
 		<dd class="contenu">

@@ -70,12 +70,24 @@
 			<span>Prévisions météo :</span>	
 		</dt>
 		<dd class="contenu">
-			<xsl:for-each select="jour">
+			<xsl:for-each select="jour[@date=0 or @date=1 or @date=2]">
 				<dl>
 					<xsl:attribute name="class">meteo<xsl:text> </xsl:text><xsl:if test="(position() mod 2)=0">pair</xsl:if><xsl:if test="(position() mod 2)=1">impair</xsl:if></xsl:attribute>
-					<dt class="quand"> Prévision à <xsl:value-of select="@date"/> jours  </dt>
+					<dt class="quand">
+						<xsl:choose>
+							<xsl:when test="@date=0">
+								Ce soir
+							</xsl:when>
+							<xsl:when test="@date=1">
+								Demain
+							</xsl:when>
+							<xsl:when test="@date=2">
+								Après-Demain
+							</xsl:when>
+						</xsl:choose>
+					</dt>
 					<dd class="prevision">
-						<span>La température : </span><xsl:value-of select="temperature_hi"/>°C pendant la journée et <xsl:value-of select="temperature_low"/>°C la nuit<br />	
+						<span>La température : </span><xsl:if test="@date!=0"><xsl:value-of select="temperature_hi"/>°C pendant la journée et</xsl:if> <xsl:value-of select="temperature_low"/>°C la nuit<br />	
 						<span>Etat du ciel le jour : </span><xsl:value-of select="cieljour"/>
 						<img alt="meteo" width="32" height="32">
 							<xsl:attribute name="src">skins/default/images/meteo/<xsl:value-of select="imagejour"/>.gif</xsl:attribute>
