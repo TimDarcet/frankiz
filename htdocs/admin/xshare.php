@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.39  2005/01/11 16:47:10  pico
+		Bug #26
+
 		Revision 1.38  2005/01/10 22:33:13  pico
 		Correction pour le xshare aussi
-
+		
 		Revision 1.37  2005/01/03 23:27:05  pico
 		Petites modifs
 		
@@ -235,7 +238,7 @@ function rech_fils($id_parent) {
 		// affichage des folders et recherche de leurs fils 
 		//----------------------------------
 
-		$DB_web->query("SELECT id,nom FROM xshare WHERE descript='' AND id_parent='{$id_parent}'") ;
+		$DB_web->query("SELECT id,nom FROM xshare WHERE descript='' AND id_parent='{$id_parent}' ORDER BY nom") ;
 		while(list($id,$nom) = $DB_web->next_row()) {
 				echo "<noeud  id='".$id."' titre='".$nom."' lien='admin/xshare.php?dir_id=".$id."&amp;affich_elt=".base64_encode(all_elt_affich($id)) ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer);
@@ -252,7 +255,7 @@ function rech_fils($id_parent) {
 		// affichage des vrais fichiers !
 		//------------------------------------
 		
-		$DB_web->query("SELECT id,nom FROM xshare WHERE descript!='' AND id_parent='{$id_parent}'" ) ;
+		$DB_web->query("SELECT id,nom FROM xshare WHERE descript!='' AND id_parent='{$id_parent}' ORDER BY nom" ) ;
 		while(list($id,$nom) = $DB_web->next_row()) {
 			echo "\n\r<feuille  id='".$id."'  titre='".$nom."' lien='admin/xshare.php?dir_id=".$id."&amp;affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;

@@ -19,9 +19,12 @@
 */
 /*
 	$Log$
+	Revision 1.9  2005/01/11 16:47:09  pico
+	Bug #26
+
 	Revision 1.8  2005/01/10 13:31:34  pico
 	Affichage des logiciels à l'intérieur de l'arborescence
-
+	
 	Revision 1.7  2005/01/10 10:24:33  pico
 	Bug #16
 	
@@ -131,7 +134,7 @@ function rech_fils($id_parent) {
 		// affichage des folders et recherche de leurs fils 
 		//----------------------------------
 
-		$DB_web->query("SELECT id,nom FROM xshare WHERE descript='' AND id_parent='{$id_parent}'") ;
+		$DB_web->query("SELECT id,nom FROM xshare WHERE descript='' AND id_parent='{$id_parent}' ORDER BY nom") ;
 		while(list($id,$nom) = $DB_web->next_row()) {
 				echo "<noeud  id='".$id."' titre='".$nom."' lien='xshare.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer);
@@ -148,7 +151,7 @@ function rech_fils($id_parent) {
 		// affichage des vrais fichiers !
 		//------------------------------------
 		
-		$DB_web->query("SELECT id,nom FROM xshare WHERE descript!='' AND id_parent='{$id_parent}'" ) ;
+		$DB_web->query("SELECT id,nom FROM xshare WHERE descript!='' AND id_parent='{$id_parent}' ORDER BY nom" ) ;
 		while(list($id,$nom) = $DB_web->next_row()) {
 			echo "\n\r<feuille  id='".$id."'  titre='".$nom."'>\n\r" ;
 			if (eregi("/".$id."/",$a_marquer)) {

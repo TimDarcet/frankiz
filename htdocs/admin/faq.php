@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.39  2005/01/11 16:47:10  pico
+		Bug #26
+
 		Revision 1.38  2005/01/10 22:44:01  pico
 		Autre fix
-
+		
 		Revision 1.37  2005/01/10 22:26:49  pico
 		idem pour les autres formulaires
 		
@@ -159,7 +162,7 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0]=='rmdir') {
 		$DB_faq->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
 		list($dir) = $DB_faq->next_row();
-		$DB_faq->query("SELECT faq_id,question FROM faq WHERE (parent='{$temp[1]}' AND NOT  (reponse LIKE '%index.php' OR reponse LIKE '%index.html')) ") ;
+		$DB_faq->query("SELECT faq_id,question FROM faq WHERE (parent='{$temp[1]}' AND NOT  (reponse LIKE '%index.php' OR reponse LIKE '%index.html')) ORDER BY question") ;
 		if($DB_faq->num_rows()==0 && $dir!=''){
 			$dir = BASE_DATA."faq/".$dir;
 			deldir($dir);
@@ -284,7 +287,7 @@ function rech_fils($parent) {
 	
 		// affichage des folders et recherche de leurs fils 
 		//----------------------------------
-		$DB_faq->query("SELECT faq_id,question FROM faq WHERE (parent='{$parent}' AND NOT  (reponse LIKE '%index.php' OR reponse LIKE '%index.html')) ") ;
+		$DB_faq->query("SELECT faq_id,question FROM faq WHERE (parent='{$parent}' AND NOT  (reponse LIKE '%index.php' OR reponse LIKE '%index.html'))  ORDER BY question") ;
 		while(list($id,$question) = $DB_faq->next_row()) {
 			echo "<noeud id='".$id."' ";
 			echo "lien='admin/faq.php?dir_id=".$id."&amp;affich_elt=".base64_encode(all_elt_affich($id)) ;
@@ -302,7 +305,7 @@ function rech_fils($parent) {
 		// affichage des vrais questions !
 		//------------------------------------
 		
-		$DB_faq->query("SELECT faq_id,question FROM faq WHERE  ((parent='{$parent}') AND (reponse LIKE '%index.php' OR reponse LIKE '%index.html'))" ) ;
+		$DB_faq->query("SELECT faq_id,question FROM faq WHERE  ((parent='{$parent}') AND (reponse LIKE '%index.php' OR reponse LIKE '%index.html')) ORDER BY question" ) ;
 		while(list($id,$question) = $DB_faq->next_row()) {
 			echo "\n\r<feuille id='".$id."' lien='admin/faq.php?dir_id=".$id."&amp;affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;

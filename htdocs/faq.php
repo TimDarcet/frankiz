@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.15  2005/01/11 16:47:09  pico
+		Bug #26
+
 		Revision 1.14  2004/12/15 05:17:57  falco
 		Cohérence tutoiement
-
+		
 		Revision 1.13  2004/12/15 00:05:04  schmurtz
 		Plus beau
 		
@@ -171,7 +174,7 @@ function rech_fils($parent) {
 	
 		// affichage des folders et recherche de leurs fils 
 		//----------------------------------
-		$DB_faq->query("SELECT faq_id,question FROM faq WHERE (parent='{$parent}' AND NOT  (reponse LIKE '%index.php' OR reponse LIKE '%index.html'))") ;
+		$DB_faq->query("SELECT faq_id,question FROM faq WHERE (parent='{$parent}' AND NOT  (reponse LIKE '%index.php' OR reponse LIKE '%index.html')) ORDER BY question") ;
 		while(list($id,$question) = $DB_faq->next_row()) {
 			echo "<noeud id='".$id."' ";
 			$DB_faq->push_result();
@@ -191,7 +194,7 @@ function rech_fils($parent) {
 		// affichage des vrais questions !
 		//------------------------------------
 		
-		$DB_faq->query("SELECT faq_id,question FROM faq WHERE ((parent='{$parent}') AND (reponse LIKE '%index.php' OR reponse LIKE '%index.html'))" ) ;
+		$DB_faq->query("SELECT faq_id,question FROM faq WHERE ((parent='{$parent}') AND (reponse LIKE '%index.php' OR reponse LIKE '%index.html')) ORDER BY question" ) ;
 		while(list($id,$question) = $DB_faq->next_row()) {
 			$DB_faq->push_result();
 			echo "\n\r<feuille lien='faq.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
