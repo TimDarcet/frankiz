@@ -1,3 +1,7 @@
+
+
+
+
 /* ###################### GENERAL #################### */
 
 * 
@@ -6,29 +10,62 @@
 	padding: 0px;
 }
 
+img {
+	border:0;
+}
+
 body
 {
 	text-align: center ;
 	font: 0.8em "Trebuchet MS", helvetica, sans-serif ;
 }
 
+
+/* ################### POSITIONNEMENT ################# */
+
 div#conteneur
 {
 	width: 98% ;
-	margin: 30px auto 30px 13px ;
+	margin: 30px auto 10px 13px ;
 	text-align: left ;
 	background: #fff ;
 	background: url('./images/Bar_cote.png') repeat-y left top ;
 }
-
-
-/* ############################## TITRE #################### */
 
 div#header
 {
 	height: 96px ;
 	background: url('./images/Bar_haut_2.png') repeat-x left top ;
 }
+
+
+div#gauche {
+	float:left;
+	width:125px;
+	position: relative;
+}
+
+div#centre
+{
+	margin: 0 215px 0 135px;
+}
+
+div#droite
+{
+	float:right;
+	width:200px;
+	position: relative;
+}
+
+div#footer
+{
+	clear:both;
+	width:100%;
+	height:37px;
+	background: url('./images/Bar_bas_milieu.png') repeat-x left top ;
+}
+
+/* ############################## TITRE #################### */
 
 div#header h1 
 {
@@ -72,276 +109,7 @@ div#header h3 a span
 	display: none ;
 }
 
-/* ########### CONTENU #############*/
-
-
-div#centre
-{
-	margin: 0 235px 0 135px;
-}
-
-div#droite
-{
-	float:right;
-	width:200px;
-	position: relative;
-}
-
-p.news
-{
-	text-align: justify ;
-	text-indent: 2em ;
-	line-height: 1.7em ;
-}
-p:first-letter{
-	font-size:1.3em;
-	font-weight:bold;
-}
-
-p.small
-{
-	text-align: justify ;
-	text-indent: 0.7em ;
-	line-height: 1.2em;
-	font-size:0.9em;
-}
-
-p.image {
-	text-align:center;
-}
-
-p.signature {
-	text-align:right;
-	font-weight:bold;
-}
-
-
-dl {
-	width: 100%; 
-	margin:30px 0;
-}
-
-dt {
-	height: 25px;
-	background: #fff url('./images/cadre-haut.gif') top left no-repeat;
-	text-align: center;
-}
-dt span {
-	background-color:#fff;
-	line-height: 25px ;
-	font-size: 1.4em ;
-	color: #FFA200 ;
-	position:relative;
-	top:-0.7em;
-}
-
-dd {
-	border: solid #B0AFCF;
-	border-width: 0 1px;
-	padding: 0 10px; 
-}
-
-dd.bas {
-	height: 9px;
-	background: #fff url('./images/cadre-bas.gif') bottom left no-repeat;
-	border: 0 none; 
-	padding: 0; 
-}
-dd.bas span.cadrebd 
-{
-	float:right;
-	background: url('./images/cadre-basd.gif') no-repeat top left;
-}
-
-
-.droitehaut, .droitebas {
-float: right;
-}
-
-
-
-
-/* ################### MENU ###################*/
-
-ul#ecole, ul#contacts {
-	list-style-type: none ;
-}
-
-ul#menu
-{
-	float:left;
-	height:537px;
-	list-style-type: none ;
-	margin:0;
-	padding:0;
-	position: relative;
-}
-
-ul#menu li {
-	margin:0;
-	padding:0;
-	margin-top:-0px !important;
-	margin-top:-4px;
-}
-
-ul#menu li a
-{
-	display:block;
-	width: 115px ;
-	height:32px;
-
-}
-
-
-ul#menu li a span
-{
-	display:none;
-}
-/*  different elements du menu avec le RollOver  */
-
-ul#menu li#top {
-	margin-top:0px;
-	display:block;
-	width: 115px ;
-	height:8px;
-	background: url('./images/Bar_cote_top.png') no-repeat 0 0;
-}
-
-
-ul#menu li#bottom {
-	display:block;
-	width: 115px ;
-	height:10px;
-	background: url('./images/Bar_cote_bottom.png') no-repeat 0 0 ;
-}
-
-ul#menu li#annonces a 
-{
-	background: url('./images/Bar_cote_Accueil.png') no-repeat 0 -32px ;
-}
-ul#menu li#annonces a:hover
-{
-	background: url('./images/Bar_cote_Accueil.png') no-repeat 0 0 ;
-}
-
-ul#menu li#meteo a 
-{
-	background: url('./images/Bar_cote_Meteo.png') no-repeat 0 -32px ;
-}
-ul#menu li#meteo a:hover
-{
-	background: url('./images/Bar_cote_Meteo.png') no-repeat 0 0 ;
-}
-
-ul#menu li#doc a
-{
-	background: url('./images/Bar_cote_Docs.png') no-repeat 0 -32px ;
-}
-ul#menu li#doc a:hover
-{
-	background: url('./images/Bar_cote_Docs.png') no-repeat 0 0 ;
-}
-
-ul#menu li#faq a
-{
-	background: url('./images/Bar_cote_FAQ.png') no-repeat 0 -32px ;
-}
-ul#menu li#faq a:hover
-{
-	background: url('./images/Bar_cote_FAQ.png') no-repeat 0 0 ;
-}
-
-ul#menu li#xshare a 
-{
-	background: url('./images/Bar_cote_xshare.png') no-repeat 0 -32px ;
-}
-ul#menu li#xshare a:hover
-{
-	background: url('./images/Bar_cote_xshare.png') no-repeat 0 0 ;
-}
-
-ul#menu li#profil_rezal a 
-{
-	background: url('./images/Bar_cote_reseau.png') no-repeat 0 -32px ;
-}
-ul#menu li#profil_rezal a:hover
-{
-	background: url('./images/Bar_cote_reseau.png') no-repeat 0 0 ;
-}
-
-ul#menu li#infobr a
-{
-	background: url('./images/Bar_cote_IBR.png') no-repeat 0 -32px ;
-}
-ul#menu li#infobr a:hover
-{
-	background: url('./images/Bar_cote_IBR.png') no-repeat 0 0 ;
-}
-
-ul#menu li#admin a
-{
-	background: url('./images/Bar_cote_Admin.png') no-repeat 0 -32px ;
-}
-ul#menu li#admin a:hover
-{
-	background: url('./images/Bar_cote_Admin.png') no-repeat 0 0 ;
-}
-
-ul#menu li#profil a
-{
-	background: url('./images/Bar_cote_Profil.png') no-repeat 0 -32px ;
-}
-ul#menu li#profil a:hover
-{
-	background: url('./images/Bar_cote_Profil.png') no-repeat 0 0 ;
-}
-
-ul#menu li#connect a
-{
-	background: url('./images/Bar_cote_Connect.png') no-repeat 0 -32px ;
-}
-ul#menu li#connect a:hover
-{
-	background: url('./images/Bar_cote_Connect.png') no-repeat 0 0 ;
-}
-
-ul#menu li#deconnect a
-{
-	background: url('./images/Bar_cote_Deconnect.png') no-repeat 0 -32px ;
-}
-ul#menu li#deconnect a:hover
-{
-	background: url('./images/Bar_cote_Deconnect.png') no-repeat 0 0 ;
-}
-
-ul#menu li#binets a
-{
-	background: url('./images/Bar_cote_Binets.png') no-repeat 0 -32px ;
-}
-ul#menu li#binets a:hover
-{
-	background: url('./images/Bar_cote_Binets.png') no-repeat 0 0 ;
-}
-
-ul#menu li#skins a
-{
-	background: url('./images/Bar_cote_Skins.png') no-repeat 0 -32px ;
-}
-ul#menu li#skins a:hover
-{
-	background: url('./images/Bar_cote_Skins.png') no-repeat 0 0 ;
-}
-
-
 /* #################### FOOTER ################ */
-
-div#footer
-{
-	clear:both;
-	width:100%;
-	height:37px;
-	background: url('./images/Bar_bas_milieu.png') repeat-x left top ;
-}
 
 div#footer span#bas_gauche
 {	
@@ -363,16 +131,16 @@ div#footer span#bas_droit
 
 div#footer h5 
 {
-	display:block;
 	margin: 0 auto;
-	width:60px;
-	height:37px;
+	width:80% !important;
+	width:90%;
 	text-align:center;
 }
 
 div#footer h5 a
 {
 	display:block;
+	margin: 0 auto;
 	width:60px;
 	height:37px;
 	background: url('./images/bottom_arrow_top.gif') no-repeat top center;
@@ -382,6 +150,444 @@ div#footer h5 a span
 {
 	display:none;
 }
+
+/* ############# BOITE MODULE CENTRE ############### */
+
+
+dl.boite {
+	width: 100%; 
+	margin:30px 0;
+}
+
+dl.boite dt.titre {
+	height: 25px;
+	background: #fff url('./images/cadre-haut.gif') top left no-repeat;
+	text-align: center;
+}
+dl.boite dt.titre span {
+	background-color:#fff;
+	line-height: 25px ;
+	font-size: 1.4em ;
+	color: #FFA200 ;
+	position:relative;
+	top:-0.7em;
+}
+
+dl.boite dd.contenu {
+	border: solid #B0AFCF;
+	border-width: 0 1px;
+	padding: 0 10px; 
+}
+
+dl.boite dd.bas {
+	clear:both;
+	height: 9px;
+	background: #fff url('./images/cadre-bas.gif') top left no-repeat;
+	border: 0 none;
+	padding:0;
+}
+
+
+dl.boite dd.bas span.droitebas {
+	float: right;
+	width:9px;
+	height:9px;
+	background: url('./images/cadre-basd.gif') no-repeat top left;
+	position:relative;
+	top:0em;
+}
+
+dl.boite dt.titre span.droitehaut {
+	float: right;
+	width:9px;
+	height:25px;
+	background: url('./images/cadre-hautd.gif') no-repeat top left;
+	position:relative;
+	top:0em;
+}
+
+/* ############# BOITE MODULE GAUCHE ################*/
+
+dl.cadrecote {
+	margin:20px 0 0 0 ;
+	width:120px;
+}
+dl.cadrecote dt.top {
+	line-height:6px;
+	height: 6px;
+	background: url('./images/Bar_cote_cadre_haut.png') bottom left no-repeat;
+	text-align: center;
+}
+dl.cadrecote p.titre {
+	text-align:center;
+	font-weight:bold;
+	line-height: 16px ;
+	font-size: 1.2em ;
+	color: #FFA200 ;
+	position:relative;
+	top:-4px;
+}
+
+dl.cadrecote dd.milieu {
+	padding:2px 9px 2px 9px;
+	background: url('./images/Bar_cote_cadre_milieu.png') top left repeat-y;
+}
+dl.cadrecote dd.bas {
+	height: 6px;
+	background: url('./images/Bar_cote_cadre_bas.png') top left no-repeat;
+	border: 0 none; 
+}
+
+
+/* ################## PARAGRAPHE ################# */
+
+p {
+	text-align: justify ;
+}
+
+p.news
+{
+	text-indent: 2em ;
+	line-height: 1.7em ;
+}
+p.news:first-letter{
+	font-size:1.3em;
+	font-weight:bold;
+}
+
+p.small
+{
+	text-indent: 0.7em ;
+	line-height: 1.2em;
+	font-size:0.9em;
+}
+
+p.image {
+	text-align:center;
+}
+
+p.signature {
+	text-align:right;
+	font-weight:bold;
+}
+
+p.warning {
+	padding:5px;
+	border:solid 2px #faa;
+	background-color : #fee; /* rouge */
+}
+p.commentaire {
+	padding:5px;
+	border:solid 2px #ff3;
+	background-color : #ffe; /* jaune */
+}
+
+p.note {
+	padding:5px;
+	border:solid 2px #aaf;
+	background-color : #eef; /* bleu */
+}
+
+/* ################ MISE EN FORME DES LISTES (DL) ############## */
+
+/* ------- alternance jaune/rouge ------- */
+
+dl.pair {
+	background-color : #fee;
+}
+dl.impair {
+	background-color : #ffd;
+}
+dl.top {
+	background-color : #eef;
+}
+
+
+/* ------- Vocabulaire ------- */
+
+dl.definition {
+	
+	margin:0px 30px 3px 30px;
+}
+dt.objet {
+	float:left;
+	font-weight:bold;
+	letter-spacing:2px;
+}
+dd.definition {
+	margin-left:150px;
+	padding-left:5px;
+}
+
+/* ------- Trombino ------- */
+
+dl.trombino {
+	margin:0px 30px 20px 30px;
+	min-height:150px;
+	height:auto !important;
+	height:150px;
+}
+dt.nom {
+	background-color : #eef;
+	text-align:center;
+	font-weight:bold;
+	font-size:1.3em;
+}
+dd.photo{
+	float:left;
+}
+dd.sport{
+	float:right;
+}
+
+dd.element p strong {
+	float:left;
+	width:50px;
+}
+
+dd.element p.left {
+	float:left;
+	padding-left:5px;
+}
+dd.element p.right {
+	float:right;
+	text-align:right;
+	padding-right:5px;
+}
+dd.element p.binets{
+	text-align:justify;
+	margin: 5px 100px 0 100px;
+	padding:0 5px;
+}
+
+/* ------- Meteo ------- */
+
+dl.meteo {
+	margin:0px 30px 10px 30px;
+}
+dt.quand {
+	background-color : #eef;
+	text-align:left;
+	font-weight:bold;
+	font-size:1.3em;
+	line-height:1.5em;
+}
+dd.prevision {
+	padding-left:20px;
+}
+
+dd.prevision span {
+	float: left;
+	width:135px;
+	
+}
+
+/* ----------- Binets ------------*/
+
+
+dl.binets {
+	margin:0px 30px 3px 30px;
+	height:101px;
+}
+dt.icon {
+	float:left;
+	font-weight:bold;
+	letter-spacing:2px;
+}
+dd.description {
+	margin-left:120px;
+	padding-left:5px;
+}
+
+dd.categorie {
+	text-align:center;
+	font-weight:bold;
+}
+dd.lien {
+	margin-left:120px;
+	padding-left:5px;
+}
+
+
+/* ################# MENU/LISTE ####################*/
+
+ul#menu, ul#ecole, ul#contacts,ul.none, ul{
+	list-style-type: none ;
+}
+
+/* ------- Le menu de gauche ---------*/
+
+
+ul#menu li {
+	margin:0;
+	padding:0;
+	margin-top:0px !important;
+	margin-top:-4px;
+}
+
+ul#menu li a
+{
+	display:block;
+	width: 115px ;
+	height:32px;
+
+}
+
+
+ul#menu li a span
+{
+	display:none;
+}
+/*  different elements du menu avec le RollOver  */
+
+ul#menu li#top {
+	margin-top:0px !important;
+	display:block;
+	width: 115px ;
+	height:8px;
+	background: url('./images/top.png') no-repeat 0 0;
+}
+
+
+ul#menu li#bottom {
+	display:block;
+	width: 115px ;
+	height:10px;
+	background: url('./images/bottom.png') no-repeat 0 0 ;
+}
+
+ul#menu li#annonces a 
+{
+	background: url('./images/annonces.png') no-repeat 0 -32px ;
+}
+ul#menu li#annonces a:hover
+{
+	background: url('./images/annonces.png') no-repeat 0 0 ;
+}
+
+ul#menu li#meteo a 
+{
+	background: url('./images/meteo.png') no-repeat 0 -32px ;
+}
+ul#menu li#meteo a:hover
+{
+	background: url('./images/meteo.png') no-repeat 0 0 ;
+}
+
+ul#menu li#doc a
+{
+	background: url('./images/doc.png') no-repeat 0 -32px ;
+}
+ul#menu li#doc a:hover
+{
+	background: url('./images/doc.png') no-repeat 0 0 ;
+}
+
+ul#menu li#faq a
+{
+	background: url('./images/faq.png') no-repeat 0 -32px ;
+}
+ul#menu li#faq a:hover
+{
+	background: url('./images/faq.png') no-repeat 0 0 ;
+}
+
+ul#menu li#xshare a 
+{
+	background: url('./images/xshare.png') no-repeat 0 -32px ;
+}
+ul#menu li#xshare a:hover
+{
+	background: url('./images/xshare.png') no-repeat 0 0 ;
+}
+
+ul#menu li#profil_rezal a 
+{
+	background: url('./images/profil_rezal.png') no-repeat 0 -32px ;
+}
+ul#menu li#profil_rezal a:hover
+{
+	background: url('./images/profil_rezal.png') no-repeat 0 0 ;
+}
+
+ul#menu li#infobr a
+{
+	background: url('./images/infobr.png') no-repeat 0 -32px ;
+}
+ul#menu li#infobr a:hover
+{
+	background: url('./images/infobr.png') no-repeat 0 0 ;
+}
+
+ul#menu li#admin a
+{
+	background: url('./images/admin.png') no-repeat 0 -32px ;
+}
+ul#menu li#admin a:hover
+{
+	background: url('./images/admin.png') no-repeat 0 0 ;
+}
+
+ul#menu li#profil a
+{
+	background: url('./images/profil.png') no-repeat 0 -32px ;
+}
+ul#menu li#profil a:hover
+{
+	background: url('./images/profil.png') no-repeat 0 0 ;
+}
+
+ul#menu li#connect a
+{
+	background: url('./images/connect.png') no-repeat 0 -32px ;
+}
+ul#menu li#connect a:hover
+{
+	background: url('./images/connect.png') no-repeat 0 0 ;
+}
+
+ul#menu li#deconnect a
+{
+	background: url('./images/deconnect.png') no-repeat 0 -32px ;
+}
+ul#menu li#deconnect a:hover
+{
+	background: url('./images/deconnect.png') no-repeat 0 0 ;
+}
+
+ul#menu li#binets a
+{
+	background: url('./images/binets.png') no-repeat 0 -32px ;
+}
+ul#menu li#binets a:hover
+{
+	background: url('./images/binets.png') no-repeat 0 0 ;
+}
+ul#menu li#vocab a
+{
+	background: url('./images/vocab.png') no-repeat 0 -32px ;
+}
+ul#menu li#vocab a:hover
+{
+	background: url('./images/vocab.png') no-repeat 0 0 ;
+}
+ul#menu li#trombino a
+{
+	background: url('./images/trombino.png') no-repeat 0 -32px ;
+}
+ul#menu li#trombino a:hover
+{
+	background: url('./images/trombino.png') no-repeat 0 0 ;
+}
+ul#menu li#skins a
+{
+	background: url('./images/skins.png') no-repeat 0 -32px ;
+}
+ul#menu li#skins a:hover
+{
+	background: url('./images/skins.png') no-repeat 0 0 ;
+}
+
 
 /* ###############" BARRE DE NAVIGATION "######################*/
 
@@ -462,27 +668,68 @@ ul#barre_nav
 }
 
 
-/* FAQ et Xshare */
-li.noeud_ouvert
+
+/* ################## FORMULAIRE ################ */
+
+label 
+{
+	float:left;
+	width:200px;
+}
+
+dl.formulaire {
+	background-color : #eee;	
+}
+
+dt.entete {
+	background-color : #ccc;
+	text-align:center;
+	font-weight:bold;
+	font-size:1.3em;
+}
+
+dd.row {
+
+}
+
+dd.row span.gauche {
+	float:left;
+	width:200px;
+}
+
+dd.boutons {
+	text-align:center;
+}
+
+
+/* ################### DIVERS #################*/
+
+/*--------- FAQ et Xshare ---------*/
+li.noeud_ferme
 {
 	list-style-image:url('images/fold_close.gif');
 	margin-left:40px;
 }
-li.noeud_ferme
+li.noeud_ouvert
 {
-	list-style-image:url('images/fold_open.gif')
+	list-style-image:url('images/fold_open.gif');
 	margin-left:40px;
 }
 ul.feuille
 {
-	list-style-image:url('images/question.gif')
+	list-style-image:url('images/question.gif');
 }
 
+ul.feuille li {
+	margin-left:40px;
+}
+
+/* ---------- HR -----------*/
+
 div.hr {
-	height:1px;
 	width:20%;
-	background:#B0AFCF;
 	margin:0 auto;
+	text-align:center;
 }
 div.hr hr {
 	display:none;

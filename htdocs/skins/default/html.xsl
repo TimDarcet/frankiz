@@ -21,12 +21,9 @@
 	Balises de formatage.
 	
 	$Log$
-	Revision 1.7  2004/11/08 12:15:31  psycow
-	petit probleme dans le commit
+	Revision 1.8  2004/11/08 12:20:14  psycow
+	Derniere modif...
 
-	Revision 1.6  2004/11/08 12:01:49  psycow
-	Cvs parfois c'est bizarre, recommit cause conflit
-	
 	Revision 1.4  2004/11/04 15:18:01  psycow
 	Un bon debut mais plus compatible IE j'en ai peur
 	
