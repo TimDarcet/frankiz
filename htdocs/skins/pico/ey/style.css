@@ -20,7 +20,7 @@
 
 body {
 	font-size:80%;
-	font-family: Verdana,Arial,Helvetica,sans-serf;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
 	color:#000000;
 	background-color:#ffffff;
 	margin:0;
@@ -63,8 +63,8 @@ a:hover, a:active {
 }
 
 .fkz_gauche {
-        width: 20%;
-        float: left;
+    width: 20%;
+    float: left;
 	font-size: 9pt;
 	margin-top: 10px;
 	background-image:url('images/home_background.gif');
@@ -144,7 +144,7 @@ div.fkz_logo:before {
 	text-align: center;
 	width: 45%;
     height: 60px;
-    vertical-align: center;
+    vertical-align: middle;
 }
 
 .fkz_qdj_jone {
@@ -264,18 +264,12 @@ div.fkz_module_corps {
 	margin: 0;
 }
 
-.fkz_trombino,.fkz_sommaire{
+.fkz_sommaire{
 	font-size: 9pt;
 	text-align: left;
 	background-color:#f0f0f0;
 	border:1px solid #e0e0e0;
 	margin: 0;
-    padding: 5px;
-}
-
-.fkz_trombino_eleve{
-	border:1px solid #e0e0e0;
-	background-color:#f0f0f0;
     padding: 5px;
 }
 
@@ -301,7 +295,7 @@ span.fkz_annonces_vieux,span.fkz_annonces_nouveau, span.fkz_annonces_important,s
     margin: 5px;
     padding-left:16px;
     padding-bottom: 1px;
-    margin-left: 2;
+    margin-left: 2px;
     vertical-align: bottom;
 }
 
@@ -483,7 +477,7 @@ div.formulaire span.boutons{
 	padding-top:10px;
 }
 
-input:hover {
+input:hover,input:focus {
     border: 2px solid #e0e0e0;
     padding: 0px;
 }
@@ -540,4 +534,70 @@ table.liste .entete{
 #binets p {
     border-bottom: 1px solid #e0e0e0;
     font-style: italic;
+}
+
+
+/* Trombino */
+
+div.fkz_trombino_eleve {
+    border: 1px solid #e0e0e0;
+    background-color: #f0f0f0;
+    font-size: 9pt;
+}
+
+.fkz_trombino_eleve p.nom {
+    text-align: left;
+    background-color: #e0e0e0;
+    padding: 2px;
+    padding-left: 20px;
+    font-size: 120%;
+    font-weight: bold;
+    border: 2px solid #e0e0e0;
+    margin: 0;
+}
+
+.fkz_trombino_eleve p.surnom {
+    float: left;
+    width: 50%;
+    text-align: left;
+    font-style: italic;
+}
+
+.fkz_trombino_eleve p.promo {
+    font-weight: bold;
+    text-align: left;
+}
+
+.fkz_trombino_eleve p.telephone {
+    clear: both;
+    text-align: left;
+    float: left;
+    width: 50%;
+}
+
+.fkz_trombino_eleve p.casert {
+    text-align: left;
+}
+
+.fkz_trombino_eleve p.section {
+    text-align: left;
+    clear: both;
+}
+
+.fkz_trombino_eleve p, .fkz_trombino_eleve div.binets {
+    padding-left: 5px;
+    padding-right: 5px;
+    margin: 2px;
+}
+
+.fkz_trombino_eleve div.binets {
+    text-align: left;
+    margin-top: 10px;
+}
+
+.fkz_trombino_eleve p {
+    text-align: center;
+}
+
+.fkz_trombino_eleve a {
 }
