@@ -21,9 +21,12 @@
 	Affichage de la liste des binets ayant un site web.
 
 	$Log$
+	Revision 1.7  2005/01/21 17:04:28  pico
+	Erreur
+
 	Revision 1.6  2005/01/21 17:01:31  pico
 	Fonction pour savoir si interne
-
+	
 	Revision 1.5  2005/01/11 14:36:41  pico
 	Binets triés ext/int + url auto si binet sur le serveur
 	
@@ -95,7 +98,7 @@ require BASE_LOCAL."/include/page_header.inc.php";
 	while(list($id,$nom,$description,$http,$folder,$cat_id,$categorie) = $DB_trombino->next_row()) {
 			if($folder!=""){ 
 				if(est_interne()) $http=URL_BINETS.$folder;
-				else $http="/$folder";
+				else $http="$folder";
 			}
 ?>
 		<binet id="<?=$id?>" categorie="<?=$categorie?>" nom="<?=$nom?>">
