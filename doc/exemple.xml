@@ -180,8 +180,8 @@
 	</liste>
 	
 	<!-- utilisation d'une liste juste en présentation -->
-	<liste id="users" selectionnable="oui">
-		<entete id="nom" titre="Nom" action="afficher_fiche.php?id="/>
+	<liste id="usersbis">
+		<entete id="nom" titre="Nom" action="?tri=nom"/>
 		<entete id="prenom" titre="Prénom"/>
 		<element id="2956">
 			<colonne id="nom">Bon</colonne>
@@ -193,9 +193,9 @@
 	<arbre id="faq">
 		<noeud titre="Section1" lien="/faq/?sec=1">
 			<noeud titre="Sous-section1" lien="/faq/?ssec=1">
-				<feuille titre="Question 26" lien="/faq/?q=26" />
-				<feuille titre="Question 18" lien="/faq/?q=18" />
-				<feuille titre="Question 52" lien="/faq/?q=52" />
+				<feuille titre="Question 26" lien="/faq/?q=26"/>
+				<feuille titre="Question 18" lien="/faq/?q=18"/>
+				<feuille titre="Question 52" lien="/faq/?q=52"/>
 			</noeud>
 		</noeud>
 	</arbre>
