@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.12  2004/10/29 16:25:12  kikx
+	bug
+
 	Revision 1.11  2004/10/29 16:12:53  kikx
 	Diverse correction sur les envoie des mail en HTML
-
+	
 	Revision 1.10  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -266,7 +269,7 @@ if(verifie_permission_webmestre($_GET['binet'])){
 	echo $message2 ;
 	?>
 		<formulaire id="binet_web" titre="<? echo $nom?>" action="gestion/binet.php?binet=<?=$_GET['binet']?>">
-			<hidden id="id" titre="ID" valeur="<? echo $id?>"/>
+			<hidden id="id" titre="" valeur="<? echo $id?>"/>
 			<choix titre="Catégorie" id="catego" type="combo" valeur="<?=$cat_id?>">
 <?php
 				echo $liste_catego ;
