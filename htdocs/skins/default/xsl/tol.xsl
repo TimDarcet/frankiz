@@ -27,7 +27,7 @@
             <span class="droitehaut"><xsl:text> </xsl:text></span><span>TOL</span>
           </dt>
 		<dd class="contenu">
-			<form enctype="multipart/form-data" method="post" class="cadretol" accept-charset="utf-8">
+			<form enctype="multipart/form-data" method="post" class="cadretol" accept-charset="ISO-8859-1">
 				<xsl:attribute name="action"><xsl:value-of select="formulaire/@action"/></xsl:attribute>
 				<div class="center">
 					<xsl:apply-templates select="formulaire/hidden"/>

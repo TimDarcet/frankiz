@@ -130,7 +130,7 @@
 
 <xsl:template match="formulaire" mode="trombino">
 	<!-- le formulaire lui même-->
-	<form class="trombino" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+	<form class="trombino" enctype="multipart/form-data" method="post" accept-charset="ISO-8859-1">
 		<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 			<div>
 				<table>
