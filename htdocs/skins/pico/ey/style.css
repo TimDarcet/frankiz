@@ -567,8 +567,12 @@ table.liste{
 
 table.liste .entete{
 	text-decoration: underline;
+    font-size: 10pt;
 }
 
+table.liste .element {
+    font-size: 10pt;
+}
 
 
 #choix_skin h1, #profil h1,.fkz_page_meteo h1,#xshare  h1,#faq  h1,#vocabulaire  h1{
@@ -605,6 +609,10 @@ div.fkz_trombino_eleve {
 
 div.fkz_trombino_eleve:hover {
     border: 1px dashed #c0c0c0;
+}
+
+.fkz_trombino_eleve table {
+    font-size: 10pt;
 }
 
 .fkz_trombino_eleve h3 {
