@@ -1,9 +1,12 @@
 <? 
 /*
 		$Log$
+		Revision 1.18  2004/10/20 23:18:49  pico
+		Derniers fixes, ça marche !!
+
 		Revision 1.17  2004/10/20 23:04:06  pico
 		Affichage de l'arbre mieux respecté
-
+		
 		Revision 1.16  2004/10/20 22:28:27  pico
 		Encore des corrections
 		
@@ -73,7 +76,7 @@ function rech_fils($id_parent) {
 		while(list($id,$nom) = $DB_web->next_row()) {
 				echo "<noeud  id='".$id."' titre='".htmlspecialchars($nom,ENT_QUOTES)."' lien='xshare/index.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer);
-			echo "' >\n\r" ;
+			echo "'>\n\r" ;
 			if (eregi("/".$id."/",$a_marquer)) {
 				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche_folder.gif'/>\n\r" ;
 			}
@@ -246,7 +249,6 @@ echo "<br/>" ;
             <bouton id="reset" titre="Reset"/>
         </formulaire>
         <commentaire>(Tous les mots seront dans la description / Séparez les par un blanc) </commentaire>
-        </p>
 <?
 
 //
