@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.14  2005/01/11 13:42:17  pico
+	pff
+
 	Revision 1.13  2005/01/11 13:41:27  pico
 	Oups erreur
-
+	
 	Revision 1.12  2005/01/11 13:40:26  pico
 	/me boulet
 	
@@ -118,7 +121,7 @@ foreach ($_POST AS $keys => $val){
 		if ($DB_valid->num_rows()!=0) {
 			$DB_web->query("INSERT INTO sites_eleves SET eleve_id='{$temp[1]}'");
 			$DB_trombino->query("SELECT login,promo FROM eleves WHERE eleve_id='{$temp[1]}'");
-			list($login,$promo) = $DB_valid->next_row();
+			list($login,$promo) = $DB_trombino->next_row();
 			symlink (BASE_PAGESPERSOS."$login-$promo",BASE_PAGESPERSOS_EXT."$login-$promo");
 			
 			$contenu = "<b>Bonjour,</b> <br><br>".
