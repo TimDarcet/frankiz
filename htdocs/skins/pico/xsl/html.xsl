@@ -68,9 +68,9 @@
 
 <xsl:template match="liste[(@selectionnable='oui') or (@action!='')]">
 	<form method="post">
-	<xsl:apply-templates select="commentaire | warning | note"/>
 	<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 	<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+	<xsl:apply-templates select="commentaire | warning | note"/>
 	<xsl:if test="boolean(@titre)">
 		<h2><span><xsl:value-of select="@titre"/></span></h2>
 	</xsl:if>
