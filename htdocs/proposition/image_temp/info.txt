@@ -1,1 +1,0 @@
-Il faut rendre ce folder writable par le www-data sinon ca ne fonctionnera pas correctement
