@@ -512,7 +512,6 @@ table.reponse_qdj {
 }
 table.reponse_qdj td {
 	text-align:center;
-	height:100px;
 	width:50%;
 }
 table.reponse_qdj td div.col {
@@ -528,9 +527,7 @@ table.reponse_qdj td div.col span.jone {
 table.reponse_qdj td div.col span.rouje {
 	background:url(images/rouge.gif) repeat-y top center;
 }
-table.reponse_qdj td div.reponse {
-	height:50px;
-}
+
 
 
 /* ---------- Xshare et FAQ --------- */
