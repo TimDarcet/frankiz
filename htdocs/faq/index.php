@@ -1,9 +1,12 @@
 <? 
 /*
 		$Log$
+		Revision 1.13  2004/10/20 21:59:13  pico
+		BugFix
+
 		Revision 1.12  2004/10/20 21:52:31  pico
 		Chgt noeuds
-
+		
 		Revision 1.11  2004/10/20 20:00:37  pico
 		Génération des balises plus conforme
 		
@@ -56,18 +59,12 @@ function rech_fils($parent) {
 	global $DB_web,$a_marquer ; 
 
 	if (affiche_element_faq($parent)) {			// on continue l'affichage ssi on demande l'affichage
-
-		if ($parent!=0) {
-			echo "<noeud class='foldinglist'>\n\r" ;
-		} else {
-			echo "<noeud>\n\r" ;
-		}
 	
 		// affichage des folders et recherche de leurs fils 
 		//----------------------------------
 		$DB_web->query("SELECT faq_id,question FROM faq WHERE parent='{$parent}' AND reponse NOT LIKE '%index.php' ") ;
 		while(list($id,$question) = $DB_web->next_row()) {
-			echo "<noeud id='".$id."' ";	
+			echo "<noeud id='".$id."' ";
 			echo "lien='faq/index.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#".$id."' titre='".htmlspecialchars($question,ENT_QUOTES)."'>" ;
@@ -91,7 +88,6 @@ function rech_fils($parent) {
 			}
 			echo "</feuille>\n\r" ;
 		}
-		echo "</noeud>\n\r" ;
 	}
 }
 
