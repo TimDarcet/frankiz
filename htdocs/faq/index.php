@@ -1,9 +1,12 @@
 <? 
 /*
 		$Log$
+		Revision 1.16  2004/10/20 22:41:01  pico
+		Encore un ptit truc
+
 		Revision 1.15  2004/10/20 22:10:06  pico
 		BugFix (devrait marcher)
-
+		
 		Revision 1.14  2004/10/20 22:05:55  pico
 		Changements Noeuds/Feuilles
 		
@@ -265,11 +268,15 @@ echo "<br/>" ;
    			}
  	 		fclose($texte);
 		}
-	}
-//include($repfaq);
 	echo "</cadre>";
+	} else {
+	?>
+	<warning>Erreur : Impossible de trouver cette question </warning>
+	<?
+	}
 	
-		} else {
+	
+	} else {
 	?>
 	<warning>Erreur : Impossible de trouver cette question </warning>
 	<?
