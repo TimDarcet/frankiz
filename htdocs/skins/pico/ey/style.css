@@ -197,11 +197,15 @@ span.fkz_logo {
 
 /* Fin QDJ */
 
+div.fkz_module > br {
+    display: none;
+}
+
 #mod_activites div.fkz_module_corps {
     text-align: center;
 }
 
-.fkz_liens,.fkz_contact,.fkz_liens_nav {
+.fkz_liens,.fkz_contact,.fkz_liens_nav,.fkz_stats {
     margin-top: 0;
     margin-bottom: 0;
 	list-style-type:none;
@@ -227,12 +231,6 @@ div.fkz_page_titre {
 	font-size:110%;
 }
 
-
-div.fkz_annonces_corps:hover {
-    border: 1px dashed #c0c0c0;
-    border-top: none;
-}
-
 .fkz_anniversaire,.fkz_annonces_corps,div.fkz_page_corps {
 	padding: 5px;
 	background-color:#f0f0f0;
@@ -242,11 +240,6 @@ div.fkz_annonces_corps:hover {
 
 .fkz_annonces_corps div.image {
 	text-align: center;
-}
-
-div.fkz_anniversaire:hover {
-    border: 1px dashed #c0c0c0;
-    border-top: none;
 }
 
 .fkz_titre,.fkz_titre a {
@@ -260,11 +253,6 @@ div.fkz_anniversaire:hover {
     vertical-align: middle;
 }
 
-
-div.fkz_module_corps:hover {
-    border:1px dashed #c0c0c0;
-    border-top: none;
-}
 
 .module {
     margin-bottom: 10px;
@@ -349,15 +337,20 @@ span.fkz_annonces_vieux,span.fkz_annonces_nouveau, span.fkz_annonces_important,s
 
 /* Logos menu */
 
+form#lien_trombino {
+    margin: 0;
+    padding: 0;
+}
+
 #anniversaires_logo,#navigation_logo,#perso_logo,#affiches_logo,#contacts_logo,#liens_ecole_logo,#serveurs_logo,#stats_logo,#tour_kawa_logo,#qdj_hier_logo,#qdj_logo,#meteo_logo,#sondages_logo,#lien_tol_logo {
     background-repeat:no-repeat;
     height:17px;
     width: 16px;
-    margin: 5px;
+    margin: 2px;
     padding-left:16px;
     padding-bottom: 1px;
     margin-left: 2px;
-    vertical-align: bottom;
+    vertical-align: middle;
 }
 
 #anniversaires_logo {
@@ -521,10 +514,6 @@ div.formulaire{
     padding: 5px;
 }
     
-#trombino div.formulaire:hover {
-    border: 1px dashed #c0c0c0;
-}
-
 
 div.formulaire span.droite{
     width: 78%;
@@ -618,18 +607,17 @@ div.fkz_trombino_eleve {
     padding-right: 5px;
 }
 
-div.fkz_trombino_eleve:hover {
-    border: 1px dashed #c0c0c0;
-}
-
 .fkz_trombino_eleve table {
     font-size:90%;
 }
 
 .fkz_trombino_eleve h3 {
+    font-size: 110%;
     margin-top: -1px;
     margin-left: -6px;
     margin-right: -6px;
+    padding-bottom: 2px;
+    padding-top: 2px;
     text-align: center;
     border: 1px solid #a0a0a0;
     background-color: #e0e0e0;
