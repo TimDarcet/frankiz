@@ -49,7 +49,6 @@ a:hover, a:active {
 /* Structure de la page */
 
 .fkz_page {
-	border-bottom:3px double #D37C00;
 	clear: both;
 	width: 100%;     
 }
