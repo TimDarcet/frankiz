@@ -62,9 +62,15 @@ if(isset($_REQUEST['chercher'])) {
 									 ."LEFT JOIN binets USING(binet_id) WHERE eleve_id='$eleve_id'");
 			while(list($remarque,$binet_nom,$binet_id) = mysql_fetch_row($result_bis))
 				echo "<binet nom='".afficher_identifiant($binet_nom)."' id='$binet_id'>".afficher_identifiant($remarque)."</binet>\n";
+				
 			mysql_free_result($result_bis);
+				
 			
 			echo "</eleve>\n";
+			if(verifie_permission('admin')) {
+				echo "<a href='".BASE_URL."/admin/user.php?id=$eleve_id'>Administrer $prenom $nom</a>" ;
+			}
+			
 		}
 		mysql_free_result($result);
 		
