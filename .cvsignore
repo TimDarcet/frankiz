@@ -2,3 +2,6 @@
 .FBCLockFolder
 *~
 *.bak
+cache
+webperso
+data
