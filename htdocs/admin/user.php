@@ -29,9 +29,14 @@
 	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
 	
 	$Log$
+	Revision 1.16  2004/11/29 20:48:45  kikx
+	Simplification des rajouts des droits des personnes ... ce fait grace a des cases a cocher ... (pour les autistes ca devrait etre bon ...) Comme ca pas d'erreur de syntaxe possibles...
+
+	La liste des droits possibles est dans global_func.inc.php
+
 	Revision 1.15  2004/11/27 15:39:54  pico
 	Ajout des droits trombino
-
+	
 	Revision 1.14  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
 	
@@ -99,7 +104,7 @@ if (isset($_POST['mod_generale'])) {
 	$mail = $_POST['mail'];
 	$DB_trombino->query("UPDATE eleves SET nom='$nom', prenom='$prenom', surnom='$surnom', date_nais='$date_nais', sexe='$sexe', piece_id='$piece_id', section_id='$section_id', cie='$cie', promo='$promo', login='$login', mail='$mail' WHERE eleve_id=$id ");
 	
-	echo "Modification de la partie générale faite avec succès" ;
+	echo "<commentaire>Modification de la partie générale faite avec succès</commentaire>" ;
 }
 
 // Modification de la partie "binets"
@@ -122,12 +127,17 @@ if (verifie_permission('admin') && isset($_POST['mod_compte_fkz'])) {
 	if ($_POST['pass']!="") {
 		$pass2 = md5($_POST['pass']) ;
 		$DB_web->query("UPDATE compte_frankiz SET passwd='$pass2' WHERE eleve_id=$id");
-		echo "<p>Modification du mot de passe réalisée correctement</p>" ;
+		echo "<commentaire>Modification du mot de passe réalisée correctement</commentaire>" ;
 	}
-	$perms = $_POST['perms'] ;
+        $perms = "" ;
+        foreach(liste_droits() as $droits => $nom) {
+            if (isset($_POST[$droits]))
+                $perms .= "$droits," ;
+        }
+
 	$DB_web->query("UPDATE compte_frankiz SET perms='$perms' WHERE eleve_id=$id");
 	
-	echo "Modification de la partie Compte Frankiz faite avec succès" ;
+	echo "<commentaire>Modification de la partie Compte Frankiz faite avec succès</commentaire>" ;
 }
 
 // Modification de ses variables génériques
@@ -186,11 +196,19 @@ if(verifie_permission('admin')){
 		$DB_web->query("SELECT perms FROM compte_frankiz WHERE eleve_id=$id");
 		list($perms) = $DB_web->next_row() ;
 ?>
+                <note>Pour le mot de passe : Si vous le laissez vide, il ne sera pas modifié !</note>
 		<champ id="pass" titre="Mot de passe" valeur=""/>
-		<commentaire>Pour le mot de passe : Si vous le laissez vide, il ne sera pas modifié !</commentaire>
-		<warning>Faites terminer les droits par une virgule c'est IMPORTANT, toujours ...</warning>
-		<champ id='perms' titre='Permissions' valeur='<? echo $perms?>'/>
-		
+                <note>Pour les webmestres et prez de binets, il faut allez dans le binet en question pour les modifier</note>
+		<choix titre="Droits" id="droits" type="checkbox" valeur="<?php
+			foreach(liste_droits() as $droits => $nom)
+				if(eregi($droits,$perms))
+					echo "$droits ";?>">
+<?php
+			foreach(liste_droits() as $droits => $nom)
+					echo "\t\t\t<option titre=\"$nom\" id=\"$droits\"/>\n";
+?>
+		</choix>
+
 		<bouton id='mod_compte_fkz' titre='Changer'/>
 	</formulaire>
 <? 

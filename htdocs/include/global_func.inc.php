@@ -22,9 +22,14 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.36  2004/11/29 20:48:45  kikx
+	Simplification des rajouts des droits des personnes ... ce fait grace a des cases a cocher ... (pour les autistes ca devrait etre bon ...) Comme ca pas d'erreur de syntaxe possibles...
+
+	La liste des droits possibles est dans global_func.inc.php
+
 	Revision 1.35  2004/11/24 22:12:57  schmurtz
 	Regroupement des fonctions zip unzip deldir et download dans le meme fichier
-
+	
 	Revision 1.34  2004/11/24 21:09:04  pico
 	Sauvegarde avant mise à jour skins
 	
@@ -170,6 +175,23 @@ function liste_modules() {
 		"lien_tol"			=> "Lien rapide vers le tol",
 		"rss"				=> "News Extérieures",
 		"liens_perso"		=> "Liens Perso"
+		);
+}/*
+	Renvoi la liste des droits disponibles sous la forme d'une liste :
+		"nom" => "droits"
+	
+	Si le nom affichage est vide, cela signifie que le module est toujours visible.
+*/
+function liste_droits() {
+	return array(
+                "admin"            =>"Administrateur Total",
+                "web"              =>"Webmestre de Frankiz",
+                "qdjmaster"        =>"QdjMaster",
+                "xshare"           =>"Xshare",
+                "faq"              =>"Faqmestre",
+                "trombino"         =>"TrombinoMen",
+                "bob"              =>"(EXT) BobarMen",
+                "affiches"         =>"(EXT) Affiches (ex BRC...)"
 		);
 }
 
