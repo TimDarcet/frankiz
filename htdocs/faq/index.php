@@ -1,9 +1,13 @@
 <? 
 /*
 		$Log$
+		Revision 1.10  2004/10/19 22:00:50  pico
+		Pas d'authentification
+		Fixe un warning
+
 		Revision 1.9  2004/10/19 21:01:25  pico
 		Le texte de la qdj s'affiche !!
-
+		
 		Revision 1.8  2004/10/19 07:56:56  pico
 		Corrections diverses
 		
@@ -17,7 +21,7 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_MINIMUM);
+//demande_authentification(AUTH_MINIMUM);
 
 
 // Génération de la page
@@ -243,7 +247,7 @@ echo "<br/>" ;
 // Corps du Documents pour les réponses
 //---------------------------------------------------
 
-  	if(isset($_REQUEST['idpopup'])) $id = $_REQUEST['idpopup'] ;
+  	if(isset($_REQUEST['idpopup'])) $id = $_REQUEST['idpopup'] ; else $id = "";
   	if ($id != "") {
 		$DB_web->query("SELECT question,reponse FROM faq WHERE faq_id='{$id}'") ;
 		if (list($question,$reponse) = $DB_web->next_row()) {
