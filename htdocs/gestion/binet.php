@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.14  2004/11/08 09:10:46  kikx
+	Mise en place de la partie upload du site
+
 	Revision 1.13  2004/11/08 08:47:57  kikx
 	Pour la gestion online des sites de binets
-
+	
 	Revision 1.12  2004/10/29 16:25:12  kikx
 	bug
 	
@@ -176,9 +179,23 @@ if(verifie_permission_prez($_GET['binet'])){
 
 if(verifie_permission_webmestre($_GET['binet'])){
 
+	// On demande l'upload du site sur le serveur
+	//==========================
+
+	if (isset($_POST['fileweb_up'])) {
+		if ($_FILES['file']['tmp_name']!='none') {
+			$DB_trombino->query("SELECT folder FROM binets WHERE binet_id=".$_GET['binet']);
+			list($folder) = $DB_trombino->next_row() ;
+			unzip($_FILES['file']['tmp_name'],BASE_BINETS.$folder,true) ;
+		} else {
+			$message2 .= "<warning>Tu n'as pas soumis de telechargement</warning>" ;
+		}
+	}
+	
 	// On demande la validation du changement
 	//==========================
 
+	
 	if (isset($_POST['modif2'])) {
 		$texte_image = "" ;
 		$DB_trombino->query("SELECT format,exterieur,nom,image,folder FROM binets as b WHERE binet_id=".$_GET['binet']);
@@ -302,12 +319,21 @@ if(verifie_permission_webmestre($_GET['binet'])){
 			}
 		}
 	}
-
-if (!is_dir(BASE_BINETS.$folder)) {
-		echo "vvvsdsd" ;
+	// si le folder du binet n'existe pas alors on le crée
+	if (!is_dir(BASE_BINETS.$folder)) {
 		mkdir (BASE_BINETS.$folder) ;
 	}
+	
 	echo "<h2>Gestion des fichiers du site $nom_binet</h2>";
+?>
+			<formulaire id="binet_download" titre="Telecharger le site" action="gestion/binet.php?binet=<?=$_GET['binet']?>">
+			<hidden id="id" titre="" valeur="<? echo $id?>"/>
+			<fichier id="file" titre="Un fichier 'archive' du site (1Mo max)" taille="1000000"/>
+			<bouton id='fileweb_up' titre="Upload" onClick="return window.confirm('Souhaitez vous mettre à jour votre site ? Ceci effacera tous les fichiers du site pour les remplacer par ceux de l'archive')"/>
+			<bouton id='fileweb_down' titre="Download"/>
+		</formulaire>
+<?
+	
 	echo "<arbre>";
 	echo "<noeud titre=\"/$folder\">" ;
 	
