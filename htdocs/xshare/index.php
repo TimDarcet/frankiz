@@ -1,9 +1,13 @@
 <? 
 /*
 		$Log$
+		Revision 1.12  2004/10/19 22:04:23  pico
+		Pas d'aut
+		+ Fix
+
 		Revision 1.11  2004/10/19 07:56:56  pico
 		Corrections diverses
-
+		
 		Revision 1.10  2004/10/18 23:37:03  pico
 		BugFix Recherche (pas 2 requetes sql en même temps !)
 		
@@ -14,7 +18,7 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_MINIMUM);
+// demande_authentification(AUTH_MINIMUM);
 
 
 // Génération de la page
@@ -245,7 +249,7 @@ echo "<br/>" ;
 // Corps du Documents pour les réponses
 //---------------------------------------------------
 
-  	if(isset($_REQUEST['idpopup'])) $id = $_REQUEST['idpopup'] ;
+  	if(isset($_REQUEST['idpopup'])) $id = $_REQUEST['idpopup'] ; else $id ="";
   	if ($id != "") {
 		$DB_web->query("SELECT * FROM xshare WHERE id='{$id}'") ;
 		if (list($id,$id_parent,$nom,$licence,$lien,$importance,$date,$descript,$version,$site) = $DB_web->next_row()) {
