@@ -244,22 +244,23 @@ echo "<br/>" ;
 	{
 	?>
 	<!-- Supprimer le dossier en cours -->
-	<formulaire id="xshare_<? echo $_REQUEST['dir_id'] ?>" titre="Supprimer ce dossier" action="admin/xshare.php">
+	<? if(isset($_REQUEST['dir_id'])) $dir_id = $_REQUEST['dir_id']; else $dir_id="0"; ?>
+	<formulaire id="xshare_<? echo $dir_id ?>" titre="Supprimer ce dossier" action="admin/xshare.php">
 	<? foreach ($_GET AS $keys => $val){
 		if((!strstr($keys,"adddir"))&&(!strstr($keys,"rmdir"))) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 		}
 	?>
-	<bouton id='rmdir_<? echo  $_REQUEST['dir_id'] ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce répertoire et tous ses fichiers ?!!!!!')"/>
+	<bouton id='rmdir_<? echo  $dir_id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce répertoire et tous ses fichiers ?!!!!!')"/>
 	</formulaire>
 	
 	<!-- Ajouter un sous-dossier -->
-	<formulaire id="xshare_<? echo $_REQUEST['dir_id'] ?>" titre="Ajouter un sous-dossier" action="admin/xshare.php">
+	<formulaire id="xshare_<? echo $dir_id ?>" titre="Ajouter un sous-dossier" action="admin/xshare.php">
 	<champ id="nom" titre="Nom du sous-dossier" valeur="" />
 	<? foreach ($_GET AS $keys => $val){
 		if(!strstr($keys,"adddir")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 		}
 	?>
-	<bouton id='adddir_<? echo $_REQUEST['dir_id'] ?>' titre='Ajouter' onClick="return window.confirm('!!!!!!Créer ce répertoire ?!!!!!')"/>
+	<bouton id='adddir_<? echo $dir_id ?>' titre='Ajouter' onClick="return window.confirm('!!!!!!Créer ce répertoire ?!!!!!')"/>
 	</formulaire>
 	
 <?
