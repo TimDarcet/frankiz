@@ -39,6 +39,9 @@
 			<xsl:attribute name="accesskey"><xsl:value-of select="@key"/></xsl:attribute>
 			<xsl:attribute name="title">Accès rapide: <xsl:value-of select="@key"/></xsl:attribute>
 		</xsl:if>
+		<xsl:if test="boolean(@id)">
+			<xsl:attribute name="class"><xsl:value-of select="@id"/></xsl:attribute>
+		</xsl:if>
 		<xsl:value-of select="@titre"/>
 			<xsl:apply-templates/>
 	</a>

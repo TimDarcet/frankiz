@@ -96,19 +96,8 @@
 			</b>
 		</div>
 		<div class="fkz_annonces_corps">
-			<xsl:apply-templates select="image"/>
-			<xsl:apply-templates select="*[name()!='eleve']"/>
-			<p class="fkz_signature">
-				<xsl:choose>
-					<xsl:when test="eleve/@surnom != ''">
-						<xsl:value-of select="eleve/@surnom"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="eleve/@prenom"/><xsl:text>  </xsl:text><xsl:value-of select="eleve/@nom"/>
-					</xsl:otherwise>
-				</xsl:choose>
-				(<xsl:value-of select="eleve/@promo"/>)
-			</p>
+			<xsl:apply-templates/>
+
 		</div>
 	</div>
 	<br/>
@@ -123,20 +112,7 @@
 			</b>
 		</div>
 		<div>
-			<xsl:apply-templates select="*[name()!='eleve']"/>
-			<xsl:if test="count(eleve)">
-				<p class="fkz_signature">
-					<xsl:choose>
-						<xsl:when test="eleve/@surnom != ''">
-							<xsl:value-of select="eleve/@surnom"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="eleve/@prenom"/><xsl:text>  </xsl:text><xsl:value-of select="eleve/@nom"/>
-						</xsl:otherwise>
-					</xsl:choose>
-					(<xsl:value-of select="eleve/@promo"/>)
-				</p>
-			</xsl:if>
+			<xsl:apply-templates/>
 		</div>
 	<br/>
 </xsl:template>
@@ -151,6 +127,20 @@
 			<xsl:value-of select="@titre"/>
 		</a>
 	</div>
+</xsl:template>
+
+<xsl:template match="eleve[name(..)='annonce']">
+	<p class="fkz_signature">
+		<xsl:choose>
+			<xsl:when test="@surnom != ''">
+				<xsl:value-of select="@surnom"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="@prenom"/><xsl:text>  </xsl:text><xsl:value-of select="@nom"/>
+			</xsl:otherwise>
+		</xsl:choose>
+		(<xsl:value-of select="@promo"/>)
+	</p>
 </xsl:template>
 
 </xsl:stylesheet>

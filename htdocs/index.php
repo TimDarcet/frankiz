@@ -21,9 +21,12 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.19  2004/12/13 21:28:25  pico
+	Le lien est mieux à la fin de l'annonce
+
 	Revision 1.18  2004/12/13 20:03:25  pico
 	Les liens ne forment pas de blocs, il faut donc le spécifier
-
+	
 	Revision 1.17  2004/12/12 09:29:26  kikx
 	Disparition du lien faire disparaitrre si l'utilisateur n'est pas logué ou et si l'utilisateur a deja lu cette annonce et qu'il se situe sur la page pour toute les voir
 	
@@ -117,13 +120,15 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 			<image source="<?echo DATA_DIR_URL."annonces/$id" ; ?>" texte="logo"/>
 		<? 
 		}
+?>
+		<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
+<?
 		if ((est_authentifie(AUTH_COOKIE))&&(!isset($_REQUEST['lire_tout'])))  {
 ?>
 			<lien url='?lu=<?=$id?>' titre="Faire disparaitre" id="annonces_lues"/><br/>
 <?
 }
 ?>
-		<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
 	</annonce>
 <?php }
 if ((!isset($_REQUEST['lire_tout']))&&(est_authentifie(AUTH_COOKIE))) {
