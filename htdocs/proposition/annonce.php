@@ -1,6 +1,11 @@
 <?php
 /*
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
+	
+	$Log$
+	Revision 1.6  2004/09/17 13:13:23  schmurtz
+	Ajout de la variable cvs "Log"
+
 */
 	
 require_once "../include/global.inc.php";
