@@ -1,9 +1,12 @@
 <? 
 /*
 		$Log$
+		Revision 1.9  2004/10/19 21:01:25  pico
+		Le texte de la qdj s'affiche !!
+
 		Revision 1.8  2004/10/19 07:56:56  pico
 		Corrections diverses
-
+		
 		Revision 1.7  2004/10/18 23:37:03  pico
 		BugFix Recherche (pas 2 requetes sql en même temps !)
 		
@@ -249,9 +252,18 @@ echo "<br/>" ;
 	<? 
 	echo "<h2>Q: ".$question."</h2>" ;
 	echo "<br/>";
-	$repfaq = "../../data/faq/".$reponse."";
+	$repfaq = "../../data/faq/".$reponse;
 	echo "<cadre>";
-	include($repfaq);
+
+ 	if($texte = fopen($repfaq,"r")){
+ 	 	while(!feof($texte))
+   		{
+   	 		$ligne = fgets($texte,255);
+   	 		print(htmlspecialchars($ligne,ENT_QUOTES));
+   		}
+ 	 	fclose($texte);
+	}
+//include($repfaq);
 	echo "</cadre>";
 	
 		} else {
