@@ -22,9 +22,12 @@
 	l'utilisateur courant ‡ accËs.
 
 	$Log$
+	Revision 1.22  2004/11/27 21:31:18  pico
+	Ajout du lien vers la gestion de l'Ètat du bob
+
 	Revision 1.21  2004/11/27 16:10:52  pico
 	Correction d'erreur de redirection et ajout des web ‡ la validation des activitÈs.
-
+	
 	Revision 1.20  2004/11/27 15:39:54  pico
 	Ajout des droits trombino
 	
@@ -189,56 +192,56 @@ $permissions_user = $_SESSION['user']->perms ;
 			}
 		}
 		?>
-		<lien titre="Valider les changements de photo trombino (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_trombi.php"/>
+		<lien titre="Valider les changements de photo trombino (<?=$nb?>)" url="admin/valid_trombi.php"/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('web')){
 		$DB_valid->query("SELECT eleve_id FROM valid_annonces") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les annonces (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_annonces.php"/>
+		<lien titre="Valider les annonces (<?=$nb?>)" url="admin/valid_annonces.php"/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('affiches')){
 		$DB_valid->query("SELECT eleve_id FROM valid_affiches") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les activitÈs (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_affiches.php"/>
+		<lien titre="Valider les activitÈs (<?=$nb?>)" url="admin/valid_affiches.php"/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('web')){
 		$DB_valid->query("SELECT eleve_id FROM valid_sondages") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les sondages (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_sondages.php"/>
+		<lien titre="Valider les sondages (<?=$nb?>)" url="admin/valid_sondages.php"/>
 	<?
 	}
 	if (verifie_permission('admin')){
 		$DB_valid->query("SELECT eleve_id FROM valid_mailpromo") ;
 		$nb = $DB_valid->num_rows() ;
 	?>
-		<lien titre="Valider les mails promos (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_mailpromo.php"/>
+		<lien titre="Valider les mails promos (<?=$nb?>)" url="admin/valid_mailpromo.php"/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('qdjmaster')){
 		$DB_valid->query("SELECT eleve_id FROM valid_qdj") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les qdj (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_qdj.php"/>
+		<lien titre="Valider les qdj (<?=$nb?>)" url="admin/valid_qdj.php"/>
 	<?
 	}
 	if (verifie_permission('admin')){
 		$DB_valid->query("SELECT id FROM valid_pageperso") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les page persos (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_pageperso.php"/>
+		<lien titre="Valider les page persos (<?=$nb?>)" url="admin/valid_pageperso.php"/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('trombino')){
 		$DB_valid->query("SELECT binet_id FROM valid_binet") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les changements des Binets (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_binets.php"/>
+		<lien titre="Valider les changements des Binets (<?=$nb?>)" url="admin/valid_binets.php"/>
 	<?
 	}
 	
@@ -250,17 +253,17 @@ $permissions_user = $_SESSION['user']->perms ;
 	}
 	if (verifie_permission('admin')||verifie_permission('qdjmaster')){
 	?>
-		<lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/>
+		<lien titre="Planifier les qdj" url="admin/planif_qdj.php"/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('web')){
 	?>
-		<lien titre="Planifier les activitÈs" url="<?php echo BASE_URL?>/admin/planif_affiches.php"/>
+		<lien titre="Planifier les activitÈs" url="admin/planif_affiches.php"/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('web')){
 	?>
-		<lien titre="Modifier les annonces" url="<?php echo BASE_URL?>/admin/modif_annonces.php"/>
+		<lien titre="Modifier les annonces" url="admin/modif_annonces.php"/>
 	<?
 	}
 	
@@ -272,23 +275,23 @@ $permissions_user = $_SESSION['user']->perms ;
 	}
 	if (verifie_permission('admin')){
 	?>
-		<lien titre="Changer les variables globales" url="<?php echo BASE_URL?>/admin/parametre.php"/>
+		<lien titre="Changer les variables globales" url="admin/parametre.php"/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('trombino')){
 	?>
-		<lien titre="Liste des Binets" url="<?php echo BASE_URL?>/admin/binets_liste.php"/>
-		<lien titre="Liste des sections" url="<?php echo BASE_URL?>/admin/sections.php"/>
+		<lien titre="Liste des Binets" url="admin/binets_liste.php"/>
+		<lien titre="Liste des sections" url="admin/sections.php"/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('xshare')){
 	?>
-		<lien titre="Gestion xshare" url="<?php echo BASE_URL?>/admin/xshare.php"/>
+		<lien titre="Gestion xshare" url="admin/xshare.php"/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('faq')){
 	?>
-		<lien titre="Gestion FAQ" url="<?php echo BASE_URL?>/admin/faq.php"/>
+		<lien titre="Gestion FAQ" url="admin/faq.php"/>
 	<?
 	}
 	if (verifie_permission('admin')){
@@ -298,8 +301,8 @@ $permissions_user = $_SESSION['user']->perms ;
 		$DB_valid->query("SELECT eleve_id FROM valid_ip") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Gerer les demandes d'ajout d'ips (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_ip.php"/>
-		<lien titre="Liste des IPs" url="<?php echo BASE_URL?>/admin/ip.php"/>
+		<lien titre="Gerer les demandes d'ajout d'ips (<?=$nb?>)" url="admin/valid_ip.php"/>
+		<lien titre="Liste des IPs" url="admin/ip.php"/>
 	<?
 	}
 	
@@ -320,7 +323,7 @@ $permissions_user = $_SESSION['user']->perms ;
 			$DB_trombino->query("SELECT nom FROM binets WHERE binet_id=$binet");
 			list($nom) = $DB_trombino->next_row() ;
 
-			echo "<lien titre=\"Gerer la page du binet : $nom\" url=\"". BASE_URL."/gestion/binet.php?binet=".$binet."\"/>" ;
+			echo "<lien titre=\"Gerer la page du binet : $nom\" url=\"gestion/binet.php?binet=".$binet."\"/>" ;
 		}
 	}
 
@@ -343,11 +346,19 @@ $permissions_user = $_SESSION['user']->perms ;
 			list($nom) = $DB_trombino->next_row() ;
 
 				
-			echo "<lien titre=\"Gerer les membres du binet : $nom\" url=\"". BASE_URL."/gestion/binet.php?binet=".$binet."\"/>" ;
+			echo "<lien titre=\"Gerer les membres du binet : $nom\" url=\"gestion/binet.php?binet=".$binet."\"/>" ;
 		}
 	}
 
-	?>
+
+	//
+	// Pour le bob
+	//======================================
+	if (verifie_permission('admin')||verifie_permission('bob')){
+		echo "<h2>Gestion du BÙB</h2>" ;
+		echo "<lien titre=\"Gerer l'ouverture du BÙB\" url=\"admin/etat_bob.php\"/>" ;
+	}
+?>
 
 </page>
 <?php require_once BASE_LOCAL."/include/page_footer.inc.php"; ?>
