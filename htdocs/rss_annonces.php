@@ -1,5 +1,6 @@
 <?
 require_once "include/global.inc.php";
+require_once "include/wiki.inc.php";
 
 function get_categorie($en_haut,$stamp,$perime) {
 	if($en_haut==1) return "important";
@@ -39,7 +40,7 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 		<pubDate><?php echo $stamp ?></pubDate>
 		<description>
 <?php
-		echo $contenu;
+		echo wikiVersXML($contenu);
 
 			if (file_exists(DATA_DIR_LOCAL."annonces/$id")) {
 			?>
