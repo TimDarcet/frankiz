@@ -162,12 +162,12 @@ span.fkz_logo {
 }
 
 .fkz_qdj_rouje a{
-	color: yellow;
+	color: #FFBB00;
 }
 
 
 .fkz_qdj_jone_reponse {
-	color: yellow;
+	color: #FFBB00;
 	float: right;
 }
 
@@ -179,6 +179,20 @@ span.fkz_logo {
 .fkz_qdj_last{
 	list-style-type:  none;  
 	text-align:left; 
+}
+
+.col {
+	height:50px;
+}
+.col span {
+	display:block;
+	height:50px;
+}
+.col span.jone {
+	background:url(../images/jaune.gif) repeat-y top center;
+}
+.col span.rouje {
+	background:url(../images/rouge.gif) repeat-y top center;
 }
 
 /* Fin QDJ */

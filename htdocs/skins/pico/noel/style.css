@@ -168,6 +168,19 @@ span.fkz_logo,span.fkz_logo_eleves {
 	text-align:left; 
 }
 
+.col {
+	height:50px;
+}
+.col span {
+	display:block;
+	height:50px;
+}
+.col span.jone {
+	background:url(../images/jaune.gif) repeat-y top center;
+}
+.col span.rouje {
+	background:url(../images/rouge.gif) repeat-y top center;
+}
 /* Fin QDJ */
 
 

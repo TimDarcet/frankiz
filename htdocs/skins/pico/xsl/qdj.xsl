@@ -46,11 +46,19 @@
 					<div class="fkz_qdj_question"><xsl:value-of select="qdj/question"/></div>
 					<div>
 						<div class="fkz_qdj_rouje_reponse">
+							<div class="col">
+								<span class="blanc"><xsl:attribute name="style">height:<xsl:value-of select="round(100-((qdj/reponse[@id='1']/@votes * 100) div sum(qdj/reponse/@votes)))" />%;</xsl:attribute><xsl:text> </xsl:text></span>
+								<span class="rouje"><xsl:attribute name="style">height:<xsl:value-of select="round((qdj/reponse[@id='1']/@votes * 100) div sum(qdj/reponse/@votes))" />%;</xsl:attribute><xsl:text> </xsl:text></span><br/>
+							</div>
 							<xsl:value-of select="qdj/reponse[@id='1']"/>
 							<br/>
 							<xsl:value-of select="qdj/reponse[@id='1']/@votes"/> soit <xsl:value-of select="round((qdj/reponse[@id='1']/@votes * 100) div sum(qdj/reponse/@votes))"/>%<br/>
 						</div>
 						<div class="fkz_qdj_jone_reponse">
+							<div class="col">
+								<span class="blanc"><xsl:attribute name="style">height:<xsl:value-of select="round(100-((qdj/reponse[@id='2']/@votes * 100) div sum(qdj/reponse/@votes)))" />%;</xsl:attribute><xsl:text> </xsl:text></span>
+								<span class="jone"><xsl:attribute name="style">height:<xsl:value-of select="round((qdj/reponse[@id='2']/@votes * 100) div sum(qdj/reponse/@votes))" />%;</xsl:attribute><xsl:text> </xsl:text></span><br/>
+							</div>
 							<xsl:value-of select="qdj/reponse[@id='2']"/>
 							<br/>
 							<xsl:value-of select="qdj/reponse[@id='2']/@votes"/> soit <xsl:value-of select="round((qdj/reponse[@id='2']/@votes * 100) div sum(qdj/reponse/@votes))"/>%<br/>

@@ -133,6 +133,21 @@ ul.fkz_liens_nav{
     width: 49%;
 }
 
+
+.col {
+	height:50px;
+}
+.col span {
+	display:block;
+	height:50px;
+}
+.col span.jone {
+	background:url(../images/jaune.gif) repeat-y top center;
+}
+.col span.rouje {
+	background:url(../images/rouge.gif) repeat-y top center;
+}
+
 .fkz_anniversaire_titre {
 	color: white;
 	background: #1f118c;
