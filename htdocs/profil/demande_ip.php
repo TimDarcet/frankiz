@@ -54,7 +54,7 @@ if (!isset($_POST['demander'])) {
 					"Très BR-ement\n" .
 					"L'automate :)\n"  ;
 					
-			mail("Admin FrankizII <gruson@poly.polytechnique.fr>","[Frankiz] Demande d'une nouvelle ip",$contenu);
+		mail("Admin FrankizII <gruson@poly.polytechnique.fr>","[Frankiz] Demande d'une nouvelle ip",$contenu);
 	
 ?>
 
