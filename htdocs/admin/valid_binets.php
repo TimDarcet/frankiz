@@ -21,9 +21,12 @@
 	Page de validation d'une modification d'un binet
 	
 	$Log$
+	Revision 1.5  2004/11/08 18:26:40  kikx
+	Coorige des bugs
+
 	Revision 1.4  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.3  2004/10/19 19:08:17  kikx
 	Permet a l'administrateur de valider les modification des binets
 	
@@ -52,25 +55,30 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 // On traite les différents cas de figure d'enrigistrement et validation :)
 
 // Enregistrer ...
-
+$message = "" ;
+	
 if (isset($_POST['valid'])) {
 
-	$DB_valid->query("SELECT nom,description,http,catego_id,image,format FROM valid_binet WHERE binet_id={$_POST['id']}");
-	list($nom,$description,$http,$categorie,$image,$format) = $DB_valid->next_row() ;
+
+	$DB_valid->query("SELECT nom,description,http,catego_id,image,format,folder FROM valid_binet WHERE binet_id={$_POST['id']}");
+	list($nom,$description,$http,$categorie,$image,$format,$folder) = $DB_valid->next_row() ;
 	
 	if (isset($_REQUEST['exterieur']))
 		$temp_ext = '1'  ;
 	else 
 		$temp_ext = '0' ;
 
-	$DB_trombino->query("UPDATE binets SET image=\"".addslashes($image)."\" ,format='$format' ,description='$description' , http='$http', catego_id=$categorie, exterieur=$temp_ext WHERE binet_id={$_POST['id']}");
+	$DB_trombino->query("UPDATE binets SET image=\"".addslashes($image)."\" ,format='$format' ,description='$description' , http='$http', catego_id=$categorie, exterieur=$temp_ext, folder='$folder' WHERE binet_id={$_POST['id']}");
 	
 	$DB_valid->query("DELETE FROM valid_binet WHERE binet_id={$_POST['id']}");
-	
+	$message .= "<commentaire>Le binet $nom vient d'être mis à jour</commentaire>" ;
 }
 if (isset($_POST['suppr'])) {
+	$DB_valid->query("SELECT nom FROM valid_binet WHERE binet_id={$_POST['id']}");
+	list($nom) = $DB_valid->next_row() ;
 
 	$DB_valid->query("DELETE FROM valid_binet WHERE binet_id={$_POST['id']}");
+	$message .= "<warning>Vous n'avez pas validé le changement du binet $nom</warning>" ;
 
 }
 
@@ -78,6 +86,7 @@ if (isset($_POST['suppr'])) {
 
 //===============================
 	$DB_valid->query("SELECT binet_id,nom,description,http,categorie,exterieur FROM valid_binet LEFT JOIN trombino.binets_categorie USING(catego_id)");
+	echo $message ;
 	while(list($binet_id,$nom,$description,$http,$categorie,$exterieur) = $DB_valid->next_row()) {
 ?>
 		<formulaire id="binet_web" titre="<? echo $nom?>" action="admin/valid_binets.php">

@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.19  2004/11/08 18:26:40  kikx
+	Coorige des bugs
+
 	Revision 1.18  2004/11/08 15:56:15  kikx
 	Micro bug dans la page des binets pour les webmestre
-
+	
 	Revision 1.17  2004/11/08 15:46:46  kikx
 	Correction pour les telechargement des fichiers (visiblement ca depend de la version de php)
 	
@@ -190,7 +193,6 @@ if(verifie_permission_prez($_GET['binet'])){
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 if(verifie_permission_webmestre($_GET['binet'])){
-
 	// On demande l'upload du site sur le serveur
 	//==========================
 
