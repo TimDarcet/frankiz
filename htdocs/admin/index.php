@@ -27,5 +27,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	<p>En construction…</p>
 	<h2>Site web perso</h2>
 	<p>En construction…</p>
+	<h2>Gestion des utilisateurs</h2>
+	<p><a href="<? echo BASE_URL?>/trombino">Chercher</a>…</p>
 </page>
 <?php require_once BASE_LOCAL."/include/page_footer.inc.php"; ?>
