@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.5  2004/12/13 16:23:47  kikx
+	Passage en secure validation pour les page perso + note sur les commentaires
+
 	Revision 1.4  2004/11/27 20:30:52  pico
 	Correction de commentaire
-
+	
 	Revision 1.3  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
 	
@@ -57,6 +60,8 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 // On regarde quel cas c'est ...
 // On envoie chié le mec pour son changement d'ip et on le supprime de la base
 // On accepte le changement et on l'inscrit dans la base
+$DB_valid->query("LOCK TABLE valid_pageperso WRITE");
+$DB_valid->query("SET AUTOCOMMIT=0");
 
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
@@ -64,39 +69,55 @@ foreach ($_POST AS $keys => $val){
 	// On refuse la demande d'ip supplémentaire
 	//==========================
 	if ($temp[0] == "vtff") {
-		$DB_valid->query("DELETE FROM valid_pageperso WHERE eleve_id='{$temp[1]}'");
-		
-		$bla = "refus_".$temp[1] ;
-		$contenu = "<b>Bonjour,</b> <br><br>".
-			"Nous sommes désolé mais le BR n'a pas approuvé ta demande pour la raison suivante <br>".
-			$_POST[$bla]."<br>".
-			"<br>" .
-			"Très Cordialement<br>" .
-			"Le BR<br>"  ;
-	
-		couriel($temp[1],"[Frankiz] La demande pour ton site a été refusée ",$contenu);
-		echo "<warning>Envoie d'un mail <br/>Le prévient que sa demande n'est pas acceptée</warning>" ;
-	}
-	// On accepte la demande d'ip supplémentaire
-	//===========================
-	if ($temp[0] == "ok") {
-		$DB_valid->query("DELETE FROM valid_pageperso WHERE eleve_id='{$temp[1]}'");
-		
-		$DB_web->query("INSERT INTO sites_eleves SET eleve_id='{$temp[1]}'");
+		$DB_valid->query("SELECT 0 FROM valid_pageperso WHERE eleve_id='{$temp[1]}'");
+		if ($DB_valid->num_rows()!=0) {
+
+			$DB_valid->query("DELETE FROM valid_pageperso WHERE eleve_id='{$temp[1]}'");
 			
-		$contenu = "<b>Bonjour,</b> <br><br>".
-				"Ton site perso apparaitra desormais sur le site élève<br>".
+			$bla = "refus_".$temp[1] ;
+			$contenu = "<b>Bonjour,</b> <br><br>".
+				"Nous sommes désolé mais le BR n'a pas approuvé ta demande pour la raison suivante <br>".
+				$_POST[$bla]."<br>".
 				"<br>" .
 				"Très Cordialement<br>" .
 				"Le BR<br>"  ;
 		
-		couriel($temp[1],"[Frankiz] La demande pour ton site perso a été acceptée",$contenu);
-			echo "<commentaire>Envoie d'un mail<br/>Le prévient que sa demande à été acceptée</commentaire>" ;
-
+			couriel($temp[1],"[Frankiz] La demande pour ton site a été refusée ",$contenu);
+			echo "<warning>Envoie d'un mail <br/>Le prévient que sa demande n'est pas acceptée</warning>" ;
+		} else {
+	?>
+			<warning>Requête deja traitée par un autre administrateur</warning>
+	<?
+		}
+	}
+	// On accepte la demande d'ip supplémentaire
+	//===========================
+	if ($temp[0] == "ok") {
+		$DB_valid->query("SELECT 0 FROM valid_pageperso WHERE eleve_id='{$temp[1]}'");
+		if ($DB_valid->num_rows()!=0) {
+			$DB_web->query("INSERT INTO sites_eleves SET eleve_id='{$temp[1]}'");
+				
+			$contenu = "<b>Bonjour,</b> <br><br>".
+					"Ton site perso apparaitra desormais sur le site élève<br>".
+					"<br>" .
+					"Très Cordialement<br>" .
+					"Le BR<br>"  ;
+			
+			couriel($temp[1],"[Frankiz] La demande pour ton site perso a été acceptée",$contenu);
+				echo "<commentaire>Envoie d'un mail<br/>Le prévient que sa demande à été acceptée</commentaire>" ;
+				
+			$DB_valid->query("DELETE FROM valid_pageperso WHERE eleve_id='{$temp[1]}'");
+		} else {
+	?>
+			<warning>Requête deja traitée par un autre administrateur</warning>
+	<?
+		}
 	}
 }
+$DB_valid->query("COMMIT");
+$DB_valid->query("UNLOCK TABLES");
 ?>
-
+<note>Si tu refuses une demande, met un commentaire pour que la personne comprenne pourquoi le BR ne veux pas valider sa demande</note>
 <h2>Liste des personnes demandant une entrée sur la page des sites élèves</h2>
 	<liste id="liste" selectionnable="non" action="admin/valid_pageperso.php">
 		<entete id="eleve" titre="Élève"/>
