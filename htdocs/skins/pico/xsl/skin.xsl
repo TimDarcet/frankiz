@@ -48,7 +48,7 @@
 <xsl:include href="meteo.xsl"/>
 
 <xsl:template match="/">
-	<html lang="fr" xml:lang="fr">
+	<html xml:lang="fr">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
 		<title><xsl:value-of select="frankiz/page/@titre"/></title>
