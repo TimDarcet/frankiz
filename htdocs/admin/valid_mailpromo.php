@@ -3,11 +3,14 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.2  2004/10/06 19:29:53  kikx
+	La page d'envoi de mail promo est terminéééééééééééééééééééééééé
+
 	Revision 1.1  2004/10/06 14:12:27  kikx
 	Page de mail promo quasiment en place ...
 	envoie en HTML ...
 	Page pas tout a fait fonctionnel pour l'instant
-
+	
 
 	
 */
@@ -19,17 +22,13 @@ demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
 	rediriger_vers("/admin/");
 
-
-
-
-
 // Génération de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
 <page id="valid_mailpromo" titre="Frankiz : Valide un mail promo">
-<h1>Validation des activités</h1>
+<h1>Validation des mails promos</h1>
 
 <?
 // On traite les différents cas de figure d'enrigistrement et validation d'affiche :)
@@ -56,10 +55,11 @@ foreach ($_POST AS $keys => $val){
 			"L'automate :)\n"  ;
 		couriel($eleve_id,"[Frankiz] Ton mail promo a été validé par le BR",$contenu);
 		
-		//====================================================
-		// Pocedure d'envoie de masse
+	//====================================================
+	// Procedure d'envoie de masse
+	//---------------------------------------------------------------------------------------------------------------------
 		
-	        echo "<p>Envoi en cours...</p><p>" ;
+	        echo "<p>" ;
 		$log = "" ;
 		$cnt = 0 ;
 		
@@ -72,25 +72,82 @@ foreach ($_POST AS $keys => $val){
 			$to = " promo=".$_POST['promo'] ;
 		}
 		
+		//=================================
+		// Constuction du mail à propremeent parler ...
+		//-------------------------------------------------------------------------
+		
+		// Message que l'on retravaille
+		$mail_contenu = str_replace("&gt;",">",str_replace("&lt;","<",$_POST['mail'])) ;
+		
+		// Création du délimiteurs
+		$limite = md5(uniqid (rand()));
+		$limite2 = md5(uniqid (rand()));
+					
+		//Le message en texte simple pour les navigateurs qui n'acceptent pas le HTML
+		$texte = "This is a multi-part message in MIME format.\n";
+		$texte .= "Ceci est un message est au format MIME.\n\n";
+		
+		$texte .= "------$limite\n";
+		$texte .= "Content-Type: multipart/alternative;\n";
+		$texte .= " boundary=\"----$limite2\"\n\n";
+		
+		$texte .= "------$limite2\n";
+		$texte .= "Content-Type: text/plain; charset=\"iso-8859-1\"\n";
+		$texte .= "Content-Transfer-Encoding: 8bit\n\n";
+		$texte .= strip_tags(str_replace("<p>","\n",str_replace("<br>","\n",$mail_contenu)));
+		$texte .= "\n\n";
+		//Le message en texte HTML pour les navigateurs qui acceptent  le HTML
+		$texte .= "------$limite2\n";
+		$texte .= "Content-Type: text/html; charset=\"iso-8859-1\"\n";
+		$texte .= "Content-Transfer-Encoding: 8bit\n\n";
+		$texte .="<html>\n\t<head>\n\t</head>\n<body font-size:12pt font-family: arial>\n" ;
+		$texte .= $mail_contenu;
+		$texte .= "<center><img src=\"cid:4923555B-0D28-4533-B917-07177C51A263\" alt=\"Validation par le BR\"></center>" ;
+		$texte .="\n\t</body>\n</html>" ;
+		$texte .= "\n\n\n";
+		
+		$texte .= "------$limite2--\n\n";
+		
+		// Signature BR
+		
+		//le fichier si il existe ...
+		$fichier = 'Logo.png' ;
+		
+		$texte .= "------$limite\n";
+		$texte .= "Content-Type: image/png; name=\"$fichier\"\n";
+		$texte .= "Content-Transfer-Encoding: base64\n";
+		$texte .= "Content-ID: <4923555B-0D28-4533-B917-07177C51A263>\n";
+		$texte .= "Content-Disposition: attachment; filename=\"$fichier\"\n\n";
+	
+		$fd = fopen( $fichier, "r" );
+		$contenu = fread( $fd, filesize( $fichier ) );
+		fclose( $fd );
+		$texte .= chunk_split(base64_encode($contenu));
+
+		$texte .= "\n\n\n------$limite--\n";			
+		
+		// On met en place les headers
+		$sender = str_replace("&gt;",">",str_replace("&lt;","<",$_POST['from'])) ;
+		$headers = "From: ".$sender."\r\nX-Mailer: PHP/" . phpversion()."\r\n" ;
+		$headers .= "Date: ".date("l j F Y, G:i")."\n";
+		$headers .= "MIME-Version: 1.0\n";
+		$headers .= "Content-Type: multipart/related; type=multipart/alternative ;\n";
+		$headers .= " boundary=\"----$limite\"";
+
+	//=================================
+	// Envoi du mail à propremeent parler ...
+	//-------------------------------------------------------------------------
+	
 		$DB_trombino->query("SELECT login FROM eleves WHERE ".$to) ;
 		while(list($login) = $DB_trombino->next_row() ) {
 			$mail_envoie = $login."@poly" ;
 			
-			//if (mail($mail_envoie, $_POST['titre'], $_POST['mail'], "From: ".$from."\r\nX-Mailer: PHP/" . phpversion())){
-			$mail_contenu = str_replace("&gt;",">",str_replace("&lt;","<",$_POST['mail'])) ;
-			$sender = str_replace("&gt;",">",str_replace("&lt;","<",$_POST['from'])) ;
-			
-			$headers  = "MIME-Version: 1.0\r\n";
-			$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
-			$headers .= "From: ".$sender."\r\nX-Mailer: PHP/" . phpversion()."\r\n" ;
-			
-			if (mail('gruson@poly', $_POST['titre'],$mail_contenu , $headers)){
+			if (mail($mail_envoie, $_POST['titre'],$texte , $headers)){
 				$cnt ++ ;
-				sleep(5); // Attends 1 secondes
+ 				usleep(500000); // Attends 1/2 secondes
 			} else {
 				$log .= "Erreur lors de l'envoi vers ".$mail ;
 			}
-			if ($cnt==3)break ;//========================= A VIRER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		}
 		echo $log ;
 		echo "</p><p> Nb de mail envoyé avec succès : ".$cnt."</p>" ;
