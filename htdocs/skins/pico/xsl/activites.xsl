@@ -34,9 +34,9 @@
 
 <xsl:template match="annonce" mode="activites">
 		<div style="text-align:center">
-			<b>
+			<strong>
 				<span><xsl:value-of select="@titre"/></span>
-			</b>
+			</strong>
 		</div>
 		<div style="text-align:center">
 			<xsl:if test="@date!=''">A <xsl:value-of select='substring(@date,12,5)'/><br/></xsl:if>
