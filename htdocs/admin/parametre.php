@@ -24,9 +24,12 @@
 	# la dernière promo qui est dans le trombi (qui normalment devrait être mis a jour automatiquement)
 	
 	$Log$
+	Revision 1.10  2004/12/17 14:26:20  pico
+	Pas d'action pour les listes non sélectionnables
+
 	Revision 1.9  2004/11/29 20:57:31  kikx
 	Mise en forme
-
+	
 	Revision 1.8  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
@@ -83,7 +86,7 @@ Cette page est une page pour pouvoir modifier directement les paramètres du site
 devez créer des varibles dans la table essayer qu'elles soient assez explicite.
 </note>
 <h2>Paramètres du site</h2>
-	<liste id="liste" selectionnable="non" action="admin/parametre.php">
+	<liste id="liste" selectionnable="non">
 		<entete id="nom_var" titre="Nom de la varible"/>
 		<entete id="valeur" titre="Valeur"/>
 <?

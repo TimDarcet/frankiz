@@ -22,9 +22,12 @@
 	Permet aussi de supprimer des IPs.
 	
 	$Log$
+	Revision 1.29  2004/12/17 14:26:20  pico
+	Pas d'action pour les listes non sélectionnables
+
 	Revision 1.28  2004/12/13 16:15:22  kikx
 	legere modif sur la page des ips
-
+	
 	Revision 1.27  2004/12/06 22:32:08  kikx
 	Juste pour eviter de timeouter
 	
@@ -155,7 +158,7 @@ if (isset($_POST['recherche']) ) {
 					."LEFT JOIN trombino.eleves as e $on $where ORDER BY p.piece_id ASC");
 ?>
 
-	<liste id="liste_ip" selectionnable="non" action="admin/ip.php">
+	<liste id="liste_ip" selectionnable="non">
 		<entete id="login" titre="Login"/>
 		<entete id="promo" titre="Promo"/>
 		<entete id="piece" titre="Piece"/>

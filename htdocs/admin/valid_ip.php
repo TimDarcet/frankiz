@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.23  2004/12/17 14:26:20  pico
+	Pas d'action pour les listes non sélectionnables
+
 	Revision 1.22  2004/12/16 13:00:41  pico
 	INNER en LEFT
-
+	
 	Revision 1.21  2004/12/15 00:01:56  kikx
 	esthetique
 	
@@ -161,7 +164,7 @@ $DB_admin->query("UNLOCK TABLES");
 ?>
 
 <h2>Liste des personnes demandant</h2>
-	<liste id="liste" selectionnable="non" action="admin/valid_ip.php">
+	<liste id="liste" selectionnable="non">
 		<entete id="eleve" titre="Élève"/>
 		<entete id="raison" titre="Raison"/>
 		<entete id="ip" titre="IP"/>
@@ -200,7 +203,7 @@ $DB_admin->query("UNLOCK TABLES");
 	
 	
 	<h2>Liste des personnes ayant eu leurs ips supplémentaires</h2>
-	<liste id="liste" selectionnable="non" action="admin/valid_ip.php">
+	<liste id="liste" selectionnable="non">
 		<entete id="eleve" titre="Élève"/>
 		<entete id="ip" titre="IP"/>
 <?

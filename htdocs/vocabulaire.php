@@ -21,10 +21,13 @@
 	Vocabulaire de l'X
 	
 	$Log$
+	Revision 1.3  2004/12/17 14:26:20  pico
+	Pas d'action pour les listes non sélectionnables
+
 	Revision 1.2  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
-
+	
 	Revision 1.1  2004/10/31 22:14:52  kikx
 	Oubli
 */
@@ -36,7 +39,7 @@ require "include/page_header.inc.php";
 ?>
 <page id='vocabulaire' titre='Frankiz : vocabulaire'>
 <h1>Vocabulaire propre à l'X</h1>
-	<liste id="liste_voc" selectionnable="non" action="vocabulaire.php">
+	<liste id="liste_voc" selectionnable="non">
 		<entete id="mot" titre="Expression"/>
 		<entete id="description" titre="Description"/>
 <?

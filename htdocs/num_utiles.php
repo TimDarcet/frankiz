@@ -21,9 +21,12 @@
 	Numero utiles
 	
 	$Log$
+	Revision 1.2  2004/12/17 14:26:20  pico
+	Pas d'action pour les listes non sélectionnables
+
 	Revision 1.1  2004/12/17 13:18:47  kikx
 	Rajout des numéros utiles car c'est une demande importante
-
+	
 	Revision 1.2  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
@@ -44,7 +47,7 @@ $DB_web->query("SELECT DISTINCT categorie FROM num_utiles GROUP BY categorie") ;
 while(list($categorie) = $DB_web->next_row()) {
 ?>
 	<h2><?=$categorie?></h2>
-	<liste id="liste_num" selectionnable="non" action="num_utiles.php">
+	<liste id="liste_num" selectionnable="non">
 		<entete id="endroit" titre=""/>
 		<entete id="poste" titre="num. Poste"/>
 <?		
@@ -56,7 +59,7 @@ while(list($categorie) = $DB_web->next_row()) {
 				echo "\t\t\t<colonne id=\"post\">$poste</colonne>\n";
 			echo "\t\t</element>\n";
 		}
-		$DB_web->pop_result() ;
+		$DB_web->pop_result();
 ?>
 	</liste>
 <?

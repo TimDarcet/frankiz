@@ -21,9 +21,12 @@
 	Vocabulaire de l'X
 	
 	$Log$
+	Revision 1.2  2004/12/17 14:26:20  pico
+	Pas d'action pour les listes non sélectionnables
+
 	Revision 1.1  2004/11/06 20:26:00  kikx
 	Page de liens pour éviter de surcharger la page principale
-
+	
 */
 
 require_once "include/global.inc.php";
@@ -33,7 +36,7 @@ require "include/page_header.inc.php";
 ?>
 <page id='liens' titre='Frankiz : liens'>
 <h1>Liens Utiles</h1>
-	<liste id="liste_liens" selectionnable="non" action="liens.php">
+	<liste id="liste_liens" selectionnable="non">
 		<entete id="mot" titre="Lien"/>
 		<entete id="description" titre="Description"/>
 <?
