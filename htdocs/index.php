@@ -21,27 +21,9 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
-	Revision 1.38  2005/02/10 22:15:35  pico
-	Je suis un gros boulet...
+	Revision 1.39  2005/02/10 22:25:42  pico
+	On revient à une version précédente
 
-	Revision 1.37  2005/02/10 22:12:54  pico
-	voilà
-	
-	Revision 1.36  2005/02/10 22:00:46  pico
-	Pas joli, mais devrait marcher
-	
-	Revision 1.35  2005/02/10 21:55:40  pico
-	bon
-	
-	Revision 1.34  2005/02/10 21:55:16  pico
-	Arg boulet !
-	
-	Revision 1.33  2005/02/10 21:53:10  pico
-	Corrections pour que ça marche sur le serveur de prod
-	
-	Revision 1.32  2005/02/10 21:42:41  pico
-	hum
-	
 	Revision 1.31  2005/02/10 21:37:53  pico
 	- Pour les ids de news, fait en fonction de la date de péremption, c'est mieux que seulement par id, mais y'a tjs un pb avec les nouvelles fraiches
 	- Correction pour éviter que des gens postent des annonces qui sont déjà périmées
@@ -185,20 +167,15 @@ $DB_web->query("SELECT annonces.annonce_id,stamp,perime,titre,contenu,en_haut,ex
 					 ."WHERE (perime>'".date("Y-m-d H:i:s",time())."') ORDER BY perime DESC");
 $nb =$DB_web->num_rows();
 $cpt =0;
-$a_fermer=false;
-$idprec=0;
 while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail,$visible)=$DB_web->next_row()) {
 	if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
-	if($visible && $a_fermer && $cpt > 0){
+	if($cpt > 0){
 			if(est_authentifie(AUTH_MINIMUM))
-				echo "<lien url=\"?lu=$idprec#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
+			echo "<lien url=\"?lu=$idprec#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
 			echo "</annonce>";
-			$a_fermer=false;
 	}
+	$idprec=$id;
 	$cpt++;
-	
-	if($visible){
-		$idprec=$id;
 ?>
 	<annonce id="<?php echo $id ?>" 
 		titre="<?php echo $titre ?>" visible="<?=$visible?"oui":"non" ?>"
@@ -209,12 +186,10 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 			echo "<image source=\"".DATA_DIR_URL."annonces/$id\" texte=\"logo\"/>\n";
 		echo wikiVersXML($contenu);
 		echo "<eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"$promo\" surnom=\"$surnom\" mail=\"$mail\"/>\n";
-		$a_fermer=true;
-	}
-	if($a_fermer && $cpt==$nb){
-			if(est_authentifie(AUTH_MINIMUM))
-				echo "<lien url=\"?lu=$idprec#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
-			echo "</annonce>";
+	if($nb==$cpt){
+		if(est_authentifie(AUTH_MINIMUM))
+		echo "<lien url=\"?lu=$idprec#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
+		echo "</annonce>";
 	}
 }
 echo "</page>\n";
