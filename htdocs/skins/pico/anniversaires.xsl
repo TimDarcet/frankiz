@@ -25,6 +25,7 @@
 	<xsl:if test="count(eleve) != 0">
 		<div class="fkz_anniversaire_titre">Joyeux anniversaire: </div>
 		<div class="fkz_anniversaire">
+			<xsl:if test="count(eleve[@promo='2002'])">
 				2002: 
 				<xsl:for-each select="eleve[@promo='2002']">
 					<xsl:value-of select="@prenom" />
@@ -32,7 +33,9 @@
 					<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
 					<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
 				</xsl:for-each>
+			</xsl:if>
 			<br />
+			<xsl:if test="count(eleve[@promo='2003'])">
 				2003: 
 				<xsl:for-each select="eleve[@promo='2003']">
 					<xsl:value-of select="@prenom" />
@@ -40,6 +43,7 @@
 					<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
 					<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
 				</xsl:for-each>
+			</xsl:if>
 		</div>
 	</xsl:if>
 </xsl:template>

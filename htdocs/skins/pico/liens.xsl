@@ -62,12 +62,14 @@
 <xsl:template match="module[@id='liens_navigation']">
     <div class="fkz_liens_nav">
     <xsl:for-each select="lien">
+      <span>
       <a>
         <xsl:attribute name="href">
           <xsl:value-of select="@url"/>
 	</xsl:attribute>
 	<xsl:value-of select="@titre" />
       </a>
+      </span>
       <xsl:if test="position() != last()">
         <xsl:text> | </xsl:text>
       </xsl:if>
