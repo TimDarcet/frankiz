@@ -11,9 +11,12 @@
 	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
 	
 	$Log$
+	Revision 1.9  2004/10/19 20:01:54  kikx
+	Car ca ne sert a rien si on met en place un 'su'
+
 	Revision 1.8  2004/09/15 23:20:18  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 	Revision 1.7  2004/09/15 21:42:27  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
 	
@@ -63,7 +66,7 @@ if (isset($_POST['mod_generale'])) {
 }
 
 // Modification de la partie "binets"
-
+/*
 if (isset($_POST['mod_binet'])) {
 	//$commentaire = $_POST['commentaire'];
 
@@ -75,7 +78,7 @@ if (isset($_POST['mod_binet'])) {
  	}
 	echo "Modification de la partie binets faite avec succès" ;
 }
-
+*/
 // Modification de la partie "compte FrankizII"
 
 if (isset($_POST['mod_compte_fkz'])) {
@@ -114,6 +117,7 @@ if (isset($_POST['mod_compte_fkz'])) {
 	
 <?
 // Modification de ses binets et des commentaires sur les binets  
+/*
 ?>
 	<formulaire id="user_binets" titre="Ses binets" action="admin/user.php?id=<? echo $id?>">
 <?
@@ -127,6 +131,7 @@ if (isset($_POST['mod_compte_fkz'])) {
 	</formulaire>
 	
 <?
+*/
 // Modification de ses préferences FrankizII
 ?>
 	<formulaire id="user_compt_fkz" titre="Compte Frankiz" action="admin/user.php?id=<? echo $id?>">
