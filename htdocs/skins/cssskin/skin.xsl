@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!-- $Id$ -->
 
-
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
 <xsl:import href="../basic/skin.xsl"/>
-<xsl:include href="form.xsl"/>
-
-<xsl:output method="html" encoding="ISO-8859-1"/>
-
+<xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
+	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
+	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"/>
 
 <!-- Définition d'une page web de frankiz -->
 <xsl:template match="/frankiz/page">
-	
 	<html>
 	<head>
 		<title><xsl:value-of select="@titre"/></title>
@@ -36,19 +32,7 @@
 			<xsl:apply-templates/>
 		</div>
 	</body>
-
 	</html>
-
-</xsl:template>
-
-<!-- les CSS complémentaires -->
-<xsl:template match="module[@id='liste_css']" mode="css">
-	<xsl:for-each select="lien">
-		<link rel="alternate stylesheet" type="text/css">
-			<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
-			<xsl:attribute name="title"><xsl:value-of select="@titre"/></xsl:attribute>
-		</link>
-    </xsl:for-each>
 </xsl:template>
 
 <!-- Définition des cadres et du contenu -->
@@ -146,13 +130,20 @@
 	</xsl:for-each>
 </xsl:template>
 
-
-<!-- Eleves (pour les anniversaires) -->
-<xsl:template match="eleve">
-	<xsl:value-of select="@prenom"/><xsl:text> </xsl:text>
-	<xsl:value-of select="@nom"/><xsl:text> (</xsl:text>
-	<xsl:value-of select="@promo"/><xsl:text>)</xsl:text>
-	<br/>
+<!-- les formulaires -->
+<xsl:template match="formulaire">
+	<form class="formulaire" enctype="multipart/form-data" method="post">
+			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
+		<xsl:if test="boolean(@titre)"><h2><xsl:value-of select="@titre"/></h2></xsl:if>
+		<xsl:apply-templates select="commentaire"/>
+		<xsl:for-each select="champ|choix|zonetext|textsimple|hidden|warning|image|fichier|lien">
+			<div class="champ">
+				<div class="champ_nom"><xsl:if test="boolean(@titre)"><xsl:value-of select="@titre"/> : </xsl:if></div>
+				<div class="champ_valeur"<xsl:apply-templates select="."/></div>
+			</div>
+		</xsl:for-each>
+		<xsl:apply-templates select="bouton"/>
+	</form>
 </xsl:template>
 
 </xsl:stylesheet>
