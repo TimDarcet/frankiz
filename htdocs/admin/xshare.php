@@ -50,9 +50,8 @@ foreach ($_POST AS $keys => $val){
 		$nom = $_REQUEST['nom'];
 		$DB_web->query("SELECT lien FROM xshare WHERE id='{$temp[1]}' ");
 		list($dir) = $DB_web->next_row();
-		$dir=BASE_DATA."xshare/".$dir."/";
-		$filename = $dir.$_FILES['file']['name'];
-		move_uploaded_file($_FILES['file']['tmp_name'], $filename);
+		$filename = $dir."/".$_FILES['file']['name'];
+		move_uploaded_file($_FILES['file']['tmp_name'], BASE_DATA."xshare/".$filename);
 		if(isset($_REQUEST['version'])) $version = ", version='{$_REQUEST['version']}'"; else $version = '';
 		if(isset($_REQUEST['importance'])) $importance =  ", importance='{$_REQUEST['importance']}'"; else $importance = '';
 		if(isset($_REQUEST['site'])) $site =  ", site='{$_REQUEST['site']}'"; else $site = '';
