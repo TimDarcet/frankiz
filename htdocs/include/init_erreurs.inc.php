@@ -25,9 +25,12 @@
 	- affichage des requètes mysql en commentaire dans
 	
 	$Log$
+	Revision 1.7  2005/03/15 11:54:36  pico
+	Devrait logguer aussi les variables en cas d'erreur
+
 	Revision 1.6  2005/02/08 21:57:56  pico
 	Correction bug #62
-
+	
 	Revision 1.5  2004/12/16 16:45:14  schmurtz
 	Correction d'un bug dans la gestion des authentifications par cookies
 	Ajout de fonctionnalitees de log d'erreur de connexions ou lors des bugs
@@ -103,7 +106,7 @@ function ajouter_erreur_php($errno, $errmsg, $file, $line, $vars) {
 		'errmsg'	=> $errmsg,
 		'file'		=> $file,
 		'line'		=> $line,
-		'query'		=> ""
+		'query'		=> $vars
 	);
 	$_ERREUR_FATAL = $_ERREUR_FATAL || ($errno!=E_NOTICE && $errno<E_USER_NOTICE);
 }
