@@ -66,7 +66,7 @@
 	<div class="fkz_page">
 		<div class="fkz_centre">
 			<xsl:apply-templates select="frankiz/module[@id='anniversaires']"/>
-			<br/>
+			<br/> 
 			<xsl:apply-templates select="frankiz/page[@id='accueil']" mode="sommaire"/>
 			<xsl:apply-templates select="frankiz/page[@id='accueil']" mode="complet"/>
 			<xsl:apply-templates select="frankiz/page[@id='trombino']"/>
@@ -84,11 +84,15 @@
 		<div class="fkz_droite">
 			<xsl:apply-templates select="frankiz/module[@id='qdj']"/>
 			<xsl:apply-templates select="frankiz/module[@id='qdj_hier']"/>
-			<p>
-				<a href="http://validator.w3.org/check?uri=referer">
-					<img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0!" height="31" width="88" />
-				</a>
-			</p>
+			<xsl:if test="count(frankiz/module[@id='qdj']|frankiz/module[@id='qdj_hier'])">
+				<br/>
+				<p>
+					<a href="http://validator.w3.org/check?uri=referer">
+						<span class="valid_xhtml"><xsl:text> </xsl:text></span>
+					</a>
+					<span class="valid_css"><xsl:text> </xsl:text></span>
+				</p>
+			</xsl:if>
 		</div>
 	</div>
 	</body>
