@@ -22,9 +22,12 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.9  2004/12/14 00:29:22  kikx
+	oubli
+
 	Revision 1.8  2004/12/13 16:15:22  kikx
 	legere modif sur la page des ips
-
+	
 	Revision 1.7  2004/11/26 16:08:48  pico
 	Config de la base FAQ: pour l'instant c'est dans frankiz2_tmp
 	
@@ -80,8 +83,10 @@ define('MAIL_PREZ',"eric@melix.org");
 define('PREZ_ID',$i--);
 define('MAIL_ROOT',"gruson@poly");
 define('ROOT_ID',$i--);
-
+define('MAIL_BR',"br@frankiz");
+define('BR_ID',$i--);
 define('MAIL_CONTACT',"eleves@polytechnique.fr");
+define('CONTACT_ID',$i--);
 
 // Nombres de jours affichés dans la page des annonces 
 define('MAX_PEREMPTION',8);
