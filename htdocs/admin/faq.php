@@ -244,7 +244,7 @@ echo "<br/>" ;
 	<formulaire id="faq_<? echo $id ?>" titre="La réponse" action="admin/faq.php">
 	<champ id="question" titre="Question" valeur="<? echo $question ?>" />
 	<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
-	<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce logiciel ?!!!!!')"/>
+	<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette FAQ ?!!!!!')"/>
 	</formulaire>
 	<? 
 	
@@ -280,7 +280,7 @@ echo "<br/>" ;
 	</formulaire>
 	
 	<!-- Ajouter un fichier -->
-	<formulaire id="faq_<? echo $dir_id ?>" titre="Le logiciel" action="admin/faq.php">
+	<formulaire id="faq_<? echo $dir_id ?>" titre="Nouvelle FAQ" action="admin/faq.php">
 	<champ id="question" titre="Question" valeur="" />
 	<champ id="nom" titre="Nom du sous-dossier de la faq" valeur="" />
 	<? foreach ($_GET AS $keys => $val){
