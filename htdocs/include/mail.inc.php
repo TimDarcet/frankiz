@@ -22,9 +22,12 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.22  2005/01/18 19:50:30  pico
+	Ce sont les kessiers et dei qui reçoivent les notifications de mail promo
+
 	Revision 1.21  2005/01/05 20:56:35  pico
 	Pour un blattage injustifié dans l'IK, la modif est sortie avant la parution officielle :)
-
+	
 	Revision 1.20  2005/01/03 18:37:24  pico
 	C'est mieux avec une page d'aide correcte
 	
@@ -106,6 +109,8 @@ function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID,$sender_string="") {
 		$sender = "Root du BR <".MAIL_ROOT.">" ;
 	} else if ($sender_id==TROMBINOMEN_ID) {
 		$sender = "Trombino <".MAIL_TROMBINOMEN.">" ;
+	} else if ($sender_id==MAILPROMO_ID) {
+		$sender = "Mail Promo <".MAIL_MAILPROMO.">" ;
 	} else if ($sender_id==WINDOWS_ID) {
 		$sender = "Admins Windows <".MAIL_WINDOWS.">" ;
 	} else if ($sender_id==STRINGMAIL_ID) {
@@ -143,9 +148,13 @@ function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID,$sender_string="") {
 		$nom = "" ;
 		$adresse = MAIL_ROOT ;
 	} else if ($eleve_id==TROMBINOMEN_ID) {
-                $prenom = "Trombino" ;
-                $nom = "" ;
-                $adresse = MAIL_TROMBINOMEN ;		
+		$prenom = "Trombino" ;
+		$nom = "" ;
+		$adresse = MAIL_TROMBINOMEN ;
+	} else if ($eleve_id==MAILPROMO_ID) {
+		$prenom = "Mail Promo";
+		$nom = "" ;
+		$adresse = MAIL_MAILPROMO;
 	} else if ($eleve_id==WINDOWS_ID) {
 		$prenom = "Admins Windows";
 		$nom= "";

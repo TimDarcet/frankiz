@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.30  2005/01/18 19:50:30  pico
+	Ce sont les kessiers et dei qui reçoivent les notifications de mail promo
+
 	Revision 1.29  2005/01/17 20:15:38  pico
 	Mail promo pour les kessiers
-
+	
 	Revision 1.28  2005/01/13 17:10:58  pico
 	Mails de validations From le validateur qui va plus ou moins bien
 	
@@ -168,7 +171,7 @@ foreach ($_POST AS $keys => $val){
 						"Merci de ta participation<br><br>".
 						"Très BR-ement<br>" .
 						"L'automate :)<br>"  ;
-			couriel($eleve_id,"[Frankiz] Ton mail promo a été validé par le BR",$contenu,PREZ_ID);
+			couriel($eleve_id,"[Frankiz] Ton mail promo a été validé par le BR",$contenu,MAILPROMO_ID);
 			
 			if ((isset($_POST['promo']))&&($_POST['promo'] == "")) {
 				$promo = '' ;
@@ -195,7 +198,7 @@ foreach ($_POST AS $keys => $val){
 						"Désolé <br>".
 						"Très BR-ement\n" .
 						"L'automate :)\n"  ;
-			couriel($eleve_id,"[Frankiz] Ton mail promo n'a pas été validé par le BR",$contenu,PREZ_ID);
+			couriel($eleve_id,"[Frankiz] Ton mail promo n'a pas été validé par le BR",$contenu,MAILPROMO_ID);
 	
 			$DB_valid->query("DELETE FROM valid_mailpromo WHERE mail_id='{$temp[1]}'") ;
 	

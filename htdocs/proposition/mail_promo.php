@@ -21,9 +21,12 @@
 	Mail promo permettant l'envoie de pièce jointes et de formatage HTML
 	
 	$Log$
+	Revision 1.19  2005/01/18 19:50:31  pico
+	Ce sont les kessiers et dei qui reçoivent les notifications de mail promo
+
 	Revision 1.18  2005/01/04 21:44:40  pico
 	Remise en place du lien vers l'helpwiki parce que le résumé en bas de page est incomprehensible
-
+	
 	Revision 1.17  2004/12/15 03:37:42  kikx
 	Photo d'ortho
 	
@@ -171,7 +174,7 @@ if (!isset($_REQUEST['envoie'])) {
 			"Très BR-ement<br>" .
 			"L'automate :)<br>"  ;
 			
-	couriel(PREZ_ID,"[Frankiz] Validation d'un mail promo",$contenu,$_SESSION['user']->uid);
+	couriel(MAILPROMO_ID,"[Frankiz] Validation d'un mail promo",$contenu,$_SESSION['user']->uid);
 
 }
 ?>
