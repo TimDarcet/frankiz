@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.17  2004/12/16 13:00:41  pico
+	INNER en LEFT
+
 	Revision 1.16  2004/12/08 12:22:40  kikx
 	Protection de la validation des activités
-
+	
 	Revision 1.15  2004/11/29 19:41:08  kikx
 	Micro Bug
 	
@@ -194,7 +197,7 @@ $DB_valid->query("UNLOCK TABLES");
 
 //===============================
 
-	$DB_valid->query("SELECT v.exterieur,v.affiche_id,v.date, v.titre, v.url, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_affiches as v INNER JOIN trombino.eleves as e USING(eleve_id) WHERE v.eleve_id LIKE '$user_id'");
+	$DB_valid->query("SELECT v.exterieur,v.affiche_id,v.date, v.titre, v.url, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_affiches as v LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE v.eleve_id LIKE '$user_id'");
 	while(list($ext,$id,$date,$titre,$url,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
 		echo "<module id=\"activites\" titre=\"Activités\">\n";
 ?>

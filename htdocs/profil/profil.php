@@ -24,9 +24,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.40  2004/12/16 13:00:42  pico
+	INNER en LEFT
+
 	Revision 1.39  2004/12/15 17:03:06  pico
 	2vite les renvois sur /trombino/
-
+	
 	Revision 1.38  2004/12/15 13:03:38  pico
 	Ajout mail trombinomen
 	
@@ -141,7 +144,7 @@ if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "true") && ($_REQUEST['im
 $message="";
 
 // Données sur l'utilisateur
-$DB_trombino->query("SELECT eleves.nom,prenom,surnom,mail,login,promo,sections.nom,cie,piece_id FROM eleves INNER JOIN sections USING(section_id) WHERE eleve_id='{$_SESSION['user']->uid}'");
+$DB_trombino->query("SELECT eleves.nom,prenom,surnom,mail,login,promo,sections.nom,cie,piece_id FROM eleves LEFT JOIN sections USING(section_id) WHERE eleve_id='{$_SESSION['user']->uid}'");
 list($nom,$prenom,$surnom,$mail,$login,$promo,$section,$cie,$casert) = $DB_trombino->next_row();
 
 if(isset($_POST['changer_frankiz'])) {
@@ -345,7 +348,7 @@ require "../include/page_header.inc.php";
 		<entete id="commentaire" titre="Commentaire"/>
 		
 		<?
-		$DB_trombino->query("SELECT membres.remarque,membres.binet_id,binets.nom FROM membres INNER JOIN binets USING(binet_id) WHERE eleve_id='{$_SESSION['user']->uid}' ORDER BY binets.nom ASC");
+		$DB_trombino->query("SELECT membres.remarque,membres.binet_id,binets.nom FROM membres LEFT JOIN binets USING(binet_id) WHERE eleve_id='{$_SESSION['user']->uid}' ORDER BY binets.nom ASC");
 		while (list($remarque,$binet_id,$nom) = $DB_trombino->next_row()): ?>
 			<element id="<?=$binet_id?>">
 				<colonne id="binet"><? echo $nom?> :</colonne>

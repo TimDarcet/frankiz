@@ -21,9 +21,12 @@
 	affichage d'un sondage
 
 	$Log$
+	Revision 1.6  2004/12/16 13:00:41  pico
+	INNER en LEFT
+
 	Revision 1.5  2004/12/16 12:52:57  pico
 	Passage des paramètres lors d'un login
-
+	
 	Revision 1.4  2004/12/14 22:42:18  kikx
 	Legere modif des sondages pôur que ca soit plus intuitif
 	
@@ -145,7 +148,7 @@ if (isset($_POST['valid'])) {
 	//======================================================
 	echo $message ;
 	
-	$DB_web->query("SELECT v.perime,(TO_DAYS(perime) - TO_DAYS(NOW())), v.sondage_id,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM sondage_question as v INNER JOIN trombino.eleves as e USING(eleve_id) WHERE sondage_id='{$_REQUEST['id']}'");
+	$DB_web->query("SELECT v.perime,(TO_DAYS(perime) - TO_DAYS(NOW())), v.sondage_id,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM sondage_question as v LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE sondage_id='{$_REQUEST['id']}'");
 	if ($DB_web->num_rows()==1) {
 		list($date,$delta,$id,$questions,$titre,$eleve_id,$nom, $prenom, $promo) = $DB_web->next_row() ;
 		

@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.26  2004/12/16 13:00:41  pico
+	INNER en LEFT
+
 	Revision 1.25  2004/12/15 05:09:00  kikx
 	oups
-
+	
 	Revision 1.23  2004/12/15 01:55:56  schmurtz
 	inversion
 	
@@ -215,7 +218,7 @@ $DB_valid->query("UNLOCK TABLES");
 
 //===============================
 
-	$DB_valid->query("SELECT v.exterieur, v.annonce_id,v.perime, v.titre, v.contenu, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_annonces as v INNER JOIN trombino.eleves as e USING(eleve_id)");
+	$DB_valid->query("SELECT v.exterieur, v.annonce_id,v.perime, v.titre, v.contenu, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_annonces as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
 	while(list($ext, $id,$date,$titre,$contenu,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
 ?>
 		<annonce titre="<?php  echo $titre ?>" 

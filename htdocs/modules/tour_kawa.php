@@ -21,9 +21,12 @@
 	Gestion du tour kawa.
 	
 	$Log$
+	Revision 1.12  2004/12/16 13:00:42  pico
+	INNER en LEFT
+
 	Revision 1.11  2004/12/07 21:54:09  pico
 	Interface d'ajout des tours kawa pour le bob
-
+	
 	Revision 1.10  2004/12/07 20:56:35  pico
 	Changement de la base de données de gestion des tours kawa
 	
@@ -55,7 +58,7 @@ if(est_authentifie(AUTH_MINIMUM)) {
 	// Génération des tours kawa
 	$jour = array("Aujourd'hui","Demain");
 	for ($i = 0; $i <= 1; $i++) {
-		$DB_web->query("SELECT sections.nom FROM kawa INNER JOIN trombino.sections ON kawa.section_id=sections.section_id WHERE (date=\"".date("Y-m-d",time()+$i * 3600 *24)."\")");
+		$DB_web->query("SELECT sections.nom FROM kawa LEFT JOIN trombino.sections ON kawa.section_id=sections.section_id WHERE (date=\"".date("Y-m-d",time()+$i * 3600 *24)."\")");
 		list($groupe)=$DB_web->next_row();
 		
 		if(strcasecmp("personne", $groupe) != 0 && $groupe != "") {

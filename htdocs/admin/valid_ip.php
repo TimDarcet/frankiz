@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.22  2004/12/16 13:00:41  pico
+	INNER en LEFT
+
 	Revision 1.21  2004/12/15 00:01:56  kikx
 	esthetique
-
+	
 	Revision 1.20  2004/12/08 13:00:34  kikx
 	Protection de la validation des ip
 	
@@ -163,7 +166,7 @@ $DB_admin->query("UNLOCK TABLES");
 		<entete id="raison" titre="Raison"/>
 		<entete id="ip" titre="IP"/>
 <?
-		$DB_valid->query("SELECT v.raison,e.nom,e.prenom,e.piece_id,e.eleve_id FROM valid_ip as v INNER JOIN trombino.eleves as e USING(eleve_id)");
+		$DB_valid->query("SELECT v.raison,e.nom,e.prenom,e.piece_id,e.eleve_id FROM valid_ip as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
 		while(list($raison,$nom,$prenom,$piece,$eleve_id) = $DB_valid->next_row()) {
 ?>
 			<element id="<? echo $eleve_id ;?>">
@@ -203,7 +206,7 @@ $DB_admin->query("UNLOCK TABLES");
 <?
 
 
-		$DB_admin->query("SELECT e.eleve_id,e.nom,e.promo,e.prenom,prises.ip FROM prises INNER JOIN trombino.eleves as e USING(piece_id) WHERE type='secondaire' ORDER BY e.nom ASC, e.prenom ASC");
+		$DB_admin->query("SELECT e.eleve_id,e.nom,e.promo,e.prenom,prises.ip FROM prises LEFT JOIN trombino.eleves as e USING(piece_id) WHERE type='secondaire' ORDER BY e.nom ASC, e.prenom ASC");
 		while(list($id,$nom,$promo,$prenom,$ip) = $DB_admin->next_row()) {
 ?>
 			<element id="<? echo str_replace(".","x",$ip) ;?>">

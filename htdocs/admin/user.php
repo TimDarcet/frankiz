@@ -29,9 +29,12 @@
 	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
 	
 	$Log$
+	Revision 1.20  2004/12/16 13:00:41  pico
+	INNER en LEFT
+
 	Revision 1.19  2004/12/16 12:52:57  pico
 	Passage des paramètres lors d'un login
-
+	
 	Revision 1.18  2004/12/15 17:03:06  pico
 	2vite les renvois sur /trombino/
 	
@@ -177,7 +180,7 @@ if (verifie_permission('admin') && isset($_POST['mod_compte_fkz'])) {
 ?>
 	<formulaire id="user_binets" titre="Ses binets" action="admin/user.php?id=<? echo $id?>">
 <?
-		$DB_trombino->query("SELECT membres.remarque,membres.binet_id,binets.nom FROM membres INNER JOIN binets ON membres.binet_id=binets.binet_id WHERE eleve_id=$id ORDER BY membres.binet_id ASC");
+		$DB_trombino->query("SELECT membres.remarque,membres.binet_id,binets.nom FROM membres LEFT JOIN binets ON membres.binet_id=binets.binet_id WHERE eleve_id=$id ORDER BY membres.binet_id ASC");
 		while (list($remarque,$binet_id,$nom) = $DB_trombino->next_row()) { ?>
 			<champ id="binet_<? echo $binet_id?>" titre="<? echo $nom?>" valeur="<? echo $remarque?>"/>
 <?

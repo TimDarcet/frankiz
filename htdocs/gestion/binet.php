@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.26  2004/12/16 13:00:41  pico
+	INNER en LEFT
+
 	Revision 1.25  2004/12/16 12:52:57  pico
 	Passage des paramètres lors d'un login
-
+	
 	Revision 1.24  2004/12/01 20:29:48  kikx
 	Oubli pour les webmestres
 	
@@ -185,7 +188,7 @@ if(verifie_permission_prez($_REQUEST['binet'])){
 	?>
 	<h2>Liste des membres</h2>
 	<?
-	$DB_trombino->query("SELECT m.eleve_id,remarque,nom,prenom,surnom,promo FROM membres as m INNER JOIN eleves USING(eleve_id) WHERE binet_id=".$_REQUEST['binet']." AND promo>=$promo_prez ORDER BY promo ASC,nom ASC");
+	$DB_trombino->query("SELECT m.eleve_id,remarque,nom,prenom,surnom,promo FROM membres as m LEFT JOIN eleves USING(eleve_id) WHERE binet_id=".$_REQUEST['binet']." AND promo>=$promo_prez ORDER BY promo ASC,nom ASC");
 	?>
 	<liste id="liste_binets" selectionnable="oui" action="gestion/binet.php?binet=<?=$_REQUEST['binet']?>">
 		<entete id="nom" titre="Nom"/>

@@ -21,9 +21,12 @@
 	Page qui permet aux admins de modifier une annonce validée
 	
 	$Log$
+	Revision 1.11  2004/12/16 13:00:41  pico
+	INNER en LEFT
+
 	Revision 1.10  2004/12/14 14:18:12  schmurtz
 	Suppression de la page de doc wiki : doc directement dans les pages concernees.
-
+	
 	Revision 1.9  2004/12/13 19:36:21  kikx
 	Pour changer exterieur ou non apres la validation de l'annonce (Pour Alban)
 	
@@ -117,7 +120,7 @@ $DB_valid->query("UNLOCK TABLES");
 
 //===============================
 
-	$DB_web->query("SELECT v.exterieur, v.annonce_id,v.perime, v.titre, v.contenu, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM annonces as v INNER JOIN trombino.eleves as e USING(eleve_id) WHERE (perime>=".date("Ymd000000",time()).") ORDER BY perime DESC");
+	$DB_web->query("SELECT v.exterieur, v.annonce_id,v.perime, v.titre, v.contenu, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM annonces as v LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE (perime>=".date("Ymd000000",time()).") ORDER BY perime DESC");
 	while(list($ext, $id,$date,$titre,$contenu,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_web->next_row()) {
 ?>
 		<annonce titre="<?php  echo $titre ?>" 

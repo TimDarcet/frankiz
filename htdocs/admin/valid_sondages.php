@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un sondage
 	
 	$Log$
+	Revision 1.11  2004/12/16 13:00:41  pico
+	INNER en LEFT
+
 	Revision 1.10  2004/12/14 22:17:32  kikx
 	Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
-
+	
 	Revision 1.9  2004/12/14 13:39:20  pico
 	Y'avait de la merde au niveau des locks, ça ça marche, ce serait bien si tu pouvais y jeter un coup d'oeil, kikx
 	
@@ -110,7 +113,7 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0] == "valid") {
 		cache_supprimer('sondages') ;// On supprime le cache pour reloader
 		
-		$DB_valid->query("SELECT v.perime,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM valid_sondages as v INNER JOIN trombino.eleves as e USING(eleve_id) WHERE sondage_id={$temp[1]}");
+		$DB_valid->query("SELECT v.perime,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM valid_sondages as v LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE sondage_id={$temp[1]}");
 		if ($DB_valid->num_rows()!=0) {
 		
 			list($date,$questions,$titre,$eleve_id,$nom, $prenom, $promo) = $DB_valid->next_row() ;
@@ -143,7 +146,7 @@ $DB_trombino->query("UNLOCK TABLES");
 
 //===============================
 
-	$DB_valid->query("SELECT v.perime, v.sondage_id,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM valid_sondages as v INNER JOIN trombino.eleves as e USING(eleve_id)");
+	$DB_valid->query("SELECT v.perime, v.sondage_id,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM valid_sondages as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
 	while(list($date,$id,$questions,$titre,$eleve_id,$nom, $prenom, $promo) = $DB_valid->next_row()) {
 	?>
 		<formulaire id="form" titre="<?=$titre?> (<?=date("d/m",strtotime($date))?>)">	

@@ -22,9 +22,12 @@
 	
 
 	$Log$
+	Revision 1.7  2004/12/16 13:00:41  pico
+	INNER en LEFT
+
 	Revision 1.6  2004/12/14 23:15:38  kikx
 	Pour avoir la source + affichage
-
+	
 	Revision 1.5  2004/12/14 23:11:11  kikx
 	Oups /.me boulet
 	
@@ -160,7 +163,7 @@ $DB_valid->query("COMMIT");
 $DB_valid->query("UNLOCK TABLES");
 //===============================
 
-	$DB_valid->query("SELECT v.faq_id,v.faq_modif, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_modiffaq as v INNER JOIN trombino.eleves as e USING(eleve_id)");
+	$DB_valid->query("SELECT v.faq_id,v.faq_modif, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_modiffaq as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
 	
 	while(list($id,$faq_modif,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
 

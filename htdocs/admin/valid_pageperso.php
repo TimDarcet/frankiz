@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.7  2004/12/16 13:00:41  pico
+	INNER en LEFT
+
 	Revision 1.6  2004/12/13 20:03:25  pico
 	Les liens ne forment pas de blocs, il faut donc le spécifier
-
+	
 	Revision 1.5  2004/12/13 16:23:47  kikx
 	Passage en secure validation pour les page perso + note sur les commentaires
 	
@@ -126,7 +129,7 @@ $DB_valid->query("UNLOCK TABLES");
 		<entete id="eleve" titre="Élève"/>
 		<entete id="url" titre="Url"/>
 <?
-		$DB_valid->query("SELECT e.eleve_id,e.nom,e.prenom,e.promo,e.login FROM valid_pageperso as v INNER JOIN trombino.eleves as e USING(eleve_id)");
+		$DB_valid->query("SELECT e.eleve_id,e.nom,e.prenom,e.promo,e.login FROM valid_pageperso as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
 		while(list($id,$nom,$prenom,$promo,$login) = $DB_valid->next_row()) {
 ?>
 			<element id="<? echo $id ;?>">

@@ -22,9 +22,12 @@
 	
 
 	$Log$
+	Revision 1.14  2004/12/16 13:00:41  pico
+	INNER en LEFT
+
 	Revision 1.13  2004/12/13 20:03:25  pico
 	Les liens ne forment pas de blocs, il faut donc le spécifier
-
+	
 	Revision 1.12  2004/12/13 16:32:14  kikx
 	Protection de la validation d'une QDJ ...
 	
@@ -140,7 +143,7 @@ $DB_valid->query("UNLOCK TABLES");
 <lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/><br/>
 
 <?
-	$DB_valid->query("SELECT v.qdj_id,v.question, v.reponse1, v.reponse2, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_qdj as v INNER JOIN trombino.eleves as e USING(eleve_id)");
+	$DB_valid->query("SELECT v.qdj_id,v.question, v.reponse1, v.reponse2, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_qdj as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
 	while(list($id,$question,$reponse1,$reponse2,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
 ?>
 	<module titre="QDJ">

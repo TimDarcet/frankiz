@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.39  2004/12/16 13:00:41  pico
+	INNER en LEFT
+
 	Revision 1.38  2004/12/15 23:57:35  pico
 	On fait comme ça, c'est décidé une fois pour toutes (Kikx + psycow + pico)
-
+	
 	Revision 1.37  2004/12/15 23:12:39  pico
 	correction warning
 	
@@ -179,7 +182,7 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['anniversaire'])&&isset($_REQU
 				$where .= (empty($where) ? "" : " AND") . " $db_field LIKE '%".$_REQUEST[$post_arg]."%'";
 			
 		if(!empty($_REQUEST['binet'])) {
-			$join = "INNER JOIN membres USING(eleve_id) " . $join;
+			$join = "LEFT JOIN membres USING(eleve_id) " . $join;
 			$where .= (empty($where) ? "" : " AND") . " binet_id='".$_REQUEST['binet']."'";
 		}
 	}

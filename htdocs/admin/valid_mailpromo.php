@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.25  2004/12/16 13:00:41  pico
+	INNER en LEFT
+
 	Revision 1.24  2004/12/15 20:07:01  kikx
 	Correction
-
+	
 	Revision 1.23  2004/12/15 19:26:09  kikx
 	Les mails promo devrait fonctionner now ...
 	
@@ -206,7 +209,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <?
 echo $message ;
 
-$DB_valid->query("SELECT v.mail_id,v.stamp, v.titre,v.promo, v.mail, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_mailpromo as v INNER JOIN trombino.eleves as e USING(eleve_id)");
+$DB_valid->query("SELECT v.mail_id,v.stamp, v.titre,v.promo, v.mail, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_mailpromo as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
 while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
 	if (empty($mail)) $mail="$login@poly" ;
 ?>

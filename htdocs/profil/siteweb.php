@@ -21,9 +21,12 @@
 	Pour gerer son site web perso
 		
 	$Log$
+	Revision 1.8  2004/12/16 13:00:42  pico
+	INNER en LEFT
+
 	Revision 1.7  2004/12/15 21:46:37  pico
 	Ptèt que là ça marchera mieux
-
+	
 	Revision 1.6  2004/12/14 22:17:32  kikx
 	Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
 	
@@ -53,7 +56,7 @@ demande_authentification(AUTH_FORT);
 $message="";
 
 // Données sur l'utilisateur
-$DB_trombino->query("SELECT eleves.nom,prenom,surnom,mail,login,promo,sections.nom,cie,piece_id FROM eleves INNER JOIN sections USING(section_id) WHERE eleve_id='".$_SESSION['user']->uid."'");
+$DB_trombino->query("SELECT eleves.nom,prenom,surnom,mail,login,promo,sections.nom,cie,piece_id FROM eleves LEFT JOIN sections USING(section_id) WHERE eleve_id='".$_SESSION['user']->uid."'");
 list($nom,$prenom,$surnom,$mail,$login,$promo,$section,$cie,$casert) = $DB_trombino->next_row();
 
 // Modification de la partie "Page perso"

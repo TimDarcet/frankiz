@@ -22,9 +22,12 @@
 	ses machines, son compte xnet.
 	
 	$Log$
+	Revision 1.21  2004/12/16 13:00:42  pico
+	INNER en LEFT
+
 	Revision 1.20  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-
+	
 	Revision 1.19  2004/11/22 23:38:42  kikx
 	Ajout de <note></note> un peu partout pour plus de compréhension !
 	
@@ -88,7 +91,7 @@ if(isset($_POST['changer_xnet'])) {
 }
 
 $DB_admin->query("SELECT ip.piece_id,ip.prise_id,ip.ip,ip.type FROM prises as ip "
-				."INNER JOIN trombino.eleves as e USING(piece_id) WHERE e.eleve_id='{$_SESSION['user']->uid}' "
+				."LEFT JOIN trombino.eleves as e USING(piece_id) WHERE e.eleve_id='{$_SESSION['user']->uid}' "
 				."ORDER BY ip.type ASC");
 $id_ip = 0;
 list($kzert,$prise,$ip{$id_ip},$type) = $DB_admin->next_row();

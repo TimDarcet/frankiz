@@ -21,9 +21,12 @@
 	Cette page permet de déterminer si le Bôb est ouvert ou non.
 	
 	$Log$
+	Revision 1.2  2004/12/16 13:00:41  pico
+	INNER en LEFT
+
 	Revision 1.1  2004/12/15 01:44:15  schmurtz
 	deplacement de la page d'admin du bob de admin vers gestion
-
+	
 	Revision 1.3  2004/12/07 21:54:09  pico
 	Interface d'ajout des tours kawa pour le bob
 	
@@ -92,7 +95,7 @@ list($valeur) = $DB_web->next_row();
 	
 <?
 	// Génération des tours kawa
-	$DB_web->query("SELECT kawa.date,sections.nom FROM kawa INNER JOIN trombino.sections ON kawa.section_id=sections.section_id WHERE (kawa.date>=\"".date("Y-m-d",time())."\")");
+	$DB_web->query("SELECT kawa.date,sections.nom FROM kawa LEFT JOIN trombino.sections ON kawa.section_id=sections.section_id WHERE (kawa.date>=\"".date("Y-m-d",time())."\")");
 	$i = 0;
 	 echo "<liste id=\"tour_kawa\" titre=\"Liste des tours kawa prévus\" selectionnable=\"non\">\n";
 	while(list($date,$groupe)=$DB_web->next_row()){

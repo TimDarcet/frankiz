@@ -26,9 +26,12 @@
 	informations provenant des tables du trombino (avec jointure sur l'uid).
 
 	$Log$
+	Revision 1.16  2004/12/16 13:00:41  pico
+	INNER en LEFT
+
 	Revision 1.15  2004/11/24 15:55:34  pico
 	Code pour gérer les liens perso + les rss au lancement de la session
-
+	
 	Revision 1.14  2004/11/22 07:59:00  pico
 	Correction du login pour le su.
 	
@@ -105,7 +108,7 @@ class User {
 		}
 		
 		$condition = $islogin ? "WHERE login='$login' AND promo='$promo' ORDER BY promo DESC LIMIT 1" : "WHERE eleves.eleve_id='$value[0]'"; 
-		$DB_web->query("SELECT eleves.eleve_id,login,perms,nom,prenom,passwd,IF(hashstamp>NOW(),hash,''),hash FROM trombino.eleves INNER JOIN compte_frankiz USING(eleve_id) $condition");
+		$DB_web->query("SELECT eleves.eleve_id,login,perms,nom,prenom,passwd,IF(hashstamp>NOW(),hash,''),hash FROM trombino.eleves LEFT JOIN compte_frankiz USING(eleve_id) $condition");
 		if($DB_web->num_rows() == 0) {
 			// l'utilisateur n'existe pas.
 			$this->devient_anonyme();
