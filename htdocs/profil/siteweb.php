@@ -21,9 +21,12 @@
 	Pour gerer son site web perso
 		
 	$Log$
+	Revision 1.14  2005/01/20 20:09:03  pico
+	Changement de "Très BRment, l'automate"
+
 	Revision 1.13  2005/01/06 19:42:54  pico
 	e
-
+	
 	Revision 1.12  2005/01/06 19:41:35  pico
 	Commentaire précisé
 	
@@ -113,10 +116,10 @@ if(isset($_POST['ext'])){
 			"Pour valider ou non cette demande va sur la page suivante : <br>".
 			"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_pageperso.php'>".
 			"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_pageperso.php</a></div><br><br>" .
-			"Très BR-ement<br>" .
-			"L'automate :)<br>"  ;
+			"Cordialement,<br>" .
+			"Le Webmestre de Frankiz<br>"  ;
 			
-		couriel(ROOT_ID,"[Frankiz] Demande de page perso de $nom $prenom",$contenu,$_SESSION['user']->uid);
+		couriel(WEBMESTRE_ID,"[Frankiz] Demande de page perso de $nom $prenom",$contenu,$_SESSION['user']->uid);
 		$message .= "<commentaire>Ta demande d'accessibilité depuis l'extérieur a été prise en compte et sera validée dans les meilleurs délai.</commentaire>" ;
 
 	} else if($un != 0) {

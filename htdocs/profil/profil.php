@@ -24,9 +24,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.45  2005/01/20 20:09:03  pico
+	Changement de "Très BRment, l'automate"
+
 	Revision 1.44  2005/01/18 22:07:46  pico
 	Passage des images trombi en maxi 300x400
-
+	
 	Revision 1.43  2005/01/11 14:40:35  pico
 	Fôte d'orthogaffe
 	
@@ -260,8 +263,8 @@ if(isset($_POST['changer_frankiz'])) {
 					"Pour valider ou non cette demande va sur la page suivante : <br>".
 					"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_trombi.php'>".
 					"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_trombi.php</a></div><br><br>" .
-					"Très BR-ement<br>" .
-					"L'automate :)<br>"  ;
+					"Cordialement,<br>" .
+					"Le Tolmestre<br>"  ;
 					
 				couriel(TROMBINOMEN_ID,"[Frankiz] Modification de l'image trombi de $nom $prenom",$contenu,$_SESSION['user']->uid);
 				

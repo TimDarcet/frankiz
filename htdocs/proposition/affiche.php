@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une activité
 	
 	$Log$
+	Revision 1.19  2005/01/20 20:09:03  pico
+	Changement de "Très BRment, l'automate"
+
 	Revision 1.18  2005/01/17 21:52:04  pico
 	Page des activités
-
+	
 	Revision 1.17  2004/12/15 00:05:04  schmurtz
 	Plus beau
 	
@@ -182,8 +185,8 @@ if (isset($_POST['valid'])) {
 					"Pour valider ou non cette demande va sur la page suivante<br>".
 					"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_affiches.php'>".
 					"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_affiches.php</a></div><br><br>" .
-					"Très BR-ement<br>" .
-					"L'automate :)<br>"  ;
+					"Cordialement,<br>" .
+					"Le Webmestre de Frankiz<br>"  ;
 					
 		couriel(WEBMESTRE_ID,"[Frankiz] Validation d'une activité",$contenu,$eleve_id);
 	} else {

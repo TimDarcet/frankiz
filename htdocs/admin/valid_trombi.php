@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.12  2005/01/20 20:09:03  pico
+	Changement de "Très BRment, l'automate"
+
 	Revision 1.11  2005/01/13 17:10:58  pico
 	Mails de validations From le validateur qui va plus ou moins bien
-
+	
 	Revision 1.10  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
 	
@@ -89,8 +92,8 @@ foreach ($_POST AS $keys => $val){
 			$message .= "<commentaire> Image validée pour $prenom $nom</commentaire>" ;
 			
 			$contenu = "Ton image trombino est validée <br><br>".
-			"Très BR-ement<br>" .
-			"L'automate :)<br>"  ;
+			"Cordialement,<br>" .
+			"Le Tolmestre<br>"  ;
 			couriel($temp[1],"[Frankiz] Ton image trombino est validée",$contenu,TROMBINOMEN_ID);
 		} else {
 	?>
@@ -111,8 +114,8 @@ foreach ($_POST AS $keys => $val){
 			
 			$contenu = "Ton image trombino n'est pas validée pour la raison suivante ;<br>".
 			$_POST['refus']."<br><br>".
-			"Très BR-ement<br>" .
-			"L'automate :)<br>"  ;
+			"Cordialement,<br>" .
+			"Le Tolmestre<br>"  ;
 			couriel($temp[1],"[Frankiz] Ton image trombino n'est pas validée",$contenu,TROMBINOMEN_ID);
 		} else {
 	?>

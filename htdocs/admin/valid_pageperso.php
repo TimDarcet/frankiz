@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.19  2005/01/20 20:09:03  pico
+	Changement de "Très BRment, l'automate"
+
 	Revision 1.18  2005/01/18 13:55:42  pico
 	Correction d'entête
-
+	
 	Revision 1.17  2005/01/18 13:45:31  pico
 	Plus de droits pour les web
 	
@@ -119,7 +122,7 @@ foreach ($_POST AS $keys => $val){
 				$_POST[$bla]."<br>".
 				"<br>" .
 				"Très Cordialement<br>" .
-				"Le BR<br>"  ;
+				"Le Webmestre de Frankiz<br>"  ;
 		
 			couriel($temp[1],"[Frankiz] La demande pour ton site a été refusée ",$contenu,WEBMESTRE_ID);
 			echo "<warning>Envoie d'un mail <br/>Le prévient que sa demande n'est pas acceptée</warning>" ;
@@ -143,7 +146,7 @@ foreach ($_POST AS $keys => $val){
 					"Ton site perso apparaitra desormais sur le site élève<br>".
 					"<br>" .
 					"Très Cordialement<br>" .
-					"Le BR<br>"  ;
+					"Le Webmestre de Frankiz<br>"  ;
 			
 			couriel($temp[1],"[Frankiz] La demande pour ton site perso a été acceptée",$contenu,WEBMESTRE_ID);
 				echo "<commentaire>Envoie d'un mail<br/>Le prévient que sa demande à été acceptée</commentaire>" ;

@@ -22,9 +22,12 @@
 	une seconde machine dans son casert.
 	
 	$Log$
+	Revision 1.16  2005/01/20 20:09:03  pico
+	Changement de "Très BRment, l'automate"
+
 	Revision 1.15  2004/12/16 17:26:10  schmurtz
 	Ajout d'un exemple pour login.promo, ca evitera les dupond.x2002.
-
+	
 	Revision 1.14  2004/12/14 00:52:02  kikx
 	Envoie les demandes de changement au nom du mec qui demande ... pour faire plaisir au gens ...
 	
@@ -95,8 +98,8 @@ if ($DB_valid->num_rows()>0) { ?>
 				"Pour valider ou non cette demande va sur la page : <br><br>".
 				"<div align='center'><a href='".BASE_URL."/admin/valid_ip.php'>".
 				BASE_URL."/admin/valid_ip.php</a></div><br><br>" .
-				"Très BR-ement<br>" .
-				"L'automate :)<br>";
+				"Cordialement,<br>" .
+				"Le BR<br>";
 				
 	couriel(ROOT_ID,"[Frankiz] Demande d'une nouvelle adresse IP",$contenu,$_SESSION['user']->uid);
 	

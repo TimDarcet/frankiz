@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.8  2005/01/20 20:09:03  pico
+		Changement de "Très BRment, l'automate"
+
 		Revision 1.7  2004/12/15 20:07:01  kikx
 		Correction
-
+		
 		Revision 1.6  2004/12/14 23:15:38  kikx
 		Pour avoir la source + affichage
 		
@@ -74,8 +77,8 @@ if (isset($_REQUEST['valid'])) {
 			"Pour valider ou non cette demande va sur la page suivante<br>".
 			"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_faqmodif.php'>".
 			"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_faqmodif.php</a></div><br><br>" .
-			"Très BR-ement<br>" .
-			"L'automate :)<br>"  ;
+			"Cordialement,<br>" .
+			"Le FaqMestre<br>"  ;
 	
 		couriel(FAQMESTRE_ID,"[Frankiz] Validation d'une modification d'une FAQ",$contenu,$eleve_id);
 		

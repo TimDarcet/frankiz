@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.22  2005/01/20 20:09:03  pico
+	Changement de "Très BRment, l'automate"
+
 	Revision 1.21  2005/01/17 21:52:04  pico
 	Page des activités
-
+	
 	Revision 1.20  2005/01/13 17:10:58  pico
 	Mails de validations From le validateur qui va plus ou moins bien
 	
@@ -150,7 +153,7 @@ foreach ($_POST AS $keys => $val){
 			$contenu = 	"Ton activité vient d'être validé par le BR... Elle est dès à present visible sur le site<br><br> ".
 						$_POST['explication']."<br>".
 						"Merci de ta participation <br><br>".
-						"Très BR-ement<br>" .
+						"Cordialement<br>" .
 						"Le Webmestre de Frankiz<br>"  ;
 			couriel($eleve_id,"[Frankiz] Ton activité a été validé par le BR",$contenu,WEBMESTRE_ID);
 	
@@ -181,8 +184,8 @@ foreach ($_POST AS $keys => $val){
 			$contenu = 	"Ton activité n'a pas été validé par le BR pour la raison suivante :<br>".
 						$_POST['explication']."<br>".
 						"Désolé <br><br>".
-						"Très BR-ement<br>" .
-						"Le Webmestre de frankiz<br>"  ;
+						"Cordialement,<br>" .
+						"Le Webmestre de Frankiz<br>"  ;
 			couriel($eleve_id,"[Frankiz] Ton activité n'a pas été validé par le BR",$contenu,WEBMESTRE_ID);
 			
 			$DB_valid->query("DELETE FROM valid_affiches WHERE affiche_id='{$temp[1]}'") ;

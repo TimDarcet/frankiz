@@ -21,9 +21,12 @@
 	Permet de proposer une QDJ
 	
 	$Log$
+	Revision 1.10  2005/01/20 20:09:03  pico
+	Changement de "Très BRment, l'automate"
+
 	Revision 1.9  2004/12/15 00:05:04  schmurtz
 	Plus beau
-
+	
 	Revision 1.8  2004/12/14 00:27:40  kikx
 	Pour que le FROM des mails de validation soit au nom du mec qui demande la validation... (qu'est ce que je ferai pas pour les TOS :))
 	
@@ -112,8 +115,8 @@ if (!isset($_REQUEST['envoie'])) {
 			"Pour valider ou non cette qdj va sur la page suivante<br>".
 			"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_qdj.php'>".
 			"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_qdj.php</a></div><br><br>" .
-			"Très BR-ement<br>" .
-			"L'automate :)<br>"  ;
+			"Cordialement,<br>" .
+			"Le QDJmaster<br>"  ;
 			
 	couriel(QDJMASTER_ID,"[Frankiz] Validation d'une QDJ",$contenu,$_SESSION['user']->uid);
 

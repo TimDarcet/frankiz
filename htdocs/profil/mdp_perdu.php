@@ -21,9 +21,12 @@
 	Gestion de la création d'un compte et de la perte de mot de passe.
 	
 	$Log$
+	Revision 1.22  2005/01/20 20:09:03  pico
+	Changement de "Très BRment, l'automate"
+
 	Revision 1.21  2004/12/16 17:26:10  schmurtz
 	Ajout d'un exemple pour login.promo, ca evitera les dupond.x2002.
-
+	
 	Revision 1.20  2004/12/13 20:22:10  pico
 	un s de trop..
 	
@@ -96,7 +99,7 @@ if(!empty($_REQUEST['loginpoly'])) {
 				   "\">".
 				   "http://".$_SERVER['SERVER_NAME'].$tempo[0]."profil/profil.php?uid=${id}&hash=${hash}".
 				   "</a>\n\n".
-				   "N'oublie pas ensuite de modifier ton mot de passe.<br><br> Très sincèrement<br>Le BR";
+				   "N'oublie pas ensuite de modifier ton mot de passe.<br><br> Très cordialement<br>Le BR";
 		if (($mail=="")||($mail=="NULL")) $mail = $login."@poly.polytechnique.fr" ;
 		
 		couriel($id,"[Frankiz] Création de compte/perte de mot de passe",$contenu);

@@ -22,9 +22,12 @@
 	
 
 	$Log$
+	Revision 1.13  2005/01/20 20:09:03  pico
+	Changement de "Très BRment, l'automate"
+
 	Revision 1.12  2005/01/18 13:45:31  pico
 	Plus de droits pour les web
-
+	
 	Revision 1.11  2005/01/14 09:19:31  pico
 	Corrections bug mail
 	+
@@ -147,7 +150,7 @@ foreach ($_POST AS $keys => $val){
 						"Ta modification de la FAQ vient d'être prise en compte par le BR.<br>".
 						"Nous te remercions sincèrement de ta modification.<br>".
 						"<br>Sincèrement<br>" .
-						"Le BR<br>"  ;
+						"Le Faqmestre<br>"  ;
 				
 					couriel($eleve_id,"[Frankiz] Ta modification de la FAQ vient d'être prise en compte",$contenu,FAQMESTRE_ID);
 

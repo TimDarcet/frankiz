@@ -21,9 +21,12 @@
 	Page pour demander les sondages !
 	
 	$Log$
+	Revision 1.12  2005/01/20 20:09:03  pico
+	Changement de "Très BRment, l'automate"
+
 	Revision 1.11  2005/01/18 10:35:02  pico
 	Interface avancée d'édition de sondages (on édite le code, utile pour faire plusieurs sondages de même type)
-
+	
 	Revision 1.10  2005/01/14 09:19:32  pico
 	Corrections bug mail
 	+
@@ -148,8 +151,8 @@ if (isset($_POST['valid'])) {
 			"Pour valider ou non cette demande va sur la page suivante<br>".
 			"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_sondages.php'>".
 			"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_sondages.php</a></div><br><br>" .
-			"Très BR-ement<br>" .
-			"L'automate :)<br>"  ;
+			"Cordialement,<br>" .
+			"Le Webmestre de Frankiz<br>"  ;
 					
 		couriel(WEBMESTRE_ID,"[Frankiz] Validation d'un sondage",$contenu,$_SESSION['user']->uid);
 	} else {

@@ -21,12 +21,15 @@
 	Page qui permet aux admins de valider un sondage
 	
 	$Log$
+	Revision 1.16  2005/01/20 20:09:03  pico
+	Changement de "Très BRment, l'automate"
+
 	Revision 1.15  2005/01/14 09:19:31  pico
 	Corrections bug mail
 	+
 	Sondages maintenant public ou privé (ne s'affichant pas dans le cadre)
 	Ceci sert pour les sondages section par exemple
-
+	
 	Revision 1.14  2005/01/13 17:10:58  pico
 	Mails de validations From le validateur qui va plus ou moins bien
 	
@@ -113,7 +116,7 @@ foreach ($_POST AS $keys => $val){
 						$_POST[$bla]."<br>".
 						"<br>" .
 						"Très Cordialement<br>" .
-						"Le BR<br>"  ;
+						"Le Webmestre de Frankiz<br>"  ;
 		
 			couriel($temp[2],"[Frankiz] Ton sondage a été refusé ",$contenu,WEBMESTRE_ID);
 			echo "<warning>Envoie d'un mail <br/>Le prévient que sa demande n'est pas acceptée</warning>" ;
@@ -149,7 +152,7 @@ foreach ($_POST AS $keys => $val){
 			$contenu .= $_POST[$bla]."<br>".
 						"<br>" .
 						"Très Cordialement<br>" .
-						"Le BR<br>"  ;
+						"Le Webmestre de Frankiz<br>"  ;
 		
 			couriel($temp[2],"[Frankiz] Ton sondage a été validé ",$contenu,WEBMESTRE_ID);
 			echo "<commentaire>Envoie d'un mail <br/>Prévient $prenom $nom que sa demande est acceptée</commentaire>" ;

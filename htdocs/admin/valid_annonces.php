@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.30  2005/01/20 20:09:03  pico
+	Changement de "Très BRment, l'automate"
+
 	Revision 1.29  2005/01/13 17:10:58  pico
 	Mails de validations From le validateur qui va plus ou moins bien
-
+	
 	Revision 1.28  2005/01/05 21:59:48  pico
 	Envoit de commentaire dans le mail de validation d'annonce
 	
@@ -163,7 +166,7 @@ foreach ($_POST AS $keys => $val){
 			$contenu = 	"Ton annonce vient d'être validé par le BR... Elle est dès à present visible sur la page d'accueil<br><br> ".
 						$_POST['explication']."<br>".
 						"Merci de ta participation <br><br>".
-						"Très BR-ement<br>" .
+						"Cordialement,<br>" .
 						"Le Webmestre de Frankiz<br>"  ;
 			couriel($eleve_id,"[Frankiz] Ton annonce a été validé par le BR",$contenu,WEBMESTRE_ID);
 			
@@ -199,8 +202,8 @@ foreach ($_POST AS $keys => $val){
 			$contenu = 	"Ton annonce n'a pas été validé par le BR pour la raison suivante :<br>".
 						$_POST['explication']."<br>".
 						"Désolé <br><br>".
-						"Très BR-ement<br>" .
-						"Le Webmestre de frankiz<br>"  ;
+						"Cordialement,<br>" .
+						"Le Webmestre de Frankiz<br>"  ;
 			couriel($eleve_id,"[Frankiz] Ton annonce n'a pas été validé par le BR",$contenu,WEBMESTRE_ID);
 	
 			$DB_valid->query("DELETE FROM valid_annonces WHERE annonce_id='{$temp[1]}'") ;

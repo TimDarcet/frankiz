@@ -21,9 +21,12 @@
 	Mail promo permettant l'envoie de pièce jointes et de formatage HTML
 	
 	$Log$
+	Revision 1.20  2005/01/20 20:09:03  pico
+	Changement de "Très BRment, l'automate"
+
 	Revision 1.19  2005/01/18 19:50:31  pico
 	Ce sont les kessiers et dei qui reçoivent les notifications de mail promo
-
+	
 	Revision 1.18  2005/01/04 21:44:40  pico
 	Remise en place du lien vers l'helpwiki parce que le résumé en bas de page est incomprehensible
 	
@@ -114,7 +117,7 @@ if (!isset($_REQUEST['envoie'])) {
 	<formulaire id="mail_promo" titre="Mail Promo" action="proposition/mail_promo.php">
 		<note>
 			Le texte du mail promo utilise le format wiki rappelé en bas de la page et décrit dans l'<lien url="helpwiki.php" titre="aide wiki"/><br/>
-			Pour toute remarque particulière, envoyer un mail à <lien url="mailto:prez@frankiz.polytechnique.fr" titre="prez@frankiz"/>
+			Pour toute remarque particulière, envoyer un mail à <lien url="mailto:mailpromo@frankiz.polytechnique.fr" titre="mailpromo@frankiz"/>
 		</note>
 		<choix titre="Promo" id="promo" type="combo" valeur="<? if (isset($_POST['promo'])) echo  $_POST['promo'] ;?>">
 		<?
@@ -171,8 +174,8 @@ if (!isset($_REQUEST['envoie'])) {
 			"Pour valider ou non cette demande va sur la page suivante<br>".
 			"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_mailpromo.php'>".
 			"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_mailpromo.php</a></div><br><br>" .
-			"Très BR-ement<br>" .
-			"L'automate :)<br>"  ;
+			"Cordialement,<br>" .
+			"Le BR<br>"  ;
 			
 	couriel(MAILPROMO_ID,"[Frankiz] Validation d'un mail promo",$contenu,$_SESSION['user']->uid);
 

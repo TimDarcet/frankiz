@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.30  2005/01/20 20:09:03  pico
+	Changement de "Très BRment, l'automate"
+
 	Revision 1.29  2005/01/06 20:08:11  pico
 	Changement d'adresse mail
-
+	
 	Revision 1.28  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
 	
@@ -248,10 +251,10 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 				"Pour valider ou non cette demande va sur la page suivante : <br>".
 				"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_binets.php'>".
 				"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_binets.php</a></div><br><br>" .
-				"Très BR-ement<br>" .
-				"L'automate :)<br>"  ;
+				"Cordialement,<br>" .
+				"Le Webmestre de Frankiz<br>"  ;
 				
-			couriel(ROOT_ID,"[Frankiz] Modification du binet $nom",$contenu);
+			couriel(WEBMESTRE_ID,"[Frankiz] Modification du binet $nom",$contenu);
 		
 		}
 		
