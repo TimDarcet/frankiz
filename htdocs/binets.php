@@ -21,9 +21,12 @@
 	Affichage de la liste des binets ayant un site web.
 
 	$Log$
+	Revision 1.10  2005/01/24 19:51:48  pico
+	Pour modifier un comportement quantique
+
 	Revision 1.9  2005/01/22 17:58:38  pico
 	Modif des images
-
+	
 	Revision 1.8  2005/01/21 17:05:40  pico
 	Groumf
 	
@@ -103,8 +106,8 @@ require BASE_LOCAL."/include/page_header.inc.php";
 						"ORDER BY b.catego_id ASC, b.nom ASC");
 	while(list($id,$nom,$description,$http,$folder,$cat_id,$categorie) = $DB_trombino->next_row()) {
 			if($folder!=""){ 
-				if(est_interne()) $http=URL_BINETS.$folder;
-				else $http="binets/$folder";
+				if(est_interne()) $http=URL_BINETS.$folder."/";
+				else $http="binets/$folder/";
 			}
 ?>
 		<binet id="<?=$id?>" categorie="<?=$categorie?>" nom="<?=$nom?>">
