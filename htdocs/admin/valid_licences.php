@@ -21,9 +21,13 @@
 	Page qui permet l'administartion des licences windows.
 	
 	$Log$
+	Revision 1.4  2005/01/18 12:25:09  dei
+	ajout test du formatage de la clé
+	ajout interface de recherche dans la base des clés
+
 	Revision 1.3  2005/01/17 23:46:28  pico
 	Bug fix
-
+	
 	Revision 1.2  2005/01/17 23:15:37  pico
 	debug pages de dei
 	
@@ -33,6 +37,7 @@
 	
 
 */
+
 set_time_limit(0) ;
 
 require_once "../include/global.inc.php";
@@ -49,6 +54,20 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="valid_licences" titre="Frankiz : gestion des licences Microsoft">
 <?
+//on teste si la cle entrée à la main a une forme standard...
+function test_cle($key){
+	$key=explode("-",$key);
+	if(sizeof($key==5){
+		for($i=0;$i<5;$i++){
+			if(!ereg("(^[A-Z0-9]{5})",$str)){
+				return false;
+			}
+		}
+		return true;
+	} else {
+		return false;
+	}
+}
 $DB_msdnaa->query("LOCK TABLES valid_licence WRITE ,cles_winxp WRITE,cles_2k3serv WRITE");
 $DB_msdnaa->query("SET AUTOCOMMIT=0");
 
@@ -73,7 +92,7 @@ $temp = explode("_",$keys) ;
 	}
 	// On accepte la demande de licence supplémentaire
 	//===========================
-	if ($temp[0] == "ok") {
+	if ($temp[0] == "ok" && test_cle($_POST[$temp2])) {
 		$temp2 = "ajout_licence_".$temp[1] ;
 		//on cherche ds les clés attribuées au logiciel...
 		$DB_msdnaa->query("SELECT 0 FROM cles_$temp[2] WHERE eleve_id='{$temp[1]}'");
@@ -97,6 +116,9 @@ $temp = explode("_",$keys) ;
 		else {
 			echo "<warning>IMPOSSIBLE D'ATTRIBUER CETTE LICENCE. L'utilisateur en possède déjà une.</warning>" ;
 		}
+	}
+	if(test_cle($_POST[$temp2])){
+		echo "<warning>La Clé entrée n'a pas un formatage standard !</warning>" ;
 	}
 }
 $DB_msdnaa->query("UNLOCK TABLES");
@@ -123,7 +145,7 @@ $DB_msdnaa->query("UNLOCK TABLES");
 					<p>
 						<champ titre="" id="ajout_licence_<? echo $eleve_id ;?>" valeur="" /> 
 						<bouton titre="Ok" id="ok_<? echo $eleve_id ;?>_<? echo $logiciel ;?>" />
-						<bouton titre="Vtff" id="vtff_<? echo $eleve_id ;?>_<? echo $logiciel ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette licence ?')"/>
+						<bouton titre="Refuser" id="vtff_<? echo $eleve_id ;?>_<? echo $logiciel ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette licence ?')"/>
 					</p>
 				</colonne>
 			</element>
@@ -131,8 +153,40 @@ $DB_msdnaa->query("UNLOCK TABLES");
 		}
 ?>
 	</liste>
-
-
+<?php
+if(isset($_POST['chercher']){
+	$req="SELECT e.nom,e.prenom,e.login,e.eleve_id,v.logiciel,v.cle FROM trombino.eleves as e LEFT JOIN valid_".$_POST['logiciel']." as v USING(eleves_id) WHERE";
+	if(isset(($_POST['login'])){
+		$req=$req."login=".$_POST['login'];
+		if(isset($_POST['licence'])){
+			$req=$req." AND cle=".$_POST['licence'];
+		}
+	}else{
+		if(isset($_POST['licence'])){
+			$req=$req."cle=".$_POST['licence'];
+	}
+	$DB_msdnaa->query($req);
+	while(list($nom,$prenom,$login,$eleve_id,$logiciel,$cle) = $DB_msdnaa->next_row()){
+?>
+		<element id="<? echo $eleve_id ;?>">
+				<colonne id="logiciel"><? echo "$logiciel" ?></colonne>
+				<colonne id="eleve"><? echo "$nom $prenom" ?></colonne>
+				<colonne id="login"><? echo "$login" ?></colonne>
+				<colonne id="licence"><? echo "$cle" ?></colonne>
+		</element>
+<?
+	}
+}
+?>
+<h2>Rechercher un utilisateur dans la base</h2>
+	<formulaire id="chercher" action="admin/valid_licences.php">
+	<champ titre="Login poly" id="login" valeur="" />
+	<champ titre="Licence" id="licence" valeur="" />
+	<choix titre="Logiciel" id="logiciel" type="combo" valeur="">
+		<option titre="Windows XP Pro" id="winxp"/>
+		<option titre="Windows 2003 Serveur" id="2k3serv"/>
+	</choix>
+	<bouton id='chercher' titre='Rechercher'/>
 </page>
 
 <?php
