@@ -39,9 +39,14 @@
 	)
 	
 	$Log$
+	Revision 1.29  2005/02/15 11:38:05  pico
+	Que les gens qui ont choisi une skin sont listés.
+
+	Fixe le bug #51
+
 	Revision 1.28  2005/02/15 11:31:21  pico
 	BugFix
-
+	
 	Revision 1.27  2005/02/15 11:26:50  pico
 	Modifs pour avoir le nbtotal d'utilisateurs
 	
@@ -173,8 +178,11 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	<formulaire id="form_choix_skin" titre="Choix de la skin" action="profil/skin.php">
 		<choix titre="Skin" id="newskin" type="radio" valeur="<?php echo $_SESSION['skin']['skin_nom']."/".$_SESSION['skin']['skin_css'] ?>">
 <?php
-			$DB_web->query("SELECT COUNT(*) FROM compte_frankiz");
+			//NB total d'utilisateurs
+			$DB_web->query("SELECT COUNT(*) FROM compte_frankiz WHERE skin!=''");
 			list($nbutilisateurtotal) = $DB_web->next_row();
+			
+			
 			
 			// Parcourt des skins XSL
 			$dir_xsl=opendir(BASE_LOCAL."/skins");
