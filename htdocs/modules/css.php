@@ -21,9 +21,12 @@
 	Liste des CSS existante compatible avec la skin XSL courante.
 	
 	$Log$
+	Revision 1.9  2004/11/06 10:14:12  pico
+	Voilà, c'est bon
+
 	Revision 1.8  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.7  2004/09/15 23:20:29  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
@@ -35,10 +38,10 @@
 <module id="liste_css" visible="false">
 <?php
 	//Liste des css disponibles
-	$dir=opendir(BASE_LOCAL."/css");
+	$dir=opendir(BASE_LOCAL."/css/".$_SESSION['skin']['skin_nom']);
 	while($file = readdir($dir)) {
 		if(ereg("^(.*)\.css$",$file,$regs))
-			echo "<lien titre='{$regs[1]}' url='".BASE_URL."/css/{$regs[1]}.css'/>\n";
+			echo "<lien titre='{$regs[1]}' url='".BASE_URL."/css/{$_SESSION['skin']['skin_nom']}/{$regs[1]}.css'/>\n";
 	}
 	closedir($dir);
 ?>
