@@ -30,8 +30,7 @@ if(!empty($_REQUEST['loginpoly'])) {
 		// Envoie le mail contenant l'url avec le hash
 		$contenu = "Pour te connecter sur Frankiz, il te suffit de cliquer sur le\n".
 				   "lien ci-dessous :\n\n".
-				   "	[ http://frankiz.polytechnique.fr/profil/profil.php?uid=${id}&hash=${hash} ]\n\n".
-				   "	[ http://gwennoz/frankiz2/profil/profil.php?uid=${id}&hash=${hash} ]\n\n".
+				   "	[ ".$_SERVER['SERVER_NAME']."/profil/profil.php?uid=${id}&hash=${hash} ]\n\n".
 				   "N'oublie pas ensuite de modifier ton mot de passe.";
 		mail("$nom $prenom <${login}@poly.polytechnique.fr>","[Frankiz] Création de compte/perte de mot de passe",$contenu);
 		$mail_envoye = true;
