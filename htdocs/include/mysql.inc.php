@@ -23,9 +23,12 @@
 	- destruction automatique des résultats
 
 	$Log$
+	Revision 1.12  2004/11/08 17:01:22  schmurtz
+	oups
+
 	Revision 1.11  2004/11/08 16:59:26  schmurtz
 	Retour en arriere : il faut faire comme ca tant que l'on est pas passe a un mysql > 4.2.0
-
+	
 	Revision 1.10  2004/11/05 07:55:59  pico
 	Gwz a maintenant php > 4.2
 	Le code donnait des warning, car on reselectionne 2 fois la même base dans le cas de xnet.
@@ -57,7 +60,7 @@ class DB {
 	*/
 	function DB($host,$base,$user,$pass) {
 		global $_ERREURS_PHPMYSQL;
-		$this->link = mysql_connect($host,$user,$pass,/*true*/);	// PHP 4.2.0 seulement
+		$this->link = mysql_connect($host,$user,$pass/*,true*/);	// PHP 4.2.0 seulement
 		
 		if(mysql_errno() == 0)
 			mysql_select_db($base) || ajouter_erreur_mysql("USE $base");
