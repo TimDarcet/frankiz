@@ -24,9 +24,12 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.46  2004/12/02 21:26:23  pico
+	Base URL: distinction pour éviter les http://frankiz//index.php
+
 	Revision 1.45  2004/11/26 16:12:47  pico
 	La Faq utilise la $DB_faq au lieu de $DB_web
-
+	
 	Revision 1.44  2004/11/25 01:33:45  schmurtz
 	re
 	
@@ -69,7 +72,12 @@ if(file_exists("$dir/frankiz.dtd"))
 	$href = $dir;
 
 define('BASE_LOCAL',realpath(dirname(__FILE__)."/.."));
-define('BASE_URL','http://'.$_SERVER['HTTP_HOST'].'/'.substr((dirname($_SERVER['PHP_SELF']).'/'.$href), 1));
+// Base URL: distinction pour éviter les http://frankiz//index.php
+if(substr((dirname($_SERVER['PHP_SELF'])), 1))
+	define('BASE_URL','http://'.$_SERVER['HTTP_HOST'].'/'.substr((dirname($_SERVER['PHP_SELF']).'/'.$href), 1));
+else
+	define('BASE_URL','http://'.$_SERVER['HTTP_HOST'].'/'.$href);
+
 
 // Connexions aux bases mysql
 require_once "mysql.inc.php";
