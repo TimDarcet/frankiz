@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.28  2004/12/15 23:40:35  kikx
+	Pour gerer les mots de vocabulaires
+
 	Revision 1.27  2004/12/15 01:44:15  schmurtz
 	deplacement de la page d'admin du bob de admin vers gestion
-
+	
 	Revision 1.26  2004/12/14 22:17:32  kikx
 	Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
 	
@@ -315,6 +318,11 @@ $permissions_user = $_SESSION['user']->perms ;
 	if (verifie_permission('admin')||verifie_permission('faq')){
 	?>
 		<lien titre="Gestion FAQ" url="admin/faq.php"/><br/>
+	<?
+	}
+	if (verifie_permission('admin')){
+	?>
+		<lien titre="Gestion du Vocabulaire" url="admin/vocabulaire.php"/><br/>
 	<?
 	}
 	if (verifie_permission('admin')){
