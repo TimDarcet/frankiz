@@ -21,9 +21,13 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.21  2004/11/25 01:46:10  schmurtz
+	Bug sur l'affichage des liens admin dans le trombino. C'est bien de tester quand
+	on fait des modifs.
+
 	Revision 1.20  2004/11/22 18:44:08  pico
 	Recherche par promo promo présente
-
+	
 	Revision 1.19  2004/11/22 10:15:03  pico
 	Ajout d'un lien vers le trombi d'X.org
 	
@@ -78,8 +82,9 @@ echo "<page id='trombino' titre='Frankiz : Trombino'>\n";
 // Affichage des réponses
 if(isset($_REQUEST['chercher'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_REQUEST['q_search']))))) {
 		
-		$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
-		list($promo_temp) = $DB_web->next_row() ;
+	$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
+	list($promo_temp) = $DB_web->next_row() ;
+	
 	// Création de la requête si lien_tol appelle
 	if(isset($_REQUEST['cherchertol'])) {
 		$where = "";
@@ -94,32 +99,32 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_RE
 	
 	// Création de la requète si tol s'appelle
 	if(isset($_REQUEST['chercher'])) {
-	$where = "";
-	$join = "INNER JOIN sections ON eleves.section_id=sections.section_id";
-	$champs = "eleves.eleve_id,eleves.nom,prenom,surnom,piece_id,sections.nom,eleves.section_id,cie,promo,login,mail,0";
-	
-	$where_exact = array(
-			'section' => 'eleves.section_id',	'cie' => 'cie');
-	foreach($where_exact as $post_arg => $db_field)
-		if(!empty($_REQUEST[$post_arg]))
-			$where .= (empty($where) ? "" : " AND") . " $db_field='".$_REQUEST[$post_arg]."'";
-		if($_REQUEST['promo'] == "")
-			$where .=  (empty($where) ? "" : " AND") ." (promo=$promo_temp OR promo=".($promo_temp -1).")";
-		else if($_REQUEST['promo'] != "toutes")
-			$where .= (empty($where) ? "" : " AND") ." promo='".$_REQUEST['promo']."'";
-
-	$where_like = array(
-			'nom' => 'eleves.nom',	'prenom' => 'prenom',   'casert' => 'piece_id',
-			/*'phone' => '',*/		'surnom' => 'surnom',   'mail' => 'mail',
-			'loginpoly' => 'login');
-	foreach($where_like as $post_arg => $db_field)
-		if(!empty($_REQUEST[$post_arg]))
-			$where .= (empty($where) ? "" : " AND") . " $db_field LIKE '%".$_REQUEST[$post_arg]."%'";
+		$where = "";
+		$join = "INNER JOIN sections ON eleves.section_id=sections.section_id";
+		$champs = "eleves.eleve_id,eleves.nom,prenom,surnom,piece_id,sections.nom,eleves.section_id,cie,promo,login,mail,0";
 		
-	if(!empty($_REQUEST['binet'])) {
-		$join = "INNER JOIN membres USING(eleve_id) " . $join;
-		$where .= (empty($where) ? "" : " AND") . " binet_id='".$_REQUEST['binet']."'";
-	}
+		$where_exact = array(
+				'section' => 'eleves.section_id',	'cie' => 'cie');
+		foreach($where_exact as $post_arg => $db_field)
+			if(!empty($_REQUEST[$post_arg]))
+				$where .= (empty($where) ? "" : " AND") . " $db_field='".$_REQUEST[$post_arg]."'";
+			if($_REQUEST['promo'] == "")
+				$where .=  (empty($where) ? "" : " AND") ." (promo=$promo_temp OR promo=".($promo_temp -1).")";
+			else if($_REQUEST['promo'] != "toutes")
+				$where .= (empty($where) ? "" : " AND") ." promo='".$_REQUEST['promo']."'";
+
+		$where_like = array(
+				'nom' => 'eleves.nom',	'prenom' => 'prenom',   'casert' => 'piece_id',
+				/*'phone' => '',*/		'surnom' => 'surnom',   'mail' => 'mail',
+				'loginpoly' => 'login');
+		foreach($where_like as $post_arg => $db_field)
+			if(!empty($_REQUEST[$post_arg]))
+				$where .= (empty($where) ? "" : " AND") . " $db_field LIKE '%".$_REQUEST[$post_arg]."%'";
+			
+		if(!empty($_REQUEST['binet'])) {
+			$join = "INNER JOIN membres USING(eleve_id) " . $join;
+			$where .= (empty($where) ? "" : " AND") . " binet_id='".$_REQUEST['binet']."'";
+		}
 	}
 	
 	// Génération de la page si il y a au moins un critère.
@@ -127,16 +132,17 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_RE
 		
 		$DB_trombino->query("SELECT $champs FROM eleves $join WHERE $where");
 		
-		//Génération d'un message d'erreur si aucun élève ne correspond
+		// Génération d'un message d'erreur si aucun élève ne correspond
 		if($DB_trombino->num_rows()==0)
 		echo "<warning> Désolé, aucun élève ne correspond à ta recherche </warning>";
 		
-		//Génération des fiches des élèves
+		// Génération des fiches des élèves
 		while(list($eleve_id,$nom,$prenom,$surnom,$piece_id,$section,$section_id,$cie,$promo,$login,$mail,$tel) = $DB_trombino->next_row()) {
 			echo "<eleve nom='$nom' prenom='$prenom' promo='$promo' login='$login' surnom='$surnom' "
 				."tel='$tel' mail='".(empty($mail)?"$login@poly.polytechnique.fr":$mail)."' casert='$piece_id' "
 				."section='$section' cie='$cie'>\n";
 			
+			// Génération de la liste des binets
 			$DB_trombino->push_result();
 			$DB_trombino->query("SELECT remarque,nom,membres.binet_id FROM membres "
 							   ."LEFT JOIN binets USING(binet_id) WHERE eleve_id='$eleve_id'");
@@ -144,14 +150,17 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_RE
 				echo "<binet nom='$binet_nom' id='$binet_id'>$remarque</binet>\n";
 			$DB_trombino->pop_result();
 			
+			echo "</eleve>\n";
 			
+			// TODO, nettoyer $prenom et $nom avant !!!! sinon ça marchera pas pour "L'au machin"
 			echo "<lien url='https://www.polytechnique.org/fiche.php?user=$prenom.$nom.$promo' titre='Fiche sur polytechnique.org'/>\n";
+			
+			// Liens d'administration
 			if(verifie_permission('admin')) {
 				echo "<a href='".BASE_URL."/admin/user.php?id=$eleve_id'>Administrer $prenom $nom</a>\n" ;
 				echo "<a href='".BASE_URL."/?su=$eleve_id'>Prendre l&apos;identité de $prenom $nom</a>\n" ;
 			}
-			echo "</eleve>\n";
-		}		
+		}
 	}
 }
 
