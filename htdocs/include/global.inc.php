@@ -24,9 +24,12 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.49  2005/01/26 22:15:32  schmurtz
+	Oups, maintenant c'est vraiment corrige
+
 	Revision 1.48  2005/01/26 21:56:39  schmurtz
 	Gestion de l'echappement des \
-
+	
 	Revision 1.47  2005/01/25 14:53:43  pico
 	Modifications relatives à la version de prod, à l'accès extérieur, tout ça...
 	
@@ -114,7 +117,9 @@ define('ERR_SELECTION_VIDE',$i++);
 function nettoyage_balise($tableau) {
 	foreach($tableau as $cle => $valeur)
 		if(is_array($valeur)) $tableau[$cle] = nettoyage_balise($valeur);
-		else $tableau[$cle] = str_replace(array('&','<','>','\'','"','\\'),array('&amp;','&lt;','&gt;','&apos;','&quot;','&#005C;'),$valeur);
+		else $tableau[$cle] = str_replace(array('&','<','>','\\\'','\\"','\\\\'),array('&amp;','&lt;','&gt;','&apos;','&quot;','&#92;'),$valeur);
+// Si l'échappement automatique de PHP n'est pas activé :
+//		else $tableau[$cle] = str_replace(array('&','<','>','\'','"','\\'),array('&amp;','&lt;','&gt;','&apos;','&quot;','&#92;'),$valeur);
 	return $tableau;
 }
 
