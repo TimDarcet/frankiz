@@ -19,9 +19,12 @@
 */
 /*
 	$Log$
+	Revision 1.2  2004/11/25 12:45:36  pico
+	Duble emploi de htmlspecialchar vu que les entrées dans la bdd sont déjà transformées
+
 	Revision 1.1  2004/11/25 00:10:30  schmurtz
 	Suppression des dossiers ne contenant qu'un unique fichier index.php
-
+	
 	Revision 1.23  2004/11/22 20:40:00  pico
 	Patch fonction tar
 	
@@ -110,7 +113,7 @@ function rech_fils($id_parent) {
 
 		$DB_web->query("SELECT id,nom FROM xshare WHERE descript='' AND id_parent='{$id_parent}'") ;
 		while(list($id,$nom) = $DB_web->next_row()) {
-				echo "<noeud  id='".$id."' titre='".htmlspecialchars($nom,ENT_QUOTES)."' lien='xshare.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
+				echo "<noeud  id='".$id."' titre='".$nom."' lien='xshare.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer);
 			echo "'>\n\r" ;
 			if (eregi("/".$id."/",$a_marquer)) {
@@ -127,7 +130,7 @@ function rech_fils($id_parent) {
 		
 		$DB_web->query("SELECT id,nom FROM xshare WHERE descript!='' AND id_parent='{$id_parent}'" ) ;
 		while(list($id,$nom) = $DB_web->next_row()) {
-			echo "\n\r<feuille  id='".$id."'  titre='".htmlspecialchars($nom,ENT_QUOTES)."' lien='xshare.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
+			echo "\n\r<feuille  id='".$id."'  titre='".$nom."' lien='xshare.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#descript'>\n\r" ;
 			if (eregi("/".$id."/",$a_marquer)) {

@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.26  2004/11/25 12:45:36  pico
+		Duble emploi de htmlspecialchar vu que les entrées dans la bdd sont déjà transformées
+
 		Revision 1.25  2004/11/24 22:12:57  schmurtz
 		Regroupement des fonctions zip unzip deldir et download dans le meme fichier
-
+		
 		Revision 1.24  2004/11/23 23:30:20  schmurtz
 		Modification de la balise textarea pour corriger un bug
 		(return fantomes)
@@ -190,7 +193,7 @@ function rech_fils($id_parent) {
 
 		$DB_web->query("SELECT id,nom FROM xshare WHERE descript='' AND id_parent='{$id_parent}'") ;
 		while(list($id,$nom) = $DB_web->next_row()) {
-				echo "<noeud  id='".$id."' titre='".htmlspecialchars($nom,ENT_QUOTES)."' lien='admin/xshare.php?dir_id=".$id."&amp;affich_elt=".base64_encode(all_elt_affich($id)) ;
+				echo "<noeud  id='".$id."' titre='".$nom."' lien='admin/xshare.php?dir_id=".$id."&amp;affich_elt=".base64_encode(all_elt_affich($id)) ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer);
 			echo "'>\n\r" ;
 			if (isset($_REQUEST['dir_id']) && ($id == $_REQUEST['dir_id'])) {
@@ -207,7 +210,7 @@ function rech_fils($id_parent) {
 		
 		$DB_web->query("SELECT id,nom FROM xshare WHERE descript!='' AND id_parent='{$id_parent}'" ) ;
 		while(list($id,$nom) = $DB_web->next_row()) {
-			echo "\n\r<feuille  id='".$id."'  titre='".htmlspecialchars($nom,ENT_QUOTES)."' lien='admin/xshare.php?dir_id=".$id."&amp;affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
+			echo "\n\r<feuille  id='".$id."'  titre='".$nom."' lien='admin/xshare.php?dir_id=".$id."&amp;affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "'>\n\r" ;
 			if (isset($_REQUEST['dir_id']) && ($id == $_REQUEST['dir_id'])) {

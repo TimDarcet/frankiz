@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.3  2004/11/25 12:45:36  pico
+		Duble emploi de htmlspecialchar vu que les entrées dans la bdd sont déjà transformées
+
 		Revision 1.2  2004/11/25 00:58:08  kikx
 		faqs-> faq
-
+		
 		Revision 1.1  2004/11/25 00:20:39  schmurtz
 		Parce que faq ne prend pas d's dans ce cas.
 		
@@ -140,7 +143,7 @@ function rech_fils($parent) {
 			echo "lien='faq.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
 			$DB_web->pop_result();
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
-			echo "' titre='".htmlspecialchars($question,ENT_QUOTES)."'>" ;
+			echo "' titre='".$question."'>" ;
 			if (eregi("/".$id."/",$a_marquer)) {
 				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche_folder.gif'/>" ;
 			}
@@ -159,7 +162,7 @@ function rech_fils($parent) {
 			echo "\n\r<feuille lien='faq.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
 			$DB_web->pop_result();
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
-			echo "#reponse' titre='".htmlspecialchars($question,ENT_QUOTES)."'>" ;
+			echo "#reponse' titre='".$question."'>" ;
 			if (eregi("/".$id."/",$a_marquer)) {
 				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche.gif'/>" ;
 			}

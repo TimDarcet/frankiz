@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.26  2004/11/25 12:45:36  pico
+		Duble emploi de htmlspecialchar vu que les entrées dans la bdd sont déjà transformées
+
 		Revision 1.25  2004/11/24 22:12:57  schmurtz
 		Regroupement des fonctions zip unzip deldir et download dans le meme fichier
-
+		
 		Revision 1.24  2004/11/16 14:06:28  pico
 		Toute chtite correction
 		
@@ -242,7 +245,7 @@ function rech_fils($parent) {
 			echo "<noeud id='".$id."' ";
 			echo "lien='admin/faq.php?dir_id=".$id."&amp;affich_elt=".base64_encode(all_elt_affich($id)) ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
-			echo "' titre='".htmlspecialchars($question,ENT_QUOTES)."'>\n\r" ;
+			echo "' titre='".$question."'>\n\r" ;
 			if (isset($_REQUEST['dir_id']) && ($id == $_REQUEST['dir_id'])) {
 				echo "<p id='selected'>[séléctionné]</p>\n\r" ;
 			}
@@ -259,7 +262,7 @@ function rech_fils($parent) {
 		while(list($id,$question) = $DB_web->next_row()) {
 			echo "\n\r<feuille id='".$id."' lien='admin/faq.php?dir_id=".$id."&amp;affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
-			echo "#reponse' titre='".htmlspecialchars($question,ENT_QUOTES)."'>" ;
+			echo "#reponse' titre='".$question."'>" ;
 			if (isset($_REQUEST['dir_id']) && ($id == $_REQUEST['dir_id'])) {
 				echo "<p id='selected'>[séléctionné]</p>\n\r" ;
 			}
