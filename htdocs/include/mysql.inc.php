@@ -1,15 +1,16 @@
 <?php
 /*
-	$Id$
-	
 	Gestion des connexions aux bases de données :
 	- une seule connexion par base (avec l'utilisation de variable globales)
 	- destruction automatique des résultats
 
 	$Log$
+	Revision 1.7  2004/09/15 23:19:31  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.6  2004/09/15 21:42:08  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 
 class DB {

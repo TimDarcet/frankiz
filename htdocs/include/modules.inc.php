@@ -1,7 +1,5 @@
 <?php
 /*
-	$Id$
-	
 	Inclu les modules nécessaires.
 	
 	Il est possible d'en modifier le comportement à l'aide de variables GET :
@@ -10,9 +8,12 @@
 	- 'modules[tous]' :		valeur par défaut pour l'affichage des modules
 
 	$Log$
+	Revision 1.11  2004/09/15 23:19:31  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.10  2004/09/15 21:42:08  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 
 // Cette directive "global" est utile dans le cas où cette page est inclue depuis

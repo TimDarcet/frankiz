@@ -1,13 +1,14 @@
 <?php
 /*
-	$Id$
-	
 	Affichage de la liste des binets ayant un site web.
 
 	$Log$
+	Revision 1.4  2004/09/15 23:20:39  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.3  2004/09/15 21:42:36  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 require_once "../include/global.inc.php";
 

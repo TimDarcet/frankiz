@@ -1,7 +1,5 @@
 <?php
 /*
-	$Id$
-	
 	Gestion de la liste des sections.
 	
 	ATTENTION : Il est volontairement interdit de supprimer une section. Cela pose
@@ -10,9 +8,12 @@
 	supprimer. Il est cependant possible de marquer un binet comme disparu.
 	
 	$Log$
+	Revision 1.6  2004/09/15 23:20:18  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.5  2004/09/15 21:42:27  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 
 // En-tetes

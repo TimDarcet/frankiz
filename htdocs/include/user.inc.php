@@ -1,7 +1,5 @@
 <?php
 /*
-	$Id$
-
 	Défini une classe de gestion d'un utilisateur. Cette classe n'est faite que pour la gestion
 	de l'authentification, donc il est inutile d'y inclure toute les informations du trombino, ni
 	pour modifier le trombino.
@@ -10,9 +8,12 @@
 	informations provenant des tables du trombino (avec jointure sur l'uid).
 
 	$Log$
+	Revision 1.7  2004/09/15 23:19:31  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.6  2004/09/15 21:42:08  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 
 define("AUTH_AUCUNE",0);	// Client non authentifié

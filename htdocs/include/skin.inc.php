@@ -1,13 +1,14 @@
 <?php
 /*
-	$Id$
-	
 	Gestion des skins : lecture du cookie contenant les préférences d'affichage
 	
 	$Log$
+	Revision 1.6  2004/09/15 23:19:31  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.5  2004/09/15 21:42:08  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 
 // Valeurs par défaut (dans le cas où il n'y a pas de cookie)

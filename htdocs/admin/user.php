@@ -1,7 +1,5 @@
 <?php
 /*
-	$Id$
-	
 	Gestion des utilisateurs et de leur droits. L'accès se fait par le trombino,
 	après une recherche.
 	
@@ -13,9 +11,12 @@
 	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
 	
 	$Log$
+	Revision 1.8  2004/09/15 23:20:18  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.7  2004/09/15 21:42:27  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 	
 require_once "../include/global.inc.php";

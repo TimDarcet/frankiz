@@ -1,14 +1,15 @@
 <?php
 /*
-	$Id$
-	
 	Page principale d'administration : affiche la liste des pages d'administration auxquelles
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.9  2004/09/15 23:20:18  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.8  2004/09/15 21:42:27  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 	
 // En-tetes

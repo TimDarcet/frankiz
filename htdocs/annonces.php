@@ -1,13 +1,14 @@
 <?php
 /*
-	$Id$
-	
 	Annonces de frankiz. Page d'acceuil pour les personnes déjà loguées.
 	
 	$Log$
+	Revision 1.3  2004/09/15 23:19:45  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.2  2004/09/15 21:42:15  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 
 require_once "include/global.inc.php";

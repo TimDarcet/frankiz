@@ -1,15 +1,16 @@
 <?php
 /*
-	$Id$
-	
 	Cette page gère l'attribution d'adresses IP supplémentaires aux élèves.
 	L'élève fait une demande grâce à la page profil/demande_ip.php, on valide
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.10  2004/09/15 23:20:18  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.9  2004/09/15 21:42:27  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 
 require_once "../include/global.inc.php";

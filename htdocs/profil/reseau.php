@@ -1,14 +1,15 @@
 <?php
 /*
-	$Id$
-	
 	Page permettant de modifier ses informations relatives au réseau interne de l'x : le nom de
 	ses machines, son compte xnet.
 	
 	$Log$
+	Revision 1.9  2004/09/15 23:20:07  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.8  2004/09/15 21:42:21  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 
 require_once "../include/global.inc.php";

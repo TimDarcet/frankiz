@@ -1,13 +1,14 @@
 <?php
 /*
-	$Id$
-	
 	Affichage des anniversaires avec gestion d'un cache mis à jour une fois par jour.
 	
 	$Log$
+	Revision 1.10  2004/09/15 23:20:29  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.9  2004/09/15 21:42:32  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 
 if(est_authentifie(AUTH_MINIMUM)) {

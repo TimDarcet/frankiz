@@ -1,7 +1,5 @@
 <?php
 /*
-	$Id$
-	
 	Gestion des erreurs php et mysql :
 	- on évite de les afficher à l'utilisateur.
 	- on les affiches en haut de la page pour les webmestres, met on ne les fait pas apparaître
@@ -9,9 +7,12 @@
 	- affichage des requètes mysql en commentaire dans
 	
 	$Log$
+	Revision 1.7  2004/09/15 23:19:31  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.6  2004/09/15 21:42:08  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 
 error_reporting(E_ERROR|E_CORE_ERROR|E_COMPILE_ERROR);

@@ -1,15 +1,16 @@
 <?php
 /*
-	$Id$
-	
 	Page permettant de se loguer sur le site. Cette page ne gère pas le login elle même, mais
 	grace à la fonction demande_authentification() définie dans login.inc.php. Ça permet d'afficher
 	la boîte de login dans d'autres pages qui requiert une authentification.
 	
 	$Log$
+	Revision 1.6  2004/09/15 23:19:45  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.5  2004/09/15 21:42:15  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 
 require "include/global.inc.php";

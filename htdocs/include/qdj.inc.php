@@ -1,7 +1,5 @@
 <?php
 /*
-	$Id$
-	
 	Affichage de la QDJ. Le fait d'avoir un fichier inclus permet d'éviter d'avoir du code
 	dupliquer dans qdj.php et qdj_hier.php. Ça évite aussi de devoir regrouper les deux modules
 	dans le même fichier (et donc passer autre le principe 1 module = 1 fichier).
@@ -9,9 +7,12 @@
 	TODO traiter le cas ou le qdj master est à la bourre (garder l'ancienne qdj par exemple).
 	
 	$Log$
+	Revision 1.8  2004/09/15 23:19:31  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.7  2004/09/15 23:01:21  schmurtz
 	Bug de la qdj : renvoie maintenant sur la page courante (et non index.php)
-
+	
 	Revision 1.6  2004/09/15 21:42:08  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
 	

@@ -4,7 +4,10 @@
 	Le but de cette skin est de ne pas se triturer les neurones pour faire
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
-	$Id$
+	$Log$
+	Revision 1.7  2004/09/15 23:19:56  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">

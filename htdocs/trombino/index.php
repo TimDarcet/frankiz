@@ -1,13 +1,14 @@
 <?php
 /*
-	$Id$
-	
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.11  2004/09/15 23:19:17  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.10  2004/09/15 21:42:01  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 
 require_once "../include/global.inc.php";

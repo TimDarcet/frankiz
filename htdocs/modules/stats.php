@@ -1,7 +1,5 @@
 <?php
 /*
-	$Id$
-	
 	Génération des données de statistiques des serveurs.
 	
 	Certaines données sont mise en statique pour exemple. Il serait bien de réécrir les scripts
@@ -13,9 +11,12 @@
 	de bande passante, de cpu). 
 	
 	$Log$
+	Revision 1.5  2004/09/15 23:20:29  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.4  2004/09/15 21:42:32  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 if(est_authentifie(AUTH_MINIMUM)) { ?>
 	<module id="stats" titre="Statistiques">

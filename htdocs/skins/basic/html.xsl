@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<!-- $Id$ -->
+<!--
+	Balises de formatage.
+	
+	$Log$
+	Revision 1.4  2004/09/15 23:19:56  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 

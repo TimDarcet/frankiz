@@ -1,14 +1,15 @@
 <?php
 /*
-	$Id$
-	
 	Affiche la liste des IPs attribuer aux élèves.
 	Permet aussi de supprimer des IPs.
 	
 	$Log$
+	Revision 1.15  2004/09/15 23:20:18  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.14  2004/09/15 21:42:27  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 
 // En-tetes

@@ -1,7 +1,5 @@
 <?php
 /*
-	$Id$
-	
 	Page de gestion des skins. Chaque skin est contenu dans un dossier dans $serveur_base/skins/.
 	Le fichier skin.xsl contient le code XSLT pour convertir le code XML et le fichier description.xsl
 	contient des informations importantes pour l'application de la transformation XSL et la configuration
@@ -23,9 +21,12 @@
 	)
 	
 	$Log$
+	Revision 1.7  2004/09/15 23:20:07  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.6  2004/09/15 21:42:21  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 
 require_once "../include/global.inc.php";

@@ -1,13 +1,14 @@
 <?php
 /*
-	$Id$
-	
 	Gestion du tour kawa.
 	
 	$Log$
+	Revision 1.6  2004/09/15 23:20:29  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.5  2004/09/15 21:42:32  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 
 if(est_authentifie(AUTH_MINIMUM)) {

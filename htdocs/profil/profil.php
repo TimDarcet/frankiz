@@ -1,16 +1,17 @@
 <?php
 /*
-	$Id$
-	
 	Page permettant de modifier son profil dans le trombino et quelques paramètres
 	pour le site web.
 	
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.9  2004/09/15 23:20:07  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.8  2004/09/15 21:42:21  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 
 require_once "../include/global.inc.php";

@@ -1,15 +1,16 @@
 <?php
 /*
-	$Id$
-	
 	Affichage de la QDJ actuelle et gestion des votes.
 	
 	TODO traiter le cas ou le qdj master est à la bourre (garder l'ancienne qdj par exemple).
 
 	$Log$
+	Revision 1.8  2004/09/15 23:20:29  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.7  2004/09/15 21:42:32  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 
 require_once BASE_LOCAL."/include/qdj.inc.php";

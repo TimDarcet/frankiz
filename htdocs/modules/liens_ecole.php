@@ -1,13 +1,14 @@
 <?php
 /*
-	$Id$
-	
 	Liens permettants d'accéder aux autres sites de l'école.
 	
 	$Log$
+	Revision 1.3  2004/09/15 23:20:29  schmurtz
+	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
+
 	Revision 1.2  2004/09/15 21:42:32  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 ?>
 <module id="liens_ecole" titre="Liens école">
