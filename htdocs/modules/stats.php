@@ -29,9 +29,12 @@
 	de bande passante, de cpu). 
 	
 	$Log$
+	Revision 1.11  2004/12/17 01:52:08  pico
+	On enlève les liens morts !
+
 	Revision 1.10  2004/12/15 16:50:48  schmurtz
 	Bug fix+info d'installation, maj de la version en prod du site
-
+	
 	Revision 1.9  2004/11/11 20:15:19  kikx
 	Deplacemeent du fichier des binets pour que ca erste logique
 	
@@ -54,10 +57,10 @@
 if(est_authentifie(AUTH_MINIMUM)) { ?>
 	<module id="stats" titre="Statistiques">
 		<statistiques>
-			<!--<service nom="web frankiz" stat="http://frankiz.polytechnique.fr/webalizer/" />-->
-			<!--<service nom="web binets" stat="http://gwennoz.polytechnique.fr/webalizer/" />-->
+			<!--<service nom="web frankiz" stat="http://frankiz.polytechnique.fr/webalizer/" />
+			<service nom="web binets" stat="http://gwennoz.polytechnique.fr/webalizer/" />
 			<service nom="news" stat="http://frankiz.polytechnique.fr/news/" />
-			<service nom="xnet" stat="http://frankiz.polytechnique.fr/accueil/xnetstatquick.php" />
+			<service nom="xnet" stat="http://frankiz.polytechnique.fr/accueil/xnetstatquick.php" />-->
 		<? if(file_exists(BASE_CACHE."status")) include BASE_CACHE."status"; else echo "<serveur nom='status' etat='down'/>\n"?>
 		</statistiques>
 	</module>
