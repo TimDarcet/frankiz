@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.33  2005/01/03 20:43:17  pico
+	Ajout du lien vers la page de visualisation des droits
+
 	Revision 1.32  2004/12/17 19:59:31  pico
 	Ajout du lien vers l'historique qdj
-
+	
 	Revision 1.31  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
 	
@@ -310,13 +313,14 @@ $permissions_user = $_SESSION['user']->perms ;
 	}
 	
 	
-	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('xshare')||verifie_permission('faq')||verifie_permission('trombino')){
+	if (verifie_permission('admin')||verifie_permission('xshare')||verifie_permission('faq')||verifie_permission('trombino')){
 	?>
 	<h3>Administration des données de Frankiz</h3>
 	<?
 	}
 	if (verifie_permission('admin')){
 	?>
+		<lien titre="Liste des droits accordés" url="admin/liste_droits.php"/><br/>
 		<lien titre="Changer les variables globales" url="admin/parametre.php"/><br/>
 	<?
 	}
