@@ -5,9 +5,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.12  2004/09/17 16:27:13  schmurtz
+	Simplification de l'affichage des anniversaires et correction d'un bug d'affichage.
+
 	Revision 1.11  2004/09/17 15:28:14  schmurtz
 	Utilisation de la balise <eleve> pour les derniers votants à la qdj, les anniversaires, la signature des annonces…
-
+	
 	Revision 1.10  2004/09/16 15:32:43  schmurtz
 	Suppression de la fonction afficher_identifiant(), utilisation de <![CDATA[......]]> à la place.
 	
@@ -164,9 +167,14 @@
 
 <!-- Eleves pour les anniversaires/signatures/qdj -->
 <xsl:template match="eleve">
-	<xsl:value-of select="@prenom"/><xsl:text> </xsl:text>
-	<xsl:value-of select="@nom"/><xsl:text> (</xsl:text>
-	<xsl:value-of select="@promo"/><xsl:text>)</xsl:text>
+	<xsl:choose><xsl:when test="@surnom != ''">
+		<xsl:value-of select="@surnom"/>
+	</xsl:when><xsl:otherwise>
+		<xsl:value-of select="@prenom"/><xsl:text> </xsl:text><xsl:value-of select="@nom"/>
+	</xsl:otherwise></xsl:choose>
+	<xsl:if test="@promo != ''">
+		<xsl:text> (</xsl:text><xsl:value-of select="@promo"/><xsl:text>)</xsl:text>
+	</xsl:if>
 	<br/>
 </xsl:template>
 
