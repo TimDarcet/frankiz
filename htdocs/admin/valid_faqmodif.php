@@ -22,9 +22,12 @@
 	
 
 	$Log$
+	Revision 1.8  2004/12/16 16:53:37  falco
+	typo
+
 	Revision 1.7  2004/12/16 13:00:41  pico
 	INNER en LEFT
-
+	
 	Revision 1.6  2004/12/14 23:15:38  kikx
 	Pour avoir la source + affichage
 	
@@ -77,7 +80,7 @@ foreach ($_POST AS $keys => $val){
 
 			$DB_valid->query("UPDATE valid_modiffaq SET faq_modif='{$_POST['faq_modif']}'  WHERE faq_id='{$temp[1]}'");
 		?>
-			<commentaire>Modif effectuée</commentaire>
+			<commentaire>Modification effectuée</commentaire>
 		<?
 		} else {
 	?>
@@ -115,7 +118,7 @@ foreach ($_POST AS $keys => $val){
 					fclose($handle);
 				} else {
 		?>
-					<warning>Erreur Ecriture : Remplacement de la FAQ impossible</warning>
+					<warning>Erreur écriture : remplacement de la FAQ impossible</warning>
 		<?
 				}
 				
@@ -126,16 +129,16 @@ foreach ($_POST AS $keys => $val){
 					
 		<?
 					$contenu = "<strong>Bonjour,</strong><br><br>".
-						"Ta modification de la FAQ vient d'être pris en compte par le BR<br>".
-						"Nous te remercions sincèrement de ta modification<br>".
+						"Ta modification de la FAQ vient d'être prise en compte par le BR.<br>".
+						"Nous te remercions sincèrement de ta modification.<br>".
 						"<br>Sincèrement<br>" .
 						"Le BR<br>"  ;
 				
-					couriel($eleve_id,"[Frankiz] Ta modification de la FAQ vient d'être pris en compte",$contenu);
+					couriel($eleve_id,"[Frankiz] Ta modification de la FAQ vient d'être prise en compte",$contenu);
 
 				} else {
 		?>
-					<warning>Erreur Ecriture : Remplacement de la FAQ impossible</warning>
+					<warning>Erreur écriture : remplacement de la FAQ impossible</warning>
 		<?
 				}
 			}
@@ -149,7 +152,7 @@ foreach ($_POST AS $keys => $val){
 			list($eleve_id) = $DB_valid->next_row() ;
 			$DB_valid->query("DELETE FROM valid_modiffaq WHERE faq_id='{$temp[1]}'") ;
 		?>
-			<warning>Suppression d'une modif de FAQ</warning>
+			<warning>Suppression d'une modification d'une FAQ</warning>
 		<?
 		} else {
 	?>
@@ -194,7 +197,7 @@ $DB_valid->query("UNLOCK TABLES");
 				}
 			} else {
 			?>
-				<warning>Erreur : Impossible de trouver cette question </warning>
+				<warning>Erreur : impossible de trouver cette question</warning>
 			<?
 			}
 			?>
@@ -211,7 +214,7 @@ $DB_valid->query("UNLOCK TABLES");
 			<?
 		} else {
 		?>
-			<warning>Erreur : Impossible de trouver cette question </warning>
+			<warning>Erreur : impossible de trouver cette question</warning>
 		<?
 		}
 		
