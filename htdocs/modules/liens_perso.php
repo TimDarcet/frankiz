@@ -21,9 +21,12 @@
 	Affichage des liens personnels.
 
 	$Log$
+	Revision 1.8  2004/12/05 23:19:27  pico
+	Evite d'afficher une boite vide
+
 	Revision 1.7  2004/11/30 19:56:32  pico
 	On a plus besoin du lien vers la conf des liens perso, puisqu'elle est dans la page de préférences
-
+	
 	Revision 1.6  2004/11/24 22:08:09  pico
 	Ajout lien vers page feed RSS dans le cadre liens_perso
 	
@@ -47,11 +50,11 @@
 	
 
 */
-echo "<module id=\"liens_perso\" titre=\"Liens Perso\">";
 if(isset($_SESSION['liens_perso']) && !empty($_SESSION['liens_perso']) && count($_SESSION['liens_perso'])>0){
+	echo "<module id=\"liens_perso\" titre=\"Liens Perso\">";
 	foreach($_SESSION['liens_perso'] as $titre => $url){
 		echo "<lien titre=\"$titre\" url=\"$url\" />";
 	}
+	echo "</module>";
 }
-echo "</module>";
 ?>
