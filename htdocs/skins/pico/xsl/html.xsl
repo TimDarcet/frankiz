@@ -41,7 +41,7 @@
 		</xsl:if>
 		<xsl:value-of select="@titre"/>
 			<xsl:apply-templates/>
-	</a><br/>
+	</a>
 </xsl:template>
 
 
