@@ -21,10 +21,13 @@
 	Gestion du tour kawa.
 	
 	$Log$
+	Revision 1.10  2004/12/07 20:56:35  pico
+	Changement de la base de données de gestion des tours kawa
+
 	Revision 1.9  2004/11/24 13:05:23  schmurtz
 	Ajout d'un attribut type='discret' pour les liste et formulaire, afin d'avoir
 	une presentation par defaut sans gros cadres autour.
-
+	
 	Revision 1.8  2004/11/05 08:29:23  pico
 	Mise en forme de la sortie xml du tour kawa:
 	on balançait du texte formaté, ce qui n'était du coup que très peu skinable, j'ai mis ça sous la forme d'une liste, ce sera plus pratique
@@ -49,7 +52,7 @@ if(est_authentifie(AUTH_MINIMUM)) {
 	// Génération des tours kawa
 	$jour = array("Aujourd'hui","Demain");
 	for ($i = 0; $i <= 1; $i++) {
-		$DB_web->query("SELECT groupe FROM kawa.jour WHERE (jour=\"".(unixtojd(time())+13+$i)."\")");
+		$DB_web->query("SELECT sections.nom FROM kawa INNER JOIN trombino.sections ON kawa.section_id=sections.section_id WHERE (date=\"".date("Y-m-d",time()+$i * 3600 *24)."\")");
 		list($groupe)=$DB_web->next_row();
 		
 		if(strcasecmp("personne", $groupe) != 0 && $groupe != "") {
