@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.16  2004/12/08 12:22:40  kikx
+	Protection de la validation des activités
+
 	Revision 1.15  2004/11/29 19:41:08  kikx
 	Micro Bug
-
+	
 	Revision 1.14  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
 	
@@ -100,76 +103,94 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 // On traite les différents cas de figure d'enrigistrement et validation d'affiche :)
 
 // Enregistrer ...
-
+$DB_valid->query("LOCK TABLE valid_affiches WRITE");
+$DB_valid->query("SET AUTOCOMMIT=0");
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
 
+	
 
 	if (($temp[0]=='modif')||($temp[0]=='valid')) {
-		$DB_valid->query("UPDATE valid_affiches SET date='{$_POST['date']}', titre='{$_POST['titre']}' WHERE affiche_id='{$temp[1]}'");	
+		$DB_valid->query("SELECT 0 FROM valid_affiches WHERE affiche_id='{$temp[1]}'");
+		if ($DB_valid->num_rows()!=0) {
+			$DB_valid->query("UPDATE valid_affiches SET date='{$_POST['date']}', titre='{$_POST['titre']}' WHERE affiche_id='{$temp[1]}'");
+			if ($temp[0]!='valid') {
+		?>
+				<commentaire>Modif effectuée</commentaire>
+		<?
+			}
+		} else {
 	?>
-		<commentaire>Modif effectuée</commentaire>
-	<?	
+			<warning>Requête deja traitée par un autre administrateur</warning>
+	<?
+		}
 	}
 	
 	if ($temp[0]=='valid') {
 		$DB_valid->query("SELECT eleve_id FROM valid_affiches WHERE affiche_id='{$temp[1]}'");
-		list($eleve_id) = $DB_valid->next_row() ;
-		// envoi du mail
-		$contenu = 	"Ton activité vient d'être validé par le BR... Elle est dès à present visible sur le site<br><br> ".
-					"Merci de ta participation <br><br>".
-					"Très BR-ement<br>" .
-					"Le Webmestre de Frankiz<br>"  ;
-		couriel($eleve_id,"[Frankiz] Ton activité a été validé par le BR",$contenu);
-
-		if (isset($_REQUEST['ext_auth']))
-			$temp_ext = '1'  ;
-		else 
-			$temp_ext = '0' ;
-
-		$DB_web->query("INSERT INTO affiches SET stamp=NOW(), date='{$_POST['date']}', titre='{$_POST['titre']}', url='{$_POST['url']}', eleve_id=$eleve_id, exterieur=$temp_ext");
-		
-		
-		// On déplace l'image si elle existe dans le répertoire prevu à cette effet
-		$index = mysql_insert_id($DB_web->link) ;
-		if (file_exists(DATA_DIR_LOCAL."affiches/a_valider_{$temp[1]}")){
-			rename(DATA_DIR_LOCAL."affiches/a_valider_{$temp[1]}",DATA_DIR_LOCAL."affiches/{$index}") ;
-		}
-		$DB_valid->query("DELETE FROM valid_affiches WHERE affiche_id='{$temp[1]}'") ;
-	?>
-		<commentaire>Validation effectuée</commentaire>
-	<?	
-
+		if ($DB_valid->num_rows()!=0) {
+			list($eleve_id) = $DB_valid->next_row() ;
+			// envoi du mail
+			$contenu = 	"Ton activité vient d'être validé par le BR... Elle est dès à present visible sur le site<br><br> ".
+						"Merci de ta participation <br><br>".
+						"Très BR-ement<br>" .
+						"Le Webmestre de Frankiz<br>"  ;
+			couriel($eleve_id,"[Frankiz] Ton activité a été validé par le BR",$contenu);
+	
+			if (isset($_REQUEST['ext_auth']))
+				$temp_ext = '1'  ;
+			else 
+				$temp_ext = '0' ;
+	
+			$DB_web->query("INSERT INTO affiches SET stamp=NOW(), date='{$_POST['date']}', titre='{$_POST['titre']}', url='{$_POST['url']}', eleve_id=$eleve_id, exterieur=$temp_ext");
+			
+			
+			// On déplace l'image si elle existe dans le répertoire prevu à cette effet
+			$index = mysql_insert_id($DB_web->link) ;
+			if (file_exists(DATA_DIR_LOCAL."affiches/a_valider_{$temp[1]}")){
+				rename(DATA_DIR_LOCAL."affiches/a_valider_{$temp[1]}",DATA_DIR_LOCAL."affiches/{$index}") ;
+			}
+			$DB_valid->query("DELETE FROM valid_affiches WHERE affiche_id='{$temp[1]}'") ;
+		?>
+			<commentaire>Validation effectuée</commentaire>
+		<?	
+		} 
 	}
 	if ($temp[0]=='suppr') {
 		$DB_valid->query("SELECT eleve_id FROM valid_affiches WHERE affiche_id='{$temp[1]}'");
-		list($eleve_id) = $DB_valid->next_row() ;
-		// envoi du mail
-		$contenu = 	"Ton activité n'a pas été validé par le BR pour la raison suivante :<br>".
-					$_POST['refus']."<br>".
-					"Désolé <br><br>".
-					"Très BR-ement<br>" .
-					"Le Webmestre de frankiz<br>"  ;
-		couriel($eleve_id,"[Frankiz] Ton activité n'a pas été validé par le BR",$contenu);
-		
-		$DB_valid->query("DELETE FROM valid_affiches WHERE affiche_id='{$temp[1]}'") ;
-		//On supprime aussi l'image si elle existe ...
-		
-		$supp_image = "" ;
-		if (file_exists(DATA_DIR_LOCAL."affiches/a_valider_{$temp[1]}")){
-			unlink(DATA_DIR_LOCAL."affiches/a_valider_{$temp[1]}") ;
-			$supp_image = " et de son image associée" ;
-		}
-		
-
+		if ($DB_valid->num_rows()!=0) {
+			list($eleve_id) = $DB_valid->next_row() ;
+			// envoi du mail
+			$contenu = 	"Ton activité n'a pas été validé par le BR pour la raison suivante :<br>".
+						$_POST['refus']."<br>".
+						"Désolé <br><br>".
+						"Très BR-ement<br>" .
+						"Le Webmestre de frankiz<br>"  ;
+			couriel($eleve_id,"[Frankiz] Ton activité n'a pas été validé par le BR",$contenu);
+			
+			$DB_valid->query("DELETE FROM valid_affiches WHERE affiche_id='{$temp[1]}'") ;
+			//On supprime aussi l'image si elle existe ...
+			
+			$supp_image = "" ;
+			if (file_exists(DATA_DIR_LOCAL."affiches/a_valider_{$temp[1]}")){
+				unlink(DATA_DIR_LOCAL."affiches/a_valider_{$temp[1]}") ;
+				$supp_image = " et de son image associée" ;
+			}
+			
+	
+		?>
+			<warning>Suppression d'une affiche<? echo $supp_image?></warning>
+		<?
+		}else {
 	?>
-		<warning>Suppression d'une affiche<? echo $supp_image?></warning>
+			<warning>Requête deja traitée par un autre administrateur</warning>
 	<?
+		}
 	}
 	
-	
 }
-
+$DB_valid->query("COMMIT") ;
+$DB_valid->query("UNLOCK TABLES");
 
 //===============================
 
