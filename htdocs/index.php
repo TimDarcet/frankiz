@@ -21,9 +21,12 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.25  2005/01/12 17:15:58  pico
+	Correction bug #30
+
 	Revision 1.24  2005/01/02 10:50:25  pico
 	Passage de certaines pages en visibles de l'intérieur (non loggué)
-
+	
 	Revision 1.23  2004/12/17 10:55:44  kikx
 	Ca avait déja ete fait ?
 	pige pas ...
@@ -131,7 +134,7 @@ if (!est_authentifie(AUTH_MINIMUM))  {
 $DB_web->query("SELECT annonces.annonce_id,stamp,perime,titre,contenu,en_haut,exterieur,nom,prenom,surnom,promo,"
 					 ."IFNULL(mail,CONCAT(login,'@poly.polytechnique.fr')) as mail, $annonces_lues2 "
 					 ."FROM annonces LEFT JOIN trombino.eleves USING(eleve_id) $annonces_lues1"
-					 ."WHERE (perime>=".date("Ymd000000",time()).") ORDER BY perime DESC");
+					 ."WHERE (perime>".date("Y-m-d H:i:s",time()).") ORDER BY perime DESC");
 while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail,$visible)=$DB_web->next_row()) {
 	if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
 ?>
