@@ -13,20 +13,15 @@ require_once "../include/global.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-if(!verifie_permission('admin')) {
-	header("Location: ".BASE_URL."/admin/");
-	exit;
-}
-connecter_mysql_frankiz();
+if(!verifie_permission('admin'))
+	rediriger_vers("/admin/");
 
 // Gestion des détails d'une personne
  foreach ($_POST AS $keys => $val){
         //echo "<p>$keys # $val</p>";
 	$temp = explode("_",$keys) ;
-	if ($temp[0] == "detail") {
-		header("Location: ".BASE_URL."/trombino/?chercher=1&loginpoly=$temp[1]");
-		exit;
-	}
+	if ($temp[0] == "detail")
+		rediriger_vers("/trombino/?chercher=1&loginpoly=$temp[1]");
 }
 
 // Génération de la page
@@ -36,8 +31,6 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="admin_arp" titre="Frankiz : gestion des logs ip">
 <?
-
-
 
 // Gestion de la suppression
 if(isset($_POST['supprimer'])) {
@@ -82,7 +75,7 @@ if (isset($_POST['recherche']) ) {
 
 	$query2 = "SELECT eleves.login, eleves.promo, ip_chambre_theory.prise_id, ip_chambre_theory.piece_id, ip_chambre_theory.ip_theorique FROM eleves RIGHT JOIN ip_chambre_theory USING(piece_id) ORDER BY ip_theorique ASC" ;
 
-		$result = mysql_query($query2);
+	$DB_web->query($query2);
 
 ?>
 
@@ -95,7 +88,7 @@ if (isset($_POST['recherche']) ) {
 <?php
 		
 		$temp_piece = "" ;
-		while(list($login,$promo, $id_prise,$id_piece,$ip_theorique) = mysql_fetch_row($result)) {
+		while(list($login,$promo, $id_prise,$id_piece,$ip_theorique) = $DB_web->next_row()) {
 			echo "\t\t<element id=\"$id_prise\">\n";
 
 			$login2 ="" ;
@@ -170,7 +163,6 @@ if (isset($_POST['recherche']) ) {
 //=======================
 
 		}
-		mysql_free_result($result);
 ?>
 		<bouton titre="Supprimer" id="supprimer"/>
 	</liste>
@@ -181,6 +173,5 @@ if (isset($_POST['recherche']) ) {
 </page>
 
 <?php
-deconnecter_mysql_frankiz();
 require_once BASE_LOCAL."/include/page_footer.inc.php";
 ?>
