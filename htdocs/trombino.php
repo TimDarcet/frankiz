@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.30  2004/12/15 03:48:23  kikx
+	Sinon ca merde
+
 	Revision 1.29  2004/12/12 15:18:59  psycow
 	Rechangement blah
-
+	
 	Revision 1.28  2004/12/12 13:17:01  psycow
 	Modification du Trombino
 	
@@ -114,7 +117,7 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_RE
 	list($promo_temp) = $DB_web->next_row() ;
 
 	$where = "";
-		$join = "INNER JOIN sections ON eleves.section_id=sections.section_id INNER JOIN pieces ON eleves.piece_id = pieces.piece_id ";
+		$join = "LEFT JOIN sections ON eleves.section_id=sections.section_id LEFT JOIN pieces ON eleves.piece_id = pieces.piece_id ";
 		$champs = "eleves.eleve_id,eleves.nom,prenom,surnom,eleves.piece_id,sections.nom,eleves.section_id,cie,promo,login,mail,pieces.tel";
 	
 	// Création de la requête si lien_tol appelle
