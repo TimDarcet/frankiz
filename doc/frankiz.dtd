@@ -26,10 +26,13 @@
 	utilisé.
 
 	$Log$
+	Revision 1.7  2004/11/25 00:35:19  schmurtz
+	une image de plus dans htdocs/image
+
 	Revision 1.6  2004/11/24 13:40:19  pico
 	Retour en arrière:
 	le champ est utile, c'est dans l'esprit des balises du w3c, mais ça interfère avec ce qui est fait jusqu'à maintenant, c'est à dire mettre l'id dans le champ valeur...
-
+	
 	Revision 1.5  2004/11/24 12:01:23  pico
 	Ajout du champ valeur dans les balises "option" pour pouvoir faire des formulaires plus évolués (ex: checkbox)
 	
@@ -63,8 +66,8 @@
 	
 -->
 
-<!ENTITY texte.formate "(#PCDATA|strong|em|a|image)*">
-<!ENTITY texte.misenpage "(h1|h2|h3|h4|h5|p|code|image|arbre|liste|formulaire)*">
+<!ENTITY texte.formate "(#PCDATA|strong|em|a|image|code)*">
+<!ENTITY texte.misenpage "(h1|h2|h3|h4|h5|p|ul|image|arbre|liste|formulaire)*">
 
 <!-- ------------------------------------------------------------------------------------------
 	
@@ -129,6 +132,9 @@
 <!ELEMENT h3 &texte.formate;>
 <!ELEMENT h4 &texte.formate;>
 <!ELEMENT h5 &texte.formate;>
+
+<!ELEMENT ul (&texte.formate|li);>
+<!ELEMENT li &texte.formate;>
 
 <!ELEMENT p &texte.formate;>
 <!ELEMENT note (&texte.formate;)>			<!-- note, explication sur ce à quoi sert la page/le formulaire -->

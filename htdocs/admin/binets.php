@@ -21,10 +21,13 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.18  2004/11/25 00:35:19  schmurtz
+	une image de plus dans htdocs/image
+
 	Revision 1.17  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
-
+	
 	Revision 1.16  2004/11/11 19:22:52  kikx
 	Permet de gerer l'affichage externe interne des binets
 	Permet de pas avoir de binet sans catégorie valide
@@ -192,7 +195,7 @@ if (isset($_POST['modif'])) {
 //==========================
 
 if (isset($_POST['suppr_img'])) {
-		$img = BASE_LOCAL.'/admin/binet_default.gif' ;
+		$img = BASE_LOCAL.'/images/binet_default.gif' ;
 			
 		$type_img =  'image/gif';
 		$fp = fopen($img,"rb"); // (b est pour lui dire que c'est bineaire !)
