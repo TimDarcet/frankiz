@@ -32,7 +32,7 @@
 			<p class="news"><xsl:value-of select="qdj/question"/></p>
 		<xsl:choose>
 		<xsl:when test="boolean(qdj[@action])">
-			<ul class="qdj">
+<!--			<ul class="qdj">
 				<li>
 					<span class="rouje"><xsl:text> </xsl:text></span><br/>
 					<a>		
@@ -47,10 +47,29 @@
 						<xsl:value-of select="qdj/reponse[@id='2']"/>
 					</a>
 				</li>
-			</ul>
+			</ul>-->
+			<table class="qdj">
+				<tr>
+					<td>
+					<span class="rouje"><xsl:text> </xsl:text></span><br/>
+					<a>		
+						<xsl:attribute name="href"><xsl:value-of select="qdj/@action"/>1</xsl:attribute>
+						<xsl:value-of select="qdj/reponse[@id='1']"/>
+					</a>
+					</td>
+
+					<td>
+					<span class="jone"><xsl:text> </xsl:text></span><br/>
+					<a>
+						<xsl:attribute name="href"><xsl:value-of select="qdj/@action"/>2</xsl:attribute>
+						<xsl:value-of select="qdj/reponse[@id='2']"/>
+					</a>
+					</td>
+				</tr>
+			</table>
 		</xsl:when>
 		<xsl:otherwise>
-			<ul class="reponse_qdj">
+<!--			<ul class="reponse_qdj">
 				<li>
 					<div class="col">
 						<span class="blanc"><xsl:attribute name="style">height:<xsl:value-of select="round(100-((qdj/reponse[@id='1']/@votes * 100) div sum(qdj/reponse/@votes)))" />%;</xsl:attribute><xsl:text> </xsl:text></span>
@@ -73,7 +92,34 @@
 						<xsl:value-of select="qdj/reponse[@id='2']/@votes"/> soit <xsl:value-of select="round((qdj/reponse[@id='2']/@votes * 100) div sum(qdj/reponse/@votes))"/>%<br/>
 					</div>
 				</li>
-			</ul>
+			</ul>-->
+			<table class="reponse_qdj">
+				<tr>
+					<td>
+					<div class="col">
+						<span class="blanc"><xsl:attribute name="style">height:<xsl:value-of select="round(100-((qdj/reponse[@id='1']/@votes * 100) div sum(qdj/reponse/@votes)))" />%;</xsl:attribute><xsl:text> </xsl:text></span>
+						<span class="rouje"><xsl:attribute name="style">height:<xsl:value-of select="round((qdj/reponse[@id='1']/@votes * 100) div sum(qdj/reponse/@votes))" />%;</xsl:attribute><xsl:text> </xsl:text></span><br/>
+					</div>
+					<div class="reponse">
+						<strong><xsl:value-of select="qdj/reponse[@id='1']" /></strong>
+						<br/>
+						<xsl:value-of select="qdj/reponse[@id='1']/@votes"/> soit <xsl:value-of select="round((qdj/reponse[@id='1']/@votes * 100) div sum(qdj/reponse/@votes))"/>%<br/>
+					</div>
+					</td>
+	
+					<td>
+					<div class="col">
+						<span class="blanc"><xsl:attribute name="style">height:<xsl:value-of select="round(100-((qdj/reponse[@id='2']/@votes * 100) div sum(qdj/reponse/@votes)))" />%;</xsl:attribute><xsl:text> </xsl:text></span>
+						<span class="jone"><xsl:attribute name="style">height:<xsl:value-of select="round((qdj/reponse[@id='2']/@votes * 100) div sum(qdj/reponse/@votes))" />%;</xsl:attribute><xsl:text> </xsl:text></span><br/>
+					</div>
+					<div class="reponse">
+						<strong><xsl:value-of select="qdj/reponse[@id='2']" /></strong>
+						<br/>
+						<xsl:value-of select="qdj/reponse[@id='2']/@votes"/> soit <xsl:value-of select="round((qdj/reponse[@id='2']/@votes * 100) div sum(qdj/reponse/@votes))"/>%<br/>
+					</div>
+					</td>
+				</tr>
+			</table>
 		</xsl:otherwise>
 		</xsl:choose>
 		<br/>

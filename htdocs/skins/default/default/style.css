@@ -477,60 +477,61 @@ dd.lien {
 
 /* -----------QDJ---------------*/
 
-dl#qdj ul.qdj {
-	margin-top:20px;
+dl#qdj table.qdj {
+	width:100%;
 }
 
-dl#qdj ul.qdj li {
-	display:inline;
+dl#qdj table.qdj td {
 	text-align:center;
 	height:100px;
-	width:30px;
+	width:50%;
 }
 
-dl#qdj ul.qdj li a{
+dl#qdj table.qdj td a{
 	font-weight:bold;
 }
 
-dl#qdj ul.qdj li span{
+dl#qdj table.qdj td span{
 	display:block;
 	height:45px;
 	width:100%;
 }
 
-dl#qdj ul.qdj li span.rouje {
+dl#qdj table.qdj td span.rouje {
 	background:url(images/pointrouje.gif) no-repeat top center;
 }
 
-dl#qdj ul.qdj li span.jone {
+dl#qdj table.qdj td span.jone {
 	background:url(images/pointjone.gif) no-repeat top center;
 }
 
-dl#qdj ul.reponse_qdj li {
-	float:left;
+
+
+table.reponse_qdj {
+	width:100%;
+}
+table.reponse_qdj td {
 	text-align:center;
 	height:100px;
-	width:47%;
+	width:50%;
 }
-
-dl#qdj ul.reponse_qdj li div.col {
+table.reponse_qdj td div.col {
+	height:50px;
+}
+table.reponse_qdj td div.col span {
 	display:block;
 	height:50px;
 }
-dl#qdj ul.reponse_qdj li div.col span {
-	display:block;
-	height:5px;
-}
-dl#qdj ul.reponse_qdj li div.reponse {
+table.reponse_qdj td div.reponse {
 	height:50px;
 }
-dl#qdj ul.reponse_qdj li div.col span.jone {
+table.reponse_qdj td div.col span.jone {
 	background:url(images/jaune.gif) repeat-y top center;
 }
-dl#qdj ul.reponse_qdj li div.col span.rouje {
+table.reponse_qdj td div.col span.rouje {
 	background:url(images/rouge.gif) repeat-y top center;
 }
-dl#qdj ul.reponse_qdj li span.reponse {
+table.reponse_qdj td span.reponse {
 	display:block;		
 }
 
