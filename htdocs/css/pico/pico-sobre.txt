@@ -1,1 +1,1 @@
-CSS sur 3 colonnes  (va avec la skin Pico)
+CSS sur 3 colonnes
