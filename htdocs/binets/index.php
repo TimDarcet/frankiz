@@ -21,9 +21,13 @@
 	Affichage de la liste des binets ayant un site web.
 
 	$Log$
+	Revision 1.11  2004/11/11 19:22:52  kikx
+	Permet de gerer l'affichage externe interne des binets
+	Permet de pas avoir de binet sans catégorie valide
+
 	Revision 1.10  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.9  2004/10/19 13:45:00  schmurtz
 	Classement des binets par categorie puis par nom
 	
@@ -59,10 +63,13 @@ require BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="binets" titre="Frankiz : Binets">
 <?php
+	$auth = "" ;
+	if(!$_SESSION['user']->est_authentifie(AUTH_MINIMUM)) $auth = " AND exterieur=1 " ;
+
 	$categorie_precedente = -1;
 	$DB_trombino->query("SELECT binet_id,nom,description,http,b.catego_id,categorie ".
-						"FROM binets as b LEFT JOIN binets_categorie as c USING(catego_id) ".
-						"WHERE http IS NOT NULL ".
+						"FROM binets as b RIGHT JOIN binets_categorie as c USING(catego_id) ".
+						"WHERE http IS NOT NULL AND http != '' $auth".
 						"ORDER BY b.catego_id ASC, b.nom ASC");
 	while(list($id,$nom,$description,$http,$cat_id,$categorie) = $DB_trombino->next_row()) {
 

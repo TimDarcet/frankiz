@@ -21,9 +21,13 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.2  2004/11/11 19:22:52  kikx
+	Permet de gerer l'affichage externe interne des binets
+	Permet de pas avoir de binet sans catégorie valide
+
 	Revision 1.1  2004/11/11 17:42:26  kikx
 	pour avoir la liste des binets
-
+	
 
 	
 	
@@ -39,6 +43,29 @@ if(!verifie_permission('admin'))
 
 $message = "";
 $texte_image ="" ;
+// =====================================
+// Verification en douce que tout les binets
+// ont une catégorie valide
+// =====================================
+	
+$DB_trombino->query("SELECT catego_id FROM binets_categorie WHERE categorie='Divers'");
+list($catego_divers) = $DB_trombino->next_row() ;
+$where = "" ;
+$DB_trombino->query("SELECT catego_id FROM binets_categorie") ;
+while(list($catego) = $DB_trombino->next_row()) {
+	$where .= " AND catego_id !=$catego " ; 
+}
+$warning = "" ;
+$DB_trombino->query("SELECT binet_id,nom FROM binets WHERE 1=1 $where") ;
+while(list($id,$nom) = $DB_trombino->next_row()) {
+	$warning .= " $nom " ; 
+	$DB_trombino->push_result() ;
+	$DB_trombino->query("UPDATE binets SET catego_id=$catego_divers WHERE binet_id=$id") ;
+	$DB_trombino->pop_result() ;
+}
+if ($warning!="")
+	$message .= "<warning> <p>Les binets suivant n'avaient pas de categorie valide :</p><p>$warning</p><p>Leur categorie vient d'être remis à 'Divers'</p></warning>" ;
+
 // =====================================
 // Modification d'un binet
 // =====================================

@@ -21,9 +21,13 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.16  2004/11/11 19:22:52  kikx
+	Permet de gerer l'affichage externe interne des binets
+	Permet de pas avoir de binet sans catégorie valide
+
 	Revision 1.15  2004/11/11 17:39:54  kikx
 	Centralisation des pages des binets
-
+	
 	Revision 1.14  2004/11/11 16:08:51  kikx
 	Centralisation de la gestion des binets
 	
@@ -238,7 +242,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	
 	// Les données du webmestre du Binet
 	$DB_web->query("SELECT login FROM trombino.eleves LEFT JOIN compte_frankiz USING(eleve_id) WHERE perms LIKE '%webmestre_".$_GET['id'].",%' ORDER BY promo DESC");
-	list($web_login) = $DB_web->next_row() ;
+	while(list($web_login) = $DB_web->next_row()) {
 
 ?>
 	<formulaire id="binet_web_<? echo $binet_id?>" titre="<? echo $nom_binet?>" action="admin/binets.php?id=<?=$_GET['id']?>">
@@ -263,6 +267,9 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<bouton id='suppr' titre="Supprimer" onClick="return window.confirm('Voulez vous vraiment supprimer ce binet ?')"/>
 		<bouton id='suppr_img' titre="Supprimer l'image" onClick="return window.confirm('Voulez vous vraiment supprimer l'image de ce binet ?')"/>
 	</formulaire>
+	<?
+	}
+	?>
 
 </page>
 <?php
