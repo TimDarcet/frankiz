@@ -32,7 +32,7 @@
 		Et l'humidité s'élève à <xsl:value-of select="now/humidite"/>%<br />
 		L'état du ciel : <xsl:value-of select="now/ciel"/><br />
 		<img alt="meteo" width="64" height="64">
-			<xsl:attribute name="src">skins/basic/images/meteo/<xsl:value-of select="now/image"/>.png</xsl:attribute>
+			<xsl:attribute name="src">skins/pico/images/meteo/<xsl:value-of select="now/image"/>.png</xsl:attribute>
 		</img>
 	<h2>Prévisions météo :</h2><br />
 		<xsl:for-each select="jour">
@@ -40,11 +40,11 @@
 				La température : <xsl:value-of select="temperature_hi"/>°C pendant la journée et <xsl:value-of select="temperature_low"/>°C la nuit<br />	
 				Etat du ciel le jour : <xsl:value-of select="cieljour"/>
 				<img alt="meteo" width="32" height="32">
-					<xsl:attribute name="src">skins/basic/images/meteo/<xsl:value-of select="imagejour"/>.png</xsl:attribute>
+					<xsl:attribute name="src">skins/pico/images/meteo/<xsl:value-of select="imagejour"/>.png</xsl:attribute>
 				</img><br />
 				Etat du ciel la nuit : <xsl:value-of select="cielnuit"/>
 				<img alt="meteo" width="32" height="32">
-					<xsl:attribute name="src">skins/basic/images/meteo/<xsl:value-of select="imagenuit"/>.png</xsl:attribute>
+					<xsl:attribute name="src">skins/pico/images/meteo/<xsl:value-of select="imagenuit"/>.png</xsl:attribute>
 				</img><br />
 		</xsl:for-each>
 </xsl:template>
@@ -54,7 +54,7 @@
    		<div class="fkz_module"  style="text-align: center;">
 			<xsl:value-of select="now/temperature"/>°C<br />
 			<img alt="meteo" width="64" height="64">
-				<xsl:attribute name="src">skins/basic/images/meteo/<xsl:value-of select="now/image"/>.png</xsl:attribute>
+				<xsl:attribute name="src">skins/pico/images/meteo/<xsl:value-of select="now/image"/>.png</xsl:attribute>
 			</img>
 		</div>
 </xsl:template>
