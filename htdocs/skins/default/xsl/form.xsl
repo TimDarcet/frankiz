@@ -21,9 +21,14 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.9  2005/01/23 20:56:11  pico
+	Pour ajouter les hidden dans les formulaires, sinon y'a comportement quantique...
+
+	(j'ai essayé d'appeler psycow pour le préviendre, mais il est pas là)
+
 	Revision 1.8  2004/12/17 02:01:12  psycow
 	Gros changement dans les Formulaires, mieux pour les sondages
-
+	
 	Revision 1.7  2004/12/15 00:38:30  psycow
 	Commit du boulot de l'apres midi, a la place de l'EA
 	
@@ -116,7 +121,7 @@
 				
 			</xsl:for-each> 
 			<p class="boutons">
-				<xsl:apply-templates select="bouton"/>
+				<xsl:apply-templates select="bouton | hidden"/>
 			</p>
 		</fieldset>
 	</form>
