@@ -21,9 +21,12 @@
 	Gestions des liens perso / des flux rss.
 
 	$Log$
+	Revision 1.10  2005/01/04 23:22:03  pico
+	Encore des corrections
+
 	Revision 1.9  2005/01/04 23:15:23  pico
 	oubli
-
+	
 	Revision 1.8  2005/01/02 22:14:33  pico
 	Devrait fixer les pbs concernant les flux rss
 	
@@ -165,10 +168,11 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 		<note>Choisis quelles infos tu veux avoir sur toutes tes pages Frankiz</note>
 <?
+		$liens = $_SESSION['rss'];
  		foreach(array('module') as $mode){ 
 				echo "<choix titre=\"Affichage sommaire en module\" id=\"newrss\" type=\"checkbox\" valeur=\"";
 					foreach($array as $value => $description)
-							if($value != "" && (isset($_SESSION['rss']['m_'.$value])) && ($_SESSION['rss']['m_'.$value] == $mode))
+							if($value != "" && (isset($liens['m_'.$value])) && ($liens['m_'.$value] == $mode))
 								echo "vis[".$mode."_m_".$value."]";
 						echo"\">";
 						foreach($array as $value => $description)
@@ -179,7 +183,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 		<note>Liste des flux RSS perso</note>
 <?
-		$liens = $_SESSION['rss'];
+		
 		if(is_array($liens)){
 			foreach($liens as $url => $mode){
 				if($mode == 'module') $url = substr($url, 2);
