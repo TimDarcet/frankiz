@@ -21,9 +21,12 @@
 	Fonctions permettant de zipper/dezipper un fichier
 	
 	$Log$
+	Revision 1.11  2004/11/22 21:16:23  pico
+	La création de zip devrait marcher
+
 	Revision 1.10  2004/11/22 20:40:00  pico
 	Patch fonction tar
-
+	
 	Revision 1.9  2004/11/22 19:10:01  pico
 	Corrections mineures
 	
@@ -84,7 +87,7 @@ function unzip($file,$dir,$del){
 // Compresse le dossier $dir dans l'archive $file, de type $type
 function zip($file,$dir,$type){
 	if($type == "zip"){
-		$cde = "cd $dir && /usr/bin/zip -r $file *";
+		$cde = "cd $dir && /usr/bin/zip -r $file.zip *";
 		exec($cde);
 	}
 	if($type == "tar"){
