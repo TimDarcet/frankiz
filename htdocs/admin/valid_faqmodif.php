@@ -22,9 +22,12 @@
 	
 
 	$Log$
+	Revision 1.10  2005/01/13 17:10:58  pico
+	Mails de validations From le validateur qui va plus ou moins bien
+
 	Revision 1.9  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 	Revision 1.8  2004/12/16 16:53:37  falco
 	typo
 	
@@ -137,7 +140,7 @@ foreach ($_POST AS $keys => $val){
 						"<br>Sincèrement<br>" .
 						"Le BR<br>"  ;
 				
-					couriel($eleve_id,"[Frankiz] Ta modification de la FAQ vient d'être prise en compte",$contenu);
+					couriel($eleve_id,"[Frankiz] Ta modification de la FAQ vient d'être prise en compte",$contenu,MAIL_FAQMESTRE);
 
 				} else {
 		?>

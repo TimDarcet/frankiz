@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.15  2005/01/13 17:10:58  pico
+	Mails de validations From le validateur qui va plus ou moins bien
+
 	Revision 1.14  2005/01/11 13:42:17  pico
 	pff
-
+	
 	Revision 1.13  2005/01/11 13:41:27  pico
 	Oups erreur
 	
@@ -106,7 +109,7 @@ foreach ($_POST AS $keys => $val){
 				"Très Cordialement<br>" .
 				"Le BR<br>"  ;
 		
-			couriel($temp[1],"[Frankiz] La demande pour ton site a été refusée ",$contenu);
+			couriel($temp[1],"[Frankiz] La demande pour ton site a été refusée ",$contenu,MAIL_WEBMESTRE);
 			echo "<warning>Envoie d'un mail <br/>Le prévient que sa demande n'est pas acceptée</warning>" ;
 		} else {
 	?>
@@ -130,7 +133,7 @@ foreach ($_POST AS $keys => $val){
 					"Très Cordialement<br>" .
 					"Le BR<br>"  ;
 			
-			couriel($temp[1],"[Frankiz] La demande pour ton site perso a été acceptée",$contenu);
+			couriel($temp[1],"[Frankiz] La demande pour ton site perso a été acceptée",$contenu,MAIL_WEBMESTRE);
 				echo "<commentaire>Envoie d'un mail<br/>Le prévient que sa demande à été acceptée</commentaire>" ;
 				
 			$DB_valid->query("DELETE FROM valid_pageperso WHERE eleve_id='{$temp[1]}'");

@@ -21,9 +21,12 @@
 	Page d'envoi des mails promo.
 	
 	$Log$
+	Revision 1.6  2005/01/13 17:10:58  pico
+	Mails de validations From le validateur qui va plus ou moins bien
+
 	Revision 1.5  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 */
 
 set_time_limit(0) ;
@@ -80,7 +83,6 @@ $mail_contenu = wikiVersXML($mail,true)  ; // On met true pour dire que c'est du
 		couriel($eleve_id, $titre_mail." ".$titre,$mail_contenu, STRINGMAIL_ID, $from) ;
 		//print $from."<br>" ;
 		
-		//couriel("5059", $titre_mail." ".$titre, $mail_contenu, STRINGMAIL_ID, $from) ;
 		$DB_trombino->pop_result() ;
 		print("Envoi à $nom $prenom ($promo) [".($cnt+1)."]<br>") ;
 		flush() ;

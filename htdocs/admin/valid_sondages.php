@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un sondage
 	
 	$Log$
+	Revision 1.14  2005/01/13 17:10:58  pico
+	Mails de validations From le validateur qui va plus ou moins bien
+
 	Revision 1.13  2005/01/05 21:59:48  pico
 	Envoit de commentaire dans le mail de validation d'annonce
-
+	
 	Revision 1.12  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
 	
@@ -106,7 +109,7 @@ foreach ($_POST AS $keys => $val){
 						"Très Cordialement<br>" .
 						"Le BR<br>"  ;
 		
-			couriel($temp[2],"[Frankiz] Ton sondage a été refusé ",$contenu);
+			couriel($temp[2],"[Frankiz] Ton sondage a été refusé ",$contenu,MAIL_WEBMESTRE);
 			echo "<warning>Envoie d'un mail <br/>Le prévient que sa demande n'est pas acceptée</warning>" ;
 		} else {
 	?>
@@ -136,7 +139,7 @@ foreach ($_POST AS $keys => $val){
 						"Très Cordialement<br>" .
 						"Le BR<br>"  ;
 		
-			couriel($temp[2],"[Frankiz] Ton sondage a été validé ",$contenu);
+			couriel($temp[2],"[Frankiz] Ton sondage a été validé ",$contenu,MAIL_WEBMESTRE);
 			echo "<commentaire>Envoie d'un mail <br/>Prévient $prenom $nom que sa demande est acceptée</commentaire>" ;
 		} else {
 	?>

@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.11  2005/01/13 17:10:58  pico
+	Mails de validations From le validateur qui va plus ou moins bien
+
 	Revision 1.10  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 	Revision 1.9  2004/12/15 17:23:59  pico
 	On affiche la photo a sa vraie taille pour valider un changement trombi
 	
@@ -88,7 +91,7 @@ foreach ($_POST AS $keys => $val){
 			$contenu = "Ton image trombino est validée <br><br>".
 			"Très BR-ement<br>" .
 			"L'automate :)<br>"  ;
-			couriel($temp[1],"[Frankiz] Ton image trombino est validée",$contenu);
+			couriel($temp[1],"[Frankiz] Ton image trombino est validée",$contenu,TROMBINOMEN_ID);
 		} else {
 	?>
 			<warning>Requête deja traitée par un autre administrateur</warning>
@@ -110,7 +113,7 @@ foreach ($_POST AS $keys => $val){
 			$_POST['refus']."<br><br>".
 			"Très BR-ement<br>" .
 			"L'automate :)<br>"  ;
-			couriel($temp[1],"[Frankiz] Ton image trombino n'est pas validée",$contenu);
+			couriel($temp[1],"[Frankiz] Ton image trombino n'est pas validée",$contenu,TROMBINOMEN_ID);
 		} else {
 	?>
 			<warning>Requête deja traitée par un autre administrateur</warning>

@@ -21,9 +21,12 @@
 	Affichage d'un lien sur la page d'accueil vers le tol.
 	
 	$Log$
+	Revision 1.5  2005/01/13 17:10:58  pico
+	Mails de validations From le validateur qui va plus ou moins bien
+
 	Revision 1.4  2005/01/12 20:58:08  pico
 	Recherche trombi par appui sur enter
-
+	
 	Revision 1.3  2005/01/02 10:50:25  pico
 	Passage de certaines pages en visibles de l'intérieur (non loggué)
 	
@@ -37,8 +40,8 @@ if(est_authentifie(AUTH_INTERNE)) {
 ?>
 <module id="lien_tol" titre="Tol">
 	<formulaire id="lien_trombino" action="trombino.php" type="discret">
-		<champ titre="Rechercher" id="q_search" valeur="" />
 		 <hidden id="cherchertol" valeur="ok" />
+		 <champ titre="Rechercher" id="q_search" valeur="" />
 		<bouton titre="Chercher" id="ok" />
 	</formulaire>
 </module>

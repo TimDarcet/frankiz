@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.29  2005/01/13 17:10:58  pico
+	Mails de validations From le validateur qui va plus ou moins bien
+
 	Revision 1.28  2005/01/05 21:59:48  pico
 	Envoit de commentaire dans le mail de validation d'annonce
-
+	
 	Revision 1.27  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
 	
@@ -162,7 +165,7 @@ foreach ($_POST AS $keys => $val){
 						"Merci de ta participation <br><br>".
 						"Très BR-ement<br>" .
 						"Le Webmestre de Frankiz<br>"  ;
-			couriel($eleve_id,"[Frankiz] Ton annonce a été validé par le BR",$contenu);
+			couriel($eleve_id,"[Frankiz] Ton annonce a été validé par le BR",$contenu,WEBMESTRE_ID);
 			
 			if (isset($_REQUEST['ext_auth']))
 				$temp_ext = '1'  ;
@@ -198,7 +201,7 @@ foreach ($_POST AS $keys => $val){
 						"Désolé <br><br>".
 						"Très BR-ement<br>" .
 						"Le Webmestre de frankiz<br>"  ;
-			couriel($eleve_id,"[Frankiz] Ton annonce n'a pas été validé par le BR",$contenu);
+			couriel($eleve_id,"[Frankiz] Ton annonce n'a pas été validé par le BR",$contenu,WEBMESTRE_ID);
 	
 			$DB_valid->query("DELETE FROM valid_annonces WHERE annonce_id='{$temp[1]}'") ;
 			//On supprime aussi l'image si elle existe ...

@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.38  2005/01/13 17:10:58  pico
+	Mails de validations From le validateur qui va plus ou moins bien
+
 	Revision 1.37  2005/01/10 09:49:11  pico
 	Erreur
-
+	
 	Revision 1.36  2005/01/10 09:15:19  pico
 	Grr
 	
@@ -141,7 +144,7 @@ foreach ($_POST AS $keys => $val){
 					"Très Cordialement<br>" .
 					"Le BR<br>"  ;
 	
-		couriel($temp[1],"[Frankiz] Ta demande a été refusée ",$contenu);
+		couriel($temp[1],"[Frankiz] Ta demande a été refusée ",$contenu,ROOT_ID);
 		echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande n'a pas été acceptée.</commentaire>" ;
 	}
 	
@@ -167,7 +170,7 @@ foreach ($_POST AS $keys => $val){
 						"Très Cordialement<br>" .
 						"Le BR<br>";
 		
-			couriel($temp[1],"[Frankiz] Ta demande a été acceptée",$contenu);
+			couriel($temp[1],"[Frankiz] Ta demande a été acceptée",$contenu,ROOT_ID);
 			echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande a été acceptée (nouvelle adresse IP : ".$_POST[$temp2].")</commentaire>" ;
 			
 		// S'il y  a deja une entrée comme celle demandé dans la base !
@@ -189,7 +192,7 @@ foreach ($_POST AS $keys => $val){
 					"Très Cordialement<br>" .
 					"Le BR<br>"  ;
 	
-		couriel($temp[2],"[Frankiz] Suppression d'une adresse IP",$contenu);
+		couriel($temp[2],"[Frankiz] Suppression d'une adresse IP",$contenu,ROOT_ID);
 		echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que son adresse IP $temp2 vient d'être supprimée.</commentaire>" ;
 
 	}
