@@ -4,11 +4,14 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.15  2004/10/13 21:13:24  pico
+	Validation des qdj (pbs encore mais je vais régler ça)
+
 	Revision 1.14  2004/10/06 14:12:27  kikx
 	Page de mail promo quasiment en place ...
 	envoie en HTML ...
 	Page pas tout a fait fonctionnel pour l'instant
-
+	
 	Revision 1.13  2004/10/04 21:19:11  kikx
 	Rajour d'une page pour les mails promos
 	
@@ -51,6 +54,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<lien titre="Valider les annonces" url="<?php echo BASE_URL?>/admin/valid_annonces.php"/>
 		<lien titre="Valider les activités" url="<?php echo BASE_URL?>/admin/valid_affiches.php"/>
 		<lien titre="Valider les mails promos" url="<?php echo BASE_URL?>/admin/valid_mailpromo.php"/>
+		<lien titre="Valider les qdj" url="<?php echo BASE_URL?>/admin/valid_qdj.php"/>
 	<h2>Webmestre binet X</h2>
 	<p>En construction
 </p>
