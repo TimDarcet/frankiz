@@ -21,9 +21,12 @@
 	Page qui permet l'administartion des licences windows.
 	
 	$Log$
+	Revision 1.11  2005/01/20 12:47:22  dei
+	rajout du warning dans la liste
+
 	Revision 1.10  2005/01/20 12:32:19  dei
 	ajout de la gestion des clés libres
-
+	
 	Revision 1.9  2005/01/19 19:28:58  dei
 	Corrections des recherches sql qui pouvaient vider la base par erreur...
 	
@@ -151,6 +154,9 @@ $DB_msdnaa->query("UNLOCK TABLES");
 <?php
 		$DB_msdnaa->query("SELECT v.raison,v.logiciel,l.cle,e.nom,e.prenom,e.eleve_id FROM valid_licence as v LEFT JOIN trombino.eleves as e ON e.eleve_id=v.eleve_id LEFT JOIN cles_libres as l ON v.logiciel=l.logiciel");
 		while(list($raison,$logiciel,$cle_libre,$nom,$prenom,$eleve_id) = $DB_msdnaa->next_row()) {
+			if($cle_libre==""){
+				echo "<warning>Plus de clés libres pour $logiciel</warning>";
+			}
 ?>
 			<element id="<? echo $eleve_id ;?>">
 				<colonne id="logiciel"><? echo "$logiciel" ?></colonne>
@@ -162,7 +168,7 @@ $DB_msdnaa->query("UNLOCK TABLES");
 				</colonne>
 				<colonne id="licence">
 					<p>
-						<champ titre="" id="ajout_licence_<? echo $eleve_id ;?>" valeur="<? if($cle_libre!=""){echo $cle_libre ;}else{echo "Plus de cle libre pour ce logiciel";} ?>"/>
+						<champ titre="" id="ajout_licence_<? echo $eleve_id ;?>" valeur="<? echo $cle_libre ; ?>"/>
 						<bouton titre="Ok" id="ok_<? echo $eleve_id ;?>_<? echo $logiciel ;?>" />
 						<bouton titre="Refuser" id="vtff_<? echo $eleve_id ;?>_<? echo $logiciel ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette licence ?')"/>
 					</p>
