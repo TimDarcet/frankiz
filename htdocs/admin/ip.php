@@ -73,10 +73,8 @@ if(isset($_POST['supprimer'])) {
 <?
 if (isset($_POST['recherche']) ) {
 
-	$query2 = "SELECT eleves.login, eleves.promo, ip_chambre_theory.prise_id, ip_chambre_theory.piece_id, ip_chambre_theory.ip_theorique FROM eleves RIGHT JOIN ip_chambre_theory USING(piece_id) $where ORDER BY ip_theorique ASC" ;
-
-	$DB_admin->query($query2);
-
+	$DB_admin->query("SELECT e.login, e.promo, p.prise_id, p.piece_id, p.ip FROM prises as p "
+					."LEFT JOIN trombino.eleves as e USING(piece_id)  ORDER BY ip ASC");
 ?>
 
 	<liste id="liste_ip" selectionnable="oui" action="admin/ip.php">
