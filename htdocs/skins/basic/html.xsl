@@ -21,10 +21,13 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.20  2004/10/29 17:42:36  kikx
+	Petit bug que je ne comprend pas pourquoi ca ne marchait pas avant et que ca marche now (c'est pour faire une phrase correct et comprehensible en français)
+
 	Revision 1.19  2004/10/29 16:42:31  kikx
 	Rajout des id sur les liens de navigation
 	Ca pêrmet au skinneur soit de mettre en gras certain liens specifique soit de remplacer les liens par des images comme il le souhaite
-
+	
 	Revision 1.18  2004/10/21 22:43:11  kikx
 	Bug fix et mise en place de la possibilité de modifier la photo du trombino
 	
@@ -108,8 +111,6 @@
 		<xsl:value-of select="@titre"/><xsl:apply-templates/>
 		</a><br />
 	</xsl:otherwise></xsl:choose>
-
-
 </xsl:template>
 
 <xsl:template match="lien">

@@ -22,9 +22,12 @@
 	ses machines, son compte xnet.
 	
 	$Log$
+	Revision 1.13  2004/10/29 17:42:36  kikx
+	Petit bug que je ne comprend pas pourquoi ca ne marchait pas avant et que ca marche now (c'est pour faire une phrase correct et comprehensible en français)
+
 	Revision 1.12  2004/10/22 06:53:39  pico
 	Modification du mdp qrezix
-
+	
 	Revision 1.11  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
 	
@@ -82,7 +85,7 @@ require "../include/page_header.inc.php";
 			echo "<p>&nbsp;</p><p>Tu as en plus fait rajouter ces ips à tes ip autorisées :</p>" ;
 			$id_ip++;
 			while(list($kzert,$prise,$ip{$id_ip},$type) = $DB_admin->next_row()) { 
-				echo "<p>$ip{$id_ip}</p>" ;
+				echo "<p>".$ip{$id_ip}."</p>" ;
 				$bool_ip = $bool_ip&&($ip{$id_ip}!=$_SERVER['REMOTE_ADDR']) ;
 				$id_ip++;
 			}
