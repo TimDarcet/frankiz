@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.19  2005/01/05 21:59:48  pico
+	Envoit de commentaire dans le mail de validation d'annonce
+
 	Revision 1.18  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 	Revision 1.17  2004/12/16 13:00:41  pico
 	INNER en LEFT
 	
@@ -138,6 +141,7 @@ foreach ($_POST AS $keys => $val){
 			list($eleve_id) = $DB_valid->next_row() ;
 			// envoi du mail
 			$contenu = 	"Ton activité vient d'être validé par le BR... Elle est dès à present visible sur le site<br><br> ".
+						$_POST['explication']."<br>".
 						"Merci de ta participation <br><br>".
 						"Très BR-ement<br>" .
 						"Le Webmestre de Frankiz<br>"  ;
@@ -168,7 +172,7 @@ foreach ($_POST AS $keys => $val){
 			list($eleve_id) = $DB_valid->next_row() ;
 			// envoi du mail
 			$contenu = 	"Ton activité n'a pas été validé par le BR pour la raison suivante :<br>".
-						$_POST['refus']."<br>".
+						$_POST['explication']."<br>".
 						"Désolé <br><br>".
 						"Très BR-ement<br>" .
 						"Le Webmestre de frankiz<br>"  ;
@@ -244,7 +248,7 @@ $DB_valid->query("UNLOCK TABLES");
 			<?
 			}
 			?>
-			<zonetext id="refus" titre="La raison du refus si refus"></zonetext>
+			<zonetext id="explication" titre="La raison du choix du modérateur (Surtout si refus)"></zonetext>
 
 			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
 			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Cette annonce apparaitra dès maintenant sur le site ... Voulez vous valider cette activité ?')"/>

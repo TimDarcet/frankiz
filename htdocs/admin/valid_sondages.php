@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un sondage
 	
 	$Log$
+	Revision 1.13  2005/01/05 21:59:48  pico
+	Envoit de commentaire dans le mail de validation d'annonce
+
 	Revision 1.12  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 	Revision 1.11  2004/12/16 13:00:41  pico
 	INNER en LEFT
 	
@@ -95,7 +98,7 @@ foreach ($_POST AS $keys => $val){
 
 			$DB_valid->query("DELETE FROM valid_sondages WHERE sondage_id='{$temp[1]}'");
 			
-			$bla = "refus_".$temp[1] ;
+			$bla = "explication_".$temp[1] ;
 			$contenu = "<strong>Bonjour</strong>, <br><br>".
 						"Nous sommes désolé mais ton sondage n'a pas été validé par le BR pour la raison suivante : <br>".
 						$_POST[$bla]."<br>".
@@ -125,8 +128,10 @@ foreach ($_POST AS $keys => $val){
 		
 			$DB_valid->query("DELETE FROM valid_sondages WHERE sondage_id='{$temp[1]}'");
 			
+			$bla = "explication_".$temp[1] ;
 			$contenu = "<strong>Bonjour</strong>, <br><br>".
 						"Ton sondage vient d'être mis en ligne par le BR <br>".
+						$_POST[$bla]."<br>".
 						"<br>" .
 						"Très Cordialement<br>" .
 						"Le BR<br>"  ;
@@ -160,7 +165,7 @@ $DB_trombino->query("UNLOCK TABLES");
 		
 		<formulaire id="sond_<? echo $id ?>" titre="Validation de '<?=$titre?>'" action="admin/valid_sondages.php">
 			<note>Sondage proposé par <?=$prenom?> <?=$nom?> (<?=$promo?>)</note>
-			<zonetext titre="Raison du Refus si refus" id="refus_<? echo $id ;?>"></zonetext>
+			<zonetext titre="La raison du choix du modérateur (Surtout si refus)" id="explication_<? echo $id ;?>"></zonetext>
 			
 			<bouton id='valid_<? echo $id ?>_<? echo $eleve_id ?>' titre='Valider' onClick="return window.confirm('Valider ce sondage ?')"/>
 			<bouton id='suppr_<? echo $id ?>_<? echo $eleve_id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce sondage ?!!!!!')"/>

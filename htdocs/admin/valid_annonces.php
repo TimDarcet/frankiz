@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.28  2005/01/05 21:59:48  pico
+	Envoit de commentaire dans le mail de validation d'annonce
+
 	Revision 1.27  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 	Revision 1.26  2004/12/16 13:00:41  pico
 	INNER en LEFT
 	
@@ -155,6 +158,7 @@ foreach ($_POST AS $keys => $val){
 			list($eleve_id) = $DB_valid->next_row() ;
 			// envoi du mail
 			$contenu = 	"Ton annonce vient d'être validé par le BR... Elle est dès à present visible sur la page d'accueil<br><br> ".
+						$_POST['explication']."<br>".
 						"Merci de ta participation <br><br>".
 						"Très BR-ement<br>" .
 						"Le Webmestre de Frankiz<br>"  ;
@@ -190,7 +194,7 @@ foreach ($_POST AS $keys => $val){
 			list($eleve_id) = $DB_valid->next_row() ;
 			// envoi du mail
 			$contenu = 	"Ton annonce n'a pas été validé par le BR pour la raison suivante :<br>".
-						$_POST['refus']."<br>".
+						$_POST['explication']."<br>".
 						"Désolé <br><br>".
 						"Très BR-ement<br>" .
 						"Le Webmestre de frankiz<br>"  ;
@@ -261,7 +265,7 @@ $DB_valid->query("UNLOCK TABLES");
 			<choix titre="Important" id="important" type="checkbox" valeur="<? if ((isset($_REQUEST['important']))&&(isset($_REQUEST['modif_'.$id]))) echo 'important' ;?>">
 				<option id="important" titre=""/>
 			</choix>
-			<zonetext id="refus" titre="La raison du refus si refus"></zonetext>
+			<zonetext id="explication" titre="La raison du choix du modérateur (Surtout si refus)"></zonetext>
 
 			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
 			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Cette annonce apparaitra dès maintenant sur la page d'accueil de frankiz... Voulez vous valider cette annonce ?')"/>
