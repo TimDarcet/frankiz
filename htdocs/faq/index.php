@@ -1,9 +1,12 @@
 <? 
 /*
 		$Log$
+		Revision 1.12  2004/10/20 21:52:31  pico
+		Chgt noeuds
+
 		Revision 1.11  2004/10/20 20:00:37  pico
 		Génération des balises plus conforme
-
+		
 		Revision 1.10  2004/10/19 22:00:50  pico
 		Pas d'authentification
 		Fixe un warning
@@ -64,20 +67,15 @@ function rech_fils($parent) {
 		//----------------------------------
 		$DB_web->query("SELECT faq_id,question FROM faq WHERE parent='{$parent}' AND reponse NOT LIKE '%index.php' ") ;
 		while(list($id,$question) = $DB_web->next_row()) {
-			if (affiche_element_faq($id)) {
-				echo "<feuille class='foldheader2'>\n\r";		// folder open
-			} else {
-				echo "<feuille class='foldheader1'>\n\r";		// folder fermé
-			}
-			echo "<a  name=\"".$id."\"/>" ;
-			echo "<lien  url='faq/index.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
+			echo "<noeud id='".$id."' ";	
+			echo "lien='faq/index.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
-			echo "#".$id."' titre='".htmlspecialchars($question,ENT_QUOTES)."'/>" ;
+			echo "#".$id."' titre='".htmlspecialchars($question,ENT_QUOTES)."'>" ;
 			if (eregi("/".$id."/",$a_marquer)) {
 				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche_folder.gif'/>" ;
 			}
 			rech_fils($id) ;
-			echo "\n\r</feuille>\n\r " ;
+			echo "\n\r</noeud>\n\r " ;
 		}
 		
 		// affichage des vrais questions !
@@ -85,10 +83,9 @@ function rech_fils($parent) {
 		
 		$DB_web->query("SELECT faq_id,question FROM faq WHERE parent='{$parent}' AND reponse LIKE '%index.php'" ) ;
 		while(list($id,$question) = $DB_web->next_row()) {
-			echo "\n\r<feuille>\n\r" ;
-			echo "<lien  url='faq/index.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
+			echo "\n\r<feuille lien='faq/index.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
-			echo "#reponse' titre='".htmlspecialchars($question,ENT_QUOTES)."'/>" ;
+			echo "#reponse' titre='".htmlspecialchars($question,ENT_QUOTES)."'>" ;
 			if (eregi("/".$id."/",$a_marquer)) {
 				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche.gif'/>" ;
 			}
@@ -241,9 +238,7 @@ echo "<br/>" ;
             <bouton id="Submit" titre="Valide"/>
             <bouton id="reset" titre="Reset"/>
         </formulaire>
-        <p><em>(Tous les mots seront dans la description 
-          / Séparez les par un blanc) </em>
-        </p>
+    <commentaire>(Tous les mots seront dans la description / Séparez les par un blanc) </commentaire>
 <?
 
 //
@@ -259,21 +254,22 @@ echo "<br/>" ;
 	<? 
 	$repfaq = "../../data/faq/".$reponse;
 	echo "<cadre titre=\"Q: ".$question."\">";
-
- 	if($texte = fopen($repfaq,"r")){
- 	 	while(!feof($texte))
-   		{
-   	 		$ligne = fgets($texte,255);
-   	 		print(htmlspecialchars($ligne,ENT_QUOTES));
-   		}
- 	 	fclose($texte);
+	if(file_exists($repfaq)){
+ 		if($texte = fopen($repfaq,"r")){
+ 	 		while(!feof($texte))
+   			{
+   	 			$ligne = fgets($texte,255);
+   	 			print(htmlspecialchars($ligne,ENT_QUOTES));
+   			}
+ 	 		fclose($texte);
+		}
 	}
 //include($repfaq);
 	echo "</cadre>";
 	
 		} else {
 	?>
-	<p><strong>Erreur</strong> : Impossible de trouver cette question </p>
+	<warning>Erreur : Impossible de trouver cette question </warning>
 	<?
 		}
 		echo "<br/><br/>" ;
