@@ -22,9 +22,12 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.10  2004/12/17 20:54:13  pico
+	Changement des alias mail
+
 	Revision 1.9  2004/12/17 18:36:34  pico
 	Ajout mail admin@windows
-
+	
 	Revision 1.8  2004/12/17 15:50:41  schmurtz
 	Desactivation de l'affichage des erreurs
 	
@@ -103,9 +106,9 @@ define('BR_ID',$i--);
 
 define('MAIL_CONTACT',"eleves@polytechnique.fr");
 define('CONTACT_ID',$i--);
-define('MAIL_FAQMESTRE',"br@frankiz");
+define('MAIL_FAQMESTRE',"faq@frankiz");
 define('FAQMESTRE_ID',$i--);
-define('MAIL_TROMBINOMEN',"ecco@frankiz");
+define('MAIL_TROMBINOMEN',"trombino@frankiz");
 define('TROMBINOMEN_ID',$i--);
 define('MAIL_WINDOWS',"windows@frankiz");
 define('WINDOWS_ID',$i--);
