@@ -1,10 +1,11 @@
 body {
-    margin: 0;
-    background-color: #fff699;
+	background-color: #fff699;
+	margin: 0;
+	padding: 2px;
 }
 
-.principal {
-    width: 100%;
+img {
+	border: 0;
 }
 
 a {
@@ -14,134 +15,143 @@ a:hover {
     text-decoration: none;
 }
 
-.titre {
-    font-size: 10pt;
-    font-weight: bold;
+.fkz_liens {
+	font-size: 8pt;
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+	border-top: 1px solid #888888;
 }
 
-.contacts {
-    font-size: 8pt;
+.fkz_liens_nav {
+	font-size: 9pt;
+	font-weight: bold;
+	background-color: orange;
+	border-top: 1px solid #888888;
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+	padding: 2px;
+	text-align: center;
 }
 
-.activite {
-    border: 0;
-}
-
-.liens_ecole {
-    font-size: 8pt;
-}
-
-.fkz_liens_br {
-    font-size: 9pt;
-    font-weight: bold;
-    background-color: orange;
-    border-top: 1 solid #000000;
-    border-bottom: 1 solid #000000;
-    padding: 2px;
-    text-align: center;
-}
-
-.titre {
-    font-size: 11pt;
-    text-align: center;
-}
-
-.fkz_qdj_titre {
-    font-size: 11pt;
-    font-weight: bold;
-    background-color: red;
-    text-align: center;
-    border: 1 solid #000000;
-}
 
 .fkz_qdj_question {
     font-size: 11pt;
-    text-align: center;
+    text-align: center;   
 }
 
 .fkz_qdj_jone {
+    background-color: yellow;
     float: right;
     text-align: center;
-    background-color: yellow;
     width: 49%;
-    height: 6em;
 }
 
 .fkz_qdj_rouje {
+    background-color: red;
     float: left;
     text-align: center;
-    background-color: red;
     width: 49%;
-    height:6em;
 }
 
 .fkz_anniversaire {
-    font-size: 9pt;
-    text-align: center;
-    background-color: pink;
-    max-width: 100%; 
-    border: 1 solid #000000;
+	font-size: 9pt;
+	text-align: center;
+	background-color: pink;
+	max-width: 100%; 
+	border-top: 1px solid #888888;
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
 }
 
 .fkz_titre {
-    width: 100%;
-    font-size: 11pt;
-    font-weight: bold;
-    background-color: red;
-    text-align: center;
-    border: 1 solid #000000;
+	color: inherit;
+	background: #ffdb73;
+	padding: 2px;
+	text-align : center;
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+	border-top: 1px solid #888888;
 }
 
+.fkz_module {
+	border-bottom: 1px solid #888888;
+	padding: 2px;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+}
 
 .fkz_sommaire {
     font-size: 9pt;
     text-align: left;
     max-width: 100%; 
-    border: 1 solid #000000;
+    border: 1 solid #888888;
+    background-color: #ffeaab;
 }
 
 .fkz_sommaire_titre {
-    font-size: 9pt;
-    font-weight: bold;
-    text-align: center;
-    max-width: 100%; 
-    border: 1 solid #000000;
+	background-color: #ffdb73;
+	font-size: 9pt;
+	font-weight: bold;
+	text-align: center;
+	max-width: 100%; 
+	border-top: 1px solid #888888;
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
 }
 
 .fkz_annonces {
-    font-size: 9pt;
-    text-align: left;
-    max-width: 100%; 
-    border: 1 solid #000000;
+	font-size: 9pt;
+	text-align: left;
+	max-width: 100%; 
+	background-color: #ffeaab;
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+	border-top: 1px solid #888888;
 }
 
 .fkz_trombino {
     font-size: 9pt;
     text-align: left;
     max-width: 100%; 
-    border: 1 solid #000000;
+    	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+	border-top: 1px solid #888888;
 }
 
 .fkz_page {
     clear: both;
-    width: 100%;
+    width: 100%;     
 }
+
 
 .fkz_gauche {
         width: 20%;
         float: left;
 	font-size: 9pt;
+	margin: 2;
+	padding: 2px
 }
 
 .fkz_droite {
         float: right;
         width: 20%;
 	font-size: 9pt;
+	margin: 2;
+	padding: 2px
 }
 
 .fkz_centre {
 	float: left;
-	min-width: 60%;
+	min-width: 59%;
+	margin: 2;
+	padding: 2px
 }
 
 .serveur_up {
@@ -152,4 +162,38 @@ a:hover {
 .serveur_down {
 	color: inherit;
 	background: red;
+}
+
+/* FAQ et Xshare */
+.noeud_ferme{list-style-image:url('../skins/pico/fold_close.gif')}
+.noeud_ouvert{list-style-image:url('../skins/pico/fold_open.gif')}
+.feuille{list-style-image:url('../skins/pico/question.gif')}
+
+.fkz_stats{list-style-type:  none; padding:0}
+
+.fkz_qdj_last{
+list-style-type:  none;  
+text-align:left; 
+background-color:pink;
+}
+
+
+p.commentaire {
+	color: inherit;
+	background: #FFFFDD;
+	padding: 6px;
+	border: 1px solid #FFDD00;
+}
+p.warning {
+	color: inherit;
+	background: #FFDDDD;
+	padding: 6px;
+	border: 1px solid #FF3333;
+}
+
+p.note {
+	color: inherit;
+	background: #EFEFEF;
+	font-size: 75%;
+	padding: 6px;
 }
