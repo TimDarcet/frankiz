@@ -21,9 +21,12 @@
 	Affichage des liens personnels.
 
 	$Log$
+	Revision 1.7  2004/11/30 19:56:32  pico
+	On a plus besoin du lien vers la conf des liens perso, puisqu'elle est dans la page de préférences
+
 	Revision 1.6  2004/11/24 22:08:09  pico
 	Ajout lien vers page feed RSS dans le cadre liens_perso
-
+	
 	Revision 1.5  2004/11/24 21:09:04  pico
 	Sauvegarde avant mise à jour skins
 	
@@ -45,7 +48,6 @@
 
 */
 echo "<module id=\"liens_perso\" titre=\"Liens Perso\">";
-echo"<lien titre=\"News de sites externes\" url=\"rss.php\" />";
 if(isset($_SESSION['liens_perso']) && !empty($_SESSION['liens_perso']) && count($_SESSION['liens_perso'])>0){
 	foreach($_SESSION['liens_perso'] as $titre => $url){
 		echo "<lien titre=\"$titre\" url=\"$url\" />";
