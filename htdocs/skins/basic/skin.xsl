@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.20  2004/10/26 17:52:07  kikx
+	J'essaie de respecter la charte de weather.com mais c'est chaud car il demande le mettre leur nom en gras ... et je peux pas le faire avec la skin
+
 	Revision 1.19  2004/10/26 16:57:44  kikx
 	Pour la méteo ... ca envoie du paté !!
-
+	
 	Revision 1.18  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
 	
@@ -271,7 +274,7 @@
 	<h2>Prévisions météo :</h2><br />
 		<xsl:for-each select="jour">
 			<h3>Prévision à <xsl:value-of select="@date"/> jours </h3>
-				La température : entre <xsl:value-of select="temperature_hi"/>°C et <xsl:value-of select="temperature_low"/>°C<br />	
+				La température : <xsl:value-of select="temperature_hi"/>°C pendant la journée et <xsl:value-of select="temperature_low"/>°C la nuit<br />	
 				Etat du ciel le jour : <xsl:value-of select="cieljour"/>
 				<img alt="meteo" width="32" height="32">
 					<xsl:attribute name="src">skins/basic/images/meteo/<xsl:value-of select="imagejour"/>.png</xsl:attribute>

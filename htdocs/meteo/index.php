@@ -32,9 +32,12 @@
 			dayf=8 pour avoir 7 jour de previsions
 		
 	$Log$
+	Revision 1.1  2004/10/26 17:52:07  kikx
+	J'essaie de respecter la charte de weather.com mais c'est chaud car il demande le mettre leur nom en gras ... et je peux pas le faire avec la skin
+
 	Revision 1.1  2004/10/26 16:57:44  kikx
 	Pour la méteo ... ca envoie du paté !!
-
+	
 	
 */
 
@@ -231,17 +234,22 @@ $jour = explode("day d",$xml) ;
 
 for ($i=1; $i<=8 ; $i++){
 
-	echo "<jour date=\"".($i-1)."\">" ;
-			echo "<temperature_hi>".temperature_hi($jour[$i])."</temperature_hi>\n" ;
-			echo "<temperature_low>".temperature_low($jour[$i])."</temperature_low>\n" ;
-			echo "<cieljour>".temps($jour[$i],1)."</cieljour>\n" ;
-			echo "<cielnuit>".temps($jour[$i],2)."</cielnuit>\n" ;
-			echo "<imagejour>".temps_image($jour[$i],1)."</imagejour>\n" ;
-			echo "<imagenuit>".temps_image($jour[$i],2)."</imagenuit>\n" ;
-	echo "</jour>" ;
+	echo "<jour date=\"".($i-1)."\">\n" ;
+			echo "\t<temperature_hi>".temperature_hi($jour[$i])."</temperature_hi>\n" ;
+			echo "\t<temperature_low>".temperature_low($jour[$i])."</temperature_low>\n" ;
+			echo "\t<cieljour>".temps($jour[$i],1)."</cieljour>\n" ;
+			echo "\t<cielnuit>".temps($jour[$i],2)."</cielnuit>\n" ;
+			echo "\t<imagejour>".temps_image($jour[$i],1)."</imagejour>\n" ;
+			echo "\t<imagenuit>".temps_image($jour[$i],2)."</imagenuit>\n" ;
+	echo "</jour>\n" ;
 }
 ?>
 </meteo>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<lien url="http://www.weather.com/?prod=xoap&amp;par=1006415841"><image source="meteo/Weather.com.png"/></lien>
+<lien url="http://www.weather.com/?prod=xoap&amp;par=1006415841">Météo fourni grâce à weather.com&#174;</lien>
+
 </page>
 <?
 require_once "../include/page_footer.inc.php";

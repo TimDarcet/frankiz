@@ -21,9 +21,12 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.11  2004/10/26 17:52:07  kikx
+	J'essaie de respecter la charte de weather.com mais c'est chaud car il demande le mettre leur nom en gras ... et je peux pas le faire avec la skin
+
 	Revision 1.10  2004/10/25 19:41:58  kikx
 	Rend clair la page d'accueil et les annonces
-
+	
 	Revision 1.9  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -59,6 +62,7 @@
 	<?php else: ?>
 		<lien titre="Se connecter" url="login.php" />			
 	<?php endif; ?>
+	<lien titre="Météo" url="meteo/" />
 	<lien titre="Docs/Manuels" url="documentation/" />
 	<lien titre="FAQ" url="faq/" />
 	<lien titre="Télécharger" url="xshare/" />
