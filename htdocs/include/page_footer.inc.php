@@ -23,9 +23,12 @@
 	C'est d'ici qu'est appelé la fonction qui affiche les erreurs en haut de la page.
 	
 	$Log$
+	Revision 1.10  2005/01/14 10:07:46  pico
+	Passage d'infos à la skin
+
 	Revision 1.9  2004/12/16 12:52:57  pico
 	Passage des paramètres lors d'un login
-
+	
 	Revision 1.8  2004/11/24 20:26:38  schmurtz
 	Reorganisation des skins (affichage melange skin/css + depacement des css)
 	
@@ -61,7 +64,14 @@ if(isset($_REQUEST['xml'])) {
 $xh = xslt_create();
 xslt_set_encoding($xh, "ISO-8859-1");
 
-$resultat = xslt_process($xh, 'arg:/_xml', $_SESSION['skin']['skin_xsl_chemin'], NULL, array('/_xml'=>$xml),$_SESSION['skin']['skin_parametres']);
+$parameters = array (
+  'user_nom' => $_SESSION['user']->nom,
+  'user_prenom' => $_SESSION['user']->prenom,
+  'date' => date("d/m/Y"),
+  'heure' => date("H:i")
+);
+
+$resultat = xslt_process($xh, 'arg:/_xml', $_SESSION['skin']['skin_xsl_chemin'], NULL, array('/_xml'=>$xml),array_merge($_SESSION['skin']['skin_parametres'],$parameters));
 echo xslt_error($xh);
 xslt_free($xh);
 

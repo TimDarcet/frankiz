@@ -26,6 +26,10 @@
 	
 <xsl:param name="sommaire"/>
 <xsl:param name="trier_annonces"/>
+<xsl:param name="user_nom"/>
+<xsl:param name="user_prenom"/>
+<xsl:param name="date"/>
+<xsl:param name="heure"/>
 
 <!-- a modifier -->
 <xsl:include href="html.xsl"/>
