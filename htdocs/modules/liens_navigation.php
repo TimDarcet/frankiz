@@ -21,9 +21,12 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.29  2005/01/06 17:24:18  pico
+	Pour que les sites web perso internes soient visibles de l'intérieur
+
 	Revision 1.28  2005/01/02 10:50:25  pico
 	Passage de certaines pages en visibles de l'intérieur (non loggué)
-
+	
 	Revision 1.27  2004/12/16 23:00:12  schmurtz
 	Suppression du lien Se deconnecter si l'utilisateur est loguÃ© par cookie.
 	Ca evite de le faire sans le vouloir et de devoir remettre le cookie.
@@ -129,7 +132,11 @@
 		<lien id="trombino" titre="Trombino" url="trombino.php" key="t"/>
 	<?php } ?>
 	<lien id="meteo" titre="Météo" url="meteo.php" key="m"/>
-	<lien id="siteseleves" titre="Sites élèves" url="siteseleves.php"/>
+	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
+		<lien id="siteseleves" titre="Sites élèves" url="http://perso.frankiz"/>
+	<?php else: ?>
+		<lien id="siteseleves" titre="Sites élèves" url="siteseleves.php"/>
+	<?php endif; ?>
 	<?php if ((count($_SESSION['user']->perms)>1)&&($_SESSION['user']->perms[0]!="")) { ?>
 		<lien id="admin" titre="Administration" url="gestion/" key="g"/>
 	<?php } ?>
