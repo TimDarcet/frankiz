@@ -22,9 +22,12 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.16  2005/02/06 22:51:07  pico
+	Pour une faq avec des images
+
 	Revision 1.15  2005/01/21 23:02:47  pico
 	Postage licence sur les news
-
+	
 	Revision 1.14  2005/01/18 19:50:01  pico
 	Ajout MailPromo
 	
@@ -96,7 +99,7 @@ define('BASE_BINETS_EXT',"/home/frankiz2/htdocs/binets/");
 define('BASE_PAGESPERSOS',"/home/frankiz2/webperso/");
 define('BASE_PAGESPERSOS_EXT',"/home/frankiz2/htdocs/webperso/");
 
-define('URL_DATA','data/');
+define('URL_DATA',BASE_URL.'/data/');
 define('URL_BINETS','http://binets.frankiz.eleves.polytechnique.fr/');
 define('URL_PAGEPERSO','http://perso.frankiz.eleves.polytechnique.fr/');
 
