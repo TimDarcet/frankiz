@@ -22,27 +22,27 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="page[@id='annonces']" mode="complet">
-	<xsl:choose>
-		<xsl:when test="count(annonce)">
-			<xsl:if test="$trier_annonces='pas_tri'">
-				<xsl:apply-templates select="annonce" mode="complet">
-                     <xsl:with-param name="n" select="1" />
+    <xsl:choose>
+	<xsl:when test="count(annonce)">
+	   <xsl:if test="$trier_annonces='pas_tri'">
+		<xsl:apply-templates select="annonce" mode="complet">
+                    <xsl:with-param name="n" select="1" />
                 </xsl:apply-templates>
-			</xsl:if>
-			<xsl:if test="$trier_annonces!='pas_tri'"> 
-				<xsl:apply-templates select="annonce[@categorie='important']" mode="complet">
+	   </xsl:if>
+	   <xsl:if test="$trier_annonces!='pas_tri'"> 
+	       <xsl:apply-templates select="annonce[@categorie='important']" mode="complet">
                      <xsl:with-param name="n" select="1" />
-                </xsl:apply-templates>
+               </xsl:apply-templates>
                 
-				<xsl:apply-templates select="annonce[@categorie='nouveau']" mode="complet">
+		<xsl:apply-templates select="annonce[@categorie='nouveau']" mode="complet">
                      <xsl:with-param name="n" select="count(annonce[@categorie='important'])+1" />
                 </xsl:apply-templates>
                 
-				<xsl:apply-templates select="annonce[@categorie='vieux']" mode="complet">
+		<xsl:apply-templates select="annonce[@categorie='vieux']" mode="complet">
                      <xsl:with-param name="n" select="count(annonce[@categorie='important'])+count(annonce[@categorie='nouveau'])+1" />
                 </xsl:apply-templates>
                 
-				<xsl:apply-templates select="annonce[@categorie='reste']" mode="complet">  
+		<xsl:apply-templates select="annonce[@categorie='reste']" mode="complet">  
                      <xsl:with-param name="n" select="count(annonce[@categorie='important'])+count(annonce[@categorie='nouveau'])+count(annonce[@categorie='vieux'])+1" />
                 </xsl:apply-templates>
 			</xsl:if>
@@ -98,6 +98,8 @@
 
 <xsl:template match="annonce" mode="complet">
 	<xsl:param name="n" />
+         
+	<xsl:if test="@visible!='non'">
 	<div class="fkz_annonces">
 		<xsl:attribute name="id">
 			<xsl:value-of select="concat('annonce_',@id)"/>
@@ -119,7 +121,39 @@
 
 		</div>
 	</div>
-	<br/>
+        </xsl:if>
 </xsl:template>
+
+
+<xsl:template match="annonce" mode="sommaire">
+	<div class="fkz_sommaire_corps">
+		<a>
+			<xsl:attribute name="href">
+				<xsl:if test="@visible='non'">
+					<xsl:text>?nonlu=</xsl:text><xsl:value-of select="@id"/>
+				</xsl:if>
+				<xsl:text>#</xsl:text><xsl:value-of select="concat('annonce_',@id)"/>
+			</xsl:attribute>
+			<xsl:value-of select="@titre"/>
+		</a>
+	</div>
+</xsl:template>
+
+
+<xsl:template match="eleve[name(..)='annonce']">
+	<p class="fkz_signature">
+		<xsl:choose>
+			<xsl:when test="@surnom != ''">
+				<xsl:value-of select="@surnom"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="@prenom"/><xsl:text>  </xsl:text><xsl:value-of select="@nom"/>
+			</xsl:otherwise>
+		</xsl:choose>
+		(<xsl:value-of select="@promo"/>)
+	</p>
+</xsl:template>
+
+
 
 </xsl:stylesheet>
