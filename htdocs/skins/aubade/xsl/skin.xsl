@@ -28,20 +28,20 @@
 <xsl:param name="trier_annonces"/>
 
 <!-- a modifier -->
-<xsl:include href="html.xsl"/>
-<xsl:include href="form.xsl"/>
-<xsl:include href="arbre.xsl"/>
+<xsl:include href="../../pico/xsl/html.xsl"/>
+<xsl:include href="../../pico/xsl/form.xsl"/>
+<xsl:include href="../../pico/xsl/arbre.xsl"/>
 
 <xsl:include href="annonces.xsl"/>
-<xsl:include href="skins.xsl"/>
-<xsl:include href="liens.xsl"/>
-<xsl:include href="qdj.xsl"/>
+<xsl:include href="../../pico/xsl/skins.xsl"/>
+<xsl:include href="../../pico/xsl/liens.xsl"/>
+<xsl:include href="../../pico/xsl/qdj.xsl"/>
 <xsl:include href="anniversaires.xsl"/>
-<xsl:include href="activites.xsl"/>
-<xsl:include href="tours_kawa.xsl"/>
-<xsl:include href="trombino.xsl"/>
-<xsl:include href="stats.xsl"/>
-<xsl:include href="meteo.xsl"/>
+<xsl:include href="../../pico/xsl/activites.xsl"/>
+<xsl:include href="../../pico/xsl/tours_kawa.xsl"/>
+<xsl:include href="../../pico/xsl/trombino.xsl"/>
+<xsl:include href="../../pico/xsl/stats.xsl"/>
+<xsl:include href="../../pico/xsl/meteo.xsl"/>
 
 <xsl:template match="/">
 	<html lang="fr" xml:lang="fr">
