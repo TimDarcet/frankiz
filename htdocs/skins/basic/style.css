@@ -122,6 +122,29 @@ p.commentaire {
 	border: 1px solid #FFDD00;
 }
 
+/* Liste */
+table.liste {
+	border: 1px solid #888888;
+}
+
+table.liste td {
+	padding: 2px;
+}
+
+table.liste td.entete {
+	color: inherit;
+	background: #DDDDDD;
+	text-align: center;
+	font-weight: bold;
+	border-bottom: 1px solid #888888;
+}
+
+table.liste td.boutons {
+	color: inherit;
+	background: #DDDDDD;
+	border-top: 1px solid #888888;
+}
+
 /* Trombino */
 
 table.trombino {

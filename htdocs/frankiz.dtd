@@ -98,21 +98,34 @@
 		titre   CDATA   #REQUIRED
 		lien	CDATA   #IMPLIED>
 
-<!-- la liste à pour but de servir à afficher le résultat de requètes mysql -->
-<!ELEMENT liste (entete*,element*,bouton*)>
+<!--
+	Les listes ont été conçue pour l'affichage des résultats des requètes mysql dans les pages
+	d'administration. Une liste est donc une suite de ligne contenant plusieurs champs d'information
+	triables. Il est possible de définir une liste comme étant sélectionnable (ie. on peut séletionner
+	des lignes) avec un ou plusieurs boutons permettant d'effectuer des actions sur les lignes
+	sélectionnées.
+-->
+
+<!ELEMENT liste (commentaire?,entete*,element*,bouton*)>
 <!ATTLIST liste
 		id		ID		#REQUIRED
+		titre   CDATA   #REQUIRED
 		selectionnable (oui|non) "non"
 		action  CDATA   #IMPLIED>
 		<!-- si la liste est selectionnable, il doit y avoir un attribut "action" (la liste est
 		alors un formulaire) ainsi qu'au moins un élément "bouton" -->
+
 <!ELEMENT entete EMPTY>
 <!ATTLIST entete
 		id		CDATA   #REQUIRED
-		titre   CDATA   #REQUIRED>
+		titre   CDATA   #REQUIRED
+		action  CDATA   #IMPLIED>
+		<!-- l'action est l'url à lancer si on clique sur l'entête de la colonne -->
+
 <!ELEMENT element (colonne+)>
 <!ATTLIST element
 		id		CDATA   #IMPLIED>   <!-- l'id doit existé si la liste est sélectionnable -->
+
 <!ELEMENT colonne (&texte.formate;|champ|choix|bouton)>
 <!ATTLIST colonne
 		id		CDATA   #REQUIRED>  <!-- un id de colonne doit correspondre à un id d'entête -->

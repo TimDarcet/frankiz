@@ -23,12 +23,12 @@
 	</form>
 </xsl:template>
 
-<xsl:template match="formulaire/commentaire">
+<xsl:template match="commentaire">
 	<p class="commentaire"><xsl:apply-templates/></p>
 </xsl:template>
 
 <!-- champs contenant du texte -->
-<xsl:template match="formulaire/champ">
+<xsl:template match="champ">
 	<tr><td class="gauche">
 		<xsl:value-of select="@titre"/><xsl:text> :</xsl:text>
 	</td><td class="droite">
@@ -48,7 +48,7 @@
 </xsl:template>
 
 <!-- choix multiples (radio, combo ou checkbox) -->
-<xsl:template match="formulaire/choix[@type='combo']">
+<xsl:template match="choix[@type='combo']">
 	<tr><td class="gauche">
 		<xsl:value-of select="@titre"/><xsl:text> :</xsl:text>
 	</td><td class="droite">
@@ -64,7 +64,7 @@
 	</td></tr>
 </xsl:template>
 
-<xsl:template match="formulaire/choix[@type='radio']">
+<xsl:template match="choix[@type='radio']">
 	<tr><td class="gauche">
 		<xsl:value-of select="@titre"/><xsl:text> :</xsl:text>
 	</td><td class="droite">
@@ -79,7 +79,7 @@
 	</td></tr>
 </xsl:template>
 
-<xsl:template match="formulaire/choix[@type='checkbox']">
+<xsl:template match="choix[@type='checkbox']">
 	<tr><td class="gauche">
 		<xsl:value-of select="@titre"/><xsl:text> :</xsl:text>
 	</td><td class="droite">
@@ -94,14 +94,14 @@
 </xsl:template>
 
 <!-- boutons -->
-<xsl:template match="formulaire/bouton[@id != 'reset']">
+<xsl:template match="bouton[@id != 'reset']">
 	<input type="submit">
 		<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 		<xsl:attribute name="value"><xsl:value-of select="@titre"/></xsl:attribute>
 	</input>
 </xsl:template>
 
-<xsl:template match="formulaire/bouton[@id = 'reset']">
+<xsl:template match="bouton[@id = 'reset']">
 	<input type="reset">
 		<xsl:attribute name="value"><xsl:value-of select="@titre"/></xsl:attribute>
 	</input>
