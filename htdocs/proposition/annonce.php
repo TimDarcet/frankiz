@@ -3,9 +3,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.15  2004/10/04 21:48:54  kikx
+	Modification du champs fichier pour uploader des fichiers
+
 	Revision 1.14  2004/09/20 22:19:28  kikx
 	test
-
+	
 	Revision 1.13  2004/09/20 07:14:41  kikx
 	Permet de supprimer l'image qd on va valider l'annonce !!!
 	C'est chaint si on peut pas la suppimer
@@ -188,8 +191,7 @@ if (isset($_POST['valid'])) {
 		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
 		<zonetext id="text" titre="Le texte" valeur="<? if (isset($_POST['text'])) echo $_POST['text'] ;?>"/>
 		<textsimple valeur="Ton image doit être un fichier gif, png ou jpg, ne doit pas dépasser 400x300 pixels et 250ko car sinon elle ne sera pas téléchargée"/>
-		<hidden id="MAX_FILE_SIZE"  valeur="250000"/>
-		<champ id="file" titre="Ton image" valeur=""/>
+		<champ id="file" titre="Ton image" valeur="" taille="250000"/>
 		<bouton id='suppr_img' titre="Supprimer l'image"/>
 
 		<textsimple valeur="Ta signature sera automatiquement généré"/>

@@ -3,9 +3,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une activité
 	
 	$Log$
+	Revision 1.2  2004/10/04 21:48:54  kikx
+	Modification du champs fichier pour uploader des fichiers
+
 	Revision 1.1  2004/09/20 22:31:28  kikx
 	oubli
-
+	
 
 	
 */
@@ -171,8 +174,7 @@ if (isset($_POST['valid'])) {
 		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
 		<champ id="url" titre="URL du lien" valeur="<? if (isset($_POST['url'])) echo $_POST['url'] ;?>"/>
 		<textsimple valeur="Ton image doit être un fichier gif, png ou jpg, ne doit pas dépasser 200x300 pixels et 100ko car sinon elle ne sera pas téléchargée"/>
-		<hidden id="MAX_FILE_SIZE"  valeur="100000"/>
-		<champ id="file" titre="Ton image" valeur=""/>
+		<champ id="file" titre="Ton image" valeur="" taille="100000"/>
 		<bouton id='suppr_img' titre="Supprimer l'image"/>
 
 		<textsimple valeur="Ta signature sera automatiquement généré"/>

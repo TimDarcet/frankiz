@@ -3,9 +3,12 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.12  2004/10/04 21:48:54  kikx
+	Modification du champs fichier pour uploader des fichiers
+
 	Revision 1.11  2004/09/17 22:49:29  kikx
 	Rajout de ce qui faut pour pouvoir faire des telechargeement de fichiers via des formulaires (ie des champs 'file' des champ 'hidden') de plus maintenant le formulaire sont en enctype="multipart/form-data" car sinon il parait que ca marche pas !
-
+	
 	Revision 1.10  2004/09/17 09:05:32  kikx
 	La personne peut maintenant rajouter une annonce
 	Ceci dit je ne comprend pas trop comment on protège les champs avec les <!CDATA
@@ -83,6 +86,11 @@
 		<xsl:choose><xsl:when test="@modifiable='non'">
 			<xsl:value-of select="@valeur"/>
 		</xsl:when><xsl:otherwise>
+			<xsl:if test="boolean(@taille)">
+				<hidden id="MAX_FILE_SIZE">
+					<xsl:attribute name="valeur"><xsl:value-of select="@taille"/></xsl:attribute>
+				</hidden>
+			</xsl:if>
 			<input>
 				<xsl:choose>
 					<xsl:when test="starts-with(@id,'passwd')"><xsl:attribute name="type">password</xsl:attribute></xsl:when>
