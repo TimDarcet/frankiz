@@ -22,9 +22,15 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.29  2004/11/19 22:28:36  schmurtz
+	C'est bien de conserver une certaine unite dans la maniere de mettre les
+	commentaires
+	Et dans le meme genre, si tout le monde utilisait des tabulations de la taille
+	de 4 espaces (ou autre, mais il faut se mettre d'accord) ca serait mieux.
+
 	Revision 1.28  2004/11/19 17:14:31  kikx
 	Gestion complete et enfin FINIIIIIIIIIIIIIIII des sondages !!! bon ok c'est assez moche l'affichage des resultats mais .... j'en ai marrrrrrrrrrre
-
+	
 	Revision 1.27  2004/11/17 22:19:15  kikx
 	Pour avoir un module sondage
 	
@@ -130,15 +136,15 @@ function rediriger_vers($page) {
 function liste_modules() {
 	return array(
 		"css"				=> "",
-		"liens_navigation"		=> "",
-		"liens_propositions"		=> "",
-		"liens_utiles"			=> "Liens école",
+		"liens_navigation"	=> "",
+		"liens_propositions"=> "",
+		"liens_utiles"		=> "Liens école",
 		"qdj"				=> "Question du jour",
 		"qdj_hier"			=> "Question de la veille",
 		"meteo"				=> "Météo",
 		"activites"			=> "Activités",
 		"tour_kawa"			=> "Tours kawa",
-		"anniversaires"			=> "Anniversaires",
+		"anniversaires"		=> "Anniversaires",
 		"stats"				=> "Statistiques",
 		"sondages"			=> "Sondages");
 }
@@ -181,13 +187,14 @@ function cache_sauver($cache_id) {
 	fclose($file);                 
 
 	global $_CACHE_SAVED_BUFFER;					// hack
-	ob_start();											// hack
+	ob_start();										// hack
 	echo $_CACHE_SAVED_BUFFER;						// hack
 	echo $contenu;
 }
 
-
-/* Supprime un répertoire complet et renvoit true lorsque tout c'est bien passé */
+/*
+	Supprime un répertoire complet et renvoit true lorsque tout c'est bien passé
+*/
 function deldir($dir) {
 	if (!file_exists($dir)) {
 		return false;
@@ -214,7 +221,9 @@ function deldir($dir) {
 	}
 }
 
-/* Zippe et envoit le contenu d'un répertoire */
+/*
+	Zippe et envoit le contenu d'un répertoire
+*/
 function download($dir,$type = 'zip', $filename = "temp"){
 	$file = "/tmp/".$filename;
 	zip($file,$dir,$type);
@@ -222,9 +231,10 @@ function download($dir,$type = 'zip', $filename = "temp"){
 	header("Content-Disposition: attachment; filename=$filename.$type");
 	readfile($file.".".$type);
 }
-//---------------------------------------------------------------------------------
-// Fonction de décodage du sondage
-//---------------------------------------------------------------------------------
+
+/*
+	Fonction de décodage du sondage
+*/
 function decode_sondage($string) {
 	$string = explode("###",$string) ;
 	for ($i=1 ; $i<count($string) ; $i++) {
