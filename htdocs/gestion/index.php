@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.32  2004/12/17 19:59:31  pico
+	Ajout du lien vers l'historique qdj
+
 	Revision 1.31  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 	Revision 1.30  2004/12/17 16:29:29  kikx
 	Dans le trombino maintenant les promo sont dynamiques
 	Je limit aussi le changement des images (selon leur dimension200x200 dans le trombino)
@@ -291,6 +294,7 @@ $permissions_user = $_SESSION['user']->perms ;
 	if (verifie_permission('admin')||verifie_permission('qdjmaster')||verifie_permission('web')){
 	?>
 		<lien titre="Planifier les qdj" url="admin/planif_qdj.php"/><br/>
+		<lien titre="Historique des qdj" url="admin/histo_qdj.php"/><br/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('web')){
