@@ -21,9 +21,12 @@
 	Moteur Wiki (TipiWiki)
 	
 	$Log$
+	Revision 1.15  2004/12/01 18:56:37  pico
+	Nettoyage
+
 	Revision 1.14  2004/12/01 17:38:08  pico
 	corrections
-
+	
 	Revision 1.13  2004/12/01 17:20:28  pico
 	Un oubli, excusez moi
 	
@@ -143,13 +146,8 @@ function wikiVersXML($filtered,$enhtml=false) {
 	$filtered = str_replace("</p><p>\n<h","\n<h", $filtered);
 	$filtered = preg_replace("/(<\/h[1-6]>)<\/p><p>\n/","\\1\n", $filtered);
 	$filtered = preg_replace("/<p>\n*<\/p>/","",$filtered);
-
-	$p = xml_parser_create();
-	xml_parser_set_option($p, XML_OPTION_CASE_FOLDING,0);
-	//if(xml_parse($p, $filtered, true))
-		return $filtered;
-	//else 
-	//	return "<warning>le xml généré par la fonction wiki n'est pas valide</warning>";
+	
+	return $filtered;
 }
 
 
