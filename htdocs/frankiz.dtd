@@ -84,7 +84,7 @@
 			 "texte" est un texte alternatif affiché à la place de l'image si besoin
 			 "legende", texte traditionnellement affichée juste sous l'image -->
 
-<!-- l'arbre à pour but d'affiche un ensemble de liens organisé, comme c'est le cas pour les FAQs -->
+<!-- l'arbre à pour but d'afficher un ensemble de liens organisé, comme c'est le cas pour les FAQs -->
 <!ELEMENT arbre (noeud|feuille)+>
 <!ATTLIST arbre
 		id		ID		#REQUIRED
