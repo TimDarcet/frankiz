@@ -48,10 +48,10 @@
 	</p>
 	</div>
 	<div class="fkz_trombino_section">
-		<!--<img height="122" width="80">
-		<xsl:attribute name="src"><xsl:value-of select="@section"/></xsl:attribute>
+		<img height="84" width="63">
+		<xsl:attribute name="src">skins/pico/default/images/sections/<xsl:value-of select="translate(@section,'ABCDEFGHIJKLMNOPQRSTUVWXYZéè','abcdefghijklmnopqrstuvwxyzee')"/><xsl:value-of select="@promo mod 2"/>.jpg</xsl:attribute>
 		<xsl:attribute name="alt"><xsl:value-of select="@section"/></xsl:attribute>
-		</img>--><xsl:text> </xsl:text>
+		</img>
 	</div>
 	<div class="fkz_trombino_infos2">
 		<p class="promo">
@@ -61,16 +61,18 @@
 			<xsl:value-of select="@surnom" />
 		</p>
 	</div>
-    <xsl:if test="count(binet) != 0">
-	<div class="binets">Binets:
-		<ul>
-		<xsl:for-each select="binet">
-			<li><xsl:value-of select="@nom"/><xsl:text>  </xsl:text><em>(<xsl:value-of select="text()"/>)</em></li>
-		</xsl:for-each>
-		</ul>
+	<div class="binets">
+		<xsl:if test="count(binet) != 0">
+		Binets:
+			<ul>
+			<xsl:for-each select="binet">
+				<li><xsl:value-of select="@nom"/><xsl:text>  </xsl:text><em>(<xsl:value-of select="text()"/>)</em></li>
+			</xsl:for-each>
+			</ul>
+		</xsl:if>
+		<xsl:text> </xsl:text>
 	</div>
-    </xsl:if>
-	<xsl:apply-templates select="*[name()!='binet']"/>
+		<xsl:apply-templates select="*[name()!='binet']"/>
 	</div>
 </xsl:template>
 

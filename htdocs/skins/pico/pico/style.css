@@ -243,9 +243,11 @@ div.fkz_page_titre {
 	
 .fkz_trombino_photo{
 	float:left;
+	margin-left:5px;
 }
 .fkz_trombino_section{
 	float:right;
+	margin-right:5px;
 }
 .fkz_trombino_infos{
 	float:left;
