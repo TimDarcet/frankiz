@@ -44,7 +44,7 @@
 <xsl:include href="meteo.xsl"/>
 
 <xsl:template match="/">
-	<html>
+	<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
 		<title><xsl:value-of select="frankiz/page/@titre"/></title>
@@ -67,6 +67,7 @@
 		<link href="mailto:web@fkz" rev="made" />
 		<link rel="shortcut icon" href="favicon.ico" />
 		<xsl:apply-templates select="frankiz/module[@id='liens_navigation']" mode="link"/>
+		<xsl:apply-templates select="frankiz/module[@id='liens_perso']" mode="link"/>
 	</head>
 	<body>
 		<div class="fkz_entetes">

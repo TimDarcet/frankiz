@@ -91,12 +91,19 @@
 
 <xsl:template match="module[@id='liens_navigation']" mode="link">
 	<xsl:for-each select="lien">
-		<link rel="section">
+		<link rel="navigation">
 			<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
 			<xsl:attribute name="title"><xsl:value-of select="@titre" /></xsl:attribute>
 		</link>
 	</xsl:for-each>
 </xsl:template>
 
-
+<xsl:template match="module[@id='liens_perso']" mode="link">
+	<xsl:for-each select="lien">
+		<link rel="bookmark">
+			<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+			<xsl:attribute name="title"><xsl:value-of select="@titre" /></xsl:attribute>
+		</link>
+	</xsl:for-each>
+</xsl:template>
 </xsl:stylesheet>

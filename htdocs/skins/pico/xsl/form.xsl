@@ -34,14 +34,15 @@
 			<!-- les options du formulaire -->
 			<xsl:for-each select="*[name()!='bouton']">
 				<div>
-				<xsl:if test="boolean(@titre)">
-					<span class="gauche">
-						<xsl:value-of select="@titre"/> :
-					</span>
-				</xsl:if>
+
 				<span class="droite">
 					<xsl:apply-templates select="."/>
 				</span>
+				<xsl:if test="boolean(@titre)">
+					<label class="gauche" for="concat('form_','@id')">
+						<xsl:value-of select="@titre"/> :
+					</label>
+				</xsl:if>
 				</div>
 			</xsl:for-each>
 			<!-- les boutons gérant les actions du formulaire -->
@@ -109,6 +110,7 @@
 		<xsl:value-of select="@valeur"/>
 	</xsl:when><xsl:otherwise>
 		<textarea>
+			<xsl:attribute name="id"><xsl:value-of select="concat('form_','@id')"/></xsl:attribute>
 			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:attribute name="rows">7</xsl:attribute>
 			<xsl:attribute name="cols">50</xsl:attribute>
@@ -126,6 +128,7 @@
 				<xsl:when test="starts-with(@id,'passwd')"><xsl:attribute name="type">password</xsl:attribute></xsl:when>
 				<xsl:otherwise><xsl:attribute name="type">text</xsl:attribute></xsl:otherwise>
 			</xsl:choose>
+			<xsl:attribute name="id"><xsl:value-of select="concat('form_','@id')"/></xsl:attribute>
 			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:attribute name="value"><xsl:value-of select="@valeur"/></xsl:attribute>
 		</input>
@@ -134,7 +137,9 @@
 
 <!-- choix multiples (radio, combo ou checkbox) -->
 <xsl:template match="choix[@type='combo']">
-	<select><xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+	<select>
+		<xsl:attribute name="id"><xsl:value-of select="concat('form_','@id')"/></xsl:attribute>
+		<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 		<xsl:for-each select="option">
 			<option>
 				<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
@@ -148,6 +153,7 @@
 <xsl:template match="choix[@type='radio']">
 	<xsl:for-each select="option">
 		<input type="radio">
+			<xsl:attribute name="id"><xsl:value-of select="concat('form_','@id')"/></xsl:attribute>
 			<xsl:attribute name="name"><xsl:value-of select="../@id"/></xsl:attribute>
 			<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:if test="../@valeur = @id"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
@@ -159,6 +165,7 @@
 <xsl:template match="choix[@type='checkbox']">
 	<xsl:for-each select="option">
 		<input type="checkbox">
+			<xsl:attribute name="id"><xsl:value-of select="concat('form_','@id')"/></xsl:attribute>
 			<xsl:if test="@modifiable='non'"><xsl:attribute name="disabled"/></xsl:if>
 			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:if test="contains(../@valeur,@id)"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
@@ -173,6 +180,7 @@
 		<xsl:attribute name="valeur"><xsl:value-of select="@taille"/></xsl:attribute>
 	</hidden>
 	<input type="file">
+		<xsl:attribute name="id"><xsl:value-of select="concat('form_','@id')"/></xsl:attribute>
 		<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 	</input>
 </xsl:template>
