@@ -21,9 +21,12 @@
 	Help WIKI
 	
 	$Log$
+	Revision 1.7  2004/12/01 23:37:35  pico
+	Help wiki pour les listes
+
 	Revision 1.6  2004/11/28 00:06:32  pico
 	Ajout des images avec légende (et donc "alt") dans le wiki
-
+	
 	Revision 1.5  2004/11/27 23:30:34  pico
 	Passage des xshare et faq en wiki
 	Ajout des images dans l'aide du wiki
@@ -82,6 +85,11 @@ Le nom Wiki provient d'un adjectif hawaiien wikiwiki, qui signifie rapide. C'est
 			<colonne id="type">Titre</colonne>
 			<colonne id="syntaxe"><p>===titre1===</p><p>==titre2==</p><p>=titre3=</p></colonne>";
 			<colonne id="exemple"><?="<p>".wikiVersXML("===titre1===")."</p><p>".wikiVersXML("==titre2==")."</p><p>".wikiVersXML("=titre3=")."</p>"?></colonne>";
+		</element>
+		<element id="">
+			<colonne id="type">Liste</colonne>
+			<colonne id="syntaxe"><p>- 1 niveau</p><p>- titre niveau 2</p><p>-- 2e niveau</p></colonne>";
+			<colonne id="exemple"><?="<p>".wikiVersXML("- 1 niveau")."</p><p>".wikiVersXML("- titre niveau 2\n-- 2e niveau")."</p>"?></colonne>";
 		</element>
 		<element id="">
 			<colonne id="type">Lien</colonne>
