@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.38  2005/01/10 22:33:13  pico
+		Correction pour le xshare aussi
+
 		Revision 1.37  2005/01/03 23:27:05  pico
 		Petites modifs
-
+		
 		Revision 1.36  2004/12/17 17:25:08  schmurtz
 		Ajout d'une belle page d'erreur.
 		
@@ -395,7 +398,7 @@ echo "</arbre>";
 	<? if(isset($_REQUEST['dir_id'])) $dir_id = $_REQUEST['dir_id']; else $dir_id="0"; ?>
 	<formulaire id="xshare_<? echo $dir_id ?>" titre="Supprimer ce dossier" action="admin/xshare.php">
 	<? foreach ($_REQUEST AS $keys => $val){
-		if((!strstr($keys,"rmdir"))&&(!strstr($keys,"rmdir"))) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
+		if(!strstr($keys,"rmdir")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 		}
 	?>
 	<bouton id='rmdir_<? echo  $dir_id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce répertoire et tous ses fichiers ?!!!!!')"/>
@@ -405,7 +408,7 @@ echo "</arbre>";
 	<formulaire id="xshare_<? echo $dir_id ?>" titre="Ajouter un sous-dossier" action="admin/xshare.php">
 	<champ id="nom" titre="Nom du sous-dossier" valeur="" />
 	<? foreach ($_REQUEST AS $keys => $val){
-		if(!strstr($keys,"adddir")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
+		if(!strstr($keys,"adddir")&&!strstr($keys,"nom")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 		}
 	?>
 	<bouton id='adddir_<? echo $dir_id ?>' titre='Ajouter' onClick="return window.confirm('!!!!!!Créer ce répertoire ?!!!!!')"/>
@@ -424,7 +427,7 @@ echo "</arbre>";
 	<champ id="licence" titre="Licence" />
 	<zonetext id="descript" titre="Description"></zonetext>
 	<? foreach ($_REQUEST AS $keys => $val){
-		if(!strstr($keys,"ajout")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
+		if(!strstr($keys,"ajout")&&!strstr($keys,"nom")&&!strstr($keys,"version")&&!strstr($keys,"importance")&&!strstr($keys,"site")&&!strstr($keys,"licence")&&!strstr($keys,"descript")&&!strstr($keys,"file")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 	}
 	?>
 	<fichier id="file" titre="Fichier" taille="1000000000"/>
