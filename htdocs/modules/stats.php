@@ -29,9 +29,12 @@
 	de bande passante, de cpu). 
 	
 	$Log$
+	Revision 1.10  2004/12/15 16:50:48  schmurtz
+	Bug fix+info d'installation, maj de la version en prod du site
+
 	Revision 1.9  2004/11/11 20:15:19  kikx
 	Deplacemeent du fichier des binets pour que ca erste logique
-
+	
 	Revision 1.8  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -55,7 +58,7 @@ if(est_authentifie(AUTH_MINIMUM)) { ?>
 			<!--<service nom="web binets" stat="http://gwennoz.polytechnique.fr/webalizer/" />-->
 			<service nom="news" stat="http://frankiz.polytechnique.fr/news/" />
 			<service nom="xnet" stat="http://frankiz.polytechnique.fr/accueil/xnetstatquick.php" />
-		<? if(file_exists(BASE_CACHE."status")) @include BASE_CACHE."status"; ?>
+		<? if(file_exists(BASE_CACHE."status")) include BASE_CACHE."status"; else echo "<serveur nom='status' etat='down'/>\n"?>
 		</statistiques>
 	</module>
 <?php } ?>
