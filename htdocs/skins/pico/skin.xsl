@@ -40,6 +40,7 @@
 <xsl:include href="tours_kawa.xsl"/>
 <xsl:include href="trombino.xsl"/>
 <xsl:include href="stats.xsl"/>
+<xsl:include href="meteo.xsl"/>
 
 <xsl:template match="/">
   <html>
@@ -67,6 +68,7 @@
         <xsl:apply-templates select="frankiz/module[@id='activites']"/>
         <xsl:apply-templates select="frankiz/module[@id='liens_contacts']"/>
 	<xsl:apply-templates select="frankiz/module[@id='liens_ecole']"/>
+	<xsl:apply-templates select="frankiz/module[@id='meteo']"/>
 	<xsl:apply-templates select="frankiz/module[@id='stats']"/>
       </div>
       <div class="fkz_centre">
