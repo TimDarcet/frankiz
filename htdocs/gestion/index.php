@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.6  2004/10/25 14:05:09  kikx
+	Correction d'un bug sur la page
+
 	Revision 1.5  2004/10/25 10:35:50  kikx
 	Page de validation (ou pas) des modif de trombi
-
+	
 	Revision 1.4  2004/10/21 22:52:19  kikx
 	C'est plus bo
 	
@@ -115,7 +118,6 @@ $permissions_user = ses_permissions() ;
 		<lien titre="Modifier un utilisateur" url="<?php echo BASE_URL?>/trombino"/>
 		<lien titre="Valider son changement de photo trombino" url="<?php echo BASE_URL?>/admin/valid_trombi.php"/>
 		<lien titre="Gestion des webmestres et des prez" url="<?php echo BASE_URL?>/admin/binet_web_prez.php"/>
-		<lien titre="Liste des IPs" url="<?php echo BASE_URL?>/admin/ip.php"/>
 	<h3>Validations Variées</h3>
 		<lien titre="Gerer les demandes d'ajout d'ips" url="<?php echo BASE_URL?>/admin/valid_ip.php"/>
 		<lien titre="Valider les annonces" url="<?php echo BASE_URL?>/admin/valid_annonces.php"/>
@@ -131,6 +133,10 @@ $permissions_user = ses_permissions() ;
 		<lien titre="Gestion xshare" url="<?php echo BASE_URL?>/admin/xshare.php"/>
 		<lien titre="Gestion FAQ" url="<?php echo BASE_URL?>/admin/faq.php"/>
 		<lien titre="Valider les changements des Binets" url="<?php echo BASE_URL?>/admin/valid_binets.php"/>
+	<h3>Administration du réseau élève</h3>
+		<lien titre="Liste des IPs" url="<?php echo BASE_URL?>/admin/ip.php"/>
+
+
 	<?
 	}
 	
