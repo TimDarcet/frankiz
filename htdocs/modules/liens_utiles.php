@@ -21,9 +21,12 @@
 	Liens permettants d'accéder aux autres sites de l'école.
 	
 	$Log$
+	Revision 1.9  2005/02/03 09:28:23  kikx
+	Rajout d'un lien  vers l'emploi du temps des promotion dans les liens utiles
+
 	Revision 1.8  2005/01/26 17:26:27  pico
 	Pas de liens morts à l'extérieur...
-
+	
 	Revision 1.7  2005/01/17 23:46:28  pico
 	Bug fix
 	
@@ -65,14 +68,18 @@
 	Commentaires et ajout de la variable cvs "Log"
 	
 */
+$DB_trombino->query("SELECT promo FROM eleves WHERE eleve_id='{$_SESSION['user']->uid}'");
+list($promo) = $DB_trombino->next_row();
 ?>
 <module id="liens_ecole" titre="Liens utiles">
+	
 	<lien id="utile_contact" titre="Contacter les élèves" url="contact.php" key="c"/>
 	<?php if(!est_authentifie(AUTH_INTERNE)): ?>
 		<lien id="utile_plan" titre="Venir à l'X" url="plan.php" />
 	<?php endif; ?>
 	<lien id="utile_liens" titre="Liens utiles" url="liens.php" />
 	<?php if(est_authentifie(AUTH_MINIMUM)){ ?>
+		<lien id="emploi_temps" titre="Emploi du temps" url="http://de.polytechnique.fr/scolarite/emploi_du_temps/X<?=$promo?>/index.html"/>
 		<lien id="utile_licence" titre="Licences Msdnaa" url="profil/licences.php"/>
 		<lien id="utile_redmail" titre="Redirection des mails" url="http://poly.polytechnique.fr/" /> 
 	<? } ?>
