@@ -23,9 +23,15 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.16  2005/01/14 09:19:31  pico
+	Corrections bug mail
+	+
+	Sondages maintenant public ou privé (ne s'affichant pas dans le cadre)
+	Ceci sert pour les sondages section par exemple
+
 	Revision 1.15  2005/01/13 17:10:58  pico
 	Mails de validations From le validateur qui va plus ou moins bien
-
+	
 	Revision 1.14  2005/01/11 13:42:17  pico
 	pff
 	
@@ -109,7 +115,7 @@ foreach ($_POST AS $keys => $val){
 				"Très Cordialement<br>" .
 				"Le BR<br>"  ;
 		
-			couriel($temp[1],"[Frankiz] La demande pour ton site a été refusée ",$contenu,MAIL_WEBMESTRE);
+			couriel($temp[1],"[Frankiz] La demande pour ton site a été refusée ",$contenu,WEBMESTRE_ID);
 			echo "<warning>Envoie d'un mail <br/>Le prévient que sa demande n'est pas acceptée</warning>" ;
 		} else {
 	?>
@@ -133,7 +139,7 @@ foreach ($_POST AS $keys => $val){
 					"Très Cordialement<br>" .
 					"Le BR<br>"  ;
 			
-			couriel($temp[1],"[Frankiz] La demande pour ton site perso a été acceptée",$contenu,MAIL_WEBMESTRE);
+			couriel($temp[1],"[Frankiz] La demande pour ton site perso a été acceptée",$contenu,WEBMESTRE_ID);
 				echo "<commentaire>Envoie d'un mail<br/>Le prévient que sa demande à été acceptée</commentaire>" ;
 				
 			$DB_valid->query("DELETE FROM valid_pageperso WHERE eleve_id='{$temp[1]}'");

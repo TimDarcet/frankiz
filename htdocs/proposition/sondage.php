@@ -21,9 +21,15 @@
 	Page pour demander les sondages !
 	
 	$Log$
+	Revision 1.10  2005/01/14 09:19:32  pico
+	Corrections bug mail
+	+
+	Sondages maintenant public ou privé (ne s'affichant pas dans le cadre)
+	Ceci sert pour les sondages section par exemple
+
 	Revision 1.9  2004/12/14 00:27:40  kikx
 	Pour que le FROM des mails de validation soit au nom du mec qui demande la validation... (qu'est ce que je ferai pas pour les TOS :))
-
+	
 	Revision 1.8  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
 	
@@ -117,8 +123,12 @@ if (isset($_POST['titre_sondage']))
 
 if (isset($_POST['valid'])) {
 	if ($titre_sondage!="") {
-
-		$DB_valid->query("INSERT INTO valid_sondages SET eleve_id =".$_SESSION['user']->uid.", questions='$contenu_form', titre='$titre_sondage', perime=FROM_UNIXTIME({$_POST['date']})") ;
+		if (isset($_REQUEST['noext']))
+			$temp_ext = '0'  ;
+		else 
+			$temp_ext = '1' ;
+			
+		$DB_valid->query("INSERT INTO valid_sondages SET eleve_id =".$_SESSION['user']->uid.", questions='$contenu_form', titre='$titre_sondage', perime=FROM_UNIXTIME({$_POST['date']}), exterieur='$temp_ext'") ;
 		
 		$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
 	
@@ -184,6 +194,7 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
 	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
 
+		
 <?
 	decode_sondage($contenu_form) ;
 ?>
@@ -196,6 +207,10 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 <?
 	}
 ?>
+	</choix>
+	<note>Si tu souhaites que ton sondage n'apparaisse pas sur la page principale de Frankiz (sondage privé), cliques ici.</note>
+	<choix titre="Privé" id="exterieur" type="checkbox" valeur="<? if (isset($_REQUEST['noext'])) echo 'noext' ;?>">
+		<option id="noext" titre=""/>
 	</choix>
 	<bouton titre="Valider le sondage" id="valid" onClick="return window.confirm('Voulez vous vraiment valider votre sondage ?')" />
 

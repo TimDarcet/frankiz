@@ -21,9 +21,15 @@
 	Page qui permet aux admins de valider un sondage
 	
 	$Log$
+	Revision 1.15  2005/01/14 09:19:31  pico
+	Corrections bug mail
+	+
+	Sondages maintenant public ou privé (ne s'affichant pas dans le cadre)
+	Ceci sert pour les sondages section par exemple
+
 	Revision 1.14  2005/01/13 17:10:58  pico
 	Mails de validations From le validateur qui va plus ou moins bien
-
+	
 	Revision 1.13  2005/01/05 21:59:48  pico
 	Envoit de commentaire dans le mail de validation d'annonce
 	
@@ -109,7 +115,7 @@ foreach ($_POST AS $keys => $val){
 						"Très Cordialement<br>" .
 						"Le BR<br>"  ;
 		
-			couriel($temp[2],"[Frankiz] Ton sondage a été refusé ",$contenu,MAIL_WEBMESTRE);
+			couriel($temp[2],"[Frankiz] Ton sondage a été refusé ",$contenu,WEBMESTRE_ID);
 			echo "<warning>Envoie d'un mail <br/>Le prévient que sa demande n'est pas acceptée</warning>" ;
 		} else {
 	?>
@@ -126,20 +132,26 @@ foreach ($_POST AS $keys => $val){
 		if ($DB_valid->num_rows()!=0) {
 		
 			list($date,$questions,$titre,$eleve_id,$nom, $prenom, $promo) = $DB_valid->next_row() ;
-	
-			$DB_web->query("INSERT INTO sondage_question SET eleve_id=$eleve_id, questions='$questions', titre='$titre', perime='$date'") ;
-		
+			
+			if (isset($_REQUEST['ext_auth']))
+				$temp_ext = '1'  ;
+			else 
+				$temp_ext = '0' ;
+			
+			$DB_web->query("INSERT INTO sondage_question SET eleve_id=$eleve_id, questions='$questions', titre='$titre', perime='$date', exterieur='$temp_ext'") ;
+			$index = mysql_insert_id($DB_web->link) ;
 			$DB_valid->query("DELETE FROM valid_sondages WHERE sondage_id='{$temp[1]}'");
 			
 			$bla = "explication_".$temp[1] ;
 			$contenu = "<strong>Bonjour</strong>, <br><br>".
-						"Ton sondage vient d'être mis en ligne par le BR <br>".
-						$_POST[$bla]."<br>".
+						"Ton sondage vient d'être mis en ligne par le BR <br>";
+			if($temp_ext==0) $contenu .= "Il est accessible à l'adresse suivante: http://".$_SERVER['HTTP_HOST']."/sondages.php?id=".$index."<br>";
+			$contenu .= $_POST[$bla]."<br>".
 						"<br>" .
 						"Très Cordialement<br>" .
 						"Le BR<br>"  ;
 		
-			couriel($temp[2],"[Frankiz] Ton sondage a été validé ",$contenu,MAIL_WEBMESTRE);
+			couriel($temp[2],"[Frankiz] Ton sondage a été validé ",$contenu,WEBMESTRE_ID);
 			echo "<commentaire>Envoie d'un mail <br/>Prévient $prenom $nom que sa demande est acceptée</commentaire>" ;
 		} else {
 	?>
@@ -157,19 +169,28 @@ $DB_trombino->query("UNLOCK TABLES");
 
 //===============================
 
-	$DB_valid->query("SELECT v.perime, v.sondage_id,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM valid_sondages as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
-	while(list($date,$id,$questions,$titre,$eleve_id,$nom, $prenom, $promo) = $DB_valid->next_row()) {
+	$DB_valid->query("SELECT v.exterieur,v.perime, v.sondage_id,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM valid_sondages as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
+	while(list($ext,$date,$id,$questions,$titre,$eleve_id,$nom, $prenom, $promo) = $DB_valid->next_row()) {
 	?>
 		<formulaire id="form" titre="<?=$titre?> (<?=date("d/m",strtotime($date))?>)">	
 	<?
 		decode_sondage($questions) ;
 	?>
 		</formulaire>
-		
+
 		<formulaire id="sond_<? echo $id ?>" titre="Validation de '<?=$titre?>'" action="admin/valid_sondages.php">
 			<note>Sondage proposé par <?=$prenom?> <?=$nom?> (<?=$promo?>)</note>
 			<zonetext titre="La raison du choix du modérateur (Surtout si refus)" id="explication_<? echo $id ;?>"></zonetext>
-			
+			<?
+				if ($ext==1) {
+					echo "<warning>L'utilisateur a demandé que son sondage soit visible sur le site</warning>" ;
+					$ext_temp='ext' ; 
+				} else $ext_temp="" ;
+			?>
+			<choix titre="Sondage sur la page principale de Frankiz" id="exterieur" type="checkbox" valeur="<? echo $ext_temp." " ; if ((isset($_REQUEST['ext_auth']))&&(isset($_REQUEST['modif_'.$id]))) echo 'ext_auth' ;?>">
+				<option id="ext" titre="Demande de l'utilisateur" modifiable='non'/>
+				<option id="ext_auth" titre="Décision du Webmestre"/>
+			</choix>
 			<bouton id='valid_<? echo $id ?>_<? echo $eleve_id ?>' titre='Valider' onClick="return window.confirm('Valider ce sondage ?')"/>
 			<bouton id='suppr_<? echo $id ?>_<? echo $eleve_id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce sondage ?!!!!!')"/>
 		</formulaire>

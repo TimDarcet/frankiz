@@ -21,9 +21,15 @@
 	Affichage des liens vers les sondages
 
 	$Log$
+	Revision 1.7  2005/01/14 09:19:31  pico
+	Corrections bug mail
+	+
+	Sondages maintenant public ou privé (ne s'affichant pas dans le cadre)
+	Ceci sert pour les sondages section par exemple
+
 	Revision 1.6  2004/12/14 13:43:30  pico
 	bugfix
-
+	
 	Revision 1.5  2004/12/13 20:03:25  pico
 	Les liens ne forment pas de blocs, il faut donc le spécifier
 	
@@ -43,10 +49,10 @@
 
 if(est_authentifie(AUTH_MINIMUM)) {
 	if(!cache_recuperer('sondages',strtotime(date("Y-m-d",time())))) {
-		$DB_web->query("SELECT sondage_id,titre,perime FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) >=-7");
+		$DB_web->query("SELECT sondage_id,titre,perime FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) >=-7 AND exterieur=1");
 		if($DB_web->num_rows()>0){
 			echo "<module id=\"sondages\" titre=\"Sondages\">\n";
-			$DB_web->query("SELECT sondage_id,titre,perime FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) >=0");
+			$DB_web->query("SELECT sondage_id,titre,perime FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) >=0 AND exterieur=1");
 			if($DB_web->num_rows()>0){
 				echo "<p>En Cours</p>" ;
 				while(list($id,$titre,$date) = $DB_web->next_row()) {
@@ -54,7 +60,7 @@ if(est_authentifie(AUTH_MINIMUM)) {
 				}
 			}
 			
-			$DB_web->query("SELECT sondage_id,titre,perime FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) <0 AND TO_DAYS(perime) - TO_DAYS(NOW()) >=-7");
+			$DB_web->query("SELECT sondage_id,titre,perime FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) <0 AND TO_DAYS(perime) - TO_DAYS(NOW()) >=-7 AND exterieur=1");
 			if($DB_web->num_rows()>0){
 				echo "<p>Anciens</p>" ;
 				while(list($id,$titre,$date) = $DB_web->next_row()) {
