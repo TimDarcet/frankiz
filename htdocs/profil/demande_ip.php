@@ -22,9 +22,12 @@
 	une seconde machine dans son casert.
 	
 	$Log$
+	Revision 1.11  2004/11/16 18:32:34  schmurtz
+	Petits problemes d'interpretation de <note> et <commentaire>
+
 	Revision 1.10  2004/10/29 15:41:48  kikx
 	Passage des mail en HTML pour les ip
-
+	
 	Revision 1.9  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
 	

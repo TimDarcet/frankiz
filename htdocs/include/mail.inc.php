@@ -22,9 +22,12 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.10  2004/11/16 18:32:34  schmurtz
+	Petits problemes d'interpretation de <note> et <commentaire>
+
 	Revision 1.9  2004/11/16 12:17:25  schmurtz
 	Deplacement des skins de trombino.eleves vers frankiz.compte_frankiz
-
+	
 	Revision 1.8  2004/10/31 21:29:56  kikx
 	Mise a jour du mail promo grace a la librairie de Schmurtz
 	
@@ -142,7 +145,7 @@ class Mail {
 	}
 	
 	// Gestion des mails multipart
-	function addPart($type,$encoding,$value) {
+	function addPart($type,$value,$encoding="8bit",$charset="iso-8859-1") {
 		if ($this->boundary) {
 			$this->body .= "--{$this->boundary}\n".
 						   "Content-Type: $type\n".
@@ -154,15 +157,15 @@ class Mail {
 	}
 	
 	function addPartText($text,$charset="iso-8859-1") {
-		$this->addPart("text/plain",$charset,"8bit", $text);
+		$this->addPart("text/plain",$text,"8bit",$charset);
 	}
 
 	function addPartRichText($text,$charset="iso-8859-1") {
-		$this->addPart("text/enriched",$charset,"8bit", $tex);
+		$this->addPart("text/enriched",$text,"8bit",$charset);
 	}
 	
 	function addPartHtml($html,$charset="iso-8859-1") {
-		$this->addPart("text/html",$charset,"8bit", $html);
+		$this->addPart("text/html",$html,"8bit",$charset);
 	}
 	
 	// définission du contenu d'un mail non multipart

@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.16  2004/11/16 18:32:34  schmurtz
+	Petits problemes d'interpretation de <note> et <commentaire>
+
 	Revision 1.15  2004/10/31 21:30:48  kikx
 	Oups ca fonctionnera miuex comme ca ...
-
+	
 	Revision 1.14  2004/10/31 21:29:56  kikx
 	Mise a jour du mail promo grace a la librairie de Schmurtz
 	
@@ -106,7 +109,7 @@ foreach ($_POST AS $keys => $val){
 	if (($temp[0]=='modif')||($temp[0]=='valid')) {
 		$DB_valid->query("UPDATE valid_mailpromo SET titre='{$_POST['titre']}', mail='{$_POST['mail']}', promo='{$_POST['promo']}' WHERE mail_id='{$temp[1]}'");	
 	?>
-		<commentaire><p>Modif effectuée</p></commentaire>
+		<commentaire>Modification effectuée</commentaire>
 	<?	
 	}
 	
@@ -162,7 +165,7 @@ foreach ($_POST AS $keys => $val){
 		
 		$DB_valid->query("DELETE FROM valid_mailpromo WHERE mail_id='{$temp[1]}'") ;
 	?>
-		<commentaire><p>Validation effectuée</p></commentaire>
+		<commentaire>Validation effectuée</commentaire>
 	<?	
 
 	}
@@ -193,7 +196,7 @@ while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $prom
 	if (empty($mail)) $mail="$login@poly" ;
 ?>
 	<commentaire>
-		<p><u>FROM</u>: <?php  echo "$prenom $nom &lt;$mail&gt; " ?></p>
+		<p><em>FROM</em>: <?php  echo "$prenom $nom &lt;$mail&gt; " ?></p>
 		<p>Posté le 
 			<?php  echo substr($date,6,2) ."/".substr($date,4,2) ."/".substr($date,2,2)." à ".substr($date,8,2).":".substr($date,10,2) ?>
 		</p>

@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.22  2004/11/16 18:32:34  schmurtz
+	Petits problemes d'interpretation de <note> et <commentaire>
+
 	Revision 1.21  2004/11/06 17:47:43  pico
 	........
-
+	
 	Revision 1.20  2004/10/29 17:42:36  kikx
 	Petit bug que je ne comprend pas pourquoi ca ne marchait pas avant et que ca marche now (c'est pour faire une phrase correct et comprehensible en français)
 	
@@ -229,9 +232,19 @@
 </xsl:template>
 
 <!-- Formatage HTML -->
+<xsl:template match="commentaire">
+	<p class="commentaire"><xsl:apply-templates/></p>
+</xsl:template>
+<xsl:template match="warning">
+	<p class="warning"><xsl:apply-templates/></p>
+</xsl:template>
+<xsl:template match="note">
+	<p class="note"><xsl:apply-templates/></p>
+</xsl:template>
 <xsl:template match="p">
 	<xsl:apply-templates/><br />
 </xsl:template>
+
 <xsl:template match="h1">
 	<h1><xsl:apply-templates/></h1>
 </xsl:template>
@@ -247,6 +260,7 @@
 <xsl:template match="h5">
 	<h5><xsl:apply-templates/></h5>
 </xsl:template>
+
 <xsl:template match="strong">
 	<strong><xsl:apply-templates/></strong>
 </xsl:template>

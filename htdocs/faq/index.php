@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.24  2004/11/16 18:32:34  schmurtz
+		Petits problemes d'interpretation de <note> et <commentaire>
+
 		Revision 1.23  2004/11/15 22:59:54  pico
 		Affiche correctement les faq/folder + possibilité de modifier des faq
-
+		
 		Revision 1.22  2004/10/21 22:19:37  schmurtz
 		GPLisation des fichiers du site
 		
@@ -284,11 +287,11 @@ echo "<br/>" ;
 
 
         <formulaire id="form" action="faq/index.php">
+			<note>Tous les mots seront dans la description / Séparez les par un blanc</note>
             <champ id="mots" titre="Mots-clefs" valeur="<? echo $mots ;?>"/>
             <bouton id="Submit" titre="Valide"/>
             <bouton id="reset" titre="Reset"/>
         </formulaire>
-    <commentaire>(Tous les mots seront dans la description / Séparez les par un blanc) </commentaire>
 <?
 
 //

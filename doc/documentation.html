@@ -220,6 +220,9 @@ site web facilement lisible, afin d'en assuré sa pérénité.</p>
 méthode simple est de mettre en entête 5-6 lignes expliquant l'utilisation et le fonctionnement du
 chaque fichier. Il peut être utile d'utiliser les variables CVS pour donner des informations comme
 la version d'un fichier (le "$Id$") ou les logs des modifications (le "$Log$
+la version d'un fichier (le "$Id: documentation.html,v 1.1 2004/10/19 22:35:51 schmurtz Exp $") ou les logs des modifications (le "Revision 1.2  2004/11/16 18:32:33  schmurtz
+la version d'un fichier (le "$Id: documentation.html,v 1.1 2004/10/19 22:35:51 schmurtz Exp $") ou les logs des modifications (le "Petits problemes d'interpretation de <note> et <commentaire>
+la version d'un fichier (le "$Id: documentation.html,v 1.1 2004/10/19 22:35:51 schmurtz Exp $") ou les logs des modifications (le "
 la version d'un fichier (le "$Id$") ou les logs des modifications (le "Revision 1.1  2004/10/19 22:35:51  schmurtz
 la version d'un fichier (le "$Id$") ou les logs des modifications (le "Mise à jour des documentations :
 la version d'un fichier (le "$Id$") ou les logs des modifications (le "- Déplacement des docs dans ./doc
@@ -243,6 +246,9 @@ hésiter à faire une séparation net entre ces deux phases.</p>
     &laquo;utilisation et fonctionnement de la page&raquo;
 
     $Log$
+    Revision 1.2  2004/11/16 18:32:33  schmurtz
+    Petits problemes d'interpretation de <note> et <commentaire>
+
     Revision 1.1  2004/10/19 22:35:51  schmurtz
     Mise à jour des documentations :
     - Déplacement des docs dans ./doc
@@ -402,7 +408,8 @@ CREATE TABLE pieces (
 	
 <pre class="program">
 CREATE TABLE compte_frankiz (
-    eleve_id INT UNSIGNED NOT NULL,        
+    eleve_id INT UNSIGNED NOT NULL,     
+    skin TEXT,                          # array php sérialisé définissant la skin de l'utilisateur
     passwd VARCHAR(32) NOT NULL,        # md5 hash du mot de passe
     perms TEXT NOT NULL,                # permission sous la forme d'une liste séparée par des virgules
                                         # eg : "admin,faq,webmestre_1,prez_60"
@@ -484,6 +491,20 @@ CREATE TABLE xshare (
     importance INT UNSIGNED NOT NULL default '0', # permet de mettre en valeur des logiciels
     PRIMARY KEY (xshare_id)
 );
+
+CREATE TABLE sondage_question (
+    sondage_id INT UNSIGNED NOT NULL,   # id du sondage
+    question_num INT UNSIGNED NOT NULL, # numéro de la question dans le sondage
+    question TEXT,                      # question : array php sérialisé
+    PRIMARY KEY (sondage_id,question_num)
+);
+
+CREATE TABLE sondage_reponse (
+    sondage_id INT UNSIGNED NOT NULL,   # id du sondage
+    question_num INT UNSIGNED NOT NULL, # numéro de la question dans le sondage
+    reponse TEXT,                       # réponse : array php sérialisé
+    PRIMARY KEY (sondage_id,question_num)
+);
 </pre>
 	
 	<h3>Gestion des machines (dont l'arpwatch)</h3>
@@ -553,7 +574,7 @@ CREATE TABLE valid_annonces (
     PRIMARY KEY (annonce_id)
 );
 
-CREATE TABLE `valid_mailpromo` (
+CREATE TABLE valid_mailpromo (
     mail_id INT UNSIGNED NOT NULL auto_increment,
     eleve_id INT UNSIGNED NOT NULL,     # élève faisant la demande de mail promo
     promo TINYTEXT NOT NULL,            # promos visées par le mail
@@ -581,10 +602,11 @@ Il est donc important d'en tenir compte et de supprimer toutes ces balises, ou d
 des &amp;lt; et &amp;gt; afin que le XML ne puisse pas être rendu invalide par l'action de
 l'utilisateur. Idem pour le caractère &amp; qui doit être converti en &amp;amp;.</p>
 
-<p>Par ailleurs, afin d'empécher des attaques du genre "injection SQL", les données récupérées par les
-méthode GET et POST sont toutes traitées pour échapper les 3 caractères ", ' et \. C'est sous cette forme
-que sont stockées les cha&icirc;nes de caractères dans les tables MySQL, il faut donc les dééchapper avant de
-les afficher dans la page web. Cela se fait simplement avec la fonction PHP stripslashes().</p>
+<p>Par ailleurs, afin d'empécher des attaques du genre "injection SQL ou HTML", les données récupérées
+par les méthode GET, POST et les COOKIES sont toutes automatiquement traitées pour échapper avec des
+&amp;&hellip;; les cinq caractères spéciaux du XML : &lt;, &gt;, &apos;, &quote; et &amp;. C'est sous
+cette forme que sont stockées les cha&icirc;nes de caractères dans les tables MySQL. Il n'est d'ailleurs
+pas utile (et même deconseillé) de les dééchapper avant de les afficher dans la page web.</p>
 
 <h2>Organisation des fichiers du site</h2>
 
@@ -637,12 +659,14 @@ de dossier serait suffisant vu que notre site n'est pas si grand que ça.</p>
 
 /public_html        (DOSSIER PRÉSENT DANS LA CVS)
     /admin          (pages d'administration)
-    /divers         (pages seules ne rentrant pas dans une catégorie)
-        annonces.php
-        trombino.php
-        binets.php
-        faq.php
-    	docs.php    (pages de docs/références récupérées sur le web)
+    /gestion        (pages d'administration à destination des élèves : modification des
+					paramètre de son binet, de son site web&hellip;)
+    annonces.php
+	trombino.php
+	binets.php
+	faq.php
+	docs.php        (pages de docs/références récupérées sur le web)
+    xshare.php      (pages de la section télécharger)
     index.php
     /include        (fichiers uniquement inclus)
     favicon.ico
@@ -650,26 +674,12 @@ de dossier serait suffisant vu que notre site n'est pas si grand que ça.</p>
     /modules        (modules)
     /profil         (préférences utilisateur, fiche trombino)
     /skins          (skins)
-    /xshare         (pages de la section télécharger)
-        /linux
-        /mac
-        /windows
 </pre>
 </p>
 
 <p>Pour sauvegarder le site web, il suffit donc de sauvegarder la CVS (qui contient /etc et
 /public_html), les bases de données MySQL et le dossier /data. Ce ne serait pas aussi simple
 si par exemple les images ou les fichiers de cache étaient stockées dans le /public_html.</p>
-
-<h2>Ambivalence Frankiz/Poly</h2>
-
-<p>On espère qu'à terme, une seule machine, appartenant au BR, servira de serveur interne et externe. Ce
-qui simplifiera de beaucoup la gestion des ces deux sites.</p>
-
-<p>Cependant, pour l'instant, les services seront disponibles sur les deux sans différences de
-fonctionnement, sauf pour les accès aux données non stockées dans la base de données (les images
-comme les photos du trombino ou les images des annonces) qui comme la base de données seront
-uniquement stockées sur frankiz.</p>
 
 </body>
 </html>

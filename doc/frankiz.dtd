@@ -26,9 +26,12 @@
 	utilisé.
 
 	$Log$
+	Revision 1.4  2004/11/16 18:32:33  schmurtz
+	Petits problemes d'interpretation de <note> et <commentaire>
+
 	Revision 1.3  2004/11/09 22:39:06  pico
 	Ajout des accesskeys dans les liens de navigation
-
+	
 	Revision 1.2  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -119,7 +122,12 @@
 <!ELEMENT h3 &texte.formate;>
 <!ELEMENT h4 &texte.formate;>
 <!ELEMENT h5 &texte.formate;>
+
 <!ELEMENT p &texte.formate;>
+<!ELEMENT note (&texte.formate;)>			<!-- note, explication sur ce à quoi sert la page/le formulaire -->
+<!ELEMENT commentaire (&texte.formate;)>	<!-- commentaire, information sur le résulat d'une action -->
+<!ELEMENT warning (&texte.formate;)>		<!-- warning, pour les erreurs ou les avertissement importants -->
+
 <!ELEMENT code &texte.formate;>
 <!ELEMENT strong &texte.formate;>
 <!ELEMENT em &texte.formate;>
@@ -190,7 +198,7 @@
 ------------------------------------------------------------------------------------------ -->
 
 <!-- listes -->
-<!ELEMENT liste (commentaire?,entete*,element*,bouton*)>
+<!ELEMENT liste (note?,warning?,entete*,element*,bouton*)>
 <!ATTLIST liste
 		id		ID		#REQUIRED
 		titre   CDATA   #REQUIRED
@@ -212,15 +220,12 @@
 		id		CDATA   #REQUIRED>  <!-- un id de colonne doit correspondre à un id d'entête -->
 
 <!-- formulaires -->
-<!ELEMENT formulaire (commentaire?,(champ|choix)*,bouton+)>
+<!ELEMENT formulaire (note?,warning?,(champ|choix)*,bouton+)>
 <!ATTLIST formulaire
 		id		ID		#REQUIRED
 		titre   CDATA   #REQUIRED
 		action  CDATA   #REQUIRED>
 		
-<!ELEMENT commentaire (&texte.formate;)>
-			<!-- commentaire, explication sur ce que permet de faire ce formulaire -->
-
 <!ELEMENT champ EMPTY>
 <!ATTLIST champ
 		id		ID		#REQUIRED

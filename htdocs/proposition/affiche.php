@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une activité
 	
 	$Log$
+	Revision 1.8  2004/11/16 18:32:34  schmurtz
+	Petits problemes d'interpretation de <note> et <commentaire>
+
 	Revision 1.7  2004/10/29 14:09:10  kikx
 	Envoie des mail en HTML pour la validation des affiche
-
+	
 	Revision 1.6  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
 	
@@ -180,7 +183,7 @@ if (!isset($_POST['date']))  $_POST['date']=time() ;
 
 ?>
 	<annonce date="">
-		<commentaire>NB : Cette activité sera affichée le <?php echo date("d/m/y",$_POST['date']) ;?></commentaire>
+		<note>NB : Cette activité sera affichée le <?php echo date("d/m/y",$_POST['date']) ;?></note>
 		<a href="<?php echo $_POST['url'] ;?>">
 		<?
 		if ((!isset($_POST['valid']))&&(file_exists(DATA_DIR_LOCAL."affiches/temp_$eleve_id"))) {

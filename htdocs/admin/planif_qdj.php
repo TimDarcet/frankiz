@@ -21,12 +21,15 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.11  2004/11/16 18:32:34  schmurtz
+	Petits problemes d'interpretation de <note> et <commentaire>
+
 	Revision 1.10  2004/11/02 17:54:12  pico
 	Correction bug:
 	- derniere qdj planifiée
 	- possibilité de déprogrammer une qdj en remettant 0000-00-00 comme date
 	- compte des qdj planifiées
-
+	
 	Revision 1.9  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -119,7 +122,7 @@ foreach ($_POST AS $keys => $val){
 			$DB_web->query("UPDATE qdj SET date='{$_REQUEST['date']}'WHERE qdj_id='{$temp[1]}'");
 	
 		?>
-			<commentaire><p>Planification effectuée</p></commentaire>
+			<commentaire>Planification effectuée</commentaire>
 		<?
 		}	
 	}

@@ -21,9 +21,12 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.23  2004/11/16 18:32:34  schmurtz
+	Petits problemes d'interpretation de <note> et <commentaire>
+
 	Revision 1.22  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.21  2004/10/21 21:57:07  schmurtz
 	Petites modifs sur les skins
 	
@@ -101,18 +104,6 @@
 			</td></tr>
 		</table>
 	</form>
-</xsl:template>
-
-<xsl:template match="commentaire">
-	<p class="commentaire"><xsl:apply-templates/></p>
-</xsl:template>
-
-<xsl:template match="warning">
-	<p class="warning"><xsl:apply-templates/></p>
-</xsl:template>
-
-<xsl:template match="note">
-	<p class="note"><xsl:apply-templates/></p>
 </xsl:template>
 
 <!--texte simple dans un formulaire -->
