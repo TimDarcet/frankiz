@@ -13,10 +13,8 @@ require_once "../include/global.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-if(!verifie_permission('admin')) {
-	header("Location: ".BASE_URL."/admin/");
-	exit;
-}
+if(!verifie_permission('admin'))
+	rediriger_vers("/admin/");
 
 // Génération de la page
 //===============

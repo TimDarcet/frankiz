@@ -14,11 +14,8 @@ require_once "../include/global.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-if(empty($_GET['binet']) || !verifie_permission_webmestre($_GET['binet'])
-		|| !verifie_permission_prez($_GET['binet'])) {
-	header("Location: ".BASE_URL."/admin/");
-	exit;
-}
+if(empty($_GET['binet']) || !verifie_permission_webmestre($_GET['binet']) || !verifie_permission_prez($_GET['binet']))
+	rediriger_vers("/admin/");
 $est_prez = verifie_permission_prez($_GET['binet']);
 
 // Génération de la page

@@ -13,19 +13,15 @@ require_once "../include/global.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-if(!verifie_permission('admin')) {
-	header("Location: ".BASE_URL."/admin/");
-	exit;
-}
+if(!verifie_permission('admin'))
+	rediriger_vers("/admin/");
 
 // Gestion des détails d'une personne
  foreach ($_POST AS $keys => $val){
         //echo "<p>$keys # $val</p>";
 	$temp = explode("_",$keys) ;
-	if ($temp[0] == "detail") {
-		header("Location: ".BASE_URL."/trombino/?chercher=1&loginpoly=$temp[1]");
-		exit;
-	}
+	if ($temp[0] == "detail")
+		rediriger_vers("/trombino/?chercher=1&loginpoly=$temp[1]");
 }
 
 // Génération de la page

@@ -199,17 +199,17 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			$dir=opendir(BASE_LOCAL."/css");
 			while($file = readdir($dir)) {
 				// uniquement pour les fichiers .css
-				if(!ereg("(.*).css", $file, $elements)) continue;
+				if(!ereg("^(.*)\.css$", $file, $elements)) continue;
 				$nom = $elements[1];
 				echo "<option titre=\"$nom (".lire_description_css(BASE_LOCAL."/css/$nom.txt")
 					.")\" id=\"".BASE_URL."/css/$file\"/>";
 			}
 			closedir($dir);
 ?>
+		</choix>
 		<champ titre="CSS perso" id="newcss_perso" valeur="<?php
 			if (dirname($_SESSION['skin']['skin_css']) != BASE_URL."/css")
-				echo $global_css; ?>"/>
-		</choix>
+				echo $_SESSION['skin']['skin_css']; ?>"/>
 <?php
 		// Paramètres spécifique à la skin
 		$description = lire_description_skin(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']."/description.xml");

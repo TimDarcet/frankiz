@@ -11,7 +11,6 @@
 	qu'il soit modifié par l'application du fichier de skin XSL.
 */
 
-
 function afficher_identifiant($valeur) {
 	global $donnees, $identifiant;  // $donnees contient tous les identifiants,
 	                                // défini dans page_header.inc.php
@@ -21,37 +20,6 @@ function afficher_identifiant($valeur) {
 	return "^$identifiant$";
 }
 
-/*
-	Convertion d'une adresse IP en adresse DNS sans indication de domaine.
-*/
-
-function ip2dns($ip) {
-	$dns = gethostbyaddr($ip);
-	$dns = ereg_replace("\.polytechnique\.fr","",$dns);
-	$dns = ereg_replace("\.eleves","",$dns);
-	
-	return substr($dns,0,8) == "129.104." ? "Anonyme..." : $dns;
-}
-
-/*
-	Accès aux bases MySQL
-*/
-
-$nombre_connections = 0;
-
-function connecter_mysql_frankiz() {
-	global $nombre_connections;
-	if($nombre_connections++ == 0) {
-		mysql_connect("frankiz", "web", "kokouije?.");
-		mysql_select_db("frankiz2_tmp");
-	}
-}
-
-function deconnecter_mysql_frankiz() {
-	global $nombre_connections;
-	if(--$nombre_connections == 0)
-		mysql_close();
-}
 // Demande la confirmation lors d'une suppression d'une entrée !
 // (c'est plus secure)
 function suppression() {
@@ -87,6 +55,9 @@ function aucune_erreur() {
 	return count($_ERREURS) == 0;
 }
 
+/*
+	Autres
+*/
 function nouveau_hash() {
     $fp = fopen('/dev/urandom', 'r');
     $hash = md5(fread($fp, 16));
@@ -94,4 +65,9 @@ function nouveau_hash() {
     return $hash;
 }
 
+function rediriger_vers($page) {
+	header("Location: ".BASE_URL.$page);
+	echo "<p>Si ton navigateur n'est pas automatiquement redirigé, <a href=\"".BASE_URL.$page."\">cliques ici</a>.</p>";
+	exit;
+}
 ?>
