@@ -543,8 +543,30 @@ table.reponse_qdj td div.col span.jone {
 table.reponse_qdj td div.col span.rouje {
 	background:url(images/rouge.gif) repeat-y top center;
 }
+/*--------- Etat des serveur-----------*/
 
+dl#stats ul.serveurs {
+	width:95%;
+	margin:0 auto;
 
+}
+
+dl#stats ul.serveurs li.nom {
+	display:inline;
+	background-color:#fff;
+	font-weight:normal;
+	font-size:13px;
+}
+dl#stats ul.serveurs li.serveur_up {
+	display:inline;
+	background-color:green;
+	text-align:right;
+}
+dl#stats ul.serveurs li.serveur_down {
+	display:inline;
+	background-color:red;
+	text-align:right;
+}
 
 /* ---------- Xshare et FAQ --------- */
 
