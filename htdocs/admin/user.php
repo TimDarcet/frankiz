@@ -29,10 +29,13 @@
 	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
 	
 	$Log$
+	Revision 1.25  2005/01/03 20:37:16  pico
+	Je suis un gros boulet
+
 	Revision 1.24  2005/01/03 20:30:25  pico
 	Pour garder les droits d'admin de binets
 	Et ne pas marquer les webmestres de binets comme webmestres de frankiz
-
+	
 	Revision 1.23  2005/01/03 20:07:47  pico
 	Correction du SU
 	
@@ -216,15 +219,18 @@ if(verifie_permission('admin')){
 
 
 // Modification de ses préferences FrankizII
+               $DB_web->query("SELECT perms FROM compte_frankiz WHERE eleve_id=$id");
+               list($perms) = $DB_web->next_row() ;
+	       $perms = split(",",$perms);
 ?>
 	<formulaire id="user_compt_fkz" titre="Compte Frankiz" action="admin/user.php?id=<? echo $id?>">
                 <note>Pour le mot de passe : Si vous le laissez vide, il ne sera pas modifié !</note>
 		<champ id="pass" titre="Mot de passe" valeur=""/>
                 <note>Pour les webmestres et prez de binets, il faut allez dans le binet en question pour les modifier</note>
 		<choix titre="Droits" id="droits" type="checkbox" valeur="<?php
+		
 			foreach(liste_droits() as $droits => $nom){
-				$test = false;
-				foreach(ses_permissions() as $tmp => $perm)
+				foreach($perms as $tmp => $perm)
 					if($perm == $droits){
 						echo "$droits ";
 						break;
@@ -237,7 +243,7 @@ if(verifie_permission('admin')){
 ?>
 		</choix>
 <?			$perms_binets = "";
-			foreach(ses_permissions() as $tmp => $perm)
+			foreach($perms as $tmp => $perm)
 					if(eregi("webmestre_",$perm)||eregi("prez_",$perm)){
 						$perms_binets .= "$perm,";
 					}
