@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une activité
 	
 	$Log$
+	Revision 1.20  2005/01/25 14:18:07  pico
+	Pour le lien des activites
+
 	Revision 1.19  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
-
+	
 	Revision 1.18  2005/01/17 21:52:04  pico
 	Page des activités
 	
@@ -100,7 +103,7 @@ list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_ro
 $msg="" ;
 
 if (!isset($_POST['titre']))  $_POST['titre']="Titre" ;
-if (!isset($_POST['url']))  $_POST['url']="http://" ;
+if (!isset($_POST['url']))  $_POST['url']="" ;
 if (!isset($_POST['date']))  $_POST['date']=time() ;
 if (!isset($_POST['time']))  $_POST['time']=time() ;
 if (!isset($_POST['heure']))  $_POST['heure']="00:00";
@@ -224,7 +227,7 @@ if ($erreur_upload==1)
 ?>
 	<annonce date="<? echo date('Y-m-d H:i:s',$date_complete)  ?>">
 		<note>NB : Cette activité sera affichée le <?php echo date("d/m/y",$_POST['date']) ;?></note>
-		<lien url="<?php echo $_POST['url'] ;?>">
+		<lien url="<?php echo ($_POST['url']!="")?$_POST['url']:"affiches.php" ;?>">
 		<?
 		if ((!isset($_POST['valid']))&&(file_exists(DATA_DIR_LOCAL."affiches/temp_$eleve_id"))) {
 		?>
@@ -261,7 +264,7 @@ if ((isset($_POST['valid']))&&(isset($index))&&file_exists(DATA_DIR_LOCAL."affic
 
 	<formulaire id="propoz_activite" titre="Ton activité" action="proposition/affiche.php">
 		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
-		<champ id="url" titre="URL du lien" valeur="<? if (isset($_POST['url'])) echo $_POST['url'] ;?>"/>
+		<champ id="url" titre="Lien vers une page décrivant l'activité" valeur="<? if (isset($_POST['url'])) echo $_POST['url'] ;?>"/>
 		<zonetext id="text" titre="Description plus détaillée"><? if (isset($_POST['text'])) echo $_POST['text'];?></zonetext>
 		<note>L'image doit être un fichier gif, png ou jpeg ne dépassant pas 400x300 pixels et 250Ko.</note>
 		<fichier id="file" titre="Ton image" taille="100000"/>
