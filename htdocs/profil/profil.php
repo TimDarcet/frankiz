@@ -24,11 +24,14 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.43  2005/01/11 14:40:35  pico
+	Fôte d'orthogaffe
+
 	Revision 1.42  2004/12/17 16:29:29  kikx
 	Dans le trombino maintenant les promo sont dynamiques
 	Je limit aussi le changement des images (selon leur dimension200x200 dans le trombino)
 	Dans les annonces maintenant c'est 400x300 mais < ou egal
-
+	
 	Revision 1.41  2004/12/16 22:38:01  schmurtz
 	maintenant on peut utiliser le cookie depuis deux machines.
 	
@@ -349,7 +352,7 @@ require "../include/page_header.inc.php";
 		<champ id="surnom" titre="Surnom" valeur="<?php echo $surnom ?>"/>
 		<champ id="email" titre="Email" valeur="<?php echo empty($mail) ? $login.'@poly.polytechnique.fr' : $mail ?>"/>
 		<?php if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$_SESSION['user']->uid}")): ?>
-			<note>Cette image trombino n'a pas encore été validé par le BR</note>
+			<note>Cette image trombino n'a pas encore été validée par le BR</note>
 			<image source="profil/profil.php?image=true&amp;id=<?=$_SESSION['user']->uid?>" texte="photo" height="95" width="80"/>
 		<?php else: ?>
 			<image source="trombino.php?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>" texte="photo" height="95" width="80"/>
