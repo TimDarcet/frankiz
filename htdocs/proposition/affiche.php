@@ -3,13 +3,16 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une activité
 	
 	$Log$
+	Revision 1.4  2004/10/10 21:40:49  kikx
+	Pour permettre aux eleves de demander à mettre une activité visible de l'exterieur
+
 	Revision 1.3  2004/10/07 22:52:20  kikx
 	Correction de la page des activites (modules + proposition + administration)
 		rajout de variables globales : DATA_DIR_LOCAL
 						DATA_DIR_URL
-
+	
 	Comme ca si ca change, on est safe :)
-
+	
 	Revision 1.2  2004/10/04 21:48:54  kikx
 	Modification du champs fichier pour uploader des fichiers
 	
@@ -80,8 +83,13 @@ if (isset($_POST['valid'])) {
 	if (file_exists(DATA_DIR_LOCAL."affiches/temp_$eleve_id")) {
 
 		$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
+		
+		if (isset($_REQUEST['ext']))
+			$temp_ext = '1'  ;
+		else 
+			$temp_ext = '0' ;
 	
-		$DB_valid->query("INSERT INTO valid_affiches SET date=FROM_UNIXTIME({$_POST['date']}), eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',url='".$_POST['url']."'");
+		$DB_valid->query("INSERT INTO valid_affiches SET date=FROM_UNIXTIME({$_POST['date']}), eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',url='".$_POST['url']."', exterieur=".$temp_ext);
 		
 		// on modifie le nom du fichier qui a été téléchargé si celui ci existe
 		// selon la norme de nommage ci-dessus
@@ -141,7 +149,8 @@ if (!isset($_POST['date']))  $_POST['date']=time() ;
 	echo "<module id=\"activites\" titre=\"Activités\">\n";
 
 ?>
-	<annonce date="<?php echo date("d/m/y",$_POST['date']) ;?>">
+	<annonce date="">
+		<commentaire>NB : Cette annonce sera affichée le <?php echo date("d/m/y",$_POST['date']) ;?></commentaire>
 		<a href="<?php echo $_POST['url'] ;?>">
 		<?
 		if ((!isset($_POST['valid']))&&(file_exists(DATA_DIR_LOCAL."affiches/temp_$eleve_id"))) {
@@ -186,6 +195,10 @@ if ((isset($_POST['valid']))&&(isset($index))&&file_exists(DATA_DIR_LOCAL."affic
 		<champ id="url" titre="URL du lien" valeur="<? if (isset($_POST['url'])) echo $_POST['url'] ;?>"/>
 		<textsimple valeur="Ton image doit être un fichier gif, png ou jpg, ne doit pas dépasser 200x300 pixels et 100ko car sinon elle ne sera pas téléchargée"/>
 		<champ id="file" titre="Ton image" valeur="" taille="100000"/>
+		<textsimple valeur="Si tu veux que ton activité soit visible de l'exterieur, clique ici"/>
+		<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if (isset($_REQUEST['ext'])) echo 'ext' ;?>">
+			<option id="ext" titre=""/>
+		</choix>
 		<bouton id='suppr_img' titre="Supprimer l'image"/>
 
 		<choix titre="Date de l'activité" id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
