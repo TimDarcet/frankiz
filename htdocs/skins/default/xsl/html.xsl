@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.11  2004/12/15 01:08:53  schmurtz
+	Image des annonces centrees
+
 	Revision 1.10  2004/12/14 22:36:27  schmurtz
 	Bug sur la skin defaut : <p> n'etait pas traduit
-
+	
 	Revision 1.9  2004/12/14 14:40:56  psycow
 	Modification de la qdj et du sommaire de la page annonces, suite des test IE
 	
@@ -70,12 +73,12 @@
 
 <!-- Images -->
 <xsl:template match="image">
-	<img class="image" style="border:0">
+	<p class="image"><img style="border:0">
 		<xsl:attribute name="src"><xsl:value-of select="@source"/></xsl:attribute>
 		<xsl:attribute name="alt"><xsl:value-of select="@legende"/></xsl:attribute>
 		<xsl:if test="boolean(@height)"><xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute></xsl:if>
 		<xsl:if test="boolean(@width)"><xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute></xsl:if>
-	</img><br />
+	</img></p>
 	<xsl:if test="boolean(@legende)"><span class="legende"><xsl:value-of select="@legende"/></span><br /></xsl:if>
 </xsl:template>
 

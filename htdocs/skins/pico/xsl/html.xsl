@@ -23,10 +23,10 @@
 
 <!-- Images -->
 <xsl:template match="image">
-	<img class="image">
+	<p class="image"><img border='0'>
 		<xsl:attribute name="src"><xsl:value-of select="@source"/></xsl:attribute>
 		<xsl:attribute name="alt"><xsl:value-of select="@legende"/></xsl:attribute>
-	</img><br/>
+	</img></p>
 	<xsl:if test="boolean(@legende)"><span class="legende"><xsl:value-of select="@legende"/></span><br/></xsl:if>
 </xsl:template>
 

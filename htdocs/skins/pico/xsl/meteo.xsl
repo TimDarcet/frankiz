@@ -34,10 +34,10 @@
 		<span  class="meteo"><img alt="meteo" width="64" height="64">
 			<xsl:choose>
 				<xsl:when test="now/image!='-'">
-					<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="now/image"/>.png</xsl:attribute>
+					<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="now/image"/>.gif</xsl:attribute>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:attribute name="src">skins/pico/xsl/meteo/na.png</xsl:attribute>
+					<xsl:attribute name="src">skins/pico/xsl/meteo/na.gif</xsl:attribute>
 				</xsl:otherwise>
 			</xsl:choose>
 		</img></span>
@@ -59,10 +59,10 @@
 					<span  class="meteo"><img alt="meteo" width="32" height="32">
 						<xsl:choose>
 							<xsl:when test="imagejour!='-'">
-								<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="imagejour"/>.png</xsl:attribute>
+								<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="imagejour"/>.gif</xsl:attribute>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:attribute name="src">skins/pico/xsl/meteo/na.png</xsl:attribute>
+								<xsl:attribute name="src">skins/pico/xsl/meteo/na.gif</xsl:attribute>
 							</xsl:otherwise>
 						</xsl:choose>
 					</img></span>
@@ -73,10 +73,10 @@
 					<span  class="meteo"><img alt="meteo" width="32" height="32">
 						<xsl:choose>
 							<xsl:when test="imagenuit!='-'">
-								<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="imagenuit"/>.png</xsl:attribute>
+								<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="imagenuit"/>.gif</xsl:attribute>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:attribute name="src">skins/pico/xsl/meteo/na.png</xsl:attribute>
+								<xsl:attribute name="src">skins/pico/xsl/meteo/na.gif</xsl:attribute>
 							</xsl:otherwise>
 						</xsl:choose>
 					</img></span>
@@ -96,10 +96,10 @@
 			<img alt="meteo" width="64" height="64">
 				<xsl:choose>
 					<xsl:when test="meteo/now/image!='-'">
-						<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="meteo/now/image"/>.png</xsl:attribute>
+						<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="meteo/now/image"/>.gif</xsl:attribute>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:attribute name="src">skins/pico/xsl/meteo/na.png</xsl:attribute>
+						<xsl:attribute name="src">skins/pico/xsl/meteo/na.gif</xsl:attribute>
 					</xsl:otherwise>
 				</xsl:choose>
 			</img></span>
