@@ -49,7 +49,7 @@ foreach ($os as $nom => $nombre) {
 		$i++;
 		// on calcule la hauteur du baton
 		$hauteurImageRectangle = ceil((($nombre*($hauteur-50))/$max_os));
-		//ImageFilledRectangle ($im, $i*$largeur/(count($os)+1), $hauteur-$hauteurImageRectangle, ($i+1)*$largeur/(count($os)+1), $hauteur-41, $noir);
+		Imagerectangle ($im, $i*$largeur/(count($os)+1), $hauteur-$hauteurImageRectangle, ($i+1)*$largeur/(count($os)+1), $hauteur-41, $noir);
 		ImageFilledRectangle ($im, $i*$largeur/(count($os)+1), $hauteur-$hauteurImageRectangle+2, ($i+1)*$largeur/(count($os)+1), $hauteur-41-1, $bleu_clair);
 		//ImageFilledRectangle ($im, $i*$largeur/(count($os)+1)+6, $hauteur-$hauteurImageRectangle+2, ($i+1)*$largeur/(count($os)+1)-4, $hauteur-41-1, $bleu_clair);
 		
