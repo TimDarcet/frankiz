@@ -21,9 +21,12 @@
 	Script de création de la partie activités contenant des images type "affiche".
 	
 	$Log$
+	Revision 1.10  2004/10/29 16:30:56  kikx
+	Ca evite que les activité apparaissent si il n'y a rein dedans ...
+
 	Revision 1.9  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.8  2004/10/07 22:52:20  kikx
 	Correction de la page des activites (modules + proposition + administration)
 		rajout de variables globales : DATA_DIR_LOCAL
@@ -43,16 +46,17 @@
 */
 
 if(est_authentifie(AUTH_MINIMUM)) {
-	echo "<module id=\"activites\" titre=\"Activités\">\n";
 
-	$DB_web->query("SELECT affiche_id,titre,url "
-					   ."FROM affiches WHERE TO_DAYS(date)=TO_DAYS(NOW())");
+	$DB_web->query("SELECT affiche_id,titre,url FROM affiches WHERE TO_DAYS(date)=TO_DAYS(NOW())");
+	if ($DB_web->num_rows()!=0){
+		echo "<module id=\"activites\" titre=\"Activités\">\n";
 
-	while (list($id,$titre,$url)=$DB_web->next_row()) { ?>
-		<annonce date="">
-		<lien url="<?php echo $url?>"><image source="<?php echo DATA_DIR_URL.'affiches/'.$id?>" texte="Affiche" legende="<?php echo $titre?>"/></lien>
-		</annonce>
-<?php }
-
-	echo "</module>\n";
+		while (list($id,$titre,$url)=$DB_web->next_row()) { ?>
+			<annonce date="">
+			<lien url="<?php echo $url?>"><image source="<?php echo DATA_DIR_URL.'affiches/'.$id?>" texte="Affiche" legende="<?php echo $titre?>"/></lien>
+			</annonce>
+	<?php }
+	
+		echo "</module>\n";
+	}
 }
