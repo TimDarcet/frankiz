@@ -34,15 +34,13 @@
 	<p class="promo">
 		<xsl:value-of select="@promo" />
 	</p>
-	<p class="telephone">Tel:
-		<xsl:value-of select="@phone"/>
+	<p class="telephone">Tel: <xsl:value-of select="@phone"/>
 	</p>
-	<p class="casert">
-		Casert:
-	<xsl:value-of select="@casert"/>
+	<p class="casert">Casert: <xsl:value-of select="@casert"/>
 	</p>
 	<p class="section">Section: <xsl:value-of select="@section"/>
 	</p>
+    <xsl:if test="count(binet) != 0">
 	<div class="binets">Binets:
 		<ul>
 		<xsl:for-each select="binet">
@@ -50,6 +48,7 @@
 		</xsl:for-each>
 		</ul>
 	</div>
+    </xsl:if>
 	<p>
 		<a>
 			<xsl:attribute name="href"><xsl:text>trombino.php?image=true&amp;login=</xsl:text><xsl:value-of select="@login"/><xsl:text>&amp;promo=</xsl:text><xsl:value-of select="@promo"/></xsl:attribute>
