@@ -531,13 +531,8 @@ div.formulaire span.boutons{
 	display:block;
 }
 
-input:hover,input:focus {
-    border: 2px solid #e0e0e0;
-    padding: 0px;
-}
-
-.boutons input:active {
-    border: 2px inset #e0e0e0;
+input:hover {
+    background-color: #ffffff;
 }
 
 .boutons input {
@@ -550,7 +545,6 @@ option {
 }
 
 input {
-    padding: 1px;
     border: 1px solid #e0e0e0;
     background-color: #f8f8f8;
     padding-right: 5px;
