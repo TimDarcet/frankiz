@@ -22,9 +22,12 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.8  2004/10/31 21:29:56  kikx
+	Mise a jour du mail promo grace a la librairie de Schmurtz
+
 	Revision 1.7  2004/10/29 15:41:48  kikx
 	Passage des mail en HTML pour les ip
-
+	
 	Revision 1.6  2004/10/29 14:38:37  kikx
 	Mise en format HTML des mails pour les validation de la qdj, des mails promos, et des annonces
 	
@@ -70,7 +73,7 @@ function couriel($eleve_id,$titre,$contenu,$sender="le BR <br@frankiz.polytechni
 		if(empty($adresse)) $adresse=$login."@poly.polytechnique.fr" ;
 	}
 	
-	$mail = new Mail($sender,"$prenom $nom <$adresse>",$titre,true);
+	$mail = new Mail($sender,"$prenom $nom <$adresse>",html2plain($titre),true);
 	$mail->addPartText(html2plain($contenu));
 	$mail->addPartHtml($contenu);
 	$mail->send();
@@ -193,7 +196,5 @@ class Mail {
 		return false;
 	}
 }
-
-require_once BASE_LOCAL."/include/mail_contenu.inc.php" ;
 
 ?>

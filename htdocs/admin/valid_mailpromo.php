@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.14  2004/10/31 21:29:56  kikx
+	Mise a jour du mail promo grace a la librairie de Schmurtz
+
 	Revision 1.13  2004/10/29 15:54:28  kikx
 	Mail en HTLM et raison du refus si refus
-
+	
 	Revision 1.12  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -118,7 +121,6 @@ foreach ($_POST AS $keys => $val){
 	// Procedure d'envoie de masse
 	//---------------------------------------------------------------------------------------------------------------------
 		
-	        echo "<p>" ;
 		$log = "" ;
 		$cnt = 0 ;
 		
@@ -131,115 +133,27 @@ foreach ($_POST AS $keys => $val){
 			$to = " promo=".$_POST['promo'] ;
 		}
 		
-		//=================================
-		// Constuction du mail à propremeent parler ...
-		//-------------------------------------------------------------------------
-		
-		function unhtmlentities ($string)  {
-			$string = str_replace ( '&amp;', '&', $string );
-			$string = str_replace ( '&#039;', "'", $string );
-			$string = str_replace ( '&apos;', "'", $string );
-			$string = str_replace ( '&quot;', '\"', $string );
-			$string = str_replace ( '&lt;', '<', $string );
-			$string = str_replace ( '&gt;', '>', $string );
-		
-			$trans_tbl = get_html_translation_table (HTML_ENTITIES);
-
-			$trans_tbl2 = array_flip ($trans_tbl);
-			$ret = strtr ($string, $trans_tbl2);
-			
-			return $ret ;
-			//return  preg_replace('/\&\#([0-9]+)\;/me',"chr('\\1')",$ret);
-		}
-		
-		// Message que l'on retravaille
 		$mail_contenu = str_replace("&gt;",">",str_replace("&lt;","<",$_POST['mail'])) ;
-		
-		// Création du délimiteurs
-		$limite = md5(uniqid (rand()));
-		$limite2 = md5(uniqid (rand()));
-					
-		//Le message en texte simple pour les navigateurs qui n'acceptent pas le HTML
-		$texte = "This is a multi-part message in MIME format.\n";
-		$texte .= "Ceci est un message est au format MIME.\n\n";
-		
-		$texte .= "------$limite\n";
-		$texte .= "Content-Type: multipart/alternative;\n";
-		$texte .= " boundary=\"----$limite2\"\n\n";
-		
-		$texte .= "------$limite2\n";
-		$texte .= "Content-Type: text/plain; charset=\"iso-8859-1\"\n";
-		$texte .= "Content-Transfer-Encoding: 8bit\n\n";
-		$texte .= strip_tags(unhtmlentities(nl2br($mail_contenu)));
-		$texte .= "\n\n";
-		//Le message en texte HTML pour les navigateurs qui acceptent  le HTML
-		$texte .= "------$limite2\n";
-		$texte .= "Content-Type: text/html; charset=\"iso-8859-1\"\n";
-		$texte .= "Content-Transfer-Encoding: 8bit\n\n";
-		$texte .="<html>\n\t<head>\n\t</head>\n<body font-size:12pt font-family: arial>\n" ;
-		$texte .= $mail_contenu;
-//		$texte .= "<center><img src=\"cid:4923555B-0D28-4533-B917-07177C51A263\" alt=\"Validation par le BR\"></center>" ;
-		$texte .="\n\t</body>\n</html>" ;
-		$texte .= "\n\n\n";
-		
-		$texte .= "------$limite2--\n\n";
-		
-		// JE GARDE CETTE PARTIE COMMENTEE CAR SI UN JOUR ON VEUX ENVOYER DES MAILS AVEC DES PIECES JOINTES C'EST IMPLEMENTE
-		
-		//le fichier si il existe ...
-//		$fichier = 'Logo.png' ;
-		
-//		$texte .= "------$limite\n";
-//		$texte .= "Content-Type: image/png; name=\"$fichier\"\n";
-//		$texte .= "Content-Transfer-Encoding: base64\n";
-//		$texte .= "Content-ID: <4923555B-0D28-4533-B917-07177C51A263>\n";
-//		$texte .= "Content-Disposition: attachment; filename=\"$fichier\"\n\n";
-//	
-//		$fd = fopen( $fichier, "r" );
-//		$contenu = fread( $fd, filesize( $fichier ) );
-//		fclose( $fd );
-//		$texte .= chunk_split(base64_encode($contenu));
-
-//		$texte .= "\n\n\n------$limite--\n";			
-		
-		// On met en place les headers
-		$sender = unhtmlentities($_POST['from']) ;
-		$headers = "From: ".$sender."\r\nX-Mailer: PHP/" . phpversion()."\r\n" ;
-		$headers .= "Date: ".date("l j F Y, G:i")."\n";
-		$headers .= "MIME-Version: 1.0\n";
-		$headers .= "Content-Type: multipart/related; type=multipart/alternative ;\n";
-		$headers .= " boundary=\"----$limite\"";
 
 	//=================================
 	// Envoi du mail à propremeent parler ...
 	//-------------------------------------------------------------------------
 	
-		$DB_trombino->query("SELECT login FROM eleves WHERE ".$to) ;
+		$DB_trombino->query("SELECT eleve_id,nom,prenom FROM eleves WHERE ".$to) ;
 		
 		// On crée le fichier de log qui va bien
-		$fich_log = BASE_LOCAL."/../data/mailpromo/mail.log.".$temp[1] ; 
+		$fich_log = BASE_DATA."mailpromo/mail.log.".$temp[1] ; 
 		touch($fich_log) ;
-			
-		exec("echo \"Subjet : ".$_POST['titre']."\n\" >>".$fich_log) ;
-		exec("echo \"".$headers."\n\" >>".$fich_log) ;
-		exec("echo \"".$texte."\" >>".$fich_log) ;
+
+		exec("echo \"".$mail_contenu."\" >>".$fich_log) ;
 		
-		while(list($login) = $DB_trombino->next_row() ) {
-			$mail_envoie = $login."@poly" ;
-			//$mail_envoie = "gruson@poly" ;
-			
-					
-			if (mail($mail_envoie, $titre_mail." ".$_POST['titre'],$texte , $headers)){
-				$cnt ++ ;
-				exec("echo \"Mail envoyé à ".$mail_envoie."\n\" >>".$fich_log) ;
- 				usleep(200000); // Attends 200 millisecondes
-			} else {
-				$log .= "Erreur lors de l'envoi vers ".$mail ;
-			}
-//			if ($cnt==1) break ;//================= A SUPPRIMER
+		while(list($eleve_id,$nom,$prenom) = $DB_trombino->next_row() ) {
+			couriel("2131", $titre_mail." ".$_POST['titre'],$mail_contenu) ;
+			$cnt ++ ;
+			exec("echo \"Mail envoyé à $nom $prenom ($eleve_id)\n\" >>".$fich_log) ;
+ 			usleep(100000); // Attends 100 millisecondes
+			break ;// a virer
 		}
-		echo $log ;
-		echo "</p><p> Nb de mail envoyé avec succès : ".$cnt."</p>" ;
 	
 		// fin de la procédure
 		
