@@ -111,6 +111,7 @@
 					</p>
 					<br/>
 					<xsl:apply-templates select="formulaire" mode="trombino"/>
+					<xsl:apply-templates select="lien"/>
 			</dd>
 			<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 		</dl>
@@ -168,7 +169,7 @@
 				<xsl:apply-templates select="bouton"/>
 			</p>
 	</form>
-	<br/>
+	<br/>	
 </xsl:template>
 
 <xsl:template match="champ" mode="trombino">
