@@ -23,9 +23,13 @@
 	- destruction automatique des résultats
 
 	$Log$
+	Revision 1.15  2004/11/16 14:54:12  schmurtz
+	Affichage des erreurs "Parse Error"
+	permet de loguer des infos autre que les commandes SQL (pour debugage)
+
 	Revision 1.14  2004/11/08 18:27:34  pico
 	là aussi ça devrait marcher, à tester
-
+	
 	Revision 1.13  2004/11/08 18:20:03  pico
 	Devrait mieux marcher comme ça
 	
@@ -91,8 +95,7 @@ class DB {
 		if($this->result)
 			mysql_free_result($this->result);
 		
-		//mysql_select_db($this->base,$this->link); 
-		ajouter_requete_mysql($query);
+		ajouter_debug_log("Requète SQL \"$query\"");
 		$this->result = mysql_query($query,$this->link);
 		
 		if(is_bool($this->result) && $this->result)

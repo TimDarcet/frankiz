@@ -25,9 +25,13 @@
 	- affichage des requètes mysql en commentaire dans
 	
 	$Log$
+	Revision 1.11  2004/11/16 14:54:12  schmurtz
+	Affichage des erreurs "Parse Error"
+	permet de loguer des infos autre que les commandes SQL (pour debugage)
+
 	Revision 1.10  2004/11/02 20:41:22  kikx
 	Code d'erreur mysql
-
+	
 	Revision 1.9  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -42,31 +46,33 @@
 	
 */
 
-error_reporting(E_ERROR|E_CORE_ERROR|E_COMPILE_ERROR);
+error_reporting(E_ERROR|E_CORE_ERROR|E_COMPILE_ERROR|E_PARSE);
 	// TODO actuellement on n'arrive pas à récupérer ces erreurs, donc on les affiches quand
 	// même à l'utilisateur.
 
 set_error_handler("ajouter_erreur_php");
 
-$_ERREURS_PHPMYSQL = array(); // contient des : array('errname'=>"",'errmsg'=>"",'file'=>"",'line'=>"",'query'=>"")
-$_ERREUR_FATAL = false;
-$_REQUETES_MYSQL = array(); // contient des : string.
+$_ERREURS_PHPMYSQL = array();	// contient des : array('errname'=>"",'errmsg'=>"",'file'=>"",'line'=>"",'query'=>"")
+$_ERREUR_FATAL = false;			// indique si une erreur fatale est survenue, si c'est le cas on affiche pas la page
+								// pour éviter d'afficher une demi page qui fera de toute façon planter le xslt.
+$_DEBUG_LOG = array();			// contient des : string.
 
 $_ERREURS_PHP_NOMS = array(
 	E_ERROR				=> "Fatal error",
 	E_WARNING			=> "Warning",
 	E_PARSE				=> "Parse error",
-	E_NOTICE				=> "Notice",
-	E_CORE_ERROR			=> "Core error",
+	E_NOTICE			=> "Notice",
+	E_CORE_ERROR		=> "Core error",
 	E_CORE_WARNING		=> "Core warning",
 	E_COMPILE_ERROR		=> "Compile error",
 	E_COMPILE_WARNING	=> "Compile warning",
 	E_USER_ERROR		=> "User error",
-	E_USER_WARNING	=> "User warning",
+	E_USER_WARNING		=> "User warning",
 	E_USER_NOTICE		=> "User notice",
-	2048					=> "Not strict"		// E_STRICT, PHP 5 uniquement
+	2048				=> "Not strict"		// E_STRICT, PHP 5 uniquement
 );
 
+// Ajout d'une erreur dans la liste des erreurs
 function ajouter_erreur_php($errno, $errmsg, $file, $line, $vars) {
 	global $_ERREURS_PHPMYSQL, $_ERREURS_PHP_NOMS, $_ERREUR_FATAL;
 	$_ERREURS_PHPMYSQL[] = array(
@@ -91,13 +97,15 @@ function ajouter_erreur_mysql($query) {
 	$_ERREUR_FATAL = true;
 }
 
-function ajouter_requete_mysql($query) {
-	global $_REQUETES_MYSQL;
-	$_REQUETES_MYSQL[] = $query;
-}
+// Ajout dans les logs de débogage
+function ajouter_debug_log($string) {
+	global $_DEBUG_LOG;
+	$_DEBUG_LOG[] = $string;
+}	
 
+// Affichage des erreurs
 function affiche_erreurs_php() {
-	global $_ERREURS_PHPMYSQL,$_REQUETES_MYSQL,$_ERREUR_FATAL;
+	global $_ERREURS_PHPMYSQL,$_DEBUG_LOG,$_ERREUR_FATAL;
 	
 	if(AFFICHER_LES_ERREURS) {
 		foreach($_ERREURS_PHPMYSQL as $erreur)
@@ -106,8 +114,8 @@ function affiche_erreurs_php() {
  				. (!empty($erreur['file']) ? " in <b>{$erreur['file']}</b> on line <b>{$erreur['line']}</b>" : "")
 				. "</p>\n";
 
-		foreach($_REQUETES_MYSQL as $requete)
-			echo "<!-- Requète SQL \"$requete\" -->\n";
+		foreach($_DEBUG_LOG as $entree)
+			echo "<!-- $entree -->\n";
 	
 	} else if($_ERREUR_FATAL) {
 		// On log l'erreur
