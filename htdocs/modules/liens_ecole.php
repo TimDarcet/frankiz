@@ -21,9 +21,12 @@
 	Liens permettants d'accéder aux autres sites de l'école.
 	
 	$Log$
+	Revision 1.7  2004/11/06 20:07:01  kikx
+	Id des liens pour les liens ecole
+
 	Revision 1.6  2004/11/06 20:03:06  kikx
 	Suppression de liens inutiles
-
+	
 	Revision 1.5  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -40,12 +43,12 @@
 */
 ?>
 <module id="liens_ecole" titre="Liens école">
-	<lien titre="La Kes" url="http://www.polytechnique.fr/eleves/binets/kes/" />
+	<lien id="kes" titre="La Kes" url="http://www.polytechnique.fr/eleves/binets/kes/" />
 	<?php if(est_authentifie(AUTH_MINIMUM)){ ?>
-		<lien titre="Redirection des mails" url="http://poly.polytechnique.fr/" /> 
+		<lien id="redmail" titre="Redirection des mails" url="http://poly.polytechnique.fr/" /> 
 	<? } ?>
-	<lien titre="Site de l'école" url="http://www.polytechnique.fr/" />
-	<lien titre="Site de la DE" url="http://www.edu.polytechnique.fr/" />
-	<lien titre="Intranet" url="http://intranet.polytechnique.fr/" />
-	<lien titre="Polytechnique.org" url="http://www.polytechnique.org/" />
+	<lien id="ecole" titre="Site de l'école" url="http://www.polytechnique.fr/" />
+	<lien id="ecole_de" titre="Site de la DE" url="http://www.edu.polytechnique.fr/" />
+	<lien id="intranet" titre="Intranet" url="http://intranet.polytechnique.fr/" />
+	<lien id="xorg" titre="Polytechnique.org" url="http://www.polytechnique.org/" />
 </module>
