@@ -21,9 +21,12 @@
 	Cette page permet de déterminer si le Bôb est ouvert ou non.
 	
 	$Log$
+	Revision 1.1  2004/12/15 01:44:15  schmurtz
+	deplacement de la page d'admin du bob de admin vers gestion
+
 	Revision 1.3  2004/12/07 21:54:09  pico
 	Interface d'ajout des tours kawa pour le bob
-
+	
 	Revision 1.2  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
 	
@@ -66,7 +69,7 @@ $DB_web->query("SELECT valeur FROM parametres WHERE nom='bob'");
 list($valeur) = $DB_web->next_row();
 
 ?>
-	<formulaire id="bob" titre="Ouverture du bôb" action="admin/etat_bob.php">
+	<formulaire id="bob" titre="Ouverture du bôb" action="gestion/etat_bob.php">
 		<choix titre="Le bôb est:" id="etat" type="radio" valeur="<?= $valeur ?>">
 				<option titre="Fermé" id="0"/>
 				<option titre="ouvert" id="1"/>
@@ -75,7 +78,7 @@ list($valeur) = $DB_web->next_row();
 	</formulaire>
 
 	
-	<formulaire id="kawa" titre="Ajouter un tour kawa" action="admin/etat_bob.php">
+	<formulaire id="kawa" titre="Ajouter un tour kawa" action="gestion/etat_bob.php">
 		<choix titre="Section" id="section" type="combo" valeur="">
 <?
 			$DB_trombino->query("SELECT section_id,nom FROM sections ORDER BY nom ASC");

@@ -22,9 +22,12 @@
 	l'utilisateur courant ‡ accËs.
 
 	$Log$
+	Revision 1.27  2004/12/15 01:44:15  schmurtz
+	deplacement de la page d'admin du bob de admin vers gestion
+
 	Revision 1.26  2004/12/14 22:17:32  kikx
 	Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
-
+	
 	Revision 1.25  2004/12/13 20:03:25  pico
 	Les liens ne forment pas de blocs, il faut donc le spÈcifier
 	
@@ -321,7 +324,7 @@ $permissions_user = $_SESSION['user']->perms ;
 		$DB_valid->query("SELECT eleve_id FROM valid_ip") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Gerer les demandes d'ajout d'ips (<?=$nb?>)" url="admin/valid_ip.php"/><br/>
+		<lien titre="GÈrer les demandes d'ajout d'ips (<?=$nb?>)" url="admin/valid_ip.php"/><br/>
 		<lien titre="Liste des IPs" url="admin/ip.php"/><br/>
 	<?
 	}
@@ -343,7 +346,7 @@ $permissions_user = $_SESSION['user']->perms ;
 			$DB_trombino->query("SELECT nom FROM binets WHERE binet_id=$binet");
 			list($nom) = $DB_trombino->next_row() ;
 
-			echo "<lien titre=\"Gerer la page du binet : $nom\" url=\"gestion/binet.php?binet=".$binet."\"/><br/>" ;
+			echo "<lien titre=\"GÈrer la page du binet : $nom\" url=\"gestion/binet.php?binet=".$binet."\"/><br/>" ;
 		}
 	}
 
@@ -366,7 +369,7 @@ $permissions_user = $_SESSION['user']->perms ;
 			list($nom) = $DB_trombino->next_row() ;
 
 				
-			echo "<lien titre=\"Gerer les membres du binet : $nom\" url=\"gestion/binet.php?binet=".$binet."\"/><br/>" ;
+			echo "<lien titre=\"GÈrer les membres du binet : $nom\" url=\"gestion/binet.php?binet=".$binet."\"/><br/>" ;
 		}
 	}
 
@@ -376,8 +379,8 @@ $permissions_user = $_SESSION['user']->perms ;
 	//======================================
 	if (verifie_permission('admin')||verifie_permission('bob')){
 		echo "<h2>Gestion du BÙB</h2>" ;
-		echo "<lien titre=\"Gerer l'ouverture du BÙB\" url=\"admin/etat_bob.php\"/><br/>" ;
-		echo "<lien titre=\"Gerer les tours kawa\" url=\"admin/etat_bob.php\"/><br/>" ;
+		echo "<lien titre=\"GÈrer l'ouverture du BÙB\" url=\"gestion/etat_bob.php\"/><br/>" ;
+		echo "<lien titre=\"GÈrer les tours kawa\" url=\"gestion/etat_bob.php\"/><br/>" ;
 	}
 ?>
 
