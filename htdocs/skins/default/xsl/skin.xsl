@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.10  2004/12/17 01:25:52  psycow
+	Ajout des date de naissance
+
 	Revision 1.9  2004/12/17 00:52:23  psycow
 	Correction minime
-
+	
 	Revision 1.8  2004/12/16 00:29:13  psycow
 	bug page deconnecter
 	
@@ -119,10 +122,11 @@
 			
 			<div id="gauche">
 				<xsl:apply-templates select="module[@id='liens_navigation']" />
-				<xsl:apply-templates select="module[@id='tour_kawa']"/>
 				<xsl:apply-templates select="module[@id='meteo']"/>
-				<xsl:apply-templates select="module[@id='activites']"/>
 				<xsl:apply-templates select="module[@id='lien_tol']"/>
+				<xsl:apply-templates select="module[@id='tour_kawa']"/>
+				<xsl:apply-templates select="module[@id='activites']"/>
+				
 			</div>
 
 			

@@ -52,10 +52,10 @@
 						</dd>	
 						<dd class="sport">
 							<a>
-								<xsl:attribute name="href"><xsl:text>trombino.php?image=true&amp;login=</xsl:text><xsl:value-of select="@login"/><xsl:text>&amp;promo=</xsl:text><xsl:value-of select="@promo"/></xsl:attribute>
+								<xsl:attribute name="href"><xsl:text>trombino.php?sections=</xsl:text><xsl:value-of select="@section"/><xsl:text>&amp;promo=</xsl:text><xsl:value-of select="@promo"/></xsl:attribute>
 								<img height="100">
 									<xsl:attribute name="src">
-										<xsl:text>skins/default/images/sections/</xsl:text><xsl:value-of select="translate(@section,'ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊ','abcdefghijklmnopqrstuvwxyzéèàçê')"/>
+										<xsl:text>skins/default/images/sections/</xsl:text><xsl:value-of select="translate(@section,'ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊéèaçê','abcdefghijklmnopqrstuvwxyzeeaceeeace')"/>
 										<xsl:choose>
 											<xsl:when test="(number(@promo) mod 2)=0">
 												<xsl:text>0</xsl:text>
@@ -73,6 +73,7 @@
 							<p class="right"><br/>
 								<xsl:value-of select="@promo" /><br/>
 								<xsl:value-of select="@surnom" /><br/>
+								<xsl:value-of select="@date_nais" /><br/>
 								<br/>
 							</p>
 							<p class="left"><br/>
