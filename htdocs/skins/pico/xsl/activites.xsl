@@ -23,12 +23,10 @@
 
 <xsl:template match="module[@id='activites']">
 	<xsl:if test="count(annonce) !=0">
-		<div style="text-align: center">
-			<div class="fkz_module" id='mod_activites'>
-				<div class="fkz_titre">Activités</div>
-				<div class="fkz_module_corps">
-					<xsl:apply-templates select="annonce" mode="activites"/>
-				</div>
+		<div class="fkz_module" id='mod_activites'>
+			<div class="fkz_titre"><span id="affiches_logo"><xsl:text> </xsl:text></span><span id="affiches">Activités</span></div>
+			<div class="fkz_module_corps">
+				<xsl:apply-templates select="annonce" mode="activites"/>
 			</div>
 		</div>
 	</xsl:if>
