@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.24  2004/12/07 12:11:13  pico
+	Un peu plus de droits pour le webmestre
+
 	Revision 1.23  2004/12/07 08:36:39  pico
 	Ajout d'une page pour pouvoir vider un peu les bases de données (genre pas garder les news qui datent de vieux)
-
+	
 	Revision 1.22  2004/11/27 21:31:18  pico
 	Ajout du lien vers la gestion de l'état du bob
 	
@@ -205,7 +208,7 @@ $permissions_user = $_SESSION['user']->perms ;
 		<lien titre="Valider les annonces (<?=$nb?>)" url="admin/valid_annonces.php"/>
 	<?
 	}
-	if (verifie_permission('admin')||verifie_permission('affiches')){
+	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('web')){
 		$DB_valid->query("SELECT eleve_id FROM valid_affiches") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
@@ -254,7 +257,7 @@ $permissions_user = $_SESSION['user']->perms ;
 	<h3>Administration des données validées</h3>
 	<?
 	}
-	if (verifie_permission('admin')||verifie_permission('qdjmaster')){
+	if (verifie_permission('admin')||verifie_permission('qdjmaster')||verifie_permission('web')){
 	?>
 		<lien titre="Planifier les qdj" url="admin/planif_qdj.php"/>
 	<?
