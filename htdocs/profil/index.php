@@ -21,9 +21,13 @@
 	Page permettant de modifier son profil 
 	
 	$Log$
+	Revision 1.4  2004/12/15 06:13:30  kikx
+	Ct trop la merde ....
+	pico tu le remettra qd tu auras debuggué car la moi je peux plus :(
+
 	Revision 1.3  2004/12/13 20:03:25  pico
 	Les liens ne forment pas de blocs, il faut donc le spécifier
-
+	
 	Revision 1.2  2004/11/27 17:10:37  pico
 	Hum.. commentaires qui vont pas bien
 	
@@ -51,7 +55,7 @@ require "../include/page_header.inc.php";
 	<h2>Changer l'apparence du site</h2>
 		<lien titre="Changer de skin" url="profil/skin.php"/><br/>
 		<lien titre="Gérer mes liens perso" url="profil/liens_ext.php"/><br/>
-		<lien titre="Gérer mes annonces externes" url="profil/liens_ext.php#form_rss"/><br/>
+		<!--<lien titre="Gérer mes annonces externes" url="profil/liens_ext.php#form_rss"/><br/>-->
 		
 	<h2>Changer mon profil sur le réseau</h2>
 		<lien titre="Gérer mes données réseau" url="profil/reseau.php"/><br/>
