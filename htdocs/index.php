@@ -21,9 +21,14 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.27  2005/01/18 19:30:34  pico
+	Place la boite du sudo dans la boite avec les infos de connection.
+	Pbs d'encodage des variables passées à sablotron réglés
+	Pb du su quand on est pas loggué par mot de passe réglé
+
 	Revision 1.26  2005/01/12 17:17:19  pico
 	hum
-
+	
 	Revision 1.25  2005/01/12 17:15:58  pico
 	Correction bug #30
 	
@@ -90,7 +95,7 @@
 	Commentaires et ajout de la variable cvs "Log"
 	
 */
-
+require_once "include/global.inc.php";
 require_once "include/wiki.inc.php";
 
 function get_categorie($en_haut,$stamp,$perime) {

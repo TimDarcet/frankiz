@@ -21,9 +21,14 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.35  2005/01/18 19:30:34  pico
+	Place la boite du sudo dans la boite avec les infos de connection.
+	Pbs d'encodage des variables passées à sablotron réglés
+	Pb du su quand on est pas loggué par mot de passe réglé
+
 	Revision 1.34  2005/01/18 17:19:23  pico
 	Petite modif dans le menu de navigation (pour psycow)
-
+	
 	Revision 1.33  2005/01/18 13:17:07  pico
 	Réorganisation des liens de navigation.
 	
@@ -156,6 +161,10 @@
 
 <?php if(est_authentifie(AUTH_MINIMUM)): ?>
 <module id="liens_profil" titre="Preférences">
+<?
+	if(isset($_SESSION['sueur']))
+		echo "<warning>ATTENTION, su en cours. Pour revenir à ta vrai identité, clique <a href='index.php?logout=1'>ici</a></warning>";
+?>
 	<lien id="profil"  titre="Préférences" url="profil/index.php" key="p"/>
 	<?php if ((count($_SESSION['user']->perms)>1)&&($_SESSION['user']->perms[0]!="")) { ?>
 		<lien id="admin" titre="Administration" url="gestion/" key="g"/>

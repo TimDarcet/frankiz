@@ -36,9 +36,14 @@
 	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
 
 	$Log$
+	Revision 1.10  2005/01/18 19:30:34  pico
+	Place la boite du sudo dans la boite avec les infos de connection.
+	Pbs d'encodage des variables passées à sablotron réglés
+	Pb du su quand on est pas loggué par mot de passe réglé
+
 	Revision 1.9  2005/01/11 17:42:25  pico
 	coquille
-
+	
 	Revision 1.8  2004/12/16 23:00:12  schmurtz
 	Suppression du lien Se deconnecter si l'utilisateur est loguÃ© par cookie.
 	Ca evite de le faire sans le vouloir et de devoir remettre le cookie.
@@ -155,7 +160,6 @@ if(isset($_POST['login']) && isset($_POST['passwd'])) {
 		
 		exit;
 	}
-
 // Login par cookie (si la session est déjà existante, on oublie le cookie)
 } else if(!isset($_SESSION['user']) && isset($_COOKIE['auth'])) {
 	$cookie = unserialize(base64_decode(wordwrap($_COOKIE['auth'])));
@@ -164,7 +168,8 @@ if(isset($_POST['login']) && isset($_POST['passwd'])) {
 		ajouter_access_log("erreur de log par cookie uid={$cookie['uid']} cookie={$_COOKIE['auth']}");
 
 // Login par utilisation du su (utilisable par les admins uniquement)
-} else if(isset($_REQUEST['su']) && verifie_permission('admin')) {
+}
+if(isset($_REQUEST['su']) && verifie_permission('admin')) {
 	demande_authentification(AUTH_FORT);
 	
 	$newuser = new User(false,$_REQUEST['su']);
@@ -199,7 +204,8 @@ if(!isset($_SESSION['user']))
 */
 function demande_authentification($minimum) {
 	if($_SESSION['user']->est_authentifie($minimum)) return;
-
+	
+	require_once "init_skin.inc.php"; // n'y est pas encore dans le cas d'un "su"
 	require "page_header.inc.php";
 ?>
 	<page id="login" titre="Frankiz : connexion">

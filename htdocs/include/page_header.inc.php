@@ -21,9 +21,14 @@
 	Page d'entête pour la transformation du XML. Met en place un cache de sortie.
 
 	$Log$
+	Revision 1.9  2005/01/18 19:30:34  pico
+	Place la boite du sudo dans la boite avec les infos de connection.
+	Pbs d'encodage des variables passées à sablotron réglés
+	Pb du su quand on est pas loggué par mot de passe réglé
+
 	Revision 1.8  2004/11/24 20:26:38  schmurtz
 	Reorganisation des skins (affichage melange skin/css + depacement des css)
-
+	
 	Revision 1.7  2004/11/13 00:12:24  schmurtz
 	Ajout du su
 	
@@ -50,7 +55,6 @@ ob_start();
 echo "<?xml version='1.0' encoding='ISO-8859-1' ?>\n";
 echo "<!DOCTYPE frankiz PUBLIC \"-//BR//DTD FRANKIZ 1.0//FR\" \"http://frankiz.polytechnique.fr/frankiz.dtd\">\n";
 echo "<frankiz base='".BASE_URL."/' css='".$_SESSION['skin']['skin_css_url']."'>\n";
-if(isset($_SESSION['sueur']))
-	echo "<module id='su' titre='SU'><p>ATTENTION, su en cours. Pour revenir à ta vrai identité, clique <a href='index.php?logout=1'>ici</a></p></module>";
+
 require "modules.inc.php";
 ?>
