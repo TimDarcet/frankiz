@@ -62,6 +62,7 @@
 			<br/>
 			<p class="centre">
 				<xsl:apply-templates select="lien[@id='lire_tout']"/>
+				<xsl:apply-templates select="lien[@id='lire_nonlu']"/>
 			</p> 
 		</dd>
 		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
