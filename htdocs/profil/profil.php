@@ -6,9 +6,13 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.10  2004/10/19 20:22:04  schmurtz
+	Rajout de messages de reussite dans la page profil
+	Fusion des formulaires changement de mot de passe et activation du cookie
+
 	Revision 1.9  2004/09/15 23:20:07  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 	Revision 1.8  2004/09/15 21:42:21  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
 	
@@ -19,14 +23,15 @@ demande_authentification(AUTH_MAIL);
 
 $message_succes="";
 
-
 // Données sur l'utilisateur
 $DB_trombino->query("SELECT eleves.nom,prenom,surnom,mail,login,promo,sections.nom,cie,piece_id FROM eleves INNER JOIN sections USING(section_id) WHERE eleve_id='".$_SESSION['user']->uid."'");
 list($nom,$prenom,$surnom,$mail,$login,$promo,$section,$cie,$casert) = $DB_trombino->next_row();
 
-// Modification du mot de passe
-if(isset($_POST['changer_mdp'])) {
-	if($_POST['passwd'] != $_POST['passwd2']) {
+if(isset($_POST['changer_frankiz'])) {
+	// Modification du mot de passe
+	if($_POST['passwd']=='12345678' && $_POST['passwd2']=='87654321' || empty($_POST['passwd']) && empty($_POST['passwd2'])) {
+		// ne rien faire, on garde l'ancien mot de passe
+	} else if($_POST['passwd'] != $_POST['passwd2']) {
 		ajoute_erreur(ERR_MDP_DIFFERENTS);
 	} else if(strlen($_POST['passwd']) < 8) {
 		ajoute_erreur(ERR_MDP_TROP_PETIT);
@@ -36,8 +41,7 @@ if(isset($_POST['changer_mdp'])) {
 		$message_succes="Le mot de passe vient d'être changé.";
 	}
 
-// Modification du cookie d'authentification
-} else if(isset($_POST['changer_cookie'])) {
+	// Modification du cookie d'authentification
 	if($_POST['cookie'] == 'oui') {
 		// on rajoute le cookie
 		$cookie = array('hash'=>nouveau_hash(),'uid'=>$_SESSION['user']->uid);
@@ -46,10 +50,12 @@ if(isset($_POST['changer_mdp'])) {
 		SetCookie("auth",base64_encode(serialize($cookie)),time()+3*365*24*3600,"/");
 		$_COOKIE['auth'] = "blah";  // hack permetttant de faire marcher le test d'existance du cookie
 									// utilisé quelques ligne plus bas sans devoir recharger la page.
+		$message_succes.="Le cookie d'authentification a été activé.";
 	} else {
 		// on supprime le cookie
 		SetCookie("auth","",0,"/");
 		unset($_COOKIE['auth']);	// hack, cf. au dessus.
+		$message_succes.="Le cookie d'authentification a été désactivé.";
 	}
 
 // Modification de la fiche du trombino
@@ -79,29 +85,26 @@ require "../include/page_header.inc.php";
 	<h1>Modification de son profil</h1>
 <?php
 		if(!empty($message_succes))
-			echo "<p>$message_succes</p>\n";
+			echo "<commentaire>$message_succes</commentaire>\n";
 		if(a_erreur(ERR_MDP_DIFFERENTS))
-			echo "<p>Les valeurs des deux champs n'étaient pas identiques.</p>\n";
+			echo "<warning>Les valeurs des deux champs de mot de passe n'étaient pas identiques.</warning>\n";
 		if(a_erreur(ERR_MDP_TROP_PETIT))
-			echo "<p>Il faut mettre un mot de passe plus long (au moins 8 caractères).</p>\n";
+			echo "<warning>Il faut mettre un mot de passe plus long (au moins 8 caractères).</warning>\n";
 		if(a_erreur(ERR_SURNOM_TROP_PETIT))
-			echo "<p>Il faut mettre un surnom plus long (au moins 2 caractères).</p>\n";
+			echo "<warning>Il faut mettre un surnom plus long (au moins 2 caractères).</warning>\n";
 		if(a_erreur(ERR_EMAIL_NON_VALIDE))
-			echo "<p>L'email n'est pas valide.</p>\n";
+			echo "<warning>L'email n'est pas valide.</warning>\n";
 ?>
-	<formulaire id="mod_mdp" titre="Changement de mot de passe" action="profil/profil.php">
-		<champ id="passwd" titre="Mot de passe" valeur=""/>
-		<champ id="passwd2" titre="Retaper le mot de passe" valeur=""/>
-		<bouton id="changer_mdp" titre="Changer"/>
-	</formulaire>
-	
-	<formulaire id="mod_cookie" titre="Cookie d'authentification" action="profil/profil.php">
+	<formulaire id="mod_frankiz" titre="Modification du compte Frankiz" action="profil/profil.php">
+		<textsimple valeur="Ne pas toucher ou laisser vide pour conserver l'ancien mot de passe"/>
+		<champ id="passwd" titre="Mot de passe" valeur="12345678"/>
+		<champ id="passwd2" titre="Retaper le mot de passe" valeur="87654321"/>
 		<choix id="cookie" titre="Utiliser l'authentification par cookie" type="combo"
 				valeur="<?php echo empty($_COOKIE['auth'])? 'non' : 'oui' ?>">
 			<option titre="Activé" id="oui"/>
 			<option titre="Désactivé" id="non"/>
 		</choix>
-		<bouton id="changer_cookie" titre="Changer"/>
+		<bouton id="changer_frankiz" titre="Changer"/>
 	</formulaire>
 	
 	<formulaire id="mod_trombino" titre="Changement de la fiche trombino" action="profil/profil.php">
