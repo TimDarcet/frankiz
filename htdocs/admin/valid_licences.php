@@ -21,9 +21,12 @@
 	Page qui permet l'administration des licences windows.
 	
 	$Log$
+	Revision 1.19  2005/02/16 20:41:24  dei
+	gestion autres logiciels (Access...)
+
 	Revision 1.18  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
-
+	
 	Revision 1.17  2005/02/09 20:15:51  pico
 	Ajout d'un droit pour les admin@windows pour valider les demandes de licences
 	
@@ -97,6 +100,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="valid_licences" titre="Frankiz : gestion des licences Microsoft">
 <?
+$log=array('winxp' => 'Windows XP Professionnel','2k3serv' => 'Windows Serveur 2003','2k3access'=>'Access 2003','2k3onenote'=>'One Note 2003','2k3visiopro'=>'Visio Professionnel 2003','win2k'=>'Windows 2000 Professionnel');
 //on teste si la cle entrée à la main a une forme standard...
 function test_cle($key){
 	$key=explode("-",$key);
@@ -172,6 +176,7 @@ $temp = explode("_",$keys) ;
 							"Le BR<br>";
 			
 					couriel($temp[1],"[Frankiz] Ta demande a été acceptée",$contenu,WINDOWS_ID);
+					couriel(WINDOWS_ID,"[Frankiz] Ta demande a été acceptée",$contenu,$temp[1]);
 					echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande a été acceptée (nouvelle licence : ".$_POST[$temp2].")</commentaire>" ;
 				}else{
 					echo "<warning>La clé ".$_POST[$temp2]." existe déjà et est attribuée. Elle a été supprimée de la base des clés libres.</warning>";
@@ -207,7 +212,7 @@ $DB_msdnaa->query("UNLOCK TABLES");
 			}
 ?>
 			<element id="<? echo $eleve_id ;?>">
-				<colonne id="logiciel"><? echo "$logiciel" ?></colonne>
+				<colonne id="logiciel"><? echo $log[$logiciel] ?></colonne>
 				<colonne id="eleve"><? echo "$nom $prenom" ?></colonne>
 				<colonne id="raison">
 					<p><textsimple titre="" id="raison_<? echo $eleve_id ;?>" valeur="Raison = <? echo $raison ;?>"/></p>
@@ -304,6 +309,10 @@ if(isset($_POST['effacer'])&&$_POST['login']!=""){
 		<choix titre="Logiciel" id="logiciel" type="combo" valeur="">
 			<option titre="Windows XP Pro" id="winxp"/>
 			<option titre="Windows 2003 Serveur" id="2k3serv"/>
+			<option titre="Windows 2000 Professionnel" id="win2k"/>
+			<option titre="Access 2003" id="2k3access"/>
+			<option titre="One Note 2003" id="2k3onenote"/>
+			<option titre="Visio 2003 Professionnel" id="2k3visiopro"/>
 		</choix>
 		<bouton id='chercher' titre='Rechercher'/>
 		<bouton id='ajout' titre="Ajouter"/>
@@ -390,6 +399,11 @@ if(isset($_POST['update'])&&is_readable($_FILES['file']['tmp_name'])){
 		<fichier id="file" titre="Nouvelles Licences" taille="200000"/>
 		<choix titre="Logiciel" id="logiciel" type="combo" valeur="">
 			<option titre="Windows XP Pro" id="winxp"/>
+			<option titre="Windows 2003 Serveur" id="2k3serv"/>
+			<option titre="Windows 2000 Professionnel" id="win2k"/>
+			<option titre="Access 2003" id="2k3access"/>
+			<option titre="One Note 2003" id="2k3onenote"/>
+			<option titre="Visio 2003 Professionnel" id="2k3visiopro"/>
 		</choix>
 		<bouton id='update' titre="Ajouter"/>
 	</formulaire>
