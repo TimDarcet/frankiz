@@ -19,9 +19,16 @@
 */
 /*
 		$Log$
+		Revision 1.17  2005/02/08 22:41:17  pico
+		Correction du bug de recherche sur la faq. (#55)
+
+		c'est vraiment très bizarre la gestion des variables, là...
+
+		enfin bon, ça marche...
+
 		Revision 1.16  2005/01/22 17:58:38  pico
 		Modif des images
-
+		
 		Revision 1.15  2005/01/11 16:47:09  pico
 		Bug #26
 		
@@ -265,14 +272,16 @@ function all_elt_affich($idfold){
 // vers le haut
 //------------------------------
 
-function rech_parent($id) {
-		global $DB_faq,$affich_elt;
+function rech_parent($id2) {
+		global $DB_faq;
 		$liste="";
+		$id = $id2;
 		while ($id != 0) {
 			$DB_faq->query("SELECT parent FROM faq WHERE faq_id='{$id}'") ;
-			while(list($id) = $DB_faq->next_row()){
+			while(list($id3) = $DB_faq->next_row()){
+				$id =$id3;
 				if (($id != "")&&($id != 0)){ // on rajoute ssi c'est pas le racine
-					$liste .= "/".$id;		  // car on la deja rajouté !
+					$liste = $liste."/".$id;		  // car on la deja rajouté !
 				}
 			}
 		}
@@ -309,7 +318,7 @@ if ($mots!="") {
 	$DB_faq->query("SELECT faq_id,question,reponse FROM faq") ;
 	$recherche = 0 ;
 	$a_marquer = "/" ;			// liste des elements qui contiendront les mots
-	$affich_elt = "1" ;		// liste des elements à afficher
+	$affich_elt = "0" ;		// liste des elements à afficher
 	$result = explode(" ",$mots) ;
 	$n = count($result) ;
 	while(list($id,$question,$reponse) = $DB_faq->next_row()) {
