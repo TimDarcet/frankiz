@@ -21,9 +21,12 @@
 		Fonction pour parser des rss
 		
 		$Log$
+		Revision 1.2  2004/11/18 12:11:58  pico
+		Premier jet de page pour afficher des news externes
+
 		Revision 1.1  2004/11/17 22:39:45  pico
 		Fonction pour parser des rss extérieures
-
+		
 */
 
 function rss_xml($site) {
@@ -46,6 +49,5 @@ function rss_xml($site) {
 		echo xslt_process($xh, 'arg:/_xml', BASE_LOCAL.'/include/rss_convert.xsl', NULL, array('/_xml'=>$xml));
 		xslt_free($xh);
 	}
-	else echo $xml;
 }
 ?>
