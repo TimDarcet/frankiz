@@ -70,7 +70,7 @@
 		<xsl:apply-templates select="frankiz/module[@id='liens_perso']" mode="link"/>
 	</head>
 	<body>
-        <xsl:attribute name="background">skins/aubade/<xsl:value-of select="substring-before(substring-after(frankiz/@css,'skins/aubade/'),'/style.css')" />/images/fond<xsl:value-of select="1 + (frankiz/module[@id='random']/p[1] mod 13)" />.jpg</xsl:attribute>
+        <xsl:attribute name="class">fond<xsl:value-of select="1 + (frankiz/module[@id='random']/p[1] mod 13)" /></xsl:attribute>
 		<div class="fkz_entetes">
 			<div class="fkz_logo"><a href="index.php"><span class="fkz_logo">Frankiz,</span></a></div>
 			<div  class="fkz_logo_eleves"><span class="fkz_logo_eleves">le site Web des élèves de l'École Polytechnique</span></div>

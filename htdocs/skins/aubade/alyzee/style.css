@@ -29,6 +29,60 @@ body {
     background-position: top left;
 }
 
+/* Les fonds */
+
+body.fond0 {
+    background-image: url('images/fond0.jpg');
+}
+
+body.fond1 {
+    background-image: url('images/fond1.jpg');
+}
+
+body.fond2 {
+    background-image: url('images/fond2.jpg');
+}
+
+body.fond3 {
+    background-image: url('images/fond3.jpg');
+}
+
+body.fond4 {
+    background-image: url('images/fond4.jpg');
+}
+
+body.fond5 {
+    background-image: url('images/fond5.jpg');
+}
+
+body.fond6 {
+    background-image: url('images/fond6.jpg');
+}
+
+body.fond7 {
+    background-image: url('images/fond7.jpg');
+}
+
+body.fond8 {
+    background-image: url('images/fond8.jpg');
+}
+
+body.fond9 {
+    background-image: url('images/fond9.jpg');
+}
+
+body.fond10 {
+    background-image: url('images/fond10.jpg');
+}
+
+body.fond11 {
+    background-image: url('images/fond11.jpg');
+}
+
+body.fond12 {
+    background-image: url('images/fond12.jpg');
+}
+
 img {
 	border: 0;
 }
