@@ -231,6 +231,7 @@ div.fkz_page_titre {
 	color: #000;
 	text-align : center;
 	font-weight: bold;
+    vertical-align: bottom;
 }
 
 
@@ -289,10 +290,15 @@ span.fkz_annonces_vieux,span.fkz_annonces_nouveau, span.fkz_annonces_important,s
 
 /* Logos menu */
 
-#anniversaires_logo,#navigation_logo,#affiches_logo,#contacts_logo,#liens_ecole_logo,#serveurs_logo,#stats_logo,#tour_kawa_logo,#qdj_logo,#meteo_logo,#sondages_logo,#lien_tol {
-    background-repeat:no-repeat;
-    height:16px;
-    padding-left:20px;
+#anniversaires_logo,#navigation_logo,#affiches_logo,#contacts_logo,#liens_ecole_logo,#serveurs_logo,#stats_logo,#tour_kawa_logo,#qdj_logo,#meteo_logo,#sondages_logo,#lien_tol_logo {
+/*    background-repeat:no-repeat; */
+    height:17px;
+    width: 16px;
+    margin: 5px;
+    padding-left:16px;
+    padding-bottom: 1px;
+    margin-left: 2;
+    vertical-align: bottom;
 }
 
 #anniversaires_logo {
@@ -339,7 +345,7 @@ span.fkz_annonces_vieux,span.fkz_annonces_nouveau, span.fkz_annonces_important,s
     background-image:url("images/sondage.png");
 }
 
-#lien_tol {
+#lien_tol_logo {
     background-image:url("images/tol.png");
 }
 
