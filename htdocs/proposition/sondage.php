@@ -21,12 +21,15 @@
 	Page pour demander les sondages !
 	
 	$Log$
+	Revision 1.11  2005/01/18 10:35:02  pico
+	Interface avancée d'édition de sondages (on édite le code, utile pour faire plusieurs sondages de même type)
+
 	Revision 1.10  2005/01/14 09:19:32  pico
 	Corrections bug mail
 	+
 	Sondages maintenant public ou privé (ne s'affichant pas dans le cadre)
 	Ceci sert pour les sondages section par exemple
-
+	
 	Revision 1.9  2004/12/14 00:27:40  kikx
 	Pour que le FROM des mails de validation soit au nom du mec qui demande la validation... (qu'est ce que je ferai pas pour les TOS :))
 	
@@ -67,6 +70,13 @@ $DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM ele
 list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_row();
 
 $msg="" ;
+
+ if(!isset($_REQUEST["avance"])) $_REQUEST["avance"]=1;
+ if(isset($_REQUEST["btn_avance"])){
+ 	if($_REQUEST["btn_avance"]=="Interface simplifiée") $_REQUEST["avance"]=0;
+ 	if($_REQUEST["btn_avance"]=="Interface avancée") $_REQUEST["avance"]=1;
+}
+
 //---------------------------------------------------------------------------------
 // Differents traitement
 //---------------------------------------------------------------------------------
@@ -193,11 +203,12 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 <formulaire id="form" titre="Aperçu de ton sondage">	
 	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
 	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
-
+	<h2><?=$titre_sondage?></h2>
 		
 <?
 	decode_sondage($contenu_form) ;
 ?>
+	
 	<choix titre="Sondage jusqu'à " id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
 <?	for ($i=0 ; $i<MAX_PEREMPTION ; $i++) {
 		$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
@@ -213,77 +224,97 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 		<option id="noext" titre=""/>
 	</choix>
 	<bouton titre="Valider le sondage" id="valid" onClick="return window.confirm('Voulez vous vraiment valider votre sondage ?')" />
-
+	<bouton titre="Interface <?= ($_REQUEST["avance"]==1)?"simplifiée":"avancée";?>" id="btn_avance"/>
 </formulaire>
 
 <formulaire id="ajout_titre" titre="OBLIGATOIRE: le titre du sondage" action="proposition/sondage.php">
 	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
 	<champ id="titre_sondage" titre="Titre" valeur="<?=$titre_sondage?>"/>
 	<bouton titre="Mettre à jour le titre" id="ok_titre" />
-</formulaire>	
-
-
-<formulaire id="ajout_simple" titre="Rajoute une explication" action="proposition/sondage.php">
-	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
-	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-	<zonetext id="explication" titre="Explication"></zonetext>
-	<bouton titre="Ajouter" id="ok_expli" />
 </formulaire>
-<formulaire id="ajout_champ" titre="Rajoute une question de type 'champ'" action="proposition/sondage.php">
-	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
-	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-	<champ id="question" titre="Question" valeur=""/>
-	<bouton titre="Ajouter" id="ok_champ" />
-</formulaire>
-<formulaire id="ajout_champ" titre="Rajoute une question de type 'textarea'" action="proposition/sondage.php">	
-	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
-	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-	<champ id="question" titre="Question" valeur=""/>
-	<bouton titre="Ajouter" id="ok_text" />
-</formulaire>
-<formulaire id="ajout_champ" titre="Rajoute une question de type 'radio'" action="proposition/sondage.php">	
-	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
-	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-	<champ id="question" titre="Question" valeur=""/>
-	<textsimple titre="Maintenant rajouter les réponses possibles"/>
-	<champ id="reponse1" titre="Reponse 1" valeur=""/>
-	<champ id="reponse2" titre="Reponse 2" valeur=""/>
-	<champ id="reponse3" titre="Reponse 3" valeur=""/>
-	<champ id="reponse4" titre="Reponse 4" valeur=""/>
-	<champ id="reponse5" titre="Reponse 5" valeur=""/>
-	<champ id="reponse6" titre="Reponse 6" valeur=""/>
 	
-	<bouton titre="Ajouter" id="ok_radio" />
-</formulaire>
-<formulaire id="ajout_champ" titre="Rajoute une question de type 'checkbox'" action="proposition/sondage.php">	
-	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
-	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-	<champ id="question" titre="Question" valeur=""/>
-	<textsimple titre="Maintenant rajouter les réponses possibles"/>
-	<champ id="reponse1" titre="Reponse 1" valeur=""/>
-	<champ id="reponse2" titre="Reponse 2" valeur=""/>
-	<champ id="reponse3" titre="Reponse 3" valeur=""/>
-	<champ id="reponse4" titre="Reponse 4" valeur=""/>
-	<champ id="reponse5" titre="Reponse 5" valeur=""/>
-	<champ id="reponse6" titre="Reponse 6" valeur=""/>
-	
-	<bouton titre="Ajouter" id="ok_check" />
-</formulaire>
-<formulaire id="ajout_champ" titre="Rajoute une question de type 'liste déroulante'" action="proposition/sondage.php">	
-	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
-	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-	<champ id="question" titre="Question" valeur=""/>
-	<textsimple titre="Maintenant rajouter les réponses possibles"/>
-	<champ id="reponse1" titre="Reponse 1" valeur=""/>
-	<champ id="reponse2" titre="Reponse 2" valeur=""/>
-	<champ id="reponse3" titre="Reponse 3" valeur=""/>
-	<champ id="reponse4" titre="Reponse 4" valeur=""/>
-	<champ id="reponse5" titre="Reponse 5" valeur=""/>
-	<champ id="reponse6" titre="Reponse 6" valeur=""/>
-	
-	<bouton titre="Ajouter" id="ok_combo" />
-</formulaire>
+<? if(isset($_REQUEST["avance"])&&$_REQUEST["avance"]==1){ ?>
+	<formulaire id="edit" titre="Edite ton sondage" action="proposition/sondage.php">
+		<note>
+			La syntaxe est la suivante:<br/>
+			Pour une explication: ###expli///Mon texte<br/>
+			Pour un champ: ###champ///Le nom du champ<br/>
+			Pour un texte: ###text///Ma question<br/>
+			Pour un radio: ###radio///ma question///option1///option2///option3<br/>
+			Pour une boite déroulante: ###combo///ma question///option1///option2///option3<br/>
+			Pour une checkbox: ###check///ma question///option1///option2///option3<br/>
+		</note>
+		<zonetext id="contenu_form" titre="Zone d'édition avancée" type="grand"><?=$contenu_form?></zonetext>
+		<hidden id="titre_sondage" titre="Titre" valeur="<?=$titre_sondage?>"/>
+		<bouton titre="Mettre à jour le sondage" id="ok_sondage" />
+		<hidden id="avance" valeur="1"/>
+	</formulaire>
+<? }else{ ?>
+	<formulaire id="ajout_simple" titre="Rajoute une explication" action="proposition/sondage.php">
+		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
+		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
+		<zonetext id="explication" titre="Explication"></zonetext>
+		<hidden id="avance" valeur="0"/>
+		<bouton titre="Ajouter" id="ok_expli" />
+	</formulaire>
+	<formulaire id="ajout_champ" titre="Rajoute une question de type 'champ'" action="proposition/sondage.php">
+		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
+		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
+		<champ id="question" titre="Question" valeur=""/>
+		<hidden id="avance" valeur="0"/>
+		<bouton titre="Ajouter" id="ok_champ" />
+	</formulaire>
+	<formulaire id="ajout_champ" titre="Rajoute une question de type 'textarea'" action="proposition/sondage.php">	
+		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
+		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
+		<champ id="question" titre="Question" valeur=""/>
+		<hidden id="avance" valeur="0"/>
+		<bouton titre="Ajouter" id="ok_text" />
+	</formulaire>
+	<formulaire id="ajout_champ" titre="Rajoute une question de type 'radio'" action="proposition/sondage.php">	
+		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
+		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
+		<champ id="question" titre="Question" valeur=""/>
+		<textsimple titre="Maintenant rajouter les réponses possibles"/>
+		<champ id="reponse1" titre="Reponse 1" valeur=""/>
+		<champ id="reponse2" titre="Reponse 2" valeur=""/>
+		<champ id="reponse3" titre="Reponse 3" valeur=""/>
+		<champ id="reponse4" titre="Reponse 4" valeur=""/>
+		<champ id="reponse5" titre="Reponse 5" valeur=""/>
+		<champ id="reponse6" titre="Reponse 6" valeur=""/>
+		<hidden id="avance" valeur="0"/>
+		<bouton titre="Ajouter" id="ok_radio" />
+	</formulaire>
+	<formulaire id="ajout_champ" titre="Rajoute une question de type 'checkbox'" action="proposition/sondage.php">	
+		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
+		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
+		<champ id="question" titre="Question" valeur=""/>
+		<textsimple titre="Maintenant rajouter les réponses possibles"/>
+		<champ id="reponse1" titre="Reponse 1" valeur=""/>
+		<champ id="reponse2" titre="Reponse 2" valeur=""/>
+		<champ id="reponse3" titre="Reponse 3" valeur=""/>
+		<champ id="reponse4" titre="Reponse 4" valeur=""/>
+		<champ id="reponse5" titre="Reponse 5" valeur=""/>
+		<champ id="reponse6" titre="Reponse 6" valeur=""/>
+		<hidden id="avance" valeur="0"/>
+		<bouton titre="Ajouter" id="ok_check" />
+	</formulaire>
+	<formulaire id="ajout_champ" titre="Rajoute une question de type 'liste déroulante'" action="proposition/sondage.php">	
+		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
+		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
+		<champ id="question" titre="Question" valeur=""/>
+		<textsimple titre="Maintenant rajouter les réponses possibles"/>
+		<champ id="reponse1" titre="Reponse 1" valeur=""/>
+		<champ id="reponse2" titre="Reponse 2" valeur=""/>
+		<champ id="reponse3" titre="Reponse 3" valeur=""/>
+		<champ id="reponse4" titre="Reponse 4" valeur=""/>
+		<champ id="reponse5" titre="Reponse 5" valeur=""/>
+		<champ id="reponse6" titre="Reponse 6" valeur=""/>
+		<hidden id="avance" valeur="0"/>
+		<bouton titre="Ajouter" id="ok_combo" />
+	</formulaire>
 <?
+	}
 }
 ?>
 
