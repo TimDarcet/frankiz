@@ -27,7 +27,7 @@
 			<xsl:if test="$trier_annonces='pas_tri'">
 				<xsl:apply-templates select="annonce" mode="complet"/>
 			</xsl:if>
-			<xsl:if test="$trier_annonces='trie'"> 
+			<xsl:if test="$trier_annonces!='pas_tri'"> 
 				<xsl:apply-templates select="annonce[@categorie='important']" mode="complet"/>
 				<xsl:apply-templates select="annonce[@categorie='nouveau']" mode="complet"/>
 				<xsl:apply-templates select="annonce[@categorie='vieux']" mode="complet"/>
@@ -50,7 +50,7 @@
 			<br/>
 		</xsl:if>
 	</xsl:if>
-	<xsl:if test="$sommaire='trie'">
+	<xsl:if test="$trier_annonces!='pas_tri' and $sommaire!='cache'">
 		<xsl:if test="count(annonce) != 0">
 			<div class="fkz_sommaire">
 				<xsl:if test="count(annonce[@categorie='important']) != 0">

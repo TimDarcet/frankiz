@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.25  2004/11/16 19:58:54  pico
+		Corrections urls liens et images des faq
+
 		Revision 1.24  2004/11/16 18:32:34  schmurtz
 		Petits problemes d'interpretation de <note> et <commentaire>
-
+		
 		Revision 1.23  2004/11/15 22:59:54  pico
 		Affiche correctement les faq/folder + possibilité de modifier des faq
 		
@@ -303,7 +306,7 @@ echo "<br/>" ;
 		$DB_web->query("SELECT question,reponse FROM faq WHERE faq_id='{$id}'") ;
 		if (list($question,$reponse) = $DB_web->next_row()) {
 	?>
-	<a name='reponse' />
+	<a name='reponse'> </a>
 	<? 
 	$repfaq = "../../data/faq/".$reponse;
 	echo "<cadre titre=\"Q: ".$question."\">\n";
@@ -313,6 +316,16 @@ echo "<br/>" ;
  	 		while(!feof($texte))
    			{
    	 			$ligne = fgets($texte,255);
+				// Remplace les liens locaux pour les images et les liens, car sinon conflit avec le BASE_HREF
+				$patterns[0] = '(<html>|</html>)';
+				$patterns[1] = '(src="(?!http://)(?!ftp://))';
+				$patterns[2] ='(href="(?!http://)(?!ftp://)(?!#))';
+				$patterns[3] ='(href="#)';
+				$replacements[3] = '';
+				$replacements[2] = 'src="'.dirname("../data/faq/$reponse")."/";
+				$replacements[1] = 'href="'.dirname("../data/faq/$reponse")."/";
+				$replacements[0] = 'href="'.getenv('SCRIPT_NAME')."?".getenv('QUERY_STRING')."#";
+				$ligne = preg_replace($patterns,$replacements, $ligne);
    	 			print(htmlspecialchars($ligne,ENT_QUOTES));
    			}
  	 		fclose($texte);
