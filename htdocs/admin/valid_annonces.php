@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.23  2004/12/15 01:55:56  schmurtz
+	inversion
+
 	Revision 1.22  2004/12/14 14:18:12  schmurtz
 	Suppression de la page de doc wiki : doc directement dans les pages concernees.
-
+	
 	Revision 1.21  2004/12/08 12:21:07  kikx
 	Protection de la validation des annonces
 	
@@ -211,12 +214,11 @@ $DB_valid->query("UNLOCK TABLES");
 				categorie=""
 				auteur="<?php echo empty($surnom) ? $prenom.' '.$nom : $surnom .' (X'.$promo.')'?>"
 				date="<? echo $date?>">
-				<? echo wikiVersXML($contenu) ;
-				if (file_exists(DATA_DIR_LOCAL."annonces/a_valider_{$id}")){
-				?>
-					<image source="<? echo DATA_DIR_URL."annonces/a_valider_{$id}" ; ?>" texte=""/>
 				<?
-				}
+				if (file_exists(DATA_DIR_LOCAL."annonces/a_valider_$id"))
+					echo "<image source=\"".DATA_DIR_URL."annonces/a_valider_$id\" texte=\"\"/>\n";
+				
+				echo wikiVersXML($contenu) ;
 				?>
 				<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
 		</annonce>
