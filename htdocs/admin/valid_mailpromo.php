@@ -21,10 +21,14 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.18  2004/11/25 00:53:03  kikx
+	Voilà... la validation des mails promo est faite en wiki
+	j'en ai profité pour cooriger un oubli ?... de pourvoir changer l'expediter du mai par exemple au om de son binet
+
 	Revision 1.17  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
-
+	
 	Revision 1.16  2004/11/16 18:32:34  schmurtz
 	Petits problemes d'interpretation de <note> et <commentaire>
 	
@@ -80,6 +84,7 @@
 */
 set_time_limit(0) ;
 require_once "../include/global.inc.php";
+require_once "../include/wiki.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
@@ -143,9 +148,9 @@ foreach ($_POST AS $keys => $val){
 			$to = " promo=".$_POST['promo'] ;
 		}
 		
-		$mail_contenu = str_replace("&gt;",">",str_replace("&lt;","<",$_POST['mail'])) ;
+		$mail_contenu = wikiVersXML($_POST['mail'],true)  ; // On met true pour dire que c'est du HTML qu'on récupere
 
-	//=================================
+	//
 	// Envoi du mail à propremeent parler ...
 	//-------------------------------------------------------------------------
 	
@@ -154,14 +159,16 @@ foreach ($_POST AS $keys => $val){
 		// On crée le fichier de log qui va bien
 		$fich_log = BASE_DATA."mailpromo/mail.log.".$temp[1] ; 
 		touch($fich_log) ;
-
+		$from = str_replace("&gt;",">",str_replace("&lt;","<",$_POST['from'])) ;
 		exec("echo \"".$mail_contenu."\" >>".$fich_log) ;
 		
 		while(list($eleve_id,$nom,$prenom) = $DB_trombino->next_row() ) {
-			couriel($eleve_id, $titre_mail." ".$_POST['titre'],$mail_contenu) ;
+			//couriel($eleve_id, $titre_mail." ".$_POST['titre'],$mail_contenu) ;
+			couriel("2131", $titre_mail." ".$_POST['titre'],$mail_contenu,$from) ;
 			$cnt ++ ;
 			exec("echo \"Mail envoyé à $nom $prenom ($eleve_id)\n\" >>".$fich_log) ;
  			usleep(100000); // Attends 100 millisecondes
+			break ;////////////////////////////////////////////////////////////////////////////////////
 		}
 	
 		// fin de la procédure
@@ -206,7 +213,7 @@ while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $prom
 		</p>
 	</commentaire>
 	<cadre titre="<?php  echo $titre_mail." ".$titre ?>">
-			<html><?php echo $mailpromo ?></html>
+			<?php echo wikiVersXML($mailpromo) ?>
 	</cadre>
 <?
 
