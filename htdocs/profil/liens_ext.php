@@ -21,9 +21,13 @@
 	Gestions des liens perso / des flux rss.
 
 	$Log$
+	Revision 1.19  2005/02/06 22:18:54  pico
+	et là ?
+	(ça me saoule un peu)
+
 	Revision 1.18  2005/02/06 22:13:21  pico
 	on va voir si ça donne qqch de mieux
-
+	
 	Revision 1.17  2005/02/06 22:02:56  pico
 	Quand on supprime un flux, ne supprime pas le flux perso
 	
@@ -116,9 +120,11 @@ if(isset($_REQUEST['OK_rss'])) {
 // Supprime une rss perso
 if(!empty($_REQUEST['del_rss'])) {
 	$rss = array();
+	$testarray =array();
 	$url_suppr = base64_decode($_REQUEST['del_rss']);
 	if(!empty($_SESSION['rss'])) {
-		foreach($_SESSION['rss'] as $url => $mode){
+		$testarray = $_SESSION['rss'];
+		foreach($testarray as $url => $mode){
 			$urltest = $url;
 			if($mode == 'module')
 				$urltest = substr($urltest, 2); 
