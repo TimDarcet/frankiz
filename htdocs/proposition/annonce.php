@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.39  2005/01/14 11:09:44  pico
+	suite du bug je sais plus combien
+
 	Revision 1.38  2005/01/04 21:44:40  pico
 	Remise en place du lien vers l'helpwiki parce que le résumé en bas de page est incomprehensible
-
+	
 	Revision 1.37  2004/12/17 16:29:29  kikx
 	Dans le trombino maintenant les promo sont dynamiques
 	Je limit aussi le changement des images (selon leur dimension200x200 dans le trombino)
@@ -280,7 +283,7 @@ if (isset($_POST['valid'])) {
 		<note>L'image doit être un fichier gif, png ou jpeg ne dépassant pas 400x300 pixels et 250Ko.</note>
 		<fichier id="file" titre="Ton image" taille="250000"/>
 
-		<note>Ton annonce disparaîtra le lendemain de la date de péremption.</note>
+		<note>Ton annonce disparaîtra le jour de la date de péremption.</note>
 		<choix titre="Date de péremption" id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
 <?		for ($i=0 ; $i<MAX_PEREMPTION ; $i++) {
 			$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
