@@ -29,9 +29,12 @@
 	de bande passante, de cpu). 
 	
 	$Log$
+	Revision 1.12  2004/12/17 01:54:58  pico
+	En attendant
+
 	Revision 1.11  2004/12/17 01:52:08  pico
 	On enlève les liens morts !
-
+	
 	Revision 1.10  2004/12/15 16:50:48  schmurtz
 	Bug fix+info d'installation, maj de la version en prod du site
 	
@@ -61,6 +64,7 @@ if(est_authentifie(AUTH_MINIMUM)) { ?>
 			<service nom="web binets" stat="http://gwennoz.polytechnique.fr/webalizer/" />
 			<service nom="news" stat="http://frankiz.polytechnique.fr/news/" />
 			<service nom="xnet" stat="http://frankiz.polytechnique.fr/accueil/xnetstatquick.php" />-->
+			<service nom="Prochainement..." stat="http://frankiz.polytechnique.fr" />
 		<? if(file_exists(BASE_CACHE."status")) include BASE_CACHE."status"; else echo "<serveur nom='status' etat='down'/>\n"?>
 		</statistiques>
 	</module>
