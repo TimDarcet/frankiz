@@ -64,7 +64,14 @@
 					<div>Derniers à répondre :</div>
 					<ul class="fkz_qdj_last">
 						<xsl:for-each select="qdj/dernier[position()&lt;=6]">
-							<li class="fkz_qdj_last"><xsl:value-of select="@ordre"/>. <xsl:value-of select="eleve/@surnom"/></li>
+							<li class="fkz_qdj_last"><xsl:value-of select="@ordre"/>.
+							<xsl:if test="eleve/@surnom!=''">
+								<xsl:value-of select="eleve/@surnom"/>
+							</xsl:if>
+							<xsl:if test="eleve/@surnom=''">
+								<xsl:value-of select="eleve/@prenom"/> <xsl:value-of select="eleve/@nom"/>
+							</xsl:if>
+							</li>
 						</xsl:for-each>
 					</ul>
 				</xsl:if>
