@@ -21,9 +21,12 @@
 		Fonction pour parser des rss
 		
 		$Log$
+		Revision 1.10  2004/11/24 23:51:40  pico
+		Oubli
+
 		Revision 1.9  2004/11/24 23:50:42  pico
 		Tri dans le flux css
-
+		
 		Revision 1.8  2004/11/24 23:31:11  pico
 		Affichage plus correct des rss (les &#232; sont maintenant afichés par le navigateur)
 		
@@ -74,7 +77,7 @@ function rss_xml($site,$mode = 'complet') {
 		$xh = xslt_create();
 		xslt_set_encoding($xh, "ISO-8859-1");
 		$params = array('mode'=>$mode);
-		echo $xml;xslt_process($xh, 'arg:/_xml', BASE_LOCAL.'/include/rss_convert.xsl', NULL, array('/_xml'=>$xml),$params);
+		echo xslt_process($xh, 'arg:/_xml', BASE_LOCAL.'/include/rss_convert.xsl', NULL, array('/_xml'=>$xml),$params);
 		xslt_free($xh);
 	}
 }
