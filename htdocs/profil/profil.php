@@ -24,9 +24,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.35  2004/12/15 05:12:28  falco
+	typo
+
 	Revision 1.34  2004/12/14 00:52:02  kikx
 	Envoie les demandes de changement au nom du mec qui demande ... pour faire plaisir au gens ...
-
+	
 	Revision 1.33  2004/12/07 14:39:26  schmurtz
 	Bugs et orthographe
 	
@@ -285,7 +288,7 @@ require "../include/page_header.inc.php";
 		<note>Ne pas toucher ou laisser vide pour conserver l'ancien mot de passe</note>
 		<champ id="passwd" titre="Mot de passe" valeur="12345678"/>
 		<champ id="passwd2" titre="Retaper le mot de passe" valeur="87654321"/>
-		<note>L'authentification par cookie permet de se connecter automatiquement lorsque tu te accèdes à frankiz. N'active pas cette authentification si tu te connectes sur un ordinateur qui n'est pas le tien.</note>
+		<note>L'authentification par cookie permet de se connecter automatiquement lorsque tu accèdes à frankiz. N'active pas cette authentification si tu te connectes sur un ordinateur qui n'est pas le tien.</note>
 		<choix id="cookie" titre="Utiliser l'authentification par cookie" type="combo"
 				valeur="<?php echo empty($_COOKIE['auth'])? 'non' : 'oui' ?>">
 			<option titre="Activé" id="oui"/>

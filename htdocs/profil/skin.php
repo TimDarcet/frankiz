@@ -39,9 +39,12 @@
 	)
 	
 	$Log$
+	Revision 1.24  2004/12/15 05:14:26  falco
+	typo
+
 	Revision 1.23  2004/12/14 23:54:41  pico
 	Modifs visuelles
-
+	
 	Revision 1.22  2004/12/14 23:31:07  pico
 	Affichage des skins
 	
@@ -214,7 +217,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			}
 		}
 ?>
-		<note>Tu peux aussi ne pas faire apparaître tous les élément de la skin. Tu gagneras ainsi de la
+		<note>Tu peux aussi ne pas faire apparaître tous les éléments de la skin. Tu gagneras ainsi de la
 			  place. Choisis donc les éléments que tu veux afficher.</note>
 		<choix titre="Eléments" id="newskin" type="checkbox" valeur="<?php
 			foreach(liste_modules() as $module => $nom)
@@ -229,7 +232,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		</choix>
 
 		<note>Si tu souhaites personnaliser ta skin plus en profondeur, tu peux créer ta propre feuille de style CSS
-			(Ceci s'adresse aux experts).</note>
+			(ceci s'adresse aux experts).</note>
 		<champ titre="CSS perso" id="newcss_perso" valeur="<?php if(isset($_SESSION['skin']['skin_css_perso'])) echo $_SESSION['skin']['skin_css_perso'];?>"/>
 		<bouton titre="Appliquer" id="OK_param" />
 	</formulaire>
