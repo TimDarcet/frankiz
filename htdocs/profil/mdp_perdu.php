@@ -22,7 +22,7 @@ if(!empty($_REQUEST['loginpoly'])) {
 		// (MySQL 4.1 uniquement)
 		$resultat = mysql_query("SELECT 0 FROM compte_frankiz WHERE eleve_id='$id'");
 		if(mysql_num_rows($resultat) > 0)
-			mysql_query("UPDATE compte_frankiz SET hash='$hash',hashstamp=(NOW()+3600*6) WHERE eleve_id='$id'");
+			mysql_query("UPDATE compte_frankiz SET hash='$hash',hashstamp=DATE_ADD(NOW(),INTERVAL 6 HOUR) WHERE eleve_id='$id'");
 		else
 			mysql_query("INSERT INTO compte_frankiz SET eleve_id='$id',passwd='',perms='',hash='$hash',hashstamp=NOW()+3600*6");
 		mysql_free_result($resultat);
