@@ -21,9 +21,12 @@
 	Page qui permet de demander une clé windows
 	
 	$Log$
+	Revision 1.10  2004/12/17 20:33:54  dei
+	Bugfix affichage
+
 	Revision 1.9  2004/12/17 20:27:02  pico
 	On va éviter une ptite erreur
-
+	
 	Revision 1.8  2004/12/17 20:25:20  pico
 	Ajout des logs
 	
@@ -58,28 +61,28 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 			//si la personne a déjà demandé sa clé...
 			if($attrib != 0){
 				?>
-				<p>Tu as déjà demandé ta clé, elle va t'être ré-expédiée à <? "".$mail ?></p>
+				<p>Tu as déjà demandé ta clé, elle va t'être ré-expédiée sur ta boite mail.</p>
 				<?php
-				$contenu="La clé qui vous a déjà été attribué est : $cle \n".
-					"Très BR-ement<br>" .
+				$contenu="La clé qui vous a déjà été attribué est : $cle <br><br>".
+					"Très BR-ement<br>".
 					"L'automate :)<br>";
 				//a completer couriel(WEBMESTRE_ID,"[Frankiz] Validation d'une annonce",$contenu,$eleve_id);
 				couriel($eleve_id,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,WINDOWS_ID);
-				$contenu="La clé demandée par $nom $prenom X $promo est : $cle \n".
+				$contenu="La clé demandée par $nom $prenom X $promo est : $cle <br><br>".
 					"Très BR-ement<br>" .
 					"L'automate :)<br>";
 				couriel(WINDOWS_ID,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,$eleve_id);
 			} else {
 				?>
-				<p>Ta nouvelle clé, va t'être expédiée à <? "".$mail ?></p>
+				<p>Ta nouvelle clé, va t'être expédiée à sur ta boite mail.</p>
 				<?php
 				// sinon on l'ajoute... et on update la base...
 				$DB_msdnaa->query("UPDATE cles_winxp SET attrib='1' WHERE eleve_id='".$_SESSION['user']->uid."'");
-				$contenu="La clé qui vous a été attribué est : $cle \n".
+				$contenu="La clé qui vous a été attribué est : $cle <br><br>".
 					"Très BR-ement<br>" .
 					"L'automate :)<br>";
 				couriel($eleve_id,"[Frankiz] Demande de licence Microsoft $nom $prenom X $promo ",$contenu,WINDOWS_ID);
-				$contenu="La clé attribuée à $nom $prenom X $promo est : $cle \n".
+				$contenu="La clé attribuée à $nom $prenom X $promo est : $cle <br><br>".
 					"Très BR-ement<br>" .
 					"L'automate :)<br>";
 				couriel(WINDOWS_ID,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,$eleve_id);
