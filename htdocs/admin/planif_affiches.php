@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.14  2005/01/20 20:25:33  pico
+	Boulet !
+
 	Revision 1.13  2005/01/20 20:24:33  pico
 	Plus (+) de modifs possibles sur une affiche validée
-
+	
 	Revision 1.12  2005/01/17 22:51:47  pico
 	Liens vers les activités + réorganisation
 	
@@ -67,6 +70,7 @@
 */
 	
 require_once "../include/global.inc.php";
+require_once "../include/wiki.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
