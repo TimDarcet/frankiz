@@ -21,9 +21,12 @@
 	Gestion de la création d'un compte et de la perte de mot de passe.
 	
 	$Log$
+	Revision 1.16  2004/11/03 17:03:29  pico
+	Passage de l'envoi de mail en "couriel"
+
 	Revision 1.15  2004/11/03 12:15:32  pico
 	La fonction qui remplissait le corps du mail n'existait plus -> le mail était vide !!! (merci mYk d'avoir signalé ça)
-
+	
 	Revision 1.14  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
 	
@@ -68,9 +71,7 @@ if(!empty($_REQUEST['loginpoly'])) {
 				   "N'oublie pas ensuite de modifier ton mot de passe.";
 		if (($mail=="")||($mail=="NULL")) $mail = $login."@poly.polytechnique.fr" ;
 		
-		$message = new Mail("Binet Réseau <br@frankiz.polytechnique.fr>","$nom $prenom <$mail>","[Frankiz] Création de compte/perte de mot de passe",true);
-		$message->addPartText($contenu);
-		$message->send();
+		couriel($id,"[Frankiz] Création de compte/perte de mot de passe",$contenu);
 		
 		$mail_envoye = true;
 		
