@@ -23,6 +23,7 @@ rss_xml('http://hyperlinkextractor.free.fr/rssfiles/google_france.xml','sommaire
 rss_xml('http://www.humanite.fr/backend_une.php3','sommaire');
 rss_xml('http://www.lexpress.fr/getfeedrss.asp','sommaire');
 rss_xml('http://permanent.nouvelobs.com/cgi/rss/permanent_une','sommaire');
+rss_xml('','sommaire');
 
 ?>
 </page>
