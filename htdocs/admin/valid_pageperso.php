@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.20  2005/02/15 19:30:40  kikx
+	Mise en place de log pour surveiller l'admin :)
+
 	Revision 1.19  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
-
+	
 	Revision 1.18  2005/01/18 13:55:42  pico
 	Correction d'entête
 	
@@ -113,6 +116,11 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0] == "vtff") {
 		$DB_valid->query("SELECT 0 FROM valid_pageperso WHERE eleve_id='{$temp[1]}'");
 		if ($DB_valid->num_rows()!=0) {
+		
+			$DB_trombino->query("SELECT nom,prenom,promo FROM eleves WHERE eleve_id='{$temp[1]}'");
+			list($nom,$prenom,$promo) = $DB_trombino->next_row();
+			//Log l'action de l'admin
+			log_admin($_SESSION['user']->uid," refusé la page perso de $nom $prenom ($promo) ") ;
 
 			$DB_valid->query("DELETE FROM valid_pageperso WHERE eleve_id='{$temp[1]}'");
 			
@@ -137,6 +145,12 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0] == "ok") {
 		$DB_valid->query("SELECT 0 FROM valid_pageperso WHERE eleve_id='{$temp[1]}'");
 		if ($DB_valid->num_rows()!=0) {
+		
+			$DB_trombino->query("SELECT nom,prenom,promo FROM eleves WHERE eleve_id='{$temp[1]}'");
+			list($nom,$prenom,$promo) = $DB_trombino->next_row();
+			//Log l'action de l'admin
+			log_admin($_SESSION['user']->uid," accepté la page perso de $nom $prenom ($promo) ") ;
+		
 			$DB_web->query("INSERT INTO sites_eleves SET eleve_id='{$temp[1]}'");
 			$DB_trombino->query("SELECT login,promo FROM eleves WHERE eleve_id='{$temp[1]}'");
 			list($login,$promo) = $DB_trombino->next_row();

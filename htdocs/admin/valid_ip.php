@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.39  2005/02/15 19:30:40  kikx
+	Mise en place de log pour surveiller l'admin :)
+
 	Revision 1.38  2005/01/13 17:10:58  pico
 	Mails de validations From le validateur qui va plus ou moins bien
-
+	
 	Revision 1.37  2005/01/10 09:49:11  pico
 	Erreur
 	
@@ -135,6 +138,11 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0] == "vtff") {
 		$DB_valid->query("DELETE FROM valid_ip WHERE eleve_id='{$temp[1]}'");
 		
+		$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
+		list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
+		//Log l'action de l'admin
+		log_admin($_SESSION['user']->uid," refusé l'ajout d'une ip à $prenom $nom ($promo) ") ;
+		
 		$bla = "refus_".$temp[1] ;
 		$contenu = "Bonjour, <br><br>".
 					"Nous sommes désolés de pas pouvoir d'attribuer une adresse IP supplémentaire pour la raison suivante :<br>".
@@ -160,6 +168,11 @@ foreach ($_POST AS $keys => $val){
 		
 		// S'il n'y a aucune entrée avec cette ip dans la base
 		if ($DB_admin->num_rows()==0){
+			$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
+			list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
+			//Log l'action de l'admin
+			log_admin($_SESSION['user']->uid," accepté l'ajout d'une ip à $prenom $nom ($promo) ") ;
+			
 			$DB_valid->query("DELETE FROM valid_ip WHERE eleve_id='{$temp[1]}'");
 			$DB_admin->query("INSERT prises SET prise_id='$id_prise',piece_id='$kzert',ip='{$_POST[$temp2]}',type='secondaire'");
 			
@@ -185,6 +198,11 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0] == "suppr") {
 		$temp2 = str_replace("x",".",$temp[1]) ; // euh c'est pas bo je suis d'accord mais bon c'est pour que ca marche sans trop de trick
 		$DB_admin->query("DELETE FROM prises WHERE type='secondaire' AND ip='$temp2' AND prise_id=''");
+		
+		$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[2]}'") ;
+		list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
+		//Log l'action de l'admin
+		log_admin($_SESSION['user']->uid," supprimé une ip à $prenom $nom ($promo) ") ;
 		
 		$contenu = "Bonjour, <br><br>".
 					"Nous avons supprimé l'adresse IP suivante qui t'était actuellement attribuée :<br><br>".

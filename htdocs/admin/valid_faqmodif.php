@@ -22,9 +22,12 @@
 	
 
 	$Log$
+	Revision 1.14  2005/02/15 19:30:40  kikx
+	Mise en place de log pour surveiller l'admin :)
+
 	Revision 1.13  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
-
+	
 	Revision 1.12  2005/01/18 13:45:31  pico
 	Plus de droits pour les web
 	
@@ -116,6 +119,10 @@ foreach ($_POST AS $keys => $val){
 			// On remplace le fichier par la faq modifié
 			$DB_faq->query("SELECT question,reponse FROM faq WHERE faq_id='{$temp[1]}'") ;
 			if (list($question,$reponse) = $DB_faq->next_row()) {
+				
+				//Log l'action de l'admin
+				log_admin($_SESSION['user']->uid," accepté la modification de la faq '$question'") ;
+				
 				$filename = BASE_DATA."/faq/".$reponse;
 				
 				$somecontent = $_POST['faq_modif'] ;
@@ -166,7 +173,12 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0]=='suppr') {
 		$DB_valid->query("SELECT eleve_id FROM valid_modiffaq WHERE faq_id='{$temp[1]}'");
 		if ($DB_valid->num_rows()!=0) {
-	
+		
+			$DB_faq->query("SELECT question FROM faq WHERE faq_id='{$temp[1]}'") ;
+			list($question) = $DB_faq->next_row() ;
+			//Log l'action de l'admin
+			log_admin($_SESSION['user']->uid," refusé la modification de la faq '$question'") ;
+			
 			list($eleve_id) = $DB_valid->next_row() ;
 			$DB_valid->query("DELETE FROM valid_modiffaq WHERE faq_id='{$temp[1]}'") ;
 		?>

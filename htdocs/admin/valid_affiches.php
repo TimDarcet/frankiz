@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.23  2005/02/15 19:30:40  kikx
+	Mise en place de log pour surveiller l'admin :)
+
 	Revision 1.22  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
-
+	
 	Revision 1.21  2005/01/17 21:52:04  pico
 	Page des activités
 	
@@ -149,6 +152,8 @@ foreach ($_POST AS $keys => $val){
 		$DB_valid->query("SELECT eleve_id FROM valid_affiches WHERE affiche_id='{$temp[1]}'");
 		if ($DB_valid->num_rows()!=0) {
 			list($eleve_id) = $DB_valid->next_row() ;
+			//Log l'action de l'admin
+			log_admin($_SESSION['user']->uid," accepté l'affiche {$_POST['titre']}") ;
 			// envoi du mail
 			$contenu = 	"Ton activité vient d'être validé par le BR... Elle est dès à present visible sur le site<br><br> ".
 						$_POST['explication']."<br>".
@@ -180,6 +185,8 @@ foreach ($_POST AS $keys => $val){
 		$DB_valid->query("SELECT eleve_id FROM valid_affiches WHERE affiche_id='{$temp[1]}'");
 		if ($DB_valid->num_rows()!=0) {
 			list($eleve_id) = $DB_valid->next_row() ;
+			//Log l'action de l'admin
+			log_admin($_SESSION['user']->uid," refusé l'affiche {$_POST['titre']}") ;
 			// envoi du mail
 			$contenu = 	"Ton activité n'a pas été validé par le BR pour la raison suivante :<br>".
 						$_POST['explication']."<br>".

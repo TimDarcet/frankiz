@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un sondage
 	
 	$Log$
+	Revision 1.18  2005/02/15 19:30:40  kikx
+	Mise en place de log pour surveiller l'admin :)
+
 	Revision 1.17  2005/01/21 17:01:31  pico
 	Fonction pour savoir si interne
-
+	
 	Revision 1.16  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
 	
@@ -111,6 +114,12 @@ foreach ($_POST AS $keys => $val){
 		$DB_valid->query("SELECT 0 FROM valid_sondages WHERE sondage_id='{$temp[1]}'");
 		if ($DB_valid->num_rows()!=0) {
 
+			
+			$DB_valid->query("SELECT titre FROM valid_sondages WHERE sondage_id={$temp[1]}");
+			list($titre) = $DB_valid->next_row() ;
+			//Log l'action de l'admin
+			log_admin($_SESSION['user']->uid," refusé le sondage '$titre'") ;
+			
 			$DB_valid->query("DELETE FROM valid_sondages WHERE sondage_id='{$temp[1]}'");
 			
 			$bla = "explication_".$temp[1] ;
@@ -138,6 +147,9 @@ foreach ($_POST AS $keys => $val){
 		if ($DB_valid->num_rows()!=0) {
 		
 			list($date,$questions,$titre,$eleve_id,$nom, $prenom, $promo) = $DB_valid->next_row() ;
+			
+			//Log l'action de l'admin
+			log_admin($_SESSION['user']->uid," validé le sondage '$titre'") ;
 			
 			if (isset($_REQUEST['ext_auth']))
 				$temp_ext = '1'  ;

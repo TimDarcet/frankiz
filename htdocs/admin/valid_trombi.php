@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.15  2005/02/15 19:30:40  kikx
+	Mise en place de log pour surveiller l'admin :)
+
 	Revision 1.14  2005/01/22 17:58:38  pico
 	Modif des images
-
+	
 	Revision 1.13  2005/01/21 20:38:50  pico
 	Légende des images pour qu'on sache qui est quoi
 	
@@ -91,8 +94,13 @@ foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
 	if ($temp[0]=='valid') {
 		if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$temp[1]}")) {
+			
 			$DB_trombino->query("SELECT prenom,nom,promo,login FROM eleves WHERE eleve_id={$temp[1]}") ;
 			list($prenom,$nom,$promo,$login) = $DB_trombino->next_row() ;
+			
+			//Log l'action de l'admin
+			log_admin($_SESSION['user']->uid,"validé l'image trombi de $prenom $nom") ;
+			
 			rename(DATA_DIR_LOCAL."trombino/a_valider_{$temp[1]}",BASE_PHOTOS."$promo/$login.jpg") ;
 			
 			$message .= "<commentaire> Image validée pour $prenom $nom</commentaire>" ;
@@ -110,9 +118,13 @@ foreach ($_POST AS $keys => $val){
 	}
 	if ($temp[0]=='suppr') {
 		if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$temp[1]}")) {
+			
 
 			$DB_trombino->query("SELECT prenom,nom,promo,login FROM eleves WHERE eleve_id={$temp[1]}") ;
 			list($prenom,$nom,$promo,$login) = $DB_trombino->next_row() ;
+			
+			//Log l'action de l'admin
+			log_admin($_SESSION['user']->uid," refusé l'image trombi de $prenom $nom") ;
 			
 			unlink(DATA_DIR_LOCAL."trombino/a_valider_{$temp[1]}") ;
 			

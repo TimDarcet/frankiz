@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.32  2005/02/15 19:30:40  kikx
+	Mise en place de log pour surveiller l'admin :)
+
 	Revision 1.31  2005/01/22 17:58:38  pico
 	Modif des images
-
+	
 	Revision 1.30  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
 	
@@ -165,6 +168,10 @@ foreach ($_POST AS $keys => $val){
 		$DB_valid->query("SELECT eleve_id FROM valid_annonces WHERE annonce_id='{$temp[1]}'");
 		if ($DB_valid->num_rows()!=0) {
 			list($eleve_id) = $DB_valid->next_row() ;
+			
+			//Log l'action de l'admin
+			log_admin($_SESSION['user']->uid,"validé l'annonce '{$_POST['titre']}' ") ;
+			
 			// envoi du mail
 			$contenu = 	"Ton annonce vient d'être validé par le BR... Elle est dès à present visible sur la page d'accueil<br><br> ".
 						$_POST['explication']."<br>".
@@ -201,6 +208,10 @@ foreach ($_POST AS $keys => $val){
 		$DB_valid->query("SELECT eleve_id FROM valid_annonces WHERE annonce_id='{$temp[1]}'");
 		if ($DB_valid->num_rows()!=0) {
 			list($eleve_id) = $DB_valid->next_row() ;
+			
+			//Log l'action de l'admin
+			log_admin($_SESSION['user']->uid,"supprimé l'annonce '{$_POST['titre']}' ") ;
+			
 			// envoi du mail
 			$contenu = 	"Ton annonce n'a pas été validé par le BR pour la raison suivante :<br>".
 						$_POST['explication']."<br>".

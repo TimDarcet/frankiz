@@ -21,9 +21,12 @@
 	Page qui permet l'administration des licences windows.
 	
 	$Log$
+	Revision 1.18  2005/02/15 19:30:40  kikx
+	Mise en place de log pour surveiller l'admin :)
+
 	Revision 1.17  2005/02/09 20:15:51  pico
 	Ajout d'un droit pour les admin@windows pour valider les demandes de licences
-
+	
 	Revision 1.16  2005/01/23 21:47:40  dei
 	bug de LOCK TABLES
 	
@@ -119,6 +122,12 @@ $temp = explode("_",$keys) ;
 	// On refuse la demande de licence
 	//==========================
 	if ($temp[0] == "vtff") {
+	
+		$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
+		list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
+		//Log l'action de l'admin
+		log_admin($_SESSION['user']->uid," refusé la licence de $prenom $nom ($promo) ") ;
+		
 		$DB_msdnaa->query("DELETE FROM valid_licence WHERE eleve_id='{$temp[1]}'");
 		$bla = "refus_".$temp[1] ;
 		$contenu = "Bonjour, <br><br>".
@@ -144,6 +153,12 @@ $temp = explode("_",$keys) ;
 				$DB_msdnaa->query("SELECT 0 FROM cles_$temp[2] WHERE cle='{$_POST[$temp2]}'");
 				// S'il n'y a aucune entrée avec cette licence dans la base
 				if($DB_msdnaa->num_rows()==0){
+				
+					$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
+					list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
+					//Log l'action de l'admin
+					log_admin($_SESSION['user']->uid," accepté la licence de $prenom $nom ($promo) ") ;
+					
 					echo "<note>c'est bon</note>";
 					$DB_msdnaa->query("DELETE FROM valid_licence WHERE eleve_id='{$temp[1]}'");
 					$DB_msdnaa->query("DELETE FROM cles_libres WHERE cle='{$_POST[$temp2]}' AND logiciel='{$temp[2]}'");

@@ -21,10 +21,13 @@
 	Page de validation d'une modification d'un binet
 	
 	$Log$
+	Revision 1.16  2005/02/15 19:30:40  kikx
+	Mise en place de log pour surveiller l'admin :)
+
 	Revision 1.15  2005/01/26 16:36:32  pico
 	Devrait éviter l'erreur de Bery tout à l'heure
 	(pb de création de fichier)
-
+	
 	Revision 1.14  2005/01/22 17:58:38  pico
 	Modif des images
 	
@@ -103,6 +106,9 @@ if (isset($_POST['valid'])) {
 			$temp_ext = '0' ;
 			if($folder!='' && file_exists(BASE_BINETS_EXT."$folder")) unlink(BASE_BINETS_EXT."$folder");
 		}
+		
+		//Log l'action de l'admin
+		log_admin($_SESSION['user']->uid," accepté la modification du binet $nom") ;
 	
 		$DB_trombino->query("UPDATE binets SET image=\"".addslashes($image)."\" ,format='$format' ,description='$description' , http='$http', catego_id=$categorie, exterieur=$temp_ext, folder='$folder' WHERE binet_id={$_POST['id']}");
 		
@@ -116,6 +122,9 @@ if (isset($_POST['suppr'])) {
 	$DB_valid->query("SELECT nom FROM valid_binet WHERE binet_id={$_POST['id']}");
 	if ($DB_valid->num_rows()!=0) {
 		list($nom) = $DB_valid->next_row() ;
+		
+		//Log l'action de l'admin
+		log_admin($_SESSION['user']->uid," refusé la modification du binet $nom") ;
 	
 		$DB_valid->query("DELETE FROM valid_binet WHERE binet_id={$_POST['id']}");
 		$message .= "<warning>Vous n'avez pas validé le changement du binet $nom</warning>" ;

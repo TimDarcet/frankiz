@@ -22,9 +22,12 @@
 	
 
 	$Log$
+	Revision 1.16  2005/02/15 19:30:40  kikx
+	Mise en place de log pour surveiller l'admin :)
+
 	Revision 1.15  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 	Revision 1.14  2004/12/16 13:00:41  pico
 	INNER en LEFT
 	
@@ -110,6 +113,9 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0]=='valid') {
 		$DB_valid->query("SELECT eleve_id FROM valid_qdj WHERE qdj_id='{$temp[1]}'");
 		if ($DB_valid->num_rows()!=0) {
+		
+			//Log l'action de l'admin
+			log_admin($_SESSION['user']->uid," validé la qdj '{$_POST['question']}'") ;
 
 			list($eleve_id) = $DB_valid->next_row() ;
 				
@@ -124,6 +130,9 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0]=='suppr') {
 		$DB_valid->query("SELECT eleve_id FROM valid_qdj WHERE qdj_id='{$temp[1]}'");
 		if ($DB_valid->num_rows()!=0) {
+		
+			//Log l'action de l'admin
+			log_admin($_SESSION['user']->uid," refusé la qdj '{$_POST['question']}'") ;
 	
 			list($eleve_id) = $DB_valid->next_row() ;
 			$DB_valid->query("DELETE FROM valid_qdj WHERE qdj_id='{$temp[1]}'") ;

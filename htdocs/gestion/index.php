@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.41  2005/02/15 19:30:40  kikx
+	Mise en place de log pour surveiller l'admin :)
+
 	Revision 1.40  2005/02/09 20:15:51  pico
 	Ajout d'un droit pour les admin@windows pour valider les demandes de licences
-
+	
 	Revision 1.39  2005/01/23 16:30:10  pico
 	Ajout d'une page pour surveiller les entrées dns
 	
@@ -232,6 +235,12 @@ $permissions_user = $_SESSION['user']->perms ;
 			<lien titre="Ajouter un utilisateur" url="admin/user_rajout.php"/>
 	<?
 	}
+	if (verifie_permission('admin')){
+	?>
+		<h3>Gestion du site</h3>
+			<lien titre="Log de la partie d'administration" url="admin/log_admin.php"/><br/>
+	<?
+	}
 	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('web')||verifie_permission('trombino')||verifie_permission('kes')){
 	?>
 	<h3>Validations Variées</h3>
@@ -375,6 +384,7 @@ $permissions_user = $_SESSION['user']->perms ;
 		?>
 		<lien titre="Gérer les demandes d'ajout d'ips (<?=$nb?>)" url="admin/valid_ip.php"/><br/>
 		<lien titre="Liste des IPs" url="admin/ip.php"/><br/>
+		<lien titre="Arpwatch" url="admin/arpwatch.php"/><br/>
 		<lien titre="Surveiller la DNS" url="admin/dns.php"/><br/>
 		<?
 	}
