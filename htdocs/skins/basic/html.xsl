@@ -21,9 +21,13 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.19  2004/10/29 16:42:31  kikx
+	Rajout des id sur les liens de navigation
+	Ca pêrmet au skinneur soit de mettre en gras certain liens specifique soit de remplacer les liens par des images comme il le souhaite
+
 	Revision 1.18  2004/10/21 22:43:11  kikx
 	Bug fix et mise en place de la possibilité de modifier la photo du trombino
-
+	
 	Revision 1.17  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
 	
@@ -88,6 +92,26 @@
 
 
 <!-- Liens -->
+<xsl:template match="module/lien">
+	<xsl:choose><xsl:when test="boolean(@id)">
+		<xsl:choose><xsl:when test="@id='connect'">
+			<strong><a class="lien"><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+			!<xsl:value-of select="@titre"/>!<xsl:apply-templates/>
+			</a></strong><br />
+		</xsl:when><xsl:otherwise>
+			<a class="lien"><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+			<xsl:value-of select="@titre"/><xsl:apply-templates/>
+			</a><br />
+		</xsl:otherwise></xsl:choose>
+	</xsl:when><xsl:otherwise>
+		<a class="lien"><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+		<xsl:value-of select="@titre"/><xsl:apply-templates/>
+		</a><br />
+	</xsl:otherwise></xsl:choose>
+
+
+</xsl:template>
+
 <xsl:template match="lien">
 	<a class="lien"><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
 		<xsl:value-of select="@titre"/><xsl:apply-templates/>

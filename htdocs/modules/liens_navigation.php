@@ -21,9 +21,13 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.12  2004/10/29 16:42:31  kikx
+	Rajout des id sur les liens de navigation
+	Ca pêrmet au skinneur soit de mettre en gras certain liens specifique soit de remplacer les liens par des images comme il le souhaite
+
 	Revision 1.11  2004/10/26 17:52:07  kikx
 	J'essaie de respecter la charte de weather.com mais c'est chaud car il demande le mettre leur nom en gras ... et je peux pas le faire avec la skin
-
+	
 	Revision 1.10  2004/10/25 19:41:58  kikx
 	Rend clair la page d'accueil et les annonces
 	
@@ -52,25 +56,25 @@
 */
 ?>
 <module id="liens_navigation" titre="Frankiz">
-	<lien titre="Annonces" url="index.php" />
+	<lien id="annonces" titre="Annonces" url="index.php" />
 	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
-		<lien titre="Se déconnecter" url="index.php?logout=1" />
-		<lien titre="Profil" url="profil/profil.php" />
-		<lien titre="Profil réseau" url="profil/reseau.php" />
-		<lien titre="Skins" url="profil/skin.php" />
-		<lien titre="InfoBr" url="documentation/InfoBR.pdf" />
+		<lien id="deconnect" titre="Se déconnecter" url="index.php?logout=1" />
+		<lien id="profil"  titre="Profil" url="profil/profil.php" />
+		<lien id="profil_rezal" titre="Profil réseau" url="profil/reseau.php" />
+		<lien id="skins" titre="Skins" url="profil/skin.php" />
+		<lien id="infobr" titre="InfoBr" url="documentation/InfoBR.pdf" />
 	<?php else: ?>
-		<lien titre="Se connecter" url="login.php" />			
+		<lien id="connect" titre="Se connecter" url="login.php" />			
 	<?php endif; ?>
-	<lien titre="Météo" url="meteo/" />
-	<lien titre="Docs/Manuels" url="documentation/" />
-	<lien titre="FAQ" url="faq/" />
-	<lien titre="Télécharger" url="xshare/" />
-	<lien titre="Binets" url="binets/" />
+	<lien id="meteo" titre="Météo" url="meteo/" />
+	<lien id="doc" titre="Docs/Manuels" url="documentation/" />
+	<lien id="faq" titre="FAQ" url="faq/" />
+	<lien id="xshare" titre="XShare" url="xshare/" />
+	<lien id="binets"  titre="Binets" url="binets/" />
 	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
-		<lien titre="Trombino" url="trombino/" />
+		<lien id="trombino" titre="Trombino" url="trombino/" />
 	<?php endif; ?>
 	<?php if(!empty($_SESSION['user']->perms)): ?>
-		<lien titre="Administration" url="gestion/" />
+		<lien id="admin" titre="Administration" url="gestion/" />
 	<?php endif; ?>
 </module>
