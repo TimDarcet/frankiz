@@ -18,13 +18,16 @@ class DB {
 		Création d'une connexion à une base MySQL
 	*/
 	function DB($persistent,$host,$base,$user,$pass) {
+		global $_ERREURS_PHPMYSQL;
 		if($persistent)
 			$this->link = mysql_pconnect($host,$user,$pass);
 		else
 			$this->link = mysql_connect($host,$user,$pass);
 		
 		if($this->link)
-			mysql_select_db($base);
+			mysql_select_db($base) || ajouter_erreur_mysql("USE $base");
+		else
+			ajouter_erreur_mysql("CONNECT $user@$host");
 		
 		$this->host = $host;
 		$this->base = $base;
@@ -46,6 +49,9 @@ class DB {
 		
 		if(is_bool($this->result) && $this->result)
 			$this->result = false;
+		
+		if(!$this->result)
+			ajouter_erreur_mysql($query);
 	}
 	
 	/*

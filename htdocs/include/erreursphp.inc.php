@@ -37,6 +37,16 @@ function gestionnaire_erreurs_php($errno, $errmsg, $file, $line, $vars) {
 	);
 }
 
+function ajouter_erreur_mysql($query) {
+	global $_ERREURS_PHPMYSQL;
+	$_ERREURS_PHPMYSQL[] = array(
+		'errname'	=> "MYSQL Error",
+		'errmsg'	=> mysql_error(),
+		'file'		=> "\"".$query."\"",
+		'line'		=> ""
+	);
+}
+
 function affiche_erreurs_php() {
 	global $_ERREURS_PHPMYSQL;
 	if( count($_ERREURS_PHPMYSQL) == 0 ) return;
