@@ -6,9 +6,12 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.17  2004/10/04 21:48:08  schmurtz
+	Modification des chemins d'accès vers divers éléments.
+
 	Revision 1.16  2004/09/20 20:33:47  schmurtz
 	Mise en place d'un systeme de cache propre
-
+	
 	Revision 1.15  2004/09/18 16:22:26  kikx
 	micro bug fix
 	
@@ -45,8 +48,8 @@ define('BASE_URL','http://'.$_SERVER['HTTP_HOST'].'/'.substr((dirname($_SERVER['
 
 // Configuration du site
 define('AFFICHER_LES_ERREURS',$_SERVER["SERVER_ADDR"] == "129.104.201.52");	// seulement sur gwennoz
-define('BASE_PHOTOS',"http://gwennoz/~pico/photos/");
-define('BASE_CACHE',BASE_LOCAL."/cache/");
+define('BASE_PHOTOS',BASE_LOCAL."/../data/photos/");
+define('BASE_CACHE',BASE_LOCAL."/../cache/");
 define('MAIL_WEBMESTRE',"webmestre@frankiz.polytechnique.fr");
 define('MAX_PEREMPTION',8);
 define('UPLOAD_WEB_DIR',"upload_web/");
