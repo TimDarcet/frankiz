@@ -21,8 +21,8 @@
 	Liens permettants d'accéder aux autres sites de l'école.
 	
 	$Log$
-	Revision 1.9  2005/02/03 09:28:23  kikx
-	Rajout d'un lien  vers l'emploi du temps des promotion dans les liens utiles
+	Revision 1.10  2005/02/03 09:28:59  kikx
+	erreur (desloé)
 
 	Revision 1.8  2005/01/26 17:26:27  pico
 	Pas de liens morts à l'extérieur...
