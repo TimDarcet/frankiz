@@ -26,6 +26,7 @@
 	
 <xsl:param name="sommaire"/>
 <xsl:param name="trier_annonces"/>
+<xsl:param name="blending"/>
 
 <!-- a modifier -->
 <xsl:include href="../../pico/xsl/html.xsl"/>
@@ -47,6 +48,10 @@
 	<html lang="fr" xml:lang="fr">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+		<xsl:if test="$blending='on'">
+			<meta http-equiv="Page-Exit" content="blendTrans(Duration=0.3)"/>
+			<meta http-equiv="Page-Enter" content="blendTrans(Duration=0.3)"/>
+		</xsl:if>
 		<title><xsl:value-of select="frankiz/page/@titre"/></title>
 		<base>
 			<xsl:attribute name="href">

@@ -14,4 +14,9 @@
 		<valeur id="trie">Oui</valeur>
 		<valeur id="pas_trie">Non</valeur>
 	</parametre>
+	<parametre id="blending">
+		<description>Effet de fondu en changeant de page</description>
+		<valeur id="on">Oui</valeur>
+		<valeur id="off">Non</valeur>
+	</parametre>
 </skin>
