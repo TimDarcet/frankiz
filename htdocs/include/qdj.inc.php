@@ -8,12 +8,12 @@
 */
 
 function qdj_affiche($hier,$deja_vote) {
+	global $DB_web;
 	$date = date("Y-m-d", time()-3025 - ($hier ? 24*3600 : 0));
 	$fichier_cache = BASE_LOCAL."/cache/qdj_".($hier?"hier":"courante");
 	
-	$result = mysql_query("SELECT question,reponse1,reponse2,compte1,compte2 FROM qdj WHERE date='$date' LIMIT 1");
-	list($question,$reponse1,$reponse2,$compte1,$compte2) = mysql_fetch_row($result);
-	mysql_free_result($result);
+	$DB_web->query("SELECT question,reponse1,reponse2,compte1,compte2 FROM qdj WHERE date='$date' LIMIT 1");
+	list($question,$reponse1,$reponse2,$compte1,$compte2) = $DB_web->next_row();
 ?>
 
 	<module id="<?php echo $hier ? 'qdj_hier' : 'qdj' ?>" titre="QDJ<?php if($hier) echo ' d\'hier' ?>">
@@ -29,13 +29,10 @@ function qdj_affiche($hier,$deja_vote) {
 
 			} else {
 				// interrogation de la base de données
-				connecter_mysql_frankiz();
-				$result = mysql_query("SELECT ordre,nom,prenom,surnom FROM qdj_votes LEFT JOIN eleves USING(eleve_id) WHERE date='$date' ORDER BY ordre DESC LIMIT 20");
+				$DB_web->query("SELECT ordre,nom,prenom,surnom FROM qdj_votes LEFT JOIN eleves USING(eleve_id) WHERE date='$date' ORDER BY ordre DESC LIMIT 20");
 				$contenu = "";
-				while(list($ordre,$nom,$prenom,$surnom) = mysql_fetch_row($result))
+				while(list($ordre,$nom,$prenom,$surnom) = $DB_web->next_row())
 					$contenu .= "<dernier ordre=\"$ordre\">".(empty($surnom) ? $prenom.' '.substr($nom,0,1).'.' : $surnom)."</dernier>\n";
-				mysql_free_result($result);
-				deconnecter_mysql_frankiz();
 				
 				// affichage
 				echo $contenu;  

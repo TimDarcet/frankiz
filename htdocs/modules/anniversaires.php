@@ -14,17 +14,14 @@ if(est_authentifie(AUTH_MINIMUM)) {
 		readfile($fichier_cache);
 		
 	} else {
-		connecter_mysql_frankiz();
-		$resultat = mysql_query("SELECT nom,prenom,surnom,section,cie,promo,login,mail FROM eleves "
+		$DB_web->query("SELECT nom,prenom,surnom,section,cie,promo,login,mail FROM eleves "
 							   ."WHERE MONTH(date_nais)=MONTH(NOW()) AND DAYOFMONTH(date_nais)=DAYOFMONTH(NOW()) "
 							   ."AND (promo='2002' OR promo='2003')");
 		$contenu = "";
-		while(list($nom,$prenom,$surnom,$section,$cie,$promo,$login,$mail) = mysql_fetch_row($resultat)) {
+		while(list($nom,$prenom,$surnom,$section,$cie,$promo,$login,$mail) = $DB_web->next_row()) {
 			$contenu .= "\t<eleve nom='$nom' prenom='$prenom' surnom='$surnom' section='$section' cie='$cie'"
 					   ." promo='$promo' login='$login' mail='$mail'/>\n";
 		}
-		mysql_free_result($resultat);
-		deconnecter_mysql_frankiz();
 		
 		$file = fopen($fichier_cache, 'w');
 		fwrite($file, $contenu);

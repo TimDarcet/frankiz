@@ -13,13 +13,10 @@ demande_authentification(AUTH_MAIL);
 
 $message_succes="";
 
-connecter_mysql_frankiz();
 
 // Données sur l'utilisateur
-$result = mysql_query("SELECT eleves.nom,prenom,surnom,mail,login,promo,sections.nom,cie,piece_id FROM eleves INNER JOIN sections USING(section_id) WHERE eleve_id='".$_SESSION['user']->uid."'");
-print_r(mysql_error());
-list($nom,$prenom,$surnom,$mail,$login,$promo,$section,$cie,$casert) = mysql_fetch_row($result);
-mysql_free_result($result);
+$DB_web->query("SELECT eleves.nom,prenom,surnom,mail,login,promo,sections.nom,cie,piece_id FROM eleves INNER JOIN sections USING(section_id) WHERE eleve_id='".$_SESSION['user']->uid."'");
+list($nom,$prenom,$surnom,$mail,$login,$promo,$section,$cie,$casert) = $DB_web->next_row();
 
 // Modification du mot de passe
 if(isset($_POST['changer_mdp'])) {
@@ -28,7 +25,7 @@ if(isset($_POST['changer_mdp'])) {
 	} else if(strlen($_POST['passwd']) < 8) {
 		ajoute_erreur(ERR_MDP_TROP_PETIT);
 	} else {
-		mysql_query("UPDATE compte_frankiz SET passwd='".md5($_POST['passwd'])."' "
+		$DB_web->query("UPDATE compte_frankiz SET passwd='".md5($_POST['passwd'])."' "
 				   ."WHERE eleve_id='".$_SESSION['user']->uid."' ");
 		$message_succes="Le mot de passe vient d'être changé.";
 	}
@@ -38,7 +35,7 @@ if(isset($_POST['changer_mdp'])) {
 	if($_POST['cookie'] == 'oui') {
 		// on rajoute le cookie
 		$cookie = array('hash'=>nouveau_hash(),'uid'=>$_SESSION['user']->uid);
-		mysql_query("UPDATE compte_frankiz SET hash='".$cookie['hash']."' "
+		$DB_web->query("UPDATE compte_frankiz SET hash='".$cookie['hash']."' "
 				   ."WHERE eleve_id='".$_SESSION['user']->uid."' ");
 		SetCookie("auth",base64_encode(serialize($cookie)),time()+3*365*24*3600,"/");
 		$_COOKIE['auth'] = "blah";  // hack permetttant de faire marcher le test d'existance du cookie
@@ -62,12 +59,11 @@ if(isset($_POST['changer_mdp'])) {
 	if(aucune_erreur()) {
 		$surnom = $_POST['surnom'];
 		$mail = $_POST['email'];
-		mysql_query("UPDATE eleves SET surnom='$surnom',mail=".(empty($mail)?"NULL":"'$mail'")." WHERE eleve_id='".$_SESSION['user']->uid."'");
+		$DB_web->query("UPDATE eleves SET surnom='$surnom',mail=".(empty($mail)?"NULL":"'$mail'")." WHERE eleve_id='".$_SESSION['user']->uid."'");
 		$message_succes="L'email et le surnom ont été modifié.";
 	}
 }
 
-deconnecter_mysql_frankiz();
 
 // Génération du la page XML
 require "../include/page_header.inc.php";

@@ -35,6 +35,7 @@ class User {
 	// Construit un objet à partir du login ou d'un id.
 	// On suppose que l'on est déjà connecté à la base de données
 	function User($islogin,$value) {
+		global $DB_web;
 		if(empty($value)) {
 			// construit un objet à partir de rien : utilisateur anonyme.	
 			$this->devient_anonyme();
@@ -42,9 +43,8 @@ class User {
 		}
 		
 		$condition = $islogin ? "WHERE login='$value' ORDER BY promo DESC LIMIT 1" : "WHERE eleves.eleve_id='$value'";
-		$resultat = mysql_query("SELECT eleves.eleve_id,login,perms,nom,prenom,passwd,IF(hashstamp>NOW(),hash,''),hash FROM eleves INNER JOIN compte_frankiz USING(eleve_id) $condition");
-		list($this->uid,$this->login,$this->perms,$this->nom,$this->prenom,$this->passwd,$this->mailhash,$this->cookiehash) = mysql_fetch_row($resultat);
-		mysql_free_result($resultat);
+		$DB_web->query("SELECT eleves.eleve_id,login,perms,nom,prenom,passwd,IF(hashstamp>NOW(),hash,''),hash FROM eleves INNER JOIN compte_frankiz USING(eleve_id) $condition");
+		list($this->uid,$this->login,$this->perms,$this->nom,$this->prenom,$this->passwd,$this->mailhash,$this->cookiehash) = $DB_web->next_row();
 		
 		$this->perms = split(",",$this->perms);
 		$this->methode = AUTH_AUCUNE;

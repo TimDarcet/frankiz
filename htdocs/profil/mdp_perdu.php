@@ -8,24 +8,21 @@ require "../include/global.inc.php";
 $mail_envoye = false;
 
 if(!empty($_REQUEST['loginpoly'])) {
-	connecter_mysql_frankiz();
-	$resultat = mysql_query("SELECT eleve_id,login,prenom,nom,promo,mail FROM eleves "
+	$DB_web->query("SELECT eleve_id,login,prenom,nom,promo,mail FROM eleves "
 						   ."WHERE login='".$_REQUEST['loginpoly']."' ORDER BY promo DESC LIMIT 1");
-	if(mysql_num_rows($resultat) == 1) {
-		list($id,$login,$prenom,$nom,$promo,$mail) = mysql_fetch_row($resultat);
-		mysql_free_result($resultat);
+	if($DB_web->num_rows() == 1) {
+		list($id,$login,$prenom,$nom,$promo,$mail) = $DB_web->next_row();
 		$hash = nouveau_hash();
 		
 		// Si le compte existe déjà on met à jour le hash, sinon on crée le compte
-		//mysql_query("INSERT INTO compte_frankiz SET eleve_id='$id',passwd='',perms='',hash='$hash',hashstamp=NOW()+3600*6 "
+		//$DB_web->query("INSERT INTO compte_frankiz SET eleve_id='$id',passwd='',perms='',hash='$hash',hashstamp=NOW()+3600*6 "
 		//		   ."ON DUPLICATE KEY UPDATE hash='$hash',hashstamp=NOW()+3600*6");
 		// (MySQL 4.1 uniquement)
-		$resultat = mysql_query("SELECT 0 FROM compte_frankiz WHERE eleve_id='$id'");
-		if(mysql_num_rows($resultat) > 0)
-			mysql_query("UPDATE compte_frankiz SET hash='$hash',hashstamp=DATE_ADD(NOW(),INTERVAL 6 HOUR) WHERE eleve_id='$id'");
+		$DB_web->query("SELECT 0 FROM compte_frankiz WHERE eleve_id='$id'");
+		if($DB_web->num_rows() > 0)
+			$DB_web->query("UPDATE compte_frankiz SET hash='$hash',hashstamp=DATE_ADD(NOW(),INTERVAL 6 HOUR) WHERE eleve_id='$id'");
 		else
-			mysql_query("INSERT INTO compte_frankiz SET eleve_id='$id',passwd='',perms='',hash='$hash', hashstamp=DATE_ADD(NOW(),INTERVAL 6 HOUR)");
-		mysql_free_result($resultat);
+			$DB_web->query("INSERT INTO compte_frankiz SET eleve_id='$id',passwd='',perms='',hash='$hash', hashstamp=DATE_ADD(NOW(),INTERVAL 6 HOUR)");
 		
 		// Envoie le mail contenant l'url avec le hash
 		$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
@@ -38,10 +35,8 @@ if(!empty($_REQUEST['loginpoly'])) {
 		$mail_envoye = true;
 		
 	} else {
-		mysql_free_result($resultat);
 		ajoute_erreur(ERR_LOGINPOLY);
 	}
-	deconnecter_mysql_frankiz();
 }
 
 require "../include/page_header.inc.php";

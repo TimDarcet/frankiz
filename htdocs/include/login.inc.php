@@ -30,7 +30,6 @@ if(isset($_GET['logout'])) {
 	session_start();
 }
 
-connecter_mysql_frankiz();
 
 // Login par mot de passe
 if(isset($_POST['login']) && isset($_POST['passwd'])) {
@@ -48,7 +47,7 @@ if(isset($_POST['login']) && isset($_POST['passwd'])) {
 		ajoute_erreur(ERR_MAILLOGIN);
 	
 	// Quel que soit le résultat, on supprime le hash d'authentification par mail.
-	mysql_query("UPDATE compte_frankiz SET hashstamp=0 WHERE eleve_id='".$_GET['uid']."'");
+	$DB_web->query("UPDATE compte_frankiz SET hashstamp=0 WHERE eleve_id='".$_GET['uid']."'");
 	
 	// On affiche un message d'erreur si l'authentification a échouée.
 	if(a_erreur(ERR_MAILLOGIN)) {
@@ -74,7 +73,6 @@ if(isset($_POST['login']) && isset($_POST['passwd'])) {
 	$_SESSION['user']->verifie_cookiehash($cookie['hash']);
 }
 
-deconnecter_mysql_frankiz();
 
 // Aucune information de login. Si la variable de session 'user' n'existe toujours pas
 // on crée un utilisateur anonyme.

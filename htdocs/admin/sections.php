@@ -21,7 +21,6 @@ if(!verifie_permission('admin')) {
 	exit;
 }
 
-connecter_mysql_frankiz();
 $message = "";
 
 // Gestion de la "suppression"
@@ -32,7 +31,7 @@ if(isset($_POST['existe']) || isset($_POST['existeplus'])) {
 		foreach($_POST['elements'] as $id => $on)
 			if($on='on') $ids .= (empty($ids) ? "" : ",") . "'$id'";
 		
-		mysql_query("UPDATE sections SET existe='$section_existe' WHERE section_id IN ($ids)");
+		$DB_web->query("UPDATE sections SET existe='$section_existe' WHERE section_id IN ($ids)");
 		
 		$message = "<p>".count($_POST['elements'])." sections viennent d'être marquées comme disparues avec succés.</p>\n";
 	} else {
@@ -43,7 +42,7 @@ if(isset($_POST['existe']) || isset($_POST['existeplus'])) {
 // Gestion de la création
 if(isset($_POST['nouvelle'])) {
 	if(!empty($_POST['nom'])) {
-		mysql_query("INSERT sections SET nom='".$_POST['nom']."'");
+		$DB_web->query("INSERT sections SET nom='".$_POST['nom']."'");
 		$message = "<p>La section ".$_POST['nom']." vient d'être créée.</p>\n";
 	} else {
 		ajoute_erreur(ERR_TROP_COURT);
@@ -53,7 +52,7 @@ if(isset($_POST['nouvelle'])) {
 // Modification du nom
 if(isset($_POST['maj'])) {
 	foreach($_POST['maj'] as $id => $val)
-		mysql_query("UPDATE sections SET nom='{$_POST['nom'][$id]}' WHERE section_id='$id'");
+		$DB_web->query("UPDATE sections SET nom='{$_POST['nom'][$id]}' WHERE section_id='$id'");
 	
 	$message = "<p>Le nom de la section a été modifié avec succés.</p>\n";
 }
@@ -75,14 +74,13 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<entete id="nom" titre="Nom"/>
 		<entete id="existe" titre="État"/>
 <?php
-		$result = mysql_query("SELECT nom,existe,section_id FROM sections ORDER BY nom ASC, existe DESC");
-		while(list($nom,$existe,$id) = mysql_fetch_row($result)) {
+		$DB_web->query("SELECT nom,existe,section_id FROM sections ORDER BY nom ASC, existe DESC");
+		while(list($nom,$existe,$id) = $DB_web->next_row()) {
 			echo "\t\t<element id=\"$id\">\n";
 			echo "\t\t\t<colonne id=\"nom\"><champ id=\"nom[$id]\" valeur=\"$nom\"/><bouton titre=\"Mise à jour\" id=\"maj[$id]\"/></colonne>\n";
 			echo "\t\t\t<colonne id=\"existe\">".($existe?"existante":"disparue")."</colonne>\n";
 			echo "\t\t</element>\n";
 		}
-		mysql_free_result($result);
 ?>
 		<bouton titre="Marquer comme disparue" id="existeplus"/>
 		<bouton titre="Ne pas marquer comme disparue" id="existe"/>
@@ -94,7 +92,6 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 </page>
 <?php
 
-deconnecter_mysql_frankiz();
 
 require_once BASE_LOCAL."/include/page_footer.inc.php";
 ?>

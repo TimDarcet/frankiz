@@ -50,31 +50,24 @@ if(isset($_REQUEST['chercher'])) {
 		require "../include/page_header.inc.php";
 		echo "<page id='trombino' titre='Frankiz : Trombino'>\n";
 		
-		connecter_mysql_frankiz();
 		
-		$result = mysql_query("SELECT $champs FROM eleves $join WHERE $where");
-		while(list($eleve_id,$nom,$prenom,$surnom,$piece_id,$section,$section_id,$cie,$promo,$login,$mail,$tel) = mysql_fetch_row($result)) {
+		$DB_web->query("SELECT $champs FROM eleves $join WHERE $where");
+		while(list($eleve_id,$nom,$prenom,$surnom,$piece_id,$section,$section_id,$cie,$promo,$login,$mail,$tel) = $DB_web->next_row()) {
 			echo "<eleve nom='$nom' prenom='$prenom' promo='$promo' login='$login' surnom='$surnom' "
 				."tel='$tel' mail='".(empty($mail)?"$login@poly.polytechnique.fr":$mail)."' casert='$piece_id' "
 				."section='$section' cie='$cie'>\n";
 			
-			$result_bis = mysql_query("SELECT remarque,nom,membres.binet_id FROM membres "
+			$DB_web->query("SELECT remarque,nom,membres.binet_id FROM membres "
 									 ."LEFT JOIN binets USING(binet_id) WHERE eleve_id='$eleve_id'");
-			while(list($remarque,$binet_nom,$binet_id) = mysql_fetch_row($result_bis))
+			while(list($remarque,$binet_nom,$binet_id) = $DB_web->next_row())
 				echo "<binet nom='".afficher_identifiant($binet_nom)."' id='$binet_id'>".afficher_identifiant($remarque)."</binet>\n";
-				
-			mysql_free_result($result_bis);
-				
 			
 			echo "</eleve>\n";
 			if(verifie_permission('admin')) {
 				echo "<a href='".BASE_URL."/admin/user.php?id=$eleve_id'>Administrer $prenom $nom</a>" ;
 			}
 			
-		}
-		mysql_free_result($result);
-		
-		deconnecter_mysql_frankiz();
+		}		
 		
 		echo "</page>\n";
 		require "../include/page_footer.inc.php";
@@ -104,22 +97,18 @@ require "../include/page_header.inc.php";
 		<choix titre="Section" id="section" type="combo" valeur="">
 			<option titre="Toutes" id=""/>
 <?php
-			connecter_mysql_frankiz();
-			$result = mysql_query("SELECT section_id,nom FROM sections ORDER BY nom ASC");
-			while( list($section_id,$section_nom) = mysql_fetch_row($result) )
+			$DB_web->query("SELECT section_id,nom FROM sections ORDER BY nom ASC");
+			while( list($section_id,$section_nom) = $DB_web->next_row() )
 				echo "\t\t\t<option titre=\"$section_nom\" id=\"$section_id\"/>\n";
-			mysql_free_result($result);
 ?>
 		</choix>
 			
 		<choix titre="Binet" id="binet" type="combo" valeur="">
 			<option titre="Tous" id=""/>
 <?php
-			$result = mysql_query("SELECT binet_id,nom FROM binets ORDER BY nom ASC");
-			while( list($binet_id,$binet_nom) = mysql_fetch_row($result) )
+			$DB_web->query("SELECT binet_id,nom FROM binets ORDER BY nom ASC");
+			while( list($binet_id,$binet_nom) = $DB_web->next_row() )
 				echo "\t\t\t<option titre=\"$binet_nom\" id=\"$binet_id\"/>\n";
-			mysql_free_result($result);
-			deconnecter_mysql_frankiz();
 ?>
 		</choix>
 		

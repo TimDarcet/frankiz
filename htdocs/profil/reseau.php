@@ -10,13 +10,9 @@
 
 require_once "../include/global.inc.php";
 demande_authentification(AUTH_FORT);
-connecter_mysql_frankiz();
 
-$result = mysql_query("SELECT ip_chambre_theory.piece_id,ip_chambre_theory.prise_id,ip_chambre_theory.ip_theorique FROM ip_chambre_theory INNER JOIN eleves USING(piece_id) WHERE eleve_id='".$_SESSION['user']->uid."'");
-print_r(mysql_error());
-list($kzert,$prise,$ip) = mysql_fetch_row($result);
-mysql_free_result($result);
-
+$DB_web->query("SELECT ip_chambre_theory.piece_id,ip_chambre_theory.prise_id,ip_chambre_theory.ip_theorique FROM ip_chambre_theory INNER JOIN eleves USING(piece_id) WHERE eleve_id='".$_SESSION['user']->uid."'");
+list($kzert,$prise,$ip) = $DB_web->next_row();
 
 // Génération du la page XML
 require "../include/page_header.inc.php";
@@ -33,13 +29,12 @@ require "../include/page_header.inc.php";
 
 	<note>Si tu souhaite une nouvelle ip clique <lien titre='ici' url='profil/demande_ip.php'/>
 <?
-		$result = mysql_query("SELECT ip_enplus FROM ip_ajout WHERE eleve_id='".$_SESSION['user']->uid."'");
-		print_r(mysql_error());
-		if (mysql_num_rows($result)>0) {
+		$DB_web->query("SELECT ip_enplus FROM ip_ajout WHERE eleve_id='".$_SESSION['user']->uid."'");
+		if ($DB_web->num_rows()>0) {
 			echo "<p>&nbsp;</p><p>Tu as en plus fait rajouter ces ips à tes ip autorisées :</p>" ;
 			
 			$bool_ip = true ;
-			while(list($ip_enplus) = mysql_fetch_row($result)) { 
+			while(list($ip_enplus) = $DB_web->next_row()) { 
 				echo "<p>$ip_enplus</p>" ;
 				$bool_ip = $bool_ip&&($ip_enplus!=$_SERVER['REMOTE_ADDR']) ;
 			}
@@ -56,8 +51,10 @@ require "../include/page_header.inc.php";
 ?>
 	</p>
 	<h2>Nom de tes machines</h2>
-	<p>En construction…</p>
+	<p>En construction
+</p>
 	<h2>Compte Xnet (mot de passe)</h2>
-	<p>En construction…</p>
+	<p>En construction
+</p>
 </page>
 <?php require_once BASE_LOCAL."/include/page_footer.inc.php"; ?>

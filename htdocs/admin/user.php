@@ -8,7 +8,7 @@
 	ATTENTION : il n'y a volontairement pas de pages web d'administration permettant l'ajout
 	ou la suppression d'un utilisateur. En effet, il n'y a aucune raison de supprimer un utilisateur,
 	et pour l'ajout d'utilisateur, l'opération a lieu par bloc pour toute une promo or c'est beaucoup
-	plus facile de le faire via un fichier de commande MySQL que par une interface web.
+	plus facile de le faire via un fichier de commande MySQL ou avec un interface web dédiée.
 	
 	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
 */
@@ -22,7 +22,6 @@ if(!verifie_permission('admin')) {
 	header("Location: ".BASE_URL."/admin/");
 	exit;
 }
-connecter_mysql_frankiz();
 
 // On vérifie que la personne envoie bien l'id sinon ca sert a rien ...
 if(!isset($_GET['id'])) {
@@ -38,7 +37,6 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
 <page id="admin_user" titre="Frankiz : gestion des utilisateurs">
-
 <?
 
 $id = $_GET['id'] ;
@@ -59,7 +57,7 @@ if (isset($_POST['mod_generale'])) {
 	$promo = $_POST['promo'];
 	$login = $_POST['login'];
 	$mail = $_POST['mail'];
-	mysql_query("UPDATE eleves SET nom='$nom', prenom='$prenom', surnom='$surnom', date_nais='$date_nais', sexe='$sexe', piece_id='$piece_id', section_id='$section_id', cie='$cie', promo='$promo', login='$login', mail='$mail' WHERE eleve_id=$id ");
+	$DB_web->query("UPDATE eleves SET nom='$nom', prenom='$prenom', surnom='$surnom', date_nais='$date_nais', sexe='$sexe', piece_id='$piece_id', section_id='$section_id', cie='$cie', promo='$promo', login='$login', mail='$mail' WHERE eleve_id=$id ");
 	
 	echo "Modification de la partie générale faite avec succès" ;
 }
@@ -73,7 +71,7 @@ if (isset($_POST['mod_binet'])) {
 		if ($key == "mod_binet") break ;
 		$key = explode("_",$key) ;
 		$key = $key[1] ;
-		mysql_query("UPDATE membres SET remarque='$val' WHERE eleve_id=$id AND binet_id=$key");
+		$DB_web->query("UPDATE membres SET remarque='$val' WHERE eleve_id=$id AND binet_id=$key");
  	}
 	echo "Modification de la partie binets faite avec succès" ;
 }
@@ -83,11 +81,11 @@ if (isset($_POST['mod_binet'])) {
 if (isset($_POST['mod_compte_fkz'])) {
 	if ($_POST['pass']!="") {
 		$pass2 = md5($_POST['pass']) ;
-		mysql_query("UPDATE compte_frankiz SET passwd='$pass2' WHERE eleve_id=$id");
+		$DB_web->query("UPDATE compte_frankiz SET passwd='$pass2' WHERE eleve_id=$id");
 		echo "<p>Modification du mot de passe réalisée correctement</p>" ;
 	}
 	$perms = $_POST['perms'] ;
-	mysql_query("UPDATE compte_frankiz SET perms='$perms' WHERE eleve_id=$id");
+	$DB_web->query("UPDATE compte_frankiz SET perms='$perms' WHERE eleve_id=$id");
 
 	echo "Modification de la partie Compte FrankizII faite avec succès" ;
 }
@@ -96,9 +94,8 @@ if (isset($_POST['mod_compte_fkz'])) {
 ?>
 	<formulaire id="user_general" titre="Général" action="admin/user.php?id=<? echo $id?>">
 <?
-		$result = mysql_query("SELECT nom,prenom,surnom,date_nais,sexe,piece_id,section_id,cie,promo,login,mail FROM eleves WHERE eleve_id=$id ORDER BY nom ASC");
-		
-		list($nom,$prenom,$surnom,$date_nais,$sexe,$piece_id,$section,$cie,$promo,$login,$mail) = mysql_fetch_row($result) ;
+		$DB_web->query("SELECT nom,prenom,surnom,date_nais,sexe,piece_id,section_id,cie,promo,login,mail FROM eleves WHERE eleve_id=$id ORDER BY nom ASC");
+		list($nom,$prenom,$surnom,$date_nais,$sexe,$piece_id,$section,$cie,$promo,$login,$mail) = $DB_web->next_row() ;
 ?>
 		<champ id="nom" titre="Nom" valeur="<? echo $nom?>"/>
 		<champ id='prenom' titre='Prénom' valeur='<? echo $prenom?>'/>
@@ -113,9 +110,6 @@ if (isset($_POST['mod_compte_fkz'])) {
 		<champ id='mail' titre='Mail' valeur='<? echo $mail?>'/>
 		
 		<bouton id='mod_generale' titre='Changer'/>
-<?		
-		mysql_free_result($result);
-?>
 	</formulaire>
 	
 <?
@@ -123,10 +117,8 @@ if (isset($_POST['mod_compte_fkz'])) {
 ?>
 	<formulaire id="user_binets" titre="Ses binets" action="admin/user.php?id=<? echo $id?>">
 <?
-		$result = mysql_query("SELECT membres.remarque,membres.binet_id,binets.nom FROM membres INNER JOIN binets ON membres.binet_id=binets.binet_id WHERE eleve_id=$id ORDER BY membres.binet_id ASC");
-		
-		while (list($remarque,$binet_id,$nom) = mysql_fetch_row($result)) {
-?>
+		$DB_web->query("SELECT membres.remarque,membres.binet_id,binets.nom FROM membres INNER JOIN binets ON membres.binet_id=binets.binet_id WHERE eleve_id=$id ORDER BY membres.binet_id ASC");
+		while (list($remarque,$binet_id,$nom) = $DB_web->next_row()) { ?>
 			<champ id="binet_<? echo $binet_id?>" titre="<? echo $nom?>" valeur="<? echo $remarque?>"/>
 <?
 		 }
@@ -139,18 +131,14 @@ if (isset($_POST['mod_compte_fkz'])) {
 ?>
 	<formulaire id="user_compt_fkz" titre="Compte Frankiz" action="admin/user.php?id=<? echo $id?>">
 <?
-		$result = mysql_query("SELECT perms FROM compte_frankiz WHERE eleve_id=$id");
-		
-		list($perms) = mysql_fetch_row($result) ;
+		$DB_web->query("SELECT perms FROM compte_frankiz WHERE eleve_id=$id");
+		list($perms) = $DB_web->next_row() ;
 ?>
 		<champ id="pass" titre="Mot de passe" valeur=""/>
 		<commentaire>Pour le mot de passe : Si vous le laissez vide, il ne sera pas modifié !</commentaire>
 		<champ id='perms' titre='Permissions' valeur='<? echo $perms?>'/>
 		
 		<bouton id='mod_compte_fkz' titre='Changer'/>
-<?		
-		mysql_free_result($result);
-?>
 	</formulaire>
 
 </page>

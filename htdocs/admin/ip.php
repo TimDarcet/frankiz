@@ -17,7 +17,6 @@ if(!verifie_permission('admin')) {
 	header("Location: ".BASE_URL."/admin/");
 	exit;
 }
-connecter_mysql_frankiz();
 
 // Gestion des détails d'une personne
  foreach ($_POST AS $keys => $val){
@@ -49,7 +48,7 @@ if(isset($_POST['supprimer'])) {
 				if($on='on') $ids .= (empty($ids) ? "" : ",") . "'$id'";
 				
 			
-			//mysql_query("DELETE FROM ip_chambre_theory WHERE prise_id IN ($ids)");
+			//$DB_web->query("DELETE FROM ip_chambre_theory WHERE prise_id IN ($ids)");
 			
 			$message = "<p>".count($_POST['elements'])." ip viennent d'être supprimées avec succès.</p>\n";
 		}
@@ -83,23 +82,23 @@ if (isset($_POST['recherche']) ) {
 		<entete id="prise" titre="Prise"/>
 		<entete id="ip" titre="IP"/>
 <?php
-		$result = mysql_query("SELECT  valeur FROM parametres WHERE nom='lastpromo_oncampus'");
-		list($lastpromo) = mysql_fetch_row($result) ;
+		$DB_web->query("SELECT  valeur FROM parametres WHERE nom='lastpromo_oncampus'");
+		list($lastpromo) = $DB_web->next_row() ;
 		$where2 = "" ;
 
 
-		$result = mysql_query("SELECT  prise_id, piece_id, ip_theorique FROM ip_chambre_theory ".$where." ORDER BY ip_theorique ASC");
-		while(list($id_prise,$id_piece,$ip_theorique) = mysql_fetch_row($result)) {
+		$DB_web->query("SELECT  prise_id, piece_id, ip_theorique FROM ip_chambre_theory ".$where." ORDER BY ip_theorique ASC");
+		while(list($id_prise,$id_piece,$ip_theorique) = $DB_web->next_row()) {
 			echo "\t\t<element id=\"$id_prise\">\n";
 			
 			// J'ai été obligé de faire une double requete car je voulais conserver les chambre libre (ce qui disparaissait quand je faisais
 			// une requete croisé et comme ca je vois plsu facilement les couple aussi (Kikx)
 			
-			$result2 = mysql_query("SELECT  login,promo FROM eleves  WHERE (promo='".$lastpromo."' OR promo='".($lastpromo-1)."' ) AND piece_id='$id_piece' ORDER BY promo DESC");
+			$DB_web->query("SELECT  login,promo FROM eleves  WHERE (promo='".$lastpromo."' OR promo='".($lastpromo-1)."' ) AND piece_id='$id_piece' ORDER BY promo DESC");
 			
 			$login2 ="" ;
 			$promo2 ="" ;
-			while(list($login,$promo) = mysql_fetch_row($result2)) {
+			while(list($login,$promo) = $DB_web->next_row()) {
 				if ($login2=="" ) 
 					$login2 = "<bouton titre='Détails' id='detail_$login' type='detail'/>".$login ;
 				else 
@@ -159,7 +158,7 @@ if (isset($_POST['recherche']) ) {
 				if ($temp_bbb == "20")
 					$bbb = 66 + substr($id_prise,6,2) ;
 			}
-			mysql_query("UPDATE ip_chambre_theory SET ip_theorique='$ip$aaa.$bbb' WHERE prise_id='$id_prise'");*/
+			$DB_web->query("UPDATE ip_chambre_theory SET ip_theorique='$ip$aaa.$bbb' WHERE prise_id='$id_prise'");*/
 			
 			echo "\t\t\t<colonne id=\"ip\">$ip_theorique</colonne>\n";
 			echo "\t\t</element>\n";
@@ -167,7 +166,6 @@ if (isset($_POST['recherche']) ) {
 //=======================
 
 		}
-		mysql_free_result($result);
 ?>
 		<bouton titre="Supprimer" id="supprimer"/>
 	</liste>
@@ -178,6 +176,5 @@ if (isset($_POST['recherche']) ) {
 </page>
 
 <?php
-deconnecter_mysql_frankiz();
 require_once BASE_LOCAL."/include/page_footer.inc.php";
 ?>

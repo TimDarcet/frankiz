@@ -17,7 +17,6 @@ if(!verifie_permission('admin')) {
 	header("Location: ".BASE_URL."/admin/");
 	exit;
 }
-connecter_mysql_frankiz();
 
 // Génération de la page
 //===============
@@ -37,7 +36,7 @@ foreach ($_POST AS $keys => $val){
 	// On refuse la demande d'ip supplémentaire
 	//==========================
 	if ($temp[0] == "vtff") {
-		mysql_query("DELETE FROM ip_ajout WHERE eleve_id=$temp[1] AND valider=0");
+		$DB_web->query("DELETE FROM ip_ajout WHERE eleve_id=$temp[1] AND valider=0");
 		
 		$contenu = "Bonjour, \n\n".
 					"Nous sommes désolé mais nous ne pouvons pas d'ouvrir une autre ip supplémentaire car nous ne pensons pas que tu en ai absolument besoin...\n\n".
@@ -46,8 +45,8 @@ foreach ($_POST AS $keys => $val){
 					"Très Cordialement\n" .
 					"Le BR\n"  ;
 		
-		$result = mysql_query("SELECT  login,nom,prenom,mail FROM eleves WHERE eleve_id=$temp[1]");
-		list($login,$nom,$prenom,$mail) = mysql_fetch_row($result) ;
+		$DB_web->query("SELECT  login,nom,prenom,mail FROM eleves WHERE eleve_id=$temp[1]");
+		list($login,$nom,$prenom,$mail) = $DB_web->next_row() ;
 		if (($mail=="")||($mail=="NULL")) $mail = $login."@poly.polytechnique.fr" ;
 	
 		mail("$prenom $nom<$mail>","[Frankiz] Ta demande a été refusée ",$contenu);
@@ -58,7 +57,7 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0] == "ok") {
 		$temp2 = "ajout_ip_".$temp[1] ;
 		$temp3 = "raison_".$temp[1] ;
-		mysql_query("UPDATE ip_ajout SET valider=1,ip_enplus='".$_POST[$temp2]."', raison='".$_POST[$temp3]."' WHERE eleve_id=$temp[1] AND valider=0");
+		$DB_web->query("UPDATE ip_ajout SET valider=1,ip_enplus='".$_POST[$temp2]."', raison='".$_POST[$temp3]."' WHERE eleve_id=$temp[1] AND valider=0");
 		
 		$contenu = "Bonjour, \n\n".
 					"Nous t'avons ouvert l'ip suivante :\n".
@@ -67,8 +66,8 @@ foreach ($_POST AS $keys => $val){
 					"Très Cordialement\n" .
 					"Le BR\n"  ;
 		
-		$result = mysql_query("SELECT  login,nom,prenom,mail FROM eleves WHERE eleve_id=$temp[1]");
-		list($login,$nom,$prenom,$mail) = mysql_fetch_row($result) ;
+		$DB_web->query("SELECT  login,nom,prenom,mail FROM eleves WHERE eleve_id=$temp[1]");
+		list($login,$nom,$prenom,$mail) = $DB_web->next_row() ;
 		if (($mail=="")||($mail=="NULL")) $mail = $login."@poly.polytechnique.fr" ;
 	
 		mail("$prenom $nom<$mail>","[Frankiz] Ta demande a été acceptée",$contenu);
@@ -79,7 +78,7 @@ foreach ($_POST AS $keys => $val){
 	//===========================
 	if ($temp[0] == "suppr") {
 		$temp2 = str_replace("xxx",".",$temp[2]) ; // euh c'est pas bo je suis d'accord mais bon c'est pour que ca marche sans trop de trick
-		mysql_query("DELETE FROM ip_ajout WHERE eleve_id=$temp[1] AND valider=1 AND ip_enplus='$temp2'");
+		$DB_web->query("DELETE FROM ip_ajout WHERE eleve_id=$temp[1] AND valider=1 AND ip_enplus='$temp2'");
 		
 		$contenu = "Bonjour, \n\n".
 					"Nous t'avons supprimé l'ip suivante :\n".
@@ -88,8 +87,8 @@ foreach ($_POST AS $keys => $val){
 					"Très Cordialement\n" .
 					"Le BR\n"  ;
 		
-		$result = mysql_query("SELECT  login,nom,prenom,mail FROM eleves WHERE eleve_id=$temp[1]");
-		list($login,$nom,$prenom,$mail) = mysql_fetch_row($result) ;
+		$DB_web->query("SELECT  login,nom,prenom,mail FROM eleves WHERE eleve_id=$temp[1]");
+		list($login,$nom,$prenom,$mail) = $DB_web->next_row() ;
 		if (($mail=="")||($mail=="NULL")) $mail = $login."@poly.polytechnique.fr" ;
 	
 		mail("$prenom $nom<$mail>","[Frankiz] Suppression d'une ip",$contenu);
@@ -107,8 +106,8 @@ Vous allez valider un ajout d'une ip : Pour le mement le système n'est pas fiabl
 		<entete id="raison" titre="Raison"/>
 		<entete id="ip" titre="Ip"/>
 <?
-		$result = mysql_query("SELECT  eleves.login,ip_ajout.raison,eleves.eleve_id FROM ip_ajout INNER JOIN eleves USING(eleve_id) WHERE ip_ajout.valider=0");
-		while(list($login,$raison,$eleve_id) = mysql_fetch_row($result)) {
+		$DB_web->query("SELECT  eleves.login,ip_ajout.raison,eleves.eleve_id FROM ip_ajout INNER JOIN eleves USING(eleve_id) WHERE ip_ajout.valider=0");
+		while(list($login,$raison,$eleve_id) = $DB_web->next_row()) {
 ?>
 			<element id="<? echo $eleve_id ;?>">
 				<colonne id="login"><? echo $login ;?></colonne>
@@ -134,8 +133,8 @@ Vous allez valider un ajout d'une ip : Pour le mement le système n'est pas fiabl
 		<entete id="raison" titre="Raison"/>
 		<entete id="ip" titre="Ip"/>
 <?
-		$result = mysql_query("SELECT  eleves.login,ip_ajout.raison,eleves.eleve_id,ip_ajout.ip_enplus FROM ip_ajout INNER JOIN eleves USING(eleve_id) WHERE ip_ajout.valider=1 ORDER BY eleves.login ASC");
-		while(list($login,$raison,$eleve_id,$ip) = mysql_fetch_row($result)) {
+		$DB_web->query("SELECT  eleves.login,ip_ajout.raison,eleves.eleve_id,ip_ajout.ip_enplus FROM ip_ajout INNER JOIN eleves USING(eleve_id) WHERE ip_ajout.valider=1 ORDER BY eleves.login ASC");
+		while(list($login,$raison,$eleve_id,$ip) = $DB_web->next_row()) {
 ?>
 			<element id="<? echo $eleve_id ;?>">
 				<colonne id="login"><? echo $login ;?></colonne>
@@ -149,7 +148,4 @@ Vous allez valider un ajout d'une ip : Pour le mement le système n'est pas fiabl
 
 </page>
 
-<?php
-deconnecter_mysql_frankiz();
-require_once BASE_LOCAL."/include/page_footer.inc.php";
-?>
+<?php require_once BASE_LOCAL."/include/page_footer.inc.php" ?>
