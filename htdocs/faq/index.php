@@ -1,10 +1,13 @@
 <? 
 /*
 		$Log$
+		Revision 1.11  2004/10/20 20:00:37  pico
+		Génération des balises plus conforme
+
 		Revision 1.10  2004/10/19 22:00:50  pico
 		Pas d'authentification
 		Fixe un warning
-
+		
 		Revision 1.9  2004/10/19 21:01:25  pico
 		Le texte de la qdj s'affiche !!
 		
@@ -73,8 +76,8 @@ function rech_fils($parent) {
 			if (eregi("/".$id."/",$a_marquer)) {
 				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche_folder.gif'/>" ;
 			}
-			echo "\n\r</feuille>\n\r " ;
 			rech_fils($id) ;
+			echo "\n\r</feuille>\n\r " ;
 		}
 		
 		// affichage des vrais questions !
@@ -254,10 +257,8 @@ echo "<br/>" ;
 	?>
 	<a name='reponse' />
 	<? 
-	echo "<h2>Q: ".$question."</h2>" ;
-	echo "<br/>";
 	$repfaq = "../../data/faq/".$reponse;
-	echo "<cadre>";
+	echo "<cadre titre=\"Q: ".$question."\">";
 
  	if($texte = fopen($repfaq,"r")){
  	 	while(!feof($texte))

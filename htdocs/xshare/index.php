@@ -1,10 +1,13 @@
 <? 
 /*
 		$Log$
+		Revision 1.13  2004/10/20 20:00:37  pico
+		Génération des balises plus conforme
+
 		Revision 1.12  2004/10/19 22:04:23  pico
 		Pas d'aut
 		+ Fix
-
+		
 		Revision 1.11  2004/10/19 07:56:56  pico
 		Corrections diverses
 		
@@ -72,8 +75,8 @@ function rech_fils($id_parent) {
 			if (eregi("/".$id."/",$a_marquer)) {
 				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche_folder.gif'/>" ;
 			}
-			echo "\n\r</feuille>\n\r " ;
 			rech_fils($id) ;
+			echo "\n\r</feuille>\n\r " ;
 		}
 		
 		// affichage des vrais fichiers !
