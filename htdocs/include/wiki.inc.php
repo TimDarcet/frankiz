@@ -21,10 +21,13 @@
 	Moteur Wiki (TipiWiki)
 	
 	$Log$
+	Revision 1.22  2004/12/15 01:36:52  kikx
+	Specification de la taille des images sous le WIKI
+
 	Revision 1.21  2004/12/14 22:16:06  schmurtz
 	Correction de bug du moteur wiki.
 	Simplication du code.
-
+	
 	Revision 1.20  2004/12/14 14:18:12  schmurtz
 	Suppression de la page de doc wiki : doc directement dans les pages concernees.
 	
@@ -104,6 +107,12 @@ function wikiVersXML($filtered,$enhtml=false) {
 	
 	// pictures [ url | alt ]
 	$filtered = preg_replace("/\[($regexURL\.(png|gif|jpg))\|$regexURLText\]/i",$enhtml?"<img src=\"\\1\"alt=\"\\5\"/>":"<image source=\"\\1\" texte=\"\\5\"/>",$filtered);
+	
+	// pictures [ url | alt | largeur]
+	$filtered = preg_replace("/\[($regexURL\.(png|gif|jpg))\|$regexURLText\|([0-9]+)\]/i",$enhtml?"<img src=\"\\1\"alt=\"\\5\" width=\"\\6\"/>":"<image source=\"\\1\" texte=\"\\5\" width=\"\\6\"/>",$filtered);
+	
+	// pictures [ url | alt | haut | largeur]
+	$filtered = preg_replace("/\[($regexURL\.(png|gif|jpg))\|$regexURLText\|([0-9]+)\|([0-9]+)\]/i",$enhtml?"<img src=\"\\1\"alt=\"\\5\" height=\"\\6\" width=\"\\7\"/>":"<image source=\"\\1\" texte=\"\\5\" height=\"\\6\" width=\"\\7\"/>",$filtered);
 	
 	// [ url | link ] external links
 	$filtered = preg_replace("/\[$regexURL\|$regexURLText\]/i","<a href=\"\\1\">\\3</a>", $filtered);
