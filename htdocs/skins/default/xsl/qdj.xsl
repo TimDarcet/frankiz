@@ -127,7 +127,7 @@
 			<div>Derniers à répondre :
 			<ul class="liste">
 			<xsl:for-each select="qdj/dernier[position()&lt;=4]">
-				<li class="fkz_qdj_last"><xsl:value-of select="@ordre"/>. <xsl:value-of select="eleve/@surnom"/></li>
+				<li class="fkz_qdj_last"><xsl:value-of select="@ordre"/>. <xsl:apply-templates select="eleve" mode="signature"/></li>
 			</xsl:for-each>
 			</ul>
 			</div>

@@ -86,7 +86,8 @@
 									<xsl:apply-templates select="binet" mode="trombino"/>
 								</xsl:if>
 								<br/><br/>
-								<xsl:apply-templates select="*[name()!='binet']"/>
+								<xsl:variable name="nomcourant" select="@nom"/>
+								<xsl:apply-templates select="../*[name()='lien' and contains(@url,$nomcourant)]"/>
 							</p>
 							<br/>
 						</dd>

@@ -44,7 +44,7 @@
 		<xsl:attribute name="href">mailto:<xsl:value-of select="@mail"/></xsl:attribute>
 		<xsl:value-of select="@prenom" />
 		<xsl:text> </xsl:text>
-		<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
+		<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzéèàçê','ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊ')" />
 	</a>
 	<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
 </xsl:template>
