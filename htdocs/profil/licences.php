@@ -21,9 +21,12 @@
 	Page qui permet de demander une clé windows
 	
 	$Log$
+	Revision 1.21  2005/02/02 14:31:11  dei
+	la recherche de la dernière promo se fait dans la bonne base...
+
 	Revision 1.20  2005/01/30 21:57:06  dei
 	là ça marchera mieux...
-
+	
 	Revision 1.19  2005/01/30 21:35:46  dei
 	-----------------------------------------------------------------------
 	le probleme de l'attribution des licences est transparent pour
@@ -134,9 +137,9 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 			//on prévient les admins@windows qu'il ya une clée à rajouter à la main...
 			//et le gens donne sa raison
 			if($_POST['logiciel']=="winxp"){
-				$DB_frankiz2->query("SELECT lastpromo_oncampus FROM parametres LIMIT 1");
-				list($promolim)=$DB_frankiz2->next_row();
-				if($promo==$promolim-1 || $promo==$promolim){
+				$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
+				list($promo_temp) = $DB_web->next_row() ;
+				if($promo==$promo_temp-1 || $promo==$promo_temp){
 				?>
 			
 			<formulaire id="dem_licence" titre= "Les licences pour les logiciels Microsoft" action="profil/licences.php">
