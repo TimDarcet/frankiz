@@ -21,9 +21,12 @@
 	Gestion de la création d'un compte et de la perte de mot de passe.
 	
 	$Log$
+	Revision 1.15  2004/11/03 12:15:32  pico
+	La fonction qui remplissait le corps du mail n'existait plus -> le mail était vide !!! (merci mYk d'avoir signalé ça)
+
 	Revision 1.14  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.13  2004/10/16 01:47:44  schmurtz
 	Bug dans l'envoi d'un mail
 	
@@ -65,9 +68,9 @@ if(!empty($_REQUEST['loginpoly'])) {
 				   "N'oublie pas ensuite de modifier ton mot de passe.";
 		if (($mail=="")||($mail=="NULL")) $mail = $login."@poly.polytechnique.fr" ;
 		
-		$message = new Mail("Binet Réseau <br@frankiz.polytechnique.fr>","$nom $prenom <$mail>","[Frankiz] Création de compte/perte de mot de passe");
-		$message->SetBody($contenu);
-		$message->Send();
+		$message = new Mail("Binet Réseau <br@frankiz.polytechnique.fr>","$nom $prenom <$mail>","[Frankiz] Création de compte/perte de mot de passe",true);
+		$message->addPartText($contenu);
+		$message->send();
 		
 		$mail_envoye = true;
 		
