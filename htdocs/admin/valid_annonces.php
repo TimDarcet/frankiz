@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.24  2004/12/15 05:08:29  kikx
+	Pour paxal ... les annonces peuvent etre IMPORTANTES
+
 	Revision 1.23  2004/12/15 01:55:56  schmurtz
 	inversion
-
+	
 	Revision 1.22  2004/12/14 14:18:12  schmurtz
 	Suppression de la page de doc wiki : doc directement dans les pages concernees.
 	
@@ -156,7 +159,12 @@ foreach ($_POST AS $keys => $val){
 			else 
 				$temp_ext = '0' ;
 				
-			$DB_web->query("INSERT INTO annonces  SET stamp=NOW(), perime='{$_POST['date']}', titre='{$_POST['titre']}', contenu='{$_POST['text']}', eleve_id=$eleve_id, exterieur=$temp_ext");
+			if (isset($_REQUEST['important']))
+				$temp_imp = ', en_haut=\'1\''  ;
+			else 
+				$temp_imp = '' ;
+				
+			$DB_web->query("INSERT INTO annonces  SET stamp=NOW(), perime='{$_POST['date']}', titre='{$_POST['titre']}', contenu='{$_POST['text']}', eleve_id=$eleve_id, exterieur=$temp_ext $temp_imp");
 			
 			// On déplace l'image si elle existe dans le répertoire prevu à cette effet
 			$index = mysql_insert_id($DB_web->link) ;
@@ -242,6 +250,10 @@ $DB_valid->query("UNLOCK TABLES");
 			<choix titre="Éxtérieur" id="exterieur" type="checkbox" valeur="<? echo $ext_temp." " ; if ((isset($_REQUEST['ext_auth']))&&(isset($_REQUEST['modif_'.$id]))) echo 'ext_auth' ;?>">
 				<option id="ext" titre="Demande de l'utilisateur" modifiable='non'/>
 				<option id="ext_auth" titre="Décision du Webmestre"/>
+			</choix>
+			<note>Si l'annonce est très très importante</note>
+			<choix titre="Important" id="important" type="checkbox" valeur="<? if ((isset($_REQUEST['important']))&&(isset($_REQUEST['modif_'.$id]))) echo 'important' ;?>">
+				<option id="important" titre=""/>
 			</choix>
 			<zonetext id="refus" titre="La raison du refus si refus"></zonetext>
 
