@@ -99,6 +99,7 @@
 </xsl:template>
 
 <xsl:template match="annonce" mode="complet">
+	<xsl:if test="@visible!='non'">
 	<dl class="boite">
 		<dt class="titre">
 			<a><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute><xsl:text> </xsl:text></a>
@@ -132,6 +133,7 @@
 		</dd>
 		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>
+	</xsl:if>
 </xsl:template>
 
 <xsl:template match="annonce" mode="sommaire">
@@ -148,8 +150,10 @@
 		</xsl:attribute>
 		<a>
 			<xsl:attribute name="href">
-				<xsl:text>#</xsl:text> 
-				<xsl:value-of select="@id"/>
+				<xsl:if test="@visible='non'">
+					<xsl:text>?nonlu=</xsl:text><xsl:value-of select="@id"/>
+				</xsl:if>
+				<xsl:text>#</xsl:text><xsl:value-of select="@id"/>
 			</xsl:attribute>
 			<xsl:value-of select="@titre"/>
 		</a>

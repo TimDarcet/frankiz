@@ -21,9 +21,15 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.20  2004/12/14 17:14:52  schmurtz
+	modification de la gestion des annonces lues :
+	- toutes les annonces sont envoyees dans le XML
+	- annonces lues avec l'attribut visible="non"
+	- suppression de la page affichant toutes les annonces
+
 	Revision 1.19  2004/12/13 21:28:25  pico
 	Le lien est mieux à la fin de l'annonce
-
+	
 	Revision 1.18  2004/12/13 20:03:25  pico
 	Les liens ne forment pas de blocs, il faut donc le spécifier
 	
@@ -82,60 +88,49 @@ echo "<page id='annonces' titre='Frankiz : annonces'>\n";
 
 <h2>Bienvenue sur Frankiz</h2>
 <?
-$annonces_lues1="" ;
-$annonces_lues2="" ;
-if (!est_authentifie(AUTH_COOKIE))  {
+$annonces_lues1="";
+$annonces_lues2=" 1 ";
+if (!est_authentifie(AUTH_MINIMUM))  {
 ?>
-	<p>&nbsp;</p>
-	<p>Voici la nouvelle page élève qui est en construction...</p>
-	<p>Si tu veux te connecter et accéder à la partie réservée aux élèves alors clique sur ce <a href="login.php">lien</a></p>
-	<p>Sinon navigue sur cette page en utilisant les liens qui se situe un peu partout sur cette page :)</p>
+	<p>Bienvenu sur le site web des élèves de l'École Polytechnique.</p>
+	<p>Si tu souhaites te connecter et accéder à la partie réservée aux élèves, clique
+		<a href="login.php">ici</a> pour te loguer.</p>
 <?
 } else {
-// Pour marquer les annonces comme lues
-	if (isset($_REQUEST['lu'])) {
-		$DB_web->query("INSERT INTO annonces_lues SET annonce_id='".$_REQUEST['lu']."',eleve_id= '".$_SESSION['user']->uid."'") ;
-	}
-	if (!isset($_REQUEST['lire_tout'])) {
-		$annonces_lues1=" LEFT JOIN annonces_lues ON annonces_lues.annonce_id=annonces.annonce_id AND annonces_lues.eleve_id='".$_SESSION['user']->uid."'" ;
-		$annonces_lues2=" AND annonces_lues.annonce_id IS NULL" ;
-	}
+// Pour marquer les annonces comme lues ou non
+	if (isset($_REQUEST['lu']))
+		$DB_web->query("INSERT INTO annonces_lues SET annonce_id='{$_REQUEST['lu']}',eleve_id='{$_SESSION['user']->uid}'");
+	if (isset($_REQUEST['nonlu']))
+		$DB_web->query("DELETE FROM annonces_lues WHERE annonce_id='{$_REQUEST['nonlu']}' AND eleve_id='{$_SESSION['user']->uid}'");
+	
+	$annonces_lues1=" LEFT JOIN annonces_lues ON annonces_lues.annonce_id=annonces.annonce_id AND annonces_lues.eleve_id='{$_SESSION['user']->uid}'" ;
+	$annonces_lues2=" ISNULL(annonces_lues.annonce_id) ";
 }
+
+// Affichage des annonces
 $DB_web->query("SELECT annonces.annonce_id,stamp,perime,titre,contenu,en_haut,exterieur,nom,prenom,surnom,promo,"
-					 ."IFNULL(mail,CONCAT(login,'@poly.polytechnique.fr')) as mail "
+					 ."IFNULL(mail,CONCAT(login,'@poly.polytechnique.fr')) as mail, $annonces_lues2 "
 					 ."FROM annonces LEFT JOIN trombino.eleves USING(eleve_id) $annonces_lues1"
-					 ."WHERE (perime>=".date("Ymd000000",time()).") $annonces_lues2 ORDER BY perime DESC");
-while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail)=$DB_web->next_row()) {
+					 ."WHERE (perime>=".date("Ymd000000",time()).") ORDER BY perime DESC");
+while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail,$visible)=$DB_web->next_row()) {
 	if(!$exterieur && !est_authentifie(AUTH_MINIMUM)) continue;
 ?>
 	<annonce id="<?php echo $id ?>" 
-		titre="<?php echo $titre ?>"
+		titre="<?php echo $titre ?>" visible="<?=$visible?"oui":"non" ?>"
 		categorie="<?php echo get_categorie($en_haut, $stamp, $perime) ?>"
 		date="<?php echo substr($stamp,8,2)."/".substr($stamp,5,2)."/".substr($stamp,0,4) ?>">
 <?php
+		if (file_exists(DATA_DIR_LOCAL."annonces/$id"))
+			echo "<image source=\"".DATA_DIR_URL."annonces/$id\" texte=\"logo\"/>\n";
 		echo wikiVersXML($contenu);
-
-		if (file_exists(DATA_DIR_LOCAL."annonces/$id")) {
-		?>
-			<image source="<?echo DATA_DIR_URL."annonces/$id" ; ?>" texte="logo"/>
-		<? 
-		}
-?>
-		<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
-<?
-		if ((est_authentifie(AUTH_COOKIE))&&(!isset($_REQUEST['lire_tout'])))  {
-?>
-			<lien url='?lu=<?=$id?>' titre="Faire disparaitre" id="annonces_lues"/><br/>
-<?
-}
+		echo "<eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"$promo\" surnom=\"$surnom\" mail=\"$mail\"/>\n";
+		
+		if(est_authentifie(AUTH_MINIMUM))
+			echo "<lien url=\"?lu=$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
 ?>
 	</annonce>
 <?php }
-if ((!isset($_REQUEST['lire_tout']))&&(est_authentifie(AUTH_COOKIE))) {
-	echo "<lien url='?lire_tout=1' titre='Lire toutes les annonces' id='lire_tout'/><br/>"; 
-} else if  (est_authentifie(AUTH_COOKIE)){
-	echo "<lien url='' titre='Lire les annonces non lues' id='lire_nonlu'/><br/>"; 
-}
+
 echo "</page>\n";
 require_once "include/page_footer.inc.php";
 ?>

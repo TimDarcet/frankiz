@@ -80,6 +80,7 @@
 </xsl:template>
 
 <xsl:template match="annonce" mode="complet">
+	<xsl:if test="@visible!='non'">
 	<div class="fkz_annonces">
 		<xsl:attribute name="id">
 			<xsl:value-of select="concat('annonce_',@id)"/>
@@ -101,6 +102,7 @@
 		</div>
 	</div>
 	<br/>
+	</xsl:if>
 </xsl:template>
 
 <xsl:template match="annonce">
@@ -121,8 +123,10 @@
 	<div class="fkz_sommaire_corps">
 		<a>
 			<xsl:attribute name="href">
-				<xsl:text>index.php#</xsl:text> 
-				<xsl:value-of select="concat('annonce_',@id)"/>
+				<xsl:if test="@visible='non'">
+					<xsl:text>?nonlu=</xsl:text><xsl:value-of select="@id"/>
+				</xsl:if>
+				<xsl:text>#</xsl:text><xsl:value-of select="concat('annonce_',@id)"/>
 			</xsl:attribute>
 			<xsl:value-of select="@titre"/>
 		</a>

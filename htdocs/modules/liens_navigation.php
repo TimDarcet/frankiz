@@ -21,9 +21,15 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.24  2004/12/14 17:14:53  schmurtz
+	modification de la gestion des annonces lues :
+	- toutes les annonces sont envoyees dans le XML
+	- annonces lues avec l'attribut visible="non"
+	- suppression de la page affichant toutes les annonces
+
 	Revision 1.23  2004/11/27 17:04:57  pico
 	Modif de la page de préférences
-
+	
 	Revision 1.22  2004/11/25 01:42:38  kikx
 	Truc tout moche pour corriger le probleme de l'affichage du lien administration alors que l'on est pas administrateur
 	
@@ -91,7 +97,7 @@
 */
 ?>
 <module id="liens_navigation" titre="Frankiz">
-	<lien id="annonces" titre="Annonces" url="index.php" key="a"/>
+	<lien id="annonces" titre="Annonces" url="." key="a"/>
 	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
 		<lien id="deconnect" titre="Se déconnecter" url="index.php?logout=1" key="l"/>
 		<lien id="profil"  titre="Préférences" url="profil/index.php" key="p"/>

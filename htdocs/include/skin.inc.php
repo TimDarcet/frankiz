@@ -21,9 +21,15 @@
 	Fonction servant pour la gestion des skins.
 	
 	$Log$
+	Revision 1.15  2004/12/14 17:14:53  schmurtz
+	modification de la gestion des annonces lues :
+	- toutes les annonces sont envoyees dans le XML
+	- annonces lues avec l'attribut visible="non"
+	- suppression de la page affichant toutes les annonces
+
 	Revision 1.14  2004/12/06 00:01:42  kikx
 	Passage de la skin par défaut en parametre du site et non pas stocké en dur
-
+	
 	Revision 1.13  2004/11/24 23:38:38  schmurtz
 	Gestion des skins perso + corrections dans la skin default
 	
@@ -142,7 +148,7 @@ function lire_description_css($css_dir) {
 		$description=htmlspecialchars($description, ENT_QUOTES);
 		fclose($fd);
 	}
-	return $description == "" ? "Pas de description" : $description;
+	return $description;
 }
 
 /*

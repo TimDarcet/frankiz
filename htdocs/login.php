@@ -23,9 +23,15 @@
 	la boîte de login dans d'autres pages qui requiert une authentification.
 	
 	$Log$
+	Revision 1.10  2004/12/14 17:14:52  schmurtz
+	modification de la gestion des annonces lues :
+	- toutes les annonces sont envoyees dans le XML
+	- annonces lues avec l'attribut visible="non"
+	- suppression de la page affichant toutes les annonces
+
 	Revision 1.9  2004/11/04 16:36:42  schmurtz
 	Modifications cosmetiques
-
+	
 	Revision 1.8  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -49,8 +55,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="accueil" titre="Frankiz : accueil">
 	<h2>Tu es bien authentifié !</h2>
 	<p>Te voilà prêt à accéder au fabuleux monde du campus de l'X.</p>
-	<p>Si tu veux éviter de te ré-identifier à chaque fois que tu accèdes à cette page, alors vas
-	dans tes <a href="profil/profil.php">profils</a> et selectionne l'authentification par cookie.</p>
-	<p>Sinon navigue sur la page en tout tranquilité...</p>
+	<p>Si tu veux éviter de te ré-identifier à chaque fois que tu accèdes à cette page, active l'authentification
+	par cookie dans tes <a href="profil/profil.php">préférences</a>.</p>
 </page>
 <? require_once BASE_LOCAL."/include/page_footer.inc.php" ?>

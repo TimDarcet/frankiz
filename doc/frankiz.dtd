@@ -26,10 +26,16 @@
 	utilisé.
 
 	$Log$
+	Revision 1.9  2004/12/14 17:14:52  schmurtz
+	modification de la gestion des annonces lues :
+	- toutes les annonces sont envoyees dans le XML
+	- annonces lues avec l'attribut visible="non"
+	- suppression de la page affichant toutes les annonces
+
 	Revision 1.8  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
-
+	
 	Revision 1.7  2004/11/25 00:35:19  schmurtz
 	une image de plus dans htdocs/image
 	
@@ -335,7 +341,8 @@
 		titre		CDATA   #IMPLIED
 		auteur		CDATA   #IMPLIED
 		date		CDATA   #IMPLIED
-		categorie   CDATA   #IMPLIED>
+		categorie   CDATA   #IMPLIED
+		visible		CDATA	#IMPLIED>
 
 <!-- eleve, utilisé de manière complète dans le trombino,et partielle dans les autres cas
 	 (uniquement les attributs nom, prenom, promo, surnom  et mail) -->
