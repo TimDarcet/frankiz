@@ -21,9 +21,12 @@
 	Gestion de la création d'un compte et de la perte de mot de passe.
 	
 	$Log$
+	Revision 1.21  2004/12/16 17:26:10  schmurtz
+	Ajout d'un exemple pour login.promo, ca evitera les dupond.x2002.
+
 	Revision 1.20  2004/12/13 20:22:10  pico
 	un s de trop..
-
+	
 	Revision 1.19  2004/11/25 01:42:38  kikx
 	Truc tout moche pour corriger le probleme de l'affichage du lien administration alors que l'on est pas administrateur
 	
@@ -117,7 +120,7 @@ if($mail_envoye) { ?>
 	<?php if(a_erreur(ERR_LOGINPOLY)) echo "<warning>Le login que tu a donné n'existe pas.</warning>\n"?>
 	<formulaire id="mdp_perdu" titre="Perte de mot de passe/ouverture de compte" action="profil/mdp_perdu.php">
 		<note>Si tu souhaites créer ton compte Frankiz, ou si tu as perdu ton mot de passe, entre ton
-		loginpoly.promo dans le champs si dessous. Tu receveras dans les minutes qui suivent un mail
+		loginpoly.promo (par exemple dupont.2002) dans le champs si dessous. Tu receveras dans les minutes qui suivent un mail
 		te permettant d'accéder à la partie réservée de Frankiz. Une fois authentifié grâce
 		au lien contenu dans le mail, n'oublie pas de changer ton mot de passe.</note>
 		<champ id="loginpoly" titre="login.promo" valeur=""/>

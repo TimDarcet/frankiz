@@ -22,9 +22,12 @@
 	une seconde machine dans son casert.
 	
 	$Log$
+	Revision 1.15  2004/12/16 17:26:10  schmurtz
+	Ajout d'un exemple pour login.promo, ca evitera les dupond.x2002.
+
 	Revision 1.14  2004/12/14 00:52:02  kikx
 	Envoie les demandes de changement au nom du mec qui demande ... pour faire plaisir au gens ...
-
+	
 	Revision 1.13  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
@@ -57,7 +60,7 @@
 */
 
 require_once "../include/global.inc.php";
-demande_authentification(AUTH_MINIMUM);
+demande_authentification(AUTH_FORT);
 
 // Génération du la page XML
 require "../include/page_header.inc.php";
