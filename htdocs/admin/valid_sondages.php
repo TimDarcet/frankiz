@@ -21,9 +21,13 @@
 	Page qui permet aux admins de valider un sondage
 	
 	$Log$
+	Revision 1.4  2004/11/23 23:30:20  schmurtz
+	Modification de la balise textarea pour corriger un bug
+	(return fantomes)
+
 	Revision 1.3  2004/11/17 22:19:15  kikx
 	Pour avoir un module sondage
-
+	
 	Revision 1.2  2004/11/17 21:17:21  kikx
 	Validation d'un sondage par l'admin
 	
@@ -110,7 +114,7 @@ foreach ($_POST AS $keys => $val){
 		
 		<formulaire id="sond_<? echo $id ?>" titre="Validation de '<?=$titre?>'" action="admin/valid_sondages.php">
 			<note>Sondage proposé par <?=$prenom?> <?=$nom?> (<?=$promo?>)</note>
-			<zonetext titre="Raison du Refus si refus" id="refus_<? echo $id ;?>" valeur=""/>
+			<zonetext titre="Raison du Refus si refus" id="refus_<? echo $id ;?>"></zonetext>
 			
 			<bouton id='valid_<? echo $id ?>_<? echo $eleve_id ?>' titre='Valider' onClick="return window.confirm('Valider ce sondage ?')"/>
 			<bouton id='suppr_<? echo $id ?>_<? echo $eleve_id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce sondage ?!!!!!')"/>

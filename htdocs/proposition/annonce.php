@@ -21,9 +21,13 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.25  2004/11/23 23:30:20  schmurtz
+	Modification de la balise textarea pour corriger un bug
+	(return fantomes)
+
 	Revision 1.24  2004/11/22 23:38:42  kikx
 	Ajout de <note></note> un peu partout pour plus de compréhension !
-
+	
 	Revision 1.23  2004/11/07 22:43:10  pico
 	correction faute d'orthograffe
 	
@@ -241,7 +245,7 @@ if (isset($_POST['valid'])) {
 
 	<formulaire id="propoz_annonce" titre="Ton annonce" action="proposition/annonce.php">
 		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
-		<zonetext id="text" titre="Le texte" valeur="<? if (isset($_POST['text'])) echo $_POST['text'] ;?>"/>
+		<zonetext id="text" titre="Le texte"><? if (isset($_POST['text'])) echo $_POST['text'];?></zonetext>
 		<note>Ton image doit être un fichier gif, png ou jpg, ne doit pas dépasser 400x300 pixels et 250ko car sinon elle ne sera pas téléchargée</note>
 		<fichier id="file" titre="Ton image" taille="250000"/>
 		<bouton id='suppr_img' titre="Supprimer l'image"/>

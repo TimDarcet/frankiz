@@ -21,9 +21,13 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.8  2004/11/23 23:30:20  schmurtz
+	Modification de la balise textarea pour corriger un bug
+	(return fantomes)
+
 	Revision 1.7  2004/10/29 15:14:40  kikx
 	Correction mineur
-
+	
 	Revision 1.6  2004/10/29 15:10:27  kikx
 	Passage de la page de validation des activité en HTML (pour l'envoie des mail) et rajout du champs pour mettre la raison du refus de validation
 	
@@ -182,7 +186,7 @@ foreach ($_POST AS $keys => $val){
 				<option id="ext" titre="Demande de l'utilisateur" modifiable='non'/>
 				<option id="ext_auth" titre="Décision du Webmestre"/>
 			</choix>
-			<zonetext id="refus" titre="La raison du refus si refus" valeur=""/>
+			<zonetext id="refus" titre="La raison du refus si refus"></zonetext>
 
 			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
 			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Cette annonce apparaitra dès maintenant sur le site ... Voulez vous valider cette activité ?')"/>

@@ -21,9 +21,13 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.14  2004/11/23 23:30:20  schmurtz
+	Modification de la balise textarea pour corriger un bug
+	(return fantomes)
+
 	Revision 1.13  2004/10/29 15:14:40  kikx
 	Correction mineur
-
+	
 	Revision 1.12  2004/10/29 14:58:36  kikx
 	Passage en HTML la page de validation des annonces, de plus il y a la possibilité de mettre pourquoi on refuse la validation d'une annonce
 	
@@ -181,15 +185,15 @@ foreach ($_POST AS $keys => $val){
 			?>
 
 			<champ id="titre" titre="Le titre" valeur="<? echo $titre ;?>"/>
-			<zonetext id="text" titre="Le texte" valeur="<? echo $contenu ;?>"/>
-			<textsimple valeur="La signature sera automatiquement généré"/>
+			<zonetext id="text" titre="Le texte"><?=$contenu?></zonetext>
+			<note valeur="La signature sera automatiquement généré"/>
 			<champ id="date" titre="Date de péremption" valeur="<? echo $date ;?>"/>
 			
 			<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? echo $ext_temp." " ; if ((isset($_REQUEST['ext_auth']))&&(isset($_REQUEST['modif_'.$id]))) echo 'ext_auth' ;?>">
 				<option id="ext" titre="Demande de l'utilisateur" modifiable='non'/>
 				<option id="ext_auth" titre="Décision du Webmestre"/>
 			</choix>
-			<zonetext id="refus" titre="La raison du refus si refus" valeur=""/>
+			<zonetext id="refus" titre="La raison du refus si refus"></zonetext>
 
 			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
 			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Cette annonce apparaitra dès maintenant sur la page d'accueil de frankiz... Voulez vous valider cette annonce ?')"/>

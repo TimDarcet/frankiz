@@ -22,9 +22,13 @@
 	une seconde machine dans son casert.
 	
 	$Log$
+	Revision 1.12  2004/11/23 23:30:20  schmurtz
+	Modification de la balise textarea pour corriger un bug
+	(return fantomes)
+
 	Revision 1.11  2004/11/16 18:32:34  schmurtz
 	Petits problemes d'interpretation de <note> et <commentaire>
-
+	
 	Revision 1.10  2004/10/29 15:41:48  kikx
 	Passage des mail en HTML pour les ip
 	
@@ -60,7 +64,7 @@ if (!isset($_POST['demander'])) {
 
 	<formulaire id="demande" titre="Demande d'une nouvelle IP" action="profil/demande_ip.php">
 		<commentaire>Tu vas demander une nouvelle ip : Explique nous pourquoi tu en as besoin de cette ip supplémentaire (par exemple : 2 ordinateurs, tu vis en couple ...)</commentaire>
-		<zonetext titre="Raison" id="raison" valeur="" />
+		<zonetext titre="Raison" id="raison"></zonetext>
 		<bouton titre="Demander" id="demander"/>
 	</formulaire>
 <?

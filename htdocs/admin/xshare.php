@@ -19,10 +19,14 @@
 */
 /*
 		$Log$
+		Revision 1.24  2004/11/23 23:30:20  schmurtz
+		Modification de la balise textarea pour corriger un bug
+		(return fantomes)
+
 		Revision 1.23  2004/11/15 22:17:24  pico
 		On doit pouvoir changer le texte d'une faq à présent
 		TODO: script pour dl le contenu de la faq existante
-
+		
 		Revision 1.22  2004/11/15 20:54:18  pico
 		Commit global de retour de gwz
 		
@@ -324,7 +328,7 @@ echo "<br/>" ;
 	</choix>
 	<champ id="site" titre="Site de l'éditeur" valeur="<? echo $site ?>" />
 	<champ id="licence" titre="Licence" valeur="<? echo $licence ?>" />
-	<zonetext id="descript" titre="Description" valeur="<? echo $descript ;?>"/>
+	<zonetext id="descript" titre="Description"><?=$descript?></zonetext>
 	<fichier id="file" titre="Nouveau fichier" taille="1000000000"/>
 	<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
 	<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce logiciel ?!!!!!')"/>
@@ -372,7 +376,7 @@ echo "<br/>" ;
 	</choix>
 	<champ id="site" titre="Site de l'éditeur" />
 	<champ id="licence" titre="Licence" />
-	<zonetext id="descript" titre="Description" />
+	<zonetext id="descript" titre="Description"></zonetext>
 	<? foreach ($_GET AS $keys => $val){
 		if(!strstr($keys,"ajout")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 	}

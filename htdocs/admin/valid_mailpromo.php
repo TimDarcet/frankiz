@@ -21,9 +21,13 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.17  2004/11/23 23:30:20  schmurtz
+	Modification de la balise textarea pour corriger un bug
+	(return fantomes)
+
 	Revision 1.16  2004/11/16 18:32:34  schmurtz
 	Petits problemes d'interpretation de <note> et <commentaire>
-
+	
 	Revision 1.15  2004/10/31 21:30:48  kikx
 	Oups ca fonctionnera miuex comme ca ...
 	
@@ -216,8 +220,8 @@ while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $prom
 				$_POST['from'] = "$prenom $nom &lt;$mail&gt; " ;
 		?>
 		<champ titre="From " id="from"  valeur="<? echo  $_POST['from'] ?>"/>
-		<zonetext id="mail" titre="Mail " valeur="<?  echo $mailpromo ;?>"/>
-		<choix titre="Promo" id="promo" type="combo" valeur="<?echo  $promo_mail ;?>">
+		<zonetext id="mail" titre="Mail"><?=$mailpromo?></zonetext>
+		<choix titre="Promo" id="promo" type="combo" valeur="<?echo $promo_mail ;?>">
 		<?
 			$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
 			list($promo_temp) = $DB_web->next_row() ;
@@ -228,7 +232,7 @@ while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $prom
 				echo "<option titre='$promo2' id='$promo2' />" ;
 		?>
 		</choix>
-		<zonetext id="refus" titre="La raison du refus si refus" valeur=""/>
+		<zonetext id="refus" titre="La raison du refus si refus"></zonetext>
 
 		<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
 		<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Envoyer ce mail promo ?')"/>

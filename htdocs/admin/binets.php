@@ -21,10 +21,14 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.17  2004/11/23 23:30:20  schmurtz
+	Modification de la balise textarea pour corriger un bug
+	(return fantomes)
+
 	Revision 1.16  2004/11/11 19:22:52  kikx
 	Permet de gerer l'affichage externe interne des binets
 	Permet de pas avoir de binet sans catégorie valide
-
+	
 	Revision 1.15  2004/11/11 17:39:54  kikx
 	Centralisation des pages des binets
 	
@@ -254,7 +258,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		</choix>
 		<champ id="http" titre="Http" valeur="<? echo $http?>"/>
 		<champ id="folder" titre="Folder de stockage" valeur="<? echo $folder?>"/>
-		<zonetext id="descript" titre="Description" valeur="<? echo stripslashes($descript)?>"/>
+		<zonetext id="descript" titre="Description"><?=$descript?></zonetext>
 		<image source="binets/?image=1&amp;id=<?=$binet_id?>"/>
 		<fichier id="file" titre="Ton image de 100x100 px" taille="50000"/>
 		<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if ($exterieur==1) echo 'ext' ;?>">

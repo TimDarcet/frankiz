@@ -161,7 +161,7 @@
 		
 		<champ id="champ1" titre="Champ de texte" valeur="Valeur par défaut"/>
 		<champ id="champ2" titre="Champ de texte non modifiable" valeur="Tu peux pas me changer" modifiable="non"/>
-		<zonetext id="champ3" titre="Grande zone de texte" valeur="Valeur par défaut"/>
+		<zonetext id="champ3" titre="Grande zone de texte">Valeur par défaut</zonetext>
 		
 		<fichier id="fichier" titre="Ton image" taille="250000"/>
 

@@ -21,9 +21,13 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.24  2004/11/23 23:30:20  schmurtz
+	Modification de la balise textarea pour corriger un bug
+	(return fantomes)
+
 	Revision 1.23  2004/11/16 18:32:34  schmurtz
 	Petits problemes d'interpretation de <note> et <commentaire>
-
+	
 	Revision 1.22  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
 	
@@ -120,7 +124,7 @@
 			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:attribute name="rows">7</xsl:attribute>
 			<xsl:attribute name="cols">50</xsl:attribute>
-			<xsl:value-of select="@valeur"/>
+			<xsl:value-of select="text()"/>
 		</textarea>
 	</xsl:otherwise></xsl:choose>
 </xsl:template>

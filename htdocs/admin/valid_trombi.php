@@ -21,9 +21,13 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.3  2004/11/23 23:30:20  schmurtz
+	Modification de la balise textarea pour corriger un bug
+	(return fantomes)
+
 	Revision 1.2  2004/10/29 16:04:34  kikx
 	Passage en HTML des mail et raison du refus de modificatoin
-
+	
 	Revision 1.1  2004/10/25 10:35:49  kikx
 	Page de validation (ou pas) des modif de trombi
 	
@@ -99,7 +103,7 @@ foreach ($_POST AS $keys => $val){
 				<image source="trombino/?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>&amp;original=1" texte="photo" height="95" width="80"/>
 				<image source="trombino/?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>" texte="photo" height="95" width="80"/>
 				<image source="profil/profil.php?image=true&amp;id=<?=$id ?>" texte="photo" height="95" width="80"/>
-				<zonetext id="refus" titre="La raison du refus si refus" valeur=""/>
+				<zonetext id="refus" titre="La raison du refus si refus"></zonetext>
 				<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider cette photo ?')"/>
 				<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Supprimer cette photo ?!)"/>
 			</formulaire>

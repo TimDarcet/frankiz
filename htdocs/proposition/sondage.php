@@ -21,9 +21,13 @@
 	Page pour demander les sondages !
 	
 	$Log$
+	Revision 1.7  2004/11/23 23:30:20  schmurtz
+	Modification de la balise textarea pour corriger un bug
+	(return fantomes)
+
 	Revision 1.6  2004/11/17 23:46:21  kikx
 	Prepa pour le votes des sondages
-
+	
 	Revision 1.5  2004/11/17 13:32:18  kikx
 	Mise en place du lien pour l'admin
 	
@@ -201,7 +205,7 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 <formulaire id="ajout_simple" titre="Rajoute une explication" action="proposition/sondage.php">
 	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
 	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-	<zonetext id="explication" titre="Explication" valeur=""/>
+	<zonetext id="explication" titre="Explication"></zonetext>
 	<bouton titre="Ajouter" id="ok_expli" />
 </formulaire>
 <formulaire id="ajout_champ" titre="Rajoute une question de type 'champ'" action="proposition/sondage.php">

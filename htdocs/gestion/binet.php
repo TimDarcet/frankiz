@@ -25,9 +25,13 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.21  2004/11/23 23:30:20  schmurtz
+	Modification de la balise textarea pour corriger un bug
+	(return fantomes)
+
 	Revision 1.20  2004/11/11 15:02:59  kikx
 	Legere modif
-
+	
 	Revision 1.19  2004/11/08 18:26:40  kikx
 	Coorige des bugs
 	
@@ -299,7 +303,7 @@ if(verifie_permission_webmestre($_GET['binet'])){
 ?>
 			</choix>
 			<champ id="http" titre="Http" valeur="<? echo $http?>"/>
-			<zonetext id="descript" titre="Description" valeur="<? echo stripslashes($descript)?>"/>
+			<zonetext id="descript" titre="Description"><?=$descript?>"</zonetext>
 			<?=$image_link?>
 			<fichier id="file" titre="Ton image de 100x100 px" taille="100000"/>
 			<champ id="exterieur" titre="Exterieur" valeur="<? if ($exterieur==1) echo 'Oui' ; else echo 'Non'?>" modifiable="non"/>

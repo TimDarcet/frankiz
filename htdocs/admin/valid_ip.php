@@ -23,9 +23,13 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.16  2004/11/23 23:30:20  schmurtz
+	Modification de la balise textarea pour corriger un bug
+	(return fantomes)
+
 	Revision 1.15  2004/10/29 15:41:47  kikx
 	Passage des mail en HTML pour les ip
-
+	
 	Revision 1.14  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -143,7 +147,7 @@ foreach ($_POST AS $keys => $val){
 				<colonne id="raison">
 					<p><textsimple titre="" id="raison_<? echo $eleve_id ;?>" valeur="Raison = <? echo $raison ;?>"/></p>
 					<p><textsimple titre="" id="raison2_<? echo $eleve_id ;?>" valeur="Raison si refus :"/></p>
-					<zonetext titre="Raison du Refus si refus" id="refus_<? echo $eleve_id ;?>" valeur=""/>
+					<zonetext titre="Raison du Refus si refus" id="refus_<? echo $eleve_id ;?>"></zonetext>
 				</colonne>
 				<colonne id="ip">
 <?

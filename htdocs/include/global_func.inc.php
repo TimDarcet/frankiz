@@ -22,9 +22,14 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
-	Revision 1.30  2004/11/19 23:04:27  alban
-	Rajout du module lien_tol
+	Revision 1.31  2004/11/23 23:30:20  schmurtz
+	Modification de la balise textarea pour corriger un bug
+	(return fantomes)
 
+	Revision 1.30  2004/11/19 23:04:27  alban
+	
+	Rajout du module lien_tol
+	
 	Revision 1.29  2004/11/19 22:28:36  schmurtz
 	C'est bien de conserver une certaine unite dans la maniere de mettre les
 	commentaires
@@ -250,7 +255,7 @@ function decode_sondage($string) {
 			echo "<champ id=\"$i\" titre=\"$temp[1]\" valeur=\"\"/>\n" ;
 		}
 		if ($temp[0]=="text") {
-			echo "<zonetext id=\"$i\" titre=\"$temp[1]\" valeur=\"\"/>\n" ;
+			echo "<zonetext id=\"$i\" titre=\"$temp[1]\"></zonetext>\n" ;
 		}
 		if ($temp[0]=="radio") {
 			echo "<choix titre=\"$temp[1]\" id=\"$i\" type=\"radio\" valeur=\"\">\n" ;

@@ -21,9 +21,13 @@
 	Mail promo permettant l'envoie de pièce jointes et de formatage HTML
 	
 	$Log$
+	Revision 1.10  2004/11/23 23:30:20  schmurtz
+	Modification de la balise textarea pour corriger un bug
+	(return fantomes)
+
 	Revision 1.9  2004/10/29 14:38:37  kikx
 	Mise en format HTML des mails pour les validation de la qdj, des mails promos, et des annonces
-
+	
 	Revision 1.8  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
 	
@@ -92,7 +96,7 @@ if (!isset($_REQUEST['envoie'])) {
 		</choix>
 
 		<champ titre="Sujet" id="sujet" valeur="<? if (isset($_REQUEST['sujet'])) echo $_REQUEST['sujet']?>" />
-		<zonetext titre="Mail" id="mail" valeur="<? if (isset($_REQUEST['mail'])) echo $_REQUEST['mail']?>" />
+		<zonetext titre="Mail" id="mail"><? if (isset($_REQUEST['mail'])) echo $_REQUEST['mail']?></zonetext>
 		<bouton titre="Mise à jour" id="upload"/>
 		<bouton titre="Valider" id="envoie"  onClick="return window.confirm('Voulez vous vraiment envoyer ce mail ?')"/>
 	</formulaire>
