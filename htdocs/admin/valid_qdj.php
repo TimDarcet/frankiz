@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.8  2004/10/29 15:48:43  kikx
+	Mise ne forme du php
+
 	Revision 1.7  2004/10/29 15:47:34  kikx
 	Ca ne sert a rien d'envoyer des mails qd on valide ou qu'on refuse les qdj ...
-
+	
 	Revision 1.6  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -37,10 +40,6 @@
 	
 	Revision 1.3  2004/10/13 22:14:32  pico
 	Premier jet de page pour affecter une date de publication aux qdj validées
-	
-
-	
-	
 */
 	
 require_once "../include/global.inc.php";
@@ -49,8 +48,6 @@ require_once "../include/global.inc.php";
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
 	rediriger_vers("/admin/");
-
-
 
 // Génération de la page
 //===============
@@ -82,21 +79,16 @@ foreach ($_POST AS $keys => $val){
 		list($eleve_id) = $DB_valid->next_row() ;
 			
 		$DB_web->query("INSERT INTO qdj SET question='{$_POST['question']}', reponse1='{$_POST['reponse1']}', reponse2='{$_POST['reponse2']}'");
-
-
+		
 		$DB_valid->query("DELETE FROM valid_qdj WHERE qdj_id='{$temp[1]}'") ;
 	?>
 		<commentaire><p>Validation effectuée</p></commentaire>
 	<?	
-
 	}
 	if ($temp[0]=='suppr') {
 		$DB_valid->query("SELECT eleve_id FROM valid_qdj WHERE qdj_id='{$temp[1]}'");
 		list($eleve_id) = $DB_valid->next_row() ;
-
 		$DB_valid->query("DELETE FROM valid_qdj WHERE qdj_id='{$temp[1]}'") ;
-	
-
 	?>
 		<warning><p>Suppression d'une qdj</p></warning>
 	<?
@@ -122,7 +114,6 @@ foreach ($_POST AS $keys => $val){
 <?
 // Zone de saisie de la qdj
 ?>
-
 		<formulaire id="qdj_<? echo $id ?>" titre="La QDJ" action="admin/valid_qdj.php">
 			<champ id="question" titre="La question" valeur="<? echo $question ;?>"/>
 			<champ id="reponse1" titre="Réponse1" valeur="<? echo $reponse1 ;?>"/>
