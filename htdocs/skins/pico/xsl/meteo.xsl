@@ -32,7 +32,14 @@
 		Et l'humidité s'élève à <xsl:value-of select="now/humidite"/>%<br />
 		L'état du ciel : <xsl:value-of select="now/ciel"/><br />
 		<span  class="meteo"><img alt="meteo" width="64" height="64">
-			<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="now/image"/>.png</xsl:attribute>
+			<xsl:choose>
+				<xsl:when test="now/image!='-'">
+					<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="now/image"/>.png</xsl:attribute>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:attribute name="src">skins/pico/xsl/meteo/na.png</xsl:attribute>
+				</xsl:otherwise>
+			</xsl:choose>
 		</img></span>
 	<h2>Prévisions météo :</h2><br />
 		<xsl:for-each select="jour">
@@ -50,14 +57,28 @@
 				<dd>
 					<xsl:value-of select="cieljour"/>
 					<span  class="meteo"><img alt="meteo" width="32" height="32">
-						<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="imagejour"/>.png</xsl:attribute>
+						<xsl:choose>
+							<xsl:when test="imagejour!='-'">
+								<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="imagejour"/>.png</xsl:attribute>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:attribute name="src">skins/pico/xsl/meteo/na.png</xsl:attribute>
+							</xsl:otherwise>
+						</xsl:choose>
 					</img></span>
 				</dd>
 				<dt>Etat du ciel la nuit : </dt>
 				<dd>
 					<xsl:value-of select="cielnuit"/>
 					<span  class="meteo"><img alt="meteo" width="32" height="32">
-						<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="imagenuit"/>.png</xsl:attribute>
+						<xsl:choose>
+							<xsl:when test="imagenuit!='-'">
+								<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="imagenuit"/>.png</xsl:attribute>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:attribute name="src">skins/pico/xsl/meteo/na.png</xsl:attribute>
+							</xsl:otherwise>
+						</xsl:choose>
 					</img></span>
 				</dd>
 			</dl>
@@ -72,7 +93,14 @@
 		<div class="fkz_module_corps">
 			<xsl:value-of select="meteo/now/temperature"/>°C<br />
 			<span  class="meteo"><img alt="meteo" width="64" height="64">
-				<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="meteo/now/image"/>.png</xsl:attribute>
+				<xsl:choose>
+					<xsl:when test="meteo/now/image!='-'">
+						<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="meteo/now/image"/>.png</xsl:attribute>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:attribute name="src">skins/pico/xsl/meteo/na.png</xsl:attribute>
+					</xsl:otherwise>
+				</xsl:choose>
 			</img></span>
 		</div>
 	</div>
