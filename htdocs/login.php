@@ -23,9 +23,12 @@
 	la boîte de login dans d'autres pages qui requiert une authentification.
 	
 	$Log$
+	Revision 1.9  2004/11/04 16:36:42  schmurtz
+	Modifications cosmetiques
+
 	Revision 1.8  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.7  2004/09/16 13:57:49  schmurtz
 	word wrap
 	
@@ -44,10 +47,10 @@ demande_authentification(AUTH_MDP);
 require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="accueil" titre="Frankiz : accueil">
-	<h2>Tu es bien authentifié !</h2>
-	<p>Te voilà prêt à accéder au fabuleux monde du campus de l'X</p>
+	<h2>Tu es bien authentifié !</h2>
+	<p>Te voilà prêt à accéder au fabuleux monde du campus de l'X.</p>
 	<p>Si tu veux éviter de te ré-identifier à chaque fois que tu accèdes à cette page, alors vas
-	dans tes <a href="profil/profil.php">profils</a> et selectionne l'authentification par cookie</p>
-	<p>Sinon navigue sur la page en tout tranquilité ...</p>
+	dans tes <a href="profil/profil.php">profils</a> et selectionne l'authentification par cookie.</p>
+	<p>Sinon navigue sur la page en tout tranquilité...</p>
 </page>
 <? require_once BASE_LOCAL."/include/page_footer.inc.php" ?>

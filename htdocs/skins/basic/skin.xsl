@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.23  2004/11/04 16:36:43  schmurtz
+	Modifications cosmetiques
+
 	Revision 1.22  2004/10/29 16:25:12  kikx
 	bug
-
+	
 	Revision 1.21  2004/10/28 14:49:47  kikx
 	Mise en place de la météo en module : TODO eviter de repliquer 2 fois le code de la météo
 	
@@ -164,7 +167,7 @@
 			<center><xsl:apply-templates select="image"/></center>
 		</td></tr>
 		<tr><td>
-			<xsl:apply-templates select="html"/>
+			<xsl:apply-templates/>
 		</td></tr>
 	</table><br />
 </xsl:template>

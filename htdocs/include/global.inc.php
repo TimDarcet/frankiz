@@ -24,9 +24,12 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.30  2004/11/04 16:36:42  schmurtz
+	Modifications cosmetiques
+
 	Revision 1.29  2004/10/29 15:41:48  kikx
 	Passage des mail en HTML pour les ip
-
+	
 	Revision 1.28  2004/10/29 14:38:37  kikx
 	Mise en format HTML des mails pour les validation de la qdj, des mails promos, et des annonces
 	
@@ -118,6 +121,7 @@ define('URL_DATA','http://'.$_SERVER['HTTP_HOST'].'/frankiz2/data/');
 define('DATA_DIR_LOCAL',BASE_DATA);	// pour compatibilité
 define('DATA_DIR_URL',URL_DATA);
 
+// Emails
 $i = -1 ;
 define('MAIL_WEBMESTRE',"kikx@frankiz.polytechnique.fr");
 define('WEBMESTRE_ID',$i--);
@@ -130,7 +134,7 @@ define('ROOT_ID',$i--);
 
 define('MAIL_CONTACT',"eleves@polytechnique.fr");
 
-
+// Nombres de jours affichés dans la page des annonces 
 define('MAX_PEREMPTION',8);
 
 // Gestion des erreurs PHP et MySQL
@@ -150,8 +154,6 @@ define('ERR_EMAIL_NON_VALIDE',$i++);
 define('ERR_TROP_COURT',$i++);
 define('ERR_SELECTION_VIDE',$i++);
 
-
-
 // Nettoyage des éléments récupérés par $_POST, $_GET et $_REQUEST
 function nettoyage_balise($tableau) {
 	foreach($tableau as $cle => $valeur)
@@ -164,24 +166,22 @@ $_GET = nettoyage_balise($_GET);
 $_POST = nettoyage_balise($_POST);
 $_REQUEST = nettoyage_balise($_REQUEST);
 
-//================================================================
-//
-// Elements à ne pas mettre dans la distribution libre du code car il y a les mot de passe et les comptes www.weather.com
-//
-//================================================================
+/*
+	Élements à ne pas mettre dans la distribution libre du code car il y a les mot de passe
+	et les comptes www.weather.com
+*/
 
 // Connexions aux bases mysql
 require_once "mysql.inc.php";
 $DB_xnet = new DB("frankiz2","xnet","web","kokouije?.");
-
 $DB_faq = new DB("frankiz","faq","web","kokouije?.");
 $DB_web = new DB("frankiz","frankiz2_tmp","web","kokouije?.");
 $DB_admin = new DB("frankiz","admin","web","kokouije?.");
 $DB_trombino = new DB("frankiz","trombino","web","kokouije?.");
 $DB_valid = new DB("frankiz","a_valider","web","kokouije?.");
 
-//Météo
- define('WEATHER_DOT_COM',"http://xoap.weather.com/weather/local/FRXX0076?prod=xoap&par=1006415841&key=5064537abefac140&unit=m&cc=*&dayf=8");
+// Météo
+define('WEATHER_DOT_COM',"http://xoap.weather.com/weather/local/FRXX0076?prod=xoap&par=1006415841&key=5064537abefac140&unit=m&cc=*&dayf=8");
 
 // divers fichiers inclus
 require_once "global_func.inc.php";

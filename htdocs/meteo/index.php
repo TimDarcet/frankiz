@@ -32,9 +32,12 @@
 			dayf=8 pour avoir 7 jour de previsions
 		
 	$Log$
+	Revision 1.5  2004/11/04 16:36:42  schmurtz
+	Modifications cosmetiques
+
 	Revision 1.4  2004/11/02 13:04:25  pico
 	Correction météo (othograffe + skin pico)
-
+	
 	Revision 1.3  2004/10/28 16:08:14  kikx
 	Ne fait qu'une page de fonctions pour la météo car sinon ça devient ingérable
 	
@@ -102,8 +105,6 @@ require "../include/page_header.inc.php";
 
 ?>
 
-<p>&nbsp;</p>
-<p>&nbsp;</p>
 <lien url="http://www.weather.com/?prod=xoap&amp;par=1006415841"><image source="meteo/Weather.com.png"/></lien>
 <lien url="http://www.weather.com/?prod=xoap&amp;par=1006415841">Météo fournie grâce à weather.com&#174;</lien>
 

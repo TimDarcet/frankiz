@@ -21,9 +21,12 @@
 	Page des contacts utiles
 	
 	$Log$
+	Revision 1.5  2004/11/04 16:36:42  schmurtz
+	Modifications cosmetiques
+
 	Revision 1.4  2004/10/31 18:20:24  kikx
 	Rajout d'une page pour les plan (venir à l'X)
-
+	
 	Revision 1.3  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -42,50 +45,42 @@ require "include/page_header.inc.php";
 ?>
 <page id='contact' titre='Frankiz : contact'>
 <h1>Contacts utiles</h1>
-<cadre titre="Contacter la KES">
-	<html>
-<?
 
-$text = "<p>La \"Kes\" est le Bureau des Eleves communément appelé \"Bde\" dans les autres Grandes Ecoles. Elle est en charge pendant un an de la vie des élèves<p>" ;
-$text .= "Si vous désirez des <a href='mailto:".MAIL_CONTACT."?subject=Kes : Cours Particuliers'>cours particuliers</a> donnés par un élève de l'Ecole<br>" ;
-$text .= "Si vous désirez des <a href='mailto:".MAIL_CONTACT."?subject=Kes : Informations diverses'>informations</a> sur polytechnique et les élèves" ;
-echo htmlspecialchars($text) ;
-?>
-	</html>
+<cadre titre="Contacter la Kès">
+	<p>La "Kès" est le Bureau des Élèves communément appelé "BdE" dans les autres Grandes Écoles.
+	Elle est en charge pendant un an de la vie des élèves.</p>
+	<p>Si vous désirez des <a href="mailto:<?=MAIL_CONTACT?>?subject=K%E8s%20:%20Cours%20Particuliers">cours particuliers</a> donnés par un élève de l'École.</p>
+	<p>Si vous désirez des <a href="mailto:<?=MAIL_CONTACT?>?subject=K%E8s%20:%20Informations%20diverses">informations</a> sur polytechnique et les élèves.</p>
 </cadre>
 
 <cadre titre="Contacter un élève">
-	<html>
-<?
-$text = "<h3>Par email (ou mel)</h3>" ;
-$text .= "Si tu veux joindre un élève, rien de plus facile:<br>" ;
-$text .= "<b>prénom.nom@polytechnique.fr</b>" ;
-$text .= "(Où, bien sûr, on remplace le nom et le prénom de l'élève dans cette adresse :op)" ;
-$text .= "<h3>Par la poste</h3>" ;
-$text .= "<p>Qui a dit que ce moyen de communication était démodé ????!!!!</p>" ;
-$text .= "Bon voilà la typographie type (car sinon la lettre risque de ne jamais arriver)<br>" ;
-$text .= "<p style=\"text-align: center\"><b>Prénom Nom</b><br>" ;
-$text .= "<b>Promotion X(1) / (2) Cie</b><br>" ;
-$text .= "<b>Ecole Polytechnique</b><br>" ;
-$text .= "<b>91128 Palaiseau Cedex</b></p>" ;
-$text .= "<p>Donc 2 choses importantes :</p>" ;
-$text .= "<ul><li>(1) est remplacé par la Promotion de l'élève (année d'intégration)</li>" ;
-$text .= "<li>(2) est remplacé par le numéro de sa compagnie (ben... ça faut lui demander !)</li></ul>" ;
+	<h3>Par email (ou mel)</h3>
+	<p>Si tu veux joindre un élève, rien de plus facile :</p>
+	<p><strong>prénom.nom@polytechnique.fr</strong> (Où, bien sûr, on remplace le nom et le prénom de l'élève dans cette adresse :op)</p>
 
-echo htmlspecialchars($text) ;
-?>
-	</html>
+	<h3>Par la poste</h3>
+	<p>Qui a dit que ce moyen de communication était démodé ????!!!!</p>
+	<p>Bon voilà la typographie type (car sinon la lettre risque de ne jamais arriver) :</p>
+<html><![CDATA[
+	<p style="text-align: center"><strong>
+		Prénom Nom<br />
+		Promotion X(1)/(2) Cie<br />
+		École Polytechnique<br />
+		91128 Palaiseau Cedex
+	</strong></p>
+]]></html>
+	<p>Dont 2 choses importantes :</p>
+<html><![CDATA[
+	<ul>
+		<li>(1) est remplacé par la Promotion de l'élève (année d'intégration)</li>
+		<li>(2) est remplacé par le numéro de sa compagnie (ben... ça faut lui demander !)</li>
+	</ul>
+]]></html>
 </cadre>
 
 <cadre titre="Contacter le Webmestre">
-	<html>
-
-<?
-$text = "<p>Car tu as un problème avec le site, des suggestions, des questions ... N'hésite pas !<p>" ;
-$text .= "<a href='mailto:".MAIL_WEBMESTRE."?subject=Webmestre'>Clique ici</a>" ;
-echo htmlspecialchars($text) ;
-?>
-	</html>
+	<p>Car tu as un problème avec le site, des suggestions, des questions... N'hésite pas !
+	<a href="mailto:<?=MAIL_WEBMESTRE?>?subject=Webmestre">Clique ici</a></p>
 </cadre>
 
 </page>
