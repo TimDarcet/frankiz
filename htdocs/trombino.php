@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.42  2004/12/16 14:57:29  pico
+	oups
+
 	Revision 1.41  2004/12/16 14:55:37  pico
 	Rajout des recherches par binet et par section comme sur l'ancien tol
-
+	
 	Revision 1.40  2004/12/16 14:30:10  pico
 	Recherche trombi par ordre alphabétique
 	
@@ -144,7 +147,7 @@ require "include/page_header.inc.php";
 echo "<page id='trombino' titre='Frankiz : Trombino'>\n";
 
 // Affichage des réponses
-if(isset($_REQUEST['chercher'])||isset($_REQUEST['section'])||isset($_REQUEST['binets'])||(isset($_REQUEST['anniversaire'])&&isset($_REQUEST['promo']))||(isset($_REQUEST['cherchertol'])&&(!(empty($_REQUEST['q_search']))))) {
+if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['binets'])||(isset($_REQUEST['anniversaire'])&&isset($_REQUEST['promo']))||(isset($_REQUEST['cherchertol'])&&(!(empty($_REQUEST['q_search']))))) {
 		
 	$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
 	list($promo_temp) = $DB_web->next_row() ;
@@ -159,7 +162,7 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['section'])||isset($_REQUEST['b
 	}
 	
 	// Création de la requête si sections appelle
-	if(isset($_REQUEST['section'])) {
+	if(isset($_REQUEST['sections'])) {
 		$where .= " sections.nom='{$_REQUEST['section']}'  AND (promo=$promo_temp OR promo=".($promo_temp -1).")";
 	}
 	

@@ -49,7 +49,7 @@
 	</div>
 	<div class="fkz_trombino_section">
 		<a>
-			<xsl:attribute name="href"><xsl:text>trombino.php?section=</xsl:text><xsl:value-of select="@section"/></xsl:attribute>
+			<xsl:attribute name="href"><xsl:text>trombino.php?sections=</xsl:text><xsl:value-of select="@section"/></xsl:attribute>
 			<img height="84" width="63">
 			<xsl:attribute name="src">skins/pico/default/images/sections/<xsl:value-of select="translate(@section,'ABCDEFGHIJKLMNOPQRSTUVWXYZéè','abcdefghijklmnopqrstuvwxyzee')"/><xsl:value-of select="@promo mod 2"/>.jpg</xsl:attribute>
 			<xsl:attribute name="alt"><xsl:value-of select="@section"/></xsl:attribute>
