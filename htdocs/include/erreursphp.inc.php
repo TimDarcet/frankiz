@@ -11,7 +11,7 @@
 error_reporting(E_ERROR);
 set_error_handler("gestionnaire_erreurs_php");
 
-$_ERREURS_PHP = array();
+$_ERREURS_PHPMYSQL = array();
 $_ERREURS_PHP_NOMS = array(
 	E_ERROR				=> "Fatal error",
 	E_WARNING			=> "Warning",
@@ -28,22 +28,21 @@ $_ERREURS_PHP_NOMS = array(
 );
 
 function gestionnaire_erreurs_php($errno, $errmsg, $file, $line, $vars) {
-	global $_ERREURS_PHP;
-	$_ERREURS_PHP[] = array(
-		'errno'		=> $errno,
+	global $_ERREURS_PHPMYSQL, $_ERREURS_PHP_NOMS;
+	$_ERREURS_PHPMYSQL[] = array(
+		'errname'	=> "PHP {$_ERREURS_PHP_NOMS[$errno]}",
 		'errmsg'	=> $errmsg,
 		'file'		=> $file,
-		'line'		=> $line,
-		'vars'		=> $vars
+		'line'		=> $line
 	);
 }
 
 function affiche_erreurs_php() {
-	global $_ERREURS_PHP, $_ERREURS_PHP_NOMS;
-	if( count($_ERREURS_PHP) == 0 ) return;
+	global $_ERREURS_PHPMYSQL;
+	if( count($_ERREURS_PHPMYSQL) == 0 ) return;
 	
-	foreach($_ERREURS_PHP as $erreur)
-		echo "<p><b>{$_ERREURS_PHP_NOMS[$erreur['errno']]}</b> : {$erreur['errmsg']} in <b>{$erreur['file']}</b> on line <b>{$erreur['line']}</b></p>\n";
+	foreach($_ERREURS_PHPMYSQL as $erreur)
+		echo "<p><b>{$erreur['errname']}</b> : {$erreur['errmsg']} in <b>{$erreur['file']}</b> on line <b>{$erreur['line']}</b></p>\n";
 }
 
 ?>

@@ -52,7 +52,7 @@ class User {
 	
 	function devient_anonyme() {
 		$this->uid = 0;
-		$this->methode = substr($_SERVER['HTTP_CLIENT_IP'],0,8) == "129.104." ? AUTH_INTERNE : AUTH_AUCUNE;
+		$this->methode = substr($_SERVER['REMOTE_ADDR'],0,8) == "129.104." ? AUTH_INTERNE : AUTH_AUCUNE;
 		$this->perms = array();
 	}
 	

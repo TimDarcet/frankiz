@@ -10,9 +10,8 @@
 	//Liste des css disponibles
 	$dir=opendir(BASE_LOCAL."/css");
 	while($file = readdir($dir)) {
-		list($nom_skin,$extension) = explode(".",$file);
-		if($extension!="css") continue;
-		echo "<lien titre='$nom_skin' url='".BASE_URL."/css/$nom_skin.css'/>\n";
+		if(ereg("^(.*)\.css$",$file,&$regs))
+			echo "<lien titre='{$regs[1]}' url='".BASE_URL."/css/{$regs[1]}.css'/>\n";
 	}
 	closedir($dir);
 ?>

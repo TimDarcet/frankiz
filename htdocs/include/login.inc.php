@@ -95,7 +95,7 @@ function demande_authentification($minimum) {
 			dans le login ou le mot de passe.</p>
 		<?php endif; ?>
 		<formulaire id="login" titre="Connexion" action="<?php echo $_SERVER['PHP_SELF']?>">
-			<champ id="login" titre="Login" valeur="<?php echo $_POST['login']?>"/>
+			<champ id="login" titre="Login" valeur="<?php if(isset($_POST['login'])) echo $_POST['login']?>"/>
 			<champ id="passwd" titre="Mot de passe" valeur=""/>
 			<bouton id="connect" titre="Connexion"/>
 		</formulaire>
