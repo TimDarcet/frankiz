@@ -24,9 +24,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.17  2004/10/21 22:43:11  kikx
+	Bug fix et mise en place de la possibilité de modifier la photo du trombino
+
 	Revision 1.16  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.15  2004/10/21 22:17:16  kikx
 	Juste pour Schmurtz
 	
@@ -194,7 +197,7 @@ require "../include/page_header.inc.php";
 		<champ id="casert" titre="Kazert" valeur="<?php echo $casert ?>" modifiable="non"/>
 		<champ id="surnom" titre="Surnom" valeur="<?php echo $surnom ?>"/>
 		<champ id="email" titre="Email" valeur="<?php echo empty($mail) ? $login.'@poly.polytechnique.fr' : $mail ?>"/>
-		<image url="trombino/?image=1&amp;login=<?=$login?>&amp;promo=<?=$promo?>">
+		<image source="trombino/?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>" texte="photo" height="95" width="80"/>
 		<fichier id="file" titre="Nlle photo" taille="200000"/>
 
 		<bouton id="changer_trombino" titre="Changer"/>
