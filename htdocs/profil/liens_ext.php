@@ -21,9 +21,12 @@
 	Gestions des liens perso / des flux rss.
 
 	$Log$
+	Revision 1.16  2005/02/06 21:42:16  pico
+	Correction bug #53
+
 	Revision 1.15  2005/01/04 23:35:30  pico
 	comportement quantique
-
+	
 	Revision 1.14  2005/01/04 23:33:52  pico
 	et un de plus
 	
@@ -108,8 +111,11 @@ if(!empty($_REQUEST['del_rss'])) {
 	$url_suppr = base64_decode($_REQUEST['del_rss']);
 	if(!empty($_SESSION['rss'])) {
 		foreach($_SESSION['rss'] as $url => $mode){
-			if($mode == 'module') $url = substr($url, 2);
-			if($url != $url_suppr) $rss[$url] = $mode;
+			if($mode == 'module') 
+				$urltest = substr($url, 2); 
+			else
+				$urltest = $url;
+			if($urltest != $url_suppr) $rss[$url] = $mode;
 		}
 	}
 	$_SESSION['rss'] = $rss;
