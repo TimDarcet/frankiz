@@ -94,6 +94,7 @@
 			</b>
 		</div>
 		<div class="fkz_annonces_corps">
+			<xsl:apply-templates select="image"/>
 			<xsl:apply-templates select="*[name()!='eleve']"/>
 			<p class="fkz_signature">
 				<xsl:choose>

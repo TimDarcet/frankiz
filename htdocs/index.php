@@ -21,10 +21,13 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.14  2004/12/09 19:29:13  pico
+	Rajoute le tel dans le trombino, ça pourrait être utile...
+
 	Revision 1.13  2004/11/24 22:56:18  schmurtz
 	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
 	globale pour tous les fichiers.
-
+	
 	Revision 1.12  2004/11/24 13:38:34  kikx
 	Changment de l'id de la page d'annonce en annonces pour les skinneurs
 	
@@ -85,7 +88,7 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 
 			if (file_exists(DATA_DIR_LOCAL."annonces/$id")) {
 			?>
-				<image source="<?echo DATA_DIR_URL."annonces/$id" ; ?>" texte=""/>
+				<image source="<?echo DATA_DIR_URL."annonces/$id" ; ?>" texte="logo"/>
 			<? 
 			}
 ?>

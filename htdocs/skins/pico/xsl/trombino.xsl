@@ -34,7 +34,7 @@
 	<p class="promo">
 		<xsl:value-of select="@promo" />
 	</p>
-	<p class="telephone">Tel: <xsl:value-of select="@phone"/>
+	<p class="telephone">Tel: <xsl:value-of select="@tel"/>
 	</p>
 	<p class="casert">Casert: <xsl:value-of select="@casert"/>
 	</p>

@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.25  2004/12/09 19:29:13  pico
+	Rajoute le tel dans le trombino, ça pourrait être utile...
+
 	Revision 1.24  2004/11/27 20:49:10  pico
 	Affichage des liens du trombino
-
+	
 	Revision 1.23  2004/11/27 15:39:54  pico
 	Ajout des droits trombino
 	
@@ -109,8 +112,8 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_RE
 	// Création de la requète si tol s'appelle
 	if(isset($_REQUEST['chercher'])) {
 		$where = "";
-		$join = "INNER JOIN sections ON eleves.section_id=sections.section_id";
-		$champs = "eleves.eleve_id,eleves.nom,prenom,surnom,piece_id,sections.nom,eleves.section_id,cie,promo,login,mail,0";
+		$join = "INNER JOIN sections ON eleves.section_id=sections.section_id INNER JOIN pieces ON eleves.piece_id = pieces.piece_id ";
+		$champs = "eleves.eleve_id,eleves.nom,prenom,surnom,eleves.piece_id,sections.nom,eleves.section_id,cie,promo,login,mail,pieces.tel";
 		
 		$where_exact = array(
 				'section' => 'eleves.section_id',	'cie' => 'cie');
