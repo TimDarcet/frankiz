@@ -21,10 +21,13 @@
 	Affichage des liens vers les sondages
 
 	$Log$
+	Revision 1.4  2004/12/07 12:48:31  pico
+	N'affiche pas le module sondage si il est vide
+
 	Revision 1.3  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
-
+	
 	Revision 1.2  2004/11/17 23:46:21  kikx
 	Prepa pour le votes des sondages
 	
@@ -33,25 +36,28 @@
 */
 
 if(est_authentifie(AUTH_MINIMUM)) {
-	echo "<module id=\"sondages\" titre=\"Sondages\">\n";
-
 	if(!cache_recuperer('sondages',strtotime(date("Y-m-d",time())))) {
-		
-		$DB_web->query("SELECT sondage_id,titre,perime FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) >=0");
-		echo "<p>En Cours</p>" ;
-		while(list($id,$titre,$date) = $DB_web->next_row()) {
-			echo "<lien id='sondage_encours' titre='$titre (".date("d/m",strtotime($date)).")' url='sondage.php?id=$id'/>\n";
+		$DB_web->query("SELECT sondage_id,titre,perime FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) >=-7");
+		if($DB_web->num_rows()>0){
+			echo "<module id=\"sondages\" titre=\"Sondages\">\n";
+			$DB_web->query("SELECT sondage_id,titre,perime FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) >=0");
+			if($DB_web->num_rows()>0){
+				echo "<p>En Cours</p>" ;
+				while(list($id,$titre,$date) = $DB_web->next_row()) {
+					echo "<lien id='sondage_encours' titre='$titre (".date("d/m",strtotime($date)).")' url='sondage.php?id=$id'/>\n";
+				}
+			}
+			
+			$DB_web->query("SELECT sondage_id,titre,perime FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) <0 AND TO_DAYS(perime) - TO_DAYS(NOW()) >=-7");
+			if($DB_web->num_rows()>0){
+				echo "<p>Anciens</p>" ;
+				while(list($id,$titre,$date) = $DB_web->next_row()) {
+					echo "<lien id='sondage_ancien' titre='$titre (".date("d/m",strtotime($date)).")' url='sondage.php?id=$id'/>\n";
+				}
+			}
+			echo "</module>\n";
 		}
-		
-		echo "<p>Anciens</p>" ;
-		$DB_web->query("SELECT sondage_id,titre,perime FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) <0 AND TO_DAYS(perime) - TO_DAYS(NOW()) >=-7");
-		while(list($id,$titre,$date) = $DB_web->next_row()) {
-			echo "<lien id='sondage_ancien' titre='$titre (".date("d/m",strtotime($date)).")' url='sondage.php?id=$id'/>\n";
-		}
-		
 		cache_sauver('sondages');
 	}
-	
-	echo "</module>\n";
 }
 ?>
