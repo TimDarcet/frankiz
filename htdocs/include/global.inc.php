@@ -5,6 +5,8 @@
 	$Id$
 */
 
+require_once "erreursphp.inc.php";
+
 // base des fichiers serveur
 define('BASE_LOCAL',realpath(dirname(__FILE__)."/.."));
 

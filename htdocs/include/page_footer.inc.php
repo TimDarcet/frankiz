@@ -33,18 +33,6 @@ if(isset($_GET['html'])) {
 $resultat = strtr($resultat,$donnees);
 
 // Envoi la page vers le navigateur
+affiche_erreurs_php();
 echo $resultat;
-
-// Pour Compatible XSLT
-/*
-header("Content-type: text/xml");
-
-
-print "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>
-<?xml-stylesheet type=\"text/xsl\" href=\"skins/".$skin."/skin.xsl\" ?>
-
-"; 
-
-include "fonctions/content.php";
-*/
 ?>
