@@ -29,7 +29,6 @@
 				<xsl:text> </xsl:text><!-- bug catch -->
 				<xsl:for-each select="statistiques/serveur">
 					<li class="fkz_stats">
-						
 						<span><xsl:attribute name="class">serveur_<xsl:value-of select="@etat"/></xsl:attribute>[<xsl:value-of select="@etat"/>]</span>
 						<span class="serveur_nom"><xsl:value-of select="@nom"/></span>
 					<xsl:if test="boolean(@uptime)">: <xsl:value-of select="@uptime"/> jours</xsl:if>
