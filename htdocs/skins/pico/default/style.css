@@ -387,7 +387,7 @@ span.valid_css {
 
 
 
- /* Stats */
+/* Stats */
  
 .fkz_stats{list-style-type:  none;}
 
@@ -413,7 +413,7 @@ span.valid_css {
 .noeud_ferme{list-style-image:url('images/fold_close.gif')}
 .noeud_ouvert{list-style-image:url('images/fold_open.gif')}
 .feuille{list-style-image:url('images/question.gif')}
-.fkz_stats{list-style-type:  none;}
+
 
 /* Commentaires et Warning */
 .commentaire,.warning,.note {
