@@ -21,9 +21,12 @@
 	Page pur demander les sondages !
 	
 	$Log$
+	Revision 1.3  2004/11/17 12:13:45  kikx
+	Preparation de la validation d'un sondage
+
 	Revision 1.2  2004/11/16 18:17:57  kikx
 	Mise ne place quasi definitive des proposition de sondages
-
+	
 	Revision 1.1  2004/11/16 15:35:27  kikx
 	Pour les sondages
 
@@ -85,6 +88,11 @@ if (isset($_POST['ok_check'])) {
 	if ($_POST['reponse5']!="") $contenu_form .= "///".$_POST['reponse5'] ;
 	if ($_POST['reponse6']!="") $contenu_form .= "///".$_POST['reponse6'] ;
 }
+
+
+if (isset($_POST['valid'])) {
+
+}
 //---------------------------------------------------------------------------------
 // Fonction de décodage du sondage
 //---------------------------------------------------------------------------------
@@ -141,9 +149,23 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <h1>Proposition de sondage</h1>
 
 <formulaire id="form" titre="Votre formulaire">	
+	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
+
 <?
 	decode_sondage($contenu_form) ;
 ?>
+	<choix titre="Sondage jusqu'à " id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
+<?	for ($i=0 ; $i<MAX_PEREMPTION ; $i++) {
+		$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
+		$date_value = date("d/m/y" , $date_id);
+?>
+		<option titre="<? echo $date_value?>" id="<? echo $date_id?>" />
+<?
+	}
+?>
+	</choix>
+	<bouton titre="Valider le sondage" id="valid" onClick="return window.confirm('Voulez vous vraiment valider votre sondage ?')" />
+
 </formulaire>
 
 
