@@ -356,23 +356,23 @@ span.valid_css {
 
 /* Commentaires et Warning */
 
-p.commentaire,p.warning,p.note {
+div.commentaire,div.warning,div.note {
 	color: inherit;
 	padding: 6px;
 	margin: 5px;
 }
 
-p.commentaire {
+div.commentaire {
 	background-image:url("grass/commentaire.jpg");
 	border: 1px solid #FFDD00;
 }
 
-p.warning {
+div.warning {
 	background-image:url("grass/warning.jpg");
 	border: 1px solid #FF3333;
 }
 
-p.note {
+div.note {
 	background-image:url("grass/note.jpg");
 	font-size: 75%;
 }

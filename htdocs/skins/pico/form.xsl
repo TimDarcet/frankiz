@@ -58,15 +58,15 @@
 
 
 <xsl:template match="commentaire">
-	<p class="commentaire"><xsl:apply-templates/></p>
+	<div class="commentaire"><xsl:apply-templates/></div>
 </xsl:template>
 
 <xsl:template match="warning">
-	<p class="warning"><xsl:apply-templates/></p>
+	<div class="warning"><xsl:apply-templates/></div>
 </xsl:template>
 
 <xsl:template match="note">
-	<p class="note"><xsl:apply-templates/></p>
+	<div class="note"><xsl:apply-templates/></div>
 </xsl:template>
 
 <!--texte simple dans un formulaire -->

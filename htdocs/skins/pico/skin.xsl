@@ -106,6 +106,38 @@
 	</div>
 </xsl:template>
 
+<xsl:template match="formulaire[starts-with(@id,'mod_xnet_')]">
+	<xsl:apply-templates select="commentaire | warning | note"/>
+	<form enctype="multipart/form-data" method="post">
+			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
+		<xsl:if test="boolean(@titre)">
+			<h2><span>Modification du mot de passe Xnet </span><span class="adresse_ip"><xsl:value-of select="substring-after(@titre,'Modification du mot de passe Xnet')"/></span></h2>
+		</xsl:if>
+	<div class="formulaire">
+			<!-- les options du formulaire -->
+			<xsl:for-each select="champ|choix|zonetext|textsimple|hidden|image|fichier|lien">
+				<div>
+				<xsl:if test="boolean(@titre)">
+					<span class="gauche">
+						<xsl:value-of select="@titre"/> :
+					</span>
+				</xsl:if>
+				<span class="droite">
+					<xsl:apply-templates select="."/>
+				</span>
+				</div>
+			</xsl:for-each>
+			<!-- les boutons gérant les actions du formulaire -->
+			<div>
+			<span class="boutons">
+				<xsl:apply-templates select="bouton"/>
+			</span>
+			</div>
+		</div>
+	</form>
+</xsl:template>
+
 <xsl:template match="/frankiz/page[@id='meteo']">
 	<div class="fkz_page_meteo">
 		<xsl:apply-templates/>

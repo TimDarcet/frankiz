@@ -129,19 +129,19 @@
 </xsl:template>
 
 <xsl:template match="h1">
-	<h1><span><xsl:apply-templates/></span></h1>
+	<h1><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute><span><xsl:apply-templates/></span></h1>
 </xsl:template>
 <xsl:template match="h2">
-	<h2><span><xsl:apply-templates/></span></h2>
+	<h2><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute><span><xsl:apply-templates/></span></h2>
 </xsl:template>
 <xsl:template match="h3">
-	<h3><span><xsl:apply-templates/></span></h3>
+	<h3><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute><span><xsl:apply-templates/></span></h3>
 </xsl:template>
 <xsl:template match="h4">
-	<h4><span><xsl:apply-templates/></span></h4>
+	<h4><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute><span><xsl:apply-templates/></span></h4>
 </xsl:template>
 <xsl:template match="h5">
-	<h5><span><xsl:apply-templates/></span></h5>
+	<h5><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute><span><xsl:apply-templates/></span></h5>
 </xsl:template>
 <xsl:template match="strong">
 	<strong><xsl:apply-templates/></strong>
