@@ -53,7 +53,20 @@
 						<dd class="sport">
 							<a>
 								<xsl:attribute name="href"><xsl:text>trombino.php?image=true&amp;login=</xsl:text><xsl:value-of select="@login"/><xsl:text>&amp;promo=</xsl:text><xsl:value-of select="@promo"/></xsl:attribute>
-								<img src="" width="100" height="125"/>
+								<img width="100" height="125">
+									<xsl:attribute name="src">
+										<xsl:text>images/trombino/</xsl:text><xsl:value-of select="@section"/>
+										<xsl:choose>
+											<xsl:when test="(number(@promo) mod 2)=0">
+												<xsl:text>-rouje</xsl:text>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:text>-jone</xsl:text>
+											</xsl:otherwise>
+										</xsl:choose>
+										<xsl:text>.png</xsl:text>
+									</xsl:attribute>
+								</img>
 							</a>
 						</dd>
 						<dd class="element">
@@ -63,7 +76,7 @@
 								<br/>
 							</p>
 							<p class="left"><br/>
-								<strong>Tel : </strong><xsl:value-of select="@phone"/><br/>
+								<strong>Tel : </strong><xsl:value-of select="@tel"/><br/>
 								<strong>Kzt : </strong><xsl:value-of select="@casert"/><br/>
 								<strong>Mail : </strong><a><xsl:attribute name="href"><xsl:text>mailto:</xsl:text><xsl:value-of select="@login"/><xsl:text>@poly</xsl:text></xsl:attribute><xsl:value-of select="@login"/><xsl:text>@poly</xsl:text></a><br/>
 							</p>
@@ -72,9 +85,11 @@
 									<strong>Binets : </strong>
 									<xsl:apply-templates select="binet" mode="trombino"/>
 								</xsl:if>
-								<xsl:text> </xsl:text>
+								<br/><br/>
+								<xsl:apply-templates select="*[name()!='binet']"/>
 							</p>
-						</dd>	
+							<br/>
+						</dd>
 					</dl>
 				</xsl:for-each>
 				<br/>
