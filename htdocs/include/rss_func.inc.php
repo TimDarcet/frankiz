@@ -21,9 +21,12 @@
 		Fonction pour parser des rss
 		
 		$Log$
+		Revision 1.7  2004/11/24 21:51:16  pico
+		Passage du mode d'affichage en paramètre dans la xsl
+
 		Revision 1.6  2004/11/24 21:09:04  pico
 		Sauvegarde avant mise à jour skins
-
+		
 		Revision 1.5  2004/11/24 17:15:54  pico
 		Marche mieux comme ça, sinon le premier parsage xsl fait de la merde avec les accents
 		
@@ -69,7 +72,8 @@ function rss_xml($site,$mode = 'complet') {
 	if(strstr($xml,"<rss")){
 		$xh = xslt_create();
 		xslt_set_encoding($xh, "ISO-8859-1");
-		echo xslt_process($xh, 'arg:/_xml', BASE_LOCAL.'/include/rss_convert_'.$mode.'.xsl', NULL, array('/_xml'=>$xml));
+		$params = array('mode'=>$mode);
+		echo xslt_process($xh, 'arg:/_xml', BASE_LOCAL.'/include/rss_convert.xsl', NULL, array('/_xml'=>$xml),$params);
 		xslt_free($xh);
 	}
 }
