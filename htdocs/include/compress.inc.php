@@ -21,10 +21,13 @@
 	Fonctions permettant de zipper/dezipper un fichier
 	
 	$Log$
+	Revision 1.7  2004/11/22 18:38:03  pico
+	Changements fonction de décompression (ne cherche plus sur les mimetypes)
+
 	Revision 1.6  2004/11/16 14:02:37  pico
 	- Nouvelle fonction qui permet de dl le contenu d'un répertoire
 	- Mise en place sur la page de la FAQ
-
+	
 	Revision 1.5  2004/11/08 12:03:32  pico
 	Ben zut, il a pas voulu me commiter celle là !
 	
@@ -46,13 +49,18 @@
 
 // Décompresse un fichier $file dans le repertoire $dir . $del est un booleen qui dit si le fichier zip doit être supprimé après decompression.
 function unzip($file,$dir,$del){
-	if((mime_content_type($file) == "application/zip")||(mime_content_type($file) == "application/x-zip")){
+	if (!ereg("^[a-ZA-Z0-9]+[/.zip]$",basename($file))) {
 			$cde = "/usr/bin/unzip $file -d $dir";
 			exec($cde);
 			if($del = true) unlink($file);
 	}
-	else if((mime_content_type($file) == "application/x-compressed-tar")||(mime_content_type($file) == "application/x-gzip")){
+	else if (!ereg("^[a-ZA-Z0-9]+[/.tar.gz|/.tgz]$",basename($file))){
 			$cde = "cd $dir && /bin/tar zxvf $file";
+			exec($cde);
+			if($del = true) unlink($file);
+	}
+	else if (!ereg("^[a-ZA-Z0-9]+[/.tar.bz2]$",basename($file))){
+			$cde = "cd $dir && /bin/tar jxvf $file";
 			exec($cde);
 			if($del = true) unlink($file);
 	}
@@ -66,7 +74,7 @@ function zip($file,$dir,$type){
 		exec($cde);
 	}
 	if($type == "tar"){
-		$cde = "cd $dir && /bin/tar cvf $file.tar *";
+		$cde = "cd $dir && /bin/tar zcvf $file.tar.gz *";
 		exec($cde);
 	}
 }
