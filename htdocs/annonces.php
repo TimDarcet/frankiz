@@ -3,9 +3,12 @@
 	Annonces de frankiz. Page d'acceuil pour les personnes déjà loguées.
 	
 	$Log$
+	Revision 1.12  2004/10/20 19:59:42  pico
+	Ajout champ id
+
 	Revision 1.11  2004/10/16 01:50:22  schmurtz
 	Affichage des annonces publiques (exterieure) pour les personnes non authentifiees
-
+	
 	Revision 1.10  2004/10/11 11:08:38  kikx
 	L'affichage des annonces provoquait des erreurs ...
 	
@@ -57,7 +60,8 @@ $DB_web->query("SELECT annonce_id,stamp,perime,titre,contenu,en_haut,exterieur,n
 while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail)=$DB_web->next_row()) {
 	if(!$exterieur && !est_authentifie(AUTH_MINIMUM)) continue;
 ?>
-	<annonce titre="<?php echo $titre ?>"
+	<annonce id="<?php echo $id ?>" 
+			titre="<?php echo $titre ?>"
 			categorie="<?php echo get_categorie($en_haut, $stamp, $perime) ?>"
 			date="<?php echo substr($stamp,8,2)."/".substr($stamp,5,2)."/".substr($stamp,0,4) ?>">
 <?php
