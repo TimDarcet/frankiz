@@ -3,16 +3,24 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.5  2004/09/16 11:09:38  kikx
+	C'est les vacances maintenant ...
+	Bon bref .. c'est dur aussi
+	Bon j'ai un peu arrangé la page des binets
+
 	Revision 1.4  2004/09/15 23:19:56  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 
 <!-- Images -->
 <xsl:template match="image">
-	<img class="image"><xsl:attribute name="src"><xsl:value-of select="@source"/></xsl:attribute></img><br/>
+	<img class="image">
+		<xsl:attribute name="src"><xsl:value-of select="@source"/></xsl:attribute>
+		<xsl:attribute name="border">0</xsl:attribute>
+	</img><br/>
 	<xsl:if test="boolean(@legende)"><span class="legende"><xsl:value-of select="@legende"/></span><br/></xsl:if>
 </xsl:template>
 

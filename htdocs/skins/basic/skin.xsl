@@ -5,9 +5,14 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.8  2004/09/16 11:09:38  kikx
+	C'est les vacances maintenant ...
+	Bon bref .. c'est dur aussi
+	Bon j'ai un peu arrangé la page des binets
+
 	Revision 1.7  2004/09/15 23:19:56  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -187,13 +192,17 @@
 	</xsl:if>
 
 	<tr><td width="120">
-		<xsl:apply-templates select="image"/>
+		<xsl:text disable-output-escaping="yes">&lt;a href="</xsl:text>
+		<xsl:value-of select="url"/>"<xsl:text disable-output-escaping="yes">&gt;</xsl:text>
+		<xsl:apply-templates select="image"/><xsl:text disable-output-escaping="yes">&lt;/a&gt;</xsl:text>
 	</td><td width="100%">
 		<span class="binet_nom">
-			<xsl:value-of select="@nom"/>
-		</span><br/>
+			<xsl:text disable-output-escaping="yes">&lt;h3&gt;</xsl:text>
+			<xsl:value-of select="@nom"/> 
+			<xsl:text disable-output-escaping="yes">&lt;/h3&gt;</xsl:text>
+		</span>
 		<span class="binet_descript">
-			<xsl:value-of select="descript"/>
+			<xsl:value-of select="description"/>
 		</span>
 	</td></tr>
 	<xsl:if test="position() = last()">
