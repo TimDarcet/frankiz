@@ -39,12 +39,15 @@
 	)
 	
 	$Log$
+	Revision 1.22  2004/12/14 23:31:07  pico
+	Affichage des skins
+
 	Revision 1.21  2004/12/14 17:14:53  schmurtz
 	modification de la gestion des annonces lues :
 	- toutes les annonces sont envoyees dans le XML
 	- annonces lues avec l'attribut visible="non"
 	- suppression de la page affichant toutes les annonces
-
+	
 	Revision 1.20  2004/12/07 19:53:05  pico
 	Remise en place des paramètres de skin
 	Mise à jour css classique
@@ -180,7 +183,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 					
 					$description_css = lire_description_css(BASE_LOCAL."/skins/$file_xsl/$file_css");
 					if($description_css!="")
-						echo "<option titre=\"$description_css ({$description['nom']}/$file_css)\" id=\"$file_xsl/$file_css\"/>";
+						echo "<option titre=\"$file_css: $description_css\" id=\"$file_xsl/$file_css\"/>";
 				}
 				closedir($dir_css);
 			
