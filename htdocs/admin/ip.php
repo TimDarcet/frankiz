@@ -22,9 +22,12 @@
 	Permet aussi de supprimer des IPs.
 	
 	$Log$
+	Revision 1.33  2005/03/04 08:25:11  pico
+	correction bug #71
+
 	Revision 1.32  2005/02/03 17:41:22  nc
 	Correction du lien vers la page d'admin SMAC
-
+	
 	Revision 1.31  2005/01/20 08:50:42  pico
 	Wish #42
 	
@@ -185,7 +188,7 @@ if (isset($_POST['recherche']) ) {
 			
 			// Si l'ip est une ip rajouté
 			//=====================
-			if ($type=="secondaire") {
+			if (($temp_piece==$id_piece)&&($temp_prise==$id_prise)&& ($type=="secondaire")) {
 				echo "\t\t\t<colonne id=\"login\">-</colonne>\n";
 				echo "\t\t\t<colonne id=\"promo\">-</colonne>\n";
 				echo "\t\t\t<colonne id=\"piece\">-</colonne>\n";
