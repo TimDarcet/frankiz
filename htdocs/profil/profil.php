@@ -24,9 +24,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.28  2004/11/22 21:17:12  kikx
+	merci pico !!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 	Revision 1.27  2004/11/22 21:04:54  kikx
 	Pour le debug de Pico
-
+	
 	Revision 1.26  2004/11/22 19:10:39  kikx
 	Mise en place de note pour le profil
 	permet de mieux expliquer comment cela fonctionne
@@ -253,7 +256,7 @@ if (isset($_POST['add_binet'])) {
 
 if (isset($_POST['up_page'])) {
 	if ((isset($_FILES['file'])) &&($_FILES['file']['name']!='')) {
-		$chemin = BASE_PAGESPERSOS."$login.$promo/" ;
+		$chemin = BASE_PAGESPERSOS."$login-$promo/" ;
 		deldir($chemin);
 		mkdir ($chemin) ;
 		
@@ -264,9 +267,9 @@ if (isset($_POST['up_page'])) {
 	}
 }
 if(isset($_REQUEST['download_type'])){
-	$chemin = BASE_PAGESPERSOS."$login.$promo" ;
+	$chemin = BASE_PAGESPERSOS."$login-$promo" ;
 	if (is_dir($chemin)) {
-		download($chemin,$_REQUEST['download_type'],"PERSO-$login.$promo-".time());
+		download($chemin,$_REQUEST['download_type'],"PERSO-$login-$promo-".time());
 		exit();
 	} else {
 		$message .= "<warning>Tu n'as jamais upoadé de site personnel</warning>" ;
@@ -371,7 +374,7 @@ require "../include/page_header.inc.php";
 		<note>Tu peux soumettre des .zip, des .tar.gz, .tar, .tar.bz2. Tu remplaceras ainsi l'intégralité de ton site perso. Attention tu es limité à 10Mo.</note>
 		<fichier id="file" titre="Ton site" taille="10000000000"/>
 		<?
-		if (is_dir(BASE_PAGESPERSOS.$login.".".$promo)){
+		if (is_dir(BASE_PAGESPERSOS.$login."-".$promo)){
 		?>
 			<note>Nous te conseillons de sauvegarder ton site avant d'uploader le nouveau en cas de problème.</note>
 			<lien titre="Télécharger en .zip" url="profil/profil.php?download_type=zip" />
@@ -398,13 +401,13 @@ require "../include/page_header.inc.php";
 			}
 		}
 	}
-	if (is_dir(BASE_PAGESPERSOS.$login.".".$promo)){
+	if (is_dir(BASE_PAGESPERSOS.$login."-".$promo)){
 		echo "<h2>Gestion des fichiers du site perso</h2>";
 		
 		echo "<arbre>";
-		echo "<noeud titre=\"/$login.$promo\">" ;
+		echo "<noeud titre=\"/$login-$promo\">" ;
 		
-		$arbo = parcours_arbo1(BASE_PAGESPERSOS.$login.".".$promo);
+		$arbo = parcours_arbo1(BASE_PAGESPERSOS.$login."-".$promo);
 		echo "</noeud>" ;
 		echo "</arbre>";
 	}
