@@ -87,7 +87,7 @@ a:hover, a:active {
 	margin-top: 20px;
 	background-image:url('images/home_droit.gif');
 	background-repeat:no-repeat;
-	background-position:right 50px;
+	background-position: 100% 50px;
 	min-height: 800px;
 }
 
