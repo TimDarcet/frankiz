@@ -22,9 +22,12 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.38  2004/12/14 00:30:22  kikx
+	Pour preparer le terrain a la modification de la FAQ
+
 	Revision 1.37  2004/12/07 12:13:47  kikx
 	Une fonction de diff pour autoriser au gens de modifier les faqs en live ... ca demande la validation mais le webmestre voit de suite ce qui a été modifié
-
+	
 	Revision 1.36  2004/11/29 20:48:45  kikx
 	Simplification des rajouts des droits des personnes ... ce fait grace a des cases a cocher ... (pour les autistes ca devrait etre bon ...) Comme ca pas d'erreur de syntaxe possibles...
 	
@@ -283,39 +286,109 @@ function decode_sondage($string) {
 // Returns a nicely formatted html string
 // POUR FAIRE LE DIFF ENTRE 2 STRINGS
 // PAS ENCORE TESTER ... (KIKX)
-
-function diff_to_html($oldString, $newString)
+function diff_rek(&$a1,&$a2,$D,$k,&$vbck)
 {
+ $x=$vbck[$D][$k]; $y=$x-$k;
+ if ($D==0)
+ {
+  if ($x==0) return array(array(),array());
+  else
+  return array(array_slice($a1,0,$x),array_fill(0,$x,"b"));
+ }
+ if (isset($vbck[$D-1][$k+1])) 
+ 	$x2=$vbck[$D-1][$k+1];
+ else 
+ 	$x2=0 ;
+ $y2=$vbck[$D-1][$k-1]-($k-1);
+ $xdif=$x-$x2; $ydif=$y-$y2;
+ $l=min($x-$x2,$y-$y2);
+ $x=$x-$l;
+ $y=$y-$l;
+ if ($x==$x2)
+ {
+   $res=diff_rek($a1,$a2,$D-1,$k+1,$vbck);
+   array_push($res[0],$a2[$y-1]);
+   array_push($res[1],"2");
+   if ($l>0)
+   {
+   $res[0]=array_merge($res[0],array_slice($a2,$y,$l));
+   $res[1]=array_merge($res[1],array_fill(0,$l,"b"));
+   }
+ }
+ else
+ {
+   $res=diff_rek($a1,$a2,$D-1,$k-1,$vbck);
+   array_push($res[0],$a1[$x-1]);
+   array_push($res[1],"1");
+   if ($l>0)
+   {
+   $res[0]=array_merge($res[0],array_slice($a1,$x,$l));
+   $res[1]=array_merge($res[1],array_fill(0,$l,"b"));
+   }
+ }
+ return $res;
+}
+//Example:
+//$a1=array("hello","world");
+//$a2=array("good","bye","world");
+//=> arr_diff($a1,$a2) = array(array("hello","good","bye","world"), array("1","2","2","b"));
+
+function arr_diff(&$a1,&$a2)
+{
+	$max=1700;
+	$c1=count($a1);	// taille de a1
+	$c2=count($a2);	// taille de a2
+	
+	$v[1]=0;
+	for ($D=0; $D<=$max; $D++) {
+		for ($k=-$D; $k<=$D; $k=$k+2) {
+			if (($k==-$D) || ($k!=$D && $v[$k-1]<$v[$k+1]))
+				$x=$v[$k+1];
+			else
+				$x=$v[$k-1]+1;
+			$y=$x-$k;
+			while (($x<$c1)&&($y<$c2)&&($a1[$x]==$a2[$y])){
+				$x++;
+				$y++;
+			}
+			$v[$k]=$x;
+			if (($x>=$c1)&&($y>=$c2)) {
+				$vbck[$D]=$v;
+				return diff_rek($a1,$a2,$D,$c1-$c2,$vbck);
+			}
+		}
+		$vbck[$D]=$v;
+	}
+	return -1;
+}
+function diff_to_xml($oldString, $newString) {
   $a1 = explode(" ", $oldString);
   $a2 = explode(" ", $newString);
   $result = arr_diff($a1, $a2);
+  $return = "" ;
 
   foreach ($result[0] as $num => $foo)
   {
    $source = $result[1][$num];
    $element = $result[0][$num];
-
    switch ($source)
    {
      case "1":
-       $pre = "<font color=red><s>";
-       $post = "</s></font>";
+       $pre = "<old_string>";
+       $post = "</old_string>";
        break;
      case "2":
-       $pre = "<font color=green>";
-       $post = "</font>";
+        $pre = "<new_string>";
+       $post = "</new_string>";
        break;
      case "b":
        $pre = "";
        $post = "";
        break;
    }
-   // VERTICAL OUTPUT:
-   // $return .= $num . $pre . " " . $source .
-   // " " . $element . $post . "<br>";
-   // READABLE OUTPUT:
    $return .= $pre . $element . $post . " ";
   }
   return $return;
-} 
+}
+
 ?>
