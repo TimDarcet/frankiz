@@ -29,9 +29,12 @@
 	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
 	
 	$Log$
+	Revision 1.15  2004/11/27 15:39:54  pico
+	Ajout des droits trombino
+
 	Revision 1.14  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-
+	
 	Revision 1.13  2004/11/26 22:51:21  pico
 	Correction du SU dans les pages d'admin
 	Les utilisateurs avec le droit 'affiches' peuvent changer les dates des activités qu'ils ont postées, si celles ci ont été préalablement validées par le br
@@ -60,7 +63,7 @@ require_once "../include/global.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-if(!verifie_permission('admin'))
+if(!verifie_permission('admin')&&!verifie_permission('trombino'))
 	rediriger_vers("/gestion/");
 
 // On vérifie que la personne envoie bien l'id sinon ca sert a rien ...
@@ -115,7 +118,7 @@ if (isset($_POST['mod_binet'])) {
 */
 // Modification de la partie "compte FrankizII"
 
-if (isset($_POST['mod_compte_fkz'])) {
+if (verifie_permission('admin') && isset($_POST['mod_compte_fkz'])) {
 	if ($_POST['pass']!="") {
 		$pass2 = md5($_POST['pass']) ;
 		$DB_web->query("UPDATE compte_frankiz SET passwd='$pass2' WHERE eleve_id=$id");
@@ -167,8 +170,8 @@ if (isset($_POST['mod_compte_fkz'])) {
 <?
 */
 
-// Modification de ses binets et des commentaires sur les binets  
-
+// SU et modifs du compte frankiz => seul l'admin peut le faire.
+if(verifie_permission('admin')){
 ?>
 	<formulaire id="user_su" titre="Se Logguer en tant que cet utilisateur" action="admin/user.php?su=<? echo $id?>">
 		<bouton id='su' titre='SU'/>
@@ -190,6 +193,9 @@ if (isset($_POST['mod_compte_fkz'])) {
 		
 		<bouton id='mod_compte_fkz' titre='Changer'/>
 	</formulaire>
+<? 
+} 
+?>
 
 </page>
 <?php

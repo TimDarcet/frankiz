@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.5  2004/11/27 15:39:54  pico
+	Ajout des droits trombino
+
 	Revision 1.4  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-
+	
 	Revision 1.3  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
@@ -41,7 +44,7 @@ require_once "../include/global.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-if(!verifie_permission('admin'))
+if(!verifie_permission('admin')&&!verifie_permission('trombino'))
 	rediriger_vers("/gestion/");
 
 // Génération de la page

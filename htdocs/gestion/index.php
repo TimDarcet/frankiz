@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.20  2004/11/27 15:39:54  pico
+	Ajout des droits trombino
+
 	Revision 1.19  2004/11/27 15:29:22  pico
 	Mise en place des droits web (validation d'annonces + sondages)
-
+	
 	Revision 1.18  2004/11/27 15:16:42  pico
 	Corrections
 	
@@ -160,18 +163,18 @@ $permissions_user = $_SESSION['user']->perms ;
 		<h2>Administration frankiz</h2>
 	<? 
 	}
-	if (verifie_permission('admin')){
+	if (verifie_permission('admin')||verifie_permission('trombino')){
 	?>
 		<h3>Gestion de l'utilisateur</h3>
 			<lien titre="Modifier un utilisateur" url="trombino.php"/>
 	<?
 	}
-	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('web')){
+	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('web')||verifie_permission('trombino')){
 	?>
 	<h3>Validations Variées</h3>
 	<?
 	}
-	if (verifie_permission('admin')){
+	if (verifie_permission('admin')||verifie_permission('trombino')){
 		$nb =0 ;
 		$rep = BASE_DATA."trombino/";
 		$dir = opendir($rep); 
@@ -187,7 +190,6 @@ $permissions_user = $_SESSION['user']->perms ;
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('web')){
-		<?
 		$DB_valid->query("SELECT eleve_id FROM valid_annonces") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
@@ -227,7 +229,9 @@ $permissions_user = $_SESSION['user']->perms ;
 		$nb = $DB_valid->num_rows() ;
 		?>
 		<lien titre="Valider les page persos (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_pageperso.php"/>
-		<?
+	<?
+	}
+	if (verifie_permission('admin')||verifie_permission('trombino')){
 		$DB_valid->query("SELECT binet_id FROM valid_binet") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
@@ -258,7 +262,7 @@ $permissions_user = $_SESSION['user']->perms ;
 	}
 	
 	
-	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('xshare')||verifie_permission('faq')){
+	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('xshare')||verifie_permission('faq')||verifie_permission('trombino')){
 	?>
 	<h3>Administration des données de Frankiz</h3>
 	<?
@@ -266,6 +270,10 @@ $permissions_user = $_SESSION['user']->perms ;
 	if (verifie_permission('admin')){
 	?>
 		<lien titre="Changer les variables globales" url="<?php echo BASE_URL?>/admin/parametre.php"/>
+	<?
+	}
+	if (verifie_permission('admin')||verifie_permission('trombino')){
+	?>
 		<lien titre="Liste des Binets" url="<?php echo BASE_URL?>/admin/binets_liste.php"/>
 		<lien titre="Liste des sections" url="<?php echo BASE_URL?>/admin/sections.php"/>
 	<?
