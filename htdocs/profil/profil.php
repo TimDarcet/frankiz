@@ -16,7 +16,7 @@ $message_succes="";
 connecter_mysql_frankiz();
 
 // Données sur l'utilisateur
-$result = mysql_query("SELECT nom,prenom,surnom,mail,login,promo,section,cie,piece_id FROM eleves WHERE eleve_id='".$_SESSION['user']->uid."'");
+$result = mysql_query("SELECT eleves.nom,prenom,surnom,mail,login,promo,sections.nom,cie,piece_id FROM eleves INNER JOIN sections USING(section_id) WHERE eleve_id='".$_SESSION['user']->uid."'");
 print_r(mysql_error());
 list($nom,$prenom,$surnom,$mail,$login,$promo,$section,$cie,$casert) = mysql_fetch_row($result);
 mysql_free_result($result);
