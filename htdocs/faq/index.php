@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.27  2004/11/22 20:32:29  pico
+		Correction: balises au mauvais endroit
+
 		Revision 1.26  2004/11/17 22:27:24  pico
 		Corrections et bugfix divers
-
+		
 		Revision 1.25  2004/11/16 19:58:54  pico
 		Corrections urls liens et images des faq
 		
@@ -331,19 +334,20 @@ echo "<br/>" ;
    			}
  	 		fclose($texte);
 		}
-	echo "</html>\n</cadre>";
+
 	} else {
 	?>
 	<warning>Erreur : Impossible de trouver cette question </warning>
 	<?
 	}
-	
+	echo "</html>\n</cadre>";
 	
 	} else {
 	?>
 	<warning>Erreur : Impossible de trouver cette question </warning>
 	<?
 		}
+		
 		echo "<br/><br/>" ;
 	}
 

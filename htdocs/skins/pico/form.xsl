@@ -24,7 +24,6 @@
 <!-- Formulaires -->
 <xsl:template match="formulaire">
 	<!-- la déco -->
-	<xsl:apply-templates select="commentaire | warning | note"/>
 	<form enctype="multipart/form-data" method="post">
 			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
@@ -33,7 +32,7 @@
 		</xsl:if>
 		<div class="formulaire">
 			<!-- les options du formulaire -->
-			<xsl:for-each select="champ|choix|zonetext|textsimple|hidden|image|fichier|lien">
+			<xsl:for-each select="*[name()!='bouton']">
 				<div>
 				<xsl:if test="boolean(@titre)">
 					<span class="gauche">
@@ -57,7 +56,6 @@
 
 
 <xsl:template match="formulaire[starts-with(@id,'mod_xnet_')]">
-	<xsl:apply-templates select="commentaire | warning | note"/>
 	<form enctype="multipart/form-data" method="post">
 			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
@@ -66,7 +64,7 @@
 		</xsl:if>
 	<div class="formulaire">
 			<!-- les options du formulaire -->
-			<xsl:for-each select="champ|choix|zonetext|textsimple|hidden|image|fichier|lien">
+			<xsl:for-each select="*[name()!='bouton']">
 				<div>
 				<xsl:if test="boolean(@titre)">
 					<span class="gauche">
