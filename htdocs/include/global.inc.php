@@ -24,9 +24,13 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.31  2004/11/05 23:37:10  pico
+	Contribution d'Esope: CSS semblable à l'interface de fkz1 pour la skin pico
+
+
 	Revision 1.30  2004/11/04 16:36:42  schmurtz
 	Modifications cosmetiques
-
+	
 	Revision 1.29  2004/10/29 15:41:48  kikx
 	Passage des mail en HTML pour les ip
 	
@@ -112,29 +116,33 @@ define('BASE_LOCAL',realpath(dirname(__FILE__)."/.."));
 define('BASE_URL','http://'.$_SERVER['HTTP_HOST'].'/'.substr((dirname($_SERVER['PHP_SELF']).'/'.$href), 1));
 
 // Configuration du site
-define('AFFICHER_LES_ERREURS',$_SERVER["SERVER_ADDR"] == "129.104.201.52");	// seulement sur gwennoz
-define('BASE_DATA',"/home/frankiz2/data/");				// TODO Gérer le truc proprement.
-define('BASE_PHOTOS',"/home/frankiz2/data/photos/");
-define('BASE_CACHE',"/home/frankiz2/cache/");
+define('AFFICHER_LES_ERREURS',1);	// seulement sur gwennoz
+define('BASE_DATA',"/var/www/frankiz2/data/");				// TODO Gérer le truc proprement.
+define('BASE_PHOTOS',"/var/www/frankiz2/data/photos/");
+define('BASE_CACHE',"/var/www/frankiz2/cache/");
 define('URL_DATA','http://'.$_SERVER['HTTP_HOST'].'/frankiz2/data/');
 
 define('DATA_DIR_LOCAL',BASE_DATA);	// pour compatibilité
 define('DATA_DIR_URL',URL_DATA);
 
+
+define('MAIL_WEBMESTRE',"pico@localhost");
+
 // Emails
+
 $i = -1 ;
-define('MAIL_WEBMESTRE',"kikx@frankiz.polytechnique.fr");
 define('WEBMESTRE_ID',$i--);
-define('MAIL_QDJMASTER',"eric.gruson@polytechnique.fr");
+define('MAIL_QDJMASTER',"pico@localhost");
 define('QDJMASTER_ID',$i--);
-define('MAIL_PREZ',"eric@melix.org");
+define('MAIL_PREZ',"pico@localhost");
 define('PREZ_ID',$i--);
-define('MAIL_ROOT',"gruson@poly");
+define('MAIL_ROOT',"pico@localhost");
 define('ROOT_ID',$i--);
 
 define('MAIL_CONTACT',"eleves@polytechnique.fr");
 
 // Nombres de jours affichés dans la page des annonces 
+
 define('MAX_PEREMPTION',8);
 
 // Gestion des erreurs PHP et MySQL
