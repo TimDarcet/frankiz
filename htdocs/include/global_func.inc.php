@@ -22,13 +22,16 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.45  2005/01/25 14:50:56  kikx
+	Suppression fonction xorg
+
 	Revision 1.44  2005/01/24 17:27:53  kikx
 	Permet de gerer l'auth Xorg
 	NE PAS COMMITER EN PROD ... car pas encore terminer
 	il faut maintenant reflechir a comment on gere les compte xorg ...
-
+	
 	J'attend vos avis eclairés :)
-
+	
 	Revision 1.43  2005/01/21 17:01:31  pico
 	Fonction pour savoir si interne
 	
@@ -431,45 +434,5 @@ function diff_to_xml($oldString, $newString) {
   }
   return $return;
 }
-function xorg_find_challenge(){
-	
-	$port = 80 ;
-	$url = "http://www.polytechnique.org/login.php" ;
-	$fp = fsockopen("www.polytechnique.org", $port);
-	fputs($fp, "GET $url HTTP/1.0\r\nHost: www.polytechnique.org\r\n\r\n");
-	$line = "" ;
-	while(!feof($fp)){
-		$line = fgets($fp,4000);
-		//echo $line ;
-		if ((strpos($line,"challenge")!=FALSE)&&(strpos($line,"hidden")!=FALSE)) {
-			$line2 = explode("\"",$line) ;
-			$resultat[0] =  $line2[5] ;
-		}
-		if (strpos($line,"PHPSESSID=")!=FALSE) {
-			$line2 = explode("PHPSESSID=",$line) ;
-			$line2 = explode("\"",$line2[1]) ;
-			$resultat[1] =  $line2[0] ;
-		}
-	}
-	return $resultat ;
-}
-function xorg_verif_pass($username,$pass){
-	
-	$result = xorg_find_challenge() ;
-	$session = $result[1] ;
-	$challenge = $result[0] ;
-	
-	$port = 80 ;
-	$url = "http://www.polytechnique.org/login.php?PHPSESSID=$session" ;
-	$fp = fsockopen("www.polytechnique.org", $port) ;
-	$response = md5("$username:".md5("$pass").":$challenge") ;
- 	fputs($fp, "POST $url HTTP/1.0\r\nHost: www.polytechnique.org\r\nReferer: $url\r\nCookie: PHPSESSID=$session\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: 105\r\n\r\nchallenge=$challenge&response=$response&username=$username");
-	$line = "" ;
-	while(!feof($fp)){
-		$line = fgets($fp,4000);
-		if (strpos($line,"<div class='menu_item'><a href=\"preferences.php\">Mes préférences</a></div>")!=NULL)
-			return TRUE ;
-	}
-	return FALSE ;
-}
+
 ?>
