@@ -3,9 +3,13 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.13  2004/09/20 07:14:41  kikx
+	Permet de supprimer l'image qd on va valider l'annonce !!!
+	C'est chaint si on peut pas la suppimer
+
 	Revision 1.12  2004/09/18 16:22:26  kikx
 	micro bug fix
-
+	
 	Revision 1.11  2004/09/18 16:04:52  kikx
 	Beaucoup de modifications ...
 	Amélioration des pages qui gèrent les annonces pour les rendre compatible avec la nouvelle norme de formatage xml -> balise web et balise image qui permette d'afficher une image et la signature d'une personne
@@ -63,6 +67,16 @@ if ((isset($_FILES['file']))&&($_FILES['file']['size']!=0)&&($_FILES['file']['si
 		$erreur_upload = 1 ;
 	}
 
+}
+//================================================
+// On Supprime l'image qui a été uploadé (si elle existe bien sur :))
+//================================================
+
+if (isset($_POST['suppr_img'])) {
+
+	if (file_exists($uploaddir."/annonce_$eleve_id")) {
+		unlink($uploaddir."/annonce_$eleve_id") ; 
+	}
 }
 //================================================
 // On valide l'annonce et en envoie un mail aux webmestres pour les prévenir 
@@ -173,6 +187,8 @@ if (isset($_POST['valid'])) {
 		<textsimple valeur="Ton image doit être un fichier gif, png ou jpg, ne doit pas dépasser 400x300 pixels et 250ko car sinon elle ne sera pas téléchargée"/>
 		<hidden id="MAX_FILE_SIZE"  valeur="250000"/>
 		<champ id="file" titre="Ton image" valeur=""/>
+		<bouton id='suppr_img' titre="Supprimer l'image"/>
+
 		<textsimple valeur="Ta signature sera automatiquement généré"/>
 		<choix titre="Date de péremption" id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
 <?		for ($i=0 ; $i<MAX_PEREMPTION ; $i++) {
