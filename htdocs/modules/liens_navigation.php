@@ -21,12 +21,15 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.34  2005/01/18 17:19:23  pico
+	Petite modif dans le menu de navigation (pour psycow)
+
 	Revision 1.33  2005/01/18 13:17:07  pico
 	Réorganisation des liens de navigation.
-
+	
 	je ne le met pas en prod tant que les skins ne sont pas prètes
 	(sauf si ça traine trop)
-
+	
 	Revision 1.32  2005/01/18 13:00:21  pico
 	Affichage état Bôb et Kès sur la page des activités
 	
@@ -135,7 +138,7 @@
 		<lien id="connect" titre="Se connecter" url="login.php" key="l"/>
 	<?php endif; ?>
 	<lien id="annonces" titre="Annonces" url="." key="a"/>
-	<lien id="activites" titre="Activités de la semaine" url="activites.php"/>
+	<lien id="activites" titre="Activités" url="activites.php"/>
 	<lien id="xshare" titre="Télécharger" url="xshare.php" key="x"/>
 	<lien id="faq" titre="FAQ" url="faq.php" key="f"/>
 	<?php if(est_authentifie(AUTH_INTERNE)){ ?>
