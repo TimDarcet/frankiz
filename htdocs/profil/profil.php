@@ -24,9 +24,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.44  2005/01/18 22:07:46  pico
+	Passage des images trombi en maxi 300x400
+
 	Revision 1.43  2005/01/11 14:40:35  pico
 	Fôte d'orthogaffe
-
+	
 	Revision 1.42  2004/12/17 16:29:29  kikx
 	Dans le trombino maintenant les promo sont dynamiques
 	Je limit aussi le changement des images (selon leur dimension200x200 dans le trombino)
@@ -214,25 +217,13 @@ if(isset($_POST['changer_frankiz'])) {
 
 		// On verifie d'abord que la personne n'a pas demander le changement de sa photo trombino
 		//------------------------------------
-	
 		if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$_SESSION['user']->uid}")) {
-			$message .= "<warning>Tu avais déjà demandé une modification de photo, seule la demande que tu viens de poster sera prise en compte.</warning>";
-		} else {
-			$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
-
-			$contenu = "$nom $prenom ($promo) a demandé la modification de son image trombino <br><br>".
-				"Pour valider ou non cette demande va sur la page suivante : <br>".
-				"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_trombi.php'>".
-				"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_trombi.php</a></div><br><br>" .
-				"Très BR-ement<br>" .
-				"L'automate :)<br>"  ;
-				
-			couriel(TROMBINOMEN_ID,"[Frankiz] Modification de l'image trombi de $nom $prenom",$contenu,$_SESSION['user']->uid);
-			
-			$message .= "<commentaire>Ta demande de changement de photo a été prise en compte et sera validée dans les meilleurs délais.</commentaire>";
-
+			$deuxieme_demande= true;
+		}else{
+			$deuxieme_demande= false;
 		}
 		
+		// Vérif taille et déplacemet de l'image
 		$img = $_FILES['file']['tmp_name'] ;
 		$image_types = Array ("image/bmp","image/jpeg","image/pjpeg","image/gif","image/x-png","image/png");
 	
@@ -257,12 +248,29 @@ if(isset($_POST['changer_frankiz'])) {
 		$larg = $original_size[0];
 		$haut = $original_size[1];
 
-		if ((in_array (strtolower ($type_img), $image_types))&&($larg<=200)&&($haut<=200)) {
+		if ((in_array (strtolower ($type_img), $image_types))&&($larg<=300)&&($haut<=400)) {
 			$filename =$_SESSION['user']->uid ;
 			move_uploaded_file($_FILES['file']['tmp_name'], DATA_DIR_LOCAL.'trombino/a_valider_'.$filename) ;
+			if ($deuxieme_demande) {
+				$message .= "<warning>Tu avais déjà demandé une modification de photo, seule la demande que tu viens de poster sera prise en compte.</warning>";
+			} else {
+				$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
+	
+				$contenu = "$nom $prenom ($promo) a demandé la modification de son image trombino <br><br>".
+					"Pour valider ou non cette demande va sur la page suivante : <br>".
+					"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_trombi.php'>".
+					"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_trombi.php</a></div><br><br>" .
+					"Très BR-ement<br>" .
+					"L'automate :)<br>"  ;
+					
+				couriel(TROMBINOMEN_ID,"[Frankiz] Modification de l'image trombi de $nom $prenom",$contenu,$_SESSION['user']->uid);
+				
+				$message .= "<commentaire>Ta demande de changement de photo a été prise en compte et sera validée dans les meilleurs délais.</commentaire>";
+			}
 		} else {
 			$message .= "<warning>Ton image n'est pas au bon format, ou est trop grande.</warning>" ;
 		}
+		
 	}
 }
 
@@ -357,7 +365,7 @@ require "../include/page_header.inc.php";
 		<?php else: ?>
 			<image source="trombino.php?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>" texte="photo" height="95" width="80"/>
 		<?php endif; ?>
-		<note>Tu peux personnaliser le trombino en changeant ta photo (elle ne doit pas dépasser 200Ko et 200x200 px)</note>
+		<note>Tu peux personnaliser le trombino en changeant ta photo (elle ne doit pas dépasser 200Ko et 300x400 px)</note>
 		<fichier id="file" titre="Nouvelle photo" taille="200000"/>
 
 		<bouton id="changer_trombino" titre="Changer"/>
