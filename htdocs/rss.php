@@ -21,9 +21,12 @@
 	Affichage de flux rss externes.
 
 	$Log$
+	Revision 1.16  2004/11/24 16:24:09  pico
+	Passage du formulaire de choix des rss à afficher dans une page spéciale
+
 	Revision 1.15  2004/11/24 15:55:33  pico
 	Code pour gérer les liens perso + les rss au lancement de la session
-
+	
 	Revision 1.14  2004/11/24 15:37:37  pico
 	Lis et sauvegarde les infos de session depuis la sql
 	
@@ -58,48 +61,9 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 
 <?
 
-$DB_web->query("SELECT url,description FROM liens_rss");
-while(list($value,$description)=$DB_web->next_row())
-	$array[$value] = $description;
-	
-	
-if(!empty($_REQUEST['OK_param'])) {
-	if(!empty($_REQUEST['vis']))
-		foreach($_REQUEST['vis'] as $temp => $null){
-			list($mode,$value) = split("_",$temp,2);
-			if(!isset($rss[$value]) || $rss[$value] != 'complet') $rss[$value] = $mode;
-		}
-	$_SESSION['rss'] = $rss;
-	$rss = serialize($rss);
-	$DB_web->query("UPDATE compte_frankiz SET liens_rss='$rss' WHERE eleve_id='{$_SESSION['user']->uid}'");
-	
-}
-
-?>
-	<formulaire id="form_param_rss" titre="Choix des RSS" action="rss.php">
-		<note>Choisis quelles infos tu veux avoir sur ta page de news externes</note>
-<?
- 		foreach(array('sommaire','complet') as $mode){ 
-				echo "<choix titre=\"Affichage $mode\" id=\"newrss\" type=\"checkbox\" valeur=\"";
-					foreach($array as $value => $description)
-							if($value != "" && (isset($_SESSION['rss'][$value])) && ($_SESSION['rss'][$value] == $mode))
-								echo "vis[".$mode."_".$value."]";
-						echo"\">";
-						foreach($array as $value => $description)
-							if($value != "")
-								echo "\t\t\t<option titre=\"$description\" id=\"vis[".$mode."_".$value."]\"/>\n";
-				echo "</choix>";
-		} 
-?>
-		<bouton titre="Appliquer" id="OK_param" />
-	</formulaire>
-<?
-
-
-
 $liens = $_SESSION['rss'];
 foreach($liens as $value => $mode){
-	rss_xml($value,$mode);
+	if($mode == 'complet' || $mode == 'sommaire') rss_xml($value,$mode);
 }
 
 ?>
