@@ -21,9 +21,12 @@
 	Moteur Wiki (TipiWiki)
 	
 	$Log$
+	Revision 1.10  2004/12/01 12:17:53  pico
+	Début de mise en forme html des listes (pas de 2eme niveau)
+
 	Revision 1.9  2004/12/01 12:06:14  pico
 	Gestion des listes à 2 niveaux en wiki
-
+	
 	Revision 1.8  2004/11/29 16:51:26  schmurtz
 	Correction d'un bug de traduction wiki => xml avec un texte du genre "=== blah ="
 	
@@ -83,6 +86,7 @@ function wikiVersXML($filtered,$enhtml=false) {
 	$filtered = preg_replace("/\|(.+)\|/U","<code>\\1</code>", $filtered);
 
 	// lists <ul>
+	if(!$enhtml){
 	// Listes à 2 niveau
 	$filtered = preg_replace("/(?<=[\n>])\* \*(.+)\n/","<noeud><feuille>$1</feuille></noeud>",$filtered);
 	$filtered = preg_replace("(</noeud><noeud>)","",$filtered);
@@ -95,6 +99,11 @@ function wikiVersXML($filtered,$enhtml=false) {
 	$filtered = preg_replace("(</feuille>\n)","</feuille></arbre><p>",$filtered);
 	$filtered = preg_replace("(\n<noeud)","</p><arbre><noeud",$filtered);
 	$filtered = preg_replace("(</noeud>\n)","</noeud></arbre><p>",$filtered);
+	}else{
+	// Liste simple
+	$filtered = preg_replace("/(?<=[\n>])\* (.+)\n/","<li>\\1</li>",$filtered);
+	$filtered = preg_replace("/<li>(.+)\<\/li>/","</p><ul>\\0</ul><p>",$filtered);
+	}
 	
 	// strip leading and ending line breaks
 	$filtered = preg_replace("/^(\n+)/","",$filtered); 
@@ -109,8 +118,11 @@ function wikiVersXML($filtered,$enhtml=false) {
 	
 	// html beauty
 	$filtered = "<p>".$filtered."</p>\n";
-	//$filtered = str_replace("</li>","</li>\n",$filtered);
-	//$filtered = str_replace("ul>","ul>\n",$filtered);
+	$filtered = str_replace("</li>","</li>\n",$filtered);
+	$filtered = str_replace("ul>","ul>\n",$filtered);
+	$filtered = str_replace("</feuille>","</feuille>\n",$filtered);
+	$filtered = str_replace("</noeud>","</noeud>\n",$filtered);
+	$filtered = str_replace("arbre>","arbre>\n",$filtered);
 	$filtered = str_replace("</p><p>\n<h","\n<h", $filtered);
 	$filtered = preg_replace("/(<\/h[1-6]>)<\/p><p>\n/","\\1\n", $filtered);
 	$filtered = preg_replace("/<p>\n*<\/p>/","",$filtered);
