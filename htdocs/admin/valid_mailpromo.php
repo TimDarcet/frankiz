@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.21  2004/12/08 13:11:42  kikx
+	Protection de la validation des mailpromo
+
 	Revision 1.20  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-
+	
 	Revision 1.19  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
 	
@@ -116,95 +119,117 @@ if ((isset($_POST['promo']))&&($_POST['promo'] == "")) {
 // On traite les différents cas de figure d'enrigistrement et validation d'affiche :)
 
 // Enregistrer ...
+$DB_valid->query("LOCK TABLE valid_mailpromo WRITE");
+$DB_valid->query("SET AUTOCOMMIT=0");
 
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
 
 
 	if (($temp[0]=='modif')||($temp[0]=='valid')) {
-		$DB_valid->query("UPDATE valid_mailpromo SET titre='{$_POST['titre']}', mail='{$_POST['mail']}', promo='{$_POST['promo']}' WHERE mail_id='{$temp[1]}'");	
+		$DB_valid->query("SELECT 0 FROM valid_mailpromo WHERE mail_id='{$temp[1]}'");
+		if ($DB_valid->num_rows()!=0) {
+
+			$DB_valid->query("UPDATE valid_mailpromo SET titre='{$_POST['titre']}', mail='{$_POST['mail']}', promo='{$_POST['promo']}' WHERE mail_id='{$temp[1]}'");	
+			if ($temp[0]!='valid') {
+		?>
+				<commentaire>Modification effectuée</commentaire>
+		<?
+			}
+		} else {
 	?>
-		<commentaire>Modification effectuée</commentaire>
-	<?	
+			<warning>Requête deja traitée par un autre administrateur</warning>
+	<?		
+		}	
 	}
 	
 	if ($temp[0]=='valid') {
 		$DB_valid->query("SELECT eleve_id FROM valid_mailpromo WHERE mail_id='{$temp[1]}'");
-		list($eleve_id) = $DB_valid->next_row() ;
-		// envoi du mail
-		$contenu = 	"Ton mail promo a été validé par le BR<br><br>".
-					"Merci de ta participation<br><br>".
-					"Très BR-ement<br>" .
-					"L'automate :)<br>"  ;
-		couriel($eleve_id,"[Frankiz] Ton mail promo a été validé par le BR",$contenu);
-		
-	//====================================================
-	// Procedure d'envoie de masse
-	//---------------------------------------------------------------------------------------------------------------------
-		
-		$log = "" ;
-		$cnt = 0 ;
-		
-		$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
-		list($promo_temp) = $DB_web->next_row() ;
+		if ($DB_valid->num_rows()!=0) {
 
-		if ($_POST['promo'] == "") {
-			$to = " promo=$promo_temp OR promo=".($promo_temp-1) ;
-		} else {
-			$to = " promo=".$_POST['promo'] ;
-		}
-		
-		$mail_contenu = wikiVersXML($_POST['mail'],true)  ; // On met true pour dire que c'est du HTML qu'on récupere
-
-	//
-	// Envoi du mail à propremeent parler ...
-	//-------------------------------------------------------------------------
+			list($eleve_id) = $DB_valid->next_row() ;
+			// envoi du mail
+			$contenu = 	"Ton mail promo a été validé par le BR<br><br>".
+						"Merci de ta participation<br><br>".
+						"Très BR-ement<br>" .
+						"L'automate :)<br>"  ;
+			couriel($eleve_id,"[Frankiz] Ton mail promo a été validé par le BR",$contenu);
+			
+		//====================================================
+		// Procedure d'envoie de masse
+		//---------------------------------------------------------------------------------------------------------------------
+			
+			$log = "" ;
+			$cnt = 0 ;
+			
+			$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
+			list($promo_temp) = $DB_web->next_row() ;
 	
-		$DB_trombino->query("SELECT eleve_id,nom,prenom FROM eleves WHERE ".$to) ;
-		
-		// On crée le fichier de log qui va bien
-		$fich_log = BASE_DATA."mailpromo/mail.log.".$temp[1] ; 
-		touch($fich_log) ;
-		$from = str_replace("&gt;",">",str_replace("&lt;","<",$_POST['from'])) ;
-		exec("echo \"".$mail_contenu."\" >>".$fich_log) ;
-		
-		while(list($eleve_id,$nom,$prenom) = $DB_trombino->next_row() ) {
-			//couriel($eleve_id, $titre_mail." ".$_POST['titre'],$mail_contenu) ;
-			couriel("2131", $titre_mail." ".$_POST['titre'],$mail_contenu,$from) ;
-			$cnt ++ ;
-			exec("echo \"Mail envoyé à $nom $prenom ($eleve_id)\n\" >>".$fich_log) ;
- 			usleep(100000); // Attends 100 millisecondes
-			break ;////////////////////////////////////////////////////////////////////////////////////
-		}
+			if ($_POST['promo'] == "") {
+				$to = " promo=$promo_temp OR promo=".($promo_temp-1) ;
+			} else {
+				$to = " promo=".$_POST['promo'] ;
+			}
+			
+			$mail_contenu = wikiVersXML($_POST['mail'],true)  ; // On met true pour dire que c'est du HTML qu'on récupere
 	
-		// fin de la procédure
+		//
+		// Envoi du mail à propremeent parler ...
+		//-------------------------------------------------------------------------
 		
+			$DB_trombino->query("SELECT eleve_id,nom,prenom FROM eleves WHERE ".$to) ;
+			
+			// On crée le fichier de log qui va bien
+			$fich_log = BASE_DATA."mailpromo/mail.log.".$temp[1] ; 
+			touch($fich_log) ;
+			$from = str_replace("&gt;",">",str_replace("&lt;","<",$_POST['from'])) ;
+			exec("echo \"".$mail_contenu."\" >>".$fich_log) ;
+			
+			while(list($eleve_id,$nom,$prenom) = $DB_trombino->next_row() ) {
+				//couriel($eleve_id, $titre_mail." ".$_POST['titre'],$mail_contenu) ;
+				couriel("2131", $titre_mail." ".$_POST['titre'],$mail_contenu,$from) ;
+				$cnt ++ ;
+				exec("echo \"Mail envoyé à $nom $prenom ($eleve_id)\n\" >>".$fich_log) ;
+				usleep(100000); // Attends 100 millisecondes
+				break ;////////////////////////////////////////////////////////////////////////////////////
+			}
 		
-		$DB_valid->query("DELETE FROM valid_mailpromo WHERE mail_id='{$temp[1]}'") ;
-	?>
-		<commentaire>Validation effectuée</commentaire>
-	<?	
-
+			// fin de la procédure
+			
+			
+			$DB_valid->query("DELETE FROM valid_mailpromo WHERE mail_id='{$temp[1]}'") ;
+		?>
+			<commentaire>Validation effectuée</commentaire>
+		<?	
+		}
 	}
 	if ($temp[0]=='suppr') {
 		$DB_valid->query("SELECT eleve_id FROM valid_mailpromo WHERE mail_id='{$temp[1]}'");
-		list($eleve_id) = $DB_valid->next_row() ;
-		// envoi du mail
-		$contenu = 	"Ton mail promo n'a pas été validé par le BR pour la raison suivante<br>".
-					$_POST['refus']."<br><br>".
-					"Désolé <br>".
-					"Très BR-ement\n" .
-					"L'automate :)\n"  ;
-		couriel($eleve_id,"[Frankiz] Ton mail promo n'a pas été validé par le BR",$contenu);
+		if ($DB_valid->num_rows()!=0) {
 
-		$DB_valid->query("DELETE FROM valid_mailpromo WHERE mail_id='{$temp[1]}'") ;
-
+			list($eleve_id) = $DB_valid->next_row() ;
+			// envoi du mail
+			$contenu = 	"Ton mail promo n'a pas été validé par le BR pour la raison suivante<br>".
+						$_POST['refus']."<br><br>".
+						"Désolé <br>".
+						"Très BR-ement\n" .
+						"L'automate :)\n"  ;
+			couriel($eleve_id,"[Frankiz] Ton mail promo n'a pas été validé par le BR",$contenu);
+	
+			$DB_valid->query("DELETE FROM valid_mailpromo WHERE mail_id='{$temp[1]}'") ;
+	
+		?>
+			<warning>Suppression d'un mail promo</warning>
+		<?
+		} else {
 	?>
-		<warning>Suppression d'un mail promo</warning>
-	<?
+			<warning>Requête deja traitée par un autre administrateur</warning>
+	<?		
+		}	
 	}
 }
-
+$DB_valid->query("COMMIT");
+$DB_valid->query("UNLOCK TABLES");
 
 //===============================
 
