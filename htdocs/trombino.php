@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.20  2004/11/22 18:44:08  pico
+	Recherche par promo promo présente
+
 	Revision 1.19  2004/11/22 10:15:03  pico
 	Ajout d'un lien vers le trombi d'X.org
-
+	
 	Revision 1.18  2004/11/19 23:04:27  alban
 	
 	Rajout du module lien_tol
@@ -74,7 +77,9 @@ echo "<page id='trombino' titre='Frankiz : Trombino'>\n";
 
 // Affichage des réponses
 if(isset($_REQUEST['chercher'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_REQUEST['q_search']))))) {
-
+		
+		$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
+		list($promo_temp) = $DB_web->next_row() ;
 	// Création de la requête si lien_tol appelle
 	if(isset($_REQUEST['cherchertol'])) {
 		$where = "";
@@ -83,7 +88,8 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_RE
 		$where_like = array(
 			'nom' => 'eleves.nom',	'prenom' => 'prenom',	'surnom' => 'surnom');
 		foreach($where_like as $post_arg => $db_field)
-			$where .= (empty($where) ? "" : " OR") . " $db_field LIKE '%".$_REQUEST['q_search']."%'";
+			$where .= (empty($where) ? "(" : " OR") . " $db_field LIKE '%".$_REQUEST['q_search']."%'";
+		$where .= ") AND (promo=$promo_temp OR promo=".($promo_temp -1).")";
 	}
 	
 	// Création de la requète si tol s'appelle
@@ -93,11 +99,14 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_RE
 	$champs = "eleves.eleve_id,eleves.nom,prenom,surnom,piece_id,sections.nom,eleves.section_id,cie,promo,login,mail,0";
 	
 	$where_exact = array(
-			'section' => 'eleves.section_id',	'cie' => 'cie',			/*'type' => '',*/
-			'promo' => 'promo');
+			'section' => 'eleves.section_id',	'cie' => 'cie');
 	foreach($where_exact as $post_arg => $db_field)
 		if(!empty($_REQUEST[$post_arg]))
 			$where .= (empty($where) ? "" : " AND") . " $db_field='".$_REQUEST[$post_arg]."'";
+		if($_REQUEST['promo'] == "")
+			$where .=  (empty($where) ? "" : " AND") ." (promo=$promo_temp OR promo=".($promo_temp -1).")";
+		else if($_REQUEST['promo'] != "toutes")
+			$where .= (empty($where) ? "" : " AND") ." promo='".$_REQUEST['promo']."'";
 
 	$where_like = array(
 			'nom' => 'eleves.nom',	'prenom' => 'prenom',   'casert' => 'piece_id',
@@ -154,7 +163,8 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_RE
 		<champ titre="Surnom" id="surnom" valeur="" />
 		
 		<choix titre="Promo" id="promo" type="combo" valeur="">
-			<option titre="Toutes" id="" />
+			<option titre="Actuellement sur le campus" id=""/>
+			<option titre="Toutes" id="toutes" />
 			<option titre="2003" id="2003" />
 			<option titre="2002" id="2002" />
 			<option titre="2001" id="2001" />
