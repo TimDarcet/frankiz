@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.14  2004/11/24 15:37:37  pico
+	Lis et sauvegarde les infos de session depuis la sql
+
 	Revision 1.13  2004/11/24 15:18:19  pico
 	Mise en place des liens sur une base sql
-
+	
 	Revision 1.12  2004/11/24 13:45:24  pico
 	Modifs skins pour le wiki et l'id de la page d'annonces
 	
@@ -64,10 +67,18 @@ if(!empty($_REQUEST['OK_param'])) {
 			if(!isset($rss[$value]) || $rss[$value] != 'complet') $rss[$value] = $mode;
 		}
 	$_SESSION['rss'] = $rss;
+	$rss = serialize($rss);
+	$DB_web->query("UPDATE compte_frankiz SET liens_rss='$rss' WHERE eleve_id='{$_SESSION['user']->uid}'");
+	
 }
 
 if( !isset($_SESSION['rss']) || nouveau_login() ) {
 	$_SESSION['rss'] = array();
+	$DB_web->query("SELECT liens_rss FROM compte_frankiz WHERE eleve_id='{$_SESSION['user']->uid}'") ;
+	if($DB_web->num_rows()!=0) {
+			list($new_rss) = $DB_web->next_row();
+			$_SESSION['rss'] =  unserialize($new_rss);
+	}
 }
 ?>
 	<formulaire id="form_param_rss" titre="Choix des RSS" action="rss.php">
