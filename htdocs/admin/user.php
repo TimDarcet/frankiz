@@ -29,9 +29,12 @@
 	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
 	
 	$Log$
+	Revision 1.26  2005/01/03 20:39:13  pico
+	pour la route
+
 	Revision 1.25  2005/01/03 20:37:16  pico
 	Je suis un gros boulet
-
+	
 	Revision 1.24  2005/01/03 20:30:25  pico
 	Pour garder les droits d'admin de binets
 	Et ne pas marquer les webmestres de binets comme webmestres de frankiz
@@ -219,16 +222,15 @@ if(verifie_permission('admin')){
 
 
 // Modification de ses préferences FrankizII
-               $DB_web->query("SELECT perms FROM compte_frankiz WHERE eleve_id=$id");
-               list($perms) = $DB_web->next_row() ;
-	       $perms = split(",",$perms);
+		$DB_web->query("SELECT perms FROM compte_frankiz WHERE eleve_id=$id");
+		list($perms) = $DB_web->next_row();
+		$perms = split(",",$perms);
 ?>
 	<formulaire id="user_compt_fkz" titre="Compte Frankiz" action="admin/user.php?id=<? echo $id?>">
                 <note>Pour le mot de passe : Si vous le laissez vide, il ne sera pas modifié !</note>
 		<champ id="pass" titre="Mot de passe" valeur=""/>
                 <note>Pour les webmestres et prez de binets, il faut allez dans le binet en question pour les modifier</note>
 		<choix titre="Droits" id="droits" type="checkbox" valeur="<?php
-		
 			foreach(liste_droits() as $droits => $nom){
 				foreach($perms as $tmp => $perm)
 					if($perm == $droits){
