@@ -3,11 +3,18 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.3  2004/10/07 22:52:20  kikx
+	Correction de la page des activites (modules + proposition + administration)
+		rajout de variables globales : DATA_DIR_LOCAL
+						DATA_DIR_URL
+
+	Comme ca si ca change, on est safe :)
+
 	Revision 1.2  2004/10/06 14:12:27  kikx
 	Page de mail promo quasiment en place ...
 	envoie en HTML ...
 	Page pas tout a fait fonctionnel pour l'instant
-
+	
 	Revision 1.1  2004/09/20 22:19:27  kikx
 	test
 	
@@ -21,12 +28,6 @@ require_once "../include/global.inc.php";
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
 	rediriger_vers("/admin/");
-
-
-$temp = explode("admin",$_SERVER['SCRIPT_FILENAME']) ;
-$racine = $temp[0] ;
-$uploaddir  =  $racine."/proposition/image_temp/" ;
-
 
 // Génération de la page
 //===============
@@ -61,13 +62,13 @@ foreach ($_POST AS $keys => $val){
 			"L'automate :)\n"  ;
 		couriel($eleve_id,"[Frankiz] Ton activité a été validé par le BR",$contenu);
 
-		$DB_web->query("INSERT affiches SELECT 0 as affiche_id, NOW() as stamp,date, titre,url,eleve_id FROM a_valider.valid_affiches WHERE affiche_id='{$temp[1]}'");
+		$DB_web->query("INSERT INTO affiches SET stamp=NOW(), date='{$_POST['date']}', titre='{$_POST['titre']}', url='{$_POST['url']}', eleve_id=$eleve_id");
 		
 		
 		// On déplace l'image si elle existe dans le répertoire prevu à cette effet
 		$index = mysql_insert_id() ;
-		if (file_exists($uploaddir."/{$temp[1]}_affiche")){
-			rename($uploaddir."/{$temp[1]}_affiche",$racine.UPLOAD_WEB_DIR."affiche_$index") ;
+		if (file_exists(DATA_DIR_LOCAL."affiches/a_valider_{$temp[1]}")){
+			rename(DATA_DIR_LOCAL."affiches/a_valider_{$temp[1]}",DATA_DIR_LOCAL."affiches/$index") ;
 		}
 		$DB_valid->query("DELETE FROM valid_affiches WHERE affiche_id='{$temp[1]}'") ;
 	?>
@@ -88,8 +89,8 @@ foreach ($_POST AS $keys => $val){
 		//On supprime aussi l'image si elle existe ...
 		
 		$supp_image = "" ;
-		if (file_exists($uploaddir."/{$temp[1]}_affiche")){
-			unlink($uploaddir."/{$temp[1]}_affiche") ;
+		if (file_exists(DATA_DIR_LOCAL."affiches/a_valider_{$temp[1]}")){
+			unlink(DATA_DIR_LOCAL."affiches/a_valider_{$temp[1]}") ;
 			$supp_image = " et de son image associée" ;
 		}
 		
@@ -113,10 +114,10 @@ foreach ($_POST AS $keys => $val){
 				categorie=""
 				date="<? echo $date?>">
 				<?
-				if (file_exists($uploaddir."/{$id}_affiche")){
+				if (file_exists(DATA_DIR_LOCAL."affiches/a_valider_{$id}")){
 				?>
 					<a href="<?php echo $url ?>">
-					<image source="<? echo "proposition/image_temp/{$id}_affiche" ; ?>"/>
+						<image source="<? echo DATA_DIR_URL."affiches/a_valider_{$id}" ; ?>" texte="Affiche"/>
 					</a>
 				<?
 				}
@@ -132,9 +133,7 @@ foreach ($_POST AS $keys => $val){
 		<formulaire id="affiche_<? echo $id ?>" titre="L'activité" action="admin/valid_affiches.php">
 			<champ id="titre" titre="Le titre" valeur="<?  echo $titre ;?>"/>
 			<champ id="url" titre="URL du lien" valeur="<? echo $url ;?>"/>
-		
-			<textsimple valeur="La signature sera automatiquement généré"/>
-			<champ id="date" titre="Date de péremption" valeur="<? echo $date ;?>"/>
+			<champ id="date" titre="Date d'affichage" valeur="<? echo $date ;?>"/>
 			
 			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
 			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider cette affiche ?')"/>

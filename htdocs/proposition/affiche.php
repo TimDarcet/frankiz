@@ -3,16 +3,23 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une activité
 	
 	$Log$
+	Revision 1.3  2004/10/07 22:52:20  kikx
+	Correction de la page des activites (modules + proposition + administration)
+		rajout de variables globales : DATA_DIR_LOCAL
+						DATA_DIR_URL
+
+	Comme ca si ca change, on est safe :)
+
 	Revision 1.2  2004/10/04 21:48:54  kikx
 	Modification du champs fichier pour uploader des fichiers
-
+	
 	Revision 1.1  2004/09/20 22:31:28  kikx
 	oubli
 	
 
 	
 */
-	
+
 require_once "../include/global.inc.php";
 
 // Vérification des droits
@@ -21,6 +28,7 @@ demande_authentification(AUTH_MINIMUM);
 $DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM eleves WHERE eleve_id='".$_SESSION['user']->uid."'");
 list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_row();
 
+$msg="" ;
 //---------------------------------------------------------------------------------
 // On traite l'image qui vient d'etre uploader si elle existe
 //---------------------------------------------------------------------------------
@@ -36,10 +44,6 @@ list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_ro
 //--//
 //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
 
-$temp = explode("affiche",$_SERVER['SCRIPT_FILENAME']) ;
-$temp = $temp[0] ;
-$uploaddir  =  $temp."/image_temp/" ;
-
 $erreur_upload = 0 ;
 if ((isset($_FILES['file']))&&($_FILES['file']['size']!=0))  {
 	$original_size = getimagesize($_FILES['file']['tmp_name']);
@@ -50,8 +54,8 @@ if ((isset($_FILES['file']))&&($_FILES['file']['size']!=0))  {
 	if (($larg>=200)||($haut>=300)) {
 		$erreur_upload =1 ;
 	} else if (($filetype=="image/jpg")||($filetype=="image/jpeg")||($filetype=="image/pjpg")||($filetype=="image/gif")||($filetype=="image/png")) {
-		$filename = "affiche_$eleve_id" ;
-		move_uploaded_file($_FILES['file']['tmp_name'], $uploaddir . $filename) ;
+		$filename = "temp_$eleve_id" ;
+		move_uploaded_file($_FILES['file']['tmp_name'], DATA_DIR_LOCAL.'affiches/'.$filename) ;
 	} else {
 		$erreur_upload = 1 ;
 	}
@@ -63,8 +67,8 @@ if ((isset($_FILES['file']))&&($_FILES['file']['size']!=0))  {
 
 if (isset($_POST['suppr_img'])) {
 
-	if (file_exists($uploaddir."/affiche_$eleve_id")) {
-		unlink($uploaddir."/affiche_$eleve_id") ; 
+	if (file_exists(DATA_DIR_LOCAL."affiches/temp_$eleve_id")) {
+		unlink(DATA_DIR_LOCAL."affiches/temp_$eleve_id") ; 
 	}
 }
 //================================================
@@ -73,26 +77,32 @@ if (isset($_POST['suppr_img'])) {
 
 if (isset($_POST['valid'])) {
 
-	$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
+	if (file_exists(DATA_DIR_LOCAL."affiches/temp_$eleve_id")) {
 
-	$DB_valid->query("INSERT INTO valid_affiches SET date=FROM_UNIXTIME({$_POST['date']}), eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',url='".$_POST['url']."'");
+		$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
 	
-	// on modifie le nom du fichier qui a été téléchargé si celui ci existe
-	// selon la norme de nommage ci-dessus
-	//----------------------------------------------------------------------------------------------
-	
-	if (file_exists($uploaddir."/affiche_$eleve_id")) {
+		$DB_valid->query("INSERT INTO valid_affiches SET date=FROM_UNIXTIME({$_POST['date']}), eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',url='".$_POST['url']."'");
+		
+		// on modifie le nom du fichier qui a été téléchargé si celui ci existe
+		// selon la norme de nommage ci-dessus
+		//----------------------------------------------------------------------------------------------
+		
 		$index = mysql_insert_id() ;
-		rename($uploaddir."/affiche_$eleve_id",$uploaddir."/{$index}_affiche") ; 
+		rename(DATA_DIR_LOCAL."affiches/temp_$eleve_id",DATA_DIR_LOCAL."affiches/a_valider_{$index}") ; 
+	
+		$contenu = "$prenom $nom a demandé la validation d'une activité : \n".
+					$_POST['titre']."\n\n".
+					"Pour valider ou non cette demande va sur la page suivante : \n".
+					"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_affiches.php\n\n" .
+					"Très BR-ement\n" .
+					"L'automate :)\n"  ;
+					
+		mail(MAIL_WEBMESTRE,"[Frankiz] Validation d'une activité",$contenu);
+	} else {
+		
+		$msg .= "<warning> Il faut soumettre une image pour les activités </warning>" ;
+		
 	}
-	$contenu = "$prenom $nom a demandé la validation d'une activité : \n".
-				$_POST['titre']."\n\n".
-				"Pour valider ou non cette demande va sur la page suivante : \n".
-				"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_affiches.php\n\n" .
-				"Très BR-ement\n" .
-				"L'automate :)\n"  ;
-				
-	mail("Admin Frankiz <gruson@poly.polytechnique.fr>","[Frankiz] Validation d'une activité",$contenu);
 
 }
 //=================
@@ -108,6 +118,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <h1>Proposition d'annonce</h1>
 
  <?
+ echo $msg ;
 if ($erreur_upload==1) {
 ?>
 	<warning><p>Ton fichier n'a pas été téléchargé car il ne respecte pas une des conditions spécifiées ci dessous</p>
@@ -133,13 +144,13 @@ if (!isset($_POST['date']))  $_POST['date']=time() ;
 	<annonce date="<?php echo date("d/m/y",$_POST['date']) ;?>">
 		<a href="<?php echo $_POST['url'] ;?>">
 		<?
-		if ((!isset($_POST['valid']))&&(file_exists($uploaddir."/affiche_$eleve_id"))) {
+		if ((!isset($_POST['valid']))&&(file_exists(DATA_DIR_LOCAL."affiches/temp_$eleve_id"))) {
 		?>
-		<image source="<?echo "proposition/image_temp/affiche_".$eleve_id ; ?>" texte="Affiche"/>
+		<image source="<?echo DATA_DIR_URL."affiches/temp_".$eleve_id ; ?>" texte="Affiche"/>
 		<? 
-		} else if ((isset($index))&&(file_exists($uploaddir."/{$index}_affiche"))){
+		} else if ((isset($index))&&(file_exists(DATA_DIR_LOCAL."affiches/a_valider_{$index}"))){
 		?>
-		<image source="<? echo "proposition/image_temp/{$index}_affiche" ; ?>" texte="Affiche"/>
+		<image source="<? echo DATA_DIR_URL."affiches/a_valider_{$index}" ; ?>" texte="Affiche"/>
 		<?
 		}
 		?>
@@ -155,7 +166,7 @@ if (!isset($_POST['date']))  $_POST['date']=time() ;
 // On met le commentaire qui va bien 
 //=========================
 
-if (isset($_POST['valid'])) {
+if ((isset($_POST['valid']))&&(isset($index))&&file_exists(DATA_DIR_LOCAL."affiches/a_valider_{$index}")) {
 ?>
 	<commentaire>
 		<p>Tu as demandé à un webmestre de valider ton activité</p>
@@ -177,7 +188,6 @@ if (isset($_POST['valid'])) {
 		<champ id="file" titre="Ton image" valeur="" taille="100000"/>
 		<bouton id='suppr_img' titre="Supprimer l'image"/>
 
-		<textsimple valeur="Ta signature sera automatiquement généré"/>
 		<choix titre="Date de l'activité" id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
 <?		for ($i=0 ; $i<MAX_PEREMPTION ; $i++) {
 			$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;

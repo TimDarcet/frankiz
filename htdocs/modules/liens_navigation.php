@@ -3,9 +3,16 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.6  2004/10/07 22:52:20  kikx
+	Correction de la page des activites (modules + proposition + administration)
+		rajout de variables globales : DATA_DIR_LOCAL
+						DATA_DIR_URL
+
+	Comme ca si ca change, on est safe :)
+
 	Revision 1.5  2004/09/15 23:20:29  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 	Revision 1.4  2004/09/15 21:42:32  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
 	
@@ -18,7 +25,7 @@
 		<lien titre="Profil" url="profil/profil.php" />
 		<lien titre="Profil réseau" url="profil/reseau.php" />
 		<lien titre="Skins" url="profil/skin.php" />
-		<lien titre="InfoBr" url="documentation/infobr.pdf" />
+		<lien titre="InfoBr" url="documentation/InfoBR.pdf" />
 	<?php else: ?>
 		<lien titre="Se connecter" url="login.php" />			
 	<?php endif; ?>
