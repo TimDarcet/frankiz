@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.21  2004/12/08 12:21:07  kikx
+	Protection de la validation des annonces
+
 	Revision 1.20  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-
+	
 	Revision 1.19  2004/11/27 15:29:22  pico
 	Mise en place des droits web (validation d'annonces + sondages)
 	
@@ -105,73 +108,96 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 // On traite les différents cas de figure d'enrigistrement et validation d'annonce :)
 
 // Enregistrer ...
+$DB_valid->query("LOCK TABLE valid_annonces WRITE");
+$DB_valid->query("SET AUTOCOMMIT=0");
 
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
 
-
+	
+	
+	
 	if (($temp[0]=='modif')||($temp[0]=='valid')) {
-		$DB_valid->query("UPDATE valid_annonces SET perime='{$_POST['date']}', titre='{$_POST['titre']}', contenu='{$_POST['text']}' WHERE annonce_id='{$temp[1]}'");	
+		$DB_valid->query("SELECT 0 FROM valid_annonces WHERE annonce_id='{$temp[1]}'");
+		if ($DB_valid->num_rows()!=0) {
+	
+			$DB_valid->query("UPDATE valid_annonces SET perime='{$_POST['date']}', titre='{$_POST['titre']}', contenu='{$_POST['text']}' WHERE annonce_id='{$temp[1]}'");
+			if ($temp[0]!='valid') {
 	?>
-		<commentaire>Modif effectuée</commentaire>
+				<commentaire>Modif effectuée</commentaire>
 	<?	
+			}
+		} else {
+	?>
+			<warning>Requête deja traitée par un autre administrateur</warning>
+	<?			
+		}
 	}
 	
 	if ($temp[0]=='valid') {
 		$DB_valid->query("SELECT eleve_id FROM valid_annonces WHERE annonce_id='{$temp[1]}'");
-		list($eleve_id) = $DB_valid->next_row() ;
-		// envoi du mail
-		$contenu = 	"Ton annonce vient d'être validé par le BR... Elle est dès à present visible sur la page d'accueil<br><br> ".
-					"Merci de ta participation <br><br>".
-					"Très BR-ement<br>" .
-					"Le Webmestre de Frankiz<br>"  ;
-		couriel($eleve_id,"[Frankiz] Ton annonce a été validé par le BR",$contenu);
-		
-		if (isset($_REQUEST['ext_auth']))
-			$temp_ext = '1'  ;
-		else 
-			$temp_ext = '0' ;
+		if ($DB_valid->num_rows()!=0) {
+			list($eleve_id) = $DB_valid->next_row() ;
+			// envoi du mail
+			$contenu = 	"Ton annonce vient d'être validé par le BR... Elle est dès à present visible sur la page d'accueil<br><br> ".
+						"Merci de ta participation <br><br>".
+						"Très BR-ement<br>" .
+						"Le Webmestre de Frankiz<br>"  ;
+			couriel($eleve_id,"[Frankiz] Ton annonce a été validé par le BR",$contenu);
 			
-		$DB_web->query("INSERT INTO annonces  SET stamp=NOW(), perime='{$_POST['date']}', titre='{$_POST['titre']}', contenu='{$_POST['text']}', eleve_id=$eleve_id, exterieur=$temp_ext");
+			if (isset($_REQUEST['ext_auth']))
+				$temp_ext = '1'  ;
+			else 
+				$temp_ext = '0' ;
+				
+			$DB_web->query("INSERT INTO annonces  SET stamp=NOW(), perime='{$_POST['date']}', titre='{$_POST['titre']}', contenu='{$_POST['text']}', eleve_id=$eleve_id, exterieur=$temp_ext");
+			
+			// On déplace l'image si elle existe dans le répertoire prevu à cette effet
+			$index = mysql_insert_id($DB_web->link) ;
+			if (file_exists(DATA_DIR_LOCAL."annonces/a_valider_{$temp[1]}")){
+				rename(DATA_DIR_LOCAL."annonces/a_valider_{$temp[1]}",DATA_DIR_LOCAL."annonces/$index") ;
+			}
+			$DB_valid->query("DELETE FROM valid_annonces WHERE annonce_id='{$temp[1]}'") ;
+		?>
+			<commentaire>Validation effectuée</commentaire>
+		<?	
+		} 
 		
-		// On déplace l'image si elle existe dans le répertoire prevu à cette effet
-		$index = mysql_insert_id($DB_web->link) ;
-		if (file_exists(DATA_DIR_LOCAL."annonces/a_valider_{$temp[1]}")){
-			rename(DATA_DIR_LOCAL."annonces/a_valider_{$temp[1]}",DATA_DIR_LOCAL."annonces/$index") ;
-		}
-		$DB_valid->query("DELETE FROM valid_annonces WHERE annonce_id='{$temp[1]}'") ;
-	?>
-		<commentaire>Validation effectuée</commentaire>
-	<?	
-
 	}
 	if ($temp[0]=='suppr') {
 		$DB_valid->query("SELECT eleve_id FROM valid_annonces WHERE annonce_id='{$temp[1]}'");
-		list($eleve_id) = $DB_valid->next_row() ;
-		// envoi du mail
-		$contenu = 	"Ton annonce n'a pas été validé par le BR pour la raison suivante :<br>".
-					$_POST['refus']."<br>".
-					"Désolé <br><br>".
-					"Très BR-ement<br>" .
-					"Le Webmestre de frankiz<br>"  ;
-		couriel($eleve_id,"[Frankiz] Ton annonce n'a pas été validé par le BR",$contenu);
-
-		$DB_valid->query("DELETE FROM valid_annonces WHERE annonce_id='{$temp[1]}'") ;
-		//On supprime aussi l'image si elle existe ...
-		
-		$supp_image = "" ;
-		if (file_exists(DATA_DIR_LOCAL."annonces/a_valider_{$temp[1]}")){
-			unlink(DATA_DIR_LOCAL."annonces/a_valider_{$temp[1]}") ;
-			$supp_image = " et de son image associée" ;
-		}
-	?>
-		<warning>Suppression d'une annonce<? echo $supp_image?></warning>
-	<?
-	}
+		if ($DB_valid->num_rows()!=0) {
+			list($eleve_id) = $DB_valid->next_row() ;
+			// envoi du mail
+			$contenu = 	"Ton annonce n'a pas été validé par le BR pour la raison suivante :<br>".
+						$_POST['refus']."<br>".
+						"Désolé <br><br>".
+						"Très BR-ement<br>" .
+						"Le Webmestre de frankiz<br>"  ;
+			couriel($eleve_id,"[Frankiz] Ton annonce n'a pas été validé par le BR",$contenu);
 	
+			$DB_valid->query("DELETE FROM valid_annonces WHERE annonce_id='{$temp[1]}'") ;
+			//On supprime aussi l'image si elle existe ...
+			
+			$supp_image = "" ;
+			if (file_exists(DATA_DIR_LOCAL."annonces/a_valider_{$temp[1]}")){
+				unlink(DATA_DIR_LOCAL."annonces/a_valider_{$temp[1]}") ;
+				$supp_image = " et de son image associée" ;
+			}
+		?>
+			<warning>Suppression d'une annonce<? echo $supp_image?></warning>
+		<?
+		} else {
+	?>
+			<warning>Requête deja traitée par un autre administrateur</warning>
+	<?
+		}
+	}
 	
 }
 
+$DB_valid->query("COMMIT");
+$DB_valid->query("UNLOCK TABLES");
 
 //===============================
 
@@ -205,7 +231,7 @@ foreach ($_POST AS $keys => $val){
 
 			<champ id="titre" titre="Le titre" valeur="<? echo $titre ;?>"/>
 			<zonetext id="text" titre="Le texte"><?=$contenu?></zonetext>
-			<note valeur="La signature sera automatiquement généré"/>
+			<note>La signature sera automatiquement générée</note>
 			<champ id="date" titre="Date de péremption" valeur="<? echo $date ;?>"/>
 			
 			<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? echo $ext_temp." " ; if ((isset($_REQUEST['ext_auth']))&&(isset($_REQUEST['modif_'.$id]))) echo 'ext_auth' ;?>">
