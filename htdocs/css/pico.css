@@ -34,11 +34,14 @@ div.fkz_logo {
 	height:60px;
  }
 
- span.fkz_logo {display:none;}
+span.fkz_logo {
+	display:none;
+}
  
 a {
     text-decoration: none;
 }
+
 a:hover {
     text-decoration: none;
 }
@@ -54,7 +57,7 @@ a:hover {
 .fkz_liens_nav {
 	font-size: 9pt;
 	font-weight: bold;
-	background-color: orange;
+	background-color: #ffa500;
 	border-top: 1px solid #888888;
 	border-bottom: 1px solid #888888;
 	border-right: 1px solid #888888;
@@ -83,13 +86,23 @@ a:hover {
     width: 49%;
 }
 
+.fkz_anniversaire_titre {
+	color: inherit;
+	background: #d49fa8;
+	padding: 2px;
+	text-align : center;
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+	border-top: 1px solid #888888;
+}
+
 .fkz_anniversaire {
 	font-size: 9pt;
-	text-align: center;
-	background-color: pink;
+	background-color: #ffc0cb;
 	max-width: 100%; 
-	border-top: 1px solid #888888;
 	border-bottom: 1px solid #888888;
+	padding: 2px;
 	border-right: 1px solid #888888;
 	border-left: 1px solid #888888;
 }
@@ -201,10 +214,10 @@ span.fkz_annonces_vieux {
 }
 
 .fkz_centre {
+	font-size: 9pt;
 	float: left;
 	width: 59%;
 	margin: 0.5%;
-
 }
 
 .serveur_up {
@@ -227,7 +240,7 @@ span.fkz_annonces_vieux {
 .fkz_qdj_last{
 list-style-type:  none;  
 text-align:left; 
-background-color:pink;
+background-color:#ffc0cb;
 }
 
 

@@ -80,20 +80,29 @@ a:hover {
     width: 49%;
 }
 
+.fkz_anniversaire_titre {
+	color: inherit;
+	background-color: #DDDDDD;
+	padding: 2px;
+	text-align : center;
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+	border-top: 1px solid #888888;
+}
+
 .fkz_anniversaire {
 	font-size: 9pt;
-	text-align: center;
-	background-color: #DDDDDD;
 	max-width: 100%; 
-	border-top: 1px solid #888888;
 	border-bottom: 1px solid #888888;
+	padding: 2px;
 	border-right: 1px solid #888888;
 	border-left: 1px solid #888888;
 }
 
 .fkz_titre {
 	color: inherit;
-	background: #DDDDDD;
+	background-color: #DDDDDD;
 	padding: 2px;
 	text-align : center;
 	border-bottom: 1px solid #888888;
