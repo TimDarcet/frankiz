@@ -21,9 +21,12 @@
 	Gestion arpwatch	
 	
 	$Log$
+	Revision 1.8  2005/02/09 20:24:55  kikx
+	Allegement de la page de l'arpwatch ... 1 seul requete de zamer qui fait tout d'y coup
+
 	Revision 1.7  2005/01/31 00:34:38  kikx
 	Avancement de l'arpwatch ... les roots vous pouvez me dire ce que vous voulez sur cette page ?
-
+	
 	Revision 1.6  2005/01/23 18:30:48  kikx
 	Debut d'une page d'arp watch pour frankiz
 	
@@ -63,100 +66,54 @@ function toutes_macs(){
 	return $line ;
 }
 
-function mac($id_prise,$fich){
-	$resultat = "" ;
-	$fich = spliti("<tr>",$fich) ;
-	for($i=1 ; $i<count($fich) ; $i++) {
-		if (eregi("$id_prise",$fich[$i])) {
-			$fich[$i] = spliti("<td>",$fich[$i]) ; 
-			$resultat .= "<p>".strip_tags($fich[$i][2])."</p>" ;
-		} 
-	}
-	return $resultat ;
-}
-
-function ip_non_auth($ipnormal,$mac) {
+function maj_mac_dans_bdd($fich) {
 	global $DB_admin ;
+	// On efface toute les entrées avant de recommencer
+	$DB_admin->query("DELETE FROM prise_mac") ;
 	
-	$macformat = str_replace("-",":",$mac) ;
-	$macformat = str_replace(":0",":",$macformat) ;
-	$macformat = str_replace("00","0",$macformat) ;
-	$macformat = str_replace("<p>","",$macformat) ;
-	$macformat = str_replace("</p>","",$macformat) ;
-	$macformat = str_replace("\n","",$macformat) ;
-	$macformat = str_replace("\r","",$macformat) ;
-	$macformat = str_replace(" ","",$macformat) ;
-	
-	$result = "" ;
-
-	$DB_admin->push_result() ;
-	$DB_admin->query("SELECT ip,ts FROM arpwatch_log WHERE mac='$macformat' ORDER BY ts DESC") ;
-	while(list($ip,$timestamp) = $DB_admin->next_row()) {
-		$year = substr($timestamp, 2, 2);
-		$month = substr($timestamp, 5, 2);
-		$day = substr($timestamp, 8, 2);
-		$heure = substr($timestamp, 11,8) ;
-		$date = "$day/$month/$year à $heure" ;
+	// On re-remplit la base !
+	$fich = spliti("<tr>",$fich) ;
+	for($i=2 ; $i<count($fich) ; $i++) {
+		$temp = spliti("<td>",$fich[$i]) ; 
 		
-		$test = explode(".",$ip) ;
-		if (($test[0]!="129")||($test[1]!="104")){
-			continue ;
-		}
-		if ($ip != $ipnormal) 
-			$result .= "<p><old_string>$ip</old_string> ($date)</p>" ;
+		$mac = str_replace("-",":",strip_tags($temp[2])) ;
+		$mac = str_replace("00","0",$mac) ;
+		$mac = str_replace("01","1",$mac) ;
+		$mac = str_replace("02","2",$mac) ;
+		$mac = str_replace("03","3",$mac) ;
+		$mac = str_replace("04","4",$mac) ;
+		$mac = str_replace("05","5",$mac) ;
+		$mac = str_replace("06","6",$mac) ;
+		$mac = str_replace("07","7",$mac) ;
+		$mac = str_replace("08","8",$mac) ;
+		$mac = str_replace("09","9",$mac) ;
+		$mac = str_replace("A","a",$mac) ;
+		$mac = str_replace("B","b",$mac) ;
+		$mac = str_replace("C","c",$mac) ;
+		$mac = str_replace("D","d",$mac) ;
+		$mac = str_replace("E","e",$mac) ;
+		$mac = str_replace("F","f",$mac) ;
+		$mac = str_replace("0a","0",$mac) ;
+		$mac = str_replace("0b","0",$mac) ;
+		$mac = str_replace("0c","0",$mac) ;
+		$mac = str_replace("0d","0",$mac) ;
+		$mac = str_replace("0e","0",$mac) ;
+		$mac = str_replace("0f","0",$mac) ;
+		$mac = str_replace("\n","",$mac) ;
+		$mac = str_replace("\r","",$mac) ;
+		$mac = str_replace("\t","",$mac) ;
+		$mac = str_replace(" ","",$mac) ;
+		
+		$prise = str_replace("\n","",strip_tags($temp[1])) ;
+		$prise = str_replace("\r","",$prise) ;
+		$prise = str_replace("\t","",$prise) ;
+		$prise = str_replace(" ","",$prise) ;
+		
+		echo $mac ;
+		
+		$DB_admin->query("INSERT INTO prise_mac SET prise='$prise', mac='$mac' ") ;
 	}
-	$DB_admin->pop_result() ;
-	return $result ;
 }
-
-function search_from_mac($mac) {
-	global $DB_admin,$DB_web ;
-
-	$num = explode(":",$mac) ;
-	for ($i=0; $i<6 ; $i++) {
-		$num[$i] = sprintf("%02x",hexdec($num[$i])) ;
-	}
-	$mac= implode($num,"-") ;
-	
-	// Recherhce sur la page de la dsi pour trouver la prise correspondante
-	$port = 80 ;
-	$url = "http://".DSI_URL."/SMAC/search.php?macadresse=$mac" ;
-	$fp = fsockopen(DSI_URL, $port);
-	fputs($fp, "GET $url HTTP/1.0\r\nHost: ".DSI_URL."\r\n\r\n");
-	$line = "" ;
-	while(!feof($fp)){
-		$line .= fgets($fp,4000);
-	}
-	
-	// Récuperation de la prise ...
-	$temp = explode("<TR>",$line);
-	if (!isset($temp[2])) {
-		return false ;
-	}
-	$temp = explode("<B>",$temp[2]) ;
-	$temp = explode("</B>",$temp[1]) ;
-	
-	// Recuperation de la prise
-	
-	$DB_admin->push_result() ;
-	$DB_web->query("SELECT  valeur FROM parametres WHERE nom='lastpromo_oncampus'");
-	list($lastpromo) = $DB_web->next_row() ;
-	$on = " ON ((e.promo='".($lastpromo)."' OR e.promo='".($lastpromo-1)."' OR e.promo IS NULL) AND e.piece_id=p.piece_id) " ;
-	
-	$DB_admin->query("SELECT e.login, e.promo, p.ip FROM prises as p "
-					."LEFT JOIN trombino.eleves as e $on WHERE p.prise_id='$temp[0]' LIMIT 1");
-	$result = "" ;
-	while(list($login,$promo,$ip_theorique) = $DB_admin->next_row()) {
-		$result[0] = $login ;
-		$result[1] = $promo ;
-		$result[2] = $ip_theorique ;
-	}
-					
-	$DB_admin->pop_result() ;
-	return $result ;
-}
-
-
 
 
 // Génération de la page
@@ -168,34 +125,6 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <h2>Log de la semaine</h2>
 
 <?
-// On affiche les 50 dernière entrée dans l'arpwtach ..
-$DB_admin->query("SELECT ip,ts,mac FROM arpwatch_log ORDER BY ts DESC LIMIT 50") ;
-	while(list($ip,$timestamp,$mac) = $DB_admin->next_row()) {
-		$year = substr($timestamp, 2, 2);
-		$month = substr($timestamp, 5, 2);
-		$day = substr($timestamp, 8, 2);
-		$heure = substr($timestamp, 11,8) ;
-		$date = "$day/$month/$year à $heure" ;
-		
-		$test = explode(".",$ip) ;
-		if (($test[0]!="129")||($test[1]!="104")){
-			continue ;
-		}
-		$result = search_from_mac($mac) ;
-		if (($result[2]!=$ip)&&($result!=false))
-			echo "<p>[$date] $result[0] (X$result[1]) a pris l'ip $ip (la sienne étant $result[2])</p>" ;
-		else if ($result==false)
-			echo "<p>[$date] la mac inconnu $mac a pris l'ip $ip</p>" ;
-	}
-
-?>
-
-
-
-
-
-
-<?
 	if(!empty($message))
 		echo "<commentaire>$message</commentaire>\n";
 		
@@ -205,13 +134,17 @@ $DB_admin->query("SELECT ip,ts,mac FROM arpwatch_log ORDER BY ts DESC LIMIT 50")
 	if (isset($_REQUEST['rech_prise'])) $where .= "AND p.prise_id  LIKE '%".$_REQUEST['rech_prise']."%' " ;
  	if (isset($_REQUEST['rech_ip'])) $where .= "AND p.ip LIKE'%".$_REQUEST['rech_ip']."%' " ;
 	
-	$DB_web->query("SELECT  valeur FROM parametres WHERE nom='lastpromo_oncampus'");
-	list($lastpromo) = $DB_web->next_row() ;
-	$on = " ON ((e.promo='".($lastpromo)."' OR e.promo='".($lastpromo-1)."' OR e.promo IS NULL) AND e.piece_id=p.piece_id) " ;
+	
 
 
 ?>
+	<formulaire id="update_prise" titre="Mise a jour" action="admin/arpwatch.php">
+		<commentaire>Mettez à jour grâce à ce bouton la correspondance des prises et des macs</commentaire>
+		<bouton titre="Update" id="update"/>
+	</formulaire>
+	
 	<formulaire id="recherche" titre="Recherche" action="admin/arpwatch.php">
+		<commentaire>Le nombre de résultat sera limité à 100 </commentaire>
 		<champ titre="Login" id="rech_login" valeur="<? if (isset($_REQUEST['rech_login'])) echo $_REQUEST['rech_login']?>" />
 		<champ titre="Pièce" id="rech_kzert" valeur="<? if (isset($_REQUEST['rech_kzert'])) echo $_REQUEST['rech_kzert']?>" />
 		<champ titre="Prise" id="rech_prise" valeur="<? if (isset($_REQUEST['rech_prise'])) echo $_REQUEST['rech_prise']?>" />
@@ -220,72 +153,91 @@ $DB_admin->query("SELECT ip,ts,mac FROM arpwatch_log ORDER BY ts DESC LIMIT 50")
 	</formulaire>
 <?
 echo $message ;
+if (isset($_REQUEST['update']) ) {
+	$toutes_macs = toutes_macs() ;
+	maj_mac_dans_bdd($toutes_macs) ;
+	echo "<commentaire>La base vient d'être correctement mise à jour</commentaire>" ;
+}
 
 if (isset($_REQUEST['recherche']) ) {
-	$toutes_macs = toutes_macs() ;
+	// on trouve la promo !
+	
+	$DB_web->query("SELECT  valeur FROM parametres WHERE nom='lastpromo_oncampus'");
+	list($lastpromo) = $DB_web->next_row() ;
+	$on = " ON ((e.promo='".($lastpromo)."' OR e.promo='".($lastpromo-1)."' OR e.promo IS NULL) AND e.piece_id=p.piece_id) " ;
 
-	$DB_admin->query("SELECT e.login, e.promo, p.prise_id, p.piece_id, p.ip,p.type FROM prises as p "
-					."LEFT JOIN trombino.eleves as e $on $where ORDER BY p.piece_id ASC");
+	$DB_admin->query("SELECT al.ts,al.ip,pm.mac,e.login, e.promo, p.prise_id, p.piece_id, p.ip,p.type FROM prises as p LEFT JOIN trombino.eleves as e $on LEFT JOIN prise_mac as pm ON pm.prise=p.prise_id LEFT JOIN arpwatch_log as al ON al.mac=pm.mac $where ORDER BY p.piece_id ASC");
 ?>
 
 	<liste id="liste_ip" selectionnable="non" action="admin/arpwatch.php">
 		<entete id="login" titre="Login"/>
-		<entete id="promo" titre="Promo"/>
-		<entete id="piece" titre="Piece"/>
-		<entete id="prise" titre="Prise"/>
 		<entete id="ip" titre="IP auth."/>
 		<entete id="ip_fo" titre="IP non auth"/>
-		<entete id="mac" titre="Mac"/>
 <?php
 		
-		$temp_piece = "" ;
-		while(list($login,$promo, $id_prise,$id_piece,$ip_theorique,$type) = $DB_admin->next_row()) {
-			echo "\t\t<element id=\"$id_prise\">\n";
+		$t_mac="";
+		$t_login="";
+		$t_promo="" ;
+		$t_id_prise="";
+		$t_id_piece="";
+		$t_ip_theorique="" ;
+		$t_type=""; 
+		$t_ip_prise="" ;
+		
+		$ip_prise = "" ;
+		
+		while(list($date,$ip_prise,$mac,$login,$promo, $id_prise,$id_piece,$ip_theorique,$type) = $DB_admin->next_row()) {
+			
+		
+			if ($login==$t_login) {
+			// On copie les ips ...
+				$t_ip_theorique = str_replace("$ip_theorique","",$t_ip_theorique) ;
+				if ($t_ip_theorique!="")
+					$t_ip_theorique .= "<br/>".$ip_theorique ;
+				else 
+					$t_ip_theorique .= $ip_theorique ;
+				$t_ip_theorique = str_replace("<br/><br/>","<br/>",$t_ip_theorique) ;
 
-			$login2 ="" ;
-			$promo2 ="" ;
-			
-			// Si l'ip est une ip rajouté
-			//=====================
-			if ($type=="secondaire") {
-				echo "\t\t\t<colonne id=\"login\">-</colonne>\n";
-				echo "\t\t\t<colonne id=\"promo\">-</colonne>\n";
-				echo "\t\t\t<colonne id=\"piece\">-</colonne>\n";
-				echo "\t\t\t<colonne id=\"prise\">-</colonne>\n";
-				echo "\t\t\t<colonne id=\"ip\"><p>$ip_theorique </p>(secondaire)</colonne>\n";
-				echo "\t\t\t<colonne id=\"ip_fo\">?</colonne>\n";
-				echo "\t\t\t<colonne id=\"mac\">-</colonne>\n";
-				
-//				$texte_brut=file_get_contents("http://intranet.polytechnique.fr/SYSRES/SMAC/search.php?id_prise=$id_prise");
-			} else {
-			
-			// Si l'ip est l'ip par défaut sur la prise
-			//=====================
-			
-				if (($temp_piece==$id_piece)&&($temp_prise==$id_prise)){
-					$id_piece = "###" ;
-					$id_prise = "###" ;
+			//et on gere les ips qui ne sont prise de facon non autorisé
+				if ($ip_prise!="") {
+					$t_ip_prise .= "<br/>".$ip_prise." (par $mac le $date)" ;
 				}
 				
-				if (strlen($login)>0 ) 
-					$login = "<bouton titre='Détails' id='detail_{$login}_{$promo}' type='detail'/>".$login ;
-				$macmac= mac($id_prise,$toutes_macs) ;
-				echo "\t\t\t<colonne id=\"login\">$login</colonne>\n";
-				echo "\t\t\t<colonne id=\"promo\">$promo</colonne>\n";
-				echo "\t\t\t<colonne id=\"piece\">$id_piece</colonne>\n";
-				echo "\t\t\t<colonne id=\"prise\">$id_prise</colonne>\n";
-				echo "\t\t\t<colonne id=\"ip\">$ip_theorique</colonne>\n";
-				echo "\t\t\t<colonne id=\"ip_fo\">".ip_non_auth($ip_theorique,$macmac)." </colonne>\n";
-				echo "\t\t\t<colonne id=\"mac\">".$macmac."</colonne>\n";
+			} else {
+				if ($t_id_piece!="") {	
+					echo "\t\t<element id=\"$id_prise\">\n";			
+					if (strlen($t_login)>0 ) 
+						$t_login = "<bouton titre='Détails' id='detail_{$t_login}_{$t_promo}' type='detail'/>".$t_login ;
+					echo "\t\t\t<colonne id=\"login\">$t_login</colonne>\n";
+					echo "\t\t\t<colonne id=\"ip\">$t_ip_theorique</colonne>\n";
+					echo "\t\t\t<colonne id=\"ip_fo\">".$t_ip_prise." </colonne>\n";
+					
+					echo "\t\t</element>\n";
+				}
+				
+				$t_mac=$mac ;
+				$t_login=$login ;
+				$t_promo=$promo ;
+				$t_id_prise=$id_prise ;
+				$t_id_piece=$id_piece ;
+				$t_ip_theorique=$ip_theorique ;
+				$t_type=$type ;
+				$t_ip_prise = $ip_prise ;
 			}
-			
-
-			// On sauve temporaitement la piece
-			$temp_piece = $id_piece ;
-			$temp_prise = $id_prise ;
+		}
+		
+		if ($t_id_piece!="") {	
+			echo "\t\t<element id=\"$id_prise\">\n";			
+			if (strlen($t_login)>0 ) 
+				$t_login = "<bouton titre='Détails' id='detail_{$t_login}_{$t_promo}' type='detail'/>".$t_login ;
+			echo "\t\t\t<colonne id=\"login\">$t_login</colonne>\n";
+			echo "\t\t\t<colonne id=\"ip\">$t_ip_theorique</colonne>\n";
+			echo "\t\t\t<colonne id=\"ip_fo\">".$t_ip_prise." </colonne>\n";
 			
 			echo "\t\t</element>\n";
 		}
+		
+		
 ?>
 	</liste>
 <?
