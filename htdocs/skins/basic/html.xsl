@@ -3,9 +3,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.13  2004/10/20 22:10:57  schmurtz
+	Correction du bug qui affichait deux images dans la faq
+
 	Revision 1.12  2004/10/20 22:05:36  schmurtz
 	Juste pour pico, qu'il puisse y voir quelque chose
-
+	
 	Revision 1.11  2004/10/20 19:58:02  pico
 	Changement skin pico -> valide html strict
 	Changement des balises qui étaient pas valides
@@ -140,7 +143,7 @@
 		</xsl:otherwise></xsl:choose>
 		
 		<xsl:if test="count(noeud|feuille)">
-			<ul>
+			<ul class="feuille">
 				<xsl:apply-templates select="noeud|feuille"/>
 			</ul>
 		</xsl:if>
@@ -148,7 +151,7 @@
 </xsl:template>
 
 <xsl:template match="feuille">
-	<li class="feuille">
+	<li>
 		<xsl:choose><xsl:when test="boolean(@lien)">
 			<a><xsl:attribute name="href"><xsl:value-of select="@lien"/></xsl:attribute>
 				<xsl:value-of select="@titre"/>
