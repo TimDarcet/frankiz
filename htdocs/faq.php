@@ -19,10 +19,13 @@
 */
 /*
 		$Log$
+		Revision 1.6  2004/11/27 23:41:19  pico
+		erreur de chemin vers les data dans la faq
+
 		Revision 1.5  2004/11/27 23:30:34  pico
 		Passage des xshare et faq en wiki
 		Ajout des images dans l'aide du wiki
-
+		
 		Revision 1.4  2004/11/26 16:12:47  pico
 		La Faq utilise la $DB_faq au lieu de $DB_web
 		
@@ -314,60 +317,56 @@ echo "<br/>" ;
 ?>
 
 
-        <formulaire id="form" action="faq.php">
-			<note>Tous les mots seront dans la description / Séparez les par un blanc</note>
-            <champ id="mots" titre="Mots-clefs" valeur="<? echo $mots ;?>"/>
-            <bouton id="Submit" titre="Valide"/>
-            <bouton id="reset" titre="Reset"/>
-        </formulaire>
+<formulaire id="form" action="faq.php">
+	<note>Tous les mots seront dans la description / Séparez les par un blanc</note>
+	<champ id="mots" titre="Mots-clefs" valeur="<? echo $mots ;?>"/>
+	<bouton id="Submit" titre="Valide"/>
+	<bouton id="reset" titre="Reset"/>
+</formulaire>
 <?
 
 //
 // Corps du Documents pour les réponses
 //---------------------------------------------------
 
-  	if(isset($_REQUEST['idpopup'])) $id = $_REQUEST['idpopup'] ; else $id = "";
-  	if ($id != "") {
-		$DB_faq->query("SELECT question,reponse FROM faq WHERE faq_id='{$id}'") ;
-		if (list($question,$reponse) = $DB_faq->next_row()) {
-
-	$repfaq = "../../data/faq/".$reponse;
-	echo "<cadre titre=\"Q: ".$question."\" id=\"reponse\">\n";
-	if(file_exists($repfaq)){
- 		if($texte = fopen($repfaq,"r")){
- 	 		while(!feof($texte))
-   			{
-   	 			$ligne = wikiVersXML(fgets($texte,255));
-				// Remplace les liens locaux pour les images et les liens, car sinon conflit avec le BASE_HREF
-				$patterns[0] = '(<html>|</html>)';
-				$patterns[1] = '(source="(?!http://)(?!ftp://))';
-				$patterns[2] ='(url="(?!http://)(?!ftp://)(?!#))';
-				$patterns[3] ='(url="#)';
-				$replacements[3] = '';
-				$replacements[2] = 'source="'.dirname("../data/faq/$reponse")."/";
-				$replacements[1] = 'url="'.dirname("../data/faq/$reponse")."/";
-				$replacements[0] = 'url="'.getenv('SCRIPT_NAME')."?".getenv('QUERY_STRING')."#";
-				$ligne = preg_replace($patterns,$replacements, $ligne);
-   	 			print(htmlspecialchars($ligne,ENT_QUOTES));
-   			}
- 	 		fclose($texte);
+if(isset($_REQUEST['idpopup'])) $id = $_REQUEST['idpopup'] ; else $id = "";
+if ($id != "") {
+	$DB_faq->query("SELECT question,reponse FROM faq WHERE faq_id='{$id}'") ;
+	if (list($question,$reponse) = $DB_faq->next_row()) {
+		$repfaq = BASE_DATA."/faq/".$reponse;
+		echo "<cadre titre=\"Q: ".$question."\" id=\"reponse\">\n";
+		if(file_exists($repfaq)){
+			if($texte = fopen($repfaq,"r")){
+				while(!feof($texte))
+				{
+					$ligne = wikiVersXML(fgets($texte,255));
+					// Remplace les liens locaux pour les images et les liens, car sinon conflit avec le BASE_HREF
+					$patterns[0] = '(<html>|</html>)';
+					$patterns[1] = '(source="(?!http://)(?!ftp://))';
+					$patterns[2] ='(url="(?!http://)(?!ftp://)(?!#))';
+					$patterns[3] ='(url="#)';
+					$replacements[3] = '';
+					$replacements[2] = 'source="'.dirname(BASE_DATA."/faq/$reponse")."/";
+					$replacements[1] = 'url="'.dirname(BASE_DATA."/faq/$reponse")."/";
+					$replacements[0] = 'url="'.getenv('SCRIPT_NAME')."?".getenv('QUERY_STRING')."#";
+					$ligne = preg_replace($patterns,$replacements, $ligne);
+					print(htmlspecialchars($ligne,ENT_QUOTES));
+				}
+				fclose($texte);
+			}
+		} else {
+		?>
+			<warning>Erreur : Impossible de trouver cette question </warning>
+		<?
 		}
-
+		echo "\n</cadre>";	
 	} else {
 	?>
-	<warning>Erreur : Impossible de trouver cette question </warning>
+		<warning>Erreur : Impossible de trouver cette question </warning>
 	<?
 	}
-	echo "\n</cadre>";
-	
-	} else {
-	?>
-	<warning>Erreur : Impossible de trouver cette question </warning>
-	<?
-		}
-		
-		echo "<br/><br/>" ;
-	}
+	echo "<br/><br/>" ;
+}
 
 
 //
