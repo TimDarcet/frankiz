@@ -21,9 +21,12 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.32  2005/01/18 13:00:21  pico
+	Affichage état Bôb et Kès sur la page des activités
+
 	Revision 1.31  2005/01/17 22:51:47  pico
 	Liens vers les activités + réorganisation
-
+	
 	Revision 1.30  2005/01/10 07:39:59  pico
 	Correction bug #14
 	
@@ -140,9 +143,9 @@
 	<?php endif; ?>
 	<lien id="meteo" titre="Météo" url="meteo.php" key="m"/>
 	<lien id="vocab" titre="Vocabulaire" url="vocabulaire.php" key="v"/>
-<? /*</module>
+</module>
 	
-<module id="liens_profil" titre="Preférences"> */ ?>
+<module id="liens_profil" titre="Preférences">
 	<?php if(est_authentifie(AUTH_FORT)): ?>
 		<lien id="deconnect" titre="Se déconnecter" url="index.php?logout=1" key="l"/>
 	<?php endif; ?>

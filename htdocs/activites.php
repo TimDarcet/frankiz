@@ -21,9 +21,12 @@
 	Page d'activites de frankiz.
 	
 	$Log$
+	Revision 1.4  2005/01/18 13:00:21  pico
+	Affichage état Bôb et Kès sur la page des activités
+
 	Revision 1.3  2005/01/17 21:55:18  pico
 	sert à rien, mais me plait mieux :)
-
+	
 	Revision 1.2  2005/01/17 21:52:04  pico
 	Page des activités
 	
@@ -50,8 +53,10 @@ list($valeurKes) = $DB_web->next_row();
 
 
 	
-if(est_authentifie(AUTH_INTERNE) && $valeurBob == 1) echo "<annonce titre=\"Le BôB est ouvert\"/>";
-if(est_authentifie(AUTH_INTERNE) && $valeurKes == 1) echo "<annonce titre=\"La Kes est ouverte\"/>";
+if(est_authentifie(AUTH_INTERNE)){ 
+	echo ($valeurBob == 1)?"<annonce titre=\"Le BôB est ouvert\"/>":"<annonce><em>Le BôB est fermé</em></annonce>";
+	echo ($valeurKes == 1)?"<annonce titre=\"La Kès est ouverte\"/>":"<annonce><em>La Kès est fermée</em></annonce>";
+}
 
 $date_legend = array("Aujourd'hui","Demain","Après-demain","Dans 3 jours","Dans 4 jours","Dans 5 jours","Dans une semaine");
 if(!est_authentifie(AUTH_INTERNE)) $exterieur=" AND exterieur='1' ";
