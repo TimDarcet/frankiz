@@ -21,9 +21,12 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.26  2004/12/15 02:05:30  schmurtz
+	Faut mettre vocabulaire a la fin
+
 	Revision 1.25  2004/12/15 00:05:04  schmurtz
 	Plus beau
-
+	
 	Revision 1.24  2004/12/14 17:14:53  schmurtz
 	modification de la gestion des annonces lues :
 	- toutes les annonces sont envoyees dans le XML
@@ -104,7 +107,6 @@
 	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
 		<lien id="deconnect" titre="Se déconnecter" url="index.php?logout=1" key="l"/>
 		<lien id="profil"  titre="Préférences" url="profil/index.php" key="p"/>
-		
 	<?php else: ?>
 		<lien id="connect" titre="Se connecter" url="login.php" key="l"/>
 	<?php endif; ?>
@@ -115,9 +117,9 @@
 		<lien id="trombino" titre="Trombino" url="trombino.php" key="t"/>
 	<?php } ?>
 	<lien id="meteo" titre="Météo" url="meteo.php" key="m"/>
-	<lien id="vocab" titre="Vocabulaire" url="vocabulaire.php" key="v"/>
 	<lien id="siteseleves" titre="Sites élèves" url="siteseleves.php"/>
 	<?php if ((count($_SESSION['user']->perms)>1)&&($_SESSION['user']->perms[0]!="")) { ?>
 		<lien id="admin" titre="Administration" url="gestion/" key="g"/>
 	<?php } ?>
+	<lien id="vocab" titre="Vocabulaire" url="vocabulaire.php" key="v"/>
 </module>
