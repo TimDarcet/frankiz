@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.13  2004/10/29 15:54:28  kikx
+	Mail en HTLM et raison du refus si refus
+
 	Revision 1.12  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.11  2004/10/20 23:21:39  schmurtz
 	Creation d'un element <html> qui permet d'afficher du html brute sans verification
 	C'est ce qui est maintenant utilise dans les annonces/cadres
@@ -61,14 +64,9 @@
 	envoie en HTML ...
 	Page pas tout a fait fonctionnel pour l'instant
 	
-
-	
 */
 set_time_limit(0) ;
 require_once "../include/global.inc.php";
-
-
-
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
@@ -110,9 +108,10 @@ foreach ($_POST AS $keys => $val){
 		$DB_valid->query("SELECT eleve_id FROM valid_mailpromo WHERE mail_id='{$temp[1]}'");
 		list($eleve_id) = $DB_valid->next_row() ;
 		// envoi du mail
-		$contenu = "Merci de ta participation \n\n".
-			"Très BR-ement\n" .
-			"L'automate :)\n"  ;
+		$contenu = 	"Ton mail promo a été validé par le BR<br><br>".
+					"Merci de ta participation<br><br>".
+					"Très BR-ement<br>" .
+					"L'automate :)<br>"  ;
 		couriel($eleve_id,"[Frankiz] Ton mail promo a été validé par le BR",$contenu);
 		
 	//====================================================
@@ -255,9 +254,11 @@ foreach ($_POST AS $keys => $val){
 		$DB_valid->query("SELECT eleve_id FROM valid_mailpromo WHERE mail_id='{$temp[1]}'");
 		list($eleve_id) = $DB_valid->next_row() ;
 		// envoi du mail
-		$contenu = "Désolé \n\n".
-			"Très BR-ement\n" .
-			"L'automate :)\n"  ;
+		$contenu = 	"Ton mail promo n'a pas été validé par le BR pour la raison suivante<br>".
+					$_POST['refus']."<br><br>".
+					"Désolé <br>".
+					"Très BR-ement\n" .
+					"L'automate :)\n"  ;
 		couriel($eleve_id,"[Frankiz] Ton mail promo n'a pas été validé par le BR",$contenu);
 
 		$DB_valid->query("DELETE FROM valid_mailpromo WHERE mail_id='{$temp[1]}'") ;
@@ -308,7 +309,8 @@ while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $prom
 				echo "<option titre='$promo2' id='$promo2' />" ;
 		?>
 		</choix>
-				
+		<zonetext id="refus" titre="La raison du refus si refus" valeur=""/>
+
 		<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
 		<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Envoyer ce mail promo ?')"/>
 		<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Supprimer ce mail promo et ne pas l'envoyer ?')"/>
