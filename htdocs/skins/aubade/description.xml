@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<skin>
+	<nom>Aubade</nom>
+	<description>Theme aubade</description>
+	<chemin>xsl</chemin>
+	<parametre id="sommaire">
+		<description>Afficher le sommaire des annonces</description>
+		<valeur id="trie">Trié</valeur>
+		<valeur id="pas_trie">Non trié</valeur>
+		<valeur id="cache">Ne pas afficher</valeur>
+	</parametre>
+	<parametre id="trier_annonces">
+		<description>Trier les annonces</description>
+		<valeur id="trie">Oui</valeur>
+		<valeur id="pas_trie">Non</valeur>
+	</parametre>
+</skin>
