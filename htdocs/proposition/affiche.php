@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une activité
 	
 	$Log$
+	Revision 1.10  2004/11/25 10:47:56  pico
+	Histoire d'éviter que le même pb se retrouve ici
+
 	Revision 1.9  2004/11/22 23:38:42  kikx
 	Ajout de <note></note> un peu partout pour plus de compréhension !
-
+	
 	Revision 1.8  2004/11/16 18:32:34  schmurtz
 	Petits problemes d'interpretation de <note> et <commentaire>
 	
@@ -129,7 +132,7 @@ if (isset($_POST['valid'])) {
 		// selon la norme de nommage ci-dessus
 		//----------------------------------------------------------------------------------------------
 		
-		$index = mysql_insert_id() ;
+		$index = mysql_insert_id($DB_web->link) ;
 		rename(DATA_DIR_LOCAL."affiches/temp_$eleve_id",DATA_DIR_LOCAL."affiches/a_valider_{$index}") ; 
 	
 		$contenu = "<strong>Bonjour,</strong><br><br>".
