@@ -19,6 +19,11 @@ rss_xml('http://linuxfr.org/backend/news-homepage/rss20.rss','sommaire');
 rss_xml('http://www.framasoft.net/backend.php3','sommaire');
 rss_xml('http://www.infos-du-net.com/backend.php','sommaire');
 rss_xml('http://www.clubic.com/c/xml.php?type=news','sommaire');
+rss_xml('http://hyperlinkextractor.free.fr/rssfiles/google_france.xml','sommaire');
+rss_xml('http://www.humanite.fr/backend_une.php3','sommaire');
+rss_xml('http://www.lexpress.fr/getfeedrss.asp','sommaire');
+rss_xml('http://permanent.nouvelobs.com/cgi/rss/permanent_une','sommaire');
+
 ?>
 </page>
 <?
