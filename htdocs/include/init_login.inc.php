@@ -36,9 +36,12 @@
 	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
 
 	$Log$
+	Revision 1.16  2005/01/26 06:18:15  pico
+	Suppression d'un reste
+
 	Revision 1.15  2005/01/25 14:47:48  kikx
 	Retour en arrière car fait pas l'unanimité
-
+	
 	Revision 1.14  2005/01/24 18:02:54  kikx
 	Permet de pas toujours se logguer sous l'auth xorg
 	J'attend les remarques constructives de ce qui me lisent :)
@@ -233,7 +236,7 @@ function demande_authentification($minimum) {
 			<warning>Une erreur est survenue lors de l'authentification. Vérifie qu'il n'y a pas d'erreur
 			dans le login ou le mot de passe.</warning>
 		<?php endif; ?>
-		<note>Ton login est loginpoly.promo (ou le login xorg si tu couche la case)</note>
+		<note>Ton login est loginpoly.promo</note>
 		<formulaire id="login" titre="Connexion" action="">
 		<?  foreach ($_REQUEST AS $keys => $val){
 			echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
