@@ -8,8 +8,7 @@
 	
 
 */
-?>
-
+if(est_authentifie(AUTH_MINIMUM)) { ?>
 	<module id="stats" titre="Statistiques" visible="<?php echo skin_visible("stats"); ?>">
 		<statistiques>
 			<serveur nom="frankiz" etat="up" uptime="<?php @include 'http://frankiz.polytechnique.fr/uptimefkz' ?>" />
@@ -24,3 +23,4 @@
 			<serveur nom="poly" etat="up" />
 		</statistiques>
 	</module>
+<?php } ?>

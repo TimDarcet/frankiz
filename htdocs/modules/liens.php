@@ -8,32 +8,36 @@
 
 	<module id="liens_navigation" titre="Frankiz">
 		<lien titre="Frankiz" url="." />
-		<?php if($_SESSION['user']->est_authentifie(AUTH_MINIMUM)): ?>
+		<?php if(est_authentifie(AUTH_MINIMUM)): ?>
 			<lien titre="Se déconnecter" url="index.php?logout=1" />
 			<lien titre="Profil" url="profil/profil.php" />
+			<lien titre="Skins" url="profil/skin.php" />
+			<lien titre="InfoBr" url="documentation/infobr.pdf" />
 		<?php else: ?>
 			<lien titre="Se connecter" url="login.php" />			
 		<?php endif; ?>
-		<lien titre="Skins" url="profil/skin.php" />
 		<lien titre="Docs/Manuels" url="documentation/" />
-		<lien titre="InfoBr" url="documentation/infobr.pdf" />
 		<lien titre="FAQ" url="faq/" />
 		<lien titre="Télécharger" url="xshare/" />
 		<lien titre="Binets" url="binets.php" />
-		<lien titre="Trombino" url="trombino/" />
-		<lien titre="Xplorateur" url="xplorateur/" />
-		<?php if($_SESSION['user']->verifie_permission("admin")): ?>
+		<?php if(est_authentifie(AUTH_MINIMUM)): ?>
+			<lien titre="Trombino" url="trombino/" />
+			<lien titre="Xplorateur" url="xplorateur/" />
+		<?php endif; ?>
+		<?php if(verifie_permission("admin")): ?>
 			<lien titre="Admin" url="admin/" />
 		<?php endif; ?>
 	</module>
 
 	<module id="liens_contacts" titre="Contacts" visible="<?php echo skin_visible("liens_contacts"); ?>">
 		<lien titre="Écrire aux webmasters" url="mailto:web@frankiz" />
-		<lien titre="Proposer une annonce" url="gestion/annonce.php" />
-		<lien titre="Proposer une activité" url="gestion/activite.php" />
-		<lien titre="Mise à jour d'un binet" url="gestion/majbinet.php" />
-		<lien titre="Demander un mail promo" url="gestion/mailpromo.php" />
-		<lien titre="Proposer un sondage" url="gestion/sondage.php/" />
+		<?php if(est_authentifie(AUTH_MINIMUM)): ?>
+			<lien titre="Proposer une annonce" url="gestion/annonce.php" />
+			<lien titre="Proposer une activité" url="gestion/activite.php" />
+			<lien titre="Mise à jour d'un binet" url="gestion/majbinet.php" />
+			<lien titre="Demander un mail promo" url="gestion/mailpromo.php" />
+			<lien titre="Proposer un sondage" url="gestion/sondage.php/" />
+		<?php endif; ?>
 	</module>
 
 	<module id="liens_ecole" titre="Liens école" visible="<?php echo skin_visible("liens_ecole"); ?>">

@@ -1,140 +1,89 @@
 <?php
-
-
-
-function qdj_affiche($jour,$action){
-	if($jour=="hier"){
-		$date = date("Y-m-d", time()-3025-24*3600);
-		$fichier_cache = BASE_LOCAL."/cache/qdj_hier";
-		$cache_present = 0;
-	}elseif($jour=="aujourdhui"){
-		$date = date("Y-m-d", time()-3025);
-		$fichier_cache = BASE_LOCAL."/cache/qdj_courante";
-		$fichier_cache_hier = BASE_LOCAL."/cache/qdj_hier";
-		$cache_present = 0;
-	}
-
-	if(file_exists($fichier_cache) && date("Y-m-d", filemtime($fichier_cache)) == ($hier)){
-  	// Supprime le cache périmé
-  		unlink($fichier_cache_hier);
-	}
-	if (file_exists($fichier_cache)){ 
-		if(date("Y-m-d", filemtime($fichier_cache)) == date("Y-m-d", time()-3025)){
-    			$cache_present = 1;
-  		}
-	}
+/*
+	$Id$
 	
-	connecter_mysql_frankiz();
+	Affichage et gestion de la QDJ.
+	
+	TODO traiter le cas ou le qdj master est à la bourre (garder l'ancienne qdj par exemple).
+*/
 
-	$result = mysql_query("SELECT intitule,reponse1,reponse2,compte1,compte2,id FROM questions WHERE date='$date' LIMIT 1");
-	list($intitule,$reponse1,$reponse2,$compte1,$compte2,$id) = mysql_fetch_row($result);
+
+function qdj_affiche($hier,$deja_vote) {
+	$date = date("Y-m-d", time()-3025 - ($hier ? 24*3600 : 0));
+	$jour = $hier ? 'aujourdhui' : 'hier';
+	$fichier_cache = BASE_LOCAL."/cache/qdj_".($hier?"hier":"courante");
+	
+	connecter_mysql_frankiz();  // TODO correction moche d'un bug
+	$result = mysql_query("SELECT question,reponse1,reponse2,compte1,compte2 FROM qdj WHERE date='$date' LIMIT 1");
+	list($question,$reponse1,$reponse2,$compte1,$compte2) = mysql_fetch_row($result);
 	mysql_free_result($result);
-	$comptetotal = $compte1 + $compte2;
-	deconnecter_mysql_frankiz();
 ?>
 
-	<module id="qdj" titre="QDJ<?php if($jour=="hier") echo " d'hier"?>" visible="<?php echo skin_visible("qdj_$jour");?>">
-		<qdj type="<? echo $jour ?>" id="<? echo $id ?>" 
-		<? if($action !="") echo " action=\"$action\""; ?>>
-			<question><?php echo $intitule ?></question>
-			<reponse id="1" votes="<?php echo $compte1 ?>"><?php echo $reponse1 ?></reponse>
-			<reponse id="2" votes="<?php echo $compte2 ?>"><?php echo $reponse2 ?></reponse>
-
+	<module id="qdj_<?php echo $jour ?>" titre="QDJ<?php if($hier) echo ' d\'hier' ?>" visible="<?php echo skin_visible("qdj_$jour");?>">
+		<qdj type="<?php echo $jour?>" id="<?php echo $id?>" <?php if(!$deja_vote && !$hier) echo " action=\"?qdj=$date&amp;vote=\""; ?>>
+			<question><?php echo $question ?></question>
+			<reponse id="1" votes="<?php echo $compte1?>"><?php echo $reponse1?></reponse>
+			<reponse id="2" votes="<?php echo $compte2?>"><?php echo $reponse2?></reponse>
 <?php
-		if($cache_present){
+			// Récupération des noms des derniers votants à la question en cours
+			if(file_exists($fichier_cache)) {
+				// utilisation du cache
+				readfile($fichier_cache);
 
-			readfile($fichier_cache);
-
-		}else{
-			connecter_mysql_frankiz();
-			// Récupère les résultats de la question en cours
-			$result = mysql_query("SELECT ip FROM votes WHERE question='$id' ORDER BY time DESC LIMIT 20");
-			$last=array();
-			for($i=0;$i<20 && $last[] = array_pop(mysql_fetch_row($result));$i++);
-			mysql_free_result($result);
-			reset($last);
-			deconnecter_mysql_frankiz();
- 
- 			$contenu = "";
- 			while(list($key,$lastip)=each($last)){ 
-				if(isset($lastip)){
-					$contenu .= "<dernier ordre=\"$comptetotal\">";
-					$lastip = ip2dns($lastip);
-					$contenu .= "$lastip</dernier>\n";
-					$comptetotal--;
-				} 
-			} 
-			$contenu .= "\n";
-			echo $contenu;  
-			$file = fopen($fichier_cache, 'w');
-			fwrite($file, $contenu);
-			fclose($file);  
-	}
-
+			} else {
+				// interrogation de la base de données
+				connecter_mysql_frankiz();
+				$result = mysql_query("SELECT ordre,nom,prenom,surnom FROM qdj_votes LEFT JOIN eleves USING(eleve_id) WHERE date='$date' ORDER BY ordre DESC LIMIT 20");
+				$contenu = "";
+				while(list($ordre,$nom,$prenom,$surnom) = mysql_fetch_row($result))
+					$contenu .= "<dernier ordre=\"$ordre\">".(empty($surnom) ? $prenom.' '.substr($nom,0,1).'.' : $surnom)."</dernier>\n";
+				mysql_free_result($result);
+				deconnecter_mysql_frankiz();
+				
+				// affichage
+				echo $contenu;  
+				
+				// mise en cache
+				$file = fopen($fichier_cache, 'w');
+				fwrite($file, $contenu);
+				fclose($file);
+			}
 ?>
-
 		</qdj>
 	</module>
 <?php
 }
 
-function qdj_test_vote(){
-	global $client_ip;
+if(est_authentifie(AUTH_MINIMUM)) {
 	connecter_mysql_frankiz();
-	
-	$date = date("Y-m-d", time()-3025);
-	
-	// Récupère la question en cours
-	$result = mysql_query("SELECT questions.id FROM questions , votes WHERE questions.date='$date' and votes.question = questions.id and votes.ip='$client_ip' LIMIT 1");
-	// Vérifie si le client a déjà voté à la question en cours
-	$a_vote = mysql_num_rows($result);
-	
+
+	// Nettoyage du cache si on a changé de jour
+	if(file_exists(BASE_LOCAL."/cache/qdj_hier") && filemtime(BASE_LOCAL."/cache/qdj_hier") < time()-3025-24*3600)
+		unlink(BASE_LOCAL."/cache/qdj_hier");
+
+	if(file_exists(BASE_LOCAL."/cache/qdj_courante") && filemtime(BASE_LOCAL."/cache/qdj_courante") < time()-3025)
+		unlink(BASE_LOCAL."/cache/qdj_courante");
+
+	// On cherche si l'utilisateur a déjà voté ou non
+	$date_aujourdhui = date("Y-m-d", time()-3025);
+	$result = mysql_query("SELECT 0 FROM qdj_votes WHERE date='$date_aujourdhui' and eleve_id='".$_SESSION['user']->uid."' LIMIT 1");
+	$a_vote = mysql_num_rows($result) != 0;
+
+	// Gestion du vote
+	if($date_aujourdhui==$_GET['qdj'] && !$a_vote && ($_GET['vote']==1 || $_GET['vote']==2)) {
+		unlink(BASE_LOCAL."/cache/qdj_courante");
+		mysql_query("LOCK TABLE qdj_votes WRITE");
+		mysql_query("SELECT @max:=IFNULL(MAX(ordre),0) FROM qdj_votes WHERE date='$date_aujourdhui'");
+		mysql_query("INSERT INTO qdj_votes SET date='$date_aujourdhui',eleve_id='".$_SESSION['user']->uid."',ordre=@max+1");
+		mysql_query("UNLOCK TABLES");
+		mysql_query("UPDATE qdj SET compte".$_GET['vote']."=compte".$_GET['vote']."+1 WHERE date='$date_aujourdhui'");
+		$a_vote = true;
+	}
+
+	// Affichage de la QDJ courante puis les résultats de celle de la veille
+	qdj_affiche(false,$a_vote);
+	qdj_affiche(true,true);
+
 	deconnecter_mysql_frankiz();
-
-	// Enregistre le vote
-	if(!$a_vote && !empty($_GET["vote"])) {
-  		qdj_vote();
-	}elseif(!$a_vote){ qdj_affiche("aujourdhui","?vote=");}
-	else{
-		qdj_affiche("aujourdhui","");
-	}
 }
-
-function qdj_vote(){
-	global $client_ip;
-	$vote = $_GET['vote'];
-	$date = date("Y-m-d", time()-3025);
-	$fichier_cache = BASE_LOCAL."/cache/qdj_courante";
-	$fichier_cache_hier = BASE_LOCAL."/cache/qdj_hier";
-	$heure_rel = time() - strtotime($date);
-	
-	if (client_eleve($client_ip)) {
-		connecter_mysql_frankiz();
-		$result = mysql_query("SELECT id FROM questions WHERE date='$date' LIMIT 1");
-		$id = mysql_result($result,0);
-		mysql_free_result($result);
-		
-		$query = "UPDATE questions SET compte".$vote." = compte".$vote."+1 WHERE id=$id";
-		mysql_query($query);
-		
-		
-		mysql_query("INSERT INTO votes SET date='$date',question=$id, time=$heure_rel, ip='$client_ip'");
-        
-        
-		if(date("Y-m-d", filemtime($fichier_cache)) == ($aujourdhui-3600*24)){
-			unlink($fichier_cache_hier);
-		}
-        	
-		// On update le cache de la question en cours
-		unlink($fichier_cache);
-		$cache_present = 1; 
-		$a_vote = 1;
-		deconnecter_mysql_frankiz();
-	}
-	qdj_affiche("aujourdhui","");
-}
-
-qdj_test_vote();
-
-qdj_affiche("hier","");
 ?>
