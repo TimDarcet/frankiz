@@ -23,9 +23,13 @@
 	- destruction automatique des résultats
 
 	$Log$
+	Revision 1.17  2004/11/27 16:27:33  pico
+	établit la connection à la bdd qu'à la première requete.
+	Utile si on n'a pas besoin de la connection (genre xnet ou trombino)
+
 	Revision 1.16  2004/11/17 22:18:45  schmurtz
 	Demi correction d'un bug empechant l'affichage des erreurs MySQL
-
+	
 	Revision 1.15  2004/11/16 14:54:12  schmurtz
 	Affichage des erreurs "Parse Error"
 	permet de loguer des infos autre que les commandes SQL (pour debugage)
@@ -66,6 +70,7 @@ class DB {
 	var $host;
 	var $base;
 	var $user;
+	var $pass;
 	var $saved_results;
 	
 	/*
@@ -73,13 +78,8 @@ class DB {
 	*/
 	function DB($host,$base,$user,$pass) {
 		global $_ERREURS_PHPMYSQL;
-		$this->link = mysql_connect($host,$user,$pass,true);
-		
-		if(mysql_errno() == 0)
-			mysql_select_db($base,$this->link) || ajouter_erreur_mysql("USE $base");
-		else
-			ajouter_erreur_mysql("CONNECT $user@$host");
-		
+		$this->link = null;
+		$this->pass = $pass;
 		$this->host = $host;
 		$this->base = $base;
 		$this->user = $user;
@@ -95,6 +95,15 @@ class DB {
 		Exécution d'une requète
 	*/
 	function query($query) {
+		// Connection lors de la première requete.
+		if($this->link == null){
+			$this->link = mysql_connect($this->host,$this->user,$this->pass,true);
+			if(mysql_errno() == 0)
+				mysql_select_db($this->base,$this->link) || ajouter_erreur_mysql("USE ".$this->base);
+			else
+				ajouter_erreur_mysql("CONNECT ".$this->user."@".$this->host);
+		}
+		
 		if($this->result)
 			mysql_free_result($this->result);
 		
