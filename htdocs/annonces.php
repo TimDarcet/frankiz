@@ -3,9 +3,12 @@
 	Annonces de frankiz. Page d'acceuil pour les personnes d�j� logu�es.
 	
 	$Log$
+	Revision 1.8  2004/09/17 15:28:27  schmurtz
+	Utilisation de la balise <eleve> pour les derniers votants à la qdj, les anniversaires, la signature des annonces…
+
 	Revision 1.7  2004/09/17 13:12:24  schmurtz
 	Suppression des <![CDATA[...]>> car les données des GET et POST (et donc de la base de données) sont maintenant échappées avec des &amp; &lt; &apos;...
-
+	
 	Revision 1.6  2004/09/17 10:49:40  kikx
 	Petite erreur ou plutot oubli suite a la suppression du champ valid dans les annonces
 	
@@ -38,15 +41,16 @@ require "include/page_header.inc.php";
 echo "<page id='annonces' titre='Frankiz : annonces'>\n";
 
 
-$DB_web->query("SELECT annonce_id,stamp,perime,titre,contenu,en_haut,nom,prenom "
+$DB_web->query("SELECT annonce_id,stamp,perime,titre,contenu,en_haut,nom,prenom,surnom,promo,"
+					 ."IFNULL(mail,CONCAT(login,'@poly.polytechnique.fr')) as mail "
 					 ."FROM annonces LEFT JOIN trombino.eleves USING(eleve_id) "
 					 ."WHERE (perime>=".date("Ymd000000",time()).") ORDER BY perime DESC");
-while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$nom,$prenom)=$DB_web->next_row()) { ?>
-	<annonce titre="<?php echo $titre ?>" 
+while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$nom,$prenom,$surnom,$promo,$mail)=$DB_web->next_row()) { ?>
+	<annonce titre="<?php echo $titre ?>"
 			categorie="<?php echo get_categorie($en_haut, $stamp, $perime) ?>"
-			auteur="<?php echo "$prenom $nom" ?>"
 			date="<?php echo substr($stamp,8,2)."/".substr($stamp,5,2)."/".substr($stamp,0,4) ?>">
 		<?php echo $contenu ?>
+		<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
 	</annonce>
 <?php }
 

@@ -4,9 +4,12 @@
 	de frankiz.
 
 	$Log$
+	Revision 1.9  2004/09/17 15:28:27  schmurtz
+	Utilisation de la balise <eleve> pour les derniers votants à la qdj, les anniversaires, la signature des annonces…
+
 	Revision 1.8  2004/09/15 23:19:45  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 	Revision 1.7  2004/09/15 21:42:15  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
 	
@@ -219,8 +222,8 @@
 <!ATTLIST eleve
 		nom			CDATA   #REQUIRED
 		prenom		CDATA   #REQUIRED
-		promo		CDATA   #REQUIRED
-		login		CDATA   #REQUIRED
+		promo		CDATA   #IMPLIED
+		login		CDATA   #IMPLIED
 		surnom		CDATA   #IMPLIED
 		tel			CDATA   #IMPLIED
 		mail		CDATA   #IMPLIED

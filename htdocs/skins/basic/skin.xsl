@@ -5,9 +5,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.11  2004/09/17 15:28:14  schmurtz
+	Utilisation de la balise <eleve> pour les derniers votants à la qdj, les anniversaires, la signature des annonces…
+
 	Revision 1.10  2004/09/16 15:32:43  schmurtz
 	Suppression de la fonction afficher_identifiant(), utilisation de <![CDATA[......]]> à la place.
-
+	
 	Revision 1.9  2004/09/16 13:44:34  schmurtz
 	Amélioration de l'affichage de la page des binets (avec le classement par categorie mais pas le trie).
 	Passage de la sortie de la skin basic en xhtml avec doctype.
@@ -93,7 +96,7 @@
 		<tr><th><xsl:value-of select="@titre"/> (<xsl:value-of select="@date"/>)</th></tr>
 		<tr><td>
 			<xsl:value-of disable-output-escaping="yes" select="text()"/>
-			<p class="signature"><xsl:value-of select="@auteur"/></p>
+			<p class="signature"><xsl:apply-templates select="eleve"/></p>
 		</td></tr>
 	</table><br/>
 </xsl:template>
@@ -155,18 +158,19 @@
 	</xsl:choose>
 	
 	<xsl:for-each select="dernier">
-		<xsl:value-of select="@ordre"/><xsl:text> </xsl:text><xsl:apply-templates/><br/>
+		<xsl:apply-templates select="eleve"/>
 	</xsl:for-each>
 </xsl:template>
 
-<!-- Eleves (pour les anniversaires et le trombino) -->
-<xsl:template match="module/eleve">
+<!-- Eleves pour les anniversaires/signatures/qdj -->
+<xsl:template match="eleve">
 	<xsl:value-of select="@prenom"/><xsl:text> </xsl:text>
 	<xsl:value-of select="@nom"/><xsl:text> (</xsl:text>
 	<xsl:value-of select="@promo"/><xsl:text>)</xsl:text>
 	<br/>
 </xsl:template>
 
+<!-- Eleves pour le trombino -->
 <xsl:template match="page/eleve">
 	<table class="trombino" cellspacing="0" cellpadding="0">
 		<tr><td class="titre" colspan="2">

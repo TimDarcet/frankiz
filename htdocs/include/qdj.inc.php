@@ -7,9 +7,12 @@
 	TODO traiter le cas ou le qdj master est à la bourre (garder l'ancienne qdj par exemple).
 	
 	$Log$
+	Revision 1.9  2004/09/17 15:28:20  schmurtz
+	Utilisation de la balise <eleve> pour les derniers votants aÌ€ la qdj, les anniversaires, la signature des annoncesâ€¦
+
 	Revision 1.8  2004/09/15 23:19:31  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 	Revision 1.7  2004/09/15 23:01:21  schmurtz
 	Bug de la qdj : renvoie maintenant sur la page courante (et non index.php)
 	
@@ -40,10 +43,10 @@ function qdj_affiche($hier,$deja_vote) {
 
 			} else {
 				// interrogation de la base de données
-				$DB_web->query("SELECT ordre,nom,prenom,surnom FROM qdj_votes LEFT JOIN trombino.eleves USING(eleve_id) WHERE date='$date' ORDER BY ordre DESC LIMIT 20");
+				$DB_web->query("SELECT ordre,nom,prenom,promo,surnom FROM qdj_votes LEFT JOIN trombino.eleves USING(eleve_id) WHERE date='$date' ORDER BY ordre DESC LIMIT 20");
 				$contenu = "";
-				while(list($ordre,$nom,$prenom,$surnom) = $DB_web->next_row())
-					$contenu .= "<dernier ordre=\"$ordre\">".(empty($surnom) ? $prenom.' '.substr($nom,0,1).'.' : $surnom)."</dernier>\n";
+				while(list($ordre,$nom,$prenom,$promo,$surnom) = $DB_web->next_row())
+					$contenu .= "<dernier ordre=\"$ordre\"><eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"$promo\" surnom=\"$surnom\"/></dernier>\n";
 				
 				// affichage
 				echo $contenu;  
