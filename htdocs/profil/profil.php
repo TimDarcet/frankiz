@@ -24,9 +24,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.31  2004/11/27 08:03:53  pico
+	/tmp/cvsh9cLqQ
+
 	Revision 1.30  2004/11/24 18:12:27  kikx
 	Séparation de la page du site web et du profil personnel
-
+	
 	Revision 1.29  2004/11/22 23:07:28  kikx
 	Rajout de lines vers les pages perso
 	
@@ -241,7 +244,7 @@ if (isset($_POST['suppr_binet'])) {
 		}
 	}
 	if ($count>=1) {
-		mysql_query("DELETE FROM membres WHERE binet_id IN ($ids) AND  eleve_id={$_SESSION['user']->uid}");
+		$DB_trombino->query("DELETE FROM membres WHERE binet_id IN ($ids) AND  eleve_id={$_SESSION['user']->uid}");
 		$message .=  "Suppression de $count binets" ;
 	} else {
 		$message .=  "<warning>Aucun binet séléctionné</warning>" ;	
@@ -252,7 +255,7 @@ if (isset($_POST['suppr_binet'])) {
 
 if (isset($_POST['add_binet'])) {
 	if ($_POST['liste_binet'] != 'default') {
-		mysql_query("INSERT INTO membres SET eleve_id={$_SESSION['user']->uid},binet_id={$_POST['liste_binet']}");
+		$DB_trombino->query("INSERT INTO membres SET eleve_id={$_SESSION['user']->uid},binet_id={$_POST['liste_binet']}");
 		$message .= "<commentaire>Binet correctement ajouté</commentaire>" ;
 	} else {
 		$message .=  "<warning>Aucun binet séléctionné</warning>" ;	
