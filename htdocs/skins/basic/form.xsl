@@ -3,9 +3,13 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.17  2004/10/20 19:58:02  pico
+	Changement skin pico -> valide html strict
+	Changement des balises qui étaient pas valides
+
 	Revision 1.16  2004/10/19 18:16:24  kikx
 	hum
-
+	
 	Revision 1.15  2004/10/19 14:58:43  schmurtz
 	Creation d'un champ de formulaire specifique pour les fichiers (sans passer
 	l'element champ, qui actuellement est un peu acrobatique).
@@ -39,14 +43,14 @@
 		<h2><xsl:value-of select="@titre"/></h2>
 	</xsl:if>
 	<xsl:apply-templates select="commentaire"/>
-	<form enctype="multipart/form-data" method="POST">
+	<form enctype="multipart/form-data" method="post">
 		<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<table class="formulaire" cellspacing="0" cellpadding="0">
 			<xsl:if test="boolean(@titre)">
 				<tr><td class="titre" colspan="2"><xsl:value-of select="@titre"/></td></tr>
 			</xsl:if>
 			<xsl:apply-templates select="champ|choix|zonetext|textsimple|hidden|warning|image|fichier|lien"/>
-			<tr><td class="boutons" colspan="2"><center><xsl:apply-templates select="bouton"/></center></td></tr>
+			<tr><td class="boutons" colspan="2"><div style="text-align: center"><xsl:apply-templates select="bouton"/></div></td></tr>
 		</table>
 	</form>
 </xsl:template>
@@ -164,7 +168,7 @@
 			<xsl:for-each select="option">
 				<option>
 					<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
-					<xsl:if test="../@valeur = @id"><xsl:attribute name="selected"/></xsl:if>
+					<xsl:if test="../@valeur = @id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
 					<xsl:value-of select="@titre"/>
 				</option>
 			</xsl:for-each>
@@ -180,9 +184,9 @@
 			<input type="radio">
 				<xsl:attribute name="name"><xsl:value-of select="../@id"/></xsl:attribute>
 				<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
-				<xsl:if test="../@valeur = @id"><xsl:attribute name="checked"/></xsl:if>
-				<xsl:value-of select="@titre"/><br/>
+				<xsl:if test="../@valeur = @id"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 			</input>
+			<xsl:value-of select="@titre"/><br/>
 		</xsl:for-each>
 	</td></tr>
 </xsl:template>
@@ -195,7 +199,7 @@
 			<input type="checkbox">
 				<xsl:if test="@modifiable='non'"><xsl:attribute name="disabled"/></xsl:if>
 				<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-				<xsl:if test="contains(../@valeur,@id)"><xsl:attribute name="checked"/></xsl:if>
+				<xsl:if test="contains(../@valeur,@id)"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 			</input>
 			<xsl:value-of select="@titre"/><br/>
 		</xsl:for-each>
@@ -220,7 +224,7 @@
 	<input type="submit">
 		<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 		<xsl:attribute name="value"><xsl:value-of select="@titre"/></xsl:attribute>
-		<xsl:when test="onClick"><xsl:attribute name="onClick"><xsl:value-of select="@onClick"/></xsl:attribute></xsl:when>
+		<xsl:when test="@onClick"><xsl:attribute name="onclick"><xsl:value-of select="@onClick"/></xsl:attribute></xsl:when>
 	</input>
 </xsl:template>
 

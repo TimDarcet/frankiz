@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	
-<xsl:template match="module[@id='qdj']">
-	<xsl:if test="@visible='true'">
+<xsl:template match="module[@id='qdj'] | module[@id='qdj_hier'] ">
 		<div class="fkz_titre"><xsl:value-of select="@titre"/></div>
 		<div class="fkz_module">
 		<xsl:choose>
@@ -41,14 +40,13 @@
 		</xsl:otherwise>
 		</xsl:choose>
 		<br/>
-		<center>
+		<div style="text-align: center">
 		<div>Derniers à répondre :</div>
 		<xsl:for-each select="qdj/dernier[position()&lt;=6]">
-			<xsl:value-of select="@ordre"/>. <xsl:value-of select="current()"/><br/>
+			<xsl:value-of select="@ordre"/>. <xsl:value-of select="eleve/@surnom"/><br/>
 		</xsl:for-each>
-		</center>
 		</div>
-	</xsl:if>
+		</div>
 </xsl:template>
 
 </xsl:stylesheet>

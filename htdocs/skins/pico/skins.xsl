@@ -3,7 +3,7 @@
 
 <xsl:template match="skins">
 <form method="GET" target="_parent">
-    <center><b><xsl:text>Quelle skin voulez-vous pour le site ?</xsl:text></b></center>
+    <div style="text-align: center"><b><xsl:text>Quelle skin voulez-vous pour le site ?</xsl:text></b></div>
     <xsl:for-each select="skin">
       <input type="radio" name="newskin">
         <xsl:attribute name="value">
@@ -114,7 +114,7 @@
         </input>
 <br/>
 <br/>
-<center><b><xsl:text>Quel CSS voulez-vous pour le site ?</xsl:text></b></center><br/>
+<div style="text-align: center"><b><xsl:text>Quel CSS voulez-vous pour le site ?</xsl:text></b></div><br/>
 <xsl:for-each select="css">
       <input type="radio" name="newcss">
         <xsl:attribute name="value">

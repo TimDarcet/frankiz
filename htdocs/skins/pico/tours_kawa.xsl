@@ -2,7 +2,6 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="module[@id='tours_kawa']">
-  <xsl:if test="@visible='true'">
   <xsl:if test="count(element) !=0">
   <div class="fkz_titre">Tour Kawa</div>
   <xsl:for-each select="element">
@@ -17,7 +16,6 @@
       <br/>
     </xsl:if>  
   </xsl:for-each>
-  </xsl:if>
   </xsl:if>
 </xsl:template>
 

@@ -3,9 +3,13 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.11  2004/10/20 19:58:02  pico
+	Changement skin pico -> valide html strict
+	Changement des balises qui étaient pas valides
+
 	Revision 1.10  2004/10/20 18:47:07  kikx
 	Pour rajouter des lignes non selectionnables dans une liste
-
+	
 	Revision 1.9  2004/10/18 19:14:27  pico
 	Changement balises pour me conformer à la dtd
 	
@@ -33,9 +37,9 @@
 
 <!-- Images -->
 <xsl:template match="image">
-	<img class="image">
+	<img class="image" style="border:0">
 		<xsl:attribute name="src"><xsl:value-of select="@source"/></xsl:attribute>
-		<xsl:attribute name="border">0</xsl:attribute>
+		<xsl:attribute name="alt"><xsl:value-of select="@legende"/></xsl:attribute>
 	</img><br/>
 	<xsl:if test="boolean(@legende)"><span class="legende"><xsl:value-of select="@legende"/></span><br/></xsl:if>
 </xsl:template>
@@ -56,7 +60,7 @@
 		<h2><xsl:value-of select="@titre"/></h2>
 	</xsl:if>
 	<xsl:apply-templates select="commentaire"/>
-	<form method="POST"><xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
+	<form method="post"><xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<xsl:variable name="nombre_colonnes" select="count(entete)+count(@selectionnable)"/>
 		<table class="liste" cellspacing="0" cellpadding="0">
 			<tr>

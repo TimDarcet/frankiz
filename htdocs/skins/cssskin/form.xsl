@@ -7,7 +7,7 @@
 <xsl:template match="formulaire">
 	<h2><xsl:value-of select="@titre"/></h2>
 	<xsl:apply-templates select="commentaire"/>
-	<form method="POST"><xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
+	<form method="post"><xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<xsl:apply-templates select="champ|choix|bouton"/>
 	</form>
 </xsl:template>

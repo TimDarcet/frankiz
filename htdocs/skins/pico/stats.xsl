@@ -2,7 +2,6 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="module[@id='stats']">
-	<xsl:if test="@visible='true'">
 		<div class="fkz_titre">État des serveurs :</div>
 		<div class="fkz_module">
 		<xsl:for-each select="statistiques/serveur">
@@ -20,7 +19,6 @@
 			<br/>
 		</xsl:for-each>
 		</div>
-	</xsl:if>
 </xsl:template>
 
 

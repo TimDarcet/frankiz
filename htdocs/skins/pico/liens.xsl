@@ -4,8 +4,7 @@
 
 
 <xsl:template match="module[@id='liens_contacts']">
-  <xsl:if test="(boolean(@visible) = false) or (@visible = 'true')">
-  <b><div class="fkz_titre">Contacts </div></b>
+ <div class="fkz_titre"> <b>Contacts </b></div>
   <div class="fkz_module">
     <xsl:for-each select="lien">
       <div class="fkz_lien">
@@ -20,12 +19,10 @@
   <xsl:text> </xsl:text>
   </div>
   <br/>
-  </xsl:if>
 </xsl:template>
 
 <xsl:template match="module[@id='liens_ecole']">
-  <xsl:if test="(boolean(@visible) = false) or (@visible = 'true')">
-  <script>
+  <script type="text/javascript">
   <xsl:text>loc_ecole = new Array(</xsl:text>
   <xsl:for-each select="lien">
     <xsl:text>"</xsl:text>
@@ -43,8 +40,8 @@
   }
   
   </script>
-  <form name="ecole" style="valign:bottom">
-  <b><xsl:text>Liens de l'école: </xsl:text></b>
+  <form id="ecole" style="valign:bottom" action="gotourl_ecole()">
+  <div><b><xsl:text>Liens de l'école: </xsl:text></b>
   <select onchange="gotourl_ecole()" class="fkz_liens" id="ecoles">
     <xsl:for-each select="lien">
       <option>
@@ -57,12 +54,11 @@
   </select>
   <xsl:text> </xsl:text>
   <input type="submit" value="Go" onclick="gotourl_ecole()" />
+  </div>
   </form>
-  </xsl:if>
 </xsl:template>
 
 <xsl:template match="module[@id='liens_navigation']">
-    <xsl:if test="(boolean(@visible) = false) or (@visible = 'true')">
     <div class="fkz_liens_nav">
     <xsl:for-each select="lien">
       <a>
@@ -76,7 +72,6 @@
       </xsl:if>
     </xsl:for-each>
     </div>
-    </xsl:if>
 </xsl:template>
 
 

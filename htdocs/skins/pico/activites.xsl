@@ -3,9 +3,8 @@
 
 
 <xsl:template match="module[@id='activites']">
-  <xsl:if test="@visible='true'">
-  <xsl:if test="count(element) !=0">
-  <center>
+    <xsl:if test="count(element) !=0">
+  <div style="text-align: center">
   <div class="fkz_titre">Activités</div><br/>
   <div class="fkz_module">
   <xsl:for-each select="annonce">
@@ -22,9 +21,8 @@
     <br/>
   </xsl:for-each>
   </div>
-  </center>
+  </div>
   <br/>
-  </xsl:if>
   </xsl:if>
 </xsl:template>
 

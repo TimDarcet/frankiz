@@ -2,7 +2,6 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="module[@id='anniversaires']">
-<xsl:if test="@visible='true'">
 <xsl:if test="count(eleve) != 0">
 <div class="fkz_anniversaire">Joyeux anniversaire: 
    <xsl:for-each select="eleve">
@@ -14,7 +13,6 @@
   </xsl:for-each>
   <xsl:text> !</xsl:text>
   </div>
-</xsl:if>
 </xsl:if>
 </xsl:template>
 

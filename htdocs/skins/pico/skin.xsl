@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
+<xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
+	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
+	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"/>
+	
 <xsl:param name="sommaire"/>
 <xsl:param name="trier_annonces"/>
 
@@ -34,11 +37,11 @@
     </link>
     <xsl:apply-templates select="frankiz/module[@id='liste_css']" mode="css"/>
   </head>
-  <body marginwidth="0" marginheight="0">
+  <body>
     <table border="0" width="100%">
       <tr>
-        <td valign="middle"><a href="index.php"><img src="skins/pico/frankiz.png" border="0"/></a></td>
-        <td align="right" valign="bottom"><xsl:apply-templates select="frankiz/page/module[@id='liens_ecole']"/></td>
+        <td valign="middle"><a href="index.php"><img src="skins/pico/frankiz.png" alt="Frankiz, le site Web des élèves"/></a></td>
+        <td align="right" valign="bottom"><xsl:apply-templates select="frankiz/module[@id='liens_ecole']"/></td>
       </tr>
     </table>
   <xsl:apply-templates select="frankiz/module[@id='liens_navigation']"/>
@@ -52,17 +55,60 @@
       <div class="fkz_centre">
         <xsl:apply-templates select="frankiz/module[@id='anniversaires']"/>
         <br/>
-        <xsl:apply-templates select="frankiz/page/annonces" mode="sommaire"/>
-        <xsl:apply-templates select="frankiz/page/annonces" mode="complet"/>
-		<xsl:apply-templates select="frankiz/page"/>
+        <xsl:apply-templates select="frankiz/page[@id='annonces']" mode="sommaire"/>
+        <xsl:apply-templates select="frankiz/page[@id='annonces']" mode="complet"/>
+	<xsl:apply-templates select="frankiz/page[@id='trombino']"/>
+	<xsl:apply-templates select="frankiz/page[@id!='annonces' and @id!='trombino']"/>
       </div>
       <div class="fkz_droite">
       <xsl:apply-templates select="frankiz/module[@id='qdj']"/>
+      <xsl:apply-templates select="frankiz/module[@id='qdj_hier']"/>
       </div>
       </div>
   </body>
   </html>
 </xsl:template>
 
+
+<xsl:template match="/frankiz/page[@id!='annonces' and @id!='trombino']">
+	<div class="fkz_annonces">
+		<xsl:apply-templates/>
+	</div>
+</xsl:template>
+
+<xsl:template match="cadre">
+	<h2><xsl:value-of select="@titre"/></h2>
+	<div style="text-align: center"><xsl:apply-templates select="image"/></div>
+	<xsl:value-of disable-output-escaping="yes" select="text()"/>
+</xsl:template>
+
+
+<!-- Eleves pour les anniversaires/signatures/qdj 
+<xsl:template match="eleve">
+	<xsl:choose><xsl:when test="@surnom != ''">
+		<xsl:value-of select="@surnom"/>
+	</xsl:when><xsl:otherwise>
+		<xsl:value-of select="@prenom"/><xsl:text> </xsl:text><xsl:value-of select="@nom"/>
+	</xsl:otherwise></xsl:choose>
+	<xsl:if test="@promo != ''">
+		<xsl:text> (</xsl:text><xsl:value-of select="@promo"/><xsl:text>)</xsl:text>
+	</xsl:if>
+	<br/>
+</xsl:template>
+-->
+
+<!-- Page des binets -->
+
+<xsl:template match="page/binet">
+	<xsl:if test="preceding-sibling::binet[1]/@categorie != @categorie or position() = 2">
+		<h2><xsl:value-of select="@categorie"/></h2>
+	</xsl:if>
+	
+	<a><xsl:attribute name="href"><xsl:value-of select="url"/></xsl:attribute>
+			<xsl:apply-templates select="image"/>
+	</a>
+		<h3><xsl:value-of select="@nom"/></h3>
+		<p><xsl:value-of select="description"/></p>
+</xsl:template>
 
 </xsl:stylesheet>
