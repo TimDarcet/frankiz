@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.6  2004/11/27 20:16:55  pico
+	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
+
 	Revision 1.5  2004/11/27 16:10:52  pico
 	Correction d'erreur de redirection et ajout des web à la validation des activités.
-
+	
 	Revision 1.4  2004/11/27 15:29:22  pico
 	Mise en place des droits web (validation d'annonces + sondages)
 	
@@ -102,7 +105,7 @@ foreach ($_POST AS $keys => $val){
 		list($id,$titre,$url,$date) = $DB_web->next_row(); 
 		$id = $temp[1];
 ?>
-		<warning><p>Cette Activité est déjà planifiée pour le <?echo base64_decode($temp[2]) ?></p></warning>
+		<warning>Cette Activité est déjà planifiée pour le <?echo base64_decode($temp[2]) ?></warning>
 		<annonce date="<? echo $date ?>">
 			<lien url="<?php echo $url?>"><image source="<?php echo DATA_DIR_URL.'affiches/'.$id?>" texte="Affiche" legende="<?php echo $titre?>"/></lien>
 		</annonce>
@@ -121,7 +124,7 @@ foreach ($_POST AS $keys => $val){
 				unlink(DATA_DIR_LOCAL."affiches/{$temp[1]}") ;
 		}
 	?>
-		<warning><p>Suppression d'une activité</p></warning>
+		<warning>Suppression d'une activité</warning>
 	<?
 	}
 }
@@ -129,7 +132,7 @@ foreach ($_POST AS $keys => $val){
 $date = date("Y-m-d", time());
 ?>
 <commentaire>
-	<p>Nous sommes le: <? echo $date ?></p>
+	Nous sommes le: <? echo $date ?>
 </commentaire>
 	
 <?

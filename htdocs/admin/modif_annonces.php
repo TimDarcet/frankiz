@@ -21,9 +21,12 @@
 	Page qui permet aux admins de modifier une annonce validée
 	
 	$Log$
+	Revision 1.5  2004/11/27 20:16:55  pico
+	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
+
 	Revision 1.4  2004/11/27 15:29:22  pico
 	Mise en place des droits web (validation d'annonces + sondages)
-
+	
 	Revision 1.3  2004/11/27 14:56:15  pico
 	Debut de mise en place de droits spéciaux (qdj + affiches)
 	+ génération de la page d'admin qui va bien
@@ -69,7 +72,7 @@ foreach ($_POST AS $keys => $val){
 	if (($temp[0]=='modif')||($temp[0]=='valid')) {
 		$DB_web->query("UPDATE annonces SET perime='{$_POST['date']}', titre='{$_POST['titre']}', contenu='{$_POST['text']}' WHERE annonce_id='{$temp[1]}'");	
 	?>
-		<commentaire><p>Modif effectuée</p></commentaire>
+		<commentaire>Modif effectuée</commentaire>
 	<?	
 	}
 	
@@ -83,7 +86,7 @@ foreach ($_POST AS $keys => $val){
 			$supp_image = " et de son image associée" ;
 		}
 	?>
-		<warning><p>Suppression d'une annonce<? echo $supp_image?></p></warning>
+		<warning>Suppression d'une annonce<? echo $supp_image?></warning>
 	<?
 	}
 	
@@ -100,7 +103,7 @@ foreach ($_POST AS $keys => $val){
 		}
 		$DB_web->query("DELETE FROM annonces WHERE perime<".date("Ymd000000",time()- 5 * 24 * 3600)."") ;
 	?>
-		<warning><p>Suppression de <? echo $compteur?> annonces périmées</p></warning>
+		<warning>Suppression de <? echo $compteur?> annonces périmées</warning>
 	<?
 	}
 }

@@ -22,9 +22,12 @@
 	ses machines, son compte xnet.
 	
 	$Log$
+	Revision 1.20  2004/11/27 20:16:55  pico
+	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
+
 	Revision 1.19  2004/11/22 23:38:42  kikx
 	Ajout de <note></note> un peu partout pour plus de compréhension !
-
+	
 	Revision 1.18  2004/11/08 23:19:17  pico
 	Modification des titres pour pouvoir les reperer dans le code (avec un id)
 	
@@ -111,9 +114,9 @@ require "../include/page_header.inc.php";
 		$bool_ip = $ip{$id_ip}!=$_SERVER['REMOTE_ADDR'];
 		$id_ip++;
 		if($DB_admin->num_rows()>1) {
-			echo "<p>&nbsp;</p><p>Tu as en plus fait rajouter ces ips à tes ip autorisées :</p>" ;
+			echo "<br/>Tu as en plus fait rajouter ces ips à tes ip autorisées :<br/>" ;
 			while(list($kzert,$prise,$ip{$id_ip},$type) = $DB_admin->next_row()) { 
-				echo "<p>".$ip{$id_ip}."</p>" ;
+				echo $ip{$id_ip}."<br/>" ;
 				$bool_ip = $bool_ip&&($ip{$id_ip}!=$_SERVER['REMOTE_ADDR']) ;
 				$id_ip++;
 			}

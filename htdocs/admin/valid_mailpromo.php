@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.20  2004/11/27 20:16:55  pico
+	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
+
 	Revision 1.19  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-
+	
 	Revision 1.18  2004/11/25 00:53:03  kikx
 	Voilà... la validation des mails promo est faite en wiki
 	j'en ai profité pour cooriger un oubli ?... de pourvoir changer l'expediter du mai par exemple au om de son binet
@@ -197,7 +200,7 @@ foreach ($_POST AS $keys => $val){
 		$DB_valid->query("DELETE FROM valid_mailpromo WHERE mail_id='{$temp[1]}'") ;
 
 	?>
-		<warning><p>Suppression d'un mail promo</p></warning>
+		<warning>Suppression d'un mail promo</warning>
 	<?
 	}
 }
@@ -210,10 +213,9 @@ while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $prom
 	if (empty($mail)) $mail="$login@poly" ;
 ?>
 	<commentaire>
-		<p><em>FROM</em>: <?php  echo "$prenom $nom &lt;$mail&gt; " ?></p>
-		<p>Posté le 
+		<em>FROM</em>: <?php  echo "$prenom $nom &lt;$mail&gt; " ?><br/>
+		Posté le 
 			<?php  echo substr($date,6,2) ."/".substr($date,4,2) ."/".substr($date,2,2)." à ".substr($date,8,2).":".substr($date,10,2) ?>
-		</p>
 	</commentaire>
 	<cadre titre="<?php  echo $titre_mail." ".$titre ?>">
 			<?php echo wikiVersXML($mailpromo) ?>

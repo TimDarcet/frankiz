@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une activité
 	
 	$Log$
+	Revision 1.14  2004/11/27 20:16:55  pico
+	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
+
 	Revision 1.13  2004/11/26 00:13:22  pico
 	Affiche l'heure à laquelle est prévue l'activité
-
+	
 	Revision 1.12  2004/11/25 23:50:04  pico
 	Possibilité de rajouter une heure pour l'activité (ex: scéances du BRC)
 	
@@ -192,10 +195,10 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
  echo $msg ;
 if ($erreur_upload==1) {
 ?>
-	<warning><p>Ton fichier n'a pas été téléchargé car il ne respecte pas une des conditions spécifiées ci dessous</p>
-		<p>Dimension : <? echo $larg."x".$haut ;?></p>
-		<p>Taille : <? echo $_FILES['file']['size'] ;?> octets</p>
-		<p>Type : <? echo $filetype ;?></p>
+	<warning>Ton fichier n'a pas été téléchargé car il ne respecte pas une des conditions spécifiées ci dessous<br/>
+		Dimension : <? echo $larg."x".$haut ;?><br/>
+		Taille : <? echo $_FILES['file']['size'] ;?> octets<br/>
+		Type : <? echo $filetype ;?><br/>
 	</warning>
 <?
 
@@ -237,10 +240,10 @@ if ($erreur_upload==1) {
 if ((isset($_POST['valid']))&&(isset($index))&&file_exists(DATA_DIR_LOCAL."affiches/a_valider_{$index}")) {
 ?>
 	<commentaire>
-		<p>Tu as demandé à un webmestre de valider ton activité</p>
-		<p>Il faut compter 24h pour que ton activité soit prise en compte par notre système</p>		
-		<p>&nbsp;</p>		
-		<p>Nous te remercions d'avoir soumis une activité et nous essayerons d'y répondre le plus rapidement possible</p>		
+		Tu as demandé à un webmestre de valider ton activité<br/>
+		Il faut compter 24h pour que ton activité soit prise en compte par notre système<br/>
+		<br/>
+		Nous te remercions d'avoir soumis une activité et nous essayerons d'y répondre le plus rapidement possible<br/>
 	</commentaire>
 <?	
 } else {

@@ -21,9 +21,12 @@
 	Cette page permet de déterminer si le Bôb est ouvert ou non.
 	
 	$Log$
+	Revision 1.2  2004/11/27 20:16:55  pico
+	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
+
 	Revision 1.1  2004/11/27 18:23:53  pico
 	Ajout de l'annonce: 'le bob est ouvert' dans les activités + page de gestion du bob
-
+	
 
 	
 	
@@ -46,7 +49,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 if(isset($_REQUEST['envoie'])){
 ?>
 	<commentaire>
-		<p>L'état du bôb vient d'être changé</p>
+		L'état du bôb vient d'être changé
 	</commentaire>
 <?
 	$DB_web->query("UPDATE parametres SET valeur='".$_REQUEST['etat']."' WHERE nom='bob'");

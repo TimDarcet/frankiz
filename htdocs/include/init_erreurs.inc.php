@@ -25,11 +25,14 @@
 	- affichage des requètes mysql en commentaire dans
 	
 	$Log$
+	Revision 1.2  2004/11/27 20:16:55  pico
+	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
+
 	Revision 1.1  2004/11/25 00:44:35  schmurtz
 	Ajout de init_ devant les fichier d'include servant d'initialisation de page
 	Permet de mieux les distinguer des autres fichiers d'include ne faisant que definir
 	des fonctions.
-
+	
 	Revision 1.11  2004/11/16 14:54:12  schmurtz
 	Affichage des erreurs "Parse Error"
 	permet de loguer des infos autre que les commandes SQL (pour debugage)
@@ -140,9 +143,9 @@ function affiche_erreurs_php() {
 		// TODO Écrire le contenu de $message dans un fichier de log
 		
 		if($_ERREUR_FATAL) {
-			echo "<warning><p>Une erreur inconnue est survenue.</p>\n"
-				."<p>Pour informer le Webmestre de cette erreur et expliquer la manipulation qui l'a déclenchée,"
-				." cliquez <a href=\"mailto:".MAIL_WEBMESTRE."?Subject=%5BFrankiz%20Erreur%20$timestamp%5D%20\">ici</a>.</p></warning>\n";
+			echo "<warning>Une erreur inconnue est survenue.\n"
+				."<br/>Pour informer le Webmestre de cette erreur et expliquer la manipulation qui l'a déclenchée,"
+				." cliquez <lien url=\"mailto:".MAIL_WEBMESTRE."?Subject=%5BFrankiz%20Erreur%20$timestamp%5D%20\" titre=\"ici\"/>.</warning>\n";
 			exit;
 		}
 	}

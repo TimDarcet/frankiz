@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.14  2004/11/27 20:16:55  pico
+	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
+
 	Revision 1.13  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-
+	
 	Revision 1.12  2004/11/27 14:56:15  pico
 	Debut de mise en place de droits spéciaux (qdj + affiches)
 	+ génération de la page d'admin qui va bien
@@ -156,7 +159,7 @@ foreach ($_POST AS $keys => $val){
 		list($question,$reponse1,$reponse2) = $DB_web->next_row(); 
 		$id = $temp[1];
 ?>
-		<warning><p>Cette QDJ est déjà planifiée pour le <?echo $temp[2] ?></p></warning>
+		<warning>Cette QDJ est déjà planifiée pour le <?echo $temp[2] ?></warning>
 		<module titre="QDJ">
 			<qdj type="aujourdhui" >
 				<question><?php echo $question ?></question>
@@ -182,7 +185,7 @@ foreach ($_POST AS $keys => $val){
 	
 
 	?>
-		<warning><p>Suppression d'une qdj</p></warning>
+		<warning>Suppression d'une qdj</warning>
 	<?
 	}
 }
@@ -191,7 +194,7 @@ foreach ($_POST AS $keys => $val){
 $date = date("Y-m-d", time()-3025);
 ?>
 <commentaire>
-	<p>Nous sommes le: <? echo $date ?></p>
+	Nous sommes le: <? echo $date ?><br/>
 <?
 //Cherche la date de la prochaine qdj libre
 for ($i = 0; ; $i++) 
@@ -201,11 +204,11 @@ for ($i = 0; ; $i++)
 	if(!$DB_web->num_rows()) break;
 }
 ?>
-	<p>La planification est faite jusqu'au: <? echo $date_last ?></p>
+	La planification est faite jusqu'au: <? echo $date_last ?><br/>
 <? $DB_web->query("SELECT qdj_id FROM qdj WHERE date>'$date' "); ?>
-	<p>Nb de QDJ planifiées: <? echo $DB_web->num_rows() ?></p>
+	Nb de QDJ planifiées: <? echo $DB_web->num_rows() ?><br/>
 <? $DB_web->query("SELECT qdj_id FROM qdj WHERE date='0000-00-00' "); ?>
-	<p>Nb de QDJ disponibles: <? echo $DB_web->num_rows() ?></p>
+	Nb de QDJ disponibles: <? echo $DB_web->num_rows() ?><br/>
 </commentaire>
 	
 <?

@@ -24,9 +24,12 @@
 	# la dernière promo qui est dans le trombi (qui normalment devrait être mis a jour automatiquement)
 	
 	$Log$
+	Revision 1.7  2004/11/27 20:16:55  pico
+	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
+
 	Revision 1.6  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-
+	
 	Revision 1.5  2004/11/22 19:10:01  pico
 	Corrections mineures
 	
@@ -69,8 +72,8 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="admin_parametre" titre="Frankiz : Modifier les paramètres globaux">
 
 <commentaire>
-<p>Cette page est une page pour pouvoir modifier directement les paramètres du sites : </p>
-<p> Si vous devez créer des varibles dans la table essayer qu'elles soient assez explicite :)</p>
+Cette page est une page pour pouvoir modifier directement les paramètres du sites : <br/>
+Si vous devez créer des varibles dans la table essayer qu'elles soient assez explicite :)<br/>
 </commentaire>
 <h2>Paramètres du site</h2>
 	<liste id="liste" selectionnable="non" action="admin/parametre.php">

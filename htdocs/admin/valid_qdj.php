@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.11  2004/11/27 20:16:55  pico
+	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
+
 	Revision 1.10  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-
+	
 	Revision 1.9  2004/11/27 14:56:15  pico
 	Debut de mise en place de droits spéciaux (qdj + affiches)
 	+ génération de la page d'admin qui va bien
@@ -77,7 +80,7 @@ foreach ($_POST AS $keys => $val){
 	if (($temp[0]=='modif')||($temp[0]=='valid')) {
 		$DB_valid->query("UPDATE valid_qdj SET question='{$_POST['question']}', reponse1='{$_POST['reponse1']}', reponse2='{$_POST['reponse2']}' WHERE qdj_id='{$temp[1]}'");
 	?>
-		<commentaire><p>Modif effectuée</p></commentaire>
+		<commentaire>Modif effectuée</commentaire>
 	<?
 	}
 	
@@ -89,7 +92,7 @@ foreach ($_POST AS $keys => $val){
 		
 		$DB_valid->query("DELETE FROM valid_qdj WHERE qdj_id='{$temp[1]}'") ;
 	?>
-		<commentaire><p>Validation effectuée</p></commentaire>
+		<commentaire>Validation effectuée</commentaire>
 	<?	
 	}
 	if ($temp[0]=='suppr') {
@@ -97,7 +100,7 @@ foreach ($_POST AS $keys => $val){
 		list($eleve_id) = $DB_valid->next_row() ;
 		$DB_valid->query("DELETE FROM valid_qdj WHERE qdj_id='{$temp[1]}'") ;
 	?>
-		<warning><p>Suppression d'une qdj</p></warning>
+		<warning>Suppression d'une qdj</warning>
 	<?
 	}
 }

@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.30  2004/11/27 20:16:55  pico
+	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
+
 	Revision 1.29  2004/11/25 11:52:10  pico
 	Correction des liens mysql_id
-
+	
 	Revision 1.28  2004/11/24 22:56:18  schmurtz
 	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
 	globale pour tous les fichiers.
@@ -198,10 +201,10 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
  <?
 if ($erreur_upload==1) {
 ?>
-	<warning><p>Ton fichier n'a pas été téléchargé car il ne respecte pas une des conditions spécifiées ci dessous</p>
-		<p>Dimension : <? echo $larg."x".$haut ;?></p>
-		<p>Taille : <? echo $_FILES['file']['size'] ;?> octets</p>
-		<p>Type : <? echo $filetype ;?></p>
+	<warning>Ton fichier n'a pas été téléchargé car il ne respecte pas une des conditions spécifiées ci dessous<br/>
+		Dimension : <? echo $larg."x".$haut ;?><br/>
+		Taille : <? echo $_FILES['file']['size'] ;?> octets<br/>
+		Type : <? echo $filetype ;?><br/>
 	</warning>
 <?
 
@@ -241,10 +244,10 @@ if (!isset($_POST['titre']))  $_POST['titre']="Titre" ;
 if (isset($_POST['valid'])) {
 ?>
 	<commentaire>
-		<p>Tu as demandé à un webmestre de valider ton annonce</p>
-		<p>Il faut compter 24h pour que ton annonce soit prise en compte par notre système</p>		
-		<p>&nbsp;</p>		
-		<p>Nous te remercions d'avoir soumis une annonce et nous essayerons d'y répondre le plus rapidement possible</p>		
+		Tu as demandé à un webmestre de valider ton annonce<br/>
+		Il faut compter 24h pour que ton annonce soit prise en compte par notre système<br/>
+		<br/>
+		Nous te remercions d'avoir soumis une annonce et nous essayerons d'y répondre le plus rapidement possible<br/>
 	</commentaire>
 <?	
 } else {

@@ -21,10 +21,13 @@
 	Page pour demander les sondages !
 	
 	$Log$
+	Revision 1.8  2004/11/27 20:16:55  pico
+	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
+
 	Revision 1.7  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
-
+	
 	Revision 1.6  2004/11/17 23:46:21  kikx
 	Prepa pour le votes des sondages
 	
@@ -151,10 +154,10 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 if ((isset($_POST['valid']))&&($erreur==0)) {
 ?>
 	<commentaire>
-		<p>Tu as demandé à un webmestre de valider ton sondage</p>
-		<p>Il faut compter 24h pour que ton sondage soit prise en compte par notre système</p>		
-		<p>&nbsp;</p>		
-		<p>Nous te remercions d'avoir soumis un sondage et nous essayerons d'y répondre le plus rapidement possible</p>		
+		Tu as demandé à un webmestre de valider ton sondage<br/>
+		Il faut compter 24h pour que ton sondage soit prise en compte par notre système<br/>
+		<br/>
+		Nous te remercions d'avoir soumis un sondage et nous essayerons d'y répondre le plus rapidement possible<br/>
 	</commentaire>
 	
 	

@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.18  2004/11/27 20:16:55  pico
+	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
+
 	Revision 1.17  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-
+	
 	Revision 1.16  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
@@ -84,7 +87,7 @@ foreach ($_POST AS $keys => $val){
 					"Le BR<br>"  ;
 	
 		couriel($temp[1],"[Frankiz] Ta demande a été refusée ",$contenu);
-		echo "<warning><p>Envoie d'un mail </p><p>Le prévient que sa demande n'est pas acceptée</p></warning>" ;
+		echo "<warning>Envoie d'un mail <br/>Le prévient que sa demande n'est pas acceptée</warning>" ;
 	}
 	// On accepte la demande d'ip supplémentaire
 	//===========================
@@ -109,10 +112,10 @@ foreach ($_POST AS $keys => $val){
 						"Le BR<br>"  ;
 		
 			couriel($temp[1],"[Frankiz] Ta demande a été acceptée",$contenu);
-			echo "<warning><p>Envoie d'un mail</p><p>Le prévient que sa demande à été accepté (Nlle ip =".$_POST[$temp2].") </p></warning>" ;
+			echo "<warning>Envoie d'un mail<br/>Le prévient que sa demande à été accepté (Nlle ip =".$_POST[$temp2].") </warning>" ;
 		// S'il y  a deja une entrée comme celle demandé dans la base !
 		} else {
-			echo "<warning><p>IMPOSSIBLE DE METTRE CETTE IP</p><p>Il y a déjà une autre personne la possédant</p></warning>" ;		
+			echo "<warning>IMPOSSIBLE DE METTRE CETTE IP<br/>Il y a déjà une autre personne la possédant</warning>" ;		
 		}
 
 	}
@@ -130,7 +133,7 @@ foreach ($_POST AS $keys => $val){
 					"Le BR<br>"  ;
 	
 		couriel($temp[2],"[Frankiz] Suppression d'une ip",$contenu);
-		echo "<warning><p>Envoie d'un mail à </p><p>Le previent que son ip $temp2 vient d'être supprimé</p></warning>" ;			
+		echo "<warning>Envoie d'un mail à <br/>Le previent que son ip $temp2 vient d'être supprimé</warning>" ;			
 
 	}
 }

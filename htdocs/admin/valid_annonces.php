@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.20  2004/11/27 20:16:55  pico
+	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
+
 	Revision 1.19  2004/11/27 15:29:22  pico
 	Mise en place des droits web (validation d'annonces + sondages)
-
+	
 	Revision 1.18  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
 	
@@ -110,7 +113,7 @@ foreach ($_POST AS $keys => $val){
 	if (($temp[0]=='modif')||($temp[0]=='valid')) {
 		$DB_valid->query("UPDATE valid_annonces SET perime='{$_POST['date']}', titre='{$_POST['titre']}', contenu='{$_POST['text']}' WHERE annonce_id='{$temp[1]}'");	
 	?>
-		<commentaire><p>Modif effectuée</p></commentaire>
+		<commentaire>Modif effectuée</commentaire>
 	<?	
 	}
 	
@@ -138,7 +141,7 @@ foreach ($_POST AS $keys => $val){
 		}
 		$DB_valid->query("DELETE FROM valid_annonces WHERE annonce_id='{$temp[1]}'") ;
 	?>
-		<commentaire><p>Validation effectuée</p></commentaire>
+		<commentaire>Validation effectuée</commentaire>
 	<?	
 
 	}
@@ -162,7 +165,7 @@ foreach ($_POST AS $keys => $val){
 			$supp_image = " et de son image associée" ;
 		}
 	?>
-		<warning><p>Suppression d'une annonce<? echo $supp_image?></p></warning>
+		<warning>Suppression d'une annonce<? echo $supp_image?></warning>
 	<?
 	}
 	

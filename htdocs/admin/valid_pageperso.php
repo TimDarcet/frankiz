@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.3  2004/11/27 20:16:55  pico
+	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
+
 	Revision 1.2  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-
+	
 	Revision 1.1  2004/11/24 12:51:58  kikx
 	Oubli de ma part
 	
@@ -69,7 +72,7 @@ foreach ($_POST AS $keys => $val){
 			"Le BR<br>"  ;
 	
 		couriel($temp[1],"[Frankiz] La demande pour ton site a été refusée ",$contenu);
-		echo "<warning><p>Envoie d'un mail </p><p>Le prévient que sa demande n'est pas acceptée</p></warning>" ;
+		echo "<warning>Envoie d'un mail <br/>Le prévient que sa demande n'est pas acceptée</warning>" ;
 	}
 	// On accepte la demande d'ip supplémentaire
 	//===========================
@@ -85,7 +88,7 @@ foreach ($_POST AS $keys => $val){
 				"Le BR<br>"  ;
 		
 		couriel($temp[1],"[Frankiz] La demande pour ton site perso a été acceptée",$contenu);
-			echo "<commentaire><p>Envoie d'un mail</p><p>Le prévient que sa demande à été acceptée</p></commentaire>" ;
+			echo "<commentaire>Envoie d'un mail<br/>Le prévient que sa demande à été acceptée</commentaire>" ;
 
 	}
 }

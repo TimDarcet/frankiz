@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.14  2004/11/27 20:16:55  pico
+	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
+
 	Revision 1.13  2004/11/27 16:10:52  pico
 	Correction d'erreur de redirection et ajout des web à la validation des activités.
-
+	
 	Revision 1.12  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
 	
@@ -102,7 +105,7 @@ foreach ($_POST AS $keys => $val){
 	if (($temp[0]=='modif')||($temp[0]=='valid')) {
 		$DB_valid->query("UPDATE valid_affiches SET date='{$_POST['date']}', titre='{$_POST['titre']}' WHERE affiche_id='{$temp[1]}'");	
 	?>
-		<commentaire><p>Modif effectuée</p></commentaire>
+		<commentaire>Modif effectuée</commentaire>
 	<?	
 	}
 	
@@ -131,7 +134,7 @@ foreach ($_POST AS $keys => $val){
 		}
 		$DB_valid->query("DELETE FROM valid_affiches WHERE affiche_id='{$temp[1]}'") ;
 	?>
-		<commentaire><p>Validation effectuée</p></commentaire>
+		<commentaire>Validation effectuée</commentaire>
 	<?	
 
 	}
@@ -157,7 +160,7 @@ foreach ($_POST AS $keys => $val){
 		
 
 	?>
-		<warning><p>Suppression d'une affiche<? echo $supp_image?></p></warning>
+		<warning>Suppression d'une affiche<? echo $supp_image?></warning>
 	<?
 	}
 	

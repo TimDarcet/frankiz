@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un sondage
 	
 	$Log$
+	Revision 1.7  2004/11/27 20:16:55  pico
+	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
+
 	Revision 1.6  2004/11/27 15:29:22  pico
 	Mise en place des droits web (validation d'annonces + sondages)
-
+	
 	Revision 1.5  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
 	
@@ -81,7 +84,7 @@ foreach ($_POST AS $keys => $val){
 					"Le BR<br>"  ;
 	
 		couriel($temp[2],"[Frankiz] Ton sondage a été refusé ",$contenu);
-		echo "<warning><p>Envoie d'un mail </p><p>Le prévient que sa demande n'est pas acceptée</p></warning>" ;
+		echo "<warning>Envoie d'un mail <br/>Le prévient que sa demande n'est pas acceptée</warning>" ;
 	}
 	// On accepte le sondage
 	//==========================
@@ -102,7 +105,7 @@ foreach ($_POST AS $keys => $val){
 					"Le BR<br>"  ;
 	
 		couriel($temp[2],"[Frankiz] Ton sondage a été validé ",$contenu);
-		echo "<commentaire><p>Envoie d'un mail </p><p>Prévient $prenom $nom que sa demande est acceptée</p></commentaire>" ;
+		echo "<commentaire>Envoie d'un mail <br/>Prévient $prenom $nom que sa demande est acceptée</commentaire>" ;
 	}
 
 }
