@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.7  2004/12/15 20:07:01  kikx
+		Correction
+
 		Revision 1.6  2004/12/14 23:15:38  kikx
 		Pour avoir la source + affichage
-
+		
 		Revision 1.5  2004/12/14 23:11:11  kikx
 		Oups /.me boulet
 		
@@ -120,11 +123,11 @@ if (isset($_REQUEST['valid'])) {
 						if (isset($_REQUEST['faq_modif'])) {
 							print(wikiVersXML($_POST['faq_modif'])) ;
 							echo "<note>Source : </note>" ;
-							print(diff_to_xml($wiki,$_POST['faq_modif']));
+							print(nl2br(diff_to_xml($wiki,$_POST['faq_modif'])));
 						}else{ 
 							print(wikiVersXML($wiki)) ;
 							echo "<note>Source : </note>" ;
-							print($wiki);
+							print(nl2br($wiki));
 						}
 							
 						fclose($texte);

@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.24  2004/12/15 20:07:01  kikx
+	Correction
+
 	Revision 1.23  2004/12/15 19:26:09  kikx
 	Les mails promo devrait fonctionner now ...
-
+	
 	Revision 1.22  2004/12/14 14:18:12  schmurtz
 	Suppression de la page de doc wiki : doc directement dans les pages concernees.
 	
@@ -153,9 +156,9 @@ foreach ($_POST AS $keys => $val){
 			couriel($eleve_id,"[Frankiz] Ton mail promo a été validé par le BR",$contenu);
 			
 			if ((isset($_POST['promo']))&&($_POST['promo'] == "")) {
-				$promo = 2 ;
+				$promo = '' ;
 			} else {
-				$promo = 1 ;
+				$promo = $_POST['promo'] ;
 			}
 			if (!isset($_POST['from']))
 				$sender = "$prenom $nom &lt;$mail&gt; " ;

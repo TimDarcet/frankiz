@@ -23,7 +23,7 @@ $cnt = 0 ;
 $DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
 list($promo_temp) = $DB_web->next_row() ;
 
-if ($_REQUEST['promo'] == 2) {
+if ($_REQUEST['promo'] == '') {
 	$to = " promo=$promo_temp OR promo=".($promo_temp-1) ;
 	$titre_mail="Mail BiPromo :" ;
 } else {
@@ -47,12 +47,14 @@ $mail_contenu = wikiVersXML($mail,true)  ; // On met true pour dire que c'est du
 	//echo base64_decode($_REQUEST['sender'])."<br>" ;
 	$from = html_entity_decode(base64_decode($_REQUEST['sender'])) ; 
 	exec("echo \"".$mail_contenu."\" >>".$fich_log) ;
-	
 	while(list($eleve_id,$nom,$prenom,$promo) = $DB_trombino->next_row() ) {
+		$DB_trombino->push_result() ;
 		couriel($eleve_id, $titre_mail." ".$_POST['titre'],$mail_contenu, STRINGMAIL_ID, $from) ;
 		//print $from."<br>" ;
+		
 		//couriel("5059", $titre_mail." ".$titre, $mail_contenu, STRINGMAIL_ID, $from) ;
-		print("Envoi à $nom $prenom ($promo) .... DONE<br>") ;
+		$DB_trombino->pop_result() ;
+		print("Envoi à $nom $prenom ($promo) [".($cnt+1)."]<br>") ;
 		flush() ;
 		$cnt ++ ;
 		exec("echo \"Mail envoyé à $nom $prenom ($eleve_id)\n\" >>".$fich_log) ;
@@ -63,5 +65,5 @@ $mail_contenu = wikiVersXML($mail,true)  ; // On met true pour dire que c'est du
 	// fin de la procédure
 	
 	
-	$DB_valid->query("DELETE FROM valid_mailpromo WHERE mail_id='{$temp[1]}'") ;
+	//$DB_valid->query("DELETE FROM valid_mailpromo WHERE mail_id='{$_REQUEST['id']}'") ;
 ?>
