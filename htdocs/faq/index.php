@@ -1,9 +1,12 @@
 <? 
 /*
 		$Log$
+		Revision 1.15  2004/10/20 22:10:06  pico
+		BugFix (devrait marcher)
+
 		Revision 1.14  2004/10/20 22:05:55  pico
 		Changements Noeuds/Feuilles
-
+		
 		Revision 1.13  2004/10/20 21:59:13  pico
 		BugFix
 		
@@ -70,7 +73,7 @@ function rech_fils($parent) {
 			echo "<noeud id='".$id."' ";
 			echo "lien='faq/index.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
-			echo " titre='".htmlspecialchars($question,ENT_QUOTES)."'>" ;
+			echo "' titre='".htmlspecialchars($question,ENT_QUOTES)."'>" ;
 			if (eregi("/".$id."/",$a_marquer)) {
 				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche_folder.gif'/>" ;
 			}
