@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.10  2004/11/17 13:32:18  kikx
+	Mise en place du lien pour l'admin
+
 	Revision 1.9  2004/11/12 23:32:14  schmurtz
 	oublie dans le deplacement du trombino
-
+	
 	Revision 1.8  2004/11/11 17:57:52  kikx
 	Permet de savoir juste sur la page prinipale d'administration ce qui reste a valider ou pas ... car sinon on peut faire trainer des truc super longtemps
 	
@@ -155,6 +158,11 @@ $permissions_user = ses_permissions() ;
 		$nb = $DB_valid->num_rows() ;
 		?>
 		<lien titre="Valider les activités (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_affiches.php"/>
+		<?
+		$DB_valid->query("SELECT eleve_id FROM valid_sondages") ;
+		$nb = $DB_valid->num_rows() ;
+		?>
+		<lien titre="Valider les sondages (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_sondages.php"/>
 		<?
 		$DB_valid->query("SELECT eleve_id FROM valid_mailpromo") ;
 		$nb = $DB_valid->num_rows() ;

@@ -21,9 +21,12 @@
 	Page pour demander les sondages !
 	
 	$Log$
+	Revision 1.5  2004/11/17 13:32:18  kikx
+	Mise en place du lien pour l'admin
+
 	Revision 1.4  2004/11/17 13:27:06  kikx
 	Mise ne place d'un titre dan sles sondages
-
+	
 	Revision 1.3  2004/11/17 12:13:45  kikx
 	Preparation de la validation d'un sondage
 	
@@ -103,7 +106,7 @@ if (isset($_POST['ok_check'])) {
 if (isset($_POST['valid'])) {
 	if ($titre!="") {
 
-		$DB_valid->query("INSERT INTO valid_sondage SET eleve_id =".$_SESSION['user']->uid.", questions='$contenu_form', titre='$titre', perime=FROM_UNIXTIME({$_POST['date']})") ;
+		$DB_valid->query("INSERT INTO valid_sondages SET eleve_id =".$_SESSION['user']->uid.", questions='$contenu_form', titre='$titre', perime=FROM_UNIXTIME({$_POST['date']})") ;
 		
 		$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
 	
