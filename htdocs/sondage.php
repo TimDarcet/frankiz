@@ -21,9 +21,12 @@
 	affichage d'un sondage
 
 	$Log$
+	Revision 1.11  2005/03/16 19:32:45  pico
+	Petite correction pour éviter que les gens de l'école voient les résultats des sondages.
+
 	Revision 1.10  2005/03/04 23:11:33  pico
 	Restriction des sondages par promo/section/binet
-
+	
 	Revision 1.9  2005/01/25 20:23:12  pico
 	nettoyage
 	
@@ -56,7 +59,7 @@
 
 require_once "include/global.inc.php";
 
-demande_authentification(AUTH_MINIMUM);
+demande_authentification(AUTH_FORT);
 
 
 //---------------------------------------------------------------------------------
