@@ -21,9 +21,12 @@
 	Gestions des liens perso / des flux rss.
 
 	$Log$
+	Revision 1.2  2004/11/24 18:48:01  pico
+	Encore un warning
+
 	Revision 1.1  2004/11/24 16:24:09  pico
 	Passage du formulaire de choix des rss à afficher dans une page spéciale
-
+	
 
 	
 	
@@ -51,6 +54,7 @@ while(list($value,$description)=$DB_web->next_row())
 	
 	
 if(!empty($_REQUEST['OK_param'])) {
+	$rss = array();
 	if(!empty($_REQUEST['vis']))
 		foreach($_REQUEST['vis'] as $temp => $null){
 			list($mode,$value) = split("_",$temp,2);
