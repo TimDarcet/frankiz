@@ -3,10 +3,13 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.9  2004/09/17 22:49:29  kikx
+	Rajout de ce qui faut pour pouvoir faire des telechargeement de fichiers via des formulaires (ie des champs 'file' des champ 'hidden') de plus maintenant le formulaire sont en enctype="multipart/form-data" car sinon il parait que ca marche pas !
+
 	Revision 1.8  2004/09/17 16:14:43  kikx
 	Pffffff ...
 	Je sais plus trop ce que j'ai fait donc allez voir le code parce que la ca me fait chié de refléchir
-
+	
 	Revision 1.7  2004/09/17 14:19:58  kikx
 	Page de demande d'annonce terminé
 	Ajout d'une page de validations d'annonces
@@ -40,6 +43,7 @@ if ((isset($_REQUEST['test'])||(isset($_POST['valid'])))) {
 			auteur="<?php echo empty($surnom) ? $prenom.' '.$nom : $surnom .' (X'.$promo.')'?>"
 			date="<? echo date("d/m/y") ?>">
 			<? if (isset($_POST['text'])) echo $_POST['text'] ;?>
+			<? if (isset($_FILES['file'])) echo "#".$_FILES['file']['size'] ;?>
 	</annonce>
 <?
 }
@@ -77,6 +81,9 @@ if (isset($_POST['valid'])) {
 	<formulaire id="propoz_annonce" titre="Ton annonce" action="proposition/annonce.php">
 		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
 		<zonetext id="text" titre="Le texte" valeur="<? if (isset($_POST['text'])) echo $_POST['text'] ;?>"/>
+		<textsimple valeur="Ton image ne doit pas dépasser 200x200 pixels"/>
+		<hidden id="MAX_FILE_SIZE"  valeur="30000"/>
+		<champ id="file" titre="Ton image" valeur=""/>
 		<textsimple valeur="Ta signature sera automatiquement généré"/>
 		
 		<choix titre="Date de péremption" id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">

@@ -3,11 +3,14 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.11  2004/09/17 22:49:29  kikx
+	Rajout de ce qui faut pour pouvoir faire des telechargeement de fichiers via des formulaires (ie des champs 'file' des champ 'hidden') de plus maintenant le formulaire sont en enctype="multipart/form-data" car sinon il parait que ca marche pas !
+
 	Revision 1.10  2004/09/17 09:05:32  kikx
 	La personne peut maintenant rajouter une annonce
 	Ceci dit je ne comprend pas trop comment on protège les champs avec les <!CDATA
 	-> j'ai laisser ca comme ca mais faudra modifier
-
+	
 	Revision 1.9  2004/09/15 23:19:56  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
@@ -20,12 +23,13 @@
 		<h2><xsl:value-of select="@titre"/></h2>
 	</xsl:if>
 	<xsl:apply-templates select="commentaire"/>
-	<form method="POST"><xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
+	<form enctype="multipart/form-data" method="POST">
+		<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<table class="formulaire" cellspacing="0" cellpadding="0">
 			<xsl:if test="boolean(@titre)">
 				<tr><td class="titre" colspan="2"><xsl:value-of select="@titre"/></td></tr>
 			</xsl:if>
-			<xsl:apply-templates select="champ|choix|zonetext|textsimple"/>
+			<xsl:apply-templates select="champ|choix|zonetext|textsimple|hidden"/>
 			<tr><td class="boutons" colspan="2"><center><xsl:apply-templates select="bouton"/></center></td></tr>
 		</table>
 	</form>
@@ -82,6 +86,7 @@
 			<input>
 				<xsl:choose>
 					<xsl:when test="starts-with(@id,'passwd')"><xsl:attribute name="type">password</xsl:attribute></xsl:when>
+					<xsl:when test="starts-with(@id,'file')"><xsl:attribute name="type">file</xsl:attribute></xsl:when>
 					<xsl:otherwise><xsl:attribute name="type">text</xsl:attribute></xsl:otherwise>
 				</xsl:choose>
 				<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
@@ -91,7 +96,16 @@
 	</td></tr>
 </xsl:template>
 
-
+<xsl:template match="formulaire/hidden">
+	<tr><td class="gauche">
+	</td><td class="droite">
+		<input>
+			<xsl:attribute name="type">hidden</xsl:attribute>
+			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+			<xsl:attribute name="value"><xsl:value-of select="@valeur"/></xsl:attribute>
+		</input>
+	</td></tr>
+</xsl:template>
 
 <xsl:template match="zonetext">
 	<textarea>

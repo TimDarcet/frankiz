@@ -3,8 +3,8 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
-	Revision 1.4  2004/09/17 17:41:23  kikx
-	Bon ct plein de bugs partout et ca ressemblait  a rien mais bon c'est certainement la faute de Schmurtz :))))))
+	Revision 1.5  2004/09/17 22:49:29  kikx
+	Rajout de ce qui faut pour pouvoir faire des telechargeement de fichiers via des formulaires (ie des champs 'file' des champ 'hidden') de plus maintenant le formulaire sont en enctype="multipart/form-data" car sinon il parait que ca marche pas !
 
 	
 */
@@ -42,6 +42,14 @@ foreach ($_POST AS $keys => $val){
 	}
 	
 	if ($temp[0]=='valid') {
+		$DB_valid->query("SELECT eleve_id FROM valid_annonces WHERE annonce_id='{$temp[1]}'");
+		list($eleve_id) = $DB_valid->next_row() ;
+		// envoi du mail
+		$contenu = "Merci de ta participation \n\n".
+			"Très BR-ement\n" .
+			"L'automate :)\n"  ;
+		couriel($eleve_id,"[Frankiz] Ton annonce a pas été validé par le BR",$contenu);
+
 		$DB_web->query("INSERT annonces SELECT 0 as annonce_id, NOW() as stamp,perime, titre,contenu,eleve_id,0 as en_haut FROM a_valider.valid_annonces");
 		$DB_valid->query("DELETE FROM valid_annonces WHERE annonce_id='{$temp[1]}'") ;
 	?>
@@ -52,16 +60,14 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0]=='suppr') {
 		$DB_valid->query("SELECT eleve_id FROM valid_annonces WHERE annonce_id='{$temp[1]}'");
 		list($eleve_id) = $DB_valid->next_row() ;
-		
-		$DB_valid->query("DELETE FROM valid_annonces WHERE annonce_id='{$temp[1]}'") ;
-		
+		// envoi du mail
 		$contenu = "Désolé \n\n".
 			"Très BR-ement\n" .
 			"L'automate :)\n"  ;
-			
-		
-			
 		couriel($eleve_id,"[Frankiz] Ton annonce n'a pas été validé par le BR",$contenu);
+
+		$DB_valid->query("DELETE FROM valid_annonces WHERE annonce_id='{$temp[1]}'") ;
+		
 
 	?>
 		<warning><p>Suppression d'une annonce</p></warning>
