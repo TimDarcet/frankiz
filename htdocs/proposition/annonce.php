@@ -21,10 +21,13 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.36  2004/12/15 00:05:04  schmurtz
+	Plus beau
+
 	Revision 1.35  2004/12/14 22:16:06  schmurtz
 	Correction de bug du moteur wiki.
 	Simplication du code.
-
+	
 	Revision 1.34  2004/12/14 14:18:12  schmurtz
 	Suppression de la page de doc wiki : doc directement dans les pages concernees.
 	
@@ -214,15 +217,9 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="propoz_annonce" titre="Frankiz : Propose une annonce">
 <h1>Proposition d'annonce</h1>
 
- <?
-if ($erreur_upload==1) {
-?>
-	<warning>Ton fichier n'a pas été téléchargé car il ne respecte pas une des conditions spécifiées ci dessous<br/>
-		Dimension : <? echo $larg."x".$haut ;?><br/>
-		Taille : <? echo $_FILES['file']['size'] ;?> octets<br/>
-		Type : <? echo $filetype ;?><br/>
-	</warning>
 <?
+if ($erreur_upload==1) {
+	echo "<warning>Ton image n'est pas au bon format, ou est trop grande.</warning>\n";
 
 }
 //=========================================
@@ -255,12 +252,7 @@ if (!isset($_POST['titre']))  $_POST['titre']="Titre" ;
 
 if (isset($_POST['valid'])) {
 ?>
-	<commentaire>
-		Tu as demandé à un webmestre de valider ton annonce<br/>
-		Il faut compter 24h pour que ton annonce soit prise en compte par notre système<br/>
-		<br/>
-		Nous te remercions d'avoir soumis une annonce et nous essayerons d'y répondre le plus rapidement possible<br/>
-	</commentaire>
+	<commentaire>Ta nouvelle annonce a été prise en compte et sera validée dans les meilleurs délais.</commentaire>
 <?	
 } else {
 //====================

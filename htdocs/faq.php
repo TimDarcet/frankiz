@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.13  2004/12/15 00:05:04  schmurtz
+		Plus beau
+
 		Revision 1.12  2004/12/14 23:06:06  schmurtz
 		Ajout du support zonetext grand pour les faqs
-
+		
 		Revision 1.11  2004/12/14 22:17:32  kikx
 		Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
 		
@@ -362,7 +365,7 @@ if ($id != "") {
 				fclose($texte);
 				if (est_authentifie(AUTH_MINIMUM)) {
 					?>
-					<lien url="proposition/faq_modif.php?id=<?=$id?>" titre="Editer"/>
+					<lien url="proposition/faq_modif.php?id=<?=$id?>" titre="Éditer"/>
 					<?
 				}
 			}

@@ -22,6 +22,19 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!-- Formulaires -->
+<xsl:template match="formulaire[@type='discret']">
+	<!-- le formulaire lui même, mis en page avec une table -->
+	<form enctype="multipart/form-data" method="post">
+		<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
+		<!-- les options du formulaire -->
+		<xsl:for-each select="*[not (self::bouton or self::commentaire or self::warning)]">
+			<xsl:apply-templates select="."/>
+		</xsl:for-each>
+		<!-- les boutons gérant les actions du formulaire -->
+		<xsl:apply-templates select="bouton"/>
+	</form>
+</xsl:template>
+
 <xsl:template match="formulaire">
 	<!-- la déco -->
 	<form enctype="multipart/form-data" method="post">

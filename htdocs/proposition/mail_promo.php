@@ -21,9 +21,12 @@
 	Mail promo permettant l'envoie de pièce jointes et de formatage HTML
 	
 	$Log$
+	Revision 1.16  2004/12/15 00:05:04  schmurtz
+	Plus beau
+
 	Revision 1.15  2004/12/14 14:18:12  schmurtz
 	Suppression de la page de doc wiki : doc directement dans les pages concernees.
-
+	
 	Revision 1.14  2004/12/14 00:27:40  kikx
 	Pour que le FROM des mails de validation soit au nom du mec qui demande la validation... (qu'est ce que je ferai pas pour les TOS :))
 	
@@ -113,9 +116,9 @@ if (!isset($_REQUEST['envoie'])) {
 		</choix>
 
 		<champ titre="Sujet" id="sujet" valeur="<? if (isset($_REQUEST['sujet'])) echo $_REQUEST['sujet']?>" />
-		<zonetext titre="Mail" id="mail"><? if (isset($_REQUEST['mail'])) echo $_REQUEST['mail']?></zonetext>
-		<bouton titre="Mise à jour" id="upload"/>
-		<bouton titre="Valider" id="envoie"  onClick="return window.confirm('Voulez vous vraiment envoyer ce mail ?')"/>
+		<zonetext titre="Mail" id="mail" type="grand"><? if (isset($_REQUEST['mail'])) echo $_REQUEST['mail']?></zonetext>
+		<bouton titre="Tester" id="upload"/>
+		<bouton titre="Envoyer" id="envoie"  onClick="return window.confirm('Voulez vous vraiment envoyer ce mail ?')"/>
 	</formulaire>
 	<?php affiche_syntaxe_wiki() ?>
 <?

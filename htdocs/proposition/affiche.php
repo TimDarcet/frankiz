@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une activité
 	
 	$Log$
+	Revision 1.17  2004/12/15 00:05:04  schmurtz
+	Plus beau
+
 	Revision 1.16  2004/12/14 00:27:40  kikx
 	Pour que le FROM des mails de validation soit au nom du mec qui demande la validation... (qu'est ce que je ferai pas pour les TOS :))
-
+	
 	Revision 1.15  2004/11/29 17:27:33  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
@@ -200,16 +203,10 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
  <?
  echo $msg ;
-if ($erreur_upload==1) {
-?>
-	<warning>Ton fichier n'a pas été téléchargé car il ne respecte pas une des conditions spécifiées ci dessous<br/>
-		Dimension : <? echo $larg."x".$haut ;?><br/>
-		Taille : <? echo $_FILES['file']['size'] ;?> octets<br/>
-		Type : <? echo $filetype ;?><br/>
-	</warning>
-<?
+if ($erreur_upload==1)
+	echo "<warning>Ton image n'est pas au bon format, ou est trop grande.</warning>\n";
 
-}
+
 //=========================================
 // PREVISUALISATION :
 // On teste l'affichage de l'annonce pour voir à quoi ça ressemble
@@ -246,10 +243,7 @@ if ($erreur_upload==1) {
 
 if ((isset($_POST['valid']))&&(isset($index))&&file_exists(DATA_DIR_LOCAL."affiches/a_valider_{$index}")) {
 ?>
-	<commentaire>
-		Tu as demandé à un webmestre de valider ton activité. Il faut compter 24h pour que ton activité soit prise
-		en compte par notre système.
-	</commentaire>
+	<commentaire>Ta nouvelle annonce a été prise en compte et sera validée dans les meilleurs délais.</commentaire>
 <?	
 } else {
 //====================
@@ -260,15 +254,16 @@ if ((isset($_POST['valid']))&&(isset($index))&&file_exists(DATA_DIR_LOCAL."affic
 	<formulaire id="propoz_activite" titre="Ton activité" action="proposition/affiche.php">
 		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
 		<champ id="url" titre="URL du lien" valeur="<? if (isset($_POST['url'])) echo $_POST['url'] ;?>"/>
-		<note>Ton image doit être un fichier gif, png ou jpg, ne doit pas dépasser 200x300 pixels et 100ko car sinon elle ne sera pas téléchargée</note>
+
+		<note>L'image doit être un fichier gif, png ou jpeg ne dépassant pas 400x300 pixels et 250Ko.</note>
 		<fichier id="file" titre="Ton image" taille="100000"/>
-		<note>Si tu veux que ton activité soit visible de l'exterieur, clique ici</note>
-		<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if (isset($_REQUEST['ext'])) echo 'ext' ;?>">
+
+		<note>Si tu souhaites que ton activité soit visible de l'extérieur, clique ici.</note>
+		<choix titre="Extérieur" id="exterieur" type="checkbox" valeur="<? if (isset($_REQUEST['ext'])) echo 'ext' ;?>">
 			<option id="ext" titre=""/>
 		</choix>
-		<bouton id='suppr_img' titre="Supprimer l'image"/>
 		
-		<note>Ton activité sera affiché qu'un unique jour. Choisis donc la date de ton événement</note>
+		<note>Ton activité ne sera affichée qu'un seul jour. Choisis donc la date de ton événement.</note>
 
 		<choix titre="Date de l'activité" id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
 <?		for ($i=0 ; $i<MAX_PEREMPTION ; $i++) {
@@ -281,6 +276,8 @@ if ((isset($_POST['valid']))&&(isset($index))&&file_exists(DATA_DIR_LOCAL."affic
 ?>
 		</choix>
 		<champ id="heure" titre="Heure de l'activité" valeur="<? if (isset($_POST['heure'])) echo $_POST['heure'] ;?>"/>
+
+		<bouton id='suppr_img' titre="Supprimer l'image"/>
 		<bouton id='test' titre="Tester"/>
 		<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider votre annonce ?')"/>
 	</formulaire>

@@ -21,9 +21,12 @@
 	Permet de proposer une QDJ
 	
 	$Log$
+	Revision 1.9  2004/12/15 00:05:04  schmurtz
+	Plus beau
+
 	Revision 1.8  2004/12/14 00:27:40  kikx
 	Pour que le FROM des mails de validation soit au nom du mec qui demande la validation... (qu'est ce que je ferai pas pour les TOS :))
-
+	
 	Revision 1.7  2004/11/29 17:27:33  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
@@ -63,8 +66,8 @@ if (!isset($_REQUEST['envoie'])) {
 		<champ titre="Question" id="question" valeur="<? if (isset($_REQUEST['question'])) echo $_REQUEST['question']?>" />
 		<champ titre="Réponse 1" id="reponse1" valeur="<? if (isset($_REQUEST['reponse1'])) echo $_REQUEST['reponse1']?>" />
 		<champ titre="Réponse 2" id="reponse2" valeur="<? if (isset($_REQUEST['reponse2'])) echo $_REQUEST['reponse2']?>" />
-		<bouton titre="Mise à jour" id="upload"/>
-		<bouton titre="Valider" id="envoie"  onClick="return window.confirm('Voulez vous vraiment proposer cette QDJ ?')"/>
+		<bouton titre="Tester" id="upload"/>
+		<bouton titre="Proposer" id="envoie"  onClick="return window.confirm('Voulez vous vraiment proposer cette QDJ ?')"/>
 	</formulaire>
 <?
 //==================================================
