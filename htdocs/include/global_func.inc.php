@@ -22,9 +22,14 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.39  2004/12/14 01:02:43  paxal
+	Ajout d'un random pour portage de la skin aubade et celio
+
+	Si je me suis planté n'hésitez pas à me blatter
+
 	Revision 1.38  2004/12/14 00:30:22  kikx
 	Pour preparer le terrain a la modification de la FAQ
-
+	
 	Revision 1.37  2004/12/07 12:13:47  kikx
 	Une fonction de diff pour autoriser au gens de modifier les faqs en live ... ca demande la validation mais le webmestre voit de suite ce qui a été modifié
 	
@@ -169,6 +174,7 @@ function liste_modules() {
 		"css"				=> "",
 		"liens_navigation"	=> "",
 		"liens_propositions"	=> "",
+        "random"            => "",
 		"liens_utiles"		=> "Liens école",
 		"qdj"				=> "Question du jour",
 		"qdj_hier"			=> "Question de la veille",
