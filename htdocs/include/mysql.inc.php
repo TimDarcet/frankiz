@@ -23,10 +23,13 @@
 	- destruction automatique des résultats
 
 	$Log$
+	Revision 1.16  2004/11/17 22:18:45  schmurtz
+	Demi correction d'un bug empechant l'affichage des erreurs MySQL
+
 	Revision 1.15  2004/11/16 14:54:12  schmurtz
 	Affichage des erreurs "Parse Error"
 	permet de loguer des infos autre que les commandes SQL (pour debugage)
-
+	
 	Revision 1.14  2004/11/08 18:27:34  pico
 	là aussi ça devrait marcher, à tester
 	
@@ -98,11 +101,13 @@ class DB {
 		ajouter_debug_log("Requète SQL \"$query\"");
 		$this->result = mysql_query($query,$this->link);
 		
+		if(mysql_errno() != 0 || is_bool($this->result) && $this->result == false)
+			// FIXME : mysql_errno() renvoi anormalement toujours 0
+			ajouter_erreur_mysql($query);
+
 		if(is_bool($this->result) && $this->result)
 			$this->result = false;
 		
-		if(mysql_errno() != 0)
-			ajouter_erreur_mysql($query);
 	}
 	
 	/*
