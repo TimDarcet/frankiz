@@ -3,9 +3,12 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.4  2004/10/18 20:29:44  kikx
+	Enorme modification pour la fusion des bases des binets (Merci Schmurtz)
+
 	Revision 1.3  2004/10/17 14:43:03  kikx
 	Finalisation de la page de modification des binets WEB
-
+	
 	Revision 1.2  2004/10/16 00:30:56  kikx
 	Permet de modifier des binets déjà existants
 	
@@ -30,7 +33,7 @@ $texte_image ="" ;
 	//==========================
 
 	if (isset($_POST['ajout'])) {
-		$DB_web->query("INSERT INTO  binets SET nom='{$_POST['nom']}', http='{$_POST['http']}', descript='{$_POST['descript']}', catego='{$_POST['catego']}' ");
+		$DB_trombino->query("INSERT INTO  binets SET nom='{$_POST['nom']}', http='{$_POST['http']}', description='{$_POST['descript']}', catego_id='{$_POST['catego']}' ");
 		$index = mysql_insert_id() ;
 		$message .= "<commentaire>Création du binet ' {$_POST['nom']}' effectuée</commentaire>" ;
 		
@@ -74,7 +77,7 @@ $texte_image ="" ;
 				//--------------------------------------
 			
 			if ((in_array (strtolower ($type_img), $image_types))&&($dim[0]<=100)&&($dim[1]<=100)) {
-				$DB_web->query("UPDATE binets SET image=\"$data\", format='$type_img' WHERE  id={$_POST['id']}") ;
+				$DB_trombino->query("UPDATE binets SET image=\"$data\", format='$type_img' WHERE  binet_id={$_POST['id']}") ;
 				$texte_image = " et de son image " ;
 			} else {
 				$message .= "<warning>Ton image n'est pas au bon format (taille ou extension... $type_img / $dim[0]x$dim[1] pxl)</warning>" ;
@@ -83,7 +86,7 @@ $texte_image ="" ;
 		
 		//---------------------------------------------------------
 			
-		$DB_web->query("UPDATE binets SET nom='{$_POST['nom']}', http='{$_POST['http']}', descript='{$_POST['descript']}', catego='{$_POST['catego']}' , exterieur=$ext WHERE id={$_POST['id']}");
+		$DB_trombino->query("UPDATE binets SET nom='{$_POST['nom']}', http='{$_POST['http']}', description='{$_POST['descript']}', catego_id='{$_POST['catego']}' , exterieur=$ext WHERE binet_id={$_POST['id']}");
 		$message .= "<commentaire>Modification de {$_POST['nom']} $texte_image effectuée</commentaire>" ;
 	}
 	
@@ -104,14 +107,14 @@ $texte_image ="" ;
 				//
 				// On verifie que le truc télécharger est une image ...
 				//--------------------------------------
-			$DB_web->query("UPDATE binets SET image=\"$data\", format='$type_img' WHERE  id={$_POST['id']}") ;
+			$DB_trombino->query("UPDATE binets SET image=\"$data\", format='$type_img' WHERE  binet_id={$_POST['id']}") ;
 			$message .= "<warning> Suppression de l'image du binet {$_POST['nom']}</warning>" ;
 	}
 	// On supprime un binet
 	//==========================
 	
 	if (isset($_POST['suppr'])) {
-		$DB_web->query("DELETE FROM binets WHERE id={$_POST['id']}");
+		$DB_trombino->query("DELETE FROM binets WHERE binet_id={$_POST['id']}");
 		$message .= "<warning>Suppression de {$_POST['nom']} effectuée</warning>" ;
 	}
 
@@ -126,8 +129,8 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 <?php
 	$liste_catego ="" ;
-	$DB_web->query("SELECT id,catego FROM categ_binet ORDER BY catego ASC");
-	while( list($catego_id,$catego_nom) = $DB_web->next_row() )
+	$DB_trombino->query("SELECT catego_id,categorie FROM binets_categorie ORDER BY categorie ASC");
+	while( list($catego_id,$catego_nom) = $DB_trombino->next_row() )
 		$liste_catego .= "\t\t\t<option titre=\"$catego_nom\" id=\"$catego_id\"/>\n";
 	?>
 		<formulaire id="binet_web" titre="Nouveau Binet" action="admin/binets_web.php">
@@ -151,8 +154,8 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 	<?
 	$categorie_precedente = -1;
-	$DB_web->query("SELECT b.id,date,nom,descript,http,c.id,c.catego,b.exterieur FROM binets as b INNER JOIN categ_binet as c ON(b.catego=c.id) ORDER BY b.nom ASC");
-	while(list($id,$date,$nom,$descript,$http,$cat_id,$catego,$exterieur) = $DB_web->next_row()) {
+	$DB_trombino->query("SELECT binet_id,nom,description,http,b.catego_id,categorie,exterieur FROM binets as b LEFT JOIN binets_categorie as c USING(catego_id) WHERE http IS NOT NULL ORDER BY nom ASC");
+	while(list($id,$nom,$descript,$http,$cat_id,$catego,$exterieur) = $DB_trombino->next_row()) {
 ?>
 		<formulaire id="binet_web_<? echo $id?>" titre="<? echo $nom?>" action="admin/binets_web.php">
 			<hidden id="id" titre="ID" valeur="<? echo $id?>"/>

@@ -4,9 +4,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.22  2004/10/18 20:29:44  kikx
+	Enorme modification pour la fusion des bases des binets (Merci Schmurtz)
+
 	Revision 1.21  2004/10/17 22:02:45  pico
 	Ajout lien admin xshare
-
+	
 	Revision 1.20  2004/10/17 20:27:35  kikx
 	Permet juste au prez des binets de consulter les perosnne adherant aux binet ainsi que leur commentaires
 	
@@ -93,10 +96,10 @@ $permissions_user = ses_permissions() ;
 			$binet = $binet[1] ;
 			$counter ++ ;
 			if ($counter == 1) 
-				echo "<h2>Prez binet X</h2>" ;
+				echo "<h2>Webmestre binet X</h2>" ;
 			
-			$DB_web->query("SELECT nom FROM binets WHERE id=$binet");
-			list($nom) = $DB_web->next_row() ;
+			$DB_trombino->query("SELECT nom FROM binets WHERE binet_id=$binet");
+			list($nom) = $DB_trombino->next_row() ;
 
 			echo "<lien titre=\"Gerer la page du binet : $nom\" url=\"". BASE_URL."/gestion/binet.php?binet=".$binet."\"/>" ;
 		}
@@ -117,8 +120,8 @@ $permissions_user = ses_permissions() ;
 			if ($counter == 1) 
 				echo "<h2>Prez binet X</h2>" ;
 			
-			$DB_web->query("SELECT nom FROM binets WHERE id=$binet");
-			list($nom) = $DB_web->next_row() ;
+			$DB_trombino->query("SELECT nom FROM binets WHERE binet_id=$binet");
+			list($nom) = $DB_trombino->next_row() ;
 
 				
 			echo "<lien titre=\"Gerer les membres du binet : $nom\" url=\"". BASE_URL."/gestion/binet.php?binet=".$binet."\"/>" ;
