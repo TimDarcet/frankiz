@@ -21,9 +21,12 @@
 	Page qui permet aux admins de modifier une annonce validée
 	
 	$Log$
+	Revision 1.7  2004/12/07 12:06:17  kikx
+	Ben c'est un lien cassé
+
 	Revision 1.6  2004/12/07 08:36:39  pico
 	Ajout d'une page pour pouvoir vider un peu les bases de données (genre pas garder les news qui datent de vieux)
-
+	
 	Revision 1.5  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
 	
@@ -95,7 +98,7 @@ foreach ($_POST AS $keys => $val){
 }
 
 
-echo "<lien titre=\"Supprimer les annonces périmées depuis plus de 5 jours\" url=\"nettoyage.php?annonces\"/>" ;
+echo "<lien titre=\"Supprimer les annonces périmées depuis plus de 5 jours\" url=\"admin/nettoyage.php?annonces\"/>" ;
 
 
 //===============================
