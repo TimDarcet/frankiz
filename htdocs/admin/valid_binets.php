@@ -21,9 +21,12 @@
 	Page de validation d'une modification d'un binet
 	
 	$Log$
+	Revision 1.6  2004/11/27 15:02:17  pico
+	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
+
 	Revision 1.5  2004/11/08 18:26:40  kikx
 	Coorige des bugs
-
+	
 	Revision 1.4  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -41,7 +44,7 @@ require_once "../include/global.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
-	rediriger_vers("/admin/");
+	rediriger_vers("/gestion/");
 
 // Génération de la page
 //===============

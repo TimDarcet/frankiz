@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.28  2004/11/27 15:02:17  pico
+		Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
+
 		Revision 1.27  2004/11/26 16:12:47  pico
 		La Faq utilise la $DB_faq au lieu de $DB_web
-
+		
 		Revision 1.26  2004/11/25 12:45:36  pico
 		Duble emploi de htmlspecialchar vu que les entrées dans la bdd sont déjà transformées
 		
@@ -98,7 +101,8 @@ require_once "../include/global.inc.php";
 require_once "../include/transferts.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_MINIMUM);
+if(!(verifie_permission('admin')||verifie_permission('xshare'))
+	rediriger_vers("/gestion/");
 
 if(isset($_REQUEST['download'])&&isset($_REQUEST['download_type'])){
 	download(BASE_DATA."faq/".base64_decode($_REQUEST['download']),$_REQUEST['download_type'],"FAQ-".strtr(base64_decode($_REQUEST['download']),"/","-")."-".time());

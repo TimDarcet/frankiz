@@ -21,10 +21,13 @@
 	Page qui permet aux admins de valider un sondage
 	
 	$Log$
+	Revision 1.5  2004/11/27 15:02:17  pico
+	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
+
 	Revision 1.4  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
-
+	
 	Revision 1.3  2004/11/17 22:19:15  kikx
 	Pour avoir un module sondage
 	
@@ -42,7 +45,7 @@ require_once "../include/global.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
-	rediriger_vers("/admin/");
+	rediriger_vers("/gestion/");
 
 // Génération de la page
 //===============

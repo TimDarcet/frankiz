@@ -29,10 +29,13 @@
 	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
 	
 	$Log$
+	Revision 1.14  2004/11/27 15:02:17  pico
+	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
+
 	Revision 1.13  2004/11/26 22:51:21  pico
 	Correction du SU dans les pages d'admin
 	Les utilisateurs avec le droit 'affiches' peuvent changer les dates des activités qu'ils ont postées, si celles ci ont été préalablement validées par le br
-
+	
 	Revision 1.12  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -58,7 +61,7 @@ require_once "../include/global.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
-	rediriger_vers("/admin/");
+	rediriger_vers("/gestion/");
 
 // On vérifie que la personne envoie bien l'id sinon ca sert a rien ...
 if(!isset($_GET['id']))

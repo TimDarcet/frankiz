@@ -21,10 +21,13 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.13  2004/11/27 15:02:17  pico
+	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
+
 	Revision 1.12  2004/11/27 14:56:15  pico
 	Debut de mise en place de droits spéciaux (qdj + affiches)
 	+ génération de la page d'admin qui va bien
-
+	
 	Revision 1.11  2004/11/16 18:32:34  schmurtz
 	Petits problemes d'interpretation de <note> et <commentaire>
 	
@@ -72,7 +75,7 @@ require_once "../include/global.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin') && !verifie_permission('qdjmaster'))
-	rediriger_vers("/admin/");
+	rediriger_vers("/gestion/");
 
 
 

@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.27  2004/11/27 15:02:17  pico
+		Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
+
 		Revision 1.26  2004/11/25 12:45:36  pico
 		Duble emploi de htmlspecialchar vu que les entrées dans la bdd sont déjà transformées
-
+		
 		Revision 1.25  2004/11/24 22:12:57  schmurtz
 		Regroupement des fonctions zip unzip deldir et download dans le meme fichier
 		
@@ -81,8 +84,9 @@ require_once "../include/global.inc.php";
 require_once "../include/transferts.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_MINIMUM);
-
+demande_authentification(AUTH_FORT);
+if(!(verifie_permission('admin')||verifie_permission('xshare'))
+	rediriger_vers("/gestion/");
 
 // Génération de la page
 //===============

@@ -21,10 +21,13 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.19  2004/11/27 15:02:17  pico
+	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
+
 	Revision 1.18  2004/11/25 00:53:03  kikx
 	Voilà... la validation des mails promo est faite en wiki
 	j'en ai profité pour cooriger un oubli ?... de pourvoir changer l'expediter du mai par exemple au om de son binet
-
+	
 	Revision 1.17  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
@@ -89,7 +92,7 @@ require_once "../include/wiki.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
-	rediriger_vers("/admin/");
+	rediriger_vers("/gestion/");
 
 // Génération de la page
 //===============

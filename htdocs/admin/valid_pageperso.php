@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.2  2004/11/27 15:02:17  pico
+	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
+
 	Revision 1.1  2004/11/24 12:51:58  kikx
 	Oubli de ma part
-
+	
 
 	
 */
@@ -35,7 +38,7 @@ require_once "../include/global.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
-	rediriger_vers("/admin/");
+	rediriger_vers("/gestion/");
 
 // Génération de la page
 //===============

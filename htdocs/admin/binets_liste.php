@@ -21,9 +21,12 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.4  2004/11/27 15:02:17  pico
+	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
+
 	Revision 1.3  2004/11/25 11:52:10  pico
 	Correction des liens mysql_id
-
+	
 	Revision 1.2  2004/11/11 19:22:52  kikx
 	Permet de gerer l'affichage externe interne des binets
 	Permet de pas avoir de binet sans catégorie valide
@@ -42,7 +45,7 @@ require_once "../include/global.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
-	rediriger_vers("/admin/");
+	rediriger_vers("/gestion/");
 
 $message = "";
 $texte_image ="" ;

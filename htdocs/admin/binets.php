@@ -21,9 +21,12 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.22  2004/11/27 15:02:17  pico
+	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
+
 	Revision 1.21  2004/11/25 02:10:48  kikx
 	la non plus
-
+	
 	Revision 1.19  2004/11/25 02:03:29  kikx
 	Bug d'administration des binets
 	
@@ -75,7 +78,7 @@ require_once "../include/global.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
-	rediriger_vers("/admin/");
+	rediriger_vers("/gestion/");
 
 $message = "";
 $texte_image ="" ;

@@ -23,10 +23,13 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.17  2004/11/27 15:02:17  pico
+	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
+
 	Revision 1.16  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
-
+	
 	Revision 1.15  2004/10/29 15:41:47  kikx
 	Passage des mail en HTML pour les ip
 	
@@ -49,7 +52,7 @@ require_once "../include/global.inc.php";
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
-	rediriger_vers("/admin/");
+	rediriger_vers("/gestion/");
 
 // Génération de la page
 //===============
