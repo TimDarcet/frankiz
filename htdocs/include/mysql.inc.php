@@ -23,9 +23,12 @@
 	- destruction automatique des résultats
 
 	$Log$
+	Revision 1.19  2004/12/10 17:55:24  kikx
+	Je sais pas trop ...
+
 	Revision 1.18  2004/12/06 00:01:42  kikx
 	Passage de la skin par défaut en parametre du site et non pas stocké en dur
-
+	
 	Revision 1.17  2004/11/27 16:27:33  pico
 	établit la connection à la bdd qu'à la première requete.
 	Utile si on n'a pas besoin de la connection (genre xnet ou trombino)
@@ -104,8 +107,9 @@ class DB {
 			$this->link = mysql_connect($this->host,$this->user,$this->pass,true);
 			if(mysql_errno() == 0)
 				mysql_select_db($this->base,$this->link) || ajouter_erreur_mysql("USE ".$this->base);
-			else
+			else {
 				ajouter_erreur_mysql("CONNECT ".$this->user."@".$this->host);
+			}
 		}
 		
 		if($this->result)
