@@ -26,9 +26,12 @@
 	utilisé.
 
 	$Log$
+	Revision 1.5  2004/11/24 12:01:23  pico
+	Ajout du champ valeur dans les balises "option" pour pouvoir faire des formulaires plus évolués (ex: checkbox)
+
 	Revision 1.4  2004/11/16 18:32:33  schmurtz
 	Petits problemes d'interpretation de <note> et <commentaire>
-
+	
 	Revision 1.3  2004/11/09 22:39:06  pico
 	Ajout des accesskeys dans les liens de navigation
 	
@@ -253,6 +256,7 @@
 <!ELEMENT option EMPTY>
 <!ATTLIST option
 		id		CDATA   #REQUIRED
+		value   CDATA   #IMPLIED
 		titre   CDATA   #IMPLIED>
 
 <!ELEMENT bouton EMPTY>
