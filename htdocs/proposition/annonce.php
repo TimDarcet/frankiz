@@ -3,10 +3,14 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.8  2004/09/17 16:14:43  kikx
+	Pffffff ...
+	Je sais plus trop ce que j'ai fait donc allez voir le code parce que la ca me fait chié de refléchir
+
 	Revision 1.7  2004/09/17 14:19:58  kikx
 	Page de demande d'annonce terminé
 	Ajout d'une page de validations d'annonces
-
+	
 */
 	
 require_once "../include/global.inc.php";
@@ -34,7 +38,7 @@ if ((isset($_REQUEST['test'])||(isset($_POST['valid'])))) {
 	<annonce titre="<?php  if (isset($_POST['titre'])) echo $_POST['titre'] ; ?>" 
 			categorie=""
 			auteur="<?php echo empty($surnom) ? $prenom.' '.$nom : $surnom .' (X'.$promo.')'?>"
-			date="">
+			date="<? echo date("d/m/y") ?>">
 			<? if (isset($_POST['text'])) echo $_POST['text'] ;?>
 	</annonce>
 <?
@@ -50,7 +54,7 @@ if (isset($_POST['valid'])) {
 	$contenu = "$prenom $nom a demandé la validation d'une annonce : \n".
 				$_POST['titre']."\n\n".
 				"Pour valider ou non cette demande va sur la page suivante : \n".
-				"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_annonce.php\n\n" .
+				"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_annonces.php\n\n" .
 				"Très BR-ement\n" .
 				"L'automate :)\n"  ;
 				
@@ -75,7 +79,7 @@ if (isset($_POST['valid'])) {
 		<zonetext id="text" titre="Le texte" valeur="<? if (isset($_POST['text'])) echo $_POST['text'] ;?>"/>
 		<textsimple valeur="Ta signature sera automatiquement généré"/>
 		
-		<choix titre="Date de péremption" id="date" type="combo" valeur="<? if (isset($_REQUEST['time'])) echo $_REQUEST['date'] ;?>">
+		<choix titre="Date de péremption" id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
 <?		for ($i=0 ; $i<MAX_PEREMPTION ; $i++) {
 			$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
 			$date_value = date("d/m/y" , $date_id);
