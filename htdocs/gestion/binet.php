@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.33  2005/01/27 06:33:22  pico
+	Pour éviter que quand un prez vire quelqu'un de son binet, tous les binets du gars soient effacés !
+
 	Revision 1.32  2005/01/22 17:58:38  pico
 	Modif des images
-
+	
 	Revision 1.31  2005/01/22 11:00:07  pico
 	BugFix
 	
@@ -181,7 +184,7 @@ if(verifie_permission_prez($_REQUEST['binet'])){
 			foreach($_POST['elements'] as $id => $on) {
 				$ids .= (empty($ids) ? "" : ",") . "'$id'";
 			}
-			$DB_trombino->query("DELETE FROM membres  WHERE eleve_id IN ($ids)");
+			$DB_trombino->query("DELETE FROM membres  WHERE eleve_id IN ($ids) AND binet_id='{$_REQUEST['binet']}'");
 			$message .= "<warning>".count($_POST['elements'])." personnes viennent d'être supprimées.</warning>\n";
 		}
 	}
