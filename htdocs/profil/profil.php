@@ -24,9 +24,13 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.26  2004/11/22 19:10:39  kikx
+	Mise en place de note pour le profil
+	permet de mieux expliquer comment cela fonctionne
+
 	Revision 1.25  2004/11/22 18:59:31  kikx
 	Pour gérer son site perso
-
+	
 	Revision 1.24  2004/11/07 22:41:03  pico
 	Ne cherche plus à uploader d'image qd on lui demande pas
 	
@@ -275,9 +279,10 @@ require "../include/page_header.inc.php";
 			echo "<warning>L'email n'est pas valide.</warning>\n";
 ?>
 	<formulaire id="mod_frankiz" titre="Modification du compte Frankiz" action="profil/profil.php">
-		<textsimple valeur="Ne pas toucher ou laisser vide pour conserver l'ancien mot de passe"/>
+		<note>Ne pas toucher ou laisser vide pour conserver l'ancien mot de passe</note>
 		<champ id="passwd" titre="Mot de passe" valeur="12345678"/>
 		<champ id="passwd2" titre="Retaper le mot de passe" valeur="87654321"/>
+		<note>L'authentification par cookie te permet de ne pas retaper ton mot de passe à chaque fois que tu te connecte sur frankiz. N'active pas cette authentification si tu te connecte sur un ordinateur qui n'est pas le tien</note>
 		<choix id="cookie" titre="Utiliser l'authentification par cookie" type="combo"
 				valeur="<?php echo empty($_COOKIE['auth'])? 'non' : 'oui' ?>">
 			<option titre="Activé" id="oui"/>
@@ -306,6 +311,7 @@ require "../include/page_header.inc.php";
 		<?
 		}
 		?>
+		<note>Tu peux personnaliser le trombino en changeant ta photo (elle ne doit pas dépasser 200ko)</note>
 		<fichier id="file" titre="Nlle photo" taille="200000"/>
 
 		<bouton id="changer_trombino" titre="Changer"/>
@@ -337,10 +343,7 @@ require "../include/page_header.inc.php";
 <?
 		 }
 ?>
-		<element id="<?=$binet_id?>" selectionnable="non">
-			<colonne id="binet"></colonne>
-			<colonne id="commentaire"></colonne>
-		</element>
+		<note>Si tu viens d'adhérer à un binet, n'hésite pas à le montrer et inscrit-y toi sur le TOL</note>
 		<element id="<?=$binet_id?>" selectionnable="non">
 			<colonne id="binet">Rajouter un binet</colonne>
 			<colonne id="commentaire"><?=$liste_binet?></colonne>
@@ -352,6 +355,7 @@ require "../include/page_header.inc.php";
 	
 	
 	<formulaire id="mod_pageperso" titre="Ton site web" action="profil/profil.php">
+		<note>Tu peux soumettre des .zip, des .tar.gz, .tar, .tar.bz2. Tu remplaceras ainsi l'intégralité de ton site perso. Attention tu es limité à 10Mo.</note>
 		<fichier id="file" titre="Ton site" taille="10000000000"/>
 		<bouton id="up_page" titre="Upload"/>
 	</formulaire>
