@@ -4,9 +4,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.17  2004/10/15 22:03:07  kikx
+	Mise en place d'une page pour la gestion des sites des binets
+
 	Revision 1.16  2004/10/13 22:14:32  pico
 	Premier jet de page pour affecter une date de publication aux qdj validées
-
+	
 	Revision 1.14  2004/10/06 14:12:27  kikx
 	Page de mail promo quasiment en place ...
 	envoie en HTML ...
@@ -47,6 +50,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	<h2>Administration frankiz</h2>
 		<lien titre="Modifier un utilisateur" url="<?php echo BASE_URL?>/trombino"/>
 		<lien titre="Liste des Binets" url="<?php echo BASE_URL?>/admin/binets.php"/>
+		<lien titre="Liste des Binets qui ont un site WEB" url="<?php echo BASE_URL?>/admin/binets_web.php"/>
 		<lien titre="Liste des sections" url="<?php echo BASE_URL?>/admin/sections.php"/>
 		<lien titre="Liste des IPs" url="<?php echo BASE_URL?>/admin/ip.php"/>
 		<lien titre="Gerer les demandes d'ajout d'ips" url="<?php echo BASE_URL?>/admin/valid_ip.php"/>

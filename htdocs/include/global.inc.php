@@ -6,13 +6,16 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.19  2004/10/15 22:03:07  kikx
+	Mise en place d'une page pour la gestion des sites des binets
+
 	Revision 1.18  2004/10/07 22:52:20  kikx
 	Correction de la page des activites (modules + proposition + administration)
 		rajout de variables globales : DATA_DIR_LOCAL
 						DATA_DIR_URL
-
+	
 	Comme ca si ca change, on est safe :)
-
+	
 	Revision 1.17  2004/10/04 21:48:08  schmurtz
 	Modification des chemins d'accès vers divers éléments.
 	
@@ -57,7 +60,7 @@ define('BASE_URL','http://'.$_SERVER['HTTP_HOST'].'/'.substr((dirname($_SERVER['
 define('AFFICHER_LES_ERREURS',$_SERVER["SERVER_ADDR"] == "129.104.201.52");	// seulement sur gwennoz
 define('BASE_PHOTOS',BASE_LOCAL."/../data/photos/");
 define('BASE_CACHE',BASE_LOCAL."/../cache/");
-//define('MAIL_WEBMESTRE',"webmestre@frankiz.polytechnique.fr");
+
 define('MAIL_WEBMESTRE',"kikx@frankiz.polytechnique.fr");
 define('MAX_PEREMPTION',8);
 
