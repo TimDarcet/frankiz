@@ -24,9 +24,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.25  2004/11/22 18:59:31  kikx
+	Pour gérer son site perso
+
 	Revision 1.24  2004/11/07 22:41:03  pico
 	Ne cherche plus à uploader d'image qd on lui demande pas
-
+	
 	Revision 1.23  2004/10/29 16:12:53  kikx
 	Diverse correction sur les envoie des mail en HTML
 	
@@ -237,6 +240,20 @@ if (isset($_POST['add_binet'])) {
 		$message .=  "<warning>Aucun binet séléctionné</warning>" ;	
 	}
 }
+// Modification de la partie "Page perso"
+
+if (isset($_POST['up_page'])) {
+	if ((isset($_FILES['file'])) &&($_FILES['file']['name']!='')) {
+		$chemin = BASE_PAGESPERSOS."$login.$promo/" ;
+		deldir($chemin);
+		mkdir ($chemin) ;
+		
+		$filename = $chemin.$_FILES['file']['name'];
+		move_uploaded_file($_FILES['file']['tmp_name'], BASE_PAGESPERSOS.$_FILES['file']['name']);
+		unzip(BASE_PAGESPERSOS.$_FILES['file']['name'] , $chemin , true);
+
+	}
+}
 
 
 // Génération du la page XML
@@ -332,6 +349,39 @@ require "../include/page_header.inc.php";
 		<bouton id='mod_binet' titre='Changer'/>
 	</liste>
 	
+	
+	
+	<formulaire id="mod_pageperso" titre="Ton site web" action="profil/profil.php">
+		<fichier id="file" titre="Ton site" taille="10000000000"/>
+		<bouton id="up_page" titre="Upload"/>
+	</formulaire>
+	<?
+	function parcours_arbo1($rep) {
+		if( $dir = opendir($rep) ) {
+			while( FALSE !== ($fich = readdir($dir)) ) {
+				if ($fich != "." && $fich != "..") {
+					$chemin = "$rep/$fich";
+					if (is_dir($chemin)) {
+						echo "<noeud titre=\"$fich\">";
+							parcours_arbo1($chemin);
+						echo "</noeud>" ;
+					} else {
+						echo "<feuille titre=\"$fich\"></feuille>";
+					}
+				}
+			}
+		}
+	}
+	
+	echo "<h2>Gestion des fichiers du site perso</h2>";
+	
+	echo "<arbre>";
+	echo "<noeud titre=\"/$login.$promo\">" ;
+	
+	$arbo = parcours_arbo1(BASE_PAGESPERSOS.$login.".".$promo);
+	echo "</noeud>" ;
+	echo "</arbre>";
+	?>
 
 </page>
 <?php

@@ -22,11 +22,14 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.4  2004/11/22 18:59:31  kikx
+	Pour gérer son site perso
+
 	Revision 1.3  2004/11/13 00:10:14  schmurtz
 	Il FAUT mettre les entetes de licence GPL dans les nouveaux fichiers
 	Faut aussi eviter d'utiliser une structure d'entetes perso qui casse l'homogeneite
 	des fichiers de code et en complique donc la lisibilite.
-
+	
 */
 
 // ================ ATTENTION ==============
@@ -46,6 +49,7 @@ define('BASE_DATA',"/home/frankiz2/data/");				// TODO Gérer le truc proprement.
 define('BASE_PHOTOS',"/home/frankiz2/data/photos/");
 define('BASE_CACHE',"/home/frankiz2/cache/");
 define('BASE_BINETS',"/home/frankiz2/binets/");
+define('BASE_PAGESPERSOS',"/home/frankiz2/webperso/");
 
 define('URL_DATA','http://'.$_SERVER['HTTP_HOST'].'/frankiz2/data/');
 
