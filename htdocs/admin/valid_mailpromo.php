@@ -3,9 +3,13 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.5  2004/10/10 20:13:18  kikx
+	Bug fix pour les envoie de mail promo
+	-> n'envoie plus en texte brut les truc comme &apo; &nbps; ...
+
 	Revision 1.4  2004/10/10 20:10:05  kikx
 	Ne sert plus a rien
-
+	
 	Revision 1.3  2004/10/06 21:29:29  kikx
 	Mail promo != mail bi-promo
 	
@@ -110,7 +114,7 @@ foreach ($_POST AS $keys => $val){
 		$texte .= "------$limite2\n";
 		$texte .= "Content-Type: text/plain; charset=\"iso-8859-1\"\n";
 		$texte .= "Content-Transfer-Encoding: 8bit\n\n";
-		$texte .= strip_tags(str_replace("<p>","\n",str_replace("<br>","\n",$mail_contenu)));
+		$texte .= strip_tags(str_replace("<p>","\n",str_replace("<br>","\n",html_entity_decode($mail_contenu))));
 		$texte .= "\n\n";
 		//Le message en texte HTML pour les navigateurs qui acceptent  le HTML
 		$texte .= "------$limite2\n";
