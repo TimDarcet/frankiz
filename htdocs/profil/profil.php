@@ -6,9 +6,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.14  2004/10/20 20:37:27  kikx
+	Possibilité par l'utilisateur de se rajouter un binet
+
 	Revision 1.13  2004/10/20 19:51:17  kikx
 	Structure pour se rajouter des binets
-
+	
 	Revision 1.12  2004/10/20 18:47:07  kikx
 	Pour rajouter des lignes non selectionnables dans une liste
 	
@@ -117,6 +120,17 @@ if (isset($_POST['suppr_binet'])) {
 	}
 }
 
+// Modification de la partie "binets"
+
+if (isset($_POST['add_binet'])) {
+	if ($_POST['liste_binet'] != 'default') {
+		mysql_query("INSERT INTO membres SET eleve_id={$_SESSION['user']->uid},binet_id={$_POST['liste_binet']}");
+		$message_succes = "Binet correctement ajouté" ;
+	} else {
+		$message_succes = "Aucun binet séléctionné" ;
+	}
+}
+
 
 // Génération du la page XML
 require "../include/page_header.inc.php";
@@ -172,11 +186,11 @@ require "../include/page_header.inc.php";
 			$liste_binet .="\t<option titre=\"$nom_binet\" id=\"$binet_id\"/>\n" ;
 		}
 		$liste_binet .= "</choix>\n" ;
-		$liste_binet .= "<bouton id='ajout_binet' titre='Ajouter'/>\n" ;
+		$liste_binet .= "<bouton id='add_binet' titre='Ajouter'/>\n" ;
 
 
 
-		$DB_trombino->query("SELECT membres.remarque,membres.binet_id,binets.nom FROM membres INNER JOIN binets USING(binet_id) WHERE eleve_id={$_SESSION['user']->uid} ORDER BY membres.binet_id ASC");
+		$DB_trombino->query("SELECT membres.remarque,membres.binet_id,binets.nom FROM membres INNER JOIN binets USING(binet_id) WHERE eleve_id={$_SESSION['user']->uid} ORDER BY binets.nom ASC");
 		while (list($remarque,$binet_id,$nom) = $DB_trombino->next_row()) { ?>
 		<element id="<?=$binet_id?>">
 			<colonne id="binet"><? echo $nom?> :</colonne>
