@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.26  2005/01/02 20:36:32  pico
+	Bug
+
 	Revision 1.25  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 	Revision 1.24  2004/12/17 14:34:18  pico
 	J'avais fait de la merde...
 	
@@ -167,7 +170,7 @@ $DB_admin->query("UNLOCK TABLES");
 ?>
 
 <h2>Liste des personnes demandant</h2>
-	<liste id="liste" selectionnable="non">
+	<liste id="liste" selectionnable="non" action="admin/valid_ip.php">
 		<entete id="eleve" titre="Élève"/>
 		<entete id="raison" titre="Raison"/>
 		<entete id="ip" titre="IP"/>
