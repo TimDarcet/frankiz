@@ -51,7 +51,7 @@
 			<span>Statistiques :</span>	
 		</dt>
 		<dd class="contenu">
-			<ul class="services">
+			<ul class="services contacts">
 				<xsl:for-each select="statistiques/service">
 					<li>
 						<a>

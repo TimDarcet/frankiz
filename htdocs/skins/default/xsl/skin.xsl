@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.13  2005/01/20 20:33:34  psycow
+	Modif d'IceBlue
+
 	Revision 1.12  2005/01/18 16:07:34  psycow
 	Modif de liens_profil
-
+	
 	Revision 1.10  2004/12/17 01:25:52  psycow
 	Ajout des date de naissance
 	
@@ -146,6 +149,9 @@
 				</div><!--fin #droite -->
 			
 				<div id="centre">
+					<xsl:if test="/frankiz/page[@id='annonces' or @id='accueil']">
+						<xsl:apply-templates select="module[@id='anniversaires']"/>
+					</xsl:if>
 					<xsl:apply-templates select="page[@id='annonces']" mode="sommaire"/>
 					<xsl:apply-templates select="page[@id='annonces']" mode="complet"/>
 					<xsl:apply-templates select="page[@id='trombino']"/>

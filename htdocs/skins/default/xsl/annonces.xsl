@@ -34,7 +34,6 @@
 <xsl:template match="page[@id='annonces']" mode="sommaire">
 <xsl:choose>
 <xsl:when test="count(annonce)">	
-	<xsl:apply-templates select="/frankiz/module[@id='anniversaires']"/>
 	<dl class="boite">
 		<xsl:attribute name="id"><xsl:value-of select="@id"/>_sommaire</xsl:attribute>
 		<dt class="titre">

@@ -46,8 +46,7 @@ div#gauche {
 
 div#centre
 {
-	width:100%;
-	margin: 0px 205px 0 190px;
+	margin: 0px 200px 0 195px;
 }
 
 div#droite
@@ -143,7 +142,6 @@ dl.boite dt.titre span.droitehaut {
 	display:none;
 }
 dl.boite dd.contenu {
-	width:100%;
 	padding:20px 17px 0 15px !important;
 	padding-top:0px;
 	background: url('./images/petiteboite.gif') repeat-y top left;
@@ -641,8 +639,8 @@ dl#liens_navigation dt.titre span.droitehaut {
 	display:none;
 }
 dl#liens_navigation dd.contenu {
-	padding:7px 17px 0 7px !important;
-	padding-top;:0px; 
+	padding:7px 17px 0 15px !important;
+	padding-top:0px; 
 	background: url('./images/petiteboite.gif') repeat-y top left;
 }
 dl#liens_navigation dd.contenu span.droitecentre {
@@ -658,17 +656,18 @@ dl#liens_navigation dd.bas {
 dl#liens_navigation dd.bas span.droitebas {
 	display:none;
 }
-ul#menu {
+ul#menu,ul.contacts {
 	padding:0px !important;
 	padding-top:10px;
+	margin-left:-8px;
 }
-ul#menu li {
+ul#menu li, ul.contacts li{
 	margin:0;
 	padding:0;
 	position:relative;
 	left:3px;
 }
-ul#menu li a {
+ul#menu li a, ul.contacts li a {
 	display:block;
 	width:166px;
 	height:20px;
@@ -677,12 +676,12 @@ ul#menu li a {
 	color:#84BDE7;
 }
 
-ul#menu li a:hover {
+ul#menu li a:hover, ul.contacts li a:hover {
 	color:white;
 	background-color:#A5D6EF;
 }
 
-ul#menu li a span {
+ul#menu li a span, ul.contacts li a span {
 	font-weight:bold;
 }
 
@@ -792,7 +791,7 @@ div.hr hr {
 }
 
 dl.boite h3, dl.boite h2 {
-	margin-bottom:5px;
+	padding-bottom:5px;
 	display:block;
 }
 
