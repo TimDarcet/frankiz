@@ -21,9 +21,14 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.17  2004/12/12 09:29:26  kikx
+	Disparition du lien faire disparaitrre si l'utilisateur n'est pas logué ou et si l'utilisateur a deja lu cette annonce et qu'il se situe sur la page pour toute les voir
+
+	Desolé Psycow ... j'ai pourri ta skin :(
+
 	Revision 1.16  2004/12/10 20:06:18  kikx
 	Pour faire plaisir a fruneau
-
+	
 	Revision 1.15  2004/12/10 19:49:28  kikx
 	YESSSSSS
 	Pour permettre au utilisateurs de supprimer les annonces qu'ils ont déjà lues
@@ -109,14 +114,18 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 			<image source="<?echo DATA_DIR_URL."annonces/$id" ; ?>" texte="logo"/>
 		<? 
 		}
+		if ((est_authentifie(AUTH_COOKIE))&&(!isset($_REQUEST['lire_tout'])))  {
 ?>
-		<lien url='?lu=<?=$id?>' titre="Faire disparaitre" id="annonces_lues"/>
+			<lien url='?lu=<?=$id?>' titre="Faire disparaitre" id="annonces_lues"/>
+<?
+}
+?>
 		<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
 	</annonce>
 <?php }
-if (!isset($_REQUEST['lire_tout'])) {
+if ((!isset($_REQUEST['lire_tout']))&&(est_authentifie(AUTH_COOKIE))) {
 	echo "<lien url='?lire_tout=1' titre='Lire toutes les annonces' id='lire_tout'/>"; 
-} else {
+} else if  (est_authentifie(AUTH_COOKIE)){
 	echo "<lien url='' titre='Lire les annonces non lues' id='lire_nonlu'/>"; 
 }
 echo "</page>\n";
