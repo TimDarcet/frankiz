@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.22  2004/10/29 14:40:48  kikx
+	Erreur mineur dans le lien
+
 	Revision 1.21  2004/10/29 14:38:37  kikx
 	Mise en format HTML des mails pour les validation de la qdj, des mails promos, et des annonces
-
+	
 	Revision 1.20  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
 	
@@ -148,8 +151,8 @@ if (isset($_POST['valid'])) {
 			"$prenom $nom a demandé la validation d'une annonce : <br>".
 			$_POST['titre']."<br><br>".
 			"Pour valider ou non cette demande va sur la page suivante<br>".
-			"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_annonce.php'>".
-			"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_annonce.php</a></div><br><br>" .
+			"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_annonces.php'>".
+			"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_annonces.php</a></div><br><br>" .
 			"Très BR-ement<br>" .
 			"L'automate :)<br>"  ;
 				
