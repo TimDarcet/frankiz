@@ -3,11 +3,18 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.8  2004/10/08 06:51:43  pico
+	Premier (re)commit:
+
+	Pour la validation des annonces, il manquait un champ -> erreur sql.
+
+	Il faudrait pas rajouter les options pour définir l'annonce en haut ou visible de l'extérieur ??
+
 	Revision 1.7  2004/10/06 14:12:27  kikx
 	Page de mail promo quasiment en place ...
 	envoie en HTML ...
 	Page pas tout a fait fonctionnel pour l'instant
-
+	
 	Revision 1.6  2004/09/18 16:04:52  kikx
 	Beaucoup de modifications ...
 	Amélioration des pages qui gèrent les annonces pour les rendre compatible avec la nouvelle norme de formatage xml -> balise web et balise image qui permette d'afficher une image et la signature d'une personne
@@ -64,7 +71,7 @@ foreach ($_POST AS $keys => $val){
 			"L'automate :)\n"  ;
 		couriel($eleve_id,"[Frankiz] Ton annonce a été validé par le BR",$contenu);
 
-		$DB_web->query("INSERT annonces SELECT 0 as annonce_id, NOW() as stamp,perime, titre,contenu,eleve_id,0 as en_haut FROM a_valider.valid_annonces WHERE annonce_id='{$temp[1]}'");
+		$DB_web->query("INSERT annonces SELECT 0 as annonce_id, NOW() as stamp,perime, titre,contenu,eleve_id,0 as en_haut,0 as exterieur FROM a_valider.valid_annonces WHERE annonce_id='{$temp[1]}'");
 		
 		
 		// On déplace l'image si elle existe dans le répertoire prevu à cette effet
