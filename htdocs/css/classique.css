@@ -78,6 +78,7 @@ div.fkz_liens_nav {
 li.fkz_liens_nav{
 	list-style-type:none;
 	display: inline;
+	padding-right:5px;
 }
 ul.fkz_liens_nav{
 	display: inline;
