@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.7  2004/10/29 15:14:40  kikx
+	Correction mineur
+
 	Revision 1.6  2004/10/29 15:10:27  kikx
 	Passage de la page de validation des activité en HTML (pour l'envoie des mail) et rajout du champs pour mettre la raison du refus de validation
-
+	
 	Revision 1.5  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -182,8 +185,9 @@ foreach ($_POST AS $keys => $val){
 			<zonetext id="refus" titre="La raison du refus si refus" valeur=""/>
 
 			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
-			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider cette affiche ?')"/>
-			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette affiche ?!!!!!')"/>
+			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Cette annonce apparaitra dès maintenant sur le site ... Voulez vous valider cette activité ?')"/>
+			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Si vous supprimer cette activité, celle-ci sera supprimé de façon definitive ... Voulez vous vraiment la supprimer ?')"/>
+
 		</formulaire>
 <?
 	}

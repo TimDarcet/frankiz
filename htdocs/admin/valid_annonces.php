@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.13  2004/10/29 15:14:40  kikx
+	Correction mineur
+
 	Revision 1.12  2004/10/29 14:58:36  kikx
 	Passage en HTML la page de validation des annonces, de plus il y a la possibilité de mettre pourquoi on refuse la validation d'une annonce
-
+	
 	Revision 1.11  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -189,7 +192,7 @@ foreach ($_POST AS $keys => $val){
 			<zonetext id="refus" titre="La raison du refus si refus" valeur=""/>
 
 			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
-			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Cette annonce apparaitra dès maintenantsur la apge d'accueil de frankiz... Voulez vous valider cette annonce ?')"/>
+			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Cette annonce apparaitra dès maintenant sur la page d'accueil de frankiz... Voulez vous valider cette annonce ?')"/>
 			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Si vous supprimer cette annonce, celle-ci sera supprimé de façon definitive ... Voulez vous vraiment la supprimer ?')"/>
 		</formulaire>
 <?
