@@ -21,11 +21,14 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.33  2005/01/27 17:24:12  pico
+	erreur de parenthèses
+
 	Revision 1.32  2005/01/27 15:23:17  pico
 	La boucle locale est considérée comme interne
 	Tests de photos normalement plus cools.
 	Après le reste.... je sais plus
-
+	
 	Revision 1.31  2005/01/26 16:41:02  pico
 	Bug
 	
@@ -215,7 +218,7 @@ if (isset($_POST['modif'])) {
 		//récupere les données de l'images
 		//--------------------------------------
 		
-		if(($dim = getimagesize($img)))&& (($dim[0]<=100)&&($dim[1]<=100))){
+		if(($dim = getimagesize($img))&& (($dim[0]<=100)&&($dim[1]<=100))){
 			$fp = fopen($img,"rb"); // (b est pour lui dire que c'est bineaire !)
 			$size = filesize($img) ;
 			$data = fread($fp,$size);
