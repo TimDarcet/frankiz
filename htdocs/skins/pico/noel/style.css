@@ -24,12 +24,12 @@ body {
 	color:#000;
 	background-color:#fff;
 	background-image:url('images/fond-noel.gif');
-	margin:0;
+	margin:0px;
 	padding:2px;
 }
 
 img {
-	border: 0;
+	border: 0px;
 }
 
 a:link { 
@@ -87,8 +87,8 @@ a:hover, a:active {
 .fkz_centre {
 	font-size: 9pt;
 	position: absolute;
-	left: 20.5%;
-	width: 59%;
+	left: 21%;
+	width: 58%;
 	margin-top: 20px;
 }
 
@@ -182,6 +182,10 @@ div.fkz_page_titre,div.fkz_annonces_titre {
 	background-color:#E9D2FF;
 	width:70%;
 	padding:5px;
+	padding-top:5px;
+	padding-bottom:5px;
+	padding-left:5px;
+	padding-right:5px;
 	z-index:20;
 	font-family:Georgia, serif;
 	font-variant:small-caps;
@@ -240,8 +244,8 @@ div.fkz_anniversaire_titre,.fkz_titre,.fkz_titre a {
 	text-align: center;
 	width: 100%; 
 	background-color:#E9D2FF;
-	margin: 0;
-	padding: 0;
+	margin: 0px;
+	padding: 0px;
 }
 
 .fkz_trombino,.fkz_sommaire{
@@ -251,6 +255,10 @@ div.fkz_anniversaire_titre,.fkz_titre,.fkz_titre a {
 	background-color:#F9F2FF;
 	border: 2px solid #E9D2FF;
 	margin:10px;
+	margin-left:10px;
+	margin-right:10px;
+	margin-top:10px;
+	margin-bottom:10px;
 }
 
 .fkz_trombino_eleve{
@@ -349,7 +357,11 @@ span.valid_css {
 .commentaire,.warning,.note {
 	color: inherit;
 	padding: 6px;
-	margin: 5px;
+	margin:5px;
+	margin-left:5px;
+	margin-right:5px;
+	margin-top:5px;
+	margin-bottom:5px;
 	display:block;
 }
 

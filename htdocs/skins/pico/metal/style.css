@@ -257,22 +257,22 @@ span.fkz_annonces_vieux {
         width: 20%;
         float: left;
 	font-size: 9pt;
-	margin-top: 0.5%;
+	margin-top: 1%;
 }
 
 .fkz_droite {
         float: right;
         width: 20%;
 	font-size: 9pt;
-	margin-top: 0.5%;
+	margin-top: 1%;
 }
 
 .fkz_centre {
 	font-size: 9pt;
 	position: absolute;
-	left: 20.5%;
-	width: 59%;
-	margin-top: 0.5%;
+	left: 21%;
+	width: 58%;
+	margin-top: 1%;
 }
 
 /* Stats */
