@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.20  2004/11/06 17:47:43  pico
+		........
+
 		Revision 1.19  2004/11/06 15:11:34  pico
 		Corrections page admin xshare + modification possible des logiciels (j'avais oublié de le faire)
-
+		
 		Revision 1.18  2004/10/21 22:19:37  schmurtz
 		GPLisation des fichiers du site
 		
@@ -100,7 +103,7 @@ foreach ($_POST AS $keys => $val){
 		echo "<commentaire>Repertoire crée</commentaire>";
 	}
 	
-	if (($temp[0]=='ajout') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='') && (isset($_FILES['file']))&&($_FILES['file']['size']!=0)) {
+	if (($temp[0]=='ajout') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='') && (isset($_FILES['file']))) {
 		$nom = $_REQUEST['nom'];
 		$DB_web->query("SELECT lien FROM xshare WHERE id='{$temp[1]}' ");
 		list($dir) = $DB_web->next_row();
@@ -166,8 +169,8 @@ function rech_fils($id_parent) {
 				echo "<noeud  id='".$id."' titre='".htmlspecialchars($nom,ENT_QUOTES)."' lien='admin/xshare.php?dir_id=".$id."&amp;affich_elt=".base64_encode(all_elt_affich($id)) ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer);
 			echo "'>\n\r" ;
-			if (eregi("/".$id."/",$a_marquer)) {
-				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche_folder.gif'/>\n\r" ;
+			if (isset($_REQUEST['dir_id']) && ($id == $_REQUEST['dir_id'])) {
+				echo "<p id='selected'>[séléctionné]</p>\n\r" ;
 			}
 			$DB_web->push_result();
 			rech_fils($id) ;
@@ -182,9 +185,9 @@ function rech_fils($id_parent) {
 		while(list($id,$nom) = $DB_web->next_row()) {
 			echo "\n\r<feuille  id='".$id."'  titre='".htmlspecialchars($nom,ENT_QUOTES)."' lien='admin/xshare.php?dir_id=".$id."&amp;affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
-			echo "#descript'>\n\r" ;
-			if (eregi("/".$id."/",$a_marquer)) {
-				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche.gif'/>\n\r" ;
+			echo "'>\n\r" ;
+			if (isset($_REQUEST['dir_id']) && ($id == $_REQUEST['dir_id'])) {
+				echo "<p id='selected'>[séléctionné]</p>\n\r" ;
 			}
 			echo "</feuille>\n\r" ;
 		}
@@ -343,7 +346,7 @@ echo "<br/>" ;
 	</formulaire>
 	
 	<!-- Ajouter un fichier -->
-	<formulaire id="xshare_<? echo $dir_id ?>" titre="Le logiciel" action="admin/xshare.php">
+	<formulaire id="xshare_<? echo $dir_id ?>" titre="Ajouter un logiciel" action="admin/xshare.php">
 	<champ id="nom" titre="Nom du logiciel" valeur="" />
 	<champ id="version" titre="Version" valeur="" />
 	<choix titre="Importance" id="importance" type="combo" valeur="0">
@@ -358,7 +361,7 @@ echo "<br/>" ;
 		if(!strstr($keys,"ajout")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 	}
 	?>
-	<fichier id="file" titre="Fichier" taille="1000000"/>
+	<fichier id="file" titre="Fichier" taille="1000000000"/>
 	<bouton id='ajout_<? echo $dir_id ?>' titre="Ajouter" onClick="return window.confirm('!!!!!!Ajouter ce fichier ?!!!!!')"/>
 	</formulaire>
 	

@@ -137,6 +137,8 @@
 			<xsl:value-of select="@titre"/>
 		</xsl:otherwise></xsl:choose>
 		
+		<xsl:apply-templates select="*[name()!='noeud' and  name()!= 'feuille']"/>
+		
 		<xsl:if test="count(noeud|feuille)">
 			<ul class="feuille">
 				<xsl:apply-templates select="noeud|feuille"/>

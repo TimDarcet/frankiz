@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.21  2004/11/06 17:47:43  pico
+	........
+
 	Revision 1.20  2004/10/29 17:42:36  kikx
 	Petit bug que je ne comprend pas pourquoi ca ne marchait pas avant et que ca marche now (c'est pour faire une phrase correct et comprehensible en français)
-
+	
 	Revision 1.19  2004/10/29 16:42:31  kikx
 	Rajout des id sur les liens de navigation
 	Ca pêrmet au skinneur soit de mettre en gras certain liens specifique soit de remplacer les liens par des images comme il le souhaite
@@ -202,6 +205,8 @@
 			<xsl:value-of select="@titre"/>
 		</xsl:otherwise></xsl:choose>
 		
+		<xsl:apply-templates select="*[name()!='noeud' and  name()!= 'feuille']"/>
+		
 		<xsl:if test="count(noeud|feuille)">
 			<ul class="feuille">
 				<xsl:apply-templates select="noeud|feuille"/>
@@ -219,6 +224,7 @@
 		</xsl:when><xsl:otherwise>
 			<xsl:value-of select="@titre"/>
 		</xsl:otherwise></xsl:choose>
+		<xsl:apply-templates/>
 	</li>
 </xsl:template>
 

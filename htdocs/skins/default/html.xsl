@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.5  2004/11/06 17:47:43  pico
+	........
+
 	Revision 1.4  2004/11/04 15:18:01  psycow
 	Un bon debut mais plus compatible IE j'en ai peur
-
+	
 	Revision 1.3  2004/11/03 23:38:39  psycow
 	Un bon début
 	
@@ -138,6 +141,8 @@
 			<xsl:value-of select="@titre"/>
 		</xsl:otherwise></xsl:choose>
 		
+		<xsl:apply-templates select="*[name()!='noeud' and  name()!= 'feuille']"/>
+		
 		<xsl:if test="count(noeud|feuille)">
 			<ul class="feuille">
 				<xsl:apply-templates select="noeud|feuille"/>
@@ -155,6 +160,7 @@
 		</xsl:when><xsl:otherwise>
 			<xsl:value-of select="@titre"/>
 		</xsl:otherwise></xsl:choose>
+		<xsl:apply-templates/>
 	</li>
 </xsl:template>
 

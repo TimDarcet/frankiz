@@ -18,13 +18,13 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-/* paramètres par défaut */
-table {
-	width: 100%;
-	border: 0;
+/* affichage général */
+
+body {
+	clear: both;
+	margin: 0;
 }
 
-/* affichage général */
 #frankiz {
 	color: inherit;
 	background: #DDDDDD;
@@ -32,63 +32,70 @@ table {
 	font-weight: bold;
 	font-size: 300%;
 	padding: 20px;
-	border-top: 1px solid #888888;
-	border-right: 1px solid #888888;
-	border-left: 1px solid #888888;
+	border: 1px solid #888888;
 	vertical-align: top;
+}
+
+#modules {
+	width: 20%;
+	float: left;
+}
+
+.module {
+	width: 100%;
+	border-left: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-bottom: 1px solid #888888;
+}
+
+.module>div {
+	padding: 2px;
+	font-size: 9pt;
+}
+
+.titre {
+	color: inherit;
+	background: #DDDDDD;
+	text-align : center;
+	border-bottom: 1px solid #888888;
 }
 
 #contenu {
-	border-top: 1px solid #888888;
-	width: 80%;
-	padding: 5px;
-	vertical-align: top;
-}
-
-#cadres {
-	width: 20%;
-	border-top: 1px solid #888888;
-	vertical-align: top;
-}
-
-#cadres th.cadre {
-	color: inherit;
-	background: #DDDDDD;
-	padding: 2px;
-	text-align : center;
-	border-bottom: 1px solid #888888;
-	border-right: 1px solid #888888;
-	border-left: 1px solid #888888;
-}
-
-#cadres td.cadre {
-	border-bottom: 1px solid #888888;
-	padding: 2px;
-	border-right: 1px solid #888888;
-	border-left: 1px solid #888888;
+	width: 78%;
+	padding: 1%;
+	float: right;
 }
 
 /* Annonces */
-
-table.annonce {
+.annonce {
 	border: 1px solid #888888;
-	width: 95%;
 }
 
-th.annonce {
-	color: inherit;
-	background: #DDDDDD;
-	padding: 2px;
-	text-align : center;
-	border-bottom: 1px solid #888888;
-}
-
-td.annonce {
+.annonce>div {
 	padding: 4px;
 }
 
 .signature {
 	text-align: right;
+}
+
+/* Liens */
+
+a.lien {
+	display: block;
+}
+
+/* Qdj */
+.fkz_qdj_jone {
+	float: right;
+	text-align: center;
+	width: 49%;
+}
+
+.fkz_qdj_rouje {
+	float: left;
+	text-align: center;
+	width: 49%;
 }
 
 /* État des serveurs */
@@ -102,10 +109,3 @@ td.annonce {
 	background: red;
 }
 
-/*
-	Autres classes définie mais sans style particulier :
-	- .image, pour les image créer avec la balise <image>
-	- .legende, pour les légendes des images
-	- .lien, pour les liens créer avec la balise <lien>
-	- .formulaire, pour les formulaires
-*/
