@@ -25,9 +25,14 @@
 	- affichage des requètes mysql en commentaire dans
 	
 	$Log$
+	Revision 1.5  2004/12/16 16:45:14  schmurtz
+	Correction d'un bug dans la gestion des authentifications par cookies
+	Ajout de fonctionnalitees de log d'erreur de connections ou lors des bugs
+	affichant une page "y a un bug, contacter l'admin"
+
 	Revision 1.4  2004/12/14 14:18:12  schmurtz
 	Suppression de la page de doc wiki : doc directement dans les pages concernees.
-
+	
 	Revision 1.3  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
@@ -116,7 +121,14 @@ function ajouter_erreur_mysql($query) {
 function ajouter_debug_log($string) {
 	global $_DEBUG_LOG;
 	$_DEBUG_LOG[] = $string;
-}	
+}
+
+// Ajout dans les logs d'accès. Ces logs sont conservés dans la version en prod du site.
+function ajouter_access_log($string) {
+	$file = fopen(LOG_ACCESS, 'a');
+	fwrite($file, "[".date("d/m/Y H:i:s",time())."] ".$string."\n");
+	fclose($file);
+}
 
 // Affichage des erreurs
 function affiche_erreurs_php() {
@@ -147,7 +159,10 @@ function affiche_erreurs_php() {
 						  . (empty($erreur['file']) ? " in {$erreur['file']} on line {$erreur['line']}" : "")
 						  . "\n";
 		
-		// TODO Écrire le contenu de $message dans un fichier de log
+		// On stocke le message dans un fichier de log
+		$file = fopen(LOG_ERROR, 'a');
+		fwrite($file, $message);
+		fclose($file);
 		
 		if($_ERREUR_FATAL) {
 			echo "<warning>Une erreur inconnue est survenue.\n"

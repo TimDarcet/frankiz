@@ -22,9 +22,14 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.3  2004/12/16 16:45:14  schmurtz
+	Correction d'un bug dans la gestion des authentifications par cookies
+	Ajout de fonctionnalitees de log d'erreur de connections ou lors des bugs
+	affichant une page "y a un bug, contacter l'admin"
+
 	Revision 1.2  2004/12/15 19:26:08  kikx
 	Les mails promo devrait fonctionner now ...
-
+	
 	Revision 1.1  2004/12/15 15:31:17  fruneau
 	Donne une structure
 	config.php.prod
@@ -80,6 +85,9 @@ define('BASE_PHOTOS',"/home/frankiz2/data/photos/");
 define('BASE_CACHE',"/home/frankiz2/cache/");
 define('BASE_BINETS',"/home/frankiz2/binets/");
 define('BASE_PAGESPERSOS',"/home/frankiz2/webperso/");
+
+define('LOG_ERROR',"/var/log/apache2/frankiz.error");
+define('LOG_ACCESS',"/var/log/apache2/frankiz.access");	// connection/déconnection, erreur de login
 
 define('URL_DATA','http://'.$_SERVER['HTTP_HOST'].'/frankiz2/data/');
 define('URL_PAGEPERSO','http://'.$_SERVER['HTTP_HOST'].'/frankiz2/webperso/');

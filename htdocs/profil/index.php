@@ -21,10 +21,15 @@
 	Page permettant de modifier son profil 
 	
 	$Log$
+	Revision 1.5  2004/12/16 16:45:14  schmurtz
+	Correction d'un bug dans la gestion des authentifications par cookies
+	Ajout de fonctionnalitees de log d'erreur de connections ou lors des bugs
+	affichant une page "y a un bug, contacter l'admin"
+
 	Revision 1.4  2004/12/15 06:13:30  kikx
 	Ct trop la merde ....
 	pico tu le remettra qd tu auras debuggué car la moi je peux plus :(
-
+	
 	Revision 1.3  2004/12/13 20:03:25  pico
 	Les liens ne forment pas de blocs, il faut donc le spécifier
 	
@@ -38,7 +43,7 @@
 */
 
 require_once "../include/global.inc.php";
-demande_authentification(AUTH_MAIL);
+demande_authentification(AUTH_MINIMUM);
 
 // Génération du la page XML
 require "../include/page_header.inc.php";

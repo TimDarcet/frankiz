@@ -36,9 +36,14 @@
 	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
 
 	$Log$
+	Revision 1.7  2004/12/16 16:45:14  schmurtz
+	Correction d'un bug dans la gestion des authentifications par cookies
+	Ajout de fonctionnalitees de log d'erreur de connections ou lors des bugs
+	affichant une page "y a un bug, contacter l'admin"
+
 	Revision 1.6  2004/12/16 12:52:57  pico
 	Passage des paramètres lors d'un login
-
+	
 	Revision 1.5  2004/12/15 23:38:30  pico
 	Corrections pour rendre ça valide
 	
@@ -105,25 +110,30 @@ if(isset($_REQUEST['logout'])) {
 // Login par mot de passe
 if(isset($_POST['login']) && isset($_POST['passwd'])) {
 	$_SESSION['user'] = new User(true,$_POST['login']);
-	if(!$_SESSION['user']->verifie_mdp($_POST['passwd']))
+	if(!$_SESSION['user']->verifie_mdp($_POST['passwd'])) {
 		ajoute_erreur(ERR_LOGIN);
-	
+		ajouter_access_log("erreur de mot de passe login={$_POST['login']}");
+	}
 	// Un message d'erreur s'affichera automatiquement par la page à l'origine
 	// de cette authentification.
 	
 // Login par mail
 } else if(isset($_REQUEST['hash']) && isset($_REQUEST['uid'])) {
 	$_SESSION['user'] = new User(false,$_REQUEST['uid']);
-	if(!$_SESSION['user']->verifie_mailhash($_REQUEST['hash']))
+	if(!$_SESSION['user']->verifie_mailhash($_REQUEST['hash'])) {
 		ajoute_erreur(ERR_MAILLOGIN);
+		$DB_web->query("SELECT hashstamp,hash FROM compte_frankiz WHERE eleve_id='{$_REQUEST['uid']}'");
+		list($hashstamp,$hash) = $DB_web->next_row();
+		ajouter_access_log("erreur de log par mail uid={$_REQUEST['uid']} hash=$hash stamp=$hashstamp");
+	}
 	
 	// Quel que soit le résultat, on supprime le hash d'authentification par mail.
 	$DB_web->query("UPDATE compte_frankiz SET hashstamp=0 WHERE eleve_id='".$_REQUEST['uid']."'");
 	
 	// On affiche un message d'erreur si l'authentification a échouée.
 	if(a_erreur(ERR_MAILLOGIN)) {
-		require_once "skin.inc.php";	// skin.inc.php est inclus juste après login.inc.php, donc
-										// c'est pas encore fait
+		require_once "init_skin.inc.php";	// init_skin.inc.php est inclus juste après login.inc.php, donc
+											// c'est pas encore fait
 		require "page_header.inc.php";
 ?>
 		<page id="login" titre="Frankiz : erreur">
@@ -139,9 +149,10 @@ if(isset($_POST['login']) && isset($_POST['passwd'])) {
 
 // Login par cookie (si la session est déjà existante, on oublie le cookie)
 } else if(!isset($_SESSION['user']) && isset($_COOKIE['auth'])) {
-	$cookie = unserialize(base64_decode($_COOKIE['auth']));
+	$cookie = unserialize(base64_decode(wordwrap($_COOKIE['auth'])));
 	$_SESSION['user'] = new User(false,$cookie['uid']);
-	$_SESSION['user']->verifie_cookiehash($cookie['hash']);
+	if( !$_SESSION['user']->verifie_cookiehash($cookie['hash']) )
+		ajouter_access_log("erreur de log par cookie uid={$cookie['uid']} cookie={$_COOKIE['auth']}");
 
 // Login par utilisation du su (utilisable par les admins uniquement)
 } else if(isset($_REQUEST['su']) && verifie_permission('admin')) {
@@ -149,8 +160,8 @@ if(isset($_POST['login']) && isset($_POST['passwd'])) {
 	
 	$newuser = new User(false,$_REQUEST['su']);
 	if($newuser->uid == 0) {
-		require_once "skin.inc.php";	// skin.inc.php est inclus juste après login.inc.php, donc
-										// c'est pas encore fait
+		require_once "init_skin.inc.php";	// init_skin.inc.php est inclus juste après login.inc.php, donc
+											// c'est pas encore fait
 		require "page_header.inc.php";
 		echo "<page id='su' titre='Frankiz : erreur'>\n";
 		echo "<p>L'utilisateur n'a pas encore de compte Frankiz ou alors n'existe pas.</p>\n";

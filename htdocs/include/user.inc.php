@@ -26,9 +26,14 @@
 	informations provenant des tables du trombino (avec jointure sur l'uid).
 
 	$Log$
+	Revision 1.17  2004/12/16 16:45:14  schmurtz
+	Correction d'un bug dans la gestion des authentifications par cookies
+	Ajout de fonctionnalitees de log d'erreur de connections ou lors des bugs
+	affichant une page "y a un bug, contacter l'admin"
+
 	Revision 1.16  2004/12/16 13:00:41  pico
 	INNER en LEFT
-
+	
 	Revision 1.15  2004/11/24 15:55:34  pico
 	Code pour gérer les liens perso + les rss au lancement de la session
 	
@@ -130,12 +135,10 @@ class User {
 	function verifie_mdp($_mdp) {
 		global $_NOUVEAU_LOGIN;
 		if($this->uid != 0 && md5($_mdp) == $this->passwd) {
-			ajouter_debug_log("Utilisateur authentifié par mot de passe.");
 			$this->methode = AUTH_MDP;
 			$_NOUVEAU_LOGIN = true;
 			return true;
 		} else {
-			ajouter_debug_log("Erreur d'authentification par mot de passe.");
 			$this->devient_anonyme();
 			return false;
 		}
@@ -144,12 +147,10 @@ class User {
 	function verifie_cookiehash($_hash) {
 		global $_NOUVEAU_LOGIN;
 		if($this->uid != 0 && !empty($_hash) && $_hash == $this->cookiehash) {
-			ajouter_debug_log("Utilisateur authentifié par cookie.");
 			$this->methode = AUTH_COOKIE;
 			$_NOUVEAU_LOGIN = true;
 			return true;
 		} else {
-			ajouter_debug_log("Erreur d'authentification par cookie.");
 			$this->devient_anonyme();
 			return false;
 		}
@@ -158,12 +159,10 @@ class User {
 	function verifie_mailhash($_hash) {
 		global $nouveau_login;
 		if($this->uid != 0 && !empty($_hash) && $_hash == $this->mailhash) {
-			ajouter_debug_log("Utilisateur authentifié par mail.");
 			$this->methode = AUTH_MAIL;
 			$_NOUVEAU_LOGIN = true;
 			return true;
 		} else {
-			ajouter_debug_log("Erreur d'authentification par mail.");
 			$this->devient_anonyme();
 			return false;
 		}
@@ -173,14 +172,14 @@ class User {
 	// Pour les permissions prez/webmestre, il est préférable d'utiliser les fonctions dédiées
 	// afin de rester indépendant de la manière dont on stocke les informations dans la base.
 	function verifie_permission($perm) {
-		if( $this->methode < AUTH_COOKIE) return false;
+		if( $this->methode < AUTH_MINIMUM) return false;
 		for ($i = 0 ; $i<count($this->perms) ; $i++)
 			if ($this->perms[$i] == $perm) return true;
 		return false;
 	}
 	
 	function ses_permissions() {
-		if( $this->methode < AUTH_COOKIE) return false;
+		if( $this->methode < AUTH_MINIMUM) return false;
 		return $this->perms ;
 	}
 	
