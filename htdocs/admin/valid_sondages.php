@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un sondage
 	
 	$Log$
+	Revision 1.9  2004/12/14 13:39:20  pico
+	Y'avait de la merde au niveau des locks, ça ça marche, ce serait bien si tu pouvais y jeter un coup d'oeil, kikx
+
 	Revision 1.8  2004/12/13 16:40:46  kikx
 	Protection de la validation des sondages
-
+	
 	Revision 1.7  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
 	
@@ -69,7 +72,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 // On traite les différents cas de figure d'enrigistrement et validation de qdj :)
 
 // Enregistrer ...
-$DB_valid->query("LOCK TABLE valid_sondages WRITE");
+$DB_valid->query("LOCK TABLES valid_sondages WRITE,  valid_sondages AS v WRITE, trombino.eleves AS e READ");
 $DB_valid->query("SET AUTOCOMMIT=0");
 
 foreach ($_POST AS $keys => $val){
@@ -133,6 +136,7 @@ foreach ($_POST AS $keys => $val){
 
 $DB_valid->query("COMMIT");
 $DB_valid->query("UNLOCK TABLES");
+
 //===============================
 
 	$DB_valid->query("SELECT v.perime, v.sondage_id,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM valid_sondages as v INNER JOIN trombino.eleves as e USING(eleve_id)");
