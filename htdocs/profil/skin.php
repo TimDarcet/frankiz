@@ -39,9 +39,12 @@
 	)
 	
 	$Log$
+	Revision 1.27  2005/02/15 11:26:50  pico
+	Modifs pour avoir le nbtotal d'utilisateurs
+
 	Revision 1.26  2005/02/15 11:17:21  pico
 	Test bug #51
-
+	
 	Revision 1.25  2004/12/17 19:15:24  pico
 	Pour ne plus avoir 2 skins default....
 	
@@ -167,6 +170,9 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	<formulaire id="form_choix_skin" titre="Choix de la skin" action="profil/skin.php">
 		<choix titre="Skin" id="newskin" type="radio" valeur="<?php echo $_SESSION['skin']['skin_nom']."/".$_SESSION['skin']['skin_css'] ?>">
 <?php
+			$DB_web->query("SELECT COUNT(*) FROM compte_frankiz WHERE skin IS NOT NULL");
+			list($nbutilisateurtotal) = $DB_web->next_row();
+			
 			// Parcourt des skins XSL
 			$dir_xsl=opendir(BASE_LOCAL."/skins");
 			while($file_xsl = readdir($dir_xsl)) {
@@ -184,7 +190,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 				if($description['chemin'] == ".") {
 					$DB_web->query("SELECT COUNT(*) FROM compte_frankiz WHERE skin LIKE '%$file_xsl%$file_css%'");
 					list($nbutilisateur) = $DB_web->next_row();
-					echo "<option titre=\"{$description['nom']}: {$description['description']} ($nbutilisateur)\" id=\"$file_xsl/\"/>";
+					echo "<option titre=\"{$description['nom']}: {$description['description']} ($nbutilisateur/$nbutilisateurtotal)\" id=\"$file_xsl/\"/>";
 					continue;
 				}
 				
@@ -200,9 +206,9 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 						$DB_web->query("SELECT COUNT(*) FROM compte_frankiz WHERE skin LIKE '%$file_xsl%$file_css%'");
 						list($nbutilisateur) = $DB_web->next_row();
 						if($file_css!="default")
-							echo "<option titre=\"$file_css: $description_css ($nbutilisateur)\" id=\"$file_xsl/$file_css\"/>";
+							echo "<option titre=\"$file_css: $description_css ($nbutilisateur/$nbutilisateurtotal)\" id=\"$file_xsl/$file_css\"/>";
 						else
-							echo "<option titre=\"$file_xsl: $description_css ($nbutilisateur)\" id=\"$file_xsl/$file_css\"/>";
+							echo "<option titre=\"$file_xsl: $description_css ($nbutilisateur/$nbutilisateurtotal)\" id=\"$file_xsl/$file_css\"/>";
 					}
 				}
 				closedir($dir_css);
