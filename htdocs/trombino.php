@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.46  2004/12/17 13:41:07  kikx
+	Poura voir que les resultat des promos sur le campus qd on fait une recherche trombino
+
 	Revision 1.45  2004/12/17 13:18:47  kikx
 	Rajout des numéros utiles car c'est une demande importante
-
+	
 	Revision 1.44  2004/12/17 01:09:08  pico
 	Ajout de la date de naissance dans le trombi
 	
@@ -179,7 +182,7 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 	// Création de la requête si binet appelle
 	if(isset($_REQUEST['binets'])) {
 			$join = "LEFT JOIN membres USING(eleve_id) LEFT JOIN binets ON membres.binet_id=binets.binet_id " . $join;
-			$where .= (empty($where) ? "" : " AND") . " binets.nom='".$_REQUEST['binets']."'";
+			$where .= (empty($where) ? "" : " AND") . " binets.nom='".$_REQUEST['binets']."' AND (promo=$promo_temp OR promo=".($promo_temp -1).")";
 	}
 	// Création de la requête si lien_tol appelle
 	if(isset($_REQUEST['cherchertol'])) {
