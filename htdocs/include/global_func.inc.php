@@ -22,9 +22,12 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.35  2004/11/24 22:12:57  schmurtz
+	Regroupement des fonctions zip unzip deldir et download dans le meme fichier
+
 	Revision 1.34  2004/11/24 21:09:04  pico
 	Sauvegarde avant mise à jour skins
-
+	
 	Revision 1.33  2004/11/24 20:07:12  pico
 	Ajout des liens persos
 	
@@ -211,46 +214,6 @@ function cache_sauver($cache_id) {
 	ob_start();										// hack
 	echo $_CACHE_SAVED_BUFFER;						// hack
 	echo $contenu;
-}
-
-/*
-	Supprime un répertoire complet et renvoit true lorsque tout c'est bien passé
-*/
-function deldir($dir) {
-	if (!file_exists($dir)) {
-		return false;
-	}
-	if (is_file($dir)) {
-		return unlink($dir);
-	}
-	$dh=opendir($dir);
-	while ($file=readdir($dh)) {
-		if($file!="." && $file!="..") {
-			$fullpath=$dir."/".$file;
-			if(!is_dir($fullpath)) {
-			unlink($fullpath);
-			} else {
-			deldir($fullpath);
-			}
-		}
-	}
-	closedir($dh);
-	if(rmdir($dir)) {
-		return true;
-	} else {
-		return false;
-	}
-}
-
-/*
-	Zippe et envoit le contenu d'un répertoire
-*/
-function download($dir,$type = 'zip', $filename = "temp"){
-	$file = "/tmp/".$filename;
-	zip($file,$dir,$type);
-	header("Content-type: application/force-download");
-	header("Content-Disposition: attachment; filename=$filename.$type");
-	readfile($file.".".$type);
 }
 
 /*

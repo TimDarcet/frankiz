@@ -21,14 +21,19 @@
 	Pour gerer son site web perso
 		
 	$Log$
+	Revision 1.2  2004/11/24 22:12:57  schmurtz
+	Regroupement des fonctions zip unzip deldir et download dans le meme fichier
+
 	Revision 1.1  2004/11/24 18:12:27  kikx
 	Séparation de la page du site web et du profil personnel
-
+	
 	
 */
 
 require_once "../include/global.inc.php";
-demande_authentification(AUTH_MAIL);
+require_once "../include/transferts.inc.php";
+
+demande_authentification(AUTH_FORT);
 
 $message="";
 

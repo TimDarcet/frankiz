@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.25  2004/11/24 22:12:57  schmurtz
+		Regroupement des fonctions zip unzip deldir et download dans le meme fichier
+
 		Revision 1.24  2004/11/16 14:06:28  pico
 		Toute chtite correction
-
+		
 		Revision 1.23  2004/11/16 14:02:37  pico
 		- Nouvelle fonction qui permet de dl le contenu d'un répertoire
 		- Mise en place sur la page de la FAQ
@@ -86,6 +89,7 @@
 		
 */
 require_once "../include/global.inc.php";
+require_once "../include/transferts.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_MINIMUM);

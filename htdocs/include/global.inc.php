@@ -24,9 +24,12 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.40  2004/11/24 22:12:57  schmurtz
+	Regroupement des fonctions zip unzip deldir et download dans le meme fichier
+
 	Revision 1.39  2004/11/24 20:26:38  schmurtz
 	Reorganisation des skins (affichage melange skin/css + depacement des css)
-
+	
 	Revision 1.38  2004/11/24 16:37:09  pico
 	Ajout des news externes en tant que module
 	
@@ -89,7 +92,6 @@ require_once "global_func.inc.php";
 require_once "mail.inc.php";			// TODO : supprimer et mettre dans les fichiers qui ont en vraiment besoin
 require_once "login.inc.php";
 require_once "init_skin.inc.php";
-require_once "compress.inc.php";		// TODO : supprimer et mettre dans les fichiers qui ont en vraiment besoin
 require_once "wiki.inc.php";			// TODO : supprimer et mettre dans les fichiers qui ont en vraiment besoin
 require_once "param_session.inc.php";	// TODO : supprimer et mettre dans les fichiers qui ont en vraiment besoin
 require_once "rss_func.inc.php";		// TODO : supprimer et mettre dans les fichiers qui ont en vraiment besoin

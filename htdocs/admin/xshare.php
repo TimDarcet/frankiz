@@ -19,10 +19,13 @@
 */
 /*
 		$Log$
+		Revision 1.25  2004/11/24 22:12:57  schmurtz
+		Regroupement des fonctions zip unzip deldir et download dans le meme fichier
+
 		Revision 1.24  2004/11/23 23:30:20  schmurtz
 		Modification de la balise textarea pour corriger un bug
 		(return fantomes)
-
+		
 		Revision 1.23  2004/11/15 22:17:24  pico
 		On doit pouvoir changer le texte d'une faq à présent
 		TODO: script pour dl le contenu de la faq existante
@@ -72,6 +75,7 @@
 		
 */
 require_once "../include/global.inc.php";
+require_once "../include/transferts.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_MINIMUM);

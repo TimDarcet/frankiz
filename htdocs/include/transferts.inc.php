@@ -18,12 +18,16 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Fonctions permettant de zipper/dezipper un fichier
+	Fonctions permettant de zipper/dezipper un fichier, et de download un dossier
+	sous forme d'archive.
 	
 	$Log$
+	Revision 1.1  2004/11/24 22:12:57  schmurtz
+	Regroupement des fonctions zip unzip deldir et download dans le meme fichier
+
 	Revision 1.11  2004/11/22 21:16:23  pico
 	La création de zip devrait marcher
-
+	
 	Revision 1.10  2004/11/22 20:40:00  pico
 	Patch fonction tar
 	
@@ -54,12 +58,12 @@
 	
 	Revision 1.1  2004/11/07 00:07:47  pico
 	Utilisation de la fonction unzip pour dezipper une archive
-	
-	
-	
 */
 
-// Décompresse un fichier $file dans le repertoire $dir . $del est un booleen qui dit si le fichier zip doit être supprimé après decompression.
+/*
+	Décompresse un fichier $file dans le repertoire $dir. $del est un booleen qui dit si le
+	fichier zip doit être supprimé après decompression.
+*/
 function unzip($file,$dir,$del){
 	if (eregi("(.zip)$",basename($file))) {
 			$cde = "/usr/bin/unzip $file -d $dir";
@@ -84,7 +88,9 @@ function unzip($file,$dir,$del){
 	else return false;
 }
 
-// Compresse le dossier $dir dans l'archive $file, de type $type
+/*
+	Compresse le dossier $dir dans l'archive $file, de type $type
+*/
 function zip($file,$dir,$type){
 	if($type == "zip"){
 		$cde = "cd $dir && /usr/bin/zip -r $file.zip *";
@@ -98,6 +104,46 @@ function zip($file,$dir,$type){
 		$cde = "cd $dir && /bin/tar zcvf $file.tar.gz *";
 		exec($cde);
 	}
+}
+
+/*
+	Supprime un répertoire complet et renvoit true lorsque tout c'est bien passé
+*/
+function deldir($dir) {
+	if (!file_exists($dir)) {
+		return false;
+	}
+	if (is_file($dir)) {
+		return unlink($dir);
+	}
+	$dh=opendir($dir);
+	while ($file=readdir($dh)) {
+		if($file!="." && $file!="..") {
+			$fullpath=$dir."/".$file;
+			if(!is_dir($fullpath)) {
+			unlink($fullpath);
+			} else {
+			deldir($fullpath);
+			}
+		}
+	}
+	closedir($dh);
+	if(rmdir($dir)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/*
+	Zippe et envoit le contenu d'un répertoire
+*/
+function download($dir,$type = 'zip', $filename = "temp"){
+	$file = "/tmp/".$filename;
+	zip($file,$dir,$type);
+	header("Content-type: application/force-download");
+	header("Content-Disposition: attachment; filename=$filename.$type");
+	readfile($file.".".$type);
 }
 
 ?>
