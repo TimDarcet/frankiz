@@ -23,10 +23,13 @@
 	- destruction automatique des résultats
 
 	$Log$
+	Revision 1.18  2004/12/06 00:01:42  kikx
+	Passage de la skin par défaut en parametre du site et non pas stocké en dur
+
 	Revision 1.17  2004/11/27 16:27:33  pico
 	établit la connection à la bdd qu'à la première requete.
 	Utile si on n'a pas besoin de la connection (genre xnet ou trombino)
-
+	
 	Revision 1.16  2004/11/17 22:18:45  schmurtz
 	Demi correction d'un bug empechant l'affichage des erreurs MySQL
 	
@@ -63,6 +66,7 @@
 	Commentaires et ajout de la variable cvs "Log"
 	
 */
+
 
 class DB {
 	var $link;

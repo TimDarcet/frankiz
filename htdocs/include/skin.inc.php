@@ -21,9 +21,12 @@
 	Fonction servant pour la gestion des skins.
 	
 	$Log$
+	Revision 1.14  2004/12/06 00:01:42  kikx
+	Passage de la skin par défaut en parametre du site et non pas stocké en dur
+
 	Revision 1.13  2004/11/24 23:38:38  schmurtz
 	Gestion des skins perso + corrections dans la skin default
-
+	
 	Revision 1.12  2004/11/24 20:26:38  schmurtz
 	Reorganisation des skins (affichage melange skin/css + depacement des css)
 	
@@ -146,9 +149,15 @@ function lire_description_css($css_dir) {
 	Renvoi les paramètres de la skin par défaut
 */
 function skin_defaut() {
+	global $DB_web ;
+	
+	$DB_web->query("SELECT valeur FROM parametres WHERE nom='skin_default'") ; 
+	list($skin) = $DB_web->next_row() ;
+	$DB_web->query("SELECT valeur FROM parametres WHERE nom='css_default'") ; 
+	list($css) = $DB_web->next_row() ;
 	return array (
-			"skin_nom" => "basic",
-			"skin_css" => "",
+			"skin_nom" => "$skin",
+			"skin_css" => "$css",
 			"skin_parametres" => array(),
 			"skin_visible" => array(),
 	);
