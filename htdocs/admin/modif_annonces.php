@@ -21,10 +21,14 @@
 	Page qui permet aux admins de modifier une annonce validée
 	
 	$Log$
+	Revision 1.3  2004/11/27 14:56:15  pico
+	Debut de mise en place de droits spéciaux (qdj + affiches)
+	+ génération de la page d'admin qui va bien
+
 	Revision 1.2  2004/11/27 14:12:31  pico
 	Ajout d'un lien pour supprimmer les annonces périmées depuis plus de 5 jours
 	(histoire de pas garder des archives inutiles)
-
+	
 	Revision 1.1  2004/11/27 13:59:27  pico
 	Page pour modifier les annonces validées
 	
@@ -104,7 +108,7 @@ echo "<lien titre=\"Supprimer les annonces périmées depuis plus de 5 jours\" url
 
 //===============================
 
-	$DB_web->query("SELECT v.exterieur, v.annonce_id,v.perime, v.titre, v.contenu, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM annonces as v INNER JOIN trombino.eleves as e USING(eleve_id) WHERE WHERE (perime>=".date("Ymd000000",time()).") ORDER BY perime DESC");
+	$DB_web->query("SELECT v.exterieur, v.annonce_id,v.perime, v.titre, v.contenu, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM annonces as v INNER JOIN trombino.eleves as e USING(eleve_id) WHERE (perime>=".date("Ymd000000",time()).") ORDER BY perime DESC");
 	while(list($ext, $id,$date,$titre,$contenu,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_web->next_row()) {
 ?>
 		<annonce titre="<?php  echo $titre ?>" 

@@ -21,9 +21,13 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.11  2004/11/27 14:56:15  pico
+	Debut de mise en place de droits spéciaux (qdj + affiches)
+	+ génération de la page d'admin qui va bien
+
 	Revision 1.10  2004/11/25 23:50:04  pico
 	Possibilité de rajouter une heure pour l'activité (ex: scéances du BRC)
-
+	
 	Revision 1.9  2004/11/25 10:40:08  pico
 	Correction activités (sinon l'image était tjs écrite en tant que 0 et ct pas glop du coup)
 	
@@ -65,10 +69,13 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
-if(!verifie_permission('admin'))
+if(verifie_permission('admin'))
+	$user_id = '%';
+else if(verifie_permission('affiches'))
+	$user_id = $_SESSION['user']->uid;
+else
 	rediriger_vers("/admin/");
-
+	
 // Génération de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
@@ -154,7 +161,7 @@ foreach ($_POST AS $keys => $val){
 
 //===============================
 
-	$DB_valid->query("SELECT v.exterieur,v.affiche_id,v.date, v.titre, v.url, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_affiches as v INNER JOIN trombino.eleves as e USING(eleve_id)");
+	$DB_valid->query("SELECT v.exterieur,v.affiche_id,v.date, v.titre, v.url, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_affiches as v INNER JOIN trombino.eleves as e USING(eleve_id) WHERE eleve_id LIKE '$user_id'");
 	while(list($ext,$id,$date,$titre,$url,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
 		echo "<module id=\"activites\" titre=\"Activités\">\n";
 ?>
@@ -187,11 +194,17 @@ foreach ($_POST AS $keys => $val){
 				echo "<warning>L'utilisateur a demandé que son activité soit visible de l'exterieur</warning>" ;
 				$ext_temp='ext' ; 
 			} else $ext_temp="" ;
+			
+			// L'utilisateur qui a les droits de valider ses propres affiches ne peut pas les afficher à l'exterieur, seul un admin le peut.
+			if(!verifie_permission('affiches')){
 			?>
-			<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? echo $ext_temp." " ; if ((isset($_REQUEST['ext_auth']))&&(isset($_REQUEST['modif_'.$id]))) echo 'ext_auth' ;?>">
-				<option id="ext" titre="Demande de l'utilisateur" modifiable='non'/>
-				<option id="ext_auth" titre="Décision du Webmestre"/>
-			</choix>
+				<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? echo $ext_temp." " ; if ((isset($_REQUEST['ext_auth']))&&(isset($_REQUEST['modif_'.$id]))) echo 'ext_auth' ;?>">
+					<option id="ext" titre="Demande de l'utilisateur" modifiable='non'/>
+					<option id="ext_auth" titre="Décision du Webmestre"/>
+				</choix>
+			<?
+			}
+			?>
 			<zonetext id="refus" titre="La raison du refus si refus"></zonetext>
 
 			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>

@@ -22,9 +22,13 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.16  2004/11/27 14:56:15  pico
+	Debut de mise en place de droits spéciaux (qdj + affiches)
+	+ génération de la page d'admin qui va bien
+
 	Revision 1.15  2004/11/27 14:30:16  pico
 	réorganisation page d'admin
-
+	
 	Revision 1.14  2004/11/27 14:16:19  pico
 	Ajout du lien de modif dans la page d'admin, réorganisation de la page
 	
@@ -157,7 +161,7 @@ $permissions_user = $_SESSION['user']->perms ;
 				$nb++ ;
 			}
 		}
-		?>	
+		?>
 		<lien titre="Valider les changements de photo trombino (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_trombi.php"/>
 		<?
 		$DB_valid->query("SELECT eleve_id FROM valid_annonces") ;
@@ -214,8 +218,39 @@ $permissions_user = $_SESSION['user']->perms ;
 		?>
 		<lien titre="Gerer les demandes d'ajout d'ips (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_ip.php"/>
 		<lien titre="Liste des IPs" url="<?php echo BASE_URL?>/admin/ip.php"/>
-
-
+	<?
+	}
+	
+	//
+	// Pour le QDJ Master
+	//======================================
+	if (verifie_permission('qdjmaster')){?>
+	<h2>Administration frankiz</h2>
+	<h3>Validations Variées</h3>
+		<?
+		$DB_valid->query("SELECT eleve_id FROM valid_qdj") ;
+		$nb = $DB_valid->num_rows() ;
+		?>
+		<lien titre="Valider les qdj (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_qdj.php"/>
+	<h3>Administration des données validées</h3>
+		<lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/>
+	<?
+	}
+	
+	//
+	// Pour les binets qui ont des activités régulières et à qui on donne
+	// le droit de les valider sur le site interne (ex: BRC)
+	//======================================
+	if (verifie_permission('affiches')){?>
+	<h2>Administration frankiz</h2>
+	<h3>Validations Variées</h3>
+		<?
+		$DB_valid->query("SELECT eleve_id FROM valid_affiches") ;
+		$nb = $DB_valid->num_rows() ;
+		?>
+		<lien titre="Valider les activités (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_affiches.php"/>
+	<h3>Administration des données validées</h3>
+		<lien titre="Planifier les activités" url="<?php echo BASE_URL?>/admin/planif_affiches.php"/>
 	<?
 	}
 	

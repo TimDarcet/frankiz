@@ -21,9 +21,13 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.12  2004/11/27 14:56:15  pico
+	Debut de mise en place de droits spéciaux (qdj + affiches)
+	+ génération de la page d'admin qui va bien
+
 	Revision 1.11  2004/11/16 18:32:34  schmurtz
 	Petits problemes d'interpretation de <note> et <commentaire>
-
+	
 	Revision 1.10  2004/11/02 17:54:12  pico
 	Correction bug:
 	- derniere qdj planifiée
@@ -67,7 +71,7 @@ require_once "../include/global.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-if(!verifie_permission('admin'))
+if(!verifie_permission('admin') && !verifie_permission('qdjmaster'))
 	rediriger_vers("/admin/");
 
 
