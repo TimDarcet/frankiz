@@ -39,9 +39,12 @@
 	)
 	
 	$Log$
+	Revision 1.12  2004/11/08 12:45:17  pico
+	Rajout d'un id pour pouvoir skinner les titres des formulaires
+
 	Revision 1.11  2004/11/06 10:40:46  pico
 	Maintenant, ça doit marcher
-
+	
 	Revision 1.10  2004/11/06 10:23:15  pico
 	BugFix au niveau de l'affichage du choix de css
 	
@@ -220,7 +223,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="choix_skin" titre="Frankiz : choix skin">
 	<h1>Personnalisation de Frankiz II</h1>
 	
-	<formulaire titre="Choix de la skin" action="profil/skin.php">
+	<formulaire id="form_choix_skin" titre="Choix de la skin" action="profil/skin.php">
 		<choix titre="Skin" id="newskin" type="radio" valeur="<?php echo $_SESSION['skin']['skin_nom']?>">
 <?php
 			// Choix de la feuille de style XSL
@@ -239,7 +242,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<bouton titre="Appliquer" id="OK_skin" />
 	</formulaire>
 	
-	<formulaire titre="Paramètres de la skin <? echo $_SESSION['skin']['skin_nom'] ?>" action="profil/skin.php">
+	<formulaire id="form_param_skin" titre="Paramètres de la skin <? echo $_SESSION['skin']['skin_nom'] ?>" action="profil/skin.php">
 		<choix titre="CSS" id="newcss" type="combo" valeur="<?php echo $_SESSION['skin']['skin_css']?>">
 <?php
 			// Choix de la feuille de style CSS
