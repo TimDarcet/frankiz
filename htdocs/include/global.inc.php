@@ -24,9 +24,12 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.33  2004/11/07 00:09:13  pico
+	Include du fichier contenant les fonctions de compression
+
 	Revision 1.32  2004/11/06 15:09:18  pico
 	Correction d'un commit de merde, désolé
-
+	
 	Revision 1.30  2004/11/04 16:36:42  schmurtz
 	Modifications cosmetiques
 	
@@ -191,5 +194,6 @@ require_once "global_func.inc.php";
 require_once "mail.inc.php";
 require_once "login.inc.php";
 require_once "skin.inc.php";
+require_once "compress.inc.php";
 
 ?>
