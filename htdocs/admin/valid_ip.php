@@ -34,7 +34,7 @@ foreach ($_POST AS $keys => $val){
 	// On refuse la demande d'ip supplémentaire
 	//==========================
 	if ($temp[0] == "vtff") {
-		$DB_admin->query("DELETE FROM ip_ajout WHERE eleve_id=$temp[1] AND valider=0");
+		$DB_admin->query("DELETE FROM validations_ip WHERE eleve_id='{$temp[1]}'");
 		
 		$contenu = "Bonjour, \n\n".
 					"Nous sommes désolé mais nous ne pouvons pas d'ouvrir une autre ip supplémentaire car nous ne pensons pas que tu en ai absolument besoin...\n\n".
@@ -43,11 +43,11 @@ foreach ($_POST AS $keys => $val){
 					"Très Cordialement\n" .
 					"Le BR\n"  ;
 		
-		$DB_trombino->query("SELECT login,nom,prenom,mail FROM eleves WHERE eleve_id=$temp[1]");
+		$DB_trombino->query("SELECT login,nom,prenom,mail FROM eleves WHERE eleve_id='{$temp[1]}'");
 		list($login,$nom,$prenom,$mail) = $DB_trombino->next_row() ;
 		if (($mail=="")||($mail=="NULL")) $mail = $login."@poly.polytechnique.fr" ;
 	
-		mail("$prenom $nom<$mail>","[Frankiz] Ta demande a été refusée ",$contenu);
+		mail("\"$prenom $nom\" <$mail>","[Frankiz] Ta demande a été refusée ",$contenu);
 
 	}
 	// On accepte la demande d'ip supplémentaire
@@ -55,7 +55,8 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0] == "ok") {
 		$temp2 = "ajout_ip_".$temp[1] ;
 		$temp3 = "raison_".$temp[1] ;
-		$DB_admin->query("UPDATE ip_ajout SET valider=1,ip_enplus='".$_POST[$temp2]."', raison='".$_POST[$temp3]."' WHERE eleve_id=$temp[1] AND valider=0");
+		$DB_admin->query("DELETE FROM validations_ip WHERE eleve_id='{$temp[1]}'");
+		$DB_admin->query("INSERT prises SET prise_id='',piece_id='',ip='{$_POST[$temp2]}',type='secondaire'");
 		
 		$contenu = "Bonjour, \n\n".
 					"Nous t'avons ouvert l'ip suivante :\n".
@@ -64,19 +65,19 @@ foreach ($_POST AS $keys => $val){
 					"Très Cordialement\n" .
 					"Le BR\n"  ;
 		
-		$DB_trombino->query("SELECT  login,nom,prenom,mail FROM eleves WHERE eleve_id=$temp[1]");
-		list($login,$nom,$prenom,$mail) = $DB_trombino->next_row() ;
+		$DB_trombino->query("SELECT login,nom,prenom,mail FROM eleves WHERE eleve_id='{$temp[1]}'");
+		list($login,$nom,$prenom,$mail) = $DB_trombino->next_row();
 		if (($mail=="")||($mail=="NULL")) $mail = $login."@poly.polytechnique.fr" ;
 	
-		mail("$prenom $nom<$mail>","[Frankiz] Ta demande a été acceptée",$contenu);
+		mail("\"$prenom $nom\" <$mail>","[Frankiz] Ta demande a été acceptée",$contenu);
 
 	}
 	
 	// On vire une ip qu'on avait validé
 	//===========================
 	if ($temp[0] == "suppr") {
-		$temp2 = str_replace("xxx",".",$temp[2]) ; // euh c'est pas bo je suis d'accord mais bon c'est pour que ca marche sans trop de trick
-		$DB_admin->query("DELETE FROM ip_ajout WHERE eleve_id=$temp[1] AND valider=1 AND ip_enplus='$temp2'");
+		$temp2 = str_replace("x",".",$temp[2]) ; // euh c'est pas bo je suis d'accord mais bon c'est pour que ca marche sans trop de trick
+		$DB_admin->query("DELETE FROM prises WHERE type='secondaire' AND ip='$temp2'");
 		
 		$contenu = "Bonjour, \n\n".
 					"Nous t'avons supprimé l'ip suivante :\n".
@@ -85,11 +86,11 @@ foreach ($_POST AS $keys => $val){
 					"Très Cordialement\n" .
 					"Le BR\n"  ;
 		
-		$DB_trombino->query("SELECT login,nom,prenom,mail FROM eleves WHERE eleve_id=$temp[1]");
+		$DB_trombino->query("SELECT login,nom,prenom,mail FROM eleves WHERE eleve_id='{$temp[1]}'");
 		list($login,$nom,$prenom,$mail) = $DB_trombino->next_row() ;
 		if (($mail=="")||($mail=="NULL")) $mail = $login."@poly.polytechnique.fr" ;
 	
-		mail("$prenom $nom<$mail>","[Frankiz] Suppression d'une ip",$contenu);
+		mail("\"$prenom $nom\" <$mail>","[Frankiz] Suppression d'une ip",$contenu);
 
 	}
 }
@@ -100,17 +101,20 @@ Vous allez valider un ajout d'une ip : Pour le mement le système n'est pas fiabl
 </commentaire>
 <h2>Liste des personnes demandant</h2>
 	<liste id="liste" selectionnable="non" action="admin/valid_ip.php">
-		<entete id="login" titre="Login"/>
+		<entete id="eleve" titre="Élève"/>
 		<entete id="raison" titre="Raison"/>
-		<entete id="ip" titre="Ip"/>
+		<entete id="prises" titre="Prises"/>
+		<entete id="ip" titre="IP"/>
 <?
-		$DB_admin->query("SELECT  eleves.login,ip_ajout.raison,eleves.eleve_id FROM ip_ajout INNER JOIN trombino.eleves USING(eleve_id) WHERE ip_ajout.valider=0");
-		while(list($login,$raison,$eleve_id) = $DB_web->admin_row()) {
+		$DB_admin->query("SELECT v.raison,e.nom,e.prenom,e.piece_id,e.eleve_id FROM validations_ip as v INNER JOIN trombino.eleves as e USING(eleve_id)");
+		while(list($raison,$nom,$prenom,$piece,$eleve_id) = $DB_admin->next_row()) {
 ?>
 			<element id="<? echo $eleve_id ;?>">
-				<colonne id="login"><? echo $login ;?></colonne>
+				<colonne id="eleve"><? echo "$nom $prenom" ?></colonne>
 				<colonne id="raison">
 					<zonetext titre="" id="raison_<? echo $eleve_id ;?>" valeur="<? echo $raison ;?>"/>
+				</colonne>
+				<colonne id="prises">
 				</colonne>
 				<colonne id="ip">
 					<champ titre="" id="ajout_ip_<? echo $eleve_id ;?>" valeur="129.104." /> 
@@ -127,17 +131,17 @@ Vous allez valider un ajout d'une ip : Pour le mement le système n'est pas fiabl
 	
 	<h2>Liste des personnes ayant eu leurs ips supplémentaires</h2>
 	<liste id="liste" selectionnable="non" action="admin/valid_ip.php">
-		<entete id="login" titre="Login"/>
-		<entete id="raison" titre="Raison"/>
-		<entete id="ip" titre="Ip"/>
+		<entete id="eleve" titre="Élève"/>
+		<entete id="prise" titre="Prise"/>
+		<entete id="ip" titre="IP"/>
 <?
-		$DB_admin->query("SELECT  eleves.login,ip_ajout.raison,eleves.eleve_id,ip_ajout.ip_enplus FROM ip_ajout INNER JOIN eleves USING(eleve_id) WHERE ip_ajout.valider=1 ORDER BY eleves.login ASC");
-		while(list($login,$raison,$eleve_id,$ip) = $DB_admin->next_row()) {
+		$DB_admin->query("SELECT e.nom,e.prenom,prises.prise_id,prises.ip FROM prises INNER JOIN trombino.eleves as e USING(piece_id) WHERE type='secondaire' ORDER BY e.nom ASC, e.prenom ASC");
+		while(list($nom,$prenom,$prise,$ip) = $DB_admin->next_row()) {
 ?>
-			<element id="<? echo $eleve_id ;?>">
-				<colonne id="login"><? echo $login ;?></colonne>
-				<colonne id="raison"><? echo $raison ;?></colonne>
-				<colonne id="ip"><? echo $ip ;?><bouton titre="Dégage!" id="suppr_<? echo $eleve_id ;?>_<? echo str_replace(".","xxx",$ip) ;?>"/></colonne>
+			<element id="<? echo str_replace(".","x",$ip) ;?>">
+				<colonne id="eleve"><? echo "$nom $prenom" ?></colonne>
+				<colonne id="prise"><? echo $prise ?></colonne>
+				<colonne id="ip"><? echo $ip ;?><bouton titre="Dégage!" id="<? echo str_replace(".","x",$ip) ;?>"/></colonne>
 			</element>
 <?
 		}

@@ -10,7 +10,6 @@
 
 require_once "../include/global.inc.php";
 demande_authentification(AUTH_FORT);
-connecter_mysql_frankiz();
 
 $eleve_id=$_SESSION['user']->uid;
 
@@ -29,8 +28,8 @@ if (!isset($_POST['demander'])) {
 	</formulaire>
 <?
 } else {
-	$resultat = mysql_query("SELECT * FROM ip_ajout WHERE eleve_id='".$_SESSION['user']->uid."' AND valider=0");
-	if (mysql_num_rows($resultat)>0){
+	$DB_admin->query("SELECT 0 FROM validations_ip WHERE eleve_id='{$_SESSION['user']->uid}'");
+	if ($DB_admin->num_rows()>0){
 ?>
 
 		<warning>Tu as déjà fait une demande</warning>
@@ -39,11 +38,11 @@ if (!isset($_POST['demander'])) {
 	
 <?
 	} else {
-
-		mysql_query("INSERT ip_ajout SET raison='".$_POST['raison']."', eleve_id='".$_SESSION['user']->uid."',valider=0");
+		$DB_admin->query("INSERT validations_ip SET raison='{$_POST['raison']}', eleve_id='{$_SESSION['user']->uid}'");
+		
 		// Envoie du mail au webmestre pour le prévenir d'une demande d'ip
-		$resultat = mysql_query("SELECT nom,prenom FROM eleves WHERE eleve_id='".$_SESSION['user']->uid."'");
-		list($nom,$prenom)=mysql_fetch_row($resultat);
+		$DB_trombino->query("SELECT nom,prenom FROM eleves WHERE eleve_id='{$_SESSION['user']->uid}'");
+		list($nom,$prenom)=$DB_trombino->next_row();
 		
 		$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
 		
@@ -54,7 +53,7 @@ if (!isset($_POST['demander'])) {
 					"Très BR-ement\n" .
 					"L'automate :)\n"  ;
 					
-		mail("Admin FrankizII <gruson@poly.polytechnique.fr>","[Frankiz] Demande d'une nouvelle ip",$contenu);
+		mail("Admin Frankiz <gruson@poly.polytechnique.fr>","[Frankiz] Demande d'une nouvelle ip",$contenu);
 	
 ?>
 
