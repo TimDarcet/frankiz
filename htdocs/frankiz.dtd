@@ -1,3 +1,202 @@
-Déplacé dans ./doc/
-Il faut garder se fichier qui sert pour retrouver la base du site web dans ./htdocs/include/global.inc.php
-TODO trouver un moyen de supprimer se fichier (en tenant compte de la remarque ci dessus !)
+<!DOCTYPE frankiz [
+<!--
+
+	Copyright (C) 2004 Binet Réseau
+	http://www.polytechnique.fr/eleves/binets/br/
+	
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2
+	of the License, or (at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+-->
+
+<!ENTITY texte.formate "(#PCDATA|strong|em|a|image|code)*">
+<!ENTITY texte.misenpage "(h1|h2|h3|h4|h5|p|ul|image|arbre|liste|formulaire)*">
+
+
+<!ELEMENT frankiz (module*|page+)>
+<!ATTLIST frankiz
+		base	CDATA   #REQUIRED	
+		css		CDATA   #IMPLIED>
+
+<!ELEMENT page &texte.misenpage;>
+<!ATTLIST page
+		id		ID		#REQUIRED
+		titre   CDATA   #IMPLIED>
+
+<!ELEMENT module (&texte.misenpage;|statistique|qdj|annonce|eleve)*>
+<!ATTLIST module
+		id		ID		#REQUIRED
+		titre   CDATA   #IMPLIED
+		visible (true|false) "true">
+
+<!ELEMENT h2 &texte.formate;>
+<!ELEMENT h3 &texte.formate;>
+<!ELEMENT h4 &texte.formate;>
+<!ELEMENT h5 &texte.formate;>
+
+<!ELEMENT ul (&texte.formate|li);>
+<!ELEMENT li &texte.formate;>
+
+<!ELEMENT p &texte.formate;>
+<!ELEMENT note (&texte.formate;)>	
+<!ELEMENT commentaire (&texte.formate;)>
+<!ELEMENT warning (&texte.formate;)>	
+<!ELEMENT code &texte.formate;>
+<!ELEMENT strong &texte.formate;>
+<!ELEMENT em &texte.formate;>
+
+<!ELEMENT a (#PCDATA|strong)*>
+<!ATTLIST a
+		href	CDATA   #REQUIRED>
+
+<!ELEMENT lien EMPTY>
+<!ATTLIST lien
+		url		CDATA   #REQUIRED
+		titre   CDATA   #IMPLIED
+		key   CDATA   #IMPLIED>
+	
+<!ELEMENT image EMPTY>
+<!ATTLIST image
+		source  CDATA   #REQUIRED
+		texte   CDATA   #REQUIRED
+		legende CDATA   #IMPLIED>
+
+<!ATTLIST arbre
+		id		ID		#REQUIRED
+		titre   CDATA   #IMPLIED>
+<!ELEMENT noeud (noeud|feuille)+>
+<!ATTLIST noeud
+		titre   CDATA   #REQUIRED
+		lien	CDATA   #IMPLIED>
+<!ELEMENT feuille &texte.formate;>
+<!ATTLIST feuille
+		titre   CDATA   #REQUIRED
+		lien	CDATA   #IMPLIED>
+
+
+<!-- listes -->
+<!ELEMENT liste (note?,warning?,entete*,element*,bouton*)>
+<!ATTLIST liste
+		id		ID		#REQUIRED
+		titre   CDATA   #REQUIRED
+		selectionnable (oui|non) "non"
+		action  CDATA   #IMPLIED>
+<!ELEMENT entete EMPTY>
+<!ATTLIST entete
+		id		CDATA   #REQUIRED
+		titre   CDATA   #REQUIRED
+		action  CDATA   #IMPLIED>
+<!ELEMENT element (colonne+)>
+<!ATTLIST element
+		id		CDATA   #IMPLIED>   <!-- l'id doit exister si la liste est sélectionnable -->
+<!ELEMENT colonne (&texte.formate;|champ|choix|bouton)>
+<!ATTLIST colonne
+		id		CDATA   #REQUIRED>  <!-- un id de colonne doit correspondre à un id d'entête -->
+
+<!-- formulaires -->
+<!ELEMENT formulaire (note?,warning?,(champ|choix)*,bouton+)>
+<!ATTLIST formulaire
+		id		ID		#REQUIRED
+		titre   CDATA   #REQUIRED
+		action  CDATA   #REQUIRED>
+		
+<!ELEMENT champ EMPTY>
+<!ATTLIST champ
+		id		ID		#REQUIRED
+		titre   CDATA   #IMPLIED
+		valeur  CDATA   #IMPLIED
+		modifiable (oui|non) "oui">
+
+<!-- élément de formulaire -->
+<!ELEMENT zonetext EMPTY>
+<!ATTLIST zonetext
+		id		ID		#REQUIRED
+		titre   CDATA   #IMPLIED
+		valeur  CDATA   #IMPLIED>
+			<!-- comme un champ, mais sur plusieurs lignes -->
+
+<!ELEMENT choix (option)+>
+<!ATTLIST choix
+		id		ID		#REQUIRED
+		titre   CDATA   #IMPLIED
+		type	(combo|radio|checkbox) "combo"
+		valeur  CDATA   #IMPLIED>
+<!ELEMENT option EMPTY>
+<!ATTLIST option
+		id		CDATA   #REQUIRED
+		titre   CDATA   #IMPLIED>
+
+<!ELEMENT bouton EMPTY>
+<!ATTLIST bouton
+		id		CDATA   #REQUIRED
+		type	CDATA	#IMPLIED
+		titre   CDATA   #IMPLIED>
+
+<!ELEMENT textsimple EMPTY>
+<!ATTLIST textsimple
+		valeur	CDATA #REQUIRED>
+
+<!ELEMENT statistiques (serveur|service)+>
+<!ELEMENT serveur EMPTY>
+<!ATTLIST serveur
+		nom		CDATA   #REQUIRED
+		etat	CDATA   #REQUIRED>
+<!ELEMENT service EMPTY>
+<!ATTLIST service
+		nom		CDATA   #REQUIRED
+		etat	CDATA   #REQUIRED>
+
+<!-- gestion de la qdj -->
+<!ELEMENT qdj (reponse+,dernier*)>
+<!ATTLIST qdj
+		id		CDATA   #REQUIRED
+		type	(hier|aujourdhui) "aujourdhui"
+		action  CDATA   #REQUIRED>
+<!ELEMENT question &texte.formate;>
+<!ELEMENT reponse &texte.formate;>
+<!ATTLIST reponse
+		id		CDATA   #REQUIRED
+		votes   CDATA   #IMPLIED>
+<!ELEMENT dernier (#PCDATA)>
+<!ATTLIST dernier
+		ordre   CDATA   #REQUIRED>
+
+<!ELEMENT annonce &texte.misenpage;>
+<!ATTLIST annonce
+		titre		CDATA   #IMPLIED
+		auteur		CDATA   #IMPLIED
+		date		CDATA   #IMPLIED
+		categorie   CDATA   #IMPLIED
+		visible		CDATA	#IMPLIED>
+
+<!ELEMENT eleve (binet)*>
+<!ATTLIST eleve
+		nom			CDATA   #REQUIRED
+		prenom		CDATA   #REQUIRED
+		promo		CDATA   #IMPLIED
+		login		CDATA   #IMPLIED
+		surnom		CDATA   #IMPLIED
+		tel			CDATA   #IMPLIED
+		mail		CDATA   #IMPLIED
+		casert		CDATA   #IMPLIED
+		naissance   CDATA   #IMPLIED
+		section		CDATA   #IMPLIED
+		cie			CDATA   #IMPLIED>
+<!ELEMENT binet (#PCDATA)>
+<!ATTLIST binet
+		nom			CDATA   #REQUIRED
+		id			CDATA   #REQUIRED>
+
+
+]>

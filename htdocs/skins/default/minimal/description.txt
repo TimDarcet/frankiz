@@ -1,1 +1,2 @@
-CSS Minimal. Un peu de simplicité dans un monde complexe.
+CSS Minimal. Un peu de simplicité dans un monde complexe. (PLANTE LE SITE SI
+UTILISE AVEC IE)

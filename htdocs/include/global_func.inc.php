@@ -22,9 +22,12 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.46  2005/01/25 14:53:43  pico
+	Modifications relatives à la version de prod, à l'accès extérieur, tout ça...
+
 	Revision 1.45  2005/01/25 14:50:56  kikx
 	Suppression fonction xorg
-
+	
 	Revision 1.44  2005/01/24 17:27:53  kikx
 	Permet de gerer l'auth Xorg
 	NE PAS COMMITER EN PROD ... car pas encore terminer
@@ -299,31 +302,31 @@ function decode_sondage($string) {
 			echo "<note>$temp[1]</note>\n" ;
 		}
 		if ($temp[0]=="champ") {
-			echo "<champ id=\"$i\" titre=\"$temp[1]\" valeur=\"\"/>\n" ;
+			echo "<champ id=\"$i\" titre=\"$temp[1]\" valeur=\"\"/><br/>\n" ;
 		}
 		if ($temp[0]=="text") {
-			echo "<zonetext id=\"$i\" titre=\"$temp[1]\"></zonetext>\n" ;
+			echo "<zonetext id=\"$i\" titre=\"$temp[1]\"></zonetext><br/>\n" ;
 		}
 		if ($temp[0]=="radio") {
 			echo "<choix titre=\"$temp[1]\" id=\"$i\" type=\"radio\" valeur=\"\">\n" ;
 			for ($j=2 ; $j<count($temp) ; $j++) {
 				echo "\t<option titre=\"".$temp[$j]."\" id=\"".($j-1)."\"/>\n";
 			}	
-			echo "</choix>\n" ;
+			echo "</choix><br/>\n" ;
 		}
 		if ($temp[0]=="combo") {
 			echo "<choix titre=\"$temp[1]\" id=\"$i\" type=\"combo\" valeur=\"\">\n" ;
 			for ($j=2 ; $j<count($temp) ; $j++) {
 				echo "\t<option titre=\"".$temp[$j]."\" id=\"".($j-1)."\"/>\n";
 			}	
-			echo "</choix>\n" ;
+			echo "</choix><br/>\n" ;
 		}
 		if ($temp[0]=="check") {
 			echo "<choix titre=\"$temp[1]\" id=\"$i\" type=\"checkbox\" valeur=\"\">\n" ;
 			for ($j=2 ; $j<count($temp) ; $j++) {
 				echo "\t<option titre=\"".$temp[$j]."\" id=\"{$i}_".($j-1)."\"/>\n";
 			}	
-			echo "</choix>\n" ;
+			echo "</choix><br/>\n" ;
 		}
 	}
 }

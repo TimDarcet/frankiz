@@ -24,9 +24,12 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.47  2005/01/25 14:53:43  pico
+	Modifications relatives à la version de prod, à l'accès extérieur, tout ça...
+
 	Revision 1.46  2004/12/02 21:26:23  pico
 	Base URL: distinction pour éviter les http://frankiz//index.php
-
+	
 	Revision 1.45  2004/11/26 16:12:47  pico
 	La Faq utilise la $DB_faq au lieu de $DB_web
 	
@@ -70,13 +73,15 @@
 foreach(Array('.', '..', '../..', '../../..') as $dir)
 if(file_exists("$dir/frankiz.dtd"))
 	$href = $dir;
-
+$https = ($_SERVER['HTTPS']=='on')? 'https':'http';
 define('BASE_LOCAL',realpath(dirname(__FILE__)."/.."));
 // Base URL: distinction pour éviter les http://frankiz//index.php
-if(substr((dirname($_SERVER['PHP_SELF'])), 1))
-	define('BASE_URL','http://'.$_SERVER['HTTP_HOST'].'/'.substr((dirname($_SERVER['PHP_SELF']).'/'.$href), 1));
+if($_SERVER["HTTP_X_FORWARDED_HOST"]=="www.polytechnique.fr")
+        define('BASE_URL',$https.'://www.polytechnique.fr/eleve/frankiz_test');
+else if(substr((dirname($_SERVER['PHP_SELF'])), 1))
+	define('BASE_URL',$https.'://'.$_SERVER['HTTP_HOST'].'/'.substr((dirname($_SERVER['PHP_SELF']).'/'.$href), 1));
 else
-	define('BASE_URL','http://'.$_SERVER['HTTP_HOST'].'/'.$href);
+	define('BASE_URL',$https.'://'.$_SERVER['HTTP_HOST'].'/'.$href);
 
 
 // Connexions aux bases mysql
