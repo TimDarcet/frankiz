@@ -21,7 +21,7 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:template match="page[@id='accueil']" mode="complet">
+<xsl:template match="page[@id='annonces']" mode="complet">
 	<xsl:choose>
 		<xsl:when test="count(annonce)">
 			<xsl:if test="$trier_annonces='pas_tri'">
@@ -41,7 +41,7 @@
 </xsl:template>
 
 
-<xsl:template match="page[@id='accueil']" mode="sommaire">
+<xsl:template match="page[@id='annonces']" mode="sommaire">
 	<xsl:if test="$sommaire='pas_tri'">
 		<xsl:if test="count(annonce) != 0">
 			<div class="fkz_sommaire">
@@ -94,7 +94,7 @@
 			</b>
 		</div>
 		<div class="fkz_annonces_corps">
-			<xsl:apply-templates select="html"/>
+			<xsl:apply-templates select="*[name()!='eleve']"/>
 			<p class="fkz_signature">
 				<xsl:choose>
 					<xsl:when test="eleve/@surnom != ''">

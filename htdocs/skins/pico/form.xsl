@@ -128,7 +128,6 @@
 			</xsl:choose>
 			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:attribute name="value"><xsl:value-of select="@valeur"/></xsl:attribute>
-			<xsl:if test="@valeur!=''"><xsl:attribute name="value"><xsl:value-of select="@valeur"/></xsl:attribute></xsl:if>
 		</input>
 	</xsl:otherwise></xsl:choose>
 </xsl:template>
@@ -140,7 +139,6 @@
 			<option>
 				<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
 				<xsl:if test="../@valeur = @id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-				<xsl:if test="@valeur!=''"><xsl:attribute name="value"><xsl:value-of select="@valeur"/></xsl:attribute></xsl:if>
 				<xsl:value-of select="@titre"/>
 			</option>
 		</xsl:for-each>
@@ -153,7 +151,6 @@
 			<xsl:attribute name="name"><xsl:value-of select="../@id"/></xsl:attribute>
 			<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:if test="../@valeur = @id"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-			<xsl:if test="@valeur!=''"><xsl:attribute name="value"><xsl:value-of select="@valeur"/></xsl:attribute></xsl:if>
 		</input>
 		<xsl:value-of select="@titre"/><br/>
 	</xsl:for-each>
@@ -165,7 +162,6 @@
 			<xsl:if test="@modifiable='non'"><xsl:attribute name="disabled"/></xsl:if>
 			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:if test="contains(../@valeur,@id)"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-			<xsl:if test="@valeur!=''"><xsl:attribute name="value"><xsl:value-of select="@valeur"/></xsl:attribute></xsl:if>
 		</input>
 		<xsl:value-of select="@titre"/><br/>
 	</xsl:for-each>

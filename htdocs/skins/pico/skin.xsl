@@ -76,10 +76,10 @@
 		<div class="fkz_page">
 			<div class="fkz_centre">
 				<xsl:apply-templates select="frankiz/module[@id='anniversaires']"/>
-				<xsl:apply-templates select="frankiz/page[@id='accueil']" mode="sommaire"/>
-				<xsl:apply-templates select="frankiz/page[@id='accueil']" mode="complet"/>
+				<xsl:apply-templates select="frankiz/page[@id='annonces']" mode="sommaire"/>
+				<xsl:apply-templates select="frankiz/page[@id='annonces']" mode="complet"/>
 				<xsl:apply-templates select="frankiz/page[@id='trombino']"/>
-				<xsl:apply-templates select="frankiz/page[@id!='accueil' and @id!='trombino']"/>
+				<xsl:apply-templates select="frankiz/page[@id!='annonces' and @id!='trombino']"/>
 			</div>
 			<div class="fkz_gauche">
 				<xsl:apply-templates select="frankiz/module[@id='liens_navigation']"/>

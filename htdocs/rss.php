@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.12  2004/11/24 13:45:24  pico
+	Modifs skins pour le wiki et l'id de la page d'annonces
+
 	Revision 1.11  2004/11/24 13:31:42  pico
 	Modifs pages liens rss
-
+	
 	Revision 1.10  2004/11/23 21:17:41  pico
 	Ne charge qu'au login ou à l'établissemnt de la session (ce code va buger, je fais juste un travail préparatoire)
 	
@@ -64,7 +67,7 @@ $array = array(
 	);
 if(!empty($_REQUEST['OK_param'])) {
 	// Visibilité
-	foreach($array as $value => $mode)
+	foreach($array as $value => $description)
 		if($array != "")
 			unset($_SESSION['rss'][$value]);
 	
@@ -88,7 +91,7 @@ if( !isset($_SESSION['rss']) || nouveau_login() ) {
 						echo"\">";
 						foreach($array as $value => $description)
 							if($value != "")
-								echo "\t\t\t<option titre=\"$description\" id=\"vis[$value]=$mode\" valeur='$mode'/>\n";
+								echo "\t\t\t<option titre=\"$description\" id=\"vis[$mode_$value]\"/>\n";
 				echo "</choix>";
 		} 
 ?>
