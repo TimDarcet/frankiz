@@ -22,15 +22,31 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="module[@id='liens_contacts']">
-	<ul id="contacts">
-		<xsl:apply-templates select="lien" mode="liste"/>
-	</ul>
+	<dl>
+		<dt><img class="droitehaut" src="skins/default/images/cadre-hautd.gif" alt="" />
+			<span><xsl:value-of select="@titre"/></span>	
+		</dt>
+		<dd>
+			<ul id="contacts">
+				<xsl:apply-templates select="lien" mode="liste"/>
+			</ul>
+		</dd>
+		<dd class="bas"><img class="droitebas" src="skins/default/images/cadre-basd.gif" alt="" /></dd>
+	</dl>
 </xsl:template>
 
 <xsl:template match="module[@id='liens_ecole']">
-	<ul id="ecole">
-		<xsl:apply-templates select="lien" mode="liste"/>
-	</ul>
+	<dl>
+		<dt><img class="droitehaut" src="skins/default/images/cadre-hautd.gif" alt="" />
+			<span><xsl:value-of select="@titre"/></span>	
+		</dt>
+		<dd>
+			<ul id="ecole">
+				<xsl:apply-templates select="lien" mode="liste"/>
+			</ul>
+		</dd>
+		<dd class="bas"><img class="droitebas" src="skins/default/images/cadre-basd.gif" alt="" /></dd>
+	</dl>
 </xsl:template>
 
 <xsl:template match="module[@id='liens_navigation']">

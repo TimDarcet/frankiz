@@ -22,8 +22,11 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	
 <xsl:template match="module[@id='qdj'] | module[@id='qdj_hier'] ">
-		<div class="fkz_titre"><xsl:value-of select="@titre"/></div>
-		<div class="fkz_module">
+	<dl>
+		<dt><img class="droitehaut" src="skins/default/images/cadre-hautd.gif" alt="" />
+			<span><xsl:value-of select="@titre"/></span>	
+		</dt>
+		<dd>
 		<xsl:choose>
 		<xsl:when test="boolean(qdj[@action])">
 			<div class="fkz_qdj_question"><xsl:value-of select="qdj/question"/></div>
@@ -59,7 +62,7 @@
 		</xsl:otherwise>
 		</xsl:choose>
 		<br/>
-			<div style="text-align: center"><br/>
+		<br/>
 			<xsl:if test="count(qdj/dernier)">
 				<div>Derniers à répondre :</div>
 				<ul class="fkz_qdj_last">
@@ -68,8 +71,11 @@
 				</xsl:for-each>
 				</ul>
 			</xsl:if>
-			</div>
-		</div>
+		</dd>
+		<dd class="bas"><img class="droitebas" src="skins/default/images/cadre-basd.gif" alt="" /></dd>
+	</dl>
+	<br />
+	<br />
 </xsl:template>
 
 </xsl:stylesheet>

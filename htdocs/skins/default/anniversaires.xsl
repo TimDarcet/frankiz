@@ -46,8 +46,6 @@
 			</dd>
 			<dd class="bas"><img class="droitebas" src="skins/default/images/cadre-basd.gif" alt="" /></dd>
 		</dl>
-		<br />
-		<br />
 	</xsl:if>
 </xsl:template>
 

@@ -23,12 +23,20 @@
 <!-- Meteo de l'X -->
 
 <xsl:template match="module/meteo">
-   		<p class="image">
-			<xsl:value-of select="now/temperature"/>°C<br />
-			<img alt="meteo" width="64" height="64">
-				<xsl:attribute name="src">skins/pico/images/meteo/<xsl:value-of select="now/image"/>.png</xsl:attribute>
-			</img>
-		</p>
+	<dl>
+		<dt><img class="droitehaut" src="skins/default/images/cadre-hautd.gif" alt="" />
+			<span>Météo</span>	
+		</dt>
+		<dd>
+			<p class="image">
+				<xsl:value-of select="now/temperature"/>°C<br />
+				<img alt="meteo" width="64" height="64">
+					<xsl:attribute name="src">skins/pico/images/meteo/<xsl:value-of select="now/image"/>.png</xsl:attribute>
+				</img>
+			</p>
+		</dd>
+		<dd class="bas"><img class="droitebas" src="skins/default/images/cadre-basd.gif" alt="" /></dd>
+	</dl>
 </xsl:template>
 
 <xsl:template match="page/meteo">
@@ -49,8 +57,7 @@
 		</dd>
 		<dd class="bas"><img class="droitebas" src="images/cadre-basd.gif" alt="" /></dd>
 	</dl>
-	<br/>
-	<br/>
+	<div class="hr"><hr/></div>
 	<dl>
 		<dt><img class="droitehaut" src="skins/default/images/cadre-hautd.gif" alt="" />
 			<span>Prévisions météo :</span>	

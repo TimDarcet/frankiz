@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.6  2004/11/05 00:51:22  psycow
+	Le commit avant le dodo, ça avance bien, la structure de base y est plus que les petites amélioration partout ;-)
+
 	Revision 1.5  2004/11/04 15:18:01  psycow
 	Un bon debut mais plus compatible IE j'en ai peur
-
+	
 	Revision 1.4  2004/11/03 23:38:39  psycow
 	Un bon début
 	
@@ -42,27 +45,23 @@
 <xsl:include href="html.xsl"/>
 <xsl:include href="form.xsl"/>
 
-<xsl:include href="annonces.xsl"/>
-<xsl:include href="skins.xsl"/>
 <xsl:include href="liens.xsl"/>
-<xsl:include href="qdj.xsl"/>
+<xsl:include href="meteo.xsl"/>
 <xsl:include href="anniversaires.xsl"/>
+<xsl:include href="qdj.xsl"/>
+<xsl:include href="annonces.xsl"/>
+<!--
+<xsl:include href="skins.xsl"/>
 <xsl:include href="activites.xsl"/>
 <xsl:include href="tours_kawa.xsl"/>
 <xsl:include href="trombino.xsl"/>
 <xsl:include href="stats.xsl"/>
-<xsl:include href="meteo.xsl"/>
-
+-->
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"/>
 
 <xsl:template match="/frankiz"> 
-	<xsl:apply-templates select="page"/>
-</xsl:template>
-
-<!-- Définition d'une page web de frankiz -->
-<xsl:template match="/frankiz/page">
 	
 	<html>
 	<head>
@@ -70,11 +69,11 @@
 		<!-- semble ne pas marcher avec certains navigateurs lorsque la base est relative -->
 		<base>
 			<xsl:attribute name="href">
-				<xsl:value-of select="../@base"/>
+				<xsl:value-of select="@base"/>
 			</xsl:attribute>
 		</base>
 		<link rel="stylesheet" type="text/css" href="skins/default/style.css" media="screen" />
-		<xsl:apply-templates select="/frankiz/module[@id='liste_css']" mode="css"/>
+		<xsl:apply-templates select="module[@id='liste_css']" mode="css"/>
 	</head>
 
 	<body>
@@ -88,51 +87,25 @@
 			<xsl:apply-templates select="/frankiz/module[@id='liens_navigation']" />
 	
 			<div id="droite">
-				<xsl:for-each select="/frankiz/module[@id!='liens_navigation' and @id!='anniversaires']">
-					<xsl:if test="(boolean(@visible) = false) or (@visible = 'true')">
-						<dl>
-							<dt><img class="droitehaut" src="skins/default/images/cadre-hautd.gif" alt="" />
-								<span><xsl:value-of select="@titre"/></span>	
-							</dt>
-							<dd>
-								<xsl:choose>
-									<xsl:when test="@id='liens_contacts'">
-										<xsl:apply-templates select="/frankiz/module[@id='liens_contacts']"/>
-									</xsl:when>
-									<xsl:when test="@id='liens_ecole'">
-										<xsl:apply-templates select="/frankiz/module[@id='liens_ecole']"/>
-									</xsl:when>
-									<xsl:when test="@id='qdj'">
-										<xsl:apply-templates select="/frankiz/module[@id='qdj']"/>
-									</xsl:when>
-									<xsl:when test="@id='qdj_hier'">
-										<xsl:apply-templates select="/frankiz/module[@id='qdj_hier']"/>
-									</xsl:when>
-									<xsl:when test="@id='meteo'">
-										<xsl:apply-templates select="/frankiz/module[@id='meteo']"/>
-									</xsl:when>
-									<xsl:when test="@id='tour_kawa'">
-										<xsl:apply-templates select="/frankiz/module[@id='tour_kawa']"/>
-									</xsl:when>
-									<xsl:when test="@id='stats'">
-										<xsl:apply-templates select="/frankiz/module[@id='stats']"/>
-									</xsl:when>
-									<xsl:otherwise>
-										<!-- normalement il n'y a pas d'autres modules -->
-									</xsl:otherwise>
-								</xsl:choose>
-							</dd>
-							<dd class="bas"><img class="droitebas" src="skins/default/images/cadre-basd.gif" alt="" /></dd>
-						</dl>
-						<br />
-						<br />
-					</xsl:if>
-				</xsl:for-each>
+				<xsl:apply-templates select="module[@id='liens_contacts']"/>
+				<xsl:apply-templates select="module[@id='liens_ecole']"/>
+				<xsl:apply-templates select="module[@id='qdj']"/>
+				<xsl:apply-templates select="module[@id='qdj_hier']"/>
+				<xsl:apply-templates select="module[@id='meteo']"/>
+				<xsl:apply-templates select="module[@id='tour_kawa']"/>
+				<xsl:apply-templates select="module[@id='stats']"/>
 			</div><!--fin #droite -->
 			
 			<div id="centre">
-				<xsl:apply-templates select="/frankiz/module[@id='anniversaires']"/>
-				<xsl:apply-templates />
+				<xsl:if test="page/@id='accueil'">
+					<xsl:apply-templates select="module[@id='anniversaires']"/>
+					<xsl:apply-templates select="page[@id='accueil']" mode="sommaire"/>
+					<div class="hr"><hr /></div>
+					<xsl:apply-templates select="page[@id='accueil']" mode="complet"/>
+				</xsl:if>
+				<xsl:apply-templates select="page[@id='trombino']"/>
+				<xsl:apply-templates select="page[@id='meteo']"/>
+				<xsl:apply-templates select="page[@id!='annonces' and @id!='trombino' and @id!='meteo']"/>
 			</div><!--fin #centre -->
 			
 			<div id="footer">
@@ -145,6 +118,19 @@
 	</body>
 	</html>
 
+</xsl:template>
+
+
+<xsl:template match="page[@id!='annonces' and @id!='trombino' and @id!='meteo']">
+	<dl>
+		<dt><img class="droitehaut" src="skins/default/images/cadre-hautd.gif" alt="" />
+			<span><xsl:value-of select="@titre"/></span>	
+		</dt>
+		<dd>
+			<xsl:apply-templates/>
+		</dd>
+		<dd class="bas"><img class="droitebas" src="skins/default/images/cadre-basd.gif" alt="" /></dd>
+	</dl>
 </xsl:template>
 
 

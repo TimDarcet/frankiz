@@ -118,6 +118,7 @@ p.signature {
 
 dl {
 	width: 100%; 
+	margin:30px 0;
 }
 
 dt {
@@ -462,6 +463,27 @@ ul#barre_nav
 
 
 /* FAQ et Xshare */
-li.noeud_ouvert{list-style-image:url('images/fold_close.gif')}
-li.noeud_ferme{list-style-image:url('images/fold_open.gif')}
-ul.feuille{list-style-image:url('images/question.gif')}
+li.noeud_ouvert
+{
+	list-style-image:url('images/fold_close.gif');
+	margin-left:40px;
+}
+li.noeud_ferme
+{
+	list-style-image:url('images/fold_open.gif')
+	margin-left:40px;
+}
+ul.feuille
+{
+	list-style-image:url('images/question.gif')
+}
+
+div.hr {
+	height:1px;
+	width:20%;
+	background:#B0AFCF;
+	margin:0 auto;
+}
+div.hr hr {
+	display:none;
+}
