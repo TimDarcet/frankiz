@@ -3,11 +3,14 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.6  2004/09/20 20:31:20  schmurtz
+	Rajout de la balise html <em>
+
 	Revision 1.5  2004/09/16 11:09:38  kikx
 	C'est les vacances maintenant ...
 	Bon bref .. c'est dur aussi
 	Bon j'ai un peu arrangé la page des binets
-
+	
 	Revision 1.4  2004/09/15 23:19:56  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
@@ -108,6 +111,9 @@
 </xsl:template>
 <xsl:template match="strong">
 	<strong><xsl:apply-templates/></strong>
+</xsl:template>
+<xsl:template match="em">
+	<em><xsl:apply-templates/></em>
 </xsl:template>
 <xsl:template match="code">
 	<code><xsl:apply-templates/></code>

@@ -4,9 +4,12 @@
 	de frankiz.
 
 	$Log$
+	Revision 1.10  2004/09/20 20:31:20  schmurtz
+	Rajout de la balise html <em>
+
 	Revision 1.9  2004/09/17 15:28:27  schmurtz
 	Utilisation de la balise <eleve> pour les derniers votants à la qdj, les anniversaires, la signature des annonces…
-
+	
 	Revision 1.8  2004/09/15 23:19:45  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
@@ -15,7 +18,7 @@
 	
 -->
 
-<!ENTITY texte.formate "(#PCDATA|strong|a|image)*">
+<!ENTITY texte.formate "(#PCDATA|strong|em|a|image)*">
 <!ENTITY texte.misenpage "(h1|h2|h3|h4|h5|p|code|image|arbre|liste|formulaire)*">
 
 <!--
@@ -70,8 +73,8 @@
 <!ELEMENT h5 &texte.formate;>
 <!ELEMENT p &texte.formate;>
 <!ELEMENT code &texte.formate;>
-
-<!ELEMENT strong (#PCDATA|a)*>
+<!ELEMENT strong &texte.formate;>
+<!ELEMENT em &texte.formate;>
 
 <!ELEMENT a (#PCDATA|strong)*>
 <!ATTLIST a
