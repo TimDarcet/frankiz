@@ -24,9 +24,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.23  2004/10/29 16:12:53  kikx
+	Diverse correction sur les envoie des mail en HTML
+
 	Revision 1.22  2004/10/25 10:35:50  kikx
 	Page de validation (ou pas) des modif de trombi
-
+	
 	Revision 1.21  2004/10/22 15:18:33  kikx
 	Correction du bug d'affichage de l'image trombino quand l'utilisateur a demander la modification
 	
@@ -151,13 +154,14 @@ if(isset($_POST['changer_frankiz'])) {
 		} else {
 			$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
 
-			$contenu = "$nom $prenom ($promo) a demandé la modification de son image trombino \n\n".
-				"Pour valider ou non cette demande va sur la page suivante : \n".
-				"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_trombi.php\n\n" .
-				"Très BR-ement\n" .
-				"L'automate :)\n"  ;
+			$contenu = "$nom $prenom ($promo) a demandé la modification de son image trombino <br><br>".
+				"Pour valider ou non cette demande va sur la page suivante : <br>".
+				"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_trombi.php'>".
+				"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_trombi.php</a></div><br><br>" .
+				"Très BR-ement<br>" .
+				"L'automate :)<br>"  ;
 				
-			mail(MAIL_WEBMESTRE,"[Frankiz] Modification de l'image trombi de $nom $prenom",$contenu);
+			couriel(WEBMESTRE_ID,"[Frankiz] Modification de l'image trombi de $nom $prenom",$contenu);
 			$message .= "<commentaire>Ta demande de changement de photo a été prise en compte et sera validée dans les meilleurs délai... Merci</commentaire>" ;
 
 		}

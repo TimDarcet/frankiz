@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.11  2004/10/29 16:12:53  kikx
+	Diverse correction sur les envoie des mail en HTML
+
 	Revision 1.10  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.9  2004/10/19 19:08:17  kikx
 	Permet a l'administrateur de valider les modification des binets
 	
@@ -185,13 +188,14 @@ if(verifie_permission_webmestre($_GET['binet'])){
 		} else {
 			$tempo = explode("gestion",$_SERVER['REQUEST_URI']) ;
 
-			$contenu = "Le webmestre du binet $nom a demandé la modification de l'affichage de son binet \n\n".
-				"Pour valider ou non cette demande va sur la page suivante : \n".
-				"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_binets.php\n\n" .
-				"Très BR-ement\n" .
-				"L'automate :)\n"  ;
+			$contenu = "Le webmestre du binet $nom a demandé la modification de l'affichage de son binet <br><br>".
+				"Pour valider ou non cette demande va sur la page suivante : <br>".
+				"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_binets.php'>".
+				"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_binets.php</a></div><br><br>" .
+				"Très BR-ement<br>" .
+				"L'automate :)<br>"  ;
 				
-			mail(MAIL_WEBMESTRE,"[Frankiz] Modification du binet $nom",$contenu);
+			couriel(WEBMESTRE_ID,"[Frankiz] Modification du binet $nom",$contenu);
 		
 		}
 		
