@@ -21,9 +21,12 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.7  2004/11/08 08:47:57  kikx
+	Pour la gestion online des sites de binets
+
 	Revision 1.6  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.5  2004/10/19 14:58:42  schmurtz
 	Creation d'un champ de formulaire specifique pour les fichiers (sans passer
 	l'element champ, qui actuellement est un peu acrobatique).
@@ -58,7 +61,7 @@ $texte_image ="" ;
 	//==========================
 
 	if (isset($_POST['ajout'])) {
-		$DB_trombino->query("INSERT INTO  binets SET nom='{$_POST['nom']}', http='{$_POST['http']}', description='{$_POST['descript']}', catego_id='{$_POST['catego']}' ");
+		$DB_trombino->query("INSERT INTO  binets SET nom='{$_POST['nom']}', http='{$_POST['http']}', description='{$_POST['descript']}', catego_id='{$_POST['catego']} ' ");
 		$index = mysql_insert_id() ;
 		$message .= "<commentaire>Création du binet ' {$_POST['nom']}' effectuée</commentaire>" ;
 		
@@ -111,7 +114,7 @@ $texte_image ="" ;
 		
 		//---------------------------------------------------------
 			
-		$DB_trombino->query("UPDATE binets SET nom='{$_POST['nom']}', http='{$_POST['http']}', description='{$_POST['descript']}', catego_id='{$_POST['catego']}' , exterieur=$ext WHERE binet_id={$_POST['id']}");
+		$DB_trombino->query("UPDATE binets SET nom='{$_POST['nom']}', folder='{$_POST['folder']}', http='{$_POST['http']}', description='{$_POST['descript']}', catego_id='{$_POST['catego']}' , exterieur=$ext WHERE binet_id={$_POST['id']}");
 		$message .= "<commentaire>Modification de {$_POST['nom']} $texte_image effectuée</commentaire>" ;
 	}
 	
@@ -167,6 +170,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 			</choix>
 			<champ id="http" titre="Http" valeur=""/>
+			<champ id="folder" titre="Folder de stockage" valeur=""/>
 			<zonetext id="descript" titre="Description" valeur=""/>
 			<fichier id="file" titre="Ton image de 100x100 px" taille="50000"/>
 			<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="">
@@ -179,8 +183,8 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 	<?
 	$categorie_precedente = -1;
-	$DB_trombino->query("SELECT binet_id,nom,description,http,b.catego_id,categorie,exterieur FROM binets as b LEFT JOIN binets_categorie as c USING(catego_id) WHERE http IS NOT NULL ORDER BY nom ASC");
-	while(list($id,$nom,$descript,$http,$cat_id,$catego,$exterieur) = $DB_trombino->next_row()) {
+	$DB_trombino->query("SELECT binet_id,nom,description,http,b.catego_id,categorie,exterieur,folder FROM binets as b LEFT JOIN binets_categorie as c USING(catego_id) WHERE http IS NOT NULL ORDER BY nom ASC");
+	while(list($id,$nom,$descript,$http,$cat_id,$catego,$exterieur,$folder) = $DB_trombino->next_row()) {
 ?>
 		<formulaire id="binet_web_<? echo $id?>" titre="<? echo $nom?>" action="admin/binets_web.php">
 			<hidden id="id" titre="ID" valeur="<? echo $id?>"/>
@@ -191,6 +195,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 			</choix>
 			<champ id="http" titre="Http" valeur="<? echo $http?>"/>
+			<champ id="folder" titre="Folder de stockage" valeur="<? echo $folder?>"/>
 			<zonetext id="descript" titre="Description" valeur="<? echo stripslashes($descript)?>"/>
 			<image source="binets/?image=1&amp;id=<?=$id?>"/>
 			<fichier id="file" titre="Ton image de 100x100 px" taille="50000"/>

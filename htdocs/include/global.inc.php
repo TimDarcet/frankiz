@@ -24,9 +24,12 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.34  2004/11/08 08:47:57  kikx
+	Pour la gestion online des sites de binets
+
 	Revision 1.33  2004/11/07 00:09:13  pico
 	Include du fichier contenant les fonctions de compression
-
+	
 	Revision 1.32  2004/11/06 15:09:18  pico
 	Correction d'un commit de merde, désolé
 	
@@ -122,7 +125,9 @@ define('AFFICHER_LES_ERREURS',$_SERVER["SERVER_ADDR"] == "129.104.201.52");	// s
 define('BASE_DATA',"/home/frankiz2/data/");				// TODO Gérer le truc proprement.
 define('BASE_PHOTOS',"/home/frankiz2/data/photos/");
 define('BASE_CACHE',"/home/frankiz2/cache/");
+define('BASE_BINETS',BASE_LOCAL."/../binets/");
 define('URL_DATA','http://'.$_SERVER['HTTP_HOST'].'/frankiz2/data/');
+
 
 define('DATA_DIR_LOCAL',BASE_DATA);	// pour compatibilité
 define('DATA_DIR_URL',URL_DATA);
