@@ -111,7 +111,9 @@
 					</p>
 					<br/>
 					<xsl:apply-templates select="formulaire" mode="trombino"/>
-					<xsl:apply-templates select="lien"/>
+					<p class="center">
+						<xsl:apply-templates select="lien"/>
+					</p>
 			</dd>
 			<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 		</dl>
@@ -128,21 +130,6 @@
 	<form class="trombino" enctype="multipart/form-data" method="post">
 		<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 			<div>
-<!--				<p class="droite">
-					<xsl:apply-templates select="champ[@id='surnom']" mode="trombino"/>
-					<xsl:apply-templates select="choix[@id='binet']" mode="trombino"/>
-					<xsl:apply-templates select="champ[@id='casert']" mode="trombino"/>
-				</p>
-				<p class="gauche">
-					<xsl:apply-templates select="champ[@id='prenom']" mode="trombino"/>
-					<xsl:apply-templates select="choix[@id='promo']" mode="trombino"/>
-					<xsl:apply-templates select="champ[@id='loginpoly']" mode="trombino"/>
-				</p>
-				<p class="centre">
-					<xsl:apply-templates select="champ[@id='nom']" mode="trombino"/>
-					<xsl:apply-templates select="choix[@id='section']" mode="trombino"/>
-					<xsl:apply-templates select="champ[@id='phone']" mode="trombino"/>
-				</p>-->
 				<table>
 					<tr>
 						<td><xsl:apply-templates select="champ[@id='prenom']" mode="trombino"/></td>

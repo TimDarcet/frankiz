@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.14  2005/01/20 23:40:57  psycow
+	Modif de compatibilité
+
 	Revision 1.13  2005/01/20 20:33:34  psycow
 	Modif d'IceBlue
-
+	
 	Revision 1.12  2005/01/18 16:07:34  psycow
 	Modif de liens_profil
 	
@@ -80,6 +83,12 @@
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+<xsl:param name="user_nom"/>
+<xsl:param name="user_prenom"/>
+<xsl:param name="date"/>
+<xsl:param name="heure"/>
+
 
 <xsl:include href="html.xsl"/>
 <xsl:include href="form.xsl"/>
@@ -136,6 +145,7 @@
 					<xsl:apply-templates select="module[@id='liens_perso']"/>
 					<xsl:apply-templates select="module[@id='tour_kawa']"/>
 					<xsl:apply-templates select="module[@id='activites']"/>	
+					<xsl:apply-templates select="module[@id='sondages']"/>
 				</div>
 			
 				<div id="droite">

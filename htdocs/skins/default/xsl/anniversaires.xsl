@@ -42,8 +42,8 @@
 			<xsl:attribute name="href">
 		 		trombino.php?anniversaire&amp;promo=<xsl:value-of select="@promo" />
 			</xsl:attribute>
-			<strong><xsl:value-of select="@promo" /> </strong>
-		</a>: 
+			<strong><xsl:value-of select="@promo" /></strong>
+		</a> : 
 	</xsl:if>
  		<xsl:value-of select="@prenom" />
  		<xsl:text> </xsl:text>

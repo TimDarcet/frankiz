@@ -25,7 +25,7 @@
 	<xsl:if test="count(liste/element) !=0">
 		<dl id="tour_kawa" class="boite">
           <dt class="titre">
-            <span class="droitehaut"> </span><span>Tour Kawa</span>
+            <span class="droitehaut"><xsl:text> </xsl:text></span><span>Tour Kawa</span>
           </dt>
 			<dd class="contenu">
 				<ul class="none">

@@ -17,6 +17,17 @@ body
 	font: 0.8em "Arial", helvetica, sans-serif ;
 }
 
+a {
+	color:#84BDE7;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+a:hover {
+	color:white;
+	background-color:#A5D6EF;
+}
+
 /* ################### POSITIONNEMENT ################# */
 
 div#conteneur {
@@ -25,7 +36,7 @@ div#conteneur {
 div#header
 {
 	position:absolute;
-	left:-13px;
+	left:0px;
 	right:0px;
 	height: 259px;
 	background: url('./images/titrebackground.gif') repeat-x left top ;
@@ -33,20 +44,22 @@ div#header
 }
 
 div#contenu {
+	width:98%;
+	margin: 0 auto;
 	position:absolute;
 	top:260px;
+	left:1%;
 	padding:0 0 0 0;
 }
 
 div#gauche {
 	float:left;
 	width:170px;
-	margin-left:15px;
 }
 
 div#centre
 {
-	margin: 0px 200px 0 195px;
+	margin: 0px 200px 0 185px;
 }
 
 div#droite
@@ -57,8 +70,10 @@ div#droite
 
 div#footer
 {
-	position:relative;
-	right:0px;
+	position:absolute;
+	bottom:-30px;
+	left:-1%;
+	right:-1%;
 	clear:both;
 	height:37px;
 	background: url('./images/footer.gif') repeat-x left top ;
@@ -174,8 +189,8 @@ dl#activites div.activite p.image img {
 /* ############# BOITE MODULE CENTER ############### */
 
 div#centre dl.boite {
-	width:98%;
-	margin:0 0 20px 10px;
+	width:100%;
+	margin:0 0 20px 0;
 }
 
 div#centre dl.boite dt.titre {

@@ -30,6 +30,7 @@
 			<form enctype="multipart/form-data" method="post" class="cadretol">
 				<xsl:attribute name="action"><xsl:value-of select="formulaire/@action"/></xsl:attribute>
 				<div class="center">
+					<xsl:apply-templates select="formulaire/hidden"/>
 					<input>
 						<xsl:attribute name="class">champ</xsl:attribute>
 						<xsl:attribute name="name"><xsl:value-of select="formulaire/champ/@id"/></xsl:attribute>
