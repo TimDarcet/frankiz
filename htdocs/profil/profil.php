@@ -24,10 +24,13 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.27  2004/11/22 21:04:54  kikx
+	Pour le debug de Pico
+
 	Revision 1.26  2004/11/22 19:10:39  kikx
 	Mise en place de note pour le profil
 	permet de mieux expliquer comment cela fonctionne
-
+	
 	Revision 1.25  2004/11/22 18:59:31  kikx
 	Pour gérer son site perso
 	
@@ -87,6 +90,8 @@
 
 require_once "../include/global.inc.php";
 demande_authentification(AUTH_MAIL);
+
+
 
 // Récupération d'une image
 if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "true") && ($_REQUEST['image'] != "")){
@@ -255,10 +260,18 @@ if (isset($_POST['up_page'])) {
 		$filename = $chemin.$_FILES['file']['name'];
 		move_uploaded_file($_FILES['file']['tmp_name'], BASE_PAGESPERSOS.$_FILES['file']['name']);
 		unzip(BASE_PAGESPERSOS.$_FILES['file']['name'] , $chemin , true);
-
+		$message .= "<commentaire>Ton site personnel vient d'être mis à jour</commentaire>" ;
 	}
 }
-
+if(isset($_REQUEST['download_type'])){
+	$chemin = BASE_PAGESPERSOS."$login.$promo" ;
+	if (is_dir($chemin)) {
+		download($chemin,$_REQUEST['download_type'],"PERSO-$login.$promo-".time());
+		exit();
+	} else {
+		$message .= "<warning>Tu n'as jamais upoadé de site personnel</warning>" ;
+	}
+}
 
 // Génération du la page XML
 require "../include/page_header.inc.php";
@@ -357,6 +370,15 @@ require "../include/page_header.inc.php";
 	<formulaire id="mod_pageperso" titre="Ton site web" action="profil/profil.php">
 		<note>Tu peux soumettre des .zip, des .tar.gz, .tar, .tar.bz2. Tu remplaceras ainsi l'intégralité de ton site perso. Attention tu es limité à 10Mo.</note>
 		<fichier id="file" titre="Ton site" taille="10000000000"/>
+		<?
+		if (is_dir(BASE_PAGESPERSOS.$login.".".$promo)){
+		?>
+			<note>Nous te conseillons de sauvegarder ton site avant d'uploader le nouveau en cas de problème.</note>
+			<lien titre="Télécharger en .zip" url="profil/profil.php?download_type=zip" />
+			<lien titre="Télécharger en .tar.gz" url="profil/profil.php?download_type=tar.gz" />
+		<?
+		}
+		?>
 		<bouton id="up_page" titre="Upload"/>
 	</formulaire>
 	<?
@@ -376,15 +398,16 @@ require "../include/page_header.inc.php";
 			}
 		}
 	}
-	
-	echo "<h2>Gestion des fichiers du site perso</h2>";
-	
-	echo "<arbre>";
-	echo "<noeud titre=\"/$login.$promo\">" ;
-	
-	$arbo = parcours_arbo1(BASE_PAGESPERSOS.$login.".".$promo);
-	echo "</noeud>" ;
-	echo "</arbre>";
+	if (is_dir(BASE_PAGESPERSOS.$login.".".$promo)){
+		echo "<h2>Gestion des fichiers du site perso</h2>";
+		
+		echo "<arbre>";
+		echo "<noeud titre=\"/$login.$promo\">" ;
+		
+		$arbo = parcours_arbo1(BASE_PAGESPERSOS.$login.".".$promo);
+		echo "</noeud>" ;
+		echo "</arbre>";
+	}
 	?>
 
 </page>
