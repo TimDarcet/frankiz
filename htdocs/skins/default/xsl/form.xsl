@@ -21,9 +21,12 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.6  2004/12/14 23:06:06  schmurtz
+	Ajout du support zonetext grand pour les faqs
+
 	Revision 1.5  2004/12/12 17:45:33  psycow
 	Modification Mineure, pre-test IE: la dernière étape
-
+	
 	Revision 1.4  2004/12/10 14:31:28  psycow
 	Elimination du Bug des Formulaires, etapes suivantes tests sous IE
 	
@@ -146,7 +149,9 @@
 		</xsl:when><xsl:otherwise>
 			<textarea>
 				<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-				<xsl:attribute name="rows">7</xsl:attribute>
+				<xsl:attribute name="rows">
+					<xsl:choose><xsl:when test="@type='grand'">30</xsl:when><xsl:otherwise>7</xsl:otherwise></xsl:choose>
+				</xsl:attribute>
 				<xsl:attribute name="cols">50</xsl:attribute>
 				<xsl:value-of select="text()"/>
 			</textarea>

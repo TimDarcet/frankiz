@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.12  2004/12/14 23:06:06  schmurtz
+		Ajout du support zonetext grand pour les faqs
+
 		Revision 1.11  2004/12/14 22:17:32  kikx
 		Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
-
+		
 		Revision 1.10  2004/12/01 19:28:47  pico
 		Format du wiki: - pour les listes
 		
@@ -357,7 +360,7 @@ if ($id != "") {
 				}
 				print(wikiVersXML($wiki));
 				fclose($texte);
-				if (est_authentifie()) {
+				if (est_authentifie(AUTH_MINIMUM)) {
 					?>
 					<lien url="proposition/faq_modif.php?id=<?=$id?>" titre="Editer"/>
 					<?

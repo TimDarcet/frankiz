@@ -22,8 +22,8 @@
 	
 
 	$Log$
-	Revision 1.2  2004/12/14 23:00:50  kikx
-	Car c'est trop la merde sinon
+	Revision 1.3  2004/12/14 23:06:06  schmurtz
+	Ajout du support zonetext grand pour les faqs
 
 	Revision 1.1  2004/12/14 22:49:53  kikx
 	oups désolé
@@ -189,7 +189,7 @@ $DB_valid->query("UNLOCK TABLES");
 			
 			<formulaire id='modif_faq' titre='Modification' action= 'admin/valid_faqmodif.php'>
 				<note>Modification apportée par <? echo "$prenom $nom ($promo)"?></note>
-				<zonetext titre="FAQ" id='faq_modif'><?=$faq_modif?></zonetext>
+				<zonetext titre="FAQ" id='faq_modif' type="grand"><?=$faq_modif?></zonetext>
 				<bouton id='modif_<?=$id?>' titre="Modifier"/>
 				<bouton id='valid_<?=$id?>' titre='Valider' onClick="return window.confirm('Voulez vous vraiment validé cette modification ?')"/>
 				<bouton id='suppr_<?=$id?>' titre='Supprimer' onClick="return window.confirm('Voulez vous vraiment supprimer cette modification de FAQ ?')"/>

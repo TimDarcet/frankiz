@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.3  2004/12/14 23:06:06  schmurtz
+		Ajout du support zonetext grand pour les faqs
+
 		Revision 1.2  2004/12/14 23:00:50  kikx
 		Car c'est trop la merde sinon
-
+		
 		Revision 1.1  2004/12/14 22:17:32  kikx
 		Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
 		
@@ -121,7 +124,7 @@ if (isset($_REQUEST['valid'])) {
 				</cadre>
 				
 				<formulaire id='modif_faq' titre='Modification' action='proposition/faq_modif.php?id=<?=$id?>'>
-					<zonetext titre="FAQ" id='faq_modif'><?
+					<zonetext titre="FAQ" id='faq_modif' type="grand"><?
 					if (isset($_REQUEST['faq_modif']))
 						print($_POST['faq_modif']);
 					else 

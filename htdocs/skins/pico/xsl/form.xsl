@@ -96,7 +96,9 @@
 		<textarea>
 			<xsl:attribute name="id"><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
 			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-			<xsl:attribute name="rows">7</xsl:attribute>
+			<xsl:attribute name="rows">
+				<xsl:choose><xsl:when test="@type='grand'">30</xsl:when><xsl:otherwise>7</xsl:otherwise></xsl:choose>
+			</xsl:attribute>
 			<xsl:attribute name="cols">50</xsl:attribute>
 			<xsl:value-of select="text()"/>
 		</textarea>
