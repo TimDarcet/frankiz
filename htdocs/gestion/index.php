@@ -4,9 +4,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.1  2004/10/20 21:45:01  kikx
+	Pour que ca soit propre
+
 	Revision 1.25  2004/10/19 19:08:17  kikx
 	Permet a l'administrateur de valider les modification des binets
-
+	
 	Revision 1.24  2004/10/19 18:16:24  kikx
 	hum
 	

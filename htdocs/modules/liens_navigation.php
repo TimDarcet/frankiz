@@ -3,9 +3,12 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.8  2004/10/20 21:45:01  kikx
+	Pour que ca soit propre
+
 	Revision 1.7  2004/10/16 01:50:22  schmurtz
 	Affichage des annonces publiques (exterieure) pour les personnes non authentifiees
-
+	
 	Revision 1.6  2004/10/07 22:52:20  kikx
 	Correction de la page des activites (modules + proposition + administration)
 		rajout de variables globales : DATA_DIR_LOCAL
@@ -40,6 +43,6 @@
 		<lien titre="Trombino" url="trombino/" />
 	<?php endif; ?>
 	<?php if(!empty($_SESSION['user']->perms)): ?>
-		<lien titre="Administration" url="admin/" />
+		<lien titre="Administration" url="gestion/" />
 	<?php endif; ?>
 </module>
