@@ -53,7 +53,7 @@ function rech_fils($id_parent) {
 				echo "<feuille class='foldheader1'>\n\r";		// folder fermé
 			}
 			echo "<a name=\"".$id."\"/>" ;
-			echo "<lien titre='".$nom."' url='xshare/index.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
+			echo "<lien titre='".htmlentities($nom,ENT_QUOTES)."' url='xshare/index.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#".$id."' />" ;
 			if (eregi("/".$id."/",$a_marquer)) {

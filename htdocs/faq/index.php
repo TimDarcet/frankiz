@@ -37,9 +37,9 @@ function rech_fils($idparent) {
 	if (affiche_element_faq($idparent)) {			// on continue l'affichage ssi on demande l'affichage
 
 		if ($idparent!=0) {
-			echo "<ul class='foldinglist'>\n\r" ;
+			echo "<noeud class='foldinglist'>\n\r" ;
 		} else {
-			echo "<ul>\n\r" ;
+			echo "<noeud>\n\r" ;
 		}
 	
 		// affichage des folders et recherche de leurs fils 
@@ -48,20 +48,18 @@ function rech_fils($idparent) {
 		$DB_faq->query("SELECT id,question FROM faq WHERE reponse='' AND idparent='{$idparent}'") ;
 		while(list($id,$question) = $DB_faq->next_row()) {
 			if (affiche_element_faq($id)) {
-				echo "<li class='foldheader2'>\n\r";		// folder open
+				echo "<feuille class='foldheader2'>\n\r";		// folder open
 			} else {
-				echo "<li class='foldheader1'>\n\r";		// folder fermé
+				echo "<feuille class='foldheader1'>\n\r";		// folder fermé
 			}
-			echo "<a name=\"".$id."\"/>" ;
-			echo "<a href='faq/index.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
+			echo "<a  name=\"".$id."\"/>" ;
+			echo "<lien  url='faq/index.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
 			if ($a_marquer != "") echo "&a_marquer=".base64_encode($a_marquer) ;
-			echo "#".$id."'>" ;
-			echo $question ;
-			echo "</a>" ;
+			echo "#".$id."' titre='".htmlentities($question,ENT_QUOTES)."'/>" ;
 			if (eregi("/".$id."/",$a_marquer)) {
-				echo "<img src='./faq_fleche_folder.gif'/>" ;
+				echo "<image source='./faq_fleche_folder.gif'/>" ;
 			}
-			echo "\n\r</li>\n\r " ;
+			echo "\n\r</feuille>\n\r " ;
 			rech_fils($id) ;
 		}
 		
@@ -70,18 +68,16 @@ function rech_fils($idparent) {
 		
 		$DB_faq->query("SELECT id,question FROM faq WHERE reponse!='' AND idparent='{$idparent}'" ) ;
 		while(list($id,$question) = $DB_faq->next_row()) {
-			echo "\n\r<li>\n\r" ;
-			echo "<a href='faq/index.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
+			echo "\n\r<feuille>\n\r" ;
+			echo "<lien  url='faq/index.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
 			if ($a_marquer != "") echo "&a_marquer=".base64_encode($a_marquer) ;
-			echo "#reponse'>" ;
-			echo $question ;
-			echo "</a>" ;
+			echo "#reponse' titre='".htmlentities($question,ENT_QUOTES)."'/>" ;
 			if (eregi("/".$id."/",$a_marquer)) {
-				echo "<img src='./faq_fleche.gif'/>" ;
+				echo "<image source='./faq_fleche.gif'/>" ;
 			}
-			echo "</li>\n\r" ;
+			echo "</feuille>\n\r" ;
 		}
-		echo "</ul>\n\r" ;
+		echo "</noeud>\n\r" ;
 	}
 }
 
@@ -215,7 +211,9 @@ essayer avec d'autres crit&egrave;res
 // simple maintenant
 //----------------------
 
+echo "<arbre>";
 rech_fils(0) ;
+echo "</arbre>";
 }
 echo "<br/>" ;
 
