@@ -21,9 +21,12 @@
 	Page pour demander les sondages !
 	
 	$Log$
+	Revision 1.6  2004/11/17 23:46:21  kikx
+	Prepa pour le votes des sondages
+
 	Revision 1.5  2004/11/17 13:32:18  kikx
 	Mise en place du lien pour l'admin
-
+	
 	Revision 1.4  2004/11/17 13:27:06  kikx
 	Mise ne place d'un titre dan sles sondages
 	
@@ -56,10 +59,8 @@ if (isset($_REQUEST['contenu_form']))
 else
 	$contenu_form="" ;
 	
-if (isset($_REQUEST['titre']))
-	$titre=$_REQUEST['titre'] ;
-else
-	$titre="" ;
+
+$titre_sondage="" ;
 	
 $erreur = 0 ;
 	
@@ -101,12 +102,13 @@ if (isset($_POST['ok_check'])) {
 	if ($_POST['reponse5']!="") $contenu_form .= "///".$_POST['reponse5'] ;
 	if ($_POST['reponse6']!="") $contenu_form .= "///".$_POST['reponse6'] ;
 }
-
+if (isset($_POST['titre_sondage']))
+	$titre_sondage=$_POST['titre_sondage'] ;
 
 if (isset($_POST['valid'])) {
-	if ($titre!="") {
+	if ($titre_sondage!="") {
 
-		$DB_valid->query("INSERT INTO valid_sondages SET eleve_id =".$_SESSION['user']->uid.", questions='$contenu_form', titre='$titre', perime=FROM_UNIXTIME({$_POST['date']})") ;
+		$DB_valid->query("INSERT INTO valid_sondages SET eleve_id =".$_SESSION['user']->uid.", questions='$contenu_form', titre='$titre_sondage', perime=FROM_UNIXTIME({$_POST['date']})") ;
 		
 		$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
 	
@@ -141,6 +143,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="propoz_sondage" titre="Frankiz : Propose un sondage">
 <h1>Proposition de sondage</h1>
 <?
+
 if ((isset($_POST['valid']))&&($erreur==0)) {
 ?>
 	<commentaire>
@@ -151,7 +154,7 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 	</commentaire>
 	
 	
-	<formulaire id="form" titre="<?=$titre?>">	
+	<formulaire id="form" titre="<?=$titre_sondage?>">	
 <?
 	decode_sondage($contenu_form) ;
 ?>
@@ -169,7 +172,7 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 ?>
 <formulaire id="form" titre="Aperçu de ton sondage">	
 	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-	<hidden id="titre" valeur="<?=$titre?>"/>
+	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
 
 <?
 	decode_sondage($contenu_form) ;
@@ -188,33 +191,33 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 
 </formulaire>
 
-<formulaire id="ajout_titre" titre="OBLIGATOIRE : le titre du sondage" action="proposition/sondage.php">
+<formulaire id="ajout_titre" titre="OBLIGATOIRE: le titre du sondage" action="proposition/sondage.php">
 	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-	<champ id="titre" titre="Titre" valeur="<?=$titre?>"/>
+	<champ id="titre_sondage" titre="Titre" valeur="<?=$titre_sondage?>"/>
 	<bouton titre="Mettre à jour le titre" id="ok_titre" />
 </formulaire>	
 
 
 <formulaire id="ajout_simple" titre="Rajoute une explication" action="proposition/sondage.php">
-	<hidden id="titre" valeur="<?=$titre?>"/>
+	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
 	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
 	<zonetext id="explication" titre="Explication" valeur=""/>
 	<bouton titre="Ajouter" id="ok_expli" />
 </formulaire>
 <formulaire id="ajout_champ" titre="Rajoute une question de type 'champ'" action="proposition/sondage.php">
-	<hidden id="titre" valeur="<?=$titre?>"/>
+	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
 	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
 	<champ id="question" titre="Question" valeur=""/>
 	<bouton titre="Ajouter" id="ok_champ" />
 </formulaire>
 <formulaire id="ajout_champ" titre="Rajoute une question de type 'textarea'" action="proposition/sondage.php">	
-	<hidden id="titre" valeur="<?=$titre?>"/>
+	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
 	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
 	<champ id="question" titre="Question" valeur=""/>
 	<bouton titre="Ajouter" id="ok_text" />
 </formulaire>
 <formulaire id="ajout_champ" titre="Rajoute une question de type 'radio'" action="proposition/sondage.php">	
-	<hidden id="titre" valeur="<?=$titre?>"/>
+	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
 	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
 	<champ id="question" titre="Question" valeur=""/>
 	<textsimple titre="Maintenant rajouter les réponses possibles"/>
@@ -228,7 +231,7 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 	<bouton titre="Ajouter" id="ok_radio" />
 </formulaire>
 <formulaire id="ajout_champ" titre="Rajoute une question de type 'checkbox'" action="proposition/sondage.php">	
-	<hidden id="titre" valeur="<?=$titre?>"/>
+	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
 	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
 	<champ id="question" titre="Question" valeur=""/>
 	<textsimple titre="Maintenant rajouter les réponses possibles"/>
@@ -242,7 +245,7 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 	<bouton titre="Ajouter" id="ok_check" />
 </formulaire>
 <formulaire id="ajout_champ" titre="Rajoute une question de type 'liste déroulante'" action="proposition/sondage.php">	
-	<hidden id="titre" valeur="<?=$titre?>"/>
+	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
 	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
 	<champ id="question" titre="Question" valeur=""/>
 	<textsimple titre="Maintenant rajouter les réponses possibles"/>

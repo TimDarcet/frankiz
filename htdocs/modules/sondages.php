@@ -21,9 +21,12 @@
 	Affichage des liens vers les sondages
 
 	$Log$
+	Revision 1.2  2004/11/17 23:46:21  kikx
+	Prepa pour le votes des sondages
+
 	Revision 1.1  2004/11/17 22:19:15  kikx
 	Pour avoir un module sondage
-
+	
 
 */
 
@@ -40,12 +43,12 @@ if(est_authentifie(AUTH_MINIMUM)) {
 		}
 		
 		echo "<p>Anciens</p>" ;
-		$DB_web->query("SELECT sondage_id,titre,perime FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) <0 AND TO_DAYS(date) - TO_DAYS(NOW()) >=-7");
+		$DB_web->query("SELECT sondage_id,titre,perime FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) <0 AND TO_DAYS(perime) - TO_DAYS(NOW()) >=-7");
 		while(list($id,$titre,$date) = $DB_web->next_row()) {
-			echo "<lien id='sondage_ancien' titre='$titre (".date("d/m",strtotime($date)).")' lien='".BASE_URL."/sondage.php?id=$id'/>\n";
+			echo "<lien id='sondage_ancien' titre='$titre (".date("d/m",strtotime($date)).")' url='".BASE_URL."/sondage.php?id=$id'/>\n";
 		}
 		
-		cache_sauver('anniversaires');
+		cache_sauver('sondages');
 	}
 
 	echo "</module>\n";
