@@ -52,11 +52,18 @@
 </xsl:template>
 
 <xsl:template match="module[@id='liens_navigation']">
-	<ul id="menu">
-		<li id="top"></li>
-		<xsl:apply-templates select="lien" mode="liste"/>
-		<li id="bottom"></li>
-	</ul>
+	<dl id="menu">
+		<dt class="titre">
+			<span class="droitehaut"><xsl:text> </xsl:text></span>
+			<span><xsl:value-of select="@titre"/></span>	
+		</dt>
+		<dd class="contenu">
+			<ul id="menu">
+				<xsl:apply-templates select="lien" mode="liste"/>
+			</ul>
+		</dd>
+		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
+	</dl>
 </xsl:template>
 
 <xsl:template match="lien" mode="liste">

@@ -180,7 +180,6 @@ dl.boite dd.contenu {
 }
 
 dl.boite dd.bas {
-	clear:both;
 	height: 9px;
 	background: #fff url('./images/cadre-bas.gif') top left no-repeat;
 	border: 0 none;
@@ -238,6 +237,9 @@ dl.cadrecote dd.bas {
 	border: 0 none; 
 }
 
+span.tour_kawa {
+	padding-left:20px;
+}
 
 /* ################## PARAGRAPHE ################# */
 
@@ -439,50 +441,53 @@ dd.lien {
 
 /* ################# MENU/LISTE ####################*/
 
-ul#menu, ul#ecole, ul#contacts,ul.none, ul{
+ul#menu, ul#ecole, ul#contacts,ul.none, ul#services, ul#serveurs,ul{
 	list-style-type: none ;
 }
 
 /* ------- Le menu de gauche ---------*/
 
-
+dl#menu {
+	width: 115px; 
+	margin: 0;
+}
+dl#menu dt.titre {
+	height: 13px !important;
+	background: url('./images/top.png') no-repeat bottom left;
+}
+dl#menu dt.titre span {
+	display:none;
+}
+dl#menu dd.contenu {
+	margin:0px;
+	padding:0;
+}
+dl#menu dd.bas {
+	height: 10px !important;
+	background: url('./images/bottom.png') no-repeat top left;
+}
+dl#menu dd.bas span.droitebas {
+	display:none;
+}
+dl#menu dt.titre span.droitehaut {
+	display:none;
+}
 ul#menu li {
 	margin:0;
 	padding:0;
 	margin-top:0px !important;
 	margin-top:-4px;
 }
-
-ul#menu li a
-{
+ul#menu li a {
 	display:block;
 	width: 115px ;
 	height:32px;
-
 }
-
-
-ul#menu li a span
-{
+ul#menu li a span {
 	display:none;
 }
+
 /*  different elements du menu avec le RollOver  */
-
-ul#menu li#top {
-	margin-top:0px !important;
-	display:block;
-	width: 115px ;
-	height:8px;
-	background: url('./images/top.png') no-repeat 0 0;
-}
-
-
-ul#menu li#bottom {
-	display:block;
-	width: 115px ;
-	height:10px;
-	background: url('./images/bottom.png') no-repeat 0 0 ;
-}
 
 ul#menu li#annonces a 
 {

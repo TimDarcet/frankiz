@@ -29,24 +29,24 @@
 				<span>Joyeux anniversaire: </span>	
 			</dt>
 			<dd class="contenu">
-				2002: 
-				<xsl:for-each select="eleve[@promo='2002']">
-					<xsl:value-of select="@prenom" />
-					<xsl:text> </xsl:text>
-					<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
-					<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
-				</xsl:for-each>
-				<br />
-				2003: 
-				<xsl:for-each select="eleve[@promo='2003']">
-					<xsl:value-of select="@prenom" />
-					<xsl:text> </xsl:text>
-					<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
-					<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
-				</xsl:for-each>
+				<xsl:apply-templates select="eleve" mode="anniversaire"/>
 			</dd>
 			<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>		</dl>
 	</xsl:if>
+</xsl:template>
+
+<xsl:template match="eleve" mode="anniversaire">
+	<xsl:if test="preceding-sibling::eleve[1]/@promo != @promo or position() = 1">
+		<xsl:if test="position()!=1"><br/></xsl:if>
+		<strong><xsl:value-of select="@promo" /> : </strong>
+	</xsl:if>
+	<a>
+		<xsl:attribute name="href">mailto:<xsl:value-of select="@mail"/></xsl:attribute>
+		<xsl:value-of select="@prenom" />
+		<xsl:text> </xsl:text>
+		<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
+	</a>
+	<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>

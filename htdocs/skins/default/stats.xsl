@@ -22,35 +22,48 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="module[@id='stats']">
-		<div class="fkz_titre">État des serveurs :</div>
-		<div class="fkz_module">
-		<ul class="fkz_stats">
-		<xsl:for-each select="statistiques/serveur">
-			<li class="fkz_stats">
-				<xsl:value-of select="@nom"/>
-				<xsl:text> </xsl:text>
-				<span>
-					<xsl:attribute name="class">serveur_<xsl:value-of select="@etat"/></xsl:attribute>[<xsl:value-of select="@etat"/>]
-				</span>
-			<xsl:if test="boolean(@uptime)">: <xsl:value-of select="@uptime"/> jours</xsl:if>
-			</li>
-		</xsl:for-each>
-		</ul>
-		</div>
-		
-		<div class="fkz_titre">Statistiques :</div>
-		<div class="fkz_module">
-		<ul class="fkz_stats">
-		<xsl:for-each select="statistiques/service">
-			<li class="fkz_stats">
-			<a>
-				<xsl:attribute name="href"><xsl:value-of select="@stat"/></xsl:attribute>
-				<xsl:value-of select="@nom"/>
-			</a>
-			</li>
-		</xsl:for-each>
-		</ul>
-		</div>
+	<xsl:if test="boolean(statistiques/serveur)">
+		<dl class="boite">
+			<dt class="titre">
+				<span class="droitehaut"><xsl:text> </xsl:text></span>
+				<span>Etat des Serveurs</span>	
+			</dt>
+			<dd  class="contenu">
+				<ul class="serveurs">
+					<xsl:for-each select="statistiques/serveur">
+						<li>
+							<xsl:value-of select="@nom"/>
+							<xsl:text> </xsl:text>
+							<span>
+								<xsl:attribute name="class">serveur_<xsl:value-of select="@etat"/></xsl:attribute>[<xsl:value-of select="@etat"/>]
+							</span>
+							<xsl:if test="boolean(@uptime)">: <xsl:value-of select="@uptime"/> jours</xsl:if>
+						</li>
+					</xsl:for-each>
+				</ul>
+			</dd>
+			<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
+		</dl>
+	</xsl:if>
+	<dl class="boite">
+		<dt class="titre">
+			<span class="droitehaut"><xsl:text> </xsl:text></span>
+			<span>Statistiques :</span>	
+		</dt>
+		<dd class="contenu">
+			<ul class="services">
+				<xsl:for-each select="statistiques/service">
+					<li>
+						<a>
+							<xsl:attribute name="href"><xsl:value-of select="@stat"/></xsl:attribute>
+							<xsl:value-of select="@nom"/>
+						</a>
+					</li>
+				</xsl:for-each>
+			</ul>
+		</dd>
+		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
+	</dl>
 </xsl:template>
 
 

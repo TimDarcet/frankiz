@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.9  2004/11/13 05:26:18  psycow
+	Commit de sauvegarde, modification du menu, correction de bug d'affichage
+
 	Revision 1.8  2004/11/12 00:23:04  psycow
 	Modification du trombi, gestion graphique des formulaires; c'est pas trop mal on touche a la fin
-
+	
 	Revision 1.7  2004/11/08 12:00:37  psycow
 	Grosse Modification du WE
 	
@@ -58,11 +61,9 @@
 <xsl:include href="trombino.xsl"/>
 <xsl:include href="binets.xsl"/>
 <xsl:include href="voca.xsl"/>
-<!--
-
-<xsl:include href="skins.xsl"/>
-<xsl:include href="activites.xsl"/>
 <xsl:include href="stats.xsl"/>
+<!--
+<xsl:include href="activites.xsl"/>
 -->
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -93,7 +94,7 @@
 		
 			<div id="gauche">
 				<xsl:apply-templates select="/frankiz/module[@id='liens_navigation']" />
-				<xsl:apply-templates select="module[@id='tours_kawa']"/>
+				<xsl:apply-templates select="module[@id='tour_kawa']"/>
 				<xsl:apply-templates select="module[@id='meteo']"/>
 			</div>
 
@@ -129,7 +130,8 @@
 							<xsl:text>Retour en haut</xsl:text>
 						</xsl:attribute>
 						<span>Retour en Haut</span>
-					</a>				</h5>
+					</a>
+				</h5>
 			</div>
 		</div><!--fin #conteneur -->
 		

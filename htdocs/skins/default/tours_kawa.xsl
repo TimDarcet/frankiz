@@ -21,30 +21,22 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:template match="module[@id='tours_kawa']">
-  <xsl:if test="count(element) !=0">
-	<dl class="cadrecote">
-		<dt class="top"><xsl:text> </xsl:text></dt>
-		<dd class="milieu">
-			<p class="titre">Tour Kawa</p>
-			<ul class="none">
-			  <xsl:for-each select="element">
-			    <xsl:if test="@nom = '1'">
-			      <li><strong><xsl:text>Aujourd'hui: </xsl:text></strong>
-			      <xsl:value-of select="current()"/>
-     				</li>
-    			    </xsl:if>
-			    <xsl:if test="@nom = '2'">
-      			<li><strong><xsl:text>Demain: </xsl:text></strong>
-      			<xsl:value-of select="current()"/>    
-     			 	</li>
-    			    </xsl:if>  
-  			   </xsl:for-each>
-			</ul>
-		</dd>
-		<dd class="bas"></dd>
-	</dl>
-  </xsl:if>
+<xsl:template match="module[@id='tour_kawa']">
+	<xsl:if test="count(liste/element) !=0">
+		<dl class="cadrecote">
+			<dt class="top"><xsl:text> </xsl:text></dt>
+			<dd class="milieu">
+				<p class="titre">Tour Kawa</p>
+				<ul class="none">
+				<xsl:for-each select="liste/element">
+					<li><strong><xsl:value-of select="colonne[@id='jour']"/>: </strong>
+					<span class="tour_kawa"><xsl:value-of select="colonne[@id='kawa']"/></span></li>
+				</xsl:for-each>
+				</ul>
+			</dd>
+			<dd class="bas"></dd>
+		</dl>
+	</xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>
