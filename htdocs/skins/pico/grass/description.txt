@@ -1,1 +1,1 @@
-CSS inspirée de la skin Elastic Lawn de csszengarden
+Inspirée de la skin Elastic Lawn de csszengarden (non compatible IE)
