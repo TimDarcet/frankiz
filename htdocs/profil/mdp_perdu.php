@@ -21,9 +21,12 @@
 	Gestion de la création d'un compte et de la perte de mot de passe.
 	
 	$Log$
+	Revision 1.23  2005/04/06 06:46:51  pico
+	COrrection mail ouverture de compte
+
 	Revision 1.22  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
-
+	
 	Revision 1.21  2004/12/16 17:26:10  schmurtz
 	Ajout d'un exemple pour login.promo, ca evitera les dupond.x2002.
 	
@@ -95,9 +98,9 @@ if(!empty($_REQUEST['loginpoly'])) {
 				Pour te connecter sur Frankiz, il te suffit de cliquer sur le".
 				   "lien ci-dessous :<br/>\n\n".
 				   "<a href=\"".
-				   "http://".$_SERVER['SERVER_NAME'].$tempo[0]."profil/profil.php?uid=${id}&hash=${hash}".
+				   BASE_URL."/profil/profil.php?uid=${id}&hash=${hash}".
 				   "\">".
-				   "http://".$_SERVER['SERVER_NAME'].$tempo[0]."profil/profil.php?uid=${id}&hash=${hash}".
+				   BASE_URL."/profil/profil.php?uid=${id}&hash=${hash}".
 				   "</a>\n\n".
 				   "N'oublie pas ensuite de modifier ton mot de passe.<br><br> Très cordialement<br>Le BR";
 		if (($mail=="")||($mail=="NULL")) $mail = $login."@poly.polytechnique.fr" ;
