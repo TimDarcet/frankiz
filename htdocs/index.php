@@ -21,9 +21,12 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.12  2004/11/24 13:38:34  kikx
+	Changment de l'id de la page d'annonce en annonces pour les skinneurs
+
 	Revision 1.11  2004/11/24 13:32:23  kikx
 	Passage des annonces en wiki !
-
+	
 	Revision 1.10  2004/10/25 19:41:58  kikx
 	Rend clair la page d'accueil et les annonces
 	
@@ -49,7 +52,7 @@ function get_categorie($en_haut,$stamp,$perime) {
 
 // génération de la page
 require "include/page_header.inc.php";
-echo "<page id='accueil' titre='Frankiz : accueil'>\n";
+echo "<page id='annonces' titre='Frankiz : annonces'>\n";
 ?>
 
 <h2>Bienvenue sur Frankiz</h2>
