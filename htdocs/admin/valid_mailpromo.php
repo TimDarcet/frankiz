@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.33  2005/02/17 09:56:37  dei
+	pour que le titre apparaisse dans les logs : $_POST...
+
 	Revision 1.32  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
-
+	
 	Revision 1.31  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
 	
@@ -174,7 +177,7 @@ foreach ($_POST AS $keys => $val){
 			list($eleve_id) = $DB_valid->next_row() ;
 			
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," accepté le mail promo '{$POST['titre']}' ") ;
+			log_admin($_SESSION['user']->uid," accepté le mail promo '{$_POST['titre']}' ") ;
 			
 			// envoi du mail
 			$contenu = 	"Ton mail promo a été validé par le BR<br><br>".
@@ -203,7 +206,7 @@ foreach ($_POST AS $keys => $val){
 
 			list($eleve_id) = $DB_valid->next_row() ;
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," refusé le mail promo '{$POST['titre']}' ") ;
+			log_admin($_SESSION['user']->uid," refusé le mail promo '{$_POST['titre']}' ") ;
 			// envoi du mail
 			$contenu = 	"Ton mail promo n'a pas été validé par le BR pour la raison suivante<br>".
 						$_POST['refus']."<br><br>".
