@@ -22,9 +22,12 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.7  2004/12/17 12:45:50  pico
+	Mal prez
+
 	Revision 1.6  2004/12/16 16:54:58  schmurtz
 	Installation du lien symbolique config.php -> config.php.prod sur frankiz
-
+	
 	Revision 1.5  2004/12/16 16:45:14  schmurtz
 	Correction d'un bug dans la gestion des authentifications par cookies
 	Ajout de fonctionnalitees de log d'erreur de connections ou lors des bugs
@@ -84,7 +87,7 @@ define('MAIL_WEBMESTRE',"web@frankiz.polytechnique.fr");
 define('WEBMESTRE_ID',$i--);
 define('MAIL_QDJMASTER',"qdj@frankiz.polytechnique.fr");
 define('QDJMASTER_ID',$i--);
-define('MAIL_PREZ',"prez@frankiz.polytechnique.fr,root@frankiz.polytechnique.fr");
+define('MAIL_PREZ',"prez@frankiz.polytechnique.fr");
 define('PREZ_ID',$i--);
 define('MAIL_ROOT',"root@frankiz.polytechnique.fr");
 define('ROOT_ID',$i--);
