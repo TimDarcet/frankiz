@@ -3,9 +3,12 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.10  2004/10/13 21:21:14  kikx
+	Le rend opérationnel
+
 	Revision 1.9  2004/10/13 21:19:52  kikx
 	Rajout de bug fix
-
+	
 	Revision 1.8  2004/10/13 20:45:16  kikx
 	Mises en place de log pour l'envoie des mail promos
 	
@@ -198,18 +201,18 @@ foreach ($_POST AS $keys => $val){
 		exec("echo \"".$texte."\" >>".$fich_log) ;
 		
 		while(list($login) = $DB_trombino->next_row() ) {
-//			$mail_envoie = $login."@poly" ;
-			$mail_envoie = "gruson@poly" ;
+			$mail_envoie = $login."@poly" ;
+			//$mail_envoie = "gruson@poly" ;
 			
 					
 			if (mail($mail_envoie, $titre_mail." ".$_POST['titre'],$texte , $headers)){
 				$cnt ++ ;
-				exec("echo \"Mail envoyé à ".$mail_envoie."\" >>".$fich_log) ;
+				exec("echo \"Mail envoyé à ".$mail_envoie."\n\" >>".$fich_log) ;
  				usleep(200000); // Attends 200 millisecondes
 			} else {
 				$log .= "Erreur lors de l'envoi vers ".$mail ;
 			}
-			if ($cnt==1) break ;//================= A SUPPRIMER
+//			if ($cnt==1) break ;//================= A SUPPRIMER
 		}
 		echo $log ;
 		echo "</p><p> Nb de mail envoyé avec succès : ".$cnt."</p>" ;
