@@ -22,7 +22,7 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$nom,$prenom)=mysql_fetch
 	<annonce titre="<?php echo $titre ?>" 
 			categorie="<?php echo get_categorie($en_haut, $stamp, $perime) ?>"
 			auteur="<?php echo "$prenom $nom" ?>"
-			date="<?php echo substr($stamp,6,2)."/".substr($stamp,4,2)."/".substr($stamp,0,4) ?>">
+			date="<?php echo substr($stamp,8,2)."/".substr($stamp,5,2)."/".substr($stamp,0,4) ?>">
 		<?php echo afficher_identifiant($contenu) ?>
 	</annonce>
 <?php }
