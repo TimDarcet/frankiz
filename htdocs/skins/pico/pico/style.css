@@ -110,41 +110,47 @@ span#contacts_logo,span#liens_ecole_logo,span#meteo_logo,span#stats_logo,span#se
  
 /* QDJ */
 
+
 .fkz_qdj_question {
     font-size: 11pt;
-    text-align: center;   
+    text-align: center;
+    width: 99%;
+    /*border: 1px solid black ; SUPP*/
 }
 
-.fkz_qdj_jone, .fkz_qdj_rouje,.fkz_qdj_jone_reponse,.fkz_qdj_rouje_reponse{
-	background-repeat:no-repeat;
+.fkz_qdj_jone, div.fkz_qdj_rouje, div.fkz_qdj_jone_reponse, div.fkz_qdj_rouje_reponse{
+	/*background-repeat:no-repeat;
 	background-position: center center;
-	height:60px;
+	height:60px;*/
 	text-align: center;
-	width: 49%;
+	width: 48%;
+	/*border: 1px solid black ; SUPP*/
 }
 
 .fkz_qdj_jone {
-	background-image:url("../default/pointjone.gif");
+	/*background-image:url("images/pointjone.gif");*/
 	float: right;
 }
 
 .fkz_qdj_rouje {
-	background-image:url("../default/pointrouje.gif");
+	/*background-image:url("images/pointrouje.gif");*/
 	float: left;
 }
 
 
-.fkz_qdj_jone a{
+.fkz_qdj_jone a {
 	color: red;
+	font-weight: bold;
 }
 
-.fkz_qdj_rouje a{
-	color: yellow;
+.fkz_qdj_rouje a {
+	color: #FFBB00;
+	font-weight: bold;
 }
 
 
 .fkz_qdj_jone_reponse {
-	color: yellow;
+	color: #FFBB00;
 	float: right;
 }
 
@@ -308,9 +314,9 @@ span.valid_css {
 }
 
 /* FAQ et Xshare */
-.noeud_ferme{list-style-image:url('../default/fold_close.gif')}
-.noeud_ouvert{list-style-image:url('../default/fold_open.gif')}
-.feuille{list-style-image:url('../default/question.gif')}
+.noeud_ferme{list-style-image:url('../default/images/fold_close.gif')}
+.noeud_ouvert{list-style-image:url('../default/images/fold_open.gif')}
+.feuille{list-style-image:url('../default/images/question.gif')}
 
 /* Commentaires et Warning */
 
