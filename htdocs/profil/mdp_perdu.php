@@ -21,10 +21,13 @@
 	Gestion de la création d'un compte et de la perte de mot de passe.
 	
 	$Log$
+	Revision 1.19  2004/11/25 01:42:38  kikx
+	Truc tout moche pour corriger le probleme de l'affichage du lien administration alors que l'on est pas administrateur
+
 	Revision 1.18  2004/11/24 22:56:18  schmurtz
 	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
 	globale pour tous les fichiers.
-
+	
 	Revision 1.17  2004/11/03 17:23:43  pico
 	Remise en forme du mail html
 	
@@ -54,8 +57,15 @@ require_once "../include/mail.inc.php";
 $mail_envoye = false;
 
 if(!empty($_REQUEST['loginpoly'])) {
+	$temp = explode(".",$_REQUEST['loginpoly']) ;
+	$login = $temp[0] ;
+	if (count($temp)==2) 
+		$promo=$temp[1] ;
+	else
+		$promo="" ;
+		
 	$DB_trombino->query("SELECT eleve_id,login,prenom,nom,promo,mail FROM eleves "
-						   ."WHERE login='".$_REQUEST['loginpoly']."' ORDER BY promo DESC LIMIT 1");
+						   ."WHERE login='$login' AND promo='$promo' ORDER BY promo DESC LIMIT 1");
 	if($DB_trombino->num_rows() == 1) {
 		list($id,$login,$prenom,$nom,$promo,$mail) = $DB_trombino->next_row();
 		$hash = nouveau_hash();
@@ -72,14 +82,15 @@ if(!empty($_REQUEST['loginpoly'])) {
 		
 		// Envoie le mail contenant l'url avec le hash
 		$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
-		$contenu = "Pour te connecter sur Frankiz, il te suffit de cliquer sur le<br/>\n".
+		$contenu = "<b>Bonjour</b><br>
+				Pour te connecter sur Frankiz, il te suffit de cliquer sur le".
 				   "lien ci-dessous :<br/>\n\n".
-				   "<blockquote>\t[ <a href=\"".
+				   "<a href=\"".
 				   "http://".$_SERVER['SERVER_NAME'].$tempo[0]."profil/profil.php?uid=${id}&hash=${hash}".
 				   "\">".
 				   "http://".$_SERVER['SERVER_NAME'].$tempo[0]."profil/profil.php?uid=${id}&hash=${hash}".
-				   "</a> ]</blockquote>\n\n".
-				   "N'oublie pas ensuite de modifier ton mot de passe.";
+				   "</a>\n\n".
+				   "N'oublie pas ensuite de modifier ton mot de passe.<br><br> Très sincèrement<br>Le BRs";
 		if (($mail=="")||($mail=="NULL")) $mail = $login."@poly.polytechnique.fr" ;
 		
 		couriel($id,"[Frankiz] Création de compte/perte de mot de passe",$contenu);
@@ -95,18 +106,18 @@ require "../include/page_header.inc.php";
 echo "<page id='mdp_perdu' titre='Frankiz : creation de compte/perte de mot de passe'>\n";
 
 if($mail_envoye) { ?>
-	<p>Le mail a été envoyé avec succès à l'adresse <?php echo $mail?>.
+	<commentaire>Le mail a été envoyé avec succès à l'adresse <?php echo $mail?>.
 	Il te permettra de te connecter une fois au site web Frankiz pour changer ton mot de passe
-	ou choisir ton mot de passe si tu n'en a pas encore défini un.</p>
+	ou choisir ton mot de passe si tu n'en a pas encore défini un.</commentaire>
 	
 <?php } else { ?>
-	<?php if(a_erreur(ERR_LOGINPOLY)) echo "<p>Le login que tu a donné n'existe pas.</p>\n"?>
+	<?php if(a_erreur(ERR_LOGINPOLY)) echo "<warning>Le login que tu a donné n'existe pas.</warning>\n"?>
 	<formulaire id="mdp_perdu" titre="Perte de mot de passe/ouverture de compte" action="profil/mdp_perdu.php">
-		<commentaire>Si tu souhaites créer ton compte Frankiz, ou si tu as perdu ton mot de passe, entre ton
-		login poly dans le champs si dessous. Tu receveras dans les minutes qui suivent un mail
+		<note>Si tu souhaites créer ton compte Frankiz, ou si tu as perdu ton mot de passe, entre ton
+		loginpoly.promo dans le champs si dessous. Tu receveras dans les minutes qui suivent un mail
 		te permettant d'accéder à la partie réservée de Frankiz. Une fois authentifié grâce
-		au lien contenu dans le mail, n'oublie pas de changer ton mot de passe.</commentaire>
-		<champ id="loginpoly" titre="Login poly" valeur=""/>
+		au lien contenu dans le mail, n'oublie pas de changer ton mot de passe.</note>
+		<champ id="loginpoly" titre="login.promo" valeur=""/>
 		<bouton id="valider" titre="Valider"/>
 	</formulaire>
 <?php }

@@ -21,9 +21,12 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.22  2004/11/25 01:42:38  kikx
+	Truc tout moche pour corriger le probleme de l'affichage du lien administration alors que l'on est pas administrateur
+
 	Revision 1.21  2004/11/25 00:20:39  schmurtz
 	Parce que faq ne prend pas d's dans ce cas.
-
+	
 	Revision 1.20  2004/11/25 00:10:31  schmurtz
 	Suppression des dossiers ne contenant qu'un unique fichier index.php
 	
@@ -93,21 +96,19 @@
 		<lien id="skins" titre="Skins" url="profil/skin.php" key="s"/>
 		
 	<?php else: ?>
-		<lien id="connect" titre="Se connecter" url="login.php" key="l"/>			
+		<lien id="connect" titre="Se connecter" url="login.php" key="l"/>
 	<?php endif; ?>
 	<lien id="meteo" titre="Météo" url="meteo.php" key="m"/>
-	<!--<lien id="infobr" titre="InfoBr" url="documentation/InfoBR.pdf" />
-	<lien id="doc" titre="Docs/Manuels" url="documentation/" />-->
 	<lien id="faq" titre="FAQ" url="faq.php" key="f"/>
 	<lien id="xshare" titre="XShare" url="xshare.php" key="x"/>
 	<lien id="binets"  titre="Binets" url="binets.php" key="b"/>
-	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
+	<?php if(est_authentifie(AUTH_MINIMUM)){ ?>
 		<lien id="trombino" titre="Trombino" url="trombino.php" key="t"/>
-	<?php endif; ?>
-	<?php if(!empty($_SESSION['user']->perms)): ?>
+	<?php } ?>
+	<?php if ((count($_SESSION['user']->perms)>1)&&($_SESSION['user']->perms[0]!="")) { ?>
 		<lien id="admin" titre="Administration" url="gestion/" key="g"/>
-	<?php endif; ?>
-	<lien id="siteseleves" titre="Sites Eleves" url="siteseleves.php"/>	
-	<lien id="vocab" titre="Vocabulaire" url="vocabulaire.php" key="v"/>			
+	<?php } ?>
+	<lien id="siteseleves" titre="Sites Eleves" url="siteseleves.php"/>
+	<lien id="vocab" titre="Vocabulaire" url="vocabulaire.php" key="v"/>
 
 </module>
