@@ -34,9 +34,16 @@ $bleu_clair = ImageColorAllocate ($im, 95, 160, 240);
 
 
 // on dessine un trait horizontal pour représenter l'axe du temps     
-ImageLine ($im, 20, $hauteur-40, $largeur-15, $hauteur-40, $noir);
+$i=0;
+while($i<$max_os){
+	$hauteurImageRectangle = ceil((($i*($hauteur-60))/$max_os));
+	ImageLine ($im, 10, $hauteur-$hauteurImageRectangle-40, $largeur-1, $hauteur-$hauteurImageRectangle-40, $noir);
+	imagestringup($im, 0, 0,$hauteur-$hauteurImageRectangle-40, $i, $noir);
+	$i+=100;
+}
+
 // on dessine un trait vertical pour représenter le nombre de pages vues
-ImageLine ($im, 20, 30, 20, $hauteur-40, $noir);
+ImageLine ($im, 10, 30, 10, $hauteur-40, $noir);
 
 // on affiche les legendes sur les deux axes ainsi que différents textes (note : pour que le script trouve la police verdana, vous devrez placer la police verdana dans un repertoire /fonts/)
 imagestring($im, 4, $largeur-70, $hauteur-20, "Heure", $noir);
@@ -48,18 +55,18 @@ $i=0;
 foreach ($os as $nom => $nombre) {
 		$i++;
 		// on calcule la hauteur du baton
-		$hauteurImageRectangle = ceil((($nombre*($hauteur-50))/$max_os));
-		ImageFilledRectangle ($im, $i*$largeur/(count($os)+1), $hauteur-$hauteurImageRectangle+2, ($i+1)*$largeur/(count($os)+1), $hauteur-41-1, $bleu_clair);
-		Imagerectangle ($im, $i*$largeur/(count($os)+1), $hauteur-$hauteurImageRectangle+2, ($i+1)*$largeur/(count($os)+1), $hauteur-41, $noir);
+		$hauteurImageRectangle = ceil((($nombre*($hauteur-60))/$max_os));
+		ImageFilledRectangle ($im, 10+$i*($largeur-10)/(count($os)+1), $hauteur-$hauteurImageRectangle+2-40, 10+($i+1)*($largeur-10)/(count($os)+1), $hauteur-41-1, $bleu_clair);
+		Imagerectangle ($im, 10+$i*($largeur-10)/(count($os)+1), $hauteur-$hauteurImageRectangle+2-40, 10+($i+1)*($largeur-10)/(count($os)+1), $hauteur-41, $noir);
 }
 
 $i=0;
 foreach ($os as $nom => $nombre) {
 	$i++;
 	if(substr($nom,3,2)=="00"){
-		$hauteurImageRectangle = ceil((($nombre*($hauteur-50))/$max_os));
-		ImageString ($im, 2, $i*$largeur/(count($os)+1), $hauteur-38, substr($nom,0,2)."h", $noir);
-		imagestring($im, 2, $i*$largeur/(count($os)+1),min($hauteur-$hauteurImageRectangle-20,$hauteur-61), $nombre, $noir);
+		$hauteurImageRectangle = ceil((($nombre*($hauteur-60))/$max_os));
+		ImageString ($im, 2, 10+$i*($largeur-10)/(count($os)+1), $hauteur-38, substr($nom,0,2)."h", $noir);
+		//imagestring($im, 2, 10+$i*($largeur-10)/(count($os)+1),min($hauteur-$hauteurImageRectangle-60,$hauteur-61), $nombre, $noir);
 	}
 }
 // on dessine le tout
