@@ -4,8 +4,8 @@
 	l'utilisateur courant à accès.
 
 	$Log$
-	Revision 1.15  2004/10/13 21:13:24  pico
-	Validation des qdj (pbs encore mais je vais régler ça)
+	Revision 1.16  2004/10/13 22:14:32  pico
+	Premier jet de page pour affecter une date de publication aux qdj validées
 
 	Revision 1.14  2004/10/06 14:12:27  kikx
 	Page de mail promo quasiment en place ...
@@ -55,6 +55,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<lien titre="Valider les activités" url="<?php echo BASE_URL?>/admin/valid_affiches.php"/>
 		<lien titre="Valider les mails promos" url="<?php echo BASE_URL?>/admin/valid_mailpromo.php"/>
 		<lien titre="Valider les qdj" url="<?php echo BASE_URL?>/admin/valid_qdj.php"/>
+		<lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/>
 	<h2>Webmestre binet X</h2>
 	<p>En construction
 </p>

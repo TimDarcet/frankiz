@@ -3,8 +3,8 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
-	Revision 1.2  2004/10/13 21:19:02  pico
-	Oubié d'enlever ça
+	Revision 1.3  2004/10/13 22:14:32  pico
+	Premier jet de page pour affecter une date de publication aux qdj validées
 
 
 	
@@ -26,6 +26,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
 <page id="valid_qdj" titre="Frankiz : Valide une qdj">
+
 <h1>Validation de qdj</h1>
 
 <?
@@ -75,12 +76,11 @@ foreach ($_POST AS $keys => $val){
 	
 
 	?>
-		<warning><p>Suppression d'une qdj<? echo $supp_image?></p></warning>
+		<warning><p>Suppression d'une qdj</p></warning>
 	<?
 	}
-	
-	
 }
+
 
 
 //===============================
@@ -96,7 +96,7 @@ foreach ($_POST AS $keys => $val){
 		</qdj>
 	</module>
 <?
-// Zone de saisie de l'annonce
+// Zone de saisie de la qdj
 ?>
 
 		<formulaire id="qdj_<? echo $id ?>" titre="La QDJ" action="admin/valid_qdj.php">
@@ -105,7 +105,6 @@ foreach ($_POST AS $keys => $val){
 			<champ id="question" titre="La question" valeur="<? echo $question ;?>"/>
 			<champ id="reponse1" titre="Réponse1" valeur="<? echo $reponse1 ;?>"/>
 			<champ id="reponse2" titre="Réponse2" valeur="<? echo $reponse2 ;?>"/>
-			
 			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
 			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider cette qdj ?')"/>
 			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette qdj ?!!!!!')"/>
