@@ -22,9 +22,12 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.23  2004/11/08 11:57:58  pico
+	Déplacement de la fonction deldir (pas une fonction de compression)
+
 	Revision 1.22  2004/11/06 20:52:08  kikx
 	Reordonnancement des liens
-
+	
 	Revision 1.21  2004/10/28 14:49:47  kikx
 	Mise en place de la météo en module : TODO eviter de repliquer 2 fois le code de la météo
 	
@@ -165,4 +168,33 @@ function cache_sauver($cache_id) {
 	echo $_CACHE_SAVED_BUFFER;						// hack
 	echo $contenu;
 }
+
+
+/* Supprime un répertoire complet et renvoit true lorsque tout c'est bien passé */
+function deldir($dir) {
+	if (!file_exists($dirname)) {
+		return false;
+	}
+	if (is_file($dirname)) {
+		return unlink($dirname);
+	}
+	$dh=opendir($dir);
+	while ($file=readdir($dh)) {
+		if($file!="." && $file!="..") {
+			$fullpath=$dir."/".$file;
+			if(!is_dir($fullpath)) {
+			unlink($fullpath);
+			} else {
+			deldir($fullpath);
+			}
+		}
+	}
+	closedir($dh);
+	if(rmdir($dir)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 ?>
