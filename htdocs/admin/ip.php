@@ -22,9 +22,12 @@
 	Permet aussi de supprimer des IPs.
 	
 	$Log$
+	Revision 1.31  2005/01/20 08:50:42  pico
+	Wish #42
+
 	Revision 1.30  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 	Revision 1.29  2004/12/17 14:26:20  pico
 	Pas d'action pour les listes non sélectionnables
 	
@@ -93,7 +96,7 @@ $blabla = "" ;
         //echo "<p>$keys # $val</p>";
 	$temp = explode("_",$keys) ;
 	if ($temp[0] == "detail")
-		rediriger_vers("/trombino.php?chercher=1&loginpoly=$temp[1]");
+		rediriger_vers("/trombino.php?chercher&loginpoly=$temp[1]&promo=$temp[2]");
 }
 function toutes_macs(){
 	$port = 80 ;
@@ -161,7 +164,7 @@ if (isset($_POST['recherche']) ) {
 					."LEFT JOIN trombino.eleves as e $on $where ORDER BY p.piece_id ASC");
 ?>
 
-	<liste id="liste_ip" selectionnable="non">
+	<liste id="liste_ip" selectionnable="non" action="admin/ip.php">
 		<entete id="login" titre="Login"/>
 		<entete id="promo" titre="Promo"/>
 		<entete id="piece" titre="Piece"/>
@@ -199,7 +202,7 @@ if (isset($_POST['recherche']) ) {
 				}
 				
 				if (strlen($login)>0 ) 
-					$login = "<bouton titre='Détails' id='detail_$login' type='detail'/>".$login ;
+					$login = "<bouton titre='Détails' id='detail_{$login}_{$promo}' type='detail'/>".$login ;
 				
 				echo "\t\t\t<colonne id=\"login\">$login</colonne>\n";
 				echo "\t\t\t<colonne id=\"promo\">$promo</colonne>\n";
