@@ -287,30 +287,26 @@ span.valid_css {
  
  /* Fin Logos W3C */
 
-
 /* Stats */
  
 .fkz_stats{list-style-type:  none;}
 
 .serveur_nom {
-	display: block;
+	position:relative;
+	left:5px;
 	color: inherit;
 }
 
 .serveur_up {
 	color: inherit;
 	background: lime;
-	position: relative;
-	left: 80px;
-	top: -16px;
+
 }
 
 .serveur_down {
 	color: inherit;
 	background: red;
-	position: relative;
-	left: 80px;
-	top: -16px;
+
 }
 
 /* FAQ et Xshare */
@@ -370,19 +366,37 @@ div.formulaire span.boutons{
 }
 /* Formulaires */
 
+
 /* Listes */
 table.liste{
 	clear:both;
 	width:100%;
+	margin-top:5px;
 }
 
 table.liste .entete{
 	text-decoration: underline;
 }
 
-
+table.liste .element{
+	padding-top:10px;
+	font-size: 9pt;
+}
 
 #choix_skin h1, #profil h1,.fkz_page_meteo h1,#xshare  h1,#faq  h1,#vocabulaire  h1{
 	display:none;
 }
 
+span.meteo{
+	display: block;
+	text-align:center;
+}
+
+div.meteo{
+	display: block;
+	border-top: 2px solid #E9D2FF;
+}
+
+p.image {
+	text-align: center;
+}
