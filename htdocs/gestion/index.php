@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.14  2004/11/27 14:16:19  pico
+	Ajout du lien de modif dans la page d'admin, réorganisation de la page
+
 	Revision 1.13  2004/11/27 12:58:23  pico
 	jout du lien vers la planification des activités
-
+	
 	Revision 1.12  2004/11/25 02:03:29  kikx
 	Bug d'administration des binets
 	
@@ -193,12 +196,14 @@ $permissions_user = $_SESSION['user']->perms ;
 		$nb = $DB_valid->num_rows() ;
 		?>
 		<lien titre="Valider les changements des Binets (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_binets.php"/>
+	<h3>Administration des données validées</h3>
+		<lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/>
+		<lien titre="Planifier les activités" url="<?php echo BASE_URL?>/admin/planif_affiches.php"/>
+		<lien titre="Modifier les annonces" url="<?php echo BASE_URL?>/admin/modif_annonces.php"/>
 	<h3>Administration des données de Frankiz</h3>
 		<lien titre="Liste des Binets" url="<?php echo BASE_URL?>/admin/binets_liste.php"/>
 		<lien titre="Liste des sections" url="<?php echo BASE_URL?>/admin/sections.php"/>
 		<lien titre="Changer les variables globales" url="<?php echo BASE_URL?>/admin/parametre.php"/>
-		<lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/>
-		<lien titre="Planifier les activités" url="<?php echo BASE_URL?>/admin/planif_affiches.php"/>
 		<lien titre="Gestion xshare" url="<?php echo BASE_URL?>/admin/xshare.php"/>
 		<lien titre="Gestion FAQ" url="<?php echo BASE_URL?>/admin/faq.php"/>
 	<h3>Administration du réseau élève</h3>
