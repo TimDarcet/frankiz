@@ -24,9 +24,12 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.26  2004/10/28 16:08:14  kikx
+	Ne fait qu'une page de fonctions pour la météo car sinon ça devient ingérable
+
 	Revision 1.25  2004/10/22 06:52:38  pico
 	Bdd xnet
-
+	
 	Revision 1.24  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -127,6 +130,8 @@ define('ERR_EMAIL_NON_VALIDE',$i++);
 define('ERR_TROP_COURT',$i++);
 define('ERR_SELECTION_VIDE',$i++);
 
+
+
 // Nettoyage des éléments récupérés par $_POST, $_GET et $_REQUEST
 function nettoyage_balise($tableau) {
 	foreach($tableau as $cle => $valeur)
@@ -139,6 +144,12 @@ $_GET = nettoyage_balise($_GET);
 $_POST = nettoyage_balise($_POST);
 $_REQUEST = nettoyage_balise($_REQUEST);
 
+//================================================================
+//
+// Elements à ne pas mettre dans la distribution libre du code car il y a les mot de passe et les comptes www.weather.com
+//
+//================================================================
+
 // Connexions aux bases mysql
 require_once "mysql.inc.php";
 $DB_xnet = new DB("frankiz2","xnet","web","kokouije?.");
@@ -148,6 +159,9 @@ $DB_web = new DB("frankiz","frankiz2_tmp","web","kokouije?.");
 $DB_admin = new DB("frankiz","admin","web","kokouije?.");
 $DB_trombino = new DB("frankiz","trombino","web","kokouije?.");
 $DB_valid = new DB("frankiz","a_valider","web","kokouije?.");
+
+//Météo
+ define('WEATHER_DOT_COM',"http://xoap.weather.com/weather/local/FRXX0076?prod=xoap&par=1006415841&key=5064537abefac140&unit=m&cc=*&dayf=8");
 
 // divers fichiers inclus
 require_once "global_func.inc.php";
