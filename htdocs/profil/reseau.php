@@ -22,9 +22,12 @@
 	ses machines, son compte xnet.
 	
 	$Log$
+	Revision 1.12  2004/10/22 06:53:39  pico
+	Modification du mdp qrezix
+
 	Revision 1.11  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.10  2004/10/21 17:46:05  pico
 	Corrections diverses
 	Affiche l'host correspondant aux ip dans la page du profil
@@ -50,14 +53,10 @@ if(isset($_POST['changer_xnet'])) {
 	} else if(strlen($_POST['passwd']) < 6) {
 		ajoute_erreur(ERR_MDP_TROP_PETIT);
 	} else {
-		$pass = "MD5: ".md5($_POST['passwd']."Vive le BR");
-	/*	echo "$pass / ".$_POST['ip_xnet']." / ";
-		$DB_xnet->query("SELECT password FROM clients WHERE lastip='{$_POST['ip_xnet']}'");
-		list($passdist) = $DB_xnet->next_row();
-		echo $passdist;
+		$pass = md5($_POST['passwd']."Vive le BR");
+		$DB_xnet->query("UPDATE clients SET password='{$pass}' WHERE lastip='{$_POST['ip_xnet']}'");
 		
 		$message_succes="Le mot de passe vient d'être changé.";
-	*/
 	}
 }
 
