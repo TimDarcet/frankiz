@@ -24,9 +24,12 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.25  2004/10/22 06:52:38  pico
+	Bdd xnet
+
 	Revision 1.24  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.23  2004/10/21 12:24:48  kikx
 	Correction d'un bug suite a un commit
 	
@@ -138,6 +141,8 @@ $_REQUEST = nettoyage_balise($_REQUEST);
 
 // Connexions aux bases mysql
 require_once "mysql.inc.php";
+$DB_xnet = new DB("frankiz2","xnet","web","kokouije?.");
+
 $DB_faq = new DB("frankiz","faq","web","kokouije?.");
 $DB_web = new DB("frankiz","frankiz2_tmp","web","kokouije?.");
 $DB_admin = new DB("frankiz","admin","web","kokouije?.");
