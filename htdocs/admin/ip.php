@@ -19,7 +19,15 @@ if(!verifie_permission('admin')) {
 }
 connecter_mysql_frankiz();
 
-
+// Gestion des détails d'une personne
+ foreach ($_POST AS $keys => $val){
+        //echo "<p>$keys # $val</p>";
+	$temp = explode("_",$keys) ;
+	if ($temp[0] == "detail") {
+		header("Location: ".BASE_URL."/trombino/?chercher=1&loginpoly=$temp[1]");
+		exit;
+	}
+}
 
 // Génération de la page
 //===============
@@ -28,6 +36,8 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="admin_arp" titre="Frankiz : gestion des logs ip">
 <?
+
+
 
 // Gestion de la suppression
 if(isset($_POST['supprimer'])) {
@@ -88,9 +98,9 @@ if(isset($_POST['supprimer'])) {
 			$promo2 ="" ;
 			while(list($login,$promo) = mysql_fetch_row($result2)) {
 				if ($login2=="" ) 
-					$login2 = $login ;
+					$login2 = "<bouton titre='Détails' id='detail_$login' type='detail'/>".$login ;
 				else 
-					$login2 .= " / $login" ;
+					$login2 .= " / <image source='/~kikx/skins/basic/detail.gif'/>$login" ;
 					
 				if ($promo2=="" ) 
 					$promo2 = $promo ;

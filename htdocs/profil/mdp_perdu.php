@@ -24,7 +24,7 @@ if(!empty($_REQUEST['loginpoly'])) {
 		if(mysql_num_rows($resultat) > 0)
 			mysql_query("UPDATE compte_frankiz SET hash='$hash',hashstamp=DATE_ADD(NOW(),INTERVAL 6 HOUR) WHERE eleve_id='$id'");
 		else
-			mysql_query("INSERT INTO compte_frankiz SET eleve_id='$id',passwd='',perms='',hash='$hash',hashstamp= DATE_ADD(NOW(),INTERVAL 6 HOUR)");
+			mysql_query("INSERT INTO compte_frankiz SET eleve_id='$id',passwd='',perms='',hash='$hash', hashstamp=DATE_ADD(NOW(),INTERVAL 6 HOUR)");
 		mysql_free_result($resultat);
 		
 		// Envoie le mail contenant l'url avec le hash
