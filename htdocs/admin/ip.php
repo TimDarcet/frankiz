@@ -22,9 +22,12 @@
 	Permet aussi de supprimer des IPs.
 	
 	$Log$
+	Revision 1.34  2005/03/16 17:13:40  pico
+	Les admin@windows ont accès à la liste des ips et à l'arpwatch
+
 	Revision 1.33  2005/03/04 08:25:11  pico
 	correction bug #71
-
+	
 	Revision 1.32  2005/02/03 17:41:22  nc
 	Correction du lien vers la page d'admin SMAC
 	
@@ -91,7 +94,7 @@ require_once "../include/global.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-if(!verifie_permission('admin'))
+if(!verifie_permission('admin')&&!verifie_permission('windows'))
 	acces_interdit();
 	
 $message = "" ;

@@ -21,9 +21,12 @@
 	Gestion arpwatch	
 	
 	$Log$
+	Revision 1.10  2005/03/16 17:13:40  pico
+	Les admin@windows ont accès à la liste des ips et à l'arpwatch
+
 	Revision 1.9  2005/02/13 11:37:21  kikx
 	Permet d'avoir les details de l'arpwatch de facon plus lisible pour une personne ! (pour NC)
-
+	
 	Revision 1.8  2005/02/09 20:24:55  kikx
 	Allegement de la page de l'arpwatch ... 1 seul requete de zamer qui fait tout d'y coup
 	
@@ -44,7 +47,7 @@ require_once "../include/global.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-if(!verifie_permission('admin'))
+if(!verifie_permission('admin')&&!verifie_permission('windows'))
 	acces_interdit();
 	
 $message = "" ;

@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.42  2005/03/16 17:13:40  pico
+	Les admin@windows ont accès à la liste des ips et à l'arpwatch
+
 	Revision 1.41  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
-
+	
 	Revision 1.40  2005/02/09 20:15:51  pico
 	Ajout d'un droit pour les admin@windows pour valider les demandes de licences
 	
@@ -383,12 +386,14 @@ $permissions_user = $_SESSION['user']->perms ;
 		$nb = $DB_valid->num_rows() ;
 		?>
 		<lien titre="Gérer les demandes d'ajout d'ips (<?=$nb?>)" url="admin/valid_ip.php"/><br/>
-		<lien titre="Liste des IPs" url="admin/ip.php"/><br/>
-		<lien titre="Arpwatch" url="admin/arpwatch.php"/><br/>
 		<lien titre="Surveiller la DNS" url="admin/dns.php"/><br/>
 		<?
 	}
 	if (verifie_permission('admin')||verifie_permission('windows')){
+		?>
+		<lien titre="Liste des IPs" url="admin/ip.php"/><br/>
+		<lien titre="Arpwatch" url="admin/arpwatch.php"/><br/>
+		<?
 		$DB_msdnaa->query("SELECT eleve_id FROM valid_licence") ;
 		$nb = $DB_msdnaa->num_rows() ;
 		?>
