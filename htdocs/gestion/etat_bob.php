@@ -21,9 +21,12 @@
 	Cette page permet de déterminer si le Bôb est ouvert ou non.
 	
 	$Log$
+	Revision 1.6  2005/03/08 11:58:06  pico
+	Correction bug, permet d'effacer des tours kawa
+
 	Revision 1.5  2005/01/06 23:31:31  pico
 	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
-
+	
 	Revision 1.4  2005/01/04 13:30:13  pico
 	Ajout possibilité de virer des tours kawa
 	
@@ -121,7 +124,7 @@ list($valeur) = $DB_web->next_row();
 			echo "<element id=\"$i\">";
 			echo "<colonne id=\"jour\">$date</colonne>";
 			echo "<colonne id=\"kawa\">$groupe</colonne>";
-			echo "<colonne id=\"supprimer\"><lien url='gestion/etat_bob?del=$date' titre='Supprimer'/></colonne>";
+			echo "<colonne id=\"supprimer\"><lien url='gestion/etat_bob.php?del=$date' titre='Supprimer'/></colonne>";
 			echo "</element>\n";
 			$i++;
 		}
