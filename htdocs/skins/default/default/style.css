@@ -570,39 +570,39 @@ dl#annonces_sommaire ul li.droite{
 }
 /* ################# MENU/LISTE ####################*/
 
-ul#menu, ul#ecole, ul#contacts,ul.none, ul#services, ul#serveurs,ul{
+ul#menu, ul#ecole, ul.contacts,ul.none, ul#services, ul#serveurs,ul{
 	list-style-type: none ;
 }
 
 /* ------- Le menu de gauche ---------*/
 
-dl#menu {
+dl#liens_navigation {
 	width: 115px; 
 	margin: 0;
 }
-dl#menu dt.titre {
+dl#liens_navigation dt.titre {
 	height: 13px !important;
 	margin-bottom:0px !important;
 	margin-bottom:4px;
 	background: url('./images/top.png') no-repeat bottom left;
 }
-dl#menu dt.titre span {
+dl#liens_navigation dt.titre span {
 	display:none;
 }
-dl#menu dd.contenu {
+dl#liens_navigation dd.contenu {
 	margin:0px;
 	padding:0px;
 }
-dl#menu dd.bas {
+dl#liens_navigation dd.bas {
 	height: 10px !important;
 	margin-top:0px !important;
 	margin-top:-4px;
 	background: url('./images/bottom.png') no-repeat top left;
 }
-dl#menu dd.bas span.droitebas {
+dl#liens_navigation dd.bas span.droitebas {
 	display:none;
 }
-dl#menu dt.titre span.droitehaut {
+dl#liens_navigation dt.titre span.droitehaut {
 	display:none;
 }
 ul#menu li {
@@ -769,6 +769,14 @@ form {
 	padding:7px;
 }
 
+textarea {
+	width:80%;
+	height:10em;
+}
+
+fieldset {
+	border:0;
+}
 /* -- formulaire simple (trombi,skin,etc...) -- */
 
 .formulaire {
@@ -876,3 +884,4 @@ dl.boite h3, dl.boite h2 {
 .float_right {
 	float:right;
 }
+

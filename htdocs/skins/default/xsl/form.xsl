@@ -21,8 +21,8 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
-	Revision 1.6  2004/12/14 23:06:06  schmurtz
-	Ajout du support zonetext grand pour les faqs
+	Revision 1.7  2004/12/15 00:38:30  psycow
+	Commit du boulot de l'apres midi, a la place de l'EA
 
 	Revision 1.5  2004/12/12 17:45:33  psycow
 	Modification Mineure, pre-test IE: la dernière étape
@@ -66,27 +66,7 @@
 	<form enctype="multipart/form-data" method="post" class="formulaire">
 			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
-
-<!-- 		<table class="formulaire" cellspacing="0" cellpadding="0">
-			<xsl:if test="boolean(@titre)">
-				<tr><td class="titre" colspan="2"><xsl:value-of select="@titre"/></td></tr>
-			</xsl:if>
-			<xsl:for-each select="*[name()!='bouton' and name()!='hidden']">
-				<xsl:choose><xsl:when test="self::note">
-					<tr><td colspan="2"><xsl:apply-templates select="."/></td></tr>
-				</xsl:when><xsl:otherwise>
-					<tr><td class="gauche">
-						<xsl:if test="boolean(@titre)"><xsl:value-of select="@titre"/> :</xsl:if>
-					</td><td class="droite">
-						<xsl:apply-templates select="."/>
-					</td></tr>
-				</xsl:otherwise></xsl:choose>
-			</xsl:for-each>
-			<tr><td colspan="2">
-				<xsl:apply-templates select="bouton"/>
-			</td></tr>
-		</table>
- -->
+		<fieldset>
  		<xsl:if test="boolean(@titre)">
 			<xsl:choose>
 				<xsl:when test="starts-with(@id,'mod_xnet_')">
@@ -121,6 +101,7 @@
 			<p class="boutons">
 				<xsl:apply-templates select="bouton"/>
 			</p>
+		</fieldset>
 	</form>
 </xsl:template>
 
@@ -149,10 +130,7 @@
 		</xsl:when><xsl:otherwise>
 			<textarea>
 				<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-				<xsl:attribute name="rows">
-					<xsl:choose><xsl:when test="@type='grand'">30</xsl:when><xsl:otherwise>7</xsl:otherwise></xsl:choose>
-				</xsl:attribute>
-				<xsl:attribute name="cols">50</xsl:attribute>
+				
 				<xsl:value-of select="text()"/>
 			</textarea>
 		</xsl:otherwise></xsl:choose>

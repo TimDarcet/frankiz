@@ -29,7 +29,7 @@
 			<span><xsl:value-of select="@titre"/></span>	
 		</dt>
 		<dd class="contenu">
-			<ul id="contacts">
+			<ul class="contacts">
 				<xsl:apply-templates select="lien" mode="liste"/>
 			</ul>
 		</dd>
@@ -39,7 +39,8 @@
 
 
 <xsl:template match="module[@id='liens_navigation']">
-	<dl id="menu">
+	<dl>
+		<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 		<dt class="titre">
 			<span class="droitehaut"><xsl:text> </xsl:text></span>
 			<span><xsl:value-of select="@titre"/></span>	

@@ -121,7 +121,7 @@
 	<!-- le formulaire lui même-->
 	<form class="trombino" enctype="multipart/form-data" method="post">
 		<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
-			
+			<div>
 <!--				<p class="droite">
 					<xsl:apply-templates select="champ[@id='surnom']" mode="trombino"/>
 					<xsl:apply-templates select="choix[@id='binet']" mode="trombino"/>
@@ -155,7 +155,7 @@
 						<td><xsl:apply-templates select="champ[@id='casert']" mode="trombino"/></td>
 					</tr>
 				</table>
-			
+			</div>
 			
 			
 			<p class="bouton">

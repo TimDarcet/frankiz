@@ -43,7 +43,7 @@
 			<div class="sommaire">
 			<xsl:if test="last() != 0">
 				<xsl:if test="count(annonce[@categorie='important']) != 0">
-					<p class="center">
+					<div class="center">
 						<strong><span class="flag_important"><xsl:text> </xsl:text></span> Important</strong><br/>
 						<ul>
 							<xsl:apply-templates select="annonce[@categorie='important']" mode="sommaire"/>
@@ -51,10 +51,10 @@
 								<li class="droite"><xsl:text> </xsl:text></li>
 							</xsl:if>
 						</ul>
-					</p>
+					</div>
 				</xsl:if>
 				<xsl:if test="count(annonce[@categorie='nouveau']) != 0">
-					<p class="center">
+					<div class="center">
 						<strong><span class="flag_nouveau"><xsl:text> </xsl:text></span> Nouvelles Fraîches</strong><br/>
 						<ul>
 							<xsl:apply-templates select="annonce[@categorie='nouveau']" mode="sommaire"/>
@@ -62,10 +62,10 @@
 								<li class="droite"><xsl:text> </xsl:text></li>
 							</xsl:if>
 						</ul>
-					</p>
+					</div>
 				</xsl:if>
 				<xsl:if test="count(annonce[@categorie='vieux']) != 0">
-					<p class="center">
+					<div class="center">
 						<strong><span class="flag_vieux"><xsl:text> </xsl:text></span> Demain c'est fini</strong><br/>
 						<ul>
 							<xsl:apply-templates select="annonce[@categorie='vieux']" mode="sommaire"/>
@@ -73,10 +73,10 @@
 								<li class="droite"><xsl:text> </xsl:text></li>
 							</xsl:if>
 						</ul>
-					</p>
+					</div>
 				</xsl:if>
 				<xsl:if test="count(annonce[@categorie='reste']) != 0">
-					<p class="center">
+					<div class="center">
 						<strong><span class="flag_reste"><xsl:text> </xsl:text></span> En attendant...</strong><br/>
 						<ul>
 							<xsl:apply-templates select="annonce[@categorie='reste']" mode="sommaire"/>
@@ -84,7 +84,7 @@
 								<li class="droite"><xsl:text> </xsl:text></li>
 							</xsl:if>
 						</ul>
-					</p>
+					</div>
 				</xsl:if>
 			</xsl:if>
 			</div>
@@ -102,7 +102,7 @@
 	<xsl:if test="@visible!='non'">
 	<dl class="boite">
 		<dt class="titre">
-			<a><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute><xsl:text> </xsl:text></a>
+			<a><xsl:attribute name="id">a<xsl:value-of select="@id"/></xsl:attribute><xsl:text> </xsl:text></a>
 			<xsl:choose>	
 				<xsl:when test="count(lien[@id='annonces_lues'])">
 					<span class="hidenews">
@@ -153,7 +153,7 @@
 				<xsl:if test="@visible='non'">
 					<xsl:text>?nonlu=</xsl:text><xsl:value-of select="@id"/>
 				</xsl:if>
-				<xsl:text>#</xsl:text><xsl:value-of select="@id"/>
+				<xsl:text>#a</xsl:text><xsl:value-of select="@id"/>
 			</xsl:attribute>
 			<xsl:value-of select="@titre"/>
 		</a>
@@ -162,9 +162,6 @@
 
 <xsl:template match="lien" mode="sansbr">
 	<a class="lien">
-		<xsl:if test="boolean(@id)">
-			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
-		</xsl:if>
 		<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
 		<xsl:attribute name="title"><xsl:value-of select="@titre"/></xsl:attribute>
 		<span><xsl:value-of select="@titre"/><xsl:apply-templates/></span>
