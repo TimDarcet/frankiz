@@ -156,3 +156,37 @@ a:hover {
 	color: inherit;
 	background: red;
 }
+
+/* FAQ et Xshare */
+.noeud_ferme{list-style-image:url('../skins/pico/fold_close.gif')}
+.noeud_ouvert{list-style-image:url('../skins/pico/fold_open.gif')}
+.feuille{list-style-image:url('../skins/pico/question.gif')}
+
+.fkz_stats{list-style-type:  none; padding:0}
+
+.fkz_qdj_last{
+list-style-type:  none;  
+text-align:left; 
+background-color:#e5e5e5
+}
+
+
+p.commentaire {
+	color: inherit;
+	background: #FFFFDD;
+	padding: 6px;
+	border: 1px solid #FFDD00;
+}
+p.warning {
+	color: inherit;
+	background: #FFDDDD;
+	padding: 6px;
+	border: 1px solid #FF3333;
+}
+
+p.note {
+	color: inherit;
+	background: #EFEFEF;
+	font-size: 75%;
+	padding: 6px;
+}

@@ -124,6 +124,7 @@
 		</xsl:otherwise></xsl:choose>
 	</li>
 </xsl:template>
+
 <!-- Eleves pour les anniversaires/signatures/qdj 
 <xsl:template match="eleve">
 	<xsl:choose><xsl:when test="@surnom != ''">
