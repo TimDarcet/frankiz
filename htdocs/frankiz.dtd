@@ -1,9 +1,14 @@
 <!DOCTYPE frankiz [
 <!--
+	$Id$
+
 	DTD pour le sous ensemble XML utilisé dans la génération des pages du site web
 	de frankiz.
-	
-	$Id$
+
+	$Log$
+	Revision 1.7  2004/09/15 21:42:15  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 -->
 
 <!ENTITY texte.formate "(#PCDATA|strong|a|image)*">

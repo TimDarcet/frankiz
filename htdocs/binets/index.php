@@ -3,6 +3,11 @@
 	$Id$
 	
 	Affichage de la liste des binets ayant un site web.
+
+	$Log$
+	Revision 1.3  2004/09/15 21:42:36  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 require_once "../include/global.inc.php";
 

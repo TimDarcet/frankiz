@@ -7,6 +7,11 @@
 	le trombino.
 	
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
+	
+	$Log$
+	Revision 1.3  2004/09/15 21:42:27  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 	
 // En-tetes

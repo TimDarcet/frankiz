@@ -2,10 +2,13 @@
 /*
 	$Id$
 	
-	Page permettant de modifier ses informations relatives au réseau interne de l'x : le nom de
-	ses machines, son compte xnet.
+	Page permettant de faire une demande d'adresse IP supplémentaire pour mettre
+	une seconde machine dans son casert.
 	
-	TODO faire la page
+	$Log$
+	Revision 1.5  2004/09/15 21:42:21  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 
 require_once "../include/global.inc.php";

@@ -1,7 +1,15 @@
 <?php
 /*
+	$Id$
+	
 	Pied de page pour la transformation du XML. récupère le cache de sortie et applique une
 	transformation XSLT.
+	C'est d'ici qu'est appelé la fonction qui affiche les erreurs en haut de la page.
+	
+	$Log$
+	Revision 1.3  2004/09/15 21:42:08  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 
 echo "</frankiz>\n";

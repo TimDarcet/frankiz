@@ -3,6 +3,12 @@
 	$Id$
 
 	Divers fonctions pouvant être utile dans n'importe quelles pages.
+	Pas de fonctionnalités spécifiques à quelques pages.
+
+	$Log$
+	Revision 1.9  2004/09/15 21:42:08  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 
 /*

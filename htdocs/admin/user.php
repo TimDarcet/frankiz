@@ -11,9 +11,13 @@
 	plus facile de le faire via un fichier de commande MySQL ou avec un interface web dédiée.
 	
 	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
+	
+	$Log$
+	Revision 1.7  2004/09/15 21:42:27  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 	
-// En-tetes
 require_once "../include/global.inc.php";
 
 // Vérification des droits

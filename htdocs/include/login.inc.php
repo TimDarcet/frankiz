@@ -16,6 +16,11 @@
 	
 	Ce fichier définie aussi la fonction demande_authentification qui vérifie si le client est
 	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
+
+	$Log$
+	Revision 1.7  2004/09/15 21:42:08  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 
 require_once "global.inc.php";

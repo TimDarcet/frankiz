@@ -8,6 +8,11 @@
 	
 	La table d'authentification contient les champs 'eleve_id', 'login', 'passwd' et 'perms', les autres
 	informations provenant des tables du trombino (avec jointure sur l'uid).
+
+	$Log$
+	Revision 1.6  2004/09/15 21:42:08  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 
 define("AUTH_AUCUNE",0);	// Client non authentifié

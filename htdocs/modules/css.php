@@ -2,7 +2,12 @@
 /*
 	$Id$
 	
-	Liste des CSS accessibles.
+	Liste des CSS existante compatible avec la skin XSL courante.
+	
+	$Log$
+	Revision 1.6  2004/09/15 21:42:32  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 ?>
 <module id="liste_css" visible="false">

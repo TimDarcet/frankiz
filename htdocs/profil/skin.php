@@ -21,6 +21,11 @@
 			[«module 2»] => «true/false»
 		)
 	)
+	
+	$Log$
+	Revision 1.6  2004/09/15 21:42:21  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 
 require_once "../include/global.inc.php";

@@ -1,14 +1,17 @@
 <?php
-// +----------------------------------------------------------------------
-// | PHP Source                                                           
-// +----------------------------------------------------------------------
-// | Copyright (C) 2004 by Eric Gruson <eric.gruson@polytechnique.fr>
-// +----------------------------------------------------------------------
-// |
-// | Copyright: See COPYING file that comes with this distribution
-// +----------------------------------------------------------------------
-//
-// En-tetes
+/*
+	$Id$
+	
+	Cette page gère l'attribution d'adresses IP supplémentaires aux élèves.
+	L'élève fait une demande grâce à la page profil/demande_ip.php, on valide
+	ou refuse la demande ici.
+	
+	$Log$
+	Revision 1.9  2004/09/15 21:42:27  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
+*/
+
 require_once "../include/global.inc.php";
 
 // Vérification des droits

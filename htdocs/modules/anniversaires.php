@@ -1,8 +1,13 @@
 <?php
 /*
+	$Id$
+	
 	Affichage des anniversaires avec gestion d'un cache mis à jour une fois par jour.
 	
-	$Id$
+	$Log$
+	Revision 1.9  2004/09/15 21:42:32  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 
 if(est_authentifie(AUTH_MINIMUM)) {

@@ -6,6 +6,11 @@
 	pour le site web.
 	
 	TODO modification de sa photo et de ses binets.
+	
+	$Log$
+	Revision 1.8  2004/09/15 21:42:21  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 
 require_once "../include/global.inc.php";

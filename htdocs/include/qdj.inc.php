@@ -2,9 +2,16 @@
 /*
 	$Id$
 	
-	Affichage de la QDJ.
+	Affichage de la QDJ. Le fait d'avoir un fichier inclus permet d'éviter d'avoir du code
+	dupliquer dans qdj.php et qdj_hier.php. Ça évite aussi de devoir regrouper les deux modules
+	dans le même fichier (et donc passer autre le principe 1 module = 1 fichier).
 	
 	TODO traiter le cas ou le qdj master est à la bourre (garder l'ancienne qdj par exemple).
+	
+	$Log$
+	Revision 1.6  2004/09/15 21:42:08  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 
 function qdj_affiche($hier,$deja_vote) {

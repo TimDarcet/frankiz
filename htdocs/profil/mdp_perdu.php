@@ -1,6 +1,13 @@
 <?php
 /*
+	$Id$
+	
 	Gestion de la création d'un compte et de la perte de mot de passe.
+	
+	$Log$
+	Revision 1.11  2004/09/15 21:42:21  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 
 require "../include/global.inc.php";

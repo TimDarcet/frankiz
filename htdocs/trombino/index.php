@@ -3,6 +3,11 @@
 	$Id$
 	
 	Recherche dans le trombino.
+
+	$Log$
+	Revision 1.10  2004/09/15 21:42:01  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 
 require_once "../include/global.inc.php";

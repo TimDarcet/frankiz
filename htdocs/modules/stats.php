@@ -1,11 +1,20 @@
 <?php
 /*
+	$Id$
+	
 	Génération des données de statistiques des serveurs.
 	
 	Certaines données sont mise en statique pour exemple. Il serait bien de réécrir les scripts
 	qui récupère ces informations pour qu'ils enregistrent leurs données dans des fichiers directement
 	en XML, et non sous forme d'une suite de "0" et de "1".
 	
+	TODO : limiter à l'état des services (up/down), les pluparts des élèves s'en fout complètement
+	Par ailleurs, il faudra créer des pages de stats assez complètes pour les admins (avec les usages
+	de bande passante, de cpu). 
+	
+	$Log$
+	Revision 1.4  2004/09/15 21:42:32  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
 
 */
 if(est_authentifie(AUTH_MINIMUM)) { ?>

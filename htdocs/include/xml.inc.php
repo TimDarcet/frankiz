@@ -5,6 +5,13 @@
 	Code permettant de parser du code XML. La fonction xml_get_tree renvoit la traduction sous
 	forme d'arbre du contenu du fichier XML.
 	
+	$Log$
+	Revision 1.2  2004/09/15 21:42:08  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
+*/
+
+/*
 	Exemple : le fichier contenant le code XML suivant
 				<xml>
 					<blah>coucou</blah>

@@ -5,7 +5,10 @@
 	Page permettant de modifier ses informations relatives au réseau interne de l'x : le nom de
 	ses machines, son compte xnet.
 	
-	TODO faire la page
+	$Log$
+	Revision 1.8  2004/09/15 21:42:21  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 
 require_once "../include/global.inc.php";

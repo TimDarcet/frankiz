@@ -3,6 +3,11 @@
 	$Id$
 	
 	Gestion de la liste des binets.
+
+	$Log$
+	Revision 1.8  2004/09/15 21:42:27  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 
 // En-tetes

@@ -1,4 +1,15 @@
 <?php
+/*
+	$Id$
+	
+	Annonces de frankiz. Page d'acceuil pour les personnes déjà loguées.
+	
+	$Log$
+	Revision 1.2  2004/09/15 21:42:15  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
+*/
+
 require_once "include/global.inc.php";
 demande_authentification(AUTH_MINIMUM);
 

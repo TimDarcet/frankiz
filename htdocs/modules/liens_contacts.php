@@ -3,6 +3,11 @@
 	$Id$
 
 	Liens permettants de contacter les webmestres et faire des demandes.
+	
+	$Log$
+	Revision 1.3  2004/09/15 21:42:32  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 ?>
 <module id="liens_contacts" titre="Contacts">

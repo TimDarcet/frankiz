@@ -4,11 +4,15 @@
 	
 	Gestion de la liste des sections.
 	
-	Il est volontairement interdit de supprimer une section. Cela pose en effet
-	des problèmes de cohérence de la base de donnée : pour supprimer une section,
-	il faut d'abord qu'il n'y ait personne de rattaché à la section à supprimer.
-	Il est cependant possible de marquer un binet comme disparu.
+	ATTENTION : Il est volontairement interdit de supprimer une section. Cela pose
+	en effet des problèmes de cohérence de la base de donnée : pour supprimer une
+	section, il faut d'abord qu'il n'y ait personne de rattaché à la section à
+	supprimer. Il est cependant possible de marquer un binet comme disparu.
 	
+	$Log$
+	Revision 1.5  2004/09/15 21:42:27  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 
 // En-tetes

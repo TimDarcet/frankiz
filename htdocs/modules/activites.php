@@ -1,8 +1,13 @@
 <?php
 /*
+	$Id$
+
 	Script de création de la partie activités contenant des images type "affiche".
 	
-	$Id$
+	$Log$
+	Revision 1.5  2004/09/15 21:42:32  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 
 if(est_authentifie(AUTH_MINIMUM)) {

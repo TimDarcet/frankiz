@@ -1,8 +1,13 @@
 <?php
 /*
-	Page d'entête pour la transformation du XML. Met en place un cache de sortie.
-	
 	$Id$
+
+	Page d'entête pour la transformation du XML. Met en place un cache de sortie.
+
+	$Log$
+	Revision 1.3  2004/09/15 21:42:08  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 
 require_once "global.inc.php";

@@ -3,6 +3,14 @@
 	$Id$
 
 	Fichier de définition de variables et constantes utiles dans tout le projet.
+	C'est de ce script que sont inclus tous les fichiers inclus pour toutes les pages
+	et _qui inclus du code en dehors de fonctions_ comme erreursphp.inc.php, login.inc.php,
+	skin.inc.php… mais pas user.inc.php, xml.inc.php…
+	
+	$Log$
+	Revision 1.8  2004/09/15 21:42:08  schmurtz
+	Commentaires et ajout de la variable cvs "Log"
+
 */
 
 // Définition générique des différentes bases pour l'accès aux fichiers
