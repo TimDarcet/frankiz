@@ -227,7 +227,7 @@ div.fkz_page_titre {
 	border:1px solid #1F118C;
 }
 
-.fkz_titre {
+.fkz_titre,.fkz_titre a {
 	height:20px;
 	border:1px solid #1F118C;
 	background-color: #1F118C;
@@ -238,6 +238,7 @@ div.fkz_page_titre {
 	font-weight: bold;
 	text-align: center;
 }
+
 
 .fkz_module_corps,div.fkz_liens_nav {
 	color:#333;

@@ -32,7 +32,7 @@
 		Et l'humidité s'élève à <xsl:value-of select="now/humidite"/>%<br />
 		L'état du ciel : <xsl:value-of select="now/ciel"/><br />
 		<img alt="meteo" width="64" height="64">
-			<xsl:attribute name="src">skins/pico/images/meteo/<xsl:value-of select="now/image"/>.png</xsl:attribute>
+			<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="now/image"/>.png</xsl:attribute>
 		</img>
 	<h2>Prévisions météo :</h2><br />
 		<xsl:for-each select="jour">
