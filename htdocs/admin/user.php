@@ -29,9 +29,12 @@
 	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
 	
 	$Log$
+	Revision 1.22  2005/01/03 20:05:07  pico
+	Corrections diverses
+
 	Revision 1.21  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 	Revision 1.20  2004/12/16 13:00:41  pico
 	INNER en LEFT
 	
@@ -198,7 +201,7 @@ if (verifie_permission('admin') && isset($_POST['mod_compte_fkz'])) {
 // SU et modifs du compte frankiz => seul l'admin peut le faire.
 if(verifie_permission('admin')){
 ?>
-	<formulaire id="user_su" titre="Se Logguer en tant que cet utilisateur" action="admin/user.php?su=<? echo $id?>">
+	<formulaire id="user_su" titre="Se Logguer en tant que cet utilisateur" action="?su=<? echo $id?>">
 		<bouton id='su' titre='SU'/>
 	</formulaire>
 <?
