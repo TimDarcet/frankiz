@@ -39,9 +39,12 @@
 	)
 	
 	$Log$
+	Revision 1.15  2004/11/16 12:17:26  schmurtz
+	Deplacement des skins de trombino.eleves vers frankiz.compte_frankiz
+
 	Revision 1.14  2004/11/13 00:12:24  schmurtz
 	Ajout du su
-
+	
 	Revision 1.13  2004/11/11 21:15:52  kikx
 	Rajout d'un champs dans le trombino pour stocker la skin du mec ...
 	le cookie est prioritaire, mais si il n'existe pas ou qu'il a ppartient a quelqu'un d'autre, alors on va cherhcer dans la BDD
@@ -222,7 +225,7 @@ if(!empty($new_skin)) {
 	$cookie = serialize($new_skin);
 	SetCookie("skin",base64_encode($cookie),time()+3*365*24*3600,"/");
 	skin_parse($cookie);
-	$DB_trombino->query("UPDATE eleves SET skin='$cookie' WHERE eleve_id='".$_SESSION['user']->uid."'");
+	$DB_web->query("UPDATE compte_frankiz SET skin='$cookie' WHERE eleve_id='{$_SESSION['user']->uid}'");
 }
 
 // Récupération du contenu de la page (en XML)

@@ -22,9 +22,12 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.9  2004/11/16 12:17:25  schmurtz
+	Deplacement des skins de trombino.eleves vers frankiz.compte_frankiz
+
 	Revision 1.8  2004/10/31 21:29:56  kikx
 	Mise a jour du mail promo grace a la librairie de Schmurtz
-
+	
 	Revision 1.7  2004/10/29 15:41:48  kikx
 	Passage des mail en HTML pour les ip
 	
@@ -143,7 +146,7 @@ class Mail {
 		if ($this->boundary) {
 			$this->body .= "--{$this->boundary}\n".
 						   "Content-Type: $type\n".
-						   "Content-Transfer-Encoding: $encoding\n\n".
+						   "Content-Transfer-Encoding: $encoding; charset=$charset\n\n".
 						   "$value\n";
 		} else {
 			echo "<b>Erreur : addPart s'applique uniquement aux messages multipart!</b>";
@@ -151,25 +154,25 @@ class Mail {
 	}
 	
 	function addPartText($text,$charset="iso-8859-1") {
-		$this->addPart("text/plain; charset=$charset","8bit", $text);
+		$this->addPart("text/plain",$charset,"8bit", $text);
 	}
 
-/*	function addPartRichText($text,$charset="iso-8859-1") {
-		$this->addPart("text/enriched; charset=$charset","8bit", $tex);
-	}*/ //Kikx se demande si ça sert vraiment ? 
+	function addPartRichText($text,$charset="iso-8859-1") {
+		$this->addPart("text/enriched",$charset,"8bit", $tex);
+	}
 	
 	function addPartHtml($html,$charset="iso-8859-1") {
-		$this->addPart("text/html; charset=$charset","8bit", $html);
+		$this->addPart("text/html",$charset,"8bit", $html);
 	}
 	
 	// définission du contenu d'un mail non multipart
-/*	function setBody($text) {
+	function setBody($text) {
 		if (!$this->boundary) {
 			$this->body = $text;
 		} else {
 			echo "<b>Erreur : setBody s'applique uniquement aux messages inline!</b>";
 		}
-	}*/ // On dit que l'on envoie que des mail en HTML ... donc en multipart (kikx)
+	}
 	
 	// pour les envois multiples du même mail à plusieurs personnes
 	function setTo($to) {

@@ -21,9 +21,12 @@
 	Gestion des skins : lecture du cookie contenant les préférences d'affichage
 	
 	$Log$
+	Revision 1.10  2004/11/16 12:17:25  schmurtz
+	Deplacement des skins de trombino.eleves vers frankiz.compte_frankiz
+
 	Revision 1.9  2004/11/13 00:12:24  schmurtz
 	Ajout du su
-
+	
 	Revision 1.8  2004/11/11 21:15:52  kikx
 	Rajout d'un champs dans le trombino pour stocker la skin du mec ...
 	le cookie est prioritaire, mais si il n'existe pas ou qu'il a ppartient a quelqu'un d'autre, alors on va cherhcer dans la BDD
@@ -72,9 +75,9 @@ function skin_parse($skin_str) {
 
 // Retrouve les données skin
 if(est_authentifie(AUTH_MINIMUM)) {
-	$DB_trombino->query("SELECT skin FROM eleves WHERE eleve_id='{$_SESSION['user']->uid}'") ;
-	if($DB_trombino->num_rows()!=0) {
-		list($skin) = $DB_trombino->next_row();
+	$DB_web->query("SELECT skin FROM compte_frankiz WHERE eleve_id='{$_SESSION['user']->uid}'") ;
+	if($DB_web->num_rows()!=0) {
+		list($skin) = $DB_web->next_row();
 		$cookie = $skin;		// hack bizarre pour être sur que php considère $cookie comme un string
 								// ce qui est indispensable pour la fonction base64_encode (si on met
 								// directement $skin, php considère que c'est un array alors que c'est faux)
