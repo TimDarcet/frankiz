@@ -21,9 +21,13 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.43  2005/04/06 23:11:11  schmurtz
+	Bug dans le code permettant de revenir a l'annonce suivant quand on supprime
+	une annonce.
+
 	Revision 1.42  2005/02/15 10:36:13  pico
 	Plus qu'une seule requete sql
-
+	
 	Revision 1.41  2005/02/15 09:25:03  pico
 	ça devrait être plus propre comme ça
 	
@@ -173,7 +177,7 @@ $DB_web->query("SELECT annonces.annonce_id,stamp,perime,titre,contenu,en_haut,ex
 					 ."IFNULL(mail,CONCAT(login,'@poly.polytechnique.fr')) as mail, $annonces_lues2 "
 					 ."FROM annonces LEFT JOIN trombino.eleves USING(eleve_id) $annonces_lues1"
 					 ."WHERE (perime>'".date("Y-m-d H:i:s",time())."') ORDER BY perime DESC");
-if (est_authentifie(AUTH_MINIMUM))  {
+/*if (est_authentifie(AUTH_MINIMUM))  {
 	$idprec=0;
 	while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail,$visible)=$DB_web->next_row()) {
 		if($visible){
@@ -183,7 +187,7 @@ if (est_authentifie(AUTH_MINIMUM))  {
 		}
 	}
 	mysql_data_seek($DB_web->result, 0);
-}
+}*/
 while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail,$visible)=$DB_web->next_row()) {
 	if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
 ?>
@@ -197,7 +201,7 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 		echo wikiVersXML($contenu);
 		echo "<eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"$promo\" surnom=\"$surnom\" mail=\"$mail\"/>\n";
 		if(est_authentifie(AUTH_MINIMUM))
-			echo "<lien url=\"?lu=$id".(isset($array_id[$id])?"#annonce_".$array_id[$id]:"")."\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
+			echo "<lien url=\"?lu=$id#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
 		echo "</annonce>";
 }
 echo "</page>\n";

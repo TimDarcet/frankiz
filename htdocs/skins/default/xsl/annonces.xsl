@@ -116,10 +116,12 @@
 </xsl:template>
 
 <xsl:template match="annonce" mode="complet">
+	<a><xsl:attribute name="name"><xsl:value-of select="concat('annonce_',@id)"/></xsl:attribute>
+		<xsl:text> </xsl:text>
+	</a>
 	<xsl:if test="@visible!='non'">
 	<dl class="boite">
 		<dt class="titre">
-			<a><xsl:attribute name="id">a<xsl:value-of select="@id"/></xsl:attribute><xsl:text> </xsl:text></a>
 			<xsl:choose>	
 				<xsl:when test="count(lien[@id='annonces_lues'])">
 					<span class="hidenews">
