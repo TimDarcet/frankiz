@@ -22,9 +22,12 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.8  2005/01/11 14:35:58  pico
+	Binets externes
+
 	Revision 1.7  2005/01/11 13:34:50  pico
 	idem
-
+	
 	Revision 1.6  2004/12/17 18:36:34  pico
 	Ajout mail admin@windows
 	
@@ -105,6 +108,7 @@ define('LOG_ACCESS',"/var/log/apache2/frankiz.access");	// connection/déconnecti
 
 define('URL_DATA','http://'.$_SERVER['HTTP_HOST'].'/frankiz2/data/');
 define('URL_PAGEPERSO','http://'.$_SERVER['HTTP_HOST'].'/frankiz2/webperso/');
+define('URL_BINETS','http://binets.frankiz.eleves.polytechnique.fr/');
 
 define('DATA_DIR_LOCAL',BASE_DATA);	// pour compatibilité
 define('DATA_DIR_URL',URL_DATA);
