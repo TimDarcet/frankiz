@@ -19,9 +19,12 @@
 */
 /*
 	$Log$
+	Revision 1.7  2005/01/10 10:24:33  pico
+	Bug #16
+
 	Revision 1.6  2004/12/15 05:19:13  falco
 	cohérence
-
+	
 	Revision 1.5  2004/12/09 20:53:27  pico
 	Faute d'orthographe
 	
@@ -298,7 +301,7 @@ echo "</arbre>";
   	if ($id != "") {
 		$DB_web->query("SELECT * FROM xshare WHERE id='{$id}'") ;
 		if (list($id,$id_parent,$nom,$licence,$lien,$importance,$date,$descript,$version,$site) = $DB_web->next_row()) { 
-			echo "<h2 id=\"descript\"><lien titre='".$nom."' url='../data/xshare/".$lien."'/></h2>";
+			echo "<h2 id=\"descript\">$nom</h2><lien titre='Télécharger ici' url='../data/xshare/".$lien."'/><br/>";
 			if($importance == 1) echo "<p>Important</p>";
 			if($importance == 2) echo "<p><strong>Indispensable</strong></p>";
 			echo "<em><lien titre='site de l&apos;éditeur' url='".$site."'/></em>";
