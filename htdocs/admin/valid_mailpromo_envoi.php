@@ -65,5 +65,5 @@ $mail_contenu = wikiVersXML($mail,true)  ; // On met true pour dire que c'est du
 	// fin de la procédure
 	
 	
-	//$DB_valid->query("DELETE FROM valid_mailpromo WHERE mail_id='{$_REQUEST['id']}'") ;
+	$DB_valid->query("DELETE FROM valid_mailpromo WHERE mail_id='{$_REQUEST['id']}'") ;
 ?>
