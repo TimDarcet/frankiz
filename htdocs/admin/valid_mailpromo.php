@@ -3,9 +3,12 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.4  2004/10/10 20:10:05  kikx
+	Ne sert plus a rien
+
 	Revision 1.3  2004/10/06 21:29:29  kikx
 	Mail promo != mail bi-promo
-
+	
 	Revision 1.2  2004/10/06 19:29:53  kikx
 	La page d'envoi de mail promo est terminיייייייייייייייייייייייי
 	
@@ -156,7 +159,7 @@ foreach ($_POST AS $keys => $val){
 			$mail_envoie = $login."@poly" ;
 			
 			if (mail($mail_envoie, $titre_mail." ".$_POST['titre'],$texte , $headers)){
-//			if (true){
+			if (true){
 				$cnt ++ ;
  				usleep(500000); // Attends 1/2 secondes
 			} else {
