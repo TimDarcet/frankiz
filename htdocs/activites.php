@@ -21,9 +21,12 @@
 	Page d'activites de frankiz.
 	
 	$Log$
+	Revision 1.3  2005/01/17 21:55:18  pico
+	sert à rien, mais me plait mieux :)
+
 	Revision 1.2  2005/01/17 21:52:04  pico
 	Page des activités
-
+	
 	Revision 1.1  2005/01/17 21:13:45  pico
 	Ajout d'une page pour des activités plus complètes...
 	
@@ -36,7 +39,7 @@ require_once "include/wiki.inc.php";
 
 // génération de la page
 require "include/page_header.inc.php";
-echo "<page id='activites' titre='Frankiz : activités'>\n";
+echo "<page id='activites' titre='Frankiz : activités de la semaine'>\n";
 
 // Etat du bôb
 $DB_web->query("SELECT valeur FROM parametres WHERE nom='bob'");
