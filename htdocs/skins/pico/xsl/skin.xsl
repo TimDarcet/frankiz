@@ -186,10 +186,10 @@
 </xsl:template>
 
 <xsl:template match="module">
-	<div class="module"><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+	<div class="module"><xsl:attribute name="id">mod_<xsl:value-of select="@id"/></xsl:attribute>
 		<div class="fkz_titre">
-			<span><xsl:attribute name="id"><xsl:value-of select="@titre"/>_logo</xsl:attribute><xsl:text> </xsl:text></span>
-			<span><xsl:attribute name="id"><xsl:value-of select="@titre"/></xsl:attribute><xsl:value-of select="@titre"/></span>
+			<span><xsl:attribute name="id"><xsl:value-of select="@id"/>_logo</xsl:attribute><xsl:text> </xsl:text></span>
+			<span><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute><xsl:value-of select="@titre"/></span>
 		</div>
 		<div class="fkz_module_corps">
 			<xsl:apply-templates/>
