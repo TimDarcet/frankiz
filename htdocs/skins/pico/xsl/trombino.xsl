@@ -170,7 +170,6 @@
 				<xsl:apply-templates select="bouton"/>
 			</p>
 			</div>
-
 	</form>
 	<br/>
 </xsl:template>
