@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.34  2005/01/10 21:58:49  pico
+		Blindage pour les faqmestres qui font de nombreuses bétises...
+
 		Revision 1.33  2004/12/17 17:25:08  schmurtz
 		Ajout d'une belle page d'erreur.
-
+		
 		Revision 1.32  2004/12/16 12:52:57  pico
 		Passage des paramètres lors d'un login
 		
@@ -144,11 +147,16 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0]=='rmdir') {
 		$DB_faq->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
 		list($dir) = $DB_faq->next_row();
-		$dir = BASE_DATA."faq/".$dir;
-		deldir($dir);
-		$DB_faq->query("DELETE FROM faq WHERE faq_id='{$temp[1]}'");
-		$DB_faq->query("DELETE FROM faq WHERE parent='{$temp[1]}'");
-		echo "<warning>Repertoire Supprimé</warning>";
+		$DB_faq->query("SELECT faq_id,question FROM faq WHERE (parent='{$temp[1]}' AND NOT  (reponse LIKE '%index.php' OR reponse LIKE '%index.html')) ") ;
+		if($DB_faq->num_rows()==0){
+			$dir = BASE_DATA."faq/".$dir;
+			deldir($dir);
+			$DB_faq->query("DELETE FROM faq WHERE faq_id='{$temp[1]}'");
+			$DB_faq->query("DELETE FROM faq WHERE parent='{$temp[1]}'");
+			echo "<warning>Repertoire Supprimé</warning>";
+		}else{
+			echo "<warning>Tentative de suppression d'un répertoire racine !!!</warning>";
+		}
 	}
 	
 	if (($temp[0]=='adddir') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='')) {
