@@ -24,9 +24,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.18  2004/10/22 11:13:32  kikx
+	Autorise de modifier son image trombi : reste a faire la apge de validation coté admin
+
 	Revision 1.17  2004/10/21 22:43:11  kikx
 	Bug fix et mise en place de la possibilité de modifier la photo du trombino
-
+	
 	Revision 1.16  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
 	
@@ -60,7 +63,7 @@
 require_once "../include/global.inc.php";
 demande_authentification(AUTH_MAIL);
 
-$message_succes="";
+$message="";
 
 // Données sur l'utilisateur
 $DB_trombino->query("SELECT eleves.nom,prenom,surnom,mail,login,promo,sections.nom,cie,piece_id FROM eleves INNER JOIN sections USING(section_id) WHERE eleve_id='".$_SESSION['user']->uid."'");
@@ -77,7 +80,7 @@ if(isset($_POST['changer_frankiz'])) {
 	} else {
 		$DB_web->query("UPDATE compte_frankiz SET passwd='".md5($_POST['passwd'])."' "
 				   ."WHERE eleve_id='".$_SESSION['user']->uid."' ");
-		$message_succes="Le mot de passe vient d'être changé.";
+		$message.="Le mot de passe vient d'être changé.";
 	}
 
 	// Modification du cookie d'authentification
@@ -89,12 +92,12 @@ if(isset($_POST['changer_frankiz'])) {
 		SetCookie("auth",base64_encode(serialize($cookie)),time()+3*365*24*3600,"/");
 		$_COOKIE['auth'] = "blah";  // hack permetttant de faire marcher le test d'existance du cookie
 									// utilisé quelques ligne plus bas sans devoir recharger la page.
-		$message_succes.="Le cookie d'authentification a été activé.";
+		$message.="Le cookie d'authentification a été activé.";
 	} else {
 		// on supprime le cookie
 		SetCookie("auth","",0,"/");
 		unset($_COOKIE['auth']);	// hack, cf. au dessus.
-		$message_succes.="Le cookie d'authentification a été désactivé.";
+		$message.="Le cookie d'authentification a été désactivé.";
 	}
 
 // Modification de la fiche du trombino
@@ -111,8 +114,73 @@ if(isset($_POST['changer_frankiz'])) {
 		$surnom = $_POST['surnom'];
 		$mail = $_POST['email'];
 		$DB_trombino->query("UPDATE eleves SET surnom='$surnom',mail=".(empty($mail)?"NULL":"'$mail'")." WHERE eleve_id='".$_SESSION['user']->uid."'");
-		$message_succes="L'email et le surnom ont été modifié.";
+		$message.="<commentaire>L'email et le surnom ont été modifié.</commentaire>";
 	}
+	
+	//===================================
+	// Modification de l'image trombino
+	//--------------------------------------------
+	
+	if ($_FILES['file']['tmp_name']!='none') {
+
+		// On verifie d'abord que la personne n'a pas demander le changement de sa photo trombino
+		//------------------------------------
+	
+		$DB_valid->query("SELECT eleve_id FROM valid_img_trombi WHERE eleve_id={$_SESSION['user']->uid}");
+		if ($DB_valid->num_rows()!=0) {
+			$message .= "<warning>Vous aviez déjà demandé une modification, seule la demande que vous venez de poster sera prise en compte</warning>" ;
+			$DB_valid->query("DELETE FROM valid_img_trombi WHERE eleve_id={$_SESSION['user']->uid}");
+		} else {
+			$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
+
+			$contenu = "$nom $prenom ($promo) a demandé la modification de son image trombino \n\n".
+				"Pour valider ou non cette demande va sur la page suivante : \n".
+				"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_trombino.php\n\n" .
+				"Très BR-ement\n" .
+				"L'automate :)\n"  ;
+				
+			mail(MAIL_WEBMESTRE,"[Frankiz] Modification de l'image trombi de $nom $prenom",$contenu);
+		
+		}
+		
+		$img = $_FILES['file']['tmp_name'] ;
+		$image_types = Array ("image/bmp","image/jpeg","image/pjpeg","image/gif","image/x-png","image/png");
+	
+			//récupere les données de l'images
+			//--------------------------------------
+			
+		$type_img =  $_FILES["file"]["type"];
+		
+		$fp = fopen($img,"rb"); // (b est pour lui dire que c'est bineaire !)
+		$size = filesize($img) ;
+		$dim = getimagesize($img) ;
+		$data = fread($fp,$size);
+		fclose($fp);
+		$data = addslashes($data);
+	
+			//
+			// On verifie que le truc télécharger est une image ...
+			//--------------------------------------
+		if (in_array (strtolower ($type_img), $image_types)) {
+			$DB_valid->query("INSERT INTO valid_img_trombi SET image=\"$data\", eleve_id={$_SESSION['user']->uid}") ;
+			$message .= "<commentaire>La demande de modification de ton image trombino a été effectuée</commentaire>" ;
+		} else {
+			$message .= "<warning>Ton image n'est pas une image au bon format</warning>" ;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 // Modification de la partie "binets"
 
@@ -125,7 +193,7 @@ if (isset($_POST['mod_binet'])) {
 		$key = $key[1] ;
 		$DB_trombino->query("UPDATE membres SET remarque='$val' WHERE eleve_id={$_SESSION['user']->uid} AND binet_id=$key");
  	}
-	$message_succes =  "Modification de la partie binets faite avec succès" ;
+	$message .=  "<commentaire>Modification de la partie binets faite avec succès</commentaire>" ;
 }
 
 // Modification de la partie "binets"
@@ -141,9 +209,9 @@ if (isset($_POST['suppr_binet'])) {
 	}
 	if ($count>=1) {
 		mysql_query("DELETE FROM membres WHERE binet_id IN ($ids) AND  eleve_id={$_SESSION['user']->uid}");
-		$message_succes =  "Suppression de $count binets" ;
+		$message .=  "Suppression de $count binets" ;
 	} else {
-		$message_succes =  "Aucun binet séléctionné" ;	
+		$message .=  "<warning>Aucun binet séléctionné</warning>" ;	
 	}
 }
 
@@ -152,9 +220,9 @@ if (isset($_POST['suppr_binet'])) {
 if (isset($_POST['add_binet'])) {
 	if ($_POST['liste_binet'] != 'default') {
 		mysql_query("INSERT INTO membres SET eleve_id={$_SESSION['user']->uid},binet_id={$_POST['liste_binet']}");
-		$message_succes = "Binet correctement ajouté" ;
+		$message .= "<commentaire>Binet correctement ajouté</commentaire>" ;
 	} else {
-		$message_succes = "Aucun binet séléctionné" ;
+		$message .=  "<warning>Aucun binet séléctionné</warning>" ;	
 	}
 }
 
@@ -166,8 +234,8 @@ require "../include/page_header.inc.php";
 <page id="profil" titre="Frankiz : modification du profil">
 	<h1>Modification de son profil</h1>
 <?php
-		if(!empty($message_succes))
-			echo "<commentaire>$message_succes</commentaire>\n";
+		if(!empty($message))
+			echo "$message\n";
 		if(a_erreur(ERR_MDP_DIFFERENTS))
 			echo "<warning>Les valeurs des deux champs de mot de passe n'étaient pas identiques.</warning>\n";
 		if(a_erreur(ERR_MDP_TROP_PETIT))
