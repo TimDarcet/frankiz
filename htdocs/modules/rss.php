@@ -21,10 +21,13 @@
 	Affichage de flux rss externes sous forme de module.
 
 	$Log$
+	Revision 1.7  2004/11/24 23:06:46  pico
+	BugFix
+
 	Revision 1.6  2004/11/24 22:56:18  schmurtz
 	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
 	globale pour tous les fichiers.
-
+	
 	Revision 1.5  2004/11/24 19:00:32  pico
 	Bon, là ça devrait être bon...
 	
@@ -43,7 +46,7 @@
 
 */
 
-require_once "../rss_func.inc.php";
+require_once "../include/rss_func.inc.php";
 
 if(isset($_SESSION['rss']) && !empty($_SESSION['rss']) && count($_SESSION['rss'])>0){
 	foreach($_SESSION['rss'] as $value => $mode){
