@@ -21,9 +21,12 @@
 	Script de crÈation de la partie activitÈs contenant des images type "affiche".
 	
 	$Log$
+	Revision 1.13  2004/12/13 08:50:48  pico
+	Correction mineure
+
 	Revision 1.12  2004/11/27 18:23:53  pico
 	Ajout de l'annonce: 'le bob est ouvert' dans les activitÈs + page de gestion du bob
-
+	
 	Revision 1.11  2004/11/25 10:40:08  pico
 	Correction activitÈs (sinon l'image Ètait tjs Ècrite en tant que 0 et ct pas glop du coup)
 	
@@ -59,7 +62,7 @@ if(est_authentifie(AUTH_MINIMUM)) {
 	$DB_web->query("SELECT affiche_id,titre,url,date FROM affiches WHERE TO_DAYS(date)=TO_DAYS(NOW())");
 	if ($DB_web->num_rows()!=0 || $valeur=='1'){
 		echo "<module id=\"activites\" titre=\"ActivitÈs\">\n";
-		if($valeur == 1) echo "<annonce titre=\"Le BÙB est ouvert\"/>";
+		if($valeur == 1) echo "<annonce><p>Le BÙB est ouvert</p></annonce>";
 		while (list($id,$titre,$url,$date)=$DB_web->next_row()) { ?>
 			<annonce date="<? echo $date ?>">
 			<lien url="<?php echo $url?>"><image source="<?php echo DATA_DIR_URL.'affiches/'.$id?>" texte="Affiche" legende="<?php echo $titre?>"/></lien>
