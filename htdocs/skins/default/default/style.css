@@ -263,6 +263,10 @@ span.tour_kawa {
 	padding-left:20px;
 }
 
+dl#activités div.activité p.image img {
+	width:90px;
+}
+
 /* ################## PARAGRAPHE ################# */
 
 p {
