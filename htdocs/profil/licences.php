@@ -21,11 +21,14 @@
 	Page qui permet de demander une clé windows
 	
 	$Log$
+	Revision 1.20  2005/01/30 21:57:06  dei
+	là ça marchera mieux...
+
 	Revision 1.19  2005/01/30 21:35:46  dei
 	-----------------------------------------------------------------------
 	le probleme de l'attribution des licences est transparent pour
 	l'utilisateur
-
+	
 	Revision 1.18  2005/01/18 20:52:17  dei
 	c'est plus clair comme ça
 	
@@ -131,20 +134,31 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 			//on prévient les admins@windows qu'il ya une clée à rajouter à la main...
 			//et le gens donne sa raison
 			if($_POST['logiciel']=="winxp"){
+				$DB_frankiz2->query("SELECT lastpromo_oncampus FROM parametres LIMIT 1");
+				list($promolim)=$DB_frankiz2->next_row();
+				if($promo==$promolim-1 || $promo==$promolim){
 				?>
 			
 			<formulaire id="dem_licence" titre= "Les licences pour les logiciels Microsoft" action="profil/licences.php">
 				<note>Ta requéte a bien été prise en compte, un admin@windows s'en occupe.</note>
-				<?/*<warning>Tu ne figures pas dans la liste des personnes ayant droit à une licence dans le cadre du programme MSDNAA</warning>
-				<p>Seuls les étudiants sur le platâl peuvent faire une demande pour une license Microsoft dans le cadre MSDNAA, s'il s'agit d'une erreur tu peux le signaler aux admin@windows.</p>
-				<p>Si c'est le cas indique la raison de ta demande :</p>
-				<zonetext titre="Raison" id="raison"></zonetext>*/?>
 				<hidden id="raison" valeur="sur le platal"/>
 				<? if(isset($_POST['logiciel'])){ echo "<hidden id=\"logiciel\" valeur=\"".$_POST['logiciel']."\" />"; } ?>
 				<bouton id='envoyer' titre='Continuer'/>
-				<?/*<bouton id='' titre='Ne rien faire'/>*/?>
-			</formulaire>
+			</formulaire>	
 			<?php 
+				}else{
+			?>
+			<formulaire id="dem_licence" titre= "Les licences pour les logiciels Microsoft" action="profil/licences.php">
+				<warning>Tu ne figures pas dans la liste des personnes ayant droit à une licence dans le cadre du programme MSDNAA</warning>
+				<p>Seuls les étudiants sur le platâl peuvent faire une demande pour une license Microsoft dans le cadre MSDNAA, s'il s'agit d'une erreur tu peux le signaler aux admin@windows.</p>
+				<p>Si c'est le cas indique la raison de ta demande :</p>
+				<zonetext titre="Raison" id="raison"></zonetext>
+				<? if(isset($_POST['logiciel'])){ echo "<hidden id=\"logiciel\" valeur=\"".$_POST['logiciel']."\" />"; } ?>
+				<bouton id='envoyer' titre='Continuer'/>
+				<bouton id='' titre='Ne rien faire'/>
+			</formulaire>
+			<?
+				}
 			}
 		
 			//traitement particulier pour les autres logiciels
