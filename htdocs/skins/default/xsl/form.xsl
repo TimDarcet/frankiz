@@ -21,9 +21,12 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.8  2004/12/17 02:01:12  psycow
+	Gros changement dans les Formulaires, mieux pour les sondages
+
 	Revision 1.7  2004/12/15 00:38:30  psycow
 	Commit du boulot de l'apres midi, a la place de l'EA
-
+	
 	Revision 1.5  2004/12/12 17:45:33  psycow
 	Modification Mineure, pre-test IE: la dernière étape
 	
@@ -80,9 +83,9 @@
 			<xsl:for-each select="*[name()!='bouton' and name()!='hidden']">
  				<!--<xsl:choose>
 					<xsl:when test="name()!='warning' and name()!='commentaire' and name()!='note' and name()!='notice'">
-					 -->	<span class="droite">
+					 --><!--	<span class="droite">
 							<xsl:apply-templates select="."/>
-						</span>
+						</span>-->
  				<!--	</xsl:when> 
 					<xsl:otherwise>
 						<span class="gauche">
@@ -90,13 +93,27 @@
 						</span>
 					</xsl:otherwise>
 				</xsl:choose> -->
-				<xsl:if test="boolean(@titre)">
+				<!--<xsl:if test="boolean(@titre)">
 					<label class="gauche">
 						<xsl:attribute name='for'><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
 						<xsl:value-of select="@titre"/> :
 					</label>
+				</xsl:if>-->
+				
+				<xsl:if test="boolean(@titre)">
+					<p class="titre"><xsl:value-of select="@titre"/> :</p>
 				</xsl:if>
-				<br/>
+				<xsl:choose>
+					<xsl:when test="name()!='warning' and name()!='commentaire' and name()!='note' and name()!='notice'">
+						<span class="objet">
+							<xsl:apply-templates select="."/>
+						</span>
+					</xsl:when> 
+					<xsl:otherwise>
+							<xsl:apply-templates select="."/>
+					</xsl:otherwise>
+				</xsl:choose> 
+				
 			</xsl:for-each> 
 			<p class="boutons">
 				<xsl:apply-templates select="bouton"/>

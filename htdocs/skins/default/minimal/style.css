@@ -602,22 +602,12 @@ fieldset {
 }
 /* -- formulaire simple (trombi,skin,etc...) -- */
 
-.formulaire {
+.formulaire span.objet{
+	display:block;
+	margin-left:10%;
 }
-
-.formulaire span.droite{
-	float:right;
-	width:78%;
-	text-align: left;
-}
-
-.formulaire label.gauche{
-	float:left;
-	width:20%;
-	padding-left:5px;
-}
-.formulaire div{
-	clear:both;
+.formulaire p.titre{
+	text-decoration:underline;
 }
 
 .formulaire p.boutons{
@@ -626,7 +616,6 @@ fieldset {
 	padding-top:10px;
 	margin:0 auto;
 }
-
 
 /* -- formulaires plus chiants, basés sur les listes (gestion par tableau) -- */
 table.liste {

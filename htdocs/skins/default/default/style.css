@@ -806,22 +806,12 @@ fieldset {
 }
 /* -- formulaire simple (trombi,skin,etc...) -- */
 
-.formulaire {
+.formulaire span.objet{
+	display:block;
+	margin-left:10%;
 }
-
-.formulaire span.droite{
-	float:right;
-	width:78%;
-	text-align: left;
-}
-
-.formulaire label.gauche{
-	float:left;
-	width:20%;
-	padding-left:5px;
-}
-.formulaire div{
-	clear:both;
+.formulaire p.titre{
+	text-decoration:underline;
 }
 
 .formulaire p.boutons{
