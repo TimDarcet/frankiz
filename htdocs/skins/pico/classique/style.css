@@ -39,11 +39,11 @@ span.fkz_logo,span.fkz_logo_eleves {
 	display:none;
 }
  
-a {
+a, a:link {
     text-decoration: none;
 }
 
-a:hover {
+a:hover, a:active {
     text-decoration: underline overline;
 }
 
@@ -98,55 +98,35 @@ ul.fkz_liens_nav{
 }
 
 .fkz_qdj_jone {
-	background-image: url("../default/pointjone.gif");
-	background-repeat:no-repeat;
-	background-position: center center;
-	height:60px;
 	float: right;
 	text-align: center;
 	width: 49%;
 }
 
 .fkz_qdj_rouje {
-	background-image:url("../default/pointrouje.gif");
-	background-repeat:no-repeat;
-	background-position: center center;
-	height:60px;
     float: left;
     text-align: center;
     width: 49%;
 }
 
 .fkz_qdj_jone_reponse {
-	background-color:yellow;
-	height:60px;
 	float: right;
 	text-align: center;
 	width: 49%;
+	color: yellow;
 }
 
 .fkz_qdj_rouje_reponse {
-	background-color:red;
-	height:60px;
     float: left;
     text-align: center;
     width: 49%;
+    color: red;
 }
 
-
-.col {
-	height:50px;
-}
-.col span {
-	display:block;
-	height:50px;
-}
-.col span.jone {
-	background:url(../images/jaune.gif) repeat-y top center;
-}
-.col span.rouje {
-	background:url(../images/rouge.gif) repeat-y top center;
-}
+div.col {height: 50px;}
+div.col span { height: 50px; display: block;}
+span.rouge { background-image: url("images/rouge.gif") repeat-y top center ;}
+span.jaune { background-image: url("images/jaune.gif") repeat-y top center ;}
 
 .fkz_anniversaire_titre {
 	color: white;
@@ -172,9 +152,9 @@ ul.fkz_liens_nav{
 	border-left: 1px solid #1f118c;
 }
 
-.fkz_titre {
+.fkz_titre, .fkz_page_titre {
 	color: white;
-	background: #1f118c;
+	background-color: #1f118c;
 	padding: 2px;
 	text-align : center;
 	font-size: 11pt;
@@ -186,7 +166,7 @@ ul.fkz_liens_nav{
 	border-top: 1px solid #1f118c;
 }
 
-.fkz_module_corps {
+.fkz_module_corps, .fkz_page_corps {
 	background: #e8e7f3;
 	border-bottom: 1px solid #1f118c;
 	padding: 2px;
@@ -223,7 +203,7 @@ ul.fkz_liens_nav{
 	margin-right: -5px;
 }
 
-.fkz_annonces,.fkz_page_divers {
+.fkz_annonces {
 	padding-left: 5px;
 	padding-right: 5px;
 	font-size: 9pt;
@@ -313,7 +293,7 @@ span.fkz_annonces_vieux {
 .fkz_stats{list-style-type:  none; }
 
 .serveur_nom {
-	display: block;
+/*	display: block;*/
 	color: inherit;
 }
 
@@ -321,16 +301,16 @@ span.fkz_annonces_vieux {
 	color: inherit;
 	background: lime;
 	position: relative;
-	left: 100px;
-	top: 16px;
+	left: 120px;
+/*	top: 16px;*/
 }
 
 .serveur_down {
 	color: inherit;
 	background: red;
 	position: relative;
-	left: 100px;
-	top: 16px;
+	left: 120px;
+/*	top: 16px;*/
 }
 /* FAQ et Xshare */
 .noeud_ferme {
@@ -342,7 +322,7 @@ span.fkz_annonces_vieux {
 }
 
 .feuille {
-	margin:5px; border: thin dotted #ccc; list-style-image: url('../default/question.gif');
+	list-style-image: url('../default/question.gif');
 }
 
 
@@ -480,4 +460,9 @@ form.trombino table{
 
 form.trombino input,form.trombino select {
 	width:150px;
+}
+
+span.meteo {
+	text-align: center;
+	display: block;
 }
