@@ -21,9 +21,12 @@
 	Liens permettants de contacter les webmestres et faire des demandes.
 	
 	$Log$
+	Revision 1.16  2004/11/06 20:10:53  kikx
+	Id des liens pour le module contact ...
+
 	Revision 1.15  2004/10/31 18:20:24  kikx
 	Rajout d'une page pour les plan (venir à l'X)
-
+	
 	Revision 1.14  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -66,17 +69,17 @@
 	
 */
 ?>
-<module id="liens_contacts" titre="Contacts">
-	<lien titre="Contact" url="contact.php" />
+<module id="liens_contacts" titre="Utiles">
+	<lien id="utile_contact" titre="Contact" url="contact.php" />
 	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
-		<lien titre="Proposer une annonce" url="proposition/annonce.php" />
-		<lien titre="Proposer une activité" url="proposition/affiche.php" />
-		<lien titre="Proposer une qdj" url="proposition/qdj.php" />
-		<lien titre="Demander un mail promo" url="proposition/mail_promo.php" />
+		<lien id="utile_annonce" titre="Proposer une annonce" url="proposition/annonce.php" />
+		<lien id="utile_activite" titre="Proposer une activité" url="proposition/affiche.php" />
+		<lien id="utile_qdj" titre="Proposer une qdj" url="proposition/qdj.php" />
+		<lien id="utile_mailpromo" titre="Demander un mail promo" url="proposition/mail_promo.php" />
 		<!--<lien titre="Proposer un sondage" url="proposition/sondage.php/" />-->
 	<?php endif; ?>
 	<?php if(!est_authentifie(AUTH_MINIMUM)): ?>
-		<lien titre="Venir à l'X" url="plan.php" />
+		<lien id="utile_plan" titre="Venir à l'X" url="plan.php" />
 	<?php endif; ?>
-	
+	<lien id="utile_liens" titre="Liens utiles" url="liens.php" />
 </module>
