@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.15  2004/10/24 20:13:22  kikx
+	Pour afficher la photo original ...
+
 	Revision 1.14  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.13  2004/09/17 13:12:07  schmurtz
 	Suppression des <![CDATA[...]>> car les données des GET et POST (et donc de la base de données) sont maintenant échappées avec des &amp; &lt; &apos;...
 	
@@ -46,7 +49,11 @@ demande_authentification(AUTH_MINIMUM);
 if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "true") && ($_REQUEST['image'] != "")){
 	require_once("../include/global.inc.php");
 	header('content-type: image/jpeg');
-	readfile(BASE_PHOTOS.$_REQUEST['promo']."/".$_REQUEST['login'].".jpg");	
+	if (!isset($_REQUEST['original'])) {
+		readfile(BASE_PHOTOS.$_REQUEST['promo']."/".$_REQUEST['login'].".jpg");	
+	} else {
+		readfile(BASE_PHOTOS.$_REQUEST['promo']."/".$_REQUEST['login']."_original.jpg");		
+	}
 	exit;
 }
 
