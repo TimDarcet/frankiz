@@ -21,9 +21,12 @@
 	Page qui permet l'administration des licences windows.
 	
 	$Log$
+	Revision 1.21  2005/02/16 21:32:55  dei
+	pour pas faire le boulet a stocker plein de fois la meme clé
+
 	Revision 1.20  2005/02/16 21:20:23  dei
 	ajout de la gestion des clés uniques, sans trop "pourrir" la page
-
+	
 	Revision 1.19  2005/02/16 20:41:24  dei
 	gestion autres logiciels (Access...)
 	
@@ -120,7 +123,7 @@ function test_cle($key){
 	return false;
 }
 
-$DB_msdnaa->query("LOCK TABLES valid_licence WRITE ,cles_winxp WRITE,cles_2k3serv WRITE,cles_libres WRITE,cles_2k3access WRITE, cles_2k3onenote WRITE, cles_2k3visiopro WRITE, cles_admin WRITE, cles_win2k WRITE, cles_visualstudio WRITE");
+$DB_msdnaa->query("LOCK TABLES valid_licence WRITE ,cles_winxp WRITE,cles_2k3serv WRITE,cles_libres WRITE,cles_2k3access WRITE, cles_2k3onenote WRITE, cles_2k3visiopro WRITE, cles_admin WRITE");
 $DB_msdnaa->query("SET AUTOCOMMIT=0");
 
 foreach ($_POST AS $keys => $val){
@@ -166,8 +169,7 @@ $temp = explode("_",$keys) ;
 					
 					echo "<note>c'est bon</note>";
 					$DB_msdnaa->query("DELETE FROM valid_licence WHERE eleve_id='{$temp[1]}'");
-					//on l'ajoute à la base concernée...
-					$DB_msdnaa->query("INSERT cles_$temp[2] SET eleve_id='{$temp[1]}', attrib='1', cle='$_POST[$temp2]'");
+					
 					$contenu = "Bonjour, <br><br>".
 							"Nous t'avons attribué la licence suivante :<br>".
 							$_POST[$temp2]."<br>".
@@ -342,11 +344,9 @@ if(isset($_POST['effacer'])&&$_POST['login']!=""){
 		<choix titre="Logiciel" id="logiciel" type="combo" valeur="">
 			<option titre="Windows XP Pro" id="winxp"/>
 			<option titre="Windows 2003 Serveur" id="2k3serv"/>
-			<option titre="Windows 2000 Professionnel" id="win2k"/>
 			<option titre="Access 2003" id="2k3access"/>
 			<option titre="One Note 2003" id="2k3onenote"/>
 			<option titre="Visio 2003 Professionnel" id="2k3visiopro"/>
-			<option titre="Visual Studio .NET" id="visualstudio"/>
 		</choix>
 		<bouton id='chercher' titre='Rechercher'/>
 		<bouton id='ajout' titre="Ajouter"/>
@@ -434,11 +434,9 @@ if(isset($_POST['update'])&&is_readable($_FILES['file']['tmp_name'])){
 		<choix titre="Logiciel" id="logiciel" type="combo" valeur="">
 			<option titre="Windows XP Pro" id="winxp"/>
 			<option titre="Windows 2003 Serveur" id="2k3serv"/>
-			<option titre="Windows 2000 Professionnel" id="win2k"/>
 			<option titre="Access 2003" id="2k3access"/>
 			<option titre="One Note 2003" id="2k3onenote"/>
 			<option titre="Visio 2003 Professionnel" id="2k3visiopro"/>
-			<option titre="Visual Studio .NET" id="visualstudio"/>
 		</choix>
 		<bouton id='update' titre="Ajouter"/>
 	</formulaire>
