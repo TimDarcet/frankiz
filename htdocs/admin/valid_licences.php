@@ -21,9 +21,12 @@
 	Page qui permet l'administartion des licences windows.
 	
 	$Log$
+	Revision 1.16  2005/01/23 21:47:40  dei
+	bug de LOCK TABLES
+
 	Revision 1.15  2005/01/23 21:37:26  dei
 	voilà version finale ! (j'espère)
-
+	
 	Revision 1.14  2005/01/23 21:05:02  dei
 	la ça devrait mieux marcher
 	
@@ -104,7 +107,7 @@ function test_cle($key){
 	return false;
 }
 
-$DB_msdnaa->query("LOCK TABLES valid_licence WRITE ,cles_winxp WRITE,cles_2k3serv WRITE");
+$DB_msdnaa->query("LOCK TABLES valid_licence WRITE ,cles_winxp WRITE,cles_2k3serv WRITE,cles_libres WRITE");
 $DB_msdnaa->query("SET AUTOCOMMIT=0");
 
 foreach ($_POST AS $keys => $val){
