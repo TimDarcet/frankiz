@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.37  2005/01/10 22:26:49  pico
+		idem pour les autres formulaires
+
 		Revision 1.36  2005/01/10 22:24:37  pico
 		Voilà l'erreur
-
+		
 		Revision 1.35  2005/01/10 22:17:03  pico
 		Amélioration ?
 		
@@ -435,7 +438,7 @@ echo "</arbre>";
 	<? if(isset($_REQUEST['dir_id'])) $dir_id = $_REQUEST['dir_id']; else $dir_id="1"; ?>
 	<formulaire id="del_dir_faq_<? echo $dir_id ?>" titre="Supprimer ce dossier" action="admin/faq.php">
 	<? foreach ($_REQUEST AS $keys => $val){
-		if((!strstr($keys,"rmdir"))&&(!strstr($keys,"rmdir"))) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
+		if(!strstr($keys,"rmdir")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 		}
 	?>
 	<bouton id='rmdir_<? echo  $dir_id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce répertoire et tous ses fichiers ?!!!!!')"/>
@@ -446,7 +449,7 @@ echo "</arbre>";
 	<champ id="nom" titre="Nom du sous-dossier" valeur="" />
 	<champ id="desc" titre="Description du sous-dossier" valeur="" />
 	<? foreach ($_REQUEST AS $keys => $val){
-		if(!strstr($keys,"adddir")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
+		if(!strstr($keys,"adddir") && !strstr($keys,"nom") && !strstr($keys,"desc")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 		}
 	?>
 	<bouton id='adddir_<? echo $dir_id ?>' titre='Ajouter' onClick="return window.confirm('!!!!!!Créer ce répertoire ?!!!!!')"/>
