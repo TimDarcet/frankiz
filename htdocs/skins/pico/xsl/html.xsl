@@ -131,6 +131,12 @@
 <xsl:template match="br">
 	<br/>
 </xsl:template>
+<xsl:template match="ul">
+	<ul><xsl:apply-templates/></ul>
+</xsl:template>
+<xsl:template match="li">
+	<li><xsl:apply-templates/></li>
+</xsl:template>
 <xsl:template match="p[@id='selected']">
 	<img src="skins/pico/fleche.gif" alt="[selectionné]"/>
 </xsl:template>

@@ -21,9 +21,12 @@
 	Moteur Wiki (TipiWiki)
 	
 	$Log$
+	Revision 1.7  2004/11/28 01:33:32  pico
+	Gestion des listes sur le wiki (arbre + feuille)
+
 	Revision 1.6  2004/11/28 00:06:32  pico
 	Ajout des images avec légende (et donc "alt") dans le wiki
-
+	
 	Revision 1.5  2004/11/27 23:30:34  pico
 	Passage des xshare et faq en wiki
 	Ajout des images dans l'aide du wiki
@@ -74,13 +77,14 @@ function wikiVersXML($filtered,$enhtml=false) {
 	$filtered = preg_replace("/\|(.+)\|/U","<code>\\1</code>", $filtered);
 
 	// lists <ul>
-	//$filtered = preg_replace("/(?<=[\n>])\* (.+)\n/","<li>\\1</li>",$filtered);
-	//$filtered = preg_replace("/<li>(.+)\<\/li>/","</p><ul>\\0</ul><p>",$filtered);
+	$filtered = preg_replace("/(?<=[\n>])\* (.+)\n/","<feuille>\\1</feuille>",$filtered);
+	$filtered = preg_replace("/<feuille>(.+)\<\/feuille>/","</p><arbre><noeud>\\0</noeud></arbre><p>",$filtered);
 	
 	// strip leading and ending line breaks
 	$filtered = preg_replace("/^(\n+)/","",$filtered); 
 	$filtered = preg_replace("/\n{3,}/","<p> </p>",$filtered); 
-
+	
+	
 	// <pre> blocks
 	//$filtered = preg_replace("/(?<=\n) (.*)(\n)/","<pre>\\1</pre>", $filtered);
 	
@@ -88,7 +92,7 @@ function wikiVersXML($filtered,$enhtml=false) {
 	$filtered = str_replace("\n","</p><p>\n",$filtered);
 	
 	// html beauty
-	$filtered = "<p>".$filtered."</p>";
+	$filtered = "<p>".$filtered."</p>\n";
 	//$filtered = str_replace("</li>","</li>\n",$filtered);
 	//$filtered = str_replace("ul>","ul>\n",$filtered);
 	$filtered = str_replace("</p><p>\n<h","\n<h", $filtered);

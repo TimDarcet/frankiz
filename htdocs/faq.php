@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.7  2004/11/28 01:33:32  pico
+		Gestion des listes sur le wiki (arbre + feuille)
+
 		Revision 1.6  2004/11/27 23:41:19  pico
 		erreur de chemin vers les data dans la faq
-
+		
 		Revision 1.5  2004/11/27 23:30:34  pico
 		Passage des xshare et faq en wiki
 		Ajout des images dans l'aide du wiki
@@ -337,21 +340,19 @@ if ($id != "") {
 		echo "<cadre titre=\"Q: ".$question."\" id=\"reponse\">\n";
 		if(file_exists($repfaq)){
 			if($texte = fopen($repfaq,"r")){
+				$wiki = '';
 				while(!feof($texte))
 				{
-					$ligne = wikiVersXML(fgets($texte,255));
+					$ligne = fgets($texte,2000);
 					// Remplace les liens locaux pour les images et les liens, car sinon conflit avec le BASE_HREF
-					$patterns[0] = '(<html>|</html>)';
-					$patterns[1] = '(source="(?!http://)(?!ftp://))';
-					$patterns[2] ='(url="(?!http://)(?!ftp://)(?!#))';
-					$patterns[3] ='(url="#)';
-					$replacements[3] = '';
-					$replacements[2] = 'source="'.dirname(BASE_DATA."/faq/$reponse")."/";
-					$replacements[1] = 'url="'.dirname(BASE_DATA."/faq/$reponse")."/";
-					$replacements[0] = 'url="'.getenv('SCRIPT_NAME')."?".getenv('QUERY_STRING')."#";
+					$patterns[0] ='(\[(?!http://)(?!ftp://)(?!#))';
+					$patterns[1] ='(\[#)';
+					$replacements[1] = '['.dirname(BASE_URL."/../data/faq/$reponse")."/";
+					$replacements[0] = '['.getenv('SCRIPT_NAME')."?".getenv('QUERY_STRING')."#";
 					$ligne = preg_replace($patterns,$replacements, $ligne);
-					print(htmlspecialchars($ligne,ENT_QUOTES));
+					$wiki.= $ligne;
 				}
+				print(wikiVersXML($wiki));
 				fclose($texte);
 			}
 		} else {

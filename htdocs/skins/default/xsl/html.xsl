@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.3  2004/11/28 01:33:33  pico
+	Gestion des listes sur le wiki (arbre + feuille)
+
 	Revision 1.2  2004/11/27 20:58:37  pico
 	Ajout de la balise <br/>
-
+	
 	Revision 1.1  2004/11/24 20:26:40  schmurtz
 	Reorganisation des skins (affichage melange skin/css + depacement des css)
 	
@@ -190,6 +193,12 @@
 <!-- Formatage HTML -->
 <xsl:template match="p">
 	<xsl:apply-templates/><br />
+</xsl:template>
+<xsl:template match="ul">
+	<ul><xsl:apply-templates/></ul>
+</xsl:template>
+<xsl:template match="li">
+	<li><xsl:apply-templates/></li>
 </xsl:template>
 <xsl:template match="br">
 	<br/>
