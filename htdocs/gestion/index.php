@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.38  2005/01/18 18:26:56  pico
+	Pb d'accent
+
 	Revision 1.37  2005/01/18 13:45:31  pico
 	Plus de droits pour les web
-
+	
 	Revision 1.36  2005/01/18 12:11:49  pico
 	Etat de la kès + validation des mails promos dans l'interface de la Kès
 	
@@ -211,7 +214,7 @@ $permissions_user = $_SESSION['user']->perms ;
 ?>
 <page id="admin" titre="Frankiz : administration">
 	<? 
-	if (verifie_permission('admin')||verifie_permission('web')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('xshare')||verifie_permission('faq')||verifie_permission('kes')){
+	if (verifie_permission('admin')||verifie_permission('web')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('xshare')||verifie_permission('faq')){
 	?>
 		<h2>Administration frankiz</h2>
 	<? 
@@ -429,7 +432,7 @@ $permissions_user = $_SESSION['user']->perms ;
 	//
 	// Pour la Kès
 	//======================================
-	if (verifie_permission('admin')||verifie_permission('kès')){
+	if (verifie_permission('admin')||verifie_permission('kes')){
 		echo "<h2>Gestion de la Kès</h2>" ;
 		echo "<lien titre=\"Gérer l'ouverture de la Kès\" url=\"gestion/etat_kes.php\"/><br/>" ;
 		$DB_valid->query("SELECT eleve_id FROM valid_mailpromo") ;
