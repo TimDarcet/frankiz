@@ -21,9 +21,12 @@
 	Moteur Wiki (TipiWiki)
 	
 	$Log$
+	Revision 1.20  2004/12/14 14:18:12  schmurtz
+	Suppression de la page de doc wiki : doc directement dans les pages concernees.
+
 	Revision 1.19  2004/12/14 12:47:49  pico
 	Le wiki devrait marcher beaucoup mieux ainsi....
-
+	
 	Revision 1.18  2004/12/13 23:45:49  kikx
 	Attention ... je sais pas trop ce que je fais mais qd je le fait ca corrige les bugs de alban
 	
@@ -106,22 +109,22 @@ function wikiVersXML($filtered,$enhtml=false) {
 	
 	// lists <ul>
 	if(!$enhtml){
-	// Listes à 2 niveau
-	$filtered = preg_replace("/(?<=[\n>])--(.+)\n/","<arbre><noeud><feuille>$1</feuille></noeud></arbre>",$filtered);
-	$filtered = preg_replace("(</noeud></arbre><arbre><noeud>)","",$filtered);
-	// Légende liste 2 niveau
-	$filtered = preg_replace("/(?<=[\n>])-(.+)\n<arbre><noeud>/","<arbre><noeud titre=\"$1\">",$filtered);
-	// Liste simple
-	$filtered = preg_replace("/(?<=[\n>])-(.+)\n/","<arbre><feuille>$1</feuille></arbre>",$filtered);
-	// Structure d'arbre
-	$filtered = preg_replace("(</arbre><arbre>)","",$filtered);
-	}else{
-	// Listes
-	$filtered = preg_replace("/(?<=[\n>])--(.+)\n/","<li><ul><li>\\1</li></ul></li>",$filtered); //Liste 2 eme niveau
-	$filtered = preg_replace("/(?<=[\n>])-(.+)\n/","<li>\\1</li>",$filtered); // Liste 1er niveau
-	$filtered = preg_replace("(</ul></li><li><ul>)","",$filtered);  
-	$filtered = preg_replace("(</li><li><ul>)","<ul>",$filtered);
-	$filtered = preg_replace("/<li>(.+)\<\/li>/","<br/><ul>\\0</ul><br/>\n",$filtered);
+		// Listes à 2 niveau
+		$filtered = preg_replace("/(?<=[\n>])--(.+)\n/","<arbre><noeud><feuille>$1</feuille></noeud></arbre>",$filtered);
+		$filtered = preg_replace("(</noeud></arbre><arbre><noeud>)","",$filtered);
+		// Légende liste 2 niveau
+		$filtered = preg_replace("/(?<=[\n>])-(.+)\n<arbre><noeud>/","<arbre><noeud titre=\"$1\">",$filtered);
+		// Liste simple
+		$filtered = preg_replace("/(?<=[\n>])-(.+)\n/","<arbre><feuille>$1</feuille></arbre>",$filtered);
+		// Structure d'arbre
+		$filtered = preg_replace("(</arbre><arbre>)","",$filtered);
+	} else {
+		// Listes
+		$filtered = preg_replace("/(?<=[\n>])--(.+)\n/","<li><ul><li>\\1</li></ul></li>",$filtered); //Liste 2 eme niveau
+		$filtered = preg_replace("/(?<=[\n>])-(.+)\n/","<li>\\1</li>",$filtered); // Liste 1er niveau
+		$filtered = preg_replace("(</ul></li><li><ul>)","",$filtered);  
+		$filtered = preg_replace("(</li><li><ul>)","<ul>",$filtered);
+		$filtered = preg_replace("/<li>(.+)\<\/li>/","<br/><ul>\\0</ul><br/>\n",$filtered);
 	}
 	
 	// Headlines <h1><h2><h3>
@@ -134,12 +137,9 @@ function wikiVersXML($filtered,$enhtml=false) {
 	$filtered = preg_replace("/&apos;&apos;(.+)&apos;&apos;/U","<em>\\1</em>", $filtered);
 	$filtered = preg_replace("/\|(.+)\|/U","<code>\\1</code>", $filtered);
 
-
-	
 	// strip leading and ending line breaks
 	$filtered = preg_replace("/^(\n+)/","",$filtered); 
 	$filtered = preg_replace("/\n{3,}/","<br/>",$filtered); 
-	
 	
 	// <pre> blocks
 	//$filtered = preg_replace("/(?<=\n) (.*)(\n)/","<pre>\\1</pre>", $filtered);
@@ -159,5 +159,12 @@ function wikiVersXML($filtered,$enhtml=false) {
 	return $filtered;
 }
 
+function affiche_syntaxe_wiki() {
+	echo "<html>&lt;small&gt;".
+		"Formatage : **gras** ''italic'' |code|    Listes : -élément --sousélément &lt;br/&gt;".
+		"Liens/image : [http://exemple.fr/|Titre] [http://exemple.fr/image.png]&lt;br/&gt;".
+		"Titres : ===titre1=== ==titre2== =titre3=&lt;br/&gt;".
+		"&lt;/small&gt;</html>";
+}
 
 ?>

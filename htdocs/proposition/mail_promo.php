@@ -21,9 +21,12 @@
 	Mail promo permettant l'envoie de pièce jointes et de formatage HTML
 	
 	$Log$
+	Revision 1.15  2004/12/14 14:18:12  schmurtz
+	Suppression de la page de doc wiki : doc directement dans les pages concernees.
+
 	Revision 1.14  2004/12/14 00:27:40  kikx
 	Pour que le FROM des mails de validation soit au nom du mec qui demande la validation... (qu'est ce que je ferai pas pour les TOS :))
-
+	
 	Revision 1.13  2004/11/29 17:27:33  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
@@ -96,7 +99,6 @@ list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_ro
 <?
 if (!isset($_REQUEST['envoie'])) {
 ?>
-	<note>La syntaxe est la syntaxe wiki... si tu ne sais pas taper correctement du texte wiki, va sur notre page <lien titre="d'aide WIKI" url="helpwiki.php"/></note>
 	<formulaire id="mail_promo" titre="Mail Promo" action="proposition/mail_promo.php">
 		<choix titre="Promo" id="promo" type="combo" valeur="<? if (isset($_POST['promo'])) echo  $_POST['promo'] ;?>">
 		<?
@@ -115,6 +117,7 @@ if (!isset($_REQUEST['envoie'])) {
 		<bouton titre="Mise à jour" id="upload"/>
 		<bouton titre="Valider" id="envoie"  onClick="return window.confirm('Voulez vous vraiment envoyer ce mail ?')"/>
 	</formulaire>
+	<?php affiche_syntaxe_wiki() ?>
 <?
 //==================================================
 //=

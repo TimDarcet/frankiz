@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.34  2004/12/14 14:18:12  schmurtz
+	Suppression de la page de doc wiki : doc directement dans les pages concernees.
+
 	Revision 1.33  2004/12/14 07:40:33  pico
 	/me boulet
-
+	
 	Revision 1.32  2004/12/14 07:26:33  pico
 	Correction du module random
 	La politique est de na pas rajouter des balises si elles ne sont pas utiles ailleurs, là, je pense que l'on peut s'en passer et avoir tout de même l'effet recherché.
@@ -264,7 +267,6 @@ if (isset($_POST['valid'])) {
 // Zone de saisie de l'annonce
 //====================
 ?>
-<note>La syntaxe est la syntaxe wiki... si tu ne sais pas taper correctement du texte wiki, va sur notre page <lien titre="d'aide WIKI" url="helpwiki.php"/></note>
 
 	<formulaire id="propoz_annonce" titre="Ton annonce" action="proposition/annonce.php">
 		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
@@ -295,6 +297,7 @@ if (isset($_POST['valid'])) {
 		<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider votre annonce ?')"/>
 	</formulaire>
 <?
+	affiche_syntaxe_wiki();
 }
 ?>
 

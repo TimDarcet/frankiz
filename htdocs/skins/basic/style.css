@@ -149,9 +149,7 @@ p.warning {
 }
 
 p.note {
-	color: inherit;
-	background: #EFEFEF;
-	font-size: 75%;
+	font-size: 80%;
 	padding: 6px;
 }
 

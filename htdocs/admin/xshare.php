@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.32  2004/12/14 14:18:12  schmurtz
+		Suppression de la page de doc wiki : doc directement dans les pages concernees.
+
 		Revision 1.31  2004/12/13 07:06:03  pico
 		Affichage du lien pour masquer une annonce
-
+		
 		Revision 1.30  2004/11/29 17:27:32  schmurtz
 		Modifications esthetiques.
 		Nettoyage de vielles balises qui trainaient.
@@ -96,6 +99,7 @@
 */
 require_once "../include/global.inc.php";
 require_once "../include/transferts.inc.php";
+require_once "../include/wiki.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
@@ -356,14 +360,13 @@ echo "</arbre>";
 	</choix>
 	<champ id="site" titre="Site de l'éditeur" valeur="<? echo $site ?>" />
 	<champ id="licence" titre="Licence" valeur="<? echo $licence ?>" />
-	<note>La syntaxe est la syntaxe wiki... si tu ne sais pas taper correctement du texte wiki, va sur notre page <lien titre="d'aide WIKI" url="helpwiki.php"/></note>
 	<zonetext id="descript" titre="Description"><?=$descript?></zonetext>
 	<fichier id="file" titre="Nouveau fichier" taille="1000000000"/>
 	<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
 	<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce logiciel ?!!!!!')"/>
 	</formulaire>
 	<? 
-	
+			affiche_syntaxe_wiki();
 		} else {
 	?>
 	<warning>Erreur : Impossible de trouver cette description </warning>
@@ -395,7 +398,6 @@ echo "</arbre>";
 	
 	<!-- Ajouter un fichier -->
 	<formulaire id="xshare_<? echo $dir_id ?>" titre="Ajouter un logiciel" action="admin/xshare.php">
-	<note>La syntaxe est la syntaxe wiki... si tu ne sais pas taper correctement du texte wiki, va sur notre page <lien titre="d'aide WIKI" url="helpwiki.php"/></note>
 	<champ id="nom" titre="Nom du logiciel" valeur="" />
 	<champ id="version" titre="Version" valeur="" />
 	<choix titre="Importance" id="importance" type="combo" valeur="0">

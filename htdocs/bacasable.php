@@ -19,9 +19,12 @@
 */
 /*
 	$Log$
+	Revision 1.2  2004/12/14 14:18:11  schmurtz
+	Suppression de la page de doc wiki : doc directement dans les pages concernees.
+
 	Revision 1.1  2004/11/24 00:26:09  schmurtz
 	Debut de gestion de wiki
-
+	
 */
 
 require "include/wiki.inc.php";
@@ -41,5 +44,6 @@ require "include/page_header.inc.php";
 		<zonetext id="contenu" titre="contenu"><?=$_POST['contenu']?></zonetext>
 		<bouton id="tester" titre="Tester"/>
 	</formulaire>
+	<?php affiche_syntaxe_wiki() ?>
 </page>
 <?php require "include/page_footer.inc.php" ?>

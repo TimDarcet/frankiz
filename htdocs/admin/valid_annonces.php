@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.22  2004/12/14 14:18:12  schmurtz
+	Suppression de la page de doc wiki : doc directement dans les pages concernees.
+
 	Revision 1.21  2004/12/08 12:21:07  kikx
 	Protection de la validation des annonces
-
+	
 	Revision 1.20  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
 	
@@ -234,7 +237,7 @@ $DB_valid->query("UNLOCK TABLES");
 			<note>La signature sera automatiquement générée</note>
 			<champ id="date" titre="Date de péremption" valeur="<? echo $date ;?>"/>
 			
-			<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? echo $ext_temp." " ; if ((isset($_REQUEST['ext_auth']))&&(isset($_REQUEST['modif_'.$id]))) echo 'ext_auth' ;?>">
+			<choix titre="Éxtérieur" id="exterieur" type="checkbox" valeur="<? echo $ext_temp." " ; if ((isset($_REQUEST['ext_auth']))&&(isset($_REQUEST['modif_'.$id]))) echo 'ext_auth' ;?>">
 				<option id="ext" titre="Demande de l'utilisateur" modifiable='non'/>
 				<option id="ext_auth" titre="Décision du Webmestre"/>
 			</choix>
@@ -245,6 +248,7 @@ $DB_valid->query("UNLOCK TABLES");
 			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Si vous supprimer cette annonce, celle-ci sera supprimé de façon definitive ... Voulez vous vraiment la supprimer ?')"/>
 		</formulaire>
 <?
+		affiche_syntaxe_wiki();
 	}
 ?>
 </page>

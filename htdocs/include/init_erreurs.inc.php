@@ -25,10 +25,13 @@
 	- affichage des requètes mysql en commentaire dans
 	
 	$Log$
+	Revision 1.4  2004/12/14 14:18:12  schmurtz
+	Suppression de la page de doc wiki : doc directement dans les pages concernees.
+
 	Revision 1.3  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
-
+	
 	Revision 1.2  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
 	
@@ -149,7 +152,7 @@ function affiche_erreurs_php() {
 		if($_ERREUR_FATAL) {
 			echo "<warning>Une erreur inconnue est survenue.\n"
 				." Pour informer le Webmestre de cette erreur et expliquer la manipulation qui l'a déclenchée,"
-				." cliquez <lien url=\"mailto:".MAIL_WEBMESTRE."?Subject=%5BFrankiz%20Erreur%20$timestamp%5D%20\" titre=\"ici\"/>.</warning>\n";
+				." cliquez <a href=\"mailto:".MAIL_WEBMESTRE."?Subject=%5BFrankiz%20Erreur%20$timestamp%5D%20\">ici</a>.</warning>\n";
 			exit;
 		}
 	}

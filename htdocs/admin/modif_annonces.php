@@ -21,9 +21,12 @@
 	Page qui permet aux admins de modifier une annonce validée
 	
 	$Log$
+	Revision 1.10  2004/12/14 14:18:12  schmurtz
+	Suppression de la page de doc wiki : doc directement dans les pages concernees.
+
 	Revision 1.9  2004/12/13 19:36:21  kikx
 	Pour changer exterieur ou non apres la validation de l'annonce (Pour Alban)
-
+	
 	Revision 1.8  2004/12/07 13:10:56  pico
 	Passage du nettoyage en formulaire
 	
@@ -139,7 +142,7 @@ $DB_valid->query("UNLOCK TABLES");
 			<champ id="titre" titre="Le titre" valeur="<? echo $titre ;?>"/>
 			<zonetext id="text" titre="Le texte"><?=$contenu?></zonetext>
 			<champ id="date" titre="Date de péremption" valeur="<? echo $date ;?>"/>
-			<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if ($ext==1) echo "ext_auth" ?>">
+			<choix titre="Éxtérieur" id="exterieur" type="checkbox" valeur="<? if ($ext==1) echo "ext_auth" ?>">
 				<option id="ext_auth" titre="Décision du Webmestre"/>
 			</choix>
 
@@ -147,6 +150,7 @@ $DB_valid->query("UNLOCK TABLES");
 			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Si vous supprimer cette annonce, celle-ci sera supprimé de façon definitive ... Voulez vous vraiment la supprimer ?')"/>
 		</formulaire>
 <?
+		affiche_syntaxe_wiki();
 	}
 ?>
 </page>
