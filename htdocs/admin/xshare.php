@@ -62,6 +62,13 @@ foreach ($_POST AS $keys => $val){
 	
 		echo "<commentaire>Fichier ajouté</commentaire>";
 	}
+	if ($temp[0]=='suppr') {
+		$DB_web->query("SELECT lien FROM xshare WHERE id='{$temp[1]}' ");
+		list($dir) = $DB_web->next_row();
+		unlink(BASE_DATA."xshare/".$dir);
+		$DB_web->query("DELETE FROM xshare WHERE id='{$temp[1]}'");
+		echo "<warning>Fichier Supprimé</warning>";
+	}
 }
 
 
