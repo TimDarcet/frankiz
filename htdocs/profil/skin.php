@@ -39,9 +39,13 @@
 	)
 	
 	$Log$
+	Revision 1.13  2004/11/11 21:15:52  kikx
+	Rajout d'un champs dans le trombino pour stocker la skin du mec ...
+	le cookie est prioritaire, mais si il n'existe pas ou qu'il a ppartient a quelqu'un d'autre, alors on va cherhcer dans la BDD
+
 	Revision 1.12  2004/11/08 12:45:17  pico
 	Rajout d'un id pour pouvoir skinner les titres des formulaires
-
+	
 	Revision 1.11  2004/11/06 10:40:46  pico
 	Maintenant, ça doit marcher
 	
@@ -214,7 +218,9 @@ if(!empty($_REQUEST['OK_skin'])) {
 if( !empty($new_skin) ) {
 	$cookie = serialize($new_skin);
 	SetCookie("skin",base64_encode($cookie),time()+3*365*24*3600,"/");
+	SetCookie("user_id",base64_encode("".$_SESSION['user']->uid),time()+3*365*24*3600,"/");
 	skin_parse($cookie);
+	$DB_trombino->query("UPDATE eleves SET skin='$cookie' WHERE eleve_id='".$_SESSION['user']->uid."'");
 }
 
 // Récupération du contenu de la page (en XML)
