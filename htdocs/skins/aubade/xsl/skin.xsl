@@ -23,7 +23,11 @@
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"/>
-	
+
+<xsl:param name="user_nom"/>
+<xsl:param name="user_prenom"/>
+<xsl:param name="date"/>
+<xsl:param name="heure"/>
 <xsl:param name="sommaire"/>
 <xsl:param name="trier_annonces"/>
 <xsl:param name="blending"/>

@@ -21,9 +21,12 @@
 	Script de création de la partie activités contenant des images type "affiche".
 	
 	$Log$
+	Revision 1.17  2005/01/17 22:51:47  pico
+	Liens vers les activités + réorganisation
+
 	Revision 1.16  2005/01/17 08:16:01  pico
 	Passage de l'ouverture du bob en gras
-
+	
 	Revision 1.15  2005/01/12 23:20:30  pico
 	Activités extérieures, et triées par heure...
 	
@@ -80,6 +83,5 @@ if ($DB_web->num_rows()!=0 || $valeur=='1'){
 		<lien url="<?php echo $url?>"><image source="<?php echo DATA_DIR_URL.'affiches/'.$id?>" texte="Affiche" legende="<?php echo $titre?>"/></lien>
 		</annonce>
 <?php }
-
 	echo "</module>\n";
 }

@@ -21,9 +21,12 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.31  2005/01/17 22:51:47  pico
+	Liens vers les activités + réorganisation
+
 	Revision 1.30  2005/01/10 07:39:59  pico
 	Correction bug #14
-
+	
 	Revision 1.29  2005/01/06 17:24:18  pico
 	Pour que les sites web perso internes soient visibles de l'intérieur
 	
@@ -119,29 +122,35 @@
 */
 ?>
 <module id="liens_navigation" titre="Frankiz">
-	<lien id="annonces" titre="Annonces" url="." key="a"/>
-	<?php if(est_authentifie(AUTH_FORT)): ?>
-		<lien id="deconnect" titre="Se déconnecter" url="index.php?logout=1" key="l"/>
-	<?php endif; ?>
-	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
-		<lien id="profil"  titre="Préférences" url="profil/index.php" key="p"/>
-	<?php else: ?>
+	<?php if(!est_authentifie(AUTH_MINIMUM)): ?>
 		<lien id="connect" titre="Se connecter" url="login.php" key="l"/>
 	<?php endif; ?>
-	<lien id="faq" titre="FAQ" url="faq.php" key="f"/>
+	<lien id="annonces" titre="Annonces" url="." key="a"/>
+	<lien id="activites" titre="Activités de la semaine" url="activites.php"/>
 	<lien id="xshare" titre="Télécharger" url="xshare.php" key="x"/>
-	<lien id="binets"  titre="Binets" url="binets.php" key="b"/>
+	<lien id="faq" titre="FAQ" url="faq.php" key="f"/>
 	<?php if(est_authentifie(AUTH_INTERNE)){ ?>
 		<lien id="trombino" titre="Trombino" url="trombino.php" key="t"/>
 	<?php } ?>
-	<lien id="meteo" titre="Météo" url="meteo.php" key="m"/>
+	<lien id="binets"  titre="Binets" url="binets.php" key="b"/>
 	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
 		<lien id="siteseleves" titre="Sites élèves" url="http://perso.frankiz"/>
 	<?php else: ?>
 		<lien id="siteseleves" titre="Sites élèves" url="siteseleves.php"/>
 	<?php endif; ?>
+	<lien id="meteo" titre="Météo" url="meteo.php" key="m"/>
+	<lien id="vocab" titre="Vocabulaire" url="vocabulaire.php" key="v"/>
+<? /*</module>
+	
+<module id="liens_profil" titre="Preférences"> */ ?>
+	<?php if(est_authentifie(AUTH_FORT)): ?>
+		<lien id="deconnect" titre="Se déconnecter" url="index.php?logout=1" key="l"/>
+	<?php endif; ?>
+	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
+		<lien id="profil"  titre="Préférences" url="profil/index.php" key="p"/>
+	<?php endif; ?>
 	<?php if ((count($_SESSION['user']->perms)>1)&&($_SESSION['user']->perms[0]!="")) { ?>
 		<lien id="admin" titre="Administration" url="gestion/" key="g"/>
 	<?php } ?>
-	<lien id="vocab" titre="Vocabulaire" url="vocabulaire.php" key="v"/>
+	
 </module>

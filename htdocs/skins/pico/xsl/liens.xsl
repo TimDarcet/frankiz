@@ -73,6 +73,35 @@
 		<div class="fkz_module_corps">
 			<ul class="fkz_liens_nav">
 				<xsl:for-each select="lien">
+					<xsl:if test="@id='deconnect'"><br/></xsl:if>
+					<li class="fkz_liens_nav">
+						<a>
+							<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+							<xsl:if test="boolean(@key)">
+								<xsl:attribute name="accesskey"><xsl:value-of select="@key"/></xsl:attribute>
+								<xsl:attribute name="title">Accès rapide: <xsl:value-of select="@key"/></xsl:attribute>
+							</xsl:if>
+							<xsl:value-of select="@titre" />
+						</a>
+					</li>
+				</xsl:for-each>
+			</ul>
+		</div>
+	</div>
+</xsl:template>
+
+<xsl:template match="module[@id='liens_profil']">
+	 <div class="fkz_module" id='mod_liens_nav'>
+	 	<div class="fkz_titre">
+			<span id="navigation_logo"><xsl:text> </xsl:text></span>
+			<span id="navigation">Profil</span>
+		</div>
+		<div class="fkz_module_corps">
+			<div style="text-align:center;"><xsl:value-of select="$date"/> <xsl:text> </xsl:text> <xsl:value-of select="$heure"/><br/>
+			Connecté en tant que: <br/><xsl:value-of select="$user_prenom"/> <xsl:text> </xsl:text> <xsl:value-of select="$user_nom"/></div>
+			<ul class="fkz_liens_nav">
+				
+				<xsl:for-each select="lien">
 					<li class="fkz_liens_nav">
 						<a>
 							<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>

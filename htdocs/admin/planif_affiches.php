@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.12  2005/01/17 22:51:47  pico
+	Liens vers les activités + réorganisation
+
 	Revision 1.11  2005/01/06 23:31:31  pico
 	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
-
+	
 	Revision 1.10  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
 	
@@ -171,7 +174,7 @@ while(list($id,$titre,$url,$date) = $DB_web->next_row()){
 		<? if(strtotime($date) >time() + 24*3600){ ?><bouton titre="Un jour plus tôt" id="reddate_<? echo $id ?>_<? echo base64_encode($date) ?>"/><? } ?>
 		<bouton titre="Un jour plus tard" id="augdate_<? echo $id ?>_<? echo base64_encode($date) ?>"/>
 		<bouton id='modif_<? echo $id ?>_<? echo base64_encode($date) ?>' titre='Modifier la date manuellement'/>
-		<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette qdj ?!!!!!')"/>
+		<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette affiche ?!!!!!')"/>
 		<hidden id="show"/>
 	
 	</formulaire>
