@@ -21,9 +21,14 @@
 	Gestions des liens perso / des flux rss.
 
 	$Log$
+	Revision 1.17  2005/02/06 22:02:56  pico
+	Quand on supprime un flux, ne supprime pas le flux perso
+
+	ça marche maintenant chez moi, à voir en prod...
+
 	Revision 1.16  2005/02/06 21:42:16  pico
 	Correction bug #53
-
+	
 	Revision 1.15  2005/01/04 23:35:30  pico
 	comportement quantique
 	
@@ -206,12 +211,14 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 		<note>Liste des flux RSS perso</note>
 <?
-		
 		if(is_array($liens)){
 			foreach($liens as $url => $mode){
-				if($mode == 'module') $url = substr($url, 2);
-				if(!array_key_exists($url,$array))
-					echo "<note>$url ($mode) <lien titre=\"supprimer\" url=\"profil/liens_ext.php?del_rss=".base64_encode($url)."\"/></note>";
+				$urltest=$url;
+				if($mode == 'module') $urltest = substr($url, 2);
+				if(!array_key_exists($urltest,$array)){
+					echo "<hidden id=\"vis[".$mode."_".$url."]\" valeur=\"\" />";
+					echo "<note>$urltest ($mode) <lien titre=\"supprimer\" url=\"profil/liens_ext.php?del_rss=".base64_encode($urltest)."\"/></note>";
+				}
 			}
 		}
 ?>
@@ -220,6 +227,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		foreach(array('sommaire','complet','module') as $mode){ 
 			echo "<champ id=\"rss_perso_".$mode."\" titre=\"$mode\"/>\n";
 		}
+		
 ?>
 		<bouton titre="Appliquer" id="OK_rss" />
 	</formulaire>
