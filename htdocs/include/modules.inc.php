@@ -26,9 +26,12 @@
 	- 'modules[tous]' :		valeur par défaut pour l'affichage des modules
 
 	$Log$
+	Revision 1.13  2004/12/16 12:52:57  pico
+	Passage des paramètres lors d'un login
+
 	Revision 1.12  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.11  2004/09/15 23:19:31  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
@@ -47,14 +50,14 @@ function existant_et_egal_a($variable,$index,$valeur) {
 	return isset($variable[$index]) && $variable[$index] == $valeur;
 }
 
-if(!isset($_GET['modules']))
-	$_GET['modules'] = array();
+if(!isset($_REQUEST['modules']))
+	$_REQUEST['modules'] = array();
 
 foreach(liste_modules() as $module => $modifiable)
-	if(		!existant_et_egal_a($_GET['modules'],'tous','off')
+	if(		!existant_et_egal_a($_REQUEST['modules'],'tous','off')
 			&& (!$modifiable || !existant_et_egal_a($_SESSION['skin']['skin_visible'],$module,false))
 		||
-			existant_et_egal_a($_GET['modules'],'tous','on')
-			&& !existant_et_egal_a($_GET['modules'],$module,'off') )
+			existant_et_egal_a($_REQUEST['modules'],'tous','on')
+			&& !existant_et_egal_a($_REQUEST['modules'],$module,'off') )
 		require BASE_LOCAL."/modules/$module.php";
 ?>

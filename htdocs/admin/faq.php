@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.32  2004/12/16 12:52:57  pico
+		Passage des paramètres lors d'un login
+
 		Revision 1.31  2004/12/13 20:03:25  pico
 		Les liens ne forment pas de blocs, il faut donc le spécifier
-
+		
 		Revision 1.30  2004/11/29 17:27:32  schmurtz
 		Modifications esthetiques.
 		Nettoyage de vielles balises qui trainaient.
@@ -413,7 +416,7 @@ echo "</arbre>";
 	<!-- Supprimer le dossier en cours -->
 	<? if(isset($_REQUEST['dir_id'])) $dir_id = $_REQUEST['dir_id']; else $dir_id="1"; ?>
 	<formulaire id="faq_<? echo $dir_id ?>" titre="Supprimer ce dossier" action="admin/faq.php">
-	<? foreach ($_GET AS $keys => $val){
+	<? foreach ($_REQUEST AS $keys => $val){
 		if((!strstr($keys,"rmdir"))&&(!strstr($keys,"rmdir"))) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 		}
 	?>
@@ -424,7 +427,7 @@ echo "</arbre>";
 	<formulaire id="faq_<? echo $dir_id ?>" titre="Ajouter un sous-dossier" action="admin/faq.php">
 	<champ id="nom" titre="Nom du sous-dossier" valeur="" />
 	<champ id="desc" titre="Description du sous-dossier" valeur="" />
-	<? foreach ($_GET AS $keys => $val){
+	<? foreach ($_REQUEST AS $keys => $val){
 		if(!strstr($keys,"adddir")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 		}
 	?>
@@ -435,7 +438,7 @@ echo "</arbre>";
 	<formulaire id="faq_<? echo $dir_id ?>" titre="Nouvelle FAQ" action="admin/faq.php">
 	<champ id="question" titre="Question" valeur="" />
 	<champ id="nom" titre="Nom du sous-dossier de la faq" valeur="" />
-	<? foreach ($_GET AS $keys => $val){
+	<? foreach ($_REQUEST AS $keys => $val){
 		if(!strstr($keys,"ajout")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 	}
 	?>

@@ -23,9 +23,12 @@
 	TODO traiter le cas ou le qdj master est à la bourre (garder l'ancienne qdj par exemple).
 
 	$Log$
+	Revision 1.12  2004/12/16 12:52:57  pico
+	Passage des paramètres lors d'un login
+
 	Revision 1.11  2004/11/02 17:46:39  pico
 	Modification de la gestion des caches de la qdj
-
+	
 	Revision 1.10  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -50,14 +53,14 @@ if(est_authentifie(AUTH_MINIMUM)) {
 	$a_vote = $DB_web->num_rows() != 0;
 
 	// Gestion du vote
-	if(isset($_GET['qdj']) && $date_aujourdhui==$_GET['qdj'] && !$a_vote && ($_GET['vote']==1 || $_GET['vote']==2)) {
+	if(isset($_REQUEST['qdj']) && $date_aujourdhui==$_REQUEST['qdj'] && !$a_vote && ($_REQUEST['vote']==1 || $_REQUEST['vote']==2)) {
 		cache_supprimer("qdj_courante_question");
 		cache_supprimer("qdj_courante_reponse");
 		$DB_web->query("LOCK TABLE qdj_votes WRITE");
 		$DB_web->query("SELECT @max:=IFNULL(MAX(ordre),0) FROM qdj_votes WHERE date='$date_aujourdhui'");
 		$DB_web->query("INSERT INTO qdj_votes SET date='$date_aujourdhui',eleve_id='".$_SESSION['user']->uid."',ordre=@max+1");
 		$DB_web->query("UNLOCK TABLES");
-		$DB_web->query("UPDATE qdj SET compte".$_GET['vote']."=compte".$_GET['vote']."+1 WHERE date='$date_aujourdhui'");
+		$DB_web->query("UPDATE qdj SET compte".$_REQUEST['vote']."=compte".$_REQUEST['vote']."+1 WHERE date='$date_aujourdhui'");
 		rediriger_vers("/");
 	}
 

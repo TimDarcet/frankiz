@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.25  2004/12/16 12:52:57  pico
+	Passage des paramètres lors d'un login
+
 	Revision 1.24  2004/12/01 20:29:48  kikx
 	Oubli pour les webmestres
-
+	
 	Revision 1.23  2004/11/27 16:10:52  pico
 	Correction d'erreur de redirection et ajout des web à la validation des activités.
 	
@@ -113,7 +116,7 @@ require_once "../include/global.inc.php";
 
 // Récupération d'une image
 if(isset($_REQUEST['image'])){
-	$DB_valid->query("SELECT image,format FROM valid_binet WHERE binet_id='{$_GET['id']}'");
+	$DB_valid->query("SELECT image,format FROM valid_binet WHERE binet_id='{$_REQUEST['id']}'");
 	list($image,$format) = $DB_valid->next_row() ;
 	header("content-type: $format");
 	echo $image;
@@ -122,10 +125,10 @@ if(isset($_REQUEST['image'])){
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-if ((empty($_GET['binet'])) || ((!verifie_permission_webmestre($_GET['binet'])) && (!verifie_permission_prez($_GET['binet']))))
+if ((empty($_REQUEST['binet'])) || ((!verifie_permission_webmestre($_REQUEST['binet'])) && (!verifie_permission_prez($_REQUEST['binet']))))
 	rediriger_vers("/gestion/");
 	
-$DB_trombino->query("SELECT nom FROM binets WHERE binet_id=".$_GET['binet']);
+$DB_trombino->query("SELECT nom FROM binets WHERE binet_id=".$_REQUEST['binet']);
 list($nom_binet) = $DB_trombino->next_row() ;
 $message ="" ;
 $message2 ="" ;
@@ -145,7 +148,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-if(verifie_permission_prez($_GET['binet'])){
+if(verifie_permission_prez($_REQUEST['binet'])){
 
 	//=================================
 	// Suppression d'une personne
@@ -182,9 +185,9 @@ if(verifie_permission_prez($_GET['binet'])){
 	?>
 	<h2>Liste des membres</h2>
 	<?
-	$DB_trombino->query("SELECT m.eleve_id,remarque,nom,prenom,surnom,promo FROM membres as m INNER JOIN eleves USING(eleve_id) WHERE binet_id=".$_GET['binet']." AND promo>=$promo_prez ORDER BY promo ASC,nom ASC");
+	$DB_trombino->query("SELECT m.eleve_id,remarque,nom,prenom,surnom,promo FROM membres as m INNER JOIN eleves USING(eleve_id) WHERE binet_id=".$_REQUEST['binet']." AND promo>=$promo_prez ORDER BY promo ASC,nom ASC");
 	?>
-	<liste id="liste_binets" selectionnable="oui" action="gestion/binet.php?binet=<?=$_GET['binet']?>">
+	<liste id="liste_binets" selectionnable="oui" action="gestion/binet.php?binet=<?=$_REQUEST['binet']?>">
 		<entete id="nom" titre="Nom"/>
 		<entete id="description" titre="Description"/>
 	<?
@@ -208,7 +211,7 @@ if(verifie_permission_prez($_GET['binet'])){
 //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-if(verifie_permission_webmestre($_GET['binet'])){
+if(verifie_permission_webmestre($_REQUEST['binet'])){
 	
 	// On demande la validation du changement
 	//==========================
@@ -216,7 +219,7 @@ if(verifie_permission_webmestre($_GET['binet'])){
 	
 	if (isset($_POST['modif2'])) {
 		$texte_image = "" ;
-		$DB_trombino->query("SELECT format,exterieur,nom,image,folder FROM binets as b WHERE binet_id=".$_GET['binet']);
+		$DB_trombino->query("SELECT format,exterieur,nom,image,folder FROM binets as b WHERE binet_id=".$_REQUEST['binet']);
 		list($format,$exterieur,$nom,$image,$folder) = $DB_trombino->next_row() ;
 
 		// On verifie d'abord que le binet n'a pas une autre entrée dans la table de validation
@@ -285,13 +288,13 @@ if(verifie_permission_webmestre($_GET['binet'])){
 	while( list($catego_id,$catego_nom) = $DB_trombino->next_row() )
 		$liste_catego .= "\t\t\t<option titre=\"$catego_nom\" id=\"$catego_id\"/>\n";
 
-	$DB_valid->query("SELECT binet_id,nom,description,http,catego_id,exterieur,folder FROM valid_binet WHERE binet_id=".$_GET['binet']);
+	$DB_valid->query("SELECT binet_id,nom,description,http,catego_id,exterieur,folder FROM valid_binet WHERE binet_id=".$_REQUEST['binet']);
 	if ($DB_valid->num_rows()!=0) {
 		list($id,$nom,$descript,$http,$cat_id,$exterieur,$folder) = $DB_valid->next_row() ;
 		$message2 .= "<commentaire>L'aperçu que vous avez maintenant n'a pas encore été validé par le BR. Il faut encore attendre pour que celui ci soit pris en compte</commentaire>" ;
 		$image_link = "<image source=\"gestion/binet.php?image=1&amp;id=$id\"/>" ;
 	} else {
-		$DB_trombino->query("SELECT binet_id,nom,description,http,catego_id,exterieur,folder FROM binets WHERE binet_id=".$_GET['binet']);
+		$DB_trombino->query("SELECT binet_id,nom,description,http,catego_id,exterieur,folder FROM binets WHERE binet_id=".$_REQUEST['binet']);
 		list($id,$nom,$descript,$http,$cat_id,$exterieur,$folder) = $DB_trombino->next_row() ;
 		$image_link = "<image source=\"binets/?image=1&amp;id=$id\"/>" ;
 	}
@@ -304,7 +307,7 @@ if(verifie_permission_webmestre($_GET['binet'])){
 	echo $message2 ;
 	?>
 	<note> Si tu ne souhaites pas que ton binet apparaisse dans la liste des binets sur le site, alors supprime le champs Http</note>
-		<formulaire id="binet_web" titre="<? echo $nom?>" action="gestion/binet.php?binet=<?=$_GET['binet']?>">
+		<formulaire id="binet_web" titre="<? echo $nom?>" action="gestion/binet.php?binet=<?=$_REQUEST['binet']?>">
 			<hidden id="id" titre="" valeur="<? echo $id?>"/>
 			<choix titre="Catégorie" id="catego" type="combo" valeur="<?=$cat_id?>">
 <?php

@@ -36,9 +36,12 @@
 	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
 
 	$Log$
+	Revision 1.6  2004/12/16 12:52:57  pico
+	Passage des paramètres lors d'un login
+
 	Revision 1.5  2004/12/15 23:38:30  pico
 	Corrections pour rendre ça valide
-
+	
 	Revision 1.4  2004/12/02 11:47:30  pico
 	C'est bizarre, le // marche pas partout :(
 	
@@ -82,7 +85,7 @@ session_start();
 	Si un logout a été effectué, on détruit la session, puis on la recrer, vierge.
 	Si un su est en cours, on en sort.
 */
-if(isset($_GET['logout'])) {
+if(isset($_REQUEST['logout'])) {
 	if(isset($_SESSION['sueur'])) {
 		// on sort juste du su
 		$_SESSION['user'] = $_SESSION['sueur'];
@@ -109,13 +112,13 @@ if(isset($_POST['login']) && isset($_POST['passwd'])) {
 	// de cette authentification.
 	
 // Login par mail
-} else if(isset($_GET['hash']) && isset($_GET['uid'])) {
-	$_SESSION['user'] = new User(false,$_GET['uid']);
-	if(!$_SESSION['user']->verifie_mailhash($_GET['hash']))
+} else if(isset($_REQUEST['hash']) && isset($_REQUEST['uid'])) {
+	$_SESSION['user'] = new User(false,$_REQUEST['uid']);
+	if(!$_SESSION['user']->verifie_mailhash($_REQUEST['hash']))
 		ajoute_erreur(ERR_MAILLOGIN);
 	
 	// Quel que soit le résultat, on supprime le hash d'authentification par mail.
-	$DB_web->query("UPDATE compte_frankiz SET hashstamp=0 WHERE eleve_id='".$_GET['uid']."'");
+	$DB_web->query("UPDATE compte_frankiz SET hashstamp=0 WHERE eleve_id='".$_REQUEST['uid']."'");
 	
 	// On affiche un message d'erreur si l'authentification a échouée.
 	if(a_erreur(ERR_MAILLOGIN)) {
@@ -141,10 +144,10 @@ if(isset($_POST['login']) && isset($_POST['passwd'])) {
 	$_SESSION['user']->verifie_cookiehash($cookie['hash']);
 
 // Login par utilisation du su (utilisable par les admins uniquement)
-} else if(isset($_GET['su']) && verifie_permission('admin')) {
+} else if(isset($_REQUEST['su']) && verifie_permission('admin')) {
 	demande_authentification(AUTH_FORT);
 	
-	$newuser = new User(false,$_GET['su']);
+	$newuser = new User(false,$_REQUEST['su']);
 	if($newuser->uid == 0) {
 		require_once "skin.inc.php";	// skin.inc.php est inclus juste après login.inc.php, donc
 										// c'est pas encore fait
@@ -186,6 +189,10 @@ function demande_authentification($minimum) {
 		<?php endif; ?>
 		<note>Ton login est loginpoly.promo</note>
 		<formulaire id="login" titre="Connexion" action="<?php echo 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']?>">
+		<?  foreach ($_REQUEST AS $keys => $val){
+			echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
+			}
+		?>
 			<champ id="login" titre="Login" valeur="<?php if(isset($_POST['login'])) echo $_POST['login']?>"/>
 			<champ id="passwd" titre="Mot de passe" valeur=""/>
 			<bouton id="connect" titre="Connexion"/>

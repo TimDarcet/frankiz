@@ -21,11 +21,15 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.25  2004/12/16 12:52:57  pico
+	Passage des paramètres lors d'un login
+
 	Revision 1.24  2004/12/15 22:25:47  kikx
 	Verification que le prez et le webmestre sont d'une promo sur le campus
-
+	
 	Revision 1.23  2004/12/01 20:29:47  kikx
 	Oubli pour les webmestres
+
 	
 	Revision 1.22  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
@@ -91,8 +95,8 @@ $texte_image ="" ;
 // =====================================
 // Modification d'un binet
 // =====================================
-$binet_id = $_GET['id'] ;
-$DB_trombino->query("SELECT nom FROM binets WHERE binet_id=".$_GET['id']);
+$binet_id = $_REQUEST['id'] ;
+$DB_trombino->query("SELECT nom FROM binets WHERE binet_id=".$_REQUEST['id']);
 list($nomdubinet) = $DB_trombino->next_row() ;
 
 	
@@ -108,7 +112,9 @@ if (isset($_POST['modif'])) {
 	// On verifie que les droits des webmestre et des prez n'ont pas changé
 	//==========================================================================
 	// Les données du prez du Binet actuel
+
 	$DB_web->query("SELECT login FROM trombino.eleves LEFT JOIN compte_frankiz USING(eleve_id) WHERE perms LIKE '%prez_".$_GET['id'].",%' AND (promo='$promo_temp' OR promo='$promo_temp2') ORDER BY promo DESC");
+
 	list($prez_login) = $DB_web->next_row() ;
 	// On change de prez
 	if ($_POST['prez']!= $prez_login) {
@@ -139,9 +145,10 @@ if (isset($_POST['modif'])) {
 	
 	
 	// Les données du webmestre du Binet actuel
-	
+
 
 	$DB_web->query("SELECT login FROM trombino.eleves LEFT JOIN compte_frankiz USING(eleve_id) WHERE perms LIKE '%webmestre_".$_GET['id'].",%' AND (promo='$promo_temp' OR promo='$promo_temp2') ORDER BY promo DESC");
+
 	list($web_login) = $DB_web->next_row() ;
 	
 	if ($_POST['webmestre']!= $web_login) {
@@ -199,7 +206,7 @@ if (isset($_POST['modif'])) {
 			//--------------------------------------
 		
 		if ((in_array (strtolower ($type_img), $image_types))&&($dim[0]<=100)&&($dim[1]<=100)) {
-			$DB_trombino->query("UPDATE binets SET image=\"$data\", format='$type_img' WHERE  binet_id={$_GET['id']}") ;
+			$DB_trombino->query("UPDATE binets SET image=\"$data\", format='$type_img' WHERE  binet_id={$_REQUEST['id']}") ;
 			$texte_image = " et de son image " ;
 		} else {
 			$message .= "<warning>Ton image n'est pas au bon format (taille ou extension... $type_img / $dim[0]x$dim[1] pxl)</warning>" ;
@@ -208,7 +215,7 @@ if (isset($_POST['modif'])) {
 	
 	//---------------------------------------------------------
 		
-	$DB_trombino->query("UPDATE binets SET nom='{$_POST['nom']}', folder='{$_POST['folder']}', http='{$_POST['http']}', description='{$_POST['descript']}', catego_id='{$_POST['catego']}' , exterieur=$ext WHERE binet_id={$_GET['id']}");
+	$DB_trombino->query("UPDATE binets SET nom='{$_POST['nom']}', folder='{$_POST['folder']}', http='{$_POST['http']}', description='{$_POST['descript']}', catego_id='{$_POST['catego']}' , exterieur=$ext WHERE binet_id={$_REQUEST['id']}");
 	$message .= "<commentaire>Modification de {$_POST['nom']} $texte_image effectuée</commentaire>" ;
 }
 
@@ -229,14 +236,14 @@ if (isset($_POST['suppr_img'])) {
 			//
 			// On verifie que le truc télécharger est une image ...
 			//--------------------------------------
-		$DB_trombino->query("UPDATE binets SET image=\"$data\", format='$type_img' WHERE  binet_id={$_GET['id']}") ;
+		$DB_trombino->query("UPDATE binets SET image=\"$data\", format='$type_img' WHERE  binet_id={$_REQUEST['id']}") ;
 		$message .= "<warning> Suppression de l'image du binet {$_POST['nom']}</warning>" ;
 }
 // On supprime un binet
 //==========================
 
 if (isset($_POST['suppr'])) {
-	$DB_trombino->query("DELETE FROM binets WHERE binet_id={$_GET['id']}");
+	$DB_trombino->query("DELETE FROM binets WHERE binet_id={$_REQUEST['id']}");
 	$message .= "<warning>Suppression de {$_POST['nom']} effectuée</warning>" ;
 }
 
@@ -261,19 +268,19 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	$categorie_precedente = -1;
 	
 	// Les infos du Binet en générale
-	$DB_trombino->query("SELECT description, nom,binet_id, http, catego_id, exterieur, folder FROM binets WHERE binet_id='".$_GET['id']."'");
+	$DB_trombino->query("SELECT description, nom,binet_id, http, catego_id, exterieur, folder FROM binets WHERE binet_id='".$_REQUEST['id']."'");
 	list($descript,$nom_binet,$binet_id,$http,$cat_id,$exterieur,$folder) = $DB_trombino->next_row() ;
 	
 	// Les données du prez du Binet
-	$DB_web->query("SELECT login FROM trombino.eleves LEFT JOIN compte_frankiz USING(eleve_id) WHERE perms LIKE '%prez_".$_GET['id'].",%' ORDER BY promo DESC");
+	$DB_web->query("SELECT login FROM trombino.eleves LEFT JOIN compte_frankiz USING(eleve_id) WHERE perms LIKE '%prez_".$_REQUEST['id'].",%' ORDER BY promo DESC");
 	list($prez_login) = $DB_web->next_row() ;
 	
 	// Les données du webmestre du Binet
-	$DB_web->query("SELECT login FROM trombino.eleves LEFT JOIN compte_frankiz USING(eleve_id) WHERE perms LIKE '%webmestre_".$_GET['id'].",%' ORDER BY promo DESC");
+	$DB_web->query("SELECT login FROM trombino.eleves LEFT JOIN compte_frankiz USING(eleve_id) WHERE perms LIKE '%webmestre_".$_REQUEST['id'].",%' ORDER BY promo DESC");
 	list($web_login) = $DB_web->next_row() ;
 
 ?>
-	<formulaire id="binet_web_<? echo $binet_id?>" titre="<? echo $nom_binet?>" action="admin/binets.php?id=<?=$_GET['id']?>">
+	<formulaire id="binet_web_<? echo $binet_id?>" titre="<? echo $nom_binet?>" action="admin/binets.php?id=<?=$_REQUEST['id']?>">
 		<champ id="nom" titre="Nom" valeur="<? echo $nom_binet?>"/>
 		<choix titre="Catégorie" id="catego" type="combo" valeur="<?=$cat_id?>">
 <?php

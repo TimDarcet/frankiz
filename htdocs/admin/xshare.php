@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.35  2004/12/16 12:52:57  pico
+		Passage des paramètres lors d'un login
+
 		Revision 1.34  2004/12/14 18:29:53  pico
 		Là, les modifs marchent mieux
-
+		
 		Revision 1.33  2004/12/14 18:23:38  pico
 		Gros bug...
 		
@@ -384,7 +387,7 @@ echo "</arbre>";
 	<!-- Supprimer le dossier en cours -->
 	<? if(isset($_REQUEST['dir_id'])) $dir_id = $_REQUEST['dir_id']; else $dir_id="0"; ?>
 	<formulaire id="xshare_<? echo $dir_id ?>" titre="Supprimer ce dossier" action="admin/xshare.php">
-	<? foreach ($_GET AS $keys => $val){
+	<? foreach ($_REQUEST AS $keys => $val){
 		if((!strstr($keys,"rmdir"))&&(!strstr($keys,"rmdir"))) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 		}
 	?>
@@ -394,7 +397,7 @@ echo "</arbre>";
 	<!-- Ajouter un sous-dossier -->
 	<formulaire id="xshare_<? echo $dir_id ?>" titre="Ajouter un sous-dossier" action="admin/xshare.php">
 	<champ id="nom" titre="Nom du sous-dossier" valeur="" />
-	<? foreach ($_GET AS $keys => $val){
+	<? foreach ($_REQUEST AS $keys => $val){
 		if(!strstr($keys,"adddir")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 		}
 	?>
@@ -413,7 +416,7 @@ echo "</arbre>";
 	<champ id="site" titre="Site de l'éditeur" />
 	<champ id="licence" titre="Licence" />
 	<zonetext id="descript" titre="Description"></zonetext>
-	<? foreach ($_GET AS $keys => $val){
+	<? foreach ($_REQUEST AS $keys => $val){
 		if(!strstr($keys,"ajout")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 	}
 	?>

@@ -29,9 +29,12 @@
 	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
 	
 	$Log$
+	Revision 1.19  2004/12/16 12:52:57  pico
+	Passage des paramètres lors d'un login
+
 	Revision 1.18  2004/12/15 17:03:06  pico
 	2vite les renvois sur /trombino/
-
+	
 	Revision 1.17  2004/11/29 20:57:31  kikx
 	Mise en forme
 	
@@ -78,7 +81,7 @@ if(!verifie_permission('admin')&&!verifie_permission('trombino'))
 	rediriger_vers("/gestion/");
 
 // On vérifie que la personne envoie bien l'id sinon ca sert a rien ...
-if(!isset($_GET['id']))
+if(!isset($_REQUEST['id']))
 	rediriger_vers("trombino.php");
 
 
@@ -90,7 +93,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="admin_user" titre="Frankiz : gestion des utilisateurs">
 <?
 
-$id = $_GET['id'] ;
+$id = $_REQUEST['id'] ;
 // Traitement des demandes de modifications !
 //============================
 

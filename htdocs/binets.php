@@ -21,9 +21,12 @@
 	Affichage de la liste des binets ayant un site web.
 
 	$Log$
+	Revision 1.3  2004/12/16 12:52:57  pico
+	Passage des paramètres lors d'un login
+
 	Revision 1.2  2004/12/15 01:31:29  schmurtz
 	bugs
-
+	
 	Revision 1.1  2004/11/11 20:15:19  kikx
 	Deplacemeent du fichier des binets pour que ca erste logique
 	
@@ -59,7 +62,7 @@ require_once "include/global.inc.php";
 
 // Récupération d'une image
 if(isset($_REQUEST['image'])){
-	$DB_trombino->query("SELECT image,format FROM binets WHERE binet_id='{$_GET['id']}'");
+	$DB_trombino->query("SELECT image,format FROM binets WHERE binet_id='{$_REQUEST['id']}'");
 	list($image,$format) = $DB_trombino->next_row() ;
 	header("content-type: $format");
 	echo $image;

@@ -21,9 +21,12 @@
 	affichage d'un sondage
 
 	$Log$
+	Revision 1.5  2004/12/16 12:52:57  pico
+	Passage des paramètres lors d'un login
+
 	Revision 1.4  2004/12/14 22:42:18  kikx
 	Legere modif des sondages pôur que ca soit plus intuitif
-
+	
 	Revision 1.3  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
@@ -46,7 +49,7 @@ demande_authentification(AUTH_MINIMUM);
 function resultat_sondage($string,$sondage_id) {
 	global $DB_web ;
 	
-	$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_GET['id']}'");
+	$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_REQUEST['id']}'");
 	$nombre_votants = $DB_web->num_rows() ;
 	echo "<p>==========================================================</p>" ;
 	echo "<p>== $nombre_votants personnes ont répondu à ce sondage</p>" ;
@@ -90,7 +93,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="sondage" titre="Frankiz : Sondage">
 <?
 $a_vote="non" ;
-$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_GET['id']}' AND eleve_id='".$_SESSION['user']->uid."'");
+$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_REQUEST['id']}' AND eleve_id='".$_SESSION['user']->uid."'");
 if ($DB_web->num_rows()>=1) {
 	$a_vote = "oui" ;
 ?>
@@ -102,7 +105,7 @@ if ($DB_web->num_rows()>=1) {
 
 // La personne a t'elle cliqué sur le vouton de validation ?
 if (isset($_POST['valid'])) {
-	$DB_web->query("SELECT (TO_DAYS(perime) - TO_DAYS(NOW())) FROM sondage_question WHERE sondage_id='{$_GET['id']}'");
+	$DB_web->query("SELECT (TO_DAYS(perime) - TO_DAYS(NOW())) FROM sondage_question WHERE sondage_id='{$_REQUEST['id']}'");
 	// Y a t'il yn sondage qui existe sous cette id ?
 	if ($DB_web->num_rows()==1) {
 		list($delta) = $DB_web->next_row() ;
@@ -110,11 +113,11 @@ if (isset($_POST['valid'])) {
 		// La date permet elle encore de voter ?
 		if ($delta >= 0) {
 			// Verifie que le mec a pas déja voté !
-			$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_GET['id']}' AND eleve_id='".$_SESSION['user']->uid."'");
+			$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_REQUEST['id']}' AND eleve_id='".$_SESSION['user']->uid."'");
 			if ($DB_web->num_rows()==0) {
 				// Il a donc pas voté
 				//on le marque donc comme ayant voté
-				$DB_web->query("INSERT INTO sondage_votants SET sondage_id='{$_GET['id']}', eleve_id='".$_SESSION['user']->uid."'");
+				$DB_web->query("INSERT INTO sondage_votants SET sondage_id='{$_REQUEST['id']}', eleve_id='".$_SESSION['user']->uid."'");
 				$a_vote = "oui" ;
 				// On va lire les variables du sondage
 				foreach($_POST as $keys => $val) {
@@ -128,7 +131,7 @@ if (isset($_POST['valid'])) {
 							$qnum = $keys ;
 							$reponse = $val ;
 						}
-						$DB_web->query("INSERT INTO sondage_reponse SET sondage_id='{$_GET['id']}', question_num='".$qnum."', reponse='$reponse' ");
+						$DB_web->query("INSERT INTO sondage_reponse SET sondage_id='{$_REQUEST['id']}', question_num='".$qnum."', reponse='$reponse' ");
 					}
 				}
 			}
@@ -142,7 +145,7 @@ if (isset($_POST['valid'])) {
 	//======================================================
 	echo $message ;
 	
-	$DB_web->query("SELECT v.perime,(TO_DAYS(perime) - TO_DAYS(NOW())), v.sondage_id,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM sondage_question as v INNER JOIN trombino.eleves as e USING(eleve_id) WHERE sondage_id='{$_GET['id']}'");
+	$DB_web->query("SELECT v.perime,(TO_DAYS(perime) - TO_DAYS(NOW())), v.sondage_id,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM sondage_question as v INNER JOIN trombino.eleves as e USING(eleve_id) WHERE sondage_id='{$_REQUEST['id']}'");
 	if ($DB_web->num_rows()==1) {
 		list($date,$delta,$id,$questions,$titre,$eleve_id,$nom, $prenom, $promo) = $DB_web->next_row() ;
 		
@@ -152,7 +155,7 @@ if (isset($_POST['valid'])) {
 	<?
 		if ($delta>=0) {
 	?>
-			<formulaire id="form" titre="<?=$titre?> (<?=date("d/m",strtotime($date))?>)" action="sondage.php?id=<?=$_GET['id']?>">
+			<formulaire id="form" titre="<?=$titre?> (<?=date("d/m",strtotime($date))?>)" action="sondage.php?id=<?=$_REQUEST['id']?>">
 			<?
 			decode_sondage($questions) ;
 			if ($a_vote=="non") {
@@ -168,7 +171,7 @@ if (isset($_POST['valid'])) {
 			?>
 			<cadre id="form" titre="<?=$titre?> (<?=date("d/m",strtotime($date))?>)">
 			<?
-			resultat_sondage($questions,$_GET['id']) ;
+			resultat_sondage($questions,$_REQUEST['id']) ;
 			?>
 			</cadre>
 			<?

@@ -23,9 +23,12 @@
 	C'est d'ici qu'est appelé la fonction qui affiche les erreurs en haut de la page.
 	
 	$Log$
+	Revision 1.9  2004/12/16 12:52:57  pico
+	Passage des paramètres lors d'un login
+
 	Revision 1.8  2004/11/24 20:26:38  schmurtz
 	Reorganisation des skins (affichage melange skin/css + depacement des css)
-
+	
 	Revision 1.7  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -49,7 +52,7 @@ echo "</frankiz>\n";
 $xml = ob_get_contents();
 ob_end_clean();
 
-if(isset($_GET['xml'])) {
+if(isset($_REQUEST['xml'])) {
 	echo $xml;
 	exit;
 }
