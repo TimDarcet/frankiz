@@ -21,9 +21,12 @@
 	Page qui permet l'administartion des licences windows.
 	
 	$Log$
+	Revision 1.15  2005/01/23 21:37:26  dei
+	voilà version finale ! (j'espère)
+
 	Revision 1.14  2005/01/23 21:05:02  dei
 	la ça devrait mieux marcher
-
+	
 	Revision 1.13  2005/01/23 20:28:48  dei
 	correction bug attribution automatique licence
 	
@@ -132,11 +135,12 @@ $temp = explode("_",$keys) ;
 			$DB_msdnaa->query("SELECT 0 FROM valid_licence WHERE eleve_id='{$temp[1]}'");
 			if($DB_msdnaa->num_rows()!=0){
 				//on cherche ds les clés attribuées au logiciel..
-				$DB_msdnaa->query("SELECT 0 FROM cles_$temp[2] WHERE cle='$_POST[$temp2]'");
+				$DB_msdnaa->query("SELECT 0 FROM cles_$temp[2] WHERE cle='{$_POST[$temp2]}'");
 				// S'il n'y a aucune entrée avec cette licence dans la base
 				if($DB_msdnaa->num_rows()==0){
+					echo "<note>c'est bon</note>";
 					$DB_msdnaa->query("DELETE FROM valid_licence WHERE eleve_id='{$temp[1]}'");
-					$DB_msdnaa->query("DELETE FROM cles_libres WHERE cle='$_POST[$temp2]' AND logiciel='{$temp[2]}'");
+					$DB_msdnaa->query("DELETE FROM cles_libres WHERE cle='{$_POST[$temp2]}' AND logiciel='{$temp[2]}'");
 					//on l'ajoute à la base concernée...
 					$DB_msdnaa->query("INSERT cles_$temp[2] SET eleve_id='{$temp[1]}', attrib='1', cle='$_POST[$temp2]'");
 					$contenu = "Bonjour, <br><br>".
@@ -148,9 +152,12 @@ $temp = explode("_",$keys) ;
 			
 					couriel($temp[1],"[Frankiz] Ta demande a été acceptée",$contenu,WINDOWS_ID);
 					echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande a été acceptée (nouvelle licence : ".$_POST[$temp2].")</commentaire>" ;
+				}else{
+					echo "<warning>La clé ".$_POST[$temp2]." existe déjà et est attribuée. Elle a été supprimée de la base des clés libres.</warning>";
+					$DB_msdnaa->query("DELETE FROM cles_libres WHERE cle='{$_POST[$temp2]}' AND logiciel='{$temp[2]}'");
 				}
 			}else{
-				echo "<commentaire>La demande a déjà été traitée par un autre administrateur du systeme";
+				echo "<warning>La demande a déjà été traitée par un autre administrateur du systeme</warning>";
 			}
 		}
 		// S'il y  a deja une entrée comme celle demandé dans la base !
