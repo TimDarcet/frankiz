@@ -1,7 +1,11 @@
 <?php
 /*
+	$Id$
+	
 	Page permettant de modifier son profil dans le trombino et quelques paramètres
 	pour le site web.
+	
+	TODO modification de sa photo et de ses binets.
 */
 
 require_once "../include/global.inc.php";
@@ -69,7 +73,7 @@ deconnecter_mysql_frankiz();
 require "../include/page_header.inc.php";
 
 ?>
-<page id="mdp_perdu" titre="Frankiz : modification du profil">
+<page id="profil" titre="Frankiz : modification du profil">
 	<h1>Modification de son profil</h1>
 <?php
 		if(!empty($message_succes))
