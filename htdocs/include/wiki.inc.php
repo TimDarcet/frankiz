@@ -21,9 +21,12 @@
 	Moteur Wiki (TipiWiki)
 	
 	$Log$
+	Revision 1.12  2004/12/01 17:06:55  pico
+	correction listes html
+
 	Revision 1.11  2004/12/01 12:27:45  pico
 	Ajout du 2 eme niveau de listes
-
+	
 	Revision 1.10  2004/12/01 12:17:53  pico
 	Début de mise en forme html des listes (pas de 2eme niveau)
 	
@@ -103,10 +106,11 @@ function wikiVersXML($filtered,$enhtml=false) {
 	$filtered = preg_replace("(\n<noeud)","</p><arbre><noeud",$filtered);
 	$filtered = preg_replace("(</noeud>\n)","</noeud></arbre><p>",$filtered);
 	}else{
-	// Liste simple
-	$filtered = preg_replace("/(?<=[\n>])\* \*(.+)\n/","<li><ul><li>\\1</li></ul></li>",$filtered);
-	$filtered = preg_replace("(</ul></li><li><ul>)","",$filtered);
-	$filtered = preg_replace("/(?<=[\n>])\* (.+)\n/","<li>\\1</li>",$filtered);
+	// Listes
+	$filtered = preg_replace("/(?<=[\n>])\* \*(.+)\n/","<li><ul><li>\\1</li></ul></li>",$filtered); //Liste 2 eme niveau
+	$filtered = preg_replace("/(?<=[\n>])\* (.+)\n/","<li>\\1</li>",$filtered); // Liste 1er niveau
+	$filtered = preg_replace("(</ul></li><li><ul>)","",$filtered);  
+	$filtered = preg_replace("(</li><li><ul>)","<ul>",$filtered);
 	$filtered = preg_replace("/<li>(.+)\<\/li>/","</p><ul>\\0</ul><p>",$filtered);
 	}
 	
