@@ -21,10 +21,13 @@
 	Page pour demander les sondages !
 	
 	$Log$
+	Revision 1.14  2005/03/04 23:11:33  pico
+	Restriction des sondages par promo/section/binet
+
 	Revision 1.13  2005/02/10 21:37:53  pico
 	- Pour les ids de news, fait en fonction de la date de péremption, c'est mieux que seulement par id, mais y'a tjs un pb avec les nouvelles fraiches
 	- Correction pour éviter que des gens postent des annonces qui sont déjà périmées
-
+	
 	Revision 1.12  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
 	
@@ -140,12 +143,10 @@ if (isset($_POST['titre_sondage']))
 
 if (isset($_POST['valid'])) {
 	if ($titre_sondage!="") {
-		if (isset($_REQUEST['noext']))
-			$temp_ext = '0'  ;
-		else 
-			$temp_ext = '1' ;
-			
-		$DB_valid->query("INSERT INTO valid_sondages SET eleve_id =".$_SESSION['user']->uid.", questions='$contenu_form', titre='$titre_sondage', perime=FROM_UNIXTIME({$_POST['date']}), exterieur='$temp_ext'") ;
+		$restriction = '';
+		if(($_REQUEST['restriction']!='aucune')&&($_REQUEST[$_REQUEST['restriction']])!='')
+			$restriction = ",restriction='{$_REQUEST['restriction']}_{$_REQUEST[$_REQUEST['restriction']]}'";
+		$DB_valid->query("INSERT INTO valid_sondages SET eleve_id =".$_SESSION['user']->uid.", questions='$contenu_form', titre='$titre_sondage', perime=FROM_UNIXTIME({$_POST['date']}) $restriction") ;
 		
 		$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
 	
@@ -226,10 +227,38 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 	}
 ?>
 	</choix>
-	<note>Si tu souhaites que ton sondage n'apparaisse pas sur la page principale de Frankiz (sondage privé), cliques ici.</note>
-	<choix titre="Privé" id="exterieur" type="checkbox" valeur="<? if (isset($_REQUEST['noext'])) echo 'noext' ;?>">
-		<option id="noext" titre=""/>
+	<note>Si tu souhaite que ce sondage soit réservé à certaines personnes, définis le ici</note>
+	<choix titre="Restreindre" id="restriction" type="radio" valeur="<? echo (isset($_REQUEST['restriction'])) ? $_REQUEST['restriction']:"aucune" ;?>">
+		<option id="aucune" titre="Aucune"/>
+		<option id="promo" titre="A une promo"/>
+		<option id="section" titre="A une section"/>
+		<option id="binet" titre="A un binet"/>
 	</choix>
+	<choix titre="Promo" id="promo" type="combo" valeur="">
+		<option titre="Toutes" id="" />
+<?php
+		$DB_trombino->query("SELECT DISTINCT promo FROM eleves ORDER BY promo DESC");
+		while( list($promo) = $DB_trombino->next_row() )
+			echo "\t\t\t<option titre=\"$promo\" id=\"$promo\"/>\n";
+?>
+	</choix>
+	<choix titre="Section" id="section" type="combo" valeur="">
+		<option titre="Toutes" id=""/>
+<?php
+		$DB_trombino->query("SELECT section_id,nom FROM sections ORDER BY nom ASC");
+		while( list($section_id,$section_nom) = $DB_trombino->next_row() )
+			echo "\t\t\t<option titre=\"$section_nom\" id=\"$section_id\"/>\n";
+?>
+	</choix>
+	<choix titre="Binet" id="binet" type="combo" valeur="">
+		<option titre="Tous" id=""/>
+<?php
+		$DB_trombino->query("SELECT binet_id,nom FROM binets ORDER BY nom ASC");
+		while( list($binet_id,$binet_nom) = $DB_trombino->next_row() )
+			echo "\t\t\t<option titre=\"$binet_nom\" id=\"$binet_id\"/>\n";
+?>
+	</choix>
+	<br/>
 	<bouton titre="Valider le sondage" id="valid" onClick="return window.confirm('Voulez vous vraiment valider votre sondage ?')" />
 	<bouton titre="Interface <?= ($_REQUEST["avance"]==1)?"simplifiée":"avancée";?>" id="btn_avance"/>
 </formulaire>

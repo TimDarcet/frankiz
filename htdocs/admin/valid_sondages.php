@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un sondage
 	
 	$Log$
+	Revision 1.21  2005/03/04 23:11:33  pico
+	Restriction des sondages par promo/section/binet
+
 	Revision 1.20  2005/03/02 07:24:49  pico
 	corrige une petite erreur d'url
-
+	
 	Revision 1.19  2005/02/15 19:45:14  pico
 	Pour modifier les sondages lors de la validation
 	
@@ -147,27 +150,22 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0] == "valid") {
 		cache_supprimer('sondages') ;// On supprime le cache pour reloader
 		
-		$DB_valid->query("SELECT v.perime,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM valid_sondages as v LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE sondage_id={$temp[1]}");
+		$DB_valid->query("SELECT v.perime,v.questions,v.titre,v.eleve_id,v.restriction, e.nom, e.prenom, e.promo FROM valid_sondages as v LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE sondage_id={$temp[1]}");
 		if ($DB_valid->num_rows()!=0) {
 		
-			list($date,$questions,$titre,$eleve_id,$nom, $prenom, $promo) = $DB_valid->next_row() ;
+			list($date,$questions,$titre,$eleve_id,$restriction,$nom, $prenom, $promo) = $DB_valid->next_row() ;
 			
 			//Log l'action de l'admin
 			log_admin($_SESSION['user']->uid," validé le sondage '$titre'") ;
-			
-			if (isset($_REQUEST['ext_auth']))
-				$temp_ext = '1'  ;
-			else 
-				$temp_ext = '0' ;
-			
-			$DB_web->query("INSERT INTO sondage_question SET eleve_id=$eleve_id, questions='$questions', titre='$titre', perime='$date', exterieur='$temp_ext'") ;
+
+			$DB_web->query("INSERT INTO sondage_question SET eleve_id=$eleve_id, questions='$questions', titre='$titre', perime='$date', restriction='$restriction'") ;
 			$index = mysql_insert_id($DB_web->link) ;
 			$DB_valid->query("DELETE FROM valid_sondages WHERE sondage_id='{$temp[1]}'");
 			
 			$bla = "explication_".$temp[1] ;
 			$contenu = "<strong>Bonjour</strong>, <br><br>".
 						"Ton sondage vient d'être mis en ligne par le BR <br>";
-			if($temp_ext==0) $contenu .= "Il est accessible à l'adresse suivante: ".BASE_URL."/sondage.php?id=".$index."<br>";
+			$contenu .= "Il est accessible à l'adresse suivante: ".BASE_URL."/sondage.php?id=".$index."<br>";
 			$contenu .= $_POST[$bla]."<br>".
 						"<br>" .
 						"Très Cordialement<br>" .
@@ -197,8 +195,8 @@ $DB_trombino->query("UNLOCK TABLES");
 
 //===============================
 
-	$DB_valid->query("SELECT v.exterieur,v.perime, v.sondage_id,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM valid_sondages as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
-	while(list($ext,$date,$id,$questions,$titre,$eleve_id,$nom, $prenom, $promo) = $DB_valid->next_row()) {
+	$DB_valid->query("SELECT v.perime, v.sondage_id,v.questions,v.titre,v.eleve_id,v.restriction, e.nom, e.prenom, e.promo FROM valid_sondages as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
+	while(list($date,$id,$questions,$titre,$eleve_id,$restriction,$nom, $prenom, $promo) = $DB_valid->next_row()) {
 	?>
 		<formulaire id="form" titre="<?=$titre?> (<?=date("d/m",strtotime($date))?>)">	
 	<?
@@ -209,16 +207,7 @@ $DB_trombino->query("UNLOCK TABLES");
 		<formulaire id="sond_<? echo $id ?>" titre="Validation de '<?=$titre?>'" action="admin/valid_sondages.php">
 			<note>Sondage proposé par <?=$prenom?> <?=$nom?> (<?=$promo?>)</note>
 			<zonetext titre="La raison du choix du modérateur (Surtout si refus)" id="explication_<? echo $id ;?>"></zonetext>
-			<?
-				if ($ext==1) {
-					echo "<warning>L'utilisateur a demandé que son sondage soit visible sur le site</warning>" ;
-					$ext_temp='ext' ; 
-				} else $ext_temp="" ;
-			?>
-			<choix titre="Sondage sur la page principale de Frankiz" id="exterieur" type="checkbox" valeur="<? echo $ext_temp." " ; if ((isset($_REQUEST['ext_auth']))&&(isset($_REQUEST['modif_'.$id]))) echo 'ext_auth' ;?>">
-				<option id="ext" titre="Demande de l'utilisateur" modifiable='non'/>
-				<option id="ext_auth" titre="Décision du Webmestre"/>
-			</choix>
+			<textsimple id='restriction' valeur='Restriction demandée: <?=$restriction?>'/><br/>
 			<choix titre="Sondage jusqu'à " id="date" type="combo" valeur="<? echo $date ;?>">
 			<?	for ($i=1 ; $i<=MAX_PEREMPTION ; $i++) {
 				$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
