@@ -44,7 +44,7 @@
 				</xsl:when>
 				<xsl:otherwise>
 					<div class="fkz_qdj_question"><xsl:value-of select="qdj/question"/></div>
-					<div class="fkz_page">
+					<div>
 						<div class="fkz_qdj_rouje_reponse">
 							<xsl:value-of select="qdj/reponse[@id='1']"/>
 							<br/>
@@ -59,7 +59,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			<!--<br/>-->
-			<div style="text-align: center"><br/>
+			<div class="fkz_end_page" style="text-align: center"><br/>
 				<xsl:if test="count(qdj/dernier)">
 					<div>Derniers à répondre :</div>
 					<ul class="fkz_qdj_last">

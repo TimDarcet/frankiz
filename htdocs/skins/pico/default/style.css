@@ -127,45 +127,47 @@ div.fkz_logo {
 
  /* Fin Logos Modules */
 
-
- 
 /* QDJ */
 
 .fkz_qdj_question {
     font-size: 11pt;
-    text-align: center;   
+    text-align: center;
+    width: 99%;
+    /*border: 1px solid black ; SUPP*/
 }
 
-.fkz_qdj_jone, .fkz_qdj_rouje,.fkz_qdj_jone_reponse,.fkz_qdj_rouje_reponse{
-	background-repeat:no-repeat;
+.fkz_qdj_jone, div.fkz_qdj_rouje, div.fkz_qdj_jone_reponse, div.fkz_qdj_rouje_reponse{
+	/*background-repeat:no-repeat;
 	background-position: center center;
-	height:60px;
+	height:60px;*/
 	text-align: center;
-	width: 49%;
+	width: 48%;
+	/*border: 1px solid black ; SUPP*/
 }
 
 .fkz_qdj_jone {
-	background-image:url("images/pointjone.gif");
+	/*background-image:url("images/pointjone.gif");*/
 	float: right;
 }
 
 .fkz_qdj_rouje {
-	background-image:url("images/pointrouje.gif");
+	/*background-image:url("images/pointrouje.gif");*/
 	float: left;
 }
 
 
-.fkz_qdj_jone a{
+.fkz_qdj_jone a {
 	color: red;
+	font-weight: bold;
 }
 
-.fkz_qdj_rouje a{
-	color: yellow;
+.fkz_qdj_rouje a {
+	color: #FFBB00;
+	font-weight: bold;
 }
-
 
 .fkz_qdj_jone_reponse {
-	color: yellow;
+	color: #FFBB00;
 	float: right;
 }
 
@@ -277,6 +279,53 @@ div.fkz_page_titre {
 	background-color:#eef1f2;
 }
 
+.nom{
+	text-align:center;
+}
+	
+.fkz_trombino_photo{
+	float:left;
+	margin-left:5px;
+}
+.fkz_trombino_section{
+	float:right;
+	margin-right:5px;
+}
+.fkz_trombino_infos{
+	float:left;
+	margin-left:5px;
+}
+.fkz_trombino_infos2{
+	float:right;
+	margin-right:5px;
+}
+.binets{
+	clear:both;
+}
+
+.fkz_signature{
+	text-align:right;
+	font-weight: bold;
+}
+
+form.trombino { 
+	
+	padding:20px 0px;
+}
+
+form.trombino div{
+	text-align:center;
+	padding:7px;
+}
+form.trombino table{
+	font-size: 9pt;
+	text-align:right;
+}
+
+form.trombino input,form.trombino select {
+	width:150px;
+}
+
 .fkz_signature{
 	text-align:right;
 	font-weight: bold;
@@ -333,42 +382,44 @@ span.valid_css {
  /* Fin Logos W3C */
 
 
-/* Stats */
+
+ /* Stats */
  
 .fkz_stats{list-style-type:  none;}
 
 .serveur_nom {
-	display: block;
+	position:relative;
+	left:5px;
 	color: inherit;
 }
 
 .serveur_up {
 	color: inherit;
 	background: lime;
-	position: relative;
-	left: 80px;
-	top: -16px;
+
 }
 
 .serveur_down {
 	color: inherit;
 	background: red;
-	position: relative;
-	left: 80px;
-	top: -16px;
+
 }
 
 /* FAQ et Xshare */
 .noeud_ferme{list-style-image:url('images/fold_close.gif')}
 .noeud_ouvert{list-style-image:url('images/fold_open.gif')}
 .feuille{list-style-image:url('images/question.gif')}
+.fkz_stats{list-style-type:  none;}
 
 /* Commentaires et Warning */
-
 .commentaire,.warning,.note {
 	color: inherit;
 	padding: 6px;
-	margin: 5px;
+	margin:5px;
+	margin-left:5px;
+	margin-right:5px;
+	margin-top:5px;
+	margin-bottom:5px;
 	display:block;
 }
 
@@ -384,6 +435,7 @@ span.valid_css {
 	font-size: 75%;
 	border: 1px solid #FFDD00;
 }
+
 
 /* Formulaires */
 
@@ -423,14 +475,32 @@ div.formulaire span.boutons{
 table.liste{
 	clear:both;
 	width:100%;
+	margin-top:5px;
 }
 
 table.liste .entete{
 	text-decoration: underline;
 }
 
-
+table.liste .element{
+	padding-top:10px;
+	font-size: 9pt;
+}
 
 #choix_skin h1, #profil h1,.fkz_page_meteo h1,#xshare  h1,#faq  h1,#vocabulaire  h1{
 	display:none;
+}
+
+span.meteo{
+	display: block;
+	text-align:center;
+}
+
+div.meteo{
+	display: block;
+	border-top: 2px solid #E9D2FF;
+}
+
+p.image {
+	text-align: center;
 }
