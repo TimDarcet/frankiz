@@ -6,8 +6,6 @@
 */
 
 if(est_authentifie(AUTH_MINIMUM)) {
-
-	require_once BASE_LOCAL."/include/trombino.inc.php";
 ?>
 
 	<module id="anniversaires" titre="Anniversaires" visible="<?php echo skin_visible("anniversaires"); ?>">
