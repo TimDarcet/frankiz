@@ -56,26 +56,8 @@ foreach ($_POST AS $keys => $val){
 	// On accepte la demande d'ip supplémentaire
 	//===========================
 	if ($temp[0] == "ok") {
-			mysql_query("DELETE FROM ip_ajout WHERE ip='$temp[1]' AND valider=1");
-	
-		$contenu = "Bonjour, \n\n".
-					"Nous t'avons supprimer l'ip suivante :\n".
-					$_POST[$temp2]."\n".
-					"En effet, nous pensons qu'elle ne te servira plus\n\n" .
-					"Très Cordialement\n" .
-					"Le BR\n"  ;
-		
-		$result = mysql_query("SELECT  login,nom,prenom,mail FROM eleves WHERE eleve_id=$temp[1]");
-		list($login,$nom,$prenom,$mail) = mysql_fetch_row($result) ;
-		if (($mail=="")||($mail=="NULL")) $mail = $login."@poly.polytechnique.fr" ;
-	
-		mail("$prenom $nom<$mail>","[Frankiz] Une de tes ips est supprimé",$contenu);
-
-	}
-	
-	// On vire une ip qu'on avait validé
-	//===========================
-	if ($temp[0] == "suppr") {
+		$temp2 = "ajout_ip_".$temp[1] ;
+		$temp3 = "raison_".$temp[1] ;
 		mysql_query("UPDATE ip_ajout SET valider=1,ip_enplus='".$_POST[$temp2]."', raison='".$_POST[$temp3]."' WHERE eleve_id=$temp[1] AND valider=0");
 		
 		$contenu = "Bonjour, \n\n".
@@ -92,13 +74,29 @@ foreach ($_POST AS $keys => $val){
 		mail("$prenom $nom<$mail>","[Frankiz] Ta demande a été acceptée",$contenu);
 
 	}
+	
+	// On vire une ip qu'on avait validé
+	//===========================
+	if ($temp[0] == "suppr") {
+		$temp2 = str_replace("xxx",".",$temp[2]) ; // euh c'est pas bo je suis d'accord mais bon c'est pour que ca marche sans trop de trick
+		mysql_query("DELETE FROM ip_ajout WHERE eleve_id=$temp[1] AND valider=1 AND ip_enplus='$temp2'");
+		
+		$contenu = "Bonjour, \n\n".
+					"Nous t'avons supprimé l'ip suivante :\n".
+					$temp2."\n".
+					"\n" .
+					"Très Cordialement\n" .
+					"Le BR\n"  ;
+		
+		$result = mysql_query("SELECT  login,nom,prenom,mail FROM eleves WHERE eleve_id=$temp[1]");
+		list($login,$nom,$prenom,$mail) = mysql_fetch_row($result) ;
+		if (($mail=="")||($mail=="NULL")) $mail = $login."@poly.polytechnique.fr" ;
+	
+		mail("$prenom $nom<$mail>","[Frankiz] Suppression d'une ip",$contenu);
+
+	}
 }
 ?>
-
-
-
-
-
 
 <commentaire>
 Vous allez valider un ajout d'une ip : Pour le mement le système n'est pas fiable car on ne sais pas si l'ip qu'on lui attribut est libre... Donc faites super attention car après c'est la merde !
@@ -142,7 +140,7 @@ Vous allez valider un ajout d'une ip : Pour le mement le système n'est pas fiabl
 			<element id="<? echo $eleve_id ;?>">
 				<colonne id="login"><? echo $login ;?></colonne>
 				<colonne id="raison"><? echo $raison ;?></colonne>
-				<colonne id="ip"><? echo $ip ;?><bouton titre="Dégage!" id="suppr_<? echo $ip ;?>"/></colonne>
+				<colonne id="ip"><? echo $ip ;?><bouton titre="Dégage!" id="suppr_<? echo $eleve_id ;?>_<? echo str_replace(".","xxx",$ip) ;?>"/></colonne>
 			</element>
 <?
 		}
