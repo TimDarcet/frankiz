@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.10  2004/11/25 23:50:04  pico
+	Possibilité de rajouter une heure pour l'activité (ex: scéances du BRC)
+
 	Revision 1.9  2004/11/25 10:40:08  pico
 	Correction activités (sinon l'image était tjs écrite en tant que 0 et ct pas glop du coup)
-
+	
 	Revision 1.8  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)

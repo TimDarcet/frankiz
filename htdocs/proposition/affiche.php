@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une activité
 	
 	$Log$
+	Revision 1.12  2004/11/25 23:50:04  pico
+	Possibilité de rajouter une heure pour l'activité (ex: scéances du BRC)
+
 	Revision 1.11  2004/11/25 11:52:10  pico
 	Correction des liens mysql_id
-
+	
 	Revision 1.10  2004/11/25 10:47:56  pico
 	Histoire d'éviter que le même pb se retrouve ici
 	
@@ -128,8 +131,16 @@ if (isset($_POST['valid'])) {
 			$temp_ext = '1'  ;
 		else 
 			$temp_ext = '0' ;
-	
-		$DB_valid->query("INSERT INTO valid_affiches SET date=FROM_UNIXTIME({$_POST['date']}), eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',url='".$_POST['url']."', exterieur=".$temp_ext);
+		
+		$date = $_POST['date'];
+		if (ereg("(((^[0-9]{1})|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])", $_POST['heure'], $regs)) {
+			list ($H, $i)  = explode(':', $_POST['heure']);
+			$date = $date + $H * 3600 + $i * 60;
+		}
+		
+		
+		
+		$DB_valid->query("INSERT INTO valid_affiches SET date=FROM_UNIXTIME({$date}), eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',url='".$_POST['url']."', exterieur=".$temp_ext);
 		
 		// on modifie le nom du fichier qui a été téléchargé si celui ci existe
 		// selon la norme de nommage ci-dessus
@@ -187,6 +198,8 @@ if ($erreur_upload==1) {
 if (!isset($_POST['titre']))  $_POST['titre']="Titre" ;
 if (!isset($_POST['url']))  $_POST['url']="http://" ;
 if (!isset($_POST['date']))  $_POST['date']=time() ;
+if (!isset($_POST['time']))  $_POST['time']=time() ;
+if (!isset($_POST['heure']))  $_POST['heure']="00:00";
 
 	echo "<module id=\"activites\" titre=\"Activités\">\n";
 
@@ -255,6 +268,7 @@ if ((isset($_POST['valid']))&&(isset($index))&&file_exists(DATA_DIR_LOCAL."affic
 		}
 ?>
 		</choix>
+		<champ id="heure" titre="Heure de l'activité" valeur="<? if (isset($_POST['heure'])) echo $_POST['heure'] ;?>"/>
 		<bouton id='test' titre="Tester"/>
 		<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider votre annonce ?')"/>
 	</formulaire>
