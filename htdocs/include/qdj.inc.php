@@ -9,9 +9,12 @@
 	TODO traiter le cas ou le qdj master est à la bourre (garder l'ancienne qdj par exemple).
 	
 	$Log$
+	Revision 1.7  2004/09/15 23:01:21  schmurtz
+	Bug de la qdj : renvoie maintenant sur la page courante (et non index.php)
+
 	Revision 1.6  2004/09/15 21:42:08  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
-
+	
 */
 
 function qdj_affiche($hier,$deja_vote) {
@@ -24,7 +27,7 @@ function qdj_affiche($hier,$deja_vote) {
 ?>
 
 	<module id="<?php echo $hier ? 'qdj_hier' : 'qdj' ?>" titre="QDJ<?php if($hier) echo ' d\'hier' ?>">
-		<qdj type="<?php echo $hier ? 'aujourdhui' : 'hier' ?>" id="<?php echo $date?>" <?php if(!$deja_vote && !$hier) echo " action=\"?qdj=$date&amp;vote=\""; ?>>
+		<qdj type="<?php echo $hier ? 'aujourdhui' : 'hier' ?>" id="<?php echo $date?>" <?php if(!$deja_vote && !$hier) echo " action=\"{$_SERVER['PHP_SELF']}?qdj=$date&amp;vote=\""; ?>>
 			<question><?php echo $question ?></question>
 			<reponse id="1" votes="<?php echo $compte1?>"><?php echo $reponse1?></reponse>
 			<reponse id="2" votes="<?php echo $compte2?>"><?php echo $reponse2?></reponse>
