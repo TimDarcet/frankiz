@@ -21,21 +21,20 @@
 	affichage d'un sondage
 
 	$Log$
+	Revision 1.3  2004/11/29 17:27:32  schmurtz
+	Modifications esthetiques.
+	Nettoyage de vielles balises qui trainaient.
+
 	Revision 1.2  2004/11/19 17:14:31  kikx
 	Gestion complete et enfin FINIIIIIIIIIIIIIIII des sondages !!! bon ok c'est assez moche l'affichage des resultats mais .... j'en ai marrrrrrrrrrre
-
+	
 	Revision 1.1  2004/11/17 23:46:21  kikx
 	Prepa pour le votes des sondages
-	
-
-	
 */
 
 require_once "include/global.inc.php";
 
 demande_authentification(AUTH_MINIMUM);
-
-
 
 
 //---------------------------------------------------------------------------------

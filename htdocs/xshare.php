@@ -19,10 +19,14 @@
 */
 /*
 	$Log$
+	Revision 1.4  2004/11/29 17:27:32  schmurtz
+	Modifications esthetiques.
+	Nettoyage de vielles balises qui trainaient.
+
 	Revision 1.3  2004/11/27 23:30:34  pico
 	Passage des xshare et faq en wiki
 	Ajout des images dans l'aide du wiki
-
+	
 	Revision 1.2  2004/11/25 12:45:36  pico
 	Duble emploi de htmlspecialchar vu que les entrées dans la bdd sont déjà transformées
 	
@@ -217,9 +221,6 @@ function rech_parent($id) {
 //
 /////////////////////////////////////////////////////////////////////////////////
 ?>
-  
-<p align="left">&nbsp;</p>
-
       
 
 <?
@@ -228,11 +229,11 @@ function rech_parent($id) {
 
 if (($mots!="")||($a_marquer!="")) {
 ?>
-<u><strong>Recherche</strong></u><br/><br/>
+<p><strong>Résultats de la recherche</strong></p>
 <?
 } else {
 ?>
-<p><strong>Visualisation des différents téléchargements : </strong> </p>
+<p><strong>Logiciels disponible en téléchargement :</strong></p>
 <?
 }
 
@@ -262,9 +263,8 @@ if ($mots!="") {
 	}
 	if (!$recherche) {
 ?>
-  <font color="#000066">Recherche infructueuse ...</font>
-essayer avec d'autres crit&egrave;res 
-  <?
+  <warning>Recherche infructueuse. Essayer avec d'autres critères.</warning>
+<?
 	} 
 }
 //
@@ -275,17 +275,13 @@ echo "<arbre>";
 rech_fils(0) ;
 echo "</arbre>";
 
-echo "<br/>" ;
-
 ?>
 
-
-        <formulaire id="form" action="xshare.php">
-            <champ id="mots" titre="Mots-clefs" valeur="<? echo $mots ;?>"/>
-            <bouton id="Submit" titre="Valide"/>
-            <bouton id="reset" titre="Reset"/>
-        </formulaire>
-        <commentaire>(Tous les mots seront dans la description / Séparez les par un blanc) </commentaire>
+	<formulaire id="form" action="xshare.php">
+		<note>Tous les mots seront dans la description. Séparez les par des blancs.</note>
+		<champ id="mots" titre="Mots-clefs" valeur="<? echo $mots ;?>"/>
+		<bouton id="Submit" titre="Chercher"/>
+	</formulaire>
 <?
 
 //
@@ -308,10 +304,9 @@ echo "<br/>" ;
 	
 		} else {
 			?>
-			<warning>Erreur : Impossible de trouver cette description </warning>
+			<warning>Erreur : Impossible de trouver cette description </warning>
 			<?
 		}
-		echo "<br/><br/>" ;
 	}
 //
 // Pied de page ...

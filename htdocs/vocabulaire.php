@@ -21,11 +21,12 @@
 	Vocabulaire de l'X
 	
 	$Log$
+	Revision 1.2  2004/11/29 17:27:32  schmurtz
+	Modifications esthetiques.
+	Nettoyage de vielles balises qui trainaient.
+
 	Revision 1.1  2004/10/31 22:14:52  kikx
 	Oubli
-
-	
-
 */
 
 require_once "include/global.inc.php";

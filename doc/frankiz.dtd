@@ -26,9 +26,13 @@
 	utilisé.
 
 	$Log$
+	Revision 1.8  2004/11/29 17:27:32  schmurtz
+	Modifications esthetiques.
+	Nettoyage de vielles balises qui trainaient.
+
 	Revision 1.7  2004/11/25 00:35:19  schmurtz
 	une image de plus dans htdocs/image
-
+	
 	Revision 1.6  2004/11/24 13:40:19  pico
 	Retour en arrière:
 	le champ est utile, c'est dans l'esprit des balises du w3c, mais ça interfère avec ce qui est fait jusqu'à maintenant, c'est à dire mettre l'id dans le champ valeur...
@@ -278,7 +282,7 @@
 			 si l'id est "reset", il faut créer un bouton reset et non un bouton submit -->
 
 <!-- textsimple permet d'insérer des commentaires dans un formulaire. C'est une méthode assez moche
-	 qu'il faudra modifier -->
+	 qu'il faudra modifier === OBSOLETE : utiliser une <note> === -->
 <!ELEMENT textsimple EMPTY>
 <!ATTLIST textsimple
 		valeur	CDATA #REQUIRED>

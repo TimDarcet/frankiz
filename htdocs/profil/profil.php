@@ -24,9 +24,13 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.32  2004/11/29 17:27:32  schmurtz
+	Modifications esthetiques.
+	Nettoyage de vielles balises qui trainaient.
+
 	Revision 1.31  2004/11/27 08:03:53  pico
 	/tmp/cvsh9cLqQ
-
+	
 	Revision 1.30  2004/11/24 18:12:27  kikx
 	Séparation de la page du site web et du profil personnel
 	
@@ -116,7 +120,7 @@ if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "true") && ($_REQUEST['im
 $message="";
 
 // Données sur l'utilisateur
-$DB_trombino->query("SELECT eleves.nom,prenom,surnom,mail,login,promo,sections.nom,cie,piece_id FROM eleves INNER JOIN sections USING(section_id) WHERE eleve_id='".$_SESSION['user']->uid."'");
+$DB_trombino->query("SELECT eleves.nom,prenom,surnom,mail,login,promo,sections.nom,cie,piece_id FROM eleves INNER JOIN sections USING(section_id) WHERE eleve_id='{$_SESSION['user']->uid}'");
 list($nom,$prenom,$surnom,$mail,$login,$promo,$section,$cie,$casert) = $DB_trombino->next_row();
 
 if(isset($_POST['changer_frankiz'])) {
@@ -128,8 +132,7 @@ if(isset($_POST['changer_frankiz'])) {
 	} else if(strlen($_POST['passwd']) < 8) {
 		ajoute_erreur(ERR_MDP_TROP_PETIT);
 	} else {
-		$DB_web->query("UPDATE compte_frankiz SET passwd='".md5($_POST['passwd'])."' "
-				   ."WHERE eleve_id='".$_SESSION['user']->uid."' ");
+		$DB_web->query("UPDATE compte_frankiz SET passwd='".md5($_POST['passwd'])."' WHERE eleve_id='{$_SESSION['user']->uid}'");
 		$message.="<commentaire>Le mot de passe vient d'être changé.</commentaire>";
 	}
 
@@ -137,8 +140,7 @@ if(isset($_POST['changer_frankiz'])) {
 	if($_POST['cookie'] == 'oui') {
 		// on rajoute le cookie
 		$cookie = array('hash'=>nouveau_hash(),'uid'=>$_SESSION['user']->uid);
-		$DB_web->query("UPDATE compte_frankiz SET hash='".$cookie['hash']."' "
-				   ."WHERE eleve_id='".$_SESSION['user']->uid."' ");
+		$DB_web->query("UPDATE compte_frankiz SET hash='{$cookie['hash']}' WHERE eleve_id='{$_SESSION['user']->uid}'");
 		SetCookie("auth",base64_encode(serialize($cookie)),time()+3*365*24*3600,"/");
 		$_COOKIE['auth'] = "blah";  // hack permetttant de faire marcher le test d'existance du cookie
 									// utilisé quelques ligne plus bas sans devoir recharger la page.
@@ -163,7 +165,7 @@ if(isset($_POST['changer_frankiz'])) {
 	if(aucune_erreur()) {
 		$surnom = $_POST['surnom'];
 		$mail = $_POST['email'];
-		$DB_trombino->query("UPDATE eleves SET surnom='$surnom',mail=".(empty($mail)?"NULL":"'$mail'")." WHERE eleve_id='".$_SESSION['user']->uid."'");
+		$DB_trombino->query("UPDATE eleves SET surnom='$surnom',mail=".(empty($mail)?"NULL":"'$mail'")." WHERE eleve_id='{$_SESSION['user']->uid}'");
 		$message.="<commentaire>L'email et le surnom ont été modifié.</commentaire>";
 	}
 	
@@ -176,7 +178,7 @@ if(isset($_POST['changer_frankiz'])) {
 		//------------------------------------
 	
 		if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$_SESSION['user']->uid}")) {
-			$message .= "<warning>Vous aviez déjà demandé une modification, seule la demande que vous venez de poster sera prise en compte</warning>" ;
+			$message .= "<warning>Vous aviez déjà demandé une modification de photo, seule la demande que vous venez de poster sera prise en compte.</warning>";
 		} else {
 			$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
 
@@ -188,7 +190,7 @@ if(isset($_POST['changer_frankiz'])) {
 				"L'automate :)<br>"  ;
 				
 			couriel(WEBMESTRE_ID,"[Frankiz] Modification de l'image trombi de $nom $prenom",$contenu);
-			$message .= "<commentaire>Ta demande de changement de photo a été prise en compte et sera validée dans les meilleurs délai... Merci</commentaire>" ;
+			$message .= "<commentaire>Ta demande de changement de photo a été prise en compte et sera validée dans les meilleurs délais.</commentaire>";
 
 		}
 		
@@ -214,26 +216,19 @@ if(isset($_POST['changer_frankiz'])) {
 			$filename =$_SESSION['user']->uid ;
 			move_uploaded_file($_FILES['file']['tmp_name'], DATA_DIR_LOCAL.'trombino/a_valider_'.$filename) ;
 		} else {
-			$message .= "<warning>Ton image n'est pas une image au bon format</warning>" ;
+			$message .= "<warning>Ton image n'est pas une image au bon format.</warning>" ;
 		}
 	}
 }
-// Modification de la partie "binets"
 
+// Modification d'un commentaire sur un binet
 if (isset($_POST['mod_binet'])) {
-	//$commentaire = $_POST['commentaire'];
-
-	foreach($_POST as $key=>$val) {
-		if ($key == "mod_binet") continue ;
-		$key = explode("_",$key) ;
-		$key = $key[1] ;
-		$DB_trombino->query("UPDATE membres SET remarque='$val' WHERE eleve_id={$_SESSION['user']->uid} AND binet_id=$key");
- 	}
-	$message .=  "<commentaire>Modification de la partie binets faite avec succès</commentaire>" ;
+	foreach($_POST['commentaire'] as $key=>$val)
+		$DB_trombino->query("UPDATE membres SET remarque='$val' WHERE eleve_id='{$_SESSION['user']->uid}' AND binet_id='$key'");
+	$message .= "<commentaire>Modification de la partie binets faite avec succès.</commentaire>";
 }
 
-// Modification de la partie "binets"
-
+// Suppression d'un binet
 if (isset($_POST['suppr_binet'])) {
 	$count =0 ;
 	if (isset($_POST['elements'])) {
@@ -244,21 +239,20 @@ if (isset($_POST['suppr_binet'])) {
 		}
 	}
 	if ($count>=1) {
-		$DB_trombino->query("DELETE FROM membres WHERE binet_id IN ($ids) AND  eleve_id={$_SESSION['user']->uid}");
-		$message .=  "Suppression de $count binets" ;
+		$DB_trombino->query("DELETE FROM membres WHERE binet_id IN ($ids) AND  eleve_id='{$_SESSION['user']->uid}'");
+		$message .= "<commentaire>Suppression de $count binet(s).</commentaire>";
 	} else {
-		$message .=  "<warning>Aucun binet séléctionné</warning>" ;	
+		$message .= "<warning>Aucun binet séléctionné.</warning>";
 	}
 }
 
-// Modification de la partie "binets"
-
+// Ajout d'un binet
 if (isset($_POST['add_binet'])) {
 	if ($_POST['liste_binet'] != 'default') {
-		$DB_trombino->query("INSERT INTO membres SET eleve_id={$_SESSION['user']->uid},binet_id={$_POST['liste_binet']}");
-		$message .= "<commentaire>Binet correctement ajouté</commentaire>" ;
+		$DB_trombino->query("INSERT INTO membres SET eleve_id='{$_SESSION['user']->uid}',binet_id='{$_POST['liste_binet']}'");
+		$message .= "<commentaire>Binet correctement ajouté</commentaire>";
 	} else {
-		$message .=  "<warning>Aucun binet séléctionné</warning>" ;	
+		$message .= "<warning>Aucun binet séléctionné.</warning>";
 	}
 }
 
@@ -302,55 +296,47 @@ require "../include/page_header.inc.php";
 		<champ id="casert" titre="Kazert" valeur="<?php echo $casert ?>" modifiable="non"/>
 		<champ id="surnom" titre="Surnom" valeur="<?php echo $surnom ?>"/>
 		<champ id="email" titre="Email" valeur="<?php echo empty($mail) ? $login.'@poly.polytechnique.fr' : $mail ?>"/>
-		<?
-		if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$_SESSION['user']->uid}")) {
-		?>
-			<warning>Cette image trombino n'a pas encore été validé par le BR</warning>
-			<image source="<? echo "profil/profil.php?image=true&amp;id=".$_SESSION['user']->uid ; ?>" texte="photo" height="95" width="80"/>
-		<?
-		} else {
-		?>
+		<?php if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$_SESSION['user']->uid}")): ?>
+			<note>Cette image trombino n'a pas encore été validé par le BR</note>
+			<image source="profil/profil.php?image=true&amp;id=<?=$_SESSION['user']->uid?>" texte="photo" height="95" width="80"/>
+		<?php else: ?>
 			<image source="trombino/?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>" texte="photo" height="95" width="80"/>
-		<?
-		}
-		?>
+		<?php endif; ?>
 		<note>Tu peux personnaliser le trombino en changeant ta photo (elle ne doit pas dépasser 200ko)</note>
-		<fichier id="file" titre="Nlle photo" taille="200000"/>
+		<fichier id="file" titre="Nouvelle photo" taille="200000"/>
 
 		<bouton id="changer_trombino" titre="Changer"/>
 	</formulaire>
 	
-	<liste id="liste_binet" selectionnable="oui" action="profil/profil.php" titre="Tes Binets">
+	<liste id="liste_binet" selectionnable="oui" action="profil/profil.php" titre="Mes Binets">
 		<entete id="binet" titre="Binet"/>
 		<entete id="commentaire" titre="Commentaire"/>
-
-<?
-		$DB_trombino->query("SELECT nom,binet_id FROM binets  ORDER BY nom ASC");
-		$liste_binet = "<choix id=\"liste_binet\"  type=\"combo\" valeur=\"Ajout\">\n" ;
-		$liste_binet .= "\t<option titre=\"\" id=\"default\"/>" ;
-
-		while (list($nom_binet,$binet_id) = $DB_trombino->next_row()) { 
-			$liste_binet .="\t<option titre=\"$nom_binet\" id=\"$binet_id\"/>\n" ;
-		}
-		$liste_binet .= "</choix>\n" ;
-		$liste_binet .= "<bouton id='add_binet' titre='Ajouter'/>\n" ;
-
-
-
-		$DB_trombino->query("SELECT membres.remarque,membres.binet_id,binets.nom FROM membres INNER JOIN binets USING(binet_id) WHERE eleve_id={$_SESSION['user']->uid} ORDER BY binets.nom ASC");
-		while (list($remarque,$binet_id,$nom) = $DB_trombino->next_row()) { ?>
-		<element id="<?=$binet_id?>">
-			<colonne id="binet"><? echo $nom?> :</colonne>
-			<colonne id="commentaire"><champ id="binet_<? echo $binet_id?>" titre="" valeur="<? echo $remarque?>"/></colonne>
-		</element>
-<?
-		 }
-?>
+		
+		<?
+		$DB_trombino->query("SELECT membres.remarque,membres.binet_id,binets.nom FROM membres INNER JOIN binets USING(binet_id) WHERE eleve_id='{$_SESSION['user']->uid}' ORDER BY binets.nom ASC");
+		while (list($remarque,$binet_id,$nom) = $DB_trombino->next_row()): ?>
+			<element id="<?=$binet_id?>">
+				<colonne id="binet"><? echo $nom?> :</colonne>
+				<colonne id="commentaire"><champ id="commentaire[<? echo $binet_id?>]" titre="" valeur="<? echo $remarque?>"/></colonne>
+			</element>
+		<? endwhile; ?>
+		
 		<note>Si tu viens d'adhérer à un binet, n'hésite pas à le montrer et inscrit-y toi sur le TOL</note>
 		<element id="<?=$binet_id?>" selectionnable="non">
 			<colonne id="binet">Rajouter un binet</colonne>
-			<colonne id="commentaire"><?=$liste_binet?></colonne>
+			<colonne id="commentaire">
+				<choix id="liste_binet"  type="combo" valeur="Ajout">
+					<option titre="" id="default"/>
+<?
+					$DB_trombino->query("SELECT nom,binet_id FROM binets  ORDER BY nom ASC");
+					while (list($nom_binet,$binet_id) = $DB_trombino->next_row())
+						echo "<option titre=\"$nom_binet\" id=\"$binet_id\"/>\n";
+?>
+				</choix>
+				<bouton id='add_binet' titre='Ajouter'/>
+			</colonne>
 		</element>
+		
 		<bouton id='suppr_binet' titre='Supprimer' onClick="return window.confirm('Voulez vous vraiment supprimer ce binet ?')"/>
 		<bouton id='mod_binet' titre='Changer'/>
 	</liste>

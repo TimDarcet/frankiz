@@ -21,9 +21,13 @@
 	Gestions des liens perso / des flux rss.
 
 	$Log$
+	Revision 1.6  2004/11/29 17:27:32  schmurtz
+	Modifications esthetiques.
+	Nettoyage de vielles balises qui trainaient.
+
 	Revision 1.5  2004/11/24 21:09:04  pico
 	Sauvegarde avant mise à jour skins
-
+	
 	Revision 1.4  2004/11/24 20:07:12  pico
 	Ajout des liens persos
 	
@@ -35,18 +39,12 @@
 	
 	Revision 1.1  2004/11/24 16:24:09  pico
 	Passage du formulaire de choix des rss à afficher dans une page spéciale
-	
-
-	
-	
 */
-
 
 require_once "../include/global.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_MINIMUM);
-
 
 
 $DB_web->query("SELECT url,description FROM liens_rss");

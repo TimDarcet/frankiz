@@ -21,9 +21,13 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.25  2004/11/29 17:27:33  schmurtz
+	Modifications esthetiques.
+	Nettoyage de vielles balises qui trainaient.
+
 	Revision 1.24  2004/11/27 20:58:37  pico
 	Ajout de la balise <br/>
-
+	
 	Revision 1.23  2004/11/24 13:05:23  schmurtz
 	Ajout d'un attribut type='discret' pour les liste et formulaire, afin d'avoir
 	une presentation par defaut sans gros cadres autour.
@@ -264,7 +268,7 @@
 	<p class="note"><xsl:apply-templates/></p>
 </xsl:template>
 <xsl:template match="p">
-	<xsl:apply-templates/><br />
+	<p><xsl:apply-templates/></p>
 </xsl:template>
 <xsl:template match="br">
 	<br/>

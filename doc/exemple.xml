@@ -165,7 +165,7 @@
 		
 		<fichier id="fichier" titre="Ton image" taille="250000"/>
 
-		<textsimple valeur="Commentaire, information"/>
+		<note>Commentaire, information</note>
 
 		<choix titre="Menu" id="choix1" type="combo" valeur="17">
 			<option titre="trois" id="3"/>

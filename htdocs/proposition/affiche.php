@@ -21,9 +21,13 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une activité
 	
 	$Log$
+	Revision 1.15  2004/11/29 17:27:33  schmurtz
+	Modifications esthetiques.
+	Nettoyage de vielles balises qui trainaient.
+
 	Revision 1.14  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-
+	
 	Revision 1.13  2004/11/26 00:13:22  pico
 	Affiche l'heure à laquelle est prévue l'activité
 	
@@ -240,10 +244,8 @@ if ($erreur_upload==1) {
 if ((isset($_POST['valid']))&&(isset($index))&&file_exists(DATA_DIR_LOCAL."affiches/a_valider_{$index}")) {
 ?>
 	<commentaire>
-		Tu as demandé à un webmestre de valider ton activité<br/>
-		Il faut compter 24h pour que ton activité soit prise en compte par notre système<br/>
-		<br/>
-		Nous te remercions d'avoir soumis une activité et nous essayerons d'y répondre le plus rapidement possible<br/>
+		Tu as demandé à un webmestre de valider ton activité. Il faut compter 24h pour que ton activité soit prise
+		en compte par notre système.
 	</commentaire>
 <?	
 } else {

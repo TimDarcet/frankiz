@@ -19,9 +19,13 @@
 */
 /*
 		$Log$
+		Revision 1.30  2004/11/29 17:27:32  schmurtz
+		Modifications esthetiques.
+		Nettoyage de vielles balises qui trainaient.
+
 		Revision 1.29  2004/11/27 15:16:42  pico
 		Corrections
-
+		
 		Revision 1.28  2004/11/27 15:02:17  pico
 		Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
 		
@@ -175,7 +179,7 @@ foreach ($_POST AS $keys => $val){
 			echo "<commentaire>FAQ ajoutée</commentaire>";
 		}
 		else{
-			echo "<warning>Impossible de trouver un fichier index.html ou index.php dans la FAQ soumise<br/> opération annulée</warning>";
+			echo "<warning>Impossible de trouver un fichier index.html ou index.php dans la FAQ soumise. L'opération a été annulée.</warning>";
 			$dir = BASE_DATA."faq/".$dir."/".$_REQUEST['nom'];
 			deldir($dir);
 		}
@@ -207,7 +211,7 @@ foreach ($_POST AS $keys => $val){
 				$reponse =", reponse='{$filename}'";
 			}
 			else{
-				echo "<warning>Impossible de trouver un fichier index.html ou index.php dans la FAQ soumise<br/> opération annulée</warning>";
+				echo "<warning>Impossible de trouver un fichier index.html ou index.php dans la FAQ soumise. L'opération a été annulée.</warning>";
 				deldir($dir);
 				$reponse = "";
 			}
@@ -367,7 +371,6 @@ function rech_parent($id) {
 echo "<arbre>";
 rech_fils(0) ;
 echo "</arbre>";
-echo "<br/>" ;
 
 ?>
 
@@ -386,7 +389,7 @@ echo "<br/>" ;
 	?>
 	<formulaire id="faq_<? echo $id ?>" titre="La réponse" action="admin/faq.php">
 	<champ id="question" titre="Question" valeur="<? echo $question ?>" />
-	<textsimple id="nom" titre="Nom du sous-dossier de la faq" valeur="<? echo dirname($reponse) ?>" />
+	<champ id="nom" titre="Nom du sous-dossier de la faq" valeur="<? echo dirname($reponse) ?>" />
 	<fichier id="file" titre="Changer fichier réponse (fichier .html, .zip ou .tar)" taille="1000000000"/>
 	<lien titre="Télécharger la faq en .zip" url="admin/faq.php?download=<? echo base64_encode(dirname($reponse)) ?>&amp;download_type=zip" />
 	<lien titre="Télécharger la faq en .tar" url="admin/faq.php?download=<? echo base64_encode(dirname($reponse)) ?>&amp;download_type=tar" />
@@ -400,7 +403,6 @@ echo "<br/>" ;
 	<warning>Erreur : Impossible de trouver cette description </warning>
 	<?
 		}
-		echo "<br/><br/>" ;
 	}
 	else
 	{

@@ -21,9 +21,13 @@
 	Page de validation d'une modification d'un binet
 	
 	$Log$
+	Revision 1.7  2004/11/29 17:27:32  schmurtz
+	Modifications esthetiques.
+	Nettoyage de vielles balises qui trainaient.
+
 	Revision 1.6  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-
+	
 	Revision 1.5  2004/11/08 18:26:40  kikx
 	Coorige des bugs
 	
@@ -94,10 +98,10 @@ if (isset($_POST['suppr'])) {
 ?>
 		<formulaire id="binet_web" titre="<? echo $nom?>" action="admin/valid_binets.php">
 			<hidden id="id" titre="ID" valeur="<? echo $binet_id?>"/>
-			<textsimple  titre="Catégorie" valeur="<? echo $categorie?>"/>
+			<champ titre="Catégorie" valeur="<? echo $categorie?>" modifiable="non"/>
 			<image source="gestion/binet.php?image=1&amp;id=<?=$binet_id?>"/>
-			<lien  url="<? echo $http?>" titre="<? echo $http?>"/>
-			<textsimple  titre="Description" valeur="<? echo stripslashes($description)?>"/>
+			<lien url="<? echo $http?>" titre="<? echo $http?>"/>
+			<champ titre="Description" valeur="<? echo stripslashes($description)?>" modifiable="non"/>
 
 			<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if ($exterieur==1) echo 'exterieur' ;?>" >
 				<option id="exterieur" titre=""/>

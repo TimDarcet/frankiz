@@ -21,10 +21,14 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.26  2004/11/29 17:27:33  schmurtz
+	Modifications esthetiques.
+	Nettoyage de vielles balises qui trainaient.
+
 	Revision 1.25  2004/11/24 13:05:23  schmurtz
 	Ajout d'un attribut type='discret' pour les liste et formulaire, afin d'avoir
 	une presentation par defaut sans gros cadres autour.
-
+	
 	Revision 1.24  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
@@ -69,7 +73,9 @@
 	Modification du champs fichier pour uploader des fichiers
 	
 	Revision 1.11  2004/09/17 22:49:29  kikx
-	Rajout de ce qui faut pour pouvoir faire des telechargeement de fichiers via des formulaires (ie des champs 'file' des champ 'hidden') de plus maintenant le formulaire sont en enctype="multipart/form-data" car sinon il parait que ca marche pas !
+	Rajout de ce qui faut pour pouvoir faire des telechargeement de fichiers via des formulaires
+	(ie des champs 'file' des champ 'hidden') de plus maintenant le formulaire sont en
+	enctype="multipart/form-data" car sinon il parait que ca marche pas !
 	
 	Revision 1.10  2004/09/17 09:05:32  kikx
 	La personne peut maintenant rajouter une annonce
@@ -101,7 +107,6 @@
 	<xsl:if test="boolean(@titre)">
 		<h2><xsl:value-of select="@titre"/></h2>
 	</xsl:if>
-	<xsl:apply-templates select="commentaire|warning"/>
 
 	<!-- le formulaire lui même, mis en page avec une table -->
 	<form enctype="multipart/form-data" method="post">
@@ -111,13 +116,17 @@
 			<xsl:if test="boolean(@titre)">
 				<tr><td class="titre" colspan="2"><xsl:value-of select="@titre"/></td></tr>
 			</xsl:if>
-			<!-- les options du formulaire -->
-			<xsl:for-each select="*[not (self::bouton or self::commentaire or self::warning)]">
-				<tr><td class="gauche">
-					<xsl:if test="boolean(@titre)"><xsl:value-of select="@titre"/> :</xsl:if>
-				</td><td class="droite">
-					<xsl:apply-templates select="."/>
-				</td></tr>
+			<!-- les options et notes du formulaire -->
+			<xsl:for-each select="*[not (self::bouton)]">
+				<xsl:choose><xsl:when test="self::note">
+					<tr><td colspan="2"><xsl:apply-templates select="."/></td></tr>
+				</xsl:when><xsl:otherwise>
+					<tr><td class="gauche">
+						<xsl:if test="boolean(@titre)"><xsl:value-of select="@titre"/> :</xsl:if>
+					</td><td class="droite">
+						<xsl:apply-templates select="."/>
+					</td></tr>
+				</xsl:otherwise></xsl:choose>
 			</xsl:for-each>
 			<!-- les boutons gérant les actions du formulaire -->
 			<tr><td class="boutons" colspan="2">

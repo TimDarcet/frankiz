@@ -74,7 +74,6 @@ td#modules>table tr>td {
 
 table.annonce {
 	border: 1px solid #888888;
-	width: 95%;
 }
 
 table.annonce th {
@@ -201,9 +200,17 @@ table.trombino img {
 }
 
 /* FAQ et Xshare */
-li.noeud_ouvert{list-style-image:url('fold_close.gif')}
-li.noeud_ferme{list-style-image:url('fold_open.gif')}
-ul.feuille{list-style-image:url('question.gif')}
+li.noeud_ouvert {
+	list-style-image:url("fold_open.gif");
+}
+
+li.noeud_ferme {
+	list-style-image:url("fold_close.gif");
+}
+
+ul.feuille {
+	list-style-image:url("question.gif");
+}
 
 /* Balises HTML */
 H1 {

@@ -23,9 +23,13 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.19  2004/11/29 17:27:32  schmurtz
+	Modifications esthetiques.
+	Nettoyage de vielles balises qui trainaient.
+
 	Revision 1.18  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-
+	
 	Revision 1.17  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
 	
@@ -62,7 +66,7 @@ if(!verifie_permission('admin'))
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
-<page id="admin_valid_ip" titre="Frankiz : Ajouter une ip à un utilisateur">
+<page id="admin_valid_ip" titre="Frankiz : Attribuer une nouvelle adresse IP">
 
 <?
 // On regarde quel cas c'est ...
@@ -79,16 +83,17 @@ foreach ($_POST AS $keys => $val){
 		
 		$bla = "refus_".$temp[1] ;
 		$contenu = "Bonjour, <br><br>".
-					"Nous sommes désolé mais nous ne pouvons pas d'ouvrir une autre ip supplémentaire <br>".
+					"Nous sommes désolés de pas pouvoir d'attribuer une adresse IP supplémentaire pour la raison suivante :<br>".
 					$_POST[$bla]."<br>".
-					"Il y a certainement une autre façon de faire qui te permettra de faire ce que tu as envie de faire <br>".
+					"Il y a certainement une autre façon de procéder pour atteindre ton but.<br>".
 					"<br>" .
 					"Très Cordialement<br>" .
 					"Le BR<br>"  ;
 	
 		couriel($temp[1],"[Frankiz] Ta demande a été refusée ",$contenu);
-		echo "<warning>Envoie d'un mail <br/>Le prévient que sa demande n'est pas acceptée</warning>" ;
+		echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande n'a pas été acceptée.</commentaire>" ;
 	}
+	
 	// On accepte la demande d'ip supplémentaire
 	//===========================
 	if ($temp[0] == "ok") {
@@ -105,17 +110,18 @@ foreach ($_POST AS $keys => $val){
 			$DB_admin->query("INSERT prises SET prise_id='',piece_id='$kzert',ip='{$_POST[$temp2]}',type='secondaire'");
 			
 			$contenu = "Bonjour, <br><br>".
-						"Nous t'avons ouvert l'ip suivante :<br>".
+						"Nous t'avons attribué l'adresse IP suivante :<br>".
 						$_POST[$temp2]."<br>".
 						"<br>" .
 						"Très Cordialement<br>" .
-						"Le BR<br>"  ;
+						"Le BR<br>";
 		
 			couriel($temp[1],"[Frankiz] Ta demande a été acceptée",$contenu);
-			echo "<warning>Envoie d'un mail<br/>Le prévient que sa demande à été accepté (Nlle ip =".$_POST[$temp2].") </warning>" ;
+			echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande a été acceptée (nouvelle adresse IP : ".$_POST[$temp2].")</commentaire>" ;
+			
 		// S'il y  a deja une entrée comme celle demandé dans la base !
 		} else {
-			echo "<warning>IMPOSSIBLE DE METTRE CETTE IP<br/>Il y a déjà une autre personne la possédant</warning>" ;		
+			echo "<warning>IMPOSSIBLE D'ATTRIBUER CETTE IP. Une autre personne la posséde déjà.</warning>" ;
 		}
 
 	}
@@ -127,13 +133,13 @@ foreach ($_POST AS $keys => $val){
 		$DB_admin->query("DELETE FROM prises WHERE type='secondaire' AND ip='$temp2' AND prise_id=''");
 		
 		$contenu = "Bonjour, <br><br>".
-					"Nous t'avons supprimé l'ip suivante :<br><br>".
+					"Nous avons supprimé l'adresse IP suivante qui t'était actuellement attribuée :<br><br>".
 					$temp2."<br><br>".
 					"Très Cordialement<br>" .
 					"Le BR<br>"  ;
 	
-		couriel($temp[2],"[Frankiz] Suppression d'une ip",$contenu);
-		echo "<warning>Envoie d'un mail à <br/>Le previent que son ip $temp2 vient d'être supprimé</warning>" ;			
+		couriel($temp[2],"[Frankiz] Suppression d'une adresse IP",$contenu);
+		echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que son adresse IP $temp2 vient d'être supprimée.</commentaire>" ;
 
 	}
 }

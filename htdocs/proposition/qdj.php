@@ -21,9 +21,13 @@
 	Permet de proposer une QDJ
 	
 	$Log$
+	Revision 1.7  2004/11/29 17:27:33  schmurtz
+	Modifications esthetiques.
+	Nettoyage de vielles balises qui trainaient.
+
 	Revision 1.6  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-
+	
 	Revision 1.5  2004/10/29 14:38:37  kikx
 	Mise en format HTML des mails pour les validation de la qdj, des mails promos, et des annonces
 	
@@ -84,8 +88,7 @@ if (!isset($_REQUEST['envoie'])) {
 } else {
 ?>
 	<commentaire>
-		Merci d'avoir proposé une QDJ<br/>
-		Le responsable au BR essayera de la publier le plus tôt possible
+		Merci d'avoir proposé une QDJ. Le responsable au BR essayera de la publier le plus tôt possible.
 	</commentaire>
 <?
 	// Stockage dans la base SQL

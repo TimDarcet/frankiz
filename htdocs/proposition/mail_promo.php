@@ -21,9 +21,13 @@
 	Mail promo permettant l'envoie de pièce jointes et de formatage HTML
 	
 	$Log$
+	Revision 1.13  2004/11/29 17:27:33  schmurtz
+	Modifications esthetiques.
+	Nettoyage de vielles balises qui trainaient.
+
 	Revision 1.12  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-
+	
 	Revision 1.11  2004/11/25 00:17:12  kikx
 	Passage des mails promo en wiki
 	
@@ -129,8 +133,7 @@ if (!isset($_REQUEST['envoie'])) {
 } else {
 ?>
 	<commentaire>
-		Merci d'avoir proposé un mail promo<br/>
-		Le responsable au BR essayera de te le valider le plus tôt possible<br/>
+		Merci d'avoir proposé un mail promo. Le responsable au BR essayera de te le valider le plus tôt possible.
 	</commentaire>
 <?
 	// Stockage dans la base SQL

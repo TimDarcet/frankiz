@@ -19,9 +19,13 @@
 */
 /*
 		$Log$
+		Revision 1.9  2004/11/29 17:27:32  schmurtz
+		Modifications esthetiques.
+		Nettoyage de vielles balises qui trainaient.
+
 		Revision 1.8  2004/11/28 10:03:25  pico
 		Ptite correction dans les urls de data
-
+		
 		Revision 1.7  2004/11/28 01:33:32  pico
 		Gestion des listes sur le wiki (arbre + feuille)
 		
@@ -260,21 +264,17 @@ function rech_parent($id) {
 /////////////////////////////////////////////////////////////////////////////////
 ?>
   
-<p align="left">&nbsp;</p>
-
-      
-
 <?
 // Entete !
 //-------------------------
 
 if (($mots!="")||($a_marquer!="")) {
 ?>
-<u><strong>Recherche</strong></u><br/><br/>
+<p><strong>Recherche</strong></p>
 <?
 } else {
 ?>
-<p><strong>Visualisation des différentes FAQ : </strong> </p>
+<p><strong>Liste des différentes questions de la FAQ :</strong></p>
 <?
 }
 
@@ -302,13 +302,9 @@ if ($mots!="") {
 			}
 		}
 	}
-	if (!$recherche) {
-?>
-  <font color="#000066">Recherche infructueuse ...</font>
-essayer avec d'autres critères 
-  <?
-	} 
-} 
+	if (!$recherche)
+		echo "<warning>Recherche infructueuse. Essayer avec d'autres critères.</warning>\n";
+}
 
 //
 // on affiche  l'arbre 
@@ -318,16 +314,13 @@ echo "<arbre>";
 rech_fils(0) ;
 echo "</arbre>";
 
-echo "<br/>" ;
-
 ?>
 
 
 <formulaire id="form" action="faq.php">
 	<note>Tous les mots seront dans la description / Séparez les par un blanc</note>
 	<champ id="mots" titre="Mots-clefs" valeur="<? echo $mots ;?>"/>
-	<bouton id="Submit" titre="Valide"/>
-	<bouton id="reset" titre="Reset"/>
+	<bouton id="Submit" titre="Chercher"/>
 </formulaire>
 <?
 
@@ -369,7 +362,6 @@ if ($id != "") {
 		<warning>Erreur : Impossible de trouver cette question </warning>
 	<?
 	}
-	echo "<br/><br/>" ;
 }
 
 

@@ -19,10 +19,14 @@
 */
 /*
 		$Log$
+		Revision 1.30  2004/11/29 17:27:32  schmurtz
+		Modifications esthetiques.
+		Nettoyage de vielles balises qui trainaient.
+
 		Revision 1.29  2004/11/27 23:30:34  pico
 		Passage des xshare et faq en wiki
 		Ajout des images dans l'aide du wiki
-
+		
 		Revision 1.28  2004/11/27 15:16:42  pico
 		Corrections
 		
@@ -319,7 +323,6 @@ function rech_parent($id) {
 echo "<arbre>";
 rech_fils(0) ;
 echo "</arbre>";
-echo "<br/>" ;
 
 ?>
 
@@ -359,7 +362,6 @@ echo "<br/>" ;
 	<warning>Erreur : Impossible de trouver cette description </warning>
 	<?
 		}
-		echo "<br/><br/>" ;
 	}
 	else
 	{

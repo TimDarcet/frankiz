@@ -21,9 +21,13 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.15  2004/11/29 17:27:32  schmurtz
+	Modifications esthetiques.
+	Nettoyage de vielles balises qui trainaient.
+
 	Revision 1.14  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-
+	
 	Revision 1.13  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
 	
@@ -193,8 +197,7 @@ foreach ($_POST AS $keys => $val){
 //nb de qdj planifiées
 $date = date("Y-m-d", time()-3025);
 ?>
-<commentaire>
-	Nous sommes le: <? echo $date ?><br/>
+	<p>Nous sommes le : <?= $date ?></p>
 <?
 //Cherche la date de la prochaine qdj libre
 for ($i = 0; ; $i++) 
@@ -204,12 +207,11 @@ for ($i = 0; ; $i++)
 	if(!$DB_web->num_rows()) break;
 }
 ?>
-	La planification est faite jusqu'au: <? echo $date_last ?><br/>
-<? $DB_web->query("SELECT qdj_id FROM qdj WHERE date>'$date' "); ?>
-	Nb de QDJ planifiées: <? echo $DB_web->num_rows() ?><br/>
-<? $DB_web->query("SELECT qdj_id FROM qdj WHERE date='0000-00-00' "); ?>
-	Nb de QDJ disponibles: <? echo $DB_web->num_rows() ?><br/>
-</commentaire>
+	<p>La planification est faite jusqu'au : <?= $date_last ?></p>
+	<? $DB_web->query("SELECT qdj_id FROM qdj WHERE date>'$date' "); ?>
+	<p>Nb de QDJ planifiées: <? echo $DB_web->num_rows() ?></p>
+	<? $DB_web->query("SELECT qdj_id FROM qdj WHERE date='0000-00-00' "); ?>
+	<p>Nb de QDJ disponibles: <? echo $DB_web->num_rows() ?></p>
 	
 <?
 // Affiche la planification existante
@@ -224,9 +226,9 @@ if(isset($_REQUEST['show'])) {
 
 ?>
 		<formulaire id="<? echo $id ?>" action="admin/planif_qdj.php">
-			<textsimple valeur="<? echo $date ?>"/>
-			<textsimple valeur="<? echo $question ?>"/>
-			<textsimple valeur="<? echo $reponse1 ?> / <? echo $reponse2 ?>"/>
+			<note><?= $date ?></note>
+			<note><?= $question ?></note>
+			<note><?= "$reponse1 / $reponse2" ?></note>
 		
 			<? if(strtotime($date) >time()-3025 + 24*3600){ ?><bouton titre="Un jour plus tôt" id="reddate_<? echo $id ?>_<? echo $date ?>"/><? } ?>
 			<bouton titre="Un jour plus tard" id="augdate_<? echo $id ?>_<? echo $date ?>"/>

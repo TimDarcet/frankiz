@@ -25,9 +25,13 @@
 	- affichage des requètes mysql en commentaire dans
 	
 	$Log$
+	Revision 1.3  2004/11/29 17:27:32  schmurtz
+	Modifications esthetiques.
+	Nettoyage de vielles balises qui trainaient.
+
 	Revision 1.2  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-
+	
 	Revision 1.1  2004/11/25 00:44:35  schmurtz
 	Ajout de init_ devant les fichier d'include servant d'initialisation de page
 	Permet de mieux les distinguer des autres fichiers d'include ne faisant que definir
@@ -144,7 +148,7 @@ function affiche_erreurs_php() {
 		
 		if($_ERREUR_FATAL) {
 			echo "<warning>Une erreur inconnue est survenue.\n"
-				."<br/>Pour informer le Webmestre de cette erreur et expliquer la manipulation qui l'a déclenchée,"
+				." Pour informer le Webmestre de cette erreur et expliquer la manipulation qui l'a déclenchée,"
 				." cliquez <lien url=\"mailto:".MAIL_WEBMESTRE."?Subject=%5BFrankiz%20Erreur%20$timestamp%5D%20\" titre=\"ici\"/>.</warning>\n";
 			exit;
 		}
