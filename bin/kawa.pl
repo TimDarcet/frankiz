@@ -89,7 +89,7 @@ sub selection {
 	$tm=localtime;
 	my $date;
 	for ($i=0; $i<3; $i++) {
-		$date=($tm->year) . "-" . $tm->month . "-" . ($tm->day - $i);
+		$date=($tm->year) . "-" . $tm->mon . "-" . ($tm->mday - $i);
 		traiter_jour($date,$name,$subject[$i],$body);
 	}
 }
