@@ -21,9 +21,12 @@
 	Page qui permet l'administartion des licences windows.
 	
 	$Log$
+	Revision 1.8  2005/01/19 12:11:31  dei
+	debug gestion d'ajout de licence sur demande
+
 	Revision 1.7  2005/01/18 22:40:44  dei
 	ajout d'une fonction pour mettre des clés dans la base à la main
-
+	
 	Revision 1.6  2005/01/18 21:38:41  dei
 	ajout de fonctionnalité de recherche et correction test des clés
 	
@@ -67,14 +70,11 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 function test_cle($key){
 	$key=explode("-",$key);
 	if(sizeof($key)==5){
-		echo "size";
 		for($i=0;$i<sizeof($key);$i++){
 			if(!ereg('^[[:alnum:]]+$', $key[$i])){
-				echo "$i";
 				return false;
 			}
 		}
-		echo "ok";
 		return true;
 	}
 	return false;
@@ -105,16 +105,15 @@ $temp = explode("_",$keys) ;
 	// On accepte la demande de licence supplémentaire
 	//===========================
 	if ($temp[0] == "ok"){
+		$temp2 = "ajout_licence_".$temp[1] ;
 		if(test_cle($_POST[$temp2])) {
-			$temp2 = "ajout_licence_".$temp[1] ;
-			//on cherche ds les clés attribuées au logiciel...
+			//on cherche ds les clés attribuées au logiciel..
 			$DB_msdnaa->query("SELECT 0 FROM cles_$temp[2] WHERE cle='$_POST[$temp2]'");
 			// S'il n'y a aucune entrée avec cette licence dans la base
 			if($DB_msdnaa->num_rows()==0){
 				$DB_msdnaa->query("DELETE FROM valid_licence WHERE eleve_id='{$temp[1]}'");
 				//on l'ajoute à la base concernée...
 				$DB_msdnaa->query("INSERT cles_$temp[2] SET eleve_id='{$temp[1]}', attrib='1', cle='$_POST[$temp2]'");
-				
 				$contenu = "Bonjour, <br><br>".
 							"Nous t'avons attribué la licence suivante :<br>".
 							$_POST[$temp2]."<br>".
@@ -224,7 +223,8 @@ if(isset($_POST['chercher'])){
 	</formulaire>
 
 <?php
-//a faire évoluer pour faire entrer les clés depuisun fichier texte...
+
+//a faire évoluer pour faire entrer les clés depuis un fichier texte...
 if(isset($_POST['ajout'])&&test_cle($_POST['cle'])&&$_POST['login']!=""){
 	$DB_msdnaa->query("SELECT 0 FROM cles_{$_POST['logiciel']} WHERE cle='{$_POST['cle']}'");
 	if($DB_msdnaa->num_rows()==0){
@@ -254,7 +254,6 @@ if(isset($_POST['ajout'])&&test_cle($_POST['cle'])&&$_POST['login']!=""){
 		</choix>
 		<bouton id='ajout' titre="Ajouter"/>
 	</formulaire>
-
 </page>		
 <?php
 require_once BASE_LOCAL."/include/page_footer.inc.php";
