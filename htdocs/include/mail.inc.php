@@ -22,9 +22,12 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.20  2005/01/03 18:37:24  pico
+	C'est mieux avec une page d'aide correcte
+
 	Revision 1.19  2005/01/03 12:16:09  pico
 	Correction envoit de mails
-
+	
 	Revision 1.18  2005/01/03 10:05:55  pico
 	Correction des l'erreur lors de l'envoi des mails pour les gens avec une ' dans leur nom
 	
@@ -147,7 +150,7 @@ function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID,$sender_string="") {
 	} else {
 		global $DB_trombino;
 		$DB_trombino->query("SELECT nom,prenom,mail,login FROM eleves WHERE eleve_id=$eleve_id") ;
-		list($nom, $prenom, $adresse, $login) = $DB_trombino->next_row()  ;
+		list($nom, $prenom, $adresse, $login) = $DB_trombino->next_row();
 		if(empty($adresse)) $adresse=$login."@poly.polytechnique.fr" ;
 		$prenom = str_replace(array('&amp;','&lt;','&gt;','&apos;','&quot;',''),array('&','<','>','\'','"','\\'),$prenom);
 		$nom = str_replace(array('&amp;','&lt;','&gt;','&apos;','&quot;',''),array('&','<','>','\'','"','\\'),$nom);

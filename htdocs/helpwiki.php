@@ -21,9 +21,12 @@
 	Help WIKI
 	
 	$Log$
+	Revision 1.8  2005/01/03 18:37:24  pico
+	C'est mieux avec une page d'aide correcte
+
 	Revision 1.7  2004/12/01 23:37:35  pico
 	Help wiki pour les listes
-
+	
 	Revision 1.6  2004/11/28 00:06:32  pico
 	Ajout des images avec légende (et donc "alt") dans le wiki
 	
@@ -93,8 +96,8 @@ Le nom Wiki provient d'un adjectif hawaiien wikiwiki, qui signifie rapide. C'est
 		</element>
 		<element id="">
 			<colonne id="type">Lien</colonne>
-			<colonne id="syntaxe"><p>http://frankiz/</p><p>[http://frankiz|Ici c'est le site élève]</p><p>[mailto://moi@moi|Mon email]</p></colonne>";
-			<colonne id="exemple"><?="<p>".wikiVersXML("http://frankiz/")."</p><p>".wikiVersXML("[http://frankiz/|Ici c'est le site élève]")."</p><p>".wikiVersXML("[mailto://moi@moi|Mon email]")."</p>"?></colonne>";
+			<colonne id="syntaxe"><p>http://frankiz/</p><p>[http://frankiz|Ici c'est le site élève]</p><p>[mailto:moi@moi|Mon email]</p></colonne>";
+			<colonne id="exemple"><?="<p>".wikiVersXML("http://frankiz/")."</p><p>".wikiVersXML("[http://frankiz/|Ici c'est le site élève]")."</p><p>".wikiVersXML("[mailto:moi@moi|Mon email]")."</p>"?></colonne>";
 		</element>
 		<element id="">
 			<colonne id="type">Image</colonne>
