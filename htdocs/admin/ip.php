@@ -22,9 +22,12 @@
 	Permet aussi de supprimer des IPs.
 	
 	$Log$
+	Revision 1.24  2004/10/28 11:42:16  kikx
+	Bug de ma part que je viens de corriger
+
 	Revision 1.23  2004/10/28 11:29:07  kikx
 	Mise en place d'un cache pour 30 min pour la météo
-
+	
 	Revision 1.22  2004/10/26 16:57:44  kikx
 	Pour la méteo ... ca envoie du paté !!
 	
@@ -74,20 +77,20 @@ $blabla = "" ;
 }
 
 function mac($id_prise){
-
-	/*your proxy server address*/
-	$proxy = "kuzh.polytechnique.fr";
-	/*your proxy server port*/
-	$port = 8080;
-	/*the url you want to connect to*/
-	$url = "http://xoap.weather.com/weather/local/FRXX0076?prod=xoap&par=1006415841&key=5064537abefac140";
+	$proxy = "kuzh.polytechnique.fr" ;
+	$port = 8080 ;
+	$url = "http://intranet.polytechnique.fr/SYSRES/SMAC/search.php?id_prise=$id_prise" ;
 	$fp = fsockopen($proxy, $port);
 	fputs($fp, "GET $url HTTP/1.0\r\nHost: $proxy\r\n\r\n");
 	$line = "" ;
 	while(!feof($fp)){
-  		$line .= fgets($fp, 4000);
+		$line = fgets($fp,4000);
+		$line = explode("-",$line) ;
+		if (count($line)==6) {
+			fclose($fp);
+			return ($line[0].":".$line[1].":".$line[2].":".$line[3].":".$line[4].":".$line[5]) ;
+		}
 	}
-	return $line ;
 }
 
 
