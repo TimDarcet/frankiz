@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 
 #Script pour les stats du nb de connectés xnet
+# Garde 144 résultats, soit 6* 24: Une journée avec un enregistrement toutes les 10minutes.
 
 $file="/home/frankiz2/cache/stats-xnet";
 use DBI();
@@ -19,7 +20,7 @@ if ($non_vide)
 {
 	my $string.= time." ".$nombre."\n";
 	open(FILE,"$file");
-	while (defined(my $l=<FILE>)&&$i<12) {$string.= $l;$i++;}
+	while (defined(my $l=<FILE>)&&$i<144) {$string.= $l;$i++;}
 	close(FILE);
 	
 	open(FILE,">$file");
