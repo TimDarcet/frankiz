@@ -1,9 +1,12 @@
 <? 
 /*
 		$Log$
+		Revision 1.7  2004/10/18 23:37:03  pico
+		BugFix Recherche (pas 2 requetes sql en même temps !)
+
 		Revision 1.6  2004/10/18 22:17:45  pico
 		Ajout des logs dans le fichier
-
+		
 */
 require_once "../include/global.inc.php";
 
@@ -24,10 +27,9 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 // Corps du Documents
 //---------------------------------------------------
 
-if(isset($_REQUEST['affich_elt'])) define("AFFICH_ELT",base64_decode($_REQUEST['affich_elt'])) ; else define("AFFICH_ELT",'');
-if(isset($_REQUEST['a_marquer'])) define("A_MARQUER",base64_decode($_REQUEST['a_marquer'])) ; else define("A_MARQUER","");
-if(isset($_REQUEST['mots'])) define("MOTS",$_REQUEST['mots']) ; else define("MOTS",'');
-
+if(isset($_REQUEST['mots'])) $mots=$_REQUEST['mots'] ; else $mots='';
+if(isset($_REQUEST['affich_elt'])) $affich_elt = base64_decode($_REQUEST['affich_elt']); else $affich_elt ="";
+if(isset($_REQUEST['a_marquer'])) $a_marquer = base64_decode($_REQUEST['a_marquer']) ; else $a_marquer ="";
 //
 //Petit programme recursif
 // pour parcourir l'arbre
@@ -35,7 +37,7 @@ if(isset($_REQUEST['mots'])) define("MOTS",$_REQUEST['mots']) ; else define("MOT
 //------------------------------
 
 function rech_fils($parent) {
-	global $DB_web ; 
+	global $DB_web,$a_marquer ; 
 
 	if (affiche_element_faq($parent)) {			// on continue l'affichage ssi on demande l'affichage
 
@@ -56,10 +58,10 @@ function rech_fils($parent) {
 			}
 			echo "<a  name=\"".$id."\"/>" ;
 			echo "<lien  url='faq/index.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
-			if (A_MARQUER != "") echo "&a_marquer=".base64_encode(A_MARQUER) ;
+			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#".$id."' titre='".htmlspecialchars($question,ENT_QUOTES)."'/>" ;
-			if (eregi("/".$id."/",A_MARQUER)) {
-				echo "<image source='./faq_fleche_folder.gif'/>" ;
+			if (eregi("/".$id."/",$a_marquer)) {
+				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche_folder.gif'/>" ;
 			}
 			echo "\n\r</feuille>\n\r " ;
 			rech_fils($id) ;
@@ -72,10 +74,10 @@ function rech_fils($parent) {
 		while(list($id,$question) = $DB_web->next_row()) {
 			echo "\n\r<feuille>\n\r" ;
 			echo "<lien  url='faq/index.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
-			if (A_MARQUER != "") echo "&a_marquer=".base64_encode(A_MARQUER) ;
+			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#reponse' titre='".htmlspecialchars($question,ENT_QUOTES)."'/>" ;
-			if (eregi("/".$id."/",A_MARQUER)) {
-				echo "<image source='./faq_fleche.gif'/>" ;
+			if (eregi("/".$id."/",$a_marquer)) {
+				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche.gif'/>" ;
 			}
 			echo "</feuille>\n\r" ;
 		}
@@ -90,10 +92,9 @@ function rech_fils($parent) {
 //------------------------------
 
 function affiche_element_faq($idfold){
-
-	
+	global $affich_elt;
 	if ($idfold == 0) return 1 ;			// on affiche toujours la racine !!
-	$ids = explode("/",AFFICH_ELT) ;
+	$ids = explode("/",$affich_elt) ;
 	for ($i=0 ; $i<count($ids) ; $i++) {
 		if (intval($ids[$i]) == $idfold) return 1 ;
 	}
@@ -107,9 +108,8 @@ function affiche_element_faq($idfold){
 //------------------------------
 
 function all_elt_affich($idfold){
-
-
-	$ids = explode("/",AFFICH_ELT) ;
+	global $affich_elt;
+	$ids = explode("/",$affich_elt) ;
 	$str = "0" ;
 	$retire = 0 ;
 	for ($i=0 ; $i<count($ids) ; $i++) {		// on parcours tous les element et on les re-rajoute avce condition ...
@@ -165,7 +165,7 @@ function rech_parent($id) {
 // Entete !
 //-------------------------
 
-if ((MOTS!="")||(A_MARQUER!="")) {
+if (($mots!="")||($a_marquer!="")) {
 ?>
 <u><strong>Recherche</strong></u><br/><br/>
 <?
@@ -181,18 +181,20 @@ if ((MOTS!="")||(A_MARQUER!="")) {
 //
 ////////////////////////////////////////////////
 
-if (MOTS!="") {
+if ($mots!="") {
 	$DB_web->query("SELECT faq_id,question,reponse FROM faq") ;
 	$recherche = 0 ;
-	${A_MARQUER} = "/" ;			// liste des elements qui contiendront les mots
+	$a_marquer = "/" ;			// liste des elements qui contiendront les mots
 	$a_afficher = "0/" ;		// liste des elements à afficher
+	$result = explode(" ",$mots) ;
+	$n = count($result) ;
 	while(list($id,$question,$reponse) = $DB_web->next_row()) {
-		$result = explode(" ",MOTS) ;
-		$n = count($result) ;
 		for ($i=0 ; $i<$n ; $i++){ 			// on regarde dans chaque FAQ si il y a les mots ...
 			if ((eregi($result[$i],$reponse))||(eregi($result[$i],$question))) {
-				$a_afficher .= rech_parent($id) ;
-				${A_MARQUER} .= $id."/" ;
+				$DB_web->push_result();
+				$a_afficher = $a_afficher.rech_parent($id) ;
+				$DB_web->pop_result();
+				$a_marquer = $a_marquer.$id."/" ;
 				$recherche = 1 ;
 			}
 		}
@@ -200,10 +202,9 @@ if (MOTS!="") {
 	if (!$recherche) {
 ?>
   <font color="#000066">Recherche infructueuse ...</font>
-essayer avec d'autres crit&egrave;res 
+essayer avec d'autres critères 
   <?
 	} else {
-		${AFFICH_ELT} = $a_afficher ;
 		rech_fils(0) ; 
 	}
 } else {
@@ -222,8 +223,8 @@ echo "<br/>" ;
 ?>
 
 
-        <formulaire id="form" action="faq/faq.php">
-            <champ id="mots" titre="Mots-clefs" valeur="<? echo MOTS ;?>"/>
+        <formulaire id="form" action="faq/index.php">
+            <champ id="mots" titre="Mots-clefs" valeur="<? echo $mots ;?>"/>
             <bouton id="Submit" titre="Valide"/>
             <bouton id="reset" titre="Reset"/>
         </formulaire>
