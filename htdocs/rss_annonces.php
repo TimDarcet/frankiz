@@ -34,7 +34,7 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 ?>
 	<item>
 		<title><?php echo $titre ?></title>
-		<link><? echo BASE_URL."#".$id ?></link>
+		<link><? echo BASE_URL."?nonlu=$id#annonce_$id" ?></link>
 		<category><?php echo get_categorie($en_haut, $stamp, $perime) ?></category>
 		<pubDate><?php echo $stamp ?></pubDate>
 		<description>
