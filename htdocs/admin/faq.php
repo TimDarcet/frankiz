@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.16  2004/11/06 15:19:09  pico
+		Modifiaction possible du titre des faq
+
 		Revision 1.15  2004/11/05 14:08:22  pico
 		BugFix
-
+		
 		Revision 1.14  2004/11/05 13:50:22  pico
 		Admin FAQ:
 		On peut maintenant uploader un fichier html, une archive tar.gz (ou .tgz) ou un fichier .zip
@@ -143,6 +146,12 @@ foreach ($_POST AS $keys => $val){
 			$dir = BASE_DATA."faq/".$dir."/".$_REQUEST['nom'];
 			exec("rm -r $dir");
 		}
+	}
+	
+	if (($temp[0]=='modif') && isset($_REQUEST['question']) && ($_REQUEST['question']!='')) {
+		$question = $_REQUEST['question'];
+		$DB_web-> query("UPDATE faq SET question='{$question}' WHERE faq_id='{$temp[1]}' ");
+		echo "<commentaire>FAQ modifiée</commentaire>";
 	}
 	
 	if ($temp[0]=='suppr') {
