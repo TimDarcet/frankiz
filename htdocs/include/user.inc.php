@@ -115,7 +115,7 @@ class User {
 	}
 }
 
-// Fonctions simplifiée, utilisant $_SESSION['user'] directement
+// Fonctions simplifiées, utilisant $_SESSION['user'] directement
 function verifie_permission($perm) {
 	return $_SESSION['user']->verifie_permission($perm);
 }
