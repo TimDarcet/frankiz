@@ -84,18 +84,18 @@
        <xsl:value-of select="@id"/>
        </xsl:attribute><xsl:text> </xsl:text>
        </a>
-       <div style="text-align: center"><b>
+       <div class="fkz_annonces_titre"><b>
        <span>
           <xsl:attribute name="class">fkz_annonces_<xsl:value-of select="@categorie"/>
 	</xsl:attribute><xsl:text> </xsl:text></span>
 	<span class="fkz_annonces_cat">(<xsl:value-of select="@categorie"/>)</span>
 	
       <xsl:text> </xsl:text>
-	<xsl:value-of select="@titre"/>
+	<span class="fkz_annonces_titre"><xsl:value-of select="@titre"/></span>
       </b></div>
       <br/>
       <xsl:apply-templates select="html"/>
-      <p style="text-align: right">
+      <p class="fkz_signature">
       <xsl:choose>
       <xsl:when test="eleve/@surnom != ''">
 		<xsl:value-of select="eleve/@surnom"/>
