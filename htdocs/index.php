@@ -21,9 +21,12 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.41  2005/02/15 09:25:03  pico
+	ça devrait être plus propre comme ça
+
 	Revision 1.40  2005/02/15 09:03:35  pico
 	Version qui va ptèt mieux marcher
-
+	
 	Revision 1.39  2005/02/10 22:25:42  pico
 	On revient à une version précédente
 	
@@ -160,42 +163,37 @@ if (!est_authentifie(AUTH_MINIMUM))  {
 	
 	$annonces_lues1=" LEFT JOIN annonces_lues ON annonces_lues.annonce_id=annonces.annonce_id AND annonces_lues.eleve_id='{$_SESSION['user']->uid}'" ;
 	$annonces_lues2=" ISNULL(annonces_lues.annonce_id) ";
+
+	$DB_web->query("SELECT annonces.annonce_id "
+						."FROM annonces $annonces_lues1"
+						."WHERE (perime>'".date("Y-m-d H:i:s",time())."') AND $annonces_lues2 ORDER BY perime DESC");
+	$idprec=0;
+	while(list($id)=$DB_web->next_row()) {
+		if($idprec!=0)
+			$array_id[$idprec]=$id;
+		$idprec=$id;
+	}
 }
-		
-		
 // Affichage des annonces
 $DB_web->query("SELECT annonces.annonce_id,stamp,perime,titre,contenu,en_haut,exterieur,nom,prenom,surnom,promo,"
 					 ."IFNULL(mail,CONCAT(login,'@poly.polytechnique.fr')) as mail, $annonces_lues2 "
 					 ."FROM annonces LEFT JOIN trombino.eleves USING(eleve_id) $annonces_lues1"
 					 ."WHERE (perime>'".date("Y-m-d H:i:s",time())."') ORDER BY perime DESC");
-$nb =$DB_web->num_rows();
-$ouvert = false;
 while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail,$visible)=$DB_web->next_row()) {
 	if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
-	if($ouvert){
-			if(est_authentifie(AUTH_MINIMUM))
-			echo "<lien url=\"?lu=$idprec#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
-			echo "</annonce>";
-			$ouvert = false;
-	}
-	$idprec=$id;
 ?>
 	<annonce id="<?php echo $id ?>" 
 		titre="<?php echo $titre ?>" visible="<?=$visible?"oui":"non" ?>"
 		categorie="<?php echo get_categorie($en_haut, $stamp, $perime) ?>"
 		date="<?php echo substr($stamp,8,2)."/".substr($stamp,5,2)."/".substr($stamp,0,4) ?>">
 <?php
-		$ouvert = true;
 		if (file_exists(DATA_DIR_LOCAL."annonces/$id"))
 			echo "<image source=\"".DATA_DIR_URL."annonces/$id\" texte=\"logo\"/>\n";
 		echo wikiVersXML($contenu);
 		echo "<eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"$promo\" surnom=\"$surnom\" mail=\"$mail\"/>\n";
-}
-if($ouvert){
 		if(est_authentifie(AUTH_MINIMUM))
-		echo "<lien url=\"?lu=$idprec\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
+			echo "<lien url=\"?lu=$id".(isset($array_id[$id])?"#annonce_".$array_id[$id]:"")."\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
 		echo "</annonce>";
-		$ouvert = false;
 }
 echo "</page>\n";
 require_once "include/page_footer.inc.php";
