@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.36  2005/01/18 12:11:49  pico
+	Etat de la kès + validation des mails promos dans l'interface de la Kès
+
 	Revision 1.35  2005/01/17 23:46:28  pico
 	Bug fix
-
+	
 	Revision 1.34  2005/01/17 20:15:38  pico
 	Mail promo pour les kessiers
 	
@@ -258,13 +261,6 @@ $permissions_user = $_SESSION['user']->perms ;
 		<lien titre="Valider les sondages (<?=$nb?>)" url="admin/valid_sondages.php"/><br/>
 	<?
 	}
-	if (verifie_permission('admin')||verifie_permission('kes')){
-		$DB_valid->query("SELECT eleve_id FROM valid_mailpromo") ;
-		$nb = $DB_valid->num_rows() ;
-	?>
-		<lien titre="Valider les mails promos (<?=$nb?>)" url="admin/valid_mailpromo.php"/><br/>
-	<?
-	}
 	if (verifie_permission('admin')||verifie_permission('qdjmaster')){
 		$DB_valid->query("SELECT eleve_id FROM valid_qdj") ;
 		$nb = $DB_valid->num_rows() ;
@@ -425,6 +421,17 @@ $permissions_user = $_SESSION['user']->perms ;
 		echo "<h2>Gestion du BôB</h2>" ;
 		echo "<lien titre=\"Gérer l'ouverture du BôB\" url=\"gestion/etat_bob.php\"/><br/>" ;
 		echo "<lien titre=\"Gérer les tours kawa\" url=\"gestion/etat_bob.php\"/><br/>" ;
+	}
+	
+	//
+	// Pour la Kès
+	//======================================
+	if (verifie_permission('admin')||verifie_permission('kès')){
+		echo "<h2>Gestion de la Kès</h2>" ;
+		echo "<lien titre=\"Gérer l'ouverture de la Kès\" url=\"gestion/etat_kes.php\"/><br/>" ;
+		$DB_valid->query("SELECT eleve_id FROM valid_mailpromo") ;
+		$nb = $DB_valid->num_rows() ;
+		echo "<lien titre=\"Valider les mails promos ($nb)\" url=\"admin/valid_mailpromo.php\"/><br/>";
 	}
 ?>
 
