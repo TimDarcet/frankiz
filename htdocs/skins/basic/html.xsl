@@ -3,10 +3,13 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.9  2004/10/18 19:14:27  pico
+	Changement balises pour me conformer à la dtd
+
 	Revision 1.8  2004/10/17 17:09:43  pico
 	Gestion des listes
 	Classes FAQ pour affichage graphique
-
+	
 	Revision 1.7  2004/09/20 22:19:28  kikx
 	test
 	
@@ -123,10 +126,10 @@
 <xsl:template match="code">
 	<code><xsl:apply-templates/></code>
 </xsl:template>
-<xsl:template match="ul">
+<xsl:template match="noeud">
 	<ul><xsl:attribute name="class"><xsl:value-of select="@class"/></xsl:attribute><xsl:apply-templates/></ul>
 </xsl:template>
-<xsl:template match="li">
+<xsl:template match="feuille">
 	<li><xsl:attribute name="class"><xsl:value-of select="@class"/></xsl:attribute><xsl:apply-templates/></li>
 </xsl:template>
 <xsl:template match="a">

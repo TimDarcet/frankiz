@@ -86,9 +86,9 @@ function rech_fils($id_parent) {
 	if (affiche_element_xshare($id_parent)) {			// on continue l'affichage ssi on demande l'affichage
 
 		if ($id_parent!=0) {
-			echo "<ul class='foldinglist'>\n\r" ;
+			echo "<noeud class='foldinglist'>\n\r" ;
 		} else {
-			echo "<ul>\n\r" ;
+			echo "<noeud>\n\r" ;
 		}
 	
 		// affichage des folders et recherche de leurs fils 
@@ -97,9 +97,9 @@ function rech_fils($id_parent) {
 		$DB_web->query("SELECT id,nom FROM xshare WHERE descript='' AND id_parent='{$id_parent}'") ;
 		while(list($id,$nom) = $DB_web->next_row()) {
 			if (affiche_element_xshare($id)) {
-				echo "<li class='foldheader2'>\n\r";		// folder open
+				echo "<feuille class='foldheader2'>\n\r";		// folder open
 			} else {
-				echo "<li class='foldheader1'>\n\r";		// folder fermé
+				echo "<feuille class='foldheader1'>\n\r";		// folder fermé
 			}
 			echo "<a name=\"".$id."\"/>" ;
 			echo "<lien titre='".$nom."' url='admin/xshare.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
@@ -108,7 +108,7 @@ function rech_fils($id_parent) {
 			if (eregi("/".$id."/",$a_marquer)) {
 				echo "<image source='./xshare_fleche_folder.gif'/>" ;
 			}
-			echo "\n\r</li>\n\r " ;
+			echo "\n\r</feuille>\n\r " ;
 			rech_fils($id) ;
 		}
 		
@@ -117,16 +117,16 @@ function rech_fils($id_parent) {
 		
 		$DB_web->query("SELECT id,nom FROM xshare WHERE descript!='' AND id_parent='{$id_parent}'" ) ;
 		while(list($id,$nom) = $DB_web->next_row()) {
-			echo "\n\r<li class='question'>\n\r" ;
+			echo "\n\r<feuille class='question'>\n\r" ;
 			echo "<lien titre='".htmlentities($nom,ENT_QUOTES)."' url='admin/xshare.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#descript'/>" ;
 			if (eregi("/".$id."/",$a_marquer)) {
 				echo "<image source='./xshare_fleche.gif'/>" ;
 			}
-			echo "</li>\n\r" ;
+			echo "</feuille>\n\r" ;
 		}
-		echo "</ul>\n\r" ;
+		echo "</noeud>\n\r" ;
 	}
 }
 
@@ -215,9 +215,9 @@ function rech_parent($id) {
 // on affiche  l'arbre 
 // simple maintenant
 //----------------------
-
+echo "<arbre>";
 rech_fils(0) ;
-
+echo "</arbre>";
 echo "<br/>" ;
 
 ?>
