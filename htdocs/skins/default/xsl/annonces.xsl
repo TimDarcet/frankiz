@@ -34,6 +34,7 @@
 </xsl:template>
 
 <xsl:template match="page[@id='annonces']" mode="sommaire">
+<xsl:if test="count(annonce)">	
 	<dl class="boite">
 		<xsl:attribute name="id"><xsl:value-of select="@id"/>_sommaire</xsl:attribute>
 		<dt class="titre">
@@ -45,6 +46,7 @@
 		</dd>
 		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>
+</xsl:if>
 </xsl:template>
 
 
