@@ -21,10 +21,14 @@
 	Page d'envoi dee mail par catégories
 	
 	$Log$
+	Revision 1.2  2005/03/22 20:52:28  dei
+	bon comme d'hab c crade, mais là c corrigé
+	ajout du log de la validation
+
 	Revision 1.1  2005/03/22 19:46:15  dei
 	pour envoyer des mails à un batiment, un étage, un binet, une section,
 	aux prez, webmestres...
-
+	
 
 */
 // En-tetes
@@ -51,8 +55,8 @@ if (!isset($_POST['envoie'])||isset($_POST['continuer'])) {
 			Le texte du mail promo utilise le format wiki rappelé en bas de la page et décrit dans l'<lien url="helpwiki.php" titre="aide wiki"/><br/>
 		</note>
 		<choix titre="Promo" id="promo" type="combo" valeur="">
-			<option titre="Sur le campus" id=""/>
-			<option titre="Toutes" id="toutes" />
+			<option titre="Sur le campus" id="campus"/>
+			<option titre="Toutes" id="" />
 
 <?php
 			$DB_trombino->query("SELECT DISTINCT promo FROM eleves ORDER BY promo DESC");
@@ -85,7 +89,7 @@ if (!isset($_POST['envoie'])||isset($_POST['continuer'])) {
 			<option titre="Prez" id="prez"/>
 			<option titre="Webmestre" id="web"/>
 		</choix>
-		
+		<note>Le numéro de casert est auto-complété par la droite, ce qui permet de selectionner un étage, un batiment...</note>
 		<champ titre="Casert" id="casert" valeur="" />
 		
 		<champ titre="Sujet" id="sujet" valeur="<? if (isset($_POST['sujet'])) echo $_POST['sujet']?>" />
@@ -164,27 +168,49 @@ if (!isset($_POST['envoie'])||isset($_POST['continuer'])) {
 	if($_POST['section']!=""||$_POST['casert']!=""||$_POST['binet']!=""||$_POST['postes']!=""){
 		//construction requete
 		$req="SELECT e.eleve_id,e.nom,e.prenom,e.promo FROM eleves as e LEFT JOIN frankiz2.compte_frankiz as cpt ON e.eleve_id=cpt.eleve_id";
+		$log=" envoyé un mail groupé";
 		if(isset($_POST['binet']) && $_POST['binet']!=""){
 			$req=$req." LEFT JOIN membres as m ON e.eleve_id=m.eleve_id WHERE 1 AND m.binet_id='{$_POST['binet']}'";
+			$DB_trombino->query("SELECT nom FROM binets WHERE binet_id='{$_POST['binet']}' LIMIT 0,1");
+			list($nom_binet)=$DB_trombino->next_row();
+			$log=$log." au Binet $nom_binet";
 		} else {
 			$req=$req."  WHERE 1";
 		}
 		if(isset($_POST['section']) && $_POST['section']!=""){
 			$req=$req." AND e.section_id='{$_POST['section']}'";
+			$DB_trombino->query("SELECT nom FROM sections WHERE section_id='{$_POST['section']}' LIMIT 0,1");
+			list($nom_section)=$DB_trombino->next_row();
+			$log=$log." à la section $nom_section";
 		}
 		if(isset($_POST['casert']) && $_POST['casert']!=""){
 			$req=$req." AND e.piece_id LIKE '{$_POST['casert']}%'";
-		}
-		if(isset($_POST['binet']) && $_POST['binet']!=""){
-			$req=$req." AND m.binet_id='{$_POST['binet']}'";
+			$log=$log." aux kserts {$_POST['casert']}";
 		}
 		if(isset($_POST['postes']) && $_POST['postes']!=""){
 			if($_POST['postes']=="prez"){
 				$req=$req." AND cpt.perms LIKE '%prez_%'";
+				$log=$log." aux prez des Binets";
 			} elseif ($_POST['postes']=="web"){
 				$req=$req." AND cpt.perms LIKE '%webmestres_%'";
+				$log=$log." aux webmestres des Binets";
 			}
 		}
+		if(isset($_POST['promo']) && $_POST['promo']!=""){
+			if($_POST['promo']=="campus"){
+				$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
+				list($promo_temp) = $DB_web->next_row() ;
+				$promo_temp_=$promo_temp-1;
+				$req=$req." AND (e.promo='$promo_temp' OR e.promo='$promo_temp_')";
+				$log=$log." aux promos sur le campus";
+			} else {
+				$req=$req." AND e.promo='{$_POST['promo']}'";
+				$log=$log." à la promo {$_POST['promo']}";
+			}
+		}
+		//log de l'action
+		log_admin($_SESSION['user']->uid,$log) ;
+		
 		$from = $_POST['from'] ;
 		$DB_trombino->query("$req");
 		$cnt = 0 ;
@@ -200,7 +226,7 @@ if (!isset($_POST['envoie'])||isset($_POST['continuer'])) {
 <?
 		while(list($eleve_id,$nom,$prenom,$promo)=$DB_trombino->next_row()){
 			$DB_trombino->push_result() ;
-			couriel($eleve_id,"".$titre_mail,$mail_contenu, STRINGMAIL_ID, $from) ;
+			//couriel($eleve_id,"".$titre_mail,$mail_contenu, STRINGMAIL_ID, $from) ;
 			$DB_trombino->pop_result() ;
 			/*print("Envoi à $nom $prenom ($promo) [".($cnt+1)."]<br>") ;
 			flush() ;*/
