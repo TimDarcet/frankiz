@@ -10,14 +10,14 @@ use Time::localtime;
 my $dbh = DBI->connect("DBI:mysql:database=frankiz2_tmp:host=localhost","web","kokouije?.",{'RaiseError'=>1});
 
 sub post {
-        local ($serveur) = "frankiz";
+        local ($serveur) = "localhost";
 	local ($ng,$groupe,$type,$name,$subject,$body)= @_;
 	local $nntp = Net::NNTP->new("$serveur") or die "Ne peut pas se connecter au serveur";
 	open (POST, "post.file");
 	@post = <POST>;
 	close POST;
-	$nntp->postok() or die "Could not post article: $!";
-	$nntp->post();
+	$nntp->post() or die "Could not post article: $!";
+	
 	if ($type==1) {
 		$nntp->datasend("From: ".$name." <news\@frankiz.eleves.polytechnique.fr>\n");
 		$nntp->datasend("Newsgroups: ". $ng ."\n");
@@ -41,7 +41,7 @@ sub post {
 	      	$nntp->datasend("X-Newsreader:Tour Kawa Reminder v1.0\n");
 		$nntp->datasend("\n\n");
 		$nntp->datasend($text . "\n" . "Et merde bordel!\n");
-               	}													
+               }
 	for (@post)     {
 	    $nntp->datasend($_);
 	}
@@ -68,7 +68,7 @@ sub traiter_jour {
 	if ($groupe ne "personne")
 	    {
 	    post($newsgroup,$groupe,1,$name,$subject,$body);
-	    print "Envoi d'un post de type " . $type ." sur le ng : ".$newsgroup . "\n";
+	    print "Envoi d'un post sur le ng : ".$newsgroup . "\n";
 	    }
 	else 
 	    {
