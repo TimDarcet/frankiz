@@ -21,9 +21,12 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.3  2004/11/08 12:00:37  psycow
+	Grosse Modification du WE
+
 	Revision 1.2  2004/11/03 21:23:03  psycow
 	auvegarde de mon debut dans les xsl
-
+	
 	Revision 1.1  2004/11/03 18:21:32  psycow
 	*** empty log message ***
 	
@@ -32,33 +35,35 @@
 
 <!-- Formulaires -->
 <xsl:template match="formulaire">
-	<!-- la déco -->
-	<xsl:if test="boolean(@titre)">
-		<h2><xsl:value-of select="@titre"/></h2>
-	</xsl:if>
+	<!-- Affichage des informations importantes -->
 	<xsl:apply-templates select="commentaire|warning"/>
 
 	<!-- le formulaire lui même, mis en page avec une table -->
 	<form enctype="multipart/form-data" method="post">
 			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
-		<table class="formulaire" cellspacing="0" cellpadding="0">
+		<dl class="formulaire">
 			<!-- le titre du formulaire -->
-			<xsl:if test="boolean(@titre)">
-				<tr><td class="titre" colspan="2"><xsl:value-of select="@titre"/></td></tr>
-			</xsl:if>
+			<dt class="entete">
+				<xsl:if test="boolean(@titre)">
+					<tr><td class="titre" colspan="2"><xsl:value-of select="@titre"/></td></tr>
+				</xsl:if>
+			</dt>
 			<!-- les options du formulaire -->
 			<xsl:for-each select="*[not (self::bouton or self::commentaire or self::warning)]">
-				<tr><td class="gauche">
-					<xsl:if test="boolean(@titre)"><xsl:value-of select="@titre"/> :</xsl:if>
-				</td><td class="droite">
-					<xsl:apply-templates select="."/>
-				</td></tr>
+				<dd class="row">
+					<span class="gauche"><xsl:text> </xsl:text>
+						<xsl:if test="boolean(@titre)"><xsl:value-of select="@titre"/> :</xsl:if>
+					</span>
+					<span class="droite"><xsl:text> </xsl:text>
+						<xsl:apply-templates select="."/>
+					</span>
+				</dd>
 			</xsl:for-each>
 			<!-- les boutons gérant les actions du formulaire -->
-			<tr><td class="boutons" colspan="2">
+			<dd class="boutons"><br/>
 				<xsl:apply-templates select="bouton"/>
-			</td></tr>
-		</table>
+			</dd>
+		</dl>
 	</form>
 </xsl:template>
 

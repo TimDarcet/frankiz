@@ -22,42 +22,40 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	
 <xsl:template match="module[@id='qdj'] | module[@id='qdj_hier'] ">
-	<dl>
-		<dt><img class="droitehaut" src="skins/default/images/cadre-hautd.gif" alt="" />
+	<dl class="boite">
+		<dt class="titre">
+			<span class="droitehaut"><xsl:text> </xsl:text></span>
 			<span><xsl:value-of select="@titre"/></span>	
 		</dt>
-		<dd>
+		<dd class="contenu">
 		<xsl:choose>
 		<xsl:when test="boolean(qdj[@action])">
-			<div class="fkz_qdj_question"><xsl:value-of select="qdj/question"/></div>
+			<p class="news"><xsl:value-of select="qdj/question"/></p>
 			<div class="fkz_qdj_rouje"><br/>
-			<a>
-			<xsl:attribute name="href"><xsl:value-of select="qdj/@action"/>1</xsl:attribute>
-			<xsl:value-of select="qdj/reponse[@id='1']"/>
-			</a>
+				<a>
+					<xsl:attribute name="href"><xsl:value-of select="qdj/@action"/>1</xsl:attribute>
+					<xsl:value-of select="qdj/reponse[@id='1']"/>
+				</a>
 			</div>
 			<div class="fkz_qdj_jone"><br/>
-			<a>
-			<xsl:attribute name="href"><xsl:value-of select="qdj/@action"/>2</xsl:attribute>
-			<xsl:value-of select="qdj/reponse[@id='2']"/>
-			</a>
+				<a>
+					<xsl:attribute name="href"><xsl:value-of select="qdj/@action"/>2</xsl:attribute>
+					<xsl:value-of select="qdj/reponse[@id='2']"/>
+				</a>
 			</div>
 			<br/><br/>
 		</xsl:when>
 		<xsl:otherwise>
-			<div class="fkz_qdj_question"><xsl:value-of select="qdj/question"/></div>
-			<div class="fkz_page">
+			<p class="news"><xsl:value-of select="qdj/question"/></p>
 			<div class="fkz_qdj_rouje_reponse">
-			<xsl:value-of select="qdj/reponse[@id='1']"/>
-			<br/>
-			<xsl:value-of select="qdj/reponse[@id='1']/@votes"/> soit <xsl:value-of select="round((qdj/reponse[@id='1']/@votes * 100) div sum(qdj/reponse/@votes))"/>%<br/>
-			
+				<xsl:value-of select="qdj/reponse[@id='1']"/>
+				<br/>
+				<xsl:value-of select="qdj/reponse[@id='1']/@votes"/> soit <xsl:value-of select="round((qdj/reponse[@id='1']/@votes * 100) div sum(qdj/reponse/@votes))"/>%<br/>
 			</div>
 			<div class="fkz_qdj_jone_reponse">
-			<xsl:value-of select="qdj/reponse[@id='2']"/>
-			<br/>
-			<xsl:value-of select="qdj/reponse[@id='2']/@votes"/> soit <xsl:value-of select="round((qdj/reponse[@id='2']/@votes * 100) div sum(qdj/reponse/@votes))"/>%<br/>			
-			</div>
+				<xsl:value-of select="qdj/reponse[@id='2']"/>
+				<br/>
+				<xsl:value-of select="qdj/reponse[@id='2']/@votes"/> soit <xsl:value-of select="round((qdj/reponse[@id='2']/@votes * 100) div sum(qdj/reponse/@votes))"/>%<br/>			
 			</div>
 		</xsl:otherwise>
 		</xsl:choose>
@@ -65,17 +63,15 @@
 		<br/>
 			<xsl:if test="count(qdj/dernier)">
 				<div>Derniers à répondre :</div>
-				<ul class="fkz_qdj_last">
+				<ul class="none">
 				<xsl:for-each select="qdj/dernier[position()&lt;=6]">
 					<li class="fkz_qdj_last"><xsl:value-of select="@ordre"/>. <xsl:value-of select="eleve/@surnom"/></li>
 				</xsl:for-each>
 				</ul>
 			</xsl:if>
 		</dd>
-		<dd class="bas"><img class="droitebas" src="skins/default/images/cadre-basd.gif" alt="" /></dd>
+		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>
-	<br />
-	<br />
 </xsl:template>
 
 </xsl:stylesheet>

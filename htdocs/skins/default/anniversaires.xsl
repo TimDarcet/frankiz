@@ -23,11 +23,12 @@
 
 <xsl:template match="module[@id='anniversaires']">
 	<xsl:if test="count(eleve) != 0">
-		<dl>
-			<dt><img class="droitehaut" src="skins/default/images/cadre-hautd.gif" alt="" />
+		<dl class="boite">
+			<dt class="titre">
+				<span class="droitehaut"><xsl:text> </xsl:text></span>
 				<span>Joyeux anniversaire: </span>	
 			</dt>
-			<dd>
+			<dd class="contenu">
 				2002: 
 				<xsl:for-each select="eleve[@promo='2002']">
 					<xsl:value-of select="@prenom" />
@@ -44,8 +45,7 @@
 					<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
 				</xsl:for-each>
 			</dd>
-			<dd class="bas"><img class="droitebas" src="skins/default/images/cadre-basd.gif" alt="" /></dd>
-		</dl>
+			<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>		</dl>
 	</xsl:if>
 </xsl:template>
 

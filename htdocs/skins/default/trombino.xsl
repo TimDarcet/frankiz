@@ -22,43 +22,74 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="page[@id='trombino']">
-	<div class="fkz_trombino">
-		<xsl:for-each select="eleve">
-			<p>
-				<xsl:value-of select="@prenom" />
-				<xsl:text> </xsl:text>
-				<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
-			</p>
-			<p>
-				<xsl:value-of select="@surnom" />
-			</p>
-			<p>
-				<xsl:value-of select="@promo" />
-			</p>
-			<p>Tel:
-				<xsl:value-of select="@phone"/>  Casert:
-			<xsl:value-of select="@casert"/>
-			</p>
-			<p>Section: <xsl:value-of select="@section"/>
-			</p>
-			<p>Binets:
-				<xsl:for-each select="liste[@id='binets']/element">
-					<xsl:value-of select="current()"/>, 
-				</xsl:for-each>
-			</p>
-			<p>
-				<a>
-					<xsl:attribute name="href"><xsl:text>trombino/index.php?image=true&amp;login=</xsl:text><xsl:value-of select="@login"/><xsl:text>&amp;promo=</xsl:text><xsl:value-of select="@promo"/></xsl:attribute>
-					<img height="95" width="80">
-					<xsl:attribute name="src"><xsl:text>trombino/index.php?image=true&amp;login=</xsl:text><xsl:value-of select="@login"/><xsl:text>&amp;promo=</xsl:text><xsl:value-of select="@promo"/></xsl:attribute>
-					<xsl:attribute name="alt"><xsl:value-of select="@login"/> (<xsl:value-of select="@promo"/>)</xsl:attribute>
-					</img>
-				</a>
-			</p>
-			<hr/>
-		</xsl:for-each>
-		<xsl:apply-templates select="formulaire"/>
-	</div>
+	<dl class="boite">
+		<dt class="titre">
+			<span class="droitehaut"><xsl:text> </xsl:text></span>
+			<span>
+				Résultat de la recherche
+			</span>	
+		</dt>
+		<dd class="contenu">
+			<br/>
+			<xsl:for-each select="eleve">
+                		<dl>
+					<xsl:attribute name="class">trombino<xsl:text> </xsl:text><xsl:if test="(position() mod 2)=0">pair</xsl:if><xsl:if test="(position() mod 2)=1">impair</xsl:if></xsl:attribute>
+                  			<dt class="nom">
+						<xsl:value-of select="@prenom" />
+						<xsl:text> </xsl:text>
+						<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
+					</dt> 
+		  			<dd class="photo">
+						<a>
+							<xsl:attribute name="href"><xsl:text>trombino/index.php?image=true&amp;login=</xsl:text><xsl:value-of select="@login"/><xsl:text>&amp;promo=</xsl:text><xsl:value-of select="@promo"/></xsl:attribute>
+							<xsl:attribute name="title"><xsl:value-of select="@prenom"/><xsl:text> </xsl:text><xsl:value-of select="@nom"/></xsl:attribute>
+							<img width="100" height="125">
+								<xsl:attribute name="src"><xsl:text>trombino/index.php?image=true&amp;login=</xsl:text><xsl:value-of select="@login"/><xsl:text>&amp;promo=</xsl:text><xsl:value-of select="@promo"/></xsl:attribute>
+								<xsl:attribute name="alt"><xsl:value-of select="@login"/> (<xsl:value-of select="@promo"/>)</xsl:attribute>
+							</img>
+						</a>
+					</dd>	
+		  			<dd class="sport">
+						<a>
+							<xsl:attribute name="href"><xsl:text>trombino/index.php?image=true&amp;login=</xsl:text><xsl:value-of select="@login"/><xsl:text>&amp;promo=</xsl:text><xsl:value-of select="@promo"/></xsl:attribute>
+							<img src="" width="100" height="125"/>
+						</a>
+					</dd>
+                  			<dd class="element">
+						<p class="right"><br/>
+							<xsl:value-of select="@promo" />
+							<xsl:value-of select="@surnom" /><br/>
+							15/12/82<br/>
+						</p>
+						<p class="left"><br/>
+							<strong>Tel : </strong><xsl:value-of select="@phone"/><br/>
+							<strong>Kzt : </strong><xsl:value-of select="@casert"/><br/>
+							<strong>Mail : </strong><a href="mailto:jaeck@poly">jaeck@poly</a><br/>
+						</p>
+						<p class="binets"><strong>Binets : </strong>
+							<xsl:for-each select="liste[@id='binets']/element">
+								<xsl:value-of select="current()"/>, 
+							</xsl:for-each>
+						</p>
+		  			</dd>	
+                		</dl>
+			</xsl:for-each>
+			<br/>
+		</dd>
+		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
+	</dl>
+	<xsl:if test="boolean(formulaire)">
+		<dl class="boite">
+			<dt class="titre">
+				<span class="droitehaut"><xsl:text> </xsl:text></span>
+				<span><xsl:value-of select="formulaire/@titre"/></span>	
+			</dt>
+			<dd class="contenu">
+				<xsl:apply-templates select="formulaire"/>
+			</dd>
+			<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
+		</dl>
+	</xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>

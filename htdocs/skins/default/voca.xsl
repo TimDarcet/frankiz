@@ -21,53 +21,37 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:template match="module[@id='liens_contacts']">
+<xsl:template match="page[@id='vocabulaire']">
 	<dl class="boite">
 		<dt class="titre">
 			<span class="droitehaut"><xsl:text> </xsl:text></span>
-			<span><xsl:value-of select="@titre"/></span>	
+			<span><xsl:value-of select="h1"/></span>	
 		</dt>
 		<dd class="contenu">
-			<ul id="contacts">
-				<xsl:apply-templates select="lien" mode="liste"/>
-			</ul>
+			<xsl:apply-templates select="liste" mode="vocabulaire"/>
 		</dd>
 		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>
 </xsl:template>
 
-<xsl:template match="module[@id='liens_ecole']">
-	<dl class="boite">
-		<dt class="titre">
-			<span class="droitehaut"><xsl:text> </xsl:text></span>
-			<span><xsl:value-of select="@titre"/></span>	
-		</dt>
-		<dd class="contenu">
-			<ul id="ecole">
-				<xsl:apply-templates select="lien" mode="liste"/>
-			</ul>
-		</dd>
-		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
+<xsl:template match="liste" mode="vocabulaire">
+	<dl class="definition top">
+		<dt class="objet"><xsl:value-of select="entete[@id='mot']/@titre"/></dt>
+		<dd class="definition"><xsl:value-of select="entete[@id='description']/@titre"/></dd>
+	</dl>
+		<xsl:apply-templates select="element" mode="vocabulaire"/>
+</xsl:template>
+
+<xsl:template match="element" mode="vocabulaire">
+	<dl>
+		<xsl:attribute name="class">definition<xsl:text> </xsl:text><xsl:if test="(position() mod 2)=0">pair</xsl:if><xsl:if test="(position() mod 2)=1">impair</xsl:if></xsl:attribute>	
+		<dt class="objet"><xsl:apply-templates select="colonne[@id='mot']" mode="vocabulaire"/></dt>
+		<dd class="definition"><xsl:apply-templates select="colonne[@id='explication']" mode="vocabulaire"/></dd>	
 	</dl>
 </xsl:template>
 
-<xsl:template match="module[@id='liens_navigation']">
-	<ul id="menu">
-		<li id="top"></li>
-		<xsl:apply-templates select="lien" mode="liste"/>
-		<li id="bottom"></li>
-	</ul>
-</xsl:template>
-
-<xsl:template match="lien" mode="liste">
-	<li>
-		<xsl:if test="boolean(@id)">
-			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
-		</xsl:if>
-		<a><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
-			<span><xsl:value-of select="@titre" /></span>
-		</a>
-	</li>
+<xsl:template match="colonne[@id='mot' and @id='explication']" mode="vocabulaire">
+	<xsl:apply-templates/>
 </xsl:template>
 
 </xsl:stylesheet>

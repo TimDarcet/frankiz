@@ -32,11 +32,12 @@
 
 
 <xsl:template match="page[@id='accueil']" mode="sommaire">
-	<dl>
-		<dt><img class="droitehaut" src="skins/default/images/cadre-hautd.gif" alt="" />
+	<dl class="boite">
+		<dt class="titre">
+			<span class="droitehaut"><xsl:text> </xsl:text></span>
 			<span> Sommaire </span>	
 		</dt>
-		<dd>
+		<dd class="contenu">
 	<xsl:if test="last() != 0">
 		<xsl:if test="count(annonce[@categorie='important']) != 0">
 			<div class="fkz_sommaire_titre">
@@ -58,19 +59,19 @@
 		</xsl:if>
 	</xsl:if>
 		</dd>
-		<dd class="bas"><img class="droitebas" src="skins/default/images/cadre-basd.gif" alt="" /></dd>
+		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>
 </xsl:template>
 
 <xsl:template match="annonce" mode="complet">
-	<dl>
-		<dt>
-			<img class="droitehaut" src="skins/default/images/cadre-hautd.gif" alt="" />
+	<dl class="boite">
+		<dt class="titre">
+			<span class="droitehaut"><xsl:text> </xsl:text></span>
 			<a><xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute></a>      
 			<span><xsl:attribute name="class">fkz_annonces_<xsl:value-of select="@categorie"/></xsl:attribute><xsl:text> </xsl:text></span>
 			<span><xsl:value-of select="@titre"/></span> 
 		</dt>
-		<dd>
+		<dd class="contenu">
 		<p class="image">
 			<xsl:apply-templates select="image"/>
 		</p>
@@ -88,7 +89,7 @@
 			</xsl:choose>
      		</p>
 		</dd>
-		<dd class="bas"><img class="droitebas" src="skins/default/images/cadre-basd.gif" alt="" /></dd>
+		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>
 </xsl:template>
 

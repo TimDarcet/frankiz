@@ -21,53 +21,46 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:template match="module[@id='liens_contacts']">
+<xsl:template match="page[@id='binets']">
 	<dl class="boite">
 		<dt class="titre">
 			<span class="droitehaut"><xsl:text> </xsl:text></span>
 			<span><xsl:value-of select="@titre"/></span>	
 		</dt>
 		<dd class="contenu">
-			<ul id="contacts">
-				<xsl:apply-templates select="lien" mode="liste"/>
-			</ul>
+
+			<xsl:variable name="cat" select="Z"/>
+			<xsl:for-each select="binet">
+				<xsl:sort select="@categorie" order="ascending" data-type="texte"/>
+				<xsl:if test="$cat!=@categorie">
+					<xsl:variable name="cat" select="@categorie"/>
+					<br/>
+	        			<dl class="binets top">
+                				<dt class="icon"></dt>
+						<dd class="categorie"><xsl:value-of select="@categorie"/></dd>
+					</dl>
+				</xsl:if>
+				<dl>
+					<xsl:attribute name="class">binets<xsl:text> </xsl:text><xsl:if test="(position() mod 2)=0">pair</xsl:if><xsl:if test="(position() mod 2)=1">impair</xsl:if></xsl:attribute>
+					<dt class="icon">
+						<a>
+							<xsl:attribute name="href"><xsl:apply-templates select="url"/></xsl:attribute>
+							<xsl:apply-templates select="image"/>
+						</a>
+					</dt>
+					<dd class="description">
+						<a>
+							<xsl:attribute name="href"><xsl:apply-templates select="url"/></xsl:attribute>
+							<strong><xsl:value-of select="@nom"/></strong>
+						</a><br/>
+						<xsl:apply-templates select="description"/>
+					</dd>	
+				</dl>
+			</xsl:for-each>
+
 		</dd>
 		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>
-</xsl:template>
-
-<xsl:template match="module[@id='liens_ecole']">
-	<dl class="boite">
-		<dt class="titre">
-			<span class="droitehaut"><xsl:text> </xsl:text></span>
-			<span><xsl:value-of select="@titre"/></span>	
-		</dt>
-		<dd class="contenu">
-			<ul id="ecole">
-				<xsl:apply-templates select="lien" mode="liste"/>
-			</ul>
-		</dd>
-		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
-	</dl>
-</xsl:template>
-
-<xsl:template match="module[@id='liens_navigation']">
-	<ul id="menu">
-		<li id="top"></li>
-		<xsl:apply-templates select="lien" mode="liste"/>
-		<li id="bottom"></li>
-	</ul>
-</xsl:template>
-
-<xsl:template match="lien" mode="liste">
-	<li>
-		<xsl:if test="boolean(@id)">
-			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
-		</xsl:if>
-		<a><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
-			<span><xsl:value-of select="@titre" /></span>
-		</a>
-	</li>
 </xsl:template>
 
 </xsl:stylesheet>
