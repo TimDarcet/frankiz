@@ -50,20 +50,20 @@
 	<xsl:if test="last() != 0">
 		<xsl:if test="count(annonce[@categorie='important']) != 0">
 			<div class="fkz_sommaire_titre">
-			       <span class="fkz_annonces_important"/> Important
+			       <span class="fkz_annonces_important"><xsl:text> </xsl:text></span> Important
 			</div>
 			<xsl:apply-templates select="annonce[@categorie='important']" mode="sommaire"/>
 		</xsl:if>
 		<xsl:if test="count(annonce[@categorie='nouveau']) != 0">
-			<div class="fkz_sommaire_titre"><span class="fkz_annonces_nouveau"/> Nouvelles Fraîches</div>
+			<div class="fkz_sommaire_titre"><span class="fkz_annonces_nouveau"><xsl:text> </xsl:text></span> Nouvelles Fraîches</div>
 			<xsl:apply-templates select="annonce[@categorie='nouveau']" mode="sommaire"/>
 		</xsl:if>
 		<xsl:if test="count(annonce[@categorie='vieux']) != 0">
-			<div class="fkz_sommaire_titre"><span class="fkz_annonces_vieux"/> Demain c'est fini</div>
+			<div class="fkz_sommaire_titre"><span class="fkz_annonces_vieux"><xsl:text> </xsl:text></span> Demain c'est fini</div>
 			<xsl:apply-templates select="annonce[@categorie='vieux']" mode="sommaire"/>
 		</xsl:if>
 		<xsl:if test="count(annonce[@categorie='reste']) != 0">
-			<div class="fkz_sommaire_titre"><span class="fkz_annonces_reste"/> En attendant...</div>
+			<div class="fkz_sommaire_titre"><span class="fkz_annonces_reste"><xsl:text> </xsl:text></span> En attendant...</div>
 			<xsl:apply-templates select="annonce[@categorie='reste']" mode="sommaire"/>
 		</xsl:if>
 	</xsl:if>
@@ -80,7 +80,7 @@
        <div style="text-align: center"><b>
        <span>
           <xsl:attribute name="class">fkz_annonces_<xsl:value-of select="@categorie"/>
-	</xsl:attribute></span>
+	</xsl:attribute><xsl:text> </xsl:text></span>
 	<span class="fkz_annonces_cat">(<xsl:value-of select="@categorie"/>)</span>
 	
       <xsl:text> </xsl:text>

@@ -70,7 +70,7 @@
 			<xsl:apply-templates select="frankiz/page[@id='accueil']" mode="sommaire"/>
 			<xsl:apply-templates select="frankiz/page[@id='accueil']" mode="complet"/>
 			<xsl:apply-templates select="frankiz/page[@id='trombino']"/>
-			<xsl:apply-templates select="frankiz/page[@id!='annonces' and @id!='trombino']"/>
+			<xsl:apply-templates select="frankiz/page[@id!='accueil' and @id!='trombino']"/>
 		</div>
 		<div class="fkz_gauche">
 			<xsl:apply-templates select="frankiz/module[@id='tours_kawa']"/>
