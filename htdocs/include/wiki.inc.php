@@ -21,15 +21,18 @@
 	Moteur Wiki (TipiWiki)
 	
 	$Log$
+	Revision 1.3  2004/11/25 00:26:55  schmurtz
+	Permet de convertir le wiki en html veritable.
+
 	Revision 1.2  2004/11/24 12:51:02  kikx
 	Pour commencer la compatibilité wiki
-
+	
 	Revision 1.1  2004/11/24 00:26:09  schmurtz
 	Debut de gestion de wiki
 	
 */
 
-function wikiVersXML($filtered) {
+function wikiVersXML($filtered,$enhtml=false) {
 	// from Simon Schoar <simon@schoar.de> :
 	$regexURL = "((http|https|ftp|mailto):\/\/[\w\.\:\@\?\&\~\%\=\+\-\/\_\;]+)";
 	$regexURLText = "([\w\.\:\'\@\?\&\~\%\=\+\-\/\_\ \;\,\$éèàù]+)";
@@ -41,7 +44,7 @@ function wikiVersXML($filtered) {
 	$filtered = preg_replace("/\[$regexURL\|$regexURLText\]/i","<a href=\"\\1\">\\3</a>", $filtered);
 
 	// pictures [ url ]
-	$filtered = preg_replace("/\[($regexURL\.(png|gif|jpg))\]/i","<image source=\"\\1\"/>",$filtered);
+	$filtered = preg_replace("/\[($regexURL\.(png|gif|jpg))\]/i",$enhtml?"<img src=\"\\1\"/>":"<image source=\"\\1\"/>",$filtered);
 	
 	// plain urls in the text
 	$filtered = preg_replace("/(?<![\"\[])$regexURL(?!\")/","<a href=\"\\0\">\\0</a>",$filtered);
