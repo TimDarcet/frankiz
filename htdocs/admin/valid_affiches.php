@@ -3,13 +3,16 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.4  2004/10/10 22:31:41  kikx
+	Voilà ... Maintenant le webmestre prut ou non valider des activité visibles de l'exterieur
+
 	Revision 1.3  2004/10/07 22:52:20  kikx
 	Correction de la page des activites (modules + proposition + administration)
 		rajout de variables globales : DATA_DIR_LOCAL
 						DATA_DIR_URL
-
+	
 	Comme ca si ca change, on est safe :)
-
+	
 	Revision 1.2  2004/10/06 14:12:27  kikx
 	Page de mail promo quasiment en place ...
 	envoie en HTML ...
@@ -62,7 +65,12 @@ foreach ($_POST AS $keys => $val){
 			"L'automate :)\n"  ;
 		couriel($eleve_id,"[Frankiz] Ton activité a été validé par le BR",$contenu);
 
-		$DB_web->query("INSERT INTO affiches SET stamp=NOW(), date='{$_POST['date']}', titre='{$_POST['titre']}', url='{$_POST['url']}', eleve_id=$eleve_id");
+		if (isset($_REQUEST['ext_auth']))
+			$temp_ext = '1'  ;
+		else 
+			$temp_ext = '0' ;
+
+		$DB_web->query("INSERT INTO affiches SET stamp=NOW(), date='{$_POST['date']}', titre='{$_POST['titre']}', url='{$_POST['url']}', eleve_id=$eleve_id, exterieur=$temp_ext");
 		
 		
 		// On déplace l'image si elle existe dans le répertoire prevu à cette effet
@@ -106,8 +114,8 @@ foreach ($_POST AS $keys => $val){
 
 //===============================
 
-	$DB_valid->query("SELECT v.affiche_id,v.date, v.titre, v.url, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_affiches as v INNER JOIN trombino.eleves as e USING(eleve_id)");
-	while(list($id,$date,$titre,$url,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
+	$DB_valid->query("SELECT v.exterieur,v.affiche_id,v.date, v.titre, v.url, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_affiches as v INNER JOIN trombino.eleves as e USING(eleve_id)");
+	while(list($ext,$id,$date,$titre,$url,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
 		echo "<module id=\"activites\" titre=\"Activités\">\n";
 ?>
 		<annonce titre="<?php  echo $titre ?>" 
@@ -134,7 +142,17 @@ foreach ($_POST AS $keys => $val){
 			<champ id="titre" titre="Le titre" valeur="<?  echo $titre ;?>"/>
 			<champ id="url" titre="URL du lien" valeur="<? echo $url ;?>"/>
 			<champ id="date" titre="Date d'affichage" valeur="<? echo $date ;?>"/>
-			
+			<? 
+			if ($ext==1) {
+				echo "<warning>L'utilisateur a demandé que son activité soit visible de l'exterieur</warning>" ;
+				$ext_temp='ext' ; 
+			} else $ext_temp="" ;
+			?>
+			<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? echo $ext_temp." " ; if ((isset($_REQUEST['ext_auth']))&&(isset($_REQUEST['modif_'.$id]))) echo 'ext_auth' ;?>">
+				<option id="ext" titre="Demande de l'utilisateur" modifiable='non'/>
+				<option id="ext_auth" titre="Décision du Webmestre"/>
+			</choix>
+
 			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
 			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider cette affiche ?')"/>
 			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette affiche ?!!!!!')"/>

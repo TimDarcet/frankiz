@@ -3,9 +3,12 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.13  2004/10/10 22:31:41  kikx
+	Voilà ... Maintenant le webmestre prut ou non valider des activité visibles de l'exterieur
+
 	Revision 1.12  2004/10/04 21:48:54  kikx
 	Modification du champs fichier pour uploader des fichiers
-
+	
 	Revision 1.11  2004/09/17 22:49:29  kikx
 	Rajout de ce qui faut pour pouvoir faire des telechargeement de fichiers via des formulaires (ie des champs 'file' des champ 'hidden') de plus maintenant le formulaire sont en enctype="multipart/form-data" car sinon il parait que ca marche pas !
 	
@@ -32,7 +35,7 @@
 			<xsl:if test="boolean(@titre)">
 				<tr><td class="titre" colspan="2"><xsl:value-of select="@titre"/></td></tr>
 			</xsl:if>
-			<xsl:apply-templates select="champ|choix|zonetext|textsimple|hidden"/>
+			<xsl:apply-templates select="champ|choix|zonetext|textsimple|hidden|warning"/>
 			<tr><td class="boutons" colspan="2"><center><xsl:apply-templates select="bouton"/></center></td></tr>
 		</table>
 	</form>
@@ -173,6 +176,7 @@
 	</td><td class="droite">
 		<xsl:for-each select="option">
 			<input type="checkbox">
+				<xsl:if test="@modifiable='non'"><xsl:attribute name="disabled"/></xsl:if>
 				<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 				<xsl:if test="contains(../@valeur,@id)"><xsl:attribute name="checked"/></xsl:if>
 			</input>
