@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.9  2004/12/17 00:52:23  psycow
+	Correction minime
+
 	Revision 1.8  2004/12/16 00:29:13  psycow
 	bug page deconnecter
-
+	
 	Revision 1.7  2004/12/14 14:40:56  psycow
 	Modification de la qdj et du sommaire de la page annonces, suite des test IE
 	
@@ -130,7 +133,7 @@
 				<xsl:apply-templates select="module[@id='liens_contacts']"/>
 				<xsl:apply-templates select="module[@id='liens_ecole']"/>
 				<xsl:apply-templates select="module[@id='stats']"/>
-				<xsl:apply-templates select="module[@visible!='false' and @id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id!='activites' and @id!='liens_navigation' and @id!='liens_perso' and @id!='anniversaires' and @id!='liste_css' and @id!='lien_tol']"/>
+				<xsl:apply-templates select="module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id!='activites' and @id!='liens_navigation' and @id!='liens_perso' and @id!='anniversaires' and @id!='liste_css' and @id!='lien_tol']"/>
 			</div><!--fin #droite -->
 			
 			<div id="centre">
@@ -176,6 +179,7 @@
 </xsl:template>
 
 <xsl:template match="module">
+	<xsl:if test="not (boolean(@visible))">
 		<dl id="autres" class="boite">
 			<dt class="titre">
 				<span class="droitehaut"><xsl:text> </xsl:text></span>
@@ -186,6 +190,7 @@
 			</dd>
 			<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 		</dl>
+	</xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>

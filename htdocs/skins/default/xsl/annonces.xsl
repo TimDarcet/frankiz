@@ -28,29 +28,12 @@
 			<xsl:apply-templates select="annonce[@categorie='vieux']" mode="complet"/>
 			<xsl:apply-templates select="annonce[@categorie='reste']" mode="complet"/>  
 	</xsl:if>
-	<xsl:if test="count(annonce)=0">
-		<xsl:apply-templates select="annonce" mode="vide"/>  
-	</xsl:if>
-</xsl:template>
-
-<xsl:template match="page[@id='annonces']" mode="sommaire">
-<xsl:if test="count(annonce)">	
-	<dl class="boite">
-		<xsl:attribute name="id"><xsl:value-of select="@id"/>_sommaire</xsl:attribute>
-		<dt class="titre">
-			<span class="droitehaut"><xsl:text> </xsl:text></span>
-			<span> Sommaire </span>	
-		</dt>
-		<dd class="contenu">
-			<xsl:apply-templates/>
-		</dd>
-		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
-	</dl>
-</xsl:if>
 </xsl:template>
 
 
 <xsl:template match="page[@id='annonces']" mode="sommaire">
+<xsl:choose>
+<xsl:when test="count(annonce)">	
 	<xsl:apply-templates select="/frankiz/module[@id='anniversaires']"/>
 	<dl class="boite">
 		<xsl:attribute name="id"><xsl:value-of select="@id"/>_sommaire</xsl:attribute>
@@ -116,6 +99,21 @@
 		</dd>
 		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>
+</xsl:when>
+<xsl:otherwise>
+	<dl class="boite">
+		<xsl:attribute name="id"><xsl:value-of select="@id"/>_sommaire</xsl:attribute>
+		<dt class="titre">
+			<span class="droitehaut"><xsl:text> </xsl:text></span>
+			<span> Bienvenue Sur Frankiz </span>	
+		</dt>
+		<dd class="contenu">
+			<xsl:apply-templates/>
+		</dd>
+		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
+	</dl>
+</xsl:otherwise>
+</xsl:choose>
 </xsl:template>
 
 <xsl:template match="annonce" mode="complet">
