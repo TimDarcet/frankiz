@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.31  2005/01/22 11:00:07  pico
+	BugFix
+
 	Revision 1.30  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
-
+	
 	Revision 1.29  2005/01/06 20:08:11  pico
 	Changement d'adresse mail
 	
@@ -355,19 +358,20 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 		}
 	}
 	// si le folder du binet n'existe pas alors on le crée
-	if (!is_dir(BASE_BINETS.$folder)) {
-		mkdir (BASE_BINETS.$folder) ;
+	if($folder!=''){
+		if (!is_dir(BASE_BINETS.$folder)) {
+			mkdir (BASE_BINETS.$folder) ;
+		}
+		
+		echo "<h2>Gestion des fichiers du site $nom_binet</h2>";
+		
+		echo "<arbre>";
+		echo "<noeud titre=\"/$folder\">" ;
+		
+		$arbo = parcours_arbo1(BASE_BINETS.$folder);
+		echo "</noeud>" ;
+		echo "</arbre>";
 	}
-	
-	echo "<h2>Gestion des fichiers du site $nom_binet</h2>";
-	
-	echo "<arbre>";
-	echo "<noeud titre=\"/$folder\">" ;
-	
-	$arbo = parcours_arbo1(BASE_BINETS.$folder);
-	echo "</noeud>" ;
-	echo "</arbre>";
-
 }
 
 ?>
