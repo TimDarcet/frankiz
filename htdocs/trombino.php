@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.49  2005/01/05 20:56:35  pico
+	Pour un blattage injustifié dans l'IK, la modif est sortie avant la parution officielle :)
+
 	Revision 1.48  2005/01/02 10:50:25  pico
 	Passage de certaines pages en visibles de l'intérieur (non loggué)
-
+	
 	Revision 1.47  2004/12/17 16:29:29  kikx
 	Dans le trombino maintenant les promo sont dynamiques
 	Je limit aussi le changement des images (selon leur dimension200x200 dans le trombino)
@@ -168,7 +171,7 @@ require "include/page_header.inc.php";
 echo "<page id='trombino' titre='Frankiz : Trombino'>\n";
 
 // Affichage des réponses
-if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['binets'])||(isset($_REQUEST['anniversaire'])&&isset($_REQUEST['promo']))||(isset($_REQUEST['cherchertol'])&&(!(empty($_REQUEST['q_search']))))) {
+if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['binets'])||(isset($_REQUEST['anniversaire'])&&isset($_REQUEST['promo']))||isset($_REQUEST['anniversaire_week'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_REQUEST['q_search']))))) {
 		
 	$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
 	list($promo_temp) = $DB_web->next_row() ;
@@ -180,6 +183,19 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 	// Création de la requête si anniversaire appelle
 	if(isset($_REQUEST['anniversaire'])) {
 		$where .= " MONTH(date_nais)=MONTH(NOW()) AND DAYOFMONTH(date_nais)=DAYOFMONTH(NOW()) AND promo='{$_REQUEST['promo']}'";
+	}
+	
+	// Création de la requête si anniversaire appelle
+	if(isset($_REQUEST['anniversaire_week'])) {
+		if(isset($_REQUEST['depart'])) 
+			$date1=$_REQUEST['depart']; 
+		else 
+			$date1=date("Y-m-d");
+		$date2=date("Y-m-d",strtotime($date1)+7*24*3600);
+		echo "<commentaire>Liste des personnes fêtant leur anniversaire entre le ".date("d/m",strtotime($date1))." et le ".date("d/m",strtotime($date2))."</commentaire>";
+		$where .= " DAYOFYEAR(date_nais + INTERVAL (YEAR(NOW()) - YEAR(date_nais)) YEAR)>=DAYOFYEAR('$date1') 
+			AND DAYOFYEAR(date_nais + INTERVAL (YEAR(NOW()) - YEAR(date_nais)) YEAR)<=DAYOFYEAR('$date1'+ INTERVAL 7 DAY) 
+			AND (promo=$promo_temp OR promo=".($promo_temp -1).")";
 	}
 	
 	// Création de la requête si sections appelle
@@ -319,6 +335,7 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 		<bouton titre="Effacer" id="reset" />
 		<bouton titre="Chercher" id="chercher" />
 	</formulaire>
+	<lien url="trombino.php?anniversaire_week&amp;depart=<?echo date("Y-m-d"); ?>" titre="Anniversaires à souhaiter dans la semaine"/><br/>
 	<lien url="num_utiles.php" titre="Numéros Utiles"/>
 </page>
 <?php require "include/page_footer.inc.php" ?>

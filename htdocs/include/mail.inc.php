@@ -22,9 +22,12 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.21  2005/01/05 20:56:35  pico
+	Pour un blattage injustifié dans l'IK, la modif est sortie avant la parution officielle :)
+
 	Revision 1.20  2005/01/03 18:37:24  pico
 	C'est mieux avec une page d'aide correcte
-
+	
 	Revision 1.19  2005/01/03 12:16:09  pico
 	Correction envoit de mails
 	
@@ -161,6 +164,9 @@ function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID,$sender_string="") {
 	$mail->addPartHtml($contenu);
 	$mail->send();
 }
+
+
+
 
 // convertit un message HTML en un message plaintext.
 function html2plain($html) {
