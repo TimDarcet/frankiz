@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.29  2004/12/12 15:18:59  psycow
+	Rechangement blah
+
 	Revision 1.28  2004/12/12 13:17:01  psycow
 	Modification du Trombino
-
+	
 	Revision 1.27  2004/12/09 19:58:59  pico
 	Suppression du code en double
 	
@@ -171,7 +174,7 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_RE
 			while(list($remarque,$binet_nom,$binet_id) = $DB_trombino->next_row())
 				echo "<binet nom='$binet_nom' id='$binet_id'>$remarque</binet>\n";
 			$DB_trombino->pop_result();
-			
+			echo "</eleve>\n";
 			
 			// TODO, nettoyer $prenom et $nom avant !!!! sinon ça marchera pas pour "L'au machin"
 			echo "<lien url='https://www.polytechnique.org/fiche.php?user=$prenom.$nom.$promo' titre='Fiche sur polytechnique.org'/>\n";
@@ -183,7 +186,7 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_RE
 			if(verifie_permission('admin')) {
 				echo "<lien url='".BASE_URL."/?su=$eleve_id' titre='Prendre l&apos;identité de $prenom $nom'/>\n" ;
 			}
-			echo "</eleve>\n";
+			
 			echo "<br/>";
 		}
 	}
