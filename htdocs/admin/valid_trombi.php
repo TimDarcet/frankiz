@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.2  2004/10/29 16:04:34  kikx
+	Passage en HTML des mail et raison du refus de modificatoin
+
 	Revision 1.1  2004/10/25 10:35:49  kikx
 	Page de validation (ou pas) des modif de trombi
-
+	
 
 */
 	
@@ -56,9 +59,9 @@ foreach ($_POST AS $keys => $val){
 		
 		$message .= "<commentaire> Image validée pour $prenom $nom</commentaire>" ;
 		
-		$contenu = "Ton image trombino est validée \n\n".
-		"Très BR-ement\n" .
-		"L'automate :)\n"  ;
+		$contenu = "Ton image trombino est validée <br><br>".
+		"Très BR-ement<br>" .
+		"L'automate :)<br>"  ;
 		couriel($temp[1],"[Frankiz] Ton image trombino est validée",$contenu);
 	}
 	if ($temp[0]=='suppr') {
@@ -69,11 +72,10 @@ foreach ($_POST AS $keys => $val){
 		
 		$message .= "<warning> Image non  validée pour $prenom $nom</warning>" ;
 		
-		$contenu = "Ton image trombino n'est pas validée \n".
-		"car les BRmen ne pense pas qu'elle puisse te representer\n\n".
-		"Propose en une qui te ressemble plus ...\n\n".
-		"Très BR-ement\n" .
-		"L'automate :)\n"  ;
+		$contenu = "Ton image trombino n'est pas validée pour la raison suivante ;<br>".
+		$_POST['refus']."<br><br>".
+		"Très BR-ement<br>" .
+		"L'automate :)<br>"  ;
 		couriel($temp[1],"[Frankiz] Ton image trombino n'est pas validée",$contenu);		
 	}
 }
@@ -97,6 +99,7 @@ foreach ($_POST AS $keys => $val){
 				<image source="trombino/?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>&amp;original=1" texte="photo" height="95" width="80"/>
 				<image source="trombino/?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>" texte="photo" height="95" width="80"/>
 				<image source="profil/profil.php?image=true&amp;id=<?=$id ?>" texte="photo" height="95" width="80"/>
+				<zonetext id="refus" titre="La raison du refus si refus" valeur=""/>
 				<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider cette photo ?')"/>
 				<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Supprimer cette photo ?!)"/>
 			</formulaire>
