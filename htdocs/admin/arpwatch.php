@@ -21,9 +21,12 @@
 	Gestion arpwatch	
 	
 	$Log$
+	Revision 1.7  2005/01/31 00:34:38  kikx
+	Avancement de l'arpwatch ... les roots vous pouvez me dire ce que vous voulez sur cette page ?
+
 	Revision 1.6  2005/01/23 18:30:48  kikx
 	Debut d'une page d'arp watch pour frankiz
-
+	
 
 	
 */
@@ -97,17 +100,62 @@ function ip_non_auth($ipnormal,$mac) {
 		
 		$test = explode(".",$ip) ;
 		if (($test[0]!="129")||($test[1]!="104")){
-			//$result .= "pas bon = $test[0] / $test[1] " ; 
-			break ;
+			continue ;
 		}
-		if ($ip == $ipnormal) 
-			$result .= "<p>$ip ($date)</p>" ;
-		else 
+		if ($ip != $ipnormal) 
 			$result .= "<p><old_string>$ip</old_string> ($date)</p>" ;
 	}
 	$DB_admin->pop_result() ;
 	return $result ;
 }
+
+function search_from_mac($mac) {
+	global $DB_admin,$DB_web ;
+
+	$num = explode(":",$mac) ;
+	for ($i=0; $i<6 ; $i++) {
+		$num[$i] = sprintf("%02x",hexdec($num[$i])) ;
+	}
+	$mac= implode($num,"-") ;
+	
+	// Recherhce sur la page de la dsi pour trouver la prise correspondante
+	$port = 80 ;
+	$url = "http://".DSI_URL."/SMAC/search.php?macadresse=$mac" ;
+	$fp = fsockopen(DSI_URL, $port);
+	fputs($fp, "GET $url HTTP/1.0\r\nHost: ".DSI_URL."\r\n\r\n");
+	$line = "" ;
+	while(!feof($fp)){
+		$line .= fgets($fp,4000);
+	}
+	
+	// Récuperation de la prise ...
+	$temp = explode("<TR>",$line);
+	if (!isset($temp[2])) {
+		return false ;
+	}
+	$temp = explode("<B>",$temp[2]) ;
+	$temp = explode("</B>",$temp[1]) ;
+	
+	// Recuperation de la prise
+	
+	$DB_admin->push_result() ;
+	$DB_web->query("SELECT  valeur FROM parametres WHERE nom='lastpromo_oncampus'");
+	list($lastpromo) = $DB_web->next_row() ;
+	$on = " ON ((e.promo='".($lastpromo)."' OR e.promo='".($lastpromo-1)."' OR e.promo IS NULL) AND e.piece_id=p.piece_id) " ;
+	
+	$DB_admin->query("SELECT e.login, e.promo, p.ip FROM prises as p "
+					."LEFT JOIN trombino.eleves as e $on WHERE p.prise_id='$temp[0]' LIMIT 1");
+	$result = "" ;
+	while(list($login,$promo,$ip_theorique) = $DB_admin->next_row()) {
+		$result[0] = $login ;
+		$result[1] = $promo ;
+		$result[2] = $ip_theorique ;
+	}
+					
+	$DB_admin->pop_result() ;
+	return $result ;
+}
+
 
 
 
@@ -116,7 +164,37 @@ function ip_non_auth($ipnormal,$mac) {
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
-<page id="admin_arp" titre="Frankiz : gestion des logs ip">
+<page id="admin_arp" titre="Frankiz : gestion de l'arpwatch">
+<h2>Log de la semaine</h2>
+
+<?
+// On affiche les 50 dernière entrée dans l'arpwtach ..
+$DB_admin->query("SELECT ip,ts,mac FROM arpwatch_log ORDER BY ts DESC LIMIT 50") ;
+	while(list($ip,$timestamp,$mac) = $DB_admin->next_row()) {
+		$year = substr($timestamp, 2, 2);
+		$month = substr($timestamp, 5, 2);
+		$day = substr($timestamp, 8, 2);
+		$heure = substr($timestamp, 11,8) ;
+		$date = "$day/$month/$year à $heure" ;
+		
+		$test = explode(".",$ip) ;
+		if (($test[0]!="129")||($test[1]!="104")){
+			continue ;
+		}
+		$result = search_from_mac($mac) ;
+		if (($result[2]!=$ip)&&($result!=false))
+			echo "<p>[$date] $result[0] (X$result[1]) a pris l'ip $ip (la sienne étant $result[2])</p>" ;
+		else if ($result==false)
+			echo "<p>[$date] la mac inconnu $mac a pris l'ip $ip</p>" ;
+	}
+
+?>
+
+
+
+
+
+
 <?
 	if(!empty($message))
 		echo "<commentaire>$message</commentaire>\n";
@@ -133,7 +211,6 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 
 ?>
-<note>Si la page ne marche pas trop, allez sur la page de la <lien titre="DSI" url="http://<?=DSI_URL?>/SMAC/main.php"/></note>
 	<formulaire id="recherche" titre="Recherche" action="admin/arpwatch.php">
 		<champ titre="Login" id="rech_login" valeur="<? if (isset($_REQUEST['rech_login'])) echo $_REQUEST['rech_login']?>" />
 		<champ titre="Pièce" id="rech_kzert" valeur="<? if (isset($_REQUEST['rech_kzert'])) echo $_REQUEST['rech_kzert']?>" />
