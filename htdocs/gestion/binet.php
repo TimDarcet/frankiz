@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.17  2004/11/08 15:46:46  kikx
+	Correction pour les telechargement des fichiers (visiblement ca depend de la version de php)
+
 	Revision 1.16  2004/11/08 11:55:13  pico
 	Maintenant ça supprime bien tous les fichiers
-
+	
 	Revision 1.15  2004/11/08 09:15:50  kikx
 	Effacement du repertoire avant le telechargement
 	
@@ -189,7 +192,7 @@ if(verifie_permission_webmestre($_GET['binet'])){
 	//==========================
 
 	if (isset($_POST['fileweb_up'])) {
-		if ($_FILES['file']['tmp_name']!='none') {
+		if (($_FILES['file']['tmp_name']!='none')&&($_FILES['file']['tmp_name']!='')) {
 			$DB_trombino->query("SELECT folder FROM binets WHERE binet_id=".$_GET['binet']);
 			list($folder) = $DB_trombino->next_row() ;
 			deldir(BASE_BINETS.$folder) ;// On supprime tout
@@ -230,7 +233,7 @@ if(verifie_permission_webmestre($_GET['binet'])){
 		
 		}
 		
-		$DB_valid->query("INSERT INTO  valid_binet SET binet_id={$_POST['id']}, nom='$nom', http='{$_POST['http']}', description='{$_POST['descript']}', catego_id='{$_POST['catego']}' , exterieur=$exterieur, folder=$folder, image=\"".addslashes($image)."\", format='$format'");
+		$DB_valid->query("INSERT INTO  valid_binet SET binet_id={$_POST['id']}, nom='$nom', http='{$_POST['http']}', description='{$_POST['descript']}', catego_id='{$_POST['catego']}' , exterieur=$exterieur, folder='$folder', image=\"".addslashes($image)."\", format='$format'");
 		
 		$index = mysql_insert_id() ;
 
@@ -238,8 +241,9 @@ if(verifie_permission_webmestre($_GET['binet'])){
 			
 		// si on demande la modification de l'image
 		//--------------------------------------------------------
+		$message2 .= "<warning>".$_FILES['file']['tmp_name']."</warning>" ;
 
-		if ($_FILES['file']['tmp_name']!='none') {
+		if (($_FILES['file']['tmp_name']!='none')&&($_FILES['file']['tmp_name']!='')) {
 			$img = $_FILES['file']['tmp_name'] ;
 			$image_types = Array ("image/bmp","image/jpeg","image/pjpeg","image/gif","image/x-png","image/png");
 		
@@ -295,6 +299,7 @@ if(verifie_permission_webmestre($_GET['binet'])){
 	<?
 	echo $message2 ;
 	?>
+	<notice> Si tu ne souhaites pas que ton binet apparaisse dans la liste des binets sur le site, alors supprime le champs Http</notice>
 		<formulaire id="binet_web" titre="<? echo $nom?>" action="gestion/binet.php?binet=<?=$_GET['binet']?>">
 			<hidden id="id" titre="" valeur="<? echo $id?>"/>
 			<choix titre="Catégorie" id="catego" type="combo" valeur="<?=$cat_id?>">

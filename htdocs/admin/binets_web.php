@@ -21,9 +21,12 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.8  2004/11/08 15:46:46  kikx
+	Correction pour les telechargement des fichiers (visiblement ca depend de la version de php)
+
 	Revision 1.7  2004/11/08 08:47:57  kikx
 	Pour la gestion online des sites de binets
-
+	
 	Revision 1.6  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -68,7 +71,7 @@ $texte_image ="" ;
 		// Trick pour ne pas avoir a recopier le code d'integration de l'image à la base de donnée
 		$_POST['modif'] = 1 ;
 		$_POST['id'] = $index  ;
-		if ($_FILES['file']['tmp_name']=='none')
+		if (($_FILES['file']['tmp_name']!='none')&&($_FILES['file']['tmp_name']!=''))
 			$_POST['suppr_img'] = 1 ;
 		
 	}
@@ -84,7 +87,7 @@ $texte_image ="" ;
 			
 		// si on demande la modification de l'image
 		//--------------------------------------------------------
-		if ($_FILES['file']['tmp_name']!='none') {
+		if (($_FILES['file']['tmp_name']!='none')&&($_FILES['file']['tmp_name']!='')) {
 			$img = $_FILES['file']['tmp_name'] ;
 			$image_types = Array ("image/bmp","image/jpeg","image/pjpeg","image/gif","image/x-png","image/png");
 		
