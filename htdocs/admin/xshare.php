@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.19  2004/11/06 15:11:34  pico
+		Corrections page admin xshare + modification possible des logiciels (j'avais oublié de le faire)
+
 		Revision 1.18  2004/10/21 22:19:37  schmurtz
 		GPLisation des fichiers du site
-
+		
 		Revision 1.17  2004/10/20 23:18:49  pico
 		Derniers fixes, ça marche !!
 		
@@ -113,6 +116,20 @@ foreach ($_POST AS $keys => $val){
 	
 		echo "<commentaire>Fichier ajouté</commentaire>";
 	}
+	
+	if (($temp[0]=='modif') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='')) {
+		$nom = $_REQUEST['nom'];
+		if(isset($_REQUEST['lien'])) $lien = ", lien='{$_REQUEST['lien']}'"; else $lien = ", lien=''";
+		if(isset($_REQUEST['version'])) $version = ", version='{$_REQUEST['version']}'"; else $version = ", version=''";
+		if(isset($_REQUEST['importance'])) $importance =  ", importance='{$_REQUEST['importance']}'"; else $importance = ", importance=''";
+		if(isset($_REQUEST['site'])) $site =  ", site='{$_REQUEST['site']}'"; else $site = ", site=''";
+		if(isset($_REQUEST['licence'])) $licence = ", licence='{$_REQUEST['licence']}'"; else $licence = ", licence=''";
+		if(isset($_REQUEST['descript'])) $descript = ", descript='{$_REQUEST['descript']}'"; else $descript =", descript= ''";
+		$DB_web-> query("UPDATE xshare SET nom='{$nom}' $lien $version $importance $site $licence $descript WHERE id={$temp[1]}");
+	
+		echo "<commentaire>Fichier modifié</commentaire>";
+	}
+	
 	if ($temp[0]=='suppr') {
 		$DB_web->query("SELECT lien FROM xshare WHERE id='{$temp[1]}' ");
 		list($dir) = $DB_web->next_row();
@@ -146,7 +163,7 @@ function rech_fils($id_parent) {
 
 		$DB_web->query("SELECT id,nom FROM xshare WHERE descript='' AND id_parent='{$id_parent}'") ;
 		while(list($id,$nom) = $DB_web->next_row()) {
-				echo "<noeud  id='".$id."' titre='".htmlspecialchars($nom,ENT_QUOTES)."' lien='admin/xshare.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
+				echo "<noeud  id='".$id."' titre='".htmlspecialchars($nom,ENT_QUOTES)."' lien='admin/xshare.php?dir_id=".$id."&amp;affich_elt=".base64_encode(all_elt_affich($id)) ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer);
 			echo "'>\n\r" ;
 			if (eregi("/".$id."/",$a_marquer)) {
@@ -163,7 +180,7 @@ function rech_fils($id_parent) {
 		
 		$DB_web->query("SELECT id,nom FROM xshare WHERE descript!='' AND id_parent='{$id_parent}'" ) ;
 		while(list($id,$nom) = $DB_web->next_row()) {
-			echo "\n\r<feuille  id='".$id."'  titre='".htmlspecialchars($nom,ENT_QUOTES)."' lien='admin/xshare.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
+			echo "\n\r<feuille  id='".$id."'  titre='".htmlspecialchars($nom,ENT_QUOTES)."' lien='admin/xshare.php?dir_id=".$id."&amp;affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#descript'>\n\r" ;
 			if (eregi("/".$id."/",$a_marquer)) {
@@ -273,12 +290,11 @@ echo "<br/>" ;
 // Corps du Documents pour les réponses
 //---------------------------------------------------
 
-  	if(isset($_REQUEST['idpopup'])) $id = $_REQUEST['idpopup'] ;
+  	if(isset($_REQUEST['idpopup'])) $id = $_REQUEST['idpopup']; else $id = "";
   	if ($id != "") {
 		$DB_web->query("SELECT * FROM xshare WHERE id='{$id}'") ;
 		if (list($id,$id_parent,$nom,$licence,$lien,$importance,$date,$descript,$version,$site) = $DB_web->next_row()) {
 	?>
-	<a name='descript' />
 	<formulaire id="xshare_<? echo $id ?>" titre="Le logiciel" action="admin/xshare.php">
 	<champ id="nom" titre="Nom du logiciel" valeur="<? echo $nom ?>" />
 	<champ id="version" titre="Version" valeur="<? echo $version ?>" />
