@@ -25,7 +25,6 @@ body {
 	background-color:#fff699;
 	margin:0;
 	padding:2px;
-	border:2px solid #DDE0F1;
 }
 
 img {
@@ -198,6 +197,11 @@ div.fkz_page_titre {
 .fkz_anniversaire,.fkz_annonces_corps,div.fkz_page_corps, .fkz_module_corps,.fkz_trombino,.fkz_sommaire{
 	background-color:#ffeaab;
 	border:1px solid #888;
+}
+
+.fkz_annonces_corps,div.fkz_page_corps, .fkz_module_corps,.fkz_trombino,.fkz_sommaire{
+	margin-bottom: 10px;
+	padding: 2px;
 }
 
 .fkz_titre {
