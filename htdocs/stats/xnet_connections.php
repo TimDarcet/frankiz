@@ -12,7 +12,7 @@ $fp=fopen(BASE_CACHE."stats-xnet",'r');
 while(!feof($fp)){
 	if(list($date,$nb) = explode(" ",fgets($fp, 4000)))
 		if(substr($nb, 0, -1)!='')
-			$os[date("Y-m-d H:i",$date)]=substr($nb, 0, -1);
+			$os[date("Ymd H:i",$date)]=substr($nb, 0, -1);
 }
 fclose($fp);
 ksort($os);
