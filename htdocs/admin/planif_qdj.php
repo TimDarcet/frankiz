@@ -3,9 +3,12 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.7  2004/10/15 20:49:46  pico
+	Affichage plus compressé pour plus de lisibilité
+
 	Revision 1.6  2004/10/15 20:32:01  pico
 	Reorganisation de la page
-
+	
 	Revision 1.5  2004/10/14 22:15:24  pico
 	- Ajout de boutons "un jour plus tôt" "un jour plus tard"
 	- Empèche de définir une date passée pour la qdj
@@ -180,8 +183,7 @@ if(isset($_REQUEST['show'])) {
 		<formulaire id="<? echo $id ?>" action="admin/planif_qdj.php">
 			<textsimple valeur="<? echo $date ?>"/>
 			<textsimple valeur="<? echo $question ?>"/>
-			<textsimple valeur="<? echo $reponse1 ?>"/>
-			<textsimple valeur="<? echo $reponse2 ?>"/>
+			<textsimple valeur="<? echo $reponse1 ?> / <? echo $reponse2 ?>"/>
 		
 			<? if(strtotime($date) >time()-3025 + 24*3600){ ?><bouton titre="Un jour plus tôt" id="reddate_<? echo $id ?>_<? echo $date ?>"/><? } ?>
 			<bouton titre="Un jour plus tard" id="augdate_<? echo $id ?>_<? echo $date ?>"/>
