@@ -45,4 +45,19 @@
 	</xsl:if>
 </xsl:template>
 
+<xsl:template match="module[@id='fetes']">
+	<xsl:if test="count(eleve) != 0">
+        <div class="fkz_module" id="mod_fetes">
+		<div class="fkz_titre"><span id="fetes_logo"><xsl:text> </xsl:text></span><span id="fetes">Bonne fête: </span></div>
+		<div class="fkz_module_corps">
+			<xsl:for-each select="eleve">
+ 				<xsl:value-of select="@prenom" />
+ 				<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
+			</xsl:for-each>
+		</div>
+		<br/> 
+		</div>
+	</xsl:if>
+</xsl:template>
+
 </xsl:stylesheet>

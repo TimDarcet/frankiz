@@ -22,9 +22,12 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.41  2005/01/12 22:40:39  pico
+	Ajout des fêtes à souhaiter
+
 	Revision 1.40  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 	Revision 1.39  2004/12/14 01:02:43  paxal
 	Ajout d'un random pour portage de la skin aubade et celio
 	
@@ -195,6 +198,7 @@ function liste_modules() {
 		"activites"			=> "Activités",
 		"tour_kawa"		=> "Tours kawa",
 		"anniversaires"		=> "Anniversaires",
+		"fetes"		=> "Fête du jour",
 		"stats"			=> "Statistiques",
 		"sondages"		=> "Sondages",
 		"lien_tol"			=> "Lien rapide vers le tol",
