@@ -72,13 +72,17 @@
 <xsl:template match="annonce" mode="complet">
 	<dl class="boite">
 		<dt class="titre">
-			<span class="droitehaut"><xsl:text> </xsl:text></span>
-			<xsl:if test="count(lien[@id='annonces_lues'])">
-				<span class="hidenews">
-					<xsl:apply-templates select="lien[@id='annonces_lues']"/>
-				</span> 
-			</xsl:if>
-			<a><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute><xsl:text> </xsl:text></a>      
+			<a><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute><xsl:text> </xsl:text></a>
+			<xsl:choose>	
+				<xsl:when test="count(lien[@id='annonces_lues'])">
+					<span class="hidenews">
+						<xsl:apply-templates select="lien[@id='annonces_lues']" mode="sansbr"/>
+					</span> 
+				</xsl:when>
+				<xsl:otherwise>
+					<span class="droitehaut"><xsl:text> </xsl:text></span>
+				</xsl:otherwise>
+			</xsl:choose>      
 <!-- 			<span><xsl:attribute name="class"><xsl:value-of select="@categorie"/></xsl:attribute><xsl:text> </xsl:text></span> -->
 			<span><xsl:value-of select="@titre"/></span>
 
@@ -118,6 +122,17 @@
 		<xsl:value-of select="@titre"/>
 	</a>
 </div>
+</xsl:template>
+
+<xsl:template match="lien" mode="sansbr">
+	<a class="lien">
+		<xsl:if test="boolean(@id)">
+			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+		</xsl:if>
+		<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+		<xsl:attribute name="title"><xsl:value-of select="@titre"/></xsl:attribute>
+		<span><xsl:value-of select="@titre"/><xsl:apply-templates/></span>
+	</a>
 </xsl:template>
 
 </xsl:stylesheet>

@@ -13,7 +13,7 @@
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
-	
+	s
 	You should have received a copy of the GNU General Public License
 	along with this program; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -21,26 +21,33 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:template match="module[@id='lien_tol']">
-	<dl id="lien_tol" class="cadrecote">
-		<dt class="top"><xsl:text> </xsl:text></dt>
-		<dd class="milieu">
-			<p class="titre">TOL</p>
-			<form enctype="multipart/form-data" method="post" class="cadretol">
-				<xsl:attribute name="action"><xsl:value-of select="formulaire/@action"/></xsl:attribute>
-				<div class="center">
-					<input>
-						<xsl:attribute name="name"><xsl:value-of select="formulaire/champ/@id"/></xsl:attribute>
-						<xsl:attribute name="value"><xsl:value-of select="formulaire/champ/@valeur"/></xsl:attribute>
-					</input>
-					<input type="submit">
-						<xsl:attribute name="name"><xsl:value-of select="formulaire/bouton/@id"/></xsl:attribute>
-						<xsl:attribute name="value">Chercher</xsl:attribute>
-					</input>	
-				</div>
-			</form>
+<xsl:template match="page[@id='xshare' or @id='faq']">
+	<dl class="boite">
+		<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+		<dt class="titre">
+			<span class="droitehaut"><xsl:text> </xsl:text></span>
+			<span><xsl:value-of select="h1"/></span>
+		</dt>
+		<dd class="contenu">
+		<div id="recherchearbre">
+			<dl class="boite">
+				<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+				<dt class="titre">
+					<span class="droitehaut"><xsl:text> </xsl:text></span>
+				</dt>
+				<dd class="contenu">
+					<xsl:apply-templates select="formulaire"/>
+				</dd>
+				<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
+			</dl>
+		</div>
+			<xsl:apply-templates select="p"/>
+			<div class="arbre">
+				<xsl:apply-templates select="arbre"/>
+			</div>
+			
 		</dd>
-		<dd class="bas"><xsl:text> </xsl:text></dd>
+		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>
 </xsl:template>
 

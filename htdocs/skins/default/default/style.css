@@ -171,6 +171,8 @@ dl.boite dt.titre span {
 	line-height: 25px ;
 	font-size: 1.4em ;
 	color: #FFA200 ;
+	position:relative;
+	top:-3px;
 }
 
 dl.boite dd.contenu {
@@ -198,9 +200,9 @@ dl.boite dd.bas span.droitebas {
 
 dl.boite dt.titre span.droitehaut {
 	float: right;
-	width:9px;
+	width:15px;
 	height:25px;
-	background: url('./images/cadre-hautd.gif') no-repeat top left;
+	background: url('./images/cadre-hautd.gif') no-repeat bottom right;
 	position:relative;
 	top:0em;
 }
@@ -208,17 +210,17 @@ dl.boite span.hidenews {
 	float:right;
 	width:15px;
 	height:25px;
-	background: url('./images/cadre-haut.gif') no-repeat -50px 0px;
+	position:relative;
+	top:0px;
 }
 
 dl.boite span.hidenews a {
 	display:block;
-	position:relative;
-	left:8px;
-	top:4px;
-	background:transparent url(images/hidenews.png) no-repeat bottom right;
+	background: url(images/hidenews.png) no-repeat bottom right;
 	width:15px;
-	height:25px;
+	height:15px;
+	position:relative;
+	top:13px;
 }
 
 dl.boite  span.hidenews a span {
@@ -386,18 +388,21 @@ dd.element p.binets{
 	padding:0 5px;
 }
 
+form.cadretol input{
+	width:85px;
+	margin:0 auto;
+}
+
 form.trombino { 
 	padding:20px 0px;
 }
 
-/*form.trombino div{
-	border: dashed 1px silver;
-	width:75%;
-	margin:0px auto;
+form.trombino div{
+	text-align:center;
 	padding:7px;
-}*/
+}
 
-form.trombino table {
+form.trombino div table {
 	width:60%;
 	border: dashed 1px silver;
 	margin:0 auto;
@@ -478,6 +483,65 @@ dd.lien {
 	padding-left:5px;
 }
 
+/* -----------QDJ---------------*/
+
+dl#qdj ul.qdj {
+	margin-top:20px;
+}
+
+dl#qdj ul.qdj li {
+	display:inline;
+	text-align:center;
+	height:100px;
+	width:30px;
+}
+
+dl#qdj ul.qdj li a{
+	font-weight:bold;
+}
+
+dl#qdj ul.qdj li span{
+	display:block;
+	height:45px;
+	width:90%;
+}
+
+dl#qdj ul.qdj li span.rouje {
+	background:url(images/pointrouje.gif) no-repeat top center;
+}
+
+dl#qdj ul.qdj li span.jone {
+	background:url(images/pointjone.gif) no-repeat top center;
+}
+
+dl#qdj ul.reponse_qdj li {
+	float:left;
+	text-align:center;
+	height:100px;
+	width:45%;	
+}
+
+dl#qdj ul.reponse_qdj li div.col span {
+	display:block;
+	height:50px;
+}
+dl#qdj ul.reponse_qdj li div.col span.jone {
+	background:url(images/jaune.gif) repeat-y top center;
+}
+dl#qdj ul.reponse_qdj li div.col span.rouje {
+	background:url(images/rouge.gif) repeat-y top center;
+}
+dl#qdj ul.reponse_qdj li span.reponse {
+	display:block;		
+}
+
+/* ---------- Xshare et FAQ --------- */
+
+div#recherchearbre {
+	float:right;
+	width:200px;
+}
+
 
 /* ################# MENU/LISTE ####################*/
 
@@ -493,6 +557,8 @@ dl#menu {
 }
 dl#menu dt.titre {
 	height: 13px !important;
+	margin-bottom:0px !important;
+	margin-bottom:4px;
 	background: url('./images/top.png') no-repeat bottom left;
 }
 dl#menu dt.titre span {
@@ -500,10 +566,12 @@ dl#menu dt.titre span {
 }
 dl#menu dd.contenu {
 	margin:0px;
-	padding:0;
+	padding:0px;
 }
 dl#menu dd.bas {
 	height: 10px !important;
+	margin-top:0px !important;
+	margin-top:-4px;
 	background: url('./images/bottom.png') no-repeat top left;
 }
 dl#menu dd.bas span.droitebas {
@@ -858,4 +926,7 @@ dl.boite h3, dl.boite h2 {
 }
 .clear {
 	clear:left;
+}
+.float_right {
+	float:right;
 }

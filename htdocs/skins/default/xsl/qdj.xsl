@@ -23,52 +23,66 @@
 	
 <xsl:template match="module[@id='qdj'] | module[@id='qdj_hier'] ">
 	<dl class="boite">
+		<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 		<dt class="titre">
 			<span class="droitehaut"><xsl:text> </xsl:text></span>
 			<span><xsl:value-of select="@titre"/></span>	
 		</dt>
 		<dd class="contenu">
+			<p class="news"><xsl:value-of select="qdj/question"/></p>
 		<xsl:choose>
 		<xsl:when test="boolean(qdj[@action])">
-			<p class="news"><xsl:value-of select="qdj/question"/></p>
-			<div class="fkz_qdj_rouje"><br/>
-				<a>
-					<xsl:attribute name="href"><xsl:value-of select="qdj/@action"/>1</xsl:attribute>
-					<xsl:value-of select="qdj/reponse[@id='1']"/>
-				</a>
-			</div>
-			<div class="fkz_qdj_jone"><br/>
-				<a>
-					<xsl:attribute name="href"><xsl:value-of select="qdj/@action"/>2</xsl:attribute>
-					<xsl:value-of select="qdj/reponse[@id='2']"/>
-				</a>
-			</div>
-			<br/><br/>
+			<ul class="qdj">
+				<li>
+					<span class="rouje"><xsl:text> </xsl:text></span><br/>
+					<a>		
+						<xsl:attribute name="href"><xsl:value-of select="qdj/@action"/>1</xsl:attribute>
+						<xsl:value-of select="qdj/reponse[@id='1']"/>
+					</a>
+				</li>
+				<li>
+					<span class="jone"><xsl:text> </xsl:text></span><br/>
+					<a>
+						<xsl:attribute name="href"><xsl:value-of select="qdj/@action"/>2</xsl:attribute>
+						<xsl:value-of select="qdj/reponse[@id='2']"/>
+					</a>
+				</li>
+			</ul>
 		</xsl:when>
 		<xsl:otherwise>
-			<p class="news"><xsl:value-of select="qdj/question"/></p>
-			<div class="fkz_qdj_rouje_reponse">
-				<xsl:value-of select="qdj/reponse[@id='1']"/>
-				<br/>
-				<xsl:value-of select="qdj/reponse[@id='1']/@votes"/> soit <xsl:value-of select="round((qdj/reponse[@id='1']/@votes * 100) div sum(qdj/reponse/@votes))"/>%<br/>
-			</div>
-			<div class="fkz_qdj_jone_reponse">
-				<xsl:value-of select="qdj/reponse[@id='2']"/>
-				<br/>
-				<xsl:value-of select="qdj/reponse[@id='2']/@votes"/> soit <xsl:value-of select="round((qdj/reponse[@id='2']/@votes * 100) div sum(qdj/reponse/@votes))"/>%<br/>			
-			</div>
+			<ul class="reponse_qdj">
+				<li>
+					<div class="col">
+						<span class="rouje"><xsl:attribute name="style">height:<xsl:value-of select="round((qdj/reponse[@id='1']/@votes * 100) div sum(qdj/reponse/@votes))" />%;</xsl:attribute><xsl:text> </xsl:text></span><br/>
+					</div>
+					<span class="reponse">
+						<strong><xsl:value-of select="qdj/reponse[@id='1']" /></strong>
+						<br/>
+						<xsl:value-of select="qdj/reponse[@id='1']/@votes"/> soit <xsl:value-of select="round((qdj/reponse[@id='1']/@votes * 100) div sum(qdj/reponse/@votes))"/>%<br/>
+					</span>
+				</li>
+				<li>
+					<div class="col">
+						<span class="jone"><xsl:attribute name="style">height:<xsl:value-of select="round((qdj/reponse[@id='2']/@votes * 100) div sum(qdj/reponse/@votes))" />%;</xsl:attribute><xsl:text> </xsl:text></span><br/>
+					</div>
+					<span class="reponse">
+						<strong><xsl:value-of select="qdj/reponse[@id='2']" /></strong>
+						<br/>
+						<xsl:value-of select="qdj/reponse[@id='2']/@votes"/> soit <xsl:value-of select="round((qdj/reponse[@id='2']/@votes * 100) div sum(qdj/reponse/@votes))"/>%<br/>
+					</span>
+				</li>
+			</ul>	
 		</xsl:otherwise>
 		</xsl:choose>
 		<br/>
-		<br/>
-			<xsl:if test="count(qdj/dernier)">
-				<div>Derniers à répondre :</div>
-				<ul class="none">
-				<xsl:for-each select="qdj/dernier[position()&lt;=6]">
-					<li class="fkz_qdj_last"><xsl:value-of select="@ordre"/>. <xsl:value-of select="eleve/@surnom"/></li>
-				</xsl:for-each>
-				</ul>
-			</xsl:if>
+		<xsl:if test="count(qdj/dernier)">
+			<div>Derniers à répondre :</div>
+			<ul class="liste">
+			<xsl:for-each select="qdj/dernier[position()&lt;=5]">
+				<li class="fkz_qdj_last"><xsl:value-of select="@ordre"/>. <xsl:value-of select="eleve/@surnom"/></li>
+			</xsl:for-each>
+			</ul>
+		</xsl:if>
 		</dd>
 		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>

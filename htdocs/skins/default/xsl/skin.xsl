@@ -23,9 +23,13 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.6  2004/12/14 01:34:14  psycow
+	Gestion IE, modifications diverses de compatibilité
+	CV: ----------------------------------------------------------------------
+
 	Revision 1.5  2004/12/10 03:04:31  psycow
 	Resolution du probleme des boites sous Firefox, reste un probleme sur le positionnement des formulaires dans les boites...
-
+	
 	Revision 1.4  2004/12/09 14:00:07  psycow
 	Bonne modification et resolutions des principaux problemes de versions... et oui je suis un boulet qui ecrase les bons fichier et mets les mauvais en commit...
 	
@@ -76,6 +80,7 @@
 <xsl:include href="stats.xsl"/>
 <xsl:include href="activites.xsl"/>
 <xsl:include href="tol.xsl"/>
+<!-- <xsl:include href="faq_xshare.xsl"/> -->
 
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -127,7 +132,12 @@
 				<xsl:apply-templates select="page[@id='annonces']" mode="sommaire"/>
 				<xsl:apply-templates select="page[@id='annonces']" mode="complet"/>
 				<xsl:apply-templates select="page[@id='trombino']"/>
-				<xsl:apply-templates select="page[@id!='annonces' and @id!='trombino']"/>
+				<xsl:apply-templates select="page[@id='faq']"/>
+				<xsl:apply-templates select="page[@id='xshare']"/>
+				<xsl:apply-templates select="page[@id='binets']"/>
+				<xsl:apply-templates select="page[@id='vocabulaire']"/>
+				<xsl:apply-templates select="page[@id='meteo']"/>
+				<xsl:apply-templates select="page[@id!='annonces' and @id!='trombino' and @id!='faq' and @id!='xshare' and @id!='binets' and @id!='meteo' and @id!='vocabulaire']"/>
 			</div><!--fin #centre -->
 			
 			<div id="footer">
@@ -147,7 +157,7 @@
 </xsl:template>
 
 
-<xsl:template match="page[@id!='annonces' and @id!='trombino' and @id!='binets' and @id!='meteo' and @id!='vocabulaire']">
+<xsl:template match="page[@id!='annonces' and @id!='trombino' and @id!='binets' and @id!='meteo' and @id!='vocabulaire' and @id!='faq' and @id!='xshare']">
 	<dl class="boite">
 		<dt class="titre">
 			<span class="droitehaut"><xsl:text> </xsl:text></span>
