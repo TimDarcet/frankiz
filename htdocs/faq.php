@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.19  2005/03/15 12:01:40  pico
+		oups
+
 		Revision 1.18  2005/03/15 11:59:55  pico
 		Correction bug #74
-
+		
 		Revision 1.17  2005/02/08 22:41:17  pico
 		Correction du bug de recherche sur la faq. (#55)
 		
@@ -408,7 +411,7 @@ if ($id != "") {
 // Pied de page ...
 //---------------------------------------------------
 ?>
-<note>Pour tout commentaire, contactez les <lien url="mailto://<?= MAIL_FAQMESTRE ?>" titre="FaqMestres"/></note>
+<note>Pour tout commentaire, contactez les <lien url="mailto:<?= MAIL_FAQMESTRE ?>" titre="FaqMestres"/></note>
 </page>
 <?php
 
