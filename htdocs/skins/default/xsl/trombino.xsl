@@ -44,7 +44,7 @@
 							<a>
 								<xsl:attribute name="href"><xsl:text>trombino.php?image=true&amp;login=</xsl:text><xsl:value-of select="@login"/><xsl:text>&amp;promo=</xsl:text><xsl:value-of select="@promo"/></xsl:attribute>
 								<xsl:attribute name="title"><xsl:value-of select="@prenom"/><xsl:text> </xsl:text><xsl:value-of select="@nom"/></xsl:attribute>
-								<img width="100" height="122">
+								<img height="122">
 									<xsl:attribute name="src"><xsl:text>trombino.php?image=true&amp;login=</xsl:text><xsl:value-of select="@login"/><xsl:text>&amp;promo=</xsl:text><xsl:value-of select="@promo"/></xsl:attribute>
 									<xsl:attribute name="alt"><xsl:value-of select="@login"/> (<xsl:value-of select="@promo"/>)</xsl:attribute>
 								</img>
@@ -53,18 +53,18 @@
 						<dd class="sport">
 							<a>
 								<xsl:attribute name="href"><xsl:text>trombino.php?image=true&amp;login=</xsl:text><xsl:value-of select="@login"/><xsl:text>&amp;promo=</xsl:text><xsl:value-of select="@promo"/></xsl:attribute>
-								<img width="100" height="125">
+								<img height="100">
 									<xsl:attribute name="src">
-										<xsl:text>images/trombino/</xsl:text><xsl:value-of select="@section"/>
+										<xsl:text>skins/default/images/sections/</xsl:text><xsl:value-of select="translate(@section,'ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊ','abcdefghijklmnopqrstuvwxyzéèàçê')"/>
 										<xsl:choose>
 											<xsl:when test="(number(@promo) mod 2)=0">
-												<xsl:text>-rouje</xsl:text>
+												<xsl:text>0</xsl:text>
 											</xsl:when>
 											<xsl:otherwise>
-												<xsl:text>-jone</xsl:text>
+												<xsl:text>1</xsl:text>
 											</xsl:otherwise>
 										</xsl:choose>
-										<xsl:text>.png</xsl:text>
+										<xsl:text>.jpg</xsl:text>
 									</xsl:attribute>
 								</img>
 							</a>

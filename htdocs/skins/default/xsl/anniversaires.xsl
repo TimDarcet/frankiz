@@ -38,14 +38,16 @@
 <xsl:template match="eleve" mode="anniversaire">
 	<xsl:if test="preceding-sibling::eleve[1]/@promo != @promo or position() = 1">
 		<xsl:if test="position()!=1"><br/></xsl:if>
-		<strong><xsl:value-of select="@promo" /> : </strong>
+		<a>
+			<xsl:attribute name="href">
+		 		trombino.php?anniversaire&amp;promo=<xsl:value-of select="@promo" />
+			</xsl:attribute>
+			<strong><xsl:value-of select="@promo" /> </strong>
+		</a>: 
 	</xsl:if>
-	<a>
-		<xsl:attribute name="href">mailto:<xsl:value-of select="@mail"/></xsl:attribute>
-		<xsl:value-of select="@prenom" />
-		<xsl:text> </xsl:text>
-		<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzéèàçê','ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊ')" />
-	</a>
+ 		<xsl:value-of select="@prenom" />
+ 		<xsl:text> </xsl:text>
+ 		<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzéèàçê','ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊ')" />
 	<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
 </xsl:template>
 

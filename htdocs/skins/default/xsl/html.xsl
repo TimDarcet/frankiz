@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.13  2004/12/15 22:11:37  psycow
+	Gestion anniversaire et activités
+
 	Revision 1.12  2004/12/15 07:04:35  schmurtz
 	epsilon
-
+	
 	Revision 1.11  2004/12/15 01:08:53  schmurtz
 	Image des annonces centrees
 	
@@ -76,13 +79,17 @@
 
 <!-- Images -->
 <xsl:template match="image">
-	<p class="image"><img style="border:0">
+	<p class="image">
+		<img>
 		<xsl:attribute name="src"><xsl:value-of select="@source"/></xsl:attribute>
 		<xsl:attribute name="alt"><xsl:value-of select="@legende"/></xsl:attribute>
 		<xsl:if test="boolean(@height)"><xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute></xsl:if>
 		<xsl:if test="boolean(@width)"><xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute></xsl:if>
-	</img></p>
-	<xsl:if test="boolean(@legende)"><span class="legende"><xsl:value-of select="@legende"/></span><br /></xsl:if>
+		</img>
+	</p>
+	<xsl:if test="boolean(@legende)">
+		<span class="legende"><xsl:value-of select="@legende"/></span><br />
+	</xsl:if>
 </xsl:template>
 
 

@@ -22,21 +22,22 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="module[@id='activites']">
-    <xsl:if test="count(element) !=0">
+    <xsl:if test="count(annonce) !=0">
 	<dl id="activités" class="cadrecote">
 		<dt class="top"><xsl:text> </xsl:text></dt>
 		<dd class="milieu">
 			<p class="titre">Activités</p>
 				<xsl:for-each select="annonce">
-					<xsl:if test="@titre = 'brc'">
-						<xsl:if test="current()=0">
-							<b><xsl:text>Ce soir, au BRC</xsl:text></b><br/>
+					<div class="activité center">
+						<xsl:if test="@date!=''">A <xsl:value-of select='substring(@date,12,5)'/><br/></xsl:if>
+						<xsl:apply-templates select="*[name()!='eleve']"/>
+						<xsl:if test="count(eleve)">
+							<p class="fkz_signature">
+								<xsl:apply-templates select="eleve" mode="signature"/>
+							</p>
 						</xsl:if>
-						<em><xsl:value-of select="titre"/>
-						<xsl:text> </xsl:text>à<xsl:text> </xsl:text>
-						<xsl:value-of select="heure"/></em><br/>
-					</xsl:if>
-					<xsl:apply-templates/>
+						<xsl:text> </xsl:text> <!-- Pas de div vide -->
+					</div>
 				</xsl:for-each>
 		</dd>
 		<dd class="bas"><xsl:text> </xsl:text></dd>
