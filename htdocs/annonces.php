@@ -3,9 +3,12 @@
 	Annonces de frankiz. Page d'acceuil pour les personnes déjà loguées.
 	
 	$Log$
+	Revision 1.6  2004/09/17 10:49:40  kikx
+	Petite erreur ou plutot oubli suite a la suppression du champ valid dans les annonces
+
 	Revision 1.5  2004/09/16 15:33:50  schmurtz
 	Orthographe
-
+	
 	Revision 1.4  2004/09/16 15:33:03  schmurtz
 	Suppression de la fonction afficher_identifiant(), utilisation de <![CDATA[......]]> aÌ€ la place.
 	
@@ -34,7 +37,7 @@ echo "<page id='annonces' titre='Frankiz : annonces'>\n";
 
 $DB_web->query("SELECT annonce_id,stamp,perime,titre,contenu,en_haut,nom,prenom "
 					 ."FROM annonces LEFT JOIN trombino.eleves USING(eleve_id) "
-					 ."WHERE (perime>=".date("Ymd000000",time())." AND valide=1) ORDER BY perime DESC");
+					 ."WHERE (perime>=".date("Ymd000000",time()).") ORDER BY perime DESC");
 while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$nom,$prenom)=$DB_web->next_row()) { ?>
 	<annonce titre="<?php echo $titre ?>" 
 			categorie="<?php echo get_categorie($en_haut, $stamp, $perime) ?>"

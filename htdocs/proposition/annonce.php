@@ -23,7 +23,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 // On teste l'affichage de l'annonce pour voir à quoi ça ressemble
 
-if (isset($_POST['test'])) {
+if ((isset($_POST['test'])||(isset($_POST['valid'])))) {
 ?>
 	<annonce titre="<?php  if (isset($_POST['titre'])) echo $_POST['titre'] ; ?>" 
 			categorie=""
