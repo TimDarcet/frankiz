@@ -46,15 +46,14 @@
 
 
 <!-- Listes -->
-<xsl:template match="liste[@selectionnable!='oui']">
+<xsl:template match="liste[(@selectionnable!='oui') and (@action='')]">
 	<xsl:if test="boolean(@titre)">
 		<h2><xsl:value-of select="@titre"/></h2>
 	</xsl:if>
 	<xsl:apply-templates select="commentaire"/>
-		<xsl:variable name="nombre_colonnes" select="count(entete)+count(@selectionnable)"/>
+		<xsl:variable name="nombre_colonnes" select="count(entete)"/>
 		<table class="liste" cellspacing="0" cellpadding="0">
 			<tr>
-				<xsl:if test="@selectionnable='oui'"><td class="entete">&#160;</td></xsl:if>
 				<xsl:apply-templates select="entete"/>
 			</tr>
 			<xsl:apply-templates select="element"/>
@@ -65,7 +64,7 @@
 </xsl:template>
 
 
-<xsl:template match="liste[@selectionnable='oui']">
+<xsl:template match="liste[(@selectionnable='oui') or (@action!='')]">
 	<form method="post">
 	<xsl:apply-templates select="commentaire | warning"/>
 	<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
@@ -73,7 +72,7 @@
 	<xsl:if test="boolean(@titre)">
 		<h2><span><xsl:value-of select="@titre"/></span></h2>
 	</xsl:if>
-		<xsl:variable name="nombre_colonnes" select="count(entete)+count(@selectionnable)"/>
+		<xsl:variable name="nombre_colonnes" select="count(entete)+ number(contains('oui',@selectionnable))"/>
 		<table class="liste" cellspacing="0" cellpadding="0">
 			<tr>
 				<xsl:if test="@selectionnable='oui'"><td class="entete">&#160;</td></xsl:if>

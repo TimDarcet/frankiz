@@ -21,9 +21,12 @@
 	Fonctions permettant de zipper/dezipper un fichier
 	
 	$Log$
+	Revision 1.9  2004/11/22 19:10:01  pico
+	Corrections mineures
+
 	Revision 1.8  2004/11/22 18:54:55  pico
 	Nouvelle version, devrait mieux marcher
-
+	
 	Revision 1.7  2004/11/22 18:38:03  pico
 	Changements fonction de décompression (ne cherche plus sur les mimetypes)
 	
@@ -72,7 +75,7 @@ function unzip($file,$dir,$del){
 			exec($cde);
 			if($del = true) unlink($file);
 	}
-	else echo "<warning>Type de fichier non reconnu: ".mime_content_type($file)."</warning>";
+	else return false;
 }
 
 // Compresse le dossier $dir dans l'archive $file, de type $type

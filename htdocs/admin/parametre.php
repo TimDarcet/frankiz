@@ -24,9 +24,12 @@
 	# la dernière promo qui est dans le trombi (qui normalment devrait être mis a jour automatiquement)
 	
 	$Log$
+	Revision 1.5  2004/11/22 19:10:01  pico
+	Corrections mineures
+
 	Revision 1.4  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.3  2004/09/16 15:30:09  schmurtz
 	Ajout de la variable cvs "Log", suppression de return inutiles
 	
