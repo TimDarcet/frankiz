@@ -21,9 +21,12 @@
 		Fonction pour parser des rss
 		
 		$Log$
+		Revision 1.12  2005/01/11 13:13:36  pico
+		Histoire d'avoir un cache des flux rss
+
 		Revision 1.11  2004/11/25 00:16:02  pico
 		Ne traite plus le flux rss si celui ci n'est pas du xml valide
-
+		
 		Revision 1.10  2004/11/24 23:51:40  pico
 		Oubli
 		
@@ -64,13 +67,16 @@ function rss_xml($site,$mode = 'complet') {
 	// Récupération de la météo
 	$proxy = "kuzh.polytechnique.fr";
 	$port = 8080;
-
-	$fp = fsockopen($proxy, $port);
-	fputs($fp, "GET ".$site." HTTP/1.0\r\nHost: $proxy\r\n\r\n");
+	$date_valide = time()-600; //cache 10min
+	if(!(file_exists(BASE_CACHE."rss/".base64_encode($site)) && filemtime(BASE_CACHE."rss/".base64_encode($site)) > $date_valide)) {
+		exec("http_proxy=\"$proxy:$port\" wget -O ".BASE_CACHE."rss/".base64_encode($site)." $site");
+	}
+	
+	$fp=fopen(BASE_CACHE."rss/".base64_encode($site),'r');
 	$xml = "";
 	while(!feof($fp)){
 		$xml .= fgets($fp, 4000);
-	}	
+	}
 	
 	$xml = strstr($xml,"<?xml");
 	$xml = html_entity_decode ($xml,ENT_NOQUOTES);
