@@ -58,7 +58,8 @@ a {
 }
 
 a:visited {
-
+	color: purple;
+	text-decoration: underline;
 }
 
 a:hover {
@@ -67,6 +68,7 @@ a:hover {
 	padding: 2px;
    background-image: url("images/modern_fond_liens.png");
    border: 1px dashed gray;
+   text-decoration: none;
 }
 
 #mod_liens_nav {
@@ -173,7 +175,7 @@ ul.fkz_liens_nav{
 }
 
 .fkz_titre {
-	background: #dddddd;
+	background-color: #dddddd;
 	background-image: url("images/modern_angle.png");
 	background-position: right;
 	background-repeat: no-repeat;
@@ -191,12 +193,36 @@ ul.fkz_liens_nav{
 	display: inline;
 }
 
+div.fkz_annonces_titre {
+	background-color: #dddddd;
+	background-image: url("images/modern_angle.png");
+	background-position: right;
+	background-repeat: no-repeat;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 0px;
+	padding-right: 40px;
+	max-width: 100%;
+	text-align : left;
+	font-size: 11pt;
+	font-style: italic;
+	font-weight: bold;
+	border-left: 1px dashed gray;
+	border-bottom: 1px solid #dddddd;
+	display: inline;
+}
+
+.fkz_signature {
+	text-align: right;
+	font-style: italic;
+}
+
 #mod_liens_nav  .fkz_titre{
 	display:none;
 }
 #mod_liens_nav  div{display:inline; border:none; background:none}
 
-.fkz_module_corps {
+.fkz_module_corps, .fkz_annonces_corps {
 	background: #dddddd;
 	border: 1px dashed gray;
 	padding: 2px;
@@ -204,7 +230,7 @@ ul.fkz_liens_nav{
 	margin-top: 2px;
 }
 
-.fkz_module_corps:hover {
+.fkz_module_corps:hover, .fkz_annonces_corps:hover, .fkz_anniversaire:hover, .fkz_sommaire:hover {
 	background-color: white;
 }
 
@@ -215,12 +241,7 @@ ul.fkz_liens_nav{
     margin-top: 2px;
     padding-left: 5px;
     padding-right: 5px;
-    margin-left: -5px;
-    margin-right: -5px;
-}
-
-.fkz_sommaire:hover {
-	background-color: white;
+    border: 1px dashed gray;
 }
 
 .fkz_sommaire_titre {
@@ -231,9 +252,11 @@ ul.fkz_liens_nav{
 	font-style: italic;
 	padding-left: 10px;
 	padding-right: 40px;
+	margin-left: -5px;
+   margin-right: -5px;
 }
 
-.fkz_annonces,.fkz_page_divers {
+.fkz_page_divers {
 	padding-left: 5px;
 	padding-right: 5px;
 	font-size: 9pt;
@@ -241,6 +264,18 @@ ul.fkz_liens_nav{
 	max-width: 100%; 
 	background-color: #dddddd;
 	border: 1px dashed gray;
+}
+
+.fkz_annonces_corps {
+	padding-left: 5px;
+	padding-right: 5px;
+	font-size: 9pt;
+	text-align: left;
+	max-width: 100%; 
+	background-color: #dddddd;
+	border-left: 1px dashed gray;
+	border-right: 1px dashed gray;
+	border-bottom: 1px dashed gray;
 }
 
 span.fkz_annonces_vieux {
@@ -295,22 +330,22 @@ span.fkz_annonces_vieux {
         width: 20%;
         float: left;
 	font-size: 9pt;
-	margin-top: 1%;
+	margin-top: 0.5%;
 }
 
 .fkz_droite {
         float: right;
         width: 20%;
 	font-size: 9pt;
-	margin-top: 1%;
+	margin-top: 0.5%;
 }
 
 .fkz_centre {
 	font-size: 9pt;
 	position: absolute;
-	left: 21%;
-	width: 58%;
-	margin-top: 1%;
+	left: 20.5%;
+	width: 59%;
+	margin-top: 0.5%;
 }
 
 /* Stats */
@@ -326,16 +361,16 @@ span.fkz_annonces_vieux {
 	color: inherit;
 	background: lime;
 	position: relative;
-	left: 80px;
-	top: -16px;
+	left: 100px;
+	top: 16px;
 }
 
 .serveur_down {
 	color: inherit;
 	background: red;
 	position: relative;
-	left: 80px;
-	top: -16px;
+	left: 100px;
+	top: 16px;
 }
 /* FAQ et Xshare */
 .noeud_ferme {
@@ -363,6 +398,7 @@ span.fkz_annonces_vieux {
 	background: #cccccc;
 	padding: 6px;
 	border: 1px dashed #808080;
+	display: block;
 }
 
 .warning {
@@ -370,6 +406,7 @@ span.fkz_annonces_vieux {
 	background: #ffd4d4;
 	padding: 6px;
 	border: 1px dashed #FF3333;
+	display: block;
 }
 
 .note {
@@ -378,6 +415,7 @@ span.fkz_annonces_vieux {
 	border: 1px dashed #fbff80;
 	font-size: 75%;
 	padding: 6px;
+	display: block;
 }
 
  /* Logos W3C */
@@ -440,3 +478,51 @@ div.formulaire span.boutons{
 /* Formulaires */
 
 .fkz_page_titre{display:none;}
+
+/* Trombino */
+.nom{
+	text-align:center;
+}
+	
+.fkz_trombino_photo{
+	float:left;
+	margin-left:5px;
+}
+.fkz_trombino_section{
+	float:right;
+	margin-right:5px;
+}
+.fkz_trombino_infos{
+	float:left;
+	margin-left:5px;
+}
+.fkz_trombino_infos2{
+	float:right;
+	margin-right:5px;
+}
+.binets{
+	clear:both;
+}
+
+.fkz_signature{
+	text-align:right;
+	font-weight: bold;
+}
+
+form.trombino { 
+	
+	padding:20px 0px;
+}
+
+form.trombino div{
+	text-align:center;
+	padding:7px;
+}
+form.trombino table{
+	font-size: 9pt;
+	text-align:right;
+}
+
+form.trombino input,form.trombino select {
+	width:150px;
+}
