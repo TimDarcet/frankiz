@@ -21,9 +21,12 @@
 		Fonction pour parser des rss
 		
 		$Log$
+		Revision 1.11  2004/11/25 00:16:02  pico
+		Ne traite plus le flux rss si celui ci n'est pas du xml valide
+
 		Revision 1.10  2004/11/24 23:51:40  pico
 		Oubli
-
+		
 		Revision 1.9  2004/11/24 23:50:42  pico
 		Tri dans le flux css
 		
@@ -67,13 +70,16 @@ function rss_xml($site,$mode = 'complet') {
 	$xml = "";
 	while(!feof($fp)){
 		$xml .= fgets($fp, 4000);
-	}
+	}	
+	
 	$xml = strstr($xml,"<?xml");
 	$xml = html_entity_decode ($xml,ENT_NOQUOTES);
 	$xml =  str_replace(array('&(^#)','&nbsp;'),array('&amp;',' '),$xml);
 
 	// traduction du rss dans notre format
-	if(strstr($xml,"<rss")){
+	$p = xml_parser_create();
+	xml_parser_set_option($p, XML_OPTION_CASE_FOLDING,0);
+	if(xml_parse($p, $xml, true) && strstr($xml,"<rss")){
 		$xh = xslt_create();
 		xslt_set_encoding($xh, "ISO-8859-1");
 		$params = array('mode'=>$mode);
