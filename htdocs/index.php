@@ -21,10 +21,13 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.30  2005/02/08 21:57:56  pico
+	Correction bug #62
+
 	Revision 1.29  2005/02/02 12:40:38  kikx
 	Resolution bug 57
 	Pb restant, je ne suis jamais sur que l'annonce d'en dessous c'est id-1 car c'est la skin qui reordonne
-
+	
 	Revision 1.28  2005/01/24 17:27:53  kikx
 	Permet de gerer l'auth Xorg
 	NE PAS COMMITER EN PROD ... car pas encore terminer
@@ -33,7 +36,7 @@
 	J'attend vos avis eclairés :)
 	
 	Revision 1.27  2005/01/18 19:30:34  pico
-	Place la boite du sudo dans la boite avec les infos de connection.
+	Place la boite du sudo dans la boite avec les infos de connexion.
 	Pbs d'encodage des variables passées à sablotron réglés
 	Pb du su quand on est pas loggué par mot de passe réglé
 	

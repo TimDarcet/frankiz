@@ -36,9 +36,12 @@
 	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
 
 	$Log$
+	Revision 1.17  2005/02/08 21:57:56  pico
+	Correction bug #62
+
 	Revision 1.16  2005/01/26 06:18:15  pico
 	Suppression d'un reste
-
+	
 	Revision 1.15  2005/01/25 14:47:48  kikx
 	Retour en arrière car fait pas l'unanimité
 	
@@ -60,7 +63,7 @@
 	Modifs de chemins
 	
 	Revision 1.10  2005/01/18 19:30:34  pico
-	Place la boite du sudo dans la boite avec les infos de connection.
+	Place la boite du sudo dans la boite avec les infos de connexion.
 	Pbs d'encodage des variables passées à sablotron réglés
 	Pb du su quand on est pas loggué par mot de passe réglé
 	
@@ -76,7 +79,7 @@
 	
 	Revision 1.7  2004/12/16 16:45:14  schmurtz
 	Correction d'un bug dans la gestion des authentifications par cookies
-	Ajout de fonctionnalitees de log d'erreur de connections ou lors des bugs
+	Ajout de fonctionnalitees de log d'erreur de connexions ou lors des bugs
 	affichant une page "y a un bug, contacter l'admin"
 	
 	Revision 1.6  2004/12/16 12:52:57  pico

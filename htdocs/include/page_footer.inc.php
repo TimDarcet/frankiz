@@ -23,11 +23,14 @@
 	C'est d'ici qu'est appelé la fonction qui affiche les erreurs en haut de la page.
 	
 	$Log$
+	Revision 1.12  2005/02/08 21:57:56  pico
+	Correction bug #62
+
 	Revision 1.11  2005/01/18 19:30:34  pico
-	Place la boite du sudo dans la boite avec les infos de connection.
+	Place la boite du sudo dans la boite avec les infos de connexion.
 	Pbs d'encodage des variables passées à sablotron réglés
 	Pb du su quand on est pas loggué par mot de passe réglé
-
+	
 	Revision 1.10  2005/01/14 10:07:46  pico
 	Passage d'infos à la skin
 	

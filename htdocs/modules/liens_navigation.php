@@ -21,11 +21,14 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.37  2005/02/08 21:57:56  pico
+	Correction bug #62
+
 	Revision 1.36  2005/01/21 17:03:05  pico
 	Gogogo
-
+	
 	Revision 1.35  2005/01/18 19:30:34  pico
-	Place la boite du sudo dans la boite avec les infos de connection.
+	Place la boite du sudo dans la boite avec les infos de connexion.
 	Pbs d'encodage des variables passées à sablotron réglés
 	Pb du su quand on est pas loggué par mot de passe réglé
 	

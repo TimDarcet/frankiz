@@ -25,11 +25,14 @@
 	- affichage des requètes mysql en commentaire dans
 	
 	$Log$
+	Revision 1.6  2005/02/08 21:57:56  pico
+	Correction bug #62
+
 	Revision 1.5  2004/12/16 16:45:14  schmurtz
 	Correction d'un bug dans la gestion des authentifications par cookies
-	Ajout de fonctionnalitees de log d'erreur de connections ou lors des bugs
+	Ajout de fonctionnalitees de log d'erreur de connexions ou lors des bugs
 	affichant une page "y a un bug, contacter l'admin"
-
+	
 	Revision 1.4  2004/12/14 14:18:12  schmurtz
 	Suppression de la page de doc wiki : doc directement dans les pages concernees.
 	

@@ -21,15 +21,18 @@
 	Page permettant de modifier son profil 
 	
 	$Log$
+	Revision 1.8  2005/02/08 21:57:56  pico
+	Correction bug #62
+
 	Revision 1.7  2005/01/02 22:14:33  pico
 	Devrait fixer les pbs concernant les flux rss
-
+	
 	Revision 1.6  2004/12/17 21:52:50  pico
 	Ne buggue plus si pas de kazert
 	
 	Revision 1.5  2004/12/16 16:45:14  schmurtz
 	Correction d'un bug dans la gestion des authentifications par cookies
-	Ajout de fonctionnalitees de log d'erreur de connections ou lors des bugs
+	Ajout de fonctionnalitees de log d'erreur de connexions ou lors des bugs
 	affichant une page "y a un bug, contacter l'admin"
 	
 	Revision 1.4  2004/12/15 06:13:30  kikx
