@@ -417,11 +417,12 @@ table.liste .entete{
 }
 
 
-#choix_skin h1 span,#choix_skin h2 span,#profil  h1 span,#profil h2 span{
+#choix_skin h1 span,#choix_skin h2 span,#profil  h1 span,#profil h2 span, #profil_reseau h2 span,
+	.fkz_page_meteo h1 span,#xshare  h1 span,#faq  h1 span,#vocabulaire  h1 span{
 	display:none;
 }
 
-#choix_skin h2, #profil h2{
+#choix_skin h2, #profil h2, #profil_reseau h2,#profil_reseau form h2,.fkz_page_meteo h1,#xshare  h1,#faq  h1,#vocabulaire  h1{
 	background-repeat:no-repeat;
 	background-position: left;
 	height: 22px;
@@ -454,6 +455,18 @@ table.liste .entete{
 	background-image: url("grass/titre_page_profil.png");
 }
 
+#faq  h1 {
+	background-image: url("grass/faq.png");
+}
+
+#vocabulaire  h1 {
+	background-image: url("grass/vocabulaire.png");
+}
+
+#xshare  h1 {
+	background-image: url("grass/xshare.png");
+}
+
 #profil #mod_frankiz h2{
 	background-image: url("grass/titre_compte_profil.png");
 }
@@ -465,3 +478,27 @@ table.liste .entete{
 #profil #liste_binet h2{
 	background-image: url("grass/titre_binet_profil.png");
 }
+
+#profil_reseau h2#nom_machine{
+	background-image: url("grass/titre_reseau_nom.png");
+}
+
+#profil_reseau h2#reseau_ip{
+	background-image: url("grass/titre_reseau_info.png");
+}
+
+
+#profil_reseau form h2{
+	background-image: url("grass/titre_reseau_xnet.png");
+}
+
+#profil_reseau form h2 span.adresse_ip{
+	background-image: none;
+	display:inline;
+	padding-left:243px;
+}
+
+.fkz_page_meteo h1{
+	background-image: url("grass/titre_meteo.png");
+}
+
