@@ -37,22 +37,20 @@ function ip2dns($ip) {
 	Accès aux bases MySQL
 */
 
-function connecter_mysql_tol() {
-	mysql_connect("heol", "web", "kouije?");
-	mysql_select_db("trombinopico");
-}
-
-function deconnecter_mysql_tol() {
-	mysql_close();
-}
+$nombre_connections = 0;
 
 function connecter_mysql_frankiz() {
-	mysql_connect("frankiz", "web", "kokouije?.");
-	mysql_select_db("frankiz2_tmp");
+	global $nombre_connections;
+	if($nombre_connections++ == 0) {
+		mysql_connect("frankiz", "web", "kokouije?.");
+		mysql_select_db("frankiz2_tmp");
+	}
 }
 
 function deconnecter_mysql_frankiz() {
-	mysql_close();
+	global $nombre_connections;
+	if(--$nombre_connections == 0)
+		mysql_close();
 }
 
 /*
