@@ -289,17 +289,21 @@ span.fkz_annonces_vieux,span.fkz_annonces_nouveau, span.fkz_annonces_important,s
 
 /* Logos menu */
 
-#navigation_logo,#activites_logo,#contacts_logo,#liens_ecole_logo,#serveurs_logo,#stats_logo {
+#anniversaires_logo,#navigation_logo,#affiches_logo,#contacts_logo,#liens_ecole_logo,#serveurs_logo,#stats_logo,#tour_kawa_logo,#qdj_logo,#meteo_logo,#sondages_logo,#lien_tol {
     background-repeat:no-repeat;
     height:16px;
     padding-left:20px;
+}
+
+#anniversaires_logo {
+    background-image:url("images/anniversaire.png");
 }
 
 #navigation_logo {
     background-image:url("images/navigation.png");
 }
 
-#activites_logo {
+#affiches_logo {
     background-image:url("images/activites.png");
 }
 
@@ -318,6 +322,28 @@ span.fkz_annonces_vieux,span.fkz_annonces_nouveau, span.fkz_annonces_important,s
 #stats_logo {
     background-image:url("images/stats.png");
 }
+
+#tour_kawa_logo {
+    background-image:url("images/coffee.png");
+}
+
+#qdj_logo {
+    background-image:url("images/qdj.png");
+}
+
+#meteo_logo {
+    background-image:url("images/meteo.png");
+}
+
+#sondages_logo {
+    background-image:url("images/sondage.png");
+}
+
+#lien_tol {
+    background-image:url("images/tol.png");
+}
+
+
 
 span.fkz_annonces_vieux {
 	background-image:url("images/vieux.gif");
