@@ -3,9 +3,14 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.2  2004/10/21 17:46:05  pico
+	Corrections diverses
+	Affiche l'host correspondant aux ip dans la page du profil
+	Début de gestion du password xnet
+
 	Revision 1.1  2004/10/20 22:18:03  pico
 	Mise à jour skin
-
+	
 	Revision 1.18  2004/10/20 20:16:00  schmurtz
 	Correction d'un bug de la skin basic : dans une liste, les boutons/champs
 	s'affichaient dans la mauvaise colonne.
@@ -51,28 +56,27 @@
 		<h2><xsl:value-of select="@titre"/></h2>
 	</xsl:if>
 	<xsl:apply-templates select="commentaire"/>
-
-	<!-- le formulaire lui même, mis en page avec une table -->
 	<form enctype="multipart/form-data" method="post">
 			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
-		<table class="formulaire" cellspacing="0" cellpadding="0">
-			<!-- le titre du formulaire -->
-			<xsl:if test="boolean(@titre)">
-				<tr><td class="titre" colspan="2"><xsl:value-of select="@titre"/></td></tr>
-			</xsl:if>
+		<div class="formulaire">
 			<!-- les options du formulaire -->
 			<xsl:for-each select="champ|choix|zonetext|textsimple|hidden|warning|image|fichier|lien">
-				<tr><td class="gauche">
+				<div>
+				<span class="gauche">
 					<xsl:if test="boolean(@titre)"><xsl:value-of select="@titre"/> :</xsl:if>
-				</td><td class="droite">
+				</span>
+				<span class="droite">
 					<xsl:apply-templates select="."/>
-				</td></tr>
+				</span>
+				</div>
 			</xsl:for-each>
 			<!-- les boutons gérant les actions du formulaire -->
-			<tr><td class="boutons" colspan="2">
+			<div>
+			<span class="boutons" colspan="2">
 				<xsl:apply-templates select="bouton"/>
-			</td></tr>
-		</table>
+			</span>
+			</div>
+		</div>
 	</form>
 </xsl:template>
 

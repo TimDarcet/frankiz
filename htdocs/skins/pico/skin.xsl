@@ -122,6 +122,7 @@
 		</xsl:when><xsl:otherwise>
 			<xsl:value-of select="@titre"/>
 		</xsl:otherwise></xsl:choose>
+		<xsl:apply-templates />
 	</li>
 </xsl:template>
 

@@ -1,9 +1,14 @@
 <? 
 /*
 		$Log$
+		Revision 1.21  2004/10/21 17:46:05  pico
+		Corrections diverses
+		Affiche l'host correspondant aux ip dans la page du profil
+		Début de gestion du password xnet
+
 		Revision 1.20  2004/10/21 12:23:17  pico
 		Un doublon qui servait pas
-
+		
 		Revision 1.19  2004/10/21 12:18:52  pico
 		Gestion des recherches
 		
@@ -226,7 +231,7 @@ if ($mots!="") {
 		for ($i=0 ; $i<$n ; $i++){ 			// on regarde dans chaque FAQ si il y a les mots ...
 			if ((eregi($result[$i],$reponse))||(eregi($result[$i],$question))) {
 				$DB_web->push_result();
-				$affich_elt = $affich_elt.rech_parent($id) ;
+				$affich_elt = $affich_elt.rech_parent($id);
 				$DB_web->pop_result();
 				$a_marquer = $a_marquer.$id."/" ;
 				$recherche = 1 ;
