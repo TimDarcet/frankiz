@@ -3,9 +3,12 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.14  2004/10/16 00:30:56  kikx
+	Permet de modifier des binets déjà existants
+
 	Revision 1.13  2004/10/10 22:31:41  kikx
 	Voilà ... Maintenant le webmestre prut ou non valider des activité visibles de l'exterieur
-
+	
 	Revision 1.12  2004/10/04 21:48:54  kikx
 	Modification du champs fichier pour uploader des fichiers
 	
@@ -35,7 +38,7 @@
 			<xsl:if test="boolean(@titre)">
 				<tr><td class="titre" colspan="2"><xsl:value-of select="@titre"/></td></tr>
 			</xsl:if>
-			<xsl:apply-templates select="champ|choix|zonetext|textsimple|hidden|warning"/>
+			<xsl:apply-templates select="champ|choix|zonetext|textsimple|hidden|warning|image"/>
 			<tr><td class="boutons" colspan="2"><center><xsl:apply-templates select="bouton"/></center></td></tr>
 		</table>
 	</form>
