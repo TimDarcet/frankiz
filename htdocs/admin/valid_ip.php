@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.21  2004/12/15 00:01:56  kikx
+	esthetique
+
 	Revision 1.20  2004/12/08 13:00:34  kikx
 	Protection de la validation des ip
-
+	
 	Revision 1.19  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
@@ -198,11 +201,13 @@ $DB_admin->query("UNLOCK TABLES");
 		<entete id="eleve" titre="Élève"/>
 		<entete id="ip" titre="IP"/>
 <?
-		$DB_admin->query("SELECT e.eleve_id,e.nom,e.prenom,prises.ip FROM prises INNER JOIN trombino.eleves as e USING(piece_id) WHERE type='secondaire' ORDER BY e.nom ASC, e.prenom ASC");
-		while(list($id,$nom,$prenom,$ip) = $DB_admin->next_row()) {
+
+
+		$DB_admin->query("SELECT e.eleve_id,e.nom,e.promo,e.prenom,prises.ip FROM prises INNER JOIN trombino.eleves as e USING(piece_id) WHERE type='secondaire' ORDER BY e.nom ASC, e.prenom ASC");
+		while(list($id,$nom,$promo,$prenom,$ip) = $DB_admin->next_row()) {
 ?>
 			<element id="<? echo str_replace(".","x",$ip) ;?>">
-				<colonne id="eleve"><? echo "$nom $prenom" ?></colonne>
+				<colonne id="eleve"><? echo "$nom $prenom ($promo)" ?></colonne>
 				<colonne id="ip"><? echo $ip ;?><bouton titre="Dégage!" id="suppr_<? echo str_replace(".","x",$ip) ;?>_<? echo $id?>" onClick="return window.confirm('Voulez vous vraiment supprimez cette ip ?')"/></colonne>
 			</element>
 <?
