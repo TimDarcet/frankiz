@@ -3,9 +3,12 @@
 	Mail promo permettant l'envoie de pièce jointes et de formatage HTML
 	
 	$Log$
+	Revision 1.6  2004/10/13 19:36:44  kikx
+	Correction de la page mail promo pour le text plain
+
 	Revision 1.5  2004/10/06 21:29:29  kikx
 	Mail promo != mail bi-promo
-
+	
 	Revision 1.4  2004/10/06 21:07:17  kikx
 	Micro correction car on abandonne pour le moment l'idee de piece jointe
 	
@@ -103,8 +106,7 @@ if (!isset($_REQUEST['envoie'])) {
 				"Très BR-ement\n" .
 				"L'automate :)\n"  ;
 				
-	mail("Admin Frankiz <gruson@poly.polytechnique.fr>","[Frankiz] Validation d'un mail promo",$contenu);
-
+	mail(MAIL_WEBMESTRE,"[Frankiz] Validation d'un mail promo",$contenu);
 }
 ?>
 </page>

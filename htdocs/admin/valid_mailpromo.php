@@ -3,9 +3,12 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.7  2004/10/13 19:36:44  kikx
+	Correction de la page mail promo pour le text plain
+
 	Revision 1.6  2004/10/12 18:23:15  kikx
 	On retire le petit logo de merde dans les mails promo
-
+	
 	Revision 1.5  2004/10/10 20:13:18  kikx
 	Bug fix pour les envoie de mail promo
 	-> n'envoie plus en texte brut les truc comme &apo; &nbps; ...
@@ -99,6 +102,23 @@ foreach ($_POST AS $keys => $val){
 		// Constuction du mail à propremeent parler ...
 		//-------------------------------------------------------------------------
 		
+		function unhtmlentities ($string)  {
+			$string = str_replace ( '&amp;', '&', $string );
+			$string = str_replace ( '&#039;', "'", $string );
+			$string = str_replace ( '&apos;', "'", $string );
+			$string = str_replace ( '&quot;', '\"', $string );
+			$string = str_replace ( '&lt;', '<', $string );
+			$string = str_replace ( '&gt;', '>', $string );
+		
+			$trans_tbl = get_html_translation_table (HTML_ENTITIES);
+
+			$trans_tbl2 = array_flip ($trans_tbl);
+			$ret = strtr ($string, $trans_tbl2);
+			
+			return $ret ;
+			//return  preg_replace('/\&\#([0-9]+)\;/me',"chr('\\1')",$ret);
+		}
+		
 		// Message que l'on retravaille
 		$mail_contenu = str_replace("&gt;",">",str_replace("&lt;","<",$_POST['mail'])) ;
 		
@@ -117,7 +137,7 @@ foreach ($_POST AS $keys => $val){
 		$texte .= "------$limite2\n";
 		$texte .= "Content-Type: text/plain; charset=\"iso-8859-1\"\n";
 		$texte .= "Content-Transfer-Encoding: 8bit\n\n";
-		$texte .= strip_tags(str_replace("<p>","\n",str_replace("<br>","\n",html_entity_decode($mail_contenu))));
+		$texte .= strip_tags(unhtmlentities(nl2br($mail_contenu)));
 		$texte .= "\n\n";
 		//Le message en texte HTML pour les navigateurs qui acceptent  le HTML
 		$texte .= "------$limite2\n";
@@ -150,7 +170,7 @@ foreach ($_POST AS $keys => $val){
 //		$texte .= "\n\n\n------$limite--\n";			
 		
 		// On met en place les headers
-		$sender = str_replace("&gt;",">",str_replace("&lt;","<",$_POST['from'])) ;
+		$sender = unhtmlentities($_POST['from']) ;
 		$headers = "From: ".$sender."\r\nX-Mailer: PHP/" . phpversion()."\r\n" ;
 		$headers .= "Date: ".date("l j F Y, G:i")."\n";
 		$headers .= "MIME-Version: 1.0\n";
@@ -163,15 +183,16 @@ foreach ($_POST AS $keys => $val){
 	
 		$DB_trombino->query("SELECT login FROM eleves WHERE ".$to) ;
 		while(list($login) = $DB_trombino->next_row() ) {
-			$mail_envoie = $login."@poly" ;
-			
+//			$mail_envoie = $login."@poly" ;
+			$mail_envoie = "gruson@poly" ;
+					
 			if (mail($mail_envoie, $titre_mail." ".$_POST['titre'],$texte , $headers)){
-			if (true){
 				$cnt ++ ;
- 				usleep(500000); // Attends 1/2 secondes
+ 				usleep(200000); // Attends 200 millisecondes
 			} else {
 				$log .= "Erreur lors de l'envoi vers ".$mail ;
 			}
+			if ($cnt==1) break ;//================= A SUPPRIMER
 		}
 		echo $log ;
 		echo "</p><p> Nb de mail envoyé avec succès : ".$cnt."</p>" ;
@@ -225,7 +246,11 @@ while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $prom
 
 	<formulaire id="mailpromo_<? echo $id ?>" titre="Mail Promo" action="admin/valid_mailpromo.php">
 		<champ id="titre" titre="Sujet " valeur="<?  echo $titre ;?>"/>
-		<hidden id="from"  valeur="<? echo "$prenom $nom &lt;$mail&gt; " ?>"/>
+		<?
+			if ((!isset($_POST['from']))||($temp[1]!=$id))
+				$_POST['from'] = "$prenom $nom &lt;$mail&gt; " ;
+		?>
+		<champ titre="From :" id="from"  valeur="<? echo  $_POST['from'] ?>"/>
 		<zonetext id="mail" titre="Mail " valeur="<?  echo $mailpromo ;?>"/>
 		<choix titre="Promo" id="promo" type="combo" valeur="<?echo  $promo_mail ;?>">
 		<?
