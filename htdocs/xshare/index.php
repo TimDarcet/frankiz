@@ -223,7 +223,7 @@ echo "<br/>" ;
             <bouton id="Submit" titre="Valide"/>
             <bouton id="reset" titre="Reset"/>
         </formulaire>
-        <p><em>(Tous les mots seront dans la nomion 
+        <p><em>(Tous les mots seront dans la description 
           / Séparez les par un blanc) </em>
         </p>
 <?
