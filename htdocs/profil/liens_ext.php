@@ -21,9 +21,12 @@
 	Gestions des liens perso / des flux rss.
 
 	$Log$
+	Revision 1.11  2005/01/04 23:25:06  pico
+	oups
+
 	Revision 1.10  2005/01/04 23:22:03  pico
 	Encore des corrections
-
+	
 	Revision 1.9  2005/01/04 23:15:23  pico
 	oubli
 	
@@ -66,7 +69,7 @@ while(list($value,$description)=$DB_web->next_row())
 	
 
 // Mise à jour / ajout de rss
-if(!empty($_REQUEST['OK_rss'])) {
+if(isset($_REQUEST['OK_rss'])) {
 	$rss = array();
 	// Rss contenues dans la base sql
 	if(!empty($_REQUEST['vis']))
@@ -153,10 +156,11 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	<formulaire id="form_rss" titre="Choix des RSS" action="profil/liens_ext.php">
 		<note>Choisis quelles infos tu veux avoir sur ta page de news externes</note>
 <?
+		$liens = $_SESSION['rss'];
  		foreach(array('sommaire','complet') as $mode){ 
 				echo "<choix titre=\"Affichage $mode\" id=\"newrss\" type=\"checkbox\" valeur=\"";
 					foreach($array as $value => $description)
-							if($value != "" && (isset($_SESSION['rss'][$value])) && ($_SESSION['rss'][$value] == $mode))
+							if($value != "" && (isset($liens[$value])) && ($liens[$value] == $mode))
 								echo "vis[".$mode."_".$value."]";
 						echo"\">";
 						foreach($array as $value => $description)
@@ -168,7 +172,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 		<note>Choisis quelles infos tu veux avoir sur toutes tes pages Frankiz</note>
 <?
-		$liens = $_SESSION['rss'];
+		
  		foreach(array('module') as $mode){ 
 				echo "<choix titre=\"Affichage sommaire en module\" id=\"newrss\" type=\"checkbox\" valeur=\"";
 					foreach($array as $value => $description)
