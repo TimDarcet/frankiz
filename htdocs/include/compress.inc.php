@@ -21,9 +21,12 @@
 	Fonctions permettant de zipper/dezipper un fichier
 	
 	$Log$
+	Revision 1.10  2004/11/22 20:40:00  pico
+	Patch fonction tar
+
 	Revision 1.9  2004/11/22 19:10:01  pico
 	Corrections mineures
-
+	
 	Revision 1.8  2004/11/22 18:54:55  pico
 	Nouvelle version, devrait mieux marcher
 	
@@ -85,6 +88,10 @@ function zip($file,$dir,$type){
 		exec($cde);
 	}
 	if($type == "tar"){
+		$cde = "cd $dir && /bin/tar cvf $file.tar *";
+		exec($cde);
+	}
+	if($type == "tar.gz"){
 		$cde = "cd $dir && /bin/tar zcvf $file.tar.gz *";
 		exec($cde);
 	}

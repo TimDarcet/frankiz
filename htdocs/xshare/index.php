@@ -19,9 +19,12 @@
 */
 /*
 	$Log$
+	Revision 1.23  2004/11/22 20:40:00  pico
+	Patch fonction tar
+
 	Revision 1.22  2004/11/06 20:03:06  kikx
 	Suppression de liens inutiles
-
+	
 	Revision 1.21  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
 	
@@ -282,24 +285,21 @@ echo "<br/>" ;
   	if(isset($_REQUEST['idpopup'])) $id = $_REQUEST['idpopup'] ; else $id ="";
   	if ($id != "") {
 		$DB_web->query("SELECT * FROM xshare WHERE id='{$id}'") ;
-		if (list($id,$id_parent,$nom,$licence,$lien,$importance,$date,$descript,$version,$site) = $DB_web->next_row()) {
-	?>
-	<a name='descript' />
-	<? 
-	echo "<h2><lien titre='".$nom."' url='../data/xshare/".$lien."'/></h2>";
-	if($importance == 1) echo "<p>Important</p>";
-	if($importance == 2) echo "<p><strong>Indispensable</strong></p>";
-	echo "<em><lien titre='site de l&apos;éditeur' url='".$site."'/></em>";
-	echo "<p>Dernière modification le ".substr($date, 6, 2)."/".substr($date, 4, 2)."/".substr($date, 0, 4)."</p>" ;
-	if($version != '') echo "<p>Version: ".$version."</p>";
-	if($licence != '') echo "<p>Licence: ".$licence."</p>";
-	echo "<p>Description: ".$descript."</p>";
+		if (list($id,$id_parent,$nom,$licence,$lien,$importance,$date,$descript,$version,$site) = $DB_web->next_row()) { 
+			echo "<h2 id=\"descript\"><lien titre='".$nom."' url='../data/xshare/".$lien."'/></h2>";
+			if($importance == 1) echo "<p>Important</p>";
+			if($importance == 2) echo "<p><strong>Indispensable</strong></p>";
+			echo "<em><lien titre='site de l&apos;éditeur' url='".$site."'/></em>";
+			echo "<p>Dernière modification le ".substr($date, 6, 2)."/".substr($date, 4, 2)."/".substr($date, 0, 4)."</p>" ;
+			if($version != '') echo "<p>Version: ".$version."</p>";
+			if($licence != '') echo "<p>Licence: ".$licence."</p>";
+			echo "<p>Description: ".$descript."</p>";
 
 	
 		} else {
-	?>
-	<warning>Erreur : Impossible de trouver cette description </warning>
-	<?
+			?>
+			<warning>Erreur : Impossible de trouver cette description </warning>
+			<?
 		}
 		echo "<br/><br/>" ;
 	}
