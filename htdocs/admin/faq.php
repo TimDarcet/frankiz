@@ -19,9 +19,14 @@
 */
 /*
 		$Log$
+		Revision 1.14  2004/11/05 13:50:22  pico
+		Admin FAQ:
+		On peut maintenant uploader un fichier html, une archive tar.gz (ou .tgz) ou un fichier .zip
+		Le fichier est décompressé, on cherche dedans un fichier index, si il n'y en a pas, on refuse et on supprime les fichiers pour pas laisser es traces.
+
 		Revision 1.13  2004/10/21 22:19:37  schmurtz
 		GPLisation des fichiers du site
-
+		
 		Revision 1.12  2004/10/20 23:04:06  pico
 		Affichage de l'arbre mieux respecté
 		
@@ -60,7 +65,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
 <page id="faq" titre="Frankiz : FAQ">
-<h1>Xshare</h1>
+<h1>FAQ</h1>
 
 <?
 
@@ -100,12 +105,41 @@ foreach ($_POST AS $keys => $val){
 		$DB_web->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
 		list($dir) = $DB_web->next_row();
 		mkdir(BASE_DATA."faq/".$dir."/".$_REQUEST['nom']);
-		$filename = $dir."/".$_REQUEST['nom']."/index.php";
-		move_uploaded_file($_FILES['file']['tmp_name'], BASE_DATA."faq/".$filename);
-		
-		$DB_web-> query("INSERT INTO faq SET parent='{$temp[1]}' , question='{$question}' , reponse='{$filename}'");
-	
-		echo "<commentaire>Fichier ajouté</commentaire>";
+		if($_FILES['file']['type'] == "text/html"){
+			$filename = $dir."/".$_REQUEST['nom']."/index.php";
+			move_uploaded_file($_FILES['file']['tmp_name'], BASE_DATA."faq/".$filename);
+		}
+		else if($_FILES['file']['type'] == "application/zip"){
+			$filename = $dir."/".$_REQUEST['nom']."/".$_FILES['file']['name'];
+			move_uploaded_file($_FILES['file']['tmp_name'], BASE_DATA."faq/".$filename);
+			$cde = "/usr/bin/unzip ".BASE_DATA."faq/".$filename." -d".BASE_DATA."faq/".$dir.$_REQUEST['nom'];
+			exec($cde);
+			unlink(BASE_DATA."faq/".$filename);
+		}
+		else if(($_FILES['file']['type'] == "application/x-compressed-tar")||($_FILES['file']['type'] == "application/x-gzip")){
+			$filename = $dir."/".$_REQUEST['nom']."/".$_FILES['file']['name'];
+			move_uploaded_file($_FILES['file']['tmp_name'], BASE_DATA."faq/".$filename);
+			$cde = "cd ".BASE_DATA."faq/".$dir.$_REQUEST['nom']." && /bin/tar zxvf ".BASE_DATA."faq/".$filename;
+			exec($cde);
+			unlink(BASE_DATA."faq/".$filename);
+		}
+		else
+			echo $_FILES['file']['type'];
+		if(file_exists($dir."/".$_REQUEST['nom']."/index.php")){
+			 $filename = $dir."/".$_REQUEST['nom']."/index.php";
+			 $DB_web-> query("INSERT INTO faq SET parent='{$temp[1]}' , question='{$question}' , reponse='{$filename}'");
+			 echo "<commentaire>FAQ ajoutée</commentaire>";
+		}
+		else if(file_exists($dir."/".$_REQUEST['nom']."/index.html")){
+			$filename = $dir."/".$_REQUEST['nom']."/index.html";
+			$DB_web-> query("INSERT INTO faq SET parent='{$temp[1]}' , question='{$question}' , reponse='{$filename}'");
+			echo "<commentaire>FAQ ajoutée</commentaire>";
+		}
+		else{
+			echo "<warning>Impossible de trouver un fichier index.html ou index.php dans la FAQ soumise<br/> opération annulée</warning>";
+			$dir = BASE_DATA."faq/".$dir."/".$_REQUEST['nom'];
+			exec("rm -r $dir");
+		}
 	}
 	
 	if ($temp[0]=='suppr') {
@@ -144,7 +178,7 @@ function rech_fils($parent) {
 		$DB_web->query("SELECT faq_id,question FROM faq WHERE parent='{$parent}' AND reponse NOT LIKE '%index.php' ") ;
 		while(list($id,$question) = $DB_web->next_row()) {
 			echo "<noeud id='".$id."' ";
-			echo "lien='faq/index.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
+			echo "lien='admin/faq.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "' titre='".htmlspecialchars($question,ENT_QUOTES)."'>\n\r" ;
 			if (eregi("/".$id."/",$a_marquer)) {
@@ -161,7 +195,7 @@ function rech_fils($parent) {
 		
 		$DB_web->query("SELECT faq_id,question FROM faq WHERE parent='{$parent}' AND reponse LIKE '%index.php'" ) ;
 		while(list($id,$question) = $DB_web->next_row()) {
-			echo "\n\r<feuille id='".$id."' lien='faq/index.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
+			echo "\n\r<feuille id='".$id."' lien='admin/faq.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#reponse' titre='".htmlspecialchars($question,ENT_QUOTES)."'>" ;
 			if (eregi("/".$id."/",$a_marquer)) {
@@ -270,7 +304,7 @@ echo "<br/>" ;
 // Corps du Documents pour les réponses
 //---------------------------------------------------
 
-  	if(isset($_REQUEST['idpopup'])) $id = $_REQUEST['idpopup'] ;
+  	if(isset($_REQUEST['idpopup'])) $id = $_REQUEST['idpopup'] ; else $id ="";
   	if ($id != "") {
 		$DB_web->query("SELECT * FROM faq WHERE faq_id='{$id}'") ;
 		if (list($id,$parent,$question,$reponse) = $DB_web->next_row()) {
@@ -322,7 +356,7 @@ echo "<br/>" ;
 		if(!strstr($keys,"ajout")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 	}
 	?>
-	<fichier id="file" titre="Fichier réponse" taille="1000000"/>
+	<fichier id="file" titre="Fichier réponse (fichier .html, .zip ou .tar.gz)" taille="1000000"/>
 	<bouton id='ajout_<? echo $dir_id ?>' titre="Ajouter" onClick="return window.confirm('!!!!!!Ajouter ce fichier ?!!!!!')"/>
 	</formulaire>
 	
