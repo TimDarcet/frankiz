@@ -21,9 +21,12 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.36  2005/02/10 22:00:46  pico
+	Pas joli, mais devrait marcher
+
 	Revision 1.35  2005/02/10 21:55:40  pico
 	bon
-
+	
 	Revision 1.34  2005/02/10 21:55:16  pico
 	Arg boulet !
 	
@@ -176,16 +179,19 @@ $DB_web->query("SELECT annonces.annonce_id,stamp,perime,titre,contenu,en_haut,ex
 					 ."WHERE (perime>'".date("Y-m-d H:i:s",time())."') ORDER BY perime DESC");
 $nb =$DB_web->num_rows();
 $cpt =0;
+$a_fermer=false;
 while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail,$visible)=$DB_web->next_row()) {
 	if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
-	//if(!$visible && $cpt++!=$nb) continue;
-	if($cpt > 0){
+	if($visible && $cpt > 0){
 			if(est_authentifie(AUTH_MINIMUM))
 				echo "<lien url=\"?lu=$idprec#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
 			echo "</annonce>";
+			$a_fermer=false;
 	}
-	$idprec=$id;
 	$cpt++;
+	
+	if($visible){
+		$idprec=$id;
 ?>
 	<annonce id="<?php echo $id ?>" 
 		titre="<?php echo $titre ?>" visible="<?=$visible?"oui":"non" ?>"
@@ -196,11 +202,13 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 			echo "<image source=\"".DATA_DIR_URL."annonces/$id\" texte=\"logo\"/>\n";
 		echo wikiVersXML($contenu);
 		echo "<eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"$promo\" surnom=\"$surnom\" mail=\"$mail\"/>\n";
-		if($cpt==$nb){
+		$a_fermer=true;
+	}
+	if($a_fermer && $cpt==$nb){
 			if(est_authentifie(AUTH_MINIMUM))
 				echo "<lien url=\"?lu=$idprec#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
 			echo "</annonce>";
-		}
+	}
 }
 echo "</page>\n";
 require_once "include/page_footer.inc.php";
