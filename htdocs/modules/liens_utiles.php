@@ -21,9 +21,12 @@
 	Liens permettants d'accéder aux autres sites de l'école.
 	
 	$Log$
+	Revision 1.8  2005/01/26 17:26:27  pico
+	Pas de liens morts à l'extérieur...
+
 	Revision 1.7  2005/01/17 23:46:28  pico
 	Bug fix
-
+	
 	Revision 1.6  2005/01/10 07:43:05  pico
 	Bug #20
 	
@@ -73,9 +76,9 @@
 		<lien id="utile_licence" titre="Licences Msdnaa" url="profil/licences.php"/>
 		<lien id="utile_redmail" titre="Redirection des mails" url="http://poly.polytechnique.fr/" /> 
 	<? } ?>
-	<lien id="utile_irc" titre="Accéder à l'IRC" url="http://ircserver/"/>
+	<?php if(est_authentifie(AUTH_INTERNE)): ?><lien id="utile_irc" titre="Accéder à l'IRC" url="http://ircserver/"/><?php endif; ?>
 	<lien id="utile_ecole" titre="Site de l'école" url="http://www.polytechnique.fr/" />
 	<lien id="utile_ecole_de" titre="Site de la DE" url="http://www.edu.polytechnique.fr/" key="d"/>
-	<lien id="utile_intranet" titre="Intranet" url="http://intranet.polytechnique.fr/" key="i"/>
+	<?php if(est_authentifie(AUTH_INTERNE)): ?><lien id="utile_intranet" titre="Intranet" url="http://intranet.polytechnique.fr/" key="i"/><?php endif; ?>
 	<lien id="utile_xorg" titre="Polytechnique.org" url="http://www.polytechnique.org/" key="o"/>
 </module>
