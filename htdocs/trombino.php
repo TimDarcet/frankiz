@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.38  2004/12/15 23:57:35  pico
+	On fait comme ça, c'est décidé une fois pour toutes (Kikx + psycow + pico)
+
 	Revision 1.37  2004/12/15 23:12:39  pico
 	correction warning
-
+	
 	Revision 1.36  2004/12/15 23:07:05  pico
 	Correction recherche tel sur le trombi
 	
@@ -203,7 +206,7 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['anniversaire'])&&isset($_REQU
 			while(list($remarque,$binet_nom,$binet_id) = $DB_trombino->next_row())
 				echo "<binet nom='$binet_nom' id='$binet_id'>$remarque</binet>\n";
 			$DB_trombino->pop_result();
-			echo "</eleve>\n";
+			
 			
 			// Echappe les '
 			$nompolyorg = str_replace( "&apos;" , "" , $nom );
@@ -213,16 +216,16 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['anniversaire'])&&isset($_REQU
 			$nompolyorg = str_replace( " " , "-" , $nompolyorg );
 			$prenompolyorg = str_replace( " " , "-" , $prenompolyorg );
 			
-			echo "<lien url='https://www.polytechnique.org/fiche.php?user=$prenompolyorg.$nompolyorg.$promo' titre='Fiche sur polytechnique.org'/>\n";
+			echo "<lien url='https://www.polytechnique.org/fiche.php?user=$prenompolyorg.$nompolyorg.$promo' titre='Fiche sur polytechnique.org'/><br/>\n";
 			
 			// Liens d'administration
 			if(verifie_permission('admin')||verifie_permission('trombino')) {
-				echo "<lien url='".BASE_URL."/admin/user.php?id=$eleve_id' titre='Administrer $prenom $nom'/>\n" ;
+				echo "<lien url='".BASE_URL."/admin/user.php?id=$eleve_id' titre='Administrer $prenom $nom'/><br/>\n" ;
 			}
 			if(verifie_permission('admin')) {
-				echo "<lien url='".BASE_URL."/?su=$eleve_id' titre='Prendre l&apos;identité de $prenom $nom'/>\n" ;
+				echo "<lien url='".BASE_URL."/?su=$eleve_id' titre='Prendre l&apos;identité de $prenom $nom'/><br/>\n" ;
 			}
-			
+			echo "</eleve>\n";
 			echo "<br/>";
 		}
 	}
