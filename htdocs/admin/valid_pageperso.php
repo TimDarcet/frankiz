@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.18  2005/01/18 13:55:42  pico
+	Correction d'entête
+
 	Revision 1.17  2005/01/18 13:45:31  pico
 	Plus de droits pour les web
-
+	
 	Revision 1.16  2005/01/14 09:19:31  pico
 	Corrections bug mail
 	+
@@ -90,7 +93,7 @@ if(!verifie_permission('admin')&&!verifie_permission('web'))
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
-<page id="admin_valid_ip" titre="Frankiz : Ajouter une ip à un utilisateur">
+<page id="admin_valid_perso" titre="Frankiz : Valider les pages perso">
 
 <?
 // On regarde quel cas c'est ...
