@@ -45,8 +45,8 @@
 		</xsl:when><xsl:otherwise>
 			<textarea>
 				<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-				<xsl:attribute name="rows">5</xsl:attribute>
-				<xsl:attribute name="cols">25</xsl:attribute>
+				<xsl:attribute name="rows">7</xsl:attribute>
+				<xsl:attribute name="cols">50</xsl:attribute>
 				<xsl:value-of select="@valeur"/>
 			</textarea>
 		</xsl:otherwise></xsl:choose>
