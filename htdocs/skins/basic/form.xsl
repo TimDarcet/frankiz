@@ -3,10 +3,13 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.16  2004/10/19 18:16:24  kikx
+	hum
+
 	Revision 1.15  2004/10/19 14:58:43  schmurtz
 	Creation d'un champ de formulaire specifique pour les fichiers (sans passer
 	l'element champ, qui actuellement est un peu acrobatique).
-
+	
 	Revision 1.14  2004/10/16 00:30:56  kikx
 	Permet de modifier des binets déjà existants
 	
@@ -42,7 +45,7 @@
 			<xsl:if test="boolean(@titre)">
 				<tr><td class="titre" colspan="2"><xsl:value-of select="@titre"/></td></tr>
 			</xsl:if>
-			<xsl:apply-templates select="champ|choix|zonetext|textsimple|hidden|warning|image|fichier"/>
+			<xsl:apply-templates select="champ|choix|zonetext|textsimple|hidden|warning|image|fichier|lien"/>
 			<tr><td class="boutons" colspan="2"><center><xsl:apply-templates select="bouton"/></center></td></tr>
 		</table>
 	</form>
