@@ -19,7 +19,7 @@
 */
 
 body {
-	font-size:80%;
+	font-size:90%;
 	font-family: Verdana,Arial,Helvetica,sans-serif;
 	color:#000000;
 	background-color:#ffffff;
@@ -66,7 +66,7 @@ a:hover, a:active {
 .fkz_gauche {
     width: 20%;
     float: left;
-	font-size: 9pt;
+	font-size:90%;
 	margin-top: 10px;
 	min-height: 800px;
 }
@@ -74,13 +74,13 @@ a:hover, a:active {
 .fkz_droite {
     float: right;
     width: 20%;
-	font-size: 9pt;
+	font-size:90%;
 	margin-top: 10px;
 	min-height: 800px;
 }
 
 .fkz_centre {
-	font-size: 9pt;
+	font-size:90%;
 	position: absolute;
 	left: 21%;
 	width: 58%;
@@ -136,7 +136,7 @@ span.fkz_logo {
 /* QDJ */
 
 .fkz_qdj_question {
-    font-size: 11pt;
+    font-size: 110%;
     text-align: center;   
 }
 
@@ -220,11 +220,11 @@ div.fkz_anniversaire_titre,div.fkz_page_titre,div.fkz_annonces_titre {
 	font-style:oblique;
 	color:#000;
 	font-weight:bold;
-	font-size:120%;
+	font-size:110%;
 }
 
 div.fkz_page_titre {
-	font-size:200%;
+	font-size:110%;
 }
 
 
@@ -299,7 +299,7 @@ a[href|="?lu="] {
 }
 
 .fkz_sommaire_corps {
-	font-size: 9pt;
+	font-size:90%;
 	text-align: left;
 	background-color:#f0f0f0;
     padding-left: 5px;
@@ -317,7 +317,7 @@ a[href|="?lu="] {
     border-top: 1px solid #c0c0c0;
     border-bottom: 1px solid #c0c0c0;
     background-color: #e0e0e0;
-	font-size: 9pt;
+	font-size:100%;
 	font-weight: bold;
 	text-align: center;
 	margin: 0;
@@ -328,7 +328,7 @@ a[href|="?lu="] {
     background-color: #f0f0f0;
 	border:1px solid #a0a0a0;
     border-top: none;
-	font-size: 9pt;
+	font-size:100%;
 	text-align: left;
 	margin: 0;
     padding: 0;
@@ -578,11 +578,11 @@ table.liste{
 
 table.liste .entete{
 	text-decoration: underline;
-    font-size: 10pt;
+    font-size:90%;
 }
 
 table.liste .element {
-    font-size: 10pt;
+    font-size:90%;
 }
 
 
@@ -613,7 +613,7 @@ table.liste .element {
 div.fkz_trombino_eleve {
     border: 1px solid #c0c0c0;
     background-color: #f0f0f0;
-    font-size: 9pt;
+    font-size:90%;
     padding-left: 5px;
     padding-right: 5px;
 }
@@ -623,7 +623,7 @@ div.fkz_trombino_eleve:hover {
 }
 
 .fkz_trombino_eleve table {
-    font-size: 10pt;
+    font-size:90%;
 }
 
 .fkz_trombino_eleve h3 {
