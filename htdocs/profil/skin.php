@@ -39,9 +39,12 @@
 	)
 	
 	$Log$
+	Revision 1.18  2004/11/24 23:38:38  schmurtz
+	Gestion des skins perso + corrections dans la skin default
+
 	Revision 1.17  2004/11/24 20:26:38  schmurtz
 	Reorganisation des skins (affichage melange skin/css + depacement des css)
-
+	
 	Revision 1.16  2004/11/22 23:38:42  kikx
 	Ajout de <note></note> un peu partout pour plus de compréhension !
 	
@@ -99,9 +102,9 @@ if(!empty($_REQUEST['OK_skin'])) {
 	$new_skin['skin_css'] = $_SESSION['skin']['skin_css'];
 
 
-	// CSS perso (TODO)
-	//if(!empty($_REQUEST['newcss_perso']))
-	//	urldecode($_REQUEST['newcss_perso']);
+	// CSS perso
+	if(!empty($_REQUEST['newcss_perso']))
+		$new_skin['skin_css_perso'] = urldecode($_REQUEST['newcss_perso']);
 	
 	// Paramètres
 	$new_skin['skin_parametres'] = array();
@@ -134,7 +137,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	<h1>Personnalisation de Frankiz II</h1>
 	
 	<formulaire id="form_choix_skin" titre="Choix de la skin" action="profil/skin.php">
-		<choix titre="Skin" id="newskin" type="radio" valeur="<?php echo $_SESSION['skin']['skin_nom']?>">
+		<choix titre="Skin" id="newskin" type="radio" valeur="<?php echo $_SESSION['skin']['skin_nom']."/".$_SESSION['skin']['skin_css'] ?>">
 <?php
 			// Parcourt des skins XSL
 			$dir_xsl=opendir(BASE_LOCAL."/skins");
@@ -151,7 +154,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 				
 				// Si c'est une skin sans CSS
 				if($description['chemin'] == ".") {
-					echo "<option titre=\"{$description['nom']} ({$description['description']})\" id=\"$file_xsl\"/>";
+					echo "<option titre=\"{$description['nom']} ({$description['description']})\" id=\"$file_xsl/\"/>";
 					continue;
 				}
 				
@@ -208,9 +211,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 		<note>Si tu veux personnaliser encore plus ta skin, tu peux créer ta propre feuille de style. Ceci
 			  s'adresse aux experts.</note>
-		<champ titre="CSS perso" id="newcss_perso" valeur="<?php
-			if ((dirname($_SESSION['skin']['skin_css']) != BASE_URL."/css/".$_SESSION['skin']['skin_nom'])&&(dirname($_SESSION['skin']['skin_css']) != BASE_URL."/skins/".$_SESSION['skin']['skin_nom'])){
-				echo $_SESSION['skin']['skin_css']; }?>"/>
+		<champ titre="CSS perso" id="newcss_perso" valeur="<?php if(isset($_SESSION['skin']['skin_css_perso'])) echo $_SESSION['skin']['skin_css_perso'];?>"/>
 		<bouton titre="Appliquer" id="OK_param" />
 	</formulaire>
 </page>

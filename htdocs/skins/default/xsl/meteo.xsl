@@ -30,7 +30,7 @@
 			<p class="image">
 				<strong><xsl:value-of select="now/temperature"/>°C</strong><br />
 				<img alt="meteo" width="64" height="64">
-					<xsl:attribute name="src">skins/default/images/meteo/<xsl:value-of select="now/image"/>.gif</xsl:attribute>
+					<xsl:attribute name="src">skins/default/xsl/meteo/<xsl:value-of select="now/image"/>.gif</xsl:attribute>
 				</img>
 			</p>
 		</dd>
@@ -55,7 +55,7 @@
 					Et l'humidité s'élève à <xsl:value-of select="now/humidite"/>%<br />
 					L'état du ciel : <xsl:value-of select="now/ciel"/><br />
 					<img alt="meteo" width="64" height="64">
-					<xsl:attribute name="src">skins/default/images/meteo/<xsl:value-of select="now/image"/>.gif</xsl:attribute>
+					<xsl:attribute name="src">skins/default/xsl/meteo/<xsl:value-of select="now/image"/>.gif</xsl:attribute>
 						</img>
 				</dd>
 			</dl>
@@ -90,11 +90,11 @@
 						<span>La température : </span><xsl:if test="@date!=0"><xsl:value-of select="temperature_hi"/>°C pendant la journée et</xsl:if> <xsl:value-of select="temperature_low"/>°C la nuit<br />	
 						<span>Etat du ciel le jour : </span><xsl:value-of select="cieljour"/>
 						<img alt="meteo" width="32" height="32">
-							<xsl:attribute name="src">skins/default/images/meteo/<xsl:value-of select="imagejour"/>.gif</xsl:attribute>
+							<xsl:attribute name="src">skins/default/xsl/meteo/<xsl:value-of select="imagejour"/>.gif</xsl:attribute>
 						</img><br />
 						<span>Etat du ciel la nuit : </span><xsl:value-of select="cielnuit"/>
 						<img alt="meteo" width="32" height="32">
-							<xsl:attribute name="src">skins/default/images/meteo/<xsl:value-of select="imagenuit"/>.gif</xsl:attribute>
+							<xsl:attribute name="src">skins/default/xsl/meteo/<xsl:value-of select="imagenuit"/>.gif</xsl:attribute>
 						</img><br />
 					</dd>
 				</dl>

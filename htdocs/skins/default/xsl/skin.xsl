@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.3  2004/11/24 23:38:38  schmurtz
+	Gestion des skins perso + corrections dans la skin default
+
 	Revision 1.2  2004/11/24 21:14:57  psycow
 	Commit des modif faites sous windows et reorganisation de skin
-
+	
 	Revision 1.9  2004/11/13 05:26:18  psycow
 	Commit de sauvegarde, modification du menu, correction de bug d'affichage
 	
@@ -83,7 +86,7 @@
 				<xsl:value-of select="@base"/>
 			</xsl:attribute>
 		</base>
-		<link rel="stylesheet" type="text/css" href="skins/default/style.css" media="screen" />
+		<link rel="stylesheet" type="text/css" media="screen"><xsl:attribute name="href"><xsl:value-of select="@css"/></xsl:attribute></link>
 		<xsl:apply-templates select="module[@id='liste_css']" mode="css"/>
 	</head>
 

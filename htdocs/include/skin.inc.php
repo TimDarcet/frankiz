@@ -21,9 +21,12 @@
 	Fonction servant pour la gestion des skins.
 	
 	$Log$
+	Revision 1.13  2004/11/24 23:38:38  schmurtz
+	Gestion des skins perso + corrections dans la skin default
+
 	Revision 1.12  2004/11/24 20:26:38  schmurtz
 	Reorganisation des skins (affichage melange skin/css + depacement des css)
-
+	
 */
 
 require_once "xml.inc.php";
@@ -169,7 +172,10 @@ function skin_valider() {
 	$description = lire_description_skin(BASE_LOCAL."/skins/{$_SESSION['skin']['skin_nom']}");
 	if(!empty($description)) {
 		$_SESSION['skin']['skin_xsl_chemin'] = BASE_LOCAL."/skins/{$_SESSION['skin']['skin_nom']}/{$description['chemin']}/skin.xsl";
-		$_SESSION['skin']['skin_css_url'] = BASE_URL."/skins/{$_SESSION['skin']['skin_nom']}/{$_SESSION['skin']['skin_css']}/style.css";
+		if(isset($_SESSION['skin']['skin_css_perso']))
+			$_SESSION['skin']['skin_css_url'] = $_SESSION['skin']['skin_css_perso'];
+		else
+			$_SESSION['skin']['skin_css_url'] = BASE_URL."/skins/{$_SESSION['skin']['skin_nom']}/{$_SESSION['skin']['skin_css']}/style.css";
 	} else {
 		ajouter_debug_log("Erreur de lecture de la skin {$_SESSION['skin']['skin_nom']}");
 		$_SESSION['skin'] = skin_defaut();
