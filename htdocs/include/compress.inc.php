@@ -21,9 +21,12 @@
 	Fonctions permettant de zipper/dezipper un fichier
 	
 	$Log$
+	Revision 1.2  2004/11/07 09:03:09  pico
+	Fonction pour zipper
+
 	Revision 1.1  2004/11/07 00:07:47  pico
 	Utilisation de la fonction unzip pour dezipper une archive
-
+	
 	
 	
 */
@@ -40,19 +43,19 @@ function unzip($file,$dir,$del){
 			exec($cde);
 			if($del = true) unlink($file);
 	}
-	else echo "<warning>Type de fichier inconnu: ".mime_content_type($file)."</warning>";
+	else echo "<warning>Type de fichier non reconnu: ".mime_content_type($file)."</warning>";
 }
 
-// Compresse un dossier
+// Compresse le dossier $dir dans l'archive $file, de type $type
 function zip($file,$dir,$type){
-		if($type == "zip"){
-			$cde = "/usr/bin/zip -r $file $dir";
-			exec($cde);
-		}
-		if($type == "tar"){
-			//$cde = "cd $dir && /bin/tar zxvf $file";
-			//exec($cde);
-		}
+	if($type == "zip"){
+		$cde = "/usr/bin/zip -r $file $dir";
+		exec($cde);
+	}
+	if($type == "tar"){
+		$cde = "/bin/tar czvf $file $dir";
+		exec($cde);
+	}
 }
 
 ?>
