@@ -271,6 +271,7 @@ p {
 
 p.news {
 	text-indent: 2em ;
+	padding-bottom:10px;
 }
 p.news:first-letter {
 	font-size:1.3em;
