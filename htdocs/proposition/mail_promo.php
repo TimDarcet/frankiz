@@ -3,9 +3,12 @@
 	Mail promo permettant l'envoie de pièce jointes et de formatage HTML
 	
 	$Log$
+	Revision 1.2  2004/10/04 22:55:25  kikx
+	Modification pour permettre aux personnes de poster des mails promos
+
 	Revision 1.1  2004/10/04 22:51:48  kikx
 	Modification de l'endroit de stockage
-
+	
 	Revision 1.2  2004/10/04 22:48:54  kikx
 	Modification mineur de la page d'envoie de mail promo !
 	
@@ -19,9 +22,7 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
-if(!verifie_permission('admin'))
-	rediriger_vers("/admin/");
+demande_authentification(AUTH_MINIMUM);
 
 // Génération de la page
 //===============
@@ -31,12 +32,10 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="admin_mailpromo" titre="Frankiz : Envoie des mails promos">
 
 
-	<formulaire id="mail_promo" titre="Mail Promo" action="admin/mail_promo.php">
+	<formulaire id="mail_promo" titre="Mail Promo" action="proposition/mail_promo.php">
 		<zonetext titre="Mail" id="mail" valeur="<? if (isset($_REQUEST['mail'])) echo $_REQUEST['mail']?>" />
-		<commentaire>
-		Vous pouvez rajouter des pièces jointes mais faites le avec parcimonie car ça boulétise le serveur
-		</commentaire>
-		<champ id="file" titre="Pièce jointe" valeur=""/>
+		<textsimple valeur="Ton fichier ne doit pas dépasser 500ko car sinon elle ne sera pas téléchargée"/>
+		<champ id="file" titre="Pièce jointe" valeur="" taille="500000"/>
 		<bouton titre="Mise à jour" id="upload"/>
 		<bouton titre="Envoyer" id="envoie"  onClick="return window.confirm('Voulez vous vraiment envoyer ce mail ?')"/>
 	</formulaire>
