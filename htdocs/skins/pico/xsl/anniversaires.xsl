@@ -26,25 +26,21 @@
         <div class="fkz_module" id="mod_anniversaires">
 		<div class="fkz_anniversaire_titre"><span id="anniversaires_logo"><xsl:text> </xsl:text></span><span id="anniversaires">Joyeux anniversaire: </span></div>
 		<div class="fkz_anniversaire">
-			<xsl:if test="count(eleve[@promo='2002'])">
-				<a href="trombino.php?anniversaire&amp;promo=2002">2002</a>: 
-				<xsl:for-each select="eleve[@promo='2002']">
-					<xsl:value-of select="@prenom" />
-					<xsl:text> </xsl:text>
-					<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzéèàçê','ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊ')" />
-					<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
-				</xsl:for-each>
-				<br />
-			</xsl:if>
-			<xsl:if test="count(eleve[@promo='2003'])">
-				<a href="trombino.php?anniversaire&amp;promo=2003">2003</a>: 
-				<xsl:for-each select="eleve[@promo='2003']">
-					<xsl:value-of select="@prenom" />
-					<xsl:text> </xsl:text>
-					<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzéèàçê','ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊ')" />
-					<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
-				</xsl:for-each>
-			</xsl:if>
+			<xsl:for-each select="eleve">
+				<xsl:if test="preceding-sibling::eleve[1]/@promo != @promo or position() = 1">
+					<xsl:if test="position()!=1"><br/></xsl:if>
+					<a>
+						<xsl:attribute name="href">
+							trombino.php?anniversaire&amp;promo=<xsl:value-of select="@promo" />
+						</xsl:attribute>
+						<xsl:value-of select="@promo" /> 
+					</a>: 
+				</xsl:if>
+ 				<xsl:value-of select="@prenom" />
+ 				<xsl:text> </xsl:text>
+ 				<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzéèàçê','ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊ')" />
+				<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
+			</xsl:for-each>
 		</div>
 		<br/> 
 		</div>

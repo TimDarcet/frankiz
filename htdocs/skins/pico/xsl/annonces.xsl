@@ -142,7 +142,7 @@
 				<xsl:value-of select="@prenom"/><xsl:text>  </xsl:text><xsl:value-of select="@nom"/>
 			</xsl:otherwise>
 		</xsl:choose>
-		(<xsl:value-of select="@promo"/>)
+		<xsl:if test="@promo!=''">(<xsl:value-of select="@promo"/>)</xsl:if>
 	</p>
 </xsl:template>
 
