@@ -4,9 +4,12 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.13  2004/09/17 17:24:20  kikx
+	Creation d'un couriel() qui permet d'envoyer des mail
+
 	Revision 1.12  2004/09/17 15:27:08  schmurtz
 	Suppression de la fonction suppression qui ne sert pas.
-
+	
 	Revision 1.11  2004/09/16 15:32:56  schmurtz
 	Suppression de la fonction afficher_identifiant(), utilisation de <![CDATA[......]]> aÌ€ la place.
 	
@@ -47,6 +50,16 @@ function nouveau_hash() {
     $hash = md5(fread($fp, 16));
     fclose($fp);
     return $hash;
+}
+
+/*
+	envoie un mail
+*/
+function couriel($eleve_id,$titre,$contenu) {
+	$DB_trombino->query("SELECT nom,prenom,mail,login FROM eleves WHERE eleve_id='$eleve_id'") ;
+	list($nom, $prenom, $mail, $login) = $DB_valid->next_row())  ;
+	if (empty($mail)) $mail=$login."@poly.polytechnique.fr" ;
+	mail("$prenom $nom <$mail>",$titre,$contenu) ;
 }
 
 /*

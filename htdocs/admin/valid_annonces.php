@@ -3,9 +3,8 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
-	Revision 1.2  2004/09/17 16:14:43  kikx
-	Pffffff ...
-	Je sais plus trop ce que j'ai fait donc allez voir le code parce que la ca me fait chié de refléchir
+	Revision 1.3  2004/09/17 17:24:20  kikx
+	Creation d'un couriel() qui permet d'envoyer des mail
 
 	
 */
@@ -51,7 +50,19 @@ foreach ($_POST AS $keys => $val){
 
 	}
 	if ($temp[0]=='suppr') {
+		$DB_valid->query("SELECT v.annonce_id,v.perime, v.titre, v.contenu, e.nom, e.prenom, e.surnom, e.promo FROM valid_annonces as v INNER JOIN trombino.eleves as e USING(eleve_id)");
+
 		$DB_valid->query("DELETE FROM valid_annonces WHERE annonce_id='{$temp[1]}'") ;
+		
+		$contenu = "Désolé \n\n".
+			"Très BR-ement\n" .
+			"L'automate :)\n"  ;
+			
+		$DB_valid->query("SELECT eleve_id FROM valid_annonces WHERE annonce_id='{$temp[1]}");
+		list($eleve_id) = $DB_valid->next_row()
+			
+		couriel($eleve_id,"[Frankiz] Ton annonce n'a pas été validé par le BR",$contenu);
+
 	?>
 		<warning><p>Suppression d'une annonce</p></warning>
 	<?	
