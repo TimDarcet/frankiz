@@ -39,9 +39,13 @@
 	)
 	
 	$Log$
+	Revision 1.20  2004/12/07 19:53:05  pico
+	Remise en place des paramètres de skin
+	Mise à jour css classique
+
 	Revision 1.19  2004/12/07 14:39:26  schmurtz
 	Bugs et orthographe
-
+	
 	Revision 1.18  2004/11/24 23:38:38  schmurtz
 	Gestion des skins perso + corrections dans la skin default
 	
@@ -181,9 +185,10 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	</formulaire>
 	
 	<formulaire id="form_param_skin" titre="Paramètres de la skin <? echo $_SESSION['skin']['skin_nom'] ?>" action="profil/skin.php">
+		<note>Tu peux choisir des paramètres spéciaux pour la skin courante.</note>
 <?php
 		// Paramètres spécifique à la skin
-		/*$description = lire_description_skin(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']."/description.xml");
+		$description = lire_description_skin(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']);
 		foreach($description['parametres'] as $parametre_id => $parametre) {
 			if(empty($parametre['valeurs'])) {
 				echo "<champ titre=\"".$parametre['description']."\" id=\"param[$parametre_id]\" valeur=\""
@@ -195,11 +200,10 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 					echo "\t<option titre=\"$param_desc\" id=\"$param_id\"/>\n";
 				echo "</choix>\n";
 			}
-		}*/
+		}
 ?>
-
-		<note>Tu peux aussi ne pas faire apparaître tous les élément de la skin histoire de gagner de la
-			  place. Choisis ici les éléments que tu veux afficher :</note>
+		<note>Tu peux aussi ne pas faire apparaître tous les élément de la skin. Tu gagneras ainsi de la
+			  place. Choisis donc les éléments que tu veux afficher.</note>
 		<choix titre="Eléments" id="newskin" type="checkbox" valeur="<?php
 			foreach(liste_modules() as $module => $nom)
 				if($nom != "" && (!isset($_SESSION['skin']['skin_visible'][$module])

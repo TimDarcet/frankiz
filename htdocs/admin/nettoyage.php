@@ -21,9 +21,13 @@
 	Page qui permet aux admins de vider la bdd des activités périmées
 	
 	$Log$
+	Revision 1.4  2004/12/07 19:53:05  pico
+	Remise en place des paramètres de skin
+	Mise à jour css classique
+
 	Revision 1.3  2004/12/07 13:10:56  pico
 	Passage du nettoyage en formulaire
-
+	
 	Revision 1.2  2004/12/07 08:45:13  pico
 	Nettoyage des qdj
 	
@@ -93,6 +97,18 @@ foreach ($_POST AS $keys => $val){
 		<warning>Suppression de <? echo $compteur?> qdj périmées</warning>
 	<?
 	}
+	
+	if ($temp[0] == "sondage") {
+		$DB_web->query("SELECT sondage_id FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) <-60");
+		$compteur = $DB_web->num_rows();
+		while(list($id)=$DB_web->next_row()) {
+			$DB_web->query("DELETE FROM sondage_votants WHERE sondage_id=$id");
+		}
+		$DB_web->query("DELETE FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) <-60");
+	?>
+		<warning>Suppression de <? echo $compteur?> sondages périmés et de leurs résultats</warning>
+	<?
+	}
 }
 
 ?>
@@ -101,7 +117,7 @@ foreach ($_POST AS $keys => $val){
 			<option  titre="Supprimer les annonces périmées depuis plus de 5 jours" id="annonces"/>
 			<option  titre="Supprimer les affiches périmées depuis plus de 5 jours" id="affiches"/>
 			<option  titre="Supprimer les qdj périmées depuis plus de 5 jours" id="qdj"/>
-			
+			<option  titre="Supprimer les sondages périmés depuis plus de 60 jours" id="sondage"/>
 		</choix>
 		<bouton id='mod_compte_fkz' titre='Changer'/>
 	</formulaire>
