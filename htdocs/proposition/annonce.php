@@ -21,9 +21,13 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.28  2004/11/24 22:56:18  schmurtz
+	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
+	globale pour tous les fichiers.
+
 	Revision 1.27  2004/11/24 13:32:23  kikx
 	Passage des annonces en wiki !
-
+	
 	Revision 1.26  2004/11/24 12:51:02  kikx
 	Pour commencer la compatibilité wiki
 	
@@ -90,6 +94,7 @@
 */
 	
 require_once "../include/global.inc.php";
+require_once "../include/wiki.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_MINIMUM);

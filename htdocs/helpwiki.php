@@ -21,9 +21,13 @@
 	Help WIKI
 	
 	$Log$
+	Revision 1.4  2004/11/24 22:56:18  schmurtz
+	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
+	globale pour tous les fichiers.
+
 	Revision 1.3  2004/11/24 13:48:17  kikx
 	Met un lien vers la page bac a sable a partir de la page d'aide wiki
-
+	
 	Revision 1.2  2004/11/24 13:32:23  kikx
 	Passage des annonces en wiki !
 	
@@ -33,7 +37,7 @@
 
 */
 
-require_once "include/global.inc.php";
+require_once "include/wiki.inc.php";
 
 // génération de la page
 require "include/page_header.inc.php";

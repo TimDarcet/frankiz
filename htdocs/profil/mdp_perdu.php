@@ -21,9 +21,13 @@
 	Gestion de la création d'un compte et de la perte de mot de passe.
 	
 	$Log$
+	Revision 1.18  2004/11/24 22:56:18  schmurtz
+	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
+	globale pour tous les fichiers.
+
 	Revision 1.17  2004/11/03 17:23:43  pico
 	Remise en forme du mail html
-
+	
 	Revision 1.16  2004/11/03 17:03:29  pico
 	Passage de l'envoi de mail en "couriel"
 	
@@ -44,7 +48,7 @@
 	
 */
 
-require "../include/global.inc.php";
+require_once "../include/global.inc.php";
 require_once "../include/mail.inc.php";
 
 $mail_envoye = false;

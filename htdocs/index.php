@@ -21,9 +21,13 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.13  2004/11/24 22:56:18  schmurtz
+	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
+	globale pour tous les fichiers.
+
 	Revision 1.12  2004/11/24 13:38:34  kikx
 	Changment de l'id de la page d'annonce en annonces pour les skinneurs
-
+	
 	Revision 1.11  2004/11/24 13:32:23  kikx
 	Passage des annonces en wiki !
 	
@@ -41,7 +45,7 @@
 	
 */
 
-require_once "include/global.inc.php";
+require_once "include/wiki.inc.php";
 
 function get_categorie($en_haut,$stamp,$perime) {
 	if($en_haut==1) return "important";

@@ -21,9 +21,13 @@
 	Affichage de flux rss externes.
 
 	$Log$
+	Revision 1.18  2004/11/24 22:56:18  schmurtz
+	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
+	globale pour tous les fichiers.
+
 	Revision 1.17  2004/11/24 16:37:09  pico
 	Ajout des news externes en tant que module
-
+	
 	Revision 1.16  2004/11/24 16:24:09  pico
 	Passage du formulaire de choix des rss à afficher dans une page spéciale
 	
@@ -50,6 +54,7 @@
 
 
 require_once "include/global.inc.php";
+require_once "include/rss_func.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_MINIMUM);
