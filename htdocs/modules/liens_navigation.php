@@ -21,9 +21,12 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.30  2005/01/10 07:39:59  pico
+	Correction bug #14
+
 	Revision 1.29  2005/01/06 17:24:18  pico
 	Pour que les sites web perso internes soient visibles de l'intérieur
-
+	
 	Revision 1.28  2005/01/02 10:50:25  pico
 	Passage de certaines pages en visibles de l'intérieur (non loggué)
 	
@@ -126,7 +129,7 @@
 		<lien id="connect" titre="Se connecter" url="login.php" key="l"/>
 	<?php endif; ?>
 	<lien id="faq" titre="FAQ" url="faq.php" key="f"/>
-	<lien id="xshare" titre="XShare" url="xshare.php" key="x"/>
+	<lien id="xshare" titre="Télécharger" url="xshare.php" key="x"/>
 	<lien id="binets"  titre="Binets" url="binets.php" key="b"/>
 	<?php if(est_authentifie(AUTH_INTERNE)){ ?>
 		<lien id="trombino" titre="Trombino" url="trombino.php" key="t"/>
