@@ -22,9 +22,15 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.1  2004/12/15 15:31:17  fruneau
+	Donne une structure
+	config.php.prod
+	config.php.dev
+	en remplacement du config.php...
+
 	Revision 1.11  2004/12/15 13:03:22  pico
 	Ajout mail trombinomen
-
+	
 	Revision 1.10  2004/12/14 22:17:32  kikx
 	Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
 	
