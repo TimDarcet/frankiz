@@ -22,9 +22,12 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.8  2004/12/13 16:15:22  kikx
+	legere modif sur la page des ips
+
 	Revision 1.7  2004/11/26 16:08:48  pico
 	Config de la base FAQ: pour l'instant c'est dans frankiz2_tmp
-
+	
 	Revision 1.6  2004/11/24 17:29:29  kikx
 	Permet de ne pas faire 1000 requete sur le serveur de la DSI et de plus permet de rendre la page fonctionnel
 	
@@ -66,7 +69,7 @@ define('URL_PAGEPERSO','http://'.$_SERVER['HTTP_HOST'].'/frankiz2/webperso/');
 define('DATA_DIR_LOCAL',BASE_DATA);	// pour compatibilité
 define('DATA_DIR_URL',URL_DATA);
 
-define('DSI_URL',"http://reseaux.polytechnique.fr/SMAC/") ;
+define('DSI_URL',"reseaux.polytechnique.fr") ;
 // Emails
 $i = -1 ;
 define('MAIL_WEBMESTRE',"kikx@frankiz.polytechnique.fr");

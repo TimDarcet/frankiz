@@ -22,9 +22,12 @@
 	Permet aussi de supprimer des IPs.
 	
 	$Log$
+	Revision 1.28  2004/12/13 16:15:22  kikx
+	legere modif sur la page des ips
+
 	Revision 1.27  2004/12/06 22:32:08  kikx
 	Juste pour eviter de timeouter
-
+	
 	Revision 1.26  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
 	
@@ -84,14 +87,13 @@ $blabla = "" ;
         //echo "<p>$keys # $val</p>";
 	$temp = explode("_",$keys) ;
 	if ($temp[0] == "detail")
-		rediriger_vers("/trombino/?chercher=1&loginpoly=$temp[1]");
+		rediriger_vers("/trombino.php?chercher=1&loginpoly=$temp[1]");
 }
 function toutes_macs(){
-	$proxy = "kuzh.polytechnique.fr" ;
-	$port = 8080 ;
-	$url = DSI_URL."search.php" ;
-	$fp = fsockopen($proxy, $port);
-	fputs($fp, "GET $url HTTP/1.0\r\nHost: $proxy\r\n\r\n");
+	$port = 80 ;
+	$url = "http://".DSI_URL."/SMAC/search.php" ;
+	$fp = fsockopen(DSI_URL, $port);
+	fputs($fp, "GET $url HTTP/1.0\r\nHost: ".DSI_URL."\r\n\r\n");
 	$line = "" ;
 	while(!feof($fp)){
 		$line .= fgets($fp,4000);
@@ -135,7 +137,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 
 ?>
-<note>Si la page ne marche pas trop, allez sur la page de la <lien titre="DSI" url="<?=DSI_URL?>main.php"/></note>
+<note>Si la page ne marche pas trop, allez sur la page de la <lien titre="DSI" url="http://<?=DSI_URL?>/SMAC/main.php"/></note>
 	<formulaire id="recherche" titre="Recherche" action="admin/ip.php">
 		<champ titre="Login" id="rech_login" valeur="<? if (isset($_POST['rech_login'])) echo $_POST['rech_login']?>" />
 		<champ titre="Pièce" id="rech_kzert" valeur="<? if (isset($_POST['rech_kzert'])) echo $_POST['rech_kzert']?>" />
