@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.13  2005/01/20 20:24:33  pico
+	Plus (+) de modifs possibles sur une affiche validée
+
 	Revision 1.12  2005/01/17 22:51:47  pico
 	Liens vers les activités + réorganisation
-
+	
 	Revision 1.11  2005/01/06 23:31:31  pico
 	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
 	
@@ -97,10 +100,10 @@ foreach ($_POST AS $keys => $val){
 		}
 		else
 		{
-			$DB_web->query("UPDATE affiches SET date='{$_REQUEST['date']}'WHERE affiche_id='{$temp[1]}'");
+			$DB_web->query("UPDATE affiches SET titre='{$_REQUEST['titre']}', url='{$_REQUEST['url']}', description='{$_REQUEST['text']}', date='{$_REQUEST['date']}' WHERE affiche_id='{$temp[1]}'");
 	
 		?>
-			<commentaire>Planification effectuée</commentaire>
+			<commentaire>Modification effectuée</commentaire>
 		<?
 		}	
 	}
@@ -120,16 +123,21 @@ foreach ($_POST AS $keys => $val){
 	// Formulaire pour modifier la date de parution de la QDJ déjà planifiée
 	
 	if($temp[0]=='modif') {
-		$DB_web->query("SELECT affiche_id,titre,url,date FROM affiches WHERE affiche_id='{$temp[1]}' AND eleve_id LIKE '$user_id'");
-		list($id,$titre,$url,$date) = $DB_web->next_row(); 
+		$DB_web->query("SELECT affiche_id,titre,url,date,description FROM affiches WHERE affiche_id='{$temp[1]}' AND eleve_id LIKE '$user_id'");
+		list($id,$titre,$url,$date,$texte) = $DB_web->next_row(); 
 		$id = $temp[1];
 ?>
-		<warning>Cette Activité est déjà planifiée pour le <?echo base64_decode($temp[2]) ?></warning>
+		<warning>Cette Activité est déjà planifiée pour le <?echo $date ?></warning>
 		<annonce date="<? echo $date ?>">
 			<lien url="<?php echo $url?>"><image source="<?php echo DATA_DIR_URL.'affiches/'.$id?>" texte="Affiche" legende="<?php echo $titre?>"/></lien>
+			<? echo wikiVersXML($texte); ?>
 		</annonce>
 		<formulaire id="affiche_<? echo $id ?>" action="admin/planif_affiches.php">
-			<champ id="date" titre="date" valeur="<? echo base64_decode($temp[2]) ?>"/>
+			<champ id="date" titre="date" valeur="<? echo $date ?>"/>
+			<champ id="titre" titre="Le titre" valeur="<?  echo $titre ;?>"/>
+			<champ id="url" titre="URL du lien" valeur="<? echo $url ;?>"/>
+			<zonetext id="text" titre="Description plus détaillée"><?=$texte?></zonetext>
+			<champ id="date" titre="Date d'affichage" valeur="<? echo $date ;?>"/>
 			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider la planification de cette activité ?')"/>
 		</formulaire>
 <?	
@@ -162,18 +170,19 @@ $date = date("Y-m-d", time());
 ?>
 	<h2>Prévisions</h2>
 <?
-$DB_web->query("SELECT affiche_id,titre,url,date FROM affiches WHERE TO_DAYS(date)>=TO_DAYS(NOW()) AND eleve_id LIKE '$user_id'");
-while(list($id,$titre,$url,$date) = $DB_web->next_row()){
+$DB_web->query("SELECT affiche_id,titre,url,date,description FROM affiches WHERE TO_DAYS(date)>=TO_DAYS(NOW()) AND eleve_id LIKE '$user_id'");
+while(list($id,$titre,$url,$date,$texte) = $DB_web->next_row()){
 
 ?>
 		<annonce date="<? echo $date ?>">
 			<lien url="<?php echo $url?>"><image source="<?php echo DATA_DIR_URL.'affiches/'.$id?>" texte="Affiche" legende="<?php echo $titre?>"/></lien>
+			<? echo wikiVersXML($texte); ?>
 		</annonce>
 	<formulaire id="<? echo $id ?>" action="admin/planif_affiches.php">
 		<note><? echo $date ?></note>
 		<? if(strtotime($date) >time() + 24*3600){ ?><bouton titre="Un jour plus tôt" id="reddate_<? echo $id ?>_<? echo base64_encode($date) ?>"/><? } ?>
 		<bouton titre="Un jour plus tard" id="augdate_<? echo $id ?>_<? echo base64_encode($date) ?>"/>
-		<bouton id='modif_<? echo $id ?>_<? echo base64_encode($date) ?>' titre='Modifier la date manuellement'/>
+		<bouton id='modif_<? echo $id ?>_<? echo base64_encode($date) ?>' titre="Modifier l'activité"/>
 		<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette affiche ?!!!!!')"/>
 		<hidden id="show"/>
 	
