@@ -63,6 +63,9 @@
 		<p class="surnom">
 			<xsl:value-of select="@surnom" />
 		</p>
+		<p class="date_naissance">
+			<xsl:value-of select="@date_nais" />
+		</p>
 	</div>
 	<div class="binets">
 		<xsl:if test="count(binet) != 0">

@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.44  2004/12/17 01:09:08  pico
+	Ajout de la date de naissance dans le trombi
+
 	Revision 1.43  2004/12/16 14:58:15  pico
 	Pfiou
-
+	
 	Revision 1.42  2004/12/16 14:57:29  pico
 	
 	oups
@@ -158,7 +161,7 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 
 	$where = "";
 		$join = "LEFT JOIN sections ON eleves.section_id=sections.section_id LEFT JOIN pieces ON eleves.piece_id = pieces.piece_id ";
-		$champs = "eleves.eleve_id,eleves.nom,prenom,surnom,eleves.piece_id,sections.nom,eleves.section_id,cie,promo,login,mail,pieces.tel";
+		$champs = "eleves.eleve_id,eleves.nom,prenom,surnom,date_nais,eleves.piece_id,sections.nom,eleves.section_id,cie,promo,login,mail,pieces.tel";
 	
 	// Création de la requête si anniversaire appelle
 	if(isset($_REQUEST['anniversaire'])) {
@@ -220,8 +223,9 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 		echo "<warning> Désolé, aucun élève ne correspond à ta recherche </warning>";
 		
 		// Génération des fiches des élèves
-		while(list($eleve_id,$nom,$prenom,$surnom,$piece_id,$section,$section_id,$cie,$promo,$login,$mail,$tel) = $DB_trombino->next_row()) {
-			echo "<eleve nom='$nom' prenom='$prenom' promo='$promo' login='$login' surnom='$surnom' "
+		while(list($eleve_id,$nom,$prenom,$surnom,$date_nais,$piece_id,$section,$section_id,$cie,$promo,$login,$mail,$tel) = $DB_trombino->next_row()) {
+			$date_nais = date("d/m/Y",strtotime($date_nais));
+			echo "<eleve nom='$nom' prenom='$prenom' promo='$promo' login='$login' surnom='$surnom' date_nais='$date_nais' "
 				."tel='$tel' mail='".(empty($mail)?"$login@poly.polytechnique.fr":$mail)."' casert='$piece_id' "
 				."section='$section' cie='$cie'>\n";
 			
