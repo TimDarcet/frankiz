@@ -59,10 +59,10 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			else if ($temp_aaa=="C1") $aaa="210" ;
 			else if ($temp_aaa=="C2") $aaa="211" ;
 			else if ($temp_aaa=="C3") $aaa="212" ;
-			else if ($temp_aaa=="D0") $aaa="209" ;
-			else if ($temp_aaa=="D1") $aaa="210" ;
-			else if ($temp_aaa=="D2") $aaa="211" ;
-			else if ($temp_aaa=="D3") $aaa="212" ;
+			else if ($temp_aaa=="D0") $aaa="219" ;
+			else if ($temp_aaa=="D1") $aaa="220" ;
+			else if ($temp_aaa=="D2") $aaa="221" ;
+			else if ($temp_aaa=="D3") $aaa="222" ;
 			else if ($temp_aaa=="M0") $aaa="203" ;
 			else if ($temp_aaa=="N0") $aaa="204" ;
 			else if ($temp_aaa=="17") $aaa="214" ;
@@ -82,9 +82,9 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 				if ($temp_bbb == "20")
 					$bbb = 66 + substr($id_prise,6,2) ;
 			}
-			mysql_query("UPDATE prises SET ip_theorique='$ip$aaa.$bbb' WHERE prise_id='$id_prise'");*/
+			mysql_query("UPDATE ip_chambre_theory SET ip_theorique='$ip$aaa.$bbb' WHERE prise_id='$id_prise'");*/
 			
-			echo "\t\t\t<colonne id=\"ip\">$ip_theorique</colonne>\n";
+			echo "\t\t\t<colonne id=\"ip\">$ip_theorique / $ip$aaa.$bbb</colonne>\n";
 			echo "\t\t</element>\n";
 		
 //=======================
