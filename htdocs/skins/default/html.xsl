@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.9  2004/11/12 00:23:04  psycow
+	Modification du trombi, gestion graphique des formulaires; c'est pas trop mal on touche a la fin
+
 	Revision 1.8  2004/11/08 12:20:14  psycow
 	Derniere modif...
-
+	
 	Revision 1.4  2004/11/04 15:18:01  psycow
 	Un bon debut mais plus compatible IE j'en ai peur
 	
@@ -61,21 +64,37 @@
 
 <!-- Listes -->
 <xsl:template match="liste">
-	<xsl:if test="boolean(@titre)">
-		<h2><xsl:value-of select="@titre"/></h2>
-	</xsl:if>
 	<xsl:apply-templates select="commentaire"/>
 	<form method="post"><xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<xsl:variable name="nombre_colonnes" select="count(entete)+count(@selectionnable)"/>
 		<table class="liste" cellspacing="0" cellpadding="0">
-			<tr>
-				<xsl:if test="@selectionnable='oui'"><td class="entete">&#160;</td></xsl:if>
-				<xsl:apply-templates select="entete"/>
-			</tr>
-			<xsl:apply-templates select="element"/>
-			<tr><td class="boutons"><xsl:attribute name="colspan"><xsl:value-of select="$nombre_colonnes"/></xsl:attribute>
-				<xsl:apply-templates select="bouton"/>
-			</td></tr>
+			<thead>
+				<xsl:if test="boolean(@titre)">
+					<tr class="titre">
+						<td>
+							<xsl:attribute name="colspan"><xsl:value-of select="$nombre_colonnes"/></xsl:attribute>
+							<xsl:value-of select="@titre"/>
+						</td>
+					</tr>
+				</xsl:if>
+				<tr>
+					<xsl:if test="@selectionnable='oui'">
+						<td class="entete">&#160;</td>
+					</xsl:if>
+					<xsl:apply-templates select="entete"/>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<td class="boutons">
+						<xsl:attribute name="colspan"><xsl:value-of select="$nombre_colonnes"/></xsl:attribute>
+						<xsl:apply-templates select="bouton"/>
+					</td>
+				</tr>
+			</tfoot>
+			<tbody>
+				<xsl:apply-templates select="element"/>
+			</tbody>
 		</table>
 	</form>
 </xsl:template>
@@ -94,6 +113,7 @@
 
 <xsl:template match="liste/element">
 	<tr>
+		<xsl:attribute name="class"><xsl:if test="(position() mod 2)=0">pair</xsl:if><xsl:if test="(position() mod 2)=1">impair</xsl:if></xsl:attribute>
 		<xsl:if test="../@selectionnable='oui'">
 			<td class="element">
 				<xsl:choose>

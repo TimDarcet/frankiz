@@ -1,7 +1,4 @@
 
-
-
-
 /* ###################### GENERAL #################### */
 
 * 
@@ -10,12 +7,15 @@
 	padding: 0px;
 }
 
+
+
 img {
 	border:0;
 }
 
 body
 {
+	background-color:#fff;
 	text-align: center ;
 	font: 0.8em "Trebuchet MS", helvetica, sans-serif ;
 }
@@ -135,6 +135,7 @@ div#footer h5
 	width:80% !important;
 	width:90%;
 	text-align:center;
+	background: url('./images/bottom_arrow_top.gif') no-repeat top center;
 }
 
 div#footer h5 a
@@ -143,7 +144,6 @@ div#footer h5 a
 	margin: 0 auto;
 	width:60px;
 	height:37px;
-	background: url('./images/bottom_arrow_top.gif') no-repeat top center;
 }
 
 div#footer h5 a span
@@ -346,8 +346,7 @@ dd.element p strong {
 }
 
 dd.element p.left {
-	float:left;
-	padding-left:5px;
+	margin-left:10px;
 }
 dd.element p.right {
 	float:right;
@@ -358,6 +357,34 @@ dd.element p.binets{
 	text-align:justify;
 	margin: 5px 100px 0 100px;
 	padding:0 5px;
+}
+
+form.trombino { 
+	padding:20px 0px;
+}
+
+form.trombino div{
+	border: dashed 1px silver;
+	width:75%;
+	margin:0px auto;
+	padding:7px;
+}
+form p.gauche{
+	float:left;
+	width:33%;
+}
+form p.droite{
+	float:right;
+	width:33%;
+}
+form p.centre{
+	margin:0px 33%;
+	width:33%;
+}
+form p.bouton {
+	clear:both;
+	width:100%;
+	text-align:center;
 }
 
 /* ------- Meteo ------- */
@@ -387,7 +414,6 @@ dd.prevision span {
 
 dl.binets {
 	margin:0px 30px 3px 30px;
-	height:101px;
 }
 dt.icon {
 	float:left;
@@ -397,9 +423,11 @@ dt.icon {
 dd.description {
 	margin-left:120px;
 	padding-left:5px;
+	height:101px;
 }
 
 dd.categorie {
+	padding:6px;
 	text-align:center;
 	font-weight:bold;
 }
@@ -671,12 +699,11 @@ ul#barre_nav
 
 /* ################## FORMULAIRE ################ */
 
-label 
-{
-	float:left;
-	width:200px;
+form {
+	padding:7px;
 }
 
+/* -- formulaire simple (trombi,skin,etc...) -- */
 dl.formulaire {
 	background-color : #eee;	
 }
@@ -689,7 +716,7 @@ dt.entete {
 }
 
 dd.row {
-	padding:5px 0px;
+	padding:5px 0px 10px 0px;
 }
 
 dd.row span.gauche {
@@ -709,6 +736,54 @@ dd.impair {
 dd.boutons {
 	text-align:center;
 	background-color : #eee;
+}
+
+form div {
+	width:100%;
+}
+
+form div div.label {
+	width:190px;
+}
+
+form div.element {
+	width:70%;
+	margin-left:200px;
+	margin-top:-1em;
+}
+
+form div.element img{
+	margin-top:1em;	
+}
+
+/* -- formulaires plus chiants, basés sur les listes (gestion par tableau) -- */
+
+table.liste thead {
+	background-color : #ccc;
+}
+
+table.liste thead tr.titre td {
+	font-weight:bold;
+	font-size:1.7em;
+	text-align:center;
+}
+
+table.liste thead td {
+	font-weight:bold;
+	font-size:1.2em;
+}
+
+tr.pair {
+	background-color : #eee;
+}
+
+tr.impair {
+	background-color : #ddd;
+}
+
+td.boutons {
+	text-align:center;
+	background-color : #ccc;
 }
 
 /* ################### DIVERS #################*/

@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.8  2004/11/12 00:23:04  psycow
+	Modification du trombi, gestion graphique des formulaires; c'est pas trop mal on touche a la fin
+
 	Revision 1.7  2004/11/08 12:00:37  psycow
 	Grosse Modification du WE
-
+	
 	Revision 1.5  2004/11/04 15:18:01  psycow
 	Un bon debut mais plus compatible IE j'en ai peur
 	
@@ -52,11 +55,11 @@
 <xsl:include href="qdj.xsl"/>
 <xsl:include href="annonces.xsl"/>
 <xsl:include href="tours_kawa.xsl"/>
-
+<xsl:include href="trombino.xsl"/>
 <xsl:include href="binets.xsl"/>
 <xsl:include href="voca.xsl"/>
 <!--
-<xsl:include href="trombino.xsl"/>
+
 <xsl:include href="skins.xsl"/>
 <xsl:include href="activites.xsl"/>
 <xsl:include href="stats.xsl"/>
@@ -121,16 +124,12 @@
 				<span id="bas_gauche"><xsl:text> </xsl:text></span>
 				<span id="bas_droit"><xsl:text> </xsl:text></span>
 				<h5>
-					<a>
-						<xsl:attribute name="href">
-							<xsl:value-of select="@base"/>
-						</xsl:attribute>
+					<a href="#">
 						<xsl:attribute name="title">
 							<xsl:text>Retour en haut</xsl:text>
 						</xsl:attribute>
 						<span>Retour en Haut</span>
-					</a>
-				</h5>
+					</a>				</h5>
 			</div>
 		</div><!--fin #conteneur -->
 		

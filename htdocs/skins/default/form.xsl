@@ -21,9 +21,12 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.5  2004/11/12 00:23:04  psycow
+	Modification du trombi, gestion graphique des formulaires; c'est pas trop mal on touche a la fin
+
 	Revision 1.4  2004/11/09 01:50:48  psycow
 	Commit predodo, debut de modification des formulaires...
-
+	
 	Revision 1.3  2004/11/08 12:00:37  psycow
 	Grosse Modification du WE
 	
@@ -39,7 +42,7 @@
 <!-- Formulaires -->
 <xsl:template match="formulaire">
 	<!-- Affichage des informations importantes -->
-	<xsl:apply-templates select="commentaire|warning"/>
+	<xsl:apply-templates select="commentaire|warning|note|notice"/>
 
 	<!-- le formulaire lui même, mis en page avec une table -->
 	<form enctype="multipart/form-data" method="post">
@@ -48,17 +51,33 @@
 			<!-- le titre du formulaire -->
 			<dt class="entete">
 				<xsl:if test="boolean(@titre)">
-					<tr><td class="titre" colspan="2"><xsl:value-of select="@titre"/></td></tr>
+					<xsl:value-of select="@titre"/>
 				</xsl:if>
 			</dt>
 			<!-- les options du formulaire -->
 			<xsl:for-each select="*[not (self::bouton or self::commentaire or self::warning or self::hidden)]">
-				<dd><xsl:attribute name="class">row<xsl:text> </xsl:text><xsl:if test="(position() mod 2)=0">pair</xsl:if><xsl:if test="(position() mod 2)=1">impair</xsl:if></xsl:attribute>
-					<span class="gauche"><xsl:value-of select="@titre"/></span>
+				<dd class="row">
+<!-- 					<span class="gauche"> 
+						<xsl:value-of select="@titre"/>
+					</span>
 					<span class="droite">
 						<xsl:apply-templates select="."/>
-					</span>
-					
+					</span>-->
+					<div> 
+						<xsl:choose>
+							<xsl:when test="boolean(self::lien)">
+								<strong>Liens :</strong> 
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:if test="boolean(@titre)">
+									<div class="label"><xsl:value-of select="@titre"/> : </div>
+								</xsl:if>
+							</xsl:otherwise>
+						</xsl:choose>
+						<div class="element">
+							<xsl:apply-templates select="."/>
+						</div>
+					</div>
 				</dd>
 			</xsl:for-each>
 			<!-- les boutons gérant les actions du formulaire -->
@@ -71,6 +90,7 @@
 	<br/>
 </xsl:template>
 
+
 <xsl:template match="commentaire">
 	<p class="commentaire"><xsl:apply-templates/></p>
 </xsl:template>
@@ -79,7 +99,7 @@
 	<p class="warning"><xsl:apply-templates/></p>
 </xsl:template>
 
-<xsl:template match="note">
+<xsl:template match="note|notice">
 	<p class="note"><xsl:apply-templates/></p>
 </xsl:template>
 
@@ -119,7 +139,8 @@
 
 <!-- choix multiples (radio, combo ou checkbox) -->
 <xsl:template match="choix[@type='combo']">
-		<select><xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+		<select>
+			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:for-each select="option">
 				<option>
 					<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
@@ -132,23 +153,27 @@
 
 <xsl:template match="choix[@type='radio']">
 		<xsl:for-each select="option">
-			<input type="radio">
-				<xsl:attribute name="name"><xsl:value-of select="../@id"/></xsl:attribute>
-				<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
-				<xsl:if test="../@valeur = @id"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-			</input>
-			<xsl:value-of select="@titre"/><br />
+			<label>
+				<input type="radio">
+					<xsl:attribute name="name"><xsl:value-of select="../@id"/></xsl:attribute>
+					<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
+					<xsl:if test="../@valeur = @id"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<xsl:value-of select="@titre"/><br />
+			</label>
 		</xsl:for-each>
 </xsl:template>
 
 <xsl:template match="choix[@type='checkbox']">
 		<xsl:for-each select="option">
-			<input type="checkbox">
-				<xsl:if test="@modifiable='non'"><xsl:attribute name="disabled"/></xsl:if>
-				<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-				<xsl:if test="contains(../@valeur,@id)"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-			</input>
-			<xsl:value-of select="@titre"/><br />
+			<label>
+				<input type="checkbox">
+					<xsl:if test="@modifiable='non'"><xsl:attribute name="disabled"/></xsl:if>
+					<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+					<xsl:if test="contains(../@valeur,@id)"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<xsl:value-of select="@titre"/><br />
+			</label>
 		</xsl:for-each>
 </xsl:template>
 

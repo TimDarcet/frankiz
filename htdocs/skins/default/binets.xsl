@@ -29,27 +29,20 @@
 		</dt>
 		<dd class="contenu">
 		<br/>
-        		<dl class="binets top">
-				<dt class="objet"></dt>
-				<dd class="categorie">Art</dd>
-			</dl>
-			<xsl:apply-templates select="binet[@categorie='Art']"/>
-        		<dl class="binets top">
-				<dt class="objet"></dt>
-				<dd class="categorie">Association Humanitaire</dd>
-			</dl>
-			<xsl:apply-templates select="binet[@categorie='Association Humanitaire']"/>
-        		<dl class="binets top">
-				<dt class="objet"></dt>
-				<dd class="categorie">Divers</dd>
-			</dl>
-			<xsl:apply-templates select="binet[@categorie='Divers']"/>
+			<xsl:apply-templates select="binet"/>
 		</dd>
 		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>
 </xsl:template>
 
 <xsl:template match="binet">
+	<xsl:if test="preceding-sibling::binet[1]/@categorie != @categorie or position() = 1">
+		<br/>
+        	<dl class="binets top">
+			<dt class="objet"></dt>
+			<dd class="categorie"><xsl:value-of select="@categorie"/></dd>	
+		</dl>
+	</xsl:if>
 	<dl>
 		<xsl:attribute name="class">binets<xsl:text> </xsl:text><xsl:if test="(position() mod 2)=0">pair</xsl:if><xsl:if test="(position() mod 2)=1">impair</xsl:if></xsl:attribute>
 		<dt class="icon">
