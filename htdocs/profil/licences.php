@@ -21,9 +21,13 @@
 	Page qui permet de demander une clé windows
 	
 	$Log$
+	Revision 1.17  2005/01/18 15:56:06  dei
+	l'utilisateur doit donner une raison non vide pour demander des licences
+	supplémentaires
+
 	Revision 1.16  2005/01/17 23:46:28  pico
 	Bug fix
-
+	
 	Revision 1.15  2005/01/17 23:25:08  pico
 	Suite des corrections dei
 	
@@ -70,7 +74,14 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 
 ?>
 <page id="licences" titre="Frankiz : Les Licences">
-<?	//on vérifie que la demande est faite pour windows xp pro
+<?	
+	//on vérifie que la raison n'est pas vide... si elle l'est il se tape tout le formulaire pour recommencer.
+	if(isset($_POST['raison'])&&$_POST['raison']==""){
+?>
+		 <warning>Il faut une raison pour obtenir ces licences !</warning>
+<?
+	}
+	//on vérifie que la demande est faite pour windows xp pro
 	if(isset($_POST['accord'])){
 		if($_POST['logiciel']=="winxp"){
 			//on lance la requête qui va bien pour voir la clé
@@ -166,7 +177,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 		</formulaire>
 	<?php
 	} else {
-		if(isset($_POST['envoyer'])){
+		if(isset($_POST['envoyer'])&&$_POST['raison']!=""){
 			//on teste si il n'y a pas déjà une demande en attente
 			$DB_msdnaa->query("SELECT 0 FROM valid_licence WHERE eleve_id='{$_SESSION['user']->uid}'");
 			if ($DB_msdnaa->num_rows()>0) { 
@@ -190,6 +201,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 	?>
 		<formulaire id="dem_licence" titre= "Les licences pour les logiciels Microsoft" action="profil/licences.php">
 			<note>Dans le cadre de l'accord MSDNAA, chaque étudiant de polytechnique à le droit à une version de Windows XP Pro gratuite, légale et attibuée à vie</note>
+			<note>Des les clés pour d'autres logiciels de Microsoft peuvent être attribuées aux élèves, à la discrétion du Binet Réseau, en cas de demande motivée dans le formulaire ci-dessous.</note>
 			<p>Les licences disponibles</p>
 			<choix titre="Logiciels" id="logiciel" type="combo" valeur="">
 				<option titre="Windows XP Pro" id="winxp"/>
