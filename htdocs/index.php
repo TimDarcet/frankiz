@@ -21,9 +21,13 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.15  2004/12/10 19:49:28  kikx
+	YESSSSSS
+	Pour permettre au utilisateurs de supprimer les annonces qu'ils ont déjà lues
+
 	Revision 1.14  2004/12/09 19:29:13  pico
 	Rajoute le tel dans le trombino, ça pourrait être utile...
-
+	
 	Revision 1.13  2004/11/24 22:56:18  schmurtz
 	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
 	globale pour tous les fichiers.
@@ -64,6 +68,8 @@ echo "<page id='annonces' titre='Frankiz : annonces'>\n";
 
 <h2>Bienvenue sur Frankiz</h2>
 <?
+$annonces_lues1="" ;
+$annonces_lues2="" ;
 if (!est_authentifie(AUTH_COOKIE))  {
 ?>
 	<p>&nbsp;</p>
@@ -71,27 +77,35 @@ if (!est_authentifie(AUTH_COOKIE))  {
 	<p>Si tu veux te connecter et accéder à la partie réservée aux élèves alors clique sur ce <a href="login.php">lien</a></p>
 	<p>Sinon navigue sur cette page en utilisant les liens qui se situe un peu partout sur cette page :)</p>
 <?
+} else {
+// Pour marquer les annonces comme lues
+	if (isset($_REQUEST['lu'])) {
+		$DB_web->query("INSERT INTO annonces_lues SET annonce_id='".$_REQUEST['lu']."',eleve_id= '".$_SESSION['user']->uid."'") ;
+	}
+	$annonces_lues1=" LEFT JOIN annonces_lues ON annonces_lues.annonce_id=annonces.annonce_id AND annonces_lues.eleve_id='".$_SESSION['user']->uid."'" ;
+	$annonces_lues2=" AND annonces_lues.annonce_id IS NULL" ;
 }
-$DB_web->query("SELECT annonce_id,stamp,perime,titre,contenu,en_haut,exterieur,nom,prenom,surnom,promo,"
+$DB_web->query("SELECT annonces.annonce_id,stamp,perime,titre,contenu,en_haut,exterieur,nom,prenom,surnom,promo,"
 					 ."IFNULL(mail,CONCAT(login,'@poly.polytechnique.fr')) as mail "
-					 ."FROM annonces LEFT JOIN trombino.eleves USING(eleve_id) "
-					 ."WHERE (perime>=".date("Ymd000000",time()).") ORDER BY perime DESC");
+					 ."FROM annonces LEFT JOIN trombino.eleves USING(eleve_id) $annonces_lues1"
+					 ."WHERE (perime>=".date("Ymd000000",time()).") $annonces_lues2 ORDER BY perime DESC");
 while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail)=$DB_web->next_row()) {
 	if(!$exterieur && !est_authentifie(AUTH_MINIMUM)) continue;
 ?>
 	<annonce id="<?php echo $id ?>" 
-			titre="<?php echo $titre ?>"
-			categorie="<?php echo get_categorie($en_haut, $stamp, $perime) ?>"
-			date="<?php echo substr($stamp,8,2)."/".substr($stamp,5,2)."/".substr($stamp,0,4) ?>">
+		titre="<?php echo $titre ?>"
+		categorie="<?php echo get_categorie($en_haut, $stamp, $perime) ?>"
+		date="<?php echo substr($stamp,8,2)."/".substr($stamp,5,2)."/".substr($stamp,0,4) ?>">
 <?php
 		echo wikiVersXML($contenu);
 
-			if (file_exists(DATA_DIR_LOCAL."annonces/$id")) {
-			?>
-				<image source="<?echo DATA_DIR_URL."annonces/$id" ; ?>" texte="logo"/>
-			<? 
-			}
+		if (file_exists(DATA_DIR_LOCAL."annonces/$id")) {
+		?>
+			<image source="<?echo DATA_DIR_URL."annonces/$id" ; ?>" texte="logo"/>
+		<? 
+		}
 ?>
+		<lien url='?lu=<?=$id?>' titre="Faire disparaitre" id="annonces_lues"/>
 		<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
 	</annonce>
 <?php }
