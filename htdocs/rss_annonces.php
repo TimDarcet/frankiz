@@ -19,7 +19,7 @@ echo"<?xml version=\"1.0\" encoding=\"iso-8859-15\" ?>";
 		<description>Frankiz : Le serveur des élèves de l'école polytechnique.</description>
 		<ttl>10</ttl>
 		<image>
-			<url>http://pico/frankiz2/htdocs/skins/pico/images/home_logo.png</url>
+			<url><? echo BASE_URL ?>/skins/pico/images/home_logo.png</url>
 			<title>Frankiz : Annonces</title>
 			<link><? echo BASE_URL ?></link>
 		</image>
