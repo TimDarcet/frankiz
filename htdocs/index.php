@@ -21,12 +21,15 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.21  2004/12/14 18:42:28  schmurtz
+	Bugs sur les annonces
+
 	Revision 1.20  2004/12/14 17:14:52  schmurtz
 	modification de la gestion des annonces lues :
 	- toutes les annonces sont envoyees dans le XML
 	- annonces lues avec l'attribut visible="non"
 	- suppression de la page affichant toutes les annonces
-
+	
 	Revision 1.19  2004/12/13 21:28:25  pico
 	Le lien est mieux à la fin de l'annonce
 	
@@ -125,7 +128,7 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 		echo wikiVersXML($contenu);
 		echo "<eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"$promo\" surnom=\"$surnom\" mail=\"$mail\"/>\n";
 		
-		if(est_authentifie(AUTH_MINIMUM))
+		if(est_authentifie(AUTH_MINIMUM) && $visible)
 			echo "<lien url=\"?lu=$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
 ?>
 	</annonce>

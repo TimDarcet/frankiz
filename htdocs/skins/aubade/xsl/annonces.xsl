@@ -25,7 +25,9 @@
 	<xsl:choose>
 		<xsl:when test="count(annonce)">
 			<xsl:if test="$trier_annonces='pas_tri'">
-				<xsl:apply-templates select="annonce" mode="complet"/>
+				<xsl:apply-templates select="annonce" mode="complet">
+                     <xsl:with-param name="n" select="1" />
+                </xsl:apply-templates>
 			</xsl:if>
 			<xsl:if test="$trier_annonces!='pas_tri'"> 
 				<xsl:apply-templates select="annonce[@categorie='important']" mode="complet">
@@ -37,9 +39,7 @@
                 </xsl:apply-templates>
                 
 				<xsl:apply-templates select="annonce[@categorie='vieux']" mode="complet">
-                     <xsl:with-param name="n">
-                         <xsl:value-of select="count(annonce[@categorie='important'])+count(annonce[@categorie='nouveau'])+1" />
-                     </xsl:with-param>
+                     <xsl:with-param name="n" select="count(annonce[@categorie='important'])+count(annonce[@categorie='nouveau'])+1" />
                 </xsl:apply-templates>
                 
 				<xsl:apply-templates select="annonce[@categorie='reste']" mode="complet">  
@@ -97,12 +97,12 @@
 </xsl:template>
 
 <xsl:template match="annonce" mode="complet">
+	<xsl:param name="n" />
 	<div class="fkz_annonces">
 		<xsl:attribute name="id">
 			<xsl:value-of select="concat('annonce_',@id)"/>
 		</xsl:attribute>
 		<div class="fkz_annonces_titre">
-            <xsl:param name="n" />
             <span class="lecon">Le</span><span class="lecon_cedille">ç</span><span class="lecon">on n°<xsl:value-of select="$n + position() - 1" /></span><span class="lecon_cedille"> :</span>
 			<b>
 				<span>
@@ -120,46 +120,6 @@
 		</div>
 	</div>
 	<br/>
-</xsl:template>
-
-<xsl:template match="annonce">
-		<div>
-			<b>
-				<xsl:if test="@categorie!=''"><span>(<xsl:value-of select="@categorie"/>)</span></xsl:if>
-				<xsl:text> </xsl:text>
-				<span><xsl:value-of select="@titre"/></span>
-			</b>
-		</div>
-		<div>
-			<xsl:apply-templates/>
-		</div>
-	<br/>
-</xsl:template>
-
-<xsl:template match="annonce" mode="sommaire">
-	<div class="fkz_sommaire_corps">
-		<a>
-			<xsl:attribute name="href">
-				<xsl:text>index.php#</xsl:text> 
-				<xsl:value-of select="concat('annonce_',@id)"/>
-			</xsl:attribute>
-			<xsl:value-of select="@titre"/>
-		</a>
-	</div>
-</xsl:template>
-
-<xsl:template match="eleve[name(..)='annonce']">
-	<p class="fkz_signature">
-		<xsl:choose>
-			<xsl:when test="@surnom != ''">
-				<xsl:value-of select="@surnom"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="@prenom"/><xsl:text>  </xsl:text><xsl:value-of select="@nom"/>
-			</xsl:otherwise>
-		</xsl:choose>
-		(<xsl:value-of select="@promo"/>)
-	</p>
 </xsl:template>
 
 </xsl:stylesheet>
