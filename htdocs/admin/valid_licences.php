@@ -21,9 +21,12 @@
 	Page qui permet l'administartion des licences windows.
 	
 	$Log$
+	Revision 1.9  2005/01/19 19:28:58  dei
+	Corrections des recherches sql qui pouvaient vider la base par erreur...
+
 	Revision 1.8  2005/01/19 12:11:31  dei
 	debug gestion d'ajout de licence sur demande
-
+	
 	Revision 1.7  2005/01/18 22:40:44  dei
 	ajout d'une fonction pour mettre des clés dans la base à la main
 	
@@ -72,11 +75,13 @@ function test_cle($key){
 	if(sizeof($key)==5){
 		for($i=0;$i<sizeof($key);$i++){
 			if(!ereg('^[[:alnum:]]+$', $key[$i])){
+				echo "<warning>Cette clé n'a pas le bon formatage !</warning>";
 				return false;
 			}
 		}
 		return true;
 	}
+	echo "<warning>Cette clé n'a pas le bon formatage !</warning>";
 	return false;
 }
 
@@ -136,7 +141,7 @@ $temp = explode("_",$keys) ;
 }
 $DB_msdnaa->query("UNLOCK TABLES");
 ?>
-<h2>Liste des personnes demandant</h2>
+<h2>Liste des personnes demandant une licence</h2>
 	<liste id="liste" selectionnable="non" action="admin/valid_licences.php">
 		<entete id="logiciel" titre="Logiciel"/>
 		<entete id="eleve" titre="Élève"/>
@@ -168,12 +173,12 @@ $DB_msdnaa->query("UNLOCK TABLES");
 	</liste>
 <?php
 if(isset($_POST['chercher'])){
-	$req="SELECT e.nom,e.prenom,e.login,e.eleve_id,e.promo,v.cle,v.attrib FROM trombino.eleves as e LEFT JOIN cles_".$_POST['logiciel']." as v USING(eleve_id) WHERE 1=1";
+	$req="SELECT e.nom,e.prenom,e.login,e.eleve_id,e.promo,v.cle,v.attrib FROM trombino.eleves as e LEFT JOIN cles_".$_POST['logiciel']." as v USING(eleve_id) WHERE 1";
 	if($_POST['login']!=""){
 		$req=$req." AND e.login LIKE '%{$_POST['login']}%'";
 	}
-	if($_POST['licence']!=''){
-		$req=$req." AND v.cle='%{$_POST['licence']}%'";
+	if($_POST['cle']!=''){
+		$req=$req." AND v.cle LIKE '%{$_POST['cle']}%'";
 	}
 	if(isset($_POST['promo'])){
 			$req=$req." AND e.promo='{$_POST['promo']}'";
@@ -186,7 +191,7 @@ if(isset($_POST['chercher'])){
 		<entete id="promo" titre="Promo"/>
 		<entete id="eleve" titre="Élève"/>
 		<entete id="login" titre="Login"/>
-		<entete id="licence" titre="licence"/>
+		<entete id="licence" titre="Licence"/>
 		<entete id="attrib" titre="Attribuée"/>
 <?
 	while(list($nom,$prenom,$login,$eleve_id,$promo,$cle,$attrib) = $DB_msdnaa->next_row()){
@@ -199,62 +204,74 @@ if(isset($_POST['chercher'])){
 				<colonne id="licence"><? echo "$cle" ?></colonne>
 				<colonne id="attrib"><? if($attrib!="0" && $attrib!=""){echo "oui";}else{echo "non";} ?></colonne>
 		</element>
-<?
+<?php
 	}
 	echo "</liste>";
 }
-?>
-<h2>Rechercher un utilisateur dans la base</h2>
-	<formulaire id="chercher" action="admin/valid_licences.php">
-		<champ titre="Login poly" id="login" valeur="" />
-		<champ titre="Licence" id="licence" valeur="" />
-			<choix titre="Promo" id="promo" type="combo" valeur="">
-<?php
-			$DB_trombino->query("SELECT DISTINCT promo FROM eleves ORDER BY promo DESC");
-			while( list($promo) = $DB_trombino->next_row() )
-				echo "\t\t\t<option titre=\"$promo\" id=\"$promo\"/>\n";
-?>
-			</choix>
-		<choix titre="Logiciel" id="logiciel" type="combo" valeur="">
-			<option titre="Windows XP Pro" id="winxp"/>
-			<option titre="Windows 2003 Serveur" id="2k3serv"/>
-		</choix>
-		<bouton id='chercher' titre='Rechercher'/>
-	</formulaire>
-
-<?php
 
 //a faire évoluer pour faire entrer les clés depuis un fichier texte...
-if(isset($_POST['ajout'])&&test_cle($_POST['cle'])&&$_POST['login']!=""){
+if((isset($_POST['ajout']))&&test_cle($_POST['cle'])&&$_POST['login']!=""){
+	$DB_trombino->query("SELECT eleve_id FROM eleves WHERE login='{$_POST['login']}' AND promo='{$_POST['promo']}' LIMIT 1");
+	list($eleve_id)=$DB_trombino->next_row();
 	$DB_msdnaa->query("SELECT 0 FROM cles_{$_POST['logiciel']} WHERE cle='{$_POST['cle']}'");
 	if($DB_msdnaa->num_rows()==0){
-		$DB_trombino->query("SELECT eleve_id FROM eleves WHERE login='{$_POST['login']}' AND promo='{$_POST['promo']}' LIMIT 1");
-		list($eleve_id)=$DB_trombino->next_row();
-		$DB_msdnaa->query("INSERT cles_{$_POST['logiciel']} SET eleve_id='{$eleve_id}', attrib='1', cle='{$_POST['cle']}'");
-		echo "La clé a été bien ajoutée";
+		$DB_msdnaa->query("INSERT cles_{$_POST['logiciel']} SET eleve_id='{$eleve_id}', attrib='0', cle='{$_POST['cle']}'");
+		echo "<note>La clé a bien été ajoutée</note>";
 	} else {
-		echo "une erreur s'est produite";
+		if($DB_msdnaa->num_rows()!=0){
+			$DB_msdnaa->query("UPDATE cles_{$_POST['logiciel']} SET attrib='0', cle='{$_POST['cle']}' WHERE eleve_id='{$eleve_id}' LIMIT 1");
+			echo "<note>La clé a bien été mise à jour</note>";
+		}
 	}
 }
+if(isset($_POST['effacer'])&&$_POST['login']!=""){
+	$DB_trombino->query("SELECT eleve_id FROM eleves WHERE login='{$_POST['login']}' AND promo='{$_POST['promo']}' LIMIT 1");
+	list($eleve_id)=$DB_trombino->next_row();
+	$DB_msdnaa->query("SELECT 0 FROM cles_{$_POST['logiciel']} WHERE eleve_id='{$eleve_id}'");
+	if($DB_msdnaa->num_rows()!=0){
+		$DB_msdnaa->query("DELETE FROM cles_{$_POST['logiciel']} WHERE eleve_id='{$eleve_id}' LIMIT 1");
+		echo "<note>La clé a bien été supprimée</note>";
+	}
+}
+
 ?>
-<h2>Ajout d'une clé dans la base</h2>
+<h2>Recherche/Ajout/Suppression d'une clé dans la base</h2>
 	<formulaire id="ajout" action="admin/valid_licences.php">
-		<champ titre="login" id="login" valeur=""/>
-			<choix titre="Promo" id="promo" type="combo" valeur="">
+		<note>Cette fonction sert seulement à corriger un oubli ou une erreur !</note>
+		<champ titre="Login poly" id="login" valeur=""/>
+		<choix titre="Promo" id="promo" type="combo" valeur="">
 <?php
 			$DB_trombino->query("SELECT DISTINCT promo FROM eleves ORDER BY promo DESC");
 			while( list($promo) = $DB_trombino->next_row() )
 				echo "\t\t\t<option titre=\"$promo\" id=\"$promo\"/>\n";
 ?>
-			</choix>
+		</choix>
 		<champ titre="Licence" id="cle" valeur=""/>
 		<choix titre="Logiciel" id="logiciel" type="combo" valeur="">
 			<option titre="Windows XP Pro" id="winxp"/>
 			<option titre="Windows 2003 Serveur" id="2k3serv"/>
 		</choix>
+		<bouton id='chercher' titre='Rechercher'/>
 		<bouton id='ajout' titre="Ajouter"/>
+		<bouton id='effacer' titre="Supprimer"/>
 	</formulaire>
-</page>		
+
+<h2>Ajout des clés pour une promo dans la base</h2>
+	<formulaire id="ajout" action="admin/valid_licences.php">
+		<choix titre="Promo" id="promo" type="combo" valeur="">
+<?php
+			$DB_trombino->query("SELECT DISTINCT promo FROM eleves ORDER BY promo DESC");
+			while( list($promo) = $DB_trombino->next_row() )
+				echo "\t\t\t<option titre=\"$promo\" id=\"$promo\"/>\n";
+?>
+		</choix>
+		<fichier id="file" titre="Nouvelles Licences" taille="200000"/>
+		<choix titre="Logiciel" id="logiciel" type="combo" valeur="">
+			<option titre="Windows XP Pro" id="winxp"/>
+		</choix>
+		<bouton id='update' titre="Ajouter"/>
+	</formulaire>
+</page>
 <?php
 require_once BASE_LOCAL."/include/page_footer.inc.php";
 ?>
