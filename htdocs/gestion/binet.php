@@ -7,9 +7,13 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.8  2004/10/19 14:58:42  schmurtz
+	Creation d'un champ de formulaire specifique pour les fichiers (sans passer
+	l'element champ, qui actuellement est un peu acrobatique).
+
 	Revision 1.7  2004/10/18 23:07:43  kikx
 	Finalisation de la page d'administration des binets par le prez ou le webmestre de ce dit binet
-
+	
 	Revision 1.6  2004/10/18 20:29:44  kikx
 	Enorme modification pour la fusion des bases des binets (Merci Schmurtz)
 	
@@ -233,7 +237,7 @@ if(verifie_permission_webmestre($_GET['binet'])){
 			<champ id="http" titre="Http" valeur="<? echo $http?>"/>
 			<zonetext id="descript" titre="Description" valeur="<? echo stripslashes($descript)?>"/>
 			<?=$image_link?>
-			<champ id="file" titre="Ton image de 100x100 px" valeur="" taille="100000"/>
+			<fichier id="file" titre="Ton image de 100x100 px" taille="100000"/>
 			<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if ($exterieur==1) echo 'ext' ;?>" >
 				<option id="ext" titre="" modifiable="non"/>
 			</choix>

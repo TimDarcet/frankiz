@@ -1,9 +1,13 @@
 <? 
 /*
 		$Log$
+		Revision 1.7  2004/10/19 14:58:42  schmurtz
+		Creation d'un champ de formulaire specifique pour les fichiers (sans passer
+		l'element champ, qui actuellement est un peu acrobatique).
+
 		Revision 1.6  2004/10/19 07:56:56  pico
 		Corrections diverses
-
+		
 		Revision 1.5  2004/10/18 22:17:45  pico
 		Ajout des logs dans le fichier
 		
@@ -286,7 +290,7 @@ echo "<br/>" ;
 		if(!strstr($keys,"ajout")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 	}
 	?>
-	<champ id="file" titre="Fichier réponse" valeur=""/>
+	<fichier id="file" titre="Fichier réponse" taille="1000000"/>
 	<bouton id='ajout_<? echo $dir_id ?>' titre="Ajouter" onClick="return window.confirm('!!!!!!Ajouter ce fichier ?!!!!!')"/>
 	</formulaire>
 	

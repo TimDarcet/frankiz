@@ -3,9 +3,13 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.18  2004/10/19 14:58:43  schmurtz
+	Creation d'un champ de formulaire specifique pour les fichiers (sans passer
+	l'element champ, qui actuellement est un peu acrobatique).
+
 	Revision 1.17  2004/10/13 19:37:13  kikx
 	oubli
-
+	
 	Revision 1.16  2004/10/11 11:01:38  kikx
 	Correction des pages de proposition et de validation des annonces pour permettre
 	- de stocker les image au bon endroit
@@ -200,7 +204,7 @@ if (isset($_POST['valid'])) {
 		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
 		<zonetext id="text" titre="Le texte" valeur="<? if (isset($_POST['text'])) echo $_POST['text'] ;?>"/>
 		<textsimple valeur="Ton image doit être un fichier gif, png ou jpg, ne doit pas dépasser 400x300 pixels et 250ko car sinon elle ne sera pas téléchargée"/>
-		<champ id="file" titre="Ton image" valeur="" taille="250000"/>
+		<fichier id="file" titre="Ton image" taille="250000"/>
 		<bouton id='suppr_img' titre="Supprimer l'image"/>
 
 		<textsimple valeur="Ta signature sera automatiquement généré"/>

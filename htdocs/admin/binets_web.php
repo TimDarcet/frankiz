@@ -3,9 +3,13 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.5  2004/10/19 14:58:42  schmurtz
+	Creation d'un champ de formulaire specifique pour les fichiers (sans passer
+	l'element champ, qui actuellement est un peu acrobatique).
+
 	Revision 1.4  2004/10/18 20:29:44  kikx
 	Enorme modification pour la fusion des bases des binets (Merci Schmurtz)
-
+	
 	Revision 1.3  2004/10/17 14:43:03  kikx
 	Finalisation de la page de modification des binets WEB
 	
@@ -143,7 +147,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			</choix>
 			<champ id="http" titre="Http" valeur=""/>
 			<zonetext id="descript" titre="Description" valeur=""/>
-			<champ id="file" titre="Ton image de 100x100 px" valeur="" taille="50000"/>
+			<fichier id="file" titre="Ton image de 100x100 px" taille="50000"/>
 			<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="">
 				<option id="ext" titre=""/>
 			</choix>
@@ -168,7 +172,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			<champ id="http" titre="Http" valeur="<? echo $http?>"/>
 			<zonetext id="descript" titre="Description" valeur="<? echo stripslashes($descript)?>"/>
 			<image source="binets/?image=1&amp;id=<?=$id?>"/>
-			<champ id="file" titre="Ton image de 100x100 px" valeur="" taille="50000"/>
+			<fichier id="file" titre="Ton image de 100x100 px" taille="50000"/>
 			<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if ($exterieur==1) echo 'ext' ;?>">
 				<option id="ext" titre=""/>
 			</choix>

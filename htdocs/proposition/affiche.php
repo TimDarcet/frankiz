@@ -3,9 +3,13 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une activité
 	
 	$Log$
+	Revision 1.5  2004/10/19 14:58:43  schmurtz
+	Creation d'un champ de formulaire specifique pour les fichiers (sans passer
+	l'element champ, qui actuellement est un peu acrobatique).
+
 	Revision 1.4  2004/10/10 21:40:49  kikx
 	Pour permettre aux eleves de demander à mettre une activité visible de l'exterieur
-
+	
 	Revision 1.3  2004/10/07 22:52:20  kikx
 	Correction de la page des activites (modules + proposition + administration)
 		rajout de variables globales : DATA_DIR_LOCAL
@@ -194,7 +198,7 @@ if ((isset($_POST['valid']))&&(isset($index))&&file_exists(DATA_DIR_LOCAL."affic
 		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
 		<champ id="url" titre="URL du lien" valeur="<? if (isset($_POST['url'])) echo $_POST['url'] ;?>"/>
 		<textsimple valeur="Ton image doit être un fichier gif, png ou jpg, ne doit pas dépasser 200x300 pixels et 100ko car sinon elle ne sera pas téléchargée"/>
-		<champ id="file" titre="Ton image" valeur="" taille="100000"/>
+		<fichier id="file" titre="Ton image" taille="100000"/>
 		<textsimple valeur="Si tu veux que ton activité soit visible de l'exterieur, clique ici"/>
 		<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if (isset($_REQUEST['ext'])) echo 'ext' ;?>">
 			<option id="ext" titre=""/>

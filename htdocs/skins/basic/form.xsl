@@ -3,9 +3,13 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.15  2004/10/19 14:58:43  schmurtz
+	Creation d'un champ de formulaire specifique pour les fichiers (sans passer
+	l'element champ, qui actuellement est un peu acrobatique).
+
 	Revision 1.14  2004/10/16 00:30:56  kikx
 	Permet de modifier des binets déjà existants
-
+	
 	Revision 1.13  2004/10/10 22:31:41  kikx
 	Voilà ... Maintenant le webmestre prut ou non valider des activité visibles de l'exterieur
 	
@@ -38,7 +42,7 @@
 			<xsl:if test="boolean(@titre)">
 				<tr><td class="titre" colspan="2"><xsl:value-of select="@titre"/></td></tr>
 			</xsl:if>
-			<xsl:apply-templates select="champ|choix|zonetext|textsimple|hidden|warning|image"/>
+			<xsl:apply-templates select="champ|choix|zonetext|textsimple|hidden|warning|image|fichier"/>
 			<tr><td class="boutons" colspan="2"><center><xsl:apply-templates select="bouton"/></center></td></tr>
 		</table>
 	</form>
@@ -92,21 +96,28 @@
 		<xsl:choose><xsl:when test="@modifiable='non'">
 			<xsl:value-of select="@valeur"/>
 		</xsl:when><xsl:otherwise>
-			<xsl:if test="boolean(@taille)">
-				<hidden id="MAX_FILE_SIZE">
-					<xsl:attribute name="valeur"><xsl:value-of select="@taille"/></xsl:attribute>
-				</hidden>
-			</xsl:if>
 			<input>
 				<xsl:choose>
 					<xsl:when test="starts-with(@id,'passwd')"><xsl:attribute name="type">password</xsl:attribute></xsl:when>
-					<xsl:when test="starts-with(@id,'file')"><xsl:attribute name="type">file</xsl:attribute></xsl:when>
 					<xsl:otherwise><xsl:attribute name="type">text</xsl:attribute></xsl:otherwise>
 				</xsl:choose>
 				<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 				<xsl:attribute name="value"><xsl:value-of select="@valeur"/></xsl:attribute>
 			</input>
 		</xsl:otherwise></xsl:choose>
+	</td></tr>
+</xsl:template>
+
+<xsl:template match="formulaire/fichier">
+	<tr><td class="gauche">
+		<xsl:value-of select="@titre"/><xsl:text> :</xsl:text>
+	</td><td class="droite">
+		<hidden id="MAX_FILE_SIZE">
+			<xsl:attribute name="valeur"><xsl:value-of select="@taille"/></xsl:attribute>
+		</hidden>
+		<input type="file">
+			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+		</input>
 	</td></tr>
 </xsl:template>
 
