@@ -21,10 +21,13 @@
 	Page de validation d'une modification d'un binet
 	
 	$Log$
+	Revision 1.8  2004/12/08 12:46:50  kikx
+	Protection de la validation des binets
+
 	Revision 1.7  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
-
+	
 	Revision 1.6  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
 	
@@ -63,32 +66,41 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 // Enregistrer ...
 $message = "" ;
-	
+$DB_valid->query("LOCK TABLE valid_annonces WRITE");
+$DB_valid->query("SET AUTOCOMMIT=0");
+
 if (isset($_POST['valid'])) {
-
-
 	$DB_valid->query("SELECT nom,description,http,catego_id,image,format,folder FROM valid_binet WHERE binet_id={$_POST['id']}");
-	list($nom,$description,$http,$categorie,$image,$format,$folder) = $DB_valid->next_row() ;
+	if ($DB_valid->num_rows()!=0) {
+		list($nom,$description,$http,$categorie,$image,$format,$folder) = $DB_valid->next_row() ;
+		
+		if (isset($_REQUEST['exterieur']))
+			$temp_ext = '1'  ;
+		else 
+			$temp_ext = '0' ;
 	
-	if (isset($_REQUEST['exterieur']))
-		$temp_ext = '1'  ;
-	else 
-		$temp_ext = '0' ;
-
-	$DB_trombino->query("UPDATE binets SET image=\"".addslashes($image)."\" ,format='$format' ,description='$description' , http='$http', catego_id=$categorie, exterieur=$temp_ext, folder='$folder' WHERE binet_id={$_POST['id']}");
-	
-	$DB_valid->query("DELETE FROM valid_binet WHERE binet_id={$_POST['id']}");
-	$message .= "<commentaire>Le binet $nom vient d'être mis à jour</commentaire>" ;
+		$DB_trombino->query("UPDATE binets SET image=\"".addslashes($image)."\" ,format='$format' ,description='$description' , http='$http', catego_id=$categorie, exterieur=$temp_ext, folder='$folder' WHERE binet_id={$_POST['id']}");
+		
+		$DB_valid->query("DELETE FROM valid_binet WHERE binet_id={$_POST['id']}");
+		$message .= "<commentaire>Le binet $nom vient d'être mis à jour</commentaire>" ;
+	} else {
+		$message .= "<warning>Requête deja traitée par un autre administrateur</warning>" ;
+	}
 }
 if (isset($_POST['suppr'])) {
 	$DB_valid->query("SELECT nom FROM valid_binet WHERE binet_id={$_POST['id']}");
-	list($nom) = $DB_valid->next_row() ;
-
-	$DB_valid->query("DELETE FROM valid_binet WHERE binet_id={$_POST['id']}");
-	$message .= "<warning>Vous n'avez pas validé le changement du binet $nom</warning>" ;
+	if ($DB_valid->num_rows()!=0) {
+		list($nom) = $DB_valid->next_row() ;
+	
+		$DB_valid->query("DELETE FROM valid_binet WHERE binet_id={$_POST['id']}");
+		$message .= "<warning>Vous n'avez pas validé le changement du binet $nom</warning>" ;
+	} else {
+		$message .= "<warning>Requête deja traitée par un autre administrateur</warning>" ;
+	}
 
 }
-
+$DB_valid->query("COMMIT");
+$DB_valid->query("UNLOCK TABLES");
 
 
 //===============================
