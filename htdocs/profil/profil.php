@@ -6,10 +6,13 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.11  2004/10/20 11:02:10  kikx
+	Permet la suppression des binets dans son profil
+
 	Revision 1.10  2004/10/19 20:22:04  schmurtz
 	Rajout de messages de reussite dans la page profil
 	Fusion des formulaires changement de mot de passe et activation du cookie
-
+	
 	Revision 1.9  2004/09/15 23:20:07  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
@@ -75,6 +78,38 @@ if(isset($_POST['changer_frankiz'])) {
 		$message_succes="L'email et le surnom ont été modifié.";
 	}
 }
+// Modification de la partie "binets"
+
+if (isset($_POST['mod_binet'])) {
+	//$commentaire = $_POST['commentaire'];
+
+	foreach($_POST as $key=>$val) {
+		if ($key == "mod_binet") continue ;
+		$key = explode("_",$key) ;
+		$key = $key[1] ;
+		$DB_trombino->query("UPDATE membres SET remarque='$val' WHERE eleve_id={$_SESSION['user']->uid} AND binet_id=$key");
+ 	}
+	$message_succes =  "Modification de la partie binets faite avec succès" ;
+}
+
+// Modification de la partie "binets"
+
+if (isset($_POST['suppr_binet'])) {
+	$count =0 ;
+	if (isset($_POST['elements'])) {
+		$ids = "" ;
+		foreach($_POST['elements'] as $id => $on) {
+			if($on='on') $ids .= (empty($ids) ? "" : ",") . "'$id'";
+			$count ++ ;
+		}
+	}
+	if ($count>=1) {
+		mysql_query("DELETE FROM membres WHERE binet_id IN ($ids) AND  eleve_id={$_SESSION['user']->uid}");
+		$message_succes =  "Suppression de $count binets" ;
+	} else {
+		$message_succes =  "Aucun binet séléctionné" ;	
+	}
+}
 
 
 // Génération du la page XML
@@ -117,6 +152,27 @@ require "../include/page_header.inc.php";
 		<champ id="email" titre="Email" valeur="<?php echo empty($mail) ? $login.'@poly.polytechnique.fr' : $mail ?>"/>
 		<bouton id="changer_trombino" titre="Changer"/>
 	</formulaire>
+	
+	<h2>Tes Binets</h2>
+	<liste id="liste_binet" selectionnable="oui" action="profil/profil.php">
+		<entete id="binet" titre="Binet"/>
+		<entete id="commentaire" titre="Commentaire"/>
+
+<?
+		$DB_trombino->query("SELECT membres.remarque,membres.binet_id,binets.nom FROM membres INNER JOIN binets USING(binet_id) WHERE eleve_id={$_SESSION['user']->uid} ORDER BY membres.binet_id ASC");
+		while (list($remarque,$binet_id,$nom) = $DB_trombino->next_row()) { ?>
+		<element id="<?=$binet_id?>">
+			<colonne id="binet"><? echo $nom?> :</colonne>
+			<colonne id="commentaire"><champ id="binet_<? echo $binet_id?>" titre="" valeur="<? echo $remarque?>"/></colonne>
+		</element>
+<?
+		 }
+?>
+		<bouton id='suppr_binet' titre='Supprimer' onClick="return window.confirm('Voulez vous vraiment supprimer ce binet ?')"/>
+		<bouton id='mod_binet' titre='Changer'/>
+	</liste>
+	
+
 </page>
 <?php
 require_once BASE_LOCAL."/include/page_footer.inc.php";
