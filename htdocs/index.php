@@ -21,11 +21,18 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.28  2005/01/24 17:27:53  kikx
+	Permet de gerer l'auth Xorg
+	NE PAS COMMITER EN PROD ... car pas encore terminer
+	il faut maintenant reflechir a comment on gere les compte xorg ...
+
+	J'attend vos avis eclairés :)
+
 	Revision 1.27  2005/01/18 19:30:34  pico
 	Place la boite du sudo dans la boite avec les infos de connection.
 	Pbs d'encodage des variables passées à sablotron réglés
 	Pb du su quand on est pas loggué par mot de passe réglé
-
+	
 	Revision 1.26  2005/01/12 17:17:19  pico
 	hum
 	
@@ -137,7 +144,8 @@ if (!est_authentifie(AUTH_MINIMUM))  {
 	$annonces_lues1=" LEFT JOIN annonces_lues ON annonces_lues.annonce_id=annonces.annonce_id AND annonces_lues.eleve_id='{$_SESSION['user']->uid}'" ;
 	$annonces_lues2=" ISNULL(annonces_lues.annonce_id) ";
 }
-
+		
+		
 // Affichage des annonces
 $DB_web->query("SELECT annonces.annonce_id,stamp,perime,titre,contenu,en_haut,exterieur,nom,prenom,surnom,promo,"
 					 ."IFNULL(mail,CONCAT(login,'@poly.polytechnique.fr')) as mail, $annonces_lues2 "

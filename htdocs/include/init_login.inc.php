@@ -36,9 +36,16 @@
 	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
 
 	$Log$
+	Revision 1.13  2005/01/24 17:27:53  kikx
+	Permet de gerer l'auth Xorg
+	NE PAS COMMITER EN PROD ... car pas encore terminer
+	il faut maintenant reflechir a comment on gere les compte xorg ...
+
+	J'attend vos avis eclairés :)
+
 	Revision 1.12  2005/01/21 16:50:37  pico
 	Erreur
-
+	
 	Revision 1.11  2005/01/21 16:48:29  pico
 	Modifs de chemins
 	
@@ -129,10 +136,19 @@ if(isset($_REQUEST['logout'])) {
 */
 // Login par mot de passe
 if(isset($_POST['login']) && isset($_POST['passwd'])) {
-	$_SESSION['user'] = new User(true,$_POST['login']);
-	if(!$_SESSION['user']->verifie_mdp($_POST['passwd'])) {
-		ajoute_erreur(ERR_LOGIN);
-		ajouter_access_log("erreur de mot de passe login={$_POST['login']}");
+	
+	if (!isset($_POST['auth_xorg'])){ // Si on n'utilise pas l'auth xorg ...
+		$_SESSION['user'] = new User(true,$_POST['login']);
+		if(!$_SESSION['user']->verifie_mdp($_POST['passwd'])) {
+			ajoute_erreur(ERR_LOGIN);
+			ajouter_access_log("erreur de mot de passe login={$_POST['login']}");
+		}
+	} else {// Si on utilise le login xorg
+		if (xorg_verif_pass($_POST['login'],$_POST['passwd'])) {
+			echo "Authentifié Xorg" ;
+		} else {
+			echo "Fausse authentification Xorg" ;
+		}
 	}
 	// Un message d'erreur s'affichera automatiquement par la page à l'origine
 	// de cette authentification.
@@ -219,12 +235,15 @@ function demande_authentification($minimum) {
 			<warning>Une erreur est survenue lors de l'authentification. Vérifie qu'il n'y a pas d'erreur
 			dans le login ou le mot de passe.</warning>
 		<?php endif; ?>
-		<note>Ton login est loginpoly.promo</note>
+		<note>Ton login est loginpoly.promo (ou le login xorg si tu couche la case)</note>
 		<formulaire id="login" titre="Connexion" action="">
 		<?  foreach ($_REQUEST AS $keys => $val){
 			echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 			}
 		?>
+			<choix titre="Login XORG" id="auth_xorg" type="checkbox" valeur="">
+				<option id="auth_xorg" titre=""/>
+			</choix>
 			<champ id="login" titre="Login" valeur="<?php if(isset($_POST['login'])) echo $_POST['login']?>"/>
 			<champ id="passwd" titre="Mot de passe" valeur=""/>
 			<bouton id="connect" titre="Connexion"/>
