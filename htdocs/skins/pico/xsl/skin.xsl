@@ -153,7 +153,7 @@
 	<a><xsl:attribute name="href"><xsl:value-of select="url"/></xsl:attribute>
 			<xsl:apply-templates select="image"/>
 	</a>
-		<h3><xsl:value-of select="@nom"/></h3>
+		<h3><a><xsl:attribute name="href"><xsl:value-of select="url"/></xsl:attribute><xsl:value-of select="@nom"/></a></h3>
 		<p><xsl:value-of select="description"/></p>
 </xsl:template>
 
