@@ -62,9 +62,6 @@
 			<xsl:apply-templates select="entete"/>
 		</tr>
 		<xsl:apply-templates select="element"/>
-		<tr><td class="boutons"><xsl:attribute name="colspan"><xsl:value-of select="$nombre_colonnes"/></xsl:attribute>
-			<xsl:apply-templates select="bouton"/>
-		</td></tr>
 	</table>
 </xsl:template>
 
