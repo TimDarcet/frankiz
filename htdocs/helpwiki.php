@@ -21,9 +21,13 @@
 	Help WIKI
 	
 	$Log$
+	Revision 1.10  2005/01/26 13:58:20  pico
+	Correction de pbs sur le wiki et les pages qui y font référence
+	(genre le <p><h1>blah</h1></p> ...)
+
 	Revision 1.9  2005/01/23 16:30:10  pico
 	Ajout d'une page pour surveiller les entrées dns
-
+	
 	Revision 1.8  2005/01/03 18:37:24  pico
 	C'est mieux avec une page d'aide correcte
 	
@@ -90,22 +94,22 @@ Le nom Wiki provient d'un adjectif hawaiien wikiwiki, qui signifie rapide. C'est
 		<element id="">
 			<colonne id="type">Titre</colonne>
 			<colonne id="syntaxe"><p>===titre1===</p><p>==titre2==</p><p>=titre3=</p></colonne>
-			<colonne id="exemple"><?="<p>".wikiVersXML("===titre1===")."</p><p>".wikiVersXML("==titre2==")."</p><p>".wikiVersXML("=titre3=")."</p>"?></colonne>
+			<colonne id="exemple"><?=wikiVersXML("===titre1===").wikiVersXML("==titre2==").wikiVersXML("=titre3=")?></colonne>
 		</element>
 		<element id="">
 			<colonne id="type">Liste</colonne>
 			<colonne id="syntaxe"><p>- 1 niveau</p><p>- titre niveau 2</p><p>-- 2e niveau</p></colonne>
-			<colonne id="exemple"><?="<p>".wikiVersXML("- 1 niveau")."</p><p>".wikiVersXML("- titre niveau 2\n-- 2e niveau")."</p>"?></colonne>
+			<colonne id="exemple"><?=wikiVersXML("- 1 niveau").wikiVersXML("- titre niveau 2\n-- 2e niveau")?></colonne>
 		</element>
 		<element id="">
 			<colonne id="type">Lien</colonne>
 			<colonne id="syntaxe"><p>http://frankiz/</p><p>[http://frankiz|Ici c'est le site élève]</p><p>[mailto:moi@moi|Mon email]</p></colonne>
-			<colonne id="exemple"><?="<p>".wikiVersXML("http://frankiz/")."</p><p>".wikiVersXML("[http://frankiz/|Ici c'est le site élève]")."</p><p>".wikiVersXML("[mailto:moi@moi|Mon email]")."</p>"?></colonne>
+			<colonne id="exemple"><?=wikiVersXML("http://frankiz/").wikiVersXML("[http://frankiz/|Ici c'est le site élève]").wikiVersXML("[mailto:moi@moi|Mon email]")?></colonne>
 		</element>
 		<element id="">
 			<colonne id="type">Image</colonne>
 			<colonne id="syntaxe"><p>[http://binets/icones/reseau.png]</p><p>[http://binets/icones/reseau.png|Logo binet réseau]</p></colonne>
-			<colonne id="exemple"><?="<p>".wikiVersXML("[http://binets/icones/reseau.png]")."</p><p>".wikiVersXML("[http://binets/icones/reseau.png|Logo binet réseau]")."</p>"?></colonne>
+			<colonne id="exemple"><?=wikiVersXML("[http://binets/icones/reseau.png]").wikiVersXML("[http://binets/icones/reseau.png|Logo binet réseau]")?></colonne>
 		</element>
 </liste>
 

@@ -19,9 +19,13 @@
 */
 /*
 	$Log$
+	Revision 1.5  2005/01/26 13:58:20  pico
+	Correction de pbs sur le wiki et les pages qui y font référence
+	(genre le <p><h1>blah</h1></p> ...)
+
 	Revision 1.4  2005/01/04 21:44:40  pico
 	Remise en place du lien vers l'helpwiki parce que le résumé en bas de page est incomprehensible
-
+	
 	Revision 1.3  2004/12/14 22:16:06  schmurtz
 	Correction de bug du moteur wiki.
 	Simplication du code.
@@ -44,10 +48,10 @@ if(!isset($_POST['contenu']))
 require "include/page_header.inc.php";
 ?>
 <page id="bacasable" titre="Frankiz : bac à sable">
-	<cadre id="bacasable" titre="Contenu">
+	<cadre id="resultat" titre="Contenu">
 		<?php echo wikiVersXML($_POST['contenu']) ?>
 	</cadre>
-	<formulaire id="bacasable" titre="Bac à sable" action="bacasable.php">
+	<formulaire id="form_bacasable" titre="Bac à sable" action="bacasable.php">
 		<note>
 			Le texte utilise le format wiki rappelé en bas de la page et décrit dans l'<lien url="helpwiki.php" titre="aide wiki"/>
 		</note>
