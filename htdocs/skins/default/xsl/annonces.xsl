@@ -22,17 +22,12 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="page[@id='annonces']" mode="complet">
-	<xsl:choose>
-		<xsl:when test="count(annonce)">
-				<xsl:apply-templates select="annonce[@categorie='important']" mode="complet"/>
-				<xsl:apply-templates select="annonce[@categorie='nouveau']" mode="complet"/>
-				<xsl:apply-templates select="annonce[@categorie='vieux']" mode="complet"/>
-				<xsl:apply-templates select="annonce[@categorie='reste']" mode="complet"/>  
-		</xsl:when>
-		<xsl:otherwise>
-			<xsl:apply-templates/>
-		</xsl:otherwise>
-	</xsl:choose>
+	<xsl:if test="count(annonce)">
+			<xsl:apply-templates select="annonce[@categorie='important']" mode="complet"/>
+			<xsl:apply-templates select="annonce[@categorie='nouveau']" mode="complet"/>
+			<xsl:apply-templates select="annonce[@categorie='vieux']" mode="complet"/>
+			<xsl:apply-templates select="annonce[@categorie='reste']" mode="complet"/>  
+	</xsl:if>
 </xsl:template>
 
 
@@ -44,26 +39,30 @@
 			<span> Sommaire </span>	
 		</dt>
 		<dd class="contenu">
-	<xsl:if test="last() != 0">
-		<xsl:if test="count(annonce[@categorie='important']) != 0">
-			<div class="fkz_sommaire_titre">
-			       <span class="fkz_annonces_important"/> Important
-			</div>
-			<xsl:apply-templates select="annonce[@categorie='important']" mode="sommaire"/>
-		</xsl:if>
-		<xsl:if test="count(annonce[@categorie='nouveau']) != 0">
-			<div class="fkz_sommaire_titre"><span class="fkz_annonces_nouveau"/> Nouvelles Fraîches</div>
-			<xsl:apply-templates select="annonce[@categorie='nouveau']" mode="sommaire"/>
-		</xsl:if>
-		<xsl:if test="count(annonce[@categorie='vieux']) != 0">
-			<div class="fkz_sommaire_titre"><span class="fkz_annonces_vieux"/> Demain c'est fini</div>
-			<xsl:apply-templates select="annonce[@categorie='vieux']" mode="sommaire"/>
-		</xsl:if>
-		<xsl:if test="count(annonce[@categorie='reste']) != 0">
-			<div class="fkz_sommaire_titre"><span class="fkz_annonces_reste"/> En attendant...</div>
-			<xsl:apply-templates select="annonce[@categorie='reste']" mode="sommaire"/>
-		</xsl:if>
-	</xsl:if>
+			<xsl:if test="last() != 0">
+				<xsl:if test="count(annonce[@categorie='important']) != 0">
+					<div class="fkz_sommaire_titre">
+					<span class="fkz_annonces_important"/> Important
+					</div>
+					<xsl:apply-templates select="annonce[@categorie='important']" mode="sommaire"/>
+				</xsl:if>
+				<xsl:if test="count(annonce[@categorie='nouveau']) != 0">
+					<div class="fkz_sommaire_titre"><span class="fkz_annonces_nouveau"/> Nouvelles Fraîches</div>
+					<xsl:apply-templates select="annonce[@categorie='nouveau']" mode="sommaire"/>
+				</xsl:if>
+				<xsl:if test="count(annonce[@categorie='vieux']) != 0">
+					<div class="fkz_sommaire_titre"><span class="fkz_annonces_vieux"/> Demain c'est fini</div>
+					<xsl:apply-templates select="annonce[@categorie='vieux']" mode="sommaire"/>
+				</xsl:if>
+				<xsl:if test="count(annonce[@categorie='reste']) != 0">
+					<div class="fkz_sommaire_titre"><span class="fkz_annonces_reste"/> En attendant...</div>
+					<xsl:apply-templates select="annonce[@categorie='reste']" mode="sommaire"/>
+				</xsl:if>
+			</xsl:if>
+			<br/>
+			<p class="centre">
+				<xsl:apply-templates select="lien[@id='lire_tout']"/>
+			</p> 
 		</dd>
 		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>
@@ -73,9 +72,13 @@
 	<dl class="boite">
 		<dt class="titre">
 			<span class="droitehaut"><xsl:text> </xsl:text></span>
+			<span class="hidenews">
+				<xsl:apply-templates select="lien[@id='annonces_lues']"/>
+			</span> 
 			<a><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute><xsl:text> </xsl:text></a>      
 <!-- 			<span><xsl:attribute name="class"><xsl:value-of select="@categorie"/></xsl:attribute><xsl:text> </xsl:text></span> -->
-			<span><xsl:value-of select="@titre"/></span> 
+			<span><xsl:value-of select="@titre"/></span>
+
 		</dt>
 		<dd class="contenu">
 		<p class="image">
@@ -84,7 +87,7 @@
 		</p>
 		<p class="news">
 			<xsl:text> </xsl:text>
-			<xsl:apply-templates/>
+			<xsl:apply-templates select="*[not(self::lien/@id='annonces_lues')]"/>
 		</p>
 		<p class="signature">
 			<xsl:text> </xsl:text>

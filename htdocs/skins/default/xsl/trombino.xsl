@@ -68,8 +68,11 @@
 								<strong>Mail : </strong><a><xsl:attribute name="href"><xsl:text>mailto:</xsl:text><xsl:value-of select="@login"/><xsl:text>@poly</xsl:text></xsl:attribute><xsl:value-of select="@login"/><xsl:text>@poly</xsl:text></a><br/>
 							</p>
 							<p class="binets">
-								<strong>Binets : </strong>
-								<xsl:apply-templates select="binet" mode="trombino"/>
+								<xsl:if test="count(binet)!=0">
+									<strong>Binets : </strong>
+									<xsl:apply-templates select="binet" mode="trombino"/>
+								</xsl:if>
+								<xsl:text> </xsl:text>
 							</p>
 						</dd>	
 					</dl>

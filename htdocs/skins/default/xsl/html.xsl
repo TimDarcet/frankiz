@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.6  2004/12/11 06:08:04  psycow
+	Gestion de l'effacement des news lues
+
 	Revision 1.5  2004/12/10 03:04:31  psycow
 	Resolution du probleme des boites sous Firefox, reste un probleme sur le positionnement des formulaires dans les boites...
-
+	
 	Revision 1.4  2004/11/30 21:33:18  pico
 	Rajout des feuilles à la base d'un arbre
 	
@@ -72,7 +75,8 @@
 			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 		</xsl:if>
 		<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
-		<xsl:value-of select="@titre"/><xsl:apply-templates/>
+		<xsl:attribute name="title"><xsl:value-of select="@titre"/></xsl:attribute>
+		<span><xsl:value-of select="@titre"/><xsl:apply-templates/></span>
 	</a><br/>
 </xsl:template>
 
