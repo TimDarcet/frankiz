@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<!-- $Id$ -->
+<!-- $Log$
+<!-- Revision 1.5  2004/11/05 13:48:50  pico
+<!-- Corrections diverses skin
+<!-- -->
 <!--
 	Copyright (C) 2004 Binet Réseau
 	http://www.polytechnique.fr/eleves/binets/br/
