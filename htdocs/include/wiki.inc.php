@@ -21,9 +21,13 @@
 	Moteur Wiki (TipiWiki)
 	
 	$Log$
+	Revision 1.4  2004/11/27 18:46:50  pico
+	Correction wiki: gestion des liens (génère du xml et plus des balises <a>)
+	Correction des skins pour validité xhtml
+
 	Revision 1.3  2004/11/25 00:26:55  schmurtz
 	Permet de convertir le wiki en html veritable.
-
+	
 	Revision 1.2  2004/11/24 12:51:02  kikx
 	Pour commencer la compatibilité wiki
 	
@@ -47,7 +51,7 @@ function wikiVersXML($filtered,$enhtml=false) {
 	$filtered = preg_replace("/\[($regexURL\.(png|gif|jpg))\]/i",$enhtml?"<img src=\"\\1\"/>":"<image source=\"\\1\"/>",$filtered);
 	
 	// plain urls in the text
-	$filtered = preg_replace("/(?<![\"\[])$regexURL(?!\")/","<a href=\"\\0\">\\0</a>",$filtered);
+	$filtered = preg_replace("/(?<![\"\[])$regexURL(?!\")/",$enhtml?"<a href=\"\\0\">\\0</a>":"<lien url=\"\\0\">\\0</lien>",$filtered);
 	
 	// Headlines <h1><h2><h3>
 	$filtered = preg_replace("/\n===(.+)===[\t  ]*\n/","</p>\n<h2>\\1</h2>\n<p>",$filtered);

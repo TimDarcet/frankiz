@@ -100,7 +100,7 @@
 
 <xsl:template match="module[@id='liens_perso']">
 	 <div class="module" id='mod_liens_perso'>
-	 	<div class="fkz_titre"><span id="navigation_logo"><span id="navigation">Liens Perso</span></span></div>
+	 	<div class="fkz_titre"><span id="perso_logo"><span id="perso">Liens Perso</span></span></div>
 		<div class="fkz_module_corps">
 			<ul class="fkz_liens">
 				<xsl:for-each select="lien">

@@ -80,7 +80,7 @@
 <xsl:template match="annonce" mode="complet">
 	<div class="fkz_annonces">
 		<xsl:attribute name="id">
-			<xsl:value-of select="@id"/>
+			<xsl:value-of select="concat('annonce_',@id)"/>
 		</xsl:attribute>
 		<div class="fkz_annonces_titre">
 			<b>
@@ -143,7 +143,7 @@
 		<a>
 			<xsl:attribute name="href">
 				<xsl:text>index.php#</xsl:text> 
-				<xsl:value-of select="@id"/>
+				<xsl:value-of select="concat('annonce_',@id)"/>
 			</xsl:attribute>
 			<xsl:value-of select="@titre"/>
 		</a>

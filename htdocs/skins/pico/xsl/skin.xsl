@@ -44,7 +44,7 @@
 <xsl:include href="meteo.xsl"/>
 
 <xsl:template match="/">
-	<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+	<html lang="fr" xml:lang="fr">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
 		<title><xsl:value-of select="frankiz/page/@titre"/></title>
@@ -71,7 +71,7 @@
 	</head>
 	<body>
 		<div class="fkz_entetes">
-			<a href="index.php"><div class="fkz_logo"><span class="fkz_logo">Frankiz,</span></div></a>
+			<div class="fkz_logo"><a href="index.php"><span class="fkz_logo">Frankiz,</span></a></div>
 			<div  class="fkz_logo_eleves"><span class="fkz_logo_eleves">le site Web des élèves</span></div>
 		</div>
 		<div class="fkz_page">
