@@ -51,7 +51,7 @@ sub post {
  
    
 sub traiter_jour {
-    my ($date,$time,$name,$subject,$body) =@_;
+    my ($date,$name,$subject,$body) =@_;
     print "Date : " . $date . "\n";                                     #DEBUG
     $reqt="SELECT sections.nom,sections.newsgroup FROM kawa INNER JOIN trombino.sections ON kawa.section_id=sections.section_id WHERE date='$date'";
     my $rep = $dbh->prepare($reqt);
@@ -83,14 +83,15 @@ sub traiter_jour {
 
 sub selection {
 # definir la date
-    $tm=localtime;
-    my $date=($tm->year) . "-" . $tm->month . "-" . $tm->day;
-    $reqt="SELECT time,name,subject,body FROM message ORDER BY time";
-    my $rep = $dbh->prepare($reqt);
-    $rep->execute;
-    while(($time,$name,$subject,$body)=$rep->fetchrow_array()){
-    	traiter_jour($date,$time,$name,$subject,$body);
-    	}
+	my $name = "Tour kawa";
+	my @subject = ("Au Bôb à 12h15","Un petit café demain?","Dans trois jours tour kawa");
+	my $body = "";
+	$tm=localtime;
+	my $date;
+	for ($i=0; $i<3; $i++) {
+		$date=($tm->year) . "-" . $tm->month . "-" . ($tm->day - $i);
+		traiter_jour($date,$name,$subject[$i],$body);
+	}
 }
 
 #post(junk,1);
