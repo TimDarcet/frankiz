@@ -18,12 +18,15 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Page qui permet l'administartion des licences windows.
+	Page qui permet l'administration des licences windows.
 	
 	$Log$
+	Revision 1.17  2005/02/09 20:15:51  pico
+	Ajout d'un droit pour les admin@windows pour valider les demandes de licences
+
 	Revision 1.16  2005/01/23 21:47:40  dei
 	bug de LOCK TABLES
-
+	
 	Revision 1.15  2005/01/23 21:37:26  dei
 	voilà version finale ! (j'espère)
 	
@@ -81,7 +84,7 @@ require_once "../include/global.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-if(!verifie_permission('admin'))
+if(!verifie_permission('admin')&&!verifie_permission('windows'))
 	acces_interdit();
 //
 //

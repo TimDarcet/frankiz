@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.40  2005/02/09 20:15:51  pico
+	Ajout d'un droit pour les admin@windows pour valider les demandes de licences
+
 	Revision 1.39  2005/01/23 16:30:10  pico
 	Ajout d'une page pour surveiller les entrées dns
-
+	
 	Revision 1.38  2005/01/18 18:26:56  pico
 	Pb d'accent
 	
@@ -361,10 +364,12 @@ $permissions_user = $_SESSION['user']->perms ;
 		<lien titre="Gestion des num utiles" url="admin/num_utiles.php"/><br/>
 	<?
 	}
-	if (verifie_permission('admin')){
+	if (verifie_permission('admin')||verifie_permission('windows')){
 	?>
 	<h3>Administration du réseau élève</h3>
-		<?
+	<?
+	}
+	if (verifie_permission('admin')){
 		$DB_valid->query("SELECT eleve_id FROM valid_ip") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
@@ -372,6 +377,8 @@ $permissions_user = $_SESSION['user']->perms ;
 		<lien titre="Liste des IPs" url="admin/ip.php"/><br/>
 		<lien titre="Surveiller la DNS" url="admin/dns.php"/><br/>
 		<?
+	}
+	if (verifie_permission('admin')||verifie_permission('windows')){
 		$DB_msdnaa->query("SELECT eleve_id FROM valid_licence") ;
 		$nb = $DB_msdnaa->num_rows() ;
 		?>

@@ -22,11 +22,14 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.48  2005/02/09 20:15:51  pico
+	Ajout d'un droit pour les admin@windows pour valider les demandes de licences
+
 	Revision 1.47  2005/01/27 15:23:17  pico
 	La boucle locale est considérée comme interne
 	Tests de photos normalement plus cools.
 	Après le reste.... je sais plus
-
+	
 	Revision 1.46  2005/01/25 14:53:43  pico
 	Modifications relatives à la version de prod, à l'accès extérieur, tout ça...
 	
@@ -241,15 +244,16 @@ function liste_modules() {
 */
 function liste_droits() {
 	return array(
-		"admin"            =>"Administrateur Total",
-		"web"              =>"Webmestre de Frankiz",
-		"qdjmaster"        =>"QdjMaster",
-		"xshare"           =>"Xshare",
-		"faq"              =>"Faqmestre",
-		"trombino"         =>"TrombinoMen",
-		"kes"         =>"(EXT) Kessiers (mail promo)",
-		"bob"              =>"(EXT) BobarMen",
-		"affiches"         =>"(EXT) Affiches (ex BRC...)"
+		"admin"		=>	"Administrateur Total",
+		"web"		=>	"Webmestre de Frankiz",
+		"qdjmaster"	=>	"QdjMaster",
+		"xshare"		=>	"Xshare",
+		"faq"			=>	"Faqmestre",
+		"trombino"	=>	"TrombinoMen",
+		"windows"		=>	"admin@windows",
+		"kes"		=>	"(EXT) Kessiers (mail promo)",
+		"bob"		=>	"(EXT) BobarMen",
+		"affiches"		=>	"(EXT) Affiches (ex BRC...)"
 		);
 }
 
