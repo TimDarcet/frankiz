@@ -22,9 +22,12 @@
 	Permet aussi de supprimer des IPs.
 	
 	$Log$
+	Revision 1.19  2004/10/25 15:36:47  kikx
+	Recherhce par login
+
 	Revision 1.18  2004/10/25 14:05:09  kikx
 	Correction d'un bug sur la page
-
+	
 	Revision 1.17  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -68,6 +71,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		
 	$where = " WHERE 1 " ;
 	If (isset($_POST['rech_kzert'])) $where .= "AND p.piece_id LIKE '%".$_POST['rech_kzert']."%' " ;
+	If (isset($_POST['rech_login'])) $where .= "AND e.login LIKE '%".$_POST['rech_login']."%' " ;
 	if (isset($_POST['rech_prise'])) $where .= "AND p.prise_id  LIKE '%".$_POST['rech_prise']."%' " ;
  	if (isset($_POST['rech_ip'])) $where .= "AND p.ip LIKE'%".$_POST['rech_ip']."%' " ;
 	
@@ -78,6 +82,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
 	<formulaire id="recherche" titre="Recherche" action="admin/ip.php">
+		<champ titre="Login" id="rech_login" valeur="<? if (isset($_POST['rech_login'])) echo $_POST['rech_login']?>" />
 		<champ titre="Pièce" id="rech_kzert" valeur="<? if (isset($_POST['rech_kzert'])) echo $_POST['rech_kzert']?>" />
 		<champ titre="Prise" id="rech_prise" valeur="<? if (isset($_POST['rech_prise'])) echo $_POST['rech_prise']?>" />
 		<champ titre="Ip" id="rech_ip" valeur="<? if (isset($_POST['rech_ip'])) echo $_POST['rech_ip']?>" />
