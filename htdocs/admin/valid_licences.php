@@ -21,9 +21,12 @@
 	Page qui permet l'administartion des licences windows.
 	
 	$Log$
+	Revision 1.14  2005/01/23 21:05:02  dei
+	la ça devrait mieux marcher
+
 	Revision 1.13  2005/01/23 20:28:48  dei
 	correction bug attribution automatique licence
-
+	
 	Revision 1.12  2005/01/21 21:44:24  dei
 	Ajout d'une fonction pour rentrer les licences en vrac depuis un
 	fichier, séparées par des ";"
@@ -126,8 +129,8 @@ $temp = explode("_",$keys) ;
 		$temp2 = "ajout_licence_".$temp[1] ;
 		if(test_cle($_POST[$temp2])) {
 			//on vérifie que la requete existe encore...
-			$DB_msdnaa->query("SELECT 0 FROM valid_licence WHERE eleve_id='$_POST[$temp2]'");
-			if($DB_msdnaa->num_rows()==1){
+			$DB_msdnaa->query("SELECT 0 FROM valid_licence WHERE eleve_id='{$temp[1]}'");
+			if($DB_msdnaa->num_rows()!=0){
 				//on cherche ds les clés attribuées au logiciel..
 				$DB_msdnaa->query("SELECT 0 FROM cles_$temp[2] WHERE cle='$_POST[$temp2]'");
 				// S'il n'y a aucune entrée avec cette licence dans la base
@@ -145,14 +148,14 @@ $temp = explode("_",$keys) ;
 			
 					couriel($temp[1],"[Frankiz] Ta demande a été acceptée",$contenu,WINDOWS_ID);
 					echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande a été acceptée (nouvelle licence : ".$_POST[$temp2].")</commentaire>" ;
-				}else{
-					echo "<commentaire>La demande a déjà été traitée par un autre administrateur du systeme";
 				}
+			}else{
+				echo "<commentaire>La demande a déjà été traitée par un autre administrateur du systeme";
 			}
-			// S'il y  a deja une entrée comme celle demandé dans la base !
-			else {
-				echo "<warning>IMPOSSIBLE D'ATTRIBUER CETTE LICENCE. L'utilisateur en possède déjà une.</warning>" ;
-			}
+		}
+		// S'il y  a deja une entrée comme celle demandé dans la base !
+		else {
+			echo "<warning>IMPOSSIBLE D'ATTRIBUER CETTE LICENCE. L'utilisateur en possède déjà une.</warning>" ;
 		}
 	}
 }
@@ -165,10 +168,12 @@ $DB_msdnaa->query("UNLOCK TABLES");
 		<entete id="raison" titre="Raison"/>
 		<entete id="licence" titre="licence"/>
 <?php
-		$DB_msdnaa->query("SELECT 0 FROM valid_licence");
-		$nb=$DB_msdnaa->num_rows();
-		$DB_msdnaa->query("SELECT v.raison,v.logiciel,l.cle,e.nom,e.prenom,e.eleve_id FROM valid_licence as v LEFT JOIN trombino.eleves as e ON e.eleve_id=v.eleve_id LEFT JOIN cles_libres as l ON l.logiciel=v.logiciel LIMIT $nb");
-		while(list($raison,$logiciel,$cle_libre,$nom,$prenom,$eleve_id) = $DB_msdnaa->next_row()) {
+		$DB_msdnaa->query("SELECT v.raison,v.logiciel,e.nom,e.prenom,e.eleve_id FROM valid_licence as v LEFT JOIN trombino.eleves as e ON e.eleve_id=v.eleve_id");
+		while(list($raison,$logiciel,$nom,$prenom,$eleve_id) = $DB_msdnaa->next_row()) {
+			$DB_msdnaa->push_result();
+			$DB_msdnaa->query("SELECT cle FROM cles_libres WHERE logiciel='{$logiciel}' LIMIT 1");
+			list($cle_libre)=$DB_msdnaa->next_row();
+			$DB_msdnaa->pop_result();
 			if($cle_libre==""){
 				echo "<warning>Plus de clés libres pour $logiciel</warning>";
 			}
