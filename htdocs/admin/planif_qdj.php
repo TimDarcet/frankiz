@@ -3,9 +3,12 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.8  2004/10/17 18:55:50  pico
+	.
+
 	Revision 1.7  2004/10/15 20:49:46  pico
 	Affichage plus compressé pour plus de lisibilité
-
+	
 	Revision 1.6  2004/10/15 20:32:01  pico
 	Reorganisation de la page
 	
