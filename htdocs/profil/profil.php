@@ -24,9 +24,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.41  2004/12/16 22:38:01  schmurtz
+	maintenant on peut utiliser le cookie depuis deux machines.
+
 	Revision 1.40  2004/12/16 13:00:42  pico
 	INNER en LEFT
-
+	
 	Revision 1.39  2004/12/15 17:03:06  pico
 	2vite les renvois sur /trombino/
 	
@@ -162,9 +165,12 @@ if(isset($_POST['changer_frankiz'])) {
 
 	// Modification du cookie d'authentification
 	if($_POST['cookie'] == 'oui') {
-		// on rajoute le cookie
-		$cookie = array('hash'=>nouveau_hash(),'uid'=>$_SESSION['user']->uid);
-		$DB_web->query("UPDATE compte_frankiz SET hash='{$cookie['hash']}' WHERE eleve_id='{$_SESSION['user']->uid}'");
+		// on rajoute le cookie (le hash est le même que celui créé lors de l'authentification
+		// initiale par mail)
+		$DB_web->query("SELECT hash FROM compte_frankiz WHERE eleve_id='{$_SESSION['user']->uid}'");
+		list($new_hash) = $DB_web->next_row();
+		$cookie = array('hash'=>$new_hash,'uid'=>$_SESSION['user']->uid);
+		
 		SetCookie("auth",base64_encode(serialize($cookie)),time()+3*365*24*3600,"/");
 		$_COOKIE['auth'] = "blah";  // hack permetttant de faire marcher le test d'existance du cookie
 									// utilisé quelques ligne plus bas sans devoir recharger la page.
