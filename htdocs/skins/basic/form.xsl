@@ -28,7 +28,7 @@
 </xsl:template>
 
 <!-- champs contenant du texte -->
-<xsl:template match="champ">
+<xsl:template match="formulaire/champ">
 	<tr><td class="gauche">
 		<xsl:value-of select="@titre"/><xsl:text> :</xsl:text>
 	</td><td class="droite">
@@ -45,6 +45,17 @@
 			</input>
 		</xsl:otherwise></xsl:choose>
 	</td></tr>
+</xsl:template>
+
+<xsl:template match="champ">
+	<input>
+		<xsl:choose>
+			<xsl:when test="starts-with(@id,'passwd')"><xsl:attribute name="type">password</xsl:attribute></xsl:when>
+			<xsl:otherwise><xsl:attribute name="type">text</xsl:attribute></xsl:otherwise>
+		</xsl:choose>
+		<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+		<xsl:attribute name="value"><xsl:value-of select="@valeur"/></xsl:attribute>
+	</input>
 </xsl:template>
 
 <!-- choix multiples (radio, combo ou checkbox) -->
@@ -94,15 +105,15 @@
 </xsl:template>
 
 <!-- boutons -->
-<xsl:template match="bouton[@id != 'reset']">
-	<input type="submit">
-		<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+<xsl:template match="bouton[@id='reset']">
+	<input type="reset">
 		<xsl:attribute name="value"><xsl:value-of select="@titre"/></xsl:attribute>
 	</input>
 </xsl:template>
 
-<xsl:template match="bouton[@id = 'reset']">
-	<input type="reset">
+<xsl:template match="bouton">
+	<input type="submit">
+		<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 		<xsl:attribute name="value"><xsl:value-of select="@titre"/></xsl:attribute>
 	</input>
 </xsl:template>
