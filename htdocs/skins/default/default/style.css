@@ -478,7 +478,7 @@ dd.lien {
 /* -----------QDJ---------------*/
 
 dl#qdj table.qdj {
-	width:100%;
+	width:80%;
 }
 
 dl#qdj table.qdj td {
@@ -508,7 +508,7 @@ dl#qdj table.qdj td span.jone {
 
 
 table.reponse_qdj {
-	width:100%;
+	width:80%;
 }
 table.reponse_qdj td {
 	text-align:center;
@@ -548,7 +548,7 @@ div#recherchearbre {
 /* -------- Sommaires page d'annonce ----------*/
 dl#annonces_sommaire table.sommaire {
 	margin:0 auto;
-	width:100%;
+	width:80%;
 }
 
 dl#annonces_sommaire tr td{
