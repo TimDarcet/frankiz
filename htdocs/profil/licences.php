@@ -21,10 +21,13 @@
 	Page qui permet de demander une clé windows
 	
 	$Log$
+	Revision 1.18  2005/01/18 20:52:17  dei
+	c'est plus clair comme ça
+
 	Revision 1.17  2005/01/18 15:56:06  dei
 	l'utilisateur doit donner une raison non vide pour demander des licences
 	supplémentaires
-
+	
 	Revision 1.16  2005/01/17 23:46:28  pico
 	Bug fix
 	
@@ -201,7 +204,6 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 	?>
 		<formulaire id="dem_licence" titre= "Les licences pour les logiciels Microsoft" action="profil/licences.php">
 			<note>Dans le cadre de l'accord MSDNAA, chaque étudiant de polytechnique à le droit à une version de Windows XP Pro gratuite, légale et attibuée à vie</note>
-			<note>Des les clés pour d'autres logiciels de Microsoft peuvent être attribuées aux élèves, à la discrétion du Binet Réseau, en cas de demande motivée dans le formulaire ci-dessous.</note>
 			<p>Les licences disponibles</p>
 			<choix titre="Logiciels" id="logiciel" type="combo" valeur="">
 				<option titre="Windows XP Pro" id="winxp"/>
