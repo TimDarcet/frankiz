@@ -25,9 +25,12 @@
 	TODO traiter le cas ou le qdj master est à la bourre (garder l'ancienne qdj par exemple).
 	
 	$Log$
+	Revision 1.12  2004/11/02 17:29:22  pico
+	Ne crée plus de qdj qd il n'y en a pas.
+
 	Revision 1.11  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.10  2004/09/20 20:33:47  schmurtz
 	Mise en place d'un systeme de cache propre
 	
@@ -51,7 +54,7 @@ function qdj_affiche($hier,$deja_vote) {
 	$cache_id = "qdj_".($hier?"hier":"courante");
 	
 	$DB_web->query("SELECT question,reponse1,reponse2,compte1,compte2 FROM qdj WHERE date='$date' LIMIT 1");
-	list($question,$reponse1,$reponse2,$compte1,$compte2) = $DB_web->next_row();
+	while(list($question,$reponse1,$reponse2,$compte1,$compte2) = $DB_web->next_row()){
 ?>
 
 	<module id="<?php echo $hier ? 'qdj_hier' : 'qdj' ?>" titre="QDJ<?php if($hier) echo ' d\'hier' ?>">
@@ -73,5 +76,6 @@ function qdj_affiche($hier,$deja_vote) {
 		</qdj>
 	</module>
 <?php
+	}
 }
 ?>
