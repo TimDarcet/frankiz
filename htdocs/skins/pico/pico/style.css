@@ -319,7 +319,12 @@ span.valid_css {
 .commentaire,.warning,.note {
 	color: inherit;
 	padding: 6px;
-	margin: 5px;
+	margin:5px;
+	margin-left:5px;
+	margin-right:5px;
+	margin-top:5px;
+	margin-bottom:5px;
+	display:block;
 }
 
 .commentaire {
@@ -331,7 +336,7 @@ span.valid_css {
 }
 
 .note {
-	font-size: 75%;
+	border: 1px solid #FFDD00;
 }
 
 /* Formulaires */
