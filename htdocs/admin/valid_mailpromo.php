@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.15  2004/10/31 21:30:48  kikx
+	Oups ca fonctionnera miuex comme ca ...
+
 	Revision 1.14  2004/10/31 21:29:56  kikx
 	Mise a jour du mail promo grace a la librairie de Schmurtz
-
+	
 	Revision 1.13  2004/10/29 15:54:28  kikx
 	Mail en HTLM et raison du refus si refus
 	
@@ -148,11 +151,10 @@ foreach ($_POST AS $keys => $val){
 		exec("echo \"".$mail_contenu."\" >>".$fich_log) ;
 		
 		while(list($eleve_id,$nom,$prenom) = $DB_trombino->next_row() ) {
-			couriel("2131", $titre_mail." ".$_POST['titre'],$mail_contenu) ;
+			couriel($eleve_id, $titre_mail." ".$_POST['titre'],$mail_contenu) ;
 			$cnt ++ ;
 			exec("echo \"Mail envoyé à $nom $prenom ($eleve_id)\n\" >>".$fich_log) ;
  			usleep(100000); // Attends 100 millisecondes
-			break ;// a virer
 		}
 	
 		// fin de la procédure
