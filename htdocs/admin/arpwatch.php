@@ -84,7 +84,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			}
 			mysql_query("UPDATE ip_chambre_theory SET ip_theorique='$ip$aaa.$bbb' WHERE prise_id='$id_prise'");*/
 			
-			echo "\t\t\t<colonne id=\"ip\">$ip_theorique / $ip$aaa.$bbb</colonne>\n";
+			echo "\t\t\t<colonne id=\"ip\">$ip_theorique</colonne>\n";
 			echo "\t\t</element>\n";
 		
 //=======================
