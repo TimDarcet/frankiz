@@ -21,9 +21,12 @@
 		Fonction pour parser des rss
 		
 		$Log$
+		Revision 1.4  2004/11/23 17:36:02  pico
+		Rajout de balises link pour les navigateurs texte et pour indiquer la précense du feed rss
+
 		Revision 1.3  2004/11/22 21:59:28  pico
 		2 modes d'affichage des rss: complet ou liste de liens
-
+		
 		Revision 1.2  2004/11/18 12:11:58  pico
 		Premier jet de page pour afficher des news externes
 		
@@ -48,7 +51,7 @@ function rss_xml($site,$mode = 'complet') {
 		$xml .= fgets($fp, 4000);
 	}
 	$xml = strstr($xml,"<?xml");	// TODO corriger ce gros hack, vérifier aussi que la requète
-									// http à réussie
+
 	// traduction du rss dans notre format
 	if(strstr($xml,"<rss")){
 		$xh = xslt_create();

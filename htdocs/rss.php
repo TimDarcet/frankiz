@@ -23,8 +23,10 @@ rss_xml('http://hyperlinkextractor.free.fr/rssfiles/google_france.xml','sommaire
 rss_xml('http://www.humanite.fr/backend_une.php3','sommaire');
 rss_xml('http://www.lexpress.fr/getfeedrss.asp','sommaire');
 rss_xml('http://permanent.nouvelobs.com/cgi/rss/permanent_une','sommaire');
-rss_xml('','sommaire');
-
+rss_xml('http://www.vnunet.fr/rssrdf/news.xml ','sommaire');
+rss_xml('http://www.microsite.reuters.com/rss/topNews','sommaire');
+rss_xml('http://www.washingtonpost.com/wp-srv/world/rssheadlines.xml','sommaire');
+rss_xml('http://mozillazine.org/contents.rdf','sommaire');
 ?>
 </page>
 <?

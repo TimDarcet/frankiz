@@ -59,6 +59,14 @@
 			</xsl:attribute>
 		</link>
 		<xsl:apply-templates select="frankiz/module[@id='liste_css']" mode="css"/>
+		<link rel="alternate" type="application/rss+xml" title="Version RSS" href="rss_annonces.php" />
+		<link rel="glossary" title="Vocabulaire" href="vocabulaire.php" />
+		<link rel="help" title="Contact" href="contact.php"/>
+		<link rel="index" href="index.php"/>
+		<link rel="start" href="index.php"/>
+		<link href="mailto:web@fkz" rev="made" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<xsl:apply-templates select="frankiz/module[@id='liens_navigation']" mode="link"/>
 	</head>
 	<body>
 		<div class="fkz_entetes">
