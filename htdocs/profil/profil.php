@@ -24,9 +24,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.19  2004/10/22 14:44:40  kikx
+	Permet l'affichage dans le profil de l'image que l'on souhaite modifier (bug encore sur l'affichage)
+
 	Revision 1.18  2004/10/22 11:13:32  kikx
 	Autorise de modifier son image trombi : reste a faire la apge de validation coté admin
-
+	
 	Revision 1.17  2004/10/21 22:43:11  kikx
 	Bug fix et mise en place de la possibilité de modifier la photo du trombino
 	
@@ -62,6 +65,14 @@
 
 require_once "../include/global.inc.php";
 demande_authentification(AUTH_MAIL);
+
+// Récupération d'une image
+if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "true") && ($_REQUEST['image'] != "")){
+	require_once("../include/global.inc.php");
+	header('content-type: image/jpeg');
+	readfile(BASE_PHOTOS.$_REQUEST['promo']."/".$_REQUEST['login'].".jpg");	
+	exit;
+}
 
 $message="";
 
@@ -126,10 +137,8 @@ if(isset($_POST['changer_frankiz'])) {
 		// On verifie d'abord que la personne n'a pas demander le changement de sa photo trombino
 		//------------------------------------
 	
-		$DB_valid->query("SELECT eleve_id FROM valid_img_trombi WHERE eleve_id={$_SESSION['user']->uid}");
-		if ($DB_valid->num_rows()!=0) {
+		if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$_SESSION['user']->uid}")) {
 			$message .= "<warning>Vous aviez déjà demandé une modification, seule la demande que vous venez de poster sera prise en compte</warning>" ;
-			$DB_valid->query("DELETE FROM valid_img_trombi WHERE eleve_id={$_SESSION['user']->uid}");
 		} else {
 			$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
 
@@ -162,25 +171,12 @@ if(isset($_POST['changer_frankiz'])) {
 			// On verifie que le truc télécharger est une image ...
 			//--------------------------------------
 		if (in_array (strtolower ($type_img), $image_types)) {
-			$DB_valid->query("INSERT INTO valid_img_trombi SET image=\"$data\", eleve_id={$_SESSION['user']->uid}") ;
-			$message .= "<commentaire>La demande de modification de ton image trombino a été effectuée</commentaire>" ;
+			$filename =$_SESSION['user']->uid ;
+			move_uploaded_file($_FILES['file']['tmp_name'], DATA_DIR_LOCAL.'trombino/a_valider_'.$filename) ;
 		} else {
 			$message .= "<warning>Ton image n'est pas une image au bon format</warning>" ;
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
 // Modification de la partie "binets"
 
@@ -265,7 +261,18 @@ require "../include/page_header.inc.php";
 		<champ id="casert" titre="Kazert" valeur="<?php echo $casert ?>" modifiable="non"/>
 		<champ id="surnom" titre="Surnom" valeur="<?php echo $surnom ?>"/>
 		<champ id="email" titre="Email" valeur="<?php echo empty($mail) ? $login.'@poly.polytechnique.fr' : $mail ?>"/>
-		<image source="trombino/?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>" texte="photo" height="95" width="80"/>
+		<?
+		if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$_SESSION['user']->uid}")) {
+		?>
+			<warning>Cette image trombino n'a pas encore été validé par le BR</warning>
+			<image source="<? echo DATA_DIR_URL."trombino/a_valider_".$_SESSION['user']->uid ; ?>" texte="photo" height="95" width="80"/>
+		<?
+		} else {
+		?>
+			<image source="trombino/?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>" texte="photo" height="95" width="80"/>
+		<?
+		}
+		?>
 		<fichier id="file" titre="Nlle photo" taille="200000"/>
 
 		<bouton id="changer_trombino" titre="Changer"/>
