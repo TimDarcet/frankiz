@@ -15,7 +15,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 <?
 rss_xml('http://www.liberation.fr/rss.php');
 rss_xml('http://linuxfr.org/backend/news/rss20.rss');
-rss_xml('http://linuxfr.org/backend/news-homepage/rss20.rss');
+rss_xml('http://linuxfr.org/backend/news-homepage/rss20.rss','sommaire');
 ?>
 </page>
 <?

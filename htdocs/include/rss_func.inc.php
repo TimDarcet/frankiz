@@ -21,15 +21,22 @@
 		Fonction pour parser des rss
 		
 		$Log$
+		Revision 1.3  2004/11/22 21:59:28  pico
+		2 modes d'affichage des rss: complet ou liste de liens
+
 		Revision 1.2  2004/11/18 12:11:58  pico
 		Premier jet de page pour afficher des news externes
-
+		
 		Revision 1.1  2004/11/17 22:39:45  pico
 		Fonction pour parser des rss extérieures
 		
 */
 
-function rss_xml($site) {
+/* 
+	mode = '' : 			affichage complet
+	mode = 'sommaire' :	seulement les titres et lien vers l'article
+*/
+function rss_xml($site,$mode = 'complet') {
 	// Récupération de la météo
 	$proxy = "kuzh.polytechnique.fr";
 	$port = 8080;
@@ -46,7 +53,7 @@ function rss_xml($site) {
 	if(strstr($xml,"<rss")){
 		$xh = xslt_create();
 		xslt_set_encoding($xh, "ISO-8859-1");
-		echo xslt_process($xh, 'arg:/_xml', BASE_LOCAL.'/include/rss_convert.xsl', NULL, array('/_xml'=>$xml));
+		echo xslt_process($xh, 'arg:/_xml', BASE_LOCAL.'/include/rss_convert_'.$mode.'.xsl', NULL, array('/_xml'=>$xml));
 		xslt_free($xh);
 	}
 }
