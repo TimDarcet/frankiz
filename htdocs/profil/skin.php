@@ -39,9 +39,12 @@
 	)
 	
 	$Log$
+	Revision 1.9  2004/11/06 10:13:27  pico
+	Mise à jour fichier choix skin
+
 	Revision 1.8  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.7  2004/09/15 23:20:07  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
@@ -227,17 +230,17 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<bouton titre="Appliquer" id="OK_skin" />
 	</formulaire>
 	
-	<formulaire titre="Paramètres de la skin" action="profil/skin.php">
+	<formulaire titre="Paramètres de la skin <? echo $_SESSION['skin']['skin_nom'] ?>" action="profil/skin.php">
 		<choix titre="CSS" id="newcss" type="combo" valeur="<?php echo $_SESSION['skin']['skin_css']?>">
 <?php
 			// Choix de la feuille de style CSS
-			$dir=opendir(BASE_LOCAL."/css");
+			$dir=opendir(BASE_LOCAL."/css/{$_SESSION['skin']['skin_nom']}");
 			while($file = readdir($dir)) {
 				// uniquement pour les fichiers .css
 				if(!ereg("^(.*)\.css$", $file, $elements)) continue;
 				$nom = $elements[1];
 				echo "<option titre=\"$nom (".lire_description_css(BASE_LOCAL."/css/$nom.txt")
-					.")\" id=\"".BASE_URL."/css/$file\"/>";
+					.")\" id=\"".BASE_URL."/css/{$_SESSION['skin']['skin_nom']}/$file\"/>";
 			}
 			closedir($dir);
 ?>
