@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
 <!-- $Id$ -->
 <!--
 	Copyright (C) 2004 Binet Réseau
@@ -21,8 +20,8 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
-	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
-	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"/>
+	doctype-public="-//W3C//DTD XHTML 1.1//EN"
+	doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
 	
 <xsl:param name="sommaire"/>
 <xsl:param name="trier_annonces"/>
@@ -110,7 +109,9 @@
 						<a href="http://validator.w3.org/check?uri=referer">
 							<span class="valid_xhtml"><xsl:text> </xsl:text></span>
 						</a>
+						<a href="http://jigsaw.w3.org/css-validator/validator?uri=referer">
 						<span class="valid_css"><xsl:text> </xsl:text></span>
+						</a>
 					</p>
 				</xsl:if>
 			</div>
