@@ -91,7 +91,7 @@ ul.fkz_liens_nav{
 }
 
 .fkz_qdj_jone {
-	background-image: url("../skins/pico/pointjone.gif");
+	background-image: url("pointjone.gif");
 	background-repeat:no-repeat;
 	background-position: center center;
 	height:60px;
@@ -101,7 +101,7 @@ ul.fkz_liens_nav{
 }
 
 .fkz_qdj_rouje {
-	background-image:url("../skins/pico/pointrouje.gif");
+	background-image:url("pointrouje.gif");
 	background-repeat:no-repeat;
 	background-position: center center;
 	height:60px;
@@ -299,15 +299,15 @@ span.fkz_annonces_vieux {
 }
 /* FAQ et Xshare */
 .noeud_ferme {
-	list-style-image: url('../skins/pico/fold_close.gif');
+	list-style-image: url('fold_close.gif');
 }
 
 .noeud_ouvert {
-	list-style-image: url('../skins/pico/fold_open.gif');
+	list-style-image: url('fold_open.gif');
 }
 
 .feuille {
-	list-style-image: url('../skins/pico/question.gif');
+	list-style-image: url('question.gif');
 }
 
 

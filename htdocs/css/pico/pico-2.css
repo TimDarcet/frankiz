@@ -29,7 +29,7 @@ img {
 }
 
 div.fkz_logo {
-	background-image:url("../skins/pico/frankiz.png");
+	background-image:url("../../skins/pico/frankiz.png");
 	background-repeat:no-repeat;
 	height:60px;
  }
@@ -78,7 +78,7 @@ ul.fkz_liens_nav{
 }
 
 .fkz_qdj_jone {
-	background-image:url("../skins/pico/pointjone.gif");
+	background-image:url("../../skins/pico/pointjone.gif");
 	background-repeat:no-repeat;
 	background-position: center center;
 	height:60px;
@@ -88,7 +88,7 @@ ul.fkz_liens_nav{
 }
 
 .fkz_qdj_rouje {
-	background-image:url("../skins/pico/pointrouje.gif");
+	background-image:url("../../skins/pico/pointrouje.gif");
 	background-repeat:no-repeat;
 	background-position: center center;
 	height:60px;
@@ -283,9 +283,9 @@ span.valid_css {
 }
 
 /* FAQ et Xshare */
-.noeud_ferme{list-style-image:url('../skins/pico/fold_close.gif')}
-.noeud_ouvert{list-style-image:url('../skins/pico/fold_open.gif')}
-.feuille{list-style-image:url('../skins/pico/question.gif')}
+.noeud_ferme{list-style-image:url('../../skins/pico/fold_close.gif')}
+.noeud_ouvert{list-style-image:url('../../skins/pico/fold_open.gif')}
+.feuille{list-style-image:url('../../skins/pico/question.gif')}
 
 .fkz_stats{list-style-type:  none;}
 

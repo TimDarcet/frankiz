@@ -106,7 +106,7 @@
 	<p><xsl:apply-templates/></p>
 </xsl:template>
 <xsl:template match="p[@id='selected']">
-	<img src="skins/pico/fleche.gif" alt=" [selected]"/>
+	<img src="skins/pico/fleche.gif" alt="[selectionné]"/>
 </xsl:template>
 
 <xsl:template match="h1">
