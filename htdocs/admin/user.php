@@ -29,11 +29,14 @@
 	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
 	
 	$Log$
+	Revision 1.17  2004/11/29 20:57:31  kikx
+	Mise en forme
+
 	Revision 1.16  2004/11/29 20:48:45  kikx
 	Simplification des rajouts des droits des personnes ... ce fait grace a des cases a cocher ... (pour les autistes ca devrait etre bon ...) Comme ca pas d'erreur de syntaxe possibles...
-
+	
 	La liste des droits possibles est dans global_func.inc.php
-
+	
 	Revision 1.15  2004/11/27 15:39:54  pico
 	Ajout des droits trombino
 	
@@ -208,7 +211,6 @@ if(verifie_permission('admin')){
 					echo "\t\t\t<option titre=\"$nom\" id=\"$droits\"/>\n";
 ?>
 		</choix>
-
 		<bouton id='mod_compte_fkz' titre='Changer'/>
 	</formulaire>
 <? 

@@ -24,10 +24,13 @@
 	# la dernière promo qui est dans le trombi (qui normalment devrait être mis a jour automatiquement)
 	
 	$Log$
+	Revision 1.9  2004/11/29 20:57:31  kikx
+	Mise en forme
+
 	Revision 1.8  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
-
+	
 	Revision 1.7  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
 	
@@ -75,10 +78,10 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="admin_parametre" titre="Frankiz : Modifier les paramètres globaux">
 
-<commentaire>
+<note>
 Cette page est une page pour pouvoir modifier directement les paramètres du sites : si vous
 devez créer des varibles dans la table essayer qu'elles soient assez explicite.
-</commentaire>
+</note>
 <h2>Paramètres du site</h2>
 	<liste id="liste" selectionnable="non" action="admin/parametre.php">
 		<entete id="nom_var" titre="Nom de la varible"/>
