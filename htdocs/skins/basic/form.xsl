@@ -3,10 +3,13 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.19  2004/10/20 23:45:48  schmurtz
+	<br/> ==> <br /> pour compatibilite avec IE
+
 	Revision 1.18  2004/10/20 20:16:00  schmurtz
 	Correction d'un bug de la skin basic : dans une liste, les boutons/champs
 	s'affichaient dans la mauvaise colonne.
-
+	
 	Revision 1.17  2004/10/20 19:58:02  pico
 	Changement skin pico -> valide html strict
 	Changement des balises qui étaient pas valides
@@ -139,7 +142,7 @@
 			<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:if test="../@valeur = @id"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 		</input>
-		<xsl:value-of select="@titre"/><br/>
+		<xsl:value-of select="@titre"/><br />
 	</xsl:for-each>
 </xsl:template>
 
@@ -150,7 +153,7 @@
 			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:if test="contains(../@valeur,@id)"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 		</input>
-		<xsl:value-of select="@titre"/><br/>
+		<xsl:value-of select="@titre"/><br />
 	</xsl:for-each>
 </xsl:template>
 

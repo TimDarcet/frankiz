@@ -5,10 +5,13 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.17  2004/10/20 23:45:48  schmurtz
+	<br/> ==> <br /> pour compatibilite avec IE
+
 	Revision 1.16  2004/10/20 23:21:39  schmurtz
 	Creation d'un element <html> qui permet d'afficher du html brute sans verification
 	C'est ce qui est maintenant utilise dans les annonces/cadres
-
+	
 	Revision 1.15  2004/10/04 22:48:55  kikx
 	Modification mineur de la page d'envoie de mail promo !
 	
@@ -118,7 +121,7 @@
 			<xsl:apply-templates select="html"/>
 			<p class="signature"><b><xsl:apply-templates select="eleve"/></b></p>
 		</td></tr>
-	</table><br/>
+	</table><br />
 </xsl:template>
 
 <xsl:template match="cadre">
@@ -130,7 +133,7 @@
 		<tr><td>
 			<xsl:apply-templates select="html"/>
 		</td></tr>
-	</table><br/>
+	</table><br />
 </xsl:template>
 
 <xsl:template match="module/annonce">
@@ -139,26 +142,26 @@
 
 <!-- statistiques -->
 <xsl:template match="statistiques">
-	État des serveurs :<br/>
+	État des serveurs :<br />
 	<xsl:for-each select="serveur">
 		- <span><xsl:attribute name="class">serveur_<xsl:value-of select="@etat"/></xsl:attribute>
 			<xsl:value-of select="@nom"/></span>
 		<xsl:if test="boolean(@uptime)">: <xsl:value-of select="@uptime"/> jours</xsl:if>
-		<br/>
+		<br />
 	</xsl:for-each>
-	Statistiques :<br/>
+	Statistiques :<br />
 	<xsl:for-each select="service">
 		- <a>
 			<xsl:attribute name="href"><xsl:value-of select="@stat"/></xsl:attribute>
 			<xsl:value-of select="@nom"/>
 		</a>
-		<br/>
+		<br />
 	</xsl:for-each>
 </xsl:template>
 
 <!-- qdj (peut contenir plus de deux réponses) -->
 <xsl:template match="module/qdj">
-	<xsl:apply-templates select="question"/><br/>
+	<xsl:apply-templates select="question"/><br />
 	
 	<xsl:choose>
 		<!-- l'utilisateur n'a pas encore voté -->
@@ -169,7 +172,7 @@
 						<xsl:value-of select="../@action"/><xsl:value-of select="@id"/>
 					</xsl:attribute>
 					<xsl:apply-templates/>
-				</a><br/>
+				</a><br />
 			</xsl:for-each>
 		</xsl:when>
 		
@@ -179,11 +182,11 @@
 			<xsl:choose>
 				<xsl:when test="$sum_votes != 0">
 					<xsl:for-each select="reponse">
-						<xsl:apply-templates/>: <xsl:value-of select="round((@votes * 100) div $sum_votes)"/>%<br/>
+						<xsl:apply-templates/>: <xsl:value-of select="round((@votes * 100) div $sum_votes)"/>%<br />
 					</xsl:for-each>
 				</xsl:when>
 				<xsl:otherwise> <!-- petite subtilité si aucun vote n'a été effectué -->
-					<xsl:for-each select="reponse"><xsl:apply-templates/>: 0%<br/></xsl:for-each>
+					<xsl:for-each select="reponse"><xsl:apply-templates/>: 0%<br /></xsl:for-each>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:otherwise>
@@ -204,7 +207,7 @@
 	<xsl:if test="@promo != ''">
 		<xsl:text> (</xsl:text><xsl:value-of select="@promo"/><xsl:text>)</xsl:text>
 	</xsl:if>
-	<br/>
+	<br />
 </xsl:template>
 
 <!-- Eleves pour le trombino -->
@@ -219,12 +222,12 @@
 				<xsl:attribute name="src">trombino/?image=true&amp;login=<xsl:value-of select="@login"/>&amp;promo=<xsl:value-of select="@promo"/></xsl:attribute>
 			</img>
 		</td><td width="100%">
-			Surnom : <xsl:value-of select="@surnom"/><br/>
-			Tel : <xsl:value-of select="@tel"/><br/>
-			Kazert : <xsl:value-of select="@casert"/><br/>
-			Mail : <xsl:value-of select="@mail"/><br/>
-			Section : <xsl:value-of select="@section"/> (<xsl:value-of select="@cie"/>e Cie)<br/>
-			Binets : <xsl:apply-templates select="binet"/><br/>
+			Surnom : <xsl:value-of select="@surnom"/><br />
+			Tel : <xsl:value-of select="@tel"/><br />
+			Kazert : <xsl:value-of select="@casert"/><br />
+			Mail : <xsl:value-of select="@mail"/><br />
+			Section : <xsl:value-of select="@section"/> (<xsl:value-of select="@cie"/>e Cie)<br />
+			Binets : <xsl:apply-templates select="binet"/><br />
 		</td></tr>
 	</table>
 </xsl:template>

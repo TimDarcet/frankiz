@@ -3,10 +3,13 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.15  2004/10/20 23:45:48  schmurtz
+	<br/> ==> <br /> pour compatibilite avec IE
+
 	Revision 1.14  2004/10/20 23:21:39  schmurtz
 	Creation d'un element <html> qui permet d'afficher du html brute sans verification
 	C'est ce qui est maintenant utilise dans les annonces/cadres
-
+	
 	Revision 1.13  2004/10/20 22:10:57  schmurtz
 	Correction du bug qui affichait deux images dans la faq
 	
@@ -50,8 +53,8 @@
 	<img class="image" style="border:0">
 		<xsl:attribute name="src"><xsl:value-of select="@source"/></xsl:attribute>
 		<xsl:attribute name="alt"><xsl:value-of select="@legende"/></xsl:attribute>
-	</img><br/>
-	<xsl:if test="boolean(@legende)"><span class="legende"><xsl:value-of select="@legende"/></span><br/></xsl:if>
+	</img><br />
+	<xsl:if test="boolean(@legende)"><span class="legende"><xsl:value-of select="@legende"/></span><br /></xsl:if>
 </xsl:template>
 
 
@@ -60,7 +63,7 @@
 	<a class="lien"><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
 		<xsl:value-of select="@titre"/>
 			<xsl:apply-templates/>
-	</a><br/>
+	</a><br />
 </xsl:template>
 
 
@@ -168,7 +171,7 @@
 
 <!-- Formatage HTML -->
 <xsl:template match="p">
-	<xsl:apply-templates/><br/>
+	<xsl:apply-templates/><br />
 </xsl:template>
 <xsl:template match="h1">
 	<h1><xsl:apply-templates/></h1>
@@ -195,7 +198,7 @@
 	<code><xsl:apply-templates/></code>
 </xsl:template>
 <xsl:template match="a">
-	<a><xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute><xsl:attribute name="href"><xsl:value-of select="@href"/></xsl:attribute><xsl:apply-templates/></a>
+	<a><xsl:attribute name="href"><xsl:value-of select="@href"/></xsl:attribute><xsl:apply-templates/></a>
 </xsl:template>
 
 <xsl:template match="html"><!-- très moche car impossible à skinner, mais parfois indispensable -->
