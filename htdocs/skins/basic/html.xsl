@@ -3,9 +3,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.7  2004/09/20 22:19:28  kikx
+	test
+
 	Revision 1.6  2004/09/20 20:31:20  schmurtz
 	Rajout de la balise html <em>
-
+	
 	Revision 1.5  2004/09/16 11:09:38  kikx
 	C'est les vacances maintenant ...
 	Bon bref .. c'est dur aussi
@@ -32,9 +35,7 @@
 <xsl:template match="lien">
 	<a class="lien"><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
 		<xsl:value-of select="@titre"/>
-		<xsl:if test="boolean(@legende) and count(element)!=0">
-			<br/><xsl:apply-templates/>
-		</xsl:if>
+			<xsl:apply-templates/>
 	</a><br/>
 </xsl:template>
 

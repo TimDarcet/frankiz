@@ -3,10 +3,13 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.14  2004/09/20 22:19:28  kikx
+	test
+
 	Revision 1.13  2004/09/20 07:14:41  kikx
 	Permet de supprimer l'image qd on va valider l'annonce !!!
 	C'est chaint si on peut pas la suppimer
-
+	
 	Revision 1.12  2004/09/18 16:22:26  kikx
 	micro bug fix
 	
@@ -52,7 +55,7 @@ $temp = $temp[0] ;
 $uploaddir  =  $temp."/image_temp/" ;
 
 $erreur_upload = 0 ;
-if ((isset($_FILES['file']))&&($_FILES['file']['size']!=0)&&($_FILES['file']['size']!=0))  {
+if ((isset($_FILES['file']))&&($_FILES['file']['size']!=0))  {
 	$original_size = getimagesize($_FILES['file']['tmp_name']);
 	$filetype = $_FILES['file']['type'] ;
 	
