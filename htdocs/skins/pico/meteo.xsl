@@ -52,13 +52,13 @@
 		</xsl:for-each>
 </xsl:template>
 
-<xsl:template match="module/meteo">
+<xsl:template match="module[@id='meteo']">
 	<div class="fkz_module"  id='mod_meteo'>
 		<div class="fkz_titre"><span id="meteo_logo"><xsl:text> </xsl:text></span><span id="meteo">La météo</span></div>
 		<div class="fkz_module_corps">
-			<xsl:value-of select="now/temperature"/>°C<br />
+			<xsl:value-of select="meteo/now/temperature"/>°C<br />
 			<img alt="meteo" width="64" height="64">
-				<xsl:attribute name="src">skins/pico/images/meteo/<xsl:value-of select="now/image"/>.png</xsl:attribute>
+				<xsl:attribute name="src">skins/pico/images/meteo/<xsl:value-of select="meteo/now/image"/>.png</xsl:attribute>
 			</img>
 		</div>
 	</div>

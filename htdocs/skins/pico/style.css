@@ -48,6 +48,16 @@ a:hover, a:active {
 	border-bottom:1px dashed #1F118C;
 	}
 
+#rss .fkz_titre a:link,#rss  .fkz_titre a:visited { 
+	color:#fff;
+	font-style:italic;
+	text-decoration:none;
+	}
+#rss  .fkz_titre a:hover, #rss .fkz_titre a:active { 
+	text-decoration:none;
+	margin-bottom:1px;
+	border-bottom:1px dashed #1F118C;
+	}
 /* Structure de la page */
 
 .fkz_page {

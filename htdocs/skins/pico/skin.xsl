@@ -86,7 +86,8 @@
 				<xsl:apply-templates select="frankiz/module[@id='qdj']"/>
 				<xsl:apply-templates select="frankiz/module[@id='qdj_hier']"/>
 				<xsl:apply-templates select="frankiz/module[@id='meteo']"/>
-				<xsl:if test="count(frankiz/module[@id='qdj']|frankiz/module[@id='qdj_hier']|frankiz/module[@id='tour_kawa'])">
+				<xsl:apply-templates select="frankiz/module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id!='activites' and @id!='liens_navigation' and @id!='anniversaires' and @id!='liste_css']"/>
+				<xsl:if test="count(frankiz/module[@id!='stats' and @id!='liens_ecole' and @id!='activites' and @id!='liens_navigation' and @id!='liens_contacts' and @id!='anniversaires' and @id!='liste_css'])">
 					<p class="valid">
 						<a href="http://validator.w3.org/check?uri=referer">
 							<span class="valid_xhtml"><xsl:text> </xsl:text></span>
@@ -121,7 +122,10 @@
 
 
 <xsl:template match="cadre">
-	<h2><xsl:value-of select="@titre"/></h2>
+	<h2>
+		<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+		<xsl:value-of select="@titre"/>
+	</h2>
 	<xsl:if test="count(image)"><div style="text-align: center"><xsl:apply-templates select="image"/></div></xsl:if>
 	<xsl:apply-templates/>
 </xsl:template>
@@ -140,6 +144,46 @@
 	</a>
 		<h3><xsl:value-of select="@nom"/></h3>
 		<p><xsl:value-of select="description"/></p>
+</xsl:template>
+
+
+<xsl:template match="module[@id='rss']">
+	 <div class="module" id='mod_rss'>
+	 	
+		<div class="fkz_titre">
+			<a>
+				<xsl:attribute name="href"><xsl:value-of select="lien[position()=1]/@url"/></xsl:attribute>
+				<xsl:value-of select="lien[position()=1]/@titre" />
+			</a>
+			<xsl:value-of select="lien[position()=1]"/>
+		</div>
+		<div class="fkz_module_corps">
+			<dl class="fkz_rss">
+				<xsl:for-each select="lien[position()>1]">
+					<dt class="fkz_rss">
+						<a>
+							<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+							<xsl:value-of select="@titre" />
+						</a>
+					</dt>
+					<dd>
+						<xsl:value-of select="current()" />
+					</dd>
+				</xsl:for-each>
+			</dl>
+		</div>
+	</div>
+</xsl:template>
+
+<xsl:template match="module">
+	<div class="module"><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+		<div class="fkz_titre">
+			<xsl:value-of select="@titre"/>
+		</div>
+		<div class="fkz_module_corps">
+			<xsl:apply-templates/>
+		</div>
+	</div>
 </xsl:template>
 
 </xsl:stylesheet>

@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.26  2004/11/17 22:27:24  pico
+		Corrections et bugfix divers
+
 		Revision 1.25  2004/11/16 19:58:54  pico
 		Corrections urls liens et images des faq
-
+		
 		Revision 1.24  2004/11/16 18:32:34  schmurtz
 		Petits problemes d'interpretation de <note> et <commentaire>
 		
@@ -305,11 +308,9 @@ echo "<br/>" ;
   	if ($id != "") {
 		$DB_web->query("SELECT question,reponse FROM faq WHERE faq_id='{$id}'") ;
 		if (list($question,$reponse) = $DB_web->next_row()) {
-	?>
-	<a name='reponse'> </a>
-	<? 
+
 	$repfaq = "../../data/faq/".$reponse;
-	echo "<cadre titre=\"Q: ".$question."\">\n";
+	echo "<cadre titre=\"Q: ".$question."\" id=\"reponse\">\n";
 	echo "<html>";
 	if(file_exists($repfaq)){
  		if($texte = fopen($repfaq,"r")){

@@ -79,11 +79,9 @@
 
 <xsl:template match="annonce" mode="complet">
 	<div class="fkz_annonces">
-		<a> 
-			<xsl:attribute name="name">
+		<xsl:attribute name="id">
 			<xsl:value-of select="@id"/>
-			</xsl:attribute><xsl:text> </xsl:text>
-		</a>
+		</xsl:attribute>
 		<div class="fkz_annonces_titre">
 			<b>
 				<span>

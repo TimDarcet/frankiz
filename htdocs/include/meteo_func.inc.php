@@ -31,10 +31,13 @@
 			dayf=8 pour avoir 7 jour de previsions
 
 	$Log$
+	Revision 1.3  2004/11/17 22:27:24  pico
+	Corrections et bugfix divers
+
 	Revision 1.2  2004/11/04 22:07:19  schmurtz
 	Suppression du parser xml de la meteo : utilisation d'une conversion xsl a
 	la place
-
+	
 	Revision 1.1  2004/10/28 16:08:14  kikx
 	Ne fait qu'une page de fonctions pour la météo car sinon ça devient ingérable
 	
@@ -56,9 +59,11 @@ function weather_xml() {
 									// http à réussie
 	
 	// traduction de la météo dans notre format
-	$xh = xslt_create();
-	xslt_set_encoding($xh, "ISO-8859-1");
-	echo xslt_process($xh, 'arg:/_xml', BASE_LOCAL.'/include/meteo_convert.xsl', NULL, array('/_xml'=>$xml));
-	xslt_free($xh);
+	if(strstr($xml,"<weather")){
+		$xh = xslt_create();
+		xslt_set_encoding($xh, "ISO-8859-1");
+		echo xslt_process($xh, 'arg:/_xml', BASE_LOCAL.'/include/meteo_convert.xsl', NULL, array('/_xml'=>$xml));
+		xslt_free($xh);
+	}
 }
 ?>
