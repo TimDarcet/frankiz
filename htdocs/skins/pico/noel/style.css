@@ -139,17 +139,19 @@ span.fkz_logo,span.fkz_logo_eleves {
 }
 
 
-.fkz_qdj_jone a{
+.fkz_qdj_jone a {
 	color: red;
+	font-weight: bold;
 }
 
-.fkz_qdj_rouje a{
-	color: yellow;
+.fkz_qdj_rouje a {
+	color: #FFBB00;
+	font-weight: bold;
 }
 
 
 .fkz_qdj_jone_reponse {
-	color: yellow;
+	color: #FFBB00;
 	float: right;
 }
 
