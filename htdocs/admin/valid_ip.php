@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.33  2005/01/10 08:38:04  pico
+	BugFix
+
 	Revision 1.32  2005/01/10 08:25:40  pico
 	Plus sûr
-
+	
 	Revision 1.31  2005/01/10 08:20:57  pico
 	Ajoute le numero de prise
 	
@@ -232,6 +235,7 @@ $DB_admin->query("UNLOCK TABLES");
 	<liste id="liste" selectionnable="non" action="admin/valid_ip.php">
 		<entete id="prise" titre="Prise"/>
 		<entete id="ip" titre="IP"/>
+		<entete id="degage" titre=""/>
 		<entete id="eleve" titre="Élève"/>
 
 <?
