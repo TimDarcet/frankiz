@@ -277,9 +277,11 @@ div.fkz_anniversaire_titre,.fkz_titre,.fkz_titre a {
 	
 .fkz_trombino_photo{
 	float:left;
+	margin-left:5px;
 }
 .fkz_trombino_section{
 	float:right;
+	margin-right:5px;
 }
 .fkz_trombino_infos{
 	float:left;
