@@ -60,6 +60,8 @@ div#droite
 div#footer
 {
 	clear:both;
+/*	position:absolute; 
+	bottom:0; */
 	width:100%;
 	height:37px;
 	background: url('./images/Bar_bas_milieu.png') repeat-x left top ;
@@ -156,7 +158,7 @@ div#footer h5 a span
 
 dl.boite {
 	width: 100%; 
-	margin:30px 0;
+	margin:0 0 30px 0;
 }
 
 dl.boite dt.titre {
@@ -715,29 +717,29 @@ form {
 
 /* -- formulaire simple (trombi,skin,etc...) -- */
 
-div.formulaire {
-	float:left;
+.formulaire {
 }
 
-div.formulaire span.droite{
+.formulaire span.droite{
 	float:right;
 	width:78%;
 	text-align: left;
 }
 
-div.formulaire span.gauche{
+.formulaire label.gauche{
 	float:left;
 	width:20%;
 	padding-left:5px;
 }
-div.formulaire div{
+.formulaire div{
 	clear:both;
 }
 
-div.formulaire span.boutons{
-	display:block;
+.formulaire p.boutons{
+
 	padding-left: 22%;
 	padding-top:10px;
+	margin:0 auto;
 }
 
 
@@ -815,6 +817,5 @@ dl.boite h3, dl.boite h2 {
 	margin:0 auto;
 }
 .clear {
-	border:red 1px solid;
 	clear:left;
 }
