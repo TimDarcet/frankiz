@@ -11,9 +11,12 @@
 	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
 	
 	$Log$
+	Revision 1.11  2004/10/21 20:37:59  kikx
+	C'est moche mais c'est achement pratique
+
 	Revision 1.10  2004/10/19 20:15:24  kikx
 	Pour Schmurtz
-
+	
 	Revision 1.9  2004/10/19 20:01:54  kikx
 	Car ca ne sert a rien si on met en place un 'su'
 	
@@ -154,6 +157,7 @@ if (isset($_POST['mod_compte_fkz'])) {
 ?>
 		<champ id="pass" titre="Mot de passe" valeur=""/>
 		<commentaire>Pour le mot de passe : Si vous le laissez vide, il ne sera pas modifié !</commentaire>
+		<warning>Faites terminer les droits par une virgule c'est IMPORTANT, toujours ...</warning>
 		<champ id='perms' titre='Permissions' valeur='<? echo $perms?>'/>
 		
 		<bouton id='mod_compte_fkz' titre='Changer'/>

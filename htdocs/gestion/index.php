@@ -4,9 +4,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.2  2004/10/21 20:37:59  kikx
+	C'est moche mais c'est achement pratique
+
 	Revision 1.1  2004/10/20 21:45:01  kikx
 	Pour que ca soit propre
-
+	
 	Revision 1.25  2004/10/19 19:08:17  kikx
 	Permet a l'administrateur de valider les modification des binets
 	
@@ -84,6 +87,7 @@ $permissions_user = ses_permissions() ;
 		<lien titre="Modifier un utilisateur" url="<?php echo BASE_URL?>/trombino"/>
 		<lien titre="Liste des Binets" url="<?php echo BASE_URL?>/admin/binets.php"/>
 		<lien titre="Liste des Binets qui ont un site WEB" url="<?php echo BASE_URL?>/admin/binets_web.php"/>
+		<lien titre="Gestion des webmestres et des prez" url="<?php echo BASE_URL?>/admin/binet_web_prez.php"/>
 		<lien titre="Liste des sections" url="<?php echo BASE_URL?>/admin/sections.php"/>
 		<lien titre="Liste des IPs" url="<?php echo BASE_URL?>/admin/ip.php"/>
 		<lien titre="Gerer les demandes d'ajout d'ips" url="<?php echo BASE_URL?>/admin/valid_ip.php"/>
