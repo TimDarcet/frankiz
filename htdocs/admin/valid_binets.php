@@ -21,9 +21,12 @@
 	Page de validation d'une modification d'un binet
 	
 	$Log$
+	Revision 1.10  2004/12/13 20:03:25  pico
+	Les liens ne forment pas de blocs, il faut donc le spécifier
+
 	Revision 1.9  2004/12/08 12:48:07  kikx
 	oups
-
+	
 	Revision 1.8  2004/12/08 12:46:50  kikx
 	Protection de la validation des binets
 	
@@ -115,7 +118,7 @@ $DB_valid->query("UNLOCK TABLES");
 			<hidden id="id" titre="ID" valeur="<? echo $binet_id?>"/>
 			<champ titre="Catégorie" valeur="<? echo $categorie?>" modifiable="non"/>
 			<image source="gestion/binet.php?image=1&amp;id=<?=$binet_id?>"/>
-			<lien url="<? echo $http?>" titre="<? echo $http?>"/>
+			<lien url="<? echo $http?>" titre="<? echo $http?>"/><br/>
 			<champ titre="Description" valeur="<? echo stripslashes($description)?>" modifiable="non"/>
 
 			<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if ($exterieur==1) echo 'exterieur' ;?>" >

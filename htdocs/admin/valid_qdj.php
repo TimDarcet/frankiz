@@ -20,10 +20,14 @@
 /*
 	Page qui permet aux admins de valider une qdj
 	
+
 	$Log$
+	Revision 1.13  2004/12/13 20:03:25  pico
+	Les liens ne forment pas de blocs, il faut donc le spécifier
+
 	Revision 1.12  2004/12/13 16:32:14  kikx
 	Protection de la validation d'une QDJ ...
-
+	
 	Revision 1.11  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
 	
@@ -133,7 +137,7 @@ $DB_valid->query("UNLOCK TABLES");
 //===============================
 ?>
 
-<lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/>
+<lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/><br/>
 
 <?
 	$DB_valid->query("SELECT v.qdj_id,v.question, v.reponse1, v.reponse2, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_qdj as v INNER JOIN trombino.eleves as e USING(eleve_id)");

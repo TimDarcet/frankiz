@@ -21,9 +21,12 @@
 	Pour gerer son site web perso
 		
 	$Log$
+	Revision 1.5  2004/12/13 20:03:25  pico
+	Les liens ne forment pas de blocs, il faut donc le spécifier
+
 	Revision 1.4  2004/12/07 14:39:26  schmurtz
 	Bugs et orthographe
-
+	
 	Revision 1.3  2004/11/24 22:29:52  kikx
 	blu
 	
@@ -114,8 +117,8 @@ require "../include/page_header.inc.php";
 		if (is_dir(BASE_PAGESPERSOS.$login."-".$promo)){
 		?>
 			<note>Nous te conseillons de sauvegarder ton site avant d'uploader le nouveau en cas de problème.</note>
-			<lien titre="Télécharger en .zip" url="profil/siteweb.php?download_type=zip" />
-			<lien titre="Télécharger en .tar.gz" url="profil/siteweb.php?download_type=tar.gz" />
+			<lien titre="Télécharger en .zip" url="profil/siteweb.php?download_type=zip" /><br/>
+			<lien titre="Télécharger en .tar.gz" url="profil/siteweb.php?download_type=tar.gz" /><br/>
 			<note>Si tu souhaites que ton site apparaisse sur la liste des sites élèves, clique sur le bouton "Extérieur"</note>
 			<bouton id="ext" titre="Extérieur"/>
 		<?

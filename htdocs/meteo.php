@@ -21,9 +21,12 @@
 	Permet de donner la météo sur Paris (cf. meteo_func.inc.php)
 			
 	$Log$
+	Revision 1.2  2004/12/13 20:03:25  pico
+	Les liens ne forment pas de blocs, il faut donc le spécifier
+
 	Revision 1.1  2004/11/25 00:10:30  schmurtz
 	Suppression des dossiers ne contenant qu'un unique fichier index.php
-
+	
 	Revision 1.6  2004/11/04 22:07:19  schmurtz
 	Suppression du parser xml de la meteo : utilisation d'une conversion xsl a
 	la place
@@ -63,7 +66,7 @@ require BASE_LOCAL."/include/page_header.inc.php";
 		cache_sauver('meteo');
 	}
 ?>
-<lien url="http://www.weather.com/?prod=xoap&amp;par=1006415841"><image source="meteo/Weather.com.png"/></lien>
+<lien url="http://www.weather.com/?prod=xoap&amp;par=1006415841"><image source="meteo/Weather.com.png"/></lien><br/>
 <lien url="http://www.weather.com/?prod=xoap&amp;par=1006415841">Météo fournie grâce à weather.com&#174;</lien>
 </page>
 <?php require_once BASE_LOCAL."/include/page_footer.inc.php"; ?>

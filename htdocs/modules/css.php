@@ -21,9 +21,12 @@
 	Liste des CSS existante compatible avec la skin XSL courante.
 	
 	$Log$
+	Revision 1.13  2004/12/13 20:03:25  pico
+	Les liens ne forment pas de blocs, il faut donc le spécifier
+
 	Revision 1.12  2004/12/06 17:45:06  pico
 	Correction choix css alternatives
-
+	
 	Revision 1.11  2004/12/06 14:54:06  pico
 	Remet l'affichage des css alternatives (perdu lors du passage en /nomskin/nomcss)
 	
@@ -58,7 +61,7 @@
 			$file_css == "CVS" || $file_css{0} == "#" || $file_css == $description['chemin']) continue;
 		
 		$description_css = lire_description_css(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']."/$file_css");
-		echo "<lien titre=\"$file_css ($description_css)\" url=\"".BASE_URL."/skins/".$_SESSION['skin']['skin_nom']."/$file_css/style.css\"/>";
+		echo "<lien titre=\"$file_css ($description_css)\" url=\"".BASE_URL."/skins/".$_SESSION['skin']['skin_nom']."/$file_css/style.css\"/><br/>";
 	}
 	closedir($dir_css);
 ?>

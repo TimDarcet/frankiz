@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.25  2004/12/13 20:03:25  pico
+	Les liens ne forment pas de blocs, il faut donc le spécifier
+
 	Revision 1.24  2004/12/07 12:11:13  pico
 	Un peu plus de droits pour le webmestre
-
+	
 	Revision 1.23  2004/12/07 08:36:39  pico
 	Ajout d'une page pour pouvoir vider un peu les bases de données (genre pas garder les news qui datent de vieux)
 	
@@ -198,56 +201,56 @@ $permissions_user = $_SESSION['user']->perms ;
 			}
 		}
 		?>
-		<lien titre="Valider les changements de photo trombino (<?=$nb?>)" url="admin/valid_trombi.php"/>
+		<lien titre="Valider les changements de photo trombino (<?=$nb?>)" url="admin/valid_trombi.php"/><br/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('web')){
 		$DB_valid->query("SELECT eleve_id FROM valid_annonces") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les annonces (<?=$nb?>)" url="admin/valid_annonces.php"/>
+		<lien titre="Valider les annonces (<?=$nb?>)" url="admin/valid_annonces.php"/><br/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('web')){
 		$DB_valid->query("SELECT eleve_id FROM valid_affiches") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les activités (<?=$nb?>)" url="admin/valid_affiches.php"/>
+		<lien titre="Valider les activités (<?=$nb?>)" url="admin/valid_affiches.php"/><br/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('web')){
 		$DB_valid->query("SELECT eleve_id FROM valid_sondages") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les sondages (<?=$nb?>)" url="admin/valid_sondages.php"/>
+		<lien titre="Valider les sondages (<?=$nb?>)" url="admin/valid_sondages.php"/><br/>
 	<?
 	}
 	if (verifie_permission('admin')){
 		$DB_valid->query("SELECT eleve_id FROM valid_mailpromo") ;
 		$nb = $DB_valid->num_rows() ;
 	?>
-		<lien titre="Valider les mails promos (<?=$nb?>)" url="admin/valid_mailpromo.php"/>
+		<lien titre="Valider les mails promos (<?=$nb?>)" url="admin/valid_mailpromo.php"/><br/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('qdjmaster')){
 		$DB_valid->query("SELECT eleve_id FROM valid_qdj") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les qdj (<?=$nb?>)" url="admin/valid_qdj.php"/>
+		<lien titre="Valider les qdj (<?=$nb?>)" url="admin/valid_qdj.php"/><br/>
 	<?
 	}
 	if (verifie_permission('admin')){
 		$DB_valid->query("SELECT id FROM valid_pageperso") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les page persos (<?=$nb?>)" url="admin/valid_pageperso.php"/>
+		<lien titre="Valider les page persos (<?=$nb?>)" url="admin/valid_pageperso.php"/><br/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('trombino')){
 		$DB_valid->query("SELECT binet_id FROM valid_binet") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les changements des Binets (<?=$nb?>)" url="admin/valid_binets.php"/>
+		<lien titre="Valider les changements des Binets (<?=$nb?>)" url="admin/valid_binets.php"/><br/>
 	<?
 	}
 	
@@ -259,46 +262,46 @@ $permissions_user = $_SESSION['user']->perms ;
 	}
 	if (verifie_permission('admin')||verifie_permission('qdjmaster')||verifie_permission('web')){
 	?>
-		<lien titre="Planifier les qdj" url="admin/planif_qdj.php"/>
+		<lien titre="Planifier les qdj" url="admin/planif_qdj.php"/><br/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('web')){
 	?>
-		<lien titre="Planifier les activités" url="admin/planif_affiches.php"/>
+		<lien titre="Planifier les activités" url="admin/planif_affiches.php"/><br/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('web')){
 	?>
-		<lien titre="Modifier les annonces" url="admin/modif_annonces.php"/>
-		<lien titre="Nettoyer les bases de données" url="admin/nettoyage.php"/>
+		<lien titre="Modifier les annonces" url="admin/modif_annonces.php"/><br/>
+		<lien titre="Nettoyer les bases de données" url="admin/nettoyage.php"/><br/>
 	<?
 	}
 	
 	
-	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('xshare')||verifie_permission('faq')||verifie_permission('trombino')){
+	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('xshare')||verifie_permission('faq')||verifie_permission('trombino')){
 	?>
 	<h3>Administration des données de Frankiz</h3>
 	<?
 	}
 	if (verifie_permission('admin')){
 	?>
-		<lien titre="Changer les variables globales" url="admin/parametre.php"/>
+		<lien titre="Changer les variables globales" url="admin/parametre.php"/><br/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('trombino')){
 	?>
-		<lien titre="Liste des Binets" url="admin/binets_liste.php"/>
-		<lien titre="Liste des sections" url="admin/sections.php"/>
+		<lien titre="Liste des Binets" url="admin/binets_liste.php"/><br/>
+		<lien titre="Liste des sections" url="admin/sections.php"/><br/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('xshare')){
 	?>
-		<lien titre="Gestion xshare" url="admin/xshare.php"/>
+		<lien titre="Gestion xshare" url="admin/xshare.php"/><br/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('faq')){
 	?>
-		<lien titre="Gestion FAQ" url="admin/faq.php"/>
+		<lien titre="Gestion FAQ" url="admin/faq.php"/><br/>
 	<?
 	}
 	if (verifie_permission('admin')){
@@ -308,8 +311,8 @@ $permissions_user = $_SESSION['user']->perms ;
 		$DB_valid->query("SELECT eleve_id FROM valid_ip") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Gerer les demandes d'ajout d'ips (<?=$nb?>)" url="admin/valid_ip.php"/>
-		<lien titre="Liste des IPs" url="admin/ip.php"/>
+		<lien titre="Gerer les demandes d'ajout d'ips (<?=$nb?>)" url="admin/valid_ip.php"/><br/>
+		<lien titre="Liste des IPs" url="admin/ip.php"/><br/>
 	<?
 	}
 	
@@ -330,7 +333,7 @@ $permissions_user = $_SESSION['user']->perms ;
 			$DB_trombino->query("SELECT nom FROM binets WHERE binet_id=$binet");
 			list($nom) = $DB_trombino->next_row() ;
 
-			echo "<lien titre=\"Gerer la page du binet : $nom\" url=\"gestion/binet.php?binet=".$binet."\"/>" ;
+			echo "<lien titre=\"Gerer la page du binet : $nom\" url=\"gestion/binet.php?binet=".$binet."\"/><br/>" ;
 		}
 	}
 
@@ -353,7 +356,7 @@ $permissions_user = $_SESSION['user']->perms ;
 			list($nom) = $DB_trombino->next_row() ;
 
 				
-			echo "<lien titre=\"Gerer les membres du binet : $nom\" url=\"gestion/binet.php?binet=".$binet."\"/>" ;
+			echo "<lien titre=\"Gerer les membres du binet : $nom\" url=\"gestion/binet.php?binet=".$binet."\"/><br/>" ;
 		}
 	}
 
@@ -363,7 +366,8 @@ $permissions_user = $_SESSION['user']->perms ;
 	//======================================
 	if (verifie_permission('admin')||verifie_permission('bob')){
 		echo "<h2>Gestion du BôB</h2>" ;
-		echo "<lien titre=\"Gerer l'ouverture du BôB\" url=\"admin/etat_bob.php\"/>" ;
+		echo "<lien titre=\"Gerer l'ouverture du BôB\" url=\"admin/etat_bob.php\"/><br/>" ;
+		echo "<lien titre=\"Gerer les tours kawa\" url=\"admin/etat_bob.php\"/><br/>" ;
 	}
 ?>
 

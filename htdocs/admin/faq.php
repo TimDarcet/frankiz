@@ -19,10 +19,13 @@
 */
 /*
 		$Log$
+		Revision 1.31  2004/12/13 20:03:25  pico
+		Les liens ne forment pas de blocs, il faut donc le spécifier
+
 		Revision 1.30  2004/11/29 17:27:32  schmurtz
 		Modifications esthetiques.
 		Nettoyage de vielles balises qui trainaient.
-
+		
 		Revision 1.29  2004/11/27 15:16:42  pico
 		Corrections
 		
@@ -391,8 +394,8 @@ echo "</arbre>";
 	<champ id="question" titre="Question" valeur="<? echo $question ?>" />
 	<champ id="nom" titre="Nom du sous-dossier de la faq" valeur="<? echo dirname($reponse) ?>" />
 	<fichier id="file" titre="Changer fichier réponse (fichier .html, .zip ou .tar)" taille="1000000000"/>
-	<lien titre="Télécharger la faq en .zip" url="admin/faq.php?download=<? echo base64_encode(dirname($reponse)) ?>&amp;download_type=zip" />
-	<lien titre="Télécharger la faq en .tar" url="admin/faq.php?download=<? echo base64_encode(dirname($reponse)) ?>&amp;download_type=tar" />
+	<lien titre="Télécharger la faq en .zip" url="admin/faq.php?download=<? echo base64_encode(dirname($reponse)) ?>&amp;download_type=zip" /><br/>
+	<lien titre="Télécharger la faq en .tar" url="admin/faq.php?download=<? echo base64_encode(dirname($reponse)) ?>&amp;download_type=tar" /><br/>
 	<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
 	<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette FAQ ?!!!!!')"/>
 	</formulaire>

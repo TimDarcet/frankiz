@@ -21,11 +21,14 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.18  2004/12/13 20:03:25  pico
+	Les liens ne forment pas de blocs, il faut donc le spécifier
+
 	Revision 1.17  2004/12/12 09:29:26  kikx
 	Disparition du lien faire disparaitrre si l'utilisateur n'est pas logué ou et si l'utilisateur a deja lu cette annonce et qu'il se situe sur la page pour toute les voir
-
+	
 	Desolé Psycow ... j'ai pourri ta skin :(
-
+	
 	Revision 1.16  2004/12/10 20:06:18  kikx
 	Pour faire plaisir a fruneau
 	
@@ -116,7 +119,7 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 		}
 		if ((est_authentifie(AUTH_COOKIE))&&(!isset($_REQUEST['lire_tout'])))  {
 ?>
-			<lien url='?lu=<?=$id?>' titre="Faire disparaitre" id="annonces_lues"/>
+			<lien url='?lu=<?=$id?>' titre="Faire disparaitre" id="annonces_lues"/><br/>
 <?
 }
 ?>
@@ -124,9 +127,9 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 	</annonce>
 <?php }
 if ((!isset($_REQUEST['lire_tout']))&&(est_authentifie(AUTH_COOKIE))) {
-	echo "<lien url='?lire_tout=1' titre='Lire toutes les annonces' id='lire_tout'/>"; 
+	echo "<lien url='?lire_tout=1' titre='Lire toutes les annonces' id='lire_tout'/><br/>"; 
 } else if  (est_authentifie(AUTH_COOKIE)){
-	echo "<lien url='' titre='Lire les annonces non lues' id='lire_nonlu'/>"; 
+	echo "<lien url='' titre='Lire les annonces non lues' id='lire_nonlu'/><br/>"; 
 }
 echo "</page>\n";
 require_once "include/page_footer.inc.php";

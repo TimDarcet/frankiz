@@ -21,9 +21,12 @@
 	Affichage des liens vers les sondages
 
 	$Log$
+	Revision 1.5  2004/12/13 20:03:25  pico
+	Les liens ne forment pas de blocs, il faut donc le spécifier
+
 	Revision 1.4  2004/12/07 12:48:31  pico
 	N'affiche pas le module sondage si il est vide
-
+	
 	Revision 1.3  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
@@ -44,7 +47,7 @@ if(est_authentifie(AUTH_MINIMUM)) {
 			if($DB_web->num_rows()>0){
 				echo "<p>En Cours</p>" ;
 				while(list($id,$titre,$date) = $DB_web->next_row()) {
-					echo "<lien id='sondage_encours' titre='$titre (".date("d/m",strtotime($date)).")' url='sondage.php?id=$id'/>\n";
+					echo "<lien id='sondage_encours' titre='$titre (".date("d/m",strtotime($date)).")' url='sondage.php?id=$id'/>\<br/>n";
 				}
 			}
 			
@@ -52,7 +55,7 @@ if(est_authentifie(AUTH_MINIMUM)) {
 			if($DB_web->num_rows()>0){
 				echo "<p>Anciens</p>" ;
 				while(list($id,$titre,$date) = $DB_web->next_row()) {
-					echo "<lien id='sondage_ancien' titre='$titre (".date("d/m",strtotime($date)).")' url='sondage.php?id=$id'/>\n";
+					echo "<lien id='sondage_ancien' titre='$titre (".date("d/m",strtotime($date)).")' url='sondage.php?id=$id'/><br/>\n";
 				}
 			}
 			echo "</module>\n";

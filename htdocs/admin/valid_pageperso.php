@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.6  2004/12/13 20:03:25  pico
+	Les liens ne forment pas de blocs, il faut donc le spécifier
+
 	Revision 1.5  2004/12/13 16:23:47  kikx
 	Passage en secure validation pour les page perso + note sur les commentaires
-
+	
 	Revision 1.4  2004/11/27 20:30:52  pico
 	Correction de commentaire
 	
@@ -129,7 +132,7 @@ $DB_valid->query("UNLOCK TABLES");
 			<element id="<? echo $id ;?>">
 				<colonne id="eleve"><? echo "$nom $prenom ($promo)" ?></colonne>
 				<colonne id="url">
-					<lien id="<?=$id?>" titre="Site" url="<? echo URL_PAGEPERSO."$login-$promo"?>"/>
+					<lien id="<?=$id?>" titre="Site" url="<? echo URL_PAGEPERSO."$login-$promo"?>"/><br/>
 					<zonetext titre="Raison du Refus si refus" id="refus_<? echo $id ;?>" valeur=""/>
 					<bouton titre="Ok" id="ok_<? echo $id ;?>" />
 					<bouton titre="Vtff" id="vtff_<? echo $id ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette page ?')"/>

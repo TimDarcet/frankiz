@@ -21,9 +21,12 @@
 	Affichage des liens personnels.
 
 	$Log$
+	Revision 1.9  2004/12/13 20:03:25  pico
+	Les liens ne forment pas de blocs, il faut donc le spécifier
+
 	Revision 1.8  2004/12/05 23:19:27  pico
 	Evite d'afficher une boite vide
-
+	
 	Revision 1.7  2004/11/30 19:56:32  pico
 	On a plus besoin du lien vers la conf des liens perso, puisqu'elle est dans la page de préférences
 	
@@ -53,7 +56,7 @@
 if(isset($_SESSION['liens_perso']) && !empty($_SESSION['liens_perso']) && count($_SESSION['liens_perso'])>0){
 	echo "<module id=\"liens_perso\" titre=\"Liens Perso\">";
 	foreach($_SESSION['liens_perso'] as $titre => $url){
-		echo "<lien titre=\"$titre\" url=\"$url\" />";
+		echo "<lien titre=\"$titre\" url=\"$url\" /><br/>";
 	}
 	echo "</module>";
 }
