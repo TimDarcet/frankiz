@@ -36,11 +36,14 @@
 	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
 
 	$Log$
+	Revision 1.2  2004/12/01 21:05:53  pico
+	Correction lien login
+
 	Revision 1.1  2004/11/25 00:44:35  schmurtz
 	Ajout de init_ devant les fichier d'include servant d'initialisation de page
 	Permet de mieux les distinguer des autres fichiers d'include ne faisant que definir
 	des fonctions.
-
+	
 	Revision 1.12  2004/11/24 20:26:38  schmurtz
 	Reorganisation des skins (affichage melange skin/css + depacement des css)
 	
@@ -173,7 +176,7 @@ function demande_authentification($minimum) {
 			dans le login ou le mot de passe.</warning>
 		<?php endif; ?>
 		<note>Ton login est loginpoly.promo</note>
-		<formulaire id="login" titre="Connexion" action="<?php echo $_SERVER['PHP_SELF']?>">
+		<formulaire id="login" titre="Connexion" action="<?php echo BASE_URL.$_SERVER['PHP_SELF']?>">
 			<champ id="login" titre="Login" valeur="<?php if(isset($_POST['login'])) echo $_POST['login']?>"/>
 			<champ id="passwd" titre="Mot de passe" valeur=""/>
 			<bouton id="connect" titre="Connexion"/>
