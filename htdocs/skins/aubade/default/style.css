@@ -1,0 +1,683 @@
+/* $Id$ */
+/*
+	Copyright (C) 2004 Binet Réseau
+	http://www.polytechnique.fr/eleves/binets/br/
+	
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2
+	of the License, or (at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+*/
+
+body {
+	font-size:100%;
+	font-family: Arial,Verdana,Helvetica,sans-serif;
+	color:#000000;
+	background-color:#ffffff;
+	margin:0;
+	padding:5px;
+    background-repeat: no-repeat;
+    background-position: top left;
+}
+
+img {
+	border: 0;
+}
+
+a:link { 
+	color:#666699;
+	text-decoration:none;
+	}
+a:visited { 
+	color:#696969;
+	text-decoration:none;
+}
+
+a:hover, a:active { 
+    color: #FF0000;
+	text-decoration:underline;
+}
+
+#rss .fkz_titre a:link,#rss  .fkz_titre a:visited { 
+	color:#5050c0;
+	text-decoration:none;
+	}
+#rss  .fkz_titre a:hover, #rss .fkz_titre a:active { 
+	text-decoration:none;
+	margin-bottom:1px;
+	border-bottom:1px solid #a0a0a0;
+	}
+/* Structure de la page */
+
+.fkz_page {
+	clear: both;
+	width: 100%;     
+}
+
+.fkz_entetes {
+}
+
+.fkz_gauche {
+    width: 20%;
+    float: left;
+	font-size: 12pt;
+	margin-top: 10px;
+	min-height: 800px;
+}
+
+.fkz_droite {
+    float: right;
+    width: 20%;
+	font-size: 12pt;
+	margin-top: 10px;
+	min-height: 800px;
+}
+
+.fkz_centre {
+	font-size: 12pt;
+	position: absolute;
+	left: 21%;
+	width: 58%;
+	margin-top: 10px;
+}
+
+div.fkz_end_page{clear:both;margin:3px;}
+/* Fin Structure de la page */
+
+/* Logos Modules */
+
+div.fkz_logo_eleves, span.fkz_logo {
+    display:none;
+}
+
+div.fkz_logo {
+	background-image:url("images/frankiz.gif");
+    background-position: center;
+	background-repeat:no-repeat;
+    width: 100%;
+    height: 230px;
+}
+
+span.fkz_logo {
+}
+
+/* div.fkz_logo:before {
+    content: "Frankiz";
+	background-image:url("images/home_logo.png");
+	background-repeat:no-repeat;
+	height:93px;
+	width:373px; 
+ }*/
+
+/* div.fkz_logo_eleves {
+    display: none;
+	background-image:url("images/home_logo_eleve.png");
+	background-repeat:no-repeat;
+	height:30px;
+	width:476px;
+	position:relative;
+	left:60px;
+	top:-5px;
+    
+ }*/
+
+ /* Fin Logos Modules */
+
+
+ 
+/* QDJ */
+
+.fkz_qdj_question {
+    font-size: 11pt;
+    text-align: center;   
+}
+
+.fkz_qdj_jone, .fkz_qdj_rouje,.fkz_qdj_jone_reponse,.fkz_qdj_rouje_reponse{
+	text-align: center;
+	width: 45%;
+    height: 60px;
+    vertical-align: middle;
+}
+
+.fkz_qdj_jone {
+	background-image:url("images/pointjone.gif");
+	float: right;
+}
+
+.fkz_qdj_rouje {
+	background-image:url("images/pointrouje.gif");
+	float: left;
+}
+
+
+.fkz_qdj_jone a{
+	color: red;
+}
+
+.fkz_qdj_rouje a{
+	color: yellow;
+}
+
+
+.fkz_qdj_jone_reponse {
+	color: yellow;
+	float: right;
+}
+
+.fkz_qdj_rouje_reponse {
+	float: left;
+	color: red;
+}
+
+.fkz_qdj_last{
+	list-style-type:  none;  
+	text-align:left; 
+}
+
+/* Fin QDJ */
+
+#mod_activites div.fkz_module_corps {
+    text-align: center;
+}
+
+.fkz_liens,.fkz_contact,.fkz_stats,.fkz_liens_nav {
+    margin-top: 0;
+    margin-bottom: 0;
+	list-style-type:none;
+	color:#333;
+    position: relative;
+    left:-10px;
+}
+
+div.fkz_anniversaire_titre,div.fkz_page_titre,div.fkz_annonces_titre {
+	text-align : center;
+	border:2px solid #000000;
+    border-bottom: none;
+	padding:5px;
+	font-family:Georgia, serif;
+	font-variant:small-caps;
+	color:#666699;
+	font-weight:bold;
+	font-size:120%;
+    text-decoration: underline;
+}
+div.fkz_annonces_titre {
+    color: #000000;
+    text-decoration: none;
+}
+
+.lecon {
+    font-family: Times New Roman, Times, serif;
+    text-decoration: underline;
+    font-size: 120%;
+    color: #666699;
+    font-variant: normal;
+}
+
+.lecon_cedille {
+    font-family: Times New Roman, Times, serif;
+    font-size: 120%;
+    color: #666699;
+    text-decoration: none;
+    font-variant: normal;
+}
+
+div.fkz_page_titre {
+	font-size:200%;
+}
+
+
+
+.fkz_anniversaire,.fkz_annonces_corps,div.fkz_page_corps {
+	padding: 5px;
+	border:2px solid #000000;
+    border-top: none;
+}
+
+.fkz_annonces_corps {
+    text-align: justify;
+}
+.fkz_annonces {
+    border: 1px solid #000000;
+    padding: 5px;
+}
+
+.fkz_titre,.fkz_titre a {
+	border:2px solid #000000;
+    border-bottom: none;
+	margin:0px;
+	padding:2px;
+	color: #666699;
+	text-align : center;
+	font-weight: bold;
+    vertical-align: middle;
+    text-decoration: underline;
+}
+
+
+.module {
+    margin-bottom: 10px;
+}
+
+div.fkz_module {
+    margin-bottom: 10px;
+    border: 1px solid #000000;
+    padding: 5px;
+}
+
+div.fkz_module_corps {
+	color:#000;
+	border:2px solid #000000;
+    border-top: none;
+	padding: 5px;
+}
+
+#mod_meteo {
+    text-align:center;
+}
+
+#mod_random {
+    display: none;
+}
+
+.fkz_sommaire a.lien {
+    text-align: center;
+    width: 100%;
+    padding-left: 5px;
+    font-style: italic;
+}
+
+a[href|="?lu="] {
+    font-style: italic;
+}
+
+.fkz_sommaire_corps {
+	font-size: 12pt;
+	text-align: left;
+}
+
+.fkz_sommaire a:link {
+    text-decoration: underline;
+}
+
+.fkz_sommaire a:visited {
+    text-decoration: none;
+}
+
+.fkz_sommaire_titre {
+	font-size: 12pt;
+	font-weight: bold;
+	text-align: center;
+	margin: 0;
+}
+
+.fkz_sommaire{
+	border:1px solid #000000;
+	font-size: 12pt;
+	text-align: left;
+	margin: 0;
+    padding: 5px;
+}
+
+.fkz_sommaire_bloc {
+    border: 2px solid #000000;
+    padding: 5px;
+}
+
+.fkz_signature{
+	text-align:right;
+	font-weight: bold;
+}
+
+/* Logos Catégories d'annonce */
+
+span.fkz_annonces_vieux,span.fkz_annonces_nouveau, span.fkz_annonces_important,span.fkz_annonces_reste,span.fkz_annonces_reste {
+	background-repeat:no-repeat;
+	height:20px;
+	padding-left:20px; 
+ }
+
+/* Logos menu */
+
+#anniversaires_logo,#navigation_logo,#perso_logo,#affiches_logo,#contacts_logo,#liens_ecole_logo,#serveurs_logo,#stats_logo,#tour_kawa_logo,#qdj_hier_logo,#qdj_logo,#meteo_logo,#sondages_logo,#lien_tol_logo {
+    background-repeat:no-repeat;
+    height:17px;
+    width: 16px;
+    margin: 5px;
+    padding-left:16px;
+    padding-bottom: 1px;
+    margin-left: 2px;
+    vertical-align: bottom;
+}
+
+#anniversaires_logo {
+    background-image:url("images/anniversaire.png");
+}
+
+#perso_logo {
+    background-image:url("images/bookmark.png");
+}
+
+#navigation_logo {
+    background-image:url("images/navigation.png");
+}
+
+#affiches_logo {
+    background-image:url("images/activites.png");
+}
+
+#contacts_logo {
+    background-image:url("images/contribuer.png");
+}
+
+#liens_ecole_logo {
+    background-image:url("images/liens_utiles.png");
+}
+
+#serveurs_logo {
+    background-image:url("images/serveurs.png");
+}
+
+#stats_logo {
+    background-image:url("images/stats.png");
+}
+
+#tour_kawa_logo {
+    background-image:url("images/coffee.png");
+}
+
+#qdj_hier_logo {
+    background-image:url("images/qdj.png");
+}
+
+#qdj_logo {
+    background-image:url("images/qdj.png");
+}
+
+#meteo_logo {
+    background-image:url("images/meteo.png");
+}
+
+#sondages_logo {
+    background-image:url("images/sondage.png");
+}
+
+#lien_tol_logo {
+    background-image:url("images/tol.png");
+}
+
+
+
+span.fkz_annonces_vieux {
+	background-image:url("images/vieux.gif");
+}
+
+ span.fkz_annonces_nouveau {
+	background-image:url("images/nouveau.gif");
+}
+ 
+ span.fkz_annonces_important {
+	background-image:url("images/important.gif");
+ } 
+ 
+ span.fkz_annonces_reste {
+	background-image:url("images/reste.gif");
+ } 
+  
+ span.fkz_annonces_cat {
+    display:none;
+ }
+ 
+ /* Fin Logos Catégories d'annonce */
+ 
+ /* Logos W3C */
+
+p.valid {
+    width: 100%;
+    text-align: center;
+}
+
+span.valid_xhtml:before {
+    content:url("http://www.w3.org/Icons/valid-xhtml10");
+}
+
+span.valid_css:before {
+    content:url("http://www.w3.org/Icons/valid-css");
+}
+ 
+ /* Fin Logos W3C */
+
+
+/* Stats */
+ 
+.fkz_stats{list-style-type:  none;}
+
+.serveur_nom {
+	display: block;
+	color: inherit;
+}
+
+.serveur_up {
+	color: inherit;
+	background: lime;
+	position: relative;
+	left: 80px;
+	top: -16px;
+}
+
+.serveur_down {
+	color: inherit;
+	background: red;
+	position: relative;
+	left: 80px;
+	top: -16px;
+}
+
+/* FAQ et Xshare */
+/* 
+.noeud_ferme {list-style-image:url('images/fold_close.gif')}
+.noeud_ouvert {list-style-image:url('images/fold_open.gif')}
+.feuille {list-style-image:url('images/question.gif')}
+*/
+/* Commentaires et Warning */
+
+.commentaire,.warning,.note {
+	color: inherit;
+	padding: 3px;
+	margin: 5px;
+	display:block;
+}
+
+.commentaire {
+	border: 1px solid #5050c0;
+}
+
+.warning {
+	border: 1px solid #FF3333;
+}
+
+.note {
+	font-size: 80%;
+	border: 1px solid #5050c0;
+}
+
+/* Formulaires */
+
+div.formulaire{
+	display:block;
+}
+
+#trombino div.formulaire {
+    background-color: #f0f0f0;
+    border: 1px solid #c0c0c0;
+    padding: 5px;
+}
+    
+#trombino div.formulaire:hover {
+    border: 1px dashed #c0c0c0;
+}
+
+
+div.formulaire span.droite{
+    width: 78%;
+    float: right;
+    text-align:left;
+}
+
+div.formulaire span.gauche{
+    float: left;
+    width: 20%;
+	padding-left:5px;
+}
+div.formulaire div{
+	clear:both;
+}
+
+div.formulaire span.boutons{
+	display:block;
+	padding-left: 22%;
+}
+.fkz_module_corps div.formulaire span.droite,.fkz_module_corps div.formulaire span.gauche{
+	display:block;
+}
+
+input:hover,input:focus {
+    border: 2px solid #e0e0e0;
+    padding: 0px;
+}
+
+.boutons input:active {
+    border: 2px inset #e0e0e0;
+}
+
+.boutons input {
+    cursor:pointer;
+}
+
+option {
+    border-top: 1px solid #e0e0e0;
+    background-color: #f8f8f8;
+}
+
+input {
+    padding: 1px;
+    border: 1px solid #e0e0e0;
+    background-color: #f8f8f8;
+    padding-right: 5px;
+}
+
+/* Formulaires */
+
+/* Listes */
+table.liste{
+	clear:both;
+	width:100%;
+}
+
+table.liste .entete{
+	text-decoration: underline;
+}
+
+
+
+#choix_skin h1, #profil h1,.fkz_page_meteo h1,#xshare  h1,#faq  h1,#vocabulaire  h1{
+	display:none;
+}
+
+/* Binets */
+
+#binets h2 {
+    border: 2px solid #e0e0e0;
+    background-color: #f8f8f8;
+    padding-left: 20px;
+}
+
+#binets h3 {
+    border-top: 1px solid #e0e0e0;
+}
+
+#binets p {
+    border-bottom: 1px solid #e0e0e0;
+    font-style: italic;
+}
+
+
+/* Trombino */
+
+div.fkz_trombino_eleve {
+    border: 1px solid #c0c0c0;
+    background-color: #f0f0f0;
+    font-size: 9pt;
+}
+
+div.fkz_trombino_eleve:hover {
+    border: 1px dashed #c0c0c0;
+}
+
+.fkz_trombino_eleve p.nom {
+    text-align: left;
+    background-color: #e0e0e0;
+    padding: 2px;
+    padding-left: 20px;
+    font-size: 120%;
+    font-weight: bold;
+    border: 1px solid #a0a0a0;
+    margin: -1px;
+}
+
+.fkz_trombino_eleve p.surnom {
+    float: left;
+    width: 50%;
+    text-align: left;
+    font-style: italic;
+}
+
+.fkz_trombino_eleve p.promo {
+    font-weight: bold;
+    text-align: left;
+}
+
+.fkz_trombino_eleve p.telephone {
+    clear: both;
+    text-align: left;
+    float: left;
+    width: 50%;
+}
+
+.fkz_trombino_eleve p.casert {
+    text-align: left;
+}
+
+.fkz_trombino_eleve p.section {
+    text-align: left;
+    clear: both;
+}
+
+.fkz_trombino_eleve p, .fkz_trombino_eleve div.binets {
+    padding-left: 5px;
+    padding-right: 5px;
+    margin: 2px;
+}
+
+.fkz_trombino_eleve div.binets {
+    text-align: left;
+    margin-top: 10px;
+}
+
+.fkz_trombino_eleve p {
+    text-align: center;
+}
+
+.fkz_trombino_eleve a {
+}
+
+
