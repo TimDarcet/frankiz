@@ -21,9 +21,12 @@
 	Page qui permet de demander une clé windows
 	
 	$Log$
+	Revision 1.22  2005/02/16 21:20:42  dei
+	lui aussi a changé...
+
 	Revision 1.21  2005/02/02 14:31:11  dei
 	la recherche de la dernière promo se fait dans la bonne base...
-
+	
 	Revision 1.20  2005/01/30 21:57:06  dei
 	là ça marchera mieux...
 	
@@ -89,7 +92,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 ?>
 <page id="licences" titre="Frankiz : Les Licences">
 <?	
-	$log=array('winxp' => 'Windows XP Professionnel','2k3serv' => 'Windows Serveur 2003','2k3access'=>'Access 2003','2k3onenote'=>'One Note 2003','2k3visiopro'=>'Visio Professionnel 2003','win2k'=>'Windows 2000 Professionnel');
+	$log=array('visualstudio' => 'Visual Studio .NET','winxp' => 'Windows XP Professionnel','2k3serv' => 'Windows Serveur 2003','2k3access'=>'Access 2003','2k3onenote'=>'One Note 2003','2k3visiopro'=>'Visio Professionnel 2003','win2k'=>'Windows 2000 Professionnel');
 	//on vérifie que la raison n'est pas vide... si elle l'est il se tape tout le formulaire pour recommencer.
 	if(isset($_POST['raison'])&&$_POST['raison']==""){
 ?>
@@ -237,6 +240,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 				<option titre="Access 2003" id="2k3access"/>
 				<option titre="One Note 2003" id="2k3onenote"/>
 				<option titre="Visio 2003 Professionnel" id="2k3visiopro"/>
+				<option titre="Visual Studio .NET" id="visualstudio"/>
 			</choix>	
 			<bouton id='valid' titre='Envoyer'/>
 		</formulaire>
