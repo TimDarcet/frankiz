@@ -21,9 +21,12 @@
 	Gestion du tour kawa.
 	
 	$Log$
+	Revision 1.11  2004/12/07 21:54:09  pico
+	Interface d'ajout des tours kawa pour le bob
+
 	Revision 1.10  2004/12/07 20:56:35  pico
 	Changement de la base de données de gestion des tours kawa
-
+	
 	Revision 1.9  2004/11/24 13:05:23  schmurtz
 	Ajout d'un attribut type='discret' pour les liste et formulaire, afin d'avoir
 	une presentation par defaut sans gros cadres autour.
@@ -57,7 +60,7 @@ if(est_authentifie(AUTH_MINIMUM)) {
 		
 		if(strcasecmp("personne", $groupe) != 0 && $groupe != "") {
 			// si c'est le premier tour kawa, on ouvre la liste
-			if(!$tour_existe) echo "<liste id=\"tour_kawa\" type=\"discret\">\n";
+			if(!$tour_existe) echo "<liste id=\"tour_kawa\" selectionnable=\"non\">\n";
 			
 			echo "<element id=\"$i\">";
 			echo "<colonne id=\"jour\">$jour[$i]</colonne>";

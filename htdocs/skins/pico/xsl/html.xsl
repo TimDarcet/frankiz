@@ -46,21 +46,21 @@
 
 
 <!-- Listes -->
-<xsl:template match="liste[(@selectionnable!='oui') and (@action='')]">
+<xsl:template match="liste">
 	<xsl:if test="boolean(@titre)">
 		<h2><xsl:value-of select="@titre"/></h2>
 	</xsl:if>
 	<xsl:apply-templates select="commentaire"/>
-		<xsl:variable name="nombre_colonnes" select="count(entete)"/>
-		<table class="liste" cellspacing="0" cellpadding="0">
-			<tr>
-				<xsl:apply-templates select="entete"/>
-			</tr>
-			<xsl:apply-templates select="element"/>
-			<tr><td class="boutons"><xsl:attribute name="colspan"><xsl:value-of select="$nombre_colonnes"/></xsl:attribute>
-				<xsl:apply-templates select="bouton"/>
-			</td></tr>
-		</table>
+	<xsl:variable name="nombre_colonnes" select="count(entete)"/>
+	<table class="liste" cellspacing="0" cellpadding="0">
+		<tr>
+			<xsl:apply-templates select="entete"/>
+		</tr>
+		<xsl:apply-templates select="element"/>
+		<tr><td class="boutons"><xsl:attribute name="colspan"><xsl:value-of select="$nombre_colonnes"/></xsl:attribute>
+			<xsl:apply-templates select="bouton"/>
+		</td></tr>
+	</table>
 </xsl:template>
 
 
