@@ -21,9 +21,15 @@
 	Liste des CSS existante compatible avec la skin XSL courante.
 	
 	$Log$
+	Revision 1.10  2004/11/06 10:23:15  pico
+	BugFix au niveau de l'affichage du choix de css
+
+	Lorsqu'on change de skin, la css est la css "style.css" du répertoire de la skin.
+	Cela permet d'éviter de garder la css d'une autre skin, sinon ça rend tout pas beau.
+
 	Revision 1.9  2004/11/06 10:14:12  pico
 	Voilà, c'est bon
-
+	
 	Revision 1.8  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -38,11 +44,13 @@
 <module id="liste_css" visible="false">
 <?php
 	//Liste des css disponibles
-	$dir=opendir(BASE_LOCAL."/css/".$_SESSION['skin']['skin_nom']);
-	while($file = readdir($dir)) {
-		if(ereg("^(.*)\.css$",$file,$regs))
-			echo "<lien titre='{$regs[1]}' url='".BASE_URL."/css/{$_SESSION['skin']['skin_nom']}/{$regs[1]}.css'/>\n";
+	if(is_dir(BASE_LOCAL."/css/".$_SESSION['skin']['skin_nom'])) {
+		$dir=opendir(BASE_LOCAL."/css/".$_SESSION['skin']['skin_nom']);
+		while($file = readdir($dir)) {
+			if(ereg("^(.*)\.css$",$file,$regs))
+				echo "<lien titre='{$regs[1]}' url='".BASE_URL."/css/{$_SESSION['skin']['skin_nom']}/{$regs[1]}.css'/>\n";
+		}
+		closedir($dir);
 	}
-	closedir($dir);
 ?>
 </module>

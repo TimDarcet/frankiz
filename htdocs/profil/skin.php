@@ -39,9 +39,15 @@
 	)
 	
 	$Log$
+	Revision 1.10  2004/11/06 10:23:15  pico
+	BugFix au niveau de l'affichage du choix de css
+
+	Lorsqu'on change de skin, la css est la css "style.css" du répertoire de la skin.
+	Cela permet d'éviter de garder la css d'une autre skin, sinon ça rend tout pas beau.
+
 	Revision 1.9  2004/11/06 10:13:27  pico
 	Mise à jour fichier choix skin
-
+	
 	Revision 1.8  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
 	
@@ -171,7 +177,7 @@ $new_skin = array();
 
 if(!empty($_REQUEST['OK_skin'])) {
 	$new_skin['skin_nom'] = $_REQUEST['newskin'];
-	$new_skin['skin_css'] = $_SESSION['skin']['skin_css'];
+	$new_skin['skin_css'] = BASE_URL."/skins/".$_REQUEST['newskin']."/style.css";
 	$new_skin['skin_parametres'] = array();
 	$new_skin['skin_visible'] = $_SESSION['skin']['skin_visible'];
 
@@ -234,15 +240,17 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<choix titre="CSS" id="newcss" type="combo" valeur="<?php echo $_SESSION['skin']['skin_css']?>">
 <?php
 			// Choix de la feuille de style CSS
-			$dir=opendir(BASE_LOCAL."/css/{$_SESSION['skin']['skin_nom']}");
-			while($file = readdir($dir)) {
-				// uniquement pour les fichiers .css
-				if(!ereg("^(.*)\.css$", $file, $elements)) continue;
-				$nom = $elements[1];
-				echo "<option titre=\"$nom (".lire_description_css(BASE_LOCAL."/css/$nom.txt")
-					.")\" id=\"".BASE_URL."/css/{$_SESSION['skin']['skin_nom']}/$file\"/>";
+			if(is_dir(BASE_LOCAL."/css/".$_SESSION['skin']['skin_nom'])) {
+				$dir=opendir(BASE_LOCAL."/css/{$_SESSION['skin']['skin_nom']}");
+				while($file = readdir($dir)) {
+					// uniquement pour les fichiers .css
+					if(!ereg("^(.*)\.css$", $file, $elements)) continue;
+					$nom = $elements[1];
+					echo "<option titre=\"$nom (".lire_description_css(BASE_LOCAL."/css/$nom.txt")
+						.")\" id=\"".BASE_URL."/css/{$_SESSION['skin']['skin_nom']}/$file\"/>";
+				}
+				closedir($dir);
 			}
-			closedir($dir);
 ?>
 		</choix>
 		<champ titre="CSS perso" id="newcss_perso" valeur="<?php
