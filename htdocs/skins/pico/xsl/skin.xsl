@@ -72,7 +72,7 @@
 	<body>
 		<div class="fkz_entetes">
 			<div class="fkz_logo"><a href="index.php"><span class="fkz_logo">Frankiz,</span></a></div>
-			<div  class="fkz_logo_eleves"><span class="fkz_logo_eleves">le site Web des élèves</span></div>
+			<div  class="fkz_logo_eleves"><span class="fkz_logo_eleves">le site Web des élèves de l'École Polytechnique</span></div>
 		</div>
 		<div class="fkz_page">
 			<div class="fkz_centre">

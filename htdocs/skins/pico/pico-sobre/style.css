@@ -55,6 +55,11 @@ a:hover, a:active {
 }
 
 .fkz_entetes {
+	background-color:#f0f0f0;
+	border:1px solid #CCC;
+	display:block;
+	width:100%;
+	text-align: center;
 }
 
 .fkz_gauche {
@@ -86,26 +91,10 @@ div.fkz_end_page{clear:both;margin:3px;}
 
 /* Logos Modules */
 
-span.fkz_logo,span.fkz_logo_eleves{
-	display:none;
+.fkz_logo{
+	font-size:200%;
 }
 
-div.fkz_logo {
-	background-image:url("images/home_logo.png");
-	background-repeat:no-repeat;
-	height:93px;
-	width:373px;
- }
-
- div.fkz_logo_eleves {
-	background-image:url("images/home_logo_eleve.png");
-	background-repeat:no-repeat;
-	height:30px;
-	width:476px;
-	position:relative;
-	left:60px;
-	top:-5px;
- }
 
 
 #contacts,#liens_ecole,span#meteo,span#stats,span#serveurs,span#tour_kawa,span#qdj_hier, span#qdj, span#anniversaires{
