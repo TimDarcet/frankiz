@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.10  2004/12/14 22:36:27  schmurtz
+	Bug sur la skin defaut : <p> n'etait pas traduit
+
 	Revision 1.9  2004/12/14 14:40:56  psycow
 	Modification de la qdj et du sommaire de la page annonces, suite des test IE
-
+	
 	Revision 1.8  2004/12/13 21:02:59  pico
 	Voilà !
 	
@@ -211,7 +214,7 @@
 
 <!-- Formatage HTML -->
 <xsl:template match="p">
-	<xsl:apply-templates/>
+	<p><xsl:apply-templates/></p>
 </xsl:template>
 <xsl:template match="ul">
 	<ul><xsl:apply-templates/></ul>
