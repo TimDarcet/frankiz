@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.13  2004/11/27 12:58:23  pico
+	jout du lien vers la planification des activités
+
 	Revision 1.12  2004/11/25 02:03:29  kikx
 	Bug d'administration des binets
-
+	
 	Revision 1.11  2004/11/22 23:07:28  kikx
 	Rajout de lines vers les pages perso
 	
@@ -195,6 +198,7 @@ $permissions_user = $_SESSION['user']->perms ;
 		<lien titre="Liste des sections" url="<?php echo BASE_URL?>/admin/sections.php"/>
 		<lien titre="Changer les variables globales" url="<?php echo BASE_URL?>/admin/parametre.php"/>
 		<lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/>
+		<lien titre="Planifier les activités" url="<?php echo BASE_URL?>/admin/planif_affiches.php"/>
 		<lien titre="Gestion xshare" url="<?php echo BASE_URL?>/admin/xshare.php"/>
 		<lien titre="Gestion FAQ" url="<?php echo BASE_URL?>/admin/faq.php"/>
 	<h3>Administration du réseau élève</h3>
