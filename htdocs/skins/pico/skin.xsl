@@ -65,7 +65,7 @@
 		<link rel="index" href="index.php"/>
 		<link rel="start" href="index.php"/>
 		<link href="mailto:web@fkz" rev="made" />
-		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="shortcut icon" href="favicon.ico" />
 		<xsl:apply-templates select="frankiz/module[@id='liens_navigation']" mode="link"/>
 	</head>
 	<body>
