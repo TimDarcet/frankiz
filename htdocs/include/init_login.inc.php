@@ -36,11 +36,18 @@
 	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
 
 	$Log$
+	Revision 1.8  2004/12/16 23:00:12  schmurtz
+	Suppression du lien Se deconnecter si l'utilisateur est loguÃ© par cookie.
+	Ca evite de le faire sans le vouloir et de devoir remettre le cookie.
+
+	Pour rester coherent, se deloguer quand on est authentifie par mot de passe
+	et que le cookie est active = revenir a une authentification faible par cookie.
+
 	Revision 1.7  2004/12/16 16:45:14  schmurtz
 	Correction d'un bug dans la gestion des authentifications par cookies
 	Ajout de fonctionnalitees de log d'erreur de connections ou lors des bugs
 	affichant une page "y a un bug, contacter l'admin"
-
+	
 	Revision 1.6  2004/12/16 12:52:57  pico
 	Passage des paramètres lors d'un login
 	
@@ -99,7 +106,6 @@ if(isset($_REQUEST['logout'])) {
 	} else {
 		session_unset();
 		session_destroy();
-		SetCookie("auth","",0,"/");
 	}
 	rediriger_vers("/");
 }
