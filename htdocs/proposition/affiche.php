@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une activité
 	
 	$Log$
+	Revision 1.13  2004/11/26 00:13:22  pico
+	Affiche l'heure à laquelle est prévue l'activité
+
 	Revision 1.12  2004/11/25 23:50:04  pico
 	Possibilité de rajouter une heure pour l'activité (ex: scéances du BRC)
-
+	
 	Revision 1.11  2004/11/25 11:52:10  pico
 	Correction des liens mysql_id
 	
@@ -75,6 +78,21 @@ $DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM ele
 list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_row();
 
 $msg="" ;
+
+if (!isset($_POST['titre']))  $_POST['titre']="Titre" ;
+if (!isset($_POST['url']))  $_POST['url']="http://" ;
+if (!isset($_POST['date']))  $_POST['date']=time() ;
+if (!isset($_POST['time']))  $_POST['time']=time() ;
+if (!isset($_POST['heure']))  $_POST['heure']="00:00";
+
+$date_complete = $_POST['date'];
+
+// Vérifie si le format d'heure est bon avant de le mettre dans l'affichage
+if (ereg("(((^[0-9]{1})|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])", $_POST['heure'], $regs)) {
+	list ($H, $i)  = explode(':', $_POST['heure']);
+	$date_complete = $date_complete + $H * 3600 + $i * 60;
+}
+else $_POST['heure']="00:00";
 //---------------------------------------------------------------------------------
 // On traite l'image qui vient d'etre uploader si elle existe
 //---------------------------------------------------------------------------------
@@ -131,16 +149,8 @@ if (isset($_POST['valid'])) {
 			$temp_ext = '1'  ;
 		else 
 			$temp_ext = '0' ;
-		
-		$date = $_POST['date'];
-		if (ereg("(((^[0-9]{1})|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])", $_POST['heure'], $regs)) {
-			list ($H, $i)  = explode(':', $_POST['heure']);
-			$date = $date + $H * 3600 + $i * 60;
-		}
-		
-		
-		
-		$DB_valid->query("INSERT INTO valid_affiches SET date=FROM_UNIXTIME({$date}), eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',url='".$_POST['url']."', exterieur=".$temp_ext);
+
+		$DB_valid->query("INSERT INTO valid_affiches SET date=FROM_UNIXTIME({$date_complete}), eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',url='".$_POST['url']."', exterieur=".$temp_ext);
 		
 		// on modifie le nom du fichier qui a été téléchargé si celui ci existe
 		// selon la norme de nommage ci-dessus
@@ -195,16 +205,10 @@ if ($erreur_upload==1) {
 // On teste l'affichage de l'annonce pour voir à quoi ça ressemble
 //=========================================
 
-if (!isset($_POST['titre']))  $_POST['titre']="Titre" ;
-if (!isset($_POST['url']))  $_POST['url']="http://" ;
-if (!isset($_POST['date']))  $_POST['date']=time() ;
-if (!isset($_POST['time']))  $_POST['time']=time() ;
-if (!isset($_POST['heure']))  $_POST['heure']="00:00";
-
 	echo "<module id=\"activites\" titre=\"Activités\">\n";
 
 ?>
-	<annonce date="">
+	<annonce date="<? echo date('Y-m-d H:i:s',$date_complete)  ?>">
 		<note>NB : Cette activité sera affichée le <?php echo date("d/m/y",$_POST['date']) ;?></note>
 		<a href="<?php echo $_POST['url'] ;?>">
 		<?

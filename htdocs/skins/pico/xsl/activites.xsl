@@ -27,11 +27,37 @@
 			<div class="fkz_module" id='mod_activites'>
 				<div class="fkz_titre">Activités</div>
 				<div class="fkz_module_corps">
-					<xsl:apply-templates select="annonce"/>
+					<xsl:apply-templates select="annonce" mode="activites"/>
 				</div>
 			</div>
 		</div>
 	</xsl:if>
+</xsl:template>
+
+<xsl:template match="annonce" mode="activites">
+		<div>
+			<b>
+				<span><xsl:value-of select="@titre"/></span>
+			</b>
+		</div>
+		<div>
+			A <xsl:value-of select='substring(@date,12,5)'/><br/>
+			<xsl:apply-templates select="*[name()!='eleve']"/>
+			<xsl:if test="count(eleve)">
+				<p class="fkz_signature">
+					<xsl:choose>
+						<xsl:when test="eleve/@surnom != ''">
+							<xsl:value-of select="eleve/@surnom"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="eleve/@prenom"/><xsl:text>  </xsl:text><xsl:value-of select="eleve/@nom"/>
+						</xsl:otherwise>
+					</xsl:choose>
+					(<xsl:value-of select="eleve/@promo"/>)
+				</p>
+			</xsl:if>
+		</div>
+	<br/>
 </xsl:template>
 
 </xsl:stylesheet>
