@@ -3,8 +3,8 @@
 	Permet de proposer une QDJ
 	
 	$Log$
-	Revision 1.1  2004/10/13 20:03:30  pico
-	Page pour soumettre des qdj
+	Revision 1.2  2004/10/13 21:11:16  pico
+	QDJ
 
 	
 	
@@ -38,20 +38,23 @@ if (!isset($_REQUEST['envoie'])) {
 <?
 //==================================================
 //=
-//= Permet de visualiser son mail avant de l'envoyer
+//= Permet de visualiser sa qdj avant de l'envoyer
 //=
 //==================================================
 	if (isset($_REQUEST['upload'])) {
 ?>
-		<cadre  titre="QDJ : <? if (isset($_REQUEST['question'])) echo $_REQUEST['question']?>" >
-			<? if (isset($_REQUEST['reponse1'])) {echo "- "; echo $_REQUEST['reponse1'];echo "&lt;br/&gt;";} ?>
-			<? if (isset($_REQUEST['reponse2'])) {echo "- ";echo $_REQUEST['reponse2'];} ?>
-		</cadre>
+	<module titre="QDJ">
+		<qdj type="aujourdhui" >
+			<question><?php echo $_REQUEST['question'] ?></question>
+			<reponse id="1"><?php echo $_REQUEST['reponse1'] ?></reponse>
+			<reponse id="2"><?php echo $_REQUEST['reponse2'] ?></reponse>
+		</qdj>
+	</module>		
 <?
 	}
 //==================================================
 //=
-//= Stockage du mail en attente de validation par un webmestre
+//= Stockage de la qdj en attente de validation par un qdjmaster
 //=
 //==================================================
 } else {
@@ -62,7 +65,7 @@ if (!isset($_REQUEST['envoie'])) {
 	</commentaire>
 <?
 	// Stockage dans la base SQL
-	$DB_valid->query("INSERT INTO valid_qdj SET question='{$_REQUEST['question']}',reponse1='{$_REQUEST['reponse1']}',reponse2='{$_REQUEST['reponse2']}',eleve_id={$_SESSION['user']->uid}") ;
+	$DB_valid->query("INSERT INTO valid_qdj SET eleve_id='{$_SESSION['user']->uid}',question='{$_REQUEST['question']}',reponse1='{$_REQUEST['reponse1']}',reponse2='{$_REQUEST['reponse2']}'") ;
 
 	//Envoie du mail à l'admin pour la validation
 	$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
