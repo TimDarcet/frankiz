@@ -3,10 +3,14 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.18  2004/10/20 20:16:00  schmurtz
+	Correction d'un bug de la skin basic : dans une liste, les boutons/champs
+	s'affichaient dans la mauvaise colonne.
+
 	Revision 1.17  2004/10/20 19:58:02  pico
 	Changement skin pico -> valide html strict
 	Changement des balises qui étaient pas valides
-
+	
 	Revision 1.16  2004/10/19 18:16:24  kikx
 	hum
 	
@@ -39,18 +43,32 @@
 
 <!-- Formulaires -->
 <xsl:template match="formulaire">
+	<!-- la déco -->
 	<xsl:if test="boolean(@titre)">
 		<h2><xsl:value-of select="@titre"/></h2>
 	</xsl:if>
 	<xsl:apply-templates select="commentaire"/>
-	<form enctype="multipart/form-data" method="post">
-		<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
+
+	<!-- le formulaire lui même, mis en page avec une table -->
+	<form enctype="multipart/form-data" method="POST">
+			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<table class="formulaire" cellspacing="0" cellpadding="0">
+			<!-- le titre du formulaire -->
 			<xsl:if test="boolean(@titre)">
 				<tr><td class="titre" colspan="2"><xsl:value-of select="@titre"/></td></tr>
 			</xsl:if>
-			<xsl:apply-templates select="champ|choix|zonetext|textsimple|hidden|warning|image|fichier|lien"/>
-			<tr><td class="boutons" colspan="2"><div style="text-align: center"><xsl:apply-templates select="bouton"/></div></td></tr>
+			<!-- les options du formulaire -->
+			<xsl:for-each select="champ|choix|zonetext|textsimple|hidden|warning|image|fichier|lien">
+				<tr><td class="gauche">
+					<xsl:if test="boolean(@titre)"><xsl:value-of select="@titre"/> :</xsl:if>
+				</td><td class="droite">
+					<xsl:apply-templates select="."/>
+				</td></tr>
+			</xsl:for-each>
+			<!-- les boutons gérant les actions du formulaire -->
+			<tr><td class="boutons" colspan="2">
+				<xsl:apply-templates select="bouton"/>
+			</td></tr>
 		</table>
 	</form>
 </xsl:template>
@@ -68,142 +86,90 @@
 </xsl:template>
 
 <!--texte simple dans un formulaire -->
-<xsl:template match="formulaire/textsimple">
-	<tr>
-		<td class="gauche"></td>
-		<td class="droite">
-			<xsl:value-of select="@valeur"/>
-		</td>
-	</tr>
+<xsl:template match="textsimple">
+	<xsl:value-of select="@valeur"/>
 </xsl:template>
 
 <!-- champs contenant du texte -->
-<xsl:template match="formulaire/zonetext">
-	<tr><td class="gauche">
-		<xsl:value-of select="@titre"/><xsl:text> :</xsl:text>
-	</td><td class="droite">
-		<xsl:choose><xsl:when test="@modifiable='non'">
-			<xsl:value-of select="@valeur"/>
-		</xsl:when><xsl:otherwise>
-			<textarea>
-				<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-				<xsl:attribute name="rows">7</xsl:attribute>
-				<xsl:attribute name="cols">50</xsl:attribute>
-				<xsl:value-of select="@valeur"/>
-			</textarea>
-		</xsl:otherwise></xsl:choose>
-	</td></tr>
-</xsl:template>
-
-
-<xsl:template match="formulaire/champ">
-	<tr><td class="gauche">
-		<xsl:value-of select="@titre"/><xsl:text> :</xsl:text>
-	</td><td class="droite">
-		<xsl:choose><xsl:when test="@modifiable='non'">
-			<xsl:value-of select="@valeur"/>
-		</xsl:when><xsl:otherwise>
-			<input>
-				<xsl:choose>
-					<xsl:when test="starts-with(@id,'passwd')"><xsl:attribute name="type">password</xsl:attribute></xsl:when>
-					<xsl:otherwise><xsl:attribute name="type">text</xsl:attribute></xsl:otherwise>
-				</xsl:choose>
-				<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-				<xsl:attribute name="value"><xsl:value-of select="@valeur"/></xsl:attribute>
-			</input>
-		</xsl:otherwise></xsl:choose>
-	</td></tr>
-</xsl:template>
-
-<xsl:template match="formulaire/fichier">
-	<tr><td class="gauche">
-		<xsl:value-of select="@titre"/><xsl:text> :</xsl:text>
-	</td><td class="droite">
-		<hidden id="MAX_FILE_SIZE">
-			<xsl:attribute name="valeur"><xsl:value-of select="@taille"/></xsl:attribute>
-		</hidden>
-		<input type="file">
-			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-		</input>
-	</td></tr>
-</xsl:template>
-
-<xsl:template match="formulaire/hidden">
-	<tr><td class="gauche">
-	</td><td class="droite">
-		<input>
-			<xsl:attribute name="type">hidden</xsl:attribute>
-			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-			<xsl:attribute name="value"><xsl:value-of select="@valeur"/></xsl:attribute>
-		</input>
-	</td></tr>
-</xsl:template>
-
 <xsl:template match="zonetext">
-	<textarea>
-		<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-		<xsl:attribute name="ROWS">5</xsl:attribute>
-		<xsl:attribute name="COLS">25</xsl:attribute>
+	<xsl:choose><xsl:when test="@modifiable='non'">
 		<xsl:value-of select="@valeur"/>
-	</textarea>
+	</xsl:when><xsl:otherwise>
+		<textarea>
+			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+			<xsl:attribute name="rows">7</xsl:attribute>
+			<xsl:attribute name="cols">50</xsl:attribute>
+			<xsl:value-of select="@valeur"/>
+		</textarea>
+	</xsl:otherwise></xsl:choose>
 </xsl:template>
 
 <xsl:template match="champ">
-	<input>
-		<xsl:choose>
-			<xsl:when test="starts-with(@id,'passwd')"><xsl:attribute name="type">password</xsl:attribute></xsl:when>
-			<xsl:otherwise><xsl:attribute name="type">text</xsl:attribute></xsl:otherwise>
-		</xsl:choose>
-		<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-		<xsl:attribute name="value"><xsl:value-of select="@valeur"/></xsl:attribute>
-	</input>
+	<xsl:choose><xsl:when test="@modifiable='non'">
+		<xsl:value-of select="@valeur"/>
+	</xsl:when><xsl:otherwise>
+		<input>
+			<xsl:choose>
+				<xsl:when test="starts-with(@id,'passwd')"><xsl:attribute name="type">password</xsl:attribute></xsl:when>
+				<xsl:otherwise><xsl:attribute name="type">text</xsl:attribute></xsl:otherwise>
+			</xsl:choose>
+			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+			<xsl:attribute name="value"><xsl:value-of select="@valeur"/></xsl:attribute>
+		</input>
+	</xsl:otherwise></xsl:choose>
 </xsl:template>
 
 <!-- choix multiples (radio, combo ou checkbox) -->
 <xsl:template match="choix[@type='combo']">
-	<tr><td class="gauche">
-		<xsl:value-of select="@titre"/><xsl:text> :</xsl:text>
-	</td><td class="droite">
-		<select><xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-			<xsl:for-each select="option">
-				<option>
-					<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
-					<xsl:if test="../@valeur = @id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-					<xsl:value-of select="@titre"/>
-				</option>
-			</xsl:for-each>
-		</select>
-	</td></tr>
+	<select><xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+		<xsl:for-each select="option">
+			<option>
+				<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
+				<xsl:if test="../@valeur = @id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+				<xsl:value-of select="@titre"/>
+			</option>
+		</xsl:for-each>
+	</select>
 </xsl:template>
 
 <xsl:template match="choix[@type='radio']">
-	<tr><td class="gauche">
-		<xsl:value-of select="@titre"/><xsl:text> :</xsl:text>
-	</td><td class="droite">
-		<xsl:for-each select="option">
-			<input type="radio">
-				<xsl:attribute name="name"><xsl:value-of select="../@id"/></xsl:attribute>
-				<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
-				<xsl:if test="../@valeur = @id"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-			</input>
-			<xsl:value-of select="@titre"/><br/>
-		</xsl:for-each>
-	</td></tr>
+	<xsl:for-each select="option">
+		<input type="radio">
+			<xsl:attribute name="name"><xsl:value-of select="../@id"/></xsl:attribute>
+			<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
+			<xsl:if test="../@valeur = @id"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+		</input>
+		<xsl:value-of select="@titre"/><br/>
+	</xsl:for-each>
 </xsl:template>
 
 <xsl:template match="choix[@type='checkbox']">
-	<tr><td class="gauche">
-		<xsl:value-of select="@titre"/><xsl:text> :</xsl:text>
-	</td><td class="droite">
-		<xsl:for-each select="option">
-			<input type="checkbox">
-				<xsl:if test="@modifiable='non'"><xsl:attribute name="disabled"/></xsl:if>
-				<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-				<xsl:if test="contains(../@valeur,@id)"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-			</input>
-			<xsl:value-of select="@titre"/><br/>
-		</xsl:for-each>
-	</td></tr>
+	<xsl:for-each select="option">
+		<input type="checkbox">
+			<xsl:if test="@modifiable='non'"><xsl:attribute name="disabled"/></xsl:if>
+			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+			<xsl:if test="contains(../@valeur,@id)"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+		</input>
+		<xsl:value-of select="@titre"/><br/>
+	</xsl:for-each>
+</xsl:template>
+
+<!-- autres -->
+<xsl:template match="fichier">
+	<hidden id="MAX_FILE_SIZE">
+		<xsl:attribute name="valeur"><xsl:value-of select="@taille"/></xsl:attribute>
+	</hidden>
+	<input type="file">
+		<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+	</input>
+</xsl:template>
+
+<xsl:template match="hidden">
+	<input>
+		<xsl:attribute name="type">hidden</xsl:attribute>
+		<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+		<xsl:attribute name="value"><xsl:value-of select="@valeur"/></xsl:attribute>
+	</input>
 </xsl:template>
 
 <!-- boutons -->

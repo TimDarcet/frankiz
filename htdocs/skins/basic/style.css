@@ -115,6 +115,7 @@ table.formulaire td.boutons {
 	color: inherit;
 	background: #DDDDDD;
 	border-top: 1px solid #888888;
+	text-align: center;
 }
 
 p.commentaire {
