@@ -7,9 +7,12 @@
 	TODO traiter le cas ou le qdj master est à la bourre (garder l'ancienne qdj par exemple).
 	
 	$Log$
+	Revision 1.10  2004/09/20 20:33:47  schmurtz
+	Mise en place d'un systeme de cache propre
+
 	Revision 1.9  2004/09/17 15:28:20  schmurtz
 	Utilisation de la balise <eleve> pour les derniers votants aÌ€ la qdj, les anniversaires, la signature des annoncesâ€¦
-
+	
 	Revision 1.8  2004/09/15 23:19:31  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
@@ -24,7 +27,7 @@
 function qdj_affiche($hier,$deja_vote) {
 	global $DB_web;
 	$date = date("Y-m-d", time()-3025 - ($hier ? 24*3600 : 0));
-	$fichier_cache = BASE_LOCAL."/cache/qdj_".($hier?"hier":"courante");
+	$cache_id = "qdj_".($hier?"hier":"courante");
 	
 	$DB_web->query("SELECT question,reponse1,reponse2,compte1,compte2 FROM qdj WHERE date='$date' LIMIT 1");
 	list($question,$reponse1,$reponse2,$compte1,$compte2) = $DB_web->next_row();
@@ -37,24 +40,13 @@ function qdj_affiche($hier,$deja_vote) {
 			<reponse id="2" votes="<?php echo $compte2?>"><?php echo $reponse2?></reponse>
 <?php
 			// Récupération des noms des derniers votants à la question en cours
-			if(file_exists($fichier_cache)) {
-				// utilisation du cache
-				readfile($fichier_cache);
-
-			} else {
+			if(!cache_recuperer($cache_id,strtotime(date("Y-m-d 00:50:25", time()-3025 - ($hier ? 24*3600 : 0))))) {
 				// interrogation de la base de données
 				$DB_web->query("SELECT ordre,nom,prenom,promo,surnom FROM qdj_votes LEFT JOIN trombino.eleves USING(eleve_id) WHERE date='$date' ORDER BY ordre DESC LIMIT 20");
-				$contenu = "";
 				while(list($ordre,$nom,$prenom,$promo,$surnom) = $DB_web->next_row())
-					$contenu .= "<dernier ordre=\"$ordre\"><eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"$promo\" surnom=\"$surnom\"/></dernier>\n";
+					echo "<dernier ordre=\"$ordre\"><eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"$promo\" surnom=\"$surnom\"/></dernier>\n";
 				
-				// affichage
-				echo $contenu;  
-				
-				// mise en cache
-				$file = fopen($fichier_cache, 'w');
-				fwrite($file, $contenu);
-				fclose($file);
+				cache_sauver($cache_id);
 			}
 ?>
 		</qdj>

@@ -5,9 +5,12 @@
 	C'est d'ici qu'est appelé la fonction qui affiche les erreurs en haut de la page.
 	
 	$Log$
+	Revision 1.6  2004/09/20 20:33:47  schmurtz
+	Mise en place d'un systeme de cache propre
+
 	Revision 1.5  2004/09/16 15:32:56  schmurtz
 	Suppression de la fonction afficher_identifiant(), utilisation de <![CDATA[......]]> aÌ€ la place.
-
+	
 	Revision 1.4  2004/09/15 23:19:31  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
@@ -21,7 +24,6 @@ echo "</frankiz>\n";
 // Récupération du cache de sortie
 $xml = ob_get_contents();
 ob_end_clean();
-ob_end_flush();
 
 if(isset($_GET['xml'])) {
 	echo $xml;
