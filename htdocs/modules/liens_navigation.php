@@ -21,9 +21,15 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.33  2005/01/18 13:17:07  pico
+	Réorganisation des liens de navigation.
+
+	je ne le met pas en prod tant que les skins ne sont pas prètes
+	(sauf si ça traine trop)
+
 	Revision 1.32  2005/01/18 13:00:21  pico
 	Affichage état Bôb et Kès sur la page des activités
-
+	
 	Revision 1.31  2005/01/17 22:51:47  pico
 	Liens vers les activités + réorganisation
 	
@@ -144,16 +150,15 @@
 	<lien id="meteo" titre="Météo" url="meteo.php" key="m"/>
 	<lien id="vocab" titre="Vocabulaire" url="vocabulaire.php" key="v"/>
 </module>
-	
+
+<?php if(est_authentifie(AUTH_MINIMUM)): ?>
 <module id="liens_profil" titre="Preférences">
-	<?php if(est_authentifie(AUTH_FORT)): ?>
-		<lien id="deconnect" titre="Se déconnecter" url="index.php?logout=1" key="l"/>
-	<?php endif; ?>
-	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
-		<lien id="profil"  titre="Préférences" url="profil/index.php" key="p"/>
-	<?php endif; ?>
+	<lien id="profil"  titre="Préférences" url="profil/index.php" key="p"/>
 	<?php if ((count($_SESSION['user']->perms)>1)&&($_SESSION['user']->perms[0]!="")) { ?>
 		<lien id="admin" titre="Administration" url="gestion/" key="g"/>
 	<?php } ?>
-	
+		<?php if(est_authentifie(AUTH_FORT)): ?>
+		<lien id="deconnect" titre="Se déconnecter" url="index.php?logout=1" key="l"/>
+	<?php endif; ?>
 </module>
+<?php endif; ?>
