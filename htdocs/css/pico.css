@@ -1,7 +1,7 @@
 body {
 	background-color: #fff699;
 	margin: 0;
-	padding: 2px;
+	padding: 2px
 }
 
 img {
@@ -135,23 +135,21 @@ a:hover {
         width: 20%;
         float: left;
 	font-size: 9pt;
-	margin: 2;
-	padding: 2px
+	margin-top: 0.5%;
 }
 
 .fkz_droite {
         float: right;
         width: 20%;
 	font-size: 9pt;
-	margin: 2;
-	padding: 2px
+	margin-top: 0.5%;
 }
 
 .fkz_centre {
 	float: left;
-	min-width: 59%;
-	margin: 2;
-	padding: 2px
+	width: 59%;
+	margin: 0.5%;
+
 }
 
 .serveur_up {
