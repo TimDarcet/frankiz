@@ -21,9 +21,12 @@
 	Page qui permet aux admins de modifier une annonce validée
 	
 	$Log$
+	Revision 1.15  2005/01/12 17:20:59  pico
+	Bug #30 suite pour l'admin
+
 	Revision 1.14  2005/01/04 21:44:40  pico
 	Remise en place du lien vers l'helpwiki parce que le résumé en bas de page est incomprehensible
-
+	
 	Revision 1.13  2005/01/04 21:23:37  pico
 	Pour pouvoir remettre une annonce périmée depuis moins de 2 jours
 	
@@ -129,7 +132,7 @@ $DB_valid->query("UNLOCK TABLES");
 
 //===============================
 
-	$DB_web->query("SELECT v.exterieur, v.annonce_id,v.perime, v.titre, v.contenu, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM annonces as v LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE (perime>=".date("Ymd000000",time()-48*3600).") ORDER BY perime DESC");
+	$DB_web->query("SELECT v.exterieur, v.annonce_id,v.perime, v.titre, v.contenu, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM annonces as v LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE (perime>'".date("Y-m-d H:i:s",time()-48*3600)."') ORDER BY perime DESC");
 	while(list($ext, $id,$date,$titre,$contenu,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_web->next_row()) {
 ?>
 		<annonce titre="<?php  echo $titre ?>" 
