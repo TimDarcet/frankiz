@@ -246,7 +246,8 @@ div.fkz_anniversaire_titre,.fkz_titre,.fkz_titre a {
 	width: 100%; 
 	color: white;
 	background-color:#1f118c;
-	margin: 0;
+	margin-left: -5px;
+	margin-right: -5px;
 	padding: 0;
 }
 
