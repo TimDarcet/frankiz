@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.53  2005/01/12 22:56:31  pico
+	classemnt trombi par promo, maxi 80 résultats
+
 	Revision 1.52  2005/01/12 21:40:41  pico
 	Erreur
-
+	
 	Revision 1.51  2005/01/12 21:39:51  pico
 	Affichage photo d'origine
 	
@@ -268,12 +271,13 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 	// Génération de la page si il y a au moins un critère.
 	if(!empty($where)) {	
 		
-		$DB_trombino->query("SELECT $champs FROM eleves $join WHERE $where ORDER BY eleves.nom,prenom ASC");
+		$DB_trombino->query("SELECT $champs FROM eleves $join WHERE $where ORDER BY promo,eleves.nom,prenom ASC LIMIT 80");
 		
 		// Génération d'un message d'erreur si aucun élève ne correspond
 		if($DB_trombino->num_rows()==0)
 		echo "<warning> Désolé, aucun élève ne correspond à ta recherche </warning>";
-		
+		if($DB_trombino->num_rows()==80)
+		echo "<warning>Trop de résultats: seulement les 80 premiers sont affichés</warning>";
 		// Génération des fiches des élèves
 		while(list($eleve_id,$nom,$prenom,$surnom,$date_nais,$piece_id,$section,$section_id,$cie,$promo,$login,$mail,$tel) = $DB_trombino->next_row()) {
 			$date_nais = date("d/m/Y",strtotime($date_nais));
