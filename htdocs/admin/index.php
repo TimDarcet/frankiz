@@ -4,9 +4,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.25  2004/10/19 19:08:17  kikx
+	Permet a l'administrateur de valider les modification des binets
+
 	Revision 1.24  2004/10/19 18:16:24  kikx
 	hum
-
+	
 	Revision 1.23  2004/10/18 21:16:33  pico
 	Partie admin FAQ
 	chgt table sql de la faq
@@ -89,7 +92,7 @@ $permissions_user = ses_permissions() ;
 		<lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/>
 		<lien titre="Gestion xshare" url="<?php echo BASE_URL?>/admin/xshare.php"/>
 		<lien titre="Gestion FAQ" url="<?php echo BASE_URL?>/admin/faq.php"/>
-		<lien titre="Valider les changements des Binets" url="<?php echo BASE_URL?>/admin/faq.php"/>
+		<lien titre="Valider les changements des Binets" url="<?php echo BASE_URL?>/admin/valid_binets.php"/>
 	<?
 	}
 	

@@ -7,10 +7,13 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.9  2004/10/19 19:08:17  kikx
+	Permet a l'administrateur de valider les modification des binets
+
 	Revision 1.8  2004/10/19 14:58:42  schmurtz
 	Creation d'un champ de formulaire specifique pour les fichiers (sans passer
 	l'element champ, qui actuellement est un peu acrobatique).
-
+	
 	Revision 1.7  2004/10/18 23:07:43  kikx
 	Finalisation de la page d'administration des binets par le prez ou le webmestre de ce dit binet
 	
@@ -158,6 +161,17 @@ if(verifie_permission_webmestre($_GET['binet'])){
 		if ($DB_valid->num_rows()!=0) {
 			$message2 .= "<warning>Vous aviez déjà demandé une modification, seule la demande que vous venez de poster sera prise en compte</warning>" ;
 			$DB_valid->query("DELETE FROM valid_binet WHERE binet_id={$_POST['id']}");
+		} else {
+			$tempo = explode("gestion",$_SERVER['REQUEST_URI']) ;
+
+			$contenu = "Le webmestre du binet $nom a demandé la modification de l'affichage de son binet \n\n".
+				"Pour valider ou non cette demande va sur la page suivante : \n".
+				"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_binets.php\n\n" .
+				"Très BR-ement\n" .
+				"L'automate :)\n"  ;
+				
+			mail(MAIL_WEBMESTRE,"[Frankiz] Modification du binet $nom",$contenu);
+		
 		}
 		
 		$DB_valid->query("INSERT INTO  valid_binet SET binet_id={$_POST['id']}, nom='$nom', http='{$_POST['http']}', description='{$_POST['descript']}', catego_id='{$_POST['catego']}' , exterieur=$exterieur, image=\"".addslashes($image)."\", format='$format'");
@@ -196,8 +210,7 @@ if(verifie_permission_webmestre($_GET['binet'])){
 				$message2 .= "<warning>Ton image n'est pas au bon format (taille ou extension... $type_img / $dim[0]x$dim[1] pxl)</warning>" ;
 			}
 		}
-		$message2 .= "<commentaire>La demande de modification du binet ' $nom'  $texte_image a été effectuée</commentaire>" ;
-
+		$message2 .= "<commentaire>La demande de modification du binet '$nom'  $texte_image a été effectuée</commentaire>" ;
 	}
 	
 //============================================
