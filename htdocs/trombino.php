@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.45  2004/12/17 13:18:47  kikx
+	Rajout des numéros utiles car c'est une demande importante
+
 	Revision 1.44  2004/12/17 01:09:08  pico
 	Ajout de la date de naissance dans le trombi
-
+	
 	Revision 1.43  2004/12/16 14:58:15  pico
 	Pfiou
 	
@@ -304,5 +307,6 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 		<bouton titre="Effacer" id="reset" />
 		<bouton titre="Chercher" id="chercher" />
 	</formulaire>
+	<lien url="num_utiles.php" titre="Numéros Utiles"/>
 </page>
 <?php require "include/page_footer.inc.php" ?>

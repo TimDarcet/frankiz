@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.29  2004/12/17 13:18:47  kikx
+	Rajout des numéros utiles car c'est une demande importante
+
 	Revision 1.28  2004/12/15 23:40:35  kikx
 	Pour gerer les mots de vocabulaires
-
+	
 	Revision 1.27  2004/12/15 01:44:15  schmurtz
 	deplacement de la page d'admin du bob de admin vers gestion
 	
@@ -323,6 +326,11 @@ $permissions_user = $_SESSION['user']->perms ;
 	if (verifie_permission('admin')){
 	?>
 		<lien titre="Gestion du Vocabulaire" url="admin/vocabulaire.php"/><br/>
+	<?
+	}
+	if (verifie_permission('admin')){
+	?>
+		<lien titre="Gestion des num utiles" url="admin/num_utiles.php"/><br/>
 	<?
 	}
 	if (verifie_permission('admin')){
