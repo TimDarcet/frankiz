@@ -91,17 +91,17 @@
 </xsl:template>
 
 <xsl:template match="module[@id='liens_profil']">
-	 <div class="fkz_module" id='mod_liens_nav'>
+	 <div class="fkz_module" id='mod_liens_profil'>
 	 	<div class="fkz_titre">
-			<span id="navigation_logo"><xsl:text> </xsl:text></span>
-			<span id="navigation">Profil: <xsl:value-of select="$user_prenom"/> <xsl:text> </xsl:text> <xsl:value-of select="$user_nom"/></span>
+			<span id="liens_profil_logo"><xsl:text> </xsl:text></span>
+			<span id="liens_profil">Profil: <xsl:value-of select="$user_prenom"/> <xsl:text> </xsl:text> <xsl:value-of select="$user_nom"/></span>
 		</div>
 		<div class="fkz_module_corps">
 			<div style="text-align:center;"><xsl:value-of select="$date"/> <xsl:text> </xsl:text> <xsl:value-of select="$heure"/><br/></div>
 			<xsl:apply-templates select="warning"/>
-			<ul class="fkz_liens_nav">
+			<ul class="fkz_liens">
 				<xsl:for-each select="lien">
-					<li class="fkz_liens_nav">
+					<li class="fkz_liens">
 						<a>
 							<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
 							<xsl:if test="boolean(@key)">
