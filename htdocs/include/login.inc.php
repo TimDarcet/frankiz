@@ -36,9 +36,12 @@
 	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
 
 	$Log$
+	Revision 1.11  2004/11/16 15:09:15  kikx
+	Le login est now login.promo
+
 	Revision 1.10  2004/11/13 00:12:24  schmurtz
 	Ajout du su
-
+	
 	Revision 1.9  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -151,9 +154,10 @@ function demande_authentification($minimum) {
 ?>
 	<page id="login" titre="Frankiz : connexion">
 		<?php if(a_erreur(ERR_LOGIN)):?>
-			<p>Une erreur est survenue lors de l'authentification. Vérifie qu'il n'y a pas d'erreur
-			dans le login ou le mot de passe.</p>
+			<warning>Une erreur est survenue lors de l'authentification. Vérifie qu'il n'y a pas d'erreur
+			dans le login ou le mot de passe.</warning>
 		<?php endif; ?>
+		<note>Ton login est loginpoly.promo</note>
 		<formulaire id="login" titre="Connexion" action="<?php echo $_SERVER['PHP_SELF']?>">
 			<champ id="login" titre="Login" valeur="<?php if(isset($_POST['login'])) echo $_POST['login']?>"/>
 			<champ id="passwd" titre="Mot de passe" valeur=""/>

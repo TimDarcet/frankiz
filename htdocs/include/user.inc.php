@@ -26,9 +26,12 @@
 	informations provenant des tables du trombino (avec jointure sur l'uid).
 
 	$Log$
+	Revision 1.12  2004/11/16 15:09:15  kikx
+	Le login est now login.promo
+
 	Revision 1.11  2004/11/16 14:55:46  schmurtz
 	On evite les appels frequents a la BD pour recuperer la skin
-
+	
 	Revision 1.10  2004/11/13 00:12:24  schmurtz
 	Ajout du su
 	
@@ -82,8 +85,16 @@ class User {
 			$this->devient_anonyme();
 			return;
 		}
+		$value = explode(".",$value) ;
+		if (count($value)!=2) {
+			$login ="" ;
+			$promo = "" ;	
+		} else {
+			$login = $value[0] ;
+			$promo = $value[1] ;
+		}
 		
-		$condition = $islogin ? "WHERE login='$value' ORDER BY promo DESC LIMIT 1" : "WHERE eleves.eleve_id='$value'";
+		$condition = $islogin ? "WHERE login='$login' AND promo=$promo ORDER BY promo DESC LIMIT 1" : "WHERE eleves.eleve_id='$value'";
 		$DB_web->query("SELECT eleves.eleve_id,login,perms,nom,prenom,passwd,IF(hashstamp>NOW(),hash,''),hash FROM trombino.eleves INNER JOIN compte_frankiz USING(eleve_id) $condition");
 		if($DB_web->num_rows() == 0) {
 			// l'utilisateur n'existe pas.
