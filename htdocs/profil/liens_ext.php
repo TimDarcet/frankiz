@@ -21,9 +21,12 @@
 	Gestions des liens perso / des flux rss.
 
 	$Log$
+	Revision 1.3  2004/11/24 19:02:37  pico
+	Applique les changements tout de suite
+
 	Revision 1.2  2004/11/24 18:48:01  pico
 	Encore un warning
-
+	
 	Revision 1.1  2004/11/24 16:24:09  pico
 	Passage du formulaire de choix des rss à afficher dans une page spéciale
 	
@@ -39,14 +42,6 @@ require_once "../include/global.inc.php";
 demande_authentification(AUTH_MINIMUM);
 
 
-// Génération de la page
-//===============
-require_once BASE_LOCAL."/include/page_header.inc.php";
-
-?>
-<page id="profil_liens_ext" titre="Frankiz : Gestion des liens externes">
-
-<?
 
 $DB_web->query("SELECT url,description FROM liens_rss");
 while(list($value,$description)=$DB_web->next_row())
@@ -65,7 +60,16 @@ if(!empty($_REQUEST['OK_param'])) {
 	$DB_web->query("UPDATE compte_frankiz SET liens_rss='$rss' WHERE eleve_id='{$_SESSION['user']->uid}'");	
 }
 
+
+
+// Génération de la page
+//===============
+require_once BASE_LOCAL."/include/page_header.inc.php";
+
 ?>
+<page id="profil_liens_ext" titre="Frankiz : Gestion des liens externes">
+
+
 	<formulaire id="form_param_rss" titre="Choix des RSS" action="profil/liens_ext.php">
 		<note>Choisis quelles infos tu veux avoir sur ta page de news externes</note>
 <?
