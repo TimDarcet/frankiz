@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une activité
 	
 	$Log$
+	Revision 1.7  2004/10/29 14:09:10  kikx
+	Envoie des mail en HTML pour la validation des affiche
+
 	Revision 1.6  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.5  2004/10/19 14:58:43  schmurtz
 	Creation d'un champ de formulaire specifique pour les fichiers (sans passer
 	l'element champ, qui actuellement est un peu acrobatique).
@@ -65,8 +68,8 @@ $msg="" ;
 //--//
 //--// Norme de nommage des images que nous uploadons
 //--// dans le rep prévu a cette effet : 
-//--// # affiche_{$id_eleves} qd l'annonce n'a pas été soumise à validation
-//--// # {$id_affiche}_affiche qd l'annonce est soumise à validation
+//--// # temp_{$id_eleves} qd l'annonce n'a pas été soumise à validation
+//--// # a_valider_{$id_affiche} qd l'annonce est soumise à validation
 //--//
 //--// Ceci permet de faire la différence entre les fichiers tempo et les fichiers a valider
 //--//
@@ -123,14 +126,16 @@ if (isset($_POST['valid'])) {
 		$index = mysql_insert_id() ;
 		rename(DATA_DIR_LOCAL."affiches/temp_$eleve_id",DATA_DIR_LOCAL."affiches/a_valider_{$index}") ; 
 	
-		$contenu = "$prenom $nom a demandé la validation d'une activité : \n".
-					$_POST['titre']."\n\n".
-					"Pour valider ou non cette demande va sur la page suivante : \n".
-					"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_affiches.php\n\n" .
-					"Très BR-ement\n" .
-					"L'automate :)\n"  ;
+		$contenu = "<strong>Bonjour,</strong><br><br>".
+					"$prenom $nom a demandé la validation d'une activité : <br>".
+					$_POST['titre']."<br><br>".
+					"Pour valider ou non cette demande va sur la page suivante<br>".
+					"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_affiches.php'>".
+					"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_affiches.php</a></div><br><br>" .
+					"Très BR-ement<br>" .
+					"L'automate :)<br>"  ;
 					
-		mail(MAIL_WEBMESTRE,"[Frankiz] Validation d'une activité",$contenu);
+		couriel(WEBMESTRE_ID,"[Frankiz] Validation d'une activité",$contenu,"Frankiz <br@frankiz>");
 	} else {
 		
 		$msg .= "<warning> Il faut soumettre une image pour les activités </warning>" ;
@@ -148,7 +153,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
 <page id="propoz_affiche" titre="Frankiz : Propose une activité">
-<h1>Proposition d'annonce</h1>
+<h1>Proposition d'activité</h1>
 
  <?
  echo $msg ;
@@ -175,7 +180,7 @@ if (!isset($_POST['date']))  $_POST['date']=time() ;
 
 ?>
 	<annonce date="">
-		<commentaire>NB : Cette annonce sera affichée le <?php echo date("d/m/y",$_POST['date']) ;?></commentaire>
+		<commentaire>NB : Cette activité sera affichée le <?php echo date("d/m/y",$_POST['date']) ;?></commentaire>
 		<a href="<?php echo $_POST['url'] ;?>">
 		<?
 		if ((!isset($_POST['valid']))&&(file_exists(DATA_DIR_LOCAL."affiches/temp_$eleve_id"))) {
@@ -204,7 +209,7 @@ if ((isset($_POST['valid']))&&(isset($index))&&file_exists(DATA_DIR_LOCAL."affic
 ?>
 	<commentaire>
 		<p>Tu as demandé à un webmestre de valider ton activité</p>
-		<p>Il faut compter 24h pour que ton annonce soit prise en compte par notre système</p>		
+		<p>Il faut compter 24h pour que ton activité soit prise en compte par notre système</p>		
 		<p>&nbsp;</p>		
 		<p>Nous te remercions d'avoir soumis une activité et nous essayerons d'y répondre le plus rapidement possible</p>		
 	</commentaire>

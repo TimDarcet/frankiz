@@ -24,9 +24,12 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.27  2004/10/29 14:09:10  kikx
+	Envoie des mail en HTML pour la validation des affiche
+
 	Revision 1.26  2004/10/28 16:08:14  kikx
 	Ne fait qu'une page de fonctions pour la météo car sinon ça devient ingérable
-
+	
 	Revision 1.25  2004/10/22 06:52:38  pico
 	Bdd xnet
 	
@@ -110,6 +113,7 @@ define('DATA_DIR_LOCAL',BASE_DATA);	// pour compatibilité
 define('DATA_DIR_URL',URL_DATA);
 
 define('MAIL_WEBMESTRE',"kikx@frankiz.polytechnique.fr");
+define('WEBMESTRE_ID',"-1");
 define('MAIL_CONTACT',"eleves@polytechnique.fr");
 define('MAX_PEREMPTION',8);
 

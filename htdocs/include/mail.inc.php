@@ -22,9 +22,12 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.5  2004/10/29 14:09:10  kikx
+	Envoie des mail en HTML pour la validation des affiche
+
 	Revision 1.4  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.3  2004/10/16 01:47:45  schmurtz
 	Bug dans l'envoi d'un mail
 	
@@ -37,30 +40,50 @@
 */
 
 // envoi d'un mail à un élève
-function couriel($eleve_id,$titre,$contenu) {
-	global $DB_trombino;
-	$DB_trombino->query("SELECT nom,prenom,mail,login FROM eleves WHERE eleve_id='$eleve_id'") ;
-	list($nom, $prenom, $adresse, $login) = $DB_trombino->next_row()  ;
-	if(empty($adresse)) $adresse=$login."@poly.polytechnique.fr" ;
+function couriel($eleve_id,$titre,$contenu,$sender="le BR <br@frankiz.polytechnique.fr>") {
+	if ($eleve_id==WEBMESTRE_ID) {
+		$prenom = "Webmestre de Frankiz" ;
+		$nom = "" ;
+		$adresse = MAIL_WEBMESTRE ;
+	} else {
+		global $DB_trombino;
+		$DB_trombino->query("SELECT nom,prenom,mail,login FROM eleves WHERE eleve_id=$eleve_id") ;
+		list($nom, $prenom, $adresse, $login) = $DB_trombino->next_row()  ;
+		if(empty($adresse)) $adresse=$login."@poly.polytechnique.fr" ;
+	}
 	
-	$mail = new Mail("Binet Réseau <br@frankiz.polytechnique.fr>","$prenom $nom <$adresse>",$titre);
-	$mail->setBody($contenu);
+	$mail = new Mail($sender,"$prenom $nom <$adresse>",$titre,true);
+	$mail->addPartText(html2plain($contenu));
+	$mail->addPartHtml($contenu);
 	$mail->send();
 }
 
 // convertit un message HTML en un message plaintext.
 function html2plain($html) {
-	$text = html_entity_decode($html);
-	return trim(strip_tags($text));
+	$string = str_replace ( '<br>', "\n", $html );
+	$string = str_replace ( '</p>', "\n", $string );
+	
+	$string = str_replace ( '&amp;', '&', $string );
+	$string = str_replace ( '&#039;', "'", $string );
+	$string = str_replace ( '&apos;', "'", $string );
+	$string = str_replace ( '&quot;', '\"', $string );
+	$string = str_replace ( '&lt;', '<', $string );
+	$string = str_replace ( '&gt;', '>', $string );
+
+	$trans_tbl = get_html_translation_table (HTML_ENTITIES);
+
+	$trans_tbl2 = array_flip ($trans_tbl);
+	$ret = strtr ($string, $trans_tbl2);
+	return trim(strip_tags($ret));
 }
 
 // convertit un message plaintext en un message HTML avec des liens clickables.
-function plain2html($text) {
+/*function plain2html($text) {
 	$html = ereg_replace("[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]",
 	"<a href=\"\\0\">\\0</a>", $text);
 	$html = nl2br($html);
 	return "<html><body>\n$html\n</body></html>";
-}
+}*/ //Utile ? (kikx)
 
 class Mail {
 	var $header, $body;
@@ -95,7 +118,7 @@ class Mail {
 	}
 	
 	// Gestion des mails multipart
-	function addPart($type,$charset,$encoding,$value) {
+	function addPart($type,$encoding,$value) {
 		if ($this->boundary) {
 			$this->body .= "--{$this->boundary}\n".
 						   "Content-Type: $type\n".
@@ -110,22 +133,22 @@ class Mail {
 		$this->addPart("text/plain; charset=$charset","8bit", $text);
 	}
 
-	function addPartRichText($text,$charset="iso-8859-1") {
+/*	function addPartRichText($text,$charset="iso-8859-1") {
 		$this->addPart("text/enriched; charset=$charset","8bit", $tex);
-	}
+	}*/ //Kikx se demande si ça sert vraiment ? 
 	
 	function addPartHtml($html,$charset="iso-8859-1") {
 		$this->addPart("text/html; charset=$charset","8bit", $html);
 	}
 	
 	// définission du contenu d'un mail non multipart
-	function setBody($text) {
+/*	function setBody($text) {
 		if (!$this->boundary) {
 			$this->body = $text;
 		} else {
 			echo "<b>Erreur : setBody s'applique uniquement aux messages inline!</b>";
 		}
-	}
+	}*/ // On dit que l'on envoie que des mail en HTML ... donc en multipart (kikx)
 	
 	// pour les envois multiples du même mail à plusieurs personnes
 	function setTo($to) {
@@ -152,4 +175,7 @@ class Mail {
 		return false;
 	}
 }
+
+require_once BASE_LOCAL."/include/mail_contenu.inc.php" ;
+
 ?>
