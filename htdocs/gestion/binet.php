@@ -7,9 +7,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.4  2004/10/17 23:17:18  kikx
+	Maintenant le prez peut supprimer les personnes qui sont dans son binet et modifier leur commentaires
+
 	Revision 1.3  2004/10/17 20:27:35  kikx
 	Permet juste au prez des binets de consulter les perosnne adherant aux binet ainsi que leur commentaires
-
+	
 	Revision 1.2  2004/10/17 17:31:32  kikx
 	Micro modif avant que j'oublie
 	
@@ -35,7 +38,35 @@ if ((empty($_GET['binet'])) || ((!verifie_permission_webmestre($_GET['binet'])) 
 	
 $DB_web->query("SELECT nom FROM binets WHERE id=".$_GET['binet']);
 list($nom_binet) = $DB_web->next_row() ;
+$message ="" ;
 
+//=================================
+// Suppression d'une personne
+//=================================
+$ids ="" ;
+if(isset($_POST['suppr'])) {
+	foreach($_POST['elements'] as $id => $on) {
+		$ids .= (empty($ids) ? "" : ",") . "'$id'";
+	}
+	$DB_trombino->query("DELETE FROM membres  WHERE eleve_id IN ($ids)");
+	$message .= "<warning>".count($_POST['elements'])." personnes viennent d'être supprimées.</warning>\n";
+}
+//=================================
+// Modification des commentaires des differents membres
+//=================================
+$ids ="" ;
+if(isset($_POST['modif'])) {
+	//$DB_trombino->query("SELECT m.eleve_id FROM membres as m INNER JOIN eleves USING(eleve_id) WHERE binet_id=".$_GET['binet']." AND promo=$promo_prez");
+	//while(list($id) = $DB_trombino->next_row()) {
+
+	foreach($_POST['description'] as $id => $on) {
+		$DB_trombino->query("UPDATE  membres SET remarque='$on' WHERE eleve_id=$id");
+	}
+	$message .= "<commentaire> Sauvegardes des commentaires des différents membres du binet</commentaire>\n";
+}
+//=================================
+// Génération de la page
+//=================================
 
 require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
@@ -48,24 +79,28 @@ if(verifie_permission_prez($_GET['binet'])){
 	?>
 	<h1>Administration par le </h1>
 	<h1>prèz du binet <?=$nom_binet?></h1>
-	
+	<?
+	echo $message ;
+	?>
 	<h2>Liste des membres</h2>
 	<?
 	$DB_trombino->query("SELECT m.eleve_id,remarque,nom,prenom,surnom,promo FROM membres as m INNER JOIN eleves USING(eleve_id) WHERE binet_id=".$_GET['binet']." AND promo=$promo_prez");
 	?>
-	<liste id="liste_binets" selectionnable="oui" action="admin/binets.php">
+	<liste id="liste_binets" selectionnable="oui" action="gestion/binet.php?binet=<?=$_GET['binet']?>">
 		<entete id="nom" titre="Nom"/>
 		<entete id="description" titre="Description"/>
 	<?
 	while(list($id,$remarque,$nom,$prenom,$surnom,$promo) = $DB_trombino->next_row()) {
 			echo "\t\t<element id=\"$id\">\n";
-			echo "\t\t\t<colonne id=\"nom\">$nom</colonne>\n";
-			echo "\t\t\t<colonne id=\"description\">$remarque</colonne>\n";
+			$surnom = (empty($surnom) ? "" : " (".$surnom.")") ; 
+			echo "\t\t\t<colonne id=\"nom\">$nom $prenom ".$surnom."</colonne>\n";
+			echo "\t\t\t<colonne id=\"description\"><champ id=\"description[$id]\" valeur=\"$remarque\"/></colonne>\n";
 			echo "\t\t</element>\n";
 	}
 ?>
-		<bouton titre="Modifier" id="modif"/>
+		
 		<bouton titre="Supprimer" id="suppr" onClick="return window.confirm('Supprimer cette personne de mon binet ?')"/>
+		<bouton titre="Modifier tous les commentaires" id="modif"/>
 	</liste>
 <?
 }
