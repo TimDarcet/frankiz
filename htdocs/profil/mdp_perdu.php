@@ -24,13 +24,14 @@ if(!empty($_REQUEST['loginpoly'])) {
 		if(mysql_num_rows($resultat) > 0)
 			mysql_query("UPDATE compte_frankiz SET hash='$hash',hashstamp=DATE_ADD(NOW(),INTERVAL 6 HOUR) WHERE eleve_id='$id'");
 		else
-			mysql_query("INSERT INTO compte_frankiz SET eleve_id='$id',passwd='',perms='',hash='$hash',hashstamp=NOW()+3600*6");
+			mysql_query("INSERT INTO compte_frankiz SET eleve_id='$id',passwd='',perms='',hash='$hash',hashstamp= DATE_ADD(NOW(),INTERVAL 6 HOUR)");
 		mysql_free_result($resultat);
 		
 		// Envoie le mail contenant l'url avec le hash
+		$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
 		$contenu = "Pour te connecter sur Frankiz, il te suffit de cliquer sur le\n".
 				   "lien ci-dessous :\n\n".
-				   "	[ ".$_SERVER['SERVER_NAME']."/profil/profil.php?uid=${id}&hash=${hash} ]\n\n".
+				   "	[ http://".$_SERVER['SERVER_NAME'].$tempo[0]."profil/profil.php?uid=${id}&hash=${hash} ]\n\n".
 				   "N'oublie pas ensuite de modifier ton mot de passe.";
 		mail("$nom $prenom <${login}@poly.polytechnique.fr>","[Frankiz] Création de compte/perte de mot de passe",$contenu);
 		$mail_envoye = true;
