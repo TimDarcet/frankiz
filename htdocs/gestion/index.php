@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.15  2004/11/27 14:30:16  pico
+	réorganisation page d'admin
+
 	Revision 1.14  2004/11/27 14:16:19  pico
 	Ajout du lien de modif dans la page d'admin, réorganisation de la page
-
+	
 	Revision 1.13  2004/11/27 12:58:23  pico
 	jout du lien vers la planification des activités
 	
@@ -141,12 +144,8 @@ $permissions_user = $_SESSION['user']->perms ;
 	<h2>Administration frankiz</h2>
 	<h3>Gestion de l'utilisateur</h3>
 		<lien titre="Modifier un utilisateur" url="trombino.php"/>
+
 	<h3>Validations Variées</h3>
-		<?
-		$DB_valid->query("SELECT eleve_id FROM valid_ip") ;
-		$nb = $DB_valid->num_rows() ;
-		?>
-		<lien titre="Gerer les demandes d'ajout d'ips (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_ip.php"/>
 		<?
 		$nb =0 ;
 		$rep = BASE_DATA."trombino/";
@@ -159,8 +158,7 @@ $permissions_user = $_SESSION['user']->perms ;
 			}
 		}
 		?>	
-
-		<lien titre="Valider son changement de photo trombino (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_trombi.php"/>
+		<lien titre="Valider les changements de photo trombino (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_trombi.php"/>
 		<?
 		$DB_valid->query("SELECT eleve_id FROM valid_annonces") ;
 		$nb = $DB_valid->num_rows() ;
@@ -196,17 +194,25 @@ $permissions_user = $_SESSION['user']->perms ;
 		$nb = $DB_valid->num_rows() ;
 		?>
 		<lien titre="Valider les changements des Binets (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_binets.php"/>
+
 	<h3>Administration des données validées</h3>
 		<lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/>
 		<lien titre="Planifier les activités" url="<?php echo BASE_URL?>/admin/planif_affiches.php"/>
 		<lien titre="Modifier les annonces" url="<?php echo BASE_URL?>/admin/modif_annonces.php"/>
+
 	<h3>Administration des données de Frankiz</h3>
+		<lien titre="Changer les variables globales" url="<?php echo BASE_URL?>/admin/parametre.php"/>
 		<lien titre="Liste des Binets" url="<?php echo BASE_URL?>/admin/binets_liste.php"/>
 		<lien titre="Liste des sections" url="<?php echo BASE_URL?>/admin/sections.php"/>
-		<lien titre="Changer les variables globales" url="<?php echo BASE_URL?>/admin/parametre.php"/>
 		<lien titre="Gestion xshare" url="<?php echo BASE_URL?>/admin/xshare.php"/>
 		<lien titre="Gestion FAQ" url="<?php echo BASE_URL?>/admin/faq.php"/>
+
 	<h3>Administration du réseau élève</h3>
+		<?
+		$DB_valid->query("SELECT eleve_id FROM valid_ip") ;
+		$nb = $DB_valid->num_rows() ;
+		?>
+		<lien titre="Gerer les demandes d'ajout d'ips (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_ip.php"/>
 		<lien titre="Liste des IPs" url="<?php echo BASE_URL?>/admin/ip.php"/>
 
 
