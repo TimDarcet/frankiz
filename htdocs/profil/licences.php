@@ -21,9 +21,12 @@
 	Page qui permet de demander une clé windows
 	
 	$Log$
+	Revision 1.9  2004/12/17 20:27:02  pico
+	On va éviter une ptite erreur
+
 	Revision 1.8  2004/12/17 20:25:20  pico
 	Ajout des logs
-
+	
 	
 */
 	
@@ -45,7 +48,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 ?>
 <page id="licences" titre="Frankiz : Les Licences">
 <?	//on vérifie que la demande est faite pour windows xp pro
-	if(isset($_POST['accord']) && ($_POST['logiciel']==xp_pro)){
+	if(isset($_POST['accord']) && ($_POST['logiciel']=="xp_pro")){
 		//on lance la requête qui va bien pour voir la clé
 		$DB_msdnaa->query("SELECT cle,attrib FROM cles_winxp WHERE eleve_id='".$_SESSION['user']->uid."' LIMIT 0,1");
 		//on verifie que le demandeur existe dans la base
