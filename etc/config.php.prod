@@ -22,12 +22,15 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.2  2004/12/15 15:40:16  fruneau
+	Synchronisation de config.php avec celui qui était utilisé
+
 	Revision 1.1  2004/12/15 15:31:17  fruneau
 	Donne une structure
 	config.php.prod
 	config.php.dev
 	en remplacement du config.php...
-
+	
 	Revision 1.11  2004/12/15 13:03:22  pico
 	Ajout mail trombinomen
 	
@@ -89,9 +92,9 @@ define('DSI_URL',"reseaux.polytechnique.fr") ;
 $i = -1 ;
 define('MAIL_WEBMESTRE',"web@frankiz.polytechnique.fr");
 define('WEBMESTRE_ID',$i--);
-define('MAIL_QDJMASTER',"thierry.vinas@polytechnique.fr");
+define('MAIL_QDJMASTER',"qdj@polytechnique.fr");
 define('QDJMASTER_ID',$i--);
-define('MAIL_PREZ',"dei@frankiz.polytechnique.fr");
+define('MAIL_PREZ',"prez@frankiz.polytechnique.fr,root@frankiz.polytechnique.fr");
 define('PREZ_ID',$i--);
 define('MAIL_ROOT',"root@frankiz.polytechnique.fr");
 define('ROOT_ID',$i--);
