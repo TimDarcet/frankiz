@@ -42,7 +42,12 @@ div.fkz_logo:hover {
 	background-position: center;
 }
 
-span.fkz_logo {
+div.fkz_entetes a:hover{
+	border:none;
+	padding:0px;
+}
+
+span.fkz_logo,span.fkz_logo_eleves {
 	display:none;
 }
  
@@ -64,7 +69,10 @@ a:hover {
    border: 1px dashed gray;
 }
 
-div.fkz_liens_nav {
+#mod_liens_nav {
+	position:absolute;
+	top:180px;
+	width:100%;
 	font-size: 9pt;
 	background-color: #dddddd;
 	border: 1px dashed gray;
@@ -73,7 +81,9 @@ div.fkz_liens_nav {
 	text-align: center;
 }
 
-div.fkz_liens_nav:hover {
+
+
+#mod_liens_nav:hover {
 	background-color: white;
 }
 
@@ -181,7 +191,12 @@ ul.fkz_liens_nav{
 	display: inline;
 }
 
-.fkz_module {
+#mod_liens_nav  .fkz_titre{
+	display:none;
+}
+#mod_liens_nav  div{display:inline; border:none; background:none}
+
+.fkz_module_corps {
 	background: #dddddd;
 	border: 1px dashed gray;
 	padding: 2px;
@@ -189,7 +204,7 @@ ul.fkz_liens_nav{
 	margin-top: 2px;
 }
 
-.fkz_module:hover {
+.fkz_module_corps:hover {
 	background-color: white;
 }
 
@@ -270,8 +285,9 @@ span.fkz_annonces_vieux {
 }
 
 .fkz_page {
-    clear: both;
-    width: 100%;     
+	padding-top:40px;
+	clear: both;
+	width: 100%;     
 }
 
 
@@ -419,3 +435,5 @@ div.formulaire span.boutons{
 }
 
 /* Formulaires */
+
+.fkz_page_titre{display:none;}

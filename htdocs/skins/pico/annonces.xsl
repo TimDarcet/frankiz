@@ -42,82 +42,87 @@
 
 
 <xsl:template match="page[@id='accueil']" mode="sommaire">
-<xsl:if test="$sommaire='pas_tri'">
-	<xsl:if test="count(annonce) != 0">
-		<div class="fkz_annonces">
-			<xsl:apply-templates select="annonce" mode="sommaire"/>
-		</div>
-		<br/>
-	</xsl:if>
-</xsl:if>
-<xsl:if test="$sommaire='trie'">
-	<xsl:if test="count(annonce) != 0">
-		<div class="fkz_annonces">
-		<xsl:if test="count(annonce[@categorie='important']) != 0">
-			<div class="fkz_sommaire_titre">
-			       <span class="fkz_annonces_important"><xsl:text> </xsl:text></span> Important
+	<xsl:if test="$sommaire='pas_tri'">
+		<xsl:if test="count(annonce) != 0">
+			<div class="fkz_sommaire">
+				<xsl:apply-templates select="annonce" mode="sommaire"/>
 			</div>
-			<xsl:apply-templates select="annonce[@categorie='important']" mode="sommaire"/>
+			<br/>
 		</xsl:if>
-		<xsl:if test="count(annonce[@categorie='nouveau']) != 0">
-			<div class="fkz_sommaire_titre"><span class="fkz_annonces_nouveau"><xsl:text> </xsl:text></span> Nouvelles Fraîches</div>
-			<xsl:apply-templates select="annonce[@categorie='nouveau']" mode="sommaire"/>
-		</xsl:if>
-		<xsl:if test="count(annonce[@categorie='vieux']) != 0">
-			<div class="fkz_sommaire_titre"><span class="fkz_annonces_vieux"><xsl:text> </xsl:text></span> Demain c'est fini</div>
-			<xsl:apply-templates select="annonce[@categorie='vieux']" mode="sommaire"/>
-		</xsl:if>
-		<xsl:if test="count(annonce[@categorie='reste']) != 0">
-			<div class="fkz_sommaire_titre"><span class="fkz_annonces_reste"><xsl:text> </xsl:text></span> En attendant...</div>
-			<xsl:apply-templates select="annonce[@categorie='reste']" mode="sommaire"/>
-		</xsl:if>
-		</div>
-		<br/>
 	</xsl:if>
-	
-</xsl:if>
+	<xsl:if test="$sommaire='trie'">
+		<xsl:if test="count(annonce) != 0">
+			<div class="fkz_sommaire">
+				<xsl:if test="count(annonce[@categorie='important']) != 0">
+					<div class="fkz_sommaire_titre">
+					<span class="fkz_annonces_important"><xsl:text> </xsl:text></span> Important
+					</div>
+					<xsl:apply-templates select="annonce[@categorie='important']" mode="sommaire"/>
+				</xsl:if>
+				<xsl:if test="count(annonce[@categorie='nouveau']) != 0">
+					<div class="fkz_sommaire_titre"><span class="fkz_annonces_nouveau"><xsl:text> </xsl:text></span> Nouvelles Fraîches</div>
+					<xsl:apply-templates select="annonce[@categorie='nouveau']" mode="sommaire"/>
+				</xsl:if>
+				<xsl:if test="count(annonce[@categorie='vieux']) != 0">
+					<div class="fkz_sommaire_titre"><span class="fkz_annonces_vieux"><xsl:text> </xsl:text></span> Demain c'est fini</div>
+					<xsl:apply-templates select="annonce[@categorie='vieux']" mode="sommaire"/>
+				</xsl:if>
+				<xsl:if test="count(annonce[@categorie='reste']) != 0">
+					<div class="fkz_sommaire_titre"><span class="fkz_annonces_reste"><xsl:text> </xsl:text></span> En attendant...</div>
+					<xsl:apply-templates select="annonce[@categorie='reste']" mode="sommaire"/>
+				</xsl:if>
+			</div>
+			<br/>
+		</xsl:if>
+	</xsl:if>
 </xsl:template>
 
 <xsl:template match="annonce" mode="complet">
-<div class="fkz_annonces">
-       <a> <xsl:attribute name="name">
-       <xsl:value-of select="@id"/>
-       </xsl:attribute><xsl:text> </xsl:text>
-       </a>
-       <div class="fkz_annonces_titre"><b>
-       <span>
-          <xsl:attribute name="class">fkz_annonces_<xsl:value-of select="@categorie"/>
-	</xsl:attribute><xsl:text> </xsl:text></span>
-	<span class="fkz_annonces_cat">(<xsl:value-of select="@categorie"/>)</span>
-	
-      <xsl:text> </xsl:text>
-	<span class="fkz_annonces_titre"><xsl:value-of select="@titre"/></span>
-      </b></div>
-      <br/>
-      <xsl:apply-templates select="html"/>
-      <p class="fkz_signature">
-      <xsl:choose>
-      <xsl:when test="eleve/@surnom != ''">
-		<xsl:value-of select="eleve/@surnom"/>
-	</xsl:when>
-      <xsl:otherwise>
-      <xsl:value-of select="eleve/@prenom"/><xsl:text>  </xsl:text><xsl:value-of select="eleve/@nom"/>
-      </xsl:otherwise>
-      </xsl:choose>
-      </p>
-</div>
-<br/>
+	<div class="fkz_annonces">
+		<a> 
+			<xsl:attribute name="name">
+			<xsl:value-of select="@id"/>
+			</xsl:attribute><xsl:text> </xsl:text>
+		</a>
+		<div class="fkz_annonces_titre">
+			<b>
+				<span>
+					<xsl:attribute name="class">fkz_annonces_<xsl:value-of select="@categorie"/></xsl:attribute>
+					<xsl:text> </xsl:text>
+				</span>
+				<span class="fkz_annonces_cat">(<xsl:value-of select="@categorie"/>)</span>
+				<xsl:text> </xsl:text>
+				<span class="fkz_annonces_titre"><xsl:value-of select="@titre"/></span>
+			</b>
+		</div>
+		<div class="fkz_annonces_corps">
+			<xsl:apply-templates select="html"/>
+			<p class="fkz_signature">
+				<xsl:choose>
+					<xsl:when test="eleve/@surnom != ''">
+						<xsl:value-of select="eleve/@surnom"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="eleve/@prenom"/><xsl:text>  </xsl:text><xsl:value-of select="eleve/@nom"/>
+					</xsl:otherwise>
+				</xsl:choose>
+				(<xsl:value-of select="eleve/@promo"/>)
+			</p>
+		</div>
+	</div>
+	<br/>
 </xsl:template>
 
 <xsl:template match="annonce" mode="sommaire">
-<div class="fkz_sommaire">
-       <a> <xsl:attribute name="href">
-       <xsl:text>index.php#</xsl:text> 
-       <xsl:value-of select="@id"/>
-       </xsl:attribute>
-       	<xsl:value-of select="@titre"/>
-	</a>
-</div>
+	<div class="fkz_sommaire_corps">
+		<a>
+			<xsl:attribute name="href">
+				<xsl:text>index.php#</xsl:text> 
+				<xsl:value-of select="@id"/>
+			</xsl:attribute>
+			<xsl:value-of select="@titre"/>
+		</a>
+	</div>
 </xsl:template>
 
 </xsl:stylesheet>

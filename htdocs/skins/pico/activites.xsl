@@ -22,27 +22,28 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="module[@id='activites']">
-    <xsl:if test="count(element) !=0">
-  <div style="text-align: center">
-  <div id="activite" class="fkz_titre">Activités</div><br/>
-  <div class="fkz_module">
-  <xsl:for-each select="annonce">
-    <xsl:if test="@titre = 'brc'">
-      <xsl:if test="current()=0">
-        <b><xsl:text>Ce soir, au BRC</xsl:text></b><br/>
-      </xsl:if>
-      <i><xsl:value-of select="titre"/>
-      <xsl:text> </xsl:text>à<xsl:text> </xsl:text>
-      <xsl:value-of select="heure"/></i><br/>
-    </xsl:if>
-    <xsl:apply-templates/>
-    <br/>
-    <br/>
-  </xsl:for-each>
-  </div>
-  </div>
-  <br/>
-  </xsl:if>
+	<xsl:if test="count(element) !=0">
+		<div style="text-align: center">
+			<div class="fkz_module" id='mod_activites'>
+				<div class="fkz_titre">Activités</div>
+				<div class="fkz_module_corps">
+					<xsl:for-each select="annonce">
+						<xsl:if test="@titre = 'brc'">
+							<xsl:if test="current()=0">
+								<b><xsl:text>Ce soir, au BRC</xsl:text></b><br/>
+							</xsl:if>
+							<i><xsl:value-of select="titre"/>
+							<xsl:text> </xsl:text>à<xsl:text> </xsl:text>
+							<xsl:value-of select="heure"/></i><br/>
+						</xsl:if>
+						<xsl:apply-templates/>
+						<br/>
+						<br/>
+					</xsl:for-each>
+				</div>
+			</div>
+		</div>
+	</xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>

@@ -30,6 +30,7 @@
 <!-- a modifier -->
 <xsl:include href="html.xsl"/>
 <xsl:include href="form.xsl"/>
+<xsl:include href="arbre.xsl"/>
 
 <xsl:include href="annonces.xsl"/>
 <xsl:include href="skins.xsl"/>
@@ -104,45 +105,17 @@
 <xsl:template match="/frankiz/page[@id!='annonces' and @id!='trombino']">
 	<div class="fkz_page_divers">
 		<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
-		<xsl:apply-templates/>
-	</div>
-</xsl:template>
-
-<xsl:template match="formulaire[starts-with(@id,'mod_xnet_')]">
-	<xsl:apply-templates select="commentaire | warning | note"/>
-	<form enctype="multipart/form-data" method="post">
-			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
-			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
-		<xsl:if test="boolean(@titre)">
-			<h2><span>Modification du mot de passe Xnet </span><span class="adresse_ip"><xsl:value-of select="substring-after(@titre,'Modification du mot de passe Xnet')"/></span></h2>
+		<xsl:if test="@id != ''">
+			<div class="fkz_page_titre"><xsl:value-of select="substring-after(@titre,'Frankiz : ')"/></div>
 		</xsl:if>
-	<div class="formulaire">
-			<!-- les options du formulaire -->
-			<xsl:for-each select="champ|choix|zonetext|textsimple|hidden|image|fichier|lien">
-				<div>
-				<xsl:if test="boolean(@titre)">
-					<span class="gauche">
-						<xsl:value-of select="@titre"/> :
-					</span>
-				</xsl:if>
-				<span class="droite">
-					<xsl:apply-templates select="."/>
-				</span>
-				</div>
-			</xsl:for-each>
-			<!-- les boutons gérant les actions du formulaire -->
-			<div>
-			<span class="boutons">
-				<xsl:apply-templates select="bouton"/>
-			</span>
-			</div>
-		</div>
-	</form>
+		<div class="fkz_page_corps"><xsl:apply-templates/></div>
+	</div>
 </xsl:template>
 
 <xsl:template match="/frankiz/page[@id='meteo']">
 	<div class="fkz_page_meteo">
-		<xsl:apply-templates/>
+		<div class="fkz_page_titre">Météo</div>
+		<div class="fkz_page_corps"><xsl:apply-templates/></div>
 	</div>
 </xsl:template>
 
@@ -154,67 +127,6 @@
 </xsl:template>
 
 
-
-<!-- Arbres -->
-<xsl:template match="arbre">
-	<xsl:if test="boolean(@titre)"><h2><xsl:value-of select="@titre"/></h2></xsl:if>
-	<ul>
-		<xsl:apply-templates select="noeud"/>
-	</ul>
-</xsl:template>
-
-<xsl:template match="noeud">
-	<li>
-		<xsl:choose><xsl:when test="count(noeud|feuille)">
-			<xsl:attribute name="class">noeud_ouvert</xsl:attribute>
-		</xsl:when><xsl:otherwise>
-			<xsl:attribute name="class">noeud_ferme</xsl:attribute>
-		</xsl:otherwise></xsl:choose>
-		
-		<xsl:choose><xsl:when test="boolean(@lien)">
-			<a><xsl:attribute name="href"><xsl:value-of select="@lien"/></xsl:attribute>
-				<xsl:value-of select="@titre"/>
-			</a>
-		</xsl:when><xsl:otherwise>
-			<xsl:value-of select="@titre"/>
-		</xsl:otherwise></xsl:choose>
-		
-		<xsl:apply-templates select="*[name()!='noeud' and  name()!= 'feuille']"/>
-		
-		<xsl:if test="count(noeud|feuille)">
-			<ul class="feuille">
-				<xsl:apply-templates select="noeud|feuille"/>
-			</ul>
-		</xsl:if>
-	</li>
-</xsl:template>
-
-<xsl:template match="feuille">
-	<li>
-		<xsl:choose><xsl:when test="boolean(@lien)">
-			<a><xsl:attribute name="href"><xsl:value-of select="@lien"/></xsl:attribute>
-				<xsl:value-of select="@titre"/>
-			</a>
-		</xsl:when><xsl:otherwise>
-			<xsl:value-of select="@titre"/>
-		</xsl:otherwise></xsl:choose>
-		<xsl:apply-templates />
-	</li>
-</xsl:template>
-
-<!-- Eleves pour les anniversaires/signatures/qdj 
-<xsl:template match="eleve">
-	<xsl:choose><xsl:when test="@surnom != ''">
-		<xsl:value-of select="@surnom"/>
-	</xsl:when><xsl:otherwise>
-		<xsl:value-of select="@prenom"/><xsl:text> </xsl:text><xsl:value-of select="@nom"/>
-	</xsl:otherwise></xsl:choose>
-	<xsl:if test="@promo != ''">
-		<xsl:text> (</xsl:text><xsl:value-of select="@promo"/><xsl:text>)</xsl:text>
-	</xsl:if>
-	<br/>
-</xsl:template>
--->
 
 <!-- Page des binets -->
 

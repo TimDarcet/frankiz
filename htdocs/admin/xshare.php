@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.22  2004/11/15 20:54:18  pico
+		Commit global de retour de gwz
+
 		Revision 1.21  2004/11/08 11:46:27  pico
 		Modif pour utiliser la fonction deldir
-
+		
 		Revision 1.20  2004/11/06 17:47:43  pico
 		........
 		
@@ -121,8 +124,16 @@ foreach ($_POST AS $keys => $val){
 	}
 	
 	if (($temp[0]=='modif') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='')) {
+		if((isset($_FILES['file']))&&($_FILES['file']['name']!='')){
+			$DB_web->query("SELECT y.lien FROM xshare as x INNER JOIN xshare as y ON x.id_parent=y.id WHERE x.id='{$temp[1]}' ");
+			list($dir) = $DB_web->next_row();
+			deldir(BASE_DATA."xshare/".$dir);
+			$filename = $dir."/".$_FILES['file']['name'];
+			move_uploaded_file($_FILES['file']['tmp_name'], BASE_DATA."xshare/".$filename);
+			$lien = ", lien='{$filename}'"; 
+		}
+		else $lien = '';
 		$nom = $_REQUEST['nom'];
-		if(isset($_REQUEST['lien'])) $lien = ", lien='{$_REQUEST['lien']}'"; else $lien = ", lien=''";
 		if(isset($_REQUEST['version'])) $version = ", version='{$_REQUEST['version']}'"; else $version = ", version=''";
 		if(isset($_REQUEST['importance'])) $importance =  ", importance='{$_REQUEST['importance']}'"; else $importance = ", importance=''";
 		if(isset($_REQUEST['site'])) $site =  ", site='{$_REQUEST['site']}'"; else $site = ", site=''";
@@ -301,7 +312,6 @@ echo "<br/>" ;
 	<formulaire id="xshare_<? echo $id ?>" titre="Le logiciel" action="admin/xshare.php">
 	<champ id="nom" titre="Nom du logiciel" valeur="<? echo $nom ?>" />
 	<champ id="version" titre="Version" valeur="<? echo $version ?>" />
-	<champ id="lien" titre="Lien de téléchargement" valeur="<? echo $lien ?>" />
 	<choix titre="Importance" id="importance" type="combo" valeur="<? echo $importance ?>">
 				<option id="0" titre="Normal"/>
 				<option id="1" titre="Important"/>
@@ -310,6 +320,7 @@ echo "<br/>" ;
 	<champ id="site" titre="Site de l'éditeur" valeur="<? echo $site ?>" />
 	<champ id="licence" titre="Licence" valeur="<? echo $licence ?>" />
 	<zonetext id="descript" titre="Description" valeur="<? echo $descript ;?>"/>
+	<fichier id="file" titre="Nouveau fichier" taille="1000000000"/>
 	<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
 	<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce logiciel ?!!!!!')"/>
 	</formulaire>
