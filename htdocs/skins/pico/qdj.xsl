@@ -26,32 +26,31 @@
 		<div class="fkz_module">
 		<xsl:choose>
 		<xsl:when test="boolean(qdj[@action])">
-			<div class="qdj_question"><xsl:value-of select="qdj/question"/></div><br/>
-			<div class="fkz_qdj_rouje">
+			<div class="fkz_qdj_question"><xsl:value-of select="qdj/question"/></div>
+			<div class="fkz_qdj_rouje"><br/>
 			<a>
 			<xsl:attribute name="href"><xsl:value-of select="qdj/@action"/>1</xsl:attribute>
-			<img src="skins/pico/pointrouje.gif" alt="rouje"/><br/>
 			<xsl:value-of select="qdj/reponse[@id='1']"/>
 			</a>
 			</div>
-			<div class="fkz_qdj_jone">
+			<div class="fkz_qdj_jone"><br/>
 			<a>
 			<xsl:attribute name="href"><xsl:value-of select="qdj/@action"/>2</xsl:attribute>
-			<img src="skins/pico/pointjone.gif" alt="jône"/><br/>
 			<xsl:value-of select="qdj/reponse[@id='2']"/>
 			</a>
 			</div>
+			<br/><br/>
 		</xsl:when>
 		<xsl:otherwise>
 			<div class="fkz_qdj_question"><xsl:value-of select="qdj/question"/></div>
 			<div class="fkz_page">
-			<div class="fkz_qdj_rouje">
+			<div class="fkz_qdj_rouje_reponse">
 			<xsl:value-of select="qdj/reponse[@id='1']"/>
 			<br/>
 			<xsl:value-of select="qdj/reponse[@id='1']/@votes"/> soit <xsl:value-of select="round((qdj/reponse[@id='1']/@votes * 100) div sum(qdj/reponse/@votes))"/>%<br/>
 			
 			</div>
-			<div class="fkz_qdj_jone">
+			<div class="fkz_qdj_jone_reponse">
 			<xsl:value-of select="qdj/reponse[@id='2']"/>
 			<br/>
 			<xsl:value-of select="qdj/reponse[@id='2']/@votes"/> soit <xsl:value-of select="round((qdj/reponse[@id='2']/@votes * 100) div sum(qdj/reponse/@votes))"/>%<br/>			
@@ -60,7 +59,7 @@
 		</xsl:otherwise>
 		</xsl:choose>
 		<br/>
-			<div style="text-align: center"><br />
+			<div style="text-align: center"><br/>
 			<xsl:if test="count(qdj/dernier)">
 				<div>Derniers à répondre :</div>
 				<ul class="fkz_qdj_last">
