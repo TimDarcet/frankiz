@@ -85,8 +85,8 @@ a:hover, a:active {
 .fkz_centre {
 	font-size: 12pt;
 	position: absolute;
-	left: 21%;
-	width: 58%;
+	left: 22%;
+	width: 56%;
 	margin-top: 10px;
 }
 
@@ -144,7 +144,6 @@ span.fkz_logo {
 .fkz_qdj_jone, .fkz_qdj_rouje,.fkz_qdj_jone_reponse,.fkz_qdj_rouje_reponse{
 	text-align: center;
 	width: 45%;
-    height: 60px;
     vertical-align: middle;
 }
 
@@ -161,26 +160,31 @@ span.fkz_logo {
 
 .fkz_qdj_jone a{
 	color: red;
+    font-weight: bold;
 }
 
 .fkz_qdj_rouje a{
 	color: yellow;
+    font-weight: bold;
 }
 
 
 .fkz_qdj_jone_reponse {
 	color: yellow;
+    font-weight: bold;
 	float: right;
 }
 
 .fkz_qdj_rouje_reponse {
 	float: left;
+    font-weight: bold;
 	color: red;
 }
 
-.fkz_qdj_last{
+ul.fkz_qdj_last{
 	list-style-type:  none;  
 	text-align:left; 
+    padding-top: 3px;
 }
 
 /* Fin QDJ */
@@ -189,13 +193,12 @@ span.fkz_logo {
     text-align: center;
 }
 
-.fkz_liens,.fkz_contact,.fkz_stats,.fkz_liens_nav {
+div.fkz_module ul {
     margin-top: 0;
     margin-bottom: 0;
 	list-style-type:none;
-	color:#333;
     position: relative;
-    left:-10px;
+    left:-20px;
 }
 
 div.fkz_anniversaire_titre,div.fkz_page_titre,div.fkz_annonces_titre {
@@ -231,9 +234,16 @@ div.fkz_annonces_titre {
     font-variant: normal;
 }
 
+
+div.fkz_page_divers {
+    border: 1px solid #000000;
+    padding: 5px;
+}
+
 div.fkz_page_titre {
 	font-size:200%;
 }
+
 
 
 
@@ -264,12 +274,8 @@ div.fkz_page_titre {
 }
 
 
-.module {
-    margin-bottom: 10px;
-}
-
 div.fkz_module {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     border: 1px solid #000000;
     padding: 5px;
 }
@@ -286,6 +292,10 @@ div.fkz_module_corps {
 }
 
 #mod_random {
+    display: none;
+}
+
+#mod_anniversaires br {
     display: none;
 }
 
@@ -459,27 +469,22 @@ span.valid_css:before {
 
 /* Stats */
  
-.fkz_stats{list-style-type:  none;}
+.fkz_stats{list-style-type:  none; padding-left: -10px;}
 
 .serveur_nom {
-	display: block;
 	color: inherit;
+    position: relative;
+    left: 10px;
 }
 
 .serveur_up {
 	color: inherit;
 	background: lime;
-	position: relative;
-	left: 80px;
-	top: -16px;
 }
 
 .serveur_down {
 	color: inherit;
 	background: red;
-	position: relative;
-	left: 80px;
-	top: -16px;
 }
 
 /* FAQ et Xshare */
@@ -516,16 +521,6 @@ div.formulaire{
 	display:block;
 }
 
-#trombino div.formulaire {
-    background-color: #f0f0f0;
-    border: 1px solid #c0c0c0;
-    padding: 5px;
-}
-    
-#trombino div.formulaire:hover {
-    border: 1px dashed #c0c0c0;
-}
-
 
 div.formulaire span.droite{
     width: 78%;
@@ -550,30 +545,6 @@ div.formulaire span.boutons{
 	display:block;
 }
 
-input:hover,input:focus {
-    border: 2px solid #e0e0e0;
-    padding: 0px;
-}
-
-.boutons input:active {
-    border: 2px inset #e0e0e0;
-}
-
-.boutons input {
-    cursor:pointer;
-}
-
-option {
-    border-top: 1px solid #e0e0e0;
-    background-color: #f8f8f8;
-}
-
-input {
-    padding: 1px;
-    border: 1px solid #e0e0e0;
-    background-color: #f8f8f8;
-    padding-right: 5px;
-}
 
 /* Formulaires */
 
@@ -588,96 +559,109 @@ table.liste .entete{
 }
 
 
+#choix_skin h1, #profil h1,.fkz_page_meteo h1 {
+    display: none;
+}
 
-#choix_skin h1, #profil h1,.fkz_page_meteo h1,#xshare  h1,#faq  h1,#vocabulaire  h1{
-	display:none;
+#xshare  h1,#faq  h1,#vocabulaire  h1{
+    margin-top: 0;
+/*	display:none; */
 }
 
 /* Binets */
 
+#binets .fkz_page_corps {
+    padding-bottom: 50px;
+}
+
 #binets h2 {
-    border: 2px solid #e0e0e0;
-    background-color: #f8f8f8;
+	clear:both;
     padding-left: 20px;
+    text-decoration: underline;
+    color: #666699;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top: 2px solid #000000;
+    border-bottom: 2px solid #000000;
+    padding-top: 50px;
 }
 
 #binets h3 {
-    border-top: 1px solid #e0e0e0;
+	clear:both;
+    display: block;
+    padding-bottom: 5px;
+}
+
+div.image {
+    float: left;
+    height: 100px;
+    padding-right: 5px;
+    padding-bottom: 5px;
 }
 
 #binets p {
-    border-bottom: 1px solid #e0e0e0;
     font-style: italic;
+    text-align: justify;
 }
 
 
 /* Trombino */
 
+div.fkz_trombino {
+    border: 1px solid #000000;
+    padding: 5px;
+}
+
 div.fkz_trombino_eleve {
-    border: 1px solid #c0c0c0;
-    background-color: #f0f0f0;
-    font-size: 9pt;
+    border: 2px solid #000000;
+    padding: 5px;
+    margin-bottom: 5px;
 }
 
-div.fkz_trombino_eleve:hover {
-    border: 1px dashed #c0c0c0;
-}
-
-.fkz_trombino_eleve p.nom {
-    text-align: left;
-    background-color: #e0e0e0;
-    padding: 2px;
-    padding-left: 20px;
-    font-size: 120%;
-    font-weight: bold;
-    border: 1px solid #a0a0a0;
-    margin: -1px;
-}
-
-.fkz_trombino_eleve p.surnom {
-    float: left;
-    width: 50%;
-    text-align: left;
-    font-style: italic;
-}
-
-.fkz_trombino_eleve p.promo {
-    font-weight: bold;
-    text-align: left;
-}
-
-.fkz_trombino_eleve p.telephone {
-    clear: both;
-    text-align: left;
-    float: left;
-    width: 50%;
-}
-
-.fkz_trombino_eleve p.casert {
-    text-align: left;
-}
-
-.fkz_trombino_eleve p.section {
-    text-align: left;
-    clear: both;
-}
-
-.fkz_trombino_eleve p, .fkz_trombino_eleve div.binets {
-    padding-left: 5px;
-    padding-right: 5px;
-    margin: 2px;
-}
-
-.fkz_trombino_eleve div.binets {
-    text-align: left;
-    margin-top: 10px;
-}
-
-.fkz_trombino_eleve p {
+.fkz_trombino_eleve h3 {
+    margin: 0;
+    margin-bottom: 20px;
     text-align: center;
+    border-bottom: 2px solid #000000;
 }
 
-.fkz_trombino_eleve a {
+.fkz_trombino_eleve .fkz_trombino_photo {
+    float: left;
+    padding-right: 10px;
+}
+
+.fkz_trombino_eleve .fkz_trombino_section {
+    float: right;
+}
+
+.fkz_trombino_eleve .fkz_trombino_infos2 {
+    float: right;
+    padding-right: 10px;
+    text-align: right;
+}
+
+.fkz_trombino_eleve .fkz_trombino_infos {
+    float: left
+}
+
+.fkz_trombino .binets {
+    text-align: left;
+    padding-top: 10px;
+    clear: both;
+}
+
+.fkz_trombino_eleve .fkz_trombino_infos2 p, .fkz_trombino_eleve .fkz_trombino_infos p {
+
+}
+
+.fkz_trombino br {
+    display: none;
 }
 
 
+/* Météo */
+
+div.fkz_page_meteo {
+    border: 1px solid #000000;
+    padding: 5px;
+}

@@ -31,7 +31,6 @@
 <xsl:include href="../../pico/xsl/html.xsl"/>
 <xsl:include href="../../pico/xsl/form.xsl"/>
 <xsl:include href="../../pico/xsl/arbre.xsl"/>
-
 <xsl:include href="../../pico/xsl/annonces.xsl"/>
 <xsl:include href="annonces.xsl"/>
 <xsl:include href="../../pico/xsl/skins.xsl"/>
@@ -114,5 +113,92 @@
 	</body>
 	</html>
 </xsl:template>
+
+<xsl:template match="/frankiz/page[@id!='annonces' and @id!='trombino']">
+    <div class="fkz_page_divers">
+        <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+        <xsl:if test="@id != ''">
+            <div class="fkz_page_titre"><xsl:value-of select="substring-after(@itre,'Frankiz : ')"/></div>
+        </xsl:if>
+        <div class="fkz_page_corps"><xsl:apply-templates/></div>
+    </div>
+</xsl:template>
+
+<xsl:template match="/frankiz/page[@id='meteo']">
+    <div class="fkz_page_meteo">
+        <div class="fkz_page_titre">Météo</div>
+        <div class="fkz_page_corps"><xsl:apply-templates/></div>
+    </div>
+</xsl:template>
+
+<xsl:template match="cadre">
+    <h2>
+        <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+        <xsl:value-of select="@titre"/>
+    </h2>
+    <xsl:apply-templates/>
+</xsl:template>
+
+
+
+
+<xsl:template match="page/binet">
+    <xsl:if test="preceding-sibling::binet[1]/@categorie != @categorie or position() = 2">
+        <h2><xsl:value-of select="@categorie"/></h2>
+    </xsl:if>
+    <h3><a><xsl:attribute name="href"><xsl:value-of select="url"/></xsl:attribute><xsl:value-of select="@nom"/></a></h3>
+    <a><xsl:attribute name="href"><xsl:value-of select="url"/></xsl:attribute>
+        <xsl:apply-templates select="image"/>
+    </a>
+    <p><xsl:value-of select="description"/></p>
+</xsl:template>
+
+
+
+
+
+
+<xsl:template match="module[@id='rss']">
+     <div class="fkz_module" id='mod_rss'>
+        <div class="fkz_titre">
+            <a>
+                <xsl:attribute name="href"><xsl:value-of select="lien[position()=1]/@url"/></xsl:attribute>
+                <xsl:value-of select="lien[position()=1]/@titre" />
+            </a>
+            <xsl:value-of select="lien[position()=1]"/>
+        </div>
+        <div class="fkz_module_corps">
+            <dl class="fkz_rss">
+                <xsl:for-each select="lien[position()>1]">
+                    <dt class="fkz_rss">
+                        <a>
+                            <xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+                            <xsl:value-of select="@titre" />
+                        </a>
+                    </dt>
+                    <dd>
+                        <xsl:value-of select="current()" />
+                    </dd>
+                </xsl:for-each>
+            </dl>
+        </div>
+    </div>
+</xsl:template>
+
+<xsl:template match="module">
+    <xsl:if test="false = starts-with(@visible,'false')">
+        <div class="fkz_module"><xsl:attribute name="id">mod_<xsl:value-of select="@id"/></xsl:attribute>
+            <div class="fkz_titre">
+                <span><xsl:attribute name="id"><xsl:value-of select="@id"/>_logo</xsl:attribute><xsl:text> </xsl:text></span>
+                <span><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute><xsl:value-of select="@titre"/></span>
+            </div>
+            <div class="fkz_module_corps">
+                <xsl:apply-templates/>
+            </div>
+        </div>
+    </xsl:if>
+</xsl:template>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+
 
 </xsl:stylesheet>
