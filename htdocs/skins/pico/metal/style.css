@@ -326,21 +326,21 @@ span.fkz_annonces_vieux {
 	background-color: #cccccc;
 }
 
-div.commentaire {
+.commentaire {
 	color: inherit;
 	background: #cccccc;
 	padding: 6px;
 	border: 3px solid #808080;
 }
 
-div.warning {
+.warning {
 	color: inherit;
 	background: #ffd4d4;
 	padding: 6px;
 	border: 3px solid #FF3333;
 }
 
-div.note {
+.note {
 	color: inherit;
 	background: #fdffd0;
 	border: 3px solid #fbff80;

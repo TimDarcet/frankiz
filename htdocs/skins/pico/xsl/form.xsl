@@ -47,7 +47,7 @@
 				</span>
 				<xsl:if test="boolean(@titre)">
 					<label class="gauche" >
-						<xsl:attribute name='for'><xsl:value-of select="concat('form_',@id)"/></xsl:attribute>
+						<xsl:attribute name='for'><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
 						<xsl:value-of select="@titre"/> :
 					</label>
 				</xsl:if>
@@ -78,7 +78,7 @@
 <!--texte simple dans un formulaire -->
 <xsl:template match="textsimple">
 	<span>
-		<xsl:attribute name="id"><xsl:value-of select="concat('form_',@id)"/></xsl:attribute>
+		<xsl:attribute name="id"><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
 		<xsl:value-of select="@valeur"/>
 	</span>
 </xsl:template>
@@ -88,13 +88,13 @@
 	<xsl:choose>
 	<xsl:when test="@modifiable='non'">
 		<span>
-			<xsl:attribute name="id"><xsl:value-of select="concat('form_',@id)"/></xsl:attribute>
+			<xsl:attribute name="id"><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
 			<xsl:value-of select="@valeur"/>
 		</span>
 	</xsl:when>
 	<xsl:otherwise>
 		<textarea>
-			<xsl:attribute name="id"><xsl:value-of select="concat('form_',@id)"/></xsl:attribute>
+			<xsl:attribute name="id"><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
 			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:attribute name="rows">7</xsl:attribute>
 			<xsl:attribute name="cols">50</xsl:attribute>
@@ -107,7 +107,7 @@
 	<xsl:choose>
 	<xsl:when test="@modifiable='non'">
 		<span>
-			<xsl:attribute name="id"><xsl:value-of select="concat('form_',@id)"/></xsl:attribute>
+			<xsl:attribute name="id"><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
 			<xsl:value-of select="@valeur"/>
 		</span>
 	</xsl:when>
@@ -117,7 +117,7 @@
 				<xsl:when test="starts-with(@id,'passwd')"><xsl:attribute name="type">password</xsl:attribute></xsl:when>
 				<xsl:otherwise><xsl:attribute name="type">text</xsl:attribute></xsl:otherwise>
 			</xsl:choose>
-			<xsl:attribute name="id"><xsl:value-of select="concat('form_',@id)"/></xsl:attribute>
+			<xsl:attribute name="id"><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
 			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:attribute name="value"><xsl:value-of select="@valeur"/></xsl:attribute>
 		</input>
@@ -127,7 +127,7 @@
 <!-- choix multiples (radio, combo ou checkbox) -->
 <xsl:template match="choix[@type='combo']">
 	<select>
-		<xsl:attribute name="id"><xsl:value-of select="concat('form_',@id)"/></xsl:attribute>
+		<xsl:attribute name="id"><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
 		<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 		<xsl:for-each select="option">
 			<option>
@@ -142,7 +142,7 @@
 <xsl:template match="choix[@type='radio']">
 	<xsl:for-each select="option">
 		<input type="radio">
-			<xsl:attribute name="id"><xsl:value-of select="concat('form_',@id)"/></xsl:attribute>
+			<xsl:attribute name="id"><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
 			<xsl:attribute name="name"><xsl:value-of select="../@id"/></xsl:attribute>
 			<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:if test="../@valeur = @id"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
@@ -154,7 +154,7 @@
 <xsl:template match="choix[@type='checkbox']">
 	<xsl:for-each select="option">
 		<input type="checkbox">
-			<xsl:attribute name="id"><xsl:value-of select="concat('form_',@id)"/></xsl:attribute>
+			<xsl:attribute name="id"><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
 			<xsl:if test="@modifiable='non'"><xsl:attribute name="disabled"/></xsl:if>
 			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:if test="contains(../@valeur,@id)"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
@@ -169,7 +169,7 @@
 		<xsl:attribute name="value"><xsl:value-of select="@taille"/></xsl:attribute>
 	</input>
 	<input type="file">
-		<xsl:attribute name="id"><xsl:value-of select="concat('form_',@id)"/></xsl:attribute>
+		<xsl:attribute name="id"><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
 		<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 	</input>
 </xsl:template>

@@ -286,7 +286,7 @@ background-color:#ffc0cb;
 }
 
 
-div.commentaire {
+.commentaire {
 	color: inherit;
 	background: #FFFFDD;
 	padding: 6px;
@@ -294,14 +294,14 @@ div.commentaire {
 }
 
 
-div.warning {
+.warning {
 	color: inherit;
 	background: #FFDDDD;
 	padding: 6px;
 	border: 1px solid #FF3333;
 }
 
-div.note {
+.note {
 	color: inherit;
 	background: #EFEFEF;
 	font-size: 75%;
