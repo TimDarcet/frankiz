@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.8  2004/11/11 17:57:52  kikx
+	Permet de savoir juste sur la page prinipale d'administration ce qui reste a valider ou pas ... car sinon on peut faire trainer des truc super longtemps
+
 	Revision 1.7  2004/11/11 17:39:54  kikx
 	Centralisation des pages des binets
-
+	
 	Revision 1.6  2004/10/25 14:05:09  kikx
 	Correction d'un bug sur la page
 	
@@ -119,14 +122,51 @@ $permissions_user = ses_permissions() ;
 	<h2>Administration frankiz</h2>
 	<h3>Gestion de l'utilisateur</h3>
 		<lien titre="Modifier un utilisateur" url="<?php echo BASE_URL?>/trombino"/>
-		<lien titre="Valider son changement de photo trombino" url="<?php echo BASE_URL?>/admin/valid_trombi.php"/>
-		<lien titre="Gestion des webmestres et des prez" url="<?php echo BASE_URL?>/admin/binet_web_prez.php"/>
 	<h3>Validations Variées</h3>
-		<lien titre="Gerer les demandes d'ajout d'ips" url="<?php echo BASE_URL?>/admin/valid_ip.php"/>
-		<lien titre="Valider les annonces" url="<?php echo BASE_URL?>/admin/valid_annonces.php"/>
-		<lien titre="Valider les activités" url="<?php echo BASE_URL?>/admin/valid_affiches.php"/>
-		<lien titre="Valider les mails promos" url="<?php echo BASE_URL?>/admin/valid_mailpromo.php"/>
-		<lien titre="Valider les qdj" url="<?php echo BASE_URL?>/admin/valid_qdj.php"/>
+		<?
+		$DB_valid->query("SELECT eleve_id FROM valid_ip") ;
+		$nb = $DB_valid->num_rows() ;
+		?>
+		<lien titre="Gerer les demandes d'ajout d'ips (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_ip.php"/>
+		<?
+		$nb =0 ;
+		$rep = BASE_DATA."trombino/";
+		$dir = opendir($rep); 
+
+		while ($namefile = readdir($dir)) {
+			$namefile = explode("_",$namefile) ;
+			if ((count($namefile)>=2)&&($namefile[1]=="valider")) {
+				$nb++ ;
+			}
+		}
+		?>	
+
+		<lien titre="Valider son changement de photo trombino (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_trombi.php"/>
+		<?
+		$DB_valid->query("SELECT eleve_id FROM valid_annonces") ;
+		$nb = $DB_valid->num_rows() ;
+		?>
+		<lien titre="Valider les annonces (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_annonces.php"/>
+		<?
+		$DB_valid->query("SELECT eleve_id FROM valid_affiches") ;
+		$nb = $DB_valid->num_rows() ;
+		?>
+		<lien titre="Valider les activités (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_affiches.php"/>
+		<?
+		$DB_valid->query("SELECT eleve_id FROM valid_mailpromo") ;
+		$nb = $DB_valid->num_rows() ;
+		?>
+		<lien titre="Valider les mails promos (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_mailpromo.php"/>
+		<?
+		$DB_valid->query("SELECT eleve_id FROM valid_qdj") ;
+		$nb = $DB_valid->num_rows() ;
+		?>
+		<lien titre="Valider les qdj (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_qdj.php"/>
+		<?
+		$DB_valid->query("SELECT binet_id FROM valid_binet") ;
+		$nb = $DB_valid->num_rows() ;
+		?>
+		<lien titre="Valider les changements des Binets (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_binets.php"/>
 	<h3>Administration des données de Frankiz</h3>
 		<lien titre="Liste des Binets" url="<?php echo BASE_URL?>/admin/binets_liste.php"/>
 		<lien titre="Liste des sections" url="<?php echo BASE_URL?>/admin/sections.php"/>
@@ -134,7 +174,6 @@ $permissions_user = ses_permissions() ;
 		<lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/>
 		<lien titre="Gestion xshare" url="<?php echo BASE_URL?>/admin/xshare.php"/>
 		<lien titre="Gestion FAQ" url="<?php echo BASE_URL?>/admin/faq.php"/>
-		<lien titre="Valider les changements des Binets" url="<?php echo BASE_URL?>/admin/valid_binets.php"/>
 	<h3>Administration du réseau élève</h3>
 		<lien titre="Liste des IPs" url="<?php echo BASE_URL?>/admin/ip.php"/>
 
