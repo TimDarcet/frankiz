@@ -24,7 +24,7 @@
 
 
 <xsl:template match="module[@id='liens_contacts']">
- <div class="fkz_titre"><span id="contacts_logo"></span><span id="contacts">Contacts</span></div>
+ <div class="fkz_titre"><span id="contacts_logo"><span id="contacts">Contacts</span></span></div>
   <div class="fkz_module">
     <xsl:for-each select="lien">
       <div class="fkz_lien">
@@ -41,7 +41,7 @@
 </xsl:template>
 
 <xsl:template match="module[@id='liens_ecole']">
-   <div class="fkz_titre"><span id="liens_ecole_logo"><xsl:text> </xsl:text></span><span id="liens_ecole">Liens Ecole</span></div>
+   <div class="fkz_titre"><span id="liens_ecole_logo"><span id="liens_ecole">Liens Ecole</span></span></div>
    <div class="fkz_module">
     <xsl:for-each select="lien">
       <div class="fkz_lien">
@@ -60,7 +60,7 @@
 <xsl:template match="module[@id='liens_navigation']">
     <div class="fkz_liens_nav">
     <xsl:for-each select="lien">
-      <span>
+      <span class="fkz_liens_nav">
       <a>
         <xsl:attribute name="href">
           <xsl:value-of select="@url"/>
@@ -69,7 +69,6 @@
       </a>
       </span>
       <xsl:if test="position() != last()">
-        <xsl:text> | </xsl:text>
       </xsl:if>
     </xsl:for-each>
     </div>

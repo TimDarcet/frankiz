@@ -182,7 +182,7 @@ text-align:left;
 	font-size: 8pt;
 }
 
-.fkz_liens_nav {
+div.fkz_liens_nav {
 	font-size: 9pt;
 	font-weight: bold;
 	background-image:url("grass/grassbrown.jpg");
@@ -306,14 +306,25 @@ span.valid_css {
  
 .fkz_stats{list-style-type:  none; padding:0}
 
+.serveur_nom {
+	display: block;
+	color: inherit;
+}
+
 .serveur_up {
 	color: inherit;
 	background: lime;
+	position: relative;
+	left: 80px;
+	top: -16px;
 }
 
 .serveur_down {
 	color: inherit;
 	background: red;
+	position: relative;
+	left: 80px;
+	top: -16px;
 }
 
 /* FAQ et Xshare */

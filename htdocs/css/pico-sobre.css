@@ -236,14 +236,25 @@ span.fkz_annonces_vieux {
 	margin-top: 0.5%;
 }
 
+.serveur_nom {
+	display: block;
+	color: inherit;
+}
+
 .serveur_up {
 	color: inherit;
 	background: lime;
+	position: relative;
+	left: 80px;
+	top: -16px;
 }
 
 .serveur_down {
 	color: inherit;
 	background: red;
+	position: relative;
+	left: 80px;
+	top: -16px;
 }
 
 /* FAQ et Xshare */
