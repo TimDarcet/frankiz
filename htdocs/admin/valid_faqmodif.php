@@ -22,9 +22,12 @@
 	
 
 	$Log$
+	Revision 1.2  2004/12/14 23:00:50  kikx
+	Car c'est trop la merde sinon
+
 	Revision 1.1  2004/12/14 22:49:53  kikx
 	oups désolé
-
+	
 
 */
 	
@@ -172,7 +175,7 @@ $DB_valid->query("UNLOCK TABLES");
 					}
 					
 			
-					print(wikiVersXML(diff_to_xml($wiki,$faq_modif)));
+					print(diff_to_xml($wiki,$faq_modif));
 						
 					fclose($texte);
 				}

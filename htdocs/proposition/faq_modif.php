@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.2  2004/12/14 23:00:50  kikx
+		Car c'est trop la merde sinon
+
 		Revision 1.1  2004/12/14 22:17:32  kikx
 		Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
-
+		
 
 		
 */
@@ -103,9 +106,9 @@ if (isset($_REQUEST['valid'])) {
 						}
 						
 						if (isset($_REQUEST['faq_modif']))
-							print(wikiVersXML(diff_to_xml($wiki,$_POST['faq_modif'])));
+							print(diff_to_xml($wiki,$_POST['faq_modif']));
 						else 
-							print(wikiVersXML($wiki));
+							print($wiki);
 							
 						fclose($texte);
 					}
