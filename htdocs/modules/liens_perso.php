@@ -21,9 +21,12 @@
 	Affichage de flux rss externes sous forme de module.
 
 	$Log$
+	Revision 1.4  2004/11/24 19:00:32  pico
+	Bon, là ça devrait être bon...
+
 	Revision 1.3  2004/11/24 18:53:31  pico
 	J'espère que ça sera fixé cette fois
-
+	
 	Revision 1.2  2004/11/24 18:39:02  pico
 	WarningFix si variable vide
 	
@@ -35,11 +38,11 @@
 	
 
 */
-$liens = $_SESSION['liens_perso'];
-if(count($liens)>0){
+
+if(isset($_SESSION['liens_perso']) && !empty($_SESSION['liens_perso']) && count($_SESSION['liens_perso'])>0){
 	echo "<module id=\"liens_perso\" titre=\"Liens Perso\">";
 	
-	foreach($liens as $titre => $url){
+	foreach($_SESSION['liens_perso'] as $titre => $url){
 		echo "<lien titre=\"$titre\" url=\"$url\" />";
 	}
 	
