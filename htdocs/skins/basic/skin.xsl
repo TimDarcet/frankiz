@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.28  2004/12/01 22:09:15  pico
+	Correction lien images aussi
+
 	Revision 1.27  2004/11/25 02:22:02  schmurtz
 	esthetisme (trop long)
-
+	
 	Revision 1.26  2004/11/24 12:51:02  kikx
 	Pour commencer la compatibilité wiki
 	
@@ -267,7 +270,7 @@
 		</td></tr>
 		<tr><td>
 			<img alt="photo" width="80" height="95">
-				<xsl:attribute name="src">trombino/?image=true&amp;login=<xsl:value-of select="@login"/>&amp;promo=<xsl:value-of select="@promo"/></xsl:attribute>
+				<xsl:attribute name="src">trombino.php?image=true&amp;login=<xsl:value-of select="@login"/>&amp;promo=<xsl:value-of select="@promo"/></xsl:attribute>
 			</img>
 		</td><td width="100%">
 			Surnom : <xsl:value-of select="@surnom"/><br />
