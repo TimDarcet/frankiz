@@ -21,10 +21,13 @@
 	Page qui permet aux admins de vider la bdd des activités périmées
 	
 	$Log$
+	Revision 1.5  2004/12/10 20:23:50  kikx
+	Pour supprimer les entrées des annonces non lues si celle ci n'existe plus ... evite d'exploser les tables
+
 	Revision 1.4  2004/12/07 19:53:05  pico
 	Remise en place des paramètres de skin
 	Mise à jour css classique
-
+	
 	Revision 1.3  2004/12/07 13:10:56  pico
 	Passage du nettoyage en formulaire
 	
@@ -70,11 +73,13 @@ foreach ($_POST AS $keys => $val){
 		$compteur = 0;
 		while(list($id)=$DB_web->next_row()) {
 			$compteur++;
+			$DB_web->query("DELETE FROM annonces_lues WHERE annonces_id='".$id."'") ;
 			if (file_exists(DATA_DIR_LOCAL."annonces/$id")){
 				unlink(DATA_DIR_LOCAL."annonces/$id") ;
 			}
 		}
 		$DB_web->query("DELETE FROM annonces WHERE perime<".date("Ymd000000",time()- 5 * 24 * 3600)."") ;
+
 	?>
 		<warning>Suppression de <? echo $compteur?> annonces périmées</warning>
 	<?
