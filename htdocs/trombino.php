@@ -57,15 +57,16 @@ if(isset($_REQUEST['chercher'])) {
 				."tel='$tel' mail='".(empty($mail)?"$login@poly.polytechnique.fr":$mail)."' casert='$piece_id' "
 				."section='$section' cie='$cie'>\n";
 			
+			$DB_trombino->push_result();
 			$DB_trombino->query("SELECT remarque,nom,membres.binet_id FROM membres "
-									 ."LEFT JOIN binets USING(binet_id) WHERE eleve_id='$eleve_id'");
+							   ."LEFT JOIN binets USING(binet_id) WHERE eleve_id='$eleve_id'");
 			while(list($remarque,$binet_nom,$binet_id) = $DB_trombino->next_row())
 				echo "<binet nom='".afficher_identifiant($binet_nom)."' id='$binet_id'>".afficher_identifiant($remarque)."</binet>\n";
+			$DB_trombino->pop_result();
 			
 			echo "</eleve>\n";
-			if(verifie_permission('admin')) {
+			if(verifie_permission('admin'))
 				echo "<a href='".BASE_URL."/admin/user.php?id=$eleve_id'>Administrer $prenom $nom</a>" ;
-			}
 			
 		}		
 		

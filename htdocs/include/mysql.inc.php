@@ -13,6 +13,7 @@ class DB {
 	var $host;
 	var $base;
 	var $user;
+	var $saved_result;
 	
 	/*
 		Création d'une connexion à une base MySQL
@@ -30,6 +31,7 @@ class DB {
 		$this->base = $base;
 		$this->user = $user;
 		$this->result = false;
+		$this->saved_result = false;
 	}
 	
 	function close() {
@@ -75,6 +77,19 @@ class DB {
 
 	function insert_id() {
 		return mysql_insert_id($this->link);
+	}
+	
+	/*
+		Sauvegarde du résultat d'une requète
+	*/
+	function push_result() {
+		$this->saved_result = $this->result;
+		$this->result = false;
+	}
+
+	function pop_result() {
+		$this->result = $this->saved_result;
+		$this->saved_result = false;
 	}
 }
 ?>
