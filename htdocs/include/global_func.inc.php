@@ -71,6 +71,11 @@ function ajoute_erreur($err) {
 	$_ERREURS[$err] = $err;
 }
 
+function aucune_erreur() {
+	global $_ERREURS;
+	return count($_ERREURS) == 0;
+}
+
 function nouveau_hash() {
     $fp = fopen('/dev/urandom', 'r');
     $hash = md5(fread($fp, 16));

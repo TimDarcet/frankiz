@@ -27,6 +27,8 @@ define('ERR_MAILLOGIN',$i++);
 define('ERR_LOGINPOLY',$i++);
 define('ERR_MDP_DIFFERENTS',$i++);
 define('ERR_MDP_TROP_PETIT',$i++);
+define('ERR_SURNOM_TROP_PETIT',$i++);
+define('ERR_EMAIL_NON_VALIDE',$i++);
 
 // divers fichiers inclus
 require_once "global_func.inc.php";

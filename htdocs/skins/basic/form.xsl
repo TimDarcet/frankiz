@@ -32,14 +32,18 @@
 	<tr><td class="gauche">
 		<xsl:value-of select="@titre"/><xsl:text> :</xsl:text>
 	</td><td class="droite">
-		<input>
-			<xsl:choose>
-				<xsl:when test="starts-with(@id,'passwd')"><xsl:attribute name="type">password</xsl:attribute></xsl:when>
-				<xsl:otherwise><xsl:attribute name="type">text</xsl:attribute></xsl:otherwise>
-			</xsl:choose>
-			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-			<xsl:attribute name="value"><xsl:value-of select="@valeur"/></xsl:attribute>
-		</input>
+		<xsl:choose><xsl:when test="@modifiable='non'">
+			<xsl:value-of select="@valeur"/>
+		</xsl:when><xsl:otherwise>
+			<input>
+				<xsl:choose>
+					<xsl:when test="starts-with(@id,'passwd')"><xsl:attribute name="type">password</xsl:attribute></xsl:when>
+					<xsl:otherwise><xsl:attribute name="type">text</xsl:attribute></xsl:otherwise>
+				</xsl:choose>
+				<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+				<xsl:attribute name="value"><xsl:value-of select="@valeur"/></xsl:attribute>
+			</input>
+		</xsl:otherwise></xsl:choose>
 	</td></tr>
 </xsl:template>
 

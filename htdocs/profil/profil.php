@@ -11,6 +11,12 @@ $message_succes="";
 
 connecter_mysql_frankiz();
 
+// Données sur l'utilisateur
+$result = mysql_query("SELECT nom,prenom,surnom,mail,login,promo,section,cie,piece_id FROM eleves WHERE eleve_id='".$_SESSION['user']->uid."'");
+print_r(mysql_error());
+list($nom,$prenom,$surnom,$mail,$login,$promo,$section,$cie,$casert) = mysql_fetch_row($result);
+mysql_free_result($result);
+
 // Modification du mot de passe
 if(isset($_POST['changer_mdp'])) {
 	if($_POST['passwd'] != $_POST['passwd2']) {
@@ -41,7 +47,20 @@ if(isset($_POST['changer_mdp'])) {
 
 // Modification de la fiche du trombino
 } else if(isset($_POST['changer_trombino'])) {
-	// TODO
+	if(strlen($_POST['surnom']) < 2 && !empty($_POST['surnom']))
+		ajoute_erreur(ERR_SURNOM_TROP_PETIT);
+		
+	if($_POST['email'] == "$login@poly" || $_POST['email'] == "$login@poly.polytechnique.fr")
+		$_POST['email'] = "";
+	if(!ereg("^[a-zA-Z0-9_+.-]+@[a-zA-Z0-9.-]+$",$_POST['email']) && !empty($_POST['email']))
+		ajoute_erreur(ERR_EMAIL_NON_VALIDE);
+	
+	if(aucune_erreur()) {
+		$surnom = $_POST['surnom'];
+		$mail = $_POST['email'];
+		mysql_query("UPDATE eleves SET surnom='$surnom',mail=".(empty($mail)?"NULL":"'$mail'")." WHERE eleve_id='".$_SESSION['user']->uid."'");
+		$message_succes="L'email et le surnom ont été modifié.";
+	}
 }
 
 deconnecter_mysql_frankiz();
@@ -59,6 +78,10 @@ require "../include/page_header.inc.php";
 			echo "<p>Les valeurs des deux champs n'étaient pas identiques.</p>\n";
 		if(a_erreur(ERR_MDP_TROP_PETIT))
 			echo "<p>Il faut mettre un mot de passe plus long (au moins 8 caractères).</p>\n";
+		if(a_erreur(ERR_SURNOM_TROP_PETIT))
+			echo "<p>Il faut mettre un surnom plus long (au moins 2 caractères).</p>\n";
+		if(a_erreur(ERR_EMAIL_NON_VALIDE))
+			echo "<p>L'email n'est pas valide.</p>\n";
 ?>
 	<formulaire id="mod_mdp" titre="Changement de mot de passe" action="profil/profil.php">
 		<champ id="passwd" titre="Mot de passe" valeur=""/>
@@ -76,8 +99,13 @@ require "../include/page_header.inc.php";
 	</formulaire>
 	
 	<formulaire id="mod_trombino" titre="Changement de la fiche trombino" action="profil/profil.php">
-		<champ id="surnom" titre="Surnom" valeur=""/>
-		<champ id="email" titre="Email" valeur=""/>
+		<champ id="nom" titre="Nom" valeur="<?php echo $nom.' '.$prenom ?>" modifiable="non"/>
+		<champ id="loginpoly" titre="Login poly" valeur="<?php echo $login ?>" modifiable="non"/>
+		<champ id="promo" titre="Promo" valeur="<?php echo $promo ?>" modifiable="non"/>
+		<champ id="section" titre="Section" valeur="<?php echo $section.' (compagnie '.$cie.')' ?>" modifiable="non"/>
+		<champ id="casert" titre="Kazert" valeur="<?php echo $casert ?>" modifiable="non"/>
+		<champ id="surnom" titre="Surnom" valeur="<?php echo $surnom ?>"/>
+		<champ id="email" titre="Email" valeur="<?php echo empty($mail) ? $login.'@poly.polytechnique.fr' : $mail ?>"/>
 		<bouton id="changer_trombino" titre="Changer"/>
 	</formulaire>
 </page>

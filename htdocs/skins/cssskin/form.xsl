@@ -18,14 +18,18 @@
 
 <xsl:template match="formulaire/champ">
 	<p><xsl:value-of select="@titre"/><xsl:text> : </xsl:text>
-		<input>
-			<xsl:choose>
-				<xsl:when test="starts-with(@id,'passwd')"><xsl:attribute name="type">password</xsl:attribute></xsl:when>
-				<xsl:otherwise><xsl:attribute name="type">text</xsl:attribute></xsl:otherwise>
-			</xsl:choose>
-			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+		<xsl:choose><xsl:when test="@modifiable='non'">
 			<xsl:value-of select="@valeur"/>
-		</input>
+		</xsl:when><xsl:otherwise>
+			<input>
+				<xsl:choose>
+					<xsl:when test="starts-with(@id,'passwd')"><xsl:attribute name="type">password</xsl:attribute></xsl:when>
+					<xsl:otherwise><xsl:attribute name="type">text</xsl:attribute></xsl:otherwise>
+				</xsl:choose>
+				<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+				<xsl:value-of select="@valeur"/>
+			</input>
+		</xsl:otherwise></xsl:choose>
 	</p>
 </xsl:template>
 

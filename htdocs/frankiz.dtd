@@ -130,15 +130,16 @@
 		titre   CDATA   #REQUIRED
 		action  CDATA   #REQUIRED>
 		
-<!ELEMENT commentaire (&texte.formate;)>	<!-- commentaire, explication sur ce que permet de faire
-												 ce formulaire -->
+<!ELEMENT commentaire (&texte.formate;)>
+			<!-- commentaire, explication sur ce que permet de faire ce formulaire -->
 
 <!ELEMENT champ EMPTY>
 <!ATTLIST champ
 		id		ID		#REQUIRED
 		titre   CDATA   #IMPLIED
-		valeur  CDATA   #IMPLIED>   <!-- si l'id commence par 'passwd', un champ de mot de passe
-										 doit être utilisé -->
+		valeur  CDATA   #IMPLIED
+		modifiable (oui|non) "oui">
+			<!-- si l'id commence par 'passwd', un champ de mot de passe doit être utilisé -->
 
 <!ELEMENT choix (option)+>
 <!ATTLIST choix
