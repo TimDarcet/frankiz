@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.17  2004/11/13 00:25:26  schmurtz
+	Rajout du lien d'ace au su
+
 	Revision 1.16  2004/11/12 23:32:14  schmurtz
 	oublie dans le deplacement du trombino
-
+	
 	Revision 1.15  2004/10/24 20:13:22  kikx
 	Pour afficher la photo original ...
 	
@@ -108,9 +111,10 @@ if(isset($_REQUEST['chercher'])) {
 			$DB_trombino->pop_result();
 			
 			echo "</eleve>\n";
-			if(verifie_permission('admin'))
+			if(verifie_permission('admin')) {
 				echo "<a href='".BASE_URL."/admin/user.php?id=$eleve_id'>Administrer $prenom $nom</a>" ;
-			
+				echo "<a href='".BASE_URL."/?su=$eleve_id'>Prendre l&apos;identité de $prenom $nom</a>\n" ;
+			}
 		}		
 		
 		echo "</page>\n";
@@ -123,7 +127,7 @@ if(isset($_REQUEST['chercher'])) {
 require "include/page_header.inc.php";
 ?>
 <page id="trombino" titre="Frankiz : Trombino">
-	<formulaire id="trombino" action="trombino/">
+	<formulaire id="trombino" action="trombino.php">
 		<champ titre="Nom" id="nom" valeur="" />
 		<champ titre="Prénom" id="prenom" valeur="" />
 		<champ titre="Surnom" id="surnom" valeur="" />
