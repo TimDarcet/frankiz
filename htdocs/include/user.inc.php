@@ -26,9 +26,12 @@
 	informations provenant des tables du trombino (avec jointure sur l'uid).
 
 	$Log$
+	Revision 1.11  2004/11/16 14:55:46  schmurtz
+	On evite les appels frequents a la BD pour recuperer la skin
+
 	Revision 1.10  2004/11/13 00:12:24  schmurtz
 	Ajout du su
-
+	
 	Revision 1.9  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -53,6 +56,9 @@ define("AUTH_MDP",4);		// Client authentifié par mot de passe
 
 define("AUTH_MINIMUM",2);   // Valeur minimum correspondant à un client authentifié
 define("AUTH_FORT",3);		// Valeur minimum correspondant à un client authentifié avec une méthode sécurisé
+
+global $_NOUVEAU_LOGIN;	// indique si l'utilisateur vient de se loguer
+$_NOUVEAU_LOGIN = false;
 
 class User {
 	// description de l'utilisateur
@@ -98,30 +104,42 @@ class User {
 	// Authentification par mot de passe, cookie, mail. Si l'authentification échoue, on revient à
 	// un utilisateur anonyme. Renvoie vrai si l'authentification à réussie.
 	function verifie_mdp($_mdp) {
+		global $_NOUVEAU_LOGIN;
 		if($this->uid != 0 && md5($_mdp) == $this->passwd) {
+			ajouter_debug_log("Utilisateur authentifié par mot de passe.");
 			$this->methode = AUTH_MDP;
+			$_NOUVEAU_LOGIN = true;
 			return true;
 		} else {
+			ajouter_debug_log("Erreur d'authentification par mot de passe.");
 			$this->devient_anonyme();
 			return false;
 		}
 	}
 	
 	function verifie_cookiehash($_hash) {
+		global $_NOUVEAU_LOGIN;
 		if($this->uid != 0 && !empty($_hash) && $_hash == $this->cookiehash) {
+			ajouter_debug_log("Utilisateur authentifié par cookie.");
 			$this->methode = AUTH_COOKIE;
+			$_NOUVEAU_LOGIN = true;
 			return true;
 		} else {
+			ajouter_debug_log("Erreur d'authentification par cookie.");
 			$this->devient_anonyme();
 			return false;
 		}
 	}
 	
 	function verifie_mailhash($_hash) {
+		global $nouveau_login;
 		if($this->uid != 0 && !empty($_hash) && $_hash == $this->mailhash) {
+			ajouter_debug_log("Utilisateur authentifié par mail.");
 			$this->methode = AUTH_MAIL;
+			$_NOUVEAU_LOGIN = true;
 			return true;
 		} else {
+			ajouter_debug_log("Erreur d'authentification par mail.");
 			$this->devient_anonyme();
 			return false;
 		}
@@ -174,4 +192,10 @@ function verifie_permission_webmestre($binet) {
 }
 function est_authentifie($minimum) {
 	return $_SESSION['user']->methode >= $minimum;
+}
+
+// Revoit vrai si l'utilisateur vient tout juste de se loguer
+function nouveau_login() {
+	global $_NOUVEAU_LOGIN;
+	return $_NOUVEAU_LOGIN;
 }
