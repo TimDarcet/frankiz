@@ -63,7 +63,7 @@ div#droite
 	right:0px;
 	float:right;
 	width:182px;
-	margin-top:125px;
+	margin-top:128px;
 }
 
 div#footer
@@ -163,7 +163,8 @@ div#gauche dl.boite dt.titre, div#droite  dl.boite dt.titre {
 	text-align: center;
 }
 div#droite dl.boite dt.titre {
-	background: transparent url('./images/boitedroitehaut.jpg') no-repeat top left ;
+	background: transparent url('./images/boitedroitehaut.jpg') no-repeat
+top left ;
 }
 div#gauche dl.boite dt.titre span, div#droite  dl.boite dt.titre span {
 	font-size: 1.2em ;
@@ -173,11 +174,12 @@ div#gauche dl.boite dt.titre span, div#droite  dl.boite dt.titre span {
 	left:0px;
 	font-weight:bold;
 }
-div#gauche dl.boite dt.titre span.droitehaut, div#droite dl.boite dt.titre span.droitehaut  {
+div#gauche dl.boite dt.titre span.droitehaut, div#droite dl.boite dt.titre
+span.droitehaut  {
 	display:none;
 }
 div#gauche dl.boite dd.contenu, div#droite  dl.boite dd.contenu {
-	width:180px;
+
 	padding:0px 15px 0 15px !important;
 	padding-top:0px;
 	background: url('./images/boitegauchecentre.jpg') repeat-y top left;
@@ -185,7 +187,8 @@ div#gauche dl.boite dd.contenu, div#droite  dl.boite dd.contenu {
 div#droite dl.boite dd.contenu {
 	background: url('./images/boitedroitecentre.jpg') repeat-y top left;
 }
-div#gauche dl.boite dd.contenu span.droitecentre, div#droite dl.boite dd.contenu span.droitecentre {
+div#gauche dl.boite dd.contenu span.droitecentre, div#droite dl.boite dd.contenu
+span.droitecentre {
 	display:none;
 }
 div#gauche dl.boite dd.bas, div#droite dl.boite dd.bas  {
@@ -199,19 +202,12 @@ div#droite dl.boite dd.bas {
 	background: url('./images/boitedroitebas.jpg') no-repeat top left ;
 	height:190px;
 }
-div#gauche dl.boite dd.bas span.droitebas, div#droite dl.boite dd.bas span.droitebas  {
+div#gauche dl.boite dd.bas span.droitebas, div#droite dl.boite dd.bas
+span.droitebas  {
 	display:none;
 }
 span.tour_kawa {
 	padding-left:20px;
-}
-
-dl#activites div.activite {
-	text-align:center;
-}
-
-dl#activites div.activite p.image img {
-	width:140px;
 }
 
 /* ############# BOITE MODULE CENTER ############### */
@@ -239,7 +235,8 @@ div#centre dl.boite dt.titre span.droitehaut {
 	float: left;
 	width:89px;
 	height:79px;
-	background: url('./images/boitecentrehautgauche.jpg') no-repeat top left;
+	background: url('./images/boitecentrehautgauche.jpg') no-repeat top
+left;
 	position:relative;
 	top:0em;
 	left:0px;
@@ -247,7 +244,8 @@ div#centre dl.boite dt.titre span.droitehaut {
 
 div#centre dl.boite dd.contenu {
 	padding: 0 15px 0 30px; 
-	background: #F2CD99 url('./images/boitecentrecentre.jpg') repeat-y top left;
+	background: #F2CD99 url('./images/boitecentrecentre.jpg') repeat-y top
+left;
 	text-align:left;
 	margin-right:4px;
 	height:100%;
@@ -290,6 +288,20 @@ div#centre dl.boite span.hidenews a {
 }
 div#centre dl.boite  span.hidenews a span {
 	display:none;
+}
+
+/* ################# AUTRES BOITES ################### */
+
+dl#activites, dl#autres {
+	width:180px;
+}
+
+dl#activites div.activite {
+	text-align:center;
+}
+
+dl#activites div.activite p.image img {
+	width:140px;
 }
 
 /* ################# BOITE TOL LIEN RAPIDE  ################ */
@@ -731,7 +743,7 @@ ul.contacts li {
 ul.contacts li a {
 	display:block;
 	width:150px;
-	height:20px;
+	line-height:20px;
 	text-decoration:none;
 	text-align:center;
 	color:#DE5900;
