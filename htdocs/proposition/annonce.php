@@ -3,8 +3,9 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
-	Revision 1.9  2004/09/17 22:49:29  kikx
-	Rajout de ce qui faut pour pouvoir faire des telechargeement de fichiers via des formulaires (ie des champs 'file' des champ 'hidden') de plus maintenant le formulaire sont en enctype="multipart/form-data" car sinon il parait que ca marche pas !
+	Revision 1.10  2004/09/18 00:51:41  kikx
+	Permet d'uploader des fichiers
+	rajout d'un cahmp image dan sles annonces car on a le droit qu'a une seule image ...
 
 	Revision 1.8  2004/09/17 16:14:43  kikx
 	Pffffff ...
@@ -24,6 +25,35 @@ demande_authentification(AUTH_MINIMUM);
 $DB_trombino->query("SELECT nom,prenom,surnom,mail,login,promo FROM eleves WHERE eleve_id='".$_SESSION['user']->uid."'");
 list($nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_row();
 
+//---------------------------------------------------------------------------------
+// On traite l'image qui vient d'etre uploader si elle existe
+//---------------------------------------------------------------------------------
+
+$temp = explode("annonce",$_SERVER['SCRIPT_FILENAME']) ;
+$temp = $temp[0] ;
+$uploaddir  =  $temp."/image_temp/" ;
+
+$erreur_upload = 0 ;
+if ((isset($_FILES['file']))&&($_FILES['file']['size']!=0)&&($_FILES['file']['size']!=0))  {
+	$original_size = getimagesize($_FILES['file']['tmp_name']);
+	$filetype = $_FILES['file']['type'] ;
+	
+	$larg = $original_size[0];
+	$haut = $original_size[1];
+	if (($larg>=400)&&($haut>=400)) {
+		$erreur_upload =1 ;
+	} else if (($filetype=="image/jpg")||($filetype=="image/jpeg")||($filetype=="image/pjpg")||($filetype=="image/gif")||($filetype=="image/png")) {
+		
+//		$temp = explode(".",$_FILES['file']['name']) ;
+//		$filename = "annonce_$login.".$temp[count($temp)-1] ;
+		$filename = "annonce_$login" ;
+		move_uploaded_file($_FILES['file']['tmp_name'], $uploaddir . $filename) ;
+	} else {
+		$erreur_upload = 1 ;
+	}
+
+}
+
 // Génération de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
@@ -33,17 +63,29 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <h1>Proposition d'annonce</h1>
 
  <?
+if ($erreur_upload==1) {
+?>
+	<warning><p>Ton fichier n'a pas été téléchargé car il ne respecte pas une des conditions spécifiées ci dessous</p>
+		<p>Dimension : <? echo $larg."x".$haut ;?></p>
+		<p>Taille : <? echo $_FILES['file']['size'] ;?> octets</p>
+		<p>Type : <? echo $filetype ;?></p>
+	</warning>
+<?
 
+}
 // On teste l'affichage de l'annonce pour voir à quoi ça ressemble
 
 if ((isset($_REQUEST['test'])||(isset($_POST['valid'])))) {
+
+$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
 ?>
 	<annonce titre="<?php  if (isset($_POST['titre'])) echo $_POST['titre'] ; ?>" 
 			categorie=""
-			auteur="<?php echo empty($surnom) ? $prenom.' '.$nom : $surnom .' (X'.$promo.')'?>"
 			date="<? echo date("d/m/y") ?>">
-			<? if (isset($_POST['text'])) echo $_POST['text'] ;?>
-			<? if (isset($_FILES['file'])) echo "#".$_FILES['file']['size'] ;?>
+			<? 
+			if (isset($_POST['text'])) echo $_POST['text'] ;?>
+			<image source="<?if (file_exists($uploaddir."/annonce_$login")) echo "proposition/image_temp/annonce_".$login ; ?>"/>
+			<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
 	</annonce>
 <?
 }
@@ -81,11 +123,10 @@ if (isset($_POST['valid'])) {
 	<formulaire id="propoz_annonce" titre="Ton annonce" action="proposition/annonce.php">
 		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
 		<zonetext id="text" titre="Le texte" valeur="<? if (isset($_POST['text'])) echo $_POST['text'] ;?>"/>
-		<textsimple valeur="Ton image ne doit pas dépasser 200x200 pixels"/>
-		<hidden id="MAX_FILE_SIZE"  valeur="30000"/>
+		<textsimple valeur="Ton image doit être un fichier gif, png ou jpg, ne doit pas dépasser 200x200 pixels et 250ko car sinon elle ne sera pas téléchargée"/>
+		<hidden id="MAX_FILE_SIZE"  valeur="250000"/>
 		<champ id="file" titre="Ton image" valeur=""/>
 		<textsimple valeur="Ta signature sera automatiquement généré"/>
-		
 		<choix titre="Date de péremption" id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
 <?		for ($i=0 ; $i<MAX_PEREMPTION ; $i++) {
 			$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
@@ -96,8 +137,6 @@ if (isset($_POST['valid'])) {
 		}
 ?>
 		</choix>
-		
-		
 		<bouton id='test' titre="Tester"/>
 		<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider votre annonce ?')"/>
 	</formulaire>

@@ -5,9 +5,13 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.13  2004/09/18 00:51:41  kikx
+	Permet d'uploader des fichiers
+	rajout d'un cahmp image dan sles annonces car on a le droit qu'a une seule image ...
+
 	Revision 1.12  2004/09/17 16:27:13  schmurtz
 	Simplification de l'affichage des anniversaires et correction d'un bug d'affichage.
-
+	
 	Revision 1.11  2004/09/17 15:28:14  schmurtz
 	Utilisation de la balise <eleve> pour les derniers votants à la qdj, les anniversaires, la signature des annonces…
 	
@@ -97,6 +101,9 @@
 <xsl:template match="page/annonce">
 	<table class="annonce" cellspacing="0" cellpadding="0">
 		<tr><th><xsl:value-of select="@titre"/> (<xsl:value-of select="@date"/>)</th></tr>
+		<tr><td>
+			<center><xsl:apply-templates select="image"/></center>
+		</td></tr>
 		<tr><td>
 			<xsl:value-of disable-output-escaping="yes" select="text()"/>
 			<p class="signature"><xsl:apply-templates select="eleve"/></p>
