@@ -21,10 +21,13 @@
 	affichage d'un sondage
 
 	$Log$
+	Revision 1.4  2004/12/14 22:42:18  kikx
+	Legere modif des sondages pôur que ca soit plus intuitif
+
 	Revision 1.3  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
-
+	
 	Revision 1.2  2004/11/19 17:14:31  kikx
 	Gestion complete et enfin FINIIIIIIIIIIIIIIII des sondages !!! bon ok c'est assez moche l'affichage des resultats mais .... j'en ai marrrrrrrrrrre
 	
@@ -131,46 +134,50 @@ if (isset($_POST['valid'])) {
 			}
 		}
 	}
-}
-// Dévut du formulaire !
-//======================================================
-echo $message ;
-
-$DB_web->query("SELECT v.perime,(TO_DAYS(perime) - TO_DAYS(NOW())), v.sondage_id,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM sondage_question as v INNER JOIN trombino.eleves as e USING(eleve_id) WHERE sondage_id='{$_GET['id']}'");
-if ($DB_web->num_rows()==1) {
-	list($date,$delta,$id,$questions,$titre,$eleve_id,$nom, $prenom, $promo) = $DB_web->next_row() ;
-	
-	// Le Formulaire pour repondre ...
-?>
-	<note>Sondage proposé par <? echo "$prenom $nom ($promo)" ?></note> 
-<?
-	if ($delta>=0) {
-?>
-		<formulaire id="form" titre="<?=$titre?> (<?=date("d/m",strtotime($date))?>)" action="sondage.php?id=<?=$_GET['id']?>">
-		<?
-		decode_sondage($questions) ;
-		if ($a_vote=="non") {
-		?>
-			<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider le vote pour ce sondage?')"/>	
+	?>
+	<commentaire>Merci d'avoir voté</commentaire>
 	<?
-		}
-		?>
-		</formulaire>
-		<?
-	} else {
-		// Les résultats du sondage !
-		?>
-		<cadre id="form" titre="<?=$titre?> (<?=date("d/m",strtotime($date))?>)">
-		<?
-		resultat_sondage($questions,$_GET['id']) ;
-		?>
-		</cadre>
-		<?
-	}
 } else {
-?>
-<warning>Le sondage que tu demandes n'existes plus ou n'a jamais existé</warning>
-<?
+	// Dévut du formulaire !
+	//======================================================
+	echo $message ;
+	
+	$DB_web->query("SELECT v.perime,(TO_DAYS(perime) - TO_DAYS(NOW())), v.sondage_id,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM sondage_question as v INNER JOIN trombino.eleves as e USING(eleve_id) WHERE sondage_id='{$_GET['id']}'");
+	if ($DB_web->num_rows()==1) {
+		list($date,$delta,$id,$questions,$titre,$eleve_id,$nom, $prenom, $promo) = $DB_web->next_row() ;
+		
+		// Le Formulaire pour repondre ...
+	?>
+		<note>Sondage proposé par <? echo "$prenom $nom ($promo)" ?></note> 
+	<?
+		if ($delta>=0) {
+	?>
+			<formulaire id="form" titre="<?=$titre?> (<?=date("d/m",strtotime($date))?>)" action="sondage.php?id=<?=$_GET['id']?>">
+			<?
+			decode_sondage($questions) ;
+			if ($a_vote=="non") {
+			?>
+				<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider le vote pour ce sondage?')"/>	
+		<?
+			}
+			?>
+			</formulaire>
+			<?
+		} else {
+			// Les résultats du sondage !
+			?>
+			<cadre id="form" titre="<?=$titre?> (<?=date("d/m",strtotime($date))?>)">
+			<?
+			resultat_sondage($questions,$_GET['id']) ;
+			?>
+			</cadre>
+			<?
+		}
+	} else {
+	?>
+	<warning>Le sondage que tu demandes n'existes plus ou n'a jamais existé</warning>
+	<?
+	}
 }
 ?>
 </page>
