@@ -327,24 +327,21 @@ span.valid_css {
 .fkz_stats{list-style-type:  none;}
 
 .serveur_nom {
-	display: block;
+	position:relative;
+	left:5px;
 	color: inherit;
 }
 
 .serveur_up {
 	color: inherit;
 	background: lime;
-	position: relative;
-	left: 80px;
-	top: -16px;
+
 }
 
 .serveur_down {
 	color: inherit;
 	background: red;
-	position: relative;
-	left: 80px;
-	top: -16px;
+
 }
 
 /* FAQ et Xshare */
