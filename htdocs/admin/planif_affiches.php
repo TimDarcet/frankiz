@@ -21,10 +21,14 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.3  2004/11/27 14:12:31  pico
+	Ajout d'un lien pour supprimmer les annonces périmées depuis plus de 5 jours
+	(histoire de pas garder des archives inutiles)
+
 	Revision 1.2  2004/11/26 22:51:21  pico
 	Correction du SU dans les pages d'admin
 	Les utilisateurs avec le droit 'affiches' peuvent changer les dates des activités qu'ils ont postées, si celles ci ont été préalablement validées par le br
-
+	
 	Revision 1.1  2004/11/26 22:28:58  pico
 	Ajout d'une page pour pouvoir modifier la date d'une activité ou la supprimer
 	
@@ -107,8 +111,9 @@ foreach ($_POST AS $keys => $val){
 	
 	if ($temp[0]=='suppr') {
 		$DB_web->query("DELETE FROM affiches WHERE affiche_id='{$temp[1]}'") ;
-	
-
+		if (file_exists(DATA_DIR_LOCAL."affiches/{$temp[1]}")){
+				unlink(DATA_DIR_LOCAL."affiches/{$temp[1]}") ;
+		}
 	?>
 		<warning><p>Suppression d'une activité</p></warning>
 	<?

@@ -21,9 +21,13 @@
 	Page qui permet aux admins de modifier une annonce validée
 	
 	$Log$
+	Revision 1.2  2004/11/27 14:12:31  pico
+	Ajout d'un lien pour supprimmer les annonces périmées depuis plus de 5 jours
+	(histoire de pas garder des archives inutiles)
+
 	Revision 1.1  2004/11/27 13:59:27  pico
 	Page pour modifier les annonces validées
-
+	
 
 	
 */
@@ -76,13 +80,31 @@ foreach ($_POST AS $keys => $val){
 	<?
 	}
 	
-	
+	if ($temp[0]=='supprold') {
+		
+		$DB_web->query("SELECT annonce_id FROM annonces WHERE perime<".date("Ymd000000",time()- 5 * 24 * 3600)."") ;
+		//On supprime aussi l'image si elle existe ...
+		$compteur = 0;
+		while(list($id)=$DB_web->next_row()) {
+			$compteur++;
+			if (file_exists(DATA_DIR_LOCAL."annonces/{$temp[1]}")){
+				unlink(DATA_DIR_LOCAL."annonces/{$temp[1]}") ;
+			}
+		}
+		$DB_web->query("DELETE FROM annonces WHERE perime<".date("Ymd000000",time()- 5 * 24 * 3600)."") ;
+	?>
+		<warning><p>Suppression de <? echo $compteur?> annonces périmées</p></warning>
+	<?
+	}
 }
+
+
+echo "<lien titre=\"Supprimer les annonces périmées depuis plus de 5 jours\" url=\"admin/modif_annonces.php?supprold\"/>" ;
 
 
 //===============================
 
-	$DB_web->query("SELECT v.exterieur, v.annonce_id,v.perime, v.titre, v.contenu, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM annonces as v INNER JOIN trombino.eleves as e USING(eleve_id)");
+	$DB_web->query("SELECT v.exterieur, v.annonce_id,v.perime, v.titre, v.contenu, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM annonces as v INNER JOIN trombino.eleves as e USING(eleve_id) WHERE WHERE (perime>=".date("Ymd000000",time()).") ORDER BY perime DESC");
 	while(list($ext, $id,$date,$titre,$contenu,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_web->next_row()) {
 ?>
 		<annonce titre="<?php  echo $titre ?>" 
