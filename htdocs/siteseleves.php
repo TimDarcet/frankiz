@@ -21,9 +21,12 @@
 	Sites Eleves
 	
 	$Log$
+	Revision 1.2  2004/12/15 01:51:04  kikx
+	Car finalement on s'en fout des commentaires
+
 	Revision 1.1  2004/11/24 12:51:58  kikx
 	Oubli de ma part
-
+	
 
 
 */
@@ -37,13 +40,11 @@ require "include/page_header.inc.php";
 <h1>Sites de certains élèves de l'X</h1>
 	<liste id="page_eleves" selectionnable="non" action="vocabulaire.php">
 		<entete id="eleves" titre=""/>
-		<entete id="description" titre="Description"/>
 <?
 		$DB_web->query("SELECT e.eleve_id,e.nom,e.prenom,e.promo,commentaires,e.login FROM sites_eleves INNER JOIN trombino.eleves as e USING(eleve_id) ORDER BY promo DESC") ;
 		while(list($id,$nom,$prenom,$promo,$commentaire,$login) = $DB_web->next_row()) {
 			echo "\t\t<element id=\"$id\">\n";
 				echo "\t\t\t<colonne id=\"eleves\"><lien id='$id' titre='$prenom $nom ($promo)' url='".URL_PAGEPERSO."$login-$promo/'/></colonne>\n";
-				echo "\t\t\t<colonne id=\"description\">$commentaire</colonne>\n";
 			echo "\t\t</element>\n";
 		}
 ?>
