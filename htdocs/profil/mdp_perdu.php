@@ -9,10 +9,10 @@ $mail_envoye = false;
 
 if(!empty($_REQUEST['loginpoly'])) {
 	connecter_mysql_frankiz();
-	$resultat = mysql_query("SELECT eleve_id,login,prenom,nom,promo FROM eleves "
+	$resultat = mysql_query("SELECT eleve_id,login,prenom,nom,promo,mail FROM eleves "
 						   ."WHERE login='".$_REQUEST['loginpoly']."' ORDER BY promo DESC LIMIT 1");
 	if(mysql_num_rows($resultat) == 1) {
-		list($id,$login,$prenom,$nom,$promo) = mysql_fetch_row($resultat);
+		list($id,$login,$prenom,$nom,$promo,$mail) = mysql_fetch_row($resultat);
 		mysql_free_result($resultat);
 		$hash = nouveau_hash();
 		
@@ -33,7 +33,8 @@ if(!empty($_REQUEST['loginpoly'])) {
 				   "lien ci-dessous :\n\n".
 				   "	[ http://".$_SERVER['SERVER_NAME'].$tempo[0]."profil/profil.php?uid=${id}&hash=${hash} ]\n\n".
 				   "N'oublie pas ensuite de modifier ton mot de passe.";
-		mail("$nom $prenom <${login}@poly.polytechnique.fr>","[Frankiz] Création de compte/perte de mot de passe",$contenu);
+		if (($mail=="")||($mail=="NULL")) $mail = $login."@poly.polytechnique.fr" ;
+		mail("$nom $prenom <$mail>","[Frankiz] Création de compte/perte de mot de passe",$contenu);
 		$mail_envoye = true;
 		
 	} else {
@@ -47,7 +48,7 @@ require "../include/page_header.inc.php";
 echo "<page id='mdp_perdu' titre='Frankiz : creation de compte/perte de mot de passe'>\n";
 
 if($mail_envoye) { ?>
-	<p>Le mail a été envoyé avec succès à l'adresse <?php echo $login?>@poly.polytechnique.fr.
+	<p>Le mail a été envoyé avec succès à l'adresse <?php echo $mail?>.
 	Il te permettra de te connecter une fois au site web Frankiz pour changer ton mot de passe
 	ou choisir ton mot de passe si tu n'en a pas encore défini un.</p>
 	
