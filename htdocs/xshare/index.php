@@ -1,9 +1,12 @@
 <? 
 /*
 		$Log$
+		Revision 1.16  2004/10/20 22:28:27  pico
+		Encore des corrections
+
 		Revision 1.15  2004/10/20 22:10:06  pico
 		BugFix (devrait marcher)
-
+		
 		Revision 1.14  2004/10/20 22:05:55  pico
 		Changements Noeuds/Feuilles
 		
@@ -237,8 +240,7 @@ echo "<br/>" ;
             <bouton id="Submit" titre="Valide"/>
             <bouton id="reset" titre="Reset"/>
         </formulaire>
-        <p><em>(Tous les mots seront dans la description 
-          / Séparez les par un blanc) </em>
+        <commentaire>(Tous les mots seront dans la description / Séparez les par un blanc) </commentaire>
         </p>
 <?
 
@@ -265,7 +267,7 @@ echo "<br/>" ;
 	
 		} else {
 	?>
-	<p><strong>Erreur</strong> : Impossible de trouver cette description </p>
+	<warning>Erreur : Impossible de trouver cette description </warning>
 	<?
 		}
 		echo "<br/><br/>" ;
