@@ -30,14 +30,14 @@
 			<div class="fkz_qdj_rouje">
 			<a>
 			<xsl:attribute name="href"><xsl:value-of select="qdj/@action"/>1</xsl:attribute>
-			<img src="skins/pico/pointrouje.gif"/><br/>
+			<img src="skins/pico/pointrouje.gif" alt="rouje"/><br/>
 			<xsl:value-of select="qdj/reponse[@id='1']"/>
 			</a>
 			</div>
 			<div class="fkz_qdj_jone">
 			<a>
 			<xsl:attribute name="href"><xsl:value-of select="qdj/@action"/>2</xsl:attribute>
-			<img src="skins/pico/pointjone.gif"/><br/>
+			<img src="skins/pico/pointjone.gif" alt="jône"/><br/>
 			<xsl:value-of select="qdj/reponse[@id='2']"/>
 			</a>
 			</div>
@@ -60,14 +60,16 @@
 		</xsl:otherwise>
 		</xsl:choose>
 		<br/>
-		<div style="text-align: center">
-		<div>Derniers à répondre :</div>
-		<ul class="fkz_qdj_last">
-		<xsl:for-each select="qdj/dernier[position()&lt;=6]">
-			<li class="fkz_qdj_last"><xsl:value-of select="@ordre"/>. <xsl:value-of select="eleve/@surnom"/></li>
-		</xsl:for-each>
-		</ul>
-		</div>
+		<xsl:if test="count(qdj/dernier)">
+			<div style="text-align: center">
+			<div>Derniers à répondre :</div>
+			<ul class="fkz_qdj_last">
+			<xsl:for-each select="qdj/dernier[position()&lt;=6]">
+				<li class="fkz_qdj_last"><xsl:value-of select="@ordre"/>. <xsl:value-of select="eleve/@surnom"/></li>
+			</xsl:for-each>
+			</ul>
+			</div>
+		</xsl:if>
 		</div>
 </xsl:template>
 
