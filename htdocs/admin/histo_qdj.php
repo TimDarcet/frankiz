@@ -21,9 +21,12 @@
 	Page qui permet aux admins de voir l'historique des qdj
 	
 	$Log$
+	Revision 1.4  2004/12/17 20:28:02  pico
+	Plus joli
+
 	Revision 1.3  2004/12/17 20:11:54  pico
 	Un peu moins précis..
-
+	
 	Revision 1.2  2004/12/17 20:08:38  pico
 	Affichage plus condensé
 	
@@ -69,7 +72,7 @@ $date = date("Y-m-d", time()-3025);
 		$p2 = round(100*$compte2/($compte1+$compte2));
 ?>
 		<h4>QDJ du <?= date("d/m/Y",strtotime($date)) ?></h4>
-			<?= $question ?><br/>
+			<?= "$question ?" ?><br/>
 			<?= "- $reponse1 ($compte1 soit $p1%)"?><br/>
 			<?= "- $reponse2 ($compte2 soit $p2%)"?><br/>
 		
