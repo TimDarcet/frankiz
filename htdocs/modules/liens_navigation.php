@@ -21,9 +21,12 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.16  2004/11/11 20:15:19  kikx
+	Deplacemeent du fichier des binets pour que ca erste logique
+
 	Revision 1.15  2004/11/09 22:39:06  pico
 	Ajout des accesskeys dans les liens de navigation
-
+	
 	Revision 1.14  2004/11/06 15:17:58  kikx
 	Suppression des liens vers l'InfoBR et les docs
 		-> Telecharger+FAQ = InfoBR
@@ -82,7 +85,7 @@
 	<lien id="doc" titre="Docs/Manuels" url="documentation/" />-->
 	<lien id="faq" titre="FAQ" url="faq/" key="f"/>
 	<lien id="xshare" titre="XShare" url="xshare/" key="x"/>
-	<lien id="binets"  titre="Binets" url="binets/" key="b"/>
+	<lien id="binets"  titre="Binets" url="binets.php" key="b"/>
 	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
 		<lien id="trombino" titre="Trombino" url="trombino/" key="t"/>
 	<?php endif; ?>
