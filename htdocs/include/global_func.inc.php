@@ -53,6 +53,19 @@ function deconnecter_mysql_frankiz() {
 		mysql_close();
 }
 
+function connecter_mysql_frankiz_admin() {
+	global $nombre_connections;
+	if($nombre_connections++ == 0) {
+		mysql_connect("frankiz", "admin", "r00tdb");
+		mysql_select_db("admin");
+	}
+}
+
+function deconnecter_mysql_frankiz_admin() {
+	global $nombre_connections;
+	if(--$nombre_connections == 0)
+		mysql_close();
+}
 /*
 	Gestion des erreurs
 */
