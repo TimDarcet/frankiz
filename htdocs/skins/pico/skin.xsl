@@ -85,7 +85,6 @@
 			<xsl:apply-templates select="frankiz/module[@id='qdj']"/>
 			<xsl:apply-templates select="frankiz/module[@id='qdj_hier']"/>
 			<xsl:if test="count(frankiz/module[@id='qdj']|frankiz/module[@id='qdj_hier']|frankiz/module[@id='tour_kawa'])">
-				<br/>
 				<p>
 					<a href="http://validator.w3.org/check?uri=referer">
 						<span class="valid_xhtml"><xsl:text> </xsl:text></span>
