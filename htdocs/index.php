@@ -21,9 +21,12 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.22  2004/12/17 09:41:53  pico
+	Solution simple pour éviter de mettre 2 fois la même entrée dans la base des annonces lues
+
 	Revision 1.21  2004/12/14 18:42:28  schmurtz
 	Bugs sur les annonces
-
+	
 	Revision 1.20  2004/12/14 17:14:52  schmurtz
 	modification de la gestion des annonces lues :
 	- toutes les annonces sont envoyees dans le XML
@@ -101,8 +104,12 @@ if (!est_authentifie(AUTH_MINIMUM))  {
 <?
 } else {
 // Pour marquer les annonces comme lues ou non
-	if (isset($_REQUEST['lu']))
-		$DB_web->query("INSERT INTO annonces_lues SET annonce_id='{$_REQUEST['lu']}',eleve_id='{$_SESSION['user']->uid}'");
+	if (isset($_REQUEST['lu'])){
+		$DB_web->query("SELECT 0 FROM annonces_lues WHERE annonce_id='{$_REQUEST['lu']}' AND eleve_id='{$_SESSION['user']->uid}'");
+		if($DB_web->num_rows()==0){
+			$DB_web->query("INSERT INTO annonces_lues SET annonce_id='{$_REQUEST['lu']}',eleve_id='{$_SESSION['user']->uid}'");
+		}
+	}
 	if (isset($_REQUEST['nonlu']))
 		$DB_web->query("DELETE FROM annonces_lues WHERE annonce_id='{$_REQUEST['nonlu']}' AND eleve_id='{$_SESSION['user']->uid}'");
 	
