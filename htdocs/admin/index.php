@@ -4,11 +4,14 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.19  2004/10/17 17:16:28  kikx
+	prtit oubli de definitions d'une variable
+
 	Revision 1.18  2004/10/17 17:13:20  kikx
 	Pour rendre la page d'administration plus belle
 	n'affiche le truc d'admin que si on est admin
 	meme chsoe pour le prez et le webmestre
-
+	
 	Revision 1.17  2004/10/15 22:03:07  kikx
 	Mise en place d'une page pour la gestion des sites des binets
 	
@@ -50,6 +53,8 @@ if(empty($_SESSION['user']->perms))
 
 // Génération de la page
 require_once BASE_LOCAL."/include/page_header.inc.php";
+
+$permissions_user = ses_permissions() ;
 ?>
 <page id="admin" titre="Frankiz : administration">
 	<? if (verifie_permission('admin')){?>
