@@ -21,9 +21,12 @@
 	Page qui permet de demander une clé windows
 	
 	$Log$
+	Revision 1.13  2005/01/17 22:07:33  dei
+	mise a jour de la page, compatible avec admin/admin_licences.php
+
 	Revision 1.12  2004/12/17 21:46:16  falco
 	un peu de rigueur ne fait pas de mal
-
+	
 	Revision 1.11  2004/12/17 21:09:14  dei
 	<br/>...
 	mopufles!
@@ -58,51 +61,71 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 ?>
 <page id="licences" titre="Frankiz : Les Licences">
 <?	//on vérifie que la demande est faite pour windows xp pro
-	if(isset($_POST['accord']) && ($_POST['logiciel']=="xp_pro")){
-		//on lance la requête qui va bien pour voir la clé
-		$DB_msdnaa->query("SELECT cle,attrib FROM cles_winxp WHERE eleve_id='".$_SESSION['user']->uid."' LIMIT 0,1");
-		//on verifie que le demandeur existe dans la base
-		if($DB_msdnaa->num_rows()!=0){
-			//on a la clé attribuée de manière unique par le BR.
-			list($cle,$attrib) = $DB_msdnaa->next_row();
-			//si la personne a déjà demandé sa clé...
-			if($attrib != 0){
+	if(isset($_POST['accord'])){
+		if($_POST['logiciel']=="winxp"){
+			//on lance la requête qui va bien pour voir la clé
+			$DB_msdnaa->query("SELECT cle,attrib FROM cles_winxp WHERE eleve_id='".$_SESSION['user']->uid."' LIMIT 0,1");
+			//on verifie que le demandeur existe dans la base
+			if($DB_msdnaa->num_rows()!=0){
+				//on a la clé attribuée de manière unique par le BR.
+				list($cle,$attrib) = $DB_msdnaa->next_row();
+				//si la personne a déjà demandé sa clé...
+				if($attrib != 0){
 				?>
 				<p>Tu as déjà demandé ta clé, elle va t'être ré-expédiée sur ta boite mail.</p>
 				<?php
-				$contenu="La clé qui vous a déjà été attribuée est : $cle <br/><br/>".
-					"Très BR-ement<br/>".
-					"L'automate :)<br/>";
+					$contenu="La clé qui vous a déjà été attribuée est : $cle <br/><br/>".
+						"Très Cordialement<br>" .
+						"Le BR<br>"  ;
 				//a completer couriel(WEBMESTRE_ID,"[Frankiz] Validation d'une annonce",$contenu,$eleve_id);
-				couriel($eleve_id,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,WINDOWS_ID);
-				$contenu="La clé demandée par $nom $prenom X $promo est : $cle <br/><br/>".
-					"Très BR-ement<br/>" .
-					"L'automate :)<br/>";
-				couriel(WINDOWS_ID,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,$eleve_id);
-			} else {
+					couriel($eleve_id,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,WINDOWS_ID);
+					$contenu="La clé demandée par $nom $prenom X $promo est : $cle <br/><br/>".
+						"Très Cordialement<br>" .
+						"Le BR<br>"  ;
+					couriel(WINDOWS_ID,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,$eleve_id);
+				} else {
 				?>
 				<p>Ta nouvelle clé va t'être expédiée sur ta boite mail.</p>
 				<?php
 				// sinon on l'ajoute... et on update la base...
-				$DB_msdnaa->query("UPDATE cles_winxp SET attrib='1' WHERE eleve_id='".$_SESSION['user']->uid."'");
-				$contenu="La clé qui vous a été attribuée est : $cle <br/><br/>".
-					"Très BR-ement<br/>" .
-					"L'automate :)<br/>";
-				couriel($eleve_id,"[Frankiz] Demande de licence Microsoft $nom $prenom X $promo ",$contenu,WINDOWS_ID);
-				$contenu="La clé attribuée à $nom $prenom X $promo est : $cle <br/><br/>".
-					"Très BR-ement<br/>" .
-					"L'automate :)<br/>";
-				couriel(WINDOWS_ID,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,$eleve_id);
-			}
-		} else {
-			//on prévient les admins@windows qu'il ya une clée à rajouter à la main...
-			?>
-			<warning>Tu ne figures pas dans la liste des personnes ayant droit à une licence dans le cadre du programme MSDNAA</warning>
-			<p>Seuls les étudiants sur le platâl peuvent faire une demande pour une license Microsoft dans le cadre MSDNAA, s'il s'agit d'une erreur tu peux le signaler au admin@windows.</p>
-			<p>Si c'est le cas clique içi :</p>
-			<bouton id='envoyer' titre='Envoyer'/>
-			<bouton id='' titre='Ne rien faire'/>
+						$DB_msdnaa->query("UPDATE cles_winxp SET attrib='1' WHERE eleve_id='".$_SESSION['user']->uid."'");
+						$contenu="La clé qui vous a été attribuée est : $cle <br/><br/>".
+							"Très Cordialement<br>" .
+							"Le BR<br>"  ;
+					couriel($eleve_id,"[Frankiz] Demande de licence Microsoft $nom $prenom X $promo ",$contenu,WINDOWS_ID);
+					$contenu="La clé attribuée à $nom $prenom X $promo est : $cle <br/><br/>".
+						"Très Cordialement<br>" .
+						"Le BR<br>"  ;
+					couriel(WINDOWS_ID,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,$eleve_id);
+				}
+			} else {
+				//on prévient les admins@windows qu'il ya une clée à rajouter à la main...
+				//et le gens donne sa raison
+				?>
+			
+			<formulaire id="dem_licence" titre= "Les licences pour les logiciels Microsoft" action="profil/licences.php">
+				<warning>Tu ne figures pas dans la liste des personnes ayant droit à une licence dans le cadre du programme MSDNAA</warning>
+				<p>Seuls les étudiants sur le platâl peuvent faire une demande pour une license Microsoft dans le cadre MSDNAA, s'il s'agit d'une erreur tu peux le signaler aux admin@windows.</p>
+				<p>Si c'est le cas indique la raison de ta demande :</p>
+				<zonetext titre="Raison" id="raison"></zonetext>
+				<? if(isset($_POST['logiciel'])){ echo "<hidden id=\"logiciel\" valeur=\"".$_POST['logiciel']."\" />"; } ?>
+				<bouton id='envoyer' titre='Envoyer'/>
+				<bouton id='' titre='Ne rien faire'/>
+			</formulaire>
 			<?php
+			}
+		}
+		//traitement particulier pour les autres logiciels
+		if($_POST['logiciel']!="xppro"){
+?>
+			<formulaire id="dem_licence" titre= "Les licences pour les logiciels Microsoft" action="profil/licences.php">
+				<warning>Vu le faible nombre de licences que nous possédons pour ce logiciel, il nous faut une raison valable pour te l'attribuer.</warning>
+				<zonetext titre="Raison" id="raison"></zonetext>
+				<? if(isset($_POST['logiciel'])){ echo "<hidden id=\"logiciel\" valeur=\"".$_POST['logiciel']."\" />"; } ?>
+				<bouton id='envoyer' titre='Envoyer'/>
+				<bouton id='' titre='Ne rien faire'/>
+			</formulaire>
+<?php
 		}
 	}
 
@@ -134,16 +157,33 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 	<?php
 	} else {
 		if(isset($_POST['envoyer'])){
-		?>
+			//on teste si il n'y a pas déjà une demande en attente
+			$DB_msdnaa->query("SELECT 0 FROM valid_licence WHERE eleve_id='{$_SESSION['user']->uid}'");
+			if ($DB_msdnaa->num_rows()>0) { 
+	?>
+		<warning>Tu as déjà fait une demande d'attribution d'une licence Windows. Le BR s'en occupe...</warning>
+		
+	<?php	
+			} else {
+				//on prends en compte la demande...
+				$DB_msdnaa->query("INSERT valid_licence SET raison='{$_POST['raison']}', lociciel='{$_POST['logiciel']}', eleve_id='{$_SESSION['user']->uid}'");
+	?>
 			<warning>Ta requête a bien été prise en compte.</warning>
-		<?
+			<?php
+				$contenu="La demande de clé de $nom $prenom X $promo n'a pas aboutit faute de clé. Si sa demande est légitime, veuillez aller sur la page d'administration pour en ajouter une. <br/><br/>".
+					"Très Cordialement<br>" .
+					"Le BR<br>"  ;
+				couriel(WINDOWS_ID,"[Frankiz] echec de la demande de licence Microsoft de $nom $prenom X $promo",$contenu,$eleve_id);
+				
+			}
 		}
 	?>
 		<formulaire id="dem_licence" titre= "Les licences pour les logiciels Microsoft" action="profil/licences.php">
 			<note>Dans le cadre de l'accord MSDNAA, chaque étudiant de polytechnique à le droit à une version de Windows XP Pro gratuite, légale et attibuée à vie</note>
 			<p>Les licences disponibles</p>
 			<choix titre="Logiciels" id="logiciel" type="combo" valeur="">
-				<option titre="Windows XP Pro" id="xp_pro"/>
+				<option titre="Windows XP Pro" id="winxp"/>
+				<option titre="Windows 2003 Serveur" id="2k3serv"/>
 			</choix>	
 			<bouton id='valid' titre='Envoyer'/>
 		</formulaire>
