@@ -15,6 +15,9 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <h1>Xshare</h1>
 
 <?
+
+
+
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
 
@@ -32,6 +35,7 @@ foreach ($_POST AS $keys => $val){
 		$DB_web->query("DELETE FROM xshare WHERE id_parent='{$temp[1]}'");
 		echo "<warning>Repertoire Supprimé</warning>";
 	}
+	
 	if (($temp[0]=='adddir') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='')) {
 		$nom = $_REQUEST['nom'];
 		$DB_web->query("SELECT lien FROM xshare WHERE id='{$temp[1]}' ");
@@ -42,6 +46,23 @@ foreach ($_POST AS $keys => $val){
 		echo "<commentaire>Repertoire crée</commentaire>";
 	}
 	
+	if (($temp[0]=='ajout') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='') && (isset($_FILES['file']))&&($_FILES['file']['size']!=0)) {
+		$nom = $_REQUEST['nom'];
+		$DB_web->query("SELECT lien FROM xshare WHERE id='{$temp[1]}' ");
+		list($dir) = $DB_web->next_row();
+		$dir=BASE_DATA."xshare/".$dir."/";
+		$filename = $dir.$_FILES['file']['name'];
+		move_uploaded_file($_FILES['file']['tmp_name'], $filename);
+		if(isset($_REQUEST['version'])) $version = ", version='{$_REQUEST['version']}'"; else $version = '';
+		if(isset($_REQUEST['importance'])) $importance =  ", importance='{$_REQUEST['importance']}'"; else $importance = '';
+		if(isset($_REQUEST['site'])) $site =  ", site='{$_REQUEST['site']}'"; else $site = '';
+		if(isset($_REQUEST['licence'])) $licence = ", licence='{$_REQUEST['licence']}'"; else $licence = '';
+		if(isset($_REQUEST['descript'])) $descript = ", descript='{$_REQUEST['descript']}'"; else $descript = '';
+		
+		$DB_web-> query("INSERT INTO xshare SET id_parent='{$temp[1]}' , nom='{$nom}' , lien='{$filename}' $version $importance $site $licence $descript");
+	
+		echo "<commentaire>Fichier ajouté</commentaire>";
+	}
 }
 
 
@@ -247,7 +268,7 @@ echo "<br/>" ;
 	<? if(isset($_REQUEST['dir_id'])) $dir_id = $_REQUEST['dir_id']; else $dir_id="0"; ?>
 	<formulaire id="xshare_<? echo $dir_id ?>" titre="Supprimer ce dossier" action="admin/xshare.php">
 	<? foreach ($_GET AS $keys => $val){
-		if((!strstr($keys,"adddir"))&&(!strstr($keys,"rmdir"))) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
+		if((!strstr($keys,"rmdir"))&&(!strstr($keys,"rmdir"))) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 		}
 	?>
 	<bouton id='rmdir_<? echo  $dir_id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce répertoire et tous ses fichiers ?!!!!!')"/>
@@ -261,6 +282,26 @@ echo "<br/>" ;
 		}
 	?>
 	<bouton id='adddir_<? echo $dir_id ?>' titre='Ajouter' onClick="return window.confirm('!!!!!!Créer ce répertoire ?!!!!!')"/>
+	</formulaire>
+	
+	<!-- Ajouter un fichier -->
+	<formulaire id="xshare_<? echo $dir_id ?>" titre="Le logiciel" action="admin/xshare.php">
+	<champ id="nom" titre="Nom du logiciel" valeur="" />
+	<champ id="version" titre="Version" valeur="" />
+	<choix titre="Importance" id="importance" type="combo" valeur="0">
+				<option id="0" titre="Normal"/>
+				<option id="1" titre="Important"/>
+				<option id="2" titre="Indispensable"/>
+	</choix>
+	<champ id="site" titre="Site de l'éditeur" />
+	<champ id="licence" titre="Licence" />
+	<zonetext id="descript" titre="Description" />
+	<? foreach ($_GET AS $keys => $val){
+		if(!strstr($keys,"ajout")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
+	}
+	?>
+	<champ id="file" titre="Fichier" valeur=""/>
+	<bouton id='ajout_<? echo $dir_id ?>' titre="Ajouter" onClick="return window.confirm('!!!!!!Ajouter ce fichier ?!!!!!')"/>
 	</formulaire>
 	
 <?
