@@ -122,6 +122,26 @@ p.commentaire {
 	border: 1px solid #FFDD00;
 }
 
+/* Trombino */
+
+table.trombino {
+	border: 1px solid #888888;
+	margin-bottom: 5px;
+}
+
+table.trombino td.titre {
+	color: inherit;
+	background: #DDDDDD;
+	text-align: center;
+	font-weight: bold;
+	border-bottom: 1px solid #888888;
+}
+
+table.trombino img {
+	margin: 2px;
+	margin-right: 20px;
+}
+
 /* Balises HTML */
 H1 {
 	text-align: center;

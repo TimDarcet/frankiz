@@ -12,6 +12,10 @@
 <xsl:include href="form.xsl"/>
 <xsl:output method="html" encoding="ISO-8859-1"/>
 
+<xsl:template match="/frankiz"> 
+	<xsl:apply-templates select="page"/>
+</xsl:template>
+
 <!-- Définition d'une page web de frankiz -->
 <xsl:template match="/frankiz/page">
 	
@@ -25,58 +29,49 @@
 			</xsl:attribute>
 		</base>
 		<link rel="stylesheet" type="text/css" href="skins/basic/style.css"/>
-		<xsl:apply-templates select="frankiz/module[@id='liste_css']"/>
+		<xsl:apply-templates select="/frankiz/module[@id='liste_css']" mode="css"/>
 	</head>
 
-	<body style="margin: 0 0 0 0">
+	<body style="margin: 0">
 		<table cellspacing="0" cellpadding="0">
 			<tr><td id="frankiz" colspan="2">
 				Frankiz, le serveur des élèves
 				
 			</td></tr> <tr><td id="cadres">
 				<table cellspacing="0" cellpadding="0">
-						<xsl:apply-templates select="module"/>
+					<xsl:apply-templates select="/frankiz/module"/>
 				</table>
 				
 			</td><td id="contenu">
-				<xsl:apply-templates select="contenu"/>
+				<xsl:apply-templates/>
 				
 			</td></tr>
 		</table>
 	</body>
-
 	</html>
 
 </xsl:template>
 
 <!-- les CSS complémentaires -->
-<xsl:template match="module[@id='liste_css']">
-<xsl:for-each select="element">
-    <link rel="alternate stylesheet" type="text/css">
-    <xsl:attribute name="href">
-       <xsl:value-of select="@url"/>
-    </xsl:attribute>
-    <xsl:attribute name="title">
-    	<xsl:value-of select="@nom"/>
-    </xsl:attribute>
-    </link>
+<xsl:template match="/frankiz/module[@id='liste_css']" mode="css">
+	<xsl:for-each select="lien">
+		<link rel="alternate stylesheet" type="text/css">
+			<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+			<xsl:attribute name="title"><xsl:value-of select="@titre"/></xsl:attribute>
+		</link>
     </xsl:for-each>
 </xsl:template>
 
-<!-- Définition des cadres et du contenu -->
-<xsl:template match="/frankiz/page/module">
+<!-- Définition des modules -->
+<xsl:template match="/frankiz/module">
 	<xsl:if test="(boolean(@visible) = false) or (@visible = 'true')">
 		<tr><th class="cadre"><xsl:value-of select="@titre"/></th></tr>
 		<tr><td class="cadre"><xsl:apply-templates/></td></tr>
 	</xsl:if>
 </xsl:template>
 
-<xsl:template match="/frankiz/page/contenu">
-	<xsl:apply-templates/>
-</xsl:template>
-
 <!-- Annonces (une annonce dans un module correspond à une activité) -->
-<xsl:template match="liste/annonce">
+<xsl:template match="page/annonce">
 	<table class="annonce" cellspacing="0" cellpadding="0">
 		<tr><th class="annonce"><xsl:value-of select="@titre"/> (<xsl:value-of select="@date"/>)</th></tr>
 		<tr><td class="annonce">
@@ -147,13 +142,31 @@
 	</xsl:for-each>
 </xsl:template>
 
-
-<!-- Eleves (pour les anniversaires) -->
-<xsl:template match="eleve">
+<!-- Eleves (pour les anniversaires et le trombino) -->
+<xsl:template match="module/eleve">
 	<xsl:value-of select="@prenom"/><xsl:text> </xsl:text>
 	<xsl:value-of select="@nom"/><xsl:text> (</xsl:text>
 	<xsl:value-of select="@promo"/><xsl:text>)</xsl:text>
 	<br/>
+</xsl:template>
+
+<xsl:template match="page/eleve">
+	<table class="trombino" cellspacing="0" cellpadding="0">
+		<tr><td class="titre" colspan="2">
+			<xsl:value-of select="@prenom"/><xsl:text> </xsl:text><xsl:value-of select="@nom"/>
+			<xsl:text> (</xsl:text><xsl:value-of select="@promo"/><xsl:text>)</xsl:text>
+		</td></tr>
+		<tr><td>
+			<img alt="photo" width="80" height="95">
+				<xsl:attribute name="src">trombino/?image=true&amp;login=<xsl:value-of select="@login"/>&amp;promo=<xsl:value-of select="@promo"/></xsl:attribute>
+			</img>
+		</td><td width="100%">
+			Surnom : <xsl:value-of select="@surnom"/><br/>
+			Tel : <xsl:value-of select="@tel"/><br/>
+			Kazert : <xsl:value-of select="@casert"/><br/>
+			Mail : <xsl:value-of select="@mail"/><br/>
+		</td></tr>
+	</table>
 </xsl:template>
 
 </xsl:stylesheet>

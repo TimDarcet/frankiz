@@ -8,21 +8,12 @@ if(!verifie_permission("admin")) {
 	exit;
 }
 
+// Génération de la page
 require_once BASE_LOCAL."/include/page_header.inc.php";
-
-
-// Récupération du contenu de la page (en XML)
-echo "<page id='accueil' titre='Frankiz : admin'>\n";
-require BASE_LOCAL."/include/modules.inc.php";
-
 ?>
-<contenu>
+<page id="accueil" titre="Frankiz : admin">
 	<h1>Admin Frankiz</h1>
-
-</contenu>
 </page>
 <?php
-
-// Applique les transformations
 require_once BASE_LOCAL."/include/page_footer.inc.php";
 ?>

@@ -169,79 +169,75 @@ if( !empty($new_skin) ) {
 
 // Récupération du contenu de la page (en XML)
 require_once BASE_LOCAL."/include/page_header.inc.php";
-
-echo "<page id='choix_skin' titre='Frankiz : choix skin'>\n";
-require BASE_LOCAL."/include/modules.inc.php";
 ?>
-	<contenu>
-		<h1>Personnalisation de Frankiz II</h1>
-		
-		<formulaire titre="Choix de la skin" action="profil/skin.php">
-			<choix titre="Skin" id="newskin" type="radio" valeur="<?php echo $_SESSION['skin']['skin_nom']?>">
+<page id="choix_skin" titre="Frankiz : choix skin">
+	<h1>Personnalisation de Frankiz II</h1>
+	
+	<formulaire titre="Choix de la skin" action="profil/skin.php">
+		<choix titre="Skin" id="newskin" type="radio" valeur="<?php echo $_SESSION['skin']['skin_nom']?>">
 <?php
-				// Choix de la feuille de style XSL
-				$dir=opendir(BASE_LOCAL."/skins");
-				while($file = readdir($dir)) {
-					// uniquement pour les dossiers non particulier
-					if(!is_dir(BASE_LOCAL."/skins/$file") || $file == "." || $file == ".." ||
-						$file == "CVS" || $file{0} == "#") continue;
-					$description = lire_description_skin(BASE_LOCAL."/skins/$file/description.xml");
-					echo "<option titre=\"".$description['nom']." (".$description['description']
-						.")\" id=\"$file\"/>";
-				}
-				closedir($dir);
-?>
-			</choix>
-			<bouton titre="Appliquer" id="OK_skin" />
-		</formulaire>
-		
-		<formulaire titre="Paramètres de la skin" action="profil/skin.php">
-			<choix titre="CSS" id="newcss" type="combo" valeur="<?php echo $_SESSION['skin']['skin_css']?>">
-<?php
-				// Choix de la feuille de style CSS
-				$dir=opendir(BASE_LOCAL."/css");
-				while($file = readdir($dir)) {
-					// uniquement pour les fichiers .css
-					if(!ereg("(.*).css", $file, $elements)) continue;
-					$nom = $elements[1];
-					echo "<option titre=\"$nom (".lire_description_css(BASE_LOCAL."/css/$nom.txt")
-						.")\" id=\"".BASE_URL."/css/$file\"/>";
-				}
-				closedir($dir);
-?>
-			<champ titre="CSS perso" id="newcss_perso" valeur="<?php
-				if (dirname($_SESSION['skin']['skin_css']) != BASE_URL."/css")
-					echo $global_css; ?>"/>
-			</choix>
-<?php
-			// Paramètres spécifique à la skin
-			$description = lire_description_skin(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']."/description.xml");
-			foreach($description['parametres'] as $parametre_id => $parametre) {
-				if(empty($parametre['valeurs'])) {
-					echo "<champ titre=\"".$parametre['description']."\" id=\"param[$parametre_id]\" valeur=\""
-							.$_SESSION['skin']['skin_parametres'][$parametre_id]."\"/>\n";
-				} else {
-					echo "<choix titre=\"".$parametre['description']."\" id=\"param[$parametre_id]\" valeur=\""
-							.$_SESSION['skin']['skin_parametres'][$parametre_id]."\" type=\"combo\">\n";
-					foreach($parametre['valeurs'] as $param_id => $param_desc)
-						echo "\t<option titre=\"$param_desc\" id=\"$param_id\"/>\n";
-					echo "</choix>\n";
-				}
+			// Choix de la feuille de style XSL
+			$dir=opendir(BASE_LOCAL."/skins");
+			while($file = readdir($dir)) {
+				// uniquement pour les dossiers non particulier
+				if(!is_dir(BASE_LOCAL."/skins/$file") || $file == "." || $file == ".." ||
+					$file == "CVS" || $file{0} == "#") continue;
+				$description = lire_description_skin(BASE_LOCAL."/skins/$file/description.xml");
+				echo "<option titre=\"".$description['nom']." (".$description['description']
+					.")\" id=\"$file\"/>";
 			}
+			closedir($dir);
 ?>
-			<choix titre="Eléments" id="newskin" type="checkbox" valeur="<?php foreach($_SESSION['skin']['skin_visible'] as $module => $visible) if($visible) echo "vis[$module] "; ?>">
-				<option titre="Activités" id="vis[activites]"/>
-				<option titre="Question du jour" id="vis[qdj_aujourdhui]"/>
-				<option titre="QDJ de la veille" id="vis[qdj_hier]"/>
-				<option titre="Anniversaires" id="vis[anniversaires]"/>
-				<option titre="Liens contacts" id="vis[liens_contacts]"/>
-				<option titre="Liens école" id="vis[liens_ecole]"/>
-				<option titre="Tours kawa" id="vis[tours_kawa]"/>
-				<option titre="Statistiques" id="vis[stats]"/>
-			</choix>
-			<bouton titre="Appliquer" id="OK_param" />
-		</formulaire>
-	</contenu>
+		</choix>
+		<bouton titre="Appliquer" id="OK_skin" />
+	</formulaire>
+	
+	<formulaire titre="Paramètres de la skin" action="profil/skin.php">
+		<choix titre="CSS" id="newcss" type="combo" valeur="<?php echo $_SESSION['skin']['skin_css']?>">
+<?php
+			// Choix de la feuille de style CSS
+			$dir=opendir(BASE_LOCAL."/css");
+			while($file = readdir($dir)) {
+				// uniquement pour les fichiers .css
+				if(!ereg("(.*).css", $file, $elements)) continue;
+				$nom = $elements[1];
+				echo "<option titre=\"$nom (".lire_description_css(BASE_LOCAL."/css/$nom.txt")
+					.")\" id=\"".BASE_URL."/css/$file\"/>";
+			}
+			closedir($dir);
+?>
+		<champ titre="CSS perso" id="newcss_perso" valeur="<?php
+			if (dirname($_SESSION['skin']['skin_css']) != BASE_URL."/css")
+				echo $global_css; ?>"/>
+		</choix>
+<?php
+		// Paramètres spécifique à la skin
+		$description = lire_description_skin(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']."/description.xml");
+		foreach($description['parametres'] as $parametre_id => $parametre) {
+			if(empty($parametre['valeurs'])) {
+				echo "<champ titre=\"".$parametre['description']."\" id=\"param[$parametre_id]\" valeur=\""
+						.$_SESSION['skin']['skin_parametres'][$parametre_id]."\"/>\n";
+			} else {
+				echo "<choix titre=\"".$parametre['description']."\" id=\"param[$parametre_id]\" valeur=\""
+						.$_SESSION['skin']['skin_parametres'][$parametre_id]."\" type=\"combo\">\n";
+				foreach($parametre['valeurs'] as $param_id => $param_desc)
+					echo "\t<option titre=\"$param_desc\" id=\"$param_id\"/>\n";
+				echo "</choix>\n";
+			}
+		}
+?>
+		<choix titre="Eléments" id="newskin" type="checkbox" valeur="<?php foreach($_SESSION['skin']['skin_visible'] as $module => $visible) if($visible) echo "vis[$module] "; ?>">
+			<option titre="Activités" id="vis[activites]"/>
+			<option titre="Question du jour" id="vis[qdj_aujourdhui]"/>
+			<option titre="QDJ de la veille" id="vis[qdj_hier]"/>
+			<option titre="Anniversaires" id="vis[anniversaires]"/>
+			<option titre="Liens contacts" id="vis[liens_contacts]"/>
+			<option titre="Liens école" id="vis[liens_ecole]"/>
+			<option titre="Tours kawa" id="vis[tours_kawa]"/>
+			<option titre="Statistiques" id="vis[stats]"/>
+		</choix>
+		<bouton titre="Appliquer" id="OK_param" />
+	</formulaire>
 </page>
 <?php
 

@@ -44,8 +44,6 @@ if(!empty($_REQUEST['loginpoly'])) {
 
 require "../include/page_header.inc.php";
 echo "<page id='mdp_perdu' titre='Frankiz : creation de compte/perte de mot de passe'>\n";
-require BASE_LOCAL."/include/modules.inc.php";
-echo "<contenu>\n";
 
 if($mail_envoye) { ?>
 	<p>Le mail a été envoyé avec succès à l'adresse <?php echo $login?>@poly.polytechnique.fr.
@@ -64,6 +62,6 @@ if($mail_envoye) { ?>
 	</formulaire>
 <?php }
 
-echo "</contenu>\n</page>\n";
+echo "</page>\n";
 require_once BASE_LOCAL."/include/page_footer.inc.php";
 ?>

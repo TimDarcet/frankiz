@@ -4,7 +4,7 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:include href="html.xsl"/>
+<xsl:import href="../basic/skin.xsl"/>
 <xsl:include href="form.xsl"/>
 
 <xsl:output method="html" encoding="ISO-8859-1"/>
@@ -24,13 +24,15 @@
 		</base>
 		<link rel="stylesheet" type="text/css">
 			<xsl:attribute name="href"><xsl:value-of select="../@css"/></xsl:attribute></link>
-		<xsl:apply-templates select="frankiz/module[@type='liste_css']"/>
+		<xsl:apply-templates select="frankiz/module[@id='liste_css']" mode="css"/>
 	</head>
 
 	<body>
 		<div id="frankiz">Frankiz, le serveur des élèves</div>
-		<xsl:apply-templates select="module"/>
-		<xsl:apply-templates select="contenu"/>	
+		<xsl:apply-templates select="/frankiz/module"/>
+		<div id="contenu">
+			<xsl:apply-templates/>
+		</div>
 	</body>
 
 	</html>
@@ -38,34 +40,24 @@
 </xsl:template>
 
 <!-- les CSS complémentaires -->
-<xsl:template match="module[@type='liste_css']">
-<xsl:for-each select="element">
-    <link rel="alternate stylesheet" type="text/css">
-    <xsl:attribute name="href">
-       <xsl:value-of select="@url"/>
-    </xsl:attribute>
-    <xsl:attribute name="title">
-    	<xsl:value-of select="@nom"/>
-    </xsl:attribute>
-    </link>
+<xsl:template match="module[@id='liste_css']" mode="css">
+	<xsl:for-each select="lien">
+		<link rel="alternate stylesheet" type="text/css">
+			<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+			<xsl:attribute name="title"><xsl:value-of select="@titre"/></xsl:attribute>
+		</link>
     </xsl:for-each>
 </xsl:template>
 
 <!-- Définition des cadres et du contenu -->
-<xsl:template match="/frankiz/page/module">
+<xsl:template match="/frankiz/module">
 	<xsl:if test="(boolean(@visible) = false) or (@visible = 'true')">
 		<div class="module">
-			<xsl:attribute name="id">module_<xsl:value-of select="@type"/></xsl:attribute>
+			<xsl:attribute name="id">module_<xsl:value-of select="@id"/></xsl:attribute>
 			<div class="titre"><xsl:value-of select="@titre"/></div>
 			<div class="contenu"><xsl:apply-templates/></div>
 		</div>
 	</xsl:if>
-</xsl:template>
-
-<xsl:template match="/frankiz/page/contenu">
-	<div id="contenu">
-		<xsl:apply-templates/>
-	</div>
 </xsl:template>
 
 <!-- Annonces (une annonce dans un module correspond à une activité) -->

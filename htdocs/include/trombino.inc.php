@@ -37,17 +37,9 @@ function trombi_recherche($nom,$prenom,$phone,$casert,
 	$query .= " ORDER BY nom";
 	$result = mysql_query($query);
 	while(list($nom,$prenom,$phone,$casert,$jour,$mois,$annee,$section,$cie,$surnom,$promo,$mail,$sexe,$login,$type,$droitmodifphoto,$binets) = mysql_fetch_row($result)) { 
-		$resultat .= "<eleve ";  
-		reset($champs_dispo);
-		while (list(, $valeur) = each ($champs_dispo)) {
-			if(${$valeur} != ""){
-				$resultat .= "$valeur=\"${$valeur}\" ";
-			}
-		}
-	  	$resultat .= ">";
-		if($binets != ""){
-				$resultat .= trombi_binet($binets);
-		}
+		$resultat .= "<eleve nom='$nom' prenom='$prenom' promo='$promo' login='$login' surnom='$surnom' tel='$phone' mail='$mail' casert='$casert' naissance='$jour/$mois/$annee' section='$section' cie='$cie'>";
+		if($binets != "")
+			$resultat .= trombi_binet($binets);
 		$resultat .= "</eleve>";
 	}
 	

@@ -52,19 +52,16 @@ if(isset($_POST['login']) && isset($_POST['passwd'])) {
 	
 	// On affiche un message d'erreur si l'authentification a échouée.
 	if(a_erreur(ERR_MAILLOGIN)) {
-		require "page_header.inc.php";
 		require_once "skin.inc.php";	// skin.inc.php est inclus juste après login.inc.php, donc
 										// c'est pas encore fait
-		echo "<page id='login' titre='Frankiz : connexion'>\n";
-		require "modules.inc.php";
+		require "page_header.inc.php";
 ?>
-		<contenu>
+		<page id="login" titre="Frankiz : erreur">
 			<p>Une erreur est survenue lors de la vérification du lien d'authentification. Il s'agit
 			peut être d'un dépassement des 6 heures de validité du lien. Si c'est le cas, recommence
 			la procédure en cliquant <a href="<?php echo BASE_URL.'/profil/mdp_perdu.php'?>">ici</a>.</p>
-		</contenu>
+		</page>
 <?php
-		echo "</page>\n";
 		require "page_footer.inc.php";
 		
 		exit;
@@ -91,10 +88,8 @@ function demande_authentification($minimum) {
 	if($_SESSION['user']->est_authentifie($minimum)) return;
 
 	require "page_header.inc.php";
-	echo "<page id='login' titre='Frankiz : connexion'>\n";
-	require "modules.inc.php";
 ?>
-	<contenu>
+	<page id="login" titre="Frankiz : connexion">
 		<?php if(a_erreur(ERR_LOGIN)):?>
 			<p>Une erreur est survenue lors de l'authentification. Vérifie qu'il n'y a pas d'erreur
 			dans le login ou le mot de passe.</p>
@@ -106,9 +101,8 @@ function demande_authentification($minimum) {
 		</formulaire>
 		<p>Si tu as oublié ton mot de passe ou que tu pas encore de compte,
 		clique <a href="<?php echo BASE_URL.'/profil/mdp_perdu.php'?>">ici</a>.</p>
-	</contenu>
+	</page>
 <?php
-	echo "</page>\n";
 	require "page_footer.inc.php";
 	
 	exit;

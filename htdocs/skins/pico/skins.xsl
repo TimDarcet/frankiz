@@ -139,16 +139,12 @@
 </form>
 </xsl:template>
 
-<xsl:template match="module[@id='liste_css']">
-<xsl:for-each select="element">
-    <link rel="alternate stylesheet" type="text/css">
-    <xsl:attribute name="href">
-       <xsl:value-of select="@url"/>
-    </xsl:attribute>
-    <xsl:attribute name="title">
-    	<xsl:value-of select="@nom"/>
-    </xsl:attribute>
-    </link>
+<xsl:template match="module[@id='liste_css']" mode="css">
+	<xsl:for-each select="lien">
+		<link rel="alternate stylesheet" type="text/css">
+			<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+			<xsl:attribute name="title"><xsl:value-of select="@titre"/></xsl:attribute>
+		</link>
     </xsl:for-each>
 </xsl:template>
 

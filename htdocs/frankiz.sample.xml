@@ -14,211 +14,173 @@
 -->
 <!--
 
-	(un début de DTD)
-	Les balises définissant l'organisation du site sont :
-		- frankiz
-			- page
-				- cadre
-					- statistiques (contenant : serveur, service)
-					- qdj (contenant : question, reponse, dernier)
-				- contenu
-					- annonce
-	
-	Les balises de formatage et de définition de contenu basiques sont :
-		- lien
-		- image
-		- p h1 h2 h3 h4 h5 strong code (formatage html de base)
-	
-	Les balises plus spécifiques de définition de contenu :
-		- arbre
-			- noeud
-				- noeud
-				- feuille
-		- formulaire
-			- choix (menu popup, boutons radio, cases à cocher)
-				- option
-			- champ (pour demander du texte ou un mot de passe)
-			- bouton (pour valider le formulaire)
-		- liste (pour les résultats de requètes SQL, utile pour les pages d'administration)
-
--->
-<!--
-
 	Une page contient deux types d'éléments :
-		- les cadres, affichés sur les côtés ou en haut de la page, non liés à une page donnée.
+		- les modules, affichés sur les côtés ou en haut de la page, non liés à une page donnée.
 		- le contenu, lié à une page donnée et affiché au centre.
 	
-	Les cadres sont identifiables par leur "id" (mais pas par leur "titre" qui doit pouvoir être
+	Les modules sont identifiables par leur "id" (mais pas par leur "titre" qui doit pouvoir être
 	modifié quand les webmestres le souhaite), ce qui permet de les afficher différents dans une
 	skin XSL si on le souhaite.
-	Pour une meilleure cohérence, les cadres contenant des liens doivent avoir un id qui commence
-	par "liens" (cela permet d'avoir un affichage par défaut des cadres contenant des liens). Dans
+	Pour une meilleure cohérence, les modules contenant des liens doivent avoir un id qui commence
+	par "liens" (cela permet d'avoir un affichage par défaut des modules contenant des liens). Dans
 	le même ordre d'idée, les pages d'administration auront toutes un id commençant par "admin".
 
 -->
 
-<frankiz>
+<frankiz base="http://frankiz/" css="style.css">
+
+<module id="liens_navigation" titre="Frankiz">
+	<lien titre="frankiz" lien="/index.php" />
+	<lien titre="Skins" lien="/choix_skin.php" />
+	<lien titre="Docs/Manuels" lien="/documentation/" />
+	<lien titre="InfoBr" lien="/documentation/infobr.pdf" />
+	<lien titre="FAQ" lien="/faq/" />
+	<lien titre="Télécharger" lien="/xshare" />
+	<lien titre="Binets" lien="http://binets.polytechnique.fr/" />
+	<lien titre="Trombino" lien="/trombino/" />
+	<lien titre="Xplorateur" lien="/xplorateur/" />	
+</module>
+
+<module id="activites" titre="Activités" visible="on">
+	<annonce titre="BRC" auteur="264" date="20H30"> <!-- auteur = ID dans la base du trombi -->
+		<image source="http://binets/brc/affiches/lestontonsflingeurs.jpg" texte="Affiche"
+			lien="http://www.imdb.com/?movie=17653" legende="Les tontons flingeurs"/>
+		<!-- Les images peuvent avoir une légende qui s'affiche en dessous et un lien.
+			 L'attribut "texte" permet de donner un texte alternatif au cas où l'image ne puisse
+			 pas être affichée -->
+	</annonce>
+</module>
+
+<module id="liens_contacts" titre="Contacts" visible="off">
+	<lien titre="Écrire aux webmasters" lien="mailto:web@frankiz" />
+	<lien titre="Proposer une annonce" lien="/gestion/annonce.php" />
+	<lien titre="Proposer une activité" lien="/gestion/activite.php" />
+	<lien titre="Mise à jour d'un binet" lien="/gestion/majbinet.php" />
+	<lien titre="Demander un mail promo" lien="/gestion/mailpromo.php" />
+	<lien titre="Proposer un sondage" lien="/gestion/sondage.php/" />
+</module>
+
+<module id="stats" titre="Statistiques">
+	<statistiques>
+		<serveur nom="frankiz" etat="up" uptime="300" />
+			<!-- reste à définir le format de l'attribut "uptime" -->
+		<serveur nom="gwennoz" etat="up" uptime="100" />
+		<serveur nom="heol" etat="down" />
+		<service nom="web frankiz" stat="/stats/xnet.php" />
+			<!-- on pourrait rajouter un attribut etat --> 
+		<service nom="web binets" stat="/stats/web_frankiz.php" />
+		<service nom="news" stat="/stats/web_binets.php" />
+		<service nom="xnet" stat="/stats/xnet.php" />
+		<serveur nom="kuzh" etat="down" />
+		<serveur nom="sil" etat="up" />
+		<serveur nom="poly" etat="up" />
+	</statistiques>
+</module>
+
+<module id="anniversaires" titre="Anniversaires">
+	<!-- formatage à revoir : ici, on perd la structuration des données et le classement par promo.
+		 on pourrait utiliser la balise "liste" qui sert à l'affichage des résultats de requètes MySQL. -->
+	<p>Arnaud CHOMBIER</p>
+	<p>Coin PAN</p>
+</module>
+
+<module id="qdj" titre="QDJ">
+	<qdj action="/accueil/qdj.php?id=308&amp;reponse=">
+			<!-- pas d'attribut "action" si l'utilisateur à déjà voté. l'url de réponse est
+				 "action + id de la réponse"-->
+		<question>Frankiz II, c'est</question>
+		<reponse id="1">Super bien</reponse>
+			<!-- attribut "votes" en plus indiquant le nombre de vote pour cette réponse si
+				 l'utilisateur à déjà voté -->
+		<reponse id="2">Un projet sans fin</reponse>
+		<dernier ordre="201">Arnaud Chombier</dernier>
+		<dernier ordre="200">Blah</dernier>
+		<dernier ordre="199">Lui</dernier>
+	</qdj>
+</module>
+
+<module id="qdj_hier" titre="QDJ d'hier">
+	<qdj>
+		<question>Le BR, c'est des geeks qui</question>
+		<reponse id="1" votes="217">pensent qu'à eux</reponse>
+		<reponse id="2" votes="20">bossent en continu pour nous</reponse>
+		<dernier ordre="237">Arnaud Chombier</dernier>
+		<dernier ordre="236">Blah</dernier>
+		<dernier ordre="235">Lui</dernier>
+	</qdj>
+</module>
+
+<module id="liens_ecole" titre="Liens école">
+	<lien titre="La Kes" lien="http://binets/kes/" />
+	<lien titre="Aide aux binets" lien="http://binets/kes-binets/" />
+	<lien titre="Le site des élèves" lien="http://www.polytechnique.fr/eleves/" />
+	<lien titre="Redirection des mails" lien="http://poly.polytechnique.fr/" />
+	<lien titre="Corrige ton poly" lien="http://binets/corrigepoly/" />
+	<lien titre="Site de l'école" lien="http://www.polytechnique.fr/" />
+	<lien titre="Site de la DE" lien="http://www.edu.polytechnique.fr/" />
+	<lien titre="Bureau des effectifs" lien="http://intranet-effectifs.polytechnique.fr/" />
+	<lien titre="Intranet" lien="http://intranet.polytechnique.fr/" />
+	<lien titre="Polytechnique.org" lien="http://www.polytechnique.org/" />
+	<lien titre="Les photos" lien="http://www.polytechnique.fr/eleves/binets/photo/photos/photos.htm" />
+</module>
+
 <page id="accueil" titre="Frankiz : accueil" javascript="accueil.js" css="frankiz.css">
 	<!-- la balise javascript peut être utile pour inclure des fonctions javascript qui seront
 		 utilisées dans des liens -->
 	
 	<!-- l'intérêt d'utiliser deux balises "frankiz" et "page" est de stocker plusieurs pages
 		 dans le même fichier xml. Est-ce vraiment utile ? -->
+	<annonce titre="Viendez à mon binet" auteur="Moi" date="10 juin">
+		<!-- contenu de l'annonce : peut-être n'importe quoi. -->
+		<image source="/data/annonce234.jpg" texte="Viendez à mon binet" />
+		<p>C'est le plus beau !</p>
+	</annonce>
 	
-	
-	<cadre id="liens_navigation" titre="Frankiz">
-		<lien titre="frankiz" lien="/index.php" />
-		<lien titre="Skins" lien="/choix_skin.php" />
-		<lien titre="Docs/Manuels" lien="/documentation/" />
-		<lien titre="InfoBr" lien="/documentation/infobr.pdf" />
-		<lien titre="FAQ" lien="/faq/" />
-		<lien titre="Télécharger" lien="/xshare" />
-		<lien titre="Binets" lien="http://binets.polytechnique.fr/" />
-		<lien titre="Trombino" lien="/trombino/" />
-		<lien titre="Xplorateur" lien="/xplorateur/" />	
-	</cadre>
-
-	<cadre id="activites" titre="Activités" visible="on">
-		<annonce titre="BRC" auteur="264" date="20H30"> <!-- auteur = ID dans la base du trombi -->
-			<image source="http://binets/brc/affiches/lestontonsflingeurs.jpg" texte="Affiche"
-				lien="http://www.imdb.com/?movie=17653" legende="Les tontons flingeurs"/>
-			<!-- Les images peuvent avoir une légende qui s'affiche en dessous et un lien.
-				 L'attribut "texte" permet de donner un texte alternatif au cas où l'image ne puisse
-				 pas être affichée -->
-		</annonce>
-	</cadre>
-
-	<cadre id="liens_contacts" titre="Contacts" visible="off">
-		<lien titre="Écrire aux webmasters" lien="mailto:web@frankiz" />
-		<lien titre="Proposer une annonce" lien="/gestion/annonce.php" />
-		<lien titre="Proposer une activité" lien="/gestion/activite.php" />
-		<lien titre="Mise à jour d'un binet" lien="/gestion/majbinet.php" />
-		<lien titre="Demander un mail promo" lien="/gestion/mailpromo.php" />
-		<lien titre="Proposer un sondage" lien="/gestion/sondage.php/" />
-	</cadre>
-	
-	<cadre id="stats" titre="Statistiques">
-		<statistiques>
-			<serveur nom="frankiz" etat="up" uptime="300" />
-				<!-- reste à définir le format de l'attribut "uptime" -->
-			<serveur nom="gwennoz" etat="up" uptime="100" />
-			<serveur nom="heol" etat="down" />
-			<service nom="web frankiz" stat="/stats/xnet.php" />
-				<!-- on pourrait rajouter un attribut etat --> 
-			<service nom="web binets" stat="/stats/web_frankiz.php" />
-			<service nom="news" stat="/stats/web_binets.php" />
-			<service nom="xnet" stat="/stats/xnet.php" />
-			<serveur nom="kuzh" etat="down" />
-			<serveur nom="sil" etat="up" />
-			<serveur nom="poly" etat="up" />
-		</statistiques>
-	</cadre>
-	
-	<cadre id="anniversaires" titre="Anniversaires">
-		<!-- formatage à revoir : ici, on perd la structuration des données et le classement par promo.
-			 on pourrait utiliser la balise "liste" qui sert à l'affichage des résultats de requètes MySQL. -->
-		<p>Arnaud CHOMBIER</p>
-		<p>Coin PAN</p>
-	</cadre>
-
-	<contenu>
-		<annonce titre="Viendez à mon binet" auteur="Moi" date="10 juin">
-			<!-- contenu de l'annonce : peut-être n'importe quoi. -->
-			<image source="/data/annonce234.jpg" texte="Viendez à mon binet" />
-			<p>C'est le plus beau !</p>
-		</annonce>
-	</contenu>
-	
-	<cadre id="qdj" titre="QDJ">
-		<qdj action="/accueil/qdj.php?id=308&amp;reponse=">
-				<!-- pas d'attribut "action" si l'utilisateur à déjà voté. l'url de réponse est
-					 "action + id de la réponse"-->
-			<question>Frankiz II, c'est</question>
-			<reponse id="1">Super bien</reponse>
-				<!-- attribut "votes" en plus indiquant le nombre de vote pour cette réponse si
-					 l'utilisateur à déjà voté -->
-			<reponse id="2">Un projet sans fin</reponse>
-			<dernier ordre="201">Arnaud Chombier</dernier>
-			<dernier ordre="200">Blah</dernier>
-			<dernier ordre="199">Lui</dernier>
-		</qdj>
-	</cadre>
-
-	<cadre id="qdj_hier" titre="QDJ d'hier">
-		<qdj>
-			<question>Le BR, c'est des geeks qui</question>
-			<reponse id="1" votes="217">pensent qu'à eux</reponse>
-			<reponse id="2" votes="20">bossent en continu pour nous</reponse>
-			<dernier ordre="237">Arnaud Chombier</dernier>
-			<dernier ordre="236">Blah</dernier>
-			<dernier ordre="235">Lui</dernier>
-		</qdj>
-	</cadre>
-	
-	<cadre id="liens_ecole" titre="Liens école">
-		<lien titre="La Kes" lien="http://binets/kes/" />
-		<lien titre="Aide aux binets" lien="http://binets/kes-binets/" />
-		<lien titre="Le site des élèves" lien="http://www.polytechnique.fr/eleves/" />
-		<lien titre="Redirection des mails" lien="http://poly.polytechnique.fr/" />
-		<lien titre="Corrige ton poly" lien="http://binets/corrigepoly/" />
-		<lien titre="Site de l'école" lien="http://www.polytechnique.fr/" />
-		<lien titre="Site de la DE" lien="http://www.edu.polytechnique.fr/" />
-		<lien titre="Bureau des effectifs" lien="http://intranet-effectifs.polytechnique.fr/" />
-		<lien titre="Intranet" lien="http://intranet.polytechnique.fr/" />
-		<lien titre="Polytechnique.org" lien="http://www.polytechnique.org/" />
-		<lien titre="Les photos" lien="http://www.polytechnique.fr/eleves/binets/photo/photos/photos.htm" />
-	</cadre>
 </page>
 
 <page id="faq" titre="Frankiz : FAQ" css="frankiz.css">
-	<contenu>
-		<h1>Foire aux questions</h1>
-		<arbre id="faq">
-			<!-- utilisable aussi pour les pages xshare ou n'importe quelle liste de liens arborescente -->
-			<noeud titre="Section1" lien="/faq/?sec=1">
-				<noeud titre="Sous-section1" lien="/faq/?ssec=1">
-					<feuille titre="Question 26" lien="/faq/?q=26" />
-					<feuille titre="Question 18" lien="/faq/?q=18" />
-					<feuille titre="Question 52" lien="/faq/?q=52" />
-				</noeud>
+	<h1>Foire aux questions</h1>
+	<arbre id="faq">
+		<!-- utilisable aussi pour les pages xshare ou n'importe quelle liste de liens arborescente -->
+		<noeud titre="Section1" lien="/faq/?sec=1">
+			<noeud titre="Sous-section1" lien="/faq/?ssec=1">
+				<feuille titre="Question 26" lien="/faq/?q=26" />
+				<feuille titre="Question 18" lien="/faq/?q=18" />
+				<feuille titre="Question 52" lien="/faq/?q=52" />
 			</noeud>
-		</arbre>
-		<!-- ici, le contenu de la question choisie -->
-	</contenu>
+		</noeud>
+	</arbre>
+	<!-- ici, le contenu de la question choisie -->
 </page>
 
 <page id="trombino" titre="Frankiz : TOL" css="frankiz.css">
-	<contenu>
-		<!-- pour les besoins de l'exemple, j'ai mis les résultats et la boîte de recherche sur la même
-			 page. Il est cependant imaginable de ne jamais afficher les deux en même temps comme c'est
-			 le cas actuellement-->
-		<h1>Recherche sur le Trombino OnLine</h1>
-		<formulaire action="/trombino/chercher.php">
-			<!-- Tous les formulaires envoient leur données en POST, c'est plus beau pour l'utilisateur
-				 et ça complique le hackage. La non-utilisation des balises de bases du html permet
-				 d'avoir un aspect générique de présentation quelle que soit la page et l'imagination de
-				 l'auteur de la page -->
-			<champ titre="nom" id="nom" valeur="" />
-			<champ titre="prénom" id="prenom" valeur="" />
-			<choix titre="sexe" id="sexe" type="popup" valeur="TO7"><option titre="TO7" id="TO7" /><option titre="TOS" id="TOS" /></choix>
-				<!-- permet aussi d'utiliser un type "checkbox" pour gérer les choix multiples -->
-			<bouton titre="Chercher" id="chercher" />
-		</formulaire>
-	</contenu>
+	<!-- pour les besoins de l'exemple, j'ai mis les résultats et la boîte de recherche sur la même
+		 page. Il est cependant imaginable de ne jamais afficher les deux en même temps comme c'est
+		 le cas actuellement-->
+	<h1>Recherche sur le Trombino OnLine</h1>
+	<formulaire action="/trombino/chercher.php">
+		<!-- Tous les formulaires envoient leur données en POST, c'est plus beau pour l'utilisateur
+			 et ça complique le hackage. La non-utilisation des balises de bases du html permet
+			 d'avoir un aspect générique de présentation quelle que soit la page et l'imagination de
+			 l'auteur de la page -->
+		<champ titre="nom" id="nom" valeur="" />
+		<champ titre="prénom" id="prenom" valeur="" />
+		<choix titre="sexe" id="sexe" type="popup" valeur="TO7"><option titre="TO7" id="TO7" /><option titre="TOS" id="TOS" /></choix>
+			<!-- permet aussi d'utiliser un type "checkbox" pour gérer les choix multiples -->
+		<bouton titre="Chercher" id="chercher" />
+	</formulaire>
 </page>
 
 <page id="admin_users" titre="Frankiz : administration des utilisateurs" css="frankiz.css">
-	<contenu>
-		<h1>Liste des utilisateurs</h1>
-		<liste id="users" selectionnable="oui">
-			<entete id="nom" titre="Nom" action="afficher_fiche.php?id="/>
-			<entete id="prenom" titre="Prénom"/>
-			<element id="2956">
-				<colonne id="nom">Bon</colonne>
-				<colonne id="prenom">Jean</colonne>
-			</element>
-		</liste>
-	</contenu>
+	<h1>Liste des utilisateurs</h1>
+	<liste id="users" selectionnable="oui">
+		<entete id="nom" titre="Nom" action="afficher_fiche.php?id="/>
+		<entete id="prenom" titre="Prénom"/>
+		<element id="2956">
+			<colonne id="nom">Bon</colonne>
+			<colonne id="prenom">Jean</colonne>
+		</element>
+	</liste>
 </page>
 
 </frankiz>
