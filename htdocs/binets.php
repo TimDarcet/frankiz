@@ -21,9 +21,12 @@
 	Affichage de la liste des binets ayant un site web.
 
 	$Log$
+	Revision 1.2  2004/12/15 01:31:29  schmurtz
+	bugs
+
 	Revision 1.1  2004/11/11 20:15:19  kikx
 	Deplacemeent du fichier des binets pour que ca erste logique
-
+	
 	Revision 1.12  2004/11/11 19:38:55  kikx
 	Micro bug
 	
@@ -81,7 +84,7 @@ require BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
 		<binet id="<?=$id?>" categorie="<?=$categorie?>" nom="<?=$nom?>">
-			<image source="binets/?image=1&amp;id=<?=$id?>"/>
+			<image source="binets.php?image=1&amp;id=<?=$id?>"/>
 			<description><?=stripslashes($description)?></description>
 			<url><?=$http?></url>
 		</binet>
