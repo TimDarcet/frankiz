@@ -48,10 +48,13 @@
 	</p>
 	</div>
 	<div class="fkz_trombino_section">
-		<img height="84" width="63">
-		<xsl:attribute name="src">skins/pico/default/images/sections/<xsl:value-of select="translate(@section,'ABCDEFGHIJKLMNOPQRSTUVWXYZéè','abcdefghijklmnopqrstuvwxyzee')"/><xsl:value-of select="@promo mod 2"/>.jpg</xsl:attribute>
-		<xsl:attribute name="alt"><xsl:value-of select="@section"/></xsl:attribute>
-		</img>
+		<a>
+			<xsl:attribute name="href"><xsl:text>trombino.php?section=</xsl:text><xsl:value-of select="@section"/></xsl:attribute>
+			<img height="84" width="63">
+			<xsl:attribute name="src">skins/pico/default/images/sections/<xsl:value-of select="translate(@section,'ABCDEFGHIJKLMNOPQRSTUVWXYZéè','abcdefghijklmnopqrstuvwxyzee')"/><xsl:value-of select="@promo mod 2"/>.jpg</xsl:attribute>
+			<xsl:attribute name="alt"><xsl:value-of select="@section"/></xsl:attribute>
+			</img>
+		</a>
 	</div>
 	<div class="fkz_trombino_infos2">
 		<p class="promo">
@@ -66,7 +69,7 @@
 		Binets:
 			<ul>
 			<xsl:for-each select="binet">
-				<li><xsl:value-of select="@nom"/><xsl:text>  </xsl:text><xsl:if test="text()!=''"><em>(<xsl:value-of select="text()"/>)</em></xsl:if></li>
+				<li><a>	<xsl:attribute name="href"><xsl:text>trombino.php?binets=</xsl:text><xsl:value-of select="@nom"/></xsl:attribute><xsl:value-of select="@nom"/></a><xsl:text>  </xsl:text><xsl:if test="text()!=''"><em>(<xsl:value-of select="text()"/>)</em></xsl:if></li>
 			</xsl:for-each>
 			</ul>
 		</xsl:if>
