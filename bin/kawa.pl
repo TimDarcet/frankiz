@@ -10,7 +10,7 @@ use Time::localtime;
 my $dbh = DBI->connect("DBI:mysql:database=frankiz2_tmp:host=localhost","web","kokouije?.",{'RaiseError'=>1});
 
 sub post {
-        local ($serveur) = "localhost";
+        local ($serveur) = "129.104.201.51";
 	local ($ng,$groupe,$type,$name,$subject,$body)= @_;
 	local $nntp = Net::NNTP->new("$serveur") or die "Ne peut pas se connecter au serveur";
 	open (POST, "post.file");
