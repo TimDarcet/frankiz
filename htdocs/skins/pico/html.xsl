@@ -41,28 +41,45 @@
 
 
 <!-- Listes -->
-<xsl:template match="liste">
+<xsl:template match="liste[@selectionnable!='oui']">
+	<xsl:if test="boolean(@titre)">
+		<h2><xsl:value-of select="@titre"/></h2>
+	</xsl:if>
+	<xsl:apply-templates select="commentaire"/>
+	<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
+	<xsl:variable name="nombre_colonnes" select="count(entete)+count(@selectionnable)"/>
+	<div class="liste" cellspacing="0" cellpadding="0">
+		<div>
+			<xsl:apply-templates select="entete"/>
+		</div>
+			<xsl:apply-templates select="element"/>
+	</div>
+</xsl:template>
+
+<xsl:template match="liste[@selectionnable='oui']">
 	<xsl:if test="boolean(@titre)">
 		<h2><xsl:value-of select="@titre"/></h2>
 	</xsl:if>
 	<xsl:apply-templates select="commentaire"/>
 	<form method="post"><xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<xsl:variable name="nombre_colonnes" select="count(entete)+count(@selectionnable)"/>
-		<table class="liste" cellspacing="0" cellpadding="0">
-			<tr>
-				<xsl:if test="@selectionnable='oui'"><td class="entete">&#160;</td></xsl:if>
+		<div class="formulaire" cellspacing="0" cellpadding="0">
+			<div>
+				<xsl:if test="@selectionnable='oui'"><span class="entete">&#160;</span></xsl:if>
 				<xsl:apply-templates select="entete"/>
-			</tr>
+			</div>
 			<xsl:apply-templates select="element"/>
-			<tr><td class="boutons"><xsl:attribute name="colspan"><xsl:value-of select="$nombre_colonnes"/></xsl:attribute>
-				<xsl:apply-templates select="bouton"/>
-			</td></tr>
-		</table>
+			<div>
+				<span class="boutons">
+					<xsl:apply-templates select="bouton"/>
+				</span>
+			</div>
+		</div>
 	</form>
 </xsl:template>
 
 <xsl:template match="liste/entete">
-	<td class="entete">
+	<div class="entete">
 		<xsl:choose><xsl:when test="boolean(@action)">
 			<a><xsl:attribute name="href"><xsl:value-of select="@action"/></xsl:attribute>
 				<xsl:value-of select="@titre"/>
@@ -70,13 +87,13 @@
 		</xsl:when><xsl:otherwise>
 			<xsl:value-of select="@titre"/>
 		</xsl:otherwise></xsl:choose>
-	</td>
+	</div>
 </xsl:template>
 
 <xsl:template match="liste/element">
-	<tr>
+	<div>
 		<xsl:if test="../@selectionnable='oui'">
-			<td class="element">
+			<span class="element">
 				<xsl:choose>
 					<xsl:when test="not(boolean(@selectionnable))">
 						<input type="checkbox">
@@ -90,12 +107,12 @@
 					</xsl:when>
 
 				</xsl:choose>
-			</td>
+			</span>
 		</xsl:if>
 		<xsl:for-each select="colonne">
-			<td class="element"><xsl:apply-templates/></td>
+			<span class="element"><xsl:apply-templates/></span>
 		</xsl:for-each>
-	</tr>
+	</div>
 </xsl:template>
 
 <!-- Arbres -->
