@@ -21,9 +21,12 @@
 	Page qui permet aux admins de modifier une annonce validée
 	
 	$Log$
+	Revision 1.9  2004/12/13 19:36:21  kikx
+	Pour changer exterieur ou non apres la validation de l'annonce (Pour Alban)
+
 	Revision 1.8  2004/12/07 13:10:56  pico
 	Passage du nettoyage en formulaire
-
+	
 	Revision 1.7  2004/12/07 12:06:17  kikx
 	Ben c'est un lien cassé
 	
@@ -73,13 +76,20 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 // On traite les différents cas de figure d'enrigistrement et validation d'annonce :)
 
 // Enregistrer ...
+$DB_valid->query("LOCK TABLE valid_annonces WRITE");
+$DB_valid->query("SET AUTOCOMMIT=0");
 
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
 
 
 	if (($temp[0]=='modif')||($temp[0]=='valid')) {
-		$DB_web->query("UPDATE annonces SET perime='{$_POST['date']}', titre='{$_POST['titre']}', contenu='{$_POST['text']}' WHERE annonce_id='{$temp[1]}'");	
+		if (isset($_REQUEST['ext_auth']))
+			$temp_ext = '1'  ;
+		else 
+			$temp_ext = '0' ;
+
+		$DB_web->query("UPDATE annonces SET perime='{$_POST['date']}', titre='{$_POST['titre']}', contenu='{$_POST['text']}',exterieur=$temp_ext  WHERE annonce_id='{$temp[1]}'");	
 	?>
 		<commentaire>Modif effectuée</commentaire>
 	<?	
@@ -99,7 +109,8 @@ foreach ($_POST AS $keys => $val){
 	<?
 	}
 }
-
+$DB_valid->query("COMMIT");
+$DB_valid->query("UNLOCK TABLES");
 
 //===============================
 
@@ -128,6 +139,10 @@ foreach ($_POST AS $keys => $val){
 			<champ id="titre" titre="Le titre" valeur="<? echo $titre ;?>"/>
 			<zonetext id="text" titre="Le texte"><?=$contenu?></zonetext>
 			<champ id="date" titre="Date de péremption" valeur="<? echo $date ;?>"/>
+			<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if ($ext==1) echo "ext_auth" ?>">
+				<option id="ext_auth" titre="Décision du Webmestre"/>
+			</choix>
+
 			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
 			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Si vous supprimer cette annonce, celle-ci sera supprimé de façon definitive ... Voulez vous vraiment la supprimer ?')"/>
 		</formulaire>
