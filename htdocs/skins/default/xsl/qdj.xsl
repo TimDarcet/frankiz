@@ -53,35 +53,38 @@
 			<ul class="reponse_qdj">
 				<li>
 					<div class="col">
+						<span class="blanc"><xsl:attribute name="style">height:<xsl:value-of select="round(100-((qdj/reponse[@id='1']/@votes * 100) div sum(qdj/reponse/@votes)))" />%;</xsl:attribute><xsl:text> </xsl:text></span>
 						<span class="rouje"><xsl:attribute name="style">height:<xsl:value-of select="round((qdj/reponse[@id='1']/@votes * 100) div sum(qdj/reponse/@votes))" />%;</xsl:attribute><xsl:text> </xsl:text></span><br/>
 					</div>
-					<span class="reponse">
+					<div class="reponse">
 						<strong><xsl:value-of select="qdj/reponse[@id='1']" /></strong>
 						<br/>
 						<xsl:value-of select="qdj/reponse[@id='1']/@votes"/> soit <xsl:value-of select="round((qdj/reponse[@id='1']/@votes * 100) div sum(qdj/reponse/@votes))"/>%<br/>
-					</span>
+					</div>
 				</li>
 				<li>
 					<div class="col">
+						<span class="blanc"><xsl:attribute name="style">height:<xsl:value-of select="round(100-((qdj/reponse[@id='2']/@votes * 100) div sum(qdj/reponse/@votes)))" />%;</xsl:attribute><xsl:text> </xsl:text></span>
 						<span class="jone"><xsl:attribute name="style">height:<xsl:value-of select="round((qdj/reponse[@id='2']/@votes * 100) div sum(qdj/reponse/@votes))" />%;</xsl:attribute><xsl:text> </xsl:text></span><br/>
 					</div>
-					<span class="reponse">
+					<div class="reponse">
 						<strong><xsl:value-of select="qdj/reponse[@id='2']" /></strong>
 						<br/>
 						<xsl:value-of select="qdj/reponse[@id='2']/@votes"/> soit <xsl:value-of select="round((qdj/reponse[@id='2']/@votes * 100) div sum(qdj/reponse/@votes))"/>%<br/>
-					</span>
+					</div>
 				</li>
-			</ul>	
+			</ul>
 		</xsl:otherwise>
 		</xsl:choose>
 		<br/>
 		<xsl:if test="count(qdj/dernier)">
-			<div>Derniers à répondre :</div>
+			<div>Derniers à répondre :
 			<ul class="liste">
-			<xsl:for-each select="qdj/dernier[position()&lt;=5]">
+			<xsl:for-each select="qdj/dernier[position()&lt;=4]">
 				<li class="fkz_qdj_last"><xsl:value-of select="@ordre"/>. <xsl:value-of select="eleve/@surnom"/></li>
 			</xsl:for-each>
 			</ul>
+			</div>
 		</xsl:if>
 		</dd>
 		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>

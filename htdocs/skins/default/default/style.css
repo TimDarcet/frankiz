@@ -269,12 +269,10 @@ p {
 	text-align: justify ;
 }
 
-p.news
-{
+p.news {
 	text-indent: 2em ;
-	line-height: 1.7em ;
 }
-p.news:first-letter{
+p.news:first-letter {
 	font-size:1.3em;
 	font-weight:bold;
 }
@@ -387,21 +385,17 @@ dd.element p.binets{
 	margin: 5px 100px 0 100px;
 	padding:0 5px;
 }
-
 form.cadretol input{
 	width:85px;
 	margin:0 auto;
 }
-
 form.trombino { 
 	padding:20px 0px;
 }
-
 form.trombino div{
 	text-align:center;
 	padding:7px;
 }
-
 form.trombino div table {
 	width:60%;
 	border: dashed 1px silver;
@@ -449,7 +443,6 @@ dt.quand {
 dd.prevision {
 	padding-left:20px;
 }
-
 dd.prevision span {
 	float: left;
 	width:135px;
@@ -457,7 +450,6 @@ dd.prevision span {
 }
 
 /* ----------- Binets ------------*/
-
 
 dl.binets {
 	margin:0px 30px 3px 30px;
@@ -503,7 +495,7 @@ dl#qdj ul.qdj li a{
 dl#qdj ul.qdj li span{
 	display:block;
 	height:45px;
-	width:90%;
+	width:100%;
 }
 
 dl#qdj ul.qdj li span.rouje {
@@ -518,11 +510,18 @@ dl#qdj ul.reponse_qdj li {
 	float:left;
 	text-align:center;
 	height:100px;
-	width:45%;	
+	width:47%;
 }
 
+dl#qdj ul.reponse_qdj li div.col {
+	display:block;
+	height:50px;
+}
 dl#qdj ul.reponse_qdj li div.col span {
 	display:block;
+	height:5px;
+}
+dl#qdj ul.reponse_qdj li div.reponse {
 	height:50px;
 }
 dl#qdj ul.reponse_qdj li div.col span.jone {
@@ -538,11 +537,37 @@ dl#qdj ul.reponse_qdj li span.reponse {
 /* ---------- Xshare et FAQ --------- */
 
 div#recherchearbre {
-	float:right;
+	position:absolute;
+	top:200px;
+	right:250px;
+	background-color:white;
 	width:200px;
 }
 
+/* -------- Sommaires page d'annonce ----------*/
+dl#annonces_sommaire div.sommaire {
+	margin:0 auto;
+	width:100%;
+}
 
+dl#annonces_sommaire  p.center {
+	display:block;
+	position:relative;
+}
+
+dl#annonces_sommaire ul li{
+	float:left;
+	width:48%;
+	margin:0 1%;
+	height:18px;
+	padding:1px 0;
+}
+dl#annonces_sommaire ul li.gauche{
+	text-align:right;
+}
+dl#annonces_sommaire ul li.droite{
+	text-align:left;
+}
 /* ################# MENU/LISTE ####################*/
 
 ul#menu, ul#ecole, ul#contacts,ul.none, ul#services, ul#serveurs,ul{
@@ -737,85 +762,6 @@ ul#menu li#siteseleves a:hover
 	background: url('./images/siteseleves.png') no-repeat 0 0 ;
 }
 
-/* ###############" BARRE DE NAVIGATION "######################*/
-
-ul#barre_nav
-{
-	list-style: none;
-	position:absolute;
-	top:0px;
-	left:0px;
-}
-
-#barre_nav ul
-{ 
-	list-style: none;
-	width:12em;
-	z-index:99;
-	position:relative;
-	overflow:visible;  
-}
-
-#barre_nav li
-{   
-	position: relative; 
-	float:left;
-	width: 12em;
-	background-color:#DFDFDF;
-	border:solid 1px #CECECE;
-	border-bottom:none;
-	display:block;
-	height:auto;
-}
- 
-#barre_nav a 
-{
-	text-decoration:none; 
-	display:block;
-	padding: 0.1em;  
-	margin:0.2em 0 0.2em 0.1em; 
-	background-color:#DFDFDF;
-	width:11.5em; 
-	height:1em;
-}
-
-#barre_nav a:hover
-{
-	background-color:#0099CC; 
-	color:#FFFFFF;
-	background-image:none;
-}
-
-#barre_nav ul
-{
-	display:none;   
-}
-
-
-#barre_nav ul ul, #barre_nav ul ul ul
-{
-	display:none; 
-	position:absolute; 
-	margin-top:-1.8em; 
-	margin-left:12em;
-}
-
-
-#barre_nav ul li>ul, #barre_nav ul ul li>ul{
-	margin-top:-1.4em; 
-}
-
-#barre_nav li:hover ul ul, #barre_nav li:hover ul ul ul
-{
-	display:none; 
-}
-
-#barre_nav li:hover ul, #barre_nav ul li:hover ul, #barre_nav ul ul li:hover ul
-{
-	display:block;
-}
-
-
 
 /* ################## FORMULAIRE ################ */
 
@@ -922,7 +868,7 @@ dl.boite h3, dl.boite h2 {
 }
 
 .center {
-	margin:0 auto;
+	text-align:center;
 }
 .clear {
 	clear:left;

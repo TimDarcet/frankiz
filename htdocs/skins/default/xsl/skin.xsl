@@ -23,10 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.7  2004/12/14 14:40:56  psycow
+	Modification de la qdj et du sommaire de la page annonces, suite des test IE
+
 	Revision 1.6  2004/12/14 01:34:14  psycow
 	Gestion IE, modifications diverses de compatibilité
-	CV: ----------------------------------------------------------------------
-
+		
 	Revision 1.5  2004/12/10 03:04:31  psycow
 	Resolution du probleme des boites sous Firefox, reste un probleme sur le positionnement des formulaires dans les boites...
 	
@@ -80,7 +82,7 @@
 <xsl:include href="stats.xsl"/>
 <xsl:include href="activites.xsl"/>
 <xsl:include href="tol.xsl"/>
-<!-- <xsl:include href="faq_xshare.xsl"/> -->
+<xsl:include href="faq_xshare.xsl"/>
 
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -125,7 +127,7 @@
 				<xsl:apply-templates select="module[@id='liens_contacts']"/>
 				<xsl:apply-templates select="module[@id='liens_ecole']"/>
 				<xsl:apply-templates select="module[@id='stats']"/>
-				<xsl:apply-templates select="module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id!='activites' and @id!='liens_navigation' and @id!='liens_perso' and @id!='anniversaires' and @id!='liste_css' and @id!='lien_tol']"/>
+				<xsl:apply-templates select="module[@visible!='false' and @id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id!='activites' and @id!='liens_navigation' and @id!='liens_perso' and @id!='anniversaires' and @id!='liste_css' and @id!='lien_tol']"/>
 			</div><!--fin #droite -->
 			
 			<div id="centre">
@@ -157,7 +159,7 @@
 </xsl:template>
 
 
-<xsl:template match="page[@id!='annonces' and @id!='trombino' and @id!='binets' and @id!='meteo' and @id!='vocabulaire' and @id!='faq' and @id!='xshare']">
+<xsl:template match="page[@id!='annonces' and @id!='trombino' and @id!='binets' and @id!='meteo' and @id!='vocabulaire' ]"><!--and @id!='faq' and @id!='xshare'-->
 	<dl class="boite">
 		<dt class="titre">
 			<span class="droitehaut"><xsl:text> </xsl:text></span>

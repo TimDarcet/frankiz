@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.9  2004/12/14 14:40:56  psycow
+	Modification de la qdj et du sommaire de la page annonces, suite des test IE
+
 	Revision 1.8  2004/12/13 21:02:59  pico
 	Voilà !
-
+	
 	Revision 1.7  2004/12/13 20:51:24  pico
 	New balises :)
 	
@@ -83,7 +86,7 @@
 		<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
 		<xsl:attribute name="title"><xsl:value-of select="@titre"/></xsl:attribute>
 		<span><xsl:value-of select="@titre"/><xsl:apply-templates/></span>
-	</a><br/>
+	</a>
 </xsl:template>
 
 
@@ -208,7 +211,7 @@
 
 <!-- Formatage HTML -->
 <xsl:template match="p">
-	<xsl:apply-templates/><br />
+	<xsl:apply-templates/>
 </xsl:template>
 <xsl:template match="ul">
 	<ul><xsl:apply-templates/></ul>

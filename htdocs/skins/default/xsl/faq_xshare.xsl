@@ -47,8 +47,12 @@
 			</div>
 			
 		</dd>
+		<dd class="contenu">
+			
+		</dd>
 		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>
+	
 </xsl:template>
 
 </xsl:stylesheet>
