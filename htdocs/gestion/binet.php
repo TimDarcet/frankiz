@@ -7,9 +7,13 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.1  2004/10/17 15:22:05  kikx
+	Mise en place d'un repertoire de gestion qui se différencie de admin car ce n'est pas l'admin :)
+	En gros il servira a tout les modification des prez des webmestres , des pages persos, ...
+
 	Revision 1.4  2004/09/15 23:20:18  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 	Revision 1.3  2004/09/15 21:42:27  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
 	
