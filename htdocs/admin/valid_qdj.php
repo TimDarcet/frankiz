@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.12  2004/12/13 16:32:14  kikx
+	Protection de la validation d'une QDJ ...
+
 	Revision 1.11  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-
+	
 	Revision 1.10  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
 	
@@ -72,39 +75,61 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 // On traite les différents cas de figure d'enrigistrement et validation de qdj :)
 
 // Enregistrer ...
+$DB_valid->query("LOCK TABLE valid_qdj WRITE");
+$DB_valid->query("SET AUTOCOMMIT=0");
 
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
 
 
 	if (($temp[0]=='modif')||($temp[0]=='valid')) {
-		$DB_valid->query("UPDATE valid_qdj SET question='{$_POST['question']}', reponse1='{$_POST['reponse1']}', reponse2='{$_POST['reponse2']}' WHERE qdj_id='{$temp[1]}'");
+		$DB_valid->query("SELECT 0 FROM valid_qdj WHERE qdj_id='{$temp[1]}'");
+		if ($DB_valid->num_rows()!=0) {
+
+			$DB_valid->query("UPDATE valid_qdj SET question='{$_POST['question']}', reponse1='{$_POST['reponse1']}', reponse2='{$_POST['reponse2']}' WHERE qdj_id='{$temp[1]}'");
+		?>
+			<commentaire>Modif effectuée</commentaire>
+		<?
+		} else {
 	?>
-		<commentaire>Modif effectuée</commentaire>
+			<warning>Requête deja traitée par un autre administrateur</warning>
 	<?
+		}
 	}
 	
 	if ($temp[0]=='valid') {
 		$DB_valid->query("SELECT eleve_id FROM valid_qdj WHERE qdj_id='{$temp[1]}'");
-		list($eleve_id) = $DB_valid->next_row() ;
+		if ($DB_valid->num_rows()!=0) {
+
+			list($eleve_id) = $DB_valid->next_row() ;
+				
+			$DB_web->query("INSERT INTO qdj SET question='{$_POST['question']}', reponse1='{$_POST['reponse1']}', reponse2='{$_POST['reponse2']}'");
 			
-		$DB_web->query("INSERT INTO qdj SET question='{$_POST['question']}', reponse1='{$_POST['reponse1']}', reponse2='{$_POST['reponse2']}'");
-		
-		$DB_valid->query("DELETE FROM valid_qdj WHERE qdj_id='{$temp[1]}'") ;
-	?>
-		<commentaire>Validation effectuée</commentaire>
-	<?	
+			$DB_valid->query("DELETE FROM valid_qdj WHERE qdj_id='{$temp[1]}'") ;
+		?>
+			<commentaire>Validation effectuée</commentaire>
+		<?
+		}
 	}
 	if ($temp[0]=='suppr') {
 		$DB_valid->query("SELECT eleve_id FROM valid_qdj WHERE qdj_id='{$temp[1]}'");
-		list($eleve_id) = $DB_valid->next_row() ;
-		$DB_valid->query("DELETE FROM valid_qdj WHERE qdj_id='{$temp[1]}'") ;
+		if ($DB_valid->num_rows()!=0) {
+	
+			list($eleve_id) = $DB_valid->next_row() ;
+			$DB_valid->query("DELETE FROM valid_qdj WHERE qdj_id='{$temp[1]}'") ;
+		?>
+			<warning>Suppression d'une qdj</warning>
+		<?
+		} else {
 	?>
-		<warning>Suppression d'une qdj</warning>
+			<warning>Requête deja traitée par un autre administrateur</warning>
 	<?
+		}
+
 	}
 }
-
+$DB_valid->query("COMMIT");
+$DB_valid->query("UNLOCK TABLES");
 //===============================
 ?>
 
