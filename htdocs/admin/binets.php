@@ -22,8 +22,8 @@ if(isset($_POST['supprimer'])) {
 		foreach($_POST['elements'] as $id => $on)
 			if($on='on') $ids .= (empty($ids) ? "" : ",") . "'$id'";
 		
-		$DB_web->query("DELETE FROM binets WHERE binet_id IN ($ids)");
-		$DB_web->query("DELETE FROM membres WHERE binet_id IN ($ids)");
+		$DB_trombino->query("DELETE FROM binets WHERE binet_id IN ($ids)");
+		$DB_trombino->query("DELETE FROM membres WHERE binet_id IN ($ids)");
 		
 		$message = "<p>".count($_POST['elements'])." binets viennent d'être supprimés avec succés.</p>\n";
 	} else {
@@ -34,7 +34,7 @@ if(isset($_POST['supprimer'])) {
 // Gestion de la création
 if(isset($_POST['nouveau'])) {
 	if(!empty($_POST['nom'])) {
-		$DB_web->query("INSERT binets SET nom='".$_POST['nom']."'");
+		$DB_trombino->query("INSERT binets SET nom='".$_POST['nom']."'");
 		$message = "<p>Le binet ".$_POST['nom']." vient d'être créé.</p>\n";
 	} else {
 		ajoute_erreur(ERR_TROP_COURT);
@@ -58,8 +58,8 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<entete id="nom" titre="Nom"/>
 		<entete id="description" titre="Description"/>
 <?php
-		$DB_web->query("SELECT nom,description,binet_id FROM binets ORDER BY nom ASC");
-		while(list($nom,$desc,$id) = $DB_web->next_row()) {
+		$DB_trombino->query("SELECT nom,description,binet_id FROM binets ORDER BY nom ASC");
+		while(list($nom,$desc,$id) = $DB_trombino->next_row()) {
 			echo "\t\t<element id=\"$id\">\n";
 			echo "\t\t\t<colonne id=\"nom\">$nom</colonne>\n";
 			echo "\t\t\t<colonne id=\"description\">$desc</colonne>\n";

@@ -8,10 +8,10 @@ require "../include/global.inc.php";
 $mail_envoye = false;
 
 if(!empty($_REQUEST['loginpoly'])) {
-	$DB_web->query("SELECT eleve_id,login,prenom,nom,promo,mail FROM eleves "
+	$DB_trombino->query("SELECT eleve_id,login,prenom,nom,promo,mail FROM eleves "
 						   ."WHERE login='".$_REQUEST['loginpoly']."' ORDER BY promo DESC LIMIT 1");
-	if($DB_web->num_rows() == 1) {
-		list($id,$login,$prenom,$nom,$promo,$mail) = $DB_web->next_row();
+	if($DB_trombino->num_rows() == 1) {
+		list($id,$login,$prenom,$nom,$promo,$mail) = $DB_trombino->next_row();
 		$hash = nouveau_hash();
 		
 		// Si le compte existe déjà on met à jour le hash, sinon on crée le compte

@@ -52,7 +52,7 @@ if (isset($_POST['mod_generale'])) {
 	$promo = $_POST['promo'];
 	$login = $_POST['login'];
 	$mail = $_POST['mail'];
-	$DB_web->query("UPDATE eleves SET nom='$nom', prenom='$prenom', surnom='$surnom', date_nais='$date_nais', sexe='$sexe', piece_id='$piece_id', section_id='$section_id', cie='$cie', promo='$promo', login='$login', mail='$mail' WHERE eleve_id=$id ");
+	$DB_trombino->query("UPDATE eleves SET nom='$nom', prenom='$prenom', surnom='$surnom', date_nais='$date_nais', sexe='$sexe', piece_id='$piece_id', section_id='$section_id', cie='$cie', promo='$promo', login='$login', mail='$mail' WHERE eleve_id=$id ");
 	
 	echo "Modification de la partie générale faite avec succès" ;
 }
@@ -66,7 +66,7 @@ if (isset($_POST['mod_binet'])) {
 		if ($key == "mod_binet") break ;
 		$key = explode("_",$key) ;
 		$key = $key[1] ;
-		$DB_web->query("UPDATE membres SET remarque='$val' WHERE eleve_id=$id AND binet_id=$key");
+		$DB_trombino->query("UPDATE membres SET remarque='$val' WHERE eleve_id=$id AND binet_id=$key");
  	}
 	echo "Modification de la partie binets faite avec succès" ;
 }
@@ -81,16 +81,16 @@ if (isset($_POST['mod_compte_fkz'])) {
 	}
 	$perms = $_POST['perms'] ;
 	$DB_web->query("UPDATE compte_frankiz SET perms='$perms' WHERE eleve_id=$id");
-
-	echo "Modification de la partie Compte FrankizII faite avec succès" ;
+	
+	echo "Modification de la partie Compte Frankiz faite avec succès" ;
 }
 
 // Modification de ses variables génériques
 ?>
 	<formulaire id="user_general" titre="Général" action="admin/user.php?id=<? echo $id?>">
 <?
-		$DB_web->query("SELECT nom,prenom,surnom,date_nais,sexe,piece_id,section_id,cie,promo,login,mail FROM eleves WHERE eleve_id=$id ORDER BY nom ASC");
-		list($nom,$prenom,$surnom,$date_nais,$sexe,$piece_id,$section,$cie,$promo,$login,$mail) = $DB_web->next_row() ;
+		$DB_trombino->query("SELECT nom,prenom,surnom,date_nais,sexe,piece_id,section_id,cie,promo,login,mail FROM eleves WHERE eleve_id=$id ORDER BY nom ASC");
+		list($nom,$prenom,$surnom,$date_nais,$sexe,$piece_id,$section,$cie,$promo,$login,$mail) = $DB_trombino->next_row() ;
 ?>
 		<champ id="nom" titre="Nom" valeur="<? echo $nom?>"/>
 		<champ id='prenom' titre='Prénom' valeur='<? echo $prenom?>'/>
@@ -112,8 +112,8 @@ if (isset($_POST['mod_compte_fkz'])) {
 ?>
 	<formulaire id="user_binets" titre="Ses binets" action="admin/user.php?id=<? echo $id?>">
 <?
-		$DB_web->query("SELECT membres.remarque,membres.binet_id,binets.nom FROM membres INNER JOIN binets ON membres.binet_id=binets.binet_id WHERE eleve_id=$id ORDER BY membres.binet_id ASC");
-		while (list($remarque,$binet_id,$nom) = $DB_web->next_row()) { ?>
+		$DB_trombino->query("SELECT membres.remarque,membres.binet_id,binets.nom FROM membres INNER JOIN binets ON membres.binet_id=binets.binet_id WHERE eleve_id=$id ORDER BY membres.binet_id ASC");
+		while (list($remarque,$binet_id,$nom) = $DB_trombino->next_row()) { ?>
 			<champ id="binet_<? echo $binet_id?>" titre="<? echo $nom?>" valeur="<? echo $remarque?>"/>
 <?
 		 }

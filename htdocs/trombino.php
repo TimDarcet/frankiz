@@ -51,15 +51,15 @@ if(isset($_REQUEST['chercher'])) {
 		echo "<page id='trombino' titre='Frankiz : Trombino'>\n";
 		
 		
-		$DB_web->query("SELECT $champs FROM eleves $join WHERE $where");
-		while(list($eleve_id,$nom,$prenom,$surnom,$piece_id,$section,$section_id,$cie,$promo,$login,$mail,$tel) = $DB_web->next_row()) {
+		$DB_trombino->query("SELECT $champs FROM eleves $join WHERE $where");
+		while(list($eleve_id,$nom,$prenom,$surnom,$piece_id,$section,$section_id,$cie,$promo,$login,$mail,$tel) = $DB_trombino->next_row()) {
 			echo "<eleve nom='$nom' prenom='$prenom' promo='$promo' login='$login' surnom='$surnom' "
 				."tel='$tel' mail='".(empty($mail)?"$login@poly.polytechnique.fr":$mail)."' casert='$piece_id' "
 				."section='$section' cie='$cie'>\n";
 			
-			$DB_web->query("SELECT remarque,nom,membres.binet_id FROM membres "
+			$DB_trombino->query("SELECT remarque,nom,membres.binet_id FROM membres "
 									 ."LEFT JOIN binets USING(binet_id) WHERE eleve_id='$eleve_id'");
-			while(list($remarque,$binet_nom,$binet_id) = $DB_web->next_row())
+			while(list($remarque,$binet_nom,$binet_id) = $DB_trombino->next_row())
 				echo "<binet nom='".afficher_identifiant($binet_nom)."' id='$binet_id'>".afficher_identifiant($remarque)."</binet>\n";
 			
 			echo "</eleve>\n";
@@ -97,8 +97,8 @@ require "../include/page_header.inc.php";
 		<choix titre="Section" id="section" type="combo" valeur="">
 			<option titre="Toutes" id=""/>
 <?php
-			$DB_web->query("SELECT section_id,nom FROM sections ORDER BY nom ASC");
-			while( list($section_id,$section_nom) = $DB_web->next_row() )
+			$DB_trombino->query("SELECT section_id,nom FROM sections ORDER BY nom ASC");
+			while( list($section_id,$section_nom) = $DB_trombino->next_row() )
 				echo "\t\t\t<option titre=\"$section_nom\" id=\"$section_id\"/>\n";
 ?>
 		</choix>
@@ -106,8 +106,8 @@ require "../include/page_header.inc.php";
 		<choix titre="Binet" id="binet" type="combo" valeur="">
 			<option titre="Tous" id=""/>
 <?php
-			$DB_web->query("SELECT binet_id,nom FROM binets ORDER BY nom ASC");
-			while( list($binet_id,$binet_nom) = $DB_web->next_row() )
+			$DB_trombino->query("SELECT binet_id,nom FROM binets ORDER BY nom ASC");
+			while( list($binet_id,$binet_nom) = $DB_trombino->next_row() )
 				echo "\t\t\t<option titre=\"$binet_nom\" id=\"$binet_id\"/>\n";
 ?>
 		</choix>

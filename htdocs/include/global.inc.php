@@ -1,8 +1,8 @@
 <?php
 /*
-	Fichier de définition de variables et constantes utiles dans tout le projet.
-	
 	$Id$
+
+	Fichier de définition de variables et constantes utiles dans tout le projet.
 */
 
 require_once "erreursphp.inc.php";
@@ -30,8 +30,9 @@ define('ERR_SELECTION_VIDE',$i++);
 
 // Connexions aux bases mysql
 require_once "mysql.inc.php";
-$DB_web = new DB(false,"frankiz","frankiz2_tmp","web","kokouije?.");
-//$DB_admin = new DB(false,"frankiz","admin","admin","??????");
+$DB_web = new DB("frankiz","frankiz2_tmp","web","kokouije?.");
+$DB_admin = new DB("frankiz","admin","web","kokouije?.");
+$DB_trombino = new DB("frankiz","trombino","web","kokouije?.");
 
 // divers fichiers inclus
 require_once "global_func.inc.php";

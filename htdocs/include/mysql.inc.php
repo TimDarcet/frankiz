@@ -17,14 +17,11 @@ class DB {
 	/*
 		Création d'une connexion à une base MySQL
 	*/
-	function DB($persistent,$host,$base,$user,$pass) {
+	function DB($host,$base,$user,$pass) {
 		global $_ERREURS_PHPMYSQL;
-		if($persistent)
-			$this->link = mysql_pconnect($host,$user,$pass);
-		else
-			$this->link = mysql_connect($host,$user,$pass);
+		$this->link = mysql_connect($host,$user,$pass/*,true*/);	// PHP 4.2.0 seulement
 		
-		if($this->link)
+		if(mysql_errno() == 0)
 			mysql_select_db($base) || ajouter_erreur_mysql("USE $base");
 		else
 			ajouter_erreur_mysql("CONNECT $user@$host");
@@ -45,12 +42,13 @@ class DB {
 	function query($query) {
 		if($this->result)
 			mysql_free_result($this->result);
+		mysql_select_db($this->base); // TODO à changer, très moche (maj PHP > 4.2.0 par exemple)
 		$this->result = mysql_query($query,$this->link);
 		
 		if(is_bool($this->result) && $this->result)
 			$this->result = false;
 		
-		if(!$this->result)
+		if(mysql_errno() != 0)
 			ajouter_erreur_mysql($query);
 	}
 	

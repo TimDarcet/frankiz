@@ -15,8 +15,8 @@ $message_succes="";
 
 
 // Données sur l'utilisateur
-$DB_web->query("SELECT eleves.nom,prenom,surnom,mail,login,promo,sections.nom,cie,piece_id FROM eleves INNER JOIN sections USING(section_id) WHERE eleve_id='".$_SESSION['user']->uid."'");
-list($nom,$prenom,$surnom,$mail,$login,$promo,$section,$cie,$casert) = $DB_web->next_row();
+$DB_trombino->query("SELECT eleves.nom,prenom,surnom,mail,login,promo,sections.nom,cie,piece_id FROM eleves INNER JOIN sections USING(section_id) WHERE eleve_id='".$_SESSION['user']->uid."'");
+list($nom,$prenom,$surnom,$mail,$login,$promo,$section,$cie,$casert) = $DB_trombino->next_row();
 
 // Modification du mot de passe
 if(isset($_POST['changer_mdp'])) {
@@ -59,7 +59,7 @@ if(isset($_POST['changer_mdp'])) {
 	if(aucune_erreur()) {
 		$surnom = $_POST['surnom'];
 		$mail = $_POST['email'];
-		$DB_web->query("UPDATE eleves SET surnom='$surnom',mail=".(empty($mail)?"NULL":"'$mail'")." WHERE eleve_id='".$_SESSION['user']->uid."'");
+		$DB_trombino->query("UPDATE eleves SET surnom='$surnom',mail=".(empty($mail)?"NULL":"'$mail'")." WHERE eleve_id='".$_SESSION['user']->uid."'");
 		$message_succes="L'email et le surnom ont été modifié.";
 	}
 }

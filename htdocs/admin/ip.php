@@ -75,7 +75,7 @@ if (isset($_POST['recherche']) ) {
 
 	$query2 = "SELECT eleves.login, eleves.promo, ip_chambre_theory.prise_id, ip_chambre_theory.piece_id, ip_chambre_theory.ip_theorique FROM eleves RIGHT JOIN ip_chambre_theory USING(piece_id) $where ORDER BY ip_theorique ASC" ;
 
-	$DB_web->query($query2);
+	$DB_admin->query($query2);
 
 ?>
 
@@ -88,7 +88,7 @@ if (isset($_POST['recherche']) ) {
 <?php
 		
 		$temp_piece = "" ;
-		while(list($login,$promo, $id_prise,$id_piece,$ip_theorique) = $DB_web->next_row()) {
+		while(list($login,$promo, $id_prise,$id_piece,$ip_theorique) = $DB_admin->next_row()) {
 			echo "\t\t<element id=\"$id_prise\">\n";
 
 			$login2 ="" ;

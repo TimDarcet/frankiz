@@ -11,8 +11,8 @@
 require_once "../include/global.inc.php";
 demande_authentification(AUTH_FORT);
 
-$DB_web->query("SELECT ip_chambre_theory.piece_id,ip_chambre_theory.prise_id,ip_chambre_theory.ip_theorique FROM ip_chambre_theory INNER JOIN eleves USING(piece_id) WHERE eleve_id='".$_SESSION['user']->uid."'");
-list($kzert,$prise,$ip) = $DB_web->next_row();
+$DB_admin->query("SELECT ip_chambre_theory.piece_id,ip_chambre_theory.prise_id,ip_chambre_theory.ip_theorique FROM ip_chambre_theory INNER JOIN eleves USING(piece_id) WHERE eleve_id='".$_SESSION['user']->uid."'");
+list($kzert,$prise,$ip) = $DB_admin->next_row();
 
 // Génération du la page XML
 require "../include/page_header.inc.php";
@@ -29,12 +29,12 @@ require "../include/page_header.inc.php";
 
 	<note>Si tu souhaite une nouvelle ip clique <lien titre='ici' url='profil/demande_ip.php'/>
 <?
-		$DB_web->query("SELECT ip_enplus FROM ip_ajout WHERE eleve_id='".$_SESSION['user']->uid."'");
-		if ($DB_web->num_rows()>0) {
+		$DB_admin->query("SELECT ip_enplus FROM ip_ajout WHERE eleve_id='".$_SESSION['user']->uid."'");
+		if ($DB_admin->num_rows()>0) {
 			echo "<p>&nbsp;</p><p>Tu as en plus fait rajouter ces ips à tes ip autorisées :</p>" ;
 			
 			$bool_ip = true ;
-			while(list($ip_enplus) = $DB_web->next_row()) { 
+			while(list($ip_enplus) = $DB_admin->next_row()) { 
 				echo "<p>$ip_enplus</p>" ;
 				$bool_ip = $bool_ip&&($ip_enplus!=$_SERVER['REMOTE_ADDR']) ;
 			}

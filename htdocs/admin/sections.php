@@ -29,7 +29,7 @@ if(isset($_POST['existe']) || isset($_POST['existeplus'])) {
 		foreach($_POST['elements'] as $id => $on)
 			if($on='on') $ids .= (empty($ids) ? "" : ",") . "'$id'";
 		
-		$DB_web->query("UPDATE sections SET existe='$section_existe' WHERE section_id IN ($ids)");
+		$DB_trombino->query("UPDATE sections SET existe='$section_existe' WHERE section_id IN ($ids)");
 		
 		$message = "<p>".count($_POST['elements'])." sections viennent d'être marquées comme disparues avec succés.</p>\n";
 	} else {
@@ -40,7 +40,7 @@ if(isset($_POST['existe']) || isset($_POST['existeplus'])) {
 // Gestion de la création
 if(isset($_POST['nouvelle'])) {
 	if(!empty($_POST['nom'])) {
-		$DB_web->query("INSERT sections SET nom='".$_POST['nom']."'");
+		$DB_trombino->query("INSERT sections SET nom='".$_POST['nom']."'");
 		$message = "<p>La section ".$_POST['nom']." vient d'être créée.</p>\n";
 	} else {
 		ajoute_erreur(ERR_TROP_COURT);
@@ -50,7 +50,7 @@ if(isset($_POST['nouvelle'])) {
 // Modification du nom
 if(isset($_POST['maj'])) {
 	foreach($_POST['maj'] as $id => $val)
-		$DB_web->query("UPDATE sections SET nom='{$_POST['nom'][$id]}' WHERE section_id='$id'");
+		$DB_trombino->query("UPDATE sections SET nom='{$_POST['nom'][$id]}' WHERE section_id='$id'");
 	
 	$message = "<p>Le nom de la section a été modifié avec succés.</p>\n";
 }
@@ -72,8 +72,8 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<entete id="nom" titre="Nom"/>
 		<entete id="existe" titre="État"/>
 <?php
-		$DB_web->query("SELECT nom,existe,section_id FROM sections ORDER BY nom ASC, existe DESC");
-		while(list($nom,$existe,$id) = $DB_web->next_row()) {
+		$DB_trombino->query("SELECT nom,existe,section_id FROM sections ORDER BY nom ASC, existe DESC");
+		while(list($nom,$existe,$id) = $DB_trombino->next_row()) {
 			echo "\t\t<element id=\"$id\">\n";
 			echo "\t\t\t<colonne id=\"nom\"><champ id=\"nom[$id]\" valeur=\"$nom\"/><bouton titre=\"Mise à jour\" id=\"maj[$id]\"/></colonne>\n";
 			echo "\t\t\t<colonne id=\"existe\">".($existe?"existante":"disparue")."</colonne>\n";

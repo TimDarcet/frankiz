@@ -15,7 +15,7 @@ echo "<page id='accueil' titre='Frankiz : accueil'>\n";
 
 
 $DB_web->query("SELECT annonce_id,stamp,perime,titre,contenu,en_haut,nom,prenom "
-					 ."FROM annonces LEFT JOIN eleves USING(eleve_id) "
+					 ."FROM annonces LEFT JOIN trombino.eleves USING(eleve_id) "
 					 ."WHERE (perime>=".date("Ymd000000",time())." AND valide=1) ORDER BY perime DESC");
 while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$nom,$prenom)=$DB_web->next_row()) { ?>
 	<annonce titre="<?php echo $titre ?>" 
