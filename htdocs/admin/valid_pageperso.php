@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.13  2005/01/11 13:41:27  pico
+	Oups erreur
+
 	Revision 1.12  2005/01/11 13:40:26  pico
 	/me boulet
-
+	
 	Revision 1.11  2005/01/11 13:35:34  pico
 	Ajout des pages perso externes au bon endroit
 	
@@ -114,8 +117,8 @@ foreach ($_POST AS $keys => $val){
 		$DB_valid->query("SELECT 0 FROM valid_pageperso WHERE eleve_id='{$temp[1]}'");
 		if ($DB_valid->num_rows()!=0) {
 			$DB_web->query("INSERT INTO sites_eleves SET eleve_id='{$temp[1]}'");
-			$DB_trombino->query("SELECT nom,prenom,promo FROM eleves WHERE eleve_id='{$temp[1]}'");
-			list($nom,$prenom,$promo) = $DB_valid->next_row();
+			$DB_trombino->query("SELECT login,promo FROM eleves WHERE eleve_id='{$temp[1]}'");
+			list($login,$promo) = $DB_valid->next_row();
 			symlink (BASE_PAGESPERSOS."$login-$promo",BASE_PAGESPERSOS_EXT."$login-$promo");
 			
 			$contenu = "<b>Bonjour,</b> <br><br>".
