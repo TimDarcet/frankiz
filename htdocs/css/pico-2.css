@@ -209,16 +209,19 @@ span.valid_xhtml {
 	background-image:url("http://www.w3.org/Icons/valid-xhtml10");
 	width: 88px;
 	height:31px;
-	padding-left: 88px;
-	padding-top: 16px;
+	position: relative;
+	display:block;
+	left: 5px;
 }
 	
 span.valid_css {
 	background-image:url("http://www.w3.org/Icons/valid-css");
 	width: 88px;
 	height:31px;
- 	padding-left: 88px;
-	padding-top: 16px;
+	display:block;
+	position: relative;
+	left: 98px;
+	top: -31px;
 }
  
  span.fkz_annonces_cat {display:none;}
