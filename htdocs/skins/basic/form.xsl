@@ -27,6 +27,10 @@
 	<p class="commentaire"><xsl:apply-templates/></p>
 </xsl:template>
 
+<xsl:template match="warning">
+	<p class="warning"><xsl:apply-templates/></p>
+</xsl:template>
+
 <!-- champs contenant du texte -->
 <xsl:template match="formulaire/champ">
 	<tr><td class="gauche">

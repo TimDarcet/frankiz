@@ -19,18 +19,7 @@ if(!verifie_permission('admin')) {
 }
 connecter_mysql_frankiz();
 
-// Gestion de la suppression
-if(isset($_POST['supprimer'])) {
-	if(isset($_POST['elements'])) {
-		$ids = "";
-		foreach($_POST['elements'] as $id => $on)
-			if($on='on') $ids .= (empty($ids) ? "" : ",") . "'$id'";
-		
-		mysql_query("DELETE FROM ip_chambre_theory WHERE prise_id IN ($ids)");
-		
-		$message = "<p>".count($_POST['elements'])." ip viennent d'être supprimées avec succès.</p>\n";
-	}
-}
+
 
 // Génération de la page
 //===============
@@ -39,8 +28,33 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="admin_arp" titre="Frankiz : gestion des logs ip">
 <?
+
+// Gestion de la suppression
+if(isset($_POST['supprimer'])) {
+	if(isset($_POST['elements'])) {
+	
+		if (suppression()) {
+			$ids = "";
+			foreach($_POST['elements'] as $id => $on)
+				if($on='on') $ids .= (empty($ids) ? "" : ",") . "'$id'";
+				
+			
+			//mysql_query("DELETE FROM ip_chambre_theory WHERE prise_id IN ($ids)");
+			
+			$message = "<p>".count($_POST['elements'])." ip viennent d'être supprimées avec succès.</p>\n";
+		}
+	}
+}
+
+
 	if(!empty($message))
 		echo "<commentaire>$message</commentaire>\n";
+		
+	$where = " WHERE 1 " ;
+	if ($_POST['rech_kzert']!="") $where .= "AND piece_id LIKE '%".$_POST['rech_kzert']."%' " ;
+	if ($_POST['rech_prise']!="") $where .= "AND prise_id  LIKE '%".$_POST['rech_prise']."%' " ;
+	if ($_POST['rech_ip']!="") $where .= "AND ip_theorique LIKE'%".$_POST['rech_ip']."%' " ;
+
 ?>
 	<formulaire id="recherche" titre="Recherche" action="admin/ip.php">
 		<champ titre="Pièce" id="rech_kzert" valeur="<? echo $_POST['rech_kzert']?>" />
@@ -49,22 +63,42 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<bouton titre="Recherche" id="recherche"/>
 	</formulaire>
 
-<?
-	$where = " WHERE 1 " ;
-	if ($_POST['rech_kzert']!="") $where .= "AND piece_id LIKE '%$rech_kzert%' " ;
-	if ($_POST['rech_prise']!="") $where .= "AND prise_id  LIKE '%$rech_prise%' " ;
-	if ($_POST['rech_ip']!="") $where .= "AND ip_theorique LIKE'%$rech_ip%' " ;
-
-?>
-
 	<liste id="liste_ip" selectionnable="oui" action="admin/ip.php">
+		<entete id="login" titre="Login"/>
+		<entete id="promo" titre="Promo"/>
 		<entete id="piece" titre="Piece"/>
 		<entete id="prise" titre="Prise"/>
 		<entete id="ip" titre="IP"/>
 <?php
-		$result = mysql_query("SELECT  prise_id,piece_id,ip_theorique FROM ip_chambre_theory ".$where."ORDER BY ip_theorique ASC");
+		$result = mysql_query("SELECT  valeur FROM parametres WHERE nom='lastpromo_oncampus'");
+		list($lastpromo) = mysql_fetch_row($result) ;
+		$where2 = "" ;
+
+
+		$result = mysql_query("SELECT  prise_id, piece_id, ip_theorique FROM ip_chambre_theory ".$where." ORDER BY ip_theorique ASC");
 		while(list($id_prise,$id_piece,$ip_theorique) = mysql_fetch_row($result)) {
 			echo "\t\t<element id=\"$id_prise\">\n";
+			
+			// J'ai été obligé de faire une double requete car je voulais conserver les chambre libre (ce qui disparaissait quand je faisais
+			// une requete croisé et comme ca je vois plsu facilement les couple aussi (Kikx)
+			
+			$result2 = mysql_query("SELECT  login,promo FROM eleves  WHERE (promo='".$lastpromo."' OR promo='".($lastpromo-1)."' ) AND piece_id='$id_piece' ORDER BY promo DESC");
+			
+			$login2 ="" ;
+			$promo2 ="" ;
+			while(list($login,$promo) = mysql_fetch_row($result2)) {
+				if ($login2=="" ) 
+					$login2 = $login ;
+				else 
+					$login2 .= " / $login" ;
+					
+				if ($promo2=="" ) 
+					$promo2 = $promo ;
+				else 
+					$promo2 .= " / $promo" ;
+			}
+			echo "\t\t\t<colonne id=\"login\">$login2</colonne>\n";
+			echo "\t\t\t<colonne id=\"promo\">".$promo2."</colonne>\n";
 			echo "\t\t\t<colonne id=\"piece\">$id_piece</colonne>\n";
 			echo "\t\t\t<colonne id=\"prise\">$id_prise</colonne>\n";
 			

@@ -121,6 +121,12 @@ p.commentaire {
 	padding: 6px;
 	border: 1px solid #FFDD00;
 }
+p.warning {
+	color: inherit;
+	background: #FFDDDD;
+	padding: 6px;
+	border: 1px solid #FF3333;
+}
 
 /* Liste */
 table.liste {

@@ -52,19 +52,19 @@ function deconnecter_mysql_frankiz() {
 	if(--$nombre_connections == 0)
 		mysql_close();
 }
-
-function connecter_mysql_frankiz_admin() {
-	global $nombre_connections;
-	if($nombre_connections++ == 0) {
-		mysql_connect("frankiz", "admin", "r00tdb");
-		mysql_select_db("admin");
-	}
-}
-
-function deconnecter_mysql_frankiz_admin() {
-	global $nombre_connections;
-	if(--$nombre_connections == 0)
-		mysql_close();
+// Demande la confirmation lors d'une suppression d'une entrée !
+// (c'est plus secure)
+function suppression() {
+	global $HTTP_POST_VARS;
+	$post = "?" ;
+	foreach($_POST as $key=>$val) {
+ 		//$post .=  $key."=".$val.""; 
+ 	}
+	echo "<warning>" ;
+	echo "<b>ATTENTION</b> : Vous voulez supprimer des entrées" ;
+	echo "</warning>" ;
+	return false ;
+	
 }
 /*
 	Gestion des erreurs
