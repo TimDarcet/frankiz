@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.8  2004/11/28 10:03:25  pico
+		Ptite correction dans les urls de data
+
 		Revision 1.7  2004/11/28 01:33:32  pico
 		Gestion des listes sur le wiki (arbre + feuille)
-
+		
 		Revision 1.6  2004/11/27 23:41:19  pico
 		erreur de chemin vers les data dans la faq
 		
@@ -347,7 +350,7 @@ if ($id != "") {
 					// Remplace les liens locaux pour les images et les liens, car sinon conflit avec le BASE_HREF
 					$patterns[0] ='(\[(?!http://)(?!ftp://)(?!#))';
 					$patterns[1] ='(\[#)';
-					$replacements[1] = '['.dirname(BASE_URL."/../data/faq/$reponse")."/";
+					$replacements[1] = '['.dirname(URL_data."/../data/faq/$reponse")."/";
 					$replacements[0] = '['.getenv('SCRIPT_NAME')."?".getenv('QUERY_STRING')."#";
 					$ligne = preg_replace($patterns,$replacements, $ligne);
 					$wiki.= $ligne;
