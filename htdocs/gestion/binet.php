@@ -7,9 +7,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.5  2004/10/17 23:30:44  kikx
+	Juste un petit bug si on supprime zero entrées
+
 	Revision 1.4  2004/10/17 23:17:18  kikx
 	Maintenant le prez peut supprimer les personnes qui sont dans son binet et modifier leur commentaires
-
+	
 	Revision 1.3  2004/10/17 20:27:35  kikx
 	Permet juste au prez des binets de consulter les perosnne adherant aux binet ainsi que leur commentaires
 	
@@ -45,11 +48,14 @@ $message ="" ;
 //=================================
 $ids ="" ;
 if(isset($_POST['suppr'])) {
-	foreach($_POST['elements'] as $id => $on) {
-		$ids .= (empty($ids) ? "" : ",") . "'$id'";
+	if(isset($_POST['elements'])) {
+
+		foreach($_POST['elements'] as $id => $on) {
+			$ids .= (empty($ids) ? "" : ",") . "'$id'";
+		}
+		$DB_trombino->query("DELETE FROM membres  WHERE eleve_id IN ($ids)");
+		$message .= "<warning>".count($_POST['elements'])." personnes viennent d'être supprimées.</warning>\n";
 	}
-	$DB_trombino->query("DELETE FROM membres  WHERE eleve_id IN ($ids)");
-	$message .= "<warning>".count($_POST['elements'])." personnes viennent d'être supprimées.</warning>\n";
 }
 //=================================
 // Modification des commentaires des differents membres
@@ -84,7 +90,7 @@ if(verifie_permission_prez($_GET['binet'])){
 	?>
 	<h2>Liste des membres</h2>
 	<?
-	$DB_trombino->query("SELECT m.eleve_id,remarque,nom,prenom,surnom,promo FROM membres as m INNER JOIN eleves USING(eleve_id) WHERE binet_id=".$_GET['binet']." AND promo=$promo_prez");
+	$DB_trombino->query("SELECT m.eleve_id,remarque,nom,prenom,surnom,promo FROM membres as m INNER JOIN eleves USING(eleve_id) WHERE binet_id=".$_GET['binet']." AND promo>=$promo_prez ORDER BY promo ASC,nom ASC");
 	?>
 	<liste id="liste_binets" selectionnable="oui" action="gestion/binet.php?binet=<?=$_GET['binet']?>">
 		<entete id="nom" titre="Nom"/>
@@ -93,7 +99,7 @@ if(verifie_permission_prez($_GET['binet'])){
 	while(list($id,$remarque,$nom,$prenom,$surnom,$promo) = $DB_trombino->next_row()) {
 			echo "\t\t<element id=\"$id\">\n";
 			$surnom = (empty($surnom) ? "" : " (".$surnom.")") ; 
-			echo "\t\t\t<colonne id=\"nom\">$nom $prenom ".$surnom."</colonne>\n";
+			echo "\t\t\t<colonne id=\"nom\">X$promo : $prenom $nom $surnom</colonne>\n";
 			echo "\t\t\t<colonne id=\"description\"><champ id=\"description[$id]\" valeur=\"$remarque\"/></colonne>\n";
 			echo "\t\t</element>\n";
 	}
