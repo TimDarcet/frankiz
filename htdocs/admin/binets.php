@@ -21,9 +21,12 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.12  2004/11/08 15:26:44  kikx
+	bla
+
 	Revision 1.11  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.10  2004/10/20 21:00:04  kikx
 	C'est qd meme plus beau
 	
@@ -98,10 +101,11 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 		<bouton titre="Supprimer" id="supprimer"/>
 	</liste>
-	<formulaire id="nouveau_binet" titre="Nouveau Binet" action="admin/binets.php">
+	<notice>Pour ajouter un binet, allez dans la partie binet web</notice>
+<!--	<formulaire id="nouveau_binet" titre="Nouveau Binet" action="admin/binets.php">
 		<champ titre="Nom du binet" id="nom" valeur="" />
 		<bouton titre="Nouveau" id="nouveau"/>
-	</formulaire>
+	</formulaire>-->
 </page>
 <?php
 
