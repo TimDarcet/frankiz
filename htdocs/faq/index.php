@@ -1,9 +1,12 @@
 <? 
 /*
 		$Log$
+		Revision 1.17  2004/10/20 23:04:06  pico
+		Affichage de l'arbre mieux respecté
+
 		Revision 1.16  2004/10/20 22:41:01  pico
 		Encore un ptit truc
-
+		
 		Revision 1.15  2004/10/20 22:10:06  pico
 		BugFix (devrait marcher)
 		
@@ -80,7 +83,9 @@ function rech_fils($parent) {
 			if (eregi("/".$id."/",$a_marquer)) {
 				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche_folder.gif'/>" ;
 			}
+			$DB_web->push_result();
 			rech_fils($id) ;
+			$DB_web->pop_result();
 			echo "\n\r</noeud>\n\r " ;
 		}
 		
