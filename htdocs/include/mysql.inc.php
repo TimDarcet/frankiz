@@ -5,9 +5,12 @@
 	- destruction automatique des résultats
 
 	$Log$
+	Revision 1.8  2004/10/20 23:11:51  schmurtz
+	Suppression de la limitation de deux appels imbriques a mysql.
+
 	Revision 1.7  2004/09/15 23:19:31  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 	Revision 1.6  2004/09/15 21:42:08  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
 	
@@ -19,7 +22,7 @@ class DB {
 	var $host;
 	var $base;
 	var $user;
-	var $saved_result;
+	var $saved_results;
 	
 	/*
 		Création d'une connexion à une base MySQL
@@ -37,7 +40,7 @@ class DB {
 		$this->base = $base;
 		$this->user = $user;
 		$this->result = false;
-		$this->saved_result = false;
+		$this->saved_results = array();
 	}
 	
 	function close() {
@@ -89,13 +92,14 @@ class DB {
 		Sauvegarde du résultat d'une requète
 	*/
 	function push_result() {
-		$this->saved_result = $this->result;
+		$this->saved_results[count($this->saved_results)] = $this->result;
 		$this->result = false;
 	}
 
 	function pop_result() {
-		$this->result = $this->saved_result;
-		$this->saved_result = false;
+		$last = count($this->saved_results)-1;
+		$this->result = $this->saved_results[$last];
+		unset($this->saved_results[$last]);
 	}
 }
 ?>
