@@ -21,12 +21,15 @@
 	Liste des CSS existante compatible avec la skin XSL courante.
 	
 	$Log$
+	Revision 1.11  2004/12/06 14:54:06  pico
+	Remet l'affichage des css alternatives (perdu lors du passage en /nomskin/nomcss)
+
 	Revision 1.10  2004/11/06 10:23:15  pico
 	BugFix au niveau de l'affichage du choix de css
-
+	
 	Lorsqu'on change de skin, la css est la css "style.css" du répertoire de la skin.
 	Cela permet d'éviter de garder la css d'une autre skin, sinon ça rend tout pas beau.
-
+	
 	Revision 1.9  2004/11/06 10:14:12  pico
 	Voilà, c'est bon
 	
@@ -43,14 +46,17 @@
 ?>
 <module id="liste_css" visible="false">
 <?php
-	//Liste des css disponibles
-	if(is_dir(BASE_LOCAL."/css/".$_SESSION['skin']['skin_nom'])) {
-		$dir=opendir(BASE_LOCAL."/css/".$_SESSION['skin']['skin_nom']);
-		while($file = readdir($dir)) {
-			if(ereg("^(.*)\.css$",$file,$regs))
-				echo "<lien titre='{$regs[1]}' url='".BASE_URL."/css/{$_SESSION['skin']['skin_nom']}/{$regs[1]}.css'/>\n";
-		}
-		closedir($dir);
+	// Parcourt des feuilles de style css
+	$dir_css=opendir(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']);
+	$description = lire_description_skin(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']);
+	while($file_css = readdir($dir_css)) {
+		// uniquement pour les dossiers non particuliers
+		if(!is_dir(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']."/$file_css") || $file_css == "." || $file_css == ".." ||
+			$file_css == "CVS" || $file_css{0} == "#" || $file_css == $description['chemin']) continue;
+		
+		$description_css = lire_description_css(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']."/$file_css");
+		echo "<lien titre=\"$file_css ($description_css)\" id=\"".BASE_URL."/skins/".$_SESSION['skin']['skin_nom']."/$file_css\"/>";
 	}
+	closedir($dir_css);
 ?>
 </module>
