@@ -6,9 +6,12 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.23  2004/10/21 12:24:48  kikx
+	Correction d'un bug suite a un commit
+
 	Revision 1.22  2004/10/17 17:27:07  pico
 	Ajout bdd de la faq
-
+	
 	Revision 1.21  2004/10/16 01:18:00  schmurtz
 	Utilisation d'un chemin d'acces absolu pour partager les images et les caches entre
 	tous les developpeurs. Cela suppose que tout le monde test ce qu'il developpe sur
@@ -80,6 +83,7 @@ define('DATA_DIR_LOCAL',BASE_DATA);	// pour compatibilité
 define('DATA_DIR_URL',URL_DATA);
 
 define('MAIL_WEBMESTRE',"kikx@frankiz.polytechnique.fr");
+define('MAIL_CONTACT',"eleves@polytechnique.fr");
 define('MAX_PEREMPTION',8);
 
 // Gestion des erreurs PHP et MySQL

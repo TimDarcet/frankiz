@@ -3,9 +3,12 @@
 	Page des contacts utiles
 	
 	$Log$
+	Revision 1.2  2004/10/21 12:24:48  kikx
+	Correction d'un bug suite a un commit
+
 	Revision 1.1  2004/10/20 22:19:08  kikx
 	Une belle page de contact :)
-
+	
 
 	
 */
@@ -25,15 +28,19 @@ require "include/page_header.inc.php";
 <page id='contact' titre='Frankiz : contact'>
 <h1>Contacts utiles</h1>
 <cadre titre="Contacter la KES">
+	<html>
 <?
+
 $text = "<p>La \"Kes\" est le Bureau des Eleves communément appelé \"Bde\" dans les autres Grandes Ecoles. Elle est en charge pendant un an de la vie des élèves<p>" ;
-$text .= "Si vous désirez des <a href='mailto:".MAIL_WEBMESTRE."?subject=Kes : Cours Particuliers'>cours particuliers</a> donnés par un élève de l'Ecole<br>" ;
-$text .= "Si vous désirez des <a href='mailto:".MAIL_WEBMESTRE."?subject=Kes : Informations diverses'>informations</a> sur polytechnique et les élèves" ;
+$text .= "Si vous désirez des <a href='mailto:".MAIL_CONTACT."?subject=Kes : Cours Particuliers'>cours particuliers</a> donnés par un élève de l'Ecole<br>" ;
+$text .= "Si vous désirez des <a href='mailto:".MAIL_CONTACT."?subject=Kes : Informations diverses'>informations</a> sur polytechnique et les élèves" ;
 echo htmlspecialchars($text) ;
 ?>
+	</html>
 </cadre>
 
 <cadre titre="Contacter un élève">
+	<html>
 <?
 $text = "<h3>Par email (ou mel)</h3>" ;
 $text .= "Si tu veux joindre un élève, rien de plus facile:<br>" ;
@@ -52,14 +59,18 @@ $text .= "<li>(2) est remplacé par le numéro de sa compagnie (ben... ça faut lui
 
 echo htmlspecialchars($text) ;
 ?>
+	</html>
 </cadre>
 
 <cadre titre="Contacter le Webmestre">
+	<html>
+
 <?
 $text = "<p>Car tu as un problème avec le site, des suggestions, des questions ... N'hésite pas !<p>" ;
 $text .= "<a href='mailto:".MAIL_WEBMESTRE."?subject=Webmestre'>Clique ici</a>" ;
 echo htmlspecialchars($text) ;
 ?>
+	</html>
 </cadre>
 
 </page>
