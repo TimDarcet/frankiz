@@ -27,6 +27,7 @@ session_start();
 if(isset($_GET['logout'])) {
 	session_unset();
 	session_destroy();
+	SetCookie("auth","",0,"/");
 	rediriger_vers("/");
 }
 
