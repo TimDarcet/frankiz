@@ -5,19 +5,24 @@
 	Inclu les modules nécessaires.
 	
 	Il est possible d'en modifier le comportement à l'aide de variables GET :
-	- 'modules[blahblah]' :  'on' pour forcé l'affichage du module 'blahblah',
+	- 'modules[blahblah]' :	'on' pour forcé l'affichage du module 'blahblah',
 							'off' pour forcer le non affichage
 	- 'modules[tous]' :		valeur par défaut pour l'affichage des modules
 */
 
-$modules = array('css','liens_navigation','liens_contacts','liens_ecole','qdj','qdj_hier',
-				 'activites','tour_kawa','anniversaires','stats');
+
+function existant_et_egal_a($variable,$index,$valeur) {
+	return isset($variable[$index]) && $variable[$index] == $valeur;
+}
 
 if(!isset($_GET['modules']))
 	$_GET['modules'] = array();
 
-foreach($modules as $module)
-	if(		(!isset($_GET['modules']['tous']) || $_GET['modules']['tous']!='off') && ($module == 'css' || $module == 'liens_navigation' || skin_visible($module)=='true')
-		 || isset($_GET['modules']['tous']) && $_GET['modules']['tous']=='on' && $_GET['modules'][$module]!='off')
+foreach(liste_modules() as $module => $modifiable)
+	if(		/*!existant_et_egal_a($_GET['modules'],'tous','off')
+			&&*/ (!$modifiable || !existant_et_egal_a($_SESSION['skin']['skin_visible'],$module,false))
+		/*||
+			existant_et_egal_a($_GET['modules'],'tous','on')
+			&& !existant_et_egal_a($_GET['modules'],$module,'off')*/ )
 		require BASE_LOCAL."/modules/$module.php";
 ?>

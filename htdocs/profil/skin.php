@@ -8,13 +8,18 @@
 	de la skin par l'utilisateur.
 	
 	Toutes les configurations de l'utilisateur sont stockées dans un cookie. Ce cookie est l'encodage
-	en base64 de la version sérialisée d'une structure de la forme (on remarquera que les paramètres ne
-	peuvent pas prendre les noms 'skin_nom' et 'skin_css'):
+	en base64 de la version sérialisée d'une structure de la forme :
 	array (
 		[skin_nom]  => «nom de la skin»
 		[skin_css]  => «nom du fichier css»
-		[«param 1»] => «valeur»
-		[«param 2»] => «valeur»
+		[skin_parametres] => array (
+			[«param 1] => «valeur»
+			[«param 2»] => «valeur»
+		)
+		[skin_visible] => array (
+			[«module 1»] => «true/false»
+			[«module 2»] => «true/false»
+		)
 	)
 */
 
@@ -154,10 +159,13 @@ if(!empty($_REQUEST['OK_skin'])) {
 			$new_skin['skin_parametres'][$module] = $valeur;
 	
 	// Visibilité
-	$new_skin['skin_visible'] = array();
+	foreach(liste_modules() as $module => $nom)
+		if($nom != "")
+			$new_skin['skin_visible'][$module] = false;
+	
 	if(!empty($_REQUEST['vis']))
 		foreach($_REQUEST['vis'] as $module => $visible)
-			$new_skin['skin_visible'][$module] = TRUE;
+			$new_skin['skin_visible'][$module] = true;
 }
 
 // Si la skin a été modifié, on rajoute un cookie de validité 3 ans
@@ -216,25 +224,26 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		foreach($description['parametres'] as $parametre_id => $parametre) {
 			if(empty($parametre['valeurs'])) {
 				echo "<champ titre=\"".$parametre['description']."\" id=\"param[$parametre_id]\" valeur=\""
-						.$_SESSION['skin']['skin_parametres'][$parametre_id]."\"/>\n";
+						.(isset($_SESSION['skin']['skin_parametres'][$parametre_id]) ? $_SESSION['skin']['skin_parametres'][$parametre_id] : "")."\"/>\n";
 			} else {
 				echo "<choix titre=\"".$parametre['description']."\" id=\"param[$parametre_id]\" valeur=\""
-						.$_SESSION['skin']['skin_parametres'][$parametre_id]."\" type=\"combo\">\n";
+						.(isset($_SESSION['skin']['skin_parametres'][$parametre_id]) ? $_SESSION['skin']['skin_parametres'][$parametre_id] : "")."\" type=\"combo\">\n";
 				foreach($parametre['valeurs'] as $param_id => $param_desc)
 					echo "\t<option titre=\"$param_desc\" id=\"$param_id\"/>\n";
 				echo "</choix>\n";
 			}
 		}
 ?>
-		<choix titre="Eléments" id="newskin" type="checkbox" valeur="<?php foreach($_SESSION['skin']['skin_visible'] as $module => $visible) if($visible) echo "vis[$module] "; ?>">
-			<option titre="Activités" id="vis[activites]"/>
-			<option titre="Question du jour" id="vis[qdj]"/>
-			<option titre="QDJ de la veille" id="vis[qdj_hier]"/>
-			<option titre="Anniversaires" id="vis[anniversaires]"/>
-			<option titre="Liens contacts" id="vis[liens_contacts]"/>
-			<option titre="Liens école" id="vis[liens_ecole]"/>
-			<option titre="Tours kawa" id="vis[tour_kawa]"/>
-			<option titre="Statistiques" id="vis[stats]"/>
+		<choix titre="Eléments" id="newskin" type="checkbox" valeur="<?php
+			foreach(liste_modules() as $module => $nom)
+				if($nom != "" && (!isset($_SESSION['skin']['skin_visible'][$module])
+								  || $_SESSION['skin']['skin_visible'][$module]      ) )
+					echo "vis[$module] ";?>">
+<?php
+			foreach(liste_modules() as $module => $nom)
+				if($nom != "")
+					echo "\t\t\t<option titre=\"$nom\" id=\"vis[$module]\"/>\n";
+?>
 		</choix>
 		<bouton titre="Appliquer" id="OK_param" />
 	</formulaire>

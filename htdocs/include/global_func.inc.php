@@ -70,4 +70,19 @@ function rediriger_vers($page) {
 	echo "<p>Si ton navigateur n'est pas automatiquement redirigé, <a href=\"".BASE_URL.$page."\">cliques ici</a>.</p>";
 	exit;
 }
+
+function liste_modules() {
+	return array(
+		"css"				=> "",		/* pas de nom = module toujours visible */
+		"liens_navigation"	=> "",
+		"liens_contacts"	=> "",
+		"liens_ecole"		=> "Liens école",
+		"qdj"				=> "Question du jour",
+		"qdj_hier"			=> "Question de la veille",
+		"activites"			=> "Activités",
+		"tour_kawa"			=> "Tours kawa",
+		"anniversaires"		=> "Anniversaires",
+		"stats"				=> "Statistiques");
+}
+
 ?>
