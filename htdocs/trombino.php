@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.56  2005/01/26 14:39:44  pico
+	Résolution du pb du cookie poly.fr (toutes les photos étaient celles du propriétaire du cookie, pas top..)
+
 	Revision 1.55  2005/01/22 17:58:38  pico
 	Modif des images
-
+	
 	Revision 1.54  2005/01/18 23:24:42  pico
 	Ajout fonction tdb
 	Modif taille images trombi
@@ -175,19 +178,19 @@ require_once "include/global.inc.php";
 demande_authentification(AUTH_INTERNE);
 
 // Récupération d'une image
-if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "true") && ($_REQUEST['image'] != "")){
+if((isset($_GET['image']))&&($_GET['image'] == "true") && ($_GET['image'] != "")){
 	require_once "include/global.inc.php";
 	header('content-type: image/jpeg');
-	if (!isset($_REQUEST['original'])) {
-		readfile(BASE_PHOTOS.$_REQUEST['promo']."/".$_REQUEST['login'].".jpg");	
+	if (!isset($_GET['original'])) {
+		readfile(BASE_PHOTOS.$_GET['promo']."/".$_GET['login'].".jpg");	
 	} else {
-		readfile(BASE_PHOTOS.$_REQUEST['promo']."/".$_REQUEST['login']."_original.jpg");		
+		readfile(BASE_PHOTOS.$_GET['promo']."/".$_GET['login']."_original.jpg");		
 	}
 	exit;
 }
 
-if(isset($_REQUEST['tdb'])&&isset($_REQUEST['promo'])){
-	$DB_trombino->query("SELECT login,nom,prenom FROM eleves WHERE promo='{$_REQUEST['promo']}' ORDER BY promo,nom,prenom ASC");
+if(isset($_GET['tdb'])&&isset($_GET['promo'])){
+	$DB_trombino->query("SELECT login,nom,prenom FROM eleves WHERE promo='{$_GET['promo']}' ORDER BY promo,nom,prenom ASC");
 	echo "#\n";
 	while(list($login,$nom,$prenom) = $DB_trombino->next_row())
 		echo "$login:$nom:$prenom\n";
@@ -199,13 +202,13 @@ require "include/page_header.inc.php";
 echo "<page id='trombino' titre='Frankiz : Trombino'>\n";
 
 // Récupération d'une image dans une page
-if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "show") && ($_REQUEST['image'] != "")){
-	if (!isset($_REQUEST['original'])) {
-		echo "<image source=\"trombino.php?image=true&amp;login={$_REQUEST['login']}&amp;promo={$_REQUEST['promo']}\" texte=\"photo\"  legende=\"{$_REQUEST['login']} ({$_REQUEST['promo']})\"/>";
-		echo "<lien url=\"trombino.php?original&amp;image=show&amp;login={$_REQUEST['login']}&amp;promo={$_REQUEST['promo']}\" titre=\"Voir l'image originale\"/><br/>\n" ;
+if((isset($_GET['image']))&&($_GET['image'] == "show") && ($_GET['image'] != "")){
+	if (!isset($_GET['original'])) {
+		echo "<image source=\"trombino.php?image=true&amp;login={$_GET['login']}&amp;promo={$_GET['promo']}\" texte=\"photo\"  legende=\"{$_GET['login']} ({$_GET['promo']})\"/>";
+		echo "<lien url=\"trombino.php?original&amp;image=show&amp;login={$_GET['login']}&amp;promo={$_GET['promo']}\" titre=\"Voir l'image originale\"/><br/>\n" ;
 	} else {
-		echo "<image source=\"trombino.php?original&amp;image=true&amp;login={$_REQUEST['login']}&amp;promo={$_REQUEST['promo']}\"  texte=\"photo originale\" legende=\"{$_REQUEST['login']} ({$_REQUEST['promo']}) - originale\"/>";
-		echo "<lien url=\"trombino.php?image=show&amp;login={$_REQUEST['login']}&amp;promo={$_REQUEST['promo']}\" titre=\"Voir l'image actuelle\"/><br/>\n" ;
+		echo "<image source=\"trombino.php?original&amp;image=true&amp;login={$_GET['login']}&amp;promo={$_GET['promo']}\"  texte=\"photo originale\" legende=\"{$_GET['login']} ({$_GET['promo']}) - originale\"/>";
+		echo "<lien url=\"trombino.php?image=show&amp;login={$_GET['login']}&amp;promo={$_GET['promo']}\" titre=\"Voir l'image actuelle\"/><br/>\n" ;
 	}
 }
 
