@@ -124,8 +124,8 @@ ul.fkz_liens_nav{
 
 div.col {height: 50px;}
 div.col span { height: 50px; display: block;}
-span.rouge { background-image: url("images/rouge.gif") repeat-y top center ;}
-span.jaune { background-image: url("images/jaune.gif") repeat-y top center ;}
+span.rouge { background-image: url("../images/rouge.gif") repeat-y top center ;}
+span.jaune { background-image: url("../images/jaune.gif") repeat-y top center ;}
 
 .fkz_anniversaire_titre {
 	color: white;
