@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.23  2004/11/07 22:43:10  pico
+	correction faute d'orthograffe
+
 	Revision 1.22  2004/10/29 14:40:48  kikx
 	Erreur mineur dans le lien
-
+	
 	Revision 1.21  2004/10/29 14:38:37  kikx
 	Mise en format HTML des mails pour les validation de la qdj, des mails promos, et des annonces
 	
@@ -240,7 +243,7 @@ if (isset($_POST['valid'])) {
 		<fichier id="file" titre="Ton image" taille="250000"/>
 		<bouton id='suppr_img' titre="Supprimer l'image"/>
 
-		<textsimple valeur="Ta signature sera automatiquement généré"/>
+		<textsimple valeur="Ta signature sera automatiquement générée"/>
 		<choix titre="Date de péremption" id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
 <?		for ($i=0 ; $i<MAX_PEREMPTION ; $i++) {
 			$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
