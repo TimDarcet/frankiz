@@ -56,8 +56,26 @@ foreach ($_POST AS $keys => $val){
 	// On accepte la demande d'ip supplémentaire
 	//===========================
 	if ($temp[0] == "ok") {
-		$temp2 = "ajout_ip_".$temp[1] ;
-		$temp3 = "raison_".$temp[1] ;
+			mysql_query("DELETE FROM ip_ajout WHERE ip='$temp[1]' AND valider=1");
+	
+		$contenu = "Bonjour, \n\n".
+					"Nous t'avons supprimer l'ip suivante :\n".
+					$_POST[$temp2]."\n".
+					"En effet, nous pensons qu'elle ne te servira plus\n\n" .
+					"Très Cordialement\n" .
+					"Le BR\n"  ;
+		
+		$result = mysql_query("SELECT  login,nom,prenom,mail FROM eleves WHERE eleve_id=$temp[1]");
+		list($login,$nom,$prenom,$mail) = mysql_fetch_row($result) ;
+		if (($mail=="")||($mail=="NULL")) $mail = $login."@poly.polytechnique.fr" ;
+	
+		mail("$prenom $nom<$mail>","[Frankiz] Une de tes ips est supprimé",$contenu);
+
+	}
+	
+	// On vire une ip qu'on avait validé
+	//===========================
+	if ($temp[0] == "suppr") {
 		mysql_query("UPDATE ip_ajout SET valider=1,ip_enplus='".$_POST[$temp2]."', raison='".$_POST[$temp3]."' WHERE eleve_id=$temp[1] AND valider=0");
 		
 		$contenu = "Bonjour, \n\n".
@@ -124,7 +142,7 @@ Vous allez valider un ajout d'une ip : Pour le mement le système n'est pas fiabl
 			<element id="<? echo $eleve_id ;?>">
 				<colonne id="login"><? echo $login ;?></colonne>
 				<colonne id="raison"><? echo $raison ;?></colonne>
-				<colonne id="ip"><? echo $ip ;?></colonne>
+				<colonne id="ip"><? echo $ip ;?><bouton titre="Dégage!" id="suppr_<? echo $ip ;?>"/></colonne>
 			</element>
 <?
 		}
