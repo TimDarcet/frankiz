@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.2  2004/11/27 20:58:37  pico
+	Ajout de la balise <br/>
+
 	Revision 1.1  2004/11/24 20:26:40  schmurtz
 	Reorganisation des skins (affichage melange skin/css + depacement des css)
-
+	
 	Revision 1.9  2004/11/12 00:23:04  psycow
 	Modification du trombi, gestion graphique des formulaires; c'est pas trop mal on touche a la fin
 	
@@ -187,6 +190,9 @@
 <!-- Formatage HTML -->
 <xsl:template match="p">
 	<xsl:apply-templates/><br />
+</xsl:template>
+<xsl:template match="br">
+	<br/>
 </xsl:template>
 <xsl:template match="h1">
 	<h1><xsl:apply-templates/></h1>
