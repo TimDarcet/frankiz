@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.35  2005/01/10 22:17:03  pico
+		Amélioration ?
+
 		Revision 1.34  2005/01/10 21:58:49  pico
 		Blindage pour les faqmestres qui font de nombreuses bétises...
-
+		
 		Revision 1.33  2004/12/17 17:25:08  schmurtz
 		Ajout d'une belle page d'erreur.
 		
@@ -200,6 +203,7 @@ foreach ($_POST AS $keys => $val){
 			$dir = BASE_DATA."faq/".$dir."/".$_REQUEST['nom'];
 			deldir($dir);
 		}
+		$_REQUEST['dir_id'] = $temp[1];
 	}
 	
 	if (($temp[0]=='modif') && isset($_REQUEST['question']) && ($_REQUEST['question']!='')) {
