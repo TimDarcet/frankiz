@@ -4,9 +4,12 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.12  2004/09/17 15:27:08  schmurtz
+	Suppression de la fonction suppression qui ne sert pas.
+
 	Revision 1.11  2004/09/16 15:32:56  schmurtz
 	Suppression de la fonction afficher_identifiant(), utilisation de <![CDATA[......]]> aÌ€ la place.
-
+	
 	Revision 1.10  2004/09/15 23:19:31  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
@@ -14,24 +17,6 @@
 	Commentaires et ajout de la variable cvs "Log"
 	
 */
-
-/*
-	Affiche une page demandant la confirmation lors de la suppression d'une entrée !
-	(c'est plus secure)
-	TODO à terminer
-*/
-
-function suppression() {
-	$post = "?" ;
-	foreach($_POST as $key=>$val) {
- 		//$post .=  $key."=".$val.""; 
- 	}
-	echo "<warning>" ;
-	echo "<b>ATTENTION</b> : Vous voulez supprimer des entrées" ;
-	echo "</warning>" ;
-	return false ;
-	
-}
 
 /*
 	Gestion des erreurs dans les formulaires
@@ -93,5 +78,4 @@ function liste_modules() {
 		"anniversaires"		=> "Anniversaires",
 		"stats"				=> "Statistiques");
 }
-
 ?>
