@@ -12,7 +12,7 @@ $fp=fopen(BASE_CACHE."stats-xnet",'r');
 while(!feof($fp)){
 	if(list($date,$nb) = explode(" ",fgets($fp, 4000)))
 		if(substr($nb, 0, -1)!='')
-			$os[date("H:i",$date)]=substr($nb, 0, -1);
+			$os[date("Y-m-d H:i",$date)]=substr($nb, 0, -1);
 }
 fclose($fp);
 ksort($os);
@@ -68,9 +68,9 @@ foreach ($os as $nom => $nombre) {
 $i=0;
 foreach ($os as $nom => $nombre) {
 	$i++;
-	if(substr($nom,3,2)=="00"){
+	if(substr($nom,11,2)=="00"){
 		$hauteurImageRectangle = ceil((($nombre*($hauteur-60))/$max_os));
-		ImageString ($im, 2, 10+$i*($largeur-10)/(count($os)+1), $hauteur-38, substr($nom,0,2)."h", $noir);
+		ImageString ($im, 2, 10+$i*($largeur-10)/(count($os)+1), $hauteur-38, substr($nom,9,2)."h", $noir);
 		//imagestring($im, 2, 10+$i*($largeur-10)/(count($os)+1),min($hauteur-$hauteurImageRectangle-60,$hauteur-61), $nombre, $noir);
 	}
 }
