@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.34  2005/01/17 20:15:38  pico
+	Mail promo pour les kessiers
+
 	Revision 1.33  2005/01/03 20:43:17  pico
 	Ajout du lien vers la page de visualisation des droits
-
+	
 	Revision 1.32  2004/12/17 19:59:31  pico
 	Ajout du lien vers l'historique qdj
 	
@@ -199,7 +202,7 @@ $permissions_user = $_SESSION['user']->perms ;
 ?>
 <page id="admin" titre="Frankiz : administration">
 	<? 
-	if (verifie_permission('admin')||verifie_permission('web')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('xshare')||verifie_permission('faq')){
+	if (verifie_permission('admin')||verifie_permission('web')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('xshare')||verifie_permission('faq')||verifie_permission('kes')){
 	?>
 		<h2>Administration frankiz</h2>
 	<? 
@@ -211,7 +214,7 @@ $permissions_user = $_SESSION['user']->perms ;
 			<lien titre="Ajouter un utilisateur" url="admin/user_rajout.php"/>
 	<?
 	}
-	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('web')||verifie_permission('trombino')){
+	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('web')||verifie_permission('trombino')||verifie_permission('kes')){
 	?>
 	<h3>Validations Variées</h3>
 	<?
@@ -252,7 +255,7 @@ $permissions_user = $_SESSION['user']->perms ;
 		<lien titre="Valider les sondages (<?=$nb?>)" url="admin/valid_sondages.php"/><br/>
 	<?
 	}
-	if (verifie_permission('admin')){
+	if (verifie_permission('admin')||verifie_permission('kes')){
 		$DB_valid->query("SELECT eleve_id FROM valid_mailpromo") ;
 		$nb = $DB_valid->num_rows() ;
 	?>

@@ -22,9 +22,12 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.42  2005/01/17 20:15:39  pico
+	Mail promo pour les kessiers
+
 	Revision 1.41  2005/01/12 22:40:39  pico
 	Ajout des fêtes à souhaiter
-
+	
 	Revision 1.40  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
 	
@@ -213,14 +216,15 @@ function liste_modules() {
 */
 function liste_droits() {
 	return array(
-                "admin"            =>"Administrateur Total",
-                "web"              =>"Webmestre de Frankiz",
-                "qdjmaster"        =>"QdjMaster",
-                "xshare"           =>"Xshare",
-                "faq"              =>"Faqmestre",
-                "trombino"         =>"TrombinoMen",
-                "bob"              =>"(EXT) BobarMen",
-                "affiches"         =>"(EXT) Affiches (ex BRC...)"
+		"admin"            =>"Administrateur Total",
+		"web"              =>"Webmestre de Frankiz",
+		"qdjmaster"        =>"QdjMaster",
+		"xshare"           =>"Xshare",
+		"faq"              =>"Faqmestre",
+		"trombino"         =>"TrombinoMen",
+		"kes"         =>"(EXT) Kessiers (mail promo)",
+		"bob"              =>"(EXT) BobarMen",
+		"affiches"         =>"(EXT) Affiches (ex BRC...)"
 		);
 }
 
