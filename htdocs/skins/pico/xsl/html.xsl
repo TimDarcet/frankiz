@@ -89,7 +89,7 @@
 </xsl:template>
 
 <xsl:template match="liste/entete">
-	<td class="entete">
+	<td class="entete" valign="top">
 		<xsl:choose><xsl:when test="boolean(@action)">
 			<a><xsl:attribute name="href"><xsl:value-of select="@action"/></xsl:attribute>
 				<xsl:value-of select="@titre"/>
@@ -103,7 +103,7 @@
 <xsl:template match="liste/element">
 	<tr>
 		<xsl:if test="../@selectionnable='oui'">
-			<td class="element">
+			<td class="element" valign="top">
 				<xsl:choose>
 					<xsl:when test="not(boolean(@selectionnable))">
 						<input type="checkbox">

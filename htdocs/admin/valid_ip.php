@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.29  2005/01/10 08:04:25  pico
+	Mise en page
+
 	Revision 1.28  2005/01/10 07:55:04  pico
 	Tjs bug #21
-
+	
 	Revision 1.27  2005/01/10 07:48:58  pico
 	Bug #21
 	
@@ -182,7 +185,7 @@ $DB_admin->query("UNLOCK TABLES");
 		<entete id="raison" titre="Raison"/>
 		<entete id="ip" titre="IP"/>
 <?
-		$DB_valid->query("SELECT v.raison,e.nom,e.prenom,e.piece_id,e.eleve_id,p.prise_id FROM valid_ip as v LEFT JOIN trombino.eleves as e USING(eleve_id) LEFT JOIN admin.prises AS p USING(piece_id)");
+		$DB_valid->query("SELECT v.raison,e.nom,e.prenom,e.piece_id,e.eleve_id,p.prise_id FROM valid_ip as v LEFT JOIN trombino.eleves as e USING(eleve_id) LEFT JOIN admin.prises AS p USING(piece_id) WHERE p.type='principale'");
 		while(list($raison,$nom,$prenom,$piece,$eleve_id,$prise) = $DB_valid->next_row()) {
 ?>
 			<element id="<? echo $eleve_id ;?>">
