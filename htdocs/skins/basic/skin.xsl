@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.26  2004/11/24 12:51:02  kikx
+	Pour commencer la compatibilité wiki
+
 	Revision 1.25  2004/11/13 00:25:00  schmurtz
 	bizarrerie d'organisation
-
+	
 	Revision 1.24  2004/11/13 00:12:24  schmurtz
 	Ajout du su
 	
@@ -160,7 +163,7 @@
 			<center><xsl:apply-templates select="image"/></center>
 		</td></tr>
 		<tr><td>
-			<xsl:apply-templates select="html"/>
+			<xsl:apply-templates/>
 			<p class="signature"><b><xsl:apply-templates select="eleve"/></b></p>
 		</td></tr>
 	</table><br />

@@ -24,9 +24,12 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.36  2004/11/24 12:51:02  kikx
+	Pour commencer la compatibilité wiki
+
 	Revision 1.35  2004/11/09 19:42:15  pico
 	Passage de tous les paramètres de conf dans etc/config.php
-
+	
 	
 */
 
@@ -78,5 +81,6 @@ require_once "mail.inc.php";
 require_once "login.inc.php";
 require_once "skin.inc.php";
 require_once "compress.inc.php";
+require_once "wiki.inc.php";
 
 ?>

@@ -21,15 +21,18 @@
 	Moteur Wiki (TipiWiki)
 	
 	$Log$
+	Revision 1.2  2004/11/24 12:51:02  kikx
+	Pour commencer la compatibilité wiki
+
 	Revision 1.1  2004/11/24 00:26:09  schmurtz
 	Debut de gestion de wiki
-
+	
 */
 
 function wikiVersXML($filtered) {
 	// from Simon Schoar <simon@schoar.de> :
 	$regexURL = "((http|https|ftp|mailto):\/\/[\w\.\:\@\?\&\~\%\=\+\-\/\_\;]+)";
-	$regexURLText = "([\w\.\:\@\?\&\~\%\=\+\-\/\_\ \;\,\$]+)";
+	$regexURLText = "([\w\.\:\'\@\?\&\~\%\=\+\-\/\_\ \;\,\$éèàù]+)";
 	
 	// php-specific
 	$filtered = "\n".str_replace("\r\n","\n",$filtered)."\n";

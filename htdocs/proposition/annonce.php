@@ -21,10 +21,13 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.26  2004/11/24 12:51:02  kikx
+	Pour commencer la compatibilité wiki
+
 	Revision 1.25  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
-
+	
 	Revision 1.24  2004/11/22 23:38:42  kikx
 	Ajout de <note></note> un peu partout pour plus de compréhension !
 	
@@ -209,7 +212,7 @@ if (!isset($_POST['titre']))  $_POST['titre']="Titre" ;
 			categorie=""
 			date="<? echo date("d/m/y") ?>">
 			<? 
-			echo "<html>{$_POST['text']}</html>" ;
+			echo wikiVersXML($_POST['text']) ;
 			if ((!isset($_POST['valid']))&&(file_exists(DATA_DIR_LOCAL."annonces/temp_$eleve_id"))) {
 			?>
 				<image source="<?echo DATA_DIR_URL."annonces/temp_".$eleve_id ; ?>" texte=""/>
@@ -271,6 +274,7 @@ if (isset($_POST['valid'])) {
 		<bouton id='test' titre="Tester"/>
 		<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider votre annonce ?')"/>
 	</formulaire>
+	<lien titre="Aide WIKI" url="helpwiki.php"/>
 <?
 }
 ?>
