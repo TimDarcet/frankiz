@@ -68,7 +68,7 @@ foreach ($os as $nom => $nombre) {
 $i=0;
 foreach ($os as $nom => $nombre) {
 	$i++;
-	if(substr($nom,11,2)=="00"){
+	if(substr($nom,12,2)=="00"){
 		$hauteurImageRectangle = ceil((($nombre*($hauteur-60))/$max_os));
 		ImageString ($im, 2, 10+$i*($largeur-10)/(count($os)+1), $hauteur-38, substr($nom,9,2)."h", $noir);
 		//imagestring($im, 2, 10+$i*($largeur-10)/(count($os)+1),min($hauteur-$hauteurImageRectangle-60,$hauteur-61), $nombre, $noir);
