@@ -33,11 +33,12 @@ require "../include/page_header.inc.php";
 <? 
 
 	if (($ip!=$_SERVER['REMOTE_ADDR'])&&(substr($_SERVER['REMOTE_ADDR'],0,7)=="129.104")) {
-		echo "<commentaire>ATTENTION : " ;
+		echo "<warning>ATTENTION : " ;
 		echo "Ton ip est actuellement ".$_SERVER['REMOTE_ADDR'] ; 
-		echo " et ceci ne devrait pas être le cas si tu te connecte de ton kzert</commentaire>";
+		echo " et ceci ne devrait pas être le cas si tu te connecte de ton kzert</warning>";
 	}
 ?>
+	<note>Si tu souhaite une nouvelle ip clique <lien titre='ici' url='profil/demande_ip.php'/></note>
 	</p>
 	<h2>Nom de tes machines</h2>
 	<p>En construction…</p>

@@ -72,6 +72,9 @@ if(isset($_POST['supprimer'])) {
 		<champ titre="Ip" id="rech_ip" valeur="<? echo $_POST['rech_ip']?>" />
 		<bouton titre="Recherche" id="recherche"/>
 	</formulaire>
+<?
+if (isset($_POST['recherche']) ) {
+?>
 
 	<liste id="liste_ip" selectionnable="oui" action="admin/ip.php">
 		<entete id="login" titre="Login"/>
@@ -168,6 +171,9 @@ if(isset($_POST['supprimer'])) {
 ?>
 		<bouton titre="Supprimer" id="supprimer"/>
 	</liste>
+<?
+}
+?>
 
 </page>
 

@@ -128,6 +128,12 @@ p.warning {
 	border: 1px solid #FF3333;
 }
 
+p.note {
+	color: inherit;
+	background: #EFEFEF;
+	font-size: 75%;
+	padding: 6px;
+}
 /* Liste */
 table.liste {
 	border: 1px solid #888888;

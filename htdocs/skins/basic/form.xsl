@@ -17,7 +17,7 @@
 			<xsl:if test="boolean(@titre)">
 				<tr><td class="titre" colspan="2"><xsl:value-of select="@titre"/></td></tr>
 			</xsl:if>
-			<xsl:apply-templates select="champ|choix"/>
+			<xsl:apply-templates select="champ|choix|zonetext"/>
 			<tr><td class="boutons" colspan="2"><center><xsl:apply-templates select="bouton"/></center></td></tr>
 		</table>
 	</form>
@@ -31,7 +31,29 @@
 	<p class="warning"><xsl:apply-templates/></p>
 </xsl:template>
 
+<xsl:template match="note">
+	<p class="note"><xsl:apply-templates/></p>
+</xsl:template>
+
 <!-- champs contenant du texte -->
+<xsl:template match="formulaire/zonetext">
+	<tr><td class="gauche">
+		<xsl:value-of select="@titre"/><xsl:text> :</xsl:text>
+	</td><td class="droite">
+		<xsl:choose><xsl:when test="@modifiable='non'">
+			<xsl:value-of select="@valeur"/>
+		</xsl:when><xsl:otherwise>
+			<textarea>
+				<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+				<xsl:attribute name="rows">5</xsl:attribute>
+				<xsl:attribute name="cols">25</xsl:attribute>
+				<xsl:value-of select="@valeur"/>
+			</textarea>
+		</xsl:otherwise></xsl:choose>
+	</td></tr>
+</xsl:template>
+
+
 <xsl:template match="formulaire/champ">
 	<tr><td class="gauche">
 		<xsl:value-of select="@titre"/><xsl:text> :</xsl:text>
@@ -49,6 +71,17 @@
 			</input>
 		</xsl:otherwise></xsl:choose>
 	</td></tr>
+</xsl:template>
+
+
+
+<xsl:template match="zonetext">
+	<textarea>
+		<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+		<xsl:attribute name="ROWS">5</xsl:attribute>
+		<xsl:attribute name="COLS">25</xsl:attribute>
+		<xsl:value-of select="@valeur"/>
+	</textarea>
 </xsl:template>
 
 <xsl:template match="champ">
