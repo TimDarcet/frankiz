@@ -1,0 +1,1 @@
+CSS colorée sur 2 colonnes (va avec la skin Pico)

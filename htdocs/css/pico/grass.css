@@ -1,0 +1,383 @@
+/* $Id$ */
+/*
+	Copyright (C) 2004 Binet Réseau
+	http://www.polytechnique.fr/eleves/binets/br/
+	
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2
+	of the License, or (at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+*/
+
+body {
+	background-color: #fff699;
+	background-image:url("grass/grass.jpg");
+	margin: 0;
+	padding: 2px;
+	color: #dfd;
+}
+
+img {
+	border: 0;
+}
+
+a {
+	text-decoration: none;
+	color: #fe6;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+/* Structure de la page */
+
+.fkz_page {
+    clear: both;
+    width: 100%;     
+}
+
+
+.fkz_droite, .fkz_gauche{
+        width: 20%;
+	font-size: 9pt;
+	left: 0.5%;
+	margin-top: 0.5%;
+}
+
+.fkz_centre {
+	position: absolute;
+	font-size: 9pt;
+	left: 21%;
+	width: 78%;
+}
+
+/* Fin Structure de la page */
+
+/* Logos Modules */
+
+div.fkz_logo {
+	background-image:url("grass/logo.png");
+	background-repeat:no-repeat;
+	height:90px;
+ }
+
+span.fkz_logo {
+	display:none;
+}
+
+#contacts, #liens_ecole, #meteo,#stats,#serveurs,#tour_kawa,#qdj_hier,#qdj,#anniversaires{
+	display:none;
+ }
+
+#contacts_logo,#liens_ecole_logo,#meteo_logo,#stats_logo,#serveurs_logo,#tour_kawa_logo,#qdj_hier_logo,#qdj_logo,#anniversaires_logo{
+	background-repeat:no-repeat;
+	background-position: center;
+	height: 22px;
+	width: 100%;
+	display:block;
+ }
+
+#contacts_logo {
+	background-image:url("grass/contact.png");
+ }
+
+#liens_ecole_logo {
+	background-image:url("grass/ecole.png");
+ }
+ 
+#meteo_logo {
+	background-image:url("grass/meteo.png");
+ }
+ 
+#stats_logo {
+	background-image:url("grass/stats.png");
+ }
+ 
+#serveurs_logo {
+	background-image:url("grass/serveurs.png");
+ }
+ 
+#tour_kawa_logo {
+	background-image:url("grass/tour_kawa.png");
+ }
+ 
+#qdj_hier_logo {
+	background-image:url("grass/qdj_hier.png");
+ }
+ 
+#qdj_logo{
+	background-image:url("grass/qdj.png");
+ }
+ 
+#anniversaires_logo {
+	background-image:url("grass/anniversaire.png");
+ }
+ 
+ /* Fin Logos Modules */
+
+
+ 
+/* QDJ */
+
+.fkz_qdj_question {
+    font-size: 11pt;
+    text-align: center;   
+}
+
+.fkz_qdj_jone, .fkz_qdj_rouje,.fkz_qdj_jone_reponse,.fkz_qdj_rouje_reponse{
+	background-repeat:no-repeat;
+	background-position: center center;
+	height:60px;
+	text-align: center;
+	width: 49%;
+}
+
+.fkz_qdj_jone {
+	background-image:url("../skins/pico/pointjone.gif");
+	float: right;
+}
+
+.fkz_qdj_rouje {
+	background-image:url("../skins/pico/pointrouje.gif");
+	float: left;
+}
+
+
+.fkz_qdj_jone a{
+	color: red;
+}
+
+.fkz_qdj_rouje a{
+	color: yellow;
+}
+
+
+.fkz_qdj_jone_reponse {
+	color: yellow;
+	float: right;
+}
+
+.fkz_qdj_rouje_reponse {
+    float: left;
+    color: red;
+}
+
+.fkz_qdj_last{
+list-style-type:  none;  
+text-align:left; 
+}
+
+/* Fin QDJ */
+
+
+
+div.fkz_liens_nav, .fkz_anniversaire_titre,.fkz_titre,.fkz_annonces,.fkz_trombino{
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+	border-top: 1px solid #888888;
+}
+
+.fkz_liens,.fkz_contact,.fkz_stats {
+	list-style-type:none;
+}
+li.fkz_liens a:hover,li.fkz_contact a:hover,li.fkz_stats a:hover {
+	background-image:url("grass/grassbrown.jpg");
+}
+
+div.fkz_liens_nav {
+	font-size: 9pt;
+	font-weight: bold;
+	background-image:url("grass/grassbrown.jpg");
+	padding: 2px;
+	text-align: center;
+}
+
+li.fkz_liens_nav{
+	list-style-type:none;
+	display: inline;
+	padding-right:5px;
+}
+ul.fkz_liens_nav{
+	display: inline;
+}
+
+li.fkz_liens_nav a:hover{
+	background-image:url("grass/grassdark.jpg");
+	display: inline;
+}
+
+.fkz_anniversaire_titre {
+	background-image:url("grass/grassbrown.jpg");
+	text-align : center;
+}
+
+.fkz_anniversaire {
+	background-image:url("grass/grassdark.jpg");
+	font-size: 9pt;
+	background-color: #ffc0cb;
+	max-width: 100%; 
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+}
+
+.fkz_titre {
+	color: inherit;
+	background-image:url("grass/grassbrown.jpg");
+	text-align : center;
+}
+
+.fkz_module {
+	color: inherit;
+	background-image:url("grass/grassdark.jpg");
+	margin-bottom: 10px;
+	padding: 2px;
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+}
+
+.fkz_trombino {
+	font-size: 9pt;
+	text-align: left;
+	max-width: 100%; 
+}
+
+.fkz_sommaire {
+	background-image:url("grass/grassdark.jpg");
+	font-size: 9pt;
+	text-align: left;
+	max-width: 100%; 
+}
+
+.fkz_sommaire_titre {
+	background-image:url("grass/grassbrown.jpg");
+	font-size: 9pt;
+	font-weight: bold;
+	text-align: center;
+	max-width: 100%; 
+	margin: 0;
+	padding: 0;
+}
+
+.fkz_annonces {
+	background-image:url("grass/grassdark.jpg");
+	font-size: 9pt;
+	text-align: left;
+	max-width: 100%; 
+}
+
+/* Logos Catégories d'annonce */
+
+span.fkz_annonces_vieux,span.fkz_annonces_nouveau, span.fkz_annonces_important,span.fkz_annonces_reste,span.fkz_annonces_reste {
+	background-repeat:no-repeat;
+	height:16px;
+	padding-left:16px;
+ }
+
+span.fkz_annonces_vieux {
+	background-image:url("http://frankiz/accueil/info/icones/vieux.gif");
+}
+
+ span.fkz_annonces_nouveau {
+	background-image:url("http://frankiz/accueil/info/icones/nouveau.gif");
+}
+ 
+ span.fkz_annonces_important {
+	background-image:url("http://frankiz/accueil/info/icones/important.gif");
+ } 
+ 
+ span.fkz_annonces_reste {
+	background-image:url("http://frankiz/accueil/info/icones/reste.gif");
+ } 
+  
+ span.fkz_annonces_cat {display:none;}
+ 
+ /* Fin Logos Catégories d'annonce */
+ 
+ /* Logos W3C */
+
+span.valid_xhtml,span.valid_css {
+	width: 88px;
+	height:31px;
+	position: relative;
+	display:block;
+}
+ 
+span.valid_xhtml {
+	background-image:url("http://www.w3.org/Icons/valid-xhtml10");
+	left: 5px;
+}
+
+span.valid_css {
+	background-image:url("http://www.w3.org/Icons/valid-css");
+	left: 98px;
+	top: -31px;
+}
+ 
+ /* Fin Logos W3C */
+
+
+/* Stats */
+ 
+.fkz_stats{list-style-type:  none;}
+
+.serveur_nom {
+	display: block;
+	color: inherit;
+}
+
+.serveur_up {
+	color: inherit;
+	background: lime;
+	position: relative;
+	left: 80px;
+	top: -16px;
+}
+
+.serveur_down {
+	color: inherit;
+	background: red;
+	position: relative;
+	left: 80px;
+	top: -16px;
+}
+
+/* FAQ et Xshare */
+.noeud_ferme{list-style-image:url('../skins/pico/fold_close.gif')}
+.noeud_ouvert{list-style-image:url('../skins/pico/fold_open.gif')}
+.feuille{list-style-image:url('../skins/pico/question.gif')}
+
+/* Commentaires et Warning */
+
+p.commentaire,p.warning,p.note {
+	color: inherit;
+	padding: 6px;
+	margin: 5px;
+}
+
+p.commentaire {
+	background-image:url("grass/commentaire.jpg");
+	border: 1px solid #FFDD00;
+}
+
+p.warning {
+	background-image:url("grass/warning.jpg");
+	border: 1px solid #FF3333;
+}
+
+p.note {
+	background-image:url("grass/note.jpg");
+	font-size: 75%;
+}
