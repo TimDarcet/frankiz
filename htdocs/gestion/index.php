@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.11  2004/11/22 23:07:28  kikx
+	Rajout de lines vers les pages perso
+
 	Revision 1.10  2004/11/17 13:32:18  kikx
 	Mise en place du lien pour l'admin
-
+	
 	Revision 1.9  2004/11/12 23:32:14  schmurtz
 	oublie dans le deplacement du trombino
 	
@@ -173,6 +176,11 @@ $permissions_user = ses_permissions() ;
 		$nb = $DB_valid->num_rows() ;
 		?>
 		<lien titre="Valider les qdj (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_qdj.php"/>
+		<?
+		$DB_valid->query("SELECT id FROM valid_pageperso") ;
+		$nb = $DB_valid->num_rows() ;
+		?>
+		<lien titre="Valider les page persos (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_pageperso.php"/>
 		<?
 		$DB_valid->query("SELECT binet_id FROM valid_binet") ;
 		$nb = $DB_valid->num_rows() ;

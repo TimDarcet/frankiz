@@ -22,9 +22,12 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.5  2004/11/22 23:07:28  kikx
+	Rajout de lines vers les pages perso
+
 	Revision 1.4  2004/11/22 18:59:31  kikx
 	Pour gérer son site perso
-
+	
 	Revision 1.3  2004/11/13 00:10:14  schmurtz
 	Il FAUT mettre les entetes de licence GPL dans les nouveaux fichiers
 	Faut aussi eviter d'utiliser une structure d'entetes perso qui casse l'homogeneite
@@ -52,6 +55,7 @@ define('BASE_BINETS',"/home/frankiz2/binets/");
 define('BASE_PAGESPERSOS',"/home/frankiz2/webperso/");
 
 define('URL_DATA','http://'.$_SERVER['HTTP_HOST'].'/frankiz2/data/');
+define('URL_PAGEPERSO','http://'.$_SERVER['HTTP_HOST'].'/frankiz2/webperso/');
 
 define('DATA_DIR_LOCAL',BASE_DATA);	// pour compatibilité
 define('DATA_DIR_URL',URL_DATA);

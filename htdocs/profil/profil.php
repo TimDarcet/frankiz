@@ -24,9 +24,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.29  2004/11/22 23:07:28  kikx
+	Rajout de lines vers les pages perso
+
 	Revision 1.28  2004/11/22 21:17:12  kikx
 	merci pico !!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+	
 	Revision 1.27  2004/11/22 21:04:54  kikx
 	Pour le debug de Pico
 	
@@ -275,6 +278,27 @@ if(isset($_REQUEST['download_type'])){
 		$message .= "<warning>Tu n'as jamais upoadé de site personnel</warning>" ;
 	}
 }
+if(isset($_POST['ext'])){
+	$DB_valid->query("SELECT id FROM valid_pageperso WHERE eleve_id='".$_SESSION['user']->uid."'") ;
+	if ($DB_valid->num_rows()==0) {
+		$DB_valid->query("INSERT INTO valid_pageperso SET eleve_id='".$_SESSION['user']->uid."'") ;
+		
+		$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
+
+		$contenu = "$nom $prenom ($promo) a demandé que sa page perso apparaisse sur la liste des sites personnels <br><br>".
+			"Pour valider ou non cette demande va sur la page suivante : <br>".
+			"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_pageperso.php'>".
+			"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_pageperso.php</a></div><br><br>" .
+			"Très BR-ement<br>" .
+			"L'automate :)<br>"  ;
+			
+		couriel(WEBMESTRE_ID,"[Frankiz] Demande de page perso de $nom $prenom",$contenu);
+		$message .= "<commentaire>Ta demande a été prise en compte et sera validée dans les meilleurs délai... Merci</commentaire>" ;
+
+	} else {
+		$message .="<warning>Tu as déjà demandé d'être sur cette liste</warning>" ;
+	}
+}
 
 // Génération du la page XML
 require "../include/page_header.inc.php";
@@ -379,6 +403,8 @@ require "../include/page_header.inc.php";
 			<note>Nous te conseillons de sauvegarder ton site avant d'uploader le nouveau en cas de problème.</note>
 			<lien titre="Télécharger en .zip" url="profil/profil.php?download_type=zip" />
 			<lien titre="Télécharger en .tar.gz" url="profil/profil.php?download_type=tar.gz" />
+			<note>Si tu souhaites que ton site apparaisse sur la liste des sites élèves, clique sur le bouton "Exterieur"</note>
+			<bouton id="ext" titre="Exterieur"/>
 		<?
 		}
 		?>
@@ -405,7 +431,7 @@ require "../include/page_header.inc.php";
 		echo "<h2>Gestion des fichiers du site perso</h2>";
 		
 		echo "<arbre>";
-		echo "<noeud titre=\"/$login-$promo\">" ;
+		echo "<noeud titre=\"/\">" ;
 		
 		$arbo = parcours_arbo1(BASE_PAGESPERSOS.$login."-".$promo);
 		echo "</noeud>" ;

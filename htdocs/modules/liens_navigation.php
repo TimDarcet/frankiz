@@ -21,9 +21,12 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.18  2004/11/22 23:07:28  kikx
+	Rajout de lines vers les pages perso
+
 	Revision 1.17  2004/11/12 23:32:14  schmurtz
 	oublie dans le deplacement du trombino
-
+	
 	Revision 1.16  2004/11/11 20:15:19  kikx
 	Deplacemeent du fichier des binets pour que ca erste logique
 	
@@ -95,6 +98,7 @@
 	<?php if(!empty($_SESSION['user']->perms)): ?>
 		<lien id="admin" titre="Administration" url="gestion/" key="g"/>
 	<?php endif; ?>
+	<lien id="siteseleves" titre="Sites Eleves" url="siteseleves.php" key="v"/>			
 	<lien id="vocab" titre="Vocabulaire" url="vocabulaire.php" key="v"/>			
 
 </module>
