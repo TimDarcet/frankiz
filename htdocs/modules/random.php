@@ -21,6 +21,6 @@
 <module id="random" visible="false">
 <?php
   $n_rand = 5;
-  for($i=0; $i<$n_rand; $i++) echo "<random value=\"".rand()."\" /><BR />";
+  for($i=0; $i<$n_rand; $i++) echo "<p>".rand()."</p>";
 ?>
 </module>

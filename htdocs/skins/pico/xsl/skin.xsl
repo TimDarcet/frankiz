@@ -159,7 +159,6 @@
 
 <xsl:template match="module[@id='rss']">
 	 <div class="fkz_module" id='mod_rss'>
-	 	
 		<div class="fkz_titre">
 			<a>
 				<xsl:attribute name="href"><xsl:value-of select="lien[position()=1]/@url"/></xsl:attribute>
@@ -186,15 +185,17 @@
 </xsl:template>
 
 <xsl:template match="module">
-	<div class="fkz_module"><xsl:attribute name="id">mod_<xsl:value-of select="@id"/></xsl:attribute>
-		<div class="fkz_titre">
-			<span><xsl:attribute name="id"><xsl:value-of select="@id"/>_logo</xsl:attribute><xsl:text> </xsl:text></span>
-			<span><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute><xsl:value-of select="@titre"/></span>
+	<xsl:if test="@visible!='false'">
+		<div class="fkz_module"><xsl:attribute name="id">mod_<xsl:value-of select="@id"/></xsl:attribute>
+			<div class="fkz_titre">
+				<span><xsl:attribute name="id"><xsl:value-of select="@id"/>_logo</xsl:attribute><xsl:text> </xsl:text></span>
+				<span><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute><xsl:value-of select="@titre"/></span>
+			</div>
+			<div class="fkz_module_corps">
+				<xsl:apply-templates/>
+			</div>
 		</div>
-		<div class="fkz_module_corps">
-			<xsl:apply-templates/>
-		</div>
-	</div>
+	</xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>
