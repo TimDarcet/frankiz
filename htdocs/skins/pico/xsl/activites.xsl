@@ -33,7 +33,7 @@
 </xsl:template>
 
 <xsl:template match="annonce" mode="activites">
-		<div>
+		<div style="text-align:center">
 			<b>
 				<span><xsl:value-of select="@titre"/></span>
 			</b>

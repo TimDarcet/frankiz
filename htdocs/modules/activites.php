@@ -21,9 +21,12 @@
 	Script de crÈation de la partie activitÈs contenant des images type "affiche".
 	
 	$Log$
+	Revision 1.16  2005/01/17 08:16:01  pico
+	Passage de l'ouverture du bob en gras
+
 	Revision 1.15  2005/01/12 23:20:30  pico
 	ActivitÈs extÈrieures, et triÈes par heure...
-
+	
 	Revision 1.14  2005/01/02 10:50:25  pico
 	Passage de certaines pages en visibles de l'intÈrieur (non logguÈ)
 	
@@ -69,7 +72,7 @@ $DB_web->query("SELECT affiche_id,titre,url,date,exterieur FROM affiches WHERE T
 	
 if ($DB_web->num_rows()!=0 || $valeur=='1'){
 	echo "<module id=\"activites\" titre=\"ActivitÈs\">\n";
-	if(est_authentifie(AUTH_INTERNE) && $valeur == 1) echo "<annonce><p>Le BÙB est ouvert</p></annonce>";
+	if(est_authentifie(AUTH_INTERNE) && $valeur == 1) echo "<annonce titre=\"Le BÙB est ouvert\"/>";
 	while (list($id,$titre,$url,$date,$exterieur)=$DB_web->next_row()) { 
 		if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
 	?>
