@@ -6,6 +6,7 @@ Version de développement dans son home perso :
 - c'est maintenant accessible via l'URL http://gwennoz/~login/htdocs/
 
 Version de "prod" (celle sur http://gwennoz/frankiz2/) :
-- créer les dossiers ./data/affiches, ./data/annonces, ./data/binets, ./data/photos
+- créer les dossiers ./data/affiches, ./data/annonces, ./data/binets, ./data/photos (il y en a déjà qui sont créer par la cvs)
+- modifier le htdocs/global.inc.php qui fait actuellement pointer le data/ en dur 
 - mettre les droits o+w sur ./cache, ./data/affiches, ./data/annonces, ./data/binets, ./data/photos/*
 - modifier le cron pour lancer le script status-net (tous les quarts d'heure par exemple)
