@@ -21,9 +21,12 @@
 	Page qui permet de demander une clé windows
 	
 	$Log$
+	Revision 1.15  2005/01/17 23:25:08  pico
+	Suite des corrections dei
+
 	Revision 1.14  2005/01/17 23:15:37  pico
 	debug pages de dei
-
+	
 	Revision 1.13  2005/01/17 22:07:33  dei
 	mise a jour de la page, compatible avec admin/admin_licences.php
 	
@@ -75,28 +78,28 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 				//si la personne a déjà demandé sa clé...
 				if($attrib != 0){
 				?>
-				<p>Tu as déjà demandé ta clé, elle va t'être ré-expédiée sur ta boite mail.</p>
+				<commentaire>Tu as déjà demandé ta clé, elle va t'être ré-expédiée sur ta boite mail.</commentaire>
 				<?php
-					$contenu="La clé qui vous a déjà été attribuée est : $cle <br/><br/>".
+					$contenu="La clé qui vous a déjà été attribuée est : $cle <br><br>".
 						"Très Cordialement<br>" .
 						"Le BR<br>"  ;
 				//a completer couriel(WEBMESTRE_ID,"[Frankiz] Validation d'une annonce",$contenu,$eleve_id);
 					couriel($eleve_id,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,WINDOWS_ID);
-					$contenu="La clé demandée par $nom $prenom X $promo est : $cle <br/><br/>".
+					$contenu="La clé demandée par $nom $prenom X $promo est : $cle <br><br>".
 						"Très Cordialement<br>" .
 						"Le BR<br>"  ;
 					couriel(WINDOWS_ID,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,$eleve_id);
 				} else {
 				?>
-				<p>Ta nouvelle clé va t'être expédiée sur ta boite mail.</p>
+				<commentaire>Ta nouvelle clé va t'être expédiée sur ta boite mail.</commentaire>
 				<?php
 				// sinon on l'ajoute... et on update la base...
 						$DB_msdnaa->query("UPDATE cles_winxp SET attrib='1' WHERE eleve_id='".$_SESSION['user']->uid."'");
-						$contenu="La clé qui vous a été attribuée est : $cle <br/><br/>".
+						$contenu="La clé qui vous a été attribuée est : $cle <br><br>".
 							"Très Cordialement<br>" .
 							"Le BR<br>"  ;
 					couriel($eleve_id,"[Frankiz] Demande de licence Microsoft $nom $prenom X $promo ",$contenu,WINDOWS_ID);
-					$contenu="La clé attribuée à $nom $prenom X $promo est : $cle <br/><br/>".
+					$contenu="La clé attribuée à $nom $prenom X $promo est : $cle <br><br>".
 						"Très Cordialement<br>" .
 						"Le BR<br>"  ;
 					couriel(WINDOWS_ID,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,$eleve_id);
@@ -119,7 +122,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 			}
 		}
 		//traitement particulier pour les autres logiciels
-		if($_POST['logiciel']!="xppro"){
+		else{
 ?>
 			<formulaire id="dem_licence" titre= "Les licences pour les logiciels Microsoft" action="profil/licences.php">
 				<warning>Vu le faible nombre de licences que nous possédons pour ce logiciel, il nous faut une raison valable pour te l'attribuer.</warning>
@@ -133,7 +136,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 	}
 
 	//On regarde si le bouton a été activé et si oui on interroge la base et on envoie le mail avec la licence...
-	if(isset($_POST['valid']) && !isset($_POST['refus'])){
+	else if(isset($_POST['valid']) && !isset($_POST['refus'])){
 		//on affiche la charte...
 		// et on demande l'accord
 	?>
