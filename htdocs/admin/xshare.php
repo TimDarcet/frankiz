@@ -1,9 +1,12 @@
 <? 
 /*
 		$Log$
+		Revision 1.13  2004/10/20 22:05:55  pico
+		Changements Noeuds/Feuilles
+
 		Revision 1.12  2004/10/20 19:58:46  pico
 		BugFix: génération des balises plus conforme
-
+		
 		Revision 1.11  2004/10/19 14:58:42  schmurtz
 		Creation d'un champ de formulaire specifique pour les fichiers (sans passer
 		l'element champ, qui actuellement est un peu acrobatique).
@@ -98,33 +101,25 @@ if(isset($_REQUEST['affich_elt'])) define("AFFICH_ELT",base64_decode($_REQUEST['
 // pour parcourir l'arbre
 // vers le bas
 //------------------------------
-
 function rech_fils($id_parent) {
-	global $DB_web ; 
+	global $DB_web, $a_marquer ; 
 
 	if (affiche_element_xshare($id_parent)) {			// on continue l'affichage ssi on demande l'affichage
 
-		if ($id_parent!=0) {
-			echo "<noeud class='foldinglist'>\n\r" ;
-		} else {
-			echo "<noeud>\n\r" ;
-		}
+		
 	
 		// affichage des folders et recherche de leurs fils 
 		//----------------------------------
 
 		$DB_web->query("SELECT id,nom FROM xshare WHERE descript='' AND id_parent='{$id_parent}'") ;
 		while(list($id,$nom) = $DB_web->next_row()) {
-			if (affiche_element_xshare($id)) {
-				echo "<feuille class='foldheader2'>\n\r";		// folder open
-			} else {
-				echo "<feuille class='foldheader1'>\n\r";		// folder fermé
+				echo "<noeud  id='".$id."' titre='".htmlspecialchars($nom,ENT_QUOTES)."' lien='xshare/index.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
+			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer)."' >\n\r" ;
+			if (eregi("/".$id."/",$a_marquer)) {
+				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche_folder.gif'/>\n\r" ;
 			}
-			echo "<a name=\"".$id."\"/>" ;
-			echo "<lien titre='".htmlspecialchars($nom,ENT_QUOTES)."' url='admin/xshare.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
-			echo "&amp;dir_id=".$id."#".$id."' />" ;
 			rech_fils($id) ;
-			echo "\n\r</feuille>\n\r " ;
+			echo "\n\r</noeud>\n\r " ;
 		}
 		
 		// affichage des vrais fichiers !
@@ -132,14 +127,17 @@ function rech_fils($id_parent) {
 		
 		$DB_web->query("SELECT id,nom FROM xshare WHERE descript!='' AND id_parent='{$id_parent}'" ) ;
 		while(list($id,$nom) = $DB_web->next_row()) {
-			echo "\n\r<feuille class='question'>\n\r" ;
-			echo "<lien titre='".htmlspecialchars($nom,ENT_QUOTES)."' url='admin/xshare.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
-			echo "#descript'/>" ;
+			echo "\n\r<feuille  id='".$id."'  titre='".htmlspecialchars($nom,ENT_QUOTES)."' lien='xshare/index.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
+			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
+			echo "#descript'>\n\r" ;
+			if (eregi("/".$id."/",$a_marquer)) {
+				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche.gif'/>\n\r" ;
+			}
 			echo "</feuille>\n\r" ;
 		}
-		echo "</noeud>\n\r" ;
 	}
 }
+
 
 //
 //Petit programme qui verifie
