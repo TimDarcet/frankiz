@@ -1,0 +1,213 @@
+<!DOCTYPE frankiz [
+<!--
+	DTD pour le sous ensemble XML utilisé dans la génération des pages du site web
+	de frankiz.
+	
+	$Id$
+-->
+
+<!ENTITY texte.formate "(#PCDATA|strong|a|image)*">
+<!ENTITY texte.misenpage "(h1|h2|h3|h4|h5|p|code|image|arbre|liste|formulaire)*">
+
+<!--
+	La sortie XML peut contenir plusieurs pages (ce n'est pas le cas pour l'instant,
+	on se réserve cette possibilité pour plus tard). Les informations indépendantes 
+	des pages sont données en attribut dans la balise <frankiz>, celle dépendante des
+	pages sont bien sûr données dans la balise <page>.
+	
+	Le site est organisé par "pages", chaque page contenant un seul bloc d'information
+	(en terme de formatage html, on pourrait dire un seul "div" et en termes de l'ancien
+	frankiz, un seul un cadre). Ce contenu est décrit dans la balise <contenu>.
+	
+	Un dispose cependant d'un poll de "modules", les modules étant des petits éléments
+	d'informations pouvant apparaître par exemple sous forme de cadre positionné sur le
+	côté dans une page HTML.
+-->
+<!ELEMENT frankiz (page)*>
+<!ATTLIST frankiz
+		base	CDATA   #REQUIRED	
+		css		CDATA   #IMPLIED>
+		<!-- "base" pour les urls relatives contenues dans la page
+			 "css" est l'url du fichier de style css -->
+
+<!ELEMENT page (module*|contenu)>
+<!ATTLIST page
+		id		ID		#REQUIRED
+		titre   CDATA   #IMPLIED>
+		<!-- "id" est un id qui permet de repérer de manière unique la page
+			 contrairement à l'id, le "titre" peut être modifier à tout moment sans cassé les
+			 skins XSL/CSS -->
+
+<!ELEMENT contenu &texte.misenpage;>
+
+<!ELEMENT module (&texte.misenpage;|statistique|qdj|annonce|eleve)*>
+<!ATTLIST module
+		id		ID		#REQUIRED
+		titre   CDATA   #IMPLIED
+		visible (true|false) "true">
+
+<!--
+	Pour écrire le contenu des "modules" ou des "pages", l'auteur d'une page à besoin
+	de donner un minimum d'informations de formatage. Pour cela, on utilisera quelques
+	balises très classique du html (p, h1, h2, strong), mais par contre aucune balise
+	donnant des informations de style (i, b, font).
+	
+	S'ajoute à ça des balises spécifique à frankiz, permettant d'abstraire encore plus
+	le style dans lequel l'information sera affichée que les balises équivalente du
+	HTML : lien, image, arbre, liste.
+-->
+<!ELEMENT h1 &texte.formate;>
+<!ELEMENT h2 &texte.formate;>
+<!ELEMENT h3 &texte.formate;>
+<!ELEMENT h4 &texte.formate;>
+<!ELEMENT h5 &texte.formate;>
+<!ELEMENT p &texte.formate;>
+<!ELEMENT code &texte.formate;>
+
+<!ELEMENT strong (#PCDATA|a)*>
+
+<!ELEMENT a (#PCDATA|strong)*>
+<!ATTLIST a
+		href	CDATA   #REQUIRED>
+
+<!ELEMENT lien EMPTY>
+<!ATTLIST lien
+		url		CDATA   #REQUIRED
+		titre   CDATA   #IMPLIED>
+		<!-- "url" de l'élément pointé par le lien
+			 le "titre" est le nom du lien affiché à l'utilisateur à la place de l'url -->
+	
+<!ELEMENT image EMPTY>
+<!ATTLIST image
+		source  CDATA   #REQUIRED
+		texte   CDATA   #REQUIRED
+		legende CDATA   #IMPLIED>
+		<!-- la "source" est l'url du fichier contenant l'image
+			 "texte" est un texte alternatif affiché à la place de l'image si besoin
+			 "legende", texte traditionnellement affichée juste sous l'image -->
+
+<!-- l'arbre à pour but d'affiche un ensemble de liens organisé, comme c'est le cas pour les FAQs -->
+<!ELEMENT arbre (noeud|feuille)+>
+<!ATTLIST arbre
+		id		ID		#REQUIRED
+		titre   CDATA   #IMPLIED>
+<!ELEMENT noeud (noeud|feuille)+>
+<!ATTLIST noeud
+		titre   CDATA   #REQUIRED
+		lien	CDATA   #IMPLIED>
+<!ELEMENT feuille &texte.formate;>
+<!ATTLIST feuille
+		titre   CDATA   #REQUIRED
+		lien	CDATA   #IMPLIED>
+
+<!-- la liste à pour but de servir à afficher le résultat de requètes mysql -->
+<!ELEMENT liste (entete*,element*,bouton*)>
+<!ATTLIST liste
+		id		ID		#REQUIRED
+		selectionnable (oui|non) "non"
+		action  CDATA   #IMPLIED>
+		<!-- si la liste est selectionnable, il doit y avoir un attribut "action" (la liste est
+		alors un formulaire) ainsi qu'au moins un élément "bouton" -->
+<!ELEMENT entete EMPTY>
+<!ATTLIST entete
+		id		CDATA   #REQUIRED
+		titre   CDATA   #REQUIRED>
+<!ELEMENT element (colonne+)>
+<!ATTLIST element
+		id		CDATA   #IMPLIED>   <!-- l'id doit existé si la liste est sélectionnable -->
+<!ELEMENT colonne (&texte.formate;|champ|choix|bouton)>
+<!ATTLIST colonne
+		id		CDATA   #REQUIRED>  <!-- un id de colonne doit correspondre à un id d'entête -->
+
+<!--
+	Définition générique de formulaire. Encore une fois, l'utilisation de balises
+	différentes du HTML à pour but de rendre la sortie encore plus skinnable : par
+	exemple, aucun texte n'apparaît hors des balises (comme c'est le cas en HTML 
+	pour afficher le titre des cases à cocher)
+-->
+
+<!ELEMENT formulaire (commentaire?,(champ|choix)*,bouton+)>
+<!ATTLIST formulaire
+		id		ID		#REQUIRED
+		titre   CDATA   #REQUIRED
+		action  CDATA   #REQUIRED>
+		
+<!ELEMENT commentaire (&texte.formate;)>	<!-- commentaire, explication sur ce que permet de faire
+												 ce formulaire -->
+
+<!ELEMENT champ EMPTY>
+<!ATTLIST champ
+		id		ID		#REQUIRED
+		titre   CDATA   #IMPLIED
+		valeur  CDATA   #IMPLIED>   <!-- si l'id commence par 'passwd', un champ de mot de passe
+										 doit être utilisé -->
+
+<!ELEMENT choix (option)+>
+<!ATTLIST choix
+		id		ID		#REQUIRED
+		titre   CDATA   #IMPLIED
+		type	(combo|radio|checkbox) "combo"
+		valeur  CDATA   #IMPLIED>
+<!ELEMENT option EMPTY>
+<!ATTLIST option
+		id		CDATA   #REQUIRED
+		titre   CDATA   #IMPLIED>
+
+<!ELEMENT bouton EMPTY>
+<!ATTLIST bouton
+		id		CDATA   #REQUIRED
+		titre   CDATA   #IMPLIED>
+
+<!--
+	Balises propre à frankiz (les balises précédement définies sont totalement génériques
+	et peuvent être utilisées dans n'importe quel site web). Une telle balise est définie
+	uniquement lorsque l'utilisation des balises précédantes ne permet pas de rendre le XML
+	facilement skinnable : ça arrive lorsque les données sont très spécifiques comme dans le
+	cas de la qdj ou des statistiques.
+-->
+<!ELEMENT statistiques (serveur|service)+>
+<!ELEMENT serveur EMPTY>
+<!ATTLIST serveur
+		nom		CDATA   #REQUIRED
+		etat	CDATA   #REQUIRED
+		uptime  CDATA   #IMPLIED>
+<!ELEMENT service EMPTY>
+<!ATTLIST service
+		nom		CDATA   #REQUIRED
+		url		CDATA   #REQUIRED>
+
+<!ELEMENT qdj (reponse+,dernier*)>
+<!ATTLIST qdj
+		id		CDATA   #REQUIRED
+		type	CDATA   #IMPLIED
+		action  CDATA   #REQUIRED>
+<!ELEMENT question &texte.formate;>
+<!ELEMENT reponse &texte.formate;>
+<!ATTLIST reponse
+		id		CDATA   #REQUIRED
+		votes   CDATA   #IMPLIED>
+<!ELEMENT dernier (#PCDATA)>
+<!ATTLIST dernier
+		ordre   CDATA   #REQUIRED>
+
+<!ELEMENT annonce &texte.misenpage;>
+<!ATTLIST annonce
+		titre		CDATA   #IMPLIED
+		auteur		CDATA   #IMPLIED
+		date		CDATA   #IMPLIED
+		categorie   CDATA   #IMPLIED>
+
+<!ELEMENT eleve EMPTY>
+<!ATTLIST eleve
+		nom			CDATA   #REQUIRED
+		prenom		CDATA   #REQUIRED
+		promo		CDATA   #REQUIRED
+		surnom		CDATA   #IMPLIED
+		tel			CDATA   #IMPLIED
+		mail		CDATA   #IMPLIED
+		casert		CDATA   #IMPLIED
+		naissance   CDATA   #IMPLIED
+		section		CDATA   #IMPLIED
+		cie			CDATA   #IMPLIED>
+]>
+

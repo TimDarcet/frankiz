@@ -1,0 +1,155 @@
+body {
+    margin: 0;
+    background-color: #fff699;
+}
+
+.principal {
+    width: 100%;
+}
+
+a {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: none;
+}
+
+.titre {
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+.contacts {
+    font-size: 8pt;
+}
+
+.activite {
+    border: 0;
+}
+
+.liens_ecole {
+    font-size: 8pt;
+}
+
+.fkz_liens_br {
+    font-size: 9pt;
+    font-weight: bold;
+    background-color: orange;
+    border-top: 1 solid #000000;
+    border-bottom: 1 solid #000000;
+    padding: 2px;
+    text-align: center;
+}
+
+.titre {
+    font-size: 11pt;
+    text-align: center;
+}
+
+.fkz_qdj_titre {
+    font-size: 11pt;
+    font-weight: bold;
+    background-color: red;
+    text-align: center;
+    border: 1 solid #000000;
+}
+
+.fkz_qdj_question {
+    font-size: 11pt;
+    text-align: center;
+}
+
+.fkz_qdj_jone {
+    float: right;
+    text-align: center;
+    background-color: yellow;
+    width: 49%;
+    height: 6em;
+}
+
+.fkz_qdj_rouje {
+    float: left;
+    text-align: center;
+    background-color: red;
+    width: 49%;
+    height:6em;
+}
+
+.fkz_anniversaire {
+    font-size: 9pt;
+    text-align: center;
+    background-color: pink;
+    max-width: 100%; 
+    border: 1 solid #000000;
+}
+
+.fkz_titre {
+    width: 100%;
+    font-size: 11pt;
+    font-weight: bold;
+    background-color: red;
+    text-align: center;
+    border: 1 solid #000000;
+}
+
+
+.fkz_sommaire {
+    font-size: 9pt;
+    text-align: left;
+    max-width: 100%; 
+    border: 1 solid #000000;
+}
+
+.fkz_sommaire_titre {
+    font-size: 9pt;
+    font-weight: bold;
+    text-align: center;
+    max-width: 100%; 
+    border: 1 solid #000000;
+}
+
+.fkz_annonces {
+    font-size: 9pt;
+    text-align: left;
+    max-width: 100%; 
+    border: 1 solid #000000;
+}
+
+.fkz_trombino {
+    font-size: 9pt;
+    text-align: left;
+    max-width: 100%; 
+    border: 1 solid #000000;
+}
+
+.fkz_page {
+    clear: both;
+    width: 100%;
+}
+
+.fkz_gauche {
+        width: 20%;
+        float: left;
+	font-size: 9pt;
+}
+
+.fkz_droite {
+        float: right;
+        width: 20%;
+	font-size: 9pt;
+}
+
+.fkz_centre {
+	float: left;
+	min-width: 60%;
+}
+
+.serveur_up {
+	color: inherit;
+	background: lime;
+}
+
+.serveur_down {
+	color: inherit;
+	background: red;
+}

@@ -1,0 +1,77 @@
+body {
+    margin: 0;
+}
+
+.principal {
+    width: 100%;
+}
+
+a {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: none;
+}
+
+.titre {
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+.contacts {
+    font-size: 8pt;
+}
+
+.activite {
+    border: 0;
+}
+
+.liens_ecole {
+    font-size: 8pt;
+}
+
+.liens_br {
+    font-size: 9pt;
+    font-weight: bold;
+    background-color: #CAC2A8;
+    border-top: 1 solid #000000;
+    border-bottom: 1 solid #000000;
+    padding: 2px;
+    text-align: center;
+}
+
+.titre {
+    font-size: 11pt;
+    text-align: center;
+}
+
+.qdj_titre {
+    font-size: 11pt;
+    font-weight: bold;
+    background-color: #99CCFF;
+    text-align: center;
+    border: 1 solid #000000;
+}
+
+.qdj_question {
+    font-size: 11pt;
+    text-align: center;
+}
+
+.qdj_jone {
+    text-align: center;
+    background-color: yellow;
+}
+
+.qdj_rouje {
+    text-align: center;
+    background-color: red;
+}
+
+.anniversaire {
+    font-size: 9pt;
+    text-align: center;
+    background-color: #99CCFF;
+    padding: 5;
+    border: 1 solid #000000;
+}
