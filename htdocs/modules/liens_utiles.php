@@ -21,9 +21,12 @@
 	Liens permettants d'accéder aux autres sites de l'école.
 	
 	$Log$
+	Revision 1.1  2004/11/06 20:52:08  kikx
+	Reordonnancement des liens
+
 	Revision 1.7  2004/11/06 20:07:01  kikx
 	Id des liens pour les liens ecole
-
+	
 	Revision 1.6  2004/11/06 20:03:06  kikx
 	Suppression de liens inutiles
 	
@@ -42,13 +45,18 @@
 	
 */
 ?>
-<module id="liens_ecole" titre="Liens école">
-	<lien id="kes" titre="La Kes" url="http://www.polytechnique.fr/eleves/binets/kes/" />
+<module id="liens_ecole" titre="Liens utiles">
+	<lien id="utile_contact" titre="Contact" url="contact.php" />
+	<?php if(!est_authentifie(AUTH_MINIMUM)): ?>
+		<lien id="utile_plan" titre="Venir à l'X" url="plan.php" />
+	<?php endif; ?>
+	<lien id="utile_liens" titre="Liens utiles" url="liens.php" />
+	<lien id="utile_kes" titre="La Kes" url="http://www.polytechnique.fr/eleves/binets/kes/" />
 	<?php if(est_authentifie(AUTH_MINIMUM)){ ?>
-		<lien id="redmail" titre="Redirection des mails" url="http://poly.polytechnique.fr/" /> 
+		<lien id="utile_redmail" titre="Redirection des mails" url="http://poly.polytechnique.fr/" /> 
 	<? } ?>
-	<lien id="ecole" titre="Site de l'école" url="http://www.polytechnique.fr/" />
-	<lien id="ecole_de" titre="Site de la DE" url="http://www.edu.polytechnique.fr/" />
-	<lien id="intranet" titre="Intranet" url="http://intranet.polytechnique.fr/" />
-	<lien id="xorg" titre="Polytechnique.org" url="http://www.polytechnique.org/" />
+	<lien id="utile_ecole" titre="Site de l'école" url="http://www.polytechnique.fr/" />
+	<lien id="utile_ecole_de" titre="Site de la DE" url="http://www.edu.polytechnique.fr/" />
+	<lien id="utile_intranet" titre="Intranet" url="http://intranet.polytechnique.fr/" />
+	<lien id="utile_xorg" titre="Polytechnique.org" url="http://www.polytechnique.org/" />
 </module>
