@@ -21,9 +21,12 @@
 	Page qui permet aux admins de modifier une annonce validée
 	
 	$Log$
+	Revision 1.6  2004/12/07 08:36:39  pico
+	Ajout d'une page pour pouvoir vider un peu les bases de données (genre pas garder les news qui datent de vieux)
+
 	Revision 1.5  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-
+	
 	Revision 1.4  2004/11/27 15:29:22  pico
 	Mise en place des droits web (validation d'annonces + sondages)
 	
@@ -89,27 +92,10 @@ foreach ($_POST AS $keys => $val){
 		<warning>Suppression d'une annonce<? echo $supp_image?></warning>
 	<?
 	}
-	
-	if ($temp[0]=='supprold') {
-		
-		$DB_web->query("SELECT annonce_id FROM annonces WHERE perime<".date("Ymd000000",time()- 5 * 24 * 3600)."") ;
-		//On supprime aussi l'image si elle existe ...
-		$compteur = 0;
-		while(list($id)=$DB_web->next_row()) {
-			$compteur++;
-			if (file_exists(DATA_DIR_LOCAL."annonces/{$temp[1]}")){
-				unlink(DATA_DIR_LOCAL."annonces/{$temp[1]}") ;
-			}
-		}
-		$DB_web->query("DELETE FROM annonces WHERE perime<".date("Ymd000000",time()- 5 * 24 * 3600)."") ;
-	?>
-		<warning>Suppression de <? echo $compteur?> annonces périmées</warning>
-	<?
-	}
 }
 
 
-echo "<lien titre=\"Supprimer les annonces périmées depuis plus de 5 jours\" url=\"admin/modif_annonces.php?supprold\"/>" ;
+echo "<lien titre=\"Supprimer les annonces périmées depuis plus de 5 jours\" url=\"nettoyage.php?annonces\"/>" ;
 
 
 //===============================

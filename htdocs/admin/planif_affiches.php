@@ -21,10 +21,13 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.8  2004/12/07 08:36:39  pico
+	Ajout d'une page pour pouvoir vider un peu les bases de données (genre pas garder les news qui datent de vieux)
+
 	Revision 1.7  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
-
+	
 	Revision 1.6  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
 	
@@ -131,6 +134,7 @@ foreach ($_POST AS $keys => $val){
 		<warning>Suppression d'une activité</warning>
 	<?
 	}
+
 }
 
 $date = date("Y-m-d", time());
@@ -138,8 +142,11 @@ $date = date("Y-m-d", time());
 <commentaire>
 	Nous sommes le: <? echo $date ?>
 </commentaire>
-	
+
 <?
+
+	echo "<lien titre=\"Supprimer les affiches périmées depuis plus de 5 jours\" url=\"admin/nettoyage.php?affiches\"/>" ;
+
 // Affiche la planification existante
 ?>
 	<h2>Prévisions</h2>

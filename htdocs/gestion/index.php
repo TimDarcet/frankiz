@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.23  2004/12/07 08:36:39  pico
+	Ajout d'une page pour pouvoir vider un peu les bases de données (genre pas garder les news qui datent de vieux)
+
 	Revision 1.22  2004/11/27 21:31:18  pico
 	Ajout du lien vers la gestion de l'état du bob
-
+	
 	Revision 1.21  2004/11/27 16:10:52  pico
 	Correction d'erreur de redirection et ajout des web à la validation des activités.
 	
@@ -264,6 +267,7 @@ $permissions_user = $_SESSION['user']->perms ;
 	if (verifie_permission('admin')||verifie_permission('web')){
 	?>
 		<lien titre="Modifier les annonces" url="admin/modif_annonces.php"/>
+		<lien titre="Nettoyer les bases de données" url="admin/nettoyage.php"/>
 	<?
 	}
 	
