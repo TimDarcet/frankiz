@@ -21,10 +21,13 @@
 	Page qui permet de demander une clé windows
 	
 	$Log$
+	Revision 1.12  2004/12/17 21:46:16  falco
+	un peu de rigueur ne fait pas de mal
+
 	Revision 1.11  2004/12/17 21:09:14  dei
 	<br/>...
 	mopufles!
-
+	
 	Revision 1.10  2004/12/17 20:33:54  dei
 	Bugfix affichage
 	
@@ -67,7 +70,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 				?>
 				<p>Tu as déjà demandé ta clé, elle va t'être ré-expédiée sur ta boite mail.</p>
 				<?php
-				$contenu="La clé qui vous a déjà été attribué est : $cle <br/><br/>".
+				$contenu="La clé qui vous a déjà été attribuée est : $cle <br/><br/>".
 					"Très BR-ement<br/>".
 					"L'automate :)<br/>";
 				//a completer couriel(WEBMESTRE_ID,"[Frankiz] Validation d'une annonce",$contenu,$eleve_id);
@@ -78,11 +81,11 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 				couriel(WINDOWS_ID,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,$eleve_id);
 			} else {
 				?>
-				<p>Ta nouvelle clé, va t'être expédiée sur ta boite mail.</p>
+				<p>Ta nouvelle clé va t'être expédiée sur ta boite mail.</p>
 				<?php
 				// sinon on l'ajoute... et on update la base...
 				$DB_msdnaa->query("UPDATE cles_winxp SET attrib='1' WHERE eleve_id='".$_SESSION['user']->uid."'");
-				$contenu="La clé qui vous a été attribué est : $cle <br/><br/>".
+				$contenu="La clé qui vous a été attribuée est : $cle <br/><br/>".
 					"Très BR-ement<br/>" .
 					"L'automate :)<br/>";
 				couriel($eleve_id,"[Frankiz] Demande de licence Microsoft $nom $prenom X $promo ",$contenu,WINDOWS_ID);
