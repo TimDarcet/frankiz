@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un sondage
 	
 	$Log$
+	Revision 1.8  2004/12/13 16:40:46  kikx
+	Protection de la validation des sondages
+
 	Revision 1.7  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-
+	
 	Revision 1.6  2004/11/27 15:29:22  pico
 	Mise en place des droits web (validation d'annonces + sondages)
 	
@@ -66,6 +69,8 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 // On traite les différents cas de figure d'enrigistrement et validation de qdj :)
 
 // Enregistrer ...
+$DB_valid->query("LOCK TABLE valid_sondages WRITE");
+$DB_valid->query("SET AUTOCOMMIT=0");
 
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
@@ -73,18 +78,26 @@ foreach ($_POST AS $keys => $val){
 	// On refuse le sondage
 	//==========================
 	if ($temp[0] == "suppr") {
-		$DB_valid->query("DELETE FROM valid_sondages WHERE sondage_id='{$temp[1]}'");
+		$DB_valid->query("SELECT 0 FROM valid_sondages WHERE sondage_id='{$temp[1]}'");
+		if ($DB_valid->num_rows()!=0) {
+
+			$DB_valid->query("DELETE FROM valid_sondages WHERE sondage_id='{$temp[1]}'");
+			
+			$bla = "refus_".$temp[1] ;
+			$contenu = "<strong>Bonjour</strong>, <br><br>".
+						"Nous sommes désolé mais ton sondage n'a pas été validé par le BR pour la raison suivante : <br>".
+						$_POST[$bla]."<br>".
+						"<br>" .
+						"Très Cordialement<br>" .
+						"Le BR<br>"  ;
 		
-		$bla = "refus_".$temp[1] ;
-		$contenu = "<strong>Bonjour</strong>, <br><br>".
-					"Nous sommes désolé mais ton sondage n'a pas été validé par le BR pour la raison suivante : <br>".
-					$_POST[$bla]."<br>".
-					"<br>" .
-					"Très Cordialement<br>" .
-					"Le BR<br>"  ;
-	
-		couriel($temp[2],"[Frankiz] Ton sondage a été refusé ",$contenu);
-		echo "<warning>Envoie d'un mail <br/>Le prévient que sa demande n'est pas acceptée</warning>" ;
+			couriel($temp[2],"[Frankiz] Ton sondage a été refusé ",$contenu);
+			echo "<warning>Envoie d'un mail <br/>Le prévient que sa demande n'est pas acceptée</warning>" ;
+		} else {
+	?>
+			<warning>Requête deja traitée par un autre administrateur</warning>
+	<?			
+		}
 	}
 	// On accepte le sondage
 	//==========================
@@ -92,24 +105,34 @@ foreach ($_POST AS $keys => $val){
 		cache_supprimer('sondages') ;// On supprime le cache pour reloader
 		
 		$DB_valid->query("SELECT v.perime,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM valid_sondages as v INNER JOIN trombino.eleves as e USING(eleve_id) WHERE sondage_id={$temp[1]}");
-		list($date,$questions,$titre,$eleve_id,$nom, $prenom, $promo) = $DB_valid->next_row() ;
-
-		$DB_web->query("INSERT INTO sondage_question SET eleve_id=$eleve_id, questions='$questions', titre='$titre', perime='$date'") ;
-	
-		$DB_valid->query("DELETE FROM valid_sondages WHERE sondage_id='{$temp[1]}'");
+		if ($DB_valid->num_rows()!=0) {
 		
-		$contenu = "<strong>Bonjour</strong>, <br><br>".
-					"Ton sondage vient d'être mis en ligne par le BR <br>".
-					"<br>" .
-					"Très Cordialement<br>" .
-					"Le BR<br>"  ;
+			list($date,$questions,$titre,$eleve_id,$nom, $prenom, $promo) = $DB_valid->next_row() ;
 	
-		couriel($temp[2],"[Frankiz] Ton sondage a été validé ",$contenu);
-		echo "<commentaire>Envoie d'un mail <br/>Prévient $prenom $nom que sa demande est acceptée</commentaire>" ;
+			$DB_web->query("INSERT INTO sondage_question SET eleve_id=$eleve_id, questions='$questions', titre='$titre', perime='$date'") ;
+		
+			$DB_valid->query("DELETE FROM valid_sondages WHERE sondage_id='{$temp[1]}'");
+			
+			$contenu = "<strong>Bonjour</strong>, <br><br>".
+						"Ton sondage vient d'être mis en ligne par le BR <br>".
+						"<br>" .
+						"Très Cordialement<br>" .
+						"Le BR<br>"  ;
+		
+			couriel($temp[2],"[Frankiz] Ton sondage a été validé ",$contenu);
+			echo "<commentaire>Envoie d'un mail <br/>Prévient $prenom $nom que sa demande est acceptée</commentaire>" ;
+		} else {
+	?>
+			<warning>Requête deja traitée par un autre administrateur</warning>
+	<?			
+		}
+
 	}
 
 }
 
+$DB_valid->query("COMMIT");
+$DB_valid->query("UNLOCK TABLES");
 //===============================
 
 	$DB_valid->query("SELECT v.perime, v.sondage_id,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM valid_sondages as v INNER JOIN trombino.eleves as e USING(eleve_id)");
