@@ -10,7 +10,7 @@
 	- 'modules[tous]' :		valeur par défaut pour l'affichage des modules
 */
 
-global $DB_web;
+global $DB_web,$DB_trombino,$DB_admin;
 
 function existant_et_egal_a($variable,$index,$valeur) {
 	return isset($variable[$index]) && $variable[$index] == $valeur;
