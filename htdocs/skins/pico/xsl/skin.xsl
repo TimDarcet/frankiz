@@ -185,7 +185,7 @@
 </xsl:template>
 
 <xsl:template match="module">
-	<xsl:if test="@visible!='false'">
+	<xsl:if test="false = starts-with(@visible,'false')">
 		<div class="fkz_module"><xsl:attribute name="id">mod_<xsl:value-of select="@id"/></xsl:attribute>
 			<div class="fkz_titre">
 				<span><xsl:attribute name="id"><xsl:value-of select="@id"/>_logo</xsl:attribute><xsl:text> </xsl:text></span>
