@@ -21,22 +21,18 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:template match="module[@id='tours_kawa']">
-  <xsl:if test="count(element) !=0">
-  <div class="fkz_titre">Tour Kawa</div>
-  <xsl:for-each select="element">
-    <xsl:if test="@nom = '1'">
-      <xsl:text>Aujourd'hui: </xsl:text>
-      <xsl:value-of select="current()"/>
-      <br/>
-    </xsl:if>
-    <xsl:if test="@nom = '2'">
-      <xsl:text>Demain: </xsl:text>
-      <xsl:value-of select="current()"/>    
-      <br/>
-    </xsl:if>  
-  </xsl:for-each>
-  </xsl:if>
+<xsl:template match="module[@id='tour_kawa']">
+	<xsl:if test="count(liste/element) !=0">
+		<div class="fkz_titre">Tour Kawa</div>
+		<div class="fkz_module">
+			<xsl:for-each select="liste/element">
+				<em><xsl:value-of select="colonne[@id='jour']"/>: </em>
+				<xsl:value-of select="colonne[@id='kawa']"/>
+				<br/>
+			</xsl:for-each>
+		</div>
+  	</xsl:if>
+  
 </xsl:template>
 
 </xsl:stylesheet>

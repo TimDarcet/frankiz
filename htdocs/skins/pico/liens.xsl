@@ -38,7 +38,6 @@
     </xsl:for-each>
   <xsl:text> </xsl:text>
   </div>
-  <br/>
 </xsl:template>
 
 <xsl:template match="module[@id='liens_ecole']">
@@ -56,7 +55,6 @@
     </xsl:for-each>
   <xsl:text> </xsl:text>
   </div>
-  <br/>
 </xsl:template>
 
 <xsl:template match="module[@id='liens_navigation']">

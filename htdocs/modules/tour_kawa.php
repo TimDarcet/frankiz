@@ -21,9 +21,14 @@
 	Gestion du tour kawa.
 	
 	$Log$
+	Revision 1.8  2004/11/05 08:29:23  pico
+	Mise en forme de la sortie xml du tour kawa:
+	on balançait du texte formaté, ce qui n'était du coup que très peu skinable, j'ai mis ça sous la forme d'une liste, ce sera plus pratique
+	(la skin basique affiche ça, la skin pico aussi, la skin défaut n'affiche pas encore les tours kawa...)
+
 	Revision 1.7  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.6  2004/09/15 23:20:29  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
@@ -50,7 +55,12 @@ if(est_authentifie(AUTH_MINIMUM)) {
 		
 		for ($i = 0; $i <= 1; $i++)
 			if ($kawa[$i] != "")
-				echo "<p>".$jour[$i]." : ".$kawa[$i]."</p>\n";
+				echo "<liste id=\"tour_kawa\">
+						<element id=\"$i\">
+							<colonne id=\"jour\">$jour[$i]</colonne>
+							<colonne id=\"kawa\">$kawa[$i]</colonne>
+						</element>
+					</liste>\n";
 
 		echo "</module>\n";
 	}
