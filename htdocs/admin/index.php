@@ -4,9 +4,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.21  2004/10/17 22:02:45  pico
+	Ajout lien admin xshare
+
 	Revision 1.20  2004/10/17 20:27:35  kikx
 	Permet juste au prez des binets de consulter les perosnne adherant aux binet ainsi que leur commentaires
-
+	
 	Revision 1.19  2004/10/17 17:16:28  kikx
 	prtit oubli de definitions d'une variable
 	
@@ -74,6 +77,7 @@ $permissions_user = ses_permissions() ;
 		<lien titre="Valider les mails promos" url="<?php echo BASE_URL?>/admin/valid_mailpromo.php"/>
 		<lien titre="Valider les qdj" url="<?php echo BASE_URL?>/admin/valid_qdj.php"/>
 		<lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/>
+		<lien titre="Gestion xshare" url="<?php echo BASE_URL?>/admin/xshare.php"/>
 	<?
 	}
 	
