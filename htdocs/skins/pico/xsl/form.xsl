@@ -206,7 +206,7 @@
 </xsl:template>
 
 <xsl:template match="bouton[@type='detail']">
-	<input type="image" SRC="skins/basic/detail.gif">
+	<input type="image" src="skins/pico/images/detail.gif">
 	<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 	<xsl:attribute name="value"></xsl:attribute>
 	</input>
