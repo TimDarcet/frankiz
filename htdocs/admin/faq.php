@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.38  2005/01/10 22:44:01  pico
+		Autre fix
+
 		Revision 1.37  2005/01/10 22:26:49  pico
 		idem pour les autres formulaires
-
+		
 		Revision 1.36  2005/01/10 22:24:37  pico
 		Voilà l'erreur
 		
@@ -157,7 +160,7 @@ foreach ($_POST AS $keys => $val){
 		$DB_faq->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
 		list($dir) = $DB_faq->next_row();
 		$DB_faq->query("SELECT faq_id,question FROM faq WHERE (parent='{$temp[1]}' AND NOT  (reponse LIKE '%index.php' OR reponse LIKE '%index.html')) ") ;
-		if($DB_faq->num_rows()==0){
+		if($DB_faq->num_rows()==0 && $dir!=''){
 			$dir = BASE_DATA."faq/".$dir;
 			deldir($dir);
 			$DB_faq->query("DELETE FROM faq WHERE faq_id='{$temp[1]}'");
