@@ -180,6 +180,12 @@
 <xsl:template match="code">
 	<code><xsl:apply-templates/></code>
 </xsl:template>
+<xsl:template match="new_string">
+	<span style="color: green"><xsl:apply-templates/></span>
+</xsl:template>
+<xsl:template match="old_string">
+	<span style="color: red"><xsl:apply-templates/></span>
+</xsl:template>
 <xsl:template match="a">
 	<a>
 		<xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>

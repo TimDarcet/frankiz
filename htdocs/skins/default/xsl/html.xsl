@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.7  2004/12/13 20:51:24  pico
+	New balises :)
+
 	Revision 1.6  2004/12/11 06:08:04  psycow
 	Gestion de l'effacement des news lues
-
+	
 	Revision 1.5  2004/12/10 03:04:31  psycow
 	Resolution du probleme des boites sous Firefox, reste un probleme sur le positionnement des formulaires dans les boites...
 	
@@ -240,7 +243,12 @@
 <xsl:template match="a">
 	<a><xsl:attribute name="href"><xsl:value-of select="@href"/></xsl:attribute><xsl:apply-templates/></a>
 </xsl:template>
-
+<xsl:template match="new_string">
+	<span style="color: green"><xsl:apply-templates/></span>
+</xsl:template>
+<xsl:template match="old_string">
+	<span style="color: red"><xsl:apply-templates/></span>
+</xsl:template>
 <xsl:template match="html"><!-- très moche car impossible à skinner, mais parfois indispensable -->
 	<xsl:value-of disable-output-escaping="yes" select="text()"/>
 </xsl:template>
