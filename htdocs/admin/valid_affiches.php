@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.15  2004/11/29 19:41:08  kikx
+	Micro Bug
+
 	Revision 1.14  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-
+	
 	Revision 1.13  2004/11/27 16:10:52  pico
 	Correction d'erreur de redirection et ajout des web à la validation des activités.
 	
@@ -170,7 +173,7 @@ foreach ($_POST AS $keys => $val){
 
 //===============================
 
-	$DB_valid->query("SELECT v.exterieur,v.affiche_id,v.date, v.titre, v.url, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_affiches as v INNER JOIN trombino.eleves as e USING(eleve_id) WHERE eleve_id LIKE '$user_id'");
+	$DB_valid->query("SELECT v.exterieur,v.affiche_id,v.date, v.titre, v.url, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_affiches as v INNER JOIN trombino.eleves as e USING(eleve_id) WHERE v.eleve_id LIKE '$user_id'");
 	while(list($ext,$id,$date,$titre,$url,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
 		echo "<module id=\"activites\" titre=\"Activités\">\n";
 ?>
