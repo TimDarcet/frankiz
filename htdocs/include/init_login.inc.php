@@ -36,9 +36,12 @@
 	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
 
 	$Log$
+	Revision 1.12  2005/01/21 16:50:37  pico
+	Erreur
+
 	Revision 1.11  2005/01/21 16:48:29  pico
 	Modifs de chemins
-
+	
 	Revision 1.10  2005/01/18 19:30:34  pico
 	Place la boite du sudo dans la boite avec les infos de connection.
 	Pbs d'encodage des variables passées à sablotron réglés
@@ -217,7 +220,7 @@ function demande_authentification($minimum) {
 			dans le login ou le mot de passe.</warning>
 		<?php endif; ?>
 		<note>Ton login est loginpoly.promo</note>
-		<formulaire id="login" titre="Connexion" action="/">
+		<formulaire id="login" titre="Connexion" action="">
 		<?  foreach ($_REQUEST AS $keys => $val){
 			echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 			}
