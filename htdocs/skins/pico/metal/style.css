@@ -19,7 +19,7 @@
 */
 
 body {
-	background-image: url("metal/fond.gif");
+	background-image: url("images/fond.gif");
 	margin: 0;
 	padding: 2px;
 }
@@ -29,7 +29,7 @@ img {
 }
 
 div.fkz_logo {
-	background-image: url("metal/titre.gif");
+	background-image: url("images/titre.gif");
 	background-repeat: no-repeat;
 	background-position: center;
 	height: 180px;
@@ -211,7 +211,7 @@ ul.fkz_liens_nav{
 }
 
 span.fkz_annonces_vieux {
-	background-image:url("metal/vieux.gif");
+	background-image:url("images/vieux.gif");
 	background-repeat:no-repeat;
 	height:16px;
 	padding-left:16px;

@@ -62,7 +62,7 @@ a:hover, a:active {
         float: left;
 	font-size: 9pt;
 	margin-top: 20px;
-	background-image:url(tranquille/home_background.gif);
+	background-image:url(images/home_background.gif);
 	background-repeat:no-repeat;
 	background-position:0px 50px;
 	min-height: 800px;
@@ -73,7 +73,7 @@ a:hover, a:active {
         width: 20%;
 	font-size: 9pt;
 	margin-top: 20px;
-	background-image:url(tranquille/home_droit.gif);
+	background-image:url(images/home_droit.gif);
 	background-repeat:no-repeat;
 	background-position:right 50px;
 	min-height: 800px;
@@ -97,14 +97,14 @@ span.fkz_logo,span.fkz_logo_eleves{
 }
 
 div.fkz_logo {
-	background-image:url("tranquille/home_logo.png");
+	background-image:url("images/home_logo.png");
 	background-repeat:no-repeat;
 	height:93px;
 	width:373px;
  }
 
  div.fkz_logo_eleves {
-	background-image:url("tranquille/home_logo_eleve.png");
+	background-image:url("images/home_logo_eleve.png");
 	background-repeat:no-repeat;
 	height:30px;
 	width:476px;

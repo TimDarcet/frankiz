@@ -30,14 +30,14 @@ img {
 }
 
 div.fkz_logo {
-	background-image: url("modern/modern_titre.png");
+	background-image: url("images/modern_titre.png");
 	background-repeat: no-repeat;
 	background-position: center;
 	height: 180px;
  }
 
 div.fkz_logo:hover {
-	background-image: url("modern/modern_titre2.png");
+	background-image: url("images/modern_titre2.png");
 	background-repeat: no-repeat;
 	background-position: center;
 }
@@ -65,7 +65,7 @@ a:hover {
 	color: blue;
 	display: compact;
 	padding: 2px;
-   background-image: url("modern/modern_fond_liens.png");
+   background-image: url("images/modern_fond_liens.png");
    border: 1px dashed gray;
 }
 
@@ -145,7 +145,7 @@ ul.fkz_liens_nav{
 
 .fkz_anniversaire_titre {
 	background-color: #dddddd;
-	background-image: url("modern/modern_angle.png");
+	background-image: url("images/modern_angle.png");
 	background-position: right;
 	background-repeat: no-repeat;
 	padding-top: 2px;
@@ -174,7 +174,7 @@ ul.fkz_liens_nav{
 
 .fkz_titre {
 	background: #dddddd;
-	background-image: url("modern/modern_angle.png");
+	background-image: url("images/modern_angle.png");
 	background-position: right;
 	background-repeat: no-repeat;
 	padding-top: 2px;

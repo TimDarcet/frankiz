@@ -28,7 +28,7 @@ img {
 }
 
 div.fkz_logo {
-	background-image:url("../default/frankiz.png");
+	background-image:url("../default/images/frankiz.png");
 	background-repeat:no-repeat;
 	height:60px;
  }
@@ -76,7 +76,7 @@ ul.fkz_liens_nav{
 
 
 .fkz_qdj_jone {
-	background-image:url("../default/pointjone.gif");
+	background-image:url("../default/images/pointjone.gif");
 	background-repeat:no-repeat;
 	background-position: center center;
 	height:60px;
@@ -86,7 +86,7 @@ ul.fkz_liens_nav{
 }
 
 .fkz_qdj_rouje {
-	background-image:url("../default/pointrouje.gif");
+	background-image:url("../default/images/pointrouje.gif");
 	background-repeat:no-repeat;
 	background-position: center center;
 	height:60px;
@@ -263,9 +263,9 @@ span.fkz_annonces_vieux {
 }
 
 /* FAQ et Xshare */
-.noeud_ferme{list-style-image:url('../default/fold_close.gif')}
-.noeud_ouvert{list-style-image:url('../default/fold_open.gif')}
-.feuille{list-style-image:url('../default/question.gif')}
+.noeud_ferme{list-style-image:url('../default/images/fold_close.gif')}
+.noeud_ouvert{list-style-image:url('../default/images/fold_open.gif')}
+.feuille{list-style-image:url('../default/images/question.gif')}
 
 .fkz_stats{list-style-type:  none; }
 
