@@ -19,9 +19,12 @@
 */
 /*
 	$Log$
+	Revision 1.22  2004/11/06 20:03:06  kikx
+	Suppression de liens inutiles
+
 	Revision 1.21  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.20  2004/10/21 12:23:17  pico
 	Un doublon qui servait pas
 	
@@ -300,8 +303,6 @@ echo "<br/>" ;
 		}
 		echo "<br/><br/>" ;
 	}
-
-
 //
 // Pied de page ...
 //---------------------------------------------------

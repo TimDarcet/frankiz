@@ -21,9 +21,12 @@
 	Liens permettants d'accéder aux autres sites de l'école.
 	
 	$Log$
+	Revision 1.6  2004/11/06 20:03:06  kikx
+	Suppression de liens inutiles
+
 	Revision 1.5  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.4  2004/10/19 22:14:49  pico
 	Suppression du lien corrige ton poly
 	Redirection des mails que si authentifié
@@ -37,14 +40,12 @@
 */
 ?>
 <module id="liens_ecole" titre="Liens école">
-	<lien titre="La Kes" url="http://binets.polytechnique.fr/kes/" />
-	<lien titre="Aide aux binets" url="http://binets.polytechnique.fr/kes-binets/" />
-	<lien titre="Le site des élèves" url="http://www.polytechnique.fr/eleves/" />
-	<?php if(est_authentifie(AUTH_MINIMUM)){ ?><lien titre="Redirection des mails" url="http://poly.polytechnique.fr/" /> <? } ?>
+	<lien titre="La Kes" url="http://www.polytechnique.fr/eleves/binets/kes/" />
+	<?php if(est_authentifie(AUTH_MINIMUM)){ ?>
+		<lien titre="Redirection des mails" url="http://poly.polytechnique.fr/" /> 
+	<? } ?>
 	<lien titre="Site de l'école" url="http://www.polytechnique.fr/" />
 	<lien titre="Site de la DE" url="http://www.edu.polytechnique.fr/" />
-	<lien titre="Bureau des effectifs" url="http://intranet-effectifs.polytechnique.fr/" />
 	<lien titre="Intranet" url="http://intranet.polytechnique.fr/" />
 	<lien titre="Polytechnique.org" url="http://www.polytechnique.org/" />
-	<lien titre="Les photos" url="http://www.polytechnique.fr/eleves/binets/photo/photos/photos.htm" />
 </module>
