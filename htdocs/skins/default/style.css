@@ -1,223 +1,468 @@
-/* $Id$ */
-/*
-	Copyright (C) 2004 Binet Réseau
-	http://www.polytechnique.fr/eleves/binets/br/
-	
-	This program is free software; you can redistribute it and/or
-	modify it under the terms of the GNU General Public License
-	as published by the Free Software Foundation; either version 2
-	of the License, or (at your option) any later version.
-	
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-	
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-*/
+/* ###################### GENERAL #################### */
 
-/* paramètres par défaut */
-table {
-	width: 100%;
-	border: 0;
+* 
+{
+	margin: 0px;
+	padding: 0px;
 }
 
-/* affichage général */
-#frankiz {
-	color: inherit;
-	background: #DDDDDD;
-	text-align : center;
-	font-weight: bold;
-	font-size: 300%;
-	padding: 20px;
-	border-top: 1px solid #888888;
-	border-right: 1px solid #888888;
-	border-left: 1px solid #888888;
-	vertical-align: top;
+body
+{
+	text-align: center ;
+	font: 0.8em "Trebuchet MS", helvetica, sans-serif ;
 }
 
-#contenu {
-	border-top: 1px solid #888888;
-	width: 80%;
-	padding: 5px;
-	vertical-align: top;
+div#conteneur
+{
+	width: 98% ;
+	margin: 30px auto ;
+	text-align: left ;
+	background: #fff ;
+	background: url(images/Bar_cote.png) repeat-y left top ;
 }
 
-#modules {
-	width: 20%;
-	border-top: 1px solid #888888;
-	vertical-align: top;
+
+/* ############################## TITRE #################### */
+
+div#header
+{
+	height: 96px ;
+	background: url(images/Bar_haut_2.png) repeat-x left top ;
 }
 
-/* Modules */
-
-#modules th {
-	color: inherit;
-	background: #DDDDDD;
-	padding: 2px;
-	text-align : center;
-	border-bottom: 1px solid #888888;
-	border-right: 1px solid #888888;
-	border-left: 1px solid #888888;
+div#header h1 
+{
+	float:left;
+	z-index:20;
 }
 
-#modules td {
-	border-bottom: 1px solid #888888;
-	padding: 2px;
-	border-right: 1px solid #888888;
-	border-left: 1px solid #888888;
+div#header  h1 a
+{
+	width: 666px;
+	height: 96px ;
+	display: block ;
+	background: url(images/Bar_haut_1.png) no-repeat left top ;
 }
 
-/* Annonces */
-
-table.annonce {
-	border: 1px solid #888888;
-	width: 95%;
+div#header h1 a span
+{
+	display: none ;
 }
 
-table.annonce th {
-	color: inherit;
-	background: #DDDDDD;
-	padding: 2px;
-	text-align : center;
-	border-bottom: 1px solid #888888;
+div#header h2 span
+{
+	display: none ;
 }
 
-table.annonce td {
-	padding: 4px;
+div#header h3 
+{
+	float:right;
 }
 
-.signature {
-	text-align: right;
+div#header h3 a
+{
+	width: 69px ;
+	height: 96px ;
+	display: block ;
+	background: url(images/Bar_haut_3.png) no-repeat top left ;
 }
 
-/* État des serveurs */
-.serveur_up {
-	color: inherit;
-	background: lime;
+div#header h3 a span
+{
+	display: none ;
 }
 
-.serveur_down {
-	color: inherit;
-	background: red;
+/* ########### CONTENU #############*/
+
+
+div#centre
+{
+	margin: 0 235px 0 135px;
 }
 
-/* Formulaires */
-table.formulaire {
-	border: 1px solid #888888;
+div#droite
+{
+	position:absolute;
+	right:2%;
+	width:200px;
 }
 
-table.formulaire td {
-	padding: 2px;
+
+p.news
+{
+	text-align: justify ;
+	text-indent: 2em ;
+	line-height: 1.7em ;
+}
+p:first-letter{
+	font-size:1.3em;
+	font-weight:bold;
 }
 
-table.formulaire td.gauche {
-	width: 20%;
+p.small
+{
+	text-align: justify ;
+	text-indent: 0.7em ;
+	line-height: 1.2em;
+	font-size:0.9em;
 }
 
-table.formulaire td.droite {
-	width: 80%;
+p.image {
+	text-align:center;
 }
 
-table.formulaire td.titre {
-	color: inherit;
-	background: #DDDDDD;
-	text-align: center;
-	font-weight: bold;
-	border-bottom: 1px solid #888888;
+p.signature {
+	text-align:right;
+	font-weight:bold;
 }
 
-table.formulaire td.boutons {
-	color: inherit;
-	background: #DDDDDD;
-	border-top: 1px solid #888888;
+
+dl {
+	width: 100%; 
+}
+
+dt {
+	height: 25px;
+	background: #fff url(images/cadre-haut.gif) top left no-repeat;
 	text-align: center;
 }
-
-p.commentaire {
-	color: inherit;
-	background: #FFFFDD;
-	padding: 6px;
-	border: 1px solid #FFDD00;
-}
-p.warning {
-	color: inherit;
-	background: #FFDDDD;
-	padding: 6px;
-	border: 1px solid #FF3333;
+dt span {
+	background-color:#fff;
+	line-height: 25px ;
+	font-size: 1.4em ;
+	color: #FFA200 ;
+	position:relative;
+	top:-0.7em;
 }
 
-p.note {
-	color: inherit;
-	background: #EFEFEF;
-	font-size: 75%;
-	padding: 6px;
+dd {
+	border: solid #B0AFCF;
+	border-width: 0 1px;
+	padding: 0 10px; 
 }
 
-/* Liste */
-
-table.liste {
-	border: 1px solid #888888;
+dd.bas {
+	height: 9px;
+	background: #fff url(images/cadre-bas.gif) bottom left no-repeat;
+	border: 0 none; 
+	padding: 0; 
+}
+dd.bas span.cadrebd 
+{
+	float:right;
+	background: url(images/cadre-basd.gif) no-repeat top left;
 }
 
-table.liste td {
-	padding: 2px;
+
+#droitehaut, #droitebas { /* placement des coin droits en flottants */
+float: right;
 }
 
-table.liste td.entete {
-	color: inherit;
-	background: #DDDDDD;
-	text-align: center;
-	font-weight: bold;
-	border-bottom: 1px solid #888888;
+
+
+
+/* ################### MENU ###################*/
+
+ul#menu
+{
+	position:absolute;
+	left:12px;
+	width:120px;
+	height:537px;
+	list-style-type: none ;
+	margin:0;
+	padding:0;
 }
 
-table.liste td.boutons {
-	color: inherit;
-	background: #DDDDDD;
-	border-top: 1px solid #888888;
+html>body ul#menu {
+	position:absolute;
+	left:13px;
 }
 
-/* Trombino */
-
-table.trombino {
-	border: 1px solid #888888;
-	margin-bottom: 5px;
+ul#menu li {
+	margin:0;
+	padding:0;
+	margin-top:-7px;
+}
+html>body ul#menu li 
+{
+	margin-top:-3px;
 }
 
-table.trombino td.titre {
-	color: inherit;
-	background: #DDDDDD;
-	text-align: center;
-	font-weight: bold;
-	border-bottom: 1px solid #888888;
+ul#menu li a
+{
+	display:block;
+	width: 115px ;
+	height:35px;
+
 }
 
-table.trombino img {
-	margin: 2px;
-	margin-right: 20px;
+
+ul#menu li a span
+{
+	display:none;
+}
+/*  different elements du menu avec le RollOver  */
+
+ul#menu li#top {
+	margin-top:0;
+	display:block;
+	width: 115px ;
+	height:11px;
+	background: url(images/Bar_cote_top.png) no-repeat 0 0 !important;
+	background: url(images/Bar_cote_top.png) no-repeat 0 3px ;
 }
 
-/* FAQ et Xshare */
-li.noeud_ouvert{list-style-image:url('fold_close.gif')}
-li.noeud_ferme{list-style-image:url('fold_open.gif')}
-ul.feuille{list-style-image:url('question.gif')}
 
-/* Balises HTML */
-H1 {
-	text-align: center;
-	font-size: 200%;
+ul#menu li#bottom {
+	display:block;
+	width: 115px ;
+	height:10px;
+	background: url(images/Bar_cote_bottom.png) no-repeat 0 0 ;
 }
 
-H2 {
-	font-size: 150%;
+ul#menu li#accueil a 
+{
+	background: url(images/Bar_cote_Accueil.png) no-repeat 0 -32px ;
+}
+ul#menu li#accueil a:hover
+{
+	background: url(images/Bar_cote_Accueil.png) no-repeat 0 0 ;
 }
 
-/*
-	Autres classes définie mais sans style particulier :
-	- .image, pour les image créer avec la balise <image>
-	- .legende, pour les légendes des images
-	- .lien, pour les liens créer avec la balise <lien>
-*/
+ul#menu li#meteo a 
+{
+	background: url(images/Bar_cote_Meteo.png) no-repeat 0 -32px ;
+}
+ul#menu li#meteo a:hover
+{
+	background: url(images/Bar_cote_Meteo.png) no-repeat 0 0 ;
+}
+
+ul#menu li#docs a
+{
+	background: url(images/Bar_cote_Docs.png) no-repeat 0 -32px ;
+}
+ul#menu li#docs a:hover
+{
+	background: url(images/Bar_cote_Docs.png) no-repeat 0 0 ;
+}
+
+ul#menu li#faq a
+{
+	background: url(images/Bar_cote_FAQ.png) no-repeat 0 -32px ;
+}
+ul#menu li#faq a:hover
+{
+	background: url(images/Bar_cote_FAQ.png) no-repeat 0 0 ;
+}
+
+ul#menu li#xshare a 
+{
+	background: url(images/Bar_cote_xshare.png) no-repeat 0 -32px ;
+}
+ul#menu li#xshare a:hover
+{
+	background: url(images/Bar_cote_xshare.png) no-repeat 0 0 ;
+}
+
+ul#menu li#reseau a 
+{
+	background: url(images/Bar_cote_reseau.png) no-repeat 0 -32px ;
+}
+ul#menu li#reseau a:hover
+{
+	background: url(images/Bar_cote_reseau.png) no-repeat 0 0 ;
+}
+
+ul#menu li#ibr a
+{
+	background: url(images/Bar_cote_IBR.png) no-repeat 0 -32px ;
+}
+ul#menu li#ibr a:hover
+{
+	background: url(images/Bar_cote_IBR.png) no-repeat 0 0 ;
+}
+
+ul#menu li#admin a
+{
+	background: url(images/Bar_cote_Admin.png) no-repeat 0 -32px ;
+}
+ul#menu li#admin a:hover
+{
+	background: url(images/Bar_cote_Admin.png) no-repeat 0 0 ;
+}
+
+ul#menu li#profil a
+{
+	background: url(images/Bar_cote_Profil.png) no-repeat 0 -32px ;
+}
+ul#menu li#profil a:hover
+{
+	background: url(images/Bar_cote_Profil.png) no-repeat 0 0 ;
+}
+
+ul#menu li#connection a
+{
+	background: url(images/Bar_cote_Connect.png) no-repeat 0 -32px ;
+}
+ul#menu li#connection a:hover
+{
+	background: url(images/Bar_cote_Connect.png) no-repeat 0 0 ;
+}
+
+ul#menu li#disconnect a
+{
+	background: url(images/Bar_cote_Deconnect.png) no-repeat 0 -32px ;
+}
+ul#menu li#disconnect a:hover
+{
+	background: url(images/Bar_cote_Deconnect.png) no-repeat 0 0 ;
+}
+
+ul#menu li#binets a
+{
+	background: url(images/Bar_cote_Binets.png) no-repeat 0 -32px ;
+}
+ul#menu li#binets a:hover
+{
+	background: url(images/Bar_cote_Binets.png) no-repeat 0 0 ;
+}
+
+ul#menu li#skins a
+{
+	background: url(images/Bar_cote_Skins.png) no-repeat 0 -32px ;
+}
+ul#menu li#skins a:hover
+{
+	background: url(images/Bar_cote_Skins.png) no-repeat 0 0 ;
+}
+
+
+/* #################### FOOTER ################ */
+
+div#footer
+{
+	clear:both;
+	width:100%;
+	height:37px;
+	background: url(images/Bar_bas_milieu.png) repeat-x left top ;
+}
+
+div#footer span#bas_gauche
+{	
+	float:left;
+	width:117px;
+	height:37px;
+	background: url(images/Bar_bas_gauche.png) no-repeat left bottom ;
+}
+
+div#footer span#bas_droit
+{	
+	display:block;
+	float:right;
+	margin-right:-3px;
+	height:37px;	
+	width:19px;
+	background: url(images/Bar_bas_droit.png) no-repeat top right ;
+}
+
+div#footer h5 
+{
+	display:block;
+	margin: 0 auto;
+	width:60px;
+	height:37px;
+	text-align:center;
+}
+
+div#footer h5 a
+{
+	display:block;
+	width:60px;
+	height:37px;
+	background: url(images/bottom_arrow_top.gif) no-repeat top center;
+}
+
+div#footer h5 a span
+{
+	display:none;
+}
+
+/* ###############" BARRE DE NAVIGATION "######################*/
+
+ul#barre_nav
+{
+	list-style: none;
+	position:absolute;
+	top:0px;
+	left:0px;
+}
+
+#barre_nav ul
+{ 
+	list-style: none;
+	width:12em;
+	z-index:99;
+	position:relative;
+	overflow:visible;  
+}
+
+#barre_nav li
+{   
+	position: relative; 
+	float:left;
+	width: 12em;
+	background-color:#DFDFDF;
+	border:solid 1px #CECECE;
+	border-bottom:none;
+	display:block;
+	height:auto;
+}
+ 
+#barre_nav a 
+{
+	text-decoration:none; 
+	display:block;
+	padding: 0.1em;  
+	margin:0.2em 0 0.2em 0.1em; 
+	background-color:#DFDFDF;
+	width:11.5em; 
+	height:1em;
+}
+
+#barre_nav a:hover
+{
+	background-color:#0099CC; 
+	color:#FFFFFF;
+	background-image:none;
+}
+
+#barre_nav ul
+{
+	display:none;   
+}
+
+
+#barre_nav ul ul, #barre_nav ul ul ul
+{
+	display:none; 
+	position:absolute; 
+	margin-top:-1.8em; 
+	margin-left:12em;
+}
+
+
+#barre_nav ul li>ul, #barre_nav ul ul li>ul{
+	margin-top:-1.4em; 
+}
+
+#barre_nav li:hover ul ul, #barre_nav li:hover ul ul ul
+{
+	display:none; 
+}
+
+#barre_nav li:hover ul, #barre_nav ul li:hover ul, #barre_nav ul ul li:hover ul
+{
+	display:block;
+}
