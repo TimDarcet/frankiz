@@ -248,11 +248,6 @@ li.fkz_liens_nav a:hover{
 	border-left: 1px solid #888888;
 }
 
-.fkz_trombino {
-	font-size: 9pt;
-	text-align: left;
-	max-width: 100%; 
-}
 
 .fkz_sommaire {
 	background-image:url("grass/grassdark.jpg");
@@ -271,7 +266,7 @@ li.fkz_liens_nav a:hover{
 	padding: 0;
 }
 
-.fkz_annonces {
+.fkz_annonces,.fkz_trombino {
 	background-image:url("grass/grassdark.jpg");
 	font-size: 9pt;
 	text-align: left;
@@ -382,11 +377,31 @@ p.note {
 	font-size: 75%;
 }
 
-.submit_button,.reset_button{
-	background: #dddddd;
-	padding: 2px;
-	border-bottom: 1px solid #888888;
-	border-right: 1px solid #888888;
-	border-left: 1px solid #888888;
-	border-top: 1px solid #888888;
+/* Formulaires */
+
+div.formulaire{
+	display:block;
 }
+
+div.formulaire span.droite{
+	float:right;
+	width:78%;
+	text-align: left;
+}
+
+div.formulaire span.gauche{
+	float:left;
+	width:20%;
+	padding-left:5px;
+}
+div.formulaire div{
+	clear:both;
+}
+
+div.formulaire span.boutons{
+	display:block;
+	padding-left: 22%;
+	padding-top:10px;
+}
+
+/* Formulaires */

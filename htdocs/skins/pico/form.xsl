@@ -27,16 +27,18 @@
 	<xsl:if test="boolean(@titre)">
 		<h2><xsl:value-of select="@titre"/></h2>
 	</xsl:if>
-	<xsl:apply-templates select="commentaire"/>
+	<xsl:apply-templates select="commentaire | warning | note"/>
 	<form enctype="multipart/form-data" method="post">
 			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<div class="formulaire">
 			<!-- les options du formulaire -->
-			<xsl:for-each select="champ|choix|zonetext|textsimple|hidden|warning|image|fichier|lien">
+			<xsl:for-each select="champ|choix|zonetext|textsimple|hidden|image|fichier|lien">
 				<div>
-				<span class="gauche">
-					<xsl:if test="boolean(@titre)"><xsl:value-of select="@titre"/> :</xsl:if>
-				</span>
+				<xsl:if test="boolean(@titre)">
+					<span class="gauche">
+						<xsl:value-of select="@titre"/> :
+					</span>
+				</xsl:if>
 				<span class="droite">
 					<xsl:apply-templates select="."/>
 				</span>
@@ -51,6 +53,8 @@
 		</div>
 	</form>
 </xsl:template>
+
+
 
 <xsl:template match="commentaire">
 	<p class="commentaire"><xsl:apply-templates/></p>
