@@ -39,11 +39,14 @@
 	)
 	
 	$Log$
+	Revision 1.30  2005/02/15 15:41:33  pico
+	En pourcentage pour Kikx
+
 	Revision 1.29  2005/02/15 11:38:05  pico
 	Que les gens qui ont choisi une skin sont listés.
-
+	
 	Fixe le bug #51
-
+	
 	Revision 1.28  2005/02/15 11:31:21  pico
 	BugFix
 	
@@ -201,7 +204,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 				if($description['chemin'] == ".") {
 					$DB_web->query("SELECT COUNT(*) FROM compte_frankiz WHERE skin LIKE '%$file_css%$file_xsl%'");
 					list($nbutilisateur) = $DB_web->next_row();
-					echo "<option titre=\"{$description['nom']}: {$description['description']} ($nbutilisateur/$nbutilisateurtotal)\" id=\"$file_xsl/\"/>";
+					echo "<option titre=\"{$description['nom']}: {$description['description']} (".round(100*$nbutilisateur/$nbutilisateurtotal)."%)\" id=\"$file_xsl/\"/>";
 					continue;
 				}
 				
@@ -217,9 +220,9 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 						$DB_web->query("SELECT COUNT(*) FROM compte_frankiz WHERE skin LIKE '%$file_css%$file_xsl%'");
 						list($nbutilisateur) = $DB_web->next_row();
 						if($file_css!="default")
-							echo "<option titre=\"$file_css: $description_css ($nbutilisateur/$nbutilisateurtotal)\" id=\"$file_xsl/$file_css\"/>";
+							echo "<option titre=\"$file_css: $description_css (".round(100*$nbutilisateur/$nbutilisateurtotal)."%)\" id=\"$file_xsl/$file_css\"/>";
 						else
-							echo "<option titre=\"$file_xsl: $description_css ($nbutilisateur/$nbutilisateurtotal)\" id=\"$file_xsl/$file_css\"/>";
+							echo "<option titre=\"$file_xsl: $description_css (".round(100*$nbutilisateur/$nbutilisateurtotal)."%)\" id=\"$file_xsl/$file_css\"/>";
 					}
 				}
 				closedir($dir_css);
