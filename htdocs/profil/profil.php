@@ -6,9 +6,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.15  2004/10/21 22:17:16  kikx
+	Juste pour Schmurtz
+
 	Revision 1.14  2004/10/20 20:37:27  kikx
 	Possibilité par l'utilisateur de se rajouter un binet
-
+	
 	Revision 1.13  2004/10/20 19:51:17  kikx
 	Structure pour se rajouter des binets
 	
@@ -170,6 +173,9 @@ require "../include/page_header.inc.php";
 		<champ id="casert" titre="Kazert" valeur="<?php echo $casert ?>" modifiable="non"/>
 		<champ id="surnom" titre="Surnom" valeur="<?php echo $surnom ?>"/>
 		<champ id="email" titre="Email" valeur="<?php echo empty($mail) ? $login.'@poly.polytechnique.fr' : $mail ?>"/>
+		<image url="trombino/?image=1&amp;login=<?=$login?>&amp;promo=<?=$promo?>">
+		<fichier id="file" titre="Nlle photo" taille="200000"/>
+
 		<bouton id="changer_trombino" titre="Changer"/>
 	</formulaire>
 	
