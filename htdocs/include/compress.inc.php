@@ -21,9 +21,12 @@
 	Fonctions permettant de zipper/dezipper un fichier
 	
 	$Log$
+	Revision 1.3  2004/11/08 10:27:13  pico
+	Ajout fonction pour supprimer tout un repertoire
+
 	Revision 1.2  2004/11/07 09:03:09  pico
 	Fonction pour zipper
-
+	
 	Revision 1.1  2004/11/07 00:07:47  pico
 	Utilisation de la fonction unzip pour dezipper une archive
 	
@@ -55,6 +58,28 @@ function zip($file,$dir,$type){
 	if($type == "tar"){
 		$cde = "/bin/tar czvf $file $dir";
 		exec($cde);
+	}
+}
+
+function deldir($dir) {
+	$dh=opendir($dir);
+	while ($file=readdir($dh)) {
+		if($file!="." && $file!="..") {
+			$fullpath=$dir."/".$file;
+			if(!is_dir($fullpath)) {
+			unlink($fullpath);
+			} else {
+			deldir($fullpath);
+			}
+		}
+	}
+	
+	closedir($dh);
+	
+	if(rmdir($dir)) {
+		return true;
+	} else {
+		return false;
 	}
 }
 
