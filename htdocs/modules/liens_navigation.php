@@ -21,9 +21,12 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.23  2004/11/27 17:04:57  pico
+	Modif de la page de préférences
+
 	Revision 1.22  2004/11/25 01:42:38  kikx
 	Truc tout moche pour corriger le probleme de l'affichage du lien administration alors que l'on est pas administrateur
-
+	
 	Revision 1.21  2004/11/25 00:20:39  schmurtz
 	Parce que faq ne prend pas d's dans ce cas.
 	
@@ -91,9 +94,7 @@
 	<lien id="annonces" titre="Annonces" url="index.php" key="a"/>
 	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
 		<lien id="deconnect" titre="Se déconnecter" url="index.php?logout=1" key="l"/>
-		<lien id="profil"  titre="Profil" url="profil/profil.php" key="p"/>
-		<lien id="profil_rezal" titre="Profil réseau" url="profil/reseau.php" key="r"/>
-		<lien id="skins" titre="Skins" url="profil/skin.php" key="s"/>
+		<lien id="profil"  titre="Préférences" url="profil/index.php" key="p"/>
 		
 	<?php else: ?>
 		<lien id="connect" titre="Se connecter" url="login.php" key="l"/>
