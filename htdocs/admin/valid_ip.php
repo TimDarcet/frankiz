@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.31  2005/01/10 08:20:57  pico
+	Ajoute le numero de prise
+
 	Revision 1.30  2005/01/10 08:16:39  pico
 	Correction bug #21 aussi (on pouvait pas virer les ip des gens)
-
+	
 	Revision 1.29  2005/01/10 08:04:25  pico
 	Mise en page
 	
@@ -133,15 +136,15 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0] == "ok") {
 		$temp2 = "ajout_ip_".$temp[1] ;
 		$temp3 = "raison_".$temp[1] ;
-		$DB_trombino->query("SELECT piece_id FROM eleves WHERE eleve_id='{$temp[1]}'") ;
-		list($kzert) = $DB_trombino->next_row();
+		$DB_trombino->query("SELECT piece_id,p.prise_id FROM eleves LEFT JOIN admin.prises AS p USING(piece_id) WHERE eleve_id='{$temp[1]}' AND p.type='principale'") ;
+		list($kzert,$id_prise) = $DB_trombino->next_row();
 		
 		$DB_admin->query("SELECT 0 FROM prises WHERE ip='{$_POST[$temp2]}'");
 		
 		// S'il n'y a aucune entrée avec cette ip dans la base
 		if ($DB_admin->num_rows()==0){
 			$DB_valid->query("DELETE FROM valid_ip WHERE eleve_id='{$temp[1]}'");
-			$DB_admin->query("INSERT prises SET prise_id='',piece_id='$kzert',ip='{$_POST[$temp2]}',type='secondaire'");
+			$DB_admin->query("INSERT prises SET prise_id='$id_prise',piece_id='$kzert',ip='{$_POST[$temp2]}',type='secondaire'");
 			
 			$contenu = "Bonjour, <br><br>".
 						"Nous t'avons attribué l'adresse IP suivante :<br>".
@@ -236,7 +239,8 @@ $DB_admin->query("UNLOCK TABLES");
 ?>
 			<element id="<? echo str_replace(".","x",$ip) ;?>">
 				<colonne id="prise"><? echo "$prise" ?></colonne>
-				<colonne id="ip"><? echo $ip ;?><bouton titre="Dégage!" id="suppr_<? echo str_replace(".","x",$ip) ;?>_<? echo $id?>" onClick="return window.confirm('Voulez vous vraiment supprimez cette ip ?')"/></colonne>
+				<colonne id="ip"><? echo $ip ;?></colonne>
+				<colonne id="degage"><bouton titre="Dégage!" id="suppr_<? echo str_replace(".","x",$ip) ;?>_<? echo $id?>" onClick="return window.confirm('Voulez vous vraiment supprimez cette ip ?')"/></colonne>
 				<colonne id="eleve"><? echo "$nom $prenom ($promo)" ?></colonne>
 			</element>
 <?
