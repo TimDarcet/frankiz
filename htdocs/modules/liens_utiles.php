@@ -21,9 +21,12 @@
 	Liens permettants d'accéder aux autres sites de l'école.
 	
 	$Log$
+	Revision 1.6  2005/01/10 07:43:05  pico
+	Bug #20
+
 	Revision 1.5  2005/01/02 10:50:25  pico
 	Passage de certaines pages en visibles de l'intérieur (non loggué)
-
+	
 	Revision 1.4  2004/11/09 22:39:06  pico
 	Ajout des accesskeys dans les liens de navigation
 	
@@ -66,6 +69,7 @@
 	<?php if(est_authentifie(AUTH_MINIMUM)){ ?>
 		<lien id="utile_redmail" titre="Redirection des mails" url="http://poly.polytechnique.fr/" /> 
 	<? } ?>
+	<lien id="utile_irc" titre="Accéder à l'IRC" url="http://ircserver/"/>
 	<lien id="utile_ecole" titre="Site de l'école" url="http://www.polytechnique.fr/" />
 	<lien id="utile_ecole_de" titre="Site de la DE" url="http://www.edu.polytechnique.fr/" key="d"/>
 	<lien id="utile_intranet" titre="Intranet" url="http://intranet.polytechnique.fr/" key="i"/>
