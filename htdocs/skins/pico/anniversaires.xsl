@@ -45,6 +45,7 @@
 				</xsl:for-each>
 			</xsl:if>
 		</div>
+		<br/> 
 	</xsl:if>
 </xsl:template>
 

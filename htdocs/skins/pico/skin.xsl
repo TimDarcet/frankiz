@@ -66,7 +66,6 @@
 	<div class="fkz_page">
 		<div class="fkz_centre">
 			<xsl:apply-templates select="frankiz/module[@id='anniversaires']"/>
-			<br/> 
 			<xsl:apply-templates select="frankiz/page[@id='accueil']" mode="sommaire"/>
 			<xsl:apply-templates select="frankiz/page[@id='accueil']" mode="complet"/>
 			<xsl:apply-templates select="frankiz/page[@id='trombino']"/>

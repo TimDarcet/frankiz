@@ -24,91 +24,9 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
-	Revision 1.34  2004/11/08 08:47:57  kikx
-	Pour la gestion online des sites de binets
+	Revision 1.35  2004/11/09 19:42:15  pico
+	Passage de tous les paramËtres de conf dans etc/config.php
 
-	Revision 1.33  2004/11/07 00:09:13  pico
-	Include du fichier contenant les fonctions de compression
-	
-	Revision 1.32  2004/11/06 15:09:18  pico
-	Correction d'un commit de merde, dÈsolÈ
-	
-	Revision 1.30  2004/11/04 16:36:42  schmurtz
-	Modifications cosmetiques
-	
-	Revision 1.29  2004/10/29 15:41:48  kikx
-	Passage des mail en HTML pour les ip
-	
-	Revision 1.28  2004/10/29 14:38:37  kikx
-	Mise en format HTML des mails pour les validation de la qdj, des mails promos, et des annonces
-	
-	Revision 1.27  2004/10/29 14:09:10  kikx
-	Envoie des mail en HTML pour la validation des affiche
-	
-	Revision 1.26  2004/10/28 16:08:14  kikx
-	Ne fait qu'une page de fonctions pour la mÈtÈo car sinon Áa devient ingÈrable
-	
-	Revision 1.25  2004/10/22 06:52:38  pico
-	Bdd xnet
-	
-	Revision 1.24  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.23  2004/10/21 12:24:48  kikx
-	Correction d'un bug suite a un commit
-	
-	Revision 1.22  2004/10/17 17:27:07  pico
-	Ajout bdd de la faq
-	
-	Revision 1.21  2004/10/16 01:18:00  schmurtz
-	Utilisation d'un chemin d'acces absolu pour partager les images et les caches entre
-	tous les developpeurs. Cela suppose que tout le monde test ce qu'il developpe sur
-	gwennoz, et permet de disposer de toutes les images actuelles (photos, annonces...)
-	
-	Revision 1.20  2004/10/15 23:28:00  schmurtz
-	Suppression du dossier data de la CVS pour le remplacer par un lien symbolique
-	Tous les developpeurs partage alors les memes data (photos du trombino, images des
-	annonces...)
-	
-	Revision 1.19  2004/10/15 22:03:07  kikx
-	Mise en place d'une page pour la gestion des sites des binets
-	
-	Revision 1.18  2004/10/07 22:52:20  kikx
-	Correction de la page des activites (modules + proposition + administration)
-		rajout de variables globales : DATA_DIR_LOCAL
-						DATA_DIR_URL
-	
-	Comme ca si ca change, on est safe :)
-	
-	Revision 1.17  2004/10/04 21:48:08  schmurtz
-	Modification des chemins d'acceÃÄs vers divers eÃÅleÃÅments.
-	
-	Revision 1.16  2004/09/20 20:33:47  schmurtz
-	Mise en place d'un systeme de cache propre
-	
-	Revision 1.15  2004/09/18 16:22:26  kikx
-	micro bug fix
-	
-	Revision 1.13  2004/09/17 14:19:58  kikx
-	Page de demande d'annonce terminÈ
-	Ajout d'une page de validations d'annonces
-	
-	Revision 1.12  2004/09/17 13:12:18  schmurtz
-	Suppression des <![CDATA[...]>> car les donneÃÅes des GET et POST (et donc de la base de donneÃÅes) sont maintenant eÃÅchappeÃÅes avec des &amp; &lt; &apos;...
-	
-	Revision 1.11  2004/09/17 11:15:21  schmurtz
-	Echappement des caracteres < > & dans les variables $_POST $_GET $_REQUEST
-	
-	Revision 1.10  2004/09/17 09:05:32  kikx
-	La personne peut maintenant rajouter une annonce
-	Ceci dit je ne comprend pas trop comment on protËge les champs avec les <!CDATA
-	-> j'ai laisser ca comme ca mais faudra modifier
-	
-	Revision 1.9  2004/09/15 23:19:31  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.8  2004/09/15 21:42:08  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
 	
 */
 
@@ -120,33 +38,10 @@ if(file_exists("$dir/frankiz.dtd"))
 define('BASE_LOCAL',realpath(dirname(__FILE__)."/.."));
 define('BASE_URL','http://'.$_SERVER['HTTP_HOST'].'/'.substr((dirname($_SERVER['PHP_SELF']).'/'.$href), 1));
 
-// Configuration du site
-define('AFFICHER_LES_ERREURS',$_SERVER["SERVER_ADDR"] == "129.104.201.52");	// seulement sur gwennoz
-define('BASE_DATA',"/home/frankiz2/data/");				// TODO GÈrer le truc proprement.
-define('BASE_PHOTOS',"/home/frankiz2/data/photos/");
-define('BASE_CACHE',"/home/frankiz2/cache/");
-define('BASE_BINETS',BASE_LOCAL."/../binets/");
-define('URL_DATA','http://'.$_SERVER['HTTP_HOST'].'/frankiz2/data/');
+// Connexions aux bases mysql
+require_once "mysql.inc.php";
 
-
-define('DATA_DIR_LOCAL',BASE_DATA);	// pour compatibilitÈ
-define('DATA_DIR_URL',URL_DATA);
-
-// Emails
-$i = -1 ;
-define('MAIL_WEBMESTRE',"kikx@frankiz.polytechnique.fr");
-define('WEBMESTRE_ID',$i--);
-define('MAIL_QDJMASTER',"eric.gruson@polytechnique.fr");
-define('QDJMASTER_ID',$i--);
-define('MAIL_PREZ',"eric@melix.org");
-define('PREZ_ID',$i--);
-define('MAIL_ROOT',"gruson@poly");
-define('ROOT_ID',$i--);
-
-define('MAIL_CONTACT',"eleves@polytechnique.fr");
-
-// Nombres de jours affichÈs dans la page des annonces 
-define('MAX_PEREMPTION',8);
+require_once BASE_LOCAL."/../etc/config.php";
 
 // Gestion des erreurs PHP et MySQL
 // Il est important d'inclure ce fichier le plus tÙt possible, mais comme il a besoin
@@ -176,23 +71,6 @@ function nettoyage_balise($tableau) {
 $_GET = nettoyage_balise($_GET);
 $_POST = nettoyage_balise($_POST);
 $_REQUEST = nettoyage_balise($_REQUEST);
-
-/*
-	…lements ‡ ne pas mettre dans la distribution libre du code car il y a les mot de passe
-	et les comptes www.weather.com
-*/
-
-// Connexions aux bases mysql
-require_once "mysql.inc.php";
-$DB_xnet = new DB("frankiz2","xnet","web","kokouije?.");
-$DB_faq = new DB("frankiz","faq","web","kokouije?.");
-$DB_web = new DB("frankiz","frankiz2_tmp","web","kokouije?.");
-$DB_admin = new DB("frankiz","admin","web","kokouije?.");
-$DB_trombino = new DB("frankiz","trombino","web","kokouije?.");
-$DB_valid = new DB("frankiz","a_valider","web","kokouije?.");
-
-// MÈtÈo
-define('WEATHER_DOT_COM',"http://xoap.weather.com/weather/local/FRXX0076?prod=xoap&par=1006415841&key=5064537abefac140&unit=m&cc=*&dayf=8");
 
 // divers fichiers inclus
 require_once "global_func.inc.php";
