@@ -21,9 +21,12 @@
 	Page qui permet aux admins de voir l'historique des qdj
 	
 	$Log$
+	Revision 1.7  2005/02/04 17:32:26  pico
+	Correction bug division par zero
+
 	Revision 1.6  2005/01/06 23:31:31  pico
 	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
-
+	
 	Revision 1.5  2004/12/17 20:40:48  pico
 	Mise en forme
 	
@@ -71,8 +74,14 @@ $date = date("Y-m-d", time());
 	<?
 	$DB_web->query("SELECT qdj_id,date,question,reponse1,reponse2,compte1,compte2 FROM qdj WHERE date<'$date'  ORDER BY date DESC");
 	while(list($id,$date,$question,$reponse1,$reponse2,$compte1,$compte2) = $DB_web->next_row()){
-		$p1 = round(100*$compte1/($compte1+$compte2));
-		$p2 = round(100*$compte2/($compte1+$compte2));
+		if(($compte1+$compte2)!=0){ 
+			$p1 = round(100*$compte1/($compte1+$compte2));
+			$p2 = round(100*$compte2/($compte1+$compte2));
+		}else{
+			$p1 = 0;
+			$p2 = 0;
+		}
+		
 ?>
 		<h4>QDJ du <?= date("d/m/Y",strtotime($date)) ?></h4>
 			<?= "$question ?" ?><br/>
