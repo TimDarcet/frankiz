@@ -21,9 +21,14 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.14  2004/11/06 15:17:58  kikx
+	Suppression des liens vers l'InfoBR et les docs
+		-> Telecharger+FAQ = InfoBR
+		-> docs -> FAQ
+
 	Revision 1.13  2004/10/31 22:14:11  kikx
 	Vocabulaire de L'X
-
+	
 	Revision 1.12  2004/10/29 16:42:31  kikx
 	Rajout des id sur les liens de navigation
 	Ca pêrmet au skinneur soit de mettre en gras certain liens specifique soit de remplacer les liens par des images comme il le souhaite
@@ -65,12 +70,13 @@
 		<lien id="profil"  titre="Profil" url="profil/profil.php" />
 		<lien id="profil_rezal" titre="Profil réseau" url="profil/reseau.php" />
 		<lien id="skins" titre="Skins" url="profil/skin.php" />
-		<lien id="infobr" titre="InfoBr" url="documentation/InfoBR.pdf" />
+		
 	<?php else: ?>
 		<lien id="connect" titre="Se connecter" url="login.php" />			
 	<?php endif; ?>
 	<lien id="meteo" titre="Météo" url="meteo/" />
-	<lien id="doc" titre="Docs/Manuels" url="documentation/" />
+	<!--<lien id="infobr" titre="InfoBr" url="documentation/InfoBR.pdf" />
+	<lien id="doc" titre="Docs/Manuels" url="documentation/" />-->
 	<lien id="faq" titre="FAQ" url="faq/" />
 	<lien id="xshare" titre="XShare" url="xshare/" />
 	<lien id="binets"  titre="Binets" url="binets/" />
