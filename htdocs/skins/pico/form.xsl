@@ -24,13 +24,14 @@
 <!-- Formulaires -->
 <xsl:template match="formulaire">
 	<!-- la déco -->
-	<xsl:if test="boolean(@titre)">
-		<h2><xsl:value-of select="@titre"/></h2>
-	</xsl:if>
 	<xsl:apply-templates select="commentaire | warning | note"/>
 	<form enctype="multipart/form-data" method="post">
+			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
-		<div class="formulaire">
+		<xsl:if test="boolean(@titre)">
+			<h2><span><xsl:value-of select="@titre"/></span></h2>
+		</xsl:if>
+	<div class="formulaire">
 			<!-- les options du formulaire -->
 			<xsl:for-each select="champ|choix|zonetext|textsimple|hidden|image|fichier|lien">
 				<div>

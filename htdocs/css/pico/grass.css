@@ -416,32 +416,52 @@ table.liste .entete{
 	text-decoration: underline;
 }
 
-#choix_skin h1 {
-	background-repeat:no-repeat;
-	background-position: center;
-	background-image: url("grass/titre_page_skin.png");
-	height: 22px;
-	width: 100%;
-	display:block;
-}
-#choix_skin h1 span,#form_choix_skin h2 span,#form_param_skin h2 span{
+
+#choix_skin h1 span,#choix_skin h2 span,#profil  h1 span,#profil h2 span{
 	display:none;
 }
 
-#form_choix_skin h2 {
+#choix_skin h2, #profil h2{
 	background-repeat:no-repeat;
 	background-position: left;
-	background-image: url("grass/titre_choix_skin.png");
 	height: 22px;
 	width: 100%;
 	display:block;
 }
 
-#form_param_skin h2 {
+#choix_skin h1, #profil  h1{
+	background-image: url("grass/titre_page_skin.png");
 	background-repeat:no-repeat;
-	background-position: left;
-	background-image: url("grass/titre_param_skin.png");
+	background-position: center;
 	height: 22px;
 	width: 100%;
 	display:block;
+}
+
+#choix_skin h1 {
+	background-image: url("grass/titre_page_skin.png");
+}
+
+#choix_skin #form_choix_skin h2 {
+	background-image: url("grass/titre_choix_skin.png");
+}
+
+#choix_skin #form_param_skin h2 {
+	background-image: url("grass/titre_param_skin.png");
+}
+
+#profil  h1 {
+	background-image: url("grass/titre_page_profil.png");
+}
+
+#profil #mod_frankiz h2{
+	background-image: url("grass/titre_compte_profil.png");
+}
+
+#profil #mod_trombino h2{
+	background-image: url("grass/titre_trombino_profil.png");
+}
+
+#profil #liste_binet h2{
+	background-image: url("grass/titre_binet_profil.png");
 }
