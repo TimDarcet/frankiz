@@ -19,6 +19,9 @@
 #
 
 # $Log$
+# Revision 1.6  2004/12/16 23:18:24  schmurtz
+# Simplification de status-net
+#
 # Revision 1.5  2004/12/14 22:22:47  schmurtz
 # incoherence
 #
@@ -33,42 +36,29 @@ $file="/home/frankiz2/cache/status";
 
 use Net::Telnet;
 
-@host=("frankiz","newsgroups","ircserver","xnetserver","polynews","kuzh","sil","poly","poly");
-@port=(80,119,6667,5053,119,8080,1080,995,25);
+@services=("frankiz","newsgroups","ircserver","xnetserver","polynews","kuzh","sil","poly:réception","poly:envoi");
+@hotes=("frankiz","newsgroups","ircserver","xnetserver","polynews","kuzh","sil","poly","poly");
+@ports=(80,119,6667,5053,119,8080,1080,995,25);
 
 open(STATUS,">$file");
 
-for ($i = 0; $i <= $#host; $i++) {
+for ($i = 0; $i <= $#hotes; $i++) {
 
-   $hote=$host[$i];
-   $po=$port[$i];
-   $telnet = new Net::Telnet( Host => $hote, Port => $po, Timeout => 2, Errmode => "return");
-   if ($telnet) {
-      # connexion ok
-      $telnet -> close;
-      if($i == 7) { 
-      		$res="<serveur nom='poly:pop' etat='up' />\n";
-     }
-     if($i == 8) { 
-      		$res="<serveur nom='poly:smtp' etat='up' />\n";
-     }
-      if(($i !=7)&&($i != 8)) {
-         $res="<serveur nom='$hote' etat='up' />\n";
-      }
-   }
-   else {
-      # connexion impossible
-	if($i == 7) {
-		$res="<serveur nom='poly:pop' etat='down' />\n";
-	} 
-	if($i == 8) {
-		$res="<serveur nom='poly:smtp' etat='down' />\n";
-	} 
-	 if(($i !=7)&&($i != 8)) {
-	$res="<serveur nom='$hote' etat='down' />\n"
+	$hote=$hotes[$i];
+	$port=$ports[$i];
+	$service=$services[$i];
+	$telnet = new Net::Telnet( Host => $hote, Port => $port, Timeout => 2, Errmode => "return");
+	
+	if ($telnet) {
+		# connexion ok
+		$telnet -> close;
+		$res="<serveur nom='$service' etat='up' />\n";
+		
+	} else {
+		# connexion impossible
+		$res="<serveur nom='$service' etat='down' />\n"
 	}
-   }
-   print STATUS $res;
+	print STATUS $res;
 }
 
 close STATUS;
