@@ -3,9 +3,12 @@
 	Liens permettants de contacter les webmestres et faire des demandes.
 	
 	$Log$
+	Revision 1.11  2004/10/19 20:19:31  kikx
+	pas de sondage pour l'instant
+
 	Revision 1.10  2004/10/13 20:03:59  pico
 	Ajout du lien
-
+	
 	Revision 1.9  2004/10/06 14:12:27  kikx
 	Page de mail promo quasiment en place ...
 	envoie en HTML ...
@@ -40,6 +43,6 @@
 		<lien titre="Proposer une activité" url="proposition/affiche.php" />
 		<lien titre="Proposer une qdj" url="proposition/qdj.php" />
 		<lien titre="Demander un mail promo" url="proposition/mail_promo.php" />
-		<lien titre="Proposer un sondage" url="proposition/sondage.php/" />
+		<!--<lien titre="Proposer un sondage" url="proposition/sondage.php/" />-->
 	<?php endif; ?>
 </module>
