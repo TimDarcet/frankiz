@@ -239,7 +239,7 @@ echo "<br/>" ;
 	?>
 	<a name='descript' />
 	<? 
-	echo "<h2><lien titre='".$nom."' url='".$lien."'/></h2>";
+	echo "<h2><lien titre='".$nom."' url='../data/xshare/".$lien."'/></h2>";
 	if($importance == 1) echo "<p>Important</p>";
 	if($importance == 2) echo "<p><strong>Indispensable</strong></p>";
 	echo "<em><lien titre='site de l&apos;éditeur' url='".$site."'/></em>";
