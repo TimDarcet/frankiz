@@ -19,6 +19,9 @@
 #
 
 # $Log$
+# Revision 1.5  2004/12/14 22:22:47  schmurtz
+# incoherence
+#
 # Revision 1.4  2004/11/30 16:24:51  pico
 # Ajout du serveur de news au script de test de l'état des serveurs
 #
@@ -26,7 +29,7 @@
 # GPLisation des fichiers du site
 #
 
-$file="/var/www/frankiz2/cache/status";
+$file="/home/frankiz2/cache/status";
 
 use Net::Telnet;
 
