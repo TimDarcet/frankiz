@@ -36,11 +36,11 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 ?>
 <page id="licences" titre="Frankiz : Les Licences">
 <?	//on vérifie que la demande est faite pour windows xp pro
-	if(isset($_POST['accord']) && isset($_POST['xp_pro'])){
+	if(isset($_POST['accord']) && ($_POST['logiciel']==xp_pro)){
 		//on lance la requête qui va bien pour voir la clé
 		$DB_msdnaa->query("SELECT cle,attrib FROM cles_winxp WHERE eleve_id='".$_SESSION['user']->uid."' LIMIT 0,1");
 		//on verifie que le demandeur existe dans la base
-		if($DB_msdnaa->num_rows()>0){
+		if($DB_msdnaa->num_rows()!=0){
 			//on a la clé attribuée de manière unique par le BR.
 			list($cle,$attrib) = $DB_msdnaa->next_row();
 			//si la personne a déjà demandé sa clé...
@@ -104,9 +104,10 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 		<p>Vous pouvez utiliser les logiciels à des fins non lucratives, notamment à des fins d'enseignement, de recherche et/ou de conception, de développement et de test dans le cadre de projets pédagogiques personnels. Il est interdit d'utiliser les logiciels MSDNAA pour le développement de logiciels à but lucratif.</p>
 		<p>Lorsque vous n'êtes plus inscrit à aucun cours dispensé par l'établissement abonné, vous ne pouvez plus vous procurer des logiciels MSDNAA. Toutefois, vous pouvez continuer à utiliser les produits précédemment installés sur votre ordinateur, à condition de vous conformer toujours aux instructions du programme MSDNAA.</p>
 		<p>Si vous contrevenez aux termes et conditions stipulés dans le CLUF et l'Amendement du Contrat de Licence, l'administrateur du programme MSDNAA exigera la confirmation de la désinstallation des logiciels de votre ordinateur personnel.</p>
+		<? if(isset($_POST['logiciel'])){ echo "<hidden id=\"logiciel\" valeur=\"".$_POST['logiciel']."\" />"; } ?>
 		<bouton id='accord' titre="J'accepte" /> 
 		<bouton id='refus' titre="Je refuse" onClick="return window.confirm('Tu refuses ta clé gratuite ?')"/>
-		<? if(isset($_POST['xp_pro'])){ echo "<hidden id=\"xp_pro\" valeur=\"1\" />"; } ?>
+		
 		</formulaire>
 	<?php
 	} else {
