@@ -4,9 +4,14 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.18  2004/10/17 17:13:20  kikx
+	Pour rendre la page d'administration plus belle
+	n'affiche le truc d'admin que si on est admin
+	meme chsoe pour le prez et le webmestre
+
 	Revision 1.17  2004/10/15 22:03:07  kikx
 	Mise en place d'une page pour la gestion des sites des binets
-
+	
 	Revision 1.16  2004/10/13 22:14:32  pico
 	Premier jet de page pour affecter une date de publication aux qdj validées
 	
@@ -47,6 +52,7 @@ if(empty($_SESSION['user']->perms))
 require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="admin" titre="Frankiz : administration">
+	<? if (verifie_permission('admin')){?>
 	<h2>Administration frankiz</h2>
 		<lien titre="Modifier un utilisateur" url="<?php echo BASE_URL?>/trombino"/>
 		<lien titre="Liste des Binets" url="<?php echo BASE_URL?>/admin/binets.php"/>
@@ -60,11 +66,45 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<lien titre="Valider les mails promos" url="<?php echo BASE_URL?>/admin/valid_mailpromo.php"/>
 		<lien titre="Valider les qdj" url="<?php echo BASE_URL?>/admin/valid_qdj.php"/>
 		<lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/>
-	<h2>Webmestre binet X</h2>
-	<p>En construction
-</p>
-	<h2>Prez binet X</h2>
-	<p>En construction
-</p>
+	<?
+	}
+	
+	//
+	// Pour les webmestres des binets
+	//======================================
+	
+	$counter = 0 ;
+	for ($i = 0 ; $i<count($permissions_user) ; $i++){
+		$temp = $permissions_user[$i]; 
+		if (strpos($temp,"webmestre")!==false) { // il y a bien !== attention ...
+			$binet = explode("_",$permissions_user[$i]) ;
+			$binet = $binet[1] ;
+			$counter ++ ;
+			if ($counter == 1) 
+				echo "<h2>Prez binet X</h2>" ;
+			echo "<lien titre=\"Gerer la page du binet\" url=\"". BASE_URL."/gestion/binet.php?binet=".$binet."\"/>" ;
+		}
+	}
+
+	
+	//
+	// Pour les prez des binets
+	//======================================
+	
+	$counter = 0 ;
+	for ($i = 0 ; $i<count($permissions_user) ; $i++){
+		$temp = $permissions_user[$i]; 
+		if (strpos($temp,"prez")!==false) { // il y a bien !== attention ...
+			$binet = explode("_",$permissions_user[$i]) ;
+			$binet = $binet[1] ;
+			$counter ++ ;
+			if ($counter == 1) 
+				echo "<h2>Prez binet X</h2>" ;
+			echo "<lien titre=\"Gerer les membres du binet\" url=\"". BASE_URL."/gestion/binet.php?binet=".$binet."\"/>" ;
+		}
+	}
+
+	?>
+
 </page>
 <?php require_once BASE_LOCAL."/include/page_footer.inc.php"; ?>

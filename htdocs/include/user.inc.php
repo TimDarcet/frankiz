@@ -8,9 +8,14 @@
 	informations provenant des tables du trombino (avec jointure sur l'uid).
 
 	$Log$
+	Revision 1.8  2004/10/17 17:13:20  kikx
+	Pour rendre la page d'administration plus belle
+	n'affiche le truc d'admin que si on est admin
+	meme chsoe pour le prez et le webmestre
+
 	Revision 1.7  2004/09/15 23:19:31  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 	Revision 1.6  2004/09/15 21:42:08  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
 	
@@ -104,6 +109,11 @@ class User {
 		return false;
 	}
 	
+	function ses_permissions() {
+		if( $this->methode < AUTH_COOKIE) return false;
+		return $this->perms ;
+	}
+	
 	function verifie_permission_prez($binet) {
 		return $this->verifie_permission("prez_$binet");
 	}
@@ -124,6 +134,9 @@ class User {
 // Fonctions simplifiées, utilisant $_SESSION['user'] directement
 function verifie_permission($perm) {
 	return $_SESSION['user']->verifie_permission($perm);
+}
+function ses_permissions() {
+	return $_SESSION['user']->ses_permissions();
 }
 function verifie_permission_prez($binet) {
 	return $_SESSION['user']->verifie_permission("prez_$binet");
