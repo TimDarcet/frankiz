@@ -5,9 +5,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.11  2004/09/17 11:34:10  kikx
+	Bla
+
 	Revision 1.10  2004/09/15 23:20:18  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 	Revision 1.9  2004/09/15 21:42:27  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
 	
@@ -38,7 +41,7 @@ foreach ($_POST AS $keys => $val){
 	// On refuse la demande d'ip supplémentaire
 	//==========================
 	if ($temp[0] == "vtff") {
-		$DB_admin->query("DELETE FROM validations_ip WHERE eleve_id='{$temp[1]}'");
+		$DB_valid->query("DELETE FROM valid_ip WHERE eleve_id='{$temp[1]}'");
 		
 		$contenu = "Bonjour, \n\n".
 					"Nous sommes désolé mais nous ne pouvons pas d'ouvrir une autre ip supplémentaire car nous ne pensons pas que tu en ai absolument besoin...\n\n".
@@ -59,8 +62,11 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0] == "ok") {
 		$temp2 = "ajout_ip_".$temp[1] ;
 		$temp3 = "raison_".$temp[1] ;
-		$DB_admin->query("DELETE FROM validations_ip WHERE eleve_id='{$temp[1]}'");
-		$DB_admin->query("INSERT prises SET prise_id='',piece_id='',ip='{$_POST[$temp2]}',type='secondaire'");
+		$DB_trombino->query("SELECT piece_id FROM eleves WHERE eleve_id='{$temp[1]}'") ;
+		list($kzert) = $DB_trombino->next_row();
+		
+		$DB_valid->query("DELETE FROM valid_ip WHERE eleve_id='{$temp[1]}'");
+		$DB_admin->query("INSERT prises SET prise_id='',piece_id='$kzert',ip='{$_POST[$temp2]}',type='secondaire'");
 		
 		$contenu = "Bonjour, \n\n".
 					"Nous t'avons ouvert l'ip suivante :\n".
@@ -101,7 +107,7 @@ foreach ($_POST AS $keys => $val){
 ?>
 
 <commentaire>
-Vous allez valider un ajout d'une ip : Pour le mement le système n'est pas fiable car on ne sais pas si l'ip qu'on lui attribut est libre... Donc faites super attention car après c'est la merde !
+Vous allez valider un ajout d'une ip : Pour le moment le système n'est pas fiable car on ne sais pas si l'ip qu'on lui attribut est libre... Donc faites super attention car après c'est la merde !
 </commentaire>
 <h2>Liste des personnes demandant</h2>
 	<liste id="liste" selectionnable="non" action="admin/valid_ip.php">
@@ -110,8 +116,8 @@ Vous allez valider un ajout d'une ip : Pour le mement le système n'est pas fiabl
 		<entete id="prises" titre="Prises"/>
 		<entete id="ip" titre="IP"/>
 <?
-		$DB_admin->query("SELECT v.raison,e.nom,e.prenom,e.piece_id,e.eleve_id FROM validations_ip as v INNER JOIN trombino.eleves as e USING(eleve_id)");
-		while(list($raison,$nom,$prenom,$piece,$eleve_id) = $DB_admin->next_row()) {
+		$DB_valid->query("SELECT v.raison,e.nom,e.prenom,e.piece_id,e.eleve_id FROM valid_ip as v INNER JOIN trombino.eleves as e USING(eleve_id)");
+		while(list($raison,$nom,$prenom,$piece,$eleve_id) = $DB_valid->next_row()) {
 ?>
 			<element id="<? echo $eleve_id ;?>">
 				<colonne id="eleve"><? echo "$nom $prenom" ?></colonne>

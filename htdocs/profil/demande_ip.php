@@ -4,9 +4,12 @@
 	une seconde machine dans son casert.
 	
 	$Log$
+	Revision 1.7  2004/09/17 11:34:10  kikx
+	Bla
+
 	Revision 1.6  2004/09/15 23:20:07  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 	Revision 1.5  2004/09/15 21:42:21  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
 	
@@ -32,8 +35,8 @@ if (!isset($_POST['demander'])) {
 	</formulaire>
 <?
 } else {
-	$DB_admin->query("SELECT 0 FROM validations_ip WHERE eleve_id='{$_SESSION['user']->uid}'");
-	if ($DB_admin->num_rows()>0){
+	$DB_valid->query("SELECT 0 FROM valid_ip WHERE eleve_id='{$_SESSION['user']->uid}'");
+	if ($DB_valid->num_rows()>0){
 ?>
 
 		<warning>Tu as déjà fait une demande</warning>
@@ -42,7 +45,7 @@ if (!isset($_POST['demander'])) {
 	
 <?
 	} else {
-		$DB_admin->query("INSERT validations_ip SET raison='{$_POST['raison']}', eleve_id='{$_SESSION['user']->uid}'");
+		$DB_valid->query("INSERT valid_ip SET raison='{$_POST['raison']}', eleve_id='{$_SESSION['user']->uid}'");
 		
 		// Envoie du mail au webmestre pour le prévenir d'une demande d'ip
 		$DB_trombino->query("SELECT nom,prenom FROM eleves WHERE eleve_id='{$_SESSION['user']->uid}'");
