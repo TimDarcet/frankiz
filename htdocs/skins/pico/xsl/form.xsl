@@ -29,11 +29,9 @@
 		<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<div class="formulaire">
 		<!-- les options du formulaire -->
-		<xsl:apply-templates select="*[name()!='bouton']"/>
+			<xsl:apply-templates select="*[name()!='bouton']"/>
 		<!-- les boutons gérant les actions du formulaire -->
-			<span class="boutons">
-				<xsl:apply-templates select="bouton"/>
-			</span>
+			<xsl:apply-templates select="bouton"/>
 		</div>
 	</form>
 </xsl:template>
