@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un sondage
 	
 	$Log$
+	Revision 1.20  2005/03/02 07:24:49  pico
+	corrige une petite erreur d'url
+
 	Revision 1.19  2005/02/15 19:45:14  pico
 	Pour modifier les sondages lors de la validation
-
+	
 	Revision 1.18  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
 	
@@ -164,7 +167,7 @@ foreach ($_POST AS $keys => $val){
 			$bla = "explication_".$temp[1] ;
 			$contenu = "<strong>Bonjour</strong>, <br><br>".
 						"Ton sondage vient d'être mis en ligne par le BR <br>";
-			if($temp_ext==0) $contenu .= "Il est accessible à l'adresse suivante: ".BASE_URL."sondages.php?id=".$index."<br>";
+			if($temp_ext==0) $contenu .= "Il est accessible à l'adresse suivante: ".BASE_URL."/sondage.php?id=".$index."<br>";
 			$contenu .= $_POST[$bla]."<br>".
 						"<br>" .
 						"Très Cordialement<br>" .
