@@ -21,9 +21,12 @@
 	Affichage des anniversaires avec gestion d'un cache mis à jour une fois par jour.
 	
 	$Log$
+	Revision 1.14  2004/11/23 07:43:25  pico
+	Les différentes promos ne sont plus codées en dur, mais utilisent la variable sql
+
 	Revision 1.13  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.12  2004/09/20 20:33:47  schmurtz
 	Mise en place d'un systeme de cache propre
 	
@@ -42,9 +45,11 @@ if(est_authentifie(AUTH_MINIMUM)) {
 	echo "<module id=\"anniversaires\" titre=\"Anniversaires\">\n";
 
 	if(!cache_recuperer('anniversaires',strtotime(date("Y-m-d",time())))) {
+		$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
+		list($promo_temp) = $DB_web->next_row() ;
 		$DB_trombino->query("SELECT nom,prenom,surnom,promo,mail FROM eleves "
 							   ."WHERE MONTH(date_nais)=MONTH(NOW()) AND DAYOFMONTH(date_nais)=DAYOFMONTH(NOW()) "
-							   ."AND (promo='2002' OR promo='2003')");
+							   ."AND (promo=$promo_temp OR promo=".($promo_temp -1).")");
 		while(list($nom,$prenom,$surnom,$promo,$mail) = $DB_trombino->next_row())
 			echo "\t<eleve nom='$nom' prenom='$prenom' surnom='$surnom' promo='$promo' mail='$mail'/>\n";
 		
