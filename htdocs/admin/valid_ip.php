@@ -23,10 +23,13 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.20  2004/12/08 13:00:34  kikx
+	Protection de la validation des ip
+
 	Revision 1.19  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
-
+	
 	Revision 1.18  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
 	
@@ -72,6 +75,10 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 // On regarde quel cas c'est ...
 // On envoie chié le mec pour son changement d'ip et on le supprime de la base
 // On accepte le changement et on l'inbscrit dans la base
+
+$DB_valid->query("LOCK TABLE valid_ip WRITE");
+$DB_admin->query("LOCK TABLE prises WRITE");
+$DB_valid->query("SET AUTOCOMMIT=0");
 
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
@@ -123,7 +130,7 @@ foreach ($_POST AS $keys => $val){
 		} else {
 			echo "<warning>IMPOSSIBLE D'ATTRIBUER CETTE IP. Une autre personne la posséde déjà.</warning>" ;
 		}
-
+		
 	}
 	
 	// On vire une ip qu'on avait validé
@@ -143,6 +150,8 @@ foreach ($_POST AS $keys => $val){
 
 	}
 }
+$DB_valid->query("UNLOCK TABLES");
+$DB_admin->query("UNLOCK TABLES");
 ?>
 
 <h2>Liste des personnes demandant</h2>
