@@ -6,9 +6,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.12  2004/10/20 18:47:07  kikx
+	Pour rajouter des lignes non selectionnables dans une liste
+
 	Revision 1.11  2004/10/20 11:02:10  kikx
 	Permet la suppression des binets dans son profil
-
+	
 	Revision 1.10  2004/10/19 20:22:04  schmurtz
 	Rajout de messages de reussite dans la page profil
 	Fusion des formulaires changement de mot de passe et activation du cookie
@@ -153,8 +156,7 @@ require "../include/page_header.inc.php";
 		<bouton id="changer_trombino" titre="Changer"/>
 	</formulaire>
 	
-	<h2>Tes Binets</h2>
-	<liste id="liste_binet" selectionnable="oui" action="profil/profil.php">
+	<liste id="liste_binet" selectionnable="oui" action="profil/profil.php" titre="Tes Binets">
 		<entete id="binet" titre="Binet"/>
 		<entete id="commentaire" titre="Commentaire"/>
 

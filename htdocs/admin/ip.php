@@ -4,9 +4,12 @@
 	Permet aussi de supprimer des IPs.
 	
 	$Log$
+	Revision 1.16  2004/10/20 18:47:07  kikx
+	Pour rajouter des lignes non selectionnables dans une liste
+
 	Revision 1.15  2004/09/15 23:20:18  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 	Revision 1.14  2004/09/15 21:42:27  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
 	
@@ -46,7 +49,7 @@ if(isset($_POST['supprimer'])) {
 				if($on='on') $ids .= (empty($ids) ? "" : ",") . "'$id'";
 				
 			
-			//mysql_query("DELETE FROM ip_chambre_theory WHERE prise_id IN ($ids)");
+			mysql_query("DELETE FROM ip_chambre_theory WHERE prise_id IN ($ids)");
 			
 			$message = "<p>".count($_POST['elements'])." ip viennent d'être supprimées avec succès.</p>\n";
 		}

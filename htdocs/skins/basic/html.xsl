@@ -3,9 +3,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.10  2004/10/20 18:47:07  kikx
+	Pour rajouter des lignes non selectionnables dans une liste
+
 	Revision 1.9  2004/10/18 19:14:27  pico
 	Changement balises pour me conformer à la dtd
-
+	
 	Revision 1.8  2004/10/17 17:09:43  pico
 	Gestion des listes
 	Classes FAQ pour affichage graphique
@@ -84,9 +87,19 @@
 	<tr>
 		<xsl:if test="../@selectionnable='oui'">
 			<td class="element">
-				<input type="checkbox">
-					<xsl:attribute name="name">elements[<xsl:value-of select="@id"/>]</xsl:attribute>
-				</input>
+				<xsl:choose>
+					<xsl:when test="not(boolean(@selectionnable))">
+						<input type="checkbox">
+							<xsl:attribute name="name">elements[<xsl:value-of select="@id"/>]</xsl:attribute>
+						</input>
+					</xsl:when>
+					<xsl:when test="@selectionnable='oui'">
+						<input type="checkbox">
+							<xsl:attribute name="name">elements[<xsl:value-of select="@id"/>]</xsl:attribute>
+						</input>
+					</xsl:when>
+
+				</xsl:choose>
 			</td>
 		</xsl:if>
 		<xsl:for-each select="colonne">
