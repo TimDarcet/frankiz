@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.12  2004/10/29 14:58:36  kikx
+	Passage en HTML la page de validation des annonces, de plus il y a la possibilité de mettre pourquoi on refuse la validation d'une annonce
+
 	Revision 1.11  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.10  2004/10/20 23:21:39  schmurtz
 	Creation d'un element <html> qui permet d'afficher du html brute sans verification
 	C'est ce qui est maintenant utilise dans les annonces/cadres
@@ -92,9 +95,10 @@ foreach ($_POST AS $keys => $val){
 		$DB_valid->query("SELECT eleve_id FROM valid_annonces WHERE annonce_id='{$temp[1]}'");
 		list($eleve_id) = $DB_valid->next_row() ;
 		// envoi du mail
-		$contenu = "Merci de ta participation \n\n".
-			"Très BR-ement\n" .
-			"L'automate :)\n"  ;
+		$contenu = 	"Ton annonce vient d'être validé par le BR... Elle est dès à present visible sur la page d'accueil<br><br> ".
+					"Merci de ta participation <br><br>".
+					"Très BR-ement<br>" .
+					"Le Webmestre de Frankiz<br>"  ;
 		couriel($eleve_id,"[Frankiz] Ton annonce a été validé par le BR",$contenu);
 		
 		if (isset($_REQUEST['ext_auth']))
@@ -119,9 +123,11 @@ foreach ($_POST AS $keys => $val){
 		$DB_valid->query("SELECT eleve_id FROM valid_annonces WHERE annonce_id='{$temp[1]}'");
 		list($eleve_id) = $DB_valid->next_row() ;
 		// envoi du mail
-		$contenu = "Désolé \n\n".
-			"Très BR-ement\n" .
-			"L'automate :)\n"  ;
+		$contenu = 	"Ton annonce n'a pas été validé par le BR pour la raison suivante :<br>".
+					$_POST['refus']."<br>".
+					"Désolé <br><br>".
+					"Très BR-ement<br>" .
+					"Le Webmestre de frankiz<br>"  ;
 		couriel($eleve_id,"[Frankiz] Ton annonce n'a pas été validé par le BR",$contenu);
 
 		$DB_valid->query("DELETE FROM valid_annonces WHERE annonce_id='{$temp[1]}'") ;
@@ -132,8 +138,6 @@ foreach ($_POST AS $keys => $val){
 			unlink(DATA_DIR_LOCAL."annonces/a_valider_{$temp[1]}") ;
 			$supp_image = " et de son image associée" ;
 		}
-		
-
 	?>
 		<warning><p>Suppression d'une annonce<? echo $supp_image?></p></warning>
 	<?
@@ -182,10 +186,11 @@ foreach ($_POST AS $keys => $val){
 				<option id="ext" titre="Demande de l'utilisateur" modifiable='non'/>
 				<option id="ext_auth" titre="Décision du Webmestre"/>
 			</choix>
-			
+			<zonetext id="refus" titre="La raison du refus si refus" valeur=""/>
+
 			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
-			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider cette annonce ?')"/>
-			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette annonce ?!!!!!')"/>
+			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Cette annonce apparaitra dès maintenantsur la apge d'accueil de frankiz... Voulez vous valider cette annonce ?')"/>
+			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Si vous supprimer cette annonce, celle-ci sera supprimé de façon definitive ... Voulez vous vraiment la supprimer ?')"/>
 		</formulaire>
 <?
 	}
