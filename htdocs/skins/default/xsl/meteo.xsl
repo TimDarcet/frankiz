@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!-- $Id$ -->
 <!--
-	Copyright (C) 2004 Binet Réseau
+<!-- 	Copyright (C) 2004 Binet Réseau -->
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@
 				<strong><xsl:value-of select="meteo/now/temperature"/>°C</strong><br />
 				<a href="meteo.php">
 					<img alt="meteo" width="64" height="64">
-						<xsl:attribute name="src">skins/default/xsl/meteo/<xsl:value-of select="meteo/now/image"/>.gif</xsl:attribute>
+						<xsl:attribute name="src">skins/default/images/meteo/<xsl:value-of select="meteo/now/image"/>.gif</xsl:attribute>
 					</img>
 				</a>
 		</dd>
