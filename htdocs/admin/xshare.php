@@ -19,10 +19,13 @@
 */
 /*
 		$Log$
+		Revision 1.31  2004/12/13 07:06:03  pico
+		Affichage du lien pour masquer une annonce
+
 		Revision 1.30  2004/11/29 17:27:32  schmurtz
 		Modifications esthetiques.
 		Nettoyage de vielles balises qui trainaient.
-
+		
 		Revision 1.29  2004/11/27 23:30:34  pico
 		Passage des xshare et faq en wiki
 		Ajout des images dans l'aide du wiki
@@ -131,6 +134,9 @@ foreach ($_POST AS $keys => $val){
 		$DB_web->query("SELECT lien FROM xshare WHERE id='{$temp[1]}' ");
 		list($dir) = $DB_web->next_row();
 		$dir=$dir."/".strtolower(str_replace(" ","",$nom));
+		$tofind = "ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ";
+		$replac = "AAAAAAaaaaaaOOOOOOooooooEEEEeeeeCcIIIIiiiiUUUUuuuuyNn";
+		$dir = strtr($dir,$tofind,$replac);
 		$DB_web-> query("INSERT INTO xshare SET id_parent='{$temp[1]}',nom='{$nom}',lien='{$dir}'");
 		mkdir(BASE_DATA."xshare/".$dir);
 		echo "<commentaire>Repertoire crée</commentaire>";
@@ -142,6 +148,7 @@ foreach ($_POST AS $keys => $val){
 		list($dir) = $DB_web->next_row();
 		$filename = $dir."/".$_FILES['file']['name'];
 		move_uploaded_file($_FILES['file']['tmp_name'], BASE_DATA."xshare/".$filename);
+		echo "<commentaire>".BASE_DATA."xshare/".$filename."</commentaire>";
 		if(isset($_REQUEST['version'])) $version = ", version='{$_REQUEST['version']}'"; else $version = '';
 		if(isset($_REQUEST['importance'])) $importance =  ", importance='{$_REQUEST['importance']}'"; else $importance = '';
 		if(isset($_REQUEST['site'])) $site =  ", site='{$_REQUEST['site']}'"; else $site = '';

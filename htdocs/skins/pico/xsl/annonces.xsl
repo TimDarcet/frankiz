@@ -46,6 +46,7 @@
 		<xsl:if test="count(annonce) != 0">
 			<div class="fkz_sommaire">
 				<xsl:apply-templates select="annonce" mode="sommaire"/>
+				<xsl:apply-templates select="lien"/>
 			</div>
 			<br/>
 		</xsl:if>
@@ -71,6 +72,7 @@
 					<div class="fkz_sommaire_titre"><span class="fkz_annonces_reste"><xsl:text> </xsl:text></span> En attendant...</div>
 					<xsl:apply-templates select="annonce[@categorie='reste']" mode="sommaire"/>
 				</xsl:if>
+				<xsl:apply-templates select="lien"/>
 			</div>
 			<br/>
 		</xsl:if>
