@@ -5,9 +5,12 @@
 	la boîte de login dans d'autres pages qui requiert une authentification.
 	
 	$Log$
+	Revision 1.7  2004/09/16 13:57:49  schmurtz
+	word wrap
+
 	Revision 1.6  2004/09/15 23:19:45  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 	Revision 1.5  2004/09/15 21:42:15  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
 	
@@ -22,7 +25,8 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="accueil" titre="Frankiz : accueil">
 	<h2>Tu es bien authentifié !</h2>
 	<p>Te voilà prêt à accéder au fabuleux monde du campus de l'X</p>
-	<p>Si tu veux éviter de te ré-identifier à chaque fois que tu accèdes à cette page, alors vas dans tes <a href="profil/profil.php">profils</a> et selectionne l'authentification par cookie</p>
+	<p>Si tu veux éviter de te ré-identifier à chaque fois que tu accèdes à cette page, alors vas
+	dans tes <a href="profil/profil.php">profils</a> et selectionne l'authentification par cookie</p>
 	<p>Sinon navigue sur la page en tout tranquilité ...</p>
 </page>
 <? require_once BASE_LOCAL."/include/page_footer.inc.php" ?>
