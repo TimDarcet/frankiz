@@ -107,9 +107,9 @@
 				<xsl:apply-templates select="frankiz/module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id!='activites' and @id!='liens_navigation' and @id!='liens_profil' and @id!='liens_perso' and @id!='anniversaires' and @id!='fetes' and @id!='liste_css' and @id!='lien_tol' and @id!='sondages']"/>
 				<xsl:if test="count(frankiz/module[@id!='stats' and @id!='liens_ecole' and @id!='activites' and @id!='liens_navigation' and @id!='liens_contacts' and @id!='anniversaires' and @id!='liste_css'])">
 					<p class="valid">
-						<!--<a href="http://validator.w3.org/check?uri=referer">-->
+						<a href="http://validator.w3.org/check?uri=referer">
 							<span class="valid_xhtml"><xsl:text> </xsl:text></span>
-						<!--</a>-->
+						</a>
 						<span class="valid_css"><xsl:text> </xsl:text></span>
 					</p>
 				</xsl:if>
