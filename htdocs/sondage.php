@@ -21,9 +21,12 @@
 	affichage d'un sondage
 
 	$Log$
+	Revision 1.12  2005/03/16 19:36:09  pico
+	Pour que le gars qui soumet un sondage puisse avoir les résultats
+
 	Revision 1.11  2005/03/16 19:32:45  pico
 	Petite correction pour éviter que les gens de l'école voient les résultats des sondages.
-
+	
 	Revision 1.10  2005/03/04 23:11:33  pico
 	Restriction des sondages par promo/section/binet
 	
@@ -117,11 +120,11 @@ if (!isset($_REQUEST['id'])) {
 	<warning>Le sondage que tu demandes n'existes plus ou n'a jamais existé</warning>
 	<?
 } else {
-	$DB_web->query("SELECT restriction FROM sondage_question WHERE sondage_id='{$_REQUEST['id']}'");
+	$DB_web->query("SELECT restriction,eleve_id FROM sondage_question WHERE sondage_id='{$_REQUEST['id']}'");
 	$restrOki=true;
 	if ($DB_web->num_rows()==1) {
-		list($restriction) = $DB_web->next_row() ;
-		if($restriction!=''){
+		list($restriction,$eleve_id) = $DB_web->next_row() ;
+		if(($_SESSION['user']->uid!=$eleve_id)&&($restriction!='')){
 			$restr = explode("_",$restriction);
 			switch($restr[0]){
 				case "promo":
