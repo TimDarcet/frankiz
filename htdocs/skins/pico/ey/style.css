@@ -24,7 +24,7 @@ body {
 	color:#000000;
 	background-color:#ffffff;
 	margin:0;
-	padding:5px;
+	padding:0;
 }
 
 img {
@@ -56,35 +56,38 @@ a:hover, a:active {
 /* Structure de la page */
 
 .fkz_page {
-	clear: both;
-	width: 100%;     
 }
 
 .fkz_entetes {
+	width: 100%;
 }
 
 .fkz_gauche {
+position: absolute;
+left: 0;
     width: 20%;
-    float: left;
 	font-size:90%;
-	margin-top: 10px;
-	min-height: 800px;
+	margin-top: 5px;
 }
 
 .fkz_droite {
-    float: right;
-    width: 20%;
+	position: absolute;
+	left: 80%;
+	width: 20%;
 	font-size:90%;
-	margin-top: 10px;
-	min-height: 800px;
+	margin-top: 5px;
 }
 
 .fkz_centre {
 	font-size:90%;
 	position: absolute;
-	left: 21%;
-	width: 58%;
-	margin-top: 10px;
+	left: 20%;
+	width: 60%;
+	margin-top: 5px;
+}
+
+.fkz_centre br {
+	display: none;
 }
 
 div.fkz_end_page{clear:both;margin:3px;}
@@ -97,13 +100,13 @@ div.fkz_logo_eleves, span.fkz_logo {
 }
 
 div.fkz_logo {
-    border: 1px solid #a0a0a0;
-    background-color: #e0e0e0;
+	height: 60px;
+	border: 1px solid #a0a0a0;
+	background-color: #e0e0e0;
 	background-image:url("images/frankiz.png");
-    background-position: center;
+	background-position: center;
 	background-repeat:no-repeat;
-    width: 100%;
-    height: 60px;
+	margin: 5px;
 }
 
 span.fkz_logo {
@@ -197,12 +200,16 @@ span.fkz_logo {
 
 /* Fin QDJ */
 
-div.fkz_module > br {
-    display: none;
-}
-
 #mod_activites div.fkz_module_corps {
     text-align: center;
+}
+
+#mod_anniversaires br {
+	display: none;
+}
+
+#mod_fetes br {
+	display: none;
 }
 
 .fkz_liens,.fkz_contact,.fkz_liens_nav,.fkz_stats {
@@ -215,6 +222,8 @@ div.fkz_module > br {
 }
 
 div.fkz_anniversaire_titre,div.fkz_page_titre,div.fkz_annonces_titre {
+	margin:0;
+	z-index: 2;
 	text-align : center;
 	background-color:#e0e0e0;
 	border:1px solid #a0a0a0;
@@ -232,10 +241,20 @@ div.fkz_page_titre {
 }
 
 .fkz_anniversaire,.fkz_annonces_corps,div.fkz_page_corps {
+	z-index: 1;
 	padding: 5px;
 	background-color:#f0f0f0;
 	border:1px solid #c0c0c0;
-    border-top: none;
+	border-top: none;
+}
+
+.fkz_page_corps br {
+	display: inline;
+}
+
+.fkz_annonces {
+	margin: 5px;
+	margin-top: 10px;
 }
 
 .fkz_annonces_corps div.image {
@@ -245,29 +264,30 @@ div.fkz_page_titre {
 .fkz_titre,.fkz_titre a {
 	border:1px solid #a0a0a0;
 	background-color: #e0e0e0;
-	margin:0px;
+	margin:0;
 	padding:2px;
 	color: #000;
 	text-align : center;
 	font-weight: bold;
-    vertical-align: middle;
+	vertical-align: middle;
 }
 
-
-.module {
-    margin-bottom: 10px;
+.fkz_page_divers {
+	margin: 5px;
+	margin-bottom: 5px;
 }
 
 div.fkz_module {
+    margin: 5px;
     margin-bottom: 10px;
 }
 
 div.fkz_module_corps {
 	color:#000;
 	border:1px solid #c0c0c0;
-    border-top: none;
+	border-top: none;
 	padding: 5px;
-    background-color: #f0f0f0;
+	background-color: #f0f0f0;
 }
 
 #mod_meteo {
@@ -290,7 +310,7 @@ a[href|="?lu="] {
 	font-size:90%;
 	text-align: left;
 	background-color:#f0f0f0;
-    padding-left: 5px;
+	padding-left: 5px;
 }
 
 .fkz_sommaire a:link {
@@ -302,24 +322,25 @@ a[href|="?lu="] {
 }
 
 .fkz_sommaire_titre {
-    border-top: 1px solid #c0c0c0;
-    border-bottom: 1px solid #c0c0c0;
-    background-color: #e0e0e0;
+	border-top: 1px solid #c0c0c0;
+	border-bottom: 1px solid #c0c0c0;
+	background-color: #e0e0e0;
 	font-size:100%;
 	font-weight: bold;
 	text-align: center;
 	margin: 0;
-    padding: 3px;
+	padding: 1px;
 }
 
 .fkz_sommaire{
-    background-color: #f0f0f0;
+	background-color: #f0f0f0;
 	border:1px solid #a0a0a0;
-    border-top: none;
+	border-top: none;
 	font-size:100%;
 	text-align: left;
-	margin: 0;
-    padding: 0;
+	margin: 5px;
+	margin-top: 10px;
+	padding: 0;
 }
 
 .fkz_signature{
@@ -330,10 +351,15 @@ a[href|="?lu="] {
 /* Logos Catégories d'annonce */
 
 span.fkz_annonces_vieux,span.fkz_annonces_nouveau, span.fkz_annonces_important,span.fkz_annonces_reste,span.fkz_annonces_reste {
-	background-repeat:no-repeat;
-	height:20px;
-	padding-left:20px; 
- }
+    background-repeat:no-repeat;
+    height:17px;
+    width: 16px;
+    margin: 2px;
+    padding-left:16px;
+    padding-bottom: 1px;
+    margin-left: 2px;
+    vertical-align: middle;
+}
 
 /* Logos menu */
 
@@ -522,8 +548,8 @@ div.formulaire span.droite{
 }
 
 div.formulaire span.gauche{
-    float: left;
-    width: 20%;
+	float: left;
+	width: 20%;
 	padding-left:5px;
 }
 div.formulaire div{
@@ -598,6 +624,19 @@ table.liste .element {
 
 
 /* Trombino */
+
+.fkz_trombino {
+	padding: 5px;
+	padding-bottom: 5px;
+}
+
+.fkz_trombino br {
+	display: inline;
+}
+
+.fkz_trombino a {
+	text-align: center;
+}
 
 div.fkz_trombino_eleve {
     border: 1px solid #c0c0c0;
