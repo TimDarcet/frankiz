@@ -19,218 +19,58 @@
 */
 
 body {
-    	margin: 0;
-	padding: 2px
+	font-size:80%;
+	font-family: Aria,Helvetica,Verdana, sans-serf;
+	color:#000;
+	background-color:#fff;
+	margin:0;
+	padding:2px;
+	border:2px solid #DDE0F1;
 }
 
 img {
 	border: 0;
 }
 
-div.fkz_logo {
-	background-image:url("../default/images/frankiz.png");
-	background-repeat:no-repeat;
-	height:60px;
- }
+a:link { 
+	color:#5050c0;
+	text-decoration:none;
+	}
+a:visited { 
+	color:#5050c0;
+	text-decoration:none;
+	}
+a:hover, a:active { 
+	text-decoration:none;
+	margin-bottom:1px;
+	border-bottom:1px dashed #5050c0;
+	}
 
- span.fkz_logo {display:none;}
- 
-a {
-    text-decoration: none;
-}
-a:hover {
-    text-decoration: none;
-}
-
-div.fkz_liens_nav {
-	font-size: 9pt;
-	font-weight: bold;
-	background-color: #DDDDDD;
-	border-top: 1px solid #888888;
-	border-bottom: 1px solid #888888;
-	border-right: 1px solid #888888;
-	border-left: 1px solid #888888;
-	padding: 2px;
-	text-align: center;
-}
-
-
-.fkz_liens,.fkz_contact,.fkz_stats {
-	list-style-type:none;
-}
-
-li.fkz_liens_nav{
-	list-style-type:none;
-	display: inline;
-	padding-right:5px;
-}
-ul.fkz_liens_nav{
-	display: inline;
-}
-
-.fkz_qdj_question {
-    font-size: 11pt;
-    text-align: center;   
-}
-
-
-
-.fkz_qdj_jone {
-	background-image:url("../default/images/pointjone.gif");
-	background-repeat:no-repeat;
-	background-position: center center;
-	height:60px;
-	float: right;
-	text-align: center;
-	width: 49%;
-}
-
-.fkz_qdj_rouje {
-	background-image:url("../default/images/pointrouje.gif");
-	background-repeat:no-repeat;
-	background-position: center center;
-	height:60px;
-    float: left;
-    text-align: center;
-    width: 49%;
-}
-
-.fkz_qdj_jone_reponse {
-	height:60px;
-	float: right;
-	text-align: center;
-	width: 49%;
-}
-
-.fkz_qdj_rouje_reponse {
-	height:60px;
-    float: left;
-    text-align: center;
-    width: 49%;
-}
-
-.fkz_anniversaire_titre {
-	color: inherit;
-	background-color: #DDDDDD;
-	padding: 2px;
-	text-align : center;
-	border-bottom: 1px solid #888888;
-	border-right: 1px solid #888888;
-	border-left: 1px solid #888888;
-	border-top: 1px solid #888888;
-}
-
-.fkz_anniversaire {
-	font-size: 9pt;
-	max-width: 100%; 
-	border-bottom: 1px solid #888888;
-	padding: 2px;
-	border-right: 1px solid #888888;
-	border-left: 1px solid #888888;
-}
-
-.fkz_titre {
-	color: inherit;
-	background-color: #DDDDDD;
-	padding: 2px;
-	text-align : center;
-	border-bottom: 1px solid #888888;
-	border-right: 1px solid #888888;
-	border-left: 1px solid #888888;
-	border-top: 1px solid #888888;
-}
-
-.fkz_module {
-	border-bottom: 1px solid #888888;
-	padding: 2px;
-	border-right: 1px solid #888888;
-	border-left: 1px solid #888888;
-	margin-bottom: 10px;
-}
-
-.fkz_sommaire {
-    font-size: 9pt;
-    text-align: left;
-    max-width: 100%; 
-    background-color: #f0f0f0;
-}
-
-.fkz_sommaire_titre {
-	background: #DDDDDD;
-	font-size: 9pt;
-	font-weight: bold;
-	text-align: center;
-	max-width: 100%; 
-}
-
-.fkz_annonces,.fkz_page_divers {
-	font-size: 9pt;
-	text-align: left;
-	max-width: 100%; 
-	background-color: #e5e5e5;
-	border-bottom: 1px solid #888888;
-	border-right: 1px solid #888888;
-	border-left: 1px solid #888888;
-	border-top: 1px solid #888888;
-}
-
-span.fkz_annonces_vieux {
-	background-image:url("http://frankiz/accueil/info/icones/vieux.gif");
-	background-repeat:no-repeat;
-	height:16px;
-	padding-left:16px;
- }
-
- span.fkz_annonces_nouveau {
-	background-image:url("http://frankiz/accueil/info/icones/nouveau.gif");
-	background-repeat:no-repeat;
-	height:16px;
-	padding-left:16px;
- }
- 
- span.fkz_annonces_important {
-	background-image:url("http://frankiz/accueil/info/icones/important.gif");
-	background-repeat:no-repeat;
-	height:16px;
-	padding-left:16px;
- } 
- 
- span.fkz_annonces_reste {
-	background-image:url("http://frankiz/accueil/info/icones/reste.gif");
-	background-repeat:no-repeat;
-	height:16px;
-	padding-left:16px;
- } 
- 
- span.fkz_annonces_cat {display:none;}
-
-.fkz_trombino {
-    font-size: 9pt;
-    text-align: left;
-    max-width: 100%; 
-    	border-bottom: 1px solid #888888;
-	border-right: 1px solid #888888;
-	border-left: 1px solid #888888;
-	border-top: 1px solid #888888;
-}
+/* Structure de la page */
 
 .fkz_page {
-    clear: both;
-    width: 100%;     
+	border-bottom:3px double #D37C00;
+	clear: both;
+	width: 100%;     
+}
+
+.fkz_entetes {
 }
 
 .fkz_gauche {
         width: 20%;
         float: left;
 	font-size: 9pt;
-	margin-top: 0.5%;
+	margin-top: 20px;
+	min-height: 800px;
 }
 
 .fkz_droite {
         float: right;
         width: 20%;
 	font-size: 9pt;
-	margin-top: 0.5%;
+	margin-top: 20px;
+	min-height: 800px;
 }
 
 .fkz_centre {
@@ -238,8 +78,228 @@ span.fkz_annonces_vieux {
 	position: absolute;
 	left: 20.5%;
 	width: 59%;
-	margin-top: 0.5%;
+	margin-top: 20px;
 }
+
+div.fkz_end_page{clear:both;margin:3px;}
+/* Fin Structure de la page */
+
+/* Logos Modules */
+
+span.fkz_logo,span.fkz_logo_eleves{
+	display:none;
+}
+
+div.fkz_logo {
+	background-image:url("images/home_logo.png");
+	background-repeat:no-repeat;
+	height:93px;
+	width:373px;
+ }
+
+ div.fkz_logo_eleves {
+	background-image:url("images/home_logo_eleve.png");
+	background-repeat:no-repeat;
+	height:30px;
+	width:476px;
+	position:relative;
+	left:60px;
+	top:-5px;
+ }
+
+
+#contacts,#liens_ecole,span#meteo,span#stats,span#serveurs,span#tour_kawa,span#qdj_hier, span#qdj, span#anniversaires{
+ }
+
+span#contacts_logo,span#liens_ecole_logo,span#meteo_logo,span#stats_logo,span#serveurs_logo,span#tour_kawa_logo,span#qdj_hier_logo,span#qdj_logo,span#anniversaires_logo{
+	display:none;
+ }
+
+ 
+ /* Fin Logos Modules */
+
+
+ 
+/* QDJ */
+
+.fkz_qdj_question {
+    font-size: 11pt;
+    text-align: center;   
+}
+
+.fkz_qdj_jone, .fkz_qdj_rouje,.fkz_qdj_jone_reponse,.fkz_qdj_rouje_reponse{
+	background-repeat:no-repeat;
+	background-position: center center;
+	height:60px;
+	text-align: center;
+	width: 49%;
+}
+
+.fkz_qdj_jone {
+	background-image:url("../default/pointjone.gif");
+	float: right;
+}
+
+.fkz_qdj_rouje {
+	background-image:url("../default/pointrouje.gif");
+	float: left;
+}
+
+
+.fkz_qdj_jone a{
+	color: red;
+}
+
+.fkz_qdj_rouje a{
+	color: yellow;
+}
+
+
+.fkz_qdj_jone_reponse {
+	color: yellow;
+	float: right;
+}
+
+.fkz_qdj_rouje_reponse {
+	float: left;
+	color: red;
+}
+
+.fkz_qdj_last{
+	list-style-type:  none;  
+	text-align:left; 
+}
+
+/* Fin QDJ */
+
+
+
+.fkz_anniversaire_titre,.fkz_titre,.fkz_sommaire,.fkz_trombino{
+	border-top: 1px solid #999;
+	border-bottom: 1px solid #999;
+	border-right: 1px solid #999;
+	border-left: 1px solid #999;
+
+}
+
+.fkz_liens,.fkz_contact,.fkz_stats,.fkz_liens_nav {
+	list-style-type:none;
+	color:#333;
+}
+
+div.fkz_anniversaire_titre,div.fkz_page_titre,div.fkz_annonces_titre {
+	text-align : center;
+	background-color:#ccc;
+	font-family:Georgia, serif;
+	font-variant:small-caps;
+	font-style:oblique;
+	font-weight:bold;
+	font-size:120%;
+}
+
+div.fkz_page_titre {
+	font-size:200%;
+}
+
+
+.fkz_anniversaire,.fkz_annonces_corps,div.fkz_page_corps, .fkz_module_corps{
+	background-color:#f0f0f0;
+	border:1px solid #CCC;
+}
+
+.fkz_titre {
+	height:20px;
+	margin:0px;
+	padding:0px;
+	background-color: #ccc;
+	text-align : center;
+	font-weight: bold;
+	text-align: center;
+}
+
+
+.fkz_sommaire_corps {
+	font-size: 9pt;
+	text-align: left;
+	width: 100%; 
+}
+
+.fkz_sommaire_titre {
+	font-size: 9pt;
+	font-weight: bold;
+	text-align: center;
+	width: 100%; 
+	margin: 0;
+	padding: 0;
+}
+
+.fkz_trombino,.fkz_sommaire{
+	font-size: 9pt;
+	text-align: left;
+	width: 100%; 
+	background-color:#ccc;
+	margin:10px;
+}
+
+.fkz_signature{
+	text-align:right;
+	font-weight: bold;
+}
+
+/* Logos Catégories d'annonce */
+
+span.fkz_annonces_vieux,span.fkz_annonces_nouveau, span.fkz_annonces_important,span.fkz_annonces_reste,span.fkz_annonces_reste {
+	background-repeat:no-repeat;
+	height:16px;
+	padding-left:16px;
+ }
+
+span.fkz_annonces_vieux {
+	background-image:url("../default/images/vieux.gif");
+}
+
+ span.fkz_annonces_nouveau {
+	background-image:url("../default/images/nouveau.gif");
+}
+ 
+ span.fkz_annonces_important {
+	background-image:url("../default/images/important.gif");
+ } 
+ 
+ span.fkz_annonces_reste {
+	background-image:url("../default/images/reste.gif");
+ } 
+  
+ span.fkz_annonces_cat {display:none;}
+ 
+ /* Fin Logos Catégories d'annonce */
+ 
+ /* Logos W3C */
+
+span.valid_xhtml,span.valid_css {
+	width: 88px;
+	height:31px;
+	position: relative;
+	display:block;
+}
+ 
+span.valid_xhtml {
+	background-image:url("http://www.w3.org/Icons/valid-xhtml10");
+	left: 5px;
+}
+
+span.valid_css {
+	background-image:url("http://www.w3.org/Icons/valid-css");
+	left: 98px;
+	top: -31px;
+}
+ 
+ /* Fin Logos W3C */
+
+
+/* Stats */
+ 
+.fkz_stats{list-style-type:  none;}
 
 .serveur_nom {
 	display: block;
@@ -263,56 +323,28 @@ span.fkz_annonces_vieux {
 }
 
 /* FAQ et Xshare */
-.noeud_ferme{list-style-image:url('../default/images/fold_close.gif')}
-.noeud_ouvert{list-style-image:url('../default/images/fold_open.gif')}
-.feuille{list-style-image:url('../default/images/question.gif')}
+.noeud_ferme{list-style-image:url('../default/fold_close.gif')}
+.noeud_ouvert{list-style-image:url('../default/fold_open.gif')}
+.feuille{list-style-image:url('../default/question.gif')}
 
-.fkz_stats{list-style-type:  none; }
+/* Commentaires et Warning */
 
-.fkz_qdj_last{
-list-style-type:  none;  
-text-align:left; 
-background-color:#e5e5e5
+.commentaire,.warning,.note {
+	color: inherit;
+	padding: 6px;
+	margin: 5px;
 }
-
 
 .commentaire {
-	color: inherit;
-	background: #FFFFDD;
-	padding: 6px;
 	border: 1px solid #FFDD00;
 }
+
 .warning {
-	color: inherit;
-	background: #FFDDDD;
-	padding: 6px;
 	border: 1px solid #FF3333;
 }
 
 .note {
-	color: inherit;
-	background: #EFEFEF;
 	font-size: 75%;
-	padding: 6px;
-}
-
-span.valid_xhtml {
-	background-image:url("http://www.w3.org/Icons/valid-xhtml10");
-	width: 88px;
-	height:31px;
-	position: relative;
-	display:block;
-	left: 5px;
-}
-	
-span.valid_css {
-	background-image:url("http://www.w3.org/Icons/valid-css");
-	width: 88px;
-	height:31px;
-	display:block;
-	position: relative;
-	left: 98px;
-	top: -31px;
 }
 
 /* Formulaires */
@@ -346,3 +378,20 @@ div.formulaire span.boutons{
 	display:block;
 }
 /* Formulaires */
+
+/* Listes */
+table.liste{
+	clear:both;
+	width:100%;
+}
+
+table.liste .entete{
+	text-decoration: underline;
+}
+
+
+
+#choix_skin h1, #profil h1,.fkz_page_meteo h1,#xshare  h1,#faq  h1,#vocabulaire  h1{
+	display:none;
+}
+

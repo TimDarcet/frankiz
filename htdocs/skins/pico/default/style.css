@@ -221,7 +221,7 @@ div.fkz_page_titre {
 	position:relative;
 	top:-20px;
 	left:10px;
-	max-width: 98%;
+	width: 98%;
 	padding-top:30px;
 	background-color:#DDE0F1;
 	border:1px solid #1F118C;
@@ -251,14 +251,14 @@ div.fkz_page_titre {
 .fkz_sommaire_corps {
 	font-size: 9pt;
 	text-align: left;
-	max-width: 100%; 
+	width: 100%; 
 }
 
 .fkz_sommaire_titre {
 	font-size: 9pt;
 	font-weight: bold;
 	text-align: center;
-	max-width: 100%; 
+	width: 100%; 
 	margin: 0;
 	padding: 0;
 }
@@ -266,7 +266,7 @@ div.fkz_page_titre {
 .fkz_trombino,.fkz_sommaire{
 	font-size: 9pt;
 	text-align: left;
-	max-width: 100%; 
+	width: 100%; 
 	background-color:#DDE0F1;
 	border:1px solid #1F118C;
 	margin:10px;
