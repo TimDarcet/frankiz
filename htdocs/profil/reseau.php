@@ -22,9 +22,12 @@
 	ses machines, son compte xnet.
 	
 	$Log$
+	Revision 1.15  2004/11/01 19:23:56  pico
+	Affiche les messages d'erreur
+
 	Revision 1.14  2004/10/31 18:20:24  kikx
 	Rajout d'une page pour les plan (venir à l'X)
-
+	
 	Revision 1.13  2004/10/29 17:42:36  kikx
 	Petit bug que je ne comprend pas pourquoi ca ne marchait pas avant et que ca marche now (c'est pour faire une phrase correct et comprehensible en français)
 	
@@ -53,16 +56,19 @@ demande_authentification(AUTH_FORT);
 if(isset($_POST['changer_xnet'])) {
 	// Modification du mot de passe
 	if($_POST['passwd']=='12345678' && $_POST['passwd2']=='87654321' || empty($_POST['passwd']) && empty($_POST['passwd2'])) {
-		ajoute_erreur(ERR_MDP_DIFFERENTS);// ne rien faire, on garde l'ancien mot de passe
-	} else if($_POST['passwd'] != $_POST['passwd2']) {
+	// ne rien faire, on garde l'ancien mot de passe
+	}
+	if($_POST['passwd'] != $_POST['passwd2']) {
 		ajoute_erreur(ERR_MDP_DIFFERENTS);
-	} else if(strlen($_POST['passwd']) < 6) {
+	}
+	if(strlen($_POST['passwd']) < 6) {
 		ajoute_erreur(ERR_MDP_TROP_PETIT);
-	} else {
+	}
+	if(aucune_erreur()) {
 		$pass = md5($_POST['passwd']."Vive le BR");
 		$DB_xnet->query("UPDATE clients SET password='$pass' WHERE lastip='{$_POST['ip_xnet']}'");
 		
-		$message_succes="Le mot de passe vient d'être changé.";
+		$message="<commentaire>Le mot de passe xnet pour l'adresse {$_POST['ip_xnet']} vient d'être changé.</commentaire>";
 	}
 }
 
@@ -77,6 +83,14 @@ require "../include/page_header.inc.php";
 
 ?>
 <page id="profil_reseau" titre="Frankiz : modification du profil réseau">
+<?php
+		if(!empty($message))
+			echo "$message\n";
+		if(a_erreur(ERR_MDP_DIFFERENTS))
+			echo "<warning>Les valeurs des deux champs de mot de passe n'étaient pas identiques.</warning>\n";
+		if(a_erreur(ERR_MDP_TROP_PETIT))
+			echo "<warning>Il faut mettre un mot de passe plus long (au moins 6 caractères).</warning>\n";
+?>
 	<h2>Infos divers</h2>
 	<p>Normalement tu as l'ip <?=$ip{$id_ip}?> (car ta prise est la <?=$prise?>)</p>
 	<p>
