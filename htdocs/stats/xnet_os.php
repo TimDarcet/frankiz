@@ -1,6 +1,12 @@
 <?php
 require_once "../include/global.inc.php";
 demande_authentification(AUTH_MINIMUM);
+// on spécifie le type d'image que l'on va créer, ici ce sera une image au format PNG
+header ("Content-type: image/png");  
+
+$cache_id="xnet_stats_os";
+
+if(!cache_recuperer($cache_id,time()-600)) {
 
 $DB_xnet->query("select sum(isconnected) from clients");
 list($nb_connect)=$DB_xnet->next_row();
@@ -14,8 +20,6 @@ while(list($nom,$nb)=$DB_xnet->next_row()){
 // on calcule le nombre de pages vues sur l'année
 $max_os = max($os);
 
-// on spécifie le type d'image que l'on va créer, ici ce sera une image au format PNG
-header ("Content-type: image/png");  
 
 // on définit la largeur et la hauteur de notre image
 $largeur = 550;
@@ -63,4 +67,6 @@ foreach ($os as $nom => $nombre) {
 
 // on dessine le tout
 Imagepng ($im);
+cache_sauver($cache_id);
+}
 ?>
