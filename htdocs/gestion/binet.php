@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.29  2005/01/06 20:08:11  pico
+	Changement d'adresse mail
+
 	Revision 1.28  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 	Revision 1.27  2004/12/17 14:00:32  kikx
 	hum
 	
@@ -248,7 +251,7 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 				"Très BR-ement<br>" .
 				"L'automate :)<br>"  ;
 				
-			couriel(WEBMESTRE_ID,"[Frankiz] Modification du binet $nom",$contenu);
+			couriel(ROOT_ID,"[Frankiz] Modification du binet $nom",$contenu);
 		
 		}
 		
