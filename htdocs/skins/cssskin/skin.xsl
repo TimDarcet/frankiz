@@ -29,7 +29,9 @@
 
 	<body>
 		<div id="frankiz">Frankiz, le serveur des élèves</div>
-		<xsl:apply-templates select="/frankiz/module"/>
+		<div id="modules">
+			<xsl:apply-templates select="/frankiz/module"/>
+		</div>
 		<div id="contenu">
 			<xsl:apply-templates/>
 		</div>

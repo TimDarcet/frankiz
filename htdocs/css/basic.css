@@ -14,13 +14,17 @@ body {
 	font-weight: bold;
 	font-size: 300%;
 	padding: 20px;
-	border: 2px solid #888888;
+	border: 1px solid #888888;
 	vertical-align: top;
 }
 
-.module {
+#modules {
 	width: 20%;
-	left: 0;
+	float: left;
+}
+
+.module {
+	width: 100%;
 	border-left: 1px solid #888888;
 	border-right: 1px solid #888888;
 	border-bottom: 1px solid #888888;
@@ -39,7 +43,9 @@ body {
 }
 
 #contenu {
-	
+	width: 78%;
+	padding: 1%;
+	float: right;
 }
 
 /* Annonces */
