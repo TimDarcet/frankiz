@@ -21,10 +21,13 @@
 	Page qui permet l'administartion des licences windows.
 	
 	$Log$
+	Revision 1.2  2005/01/17 23:15:37  pico
+	debug pages de dei
+
 	Revision 1.1  2005/01/17 22:12:01  dei
 	page d'administration et de gestion de l'ajout des nouvelles
 	licences krosoft
-
+	
 
 */
 set_time_limit(0) ;
@@ -41,10 +44,10 @@ if(!verifie_permission('admin'))
 //===============	
 require_once BASE_LOCAL."/include/page_header.inc.php";	
 ?>
-<page id="admin_licences" titre="Frankiz : gestion des licences Microsoft">
+<page id="valid_licences" titre="Frankiz : gestion des licences Microsoft">
 <?
-$DB_msdnaa->query("LOCK TABLE valid_licence WRITE");
-$DB_msdnaa>query("SET AUTOCOMMIT=0");
+$DB_msdnaa->query("LOCK TABLES valid_licence WRITE ,cles_winxp WRITE,cles_2k3serv WRITE");
+$DB_msdnaa->query("SET AUTOCOMMIT=0");
 
 foreach ($_POST AS $keys => $val){
 $temp = explode("_",$keys) ;
@@ -75,7 +78,7 @@ $temp = explode("_",$keys) ;
 		if($DB_msdnaa->num_rows()==0){
 			$DB_msdnaa->query("DELETE FROM valid_licence WHERE eleve_id='{$temp[1]}'");
 			//on l'ajoute à la base concernée...
-			$DB_admin->query("INSERT cles_$temp[2] SET attrib='1', cle='$_POST[$temp2]'");
+			$DB_msdnaa->query("INSERT cles_$temp[2] SET eleve_id='{$temp[1]}', attrib='1', cle='$_POST[$temp2]'");
 			
 			$contenu = "Bonjour, <br><br>".
 						"Nous t'avons attribué la licence suivante :<br>".
@@ -88,23 +91,22 @@ $temp = explode("_",$keys) ;
 			echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande a été acceptée (nouvelle licence : ".$_POST[$temp2].")</commentaire>" ;
 		}
 		// S'il y  a deja une entrée comme celle demandé dans la base !
-		} else {
-			echo "<warning>IMPOSSIBLE D'ATTRIBUER CETTE LICENCE. Une autre personne la posséde déjà.</warning>" ;
+		else {
+			echo "<warning>IMPOSSIBLE D'ATTRIBUER CETTE LICENCE. L'utilisateur en possède déjà une.</warning>" ;
 		}
-		
 	}
-$DB_mdsnaa->query("UNLOCK TABLES");
+}
 $DB_msdnaa->query("UNLOCK TABLES");
 ?>
 <h2>Liste des personnes demandant</h2>
-	<liste id="liste" selectionnable="non" action="admin/admin_licences.php">
+	<liste id="liste" selectionnable="non" action="admin/valid_licences.php">
 		<entete id="logiciel" titre="Logiciel"/>
 		<entete id="eleve" titre="Élève"/>
 		<entete id="raison" titre="Raison"/>
 		<entete id="licence" titre="licence"/>
 <?php
-		$DB_msdnaa->query("SELECT v.raison,v.logiciel,e.nom,e.prenom,e.eleve_id, FROM valid_licence as v LEFT JOIN trombino.eleves as e");
-		while(list($raison,$logiciel,$nom,$prenom,,$eleve_id) = $DB_msdnaa->next_row()) {
+		$DB_msdnaa->query("SELECT v.raison,v.logiciel,e.nom,e.prenom,e.eleve_id FROM valid_licence as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
+		while(list($raison,$logiciel,$nom,$prenom,$eleve_id) = $DB_msdnaa->next_row()) {
 ?>
 			<element id="<? echo $eleve_id ;?>">
 				<colonne id="logiciel"><? echo "$logiciel" ?></colonne>
@@ -127,7 +129,6 @@ $DB_msdnaa->query("UNLOCK TABLES");
 ?>
 	</liste>
 
-?>
 
 </page>
 

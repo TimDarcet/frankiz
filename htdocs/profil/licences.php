@@ -21,9 +21,12 @@
 	Page qui permet de demander une clé windows
 	
 	$Log$
+	Revision 1.14  2005/01/17 23:15:37  pico
+	debug pages de dei
+
 	Revision 1.13  2005/01/17 22:07:33  dei
 	mise a jour de la page, compatible avec admin/admin_licences.php
-
+	
 	Revision 1.12  2004/12/17 21:46:16  falco
 	un peu de rigueur ne fait pas de mal
 	
@@ -166,7 +169,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 	<?php	
 			} else {
 				//on prends en compte la demande...
-				$DB_msdnaa->query("INSERT valid_licence SET raison='{$_POST['raison']}', lociciel='{$_POST['logiciel']}', eleve_id='{$_SESSION['user']->uid}'");
+				$DB_msdnaa->query("INSERT valid_licence SET raison='{$_POST['raison']}', logiciel='{$_POST['logiciel']}', eleve_id='{$_SESSION['user']->uid}'");
 	?>
 			<warning>Ta requête a bien été prise en compte.</warning>
 			<?php
