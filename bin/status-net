@@ -1,0 +1,40 @@
+#!/usr/bin/perl
+
+$file="/var/www/frankiz2/cache/status";
+
+use Net::Telnet;
+
+@host=("frankiz","gwennoz","heol","kuzh","sil","poly","poly");
+@port=(80,80,80,8080,1080,995,25);
+
+open(STATUS,">$file");
+
+for ($i = 0; $i <= $#host; $i++) {
+
+   $hote=$host[$i];
+   $po=$port[$i];
+   $telnet = new Net::Telnet( Host => $hote, Port => $po, Timeout => 2, Errmode => "return");
+   if ($telnet) {
+      # connexion ok
+      $telnet -> close;
+      if($i == 6) { 
+      		$poly = 1; 
+		$res = ""; 
+     }
+      if(($i <6)||($i == 7 && $poly)) {
+         $res="<serveur nom='$hote' etat='up' />\n";
+      }
+   }
+   else {
+      # connexion impossible
+	if($i == 6) {
+		$res ="";
+	} 
+	else {
+	$res="<serveur nom='$hote' etat='down' />\n"
+	}
+   }
+   print STATUS $res;
+}
+
+close STATUS;
