@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.21  2004/10/29 14:38:37  kikx
+	Mise en format HTML des mails pour les validation de la qdj, des mails promos, et des annonces
+
 	Revision 1.20  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.19  2004/10/20 23:21:39  schmurtz
 	Creation d'un element <html> qui permet d'afficher du html brute sans verification
 	C'est ce qui est maintenant utilise dans les annonces/cadres
@@ -141,14 +144,16 @@ if (isset($_POST['valid'])) {
 		$index = mysql_insert_id() ;
 		rename(DATA_DIR_LOCAL."annonces/temp_$eleve_id",DATA_DIR_LOCAL."annonces/a_valider_{$index}") ; 
 	}
-	$contenu = "$prenom $nom a demandé la validation d'une annonce : \n".
-				$_POST['titre']."\n\n".
-				"Pour valider ou non cette demande va sur la page suivante : \n".
-				"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_annonces.php\n\n" .
-				"Très BR-ement\n" .
-				"L'automate :)\n"  ;
+	$contenu = "<strong>Bonjour,</strong><br><br>".
+			"$prenom $nom a demandé la validation d'une annonce : <br>".
+			$_POST['titre']."<br><br>".
+			"Pour valider ou non cette demande va sur la page suivante<br>".
+			"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_annonce.php'>".
+			"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_annonce.php</a></div><br><br>" .
+			"Très BR-ement<br>" .
+			"L'automate :)<br>"  ;
 				
-	mail(MAIL_WEBMESTRE,"[Frankiz] Validation d'une annonce",$contenu);
+	couriel(WEBMESTRE_ID,"[Frankiz] Validation d'une annonce",$contenu,"Frankiz <br@frankiz>");
 
 }
 //=================

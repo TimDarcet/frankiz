@@ -22,9 +22,12 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.6  2004/10/29 14:38:37  kikx
+	Mise en format HTML des mails pour les validation de la qdj, des mails promos, et des annonces
+
 	Revision 1.5  2004/10/29 14:09:10  kikx
 	Envoie des mail en HTML pour la validation des affiche
-
+	
 	Revision 1.4  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -45,6 +48,14 @@ function couriel($eleve_id,$titre,$contenu,$sender="le BR <br@frankiz.polytechni
 		$prenom = "Webmestre de Frankiz" ;
 		$nom = "" ;
 		$adresse = MAIL_WEBMESTRE ;
+	} else if ($eleve_id==QDJMASTER_ID) {
+		$prenom = "QDJmaster" ;
+		$nom = "" ;
+		$adresse = MAIL_QDJMASTER ;
+	} else if ($eleve_id==PREZ_ID) {
+		$prenom = "Président du BR" ;
+		$nom = "" ;
+		$adresse = MAIL_PREZ ;
 	} else {
 		global $DB_trombino;
 		$DB_trombino->query("SELECT nom,prenom,mail,login FROM eleves WHERE eleve_id=$eleve_id") ;

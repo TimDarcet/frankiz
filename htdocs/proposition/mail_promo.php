@@ -21,9 +21,12 @@
 	Mail promo permettant l'envoie de pièce jointes et de formatage HTML
 	
 	$Log$
+	Revision 1.9  2004/10/29 14:38:37  kikx
+	Mise en format HTML des mails pour les validation de la qdj, des mails promos, et des annonces
+
 	Revision 1.8  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.7  2004/10/20 23:21:39  schmurtz
 	Creation d'un element <html> qui permet d'afficher du html brute sans verification
 	C'est ce qui est maintenant utilise dans les annonces/cadres
@@ -124,14 +127,18 @@ if (!isset($_REQUEST['envoie'])) {
 	//Envoie du mail à l'admin pour la validation
 	$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
 	
-	$contenu = "$prenom $nom a demandé la validation d'un mail promo : \n".
-				$_POST['sujet']."\n\n".
-				"Pour valider ou non cette demande va sur la page suivante : \n".
-				"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_mailpromo.php\n\n" .
-				"Très BR-ement\n" .
-				"L'automate :)\n"  ;
-				
-	mail(MAIL_WEBMESTRE,"[Frankiz] Validation d'un mail promo",$contenu);
+	
+	$contenu = "<strong>Bonjour,</strong><br><br>".
+			"$prenom $nom a demandé la validation d'un mail promo : <br>".
+			$_POST['sujet']."<br><br>".
+			"Pour valider ou non cette demande va sur la page suivante<br>".
+			"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_mailpromo.php'>".
+			"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_mailpromo.php</a></div><br><br>" .
+			"Très BR-ement<br>" .
+			"L'automate :)<br>"  ;
+			
+	couriel(PREZ_ID,"[Frankiz] Validation d'un mail promo",$contenu,"Frankiz <br@frankiz>");
+
 }
 ?>
 </page>

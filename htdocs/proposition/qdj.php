@@ -21,9 +21,12 @@
 	Permet de proposer une QDJ
 	
 	$Log$
+	Revision 1.5  2004/10/29 14:38:37  kikx
+	Mise en format HTML des mails pour les validation de la qdj, des mails promos, et des annonces
+
 	Revision 1.4  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.3  2004/10/13 21:25:59  pico
 	Oublié ça aussi :(	
 */
@@ -88,16 +91,19 @@ if (!isset($_REQUEST['envoie'])) {
 	//Envoie du mail à l'admin pour la validation
 	$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
 	
-	$contenu = "$prenom $nom a soumis une qdj : \n".
-				$_REQUEST['question']."\n- ".
-				$_REQUEST['reponse1']."\n- ".
-				$_REQUEST['reponse2']."\n\n".
-				"Pour valider ou non cette demande va sur la page suivante : \n".
-				"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_qdj.php\n\n" .
-				"Très BR-ement\n" .
-				"L'automate :)\n"  ;
-				
-	mail(MAIL_WEBMESTRE,"[Frankiz] Validation d'une QDJ",$contenu);
+	
+	$contenu = "<strong>Bonjour,</strong><br><br>".
+			"$prenom $nom a soumis une qdj : <br>".
+			$_REQUEST['question']."<br> ".
+			$_REQUEST['reponse1']."<br> ".
+			$_REQUEST['reponse2']."<br><br>".
+			"Pour valider ou non cette qdj va sur la page suivante<br>".
+			"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_qdj.php'>".
+			"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_qdj.php</a></div><br><br>" .
+			"Très BR-ement<br>" .
+			"L'automate :)<br>"  ;
+			
+	couriel(QDJMASTER_ID,"[Frankiz] Validation d'une QDJ",$contenu,"Frankiz <br@frankiz>");
 
 }
 ?>
