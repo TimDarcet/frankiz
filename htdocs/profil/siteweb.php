@@ -21,9 +21,12 @@
 	Pour gerer son site web perso
 		
 	$Log$
+	Revision 1.7  2004/12/15 21:46:37  pico
+	Ptèt que là ça marchera mieux
+
 	Revision 1.6  2004/12/14 22:17:32  kikx
 	Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
-
+	
 	Revision 1.5  2004/12/13 20:03:25  pico
 	Les liens ne forment pas de blocs, il faut donc le spécifier
 	
@@ -62,8 +65,8 @@ if (isset($_POST['up_page'])) {
 		mkdir ($chemin) ;
 		
 		$filename = $chemin.$_FILES['file']['name'];
-		move_uploaded_file($_FILES['file']['tmp_name'], BASE_PAGESPERSOS.$_FILES['file']['name']);
-		unzip(BASE_PAGESPERSOS.$_FILES['file']['name'] , $chemin , true);
+		move_uploaded_file($_FILES['file']['tmp_name'], $filename);
+		unzip($filename, $chemin , true);
 		$message .= "<commentaire>Ton site personnel vient d'être mis à jour.</commentaire>" ;
 	}
 }
