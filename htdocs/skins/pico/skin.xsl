@@ -100,7 +100,8 @@
 
 
 <xsl:template match="/frankiz/page[@id!='annonces' and @id!='trombino']">
-	<div class="fkz_annonces">
+	<div class="fkz_page_divers">
+		<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 		<xsl:apply-templates/>
 	</div>
 </xsl:template>

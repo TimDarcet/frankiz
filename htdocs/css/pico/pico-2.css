@@ -171,7 +171,7 @@ ul.fkz_liens_nav{
 	padding: 0;
 }
 
-.fkz_annonces {
+.fkz_annonces,.fkz_page_divers {
 	font-size: 9pt;
 	text-align: left;
 	max-width: 100%; 

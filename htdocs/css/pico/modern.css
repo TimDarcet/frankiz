@@ -218,7 +218,7 @@ ul.fkz_liens_nav{
 	padding-right: 40px;
 }
 
-.fkz_annonces {
+.fkz_annonces,.fkz_page_divers {
 	padding-left: 5px;
 	padding-right: 5px;
 	font-size: 9pt;

@@ -181,7 +181,7 @@ text-align:left;
 
 
 
-div.fkz_liens_nav, .fkz_anniversaire_titre,.fkz_titre,.fkz_annonces,.fkz_trombino{
+div.fkz_liens_nav, .fkz_anniversaire_titre,.fkz_titre,.fkz_annonces,.fkz_page_divers,.fkz_trombino{
 	border-bottom: 1px solid #888888;
 	border-right: 1px solid #888888;
 	border-left: 1px solid #888888;
@@ -266,7 +266,7 @@ li.fkz_liens_nav a:hover{
 	padding: 0;
 }
 
-.fkz_annonces,.fkz_trombino {
+.fkz_trombino,.fkz_annonces,.fkz_page_divers {
 	background-image:url("grass/grassdark.jpg");
 	font-size: 9pt;
 	text-align: left;
