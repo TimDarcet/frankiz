@@ -22,9 +22,12 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.16  2004/12/17 18:47:19  pico
+	Oubli
+
 	Revision 1.15  2004/12/17 18:37:03  pico
 	Mail admin@windows + page de demande de licence windows
-
+	
 	Revision 1.14  2004/12/15 19:26:09  kikx
 	Les mails promo devrait fonctionner now ...
 	
@@ -126,6 +129,10 @@ function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID,$sender_string="") {
                 $prenom = "Trombino" ;
                 $nom = "" ;
                 $adresse = MAIL_TROMBINOMEN ;		
+	} else if ($sender_id==WINDOWS_ID) {
+		$prenom = "Admins Windows";
+		$nom= "";
+		$adresse = MAIL_WINDOWS ;
 	} else {
 		global $DB_trombino;
 		$DB_trombino->query("SELECT nom,prenom,mail,login FROM eleves WHERE eleve_id=$eleve_id") ;
