@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.59  2005/03/10 16:47:17  pico
+	Affiche la photo originale si pas de nouvelle photo
+
 	Revision 1.58  2005/01/28 21:41:23  pico
 	BugFix /me boulet
-
+	
 	Revision 1.57  2005/01/28 21:21:53  pico
 	Idem, on peut afficher plus d'images
 	
@@ -186,10 +189,10 @@ demande_authentification(AUTH_INTERNE);
 // Récupération d'une image
 if((isset($_GET['image']))&&($_GET['image'] == "true") && ($_GET['image'] != "")){
 	require_once "include/global.inc.php";
-	if (!isset($_GET['original'])) {
+	if (!isset($_GET['original'])&&(file_exists(BASE_PHOTOS.$_GET['promo']."/".$_GET['login'].".jpg"))) {
 		$size = getimagesize(BASE_PHOTOS.$_GET['promo']."/".$_GET['login'].".jpg");
 		header("Content-type: {$size['mime']}");
-		readfile(BASE_PHOTOS.$_GET['promo']."/".$_GET['login'].".jpg");	
+		readfile(BASE_PHOTOS.$_GET['promo']."/".$_GET['login'].".jpg");
 	} else {
 		$size = getimagesize(BASE_PHOTOS.$_GET['promo']."/".$_GET['login']."_original.jpg");
 		header("Content-type: {$size['mime']}");
