@@ -1,0 +1,105 @@
+#!/usr/bin/perl -I/var/spool/news/scripts/librairies/
+
+#Script destiné a envoyer sur les news les rappels de convocation de tour kawa
+
+use DBI();
+use Net::NNTP;
+use Time::localtime;
+#use HTTP::Request;
+#use HTTP::Date;
+#use LWP::UserAgent;
+my $dbh = DBI->connect("DBI:mysql:database=frankiz2_tmp:host=localhost","web","kokouije?.",{'RaiseError'=>1});
+
+sub post {
+        local ($serveur) = "frankiz";
+	local ($ng,$groupe,$type,$name,$subject,$body)= @_;
+	local $nntp = Net::NNTP->new("$serveur") or die "Ne peut pas se connecter au serveur";
+	open (POST, "post.file");
+	@post = <POST>;
+	close POST;
+	$nntp->post() or die "Could not post article: $!";
+	if ($type==1) {
+		$nntp->datasend("From: ".$name." <news\@frankiz.eleves.polytechnique.fr>\n");
+		$nntp->datasend("Newsgroups: ". $ng ."\n");
+		$nntp->datasend("Subject: [Tour Kawa ".$groupe."] ".$subject."\n");
+		$nntp->datasend("X-Newsreader:Tour Kawa Reminder v1.0\n");
+		$nntp->datasend("\n\n");
+		$nntp->datasend($body."\n");
+		}
+	elsif ($type==2) {
+                $nntp->datasend("From: Tour kawa <news\@frankiz.eleves.polytechnique.fr>\n");
+		$nntp->datasend("Newsgroups: ". $ng ."\n");
+                $nntp->datasend("Subject: [Tour Kawa] Bouh il n'y a personne\n");
+		$nntp->datasend("X-Newsreader:Tour Kawa Reminder v1.0\n");
+		$nntp->datasend("\n\n");
+		$nntp->datasend($text . "\n" . "Bon alors pas de kawa!\n");
+		}								
+	else {	
+		$nntp->datasend("From: Tour Kawa <news\@frankiz.eleves.polytechnique.fr>\n");
+		$nntp->datasend("Newsgroups: ". $ng ."\n");
+		$nntp->datasend("Subject: [Tour Kawa] Il y a un bug\n");
+	      	$nntp->datasend("X-Newsreader:Tour Kawa Reminder v1.0\n");
+		$nntp->datasend("\n\n");
+		$nntp->datasend($text . "\n" . "Et merde bordel!\n");
+               	}													
+#	for (@post)     {
+#	    $nntp->datasend($_);
+#	}
+	close POST;
+	$nntp->quit;
+}
+ 
+   
+sub traiter_jour {
+    my ($date,$time,$name,$subject,$body) =@_;
+    print "Date : " . $date . "\n";                                     #DEBUG
+    $reqt="SELECT sections.nom,sections.newsgroup FROM kawa INNER JOIN trombino.sections ON kawa.section_id=sections.section_id WHERE date='$date'";
+    my $rep = $dbh->prepare($reqt);
+    $rep->execute;
+    $non_vide=(($groupe,$newsgroup)=$rep->fetchrow_array());
+    print "Groupe : " . $groupe . "\n";                                 #DEBUG
+    if (!$non_vide) 
+    	{
+#	$groupe="personne";
+	print "Le groupe est vide.\n";
+    }
+    if ($non_vide)
+    	{
+	if ($groupe ne "personne")
+	    {
+	    post($newsgroup,$groupe,1,$name,$subject,$body);
+	    print "Envoi d'un post de type " . $type ." sur le ng : ".$newsgroup . "\n";
+	    }
+	else 
+	    {
+	    print "Pas de post envoyé\n";
+	    }
+	}
+    else {
+    	post($newsgroup,$groupe,2,$name,$subject,$body);
+        print "Envoi d'un post de type 4\n";    	
+	}
+}
+
+sub selection {
+# definir la date
+    $tm=localtime;
+    my $date=($tm->year) . "-" . $tm->month . "-" . $tm->day;
+    $reqt="SELECT time,name,subject,body FROM message ORDER BY time";
+    my $rep = $dbh->prepare($reqt);
+    $rep->execute;
+    while(($time,$name,$subject,$body)=$rep->fetchrow_array()){
+    	traiter_jour($date,$time,$name,$subject,$body);
+    	}
+}
+
+#post(junk,1);
+selection();
+
+
+
+
+
+
+
+
