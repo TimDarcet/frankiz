@@ -39,9 +39,12 @@
 	)
 	
 	$Log$
+	Revision 1.28  2005/02/15 11:31:21  pico
+	BugFix
+
 	Revision 1.27  2005/02/15 11:26:50  pico
 	Modifs pour avoir le nbtotal d'utilisateurs
-
+	
 	Revision 1.26  2005/02/15 11:17:21  pico
 	Test bug #51
 	
@@ -170,7 +173,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	<formulaire id="form_choix_skin" titre="Choix de la skin" action="profil/skin.php">
 		<choix titre="Skin" id="newskin" type="radio" valeur="<?php echo $_SESSION['skin']['skin_nom']."/".$_SESSION['skin']['skin_css'] ?>">
 <?php
-			$DB_web->query("SELECT COUNT(*) FROM compte_frankiz WHERE skin IS NOT NULL");
+			$DB_web->query("SELECT COUNT(*) FROM compte_frankiz");
 			list($nbutilisateurtotal) = $DB_web->next_row();
 			
 			// Parcourt des skins XSL
@@ -188,7 +191,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 				
 				// Si c'est une skin sans CSS
 				if($description['chemin'] == ".") {
-					$DB_web->query("SELECT COUNT(*) FROM compte_frankiz WHERE skin LIKE '%$file_xsl%$file_css%'");
+					$DB_web->query("SELECT COUNT(*) FROM compte_frankiz WHERE skin LIKE '%$file_css%$file_xsl%'");
 					list($nbutilisateur) = $DB_web->next_row();
 					echo "<option titre=\"{$description['nom']}: {$description['description']} ($nbutilisateur/$nbutilisateurtotal)\" id=\"$file_xsl/\"/>";
 					continue;
@@ -203,7 +206,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 					
 					$description_css = lire_description_css(BASE_LOCAL."/skins/$file_xsl/$file_css");
 					if($description_css!=""){
-						$DB_web->query("SELECT COUNT(*) FROM compte_frankiz WHERE skin LIKE '%$file_xsl%$file_css%'");
+						$DB_web->query("SELECT COUNT(*) FROM compte_frankiz WHERE skin LIKE '%$file_css%$file_xsl%'");
 						list($nbutilisateur) = $DB_web->next_row();
 						if($file_css!="default")
 							echo "<option titre=\"$file_css: $description_css ($nbutilisateur/$nbutilisateurtotal)\" id=\"$file_xsl/$file_css\"/>";
