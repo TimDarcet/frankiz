@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.30  2005/01/10 08:16:39  pico
+	Correction bug #21 aussi (on pouvait pas virer les ip des gens)
+
 	Revision 1.29  2005/01/10 08:04:25  pico
 	Mise en page
-
+	
 	Revision 1.28  2005/01/10 07:55:04  pico
 	Tjs bug #21
 	
@@ -220,7 +223,7 @@ $DB_admin->query("UNLOCK TABLES");
 	
 	
 	<h2>Liste des personnes ayant eu leurs ips supplémentaires</h2>
-	<liste id="liste" selectionnable="non">
+	<liste id="liste" selectionnable="non" action="admin/valid_ip.php">
 		<entete id="prise" titre="Prise"/>
 		<entete id="ip" titre="IP"/>
 		<entete id="eleve" titre="Élève"/>
