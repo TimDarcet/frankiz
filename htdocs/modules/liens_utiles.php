@@ -21,9 +21,12 @@
 	Liens permettants d'accéder aux autres sites de l'école.
 	
 	$Log$
+	Revision 1.7  2005/01/17 23:46:28  pico
+	Bug fix
+
 	Revision 1.6  2005/01/10 07:43:05  pico
 	Bug #20
-
+	
 	Revision 1.5  2005/01/02 10:50:25  pico
 	Passage de certaines pages en visibles de l'intérieur (non loggué)
 	
@@ -67,6 +70,7 @@
 	<?php endif; ?>
 	<lien id="utile_liens" titre="Liens utiles" url="liens.php" />
 	<?php if(est_authentifie(AUTH_MINIMUM)){ ?>
+		<lien id="utile_licence" titre="Licences Msdnaa" url="profil/licences.php"/>
 		<lien id="utile_redmail" titre="Redirection des mails" url="http://poly.polytechnique.fr/" /> 
 	<? } ?>
 	<lien id="utile_irc" titre="Accéder à l'IRC" url="http://ircserver/"/>

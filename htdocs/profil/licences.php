@@ -21,9 +21,12 @@
 	Page qui permet de demander une clé windows
 	
 	$Log$
+	Revision 1.16  2005/01/17 23:46:28  pico
+	Bug fix
+
 	Revision 1.15  2005/01/17 23:25:08  pico
 	Suite des corrections dei
-
+	
 	Revision 1.14  2005/01/17 23:15:37  pico
 	debug pages de dei
 	
@@ -53,7 +56,8 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_MINIMUM);
+demande_authentification(AUTH_FORT);
+
 
 // Données sur l'utilisateur
 $DB_trombino->query("SELECT eleve_id,eleves.nom,prenom,promo,mail FROM eleves WHERE eleve_id='{$_SESSION['user']->uid}'");

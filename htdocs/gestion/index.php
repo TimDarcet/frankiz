@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.35  2005/01/17 23:46:28  pico
+	Bug fix
+
 	Revision 1.34  2005/01/17 20:15:38  pico
 	Mail promo pour les kessiers
-
+	
 	Revision 1.33  2005/01/03 20:43:17  pico
 	Ajout du lien vers la page de visualisation des droits
 	
@@ -362,6 +365,11 @@ $permissions_user = $_SESSION['user']->perms ;
 		?>
 		<lien titre="Gérer les demandes d'ajout d'ips (<?=$nb?>)" url="admin/valid_ip.php"/><br/>
 		<lien titre="Liste des IPs" url="admin/ip.php"/><br/>
+		<?
+		$DB_msdnaa->query("SELECT eleve_id FROM valid_licence") ;
+		$nb = $DB_msdnaa->num_rows() ;
+		?>
+		<lien titre="Gérer les demandes de licences (<?=$nb?>)" url="admin/valid_licences.php"/><br/>
 	<?
 	}
 	

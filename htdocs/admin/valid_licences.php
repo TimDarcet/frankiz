@@ -21,9 +21,12 @@
 	Page qui permet l'administartion des licences windows.
 	
 	$Log$
+	Revision 1.3  2005/01/17 23:46:28  pico
+	Bug fix
+
 	Revision 1.2  2005/01/17 23:15:37  pico
 	debug pages de dei
-
+	
 	Revision 1.1  2005/01/17 22:12:01  dei
 	page d'administration et de gestion de l'ajout des nouvelles
 	licences krosoft
@@ -55,7 +58,7 @@ $temp = explode("_",$keys) ;
 	// On refuse la demande de licence
 	//==========================
 	if ($temp[0] == "vtff") {
-		$DB_valid->query("DELETE FROM valid_licence WHERE eleve_id='{$temp[1]}'");
+		$DB_msdnaa->query("DELETE FROM valid_licence WHERE eleve_id='{$temp[1]}'");
 		$bla = "refus_".$temp[1] ;
 		$contenu = "Bonjour, <br><br>".
 					"Nous sommes désolés de pas pouvoir t'attribuer une licence pour la raison suivante :<br>".
