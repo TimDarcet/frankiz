@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un sondage
 	
 	$Log$
+	Revision 1.19  2005/02/15 19:45:14  pico
+	Pour modifier les sondages lors de la validation
+
 	Revision 1.18  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
-
+	
 	Revision 1.17  2005/01/21 17:01:31  pico
 	Fonction pour savoir si interne
 	
@@ -133,9 +136,7 @@ foreach ($_POST AS $keys => $val){
 			couriel($temp[2],"[Frankiz] Ton sondage a été refusé ",$contenu,WEBMESTRE_ID);
 			echo "<warning>Envoie d'un mail <br/>Le prévient que sa demande n'est pas acceptée</warning>" ;
 		} else {
-	?>
-			<warning>Requête deja traitée par un autre administrateur</warning>
-	<?			
+			echo "<warning>Requête deja traitée par un autre administrateur</warning>";
 		}
 	}
 	// On accepte le sondage
@@ -172,11 +173,17 @@ foreach ($_POST AS $keys => $val){
 			couriel($temp[2],"[Frankiz] Ton sondage a été validé ",$contenu,WEBMESTRE_ID);
 			echo "<commentaire>Envoie d'un mail <br/>Prévient $prenom $nom que sa demande est acceptée</commentaire>" ;
 		} else {
-	?>
-			<warning>Requête deja traitée par un autre administrateur</warning>
-	<?			
+			echo "<warning>Requête deja traitée par un autre administrateur</warning>";
 		}
-
+	}
+	if ($temp[0] == "modif") {
+		$DB_valid->query("SELECT 0 FROM valid_sondages WHERE sondage_id='{$temp[1]}'");
+		if ($DB_valid->num_rows()!=0) {
+			$DB_valid->query("UPDATE valid_sondages SET questions='{$_POST['contenu_form']}', titre='{$_POST['titre_sondage']}', perime=FROM_UNIXTIME({$_POST['date']}) WHERE sondage_id={$temp[1]}");
+			echo "<commentaire>Modification effectuée</commentaire>" ;
+		 } else {
+			echo "<warning>Requête deja traitée par un autre administrateur</warning>";
+		}
 	}
 
 }
@@ -209,6 +216,28 @@ $DB_trombino->query("UNLOCK TABLES");
 				<option id="ext" titre="Demande de l'utilisateur" modifiable='non'/>
 				<option id="ext_auth" titre="Décision du Webmestre"/>
 			</choix>
+			<choix titre="Sondage jusqu'à " id="date" type="combo" valeur="<? echo $date ;?>">
+			<?	for ($i=1 ; $i<=MAX_PEREMPTION ; $i++) {
+				$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
+				$date_value = date("d/m/y" , $date_id);
+				?>
+				<option titre="<? echo $date_value?>" id="<? echo $date_id?>" />
+				<?
+			}
+			?>
+			</choix>
+			<note>
+				La syntaxe est la suivante:<br/>
+				Pour une explication: ###expli///Mon texte<br/>
+				Pour un champ: ###champ///Le nom du champ<br/>
+				Pour un texte: ###text///Ma question<br/>
+				Pour un radio: ###radio///ma question///option1///option2///option3<br/>
+				Pour une boite déroulante: ###combo///ma question///option1///option2///option3<br/>
+				Pour une checkbox: ###check///ma question///option1///option2///option3<br/>
+			</note>
+			<champ id="titre_sondage" titre="Titre" valeur="<?=$titre?>"/>
+			<zonetext id="contenu_form" titre="Zone d'édition avancée" type="grand"><?=$questions?></zonetext>
+			<bouton titre="Mettre à jour le sondage" id="modif_<? echo $id ?>_<? echo $eleve_id ?>" />
 			<bouton id='valid_<? echo $id ?>_<? echo $eleve_id ?>' titre='Valider' onClick="return window.confirm('Valider ce sondage ?')"/>
 			<bouton id='suppr_<? echo $id ?>_<? echo $eleve_id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce sondage ?!!!!!')"/>
 		</formulaire>
