@@ -171,7 +171,7 @@ text-align:left;
 
 
 
-.fkz_liens,.fkz_liens_nav, .fkz_anniversaire_titre,.fkz_titre,.fkz_annonces,.fkz_trombino{
+.fkz_liens,div.fkz_liens_nav, .fkz_anniversaire_titre,.fkz_titre,.fkz_annonces,.fkz_trombino{
 	border-bottom: 1px solid #888888;
 	border-right: 1px solid #888888;
 	border-left: 1px solid #888888;
@@ -182,12 +182,16 @@ text-align:left;
 	font-size: 8pt;
 }
 
-div.fkz_liens_nav {
+.fkz_liens_nav {
 	font-size: 9pt;
 	font-weight: bold;
 	background-image:url("grass/grassbrown.jpg");
 	padding: 2px;
 	text-align: center;
+}
+
+span.fkz_liens_nav:hover{
+	background-image:url("grass/grassdark.jpg");
 }
 
 .fkz_anniversaire_titre {
