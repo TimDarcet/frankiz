@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.4  2004/11/30 21:33:18  pico
+	Rajout des feuilles à la base d'un arbre
+
 	Revision 1.3  2004/11/28 01:33:33  pico
 	Gestion des listes sur le wiki (arbre + feuille)
-
+	
 	Revision 1.2  2004/11/27 20:58:37  pico
 	Ajout de la balise <br/>
 	
@@ -150,7 +153,7 @@
 <xsl:template match="arbre">
 	<xsl:if test="boolean(@titre)"><h2><xsl:value-of select="@titre"/></h2></xsl:if>
 	<ul><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
-		<xsl:apply-templates select="noeud"/>
+		<xsl:apply-templates select="noeud|feuille"/>
 	</ul>
 </xsl:template>
 

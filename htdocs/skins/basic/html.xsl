@@ -21,10 +21,13 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.26  2004/11/30 21:33:18  pico
+	Rajout des feuilles à la base d'un arbre
+
 	Revision 1.25  2004/11/29 17:27:33  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
-
+	
 	Revision 1.24  2004/11/27 20:58:37  pico
 	Ajout de la balise <br/>
 	
@@ -214,7 +217,7 @@
 <xsl:template match="arbre">
 	<xsl:if test="boolean(@titre)"><h2><xsl:value-of select="@titre"/></h2></xsl:if>
 	<ul><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
-		<xsl:apply-templates select="noeud"/>
+		<xsl:apply-templates select="noeud|feuille"/>
 	</ul>
 </xsl:template>
 

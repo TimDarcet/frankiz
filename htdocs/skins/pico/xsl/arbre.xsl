@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<!-- $Id$ -->
 <!--
 	Copyright (C) 2004 Binet Réseau
 	http://www.polytechnique.fr/eleves/binets/br/
@@ -25,30 +24,32 @@
 <xsl:template match="arbre">
 	<xsl:if test="boolean(@titre)"><h2><xsl:value-of select="@titre"/></h2></xsl:if>
 	<ul>
-		<xsl:apply-templates select="noeud"/>
+		<xsl:apply-templates select="noeud|feuille"/>
 	</ul>
 </xsl:template>
 
 <xsl:template match="noeud">
 	<li>
-		<xsl:choose><xsl:when test="count(noeud|feuille)">
+		<!--<xsl:choose><xsl:when test="count(noeud|feuille)">
 			<xsl:attribute name="class">noeud_ouvert</xsl:attribute>
 		</xsl:when><xsl:otherwise>
 			<xsl:attribute name="class">noeud_ferme</xsl:attribute>
 		</xsl:otherwise></xsl:choose>
-		
+		-->
 		<xsl:choose><xsl:when test="boolean(@lien)">
 			<a><xsl:attribute name="href"><xsl:value-of select="@lien"/></xsl:attribute>
 				<xsl:value-of select="@titre"/>
 			</a>
-		</xsl:when><xsl:otherwise>
+		</xsl:when>
+		<xsl:otherwise>
 			<xsl:value-of select="@titre"/>
-		</xsl:otherwise></xsl:choose>
+		</xsl:otherwise>
+		</xsl:choose>
 		
 		<xsl:apply-templates select="*[name()!='noeud' and  name()!= 'feuille']"/>
 		
 		<xsl:if test="count(noeud|feuille)">
-			<ul class="feuille">
+			<ul>
 				<xsl:apply-templates select="noeud|feuille"/>
 			</ul>
 		</xsl:if>
@@ -57,13 +58,16 @@
 
 <xsl:template match="feuille">
 	<li>
-		<xsl:choose><xsl:when test="boolean(@lien)">
+		<xsl:choose>
+		<xsl:when test="boolean(@lien)">
 			<a><xsl:attribute name="href"><xsl:value-of select="@lien"/></xsl:attribute>
 				<xsl:value-of select="@titre"/>
 			</a>
-		</xsl:when><xsl:otherwise>
+		</xsl:when>
+		<xsl:otherwise>
 			<xsl:value-of select="@titre"/>
-		</xsl:otherwise></xsl:choose>
+		</xsl:otherwise>
+		</xsl:choose>
 		<xsl:apply-templates />
 	</li>
 </xsl:template>
