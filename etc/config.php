@@ -22,9 +22,12 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.7  2004/11/26 16:08:48  pico
+	Config de la base FAQ: pour l'instant c'est dans frankiz2_tmp
+
 	Revision 1.6  2004/11/24 17:29:29  kikx
 	Permet de ne pas faire 1000 requete sur le serveur de la DSI et de plus permet de rendre la page fonctionnel
-
+	
 	Revision 1.5  2004/11/22 23:07:28  kikx
 	Rajout de lines vers les pages perso
 	
@@ -82,7 +85,7 @@ define('MAX_PEREMPTION',8);
 
 // Connexions aux bases mysql
 $DB_xnet = new DB("frankiz2","xnet","web","kokouije?.");
-$DB_faq = new DB("frankiz","faq","web","kokouije?.");
+$DB_faq = new DB("frankiz","frankiz2_tmp","web","kokouije?.");
 $DB_web = new DB("frankiz","frankiz2_tmp","web","kokouije?.");
 $DB_admin = new DB("frankiz","admin","web","kokouije?.");
 $DB_trombino = new DB("frankiz","trombino","web","kokouije?.");
