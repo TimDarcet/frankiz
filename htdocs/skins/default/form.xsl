@@ -21,9 +21,12 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.6  2004/11/23 23:32:22  schmurtz
+	oubli
+
 	Revision 1.5  2004/11/12 00:23:04  psycow
 	Modification du trombi, gestion graphique des formulaires; c'est pas trop mal on touche a la fin
-
+	
 	Revision 1.4  2004/11/09 01:50:48  psycow
 	Commit predodo, debut de modification des formulaires...
 	
@@ -117,7 +120,7 @@
 				<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 				<xsl:attribute name="rows">7</xsl:attribute>
 				<xsl:attribute name="cols">50</xsl:attribute>
-				<xsl:value-of select="@valeur"/>
+				<xsl:value-of select="text()"/>
 			</textarea>
 		</xsl:otherwise></xsl:choose>
 </xsl:template>

@@ -112,7 +112,7 @@
 			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:attribute name="rows">7</xsl:attribute>
 			<xsl:attribute name="cols">50</xsl:attribute>
-			<xsl:value-of select="@valeur"/>
+			<xsl:value-of select="text()"/>
 		</textarea>
 	</xsl:otherwise></xsl:choose>
 </xsl:template>
