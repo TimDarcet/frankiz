@@ -21,9 +21,12 @@
 	Page qui permet aux admins de voir l'historique des qdj
 	
 	$Log$
+	Revision 1.2  2004/12/17 20:08:38  pico
+	Affichage plus condensé
+
 	Revision 1.1  2004/12/17 19:55:44  pico
 	Ajout d'une page pour voir l'historique des qdj
-
+	
 
 	
 */
@@ -59,15 +62,14 @@ $date = date("Y-m-d", time()-3025);
 	$date = date("Y-m-d", time()-3025 + 24*3600);
 	$DB_web->query("SELECT qdj_id,date,question,reponse1,reponse2,compte1,compte2 FROM qdj WHERE date<'$date'  ORDER BY date DESC");
 	while(list($id,$date,$question,$reponse1,$reponse2,$compte1,$compte2) = $DB_web->next_row()){
-
+		$p1 = 100*$compte1/($compte1+$compte2);
+		$p2 = 100*$compte2/($compte1+$compte2);
 ?>
-		<module titre="QDJ du <?= date("d/m/Y",strtotime($date)) ?>">
-			<qdj>
-				<question><?php echo $question ?></question>
-				<reponse id="1" votes="<?= $compte1?>"><?php echo $reponse1?></reponse>
-				<reponse id="2" votes="<?= $compte2?>"><?php echo $reponse2?></reponse>
-			</qdj>
-		</module>
+		<h4>QDJ du <?= date("d/m/Y",strtotime($date)) ?></h4>
+			<?= $question ?><br/>
+			<?= "- $reponse1 ($compte1 soit $p1%)"?><br/>
+			<?= "- $reponse2 ($compte2 soit $p2%)"?><br/>
+		
 <? 
 	}
 
