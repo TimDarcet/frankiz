@@ -26,16 +26,18 @@
 <xsl:template match="module[@id='liens_contacts']">
  <div class="fkz_titre"><span id="contacts_logo"><span id="contacts">Contacts</span></span></div>
   <div class="fkz_module">
+    <ul class="fkz_contact">
     <xsl:for-each select="lien">
-      <div class="fkz_lien">
+      <li class="fkz_contact">
       <a>
         <xsl:attribute name="href">
 	  <xsl:value-of select="@url"/>
 	</xsl:attribute>
 	<xsl:value-of select="@titre"/>
       </a>
-      </div>
+      </li>
     </xsl:for-each>
+    </ul>
   <xsl:text> </xsl:text>
   </div>
 </xsl:template>
@@ -43,34 +45,36 @@
 <xsl:template match="module[@id='liens_ecole']">
    <div class="fkz_titre"><span id="liens_ecole_logo"><span id="liens_ecole">Liens Ecole</span></span></div>
    <div class="fkz_module">
+   <ul class="fkz_liens">
     <xsl:for-each select="lien">
-      <div class="fkz_lien">
+      <li class="fkz_liens">
       <a>
         <xsl:attribute name="href">
 	  <xsl:value-of select="@url"/>
 	</xsl:attribute>
 	<xsl:value-of select="@titre"/>
       </a>
-      </div>
+      </li>
     </xsl:for-each>
+    </ul>
   <xsl:text> </xsl:text>
   </div>
 </xsl:template>
 
 <xsl:template match="module[@id='liens_navigation']">
     <div class="fkz_liens_nav">
+    <ul class="fkz_liens_nav">
     <xsl:for-each select="lien">
-      <span class="fkz_liens_nav">
+      <li class="fkz_liens_nav">
       <a>
         <xsl:attribute name="href">
           <xsl:value-of select="@url"/>
 	</xsl:attribute>
 	<xsl:value-of select="@titre" />
       </a>
-      </span>
-      <xsl:if test="position() != last()">
-      </xsl:if>
-    </xsl:for-each>
+      </li>
+      </xsl:for-each>
+    </ul>
     </div>
 </xsl:template>
 

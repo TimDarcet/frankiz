@@ -181,18 +181,21 @@ text-align:left;
 
 
 
-.fkz_liens,div.fkz_liens_nav, .fkz_anniversaire_titre,.fkz_titre,.fkz_annonces,.fkz_trombino{
+div.fkz_liens_nav, .fkz_anniversaire_titre,.fkz_titre,.fkz_annonces,.fkz_trombino{
 	border-bottom: 1px solid #888888;
 	border-right: 1px solid #888888;
 	border-left: 1px solid #888888;
 	border-top: 1px solid #888888;
 }
 
-.fkz_liens {
-	font-size: 8pt;
+.fkz_liens,.fkz_contact,.fkz_stats {
+	list-style-type:none;
+}
+li.fkz_liens a:hover,li.fkz_contact a:hover,li.fkz_stats a:hover {
+	background-image:url("grass/grassbrown.jpg");
 }
 
-.fkz_liens_nav {
+div.fkz_liens_nav {
 	font-size: 9pt;
 	font-weight: bold;
 	background-image:url("grass/grassbrown.jpg");
@@ -200,8 +203,17 @@ text-align:left;
 	text-align: center;
 }
 
-span.fkz_liens_nav:hover{
+li.fkz_liens_nav{
+	list-style-type:none;
+	display: inline;
+}
+ul.fkz_liens_nav{
+	display: inline;
+}
+
+li.fkz_liens_nav:hover{
 	background-image:url("grass/grassdark.jpg");
+	display: inline;
 }
 
 .fkz_anniversaire_titre {
@@ -318,7 +330,7 @@ span.valid_css {
 
 /* Stats */
  
-.fkz_stats{list-style-type:  none; padding:0}
+.fkz_stats{list-style-type:  none;}
 
 .serveur_nom {
 	display: block;
