@@ -3,11 +3,14 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.17  2004/10/13 19:37:13  kikx
+	oubli
+
 	Revision 1.16  2004/10/11 11:01:38  kikx
 	Correction des pages de proposition et de validation des annonces pour permettre
 	- de stocker les image au bon endroit
 	- de mettre les annonces su l'esterieur
-
+	
 	Revision 1.15  2004/10/04 21:48:54  kikx
 	Modification du champs fichier pour uploader des fichiers
 	
@@ -116,7 +119,7 @@ if (isset($_POST['valid'])) {
 				"Très BR-ement\n" .
 				"L'automate :)\n"  ;
 				
-	mail("Admin Frankiz <gruson@poly.polytechnique.fr>","[Frankiz] Validation d'une annonce",$contenu);
+	mail(MAIL_WEBMESTRE,"[Frankiz] Validation d'une annonce",$contenu);
 
 }
 //=================
