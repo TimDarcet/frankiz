@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une activité
 	
 	$Log$
+	Revision 1.18  2005/01/17 21:52:04  pico
+	Page des activités
+
 	Revision 1.17  2004/12/15 00:05:04  schmurtz
 	Plus beau
-
+	
 	Revision 1.16  2004/12/14 00:27:40  kikx
 	Pour que le FROM des mails de validation soit au nom du mec qui demande la validation... (qu'est ce que je ferai pas pour les TOS :))
 	
@@ -83,6 +86,7 @@
 */
 
 require_once "../include/global.inc.php";
+require_once "../include/wiki.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_MINIMUM);
@@ -163,7 +167,7 @@ if (isset($_POST['valid'])) {
 		else 
 			$temp_ext = '0' ;
 
-		$DB_valid->query("INSERT INTO valid_affiches SET date=FROM_UNIXTIME({$date_complete}), eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',url='".$_POST['url']."', exterieur=".$temp_ext);
+		$DB_valid->query("INSERT INTO valid_affiches SET date=FROM_UNIXTIME({$date_complete}), eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',url='".$_POST['url']."', description='".$_POST['text']."',exterieur=".$temp_ext);
 		
 		// on modifie le nom du fichier qui a été téléchargé si celui ci existe
 		// selon la norme de nommage ci-dessus
@@ -217,21 +221,22 @@ if ($erreur_upload==1)
 ?>
 	<annonce date="<? echo date('Y-m-d H:i:s',$date_complete)  ?>">
 		<note>NB : Cette activité sera affichée le <?php echo date("d/m/y",$_POST['date']) ;?></note>
-		<a href="<?php echo $_POST['url'] ;?>">
+		<lien url="<?php echo $_POST['url'] ;?>">
 		<?
 		if ((!isset($_POST['valid']))&&(file_exists(DATA_DIR_LOCAL."affiches/temp_$eleve_id"))) {
 		?>
-		<image source="<?echo DATA_DIR_URL."affiches/temp_".$eleve_id ; ?>" texte="Affiche"/>
+		<image source="<?echo DATA_DIR_URL."affiches/temp_".$eleve_id ; ?>" texte="Affiche" legende="<?php echo  $_POST['titre']?>"/>
 		<? 
 		} else if ((isset($index))&&(file_exists(DATA_DIR_LOCAL."affiches/a_valider_{$index}"))){
 		?>
-		<image source="<? echo DATA_DIR_URL."affiches/a_valider_{$index}" ; ?>" texte="Affiche"/>
+		<image source="<? echo DATA_DIR_URL."affiches/a_valider_{$index}" ; ?>" texte="Affiche" legende="<?php echo $_POST['titre']?>"/>
 		<?
 		}
 		?>
-		</a>
-		<p><?php echo $_POST['titre']?></p>
+		</lien>
+		<?  if (isset($_POST['text'])) echo wikiVersXML($_POST['text']); ?>
 		<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
+		
 	</annonce>
 		
 <?
@@ -254,7 +259,7 @@ if ((isset($_POST['valid']))&&(isset($index))&&file_exists(DATA_DIR_LOCAL."affic
 	<formulaire id="propoz_activite" titre="Ton activité" action="proposition/affiche.php">
 		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
 		<champ id="url" titre="URL du lien" valeur="<? if (isset($_POST['url'])) echo $_POST['url'] ;?>"/>
-
+		<zonetext id="text" titre="Description plus détaillée"><? if (isset($_POST['text'])) echo $_POST['text'];?></zonetext>
 		<note>L'image doit être un fichier gif, png ou jpeg ne dépassant pas 400x300 pixels et 250Ko.</note>
 		<fichier id="file" titre="Ton image" taille="100000"/>
 

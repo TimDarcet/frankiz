@@ -21,9 +21,12 @@
 	Page d'activites de frankiz.
 	
 	$Log$
+	Revision 1.2  2005/01/17 21:52:04  pico
+	Page des activités
+
 	Revision 1.1  2005/01/17 21:13:45  pico
 	Ajout d'une page pour des activités plus complètes...
-
+	
 	
 	
 */
@@ -48,16 +51,17 @@ if(est_authentifie(AUTH_INTERNE) && $valeurBob == 1) echo "<annonce titre=\"Le B
 if(est_authentifie(AUTH_INTERNE) && $valeurKes == 1) echo "<annonce titre=\"La Kes est ouverte\"/>";
 
 $date_legend = array("Aujourd'hui","Demain","Après-demain","Dans 3 jours","Dans 4 jours","Dans 5 jours","Dans une semaine");
+if(!est_authentifie(AUTH_INTERNE)) $exterieur=" AND exterieur='1' ";
 
 for($i= 0; $i<7;$i++){
-	$DB_web->query("SELECT affiche_id,titre,url,date,exterieur FROM affiches WHERE TO_DAYS(date)=TO_DAYS(NOW() + INTERVAL $i DAY) ORDER BY date");
+	$DB_web->query("SELECT affiche_id,titre,url,date,description FROM affiches WHERE TO_DAYS(date)=TO_DAYS(NOW() + INTERVAL $i DAY) $exterieur ORDER BY date");
 	if ($DB_web->num_rows()!=0){
 		echo "<h3>{$date_legend[$i]}</h3>";
-		while (list($id,$titre,$url,$date,$exterieur)=$DB_web->next_row()) { 
-			if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
+		while (list($id,$titre,$url,$date,$texte)=$DB_web->next_row()) { 
 		?>
 			<annonce date="<? echo $date ?>">
 			<lien url="<?php echo $url?>"><image source="<?php echo DATA_DIR_URL.'affiches/'.$id?>" texte="Affiche" legende="<?php echo $titre?>"/></lien>
+			<? echo wikiVersXML($texte); ?>
 			</annonce>
 		<?
 		}

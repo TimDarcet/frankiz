@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.21  2005/01/17 21:52:04  pico
+	Page des activités
+
 	Revision 1.20  2005/01/13 17:10:58  pico
 	Mails de validations From le validateur qui va plus ou moins bien
-
+	
 	Revision 1.19  2005/01/05 21:59:48  pico
 	Envoit de commentaire dans le mail de validation d'annonce
 	
@@ -94,6 +97,7 @@
 */
 	
 require_once "../include/global.inc.php";
+require_once "../include/wiki.inc.php";
 
 // Vérification des droits
 if(verifie_permission('admin')||verifie_permission('web'))
@@ -125,7 +129,7 @@ foreach ($_POST AS $keys => $val){
 	if (($temp[0]=='modif')||($temp[0]=='valid')) {
 		$DB_valid->query("SELECT 0 FROM valid_affiches WHERE affiche_id='{$temp[1]}'");
 		if ($DB_valid->num_rows()!=0) {
-			$DB_valid->query("UPDATE valid_affiches SET date='{$_POST['date']}', titre='{$_POST['titre']}' WHERE affiche_id='{$temp[1]}'");
+			$DB_valid->query("UPDATE valid_affiches SET date='{$_POST['date']}', titre='{$_POST['titre']}', description='{$_POST['text']}' WHERE affiche_id='{$temp[1]}'");
 			if ($temp[0]!='valid') {
 		?>
 				<commentaire>Modif effectuée</commentaire>
@@ -155,7 +159,7 @@ foreach ($_POST AS $keys => $val){
 			else 
 				$temp_ext = '0' ;
 	
-			$DB_web->query("INSERT INTO affiches SET stamp=NOW(), date='{$_POST['date']}', titre='{$_POST['titre']}', url='{$_POST['url']}', eleve_id=$eleve_id, exterieur=$temp_ext");
+			$DB_web->query("INSERT INTO affiches SET stamp=NOW(), date='{$_POST['date']}', titre='{$_POST['titre']}', url='{$_POST['url']}', eleve_id=$eleve_id, exterieur=$temp_ext, description='{$_POST['text']}'");
 			
 			
 			// On déplace l'image si elle existe dans le répertoire prevu à cette effet
@@ -207,25 +211,23 @@ $DB_valid->query("UNLOCK TABLES");
 
 //===============================
 
-	$DB_valid->query("SELECT v.exterieur,v.affiche_id,v.date, v.titre, v.url, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_affiches as v LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE v.eleve_id LIKE '$user_id'");
-	while(list($ext,$id,$date,$titre,$url,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
+	$DB_valid->query("SELECT v.exterieur,v.affiche_id,v.date, v.titre, v.url,v.description, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_affiches as v LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE v.eleve_id LIKE '$user_id'");
+	while(list($ext,$id,$date,$titre,$url,$description,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
 		echo "<module id=\"activites\" titre=\"Activités\">\n";
 ?>
-		<annonce titre="<?php  echo $titre ?>" 
-				categorie=""
-				date="<? echo $date?>">
-				<?
-				if (file_exists(DATA_DIR_LOCAL."affiches/a_valider_{$id}")){
-				?>
-					<a href="<?php echo $url ?>">
-						<image source="<? echo DATA_DIR_URL."affiches/a_valider_{$id}" ; ?>" texte="Affiche"/>
-					</a>
-				<?
-				}
-				?>
-				<p><?php echo $titre ?></p>
-				<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
-		</annonce>
+	<annonce date="<? echo $date ?>">
+		<lien url="<?php echo $url ;?>">
+		<?
+		if(file_exists(DATA_DIR_LOCAL."affiches/a_valider_{$id}")){
+		?>
+		<image source="<? echo DATA_DIR_URL."affiches/a_valider_{$id}" ; ?>" texte="Affiche" legende="<?php echo $titre?>"/>
+		<?
+		}
+		?>
+		</lien>
+		<? echo wikiVersXML($description); ?>
+		<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
+	</annonce>
 <?
 		echo "</module>\n" ;
 // Zone de saisie de l'affiche
@@ -234,6 +236,7 @@ $DB_valid->query("UNLOCK TABLES");
 		<formulaire id="affiche_<? echo $id ?>" titre="L'activité" action="admin/valid_affiches.php">
 			<champ id="titre" titre="Le titre" valeur="<?  echo $titre ;?>"/>
 			<champ id="url" titre="URL du lien" valeur="<? echo $url ;?>"/>
+			<zonetext id="text" titre="Description plus détaillée"><?=$description?></zonetext>
 			<champ id="date" titre="Date d'affichage" valeur="<? echo $date ;?>"/>
 			<? 
 			if ($ext==1) {
