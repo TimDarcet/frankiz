@@ -44,14 +44,15 @@ foreach ($_POST AS $keys => $val){
 		$dir=$dir."/".strtolower(str_replace(" ","",$nom));
 		$DB_web-> query("INSERT INTO faq SET parent='{$temp[1]}',question='{$desc}',reponse='{$dir}'");
 		mkdir(BASE_DATA."faq/".$dir);
-		echo "<commentaire>Repertoire crée</commentaire>";
+		echo "<commentaire>Repertoire crée".BASE_DATA."faq/".$dir."</commentaire>";
 	}
 	
-	if (($temp[0]=='ajout') && isset($_REQUEST['question']) && ($_REQUEST['question']!='') && (isset($_FILES['file']))&&($_FILES['file']['size']!=0)) {
+	if (($temp[0]=='ajout') && isset($_REQUEST['question']) && ($_REQUEST['question']!='') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='') && (isset($_FILES['file']))&&($_FILES['file']['size']!=0)) {
 		$question = $_REQUEST['question'];
 		$DB_web->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
 		list($dir) = $DB_web->next_row();
-		$filename = $dir."/index.php";
+		mkdir(BASE_DATA."faq/".$dir."/".$_REQUEST['nom']);
+		$filename = $dir."/".$_REQUEST['nom']."/index.php";
 		move_uploaded_file($_FILES['file']['tmp_name'], BASE_DATA."faq/".$filename);
 		
 		$DB_web-> query("INSERT INTO faq SET parent='{$temp[1]}' , question='{$question}' , reponse='{$filename}'");
@@ -271,6 +272,7 @@ echo "<br/>" ;
 	<!-- Ajouter un fichier -->
 	<formulaire id="faq_<? echo $dir_id ?>" titre="Le logiciel" action="admin/faq.php">
 	<champ id="question" titre="Question" valeur="" />
+	<champ id="nom" titre="Nom du sous-dossier de la faq" valeur="" />
 	<? foreach ($_GET AS $keys => $val){
 		if(!strstr($keys,"ajout")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 	}
