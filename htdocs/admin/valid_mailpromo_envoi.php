@@ -21,9 +21,13 @@
 	Page d'envoi des mails promo.
 	
 	$Log$
+	Revision 1.8  2005/01/20 13:07:02  pico
+	On envoit par ordre d'id d'élève (plus facile de voir si un id a été sauté)
+	Devrait mettre ça dans un nouveau fichier de log maintenant.
+
 	Revision 1.7  2005/01/17 20:15:38  pico
 	Mail promo pour les kessiers
-
+	
 	Revision 1.6  2005/01/13 17:10:58  pico
 	Mails de validations From le validateur qui va plus ou moins bien
 	
@@ -71,10 +75,10 @@ $mail_contenu = wikiVersXML($mail,true)  ; // On met true pour dire que c'est du
 // Envoi du mail à propremeent parler ...
 //-------------------------------------------------------------------------
 
-	$DB_trombino->query("SELECT eleve_id,nom,prenom,promo FROM eleves WHERE ".$to." ORDER BY nom ASC") ;
+	$DB_trombino->query("SELECT eleve_id,nom,prenom,promo FROM eleves WHERE ".$to." ORDER BY eleve_id ASC") ;
 	
 	// On crée le fichier de log qui va bien
-	$fich_log = BASE_DATA."mailpromo/mail.log.".$temp[1] ; 
+	$fich_log = BASE_DATA."mailpromo/mail.log.{$_REQUEST['id']}"; 
 	touch($fich_log) ;
 	
 	//$from = str_replace("&gt;",">",str_replace("&lt;","<",$_REQUEST['sender'])) ;
