@@ -8,23 +8,23 @@
 	  dans la sortie XML.
 */
 
-error_reporting(0);
+error_reporting(E_ERROR);
 set_error_handler("gestionnaire_erreurs_php");
 
 $_ERREURS_PHP = array();
 $_ERREURS_PHP_NOMS = array(
-	E_ERROR				=> "FATAL ERROR",
-	E_WARNING			=> "WARNING",
-	E_PARSE				=> "PARSE ERROR",
-	E_NOTICE			=> "NOTICE",
-	E_CORE_ERROR		=> "CORE FATAL ERROR",
-	E_CORE_WARNING		=> "CORE WARNING",
-	E_COMPILE_ERROR		=> "COMPILE FATAL ERROR",
-	E_COMPILE_WARNING	=> "COMPILE WARNING",
-	E_USER_ERROR		=> "USER ERROR",
-	E_USER_WARNING		=> "USER WARNING",
-	E_USER_NOTICE		=> "USER NOTICE",
-	2048				=> "NOT STRICT"		// E_STRICT, PHP 5 uniquement
+	E_ERROR				=> "Fatal error",
+	E_WARNING			=> "Warning",
+	E_PARSE				=> "Parse error",
+	E_NOTICE			=> "Notice",
+	E_CORE_ERROR		=> "Core error",
+	E_CORE_WARNING		=> "Core warning",
+	E_COMPILE_ERROR		=> "Compile error",
+	E_COMPILE_WARNING	=> "Compile warning",
+	E_USER_ERROR		=> "User error",
+	E_USER_WARNING		=> "User warning",
+	E_USER_NOTICE		=> "User notice",
+	2048				=> "Not strict"		// E_STRICT, PHP 5 uniquement
 );
 
 function gestionnaire_erreurs_php($errno, $errmsg, $file, $line, $vars) {
@@ -36,11 +36,6 @@ function gestionnaire_erreurs_php($errno, $errmsg, $file, $line, $vars) {
 		'line'		=> $line,
 		'vars'		=> $vars
 	);
-	
-	if($errno == E_ERROR || $errno == E_CORE_ERROR || $errno == E_COMPILE_ERROR || $errno == E_USER_ERROR) {
-		affiche_erreurs_php();
-		exit(1);
-	}
 }
 
 function affiche_erreurs_php() {
@@ -48,7 +43,7 @@ function affiche_erreurs_php() {
 	if( count($_ERREURS_PHP) == 0 ) return;
 	
 	foreach($_ERREURS_PHP as $erreur)
-		echo "<p><b>PHP {$_ERREURS_PHP_NOMS[$erreur['errno']]}</b> in file {$erreur['file']} line {$erreur['line']} : {$erreur['errmsg']}</p>\n";
+		echo "<p><b>{$_ERREURS_PHP_NOMS[$erreur['errno']]}</b> : {$erreur['errmsg']} in <b>{$erreur['file']}</b> on line <b>{$erreur['line']}</b></p>\n";
 }
 
 ?>
