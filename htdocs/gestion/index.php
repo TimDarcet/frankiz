@@ -22,9 +22,14 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.30  2004/12/17 16:29:29  kikx
+	Dans le trombino maintenant les promo sont dynamiques
+	Je limit aussi le changement des images (selon leur dimension200x200 dans le trombino)
+	Dans les annonces maintenant c'est 400x300 mais < ou egal
+
 	Revision 1.29  2004/12/17 13:18:47  kikx
 	Rajout des numéros utiles car c'est une demande importante
-
+	
 	Revision 1.28  2004/12/15 23:40:35  kikx
 	Pour gerer les mots de vocabulaires
 	
@@ -193,7 +198,8 @@ $permissions_user = $_SESSION['user']->perms ;
 	if (verifie_permission('admin')||verifie_permission('trombino')){
 	?>
 		<h3>Gestion de l'utilisateur</h3>
-			<lien titre="Modifier un utilisateur" url="trombino.php"/>
+			<lien titre="Modifier un utilisateur" url="trombino.php"/><br/>
+			<lien titre="Ajouter un utilisateur" url="admin/user_rajout.php"/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('web')||verifie_permission('trombino')){

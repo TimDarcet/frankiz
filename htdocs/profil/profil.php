@@ -24,9 +24,14 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.42  2004/12/17 16:29:29  kikx
+	Dans le trombino maintenant les promo sont dynamiques
+	Je limit aussi le changement des images (selon leur dimension200x200 dans le trombino)
+	Dans les annonces maintenant c'est 400x300 mais < ou egal
+
 	Revision 1.41  2004/12/16 22:38:01  schmurtz
 	maintenant on peut utiliser le cookie depuis deux machines.
-
+	
 	Revision 1.40  2004/12/16 13:00:42  pico
 	INNER en LEFT
 	
@@ -242,8 +247,14 @@ if(isset($_POST['changer_frankiz'])) {
 	
 			//
 			// On verifie que le truc télécharger est une image ...
+			// + bonne taille !
 			//--------------------------------------
-		if (in_array (strtolower ($type_img), $image_types)) {
+		$original_size = getimagesize($_FILES['file']['tmp_name']);
+
+		$larg = $original_size[0];
+		$haut = $original_size[1];
+
+		if ((in_array (strtolower ($type_img), $image_types))&&($larg<=200)&&($haut<=200)) {
 			$filename =$_SESSION['user']->uid ;
 			move_uploaded_file($_FILES['file']['tmp_name'], DATA_DIR_LOCAL.'trombino/a_valider_'.$filename) ;
 		} else {
@@ -343,7 +354,7 @@ require "../include/page_header.inc.php";
 		<?php else: ?>
 			<image source="trombino.php?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>" texte="photo" height="95" width="80"/>
 		<?php endif; ?>
-		<note>Tu peux personnaliser le trombino en changeant ta photo (elle ne doit pas dépasser 200Ko)</note>
+		<note>Tu peux personnaliser le trombino en changeant ta photo (elle ne doit pas dépasser 200Ko et 200x200 px)</note>
 		<fichier id="file" titre="Nouvelle photo" taille="200000"/>
 
 		<bouton id="changer_trombino" titre="Changer"/>

@@ -21,9 +21,14 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.37  2004/12/17 16:29:29  kikx
+	Dans le trombino maintenant les promo sont dynamiques
+	Je limit aussi le changement des images (selon leur dimension200x200 dans le trombino)
+	Dans les annonces maintenant c'est 400x300 mais < ou egal
+
 	Revision 1.36  2004/12/15 00:05:04  schmurtz
 	Plus beau
-
+	
 	Revision 1.35  2004/12/14 22:16:06  schmurtz
 	Correction de bug du moteur wiki.
 	Simplication du code.
@@ -151,7 +156,7 @@ if ((isset($_FILES['file']))&&($_FILES['file']['size']!=0))  {
 	
 	$larg = $original_size[0];
 	$haut = $original_size[1];
-	if (($larg>=400)||($haut>=300)) {
+	if (($larg>400)||($haut>300)) {
 		$erreur_upload =1 ;
 	} else if (($filetype=="image/jpg")||($filetype=="image/jpeg")||($filetype=="image/pjpg")||($filetype=="image/gif")||($filetype=="image/png")) {
 		$filename = "temp_$eleve_id" ;

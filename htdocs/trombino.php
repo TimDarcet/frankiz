@@ -21,9 +21,14 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.47  2004/12/17 16:29:29  kikx
+	Dans le trombino maintenant les promo sont dynamiques
+	Je limit aussi le changement des images (selon leur dimension200x200 dans le trombino)
+	Dans les annonces maintenant c'est 400x300 mais < ou egal
+
 	Revision 1.46  2004/12/17 13:41:07  kikx
 	Poura voir que les resultat des promos sur le campus qd on fait une recherche trombino
-
+	
 	Revision 1.45  2004/12/17 13:18:47  kikx
 	Rajout des numéros utiles car c'est une demande importante
 	
@@ -277,12 +282,13 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 		<choix titre="Promo" id="promo" type="combo" valeur="">
 			<option titre="Sur le campus" id=""/>
 			<option titre="Toutes" id="toutes" />
-			<option titre="2003" id="2003" />
-			<option titre="2002" id="2002" />
-			<option titre="2001" id="2001" />
-			<option titre="2000" id="2000" />
-			<option titre="1999" id="1999" />
-			<option titre="1998" id="1998" />
+
+<?php
+			$DB_trombino->query("SELECT DISTINCT promo FROM eleves ORDER BY promo DESC");
+			while( list($promo) = $DB_trombino->next_row() )
+				echo "\t\t\t<option titre=\"$promo\" id=\"$promo\"/>\n";
+?>
+
 		</choix>
 		
 		<choix titre="Section" id="section" type="combo" valeur="">
