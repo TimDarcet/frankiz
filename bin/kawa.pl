@@ -1,13 +1,12 @@
-#!/usr/bin/perl -I/var/spool/news/scripts/librairies/
+#!/usr/bin/perl
 
 #Script destiné a envoyer sur les news les rappels de convocation de tour kawa
 
 use DBI();
 use Net::NNTP;
+use Net::Cmd;
 use Time::localtime;
-#use HTTP::Request;
-#use HTTP::Date;
-#use LWP::UserAgent;
+
 my $dbh = DBI->connect("DBI:mysql:database=frankiz2_tmp:host=localhost","web","kokouije?.",{'RaiseError'=>1});
 
 sub post {
@@ -17,7 +16,8 @@ sub post {
 	open (POST, "post.file");
 	@post = <POST>;
 	close POST;
-	$nntp->post() or die "Could not post article: $!";
+	$nntp->postok() or die "Could not post article: $!";
+	$nntp->post();
 	if ($type==1) {
 		$nntp->datasend("From: ".$name." <news\@frankiz.eleves.polytechnique.fr>\n");
 		$nntp->datasend("Newsgroups: ". $ng ."\n");
@@ -42,9 +42,9 @@ sub post {
 		$nntp->datasend("\n\n");
 		$nntp->datasend($text . "\n" . "Et merde bordel!\n");
                	}													
-#	for (@post)     {
-#	    $nntp->datasend($_);
-#	}
+	for (@post)     {
+	    $nntp->datasend($_);
+	}
 	close POST;
 	$nntp->quit;
 }
@@ -103,7 +103,6 @@ sub selection {
 	}
 }
 
-#post(junk,1);
 selection();
 
 
