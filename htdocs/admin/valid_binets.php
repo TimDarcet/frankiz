@@ -21,9 +21,12 @@
 	Page de validation d'une modification d'un binet
 	
 	$Log$
+	Revision 1.12  2005/01/11 14:36:42  pico
+	Binets triés ext/int + url auto si binet sur le serveur
+
 	Revision 1.11  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 	Revision 1.10  2004/12/13 20:03:25  pico
 	Les liens ne forment pas de blocs, il faut donc le spécifier
 	
@@ -83,10 +86,13 @@ if (isset($_POST['valid'])) {
 	if ($DB_valid->num_rows()!=0) {
 		list($nom,$description,$http,$categorie,$image,$format,$folder) = $DB_valid->next_row() ;
 		
-		if (isset($_REQUEST['exterieur']))
+		if (isset($_REQUEST['exterieur'])){
 			$temp_ext = '1'  ;
-		else 
+			if(!file_exists(BASE_BINETS_EXT."$folder")) symlink (BASE_BINETS."$folder",BASE_BINETS_EXT."$folder");
+		}else{
 			$temp_ext = '0' ;
+			if(file_exists(BASE_BINETS_EXT."$folder")) unlink(BASE_BINETS_EXT."$folder");
+		}
 	
 		$DB_trombino->query("UPDATE binets SET image=\"".addslashes($image)."\" ,format='$format' ,description='$description' , http='$http', catego_id=$categorie, exterieur=$temp_ext, folder='$folder' WHERE binet_id={$_POST['id']}");
 		

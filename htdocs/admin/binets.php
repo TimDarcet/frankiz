@@ -21,9 +21,12 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.27  2005/01/11 14:36:42  pico
+	Binets triés ext/int + url auto si binet sur le serveur
+
 	Revision 1.26  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 	Revision 1.25  2004/12/16 12:52:57  pico
 	Passage des paramètres lors d'un login
 	
@@ -181,11 +184,13 @@ if (isset($_POST['modif'])) {
 
 
 
-	if ((isset($_POST['ext']))&&($_POST['ext']=='on')) 
+	if ((isset($_POST['ext']))&&($_POST['ext']=='on')) {
 		$ext = 1;
-	else
+		if(!file_exists(BASE_BINETS_EXT."$folder")) symlink (BASE_BINETS."$folder",BASE_BINETS_EXT."$folder");
+	}else{
 		$ext = 0;
-		
+		if(file_exists(BASE_BINETS_EXT."$folder")) unlink(BASE_BINETS_EXT."$folder");
+	}
 	// si on demande la modification de l'image
 	//--------------------------------------------------------
 	if (($_FILES['file']['tmp_name']!='none')&&($_FILES['file']['tmp_name']!='')) {

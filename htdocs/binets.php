@@ -21,9 +21,12 @@
 	Affichage de la liste des binets ayant un site web.
 
 	$Log$
+	Revision 1.5  2005/01/11 14:36:41  pico
+	Binets triés ext/int + url auto si binet sur le serveur
+
 	Revision 1.4  2005/01/02 10:50:25  pico
 	Passage de certaines pages en visibles de l'intérieur (non loggué)
-
+	
 	Revision 1.3  2004/12/16 12:52:57  pico
 	Passage des paramètres lors d'un login
 	
@@ -79,20 +82,23 @@ require BASE_LOCAL."/include/page_header.inc.php";
 <page id="binets" titre="Frankiz : Binets">
 <?php
 	$auth = "" ;
-	if(!$_SESSION['user']->est_authentifie(AUTH_INTERNE)) $auth = " AND exterieur=1 " ;
+	if(!$_SESSION['user']->est_authentifie(AUTH_INTERNE)) $auth = " exterieur=1 AND " ;
 
 	$categorie_precedente = -1;
-	$DB_trombino->query("SELECT binet_id,nom,description,http,b.catego_id,categorie ".
+	$DB_trombino->query("SELECT binet_id,nom,description,http,folder,b.catego_id,categorie ".
  						"FROM binets as b LEFT JOIN binets_categorie as c USING(catego_id) ".
-						"WHERE http IS NOT NULL AND http != '' $auth".
+						"WHERE $auth NOT(http IS NULL AND folder='')".
 						"ORDER BY b.catego_id ASC, b.nom ASC");
-	while(list($id,$nom,$description,$http,$cat_id,$categorie) = $DB_trombino->next_row()) {
-
+	while(list($id,$nom,$description,$http,$folder,$cat_id,$categorie) = $DB_trombino->next_row()) {
+			if($folder!=""){ 
+				if($_SESSION['user']->est_authentifie(AUTH_INTERNE)) $http=URL_BINETS.$folder;
+				else $http="/$folder";
+			}
 ?>
 		<binet id="<?=$id?>" categorie="<?=$categorie?>" nom="<?=$nom?>">
 			<image source="binets.php?image=1&amp;id=<?=$id?>"/>
 			<description><?=stripslashes($description)?></description>
-			<url><?=$http?></url>
+			<? if($http!="") echo "<url>$http</url>"; ?>
 		</binet>
 <?php
 	}

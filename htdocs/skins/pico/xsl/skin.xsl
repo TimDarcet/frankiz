@@ -150,7 +150,15 @@
 	<xsl:if test="preceding-sibling::binet[1]/@categorie != @categorie or position() = 2">
 		<h2><xsl:value-of select="@categorie"/></h2>
 	</xsl:if>
-	<h3><a><xsl:attribute name="href"><xsl:value-of select="url"/></xsl:attribute><xsl:value-of select="@nom"/></a></h3>
+	<h3>
+		<xsl:choose>
+			<xsl:when test="count(url)"><a><xsl:attribute name="href"><xsl:value-of select="url"/></xsl:attribute>
+			<xsl:value-of select="@nom"/>
+			</a>
+			</xsl:when>
+			<xsl:otherwise><xsl:value-of select="@nom"/></xsl:otherwise>
+		</xsl:choose>
+	</h3>
 		<xsl:apply-templates select="image"/>
 		<p><xsl:value-of select="description"/></p>
 </xsl:template>
