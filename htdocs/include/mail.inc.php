@@ -22,9 +22,12 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.17  2004/12/17 18:48:43  pico
+	Fatigué moi..
+
 	Revision 1.16  2004/12/17 18:47:19  pico
 	Oubli
-
+	
 	Revision 1.15  2004/12/17 18:37:03  pico
 	Mail admin@windows + page de demande de licence windows
 	
@@ -129,7 +132,7 @@ function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID,$sender_string="") {
                 $prenom = "Trombino" ;
                 $nom = "" ;
                 $adresse = MAIL_TROMBINOMEN ;		
-	} else if ($sender_id==WINDOWS_ID) {
+	} else if ($eleve_id==WINDOWS_ID) {
 		$prenom = "Admins Windows";
 		$nom= "";
 		$adresse = MAIL_WINDOWS ;
