@@ -141,11 +141,10 @@ div.fkz_logo:before {
 }
 
 .fkz_qdj_jone, .fkz_qdj_rouje,.fkz_qdj_jone_reponse,.fkz_qdj_rouje_reponse{
-	background-repeat:no-repeat;
-	background-position: center center;
-	height:60px;
 	text-align: center;
-	width: 49%;
+	width: 45%;
+    height: 60px;
+    vertical-align: center;
 }
 
 .fkz_qdj_jone {
@@ -185,12 +184,20 @@ div.fkz_logo:before {
 
 /* Fin QDJ */
 
+#mod_activites div.fkz_module_corps {
+    text-align: center;
+}
 
 .fkz_liens,.fkz_contact,.fkz_stats,.fkz_liens_nav {
 	list-style-type:none;
 	color:#333;
     position: relative;
-    left: -10px;
+   left: -10px;
+    margin: 0;
+}
+
+ul.fkz_liens_nav {
+    margin: 0;
 }
 
 div.fkz_anniversaire_titre,div.fkz_page_titre,div.fkz_annonces_titre {
@@ -235,7 +242,7 @@ div.fkz_page_titre {
 }
 
 
-.fkz_module_corps,div.fkz_liens_nav {
+div.fkz_module_corps {
 	color:#000;
 	border:1px solid #e0e0e0;
 	margin-bottom: 10px;
