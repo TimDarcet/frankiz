@@ -21,9 +21,12 @@
 	Cette page permet de déterminer si le Bôb est ouvert ou non.
 	
 	$Log$
+	Revision 1.4  2005/01/04 13:30:13  pico
+	Ajout possibilité de virer des tours kawa
+
 	Revision 1.3  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 	Revision 1.2  2004/12/16 13:00:41  pico
 	INNER en LEFT
 	
@@ -67,8 +70,14 @@ if(isset($_POST['envoie'])){
 	$DB_web->query("UPDATE parametres SET valeur='".$_REQUEST['etat']."' WHERE nom='bob'");
 }
 
-if(isset($_POST['ajout_kawa'])){
+if(isset($_POST['ajout_kawa']) &&(strtotime($_REQUEST['date']) >(time()-3025 ))&&($_REQUEST['date']!="0000-00-00")){
 	$DB_web->query("INSERT INTO kawa SET date='".$_POST['date']."', section_id='".$_POST['section']."' ");
+	echo"<commentaire>Tour kawa ajouté</commentaire>";
+}
+
+if(isset($_GET['del'])){
+	$DB_web->query("DELETE FROM kawa WHERE date='".$_GET['del']."'");
+	echo"<commentaire>Tour kawa supprimé</commentaire>";
 }
 
 $DB_web->query("SELECT valeur FROM parametres WHERE nom='bob'");
@@ -92,7 +101,7 @@ list($valeur) = $DB_web->next_row();
 				echo "\t\t\t<option titre=\"$section_nom\" id=\"$section_id\"/>\n";
 ?>
 		</choix>
-		<champ id="date" titre="Date" valeur="0000-00-00"/>
+		<champ id="date" titre="Date (année-mois-jour)" valeur="0000-00-00"/>
 		<bouton titre="Valider" id="ajout_kawa" onClick="return window.confirm('Voulez vous vraiment ajouter ce tour ?')"/>
 	</formulaire>
 	
@@ -101,14 +110,15 @@ list($valeur) = $DB_web->next_row();
 	$DB_web->query("SELECT kawa.date,sections.nom FROM kawa LEFT JOIN trombino.sections ON kawa.section_id=sections.section_id WHERE (kawa.date>=\"".date("Y-m-d",time())."\")");
 	$i = 0;
 	 echo "<liste id=\"tour_kawa\" titre=\"Liste des tours kawa prévus\" selectionnable=\"non\">\n";
+	 echo "<entete id=\"jour\" titre=\"Date\"/>";
+	 echo "<entete id=\"kawa\" titre=\"Section\"/>";
 	while(list($date,$groupe)=$DB_web->next_row()){
 		if(strcasecmp("personne", $groupe) != 0 && $groupe != "") {
 			// si c'est le premier tour kawa, on ouvre la liste
-		
-			
 			echo "<element id=\"$i\">";
 			echo "<colonne id=\"jour\">$date</colonne>";
 			echo "<colonne id=\"kawa\">$groupe</colonne>";
+			echo "<colonne id=\"supprimer\"><lien url='gestion/etat_bob?del=$date' titre='Supprimer'/></colonne>";
 			echo "</element>\n";
 			$i++;
 		}
