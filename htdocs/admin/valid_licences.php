@@ -21,9 +21,12 @@
 	Page qui permet l'administartion des licences windows.
 	
 	$Log$
+	Revision 1.6  2005/01/18 21:38:41  dei
+	ajout de fonctionnalité de recherche et correction test des clés
+
 	Revision 1.5  2005/01/18 12:52:31  pico
 	Page d'admin windows (debug)
-
+	
 	Revision 1.4  2005/01/18 12:25:09  dei
 	ajout test du formatage de la clé
 	ajout interface de recherche dans la base des clés
@@ -59,18 +62,12 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <?
 //on teste si la cle entrée à la main a une forme standard...
 function test_cle($key){
-	$key=explode("-",$key);
-	if(sizeof($key==5)){
-		for($i=0;$i<5;$i++){
-			if(!ereg("(^[A-Z0-9]{5})",$str)){
-				return false;
-			}
-		}
+	if(ereg("([0-9][A-Z]){5}-([0-9][A-Z]){5}-([0-9][A-Z]){5}-([0-9][A-Z]){5}-([0-9][A-Z]){5}",$str)){
 		return true;
-	} else {
-		return false;
 	}
+	return false;
 }
+
 $DB_msdnaa->query("LOCK TABLES valid_licence WRITE ,cles_winxp WRITE,cles_2k3serv WRITE");
 $DB_msdnaa->query("SET AUTOCOMMIT=0");
 
@@ -99,7 +96,7 @@ $temp = explode("_",$keys) ;
 		if(test_cle($_POST[$temp2])) {
 			$temp2 = "ajout_licence_".$temp[1] ;
 			//on cherche ds les clés attribuées au logiciel...
-			$DB_msdnaa->query("SELECT 0 FROM cles_$temp[2] WHERE eleve_id='{$temp[1]}'");
+			$DB_msdnaa->query("SELECT 0 FROM cles_$temp[2] WHERE cle='$_POST[$temp2]'");
 			// S'il n'y a aucune entrée avec cette licence dans la base
 			if($DB_msdnaa->num_rows()==0){
 				$DB_msdnaa->query("DELETE FROM valid_licence WHERE eleve_id='{$temp[1]}'");
@@ -160,33 +157,36 @@ $DB_msdnaa->query("UNLOCK TABLES");
 	</liste>
 <?php
 if(isset($_POST['chercher'])){
-	$req="SELECT e.nom,e.prenom,e.login,e.eleve_id,v.cle FROM trombino.eleves as e LEFT JOIN cles_".$_POST['logiciel']." as v USING(eleve_id) WHERE ";
-	if(isset($_POST['login'])){
-		$req=$req."e.login='{$_POST['login']}'";
-		if(isset($_POST['licence'])&&$_POST['licence']!=''){
-			$req=$req." AND v.cle='{$_POST['licence']}'";
-		}
-	}else{
-		if(isset($_POST['licence'])){
-			$req=$req."v.cle='{$_POST['licence']}'";
-		}
+	$req="SELECT e.nom,e.prenom,e.login,e.eleve_id,e.promo,v.cle,v.attrib FROM trombino.eleves as e LEFT JOIN cles_".$_POST['logiciel']." as v USING(eleve_id) WHERE 1=1";
+	if($_POST['login']!=""){
+		$req=$req." AND e.login LIKE '%{$_POST['login']}%'";
+	}
+	if($_POST['licence']!=''){
+		$req=$req." AND v.cle='%{$_POST['licence']}%'";
+	}
+	if(isset($_POST['promo'])){
+			$req=$req." AND e.promo='{$_POST['promo']}'";
 	}
 	$DB_msdnaa->query($req);
 ?>
 	<h2>Résultats de la recherche</h2>
 	<liste id="liste" selectionnable="non" action="admin/valid_licences.php">
 		<entete id="logiciel" titre="Logiciel"/>
+		<entete id="promo" titre="Promo"/>
 		<entete id="eleve" titre="Élève"/>
 		<entete id="login" titre="Login"/>
 		<entete id="licence" titre="licence"/>
+		<entete id="attrib" titre="Attribuée"/>
 <?
-	while(list($nom,$prenom,$login,$eleve_id,$cle) = $DB_msdnaa->next_row()){
+	while(list($nom,$prenom,$login,$eleve_id,$promo,$cle,$attrib) = $DB_msdnaa->next_row()){
 ?>
 		<element id="<? echo $eleve_id ;?>">
 				<colonne id="logiciel"><? echo  $_POST['logiciel']; ?></colonne>
+				<colonne id="promo"><? echo $_POST['promo'] ?></colonne>
 				<colonne id="eleve"><? echo "$nom $prenom" ?></colonne>
 				<colonne id="login"><? echo "$login" ?></colonne>
 				<colonne id="licence"><? echo "$cle" ?></colonne>
+				<colonne id="attrib"><? if($attrib!="0" && $attrib!=""){echo "oui";}else{echo "non";} ?></colonne>
 		</element>
 <?
 	}
@@ -197,6 +197,13 @@ if(isset($_POST['chercher'])){
 	<formulaire id="chercher" action="admin/valid_licences.php">
 	<champ titre="Login poly" id="login" valeur="" />
 	<champ titre="Licence" id="licence" valeur="" />
+		<choix titre="Promo" id="promo" type="combo" valeur="">
+<?php
+			$DB_trombino->query("SELECT DISTINCT promo FROM eleves ORDER BY promo DESC");
+			while( list($promo) = $DB_trombino->next_row() )
+				echo "\t\t\t<option titre=\"$promo\" id=\"$promo\"/>\n";
+?>
+		</choix>
 	<choix titre="Logiciel" id="logiciel" type="combo" valeur="">
 		<option titre="Windows XP Pro" id="winxp"/>
 		<option titre="Windows 2003 Serveur" id="2k3serv"/>
