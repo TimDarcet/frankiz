@@ -1,48 +1,25 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Id$ -->
 <!--
-	Balises de formatage.
+	Copyright (C) 2004 Binet Réseau
+	http://www.polytechnique.fr/eleves/binets/br/
 	
-	$Log$
-	Revision 1.3  2004/10/21 10:58:39  pico
-	Correction skin pour un truc plus modelable par les css (les images sont supprimées et générées par les css)
-
-	Revision 1.2  2004/10/21 08:33:07  pico
-	Chgts divers pour matcher avec la balise <html>
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2
+	of the License, or (at your option) any later version.
 	
-	Revision 1.1  2004/10/20 22:18:03  pico
-	Mise à jour skin
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 	
-	Revision 1.11  2004/10/20 19:58:02  pico
-	Changement skin pico -> valide html strict
-	Changement des balises qui étaient pas valides
-	
-	Revision 1.10  2004/10/20 18:47:07  kikx
-	Pour rajouter des lignes non selectionnables dans une liste
-	
-	Revision 1.9  2004/10/18 19:14:27  pico
-	Changement balises pour me conformer à la dtd
-	
-	Revision 1.8  2004/10/17 17:09:43  pico
-	Gestion des listes
-	Classes FAQ pour affichage graphique
-	
-	Revision 1.7  2004/09/20 22:19:28  kikx
-	test
-	
-	Revision 1.6  2004/09/20 20:31:20  schmurtz
-	Rajout de la balise html <em>
-	
-	Revision 1.5  2004/09/16 11:09:38  kikx
-	C'est les vacances maintenant ...
-	Bon bref .. c'est dur aussi
-	Bon j'ai un peu arrangé la page des binets
-	
-	Revision 1.4  2004/09/15 23:19:56  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!-- Images -->
 <xsl:template match="image">
