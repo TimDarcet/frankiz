@@ -5,8 +5,8 @@
 	ou refuse la demande ici.
 	
 	$Log$
-	Revision 1.11  2004/09/17 11:34:10  kikx
-	Bla
+	Revision 1.12  2004/09/17 11:55:03  kikx
+	Bug Fix dans la page de la validation d'ip ...
 
 	Revision 1.10  2004/09/15 23:20:18  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
@@ -86,8 +86,8 @@ foreach ($_POST AS $keys => $val){
 	// On vire une ip qu'on avait validé
 	//===========================
 	if ($temp[0] == "suppr") {
-		$temp2 = str_replace("x",".",$temp[2]) ; // euh c'est pas bo je suis d'accord mais bon c'est pour que ca marche sans trop de trick
-		$DB_admin->query("DELETE FROM prises WHERE type='secondaire' AND ip='$temp2'");
+		$temp2 = str_replace("x",".",$temp[1]) ; // euh c'est pas bo je suis d'accord mais bon c'est pour que ca marche sans trop de trick
+		$DB_admin->query("DELETE FROM prises WHERE type='secondaire' AND ip='$temp2' AND prise_id=''");
 		
 		$contenu = "Bonjour, \n\n".
 					"Nous t'avons supprimé l'ip suivante :\n".
@@ -151,7 +151,7 @@ Vous allez valider un ajout d'une ip : Pour le moment le système n'est pas fiabl
 			<element id="<? echo str_replace(".","x",$ip) ;?>">
 				<colonne id="eleve"><? echo "$nom $prenom" ?></colonne>
 				<colonne id="prise"><? echo $prise ?></colonne>
-				<colonne id="ip"><? echo $ip ;?><bouton titre="Dégage!" id="<? echo str_replace(".","x",$ip) ;?>"/></colonne>
+				<colonne id="ip"><? echo $ip ;?><bouton titre="Dégage!" id="suppr_<? echo str_replace(".","x",$ip) ;?>"/></colonne>
 			</element>
 <?
 		}
