@@ -33,38 +33,54 @@ list($eleve_id,$nom,$prenom,$promo,$mail) = $DB_trombino->next_row();
 require_once BASE_LOCAL."/include/page_header.inc.php";
 require_once BASE_LOCAL."/include/rss_func.inc.php";
 
-
 ?>
 <page id="licences" titre="Frankiz : Les Licences">
-<?	if(isset($_POST['accord'])){
+<?	//on vérifie que la demande est faite pour windows xp pro
+	if(isset($_POST['accord']) && isset($_POST['xp_pro'])){
 		//on lance la requête qui va bien pour voir la clé
-		$DB_msdnaa->query("SELECT cle,attrib FROM cles_winxp WHERE eleve_id='".$_SESSION['user']->uid."' LIMIT 1");
-		//on a la clé attribuée de manière unique par le BR.
-		if($DB_msdnaa->num_rows()!=0){
-			list($cle,$attrib) = $DB_msdnaa->next_row());
+		$DB_msdnaa->query("SELECT cle,attrib FROM cles_winxp WHERE eleve_id='".$_SESSION['user']->uid."' LIMIT 0,1");
+		//on verifie que le demandeur existe dans la base
+		if($DB_msdnaa->num_rows()>0){
+			//on a la clé attribuée de manière unique par le BR.
+			list($cle,$attrib) = $DB_msdnaa->next_row();
 			//si la personne a déjà demandé sa clé...
 			if($attrib != 0){
 				?>
-				<p>Tu as déjà demandé ta clé, elle va t'être ré-expédiée à <?echo "$mail" ?></p>
+				<p>Tu as déjà demandé ta clé, elle va t'être ré-expédiée à <? "".$mail ?></p>
 				<?php
-				$contenu="La clé qui vous a déjà été attribué est : $cle";
+				$contenu="La clé qui vous a déjà été attribué est : $cle \n".
+					"Très BR-ement<br>" .
+					"L'automate :)<br>";
+				//a completer couriel(WEBMESTRE_ID,"[Frankiz] Validation d'une annonce",$contenu,$eleve_id);
 				couriel($eleve_id,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,WINDOWS_ID);
-				$contenu="La clé demandée par $nom $prenom X $promo est : $cle";
+				$contenu="La clé demandée par $nom $prenom X $promo est : $cle \n".
+					"Très BR-ement<br>" .
+					"L'automate :)<br>";
 				couriel(WINDOWS_ID,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,$eleve_id);
 			} else {
 				?>
-				<p>Ta nouvelle clé, va t'être expédiée à <?echo "$mail" ?></p>
+				<p>Ta nouvelle clé, va t'être expédiée à <? "".$mail ?></p>
 				<?php
 				// sinon on l'ajoute... et on update la base...
 				$DB_msdnaa->query("UPDATE cles_winxp SET attrib='1' WHERE eleve_id='".$_SESSION['user']->uid."'");
-				$contenu="La clé qui vous a été attribué est : $cle";
-				//a completer
+				$contenu="La clé qui vous a été attribué est : $cle \n".
+					"Très BR-ement<br>" .
+					"L'automate :)<br>";
 				couriel($eleve_id,"[Frankiz] Demande de licence Microsoft $nom $prenom X $promo ",$contenu,WINDOWS_ID);
-				$contenu="La clé attribuée à $nom $prenom X $promo est : $cle";
+				$contenu="La clé attribuée à $nom $prenom X $promo est : $cle \n".
+					"Très BR-ement<br>" .
+					"L'automate :)<br>";
 				couriel(WINDOWS_ID,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,$eleve_id);
 			}
-		}else{
-			// Rajouter le gars dans la liste
+		} else {
+			//on prévient les admins@windows qu'il ya une clée à rajouter à la main...
+			?>
+			<warning>Tu ne figures pas dans la liste des personnes ayant droit à une licence dans le cadre du programme MSDNAA</warning>
+			<p>Seuls les étudiants sur le platâl peuvent faire une demande pour une license Microsoft dans le cadre MSDNAA, s'il s'agit d'une erreur tu peux le signaler au admin@windows.</p>
+			<p>Si c'est le cas clique içi :</p>
+			<bouton id='envoyer' titre='Envoyer'/>
+			<bouton id='' titre='Ne rien faire'/>
+			<?php
 		}
 	}
 
@@ -91,19 +107,21 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 		<bouton id='accord' titre="J'accepte" /> 
 		<bouton id='refus' titre="Je refuse" onClick="return window.confirm('Tu refuses ta clé gratuite ?')"/>
 		</formulaire>
-	<?
+	<?php
 	} else {
+		if(isset($_POST['envoyer'])){
+		?>
+			<warning>Ta requête a bien été prise en compte.</warning>
+		<?
+		}
 	?>
 		<formulaire id="dem_licence" titre= "Les licences pour les logiciels Microsoft" action="profil/licences.php">
 			<note>Dans le cadre de l'accord MSDNAA, chaque étudiant de polytechnique à le droit à une version de Windows XP Pro gratuite, légale et attibuée à vie</note>
 			<p>Les licences disponibles</p>
 			<choix titre="Logiciels" id="logiciel" type="combo" valeur="">
 				<option titre="Windows XP Pro" id="xp_pro"/>
-				<? //<option titre="Windows 2003 Serveur" id="server_2003" />
-				//<option titre="Access 2003" id="access_2003" /> ?>
-			</choix>
+			</choix>	
 			<bouton id='valid' titre='Envoyer'/>
-		
 		</formulaire>
 	<?
 	}
