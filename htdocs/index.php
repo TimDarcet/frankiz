@@ -21,9 +21,12 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.42  2005/02/15 10:36:13  pico
+	Plus qu'une seule requete sql
+
 	Revision 1.41  2005/02/15 09:25:03  pico
 	ça devrait être plus propre comme ça
-
+	
 	Revision 1.40  2005/02/15 09:03:35  pico
 	Version qui va ptèt mieux marcher
 	
@@ -163,22 +166,24 @@ if (!est_authentifie(AUTH_MINIMUM))  {
 	
 	$annonces_lues1=" LEFT JOIN annonces_lues ON annonces_lues.annonce_id=annonces.annonce_id AND annonces_lues.eleve_id='{$_SESSION['user']->uid}'" ;
 	$annonces_lues2=" ISNULL(annonces_lues.annonce_id) ";
-
-	$DB_web->query("SELECT annonces.annonce_id "
-						."FROM annonces $annonces_lues1"
-						."WHERE (perime>'".date("Y-m-d H:i:s",time())."') AND $annonces_lues2 ORDER BY perime DESC");
-	$idprec=0;
-	while(list($id)=$DB_web->next_row()) {
-		if($idprec!=0)
-			$array_id[$idprec]=$id;
-		$idprec=$id;
-	}
 }
+
 // Affichage des annonces
 $DB_web->query("SELECT annonces.annonce_id,stamp,perime,titre,contenu,en_haut,exterieur,nom,prenom,surnom,promo,"
 					 ."IFNULL(mail,CONCAT(login,'@poly.polytechnique.fr')) as mail, $annonces_lues2 "
 					 ."FROM annonces LEFT JOIN trombino.eleves USING(eleve_id) $annonces_lues1"
 					 ."WHERE (perime>'".date("Y-m-d H:i:s",time())."') ORDER BY perime DESC");
+if (est_authentifie(AUTH_MINIMUM))  {
+	$idprec=0;
+	while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail,$visible)=$DB_web->next_row()) {
+		if($visible){
+			if($idprec!=0)
+				$array_id[$idprec]=$id;
+			$idprec=$id;
+		}
+	}
+	mysql_data_seek($DB_web->result, 0);
+}
 while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail,$visible)=$DB_web->next_row()) {
 	if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
 ?>
