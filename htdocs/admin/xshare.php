@@ -21,20 +21,27 @@ foreach ($_POST AS $keys => $val){
 	// Supprimer le répertoire
 	
 	if ($temp[0]=='rmdir') {
-		//echo "<p>temp: ".$temp[1]."</p>";
 		$DB_web->query("SELECT lien FROM xshare WHERE id='{$temp[1]}' ");
 		list($dir) = $DB_web->next_row();
 		$dir = BASE_DATA."xshare/".$dir;
-		//echo "<p>dir: ".$dir."</p>";
 		foreach(glob($dir."/*") as $fn) {
 			unlink($fn);
-		//echo "<p>File: $fn</p>";
 		} 
 		rmdir($dir);
 		$DB_web->query("DELETE FROM xshare WHERE id='{$temp[1]}'");
 		$DB_web->query("DELETE FROM xshare WHERE id_parent='{$temp[1]}'");
 		echo "<warning>Repertoire Supprimé</warning>";
 	}
+	if (($temp[0]=='adddir') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='')) {
+		$nom = $_REQUEST['nom'];
+		$DB_web->query("SELECT lien FROM xshare WHERE id='{$temp[1]}' ");
+		list($dir) = $DB_web->next_row();
+		$dir=$dir."/".strtolower(str_replace(" ","",$nom));
+		$DB_web-> query("INSERT INTO xshare SET id_parent='{$temp[1]}',nom='{$nom}',lien='{$dir}'");
+		mkdir(BASE_DATA."xshare/".$dir);
+		echo "<commentaire>Repertoire crée</commentaire>";
+	}
+	
 }
 
 
@@ -45,7 +52,6 @@ foreach ($_POST AS $keys => $val){
 if(isset($_REQUEST['affich_elt'])) $affich_elt = base64_decode($_REQUEST['affich_elt']) ; else $affich_elt = '';
 if(isset($_REQUEST['a_marquer'])) $a_marquer = base64_decode($_REQUEST['a_marquer']) ; else $a_marquer = '';
 
-if(isset($_REQUEST['mots'])) $mots = $_REQUEST['mots'] ; else $mots = '';
 
 
 //
