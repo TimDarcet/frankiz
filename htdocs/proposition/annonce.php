@@ -21,10 +21,13 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.33  2004/12/14 07:40:33  pico
+	/me boulet
+
 	Revision 1.32  2004/12/14 07:26:33  pico
 	Correction du module random
 	La politique est de na pas rajouter des balises si elles ne sont pas utiles ailleurs, là, je pense que l'on peut s'en passer et avoir tout de même l'effet recherché.
-
+	
 	Revision 1.31  2004/12/14 00:27:40  kikx
 	Pour que le FROM des mails de validation soit au nom du mec qui demande la validation... (qu'est ce que je ferai pas pour les TOS :))
 	
@@ -190,7 +193,7 @@ if (isset($_POST['valid'])) {
 			"Très BR-ement<br>" .
 			"L'automate :)<br>"  ;
 				
-	couriel(WEBMESTRE_ID,"[Frankiz] Validation d'une annonce",$contenu,"$prenom $nom<$mail>");
+	couriel(WEBMESTRE_ID,"[Frankiz] Validation d'une annonce",$contenu,$eleve_id);
 }
 //=================
 //===============
