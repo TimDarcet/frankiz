@@ -22,9 +22,12 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.9  2004/12/17 18:36:34  pico
+	Ajout mail admin@windows
+
 	Revision 1.8  2004/12/17 15:50:41  schmurtz
 	Desactivation de l'affichage des erreurs
-
+	
 	Revision 1.7  2004/12/17 12:45:50  pico
 	Mal prez
 	
@@ -104,6 +107,8 @@ define('MAIL_FAQMESTRE',"br@frankiz");
 define('FAQMESTRE_ID',$i--);
 define('MAIL_TROMBINOMEN',"ecco@frankiz");
 define('TROMBINOMEN_ID',$i--);
+define('MAIL_WINDOWS',"windows@frankiz");
+define('WINDOWS_ID',$i--);
 
 define('STRINGMAIL_ID',$i--);
 
@@ -117,5 +122,6 @@ $DB_web = new DB("frankiz","frankiz2","web","kokouije?.");
 $DB_admin = new DB("frankiz","admin","web","kokouije?.");
 $DB_trombino = new DB("frankiz","trombino","web","kokouije?.");
 $DB_valid = new DB("frankiz","a_valider","web","kokouije?.");
+$DB_msdnaa = new DB("frankiz","msdnaa","web","kokouije?.");
 
 ?>
