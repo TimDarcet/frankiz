@@ -21,10 +21,13 @@
 	Page qui permet l'administartion des licences windows.
 	
 	$Log$
+	Revision 1.5  2005/01/18 12:52:31  pico
+	Page d'admin windows (debug)
+
 	Revision 1.4  2005/01/18 12:25:09  dei
 	ajout test du formatage de la clé
 	ajout interface de recherche dans la base des clés
-
+	
 	Revision 1.3  2005/01/17 23:46:28  pico
 	Bug fix
 	
@@ -57,7 +60,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 //on teste si la cle entrée à la main a une forme standard...
 function test_cle($key){
 	$key=explode("-",$key);
-	if(sizeof($key==5){
+	if(sizeof($key==5)){
 		for($i=0;$i<5;$i++){
 			if(!ereg("(^[A-Z0-9]{5})",$str)){
 				return false;
@@ -92,33 +95,35 @@ $temp = explode("_",$keys) ;
 	}
 	// On accepte la demande de licence supplémentaire
 	//===========================
-	if ($temp[0] == "ok" && test_cle($_POST[$temp2])) {
-		$temp2 = "ajout_licence_".$temp[1] ;
-		//on cherche ds les clés attribuées au logiciel...
-		$DB_msdnaa->query("SELECT 0 FROM cles_$temp[2] WHERE eleve_id='{$temp[1]}'");
-		// S'il n'y a aucune entrée avec cette licence dans la base
-		if($DB_msdnaa->num_rows()==0){
-			$DB_msdnaa->query("DELETE FROM valid_licence WHERE eleve_id='{$temp[1]}'");
-			//on l'ajoute à la base concernée...
-			$DB_msdnaa->query("INSERT cles_$temp[2] SET eleve_id='{$temp[1]}', attrib='1', cle='$_POST[$temp2]'");
+	if ($temp[0] == "ok"){
+		if(test_cle($_POST[$temp2])) {
+			$temp2 = "ajout_licence_".$temp[1] ;
+			//on cherche ds les clés attribuées au logiciel...
+			$DB_msdnaa->query("SELECT 0 FROM cles_$temp[2] WHERE eleve_id='{$temp[1]}'");
+			// S'il n'y a aucune entrée avec cette licence dans la base
+			if($DB_msdnaa->num_rows()==0){
+				$DB_msdnaa->query("DELETE FROM valid_licence WHERE eleve_id='{$temp[1]}'");
+				//on l'ajoute à la base concernée...
+				$DB_msdnaa->query("INSERT cles_$temp[2] SET eleve_id='{$temp[1]}', attrib='1', cle='$_POST[$temp2]'");
+				
+				$contenu = "Bonjour, <br><br>".
+							"Nous t'avons attribué la licence suivante :<br>".
+							$_POST[$temp2]."<br>".
+							"<br>" .
+							"Très Cordialement<br>" .
+							"Le BR<br>";
 			
-			$contenu = "Bonjour, <br><br>".
-						"Nous t'avons attribué la licence suivante :<br>".
-						$_POST[$temp2]."<br>".
-						"<br>" .
-						"Très Cordialement<br>" .
-						"Le BR<br>";
-		
-			couriel($temp[1],"[Frankiz] Ta demande a été acceptée",$contenu,WINDOWS_ID);
-			echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande a été acceptée (nouvelle licence : ".$_POST[$temp2].")</commentaire>" ;
+				couriel($temp[1],"[Frankiz] Ta demande a été acceptée",$contenu,WINDOWS_ID);
+				echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande a été acceptée (nouvelle licence : ".$_POST[$temp2].")</commentaire>" ;
+			}
+			// S'il y  a deja une entrée comme celle demandé dans la base !
+			else {
+				echo "<warning>IMPOSSIBLE D'ATTRIBUER CETTE LICENCE. L'utilisateur en possède déjà une.</warning>" ;
+			}
 		}
-		// S'il y  a deja une entrée comme celle demandé dans la base !
-		else {
-			echo "<warning>IMPOSSIBLE D'ATTRIBUER CETTE LICENCE. L'utilisateur en possède déjà une.</warning>" ;
+		else{
+			echo "<warning>La Clé entrée n'a pas un formatage standard !</warning>" ;
 		}
-	}
-	if(test_cle($_POST[$temp2])){
-		echo "<warning>La Clé entrée n'a pas un formatage standard !</warning>" ;
 	}
 }
 $DB_msdnaa->query("UNLOCK TABLES");
@@ -154,28 +159,38 @@ $DB_msdnaa->query("UNLOCK TABLES");
 ?>
 	</liste>
 <?php
-if(isset($_POST['chercher']){
-	$req="SELECT e.nom,e.prenom,e.login,e.eleve_id,v.logiciel,v.cle FROM trombino.eleves as e LEFT JOIN valid_".$_POST['logiciel']." as v USING(eleves_id) WHERE";
-	if(isset(($_POST['login'])){
-		$req=$req."login=".$_POST['login'];
-		if(isset($_POST['licence'])){
-			$req=$req." AND cle=".$_POST['licence'];
+if(isset($_POST['chercher'])){
+	$req="SELECT e.nom,e.prenom,e.login,e.eleve_id,v.cle FROM trombino.eleves as e LEFT JOIN cles_".$_POST['logiciel']." as v USING(eleve_id) WHERE ";
+	if(isset($_POST['login'])){
+		$req=$req."e.login='{$_POST['login']}'";
+		if(isset($_POST['licence'])&&$_POST['licence']!=''){
+			$req=$req." AND v.cle='{$_POST['licence']}'";
 		}
 	}else{
 		if(isset($_POST['licence'])){
-			$req=$req."cle=".$_POST['licence'];
+			$req=$req."v.cle='{$_POST['licence']}'";
+		}
 	}
 	$DB_msdnaa->query($req);
-	while(list($nom,$prenom,$login,$eleve_id,$logiciel,$cle) = $DB_msdnaa->next_row()){
+?>
+	<h2>Résultats de la recherche</h2>
+	<liste id="liste" selectionnable="non" action="admin/valid_licences.php">
+		<entete id="logiciel" titre="Logiciel"/>
+		<entete id="eleve" titre="Élève"/>
+		<entete id="login" titre="Login"/>
+		<entete id="licence" titre="licence"/>
+<?
+	while(list($nom,$prenom,$login,$eleve_id,$cle) = $DB_msdnaa->next_row()){
 ?>
 		<element id="<? echo $eleve_id ;?>">
-				<colonne id="logiciel"><? echo "$logiciel" ?></colonne>
+				<colonne id="logiciel"><? echo  $_POST['logiciel']; ?></colonne>
 				<colonne id="eleve"><? echo "$nom $prenom" ?></colonne>
 				<colonne id="login"><? echo "$login" ?></colonne>
 				<colonne id="licence"><? echo "$cle" ?></colonne>
 		</element>
 <?
 	}
+	echo "</liste>";
 }
 ?>
 <h2>Rechercher un utilisateur dans la base</h2>
@@ -187,6 +202,7 @@ if(isset($_POST['chercher']){
 		<option titre="Windows 2003 Serveur" id="2k3serv"/>
 	</choix>
 	<bouton id='chercher' titre='Rechercher'/>
+	</formulaire>
 </page>
 
 <?php
