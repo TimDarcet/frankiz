@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.7  2004/12/13 16:47:07  kikx
+	oups !
+
 	Revision 1.6  2004/12/13 16:45:05  kikx
 	Protection de la validation des photos trombino
-
+	
 	Revision 1.5  2004/11/27 15:39:54  pico
 	Ajout des droits trombino
 	
@@ -66,7 +69,7 @@ $message ="" ;
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
 	if ($temp[0]=='valid') {
-		if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$temp[1]}") {
+		if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$temp[1]}")) {
 			$DB_trombino->query("SELECT prenom,nom,promo,login FROM eleves WHERE eleve_id={$temp[1]}") ;
 			list($prenom,$nom,$promo,$login) = $DB_trombino->next_row() ;
 			rename(DATA_DIR_LOCAL."trombino/a_valider_{$temp[1]}",BASE_PHOTOS."$promo/$login.jpg") ;
@@ -85,7 +88,7 @@ foreach ($_POST AS $keys => $val){
 
 	}
 	if ($temp[0]=='suppr') {
-		if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$temp[1]}") {
+		if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$temp[1]}")) {
 
 			$DB_trombino->query("SELECT prenom,nom,promo,login FROM eleves WHERE eleve_id={$temp[1]}") ;
 			list($prenom,$nom,$promo,$login) = $DB_trombino->next_row() ;
