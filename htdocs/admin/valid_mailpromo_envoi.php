@@ -49,7 +49,7 @@ $mail_contenu = wikiVersXML($mail,true)  ; // On met true pour dire que c'est du
 	exec("echo \"".$mail_contenu."\" >>".$fich_log) ;
 	while(list($eleve_id,$nom,$prenom,$promo) = $DB_trombino->next_row() ) {
 		$DB_trombino->push_result() ;
-		couriel($eleve_id, $titre_mail." ".$_POST['titre'],$mail_contenu, STRINGMAIL_ID, $from) ;
+		couriel($eleve_id, $titre_mail." ".$titre,$mail_contenu, STRINGMAIL_ID, $from) ;
 		//print $from."<br>" ;
 		
 		//couriel("5059", $titre_mail." ".$titre, $mail_contenu, STRINGMAIL_ID, $from) ;
