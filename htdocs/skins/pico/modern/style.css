@@ -437,30 +437,31 @@ span.fkz_annonces_vieux {
  /* Logos W3C */
 
 span.valid_xhtml,span.valid_css {
-	width: 88px;
-	height:31px;
+	width: 80px;
+	height:15px;
 	position: relative;
 	display:block;
 }
+ 
+span.valid_xhtml {
+	background-image:url("../images/xhtml10.png");
+	left: 5px;
+}
+
+span.valid_css {
+	background-image:url("../images/css2.png");
+	left: 90px;
+	top: -15px;
+}
+ 
 
  p.valid a:hover{
 	padding: 0px;
   	border: none;
 }
 
-span.valid_xhtml {
-	background-image:url("http://www.w3.org/Icons/valid-xhtml10");
-	left: 5px;
-}
-
-span.valid_css {
-	background-image:url("http://www.w3.org/Icons/valid-css");
-	left: 98px;
-	top: -31px;
-}
- 
- /* Fin Logos W3C */
- 
+  /* Fin Logos W3C */
+  
  /* Formulaires */
 
 div.formulaire{
