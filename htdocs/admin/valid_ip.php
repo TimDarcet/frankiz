@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.34  2005/01/10 09:06:02  pico
+	Pb de lock sur les tables mysql
+
 	Revision 1.33  2005/01/10 08:38:04  pico
 	BugFix
-
+	
 	Revision 1.32  2005/01/10 08:25:40  pico
 	Plus sûr
 	
@@ -110,10 +113,10 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <?
 // On regarde quel cas c'est ...
 // On envoie chié le mec pour son changement d'ip et on le supprime de la base
-// On accepte le changement et on l'inbscrit dans la base
+// On accepte le changement et on l'inscrit dans la base
 
 $DB_valid->query("LOCK TABLE valid_ip WRITE");
-$DB_admin->query("LOCK TABLE prises WRITE");
+$DB_admin->query("LOCK TABLE prises READ");
 $DB_valid->query("SET AUTOCOMMIT=0");
 
 foreach ($_POST AS $keys => $val){
@@ -142,7 +145,7 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0] == "ok") {
 		$temp2 = "ajout_ip_".$temp[1] ;
 		$temp3 = "raison_".$temp[1] ;
-		$DB_trombino->query("SELECT e.piece_id,p.prise_id FROM eleves as e LEFT JOIN admin.prises AS p USING(piece_id) WHERE e.eleve_id='{$temp[1]}' AND p.type='principale'") ;
+		$DB_trombino->query("SELECT e.piece_id,p.prise_id FROM eleves AS e LEFT JOIN admin.prises AS p USING(piece_id) WHERE e.eleve_id='{$temp[1]}' AND p.type='principale'") ;
 		list($kzert,$id_prise) = $DB_trombino->next_row();
 		
 		$DB_admin->query("SELECT 0 FROM prises WHERE ip='{$_POST[$temp2]}'");
@@ -150,7 +153,7 @@ foreach ($_POST AS $keys => $val){
 		// S'il n'y a aucune entrée avec cette ip dans la base
 		if ($DB_admin->num_rows()==0){
 			$DB_valid->query("DELETE FROM valid_ip WHERE eleve_id='{$temp[1]}'");
-			$DB_admin->query("INSERT prises SET prise_id='$id_prise',piece_id='$kzert',ip='{$_POST[$temp2]}',type='secondaire'");
+			$DB_admin->query("INSERT prises AS p SET prise_id='$id_prise',piece_id='$kzert',ip='{$_POST[$temp2]}',type='secondaire'");
 			
 			$contenu = "Bonjour, <br><br>".
 						"Nous t'avons attribué l'adresse IP suivante :<br>".
