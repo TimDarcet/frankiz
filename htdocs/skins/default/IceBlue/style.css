@@ -1,0 +1,801 @@
+/* skin : default | CSS : IceBlue
+/* ###################### GENERAL #################### */
+
+* 
+{
+	margin: 0px;
+	padding: 0px;
+}
+
+img {
+	border:0;
+}
+
+body
+{
+	background : url('./images/background.gif')  top left;
+	font: 0.8em "Arial", helvetica, sans-serif ;
+}
+
+/* ################### POSITIONNEMENT ################# */
+
+div#conteneur {
+}
+
+div#header
+{
+	position:absolute;
+	left:-13px;
+	right:0px;
+	height: 259px;
+	background: url('./images/titrebackground.gif') repeat-x left top ;
+	overflow:hidden;
+}
+
+div#contenu {
+	position:absolute;
+	top:260px;
+	padding:0 0 0 0;
+}
+
+div#gauche {
+	float:left;
+	width:170px;
+	margin-left:15px;
+}
+
+div#centre
+{
+	margin: 0px 205px 0 190px;
+}
+
+div#droite
+{
+	float:right;
+	width:190px;
+}
+
+div#footer
+{
+	position:relative;
+	right:0px;
+	clear:both;
+	height:37px;
+	background: url('./images/footer.gif') repeat-x left top ;
+}
+
+
+/* ############################## TITRE #################### */
+
+div#header h1 a{
+	position:absolute;
+	top:185px;
+	right:10px;
+	z-index:10;
+	width:370px;
+	height:46px;
+	background: url('./images/titre.gif') no-repeat left top ;
+}
+
+div#header h1 span
+{
+	display: none ;
+}
+
+div#header h2
+{
+	width: 446px;
+	height: 259px ;
+	display: block ;
+	background: url('./images/imagetitre.gif') no-repeat left top ;
+}
+
+div#header h2 span
+{
+	display: none ;
+}
+
+
+div#header h3 
+{
+	display:none;
+}
+
+/* #################### FOOTER ################ */
+
+div#footer span#bas_gauche
+{	
+	display:none;
+}
+
+div#footer span#bas_droit
+{	
+	display:none;
+}
+
+div#footer h5 
+{
+	display:none;
+}
+
+
+/* ############# BOITE MODULE ################*/
+
+dl.boite {
+	margin:0 0 20px 0 ;
+	width:180px;
+}
+dl.boite dt.titre {
+	background: url('./images/petiteboitehaut.gif') no-repeat top left ;
+	height: 22px;
+	text-align: center;
+}
+dl.boite dt.titre span {
+	line-height: 24px ;
+	width: 168px ;
+	font-size: 1.2em ;
+	color: #5FA2D5;
+	position:relative;
+	top:5px;
+	font-weight:bold;
+}
+dl.boite dt.titre span.droitehaut {
+	display:none;
+}
+dl.boite dd.contenu {
+	padding:20px 17px 0 15px; 
+	background: #fff url('./images/petiteboite.gif') repeat-y top left;
+}
+dl.boite dd.contenu span.droitecentre{
+	display:none;
+}
+dl.boite dd.bas {
+	position:relative;
+	left:0px;
+	background: url('./images/petiteboitebas.gif') no-repeat top left ;
+	height: 27px;
+	text-align: center;
+}
+dl.boite dd.bas span.droitebas {
+	display:none;
+}
+span.tour_kawa {
+	padding-left:20px;
+}
+
+dl#activites div.activite {
+	text-align:center;
+}
+
+dl#activites div.activite p.image img {
+	width:140px;
+}
+
+
+
+/* ############# BOITE MODULE CENTER ############### */
+
+div#centre dl.boite {
+	width:98%;
+	margin:0 0 20px 10px;
+}
+
+div#centre dl.boite dt.titre {
+	background: url('./images/boitetitre.gif') no-repeat top left ;
+	height: 27px;
+	text-align: center;
+}
+div#centre dl.boite dt.titre span {
+	line-height: 24px ;
+	font-size: 1.4em ;
+	color: #fff;
+	position:relative;
+	top:0px;
+	left:15px;
+}
+div#centre dl.boite dt.titre span.droitehaut {
+	display:block;
+	float: right;
+	width:50px;
+	height:27px;
+	background: url('./images/boitetitredroite.gif') no-repeat top left;
+	position:relative;
+	top:0em;
+	left:5px;
+}
+
+div#centre dl.boite dd.contenu {
+	padding: 10px 10px 0 15px; 
+	background: #fff url('./images/boitegauche.gif') repeat-y top left;
+	text-align:left;
+	border-right: #C9E5F3 1px solid;
+}
+
+div#centre dl.boite dd.bas {
+	position:relative;
+	left:0px;
+	background: url('./images/boitebas.gif') no-repeat top left ;
+	height: 27px;
+	text-align: center;
+}
+
+div#centre dl.boite dd.bas span.droitebas {
+	display:block;
+	float: right;
+	width:50px;
+	height:27px;
+	background: url('./images/boitebasdroite.gif') no-repeat top left;
+	position:relative;
+	top:0em;
+	right:-5px;
+}
+
+div#centre dl.boite span.hidenews {
+	display:block;
+	float: right;
+	width:60px;
+	height:27px;
+	background: url('./images/hidenews.gif') no-repeat 1px top;
+}
+div#centre dl.boite span.hidenews a {
+	display:block;
+	width:50px;
+	height:27px;
+}
+div#centre dl.boite  span.hidenews a span {
+	display:none;
+}
+
+/* ################# BOITE TOL LIEN RAPIDE  ################ */
+dl#lien_tol{
+	position: absolute;
+	right:40px;
+	top:-240px;
+	height:32px;
+}
+dl#lien_tol dd.contenu{
+	width:200px;
+	background:url('./images/Tol.gif') no-repeat 15px 22px;
+}
+dl#lien_tol dd.contenu span.droitecentre{
+	display:none;
+}
+dl#lien_tol dt.titre {
+	display:none;
+}
+dl#lien_tol dd.bas {
+	display:none;
+}
+
+form.cadretol input.bouton{
+	background:url('./images/bouton.gif') no-repeat top left;
+	width:36px;
+	height:32px;
+	margin:0 auto;
+	border:none;
+	position:relative;
+	top:-6px;
+	left:37px;
+	font-size:0px;
+}
+form.cadretol input.champ {
+	background-color:transparent;
+	border:none;
+	width:85px;
+	height:21px;
+	position:relative;
+	top:-11px;
+	left:27px;
+}
+
+/* ################## PARAGRAPHE ################# */
+
+p {
+	text-align: justify ;
+}
+
+p.news {
+	text-indent: 2em ;
+	padding-bottom:10px;
+}
+p.news:first-letter {
+	font-size:1.3em;
+	font-weight:bold;
+}
+
+p.small
+{
+	text-indent: 0.7em ;
+	line-height: 1.2em;
+	font-size:0.9em;
+}
+
+p.image {
+	text-align:center;
+}
+
+p.signature {
+	text-align:right;
+	font-weight:bold;
+}
+
+p.warning {
+	color:red;
+	font-weight:bold;
+	padding:5px;
+}
+p.commentaire {
+	color:green;
+	padding:5px;
+}
+
+p.note {
+	color:blue;
+	font-style:italic;
+	padding:5px;
+}
+
+/* ################ MISE EN FORME DES LISTES (DL) ############## */
+
+/* ------- alternance jaune/rouge ------- */
+
+dl.pair {
+	background-color : #E9F4F9;
+}
+dl.impair {
+	background-color : #DDF0FA;
+}
+dl.top {
+	background-color : #D8F4F7;
+}
+
+
+/* ------- Vocabulaire ------- */
+
+dl.definition {
+	
+	margin:0px 30px 3px 30px;
+}
+dt.objet {
+	float:left;
+	font-weight:bold;
+	letter-spacing:2px;
+}
+dd.definition {
+	margin-left:150px;
+	padding-left:5px;
+}
+
+/* ------- Trombino ------- */
+
+dl#formulaireTOL p.image span.titre {
+	display:none;
+}
+dl#formulaireTOL p.image span.imagetitre {
+	display:block;
+	width:257px;
+	height:38px;
+	background:url('./images/trombino.gif') no-repeat top left;
+	margin:0 auto;
+}
+
+dl.trombino {
+	margin:0px 30px 20px 30px;
+	min-height:150px;
+	height:auto !important;
+	height:150px;
+}
+dt.nom {
+	background-color : #eef;
+	text-align:center;
+	font-weight:bold;
+	font-size:1.3em;
+}
+dd.photo{
+	float:left;
+}
+dd.sport{
+	float:right;
+}
+
+dd.element p strong {
+	float:left;
+	width:50px;
+}
+
+dd.element p.left {
+	margin-left:10px;
+}
+dd.element p.right {
+	float:right;
+	text-align:right;
+	padding-right:5px;
+}
+dd.element p.binets{
+	text-align:justify;
+	margin: 5px 100px 0 100px;
+	padding:0 5px;
+}
+
+form.trombino { 
+	color:#5FA2D5;
+	padding:20px 0px;
+}
+form.trombino div{
+	text-align:center;
+	padding:7px;
+}
+form.trombino div table {
+	width:60%;
+	border: dashed 1px silver;
+	margin:0 auto;
+}
+
+form.trombino input {
+	width:100px;
+}
+
+form.trombino select {
+	width:100px;
+}
+
+form p.gauche{
+	float:left;
+	width:33%;
+}
+form p.droite{
+	float:right;
+	width:33%;
+}
+form p.centre{
+	margin:0px 33%;
+	width:33%;
+}
+form p.bouton {
+	margin-top:20px;
+	width:100%;
+	text-align:center;
+}
+
+/* ------- Meteo ------- */
+
+dl.meteo {
+	margin:0px 30px 10px 30px;
+}
+dt.quand {
+	background-color : #eef;
+	text-align:left;
+	font-weight:bold;
+	font-size:1.3em;
+	line-height:1.5em;
+}
+dd.prevision {
+	padding-left:20px;
+}
+dd.prevision span {
+	float: left;
+	width:135px;
+	
+}
+dl#meteo dd.contenu {
+	text-align:center;
+}
+
+/* ----------- Binets ------------*/
+
+dl.binets {
+	margin:0px 30px 3px 30px;
+}
+dt.icon {
+	float:left;
+	font-weight:bold;
+	letter-spacing:2px;
+}
+dd.description {
+	margin-left:120px;
+	padding-left:5px;
+	height:101px;
+}
+
+dd.categorie {
+	padding:6px;
+	text-align:center;
+	font-weight:bold;
+}
+dd.lien {
+	margin-left:120px;
+	padding-left:5px;
+}
+
+/* -----------QDJ---------------*/
+
+dl#qdj table.qdj {
+	width:95%;
+}
+
+dl#qdj table.qdj td {
+	text-align:center;
+	height:100px;
+	width:50%;
+}
+
+dl#qdj table.qdj td a{
+	font-weight:bold;
+}
+
+dl#qdj table.qdj td span{
+	display:block;
+	height:45px;
+	width:100%;
+}
+
+dl#qdj table.qdj td span.rouje {
+	background:url(images/pointrouje.gif) no-repeat top center;
+}
+
+dl#qdj table.qdj td span.jone {
+	background:url(images/pointjone.gif) no-repeat top center;
+}
+
+table.reponse_qdj {
+	width:95%;
+}
+table.reponse_qdj td {
+	text-align:center;
+	width:50%;
+}
+table.reponse_qdj td div.col {
+	height:50px;
+}
+table.reponse_qdj td div.col span {
+	display:block;
+	height:50px;
+}
+table.reponse_qdj td div.col span.jone {
+	background:url(images/jaune.gif) repeat-y top center;
+}
+table.reponse_qdj td div.col span.rouje {
+	background:url(images/rouge.gif) repeat-y top center;
+}
+/*--------- Etat des serveur-----------*/
+
+dl#stats ul.serveurs {
+	width:95%;
+	margin:0 auto;
+
+}
+dl#stats ul.serveurs li.nom {
+	display:inline;
+	background-color:#fff;
+	font-weight:normal;
+	font-size:13px;
+}
+dl#stats ul.serveurs li.serveur_up {
+	display:inline;
+	background-color:#E9F4F9;
+	text-align:right;
+}
+dl#stats ul.serveurs li.serveur_down {
+	display:inline;
+	background-color:#DDF0FA;
+	text-align:right;
+}
+
+/* ---------- Xshare et FAQ --------- */
+
+div#recherchearbre {
+	position:absolute;
+	top:200px;
+	right:250px;
+	background-color:white;
+	width:200px;
+}
+
+/* -------- Sommaires page d'annonce ----------*/
+dl#annonces_sommaire table.sommaire {
+	margin:0 auto;
+	width:95%;
+}
+
+dl#annonces_sommaire tr td{
+	width:48%;
+	height:18px;
+	padding:1px 5px;
+}
+dl#annonces_sommaire td.gauche{
+	text-align:right;
+}
+dl#annonces_sommaire td.droite{
+	text-align:left;
+}
+/* ################# MENU/LISTE ####################*/
+
+ul#menu, ul#ecole, ul.contacts,ul.none, ul#services, ul#serveurs,ul{
+	list-style-type: none ;
+}
+
+/* ------- Le menu de gauche ---------*/
+
+dl#liens_navigation {
+	width:180px;
+	text-align: center;
+	margin-bottom:20px;
+}
+dl#liens_navigation dt.titre {
+	background: url('./images/petiteboitehaut.gif') no-repeat top left ;
+	height: 22px;
+	text-align: center;
+}
+dl#liens_navigation dt.titre span {
+	line-height: 24px;
+	width: 180px;
+	font-size: 1.2em;
+	color: #5FA2D5;
+	position:relative;
+	top:5px;
+	font-weight:bold;
+}
+dl#liens_navigation dt.titre span.droitehaut {
+	display:none;
+}
+dl#liens_navigation dd.contenu {
+	padding:7px 17px 0 7px; 
+	background: #fff url('./images/petiteboite.gif') repeat-y top left;
+}
+dl#liens_navigation dd.contenu span.droitecentre {
+	display:none;
+}
+dl#liens_navigation dd.bas {
+	position:relative;
+	left:0px;
+	background: url('./images/petiteboitebas.gif') no-repeat top left ;
+	height: 27px;
+	text-align: center;
+}
+dl#liens_navigation dd.bas span.droitebas {
+	display:none;
+}
+ul#menu li {
+	margin:0;
+	padding:0;
+	position:relative;
+	left:3px;
+}
+ul#menu li a {
+	display:block;
+	width:166px;
+	height:20px;
+	text-decoration:none;
+	text-align:center;
+	color:#84BDE7;
+}
+
+ul#menu li a:hover {
+	color:white;
+	background-color:#A5D6EF;
+}
+
+ul#menu li a span {
+	font-weight:bold;
+}
+
+/* ################## FORMULAIRE ################ */
+
+form {
+	padding:7px;
+}
+
+textarea {
+	width:80%;
+	height:10em;
+}
+
+fieldset {
+	border:0;
+}
+/* -- formulaire simple (trombi,skin,etc...) -- */
+
+.formulaire span.objet{
+	display:block;
+	margin-left:10%;
+}
+.formulaire p.titre{
+	text-decoration:underline;
+}
+
+.formulaire p.boutons{
+
+	padding-left: 22%;
+	padding-top:10px;
+	margin:0 auto;
+}
+
+
+/* -- formulaires plus chiants, basés sur les listes (gestion par tableau) -- */
+table.liste {
+	margin:0 auto;
+}
+
+table.liste thead {
+	background-color : #ccc;
+}
+
+table.liste thead tr.titre td {
+	font-weight:bold;
+	font-size:1.7em;
+	text-align:center;
+}
+
+table.liste thead td {
+	font-weight:bold;
+	font-size:1.2em;
+}
+
+tr.pair {
+	background-color : #eee;
+}
+
+tr.impair {
+	background-color : #ddd;
+}
+
+td.boutons {
+	text-align:center;
+	background-color : #ccc;
+}
+
+/* ################### DIVERS #################*/
+
+/*--------- FAQ et Xshare ---------*/
+li.noeud_ferme
+{
+	list-style-image:url('../images/fold_close.gif');
+	margin-left:40px;
+}
+li.noeud_ouvert
+{
+	list-style-image:url('../images/fold_open.gif');
+	margin-left:40px;
+}
+ul.feuille
+{
+	list-style-image:url('../images/question.gif');
+}
+
+ul.feuille li {
+	margin-left:40px;
+}
+
+li.feuille {
+	margin: 10px;
+	border:1px dashed blue;
+	list-style-type: none ;
+	padding:5px;
+}
+
+/* ---------- HR -----------*/
+
+div.hr {
+	width:20%;
+	margin:0 auto;
+	text-align:center;
+}
+div.hr hr {
+	display:none;
+}
+
+dl.boite h3, dl.boite h2 {
+	margin-bottom:5px;
+	display:block;
+}
+
+.center {
+	text-align:center;
+}
+.clear {
+	clear:left;
+}
+.float_right {
+	float:right;
+}
+
