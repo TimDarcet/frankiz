@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.4  2004/11/04 15:18:01  psycow
+	Un bon debut mais plus compatible IE j'en ai peur
+
 	Revision 1.3  2004/11/03 23:38:39  psycow
 	Un bon début
-
+	
 	
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -42,23 +45,16 @@
 
 
 <!-- Liens -->
-<xsl:template match="module/lien">
-	<xsl:choose><xsl:when test="boolean(@id)">
-		<a class="lien"><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+<xsl:template match="lien">
+	<a class="lien">
+		<xsl:if test="boolean(@id)">
+			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+		</xsl:if>
+		<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
 		<xsl:value-of select="@titre"/><xsl:apply-templates/>
-		</a><br />
-	</xsl:when><xsl:otherwise>
-		<a class="lien"><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
-		<xsl:value-of select="@titre"/><xsl:apply-templates/>
-		</a><br />
-	</xsl:otherwise></xsl:choose>
+	</a>
 </xsl:template>
 
-<xsl:template match="lien">
-	<a class="lien"><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
-		<xsl:value-of select="@titre"/><xsl:apply-templates/>
-	</a><br />
-</xsl:template>
 
 <!-- Listes -->
 <xsl:template match="liste">

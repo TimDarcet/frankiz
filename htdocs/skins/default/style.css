@@ -15,7 +15,7 @@ body
 div#conteneur
 {
 	width: 98% ;
-	margin: 30px auto ;
+	margin: 30px auto 30px 13px ;
 	text-align: left ;
 	background: #fff ;
 	background: url('./images/Bar_cote.png') repeat-y left top ;
@@ -84,16 +84,6 @@ div#droite
 {
 	float:right;
 	width:200px;
-	position: relative;
-}
-
-ul#menu
-{
-	float:left;
-	height:537px;
-	list-style-type: none ;
-	margin:0;
-	padding:0;
 	position: relative;
 }
 
@@ -172,11 +162,18 @@ float: right;
 
 /* ################### MENU ###################*/
 
+ul#ecole, ul#contacts {
+	list-style-type: none ;
+}
 
-
-html>body ul#menu {
-	position:absolute;
-	left:13px;
+ul#menu
+{
+	float:left;
+	height:537px;
+	list-style-type: none ;
+	margin:0;
+	padding:0;
+	position: relative;
 }
 
 ul#menu li {
@@ -202,12 +199,11 @@ ul#menu li a span
 /*  different elements du menu avec le RollOver  */
 
 ul#menu li#top {
-	margin-top:0;
+	margin-top:0px;
 	display:block;
 	width: 115px ;
-	height:11px;
-	background: url('./images/Bar_cote_top.png') no-repeat 0 0 !important;
-	background: url('./images/Bar_cote_top.png') no-repeat 0 3px ;
+	height:8px;
+	background: url('./images/Bar_cote_top.png') no-repeat 0 0;
 }
 
 
@@ -466,6 +462,6 @@ ul#barre_nav
 
 
 /* FAQ et Xshare */
-li.noeud_ouvert{list-style-image:url('fold_close.gif')}
-li.noeud_ferme{list-style-image:url('fold_open.gif')}
-ul.feuille{list-style-image:url('question.gif')}
+li.noeud_ouvert{list-style-image:url('images/fold_close.gif')}
+li.noeud_ferme{list-style-image:url('images/fold_open.gif')}
+ul.feuille{list-style-image:url('images/question.gif')}
