@@ -6,9 +6,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.13  2004/10/20 19:51:17  kikx
+	Structure pour se rajouter des binets
+
 	Revision 1.12  2004/10/20 18:47:07  kikx
 	Pour rajouter des lignes non selectionnables dans une liste
-
+	
 	Revision 1.11  2004/10/20 11:02:10  kikx
 	Permet la suppression des binets dans son profil
 	
@@ -161,6 +164,18 @@ require "../include/page_header.inc.php";
 		<entete id="commentaire" titre="Commentaire"/>
 
 <?
+		$DB_trombino->query("SELECT nom,binet_id FROM binets  ORDER BY nom ASC");
+		$liste_binet = "<choix id=\"liste_binet\"  type=\"combo\" valeur=\"Ajout\">\n" ;
+		$liste_binet .= "\t<option titre=\"\" id=\"default\"/>" ;
+
+		while (list($nom_binet,$binet_id) = $DB_trombino->next_row()) { 
+			$liste_binet .="\t<option titre=\"$nom_binet\" id=\"$binet_id\"/>\n" ;
+		}
+		$liste_binet .= "</choix>\n" ;
+		$liste_binet .= "<bouton id='ajout_binet' titre='Ajouter'/>\n" ;
+
+
+
 		$DB_trombino->query("SELECT membres.remarque,membres.binet_id,binets.nom FROM membres INNER JOIN binets USING(binet_id) WHERE eleve_id={$_SESSION['user']->uid} ORDER BY membres.binet_id ASC");
 		while (list($remarque,$binet_id,$nom) = $DB_trombino->next_row()) { ?>
 		<element id="<?=$binet_id?>">
@@ -170,6 +185,14 @@ require "../include/page_header.inc.php";
 <?
 		 }
 ?>
+		<element id="<?=$binet_id?>" selectionnable="non">
+			<colonne id="binet"></colonne>
+			<colonne id="commentaire"></colonne>
+		</element>
+		<element id="<?=$binet_id?>" selectionnable="non">
+			<colonne id="binet">Rajouter un binet</colonne>
+			<colonne id="commentaire"><?=$liste_binet?></colonne>
+		</element>
 		<bouton id='suppr_binet' titre='Supprimer' onClick="return window.confirm('Voulez vous vraiment supprimer ce binet ?')"/>
 		<bouton id='mod_binet' titre='Changer'/>
 	</liste>
