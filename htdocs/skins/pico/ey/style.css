@@ -103,12 +103,10 @@ div.fkz_logo_eleves, span.fkz_logo {
 }
 
 div.fkz_logo {
-    text-align: center;
-    font-size: 200%;
-    border: 1px solid #c0c0c0;
-    background-color: #f0f0f0;
+    border: 1px solid #a0a0a0;
+    background-color: #e0e0e0;
+	background-image:url("images/frankiz.gif");
     background-position: center;
-	background-image:url("images/frankiz.png");
 	background-repeat:no-repeat;
     width: 100%;
     height: 60px;
@@ -225,32 +223,53 @@ div.fkz_page_titre {
 }
 
 
+div.fkz_annonces_corps:hover {
+    border: 1px dashed #c0c0c0;
+    border-top: none;
+}
+
 .fkz_anniversaire,.fkz_annonces_corps,div.fkz_page_corps {
 	position:relative;
-/*	top:-20px; */
-/*	left:10px; */
-/*	width: 98%; */
 	padding: 5px;
 	background-color:#f0f0f0;
 	border:1px solid #c0c0c0;
+    border-top: none;
+}
+
+div.fkz_anniversaire:hover {
+    border: 1px dashed #c0c0c0;
+    border-top: none;
 }
 
 .fkz_titre,.fkz_titre a {
 	border:1px solid #a0a0a0;
 	background-color: #e0e0e0;
 	margin:0px;
-	padding:0px;
+	padding:2px;
 	color: #000;
 	text-align : center;
 	font-weight: bold;
-    vertical-align: bottom;
+    vertical-align: middle;
 }
 
+
+div.fkz_module_corps:hover {
+    border:1px dashed #c0c0c0;
+    border-top: none;
+}
+
+.module {
+    margin-bottom: 10px;
+}
+
+div.fkz_module {
+    margin-bottom: 10px;
+}
 
 div.fkz_module_corps {
 	color:#000;
 	border:1px solid #c0c0c0;
-	margin-bottom: 10px;
+    border-top: none;
 	padding: 5px;
     background-color: #f0f0f0;
 }
@@ -259,13 +278,18 @@ div.fkz_module_corps {
     text-align:center;
 }
 
+.fkz_sommaire a.lien {
+    text-align: center;
+    width: 100%;
+    background-color:#f0f0f0;
+    padding-left: 5px;
+    font-style: italic;
+}
 
 .fkz_sommaire_corps {
 	font-size: 9pt;
 	text-align: left;
 	background-color:#f0f0f0;
-	border-left:1px solid #a0a0a0;
-	border-right:1px solid #a0a0a0;
     padding-left: 5px;
 }
 
@@ -278,16 +302,20 @@ div.fkz_module_corps {
 }
 
 .fkz_sommaire_titre {
-    border: 1px solid #a0a0a0;
+    border-top: 1px solid #c0c0c0;
+    border-bottom: 1px solid #c0c0c0;
     background-color: #e0e0e0;
 	font-size: 9pt;
 	font-weight: bold;
 	text-align: center;
 	margin: 0;
+    padding: 3px;
 }
 
 .fkz_sommaire{
-	border-bottom:1px solid #a0a0a0;
+    background-color: #f0f0f0;
+	border:1px solid #a0a0a0;
+    border-top: none;
 	font-size: 9pt;
 	text-align: left;
 	margin: 0;
@@ -303,7 +331,7 @@ div.fkz_module_corps {
 
 span.fkz_annonces_vieux,span.fkz_annonces_nouveau, span.fkz_annonces_important,span.fkz_annonces_reste,span.fkz_annonces_reste {
 	background-repeat:no-repeat;
-	height:16px;
+	height:20px;
 	padding-left:20px; 
  }
 
@@ -444,10 +472,11 @@ span.valid_css:before {
 }
 
 /* FAQ et Xshare */
-.noeud_ferme{list-style-image:url('images/fold_close.gif')}
-.noeud_ouvert{list-style-image:url('images/fold_open.gif')}
-.feuille{list-style-image:url('images/question.gif')}
-
+/* 
+.noeud_ferme {list-style-image:url('images/fold_close.gif')}
+.noeud_ouvert {list-style-image:url('images/fold_open.gif')}
+.feuille {list-style-image:url('images/question.gif')}
+*/
 /* Commentaires et Warning */
 
 .commentaire,.warning,.note {
@@ -474,9 +503,18 @@ span.valid_css:before {
 
 div.formulaire{
 	display:block;
-	width:100%;
 }
 
+#trombino div.formulaire {
+    background-color: #f0f0f0;
+    border: 1px solid #c0c0c0;
+    padding: 5px;
+}
+    
+#trombino div.formulaire:hover {
+    border: 1px dashed #c0c0c0;
+}
+    
 div.formulaire span.droite{
 	float:right;
 	width:78%;
@@ -565,9 +603,13 @@ table.liste .entete{
 /* Trombino */
 
 div.fkz_trombino_eleve {
-    border: 1px solid #e0e0e0;
+    border: 1px solid #c0c0c0;
     background-color: #f0f0f0;
     font-size: 9pt;
+}
+
+div.fkz_trombino_eleve:hover {
+    border: 1px dashed #c0c0c0;
 }
 
 .fkz_trombino_eleve p.nom {
@@ -577,8 +619,8 @@ div.fkz_trombino_eleve {
     padding-left: 20px;
     font-size: 120%;
     font-weight: bold;
-    border: 2px solid #e0e0e0;
-    margin: 0;
+    border: 1px solid #a0a0a0;
+    margin: -1px;
 }
 
 .fkz_trombino_eleve p.surnom {
