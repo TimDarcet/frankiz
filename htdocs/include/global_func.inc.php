@@ -22,9 +22,12 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.51  2005/02/15 20:27:55  pico
+	Voir si ça fixe le pb de Bery
+
 	Revision 1.50  2005/02/15 19:50:10  kikx
 	commit pour la forme
-
+	
 	Revision 1.49  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
 	
@@ -455,7 +458,7 @@ function diff_to_xml($oldString, $newString) {
 
 function log_admin($id,$log) {
 	global $DB_admin ;
-	$log2 = str_replace(array('&','<','>','\\\'','\\"','\\\\'),array('&amp;','&lt;','&gt;','&apos;','&quot;','&#92;'),$log);
-	$DB_admin->query("INSERT INTO log_admin SET log='$log2', id_admin=$id") ;
+	$log2 = str_replace(array('&','<','>','\'','\"','\\'),array('&amp;','&lt;','&gt;','&apos;','&quot;','&#92;'),$log);
+	$DB_admin->query("INSERT INTO log_admin SET log='$log2', id_admin='$id'") ;
 }
 ?>
