@@ -36,9 +36,12 @@
 	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
 
 	$Log$
+	Revision 1.4  2004/12/02 11:47:30  pico
+	C'est bizarre, le // marche pas partout :(
+
 	Revision 1.3  2004/12/02 11:46:20  pico
 	Correction login
-
+	
 	Revision 1.2  2004/12/01 21:05:53  pico
 	Correction lien login
 	
@@ -179,7 +182,7 @@ function demande_authentification($minimum) {
 			dans le login ou le mot de passe.</warning>
 		<?php endif; ?>
 		<note>Ton login est loginpoly.promo</note>
-		<formulaire id="login" titre="Connexion" action="<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/'.$_SERVER['PHP_SELF']?>">
+		<formulaire id="login" titre="Connexion" action="<?php echo 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']?>">
 			<champ id="login" titre="Login" valeur="<?php if(isset($_POST['login'])) echo $_POST['login']?>"/>
 			<champ id="passwd" titre="Mot de passe" valeur=""/>
 			<bouton id="connect" titre="Connexion"/>
