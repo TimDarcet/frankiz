@@ -21,65 +21,11 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.2  2004/11/03 21:23:03  psycow
+	auvegarde de mon debut dans les xsl
+
 	Revision 1.1  2004/11/03 18:21:32  psycow
 	*** empty log message ***
-
-	Revision 1.20  2004/10/29 17:42:36  kikx
-	Petit bug que je ne comprend pas pourquoi ca ne marchait pas avant et que ca marche now (c'est pour faire une phrase correct et comprehensible en français)
-	
-	Revision 1.19  2004/10/29 16:42:31  kikx
-	Rajout des id sur les liens de navigation
-	Ca pêrmet au skinneur soit de mettre en gras certain liens specifique soit de remplacer les liens par des images comme il le souhaite
-	
-	Revision 1.18  2004/10/21 22:43:11  kikx
-	Bug fix et mise en place de la possibilité de modifier la photo du trombino
-	
-	Revision 1.17  2004/10/21 22:19:38  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.16  2004/10/21 21:57:07  schmurtz
-	Petites modifs sur les skins
-	
-	Revision 1.15  2004/10/20 23:45:48  schmurtz
-	<br/> ==> <br /> pour compatibilite avec IE
-	
-	Revision 1.14  2004/10/20 23:21:39  schmurtz
-	Creation d'un element <html> qui permet d'afficher du html brute sans verification
-	C'est ce qui est maintenant utilise dans les annonces/cadres
-	
-	Revision 1.13  2004/10/20 22:10:57  schmurtz
-	Correction du bug qui affichait deux images dans la faq
-	
-	Revision 1.12  2004/10/20 22:05:36  schmurtz
-	Juste pour pico, qu'il puisse y voir quelque chose
-	
-	Revision 1.11  2004/10/20 19:58:02  pico
-	Changement skin pico -> valide html strict
-	Changement des balises qui étaient pas valides
-	
-	Revision 1.10  2004/10/20 18:47:07  kikx
-	Pour rajouter des lignes non selectionnables dans une liste
-	
-	Revision 1.9  2004/10/18 19:14:27  pico
-	Changement balises pour me conformer à la dtd
-	
-	Revision 1.8  2004/10/17 17:09:43  pico
-	Gestion des listes
-	Classes FAQ pour affichage graphique
-	
-	Revision 1.7  2004/09/20 22:19:28  kikx
-	test
-	
-	Revision 1.6  2004/09/20 20:31:20  schmurtz
-	Rajout de la balise html <em>
-	
-	Revision 1.5  2004/09/16 11:09:38  kikx
-	C'est les vacances maintenant ...
-	Bon bref .. c'est dur aussi
-	Bon j'ai un peu arrangé la page des binets
-	
-	Revision 1.4  2004/09/15 23:19:56  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -100,15 +46,10 @@
 <!-- Liens -->
 <xsl:template match="module/lien">
 	<xsl:choose><xsl:when test="boolean(@id)">
-		<xsl:choose><xsl:when test="@id='connect'">
-			<strong><a class="lien"><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
-			!<xsl:value-of select="@titre"/>!<xsl:apply-templates/>
-			</a></strong><br />
-		</xsl:when><xsl:otherwise>
-			<a class="lien"><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
-			<xsl:value-of select="@titre"/><xsl:apply-templates/>
-			</a><br />
-		</xsl:otherwise></xsl:choose>
+		<a class="lien"><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+		<xsl:value-of select="@titre"/><xsl:apply-templates/>
+		</a><br />
+	</xsl:choose>
 	</xsl:when><xsl:otherwise>
 		<a class="lien"><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
 		<xsl:value-of select="@titre"/><xsl:apply-templates/>

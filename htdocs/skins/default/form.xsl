@@ -21,55 +21,11 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.2  2004/11/03 21:23:03  psycow
+	auvegarde de mon debut dans les xsl
+
 	Revision 1.1  2004/11/03 18:21:32  psycow
 	*** empty log message ***
-
-	Revision 1.22  2004/10/21 22:19:38  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.21  2004/10/21 21:57:07  schmurtz
-	Petites modifs sur les skins
-	
-	Revision 1.20  2004/10/21 08:33:07  pico
-	Chgts divers pour matcher avec la balise <html>
-	
-	Revision 1.19  2004/10/20 23:45:48  schmurtz
-	<br/> ==> <br /> pour compatibilite avec IE
-	
-	Revision 1.18  2004/10/20 20:16:00  schmurtz
-	Correction d'un bug de la skin basic : dans une liste, les boutons/champs
-	s'affichaient dans la mauvaise colonne.
-	
-	Revision 1.17  2004/10/20 19:58:02  pico
-	Changement skin pico -> valide html strict
-	Changement des balises qui étaient pas valides
-	
-	Revision 1.16  2004/10/19 18:16:24  kikx
-	hum
-	
-	Revision 1.15  2004/10/19 14:58:43  schmurtz
-	Creation d'un champ de formulaire specifique pour les fichiers (sans passer
-	l'element champ, qui actuellement est un peu acrobatique).
-	
-	Revision 1.14  2004/10/16 00:30:56  kikx
-	Permet de modifier des binets déjà existants
-	
-	Revision 1.13  2004/10/10 22:31:41  kikx
-	Voilà ... Maintenant le webmestre prut ou non valider des activité visibles de l'exterieur
-	
-	Revision 1.12  2004/10/04 21:48:54  kikx
-	Modification du champs fichier pour uploader des fichiers
-	
-	Revision 1.11  2004/09/17 22:49:29  kikx
-	Rajout de ce qui faut pour pouvoir faire des telechargeement de fichiers via des formulaires (ie des champs 'file' des champ 'hidden') de plus maintenant le formulaire sont en enctype="multipart/form-data" car sinon il parait que ca marche pas !
-	
-	Revision 1.10  2004/09/17 09:05:32  kikx
-	La personne peut maintenant rajouter une annonce
-	Ceci dit je ne comprend pas trop comment on protège les champs avec les <!CDATA
-	-> j'ai laisser ca comme ca mais faudra modifier
-	
-	Revision 1.9  2004/09/15 23:19:56  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">

@@ -23,64 +23,11 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
-	Revision 1.2  2004/11/03 18:44:08  pico
-	Utilise le bon fichier css
+	Revision 1.3  2004/11/03 21:23:03  psycow
+	auvegarde de mon debut dans les xsl
 
 	Revision 1.1  2004/11/03 18:21:32  psycow
 	*** empty log message ***
-	
-	Revision 1.22  2004/10/29 16:25:12  kikx
-	bug
-	
-	Revision 1.21  2004/10/28 14:49:47  kikx
-	Mise en place de la météo en module : TODO eviter de repliquer 2 fois le code de la météo
-	
-	Revision 1.20  2004/10/26 17:52:07  kikx
-	J'essaie de respecter la charte de weather.com mais c'est chaud car il demande le mettre leur nom en gras ... et je peux pas le faire avec la skin
-	
-	Revision 1.19  2004/10/26 16:57:44  kikx
-	Pour la méteo ... ca envoie du paté !!
-	
-	Revision 1.18  2004/10/21 22:19:38  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.17  2004/10/20 23:45:48  schmurtz
-	<br/> ==> <br /> pour compatibilite avec IE
-	
-	Revision 1.16  2004/10/20 23:21:39  schmurtz
-	Creation d'un element <html> qui permet d'afficher du html brute sans verification
-	C'est ce qui est maintenant utilise dans les annonces/cadres
-	
-	Revision 1.15  2004/10/04 22:48:55  kikx
-	Modification mineur de la page d'envoie de mail promo !
-	
-	Revision 1.14  2004/09/20 07:16:31  kikx
-	J'aimais pas la signature qui est pas en bold :)
-	
-	Revision 1.13  2004/09/18 00:51:41  kikx
-	Permet d'uploader des fichiers
-	rajout d'un cahmp image dan sles annonces car on a le droit qu'a une seule image ...
-	
-	Revision 1.12  2004/09/17 16:27:13  schmurtz
-	Simplification de l'affichage des anniversaires et correction d'un bug d'affichage.
-	
-	Revision 1.11  2004/09/17 15:28:14  schmurtz
-	Utilisation de la balise <eleve> pour les derniers votants aÌ€ la qdj, les anniversaires, la signature des annoncesâ€¦
-	
-	Revision 1.10  2004/09/16 15:32:43  schmurtz
-	Suppression de la fonction afficher_identifiant(), utilisation de <![CDATA[......]]> aÌ€ la place.
-	
-	Revision 1.9  2004/09/16 13:44:34  schmurtz
-	AmeÌlioration de l'affichage de la page des binets (avec le classement par categorie mais pas le trie).
-	Passage de la sortie de la skin basic en xhtml avec doctype.
-	
-	Revision 1.8  2004/09/16 11:09:38  kikx
-	C'est les vacances maintenant ...
-	Bon bref .. c'est dur aussi
-	Bon j'ai un peu arrangé la page des binets
-	
-	Revision 1.7  2004/09/15 23:19:56  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
 -->
 
@@ -107,25 +54,36 @@
 				<xsl:value-of select="../@base"/>
 			</xsl:attribute>
 		</base>
-		<link rel="stylesheet" type="text/css" href="skins/default/style.css"/>
+		<link rel="stylesheet" type="text/css" href="skins/default/style.css" media="screen" />
 		<xsl:apply-templates select="/frankiz/module[@id='liste_css']" mode="css"/>
 	</head>
 
-	<body style="margin: 0">
-		<table cellspacing="0" cellpadding="0">
-			<tr><td id="frankiz" colspan="2">
-				Frankiz, le serveur des élèves
-				
-			</td></tr><tr><td id="modules">
-				<table cellspacing="0" cellpadding="0">
-					<xsl:apply-templates select="/frankiz/module"/>
-				</table>
-				
-			</td><td id="contenu">
+	<body>
+		<div id="conteneur">
+			<div id="header">
+				<h1><a href="" title="Accueil - Page des Eleves de l'X"><span>Serveur des Elèves</span></a></h1>
+				<h2><span>200 ans de Bob et de Pales</span></h2>
+				<h3><a href="http://www.polytechnique.fr" title="Ecole Polytechnique"><span> Site de l'Ecole Polytechnique</span></a></h3>
+			</div>
+		
+		
+			<xsl:apply-templates select="/frankiz/module[@id='liens_navigation']"/>
+	
+			<div id="droite">
+				<xsl:apply-templates select="/frankiz/module[@id!='liens_navigation']"/>
+			</div>
+			
+			<div id="centre">
 				<xsl:apply-templates/>
-				
-			</td></tr>
-		</table>
+			</div>
+			
+			<div id="footer">
+				<span id="bas_gauche"></span>
+				<span id="bas_droit"></span>
+				<h5><a href="" title="Retour en haut"><span>Retour en Haut</span></a></h5>
+			</div>
+		</div>
+		
 	</body>
 	</html>
 
@@ -135,44 +93,79 @@
 <xsl:template match="/frankiz/module[@id='liste_css']" mode="css">
 	<xsl:for-each select="lien">
 		<link rel="alternate stylesheet" type="text/css">
-			<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+			
 			<xsl:attribute name="title"><xsl:value-of select="@titre"/></xsl:attribute>
 		</link>
     </xsl:for-each>
 </xsl:template>
 
+<xsl:template match="/frankiz/module[@id='liens_navigation']" mode="css">
+	<ul id="menu">
+		<li id="top"></li>
+		<xsl:for-each select="lien">
+		<li>
+			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+			<a>
+				<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+				<span><xsl:value-of select="@titre"/></span>
+			</a>
+		</li>
+		</xsl:for-each>
+    		<li id="bottom"></li>
+	</ul>
+</xsl:template>
+
+
 <!-- Définition des modules -->
 <xsl:template match="/frankiz/module">
 	<xsl:if test="(boolean(@visible) = false) or (@visible = 'true')">
-		<tr><th><xsl:value-of select="@titre"/></th></tr>
-		<tr><td><xsl:apply-templates/></td></tr>
+		<xsl:value-of select="@titre"/>
+		<xsl:apply-templates/>
 	</xsl:if>
 </xsl:template>
 
 <!-- Annonces (une annonce dans un module correspond à une activité) -->
 <xsl:template match="page/annonce">
-	<table class="annonce" cellspacing="0" cellpadding="0">
-		<tr><th><xsl:value-of select="@titre"/> (<xsl:value-of select="@date"/>)</th></tr>
-		<tr><td>
-			<center><xsl:apply-templates select="image"/></center>
-		</td></tr>
-		<tr><td>
-			<xsl:apply-templates select="html"/>
-			<p class="signature"><b><xsl:apply-templates select="eleve"/></b></p>
-		</td></tr>
-	</table><br />
+	<dl>
+		<dt>
+			<img id="droitehaut" src="images/cadre-hautd.gif" alt="" />
+			<span><xsl:value-of select="@titre"/> (<xsl:value-of select="@date"/>)</span>	
+		</dt>
+		<dd>
+			<p class="image">
+				<xsl:apply-templates select="image"/>
+			</p>
+			<p class="news">
+				<xsl:apply-templates select="html"/>
+			</p>
+			<p class="signature">
+				<xsl:apply-templates select="eleve"/>
+			</p>
+		</dd>
+		<dd class="bas">
+			<img id="droitebas" src="images/cadre-basd.gif" alt="" />
+		</dd>
+	</dl>
 </xsl:template>
 
 <xsl:template match="cadre">
-	<table class="annonce" cellspacing="0" cellpadding="0">
-		<tr><th><xsl:value-of select="@titre"/></th></tr>
-		<tr><td>
-			<center><xsl:apply-templates select="image"/></center>
-		</td></tr>
-		<tr><td>
-			<xsl:apply-templates select="html"/>
-		</td></tr>
-	</table><br />
+	<dl>
+		<dt>
+			<img id="droitehaut" src="images/cadre-hautd.gif" alt="" />
+			<span><xsl:value-of select="@titre"/> (<xsl:value-of select="@date"/>)</span>	
+		</dt>
+		<dd>
+			<p class="image">
+				<xsl:apply-templates select="image"/>
+			</p>
+			<p class="news">
+				<xsl:apply-templates select="html"/>
+			</p>
+		</dd>
+		<dd class="bas">
+			<img id="droitebas" src="images/cadre-basd.gif" alt="" />
+		</dd>
+	</dl>
 </xsl:template>
 
 <xsl:template match="module/annonce">
