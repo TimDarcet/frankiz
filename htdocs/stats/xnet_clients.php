@@ -8,7 +8,7 @@ list($nb_connect)=$DB_xnet->next_row();
 $DB_xnet->query("select p1.name as 'Client', count(p2.username) as 'Nombre d\'utilisateurs' from software as p1, clients as p2 where p1.version = p2.version group by p1.version");
 
 while(list($nom,$nb)=$DB_xnet->next_row()){
-	$os[$nom] = $nb;
+	if($nom!='') $os[$nom] = $nb;
 }
 
 // on calcule le nombre de pages vues sur l'année

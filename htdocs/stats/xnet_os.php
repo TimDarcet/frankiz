@@ -8,7 +8,7 @@ list($nb_connect)=$DB_xnet->next_row();
 $DB_xnet->query("Select if( ((options & 0x1c0) >> 6) = 1, 'Windows 9x', if( ((options & 0x1c0) >> 6)= 2, 'Windows XP', if( ((options & 0x1c0) >> 6) = 3, 'Linux', if( ((options & 0x1c0) >> 6)= 4, 'MacOS', if( ((options & 0x1c0) >> 6), 'MacOS X', '!!!'))))), count(*)  from clients where (NOT status) group by (options & 0x1c0)");
 
 while(list($nom,$nb)=$DB_xnet->next_row()){
-	$os[$nom] = $nb;
+	if($nom!='!!!') $os[$nom] = $nb;
 }
 
 // on calcule le nombre de pages vues sur l'année
