@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.21  2004/10/28 14:49:47  kikx
+	Mise en place de la météo en module : TODO eviter de repliquer 2 fois le code de la météo
+
 	Revision 1.20  2004/10/26 17:52:07  kikx
 	J'essaie de respecter la charte de weather.com mais c'est chaud car il demande le mettre leur nom en gras ... et je peux pas le faire avec la skin
-
+	
 	Revision 1.19  2004/10/26 16:57:44  kikx
 	Pour la méteo ... ca envoie du paté !!
 	
@@ -284,7 +287,13 @@
 					<xsl:attribute name="src">skins/basic/images/meteo/<xsl:value-of select="imagenuit"/>.png</xsl:attribute>
 				</img><br />
 		</xsl:for-each>
+</xsl:template>
 
+<xsl:template match="module/meteo">
+		<xsl:value-of select="now/temperature"/>°C<br />
+		<img alt="meteo" width="64" height="64">
+			<xsl:attribute name="src">skins/basic/images/meteo/<xsl:value-of select="now/image"/>.png</xsl:attribute>
+		</img>
 </xsl:template>
 
 <xsl:template match="page/eleve/binet">

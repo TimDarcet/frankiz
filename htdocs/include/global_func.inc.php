@@ -22,9 +22,12 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.21  2004/10/28 14:49:47  kikx
+	Mise en place de la météo en module : TODO eviter de repliquer 2 fois le code de la météo
+
 	Revision 1.20  2004/10/28 11:29:07  kikx
 	Mise en place d'un cache pour 30 min pour la météo
-
+	
 	Revision 1.19  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -106,10 +109,11 @@ function liste_modules() {
 	return array(
 		"css"				=> "",
 		"liens_navigation"	=> "",
-		"liens_contacts"	=> "",
-		"liens_ecole"		=> "Liens école",
+		"liens_contacts"		=> "",
+		"liens_ecole"			=> "Liens école",
 		"qdj"				=> "Question du jour",
 		"qdj_hier"			=> "Question de la veille",
+		"meteo"				=> "Météo",
 		"activites"			=> "Activités",
 		"tour_kawa"			=> "Tours kawa",
 		"anniversaires"		=> "Anniversaires",
