@@ -21,11 +21,14 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.36  2005/01/21 17:03:05  pico
+	Gogogo
+
 	Revision 1.35  2005/01/18 19:30:34  pico
 	Place la boite du sudo dans la boite avec les infos de connection.
 	Pbs d'encodage des variables passées à sablotron réglés
 	Pb du su quand on est pas loggué par mot de passe réglé
-
+	
 	Revision 1.34  2005/01/18 17:19:23  pico
 	Petite modif dans le menu de navigation (pour psycow)
 	
@@ -150,7 +153,7 @@
 		<lien id="trombino" titre="Trombino" url="trombino.php" key="t"/>
 	<?php } ?>
 	<lien id="binets"  titre="Binets" url="binets.php" key="b"/>
-	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
+	<?php if(est_authentifie(AUTH_MINIMUM) && est_interne()): ?>
 		<lien id="siteseleves" titre="Sites élèves" url="http://perso.frankiz"/>
 	<?php else: ?>
 		<lien id="siteseleves" titre="Sites élèves" url="siteseleves.php"/>
