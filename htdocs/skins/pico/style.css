@@ -361,3 +361,12 @@ span.valid_css {
 }
  
  /* Fin Logos W3C */
+ 
+ .submit_button,.reset_button{
+	background: #dddddd;
+	padding: 2px;
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+	border-top: 1px solid #888888;
+}

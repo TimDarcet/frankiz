@@ -19,7 +19,7 @@
 */
 
 body {
-	background-image: url("http://frankiz/skins/metal/fond.gif");
+	background-image: url("metal/fond.gif");
 	margin: 0;
 	padding: 2px;
 }
@@ -29,7 +29,7 @@ img {
 }
 
 div.fkz_logo {
-	background-image: url("http://frankiz/skins/metal/titre.gif");
+	background-image: url("metal/titre.gif");
 	background-repeat: no-repeat;
 	background-position: center;
 	height: 180px;
@@ -211,28 +211,28 @@ ul.fkz_liens_nav{
 }
 
 span.fkz_annonces_vieux {
-	background-image:url("http://frankiz/accueil/info/icones/vieux.gif");
+	background-image:url("metal/vieux.gif");
 	background-repeat:no-repeat;
 	height:16px;
 	padding-left:16px;
  }
 
  span.fkz_annonces_nouveau {
-	background-image:url("http://frankiz/accueil/info/icones/nouveau.gif");
+	background-image:url("../../skins/pico/images/nouveau.gif");
 	background-repeat:no-repeat;
 	height:16px;
 	padding-left:16px;
  }
  
  span.fkz_annonces_important {
-	background-image:url("http://frankiz/accueil/info/icones/important.gif");
+	background-image:url("../../skins/pico/images/important.gif");
 	background-repeat:no-repeat;
 	height:16px;
 	padding-left:16px;
  } 
  
  span.fkz_annonces_reste {
-	background-image:url("http://frankiz/accueil/info/icones/reste.gif");
+	background-image:url("../../skins/pico/images/reste.gif");
 	background-repeat:no-repeat;
 	height:16px;
 	padding-left:16px;

@@ -57,7 +57,7 @@
 			</p>
 			<hr/>
 		</xsl:for-each>
-		<xsl:apply-templates select="formulaire"/>
+		<xsl:apply-templates/>
 	</div>
 </xsl:template>
 
