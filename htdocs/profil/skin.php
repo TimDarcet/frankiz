@@ -39,10 +39,13 @@
 	)
 	
 	$Log$
+	Revision 1.14  2004/11/13 00:12:24  schmurtz
+	Ajout du su
+
 	Revision 1.13  2004/11/11 21:15:52  kikx
 	Rajout d'un champs dans le trombino pour stocker la skin du mec ...
 	le cookie est prioritaire, mais si il n'existe pas ou qu'il a ppartient a quelqu'un d'autre, alors on va cherhcer dans la BDD
-
+	
 	Revision 1.12  2004/11/08 12:45:17  pico
 	Rajout d'un id pour pouvoir skinner les titres des formulaires
 	
@@ -214,11 +217,10 @@ if(!empty($_REQUEST['OK_skin'])) {
 			$new_skin['skin_visible'][$module] = true;
 }
 
-// Si la skin a été modifié, on rajoute un cookie de validité 3 ans
-if( !empty($new_skin) ) {
+// Si la skin a été modifié, on rajoute un cookie de validité 3 ans et on stocke la skin dans nos bases.
+if(!empty($new_skin)) {
 	$cookie = serialize($new_skin);
 	SetCookie("skin",base64_encode($cookie),time()+3*365*24*3600,"/");
-	SetCookie("user_id",base64_encode("".$_SESSION['user']->uid),time()+3*365*24*3600,"/");
 	skin_parse($cookie);
 	$DB_trombino->query("UPDATE eleves SET skin='$cookie' WHERE eleve_id='".$_SESSION['user']->uid."'");
 }

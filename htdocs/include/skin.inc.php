@@ -21,10 +21,13 @@
 	Gestion des skins : lecture du cookie contenant les préférences d'affichage
 	
 	$Log$
+	Revision 1.9  2004/11/13 00:12:24  schmurtz
+	Ajout du su
+
 	Revision 1.8  2004/11/11 21:15:52  kikx
 	Rajout d'un champs dans le trombino pour stocker la skin du mec ...
 	le cookie est prioritaire, mais si il n'existe pas ou qu'il a ppartient a quelqu'un d'autre, alors on va cherhcer dans la BDD
-
+	
 	Revision 1.7  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -68,14 +71,20 @@ function skin_parse($skin_str) {
 }
 
 // Retrouve les données skin
-if ((isset($_COOKIE['skin'])) &&($_SESSION['user']->uid!="") &&(isset($_COOKIE['user_id'])) &&(base64_decode($_COOKIE['user_id'])==$_SESSION['user']->uid))
+if(est_authentifie(AUTH_MINIMUM)) {
+	$DB_trombino->query("SELECT skin FROM eleves WHERE eleve_id='{$_SESSION['user']->uid}'") ;
+	if($DB_trombino->num_rows()!=0) {
+		list($skin) = $DB_trombino->next_row();
+		$cookie = $skin;		// hack bizarre pour être sur que php considère $cookie comme un string
+								// ce qui est indispensable pour la fonction base64_encode (si on met
+								// directement $skin, php considère que c'est un array alors que c'est faux)
+		skin_parse($cookie);
+		SetCookie("skin",base64_encode($cookie),time()+3*365*24*3600,"/");
+	}
+
+} else if(isset($_COOKIE['skin'])) {
 	skin_parse(base64_decode($_COOKIE['skin']));
-else if ($_SESSION['user']->uid!="") {
-	$DB_trombino->query("SELECT skin FROM eleves WHERE eleve_id=".$_SESSION['user']->uid) ;
-	list($skin) = $DB_trombino->next_row() ;
-	$cookie = $skin;
-	skin_parse($cookie);
-	SetCookie("skin",base64_encode($cookie),time()+3*365*24*3600,"/");
-	SetCookie("user_id",base64_encode("".$_SESSION['user']->uid),time()+3*365*24*3600,"/");
+
 }
+
 ?>

@@ -21,9 +21,12 @@
 	Page d'entête pour la transformation du XML. Met en place un cache de sortie.
 
 	$Log$
+	Revision 1.7  2004/11/13 00:12:24  schmurtz
+	Ajout du su
+
 	Revision 1.6  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.5  2004/09/16 15:32:56  schmurtz
 	Suppression de la fonction afficher_identifiant(), utilisation de <![CDATA[......]]> aÌ€ la place.
 	
@@ -44,5 +47,7 @@ ob_start();
 echo "<?xml version='1.0' encoding='ISO-8859-1' ?>\n";
 echo "<!DOCTYPE frankiz PUBLIC \"-//BR//DTD FRANKIZ 1.0//FR\" \"http://frankiz.polytechnique.fr/frankiz.dtd\">\n";
 echo "<frankiz base='".BASE_URL."/' css='".$_SESSION['skin']['skin_css']."'>\n";
+if(isset($_SESSION['sueur']))
+	echo "<module id='su' titre='SU'><p>ATTENTION, su en cours. Pour revenir à ta vrai identité, clique <a href='index.php?logout=1'>ici</a></p></module>";
 require "modules.inc.php";
 ?>

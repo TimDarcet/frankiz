@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.24  2004/11/13 00:12:24  schmurtz
+	Ajout du su
+
 	Revision 1.23  2004/11/04 16:36:43  schmurtz
 	Modifications cosmetiques
-
+	
 	Revision 1.22  2004/10/29 16:25:12  kikx
 	bug
 	
@@ -309,7 +312,6 @@
 </xsl:template>
 
 <!-- Page des binets -->
-
 <xsl:template match="page/binet">
 	<xsl:if test="preceding-sibling::binet[1]/@categorie != @categorie or position() = 2">
 		<!-- TODO comprendre pourquoi postion() = 2 et pas 1 :) -->
@@ -330,6 +332,13 @@
 		<!-- TODO comprendre pourquoi postion() = last()-1 et pas last() :) -->
 		<xsl:text disable-output-escaping="yes">&lt;/table&gt;</xsl:text>
 	</xsl:if>
+</xsl:template>
+
+<!-- Affichage agressif du module su -->
+<xsl:template match="module[@id='su']">
+	<div style="display: bloc; position: fixed; top: 0; left: 0; right:0; background: red; font-weight: bold">
+		<xsl:apply-templates/>
+	</div>
 </xsl:template>
 
 </xsl:stylesheet>

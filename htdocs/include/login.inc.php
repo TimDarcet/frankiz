@@ -27,6 +27,8 @@
 	L'authentification par mail utilise les varibales GET 'hash' et 'uid'.
 	L'authentification par cookie utilise le cookie 'auth' contenant un tableau à deux entrées,
 	'hash' et 'uid', sérialisé et encodé en base64.
+	Une authentification permettant de faire un su. L'id de l'utilisateur dont on veut prendre
+	l'identité la variable GET 'su'. (pour les admins uniquement)
 	
 	Le logout s'effectue en mettant une variable GET 'logout' sur n'importe quelle page.
 	
@@ -34,9 +36,12 @@
 	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
 
 	$Log$
+	Revision 1.10  2004/11/13 00:12:24  schmurtz
+	Ajout du su
+
 	Revision 1.9  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.8  2004/09/15 23:19:31  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
@@ -52,9 +57,16 @@ session_start();
 
 // Si un logout a été effectué, on détruit la session, puis on la recrer, vierge.
 if(isset($_GET['logout'])) {
-	session_unset();
-	session_destroy();
-	SetCookie("auth","",0,"/");
+	if(isset($_SESSION['sueur'])) {
+		// on sort juste du su
+		$_SESSION['user'] = $_SESSION['sueur'];
+		unset($_SESSION['sueur']);
+		
+	} else {
+		session_unset();
+		session_destroy();
+		SetCookie("auth","",0,"/");
+	}
 	rediriger_vers("/");
 }
 
@@ -99,6 +111,28 @@ if(isset($_POST['login']) && isset($_POST['passwd'])) {
 	$cookie = unserialize(base64_decode($_COOKIE['auth']));
 	$_SESSION['user'] = new User(false,$cookie['uid']);
 	$_SESSION['user']->verifie_cookiehash($cookie['hash']);
+
+// Login par utilisation du su (utilisable par les admins uniquement)
+} else if(isset($_GET['su']) && verifie_permission('admin')) {
+	demande_authentification(AUTH_FORT);
+	
+	$newuser = new User(false,$_GET['su']);
+	if($newuser->uid == 0) {
+		require_once "skin.inc.php";	// skin.inc.php est inclus juste après login.inc.php, donc
+										// c'est pas encore fait
+		require "page_header.inc.php";
+		echo "<page id='su' titre='Frankiz : erreur'>\n";
+		echo "<p>L'utilisateur n'a pas encore de compte Frankiz ou alors n'existe pas.</p>\n";
+		echo "</page>\n";
+		require "page_footer.inc.php";
+		exit;
+	}
+
+	$newuser->methode = AUTH_MDP;
+	if(!isset($_SESSION['sueur']))
+		$_SESSION['sueur'] = $_SESSION['user']; // on sauvegarde l'utilisateur actuel
+	$_SESSION['user'] = $newuser;
+	rediriger_vers("/");
 }
 
 

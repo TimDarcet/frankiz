@@ -26,9 +26,12 @@
 	informations provenant des tables du trombino (avec jointure sur l'uid).
 
 	$Log$
+	Revision 1.10  2004/11/13 00:12:24  schmurtz
+	Ajout du su
+
 	Revision 1.9  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.8  2004/10/17 17:13:20  kikx
 	Pour rendre la page d'administration plus belle
 	n'affiche le truc d'admin que si on est admin
@@ -69,17 +72,21 @@ class User {
 	function User($islogin,$value) {
 		global $DB_web;
 		if(empty($value)) {
-			// construit un objet à partir de rien : utilisateur anonyme.	
+			// construit un objet à partir de rien : utilisateur anonyme.
 			$this->devient_anonyme();
 			return;
 		}
 		
 		$condition = $islogin ? "WHERE login='$value' ORDER BY promo DESC LIMIT 1" : "WHERE eleves.eleve_id='$value'";
 		$DB_web->query("SELECT eleves.eleve_id,login,perms,nom,prenom,passwd,IF(hashstamp>NOW(),hash,''),hash FROM trombino.eleves INNER JOIN compte_frankiz USING(eleve_id) $condition");
-		list($this->uid,$this->login,$this->perms,$this->nom,$this->prenom,$this->passwd,$this->mailhash,$this->cookiehash) = $DB_web->next_row();
-		
-		$this->perms = split(",",$this->perms);
-		$this->methode = AUTH_AUCUNE;
+		if($DB_web->num_rows() == 0) {
+			// l'utilisateur n'existe pas.
+			$this->devient_anonyme();
+		} else {
+			list($this->uid,$this->login,$this->perms,$this->nom,$this->prenom,$this->passwd,$this->mailhash,$this->cookiehash) = $DB_web->next_row();
+			$this->perms = split(",",$this->perms);
+			$this->methode = AUTH_AUCUNE;
+		}
 	}
 	
 	function devient_anonyme() {
