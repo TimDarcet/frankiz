@@ -23,12 +23,12 @@
 
 <!-- Images -->
 <xsl:template match="image">
-	<p class="image"><img border='0'>
+	<span class="image"><img>
 		<xsl:attribute name="src"><xsl:value-of select="@source"/></xsl:attribute>
 		<xsl:attribute name="alt"><xsl:value-of select="@legende"/></xsl:attribute>
 		<xsl:if test="boolean(@height)"><xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute></xsl:if>
 		<xsl:if test="boolean(@width)"><xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute></xsl:if>
-	</img></p>
+	</img></span>
 	<xsl:if test="boolean(@legende)"><span class="legende"><xsl:value-of select="@legende"/></span><br/></xsl:if>
 </xsl:template>
 
@@ -193,7 +193,7 @@
 </xsl:template>
 <xsl:template match="a">
 	<a>
-		<xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
+		<xsl:if test="@name!=''"><xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute></xsl:if>
 		<xsl:attribute name="href"><xsl:value-of select="@href"/></xsl:attribute><xsl:apply-templates/>
 	</a>
 </xsl:template>

@@ -36,9 +36,12 @@
 	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
 
 	$Log$
+	Revision 1.5  2004/12/15 23:38:30  pico
+	Corrections pour rendre ça valide
+
 	Revision 1.4  2004/12/02 11:47:30  pico
 	C'est bizarre, le // marche pas partout :(
-
+	
 	Revision 1.3  2004/12/02 11:46:20  pico
 	Correction login
 	
@@ -123,7 +126,7 @@ if(isset($_POST['login']) && isset($_POST['passwd'])) {
 		<page id="login" titre="Frankiz : erreur">
 			<p>Une erreur est survenue lors de la vérification du lien d'authentification. Il s'agit
 			peut être d'un dépassement des 6 heures de validité du lien. Si c'est le cas, recommence
-			la procédure en cliquant <a href="<?php echo BASE_URL.'/profil/mdp_perdu.php'?>">ici</a>.</p>
+			la procédure en cliquant <lien titre="ici" href="<?php echo BASE_URL.'/profil/mdp_perdu.php'?>"/>.</p>
 		</page>
 <?php
 		require "page_footer.inc.php";
