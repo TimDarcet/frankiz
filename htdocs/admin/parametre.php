@@ -5,6 +5,10 @@
 	# la dernière promo qui est sur le site
 	# la dernière promo qui est dans le trombi (qui normalment devrait être mis a jour automatiquement)
 	
+	$Log$
+	Revision 1.3  2004/09/16 15:30:09  schmurtz
+	Ajout de la variable cvs "Log", suppression de return inutiles
+
 */
 
 require_once "../include/global.inc.php";
@@ -28,22 +32,14 @@ foreach ($_POST AS $keys => $val){
 		list($max_promo) = $DB_trombino->next_row() ;
 		$DB_web->query("UPDATE parametres SET valeur='$max_promo' WHERE nom='lastpromo_ontrombino'");
 	}
-	
 }
-	
-	
-	
-	
-	
+
+
 // Génération de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
-
 ?>
 <page id="admin_parametre" titre="Frankiz : Modifier les paramètres globaux">
-
-<?
-?>
 
 <commentaire>
 <p>Cette page est une page pour pouvoir modifier directement les paramètres du sites : </p>
