@@ -3,11 +3,15 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.3  2004/10/14 19:21:41  pico
+	- Affichage de la planification existante
+	- Possibilité de replanifier une QDJ
+
 	Revision 1.2  2004/10/14 13:48:13  pico
 	Amélioration du comportement de la planification des qdj
 	- possibilité d'insérer une qdj et de décaler les autres
 	- ou remplacer la qdj déjà placée par la courante et remettre l'ancienne dans les qdj à planifier
-
+	
 
 	
 	
@@ -30,9 +34,11 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="valid_qdj" titre="Frankiz : Planifie tes qdj">
 <h1>Planification des qdj</h1>
 <?
-foreach ($_POST AS $keys => $val){
+foreach ($_REQUEST AS $keys => $val){
 	$temp = explode("_",$keys) ;
 
+	// Fixe une date de parution à la QDJ
+	
 	if ($temp[0]=='valid') {
 		$DB_web->query("SELECT qdj_id FROM qdj WHERE date='{$_REQUEST['date']}' LIMIT 1");
 		if($DB_web->num_rows())
@@ -65,11 +71,79 @@ foreach ($_POST AS $keys => $val){
 	?>
 		<commentaire><p>Planification effectuée</p></commentaire>
 	<?	
-
-
 	}
-}
+	
+	// Formulaire pour modifier la date de parution de la QDJ déjà planifiée
+	
+	if($temp[0]=='modif') {
+		$DB_web->query("SELECT question,reponse1,reponse2 FROM qdj WHERE qdj_id='{$temp[1]}'");
+		list($question,$reponse1,$reponse2) = $DB_web->next_row(); 
+?>
+		<warning><p>Cette QDJ est déjà planifiée pour le <?echo $temp[2] ?></p></warning>
+		<module titre="QDJ">
+			<qdj type="aujourdhui" >
+				<question><?php echo $question ?></question>
+				<reponse id="1"><?php echo $reponse1?></reponse>
+				<reponse id="2"><?php echo $reponse2?></reponse>
+			</qdj>
+		</module>
+		<formulaire id="qdj_<? echo $id ?>" action="admin/planif_qdj.php">
+			<champ id="date" titre="date" valeur="<? echo $temp[2] ?>"/>
+			<choix type="checkbox">
+				<option id="decalage" titre="Décaler si necessaire ?"/>
+			</choix>
+			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider la planification de cette qdj ?')"/>
+			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette qdj ?!!!!!')"/>
+		</formulaire>
+<?	
+	}
+	
+	// Supprime la qdj de la liste
+	
+	if ($temp[0]=='suppr') {
+		$DB_web->query("DELETE FROM qdj WHERE qdj_id='{$temp[1]}'") ;
+	
 
+	?>
+		<warning><p>Suppression d'une qdj</p></warning>
+	<?
+	}
+	
+	// Affiche la planification existante
+	
+	if($temp[0]=='show') {
+		?><h2>Prévisions</h2><?
+		$date = date("Y-m-d", time()-3025 + 24*3600);
+		$DB_web->query("SELECT qdj_id,date,question,reponse1,reponse2 FROM qdj WHERE date>='$date'  ORDER BY date ASC");
+		while(list($id,$date,$question,$reponse1,$reponse2) = $DB_web->next_row()){
+	?>
+			<h5><? echo $date ?></h5>
+				
+			
+			<module titre="QDJ">
+				<qdj type="aujourdhui" >
+					<question><?php echo $question ?></question>
+					<reponse id="1"><?php echo $reponse1?></reponse>
+					<reponse id="2"><?php echo $reponse2?></reponse>
+				</qdj>
+			</module>
+			<formulaire id="qdj_<? echo $id ?>" action="admin/planif_qdj.php">
+				<bouton id='modif_<? echo $id ?>_<? echo $date ?>' titre='Modifier' />
+			</formulaire>
+	<? 
+		}
+	}
+
+}
+// Afficher le bouton pour montrer la plaification déjà établie
+if(!isset($_REQUEST['show']))
+{
+?>
+	<formulaire action="admin/planif_qdj.php">
+			<bouton id='show' titre='Voir la planification existante' />
+	</formulaire>
+<?
+}
 
 
 //===============================
@@ -139,6 +213,7 @@ $DB_web->query("SELECT qdj_id FROM qdj WHERE date>'$date' ");
 				<option id="decalage" titre="Décaler si necessaire ?"/>
 			</choix>
 			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider la planification de cette qdj ?')"/>
+			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette qdj ?!!!!!')"/>
 		</formulaire>
 <?
 	}
