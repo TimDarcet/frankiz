@@ -189,15 +189,12 @@ div.fkz_logo:before {
 }
 
 .fkz_liens,.fkz_contact,.fkz_stats,.fkz_liens_nav {
+    margin-top: 0;
+    margin-bottom: 0;
 	list-style-type:none;
 	color:#333;
     position: relative;
-   left: -10px;
-    margin: 0;
-}
-
-ul.fkz_liens_nav {
-    margin: 0;
+    left:-10px;
 }
 
 div.fkz_anniversaire_titre,div.fkz_page_titre,div.fkz_annonces_titre {
@@ -298,7 +295,7 @@ span.fkz_annonces_vieux,span.fkz_annonces_nouveau, span.fkz_annonces_important,s
 /* Logos menu */
 
 #anniversaires_logo,#navigation_logo,#perso_logo,#affiches_logo,#contacts_logo,#liens_ecole_logo,#serveurs_logo,#stats_logo,#tour_kawa_logo,#qdj_logo,#meteo_logo,#sondages_logo,#lien_tol_logo {
-/*    background-repeat:no-repeat; */
+    background-repeat:no-repeat;
     height:17px;
     width: 16px;
     margin: 5px;
@@ -486,6 +483,30 @@ div.formulaire span.boutons{
 	padding-top:10px;
 }
 
+input:hover {
+    border: 2px solid #e0e0e0;
+    padding: 0px;
+}
+
+.boutons input:active {
+    border: 2px inset #e0e0e0;
+}
+
+.boutons input {
+    cursor:pointer;
+}
+
+option,select {
+    border-top: 1px solid #e0e0e0;
+    background-color: #f8f8f8;
+}
+
+input {
+    padding: 1px;
+    border: 1px solid #e0e0e0;
+    background-color: #f8f8f8;
+}
+
 /* Formulaires */
 
 /* Listes */
@@ -502,4 +523,21 @@ table.liste .entete{
 
 #choix_skin h1, #profil h1,.fkz_page_meteo h1,#xshare  h1,#faq  h1,#vocabulaire  h1{
 	display:none;
+}
+
+/* Binets */
+
+#binets h2 {
+    border: 2px solid #e0e0e0;
+    background-color: #f8f8f8;
+    padding-left: 20px;
+}
+
+#binets h3 {
+    border-top: 1px solid #e0e0e0;
+}
+
+#binets p {
+    border-bottom: 1px solid #e0e0e0;
+    font-style: italic;
 }
