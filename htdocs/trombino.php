@@ -21,9 +21,16 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.26  2004/12/09 19:56:48  pico
+	La boite de recherche tol fait aussi les requetes de tel.
+
+	Pourquoi ce bout de code est en double ?
+
+	Sinon, j'ai importé la base des numéros de tel dans frankiz2.
+
 	Revision 1.25  2004/12/09 19:29:13  pico
 	Rajoute le tel dans le trombino, ça pourrait être utile...
-
+	
 	Revision 1.24  2004/11/27 20:49:10  pico
 	Affichage des liens du trombino
 	
@@ -100,8 +107,8 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_RE
 	// Création de la requête si lien_tol appelle
 	if(isset($_REQUEST['cherchertol'])) {
 		$where = "";
-		$join = "INNER JOIN sections ON eleves.section_id=sections.section_id";
-		$champs = "eleves.eleve_id,eleves.nom,prenom,surnom,piece_id,sections.nom,eleves.section_id,cie,promo,login,mail,0";
+		$join = "INNER JOIN sections ON eleves.section_id=sections.section_id INNER JOIN pieces ON eleves.piece_id = pieces.piece_id ";
+		$champs = "eleves.eleve_id,eleves.nom,prenom,surnom,eleves.piece_id,sections.nom,eleves.section_id,cie,promo,login,mail,pieces.tel";
 		$where_like = array(
 			'nom' => 'eleves.nom',	'prenom' => 'prenom',	'surnom' => 'surnom');
 		foreach($where_like as $post_arg => $db_field)
