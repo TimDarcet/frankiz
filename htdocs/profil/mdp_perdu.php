@@ -21,9 +21,12 @@
 	Gestion de la création d'un compte et de la perte de mot de passe.
 	
 	$Log$
+	Revision 1.17  2004/11/03 17:23:43  pico
+	Remise en forme du mail html
+
 	Revision 1.16  2004/11/03 17:03:29  pico
 	Passage de l'envoi de mail en "couriel"
-
+	
 	Revision 1.15  2004/11/03 12:15:32  pico
 	La fonction qui remplissait le corps du mail n'existait plus -> le mail était vide !!! (merci mYk d'avoir signalé ça)
 	
@@ -65,9 +68,13 @@ if(!empty($_REQUEST['loginpoly'])) {
 		
 		// Envoie le mail contenant l'url avec le hash
 		$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
-		$contenu = "Pour te connecter sur Frankiz, il te suffit de cliquer sur le\n".
-				   "lien ci-dessous :\n\n".
-				   "	[ http://".$_SERVER['SERVER_NAME'].$tempo[0]."profil/profil.php?uid=${id}&hash=${hash} ]\n\n".
+		$contenu = "Pour te connecter sur Frankiz, il te suffit de cliquer sur le<br/>\n".
+				   "lien ci-dessous :<br/>\n\n".
+				   "<blockquote>\t[ <a href=\"".
+				   "http://".$_SERVER['SERVER_NAME'].$tempo[0]."profil/profil.php?uid=${id}&hash=${hash}".
+				   "\">".
+				   "http://".$_SERVER['SERVER_NAME'].$tempo[0]."profil/profil.php?uid=${id}&hash=${hash}".
+				   "</a> ]</blockquote>\n\n".
 				   "N'oublie pas ensuite de modifier ton mot de passe.";
 		if (($mail=="")||($mail=="NULL")) $mail = $login."@poly.polytechnique.fr" ;
 		
