@@ -77,7 +77,7 @@ a:hover {
 /* Logos Modules */
 
 div.fkz_logo {
-	background-image:url("images/logo.png");
+	background-image:url("images/logo.gif");
 	background-repeat:no-repeat;
 	height:90px;
  }
@@ -99,39 +99,39 @@ span#contacts_logo,span#liens_ecole_logo,span#meteo_logo,span#stats_logo,span#se
  }
 
 span#contacts_logo {
-	background-image:url("images/contact.png");
+	background-image:url("images/contact.gif");
  }
 
 span#liens_ecole_logo {
-	background-image:url("images/ecole.png");
+	background-image:url("images/ecole.gif");
  }
  
 span#meteo_logo {
-	background-image:url("images/meteo.png");
+	background-image:url("images/meteo.gif");
  }
  
 span#stats_logo {
-	background-image:url("images/stats.png");
+	background-image:url("images/stats.gif");
  }
  
 span#serveurs_logo {
-	background-image:url("images/serveurs.png");
+	background-image:url("images/serveurs.gif");
  }
  
 span#tour_kawa_logo {
-	background-image:url("images/tour_kawa.png");
+	background-image:url("images/tour_kawa.gif");
  }
  
 span#qdj_hier_logo {
-	background-image:url("images/qdj_hier.png");
+	background-image:url("images/qdj_hier.gif");
  }
  
 span#qdj_logo{
-	background-image:url("images/qdj.png");
+	background-image:url("images/qdj.gif");
  }
  
 span#anniversaires_logo {
-	background-image:url("images/anniversaire.png");
+	background-image:url("images/anniversaire.gif");
  }
  
  /* Fin Logos Modules */
@@ -310,30 +310,26 @@ span.valid_css {
  
  /* Fin Logos W3C */
 
-
 /* Stats */
  
 .fkz_stats{list-style-type:  none;}
 
 .serveur_nom {
-	display: block;
+	position:relative;
+	left:5px;
 	color: inherit;
 }
 
 .serveur_up {
 	color: inherit;
 	background: lime;
-	position: relative;
-	left: 80px;
-	top: -16px;
+
 }
 
 .serveur_down {
 	color: inherit;
 	background: red;
-	position: relative;
-	left: 80px;
-	top: -16px;
+
 }
 
 /* FAQ et Xshare */
@@ -343,10 +339,18 @@ span.valid_css {
 
 /* Commentaires et Warning */
 
+
+/* Commentaires et Warning */
+
 .commentaire,.warning,.note {
 	color: inherit;
 	padding: 6px;
-	margin: 5px;
+	margin:5px;
+	margin-left:5px;
+	margin-right:5px;
+	margin-top:5px;
+	margin-bottom:5px;
+	display:block;
 }
 
 .commentaire {
@@ -421,7 +425,7 @@ table.liste .entete{
 }
 
 #choix_skin h1, #profil  h1{
-	background-image: url("images/titre_page_skin.png");
+	background-image: url("images/titre_page_skin.gif");
 	background-repeat:no-repeat;
 	background-position: center;
 	height: 22px;
@@ -430,56 +434,56 @@ table.liste .entete{
 }
 
 #choix_skin h1 {
-	background-image: url("images/titre_page_skin.png");
+	background-image: url("images/titre_page_skin.gif");
 }
 
 #choix_skin #form_choix_skin h2 {
-	background-image: url("images/titre_choix_skin.png");
+	background-image: url("images/titre_choix_skin.gif");
 }
 
 #choix_skin #form_param_skin h2 {
-	background-image: url("images/titre_param_skin.png");
+	background-image: url("images/titre_param_skin.gif");
 }
 
 #profil  h1 {
-	background-image: url("images/titre_page_profil.png");
+	background-image: url("images/titre_page_profil.gif");
 }
 
 #faq  h1 {
-	background-image: url("images/faq.png");
+	background-image: url("images/faq.gif");
 }
 
 #vocabulaire  h1 {
-	background-image: url("images/vocabulaire.png");
+	background-image: url("images/vocabulaire.gif");
 }
 
 #xshare  h1 {
-	background-image: url("images/xshare.png");
+	background-image: url("images/xshare.gif");
 }
 
 #profil #mod_frankiz h2{
-	background-image: url("images/titre_compte_profil.png");
+	background-image: url("images/titre_compte_profil.gif");
 }
 
 #profil #mod_trombino h2{
-	background-image: url("images/titre_trombino_profil.png");
+	background-image: url("images/titre_trombino_profil.gif");
 }
 
 #profil #liste_binet h2{
-	background-image: url("images/titre_binet_profil.png");
+	background-image: url("images/titre_binet_profil.gif");
 }
 
 #profil_reseau h2#nom_machine{
-	background-image: url("images/titre_reseau_nom.png");
+	background-image: url("images/titre_reseau_nom.gif");
 }
 
 #profil_reseau h2#reseau_ip{
-	background-image: url("images/titre_reseau_info.png");
+	background-image: url("images/titre_reseau_info.gif");
 }
 
 
 #profil_reseau form h2{
-	background-image: url("images/titre_reseau_xnet.png");
+	background-image: url("images/titre_reseau_xnet.gif");
 }
 
 #profil_reseau form h2 span.adresse_ip{
@@ -489,6 +493,6 @@ table.liste .entete{
 }
 
 .fkz_page_meteo h1{
-	background-image: url("images/titre_meteo.png");
+	background-image: url("images/titre_meteo.gif");
 }
 
