@@ -19,10 +19,13 @@
 */
 /*
 		$Log$
+		Revision 1.24  2004/11/16 14:06:28  pico
+		Toute chtite correction
+
 		Revision 1.23  2004/11/16 14:02:37  pico
 		- Nouvelle fonction qui permet de dl le contenu d'un répertoire
 		- Mise en place sur la page de la FAQ
-
+		
 		Revision 1.22  2004/11/15 22:59:53  pico
 		Affiche correctement les faq/folder + possibilité de modifier des faq
 		
@@ -250,7 +253,7 @@ function rech_fils($parent) {
 		
 		$DB_web->query("SELECT faq_id,question FROM faq WHERE  ((parent='{$parent}') AND (reponse LIKE '%index.php' OR reponse LIKE '%index.html'))" ) ;
 		while(list($id,$question) = $DB_web->next_row()) {
-			echo "\n\r<feuille id='".$id."' lien='admin/faq.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
+			echo "\n\r<feuille id='".$id."' lien='admin/faq.php?dir_id=".$id."&amp;affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#reponse' titre='".htmlspecialchars($question,ENT_QUOTES)."'>" ;
 			if (isset($_REQUEST['dir_id']) && ($id == $_REQUEST['dir_id'])) {
