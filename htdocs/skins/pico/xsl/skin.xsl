@@ -151,9 +151,7 @@
 		<h2><xsl:value-of select="@categorie"/></h2>
 	</xsl:if>
 	<h3><a><xsl:attribute name="href"><xsl:value-of select="url"/></xsl:attribute><xsl:value-of select="@nom"/></a></h3>
-	<a><xsl:attribute name="href"><xsl:value-of select="url"/></xsl:attribute>
-			<xsl:apply-templates select="image"/>
-	</a>
+		<xsl:apply-templates select="image"/>
 		<p><xsl:value-of select="description"/></p>
 </xsl:template>
 
