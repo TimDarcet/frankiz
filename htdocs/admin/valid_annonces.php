@@ -3,13 +3,18 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.9  2004/10/11 11:01:38  kikx
+	Correction des pages de proposition et de validation des annonces pour permettre
+	- de stocker les image au bon endroit
+	- de mettre les annonces su l'esterieur
+
 	Revision 1.8  2004/10/08 06:51:43  pico
 	Premier (re)commit:
-
+	
 	Pour la validation des annonces, il manquait un champ -> erreur sql.
-
+	
 	Il faudrait pas rajouter les options pour définir l'annonce en haut ou visible de l'extérieur ??
-
+	
 	Revision 1.7  2004/10/06 14:12:27  kikx
 	Page de mail promo quasiment en place ...
 	envoie en HTML ...
@@ -32,10 +37,6 @@ demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
 	rediriger_vers("/admin/");
 
-
-$temp = explode("admin",$_SERVER['SCRIPT_FILENAME']) ;
-$racine = $temp[0] ;
-$uploaddir  =  $racine."/proposition/image_temp/" ;
 
 
 // Génération de la page
@@ -70,14 +71,18 @@ foreach ($_POST AS $keys => $val){
 			"Très BR-ement\n" .
 			"L'automate :)\n"  ;
 		couriel($eleve_id,"[Frankiz] Ton annonce a été validé par le BR",$contenu);
-
-		$DB_web->query("INSERT annonces SELECT 0 as annonce_id, NOW() as stamp,perime, titre,contenu,eleve_id,0 as en_haut,0 as exterieur FROM a_valider.valid_annonces WHERE annonce_id='{$temp[1]}'");
 		
+		if (isset($_REQUEST['ext_auth']))
+			$temp_ext = '1'  ;
+		else 
+			$temp_ext = '0' ;
+			
+		$DB_web->query("INSERT INTO annonces  SET stamp=NOW(), perime='{$_POST['date']}', titre='{$_POST['titre']}', contenu='{$_POST['text']}', eleve_id=$eleve_id, exterieur=$temp_ext");
 		
 		// On déplace l'image si elle existe dans le répertoire prevu à cette effet
 		$index = mysql_insert_id() ;
-		if (file_exists($uploaddir."/{$temp[1]}_annonce")){
-			rename($uploaddir."/{$temp[1]}_annonce",$racine.UPLOAD_WEB_DIR."annonce_$index") ;
+		if (file_exists(DATA_DIR_LOCAL."annonces/a_valider_{$temp[1]}")){
+			rename(DATA_DIR_LOCAL."annonces/a_valider_{$temp[1]}",DATA_DIR_LOCAL."annonces/$index") ;
 		}
 		$DB_valid->query("DELETE FROM valid_annonces WHERE annonce_id='{$temp[1]}'") ;
 	?>
@@ -98,8 +103,8 @@ foreach ($_POST AS $keys => $val){
 		//On supprime aussi l'image si elle existe ...
 		
 		$supp_image = "" ;
-		if (file_exists($uploaddir."/{$temp[1]}_annonce")){
-			unlink($uploaddir."/{$temp[1]}_annonce") ;
+		if (file_exists(DATA_DIR_LOCAL."annonces/a_valider_{$temp[1]}")){
+			unlink(DATA_DIR_LOCAL."annonces/a_valider_{$temp[1]}") ;
 			$supp_image = " et de son image associée" ;
 		}
 		
@@ -115,17 +120,17 @@ foreach ($_POST AS $keys => $val){
 
 //===============================
 
-	$DB_valid->query("SELECT v.annonce_id,v.perime, v.titre, v.contenu, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_annonces as v INNER JOIN trombino.eleves as e USING(eleve_id)");
-	while(list($id,$date,$titre,$contenu,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
+	$DB_valid->query("SELECT v.exterieur, v.annonce_id,v.perime, v.titre, v.contenu, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_annonces as v INNER JOIN trombino.eleves as e USING(eleve_id)");
+	while(list($ext, $id,$date,$titre,$contenu,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
 ?>
 		<annonce titre="<?php  echo $titre ?>" 
 				categorie=""
 				auteur="<?php echo empty($surnom) ? $prenom.' '.$nom : $surnom .' (X'.$promo.')'?>"
 				date="<? echo $date?>">
 				<? echo $contenu ;
-				if (file_exists($uploaddir."/{$id}_annonce")){
+				if (file_exists(DATA_DIR_LOCAL."annonces/a_valider_{$id}")){
 				?>
-					<image source="<? echo "proposition/image_temp/{$id}_annonce" ; ?>"/>
+					<image source="<? echo DATA_DIR_URL."annonces/a_valider_{$id}" ; ?>" texte=""/>
 				<?
 				}
 				?>
@@ -136,10 +141,22 @@ foreach ($_POST AS $keys => $val){
 ?>
 
 		<formulaire id="annonce_<? echo $id ?>" titre="L'annonce" action="admin/valid_annonces.php">
+			<? 
+			if ($ext==1) {
+				echo "<warning>L'utilisateur a demandé que son activité soit visible de l'exterieur</warning>" ;
+				$ext_temp='ext' ; 
+			} else $ext_temp="" ;
+			?>
+
 			<champ id="titre" titre="Le titre" valeur="<? echo $titre ;?>"/>
 			<zonetext id="text" titre="Le texte" valeur="<? echo $contenu ;?>"/>
 			<textsimple valeur="La signature sera automatiquement généré"/>
 			<champ id="date" titre="Date de péremption" valeur="<? echo $date ;?>"/>
+			
+			<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? echo $ext_temp." " ; if ((isset($_REQUEST['ext_auth']))&&(isset($_REQUEST['modif_'.$id]))) echo 'ext_auth' ;?>">
+				<option id="ext" titre="Demande de l'utilisateur" modifiable='non'/>
+				<option id="ext_auth" titre="Décision du Webmestre"/>
+			</choix>
 			
 			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
 			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider cette annonce ?')"/>

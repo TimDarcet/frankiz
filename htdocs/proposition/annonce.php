@@ -3,9 +3,14 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.16  2004/10/11 11:01:38  kikx
+	Correction des pages de proposition et de validation des annonces pour permettre
+	- de stocker les image au bon endroit
+	- de mettre les annonces su l'esterieur
+
 	Revision 1.15  2004/10/04 21:48:54  kikx
 	Modification du champs fichier pour uploader des fichiers
-
+	
 	Revision 1.14  2004/09/20 22:19:28  kikx
 	test
 	
@@ -38,6 +43,7 @@ demande_authentification(AUTH_MINIMUM);
 $DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM eleves WHERE eleve_id='".$_SESSION['user']->uid."'");
 list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_row();
 
+
 //---------------------------------------------------------------------------------
 // On traite l'image qui vient d'etre uploader si elle existe
 //---------------------------------------------------------------------------------
@@ -53,10 +59,6 @@ list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_ro
 //--//
 //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
 
-$temp = explode("annonce",$_SERVER['SCRIPT_FILENAME']) ;
-$temp = $temp[0] ;
-$uploaddir  =  $temp."/image_temp/" ;
-
 $erreur_upload = 0 ;
 if ((isset($_FILES['file']))&&($_FILES['file']['size']!=0))  {
 	$original_size = getimagesize($_FILES['file']['tmp_name']);
@@ -67,8 +69,8 @@ if ((isset($_FILES['file']))&&($_FILES['file']['size']!=0))  {
 	if (($larg>=400)||($haut>=300)) {
 		$erreur_upload =1 ;
 	} else if (($filetype=="image/jpg")||($filetype=="image/jpeg")||($filetype=="image/pjpg")||($filetype=="image/gif")||($filetype=="image/png")) {
-		$filename = "annonce_$eleve_id" ;
-		move_uploaded_file($_FILES['file']['tmp_name'], $uploaddir . $filename) ;
+		$filename = "temp_$eleve_id" ;
+		move_uploaded_file($_FILES['file']['tmp_name'], DATA_DIR_LOCAL ."annonces/". $filename) ;
 	} else {
 		$erreur_upload = 1 ;
 	}
@@ -80,8 +82,8 @@ if ((isset($_FILES['file']))&&($_FILES['file']['size']!=0))  {
 
 if (isset($_POST['suppr_img'])) {
 
-	if (file_exists($uploaddir."/annonce_$eleve_id")) {
-		unlink($uploaddir."/annonce_$eleve_id") ; 
+	if (file_exists(DATA_DIR_LOCAL."annonces/temp_$eleve_id")) {
+		unlink(DATA_DIR_LOCAL."annonces/temp_$eleve_id") ; 
 	}
 }
 //================================================
@@ -92,15 +94,20 @@ if (isset($_POST['valid'])) {
 
 	$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
 
-	$DB_valid->query("INSERT INTO valid_annonces SET perime=FROM_UNIXTIME({$_POST['date']}), eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',contenu='".$_POST['text']."'");
+	if (isset($_REQUEST['ext']))
+		$temp_ext = '1'  ;
+	else 
+		$temp_ext = '0' ;
+
+	$DB_valid->query("INSERT INTO valid_annonces SET perime=FROM_UNIXTIME({$_POST['date']}), eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',contenu='".$_POST['text']."', exterieur=$temp_ext");
 	
 	// on modifie le nom du fichier qui a été téléchargé si celui ci existe
 	// selon la norme de nommage ci-dessus
 	//----------------------------------------------------------------------------------------------
 	
-	if (file_exists($uploaddir."/annonce_$eleve_id")) {
+	if (file_exists(DATA_DIR_LOCAL."annonces/temp_$eleve_id")) {
 		$index = mysql_insert_id() ;
-		rename($uploaddir."/annonce_$eleve_id",$uploaddir."/{$index}_annonce") ; 
+		rename(DATA_DIR_LOCAL."annonces/temp_$eleve_id",DATA_DIR_LOCAL."annonces/a_valider_{$index}") ; 
 	}
 	$contenu = "$prenom $nom a demandé la validation d'une annonce : \n".
 				$_POST['titre']."\n\n".
@@ -147,20 +154,19 @@ if (!isset($_POST['text'])) $_POST['text']="c'est &lt;b&gt;en gras&lt;/b&gt;, "
 									."&lt;a href='mailto:toto@poly'&gt;un lien email&lt;/a&gt;" ;
 if (!isset($_POST['titre']))  $_POST['titre']="Titre" ;
 
-//$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
 ?>
 	<annonce titre="<?php echo $_POST['titre'] ; ?>" 
 			categorie=""
 			date="<? echo date("d/m/y") ?>">
 			<? 
 			echo $_POST['text'] ;
-			if ((!isset($_POST['valid']))&&(file_exists($uploaddir."/annonce_$eleve_id"))) {
+			if ((!isset($_POST['valid']))&&(file_exists(DATA_DIR_LOCAL."annonces/temp_$eleve_id"))) {
 			?>
-				<image source="<?echo "proposition/image_temp/annonce_".$eleve_id ; ?>"/>
+				<image source="<?echo DATA_DIR_URL."annonces/temp_".$eleve_id ; ?>" texte=""/>
 			<? 
-			} else if ((isset($index))&&(file_exists($uploaddir."/{$index}_annonce"))){
+			} else if ((isset($index))&&(file_exists(DATA_DIR_LOCAL."annonces/a_valider_{$index}"))){
 			?>
-				<image source="<? echo "proposition/image_temp/{$index}_annonce" ; ?>"/>
+				<image source="<?echo DATA_DIR_URL."annonces/a_valider_".$index ; ?>" texte=""/>
 			<?
 			}
 			?>
@@ -205,6 +211,12 @@ if (isset($_POST['valid'])) {
 		}
 ?>
 		</choix>
+		
+		<textsimple valeur="Si tu veux que ton annonce soit visible de l'exterieur, clique ici"/>
+		<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if (isset($_REQUEST['ext'])) echo 'ext' ;?>">
+			<option id="ext" titre=""/>
+		</choix>
+
 		<bouton id='test' titre="Tester"/>
 		<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider votre annonce ?')"/>
 	</formulaire>
