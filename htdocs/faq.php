@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.16  2005/01/22 17:58:38  pico
+		Modif des images
+
 		Revision 1.15  2005/01/11 16:47:09  pico
 		Bug #26
-
+		
 		Revision 1.14  2004/12/15 05:17:57  falco
 		Cohérence tutoiement
 		
@@ -183,7 +186,7 @@ function rech_fils($parent) {
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "' titre='".$question."'>" ;
 			if (eregi("/".$id."/",$a_marquer)) {
-				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche_folder.gif'/>" ;
+				echo "<image source='images/fleche_folder.gif' texte=\"marqué\"/>" ;
 			}
 			$DB_faq->push_result();
 			rech_fils($id) ;
@@ -202,7 +205,7 @@ function rech_fils($parent) {
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#reponse' titre='".$question."'>" ;
 			if (eregi("/".$id."/",$a_marquer)) {
-				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche.gif'/>" ;
+				echo "<image source='images/fleche.gif' texte=\"marqué\"/>" ;
 			}
 			echo "</feuille>\n\r" ;
 		}

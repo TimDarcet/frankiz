@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.41  2005/01/22 17:58:39  pico
+	Modif des images
+
 	Revision 1.40  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
-
+	
 	Revision 1.39  2005/01/14 11:09:44  pico
 	suite du bug je sais plus combien
 	
@@ -250,9 +253,9 @@ if (!isset($_POST['titre']))  $_POST['titre']="Titre" ;
 			date="<? echo date("d/m/y") ?>">
 			<? 
 			if (!isset($_POST['valid']) && file_exists(DATA_DIR_LOCAL."annonces/temp_$eleve_id")) {
-				echo "<image source=\"".DATA_DIR_URL."annonces/temp_$eleve_id\" texte=\"\"/>\n";
+				echo "<image source=\"".DATA_DIR_URL."annonces/temp_$eleve_id\" texte=\"image\"/>\n";
 			} else if (isset($index) && file_exists(DATA_DIR_LOCAL."annonces/a_valider_{$index}")){
-				echo "<image source=\"".DATA_DIR_URL."annonces/a_valider_$index\" texte=\"\"/>\n";
+				echo "<image source=\"".DATA_DIR_URL."annonces/a_valider_$index\" texte=\"image\"/>\n";
 			}
 			echo wikiVersXML($_POST['text']) ;
 			?>

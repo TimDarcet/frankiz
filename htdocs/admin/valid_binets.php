@@ -21,9 +21,12 @@
 	Page de validation d'une modification d'un binet
 	
 	$Log$
+	Revision 1.14  2005/01/22 17:58:38  pico
+	Modif des images
+
 	Revision 1.13  2005/01/18 13:45:31  pico
 	Plus de droits pour les web
-
+	
 	Revision 1.12  2005/01/11 14:36:42  pico
 	Binets triés ext/int + url auto si binet sur le serveur
 	
@@ -129,7 +132,7 @@ $DB_valid->query("UNLOCK TABLES");
 		<formulaire id="binet_web" titre="<? echo $nom?>" action="admin/valid_binets.php">
 			<hidden id="id" titre="ID" valeur="<? echo $binet_id?>"/>
 			<champ titre="Catégorie" valeur="<? echo $categorie?>" modifiable="non"/>
-			<image source="gestion/binet.php?image=1&amp;id=<?=$binet_id?>"/>
+			<image source="gestion/binet.php?image=1&amp;id=<?=$binet_id?>" texte="<?=$nom?>"/>
 			<lien url="<? echo $http?>" titre="<? echo $http?>"/><br/>
 			<champ titre="Description" valeur="<? echo stripslashes($description)?>" modifiable="non"/>
 

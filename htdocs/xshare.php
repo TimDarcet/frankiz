@@ -19,9 +19,12 @@
 */
 /*
 	$Log$
+	Revision 1.11  2005/01/22 17:58:38  pico
+	Modif des images
+
 	Revision 1.10  2005/01/21 18:21:44  pico
 	Hum...
-
+	
 	Revision 1.9  2005/01/11 16:47:09  pico
 	Bug #26
 	
@@ -143,7 +146,7 @@ function rech_fils($id_parent) {
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer);
 			echo "'>\n\r" ;
 			if (eregi("/".$id."/",$a_marquer)) {
-				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche_folder.gif'/>\n\r" ;
+				echo "<image source='images/fleche_folder.gif' texte=\"marqué\"/>\n\r" ;
 			}
 			$DB_web->push_result();
 			rech_fils($id) ;
@@ -158,7 +161,7 @@ function rech_fils($id_parent) {
 		while(list($id,$nom) = $DB_web->next_row()) {
 			echo "\n\r<feuille  id='".$id."'  titre='".$nom."'>\n\r" ;
 			if (eregi("/".$id."/",$a_marquer)) {
-				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche.gif'/>\n\r" ;
+				echo "<image source='images/fleche.gif' texte=\"marqué\"/>\n\r" ;
 			}
 			$DB_web->push_result();
 			$DB_web->query("SELECT * FROM xshare WHERE id='{$id}'") ;

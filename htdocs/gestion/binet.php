@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.32  2005/01/22 17:58:38  pico
+	Modif des images
+
 	Revision 1.31  2005/01/22 11:00:07  pico
 	BugFix
-
+	
 	Revision 1.30  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
 	
@@ -310,11 +313,11 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 	if ($DB_valid->num_rows()!=0) {
 		list($id,$nom,$descript,$http,$cat_id,$exterieur,$folder) = $DB_valid->next_row() ;
 		$message2 .= "<commentaire>L'aperçu que vous avez maintenant n'a pas encore été validé par le BR. Il faut encore attendre pour que celui ci soit pris en compte</commentaire>" ;
-		$image_link = "<image source=\"gestion/binet.php?image=1&amp;id=$id\"/>" ;
+		$image_link = "<image source=\"gestion/binet.php?image=1&amp;id=$id\" texte=\"image\"/>" ;
 	} else {
 		$DB_trombino->query("SELECT binet_id,nom,description,http,catego_id,exterieur,folder FROM binets WHERE binet_id=".$_REQUEST['binet']);
 		list($id,$nom,$descript,$http,$cat_id,$exterieur,$folder) = $DB_trombino->next_row() ;
-		$image_link = "<image source=\"binets/?image=1&amp;id=$id\"/>" ;
+		$image_link = "<image source=\"binets/?image=1&amp;id=$id\" texte=\"image\"/>" ;
 	}
 
 

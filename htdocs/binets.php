@@ -21,9 +21,12 @@
 	Affichage de la liste des binets ayant un site web.
 
 	$Log$
+	Revision 1.9  2005/01/22 17:58:38  pico
+	Modif des images
+
 	Revision 1.8  2005/01/21 17:05:40  pico
 	Groumf
-
+	
 	Revision 1.7  2005/01/21 17:04:28  pico
 	Erreur
 	
@@ -105,7 +108,7 @@ require BASE_LOCAL."/include/page_header.inc.php";
 			}
 ?>
 		<binet id="<?=$id?>" categorie="<?=$categorie?>" nom="<?=$nom?>">
-			<image source="binets.php?image=1&amp;id=<?=$id?>"/>
+			<image source="binets.php?image=1&amp;id=<?=$id?>"  texte="<?=$nom?>"/>
 			<description><?=stripslashes($description)?></description>
 			<? if($http!="") echo "<url>$http</url>"; ?>
 		</binet>

@@ -21,9 +21,12 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.30  2005/01/22 17:58:38  pico
+	Modif des images
+
 	Revision 1.29  2005/01/18 21:38:39  pico
 	Correction de bug #38
-
+	
 	Revision 1.28  2005/01/18 13:45:31  pico
 	Plus de droits pour les web
 	
@@ -304,7 +307,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<champ id="http" titre="Http" valeur="<? echo $http?>"/>
 		<champ id="folder" titre="Folder de stockage" valeur="<? echo $folder?>"/>
 		<zonetext id="descript" titre="Description"><?=$descript?></zonetext>
-		<image source="binets/?image=1&amp;id=<?=$binet_id?>"/>
+		<image source="binets/?image=1&amp;id=<?=$binet_id?>" texte="<?=$nom_binet ?>"/>
 		<fichier id="file" titre="Ton image de 100x100 px" taille="50000"/>
 		<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if ($exterieur==1) echo 'ext' ;?>">
 			<option id="ext" titre=""/>

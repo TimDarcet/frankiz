@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.31  2005/01/22 17:58:38  pico
+	Modif des images
+
 	Revision 1.30  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
-
+	
 	Revision 1.29  2005/01/13 17:10:58  pico
 	Mails de validations From le validateur qui va plus ou moins bien
 	
@@ -240,7 +243,7 @@ $DB_valid->query("UNLOCK TABLES");
 				date="<? echo $date?>">
 				<?
 				if (file_exists(DATA_DIR_LOCAL."annonces/a_valider_$id"))
-					echo "<image source=\"".DATA_DIR_URL."annonces/a_valider_$id\" texte=\"\"/>\n";
+					echo "<image source=\"".DATA_DIR_URL."annonces/a_valider_$id\" texte=\"image\"/>\n";
 				
 				echo wikiVersXML($contenu) ;
 				?>

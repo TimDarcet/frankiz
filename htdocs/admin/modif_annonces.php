@@ -21,9 +21,12 @@
 	Page qui permet aux admins de modifier une annonce validée
 	
 	$Log$
+	Revision 1.16  2005/01/22 17:58:38  pico
+	Modif des images
+
 	Revision 1.15  2005/01/12 17:20:59  pico
 	Bug #30 suite pour l'admin
-
+	
 	Revision 1.14  2005/01/04 21:44:40  pico
 	Remise en place du lien vers l'helpwiki parce que le résumé en bas de page est incomprehensible
 	
@@ -142,7 +145,7 @@ $DB_valid->query("UNLOCK TABLES");
 				<? echo wikiVersXML($contenu) ;
 				if (file_exists(DATA_DIR_LOCAL."annonces/{$id}")){
 				?>
-					<image source="<? echo DATA_DIR_URL."annonces/{$id}" ; ?>" texte=""/>
+					<image source="<? echo DATA_DIR_URL."annonces/{$id}" ; ?>" texte="image"/>
 				<?
 				}
 				?>

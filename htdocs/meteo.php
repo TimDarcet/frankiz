@@ -21,9 +21,12 @@
 	Permet de donner la météo sur Paris (cf. meteo_func.inc.php)
 			
 	$Log$
+	Revision 1.4  2005/01/22 17:58:38  pico
+	Modif des images
+
 	Revision 1.3  2004/12/14 23:32:07  schmurtz
 	Bug dans l'url d'affichage du logo weather.com
-
+	
 	Revision 1.2  2004/12/13 20:03:25  pico
 	Les liens ne forment pas de blocs, il faut donc le spécifier
 	
@@ -69,7 +72,7 @@ require BASE_LOCAL."/include/page_header.inc.php";
 		cache_sauver('meteo');
 	}
 ?>
-<lien url="http://www.weather.com/?prod=xoap&amp;par=1006415841"><image source="images/Weather.com.png"/></lien><br/>
+<lien url="http://www.weather.com/?prod=xoap&amp;par=1006415841"><image source="images/Weather.com.png" texte="Logo Weather.com"/></lien><br/>
 <lien url="http://www.weather.com/?prod=xoap&amp;par=1006415841">Météo fournie grâce à weather.com&#174;</lien>
 </page>
 <?php require_once BASE_LOCAL."/include/page_footer.inc.php"; ?>

@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.14  2005/01/22 17:58:38  pico
+	Modif des images
+
 	Revision 1.13  2005/01/21 20:38:50  pico
 	Légende des images pour qu'on sache qui est quoi
-
+	
 	Revision 1.12  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
 	
@@ -145,9 +148,9 @@ foreach ($_POST AS $keys => $val){
 
 ?>
 			<formulaire id="trombi_<? echo $id ?>" titre="<? echo "$prenom $nom (X$promo)"?>" action="admin/valid_trombi.php">
-				<image source="trombino.php?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>&amp;original=1" legende="photo originale" />
-				<image source="trombino.php?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>" legende="photo actuelle"/>
-				<image source="profil/profil.php?image=true&amp;id=<?=$id ?>" legende="photo à valider"/>
+				<image source="trombino.php?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>&amp;original=1" texte="photo originale" legende="photo originale" />
+				<image source="trombino.php?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>" texte="photo actuelle" legende="photo actuelle"/>
+				<image source="profil/profil.php?image=true&amp;id=<?=$id ?>" texte="photo à valider" legende="photo à valider"/>
 				<zonetext id="refus" titre="La raison du refus si refus"></zonetext>
 				<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider cette photo ?')"/>
 				<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Supprimer cette photo ?!)"/>

@@ -25,7 +25,7 @@
 <xsl:template match="image">
 	<span class="image" style="display:block;text-align:center"><img>
 		<xsl:attribute name="src"><xsl:value-of select="@source"/></xsl:attribute>
-		<xsl:attribute name="alt"><xsl:value-of select="@legende"/></xsl:attribute>
+		<xsl:attribute name="alt"><xsl:value-of select="@texte"/></xsl:attribute>
 		<xsl:if test="boolean(@height)"><xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute></xsl:if>
 		<xsl:if test="boolean(@width)"><xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute></xsl:if>
 	</img></span>
