@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.29  2004/11/27 15:16:42  pico
+		Corrections
+
 		Revision 1.28  2004/11/27 15:02:17  pico
 		Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-
+		
 		Revision 1.27  2004/11/26 16:12:47  pico
 		La Faq utilise la $DB_faq au lieu de $DB_web
 		
@@ -101,7 +104,7 @@ require_once "../include/global.inc.php";
 require_once "../include/transferts.inc.php";
 
 // Vérification des droits
-if(!(verifie_permission('admin')||verifie_permission('xshare'))
+if(!(verifie_permission('admin')||verifie_permission('faq')))
 	rediriger_vers("/gestion/");
 
 if(isset($_REQUEST['download'])&&isset($_REQUEST['download_type'])){

@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.28  2004/11/27 15:16:42  pico
+		Corrections
+
 		Revision 1.27  2004/11/27 15:02:17  pico
 		Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-
+		
 		Revision 1.26  2004/11/25 12:45:36  pico
 		Duble emploi de htmlspecialchar vu que les entrées dans la bdd sont déjà transformées
 		
@@ -85,7 +88,7 @@ require_once "../include/transferts.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-if(!(verifie_permission('admin')||verifie_permission('xshare'))
+if(!(verifie_permission('admin')||verifie_permission('xshare')))
 	rediriger_vers("/gestion/");
 
 // Génération de la page

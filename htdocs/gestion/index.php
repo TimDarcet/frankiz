@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.18  2004/11/27 15:16:42  pico
+	Corrections
+
 	Revision 1.17  2004/11/27 15:14:46  pico
 	Gestion desdrits dans l'index des pages admin
-
+	
 	Revision 1.16  2004/11/27 14:56:15  pico
 	Debut de mise en place de droits spéciaux (qdj + affiches)
 	+ génération de la page d'admin qui va bien
@@ -160,7 +163,7 @@ $permissions_user = $_SESSION['user']->perms ;
 			<lien titre="Modifier un utilisateur" url="trombino.php"/>
 	<?
 	}
-	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('xshare')||verifie_permission('faq')){
+	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')){
 	?>
 	<h3>Validations Variées</h3>
 	<?
