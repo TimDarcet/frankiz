@@ -53,10 +53,10 @@ if(isset($_POST['supprimer'])) {
 	if(!empty($message))
 		echo "<commentaire>$message</commentaire>\n";
 		
-//	$where = " ON 1 " ;
-// 	If (isset($_POST['rech_kzert'])) $where .= "AND ip_chambre_theory.piece_id LIKE '%".$_POST['rech_kzert']."%' " ;
-// 	if (isset($_POST['rech_prise'])) $where .= "AND ip_chambre_theory.prise_id  LIKE '%".$_POST['rech_prise']."%' " ;
-// 	if (isset($_POST['rech_ip'])) $where .= "AND ip_chambre_theory.ip_theorique LIKE'%".$_POST['rech_ip']."%' " ;
+	$where = " WHERE 1 " ;
+	If (isset($_POST['rech_kzert'])) $where .= "AND ip_chambre_theory.piece_id LIKE '%".$_POST['rech_kzert']."%' " ;
+	if (isset($_POST['rech_prise'])) $where .= "AND ip_chambre_theory.prise_id  LIKE '%".$_POST['rech_prise']."%' " ;
+ 	if (isset($_POST['rech_ip'])) $where .= "AND ip_chambre_theory.ip_theorique LIKE'%".$_POST['rech_ip']."%' " ;
 	
 //	$result = mysql_query("SELECT  valeur FROM parametres WHERE nom='lastpromo_oncampus'");
 //	list($lastpromo) = mysql_fetch_row($result) ;
@@ -73,7 +73,7 @@ if(isset($_POST['supprimer'])) {
 <?
 if (isset($_POST['recherche']) ) {
 
-	$query2 = "SELECT eleves.login, eleves.promo, ip_chambre_theory.prise_id, ip_chambre_theory.piece_id, ip_chambre_theory.ip_theorique FROM eleves RIGHT JOIN ip_chambre_theory USING(piece_id) ORDER BY ip_theorique ASC" ;
+	$query2 = "SELECT eleves.login, eleves.promo, ip_chambre_theory.prise_id, ip_chambre_theory.piece_id, ip_chambre_theory.ip_theorique FROM eleves RIGHT JOIN ip_chambre_theory USING(piece_id) $where ORDER BY ip_theorique ASC" ;
 
 	$DB_web->query($query2);
 
