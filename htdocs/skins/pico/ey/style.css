@@ -297,7 +297,7 @@ span.fkz_annonces_vieux,span.fkz_annonces_nouveau, span.fkz_annonces_important,s
 
 /* Logos menu */
 
-#anniversaires_logo,#navigation_logo,#affiches_logo,#contacts_logo,#liens_ecole_logo,#serveurs_logo,#stats_logo,#tour_kawa_logo,#qdj_logo,#meteo_logo,#sondages_logo,#lien_tol_logo {
+#anniversaires_logo,#navigation_logo,#perso_logo,#affiches_logo,#contacts_logo,#liens_ecole_logo,#serveurs_logo,#stats_logo,#tour_kawa_logo,#qdj_logo,#meteo_logo,#sondages_logo,#lien_tol_logo {
 /*    background-repeat:no-repeat; */
     height:17px;
     width: 16px;
@@ -310,6 +310,10 @@ span.fkz_annonces_vieux,span.fkz_annonces_nouveau, span.fkz_annonces_important,s
 
 #anniversaires_logo {
     background-image:url("images/anniversaire.png");
+}
+
+#perso_logo {
+    background-image:url("images/bookmark.png");
 }
 
 #navigation_logo {
