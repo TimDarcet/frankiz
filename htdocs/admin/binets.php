@@ -3,9 +3,12 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.10  2004/10/20 21:00:04  kikx
+	C'est qd meme plus beau
+
 	Revision 1.9  2004/09/15 23:20:18  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 	Revision 1.8  2004/09/15 21:42:27  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
 	
@@ -68,7 +71,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		while(list($nom,$desc,$id) = $DB_trombino->next_row()) {
 			echo "\t\t<element id=\"$id\">\n";
 			echo "\t\t\t<colonne id=\"nom\">$nom</colonne>\n";
-			echo "\t\t\t<colonne id=\"description\">$desc</colonne>\n";
+			echo "\t\t\t<colonne id=\"description\">".stripslashes($desc)."</colonne>\n";
 			echo "\t\t</element>\n";
 		}
 ?>
