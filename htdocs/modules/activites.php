@@ -21,9 +21,12 @@
 	Script de crÈation de la partie activitÈs contenant des images type "affiche".
 	
 	$Log$
+	Revision 1.15  2005/01/12 23:20:30  pico
+	ActivitÈs extÈrieures, et triÈes par heure...
+
 	Revision 1.14  2005/01/02 10:50:25  pico
 	Passage de certaines pages en visibles de l'intÈrieur (non logguÈ)
-
+	
 	Revision 1.13  2004/12/13 08:50:48  pico
 	Correction mineure
 	
@@ -57,21 +60,23 @@
 	
 */
 
-if(est_authentifie(AUTH_INTERNE)) {
-	// Etat du bÙb
-	$DB_web->query("SELECT valeur FROM parametres WHERE nom='bob'");
-	list($valeur) = $DB_web->next_row();
+
+// Etat du bÙb
+$DB_web->query("SELECT valeur FROM parametres WHERE nom='bob'");
+list($valeur) = $DB_web->next_row();
+
+$DB_web->query("SELECT affiche_id,titre,url,date,exterieur FROM affiches WHERE TO_DAYS(date)=TO_DAYS(NOW()) ORDER BY date");
 	
-	$DB_web->query("SELECT affiche_id,titre,url,date FROM affiches WHERE TO_DAYS(date)=TO_DAYS(NOW())");
-	if ($DB_web->num_rows()!=0 || $valeur=='1'){
-		echo "<module id=\"activites\" titre=\"ActivitÈs\">\n";
-		if($valeur == 1) echo "<annonce><p>Le BÙB est ouvert</p></annonce>";
-		while (list($id,$titre,$url,$date)=$DB_web->next_row()) { ?>
-			<annonce date="<? echo $date ?>">
-			<lien url="<?php echo $url?>"><image source="<?php echo DATA_DIR_URL.'affiches/'.$id?>" texte="Affiche" legende="<?php echo $titre?>"/></lien>
-			</annonce>
-	<?php }
-	
-		echo "</module>\n";
-	}
+if ($DB_web->num_rows()!=0 || $valeur=='1'){
+	echo "<module id=\"activites\" titre=\"ActivitÈs\">\n";
+	if(est_authentifie(AUTH_INTERNE) && $valeur == 1) echo "<annonce><p>Le BÙB est ouvert</p></annonce>";
+	while (list($id,$titre,$url,$date,$exterieur)=$DB_web->next_row()) { 
+		if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
+	?>
+		<annonce date="<? echo $date ?>">
+		<lien url="<?php echo $url?>"><image source="<?php echo DATA_DIR_URL.'affiches/'.$id?>" texte="Affiche" legende="<?php echo $titre?>"/></lien>
+		</annonce>
+<?php }
+
+	echo "</module>\n";
 }
