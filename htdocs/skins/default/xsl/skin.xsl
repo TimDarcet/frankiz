@@ -23,8 +23,8 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
-	Revision 1.11  2005/01/18 15:50:21  psycow
-	Modif sur la skin default, ajout d'activites, nettoyage
+	Revision 1.12  2005/01/18 16:07:34  psycow
+	Modif de liens_profil
 
 	Revision 1.10  2004/12/17 01:25:52  psycow
 	Ajout des date de naissance
@@ -138,10 +138,11 @@
 				<div id="droite">
 					<xsl:apply-templates select="module[@id='qdj']"/>
 					<xsl:apply-templates select="module[@id='qdj_hier']"/>
+					<xsl:apply-templates select="module[@id='liens_profil']"/>
 					<xsl:apply-templates select="module[@id='liens_contacts']"/>
 					<xsl:apply-templates select="module[@id='liens_ecole']"/>
 					<xsl:apply-templates select="module[@id='stats']"/>
-					<xsl:apply-templates select="module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id!='activites' and @id!='liens_navigation' and @id!='liens_perso' and @id!='anniversaires' and @id!='liste_css' and @id!='lien_tol']"/>
+					<xsl:apply-templates select="module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id='liens_profil' and @id!='activites' and @id!='liens_navigation' and @id!='liens_perso' and @id!='anniversaires' and @id!='liste_css' and @id!='lien_tol' and @id='fetes']"/>
 				</div><!--fin #droite -->
 			
 				<div id="centre">

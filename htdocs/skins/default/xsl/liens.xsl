@@ -21,7 +21,7 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:template match="module[@id='liens_perso' or @id='liens_contacts' or @id='liens_ecole']">
+<xsl:template match="module[@id='liens_perso' or @id='liens_contacts' or @id='liens_ecole' or @id='liens_profil']">
 	<dl class="boite">
 		<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 		<dt class="titre">
