@@ -7,9 +7,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.7  2004/10/18 23:07:43  kikx
+	Finalisation de la page d'administration des binets par le prez ou le webmestre de ce dit binet
+
 	Revision 1.6  2004/10/18 20:29:44  kikx
 	Enorme modification pour la fusion des bases des binets (Merci Schmurtz)
-
+	
 	Revision 1.5  2004/10/17 23:30:44  kikx
 	Juste un petit bug si on supprime zero entrées
 	
@@ -37,6 +40,15 @@
 // En-tetes
 require_once "../include/global.inc.php";
 
+// Récupération d'une image
+if(isset($_REQUEST['image'])){
+	$DB_valid->query("SELECT image,format FROM valid_binet WHERE binet_id='{$_GET['id']}'");
+	list($image,$format) = $DB_valid->next_row() ;
+	header("content-type: $format");
+	echo $image;
+	exit;
+}
+
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if ((empty($_GET['binet'])) || ((!verifie_permission_webmestre($_GET['binet'])) && (!verifie_permission_prez($_GET['binet']))))
@@ -45,6 +57,7 @@ if ((empty($_GET['binet'])) || ((!verifie_permission_webmestre($_GET['binet'])) 
 $DB_trombino->query("SELECT nom FROM binets WHERE binet_id=".$_GET['binet']);
 list($nom_binet) = $DB_trombino->next_row() ;
 $message ="" ;
+$message2 ="" ;
 
 
 //=================================
@@ -125,23 +138,93 @@ if(verifie_permission_prez($_GET['binet'])){
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 if(verifie_permission_webmestre($_GET['binet'])){
+
+	// On demande la validation du changement
+	//==========================
+
+	if (isset($_POST['modif2'])) {
+		$texte_image = "" ;
+		$DB_trombino->query("SELECT format,exterieur,nom,image FROM binets as b WHERE binet_id=".$_GET['binet']);
+		list($format,$exterieur,$nom,$image) = $DB_trombino->next_row() ;
+
+		// On verifie d'abord que le binet n'a pas une autre entrée dans la table de validation
+		//------------------------------------
+	
+		$DB_valid->query("SELECT binet_id FROM valid_binet WHERE binet_id={$_POST['id']}");
+		if ($DB_valid->num_rows()!=0) {
+			$message2 .= "<warning>Vous aviez déjà demandé une modification, seule la demande que vous venez de poster sera prise en compte</warning>" ;
+			$DB_valid->query("DELETE FROM valid_binet WHERE binet_id={$_POST['id']}");
+		}
+		
+		$DB_valid->query("INSERT INTO  valid_binet SET binet_id={$_POST['id']}, nom='$nom', http='{$_POST['http']}', description='{$_POST['descript']}', catego_id='{$_POST['catego']}' , exterieur=$exterieur, image=\"".addslashes($image)."\", format='$format'");
+		
+		$index = mysql_insert_id() ;
+
+		
+			
+		// si on demande la modification de l'image
+		//--------------------------------------------------------
+
+		if ($_FILES['file']['tmp_name']!='none') {
+			$img = $_FILES['file']['tmp_name'] ;
+			$image_types = Array ("image/bmp","image/jpeg","image/pjpeg","image/gif","image/x-png","image/png");
+		
+				//récupere les données de l'images
+				//--------------------------------------
+				
+			$type_img =  $_FILES["file"]["type"];
+			
+			$fp = fopen($img,"rb"); // (b est pour lui dire que c'est bineaire !)
+			$size = filesize($img) ;
+			$dim = getimagesize($img) ;
+			$data = fread($fp,$size);
+			fclose($fp);
+			$data = addslashes($data);
+		
+				//
+				// On verifie que le truc télécharger est une image ...
+				//--------------------------------------
+			echo $dim[0]."x".$dim[1] ;
+			if ((in_array (strtolower ($type_img), $image_types))&&($dim[0]<=100)&&($dim[1]<=100)) {
+				$DB_valid->query("UPDATE valid_binet SET image=\"$data\", format='$type_img' WHERE  binet_id={$_POST['id']}") ;
+				$texte_image = " et de son image " ;
+			} else {
+				$message2 .= "<warning>Ton image n'est pas au bon format (taille ou extension... $type_img / $dim[0]x$dim[1] pxl)</warning>" ;
+			}
+		}
+		$message2 .= "<commentaire>La demande de modification du binet ' $nom'  $texte_image a été effectuée</commentaire>" ;
+
+	}
+	
+//============================================
+
 	$liste_catego ="" ;
 	$DB_trombino->query("SELECT catego_id,categorie FROM binets_categorie ORDER BY categorie ASC");
 	while( list($catego_id,$catego_nom) = $DB_trombino->next_row() )
 		$liste_catego .= "\t\t\t<option titre=\"$catego_nom\" id=\"$catego_id\"/>\n";
 
-	$DB_trombino->query("SELECT binet_id,nom,description,http,catego_id FROM binets as b WHERE binet_id=".$_GET['binet']);
-	list($id,$nom,$descript,$http,$cat_id) = $DB_trombino->next_row()
+		
+	$DB_valid->query("SELECT binet_id FROM valid_binet WHERE binet_id=".$_GET['binet']);
+	if ($DB_valid->num_rows()!=0) {
+		$DB_valid->query("SELECT binet_id,nom,description,http,catego_id,exterieur FROM valid_binet WHERE binet_id=".$_GET['binet']);
+		list($id,$nom,$descript,$http,$cat_id,$exterieur) = $DB_valid->next_row() ;
+		$message2 .= "<commentaire>L'aperçu que vous avez maintenant n'a pas encore été validé par le BR. Il faut encore attendre pour que celui ci soit pris en compte</commentaire>" ;
+		$image_link = "<image source=\"gestion/binet.php?image=1&amp;id=$id\"/>" ;
+	} else {
+		$DB_trombino->query("SELECT binet_id,nom,description,http,catego_id,exterieur FROM binets WHERE binet_id=".$_GET['binet']);
+		list($id,$nom,$descript,$http,$cat_id,$exterieur) = $DB_trombino->next_row() ;
+		$image_link = "<image source=\"binets/?image=1&amp;id=$id\"/>" ;
+	}
+
+
 ?>
 	<h1>Administration par le </h1>
 	<h1>webmestre du binet <?=$nom_binet?></h1>
 	<?
-	echo $message ;
+	echo $message2 ;
 	?>
-
-		<formulaire id="binet_web_<? echo $id?>" titre="<? echo $nom?>" action="admin/binets_web.php">
+		<formulaire id="binet_web" titre="<? echo $nom?>" action="gestion/binet.php?binet=<?=$_GET['binet']?>">
 			<hidden id="id" titre="ID" valeur="<? echo $id?>"/>
-			<champ id="nom" titre="Nom" valeur="<? echo $nom?>"/>
 			<choix titre="Catégorie" id="catego" type="combo" valeur="<?=$cat_id?>">
 <?php
 				echo $liste_catego ;
@@ -149,9 +232,13 @@ if(verifie_permission_webmestre($_GET['binet'])){
 			</choix>
 			<champ id="http" titre="Http" valeur="<? echo $http?>"/>
 			<zonetext id="descript" titre="Description" valeur="<? echo stripslashes($descript)?>"/>
-			<image source="binets/?image=1&amp;id=<?=$id?>"/>
-			<champ id="file" titre="Ton image de 100x100 px" valeur="" taille="50000"/>
-			<bouton id='modif' titre="Modifier" onClick="return window.confirm('Souhaitez vous valider les changements')"/>
+			<?=$image_link?>
+			<champ id="file" titre="Ton image de 100x100 px" valeur="" taille="100000"/>
+			<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if ($exterieur==1) echo 'ext' ;?>" >
+				<option id="ext" titre="" modifiable="non"/>
+			</choix>
+
+			<bouton id='modif2' titre="Modifier" onClick="return window.confirm('Souhaitez vous valider les changements')"/>
 		</formulaire>
 <?php
 }
