@@ -6,11 +6,14 @@
 	skin.inc.php… mais pas user.inc.php, xml.inc.php…
 	
 	$Log$
+	Revision 1.11  2004/09/17 11:15:21  schmurtz
+	Echappement des caracteres < > & dans les variables $_POST $_GET $_REQUEST
+
 	Revision 1.10  2004/09/17 09:05:32  kikx
 	La personne peut maintenant rajouter une annonce
 	Ceci dit je ne comprend pas trop comment on protège les champs avec les <!CDATA
 	-> j'ai laisser ca comme ca mais faudra modifier
-
+	
 	Revision 1.9  2004/09/15 23:19:31  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
@@ -48,6 +51,18 @@ define('ERR_SURNOM_TROP_PETIT',$i++);
 define('ERR_EMAIL_NON_VALIDE',$i++);
 define('ERR_TROP_COURT',$i++);
 define('ERR_SELECTION_VIDE',$i++);
+
+// Nettoyage des éléments récupérés par $_POST, $_GET et $_REQUEST
+function nettoyage_balise($tableau) {
+	foreach($tableau as $cle => $valeur)
+		if(is_array($valeur)) $tableau[$cle] = nettoyage_balise($valeur);
+		else $tableau[$cle] = str_replace(array('&','<','>'),array('&amp;','&lt;','&gt;'),$valeur);
+	return $tableau;
+}
+
+$_GET = nettoyage_balise($_GET);
+$_POST = nettoyage_balise($_POST);
+$_REQUEST = nettoyage_balise($_REQUEST);
 
 // Connexions aux bases mysql
 require_once "mysql.inc.php";
