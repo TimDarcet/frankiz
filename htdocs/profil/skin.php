@@ -39,12 +39,15 @@
 	)
 	
 	$Log$
+	Revision 1.11  2004/11/06 10:40:46  pico
+	Maintenant, ça doit marcher
+
 	Revision 1.10  2004/11/06 10:23:15  pico
 	BugFix au niveau de l'affichage du choix de css
-
+	
 	Lorsqu'on change de skin, la css est la css "style.css" du répertoire de la skin.
 	Cela permet d'éviter de garder la css d'une autre skin, sinon ça rend tout pas beau.
-
+	
 	Revision 1.9  2004/11/06 10:13:27  pico
 	Mise à jour fichier choix skin
 	
@@ -246,16 +249,17 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 					// uniquement pour les fichiers .css
 					if(!ereg("^(.*)\.css$", $file, $elements)) continue;
 					$nom = $elements[1];
-					echo "<option titre=\"$nom (".lire_description_css(BASE_LOCAL."/css/$nom.txt")
+					echo "<option titre=\"$nom (".lire_description_css(BASE_LOCAL."/css/{$_SESSION['skin']['skin_nom']}/$nom.txt")
 						.")\" id=\"".BASE_URL."/css/{$_SESSION['skin']['skin_nom']}/$file\"/>";
 				}
 				closedir($dir);
 			}
+			echo "<option titre=\"CSS par défaut de la skin\" id=\"".BASE_URL."/skins/{$_SESSION['skin']['skin_nom']}/style.css\"/>";
 ?>
 		</choix>
 		<champ titre="CSS perso" id="newcss_perso" valeur="<?php
-			if (dirname($_SESSION['skin']['skin_css']) != BASE_URL."/css")
-				echo $_SESSION['skin']['skin_css']; ?>"/>
+			if ((dirname($_SESSION['skin']['skin_css']) != BASE_URL."/css/".$_SESSION['skin']['skin_nom'])&&(dirname($_SESSION['skin']['skin_css']) != BASE_URL."/skins/".$_SESSION['skin']['skin_nom'])){
+				echo $_SESSION['skin']['skin_css']; }?>"/>
 <?php
 		// Paramètres spécifique à la skin
 		$description = lire_description_skin(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']."/description.xml");
