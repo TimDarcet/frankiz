@@ -21,10 +21,13 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.16  2004/12/10 20:06:18  kikx
+	Pour faire plaisir a fruneau
+
 	Revision 1.15  2004/12/10 19:49:28  kikx
 	YESSSSSS
 	Pour permettre au utilisateurs de supprimer les annonces qu'ils ont déjà lues
-
+	
 	Revision 1.14  2004/12/09 19:29:13  pico
 	Rajoute le tel dans le trombino, ça pourrait être utile...
 	
@@ -82,8 +85,10 @@ if (!est_authentifie(AUTH_COOKIE))  {
 	if (isset($_REQUEST['lu'])) {
 		$DB_web->query("INSERT INTO annonces_lues SET annonce_id='".$_REQUEST['lu']."',eleve_id= '".$_SESSION['user']->uid."'") ;
 	}
-	$annonces_lues1=" LEFT JOIN annonces_lues ON annonces_lues.annonce_id=annonces.annonce_id AND annonces_lues.eleve_id='".$_SESSION['user']->uid."'" ;
-	$annonces_lues2=" AND annonces_lues.annonce_id IS NULL" ;
+	if (!isset($_REQUEST['lire_tout'])) {
+		$annonces_lues1=" LEFT JOIN annonces_lues ON annonces_lues.annonce_id=annonces.annonce_id AND annonces_lues.eleve_id='".$_SESSION['user']->uid."'" ;
+		$annonces_lues2=" AND annonces_lues.annonce_id IS NULL" ;
+	}
 }
 $DB_web->query("SELECT annonces.annonce_id,stamp,perime,titre,contenu,en_haut,exterieur,nom,prenom,surnom,promo,"
 					 ."IFNULL(mail,CONCAT(login,'@poly.polytechnique.fr')) as mail "
@@ -109,7 +114,11 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 		<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
 	</annonce>
 <?php }
-
+if (!isset($_REQUEST['lire_tout'])) {
+	echo "<lien url='?lire_tout=1' titre='Lire toutes les annonces' id='lire_tout'/>"; 
+} else {
+	echo "<lien url='' titre='Lire les annonces non lues' id='lire_nonlu'/>"; 
+}
 echo "</page>\n";
 require_once "include/page_footer.inc.php";
 ?>
