@@ -26,11 +26,14 @@
 	informations provenant des tables du trombino (avec jointure sur l'uid).
 
 	$Log$
+	Revision 1.18  2005/01/21 16:09:16  pico
+	Test
+
 	Revision 1.17  2004/12/16 16:45:14  schmurtz
 	Correction d'un bug dans la gestion des authentifications par cookies
 	Ajout de fonctionnalitees de log d'erreur de connections ou lors des bugs
 	affichant une page "y a un bug, contacter l'admin"
-
+	
 	Revision 1.16  2004/12/16 13:00:41  pico
 	INNER en LEFT
 	
@@ -126,7 +129,7 @@ class User {
 	
 	function devient_anonyme() {
 		$this->uid = 0;
-		$this->methode = substr($_SERVER['REMOTE_ADDR'],0,8) == "129.104." ? AUTH_INTERNE : AUTH_AUCUNE;
+		$this->methode = (substr($_SERVER['REMOTE_ADDR'],0,8) == "129.104." &&  $_SERVER['REMOTE_ADDR'] != "129.104.30.4" )? AUTH_INTERNE : AUTH_AUCUNE;
 		$this->perms = array();
 	}
 	
