@@ -4,9 +4,13 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.23  2004/10/18 21:16:33  pico
+	Partie admin FAQ
+	chgt table sql de la faq
+
 	Revision 1.22  2004/10/18 20:29:44  kikx
 	Enorme modification pour la fusion des bases des binets (Merci Schmurtz)
-
+	
 	Revision 1.21  2004/10/17 22:02:45  pico
 	Ajout lien admin xshare
 	
@@ -81,6 +85,7 @@ $permissions_user = ses_permissions() ;
 		<lien titre="Valider les qdj" url="<?php echo BASE_URL?>/admin/valid_qdj.php"/>
 		<lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/>
 		<lien titre="Gestion xshare" url="<?php echo BASE_URL?>/admin/xshare.php"/>
+		<lien titre="Gestion FAQ" url="<?php echo BASE_URL?>/admin/faq.php"/>
 	<?
 	}
 	

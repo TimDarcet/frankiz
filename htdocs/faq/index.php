@@ -29,12 +29,12 @@ if(isset($_REQUEST['mots'])) define("MOTS",$_REQUEST['mots']) ; else define("MOT
 // vers le bas
 //------------------------------
 
-function rech_fils($idparent) {
-	global $DB_faq ; 
+function rech_fils($parent) {
+	global $DB_web ; 
 
-	if (affiche_element_faq($idparent)) {			// on continue l'affichage ssi on demande l'affichage
+	if (affiche_element_faq($parent)) {			// on continue l'affichage ssi on demande l'affichage
 
-		if ($idparent!=0) {
+		if ($parent!=0) {
 			echo "<noeud class='foldinglist'>\n\r" ;
 		} else {
 			echo "<noeud>\n\r" ;
@@ -42,9 +42,8 @@ function rech_fils($idparent) {
 	
 		// affichage des folders et recherche de leurs fils 
 		//----------------------------------
-
-		$DB_faq->query("SELECT id,question FROM faq WHERE reponse='' AND idparent='{$idparent}'") ;
-		while(list($id,$question) = $DB_faq->next_row()) {
+		$DB_web->query("SELECT faq_id,question FROM faq WHERE parent='{$parent}' AND reponse NOT LIKE '%index.php' ") ;
+		while(list($id,$question) = $DB_web->next_row()) {
 			if (affiche_element_faq($id)) {
 				echo "<feuille class='foldheader2'>\n\r";		// folder open
 			} else {
@@ -64,8 +63,8 @@ function rech_fils($idparent) {
 		// affichage des vrais questions !
 		//------------------------------------
 		
-		$DB_faq->query("SELECT id,question FROM faq WHERE reponse!='' AND idparent='{$idparent}'" ) ;
-		while(list($id,$question) = $DB_faq->next_row()) {
+		$DB_web->query("SELECT faq_id,question FROM faq WHERE parent='{$parent}' AND reponse LIKE '%index.php'" ) ;
+		while(list($id,$question) = $DB_web->next_row()) {
 			echo "\n\r<feuille>\n\r" ;
 			echo "<lien  url='faq/index.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
 			if (A_MARQUER != "") echo "&a_marquer=".base64_encode(A_MARQUER) ;
@@ -135,11 +134,11 @@ function all_elt_affich($idfold){
 //------------------------------
 
 function rech_parent($id) {
-		global $DB_faq;
+		global $DB_web;
 		$liste = $id."/" ;
 		while ($id != 0) {
-			$DB_faq->query("SELECT idparent FROM faq WHERE id='{$id}'") ;
-			$id = $DB_faq->next_row() ;
+			$DB_web->query("SELECT parent FROM faq WHERE faq_id='{$id}'") ;
+			$id = $DB_web->next_row() ;
 			if (($id != "")&&($id != 0)){ // on rajoute ssi c'est pas le racine
 				$liste .= $id."/";		  // car on la deja rajouté !
 			}
@@ -178,11 +177,11 @@ if ((MOTS!="")||(A_MARQUER!="")) {
 ////////////////////////////////////////////////
 
 if (MOTS!="") {
-	$DB_faq->query("SELECT id,question,reponse FROM faq") ;
+	$DB_web->query("SELECT faq_id,question,reponse FROM faq") ;
 	$recherche = 0 ;
 	${A_MARQUER} = "/" ;			// liste des elements qui contiendront les mots
 	$a_afficher = "0/" ;		// liste des elements à afficher
-	while(list($id,$question,$reponse) = $DB_faq->next_row()) {
+	while(list($id,$question,$reponse) = $DB_web->next_row()) {
 		$result = explode(" ",MOTS) ;
 		$n = count($result) ;
 		for ($i=0 ; $i<$n ; $i++){ 			// on regarde dans chaque FAQ si il y a les mots ...
@@ -234,8 +233,8 @@ echo "<br/>" ;
 
   	if(isset($_REQUEST['idpopup'])) $id = $_REQUEST['idpopup'] ;
   	if ($id != "") {
-		$DB_faq->query("SELECT question,reponse FROM faq WHERE id='{$id}'") ;
-		if (list($question,$reponse) = $DB_faq->next_row()) {
+		$DB_web->query("SELECT question,reponse FROM faq WHERE faq_id='{$id}'") ;
+		if (list($question,$reponse) = $DB_web->next_row()) {
 	?>
 	<a name='reponse' />
 	<? 
@@ -243,7 +242,7 @@ echo "<br/>" ;
 	echo "<br/>";
 	$repfaq = "../../data/faq/".$reponse."";
 	echo "<cadre>";
-	include($repfaq."index.php");
+	include($repfaq);
 	echo "</cadre>";
 	
 		} else {
