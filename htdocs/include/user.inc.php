@@ -26,9 +26,12 @@
 	informations provenant des tables du trombino (avec jointure sur l'uid).
 
 	$Log$
+	Revision 1.19  2005/01/24 13:52:07  pico
+	Pas de droits pour les utilisateurs externes
+
 	Revision 1.18  2005/01/21 16:09:16  pico
 	Test
-
+	
 	Revision 1.17  2004/12/16 16:45:14  schmurtz
 	Correction d'un bug dans la gestion des authentifications par cookies
 	Ajout de fonctionnalitees de log d'erreur de connections ou lors des bugs
@@ -122,7 +125,7 @@ class User {
 			$this->devient_anonyme();
 		} else {
 			list($this->uid,$this->login,$this->perms,$this->nom,$this->prenom,$this->passwd,$this->mailhash,$this->cookiehash) = $DB_web->next_row();
-			$this->perms = split(",",$this->perms);
+			$this->perms = est_interne()?split(",",$this->perms):array();
 			$this->methode = AUTH_AUCUNE;
 		}
 	}
