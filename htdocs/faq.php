@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.2  2004/11/25 00:58:08  kikx
+		faqs-> faq
+
 		Revision 1.1  2004/11/25 00:20:39  schmurtz
 		Parce que faq ne prend pas d's dans ce cas.
-
+		
 		Revision 1.1  2004/11/25 00:10:30  schmurtz
 		Suppression des dossiers ne contenant qu'un unique fichier index.php
 		
@@ -134,7 +137,7 @@ function rech_fils($parent) {
 		while(list($id,$question) = $DB_web->next_row()) {
 			echo "<noeud id='".$id."' ";
 			$DB_web->push_result();
-			echo "lien='faqs.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
+			echo "lien='faq.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
 			$DB_web->pop_result();
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "' titre='".htmlspecialchars($question,ENT_QUOTES)."'>" ;
@@ -153,7 +156,7 @@ function rech_fils($parent) {
 		$DB_web->query("SELECT faq_id,question FROM faq WHERE ((parent='{$parent}') AND (reponse LIKE '%index.php' OR reponse LIKE '%index.html'))" ) ;
 		while(list($id,$question) = $DB_web->next_row()) {
 			$DB_web->push_result();
-			echo "\n\r<feuille lien='faqs.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
+			echo "\n\r<feuille lien='faq.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
 			$DB_web->pop_result();
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#reponse' titre='".htmlspecialchars($question,ENT_QUOTES)."'>" ;
@@ -301,7 +304,7 @@ echo "<br/>" ;
 ?>
 
 
-        <formulaire id="form" action="faqs.php">
+        <formulaire id="form" action="faq.php">
 			<note>Tous les mots seront dans la description / Séparez les par un blanc</note>
             <champ id="mots" titre="Mots-clefs" valeur="<? echo $mots ;?>"/>
             <bouton id="Submit" titre="Valide"/>
