@@ -111,6 +111,33 @@
 	<br/>
 </xsl:template>
 
+<xsl:template match="annonce">
+		<div>
+			<b>
+				<xsl:if test="@categorie!=''"><span>(<xsl:value-of select="@categorie"/>)</span></xsl:if>
+				<xsl:text> </xsl:text>
+				<span><xsl:value-of select="@titre"/></span>
+			</b>
+		</div>
+		<div>
+			<xsl:apply-templates select="*[name()!='eleve']"/>
+			<xsl:if test="count(eleve)">
+				<p class="fkz_signature">
+					<xsl:choose>
+						<xsl:when test="eleve/@surnom != ''">
+							<xsl:value-of select="eleve/@surnom"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="eleve/@prenom"/><xsl:text>  </xsl:text><xsl:value-of select="eleve/@nom"/>
+						</xsl:otherwise>
+					</xsl:choose>
+					(<xsl:value-of select="eleve/@promo"/>)
+				</p>
+			</xsl:if>
+		</div>
+	<br/>
+</xsl:template>
+
 <xsl:template match="annonce" mode="sommaire">
 	<div class="fkz_sommaire_corps">
 		<a>

@@ -27,19 +27,7 @@
 			<div class="fkz_module" id='mod_activites'>
 				<div class="fkz_titre">Activités</div>
 				<div class="fkz_module_corps">
-					<xsl:for-each select="annonce">
-						<xsl:if test="@titre = 'brc'">
-							<xsl:if test="current()=0">
-								<b><xsl:text>Ce soir, au BRC</xsl:text></b><br/>
-							</xsl:if>
-							<i><xsl:value-of select="titre"/>
-							<xsl:text> </xsl:text>à<xsl:text> </xsl:text>
-							<xsl:value-of select="heure"/></i><br/>
-						</xsl:if>
-						<xsl:apply-templates/>
-						<br/>
-						<br/>
-					</xsl:for-each>
+					<xsl:apply-templates select="annonce"/>
 				</div>
 			</div>
 		</div>
