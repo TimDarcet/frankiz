@@ -22,9 +22,12 @@
 	Permet aussi de supprimer des IPs.
 	
 	$Log$
+	Revision 1.22  2004/10/26 16:57:44  kikx
+	Pour la méteo ... ca envoie du paté !!
+
 	Revision 1.21  2004/10/25 19:17:12  kikx
 	Juste un petit warning
-
+	
 	Revision 1.20  2004/10/25 17:19:24  kikx
 	Parsage de la page de la DSI pour trouver les mac associer aux prises
 	
@@ -67,25 +70,21 @@ $blabla = "" ;
 		rediriger_vers("/trombino/?chercher=1&loginpoly=$temp[1]");
 }
 
-function mac($id_prise){
+function weather_xml($id_prise){
 
 	/*your proxy server address*/
 	$proxy = "kuzh.polytechnique.fr";
 	/*your proxy server port*/
 	$port = 8080;
 	/*the url you want to connect to*/
-	$url = "http://intranet.polytechnique.fr/SYSRES/SMAC/search.php?id_prise=$id_prise";
+	$url = "http://xoap.weather.com/weather/local/FRXX0076?prod=xoap&par=1006415841&key=5064537abefac140";
 	$fp = fsockopen($proxy, $port);
 	fputs($fp, "GET $url HTTP/1.0\r\nHost: $proxy\r\n\r\n");
 	$line = "" ;
 	while(!feof($fp)){
-  		$line = fgets($fp, 4000);
-		$line = explode("-",$line) ;
-		if (count($line)==6) {
-			fclose($fp);
-			return ($line[0].":".$line[1].":".$line[2].":".$line[3].":".$line[4].":".$line[5]) ;
-		}
+  		$line .= fgets($fp, 4000);
 	}
+	return $line ;
 }
 
 

@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.19  2004/10/26 16:57:44  kikx
+	Pour la méteo ... ca envoie du paté !!
+
 	Revision 1.18  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.17  2004/10/20 23:45:48  schmurtz
 	<br/> ==> <br /> pour compatibilite avec IE
 	
@@ -251,6 +254,34 @@
 			Binets : <xsl:apply-templates select="binet"/><br />
 		</td></tr>
 	</table>
+</xsl:template>
+
+<!-- Meteo de l'X -->
+<xsl:template match="page/meteo">
+	<h2>Météo sur le Platâl aujourd'hui :</h2><br />
+		Le soleil est présent de <xsl:value-of select="now/sunrise"/> à <xsl:value-of select="now/sunset"/><br />
+		La température actuelle est de <xsl:value-of select="now/temperature"/>°C<br />
+		La pression est de <xsl:value-of select="now/pression"/> millibar<br />
+		Pour ce qui est du vent <xsl:value-of select="now/vent"/><br />
+		Et l'humidité s'élève à <xsl:value-of select="now/humidite"/>%<br />
+		L'état du ciel : <xsl:value-of select="now/ciel"/><br />
+		<img alt="meteo" width="64" height="64">
+			<xsl:attribute name="src">skins/basic/images/meteo/<xsl:value-of select="now/image"/>.png</xsl:attribute>
+		</img>
+	<h2>Prévisions météo :</h2><br />
+		<xsl:for-each select="jour">
+			<h3>Prévision à <xsl:value-of select="@date"/> jours </h3>
+				La température : entre <xsl:value-of select="temperature_hi"/>°C et <xsl:value-of select="temperature_low"/>°C<br />	
+				Etat du ciel le jour : <xsl:value-of select="cieljour"/>
+				<img alt="meteo" width="32" height="32">
+					<xsl:attribute name="src">skins/basic/images/meteo/<xsl:value-of select="imagejour"/>.png</xsl:attribute>
+				</img><br />
+				Etat du ciel la nuit : <xsl:value-of select="cielnuit"/>
+				<img alt="meteo" width="32" height="32">
+					<xsl:attribute name="src">skins/basic/images/meteo/<xsl:value-of select="imagenuit"/>.png</xsl:attribute>
+				</img><br />
+		</xsl:for-each>
+
 </xsl:template>
 
 <xsl:template match="page/eleve/binet">
