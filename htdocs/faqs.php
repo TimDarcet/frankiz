@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.1  2004/11/25 00:10:30  schmurtz
+		Suppression des dossiers ne contenant qu'un unique fichier index.php
+
 		Revision 1.27  2004/11/22 20:32:29  pico
 		Correction: balises au mauvais endroit
-
+		
 		Revision 1.26  2004/11/17 22:27:24  pico
 		Corrections et bugfix divers
 		
@@ -89,7 +92,7 @@
 		Ajout des logs dans le fichier
 		
 */
-require_once "../include/global.inc.php";
+require_once "include/global.inc.php";
 
 // Vérification des droits
 //demande_authentification(AUTH_MINIMUM);
@@ -128,7 +131,7 @@ function rech_fils($parent) {
 		while(list($id,$question) = $DB_web->next_row()) {
 			echo "<noeud id='".$id."' ";
 			$DB_web->push_result();
-			echo "lien='faq/index.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
+			echo "lien='faqs.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
 			$DB_web->pop_result();
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "' titre='".htmlspecialchars($question,ENT_QUOTES)."'>" ;
@@ -147,7 +150,7 @@ function rech_fils($parent) {
 		$DB_web->query("SELECT faq_id,question FROM faq WHERE ((parent='{$parent}') AND (reponse LIKE '%index.php' OR reponse LIKE '%index.html'))" ) ;
 		while(list($id,$question) = $DB_web->next_row()) {
 			$DB_web->push_result();
-			echo "\n\r<feuille lien='faq/index.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
+			echo "\n\r<feuille lien='faqs.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
 			$DB_web->pop_result();
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#reponse' titre='".htmlspecialchars($question,ENT_QUOTES)."'>" ;
@@ -295,7 +298,7 @@ echo "<br/>" ;
 ?>
 
 
-        <formulaire id="form" action="faq/index.php">
+        <formulaire id="form" action="faqs.php">
 			<note>Tous les mots seront dans la description / Séparez les par un blanc</note>
             <champ id="mots" titre="Mots-clefs" valeur="<? echo $mots ;?>"/>
             <bouton id="Submit" titre="Valide"/>

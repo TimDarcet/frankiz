@@ -21,9 +21,12 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.20  2004/11/25 00:10:31  schmurtz
+	Suppression des dossiers ne contenant qu'un unique fichier index.php
+
 	Revision 1.19  2004/11/23 07:17:16  pico
 	Correction du 'key'
-
+	
 	Revision 1.18  2004/11/22 23:07:28  kikx
 	Rajout de lines vers les pages perso
 	
@@ -89,11 +92,11 @@
 	<?php else: ?>
 		<lien id="connect" titre="Se connecter" url="login.php" key="l"/>			
 	<?php endif; ?>
-	<lien id="meteo" titre="Météo" url="meteo/" key="m"/>
+	<lien id="meteo" titre="Météo" url="meteo.php" key="m"/>
 	<!--<lien id="infobr" titre="InfoBr" url="documentation/InfoBR.pdf" />
 	<lien id="doc" titre="Docs/Manuels" url="documentation/" />-->
-	<lien id="faq" titre="FAQ" url="faq/" key="f"/>
-	<lien id="xshare" titre="XShare" url="xshare/" key="x"/>
+	<lien id="faq" titre="FAQ" url="faqs.php" key="f"/>
+	<lien id="xshare" titre="XShare" url="xshare.php" key="x"/>
 	<lien id="binets"  titre="Binets" url="binets.php" key="b"/>
 	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
 		<lien id="trombino" titre="Trombino" url="trombino.php" key="t"/>

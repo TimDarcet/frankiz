@@ -19,9 +19,12 @@
 */
 /*
 	$Log$
+	Revision 1.1  2004/11/25 00:10:30  schmurtz
+	Suppression des dossiers ne contenant qu'un unique fichier index.php
+
 	Revision 1.23  2004/11/22 20:40:00  pico
 	Patch fonction tar
-
+	
 	Revision 1.22  2004/11/06 20:03:06  kikx
 	Suppression de liens inutiles
 	
@@ -66,7 +69,7 @@
 	Ajout des logs dans le fichier
 	
 */
-require_once "../include/global.inc.php";
+require_once "include/global.inc.php";
 
 // Vérification des droits
 // demande_authentification(AUTH_MINIMUM);
@@ -107,7 +110,7 @@ function rech_fils($id_parent) {
 
 		$DB_web->query("SELECT id,nom FROM xshare WHERE descript='' AND id_parent='{$id_parent}'") ;
 		while(list($id,$nom) = $DB_web->next_row()) {
-				echo "<noeud  id='".$id."' titre='".htmlspecialchars($nom,ENT_QUOTES)."' lien='xshare/index.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
+				echo "<noeud  id='".$id."' titre='".htmlspecialchars($nom,ENT_QUOTES)."' lien='xshare.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer);
 			echo "'>\n\r" ;
 			if (eregi("/".$id."/",$a_marquer)) {
@@ -124,7 +127,7 @@ function rech_fils($id_parent) {
 		
 		$DB_web->query("SELECT id,nom FROM xshare WHERE descript!='' AND id_parent='{$id_parent}'" ) ;
 		while(list($id,$nom) = $DB_web->next_row()) {
-			echo "\n\r<feuille  id='".$id."'  titre='".htmlspecialchars($nom,ENT_QUOTES)."' lien='xshare/index.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
+			echo "\n\r<feuille  id='".$id."'  titre='".htmlspecialchars($nom,ENT_QUOTES)."' lien='xshare.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#descript'>\n\r" ;
 			if (eregi("/".$id."/",$a_marquer)) {
@@ -270,7 +273,7 @@ echo "<br/>" ;
 ?>
 
 
-        <formulaire id="form" action="xshare/index.php">
+        <formulaire id="form" action="xshare.php">
             <champ id="mots" titre="Mots-clefs" valeur="<? echo $mots ;?>"/>
             <bouton id="Submit" titre="Valide"/>
             <bouton id="reset" titre="Reset"/>
