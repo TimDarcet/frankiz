@@ -10,7 +10,7 @@ require_once "../include/global.inc.php";
 demande_authentification(AUTH_MINIMUM);
 
 // Récupération d'une image
-if(($_REQUEST['image'] == "true") && ($_REQUEST['image'] != "")){
+if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "true") && ($_REQUEST['image'] != "")){
 	require_once("../include/global.inc.php");
 	header('content-type: image/jpeg');
 	readfile(BASE_PHOTOS.$_REQUEST['promo']."/".$_REQUEST['login'].".jpg");	

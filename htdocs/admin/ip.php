@@ -61,15 +61,15 @@ if(isset($_POST['supprimer'])) {
 		echo "<commentaire>$message</commentaire>\n";
 		
 	$where = " WHERE 1 " ;
-	if ($_POST['rech_kzert']!="") $where .= "AND piece_id LIKE '%".$_POST['rech_kzert']."%' " ;
-	if ($_POST['rech_prise']!="") $where .= "AND prise_id  LIKE '%".$_POST['rech_prise']."%' " ;
-	if ($_POST['rech_ip']!="") $where .= "AND ip_theorique LIKE'%".$_POST['rech_ip']."%' " ;
+	if (isset($_POST['rech_kzert'])) $where .= "AND piece_id LIKE '%".$_POST['rech_kzert']."%' " ;
+	if (isset($_POST['rech_prise'])) $where .= "AND prise_id  LIKE '%".$_POST['rech_prise']."%' " ;
+	if (isset($_POST['rech_ip'])) $where .= "AND ip_theorique LIKE'%".$_POST['rech_ip']."%' " ;
 
 ?>
 	<formulaire id="recherche" titre="Recherche" action="admin/ip.php">
-		<champ titre="Pièce" id="rech_kzert" valeur="<? echo $_POST['rech_kzert']?>" />
-		<champ titre="Prise" id="rech_prise" valeur="<? echo $_POST['rech_prise']?>" />
-		<champ titre="Ip" id="rech_ip" valeur="<? echo $_POST['rech_ip']?>" />
+		<champ titre="Pièce" id="rech_kzert" valeur="<? if (isset($_POST['rech_kzert'])) echo $_POST['rech_kzert']?>" />
+		<champ titre="Prise" id="rech_prise" valeur="<? if (isset($_POST['rech_prise'])) echo $_POST['rech_prise']?>" />
+		<champ titre="Ip" id="rech_ip" valeur="<? if (isset($_POST['rech_ip'])) echo $_POST['rech_ip']?>" />
 		<bouton titre="Recherche" id="recherche"/>
 	</formulaire>
 <?

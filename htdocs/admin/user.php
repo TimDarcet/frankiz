@@ -67,7 +67,7 @@ if (isset($_POST['mod_generale'])) {
 // Modification de la partie "binets"
 
 if (isset($_POST['mod_binet'])) {
-	$commentaire = $_POST['commentaire'];
+	//$commentaire = $_POST['commentaire'];
 
 	foreach($_POST as $key=>$val) {
 		if ($key == "mod_binet") break ;

@@ -49,5 +49,6 @@ function skin_visible($section) {
 }
 
 // Retrouve les donnees skin
-skin_parse(base64_decode($_COOKIE['skin']));
+if (isset($_COOKIE['skin'])) 
+	skin_parse(base64_decode($_COOKIE['skin']));
 ?>
