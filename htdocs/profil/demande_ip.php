@@ -22,9 +22,12 @@
 	une seconde machine dans son casert.
 	
 	$Log$
+	Revision 1.10  2004/10/29 15:41:48  kikx
+	Passage des mail en HTML pour les ip
+
 	Revision 1.9  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.8  2004/09/20 08:29:24  kikx
 	Rajout d'une page pour envoyer des mail d'amour a ses webmestres adorés
 	
@@ -77,14 +80,15 @@ if (!isset($_POST['demander'])) {
 		
 		$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
 		
-		$contenu = "$prenom $nom a demandé une nouvelle ip pour la raison suivante : \n".
-					stripslashes($_POST['raison'])."\n\n".
-					"Pour valider ou non cette demande va sur la page suivante : \n".
-					"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_ip.php\n\n" .
-					"Très BR-ement\n" .
-					"L'automate :)\n"  ;
+		$contenu = "$prenom $nom a demandé une nouvelle ip pour la raison suivante : <br>".
+					stripslashes($_POST['raison'])."<br><br>".
+					"Pour valider ou non cette demande va sur la page suivante : <br><br>".
+					"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_ip.php'>".
+					"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_ip.php</a></div><br><br>" .
+					"Très BR-ement<br>" .
+					"L'automate :)<br>"  ;
 					
-		mail("Admin Frankiz <gruson@poly.polytechnique.fr>","[Frankiz] Demande d'une nouvelle ip",$contenu);
+		couriel(ROOT_ID,"[Frankiz] Demande d'une nouvelle ip",$contenu);
 	
 ?>
 

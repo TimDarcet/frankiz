@@ -24,9 +24,12 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.29  2004/10/29 15:41:48  kikx
+	Passage des mail en HTML pour les ip
+
 	Revision 1.28  2004/10/29 14:38:37  kikx
 	Mise en format HTML des mails pour les validation de la qdj, des mails promos, et des annonces
-
+	
 	Revision 1.27  2004/10/29 14:09:10  kikx
 	Envoie des mail en HTML pour la validation des affiche
 	
@@ -122,6 +125,8 @@ define('MAIL_QDJMASTER',"eric.gruson@polytechnique.fr");
 define('QDJMASTER_ID',$i--);
 define('MAIL_PREZ',"eric@melix.org");
 define('PREZ_ID',$i--);
+define('MAIL_ROOT',"gruson@poly");
+define('ROOT_ID',$i--);
 
 define('MAIL_CONTACT',"eleves@polytechnique.fr");
 
