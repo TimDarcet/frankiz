@@ -21,8 +21,8 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
-	Revision 1.24  2004/12/15 05:08:29  kikx
-	Pour paxal ... les annonces peuvent etre IMPORTANTES
+	Revision 1.25  2004/12/15 05:09:00  kikx
+	oups
 
 	Revision 1.23  2004/12/15 01:55:56  schmurtz
 	inversion
@@ -160,7 +160,7 @@ foreach ($_POST AS $keys => $val){
 				$temp_ext = '0' ;
 				
 			if (isset($_REQUEST['important']))
-				$temp_imp = ', en_haut=\'1\''  ;
+				$temp_imp = ', en_haut=\'1\'' ;
 			else 
 				$temp_imp = '' ;
 				
