@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.31  2004/12/15 04:24:41  falco
+	Bugfix lien xorg TOL apostrophes
+
 	Revision 1.30  2004/12/15 03:48:23  kikx
 	Sinon ca merde
-
+	
 	Revision 1.29  2004/12/12 15:18:59  psycow
 	Rechangement blah
 	
@@ -179,8 +182,9 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_RE
 			$DB_trombino->pop_result();
 			echo "</eleve>\n";
 			
-			// TODO, nettoyer $prenom et $nom avant !!!! sinon ça marchera pas pour "L'au machin"
-			echo "<lien url='https://www.polytechnique.org/fiche.php?user=$prenom.$nom.$promo' titre='Fiche sur polytechnique.org'/>\n";
+			$nompolyorg = str_replace( "'" , "" , $nom )
+			$prenompolyorg = str_replace( "'" , "" , $prenom )
+			echo "<lien url='https://www.polytechnique.org/fiche.php?user=$prenompolyorg.$nompolyorg.$promo' titre='Fiche sur polytechnique.org'/>\n";
 			
 			// Liens d'administration
 			if(verifie_permission('admin')||verifie_permission('trombino')) {
