@@ -3,10 +3,7 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
-if(!verifie_permission('admin'))
-	rediriger_vers("/admin/");
-
+demande_authentification(AUTH_MINIMUM);
 
 
 // Génération de la page

@@ -3,10 +3,7 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
-if(!verifie_permission('admin'))
-	rediriger_vers("/admin/");
-
+demande_authentification(AUTH_MINIMUM);
 
 
 // Génération de la page
@@ -60,7 +57,7 @@ function rech_fils($id_parent) {
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#".$id."' />" ;
 			if (eregi("/".$id."/",$a_marquer)) {
-				echo "<img src='./xshare_fleche_folder.gif'/>" ;
+				echo "<image source='./xshare_fleche_folder.gif'/>" ;
 			}
 			echo "\n\r</li>\n\r " ;
 			rech_fils($id) ;
@@ -71,12 +68,12 @@ function rech_fils($id_parent) {
 		
 		$DB_web->query("SELECT id,descript FROM xshare WHERE nom!='' AND id_parent='{$id_parent}'" ) ;
 		while(list($id,$descript) = $DB_web->next_row()) {
-			echo "\n\r<li>\n\r" ;
+			echo "\n\r<li class='question'>\n\r" ;
 			echo "<lien titre='".htmlentities($descript,ENT_QUOTES)."' url='xshare/index.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#nom'/>" ;
 			if (eregi("/".$id."/",$a_marquer)) {
-				echo "<img src='./xshare_fleche.gif'/>" ;
+				echo "<image source='./xshare_fleche.gif'/>" ;
 			}
 			echo "</li>\n\r" ;
 		}
@@ -221,7 +218,7 @@ echo "<br/>" ;
 ?>
 
 
-        <formulaire id="form" action="index.php">
+        <formulaire id="form" action="xshare/index.php">
             <champ id="mots" titre="Mots-clefs" valeur="<? echo $mots ;?>"/>
             <bouton id="Submit" titre="Valide"/>
             <bouton id="reset" titre="Reset"/>
