@@ -3,10 +3,13 @@
 	Annonces de frankiz. Page d'acceuil pour les personnes déjà loguées.
 	
 	$Log$
+	Revision 1.10  2004/10/11 11:08:38  kikx
+	L'affichage des annonces provoquait des erreurs ...
+
 	Revision 1.9  2004/09/18 16:04:52  kikx
 	Beaucoup de modifications ...
 	Amélioration des pages qui gèrent les annonces pour les rendre compatible avec la nouvelle norme de formatage xml -> balise web et balise image qui permette d'afficher une image et la signature d'une personne
-
+	
 	Revision 1.8  2004/09/17 15:28:27  schmurtz
 	Utilisation de la balise <eleve> pour les derniers votants aÌ€ la qdj, les anniversaires, la signature des annoncesâ€¦
 	
@@ -55,14 +58,12 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$nom,$prenom,$surnom,$pro
 			date="<?php echo substr($stamp,8,2)."/".substr($stamp,5,2)."/".substr($stamp,0,4) ?>">
 <?php
 		echo $contenu;
-		$temp = explode("annonce",$_SERVER['SCRIPT_FILENAME']) ;
-		$racine = $temp[0].UPLOAD_WEB_DIR ;
-		if (file_exists(BASE_LOCAL."/".UPLOAD_WEB_DIR."annonce_{$id}")) {
-?>
-				<image source="<?echo UPLOAD_WEB_DIR."annonce_{$id}" ; ?>"/>
-				
-<? 
-		}
+
+			if (file_exists(DATA_DIR_LOCAL."annonces/$id")) {
+			?>
+				<image source="<?echo DATA_DIR_URL."annonces/$id" ; ?>" texte=""/>
+			<? 
+			}
 ?>
 		<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
 	</annonce>
