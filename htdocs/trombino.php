@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.52  2005/01/12 21:40:41  pico
+	Erreur
+
 	Revision 1.51  2005/01/12 21:39:51  pico
 	Affichage photo d'origine
-
+	
 	Revision 1.50  2005/01/12 21:34:42  pico
 	Change l'affichage des photos du trombi, par contre, on ne peut pas ouvrir dans une nouvelle fenetre, car ce n'est pas valide xhtml strict
 	
@@ -185,7 +188,7 @@ if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "show") && ($_REQUEST['im
 		echo "<lien url=\"trombino.php?original&amp;image=show&amp;login={$_REQUEST['login']}&amp;promo={$_REQUEST['promo']}\" titre=\"Voir l'image originale\"/><br/>\n" ;
 	} else {
 		echo "<image source=\"trombino.php?original&amp;image=true&amp;login={$_REQUEST['login']}&amp;promo={$_REQUEST['promo']}\" legende=\"{$_REQUEST['login']} ({$_REQUEST['promo']}) - originale\"/>";
-		echo "<lien url=\"trombino.php?amp;image=show&amp;login={$_REQUEST['login']}&amp;promo={$_REQUEST['promo']}\" titre=\"Voir l'image actuelle\"/><br/>\n" ;
+		echo "<lien url=\"trombino.php?image=show&amp;login={$_REQUEST['login']}&amp;promo={$_REQUEST['promo']}\" titre=\"Voir l'image actuelle\"/><br/>\n" ;
 	}
 }
 
