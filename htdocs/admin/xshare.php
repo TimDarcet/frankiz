@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.33  2004/12/14 18:23:38  pico
+		Gros bug...
+
 		Revision 1.32  2004/12/14 14:18:12  schmurtz
 		Suppression de la page de doc wiki : doc directement dans les pages concernees.
-
+		
 		Revision 1.31  2004/12/13 07:06:03  pico
 		Affichage du lien pour masquer une annonce
 		
@@ -168,8 +171,7 @@ foreach ($_POST AS $keys => $val){
 		if((isset($_FILES['file']))&&($_FILES['file']['name']!='')){
 			$DB_web->query("SELECT lien FROM xshare WHERE id='{$temp[1]}' ");
 			list($dir) = $DB_web->next_row();
-			$dir = dirname($dir);
-			deldir(BASE_DATA."xshare/".$dir);
+			unlink(BASE_DATA."xshare/".$dir);
 			$filename = $dir."/".$_FILES['file']['name'];
 			move_uploaded_file($_FILES['file']['tmp_name'], BASE_DATA."xshare/".$filename);
 			$lien = ", lien='{$filename}'"; 
