@@ -3,9 +3,12 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.9  2004/10/13 21:19:52  kikx
+	Rajout de bug fix
+
 	Revision 1.8  2004/10/13 20:45:16  kikx
 	Mises en place de log pour l'envoie des mail promos
-
+	
 	Revision 1.7  2004/10/13 19:36:44  kikx
 	Correction de la page mail promo pour le text plain
 	
@@ -33,7 +36,7 @@
 
 	
 */
-	
+set_time_limit(0) ;
 require_once "../include/global.inc.php";
 
 
@@ -245,7 +248,7 @@ while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $prom
 	if (empty($mail)) $mail="$login@poly" ;
 ?>
 	<commentaire>
-		<p><u>FROM</u>: <?php  echo BASE_LOCAL."$prenom $nom &lt;$mail&gt; " ?></p>
+		<p><u>FROM</u>: <?php  echo "$prenom $nom &lt;$mail&gt; " ?></p>
 		<p>Posté le 
 			<?php  echo substr($date,6,2) ."/".substr($date,4,2) ."/".substr($date,2,2)." à ".substr($date,8,2).":".substr($date,10,2) ?>
 		</p>
@@ -264,7 +267,7 @@ while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $prom
 			if ((!isset($_POST['from']))||((isset($temp))&&($temp[1]!=$id)))
 				$_POST['from'] = "$prenom $nom &lt;$mail&gt; " ;
 		?>
-		<champ titre="From :" id="from"  valeur="<? echo  $_POST['from'] ?>"/>
+		<champ titre="From " id="from"  valeur="<? echo  $_POST['from'] ?>"/>
 		<zonetext id="mail" titre="Mail " valeur="<?  echo $mailpromo ;?>"/>
 		<choix titre="Promo" id="promo" type="combo" valeur="<?echo  $promo_mail ;?>">
 		<?
