@@ -19,7 +19,7 @@
 	<lien titre="Docs/Manuels" url="documentation/" />
 	<lien titre="FAQ" url="faq/" />
 	<lien titre="Télécharger" url="xshare/" />
-	<lien titre="Binets" url="binets.php" />
+	<lien titre="Binets" url="binets/" />
 	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
 		<lien titre="Trombino" url="trombino/" />
 	<?php endif; ?>
