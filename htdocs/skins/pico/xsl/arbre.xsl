@@ -65,7 +65,7 @@
 			</a>
 		</xsl:when>
 		<xsl:otherwise>
-			<xsl:value-of select="@titre"/>
+			<h3><xsl:value-of select="@titre"/></h3>
 		</xsl:otherwise>
 		</xsl:choose>
 		<xsl:apply-templates />

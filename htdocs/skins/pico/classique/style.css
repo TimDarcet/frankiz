@@ -342,7 +342,7 @@ span.fkz_annonces_vieux {
 }
 
 .feuille {
-	list-style-image: url('../default/question.gif');
+	margin:5px; border: thin dotted #ccc; list-style-image: url('../default/question.gif');
 }
 
 

@@ -349,7 +349,7 @@ span.valid_css {
 /* FAQ et Xshare */
 .noeud_ferme{list-style-image:url('../default/fold_close.gif')}
 .noeud_ouvert{list-style-image:url('../default/fold_open.gif')}
-.feuille{list-style-image:url('../default/question.gif')}
+.feuille{margin:5px; border: thin dotted #ccc; list-style-image:url('../default/question.gif')}
 
 /* Commentaires et Warning */
 

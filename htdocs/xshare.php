@@ -19,9 +19,12 @@
 */
 /*
 	$Log$
+	Revision 1.8  2005/01/10 13:31:34  pico
+	Affichage des logiciels à l'intérieur de l'arborescence
+
 	Revision 1.7  2005/01/10 10:24:33  pico
 	Bug #16
-
+	
 	Revision 1.6  2004/12/15 05:19:13  falco
 	cohérence
 	
@@ -147,12 +150,28 @@ function rech_fils($id_parent) {
 		
 		$DB_web->query("SELECT id,nom FROM xshare WHERE descript!='' AND id_parent='{$id_parent}'" ) ;
 		while(list($id,$nom) = $DB_web->next_row()) {
-			echo "\n\r<feuille  id='".$id."'  titre='".$nom."' lien='xshare.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
-			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
-			echo "#descript'>\n\r" ;
+			echo "\n\r<feuille  id='".$id."'  titre='".$nom."'>\n\r" ;
 			if (eregi("/".$id."/",$a_marquer)) {
 				echo "<image source='skins/".$_SESSION['skin']['skin_nom']."/fleche.gif'/>\n\r" ;
 			}
+			$DB_web->push_result();
+			$DB_web->query("SELECT * FROM xshare WHERE id='{$id}'") ;
+			if (list($id,$id_parent,$nom,$licence,$lien,$importance,$date,$descript,$version,$site) = $DB_web->next_row()) { 
+				echo "<lien titre='Site de l&apos;éditeur' url='".$site."'/> | <lien titre='Télécharger ici' url='../data/xshare/".$lien."'/><br/><br/>";
+				if($importance == 1) echo "Logiciel important<br/>";
+				if($importance == 2) echo "<strong>Logiciel indispensable</strong><br/>";
+				echo "Dernière modification le ".substr($date, 6, 2)."/".substr($date, 4, 2)."/".substr($date, 0, 4)."<br/><br/>" ;
+				if($version != '') echo "Version: ".$version."<br/>";
+				if($licence != '') echo "Licence: ".$licence."<br/>";
+				echo "Description: ".wikiVersXML($descript)."<br/>";
+	
+		
+			} else {
+				?>
+				<warning>Erreur : Impossible de trouver cette description </warning>
+				<?
+			}
+			$DB_web->pop_result();
 			echo "</feuille>\n\r" ;
 		}
 	}
@@ -293,30 +312,6 @@ echo "</arbre>";
 	</formulaire>
 <?
 
-//
-// Corps du Documents pour les réponses
-//---------------------------------------------------
-
-  	if(isset($_REQUEST['idpopup'])) $id = $_REQUEST['idpopup'] ; else $id ="";
-  	if ($id != "") {
-		$DB_web->query("SELECT * FROM xshare WHERE id='{$id}'") ;
-		if (list($id,$id_parent,$nom,$licence,$lien,$importance,$date,$descript,$version,$site) = $DB_web->next_row()) { 
-			echo "<h2 id=\"descript\">$nom</h2><lien titre='Télécharger ici' url='../data/xshare/".$lien."'/><br/>";
-			if($importance == 1) echo "<p>Important</p>";
-			if($importance == 2) echo "<p><strong>Indispensable</strong></p>";
-			echo "<em><lien titre='site de l&apos;éditeur' url='".$site."'/></em>";
-			echo "<p>Dernière modification le ".substr($date, 6, 2)."/".substr($date, 4, 2)."/".substr($date, 0, 4)."</p>" ;
-			if($version != '') echo "<p>Version: ".$version."</p>";
-			if($licence != '') echo "<p>Licence: ".$licence."</p>";
-			echo "<p>Description: ".wikiVersXML($descript)."</p>";
-
-	
-		} else {
-			?>
-			<warning>Erreur : Impossible de trouver cette description </warning>
-			<?
-		}
-	}
 //
 // Pied de page ...
 //---------------------------------------------------
