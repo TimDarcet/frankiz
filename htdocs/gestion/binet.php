@@ -25,11 +25,14 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.37  2005/03/16 17:07:56  pico
+	Micro correction de merde, mais ça faisait longtemps que ça me soulait ;)
+
 	Revision 1.36  2005/03/15 11:45:47  pico
 	Correction du pb de myk
-
+	
 	Je sais pas si l'affichage de l'arbo sert vraiment en fait...
-
+	
 	Revision 1.35  2005/01/27 17:27:50  pico
 	/me vérifiera ses parenthèses la prochaine fois
 	
@@ -347,7 +350,7 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 ?>
 			</choix>
 			<champ id="http" titre="Http" valeur="<? echo $http?>"/>
-			<zonetext id="descript" titre="Description"><?=$descript?>"</zonetext>
+			<zonetext id="descript" titre="Description"><?=$descript?></zonetext>
 			<?=$image_link?>
 			<fichier id="file" titre="Ton image de 100x100 px" taille="100000"/>
 			<champ id="exterieur" titre="Exterieur" valeur="<? if ($exterieur==1) echo 'Oui' ; else echo 'Non'?>" modifiable="non"/>
