@@ -22,9 +22,12 @@
 	ses machines, son compte xnet.
 	
 	$Log$
+	Revision 1.17  2004/11/07 16:56:46  pico
+	Indique le nb de caractères mini pour le mdp xnet
+
 	Revision 1.16  2004/11/04 23:31:44  pico
 	Erreur d'incrémentation -> pas de changement de mdp xnet possible si on n'avait qu'une seule ip
-
+	
 	Revision 1.15  2004/11/01 19:23:56  pico
 	Affiche les messages d'erreur
 	
@@ -131,9 +134,9 @@ for ($i = 0; $i < $id_ip; $i++) {
 <br />
 <? for ($i = 0; $i < $id_ip; $i++) {
 ?>
-	<formulaire id="mod_xnet" titre="Modification du mots de passe Xnet (<? echo $ip{$i} ?>)" action="profil/reseau.php">
+	<formulaire id="mod_xnet" titre="Modification du mot de passe Xnet (<? echo $ip{$i} ?>)" action="profil/reseau.php">
 		<hidden id="ip_xnet" valeur="<? echo $ip{$i} ?>"/>
-		<champ id="passwd" titre="Mot de passe" valeur="12345678"/>
+		<champ id="passwd" titre="Mot de passe (au moins 6 caractères)" valeur="12345678"/>
 		<champ id="passwd2" titre="Retaper le mot de passe" valeur="87654321"/>
 		<bouton id="changer_xnet" titre="Changer"/>
 	</formulaire>
