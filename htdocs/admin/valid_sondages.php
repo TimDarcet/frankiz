@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un sondage
 	
 	$Log$
+	Revision 1.17  2005/01/21 17:01:31  pico
+	Fonction pour savoir si interne
+
 	Revision 1.16  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
-
+	
 	Revision 1.15  2005/01/14 09:19:31  pico
 	Corrections bug mail
 	+
@@ -148,7 +151,7 @@ foreach ($_POST AS $keys => $val){
 			$bla = "explication_".$temp[1] ;
 			$contenu = "<strong>Bonjour</strong>, <br><br>".
 						"Ton sondage vient d'être mis en ligne par le BR <br>";
-			if($temp_ext==0) $contenu .= "Il est accessible à l'adresse suivante: http://".$_SERVER['HTTP_HOST']."/sondages.php?id=".$index."<br>";
+			if($temp_ext==0) $contenu .= "Il est accessible à l'adresse suivante: ".BASE_URL."sondages.php?id=".$index."<br>";
 			$contenu .= $_POST[$bla]."<br>".
 						"<br>" .
 						"Très Cordialement<br>" .

@@ -21,9 +21,12 @@
 	Sites Eleves
 	
 	$Log$
+	Revision 1.8  2005/01/21 17:01:31  pico
+	Fonction pour savoir si interne
+
 	Revision 1.7  2005/01/21 16:49:41  pico
 	erreur
-
+	
 	Revision 1.6  2005/01/21 16:48:29  pico
 	Modifs de chemins
 	
@@ -60,7 +63,7 @@ require "include/page_header.inc.php";
 		while(list($id,$nom,$prenom,$promo,$commentaire,$login) = $DB_web->next_row()) {
 			echo "\t\t<element id=\"$id\">\n";
 				echo "\t\t\t<colonne id=\"eleves\"><lien id='$id' titre='$prenom $nom ($promo)' url='";
-				if($_SESSION['user']->est_authentifie(AUTH_INTERNE)) echo URL_PAGEPERSO;
+				if(est_interne()) echo URL_PAGEPERSO;
 				else echo "webperso";
 				echo "/$login-$promo/'/></colonne>\n";
 			echo "\t\t</element>\n";

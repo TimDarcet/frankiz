@@ -22,9 +22,12 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.43  2005/01/21 17:01:31  pico
+	Fonction pour savoir si interne
+
 	Revision 1.42  2005/01/17 20:15:39  pico
 	Mail promo pour les kessiers
-
+	
 	Revision 1.41  2005/01/12 22:40:39  pico
 	Ajout des fêtes à souhaiter
 	
@@ -180,6 +183,10 @@ function acces_interdit() {
 	$_GET['erreur'] = 403;
 	require BASE_LOCAL."/erreur.php";
 	exit;
+}
+
+function est_interne() {
+	return (substr($_SERVER['REMOTE_ADDR'],0,8) == "129.104." &&  $_SERVER['REMOTE_ADDR'] != "129.104.30.4" );
 }
 
 /*
