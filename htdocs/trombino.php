@@ -21,9 +21,13 @@
 	Recherche dans le trombino.
 
 	$Log$
-	Revision 1.42  2004/12/16 14:57:29  pico
-	oups
+	Revision 1.43  2004/12/16 14:58:15  pico
+	Pfiou
 
+	Revision 1.42  2004/12/16 14:57:29  pico
+	
+	oups
+	
 	Revision 1.41  2004/12/16 14:55:37  pico
 	Rajout des recherches par binet et par section comme sur l'ancien tol
 	
@@ -163,7 +167,7 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 	
 	// Création de la requête si sections appelle
 	if(isset($_REQUEST['sections'])) {
-		$where .= " sections.nom='{$_REQUEST['section']}'  AND (promo=$promo_temp OR promo=".($promo_temp -1).")";
+		$where .= " sections.nom='{$_REQUEST['sections']}'  AND (promo=$promo_temp OR promo=".($promo_temp -1).")";
 	}
 	
 	// Création de la requête si binet appelle
