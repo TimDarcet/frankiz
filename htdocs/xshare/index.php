@@ -1,9 +1,12 @@
 <? 
 /*
 		$Log$
+		Revision 1.20  2004/10/21 12:23:17  pico
+		Un doublon qui servait pas
+
 		Revision 1.19  2004/10/21 12:18:52  pico
 		Gestion des recherches
-
+		
 		Revision 1.18  2004/10/20 23:18:49  pico
 		Derniers fixes, ça marche !!
 		
@@ -225,17 +228,8 @@ if ($mots!="") {
   <font color="#000066">Recherche infructueuse ...</font>
 essayer avec d'autres crit&egrave;res 
   <?
-		define("$affich_elt" , "") ;
-		define ("$a_marquer","");
-	} else {
-		define ("$affich_elt", $a_afficher) ;
-		define ("$a_marquer",$a_marquer);
-		echo "<arbre>";
-		rech_fils(0) ; 
-		echo "</arbre>";
-	}
-} else {
-
+	} 
+}
 //
 // on affiche  l'arbre 
 // simple maintenant
@@ -243,7 +237,7 @@ essayer avec d'autres crit&egrave;res
 echo "<arbre>";
 rech_fils(0) ;
 echo "</arbre>";
-}
+
 echo "<br/>" ;
 
 ?>

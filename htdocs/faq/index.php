@@ -1,9 +1,12 @@
 <? 
 /*
 		$Log$
+		Revision 1.20  2004/10/21 12:23:17  pico
+		Un doublon qui servait pas
+
 		Revision 1.19  2004/10/21 12:18:52  pico
 		Gestion des recherches
-
+		
 		Revision 1.18  2004/10/21 08:33:07  pico
 		Chgts divers pour matcher avec la balise <html>
 		
@@ -235,12 +238,8 @@ if ($mots!="") {
   <font color="#000066">Recherche infructueuse ...</font>
 essayer avec d'autres critères 
   <?
-	} else {
-		echo "<arbre>";
-		rech_fils(0) ; 
-		echo "</arbre>";
-	}
-} else {
+	} 
+} 
 
 //
 // on affiche  l'arbre 
@@ -249,7 +248,7 @@ essayer avec d'autres critères
 echo "<arbre>";
 rech_fils(0) ;
 echo "</arbre>";
-}
+
 echo "<br/>" ;
 
 ?>
