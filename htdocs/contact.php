@@ -21,9 +21,12 @@
 	Page des contacts utiles
 	
 	$Log$
+	Revision 1.4  2004/10/31 18:20:24  kikx
+	Rajout d'une page pour les plan (venir à l'X)
+
 	Revision 1.3  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.2  2004/10/21 12:24:48  kikx
 	Correction d'un bug suite a un commit
 	
@@ -33,12 +36,6 @@
 
 require_once "include/global.inc.php";
 
-function get_categorie($en_haut,$stamp,$perime) {
-	if($en_haut==1) return "important";
-	elseif($stamp > date("YmdHis",time()-12*3600)) return "nouveau";
-	elseif($perime < date("YmdHis",time()+24*3600)) return "vieux";
-	else return "reste";
-}
 
 // génération de la page
 require "include/page_header.inc.php";

@@ -21,9 +21,12 @@
 	Liens permettants de contacter les webmestres et faire des demandes.
 	
 	$Log$
+	Revision 1.15  2004/10/31 18:20:24  kikx
+	Rajout d'une page pour les plan (venir à l'X)
+
 	Revision 1.14  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.13  2004/10/20 22:19:08  kikx
 	Une belle page de contact :)
 	
@@ -72,4 +75,8 @@
 		<lien titre="Demander un mail promo" url="proposition/mail_promo.php" />
 		<!--<lien titre="Proposer un sondage" url="proposition/sondage.php/" />-->
 	<?php endif; ?>
+	<?php if(!est_authentifie(AUTH_MINIMUM)): ?>
+		<lien titre="Venir à l'X" url="plan.php" />
+	<?php endif; ?>
+	
 </module>

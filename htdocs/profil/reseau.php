@@ -22,9 +22,12 @@
 	ses machines, son compte xnet.
 	
 	$Log$
+	Revision 1.14  2004/10/31 18:20:24  kikx
+	Rajout d'une page pour les plan (venir à l'X)
+
 	Revision 1.13  2004/10/29 17:42:36  kikx
 	Petit bug que je ne comprend pas pourquoi ca ne marchait pas avant et que ca marche now (c'est pour faire une phrase correct et comprehensible en français)
-
+	
 	Revision 1.12  2004/10/22 06:53:39  pico
 	Modification du mdp qrezix
 	
@@ -57,7 +60,7 @@ if(isset($_POST['changer_xnet'])) {
 		ajoute_erreur(ERR_MDP_TROP_PETIT);
 	} else {
 		$pass = md5($_POST['passwd']."Vive le BR");
-		$DB_xnet->query("UPDATE clients SET password='{$pass}' WHERE lastip='{$_POST['ip_xnet']}'");
+		$DB_xnet->query("UPDATE clients SET password='$pass' WHERE lastip='{$_POST['ip_xnet']}'");
 		
 		$message_succes="Le mot de passe vient d'être changé.";
 	}
