@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.60  2005/03/14 16:34:32  pico
+	Le grand retour de la recherche des tossettes (ne pas communiquer l'url)
+
 	Revision 1.59  2005/03/10 16:47:17  pico
 	Affiche la photo originale si pas de nouvelle photo
-
+	
 	Revision 1.58  2005/01/28 21:41:23  pico
 	BugFix /me boulet
 	
@@ -294,6 +297,10 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 		if(!empty($_REQUEST['binet'])) {
 			$join = "LEFT JOIN membres USING(eleve_id) " . $join;
 			$where .= (empty($where) ? "" : " AND") . " binet_id='".$_REQUEST['binet']."'";
+		}
+		
+		if(isset($_GET['jeveuxvoirlesfillesdelecole'])){
+			$where .= (empty($where) ? "" : " AND") . " sexe='1'";
 		}
 	}
 	
