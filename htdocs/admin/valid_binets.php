@@ -21,9 +21,12 @@
 	Page de validation d'une modification d'un binet
 	
 	$Log$
+	Revision 1.9  2004/12/08 12:48:07  kikx
+	oups
+
 	Revision 1.8  2004/12/08 12:46:50  kikx
 	Protection de la validation des binets
-
+	
 	Revision 1.7  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
@@ -66,7 +69,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 // Enregistrer ...
 $message = "" ;
-$DB_valid->query("LOCK TABLE valid_annonces WRITE");
+$DB_valid->query("LOCK TABLE valid_binet WRITE");
 $DB_valid->query("SET AUTOCOMMIT=0");
 
 if (isset($_POST['valid'])) {
