@@ -141,6 +141,7 @@ a:hover {
 }
 
 .fkz_module {
+	color: inherit;
 	border-bottom: 1px solid #888888;
 	padding: 2px;
 	border-right: 1px solid #888888;
@@ -221,26 +222,19 @@ span.fkz_annonces_vieux {
 }
 
 
-.fkz_gauche {
-        width: 20%;
-        float: left;
-	font-size: 9pt;
-	margin-top: 0.5%;
-}
-
-.fkz_droite {
-        float: right;
+.fkz_droite, .fkz_gauche{
+/*position: absolute;*/
         width: 20%;
 	font-size: 9pt;
+	left: 0.5%;
 	margin-top: 0.5%;
 }
 
 .fkz_centre {
-	font-size: 9pt;
 	position: absolute;
-	left: 20.5%;
-	width: 59%;
-	margin-top: 0.5%;
+	font-size: 9pt;
+	left: 21%;
+	width: 78%;
 }
 
 .serveur_up {

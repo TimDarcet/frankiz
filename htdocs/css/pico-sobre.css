@@ -68,13 +68,37 @@ a:hover {
     text-align: center;   
 }
 
+
+
 .fkz_qdj_jone {
-    float: right;
+	background-image:url("../skins/pico/pointjone.gif");
+	background-repeat:no-repeat;
+	background-position: center center;
+	height:60px;
+	float: right;
+	text-align: center;
+	width: 49%;
+}
+
+.fkz_qdj_rouje {
+	background-image:url("../skins/pico/pointrouje.gif");
+	background-repeat:no-repeat;
+	background-position: center center;
+	height:60px;
+    float: left;
     text-align: center;
     width: 49%;
 }
 
-.fkz_qdj_rouje {
+.fkz_qdj_jone_reponse {
+	height:60px;
+	float: right;
+	text-align: center;
+	width: 49%;
+}
+
+.fkz_qdj_rouje_reponse {
+	height:60px;
     float: left;
     text-align: center;
     width: 49%;
@@ -204,10 +228,11 @@ span.fkz_annonces_vieux {
 }
 
 .fkz_centre {
-	float: left;
+	font-size: 9pt;
+	position: absolute;
+	left: 20.5%;
 	width: 59%;
-	margin: 0.5%;
-
+	margin-top: 0.5%;
 }
 
 .serveur_up {

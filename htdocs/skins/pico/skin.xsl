@@ -64,19 +64,6 @@
 
 	<xsl:apply-templates select="frankiz/module[@id='liens_navigation']"/>
 	<div class="fkz_page">
-		<div class="fkz_gauche">
-			<xsl:apply-templates select="frankiz/module[@id='tours_kawa']"/>
-			<xsl:apply-templates select="frankiz/module[@id='activites']"/>
-			<xsl:apply-templates select="frankiz/module[@id='liens_contacts']"/>
-			<xsl:apply-templates select="frankiz/module[@id='liens_ecole']"/>
-			<xsl:apply-templates select="frankiz/module[@id='meteo']"/>
-			<xsl:apply-templates select="frankiz/module[@id='stats']"/>
-			<p>
-				<a href="http://validator.w3.org/check?uri=referer">
-					<img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0!" height="31" width="88" />
-				</a>
-			</p>
-		</div>
 		<div class="fkz_centre">
 			<xsl:apply-templates select="frankiz/module[@id='anniversaires']"/>
 			<br/>
@@ -85,9 +72,23 @@
 			<xsl:apply-templates select="frankiz/page[@id='trombino']"/>
 			<xsl:apply-templates select="frankiz/page[@id!='annonces' and @id!='trombino']"/>
 		</div>
+		<div class="fkz_gauche">
+			<xsl:apply-templates select="frankiz/module[@id='tours_kawa']"/>
+			<xsl:apply-templates select="frankiz/module[@id='activites']"/>
+			<xsl:apply-templates select="frankiz/module[@id='liens_contacts']"/>
+			<xsl:apply-templates select="frankiz/module[@id='liens_ecole']"/>
+			<xsl:apply-templates select="frankiz/module[@id='meteo']"/>
+			<xsl:apply-templates select="frankiz/module[@id='stats']"/>
+		</div>
+
 		<div class="fkz_droite">
 			<xsl:apply-templates select="frankiz/module[@id='qdj']"/>
 			<xsl:apply-templates select="frankiz/module[@id='qdj_hier']"/>
+			<p>
+				<a href="http://validator.w3.org/check?uri=referer">
+					<img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0!" height="31" width="88" />
+				</a>
+			</p>
 		</div>
 	</div>
 	</body>
