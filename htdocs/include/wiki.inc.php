@@ -21,9 +21,12 @@
 	Moteur Wiki (TipiWiki)
 	
 	$Log$
+	Revision 1.13  2004/12/01 17:20:28  pico
+	Un oubli, excusez moi
+
 	Revision 1.12  2004/12/01 17:06:55  pico
 	correction listes html
-
+	
 	Revision 1.11  2004/12/01 12:27:45  pico
 	Ajout du 2 eme niveau de listes
 	
@@ -67,7 +70,7 @@ function wikiVersXML($filtered,$enhtml=false) {
 	$regexURLText = "([\w\.\:\'\@\?\&\~\%\=\+\-\/\_\ \;\,\$éèàù]+)";
 	
 	// php-specific
-	$filtered = "\n".str_replace("\r\n","\n",$filtered)."\n";
+	$filtered = "\n".str_replace("\r\n","\n",$filtered)."\n\n";
 	
 	// pictures [ url ]
 	$filtered = preg_replace("/\[($regexURL\.(png|gif|jpg))\]/i",$enhtml?"<img src=\"\\1\"/>":"<image source=\"\\1\"/>",$filtered);
@@ -101,9 +104,9 @@ function wikiVersXML($filtered,$enhtml=false) {
 	// Liste simple
 	$filtered = preg_replace("/(?<=[\n>])\* (.+)\n/","<feuille>$1</feuille>",$filtered);
 	// Structure d'arbre
-	$filtered = preg_replace("(\n<feuille)","</p><arbre><feuille",$filtered);
+	$filtered = preg_replace("(\n<feuille)","\n</p><arbre><feuille",$filtered);
 	$filtered = preg_replace("(</feuille>\n)","</feuille></arbre><p>",$filtered);
-	$filtered = preg_replace("(\n<noeud)","</p><arbre><noeud",$filtered);
+	$filtered = preg_replace("(\n<noeud)","\n</p><arbre><noeud",$filtered);
 	$filtered = preg_replace("(</noeud>\n)","</noeud></arbre><p>",$filtered);
 	}else{
 	// Listes
@@ -136,7 +139,12 @@ function wikiVersXML($filtered,$enhtml=false) {
 	$filtered = preg_replace("/(<\/h[1-6]>)<\/p><p>\n/","\\1\n", $filtered);
 	$filtered = preg_replace("/<p>\n*<\/p>/","",$filtered);
 
-	return $filtered;
+	$p = xml_parser_create();
+	xml_parser_set_option($p, XML_OPTION_CASE_FOLDING,0);
+	//if(xml_parse($p, $filtered, true))
+		return $filtered;
+	//else 
+	//	return "<warning>le xml généré par la fonction wiki n'est pas valide</warning>";
 }
 
 
