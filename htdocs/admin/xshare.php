@@ -69,8 +69,8 @@ foreach ($_POST AS $keys => $val){
 // Corps du Documents
 //---------------------------------------------------
 
-if(isset($_REQUEST['affich_elt'])) $affich_elt = base64_decode($_REQUEST['affich_elt']) ; else $affich_elt = '';
-if(isset($_REQUEST['a_marquer'])) $a_marquer = base64_decode($_REQUEST['a_marquer']) ; else $a_marquer = '';
+if(isset($_REQUEST['affich_elt'])) define("AFFICH_ELT",base64_decode($_REQUEST['affich_elt'])) ; else define("AFFICH_ELT",'');
+if(isset($_REQUEST['a_marquer'])) define("A_MARQUER",base64_decode($_REQUEST['a_marquer'])) ; else define("A_MARQUER","");
 
 
 
@@ -81,7 +81,7 @@ if(isset($_REQUEST['a_marquer'])) $a_marquer = base64_decode($_REQUEST['a_marque
 //------------------------------
 
 function rech_fils($id_parent) {
-	global $a_marquer,$DB_web ; 
+	global $DB_web ; 
 
 	if (affiche_element_xshare($id_parent)) {			// on continue l'affichage ssi on demande l'affichage
 
@@ -102,10 +102,10 @@ function rech_fils($id_parent) {
 				echo "<feuille class='foldheader1'>\n\r";		// folder fermé
 			}
 			echo "<a name=\"".$id."\"/>" ;
-			echo "<lien titre='".$nom."' url='admin/xshare.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
-			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
+			echo "<lien titre='".htmlspecialchars($nom,ENT_QUOTES)."' url='admin/xshare.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
+			if (A_MARQUER != "") echo "&amp;a_marquer=".base64_encode(A_MARQUER) ;
 			echo "&amp;dir_id=".$id."#".$id."' />" ;
-			if (eregi("/".$id."/",$a_marquer)) {
+			if (eregi("/".$id."/",A_MARQUER)) {
 				echo "<image source='./xshare_fleche_folder.gif'/>" ;
 			}
 			echo "\n\r</feuille>\n\r " ;
@@ -118,10 +118,10 @@ function rech_fils($id_parent) {
 		$DB_web->query("SELECT id,nom FROM xshare WHERE descript!='' AND id_parent='{$id_parent}'" ) ;
 		while(list($id,$nom) = $DB_web->next_row()) {
 			echo "\n\r<feuille class='question'>\n\r" ;
-			echo "<lien titre='".htmlentities($nom,ENT_QUOTES)."' url='admin/xshare.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
-			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
+			echo "<lien titre='".htmlspecialchars($nom,ENT_QUOTES)."' url='admin/xshare.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
+			if (A_MARQUER != "") echo "&amp;a_marquer=".base64_encode(A_MARQUER) ;
 			echo "#descript'/>" ;
-			if (eregi("/".$id."/",$a_marquer)) {
+			if (eregi("/".$id."/",A_MARQUER)) {
 				echo "<image source='./xshare_fleche.gif'/>" ;
 			}
 			echo "</feuille>\n\r" ;
@@ -137,10 +137,9 @@ function rech_fils($id_parent) {
 //------------------------------
 
 function affiche_element_xshare($idfold){
-	global $affich_elt  ;
 	
 	if ($idfold == 0) return 1 ;			// on affiche toujours la racine !!
-	$ids = explode("/",$affich_elt) ;
+	$ids = explode("/",AFFICH_ELT) ;
 	for ($i=0 ; $i<count($ids) ; $i++) {
 		if (intval($ids[$i]) == $idfold) return 1 ;
 	}
@@ -154,9 +153,8 @@ function affiche_element_xshare($idfold){
 //------------------------------
 
 function all_elt_affich($idfold){
-	global $affich_elt ;
 
-	$ids = explode("/",$affich_elt) ;
+	$ids = explode("/",AFFICH_ELT) ;
 	$str = "0" ;
 	$retire = 0 ;
 	for ($i=0 ; $i<count($ids) ; $i++) {		// on parcours tous les element et on les re-rajoute avce condition ...
