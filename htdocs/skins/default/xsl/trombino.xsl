@@ -38,7 +38,7 @@
 						<dt class="nom">
 							<xsl:value-of select="@prenom" />
 							<xsl:text> </xsl:text>
-							<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
+							<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzéèàçê','ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊ')" />
 						</dt> 
 						<dd class="photo">
 							<a>
@@ -99,12 +99,15 @@
 		</dl>
 	</xsl:if>
 	<xsl:if test="boolean(formulaire)">
-		<dl class="boite">
+		<dl class="boite" id="formulaireTOL">
 			<dt class="titre">
 				<span class="droitehaut"><xsl:text> </xsl:text></span>
 			</dt>
 			<dd class="contenu">
-					<p class="image"><img src="skins/default/images/trombino.gif"/></p>
+					<p class="image">
+						<span class="imagetitre"><xsl:text> </xsl:text></span>
+						<span class="titre">Trombino</span>
+					</p>
 					<br/>
 					<xsl:apply-templates select="formulaire" mode="trombino"/>
 			</dd>

@@ -348,6 +348,17 @@ dd.definition {
 
 /* ------- Trombino ------- */
 
+dl#formulaireTOL p.image span.titre {
+	display:none;
+}
+dl#formulaireTOL p.image span.imagetitre {
+	display:block;
+	width:300px;
+	height:69px;
+	background:url(../images/trombino.gif) no-repeat top left;
+	margin:0 auto;
+}
+
 dl.trombino {
 	margin:0px 30px 20px 30px;
 	min-height:150px;
@@ -862,6 +873,7 @@ div.hr hr {
 
 dl.boite h3, dl.boite h2 {
 	margin-bottom:5px;
+	display:block;
 }
 
 .center {
