@@ -19,10 +19,13 @@
 */
 /*
 	$Log$
+	Revision 1.5  2004/12/09 20:53:27  pico
+	Faute d'orthographe
+
 	Revision 1.4  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
-
+	
 	Revision 1.3  2004/11/27 23:30:34  pico
 	Passage des xshare et faq en wiki
 	Ajout des images dans l'aide du wiki
@@ -233,7 +236,7 @@ if (($mots!="")||($a_marquer!="")) {
 <?
 } else {
 ?>
-<p><strong>Logiciels disponible en téléchargement :</strong></p>
+<p><strong>Logiciels disponibles en téléchargement :</strong></p>
 <?
 }
 
