@@ -55,7 +55,7 @@
 	<xsl:if test="boolean(@titre)">
 		<h2><xsl:value-of select="@titre"/></h2>
 	</xsl:if>
-	<xsl:apply-templates select="commentaire"/>
+	<xsl:apply-templates select="commentaire | warning | note"/>
 	<xsl:variable name="nombre_colonnes" select="count(entete)"/>
 	<table class="liste">
 		<tr>
@@ -68,7 +68,7 @@
 
 <xsl:template match="liste[(@selectionnable='oui') or (@action!='')]">
 	<form method="post">
-	<xsl:apply-templates select="commentaire | warning"/>
+	<xsl:apply-templates select="commentaire | warning | note"/>
 	<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 	<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 	<xsl:if test="boolean(@titre)">
