@@ -21,9 +21,12 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.38  2005/02/10 22:15:35  pico
+	Je suis un gros boulet...
+
 	Revision 1.37  2005/02/10 22:12:54  pico
 	voilà
-
+	
 	Revision 1.36  2005/02/10 22:00:46  pico
 	Pas joli, mais devrait marcher
 	
@@ -186,7 +189,7 @@ $a_fermer=false;
 $idprec=0;
 while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail,$visible)=$DB_web->next_row()) {
 	if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
-	if($visible && $cpt > 0){
+	if($visible && $a_fermer && $cpt > 0){
 			if(est_authentifie(AUTH_MINIMUM))
 				echo "<lien url=\"?lu=$idprec#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
 			echo "</annonce>";
