@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.25  2004/11/13 00:25:00  schmurtz
+	bizarrerie d'organisation
+
 	Revision 1.24  2004/11/13 00:12:24  schmurtz
 	Ajout du su
-
+	
 	Revision 1.23  2004/11/04 16:36:43  schmurtz
 	Modifications cosmetiques
 	
@@ -271,6 +274,10 @@
 	</table>
 </xsl:template>
 
+<xsl:template match="page/eleve/binet">
+	<xsl:value-of select="@nom"/><xsl:text> (</xsl:text><xsl:value-of select="."/><xsl:text>) </xsl:text>
+</xsl:template>
+
 <!-- Meteo de l'X -->
 <xsl:template match="page/meteo">
 	<h2>Météo sur le Platâl aujourd'hui :</h2><br />
@@ -305,10 +312,6 @@
 			<xsl:attribute name="src">skins/basic/images/meteo/<xsl:value-of select="now/image"/>.png</xsl:attribute>
 		</img>
 		</div>
-</xsl:template>
-
-<xsl:template match="page/eleve/binet">
-	<xsl:value-of select="@nom"/><xsl:text> (</xsl:text><xsl:value-of select="."/><xsl:text>) </xsl:text>
 </xsl:template>
 
 <!-- Page des binets -->
