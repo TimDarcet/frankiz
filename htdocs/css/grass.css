@@ -79,7 +79,7 @@ span.fkz_logo {
 	display:none;
  }
 
-#contacts_logo,#liens_ecole_logo,#meteo_logo,#stats_logo,#serveurs_logo,#tour_kawa_logo,#qdj_hier_logo,#qdj,#anniversaires_logo{
+#contacts_logo,#liens_ecole_logo,#meteo_logo,#stats_logo,#serveurs_logo,#tour_kawa_logo,#qdj_hier_logo,#qdj_logo,#anniversaires_logo{
 	background-repeat:no-repeat;
 	background-position: center;
 	height: 22px;
@@ -115,7 +115,7 @@ span.fkz_logo {
 	background-image:url("grass/qdj_hier.png");
  }
  
-#qdj {
+#qdj_logo{
 	background-image:url("grass/qdj.png");
  }
  
@@ -151,6 +151,16 @@ span.fkz_logo {
 	background-image:url("../skins/pico/pointrouje.gif");
 	float: left;
 }
+
+
+.fkz_qdj_jone a{
+	color: red;
+}
+
+.fkz_qdj_rouje a{
+	color: yellow;
+}
+
 
 .fkz_qdj_jone_reponse {
 	color: yellow;
