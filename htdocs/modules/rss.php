@@ -21,9 +21,12 @@
 	Affichage de flux rss externes sous forme de module.
 
 	$Log$
+	Revision 1.9  2005/01/04 23:11:29  pico
+	Bugfix ?
+
 	Revision 1.8  2004/11/24 23:07:59  pico
 	Là !²
-
+	
 	Revision 1.7  2004/11/24 23:06:46  pico
 	BugFix
 	
@@ -50,9 +53,9 @@
 */
 
 require_once BASE_LOCAL."/include/rss_func.inc.php";
-
-if(isset($_SESSION['rss']) && !empty($_SESSION['rss']) && count($_SESSION['rss'])>0){
-	foreach($_SESSION['rss'] as $value => $mode){
+$liens = $_SESSION['rss'];
+if(is_array($liens)){
+	foreach($liens as $value => $mode){
 		if($mode == 'module'){
 			list($mode,$value) = explode("_",$value,2);
 			rss_xml($value,"sommaire");
