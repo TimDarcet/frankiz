@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.12  2004/12/15 07:04:35  schmurtz
+	epsilon
+
 	Revision 1.11  2004/12/15 01:08:53  schmurtz
 	Image des annonces centrees
-
+	
 	Revision 1.10  2004/12/14 22:36:27  schmurtz
 	Bug sur la skin defaut : <p> n'etait pas traduit
 	
@@ -217,7 +220,7 @@
 
 <!-- Formatage HTML -->
 <xsl:template match="p">
-	<p><xsl:apply-templates/></p>
+	<p class="texte"><xsl:apply-templates/></p>
 </xsl:template>
 <xsl:template match="ul">
 	<ul><xsl:apply-templates/></ul>
