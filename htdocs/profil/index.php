@@ -21,11 +21,14 @@
 	Page permettant de modifier son profil 
 	
 	$Log$
+	Revision 1.6  2004/12/17 21:52:50  pico
+	Ne buggue plus si pas de kazert
+
 	Revision 1.5  2004/12/16 16:45:14  schmurtz
 	Correction d'un bug dans la gestion des authentifications par cookies
 	Ajout de fonctionnalitees de log d'erreur de connections ou lors des bugs
 	affichant une page "y a un bug, contacter l'admin"
-
+	
 	Revision 1.4  2004/12/15 06:13:30  kikx
 	Ct trop la merde ....
 	pico tu le remettra qd tu auras debuggué car la moi je peux plus :(
@@ -61,12 +64,11 @@ require "../include/page_header.inc.php";
 		<lien titre="Changer de skin" url="profil/skin.php"/><br/>
 		<lien titre="Gérer mes liens perso" url="profil/liens_ext.php"/><br/>
 		<!--<lien titre="Gérer mes annonces externes" url="profil/liens_ext.php#form_rss"/><br/>-->
-		
+
 	<h2>Changer mon profil sur le réseau</h2>
 		<lien titre="Gérer mes données réseau" url="profil/reseau.php"/><br/>
 		<lien titre="Modifier le mot de passe Xnet" url="profil/reseau.php#mod_xnet_0"/><br/>
 		<lien titre="Demander une nouvelle adresse ip" url="profil/demande_ip.php"/><br/>
-		
 		
 </page>
 <?php require_once BASE_LOCAL."/include/page_footer.inc.php"; ?>
