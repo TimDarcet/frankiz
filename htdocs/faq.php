@@ -19,13 +19,16 @@
 */
 /*
 		$Log$
+		Revision 1.18  2005/03/15 11:59:55  pico
+		Correction bug #74
+
 		Revision 1.17  2005/02/08 22:41:17  pico
 		Correction du bug de recherche sur la faq. (#55)
-
+		
 		c'est vraiment très bizarre la gestion des variables, là...
-
+		
 		enfin bon, ça marche...
-
+		
 		Revision 1.16  2005/01/22 17:58:38  pico
 		Modif des images
 		
@@ -405,7 +408,7 @@ if ($id != "") {
 // Pied de page ...
 //---------------------------------------------------
 ?>
-
+<note>Pour tout commentaire, contactez les <lien url="mailto://<?= MAIL_FAQMESTRE ?>" titre="FaqMestres"/></note>
 </page>
 <?php
 
