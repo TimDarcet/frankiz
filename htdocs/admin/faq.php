@@ -19,10 +19,13 @@
 */
 /*
 		$Log$
+		Revision 1.22  2004/11/15 22:59:53  pico
+		Affiche correctement les faq/folder + possibilité de modifier des faq
+
 		Revision 1.21  2004/11/15 22:17:24  pico
 		On doit pouvoir changer le texte d'une faq à présent
 		TODO: script pour dl le contenu de la faq existante
-
+		
 		Revision 1.20  2004/11/10 21:39:44  pico
 		Corrections skin + fonction deldir + faq
 		
@@ -219,7 +222,7 @@ function rech_fils($parent) {
 	
 		// affichage des folders et recherche de leurs fils 
 		//----------------------------------
-		$DB_web->query("SELECT faq_id,question FROM faq WHERE parent='{$parent}' AND reponse NOT LIKE '%index.php' ") ;
+		$DB_web->query("SELECT faq_id,question FROM faq WHERE (parent='{$parent}' AND NOT  (reponse LIKE '%index.php' OR reponse LIKE '%index.html')) ") ;
 		while(list($id,$question) = $DB_web->next_row()) {
 			echo "<noeud id='".$id."' ";
 			echo "lien='admin/faq.php?dir_id=".$id."&amp;affich_elt=".base64_encode(all_elt_affich($id)) ;
@@ -237,7 +240,7 @@ function rech_fils($parent) {
 		// affichage des vrais questions !
 		//------------------------------------
 		
-		$DB_web->query("SELECT faq_id,question FROM faq WHERE parent='{$parent}' AND reponse LIKE '%index.php'" ) ;
+		$DB_web->query("SELECT faq_id,question FROM faq WHERE  ((parent='{$parent}') AND (reponse LIKE '%index.php' OR reponse LIKE '%index.html'))" ) ;
 		while(list($id,$question) = $DB_web->next_row()) {
 			echo "\n\r<feuille id='".$id."' lien='admin/faq.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;

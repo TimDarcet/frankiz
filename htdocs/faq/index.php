@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.23  2004/11/15 22:59:54  pico
+		Affiche correctement les faq/folder + possibilité de modifier des faq
+
 		Revision 1.22  2004/10/21 22:19:37  schmurtz
 		GPLisation des fichiers du site
-
+		
 		Revision 1.21  2004/10/21 17:46:05  pico
 		Corrections diverses
 		Affiche l'host correspondant aux ip dans la page du profil
@@ -109,7 +112,7 @@ function rech_fils($parent) {
 	
 		// affichage des folders et recherche de leurs fils 
 		//----------------------------------
-		$DB_web->query("SELECT faq_id,question FROM faq WHERE parent='{$parent}' AND reponse NOT LIKE '%index.php' ") ;
+		$DB_web->query("SELECT faq_id,question FROM faq WHERE (parent='{$parent}' AND NOT  (reponse LIKE '%index.php' OR reponse LIKE '%index.html'))") ;
 		while(list($id,$question) = $DB_web->next_row()) {
 			echo "<noeud id='".$id."' ";
 			$DB_web->push_result();
@@ -129,7 +132,7 @@ function rech_fils($parent) {
 		// affichage des vrais questions !
 		//------------------------------------
 		
-		$DB_web->query("SELECT faq_id,question FROM faq WHERE parent='{$parent}' AND reponse LIKE '%index.php'" ) ;
+		$DB_web->query("SELECT faq_id,question FROM faq WHERE ((parent='{$parent}') AND (reponse LIKE '%index.php' OR reponse LIKE '%index.html'))" ) ;
 		while(list($id,$question) = $DB_web->next_row()) {
 			$DB_web->push_result();
 			echo "\n\r<feuille lien='faq/index.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id ;
