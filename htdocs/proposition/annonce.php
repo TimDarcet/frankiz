@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.27  2004/11/24 13:32:23  kikx
+	Passage des annonces en wiki !
+
 	Revision 1.26  2004/11/24 12:51:02  kikx
 	Pour commencer la compatibilité wiki
-
+	
 	Revision 1.25  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
@@ -200,11 +203,7 @@ if ($erreur_upload==1) {
 // On teste l'affichage de l'annonce pour voir à quoi ça ressemble
 //=========================================
 
-if (!isset($_POST['text'])) $_POST['text']="c'est &lt;b&gt;en gras&lt;/b&gt;, "
-									."&lt;u&gt;en souligné&lt;/u&gt;, "
-									."&lt;i&gt;en italique&lt;/i&gt;, "
-									."&lt;a href='http://frankiz'&gt;un lien&lt;/a&gt;,"
-									."&lt;a href='mailto:toto@poly'&gt;un lien email&lt;/a&gt;" ;
+if (!isset($_POST['text'])) $_POST['text']="" ;
 if (!isset($_POST['titre']))  $_POST['titre']="Titre" ;
 
 ?>
@@ -245,6 +244,7 @@ if (isset($_POST['valid'])) {
 // Zone de saisie de l'annonce
 //====================
 ?>
+<note>La syntaxe est la syntaxe wiki... si tu ne sais pas taper correctement du texte wiki, va sur notre page <lien titre="d'aide WIKI" url="helpwiki.php"/></note>
 
 	<formulaire id="propoz_annonce" titre="Ton annonce" action="proposition/annonce.php">
 		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
@@ -274,7 +274,6 @@ if (isset($_POST['valid'])) {
 		<bouton id='test' titre="Tester"/>
 		<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider votre annonce ?')"/>
 	</formulaire>
-	<lien titre="Aide WIKI" url="helpwiki.php"/>
 <?
 }
 ?>

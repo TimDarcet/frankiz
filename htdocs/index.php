@@ -21,9 +21,12 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.11  2004/11/24 13:32:23  kikx
+	Passage des annonces en wiki !
+
 	Revision 1.10  2004/10/25 19:41:58  kikx
 	Rend clair la page d'accueil et les annonces
-
+	
 	Revision 1.9  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -71,7 +74,7 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 			categorie="<?php echo get_categorie($en_haut, $stamp, $perime) ?>"
 			date="<?php echo substr($stamp,8,2)."/".substr($stamp,5,2)."/".substr($stamp,0,4) ?>">
 <?php
-		echo "<html>$contenu</html>";
+		echo wikiVersXML($contenu);
 
 			if (file_exists(DATA_DIR_LOCAL."annonces/$id")) {
 			?>

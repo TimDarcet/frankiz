@@ -21,9 +21,12 @@
 	Help WIKI
 	
 	$Log$
+	Revision 1.2  2004/11/24 13:32:23  kikx
+	Passage des annonces en wiki !
+
 	Revision 1.1  2004/11/24 12:51:58  kikx
 	Oubli de ma part
-
+	
 
 */
 
@@ -39,9 +42,7 @@ require "include/page_header.inc.php";
 
 Le nom Wiki provient d'un adjectif hawaiien wikiwiki, qui signifie rapide. C'est une forme à redoublement de l'adjectif wiki. Ward Cunningham, créateur du système Wiki en 1995, a choisi ce terme pour désigner le premier site utilisant ce principe, le WikiWikiWeb.
 
-<h2>Syntaxe du Wiki sur ce site</h2>
-
-<liste modifiable="non" titre="Syntaxe">
+<liste modifiable="non" titre="Syntaxe du WIKI sur ce site">
 		<entete id="type" titre=""/>
 		<entete id="syntaxe" titre="Syntaxe"/>
 		<entete id="exemple" titre="Exemple"/>
@@ -54,7 +55,12 @@ Le nom Wiki provient d'un adjectif hawaiien wikiwiki, qui signifie rapide. C'est
 		<element id="">
 			<colonne id="type">Italique</colonne>
 			<colonne id="syntaxe">''Italique''</colonne>";
-			<colonne id="exemple"><?=wikiVersXML("''Italique''")?></colonne>";
+			<colonne id="exemple"><?=wikiVersXML("&apos;&apos;Italique&apos;&apos;")?></colonne>";
+		</element>
+		<element id="">
+			<colonne id="type">Font-Fixed</colonne>
+			<colonne id="syntaxe">|Font|</colonne>";
+			<colonne id="exemple"><?=wikiVersXML("|Font|")?></colonne>";
 		</element>
 		<element id="">
 			<colonne id="type">Titre</colonne>

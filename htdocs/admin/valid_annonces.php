@@ -21,10 +21,13 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.15  2004/11/24 13:32:23  kikx
+	Passage des annonces en wiki !
+
 	Revision 1.14  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
-
+	
 	Revision 1.13  2004/10/29 15:14:40  kikx
 	Correction mineur
 	
@@ -163,7 +166,7 @@ foreach ($_POST AS $keys => $val){
 				categorie=""
 				auteur="<?php echo empty($surnom) ? $prenom.' '.$nom : $surnom .' (X'.$promo.')'?>"
 				date="<? echo $date?>">
-				<? echo "<html>$contenu</html>" ;
+				<? echo wikiVersXML($contenu) ;
 				if (file_exists(DATA_DIR_LOCAL."annonces/a_valider_{$id}")){
 				?>
 					<image source="<? echo DATA_DIR_URL."annonces/a_valider_{$id}" ; ?>" texte=""/>
