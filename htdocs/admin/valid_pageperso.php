@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.4  2004/11/27 20:30:52  pico
+	Correction de commentaire
+
 	Revision 1.3  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-
+	
 	Revision 1.2  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
 	
@@ -53,7 +56,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <?
 // On regarde quel cas c'est ...
 // On envoie chié le mec pour son changement d'ip et on le supprime de la base
-// On accepte le changement et on l'inbscrit dans la base
+// On accepte le changement et on l'inscrit dans la base
 
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
