@@ -1,8 +1,8 @@
 <?php
 /*
-	Divers fonctions pouvant être utile dans n'importe quelles pages.
-	
 	$Id$
+
+	Divers fonctions pouvant être utile dans n'importe quelles pages.
 */
 
 /*
@@ -20,10 +20,13 @@ function afficher_identifiant($valeur) {
 	return "^$identifiant$";
 }
 
-// Demande la confirmation lors d'une suppression d'une entrée !
-// (c'est plus secure)
+/*
+	Affiche une page demandant la confirmation lors de la suppression d'une entrée !
+	(c'est plus secure)
+	TODO à terminer
+*/
+
 function suppression() {
-	global $HTTP_POST_VARS;
 	$post = "?" ;
 	foreach($_POST as $key=>$val) {
  		//$post .=  $key."=".$val.""; 
@@ -34,8 +37,9 @@ function suppression() {
 	return false ;
 	
 }
+
 /*
-	Gestion des erreurs
+	Gestion des erreurs dans les formulaires
 */
 
 $_ERREURS = array();

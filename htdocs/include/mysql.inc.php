@@ -42,7 +42,9 @@ class DB {
 	function query($query) {
 		if($this->result)
 			mysql_free_result($this->result);
+		
 		mysql_select_db($this->base); // TODO à changer, très moche (maj PHP > 4.2.0 par exemple)
+		ajouter_requete_mysql($query);
 		$this->result = mysql_query($query,$this->link);
 		
 		if(is_bool($this->result) && $this->result)
