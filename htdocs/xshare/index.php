@@ -45,15 +45,15 @@ function rech_fils($id_parent) {
 		// affichage des folders et recherche de leurs fils 
 		//----------------------------------
 
-		$DB_web->query("SELECT id,descript FROM xshare WHERE nom='' AND id_parent='{$id_parent}'") ;
-		while(list($id,$descript) = $DB_web->next_row()) {
+		$DB_web->query("SELECT id,nom FROM xshare WHERE descript='' AND id_parent='{$id_parent}'") ;
+		while(list($id,$nom) = $DB_web->next_row()) {
 			if (affiche_element_xshare($id)) {
 				echo "<li class='foldheader2'>\n\r";		// folder open
 			} else {
 				echo "<li class='foldheader1'>\n\r";		// folder fermé
 			}
 			echo "<a name=\"".$id."\"/>" ;
-			echo "<lien titre='".$descript."' url='xshare/index.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
+			echo "<lien titre='".$nom."' url='xshare/index.php?affich_elt=".base64_encode(all_elt_affich($id)) ;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#".$id."' />" ;
 			if (eregi("/".$id."/",$a_marquer)) {
@@ -66,12 +66,12 @@ function rech_fils($id_parent) {
 		// affichage des vrais fichiers !
 		//------------------------------------
 		
-		$DB_web->query("SELECT id,descript FROM xshare WHERE nom!='' AND id_parent='{$id_parent}'" ) ;
-		while(list($id,$descript) = $DB_web->next_row()) {
+		$DB_web->query("SELECT id,nom FROM xshare WHERE descript!='' AND id_parent='{$id_parent}'" ) ;
+		while(list($id,$nom) = $DB_web->next_row()) {
 			echo "\n\r<li class='question'>\n\r" ;
-			echo "<lien titre='".htmlentities($descript,ENT_QUOTES)."' url='xshare/index.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
+			echo "<lien titre='".htmlentities($nom,ENT_QUOTES)."' url='xshare/index.php?affich_elt=".base64_encode(all_elt_affich($id))."&amp;idpopup=".$id;
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
-			echo "#nom'/>" ;
+			echo "#descript'/>" ;
 			if (eregi("/".$id."/",$a_marquer)) {
 				echo "<image source='./xshare_fleche.gif'/>" ;
 			}
@@ -180,15 +180,15 @@ if (($mots!="")||($a_marquer!="")) {
 ////////////////////////////////////////////////
 
 if ($mots!="") {
-	$DB_web->query("SELECT id,descript,nom FROM xshare") ;
+	$DB_web->query("SELECT id,nom,descript FROM xshare") ;
 	$recherche = 0 ;
 	$a_marquer = "/" ;			// liste des elements qui contiendront les mots
 	$a_afficher = "0/" ;		// liste des elements à afficher
-	while(list($id,$descript,$nom) = $DB_web->next_row()) {
+	while(list($id,$nom,$descript) = $DB_web->next_row()) {
 		$result = explode(" ",$mots) ;
 		$n = count($result) ;
 		for ($i=0 ; $i<$n ; $i++){ 			// on regarde dans chaque dl si il y a les mots ...
-			if ((eregi($result[$i],$nom))||(eregi($result[$i],$descript))) {
+			if ((eregi($result[$i],$descript))||(eregi($result[$i],$nom))) {
 				$a_afficher .= rech_parent($id) ;
 				$a_marquer .= $id."/" ;
 				$recherche = 1 ;
@@ -223,7 +223,7 @@ echo "<br/>" ;
             <bouton id="Submit" titre="Valide"/>
             <bouton id="reset" titre="Reset"/>
         </formulaire>
-        <p><em>(Tous les mots seront dans la description 
+        <p><em>(Tous les mots seront dans la nomion 
           / Séparez les par un blanc) </em>
         </p>
 <?
@@ -234,17 +234,19 @@ echo "<br/>" ;
 
   	if(isset($_REQUEST['idpopup'])) $id = $_REQUEST['idpopup'] ;
   	if ($id != "") {
-		$DB_web->query("SELECT descript,nom FROM xshare WHERE id='{$id}'") ;
-		if (list($descript,$nom) = $DB_web->next_row()) {
+		$DB_web->query("SELECT * FROM xshare WHERE id='{$id}'") ;
+		if (list($id,$id_parent,$nom,$licence,$lien,$importance,$date,$descript,$version,$site) = $DB_web->next_row()) {
 	?>
-	<a name='nom' />
+	<a name='descript' />
 	<? 
-	echo "<h2>Q: ".$descript."</h2>" ;
-	echo "<br/>";
-	$repxshare = DATA_DIR_LOCAL."xshare".$nom."";
-	$contenu_string = file_get_contents(DATA_DIR_LOCAL."xshare".$nom."index.php");
-	
-	print htmlentities($contenu_string, ENT_QUOTES);
+	echo "<h2><lien titre='".$nom."' url='".$lien."'/></h2>";
+	if($importance == 1) echo "<p>Important</p>";
+	if($importance == 2) echo "<p><strong>Indispensable</strong></p>";
+	echo "<em><lien titre='site de l&apos;éditeur' url='".$site."'/></em>";
+	echo "<p>Dernière modification le ".substr($date, 6, 2)."/".substr($date, 4, 2)."/".substr($date, 0, 4)."</p>" ;
+	if($version != '') echo "<p>Version: ".$version."</p>";
+	if($licence != '') echo "<p>Licence: ".$licence."</p>";
+	echo "<p>Description: ".$descript."</p>";
 
 	
 		} else {
