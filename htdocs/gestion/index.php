@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.7  2004/11/11 17:39:54  kikx
+	Centralisation des pages des binets
+
 	Revision 1.6  2004/10/25 14:05:09  kikx
 	Correction d'un bug sur la page
-
+	
 	Revision 1.5  2004/10/25 10:35:50  kikx
 	Page de validation (ou pas) des modif de trombi
 	
@@ -125,8 +128,7 @@ $permissions_user = ses_permissions() ;
 		<lien titre="Valider les mails promos" url="<?php echo BASE_URL?>/admin/valid_mailpromo.php"/>
 		<lien titre="Valider les qdj" url="<?php echo BASE_URL?>/admin/valid_qdj.php"/>
 	<h3>Administration des données de Frankiz</h3>
-		<lien titre="Liste des Binets" url="<?php echo BASE_URL?>/admin/binets.php"/>
-		<lien titre="Liste des Binets qui ont un site WEB" url="<?php echo BASE_URL?>/admin/binets_web.php"/>
+		<lien titre="Liste des Binets" url="<?php echo BASE_URL?>/admin/binets_liste.php"/>
 		<lien titre="Liste des sections" url="<?php echo BASE_URL?>/admin/sections.php"/>
 		<lien titre="Changer les variables globales" url="<?php echo BASE_URL?>/admin/parametre.php"/>
 		<lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/>

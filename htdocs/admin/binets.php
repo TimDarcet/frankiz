@@ -21,9 +21,12 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.15  2004/11/11 17:39:54  kikx
+	Centralisation des pages des binets
+
 	Revision 1.14  2004/11/11 16:08:51  kikx
 	Centralisation de la gestion des binets
-
+	
 	Revision 1.8  2004/11/08 15:46:46  kikx
 	Correction pour les telechargement des fichiers (visiblement ca depend de la version de php)
 	
@@ -62,94 +65,148 @@ $texte_image ="" ;
 // =====================================
 // Modification d'un binet
 // =====================================
+$binet_id = $_GET['id'] ;
+$DB_trombino->query("SELECT nom FROM binets WHERE binet_id=".$_GET['id']);
+list($nomdubinet) = $DB_trombino->next_row() ;
 
-	// On crée un binet
-	//==========================
-
-	if (isset($_POST['ajout'])) {
-		$DB_trombino->query("INSERT INTO  binets SET nom='{$_POST['nom']}', http='{$_POST['http']}', description='{$_POST['descript']}', catego_id='{$_POST['catego']} ' ");
-		$index = mysql_insert_id() ;
-		$message .= "<commentaire>Création du binet ' {$_POST['nom']}' effectuée</commentaire>" ;
-		
-		// Trick pour ne pas avoir a recopier le code d'integration de l'image à la base de donnée
-		$_POST['modif'] = 1 ;
-		$_POST['id'] = $index  ;
-		if (($_FILES['file']['tmp_name']!='none')&&($_FILES['file']['tmp_name']!=''))
-			$_POST['suppr_img'] = 1 ;
-	}
 	
 	// On modifie un binet
 	//==========================
 	
-	if (isset($_POST['modif'])) {
-		if ($_POST['ext']=='on') 
-			$ext = 1;
-		else
-			$ext = 0;
-			
-		// si on demande la modification de l'image
-		//--------------------------------------------------------
-		if (($_FILES['file']['tmp_name']!='none')&&($_FILES['file']['tmp_name']!='')) {
-			$img = $_FILES['file']['tmp_name'] ;
-			$image_types = Array ("image/bmp","image/jpeg","image/pjpeg","image/gif","image/x-png","image/png");
-		
-				//récupere les données de l'images
-				//--------------------------------------
-				
-			$type_img =  $_FILES["file"]["type"];
-			
-			$fp = fopen($img,"rb"); // (b est pour lui dire que c'est bineaire !)
-			$size = filesize($img) ;
-			$dim = getimagesize($img) ;
-			$data = fread($fp,$size);
-			fclose($fp);
-			$data = addslashes($data);
-		
-				//
-				// On verifie que le truc télécharger est une image ...
-				//--------------------------------------
-			
-			if ((in_array (strtolower ($type_img), $image_types))&&($dim[0]<=100)&&($dim[1]<=100)) {
-				$DB_trombino->query("UPDATE binets SET image=\"$data\", format='$type_img' WHERE  binet_id={$_POST['id']}") ;
-				$texte_image = " et de son image " ;
-			} else {
-				$message .= "<warning>Ton image n'est pas au bon format (taille ou extension... $type_img / $dim[0]x$dim[1] pxl)</warning>" ;
+if (isset($_POST['modif'])) {
+
+	// On verifie que les droits des webmestre et des prez n'ont pas changé
+	//==========================================================================
+	// Les données du prez du Binet actuel
+	$DB_web->query("SELECT login FROM trombino.eleves LEFT JOIN compte_frankiz USING(eleve_id) WHERE perms LIKE '%prez_".$_GET['id'].",%' ORDER BY promo DESC");
+	list($prez_login) = $DB_web->next_row() ;
+	// On change de prez
+	if ($_POST['prez']!= $prez_login) {
+		// on supprime les droit de l'ancien web (si il existe bien sur)
+		if ($prez_login!="") {
+			$DB_web->query("SELECT perms,e.eleve_id FROM compte_frankiz LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE login='$prez_login'" );
+			while(list($perms,$eleve_id) = $DB_web->next_row()) {
+				$perms = str_replace("prez_".$binet_id.",","",$perms) ;
+				$DB_web->query("UPDATE compte_frankiz SET perms='$perms' WHERE eleve_id='$eleve_id'");
+				$message .= "<commentaire>$prez_login n'a plus ses droit de prez du binet $nomdubinet</commentaire>\n";
 			}
 		}
+		// on donne les droits au nouveau prez
+		if ($_POST['prez']!="") {
+			$DB_web->query("SELECT perms,e.eleve_id FROM compte_frankiz LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE login='".$_POST['prez']."' " );
+			if ($DB_web->num_rows()==0) 
+				$message .= "<warning>Ce login n'existe pas ou ne s'est jamais connecté a Frankiz</warning>" ;
+			while(list($perms,$eleve_id) = $DB_web->next_row()) {
+				$perms = $perms."prez_".$binet_id."," ;
+				$DB_web->query("UPDATE compte_frankiz SET perms='$perms' WHERE eleve_id='$eleve_id'");
+				$message .= "<commentaire>".$_POST['prez']." a reçu les droits de prez du binet $nomdubinet</commentaire>\n";
+			}
+		}
+	}
+
+	
+	
+	
+	
+	// Les données du webmestre du Binet actuel
+	$DB_web->query("SELECT login FROM trombino.eleves LEFT JOIN compte_frankiz USING(eleve_id) WHERE perms LIKE '%webmestre_".$_GET['id'].",%' ORDER BY promo DESC");
+	list($web_login) = $DB_web->next_row() ;
+	
+	if ($_POST['webmestre']!= $web_login) {
+		// on supprime les droit de l'ancien web (si il existe bien sur)
+		if ($web_login!="") {
+			$DB_web->query("SELECT perms,e.eleve_id FROM compte_frankiz LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE login='$web_login'" );
+			while(list($perms,$eleve_id) = $DB_web->next_row()) {
+				$perms = str_replace("prez_".$binet_id.",","",$perms) ;
+				$DB_web->query("UPDATE compte_frankiz SET perms='$perms' WHERE eleve_id='$eleve_id'");
+				$message .= "<commentaire>$web_login n'a plus ses droit de webmestre du binet $nomdubinet</commentaire>\n";
+			}
+		}
+		// on donne les droits au nouveau prez
+		if ($_POST['webmestre']!="") {
+			$DB_web->query("SELECT perms,e.eleve_id FROM compte_frankiz LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE login='".$_POST['webmestre']."' " );
+			if ($DB_web->num_rows()==0) 
+				$message .= "<warning>Ce login n'existe pas ou ne s'est jamais connecté a Frankiz</warning>" ;
+			while(list($perms,$eleve_id) = $DB_web->next_row()) {
+				$perms = $perms."prez_".$binet_id."," ;
+				$DB_web->query("UPDATE compte_frankiz SET perms='$perms' WHERE eleve_id='$eleve_id'");
+				$message .= "<commentaire>".$_POST['webmestre']." a reçu les droits de webmestre du binet $nomdubinet</commentaire>\n";
+			}
+		}
+	}
 		
-		//---------------------------------------------------------
+
+
+
+
+	if ((isset($_POST['ext']))&&($_POST['ext']=='on')) 
+		$ext = 1;
+	else
+		$ext = 0;
+		
+	// si on demande la modification de l'image
+	//--------------------------------------------------------
+	if (($_FILES['file']['tmp_name']!='none')&&($_FILES['file']['tmp_name']!='')) {
+		$img = $_FILES['file']['tmp_name'] ;
+		$image_types = Array ("image/bmp","image/jpeg","image/pjpeg","image/gif","image/x-png","image/png");
+	
+			//récupere les données de l'images
+			//--------------------------------------
 			
-		$DB_trombino->query("UPDATE binets SET nom='{$_POST['nom']}', folder='{$_POST['folder']}', http='{$_POST['http']}', description='{$_POST['descript']}', catego_id='{$_POST['catego']}' , exterieur=$ext WHERE binet_id={$_POST['id']}");
-		$message .= "<commentaire>Modification de {$_POST['nom']} $texte_image effectuée</commentaire>" ;
-	}
-	
-	// On supprime l'image d'un binet
-	//==========================
-	
-	if (isset($_POST['suppr_img'])) {
-			$img = BASE_LOCAL.'/admin/binet_default.gif' ;
-				
-			$type_img =  'image/gif';
-			$fp = fopen($img,"rb"); // (b est pour lui dire que c'est bineaire !)
-			$size = filesize($img) ;
-			$dim = getimagesize($img) ;
-			$data = fread($fp,$size);
-			fclose($fp);
-			$data = addslashes($data);
+		$type_img =  $_FILES["file"]["type"];
 		
-				//
-				// On verifie que le truc télécharger est une image ...
-				//--------------------------------------
-			$DB_trombino->query("UPDATE binets SET image=\"$data\", format='$type_img' WHERE  binet_id={$_POST['id']}") ;
-			$message .= "<warning> Suppression de l'image du binet {$_POST['nom']}</warning>" ;
-	}
-	// On supprime un binet
-	//==========================
+		$fp = fopen($img,"rb"); // (b est pour lui dire que c'est bineaire !)
+		$size = filesize($img) ;
+		$dim = getimagesize($img) ;
+		$data = fread($fp,$size);
+		fclose($fp);
+		$data = addslashes($data);
 	
-	if (isset($_POST['suppr'])) {
-		$DB_trombino->query("DELETE FROM binets WHERE binet_id={$_POST['id']}");
-		$message .= "<warning>Suppression de {$_POST['nom']} effectuée</warning>" ;
+			//
+			// On verifie que le truc télécharger est une image ...
+			//--------------------------------------
+		
+		if ((in_array (strtolower ($type_img), $image_types))&&($dim[0]<=100)&&($dim[1]<=100)) {
+			$DB_trombino->query("UPDATE binets SET image=\"$data\", format='$type_img' WHERE  binet_id={$_GET['id']}") ;
+			$texte_image = " et de son image " ;
+		} else {
+			$message .= "<warning>Ton image n'est pas au bon format (taille ou extension... $type_img / $dim[0]x$dim[1] pxl)</warning>" ;
+		}
 	}
+	
+	//---------------------------------------------------------
+		
+	$DB_trombino->query("UPDATE binets SET nom='{$_POST['nom']}', folder='{$_POST['folder']}', http='{$_POST['http']}', description='{$_POST['descript']}', catego_id='{$_POST['catego']}' , exterieur=$ext WHERE binet_id={$_GET['id']}");
+	$message .= "<commentaire>Modification de {$_POST['nom']} $texte_image effectuée</commentaire>" ;
+}
+
+// On supprime l'image d'un binet
+//==========================
+
+if (isset($_POST['suppr_img'])) {
+		$img = BASE_LOCAL.'/admin/binet_default.gif' ;
+			
+		$type_img =  'image/gif';
+		$fp = fopen($img,"rb"); // (b est pour lui dire que c'est bineaire !)
+		$size = filesize($img) ;
+		$dim = getimagesize($img) ;
+		$data = fread($fp,$size);
+		fclose($fp);
+		$data = addslashes($data);
+	
+			//
+			// On verifie que le truc télécharger est une image ...
+			//--------------------------------------
+		$DB_trombino->query("UPDATE binets SET image=\"$data\", format='$type_img' WHERE  binet_id={$_GET['id']}") ;
+		$message .= "<warning> Suppression de l'image du binet {$_POST['nom']}</warning>" ;
+}
+// On supprime un binet
+//==========================
+
+if (isset($_POST['suppr'])) {
+	$DB_trombino->query("DELETE FROM binets WHERE binet_id={$_GET['id']}");
+	$message .= "<warning>Suppression de {$_POST['nom']} effectuée</warning>" ;
+}
 
 
 
@@ -165,96 +222,50 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		$liste_catego .= "\t\t\t<option titre=\"$catego_nom\" id=\"$catego_id\"/>\n";
 ?>
 
-<h1>Modification des binets ayant un site web</h1>
+
+<h1>Modification du binet</h1>
 
 	<?
 	$categorie_precedente = -1;
-	$DB_trombino->query("SELECT binet_id,nom,description,http,b.catego_id,categorie,exterieur,folder FROM binets as b LEFT JOIN binets_categorie as c USING(catego_id) WHERE http IS NOT NULL ORDER BY nom ASC");
-	while(list($id,$nom,$descript,$http,$cat_id,$catego,$exterieur,$folder) = $DB_trombino->next_row()) {
+	
+	// Les infos du Binet en générale
+	$DB_trombino->query("SELECT description, nom,binet_id, http, catego_id, exterieur, folder FROM binets WHERE binet_id=".$_GET['id']);
+	list($descript,$nom_binet,$binet_id,$http,$cat_id,$exterieur,$folder) = $DB_trombino->next_row() ;
+	
+	// Les données du prez du Binet
+	$DB_web->query("SELECT login FROM trombino.eleves LEFT JOIN compte_frankiz USING(eleve_id) WHERE perms LIKE '%prez_".$_GET['id'].",%' ORDER BY promo DESC");
+	list($prez_login) = $DB_web->next_row() ;
+	
+	// Les données du webmestre du Binet
+	$DB_web->query("SELECT login FROM trombino.eleves LEFT JOIN compte_frankiz USING(eleve_id) WHERE perms LIKE '%webmestre_".$_GET['id'].",%' ORDER BY promo DESC");
+	list($web_login) = $DB_web->next_row() ;
+
 ?>
-		<formulaire id="binet_web_<? echo $id?>" titre="<? echo $nom?>" action="admin/binets_web.php">
-			<hidden id="id" titre="ID" valeur="<? echo $id?>"/>
-			<champ id="nom" titre="Nom" valeur="<? echo $nom?>"/>
-			<choix titre="Catégorie" id="catego" type="combo" valeur="<?=$cat_id?>">
+	<formulaire id="binet_web_<? echo $binet_id?>" titre="<? echo $nom_binet?>" action="admin/binets.php?id=<?=$_GET['id']?>">
+		<champ id="nom" titre="Nom" valeur="<? echo $nom_binet?>"/>
+		<choix titre="Catégorie" id="catego" type="combo" valeur="<?=$cat_id?>">
 <?php
-				echo $liste_catego ;
+			echo $liste_catego ;
 ?>
-			</choix>
-			<champ id="http" titre="Http" valeur="<? echo $http?>"/>
-			<champ id="folder" titre="Folder de stockage" valeur="<? echo $folder?>"/>
-			<zonetext id="descript" titre="Description" valeur="<? echo stripslashes($descript)?>"/>
-			<image source="binets/?image=1&amp;id=<?=$id?>"/>
-			<fichier id="file" titre="Ton image de 100x100 px" taille="50000"/>
-			<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if ($exterieur==1) echo 'ext' ;?>">
-				<option id="ext" titre=""/>
-			</choix>
+		</choix>
+		<champ id="http" titre="Http" valeur="<? echo $http?>"/>
+		<champ id="folder" titre="Folder de stockage" valeur="<? echo $folder?>"/>
+		<zonetext id="descript" titre="Description" valeur="<? echo stripslashes($descript)?>"/>
+		<image source="binets/?image=1&amp;id=<?=$binet_id?>"/>
+		<fichier id="file" titre="Ton image de 100x100 px" taille="50000"/>
+		<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if ($exterieur==1) echo 'ext' ;?>">
+			<option id="ext" titre=""/>
+		</choix>
+		<champ id="prez" titre="President" valeur="<?=$prez_login?>"/>
+		<champ id="webmestre" titre="Webmestre" valeur="<?=$web_login?>"/>
 
-			<bouton id='modif' titre="Modifier"/>
-			<bouton id='suppr' titre="Supprimer" onClick="return window.confirm('Voulez vous vraiment supprimer ce binet ?')"/>
-			<bouton id='suppr_img' titre="Supprimer l'image" onClick="return window.confirm('Voulez vous vraiment supprimer l'image de ce binet ?')"/>
-		</formulaire>
-<?php
-	}
-?>
-
-<h1>Modification des binets n'ayant pas de site web</h1>
-
-	<?
-	$categorie_precedente = -1;
-	$DB_trombino->query("SELECT binet_id,nom,description,http,b.catego_id,categorie,exterieur,folder FROM binets as b LEFT JOIN binets_categorie as c USING(catego_id) WHERE http IS NULL ORDER BY nom ASC");
-	while(list($id,$nom,$descript,$http,$cat_id,$catego,$exterieur,$folder) = $DB_trombino->next_row()) {
-?>
-		<formulaire id="binet_web_<? echo $id?>" titre="<? echo $nom?>" action="admin/binets_web.php">
-			<hidden id="id" titre="ID" valeur="<? echo $id?>"/>
-			<champ id="nom" titre="Nom" valeur="<? echo $nom?>"/>
-			<choix titre="Catégorie" id="catego" type="combo" valeur="<?=$cat_id?>">
-<?php
-				echo $liste_catego ;
-?>
-			</choix>
-			<champ id="http" titre="Http" valeur="<? echo $http?>"/>
-			<champ id="folder" titre="Folder de stockage" valeur="<? echo $folder?>"/>
-			<zonetext id="descript" titre="Description" valeur="<? echo stripslashes($descript)?>"/>
-			<image source="binets/?image=1&amp;id=<?=$id?>"/>
-			<fichier id="file" titre="Ton image de 100x100 px" taille="50000"/>
-			<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if ($exterieur==1) echo 'ext' ;?>">
-				<option id="ext" titre=""/>
-			</choix>
-
-			<bouton id='modif' titre="Modifier"/>
-			<bouton id='suppr' titre="Supprimer" onClick="return window.confirm('Voulez vous vraiment supprimer ce binet ?')"/>
-			<bouton id='suppr_img' titre="Supprimer l'image" onClick="return window.confirm('Voulez vous vraiment supprimer l'image de ce binet ?')"/>
-		</formulaire>
-<?php
-	}
-?>
-
-
-<h1>Création d'un site Web de binet</h1>
-
-		<formulaire id="binet_web" titre="Nouveau Binet" action="admin/binets_web.php">
-			<hidden id="id" titre="ID" valeur=""/>
-			<champ id="nom" titre="Nom" valeur=""/>
-			<choix titre="Catégorie" id="catego" type="combo" valeur="">
-<?php
-				echo $liste_catego ;
-?>
-			</choix>
-			<champ id="http" titre="Http" valeur=""/>
-			<champ id="folder" titre="Folder de stockage" valeur=""/>
-			<zonetext id="descript" titre="Description" valeur=""/>
-			<fichier id="file" titre="Ton image de 100x100 px" taille="50000"/>
-			<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="">
-				<option id="ext" titre=""/>
-			</choix>
-
-			<bouton id='ajout' titre="Ajouter"/>
-		</formulaire>
-		
+		<bouton id='modif' titre="Modifier"/>
+		<bouton id='suppr' titre="Supprimer" onClick="return window.confirm('Voulez vous vraiment supprimer ce binet ?')"/>
+		<bouton id='suppr_img' titre="Supprimer l'image" onClick="return window.confirm('Voulez vous vraiment supprimer l'image de ce binet ?')"/>
+	</formulaire>
 
 </page>
 <?php
-
-
 require_once BASE_LOCAL."/include/page_footer.inc.php";
 ?>
+
