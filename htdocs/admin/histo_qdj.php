@@ -21,9 +21,12 @@
 	Page qui permet aux admins de voir l'historique des qdj
 	
 	$Log$
+	Revision 1.5  2004/12/17 20:40:48  pico
+	Mise en forme
+
 	Revision 1.4  2004/12/17 20:28:02  pico
 	Plus joli
-
+	
 	Revision 1.3  2004/12/17 20:11:54  pico
 	Un peu moins précis..
 	
@@ -58,14 +61,11 @@ foreach ($_POST AS $keys => $val){
 
 }
 
-//nb de qdj planifiées
 $date = date("Y-m-d", time()-3025);
 ?>
-	<p>Nous sommes le : <?= $date ?></p>
+	<h4>Nous sommes le : <?= date("d/m/Y",strtotime($date)) ?></h4>
 	<h2>Historique</h2>
 	<?
-
-	$date = date("Y-m-d", time()-3025 + 24*3600);
 	$DB_web->query("SELECT qdj_id,date,question,reponse1,reponse2,compte1,compte2 FROM qdj WHERE date<'$date'  ORDER BY date DESC");
 	while(list($id,$date,$question,$reponse1,$reponse2,$compte1,$compte2) = $DB_web->next_row()){
 		$p1 = round(100*$compte1/($compte1+$compte2));
@@ -75,7 +75,6 @@ $date = date("Y-m-d", time()-3025);
 			<?= "$question ?" ?><br/>
 			<?= "- $reponse1 ($compte1 soit $p1%)"?><br/>
 			<?= "- $reponse2 ($compte2 soit $p2%)"?><br/>
-		
 <? 
 	}
 
