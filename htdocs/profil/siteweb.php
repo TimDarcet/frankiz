@@ -21,9 +21,12 @@
 	Pour gerer son site web perso
 		
 	$Log$
+	Revision 1.3  2004/11/24 22:29:52  kikx
+	blu
+
 	Revision 1.2  2004/11/24 22:12:57  schmurtz
 	Regroupement des fonctions zip unzip deldir et download dans le meme fichier
-
+	
 	Revision 1.1  2004/11/24 18:12:27  kikx
 	Séparation de la page du site web et du profil personnel
 	
@@ -93,7 +96,7 @@ if(isset($_POST['ext'])){
 
 // Génération du la page XML
 require "../include/page_header.inc.php";
-
+ 
 ?>
 <page id="profil" titre="Frankiz : modification du profil">
 	<h1>Site Web Personnel</h1>
