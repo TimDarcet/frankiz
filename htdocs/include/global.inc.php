@@ -24,11 +24,14 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.43  2004/11/25 01:31:55  schmurtz
+	Pour debuguer
+
 	Revision 1.42  2004/11/25 00:44:35  schmurtz
 	Ajout de init_ devant les fichier d'include servant d'initialisation de page
 	Permet de mieux les distinguer des autres fichiers d'include ne faisant que definir
 	des fonctions.
-
+	
 	Revision 1.41  2004/11/24 22:56:18  schmurtz
 	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
 	globale pour tous les fichiers.
@@ -95,6 +98,10 @@ function nettoyage_balise($tableau) {
 $_GET = nettoyage_balise($_GET);
 $_POST = nettoyage_balise($_POST);
 $_REQUEST = nettoyage_balise($_REQUEST);
+
+ajouter_debug_log(var_export($_GET,true));
+ajouter_debug_log(var_export($_POST,true));
+ajouter_debug_log(var_export($_COOKIE,true));
 
 // divers fichiers inclus pour effectuer des actions avant l'affichage de la page
 require_once "global_func.inc.php";
