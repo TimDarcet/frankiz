@@ -1,12 +1,33 @@
 <?php
 /*
+	Copyright (C) 2004 Binet Réseau
+	http://www.polytechnique.fr/eleves/binets/br/
+	
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2
+	of the License, or (at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+*/
+/*
 	Page permettant de faire une demande d'adresse IP supplémentaire pour mettre
 	une seconde machine dans son casert.
 	
 	$Log$
+	Revision 1.9  2004/10/21 22:19:38  schmurtz
+	GPLisation des fichiers du site
+
 	Revision 1.8  2004/09/20 08:29:24  kikx
 	Rajout d'une page pour envoyer des mail d'amour a ses webmestres adorés
-
+	
 	Revision 1.7  2004/09/17 11:34:10  kikx
 	Bla
 	

@@ -1,5 +1,23 @@
 <?php
 /*
+	Copyright (C) 2004 Binet Réseau
+	http://www.polytechnique.fr/eleves/binets/br/
+	
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2
+	of the License, or (at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+*/
+/*
 	Gestion des erreurs php et mysql :
 	- on évite de les afficher à l'utilisateur.
 	- on les affiches en haut de la page pour les webmestres, met on ne les fait pas apparaître
@@ -7,9 +25,12 @@
 	- affichage des requètes mysql en commentaire dans
 	
 	$Log$
+	Revision 1.9  2004/10/21 22:19:37  schmurtz
+	GPLisation des fichiers du site
+
 	Revision 1.8  2004/09/17 11:00:07  schmurtz
 	Bug dans l'affichage des erreurs
-
+	
 	Revision 1.7  2004/09/15 23:19:31  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	

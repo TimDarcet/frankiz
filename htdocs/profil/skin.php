@@ -1,5 +1,23 @@
 <?php
 /*
+	Copyright (C) 2004 Binet Réseau
+	http://www.polytechnique.fr/eleves/binets/br/
+	
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2
+	of the License, or (at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+*/
+/*
 	Page de gestion des skins. Chaque skin est contenu dans un dossier dans $serveur_base/skins/.
 	Le fichier skin.xsl contient le code XSLT pour convertir le code XML et le fichier description.xsl
 	contient des informations importantes pour l'application de la transformation XSL et la configuration
@@ -21,9 +39,12 @@
 	)
 	
 	$Log$
+	Revision 1.8  2004/10/21 22:19:38  schmurtz
+	GPLisation des fichiers du site
+
 	Revision 1.7  2004/09/15 23:20:07  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 	Revision 1.6  2004/09/15 21:42:21  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
 	

@@ -1,5 +1,23 @@
 <?php
 /*
+	Copyright (C) 2004 Binet Réseau
+	http://www.polytechnique.fr/eleves/binets/br/
+	
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2
+	of the License, or (at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+*/
+/*
 	Administration d'un binet. Le webmestre peut modifier les informations liees au site web (url,
 	description), le prez peut en plus modifier les membres de son binet et leur commentaire dans
 	le trombino.
@@ -7,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.10  2004/10/21 22:19:37  schmurtz
+	GPLisation des fichiers du site
+
 	Revision 1.9  2004/10/19 19:08:17  kikx
 	Permet a l'administrateur de valider les modification des binets
-
+	
 	Revision 1.8  2004/10/19 14:58:42  schmurtz
 	Creation d'un champ de formulaire specifique pour les fichiers (sans passer
 	l'element champ, qui actuellement est un peu acrobatique).

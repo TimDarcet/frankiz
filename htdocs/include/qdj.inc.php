@@ -1,5 +1,23 @@
 <?php
 /*
+	Copyright (C) 2004 Binet Réseau
+	http://www.polytechnique.fr/eleves/binets/br/
+	
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2
+	of the License, or (at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+*/
+/*
 	Affichage de la QDJ. Le fait d'avoir un fichier inclus permet d'éviter d'avoir du code
 	dupliquer dans qdj.php et qdj_hier.php. Ça évite aussi de devoir regrouper les deux modules
 	dans le même fichier (et donc passer autre le principe 1 module = 1 fichier).
@@ -7,9 +25,12 @@
 	TODO traiter le cas ou le qdj master est à la bourre (garder l'ancienne qdj par exemple).
 	
 	$Log$
+	Revision 1.11  2004/10/21 22:19:37  schmurtz
+	GPLisation des fichiers du site
+
 	Revision 1.10  2004/09/20 20:33:47  schmurtz
 	Mise en place d'un systeme de cache propre
-
+	
 	Revision 1.9  2004/09/17 15:28:20  schmurtz
 	Utilisation de la balise <eleve> pour les derniers votants aÌ€ la qdj, les anniversaires, la signature des annoncesâ€¦
 	

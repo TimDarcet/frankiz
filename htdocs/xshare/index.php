@@ -1,43 +1,64 @@
-<? 
+<?php 
 /*
-		$Log$
-		Revision 1.20  2004/10/21 12:23:17  pico
-		Un doublon qui servait pas
+	Copyright (C) 2004 Binet Réseau
+	http://www.polytechnique.fr/eleves/binets/br/
+	
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2
+	of the License, or (at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+*/
+/*
+	$Log$
+	Revision 1.21  2004/10/21 22:19:38  schmurtz
+	GPLisation des fichiers du site
 
-		Revision 1.19  2004/10/21 12:18:52  pico
-		Gestion des recherches
-		
-		Revision 1.18  2004/10/20 23:18:49  pico
-		Derniers fixes, ça marche !!
-		
-		Revision 1.17  2004/10/20 23:04:06  pico
-		Affichage de l'arbre mieux respecté
-		
-		Revision 1.16  2004/10/20 22:28:27  pico
-		Encore des corrections
-		
-		Revision 1.15  2004/10/20 22:10:06  pico
-		BugFix (devrait marcher)
-		
-		Revision 1.14  2004/10/20 22:05:55  pico
-		Changements Noeuds/Feuilles
-		
-		Revision 1.13  2004/10/20 20:00:37  pico
-		Génération des balises plus conforme
-		
-		Revision 1.12  2004/10/19 22:04:23  pico
-		Pas d'aut
-		+ Fix
-		
-		Revision 1.11  2004/10/19 07:56:56  pico
-		Corrections diverses
-		
-		Revision 1.10  2004/10/18 23:37:03  pico
-		BugFix Recherche (pas 2 requetes sql en même temps !)
-		
-		Revision 1.9  2004/10/18 22:17:45  pico
-		Ajout des logs dans le fichier
-		
+	Revision 1.20  2004/10/21 12:23:17  pico
+	Un doublon qui servait pas
+	
+	Revision 1.19  2004/10/21 12:18:52  pico
+	Gestion des recherches
+	
+	Revision 1.18  2004/10/20 23:18:49  pico
+	Derniers fixes, ça marche !!
+	
+	Revision 1.17  2004/10/20 23:04:06  pico
+	Affichage de l'arbre mieux respecté
+	
+	Revision 1.16  2004/10/20 22:28:27  pico
+	Encore des corrections
+	
+	Revision 1.15  2004/10/20 22:10:06  pico
+	BugFix (devrait marcher)
+	
+	Revision 1.14  2004/10/20 22:05:55  pico
+	Changements Noeuds/Feuilles
+	
+	Revision 1.13  2004/10/20 20:00:37  pico
+	Génération des balises plus conforme
+	
+	Revision 1.12  2004/10/19 22:04:23  pico
+	Pas d'aut
+	+ Fix
+	
+	Revision 1.11  2004/10/19 07:56:56  pico
+	Corrections diverses
+	
+	Revision 1.10  2004/10/18 23:37:03  pico
+	BugFix Recherche (pas 2 requetes sql en même temps !)
+	
+	Revision 1.9  2004/10/18 22:17:45  pico
+	Ajout des logs dans le fichier
+	
 */
 require_once "../include/global.inc.php";
 

@@ -1,14 +1,35 @@
 <?php
 /*
+	Copyright (C) 2004 Binet Réseau
+	http://www.polytechnique.fr/eleves/binets/br/
+	
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2
+	of the License, or (at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+*/
+/*
 	Fichier de définition de variables et constantes utiles dans tout le projet.
 	C'est de ce script que sont inclus tous les fichiers inclus pour toutes les pages
 	et _qui inclus du code en dehors de fonctions_ comme erreursphp.inc.php, login.inc.php,
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.24  2004/10/21 22:19:37  schmurtz
+	GPLisation des fichiers du site
+
 	Revision 1.23  2004/10/21 12:24:48  kikx
 	Correction d'un bug suite a un commit
-
+	
 	Revision 1.22  2004/10/17 17:27:07  pico
 	Ajout bdd de la faq
 	

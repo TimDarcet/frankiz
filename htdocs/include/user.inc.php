@@ -1,5 +1,23 @@
 <?php
 /*
+	Copyright (C) 2004 Binet Réseau
+	http://www.polytechnique.fr/eleves/binets/br/
+	
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2
+	of the License, or (at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+*/
+/*
 	Défini une classe de gestion d'un utilisateur. Cette classe n'est faite que pour la gestion
 	de l'authentification, donc il est inutile d'y inclure toute les informations du trombino, ni
 	pour modifier le trombino.
@@ -8,11 +26,14 @@
 	informations provenant des tables du trombino (avec jointure sur l'uid).
 
 	$Log$
+	Revision 1.9  2004/10/21 22:19:37  schmurtz
+	GPLisation des fichiers du site
+
 	Revision 1.8  2004/10/17 17:13:20  kikx
 	Pour rendre la page d'administration plus belle
 	n'affiche le truc d'admin que si on est admin
 	meme chsoe pour le prez et le webmestre
-
+	
 	Revision 1.7  2004/09/15 23:19:31  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
