@@ -25,9 +25,12 @@
 	- affichage des requètes mysql en commentaire dans
 	
 	$Log$
+	Revision 1.10  2004/11/02 20:41:22  kikx
+	Code d'erreur mysql
+
 	Revision 1.9  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.8  2004/09/17 11:00:07  schmurtz
 	Bug dans l'affichage des erreurs
 	
@@ -53,15 +56,15 @@ $_ERREURS_PHP_NOMS = array(
 	E_ERROR				=> "Fatal error",
 	E_WARNING			=> "Warning",
 	E_PARSE				=> "Parse error",
-	E_NOTICE			=> "Notice",
-	E_CORE_ERROR		=> "Core error",
+	E_NOTICE				=> "Notice",
+	E_CORE_ERROR			=> "Core error",
 	E_CORE_WARNING		=> "Core warning",
 	E_COMPILE_ERROR		=> "Compile error",
 	E_COMPILE_WARNING	=> "Compile warning",
 	E_USER_ERROR		=> "User error",
-	E_USER_WARNING		=> "User warning",
+	E_USER_WARNING	=> "User warning",
 	E_USER_NOTICE		=> "User notice",
-	2048				=> "Not strict"		// E_STRICT, PHP 5 uniquement
+	2048					=> "Not strict"		// E_STRICT, PHP 5 uniquement
 );
 
 function ajouter_erreur_php($errno, $errmsg, $file, $line, $vars) {
@@ -79,8 +82,8 @@ function ajouter_erreur_php($errno, $errmsg, $file, $line, $vars) {
 function ajouter_erreur_mysql($query) {
 	global $_ERREURS_PHPMYSQL,$_ERREUR_FATAL;
 	$_ERREURS_PHPMYSQL[] = array(
-		'errname'	=> "MYSQL Error",
-		'errmsg'	=> mysql_error(),
+		'errname'	=> "MYSQL Error ",
+		'errmsg'	=> mysql_error()." (".mysql_errno().")",
 		'file'		=> "",
 		'line'		=> "",
 		'query'		=> $query
@@ -124,9 +127,9 @@ function affiche_erreurs_php() {
 		// TODO Écrire le contenu de $message dans un fichier de log
 		
 		if($_ERREUR_FATAL) {
-			echo "<h2>Une erreur inconnue est survenue.</h2>\n"
+			echo "<warning><p>Une erreur inconnue est survenue.</p>\n"
 				."<p>Pour informer le Webmestre de cette erreur et expliquer la manipulation qui l'a déclenchée,"
-				." cliquez <a href=\"mailto:".MAIL_WEBMESTRE."?Subject=%5BFrankiz%20Erreur%20$timestamp%5D%20\">ici</a>.</p>\n";
+				." cliquez <a href=\"mailto:".MAIL_WEBMESTRE."?Subject=%5BFrankiz%20Erreur%20$timestamp%5D%20\">ici</a>.</p></warning>\n";
 			exit;
 		}
 	}
