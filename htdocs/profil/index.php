@@ -21,9 +21,12 @@
 	Page permettant de modifier son profil 
 	
 	$Log$
+	Revision 1.9  2005/03/04 20:24:09  pico
+	Ajout d'une entrée dans le menu pour enregistrer une nouvelle Mac
+
 	Revision 1.8  2005/02/08 21:57:56  pico
 	Correction bug #62
-
+	
 	Revision 1.7  2005/01/02 22:14:33  pico
 	Devrait fixer les pbs concernant les flux rss
 	
@@ -75,6 +78,6 @@ require "../include/page_header.inc.php";
 		<lien titre="Gérer mes données réseau" url="profil/reseau.php"/><br/>
 		<lien titre="Modifier le mot de passe Xnet" url="profil/reseau.php#mod_xnet_0"/><br/>
 		<lien titre="Demander une nouvelle adresse ip" url="profil/demande_ip.php"/><br/>
-		
+		<lien titre="Demander l'ajout d'une nouvelle machine sur le réseau" url="profil/demande_ip.php"/><br/>
 </page>
 <?php require_once BASE_LOCAL."/include/page_footer.inc.php"; ?>
