@@ -124,13 +124,13 @@
 		</xsl:choose>
 		<br/>
 		<xsl:if test="count(qdj/dernier)">
-			<div>Derniers à répondre :
+			<div>Derniers à répondre :</div>
 			<ul class="liste">
-			<xsl:for-each select="qdj/dernier[position()&lt;=4]">
+			<xsl:for-each select="qdj/dernier[position()&lt;=5]">
 				<li class="fkz_qdj_last"><xsl:value-of select="@ordre"/>. <xsl:apply-templates select="eleve" mode="signature"/></li>
 			</xsl:for-each>
 			</ul>
-			</div>
+			
 		</xsl:if>
 		</dd>
 		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>

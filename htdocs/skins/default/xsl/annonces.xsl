@@ -190,7 +190,7 @@
 				<xsl:value-of select="@surnom"/>
 			</xsl:when>
 		<xsl:otherwise>
-			<xsl:value-of select="@prenom"/><xsl:text>  </xsl:text><xsl:value-of select="eleve/@nom"/>
+			<xsl:value-of select="@prenom"/><xsl:text>  </xsl:text><xsl:value-of select="@nom"/>
 		</xsl:otherwise>
 	</xsl:choose>
 </xsl:template>

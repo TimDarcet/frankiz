@@ -522,18 +522,16 @@ table.reponse_qdj td div.col span {
 	display:block;
 	height:50px;
 }
-table.reponse_qdj td div.reponse {
-	height:50px;
-}
 table.reponse_qdj td div.col span.jone {
 	background:url(images/jaune.gif) repeat-y top center;
 }
 table.reponse_qdj td div.col span.rouje {
 	background:url(images/rouge.gif) repeat-y top center;
 }
-table.reponse_qdj td span.reponse {
-	display:block;		
+table.reponse_qdj td div.reponse {
+	height:50px;
 }
+
 
 /* ---------- Xshare et FAQ --------- */
 
