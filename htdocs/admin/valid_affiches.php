@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.13  2004/11/27 16:10:52  pico
+	Correction d'erreur de redirection et ajout des web à la validation des activités.
+
 	Revision 1.12  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-
+	
 	Revision 1.11  2004/11/27 14:56:15  pico
 	Debut de mise en place de droits spéciaux (qdj + affiches)
 	+ génération de la page d'admin qui va bien
@@ -72,7 +75,7 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-if(verifie_permission('admin'))
+if(verifie_permission('admin')||verifie_permission('web'))
 	$user_id = '%';
 else if(verifie_permission('affiches'))
 	$user_id = $_SESSION['user']->uid;

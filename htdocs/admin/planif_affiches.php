@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.5  2004/11/27 16:10:52  pico
+	Correction d'erreur de redirection et ajout des web à la validation des activités.
+
 	Revision 1.4  2004/11/27 15:29:22  pico
 	Mise en place des droits web (validation d'annonces + sondages)
-
+	
 	Revision 1.3  2004/11/27 14:12:31  pico
 	Ajout d'un lien pour supprimmer les annonces périmées depuis plus de 5 jours
 	(histoire de pas garder des archives inutiles)
@@ -42,7 +45,7 @@ require_once "../include/global.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-if(verifie_permission('admin'))
+if(verifie_permission('admin')||verifie_permission('web'))
 	$user_id = '%';
 else if(verifie_permission('affiches'))
 	$user_id = $_SESSION['user']->uid;

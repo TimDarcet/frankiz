@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.23  2004/11/27 16:10:52  pico
+	Correction d'erreur de redirection et ajout des web à la validation des activités.
+
 	Revision 1.22  2004/11/25 11:52:10  pico
 	Correction des liens mysql_id
-
+	
 	Revision 1.21  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
@@ -117,7 +120,7 @@ if(isset($_REQUEST['image'])){
 // Vérification des droits
 demande_authentification(AUTH_FORT);
 if ((empty($_GET['binet'])) || ((!verifie_permission_webmestre($_GET['binet'])) && (!verifie_permission_prez($_GET['binet']))))
-	rediriger_vers("/admin/");
+	rediriger_vers("/gestion/");
 	
 $DB_trombino->query("SELECT nom FROM binets WHERE binet_id=".$_GET['binet']);
 list($nom_binet) = $DB_trombino->next_row() ;

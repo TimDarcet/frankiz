@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.21  2004/11/27 16:10:52  pico
+	Correction d'erreur de redirection et ajout des web à la validation des activités.
+
 	Revision 1.20  2004/11/27 15:39:54  pico
 	Ajout des droits trombino
-
+	
 	Revision 1.19  2004/11/27 15:29:22  pico
 	Mise en place des droits web (validation d'annonces + sondages)
 	
@@ -250,7 +253,7 @@ $permissions_user = $_SESSION['user']->perms ;
 		<lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/>
 	<?
 	}
-	if (verifie_permission('admin')||verifie_permission('affiches')){
+	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('web')){
 	?>
 		<lien titre="Planifier les activités" url="<?php echo BASE_URL?>/admin/planif_affiches.php"/>
 	<?
