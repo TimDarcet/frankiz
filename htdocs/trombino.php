@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.18  2004/11/19 23:04:27  alban
+	Rajout du module lien_tol
+
 	Revision 1.17  2004/11/13 00:25:26  schmurtz
 	Rajout du lien d'ace au su
-
+	
 	Revision 1.16  2004/11/12 23:32:14  schmurtz
 	oublie dans le deplacement du trombino
 	
@@ -48,12 +51,11 @@
 */
 
 require_once "include/global.inc.php";
-
 demande_authentification(AUTH_MINIMUM);
 
 // Récupération d'une image
 if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "true") && ($_REQUEST['image'] != "")){
-	require_once("include/global.inc.php");
+	require_once "include/global.inc.php";
 	header('content-type: image/jpeg');
 	if (!isset($_REQUEST['original'])) {
 		readfile(BASE_PHOTOS.$_REQUEST['promo']."/".$_REQUEST['login'].".jpg");	
@@ -63,10 +65,25 @@ if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "true") && ($_REQUEST['im
 	exit;
 }
 
-// Affichage des réponses
-if(isset($_REQUEST['chercher'])) {
+require "include/page_header.inc.php";
+echo "<page id='trombino' titre='Frankiz : Trombino'>\n";
 
-	// Création de la requète
+// Affichage des réponses
+if(isset($_REQUEST['chercher'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_REQUEST['q_search']))))) {
+
+	// Création de la requête si lien_tol appelle
+	if(isset($_REQUEST['cherchertol'])) {
+		$where = "";
+		$join = "INNER JOIN sections ON eleves.section_id=sections.section_id";
+		$champs = "eleves.eleve_id,eleves.nom,prenom,surnom,piece_id,sections.nom,eleves.section_id,cie,promo,login,mail,0";
+		$where_like = array(
+			'nom' => 'eleves.nom',	'prenom' => 'prenom',	'surnom' => 'surnom');
+		foreach($where_like as $post_arg => $db_field)
+			$where .= (empty($where) ? "" : " OR") . " $db_field LIKE '%".$_REQUEST['q_search']."%'";
+	}
+	
+	// Création de la requète si tol s'appelle
+	if(isset($_REQUEST['chercher'])) {
 	$where = "";
 	$join = "INNER JOIN sections ON eleves.section_id=sections.section_id";
 	$champs = "eleves.eleve_id,eleves.nom,prenom,surnom,piece_id,sections.nom,eleves.section_id,cie,promo,login,mail,0";
@@ -90,14 +107,18 @@ if(isset($_REQUEST['chercher'])) {
 		$join = "INNER JOIN membres USING(eleve_id) " . $join;
 		$where .= (empty($where) ? "" : " AND") . " binet_id='".$_REQUEST['binet']."'";
 	}
+	}
 	
-	// Génération de la page si il y a au moins un critère, sinon on raffiche le formulaire.
-	if(!empty($where)) {
-		require "include/page_header.inc.php";
-		echo "<page id='trombino' titre='Frankiz : Trombino'>\n";
-		
+	// Génération de la page si il y a au moins un critère.
+	if(!empty($where)) {	
 		
 		$DB_trombino->query("SELECT $champs FROM eleves $join WHERE $where");
+		
+		//Génération d'un message d'erreur si aucun élève ne correspond
+		if($DB_trombino->num_rows()==0)
+		echo "<warning> Désolé, aucun élève ne correspond à ta recherche </warning>";
+		
+		//Génération des fiches des élèves
 		while(list($eleve_id,$nom,$prenom,$surnom,$piece_id,$section,$section_id,$cie,$promo,$login,$mail,$tel) = $DB_trombino->next_row()) {
 			echo "<eleve nom='$nom' prenom='$prenom' promo='$promo' login='$login' surnom='$surnom' "
 				."tel='$tel' mail='".(empty($mail)?"$login@poly.polytechnique.fr":$mail)."' casert='$piece_id' "
@@ -116,17 +137,11 @@ if(isset($_REQUEST['chercher'])) {
 				echo "<a href='".BASE_URL."/?su=$eleve_id'>Prendre l&apos;identité de $prenom $nom</a>\n" ;
 			}
 		}		
-		
-		echo "</page>\n";
-		require "include/page_footer.inc.php";
-		exit;
 	}
 }
 
 // Affichage du formulaire de recherche
-require "include/page_header.inc.php";
 ?>
-<page id="trombino" titre="Frankiz : Trombino">
 	<formulaire id="trombino" action="trombino.php">
 		<champ titre="Nom" id="nom" valeur="" />
 		<champ titre="Prénom" id="prenom" valeur="" />

@@ -22,12 +22,15 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.30  2004/11/19 23:04:27  alban
+	Rajout du module lien_tol
+
 	Revision 1.29  2004/11/19 22:28:36  schmurtz
 	C'est bien de conserver une certaine unite dans la maniere de mettre les
 	commentaires
 	Et dans le meme genre, si tout le monde utilisait des tabulations de la taille
 	de 4 espaces (ou autre, mais il faut se mettre d'accord) ca serait mieux.
-
+	
 	Revision 1.28  2004/11/19 17:14:31  kikx
 	Gestion complete et enfin FINIIIIIIIIIIIIIIII des sondages !!! bon ok c'est assez moche l'affichage des resultats mais .... j'en ai marrrrrrrrrrre
 	
@@ -146,7 +149,8 @@ function liste_modules() {
 		"tour_kawa"			=> "Tours kawa",
 		"anniversaires"		=> "Anniversaires",
 		"stats"				=> "Statistiques",
-		"sondages"			=> "Sondages");
+		"sondages"			=> "Sondages",
+		"lien_tol"			=> "Lien rapide vers le tol");
 }
 
 /*
