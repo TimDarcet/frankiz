@@ -67,7 +67,7 @@
 
 
 <xsl:template match="liste[(@selectionnable='oui') or (@action!='')]">
-	<form method="post" accept-charset="ISO-8859-1">
+	<form method="post" accept-charset="utf-8">
 	<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 	<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 	<xsl:apply-templates select="commentaire | warning | note"/>

@@ -21,9 +21,12 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.11  2005/03/23 21:12:12  pico
+	Normalement tout ce qui faut pour passer en UTF8
+
 	Revision 1.10  2005/01/25 12:50:42  pico
 	Ajoute un accept-encoding dans les formulaires pour pas avoir de pbs de charset
-
+	
 	Revision 1.9  2005/01/23 20:56:11  pico
 	Pour ajouter les hidden dans les formulaires, sinon y'a comportement quantique...
 	
@@ -74,7 +77,7 @@
 <!-- Formulaires -->
 <xsl:template match="formulaire">
 	<!-- la déco -->
-	<form enctype="multipart/form-data" method="post" class="formulaire" accept-charset="ISO-8859-1">
+	<form enctype="multipart/form-data" method="post" class="formulaire" accept-charset="utf-8">
 			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<fieldset>

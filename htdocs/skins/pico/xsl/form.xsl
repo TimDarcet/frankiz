@@ -24,7 +24,7 @@
 <!-- Formulaires -->
 <xsl:template match="formulaire[@type='discret']">
 	<!-- le formulaire lui même, mis en page avec une table -->
-	<form enctype="multipart/form-data" method="post" accept-charset="ISO-8859-1">
+	<form enctype="multipart/form-data" method="post" accept-charset="utf-8">
 		<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 		<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<div class="formulaire">
@@ -38,7 +38,7 @@
 
 <xsl:template match="formulaire">
 	<!-- la déco -->
-	<form enctype="multipart/form-data" method="post" accept-charset="ISO-8859-1">
+	<form enctype="multipart/form-data" method="post" accept-charset="utf-8">
 			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<xsl:if test="boolean(@titre)">

@@ -20,7 +20,7 @@
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
+<xsl:output method="xml" indent="yes" encoding="utf-8"
 	doctype-public="-//W3C//DTD XHTML 1.1//EN"
 	doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
 	
@@ -50,7 +50,7 @@
 <xsl:template match="/">
 	<html xml:lang="fr">
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<title><xsl:value-of select="frankiz/page/@titre"/></title>
 		<base>
 			<xsl:attribute name="href">

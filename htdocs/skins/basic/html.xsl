@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.31  2005/03/23 21:12:12  pico
+	Normalement tout ce qui faut pour passer en UTF8
+
 	Revision 1.30  2005/01/25 12:50:42  pico
 	Ajoute un accept-encoding dans les formulaires pour pas avoir de pbs de charset
-
+	
 	Revision 1.29  2004/12/14 22:16:06  schmurtz
 	Correction de bug du moteur wiki.
 	Simplication du code.
@@ -172,7 +175,7 @@
 		<h2><xsl:value-of select="@titre"/></h2>
 	</xsl:if>
 	<xsl:apply-templates select="commentaire"/>
-	<form method="post" accept-charset="ISO-8859-1"><xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
+	<form method="post" accept-charset="utf-8"><xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<xsl:variable name="nombre_colonnes" select="count(entete)+count(@selectionnable)"/>
 		<table class="liste" cellspacing="0" cellpadding="0">
 			<tr>

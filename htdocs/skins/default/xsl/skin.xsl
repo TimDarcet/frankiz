@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.16  2005/03/23 21:12:12  pico
+	Normalement tout ce qui faut pour passer en UTF8
+
 	Revision 1.15  2005/02/04 15:13:01  psycow
 	# Nouvelle Skin # + quelques modifs - la skin est + compatible IE que FireFox mais j'y travaille ;-)
-
+	
 	Revision 1.13  2005/01/20 20:33:34  psycow
 	Modif d'IceBlue
 	
@@ -109,7 +112,7 @@
 <xsl:include href="tol.xsl"/>
 <xsl:include href="faq_xshare.xsl"/>
 
-<xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
+<xsl:output method="xml" indent="yes" encoding="utf-8"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"/>
 

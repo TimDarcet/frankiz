@@ -21,9 +21,12 @@
 		Fonction pour parser des rss
 		
 		$Log$
+		Revision 1.15  2005/03/23 21:12:12  pico
+		Normalement tout ce qui faut pour passer en UTF8
+
 		Revision 1.14  2005/01/19 18:29:15  pico
 		Parce que wget c'est quand même mieux que lynx
-
+		
 		Revision 1.13  2005/01/19 17:47:46  pico
 		Pour que les rss marchent même quand l'entrée est gzippée
 		
@@ -101,7 +104,7 @@ function rss_xml($site,$mode = 'complet') {
 	xml_parser_set_option($p, XML_OPTION_CASE_FOLDING,0);
 	if(xml_parse($p, $xml, true) && strstr($xml,"<rss")){
 		$xh = xslt_create();
-		xslt_set_encoding($xh, "ISO-8859-1");
+		xslt_set_encoding($xh, "utf8");
 		$params = array('mode'=>$mode);
 		echo xslt_process($xh, 'arg:/_xml', BASE_LOCAL.'/include/rss_convert.xsl', NULL, array('/_xml'=>$xml),$params);
 		xslt_free($xh);

@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.16  2005/03/23 21:12:12  pico
+	Normalement tout ce qui faut pour passer en UTF8
+
 	Revision 1.15  2005/01/25 12:50:42  pico
 	Ajoute un accept-encoding dans les formulaires pour pas avoir de pbs de charset
-
+	
 	Revision 1.14  2005/01/18 15:50:21  psycow
 	Modif sur la skin default, ajout d'activites, nettoyage
 	
@@ -115,7 +118,7 @@
 <!-- Listes -->
 <xsl:template match="liste">
 	<xsl:apply-templates select="commentaire"/>
-	<form method="post" accept-charset="ISO-8859-1"><xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
+	<form method="post" accept-charset="utf-8"><xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<xsl:variable name="nombre_colonnes" select="count(entete)+count(@selectionnable)"/>
 		<table class="liste" cellspacing="0" cellpadding="0">
 			<thead>

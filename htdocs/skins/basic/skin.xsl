@@ -23,10 +23,13 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.30  2005/03/23 21:12:12  pico
+	Normalement tout ce qui faut pour passer en UTF8
+
 	Revision 1.29  2004/12/14 22:16:06  schmurtz
 	Correction de bug du moteur wiki.
 	Simplication du code.
-
+	
 	Revision 1.28  2004/12/01 22:09:15  pico
 	Correction lien images aussi
 	
@@ -103,7 +106,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:include href="html.xsl"/>
 <xsl:include href="form.xsl"/>
-<xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
+<xsl:output method="xml" indent="yes" encoding="utf-8"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"/>
 

@@ -22,7 +22,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="skins">
-<form method="GET" action="profil/skin.php" accept-charset="ISO-8859-1">
+<form method="GET" action="profil/skin.php" accept-charset="utf-8">
     <div style="text-align: center"><b><xsl:text>Quelle skin voulez-vous pour le site ?</xsl:text></b></div>
     <xsl:for-each select="skin">
       <input type="radio" name="newskin">

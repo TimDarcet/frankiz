@@ -20,7 +20,7 @@
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
+<xsl:output method="xml" indent="yes" encoding="utf-8"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"/>
 
@@ -51,7 +51,7 @@
 <xsl:template match="/">
 	<html lang="fr" xml:lang="fr">
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<xsl:if test="$blending='on'">
 			<meta http-equiv="Page-Exit" content="blendTrans(Duration=0.3)"/>
 			<meta http-equiv="Page-Enter" content="blendTrans(Duration=0.3)"/>

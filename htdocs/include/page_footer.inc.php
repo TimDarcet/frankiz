@@ -23,9 +23,12 @@
 	C'est d'ici qu'est appelé la fonction qui affiche les erreurs en haut de la page.
 	
 	$Log$
+	Revision 1.13  2005/03/23 21:12:12  pico
+	Normalement tout ce qui faut pour passer en UTF8
+
 	Revision 1.12  2005/02/08 21:57:56  pico
 	Correction bug #62
-
+	
 	Revision 1.11  2005/01/18 19:30:34  pico
 	Place la boite du sudo dans la boite avec les infos de connexion.
 	Pbs d'encodage des variables passées à sablotron réglés
@@ -70,7 +73,7 @@ if(isset($_REQUEST['xml'])) {
 
 // Application des feuilles de styles XSL
 $xh = xslt_create();
-xslt_set_encoding($xh, "ISO-8859-1");
+xslt_set_encoding($xh, "utf8");
 
 // Les paramètres à passer à sablotron sont en UTF8
 $parameters = array (
