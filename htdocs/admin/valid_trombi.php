@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.6  2004/12/13 16:45:05  kikx
+	Protection de la validation des photos trombino
+
 	Revision 1.5  2004/11/27 15:39:54  pico
 	Ajout des droits trombino
-
+	
 	Revision 1.4  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
 	
@@ -63,30 +66,45 @@ $message ="" ;
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
 	if ($temp[0]=='valid') {
-		$DB_trombino->query("SELECT prenom,nom,promo,login FROM eleves WHERE eleve_id={$temp[1]}") ;
-		list($prenom,$nom,$promo,$login) = $DB_trombino->next_row() ;
-		rename(DATA_DIR_LOCAL."trombino/a_valider_{$temp[1]}",BASE_PHOTOS."$promo/$login.jpg") ;
-		
-		$message .= "<commentaire> Image validée pour $prenom $nom</commentaire>" ;
-		
-		$contenu = "Ton image trombino est validée <br><br>".
-		"Très BR-ement<br>" .
-		"L'automate :)<br>"  ;
-		couriel($temp[1],"[Frankiz] Ton image trombino est validée",$contenu);
+		if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$temp[1]}") {
+			$DB_trombino->query("SELECT prenom,nom,promo,login FROM eleves WHERE eleve_id={$temp[1]}") ;
+			list($prenom,$nom,$promo,$login) = $DB_trombino->next_row() ;
+			rename(DATA_DIR_LOCAL."trombino/a_valider_{$temp[1]}",BASE_PHOTOS."$promo/$login.jpg") ;
+			
+			$message .= "<commentaire> Image validée pour $prenom $nom</commentaire>" ;
+			
+			$contenu = "Ton image trombino est validée <br><br>".
+			"Très BR-ement<br>" .
+			"L'automate :)<br>"  ;
+			couriel($temp[1],"[Frankiz] Ton image trombino est validée",$contenu);
+		} else {
+	?>
+			<warning>Requête deja traitée par un autre administrateur</warning>
+	<?			
+		}
+
 	}
 	if ($temp[0]=='suppr') {
-		$DB_trombino->query("SELECT prenom,nom,promo,login FROM eleves WHERE eleve_id={$temp[1]}") ;
-		list($prenom,$nom,$promo,$login) = $DB_trombino->next_row() ;
-		
-		unlink(DATA_DIR_LOCAL."trombino/a_valider_{$temp[1]}") ;
-		
-		$message .= "<warning> Image non  validée pour $prenom $nom</warning>" ;
-		
-		$contenu = "Ton image trombino n'est pas validée pour la raison suivante ;<br>".
-		$_POST['refus']."<br><br>".
-		"Très BR-ement<br>" .
-		"L'automate :)<br>"  ;
-		couriel($temp[1],"[Frankiz] Ton image trombino n'est pas validée",$contenu);		
+		if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$temp[1]}") {
+
+			$DB_trombino->query("SELECT prenom,nom,promo,login FROM eleves WHERE eleve_id={$temp[1]}") ;
+			list($prenom,$nom,$promo,$login) = $DB_trombino->next_row() ;
+			
+			unlink(DATA_DIR_LOCAL."trombino/a_valider_{$temp[1]}") ;
+			
+			$message .= "<warning> Image non  validée pour $prenom $nom</warning>" ;
+			
+			$contenu = "Ton image trombino n'est pas validée pour la raison suivante ;<br>".
+			$_POST['refus']."<br><br>".
+			"Très BR-ement<br>" .
+			"L'automate :)<br>"  ;
+			couriel($temp[1],"[Frankiz] Ton image trombino n'est pas validée",$contenu);
+		} else {
+	?>
+			<warning>Requête deja traitée par un autre administrateur</warning>
+	<?			
+		}
+	
 	}
 }
 
