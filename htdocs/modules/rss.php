@@ -21,9 +21,12 @@
 	Affichage de flux rss externes sous forme de module.
 
 	$Log$
+	Revision 1.3  2004/11/24 18:39:02  pico
+	WarningFix si variable vide
+
 	Revision 1.2  2004/11/24 17:34:23  pico
 	Module liens perso + bugfix
-
+	
 	Revision 1.1  2004/11/24 16:37:09  pico
 	Ajout des news externes en tant que module
 	
@@ -32,7 +35,7 @@
 
 
 $liens = $_SESSION['rss'];
-if(count($liens)){
+if(!empty($liens)){
 	foreach($liens as $value => $mode){
 		if($mode == 'module'){
 			list($mode,$value) = explode("_",$value,2);
