@@ -271,9 +271,49 @@ div.fkz_anniversaire_titre,.fkz_titre,.fkz_titre a {
 	background-color:#eef1f2;
 }
 
+.nom{
+	text-align:center;
+}
+	
+.fkz_trombino_photo{
+	float:left;
+}
+.fkz_trombino_section{
+	float:right;
+}
+.fkz_trombino_infos{
+	float:left;
+	margin-left:5px;
+}
+.fkz_trombino_infos2{
+	float:right;
+	margin-right:5px;
+}
+.binets{
+	clear:both;
+}
+
 .fkz_signature{
 	text-align:right;
 	font-weight: bold;
+}
+
+form.trombino { 
+	
+	padding:20px 0px;
+}
+
+form.trombino div{
+	text-align:center;
+	padding:7px;
+}
+form.trombino table{
+	font-size: 9pt;
+	text-align:right;
+}
+
+form.trombino input,form.trombino select {
+	width:150px;
 }
 
 /* Logos Catégories d'annonce */
