@@ -121,8 +121,8 @@
 	<!-- le formulaire lui même-->
 	<form class="trombino" enctype="multipart/form-data" method="post">
 		<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
-			<div>
-				<p class="droite">
+			
+<!--				<p class="droite">
 					<xsl:apply-templates select="champ[@id='surnom']" mode="trombino"/>
 					<xsl:apply-templates select="choix[@id='binet']" mode="trombino"/>
 					<xsl:apply-templates select="champ[@id='casert']" mode="trombino"/>
@@ -136,8 +136,28 @@
 					<xsl:apply-templates select="champ[@id='nom']" mode="trombino"/>
 					<xsl:apply-templates select="choix[@id='section']" mode="trombino"/>
 					<xsl:apply-templates select="champ[@id='phone']" mode="trombino"/>
-				</p>
-			</div>
+				</p>-->
+				<table>
+					<tr>
+						<td><xsl:apply-templates select="champ[@id='prenom']" mode="trombino"/></td>
+						<td><xsl:apply-templates select="champ[@id='nom']" mode="trombino"/></td>
+						<td><xsl:apply-templates select="champ[@id='surnom']" mode="trombino"/></td>
+					</tr>
+					<tr>
+						
+						<td><xsl:apply-templates select="choix[@id='promo']" mode="trombino"/></td>
+						<td><xsl:apply-templates select="choix[@id='section']" mode="trombino"/></td>
+						<td><xsl:apply-templates select="choix[@id='binet']" mode="trombino"/></td>
+					</tr>
+					<tr>
+						<td><xsl:apply-templates select="champ[@id='loginpoly']" mode="trombino"/></td>
+						<td><xsl:apply-templates select="champ[@id='phone']" mode="trombino"/></td>
+						<td><xsl:apply-templates select="champ[@id='casert']" mode="trombino"/></td>
+					</tr>
+				</table>
+			
+			
+			
 			<p class="bouton">
 				<xsl:apply-templates select="hidden"/>
 				<xsl:apply-templates select="bouton"/>
@@ -148,7 +168,7 @@
 
 <xsl:template match="champ" mode="trombino">
 	<strong><xsl:value-of select="@titre"/></strong><br/>
-	<input size="15">
+	<input size="10">
 		<xsl:choose>
 			<xsl:when test="starts-with(@id,'passwd')"><xsl:attribute name="type">password</xsl:attribute></xsl:when>
 			<xsl:otherwise><xsl:attribute name="type">text</xsl:attribute></xsl:otherwise>

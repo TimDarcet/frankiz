@@ -73,9 +73,11 @@
 	<dl class="boite">
 		<dt class="titre">
 			<span class="droitehaut"><xsl:text> </xsl:text></span>
-			<span class="hidenews">
-				<xsl:apply-templates select="lien[@id='annonces_lues']"/>
-			</span> 
+			<xsl:if test="count(lien[@id='annonces_lues'])">
+				<span class="hidenews">
+					<xsl:apply-templates select="lien[@id='annonces_lues']"/>
+				</span> 
+			</xsl:if>
 			<a><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute><xsl:text> </xsl:text></a>      
 <!-- 			<span><xsl:attribute name="class"><xsl:value-of select="@categorie"/></xsl:attribute><xsl:text> </xsl:text></span> -->
 			<span><xsl:value-of select="@titre"/></span>
@@ -108,11 +110,12 @@
 
 <xsl:template match="annonce" mode="sommaire">
 <div class="fkz_sommaire">
-       <a> <xsl:attribute name="href">
-       <xsl:text>annonces.php#</xsl:text> 
-       <xsl:value-of select="@id"/>
-       </xsl:attribute>
-       	<xsl:value-of select="@titre"/>
+	<a>
+		<xsl:attribute name="href">
+			<xsl:text>#</xsl:text> 
+			<xsl:value-of select="@id"/>
+		</xsl:attribute>
+		<xsl:value-of select="@titre"/>
 	</a>
 </div>
 </xsl:template>

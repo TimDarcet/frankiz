@@ -21,9 +21,12 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.5  2004/12/12 17:45:33  psycow
+	Modification Mineure, pre-test IE: la dernière étape
+
 	Revision 1.4  2004/12/10 14:31:28  psycow
 	Elimination du Bug des Formulaires, etapes suivantes tests sous IE
-
+	
 	Revision 1.3  2004/12/10 03:04:31  psycow
 	Resolution du probleme des boites sous Firefox, reste un probleme sur le positionnement des formulaires dans les boites...
 	
@@ -57,7 +60,6 @@
 <!-- Formulaires -->
 <xsl:template match="formulaire">
 	<!-- la déco -->
-	<div class="center">
 	<form enctype="multipart/form-data" method="post" class="formulaire">
 			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
@@ -92,35 +94,31 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:if>
- 			<xsl:for-each select="*[name()!='bouton' and name()!='hidden']">
-				
-				<span class="droite">
-					<xsl:apply-templates select="."/>
-				</span>
+			<xsl:for-each select="*[name()!='bouton' and name()!='hidden']">
+ 				<!--<xsl:choose>
+					<xsl:when test="name()!='warning' and name()!='commentaire' and name()!='note' and name()!='notice'">
+					 -->	<span class="droite">
+							<xsl:apply-templates select="."/>
+						</span>
+ 				<!--	</xsl:when> 
+					<xsl:otherwise>
+						<span class="gauche">
+							<xsl:apply-templates select="."/>
+						</span>
+					</xsl:otherwise>
+				</xsl:choose> -->
 				<xsl:if test="boolean(@titre)">
-					<label class="gauche" >
+					<label class="gauche">
 						<xsl:attribute name='for'><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
 						<xsl:value-of select="@titre"/> :
 					</label>
 				</xsl:if>
-						
-<!--				<label class="gauche" >
-					<xsl:attribute name='for'><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
-					<xsl:if test="boolean(@titre)">
-						<xsl:value-of select="@titre"/> :
-					</xsl:if>
-
-					<span class="droite">
-						<xsl:apply-templates select="."/>
-					</span>
-				</label>
--->
+				<br/>
 			</xsl:for-each> 
 			<p class="boutons">
 				<xsl:apply-templates select="bouton"/>
 			</p>
 	</form>
-	</div>
 </xsl:template>
 
 

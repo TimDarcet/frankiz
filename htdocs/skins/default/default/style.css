@@ -293,22 +293,26 @@ p.signature {
 	font-weight:bold;
 }
 
-
 p.warning {
+	color:red;
+	font-weight:bold;
 	padding:5px;
-	border:solid 2px #faa;
-	background-color : #fee; /* rouge */
+/* 	border:solid 2px #faa; 
+	background-color : #fee; */
 }
 p.commentaire {
+	color:green;
 	padding:5px;
-	border:solid 2px #ff3;
-	background-color : #ffe; /* jaune */
+/*	border:solid 2px #ff3;
+	background-color : #ffe; */
 }
 
 p.note {
+	color:blue;
+	font-style:italic;
 	padding:5px;
-	border:solid 2px #aaf;
-	background-color : #eef; /* bleu */
+/*	border:solid 2px #aaf;
+	background-color : #eef; */
 }
 
 /* ################ MISE EN FORME DES LISTES (DL) ############## */
@@ -386,12 +390,27 @@ form.trombino {
 	padding:20px 0px;
 }
 
-form.trombino div{
+/*form.trombino div{
 	border: dashed 1px silver;
 	width:75%;
 	margin:0px auto;
 	padding:7px;
+}*/
+
+form.trombino table {
+	width:60%;
+	border: dashed 1px silver;
+	margin:0 auto;
 }
+
+form.trombino input {
+	width:100px;
+}
+
+form.trombino select {
+	width:100px;
+}
+
 form p.gauche{
 	float:left;
 	width:33%;
