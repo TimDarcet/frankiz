@@ -25,10 +25,15 @@
 	- affichage des requètes mysql en commentaire dans
 	
 	$Log$
+	Revision 1.1  2004/11/25 00:44:35  schmurtz
+	Ajout de init_ devant les fichier d'include servant d'initialisation de page
+	Permet de mieux les distinguer des autres fichiers d'include ne faisant que definir
+	des fonctions.
+
 	Revision 1.11  2004/11/16 14:54:12  schmurtz
 	Affichage des erreurs "Parse Error"
 	permet de loguer des infos autre que les commandes SQL (pour debugage)
-
+	
 	Revision 1.10  2004/11/02 20:41:22  kikx
 	Code d'erreur mysql
 	

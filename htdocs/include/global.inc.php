@@ -24,10 +24,15 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.42  2004/11/25 00:44:35  schmurtz
+	Ajout de init_ devant les fichier d'include servant d'initialisation de page
+	Permet de mieux les distinguer des autres fichiers d'include ne faisant que definir
+	des fonctions.
+
 	Revision 1.41  2004/11/24 22:56:18  schmurtz
 	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
 	globale pour tous les fichiers.
-
+	
 	Revision 1.40  2004/11/24 22:12:57  schmurtz
 	Regroupement des fonctions zip unzip deldir et download dans le meme fichier
 	
@@ -65,7 +70,7 @@ require_once BASE_LOCAL."/../etc/config.php";
 // Gestion des erreurs PHP et MySQL
 // Il est important d'inclure ce fichier le plus tôt possible, mais comme il a besoin
 // des paramètres du site on ne l'inclu que maintenant.
-require_once "erreursphp.inc.php";	// TODO : mettre avant l'ouverture des connexions aux bases mysql
+require_once "init_erreurs.inc.php";	// TODO : mettre avant l'ouverture des connexions aux bases mysql
 
 // Gestion des erreurs dans les formulaires
 $i=1;
@@ -94,8 +99,7 @@ $_REQUEST = nettoyage_balise($_REQUEST);
 // divers fichiers inclus pour effectuer des actions avant l'affichage de la page
 require_once "global_func.inc.php";
 require_once "mail.inc.php";
-require_once "login.inc.php";
+require_once "init_login.inc.php";
 require_once "init_skin.inc.php";
-require_once "param_session.inc.php";
 
 ?>

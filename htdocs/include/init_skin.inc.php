@@ -22,10 +22,20 @@
 	les principes suivants :
 	- les données sont stockées dans la variable de session 'skin'
 	
+	Deux autres variables de session permettent de stocker des informations sur l'utilisateur :
+	- 'rss', contenant la liste des flux rss
+	- 'liens_rss', contenant la liste des liens perso.
+
+	
 	$Log$
+	Revision 1.2  2004/11/25 00:44:35  schmurtz
+	Ajout de init_ devant les fichier d'include servant d'initialisation de page
+	Permet de mieux les distinguer des autres fichiers d'include ne faisant que definir
+	des fonctions.
+
 	Revision 1.1  2004/11/24 20:26:38  schmurtz
 	Reorganisation des skins (affichage melange skin/css + depacement des css)
-
+	
 	Revision 1.11  2004/11/16 14:55:46  schmurtz
 	On evite les appels frequents a la BD pour recuperer la skin
 	
@@ -53,8 +63,10 @@
 require_once "user.inc.php";
 require_once "skin.inc.php";
 
-// Recharge les données de skin si elles ne sont pas chargées (ça arrive lorsqu'un utilisateur arrive sur le
-// site et n'est pas logué) ou si l'utilisateur vient de se loguer
+/*
+	Recharge les données de skin si elles ne sont pas chargées (ça arrive lorsqu'un utilisateur arrive sur le
+	site et n'est pas logué) ou si l'utilisateur vient de se loguer
+*/
 if( !isset($_SESSION['skin']) || nouveau_login() ) {
 	
 	// Si l'utilisateur est authentifié, chercher dans la BD
@@ -84,7 +96,27 @@ if( !isset($_SESSION['skin']) || nouveau_login() ) {
 		unset($_SESSION['skin']);
 		skin_valider();
 	}
-
 }
 
+/*
+	D'autres informations sur l'utilisateur, stockées dans une variable de session.
+*/
+
+if( !isset($_SESSION['rss']) || nouveau_login() ) {
+	$_SESSION['rss'] = array();
+	$DB_web->query("SELECT liens_rss FROM compte_frankiz WHERE eleve_id='{$_SESSION['user']->uid}'") ;
+	if($DB_web->num_rows()!=0) {
+			list($rss) = $DB_web->next_row();
+			$_SESSION['rss'] =  unserialize($rss);
+	}
+}
+
+if( !isset($_SESSION['liens_perso']) || nouveau_login() ) {
+	$_SESSION['liens_perso'] = array();
+	$DB_web->query("SELECT liens_perso FROM compte_frankiz WHERE eleve_id='{$_SESSION['user']->uid}'") ;
+	if($DB_web->num_rows()!=0) {
+			list($liens) = $DB_web->next_row();
+			$_SESSION['liens_perso'] =  unserialize($liens);
+	}
+}
 ?>

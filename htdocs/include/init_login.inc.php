@@ -36,9 +36,14 @@
 	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
 
 	$Log$
+	Revision 1.1  2004/11/25 00:44:35  schmurtz
+	Ajout de init_ devant les fichier d'include servant d'initialisation de page
+	Permet de mieux les distinguer des autres fichiers d'include ne faisant que definir
+	des fonctions.
+
 	Revision 1.12  2004/11/24 20:26:38  schmurtz
 	Reorganisation des skins (affichage melange skin/css + depacement des css)
-
+	
 	Revision 1.11  2004/11/16 15:09:15  kikx
 	Le login est now login.promo
 	
