@@ -20,16 +20,17 @@
 /*
 	Affichage d'un lien sur la page d'accueil vers le tol.
 	
-	TODO verifier require_once, est_authentifie
-	
-*/
+	$Log$
+	Revision 1.2  2004/11/24 13:05:23  schmurtz
+	Ajout d'un attribut type='discret' pour les liste et formulaire, afin d'avoir
+	une presentation par defaut sans gros cadres autour.
 
-// require_once BASE_LOCAL."/include/";
+*/
 
 if(est_authentifie(AUTH_MINIMUM)) {
 ?>
 <module id="lien_tol" titre="Tol">
-	<formulaire id="lien_trombino" action="trombino.php">
+	<formulaire id="lien_trombino" action="trombino.php" type="discret">
 		<champ titre="Rechercher" id="q_search" valeur="" />
 		<bouton titre="Chercher" id="cherchertol" />
 	</formulaire>

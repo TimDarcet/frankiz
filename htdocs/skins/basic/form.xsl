@@ -21,10 +21,14 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.25  2004/11/24 13:05:23  schmurtz
+	Ajout d'un attribut type='discret' pour les liste et formulaire, afin d'avoir
+	une presentation par defaut sans gros cadres autour.
+
 	Revision 1.24  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
-
+	
 	Revision 1.23  2004/11/16 18:32:34  schmurtz
 	Petits problemes d'interpretation de <note> et <commentaire>
 	
@@ -79,6 +83,19 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!-- Formulaires -->
+<xsl:template match="formulaire[@type='discret']">
+	<!-- le formulaire lui même, mis en page avec une table -->
+	<form enctype="multipart/form-data" method="post">
+		<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
+		<!-- les options du formulaire -->
+		<xsl:for-each select="*[not (self::bouton or self::commentaire or self::warning)]">
+			<xsl:apply-templates select="."/>
+		</xsl:for-each>
+		<!-- les boutons gérant les actions du formulaire -->
+		<xsl:apply-templates select="bouton"/>
+	</form>
+</xsl:template>
+
 <xsl:template match="formulaire">
 	<!-- la déco -->
 	<xsl:if test="boolean(@titre)">

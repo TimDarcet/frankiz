@@ -21,9 +21,13 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.23  2004/11/24 13:05:23  schmurtz
+	Ajout d'un attribut type='discret' pour les liste et formulaire, afin d'avoir
+	une presentation par defaut sans gros cadres autour.
+
 	Revision 1.22  2004/11/16 18:32:34  schmurtz
 	Petits problemes d'interpretation de <note> et <commentaire>
-
+	
 	Revision 1.21  2004/11/06 17:47:43  pico
 	........
 	
@@ -127,6 +131,19 @@
 
 
 <!-- Listes -->
+
+<xsl:template match="liste[@type='discret']">
+	<table class="liste_discret" cellspacing="0" cellpadding="0">
+		<xsl:for-each select="element">
+			<tr>
+			<xsl:for-each select="colonne">
+				<td><xsl:apply-templates/></td>
+			</xsl:for-each>
+			</tr>
+		</xsl:for-each>
+	</table>
+</xsl:template>
+
 <xsl:template match="liste">
 	<xsl:if test="boolean(@titre)">
 		<h2><xsl:value-of select="@titre"/></h2>
@@ -140,9 +157,11 @@
 				<xsl:apply-templates select="entete"/>
 			</tr>
 			<xsl:apply-templates select="element"/>
-			<tr><td class="boutons"><xsl:attribute name="colspan"><xsl:value-of select="$nombre_colonnes"/></xsl:attribute>
-				<xsl:apply-templates select="bouton"/>
-			</td></tr>
+			<xsl:if test="count(bouton)">
+				<tr><td class="boutons"><xsl:attribute name="colspan"><xsl:value-of select="$nombre_colonnes"/></xsl:attribute>
+					<xsl:apply-templates select="bouton"/>
+				</td></tr>
+			</xsl:if>
 		</table>
 	</form>
 </xsl:template>

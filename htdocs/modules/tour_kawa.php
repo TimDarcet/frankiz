@@ -21,11 +21,15 @@
 	Gestion du tour kawa.
 	
 	$Log$
+	Revision 1.9  2004/11/24 13:05:23  schmurtz
+	Ajout d'un attribut type='discret' pour les liste et formulaire, afin d'avoir
+	une presentation par defaut sans gros cadres autour.
+
 	Revision 1.8  2004/11/05 08:29:23  pico
 	Mise en forme de la sortie xml du tour kawa:
 	on balançait du texte formaté, ce qui n'était du coup que très peu skinable, j'ai mis ça sous la forme d'une liste, ce sera plus pratique
 	(la skin basique affiche ça, la skin pico aussi, la skin défaut n'affiche pas encore les tours kawa...)
-
+	
 	Revision 1.7  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -39,30 +43,36 @@
 
 if(est_authentifie(AUTH_MINIMUM)) {
 
+	echo "<module id=\"tour_kawa\" titre=\"Tour Kawa\">\n";
+	$tour_existe = false;
+	
 	// Génération des tours kawa
-	$kawa = array("","");
-	for ($i = 1; $i <= 2; $i++) {
-		$DB_web->query("SELECT groupe FROM kawa.jour WHERE (jour=\"".(unixtojd(time())+12+$i)."\")");
-		$row=$DB_web->next_row();
-		$jour = array("Aujourd'hui : ","Demain : ");
-		if (strcasecmp("personne", $row[0]) != 0 && $row[0]!="") 
-			$kawa[$i-1] = $row[0];
-	}
-
 	$jour = array("Aujourd'hui","Demain");
-	if ($kawa[0] != "" || $kawa[1] != "") {
-		echo "<module id=\"tour_kawa\" titre=\"Tour Kawa\">\n";
+	for ($i = 0; $i <= 1; $i++) {
+		$DB_web->query("SELECT groupe FROM kawa.jour WHERE (jour=\"".(unixtojd(time())+13+$i)."\")");
+		list($groupe)=$DB_web->next_row();
 		
-		for ($i = 0; $i <= 1; $i++)
-			if ($kawa[$i] != "")
-				echo "<liste id=\"tour_kawa\">
-						<element id=\"$i\">
-							<colonne id=\"jour\">$jour[$i]</colonne>
-							<colonne id=\"kawa\">$kawa[$i]</colonne>
-						</element>
-					</liste>\n";
+		if(strcasecmp("personne", $groupe) != 0 && $groupe != "") {
+			// si c'est le premier tour kawa, on ouvre la liste
+			if(!$tour_existe) echo "<liste id=\"tour_kawa\" type=\"discret\">\n";
+			
+			echo "<element id=\"$i\">";
+			echo "<colonne id=\"jour\">$jour[$i]</colonne>";
+			echo "<colonne id=\"kawa\">$groupe</colonne>";
+			echo "</element>\n";
 
-		echo "</module>\n";
+			$tour_existe = true;
+		}
 	}
+
+	if($tour_existe) {
+		// il y a eu des tours kawa : on ferme la liste
+		echo "</liste>\n";
+	} else {
+		// il n'y a pas de tour kawa prévu
+		echo "<p>Pas d'attribution de tour kawa.</p>\n";
+	}
+
+	echo "</module>\n";
 }
 ?>
