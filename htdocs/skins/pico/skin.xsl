@@ -8,8 +8,8 @@
 <xsl:param name="trier_annonces"/>
 
 <!-- a modifier -->
-<xsl:include href="../basic/html.xsl"/>
-<xsl:include href="../basic/form.xsl"/>
+<xsl:include href="html.xsl"/>
+<xsl:include href="form.xsl"/>
 
 <xsl:include href="annonces.xsl"/>
 <xsl:include href="skins.xsl"/>
@@ -38,18 +38,15 @@
     <xsl:apply-templates select="frankiz/module[@id='liste_css']" mode="css"/>
   </head>
   <body>
-    <table border="0" width="100%">
-      <tr>
-        <td valign="middle"><a href="index.php"><img src="skins/pico/frankiz.png" alt="Frankiz, le site Web des élèves"/></a></td>
-        <td align="right" valign="bottom"><xsl:apply-templates select="frankiz/module[@id='liens_ecole']"/></td>
-      </tr>
-    </table>
+	<a href="index.php"><img src="skins/pico/frankiz.png" alt="Frankiz, le site Web des élèves"/></a>
+
   <xsl:apply-templates select="frankiz/module[@id='liens_navigation']"/>
       <div class="fkz_page">
       <div class="fkz_gauche">
         <xsl:apply-templates select="frankiz/module[@id='tours_kawa']"/>
         <xsl:apply-templates select="frankiz/module[@id='activites']"/>
         <xsl:apply-templates select="frankiz/module[@id='liens_contacts']"/>
+	<xsl:apply-templates select="frankiz/module[@id='liens_ecole']"/>
 	<xsl:apply-templates select="frankiz/module[@id='stats']"/>
       </div>
       <div class="fkz_centre">
@@ -83,6 +80,50 @@
 </xsl:template>
 
 
+
+<!-- Arbres -->
+<xsl:template match="arbre">
+	<xsl:if test="boolean(@titre)"><h2><xsl:value-of select="@titre"/></h2></xsl:if>
+	<ul><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+		<xsl:apply-templates select="noeud"/>
+	</ul>
+</xsl:template>
+
+<xsl:template match="noeud">
+	<li>
+		<xsl:choose><xsl:when test="count(noeud|feuille)">
+			<xsl:attribute name="class">noeud_ouvert</xsl:attribute>
+		</xsl:when><xsl:otherwise>
+			<xsl:attribute name="class">noeud_ferme</xsl:attribute>
+		</xsl:otherwise></xsl:choose>
+		
+		<xsl:choose><xsl:when test="boolean(@lien)">
+			<a><xsl:attribute name="href"><xsl:value-of select="@lien"/></xsl:attribute>
+				<xsl:value-of select="@titre"/>
+			</a>
+		</xsl:when><xsl:otherwise>
+			<xsl:value-of select="@titre"/>
+		</xsl:otherwise></xsl:choose>
+		
+		<xsl:if test="count(noeud|feuille)">
+			<ul class="feuille">
+				<xsl:apply-templates select="noeud|feuille"/>
+			</ul>
+		</xsl:if>
+	</li>
+</xsl:template>
+
+<xsl:template match="feuille">
+	<li>
+		<xsl:choose><xsl:when test="boolean(@lien)">
+			<a><xsl:attribute name="href"><xsl:value-of select="@lien"/></xsl:attribute>
+				<xsl:value-of select="@titre"/>
+			</a>
+		</xsl:when><xsl:otherwise>
+			<xsl:value-of select="@titre"/>
+		</xsl:otherwise></xsl:choose>
+	</li>
+</xsl:template>
 <!-- Eleves pour les anniversaires/signatures/qdj 
 <xsl:template match="eleve">
 	<xsl:choose><xsl:when test="@surnom != ''">

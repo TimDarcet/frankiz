@@ -42,9 +42,11 @@
 		<br/>
 		<div style="text-align: center">
 		<div>Derniers à répondre :</div>
+		<ul class="fkz_qdj_last">
 		<xsl:for-each select="qdj/dernier[position()&lt;=6]">
-			<xsl:value-of select="@ordre"/>. <xsl:value-of select="eleve/@surnom"/><br/>
+			<li class="fkz_qdj_last"><xsl:value-of select="@ordre"/>. <xsl:value-of select="eleve/@surnom"/></li>
 		</xsl:for-each>
+		</ul>
 		</div>
 		</div>
 </xsl:template>

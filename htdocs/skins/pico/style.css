@@ -75,3 +75,10 @@ a:hover {
     padding: 5;
     border: 1 solid #000000;
 }
+
+/* FAQ et Xshare */
+li.foldheader1{list-style-image:url('fold_close.gif')}
+li.foldheader2{list-style-image:url('fold_open.gif')}
+ul.foldinglist{list-style-image:url('question.gif')}
+
+.fkz_stats{list-style-type: lower-alpha}

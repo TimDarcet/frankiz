@@ -4,20 +4,28 @@
 <xsl:template match="module[@id='stats']">
 		<div class="fkz_titre">État des serveurs :</div>
 		<div class="fkz_module">
+		<ul class="fkz_stats">
 		<xsl:for-each select="statistiques/serveur">
-			- <span><xsl:attribute name="class">serveur_<xsl:value-of select="@etat"/></xsl:attribute>
-				<xsl:value-of select="@nom"/></span>
+			<li class="fkz_stats">
+				<span>
+					<xsl:attribute name="class">serveur_<xsl:value-of select="@etat"/></xsl:attribute>
+					<xsl:value-of select="@nom"/>
+				</span>
 			<xsl:if test="boolean(@uptime)">: <xsl:value-of select="@uptime"/> jours</xsl:if>
-			<br/>
+			</li>
 		</xsl:for-each>
+		</ul>
 		<div class="fkz_titre">Statistiques :</div>
+		<ul class="fkz_stats">
 		<xsl:for-each select="statistiques/service">
-			- <a>
+			<li class="fkz_stats">
+			<a>
 				<xsl:attribute name="href"><xsl:value-of select="@stat"/></xsl:attribute>
 				<xsl:value-of select="@nom"/>
 			</a>
-			<br/>
+			</li>
 		</xsl:for-each>
+		</ul>
 		</div>
 </xsl:template>
 

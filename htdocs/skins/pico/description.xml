@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <skin>
 	<nom>Pico</nom>
-	<description>skin obsolète qui permettait un affichage complet et trié des infos sur 3 colonnes</description>
+	<description>skin qui permet un affichage complet et trié des infos sur 3 colonnes</description>
 	<parametre id="sommaire">
 		<description>Afficher le sommaire des annonces</description>
 		<valeur id="trie">Trié</valeur>
