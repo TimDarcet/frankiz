@@ -25,9 +25,14 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.36  2005/03/15 11:45:47  pico
+	Correction du pb de myk
+
+	Je sais pas si l'affichage de l'arbo sert vraiment en fait...
+
 	Revision 1.35  2005/01/27 17:27:50  pico
 	/me vérifiera ses parenthèses la prochaine fois
-
+	
 	Revision 1.34  2005/01/27 16:13:39  pico
 	Tiens, j'avais oublié celui là
 	
@@ -356,7 +361,7 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 				if ($fich != "." && $fich != "..") {
 					$chemin = "$rep/$fich";
 					if (is_dir($chemin)) {
-						echo "<noeud titre=\"#$fich\">";
+						echo "<noeud titre=\"#".htmlentities($fich,ENT_QUOTES)."\">";
 							parcours_arbo1($chemin);
 						echo "</noeud>" ;
 					} else {
