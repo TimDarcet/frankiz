@@ -29,9 +29,14 @@
 			<xsl:if test="count(eleve[@promo='2002'])">
 				2002: 
 				<xsl:for-each select="eleve[@promo='2002']">
+					<a>
+						<xsl:attribute name="href">
+							trombino.php?chercher&amp;loginpoly=<xsl:value-of select="@login" />&amp;promo=<xsl:value-of select="@promo" />
+						</xsl:attribute>
 					<xsl:value-of select="@prenom" />
 					<xsl:text> </xsl:text>
 					<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzéèàçê','ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊ')" />
+					</a>
 					<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
 				</xsl:for-each>
 				<br />
@@ -39,9 +44,14 @@
 			<xsl:if test="count(eleve[@promo='2003'])">
 				2003: 
 				<xsl:for-each select="eleve[@promo='2003']">
+					<a>
+						<xsl:attribute name="href">
+							trombino.php?chercher&amp;loginpoly=<xsl:value-of select="@login" />&amp;promo=<xsl:value-of select="@promo" />
+						</xsl:attribute>
 					<xsl:value-of select="@prenom" />
 					<xsl:text> </xsl:text>
 					<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzéèàçê','ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊ')" />
+					</a>
 					<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
 				</xsl:for-each>
 			</xsl:if>

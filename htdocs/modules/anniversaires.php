@@ -21,9 +21,12 @@
 	Affichage des anniversaires avec gestion d'un cache mis à jour une fois par jour.
 	
 	$Log$
+	Revision 1.15  2004/12/15 20:57:59  pico
+	Affiche un lien vers la fiche trombi pour les anniversaires...
+
 	Revision 1.14  2004/11/23 07:43:25  pico
 	Les différentes promos ne sont plus codées en dur, mais utilisent la variable sql
-
+	
 	Revision 1.13  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -47,11 +50,11 @@ if(est_authentifie(AUTH_MINIMUM)) {
 	if(!cache_recuperer('anniversaires',strtotime(date("Y-m-d",time())))) {
 		$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
 		list($promo_temp) = $DB_web->next_row() ;
-		$DB_trombino->query("SELECT nom,prenom,surnom,promo,mail FROM eleves "
+		$DB_trombino->query("SELECT nom,prenom,surnom,promo,mail,login FROM eleves "
 							   ."WHERE MONTH(date_nais)=MONTH(NOW()) AND DAYOFMONTH(date_nais)=DAYOFMONTH(NOW()) "
 							   ."AND (promo=$promo_temp OR promo=".($promo_temp -1).")");
-		while(list($nom,$prenom,$surnom,$promo,$mail) = $DB_trombino->next_row())
-			echo "\t<eleve nom='$nom' prenom='$prenom' surnom='$surnom' promo='$promo' mail='$mail'/>\n";
+		while(list($nom,$prenom,$surnom,$promo,$mail,$login) = $DB_trombino->next_row())
+			echo "\t<eleve nom='$nom' prenom='$prenom' surnom='$surnom' promo='$promo' mail='$mail' login='$login'/>\n";
 		
 		cache_sauver('anniversaires');
 	}
