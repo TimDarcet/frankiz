@@ -21,10 +21,13 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.28  2005/01/25 12:50:42  pico
+	Ajoute un accept-encoding dans les formulaires pour pas avoir de pbs de charset
+
 	Revision 1.27  2004/12/14 22:16:06  schmurtz
 	Correction de bug du moteur wiki.
 	Simplication du code.
-
+	
 	Revision 1.26  2004/11/29 17:27:33  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
@@ -95,7 +98,7 @@
 <!-- Formulaires -->
 <xsl:template match="formulaire[@type='discret']">
 	<!-- le formulaire lui même, mis en page avec une table -->
-	<form enctype="multipart/form-data" method="post">
+	<form enctype="multipart/form-data" method="post" accept-charset="ISO-8859-1">
 		<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<!-- les options du formulaire -->
 		<xsl:for-each select="*[not (self::bouton or self::commentaire or self::warning)]">
@@ -113,7 +116,7 @@
 	</xsl:if>
 
 	<!-- le formulaire lui même, mis en page avec une table -->
-	<form enctype="multipart/form-data" method="post">
+	<form enctype="multipart/form-data" method="post" accept-charset="ISO-8859-1">
 			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<table class="formulaire" cellspacing="0" cellpadding="0">
 			<!-- le titre du formulaire -->
