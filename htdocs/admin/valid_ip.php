@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.35  2005/01/10 09:09:10  pico
+	Hum..
+
 	Revision 1.34  2005/01/10 09:06:02  pico
 	Pb de lock sur les tables mysql
-
+	
 	Revision 1.33  2005/01/10 08:38:04  pico
 	BugFix
 	
@@ -116,7 +119,6 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 // On accepte le changement et on l'inscrit dans la base
 
 $DB_valid->query("LOCK TABLE valid_ip WRITE");
-$DB_admin->query("LOCK TABLE prises READ");
 $DB_valid->query("SET AUTOCOMMIT=0");
 
 foreach ($_POST AS $keys => $val){
@@ -172,6 +174,8 @@ foreach ($_POST AS $keys => $val){
 		
 	}
 	
+$DB_admin->query("LOCK TABLE prises WRITE");
+$DB_admin->query("SET AUTOCOMMIT=0");
 	// On vire une ip qu'on avait validé
 	//===========================
 	if ($temp[0] == "suppr") {
