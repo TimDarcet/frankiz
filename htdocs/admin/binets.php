@@ -21,9 +21,12 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.31  2005/01/26 16:41:02  pico
+	Bug
+
 	Revision 1.30  2005/01/22 17:58:38  pico
 	Modif des images
-
+	
 	Revision 1.29  2005/01/18 21:38:39  pico
 	Correction de bug #38
 	
@@ -198,7 +201,7 @@ if (isset($_POST['modif'])) {
 		if(!file_exists(BASE_BINETS_EXT.$_POST['folder'])) symlink (BASE_BINETS.$_POST['folder'],BASE_BINETS_EXT.$_POST['folder']);
 	}else{
 		$ext = 0;
-		if($_POST['folder']!='' && $file_exists(BASE_BINETS_EXT.$_POST['folder'])) unlink(BASE_BINETS_EXT.$_POST['folder']);
+		if($_POST['folder']!='' && file_exists(BASE_BINETS_EXT.$_POST['folder'])) unlink(BASE_BINETS_EXT.$_POST['folder']);
 	}
 	// si on demande la modification de l'image
 	//--------------------------------------------------------
