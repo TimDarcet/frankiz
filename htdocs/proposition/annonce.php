@@ -39,7 +39,7 @@ if (isset($_POST['valid'])) {
 
 	$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
 
-	$DB_valid->query("INSERT INTO annonces SET eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',contenu='".$_POST['text']."'");
+	$DB_valid->query("INSERT INTO valid_annonces SET eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',contenu='".$_POST['text']."'");
 	
 	$contenu = "$prenom $nom a demandé la validation d'une annonce : \n".
 				$_POST['titre']."\n\n".
