@@ -3,9 +3,12 @@
 	Liens permettants de contacter les webmestres et faire des demandes.
 	
 	$Log$
+	Revision 1.12  2004/10/20 21:09:06  kikx
+	Pendant que j'y pense
+
 	Revision 1.11  2004/10/19 20:19:31  kikx
 	pas de sondage pour l'instant
-
+	
 	Revision 1.10  2004/10/13 20:03:59  pico
 	Ajout du lien
 	
@@ -37,7 +40,7 @@
 */
 ?>
 <module id="liens_contacts" titre="Contacts">
-	<lien titre="Écrire aux webmasters" url="mailto:web@frankiz.polytechnique.fr" />
+	<lien titre="Écrire aux webmasters" url="mailto:<?=MAIL_WEBMESTRE?>" />
 	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
 		<lien titre="Proposer une annonce" url="proposition/annonce.php" />
 		<lien titre="Proposer une activité" url="proposition/affiche.php" />
