@@ -23,9 +23,12 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.27  2005/01/10 07:48:58  pico
+	Bug #21
+
 	Revision 1.26  2005/01/02 20:36:32  pico
 	Bug
-
+	
 	Revision 1.25  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
 	
@@ -210,17 +213,20 @@ $DB_admin->query("UNLOCK TABLES");
 	
 	<h2>Liste des personnes ayant eu leurs ips supplémentaires</h2>
 	<liste id="liste" selectionnable="non">
-		<entete id="eleve" titre="Élève"/>
+		<entete id="prise" titre="Prise"/>
 		<entete id="ip" titre="IP"/>
+		<entete id="eleve" titre="Élève"/>
+
 <?
 
 
-		$DB_admin->query("SELECT e.eleve_id,e.nom,e.promo,e.prenom,prises.ip FROM prises LEFT JOIN trombino.eleves as e USING(piece_id) WHERE type='secondaire' ORDER BY e.nom ASC, e.prenom ASC");
-		while(list($id,$nom,$promo,$prenom,$ip) = $DB_admin->next_row()) {
+		$DB_admin->query("SELECT e.eleve_id,e.nom,e.promo,e.prenom,prises.ip,prises.prise_id FROM prises LEFT JOIN trombino.eleves as e USING(piece_id) WHERE type='secondaire' ORDER BY prises.prise_id ASC, prises.ip ASC, e.nom ASC, e.prenom ASC");
+		while(list($id,$nom,$promo,$prenom,$ip,$prise) = $DB_admin->next_row()) {
 ?>
 			<element id="<? echo str_replace(".","x",$ip) ;?>">
-				<colonne id="eleve"><? echo "$nom $prenom ($promo)" ?></colonne>
+				<colonne id="prise"><? echo "$prise" ?></colonne>
 				<colonne id="ip"><? echo $ip ;?><bouton titre="Dégage!" id="suppr_<? echo str_replace(".","x",$ip) ;?>_<? echo $id?>" onClick="return window.confirm('Voulez vous vraiment supprimez cette ip ?')"/></colonne>
+				<colonne id="eleve"><? echo "$nom $prenom ($promo)" ?></colonne>
 			</element>
 <?
 		}
