@@ -4,9 +4,12 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.18  2004/10/14 19:04:20  schmurtz
+	Bug dans la gestion du cache
+
 	Revision 1.17  2004/09/20 20:33:47  schmurtz
 	Mise en place d'un systeme de cache propre
-
+	
 	Revision 1.16  2004/09/18 16:04:52  kikx
 	Beaucoup de modifications ...
 	Amélioration des pages qui gèrent les annonces pour les rendre compatible avec la nouvelle norme de formatage xml -> balise web et balise image qui permette d'afficher une image et la signature d'une personne
@@ -59,8 +62,6 @@ function nouveau_hash() {
     return $hash;
 }
 
-
-
 /*
 	Envoi les données nécessaire pour faire une redirection vers la page donnée.
 	Arrète l'exécution du code PHP.
@@ -108,14 +109,13 @@ global $_CACHE_SAVED_BUFFER;	// TODO corriger ce hack tout moche qui se résoud a
 								// Il suffira alors de supprimer les lignes finisant par "// hack"
 
 function cache_recuperer($cache_id,$date_valide_max) {
-	if(file_exists(BASE_CACHE.$cache_id) && filemtime(BASE_CACHE.$cache_id) <= $date_valide_max) {
+	if(file_exists(BASE_CACHE.$cache_id) && filemtime(BASE_CACHE.$cache_id) > $date_valide_max) {
 		readfile(BASE_CACHE.$cache_id);
 		return true;
 	} else {
 		global $_CACHE_SAVED_BUFFER;				// hack
 		$_CACHE_SAVED_BUFFER = ob_get_contents();	// hack
 		ob_end_clean();								// hack
-		ob_end_flush();								// hack
 		ob_start();
 		return false;
 	}
@@ -124,7 +124,6 @@ function cache_recuperer($cache_id,$date_valide_max) {
 function cache_sauver($cache_id) {
 	$contenu = ob_get_contents();
 	ob_end_clean();
-	ob_end_flush();
 
 	$file = fopen(BASE_CACHE.$cache_id, 'w');
 	fwrite($file, $contenu);
