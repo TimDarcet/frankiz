@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.4  2004/12/14 23:09:52  kikx
+		Pour avoir qd meme la page modifié
+
 		Revision 1.3  2004/12/14 23:06:06  schmurtz
 		Ajout du support zonetext grand pour les faqs
-
+		
 		Revision 1.2  2004/12/14 23:00:50  kikx
 		Car c'est trop la merde sinon
 		
@@ -108,10 +111,13 @@ if (isset($_REQUEST['valid'])) {
 							$wiki.= $ligne;
 						}
 						
-						if (isset($_REQUEST['faq_modif']))
+						if (isset($_REQUEST['faq_modif'])) {
+							print(wikiVersXML($_POST['faq_modif'])) ;
 							print(diff_to_xml($wiki,$_POST['faq_modif']));
-						else 
+						}else{ 
+							print(wikiVersXML($wiki) ;
 							print($wiki);
+						}
 							
 						fclose($texte);
 					}
