@@ -21,13 +21,17 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.29  2005/02/02 12:40:38  kikx
+	Resolution bug 57
+	Pb restant, je ne suis jamais sur que l'annonce d'en dessous c'est id-1 car c'est la skin qui reordonne
+
 	Revision 1.28  2005/01/24 17:27:53  kikx
 	Permet de gerer l'auth Xorg
 	NE PAS COMMITER EN PROD ... car pas encore terminer
 	il faut maintenant reflechir a comment on gere les compte xorg ...
-
+	
 	J'attend vos avis eclairés :)
-
+	
 	Revision 1.27  2005/01/18 19:30:34  pico
 	Place la boite du sudo dans la boite avec les infos de connection.
 	Pbs d'encodage des variables passées à sablotron réglés
@@ -165,7 +169,7 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 		echo "<eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"$promo\" surnom=\"$surnom\" mail=\"$mail\"/>\n";
 		
 		if(est_authentifie(AUTH_MINIMUM) && $visible)
-			echo "<lien url=\"?lu=$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
+			echo "<lien url=\"?lu=$id#annonce_".($id-1)."\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
 ?>
 	</annonce>
 <?php }
