@@ -4,28 +4,16 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.11  2004/09/16 15:32:56  schmurtz
+	Suppression de la fonction afficher_identifiant(), utilisation de <![CDATA[......]]> aÌ€ la place.
+
 	Revision 1.10  2004/09/15 23:19:31  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 	Revision 1.9  2004/09/15 21:42:08  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
 	
 */
-
-/*
-	Affiche un identifiant à la place de la valeur et stocke la valeur dans un tableau.
-	L'utilisation de cette fonction est indipensable pour afficher du texte tel quel, sans
-	qu'il soit modifié par l'application du fichier de skin XSL.
-*/
-
-function afficher_identifiant($valeur) {
-	global $donnees, $identifiant;  // $donnees contient tous les identifiants,
-	                                // défini dans page_header.inc.php
-
-	$identifiant ++;		// Incrementation du numero d'identification
-	$donnees["^$identifiant$"] = $valeur;	// Enregistrement de la clef
-	return "^$identifiant$";
-}
 
 /*
 	Affiche une page demandant la confirmation lors de la suppression d'une entrée !

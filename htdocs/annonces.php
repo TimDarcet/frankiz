@@ -3,9 +3,12 @@
 	Annonces de frankiz. Page d'acceuil pour les personnes déjà loguées.
 	
 	$Log$
+	Revision 1.4  2004/09/16 15:33:03  schmurtz
+	Suppression de la fonction afficher_identifiant(), utilisation de <![CDATA[......]]> aÌ€ la place.
+
 	Revision 1.3  2004/09/15 23:19:45  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 	Revision 1.2  2004/09/15 21:42:15  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
 	
@@ -34,7 +37,7 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$nom,$prenom)=$DB_web->ne
 			categorie="<?php echo get_categorie($en_haut, $stamp, $perime) ?>"
 			auteur="<?php echo "$prenom $nom" ?>"
 			date="<?php echo substr($stamp,8,2)."/".substr($stamp,5,2)."/".substr($stamp,0,4) ?>">
-		<?php echo afficher_identifiant($contenu) ?>
+		<![CDATA[<?php echo $contenu ?>]]>
 	</annonce>
 <?php }
 
