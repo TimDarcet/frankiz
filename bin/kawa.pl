@@ -7,7 +7,7 @@ use Net::NNTP;
 use Net::Cmd;
 use Time::localtime;
 
-my $dbh = DBI->connect("DBI:mysql:database=frankiz2_tmp:host=localhost","web","kokouije?.",{'RaiseError'=>1});
+my $dbh = DBI->connect("DBI:mysql:database=frankiz2:host=localhost","web","kokouije?.",{'RaiseError'=>1});
 
 sub post {
         local ($serveur) = "129.104.201.51";
@@ -84,17 +84,17 @@ sub traiter_jour {
 sub selection {
 # definir la date
 	my $name = "Tour kawa";
-	my @subject = ("Au Bôb à 12h15","Un petit café demain?","Dans trois jours tour kawa");
+	my @subject = ("Au Bôb à 12h15","Un petit café demain?","Dans deux jours tour kawa");
 	my $body = "";
 	my $date;
 	for ($i=0; $i<3; $i++) {
-		$tm=localtime(time - ($i * 24 *3600));
+		$tm=localtime(time);
 		$year = ($tm->year+ 1900);
 		$month = ($tm->mon + 1);
 		if($month < 10){
 		   $month = "0" . $month; 
 		}
-		$day = ($tm->mday - $i);
+		$day = ($tm->mday + $i);
 		if($day < 10){
 		   $day = "0" . $day; 
 		}
