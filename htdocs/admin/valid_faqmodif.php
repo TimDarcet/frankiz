@@ -22,9 +22,12 @@
 	
 
 	$Log$
+	Revision 1.6  2004/12/14 23:15:38  kikx
+	Pour avoir la source + affichage
+
 	Revision 1.5  2004/12/14 23:11:11  kikx
 	Oups /.me boulet
-
+	
 	Revision 1.4  2004/12/14 23:09:52  kikx
 	Pour avoir qd meme la page modifié
 	
@@ -181,6 +184,7 @@ $DB_valid->query("UNLOCK TABLES");
 					}
 					
 					print(wikiVersXML($faq_modif)) ;
+					echo "<note>Source : </note>" ;
 					print(diff_to_xml($wiki,$faq_modif));
 						
 					fclose($texte);
