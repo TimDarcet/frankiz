@@ -4,8 +4,8 @@ $file="/var/www/frankiz2/cache/status";
 
 use Net::Telnet;
 
-@host=("frankiz","gwennoz","heol","kuzh","sil","poly","poly");
-@port=(80,80,80,8080,1080,995,25);
+@host=("frankiz","ircserver","xnetserver","polynews","kuzh","sil","poly","poly");
+@port=(119,6667,5053,119,8080,1080,995,25);
 
 open(STATUS,">$file");
 
@@ -18,19 +18,24 @@ for ($i = 0; $i <= $#host; $i++) {
       # connexion ok
       $telnet -> close;
       if($i == 6) { 
-      		$poly = 1; 
-		$res = ""; 
+      		$res="<serveur nom='poly:pop' etat='up' />\n";
      }
-      if(($i <6)||($i == 7 && $poly)) {
+     if($i == 7) { 
+      		$res="<serveur nom='poly:smtp' etat='up' />\n";
+     }
+      if(($i !=6)&&($i != 7)) {
          $res="<serveur nom='$hote' etat='up' />\n";
       }
    }
    else {
       # connexion impossible
 	if($i == 6) {
-		$res ="";
+		$res="<serveur nom='poly:pop' etat='down' />\n";
 	} 
-	else {
+	if($i == 7) {
+		$res="<serveur nom='poly:smtp' etat='down' />\n";
+	} 
+	 if(($i !=6)&&($i != 7)) {
 	$res="<serveur nom='$hote' etat='down' />\n"
 	}
    }
