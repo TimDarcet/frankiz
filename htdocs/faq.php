@@ -19,10 +19,13 @@
 */
 /*
 		$Log$
+		Revision 1.10  2004/12/01 19:28:47  pico
+		Format du wiki: - pour les listes
+
 		Revision 1.9  2004/11/29 17:27:32  schmurtz
 		Modifications esthetiques.
 		Nettoyage de vielles balises qui trainaient.
-
+		
 		Revision 1.8  2004/11/28 10:03:25  pico
 		Ptite correction dans les urls de data
 		
@@ -343,8 +346,9 @@ if ($id != "") {
 					// Remplace les liens locaux pour les images et les liens, car sinon conflit avec le BASE_HREF
 					$patterns[0] ='(\[(?!http://)(?!ftp://)(?!#))';
 					$patterns[1] ='(\[#)';
-					$replacements[1] = '['.dirname(URL_data."/../data/faq/$reponse")."/";
+					$replacements[1] = '['.dirname(URL_DATA."faq/$reponse")."/";
 					$replacements[0] = '['.getenv('SCRIPT_NAME')."?".getenv('QUERY_STRING')."#";
+					$ligne = str_replace(array('&','<','>','\'','"','\\'),array('&amp;','&lt;','&gt;','&apos;','&quot;',''),$ligne);
 					$ligne = preg_replace($patterns,$replacements, $ligne);
 					$wiki.= $ligne;
 				}

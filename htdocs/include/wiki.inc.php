@@ -21,9 +21,12 @@
 	Moteur Wiki (TipiWiki)
 	
 	$Log$
+	Revision 1.16  2004/12/01 19:28:47  pico
+	Format du wiki: - pour les listes
+
 	Revision 1.15  2004/12/01 18:56:37  pico
 	Nettoyage
-
+	
 	Revision 1.14  2004/12/01 17:38:08  pico
 	corrections
 	
@@ -93,12 +96,12 @@ function wikiVersXML($filtered,$enhtml=false) {
 	// lists <ul>
 	if(!$enhtml){
 	// Listes à 2 niveau
-	$filtered = preg_replace("/(?<=[\n>])\* \*(.+)\n/","<noeud><feuille>$1</feuille></noeud>",$filtered);
+	$filtered = preg_replace("/(?<=[\n>])--(.+)\n/","<noeud><feuille>$1</feuille></noeud>",$filtered);
 	$filtered = preg_replace("(</noeud><noeud>)","",$filtered);
 	// Légende liste 2 niveau
-	$filtered = preg_replace("/(?<=[\n>])\* (.+)\n<noeud>/","<noeud titre=\"$1\">",$filtered);
+	$filtered = preg_replace("/(?<=[\n>])-(.+)\n<noeud>/","<noeud titre=\"$1\">",$filtered);
 	// Liste simple
-	$filtered = preg_replace("/(?<=[\n>])\* (.+)\n/","<feuille>$1</feuille>",$filtered);
+	$filtered = preg_replace("/(?<=[\n>])-(.+)\n/","<feuille>$1</feuille>",$filtered);
 	// Structure d'arbre
 	$filtered = preg_replace("(\n<feuille)","\n</p><arbre><feuille",$filtered);
 	$filtered = preg_replace("(</feuille>\n)","</feuille></arbre><p>\n",$filtered);
@@ -106,8 +109,8 @@ function wikiVersXML($filtered,$enhtml=false) {
 	$filtered = preg_replace("(</noeud>\n)","</noeud></arbre><p>\n",$filtered);
 	}else{
 	// Listes
-	$filtered = preg_replace("/(?<=[\n>])\* \*(.+)\n/","<li><ul><li>\\1</li></ul></li>",$filtered); //Liste 2 eme niveau
-	$filtered = preg_replace("/(?<=[\n>])\* (.+)\n/","<li>\\1</li>",$filtered); // Liste 1er niveau
+	$filtered = preg_replace("/(?<=[\n>])--(.+)\n/","<li><ul><li>\\1</li></ul></li>",$filtered); //Liste 2 eme niveau
+	$filtered = preg_replace("/(?<=[\n>])-(.+)\n/","<li>\\1</li>",$filtered); // Liste 1er niveau
 	$filtered = preg_replace("(</ul></li><li><ul>)","",$filtered);  
 	$filtered = preg_replace("(</li><li><ul>)","<ul>",$filtered);
 	$filtered = preg_replace("/<li>(.+)\<\/li>/","</p><ul>\\0</ul><p>\n",$filtered);
