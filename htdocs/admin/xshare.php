@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.37  2005/01/03 23:27:05  pico
+		Petites modifs
+
 		Revision 1.36  2004/12/17 17:25:08  schmurtz
 		Ajout d'une belle page d'erreur.
-
+		
 		Revision 1.35  2004/12/16 12:52:57  pico
 		Passage des paramètres lors d'un login
 		
@@ -184,6 +187,7 @@ foreach ($_POST AS $keys => $val){
 			$filename = dirname($dir)."/".$_FILES['file']['name'];
 			move_uploaded_file($_FILES['file']['tmp_name'], BASE_DATA."xshare/".$filename);
 			$lien = ", lien='{$filename}'"; 
+			echo "<commentaire>".BASE_DATA."xshare/".$filename."</commentaire>";
 		}
 		else $lien = '';
 		$nom = $_REQUEST['nom'];
