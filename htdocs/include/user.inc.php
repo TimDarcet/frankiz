@@ -26,9 +26,12 @@
 	informations provenant des tables du trombino (avec jointure sur l'uid).
 
 	$Log$
+	Revision 1.21  2005/03/24 08:02:25  pico
+	Acces admin de l'exterieur (utile federez)
+
 	Revision 1.20  2005/02/08 21:57:56  pico
 	Correction bug #62
-
+	
 	Revision 1.19  2005/01/24 13:52:07  pico
 	Pas de droits pour les utilisateurs externes
 	
@@ -128,7 +131,7 @@ class User {
 			$this->devient_anonyme();
 		} else {
 			list($this->uid,$this->login,$this->perms,$this->nom,$this->prenom,$this->passwd,$this->mailhash,$this->cookiehash) = $DB_web->next_row();
-			$this->perms = est_interne()?split(",",$this->perms):array();
+			$this->perms = split(",",$this->perms);
 			$this->methode = AUTH_AUCUNE;
 		}
 	}
