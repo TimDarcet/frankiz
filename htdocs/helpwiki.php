@@ -21,9 +21,12 @@
 	Help WIKI
 	
 	$Log$
+	Revision 1.3  2004/11/24 13:48:17  kikx
+	Met un lien vers la page bac a sable a partir de la page d'aide wiki
+
 	Revision 1.2  2004/11/24 13:32:23  kikx
 	Passage des annonces en wiki !
-
+	
 	Revision 1.1  2004/11/24 12:51:58  kikx
 	Oubli de ma part
 	
@@ -41,6 +44,8 @@ require "include/page_header.inc.php";
 <h2>Qu'est ce que le wiki</h2>
 
 Le nom Wiki provient d'un adjectif hawaiien wikiwiki, qui signifie rapide. C'est une forme à redoublement de l'adjectif wiki. Ward Cunningham, créateur du système Wiki en 1995, a choisi ce terme pour désigner le premier site utilisant ce principe, le WikiWikiWeb.
+
+<note>Si tu veux tester une page wiki sur ce site, va sur <lien url="bacasable.php" titre="le bac à sable"/></note>
 
 <liste modifiable="non" titre="Syntaxe du WIKI sur ce site">
 		<entete id="type" titre=""/>
@@ -73,7 +78,6 @@ Le nom Wiki provient d'un adjectif hawaiien wikiwiki, qui signifie rapide. C'est
 			<colonne id="exemple"><?="<p>".wikiVersXML("http://frankiz/")."</p><p>".wikiVersXML("[http://frankiz/|Ici c'est le site élève]")."</p><p>".wikiVersXML("[mailto://moi@moi|Mon email]")."</p>"?></colonne>";
 		</element>
 </liste>
-
 
 </page>
 <?
