@@ -21,9 +21,13 @@
 	Page qui permet l'administartion des licences windows.
 	
 	$Log$
+	Revision 1.12  2005/01/21 21:44:24  dei
+	Ajout d'une fonction pour rentrer les licences en vrac depuis un
+	fichier, séparées par des ";"
+
 	Revision 1.11  2005/01/20 12:47:22  dei
 	rajout du warning dans la liste
-
+	
 	Revision 1.10  2005/01/20 12:32:19  dei
 	ajout de la gestion des clés libres
 	
@@ -87,7 +91,7 @@ function test_cle($key){
 		}
 		return true;
 	}
-	echo "<warning>Cette clé n'a pas le bon formatage !</warning>";
+	echo "<warning>$key : cette clé n'a pas le bon formatage !</warning>";
 	return false;
 }
 
@@ -216,7 +220,6 @@ if(isset($_POST['chercher'])){
 	echo "</liste>";
 }
 
-//a faire évoluer pour faire entrer les clés depuis un fichier texte...
 if((isset($_POST['ajout']))&&test_cle($_POST['cle'])&&$_POST['login']!=""){
 	$DB_trombino->query("SELECT eleve_id FROM eleves WHERE login='{$_POST['login']}' AND promo='{$_POST['promo']}' LIMIT 1");
 	list($eleve_id)=$DB_trombino->next_row();
@@ -263,8 +266,72 @@ if(isset($_POST['effacer'])&&$_POST['login']!=""){
 		<bouton id='effacer' titre="Supprimer" onClick="return window.confirm('Es-tu sûr de vouloir supprimer cette licence ?')"/>
 	</formulaire>
 <?php
-if(isset($_POST['update'])){
 
+if(isset($_POST['update'])&&is_readable($_FILES['file']['tmp_name'])){
+	$file=fopen($_FILES['file']['tmp_name'],"r");
+	$ligne="";
+	while(!feof($file)){
+		$ligne=$ligne.fgets($file,255);
+	}
+	fclose($file); 
+	$ligne=explode(";",$ligne);
+	$nb_cle=sizeof($ligne);
+	$DB_trombino->query("SELECT eleve_id FROM eleves WHERE promo='{$_POST['promo']}'");
+	$nb_eleves=$DB_trombino->num_rows();
+	$nb_diff=0;
+	list($eleve_id)=$DB_trombino->next_row();
+	$nb_min=min($nb_cle,$nb_eleves);
+	$nb_max=max($nb_cle,$nb_eleves);
+	$i=0;
+	while($i<$nb_min){
+		$cle_tmp=trim($ligne[$i]);
+		if(test_cle($cle_tmp)){
+			$DB_msdnaa->query("SELECT 0 FROM cles_{$_POST['logiciel']} WHERE cle='{$cle_tmp}' UNION SELECT 0 FROM cles_libres WHERE cle='{$cle_tmp}'");
+			if($DB_msdnaa->num_rows()==0){
+				$DB_msdnaa->query("SELECT cle FROM cles_{$_POST['logiciel']} WHERE eleve_id='{$eleve_id}'");
+				list($cle_test)=$DB_msdnaa->next_row();
+				if($cle_test==""){
+					$DB_msdnaa->query("INSERT cles_{$_POST['logiciel']} SET eleve_id='{$eleve_id}', attrib='0', cle='{$cle_tmp}'");
+					$i++;
+				}
+				list($eleve_id)=$DB_trombino->next_row();
+			}else{
+				echo "<warning>La clé $cle_tmp existe déjà dans les bases !</warning>";
+				$i++;
+			}
+		}else{
+			$i++;
+		}
+	}
+	if($nb_cle<$nb_eleves){
+		$DB_msdnaa->query("SELECT cle FROM cles_libres WHERE logiciel='{$_POST['logiciel']}'");
+		while(list($cle_tmp)=$DB_msdnaa->next_row()){
+			$DB_msdnaa->push_result();
+			$DB_msdnaa->query("SELECT 0 FROM cles_{$_POST['logiciel']} WHERE cle='{$cle_tmp}'");
+			if($DB_msdnaa->num_rows()==0){
+				$DB_msdnaa->query("SELECT cle FROM cles_{$_POST['logiciel']} WHERE eleve_id='{$eleve_id}'");
+				list($cle_test)=$DB_msdnaa->next_row();
+				if($cle_test==""){
+					$DB_msdnaa->query("INSERT cles_{$_POST['logiciel']} SET eleve_id='{$eleve_id}', attrib='0', cle='{$cle_tmp}'");
+					$DB_msdnaa->query("DELETE FROM cles_libres WHERE cle='{$cle_tmp}' AND logiciel='{$_POST['logiciel']}'");
+				}
+				list($eleve_id)=$DB_trombino->next_row();
+			}
+			$DB_msdnaa->pop_result();
+		}
+	}else{
+		for($i=$nb_min ; $i<$nb_max ; $i++){
+			$cle_tmp=trim($ligne[$i]);
+			if(test_cle($cle_tmp)){
+				$DB_msdnaa->query("SELECT 0 FROM cles_{$_POST['logiciel']} WHERE cle='{$cle_tmp}' UNION SELECT 0 FROM cles_libres WHERE cle='{$cle_tmp}'");
+				if($DB_msdnaa->num_rows()==0){
+					$DB_msdnaa->query("INSERT cles_libres SET logiciel='{$_POST['logiciel']}', cle='{$cle_tmp}'");
+				}else{
+					echo "<warning>La clé $cle_tmp existe déjà dans les bases !</warning>";
+				}
+			}
+		}
+	}
 }
 ?>
 <h2>Ajout des clés pour une promo dans la base</h2>
