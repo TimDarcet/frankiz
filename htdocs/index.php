@@ -21,10 +21,13 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.32  2005/02/10 21:42:41  pico
+	hum
+
 	Revision 1.31  2005/02/10 21:37:53  pico
 	- Pour les ids de news, fait en fonction de la date de péremption, c'est mieux que seulement par id, mais y'a tjs un pb avec les nouvelles fraiches
 	- Correction pour éviter que des gens postent des annonces qui sont déjà périmées
-
+	
 	Revision 1.30  2005/02/08 21:57:56  pico
 	Correction bug #62
 	
@@ -168,7 +171,7 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 	if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
 	if($cpt > 0){
 			if(est_authentifie(AUTH_MINIMUM) && $visible)
-			echo "<lien url=\"?lu=$idprec#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
+				echo "<lien url=\"?lu=$idprec#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
 			echo "</annonce>";
 	}
 	$idprec=$id;
@@ -183,9 +186,9 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 			echo "<image source=\"".DATA_DIR_URL."annonces/$id\" texte=\"logo\"/>\n";
 		echo wikiVersXML($contenu);
 		echo "<eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"$promo\" surnom=\"$surnom\" mail=\"$mail\"/>\n";
-	if($nb==$cpt){
+	if($cpt==$nb){
 		if(est_authentifie(AUTH_MINIMUM) && $visible)
-		echo "<lien url=\"?lu=$idprec#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
+			echo "<lien url=\"?lu=$idprec#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
 		echo "</annonce>";
 	}
 }
