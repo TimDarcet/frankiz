@@ -20,10 +20,19 @@
 /*
 	
 	$Log$
+	Revision 1.2  2005/01/24 09:13:05  pico
+	Stats xnet
+
 	Revision 1.1  2005/01/23 16:30:10  pico
 	Ajout d'une page pour surveiller les entrées dns
-
 	
+	
+*/
+/*
+<Fruneau> 1 - pour la suppression faut faire un match qui correspond à la première et la dernière colonne
+<Fruneau> 2 - faut aussi incrémenter le sérial (dans la table sérial)
+<Fruneau> le 1 pour être sur de bien supprimer la bonne entrée
+<Fruneau> le 2 pour la réplication de la base
 */
 
 require_once "../include/global.inc.php";
