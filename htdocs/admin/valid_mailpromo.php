@@ -3,10 +3,13 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.6  2004/10/12 18:23:15  kikx
+	On retire le petit logo de merde dans les mails promo
+
 	Revision 1.5  2004/10/10 20:13:18  kikx
 	Bug fix pour les envoie de mail promo
 	-> n'envoie plus en texte brut les truc comme &apo; &nbps; ...
-
+	
 	Revision 1.4  2004/10/10 20:10:05  kikx
 	Ne sert plus a rien
 	
@@ -122,29 +125,29 @@ foreach ($_POST AS $keys => $val){
 		$texte .= "Content-Transfer-Encoding: 8bit\n\n";
 		$texte .="<html>\n\t<head>\n\t</head>\n<body font-size:12pt font-family: arial>\n" ;
 		$texte .= $mail_contenu;
-		$texte .= "<center><img src=\"cid:4923555B-0D28-4533-B917-07177C51A263\" alt=\"Validation par le BR\"></center>" ;
+//		$texte .= "<center><img src=\"cid:4923555B-0D28-4533-B917-07177C51A263\" alt=\"Validation par le BR\"></center>" ;
 		$texte .="\n\t</body>\n</html>" ;
 		$texte .= "\n\n\n";
 		
 		$texte .= "------$limite2--\n\n";
 		
-		// Signature BR
+		// JE GARDE CETTE PARTIE COMMENTEE CAR SI UN JOUR ON VEUX ENVOYER DES MAILS AVEC DES PIECES JOINTES C'EST IMPLEMENTE
 		
 		//le fichier si il existe ...
-		$fichier = 'Logo.png' ;
+//		$fichier = 'Logo.png' ;
 		
-		$texte .= "------$limite\n";
-		$texte .= "Content-Type: image/png; name=\"$fichier\"\n";
-		$texte .= "Content-Transfer-Encoding: base64\n";
-		$texte .= "Content-ID: <4923555B-0D28-4533-B917-07177C51A263>\n";
-		$texte .= "Content-Disposition: attachment; filename=\"$fichier\"\n\n";
-	
-		$fd = fopen( $fichier, "r" );
-		$contenu = fread( $fd, filesize( $fichier ) );
-		fclose( $fd );
-		$texte .= chunk_split(base64_encode($contenu));
+//		$texte .= "------$limite\n";
+//		$texte .= "Content-Type: image/png; name=\"$fichier\"\n";
+//		$texte .= "Content-Transfer-Encoding: base64\n";
+//		$texte .= "Content-ID: <4923555B-0D28-4533-B917-07177C51A263>\n";
+//		$texte .= "Content-Disposition: attachment; filename=\"$fichier\"\n\n";
+//	
+//		$fd = fopen( $fichier, "r" );
+//		$contenu = fread( $fd, filesize( $fichier ) );
+//		fclose( $fd );
+//		$texte .= chunk_split(base64_encode($contenu));
 
-		$texte .= "\n\n\n------$limite--\n";			
+//		$texte .= "\n\n\n------$limite--\n";			
 		
 		// On met en place les headers
 		$sender = str_replace("&gt;",">",str_replace("&lt;","<",$_POST['from'])) ;
