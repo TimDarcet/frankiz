@@ -24,9 +24,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.20  2004/10/22 15:07:40  kikx
+	Juste pour la standardisation
+
 	Revision 1.19  2004/10/22 14:44:40  kikx
 	Permet l'affichage dans le profil de l'image que l'on souhaite modifier (bug encore sur l'affichage)
-
+	
 	Revision 1.18  2004/10/22 11:13:32  kikx
 	Autorise de modifier son image trombi : reste a faire la apge de validation coté admin
 	
@@ -91,7 +94,7 @@ if(isset($_POST['changer_frankiz'])) {
 	} else {
 		$DB_web->query("UPDATE compte_frankiz SET passwd='".md5($_POST['passwd'])."' "
 				   ."WHERE eleve_id='".$_SESSION['user']->uid."' ");
-		$message.="Le mot de passe vient d'être changé.";
+		$message.="<commentaire>Le mot de passe vient d'être changé.</commentaire>";
 	}
 
 	// Modification du cookie d'authentification
@@ -103,12 +106,12 @@ if(isset($_POST['changer_frankiz'])) {
 		SetCookie("auth",base64_encode(serialize($cookie)),time()+3*365*24*3600,"/");
 		$_COOKIE['auth'] = "blah";  // hack permetttant de faire marcher le test d'existance du cookie
 									// utilisé quelques ligne plus bas sans devoir recharger la page.
-		$message.="Le cookie d'authentification a été activé.";
+		$message.="<commentaire>Le cookie d'authentification a été activé.</commentaire>";
 	} else {
 		// on supprime le cookie
 		SetCookie("auth","",0,"/");
 		unset($_COOKIE['auth']);	// hack, cf. au dessus.
-		$message.="Le cookie d'authentification a été désactivé.";
+		$message.="<commentaire>Le cookie d'authentification a été désactivé.</commentaire>";
 	}
 
 // Modification de la fiche du trombino
