@@ -21,10 +21,13 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.29  2004/11/25 11:52:10  pico
+	Correction des liens mysql_id
+
 	Revision 1.28  2004/11/24 22:56:18  schmurtz
 	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
 	globale pour tous les fichiers.
-
+	
 	Revision 1.27  2004/11/24 13:32:23  kikx
 	Passage des annonces en wiki !
 	
@@ -165,7 +168,7 @@ if (isset($_POST['valid'])) {
 	//----------------------------------------------------------------------------------------------
 	
 	if (file_exists(DATA_DIR_LOCAL."annonces/temp_$eleve_id")) {
-		$index = mysql_insert_id() ;
+		$index = mysql_insert_id($DB_valid->link) ;
 		rename(DATA_DIR_LOCAL."annonces/temp_$eleve_id",DATA_DIR_LOCAL."annonces/a_valider_{$index}") ; 
 	}
 	$contenu = "<strong>Bonjour,</strong><br><br>".

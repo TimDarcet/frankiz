@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.16  2004/11/25 11:52:10  pico
+	Correction des liens mysql_id
+
 	Revision 1.15  2004/11/24 13:32:23  kikx
 	Passage des annonces en wiki !
-
+	
 	Revision 1.14  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
@@ -119,7 +122,7 @@ foreach ($_POST AS $keys => $val){
 		$DB_web->query("INSERT INTO annonces  SET stamp=NOW(), perime='{$_POST['date']}', titre='{$_POST['titre']}', contenu='{$_POST['text']}', eleve_id=$eleve_id, exterieur=$temp_ext");
 		
 		// On déplace l'image si elle existe dans le répertoire prevu à cette effet
-		$index = mysql_insert_id() ;
+		$index = mysql_insert_id($DB_web->link) ;
 		if (file_exists(DATA_DIR_LOCAL."annonces/a_valider_{$temp[1]}")){
 			rename(DATA_DIR_LOCAL."annonces/a_valider_{$temp[1]}",DATA_DIR_LOCAL."annonces/$index") ;
 		}

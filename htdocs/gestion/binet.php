@@ -25,10 +25,13 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.22  2004/11/25 11:52:10  pico
+	Correction des liens mysql_id
+
 	Revision 1.21  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
-
+	
 	Revision 1.20  2004/11/11 15:02:59  kikx
 	Legere modif
 	
@@ -233,7 +236,7 @@ if(verifie_permission_webmestre($_GET['binet'])){
 		
 		$DB_valid->query("INSERT INTO  valid_binet SET binet_id={$_POST['id']}, nom='$nom', http='{$_POST['http']}', description='{$_POST['descript']}', catego_id='{$_POST['catego']}' , exterieur=$exterieur, folder='$folder', image=\"".addslashes($image)."\", format='$format'");
 		
-		$index = mysql_insert_id() ;
+		$index = mysql_insert_id($DB_valid->link) ;
 
 		
 			
