@@ -4,9 +4,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.13  2004/10/04 21:19:11  kikx
+	Rajour d'une page pour les mails promos
+
 	Revision 1.12  2004/09/20 22:19:27  kikx
 	test
-
+	
 	Revision 1.11  2004/09/17 16:14:43  kikx
 	Pffffff ...
 	Je sais plus trop ce que j'ai fait donc allez voir le code parce que la ca me fait chié de refléchir
@@ -42,6 +45,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<lien titre="Changer les variables globales" url="<?php echo BASE_URL?>/admin/parametre.php"/>
 		<lien titre="Valider les annonces" url="<?php echo BASE_URL?>/admin/valid_annonces.php"/>
 		<lien titre="Valider les activités" url="<?php echo BASE_URL?>/admin/valid_affiches.php"/>
+		<lien titre="Envoyer un mail promo" url="<?php echo BASE_URL?>/admin/mail_promo.php"/>
 	<h2>Webmestre binet X</h2>
 	<p>En construction
 </p>
