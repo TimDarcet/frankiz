@@ -3,9 +3,12 @@
 	Liens permettants de contacter les webmestres et faire des demandes.
 	
 	$Log$
+	Revision 1.7  2004/09/20 08:53:48  kikx
+	Schmurtz tu fais chié :)
+
 	Revision 1.6  2004/09/20 08:29:24  kikx
 	Rajout d'une page pour envoyer des mail d'amour a ses webmestres adorés
-
+	
 	Revision 1.5  2004/09/17 09:05:32  kikx
 	La personne peut maintenant rajouter une annonce
 	Ceci dit je ne comprend pas trop comment on protège les champs avec les <!CDATA
@@ -20,7 +23,7 @@
 */
 ?>
 <module id="liens_contacts" titre="Contacts">
-	<lien titre="Écrire aux webmasters" url="proposition/mail_web.php" />
+	<lien titre="Écrire aux webmasters" url="mailto:web@frankiz.polytechnique.fr" />
 	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
 		<lien titre="Proposer une annonce" url="proposition/annonce.php" />
 		<lien titre="Proposer une activité" url="proposition/activite.php" />
