@@ -38,30 +38,33 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 <page id="licences" titre="Frankiz : Les Licences">
 <?	if(isset($_POST['accord'])){
 		//on lance la requête qui va bien pour voir la clé
-		$DB_msdnaa->query("SELECT cle,attrib FROM cles_winxp WHERE eleve_id='".$_SESSION['user']->uid."'");
+		$DB_msdnaa->query("SELECT cle,attrib FROM cles_winxp WHERE eleve_id='".$_SESSION['user']->uid."' LIMIT 1");
 		//on a la clé attribuée de manière unique par le BR.
-		list($cle,$attrib) = $DB_msdnaa->next_row();
-		//si la personne a déjà demandé sa clé...
-		if($attrib != 0){
-			?>
-			<p>Tu as déjà demandé ta clé, elle va t'être ré-expédiée à <?echo "$mail" ?></p>
-			<?php
-			$contenu="La clé qui vous a déjà été attribué est : $cle";
-			//a completer couriel(WEBMESTRE_ID,"[Frankiz] Validation d'une annonce",$contenu,$eleve_id);
-			couriel($eleve_id,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,WINDOWS_ID);
-			$contenu="La clé demandée par $nom $prenom X $promo est : $cle";
-			couriel(WINDOWS_ID,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,$eleve_id);
-		} else {
-			?>
-			<p>Ta nouvelle clé, va t'être expédiée à <?echo "$mail" ?></p>
-			<?php
-			// sinon on l'ajoute... et on update la base...
-			$DB_msdnaa->query("UPDATE cles_winxp SET attrib='1' WHERE eleve_id='".$_SESSION['user']->uid."'");
-			$contenu="La clé qui vous a été attribué est : $cle";
-			//a completer
-			couriel($eleve_id,"[Frankiz] Demande de licence Microsoft $nom $prenom X $promo ",$contenu,WINDOWS_ID);
-			$contenu="La clé attribuée à $nom $prenom X $promo est : $cle";
-			couriel(WINDOWS_ID,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,$eleve_id);
+		if($DB_msdnaa->num_rows()!=0){
+			list($cle,$attrib) = $DB_msdnaa->next_row());
+			//si la personne a déjà demandé sa clé...
+			if($attrib != 0){
+				?>
+				<p>Tu as déjà demandé ta clé, elle va t'être ré-expédiée à <?echo "$mail" ?></p>
+				<?php
+				$contenu="La clé qui vous a déjà été attribué est : $cle";
+				couriel($eleve_id,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,WINDOWS_ID);
+				$contenu="La clé demandée par $nom $prenom X $promo est : $cle";
+				couriel(WINDOWS_ID,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,$eleve_id);
+			} else {
+				?>
+				<p>Ta nouvelle clé, va t'être expédiée à <?echo "$mail" ?></p>
+				<?php
+				// sinon on l'ajoute... et on update la base...
+				$DB_msdnaa->query("UPDATE cles_winxp SET attrib='1' WHERE eleve_id='".$_SESSION['user']->uid."'");
+				$contenu="La clé qui vous a été attribué est : $cle";
+				//a completer
+				couriel($eleve_id,"[Frankiz] Demande de licence Microsoft $nom $prenom X $promo ",$contenu,WINDOWS_ID);
+				$contenu="La clé attribuée à $nom $prenom X $promo est : $cle";
+				couriel(WINDOWS_ID,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,$eleve_id);
+			}
+		}else{
+			// Rajouter le gars dans la liste
 		}
 	}
 
