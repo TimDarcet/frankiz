@@ -19,9 +19,13 @@
 */
 /*
 		$Log$
+		Revision 1.21  2004/11/15 22:17:24  pico
+		On doit pouvoir changer le texte d'une faq à présent
+		TODO: script pour dl le contenu de la faq existante
+
 		Revision 1.20  2004/11/10 21:39:44  pico
 		Corrections skin + fonction deldir + faq
-
+		
 		Revision 1.19  2004/11/08 11:46:27  pico
 		Modif pour utiliser la fonction deldir
 		
@@ -114,7 +118,7 @@ foreach ($_POST AS $keys => $val){
 		echo "<commentaire>Repertoire crée".BASE_DATA."faq/".$dir."</commentaire>";
 	}
 	
-	if (($temp[0]=='ajout') && isset($_REQUEST['question']) && ($_REQUEST['question']!='') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='') && (isset($_FILES['file']))) {
+	if (($temp[0]=='ajout') && isset($_REQUEST['question']) && ($_REQUEST['question']!='') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='') && (isset($_FILES['file'])) &&($_FILES['file']['name']!='') ) {
 		$question = $_REQUEST['question'];
 		$DB_web->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
 		list($dir) = $DB_web->next_row();
@@ -147,8 +151,38 @@ foreach ($_POST AS $keys => $val){
 	}
 	
 	if (($temp[0]=='modif') && isset($_REQUEST['question']) && ($_REQUEST['question']!='')) {
+		$reponse = "";
+		if((isset($_FILES['file']))&&($_FILES['file']['name']!='')){
+			$DB_web->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
+			list($dir) = $DB_web->next_row();
+			$dir = dirname($dir);
+			deldir(BASE_DATA."faq/".$dir);
+			mkdir(BASE_DATA."faq/".$dir);
+			if($_FILES['file']['type'] == "text/html"){
+				$filename = $dir."/index.html";
+				move_uploaded_file($_FILES['file']['tmp_name'], BASE_DATA."faq/".$filename);
+			}
+			else {
+				$filename = $dir."/".$_FILES['file']['name'];
+				move_uploaded_file($_FILES['file']['tmp_name'], BASE_DATA."faq/".$filename);
+				unzip(BASE_DATA."faq/".$filename , BASE_DATA."faq/".$dir , true);
+			}
+			if(file_exists(BASE_DATA."faq/".$dir."/index.php")){
+				$filename = $dir."/index.php";
+				$reponse =", reponse='{$filename}'";
+			}
+			else if(file_exists(BASE_DATA."faq/".$dir."/index.html")){
+				$filename = $dir."/index.html";
+				$reponse =", reponse='{$filename}'";
+			}
+			else{
+				echo "<warning>Impossible de trouver un fichier index.html ou index.php dans la FAQ soumise<br/> opération annulée</warning>";
+				deldir($dir);
+				$reponse = "";
+			}
+		}
 		$question = $_REQUEST['question'];
-		$DB_web-> query("UPDATE faq SET question='{$question}' WHERE faq_id='{$temp[1]}' ");
+		$DB_web-> query("UPDATE faq SET question='{$question}' {$reponse}  WHERE faq_id='{$temp[1]}' ");
 		echo "<commentaire>FAQ modifiée</commentaire>";
 	}
 	
@@ -321,6 +355,8 @@ echo "<br/>" ;
 	?>
 	<formulaire id="faq_<? echo $id ?>" titre="La réponse" action="admin/faq.php">
 	<champ id="question" titre="Question" valeur="<? echo $question ?>" />
+	<textsimple id="nom" titre="Nom du sous-dossier de la faq" valeur="<? echo dirname($reponse) ?>" />
+	<fichier id="file" titre="Changer fichier réponse (fichier .html, .zip ou .tar)" taille="1000000000"/>
 	<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
 	<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette FAQ ?!!!!!')"/>
 	</formulaire>
@@ -365,7 +401,7 @@ echo "<br/>" ;
 		if(!strstr($keys,"ajout")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 	}
 	?>
-	<fichier id="file" titre="Fichier réponse (fichier .html, .zip ou .tar.gz)" taille="1000000000"/>
+	<fichier id="file" titre="Fichier réponse (fichier .html, .zip ou .tar)" taille="1000000000"/>
 	<bouton id='ajout_<? echo $dir_id ?>' titre="Ajouter" onClick="return window.confirm('!!!!!!Ajouter ce fichier ?!!!!!')"/>
 	</formulaire>
 	

@@ -19,9 +19,13 @@
 */
 /*
 		$Log$
+		Revision 1.23  2004/11/15 22:17:24  pico
+		On doit pouvoir changer le texte d'une faq à présent
+		TODO: script pour dl le contenu de la faq existante
+
 		Revision 1.22  2004/11/15 20:54:18  pico
 		Commit global de retour de gwz
-
+		
 		Revision 1.21  2004/11/08 11:46:27  pico
 		Modif pour utiliser la fonction deldir
 		
@@ -106,7 +110,7 @@ foreach ($_POST AS $keys => $val){
 		echo "<commentaire>Repertoire crée</commentaire>";
 	}
 	
-	if (($temp[0]=='ajout') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='') && (isset($_FILES['file']))) {
+	if (($temp[0]=='ajout') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='') && (isset($_FILES['file']))&&($_FILES['file']['name']!='')) {
 		$nom = $_REQUEST['nom'];
 		$DB_web->query("SELECT lien FROM xshare WHERE id='{$temp[1]}' ");
 		list($dir) = $DB_web->next_row();
@@ -125,8 +129,9 @@ foreach ($_POST AS $keys => $val){
 	
 	if (($temp[0]=='modif') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='')) {
 		if((isset($_FILES['file']))&&($_FILES['file']['name']!='')){
-			$DB_web->query("SELECT y.lien FROM xshare as x INNER JOIN xshare as y ON x.id_parent=y.id WHERE x.id='{$temp[1]}' ");
+			$DB_web->query("SELECT lien FROM xshare WHERE id='{$temp[1]}' ");
 			list($dir) = $DB_web->next_row();
+			$dir = dirname($dir);
 			deldir(BASE_DATA."xshare/".$dir);
 			$filename = $dir."/".$_FILES['file']['name'];
 			move_uploaded_file($_FILES['file']['tmp_name'], BASE_DATA."xshare/".$filename);
