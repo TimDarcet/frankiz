@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.12  2004/11/25 02:03:29  kikx
+	Bug d'administration des binets
+
 	Revision 1.11  2004/11/22 23:07:28  kikx
 	Rajout de lines vers les pages perso
-
+	
 	Revision 1.10  2004/11/17 13:32:18  kikx
 	Mise en place du lien pour l'admin
 	
@@ -118,13 +121,14 @@
 require_once "../include/global.inc.php";
 
 demande_authentification(AUTH_FORT);
-if(empty($_SESSION['user']->perms))
+
+if (count($_SESSION['user']->perms)<=1)
 	rediriger_vers("/");
 
 // Génération de la page
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
-$permissions_user = ses_permissions() ;
+$permissions_user = $_SESSION['user']->perms ;
 ?>
 <page id="admin" titre="Frankiz : administration">
 	<? if (verifie_permission('admin')){?>

@@ -21,9 +21,12 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.19  2004/11/25 02:03:29  kikx
+	Bug d'administration des binets
+
 	Revision 1.18  2004/11/25 00:35:19  schmurtz
 	une image de plus dans htdocs/image
-
+	
 	Revision 1.17  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
@@ -240,7 +243,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	$categorie_precedente = -1;
 	
 	// Les infos du Binet en générale
-	$DB_trombino->query("SELECT description, nom,binet_id, http, catego_id, exterieur, folder FROM binets WHERE binet_id=".$_GET['id']);
+	$DB_trombino->query("SELECT description, nom,binet_id, http, catego_id, exterieur, folder FROM binets WHERE binet_id='".$_GET['id']."'");
 	list($descript,$nom_binet,$binet_id,$http,$cat_id,$exterieur,$folder) = $DB_trombino->next_row() ;
 	
 	// Les données du prez du Binet
@@ -249,7 +252,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	
 	// Les données du webmestre du Binet
 	$DB_web->query("SELECT login FROM trombino.eleves LEFT JOIN compte_frankiz USING(eleve_id) WHERE perms LIKE '%webmestre_".$_GET['id'].",%' ORDER BY promo DESC");
-	while(list($web_login) = $DB_web->next_row()) {
+	list($web_login) = $DB_web->next_row() ;
 
 ?>
 	<formulaire id="binet_web_<? echo $binet_id?>" titre="<? echo $nom_binet?>" action="admin/binets.php?id=<?=$_GET['id']?>">
@@ -274,9 +277,6 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<bouton id='suppr' titre="Supprimer" onClick="return window.confirm('Voulez vous vraiment supprimer ce binet ?')"/>
 		<bouton id='suppr_img' titre="Supprimer l'image" onClick="return window.confirm('Voulez vous vraiment supprimer l'image de ce binet ?')"/>
 	</formulaire>
-	<?
-	}
-	?>
 
 </page>
 <?php
