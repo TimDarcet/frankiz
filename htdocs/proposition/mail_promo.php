@@ -3,9 +3,13 @@
 	Mail promo permettant l'envoie de pièce jointes et de formatage HTML
 	
 	$Log$
+	Revision 1.7  2004/10/20 23:21:39  schmurtz
+	Creation d'un element <html> qui permet d'afficher du html brute sans verification
+	C'est ce qui est maintenant utilise dans les annonces/cadres
+
 	Revision 1.6  2004/10/13 19:36:44  kikx
 	Correction de la page mail promo pour le text plain
-
+	
 	Revision 1.5  2004/10/06 21:29:29  kikx
 	Mail promo != mail bi-promo
 	
@@ -77,7 +81,7 @@ if (!isset($_REQUEST['envoie'])) {
 	if (isset($_REQUEST['upload'])) {
 ?>
 		<cadre  titre="Mail Promo : <? if (isset($_REQUEST['sujet'])) echo $_REQUEST['sujet']?>" >
-			<? if (isset($_REQUEST['mail'])) echo $_REQUEST['mail']?>
+			<html><? if (isset($_REQUEST['mail'])) echo $_REQUEST['mail']?></html>
 		</cadre>
 <?
 	}

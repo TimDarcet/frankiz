@@ -76,7 +76,7 @@
 <xsl:template match="cadre">
 	<h2><xsl:value-of select="@titre"/></h2>
 	<div style="text-align: center"><xsl:apply-templates select="image"/></div>
-	<xsl:value-of disable-output-escaping="yes" select="text()"/>
+	<xsl:apply-templates select="html"/>
 </xsl:template>
 
 

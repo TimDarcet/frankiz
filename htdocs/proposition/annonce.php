@@ -3,10 +3,14 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.19  2004/10/20 23:21:39  schmurtz
+	Creation d'un element <html> qui permet d'afficher du html brute sans verification
+	C'est ce qui est maintenant utilise dans les annonces/cadres
+
 	Revision 1.18  2004/10/19 14:58:43  schmurtz
 	Creation d'un champ de formulaire specifique pour les fichiers (sans passer
 	l'element champ, qui actuellement est un peu acrobatique).
-
+	
 	Revision 1.17  2004/10/13 19:37:13  kikx
 	oubli
 	
@@ -166,7 +170,7 @@ if (!isset($_POST['titre']))  $_POST['titre']="Titre" ;
 			categorie=""
 			date="<? echo date("d/m/y") ?>">
 			<? 
-			echo $_POST['text'] ;
+			echo "<html>{$_POST['text']}</html>" ;
 			if ((!isset($_POST['valid']))&&(file_exists(DATA_DIR_LOCAL."annonces/temp_$eleve_id"))) {
 			?>
 				<image source="<?echo DATA_DIR_URL."annonces/temp_".$eleve_id ; ?>" texte=""/>

@@ -3,9 +3,13 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.14  2004/10/20 23:21:39  schmurtz
+	Creation d'un element <html> qui permet d'afficher du html brute sans verification
+	C'est ce qui est maintenant utilise dans les annonces/cadres
+
 	Revision 1.13  2004/10/20 22:10:57  schmurtz
 	Correction du bug qui affichait deux images dans la faq
-
+	
 	Revision 1.12  2004/10/20 22:05:36  schmurtz
 	Juste pour pico, qu'il puisse y voir quelque chose
 	
@@ -194,5 +198,8 @@
 	<a><xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute><xsl:attribute name="href"><xsl:value-of select="@href"/></xsl:attribute><xsl:apply-templates/></a>
 </xsl:template>
 
+<xsl:template match="html"><!-- très moche car impossible à skinner, mais parfois indispensable -->
+	<xsl:value-of disable-output-escaping="yes" select="text()"/>
+</xsl:template>
 
 </xsl:stylesheet>

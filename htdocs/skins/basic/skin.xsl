@@ -5,9 +5,13 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.16  2004/10/20 23:21:39  schmurtz
+	Creation d'un element <html> qui permet d'afficher du html brute sans verification
+	C'est ce qui est maintenant utilise dans les annonces/cadres
+
 	Revision 1.15  2004/10/04 22:48:55  kikx
 	Modification mineur de la page d'envoie de mail promo !
-
+	
 	Revision 1.14  2004/09/20 07:16:31  kikx
 	J'aimais pas la signature qui est pas en bold :)
 	
@@ -111,7 +115,7 @@
 			<center><xsl:apply-templates select="image"/></center>
 		</td></tr>
 		<tr><td>
-			<xsl:value-of disable-output-escaping="yes" select="text()"/>
+			<xsl:apply-templates select="html"/>
 			<p class="signature"><b><xsl:apply-templates select="eleve"/></b></p>
 		</td></tr>
 	</table><br/>
@@ -124,7 +128,7 @@
 			<center><xsl:apply-templates select="image"/></center>
 		</td></tr>
 		<tr><td>
-			<xsl:value-of disable-output-escaping="yes" select="text()"/>
+			<xsl:apply-templates select="html"/>
 		</td></tr>
 	</table><br/>
 </xsl:template>

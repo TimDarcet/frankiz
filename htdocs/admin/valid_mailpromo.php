@@ -3,9 +3,13 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.11  2004/10/20 23:21:39  schmurtz
+	Creation d'un element <html> qui permet d'afficher du html brute sans verification
+	C'est ce qui est maintenant utilise dans les annonces/cadres
+
 	Revision 1.10  2004/10/13 21:21:14  kikx
 	Le rend opérationnel
-
+	
 	Revision 1.9  2004/10/13 21:19:52  kikx
 	Rajout de bug fix
 	
@@ -257,7 +261,7 @@ while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $prom
 		</p>
 	</commentaire>
 	<cadre titre="<?php  echo $titre_mail." ".$titre ?>">
-			<?php echo $mailpromo ?>
+			<html><?php echo $mailpromo ?></html>
 	</cadre>
 <?
 

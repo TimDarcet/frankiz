@@ -3,9 +3,13 @@
 	Annonces de frankiz. Page d'acceuil pour les personnes déjà loguées.
 	
 	$Log$
+	Revision 1.13  2004/10/20 23:21:39  schmurtz
+	Creation d'un element <html> qui permet d'afficher du html brute sans verification
+	C'est ce qui est maintenant utilise dans les annonces/cadres
+
 	Revision 1.12  2004/10/20 19:59:42  pico
 	Ajout champ id
-
+	
 	Revision 1.11  2004/10/16 01:50:22  schmurtz
 	Affichage des annonces publiques (exterieure) pour les personnes non authentifiees
 	
@@ -65,7 +69,7 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 			categorie="<?php echo get_categorie($en_haut, $stamp, $perime) ?>"
 			date="<?php echo substr($stamp,8,2)."/".substr($stamp,5,2)."/".substr($stamp,0,4) ?>">
 <?php
-		echo $contenu;
+		echo "<html>$contenu</html>";
 
 			if (file_exists(DATA_DIR_LOCAL."annonces/$id")) {
 			?>

@@ -3,11 +3,15 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.10  2004/10/20 23:21:39  schmurtz
+	Creation d'un element <html> qui permet d'afficher du html brute sans verification
+	C'est ce qui est maintenant utilise dans les annonces/cadres
+
 	Revision 1.9  2004/10/11 11:01:38  kikx
 	Correction des pages de proposition et de validation des annonces pour permettre
 	- de stocker les image au bon endroit
 	- de mettre les annonces su l'esterieur
-
+	
 	Revision 1.8  2004/10/08 06:51:43  pico
 	Premier (re)commit:
 	
@@ -127,7 +131,7 @@ foreach ($_POST AS $keys => $val){
 				categorie=""
 				auteur="<?php echo empty($surnom) ? $prenom.' '.$nom : $surnom .' (X'.$promo.')'?>"
 				date="<? echo $date?>">
-				<? echo $contenu ;
+				<? echo "<html>$contenu</html>" ;
 				if (file_exists(DATA_DIR_LOCAL."annonces/a_valider_{$id}")){
 				?>
 					<image source="<? echo DATA_DIR_URL."annonces/a_valider_{$id}" ; ?>" texte=""/>
