@@ -27,13 +27,15 @@ table {
 	vertical-align: top;
 }
 
-#cadres {
+#modules {
 	width: 20%;
 	border-top: 1px solid #888888;
 	vertical-align: top;
 }
 
-#cadres th.cadre {
+/* Modules */
+
+#modules th {
 	color: inherit;
 	background: #DDDDDD;
 	padding: 2px;
@@ -43,7 +45,7 @@ table {
 	border-left: 1px solid #888888;
 }
 
-#cadres td.cadre {
+#modules td {
 	border-bottom: 1px solid #888888;
 	padding: 2px;
 	border-right: 1px solid #888888;
@@ -57,7 +59,7 @@ table.annonce {
 	width: 95%;
 }
 
-th.annonce {
+table.annonce th {
 	color: inherit;
 	background: #DDDDDD;
 	padding: 2px;
@@ -65,7 +67,7 @@ th.annonce {
 	border-bottom: 1px solid #888888;
 }
 
-td.annonce {
+table.annonce td {
 	padding: 4px;
 }
 
@@ -134,7 +136,9 @@ p.note {
 	font-size: 75%;
 	padding: 6px;
 }
+
 /* Liste */
+
 table.liste {
 	border: 1px solid #888888;
 }
