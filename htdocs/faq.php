@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.11  2004/12/14 22:17:32  kikx
+		Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
+
 		Revision 1.10  2004/12/01 19:28:47  pico
 		Format du wiki: - pour les listes
-
+		
 		Revision 1.9  2004/11/29 17:27:32  schmurtz
 		Modifications esthetiques.
 		Nettoyage de vielles balises qui trainaient.
@@ -354,6 +357,11 @@ if ($id != "") {
 				}
 				print(wikiVersXML($wiki));
 				fclose($texte);
+				if (est_authentifie()) {
+					?>
+					<lien url="proposition/faq_modif.php?id=<?=$id?>" titre="Editer"/>
+					<?
+				}
 			}
 		} else {
 		?>

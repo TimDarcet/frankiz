@@ -22,9 +22,12 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.10  2004/12/14 22:17:32  kikx
+	Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
+
 	Revision 1.9  2004/12/14 00:29:22  kikx
 	oubli
-
+	
 	Revision 1.8  2004/12/13 16:15:22  kikx
 	legere modif sur la page des ips
 	
@@ -87,6 +90,8 @@ define('MAIL_BR',"br@frankiz");
 define('BR_ID',$i--);
 define('MAIL_CONTACT',"eleves@polytechnique.fr");
 define('CONTACT_ID',$i--);
+define('MAIL_FAQMESTRE',"gruson@poly");
+define('FAQMESTRE_ID',$i--);
 
 // Nombres de jours affichés dans la page des annonces 
 define('MAX_PEREMPTION',8);

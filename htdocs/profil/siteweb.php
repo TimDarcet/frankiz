@@ -21,9 +21,12 @@
 	Pour gerer son site web perso
 		
 	$Log$
+	Revision 1.6  2004/12/14 22:17:32  kikx
+	Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
+
 	Revision 1.5  2004/12/13 20:03:25  pico
 	Les liens ne forment pas de blocs, il faut donc le spécifier
-
+	
 	Revision 1.4  2004/12/07 14:39:26  schmurtz
 	Bugs et orthographe
 	
@@ -92,7 +95,7 @@ if(isset($_POST['ext'])){
 			"Très BR-ement<br>" .
 			"L'automate :)<br>"  ;
 			
-		couriel(WEBMESTRE_ID,"[Frankiz] Demande de page perso de $nom $prenom",$contenu);
+		couriel(WEBMESTRE_ID,"[Frankiz] Demande de page perso de $nom $prenom",$contenu,$_SESSION['user']->uid);
 		$message .= "<commentaire>Ta demande d'accessibilité depuis l'extérieur a été prise en compte et sera validée dans les meilleurs délai.</commentaire>" ;
 
 	} else if($un != 0) {

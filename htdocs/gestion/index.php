@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.26  2004/12/14 22:17:32  kikx
+	Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
+
 	Revision 1.25  2004/12/13 20:03:25  pico
 	Les liens ne forment pas de blocs, il faut donc le spécifier
-
+	
 	Revision 1.24  2004/12/07 12:11:13  pico
 	Un peu plus de droits pour le webmestre
 	
@@ -251,6 +254,13 @@ $permissions_user = $_SESSION['user']->perms ;
 		$nb = $DB_valid->num_rows() ;
 		?>
 		<lien titre="Valider les changements des Binets (<?=$nb?>)" url="admin/valid_binets.php"/><br/>
+	<?
+	}
+	if (verifie_permission('admin')||verifie_permission('faq')){
+		$DB_valid->query("SELECT 0 FROM valid_modiffaq") ;
+		$nb = $DB_valid->num_rows() ;
+		?>
+		<lien titre="Valider les modification des FAQ (<?=$nb?>)" url="admin/valid_faqmodif.php"/><br/>
 	<?
 	}
 	
