@@ -21,7 +21,7 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:template match="page[@id='annonces']" mode="complet">
+<xsl:template match="page[@id='accueil']" mode="complet">
   <xsl:if test="$trier_annonces='pas_tri'">
   <xsl:if test="last() != 0">
        <xsl:apply-templates select="annonce" mode="complet"/>
@@ -38,7 +38,7 @@
 </xsl:template>
 
 
-<xsl:template match="page[@id='annonces']" mode="sommaire">
+<xsl:template match="page[@id='accueil']" mode="sommaire">
 <xsl:if test="$sommaire='pas_tri'">
 	<xsl:if test="last() != 0">
 		<xsl:apply-templates select="annonce" mode="sommaire"/>
