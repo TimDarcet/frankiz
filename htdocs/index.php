@@ -21,10 +21,13 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.24  2005/01/02 10:50:25  pico
+	Passage de certaines pages en visibles de l'intérieur (non loggué)
+
 	Revision 1.23  2004/12/17 10:55:44  kikx
 	Ca avait déja ete fait ?
 	pige pas ...
-
+	
 	Revision 1.22  2004/12/17 09:41:53  pico
 	Solution simple pour éviter de mettre 2 fois la même entrée dans la base des annonces lues
 	
@@ -130,7 +133,7 @@ $DB_web->query("SELECT annonces.annonce_id,stamp,perime,titre,contenu,en_haut,ex
 					 ."FROM annonces LEFT JOIN trombino.eleves USING(eleve_id) $annonces_lues1"
 					 ."WHERE (perime>=".date("Ymd000000",time()).") ORDER BY perime DESC");
 while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail,$visible)=$DB_web->next_row()) {
-	if(!$exterieur && !est_authentifie(AUTH_MINIMUM)) continue;
+	if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
 ?>
 	<annonce id="<?php echo $id ?>" 
 		titre="<?php echo $titre ?>" visible="<?=$visible?"oui":"non" ?>"

@@ -21,11 +21,14 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.48  2005/01/02 10:50:25  pico
+	Passage de certaines pages en visibles de l'intérieur (non loggué)
+
 	Revision 1.47  2004/12/17 16:29:29  kikx
 	Dans le trombino maintenant les promo sont dynamiques
 	Je limit aussi le changement des images (selon leur dimension200x200 dans le trombino)
 	Dans les annonces maintenant c'est 400x300 mais < ou egal
-
+	
 	Revision 1.46  2004/12/17 13:41:07  kikx
 	Poura voir que les resultat des promos sur le campus qd on fait une recherche trombino
 	
@@ -147,7 +150,7 @@
 */
 
 require_once "include/global.inc.php";
-demande_authentification(AUTH_MINIMUM);
+demande_authentification(AUTH_INTERNE);
 
 // Récupération d'une image
 if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "true") && ($_REQUEST['image'] != "")){

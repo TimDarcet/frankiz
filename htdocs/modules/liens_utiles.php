@@ -21,9 +21,12 @@
 	Liens permettants d'accéder aux autres sites de l'école.
 	
 	$Log$
+	Revision 1.5  2005/01/02 10:50:25  pico
+	Passage de certaines pages en visibles de l'intérieur (non loggué)
+
 	Revision 1.4  2004/11/09 22:39:06  pico
 	Ajout des accesskeys dans les liens de navigation
-
+	
 	Revision 1.3  2004/11/08 08:47:57  kikx
 	Pour la gestion online des sites de binets
 	
@@ -56,7 +59,7 @@
 ?>
 <module id="liens_ecole" titre="Liens utiles">
 	<lien id="utile_contact" titre="Contacter les élèves" url="contact.php" key="c"/>
-	<?php if(!est_authentifie(AUTH_MINIMUM)): ?>
+	<?php if(!est_authentifie(AUTH_INTERNE)): ?>
 		<lien id="utile_plan" titre="Venir à l'X" url="plan.php" />
 	<?php endif; ?>
 	<lien id="utile_liens" titre="Liens utiles" url="liens.php" />

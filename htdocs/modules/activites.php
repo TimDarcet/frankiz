@@ -21,9 +21,12 @@
 	Script de création de la partie activités contenant des images type "affiche".
 	
 	$Log$
+	Revision 1.14  2005/01/02 10:50:25  pico
+	Passage de certaines pages en visibles de l'intérieur (non loggué)
+
 	Revision 1.13  2004/12/13 08:50:48  pico
 	Correction mineure
-
+	
 	Revision 1.12  2004/11/27 18:23:53  pico
 	Ajout de l'annonce: 'le bob est ouvert' dans les activités + page de gestion du bob
 	
@@ -54,7 +57,7 @@
 	
 */
 
-if(est_authentifie(AUTH_MINIMUM)) {
+if(est_authentifie(AUTH_INTERNE)) {
 	// Etat du bôb
 	$DB_web->query("SELECT valeur FROM parametres WHERE nom='bob'");
 	list($valeur) = $DB_web->next_row();

@@ -21,9 +21,12 @@
 	Affichage des anniversaires avec gestion d'un cache mis à jour une fois par jour.
 	
 	$Log$
+	Revision 1.16  2005/01/02 10:50:25  pico
+	Passage de certaines pages en visibles de l'intérieur (non loggué)
+
 	Revision 1.15  2004/12/15 20:57:59  pico
 	Affiche un lien vers la fiche trombi pour les anniversaires...
-
+	
 	Revision 1.14  2004/11/23 07:43:25  pico
 	Les différentes promos ne sont plus codées en dur, mais utilisent la variable sql
 	
@@ -44,7 +47,7 @@
 	
 */
 
-if(est_authentifie(AUTH_MINIMUM)) {
+if(est_authentifie(AUTH_INTERNE)) {
 	echo "<module id=\"anniversaires\" titre=\"Anniversaires\">\n";
 
 	if(!cache_recuperer('anniversaires',strtotime(date("Y-m-d",time())))) {

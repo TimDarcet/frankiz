@@ -30,7 +30,7 @@ $DB_web->query("SELECT annonce_id,stamp,perime,titre,contenu,en_haut,exterieur,n
 					 ."FROM annonces LEFT JOIN trombino.eleves USING(eleve_id) "
 					 ."WHERE (perime>=".date("Ymd000000",time()).") ORDER BY perime DESC");
 while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail)=$DB_web->next_row()) {
-	if(!$exterieur && !est_authentifie(AUTH_MINIMUM)) continue;
+	if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
 ?>
 	<item>
 		<title><?php echo $titre ?></title>

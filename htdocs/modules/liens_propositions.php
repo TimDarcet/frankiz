@@ -21,9 +21,12 @@
 	Liens permettants de contacter les webmestres et faire des demandes.
 	
 	$Log$
+	Revision 1.3  2005/01/02 10:50:25  pico
+	Passage de certaines pages en visibles de l'intérieur (non loggué)
+
 	Revision 1.2  2004/11/16 15:35:27  kikx
 	Pour les sondages
-
+	
 	Revision 1.1  2004/11/06 20:52:08  kikx
 	Reordonnancement des liens
 	
@@ -77,13 +80,11 @@
 if(est_authentifie(AUTH_MINIMUM)) {
 ?>
 <module id="liens_contacts" titre="Contribuer">
-	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
 		<lien id="propo_annonce" titre="Proposer une annonce" url="proposition/annonce.php" />
 		<lien id="propo_activite" titre="Proposer une activité" url="proposition/affiche.php" />
 		<lien id="propo_qdj" titre="Proposer une qdj" url="proposition/qdj.php" />
 		<lien id="propo_sondage" titre="Proposer un sondage" url="proposition/sondage.php" />
 		<lien id="propo_mailpromo" titre="Demander un mail promo" url="proposition/mail_promo.php" />
-	<?php endif; ?>
 </module>
 <?
 }

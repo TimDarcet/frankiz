@@ -21,9 +21,12 @@
 	Affichage de la liste des binets ayant un site web.
 
 	$Log$
+	Revision 1.4  2005/01/02 10:50:25  pico
+	Passage de certaines pages en visibles de l'intérieur (non loggué)
+
 	Revision 1.3  2004/12/16 12:52:57  pico
 	Passage des paramètres lors d'un login
-
+	
 	Revision 1.2  2004/12/15 01:31:29  schmurtz
 	bugs
 	
@@ -76,7 +79,7 @@ require BASE_LOCAL."/include/page_header.inc.php";
 <page id="binets" titre="Frankiz : Binets">
 <?php
 	$auth = "" ;
-	if(!$_SESSION['user']->est_authentifie(AUTH_MINIMUM)) $auth = " AND exterieur=1 " ;
+	if(!$_SESSION['user']->est_authentifie(AUTH_INTERNE)) $auth = " AND exterieur=1 " ;
 
 	$categorie_precedente = -1;
 	$DB_trombino->query("SELECT binet_id,nom,description,http,b.catego_id,categorie ".

@@ -21,13 +21,16 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.28  2005/01/02 10:50:25  pico
+	Passage de certaines pages en visibles de l'intérieur (non loggué)
+
 	Revision 1.27  2004/12/16 23:00:12  schmurtz
 	Suppression du lien Se deconnecter si l'utilisateur est loguÃ© par cookie.
 	Ca evite de le faire sans le vouloir et de devoir remettre le cookie.
-
+	
 	Pour rester coherent, se deloguer quand on est authentifie par mot de passe
 	et que le cookie est active = revenir a une authentification faible par cookie.
-
+	
 	Revision 1.26  2004/12/15 02:05:30  schmurtz
 	Faut mettre vocabulaire a la fin
 	
@@ -122,7 +125,7 @@
 	<lien id="faq" titre="FAQ" url="faq.php" key="f"/>
 	<lien id="xshare" titre="XShare" url="xshare.php" key="x"/>
 	<lien id="binets"  titre="Binets" url="binets.php" key="b"/>
-	<?php if(est_authentifie(AUTH_MINIMUM)){ ?>
+	<?php if(est_authentifie(AUTH_INTERNE)){ ?>
 		<lien id="trombino" titre="Trombino" url="trombino.php" key="t"/>
 	<?php } ?>
 	<lien id="meteo" titre="Météo" url="meteo.php" key="m"/>
