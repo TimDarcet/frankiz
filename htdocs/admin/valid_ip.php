@@ -23,8 +23,8 @@
 	ou refuse la demande ici.
 	
 	$Log$
-	Revision 1.23  2004/12/17 14:26:20  pico
-	Pas d'action pour les listes non sélectionnables
+	Revision 1.24  2004/12/17 14:34:18  pico
+	J'avais fait de la merde...
 
 	Revision 1.22  2004/12/16 13:00:41  pico
 	INNER en LEFT

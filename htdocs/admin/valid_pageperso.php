@@ -23,8 +23,8 @@
 	ou refuse la demande ici.
 	
 	$Log$
-	Revision 1.8  2004/12/17 14:26:20  pico
-	Pas d'action pour les listes non sélectionnables
+	Revision 1.9  2004/12/17 14:34:18  pico
+	J'avais fait de la merde...
 
 	Revision 1.7  2004/12/16 13:00:41  pico
 	INNER en LEFT
@@ -128,7 +128,7 @@ $DB_valid->query("UNLOCK TABLES");
 ?>
 <note>Si tu refuses une demande, met un commentaire pour que la personne comprenne pourquoi le BR ne veux pas valider sa demande</note>
 <h2>Liste des personnes demandant une entrée sur la page des sites élèves</h2>
-	<liste id="liste" selectionnable="non">
+	<liste id="liste" selectionnable="non" action="admin/valid_pageperso.php">
 		<entete id="eleve" titre="Élève"/>
 		<entete id="url" titre="Url"/>
 <?

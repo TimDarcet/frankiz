@@ -21,8 +21,8 @@
 	Modif du vocabulaire
 	
 	$Log$
-	Revision 1.2  2004/12/17 14:26:20  pico
-	Pas d'action pour les listes non sélectionnables
+	Revision 1.3  2004/12/17 14:34:18  pico
+	J'avais fait de la merde...
 
 	Revision 1.1  2004/12/15 23:40:35  kikx
 	Pour gerer les mots de vocabulaires
@@ -65,7 +65,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="admin_vocabulaire" titre="Frankiz : Modifier le Vocabulaire">
 
 <h2>Modification du vocabulaire</h2>
-	<liste id="liste_voc" selectionnable="non">
+	<liste id="liste_voc" selectionnable="non" action="admin/vocabulaire.php">
 		<entete id="mot" titre="Expression"/>
 		<entete id="descr" titre="Description"/>
 <?
