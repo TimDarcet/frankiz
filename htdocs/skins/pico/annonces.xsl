@@ -26,35 +26,28 @@
 	</xsl:if>
 </xsl:if>
 <xsl:if test="$sommaire='trie'">
+	<div class="fkz_annonces">
 	<xsl:if test="last() != 0">
 		<xsl:if test="count(annonce[@categorie='important']) != 0">
 			<div class="fkz_sommaire_titre">
 			       <span class="fkz_annonces_important"/> Important
 			</div>
-			<div class="fkz_module">
 			<xsl:apply-templates select="annonce[@categorie='important']" mode="sommaire"/>
-			</div>
 		</xsl:if>
 		<xsl:if test="count(annonce[@categorie='nouveau']) != 0">
 			<div class="fkz_sommaire_titre"><span class="fkz_annonces_nouveau"/> Nouvelles Fraîches</div>
-			<div class="fkz_module">
 			<xsl:apply-templates select="annonce[@categorie='nouveau']" mode="sommaire"/>
-			</div>
 		</xsl:if>
 		<xsl:if test="count(annonce[@categorie='vieux']) != 0">
 			<div class="fkz_sommaire_titre"><span class="fkz_annonces_vieux"/> Demain c'est fini</div>
-			<div class="fkz_module">
 			<xsl:apply-templates select="annonce[@categorie='vieux']" mode="sommaire"/>
-			</div>
 		</xsl:if>
 		<xsl:if test="count(annonce[@categorie='reste']) != 0">
 			<div class="fkz_sommaire_titre"><span class="fkz_annonces_reste"/> En attendant...</div>
-			<div class="fkz_module">
 			<xsl:apply-templates select="annonce[@categorie='reste']" mode="sommaire"/>
-			</div>
 		</xsl:if>
-		<br/>
 	</xsl:if>
+	</div><br />
 </xsl:if>
 </xsl:template>
 
@@ -92,7 +85,7 @@
 <xsl:template match="annonce" mode="sommaire">
 <div class="fkz_sommaire">
        <a> <xsl:attribute name="href">
-       <xsl:text>#</xsl:text> 
+       <xsl:text>annonces.php#</xsl:text> 
        <xsl:value-of select="@id"/>
        </xsl:attribute>
        	<xsl:value-of select="@titre"/>

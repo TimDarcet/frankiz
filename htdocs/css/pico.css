@@ -96,7 +96,6 @@ a:hover {
     font-size: 9pt;
     text-align: left;
     max-width: 100%; 
-    border: 1 solid #888888;
     background-color: #ffeaab;
 }
 
@@ -106,10 +105,8 @@ a:hover {
 	font-weight: bold;
 	text-align: center;
 	max-width: 100%; 
-	border-top: 1px solid #888888;
-	border-bottom: 1px solid #888888;
-	border-right: 1px solid #888888;
-	border-left: 1px solid #888888;
+	margin: 0;
+	padding: 0;
 }
 
 .fkz_annonces {
