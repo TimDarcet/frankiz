@@ -30,12 +30,12 @@
 
 <xsl:template match="noeud">
 	<li>
-		<!--<xsl:choose><xsl:when test="count(noeud|feuille)">
+		<xsl:choose><xsl:when test="count(noeud|feuille)">
 			<xsl:attribute name="class">noeud_ouvert</xsl:attribute>
 		</xsl:when><xsl:otherwise>
 			<xsl:attribute name="class">noeud_ferme</xsl:attribute>
 		</xsl:otherwise></xsl:choose>
-		-->
+		
 		<xsl:choose><xsl:when test="boolean(@lien)">
 			<a><xsl:attribute name="href"><xsl:value-of select="@lien"/></xsl:attribute>
 				<xsl:value-of select="@titre"/>
@@ -57,7 +57,7 @@
 </xsl:template>
 
 <xsl:template match="feuille">
-	<li>
+	<li class="feuille">
 		<xsl:choose>
 		<xsl:when test="boolean(@lien)">
 			<a><xsl:attribute name="href"><xsl:value-of select="@lien"/></xsl:attribute>
