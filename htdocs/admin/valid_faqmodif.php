@@ -22,9 +22,12 @@
 	
 
 	$Log$
+	Revision 1.5  2004/12/14 23:11:11  kikx
+	Oups /.me boulet
+
 	Revision 1.4  2004/12/14 23:09:52  kikx
 	Pour avoir qd meme la page modifié
-
+	
 	Revision 1.3  2004/12/14 23:06:06  schmurtz
 	Ajout du support zonetext grand pour les faqs
 	
@@ -177,7 +180,7 @@ $DB_valid->query("UNLOCK TABLES");
 						$wiki.= $ligne;
 					}
 					
-					print(wikiVersXML($faq_modif) ;
+					print(wikiVersXML($faq_modif)) ;
 					print(diff_to_xml($wiki,$faq_modif));
 						
 					fclose($texte);
