@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.44  2005/01/31 15:28:40  alban
+	Un petit message après le renvoi vers wiki pour les activites
+
 	Revision 1.43  2005/01/27 17:27:50  pico
 	/me vérifiera ses parenthèses la prochaine fois
-
+	
 	Revision 1.42  2005/01/27 15:23:17  pico
 	La boucle locale est considérée comme interne
 	Tests de photos normalement plus cools.
@@ -288,7 +291,8 @@ if (isset($_POST['valid'])) {
 
 		<note>
 			Le texte de l'annonce utilise le format wiki rappelé en bas de la page et décrit dans l'<lien url="helpwiki.php" titre="aide wiki"/><br/>
-			Pour toute remarque particulière, envoyer un mail à <lien url="mailto:web@frankiz.polytechnique.fr" titre="web@frankiz"/>
+			Pour toute remarque particulière, envoyer un mail à <lien url="mailto:web@frankiz.polytechnique.fr" titre="web@frankiz"/><br/><br/>
+         Il est rappelé qu'une annonce n'est pas une activité et que si l'annonce concerne une activité, nous ne la validerons que si elle est accompagnée d'une proposition d'activité et si l'activité a lieu dans plus de quatres jours (une semaine c'est mieux).
 		</note>
 		<zonetext id="text" titre="Le texte" type="grand"><? if (isset($_POST['text'])) echo $_POST['text'];?></zonetext>
 
