@@ -1,1 +1,1 @@
-C'est frais, mais c'est pas grave. (non compatible IE, en cours)
+C'est frais, mais c'est pas grave. (compatible IE6 & FireFox)
