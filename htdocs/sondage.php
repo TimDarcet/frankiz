@@ -21,10 +21,13 @@
 	affichage d'un sondage
 
 	$Log$
+	Revision 1.9  2005/01/25 20:23:12  pico
+	nettoyage
+
 	Revision 1.8  2005/01/25 20:16:20  pico
 	Quand on a voté, on voit le nombre de votants
 	Cela fait patienter le gars qui soumet le sondage, et lui fait poster une annonce au pire si personne n'a voté.
-
+	
 	Revision 1.7  2004/12/16 16:04:15  kikx
 	Pour eviter d'avoir des erreurs php si le mec met n'importe quoi comme sondage ou s'il met pas de sondage à previsualiser ...
 	
@@ -117,7 +120,7 @@ if (!isset($_REQUEST['id'])) {
 	<?
 	$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_REQUEST['id']}'");
 	$nombre_votants = $DB_web->num_rows() ;
-	echo "<note>== $nombre_votants personnes ont répondu à ce sondage</note>" ;
+	echo "<note>$nombre_votants personnes ont répondu à ce sondage</note>" ;
 	}
 
 	// Si la personne a valider on stock son vote ...
