@@ -26,7 +26,7 @@
 <xsl:template match="module[@id='liens_contacts']">
  
   <div class="fkz_module" id='mod_contacts'>
-  <div class="fkz_titre"><span id="contacts_logo"><span id="contacts">Contribuer</span></span></div>
+  <div class="fkz_titre"><span id="contacts_logo"><xsl:text> </xsl:text></span><span id="contacts">Contribuer</span></div>
    <div class="fkz_module_corps">
     <ul class="fkz_contact">
     <xsl:for-each select="lien">
@@ -47,7 +47,7 @@
 
 <xsl:template match="module[@id='liens_ecole']">
 	<div class="fkz_module" id='mod_liens_ecole'>
-		<div class="fkz_titre"><span id="liens_ecole_logo"><span id="liens_ecole">Liens Utiles</span></span></div>
+		<div class="fkz_titre"><span id="liens_ecole_logo"><xsl:text> </xsl:text></span><span id="liens_ecole">Liens Utiles</span></div>
 		<div class="fkz_module_corps">
 			<ul class="fkz_liens">
 				<xsl:for-each select="lien">
@@ -69,7 +69,7 @@
 
 <xsl:template match="module[@id='liens_navigation']">
 	 <div class="module" id='mod_liens_nav'>
-	 	<div class="fkz_titre"><span id="navigation_logo"><span id="navigation">Navigation dans le site</span></span></div>
+	 	<div class="fkz_titre"><span id="navigation_logo"><xsl:text> </xsl:text></span><span id="navigation">Navigation dans le site</span></div>
 		<div class="fkz_module_corps">
 			<ul class="fkz_liens_nav">
 				<xsl:for-each select="lien">
@@ -100,7 +100,7 @@
 
 <xsl:template match="module[@id='liens_perso']">
 	 <div class="module" id='mod_liens_perso'>
-	 	<div class="fkz_titre"><span id="perso_logo"><span id="perso">Liens Perso</span></span></div>
+	 	<div class="fkz_titre"><span id="perso_logo"><xsl:text> </xsl:text></span><span id="perso">Liens Perso</span></div>
 		<div class="fkz_module_corps">
 			<ul class="fkz_liens">
 				<xsl:for-each select="lien">
