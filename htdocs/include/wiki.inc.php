@@ -21,9 +21,12 @@
 	Moteur Wiki (TipiWiki)
 	
 	$Log$
+	Revision 1.14  2004/12/01 17:38:08  pico
+	corrections
+
 	Revision 1.13  2004/12/01 17:20:28  pico
 	Un oubli, excusez moi
-
+	
 	Revision 1.12  2004/12/01 17:06:55  pico
 	correction listes html
 	
@@ -84,16 +87,6 @@ function wikiVersXML($filtered,$enhtml=false) {
 	// plain urls in the text
 	$filtered = preg_replace("/(?<![\"\[])$regexURL(?!\")/",$enhtml?"<a href=\"\\0\">\\0</a>":"<lien url=\"\\0\">\\0</lien>",$filtered);
 	
-	// Headlines <h1><h2><h3>
-	$filtered = preg_replace("/\n===([^=].*[^=])===[\t  ]*\n/","</p>\n<h2>\\1</h2>\n<p>",$filtered);
-	$filtered = preg_replace("/\n==([^=].*[^=])==[\t  ]*\n/","</p>\n<h3>\\1</h3>\n<p>",$filtered);
-	$filtered = preg_replace("/\n=([^=].*[^=])=[\t  ]*\n/","</p>\n<h4>\\1</h4>\n<p>",$filtered);
-
-	// text decorations (bold,italic,underline,boxed)
-	$filtered = preg_replace("/\*\*(.+)\*\*/U","<strong>\\1</strong>", $filtered);
-	$filtered = preg_replace("/&apos;&apos;(.+)&apos;&apos;/U","<em>\\1</em>", $filtered);
-	$filtered = preg_replace("/\|(.+)\|/U","<code>\\1</code>", $filtered);
-
 	// lists <ul>
 	if(!$enhtml){
 	// Listes à 2 niveau
@@ -105,17 +98,29 @@ function wikiVersXML($filtered,$enhtml=false) {
 	$filtered = preg_replace("/(?<=[\n>])\* (.+)\n/","<feuille>$1</feuille>",$filtered);
 	// Structure d'arbre
 	$filtered = preg_replace("(\n<feuille)","\n</p><arbre><feuille",$filtered);
-	$filtered = preg_replace("(</feuille>\n)","</feuille></arbre><p>",$filtered);
+	$filtered = preg_replace("(</feuille>\n)","</feuille></arbre><p>\n",$filtered);
 	$filtered = preg_replace("(\n<noeud)","\n</p><arbre><noeud",$filtered);
-	$filtered = preg_replace("(</noeud>\n)","</noeud></arbre><p>",$filtered);
+	$filtered = preg_replace("(</noeud>\n)","</noeud></arbre><p>\n",$filtered);
 	}else{
 	// Listes
 	$filtered = preg_replace("/(?<=[\n>])\* \*(.+)\n/","<li><ul><li>\\1</li></ul></li>",$filtered); //Liste 2 eme niveau
 	$filtered = preg_replace("/(?<=[\n>])\* (.+)\n/","<li>\\1</li>",$filtered); // Liste 1er niveau
 	$filtered = preg_replace("(</ul></li><li><ul>)","",$filtered);  
 	$filtered = preg_replace("(</li><li><ul>)","<ul>",$filtered);
-	$filtered = preg_replace("/<li>(.+)\<\/li>/","</p><ul>\\0</ul><p>",$filtered);
+	$filtered = preg_replace("/<li>(.+)\<\/li>/","</p><ul>\\0</ul><p>\n",$filtered);
 	}
+	
+	// Headlines <h1><h2><h3>
+	$filtered = preg_replace("/\n===([^=].*[^=])===[\t  ]*\n/","</p>\n<h2>\\1</h2>\n<p>\n",$filtered);
+	$filtered = preg_replace("/\n==([^=].*[^=])==[\t  ]*\n/","</p>\n<h3>\\1</h3>\n<p>\n",$filtered);
+	$filtered = preg_replace("/\n=([^=].*[^=])=[\t  ]*\n/","</p>\n<h4>\\1</h4>\n<p>\n",$filtered);
+
+	// text decorations (bold,italic,underline,boxed)
+	$filtered = preg_replace("/\*\*(.+)\*\*/U","<strong>\\1</strong>", $filtered);
+	$filtered = preg_replace("/&apos;&apos;(.+)&apos;&apos;/U","<em>\\1</em>", $filtered);
+	$filtered = preg_replace("/\|(.+)\|/U","<code>\\1</code>", $filtered);
+
+
 	
 	// strip leading and ending line breaks
 	$filtered = preg_replace("/^(\n+)/","",$filtered); 
