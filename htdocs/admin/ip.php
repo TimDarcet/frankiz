@@ -22,9 +22,12 @@
 	Permet aussi de supprimer des IPs.
 	
 	$Log$
+	Revision 1.20  2004/10/25 17:19:24  kikx
+	Parsage de la page de la DSI pour trouver les mac associer aux prises
+
 	Revision 1.19  2004/10/25 15:36:47  kikx
 	Recherhce par login
-
+	
 	Revision 1.18  2004/10/25 14:05:09  kikx
 	Correction d'un bug sur la page
 	
@@ -49,6 +52,9 @@ require_once "../include/global.inc.php";
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
 	rediriger_vers("/admin/");
+	
+$message = "" ;
+$blabla = "" ;
 
 // Gestion des détails d'une personne
  foreach ($_POST AS $keys => $val){
@@ -57,6 +63,29 @@ if(!verifie_permission('admin'))
 	if ($temp[0] == "detail")
 		rediriger_vers("/trombino/?chercher=1&loginpoly=$temp[1]");
 }
+
+function mac($id_prise){
+
+	/*your proxy server address*/
+	$proxy = "kuzh.polytechnique.fr";
+	/*your proxy server port*/
+	$port = 8080;
+	/*the url you want to connect to*/
+	$url = "http://intranet.polytechnique.fr/SYSRES/SMAC/search.php?id_prise=$id_prise";
+	$fp = fsockopen($proxy, $port);
+	fputs($fp, "GET $url HTTP/1.0\r\nHost: $proxy\r\n\r\n");
+	$line = "" ;
+	while(!feof($fp)){
+  		$line = fgets($fp, 4000);
+		$line = explode("-",$line) ;
+		if (count($line)==6) {
+			fclose($fp);
+			return ($line[0].":".$line[1].":".$line[2].":".$line[3].":".$line[4].":".$line[5]) ;
+		}
+	}
+}
+
+
 
 // Génération de la page
 //===============
@@ -89,6 +118,8 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<bouton titre="Recherche" id="recherche"/>
 	</formulaire>
 <?
+echo $message ;
+
 if (isset($_POST['recherche']) ) {
 
 	$DB_admin->query("SELECT e.login, e.promo, p.prise_id, p.piece_id, p.ip,p.type FROM prises as p "
@@ -101,6 +132,7 @@ if (isset($_POST['recherche']) ) {
 		<entete id="piece" titre="Piece"/>
 		<entete id="prise" titre="Prise"/>
 		<entete id="ip" titre="IP"/>
+		<entete id="mac" titre="Mac"/>
 <?php
 		
 		$temp_piece = "" ;
@@ -118,6 +150,9 @@ if (isset($_POST['recherche']) ) {
 				echo "\t\t\t<colonne id=\"piece\">-</colonne>\n";
 				echo "\t\t\t<colonne id=\"prise\">-</colonne>\n";
 				echo "\t\t\t<colonne id=\"ip\"><p>$ip_theorique </p>(secondaire)</colonne>\n";
+				echo "\t\t\t<colonne id=\"mac\">-</colonne>\n";
+				
+//				$texte_brut=file_get_contents("http://intranet.polytechnique.fr/SYSRES/SMAC/search.php?id_prise=$id_prise");
 			} else {
 			
 			// Si l'ip est l'ip par défaut sur la prise
@@ -136,7 +171,10 @@ if (isset($_POST['recherche']) ) {
 				echo "\t\t\t<colonne id=\"piece\">$id_piece</colonne>\n";
 				echo "\t\t\t<colonne id=\"prise\">$id_prise</colonne>\n";
 				echo "\t\t\t<colonne id=\"ip\">$ip_theorique</colonne>\n";
+				echo "\t\t\t<colonne id=\"mac\">".mac($id_prise)."</colonne>\n";
 			}
+			
+
 			// On sauve temporaitement la piece
 			$temp_piece = $id_piece ;
 			$temp_prise = $id_prise ;
@@ -147,6 +185,7 @@ if (isset($_POST['recherche']) ) {
 ?>
 	</liste>
 <?
+
 }
 ?>
 
