@@ -3,10 +3,13 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.4  2004/10/14 19:59:37  pico
+	Correction de bug
+
 	Revision 1.3  2004/10/14 19:21:41  pico
 	- Affichage de la planification existante
 	- Possibilité de replanifier une QDJ
-
+	
 	Revision 1.2  2004/10/14 13:48:13  pico
 	Amélioration du comportement de la planification des qdj
 	- possibilité d'insérer une qdj et de décaler les autres
@@ -78,6 +81,7 @@ foreach ($_REQUEST AS $keys => $val){
 	if($temp[0]=='modif') {
 		$DB_web->query("SELECT question,reponse1,reponse2 FROM qdj WHERE qdj_id='{$temp[1]}'");
 		list($question,$reponse1,$reponse2) = $DB_web->next_row(); 
+		$id = $temp[1];
 ?>
 		<warning><p>Cette QDJ est déjà planifiée pour le <?echo $temp[2] ?></p></warning>
 		<module titre="QDJ">

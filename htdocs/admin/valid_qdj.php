@@ -3,11 +3,14 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.5  2004/10/14 19:59:37  pico
+	Correction de bug
+
 	Revision 1.4  2004/10/14 13:48:13  pico
 	Amélioration du comportement de la planification des qdj
 	- possibilité d'insérer une qdj et de décaler les autres
 	- ou remplacer la qdj déjà placée par la courante et remettre l'ancienne dans les qdj à planifier
-
+	
 	Revision 1.3  2004/10/13 22:14:32  pico
 	Premier jet de page pour affecter une date de publication aux qdj validées
 	
@@ -57,7 +60,7 @@ foreach ($_POST AS $keys => $val){
 		$contenu = "Merci de ta participation \n\n".
 			"Très BR-ement\n" .
 			"L'automate :)\n"  ;
-		couriel($eleve_id,"[Frankiz] Ta QDJ a été validé par le BR",$contenu);
+		couriel($eleve_id,"[Frankiz] Ta QDJ a été retenue par le BR",$contenu);
 			
 		$DB_web->query("INSERT INTO qdj SET question='{$_POST['question']}', reponse1='{$_POST['reponse1']}', reponse2='{$_POST['reponse2']}'");
 
@@ -75,7 +78,7 @@ foreach ($_POST AS $keys => $val){
 		$contenu = "Désolé \n\n".
 			"Très BR-ement\n" .
 			"L'automate :)\n"  ;
-		couriel($eleve_id,"[Frankiz] Ta QDJ n'a pas été validé par le BR",$contenu);
+		couriel($eleve_id,"[Frankiz] Ta QDJ n'a pas été retenue par le BR",$contenu);
 
 		$DB_valid->query("DELETE FROM valid_qdj WHERE qdj_id='{$temp[1]}'") ;
 	
