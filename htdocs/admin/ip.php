@@ -22,9 +22,12 @@
 	Permet aussi de supprimer des IPs.
 	
 	$Log$
+	Revision 1.27  2004/12/06 22:32:08  kikx
+	Juste pour eviter de timeouter
+
 	Revision 1.26  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-
+	
 	Revision 1.25  2004/11/24 17:29:30  kikx
 	Permet de ne pas faire 1000 requete sur le serveur de la DSI et de plus permet de rendre la page fonctionnel
 	
@@ -64,6 +67,8 @@
 */
 
 // En-tetes
+set_time_limit(0) ;
+
 require_once "../include/global.inc.php";
 
 // Vérification des droits
@@ -145,7 +150,7 @@ if (isset($_POST['recherche']) ) {
 	$toutes_macs = toutes_macs() ;
 
 	$DB_admin->query("SELECT e.login, e.promo, p.prise_id, p.piece_id, p.ip,p.type FROM prises as p "
-					."LEFT JOIN trombino.eleves as e $on  $where ORDER BY p.piece_id ASC");
+					."LEFT JOIN trombino.eleves as e $on $where ORDER BY p.piece_id ASC");
 ?>
 
 	<liste id="liste_ip" selectionnable="non" action="admin/ip.php">
