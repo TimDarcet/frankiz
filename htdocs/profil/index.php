@@ -18,15 +18,15 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Page permettant de modifier son profil dans le trombino et quelques paramètres
-	pour le site web.
-	
-	TODO modification de sa photo et de ses binets.
+	Page permettant de modifier son profil 
 	
 	$Log$
+	Revision 1.2  2004/11/27 17:10:37  pico
+	Hum.. commentaires qui vont pas bien
+
 	Revision 1.1  2004/11/27 17:09:02  pico
 	Page de choix des prefs à modifier
-
+	
 	
 */
 
