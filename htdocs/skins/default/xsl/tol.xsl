@@ -21,27 +21,25 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:template match="module[@id='activites']">
-    <xsl:if test="count(element) !=0">
-	<dl id="activités" class="cadrecote">
+<xsl:template match="module[@id='lien_tol']">
+	<dl id="lien_tol" class="cadrecote">
 		<dt class="top"><xsl:text> </xsl:text></dt>
 		<dd class="milieu">
-			<p class="titre">Activités</p>
-				<xsl:for-each select="annonce">
-					<xsl:if test="@titre = 'brc'">
-						<xsl:if test="current()=0">
-							<b><xsl:text>Ce soir, au BRC</xsl:text></b><br/>
-						</xsl:if>
-						<em><xsl:value-of select="titre"/>
-						<xsl:text> </xsl:text>à<xsl:text> </xsl:text>
-						<xsl:value-of select="heure"/></em><br/>
-					</xsl:if>
-					<xsl:apply-templates/>
-				</xsl:for-each>
+			<p class="titre">TOL</p>
+			<form enctype="multipart/form-data" method="post">
+				<xsl:attribute name="action"><xsl:value-of select="formulaire/@action"/></xsl:attribute>
+				<input size="12">
+					<xsl:attribute name="name"><xsl:value-of select="formulaire/champ/@id"/></xsl:attribute>
+					<xsl:attribute name="value"><xsl:value-of select="formulaire/champ/@valeur"/></xsl:attribute>
+				</input>
+ 				<input type="submit">
+					<xsl:attribute name="name"><xsl:value-of select="formulaire/bouton/@id"/></xsl:attribute>
+					<xsl:attribute name="value">Chercher</xsl:attribute>
+				</input>	
+			</form>
 		</dd>
 		<dd class="bas"><xsl:text> </xsl:text></dd>
 	</dl>
-  </xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>

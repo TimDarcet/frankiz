@@ -22,15 +22,15 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <!-- Meteo de l'X -->
 
-<xsl:template match="module/meteo">
-	<dl class="cadrecote">
+<xsl:template match="module[@id='meteo']">
+	<dl id="meteo" class="cadrecote">
 		<dt class="top"><xsl:text> </xsl:text></dt>
 		<dd class="milieu">
-			<p class="titre">Météo</p>
+			<p class="titre"><xsl:value-of select="@titre"/></p>
 			<p class="image">
-				<strong><xsl:value-of select="now/temperature"/>°C</strong><br />
+				<strong><xsl:value-of select="meteo/now/temperature"/>°C</strong><br />
 				<img alt="meteo" width="64" height="64">
-					<xsl:attribute name="src">skins/default/xsl/meteo/<xsl:value-of select="now/image"/>.gif</xsl:attribute>
+					<xsl:attribute name="src">skins/default/xsl/meteo/<xsl:value-of select="meteo/now/image"/>.gif</xsl:attribute>
 				</img>
 			</p>
 		</dd>
@@ -39,7 +39,7 @@
 </xsl:template>
 
 <xsl:template match="page/meteo">
-	<dl class="boite">
+	<dl id="page_meteo" class="boite">
 		<dt class="titre">
 			<span class="droitehaut"><xsl:text> </xsl:text></span>
 			<span>Météo sur le Platâl aujourd'hui :</span>	

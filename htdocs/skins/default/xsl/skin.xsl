@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.4  2004/12/09 14:00:07  psycow
+	Bonne modification et resolutions des principaux problemes de versions... et oui je suis un boulet qui ecrase les bons fichier et mets les mauvais en commit...
+
 	Revision 1.3  2004/11/24 23:38:38  schmurtz
 	Gestion des skins perso + corrections dans la skin default
-
+	
 	Revision 1.2  2004/11/24 21:14:57  psycow
 	Commit des modif faites sous windows et reorganisation de skin
 	
@@ -68,9 +71,9 @@
 <xsl:include href="binets.xsl"/>
 <xsl:include href="voca.xsl"/>
 <xsl:include href="stats.xsl"/>
-<!--
 <xsl:include href="activites.xsl"/>
--->
+<xsl:include href="tol.xsl"/>
+
 <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"/>
@@ -99,9 +102,12 @@
 			</div>
 		
 			<div id="gauche">
-				<xsl:apply-templates select="/frankiz/module[@id='liens_navigation']" />
+				<xsl:apply-templates select="module[@id='liens_navigation']" />
 				<xsl:apply-templates select="module[@id='tour_kawa']"/>
 				<xsl:apply-templates select="module[@id='meteo']"/>
+				<xsl:apply-templates select="module[@id='liens_perso']"/>
+				<xsl:apply-templates select="module[@id='activites']"/>
+				<xsl:apply-templates select="module[@id='lien_tol']"/>
 			</div>
 
 			
@@ -111,25 +117,14 @@
 				<xsl:apply-templates select="module[@id='liens_contacts']"/>
 				<xsl:apply-templates select="module[@id='liens_ecole']"/>
 				<xsl:apply-templates select="module[@id='stats']"/>
+				<xsl:apply-templates select="module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id!='activites' and @id!='liens_navigation' and @id!='liens_perso' and @id!='anniversaires' and @id!='liste_css' and @id!='lien_tol']"/>
 			</div><!--fin #droite -->
 			
 			<div id="centre">
-				<xsl:if test="page/@id='accueil'">
-					<xsl:apply-templates select="module[@id='anniversaires']"/>
-					<xsl:if test="boolean(page//annonce)">
-						<xsl:apply-templates select="page[@id='accueil']" mode="sommaire"/>
-						<div class="hr"><hr /></div>
-						<xsl:apply-templates select="page[@id='accueil']" mode="complet"/>
-					</xsl:if>
-					<xsl:if test="not(boolean(page//annonce))">
-						<xsl:apply-templates select="page" mode="autre"/>
-					</xsl:if>
-				</xsl:if>
+				<xsl:apply-templates select="page[@id='annonces']" mode="sommaire"/>
+				<xsl:apply-templates select="page[@id='annonces']" mode="complet"/>
 				<xsl:apply-templates select="page[@id='trombino']"/>
-				<xsl:apply-templates select="page[@id='meteo']"/>
-				<xsl:apply-templates select="page[@id='binets']"/>
-				<xsl:apply-templates select="page[@id='vocabulaire']"/>
-				<xsl:apply-templates select="page[@id!='accueil' and @id!='trombino' and @id!='meteo' and @id!='binets' and @id!='vocabulaire']"/>
+				<xsl:apply-templates select="page[@id!='annonces' and @id!='trombino']"/>
 			</div><!--fin #centre -->
 			
 			<div id="footer">
@@ -176,6 +171,19 @@
 		</dd>
 		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>
+</xsl:template>
+
+<xsl:template match="module">
+		<dl id="autres" class="boite">
+			<dt class="titre">
+				<span class="droitehaut"><xsl:text> </xsl:text></span>
+				<span><xsl:value-of select="@titre"/></span>	
+			</dt>
+			<dd  class="contenu">
+				<xsl:apply-templates/>
+			</dd>
+			<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
+		</dl>
 </xsl:template>
 
 </xsl:stylesheet>

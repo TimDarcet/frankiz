@@ -169,8 +169,6 @@ dl.boite dt.titre span {
 	line-height: 25px ;
 	font-size: 1.4em ;
 	color: #FFA200 ;
-	position:relative;
-	top:-0.7em;
 }
 
 dl.boite dd.contenu {
@@ -709,57 +707,32 @@ form {
 }
 
 /* -- formulaire simple (trombi,skin,etc...) -- */
-dl.formulaire {
-	background-color : #eee;	
+
+div.formulaire{
+	display:block;
 }
 
-dt.entete {
-	background-color : #ccc;
-	text-align:center;
-	font-weight:bold;
-	font-size:1.3em;
+div.formulaire span.droite{
+	float:right;
+	width:78%;
+	text-align: left;
 }
 
-dd.row {
-	padding:5px 0px 10px 0px;
-}
-
-dd.row span.gauche {
+div.formulaire span.gauche{
 	float:left;
-	width:200px;
+	width:20%;
+	padding-left:5px;
 }
-dd.row span.droite {
-}
-
-dd.pair {
-	background-color : #eee;
-}
-dd.impair {
-	background-color : #ddd;
+div.formulaire div{
+	clear:both;
 }
 
-dd.boutons {
-	text-align:center;
-	background-color : #eee;
+div.formulaire span.boutons{
+	display:block;
+	padding-left: 22%;
+	padding-top:10px;
 }
 
-form div {
-	width:100%;
-}
-
-form div div.label {
-	width:190px;
-}
-
-form div.element {
-	width:70%;
-	margin-left:200px;
-	margin-top:-1em;
-}
-
-form div.element img{
-	margin-top:1em;	
-}
 
 /* -- formulaires plus chiants, basés sur les listes (gestion par tableau) -- */
 
@@ -822,4 +795,9 @@ div.hr {
 }
 div.hr hr {
 	display:none;
+}
+
+
+dl.boite h3, dl.boite h2 {
+	margin:5px;
 }

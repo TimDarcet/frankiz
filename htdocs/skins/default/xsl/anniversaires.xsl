@@ -23,7 +23,7 @@
 
 <xsl:template match="module[@id='anniversaires']">
 	<xsl:if test="count(eleve) != 0">
-		<dl class="anniversaires">
+		<dl id="anniversaires" class="boite">
 			<dt class="titre">
 				<span class="droitehaut"><xsl:text> </xsl:text></span>
 				<span>Joyeux anniversaire: </span>	

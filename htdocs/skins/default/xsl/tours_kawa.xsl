@@ -23,7 +23,7 @@
 
 <xsl:template match="module[@id='tour_kawa']">
 	<xsl:if test="count(liste/element) !=0">
-		<dl class="cadrecote">
+		<dl id="tour_kawa" class="cadrecote">
 			<dt class="top"><xsl:text> </xsl:text></dt>
 			<dd class="milieu">
 				<p class="titre">Tour Kawa</p>

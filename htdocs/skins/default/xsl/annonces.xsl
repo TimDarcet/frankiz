@@ -21,17 +21,23 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:template match="page[@id='accueil']" mode="complet">
-  <xsl:if test="last() != 0">
-	<xsl:apply-templates select="annonce[@categorie='important']" mode="complet"/>
-	<xsl:apply-templates select="annonce[@categorie='nouveau']" mode="complet"/>
-	<xsl:apply-templates select="annonce[@categorie='vieux']" mode="complet"/>
-	<xsl:apply-templates select="annonce[@categorie='reste']" mode="complet"/>  
-  </xsl:if>
+<xsl:template match="page[@id='annonces']" mode="complet">
+	<xsl:choose>
+		<xsl:when test="count(annonce)">
+				<xsl:apply-templates select="annonce[@categorie='important']" mode="complet"/>
+				<xsl:apply-templates select="annonce[@categorie='nouveau']" mode="complet"/>
+				<xsl:apply-templates select="annonce[@categorie='vieux']" mode="complet"/>
+				<xsl:apply-templates select="annonce[@categorie='reste']" mode="complet"/>  
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:apply-templates/>
+		</xsl:otherwise>
+	</xsl:choose>
 </xsl:template>
 
 
-<xsl:template match="page[@id='accueil']" mode="sommaire">
+<xsl:template match="page[@id='annonces']" mode="sommaire">
+	<xsl:apply-templates select="/frankiz/module[@id='anniversaires']"/>
 	<dl class="boite">
 		<dt class="titre">
 			<span class="droitehaut"><xsl:text> </xsl:text></span>
@@ -76,7 +82,7 @@
 			<xsl:apply-templates select="image"/>
 		</p>
 		<p class="news">
-		      <xsl:apply-templates select="html"/>
+		      <xsl:apply-templates/>
 		</p>
 		<p class="signature">
 			<xsl:choose>

@@ -21,9 +21,12 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.2  2004/12/09 14:00:07  psycow
+	Bonne modification et resolutions des principaux problemes de versions... et oui je suis un boulet qui ecrase les bons fichier et mets les mauvais en commit...
+
 	Revision 1.1  2004/11/24 20:26:40  schmurtz
 	Reorganisation des skins (affichage melange skin/css + depacement des css)
-
+	
 	Revision 1.6  2004/11/23 23:32:22  schmurtz
 	oubli
 	
@@ -47,53 +50,44 @@
 
 <!-- Formulaires -->
 <xsl:template match="formulaire">
-	<!-- Affichage des informations importantes -->
-	<xsl:apply-templates select="commentaire|warning|note|notice"/>
-
-	<!-- le formulaire lui même, mis en page avec une table -->
+	<!-- la déco -->
 	<form enctype="multipart/form-data" method="post">
+			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
-		<dl class="formulaire">
-			<!-- le titre du formulaire -->
-			<dt class="entete">
-				<xsl:if test="boolean(@titre)">
-					<xsl:value-of select="@titre"/>
-				</xsl:if>
-			</dt>
+		<xsl:if test="boolean(@titre)">
+			<xsl:choose>
+				<xsl:when test="starts-with(@id,'mod_xnet_')">
+					<h2><span>Modification du mot de passe Xnet </span><span class="adresse_ip"><xsl:value-of select="substring-after(@titre,'Modification du mot de passe Xnet')"/></span></h2>
+				</xsl:when>
+				<xsl:otherwise>
+					<h2><span><xsl:value-of select="@titre"/></span></h2>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>
+		<div class="formulaire">
 			<!-- les options du formulaire -->
-			<xsl:for-each select="*[not (self::bouton or self::commentaire or self::warning or self::hidden)]">
-				<dd class="row">
-<!-- 					<span class="gauche"> 
-						<xsl:value-of select="@titre"/>
-					</span>
-					<span class="droite">
-						<xsl:apply-templates select="."/>
-					</span>-->
-					<div> 
-						<xsl:choose>
-							<xsl:when test="boolean(self::lien)">
-								<strong>Liens :</strong> 
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:if test="boolean(@titre)">
-									<div class="label"><xsl:value-of select="@titre"/> : </div>
-								</xsl:if>
-							</xsl:otherwise>
-						</xsl:choose>
-						<div class="element">
-							<xsl:apply-templates select="."/>
-						</div>
-					</div>
-				</dd>
+			<xsl:for-each select="*[name()!='bouton']">
+				<div>
+
+				<span class="droite">
+					<xsl:apply-templates select="."/>
+				</span>
+				<xsl:if test="boolean(@titre)">
+					<label class="gauche" >
+						<xsl:attribute name='for'><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
+						<xsl:value-of select="@titre"/> :
+					</label>
+				</xsl:if>
+				</div>
 			</xsl:for-each>
 			<!-- les boutons gérant les actions du formulaire -->
-			<dd class="boutons">
-				<xsl:apply-templates select="hidden"/>
+			<div>
+			<span class="boutons">
 				<xsl:apply-templates select="bouton"/>
-			</dd>
-		</dl>
+			</span>
+			</div>
+		</div>
 	</form>
-	<br/>
 </xsl:template>
 
 
