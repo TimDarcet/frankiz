@@ -7,9 +7,12 @@
 	- affichage des requètes mysql en commentaire dans
 	
 	$Log$
+	Revision 1.8  2004/09/17 11:00:07  schmurtz
+	Bug dans l'affichage des erreurs
+
 	Revision 1.7  2004/09/15 23:19:31  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-
+	
 	Revision 1.6  2004/09/15 21:42:08  schmurtz
 	Commentaires et ajout de la variable cvs "Log"
 	
@@ -75,8 +78,8 @@ function affiche_erreurs_php() {
 	if(AFFICHER_LES_ERREURS) {
 		foreach($_ERREURS_PHPMYSQL as $erreur)
 			echo "<p><b>{$erreur['errname']}</b> : {$erreur['errmsg']}"
-				. (empty($erreur['query']) ? " in query <b>\"{$erreur['query']}\"</b>" : "")
- 				. (empty($erreur['file']) ? " in <b>{$erreur['file']}</b> on line <b>{$erreur['line']}</b>" : "")
+				. (!empty($erreur['query']) ? " in query <b>\"{$erreur['query']}\"</b>" : "")
+ 				. (!empty($erreur['file']) ? " in <b>{$erreur['file']}</b> on line <b>{$erreur['line']}</b>" : "")
 				. "</p>\n";
 
 		foreach($_REQUETES_MYSQL as $requete)
