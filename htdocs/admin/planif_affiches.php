@@ -21,9 +21,13 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.2  2004/11/26 22:51:21  pico
+	Correction du SU dans les pages d'admin
+	Les utilisateurs avec le droit 'affiches' peuvent changer les dates des activités qu'ils ont postées, si celles ci ont été préalablement validées par le br
+
 	Revision 1.1  2004/11/26 22:28:58  pico
 	Ajout d'une page pour pouvoir modifier la date d'une activité ou la supprimer
-
+	
 	
 */
 	
@@ -31,7 +35,11 @@ require_once "../include/global.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-if(!verifie_permission('admin'))
+if(verifie_permission('admin'))
+	$user_id = '%';
+else if(verifie_permission('affiches'))
+	$user_id = $_SESSION['user']->uid;
+else
 	rediriger_vers("/admin/");
 
 
@@ -80,7 +88,7 @@ foreach ($_POST AS $keys => $val){
 	// Formulaire pour modifier la date de parution de la QDJ déjà planifiée
 	
 	if($temp[0]=='modif') {
-		$DB_web->query("SELECT affiche_id,titre,url,date FROM affiches WHERE affiche_id='{$temp[1]}'");
+		$DB_web->query("SELECT affiche_id,titre,url,date FROM affiches WHERE affiche_id='{$temp[1]}' AND eleve_id LIKE '$user_id'");
 		list($id,$titre,$url,$date) = $DB_web->next_row(); 
 		$id = $temp[1];
 ?>
@@ -118,7 +126,7 @@ $date = date("Y-m-d", time());
 ?>
 	<h2>Prévisions</h2>
 <?
-$DB_web->query("SELECT affiche_id,titre,url,date FROM affiches WHERE TO_DAYS(date)>=TO_DAYS(NOW())");
+$DB_web->query("SELECT affiche_id,titre,url,date FROM affiches WHERE TO_DAYS(date)>=TO_DAYS(NOW()) AND eleve_id LIKE '$user_id'");
 while(list($id,$titre,$url,$date) = $DB_web->next_row()){
 
 ?>

@@ -29,9 +29,13 @@
 	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
 	
 	$Log$
+	Revision 1.13  2004/11/26 22:51:21  pico
+	Correction du SU dans les pages d'admin
+	Les utilisateurs avec le droit 'affiches' peuvent changer les dates des activités qu'ils ont postées, si celles ci ont été préalablement validées par le br
+
 	Revision 1.12  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.11  2004/10/21 20:37:59  kikx
 	C'est moche mais c'est achement pratique
 	
@@ -163,7 +167,7 @@ if (isset($_POST['mod_compte_fkz'])) {
 // Modification de ses binets et des commentaires sur les binets  
 
 ?>
-	<formulaire id="user_su" titre="Se Logguer en tant que cet utilisateur" action="admin/user.php?id=<? echo $id?>">
+	<formulaire id="user_su" titre="Se Logguer en tant que cet utilisateur" action="admin/user.php?su=<? echo $id?>">
 		<bouton id='su' titre='SU'/>
 	</formulaire>
 <?
