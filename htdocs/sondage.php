@@ -21,9 +21,12 @@
 	affichage d'un sondage
 
 	$Log$
+	Revision 1.7  2004/12/16 16:04:15  kikx
+	Pour eviter d'avoir des erreurs php si le mec met n'importe quoi comme sondage ou s'il met pas de sondage à previsualiser ...
+
 	Revision 1.6  2004/12/16 13:00:41  pico
 	INNER en LEFT
-
+	
 	Revision 1.5  2004/12/16 12:52:57  pico
 	Passage des paramètres lors d'un login
 	
@@ -94,97 +97,105 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
 <page id="sondage" titre="Frankiz : Sondage">
-<?
-$a_vote="non" ;
-$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_REQUEST['id']}' AND eleve_id='".$_SESSION['user']->uid."'");
-if ($DB_web->num_rows()>=1) {
-	$a_vote = "oui" ;
-?>
-	<warning>Tu as déjà voté pour ce sondage...</warning>
-<?
-}
-// Si la personne a valider on stock son vote ...
-//=================================================================
 
-// La personne a t'elle cliqué sur le vouton de validation ?
-if (isset($_POST['valid'])) {
-	$DB_web->query("SELECT (TO_DAYS(perime) - TO_DAYS(NOW())) FROM sondage_question WHERE sondage_id='{$_REQUEST['id']}'");
-	// Y a t'il yn sondage qui existe sous cette id ?
-	if ($DB_web->num_rows()==1) {
-		list($delta) = $DB_web->next_row() ;
-		
-		// La date permet elle encore de voter ?
-		if ($delta >= 0) {
-			// Verifie que le mec a pas déja voté !
-			$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_REQUEST['id']}' AND eleve_id='".$_SESSION['user']->uid."'");
-			if ($DB_web->num_rows()==0) {
-				// Il a donc pas voté
-				//on le marque donc comme ayant voté
-				$DB_web->query("INSERT INTO sondage_votants SET sondage_id='{$_REQUEST['id']}', eleve_id='".$_SESSION['user']->uid."'");
-				$a_vote = "oui" ;
-				// On va lire les variables du sondage
-				foreach($_POST as $keys => $val) {
-					if ($keys != 'valid') {
-						// Il y a 2 cas car nous avons le cas des checkbox a traiter ...
-						if (count(explode("_",$keys))==2) {
-							$temp = explode("_",$keys) ;
-							$qnum = $temp[0] ;
-							$reponse = $temp[1] ;
-						} else {
-							$qnum = $keys ;
-							$reponse = $val ;
+<?
+if (!isset($_REQUEST['id'])) {
+	?>
+	<warning>Le sondage que tu demandes n'existes plus ou n'a jamais existé</warning>
+	<?
+} else {
+	$a_vote="non" ;
+	$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_REQUEST['id']}' AND eleve_id='".$_SESSION['user']->uid."'");
+	if ($DB_web->num_rows()>=1) {
+		$a_vote = "oui" ;
+	?>
+		<warning>Tu as déjà voté pour ce sondage...</warning>
+	<?
+	}
+
+	// Si la personne a valider on stock son vote ...
+	//=================================================================
+	
+	// La personne a t'elle cliqué sur le vouton de validation ?
+	if (isset($_POST['valid'])) {
+		$DB_web->query("SELECT (TO_DAYS(perime) - TO_DAYS(NOW())) FROM sondage_question WHERE sondage_id='{$_REQUEST['id']}'");
+		// Y a t'il yn sondage qui existe sous cette id ?
+		if ($DB_web->num_rows()==1) {
+			list($delta) = $DB_web->next_row() ;
+			
+			// La date permet elle encore de voter ?
+			if ($delta >= 0) {
+				// Verifie que le mec a pas déja voté !
+				$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_REQUEST['id']}' AND eleve_id='".$_SESSION['user']->uid."'");
+				if ($DB_web->num_rows()==0) {
+					// Il a donc pas voté
+					//on le marque donc comme ayant voté
+					$DB_web->query("INSERT INTO sondage_votants SET sondage_id='{$_REQUEST['id']}', eleve_id='".$_SESSION['user']->uid."'");
+					$a_vote = "oui" ;
+					// On va lire les variables du sondage
+					foreach($_POST as $keys => $val) {
+						if ($keys != 'valid') {
+							// Il y a 2 cas car nous avons le cas des checkbox a traiter ...
+							if (count(explode("_",$keys))==2) {
+								$temp = explode("_",$keys) ;
+								$qnum = $temp[0] ;
+								$reponse = $temp[1] ;
+							} else {
+								$qnum = $keys ;
+								$reponse = $val ;
+							}
+							$DB_web->query("INSERT INTO sondage_reponse SET sondage_id='{$_REQUEST['id']}', question_num='".$qnum."', reponse='$reponse' ");
 						}
-						$DB_web->query("INSERT INTO sondage_reponse SET sondage_id='{$_REQUEST['id']}', question_num='".$qnum."', reponse='$reponse' ");
 					}
 				}
 			}
 		}
-	}
-	?>
-	<commentaire>Merci d'avoir voté</commentaire>
-	<?
-} else {
-	// Dévut du formulaire !
-	//======================================================
-	echo $message ;
-	
-	$DB_web->query("SELECT v.perime,(TO_DAYS(perime) - TO_DAYS(NOW())), v.sondage_id,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM sondage_question as v LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE sondage_id='{$_REQUEST['id']}'");
-	if ($DB_web->num_rows()==1) {
-		list($date,$delta,$id,$questions,$titre,$eleve_id,$nom, $prenom, $promo) = $DB_web->next_row() ;
-		
-		// Le Formulaire pour repondre ...
-	?>
-		<note>Sondage proposé par <? echo "$prenom $nom ($promo)" ?></note> 
-	<?
-		if ($delta>=0) {
-	?>
-			<formulaire id="form" titre="<?=$titre?> (<?=date("d/m",strtotime($date))?>)" action="sondage.php?id=<?=$_REQUEST['id']?>">
-			<?
-			decode_sondage($questions) ;
-			if ($a_vote=="non") {
-			?>
-				<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider le vote pour ce sondage?')"/>	
+		?>
+		<commentaire>Merci d'avoir voté</commentaire>
 		<?
-			}
-			?>
-			</formulaire>
-			<?
-		} else {
-			// Les résultats du sondage !
-			?>
-			<cadre id="form" titre="<?=$titre?> (<?=date("d/m",strtotime($date))?>)">
-			<?
-			resultat_sondage($questions,$_REQUEST['id']) ;
-			?>
-			</cadre>
-			<?
-		}
 	} else {
-	?>
-	<warning>Le sondage que tu demandes n'existes plus ou n'a jamais existé</warning>
-	<?
+		// Dévut du formulaire !
+		//======================================================
+		echo $message ;
+		
+		$DB_web->query("SELECT v.perime,(TO_DAYS(perime) - TO_DAYS(NOW())), v.sondage_id,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM sondage_question as v LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE sondage_id='{$_REQUEST['id']}'");
+		if ($DB_web->num_rows()==1) {
+			list($date,$delta,$id,$questions,$titre,$eleve_id,$nom, $prenom, $promo) = $DB_web->next_row() ;
+			
+			// Le Formulaire pour repondre ...
+		?>
+			<note>Sondage proposé par <? echo "$prenom $nom ($promo)" ?></note> 
+		<?
+			if ($delta>=0) {
+		?>
+				<formulaire id="form" titre="<?=$titre?> (<?=date("d/m",strtotime($date))?>)" action="sondage.php?id=<?=$_REQUEST['id']?>">
+				<?
+				decode_sondage($questions) ;
+				if ($a_vote=="non") {
+				?>
+					<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider le vote pour ce sondage?')"/>	
+			<?
+				}
+				?>
+				</formulaire>
+				<?
+			} else {
+				// Les résultats du sondage !
+				?>
+				<cadre id="form" titre="<?=$titre?> (<?=date("d/m",strtotime($date))?>)">
+				<?
+				resultat_sondage($questions,$_REQUEST['id']) ;
+				?>
+				</cadre>
+				<?
+			}
+		} else {
+		?>
+		<warning>Le sondage que tu demandes n'existes plus ou n'a jamais existé</warning>
+		<?
+		}
 	}
 }
-?>
+	?>
 </page>
 <?php require "include/page_footer.inc.php" ?>
