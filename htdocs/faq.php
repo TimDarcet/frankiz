@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.14  2004/12/15 05:17:57  falco
+		Cohérence tutoiement
+
 		Revision 1.13  2004/12/15 00:05:04  schmurtz
 		Plus beau
-
+		
 		Revision 1.12  2004/12/14 23:06:06  schmurtz
 		Ajout du support zonetext grand pour les faqs
 		
@@ -330,7 +333,7 @@ echo "</arbre>";
 
 
 <formulaire id="form" action="faq.php">
-	<note>Tous les mots seront dans la description / Séparez les par un blanc</note>
+	<note>Tous les mots seront dans la description. Sépare les par un blanc.</note>
 	<champ id="mots" titre="Mots-clefs" valeur="<? echo $mots ;?>"/>
 	<bouton id="Submit" titre="Chercher"/>
 </formulaire>
