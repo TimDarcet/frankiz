@@ -10,14 +10,14 @@
 			<div class="fkz_qdj_rouje">
 			<a>
 			<xsl:attribute name="href"><xsl:value-of select="qdj/@action"/>1</xsl:attribute>
-			<img src="skins/pico/pointrouje.gif" border="0"/><br/>
+			<img src="skins/pico/pointrouje.gif"/><br/>
 			<xsl:value-of select="qdj/reponse[@id='1']"/>
 			</a>
 			</div>
 			<div class="fkz_qdj_jone">
 			<a>
 			<xsl:attribute name="href"><xsl:value-of select="qdj/@action"/>2</xsl:attribute>
-			<img src="skins/pico/pointjone.gif" border="0"/><br/>
+			<img src="skins/pico/pointjone.gif"/><br/>
 			<xsl:value-of select="qdj/reponse[@id='2']"/>
 			</a>
 			</div>

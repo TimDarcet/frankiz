@@ -120,6 +120,36 @@ a:hover {
 	border-top: 1px solid #888888;
 }
 
+span.fkz_annonces_vieux {
+	background-image:url("http://frankiz/accueil/info/icones/vieux.gif");
+	background-repeat:no-repeat;
+	height:16px;
+	padding-left:16px;
+ }
+
+ span.fkz_annonces_nouveau {
+	background-image:url("http://frankiz/accueil/info/icones/nouveau.gif");
+	background-repeat:no-repeat;
+	height:16px;
+	padding-left:16px;
+ }
+ 
+ span.fkz_annonces_important {
+	background-image:url("http://frankiz/accueil/info/icones/important.gif");
+	background-repeat:no-repeat;
+	height:16px;
+	padding-left:16px;
+ } 
+ 
+ span.fkz_annonces_reste {
+	background-image:url("http://frankiz/accueil/info/icones/reste.gif");
+	background-repeat:no-repeat;
+	height:16px;
+	padding-left:16px;
+ } 
+ 
+ span.fkz_annonces_cat {display:none;}
+
 .fkz_trombino {
     font-size: 9pt;
     text-align: left;

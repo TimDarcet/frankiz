@@ -28,25 +28,27 @@
 <xsl:if test="$sommaire='trie'">
 	<xsl:if test="last() != 0">
 		<xsl:if test="count(annonce[@categorie='important']) != 0">
-			<div class="fkz_sommaire_titre"><img src="http://frankiz/accueil/info/icones/important.gif" alt="important"/> Important</div>
+			<div class="fkz_sommaire_titre">
+			       <span class="fkz_annonces_important"/> Important
+			</div>
 			<div class="fkz_module">
 			<xsl:apply-templates select="annonce[@categorie='important']" mode="sommaire"/>
 			</div>
 		</xsl:if>
 		<xsl:if test="count(annonce[@categorie='nouveau']) != 0">
-			<div class="fkz_sommaire_titre"><img src="http://frankiz/accueil/info/icones/nouveau.gif" alt="nouveau"/> Nouvelles Fraîches</div>
+			<div class="fkz_sommaire_titre"><span class="fkz_annonces_nouveau"/> Nouvelles Fraîches</div>
 			<div class="fkz_module">
 			<xsl:apply-templates select="annonce[@categorie='nouveau']" mode="sommaire"/>
 			</div>
 		</xsl:if>
 		<xsl:if test="count(annonce[@categorie='vieux']) != 0">
-			<div class="fkz_sommaire_titre"><img src="http://frankiz/accueil/info/icones/vieux.gif" alt="vieux"/> Demain c'est fini</div>
+			<div class="fkz_sommaire_titre"><span class="fkz_annonces_vieux"/> Demain c'est fini</div>
 			<div class="fkz_module">
 			<xsl:apply-templates select="annonce[@categorie='vieux']" mode="sommaire"/>
 			</div>
 		</xsl:if>
 		<xsl:if test="count(annonce[@categorie='reste']) != 0">
-			<div class="fkz_sommaire_titre"><img src="http://frankiz/accueil/info/icones/reste.gif" alt="reste"/> En attendant...</div>
+			<div class="fkz_sommaire_titre"><span class="fkz_annonces_reste"/> En attendant...</div>
 			<div class="fkz_module">
 			<xsl:apply-templates select="annonce[@categorie='reste']" mode="sommaire"/>
 			</div>
@@ -63,16 +65,11 @@
        </xsl:attribute>
        </a>
        <div style="text-align: center"><b>
-       <img>
-          <xsl:attribute name="alt">
-	  <xsl:value-of select="@categorie"/>
-	</xsl:attribute>
-        <xsl:attribute name="src">
-	  <xsl:text>http://frankiz/accueil/info/icones/</xsl:text>
-	  <xsl:value-of select="@categorie"/>
-	  <xsl:text>.gif</xsl:text>
-	</xsl:attribute>
-      </img>
+       <span>
+          <xsl:attribute name="class">fkz_annonces_<xsl:value-of select="@categorie"/>
+	</xsl:attribute></span>
+	<span class="fkz_annonces_cat">(<xsl:value-of select="@categorie"/>)</span>
+	
       <xsl:text> </xsl:text>
 	<xsl:value-of select="@titre"/>
       </b></div>

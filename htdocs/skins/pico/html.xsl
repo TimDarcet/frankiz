@@ -3,9 +3,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.3  2004/10/21 10:58:39  pico
+	Correction skin pour un truc plus modelable par les css (les images sont supprimées et générées par les css)
+
 	Revision 1.2  2004/10/21 08:33:07  pico
 	Chgts divers pour matcher avec la balise <html>
-
+	
 	Revision 1.1  2004/10/20 22:18:03  pico
 	Mise à jour skin
 	
@@ -43,7 +46,7 @@
 
 <!-- Images -->
 <xsl:template match="image">
-	<img class="image" style="border:0">
+	<img class="image">
 		<xsl:attribute name="src"><xsl:value-of select="@source"/></xsl:attribute>
 		<xsl:attribute name="alt"><xsl:value-of select="@legende"/></xsl:attribute>
 	</img><br/>

@@ -15,7 +15,10 @@
 			</li>
 		</xsl:for-each>
 		</ul>
+		</div>
+		
 		<div class="fkz_titre">Statistiques :</div>
+		<div class="fkz_module">
 		<ul class="fkz_stats">
 		<xsl:for-each select="statistiques/service">
 			<li class="fkz_stats">

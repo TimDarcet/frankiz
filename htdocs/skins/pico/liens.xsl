@@ -4,7 +4,7 @@
 
 
 <xsl:template match="module[@id='liens_contacts']">
- <div class="fkz_titre"> <b>Contacts </b></div>
+ <div class="fkz_titre">Contacts</div>
   <div class="fkz_module">
     <xsl:for-each select="lien">
       <div class="fkz_lien">
@@ -22,7 +22,7 @@
 </xsl:template>
 
 <xsl:template match="module[@id='liens_ecole']">
-   <div class="fkz_titre"> <b>Liens Ecole</b></div>
+   <div class="fkz_titre">Liens Ecole</div>
    <div class="fkz_module">
     <xsl:for-each select="lien">
       <div class="fkz_lien">
