@@ -23,10 +23,14 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.41  2005/03/04 20:22:58  pico
+	Demande de nouvelle adresse MAC
+	Fixe les bugs #60 et #70
+
 	Revision 1.40  2005/03/04 12:06:55  pico
 	Fixe bug #66
 	On propose automatiquement une 2 eme ip
-
+	
 	Revision 1.39  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
 	
@@ -124,7 +128,7 @@ if(!verifie_permission('admin'))
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
-<page id="admin_valid_ip" titre="Frankiz : Attribuer une nouvelle adresse IP">
+<page id="admin_valid_ip" titre="Frankiz : Attribuer une nouvelle adresse IP/MAC">
 
 <?
 // On regarde quel cas c'est ...
@@ -196,7 +200,48 @@ foreach ($_POST AS $keys => $val){
 		}
 		
 	}
+	
+	// On refuse la demande de mac supplémentaire
+	//==========================
+	if ($temp[0] == "vtffmac") {
+		$DB_valid->query("DELETE FROM valid_ip WHERE eleve_id='{$temp[1]}'");
+		
+		$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
+		list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
+		//Log l'action de l'admin
+		log_admin($_SESSION['user']->uid," refusé l'ajout d'une @mac à $prenom $nom ($promo) ") ;
+		
+		$bla = "refus_".$temp[1] ;
+		$contenu = "Bonjour, <br><br>".
+					"Nous sommes désolés de pas pouvoir t'enregistrer une adresse MAC supplémentaire pour la raison suivante :<br>".
+					$_POST[$bla]."<br>".
+					"Très Cordialement<br>" .
+					"Le BR<br>"  ;
+	
+		couriel($temp[1],"[Frankiz] Ta demande a été refusée ",$contenu,ROOT_ID);
+		echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande n'a pas été acceptée.</commentaire>" ;
+	}
+	
+	// On accepte la demande de mac supplémentaire
+	//===========================
+	if ($temp[0] == "okmac") {
+		$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
+		list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
+		//Log l'action de l'admin
+		log_admin($_SESSION['user']->uid," accepté l'ajout d'une @mac à $prenom $nom ($promo) ") ;
 
+		$DB_valid->query("DELETE FROM valid_ip WHERE eleve_id='{$temp[1]}'");
+		
+		$contenu = "Bonjour, <br><br>".
+					"Nous avons rajouté l'adresse MAC que tu nous a donné dans notre base.<br>".
+					"<br>" .
+					"Très Cordialement<br>" .
+					"Le BR<br>";
+	
+		couriel($temp[1],"[Frankiz] Ta demande a été acceptée",$contenu,ROOT_ID);
+		echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande a été acceptée</commentaire>" ;
+	}
+	
 	// On vire une ip qu'on avait validé
 	//===========================
 	if ($temp[0] == "suppr") {
@@ -230,25 +275,42 @@ $DB_admin->query("UNLOCK TABLES");
 		<entete id="raison" titre="Raison"/>
 		<entete id="ip" titre="IP"/>
 <?
-		$DB_valid->query("SELECT v.raison,e.nom,e.prenom,e.piece_id,e.eleve_id,p.prise_id,p.ip FROM valid_ip as v LEFT JOIN trombino.eleves as e USING(eleve_id) LEFT JOIN admin.prises AS p USING(piece_id) WHERE p.type='principale'");
-		while(list($raison,$nom,$prenom,$piece,$eleve_id,$prise,$ip0) = $DB_valid->next_row()) {
+		$DB_valid->query("SELECT v.raison,e.nom,e.prenom,e.piece_id,e.eleve_id,p.prise_id,p.ip,v.mac,v.type FROM valid_ip as v LEFT JOIN trombino.eleves as e USING(eleve_id) LEFT JOIN admin.prises AS p USING(piece_id) WHERE p.type='principale'");
+		while(list($raison,$nom,$prenom,$piece,$eleve_id,$prise,$ip0,$mac,$type) = $DB_valid->next_row()) {
 ?>
 			<element id="<? echo $eleve_id ;?>">
 				<colonne id="prise"><? echo "$prise" ?></colonne>
 				<colonne id="eleve"><? echo "$nom $prenom" ?></colonne>
 				<colonne id="raison">
-					<p><textsimple titre="" id="raison_<? echo $eleve_id ;?>" valeur="Raison = <? echo $raison ;?>"/></p>
-					<p><textsimple titre="" id="raison2_<? echo $eleve_id ;?>" valeur="Raison si refus :"/></p>
+					<strong>Nouvelle @MAC: </strong><? echo $mac ?><br/>
+					<? 
+						echo "<em>";
+						switch($type){
+							case 1: 
+								echo "J'ai remplacé l'ordinateur qui était dans mon casert et je souhaite juste pouvoir acceder au réseau avec (l'ancien ne pourra plus y accéder)<br/>";
+								break;
+							case 2:
+								echo "J'ai installé un 2ème ordinateur dans mon casert et je souhaite avoir une nouvelle adresse pour cette machine<br/>";
+								break;
+							default:
+								echo "Autre raison<br/>";
+						}
+						echo "</em><br/>";
+						echo "Commentaire: $raison"; 
+					?>
+					<br/><br/>
+					<textsimple titre="" id="raison2_<? echo $eleve_id ;?>" valeur="Raison si refus :"/><br/>
 					<zonetext titre="Raison du Refus si refus" id="refus_<? echo $eleve_id ;?>"></zonetext>
 				</colonne>
 				<colonne id="ip">
 <?
-					$DB_admin->query("SELECT ip FROM prises WHERE piece_id='$piece'") ;
-					while(list($ip)=$DB_admin->next_row()) {
-						echo "<p>" ;
-							echo $ip ;
-						echo "</p>" ;
-					}
+				$DB_admin->query("SELECT ip FROM prises WHERE piece_id='$piece'") ;
+				while(list($ip)=$DB_admin->next_row()) {
+					echo "<p>" ;
+						echo $ip ;
+					echo "</p>" ;
+				}
+				if($type!=1){
 					$new_ip="129.104.";
 					$ssrezo=substr($ip0, 8, 3);
 					$new_ip.=$ssrezo.".";
@@ -260,12 +322,14 @@ $DB_admin->query("UNLOCK TABLES");
 						$new_ip.=(substr($ip0, 12, 3)+110);
 					else if(($ssrezo<=222)&&($ssrezo>=203)&&($ssrezo!=213))
 						$new_ip.=(substr($ip0, 12, 3)+70);
-?>					
-					<p>
-						<champ titre="" id="ajout_ip_<? echo $eleve_id ;?>" valeur="<? echo $new_ip ?>" /> 
-						<bouton titre="Ok" id="ok_<? echo $eleve_id ;?>" />
-						<bouton titre="Vtff" id="vtff_<? echo $eleve_id ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette ip ?')"/>
-					</p>
+?>
+					<champ titre="" id="ajout_ip_<? echo $eleve_id ;?>" valeur="<? echo $new_ip ?>" /> 
+					<bouton titre="Ok" id="ok_<? echo $eleve_id ;?>" />
+					<bouton titre="Vtff" id="vtff_<? echo $eleve_id ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette demande ?')"/>
+<? 				} else {?>
+					<bouton titre="Ok" id="okmac_<? echo $eleve_id ;?>" />
+					<bouton titre="Vtff" id="vtffmac_<? echo $eleve_id ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette demande ?')"/>
+<? 				}?>
 				</colonne>
 			</element>
 <?

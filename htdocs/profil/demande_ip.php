@@ -22,9 +22,13 @@
 	une seconde machine dans son casert.
 	
 	$Log$
+	Revision 1.17  2005/03/04 20:22:58  pico
+	Demande de nouvelle adresse MAC
+	Fixe les bugs #60 et #70
+
 	Revision 1.16  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
-
+	
 	Revision 1.15  2004/12/16 17:26:10  schmurtz
 	Ajout d'un exemple pour login.promo, ca evitera les dupond.x2002.
 	
@@ -68,24 +72,50 @@ demande_authentification(AUTH_FORT);
 // Génération du la page XML
 require "../include/page_header.inc.php";
 ?>
-<page id="profil_demandeip" titre="Frankiz : Demande d'une nouvelle adresse IP">
+<page id="profil_demandeip" titre="Frankiz : Demande d'enregistrement d'une nouvelle machine">
 
 <?php
 $DB_valid->query("SELECT 0 FROM valid_ip WHERE eleve_id='{$_SESSION['user']->uid}'");
 if ($DB_valid->num_rows()>0) { ?>
-	<warning>Tu as déjà fait une demande d'attribution d'une nouvelle adresse IP. Attends que le
+	<warning>Tu as déjà fait une demande d'enregistrement d'une nouvelle machine. Attends que le
 		BR te valide la première pour en faire une seconde si cela est justifié.</warning>
 		
 <?php } else if(!isset($_POST['demander'])) { ?>
-	<formulaire id="demandeip" titre="Demande d'une nouvelle adresse IP" action="profil/demande_ip.php">
-		<note>Tu vas demander une nouvelle adresse IP. Explique nous pourquoi tu as besoin de cette
-			adresse IP supplémentaire (par exemple : deux ordinateurs, tu vis en couple&#133;)</note>
+	<formulaire id="demandeip" titre="Demande d'une nouvelle machine" action="profil/demande_ip.php">
+		<choix titre="Je fait cette demande parce que:" id="type" type="radio" valeur="1">
+			<option titre="J'ai remplacé l'ordinateur qui était dans mon casert et je souhaite juste pouvoir acceder au réseau avec (l'ancien ne pourra plus y accéder)" id="1"/>
+			<option titre="J'ai installé un 2ème ordinateur dans mon casert et je souhaite avoir une nouvelle adresse pour cette machine" id="2"/>
+			<option titre="Autre raison" id="3"/>
+		</choix>
+		<note>
+			Donne nous plus d'explications sur cette demande. (Surtout si tu as déjà plusieurs ordinateurs enregistrés sur le réseau)
+		</note>
 		<zonetext titre="Raison" id="raison"></zonetext>
+		<note>
+			Il nous faut aussi connaitre l'adresse MAC de la machine.<br/>
+			<ul>
+			<li>Si tu es sous windows :<br/>
+				<code>
+					Démarrer -> Executer -> cmd<br/>
+					Ensuite, tu tapes 'ipconfig /all'<br/>
+					L'adresse mac est de la forme XX-XX-XX-XX-XX-XX (où X est un caractère hexadécimal)<br/>
+				</code>
+			</li>
+			<li>Si tu es sous linux:<br/>
+				<code>
+					Tape '/sbin/ifconfig' dans une console.<br/>
+					L'adresse mac est de la forme XX:XX:XX:XX:XX:XX (où X est un caractère hexadécimal)<br/>
+				</code>
+			</li>
+			</ul>
+		</note>
+		<champ id="adresse_mac" titre="Adresse MAC"/>
+
 		<bouton titre="Demander" id="demander"/>
 	</formulaire>
 	
 <?php } else {
-	$DB_valid->query("INSERT valid_ip SET raison='{$_POST['raison']}', eleve_id='{$_SESSION['user']->uid}'");
+	$DB_valid->query("INSERT valid_ip SET type='{$_POST['type']}',raison='{$_POST['raison']}',mac='{$_POST['adresse_mac']}',eleve_id='{$_SESSION['user']->uid}'");
 	
 	// Envoie du mail au webmestre pour le prévenir d'une demande d'ip
 	$DB_trombino->query("SELECT nom,prenom FROM eleves WHERE eleve_id='{$_SESSION['user']->uid}'");
@@ -93,7 +123,7 @@ if ($DB_valid->num_rows()>0) { ?>
 	
 	$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
 	
-	$contenu = "$prenom $nom a demandé une nouvelle adresse IP pour la raison suivante : <br>".
+	$contenu = "$prenom $nom a demandé l'enregistrement d'une nouvelle machine pour la raison suivante : <br>".
 				$_POST['raison']."<br><br>".
 				"Pour valider ou non cette demande va sur la page : <br><br>".
 				"<div align='center'><a href='".BASE_URL."/admin/valid_ip.php'>".
@@ -101,11 +131,11 @@ if ($DB_valid->num_rows()>0) { ?>
 				"Cordialement,<br>" .
 				"Le BR<br>";
 				
-	couriel(ROOT_ID,"[Frankiz] Demande d'une nouvelle adresse IP",$contenu,$_SESSION['user']->uid);
+	couriel(ROOT_ID,"[Frankiz] Demande d'enregistrement d'une nouvelle machine",$contenu,$_SESSION['user']->uid);
 	
 	// Affichage d'un message d'information
 ?>
-	<p>Nous avons bien pris en compte ta demande d'attribution d'une nouvelle adresse IP pour la raison
+	<p>Nous avons bien pris en compte ta demande d'enregistrement de machine pour la raison
 		indiquée ci-dessous. Nous allons la traiter dans les plus brefs délais.</p>
 	<p>Raison de la demande :</p> 
 	<commentaire>
