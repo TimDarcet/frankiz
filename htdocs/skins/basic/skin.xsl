@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.27  2004/11/25 02:22:02  schmurtz
+	esthetisme (trop long)
+
 	Revision 1.26  2004/11/24 12:51:02  kikx
 	Pour commencer la compatibilité wiki
-
+	
 	Revision 1.25  2004/11/13 00:25:00  schmurtz
 	bizarrerie d'organisation
 	
@@ -342,7 +345,7 @@
 
 <!-- Affichage agressif du module su -->
 <xsl:template match="module[@id='su']">
-	<div style="display: bloc; position: fixed; top: 0; left: 0; right:0; background: red; font-weight: bold">
+	<div style="display:bloc; position:fixed; top:0; left:0; right:0; background:red; font-weight:bold">
 		<xsl:apply-templates/>
 	</div>
 </xsl:template>

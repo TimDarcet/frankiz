@@ -21,10 +21,13 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.22  2004/11/25 02:22:02  schmurtz
+	esthetisme (trop long)
+
 	Revision 1.21  2004/11/25 01:46:10  schmurtz
 	Bug sur l'affichage des liens admin dans le trombino. C'est bien de tester quand
 	on fait des modifs.
-
+	
 	Revision 1.20  2004/11/22 18:44:08  pico
 	Recherche par promo promo présente
 	
@@ -172,7 +175,7 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_RE
 		<champ titre="Surnom" id="surnom" valeur="" />
 		
 		<choix titre="Promo" id="promo" type="combo" valeur="">
-			<option titre="Actuellement sur le campus" id=""/>
+			<option titre="Sur le campus" id=""/>
 			<option titre="Toutes" id="toutes" />
 			<option titre="2003" id="2003" />
 			<option titre="2002" id="2002" />
