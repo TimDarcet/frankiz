@@ -32,9 +32,12 @@
 			dayf=8 pour avoir 7 jour de previsions
 		
 	$Log$
+	Revision 1.2  2004/10/28 11:29:07  kikx
+	Mise en place d'un cache pour 30 min pour la météo
+
 	Revision 1.1  2004/10/26 17:52:07  kikx
 	J'essaie de respecter la charte de weather.com mais c'est chaud car il demande le mettre leur nom en gras ... et je peux pas le faire avec la skin
-
+	
 	Revision 1.1  2004/10/26 16:57:44  kikx
 	Pour la méteo ... ca envoie du paté !!
 	
@@ -47,8 +50,6 @@ require_once "../include/global.inc.php";
 require "../include/page_header.inc.php";
 
 function weather_xml(){
-
-	
 	$proxy = "kuzh.polytechnique.fr";
 	$port = 8080;
 
@@ -58,8 +59,9 @@ function weather_xml(){
 	fputs($fp, "GET $url HTTP/1.0\r\nHost: $proxy\r\n\r\n");
 	$line = "" ;
 	while(!feof($fp)){
-  		$line .= fgets($fp, 4000);
+		$line .= fgets($fp, 4000);
 	}
+	
 	return $line; 
 }
 
@@ -213,38 +215,49 @@ function humidite($string) {
 ?>
 <page id='meteo' titre='Frankiz : méteo'>
 <h1>La météo du platâl</h1>
-<meteo>
-	<now>
+
+
 <?
-$xml = weather_xml() ;
-
-	echo "<sunrise>".leve_soleil($xml)."</sunrise>\n" ;
-	echo "<sunset>".couche_soleil($xml)."</sunset>\n" ;
-	echo "<temperature>".temperature($xml)."</temperature>\n" ;
-	echo "<ciel>".temps($xml)."</ciel>\n" ;
-	echo "<image>".temps_image($xml)."</image>\n" ;
-	echo "<pression>".bar($xml)."</pression>\n" ;
-	echo "<vent>".vent($xml)."</vent>\n" ;
-	echo "<humidite>".humidite($xml)."</humidite>\n" ;
+	if(!cache_recuperer('meteo',strtotime(date("Y-m-d H:i:00",time()-60*30)))) { // le cache est valide pendant 30min ...
 ?>
-	</now>
-<?
+		<meteo>
+			<now>
+		<?
+		$xml = weather_xml() ;
+		
+			echo "<sunrise>".leve_soleil($xml)."</sunrise>\n" ;
+			echo "<sunset>".couche_soleil($xml)."</sunset>\n" ;
+			echo "<temperature>".temperature($xml)."</temperature>\n" ;
+			echo "<ciel>".temps($xml)."</ciel>\n" ;
+			echo "<image>".temps_image($xml)."</image>\n" ;
+			echo "<pression>".bar($xml)."</pression>\n" ;
+			echo "<vent>".vent($xml)."</vent>\n" ;
+			echo "<humidite>".humidite($xml)."</humidite>\n" ;
+		?>
+			</now>
+		<?
+		
+		$jour = explode("day d",$xml) ;
+		
+		for ($i=1; $i<=8 ; $i++){
+		
+			echo "<jour date=\"".($i-1)."\">\n" ;
+					echo "\t<temperature_hi>".temperature_hi($jour[$i])."</temperature_hi>\n" ;
+					echo "\t<temperature_low>".temperature_low($jour[$i])."</temperature_low>\n" ;
+					echo "\t<cieljour>".temps($jour[$i],1)."</cieljour>\n" ;
+					echo "\t<cielnuit>".temps($jour[$i],2)."</cielnuit>\n" ;
+					echo "\t<imagejour>".temps_image($jour[$i],1)."</imagejour>\n" ;
+					echo "\t<imagenuit>".temps_image($jour[$i],2)."</imagenuit>\n" ;
+			echo "</jour>\n" ;
+		}
+		?>
+		</meteo>
+		<?
+		cache_sauver('meteo');
+	}
 
-$jour = explode("day d",$xml) ;
-
-for ($i=1; $i<=8 ; $i++){
-
-	echo "<jour date=\"".($i-1)."\">\n" ;
-			echo "\t<temperature_hi>".temperature_hi($jour[$i])."</temperature_hi>\n" ;
-			echo "\t<temperature_low>".temperature_low($jour[$i])."</temperature_low>\n" ;
-			echo "\t<cieljour>".temps($jour[$i],1)."</cieljour>\n" ;
-			echo "\t<cielnuit>".temps($jour[$i],2)."</cielnuit>\n" ;
-			echo "\t<imagejour>".temps_image($jour[$i],1)."</imagejour>\n" ;
-			echo "\t<imagenuit>".temps_image($jour[$i],2)."</imagenuit>\n" ;
-	echo "</jour>\n" ;
-}
 ?>
-</meteo>
+
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <lien url="http://www.weather.com/?prod=xoap&amp;par=1006415841"><image source="meteo/Weather.com.png"/></lien>

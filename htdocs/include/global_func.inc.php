@@ -22,9 +22,12 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.20  2004/10/28 11:29:07  kikx
+	Mise en place d'un cache pour 30 min pour la météo
+
 	Revision 1.19  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.18  2004/10/14 19:04:20  schmurtz
 	Bug dans la gestion du cache
 	
@@ -151,7 +154,7 @@ function cache_sauver($cache_id) {
 	fclose($file);                 
 
 	global $_CACHE_SAVED_BUFFER;					// hack
-	ob_start();										// hack
+	ob_start();											// hack
 	echo $_CACHE_SAVED_BUFFER;						// hack
 	echo $contenu;
 }

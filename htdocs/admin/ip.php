@@ -22,9 +22,12 @@
 	Permet aussi de supprimer des IPs.
 	
 	$Log$
+	Revision 1.23  2004/10/28 11:29:07  kikx
+	Mise en place d'un cache pour 30 min pour la météo
+
 	Revision 1.22  2004/10/26 16:57:44  kikx
 	Pour la méteo ... ca envoie du paté !!
-
+	
 	Revision 1.21  2004/10/25 19:17:12  kikx
 	Juste un petit warning
 	
@@ -70,7 +73,7 @@ $blabla = "" ;
 		rediriger_vers("/trombino/?chercher=1&loginpoly=$temp[1]");
 }
 
-function weather_xml($id_prise){
+function mac($id_prise){
 
 	/*your proxy server address*/
 	$proxy = "kuzh.polytechnique.fr";
