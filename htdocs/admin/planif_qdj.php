@@ -21,9 +21,15 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.10  2004/11/02 17:54:12  pico
+	Correction bug:
+	- derniere qdj planifiée
+	- possibilité de déprogrammer une qdj en remettant 0000-00-00 comme date
+	- compte des qdj planifiées
+
 	Revision 1.9  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.8  2004/10/17 18:55:50  pico
 	.
 	
@@ -77,7 +83,7 @@ foreach ($_POST AS $keys => $val){
 	// Fixe une date de parution à la QDJ
 	
 	if ($temp[0]=='valid') {
-		if(strtotime($_REQUEST['date']) <=(time()-3025 ))
+		if((strtotime($_REQUEST['date']) <=(time()-3025 ))&&($_REQUEST['date']!="0000-00-00"))
 		{ ?>
 			<warning>ERREUR: Veuillez choisir une date supérieure à aujourd'hui</warning>
 		<?
@@ -178,14 +184,14 @@ $date = date("Y-m-d", time()-3025);
 	<p>Nous sommes le: <? echo $date ?></p>
 <?
 //Cherche la date de la prochaine qdj libre
-for ($i = 1; ; $i++) 
+for ($i = 0; ; $i++) 
 {
-	$date = date("Y-m-d", time()-3025 + $i*24*3600);
-	$DB_web->query("SELECT qdj_id FROM qdj WHERE date='$date' LIMIT 1");
+	$date_last = date("Y-m-d", time()-3025 + $i*24*3600);
+	$DB_web->query("SELECT qdj_id FROM qdj WHERE date='$date_last' LIMIT 1");
 	if(!$DB_web->num_rows()) break;
 }
 ?>
-	<p>La planification est faite jusqu'au: <? echo $date ?></p>
+	<p>La planification est faite jusqu'au: <? echo $date_last ?></p>
 <? $DB_web->query("SELECT qdj_id FROM qdj WHERE date>'$date' "); ?>
 	<p>Nb de QDJ planifiées: <? echo $DB_web->num_rows() ?></p>
 <? $DB_web->query("SELECT qdj_id FROM qdj WHERE date='0000-00-00' "); ?>
@@ -283,7 +289,7 @@ if(!isset($_REQUEST['show']))
 		</module>
 		<formulaire id="qdj_<? echo $id ?>" action="admin/planif_qdj.php">
 
-			<champ id="date" titre="date" valeur="<? echo $date ?>"/>
+			<champ id="date" titre="date" valeur="<? echo $date_last ?>"/>
 			<choix type="checkbox">
 				<option id="decalage" titre="Décaler si necessaire ?"/>
 			</choix>
