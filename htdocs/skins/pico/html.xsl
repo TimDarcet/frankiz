@@ -33,7 +33,12 @@
 
 <!-- Liens -->
 <xsl:template match="lien">
-	<a class="lien"><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+	<a class="lien">
+		<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+		<xsl:if test="boolean(@key)">
+			<xsl:attribute name="accesskey"><xsl:value-of select="@key"/></xsl:attribute>
+			<xsl:attribute name="title">Accès rapide: <xsl:value-of select="@key"/></xsl:attribute>
+		</xsl:if>
 		<xsl:value-of select="@titre"/>
 			<xsl:apply-templates/>
 	</a><br/>
@@ -168,7 +173,10 @@
 	<code><xsl:apply-templates/></code>
 </xsl:template>
 <xsl:template match="a">
-	<a><xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute><xsl:attribute name="href"><xsl:value-of select="@href"/></xsl:attribute><xsl:apply-templates/></a>
+	<a>
+		<xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
+		<xsl:attribute name="href"><xsl:value-of select="@href"/></xsl:attribute><xsl:apply-templates/>
+	</a>
 </xsl:template>
 <xsl:template match="html"><!-- très moche car impossible à skinner, mais parfois indispensable -->
 	<xsl:value-of disable-output-escaping="yes" select="text()"/>

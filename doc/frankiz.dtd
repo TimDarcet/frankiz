@@ -26,9 +26,12 @@
 	utilisé.
 
 	$Log$
+	Revision 1.3  2004/11/09 22:39:06  pico
+	Ajout des accesskeys dans les liens de navigation
+
 	Revision 1.2  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.1  2004/10/19 22:35:51  schmurtz
 	Mise à jour des documentations :
 	- Déplacement des docs dans ./doc
@@ -129,9 +132,11 @@
 <!ELEMENT lien EMPTY>
 <!ATTLIST lien
 		url		CDATA   #REQUIRED
-		titre   CDATA   #IMPLIED>
+		titre   CDATA   #IMPLIED
+		key   CDATA   #IMPLIED>
 		<!-- "url" de l'élément pointé par le lien
 			 le "titre" est le nom du lien affiché à l'utilisateur à la place de l'url
+			 la "key" est l'accesskey, le raccourci clavier qui permet de l'activer
 			 À utiliser pour des liens dans une liste de liens -->
 	
 <!ELEMENT image EMPTY>

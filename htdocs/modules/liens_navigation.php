@@ -21,11 +21,14 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.15  2004/11/09 22:39:06  pico
+	Ajout des accesskeys dans les liens de navigation
+
 	Revision 1.14  2004/11/06 15:17:58  kikx
 	Suppression des liens vers l'InfoBR et les docs
 		-> Telecharger+FAQ = InfoBR
 		-> docs -> FAQ
-
+	
 	Revision 1.13  2004/10/31 22:14:11  kikx
 	Vocabulaire de L'X
 	
@@ -64,28 +67,28 @@
 */
 ?>
 <module id="liens_navigation" titre="Frankiz">
-	<lien id="annonces" titre="Annonces" url="index.php" />
+	<lien id="annonces" titre="Annonces" url="index.php" key="a"/>
 	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
-		<lien id="deconnect" titre="Se déconnecter" url="index.php?logout=1" />
-		<lien id="profil"  titre="Profil" url="profil/profil.php" />
-		<lien id="profil_rezal" titre="Profil réseau" url="profil/reseau.php" />
-		<lien id="skins" titre="Skins" url="profil/skin.php" />
+		<lien id="deconnect" titre="Se déconnecter" url="index.php?logout=1" key="l"/>
+		<lien id="profil"  titre="Profil" url="profil/profil.php" key="p"/>
+		<lien id="profil_rezal" titre="Profil réseau" url="profil/reseau.php" key="r"/>
+		<lien id="skins" titre="Skins" url="profil/skin.php" key="s"/>
 		
 	<?php else: ?>
-		<lien id="connect" titre="Se connecter" url="login.php" />			
+		<lien id="connect" titre="Se connecter" url="login.php" key="l"/>			
 	<?php endif; ?>
-	<lien id="meteo" titre="Météo" url="meteo/" />
+	<lien id="meteo" titre="Météo" url="meteo/" key="m"/>
 	<!--<lien id="infobr" titre="InfoBr" url="documentation/InfoBR.pdf" />
 	<lien id="doc" titre="Docs/Manuels" url="documentation/" />-->
-	<lien id="faq" titre="FAQ" url="faq/" />
-	<lien id="xshare" titre="XShare" url="xshare/" />
-	<lien id="binets"  titre="Binets" url="binets/" />
+	<lien id="faq" titre="FAQ" url="faq/" key="f"/>
+	<lien id="xshare" titre="XShare" url="xshare/" key="x"/>
+	<lien id="binets"  titre="Binets" url="binets/" key="b"/>
 	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
-		<lien id="trombino" titre="Trombino" url="trombino/" />
+		<lien id="trombino" titre="Trombino" url="trombino/" key="t"/>
 	<?php endif; ?>
 	<?php if(!empty($_SESSION['user']->perms)): ?>
-		<lien id="admin" titre="Administration" url="gestion/" />
+		<lien id="admin" titre="Administration" url="gestion/" key="g"/>
 	<?php endif; ?>
-	<lien id="vocab" titre="Vocabulaire" url="vocabulaire.php" />			
+	<lien id="vocab" titre="Vocabulaire" url="vocabulaire.php" key="v"/>			
 
 </module>

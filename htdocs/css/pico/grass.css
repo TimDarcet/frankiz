@@ -46,19 +46,26 @@ a:hover {
     width: 100%;     
 }
 
+.fkz_gauche {
+        width: 20%;
+        float: left;
+	font-size: 9pt;
+	margin-top: 0.5%;
+}
 
-.fkz_droite, .fkz_gauche{
+.fkz_droite {
+        float: right;
         width: 20%;
 	font-size: 9pt;
-	left: 0.5%;
 	margin-top: 0.5%;
 }
 
 .fkz_centre {
-	position: absolute;
 	font-size: 9pt;
-	left: 21%;
-	width: 78%;
+	position: absolute;
+	left: 20.5%;
+	width: 59%;
+	margin-top: 0.5%;
 }
 
 /* Fin Structure de la page */
@@ -250,7 +257,7 @@ li.fkz_liens_nav a:hover{
 
 
 .fkz_sommaire {
-	background-image:url("grass/grassdark.jpg");
+
 	font-size: 9pt;
 	text-align: left;
 	max-width: 100%; 

@@ -43,7 +43,7 @@
 	<lien titre="FAQ" lien="/faq/" />
 	<lien titre="Télécharger" lien="/xshare" />
 	<lien titre="Binets" lien="http://binets.polytechnique.fr/" />
-	<lien titre="Trombino" lien="/trombino/" />
+	<lien titre="Trombino" lien="/trombino/" key="t"/> <!-- key pour définir une accesskey au lien -->
 	<lien titre="Xplorateur" lien="/xplorateur/" />	
 </module>
 

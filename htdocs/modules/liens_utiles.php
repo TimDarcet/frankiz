@@ -21,9 +21,12 @@
 	Liens permettants d'accéder aux autres sites de l'école.
 	
 	$Log$
+	Revision 1.4  2004/11/09 22:39:06  pico
+	Ajout des accesskeys dans les liens de navigation
+
 	Revision 1.3  2004/11/08 08:47:57  kikx
 	Pour la gestion online des sites de binets
-
+	
 	Revision 1.2  2004/11/06 20:57:13  kikx
 	correction pour etre plus clair
 	
@@ -52,7 +55,7 @@
 */
 ?>
 <module id="liens_ecole" titre="Liens utiles">
-	<lien id="utile_contact" titre="Contacter les élèves" url="contact.php" />
+	<lien id="utile_contact" titre="Contacter les élèves" url="contact.php" key="c"/>
 	<?php if(!est_authentifie(AUTH_MINIMUM)): ?>
 		<lien id="utile_plan" titre="Venir à l'X" url="plan.php" />
 	<?php endif; ?>
@@ -61,7 +64,7 @@
 		<lien id="utile_redmail" titre="Redirection des mails" url="http://poly.polytechnique.fr/" /> 
 	<? } ?>
 	<lien id="utile_ecole" titre="Site de l'école" url="http://www.polytechnique.fr/" />
-	<lien id="utile_ecole_de" titre="Site de la DE" url="http://www.edu.polytechnique.fr/" />
-	<lien id="utile_intranet" titre="Intranet" url="http://intranet.polytechnique.fr/" />
-	<lien id="utile_xorg" titre="Polytechnique.org" url="http://www.polytechnique.org/" />
+	<lien id="utile_ecole_de" titre="Site de la DE" url="http://www.edu.polytechnique.fr/" key="d"/>
+	<lien id="utile_intranet" titre="Intranet" url="http://intranet.polytechnique.fr/" key="i"/>
+	<lien id="utile_xorg" titre="Polytechnique.org" url="http://www.polytechnique.org/" key="o"/>
 </module>
