@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.21  2004/11/08 11:46:27  pico
+		Modif pour utiliser la fonction deldir
+
 		Revision 1.20  2004/11/06 17:47:43  pico
 		........
-
+		
 		Revision 1.19  2004/11/06 15:11:34  pico
 		Corrections page admin xshare + modification possible des logiciels (j'avais oublié de le faire)
 		
@@ -84,10 +87,7 @@ foreach ($_POST AS $keys => $val){
 		$DB_web->query("SELECT lien FROM xshare WHERE id='{$temp[1]}' ");
 		list($dir) = $DB_web->next_row();
 		$dir = BASE_DATA."xshare/".$dir;
-		foreach(glob($dir."/*") as $fn) {
-			unlink($fn);
-		} 
-		rmdir($dir);
+		deldir($dir);
 		$DB_web->query("DELETE FROM xshare WHERE id='{$temp[1]}'");
 		$DB_web->query("DELETE FROM xshare WHERE id_parent='{$temp[1]}'");
 		echo "<warning>Repertoire Supprimé</warning>";

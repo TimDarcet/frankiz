@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.19  2004/11/08 11:46:27  pico
+		Modif pour utiliser la fonction deldir
+
 		Revision 1.18  2004/11/07 00:07:47  pico
 		Utilisation de la fonction unzip pour dezipper une archive
-
+		
 		Revision 1.17  2004/11/06 17:47:43  pico
 		........
 		
@@ -92,10 +95,7 @@ foreach ($_POST AS $keys => $val){
 			$DB_web->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
 			list($dir) = $DB_web->next_row();
 			$dir = BASE_DATA."faq/".$dir;
-			foreach(glob($dir."/*") as $fn) {
-				unlink($fn);
-			} 
-			rmdir($dir);
+			deldir($dir);
 			$DB_web->query("DELETE FROM faq WHERE faq_id='{$temp[1]}'");
 			$DB_web->query("DELETE FROM faq WHERE parent='{$temp[1]}'");
 			echo "<warning>Repertoire Supprimé</warning>";
@@ -140,7 +140,7 @@ foreach ($_POST AS $keys => $val){
 			else{
 				echo "<warning>Impossible de trouver un fichier index.html ou index.php dans la FAQ soumise<br/> opération annulée</warning>";
 				$dir = BASE_DATA."faq/".$dir."/".$_REQUEST['nom'];
-				exec("rm -r $dir");
+				deldir($dir);
 			}
 		}
 		
