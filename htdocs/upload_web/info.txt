@@ -1,1 +1,0 @@
-Il faut que ce folder soit accessible en ecriture par le www-data
