@@ -22,11 +22,14 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.37  2004/12/07 12:13:47  kikx
+	Une fonction de diff pour autoriser au gens de modifier les faqs en live ... ca demande la validation mais le webmestre voit de suite ce qui a été modifié
+
 	Revision 1.36  2004/11/29 20:48:45  kikx
 	Simplification des rajouts des droits des personnes ... ce fait grace a des cases a cocher ... (pour les autistes ca devrait etre bon ...) Comme ca pas d'erreur de syntaxe possibles...
-
+	
 	La liste des droits possibles est dans global_func.inc.php
-
+	
 	Revision 1.35  2004/11/24 22:12:57  schmurtz
 	Regroupement des fonctions zip unzip deldir et download dans le meme fichier
 	
@@ -277,5 +280,42 @@ function decode_sondage($string) {
 		}
 	}
 }
+// Returns a nicely formatted html string
+// POUR FAIRE LE DIFF ENTRE 2 STRINGS
+// PAS ENCORE TESTER ... (KIKX)
 
+function diff_to_html($oldString, $newString)
+{
+  $a1 = explode(" ", $oldString);
+  $a2 = explode(" ", $newString);
+  $result = arr_diff($a1, $a2);
+
+  foreach ($result[0] as $num => $foo)
+  {
+   $source = $result[1][$num];
+   $element = $result[0][$num];
+
+   switch ($source)
+   {
+     case "1":
+       $pre = "<font color=red><s>";
+       $post = "</s></font>";
+       break;
+     case "2":
+       $pre = "<font color=green>";
+       $post = "</font>";
+       break;
+     case "b":
+       $pre = "";
+       $post = "";
+       break;
+   }
+   // VERTICAL OUTPUT:
+   // $return .= $num . $pre . " " . $source .
+   // " " . $element . $post . "<br>";
+   // READABLE OUTPUT:
+   $return .= $pre . $element . $post . " ";
+  }
+  return $return;
+} 
 ?>
