@@ -24,14 +24,14 @@ if(est_authentifie(AUTH_MINIMUM)) {
 	$a_vote = $DB_web->num_rows() != 0;
 
 	// Gestion du vote
-	if(isset($_GET['qdj']) && date_aujourdhui==$_GET['qdj'] && !$a_vote && ($_GET['vote']==1 || $_GET['vote']==2)) {
+	if(isset($_GET['qdj']) && $date_aujourdhui==$_GET['qdj'] && !$a_vote && ($_GET['vote']==1 || $_GET['vote']==2)) {
 		unlink(BASE_LOCAL."/cache/qdj_courante");
 		$DB_web->query("LOCK TABLE qdj_votes WRITE");
 		$DB_web->query("SELECT @max:=IFNULL(MAX(ordre),0) FROM qdj_votes WHERE date='$date_aujourdhui'");
 		$DB_web->query("INSERT INTO qdj_votes SET date='$date_aujourdhui',eleve_id='".$_SESSION['user']->uid."',ordre=@max+1");
 		$DB_web->query("UNLOCK TABLES");
 		$DB_web->query("UPDATE qdj SET compte".$_GET['vote']."=compte".$_GET['vote']."+1 WHERE date='$date_aujourdhui'");
-		$a_vote = true;
+		rediriger_vers("/");
 	}
 
 	// Affichage de la QDJ courante 
