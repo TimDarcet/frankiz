@@ -24,9 +24,12 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.38  2004/11/24 16:37:09  pico
+	Ajout des news externes en tant que module
+
 	Revision 1.37  2004/11/24 15:55:34  pico
 	Code pour gérer les liens perso + les rss au lancement de la session
-
+	
 	Revision 1.36  2004/11/24 12:51:02  kikx
 	Pour commencer la compatibilité wiki
 	
@@ -84,6 +87,7 @@ require_once "mail.inc.php";
 require_once "login.inc.php";
 require_once "skin.inc.php";
 require_once "param_session.inc.php";
+require_once "rss_func.inc.php";
 require_once "compress.inc.php";
 require_once "wiki.inc.php";
 

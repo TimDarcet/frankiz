@@ -21,9 +21,12 @@
 	Affichage de flux rss externes.
 
 	$Log$
+	Revision 1.17  2004/11/24 16:37:09  pico
+	Ajout des news externes en tant que module
+
 	Revision 1.16  2004/11/24 16:24:09  pico
 	Passage du formulaire de choix des rss à afficher dans une page spéciale
-
+	
 	Revision 1.15  2004/11/24 15:55:33  pico
 	Code pour gérer les liens perso + les rss au lancement de la session
 	
@@ -55,7 +58,7 @@ demande_authentification(AUTH_MINIMUM);
 // Génération de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
-require_once BASE_LOCAL."/include/rss_func.inc.php";
+
 ?>
 <page id="rss" titre="Frankiz : News Externes">
 

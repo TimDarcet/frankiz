@@ -22,10 +22,13 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.32  2004/11/24 16:37:09  pico
+	Ajout des news externes en tant que module
+
 	Revision 1.31  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
-
+	
 	Revision 1.30  2004/11/19 23:04:27  alban
 	
 	Rajout du module lien_tol
@@ -145,17 +148,19 @@ function liste_modules() {
 	return array(
 		"css"				=> "",
 		"liens_navigation"	=> "",
-		"liens_propositions"=> "",
+		"liens_propositions"	=> "",
 		"liens_utiles"		=> "Liens école",
 		"qdj"				=> "Question du jour",
 		"qdj_hier"			=> "Question de la veille",
-		"meteo"				=> "Météo",
+		"meteo"			=> "Météo",
 		"activites"			=> "Activités",
-		"tour_kawa"			=> "Tours kawa",
+		"tour_kawa"		=> "Tours kawa",
 		"anniversaires"		=> "Anniversaires",
-		"stats"				=> "Statistiques",
-		"sondages"			=> "Sondages",
-		"lien_tol"			=> "Lien rapide vers le tol");
+		"stats"			=> "Statistiques",
+		"sondages"		=> "Sondages",
+		"lien_tol"			=> "Lien rapide vers le tol",
+		"rss"				=> "News Extérieures"
+		);
 }
 
 /*
