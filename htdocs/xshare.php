@@ -19,9 +19,12 @@
 */
 /*
 	$Log$
+	Revision 1.10  2005/01/21 18:21:44  pico
+	Hum...
+
 	Revision 1.9  2005/01/11 16:47:09  pico
 	Bug #26
-
+	
 	Revision 1.8  2005/01/10 13:31:34  pico
 	Affichage des logiciels à l'intérieur de l'arborescence
 	
@@ -160,7 +163,7 @@ function rech_fils($id_parent) {
 			$DB_web->push_result();
 			$DB_web->query("SELECT * FROM xshare WHERE id='{$id}'") ;
 			if (list($id,$id_parent,$nom,$licence,$lien,$importance,$date,$descript,$version,$site) = $DB_web->next_row()) { 
-				echo "<lien titre='Site de l&apos;éditeur' url='".$site."'/> | <lien titre='Télécharger ici' url='../data/xshare/".$lien."'/><br/><br/>";
+				echo "<lien titre='Site de l&apos;éditeur' url='".$site."'/> | <lien titre='Télécharger ici' url='data/xshare/".$lien."'/><br/><br/>";
 				if($importance == 1) echo "Logiciel important<br/>";
 				if($importance == 2) echo "<strong>Logiciel indispensable</strong><br/>";
 				echo "Dernière modification le ".substr($date, 6, 2)."/".substr($date, 4, 2)."/".substr($date, 0, 4)."<br/><br/>" ;
