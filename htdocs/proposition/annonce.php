@@ -3,10 +3,13 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.12  2004/09/18 16:22:26  kikx
+	micro bug fix
+
 	Revision 1.11  2004/09/18 16:04:52  kikx
 	Beaucoup de modifications ...
 	Amélioration des pages qui gèrent les annonces pour les rendre compatible avec la nouvelle norme de formatage xml -> balise web et balise image qui permette d'afficher une image et la signature d'une personne
-
+	
 	Revision 1.8  2004/09/17 16:14:43  kikx
 	Pffffff ...
 	Je sais plus trop ce que j'ai fait donc allez voir le code parce que la ca me fait chié de refléchir
@@ -29,6 +32,17 @@ list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_ro
 // On traite l'image qui vient d'etre uploader si elle existe
 //---------------------------------------------------------------------------------
 
+//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
+//--//
+//--// Norme de nommage des images que nous uploadons
+//--// dans le rep prévu a cette effet : 
+//--// # annonce_{$id_eleves} qd l'annonce n'a pas été soumise à validation
+//--// # {$id_annonce_a_valider}_annonce qd l'annonce est soumise à validation
+//--//
+//--// Ceci permet de faire la différence entre les fichiers tempo et les fichiers a valider
+//--//
+//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
+
 $temp = explode("annonce",$_SERVER['SCRIPT_FILENAME']) ;
 $temp = $temp[0] ;
 $uploaddir  =  $temp."/image_temp/" ;
@@ -40,7 +54,7 @@ if ((isset($_FILES['file']))&&($_FILES['file']['size']!=0)&&($_FILES['file']['si
 	
 	$larg = $original_size[0];
 	$haut = $original_size[1];
-	if (($larg>=400)&&($haut>=300)) {
+	if (($larg>=400)||($haut>=300)) {
 		$erreur_upload =1 ;
 	} else if (($filetype=="image/jpg")||($filetype=="image/jpeg")||($filetype=="image/pjpg")||($filetype=="image/gif")||($filetype=="image/png")) {
 		$filename = "annonce_$eleve_id" ;
@@ -61,6 +75,9 @@ if (isset($_POST['valid'])) {
 	$DB_valid->query("INSERT INTO valid_annonces SET perime=FROM_UNIXTIME({$_POST['date']}), eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',contenu='".$_POST['text']."'");
 	
 	// on modifie le nom du fichier qui a été téléchargé si celui ci existe
+	// selon la norme de nommage ci-dessus
+	//----------------------------------------------------------------------------------------------
+	
 	if (file_exists($uploaddir."/annonce_$eleve_id")) {
 		$index = mysql_insert_id() ;
 		rename($uploaddir."/annonce_$eleve_id",$uploaddir."/{$index}_annonce") ; 
@@ -110,7 +127,7 @@ if (!isset($_POST['text'])) $_POST['text']="c'est &lt;b&gt;en gras&lt;/b&gt;, "
 									."&lt;a href='mailto:toto@poly'&gt;un lien email&lt;/a&gt;" ;
 if (!isset($_POST['titre']))  $_POST['titre']="Titre" ;
 
-$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
+//$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
 ?>
 	<annonce titre="<?php echo $_POST['titre'] ; ?>" 
 			categorie=""

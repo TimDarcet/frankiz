@@ -6,9 +6,8 @@
 	skin.inc.php… mais pas user.inc.php, xml.inc.php…
 	
 	$Log$
-	Revision 1.14  2004/09/18 16:04:52  kikx
-	Beaucoup de modifications ...
-	Amélioration des pages qui gèrent les annonces pour les rendre compatible avec la nouvelle norme de formatage xml -> balise web et balise image qui permette d'afficher une image et la signature d'une personne
+	Revision 1.15  2004/09/18 16:22:26  kikx
+	micro bug fix
 
 	Revision 1.13  2004/09/17 14:19:58  kikx
 	Page de demande d'annonce terminé
@@ -39,7 +38,6 @@ if(file_exists("$dir/frankiz.dtd"))
 	$href = $dir;
 
 define('BASE_LOCAL',realpath(dirname(__FILE__)."/.."));
-define('BASE_LOCAL2',realpath(dirname(__FILE__)."/"));
 define('BASE_URL','http://'.$_SERVER['HTTP_HOST'].'/'.substr((dirname($_SERVER['PHP_SELF']).'/'.$href), 1));
 
 // Configuration du site
