@@ -24,9 +24,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.21  2004/10/22 15:18:33  kikx
+	Correction du bug d'affichage de l'image trombino quand l'utilisateur a demander la modification
+
 	Revision 1.20  2004/10/22 15:07:40  kikx
 	Juste pour la standardisation
-
+	
 	Revision 1.19  2004/10/22 14:44:40  kikx
 	Permet l'affichage dans le profil de l'image que l'on souhaite modifier (bug encore sur l'affichage)
 	
@@ -73,7 +76,7 @@ demande_authentification(AUTH_MAIL);
 if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "true") && ($_REQUEST['image'] != "")){
 	require_once("../include/global.inc.php");
 	header('content-type: image/jpeg');
-	readfile(BASE_PHOTOS.$_REQUEST['promo']."/".$_REQUEST['login'].".jpg");	
+	readfile(BASE_DATA."trombino/a_valider_".$_REQUEST['id']);	
 	exit;
 }
 
@@ -152,7 +155,8 @@ if(isset($_POST['changer_frankiz'])) {
 				"L'automate :)\n"  ;
 				
 			mail(MAIL_WEBMESTRE,"[Frankiz] Modification de l'image trombi de $nom $prenom",$contenu);
-		
+			$message .= "<commentaire>Ta demande de changement de photo a été prise en compte et sera validée dans les meilleurs délai... Merci</warning>" ;
+
 		}
 		
 		$img = $_FILES['file']['tmp_name'] ;
@@ -268,7 +272,7 @@ require "../include/page_header.inc.php";
 		if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$_SESSION['user']->uid}")) {
 		?>
 			<warning>Cette image trombino n'a pas encore été validé par le BR</warning>
-			<image source="<? echo DATA_DIR_URL."trombino/a_valider_".$_SESSION['user']->uid ; ?>" texte="photo" height="95" width="80"/>
+			<image source="<? echo "profil/profil.php?image=true&amp;id=".$_SESSION['user']->uid ; ?>" texte="photo" height="95" width="80"/>
 		<?
 		} else {
 		?>
