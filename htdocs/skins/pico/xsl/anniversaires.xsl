@@ -30,9 +30,7 @@
 				<xsl:if test="preceding-sibling::eleve[1]/@promo != @promo or position() = 1">
 					<xsl:if test="position()!=1"><br/></xsl:if>
 					<a>
-						<xsl:attribute name="href">
-							trombino.php?anniversaire&amp;promo=<xsl:value-of select="@promo" />
-						</xsl:attribute>
+						<xsl:attribute name="href">trombino.php?anniversaire&amp;promo=<xsl:value-of select="@promo" /></xsl:attribute>
 						<xsl:value-of select="@promo" /> 
 					</a>: 
 				</xsl:if>
