@@ -23,9 +23,12 @@
 	- destruction automatique des résultats
 
 	$Log$
+	Revision 1.14  2004/11/08 18:27:34  pico
+	là aussi ça devrait marcher, à tester
+
 	Revision 1.13  2004/11/08 18:20:03  pico
 	Devrait mieux marcher comme ça
-
+	
 	Revision 1.12  2004/11/08 17:01:22  schmurtz
 	oups
 	
@@ -63,7 +66,7 @@ class DB {
 	*/
 	function DB($host,$base,$user,$pass) {
 		global $_ERREURS_PHPMYSQL;
-		$this->link = mysql_connect($host,$user,$pass);	// PHP 4.2.0 seulement
+		$this->link = mysql_connect($host,$user,$pass,true);
 		
 		if(mysql_errno() == 0)
 			mysql_select_db($base,$this->link) || ajouter_erreur_mysql("USE $base");
@@ -88,7 +91,7 @@ class DB {
 		if($this->result)
 			mysql_free_result($this->result);
 		
-		mysql_select_db($this->base,$this->link); // TODO à changer, très moche (maj PHP > 4.2.0 par exemple)
+		//mysql_select_db($this->base,$this->link); 
 		ajouter_requete_mysql($query);
 		$this->result = mysql_query($query,$this->link);
 		
