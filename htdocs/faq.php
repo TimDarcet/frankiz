@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.1  2004/11/25 00:20:39  schmurtz
+		Parce que faq ne prend pas d's dans ce cas.
+
 		Revision 1.1  2004/11/25 00:10:30  schmurtz
 		Suppression des dossiers ne contenant qu'un unique fichier index.php
-
+		
 		Revision 1.27  2004/11/22 20:32:29  pico
 		Correction: balises au mauvais endroit
 		
