@@ -21,9 +21,12 @@
 	Page pour demander les sondages !
 	
 	$Log$
+	Revision 1.9  2004/12/14 00:27:40  kikx
+	Pour que le FROM des mails de validation soit au nom du mec qui demande la validation... (qu'est ce que je ferai pas pour les TOS :))
+
 	Revision 1.8  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-
+	
 	Revision 1.7  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
@@ -128,7 +131,7 @@ if (isset($_POST['valid'])) {
 			"Très BR-ement<br>" .
 			"L'automate :)<br>"  ;
 					
-		couriel(WEBMESTRE_ID,"[Frankiz] Validation d'un sondage",$contenu,"Frankiz <br@frankiz>");
+		couriel(WEBMESTRE_ID,"[Frankiz] Validation d'un sondage",$contenu,$_SESSION['user']->uid);
 	} else {
 		$erreur = 1 ;
 	}

@@ -21,10 +21,13 @@
 	Permet de proposer une QDJ
 	
 	$Log$
+	Revision 1.8  2004/12/14 00:27:40  kikx
+	Pour que le FROM des mails de validation soit au nom du mec qui demande la validation... (qu'est ce que je ferai pas pour les TOS :))
+
 	Revision 1.7  2004/11/29 17:27:33  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
-
+	
 	Revision 1.6  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
 	
@@ -109,7 +112,7 @@ if (!isset($_REQUEST['envoie'])) {
 			"Très BR-ement<br>" .
 			"L'automate :)<br>"  ;
 			
-	couriel(QDJMASTER_ID,"[Frankiz] Validation d'une QDJ",$contenu,"Frankiz <br@frankiz>");
+	couriel(QDJMASTER_ID,"[Frankiz] Validation d'une QDJ",$contenu,$_SESSION['user']->uid);
 
 }
 ?>

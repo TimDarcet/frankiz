@@ -21,9 +21,12 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.31  2004/12/14 00:27:40  kikx
+	Pour que le FROM des mails de validation soit au nom du mec qui demande la validation... (qu'est ce que je ferai pas pour les TOS :))
+
 	Revision 1.30  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-
+	
 	Revision 1.29  2004/11/25 11:52:10  pico
 	Correction des liens mysql_id
 	
@@ -183,7 +186,7 @@ if (isset($_POST['valid'])) {
 			"Très BR-ement<br>" .
 			"L'automate :)<br>"  ;
 				
-	couriel(WEBMESTRE_ID,"[Frankiz] Validation d'une annonce",$contenu,"Frankiz <br@frankiz>");
+	couriel(WEBMESTRE_ID,"[Frankiz] Validation d'une annonce",$contenu,$eleve_id);
 
 }
 //=================

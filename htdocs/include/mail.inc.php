@@ -22,9 +22,12 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.11  2004/12/14 00:27:40  kikx
+	Pour que le FROM des mails de validation soit au nom du mec qui demande la validation... (qu'est ce que je ferai pas pour les TOS :))
+
 	Revision 1.10  2004/11/16 18:32:34  schmurtz
 	Petits problemes d'interpretation de <note> et <commentaire>
-
+	
 	Revision 1.9  2004/11/16 12:17:25  schmurtz
 	Deplacement des skins de trombino.eleves vers frankiz.compte_frankiz
 	
@@ -55,7 +58,30 @@
 */
 
 // envoi d'un mail à un élève
-function couriel($eleve_id,$titre,$contenu,$sender="le BR <br@frankiz.polytechnique.fr>") {
+function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID) {
+
+	// On gère l'envoyeur !
+	
+	if ($sender_id==WEBMESTRE_ID) {
+		$sender = "Webmestre de Frankiz <".MAIL_WEBMESTRE.">" ;
+	} else if ($sender_id==QDJMASTER_ID) {
+		$sender = "QDJmaster de Frankiz <".MAIL_QDJMASTER.">" ;
+	} else if ($sender_id==BR_ID) {
+		$sender = "Le BR <".MAIL_BR.">" ;
+	} else if ($sender_id==PREZ_ID) {
+		$sender = "Président du BR <".MAIL_PREZ.">" ;
+	} else if ($sender_id==ROOT_ID) {
+		$sender = "Root du BR <".MAIL_ROOT.">" ;
+	} else { // C'est une personne physique
+		global $DB_trombino;
+		$DB_trombino->query("SELECT nom,prenom,mail,login FROM eleves WHERE eleve_id=$sender_id") ;
+		list($nom1, $prenom1, $adresse1, $login1) = $DB_trombino->next_row()  ;
+		if(empty($adresse1)) $adresse1=$login1."@poly.polytechnique.fr" ;
+		$sender = "$prenom1 $nom1 <$adresse1>" ;
+	}
+	
+	// On gere le destinataire
+	
 	if ($eleve_id==WEBMESTRE_ID) {
 		$prenom = "Webmestre de Frankiz" ;
 		$nom = "" ;
