@@ -88,11 +88,16 @@ sub selection {
 	my $body = "";
 	my $date;
 	for ($i=0; $i<3; $i++) {
-		$tm=localtime(time - $i * 24 *3600);
+		$tm=localtime(time - ($i * 24 *3600));
 		$year = ($tm->year+ 1900);
 		$month = ($tm->mon + 1);
+		if($month < 10){
+		   $month = "0" . $month; 
+		}
 		$day = ($tm->mday - $i);
-		if($day < 10){   $day = "0" . $day; }
+		if($day < 10){
+		   $day = "0" . $day; 
+		}
 		$date=$year . "-" . $month . "-" . $day;
 		traiter_jour($date,$name,$subject[$i],$body);
 	}
