@@ -19,9 +19,12 @@
 */
 /*
 	$Log$
+	Revision 1.6  2004/12/15 05:19:13  falco
+	cohérence
+
 	Revision 1.5  2004/12/09 20:53:27  pico
 	Faute d'orthographe
-
+	
 	Revision 1.4  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
@@ -281,7 +284,7 @@ echo "</arbre>";
 ?>
 
 	<formulaire id="form" action="xshare.php">
-		<note>Tous les mots seront dans la description. Séparez les par des blancs.</note>
+		<note>Tous les mots seront dans la description. Sépare les par un blanc.</note>
 		<champ id="mots" titre="Mots-clefs" valeur="<? echo $mots ;?>"/>
 		<bouton id="Submit" titre="Chercher"/>
 	</formulaire>
