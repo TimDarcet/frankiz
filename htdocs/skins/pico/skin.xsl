@@ -38,7 +38,7 @@
     <xsl:apply-templates select="frankiz/module[@id='liste_css']" mode="css"/>
   </head>
   <body>
-	<div><a href="index.php"><img src="skins/pico/frankiz.png" alt="Frankiz, le site Web des élèves"/></a></div>
+	<div class="fkz_logo"><a href="index.php"><span class="fkz_logo">Frankiz, le site Web des élèves</span></a></div>
 
   <xsl:apply-templates select="frankiz/module[@id='liens_navigation']"/>
       <div class="fkz_page">

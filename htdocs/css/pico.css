@@ -8,6 +8,14 @@ img {
 	border: 0;
 }
 
+div.fkz_logo {
+	background-image:url("../skins/pico/frankiz.png");
+	background-repeat:no-repeat;
+	height:60px;
+ }
+
+ span.fkz_logo {display:none;}
+ 
 a {
     text-decoration: none;
 }
