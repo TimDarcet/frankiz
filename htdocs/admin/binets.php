@@ -21,9 +21,12 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.24  2004/12/15 22:25:47  kikx
+	Verification que le prez et le webmestre sont d'une promo sur le campus
+
 	Revision 1.23  2004/12/01 20:29:47  kikx
 	Oubli pour les webmestres
-
+	
 	Revision 1.22  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
 	
@@ -98,16 +101,20 @@ list($nomdubinet) = $DB_trombino->next_row() ;
 	
 if (isset($_POST['modif'])) {
 
+	$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
+	list($promo_temp) = $DB_web->next_row() ;
+	$promo_temp2=$promo_temp-1 ;
+	
 	// On verifie que les droits des webmestre et des prez n'ont pas changé
 	//==========================================================================
 	// Les données du prez du Binet actuel
-	$DB_web->query("SELECT login FROM trombino.eleves LEFT JOIN compte_frankiz USING(eleve_id) WHERE perms LIKE '%prez_".$_GET['id'].",%' ORDER BY promo DESC");
+	$DB_web->query("SELECT login FROM trombino.eleves LEFT JOIN compte_frankiz USING(eleve_id) WHERE perms LIKE '%prez_".$_GET['id'].",%' AND (promo='$promo_temp' OR promo='$promo_temp2') ORDER BY promo DESC");
 	list($prez_login) = $DB_web->next_row() ;
 	// On change de prez
 	if ($_POST['prez']!= $prez_login) {
 		// on supprime les droit de l'ancien web (si il existe bien sur)
 		if ($prez_login!="") {
-			$DB_web->query("SELECT perms,e.eleve_id FROM compte_frankiz LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE login='$prez_login'" );
+			$DB_web->query("SELECT perms,e.eleve_id FROM compte_frankiz LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE login='$prez_login' AND (promo='$promo_temp' OR promo='$promo_temp2')" );
 			while(list($perms,$eleve_id) = $DB_web->next_row()) {
 				$perms = str_replace("prez_".$binet_id.",","",$perms) ;
 				$DB_web->query("UPDATE compte_frankiz SET perms='$perms' WHERE eleve_id='$eleve_id'");
@@ -116,7 +123,7 @@ if (isset($_POST['modif'])) {
 		}
 		// on donne les droits au nouveau prez
 		if ($_POST['prez']!="") {
-			$DB_web->query("SELECT perms,e.eleve_id FROM compte_frankiz LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE login='".$_POST['prez']."' " );
+			$DB_web->query("SELECT perms,e.eleve_id FROM compte_frankiz LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE login='".$_POST['prez']."' AND (promo='$promo_temp' OR promo='$promo_temp2')" );
 			if ($DB_web->num_rows()==0) 
 				$message .= "<warning>Ce login n'existe pas ou ne s'est jamais connecté a Frankiz</warning>" ;
 			while(list($perms,$eleve_id) = $DB_web->next_row()) {
@@ -132,13 +139,15 @@ if (isset($_POST['modif'])) {
 	
 	
 	// Les données du webmestre du Binet actuel
-	$DB_web->query("SELECT login FROM trombino.eleves LEFT JOIN compte_frankiz USING(eleve_id) WHERE perms LIKE '%webmestre_".$_GET['id'].",%' ORDER BY promo DESC");
+	
+
+	$DB_web->query("SELECT login FROM trombino.eleves LEFT JOIN compte_frankiz USING(eleve_id) WHERE perms LIKE '%webmestre_".$_GET['id'].",%' AND (promo='$promo_temp' OR promo='$promo_temp2') ORDER BY promo DESC");
 	list($web_login) = $DB_web->next_row() ;
 	
 	if ($_POST['webmestre']!= $web_login) {
-		// on supprime les droit de l'ancien web (si il existe bien sur)
+		// on supprime les droit de l'ancien web (s'il existe bien sur)
 		if ($web_login!="") {
-			$DB_web->query("SELECT perms,e.eleve_id FROM compte_frankiz LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE login='$web_login'" );
+			$DB_web->query("SELECT perms,e.eleve_id FROM compte_frankiz LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE login='$web_login' AND (promo='$promo_temp' OR promo='$promo_temp2')" );
 			while(list($perms,$eleve_id) = $DB_web->next_row()) {
 				$perms = str_replace("webmestre_".$binet_id.",","",$perms) ;
 				$DB_web->query("UPDATE compte_frankiz SET perms='$perms' WHERE eleve_id='$eleve_id'");
@@ -147,7 +156,7 @@ if (isset($_POST['modif'])) {
 		}
 		// on donne les droits au nouveau webmestre
 		if ($_POST['webmestre']!="") {
-			$DB_web->query("SELECT perms,e.eleve_id FROM compte_frankiz LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE login='".$_POST['webmestre']."' " );
+			$DB_web->query("SELECT perms,e.eleve_id FROM compte_frankiz LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE login='".$_POST['webmestre']."' AND (promo='$promo_temp' OR promo='$promo_temp2')" );
 			if ($DB_web->num_rows()==0) 
 				$message .= "<warning>Ce login n'existe pas ou ne s'est jamais connecté a Frankiz</warning>" ;
 			while(list($perms,$eleve_id) = $DB_web->next_row()) {
@@ -279,6 +288,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if ($exterieur==1) echo 'ext' ;?>">
 			<option id="ext" titre=""/>
 		</choix>
+		<note>Vous ne pouvez pas mettre plusieurs personnes par poste (il faut mettre les login dans les champs suivants)</note>
 		<champ id="prez" titre="President" valeur="<?=$prez_login?>"/>
 		<champ id="webmestre" titre="Webmestre" valeur="<?=$web_login?>"/>
 
