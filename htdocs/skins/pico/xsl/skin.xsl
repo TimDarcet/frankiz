@@ -110,7 +110,7 @@
 						<a href="http://validator.w3.org/check?uri=referer">
 							<span class="valid_xhtml"><xsl:text> </xsl:text></span>
 						</a>
-						<a href="http://jigsaw.w3.org/css-validator/validator?uri=referer">
+						<a href="http://jigsaw.w3.org/css-validator/check/referer">
 						<span class="valid_css"><xsl:text> </xsl:text></span>
 						</a>
 					</p>
