@@ -21,9 +21,13 @@
 	Page de validation d'une modification d'un binet
 	
 	$Log$
+	Revision 1.15  2005/01/26 16:36:32  pico
+	Devrait éviter l'erreur de Bery tout à l'heure
+	(pb de création de fichier)
+
 	Revision 1.14  2005/01/22 17:58:38  pico
 	Modif des images
-
+	
 	Revision 1.13  2005/01/18 13:45:31  pico
 	Plus de droits pour les web
 	
@@ -94,10 +98,10 @@ if (isset($_POST['valid'])) {
 		
 		if (isset($_REQUEST['exterieur'])){
 			$temp_ext = '1'  ;
-			if(!file_exists(BASE_BINETS_EXT."$folder")) symlink (BASE_BINETS."$folder",BASE_BINETS_EXT."$folder");
+			if($folder!='' && !file_exists(BASE_BINETS_EXT."$folder")) symlink (BASE_BINETS."$folder",BASE_BINETS_EXT."$folder");
 		}else{
 			$temp_ext = '0' ;
-			if(file_exists(BASE_BINETS_EXT."$folder")) unlink(BASE_BINETS_EXT."$folder");
+			if($folder!='' && file_exists(BASE_BINETS_EXT."$folder")) unlink(BASE_BINETS_EXT."$folder");
 		}
 	
 		$DB_trombino->query("UPDATE binets SET image=\"".addslashes($image)."\" ,format='$format' ,description='$description' , http='$http', catego_id=$categorie, exterieur=$temp_ext, folder='$folder' WHERE binet_id={$_POST['id']}");
