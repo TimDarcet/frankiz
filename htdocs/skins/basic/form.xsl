@@ -3,9 +3,12 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.21  2004/10/21 21:57:07  schmurtz
+	Petites modifs sur les skins
+
 	Revision 1.20  2004/10/21 08:33:07  pico
 	Chgts divers pour matcher avec la balise <html>
-
+	
 	Revision 1.19  2004/10/20 23:45:48  schmurtz
 	<br/> ==> <br /> pour compatibilite avec IE
 	
@@ -53,7 +56,7 @@
 	<xsl:if test="boolean(@titre)">
 		<h2><xsl:value-of select="@titre"/></h2>
 	</xsl:if>
-	<xsl:apply-templates select="commentaire"/>
+	<xsl:apply-templates select="commentaire|warning"/>
 
 	<!-- le formulaire lui même, mis en page avec une table -->
 	<form enctype="multipart/form-data" method="post">
@@ -64,7 +67,7 @@
 				<tr><td class="titre" colspan="2"><xsl:value-of select="@titre"/></td></tr>
 			</xsl:if>
 			<!-- les options du formulaire -->
-			<xsl:for-each select="champ|choix|zonetext|textsimple|hidden|warning|image|fichier|lien">
+			<xsl:for-each select="*[not (self::bouton or self::commentaire or self::warning)]">
 				<tr><td class="gauche">
 					<xsl:if test="boolean(@titre)"><xsl:value-of select="@titre"/> :</xsl:if>
 				</td><td class="droite">

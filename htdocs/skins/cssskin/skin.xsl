@@ -47,7 +47,7 @@
 </xsl:template>
 
 <!-- Annonces (une annonce dans un module correspond à une activité) -->
-<xsl:template match="contenu/annonce">
+<xsl:template match="page/annonce">
 	<div class="annonce">
 		<div class="titre"><xsl:value-of select="@titre"/> (<xsl:value-of select="@date"/>)</div>
 		<div class="contenu">
@@ -135,15 +135,21 @@
 	<form class="formulaire" enctype="multipart/form-data" method="post">
 			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<xsl:if test="boolean(@titre)"><h2><xsl:value-of select="@titre"/></h2></xsl:if>
-		<xsl:apply-templates select="commentaire"/>
-		<xsl:for-each select="champ|choix|zonetext|textsimple|hidden|warning|image|fichier|lien">
+		<xsl:apply-templates select="commentaire|warning"/>
+		<xsl:for-each select="*[not (self::bouton or self::commentaire or self::warning)]">
 			<div class="champ">
 				<div class="champ_nom"><xsl:if test="boolean(@titre)"><xsl:value-of select="@titre"/> : </xsl:if></div>
-				<div class="champ_valeur"<xsl:apply-templates select="."/></div>
+				<div class="champ_valeur"><xsl:apply-templates select="."/></div>
 			</div>
 		</xsl:for-each>
 		<xsl:apply-templates select="bouton"/>
 	</form>
+</xsl:template>
+
+<xsl:template match="lien">
+	<a class="lien"><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+		<xsl:value-of select="@titre"/><xsl:apply-templates/>
+	</a>
 </xsl:template>
 
 </xsl:stylesheet>

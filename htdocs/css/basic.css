@@ -61,6 +61,12 @@ body {
 	text-align: right;
 }
 
+/* Liens */
+
+a.lien {
+	display: block;
+}
+
 /* Qdj */
 .fkz_qdj_jone {
 	float: right;

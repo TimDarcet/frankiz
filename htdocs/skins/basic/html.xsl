@@ -3,9 +3,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.16  2004/10/21 21:57:07  schmurtz
+	Petites modifs sur les skins
+
 	Revision 1.15  2004/10/20 23:45:48  schmurtz
 	<br/> ==> <br /> pour compatibilite avec IE
-
+	
 	Revision 1.14  2004/10/20 23:21:39  schmurtz
 	Creation d'un element <html> qui permet d'afficher du html brute sans verification
 	C'est ce qui est maintenant utilise dans les annonces/cadres
@@ -61,8 +64,7 @@
 <!-- Liens -->
 <xsl:template match="lien">
 	<a class="lien"><xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
-		<xsl:value-of select="@titre"/>
-			<xsl:apply-templates/>
+		<xsl:value-of select="@titre"/><xsl:apply-templates/>
 	</a><br />
 </xsl:template>
 
