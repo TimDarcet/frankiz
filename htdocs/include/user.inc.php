@@ -26,9 +26,12 @@
 	informations provenant des tables du trombino (avec jointure sur l'uid).
 
 	$Log$
+	Revision 1.15  2004/11/24 15:55:34  pico
+	Code pour gérer les liens perso + les rss au lancement de la session
+
 	Revision 1.14  2004/11/22 07:59:00  pico
 	Correction du login pour le su.
-
+	
 	Revision 1.13  2004/11/17 22:40:50  schmurtz
 	Bug lors du login par mdp si l'utilisateur ne mets pas son login sous la forme
 	loginpoly.promo
@@ -217,3 +220,5 @@ function nouveau_login() {
 	global $_NOUVEAU_LOGIN;
 	return $_NOUVEAU_LOGIN;
 }
+
+?>

@@ -18,12 +18,15 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Recherche dans le trombino.
+	Affichage de flux rss externes.
 
 	$Log$
+	Revision 1.15  2004/11/24 15:55:33  pico
+	Code pour gérer les liens perso + les rss au lancement de la session
+
 	Revision 1.14  2004/11/24 15:37:37  pico
 	Lis et sauvegarde les infos de session depuis la sql
-
+	
 	Revision 1.13  2004/11/24 15:18:19  pico
 	Mise en place des liens sur une base sql
 	
@@ -72,14 +75,6 @@ if(!empty($_REQUEST['OK_param'])) {
 	
 }
 
-if( !isset($_SESSION['rss']) || nouveau_login() ) {
-	$_SESSION['rss'] = array();
-	$DB_web->query("SELECT liens_rss FROM compte_frankiz WHERE eleve_id='{$_SESSION['user']->uid}'") ;
-	if($DB_web->num_rows()!=0) {
-			list($new_rss) = $DB_web->next_row();
-			$_SESSION['rss'] =  unserialize($new_rss);
-	}
-}
 ?>
 	<formulaire id="form_param_rss" titre="Choix des RSS" action="rss.php">
 		<note>Choisis quelles infos tu veux avoir sur ta page de news externes</note>
