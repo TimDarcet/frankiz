@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!-- $Id$ -->
-<!--
-	Copyright (C) 2004 Binet Réseau
+<!--	Copyright (C) 2004 Binet Réseau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -121,7 +120,11 @@
 </xsl:template>
 
 <xsl:template match="binet" mode="trombino">
-	<xsl:value-of select="@nom"/><xsl:text> (</xsl:text><em><xsl:value-of select="."/></em><xsl:text>) </xsl:text>
+	<a>
+		<xsl:attribute name="href"><xsl:text>trombino.php?binets=</xsl:text><xsl:value-of select="@nom"/></xsl:attribute>
+			<xsl:value-of select="@nom"/>
+		</a>
+	<xsl:if test="current()!=''"><xsl:text> (</xsl:text><em><xsl:value-of select="."/></em><xsl:text>) </xsl:text></xsl:if>
 	<xsl:if test="position()!=last()"> - </xsl:if>	
 </xsl:template>
 

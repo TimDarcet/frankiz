@@ -23,8 +23,8 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
-	Revision 1.14  2005/01/20 23:40:57  psycow
-	Modif de compatibilité
+	Revision 1.15  2005/02/04 15:13:01  psycow
+	# Nouvelle Skin # + quelques modifs - la skin est + compatible IE que FireFox mais j'y travaille ;-)
 
 	Revision 1.13  2005/01/20 20:33:34  psycow
 	Modif d'IceBlue

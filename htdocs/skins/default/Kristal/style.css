@@ -1,4 +1,4 @@
-/* skin : default | CSS : IceBlue
+/* skin : default | CSS : Kristal
 /* ###################### GENERAL #################### */
 
 * 
@@ -13,19 +13,19 @@ img {
 
 body
 {
-	background : url('./images/background.gif')  top left;
+	background : #FEF5E4 url('./images/background.jpg') repeat-y top left;
 	font: 0.8em "Arial", helvetica, sans-serif ;
 }
 
 a {
-	color:#84BDE7;
+	color:#DE5900;
 	font-weight:bold;
 	text-decoration:none;
 }
 
 a:hover {
-	color:white;
-	background-color:#A5D6EF;
+	color:#FFED5B;
+
 }
 
 /* ################### POSITIONNEMENT ################# */
@@ -35,68 +35,80 @@ div#conteneur {
 
 div#header
 {
-	position:absolute;
-	left:0px;
-	right:0px;
-	height: 259px;
-	background: url('./images/titrebackground.gif') repeat-x left top ;
+	height: 254px;
+	background: url('./images/titrebackground.jpg') repeat-x left top ;
 	overflow:hidden;
 }
 
 div#contenu {
-	width:98%;
-	margin: 0 auto;
 	position:absolute;
-	top:260px;
-	left:1%;
+	top:255px;
 	padding:0 0 0 0;
 }
 
 div#gauche {
 	float:left;
-	width:170px;
+	width:180px;
 }
 
 div#centre
 {
-	margin: 0px 200px 0 185px;
+	margin: 30px 200px 0 190px;
 }
 
 div#droite
 {
+	position:relative;
+	right:-1px !important;
+	right:0px;
 	float:right;
-	width:190px;
+	width:182px;
+	margin-top:125px;
 }
 
 div#footer
 {
-	display:none;
+	clear:both;
+	height:86px;
+	background: url('./images/pied.jpg') repeat-x left top ;
 }
 
 
 /* ############################## TITRE #################### */
 
-div#header h1 a{
+div#header h1{
 	position:absolute;
-	top:185px;
-	right:10px;
-	z-index:10;
-	width:370px;
-	height:46px;
-	background: url('./images/titre.gif') no-repeat left top ;
+	top:0px;
+	left:0px;
+	z-index:1;
+	width:766px;
+	height:254px;
+	background: url('./images/titre.jpg') no-repeat left top ;
 }
 
-div#header h1 span
+div#header h1 a {
+	position:absolute;
+	top:120px;
+	left:120px;
+	width:560px;
+	height:56px;
+}
+
+div#header h1 a span
 {
 	display: none ;
 }
 
 div#header h2
 {
-	width: 100%;
-	height: 259px ;
+	position:absolute;
+	top:0px;
+	right:0px;
+	z-index:3;
+	width:265px;
+	height: 253px ;
 	display: block ;
-	background: url('./images/imagetitre.gif') no-repeat left top ;
+	background: url('./images/titregauche.gif') no-repeat left top ;
 }
 
 div#header h2 span
@@ -114,12 +126,19 @@ div#header h3
 
 div#footer span#bas_gauche
 {	
-	display:none;
+	float:left;
+	width:388px;
+	height:87px;
+	background: url('./images/piedgauche.jpg') no-repeat left top ;
 }
 
 div#footer span#bas_droit
 {	
-	display:none;
+	display:block;
+	float: right;
+	width:181px;
+	height:87px;
+	background: url('./images/pieddroit.jpg') no-repeat top left;
 }
 
 div#footer h5 
@@ -130,42 +149,57 @@ div#footer h5
 
 /* ############# BOITE MODULE ################*/
 
-dl.boite {
-	margin:0 0 20px 0 ;
+div#gauche dl.boite, div#droite  dl.boite {
+	margin:0 ;
 	width:180px;
 }
-dl.boite dt.titre {
-	background: url('./images/petiteboitehaut.gif') no-repeat top left ;
-	height: 22px;
+div#droite dl.boite{
+	position:relative;
+	margin-top:-130px;
+}
+div#gauche dl.boite dt.titre, div#droite  dl.boite dt.titre {
+	background: url('./images/boitegauchehaut.gif') no-repeat top left ;
+	height: 108px;
 	text-align: center;
 }
-dl.boite dt.titre span {
+div#droite dl.boite dt.titre {
+	background: transparent url('./images/boitedroitehaut.jpg') no-repeat top left ;
+}
+div#gauche dl.boite dt.titre span, div#droite  dl.boite dt.titre span {
 	font-size: 1.2em ;
-	color: #5FA2D5;
+	color: #EB3B00;
 	position:relative;
-	top:5px;
-	left:2px;
+	top:45px;
+	left:0px;
 	font-weight:bold;
 }
-dl.boite dt.titre span.droitehaut {
+div#gauche dl.boite dt.titre span.droitehaut, div#droite dl.boite dt.titre span.droitehaut  {
 	display:none;
 }
-dl.boite dd.contenu {
-	padding:20px 17px 0 15px !important;
+div#gauche dl.boite dd.contenu, div#droite  dl.boite dd.contenu {
+	width:180px;
+	padding:0px 15px 0 15px !important;
 	padding-top:0px;
-	background: url('./images/petiteboite.gif') repeat-y top left;
+	background: url('./images/boitegauchecentre.jpg') repeat-y top left;
 }
-dl.boite dd.contenu span.droitecentre{
+div#droite dl.boite dd.contenu {
+	background: url('./images/boitedroitecentre.jpg') repeat-y top left;
+}
+div#gauche dl.boite dd.contenu span.droitecentre, div#droite dl.boite dd.contenu span.droitecentre {
 	display:none;
 }
-dl.boite dd.bas {
+div#gauche dl.boite dd.bas, div#droite dl.boite dd.bas  {
 	position:relative;
 	left:0px;
-	background: url('./images/petiteboitebas.gif') no-repeat top left ;
-	height: 27px;
+	background: url('./images/boitegauchebas.jpg') no-repeat top left ;
+	height: 49px;
 	text-align: center;
 }
-dl.boite dd.bas span.droitebas {
+div#droite dl.boite dd.bas {
+	background: url('./images/boitedroitebas.jpg') no-repeat top left ;
+	height:190px;
+}
+div#gauche dl.boite dd.bas span.droitebas, div#droite dl.boite dd.bas span.droitebas  {
 	display:none;
 }
 span.tour_kawa {
@@ -184,74 +218,76 @@ dl#activites div.activite p.image img {
 
 div#centre dl.boite {
 	width:100%;
-	margin:0 0 20px 0;
+	margin:0 0 20px 0px;
 }
 
 div#centre dl.boite dt.titre {
-	background: url('./images/boitetitre.gif') no-repeat top left ;
-	height: 27px;
+	background: url('./images/boitecentrehaut.jpg') no-repeat top right ;
+	height: 79px;
 	text-align: center;
 }
 div#centre dl.boite dt.titre span {
 	line-height: 24px ;
 	font-size: 1.4em ;
-	color: #fff;
+	color: #E93F04;
 	position:relative;
-	top:0px;
-	left:15px;
+	top:12px;
+	left:-25px;
 }
 div#centre dl.boite dt.titre span.droitehaut {
 	display:block;
-	float: right;
-	width:50px;
-	height:27px;
-	background: url('./images/boitetitredroite.gif') no-repeat 1px top ;
+	float: left;
+	width:89px;
+	height:79px;
+	background: url('./images/boitecentrehautgauche.jpg') no-repeat top left;
 	position:relative;
 	top:0em;
-	left:5px;
+	left:0px;
 }
 
 div#centre dl.boite dd.contenu {
-	padding: 10px 10px 0 15px; 
-	background: #fff url('./images/boitegauche.gif') repeat-y top left;
+	padding: 0 15px 0 30px; 
+	background: #F2CD99 url('./images/boitecentrecentre.jpg') repeat-y top left;
 	text-align:left;
-	border-right: #C9E5F3 1px solid;
+	margin-right:4px;
+	height:100%;
 }
 
 div#centre dl.boite dd.bas {
 	position:relative;
 	left:0px;
-	background: url('./images/boitebas.gif') no-repeat top left ;
-	height: 27px;
+	background: url('./images/boitecentrebas.jpg') no-repeat top left ;
+	height: 49px;
 	text-align: center;
 }
 
 div#centre dl.boite dd.bas span.droitebas {
 	display:block;
 	float: right;
-	width:50px;
-	height:27px;
-	background: url('./images/boitebasdroite.gif') no-repeat 1px top;
+	width:131px;
+	height:49px;
+	background: url('./images/boitecentrebasdroite.jpg') no-repeat top left;
 	position:relative;
 	top:0em;
-	right:-5px;
+	right:0px;
+}
+
+div#centre dl.boite dd.contenu span.droitecentre {
 }
 
 div#centre dl.boite span.hidenews {
 	display:block;
-	float: right;
-	width:60px;
-	height:27px;
-	background: url('./images/hidenews.gif') no-repeat 1px top;
+	float: left;
 }
 div#centre dl.boite span.hidenews a {
 	display:block;
-	width:50px;
-	height:27px;
+	width:94px;
+	height:79px;
+	background: url('./images/hidenews.jpg') no-repeat top left;
+	position:relative;
+	top:-12px;
+	left:25px;
 }
-div#centre dl.boite span.hidenews a:hover {
-	background: url('./images/hidenewshover.gif') no-repeat 1px top;
-} 
 div#centre dl.boite  span.hidenews a span {
 	display:none;
 }
@@ -259,15 +295,19 @@ div#centre dl.boite  span.hidenews a span {
 /* ################# BOITE TOL LIEN RAPIDE  ################ */
 dl#lien_tol{
 	position: absolute;
-	right:40px;
-	top:-240px !important;
-	top:-220px;
-	height:32px;
+	right:32px;
+	top:-270px;
+	width:200px;
+	height:69px;
+	margin: 0;
+	padding:0;
 }
 dl#lien_tol dd.contenu{
+	margin:0;
+	padding:0;
 	width:200px;
-	background:url('./images/Tol.gif') no-repeat 15px 22px !important;
-	background:url('./images/Tol.gif') no-repeat 0px 2px;
+	height:69px;
+	background:url('./images/tol.jpg') no-repeat -6px 23px !important;
 }
 dl#lien_tol dd.contenu span.droitecentre{
 	display:none;
@@ -279,54 +319,35 @@ dl#lien_tol dd.bas {
 	display:none;
 }
 
+form.cadretol{
+	position:relative;
+	top:20px;
+	left:19px !important;
+	left:40px;
+}
+
 form.cadretol input.bouton{
-	background:url('./images/bouton.gif') no-repeat top left;
-	width:36px;
-	height:32px;
+	background:url('./images/bouton.jpg') no-repeat top left;
+	width:24px;
+	height:30px;
 	margin:0 auto;
 	border:none;
-	position:relative;
-	top:-6px;
-	left:37px;
 	font-size:0px;
+	position:relative;
+	top:26px;
+	left:8px;
+    cursor: pointer;
 }
 form.cadretol input.champ {
+	position:relative;
+	top:-2px;
 	background-color:transparent;
 	border:none;
-	width:85px;
+	width:105px;
 	height:21px;
-	position:relative;
-	top:-11px;
-	left:27px;
-}
-
-/* #################### METEO ################ */
-
-dl#meteo{
-	position: absolute;
-	right:0px;
-	top:-195px !important;
-	top:-175px;
-	height:32px;
-}
-dl#meteo dd.contenu{
-	width:150px;
-	background:none;
-}
-dl#meteo dd.contenu a:hover{
-	background-color:transparent;
-}
-dl#meteo dd.contenu strong{
-	color:#2B8ECA;
-}
-dl#meteo dd.contenu span.droitecentre{
-	display:none;
-}
-dl#meteo dt.titre {
-	display:none;
-}
-dl#meteo dd.bas {
-	display:none;
+	font-weight:bold;
+	font-size:1.2em;
+	color:#B71B1B;
 }
 
 /* ################## PARAGRAPHE ################# */
@@ -337,7 +358,7 @@ p {
 
 p.news {
 	text-indent: 2em ;
-	padding-bottom:10px;
+	padding-bottom:5px;
 }
 p.news:first-letter {
 	font-size:1.3em;
@@ -381,13 +402,13 @@ p.note {
 /* ------- alternance jaune/rouge ------- */
 
 dl.pair {
-	background-color : #E9F4F9;
+	background-color : #F7D984;
 }
 dl.impair {
-	background-color : #DDF0FA;
+	background-color : #EFA671;
 }
 dl.top {
-	background-color : #D8F4F7;
+	background-color : #EE8E57;
 }
 
 
@@ -395,7 +416,7 @@ dl.top {
 
 dl.definition {
 	
-	margin:0px 30px 3px 30px;
+	margin:0px 30px 0px 30px;
 }
 dt.objet {
 	float:left;
@@ -427,7 +448,7 @@ dl.trombino {
 	height:150px;
 }
 dt.nom {
-	background-color : #eef;
+	background-color : #EE8E57;
 	text-align:center;
 	font-weight:bold;
 	font-size:1.3em;
@@ -468,7 +489,7 @@ form.trombino div{
 }
 form.trombino div table {
 	width:60%;
-	border: dashed 1px silver;
+	border: dashed 1px #EE8E57;
 	margin:0 auto;
 }
 
@@ -504,7 +525,7 @@ dl.meteo {
 	margin:0px 30px 10px 30px;
 }
 dt.quand {
-	background-color : #eef;
+	background-color : #EE8E57;
 	text-align:left;
 	font-weight:bold;
 	font-size:1.3em;
@@ -525,7 +546,7 @@ dl#meteo dd.contenu {
 /* ----------- Binets ------------*/
 
 dl.binets {
-	margin:0px 30px 3px 30px;
+	margin:0px 30px 0px 30px;
 }
 dt.icon {
 	float:left;
@@ -571,11 +592,11 @@ dl#qdj table.qdj td span{
 }
 
 dl#qdj table.qdj td span.rouje {
-	background:url(images/pointrouje.gif) no-repeat top center;
+	background:url(images/pointrouje.jpg) no-repeat top center;
 }
 
 dl#qdj table.qdj td span.jone {
-	background:url(images/pointjone.gif) no-repeat top center;
+	background:url(images/pointjone.jpg) no-repeat top center;
 }
 
 table.reponse_qdj {
@@ -593,10 +614,10 @@ table.reponse_qdj td div.col span {
 	height:50px;
 }
 table.reponse_qdj td div.col span.jone {
-	background:url(images/jaune.gif) repeat-y top center;
+	background:url(images/jaune.jpg) repeat-y top center;
 }
 table.reponse_qdj td div.col span.rouje {
-	background:url(images/rouge.gif) repeat-y top center;
+	background:url(images/rouge.jpg) repeat-y top center;
 }
 /*--------- Etat des serveur-----------*/
 
@@ -656,73 +677,71 @@ ul#menu, ul#ecole, ul.contacts,ul.none, ul#services, ul#serveurs,ul{
 }
 
 /* ------- Le menu de gauche ---------*/
-
-dl#liens_navigation {
+dl#liens_navigation{
+	margin:0 0 0 0 ;
 	width:180px;
-	text-align: center;
-	margin-bottom:20px;
 }
 dl#liens_navigation dt.titre {
-	background: url('./images/petiteboitehaut.gif') no-repeat top left ;
-	height: 20px;
+	background: url('./images/boitegauchehaut.gif') no-repeat top left ;
+	height: 108px;
 	text-align: center;
 }
 dl#liens_navigation dt.titre span {
-	width: 180px;
-	font-size: 1.2em;
-	color: #5FA2D5;
+	font-size: 1.2em ;
+	color: #EB3B00;
 	position:relative;
-	top:6px;
-	left:4px;
+	top:45px;
+	left:0px;
 	font-weight:bold;
 }
-dl#liens_navigation dt.titre span.droitehaut {
+dl#liens_navigation dt.titre span.droitehaut{
 	display:none;
 }
-dl#liens_navigation dd.contenu {
-	padding:7px 17px 0 15px !important;
-	padding-top:0px; 
-	background: url('./images/petiteboite.gif') repeat-y top left;
+dl#liens_navigation dd.contenu{
+	width:150px;
+	padding:0px 15px 0 15px !important;
+	padding-top:0px;
+	background: url('./images/boitegauchecentre.jpg') repeat-y top left;
 }
-dl#liens_navigation dd.contenu span.droitecentre {
+
+dl#liens_navigation dd.contenu span.droitecentre{
 	display:none;
 }
 dl#liens_navigation dd.bas {
 	position:relative;
 	left:0px;
-	background: url('./images/petiteboitebas.gif') no-repeat top left ;
-	height: 27px;
+	background: url('./images/boitegauchebas.jpg') no-repeat top left ;
+	height: 49px;
 	text-align: center;
 }
 dl#liens_navigation dd.bas span.droitebas {
 	display:none;
 }
-ul#menu,ul.contacts {
+
+ul.contacts {
 	padding:0px !important;
 	padding-top:10px;
-	margin-left:-8px;
 }
-ul#menu li, ul.contacts li{
+ul.contacts li {
 	margin:0;
 	padding:0;
 	position:relative;
 	left:3px;
 }
-ul#menu li a, ul.contacts li a {
+ul.contacts li a {
 	display:block;
-	width:166px;
+	width:150px;
 	height:20px;
 	text-decoration:none;
 	text-align:center;
-	color:#84BDE7;
+	color:#DE5900;
 }
 
-ul#menu li a:hover, ul.contacts li a:hover {
-	color:white;
-	background-color:#A5D6EF;
+ul.contacts li a:hover {
+	color:#FFEE5B;
 }
 
-ul#menu li a span, ul.contacts li a span {
+ul.contacts li a span {
 	font-weight:bold;
 }
 
@@ -797,17 +816,17 @@ td.boutons {
 /*--------- FAQ et Xshare ---------*/
 li.noeud_ferme
 {
-	list-style-image:url('../images/fold_close.gif');
+	list-style-image:url('../images/fold_close.jpg');
 	margin-left:40px;
 }
 li.noeud_ouvert
 {
-	list-style-image:url('../images/fold_open.gif');
+	list-style-image:url('../images/fold_open.jpg');
 	margin-left:40px;
 }
 ul.feuille
 {
-	list-style-image:url('../images/question.gif');
+	list-style-image:url('../images/question.jpg');
 }
 
 ul.feuille li {
@@ -816,7 +835,7 @@ ul.feuille li {
 
 li.feuille {
 	margin: 10px;
-	border:1px dashed blue;
+	border:1px dashed #EE8E57;
 	list-style-type: none ;
 	padding:5px;
 }
@@ -833,7 +852,6 @@ div.hr hr {
 }
 
 dl.boite h3, dl.boite h2 {
-	padding-bottom:5px;
 	display:block;
 }
 

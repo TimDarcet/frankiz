@@ -32,6 +32,7 @@
 		</dd>
 		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>
+	<br/>
 </xsl:template>
 
 <xsl:template match="liste" mode="vocabulaire">

@@ -811,6 +811,7 @@ ul#menu li#siteseleves a:hover
 /* ################## FORMULAIRE ################ */
 
 form {
+	width:98%;
 	padding:7px;
 }
 

@@ -38,6 +38,10 @@
 	</dl>
 </xsl:template>
 
+<xsl:template match="page[@id='meteo']">
+	<xsl:apply-templates select="./meteo"/>
+</xsl:template>
+
 <xsl:template match="page/meteo">
 	<dl id="page_meteo" class="boite">
 		<dt class="titre">
@@ -100,6 +104,9 @@
 				</dl>
 				<br/>
 			</xsl:for-each>
+			<p class="center">
+				<xsl:apply-templates select="../lien"/>
+			</p>
 		</dd>
 		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 	</dl>

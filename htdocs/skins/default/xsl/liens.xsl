@@ -46,7 +46,7 @@
 			<span><xsl:value-of select="@titre"/></span>	
 		</dt>
 		<dd class="contenu">
-			<ul id="menu">
+			<ul id="menu" class="contacts">
 				<xsl:apply-templates select="lien[@id!='meteo']" mode="liste"/>
 			</ul>
 		</dd>
