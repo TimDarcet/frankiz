@@ -3,9 +3,14 @@
 	Page qui permet aux admins de valider une activité
 	
 	$Log$
+	Revision 1.2  2004/10/06 14:12:27  kikx
+	Page de mail promo quasiment en place ...
+	envoie en HTML ...
+	Page pas tout a fait fonctionnel pour l'instant
+
 	Revision 1.1  2004/09/20 22:19:27  kikx
 	test
-
+	
 
 	
 */
@@ -14,7 +19,8 @@ require_once "../include/global.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-
+if(!verifie_permission('admin'))
+	rediriger_vers("/admin/");
 
 
 $temp = explode("admin",$_SERVER['SCRIPT_FILENAME']) ;

@@ -3,10 +3,15 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.7  2004/10/06 14:12:27  kikx
+	Page de mail promo quasiment en place ...
+	envoie en HTML ...
+	Page pas tout a fait fonctionnel pour l'instant
+
 	Revision 1.6  2004/09/18 16:04:52  kikx
 	Beaucoup de modifications ...
 	Amélioration des pages qui gèrent les annonces pour les rendre compatible avec la nouvelle norme de formatage xml -> balise web et balise image qui permette d'afficher une image et la signature d'une personne
-
+	
 	Revision 1.5  2004/09/17 22:49:29  kikx
 	Rajout de ce qui faut pour pouvoir faire des telechargeement de fichiers via des formulaires (ie des champs 'file' des champ 'hidden') de plus maintenant le formulaire sont en enctype="multipart/form-data" car sinon il parait que ca marche pas !
 	
@@ -17,7 +22,8 @@ require_once "../include/global.inc.php";
 
 // Vérification des droits
 demande_authentification(AUTH_FORT);
-
+if(!verifie_permission('admin'))
+	rediriger_vers("/admin/");
 
 
 $temp = explode("admin",$_SERVER['SCRIPT_FILENAME']) ;
