@@ -4,9 +4,12 @@
 	une seconde machine dans son casert.
 	
 	$Log$
+	Revision 1.8  2004/09/20 08:29:24  kikx
+	Rajout d'une page pour envoyer des mail d'amour a ses webmestres adorés
+
 	Revision 1.7  2004/09/17 11:34:10  kikx
 	Bla
-
+	
 	Revision 1.6  2004/09/15 23:20:07  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
@@ -16,7 +19,7 @@
 */
 
 require_once "../include/global.inc.php";
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MINIMUM);
 
 $eleve_id=$_SESSION['user']->uid;
 
