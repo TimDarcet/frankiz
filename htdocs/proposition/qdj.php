@@ -3,8 +3,8 @@
 	Permet de proposer une QDJ
 	
 	$Log$
-	Revision 1.2  2004/10/13 21:11:16  pico
-	QDJ
+	Revision 1.3  2004/10/13 21:25:59  pico
+	Oublié ça aussi :(
 
 	
 	
@@ -33,7 +33,7 @@ if (!isset($_REQUEST['envoie'])) {
 		<champ titre="Réponse 1" id="reponse1" valeur="<? if (isset($_REQUEST['reponse1'])) echo $_REQUEST['reponse1']?>" />
 		<champ titre="Réponse 2" id="reponse2" valeur="<? if (isset($_REQUEST['reponse2'])) echo $_REQUEST['reponse2']?>" />
 		<bouton titre="Mise à jour" id="upload"/>
-		<bouton titre="Valider" id="envoie"  onClick="return window.confirm('Voulez vous vraiment envoyer ce mail ?')"/>
+		<bouton titre="Valider" id="envoie"  onClick="return window.confirm('Voulez vous vraiment proposer cette QDJ ?')"/>
 	</formulaire>
 <?
 //==================================================
