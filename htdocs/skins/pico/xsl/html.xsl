@@ -57,7 +57,7 @@
 	</xsl:if>
 	<xsl:apply-templates select="commentaire"/>
 	<xsl:variable name="nombre_colonnes" select="count(entete)"/>
-	<table class="liste" cellspacing="0" cellpadding="0">
+	<table class="liste">
 		<tr>
 			<xsl:apply-templates select="entete"/>
 		</tr>
@@ -75,7 +75,7 @@
 		<h2><span><xsl:value-of select="@titre"/></span></h2>
 	</xsl:if>
 		<xsl:variable name="nombre_colonnes" select="count(entete)+ number(contains('oui',@selectionnable))"/>
-		<table class="liste" cellspacing="0" cellpadding="0">
+		<table class="liste">
 			<tr>
 				<xsl:if test="@selectionnable='oui'"><td class="entete">&#160;</td></xsl:if>
 				<xsl:apply-templates select="entete"/>
