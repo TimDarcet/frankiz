@@ -21,9 +21,12 @@
 	Page qui permet aux admins de vider la bdd des activités périmées
 	
 	$Log$
+	Revision 1.3  2004/12/07 13:10:56  pico
+	Passage du nettoyage en formulaire
+
 	Revision 1.2  2004/12/07 08:45:13  pico
 	Nettoyage des qdj
-
+	
 	Revision 1.1  2004/12/07 08:36:39  pico
 	Ajout d'une page pour pouvoir vider un peu les bases de données (genre pas garder les news qui datent de vieux)
 		
@@ -52,7 +55,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 // Enregistrer ...
 
-foreach ($_REQUEST AS $keys => $val){
+foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
 
 
@@ -92,12 +95,17 @@ foreach ($_REQUEST AS $keys => $val){
 	}
 }
 
-
-echo "<lien titre=\"Supprimer les annonces périmées depuis plus de 5 jours\" url=\"admin/nettoyage.php?annonces\"/>" ;
-echo "<lien titre=\"Supprimer les affiches périmées depuis plus de 5 jours\" url=\"admin/nettoyage.php?affiches\"/>" ;
-echo "<lien titre=\"Supprimer les qdj périmées depuis plus de 5 jours\" url=\"admin/nettoyage.php?qdj\"/>" ;
-	
 ?>
+	<formulaire id="nett_fkz" titre="Nettoyer les bdd Fkz" action="admin/nettoyage.php">
+		<choix titre="Eléments à vider" id="element" type="checkbox">
+			<option  titre="Supprimer les annonces périmées depuis plus de 5 jours" id="annonces"/>
+			<option  titre="Supprimer les affiches périmées depuis plus de 5 jours" id="affiches"/>
+			<option  titre="Supprimer les qdj périmées depuis plus de 5 jours" id="qdj"/>
+			
+		</choix>
+		<bouton id='mod_compte_fkz' titre='Changer'/>
+	</formulaire>
+
 </page>
 
 <?php

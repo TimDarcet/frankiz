@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.9  2004/12/07 13:10:56  pico
+	Passage du nettoyage en formulaire
+
 	Revision 1.8  2004/12/07 08:36:39  pico
 	Ajout d'une page pour pouvoir vider un peu les bases de données (genre pas garder les news qui datent de vieux)
-
+	
 	Revision 1.7  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
@@ -145,7 +148,6 @@ $date = date("Y-m-d", time());
 
 <?
 
-	echo "<lien titre=\"Supprimer les affiches périmées depuis plus de 5 jours\" url=\"admin/nettoyage.php?affiches\"/>" ;
 
 // Affiche la planification existante
 ?>
