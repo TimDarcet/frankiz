@@ -21,9 +21,14 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
-	Revision 1.44  2005/01/31 15:28:40  alban
-	Un petit message après le renvoi vers wiki pour les activites
+	Revision 1.45  2005/02/10 21:37:53  pico
+	- Pour les ids de news, fait en fonction de la date de péremption, c'est mieux que seulement par id, mais y'a tjs un pb avec les nouvelles fraiches
+	- Correction pour éviter que des gens postent des annonces qui sont déjà périmées
 
+	Revision 1.44  2005/01/31 15:28:40  alban
+	
+	Un petit message après le renvoi vers wiki pour les activites
+	
 	Revision 1.43  2005/01/27 17:27:50  pico
 	/me vérifiera ses parenthèses la prochaine fois
 	
@@ -301,7 +306,7 @@ if (isset($_POST['valid'])) {
 
 		<note>Ton annonce disparaîtra le jour de la date de péremption.</note>
 		<choix titre="Date de péremption" id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
-<?		for ($i=0 ; $i<MAX_PEREMPTION ; $i++) {
+<?		for ($i=1 ; $i<=MAX_PEREMPTION ; $i++) {
 			$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
 			$date_value = date("d/m/y" , $date_id);
 ?>

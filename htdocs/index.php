@@ -21,9 +21,13 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.31  2005/02/10 21:37:53  pico
+	- Pour les ids de news, fait en fonction de la date de péremption, c'est mieux que seulement par id, mais y'a tjs un pb avec les nouvelles fraiches
+	- Correction pour éviter que des gens postent des annonces qui sont déjà périmées
+
 	Revision 1.30  2005/02/08 21:57:56  pico
 	Correction bug #62
-
+	
 	Revision 1.29  2005/02/02 12:40:38  kikx
 	Resolution bug 57
 	Pb restant, je ne suis jamais sur que l'annonce d'en dessous c'est id-1 car c'est la skin qui reordonne
@@ -158,8 +162,17 @@ $DB_web->query("SELECT annonces.annonce_id,stamp,perime,titre,contenu,en_haut,ex
 					 ."IFNULL(mail,CONCAT(login,'@poly.polytechnique.fr')) as mail, $annonces_lues2 "
 					 ."FROM annonces LEFT JOIN trombino.eleves USING(eleve_id) $annonces_lues1"
 					 ."WHERE (perime>'".date("Y-m-d H:i:s",time())."') ORDER BY perime DESC");
+$nb =$DB_web->num_rows();
+$cpt =0;
 while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail,$visible)=$DB_web->next_row()) {
 	if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
+	if($cpt > 0){
+			if(est_authentifie(AUTH_MINIMUM) && $visible)
+			echo "<lien url=\"?lu=$idprec#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
+			echo "</annonce>";
+	}
+	$idprec=$id;
+	$cpt++;
 ?>
 	<annonce id="<?php echo $id ?>" 
 		titre="<?php echo $titre ?>" visible="<?=$visible?"oui":"non" ?>"
@@ -170,13 +183,12 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 			echo "<image source=\"".DATA_DIR_URL."annonces/$id\" texte=\"logo\"/>\n";
 		echo wikiVersXML($contenu);
 		echo "<eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"$promo\" surnom=\"$surnom\" mail=\"$mail\"/>\n";
-		
+	if($nb==$cpt){
 		if(est_authentifie(AUTH_MINIMUM) && $visible)
-			echo "<lien url=\"?lu=$id#annonce_".($id-1)."\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
-?>
-	</annonce>
-<?php }
-
+		echo "<lien url=\"?lu=$idprec#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
+		echo "</annonce>";
+	}
+}
 echo "</page>\n";
 require_once "include/page_footer.inc.php";
 ?>

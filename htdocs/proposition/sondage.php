@@ -21,9 +21,13 @@
 	Page pour demander les sondages !
 	
 	$Log$
+	Revision 1.13  2005/02/10 21:37:53  pico
+	- Pour les ids de news, fait en fonction de la date de péremption, c'est mieux que seulement par id, mais y'a tjs un pb avec les nouvelles fraiches
+	- Correction pour éviter que des gens postent des annonces qui sont déjà périmées
+
 	Revision 1.12  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
-
+	
 	Revision 1.11  2005/01/18 10:35:02  pico
 	Interface avancée d'édition de sondages (on édite le code, utile pour faire plusieurs sondages de même type)
 	
@@ -213,7 +217,7 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 ?>
 	
 	<choix titre="Sondage jusqu'à " id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
-<?	for ($i=0 ; $i<MAX_PEREMPTION ; $i++) {
+<?	for ($i=1 ; $i<=MAX_PEREMPTION ; $i++) {
 		$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
 		$date_value = date("d/m/y" , $date_id);
 ?>
