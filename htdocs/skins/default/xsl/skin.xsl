@@ -23,8 +23,8 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
-	Revision 1.1  2004/11/24 20:26:40  schmurtz
-	Reorganisation des skins (affichage melange skin/css + depacement des css)
+	Revision 1.2  2004/11/24 21:14:57  psycow
+	Commit des modif faites sous windows et reorganisation de skin
 
 	Revision 1.9  2004/11/13 05:26:18  psycow
 	Commit de sauvegarde, modification du menu, correction de bug d'affichage
@@ -83,15 +83,15 @@
 				<xsl:value-of select="@base"/>
 			</xsl:attribute>
 		</base>
-		<link rel="stylesheet" type="text/css" href="skins/default/default/style.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="skins/default/style.css" media="screen" />
 		<xsl:apply-templates select="module[@id='liste_css']" mode="css"/>
 	</head>
 
 	<body>
 		<div id="conteneur">
 			<div id="header">
-				<h1><a href="" title="Accueil - Page des Eleves de l'X"><span>Serveur des Elèves</span></a></h1>
-				<h2><span>200 ans de Bob et de Pales</span></h2>
+				<h1><a href="" title="Accueil - Page des Eleves de l'X"><span>Frankiz</span></a></h1>
+				<h2><span>Serveur des Eleves</span></h2>
 				<h3><a href="http://www.polytechnique.fr" title="Ecole Polytechnique"><span> Site de l'Ecole Polytechnique</span></a></h3>
 			</div>
 		
@@ -113,9 +113,14 @@
 			<div id="centre">
 				<xsl:if test="page/@id='accueil'">
 					<xsl:apply-templates select="module[@id='anniversaires']"/>
-					<xsl:apply-templates select="page[@id='accueil']" mode="sommaire"/>
-					<div class="hr"><hr /></div>
-					<xsl:apply-templates select="page[@id='accueil']" mode="complet"/>
+					<xsl:if test="boolean(page//annonce)">
+						<xsl:apply-templates select="page[@id='accueil']" mode="sommaire"/>
+						<div class="hr"><hr /></div>
+						<xsl:apply-templates select="page[@id='accueil']" mode="complet"/>
+					</xsl:if>
+					<xsl:if test="not(boolean(page//annonce))">
+						<xsl:apply-templates select="page" mode="autre"/>
+					</xsl:if>
 				</xsl:if>
 				<xsl:apply-templates select="page[@id='trombino']"/>
 				<xsl:apply-templates select="page[@id='meteo']"/>
@@ -157,5 +162,17 @@
 	</dl>
 </xsl:template>
 
+<xsl:template match="page" mode="autre"><!-- Affichage d'une page générique, en tout html-->
+	<dl class="boite">
+		<dt class="titre">
+			<span class="droitehaut"><xsl:text> </xsl:text></span>
+			<span><xsl:value-of select="@titre"/></span>	
+		</dt>
+		<dd  class="contenu">
+			<xsl:apply-templates/>
+		</dd>
+		<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
+	</dl>
+</xsl:template>
 
 </xsl:stylesheet>

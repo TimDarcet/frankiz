@@ -46,7 +46,7 @@
 		</dt>
 		<dd class="contenu">
 			<dl class="meteo pair">
-				<dt class="quand">Aujourd'hui</dt>
+				<dt class="quand top">Aujourd'hui</dt>
 				<dd class="prevision">
 					Le soleil est présent de <xsl:value-of select="now/sunrise"/> à <xsl:value-of select="now/sunset"/><br />
 					La température actuelle est de <xsl:value-of select="now/temperature"/>°C<br />
@@ -73,7 +73,7 @@
 			<xsl:for-each select="jour[@date=0 or @date=1 or @date=2]">
 				<dl>
 					<xsl:attribute name="class">meteo<xsl:text> </xsl:text><xsl:if test="(position() mod 2)=0">pair</xsl:if><xsl:if test="(position() mod 2)=1">impair</xsl:if></xsl:attribute>
-					<dt class="quand">
+					<dt class="quand top">
 						<xsl:choose>
 							<xsl:when test="@date=0">
 								Ce soir

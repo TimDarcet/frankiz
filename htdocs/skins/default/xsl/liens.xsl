@@ -22,7 +22,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="module[@id='liens_contacts']">
-	<dl class="boite">
+	<dl class="liens_contacts">
 		<dt class="titre">
 			<span class="droitehaut"><xsl:text> </xsl:text></span>
 			<span><xsl:value-of select="@titre"/></span>	
@@ -37,7 +37,7 @@
 </xsl:template>
 
 <xsl:template match="module[@id='liens_ecole']">
-	<dl class="boite">
+	<dl id="liens_ecole">
 		<dt class="titre">
 			<span class="droitehaut"><xsl:text> </xsl:text></span>
 			<span><xsl:value-of select="@titre"/></span>	
@@ -75,6 +75,15 @@
 			<span><xsl:value-of select="@titre" /></span>
 		</a>
 	</li>
+</xsl:template>
+
+<xsl:template match="module[@id='liste_css']" mode="css">
+	<xsl:for-each select="lien">
+		<link rel="alternate stylesheet" type="text/css">
+			<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+			<xsl:attribute name="title"><xsl:value-of select="@titre"/></xsl:attribute>
+		</link>
+    </xsl:for-each>
 </xsl:template>
 
 </xsl:stylesheet>

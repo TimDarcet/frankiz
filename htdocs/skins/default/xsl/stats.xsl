@@ -23,7 +23,7 @@
 
 <xsl:template match="module[@id='stats']">
 	<xsl:if test="boolean(statistiques/serveur)">
-		<dl class="boite">
+		<dl class="stats">
 			<dt class="titre">
 				<span class="droitehaut"><xsl:text> </xsl:text></span>
 				<span>Etat des Serveurs</span>	
@@ -45,7 +45,7 @@
 			<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 		</dl>
 	</xsl:if>
-	<dl class="boite">
+	<dl class="service">
 		<dt class="titre">
 			<span class="droitehaut"><xsl:text> </xsl:text></span>
 			<span>Statistiques :</span>	

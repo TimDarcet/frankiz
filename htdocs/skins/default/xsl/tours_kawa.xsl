@@ -29,7 +29,7 @@
 				<p class="titre">Tour Kawa</p>
 				<ul class="none">
 				<xsl:for-each select="liste/element">
-					<li><strong><xsl:value-of select="colonne[@id='jour']"/>: </strong>
+					<li><strong><xsl:value-of select="colonne[@id='jour']"/>: </strong><br/>
 					<span class="tour_kawa"><xsl:value-of select="colonne[@id='kawa']"/></span></li>
 				</xsl:for-each>
 				</ul>
