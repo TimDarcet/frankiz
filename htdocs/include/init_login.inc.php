@@ -36,13 +36,16 @@
 	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
 
 	$Log$
+	Revision 1.9  2005/01/11 17:42:25  pico
+	coquille
+
 	Revision 1.8  2004/12/16 23:00:12  schmurtz
 	Suppression du lien Se deconnecter si l'utilisateur est loguÃ© par cookie.
 	Ca evite de le faire sans le vouloir et de devoir remettre le cookie.
-
+	
 	Pour rester coherent, se deloguer quand on est authentifie par mot de passe
 	et que le cookie est active = revenir a une authentification faible par cookie.
-
+	
 	Revision 1.7  2004/12/16 16:45:14  schmurtz
 	Correction d'un bug dans la gestion des authentifications par cookies
 	Ajout de fonctionnalitees de log d'erreur de connections ou lors des bugs
@@ -214,7 +217,7 @@ function demande_authentification($minimum) {
 			<champ id="passwd" titre="Mot de passe" valeur=""/>
 			<bouton id="connect" titre="Connexion"/>
 		</formulaire>
-		<p>Si tu as oublié ton mot de passe ou que tu pas encore de compte,
+		<p>Si tu as oublié ton mot de passe ou que tu n'as pas encore de compte,
 		clique <a href="<?php echo BASE_URL.'/profil/mdp_perdu.php'?>">ici</a>.</p>
 	</page>
 <?php
