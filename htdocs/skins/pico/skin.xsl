@@ -107,8 +107,8 @@
 
 <xsl:template match="cadre">
 	<h2><xsl:value-of select="@titre"/></h2>
-	<div style="text-align: center"><xsl:apply-templates select="image"/></div>
-	<xsl:apply-templates select="html"/>
+	<xsl:if test="count(image)"><div style="text-align: center"><xsl:apply-templates select="image"/></div></xsl:if>
+	<xsl:apply-templates/>
 </xsl:template>
 
 

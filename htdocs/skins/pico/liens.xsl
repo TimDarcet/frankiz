@@ -24,7 +24,7 @@
 
 
 <xsl:template match="module[@id='liens_contacts']">
- <div class="fkz_titre"><span id="contacts_logo"><span id="contacts">Contacts</span></span></div>
+ <div class="fkz_titre"><span id="contacts_logo"><span id="contacts">Contribuer</span></span></div>
   <div class="fkz_module">
     <ul class="fkz_contact">
     <xsl:for-each select="lien">
