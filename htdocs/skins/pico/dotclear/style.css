@@ -192,11 +192,6 @@ span.fkz_logo{ 	font-size: 2em; }
 	color:#333;
 }
 
-div.fkz_page_titre {
-	font-size:200%;
-}
-
-
 .fkz_sommaire_titre ,div.fkz_page_titre,div.fkz_annonces_titre,div.fkz_anniversaire_titre,.fkz_titre,.fkz_titre a {
 	height:20px;
 	margin:0px;
@@ -209,6 +204,10 @@ div.fkz_page_titre {
 	background : transparent url(images/bg-title-sidebar.png) no-repeat 100% 0;
 }
 
+div.fkz_page_titre {
+	font-size:200%;
+	margin-bottom:20px;
+}
 
 .fkz_anniversaire,.fkz_module_corps,div.fkz_liens_nav {
 	margin-bottom: 10px;
