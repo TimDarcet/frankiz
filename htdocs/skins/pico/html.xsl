@@ -46,7 +46,6 @@
 		<h2><xsl:value-of select="@titre"/></h2>
 	</xsl:if>
 	<xsl:apply-templates select="commentaire"/>
-	<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 	<xsl:variable name="nombre_colonnes" select="count(entete)+count(@selectionnable)"/>
 	<div class="liste" cellspacing="0" cellpadding="0">
 		<div>
