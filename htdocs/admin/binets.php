@@ -61,7 +61,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<entete id="nom" titre="Nom"/>
 		<entete id="description" titre="Description"/>
 <?php
-		$result = mysql_query("SELECT nom,description,binet_id FROM binets");
+		$result = mysql_query("SELECT nom,description,binet_id FROM binets ORDER BY nom ASC");
 		while(list($nom,$desc,$id) = mysql_fetch_row($result)) {
 			echo "\t\t<element id=\"$id\">\n";
 			echo "\t\t\t<colonne id=\"nom\">$nom</colonne>\n";
