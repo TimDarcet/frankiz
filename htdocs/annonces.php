@@ -3,10 +3,14 @@
 	Annonces de frankiz. Page d'acceuil pour les personnes déjà loguées.
 	
 	$Log$
+	Revision 1.14  2004/10/21 11:00:08  pico
+	Correction gestion des catégories
+	(le champ sql avait changé mais pas la fonction de comparaison de dates)
+
 	Revision 1.13  2004/10/20 23:21:39  schmurtz
 	Creation d'un element <html> qui permet d'afficher du html brute sans verification
 	C'est ce qui est maintenant utilise dans les annonces/cadres
-
+	
 	Revision 1.12  2004/10/20 19:59:42  pico
 	Ajout champ id
 	
@@ -47,8 +51,8 @@ require_once "include/global.inc.php";
 
 function get_categorie($en_haut,$stamp,$perime) {
 	if($en_haut==1) return "important";
-	elseif($stamp > date("YmdHis",time()-12*3600)) return "nouveau";
-	elseif($perime < date("YmdHis",time()+24*3600)) return "vieux";
+	elseif($stamp > date("Y-m-d H:i:s",time()-12*3600)) return "nouveau";
+	elseif($perime < date("Y-m-d H:i:s",time()+24*3600)) return "vieux";
 	else return "reste";
 }
 
