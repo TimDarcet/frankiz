@@ -21,10 +21,13 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.13  2004/10/31 22:14:11  kikx
+	Vocabulaire de L'X
+
 	Revision 1.12  2004/10/29 16:42:31  kikx
 	Rajout des id sur les liens de navigation
 	Ca pêrmet au skinneur soit de mettre en gras certain liens specifique soit de remplacer les liens par des images comme il le souhaite
-
+	
 	Revision 1.11  2004/10/26 17:52:07  kikx
 	J'essaie de respecter la charte de weather.com mais c'est chaud car il demande le mettre leur nom en gras ... et je peux pas le faire avec la skin
 	
@@ -77,4 +80,6 @@
 	<?php if(!empty($_SESSION['user']->perms)): ?>
 		<lien id="admin" titre="Administration" url="gestion/" />
 	<?php endif; ?>
+	<lien id="vocab" titre="Vocabulaire" url="vocabulaire.php" />			
+
 </module>
