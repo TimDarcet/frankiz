@@ -22,9 +22,12 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.50  2005/02/15 19:50:10  kikx
+	commit pour la forme
+
 	Revision 1.49  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
-
+	
 	Revision 1.48  2005/02/09 20:15:51  pico
 	Ajout d'un droit pour les admin@windows pour valider les demandes de licences
 	
@@ -452,7 +455,7 @@ function diff_to_xml($oldString, $newString) {
 
 function log_admin($id,$log) {
 	global $DB_admin ;
-	$log2 = htmlentities($log,ENT_QUOTES) ;
+	$log2 = str_replace(array('&','<','>','\\\'','\\"','\\\\'),array('&amp;','&lt;','&gt;','&apos;','&quot;','&#92;'),$log);
 	$DB_admin->query("INSERT INTO log_admin SET log='$log2', id_admin=$id") ;
 }
 ?>
