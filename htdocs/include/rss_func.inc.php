@@ -21,9 +21,12 @@
 		Fonction pour parser des rss
 		
 		$Log$
+		Revision 1.8  2004/11/24 23:31:11  pico
+		Affichage plus correct des rss (les &#232; sont maintenant afichés par le navigateur)
+
 		Revision 1.7  2004/11/24 21:51:16  pico
 		Passage du mode d'affichage en paramètre dans la xsl
-
+		
 		Revision 1.6  2004/11/24 21:09:04  pico
 		Sauvegarde avant mise à jour skins
 		
@@ -60,19 +63,17 @@ function rss_xml($site,$mode = 'complet') {
 		$xml .= fgets($fp, 4000);
 	}
 	$xml = strstr($xml,"<?xml");
-	$trans_tbl = get_html_translation_table (HTML_ENTITIES,ENT_QUOTES);
+	$trans_tbl = get_html_translation_table(HTML_ENTITIES,ENT_NOQUOTES);
 	$trans_tbl = array_flip ($trans_tbl);
 	$xml =  strtr($xml, $trans_tbl);
-	$trans_tbl = get_html_translation_table ();
-	$trans_tbl = array_flip ($trans_tbl);
-	$xml =  strtr($xml, $trans_tbl);
-	$xml =  str_replace("&","&amp;",$xml);
+	$xml =  str_replace("&(^#)","&amp;",$xml);
 
 	// traduction du rss dans notre format
 	if(strstr($xml,"<rss")){
 		$xh = xslt_create();
 		xslt_set_encoding($xh, "ISO-8859-1");
 		$params = array('mode'=>$mode);
+		echo BASE_LOCAL.'/include/rss_convert.xsl';
 		echo xslt_process($xh, 'arg:/_xml', BASE_LOCAL.'/include/rss_convert.xsl', NULL, array('/_xml'=>$xml),$params);
 		xslt_free($xh);
 	}
