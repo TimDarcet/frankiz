@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.16  2004/11/08 11:55:13  pico
+	Maintenant ça supprime bien tous les fichiers
+
 	Revision 1.15  2004/11/08 09:15:50  kikx
 	Effacement du repertoire avant le telechargement
-
+	
 	Revision 1.14  2004/11/08 09:10:46  kikx
 	Mise en place de la partie upload du site
 	
@@ -189,7 +192,7 @@ if(verifie_permission_webmestre($_GET['binet'])){
 		if ($_FILES['file']['tmp_name']!='none') {
 			$DB_trombino->query("SELECT folder FROM binets WHERE binet_id=".$_GET['binet']);
 			list($folder) = $DB_trombino->next_row() ;
-			rmdir(BASE_BINETS.$folder) ;// On supprime tout
+			deldir(BASE_BINETS.$folder) ;// On supprime tout
 			mkdir(BASE_BINETS.$folder) ;// On crée le repertopire qui va bien
 			unzip($_FILES['file']['tmp_name'],BASE_BINETS.$folder,true) ;
 		} else {
