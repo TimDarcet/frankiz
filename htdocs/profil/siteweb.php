@@ -21,9 +21,12 @@
 	Pour gerer son site web perso
 		
 	$Log$
+	Revision 1.10  2005/01/06 17:31:33  pico
+	Mise à jour de l'explication
+
 	Revision 1.9  2005/01/06 17:22:17  pico
 	Pour que ce soient les root qui recoivent les mails d'acces externe aux sites des élèves.
-
+	
 	Revision 1.8  2004/12/16 13:00:42  pico
 	INNER en LEFT
 	
@@ -131,7 +134,10 @@ require "../include/page_header.inc.php";
 			<note>Nous te conseillons de sauvegarder ton site avant d'uploader le nouveau en cas de problème.</note>
 			<lien titre="Télécharger en .zip" url="profil/siteweb.php?download_type=zip" /><br/>
 			<lien titre="Télécharger en .tar.gz" url="profil/siteweb.php?download_type=tar.gz" /><br/>
-			<note>Si tu souhaites que ton site apparaisse sur la liste des sites élèves, clique sur le bouton "Extérieur"</note>
+			<note>
+				Si tu souhaites que ton site apparaisse sur la liste des sites élèves visibles de l'extérieur, clique sur le bouton "Extérieur", cette demande est soumise à validation.<br/>
+				Dans tous les cas, ton site sera listé sur la liste des sites perso accessibles pour les gens loggués.
+			</note>
 			<bouton id="ext" titre="Extérieur"/>
 		<?
 		}
