@@ -48,7 +48,7 @@ if(isset($_POST['nouveau'])) {
 require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="admin_binets" titre="Frankiz : liste des binets">
-	<h1>Liste des binets</h1>
+	<h2>Liste des binets</h2>
 <?php
 	if(!empty($message))
 		echo "<p>$message</p>\n";
