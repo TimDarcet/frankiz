@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.24  2004/12/01 20:29:48  kikx
+	Oubli pour les webmestres
+
 	Revision 1.23  2004/11/27 16:10:52  pico
 	Correction d'erreur de redirection et ajout des web à la validation des activités.
-
+	
 	Revision 1.22  2004/11/25 11:52:10  pico
 	Correction des liens mysql_id
 	
@@ -300,7 +303,7 @@ if(verifie_permission_webmestre($_GET['binet'])){
 	<?
 	echo $message2 ;
 	?>
-	<notice> Si tu ne souhaites pas que ton binet apparaisse dans la liste des binets sur le site, alors supprime le champs Http</notice>
+	<note> Si tu ne souhaites pas que ton binet apparaisse dans la liste des binets sur le site, alors supprime le champs Http</note>
 		<formulaire id="binet_web" titre="<? echo $nom?>" action="gestion/binet.php?binet=<?=$_GET['binet']?>">
 			<hidden id="id" titre="" valeur="<? echo $id?>"/>
 			<choix titre="Catégorie" id="catego" type="combo" valeur="<?=$cat_id?>">

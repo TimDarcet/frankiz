@@ -21,9 +21,12 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.23  2004/12/01 20:29:47  kikx
+	Oubli pour les webmestres
+
 	Revision 1.22  2004/11/27 15:02:17  pico
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-
+	
 	Revision 1.21  2004/11/25 02:10:48  kikx
 	la non plus
 	
@@ -137,7 +140,7 @@ if (isset($_POST['modif'])) {
 		if ($web_login!="") {
 			$DB_web->query("SELECT perms,e.eleve_id FROM compte_frankiz LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE login='$web_login'" );
 			while(list($perms,$eleve_id) = $DB_web->next_row()) {
-				$perms = str_replace("prez_".$binet_id.",","",$perms) ;
+				$perms = str_replace("webmestre_".$binet_id.",","",$perms) ;
 				$DB_web->query("UPDATE compte_frankiz SET perms='$perms' WHERE eleve_id='$eleve_id'");
 				$message .= "<commentaire>$web_login n'a plus ses droit de webmestre du binet $nomdubinet</commentaire>\n";
 			}
@@ -148,7 +151,7 @@ if (isset($_POST['modif'])) {
 			if ($DB_web->num_rows()==0) 
 				$message .= "<warning>Ce login n'existe pas ou ne s'est jamais connecté a Frankiz</warning>" ;
 			while(list($perms,$eleve_id) = $DB_web->next_row()) {
-				$perms = $perms."prez_".$binet_id."," ;
+				$perms = $perms."webmestre_".$binet_id."," ;
 				$DB_web->query("UPDATE compte_frankiz SET perms='$perms' WHERE eleve_id='$eleve_id'");
 				$message .= "<commentaire>".$_POST['webmestre']." a reçu les droits de webmestre du binet $nomdubinet</commentaire>\n";
 			}
