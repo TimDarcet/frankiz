@@ -171,8 +171,40 @@
 	</table>
 </xsl:template>
 
+<xsl:template match="page/binet[position() > 1]">
+</xsl:template>
+
+<xsl:template match="page/binet[1]">
+	<xsl:for-each select="../binet">
+	<xsl:sort select="@catego"/>
+	<xsl:sort select="@nom"/>
+	<xsl:if test="position() = 1">
+		<xsl:text disable-output-escaping="yes">&lt;table cellpadding="0" cellspacing="0"&gt;</xsl:text>
+		<tr><td class="titre"><xsl:value-of select="@catego"/></td></tr>
+	</xsl:if>
+
+	<tr><td width="120">
+		<img>
+			<xsl:attribute name="src">binets/image.php?id=<xsl:value-of select="@id"/>
+			</xsl:attribute>
+		</img>
+	</td><td width="100%">
+		<span class="binet_nom">
+			<xsl:value-of select="@nom"/>
+		</span><br/>
+		<span class="binet_descript">
+			<xsl:value-of select="descript"/>
+		</span>
+	</td></tr>
+	<xsl:if test="position() = last()">
+		<xsl:text disable-output-escaping="yes">&lt;/table&gt;</xsl:text>
+	</xsl:if>
+	</xsl:for-each>
+</xsl:template>
+
 <xsl:template match="page/eleve/binet">
 	<xsl:value-of select="@nom"/><xsl:text> (</xsl:text><xsl:value-of select="."/><xsl:text>) </xsl:text>
 </xsl:template>
 
 </xsl:stylesheet>
+
