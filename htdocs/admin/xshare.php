@@ -1,5 +1,10 @@
 <? 
+/*
+		$Log$
+		Revision 1.9  2004/10/18 22:18:11  pico
+		Ajout des logs
 
+*/
 require_once "../include/global.inc.php";
 
 // Vérification des droits
