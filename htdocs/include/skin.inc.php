@@ -18,96 +18,166 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Gestion du stockage et de la relecture de la skin de l'utilisateur. On utilise
-	les principes suivants :
-	- les données sont stockées dans la variable de session 'skin'
+	Fonction servant pour la gestion des skins.
 	
 	$Log$
-	Revision 1.11  2004/11/16 14:55:46  schmurtz
-	On evite les appels frequents a la BD pour recuperer la skin
+	Revision 1.12  2004/11/24 20:26:38  schmurtz
+	Reorganisation des skins (affichage melange skin/css + depacement des css)
 
-	Revision 1.10  2004/11/16 12:17:25  schmurtz
-	Deplacement des skins de trombino.eleves vers frankiz.compte_frankiz
-	
-	Revision 1.9  2004/11/13 00:12:24  schmurtz
-	Ajout du su
-	
-	Revision 1.8  2004/11/11 21:15:52  kikx
-	Rajout d'un champs dans le trombino pour stocker la skin du mec ...
-	le cookie est prioritaire, mais si il n'existe pas ou qu'il a ppartient a quelqu'un d'autre, alors on va cherhcer dans la BDD
-	
-	Revision 1.7  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.6  2004/09/15 23:19:31  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.5  2004/09/15 21:42:08  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
-	
 */
 
-require_once "user.inc.php";
+require_once "xml.inc.php";
 
-// Relit les informations de skin et d'affichage
-function skin_parse($skin_str) {	
-	// Lecture du cookie
-	$_SESSION['skin'] = unserialize($skin_str);
+/*
+	Lit le contenu d'un fichier de description d'une skin.
+	Renvoi un arbre ayant la structure suivante :
+	array (
+		[nom] => «nom de la skin»
+		[description] => «sa description»
+		[chemin] => «chemin d'accès au dossier xsl»
+		[parametres] => array (				//liste des paramètres de la skin
+			[«id du premier paramètre»] => array (
+				[id] => «id du premier paramètre»
+				[description] => «description du paramètre»
+				[valeurs] => array (		// liste des valeurs que peut prendre le paramètre
+					[«id de la première valeur»] => [«nom de la première valeur»]
+					[«id de la deuxième valeur»] => [«nom de la deuxième valeur»]
+				)
+			)
+			[«id du deuxième paramêtre»] => array (
+				...
+			)
+		)
+	)
 	
-	// Test de l'existence de la skin et de la CSS
-	if( empty($_SESSION['skin']['skin_nom']) || !is_dir(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']) ) {
-		$_SESSION['skin']['skin_nom'] = "basic";
-		$_SESSION['skin']['skin_parametres'] = array();
+	Le code XML étant :
+	<skin>
+		<nom>«nom de la skin»</nom>
+		<descrition>«sa description»</description>
+		<chemin>«chemin d'accès au dossier xsl: "xsl" ou "." en général»</chemin>
+		<parametre id="«id du premier paramètre»">
+			<description>«description du paramètre»</description>
+			<valeur id="«id de la première valeur»">«nom de la première valeur»</valeur>
+			<valeur id="«id de la deuxième valeur»">«nom de la deuxième valeur»</valeur>
+		</parametre>
+		<parametre id="«id du deuxième paramètre»">
+			...
+		</parametre>
+	</skin>
+*/
+
+function lire_description_skin($fichier) {
+	$fichier = "$fichier/description.xml";
+	// Parsage du code XML
+	if(!file_exists($fichier)) return array();
+	$parsed_xml = xml_get_tree($fichier);
+	
+	// Vérification de la structure de l'arbre et stockage des données qui nous servent
+	// sous la forme d'un arbre.
+	$desc = array('description'=>"", 'chemin'=>".", 'parametres'=>array());
+	if( $parsed_xml[0]['tag'] == 'skin' ) {
+		// pour chaque élément de <skin>
+		$element_list = $parsed_xml[0]['children'];
+		foreach($element_list as $element) {
+			switch($element['tag']) {
+				case 'nom':
+				case 'description':
+				case 'chemin':
+					$desc[$element['tag']] = $element['value'];
+					break;
+					
+				case 'parametre':
+					$param = array();
+					$param['valeurs'] = array();
+
+					$param['id'] = $element['attributes']['id'];
+					if(empty($param['id'])) break;  // le nom est obligatoire
+
+					// pour chaque élément de <parametre>
+					$param_element_list = $element['children'];
+					foreach($param_element_list as $param_element) {
+						switch($param_element['tag']) {
+							case 'description':
+								$param['description'] = $param_element['value'];
+								break;
+								
+							case 'valeur':
+								$id = !empty($param_element['attributes']) && !empty($param_element['attributes']['id']) ?
+										$param_element['attributes']['id'] :
+										$param_element['value'];
+								$param['valeurs'][$id] = $param_element['value'];
+								break;
+						}
+					}
+					
+					// enregistrement du paramètre avec si besoin une valeur par défaut de la
+					// description
+					if( empty($param['description']) )
+						$param['description'] = "Paramètre «".$param['id']."»";
+					$desc['parametres'][$param['id']] = $param;
+					break;
+			}
+		}
 	}
 	
-	if( empty($_SESSION['skin']['skin_css']) )
-		$_SESSION['skin']['skin_css'] = BASE_URL."/css/basic.css" /*BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']."/style.css"*/;
+	return $desc;
+}
+
+/*
+	Lit la description d'une feuille de style css
+	$css_dir est le dossier contenant les fichiers de la css
+*/
+function lire_description_css($css_dir) {
+	$description="";
+	if(file_exists("$css_dir/description.txt")) {
+		// Lecture du fichier de description et suppression des éventuelles balises html
+		$fd = fopen("$css_dir/description.txt","r");
+		$description=fread($fd,filesize("$css_dir/description.txt"));
+		$description=htmlspecialchars($description, ENT_QUOTES);
+		fclose($fd);
+	}
+	return $description == "" ? "Pas de description" : $description;
+}
+
+/*
+	Renvoi les paramètres de la skin par défaut
+*/
+function skin_defaut() {
+	return array (
+			"skin_nom" => "basic",
+			"skin_css" => "",
+			"skin_parametres" => array(),
+			"skin_visible" => array(),
+	);
+}
+
+/*
+	Vérifie la validité des paramètres d'une skin. Corrige ce qui peut l'être et
+	au pire utilise la skin par defaut.
+*/
+function skin_valider() {
+	// Test de l'existence de la skin et de la CSS
+	if( !isset($_SESSION['skin']) || empty($_SESSION['skin']['skin_nom']) || !is_dir(BASE_LOCAL."/skins/{$_SESSION['skin']['skin_nom']}") ||
+		!empty($_SESSION['skin']['skin_css']) && !is_dir(BASE_LOCAL."/skins/{$_SESSION['skin']['skin_nom']}/{$_SESSION['skin']['skin_css']}") )
+		$_SESSION['skin'] = skin_defaut();
 	
 	// Vérification de l'existance de de skin_visible et skin_parametres
-	if( !isset($_SESSION['skin']['skin_visible']) )
-		$_SESSION['skin']['skin_visible'] = array();
-		
-	if( !isset($_SESSION['skin']['skin_parametres']) )
-		$_SESSION['skin']['skin_parametres'] = array();
+	if(!isset($_SESSION['skin']['skin_visible']))		$_SESSION['skin']['skin_visible'] = array();
+	if(!isset($_SESSION['skin']['skin_parametres']))	$_SESSION['skin']['skin_parametres'] = array();
+	
+	// Calcul d'éléments utiles
+	$description = lire_description_skin(BASE_LOCAL."/skins/{$_SESSION['skin']['skin_nom']}");
+	if(!empty($description)) {
+		$_SESSION['skin']['skin_xsl_chemin'] = BASE_LOCAL."/skins/{$_SESSION['skin']['skin_nom']}/{$description['chemin']}/skin.xsl";
+		$_SESSION['skin']['skin_css_url'] = BASE_URL."/skins/{$_SESSION['skin']['skin_nom']}/{$_SESSION['skin']['skin_css']}/style.css";
+	} else {
+		ajouter_debug_log("Erreur de lecture de la skin {$_SESSION['skin']['skin_nom']}");
+		$_SESSION['skin'] = skin_defaut();
+		skin_valider();
+	}
 }
 
-// Recharge les données de skin si elles ne sont pas chargées ou si l'utilisateur vient de se loguer
-if( !isset($_SESSION['skin']) || nouveau_login() ) {
-	
-	// Si l'utilisateur est authentifié, chercher dans la BD
-	if(est_authentifie(AUTH_MINIMUM)) {
-		ajouter_debug_log("Chargement de la skin depuis la BD.");
-		$DB_web->query("SELECT skin FROM compte_frankiz WHERE eleve_id='{$_SESSION['user']->uid}'") ;
-		if($DB_web->num_rows()!=0) {
-			list($skin) = $DB_web->next_row();
-			$cookie = $skin;		// hack bizarre pour être sur que php considère $cookie comme un string
-									// ce qui est indispensable pour la fonction base64_encode (si on met
-									// directement $skin, php considère que c'est un array alors que c'est faux)
-			skin_parse($cookie);
-			SetCookie("skin",base64_encode($cookie),time()+3*365*24*3600,"/");
-		}
-	
-	// Sinon on cherche dans un cookie
-	} else if(isset($_COOKIE['skin'])) {
-		ajouter_debug_log("Chargement de la skin depuis le cookie.");
-		skin_parse(base64_decode($_COOKIE['skin']));
-
-	}
-	
-	// Si vraiment on ne trouve pas, ou si une erreur c'est produite avant, on utilise des
-	// valeurs par défaut
-	if(!isset($_SESSION['skin'])) {
-		ajouter_debug_log("Chargement de la skin depuis les valeurs par défaut.");
-		// skin_parse(array())
-		$_SESSION['skin'] = array (
-			"skin_nom" => "basic",
-			"skin_css" => BASE_URL."/css/basic.css",
-			
-			"skin_parametres" => array(),
-			"skin_visible" => array()
-		);
-	}
-
+function skin_parse($skin_str) {
+	$_SESSION['skin'] = unserialize($skin_str);
+	skin_valider();
 }
-
-?>

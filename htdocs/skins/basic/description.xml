@@ -2,4 +2,5 @@
 <skin>
 	<nom>Basique</nom>
 	<description>Skin très basique pour ne pas se triturer les neurones à faire un truc propre pendant le codage du site.</description>
+	<chemin>.</chemin>
 </skin>

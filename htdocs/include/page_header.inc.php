@@ -21,9 +21,12 @@
 	Page d'entête pour la transformation du XML. Met en place un cache de sortie.
 
 	$Log$
+	Revision 1.8  2004/11/24 20:26:38  schmurtz
+	Reorganisation des skins (affichage melange skin/css + depacement des css)
+
 	Revision 1.7  2004/11/13 00:12:24  schmurtz
 	Ajout du su
-
+	
 	Revision 1.6  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -46,7 +49,7 @@ ob_start();
 // en-tetes XML
 echo "<?xml version='1.0' encoding='ISO-8859-1' ?>\n";
 echo "<!DOCTYPE frankiz PUBLIC \"-//BR//DTD FRANKIZ 1.0//FR\" \"http://frankiz.polytechnique.fr/frankiz.dtd\">\n";
-echo "<frankiz base='".BASE_URL."/' css='".$_SESSION['skin']['skin_css']."'>\n";
+echo "<frankiz base='".BASE_URL."/' css='".$_SESSION['skin']['skin_css_url']."'>\n";
 if(isset($_SESSION['sueur']))
 	echo "<module id='su' titre='SU'><p>ATTENTION, su en cours. Pour revenir à ta vrai identité, clique <a href='index.php?logout=1'>ici</a></p></module>";
 require "modules.inc.php";

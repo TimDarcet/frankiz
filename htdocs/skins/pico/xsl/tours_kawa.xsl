@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!-- 
 	$Log$
+	Revision 1.1  2004/11/24 20:26:43  schmurtz
+	Reorganisation des skins (affichage melange skin/css + depacement des css)
+
 	Revision 1.8  2004/11/15 20:54:19  pico
 	Commit global de retour de gwz
-
+	
 	Revision 1.7  2004/11/05 19:38:02  pico
 	Nouvelle Css un peu plus jolie pour la skin pico
 	

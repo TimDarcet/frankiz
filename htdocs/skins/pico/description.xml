@@ -2,6 +2,7 @@
 <skin>
 	<nom>Pico</nom>
 	<description>skin qui permet un skinnage complet par CSS</description>
+	<chemin>xsl</chemin>
 	<parametre id="sommaire">
 		<description>Afficher le sommaire des annonces</description>
 		<valeur id="trie">Trié</valeur>

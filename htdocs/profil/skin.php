@@ -39,9 +39,12 @@
 	)
 	
 	$Log$
+	Revision 1.17  2004/11/24 20:26:38  schmurtz
+	Reorganisation des skins (affichage melange skin/css + depacement des css)
+
 	Revision 1.16  2004/11/22 23:38:42  kikx
 	Ajout de <note></note> un peu partout pour plus de compréhension !
-
+	
 	Revision 1.15  2004/11/16 12:17:26  schmurtz
 	Deplacement des skins de trombino.eleves vers frankiz.compte_frankiz
 	
@@ -79,133 +82,26 @@
 */
 
 require_once "../include/global.inc.php";
-require_once "../include/xml.inc.php";
-require_once "../include/skin.inc.php";
 
 demande_authentification(AUTH_MINIMUM);
-
-/*
-	Lit le contenu d'un fichier de description d'une skin.
-	Renvoi un arbre ayant la structure suivante :
-	array (
-		[nom] => «nom de la skin»
-		[description] => «sa description»
-		[parametres] => array (				//liste des paramètres de la skin
-			[«id du premier paramètre»] => array (
-				[id] => «id du premier paramètre»
-				[description] => «description du paramètre»
-				[valeurs] => array (		// liste des valeurs que peut prendre le paramètre
-					[«id de la première valeur»] => [«nom de la première valeur»]
-					[«id de la deuxième valeur»] => [«nom de la deuxième valeur»]
-				)
-			)
-			[«id du deuxième paramêtre»] => array (
-				...
-			)
-		)
-	)
-	
-	Le code XML étant :
-	<skin>
-		<nom>«nom de la skin»</nom>
-		<descrition>«sa description»</description>
-		<parametre id="«id du premier paramètre»">
-			<description>«description du paramètre»</description>
-			<valeur id="«id de la première valeur»">«nom de la première valeur»</valeur>
-			<valeur id="«id de la deuxième valeur»">«nom de la deuxième valeur»</valeur>
-		</parametre>
-		<parametre id="«id du deuxième paramètre»">
-			...
-		</parametre>
-	</skin>
-*/
-
-function lire_description_skin($fichier) {
-	// Parsage du code XML
-	if(!file_exists($fichier)) return array();
-	$parsed_xml = xml_get_tree($fichier);
-	
-	// Vérification de la structure de l'arbre et stockage des données qui nous servent
-	// sous la forme d'un arbre.
-	$desc = array();
-	$desc['parametres'] = array();
-	if( $parsed_xml[0]['tag'] == 'skin' ) {
-		// pour chaque élément de <skin>
-		$element_list = $parsed_xml[0]['children'];
-		foreach($element_list as $element) {
-			switch($element['tag']) {
-				case 'nom':
-					$desc['nom'] = $element['value'];
-					break;
-					
-				case 'description':
-					$desc['description'] = $element['value'];
-					break;
-					
-				case 'parametre':
-					$param = array();					
-					$param['valeurs'] = array();
-
-					$param['id'] = $element['attributes']['id'];
-					if(empty($param['id'])) break;  // le nom est obligatoire
-
-					// pour chaque élément de <parametre>
-					$param_element_list = $element['children'];
-					foreach($param_element_list as $param_element) {
-						switch($param_element['tag']) {
-							case 'description':
-								$param['description'] = $param_element['value'];
-								break;
-								
-							case 'valeur':
-								$id = !empty($param_element['attributes']) && !empty($param_element['attributes']['id']) ?
-										$param_element['attributes']['id'] :
-										$param_element['value'];
-								$param['valeurs'][$id] = $param_element['value'];
-								break;
-						}
-					}
-					
-					// enregistrement du paramètre avec si besoin une valeur par défaut de la
-					// description
-					if( empty($param['description']) )
-						$param['description'] = "Paramètre «".$param['id']."»";
-					$desc['parametres'][$param['id']] = $param;
-					break;
-			}
-		}
-	}
-	
-	return $desc;
-}
-
-function lire_description_css($fichier) {
-	$description="";
-	if(file_exists($fichier)) {
-		// Lecture du fichier de description et suppression des éventuelles balises html
-		$fd = fopen($fichier,"r");
-		$description=fread($fd,filesize($fichier));
-		$description=htmlspecialchars($description, ENT_QUOTES);
-		fclose($fd);
-	}
-	return $description == "" ? "Pas de description" : $description;
-}
 
 // récupération des modifications de l'utilisateur
 $new_skin = array();
 
 if(!empty($_REQUEST['OK_skin'])) {
-	$new_skin['skin_nom'] = $_REQUEST['newskin'];
-	$new_skin['skin_css'] = BASE_URL."/skins/".$_REQUEST['newskin']."/style.css";
+	list($new_skin['skin_nom'],$new_skin['skin_css']) = split("/",$_REQUEST['newskin']."/");
 	$new_skin['skin_parametres'] = array();
 	$new_skin['skin_visible'] = $_SESSION['skin']['skin_visible'];
 
 } else if(!empty($_REQUEST['OK_param'])) {
-	// Skin et CSS
-	$new_skin['skin_nom'] = $_SESSION['skin']['skin_nom'];
-	$new_skin['skin_css'] = empty($_REQUEST['newcss_perso']) ?
-								urldecode($_REQUEST['newcss']) :
-								urldecode($_REQUEST['newcss_perso']);
+	// recopie des infos sur la skin
+	$new_skin['skin_nom'] = $_SESSION['skin']['skin_nom'] ;
+	$new_skin['skin_css'] = $_SESSION['skin']['skin_css'];
+
+
+	// CSS perso (TODO)
+	//if(!empty($_REQUEST['newcss_perso']))
+	//	urldecode($_REQUEST['newcss_perso']);
 	
 	// Paramètres
 	$new_skin['skin_parametres'] = array();
@@ -240,48 +136,48 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	<formulaire id="form_choix_skin" titre="Choix de la skin" action="profil/skin.php">
 		<choix titre="Skin" id="newskin" type="radio" valeur="<?php echo $_SESSION['skin']['skin_nom']?>">
 <?php
-			// Choix de la feuille de style XSL
-			$dir=opendir(BASE_LOCAL."/skins");
-			while($file = readdir($dir)) {
-				// uniquement pour les dossiers non particulier
-				if(!is_dir(BASE_LOCAL."/skins/$file") || $file == "." || $file == ".." ||
-					$file == "CVS" || $file{0} == "#") continue;
-				$description = lire_description_skin(BASE_LOCAL."/skins/$file/description.xml");
-				echo "<option titre=\"".$description['nom']." (".$description['description']
-					.")\" id=\"$file\"/>";
+			// Parcourt des skins XSL
+			$dir_xsl=opendir(BASE_LOCAL."/skins");
+			while($file_xsl = readdir($dir_xsl)) {
+				// uniquement pour les dossiers non particuliers
+				if(!is_dir(BASE_LOCAL."/skins/$file_xsl") || $file_xsl == "." || $file_xsl == ".." ||
+					$file_xsl == "CVS" || $file_xsl{0} == "#") continue;
+				
+				$description = lire_description_skin(BASE_LOCAL."/skins/$file_xsl");
+				if(empty($description)) {
+					ajouter_debug_log("Erreur de lecture de la description de la skin xsl $file_xsl");
+					continue;
+				}
+				
+				// Si c'est une skin sans CSS
+				if($description['chemin'] == ".") {
+					echo "<option titre=\"{$description['nom']} ({$description['description']})\" id=\"$file_xsl\"/>";
+					continue;
+				}
+				
+				// Parcourt des feuilles de style css
+				$dir_css=opendir(BASE_LOCAL."/skins/$file_xsl");
+				while($file_css = readdir($dir_css)) {
+					// uniquement pour les dossiers non particuliers
+					if(!is_dir(BASE_LOCAL."/skins/$file_xsl/$file_css") || $file_css == "." || $file_css == ".." ||
+						$file_css == "CVS" || $file_css{0} == "#" || $file_css == $description['chemin']) continue;
+					
+					$description_css = lire_description_css(BASE_LOCAL."/skins/$file_xsl/$file_css");
+					echo "<option titre=\"{$description['nom']}/$file_css ($description_css)\" id=\"$file_xsl/$file_css\"/>";
+				}
+				closedir($dir_css);
+			
 			}
-			closedir($dir);
+			closedir($dir_xsl);
 ?>
 		</choix>
 		<bouton titre="Appliquer" id="OK_skin" />
 	</formulaire>
 	
 	<formulaire id="form_param_skin" titre="Paramètres de la skin <? echo $_SESSION['skin']['skin_nom'] ?>" action="profil/skin.php">
-		<note>Pour chaque skin, il existe plusieurs version disponible grâce à des feuilles de style (CSS) : Choisis en une ...</note>
-		<choix titre="Version CSS" id="newcss" type="combo" valeur="<?php echo $_SESSION['skin']['skin_css']?>">
-<?php
-			// Choix de la feuille de style CSS
-			if(is_dir(BASE_LOCAL."/css/".$_SESSION['skin']['skin_nom'])) {
-				$dir=opendir(BASE_LOCAL."/css/{$_SESSION['skin']['skin_nom']}");
-				while($file = readdir($dir)) {
-					// uniquement pour les fichiers .css
-					if(!ereg("^(.*)\.css$", $file, $elements)) continue;
-					$nom = $elements[1];
-					echo "<option titre=\"$nom (".lire_description_css(BASE_LOCAL."/css/{$_SESSION['skin']['skin_nom']}/$nom.txt")
-						.")\" id=\"".BASE_URL."/css/{$_SESSION['skin']['skin_nom']}/$file\"/>";
-				}
-				closedir($dir);
-			}
-			echo "<option titre=\"CSS par défaut de la skin\" id=\"".BASE_URL."/skins/{$_SESSION['skin']['skin_nom']}/style.css\"/>";
-?>
-		</choix>
-		<note>Si tu veux personnaliser encore plus ta skin, tu peux créer ta propre feuille de style. Ceci s'adresse aux experts :)</note>
-		<champ titre="CSS perso" id="newcss_perso" valeur="<?php
-			if ((dirname($_SESSION['skin']['skin_css']) != BASE_URL."/css/".$_SESSION['skin']['skin_nom'])&&(dirname($_SESSION['skin']['skin_css']) != BASE_URL."/skins/".$_SESSION['skin']['skin_nom'])){
-				echo $_SESSION['skin']['skin_css']; }?>"/>
 <?php
 		// Paramètres spécifique à la skin
-		$description = lire_description_skin(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']."/description.xml");
+		/*$description = lire_description_skin(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']."/description.xml");
 		foreach($description['parametres'] as $parametre_id => $parametre) {
 			if(empty($parametre['valeurs'])) {
 				echo "<champ titre=\"".$parametre['description']."\" id=\"param[$parametre_id]\" valeur=\""
@@ -293,10 +189,11 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 					echo "\t<option titre=\"$param_desc\" id=\"$param_id\"/>\n";
 				echo "</choix>\n";
 			}
-		}
+		}*/
 ?>
-		<note>Tu peux aussi ne pas faire apparaître tous les élément de la skin. Tu gagneras ainsi de la place :) Choisis donc les éléments que tu veux afficher</note>
 
+		<note>Tu peux aussi ne pas faire apparaître tous les élément de la skin. Tu gagneras ainsi de la
+			  place :). Choisis donc les éléments que tu veux afficher</note>
 		<choix titre="Eléments" id="newskin" type="checkbox" valeur="<?php
 			foreach(liste_modules() as $module => $nom)
 				if($nom != "" && (!isset($_SESSION['skin']['skin_visible'][$module])
@@ -308,6 +205,12 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 					echo "\t\t\t<option titre=\"$nom\" id=\"vis[$module]\"/>\n";
 ?>
 		</choix>
+
+		<note>Si tu veux personnaliser encore plus ta skin, tu peux créer ta propre feuille de style. Ceci
+			  s'adresse aux experts.</note>
+		<champ titre="CSS perso" id="newcss_perso" valeur="<?php
+			if ((dirname($_SESSION['skin']['skin_css']) != BASE_URL."/css/".$_SESSION['skin']['skin_nom'])&&(dirname($_SESSION['skin']['skin_css']) != BASE_URL."/skins/".$_SESSION['skin']['skin_nom'])){
+				echo $_SESSION['skin']['skin_css']; }?>"/>
 		<bouton titre="Appliquer" id="OK_param" />
 	</formulaire>
 </page>

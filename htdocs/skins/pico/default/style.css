@@ -145,12 +145,12 @@ div.fkz_logo {
 }
 
 .fkz_qdj_jone {
-	background-image:url("../../skins/pico/pointjone.gif");
+	background-image:url("images/pointjone.gif");
 	float: right;
 }
 
 .fkz_qdj_rouje {
-	background-image:url("../../skins/pico/pointrouje.gif");
+	background-image:url("images/pointrouje.gif");
 	float: left;
 }
 
@@ -285,19 +285,19 @@ span.fkz_annonces_vieux,span.fkz_annonces_nouveau, span.fkz_annonces_important,s
  }
 
 span.fkz_annonces_vieux {
-	background-image:url("../../skins/pico/images/vieux.gif");
+	background-image:url("images/images/vieux.gif");
 }
 
  span.fkz_annonces_nouveau {
-	background-image:url("../../skins/pico/images/nouveau.gif");
+	background-image:url("images/images/nouveau.gif");
 }
  
  span.fkz_annonces_important {
-	background-image:url("../../skins/pico/images/important.gif");
+	background-image:url("images/images/important.gif");
  } 
  
  span.fkz_annonces_reste {
-	background-image:url("../../skins/pico/images/reste.gif");
+	background-image:url("images/images/reste.gif");
  } 
   
  span.fkz_annonces_cat {display:none;}
@@ -353,9 +353,9 @@ span.valid_css {
 }
 
 /* FAQ et Xshare */
-.noeud_ferme{list-style-image:url('../../skins/pico/fold_close.gif')}
-.noeud_ouvert{list-style-image:url('../../skins/pico/fold_open.gif')}
-.feuille{list-style-image:url('../../skins/pico/question.gif')}
+.noeud_ferme{list-style-image:url('images/fold_close.gif')}
+.noeud_ouvert{list-style-image:url('images/fold_open.gif')}
+.feuille{list-style-image:url('images/question.gif')}
 
 /* Commentaires et Warning */
 

@@ -2,4 +2,5 @@
 <skin>
 	<nom>Défaut</nom>
 	<description>La skin par défaut. Réalisée par Kikx et PsyCow</description>
+	<chemin>xsl</chemin>
 </skin>

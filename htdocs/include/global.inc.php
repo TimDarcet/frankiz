@@ -24,9 +24,12 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.39  2004/11/24 20:26:38  schmurtz
+	Reorganisation des skins (affichage melange skin/css + depacement des css)
+
 	Revision 1.38  2004/11/24 16:37:09  pico
 	Ajout des news externes en tant que module
-
+	
 	Revision 1.37  2004/11/24 15:55:34  pico
 	Code pour gérer les liens perso + les rss au lancement de la session
 	
@@ -55,7 +58,7 @@ require_once BASE_LOCAL."/../etc/config.php";
 // Gestion des erreurs PHP et MySQL
 // Il est important d'inclure ce fichier le plus tôt possible, mais comme il a besoin
 // des paramètres du site on ne l'inclu que maintenant.
-require_once "erreursphp.inc.php";
+require_once "erreursphp.inc.php";	// TODO : mettre avant l'ouverture des connexions aux bases mysql
 
 // Gestion des erreurs dans les formulaires
 $i=1;
@@ -81,14 +84,14 @@ $_GET = nettoyage_balise($_GET);
 $_POST = nettoyage_balise($_POST);
 $_REQUEST = nettoyage_balise($_REQUEST);
 
-// divers fichiers inclus
+// divers fichiers inclus pour effectuer des actions avant l'affichage de la page
 require_once "global_func.inc.php";
-require_once "mail.inc.php";
+require_once "mail.inc.php";			// TODO : supprimer et mettre dans les fichiers qui ont en vraiment besoin
 require_once "login.inc.php";
-require_once "skin.inc.php";
-require_once "param_session.inc.php";
-require_once "rss_func.inc.php";
-require_once "compress.inc.php";
-require_once "wiki.inc.php";
+require_once "init_skin.inc.php";
+require_once "compress.inc.php";		// TODO : supprimer et mettre dans les fichiers qui ont en vraiment besoin
+require_once "wiki.inc.php";			// TODO : supprimer et mettre dans les fichiers qui ont en vraiment besoin
+require_once "param_session.inc.php";	// TODO : supprimer et mettre dans les fichiers qui ont en vraiment besoin
+require_once "rss_func.inc.php";		// TODO : supprimer et mettre dans les fichiers qui ont en vraiment besoin
 
 ?>

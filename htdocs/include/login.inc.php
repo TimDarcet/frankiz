@@ -36,9 +36,12 @@
 	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
 
 	$Log$
+	Revision 1.12  2004/11/24 20:26:38  schmurtz
+	Reorganisation des skins (affichage melange skin/css + depacement des css)
+
 	Revision 1.11  2004/11/16 15:09:15  kikx
 	Le login est now login.promo
-
+	
 	Revision 1.10  2004/11/13 00:12:24  schmurtz
 	Ajout du su
 	
@@ -58,7 +61,10 @@ require_once "user.inc.php";
 
 session_start();
 
-// Si un logout a été effectué, on détruit la session, puis on la recrer, vierge.
+/*
+	Si un logout a été effectué, on détruit la session, puis on la recrer, vierge.
+	Si un su est en cours, on en sort.
+*/
 if(isset($_GET['logout'])) {
 	if(isset($_SESSION['sueur'])) {
 		// on sort juste du su
@@ -73,7 +79,9 @@ if(isset($_GET['logout'])) {
 	rediriger_vers("/");
 }
 
-
+/*
+	Gestion du login (mot de passe, mail, cookie, su, annonyme)
+*/
 // Login par mot de passe
 if(isset($_POST['login']) && isset($_POST['passwd'])) {
 	$_SESSION['user'] = new User(true,$_POST['login']);
@@ -138,15 +146,17 @@ if(isset($_POST['login']) && isset($_POST['passwd'])) {
 	rediriger_vers("/");
 }
 
-
 // Aucune information de login. Si la variable de session 'user' n'existe toujours pas
 // on crée un utilisateur anonyme.
 if(!isset($_SESSION['user']))
 	$_SESSION['user'] = new User(false,'');
 
-// Fonction de gestion de la demande d'authentification ($minimum est la méthode
-// d'authentification minimale pour laquelle une réauthentification par mot de passe
-// n'est pas indispensable).
+
+/*
+	Fonction de gestion de la demande d'authentification ($minimum est la méthode
+	d'authentification minimale pour laquelle une réauthentification par mot de passe
+	n'est pas indispensable).
+*/
 function demande_authentification($minimum) {
 	if($_SESSION['user']->est_authentifie($minimum)) return;
 

@@ -23,9 +23,12 @@
 	C'est d'ici qu'est appelé la fonction qui affiche les erreurs en haut de la page.
 	
 	$Log$
+	Revision 1.8  2004/11/24 20:26:38  schmurtz
+	Reorganisation des skins (affichage melange skin/css + depacement des css)
+
 	Revision 1.7  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.6  2004/09/20 20:33:47  schmurtz
 	Mise en place d'un systeme de cache propre
 	
@@ -55,7 +58,7 @@ if(isset($_GET['xml'])) {
 $xh = xslt_create();
 xslt_set_encoding($xh, "ISO-8859-1");
 
-$resultat = xslt_process($xh, 'arg:/_xml', BASE_LOCAL.'/skins/'.$_SESSION['skin']['skin_nom'].'/skin.xsl', NULL, array('/_xml'=>$xml),$_SESSION['skin']['skin_parametres']);
+$resultat = xslt_process($xh, 'arg:/_xml', $_SESSION['skin']['skin_xsl_chemin'], NULL, array('/_xml'=>$xml),$_SESSION['skin']['skin_parametres']);
 echo xslt_error($xh);
 xslt_free($xh);
 

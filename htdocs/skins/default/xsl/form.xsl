@@ -21,9 +21,12 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.1  2004/11/24 20:26:40  schmurtz
+	Reorganisation des skins (affichage melange skin/css + depacement des css)
+
 	Revision 1.6  2004/11/23 23:32:22  schmurtz
 	oubli
-
+	
 	Revision 1.5  2004/11/12 00:23:04  psycow
 	Modification du trombi, gestion graphique des formulaires; c'est pas trop mal on touche a la fin
 	
