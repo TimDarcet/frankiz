@@ -85,9 +85,9 @@
 				<span class="droitehaut"><xsl:text> </xsl:text></span>
 			</dt>
 			<dd class="contenu">
-				<p class="image"><img src="skins/basic/images/trombino.png"/></p>
-				<br/>
-				<xsl:apply-templates select="formulaire" mode="trombino"/>
+					<p class="image"><img src="skins/basic/images/trombino.png"/></p>
+					<br/>
+					<xsl:apply-templates select="formulaire" mode="trombino"/>
 			</dd>
 			<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
 		</dl>
@@ -103,27 +103,27 @@
 	<!-- le formulaire lui même-->
 	<form class="trombino" enctype="multipart/form-data" method="post">
 		<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
-		<div>
-			<p class="droite">
-				<xsl:apply-templates select="champ[@id='surnom']" mode="trombino"/>
-				<xsl:apply-templates select="choix[@id='binet']" mode="trombino"/>
-				<xsl:apply-templates select="champ[@id='casert']" mode="trombino"/>
+			<div>
+				<p class="droite">
+					<xsl:apply-templates select="champ[@id='surnom']" mode="trombino"/>
+					<xsl:apply-templates select="choix[@id='binet']" mode="trombino"/>
+					<xsl:apply-templates select="champ[@id='casert']" mode="trombino"/>
+				</p>
+				<p class="gauche">
+					<xsl:apply-templates select="champ[@id='prenom']" mode="trombino"/>
+					<xsl:apply-templates select="choix[@id='promo']" mode="trombino"/>
+					<xsl:apply-templates select="champ[@id='loginpoly']" mode="trombino"/>
+				</p>
+				<p class="centre">
+					<xsl:apply-templates select="champ[@id='nom']" mode="trombino"/>
+					<xsl:apply-templates select="choix[@id='section']" mode="trombino"/>
+					<xsl:apply-templates select="champ[@id='phone']" mode="trombino"/>
+				</p>
+			</div>
+			<p class="bouton">
+				<xsl:apply-templates select="hidden"/>
+				<xsl:apply-templates select="bouton"/>
 			</p>
-			<p class="gauche">
-				<xsl:apply-templates select="champ[@id='prenom']" mode="trombino"/>
-				<xsl:apply-templates select="choix[@id='promo']" mode="trombino"/>
-				<xsl:apply-templates select="champ[@id='loginpoly']" mode="trombino"/>
-			</p>
-			<p class="centre">
-				<xsl:apply-templates select="champ[@id='nom']" mode="trombino"/>
-				<xsl:apply-templates select="choix[@id='section']" mode="trombino"/>
-				<xsl:apply-templates select="champ[@id='phone']" mode="trombino"/>
-			</p>
-		</div>
-		<p class="bouton">
-			<xsl:apply-templates select="hidden"/>
-			<xsl:apply-templates select="bouton"/>
-		</p>
 	</form>
 	<br/>
 </xsl:template>
