@@ -14,6 +14,27 @@ demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
 	rediriger_vers("/admin/");
 
+	
+foreach ($_POST AS $keys => $val){
+	$temp = explode("_",$keys,2) ;
+	// On traite les modifications dites STANDARD
+	if ($temp[0]=='modif') {
+		$tempo = "id_".$temp[1] ;
+		$DB_web->query("UPDATE parametres SET valeur='".$_POST[$tempo]."' WHERE nom='".$temp[1]."'");
+	}
+	// On taite maintenant les modifications non standard
+	if ($keys == "update_lastpromo_ontrombino") {
+		$DB_trombino->query("SELECT MAX(promo) FROM eleves");
+		list($max_promo) = $DB_trombino->next_row() ;
+		$DB_web->query("UPDATE parametres SET valeur='$max_promo' WHERE nom='lastpromo_ontrombino'");
+	}
+	
+}
+	
+	
+	
+	
+	
 // Génération de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
@@ -42,13 +63,13 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <?
 				// Cas Particuliers traité à la main
 				if ($nom=="lastpromo_ontrombino") {
-					echo $valeur." &nbsp; &nbsp; &nbsp;" ;
+					echo $valeur." &nbsp; " ;
 					echo "<bouton titre='Update' id='update_lastpromo_ontrombino'/>" ;
 				} else {
 				// fin des cas particuliers 
 ?>
-					<champ titre="" id="<? echo $nom ;?>" valeur="<? echo $valeur ;?>"/>
-					<bouton titre='Ok' id='update_<? echo $nom ;?>'/>
+					<champ titre="" id="id_<? echo $nom ;?>" valeur="<? echo $valeur ;?>"/>
+					<bouton titre='Ok' id='modif_<? echo $nom ;?>'/>
 <?
 				}
 ?>
