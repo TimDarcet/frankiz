@@ -21,9 +21,12 @@
 	Gestions des liens perso / des flux rss.
 
 	$Log$
+	Revision 1.5  2004/11/24 21:09:04  pico
+	Sauvegarde avant mise à jour skins
+
 	Revision 1.4  2004/11/24 20:07:12  pico
 	Ajout des liens persos
-
+	
 	Revision 1.3  2004/11/24 19:02:37  pico
 	Applique les changements tout de suite
 	
@@ -50,20 +53,45 @@ $DB_web->query("SELECT url,description FROM liens_rss");
 while(list($value,$description)=$DB_web->next_row())
 	$array[$value] = $description;
 	
-	
+
+// Mise à jour / ajout de rss
 if(!empty($_REQUEST['OK_rss'])) {
 	$rss = array();
+	// Rss contenues dans la base sql
 	if(!empty($_REQUEST['vis']))
 		foreach($_REQUEST['vis'] as $temp => $null){
 			list($mode,$value) = split("_",$temp,2);
 			if(!isset($rss[$value]) || $rss[$value] != 'complet') $rss[$value] = $mode;
 		}
+	// Rss persos
+	foreach(array('complet','sommaire') as $mode)
+		if(!empty($_REQUEST['rss_perso_'.$mode]))
+			$rss[$_REQUEST['rss_perso_'.$mode]] = $mode;
+	foreach(array('module') as $mode)
+		if(!empty($_REQUEST['rss_perso_'.$mode]))
+			$rss['m_'.$_REQUEST['rss_perso_'.$mode]] = $mode;
+	// Mise à jour des infos de session et de la base de données
 	$_SESSION['rss'] = $rss;
 	$rss = serialize($rss);
 	$DB_web->query("UPDATE compte_frankiz SET liens_rss='$rss' WHERE eleve_id='{$_SESSION['user']->uid}'");	
 }
 
+// Supprime une rss perso
+if(!empty($_REQUEST['del_rss'])) {
+	$rss = array();
+	$url_suppr = base64_decode($_REQUEST['del_rss']);
+	if(!empty($_SESSION['rss'])) {
+		foreach($_SESSION['rss'] as $url => $mode){
+			if($mode == 'module') $url = substr($url, 2);
+			if($url != $url_suppr) $rss[$url] = $mode;
+		}
+	}
+	$_SESSION['rss'] = $rss;
+	$rss = serialize($rss);
+	$DB_web->query("UPDATE compte_frankiz SET liens_rss='$rss' WHERE eleve_id='{$_SESSION['user']->uid}'");
+}
 
+// Ajoute un lien perso
 if(!empty($_REQUEST['OK_liens'])) {
 	$liens = array();
 	$liens = $_SESSION['liens_perso'];
@@ -77,6 +105,7 @@ if(!empty($_REQUEST['OK_liens'])) {
 	$DB_web->query("UPDATE compte_frankiz SET liens_perso='$liens' WHERE eleve_id='{$_SESSION['user']->uid}'");
 }
 
+// Supprime un lien perso
 if(!empty($_REQUEST['del_lien'])) {
 	$liens = array();
 	$url_suppr = base64_decode($_REQUEST['del_lien']);
@@ -89,6 +118,7 @@ if(!empty($_REQUEST['del_lien'])) {
 	$DB_web->query("UPDATE compte_frankiz SET liens_perso='$liens' WHERE eleve_id='{$_SESSION['user']->uid}'");
 }
 	
+
 // Génération de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
@@ -121,7 +151,6 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 								echo "\t\t\t<option titre=\"$description\" id=\"vis[".$mode."_".$value."]\"/>\n";
 								
 				echo "</choix>";
-				echo "\t\t\t<champ id=\"rss_perso_".$mode."\" titre=\"Nouvelle rss perso\"/><br/><br/>";
 		} 
 ?>
 		<note>Choisis quelles infos tu veux avoir sur toutes tes pages Frankiz</note>
@@ -136,8 +165,23 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 							if($value != "")
 								echo "\t\t\t<option titre=\"$description\" id=\"vis[".$mode."_m_".$value."]\"/>\n";
 				echo "</choix>";
-				echo "\t\t\t<champ id=\"rss_perso_module\" titre=\"Nouvelle rss perso\"/>";
 		} 
+?>
+		<note>Liste des flux RSS perso</note>
+<?
+		if(!empty($_SESSION['rss'])) {
+			foreach($_SESSION['rss'] as $url => $mode){
+				if($mode == 'module') $url = substr($url, 2);
+				if(!array_key_exists($url,$array))
+					echo "<note>$url ($mode) <lien titre=\"supprimer\" url=\"profil/liens_ext.php?del_rss=".base64_encode($url)."\"/></note>";
+			}
+		}
+?>
+		<note>Ajouter un flux RSS perso</note>
+<?
+		foreach(array('sommaire','complet','module') as $mode){ 
+			echo "<champ id=\"rss_perso_".$mode."\" titre=\"$mode\"/>\n";
+		}
 ?>
 		<bouton titre="Appliquer" id="OK_rss" />
 	</formulaire>

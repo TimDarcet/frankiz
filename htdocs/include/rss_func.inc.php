@@ -21,9 +21,12 @@
 		Fonction pour parser des rss
 		
 		$Log$
+		Revision 1.6  2004/11/24 21:09:04  pico
+		Sauvegarde avant mise à jour skins
+
 		Revision 1.5  2004/11/24 17:15:54  pico
 		Marche mieux comme ça, sinon le premier parsage xsl fait de la merde avec les accents
-
+		
 		Revision 1.4  2004/11/23 17:36:02  pico
 		Rajout de balises link pour les navigateurs texte et pour indiquer la précense du feed rss
 		
@@ -53,7 +56,14 @@ function rss_xml($site,$mode = 'complet') {
 	while(!feof($fp)){
 		$xml .= fgets($fp, 4000);
 	}
-	$xml =  str_replace("&","&amp;",html_entity_decode(strstr($xml,"<?xml")));
+	$xml = strstr($xml,"<?xml");
+	$trans_tbl = get_html_translation_table (HTML_ENTITIES,ENT_QUOTES);
+	$trans_tbl = array_flip ($trans_tbl);
+	$xml =  strtr($xml, $trans_tbl);
+	$trans_tbl = get_html_translation_table ();
+	$trans_tbl = array_flip ($trans_tbl);
+	$xml =  strtr($xml, $trans_tbl);
+	$xml =  str_replace("&","&amp;",$xml);
 
 	// traduction du rss dans notre format
 	if(strstr($xml,"<rss")){

@@ -18,12 +18,15 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Affichage de flux rss externes sous forme de module.
+	Affichage des liens personnels.
 
 	$Log$
+	Revision 1.5  2004/11/24 21:09:04  pico
+	Sauvegarde avant mise à jour skins
+
 	Revision 1.4  2004/11/24 19:00:32  pico
 	Bon, là ça devrait être bon...
-
+	
 	Revision 1.3  2004/11/24 18:53:31  pico
 	J'espère que ça sera fixé cette fois
 	
