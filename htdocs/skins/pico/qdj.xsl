@@ -60,16 +60,16 @@
 		</xsl:otherwise>
 		</xsl:choose>
 		<br/>
-		<xsl:if test="count(qdj/dernier)">
-			<div style="text-align: center">
-			<div>Derniers à répondre :</div>
-			<ul class="fkz_qdj_last">
-			<xsl:for-each select="qdj/dernier[position()&lt;=6]">
-				<li class="fkz_qdj_last"><xsl:value-of select="@ordre"/>. <xsl:value-of select="eleve/@surnom"/></li>
-			</xsl:for-each>
-			</ul>
+			<div style="text-align: center"><br />
+			<xsl:if test="count(qdj/dernier)">
+				<div>Derniers à répondre :</div>
+				<ul class="fkz_qdj_last">
+				<xsl:for-each select="qdj/dernier[position()&lt;=6]">
+					<li class="fkz_qdj_last"><xsl:value-of select="@ordre"/>. <xsl:value-of select="eleve/@surnom"/></li>
+				</xsl:for-each>
+				</ul>
+			</xsl:if>
 			</div>
-		</xsl:if>
 		</div>
 </xsl:template>
 

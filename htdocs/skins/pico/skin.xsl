@@ -43,49 +43,55 @@
 <xsl:include href="meteo.xsl"/>
 
 <xsl:template match="/">
-  <html>
-  <head>
-      <title><xsl:value-of select="frankiz/page/@titre"/></title>
-    <base>
-    <xsl:attribute name="href">
-       <xsl:value-of select="frankiz/@base"/>
-    </xsl:attribute>
-    </base>
-    <link rel="stylesheet" type="text/css">
-    <xsl:attribute name="href">
-       <xsl:value-of select="frankiz/@css"/>
-    </xsl:attribute>
-    </link>
-    <xsl:apply-templates select="frankiz/module[@id='liste_css']" mode="css"/>
-  </head>
-  <body>
-	<div class="fkz_logo"><a href="index.php"><span class="fkz_logo">Frankiz, le site Web des élèves</span></a></div>
+	<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+		<title><xsl:value-of select="frankiz/page/@titre"/></title>
+		<base>
+			<xsl:attribute name="href">
+			<xsl:value-of select="frankiz/@base"/>
+			</xsl:attribute>
+		</base>
+		<link rel="stylesheet" type="text/css">
+			<xsl:attribute name="href">
+			<xsl:value-of select="frankiz/@css"/>
+			</xsl:attribute>
+		</link>
+		<xsl:apply-templates select="frankiz/module[@id='liste_css']" mode="css"/>
+	</head>
+	<body>
+		<div class="fkz_logo"><a href="index.php"><span class="fkz_logo">Frankiz, le site Web des élèves</span></a></div>
 
-  <xsl:apply-templates select="frankiz/module[@id='liens_navigation']"/>
-      <div class="fkz_page">
-      <div class="fkz_gauche">
-        <xsl:apply-templates select="frankiz/module[@id='tours_kawa']"/>
-        <xsl:apply-templates select="frankiz/module[@id='activites']"/>
-        <xsl:apply-templates select="frankiz/module[@id='liens_contacts']"/>
-	<xsl:apply-templates select="frankiz/module[@id='liens_ecole']"/>
-	<xsl:apply-templates select="frankiz/module[@id='meteo']"/>
-	<xsl:apply-templates select="frankiz/module[@id='stats']"/>
-      </div>
-      <div class="fkz_centre">
-        <xsl:apply-templates select="frankiz/module[@id='anniversaires']"/>
-        <br/>
-        <xsl:apply-templates select="frankiz/page[@id='annonces']" mode="sommaire"/>
-        <xsl:apply-templates select="frankiz/page[@id='annonces']" mode="complet"/>
-	<xsl:apply-templates select="frankiz/page[@id='trombino']"/>
-	<xsl:apply-templates select="frankiz/page[@id!='annonces' and @id!='trombino']"/>
-      </div>
-      <div class="fkz_droite">
-      <xsl:apply-templates select="frankiz/module[@id='qdj']"/>
-      <xsl:apply-templates select="frankiz/module[@id='qdj_hier']"/>
-      </div>
-      </div>
-  </body>
-  </html>
+	<xsl:apply-templates select="frankiz/module[@id='liens_navigation']"/>
+	<div class="fkz_page">
+		<div class="fkz_gauche">
+			<xsl:apply-templates select="frankiz/module[@id='tours_kawa']"/>
+			<xsl:apply-templates select="frankiz/module[@id='activites']"/>
+			<xsl:apply-templates select="frankiz/module[@id='liens_contacts']"/>
+			<xsl:apply-templates select="frankiz/module[@id='liens_ecole']"/>
+			<xsl:apply-templates select="frankiz/module[@id='meteo']"/>
+			<xsl:apply-templates select="frankiz/module[@id='stats']"/>
+			<p>
+				<a href="http://validator.w3.org/check?uri=referer">
+					<img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0!" height="31" width="88" />
+				</a>
+			</p>
+		</div>
+		<div class="fkz_centre">
+			<xsl:apply-templates select="frankiz/module[@id='anniversaires']"/>
+			<br/>
+			<xsl:apply-templates select="frankiz/page[@id='annonces']" mode="sommaire"/>
+			<xsl:apply-templates select="frankiz/page[@id='annonces']" mode="complet"/>
+			<xsl:apply-templates select="frankiz/page[@id='trombino']"/>
+			<xsl:apply-templates select="frankiz/page[@id!='annonces' and @id!='trombino']"/>
+		</div>
+		<div class="fkz_droite">
+			<xsl:apply-templates select="frankiz/module[@id='qdj']"/>
+			<xsl:apply-templates select="frankiz/module[@id='qdj_hier']"/>
+		</div>
+	</div>
+	</body>
+	</html>
 </xsl:template>
 
 
