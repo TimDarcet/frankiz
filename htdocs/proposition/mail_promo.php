@@ -21,9 +21,12 @@
 	Mail promo permettant l'envoie de pièce jointes et de formatage HTML
 	
 	$Log$
+	Revision 1.17  2004/12/15 03:37:42  kikx
+	Photo d'ortho
+
 	Revision 1.16  2004/12/15 00:05:04  schmurtz
 	Plus beau
-
+	
 	Revision 1.15  2004/12/14 14:18:12  schmurtz
 	Suppression de la page de doc wiki : doc directement dans les pages concernees.
 	
@@ -98,7 +101,7 @@ $DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM ele
 list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_row();
 
 ?>
-<page id="admin_mailpromo" titre="Frankiz : Envoie des mails promos">
+<page id="admin_mailpromo" titre="Frankiz : Envoi des mails promos">
 <?
 if (!isset($_REQUEST['envoie'])) {
 ?>
