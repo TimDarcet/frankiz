@@ -22,9 +22,12 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.17  2005/03/07 17:13:18  pico
+	On supprime l'adresse spammée
+
 	Revision 1.16  2005/02/06 22:51:07  pico
 	Pour une faq avec des images
-
+	
 	Revision 1.15  2005/01/21 23:02:47  pico
 	Postage licence sur les news
 	
@@ -130,7 +133,7 @@ define('MAIL_CONTACT',"eleves@polytechnique.fr");
 define('CONTACT_ID',$i--);
 define('MAIL_FAQMESTRE',"faq@frankiz");
 define('FAQMESTRE_ID',$i--);
-define('MAIL_TROMBINOMEN',"trombino@frankiz");
+define('MAIL_TROMBINOMEN',"tol@frankiz");
 define('TROMBINOMEN_ID',$i--);
 define('MAIL_WINDOWS',"msdnaa-licences@frankiz");
 define('WINDOWS_ID',$i--);
