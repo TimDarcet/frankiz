@@ -31,7 +31,7 @@
 		<xsl:if test="boolean(@titre)">
 			<h2><span><xsl:value-of select="@titre"/></span></h2>
 		</xsl:if>
-	<div class="formulaire">
+		<div class="formulaire">
 			<!-- les options du formulaire -->
 			<xsl:for-each select="champ|choix|zonetext|textsimple|hidden|image|fichier|lien">
 				<div>

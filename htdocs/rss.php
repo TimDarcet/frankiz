@@ -2,7 +2,7 @@
 require_once "include/global.inc.php";
 
 // Vérification des droits
-//demande_authentification(AUTH_MINIMUM);
+demande_authentification(AUTH_MINIMUM);
 
 
 // Génération de la page

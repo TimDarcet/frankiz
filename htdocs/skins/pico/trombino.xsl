@@ -60,9 +60,10 @@
 					</img>
 				</a>
 			</p>
+			<xsl:apply-templates select="*[name()!='binet']"/>
 			<hr/>
 		</xsl:for-each>
-		<xsl:apply-templates/>
+		
 	</div>
 </xsl:template>
 

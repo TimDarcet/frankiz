@@ -21,9 +21,13 @@
 	Recherche dans le trombino.
 
 	$Log$
-	Revision 1.18  2004/11/19 23:04:27  alban
-	Rajout du module lien_tol
+	Revision 1.19  2004/11/22 10:15:03  pico
+	Ajout d'un lien vers le trombi d'X.org
 
+	Revision 1.18  2004/11/19 23:04:27  alban
+	
+	Rajout du module lien_tol
+	
 	Revision 1.17  2004/11/13 00:25:26  schmurtz
 	Rajout du lien d'ace au su
 	
@@ -131,11 +135,13 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_RE
 				echo "<binet nom='$binet_nom' id='$binet_id'>$remarque</binet>\n";
 			$DB_trombino->pop_result();
 			
-			echo "</eleve>\n";
+			
+			echo "<lien url='https://www.polytechnique.org/fiche.php?user=$prenom.$nom.$promo' titre='Fiche sur polytechnique.org'/>\n";
 			if(verifie_permission('admin')) {
-				echo "<a href='".BASE_URL."/admin/user.php?id=$eleve_id'>Administrer $prenom $nom</a>" ;
+				echo "<a href='".BASE_URL."/admin/user.php?id=$eleve_id'>Administrer $prenom $nom</a>\n" ;
 				echo "<a href='".BASE_URL."/?su=$eleve_id'>Prendre l&apos;identité de $prenom $nom</a>\n" ;
 			}
+			echo "</eleve>\n";
 		}		
 	}
 }

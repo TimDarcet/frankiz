@@ -391,6 +391,9 @@ div.formulaire span.boutons{
 	padding-top:10px;
 }
 
+.fkz_module_corps div.formulaire span.droite,.fkz_module_corps div.formulaire span.gauche{
+	display:block;
+}
 /* Formulaires */
 
 /* Listes */
