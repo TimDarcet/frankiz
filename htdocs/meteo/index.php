@@ -18,23 +18,16 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Permet de donner la météo sur Paris
-	
-	Fonctionnement : Pour obtenir un compte GRATUIT sur www.weather.com aller sur http://www.weather.com/services/oapintellicast.html et remplir le formulaire
-		A partir de ce moment vous aurez un partner_id et une clé ! (Elle est privée donc n'utiliser pas celle qui est afficher dans la page merci)
-		taper http://xoap.weather.com/search/search?location=[yourlocation] et la page vous retourne du xml avec les id des différents lieu dans le monde qui
-		comporte ce nom (choisissez le bon !)
-		le reste est bien expliqué
-		Sinon pour ce qui concerne la légalité, je crois qu'il faut juste faire apparaitre leur logo en bas ...
-		option supplementaire de l'url 
-			c=* pour avoir la temperature , l'humidite , etc ...
-			unit=m pour avoir les unité en métrique
-			dayf=8 pour avoir 7 jour de previsions
-		
+	Permet de donner la météo sur Paris (cf. meteo_func.inc.php)
+			
 	$Log$
+	Revision 1.6  2004/11/04 22:07:19  schmurtz
+	Suppression du parser xml de la meteo : utilisation d'une conversion xsl a
+	la place
+
 	Revision 1.5  2004/11/04 16:36:42  schmurtz
 	Modifications cosmetiques
-
+	
 	Revision 1.4  2004/11/02 13:04:25  pico
 	Correction météo (othograffe + skin pico)
 	
@@ -58,57 +51,16 @@ require_once "../include/meteo_func.inc.php";
 
 // génération de la page
 require "../include/page_header.inc.php";
-
-
 ?>
 <page id='meteo' titre='Frankiz : méteo'>
 <h1>La météo du platâl</h1>
-
-
-<?
+<?php
 	if(!cache_recuperer('meteo',strtotime(date("Y-m-d H:i:00",time()-60*30)))) { // le cache est valide pendant 30min ...
-?>
-		<meteo>
-			<now>
-		<?
-		$xml = weather_xml() ;
-		
-			echo "<sunrise>".leve_soleil($xml)."</sunrise>\n" ;
-			echo "<sunset>".couche_soleil($xml)."</sunset>\n" ;
-			echo "<temperature>".temperature($xml)."</temperature>\n" ;
-			echo "<ciel>".temps($xml)."</ciel>\n" ;
-			echo "<image>".temps_image($xml)."</image>\n" ;
-			echo "<pression>".bar($xml)."</pression>\n" ;
-			echo "<vent>".vent($xml)."</vent>\n" ;
-			echo "<humidite>".humidite($xml)."</humidite>\n" ;
-		?>
-			</now>
-		<?
-		$jour = explode("day d",$xml) ;
-		
-		for ($i=1; $i<=8 ; $i++){
-		
-			echo "<jour date=\"".($i-1)."\">\n" ;
-					echo "\t<temperature_hi>".temperature_hi($jour[$i])."</temperature_hi>\n" ;
-					echo "\t<temperature_low>".temperature_low($jour[$i])."</temperature_low>\n" ;
-					echo "\t<cieljour>".temps($jour[$i],1)."</cieljour>\n" ;
-					echo "\t<cielnuit>".temps($jour[$i],2)."</cielnuit>\n" ;
-					echo "\t<imagejour>".temps_image($jour[$i],1)."</imagejour>\n" ;
-					echo "\t<imagenuit>".temps_image($jour[$i],2)."</imagenuit>\n" ;
-			echo "</jour>\n" ;
-		}
-		?>
-		</meteo>
-		<?
+		weather_xml();
 		cache_sauver('meteo');
 	}
-
 ?>
-
 <lien url="http://www.weather.com/?prod=xoap&amp;par=1006415841"><image source="meteo/Weather.com.png"/></lien>
 <lien url="http://www.weather.com/?prod=xoap&amp;par=1006415841">Météo fournie grâce à weather.com&#174;</lien>
-
 </page>
-<?
-require_once "../include/page_footer.inc.php";
-?>
+<?php require_once "../include/page_footer.inc.php"; ?>

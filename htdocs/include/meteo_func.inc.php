@@ -17,178 +17,48 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	function qui donne la météo sur Paris
+	Fonction qui donne la météo sur Paris.
+
+	Fonctionnement : Pour obtenir un compte GRATUIT sur www.weather.com aller sur http://www.weather.com/services/oapintellicast.html et remplir le formulaire
+		A partir de ce moment vous aurez un partner_id et une clé ! (Elle est privée donc n'utiliser pas celle qui est afficher dans la page merci)
+		taper http://xoap.weather.com/search/search?location=[yourlocation] et la page vous retourne du xml avec les id des différents lieu dans le monde qui
+		comporte ce nom (choisissez le bon !)
+		le reste est bien expliqué
+		Sinon pour ce qui concerne la légalité, je crois qu'il faut juste faire apparaitre leur logo en bas ...
+		option supplementaire de l'url 
+			c=* pour avoir la temperature , l'humidite , etc ...
+			unit=m pour avoir les unité en métrique
+			dayf=8 pour avoir 7 jour de previsions
 
 	$Log$
+	Revision 1.2  2004/11/04 22:07:19  schmurtz
+	Suppression du parser xml de la meteo : utilisation d'une conversion xsl a
+	la place
+
 	Revision 1.1  2004/10/28 16:08:14  kikx
 	Ne fait qu'une page de fonctions pour la météo car sinon ça devient ingérable
-
+	
 
 */
 
-
-function weather_xml(){
+function weather_xml() {
+	// Récupération de la météo
 	$proxy = "kuzh.polytechnique.fr";
 	$port = 8080;
 
-	/*the url you want to connect to*/
-	$url = WEATHER_DOT_COM ;
 	$fp = fsockopen($proxy, $port);
-	fputs($fp, "GET $url HTTP/1.0\r\nHost: $proxy\r\n\r\n");
-	$line = "" ;
+	fputs($fp, "GET ".WEATHER_DOT_COM." HTTP/1.0\r\nHost: $proxy\r\n\r\n");
+	$xml = "";
 	while(!feof($fp)){
-		$line .= fgets($fp, 4000);
+		$xml .= fgets($fp, 4000);
 	}
+	$xml = strstr($xml,"<?xml");	// TODO corriger ce gros hack, vérifier aussi que la requète
+									// http à réussie
 	
-	return $line; 
+	// traduction de la météo dans notre format
+	$xh = xslt_create();
+	xslt_set_encoding($xh, "ISO-8859-1");
+	echo xslt_process($xh, 'arg:/_xml', BASE_LOCAL.'/include/meteo_convert.xsl', NULL, array('/_xml'=>$xml));
+	xslt_free($xh);
 }
-
-//Parser de merde qui permet a faible cout de prendre ce qui se situe entre les balise xml
-// Il suffit de lui donner en arguments $separateur = separateur1&&separateur2&&....
-
-function parser($separateur,$string){
-	$sep = explode("&&",$separateur) ;
-	$temp = $string ;
-	foreach($sep AS $key => $valeur) {
-		$tempo = explode("<".$valeur,$temp) ;
-		$i=1 ;
-		// On boucle car on peut avoir <balise> ou <balise [option]> et comme on match sur
-		// "<balise" il se peut tres bien que l'on tombe sur "<balisepluslongue" qu'il ne faut pas matcher
-		while ((substr($tempo[$i],0,1)!=" ")&&(substr($tempo[$i],0,1)!=">")) {
-			$i++ ;
-		}
-		$tempo = explode(">",$tempo[$i],2) ;
-
-		$tempo = explode("</".$valeur.">",$tempo[1]) ;
-		$temp = $tempo[0] ;
-	}
-	return $temp ;
-}
-
-function leve_soleil($string) {
-	return parser("loc&&sunr",$string) ;
-}
-function couche_soleil($string) {
-	return parser("loc&&suns",$string) ;
-}
-function temperature($string) {
-	return parser("cc&&tmp",$string) ;
-}
-function temperature_hi($string) {
-	return  parser("hi",$string) ;
-}
-function temperature_low($string) {
-	return  parser("low",$string) ;
-}
-function bar($string) {
-	return parser("cc&&bar&&r",$string) ;
-}
-function temps_image($string,$i=0) {
-	if ($i==0){
-		return parser("cc&&icon",$string) ;
-	} else if ($i==1) { 	// C'est pour les previsions de la journée
-		$temp = explode('part p="n"',$string) ;
-		return parser("icon",$temp[0]) ;
-	} else {				// pour les prevision de la nuit sinon
-		$temp = explode('part p="n"',$string) ;
-		return parser("icon",$temp[1]) ;			
-	}
-}
-function temps($string,$i=0) {
-	if ($i==0){
-		$temp = parser("cc&&icon",$string) ;
-	} else if ($i==1) { 	// C'est pour les previsions de la journée
-		$temp = explode('part p="n"',$string) ;
-		$temp = parser("icon",$temp[0]) ;
-	} else {				// pour les prevision de la nuit sinon
-		$temp = explode('part p="n"',$string) ;
-		$temp = parser("icon",$temp[1]) ;			
-	}
-	switch ($temp) {
-		case 31: 	return "Ciel découvert" ;
-		case 32: 	return "Ciel découvert" ;
-		case 33: 	return "Ciel découvert" ;
-		case 36: 	return "Ciel découvert" ;
-	
-		case 0: 	return "Orage avec Pluie" ;
-		case 17:	return "Orage avec Pluie" ;
-		case 4: 	return "Orage avec Pluie" ;
-		case 3: 	return "Orage avec Pluie" ;
-		case 35: 	return "Orage avec Pluie" ;
-		case 47: 	return "Orage avec Pluie" ;
-		
-		case 37: 	return "Orage" ;
-		case 38: 	return "Orage" ;
-
-		case 29: 	return "Légers nuages" ;
-		case 34: 	return "Légers nuages" ;
-		
-		case 44: 	return "Quelques nuages" ;
-		case 30: 	return "Quelques nuages" ;
-		
-		case 26: 	return "Nuageux" ;
-		case 27: 	return "Nuageux" ;
-		
-		case 28: 	return "Nombreux nuages" ;
-		
-		case 12: 	return "Faible pluie" ;
-		
-		case 12: 	return "Pluie" ;
-		case 39: 	return "Pluie" ;
-		case 40: 	return "Pluie" ;
-		case 45: 	return "Pluie" ;
-		
-		case 45: 	return "Pluie ou neige" ;
-
-		case 1: 	return "Pluie avec vent" ;
-		case 2: 	return "Pluie avec vent" ;
-		
-		case 18: 	return "Grêle" ;
-		case 6: 	return "Grêle" ;
-		
-		case 10: 	return "Pluie givrante" ;
-		
-		case 11: 	return "Faible pluie" ;
-
-		case 7: 	return "Pluie ou neige givrante" ;
-
-		case 13: 	return "Neige faible" ;
-		
-		case 14: 	return "Chute de neige" ;
-		case 41: 	return "Chute de neige" ;
-		case 42: 	return "Chute de neige" ;
-		case 46: 	return "Chute de neige" ;
-		
-		case 43: 	return "Chute de neige et vent" ;
-
-		case 15: 	return "Forte chute de neige" ;
-		case 16: 	return "Forte chute de neige" ;
-			
-		case 19: 	return "Brume" ;
-		case 20: 	return "Brume" ;
-		case 21: 	return "Brume" ;
-		case 22: 	return "Brume" ;
-
-		case 9: 	return "Brume / Pluie" ;
-
-		case 8: 	return "Brume givrante" ;
-			
-		case 23: 	return "Venteux" ;
-		case 24: 	return "Venteux" ;
-			
-		case 25: 	return "Givre probable" ;
-			
-	}
-	return "?" ;
-}
-function vent($string) {
-	$temp =  parser("cc&&wind&&s",$string) ;
-	$temp2 = parser("cc&&wind&&t",$string) ;
-	return $temp." km/h ".$temp2 ;
-}
-function humidite($string) {
-	return parser("cc&&hmid",$string) ;
-}
-
-
 ?>
