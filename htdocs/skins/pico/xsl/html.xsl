@@ -181,10 +181,10 @@
 	<code><xsl:apply-templates/></code>
 </xsl:template>
 <xsl:template match="new_string">
-	<span style="color: green"><xsl:value-of select="text()"/><xsl:apply-templates/></span>
+	<span style="color: green"><xsl:apply-templates/></span>
 </xsl:template>
 <xsl:template match="old_string">
-	<span style="color: red"><xsl:value-of select="text()"/><xsl:apply-templates/></span>
+	<span style="color: red"><xsl:apply-templates/></span>
 </xsl:template>
 <xsl:template match="a">
 	<a>
