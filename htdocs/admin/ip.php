@@ -100,7 +100,7 @@ if(isset($_POST['supprimer'])) {
 				if ($login2=="" ) 
 					$login2 = "<bouton titre='Détails' id='detail_$login' type='detail'/>".$login ;
 				else 
-					$login2 .= " / <image source='/~kikx/skins/basic/detail.gif'/>$login" ;
+					$login2 .= " / <bouton titre='Détails' id='detail_$login' type='detail'/>$login" ;
 					
 				if ($promo2=="" ) 
 					$promo2 = $promo ;
