@@ -22,9 +22,12 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.27  2004/11/17 22:19:15  kikx
+	Pour avoir un module sondage
+
 	Revision 1.26  2004/11/17 13:27:06  kikx
 	Mise ne place d'un titre dan sles sondages
-
+	
 	Revision 1.25  2004/11/16 14:02:37  pico
 	- Nouvelle fonction qui permet de dl le contenu d'un répertoire
 	- Mise en place sur la page de la FAQ
@@ -124,16 +127,17 @@ function rediriger_vers($page) {
 function liste_modules() {
 	return array(
 		"css"				=> "",
-		"liens_navigation"	=> "",
-		"liens_propositions"	=> "",
+		"liens_navigation"		=> "",
+		"liens_propositions"		=> "",
 		"liens_utiles"			=> "Liens école",
 		"qdj"				=> "Question du jour",
 		"qdj_hier"			=> "Question de la veille",
 		"meteo"				=> "Météo",
 		"activites"			=> "Activités",
 		"tour_kawa"			=> "Tours kawa",
-		"anniversaires"		=> "Anniversaires",
-		"stats"				=> "Statistiques");
+		"anniversaires"			=> "Anniversaires",
+		"stats"				=> "Statistiques",
+		"sondages"			=> "Sondages");
 }
 
 /*

@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un sondage
 	
 	$Log$
+	Revision 1.3  2004/11/17 22:19:15  kikx
+	Pour avoir un module sondage
+
 	Revision 1.2  2004/11/17 21:17:21  kikx
 	Validation d'un sondage par l'admin
-
+	
 	Revision 1.1  2004/11/17 13:49:49  kikx
 	Preparation de la page de validation des sondages
 	
@@ -73,6 +76,8 @@ foreach ($_POST AS $keys => $val){
 	// On accepte le sondage
 	//==========================
 	if ($temp[0] == "valid") {
+		cache_supprimer('sondages') ;// On supprime le cache pour reloader
+		
 		$DB_valid->query("SELECT v.perime,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM valid_sondages as v INNER JOIN trombino.eleves as e USING(eleve_id) WHERE sondage_id={$temp[1]}");
 		list($date,$questions,$titre,$eleve_id,$nom, $prenom, $promo) = $DB_valid->next_row() ;
 
