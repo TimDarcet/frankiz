@@ -6,6 +6,7 @@
 */
 
 require_once BASE_LOCAL."/include/qdj.inc.php";
+print_r("coucou");
 
 if(est_authentifie(AUTH_MINIMUM)) {
 	connecter_mysql_frankiz();

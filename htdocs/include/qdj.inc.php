@@ -9,7 +9,6 @@
 
 function qdj_affiche($hier,$deja_vote) {
 	$date = date("Y-m-d", time()-3025 - ($hier ? 24*3600 : 0));
-	$jour = $hier ? 'aujourdhui' : 'hier';
 	$fichier_cache = BASE_LOCAL."/cache/qdj_".($hier?"hier":"courante");
 	
 	$result = mysql_query("SELECT question,reponse1,reponse2,compte1,compte2 FROM qdj WHERE date='$date' LIMIT 1");
@@ -17,8 +16,8 @@ function qdj_affiche($hier,$deja_vote) {
 	mysql_free_result($result);
 ?>
 
-	<module id="qdj_<?php echo $jour ?>" titre="QDJ<?php if($hier) echo ' d\'hier' ?>" visible="<?php echo skin_visible("qdj_$jour");?>">
-		<qdj type="<?php echo $jour?>" id="<?php echo $id?>" <?php if(!$deja_vote && !$hier) echo " action=\"?qdj=$date&amp;vote=\""; ?>>
+	<module id="<?php echo $hier ? 'qdj_hier' : 'qdj' ?>" titre="QDJ<?php if($hier) echo ' d\'hier' ?>">
+		<qdj type="<?php echo $hier ? 'aujourdhui' : 'hier' ?>" id="<?php echo $id?>" <?php if(!$deja_vote && !$hier) echo " action=\"?qdj=$date&amp;vote=\""; ?>>
 			<question><?php echo $question ?></question>
 			<reponse id="1" votes="<?php echo $compte1?>"><?php echo $reponse1?></reponse>
 			<reponse id="2" votes="<?php echo $compte2?>"><?php echo $reponse2?></reponse>
