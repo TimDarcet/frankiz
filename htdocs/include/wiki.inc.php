@@ -21,9 +21,14 @@
 	Moteur Wiki (TipiWiki)
 	
 	$Log$
+	Revision 1.18  2004/12/13 23:45:49  kikx
+	Attention ... je sais pas trop ce que je fais mais qd je le fait ca corrige les bugs de alban
+
+	Si pico pouvait m'expliquer le code ca serait cool
+
 	Revision 1.17  2004/12/13 20:42:36  pico
 	Passage du wiki en <br/> (bcp plus simple)
-
+	
 	Revision 1.16  2004/12/01 19:28:47  pico
 	Format du wiki: - pour les listes
 	
@@ -106,10 +111,10 @@ function wikiVersXML($filtered,$enhtml=false) {
 	// Liste simple
 	$filtered = preg_replace("/(?<=[\n>])-(.+)\n/","<feuille>$1</feuille>",$filtered);
 	// Structure d'arbre
-	$filtered = preg_replace("(\n<feuille)","\n</p><arbre><feuille",$filtered);
-	$filtered = preg_replace("(</feuille>\n)","</feuille></arbre><p>\n",$filtered);
-	$filtered = preg_replace("(\n<noeud)","\n</p><arbre><noeud",$filtered);
-	$filtered = preg_replace("(</noeud>\n)","</noeud></arbre><p>\n",$filtered);
+	//$filtered = preg_replace("(\n<feuille)","\n</p><arbre><feuille",$filtered);
+	//$filtered = preg_replace("(</feuille>\n)","</feuille></arbre><p>\n",$filtered);
+	//$filtered = preg_replace("(\n<noeud)","\n</p><arbre><noeud",$filtered);
+	//$filtered = preg_replace("(</noeud>\n)","</noeud></arbre><p>\n",$filtered);
 	}else{
 	// Listes
 	$filtered = preg_replace("/(?<=[\n>])--(.+)\n/","<li><ul><li>\\1</li></ul></li>",$filtered); //Liste 2 eme niveau
