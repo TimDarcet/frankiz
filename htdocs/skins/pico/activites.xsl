@@ -24,7 +24,7 @@
 <xsl:template match="module[@id='activites']">
     <xsl:if test="count(element) !=0">
   <div style="text-align: center">
-  <div class="fkz_titre">Activités</div><br/>
+  <div id="activite" class="fkz_titre">Activités</div><br/>
   <div class="fkz_module">
   <xsl:for-each select="annonce">
     <xsl:if test="@titre = 'brc'">

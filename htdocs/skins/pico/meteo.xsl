@@ -50,7 +50,7 @@
 </xsl:template>
 
 <xsl:template match="module/meteo">
-		 <div class="fkz_titre">La météo</div>
+		 <div class="fkz_titre"><span id="meteo_logo"><xsl:text> </xsl:text></span><span id="meteo">La météo</span></div>
    		<div class="fkz_module"  style="text-align: center;">
 			<xsl:value-of select="now/temperature"/>°C<br />
 			<img alt="meteo" width="64" height="64">

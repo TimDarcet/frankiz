@@ -22,7 +22,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="module[@id='stats']">
-		<div class="fkz_titre">État des serveurs :</div>
+		<div class="fkz_titre"><span id="serveurs_logo"><xsl:text> </xsl:text></span><span id="serveurs">État des serveurs :</span></div>
 		<div class="fkz_module">
 		<ul class="fkz_stats">
 		<xsl:for-each select="statistiques/serveur">
@@ -38,7 +38,7 @@
 		</ul>
 		</div>
 		
-		<div class="fkz_titre">Statistiques :</div>
+		<div class="fkz_titre"><span id="stats_logo"><xsl:text> </xsl:text></span><span id="stats">Statistiques</span></div>
 		<div class="fkz_module">
 		<ul class="fkz_stats">
 		<xsl:for-each select="statistiques/service">

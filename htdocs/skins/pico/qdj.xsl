@@ -22,7 +22,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	
 <xsl:template match="module[@id='qdj'] | module[@id='qdj_hier'] ">
-		<div class="fkz_titre"><xsl:value-of select="@titre"/></div>
+		<div class="fkz_titre"><span><xsl:attribute name="id"><xsl:value-of select="@id"/>_logo</xsl:attribute><xsl:text> </xsl:text></span><span><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute><xsl:value-of select="@titre"/></span></div>
 		<div class="fkz_module">
 		<xsl:choose>
 		<xsl:when test="boolean(qdj[@action])">

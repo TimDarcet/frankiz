@@ -23,7 +23,7 @@
 
 <xsl:template match="module[@id='anniversaires']">
 	<xsl:if test="count(eleve) != 0">
-		<div class="fkz_anniversaire_titre">Joyeux anniversaire: </div>
+		<div class="fkz_anniversaire_titre"><span id="anniversaires_logo"><xsl:text> </xsl:text></span><span id="anniversaires">Joyeux anniversaire: </span></div>
 		<div class="fkz_anniversaire">
 			<xsl:if test="count(eleve[@promo='2002'])">
 				2002: 

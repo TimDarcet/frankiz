@@ -44,7 +44,7 @@
 			</xsl:for-each>
 			<!-- les boutons gérant les actions du formulaire -->
 			<div>
-			<span class="boutons" colspan="2">
+			<span class="boutons">
 				<xsl:apply-templates select="bouton"/>
 			</span>
 			</div>

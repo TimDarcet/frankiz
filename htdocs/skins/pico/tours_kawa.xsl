@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!-- 
 	$Log$
+	Revision 1.7  2004/11/05 19:38:02  pico
+	Nouvelle Css un peu plus jolie pour la skin pico
+
 	Revision 1.6  2004/11/05 14:08:22  pico
 	BugFix
-
+	
 	 Revision 1.5  2004/11/05 13:48:50  pico
 	Corrections diverses skin
 
@@ -29,7 +32,7 @@
 
 <xsl:template match="module[@id='tour_kawa']">
 	<xsl:if test="count(liste/element) !=0">
-		<div class="fkz_titre">Tour Kawa</div>
+		<div class="fkz_titre"><span id="tour_kawa_logo"><xsl:text> </xsl:text></span><span id="tour_kawa">Tour Kawa</span></div>
 		<div class="fkz_module">
 			<xsl:for-each select="liste/element">
 				<em><xsl:value-of select="colonne[@id='jour']"/>: </em>

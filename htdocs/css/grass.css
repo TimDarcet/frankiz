@@ -1,0 +1,392 @@
+/* $Id$ */
+/*
+	Copyright (C) 2004 Binet Réseau
+	http://www.polytechnique.fr/eleves/binets/br/
+	
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2
+	of the License, or (at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+*/
+
+body {
+	background-color: #fff699;
+	background-image:url("grass/grass.jpg");
+	margin: 0;
+	padding: 2px;
+	color: #dfd;
+}
+
+img {
+	border: 0;
+}
+
+div.fkz_logo {
+	background-image:url("grass/logo.png");
+	background-repeat:no-repeat;
+	height:90px;
+ }
+
+span.fkz_logo {
+	display:none;
+}
+ 
+a {
+	text-decoration: none;
+	color: #fe6;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.fkz_liens {
+	font-size: 8pt;
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+	border-top: 1px solid #888888;
+}
+
+.fkz_liens_nav {
+	font-size: 9pt;
+	font-weight: bold;
+	background-image:url("grass/grassbrown.jpg");
+	border-top: 1px solid #888888;
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+	padding: 2px;
+	text-align: center;
+}
+
+
+.fkz_qdj_question {
+    font-size: 11pt;
+    text-align: center;   
+}
+
+.fkz_qdj_jone {
+	background-image:url("../skins/pico/pointjone.gif");
+	background-repeat:no-repeat;
+	background-position: center center;
+	height:60px;
+	float: right;
+	text-align: center;
+	width: 49%;
+}
+
+.fkz_qdj_rouje {
+	background-image:url("../skins/pico/pointrouje.gif");
+	background-repeat:no-repeat;
+	background-position: center center;
+	height:60px;
+    float: left;
+    text-align: center;
+    width: 49%;
+}
+
+.fkz_qdj_jone_reponse {
+	height:60px;
+	float: right;
+	text-align: center;
+	width: 49%;
+	color: yellow;
+}
+
+.fkz_qdj_rouje_reponse {
+	height:60px;
+    float: left;
+    text-align: center;
+    width: 49%;
+    color: red;
+}
+
+.fkz_anniversaire_titre {
+	background-image:url("grass/grassbrown.jpg");
+	padding: 2px;
+	text-align : center;
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+	border-top: 1px solid #888888;
+}
+
+.fkz_anniversaire {
+	background-image:url("grass/grassdark.jpg");
+	font-size: 9pt;
+	background-color: #ffc0cb;
+	max-width: 100%; 
+	border-bottom: 1px solid #888888;
+	padding: 2px;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+}
+
+.fkz_titre {
+	color: inherit;
+	background-image:url("grass/grassbrown.jpg");
+	padding: 2px;
+	text-align : center;
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+	border-top: 1px solid #888888;
+}
+
+
+span#contacts_logo {
+	background-image:url("grass/contact.png");
+	background-repeat:no-repeat;
+	background-position: center;
+	height: 22px;
+	width: 100px;
+	padding-left: 100px;
+ }
+
+ span#liens_ecole_logo {
+	background-image:url("grass/ecole.png");
+	background-repeat:no-repeat;
+	background-position: center;
+	height: 22px;
+	width: 120px;
+	padding-left: 120px;
+ }
+ 
+span#meteo_logo {
+	background-image:url("grass/meteo.png");
+	background-repeat:no-repeat;
+	background-position: center;
+	height: 22px;
+	width: 67px;
+	padding-left: 67px;
+ }
+ 
+ span#stats_logo {
+	background-image:url("grass/stats.png");
+	background-repeat:no-repeat;
+	background-position: center;
+	height: 22px;
+	width: 129px;
+	padding-left: 129px;
+ }
+ 
+  span#serveurs_logo {
+	background-image:url("grass/serveurs.png");
+	background-repeat:no-repeat;
+	background-position: center;
+	height: 22px;
+	width: 104px;
+	padding-left: 104px;
+ }
+ 
+   span#tour_kawa_logo {
+	background-image:url("grass/tour_kawa.png");
+	background-repeat:no-repeat;
+	background-position: center;
+	height: 22px;
+	width: 117px;
+	padding-left: 117px;
+ }
+ 
+   span#qdj_hier_logo {
+	background-image:url("grass/qdj_hier.png");
+	background-repeat:no-repeat;
+	background-position: center;
+	height: 22px;
+	width: 103px;
+	padding-left: 103px;
+ }
+ 
+    span#qdj_hier_logo {
+	background-image:url("grass/qdj.png");
+	background-repeat:no-repeat;
+	background-position: center;
+	height: 22px;
+	width: 37px;
+	padding-left: 37px;
+ }
+ 
+     span#anniversaires_logo {
+	background-image:url("grass/anniversaire.png");
+	background-repeat:no-repeat;
+	background-position: center;
+	height: 22px;
+	width: 237px;
+	padding-left: 237px;
+ }
+ 
+#contacts, #liens_ecole, #meteo,#stats,#serveurs,#tour_kawa,#qdj_hier,#qdj,#anniversaires{
+	display:none;
+ }
+
+
+.fkz_module {
+	color: inherit;
+	background-image:url("grass/grassdark.jpg");
+	border-bottom: 1px solid #888888;
+	padding: 2px;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+	margin-bottom: 10px;
+}
+
+.fkz_sommaire {
+	background-image:url("grass/grassdark.jpg");
+	font-size: 9pt;
+	text-align: left;
+	max-width: 100%; 
+}
+
+.fkz_sommaire_titre {
+	background-image:url("grass/grassbrown.jpg");
+	font-size: 9pt;
+	font-weight: bold;
+	text-align: center;
+	max-width: 100%; 
+	margin: 0;
+	padding: 0;
+}
+
+.fkz_annonces {
+	background-image:url("grass/grassdark.jpg");
+	font-size: 9pt;
+	text-align: left;
+	max-width: 100%; 
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+	border-top: 1px solid #888888;
+}
+
+span.fkz_annonces_vieux {
+	background-image:url("http://frankiz/accueil/info/icones/vieux.gif");
+	background-repeat:no-repeat;
+	height:16px;
+	padding-left:16px;
+ }
+
+ span.fkz_annonces_nouveau {
+	background-image:url("http://frankiz/accueil/info/icones/nouveau.gif");
+	background-repeat:no-repeat;
+	height:16px;
+	padding-left:16px;
+ }
+ 
+ span.fkz_annonces_important {
+	background-image:url("http://frankiz/accueil/info/icones/important.gif");
+	background-repeat:no-repeat;
+	height:16px;
+	padding-left:16px;
+ } 
+ 
+ span.fkz_annonces_reste {
+	background-image:url("http://frankiz/accueil/info/icones/reste.gif");
+	background-repeat:no-repeat;
+	height:16px;
+	padding-left:16px;
+ } 
+ 
+span.valid_xhtml {
+	background-image:url("http://www.w3.org/Icons/valid-xhtml10");
+	width: 88px;
+	height:31px;
+	padding-left: 88px;
+	padding-top: 16px;
+}
+	
+span.valid_css {
+	background-image:url("http://www.w3.org/Icons/valid-css");
+	width: 88px;
+	height:31px;
+ 	padding-left: 88px;
+	padding-top: 16px;
+}
+ 
+ span.fkz_annonces_cat {display:none;}
+
+.fkz_trombino {
+    font-size: 9pt;
+    text-align: left;
+    max-width: 100%; 
+    	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+	border-top: 1px solid #888888;
+}
+
+.fkz_page {
+    clear: both;
+    width: 100%;     
+}
+
+
+.fkz_droite, .fkz_gauche{
+/*position: absolute;*/
+        width: 20%;
+	font-size: 9pt;
+	left: 0.5%;
+	margin-top: 0.5%;
+}
+
+.fkz_centre {
+	position: absolute;
+	font-size: 9pt;
+	left: 21%;
+	width: 78%;
+}
+
+.serveur_up {
+	color: inherit;
+	background: lime;
+}
+
+.serveur_down {
+	color: inherit;
+	background: red;
+}
+
+/* FAQ et Xshare */
+.noeud_ferme{list-style-image:url('../skins/pico/fold_close.gif')}
+.noeud_ouvert{list-style-image:url('../skins/pico/fold_open.gif')}
+.feuille{list-style-image:url('../skins/pico/question.gif')}
+
+.fkz_stats{list-style-type:  none; padding:0}
+
+.fkz_qdj_last{
+list-style-type:  none;  
+text-align:left; 
+}
+
+
+p.commentaire {
+	color: inherit;
+	background-image:url("grass/commentaire.jpg");
+	padding: 6px;
+	border: 1px solid #FFDD00;
+	margin: 5px;
+}
+p.warning {
+	color: inherit;
+	background-image:url("grass/warning.jpg");
+	padding: 6px;
+	border: 1px solid #FF3333;
+	margin: 5px;
+}
+
+p.note {
+	color: inherit;
+	background-image:url("grass/note.jpg");
+	font-size: 75%;
+	padding: 6px;
+	margin: 5px;
+}

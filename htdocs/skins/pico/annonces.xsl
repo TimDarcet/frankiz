@@ -82,7 +82,7 @@
 <div class="fkz_annonces">
        <a> <xsl:attribute name="name">
        <xsl:value-of select="@id"/>
-       </xsl:attribute>
+       </xsl:attribute><xsl:text> </xsl:text>
        </a>
        <div style="text-align: center"><b>
        <span>
@@ -112,7 +112,7 @@
 <xsl:template match="annonce" mode="sommaire">
 <div class="fkz_sommaire">
        <a> <xsl:attribute name="href">
-       <xsl:text>annonces.php#</xsl:text> 
+       <xsl:text>index.php#</xsl:text> 
        <xsl:value-of select="@id"/>
        </xsl:attribute>
        	<xsl:value-of select="@titre"/>
