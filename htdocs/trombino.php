@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.16  2004/11/12 23:32:14  schmurtz
+	oublie dans le deplacement du trombino
+
 	Revision 1.15  2004/10/24 20:13:22  kikx
 	Pour afficher la photo original ...
-
+	
 	Revision 1.14  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
 	
@@ -41,13 +44,13 @@
 	
 */
 
-require_once "../include/global.inc.php";
+require_once "include/global.inc.php";
 
 demande_authentification(AUTH_MINIMUM);
 
 // Récupération d'une image
 if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "true") && ($_REQUEST['image'] != "")){
-	require_once("../include/global.inc.php");
+	require_once("include/global.inc.php");
 	header('content-type: image/jpeg');
 	if (!isset($_REQUEST['original'])) {
 		readfile(BASE_PHOTOS.$_REQUEST['promo']."/".$_REQUEST['login'].".jpg");	
@@ -87,7 +90,7 @@ if(isset($_REQUEST['chercher'])) {
 	
 	// Génération de la page si il y a au moins un critère, sinon on raffiche le formulaire.
 	if(!empty($where)) {
-		require "../include/page_header.inc.php";
+		require "include/page_header.inc.php";
 		echo "<page id='trombino' titre='Frankiz : Trombino'>\n";
 		
 		
@@ -111,13 +114,13 @@ if(isset($_REQUEST['chercher'])) {
 		}		
 		
 		echo "</page>\n";
-		require "../include/page_footer.inc.php";
+		require "include/page_footer.inc.php";
 		exit;
 	}
 }
 
 // Affichage du formulaire de recherche
-require "../include/page_header.inc.php";
+require "include/page_header.inc.php";
 ?>
 <page id="trombino" titre="Frankiz : Trombino">
 	<formulaire id="trombino" action="trombino/">
@@ -161,4 +164,4 @@ require "../include/page_header.inc.php";
 		<bouton titre="Chercher" id="chercher" />
 	</formulaire>
 </page>
-<?php require "../include/page_footer.inc.php" ?>
+<?php require "include/page_footer.inc.php" ?>

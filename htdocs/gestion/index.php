@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.9  2004/11/12 23:32:14  schmurtz
+	oublie dans le deplacement du trombino
+
 	Revision 1.8  2004/11/11 17:57:52  kikx
 	Permet de savoir juste sur la page prinipale d'administration ce qui reste a valider ou pas ... car sinon on peut faire trainer des truc super longtemps
-
+	
 	Revision 1.7  2004/11/11 17:39:54  kikx
 	Centralisation des pages des binets
 	
@@ -121,7 +124,7 @@ $permissions_user = ses_permissions() ;
 	<? if (verifie_permission('admin')){?>
 	<h2>Administration frankiz</h2>
 	<h3>Gestion de l'utilisateur</h3>
-		<lien titre="Modifier un utilisateur" url="<?php echo BASE_URL?>/trombino"/>
+		<lien titre="Modifier un utilisateur" url="trombino.php"/>
 	<h3>Validations Variées</h3>
 		<?
 		$DB_valid->query("SELECT eleve_id FROM valid_ip") ;

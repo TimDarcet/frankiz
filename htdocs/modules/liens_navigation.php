@@ -21,9 +21,12 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.17  2004/11/12 23:32:14  schmurtz
+	oublie dans le deplacement du trombino
+
 	Revision 1.16  2004/11/11 20:15:19  kikx
 	Deplacemeent du fichier des binets pour que ca erste logique
-
+	
 	Revision 1.15  2004/11/09 22:39:06  pico
 	Ajout des accesskeys dans les liens de navigation
 	
@@ -87,7 +90,7 @@
 	<lien id="xshare" titre="XShare" url="xshare/" key="x"/>
 	<lien id="binets"  titre="Binets" url="binets.php" key="b"/>
 	<?php if(est_authentifie(AUTH_MINIMUM)): ?>
-		<lien id="trombino" titre="Trombino" url="trombino/" key="t"/>
+		<lien id="trombino" titre="Trombino" url="trombino.php" key="t"/>
 	<?php endif; ?>
 	<?php if(!empty($_SESSION['user']->perms)): ?>
 		<lien id="admin" titre="Administration" url="gestion/" key="g"/>
