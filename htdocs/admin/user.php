@@ -29,9 +29,13 @@
 	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
 	
 	$Log$
+	Revision 1.24  2005/01/03 20:30:25  pico
+	Pour garder les droits d'admin de binets
+	Et ne pas marquer les webmestres de binets comme webmestres de frankiz
+
 	Revision 1.23  2005/01/03 20:07:47  pico
 	Correction du SU
-
+	
 	Revision 1.22  2005/01/03 20:05:07  pico
 	Corrections diverses
 	
@@ -155,7 +159,8 @@ if (verifie_permission('admin') && isset($_POST['mod_compte_fkz'])) {
             if (isset($_POST[$droits]))
                 $perms .= "$droits," ;
         }
-
+	if (isset($_POST['perms_binets']))
+		$perms .= $_POST['perms_binets'];
 	$DB_web->query("UPDATE compte_frankiz SET perms='$perms' WHERE eleve_id=$id");
 	
 	echo "<commentaire>Modification de la partie Compte Frankiz faite avec succès</commentaire>" ;
@@ -213,22 +218,32 @@ if(verifie_permission('admin')){
 // Modification de ses préferences FrankizII
 ?>
 	<formulaire id="user_compt_fkz" titre="Compte Frankiz" action="admin/user.php?id=<? echo $id?>">
-<?
-		$DB_web->query("SELECT perms FROM compte_frankiz WHERE eleve_id=$id");
-		list($perms) = $DB_web->next_row() ;
-?>
                 <note>Pour le mot de passe : Si vous le laissez vide, il ne sera pas modifié !</note>
 		<champ id="pass" titre="Mot de passe" valeur=""/>
                 <note>Pour les webmestres et prez de binets, il faut allez dans le binet en question pour les modifier</note>
 		<choix titre="Droits" id="droits" type="checkbox" valeur="<?php
-			foreach(liste_droits() as $droits => $nom)
-				if(eregi($droits,$perms))
-					echo "$droits ";?>">
+			foreach(liste_droits() as $droits => $nom){
+				$test = false;
+				foreach(ses_permissions() as $tmp => $perm)
+					if($perm == $droits){
+						echo "$droits ";
+						break;
+					}
+			}
+					?>">
 <?php
 			foreach(liste_droits() as $droits => $nom)
 					echo "\t\t\t<option titre=\"$nom\" id=\"$droits\"/>\n";
 ?>
 		</choix>
+<?			$perms_binets = "";
+			foreach(ses_permissions() as $tmp => $perm)
+					if(eregi("webmestre_",$perm)||eregi("prez_",$perm)){
+						$perms_binets .= "$perm,";
+					}
+			if($perms_binets != "")
+				echo "<hidden id=\"perms_binets\" valeur=\"".$perms_binets."\" />";
+?>
 		<bouton id='mod_compte_fkz' titre='Changer'/>
 	</formulaire>
 <? 
