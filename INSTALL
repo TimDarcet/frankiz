@@ -1,2 +1,9 @@
-Dans ./data/photos rajouter des liens symboliques vers les répertoires /home/frankiz2/data/photos/*
-Mettre les droits o+w sur ./cache, ./data/affiches, ./data/annonces, ./data/binets, ./data/photos/*
+Version de développement dans son home perso :
+- l'installer sur gwennoz dans ~/public_html/
+- créer un lien de ./data vers /home/frankiz2/data
+- mettre les droits o+w sur ./cache
+- c'est maintenant accessible via l'URL http://gwennoz/~login/htdocs/
+
+Version de "prod" (celle sur http://gwennoz/frankiz2/) :
+- créer les dossiers ./data/affiches, ./data/annonces, ./data/binets, ./data/photos
+- mettre les droits o+w sur ./cache, ./data/affiches, ./data/annonces, ./data/binets, ./data/photos/*
