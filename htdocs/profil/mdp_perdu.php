@@ -21,9 +21,12 @@
 	Gestion de la création d'un compte et de la perte de mot de passe.
 	
 	$Log$
+	Revision 1.20  2004/12/13 20:22:10  pico
+	un s de trop..
+
 	Revision 1.19  2004/11/25 01:42:38  kikx
 	Truc tout moche pour corriger le probleme de l'affichage du lien administration alors que l'on est pas administrateur
-
+	
 	Revision 1.18  2004/11/24 22:56:18  schmurtz
 	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
 	globale pour tous les fichiers.
@@ -90,7 +93,7 @@ if(!empty($_REQUEST['loginpoly'])) {
 				   "\">".
 				   "http://".$_SERVER['SERVER_NAME'].$tempo[0]."profil/profil.php?uid=${id}&hash=${hash}".
 				   "</a>\n\n".
-				   "N'oublie pas ensuite de modifier ton mot de passe.<br><br> Très sincèrement<br>Le BRs";
+				   "N'oublie pas ensuite de modifier ton mot de passe.<br><br> Très sincèrement<br>Le BR";
 		if (($mail=="")||($mail=="NULL")) $mail = $login."@poly.polytechnique.fr" ;
 		
 		couriel($id,"[Frankiz] Création de compte/perte de mot de passe",$contenu);
