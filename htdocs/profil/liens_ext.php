@@ -21,9 +21,12 @@
 	Gestions des liens perso / des flux rss.
 
 	$Log$
+	Revision 1.12  2005/01/04 23:30:37  pico
+	gni²
+
 	Revision 1.11  2005/01/04 23:25:06  pico
 	oups
-
+	
 	Revision 1.10  2005/01/04 23:22:03  pico
 	Encore des corrections
 	
@@ -85,7 +88,7 @@ if(isset($_REQUEST['OK_rss'])) {
 		if(!empty($_REQUEST['rss_perso_'.$mode]))
 			$rss['m_'.$_REQUEST['rss_perso_'.$mode]] = $mode;
 	// Mise à jour des infos de session et de la base de données
-	$_SESSION['rss'] = $rss;
+	$_SESSION['rss'] = unserialize($rss);
 	$rss = serialize($rss);
 	$DB_web->query("UPDATE compte_frankiz SET liens_rss='$rss' WHERE eleve_id='{$_SESSION['user']->uid}'");	
 }
