@@ -21,9 +21,12 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.34  2005/02/10 21:55:16  pico
+	Arg boulet !
+
 	Revision 1.33  2005/02/10 21:53:10  pico
 	Corrections pour que ça marche sur le serveur de prod
-
+	
 	Revision 1.32  2005/02/10 21:42:41  pico
 	hum
 	
@@ -171,7 +174,8 @@ $DB_web->query("SELECT annonces.annonce_id,stamp,perime,titre,contenu,en_haut,ex
 $nb =$DB_web->num_rows();
 $cpt =0;
 while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail,$visible)=$DB_web->next_row()) {
-	if(!$visible || (!$exterieur && !est_authentifie(AUTH_INTERNE))) continue;
+	if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
+	if(!$visible && $cpt++!=$nb) continue;
 	if($cpt > 0){
 			if(est_authentifie(AUTH_MINIMUM))
 				echo "<lien url=\"?lu=$idprec#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
