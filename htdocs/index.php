@@ -21,9 +21,12 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.37  2005/02/10 22:12:54  pico
+	voilà
+
 	Revision 1.36  2005/02/10 22:00:46  pico
 	Pas joli, mais devrait marcher
-
+	
 	Revision 1.35  2005/02/10 21:55:40  pico
 	bon
 	
@@ -180,6 +183,7 @@ $DB_web->query("SELECT annonces.annonce_id,stamp,perime,titre,contenu,en_haut,ex
 $nb =$DB_web->num_rows();
 $cpt =0;
 $a_fermer=false;
+$idprec=0;
 while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail,$visible)=$DB_web->next_row()) {
 	if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
 	if($visible && $cpt > 0){
