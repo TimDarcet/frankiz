@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.28  2004/12/13 21:02:59  pico
+	Voilà !
+
 	Revision 1.27  2004/12/13 20:51:23  pico
 	New balises :)
-
+	
 	Revision 1.26  2004/11/30 21:33:18  pico
 	Rajout des feuilles à la base d'un arbre
 	
@@ -311,7 +314,7 @@
 	<span style="color: green"><xsl:apply-templates/></span>
 </xsl:template>
 <xsl:template match="old_string">
-	<span style="color: red"><xsl:apply-templates/></span>
+	<span style="color: red; text-decoration: line-through"><xsl:apply-templates/></span>
 </xsl:template>
 <xsl:template match="html"><!-- très moche car impossible à skinner, mais parfois indispensable -->
 	<xsl:value-of disable-output-escaping="yes" select="text()"/>

@@ -184,7 +184,7 @@
 	<span style="color: green"><xsl:apply-templates/></span>
 </xsl:template>
 <xsl:template match="old_string">
-	<span style="color: red"><xsl:apply-templates/></span>
+	<span style="color: red; text-decoration: line-through"><xsl:apply-templates/></span>
 </xsl:template>
 <xsl:template match="a">
 	<a>

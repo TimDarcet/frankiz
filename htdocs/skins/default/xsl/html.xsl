@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.8  2004/12/13 21:02:59  pico
+	Voilà !
+
 	Revision 1.7  2004/12/13 20:51:24  pico
 	New balises :)
-
+	
 	Revision 1.6  2004/12/11 06:08:04  psycow
 	Gestion de l'effacement des news lues
 	
@@ -247,7 +250,7 @@
 	<span style="color: green"><xsl:apply-templates/></span>
 </xsl:template>
 <xsl:template match="old_string">
-	<span style="color: red"><xsl:apply-templates/></span>
+	<span style="color: red; text-decoration: line-through"><xsl:apply-templates/></span>
 </xsl:template>
 <xsl:template match="html"><!-- très moche car impossible à skinner, mais parfois indispensable -->
 	<xsl:value-of disable-output-escaping="yes" select="text()"/>
