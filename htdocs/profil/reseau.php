@@ -22,9 +22,12 @@
 	ses machines, son compte xnet.
 	
 	$Log$
+	Revision 1.23  2005/01/02 19:41:31  pico
+	Fixe une requete sql
+
 	Revision 1.22  2004/12/17 21:52:50  pico
 	Ne buggue plus si pas de kazert
-
+	
 	Revision 1.21  2004/12/16 13:00:42  pico
 	INNER en LEFT
 	
@@ -87,7 +90,7 @@ require "../include/page_header.inc.php";
 <page id="profil_reseau" titre="Frankiz : modification du profil réseau">
 
 <?php
-$DB_trombino->query("SELECT e.piece_id FROM eleves as e WHERE e.eleve_id='{$_SESSION['user']->uid}' AND NOT e.piece_id IS NULL");
+$DB_trombino->query("SELECT e.piece_id FROM eleves as e WHERE e.eleve_id='{$_SESSION['user']->uid}' AND NOT (e.piece_id IS NULL)");
 if($DB_trombino->num_rows()!=0){
 
 if(isset($_POST['changer_xnet'])) {
