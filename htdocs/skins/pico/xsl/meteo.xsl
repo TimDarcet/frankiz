@@ -39,16 +39,28 @@
 			<xsl:if test="@date = '0'"><h3>Aujourd'hui</h3></xsl:if>
 			<xsl:if test="@date = '1'"><h3>Demain</h3></xsl:if>
 			<xsl:if test="@date = '2'"><h3>Après demain</h3></xsl:if>
-			<xsl:if test="@date &gt; '2'"><h3>Dans <xsl:value-of select="@date"/> jours </h3></xsl:if>
-				La température : <xsl:value-of select="temperature_hi"/>°C pendant la journée et <xsl:value-of select="temperature_low"/>°C la nuit<br />	
-				Etat du ciel le jour : <xsl:value-of select="cieljour"/>
-				<img alt="meteo" width="32" height="32">
-					<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="imagejour"/>.png</xsl:attribute>
-				</img><br />
-				Etat du ciel la nuit : <xsl:value-of select="cielnuit"/>
-				<img alt="meteo" width="32" height="32">
-					<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="imagenuit"/>.png</xsl:attribute>
-				</img><br />
+			<xsl:if test="@date &lt;= '2'">
+			<dl>
+				<dt>La température : </dt>
+				<dd>
+					<xsl:value-of select="temperature_hi"/>°C pendant la journée et <xsl:value-of select="temperature_low"/>°C la nuit
+				</dd>
+				<dt>Etat du ciel le jour : </dt>
+				<dd>
+					<xsl:value-of select="cieljour"/>
+					<img alt="meteo" width="32" height="32">
+						<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="imagejour"/>.png</xsl:attribute>
+					</img>
+				</dd>
+				<dt>Etat du ciel la nuit : </dt>
+				<dd>
+					<xsl:value-of select="cielnuit"/>
+					<img alt="meteo" width="32" height="32">
+						<xsl:attribute name="src">skins/pico/xsl/meteo/<xsl:value-of select="imagenuit"/>.png</xsl:attribute>
+					</img>
+				</dd>
+			</dl>
+			</xsl:if>
 		</xsl:for-each>
 </xsl:template>
 

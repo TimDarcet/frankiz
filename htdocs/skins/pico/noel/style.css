@@ -362,7 +362,6 @@ span.valid_css {
 }
 
 .note {
-	font-size: 75%;
 	border: 1px solid #FFDD00;
 }
 
@@ -404,13 +403,17 @@ div.formulaire span.boutons{
 table.liste{
 	clear:both;
 	width:100%;
+	margin-top:5px;
 }
 
 table.liste .entete{
 	text-decoration: underline;
 }
 
-
+table.liste .element{
+	padding-top:10px;
+	font-size: 9pt;
+}
 
 #choix_skin h1, #profil h1,.fkz_page_meteo h1,#xshare  h1,#faq  h1,#vocabulaire  h1{
 	display:none;
