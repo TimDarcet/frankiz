@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.35  2004/12/15 21:09:51  pico
+	On peut rechercher les gens dont c'est l'anniversaire dans le trombi
+
 	Revision 1.34  2004/12/15 04:32:44  falco
 	Bugfix TOL #2 : " " converts into "-"
-
+	
 	Revision 1.33  2004/12/15 04:27:46  falco
 	c du html
 	
@@ -123,7 +126,7 @@ require "include/page_header.inc.php";
 echo "<page id='trombino' titre='Frankiz : Trombino'>\n";
 
 // Affichage des réponses
-if(isset($_REQUEST['chercher'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_REQUEST['q_search']))))) {
+if(isset($_REQUEST['chercher'])||(isset($_REQUEST['anniversaire'])&&isset($_REQUEST['promo']))||(isset($_REQUEST['cherchertol'])&&(!(empty($_REQUEST['q_search']))))) {
 		
 	$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
 	list($promo_temp) = $DB_web->next_row() ;
@@ -132,6 +135,11 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['cherchertol'])&&(!(empty($_RE
 		$join = "LEFT JOIN sections ON eleves.section_id=sections.section_id LEFT JOIN pieces ON eleves.piece_id = pieces.piece_id ";
 		$champs = "eleves.eleve_id,eleves.nom,prenom,surnom,eleves.piece_id,sections.nom,eleves.section_id,cie,promo,login,mail,pieces.tel";
 	
+	// Création de la requête si anniversaire appelle
+	if(isset($_REQUEST['anniversaire'])) {
+		$where .= " MONTH(date_nais)=MONTH(NOW()) AND DAYOFMONTH(date_nais)=DAYOFMONTH(NOW()) AND promo='{$_REQUEST['promo']}'";
+	}
+		
 	// Création de la requête si lien_tol appelle
 	if(isset($_REQUEST['cherchertol'])) {
 		$where_like = array(
