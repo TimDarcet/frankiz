@@ -22,9 +22,12 @@
 	Permet aussi de supprimer des IPs.
 	
 	$Log$
+	Revision 1.21  2004/10/25 19:17:12  kikx
+	Juste un petit warning
+
 	Revision 1.20  2004/10/25 17:19:24  kikx
 	Parsage de la page de la DSI pour trouver les mac associer aux prises
-
+	
 	Revision 1.19  2004/10/25 15:36:47  kikx
 	Recherhce par login
 	
@@ -110,6 +113,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 
 ?>
+<commentaire>Evitez de faire des recherches globales sur tout le monde car ça fait 1000 requêtes sur le serveur de la DSI :)</commentaire>
 	<formulaire id="recherche" titre="Recherche" action="admin/ip.php">
 		<champ titre="Login" id="rech_login" valeur="<? if (isset($_POST['rech_login'])) echo $_POST['rech_login']?>" />
 		<champ titre="Pièce" id="rech_kzert" valeur="<? if (isset($_POST['rech_kzert'])) echo $_POST['rech_kzert']?>" />
