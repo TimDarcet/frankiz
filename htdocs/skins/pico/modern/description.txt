@@ -1,1 +1,1 @@
-Inspirée d'une skin de csszengarden (Non à Jour)
+Inspirée d'une skin de csszengarden (Non compatible IE)
