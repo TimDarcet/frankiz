@@ -21,9 +21,12 @@
 	Page qui permet l'administartion des licences windows.
 	
 	$Log$
+	Revision 1.10  2005/01/20 12:32:19  dei
+	ajout de la gestion des clés libres
+
 	Revision 1.9  2005/01/19 19:28:58  dei
 	Corrections des recherches sql qui pouvaient vider la base par erreur...
-
+	
 	Revision 1.8  2005/01/19 12:11:31  dei
 	debug gestion d'ajout de licence sur demande
 	
@@ -117,6 +120,7 @@ $temp = explode("_",$keys) ;
 			// S'il n'y a aucune entrée avec cette licence dans la base
 			if($DB_msdnaa->num_rows()==0){
 				$DB_msdnaa->query("DELETE FROM valid_licence WHERE eleve_id='{$temp[1]}'");
+				$DB_msdnaa->query("DELETE FROM cles_libres WHERE cle='$_POST[$temp2]' AND logiciel='{$temp[2]}'");
 				//on l'ajoute à la base concernée...
 				$DB_msdnaa->query("INSERT cles_$temp[2] SET eleve_id='{$temp[1]}', attrib='1', cle='$_POST[$temp2]'");
 				$contenu = "Bonjour, <br><br>".
@@ -134,9 +138,6 @@ $temp = explode("_",$keys) ;
 				echo "<warning>IMPOSSIBLE D'ATTRIBUER CETTE LICENCE. L'utilisateur en possède déjà une.</warning>" ;
 			}
 		}
-		else{
-			echo "<warning>La Clé entrée n'a pas un formatage standard !</warning>" ;
-		}
 	}
 }
 $DB_msdnaa->query("UNLOCK TABLES");
@@ -148,8 +149,8 @@ $DB_msdnaa->query("UNLOCK TABLES");
 		<entete id="raison" titre="Raison"/>
 		<entete id="licence" titre="licence"/>
 <?php
-		$DB_msdnaa->query("SELECT v.raison,v.logiciel,e.nom,e.prenom,e.eleve_id FROM valid_licence as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
-		while(list($raison,$logiciel,$nom,$prenom,$eleve_id) = $DB_msdnaa->next_row()) {
+		$DB_msdnaa->query("SELECT v.raison,v.logiciel,l.cle,e.nom,e.prenom,e.eleve_id FROM valid_licence as v LEFT JOIN trombino.eleves as e ON e.eleve_id=v.eleve_id LEFT JOIN cles_libres as l ON v.logiciel=l.logiciel");
+		while(list($raison,$logiciel,$cle_libre,$nom,$prenom,$eleve_id) = $DB_msdnaa->next_row()) {
 ?>
 			<element id="<? echo $eleve_id ;?>">
 				<colonne id="logiciel"><? echo "$logiciel" ?></colonne>
@@ -161,7 +162,7 @@ $DB_msdnaa->query("UNLOCK TABLES");
 				</colonne>
 				<colonne id="licence">
 					<p>
-						<champ titre="" id="ajout_licence_<? echo $eleve_id ;?>" valeur="" /> 
+						<champ titre="" id="ajout_licence_<? echo $eleve_id ;?>" valeur="<? if($cle_libre!=""){echo $cle_libre ;}else{echo "Plus de cle libre pour ce logiciel";} ?>"/>
 						<bouton titre="Ok" id="ok_<? echo $eleve_id ;?>_<? echo $logiciel ;?>" />
 						<bouton titre="Refuser" id="vtff_<? echo $eleve_id ;?>_<? echo $logiciel ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette licence ?')"/>
 					</p>
@@ -253,9 +254,13 @@ if(isset($_POST['effacer'])&&$_POST['login']!=""){
 		</choix>
 		<bouton id='chercher' titre='Rechercher'/>
 		<bouton id='ajout' titre="Ajouter"/>
-		<bouton id='effacer' titre="Supprimer"/>
+		<bouton id='effacer' titre="Supprimer" onClick="return window.confirm('Es-tu sûr de vouloir supprimer cette licence ?')"/>
 	</formulaire>
+<?php
+if(isset($_POST['update'])){
 
+}
+?>
 <h2>Ajout des clés pour une promo dans la base</h2>
 	<formulaire id="ajout" action="admin/valid_licences.php">
 		<choix titre="Promo" id="promo" type="combo" valeur="">
