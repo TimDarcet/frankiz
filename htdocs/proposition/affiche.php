@@ -21,9 +21,14 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une activité
 	
 	$Log$
+	Revision 1.21  2005/01/27 15:23:17  pico
+	La boucle locale est considérée comme interne
+	Tests de photos normalement plus cools.
+	Après le reste.... je sais plus
+
 	Revision 1.20  2005/01/25 14:18:07  pico
 	Pour le lien des activites
-
+	
 	Revision 1.19  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
 	
@@ -133,17 +138,16 @@ else $_POST['heure']="00:00";
 
 $erreur_upload = 0 ;
 if ((isset($_FILES['file']))&&($_FILES['file']['size']!=0))  {
-	$original_size = getimagesize($_FILES['file']['tmp_name']);
-	$filetype = $_FILES['file']['type'] ;
-	
-	$larg = $original_size[0];
-	$haut = $original_size[1];
-	if (($larg>=200)||($haut>=300)) {
-		$erreur_upload =1 ;
-	} else if (($filetype=="image/jpg")||($filetype=="image/jpeg")||($filetype=="image/pjpg")||($filetype=="image/gif")||($filetype=="image/png")) {
-		$filename = "temp_$eleve_id" ;
-		move_uploaded_file($_FILES['file']['tmp_name'], DATA_DIR_LOCAL.'affiches/'.$filename) ;
-	} else {
+	if($original_size = getimagesize($_FILES['file']['tmp_name']){
+		$larg = $original_size[0];
+		$haut = $original_size[1];
+		if (($larg>=200)||($haut>=300)) {
+			$erreur_upload =1 ;
+		} else {
+			$filename = "temp_$eleve_id" ;
+			move_uploaded_file($_FILES['file']['tmp_name'], DATA_DIR_LOCAL.'affiches/'.$filename) ;
+		} 
+	}else {
 		$erreur_upload = 1 ;
 	}
 

@@ -21,10 +21,15 @@
 	Ajout d'un utilisateur !
 	
 	$Log$
+	Revision 1.3  2005/01/27 15:23:17  pico
+	La boucle locale est considérée comme interne
+	Tests de photos normalement plus cools.
+	Après le reste.... je sais plus
+
 	Revision 1.2  2005/01/18 23:24:42  pico
 	Ajout fonction tdb
 	Modif taille images trombi
-
+	
 	Revision 1.1  2004/12/17 16:30:31  kikx
 	Interface pour ajouter un seul et unique utilisateurs ... utiles pour les PITs et les PI qui ne sont pas dans le tol !
 	
@@ -54,7 +59,6 @@ if (isset($_POST['ajout'])) {
 	if (($_POST['nom']!="") &&($_POST['prenom']!="") &&($_POST['login']!="") &&($_POST['date_nais']!="") &&($_POST['sexe']!="") &&($_POST['piece_id']!="") &&($_POST['section']!="") &&($_POST['cie']!="") &&($_POST['promo']!="") &&($_POST['mail']!="")&&($_FILES['file']['tmp_name']!='')) {
 	
 		$img = $_FILES['file']['tmp_name'] ;
-		$image_types = Array ("image/jpeg","image/pjpeg");
 	
 			//récupere les données de l'images
 			//--------------------------------------
@@ -63,7 +67,6 @@ if (isset($_POST['ajout'])) {
 		
 		$fp = fopen($img,"rb"); // (b est pour lui dire que c'est bineaire !)
 		$size = filesize($img) ;
-		$dim = getimagesize($img) ;
 		$data = fread($fp,$size);
 		fclose($fp);
 		$data = addslashes($data);
@@ -72,12 +75,7 @@ if (isset($_POST['ajout'])) {
 			// On verifie que le truc télécharger est une image ...
 			// + bonne taille !
 			//--------------------------------------
-		$original_size = getimagesize($_FILES['file']['tmp_name']);
-
-		$larg = $original_size[0];
-		$haut = $original_size[1];
-
-		if ((in_array (strtolower ($type_img), $image_types))&&($larg<=300)&&($haut<=400)) {
+		if (($original_size = getimagesize($_FILES['file']['tmp_name']))&&($original_size[0]<=300)&&($original_size[1]<=400)) {
 			$filename = BASE_PHOTOS.$_REQUEST['promo']."/".$_REQUEST['login']."_original.jpg" ;
 			$filename2 = BASE_PHOTOS.$_REQUEST['promo']."/".$_REQUEST['login'].".jpg" ;
 			move_uploaded_file($_FILES['file']['tmp_name'], $filename) ;

@@ -24,9 +24,14 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.46  2005/01/27 15:23:17  pico
+	La boucle locale est considérée comme interne
+	Tests de photos normalement plus cools.
+	Après le reste.... je sais plus
+
 	Revision 1.45  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
-
+	
 	Revision 1.44  2005/01/18 22:07:46  pico
 	Passage des images trombi en maxi 300x400
 	
@@ -228,16 +233,13 @@ if(isset($_POST['changer_frankiz'])) {
 		
 		// Vérif taille et déplacemet de l'image
 		$img = $_FILES['file']['tmp_name'] ;
-		$image_types = Array ("image/bmp","image/jpeg","image/pjpeg","image/gif","image/x-png","image/png");
 	
 			//récupere les données de l'images
 			//--------------------------------------
-			
 		$type_img =  $_FILES["file"]["type"];
 		
 		$fp = fopen($img,"rb"); // (b est pour lui dire que c'est bineaire !)
 		$size = filesize($img) ;
-		$dim = getimagesize($img) ;
 		$data = fread($fp,$size);
 		fclose($fp);
 		$data = addslashes($data);
@@ -245,13 +247,9 @@ if(isset($_POST['changer_frankiz'])) {
 			//
 			// On verifie que le truc télécharger est une image ...
 			// + bonne taille !
-			//--------------------------------------
-		$original_size = getimagesize($_FILES['file']['tmp_name']);
+			//-------------------------------------
 
-		$larg = $original_size[0];
-		$haut = $original_size[1];
-
-		if ((in_array (strtolower ($type_img), $image_types))&&($larg<=300)&&($haut<=400)) {
+		if (($original_size = getimagesize($_FILES['file']['tmp_name']))&&($original_size[0]<=300)&&($original_size[1]<=400)) {
 			$filename =$_SESSION['user']->uid ;
 			move_uploaded_file($_FILES['file']['tmp_name'], DATA_DIR_LOCAL.'trombino/a_valider_'.$filename) ;
 			if ($deuxieme_demande) {

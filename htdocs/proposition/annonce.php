@@ -21,9 +21,14 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.42  2005/01/27 15:23:17  pico
+	La boucle locale est considérée comme interne
+	Tests de photos normalement plus cools.
+	Après le reste.... je sais plus
+
 	Revision 1.41  2005/01/22 17:58:39  pico
 	Modif des images
-
+	
 	Revision 1.40  2005/01/20 20:09:03  pico
 	Changement de "Très BRment, l'automate"
 	
@@ -163,20 +168,18 @@ list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_ro
 
 $erreur_upload = 0 ;
 if ((isset($_FILES['file']))&&($_FILES['file']['size']!=0))  {
-	$original_size = getimagesize($_FILES['file']['tmp_name']);
-	$filetype = $_FILES['file']['type'] ;
-	
-	$larg = $original_size[0];
-	$haut = $original_size[1];
-	if (($larg>400)||($haut>300)) {
-		$erreur_upload =1 ;
-	} else if (($filetype=="image/jpg")||($filetype=="image/jpeg")||($filetype=="image/pjpg")||($filetype=="image/gif")||($filetype=="image/png")) {
-		$filename = "temp_$eleve_id" ;
-		move_uploaded_file($_FILES['file']['tmp_name'], DATA_DIR_LOCAL ."annonces/". $filename) ;
-	} else {
+	if($original_size = getimagesize($_FILES['file']['tmp_name'])){
+		$larg = $original_size[0];
+		$haut = $original_size[1];
+		if (($larg>400)||($haut>300)) {
+			$erreur_upload =1 ;
+		} else {
+			$filename = "temp_$eleve_id" ;
+			move_uploaded_file($_FILES['file']['tmp_name'], DATA_DIR_LOCAL ."annonces/". $filename) ;
+		} 
+	}else{
 		$erreur_upload = 1 ;
 	}
-
 }
 //================================================
 // On Supprime l'image qui a été uploadé (si elle existe bien sur :))

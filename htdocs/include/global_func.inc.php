@@ -22,9 +22,14 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.47  2005/01/27 15:23:17  pico
+	La boucle locale est considérée comme interne
+	Tests de photos normalement plus cools.
+	Après le reste.... je sais plus
+
 	Revision 1.46  2005/01/25 14:53:43  pico
 	Modifications relatives à la version de prod, à l'accès extérieur, tout ça...
-
+	
 	Revision 1.45  2005/01/25 14:50:56  kikx
 	Suppression fonction xorg
 	
@@ -199,7 +204,7 @@ function acces_interdit() {
 }
 
 function est_interne() {
-	return (substr($_SERVER['REMOTE_ADDR'],0,8) == "129.104." &&  $_SERVER['REMOTE_ADDR'] != "129.104.30.4" );
+	return ($_SERVER['REMOTE_ADDR'] =="127.0.0.1" || (substr($_SERVER['REMOTE_ADDR'],0,8) == "129.104." &&  $_SERVER['REMOTE_ADDR'] != "129.104.30.4" ));
 }
 
 /*
