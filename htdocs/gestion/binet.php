@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.27  2004/12/17 14:00:32  kikx
+	hum
+
 	Revision 1.26  2004/12/16 13:00:41  pico
 	INNER en LEFT
-
+	
 	Revision 1.25  2004/12/16 12:52:57  pico
 	Passage des paramètres lors d'un login
 	
@@ -173,7 +176,7 @@ if(verifie_permission_prez($_REQUEST['binet'])){
 	$ids ="" ;
 	if(isset($_POST['modif'])) {
 		foreach($_POST['description'] as $id => $on) {
-			$DB_trombino->query("UPDATE  membres SET remarque='$on' WHERE eleve_id=$id");
+			$DB_trombino->query("UPDATE membres SET remarque='$on' WHERE eleve_id='$id' AND binet_id='".$_REQUEST['binet']."'");
 		}
 		$message .= "<commentaire> Sauvegardes des commentaires des différents membres du binet</commentaire>\n";
 	}
