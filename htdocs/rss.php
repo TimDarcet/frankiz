@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.13  2004/11/24 15:18:19  pico
+	Mise en place des liens sur une base sql
+
 	Revision 1.12  2004/11/24 13:45:24  pico
 	Modifs skins pour le wiki et l'id de la page d'annonces
-
+	
 	Revision 1.11  2004/11/24 13:31:42  pico
 	Modifs pages liens rss
 	
@@ -49,35 +52,22 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 
 <?
 
-$array = array(
-	'http://www.liberation.fr/rss.php'=>'Libération',
-	'http://linuxfr.org/backend/news/rss20.rss'=>'News LinuxFr',
-	'http://linuxfr.org/backend/news-homepage/rss20.rss'=>'News 1ère page LinuxFr',
-	'http://www.framasoft.net/backend.php3'=>'Framasoft',
-	'http://www.infos-du-net.com/backend.php'=>'Infos du Net',
-	'http://www.clubic.com/c/xml.php?type=news'=>'Clubic',
-	'http://hyperlinkextractor.free.fr/rssfiles/google_france.xml'=>'Google France',
-	'http://www.humanite.fr/backend_une.php3'=>'L\'Humanité',
-	'http://www.lexpress.fr/getfeedrss.asp'=>'L\'Express',
-	'http://permanent.nouvelobs.com/cgi/rss/permanent_une'=>'Le Nouvel Obs',
-	'http://www.vnunet.fr/rssrdf/news.xml '=>'SVM',
-	'http://www.microsite.reuters.com/rss/topNews'=>'Reuters',
-	'http://www.washingtonpost.com/wp-srv/world/rssheadlines.xml'=>'Washington Post',
-	'http://mozillazine.org/contents.rdf'=>'MozillaZine',
-	);
-if(!empty($_REQUEST['OK_param'])) {
-	// Visibilité
-	foreach($array as $value => $description)
-		if($array != "")
-			unset($_SESSION['rss'][$value]);
+$DB_web->query("SELECT url,description FROM liens_rss");
+while(list($value,$description)=$DB_web->next_row())
+	$array[$value] = $description;
 	
+	
+if(!empty($_REQUEST['OK_param'])) {
 	if(!empty($_REQUEST['vis']))
-		foreach($_REQUEST['vis'] as $value => $mode)
-			if(!isset($_SESSION['rss'][$value]) || $_SESSION['rss'][$value] != 'complet') $_SESSION['rss'][$value] = $mode;
+		foreach($_REQUEST['vis'] as $temp => $null){
+			list($mode,$value) = split("_",$temp,2);
+			if(!isset($rss[$value]) || $rss[$value] != 'complet') $rss[$value] = $mode;
+		}
+	$_SESSION['rss'] = $rss;
 }
 
 if( !isset($_SESSION['rss']) || nouveau_login() ) {
-	$_SESSION['rss'] = $array;
+	$_SESSION['rss'] = array();
 }
 ?>
 	<formulaire id="form_param_rss" titre="Choix des RSS" action="rss.php">
@@ -87,11 +77,11 @@ if( !isset($_SESSION['rss']) || nouveau_login() ) {
 				echo "<choix titre=\"Affichage $mode\" id=\"newrss\" type=\"checkbox\" valeur=\"";
 					foreach($array as $value => $description)
 							if($value != "" && (isset($_SESSION['rss'][$value])) && ($_SESSION['rss'][$value] == $mode))
-								echo "vis[$value]=$mode ";
+								echo "vis[".$mode."_".$value."]";
 						echo"\">";
 						foreach($array as $value => $description)
 							if($value != "")
-								echo "\t\t\t<option titre=\"$description\" id=\"vis[$mode_$value]\"/>\n";
+								echo "\t\t\t<option titre=\"$description\" id=\"vis[".$mode."_".$value."]\"/>\n";
 				echo "</choix>";
 		} 
 ?>
