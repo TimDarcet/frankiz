@@ -24,9 +24,12 @@
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.50  2005/03/31 17:17:01  pico
+	Frankiz exterieur
+
 	Revision 1.49  2005/01/26 22:15:32  schmurtz
 	Oups, maintenant c'est vraiment corrige
-
+	
 	Revision 1.48  2005/01/26 21:56:39  schmurtz
 	Gestion de l'echappement des \
 	
@@ -83,11 +86,12 @@ $https = ($_SERVER['HTTPS']=='on')? 'https':'http';
 define('BASE_LOCAL',realpath(dirname(__FILE__)."/.."));
 // Base URL: distinction pour éviter les http://frankiz//index.php
 if($_SERVER["HTTP_X_FORWARDED_HOST"]=="www.polytechnique.fr")
-        define('BASE_URL',$https.'://www.polytechnique.fr/eleve/frankiz_test');
+        define('BASE_URL',$https.'://www.polytechnique.fr/eleves');
 else if(substr((dirname($_SERVER['PHP_SELF'])), 1))
 	define('BASE_URL',$https.'://'.$_SERVER['HTTP_HOST'].'/'.substr((dirname($_SERVER['PHP_SELF']).'/'.$href), 1));
 else
 	define('BASE_URL',$https.'://'.$_SERVER['HTTP_HOST'].'/'.$href);
+
 
 
 // Connexions aux bases mysql
