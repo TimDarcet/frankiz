@@ -22,10 +22,13 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.26  2004/11/17 13:27:06  kikx
+	Mise ne place d'un titre dan sles sondages
+
 	Revision 1.25  2004/11/16 14:02:37  pico
 	- Nouvelle fonction qui permet de dl le contenu d'un répertoire
 	- Mise en place sur la page de la FAQ
-
+	
 	Revision 1.24  2004/11/10 21:39:44  pico
 	Corrections skin + fonction deldir + faq
 	
@@ -211,6 +214,45 @@ function download($dir,$type = 'zip', $filename = "temp"){
 	header("Content-type: application/force-download");
 	header("Content-Disposition: attachment; filename=$filename.$type");
 	readfile($file.".".$type);
+}
+//---------------------------------------------------------------------------------
+// Fonction de décodage du sondage
+//---------------------------------------------------------------------------------
+function decode_sondage($string) {
+	$string = explode("###",$string) ;
+	for ($i=1 ; $i<count($string) ; $i++) {
+		$temp = explode("///",$string[$i]) ;
+		if ($temp[0]=="expli") {
+			echo "<note>$temp[1]</note>" ;
+		}
+		if ($temp[0]=="champ") {
+			echo "<champ id=\"$i\" titre=\"$temp[1]\" valeur=\"\"/>" ;
+		}
+		if ($temp[0]=="text") {
+			echo "<zonetext id=\"$i\" titre=\"$temp[1]\" valeur=\"\"/>" ;
+		}
+		if ($temp[0]=="radio") {
+			echo "<choix titre=\"$temp[1]\" id=\"$i\" type=\"radio\" valeur=\"\">" ;
+			for ($j=2 ; $j<count($temp) ; $j++) {
+				echo "<option titre=\"".$temp[$j]."\" id=\"$j\"/>";
+			}	
+			echo "</choix>" ;
+		}
+		if ($temp[0]=="combo") {
+			echo "<choix titre=\"$temp[1]\" id=\"$i\" type=\"combo\" valeur=\"\">" ;
+			for ($j=2 ; $j<count($temp) ; $j++) {
+				echo "<option titre=\"".$temp[$j]."\" id=\"$j\"/>";
+			}	
+			echo "</choix>" ;
+		}
+		if ($temp[0]=="check") {
+			echo "<choix titre=\"$temp[1]\" id=\"$i\" type=\"checkbox\" valeur=\"\">" ;
+			for ($j=2 ; $j<count($temp) ; $j++) {
+				echo "<option titre=\"".$temp[$j]."\" id=\"$j\"/>";
+			}	
+			echo "</choix>" ;
+		}
+	}
 }
 
 ?>
