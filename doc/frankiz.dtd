@@ -26,9 +26,13 @@
 	utilisé.
 
 	$Log$
+	Revision 1.6  2004/11/24 13:40:19  pico
+	Retour en arrière:
+	le champ est utile, c'est dans l'esprit des balises du w3c, mais ça interfère avec ce qui est fait jusqu'à maintenant, c'est à dire mettre l'id dans le champ valeur...
+
 	Revision 1.5  2004/11/24 12:01:23  pico
 	Ajout du champ valeur dans les balises "option" pour pouvoir faire des formulaires plus évolués (ex: checkbox)
-
+	
 	Revision 1.4  2004/11/16 18:32:33  schmurtz
 	Petits problemes d'interpretation de <note> et <commentaire>
 	
@@ -256,7 +260,6 @@
 <!ELEMENT option EMPTY>
 <!ATTLIST option
 		id		CDATA   #REQUIRED
-		value   CDATA   #IMPLIED
 		titre   CDATA   #IMPLIED>
 
 <!ELEMENT bouton EMPTY>
