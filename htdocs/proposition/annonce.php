@@ -21,9 +21,13 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
+	Revision 1.35  2004/12/14 22:16:06  schmurtz
+	Correction de bug du moteur wiki.
+	Simplication du code.
+
 	Revision 1.34  2004/12/14 14:18:12  schmurtz
 	Suppression de la page de doc wiki : doc directement dans les pages concernees.
-
+	
 	Revision 1.33  2004/12/14 07:40:33  pico
 	/me boulet
 	
@@ -234,16 +238,12 @@ if (!isset($_POST['titre']))  $_POST['titre']="Titre" ;
 			categorie=""
 			date="<? echo date("d/m/y") ?>">
 			<? 
-			echo wikiVersXML($_POST['text']) ;
-			if ((!isset($_POST['valid']))&&(file_exists(DATA_DIR_LOCAL."annonces/temp_$eleve_id"))) {
-			?>
-				<image source="<?echo DATA_DIR_URL."annonces/temp_".$eleve_id ; ?>" texte=""/>
-			<? 
-			} else if ((isset($index))&&(file_exists(DATA_DIR_LOCAL."annonces/a_valider_{$index}"))){
-			?>
-				<image source="<?echo DATA_DIR_URL."annonces/a_valider_".$index ; ?>" texte=""/>
-			<?
+			if (!isset($_POST['valid']) && file_exists(DATA_DIR_LOCAL."annonces/temp_$eleve_id")) {
+				echo "<image source=\"".DATA_DIR_URL."annonces/temp_$eleve_id\" texte=\"\"/>\n";
+			} else if (isset($index) && file_exists(DATA_DIR_LOCAL."annonces/a_valider_{$index}")){
+				echo "<image source=\"".DATA_DIR_URL."annonces/a_valider_$index\" texte=\"\"/>\n";
 			}
+			echo wikiVersXML($_POST['text']) ;
 			?>
 			<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
 	</annonce>
@@ -270,12 +270,14 @@ if (isset($_POST['valid'])) {
 
 	<formulaire id="propoz_annonce" titre="Ton annonce" action="proposition/annonce.php">
 		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
-		<zonetext id="text" titre="Le texte"><? if (isset($_POST['text'])) echo $_POST['text'];?></zonetext>
-		<note>Ton image doit être un fichier gif, png ou jpg, ne doit pas dépasser 400x300 pixels et 250ko car sinon elle ne sera pas téléchargée</note>
-		<fichier id="file" titre="Ton image" taille="250000"/>
-		<bouton id='suppr_img' titre="Supprimer l'image"/>
 
-		<note>Ton annonce disparaitra le lendemain de la date de péremption</note>
+		<note>Le texte de l'annonce utilise le format wiki décrit en bas de la page.</note>
+		<zonetext id="text" titre="Le texte" type="grand"><? if (isset($_POST['text'])) echo $_POST['text'];?></zonetext>
+
+		<note>L'image doit être un fichier gif, png ou jpeg ne dépassant pas 400x300 pixels et 250Ko.</note>
+		<fichier id="file" titre="Ton image" taille="250000"/>
+
+		<note>Ton annonce disparaîtra le lendemain de la date de péremption.</note>
 		<choix titre="Date de péremption" id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
 <?		for ($i=0 ; $i<MAX_PEREMPTION ; $i++) {
 			$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
@@ -287,12 +289,12 @@ if (isset($_POST['valid'])) {
 ?>
 		</choix>
 		
-		<note>Si tu veux que ton annonce soit visible de l'exterieur, clique ici</note>
-		<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if (isset($_REQUEST['ext'])) echo 'ext' ;?>">
+		<note>Si tu souhaites que ton annonce soit visible de l'extérieur, clique ici.</note>
+		<choix titre="Extérieur" id="exterieur" type="checkbox" valeur="<? if (isset($_REQUEST['ext'])) echo 'ext' ;?>">
 			<option id="ext" titre=""/>
 		</choix>
-		<note>Ta signature sera automatiquement générée</note>
 
+		<bouton id='suppr_img' titre="Supprimer l'image"/>
 		<bouton id='test' titre="Tester"/>
 		<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider votre annonce ?')"/>
 	</formulaire>

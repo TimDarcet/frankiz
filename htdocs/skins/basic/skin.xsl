@@ -23,9 +23,13 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.29  2004/12/14 22:16:06  schmurtz
+	Correction de bug du moteur wiki.
+	Simplication du code.
+
 	Revision 1.28  2004/12/01 22:09:15  pico
 	Correction lien images aussi
-
+	
 	Revision 1.27  2004/11/25 02:22:02  schmurtz
 	esthetisme (trop long)
 	
@@ -169,7 +173,7 @@
 			<center><xsl:apply-templates select="image"/></center>
 		</td></tr>
 		<tr><td>
-			<xsl:apply-templates/>
+			<xsl:apply-templates select="*[not (self::eleve or self::image)]"/>
 			<p class="signature"><b><xsl:apply-templates select="eleve"/></b></p>
 		</td></tr>
 	</table><br />

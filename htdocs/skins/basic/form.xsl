@@ -21,10 +21,14 @@
 	Affichage des éléments de formulaire
 	
 	$Log$
+	Revision 1.27  2004/12/14 22:16:06  schmurtz
+	Correction de bug du moteur wiki.
+	Simplication du code.
+
 	Revision 1.26  2004/11/29 17:27:33  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
-
+	
 	Revision 1.25  2004/11/24 13:05:23  schmurtz
 	Ajout d'un attribut type='discret' pour les liste et formulaire, afin d'avoir
 	une presentation par defaut sans gros cadres autour.
@@ -148,7 +152,9 @@
 	</xsl:when><xsl:otherwise>
 		<textarea>
 			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-			<xsl:attribute name="rows">7</xsl:attribute>
+			<xsl:attribute name="rows">
+				<xsl:choose><xsl:when test="@type='grand'">30</xsl:when><xsl:otherwise>7</xsl:otherwise></xsl:choose>
+			</xsl:attribute>
 			<xsl:attribute name="cols">50</xsl:attribute>
 			<xsl:value-of select="text()"/>
 		</textarea>

@@ -21,9 +21,13 @@
 	Balises de formatage.
 	
 	$Log$
+	Revision 1.29  2004/12/14 22:16:06  schmurtz
+	Correction de bug du moteur wiki.
+	Simplication du code.
+
 	Revision 1.28  2004/12/13 21:02:59  pico
 	Voilà !
-
+	
 	Revision 1.27  2004/12/13 20:51:23  pico
 	New balises :)
 	
@@ -112,7 +116,7 @@
 <xsl:template match="image">
 	<img class="image" style="border:0">
 		<xsl:attribute name="src"><xsl:value-of select="@source"/></xsl:attribute>
-		<xsl:attribute name="alt"><xsl:value-of select="@legende"/></xsl:attribute>
+		<xsl:attribute name="alt"><xsl:value-of select="@texte"/></xsl:attribute>
 		<xsl:if test="boolean(@height)"><xsl:attribute name="height"><xsl:value-of select="@height"/></xsl:attribute></xsl:if>
 		<xsl:if test="boolean(@width)"><xsl:attribute name="width"><xsl:value-of select="@width"/></xsl:attribute></xsl:if>
 	</img><br />
@@ -296,6 +300,12 @@
 </xsl:template>
 <xsl:template match="h5">
 	<h5><xsl:apply-templates/></h5>
+</xsl:template>
+<xsl:template match="li">
+	<li><xsl:apply-templates/></li>
+</xsl:template>
+<xsl:template match="ul">
+	<ul><xsl:apply-templates/></ul>
 </xsl:template>
 
 <xsl:template match="strong">

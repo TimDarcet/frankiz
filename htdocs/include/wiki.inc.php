@@ -21,9 +21,13 @@
 	Moteur Wiki (TipiWiki)
 	
 	$Log$
+	Revision 1.21  2004/12/14 22:16:06  schmurtz
+	Correction de bug du moteur wiki.
+	Simplication du code.
+
 	Revision 1.20  2004/12/14 14:18:12  schmurtz
 	Suppression de la page de doc wiki : doc directement dans les pages concernees.
-
+	
 	Revision 1.19  2004/12/14 12:47:49  pico
 	Le wiki devrait marcher beaucoup mieux ainsi....
 	
@@ -89,7 +93,7 @@
 
 function wikiVersXML($filtered,$enhtml=false) {
 	// from Simon Schoar <simon@schoar.de> :
-	$regexURL = "((http|https|ftp|mailto):\/\/[\w\.\:\@\?\&\~\%\=\+\-\/\_\;]+)";
+	$regexURL = "((http:\/\/|https:\/\/|ftp:\/\/|mailto:)[\w\.\:\@\?\&\~\%\=\+\-\/\_\;]+)";
 	$regexURLText = "([\w\.\:\'\@\?\&\~\%\=\+\-\/\_\ \;\,\$éèàù]+)";
 	
 	// php-specific
@@ -99,69 +103,45 @@ function wikiVersXML($filtered,$enhtml=false) {
 	$filtered = preg_replace("/\[($regexURL\.(png|gif|jpg))\]/i",$enhtml?"<img src=\"\\1\"/>":"<image source=\"\\1\"/>",$filtered);
 	
 	// pictures [ url | alt ]
-	$filtered = preg_replace("/\[($regexURL\.(png|gif|jpg))\|$regexURLText\]/i",$enhtml?"<img src=\"\\1\"alt=\"\\5\"/>":"<image source=\"\\1\" legende=\"\\5\"/>",$filtered);
+	$filtered = preg_replace("/\[($regexURL\.(png|gif|jpg))\|$regexURLText\]/i",$enhtml?"<img src=\"\\1\"alt=\"\\5\"/>":"<image source=\"\\1\" texte=\"\\5\"/>",$filtered);
 	
 	// [ url | link ] external links
-	$filtered = preg_replace("/\[$regexURL\|$regexURLText\]/i",$enhtml?"<a href=\"\\1\">\\3</a>":"<lien url=\"\\1\">\\3</lien>", $filtered);
+	$filtered = preg_replace("/\[$regexURL\|$regexURLText\]/i","<a href=\"\\1\">\\3</a>", $filtered);
 	
 	// plain urls in the text
-	$filtered = preg_replace("/(?<![\"\[])$regexURL(?!\")/",$enhtml?"<a href=\"\\0\">\\0</a>":"<lien url=\"\\0\">\\0</lien>",$filtered);
+	$filtered = preg_replace("/(?<![\"\[])$regexURL(?!\")/","<a href=\"\\0\">\\0</a>",$filtered);
 	
-	// lists <ul>
-	if(!$enhtml){
-		// Listes à 2 niveau
-		$filtered = preg_replace("/(?<=[\n>])--(.+)\n/","<arbre><noeud><feuille>$1</feuille></noeud></arbre>",$filtered);
-		$filtered = preg_replace("(</noeud></arbre><arbre><noeud>)","",$filtered);
-		// Légende liste 2 niveau
-		$filtered = preg_replace("/(?<=[\n>])-(.+)\n<arbre><noeud>/","<arbre><noeud titre=\"$1\">",$filtered);
-		// Liste simple
-		$filtered = preg_replace("/(?<=[\n>])-(.+)\n/","<arbre><feuille>$1</feuille></arbre>",$filtered);
-		// Structure d'arbre
-		$filtered = preg_replace("(</arbre><arbre>)","",$filtered);
-	} else {
-		// Listes
-		$filtered = preg_replace("/(?<=[\n>])--(.+)\n/","<li><ul><li>\\1</li></ul></li>",$filtered); //Liste 2 eme niveau
-		$filtered = preg_replace("/(?<=[\n>])-(.+)\n/","<li>\\1</li>",$filtered); // Liste 1er niveau
-		$filtered = preg_replace("(</ul></li><li><ul>)","",$filtered);  
-		$filtered = preg_replace("(</li><li><ul>)","<ul>",$filtered);
-		$filtered = preg_replace("/<li>(.+)\<\/li>/","<br/><ul>\\0</ul><br/>\n",$filtered);
-	}
-	
-	// Headlines <h1><h2><h3>
-	$filtered = preg_replace("/\n===([^=].*[^=])===[\t  ]*\n/","<h2>\\1</h2>\n",$filtered);
-	$filtered = preg_replace("/\n==([^=].*[^=])==[\t  ]*\n/","<h3>\\1</h3>\n",$filtered);
-	$filtered = preg_replace("/\n=([^=].*[^=])=[\t  ]*\n/","<h4>\\1</h4>\n",$filtered);
+	// strip leading and ending line breaks and convert line breaks
+	$filtered = preg_replace("/^(\n+)/","",$filtered); 
+	$filtered = preg_replace("/(\n+)$/","",$filtered); 
+	$filtered = "<p>".preg_replace("/\n+/","</p>\n<p>",$filtered)."</p>";
 
+	// Headlines <h1><h2><h3>
+	$filtered = preg_replace("/<p>===([^=].*[^=])===[\t  ]*<\/p>/","<h2>\\1</h2>",$filtered);
+	$filtered = preg_replace("/<p>==([^=].*[^=])==[\t  ]*<\/p>/","<h3>\\1</h3>",$filtered);
+	$filtered = preg_replace("/<p>=([^=].*[^=])=[\t  ]*<\/p>/","<h4>\\1</h4>",$filtered);
+
+	// lists <ul>
+	$filtered = preg_replace("/<p>--(.+)<\/p>/","<ul><li><ul><li>\\1</li></ul></li></ul>",$filtered); // Liste 2 eme niveau
+	$filtered = preg_replace("/<p>-(.+)<\/p>/","<ul><li>\\1</li></ul>",$filtered); // Liste 1er niveau
+	$filtered = str_replace ("</li></ul></li></ul>\n<ul><li><ul><li>","</li>\n<li>",$filtered);
+	$filtered = str_replace ("</li></ul>\n<ul><li>","</li>\n<li>",$filtered);
+	$filtered = str_replace ("</li>\n<li><ul>","<ul>",$filtered);
+	
 	// text decorations (bold,italic,underline,boxed)
 	$filtered = preg_replace("/\*\*(.+)\*\*/U","<strong>\\1</strong>", $filtered);
 	$filtered = preg_replace("/&apos;&apos;(.+)&apos;&apos;/U","<em>\\1</em>", $filtered);
 	$filtered = preg_replace("/\|(.+)\|/U","<code>\\1</code>", $filtered);
-
-	// strip leading and ending line breaks
-	$filtered = preg_replace("/^(\n+)/","",$filtered); 
-	$filtered = preg_replace("/\n{3,}/","<br/>",$filtered); 
 	
 	// <pre> blocks
 	//$filtered = preg_replace("/(?<=\n) (.*)(\n)/","<pre>\\1</pre>", $filtered);
-	
-	// ad html line breaks
-	$filtered = str_replace("\n","<br/>\n",$filtered);
-	
-	// html beauty
-	$filtered = "<p>".$filtered."</p>\n";
-	$filtered = str_replace("</li>","</li>\n",$filtered);
-	$filtered = str_replace("ul>","ul>\n",$filtered);
-	$filtered = str_replace("</feuille>","</feuille>\n",$filtered);
-	$filtered = str_replace("</noeud>","</noeud>\n",$filtered);
-	$filtered = str_replace("arbre>","arbre>\n",$filtered);
-	$filtered = str_replace("<br/>\n<h","\n<h", $filtered);
-	
+		
 	return $filtered;
 }
 
 function affiche_syntaxe_wiki() {
 	echo "<html>&lt;small&gt;".
-		"Formatage : **gras** ''italic'' |code|    Listes : -élément --sousélément &lt;br/&gt;".
+		"Formatage : **gras** ' 'italic' ' |code|    Listes : -élément --sousélément &lt;br/&gt;".
 		"Liens/image : [http://exemple.fr/|Titre] [http://exemple.fr/image.png]&lt;br/&gt;".
 		"Titres : ===titre1=== ==titre2== =titre3=&lt;br/&gt;".
 		"&lt;/small&gt;</html>";
