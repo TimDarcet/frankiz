@@ -43,30 +43,31 @@
 le nouveau Frankiz.</p>
 
 <h2>Table des matières</h2>
-	<a class="toc1" href="">Buts</a>
-	<a class="toc1" href="">Système de skinnage</a>
+	<a class="toc1" href="#buts">Buts</a>
+	<a class="toc1" href="#skins">Système de skinnage</a>
 		<a class="toc2" href="">Généralités</a>
 		<a class="toc2" href="">Définition d'une skin XSL</a>
 		<a class="toc2" href="">Définition d'une skin CSS</a>
-	<a class="toc1" href="">Structure d'une page XML de Frankiz</a>
+	<a class="toc1" href="#structurexml">Structure d'une page XML de Frankiz</a>
 		<a class="toc2" href="">Organisation d'une page</a>
 		<a class="toc2" href="">Formatage du contenu</a>
 		<a class="toc2" href="">Format XML</a>
-	<a class="toc1" href="">Quelques règles de codage des scripts PHP</a>
+	<a class="toc1" href="#regles">Quelques règles de codage des scripts PHP</a>
 		<a class="toc2" href="">Commentaires</a>
 		<a class="toc2" href="">Organisation d'une page</a>
 		<a class="toc2" href="">Accès aux bases MySQL</a>
 		<a class="toc2" href="">Méthodes GET et POST des formulaires</a>
-	<a class="toc1" href="">Format de la base de données</a>
+	<a class="toc1" href="#bdd">Format de la base de données</a>
 		<a class="toc2" href="">Trombino</a>
 		<a class="toc2" href="">Contenu du site web</a>
 		<a class="toc2" href="">Gestion des machines (dont l'arpwatch)</a>
 		<a class="toc2" href="">Gestion des validations</a>
 		<a class="toc2" href="">Remarque sur les champs texte des bases</a>
-	<a class="toc1" href="">Organisation des fichiers du site</a>
-	<a class="toc1" href="">Ambivalence Frankiz/Poly</a>
+	<a class="toc1" href="#organisation">Organisation des fichiers du site</a>
+	<a class="toc1" href="#poly">Ambivalence Frankiz/Poly</a>
+	<a class="toc1" href="#droits">Gestions des droits</a>
 
-<h2>Buts</h2>
+<h2 id="buts">Buts</h2>
 
 <p>Les principales raisons qui nous on mener à lancer le projet du nouveau site de web de frankiz sont&nbsp;:
 <ul>
@@ -87,7 +88,7 @@ le nouveau Frankiz.</p>
 </ul>
 </p>
 
-<h2>Système de skinnage</h2>
+<h2 id="skins">Système de skinnage</h2>
 	<h3>Généralités</h3>
 
 <p>C'est l'une des parties les plus profondes du site. Les scripts php ne renvoient pas des données
@@ -153,7 +154,7 @@ et contient les fichiers suivants&nbsp;:
 </ul>
 </p>
 
-<h2>Structure d'une page XML de Frankiz</h2>
+<h2 id="structurexml">Structure d'une page XML de Frankiz</h2>
 	<h3>Organisation d'une page</h3>
 
 <p>La plupart des sites webs actuels ont des pages qui contiennent une partie centrale variant selon les 
@@ -209,7 +210,7 @@ toute fois la possibilité d'envoyer plusieurs page à la fois afin par exemple de
 pages à l'affichage, ou de d'avoir un système qui permet de switcher entre plusieurs pages sans
 recharger les pages. Par défaut, les skins actuelles affichent les pages les une après les autres.</p>
 
-<h2>Quelques règles de codage des scripts PHP</h2>
+<h2 id="regles">Quelques règles de codage des scripts PHP</h2>
 
 <p>Ces règles ont pour but de rendre homogène le code écrit par plusieurs personnes appartenant à
 plusieurs promo qui ne se seront pas forcément c&ocirc;toyées. Le but étant bien s&ucirc;r de rendre le code du
@@ -220,9 +221,12 @@ site web facilement lisible, afin d'en assuré sa pérénité.</p>
 méthode simple est de mettre en entête 5-6 lignes expliquant l'utilisation et le fonctionnement du
 chaque fichier. Il peut être utile d'utiliser les variables CVS pour donner des informations comme
 la version d'un fichier (le "$Id$") ou les logs des modifications (le "$Log$
-la version d'un fichier (le "$Id: documentation.html,v 1.1 2004/10/19 22:35:51 schmurtz Exp $") ou les logs des modifications (le "Revision 1.2  2004/11/16 18:32:33  schmurtz
-la version d'un fichier (le "$Id: documentation.html,v 1.1 2004/10/19 22:35:51 schmurtz Exp $") ou les logs des modifications (le "Petits problemes d'interpretation de <note> et <commentaire>
-la version d'un fichier (le "$Id: documentation.html,v 1.1 2004/10/19 22:35:51 schmurtz Exp $") ou les logs des modifications (le "
+la version d'un fichier (le "$Id: documentation.html,v 1.2 2004/11/16 18:32:33 schmurtz Exp $") ou les logs des modifications (le "Revision 1.3  2004/11/27 16:09:48  pico
+la version d'un fichier (le "$Id: documentation.html,v 1.2 2004/11/16 18:32:33 schmurtz Exp $") ou les logs des modifications (le "Mise à jour de la doc: Ajout de la description des différents droits donnés aux utilisateurs
+la version d'un fichier (le "$Id: documentation.html,v 1.2 2004/11/16 18:32:33 schmurtz Exp $") ou les logs des modifications (le "
+la version d'un fichier (le "$Id$") ou les logs des modifications (le "Revision 1.2  2004/11/16 18:32:33  schmurtz
+la version d'un fichier (le "$Id$") ou les logs des modifications (le "Petits problemes d'interpretation de <note> et <commentaire>
+la version d'un fichier (le "$Id$") ou les logs des modifications (le "
 la version d'un fichier (le "$Id$") ou les logs des modifications (le "Revision 1.1  2004/10/19 22:35:51  schmurtz
 la version d'un fichier (le "$Id$") ou les logs des modifications (le "Mise à jour des documentations :
 la version d'un fichier (le "$Id$") ou les logs des modifications (le "- Déplacement des docs dans ./doc
@@ -246,6 +250,9 @@ hésiter à faire une séparation net entre ces deux phases.</p>
     &laquo;utilisation et fonctionnement de la page&raquo;
 
     $Log$
+    Revision 1.3  2004/11/27 16:09:48  pico
+    Mise à jour de la doc: Ajout de la description des différents droits donnés aux utilisateurs
+
     Revision 1.2  2004/11/16 18:32:33  schmurtz
     Petits problemes d'interpretation de <note> et <commentaire>
 
@@ -334,7 +341,7 @@ de POST).</p>
 vers la même URL sans les paramètres GET afin d'éviter que l'utilisateur réitère la requète par
 erreur en rechargeant la page.</p>
 
-<h2>Format de la base de données</h2>
+<h2 id="bdd">Format de la base de données</h2>
 	<h3>Trombino</h3>
 
 <pre class="program">
@@ -608,7 +615,7 @@ par les méthode GET, POST et les COOKIES sont toutes automatiquement traitées po
 cette forme que sont stockées les cha&icirc;nes de caractères dans les tables MySQL. Il n'est d'ailleurs
 pas utile (et même deconseillé) de les dééchapper avant de les afficher dans la page web.</p>
 
-<h2>Organisation des fichiers du site</h2>
+<h2 id="organisation">Organisation des fichiers du site</h2>
 
 <p>À la racine du dossier contenant les données du site web, on trouve un dossier /public_html/
 contenant les fichiers accessibles par apache (uniquement les fichiers de la CVS, pas de fichier
@@ -680,6 +687,21 @@ de dossier serait suffisant vu que notre site n'est pas si grand que ça.</p>
 <p>Pour sauvegarder le site web, il suffit donc de sauvegarder la CVS (qui contient /etc et
 /public_html), les bases de données MySQL et le dossier /data. Ce ne serait pas aussi simple
 si par exemple les images ou les fichiers de cache étaient stockées dans le /public_html.</p>
+
+<h2 id="droits">Gestions des droits</h2>
+<p>L'accès à la gestion des différentes parties du site est soumise à des restrictions. Voici la liste des 
+différents droits possibles pour un utilisateur</p>
+<ul>
+	<li><em>admin</em>: L'utilisateur a tous les droits sur le site, plus spécialement celui de se connecter en tant qu'un autre utilisateur (su), de gérer les ip et d'envoyer les mails promo.</li>
+	<li><em>web</em>: L'utilisateur a les droits sur la gestion des annonces et des sondages. Il peut aussi valider ou modifier toutes les affiches (activités) et les faire apparaitre à l'extérieur.</li>
+	<li><em>trombino</em>: L'utilisateur a le droit de modifier et de valider les changements relatifs au trombino.</li>
+	<li><em>faq</em>: L'utilisateur peut modifier la FAQ.</li>
+	<li><em>xshare</em>: L'utilisateur peut gerer la partie Xshare.</li>
+	<li><em>qdjmaster</em>: L'utilisateur peut valider les qdj et les planifier.</li>
+	<li><em>affiches</em>: L'utilisateur peut valider ou modifier ses propres affiches (activités) mais ne peut pas les faire apparaitre à l'extérieur. Ce droit peut être utilisé pour certains binets ayant des activités régulières, pour ne pas surcharger le travail des utilisateurs web.</li>
+	<li><em>webmestre_</em>nomdubinet: L'utilisateur est webmaster du binet "nomdubinet" et peut modifier le site du binet ainsi que sa description dans la page d'acceuil des binets.</li>
+	<li><em>prez_</em>nomdubinet: L'utilisateur est président du binet "nomdubinet" et peut modifier la liste des membres de son binet ainsi que leurs commentaires.</li>
+</ul>
 
 </body>
 </html>
