@@ -405,3 +405,43 @@ div.formulaire span.boutons{
 }
 
 /* Formulaires */
+
+/* Listes */
+table.liste{
+	clear:both;
+	width:100%;
+}
+
+table.liste .entete{
+	text-decoration: underline;
+}
+
+#choix_skin h1 {
+	background-repeat:no-repeat;
+	background-position: center;
+	background-image: url("grass/titre_page_skin.png");
+	height: 22px;
+	width: 100%;
+	display:block;
+}
+#choix_skin h1 span,#form_choix_skin h2 span,#form_param_skin h2 span{
+	display:none;
+}
+
+#form_choix_skin h2 {
+	background-repeat:no-repeat;
+	background-position: left;
+	background-image: url("grass/titre_choix_skin.png");
+	height: 22px;
+	width: 100%;
+	display:block;
+}
+
+#form_param_skin h2 {
+	background-repeat:no-repeat;
+	background-position: left;
+	background-image: url("grass/titre_param_skin.png");
+	height: 22px;
+	width: 100%;
+	display:block;
+}
