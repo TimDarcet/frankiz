@@ -21,9 +21,12 @@
 	Pour gerer son site web perso
 		
 	$Log$
+	Revision 1.9  2005/01/06 17:22:17  pico
+	Pour que ce soient les root qui recoivent les mails d'acces externe aux sites des élèves.
+
 	Revision 1.8  2004/12/16 13:00:42  pico
 	INNER en LEFT
-
+	
 	Revision 1.7  2004/12/15 21:46:37  pico
 	Ptèt que là ça marchera mieux
 	
@@ -101,7 +104,7 @@ if(isset($_POST['ext'])){
 			"Très BR-ement<br>" .
 			"L'automate :)<br>"  ;
 			
-		couriel(WEBMESTRE_ID,"[Frankiz] Demande de page perso de $nom $prenom",$contenu,$_SESSION['user']->uid);
+		couriel(ROOT_ID,"[Frankiz] Demande de page perso de $nom $prenom",$contenu,$_SESSION['user']->uid);
 		$message .= "<commentaire>Ta demande d'accessibilité depuis l'extérieur a été prise en compte et sera validée dans les meilleurs délai.</commentaire>" ;
 
 	} else if($un != 0) {
