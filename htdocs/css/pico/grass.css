@@ -381,3 +381,12 @@ p.note {
 	background-image:url("grass/note.jpg");
 	font-size: 75%;
 }
+
+.submit_button,.reset_button{
+	background: #dddddd;
+	padding: 2px;
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+	border-top: 1px solid #888888;
+}

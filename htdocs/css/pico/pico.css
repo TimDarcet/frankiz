@@ -324,3 +324,12 @@ span.valid_css {
 	left: 98px;
 	top: -31px;
 }
+
+.submit_button,.reset_button{
+	background: #dddddd;
+	padding: 2px;
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	border-left: 1px solid #888888;
+	border-top: 1px solid #888888;
+}
