@@ -22,9 +22,12 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.7  2005/01/11 13:34:50  pico
+	idem
+
 	Revision 1.6  2004/12/17 18:36:34  pico
 	Ajout mail admin@windows
-
+	
 	Revision 1.5  2004/12/17 01:37:25  pico
 	Avec les bons mdp...
 	
@@ -93,7 +96,9 @@ define('BASE_DATA',"/home/frankiz2/data/");				// TODO Gérer le truc proprement.
 define('BASE_PHOTOS',"/home/frankiz2/data/photos/");
 define('BASE_CACHE',"/home/frankiz2/cache/");
 define('BASE_BINETS',"/home/frankiz2/binets/");
+define('BASE_BINETS_EXT',"/home/frankiz2/htdocs/binets/");
 define('BASE_PAGESPERSOS',"/home/frankiz2/webperso/");
+define('BASE_PAGESPERSOS_EXT',"/home/frankiz2/htdocs/webperso/");
 
 define('LOG_ERROR',"/var/log/apache2/frankiz.error");
 define('LOG_ACCESS',"/var/log/apache2/frankiz.access");	// connection/déconnection, erreur de login
