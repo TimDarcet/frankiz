@@ -59,6 +59,16 @@ foreach ($_POST AS $keys => $val){
 	
 		echo "<commentaire>Fichier ajouté</commentaire>";
 	}
+	
+	if ($temp[0]=='suppr') {
+		$DB_web->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
+		list($dir) = $DB_web->next_row();
+		unlink(BASE_DATA."faq/".$dir);
+		rmdir(substr(BASE_DATA."faq/".$dir, 0, -10));
+		$DB_web->query("DELETE FROM faq WHERE faq_id='{$temp[1]}' ");
+		
+		echo "<warning>Fichier supprimé</warning>";
+	}
 }
 
 
