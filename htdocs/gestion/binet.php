@@ -7,9 +7,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.3  2004/10/17 20:27:35  kikx
+	Permet juste au prez des binets de consulter les perosnne adherant aux binet ainsi que leur commentaires
+
 	Revision 1.2  2004/10/17 17:31:32  kikx
 	Micro modif avant que j'oublie
-
+	
 	Revision 1.1  2004/10/17 15:22:05  kikx
 	Mise en place d'un repertoire de gestion qui se différencie de admin car ce n'est pas l'admin :)
 	En gros il servira a tout les modification des prez des webmestres , des pages persos, ...
@@ -29,14 +32,48 @@ require_once "../include/global.inc.php";
 demande_authentification(AUTH_FORT);
 if ((empty($_GET['binet'])) || ((!verifie_permission_webmestre($_GET['binet'])) && (!verifie_permission_prez($_GET['binet']))))
 	rediriger_vers("/admin/");
-echo $est_prez = verifie_permission_prez($_GET['binet']);
+	
+$DB_web->query("SELECT nom FROM binets WHERE id=".$_GET['binet']);
+list($nom_binet) = $DB_web->next_row() ;
 
 
-// Génération de la page
 require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="admin_binet" titre="Frankiz : administration binet">
-	<p>Coucou <?php echo $est_prez ? "Prez" : "Webmestre"?> du binet <?php echo $_GET['binet']?></p>
+<?
+if(verifie_permission_prez($_GET['binet'])){
+
+	$DB_trombino->query("SELECT promo FROM eleves WHERE eleve_id='".$_SESSION['user']->uid."'");
+	list($promo_prez) = $DB_trombino->next_row() ;
+	?>
+	<h1>Administration par le </h1>
+	<h1>prèz du binet <?=$nom_binet?></h1>
+	
+	<h2>Liste des membres</h2>
+	<?
+	$DB_trombino->query("SELECT m.eleve_id,remarque,nom,prenom,surnom,promo FROM membres as m INNER JOIN eleves USING(eleve_id) WHERE binet_id=".$_GET['binet']." AND promo=$promo_prez");
+	?>
+	<liste id="liste_binets" selectionnable="oui" action="admin/binets.php">
+		<entete id="nom" titre="Nom"/>
+		<entete id="description" titre="Description"/>
+	<?
+	while(list($id,$remarque,$nom,$prenom,$surnom,$promo) = $DB_trombino->next_row()) {
+			echo "\t\t<element id=\"$id\">\n";
+			echo "\t\t\t<colonne id=\"nom\">$nom</colonne>\n";
+			echo "\t\t\t<colonne id=\"description\">$remarque</colonne>\n";
+			echo "\t\t</element>\n";
+	}
+?>
+		<bouton titre="Modifier" id="modif"/>
+		<bouton titre="Supprimer" id="suppr" onClick="return window.confirm('Supprimer cette personne de mon binet ?')"/>
+	</liste>
+<?
+}
+if(verifie_permission_prez($_GET['binet'])){
+
+
+}
+?>
 </page>
 <?php
 require_once BASE_LOCAL."/include/page_footer.inc.php";

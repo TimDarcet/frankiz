@@ -4,9 +4,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.20  2004/10/17 20:27:35  kikx
+	Permet juste au prez des binets de consulter les perosnne adherant aux binet ainsi que leur commentaires
+
 	Revision 1.19  2004/10/17 17:16:28  kikx
 	prtit oubli de definitions d'une variable
-
+	
 	Revision 1.18  2004/10/17 17:13:20  kikx
 	Pour rendre la page d'administration plus belle
 	n'affiche le truc d'admin que si on est admin
@@ -87,7 +90,11 @@ $permissions_user = ses_permissions() ;
 			$counter ++ ;
 			if ($counter == 1) 
 				echo "<h2>Prez binet X</h2>" ;
-			echo "<lien titre=\"Gerer la page du binet\" url=\"". BASE_URL."/gestion/binet.php?binet=".$binet."\"/>" ;
+			
+			$DB_web->query("SELECT nom FROM binets WHERE id=$binet");
+			list($nom) = $DB_web->next_row() ;
+
+			echo "<lien titre=\"Gerer la page du binet : $nom\" url=\"". BASE_URL."/gestion/binet.php?binet=".$binet."\"/>" ;
 		}
 	}
 
@@ -105,7 +112,12 @@ $permissions_user = ses_permissions() ;
 			$counter ++ ;
 			if ($counter == 1) 
 				echo "<h2>Prez binet X</h2>" ;
-			echo "<lien titre=\"Gerer les membres du binet\" url=\"". BASE_URL."/gestion/binet.php?binet=".$binet."\"/>" ;
+			
+			$DB_web->query("SELECT nom FROM binets WHERE id=$binet");
+			list($nom) = $DB_web->next_row() ;
+
+				
+			echo "<lien titre=\"Gerer les membres du binet : $nom\" url=\"". BASE_URL."/gestion/binet.php?binet=".$binet."\"/>" ;
 		}
 	}
 
