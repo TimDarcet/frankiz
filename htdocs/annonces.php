@@ -3,9 +3,12 @@
 	Annonces de frankiz. Page d'acceuil pour les personnes déjà loguées.
 	
 	$Log$
+	Revision 1.11  2004/10/16 01:50:22  schmurtz
+	Affichage des annonces publiques (exterieure) pour les personnes non authentifiees
+
 	Revision 1.10  2004/10/11 11:08:38  kikx
 	L'affichage des annonces provoquait des erreurs ...
-
+	
 	Revision 1.9  2004/09/18 16:04:52  kikx
 	Beaucoup de modifications ...
 	Amélioration des pages qui gèrent les annonces pour les rendre compatible avec la nouvelle norme de formatage xml -> balise web et balise image qui permette d'afficher une image et la signature d'une personne
@@ -34,7 +37,6 @@
 */
 
 require_once "include/global.inc.php";
-demande_authentification(AUTH_MINIMUM);
 
 function get_categorie($en_haut,$stamp,$perime) {
 	if($en_haut==1) return "important";
@@ -48,11 +50,13 @@ require "include/page_header.inc.php";
 echo "<page id='annonces' titre='Frankiz : annonces'>\n";
 
 
-$DB_web->query("SELECT annonce_id,stamp,perime,titre,contenu,en_haut,nom,prenom,surnom,promo,"
+$DB_web->query("SELECT annonce_id,stamp,perime,titre,contenu,en_haut,exterieur,nom,prenom,surnom,promo,"
 					 ."IFNULL(mail,CONCAT(login,'@poly.polytechnique.fr')) as mail "
 					 ."FROM annonces LEFT JOIN trombino.eleves USING(eleve_id) "
 					 ."WHERE (perime>=".date("Ymd000000",time()).") ORDER BY perime DESC");
-while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$nom,$prenom,$surnom,$promo,$mail)=$DB_web->next_row()) { ?>
+while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail)=$DB_web->next_row()) {
+	if(!$exterieur && !est_authentifie(AUTH_MINIMUM)) continue;
+?>
 	<annonce titre="<?php echo $titre ?>"
 			categorie="<?php echo get_categorie($en_haut, $stamp, $perime) ?>"
 			date="<?php echo substr($stamp,8,2)."/".substr($stamp,5,2)."/".substr($stamp,0,4) ?>">
