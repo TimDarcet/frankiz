@@ -21,9 +21,12 @@
 	Page qui permet aux admins de vider la bdd des activités périmées
 	
 	$Log$
+	Revision 1.8  2005/01/06 23:31:31  pico
+	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
+
 	Revision 1.7  2004/12/17 19:55:44  pico
 	Ajout d'une page pour voir l'historique des qdj
-
+	
 	Revision 1.6  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
 	
@@ -101,9 +104,9 @@ foreach ($_POST AS $keys => $val){
 	}
 	
 	if ($temp[0]=='qdj') {
-		$DB_web->query("SELECT qdj_id FROM qdj WHERE date<'".date("Y-m-d", time()-3025 - 365 * 24 * 3600)."' AND date>'0000-00-00'");
+		$DB_web->query("SELECT qdj_id FROM qdj WHERE date<'".date("Y-m-d", time() - 365 * 24 * 3600)."' AND date>'0000-00-00'");
 		$compteur = $DB_web->num_rows();
-		$DB_web->query("DELETE FROM qdj WHERE date<'".date("Y-m-d", time()-3025 - 365 * 24 * 3600)."' AND date>'0000-00-00'");
+		$DB_web->query("DELETE FROM qdj WHERE date<'".date("Y-m-d", time() - 365 * 24 * 3600)."' AND date>'0000-00-00'");
 	?>
 		<warning>Suppression de <? echo $compteur?> qdj périmées</warning>
 	<?

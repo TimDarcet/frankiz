@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.18  2005/01/06 23:31:31  pico
+	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
+
 	Revision 1.17  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 	Revision 1.16  2004/12/07 08:45:13  pico
 	Nettoyage des qdj
 	
@@ -106,7 +109,7 @@ foreach ($_POST AS $keys => $val){
 	// Fixe une date de parution à la QDJ
 	
 	if ($temp[0]=='valid') {
-		if((strtotime($_REQUEST['date']) <(time()-3025 ))&&($_REQUEST['date']!="0000-00-00"))
+		if((strtotime($_REQUEST['date']) <(time() ))&&($_REQUEST['date']!="0000-00-00"))
 		{ ?>
 			<warning>ERREUR: Veuillez choisir une date supérieure à aujourd'hui</warning>
 		<?
@@ -201,14 +204,14 @@ foreach ($_POST AS $keys => $val){
 }
 
 //nb de qdj planifiées
-$date = date("Y-m-d", time()-3025);
+$date = date("Y-m-d", time());
 ?>
 	<p>Nous sommes le : <?= $date ?></p>
 <?
 //Cherche la date de la prochaine qdj libre
 for ($i = 0; ; $i++) 
 {
-	$date_last = date("Y-m-d", time()-3025 + $i*24*3600);
+	$date_last = date("Y-m-d", time() + $i*24*3600);
 	$DB_web->query("SELECT qdj_id FROM qdj WHERE date='$date_last' LIMIT 1");
 	if(!$DB_web->num_rows()) break;
 }
@@ -226,7 +229,7 @@ if(isset($_REQUEST['show'])) {
 	<h2>Prévisions</h2>
 	<?
 
-	$date = date("Y-m-d", time()-3025 + 24*3600);
+	$date = date("Y-m-d", time() + 24*3600);
 	$DB_web->query("SELECT qdj_id,date,question,reponse1,reponse2 FROM qdj WHERE date>='$date'  ORDER BY date ASC");
 	while(list($id,$date,$question,$reponse1,$reponse2) = $DB_web->next_row()){
 
@@ -236,7 +239,7 @@ if(isset($_REQUEST['show'])) {
 			<note><?= $question ?></note>
 			<note><?= "$reponse1 / $reponse2" ?></note>
 		
-			<? if(strtotime($date) >time()-3025 + 24*3600){ ?><bouton titre="Un jour plus tôt" id="reddate_<? echo $id ?>_<? echo $date ?>"/><? } ?>
+			<? if(strtotime($date) >time() + 24*3600){ ?><bouton titre="Un jour plus tôt" id="reddate_<? echo $id ?>_<? echo $date ?>"/><? } ?>
 			<bouton titre="Un jour plus tard" id="augdate_<? echo $id ?>_<? echo $date ?>"/>
 			<bouton id='modif_<? echo $id ?>_<? echo $date ?>' titre='Modifier la date manuellement'/>
 			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette qdj ?!!!!!')"/>
@@ -261,7 +264,7 @@ if(!isset($_REQUEST['show']))
 
 //===============================
 // Affiche la qdj de demain et après demain
-	$date = date("Y-m-d", time()-3025 + 24*3600);
+	$date = date("Y-m-d", time() + 24*3600);
 	
 	$DB_web->query("SELECT question,reponse1,reponse2 FROM qdj WHERE date='$date' LIMIT 1");
 	list($question,$reponse1,$reponse2) = $DB_web->next_row(); 
@@ -275,7 +278,7 @@ if(!isset($_REQUEST['show']))
 			</qdj>
 		</module>
 <?
-	$date = date("Y-m-d", time()-3025 + 48*3600);
+	$date = date("Y-m-d", time() + 48*3600);
 	
 	$DB_web->query("SELECT question,reponse1,reponse2 FROM qdj WHERE date='$date' LIMIT 1");
 	list($question,$reponse1,$reponse2) = $DB_web->next_row(); 

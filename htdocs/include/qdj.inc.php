@@ -25,9 +25,12 @@
 	TODO traiter le cas ou le qdj master est à la bourre (garder l'ancienne qdj par exemple).
 	
 	$Log$
+	Revision 1.16  2005/01/06 23:31:31  pico
+	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
+
 	Revision 1.15  2004/12/16 00:22:53  pico
 	Coreection cache qdj, sinon la qdh devient la qdah...
-
+	
 	Revision 1.14  2004/12/14 17:36:33  pico
 	Correction action
 	
@@ -59,10 +62,10 @@
 
 function qdj_affiche($hier,$deja_vote) {
 	global $DB_web;
-	$date = date("Y-m-d", time()-3025 - ($hier ? 24*3600 : 0));
+	$date = date("Y-m-d", time() - ($hier ? 24*3600 : 0));
 	$cache_id = "qdj_".($hier?"hier_":"courante_").($deja_vote?"reponse":"question");
 	// Récupération des noms des derniers votants à la question en cours
-	if(!cache_recuperer($cache_id,strtotime(date("Y-m-d 00:50:25", time()-3025)))) {
+	if(!cache_recuperer($cache_id,strtotime(date("Y-m-d 00:50:25", time())))) {
 		$DB_web->query("SELECT question,reponse1,reponse2,compte1,compte2 FROM qdj WHERE date='$date' LIMIT 1");
 		while(list($question,$reponse1,$reponse2,$compte1,$compte2) = $DB_web->next_row()){
 ?>

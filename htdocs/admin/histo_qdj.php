@@ -21,9 +21,12 @@
 	Page qui permet aux admins de voir l'historique des qdj
 	
 	$Log$
+	Revision 1.6  2005/01/06 23:31:31  pico
+	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
+
 	Revision 1.5  2004/12/17 20:40:48  pico
 	Mise en forme
-
+	
 	Revision 1.4  2004/12/17 20:28:02  pico
 	Plus joli
 	
@@ -61,7 +64,7 @@ foreach ($_POST AS $keys => $val){
 
 }
 
-$date = date("Y-m-d", time()-3025);
+$date = date("Y-m-d", time());
 ?>
 	<h4>Nous sommes le : <?= date("d/m/Y",strtotime($date)) ?></h4>
 	<h2>Historique</h2>

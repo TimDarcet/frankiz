@@ -21,9 +21,12 @@
 	Cette page permet de déterminer si le Bôb est ouvert ou non.
 	
 	$Log$
+	Revision 1.5  2005/01/06 23:31:31  pico
+	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
+
 	Revision 1.4  2005/01/04 13:30:13  pico
 	Ajout possibilité de virer des tours kawa
-
+	
 	Revision 1.3  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
 	
@@ -70,7 +73,7 @@ if(isset($_POST['envoie'])){
 	$DB_web->query("UPDATE parametres SET valeur='".$_REQUEST['etat']."' WHERE nom='bob'");
 }
 
-if(isset($_POST['ajout_kawa']) &&(strtotime($_REQUEST['date']) >(time()-3025 ))&&($_REQUEST['date']!="0000-00-00")){
+if(isset($_POST['ajout_kawa']) &&(strtotime($_REQUEST['date']) >(time()))&&($_REQUEST['date']!="0000-00-00")){
 	$DB_web->query("INSERT INTO kawa SET date='".$_POST['date']."', section_id='".$_POST['section']."' ");
 	echo"<commentaire>Tour kawa ajouté</commentaire>";
 }
