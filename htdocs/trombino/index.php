@@ -1,32 +1,79 @@
 <?php
+/*
+	$Id$
+	
+	Recherche dans le trombino.
+*/
+
 require_once "../include/global.inc.php";
-require_once "../include/trombino.inc.php";
 
 demande_authentification(AUTH_MINIMUM);
 
 // Récupération d'une image
 if(($_REQUEST['image'] == "true") && ($_REQUEST['image'] != "")){
 	require_once("../include/global.inc.php");
-	trombi_image($_REQUEST['login'],$_REQUEST['promo']);
+	header('content-type: image/jpeg');
+	readfile(BASE_PHOTOS.$_REQUEST['promo']."/".$_REQUEST['login'].".jpg");	
 	exit;
 }
 
-trombi_id_binet();
-
 // Affichage des réponses
-if($_REQUEST['nom']!="" || $_REQUEST['prenom']!="" || $_REQUEST['phone']!="" || $_REQUEST['casert']!=""
-	|| $_REQUEST['section']!="" || $_REQUEST['cie']!="" || $_REQUEST['surnom']!="" || $_REQUEST['promo']!=""
-	|| $_REQUEST['mail']!="" || $_REQUEST['loginpoly']!="" || $_REQUEST['type']!="" || $_REQUEST['binet']!="") {
+if(isset($_REQUEST['chercher'])) {
+
+	// Création de la requète
+	$where = "";
+	$join = "";
+	$champs = "eleves.eleve_id,nom,prenom,surnom,piece_id,section,cie,promo,login,mail,0";
 	
-	require "../include/page_header.inc.php";
-	echo "<page id='trombino' titre='Frankiz : Trombino'>\n";
-	echo trombi_recherche($_REQUEST['nom'],$_REQUEST['prenom'],$_REQUEST['phone'],$_REQUEST['casert'],
-						  "","","",$_REQUEST['section'],$_REQUEST['cie'],$_REQUEST['surnom'],
-						  $_REQUEST['promo'],$_REQUEST['mail'],"",$_REQUEST['loginpoly'],
-						  $_REQUEST['type'],"",$_REQUEST['binet']);
-	echo "</page>\n";
-	require "../include/page_footer.inc.php";
-	exit;
+	$where_exact = array(
+			'section' => 'section', 'cie' => 'cie',			/*'type' => '',*/
+			'promo' => 'promo');
+	foreach($where_exact as $post_arg => $db_field)
+		if(!empty($_REQUEST[$post_arg]))
+			$where .= (empty($where) ? "" : " AND") . " $db_field='".$_REQUEST[$post_arg]."'";
+
+	$where_like = array(
+			'nom' => 'nom',			'prenom' => 'prenom',   'casert' => 'piece_id',
+			/*'phone' => '',*/		'surnom' => 'surnom',   'mail' => 'mail',
+			'loginpoly' => 'login');
+	foreach($where_like as $post_arg => $db_field)
+		if(!empty($_REQUEST[$post_arg]))
+			$where .= (empty($where) ? "" : " AND") . " $db_field LIKE '%".$_REQUEST[$post_arg]."%'";
+		
+	if(!empty($_REQUEST['binet'])) {
+		$join = "INNER JOIN membres USING(eleve_id)";
+		$where .= (empty($where) ? "" : " AND") . " binet_id='".$_REQUEST['binet']."'";
+	}
+	
+	// Génération de la page si il y a au moins un critère, sinon on raffiche le formulaire.
+	if(!empty($where)) {
+		require "../include/page_header.inc.php";
+		echo "<page id='trombino' titre='Frankiz : Trombino'>\n";
+		
+		connecter_mysql_frankiz();
+		
+		$result = mysql_query("SELECT $champs FROM eleves $join WHERE $where");
+		while(list($eleve_id,$nom,$prenom,$surnom,$piece_id,$section,$cie,$promo,$login,$mail,$tel) = mysql_fetch_row($result)) {
+			echo "<eleve nom='$nom' prenom='$prenom' promo='$promo' login='$login' surnom='$surnom' "
+				."tel='$tel' mail='".(empty($mail)?"$login@poly.polytechnique.fr":$mail)."' casert='$piece_id' "
+				."section='$section' cie='$cie'>\n";
+			
+			$result_bis = mysql_query("SELECT remarque,nom,membres.binet_id FROM membres "
+									 ."LEFT JOIN binets USING(binet_id) WHERE eleve_id='$eleve_id'");
+			while(list($remarque,$binet_nom,$binet_id) = mysql_fetch_row($result_bis))
+				echo "<binet nom='".afficher_identifiant($binet_nom)."' id='$binet_id'>".afficher_identifiant($remarque)."</binet>\n";
+			mysql_free_result($result_bis);
+			
+			echo "</eleve>\n";
+		}
+		mysql_free_result($result);
+		
+		deconnecter_mysql_frankiz();
+		
+		echo "</page>\n";
+		require "../include/page_footer.inc.php";
+		exit;
+	}
 }
 
 // Affichage du formulaire de recherche
@@ -72,12 +119,12 @@ require "../include/page_header.inc.php";
 		<choix titre="Binet" id="binet" type="combo" valeur="">
 			<option titre="Tous" id=""/>
 <?php
-			$i=0;
-			while ($i<count($trombi_id_binet)) {
-				if($trombi_id_binet[$i] != "")
-					echo "<option titre=\"".$trombi_id_binet[$i]."\" id=\"-$i-\"/>\n";
-				$i++;
-			}
+			connecter_mysql_frankiz();
+			$result = mysql_query("SELECT binet_id,nom FROM binets ORDER BY nom ASC");
+			while( list($binet_id,$binet_nom) = mysql_fetch_row($result) )
+				echo "\t\t\t<option titre=\"$binet_nom\" id=\"$binet_id\"/>\n";
+			mysql_free_result($result);
+			deconnecter_mysql_frankiz();
 ?>
 		</choix>
 		
@@ -96,4 +143,4 @@ require "../include/page_header.inc.php";
 		<bouton titre="Chercher" id="chercher" />
 	</formulaire>
 </page>
-<? require "../include/page_footer.inc.php" ?>
+<?php require "../include/page_footer.inc.php" ?>
