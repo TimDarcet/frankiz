@@ -21,9 +21,13 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.54  2005/01/18 23:24:42  pico
+	Ajout fonction tdb
+	Modif taille images trombi
+
 	Revision 1.53  2005/01/12 22:56:31  pico
 	classemnt trombi par promo, maxi 80 résultats
-
+	
 	Revision 1.52  2005/01/12 21:40:41  pico
 	Erreur
 	
@@ -179,7 +183,14 @@ if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "true") && ($_REQUEST['im
 	exit;
 }
 
-
+if(isset($_REQUEST['tdb'])&&isset($_REQUEST['promo'])){
+	$DB_trombino->query("SELECT login,nom,prenom FROM eleves WHERE promo='{$_REQUEST['promo']}' ORDER BY promo,nom,prenom ASC");
+	echo "#\n";
+	while(list($login,$nom,$prenom) = $DB_trombino->next_row())
+		echo "$login:$nom:$prenom\n";
+	echo "#\n";
+	exit;
+}
 
 require "include/page_header.inc.php";
 echo "<page id='trombino' titre='Frankiz : Trombino'>\n";

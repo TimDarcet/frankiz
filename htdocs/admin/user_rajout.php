@@ -21,9 +21,13 @@
 	Ajout d'un utilisateur !
 	
 	$Log$
+	Revision 1.2  2005/01/18 23:24:42  pico
+	Ajout fonction tdb
+	Modif taille images trombi
+
 	Revision 1.1  2004/12/17 16:30:31  kikx
 	Interface pour ajouter un seul et unique utilisateurs ... utiles pour les PITs et les PI qui ne sont pas dans le tol !
-
+	
 
 */
 	
@@ -73,7 +77,7 @@ if (isset($_POST['ajout'])) {
 		$larg = $original_size[0];
 		$haut = $original_size[1];
 
-		if ((in_array (strtolower ($type_img), $image_types))&&($larg<=200)&&($haut<=200)) {
+		if ((in_array (strtolower ($type_img), $image_types))&&($larg<=300)&&($haut<=400)) {
 			$filename = BASE_PHOTOS.$_REQUEST['promo']."/".$_REQUEST['login']."_original.jpg" ;
 			$filename2 = BASE_PHOTOS.$_REQUEST['promo']."/".$_REQUEST['login'].".jpg" ;
 			move_uploaded_file($_FILES['file']['tmp_name'], $filename) ;
@@ -139,7 +143,7 @@ if ((!isset($_POST['ajout']))&&($erreur==0)) {
 		</choix>
 
 		<champ id='mail' titre='Mail*' valeur='<? if (isset($_POST['mail'])) echo $_POST['mail']?>'/>
-		<note>Pour mettre la photo original en JPG !!! : 200x200 max et 200ko max :)</note>
+		<note>Pour mettre la photo original en JPG !!! : 300x400 max et 200ko max :)</note>
 		<fichier id="file" titre="Photo original"/>
 		<bouton id='test' titre='Tester'/>
 		<bouton id='ajout' titre='Rajouter' onClick="return window.confirm('Voulez vous vraiment ajouter cette personne au trombino ? Normalement ceci n'arrive quasiment jamais donc soyez sur de vous ...')"/>
