@@ -22,10 +22,13 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.17  2004/11/27 15:14:46  pico
+	Gestion desdrits dans l'index des pages admin
+
 	Revision 1.16  2004/11/27 14:56:15  pico
 	Debut de mise en place de droits spéciaux (qdj + affiches)
 	+ génération de la page d'admin qui va bien
-
+	
 	Revision 1.15  2004/11/27 14:30:16  pico
 	réorganisation page d'admin
 	
@@ -142,15 +145,27 @@ if (count($_SESSION['user']->perms)<=1)
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
 $permissions_user = $_SESSION['user']->perms ;
+
 ?>
 <page id="admin" titre="Frankiz : administration">
-	<? if (verifie_permission('admin')){?>
-	<h2>Administration frankiz</h2>
-	<h3>Gestion de l'utilisateur</h3>
-		<lien titre="Modifier un utilisateur" url="trombino.php"/>
-
+	<? 
+	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('xshare')||verifie_permission('faq')){
+	?>
+		<h2>Administration frankiz</h2>
+	<? 
+	}
+	if (verifie_permission('admin')){
+	?>
+		<h3>Gestion de l'utilisateur</h3>
+			<lien titre="Modifier un utilisateur" url="trombino.php"/>
+	<?
+	}
+	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('xshare')||verifie_permission('faq')){
+	?>
 	<h3>Validations Variées</h3>
-		<?
+	<?
+	}
+	if (verifie_permission('admin')){
 		$nb =0 ;
 		$rep = BASE_DATA."trombino/";
 		$dir = opendir($rep); 
@@ -168,12 +183,16 @@ $permissions_user = $_SESSION['user']->perms ;
 		$nb = $DB_valid->num_rows() ;
 		?>
 		<lien titre="Valider les annonces (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_annonces.php"/>
-		<?
+	<?
+	}
+	if (verifie_permission('admin')||verifie_permission('affiches')){
 		$DB_valid->query("SELECT eleve_id FROM valid_affiches") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
 		<lien titre="Valider les activités (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_affiches.php"/>
-		<?
+	<?
+	}
+	if (verifie_permission('admin')){
 		$DB_valid->query("SELECT eleve_id FROM valid_sondages") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
@@ -183,12 +202,16 @@ $permissions_user = $_SESSION['user']->perms ;
 		$nb = $DB_valid->num_rows() ;
 		?>
 		<lien titre="Valider les mails promos (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_mailpromo.php"/>
-		<?
+	<?
+	}
+	if (verifie_permission('admin')||verifie_permission('qdjmaster')){
 		$DB_valid->query("SELECT eleve_id FROM valid_qdj") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
 		<lien titre="Valider les qdj (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_qdj.php"/>
-		<?
+	<?
+	}
+	if (verifie_permission('admin')){
 		$DB_valid->query("SELECT id FROM valid_pageperso") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
@@ -198,19 +221,56 @@ $permissions_user = $_SESSION['user']->perms ;
 		$nb = $DB_valid->num_rows() ;
 		?>
 		<lien titre="Valider les changements des Binets (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_binets.php"/>
-
+	<?
+	}
+	
+	
+	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')){
+	?>
 	<h3>Administration des données validées</h3>
+	<?
+	}
+	if (verifie_permission('admin')||verifie_permission('qdjmaster')){
+	?>
 		<lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/>
+	<?
+	}
+	if (verifie_permission('admin')||verifie_permission('affiches')){
+	?>
 		<lien titre="Planifier les activités" url="<?php echo BASE_URL?>/admin/planif_affiches.php"/>
+	<?
+	}
+	if (verifie_permission('admin')){
+	?>
 		<lien titre="Modifier les annonces" url="<?php echo BASE_URL?>/admin/modif_annonces.php"/>
-
+	<?
+	}
+	
+	
+	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('xshare')||verifie_permission('faq')){
+	?>
 	<h3>Administration des données de Frankiz</h3>
+	<?
+	}
+	if (verifie_permission('admin')){
+	?>
 		<lien titre="Changer les variables globales" url="<?php echo BASE_URL?>/admin/parametre.php"/>
 		<lien titre="Liste des Binets" url="<?php echo BASE_URL?>/admin/binets_liste.php"/>
 		<lien titre="Liste des sections" url="<?php echo BASE_URL?>/admin/sections.php"/>
+	<?
+	}
+	if (verifie_permission('admin')||verifie_permission('xshare')){
+	?>
 		<lien titre="Gestion xshare" url="<?php echo BASE_URL?>/admin/xshare.php"/>
+	<?
+	}
+	if (verifie_permission('admin')||verifie_permission('faq')){
+	?>
 		<lien titre="Gestion FAQ" url="<?php echo BASE_URL?>/admin/faq.php"/>
-
+	<?
+	}
+	if (verifie_permission('admin')){
+	?>
 	<h3>Administration du réseau élève</h3>
 		<?
 		$DB_valid->query("SELECT eleve_id FROM valid_ip") ;
@@ -218,39 +278,6 @@ $permissions_user = $_SESSION['user']->perms ;
 		?>
 		<lien titre="Gerer les demandes d'ajout d'ips (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_ip.php"/>
 		<lien titre="Liste des IPs" url="<?php echo BASE_URL?>/admin/ip.php"/>
-	<?
-	}
-	
-	//
-	// Pour le QDJ Master
-	//======================================
-	if (verifie_permission('qdjmaster')){?>
-	<h2>Administration frankiz</h2>
-	<h3>Validations Variées</h3>
-		<?
-		$DB_valid->query("SELECT eleve_id FROM valid_qdj") ;
-		$nb = $DB_valid->num_rows() ;
-		?>
-		<lien titre="Valider les qdj (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_qdj.php"/>
-	<h3>Administration des données validées</h3>
-		<lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/>
-	<?
-	}
-	
-	//
-	// Pour les binets qui ont des activités régulières et à qui on donne
-	// le droit de les valider sur le site interne (ex: BRC)
-	//======================================
-	if (verifie_permission('affiches')){?>
-	<h2>Administration frankiz</h2>
-	<h3>Validations Variées</h3>
-		<?
-		$DB_valid->query("SELECT eleve_id FROM valid_affiches") ;
-		$nb = $DB_valid->num_rows() ;
-		?>
-		<lien titre="Valider les activités (<?=$nb?>)" url="<?php echo BASE_URL?>/admin/valid_affiches.php"/>
-	<h3>Administration des données validées</h3>
-		<lien titre="Planifier les activités" url="<?php echo BASE_URL?>/admin/planif_affiches.php"/>
 	<?
 	}
 	
