@@ -19,9 +19,12 @@
 */
 /*
 	$Log$
+	Revision 1.12  2005/02/09 16:54:41  pico
+	Correction pour la recherche dans le xshare
+
 	Revision 1.11  2005/01/22 17:58:38  pico
 	Modif des images
-
+	
 	Revision 1.10  2005/01/21 18:21:44  pico
 	Hum...
 	
@@ -239,14 +242,16 @@ function all_elt_affich($idfold){
 // vers le haut
 //------------------------------
 
-function rech_parent($id) {
+function rech_parent($id2) {
 		global $DB_web;
 		$liste = "" ;
+		$id = $id2;
 		while ($id != 0) {
 			$DB_web->query("SELECT id_parent FROM xshare WHERE id='{$id}'") ;
-			while(list($id) = $DB_web->next_row()){
+			while(list($id3) = $DB_web->next_row()){
+				$id =$id3;
 				if (($id != "")&&($id != 0)){ // on rajoute ssi c'est pas le racine
-					$liste .= "/".$id;		  // car on la deja rajouté !
+					$liste = $liste."/".$id;		  // car on la deja rajouté !
 				}
 			}
 		}
@@ -284,7 +289,7 @@ if ($mots!="") {
 	$DB_web->query("SELECT id,nom,descript FROM xshare") ;
 	$recherche = 0 ;
 	$a_marquer = "/" ;			// liste des elements qui contiendront les mots
-	$affich_elt = "1/" ;		// liste des elements à afficher
+	$affich_elt = "0/" ;		// liste des elements à afficher
 	while(list($id,$nom,$descript) = $DB_web->next_row()) {
 		$result = explode(" ",$mots) ;
 		$n = count($result) ;
