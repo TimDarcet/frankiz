@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.37  2004/12/15 23:12:39  pico
+	correction warning
+
 	Revision 1.36  2004/12/15 23:07:05  pico
 	Correction recherche tel sur le trombi
-
+	
 	Revision 1.35  2004/12/15 21:09:51  pico
 	On peut rechercher les gens dont c'est l'anniversaire dans le trombi
 	
@@ -165,7 +168,7 @@ if(isset($_REQUEST['chercher'])||(isset($_REQUEST['anniversaire'])&&isset($_REQU
 				$where .= (empty($where) ? "" : " AND") ." promo='".$_REQUEST['promo']."'";
 
 		$where_like = array(
-				'nom' => 'eleves.nom',	'prenom' => 'prenom',   'casert' => 'piece_id',
+				'nom' => 'eleves.nom',	'prenom' => 'prenom',   'casert' => 'eleves.piece_id',
 				'phone' => 'pieces.tel',		'surnom' => 'surnom',   'mail' => 'mail',
 				'loginpoly' => 'login');
 		foreach($where_like as $post_arg => $db_field)
