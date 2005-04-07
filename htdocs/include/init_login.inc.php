@@ -36,9 +36,12 @@
 	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
 
 	$Log$
+	Revision 1.18  2005/04/07 00:48:35  schmurtz
+	Protection contre le vol de session
+
 	Revision 1.17  2005/02/08 21:57:56  pico
 	Correction bug #62
-
+	
 	Revision 1.16  2005/01/26 06:18:15  pico
 	Suppression d'un reste
 	
@@ -126,6 +129,20 @@ require_once "global.inc.php";
 require_once "user.inc.php";
 
 session_start();
+
+/*
+	Protection contre le vol de session : une session est associé à une IP,
+	si l'IP change pendant la session, c'est qu'il y a eu vol.
+*/
+if(!isset($_SESSION['ip'])) {
+	$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
+	
+} else if($_SESSION['ip'] != $_SERVER['REMOTE_ADDR']) {
+	// vol : on détruit la session
+	session_unset();
+	session_destroy();
+	rediriger_vers("/");
+}
 
 /*
 	Si un logout a été effectué, on détruit la session, puis on la recrer, vierge.
