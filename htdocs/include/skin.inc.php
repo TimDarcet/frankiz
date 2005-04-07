@@ -21,8 +21,8 @@
 	Fonction servant pour la gestion des skins.
 	
 	$Log$
-	Revision 1.16  2005/04/06 23:37:21  schmurtz
-	bug
+	Revision 1.17  2005/04/07 21:34:01  fruneau
+	Idem pour skin.inc.php
 
 	Revision 1.15  2004/12/14 17:14:53  schmurtz
 	modification de la gestion des annonces lues :
@@ -173,18 +173,6 @@ function skin_defaut() {
 }
 
 /*
-	Modifie la skin courante pour forcer l'utilisation d'une skin donnée
-	(Pour la semaine du BR par exemple)
-*/
-function skin_force($xsl,$css) {
-	$_SESSION['skin']['skin_nom'] = $xsl;
-	$_SESSION['skin']['skin_css'] = $css;
-	$_SESSION['skin']['skin_parametres'] = array();
-	unset($_SESSION['skin']['skin_css_perso']);
-	skin_valider();
-}
-
-/*
 	Vérifie la validité des paramètres d'une skin. Corrige ce qui peut l'être et
 	au pire utilise la skin par defaut.
 */
@@ -215,9 +203,5 @@ function skin_valider() {
 
 function skin_parse($skin_str) {
 	$_SESSION['skin'] = unserialize($skin_str);
-	
-	// SMDBR : si qqn change de skin ou si on charge une skin des préférences on force la skin
-	skin_force('pico','sdbr2k3');
-	
 	skin_valider();
 }
