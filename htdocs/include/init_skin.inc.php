@@ -28,12 +28,12 @@
 
 	
 	$Log$
-	Revision 1.4  2005/04/06 23:37:21  schmurtz
-	bug
+	Revision 1.5  2005/04/07 21:27:21  fruneau
+	Repassage Ã  la version sans sdbr...
+	Pour les nostalgiques, la version boulette est taguÃ©e sdbr.
 
-	Revision 1.3  2005/04/06 23:14:34  schmurtz
-	On force la skin SDBR
-	
+	ie cvs up -r sdbr init_skin.inc.php pour la rÃ©cupÃ©rer
+
 	Revision 1.2  2004/11/25 00:44:35  schmurtz
 	Ajout de init_ devant les fichier d'include servant d'initialisation de page
 	Permet de mieux les distinguer des autres fichiers d'include ne faisant que definir
@@ -82,6 +82,7 @@ if( !isset($_SESSION['skin']) || nouveau_login() ) {
 		if($DB_web->num_rows()!=0) {
 			list($skin) = $DB_web->next_row();
 			$cookie = $skin;		// hack bizarre pour être sur que php considère $cookie comme un string
+//			$cookie = "sdbr2k3";
 									// ce qui est indispensable pour la fonction base64_encode (si on met
 									// directement $skin, php considère que c'est un array alors que c'est faux)
 			skin_parse($cookie);
@@ -102,10 +103,6 @@ if( !isset($_SESSION['skin']) || nouveau_login() ) {
 		unset($_SESSION['skin']);
 		skin_valider();
 	}
-	
-	// SMDBR : on force une skin si la personne est loguée ou vient de l'intérieur
-	if(est_authentifie(AUTH_INTERNE))
-		skin_force('pico','sdbr2k3');
 }
 
 /*
