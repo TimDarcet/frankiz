@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.61  2005/04/07 21:51:46  fruneau
+	Juste pour qu'on puisse laisser les fakes dans la base avec une promo 0000
+
 	Revision 1.60  2005/03/14 16:34:32  pico
 	Le grand retour de la recherche des tossettes (ne pas communiquer l'url)
-
+	
 	Revision 1.59  2005/03/10 16:47:17  pico
 	Affiche la photo originale si pas de nouvelle photo
 	
@@ -365,7 +368,7 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 			<option titre="Toutes" id="toutes" />
 
 <?php
-			$DB_trombino->query("SELECT DISTINCT promo FROM eleves ORDER BY promo DESC");
+			$DB_trombino->query("SELECT DISTINCT promo FROM eleves WHERE promo != '0000' ORDER BY promo DESC");
 			while( list($promo) = $DB_trombino->next_row() )
 				echo "\t\t\t<option titre=\"$promo\" id=\"$promo\"/>\n";
 ?>
