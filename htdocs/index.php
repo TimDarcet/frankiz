@@ -21,10 +21,13 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.44  2005/04/08 16:07:14  alban
+	Une page d'accueil en cas de manque d'annonce moins lacunaire a mon gout :-)
+
 	Revision 1.43  2005/04/06 23:11:11  schmurtz
 	Bug dans le code permettant de revenir a l'annonce suivant quand on supprime
 	une annonce.
-
+	
 	Revision 1.42  2005/02/15 10:36:13  pico
 	Plus qu'une seule requete sql
 	
@@ -150,9 +153,34 @@ $annonces_lues1="";
 $annonces_lues2=" 1 ";
 if (!est_authentifie(AUTH_MINIMUM))  {
 ?>
-	<p>Bienvenu sur le site web des élèves de l'École Polytechnique.</p>
-	<p>Si tu souhaites te connecter et accéder à la partie réservée aux élèves, clique
-		<a href="login.php">ici</a> pour te loguer.</p>
+
+<p>Bienvenue sur le site web des &eacute;l&egrave;ves de l'&Eacute;cole
+Polytechnique.</p>
+
+<p>Pour un &eacute;l&egrave;ve de l'&Eacute;cole des promos 1998 &agrave; 2004,
+il est possible de <a href="login.php">se connecter</a> pour
+acc&eacute;der &agrave; l'ensemble des services propos&eacute;s.</p>
+<p>Sinon, une partie du site reste accesible. Il est en effet possible de consulter :
+<ul>
+<li> Certaines <a href="activites.php">activit&eacute;s</a> de la semaine
+qui se d&eacute;rouleront sur le campus.</li>
+<li> Une base de <a href="xshare.php">t&eacute;l&eacute;chargement</a> de
+logiciels libres.</li>
+<li> Une <a href="faq.php">Foire Aux Questions</a> sur des
+probl&egrave;mes informatiques ou sur le campus</li>
+<li> Des descriptions et des sites de <a href="binets.php">clubs de
+l'&Eacute;cole</a> (les binets).</li>
+<li> Des <a href="siteseleves.php">sites d'&eacute;l&egrave;ves</a> de
+l'&Eacute;cole.</li>
+<li> Une liste du <a href="vocabulaire.php">vocabulaire</a> propre aux
+X.</li>
+</ul>
+</p>
+<p>
+Bonne navigation,</br>
+Les webmestres de Frankiz (www.frankiz.net)
+</p>
+
 <?
 } else {
 // Pour marquer les annonces comme lues ou non
