@@ -51,7 +51,7 @@
 <xsl:template match="/">
 	<html lang="fr" xml:lang="fr">
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<xsl:if test="$blending='on'">
 			<meta http-equiv="Page-Exit" content="blendTrans(Duration=0.3)"/>
 			<meta http-equiv="Page-Enter" content="blendTrans(Duration=0.3)"/>
