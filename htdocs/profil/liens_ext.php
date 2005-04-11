@@ -21,9 +21,12 @@
 	Gestions des liens perso / des flux rss.
 
 	$Log$
+	Revision 1.21  2005/04/11 20:29:27  pico
+	Passage en utf8 suite Ã  une connerie
+
 	Revision 1.20  2005/02/06 22:21:13  pico
 	je remet ça prore, je chercherais plus tard
-
+	
 	Revision 1.19  2005/02/06 22:18:54  pico
 	et là ?
 	(ça me saoule un peu)

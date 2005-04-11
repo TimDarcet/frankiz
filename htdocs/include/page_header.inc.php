@@ -21,9 +21,12 @@
 	Page d'entête pour la transformation du XML. Met en place un cache de sortie.
 
 	$Log$
+	Revision 1.11  2005/04/11 20:29:27  pico
+	Passage en utf8 suite Ã  une connerie
+
 	Revision 1.10  2005/02/08 21:57:56  pico
 	Correction bug #62
-
+	
 	Revision 1.9  2005/01/18 19:30:34  pico
 	Place la boite du sudo dans la boite avec les infos de connexion.
 	Pbs d'encodage des variables passées à sablotron réglés
@@ -48,7 +51,6 @@
 	Commentaires et ajout de la variable cvs "Log"
 	
 */
-
 require_once "global.inc.php";
 
 // mise en place du cache de sortie

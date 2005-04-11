@@ -50,7 +50,7 @@
 <xsl:template match="/">
 	<html xml:lang="fr">
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<title><xsl:value-of select="frankiz/page/@titre"/></title>
 		<base>
 			<xsl:attribute name="href">
