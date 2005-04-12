@@ -21,9 +21,12 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.46  2005/04/12 09:15:55  pico
+	Je l'avais pas vue celle là
+
 	Revision 1.45  2005/04/12 09:09:39  pico
 	Modif de la modif d'alban
-
+	
 	Revision 1.44  2005/04/08 16:07:14  alban
 	Une page d'accueil en cas de manque d'annonce moins lacunaire a mon gout :-)
 	
@@ -172,7 +175,7 @@ if (!est_authentifie(AUTH_MINIMUM))  {
 		<li> Une liste du <a href="vocabulaire.php">vocabulaire</a> propre aux X.</li>
 	</ul>
 	<br/>
-	Bonne navigation,</br>
+	Bonne navigation,<br/>
 	Les webmestres de Frankiz
 </p>
 
