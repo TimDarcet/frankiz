@@ -21,9 +21,12 @@
 	Page d'accueil de frankiz pour les personnes non loguées.
 	
 	$Log$
+	Revision 1.47  2005/04/12 09:22:53  pico
+	Remodif d'alban
+
 	Revision 1.46  2005/04/12 09:15:55  pico
 	Je l'avais pas vue celle là
-
+	
 	Revision 1.45  2005/04/12 09:09:39  pico
 	Modif de la modif d'alban
 	
@@ -159,10 +162,7 @@ $annonces_lues1="";
 $annonces_lues2=" 1 ";
 if (!est_authentifie(AUTH_MINIMUM))  {
 ?>
-
-<p>Bienvenue sur le site web des élèves de l'École Polytechnique.</p>
-
-<p>
+<annonce id="0"  titre="Bienvenue sur le site web des élèves de l'École Polytechnique." visible="oui" categorie="important" date="<?php echo date("d/m/Y") ?>">
 	Pour un élève de l'École des promos 1998 à 2004, il est possible de <a href="login.php">se connecter</a> pour accéder à l'ensemble des services proposés.
 	<br/>
 	Sinon, une partie du site reste accesible. Il est en effet possible de consulter :
@@ -177,7 +177,7 @@ if (!est_authentifie(AUTH_MINIMUM))  {
 	<br/>
 	Bonne navigation,<br/>
 	Les webmestres de Frankiz
-</p>
+</annonce>
 
 <?
 } else {
