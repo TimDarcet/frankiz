@@ -86,15 +86,7 @@
 				<xsl:apply-templates select="frankiz/page[@id='trombino']"/>
 				<xsl:apply-templates select="frankiz/page[@id!='annonces' and @id!='trombino']"/>
 			</div>
-			<div class="fkz_gauche">
-				<xsl:apply-templates select="frankiz/module[@id='liens_navigation']"/>
-				<xsl:apply-templates select="frankiz/module[@id='liens_profil']"/>
-				<xsl:apply-templates select="frankiz/module[@id='liens_perso']"/>
-				<xsl:apply-templates select="frankiz/module[@id='activites']"/>
-				<xsl:apply-templates select="frankiz/module[@id='liens_contacts']"/>
-				<xsl:apply-templates select="frankiz/module[@id='liens_ecole']"/>
-				<xsl:apply-templates select="frankiz/module[@id='stats']"/>
-			</div>
+
 	
 			<div class="fkz_droite">
 				<xsl:apply-templates select="frankiz/module[@id='fetes']"/>
@@ -115,6 +107,16 @@
 						</a>
 					</p>
 				</xsl:if>
+			</div>
+			
+			<div class="fkz_gauche">
+				<xsl:apply-templates select="frankiz/module[@id='liens_navigation']"/>
+				<xsl:apply-templates select="frankiz/module[@id='liens_profil']"/>
+				<xsl:apply-templates select="frankiz/module[@id='liens_perso']"/>
+				<xsl:apply-templates select="frankiz/module[@id='activites']"/>
+				<xsl:apply-templates select="frankiz/module[@id='liens_contacts']"/>
+				<xsl:apply-templates select="frankiz/module[@id='liens_ecole']"/>
+				<xsl:apply-templates select="frankiz/module[@id='stats']"/>
 			</div>
 		</div>
 		<div class="fkz_end_page"><xsl:text> </xsl:text></div>
