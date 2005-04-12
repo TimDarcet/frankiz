@@ -97,7 +97,6 @@
 			<span id="liens_profil">Profil: <xsl:value-of select="$user_prenom"/> <xsl:text> </xsl:text> <xsl:value-of select="$user_nom"/></span>
 		</div>
 		<div class="fkz_module_corps">
-			<div style="text-align:center;"><xsl:value-of select="$date"/> <xsl:text> </xsl:text> <xsl:value-of select="$heure"/><br/></div>
 			<xsl:apply-templates select="warning"/>
 			<ul class="fkz_liens">
 				<xsl:for-each select="lien">
