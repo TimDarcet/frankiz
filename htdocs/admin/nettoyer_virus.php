@@ -21,9 +21,12 @@
 	Pour faire peur aux gens qui ont des virus...
 	
 	$Log$
+	Revision 1.4  2005/04/13 16:09:20  pico
+	Correction
+
 	Revision 1.3  2005/04/13 15:02:00  dei
 	les logs qui vont bien pour savoir qui devirusise les gens
-
+	
 	Revision 1.2  2005/04/13 14:10:30  dei
 	j'avais oublié ça , ça ne servait que pour le test...
 	
@@ -34,7 +37,6 @@
 	
 */
 // En-tetes
-set_time_limit(0) ;
 
 require_once "../include/global.inc.php";
 
@@ -43,11 +45,13 @@ demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('windows'))
 	acces_interdit();
 
+
 // Génération de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
+
 <page id="nettoyer_virus" titre="Frankiz : gestion des virus">
 <h2>Liste des personnes infectées ou ayant eu un virus.</h2>
 <note>Cette page sert à signaler qu'un virus detecté a bien été enlevé de l'ordinateur sur l'ip considérée, après s'en être assuré !</note>
