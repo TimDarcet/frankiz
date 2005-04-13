@@ -21,10 +21,13 @@
 	Pour faire peur aux gens qui ont des virus...
 	
 	$Log$
+	Revision 1.2  2005/04/13 14:10:30  dei
+	j'avais oublié ça , ça ne servait que pour le test...
+
 	Revision 1.1  2005/04/13 13:58:16  dei
 	Voilà qui devrait faire peur à certains
 	Basé sur le script de fruneau module sur la page principale + page d'admin...
-
+	
 	
 */
 // En-tetes
@@ -71,7 +74,6 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<entete id="nomv" titre="Nom du virus"/>
 		<entete id="nettoyer" titre=""/>
 <?
-	$num=0;
 	while(list($ip,$date,$solved,$login,$eleve_id,$nomv,$id)= $DB_admin->next_row()){
 		$statut="";
 		if ($solved==0){
@@ -83,7 +85,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		}elseif ($solved==3){
 			$statut="Réseau coupé";
 		}
-		echo "\t\t<element id=\"$num\">\n";
+		echo "\t\t<element id=\"$id\">\n";
 			echo "\t\t\t<colonne id=\"ip\">$ip</colonne>\n";
 			echo "\t\t\t<colonne id=\"login\">$login</colonne>\n";
 			echo "\t\t\t<colonne id=\"date\">".preg_replace('/^(.{4})-(.{2})-(.{2})$/','$3-$2-$1', $date)."</colonne>\n";
@@ -101,7 +103,6 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			</colonne>
 <?
 		echo "\t\t</element>\n";
-		$num=$num+1;
 	}
 ?>
 	</liste>
