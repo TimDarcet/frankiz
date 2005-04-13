@@ -29,9 +29,12 @@
 	de bande passante, de cpu). 
 	
 	$Log$
+	Revision 1.18  2005/04/13 16:13:36  pico
+	Hum...
+
 	Revision 1.17  2005/04/11 20:13:54  fruneau
 	Le retour des stats news sur frankiz
-
+	
 	Revision 1.16  2005/01/24 09:18:35  pico
 	Lien vers les stats
 	
@@ -79,9 +82,8 @@ if(est_authentifie(AUTH_MINIMUM)) { ?>
 			<service nom="web perso" stat="http://perso.frankiz.eleves.polytechnique.fr/webalizer/" />
 			<service nom="web binets" stat="http://binets.frankiz.eleves.polytechnique.fr/webalizer/" />
 			<service nom="web binets (old)" stat="http://gwennoz.polytechnique.fr/webalizer/" />
-			<!--<service nom="news" stat="http://frankiz.polytechnique.fr/news/" />-->
-			<service nom="xnet" stat="stats/xnet.php" />
 			<service nom="news" stat="stats/news.php" />
+			<service nom="xnet" stat="stats/xnet.php" />
 		<? if(file_exists(BASE_CACHE."status")) include BASE_CACHE."status"; else echo "<serveur nom='status' etat='down'/>\n"?>
 		</statistiques>
 	</module>
