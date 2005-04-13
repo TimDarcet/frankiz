@@ -23,9 +23,12 @@
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.17  2005/04/13 15:39:27  fruneau
+	Mieux comme ça
+
 	Revision 1.16  2005/03/23 21:12:12  pico
 	Normalement tout ce qui faut pour passer en UTF8
-
+	
 	Revision 1.15  2005/02/04 15:13:01  psycow
 	# Nouvelle Skin # + quelques modifs - la skin est + compatible IE que FireFox mais j'y travaille ;-)
 	
@@ -162,6 +165,7 @@
 				</div><!--fin #droite -->
 			
 				<div id="centre">
+					<xsl:apply-templates select="module[@id='virus']"/>
 					<xsl:if test="/frankiz/page[@id='annonces' or @id='accueil']">
 						<xsl:apply-templates select="module[@id='anniversaires']"/>
 					</xsl:if>

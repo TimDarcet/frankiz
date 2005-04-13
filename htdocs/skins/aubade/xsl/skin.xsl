@@ -87,6 +87,7 @@
 		<div class="fkz_page">
 			<div class="fkz_centre">
 				<xsl:apply-templates select="frankiz/module[@id='anniversaires']"/>
+				<xsl:apply-templates select="frankiz/module[@id='virus']"/>
 				<xsl:apply-templates select="frankiz/page[@id='annonces']" mode="sommaire"/>
 				<xsl:apply-templates select="frankiz/page[@id='annonces']" mode="complet"/>
 				<xsl:apply-templates select="frankiz/page[@id='trombino']"/>
@@ -109,7 +110,7 @@
 				<xsl:apply-templates select="frankiz/module[@id='qdj']"/>
 				<xsl:apply-templates select="frankiz/module[@id='qdj_hier']"/>
 				<xsl:apply-templates select="frankiz/module[@id='meteo']"/>
-				<xsl:apply-templates select="frankiz/module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id!='activites' and @id!='liens_navigation' and @id!='liens_profil' and @id!='liens_perso' and @id!='anniversaires' and @id!='liste_css' and @id!='lien_tol']"/>
+				<xsl:apply-templates select="frankiz/module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id!='activites' and @id!='liens_navigation' and @id!='liens_profil' and @id!='liens_perso' and @id!='anniversaires' and @id!='liste_css' and @id!='lien_tol' and @id!='virus']"/>
 				<xsl:if test="count(frankiz/module[@id!='stats' and @id!='liens_ecole' and @id!='activites' and @id!='liens_navigation' and @id!='liens_contacts' and @id!='anniversaires' and @id!='liste_css'])">
 					<p class="valid">
 						<a href="http://validator.w3.org/check?uri=referer">
