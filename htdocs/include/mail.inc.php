@@ -22,9 +22,12 @@
 	Support les mails en mime multipart.
 	
 	$Log$
-	Revision 1.26  2005/04/13 18:23:56  pico
-	/me slaps les erreurs à la con
+	Revision 1.27  2005/04/13 18:25:12  pico
+	/me slaps himself en fait
 
+	Revision 1.26  2005/04/13 18:23:56  pico
+	/me slaps les erreurs ï¿½la con
+	
 	Revision 1.25  2005/04/13 18:18:48  pico
 	Correction
 	
@@ -252,8 +255,8 @@ class Mail {
 	function addPart($type,$value,$encoding="8bit",$charset="\"utf-8\"") {
 		if ($this->boundary) {
 			$this->body .= "--{$this->boundary}\n".
-						   "Content-Type: $type\ncharset=$charset\n".
-						   "Content-Transfer-Encoding: $encoding; \n".
+						   "Content-Type: $type; charset=$charset\n".
+						   "Content-Transfer-Encoding: $encoding\n".
 						   "$value\n";
 		} else {
 			echo "<b>Erreur : addPart s'applique uniquement aux messages multipart!</b>";
