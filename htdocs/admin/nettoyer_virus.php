@@ -1,4 +1,4 @@
- <?php
+<?php
 /*
 	Copyright (C) 2004 Binet Réseau
 	http://www.polytechnique.fr/eleves/binets/br/
@@ -21,9 +21,12 @@
 	Pour faire peur aux gens qui ont des virus...
 	
 	$Log$
+	Revision 1.5  2005/04/13 16:14:34  pico
+	test
+
 	Revision 1.4  2005/04/13 16:09:20  pico
 	Correction
-
+	
 	Revision 1.3  2005/04/13 15:02:00  dei
 	les logs qui vont bien pour savoir qui devirusise les gens
 	
