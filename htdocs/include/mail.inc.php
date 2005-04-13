@@ -22,9 +22,12 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.25  2005/04/13 18:18:48  pico
+	Correction
+
 	Revision 1.24  2005/04/13 18:13:50  pico
 	Mails en utf8 ?
-
+	
 	Revision 1.23  2005/04/13 17:10:00  pico
 	Passage de tous les fichiers en utf8.
 	
@@ -231,7 +234,7 @@ class Mail {
 							 "   boundary=\"{$this->boundary}\"\n";
 		} else {
 			$this->boundary= "";
-			$this->header .= "Content-Type: text/plain; charset=utf-8\n".
+			$this->header .= "Content-Type: text/plain; charset=\"utf-8\"\n".
 							 "Content-Disposition: inline\n".
 							 "Content-Transfer-Encoding: 8bit\n";
 	    }
@@ -243,7 +246,7 @@ class Mail {
 	}
 	
 	// Gestion des mails multipart
-	function addPart($type,$value,$encoding="8bit",$charset="utf-8") {
+	function addPart($type,$value,$encoding="8bit",$charset="\"utf-8\"") {
 		if ($this->boundary) {
 			$this->body .= "--{$this->boundary}\n".
 						   "Content-Type: $type\n".
@@ -254,15 +257,15 @@ class Mail {
 		}
 	}
 	
-	function addPartText($text,$charset="utf-8") {
+	function addPartText($text,$charset="\"utf-8\"") {
 		$this->addPart("text/plain",$text,"8bit",$charset);
 	}
 
-	function addPartRichText($text,$charset="utf-8") {
+	function addPartRichText($text,$charset="\"utf-8\"") {
 		$this->addPart("text/enriched",$text,"8bit",$charset);
 	}
 	
-	function addPartHtml($html,$charset="utf-8") {
+	function addPartHtml($html,$charset="\"utf-8\"") {
 		$this->addPart("text/html",$html,"8bit",$charset);
 	}
 	
