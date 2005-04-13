@@ -53,9 +53,10 @@ a:hover, a:active {
 
 .fkz_entetes {
 	background-image: url(images/fond_titre.png);
+	background-position: bottom left;
 	border-bottom:1px solid #888;
 	width:100%;
-	height: 90px;
+	height: 9em;
 	text-align: center;
 }
 
@@ -85,7 +86,7 @@ a:hover, a:active {
 	position: absolute;
 	left: 0px;
 	width: 100%;
-	top: 40px;
+	top: 5em;
 	text-align: right;
 }
 #mod_lien_tol .fkz_titre{ display:none;}
@@ -95,7 +96,7 @@ a:hover, a:active {
 span.valid_xhtml,span.valid_css {
 	width: 80px;
 	height:15px;
-	top: 70px;
+	top: 7em;
 	position: absolute;
 	display:block;
 }
@@ -116,7 +117,7 @@ span.valid_css {
 	position: absolute;
 	left: 0px;
 	width: 100%;
-	top: 76px;
+	top: 7em;
 	text-align: left;
 }
 
