@@ -21,9 +21,12 @@
 	Pour faire peur aux gens qui ont des virus...
 	
 	$Log$
+	Revision 1.3  2005/04/13 15:02:00  dei
+	les logs qui vont bien pour savoir qui devirusise les gens
+
 	Revision 1.2  2005/04/13 14:10:30  dei
 	j'avais oublié ça , ça ne servait que pour le test...
-
+	
 	Revision 1.1  2005/04/13 13:58:16  dei
 	Voilà qui devrait faire peur à certains
 	Basé sur le script de fruneau module sur la page principale + page d'admin...
@@ -54,6 +57,12 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		$temp = explode("_",$keys) ;
 		if ($temp[0] == "suppr") {
 			$DB_admin->query("UPDATE infections SET solved='2' WHERE id='{$temp[1]}'");
+			//sur qui est faite la manip ?
+			$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[2]}'");
+			list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
+			//log de la partie admin...
+			log_admin($_SESSION['user']->uid," certifié que $temp[3] a bien été supprimé de l'ordinateur de $nom $prenom ($promo) ") ;
+			
 			echo "<note> Le virus est considéré comme enlevé de l'odinateur. On le signale par mail à l'utilisateur.</note>";
 			$contenu="Nous avons bien pris en compte la suppression du virus $temp[3] de ton ordinateur.<br><br>".
 			"Nous te rappellons qu'il est de ta responsabilité d'assurer la sécurité de ton pc. Si tu ne sais pas comment faire utilise le domaine windows, il est là pour ça. Tu trouveras tout les renseignements nécessaires dans l'infoBR.<br>".
