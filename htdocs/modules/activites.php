@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,35 +18,38 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Script de création de la partie activités contenant des images type "affiche".
+	Script de crÃ©ation de la partie activitÃ©s contenant des images type "affiche".
 	
 	$Log$
+	Revision 1.19  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.18  2005/01/25 14:18:07  pico
 	Pour le lien des activites
-
+	
 	Revision 1.17  2005/01/17 22:51:47  pico
-	Liens vers les activités + réorganisation
+	Liens vers les activitÃ©s + rÃ©organisation
 	
 	Revision 1.16  2005/01/17 08:16:01  pico
 	Passage de l'ouverture du bob en gras
 	
 	Revision 1.15  2005/01/12 23:20:30  pico
-	Activités extérieures, et triées par heure...
+	ActivitÃ©s extÃ©rieures, et triÃ©es par heure...
 	
 	Revision 1.14  2005/01/02 10:50:25  pico
-	Passage de certaines pages en visibles de l'intérieur (non loggué)
+	Passage de certaines pages en visibles de l'intÃ©rieur (non logguÃ©)
 	
 	Revision 1.13  2004/12/13 08:50:48  pico
 	Correction mineure
 	
 	Revision 1.12  2004/11/27 18:23:53  pico
-	Ajout de l'annonce: 'le bob est ouvert' dans les activités + page de gestion du bob
+	Ajout de l'annonce: 'le bob est ouvert' dans les activitÃ©s + page de gestion du bob
 	
 	Revision 1.11  2004/11/25 10:40:08  pico
-	Correction activités (sinon l'image était tjs écrite en tant que 0 et ct pas glop du coup)
+	Correction activitÃ©s (sinon l'image Ã©tait tjs Ã©crite en tant que 0 et ct pas glop du coup)
 	
 	Revision 1.10  2004/10/29 16:30:56  kikx
-	Ca evite que les activité apparaissent si il n'y a rein dedans ...
+	Ca evite que les activitÃ© apparaissent si il n'y a rein dedans ...
 	
 	Revision 1.9  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
@@ -70,15 +73,15 @@
 */
 
 
-// Etat du bôb
+// Etat du bÃ´b
 $DB_web->query("SELECT valeur FROM parametres WHERE nom='bob'");
 list($valeur) = $DB_web->next_row();
 
 $DB_web->query("SELECT affiche_id,titre,url,date,exterieur FROM affiches WHERE TO_DAYS(date)=TO_DAYS(NOW()) ORDER BY date");
 	
 if ($DB_web->num_rows()!=0 || $valeur=='1'){
-	echo "<module id=\"activites\" titre=\"Activités\">\n";
-	if(est_authentifie(AUTH_INTERNE) && $valeur == 1) echo "<annonce titre=\"Le BôB est ouvert\"/>";
+	echo "<module id=\"activites\" titre=\"ActivitÃ©s\">\n";
+	if(est_authentifie(AUTH_INTERNE) && $valeur == 1) echo "<annonce titre=\"Le BÃ´B est ouvert\"/>";
 	while (list($id,$titre,$url,$date,$exterieur)=$DB_web->next_row()) { 
 		if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
 	?>

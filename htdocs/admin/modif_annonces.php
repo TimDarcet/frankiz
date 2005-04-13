@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,20 +18,23 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Page qui permet aux admins de modifier une annonce validée
+	Page qui permet aux admins de modifier une annonce validÃ©e
 	
 	$Log$
+	Revision 1.17  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.16  2005/01/22 17:58:38  pico
 	Modif des images
-
+	
 	Revision 1.15  2005/01/12 17:20:59  pico
 	Bug #30 suite pour l'admin
 	
 	Revision 1.14  2005/01/04 21:44:40  pico
-	Remise en place du lien vers l'helpwiki parce que le résumé en bas de page est incomprehensible
+	Remise en place du lien vers l'helpwiki parce que le rÃ©sumÃ© en bas de page est incomprehensible
 	
 	Revision 1.13  2005/01/04 21:23:37  pico
-	Pour pouvoir remettre une annonce périmée depuis moins de 2 jours
+	Pour pouvoir remettre une annonce pÃ©rimÃ©e depuis moins de 2 jours
 	
 	Revision 1.12  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
@@ -49,10 +52,10 @@
 	Passage du nettoyage en formulaire
 	
 	Revision 1.7  2004/12/07 12:06:17  kikx
-	Ben c'est un lien cassé
+	Ben c'est un lien cassÃ©
 	
 	Revision 1.6  2004/12/07 08:36:39  pico
-	Ajout d'une page pour pouvoir vider un peu les bases de données (genre pas garder les news qui datent de vieux)
+	Ajout d'une page pour pouvoir vider un peu les bases de donnÃ©es (genre pas garder les news qui datent de vieux)
 	
 	Revision 1.5  2004/11/27 20:16:55  pico
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
@@ -61,15 +64,15 @@
 	Mise en place des droits web (validation d'annonces + sondages)
 	
 	Revision 1.3  2004/11/27 14:56:15  pico
-	Debut de mise en place de droits spéciaux (qdj + affiches)
-	+ génération de la page d'admin qui va bien
+	Debut de mise en place de droits spÃ©ciaux (qdj + affiches)
+	+ gÃ©nÃ©ration de la page d'admin qui va bien
 	
 	Revision 1.2  2004/11/27 14:12:31  pico
-	Ajout d'un lien pour supprimmer les annonces périmées depuis plus de 5 jours
+	Ajout d'un lien pour supprimmer les annonces pÃ©rimÃ©es depuis plus de 5 jours
 	(histoire de pas garder des archives inutiles)
 	
 	Revision 1.1  2004/11/27 13:59:27  pico
-	Page pour modifier les annonces validées
+	Page pour modifier les annonces validÃ©es
 	
 
 	
@@ -78,14 +81,14 @@
 require_once "../include/global.inc.php";
 require_once "../include/wiki.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('web'))
 	acces_interdit();
 
 
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -94,7 +97,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <h1>Modification d'annonces</h1>
 
 <?
-// On traite les différents cas de figure d'enrigistrement et validation d'annonce :)
+// On traite les diffÃ©rents cas de figure d'enrigistrement et validation d'annonce :)
 
 // Enregistrer ...
 $DB_valid->query("LOCK TABLE valid_annonces WRITE");
@@ -112,7 +115,7 @@ foreach ($_POST AS $keys => $val){
 
 		$DB_web->query("UPDATE annonces SET perime='{$_POST['date']}', titre='{$_POST['titre']}', contenu='{$_POST['text']}',exterieur=$temp_ext  WHERE annonce_id='{$temp[1]}'");	
 	?>
-		<commentaire>Modif effectuée</commentaire>
+		<commentaire>Modif effectuÃ©e</commentaire>
 	<?	
 	}
 	
@@ -123,7 +126,7 @@ foreach ($_POST AS $keys => $val){
 		$supp_image = "" ;
 		if (file_exists(DATA_DIR_LOCAL."annonces/{$temp[1]}")){
 			unlink(DATA_DIR_LOCAL."annonces/{$temp[1]}") ;
-			$supp_image = " et de son image associée" ;
+			$supp_image = " et de son image associÃ©e" ;
 		}
 	?>
 		<warning>Suppression d'une annonce<? echo $supp_image?></warning>
@@ -157,17 +160,17 @@ $DB_valid->query("UNLOCK TABLES");
 
 		<formulaire id="annonce_<? echo $id ?>" titre="L'annonce" action="admin/modif_annonces.php">
 			<note>
-				Le texte de l'annonce utilise le format wiki rappelé en bas de la page et décrit dans l'<lien url="helpwiki.php" titre="aide wiki"/><br/>
+				Le texte de l'annonce utilise le format wiki rappelÃ© en bas de la page et dÃ©crit dans l'<lien url="helpwiki.php" titre="aide wiki"/><br/>
 			</note>
 			<champ id="titre" titre="Le titre" valeur="<? echo $titre ;?>"/>
 			<zonetext id="text" titre="Le texte"><?=$contenu?></zonetext>
-			<champ id="date" titre="Date de péremption" valeur="<? echo $date ;?>"/>
-			<choix titre="Éxtérieur" id="exterieur" type="checkbox" valeur="<? if ($ext==1) echo "ext_auth" ?>">
-				<option id="ext_auth" titre="Décision du Webmestre"/>
+			<champ id="date" titre="Date de pÃ©remption" valeur="<? echo $date ;?>"/>
+			<choix titre="Ã‰xtÃ©rieur" id="exterieur" type="checkbox" valeur="<? if ($ext==1) echo "ext_auth" ?>">
+				<option id="ext_auth" titre="DÃ©cision du Webmestre"/>
 			</choix>
 
 			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
-			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Si vous supprimer cette annonce, celle-ci sera supprimé de façon definitive ... Voulez vous vraiment la supprimer ?')"/>
+			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Si vous supprimer cette annonce, celle-ci sera supprimÃ© de faÃ§on definitive ... Voulez vous vraiment la supprimer ?')"/>
 		</formulaire>
 <?
 		affiche_syntaxe_wiki();

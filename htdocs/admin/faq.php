@@ -1,6 +1,6 @@
 <? 
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.41  2005/04/13 17:09:58  pico
+		Passage de tous les fichiers en utf8.
+
 		Revision 1.40  2005/01/18 13:45:31  pico
 		Plus de droits pour les web
-
+		
 		Revision 1.39  2005/01/11 16:47:10  pico
 		Bug #26
 		
@@ -32,22 +35,22 @@
 		idem pour les autres formulaires
 		
 		Revision 1.36  2005/01/10 22:24:37  pico
-		Voilà l'erreur
+		VoilÃ  l'erreur
 		
 		Revision 1.35  2005/01/10 22:17:03  pico
-		Amélioration ?
+		AmÃ©lioration ?
 		
 		Revision 1.34  2005/01/10 21:58:49  pico
-		Blindage pour les faqmestres qui font de nombreuses bétises...
+		Blindage pour les faqmestres qui font de nombreuses bÃ©tises...
 		
 		Revision 1.33  2004/12/17 17:25:08  schmurtz
 		Ajout d'une belle page d'erreur.
 		
 		Revision 1.32  2004/12/16 12:52:57  pico
-		Passage des paramètres lors d'un login
+		Passage des paramÃ¨tres lors d'un login
 		
 		Revision 1.31  2004/12/13 20:03:25  pico
-		Les liens ne forment pas de blocs, il faut donc le spécifier
+		Les liens ne forment pas de blocs, il faut donc le spÃ©cifier
 		
 		Revision 1.30  2004/11/29 17:27:32  schmurtz
 		Modifications esthetiques.
@@ -63,7 +66,7 @@
 		La Faq utilise la $DB_faq au lieu de $DB_web
 		
 		Revision 1.26  2004/11/25 12:45:36  pico
-		Duble emploi de htmlspecialchar vu que les entrées dans la bdd sont déjà transformées
+		Duble emploi de htmlspecialchar vu que les entrÃ©es dans la bdd sont dÃ©jÃ  transformÃ©es
 		
 		Revision 1.25  2004/11/24 22:12:57  schmurtz
 		Regroupement des fonctions zip unzip deldir et download dans le meme fichier
@@ -72,14 +75,14 @@
 		Toute chtite correction
 		
 		Revision 1.23  2004/11/16 14:02:37  pico
-		- Nouvelle fonction qui permet de dl le contenu d'un répertoire
+		- Nouvelle fonction qui permet de dl le contenu d'un rÃ©pertoire
 		- Mise en place sur la page de la FAQ
 		
 		Revision 1.22  2004/11/15 22:59:53  pico
-		Affiche correctement les faq/folder + possibilité de modifier des faq
+		Affiche correctement les faq/folder + possibilitÃ© de modifier des faq
 		
 		Revision 1.21  2004/11/15 22:17:24  pico
-		On doit pouvoir changer le texte d'une faq à présent
+		On doit pouvoir changer le texte d'une faq Ã  prÃ©sent
 		TODO: script pour dl le contenu de la faq existante
 		
 		Revision 1.20  2004/11/10 21:39:44  pico
@@ -103,13 +106,13 @@
 		Revision 1.14  2004/11/05 13:50:22  pico
 		Admin FAQ:
 		On peut maintenant uploader un fichier html, une archive tar.gz (ou .tgz) ou un fichier .zip
-		Le fichier est décompressé, on cherche dedans un fichier index, si il n'y en a pas, on refuse et on supprime les fichiers pour pas laisser es traces.
+		Le fichier est dÃ©compressÃ©, on cherche dedans un fichier index, si il n'y en a pas, on refuse et on supprime les fichiers pour pas laisser es traces.
 		
 		Revision 1.13  2004/10/21 22:19:37  schmurtz
 		GPLisation des fichiers du site
 		
 		Revision 1.12  2004/10/20 23:04:06  pico
-		Affichage de l'arbre mieux respecté
+		Affichage de l'arbre mieux respectÃ©
 		
 		Revision 1.11  2004/10/20 22:28:27  pico
 		Encore des corrections
@@ -121,7 +124,7 @@
 		Changements Noeuds/Feuilles
 		
 		Revision 1.8  2004/10/20 19:58:46  pico
-		BugFix: génération des balises plus conforme
+		BugFix: gÃ©nÃ©ration des balises plus conforme
 		
 		Revision 1.7  2004/10/19 14:58:42  schmurtz
 		Creation d'un champ de formulaire specifique pour les fichiers (sans passer
@@ -137,7 +140,7 @@
 require_once "../include/global.inc.php";
 require_once "../include/transferts.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 if(!(verifie_permission('admin')||verifie_permission('faq')||verifie_permission('web')))
 	acces_interdit();
 
@@ -146,7 +149,7 @@ if(isset($_REQUEST['download'])&&isset($_REQUEST['download_type'])){
 	exit();
 }
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -161,7 +164,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
 
-// Supprimer le répertoire
+// Supprimer le rÃ©pertoire
 	if ($temp[0]=='rmdir') {
 		$DB_faq->query("SELECT reponse FROM faq WHERE faq_id='{$temp[1]}' ");
 		list($dir) = $DB_faq->next_row();
@@ -171,9 +174,9 @@ foreach ($_POST AS $keys => $val){
 			deldir($dir);
 			$DB_faq->query("DELETE FROM faq WHERE faq_id='{$temp[1]}'");
 			$DB_faq->query("DELETE FROM faq WHERE parent='{$temp[1]}'");
-			echo "<warning>Repertoire Supprimé</warning>";
+			echo "<warning>Repertoire SupprimÃ©</warning>";
 		}else{
-			echo "<warning>Tentative de suppression d'un répertoire racine !!!</warning>";
+			echo "<warning>Tentative de suppression d'un rÃ©pertoire racine !!!</warning>";
 		}
 	}
 	
@@ -185,7 +188,7 @@ foreach ($_POST AS $keys => $val){
 		$dir=$dir."/".strtolower(str_replace(" ","",$nom));
 		$DB_faq-> query("INSERT INTO faq SET parent='{$temp[1]}',question='{$desc}',reponse='{$dir}'");
 		mkdir(BASE_DATA."faq/".$dir);
-		echo "<commentaire>Repertoire crée".BASE_DATA."faq/".$dir."</commentaire>";
+		echo "<commentaire>Repertoire crÃ©e".BASE_DATA."faq/".$dir."</commentaire>";
 	}
 	
 	if (($temp[0]=='ajout') && isset($_REQUEST['question']) && ($_REQUEST['question']!='') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='') && (isset($_FILES['file'])) &&($_FILES['file']['name']!='') ) {
@@ -206,15 +209,15 @@ foreach ($_POST AS $keys => $val){
 		if(file_exists(BASE_DATA."faq/".$dir."/".$_REQUEST['nom']."/index.php")){
 			$filename = $dir."/".$_REQUEST['nom']."/index.php";
 			$DB_faq-> query("INSERT INTO faq SET parent='{$temp[1]}' , question='{$question}' , reponse='{$filename}'");
-			echo "<commentaire>FAQ ajoutée</commentaire>";
+			echo "<commentaire>FAQ ajoutÃ©e</commentaire>";
 		}
 		else if(file_exists(BASE_DATA."faq/".$dir."/".$_REQUEST['nom']."/index.html")){
 			$filename = $dir."/".$_REQUEST['nom']."/index.html";
 			$DB_faq-> query("INSERT INTO faq SET parent='{$temp[1]}' , question='{$question}' , reponse='{$filename}'");
-			echo "<commentaire>FAQ ajoutée</commentaire>";
+			echo "<commentaire>FAQ ajoutÃ©e</commentaire>";
 		}
 		else{
-			echo "<warning>Impossible de trouver un fichier index.html ou index.php dans la FAQ soumise. L'opération a été annulée.</warning>";
+			echo "<warning>Impossible de trouver un fichier index.html ou index.php dans la FAQ soumise. L'opÃ©ration a Ã©tÃ© annulÃ©e.</warning>";
 			$dir = BASE_DATA."faq/".$dir."/".$_REQUEST['nom'];
 			deldir($dir);
 		}
@@ -247,14 +250,14 @@ foreach ($_POST AS $keys => $val){
 				$reponse =", reponse='{$filename}'";
 			}
 			else{
-				echo "<warning>Impossible de trouver un fichier index.html ou index.php dans la FAQ soumise. L'opération a été annulée.</warning>";
+				echo "<warning>Impossible de trouver un fichier index.html ou index.php dans la FAQ soumise. L'opÃ©ration a Ã©tÃ© annulÃ©e.</warning>";
 				deldir($dir);
 				$reponse = "";
 			}
 		}
 		$question = $_REQUEST['question'];
 		$DB_faq-> query("UPDATE faq SET question='{$question}' {$reponse}  WHERE faq_id='{$temp[1]}' ");
-		echo "<commentaire>FAQ modifiée</commentaire>";
+		echo "<commentaire>FAQ modifiÃ©e</commentaire>";
 	}
 	
 	if ($temp[0]=='suppr') {
@@ -264,7 +267,7 @@ foreach ($_POST AS $keys => $val){
 		rmdir(substr(BASE_DATA."faq/".$dir, 0, -10));
 		$DB_faq->query("DELETE FROM faq WHERE faq_id='{$temp[1]}' ");
 		
-		echo "<warning>Fichier supprimé</warning>";
+		echo "<warning>Fichier supprimÃ©</warning>";
 	}
 }
 
@@ -297,7 +300,7 @@ function rech_fils($parent) {
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "' titre='".$question."'>\n\r" ;
 			if (isset($_REQUEST['dir_id']) && ($id == $_REQUEST['dir_id'])) {
-				echo "<p id='selected'>[séléctionné]</p>\n\r" ;
+				echo "<p id='selected'>[sÃ©lÃ©ctionnÃ©]</p>\n\r" ;
 			}
 			$DB_faq->push_result();
 			rech_fils($id) ;
@@ -314,7 +317,7 @@ function rech_fils($parent) {
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#reponse' titre='".$question."'>" ;
 			if (isset($_REQUEST['dir_id']) && ($id == $_REQUEST['dir_id'])) {
-				echo "<p id='selected'>[séléctionné]</p>\n\r" ;
+				echo "<p id='selected'>[sÃ©lÃ©ctionnÃ©]</p>\n\r" ;
 			}
 			echo "</feuille>\n\r" ;
 		}
@@ -338,8 +341,8 @@ function affiche_element_faq($idfold){
 }
 
 //
-//Petit programme qui crée
-// la liste des folder à 
+//Petit programme qui crÃ©e
+// la liste des folder Ã  
 // afficher !
 //------------------------------
 
@@ -356,7 +359,7 @@ function all_elt_affich($idfold){
 		}
 		
 	}
-	if (!$retire) $str .= "/".$idfold ;		// si je ne l'ai pas supprimé c'est k'il faut le rajouter justement !
+	if (!$retire) $str .= "/".$idfold ;		// si je ne l'ai pas supprimÃ© c'est k'il faut le rajouter justement !
 	
 	return $str ;
 }
@@ -381,7 +384,7 @@ function rech_parent($id) {
 			$DB_faq->query("SELECT parent FROM faq WHERE faq_id='{$id}'") ;
 			$id = $DB_faq->next_row() ;
 			if (($id != "")&&($id != 0)){ // on rajoute ssi c'est pas le racine
-				$liste .= $id."/";		  // car on la deja rajouté !
+				$liste .= $id."/";		  // car on la deja rajoutÃ© !
 			}
 		}
 		return $liste ; 
@@ -397,7 +400,7 @@ function rech_parent($id) {
 
       
 
-<p><strong>Visualisation des différentes FAQ : </strong> </p>
+<p><strong>Visualisation des diffÃ©rentes FAQ : </strong> </p>
 <?
 
 //
@@ -415,7 +418,7 @@ echo "</arbre>";
 <?
 
 //
-// Corps du Documents pour les réponses
+// Corps du Documents pour les rÃ©ponses
 //---------------------------------------------------
 
   	if(isset($_REQUEST['idpopup'])) $id = $_REQUEST['idpopup'] ; else $id ="";
@@ -423,12 +426,12 @@ echo "</arbre>";
 		$DB_faq->query("SELECT * FROM faq WHERE faq_id='{$id}'") ;
 		if (list($id,$parent,$question,$reponse) = $DB_faq->next_row()) {
 	?>
-	<formulaire id="mod_faq_<? echo $id ?>" titre="La réponse" action="admin/faq.php">
+	<formulaire id="mod_faq_<? echo $id ?>" titre="La rÃ©ponse" action="admin/faq.php">
 	<champ id="question" titre="Question" valeur="<? echo $question ?>" />
 	<champ id="nom" titre="Nom du sous-dossier de la faq" valeur="<? echo dirname($reponse) ?>" />
-	<fichier id="file" titre="Changer fichier réponse (fichier .html, .zip ou .tar)" taille="1000000000"/>
-	<lien titre="Télécharger la faq en .zip" url="admin/faq.php?download=<? echo base64_encode(dirname($reponse)) ?>&amp;download_type=zip" /><br/>
-	<lien titre="Télécharger la faq en .tar" url="admin/faq.php?download=<? echo base64_encode(dirname($reponse)) ?>&amp;download_type=tar" /><br/>
+	<fichier id="file" titre="Changer fichier rÃ©ponse (fichier .html, .zip ou .tar)" taille="1000000000"/>
+	<lien titre="TÃ©lÃ©charger la faq en .zip" url="admin/faq.php?download=<? echo base64_encode(dirname($reponse)) ?>&amp;download_type=zip" /><br/>
+	<lien titre="TÃ©lÃ©charger la faq en .tar" url="admin/faq.php?download=<? echo base64_encode(dirname($reponse)) ?>&amp;download_type=tar" /><br/>
 	<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
 	<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette FAQ ?!!!!!')"/>
 	</formulaire>
@@ -450,7 +453,7 @@ echo "</arbre>";
 		if(!strstr($keys,"rmdir")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 		}
 	?>
-	<bouton id='rmdir_<? echo  $dir_id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce répertoire et tous ses fichiers ?!!!!!')"/>
+	<bouton id='rmdir_<? echo  $dir_id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce rÃ©pertoire et tous ses fichiers ?!!!!!')"/>
 	</formulaire>
 	
 	<!-- Ajouter un sous-dossier -->
@@ -461,7 +464,7 @@ echo "</arbre>";
 		if(!strstr($keys,"adddir") && !strstr($keys,"nom") && !strstr($keys,"desc")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 		}
 	?>
-	<bouton id='adddir_<? echo $dir_id ?>' titre='Ajouter' onClick="return window.confirm('!!!!!!Créer ce répertoire ?!!!!!')"/>
+	<bouton id='adddir_<? echo $dir_id ?>' titre='Ajouter' onClick="return window.confirm('!!!!!!CrÃ©er ce rÃ©pertoire ?!!!!!')"/>
 	</formulaire>
 	
 	<!-- Ajouter un fichier -->
@@ -472,7 +475,7 @@ echo "</arbre>";
 		if(!strstr($keys,"ajout") && !strstr($keys,"question") && !strstr($keys,"nom")&& !strstr($keys,"file")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 	}
 	?>
-	<fichier id="file" titre="Fichier réponse (fichier .html, .zip ou .tar)" taille="1000000000"/>
+	<fichier id="file" titre="Fichier rÃ©ponse (fichier .html, .zip ou .tar)" taille="1000000000"/>
 	<bouton id='ajout_<? echo $dir_id ?>' titre="Ajouter" onClick="return window.confirm('!!!!!!Ajouter ce fichier ?!!!!!')"/>
 	</formulaire>
 	

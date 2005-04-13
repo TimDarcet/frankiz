@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,43 +21,46 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.38  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.37  2005/02/08 21:57:56  pico
 	Correction bug #62
-
+	
 	Revision 1.36  2005/01/21 17:03:05  pico
 	Gogogo
 	
 	Revision 1.35  2005/01/18 19:30:34  pico
 	Place la boite du sudo dans la boite avec les infos de connexion.
-	Pbs d'encodage des variables passées à sablotron réglés
-	Pb du su quand on est pas loggué par mot de passe réglé
+	Pbs d'encodage des variables passÃ©es Ã  sablotron rÃ©glÃ©s
+	Pb du su quand on est pas logguÃ© par mot de passe rÃ©glÃ©
 	
 	Revision 1.34  2005/01/18 17:19:23  pico
 	Petite modif dans le menu de navigation (pour psycow)
 	
 	Revision 1.33  2005/01/18 13:17:07  pico
-	Réorganisation des liens de navigation.
+	RÃ©organisation des liens de navigation.
 	
-	je ne le met pas en prod tant que les skins ne sont pas prètes
-	(sauf si ça traine trop)
+	je ne le met pas en prod tant que les skins ne sont pas prÃ¨tes
+	(sauf si Ã§a traine trop)
 	
 	Revision 1.32  2005/01/18 13:00:21  pico
-	Affichage état Bôb et Kès sur la page des activités
+	Affichage Ã©tat BÃ´b et KÃ¨s sur la page des activitÃ©s
 	
 	Revision 1.31  2005/01/17 22:51:47  pico
-	Liens vers les activités + réorganisation
+	Liens vers les activitÃ©s + rÃ©organisation
 	
 	Revision 1.30  2005/01/10 07:39:59  pico
 	Correction bug #14
 	
 	Revision 1.29  2005/01/06 17:24:18  pico
-	Pour que les sites web perso internes soient visibles de l'intérieur
+	Pour que les sites web perso internes soient visibles de l'intÃ©rieur
 	
 	Revision 1.28  2005/01/02 10:50:25  pico
-	Passage de certaines pages en visibles de l'intérieur (non loggué)
+	Passage de certaines pages en visibles de l'intÃ©rieur (non logguÃ©)
 	
 	Revision 1.27  2004/12/16 23:00:12  schmurtz
-	Suppression du lien Se deconnecter si l'utilisateur est loguÃ© par cookie.
+	Suppression du lien Se deconnecter si l'utilisateur est loguÃƒÂ© par cookie.
 	Ca evite de le faire sans le vouloir et de devoir remettre le cookie.
 	
 	Pour rester coherent, se deloguer quand on est authentifie par mot de passe
@@ -76,7 +79,7 @@
 	- suppression de la page affichant toutes les annonces
 	
 	Revision 1.23  2004/11/27 17:04:57  pico
-	Modif de la page de préférences
+	Modif de la page de prÃ©fÃ©rences
 	
 	Revision 1.22  2004/11/25 01:42:38  kikx
 	Truc tout moche pour corriger le probleme de l'affichage du lien administration alors que l'on est pas administrateur
@@ -112,7 +115,7 @@
 	
 	Revision 1.12  2004/10/29 16:42:31  kikx
 	Rajout des id sur les liens de navigation
-	Ca pêrmet au skinneur soit de mettre en gras certain liens specifique soit de remplacer les liens par des images comme il le souhaite
+	Ca pÃªrmet au skinneur soit de mettre en gras certain liens specifique soit de remplacer les liens par des images comme il le souhaite
 	
 	Revision 1.11  2004/10/26 17:52:07  kikx
 	J'essaie de respecter la charte de weather.com mais c'est chaud car il demande le mettre leur nom en gras ... et je peux pas le faire avec la skin
@@ -149,34 +152,34 @@
 		<lien id="connect" titre="Se connecter" url="login.php" key="l"/>
 	<?php endif; ?>
 	<lien id="annonces" titre="Annonces" url="." key="a"/>
-	<lien id="activites" titre="Activités" url="activites.php"/>
-	<lien id="xshare" titre="Télécharger" url="xshare.php" key="x"/>
+	<lien id="activites" titre="ActivitÃ©s" url="activites.php"/>
+	<lien id="xshare" titre="TÃ©lÃ©charger" url="xshare.php" key="x"/>
 	<lien id="faq" titre="FAQ" url="faq.php" key="f"/>
 	<?php if(est_authentifie(AUTH_INTERNE)){ ?>
 		<lien id="trombino" titre="Trombino" url="trombino.php" key="t"/>
 	<?php } ?>
 	<lien id="binets"  titre="Binets" url="binets.php" key="b"/>
 	<?php if(est_authentifie(AUTH_MINIMUM) && est_interne()): ?>
-		<lien id="siteseleves" titre="Sites élèves" url="http://perso.frankiz"/>
+		<lien id="siteseleves" titre="Sites Ã©lÃ¨ves" url="http://perso.frankiz"/>
 	<?php else: ?>
-		<lien id="siteseleves" titre="Sites élèves" url="siteseleves.php"/>
+		<lien id="siteseleves" titre="Sites Ã©lÃ¨ves" url="siteseleves.php"/>
 	<?php endif; ?>
-	<lien id="meteo" titre="Météo" url="meteo.php" key="m"/>
+	<lien id="meteo" titre="MÃ©tÃ©o" url="meteo.php" key="m"/>
 	<lien id="vocab" titre="Vocabulaire" url="vocabulaire.php" key="v"/>
 </module>
 
 <?php if(est_authentifie(AUTH_MINIMUM)): ?>
-<module id="liens_profil" titre="Preférences">
+<module id="liens_profil" titre="PrefÃ©rences">
 <?
 	if(isset($_SESSION['sueur']))
-		echo "<warning>ATTENTION, su en cours. Pour revenir à ta vrai identité, clique <a href='index.php?logout=1'>ici</a></warning>";
+		echo "<warning>ATTENTION, su en cours. Pour revenir Ã  ta vrai identitÃ©, clique <a href='index.php?logout=1'>ici</a></warning>";
 ?>
-	<lien id="profil"  titre="Préférences" url="profil/index.php" key="p"/>
+	<lien id="profil"  titre="PrÃ©fÃ©rences" url="profil/index.php" key="p"/>
 	<?php if ((count($_SESSION['user']->perms)>1)&&($_SESSION['user']->perms[0]!="")) { ?>
 		<lien id="admin" titre="Administration" url="gestion/" key="g"/>
 	<?php } ?>
 		<?php if(est_authentifie(AUTH_FORT)): ?>
-		<lien id="deconnect" titre="Se déconnecter" url="index.php?logout=1" key="l"/>
+		<lien id="deconnect" titre="Se dÃ©connecter" url="index.php?logout=1" key="l"/>
 	<?php endif; ?>
 </module>
 <?php endif; ?>

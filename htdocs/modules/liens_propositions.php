@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,9 +21,12 @@
 	Liens permettants de contacter les webmestres et faire des demandes.
 	
 	$Log$
-	Revision 1.3  2005/01/02 10:50:25  pico
-	Passage de certaines pages en visibles de l'intérieur (non loggué)
+	Revision 1.4  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.3  2005/01/02 10:50:25  pico
+	Passage de certaines pages en visibles de l'intÃ©rieur (non logguÃ©)
+	
 	Revision 1.2  2004/11/16 15:35:27  kikx
 	Pour les sondages
 	
@@ -34,7 +37,7 @@
 	Id des liens pour le module contact ...
 	
 	Revision 1.15  2004/10/31 18:20:24  kikx
-	Rajout d'une page pour les plan (venir à l'X)
+	Rajout d'une page pour les plan (venir Ã  l'X)
 	
 	Revision 1.14  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
@@ -60,14 +63,14 @@
 	test
 	
 	Revision 1.7  2004/09/20 08:53:48  kikx
-	Schmurtz tu fais chié :)
+	Schmurtz tu fais chiÃ© :)
 	
 	Revision 1.6  2004/09/20 08:29:24  kikx
-	Rajout d'une page pour envoyer des mail d'amour a ses webmestres adorés
+	Rajout d'une page pour envoyer des mail d'amour a ses webmestres adorÃ©s
 	
 	Revision 1.5  2004/09/17 09:05:32  kikx
 	La personne peut maintenant rajouter une annonce
-	Ceci dit je ne comprend pas trop comment on protège les champs avec les <!CDATA
+	Ceci dit je ne comprend pas trop comment on protÃ¨ge les champs avec les <!CDATA
 	-> j'ai laisser ca comme ca mais faudra modifier
 	
 	Revision 1.4  2004/09/15 23:20:29  schmurtz
@@ -81,7 +84,7 @@ if(est_authentifie(AUTH_MINIMUM)) {
 ?>
 <module id="liens_contacts" titre="Contribuer">
 		<lien id="propo_annonce" titre="Proposer une annonce" url="proposition/annonce.php" />
-		<lien id="propo_activite" titre="Proposer une activité" url="proposition/affiche.php" />
+		<lien id="propo_activite" titre="Proposer une activitÃ©" url="proposition/affiche.php" />
 		<lien id="propo_qdj" titre="Proposer une qdj" url="proposition/qdj.php" />
 		<lien id="propo_sondage" titre="Proposer un sondage" url="proposition/sondage.php" />
 		<lien id="propo_mailpromo" titre="Demander un mail promo" url="proposition/mail_promo.php" />

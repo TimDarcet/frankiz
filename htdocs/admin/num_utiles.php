@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,14 +21,17 @@
 	Numero utiles
 	
 	$Log$
+	Revision 1.4  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.3  2005/01/18 13:45:31  pico
 	Plus de droits pour les web
-
+	
 	Revision 1.2  2004/12/17 14:26:20  pico
-	Pas d'action pour les listes non sélectionnables
+	Pas d'action pour les listes non sÃ©lectionnables
 	
 	Revision 1.1  2004/12/17 13:18:47  kikx
-	Rajout des numéros utiles car c'est une demande importante
+	Rajout des numÃ©ros utiles car c'est une demande importante
 	
 	Revision 1.2  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
@@ -40,7 +43,7 @@
 
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('trombino'))
 	rediriger_vers("/gestion/");
@@ -69,10 +72,10 @@ if (isset($_REQUEST['ajout'])) {
 }
 	
 	
-// génération de la page
+// gÃ©nÃ©ration de la page
 require "../include/page_header.inc.php";
 ?>
-<page id='num_utiles' titre='Frankiz : Numéros utiles'>
+<page id='num_utiles' titre='Frankiz : NumÃ©ros utiles'>
 <h1>Numeros Utiles</h1>
 <?
 $DB_web->query("SELECT DISTINCT categorie FROM num_utiles GROUP BY categorie") ;
@@ -80,7 +83,7 @@ while(list($categorie) = $DB_web->next_row()) {
 ?>
 	<h2><?=$categorie?></h2>
 	<liste id="liste_num" selectionnable="non">
-		<entete id="categorie" titre="Catégorie"/>
+		<entete id="categorie" titre="CatÃ©gorie"/>
 		<entete id="endroit" titre="Nom"/>
 		<entete id="poste" titre="num. Poste"/>
 		<entete id="suppr" titre=""/>
@@ -103,10 +106,10 @@ while(list($categorie) = $DB_web->next_row()) {
 }
 
 ?>
-<h1>Création d'un nouveau numéro</h1>
+<h1>CrÃ©ation d'un nouveau numÃ©ro</h1>
 
-		<formulaire id="binet_web" titre="Nouveau numéro" action="admin/num_utiles.php">
-			<note>La categorie est le titre de la sous section des numéros utiles (respectez la casse si vous voulez qu'elle apparaisse dans la même catégorie qu'un autre numéro</note>
+		<formulaire id="binet_web" titre="Nouveau numÃ©ro" action="admin/num_utiles.php">
+			<note>La categorie est le titre de la sous section des numÃ©ros utiles (respectez la casse si vous voulez qu'elle apparaisse dans la mÃªme catÃ©gorie qu'un autre numÃ©ro</note>
 			<champ id="categorieadd" titre="Categorie" valeur=""/>
 			<champ id="endroitadd" titre="Endroit" valeur=""/>
 			<champ id="posteadd" titre="Poste" valeur=""/>

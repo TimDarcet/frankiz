@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,9 +21,12 @@
 	Liste des CSS existante compatible avec la skin XSL courante.
 	
 	$Log$
-	Revision 1.13  2004/12/13 20:03:25  pico
-	Les liens ne forment pas de blocs, il faut donc le spécifier
+	Revision 1.14  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.13  2004/12/13 20:03:25  pico
+	Les liens ne forment pas de blocs, il faut donc le spÃ©cifier
+	
 	Revision 1.12  2004/12/06 17:45:06  pico
 	Correction choix css alternatives
 	
@@ -33,11 +36,11 @@
 	Revision 1.10  2004/11/06 10:23:15  pico
 	BugFix au niveau de l'affichage du choix de css
 	
-	Lorsqu'on change de skin, la css est la css "style.css" du répertoire de la skin.
-	Cela permet d'éviter de garder la css d'une autre skin, sinon ça rend tout pas beau.
+	Lorsqu'on change de skin, la css est la css "style.css" du rÃ©pertoire de la skin.
+	Cela permet d'Ã©viter de garder la css d'une autre skin, sinon Ã§a rend tout pas beau.
 	
 	Revision 1.9  2004/11/06 10:14:12  pico
-	Voilà, c'est bon
+	VoilÃ , c'est bon
 	
 	Revision 1.8  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site

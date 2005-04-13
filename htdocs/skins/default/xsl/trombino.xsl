@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
-<!--	Copyright (C) 2004 Binet Réseau
+<!--	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 			<dt class="titre">
 				<span class="droitehaut"><xsl:text> </xsl:text></span>
 				<span>
-					Résultat de la recherche
+					RÃ©sultat de la recherche
 				</span>	
 			</dt>
 			<dd class="contenu">
@@ -37,7 +37,7 @@
 						<dt class="nom">
 							<xsl:value-of select="@prenom" />
 							<xsl:text> </xsl:text>
-							<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzéèàçê','ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊ')" />
+							<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzÃ©Ã¨Ã Ã§Ãª','ABCDEFGHIJKLMNOPQRSTUVWXYZÃ‰ÃˆÃ€Ã‡ÃŠ')" />
 						</dt> 
 						<dd class="photo">
 							<a>
@@ -54,7 +54,7 @@
 								<xsl:attribute name="href"><xsl:text>trombino.php?sections=</xsl:text><xsl:value-of select="@section"/><xsl:text>&amp;promo=</xsl:text><xsl:value-of select="@promo"/></xsl:attribute>
 								<img height="100">
 									<xsl:attribute name="src">
-										<xsl:text>skins/default/images/sections/</xsl:text><xsl:value-of select="translate(@section,'ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊéèaçê','abcdefghijklmnopqrstuvwxyzeeaceeeace')"/>
+										<xsl:text>skins/default/images/sections/</xsl:text><xsl:value-of select="translate(@section,'ABCDEFGHIJKLMNOPQRSTUVWXYZÃ‰ÃˆÃ€Ã‡ÃŠÃ©Ã¨aÃ§Ãª','abcdefghijklmnopqrstuvwxyzeeaceeeace')"/>
 										<xsl:choose>
 											<xsl:when test="(number(@promo) mod 2)=0">
 												<xsl:text>0</xsl:text>
@@ -129,8 +129,8 @@
 </xsl:template>
 
 <xsl:template match="formulaire" mode="trombino">
-	<!-- le formulaire lui même-->
-	<form class="trombino" enctype="multipart/form-data" method="post" accept-charset="ISO-8859-1">
+	<!-- le formulaire lui mÃªme-->
+	<form class="trombino" enctype="multipart/form-data" method="post" accept-charset="UTF-8">
 		<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 			<div>
 				<table>

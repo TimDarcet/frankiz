@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,14 +18,17 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 -->
 <!--
-	Skin très simple utilisant des tables pour la disposition des éléments.
+	Skin trÃ¨s simple utilisant des tables pour la disposition des Ã©lÃ©ments.
 	Le but de cette skin est de ne pas se triturer les neurones pour faire
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
+	Revision 1.31  2005/04/13 17:10:01  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.30  2005/03/23 21:12:12  pico
 	Normalement tout ce qui faut pour passer en UTF8
-
+	
 	Revision 1.29  2004/12/14 22:16:06  schmurtz
 	Correction de bug du moteur wiki.
 	Simplication du code.
@@ -37,7 +40,7 @@
 	esthetisme (trop long)
 	
 	Revision 1.26  2004/11/24 12:51:02  kikx
-	Pour commencer la compatibilité wiki
+	Pour commencer la compatibilitÃ© wiki
 	
 	Revision 1.25  2004/11/13 00:25:00  schmurtz
 	bizarrerie d'organisation
@@ -52,13 +55,13 @@
 	bug
 	
 	Revision 1.21  2004/10/28 14:49:47  kikx
-	Mise en place de la météo en module : TODO eviter de repliquer 2 fois le code de la météo
+	Mise en place de la mÃ©tÃ©o en module : TODO eviter de repliquer 2 fois le code de la mÃ©tÃ©o
 	
 	Revision 1.20  2004/10/26 17:52:07  kikx
 	J'essaie de respecter la charte de weather.com mais c'est chaud car il demande le mettre leur nom en gras ... et je peux pas le faire avec la skin
 	
 	Revision 1.19  2004/10/26 16:57:44  kikx
-	Pour la méteo ... ca envoie du paté !!
+	Pour la mÃ©teo ... ca envoie du patÃ© !!
 	
 	Revision 1.18  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
@@ -84,19 +87,19 @@
 	Simplification de l'affichage des anniversaires et correction d'un bug d'affichage.
 	
 	Revision 1.11  2004/09/17 15:28:14  schmurtz
-	Utilisation de la balise <eleve> pour les derniers votants aÌ€ la qdj, les anniversaires, la signature des annoncesâ€¦
+	Utilisation de la balise <eleve> pour les derniers votants aÃŒÂ€ la qdj, les anniversaires, la signature des annoncesÃ¢Â€Â¦
 	
 	Revision 1.10  2004/09/16 15:32:43  schmurtz
-	Suppression de la fonction afficher_identifiant(), utilisation de <![CDATA[......]]> aÌ€ la place.
+	Suppression de la fonction afficher_identifiant(), utilisation de <![CDATA[......]]> aÃŒÂ€ la place.
 	
 	Revision 1.9  2004/09/16 13:44:34  schmurtz
-	AmeÌlioration de l'affichage de la page des binets (avec le classement par categorie mais pas le trie).
+	AmeÃŒÂlioration de l'affichage de la page des binets (avec le classement par categorie mais pas le trie).
 	Passage de la sortie de la skin basic en xhtml avec doctype.
 	
 	Revision 1.8  2004/09/16 11:09:38  kikx
 	C'est les vacances maintenant ...
 	Bon bref .. c'est dur aussi
-	Bon j'ai un peu arrangé la page des binets
+	Bon j'ai un peu arrangÃ© la page des binets
 	
 	Revision 1.7  2004/09/15 23:19:56  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
@@ -114,7 +117,7 @@
 	<xsl:apply-templates select="page"/>
 </xsl:template>
 
-<!-- Définition d'une page web de frankiz -->
+<!-- DÃ©finition d'une page web de frankiz -->
 <xsl:template match="/frankiz/page">
 	
 	<html>
@@ -133,7 +136,7 @@
 	<body style="margin: 0">
 		<table cellspacing="0" cellpadding="0">
 			<tr><td id="frankiz" colspan="2">
-				Frankiz, le serveur des élèves
+				Frankiz, le serveur des Ã©lÃ¨ves
 				
 			</td></tr><tr><td id="modules">
 				<table cellspacing="0" cellpadding="0">
@@ -150,7 +153,7 @@
 
 </xsl:template>
 
-<!-- les CSS complémentaires -->
+<!-- les CSS complÃ©mentaires -->
 <xsl:template match="/frankiz/module[@id='liste_css']" mode="css">
 	<xsl:for-each select="lien">
 		<link rel="alternate stylesheet" type="text/css">
@@ -160,7 +163,7 @@
     </xsl:for-each>
 </xsl:template>
 
-<!-- Définition des modules -->
+<!-- DÃ©finition des modules -->
 <xsl:template match="/frankiz/module">
 	<xsl:if test="(boolean(@visible) = false) or (@visible = 'true')">
 		<tr><th><xsl:value-of select="@titre"/></th></tr>
@@ -168,7 +171,7 @@
 	</xsl:if>
 </xsl:template>
 
-<!-- Annonces (une annonce dans un module correspond à une activité) -->
+<!-- Annonces (une annonce dans un module correspond Ã  une activitÃ©) -->
 <xsl:template match="page/annonce">
 	<table class="annonce" cellspacing="0" cellpadding="0">
 		<tr><th><xsl:value-of select="@titre"/> (<xsl:value-of select="@date"/>)</th></tr>
@@ -200,14 +203,14 @@
 
 <!-- statistiques -->
 <xsl:template match="statistiques">
-	État des serveurs :<br />
+	Ã‰tat des serveursÂ :<br />
 	<xsl:for-each select="serveur">
 		- <span><xsl:attribute name="class">serveur_<xsl:value-of select="@etat"/></xsl:attribute>
 			<xsl:value-of select="@nom"/></span>
 		<xsl:if test="boolean(@uptime)">: <xsl:value-of select="@uptime"/> jours</xsl:if>
 		<br />
 	</xsl:for-each>
-	Statistiques :<br />
+	StatistiquesÂ :<br />
 	<xsl:for-each select="service">
 		- <a>
 			<xsl:attribute name="href"><xsl:value-of select="@stat"/></xsl:attribute>
@@ -217,12 +220,12 @@
 	</xsl:for-each>
 </xsl:template>
 
-<!-- qdj (peut contenir plus de deux réponses) -->
+<!-- qdj (peut contenir plus de deux rÃ©ponses) -->
 <xsl:template match="module/qdj">
 	<xsl:apply-templates select="question"/><br />
 	
 	<xsl:choose>
-		<!-- l'utilisateur n'a pas encore voté -->
+		<!-- l'utilisateur n'a pas encore votÃ© -->
 		<xsl:when test="boolean(@action)">
 			<xsl:for-each select="reponse">
 				<a>
@@ -234,7 +237,7 @@
 			</xsl:for-each>
 		</xsl:when>
 		
-		<!-- l'utilisateur à déjà voté (on affiche les résultats) -->
+		<!-- l'utilisateur Ã  dÃ©jÃ  votÃ© (on affiche les rÃ©sultats) -->
 		<xsl:otherwise>
 			<xsl:variable name="sum_votes" select="sum(reponse/@votes)"/>
 			<xsl:choose>
@@ -243,7 +246,7 @@
 						<xsl:apply-templates/>: <xsl:value-of select="round((@votes * 100) div $sum_votes)"/>%<br />
 					</xsl:for-each>
 				</xsl:when>
-				<xsl:otherwise> <!-- petite subtilité si aucun vote n'a été effectué -->
+				<xsl:otherwise> <!-- petite subtilitÃ© si aucun vote n'a Ã©tÃ© effectuÃ© -->
 					<xsl:for-each select="reponse"><xsl:apply-templates/>: 0%<br /></xsl:for-each>
 				</xsl:otherwise>
 			</xsl:choose>
@@ -280,11 +283,11 @@
 				<xsl:attribute name="src">trombino.php?image=true&amp;login=<xsl:value-of select="@login"/>&amp;promo=<xsl:value-of select="@promo"/></xsl:attribute>
 			</img>
 		</td><td width="100%">
-			Surnom : <xsl:value-of select="@surnom"/><br />
-			Tel : <xsl:value-of select="@tel"/><br />
-			Kazert : <xsl:value-of select="@casert"/><br />
-			Mail : <xsl:value-of select="@mail"/><br />
-			Section : <xsl:value-of select="@section"/> (<xsl:value-of select="@cie"/>e Cie)<br />
+			SurnomÂ : <xsl:value-of select="@surnom"/><br />
+			TelÂ : <xsl:value-of select="@tel"/><br />
+			KazertÂ : <xsl:value-of select="@casert"/><br />
+			MailÂ : <xsl:value-of select="@mail"/><br />
+			SectionÂ : <xsl:value-of select="@section"/> (<xsl:value-of select="@cie"/>e Cie)<br />
 			Binets : <xsl:apply-templates select="binet"/><br />
 		</td></tr>
 	</table>
@@ -296,20 +299,20 @@
 
 <!-- Meteo de l'X -->
 <xsl:template match="page/meteo">
-	<h2>Météo sur le Platâl aujourd'hui :</h2><br />
-		Le soleil est présent de <xsl:value-of select="now/sunrise"/> à <xsl:value-of select="now/sunset"/><br />
-		La température actuelle est de <xsl:value-of select="now/temperature"/>°C<br />
+	<h2>MÃ©tÃ©o sur le PlatÃ¢l aujourd'huiÂ :</h2><br />
+		Le soleil est prÃ©sent de <xsl:value-of select="now/sunrise"/> Ã  <xsl:value-of select="now/sunset"/><br />
+		La tempÃ©rature actuelle est de <xsl:value-of select="now/temperature"/>Â°C<br />
 		La pression est de <xsl:value-of select="now/pression"/> millibar<br />
 		Pour ce qui est du vent <xsl:value-of select="now/vent"/><br />
-		Et l'humidité s'élève à <xsl:value-of select="now/humidite"/>%<br />
-		L'état du ciel : <xsl:value-of select="now/ciel"/><br />
+		Et l'humiditÃ© s'Ã©lÃ¨ve Ã  <xsl:value-of select="now/humidite"/>%<br />
+		L'Ã©tat du ciel : <xsl:value-of select="now/ciel"/><br />
 		<img alt="meteo" width="64" height="64">
 			<xsl:attribute name="src">skins/basic/images/meteo/<xsl:value-of select="now/image"/>.png</xsl:attribute>
 		</img>
-	<h2>Prévisions météo :</h2><br />
+	<h2>PrÃ©visions mÃ©tÃ©o :</h2><br />
 		<xsl:for-each select="jour">
-			<h3>Prévision à <xsl:value-of select="@date"/> jours </h3>
-				La température : <xsl:value-of select="temperature_hi"/>°C pendant la journée et <xsl:value-of select="temperature_low"/>°C la nuit<br />	
+			<h3>PrÃ©vision Ã  <xsl:value-of select="@date"/> jours </h3>
+				La tempÃ©rature : <xsl:value-of select="temperature_hi"/>Â°C pendant la journÃ©e et <xsl:value-of select="temperature_low"/>Â°C la nuit<br />	
 				Etat du ciel le jour : <xsl:value-of select="cieljour"/>
 				<img alt="meteo" width="32" height="32">
 					<xsl:attribute name="src">skins/basic/images/meteo/<xsl:value-of select="imagejour"/>.png</xsl:attribute>
@@ -323,7 +326,7 @@
 
 <xsl:template match="module/meteo">
 		<div align="center">
-		<xsl:value-of select="now/temperature"/>°C<br />
+		<xsl:value-of select="now/temperature"/>Â°C<br />
 		<img alt="meteo" width="64" height="64">
 			<xsl:attribute name="src">skins/basic/images/meteo/<xsl:value-of select="now/image"/>.png</xsl:attribute>
 		</img>

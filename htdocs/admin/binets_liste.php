@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,9 +21,12 @@
 	Gestion de la liste des binets.
 
 	$Log$
+	Revision 1.7  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.6  2005/01/18 13:45:31  pico
 	Plus de droits pour les web
-
+	
 	Revision 1.5  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
 	
@@ -35,7 +38,7 @@
 	
 	Revision 1.2  2004/11/11 19:22:52  kikx
 	Permet de gerer l'affichage externe interne des binets
-	Permet de pas avoir de binet sans catégorie valide
+	Permet de pas avoir de binet sans catÃ©gorie valide
 	
 	Revision 1.1  2004/11/11 17:42:26  kikx
 	pour avoir la liste des binets
@@ -48,7 +51,7 @@
 // En-tetes
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('web'))
 	acces_interdit();
@@ -57,7 +60,7 @@ $message = "";
 $texte_image ="" ;
 // =====================================
 // Verification en douce que tout les binets
-// ont une catégorie valide
+// ont une catÃ©gorie valide
 // =====================================
 	
 $DB_trombino->query("SELECT catego_id FROM binets_categorie WHERE categorie='Divers'");
@@ -76,23 +79,23 @@ while(list($id,$nom) = $DB_trombino->next_row()) {
 	$DB_trombino->pop_result() ;
 }
 if ($warning!="")
-	$message .= "<warning> <p>Les binets suivant n'avaient pas de categorie valide :</p><p>$warning</p><p>Leur categorie vient d'être remis à 'Divers'</p></warning>" ;
+	$message .= "<warning> <p>Les binets suivant n'avaient pas de categorie valide :</p><p>$warning</p><p>Leur categorie vient d'Ãªtre remis Ã  'Divers'</p></warning>" ;
 
 // =====================================
 // Modification d'un binet
 // =====================================
 
-	// On crée un binet
+	// On crÃ©e un binet
 	//==========================
 
 	if (isset($_POST['ajout'])) {
 		$DB_trombino->query("INSERT INTO binets SET nom='{$_POST['nom']}'");
 		$index = mysql_insert_id($DB_trombino->link) ;
-		$message .= "<commentaire>Création du binet ' {$_POST['nom']}' effectuée</commentaire>" ;
+		$message .= "<commentaire>CrÃ©ation du binet ' {$_POST['nom']}' effectuÃ©e</commentaire>" ;
 	}
 	
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="binets_web" titre="Frankiz : Binets Web">
@@ -122,7 +125,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 
 
-<h1>Création d'un binet</h1>
+<h1>CrÃ©ation d'un binet</h1>
 
 		<formulaire id="binet_web" titre="Nouveau Binet" action="admin/binets_liste.php">
 			<hidden id="id" titre="ID" valeur=""/>

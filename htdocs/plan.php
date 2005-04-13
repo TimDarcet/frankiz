@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,50 +18,53 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Plan pour venir à l'X
+	Plan pour venir Ã  l'X
 	
 	$Log$
+	Revision 1.3  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.2  2004/11/04 16:36:42  schmurtz
 	Modifications cosmetiques
-
+	
 	Revision 1.1  2004/10/31 18:20:24  kikx
-	Rajout d'une page pour les plan (venir à l'X)
+	Rajout d'une page pour les plan (venir Ã  l'X)
 
 */
 
 require_once "include/global.inc.php";
 
-// génération de la page
+// gÃ©nÃ©ration de la page
 require "include/page_header.inc.php";
 ?>
 <page id='plan' titre='Frankiz : plan'>
 
-<h1>Pour venir à l'X</h1>
-<p>L'école Polytechnique est à Palaiseau (ou plus précisement sur le plateau de Saclay) à 15 km au sud de Paris.</p>
+<h1>Pour venir Ã  l'X</h1>
+<p>L'Ã©cole Polytechnique est Ã  Palaiseau (ou plus prÃ©cisement sur le plateau de Saclay) Ã  15 km au sud de Paris.</p>
 
 <cadre titre="En RER">
 	<p>De Paris, prendre la ligne RER B vers le sud en direction de Saint-Remy-les-Chevreuse.
-	(En gros le trajet dure 30min à partir de Denfert-Rochereau).</p>
-	<p>En descendant du RER vous vous situerez du mauvais côté de la voie... Traverser la voie
-	puis ayant la voie dans le dos, prenez à gauche un petit chemin qui monte... C'est le chemin de
-	Lozère : L'X est en haut de la pente, alors courage !</p>
+	(En gros le trajet dure 30min Ã  partir de Denfert-Rochereau).</p>
+	<p>En descendant du RER vous vous situerez du mauvais cÃ´tÃ© de la voie... Traverser la voie
+	puis ayant la voie dans le dos, prenez Ã  gauche un petit chemin qui monte... C'est le chemin de
+	LozÃ¨reÂ : L'X est en haut de la pente, alors courageÂ !</p>
 </cadre>
 
 <cadre titre="En voiture">
-	<h3>1ère méthode : par l'A6</h3>
-	<p>Sur le périphérique extérieur, juste après la porte d'orléans, vous avez une sortie vers l'A6
-	5km plus loin, il y aura une séparation d'autoroute : Suivez l'A6a/E50 en direction d'Orléans/Palaiseau (9.7km).
+	<h3>1Ã¨re mÃ©thode : par l'A6</h3>
+	<p>Sur le pÃ©riphÃ©rique extÃ©rieur, juste aprÃ¨s la porte d'orlÃ©ans, vous avez une sortie vers l'A6
+	5km plus loin, il y aura une sÃ©paration d'autorouteÂ : Suivez l'A6a/E50 en direction d'OrlÃ©ans/Palaiseau (9.7km).
 	Ensuite direction A10 en suivant Palaiseau (6.1km).</p>
-	<p>Au panneau "Cité Scientifique" vous quittez l'A10 et vous vous engagez sur la N444 (1.2km).
+	<p>Au panneau "CitÃ© Scientifique" vous quittez l'A10 et vous vous engagez sur la N444 (1.2km).
 	Vous bifurquez sur la gauche vers Saclay sur la D36 (1.6km).
-	En haut de la montée vous arriverez à un très grand sens giratoire : L'X se situera à votre gauche donc
-	tournez autour et ça sera indiqué !</p>
+	En haut de la montÃ©e vous arriverez Ã  un trÃ¨s grand sens giratoireÂ : L'X se situera Ã  votre gauche donc
+	tournez autour et Ã§a sera indiquÃ©Â !</p>
 	
-	<h3>2ème méthode : par la N118</h3>
-	<p>A la porte de saint Cloud, sortez du boulevard périphérique et prenez l'Avenue de la Porte de Saint-Cloud sur 300 m.
+	<h3>2Ã¨me mÃ©thode : par la N118</h3>
+	<p>A la porte de saint Cloud, sortez du boulevard pÃ©riphÃ©rique et prenez l'Avenue de la Porte de Saint-Cloud sur 300 m.
 	Prenez la N10 (2.2km) via Boulogne-Billancourt.</p>
-	<p>Enfin prenez la N118 en direction de Bièvres - Bordeaux - Chartres - Nantes - Orléans pendant 13km environ.
-	Vous allez sortir à la route de bièvre et ensuite la D36 en suivant Polytechnique.</p>
+	<p>Enfin prenez la N118 en direction de BiÃ¨vres - Bordeaux - Chartres - Nantes - OrlÃ©ans pendant 13km environ.
+	Vous allez sortir Ã  la route de biÃ¨vre et ensuite la D36 en suivant Polytechnique.</p>
 </cadre>
 
 </page>

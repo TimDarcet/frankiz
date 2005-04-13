@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,9 +21,12 @@
 	Permet de proposer une QDJ
 	
 	$Log$
-	Revision 1.10  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
+	Revision 1.11  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.10  2005/01/20 20:09:03  pico
+	Changement de "TrÃ¨s BRment, l'automate"
+	
 	Revision 1.9  2004/12/15 00:05:04  schmurtz
 	Plus beau
 	
@@ -44,16 +47,16 @@
 	GPLisation des fichiers du site
 	
 	Revision 1.3  2004/10/13 21:25:59  pico
-	Oublié ça aussi :(	
+	OubliÃ© Ã§a aussi :(	
 */
 
 // En-tetes
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_MINIMUM);
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -67,8 +70,8 @@ if (!isset($_REQUEST['envoie'])) {
 ?>
 	<formulaire id="qdj" titre="QDJ" action="proposition/qdj.php">
 		<champ titre="Question" id="question" valeur="<? if (isset($_REQUEST['question'])) echo $_REQUEST['question']?>" />
-		<champ titre="Réponse 1" id="reponse1" valeur="<? if (isset($_REQUEST['reponse1'])) echo $_REQUEST['reponse1']?>" />
-		<champ titre="Réponse 2" id="reponse2" valeur="<? if (isset($_REQUEST['reponse2'])) echo $_REQUEST['reponse2']?>" />
+		<champ titre="RÃ©ponse 1" id="reponse1" valeur="<? if (isset($_REQUEST['reponse1'])) echo $_REQUEST['reponse1']?>" />
+		<champ titre="RÃ©ponse 2" id="reponse2" valeur="<? if (isset($_REQUEST['reponse2'])) echo $_REQUEST['reponse2']?>" />
 		<bouton titre="Tester" id="upload"/>
 		<bouton titre="Proposer" id="envoie"  onClick="return window.confirm('Voulez vous vraiment proposer cette QDJ ?')"/>
 	</formulaire>
@@ -97,13 +100,13 @@ if (!isset($_REQUEST['envoie'])) {
 } else {
 ?>
 	<commentaire>
-		Merci d'avoir proposé une QDJ. Le responsable au BR essayera de la publier le plus tôt possible.
+		Merci d'avoir proposÃ© une QDJ. Le responsable au BR essayera de la publier le plus tÃ´t possible.
 	</commentaire>
 <?
 	// Stockage dans la base SQL
 	$DB_valid->query("INSERT INTO valid_qdj SET eleve_id='{$_SESSION['user']->uid}',question='{$_REQUEST['question']}',reponse1='{$_REQUEST['reponse1']}',reponse2='{$_REQUEST['reponse2']}'") ;
 
-	//Envoie du mail à l'admin pour la validation
+	//Envoie du mail Ã  l'admin pour la validation
 	$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
 	
 	

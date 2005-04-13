@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -77,7 +77,7 @@
                         <xsl:apply-templates select="annonce[@categorie='important']" mode="sommaire"/>
                     </xsl:if>
                     <xsl:if test="count(annonce[@categorie='nouveau']) != 0">
-                        <div class="fkz_sommaire_titre"><span class="fkz_annonces_nouveau"><xsl:text> </xsl:text></span> Nouvelles Fraîches</div>
+                        <div class="fkz_sommaire_titre"><span class="fkz_annonces_nouveau"><xsl:text> </xsl:text></span> Nouvelles FraÃ®ches</div>
                         <xsl:apply-templates select="annonce[@categorie='nouveau']" mode="sommaire"/>
                     </xsl:if>
                     <xsl:if test="count(annonce[@categorie='vieux']) != 0">
@@ -105,7 +105,7 @@
 			<xsl:value-of select="concat('annonce_',@id)"/>
 		</xsl:attribute>
 		<div class="fkz_annonces_titre">
-            <span class="lecon">Le</span><span class="lecon_cedille">ç</span><span class="lecon">on n°<xsl:value-of select="$n + position() - 1" /></span><span class="lecon_cedille"> :</span>
+            <span class="lecon">Le</span><span class="lecon_cedille">Ã§</span><span class="lecon">on nÂ°<xsl:value-of select="$n + position() - 1" /></span><span class="lecon_cedille"> :</span>
 			<b>
 				<span>
 					<xsl:attribute name="class">fkz_annonces_<xsl:value-of select="@categorie"/></xsl:attribute>

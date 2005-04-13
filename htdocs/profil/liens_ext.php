@@ -1,6 +1,6 @@
 <?
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,23 +21,26 @@
 	Gestions des liens perso / des flux rss.
 
 	$Log$
-	Revision 1.21  2005/04/11 20:29:27  pico
-	Passage en utf8 suite Ã  une connerie
+	Revision 1.22  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.21  2005/04/11 20:29:27  pico
+	Passage en utf8 suite ÃƒÂ  une connerie
+	
 	Revision 1.20  2005/02/06 22:21:13  pico
-	je remet ça prore, je chercherais plus tard
+	je remet Ã§a prore, je chercherais plus tard
 	
 	Revision 1.19  2005/02/06 22:18:54  pico
-	et là ?
-	(ça me saoule un peu)
+	et lÃ  ?
+	(Ã§a me saoule un peu)
 	
 	Revision 1.18  2005/02/06 22:13:21  pico
-	on va voir si ça donne qqch de mieux
+	on va voir si Ã§a donne qqch de mieux
 	
 	Revision 1.17  2005/02/06 22:02:56  pico
 	Quand on supprime un flux, ne supprime pas le flux perso
 	
-	ça marche maintenant chez moi, à voir en prod...
+	Ã§a marche maintenant chez moi, Ã  voir en prod...
 	
 	Revision 1.16  2005/02/06 21:42:16  pico
 	Correction bug #53
@@ -52,7 +55,7 @@
 	hum hum hum
 	
 	Revision 1.12  2005/01/04 23:30:37  pico
-	gni²
+	gniÂ²
 	
 	Revision 1.11  2005/01/04 23:25:06  pico
 	oups
@@ -68,14 +71,14 @@
 	
 	Revision 1.7  2004/12/15 06:13:30  kikx
 	Ct trop la merde ....
-	pico tu le remettra qd tu auras debuggué car la moi je peux plus :(
+	pico tu le remettra qd tu auras debugguÃ© car la moi je peux plus :(
 	
 	Revision 1.6  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
 	
 	Revision 1.5  2004/11/24 21:09:04  pico
-	Sauvegarde avant mise à jour skins
+	Sauvegarde avant mise Ã  jour skins
 	
 	Revision 1.4  2004/11/24 20:07:12  pico
 	Ajout des liens persos
@@ -87,12 +90,12 @@
 	Encore un warning
 	
 	Revision 1.1  2004/11/24 16:24:09  pico
-	Passage du formulaire de choix des rss à afficher dans une page spéciale
+	Passage du formulaire de choix des rss Ã  afficher dans une page spÃ©ciale
 */
 
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_MINIMUM);
 
 
@@ -101,7 +104,7 @@ while(list($value,$description)=$DB_web->next_row())
 	$array[$value] = $description;
 	
 
-// Mise à jour / ajout de rss
+// Mise Ã  jour / ajout de rss
 if(isset($_REQUEST['OK_rss'])) {
 	$rss = array();
 	// Rss contenues dans la base sql
@@ -117,7 +120,7 @@ if(isset($_REQUEST['OK_rss'])) {
 	foreach(array('module') as $mode)
 		if(!empty($_REQUEST['rss_perso_'.$mode]))
 			$rss['m_'.$_REQUEST['rss_perso_'.$mode]] = $mode;
-	// Mise à jour des infos de session et de la base de données
+	// Mise Ã  jour des infos de session et de la base de donnÃ©es
 	$_SESSION['rss'] = $rss;
 	$rss2 = serialize($rss);
 	$DB_web->query("UPDATE compte_frankiz SET liens_rss='$rss2' WHERE eleve_id='{$_SESSION['user']->uid}'");	
@@ -169,7 +172,7 @@ if(!empty($_REQUEST['del_lien'])) {
 }
 	
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 

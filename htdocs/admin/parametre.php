@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,15 +18,18 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Cette page permet de modifier les paramètres globaux mysql du site
+	Cette page permet de modifier les paramÃ¨tres globaux mysql du site
 	genre : 
-	# la dernière promo qui est sur le site
-	# la dernière promo qui est dans le trombi (qui normalment devrait être mis a jour automatiquement)
+	# la derniÃ¨re promo qui est sur le site
+	# la derniÃ¨re promo qui est dans le trombi (qui normalment devrait Ãªtre mis a jour automatiquement)
 	
 	$Log$
+	Revision 1.13  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.12  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 	Revision 1.11  2004/12/17 14:34:18  pico
 	J'avais fait de la merde...
 	
@@ -56,7 +59,7 @@
 
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
 	acces_interdit();
@@ -78,17 +81,17 @@ foreach ($_POST AS $keys => $val){
 }
 
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
-<page id="admin_parametre" titre="Frankiz : Modifier les paramètres globaux">
+<page id="admin_parametre" titre="Frankiz : Modifier les paramÃ¨tres globaux">
 
 <note>
-Cette page est une page pour pouvoir modifier directement les paramètres du sites : si vous
-devez créer des varibles dans la table essayer qu'elles soient assez explicite.
+Cette page est une page pour pouvoir modifier directement les paramÃ¨tres du sites : si vous
+devez crÃ©er des varibles dans la table essayer qu'elles soient assez explicite.
 </note>
-<h2>Paramètres du site</h2>
+<h2>ParamÃ¨tres du site</h2>
 	<liste id="liste" selectionnable="non" action="admin/parametre.php">
 		<entete id="nom_var" titre="Nom de la varible"/>
 		<entete id="valeur" titre="Valeur"/>
@@ -100,7 +103,7 @@ devez créer des varibles dans la table essayer qu'elles soient assez explicite.
 				<colonne id="eleve"><? echo "$nom" ?></colonne>
 				<colonne id="valeur">
 <?
-				// Cas Particuliers traité à la main
+				// Cas Particuliers traitÃ© Ã  la main
 				if ($nom=="lastpromo_ontrombino") {
 					echo $valeur." &nbsp; " ;
 					echo "<bouton titre='Update' id='update_lastpromo_ontrombino'/>" ;

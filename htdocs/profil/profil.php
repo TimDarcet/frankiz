@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,28 +18,31 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Page permettant de modifier son profil dans le trombino et quelques paramètres
+	Page permettant de modifier son profil dans le trombino et quelques paramÃ¨tres
 	pour le site web.
 	
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.48  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.47  2005/01/28 21:17:21  pico
 	Correction bug affichage photo
-
+	
 	Revision 1.46  2005/01/27 15:23:17  pico
-	La boucle locale est considérée comme interne
+	La boucle locale est considÃ©rÃ©e comme interne
 	Tests de photos normalement plus cools.
-	Après le reste.... je sais plus
+	AprÃ¨s le reste.... je sais plus
 	
 	Revision 1.45  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
+	Changement de "TrÃ¨s BRment, l'automate"
 	
 	Revision 1.44  2005/01/18 22:07:46  pico
 	Passage des images trombi en maxi 300x400
 	
 	Revision 1.43  2005/01/11 14:40:35  pico
-	Fôte d'orthogaffe
+	FÃ´te d'orthogaffe
 	
 	Revision 1.42  2004/12/17 16:29:29  kikx
 	Dans le trombino maintenant les promo sont dynamiques
@@ -59,10 +62,10 @@
 	Ajout mail trombinomen
 	
 	Revision 1.37  2004/12/15 06:06:08  kikx
-	/me tres fatigué
+	/me tres fatiguÃ©
 	
 	Revision 1.36  2004/12/15 06:04:46  kikx
-	Pour ne pas avoir des messages de commentaires ambigué
+	Pour ne pas avoir des messages de commentaires ambiguÃ©
 	
 	Revision 1.35  2004/12/15 05:12:28  falco
 	typo
@@ -81,7 +84,7 @@
 	/tmp/cvsh9cLqQ
 	
 	Revision 1.30  2004/11/24 18:12:27  kikx
-	Séparation de la page du site web et du profil personnel
+	SÃ©paration de la page du site web et du profil personnel
 	
 	Revision 1.29  2004/11/22 23:07:28  kikx
 	Rajout de lines vers les pages perso
@@ -97,10 +100,10 @@
 	permet de mieux expliquer comment cela fonctionne
 	
 	Revision 1.25  2004/11/22 18:59:31  kikx
-	Pour gérer son site perso
+	Pour gÃ©rer son site perso
 	
 	Revision 1.24  2004/11/07 22:41:03  pico
-	Ne cherche plus à uploader d'image qd on lui demande pas
+	Ne cherche plus Ã  uploader d'image qd on lui demande pas
 	
 	Revision 1.23  2004/10/29 16:12:53  kikx
 	Diverse correction sur les envoie des mail en HTML
@@ -118,10 +121,10 @@
 	Permet l'affichage dans le profil de l'image que l'on souhaite modifier (bug encore sur l'affichage)
 	
 	Revision 1.18  2004/10/22 11:13:32  kikx
-	Autorise de modifier son image trombi : reste a faire la apge de validation coté admin
+	Autorise de modifier son image trombi : reste a faire la apge de validation cotÃ© admin
 	
 	Revision 1.17  2004/10/21 22:43:11  kikx
-	Bug fix et mise en place de la possibilité de modifier la photo du trombino
+	Bug fix et mise en place de la possibilitÃ© de modifier la photo du trombino
 	
 	Revision 1.16  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
@@ -130,7 +133,7 @@
 	Juste pour Schmurtz
 	
 	Revision 1.14  2004/10/20 20:37:27  kikx
-	Possibilité par l'utilisateur de se rajouter un binet
+	PossibilitÃ© par l'utilisateur de se rajouter un binet
 	
 	Revision 1.13  2004/10/20 19:51:17  kikx
 	Structure pour se rajouter des binets
@@ -158,7 +161,7 @@ demande_authentification(AUTH_MAIL);
 
 
 
-// Récupération d'une image
+// RÃ©cupÃ©ration d'une image
 if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "true") && ($_REQUEST['image'] != "")){
 	require_once("../include/global.inc.php");
 	$size = getimagesize(BASE_DATA."trombino/a_valider_".$_REQUEST['id']);
@@ -169,7 +172,7 @@ if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "true") && ($_REQUEST['im
 
 $message="";
 
-// Données sur l'utilisateur
+// DonnÃ©es sur l'utilisateur
 $DB_trombino->query("SELECT eleves.nom,prenom,surnom,mail,login,promo,sections.nom,cie,piece_id FROM eleves LEFT JOIN sections USING(section_id) WHERE eleve_id='{$_SESSION['user']->uid}'");
 list($nom,$prenom,$surnom,$mail,$login,$promo,$section,$cie,$casert) = $DB_trombino->next_row();
 
@@ -183,12 +186,12 @@ if(isset($_POST['changer_frankiz'])) {
 		ajoute_erreur(ERR_MDP_TROP_PETIT);
 	} else {
 		$DB_web->query("UPDATE compte_frankiz SET passwd='".md5($_POST['passwd'])."' WHERE eleve_id='{$_SESSION['user']->uid}'");
-		$message.="<commentaire>Le mot de passe vient d'être changé.</commentaire>";
+		$message.="<commentaire>Le mot de passe vient d'Ãªtre changÃ©.</commentaire>";
 	}
 
 	// Modification du cookie d'authentification
 	if($_POST['cookie'] == 'oui') {
-		// on rajoute le cookie (le hash est le même que celui créé lors de l'authentification
+		// on rajoute le cookie (le hash est le mÃªme que celui crÃ©Ã© lors de l'authentification
 		// initiale par mail)
 		$DB_web->query("SELECT hash FROM compte_frankiz WHERE eleve_id='{$_SESSION['user']->uid}'");
 		list($new_hash) = $DB_web->next_row();
@@ -196,13 +199,13 @@ if(isset($_POST['changer_frankiz'])) {
 		
 		SetCookie("auth",base64_encode(serialize($cookie)),time()+3*365*24*3600,"/");
 		$_COOKIE['auth'] = "blah";  // hack permetttant de faire marcher le test d'existance du cookie
-									// utilisé quelques ligne plus bas sans devoir recharger la page.
-		$message.="<commentaire>Le cookie d'authentification a été activé.</commentaire>";
+									// utilisÃ© quelques ligne plus bas sans devoir recharger la page.
+		$message.="<commentaire>Le cookie d'authentification a Ã©tÃ© activÃ©.</commentaire>";
 	} else {
 		// on supprime le cookie
 		SetCookie("auth","",0,"/");
 		unset($_COOKIE['auth']);	// hack, cf. au dessus.
-		$message.="<commentaire>Le cookie d'authentification a été désactivé.</commentaire>";
+		$message.="<commentaire>Le cookie d'authentification a Ã©tÃ© dÃ©sactivÃ©.</commentaire>";
 	}
 
 // Modification de la fiche du trombino
@@ -219,7 +222,7 @@ if(isset($_POST['changer_frankiz'])) {
 		$surnom = $_POST['surnom'];
 		$mail = $_POST['email'];
 		$DB_trombino->query("UPDATE eleves SET surnom='$surnom',mail=".(empty($mail)?"NULL":"'$mail'")." WHERE eleve_id='{$_SESSION['user']->uid}'");
-		$message.="<commentaire>L'email et le surnom ont été modifiés.</commentaire>";
+		$message.="<commentaire>L'email et le surnom ont Ã©tÃ© modifiÃ©s.</commentaire>";
 	}
 	
 	//===================================
@@ -235,10 +238,10 @@ if(isset($_POST['changer_frankiz'])) {
 			$deuxieme_demande= false;
 		}
 		
-		// Vérif taille et déplacemet de l'image
+		// VÃ©rif taille et dÃ©placemet de l'image
 		$img = $_FILES['file']['tmp_name'] ;
 	
-			//récupere les données de l'images
+			//rÃ©cupere les donnÃ©es de l'images
 			//--------------------------------------
 		$type_img =  $_FILES["file"]["type"];
 		
@@ -249,7 +252,7 @@ if(isset($_POST['changer_frankiz'])) {
 		$data = addslashes($data);
 	
 			//
-			// On verifie que le truc télécharger est une image ...
+			// On verifie que le truc tÃ©lÃ©charger est une image ...
 			// + bonne taille !
 			//-------------------------------------
 
@@ -257,11 +260,11 @@ if(isset($_POST['changer_frankiz'])) {
 			$filename =$_SESSION['user']->uid ;
 			move_uploaded_file($_FILES['file']['tmp_name'], DATA_DIR_LOCAL.'trombino/a_valider_'.$filename) ;
 			if ($deuxieme_demande) {
-				$message .= "<warning>Tu avais déjà demandé une modification de photo, seule la demande que tu viens de poster sera prise en compte.</warning>";
+				$message .= "<warning>Tu avais dÃ©jÃ  demandÃ© une modification de photo, seule la demande que tu viens de poster sera prise en compte.</warning>";
 			} else {
 				$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
 	
-				$contenu = "$nom $prenom ($promo) a demandé la modification de son image trombino <br><br>".
+				$contenu = "$nom $prenom ($promo) a demandÃ© la modification de son image trombino <br><br>".
 					"Pour valider ou non cette demande va sur la page suivante : <br>".
 					"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_trombi.php'>".
 					"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_trombi.php</a></div><br><br>" .
@@ -270,7 +273,7 @@ if(isset($_POST['changer_frankiz'])) {
 					
 				couriel(TROMBINOMEN_ID,"[Frankiz] Modification de l'image trombi de $nom $prenom",$contenu,$_SESSION['user']->uid);
 				
-				$message .= "<commentaire>Ta demande de changement de photo a été prise en compte et sera validée dans les meilleurs délais.</commentaire>";
+				$message .= "<commentaire>Ta demande de changement de photo a Ã©tÃ© prise en compte et sera validÃ©e dans les meilleurs dÃ©lais.</commentaire>";
 			}
 		} else {
 			$message .= "<warning>Ton image n'est pas au bon format, ou est trop grande.</warning>" ;
@@ -283,7 +286,7 @@ if(isset($_POST['changer_frankiz'])) {
 if (isset($_POST['mod_binet'])) {
 	foreach($_POST['commentaire'] as $key=>$val)
 		$DB_trombino->query("UPDATE membres SET remarque='$val' WHERE eleve_id='{$_SESSION['user']->uid}' AND binet_id='$key'");
-	$message .= "<commentaire>Modification de la partie binets effectuée avec succès.</commentaire>";
+	$message .= "<commentaire>Modification de la partie binets effectuÃ©e avec succÃ¨s.</commentaire>";
 }
 
 // Suppression d'un binet
@@ -300,7 +303,7 @@ if (isset($_POST['suppr_binet'])) {
 		$DB_trombino->query("DELETE FROM membres WHERE binet_id IN ($ids) AND  eleve_id='{$_SESSION['user']->uid}'");
 		$message .= "<commentaire>Suppression de $count binet(s).</commentaire>";
 	} else {
-		$message .= "<warning>Aucun binet n'est séléctionné. Aucun binet n'a donc été supprimé de la liste de tes binets.</warning>";
+		$message .= "<warning>Aucun binet n'est sÃ©lÃ©ctionnÃ©. Aucun binet n'a donc Ã©tÃ© supprimÃ© de la liste de tes binets.</warning>";
 	}
 }
 
@@ -308,14 +311,14 @@ if (isset($_POST['suppr_binet'])) {
 if (isset($_POST['add_binet'])) {
 	if ($_POST['liste_binet'] != 'default') {
 		$DB_trombino->query("INSERT INTO membres SET eleve_id='{$_SESSION['user']->uid}',binet_id='{$_POST['liste_binet']}'");
-		$message .= "<commentaire>Binet correctement ajouté</commentaire>";
+		$message .= "<commentaire>Binet correctement ajoutÃ©</commentaire>";
 	} else {
-		$message .= "<warning>Aucun binet séléctionné. Aucun binet n'a donc été ajouté à la liste de tes binets.</warning>";
+		$message .= "<warning>Aucun binet sÃ©lÃ©ctionnÃ©. Aucun binet n'a donc Ã©tÃ© ajoutÃ© Ã  la liste de tes binets.</warning>";
 	}
 }
 
 
-// Génération du la page XML
+// GÃ©nÃ©ration du la page XML
 require "../include/page_header.inc.php";
 
 ?>
@@ -325,13 +328,13 @@ require "../include/page_header.inc.php";
 		if(!empty($message))
 			echo "$message\n";
 		if(a_erreur(ERR_MDP_DIFFERENTS))
-			echo "<warning>Les valeurs des deux champs de mot de passe n'étaient pas identiques. Le mot de passe n'a pas été modifié.</warning>\n";
+			echo "<warning>Les valeurs des deux champs de mot de passe n'Ã©taient pas identiques. Le mot de passe n'a pas Ã©tÃ© modifiÃ©.</warning>\n";
 		if(a_erreur(ERR_MDP_TROP_PETIT))
-			echo "<warning>Il faut mettre un mot de passe plus long (au moins 8 caractères). Le mot de passe n'a pas été modifié.</warning>\n";
+			echo "<warning>Il faut mettre un mot de passe plus long (au moins 8 caractÃ¨res). Le mot de passe n'a pas Ã©tÃ© modifiÃ©.</warning>\n";
 		if(a_erreur(ERR_SURNOM_TROP_PETIT))
-			echo "<warning>Il faut mettre un surnom plus long (au moins 2 caractères). Le surnom n'a pas été modifié.</warning>\n";
+			echo "<warning>Il faut mettre un surnom plus long (au moins 2 caractÃ¨res). Le surnom n'a pas Ã©tÃ© modifiÃ©.</warning>\n";
 		if(a_erreur(ERR_EMAIL_NON_VALIDE))
-			echo "<warning>L'email n'est pas valide. L'adresse email n'a pas été modifié.</warning>\n";
+			echo "<warning>L'email n'est pas valide. L'adresse email n'a pas Ã©tÃ© modifiÃ©.</warning>\n";
 ?>
 	<formulaire id="mod_frankiz" titre="Modification du compte Frankiz" action="profil/profil.php">
 		<?
@@ -347,11 +350,11 @@ require "../include/page_header.inc.php";
 		?>
 		<champ id="passwd" titre="Mot de passe" valeur="12345678"/>
 		<champ id="passwd2" titre="Retaper le mot de passe" valeur="87654321"/>
-		<note>L'authentification par cookie permet de se connecter automatiquement lorsque tu accèdes à frankiz. N'active pas cette authentification si tu te connectes sur un ordinateur qui n'est pas le tien.</note>
+		<note>L'authentification par cookie permet de se connecter automatiquement lorsque tu accÃ¨des Ã  frankiz. N'active pas cette authentification si tu te connectes sur un ordinateur qui n'est pas le tien.</note>
 		<choix id="cookie" titre="Utiliser l'authentification par cookie" type="combo"
 				valeur="<?php echo empty($_COOKIE['auth'])? 'non' : 'oui' ?>">
-			<option titre="Activé" id="oui"/>
-			<option titre="Désactivé" id="non"/>
+			<option titre="ActivÃ©" id="oui"/>
+			<option titre="DÃ©sactivÃ©" id="non"/>
 		</choix>
 		<bouton id="changer_frankiz" titre="Enregistrer"/>
 	</formulaire>
@@ -365,12 +368,12 @@ require "../include/page_header.inc.php";
 		<champ id="surnom" titre="Surnom" valeur="<?php echo $surnom ?>"/>
 		<champ id="email" titre="Email" valeur="<?php echo empty($mail) ? $login.'@poly.polytechnique.fr' : $mail ?>"/>
 		<?php if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$_SESSION['user']->uid}")): ?>
-			<note>Cette image trombino n'a pas encore été validée par le BR</note>
+			<note>Cette image trombino n'a pas encore Ã©tÃ© validÃ©e par le BR</note>
 			<image source="profil/profil.php?image=true&amp;id=<?=$_SESSION['user']->uid?>" texte="photo" height="95" width="80"/>
 		<?php else: ?>
 			<image source="trombino.php?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>" texte="photo" height="95" width="80"/>
 		<?php endif; ?>
-		<note>Tu peux personnaliser le trombino en changeant ta photo (elle ne doit pas dépasser 200Ko et 300x400 px)</note>
+		<note>Tu peux personnaliser le trombino en changeant ta photo (elle ne doit pas dÃ©passer 200Ko et 300x400 px)</note>
 		<fichier id="file" titre="Nouvelle photo" taille="200000"/>
 
 		<bouton id="changer_trombino" titre="Changer"/>
@@ -389,7 +392,7 @@ require "../include/page_header.inc.php";
 			</element>
 		<? endwhile; ?>
 		
-		<note>Si tu viens d'adhérer à un binet, n'hésite pas à le montrer et inscrit-y toi sur le TOL</note>
+		<note>Si tu viens d'adhÃ©rer Ã  un binet, n'hÃ©site pas Ã  le montrer et inscrit-y toi sur le TOL</note>
 		<element id="<?=$binet_id?>" selectionnable="non">
 			<colonne id="binet">Rajouter un binet</colonne>
 			<colonne id="commentaire">
@@ -405,7 +408,7 @@ require "../include/page_header.inc.php";
 			</colonne>
 		</element>
 		
-		<bouton id='suppr_binet' titre='Supprimer' onClick="return window.confirm('Es-tu sûr de vouloir supprimer ce binet ?')"/>
+		<bouton id='suppr_binet' titre='Supprimer' onClick="return window.confirm('Es-tu sÃ»r de vouloir supprimer ce binetÂ ?')"/>
 		<bouton id='mod_binet' titre='Enregistrer les commentaires'/>
 	</liste>
 </page>

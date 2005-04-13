@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,14 +18,17 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 -->
 <!--
-	Skin très simple utilisant des tables pour la disposition des éléments.
+	Skin trÃ¨s simple utilisant des tables pour la disposition des Ã©lÃ©ments.
 	Le but de cette skin est de ne pas se triturer les neurones pour faire
 	une sortie html propre et skinnable quand on travail sur le code php.
 	
 	$Log$
-	Revision 1.17  2005/04/13 15:39:27  fruneau
-	Mieux comme Ã§a
+	Revision 1.18  2005/04/13 17:10:06  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.17  2005/04/13 15:39:27  fruneau
+	Mieux comme ÃƒÂ§a
+	
 	Revision 1.16  2005/03/23 21:12:12  pico
 	Normalement tout ce qui faut pour passer en UTF8
 	
@@ -51,7 +54,7 @@
 	Modification de la qdj et du sommaire de la page annonces, suite des test IE
 	
 	Revision 1.6  2004/12/14 01:34:14  psycow
-	Gestion IE, modifications diverses de compatibilité
+	Gestion IE, modifications diverses de compatibilitÃ©
 		
 	Revision 1.5  2004/12/10 03:04:31  psycow
 	Resolution du probleme des boites sous Firefox, reste un probleme sur le positionnement des formulaires dans les boites...
@@ -78,7 +81,7 @@
 	Un bon debut mais plus compatible IE j'en ai peur
 	
 	Revision 1.4  2004/11/03 23:38:39  psycow
-	Un bon début
+	Un bon dÃ©but
 	
 	Revision 1.3  2004/11/03 21:23:03  psycow
 	auvegarde de mon debut dans les xsl

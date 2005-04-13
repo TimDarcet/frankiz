@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 <xsl:template match="module[@id='activites']">
 	<xsl:if test="count(annonce) !=0">
 		<div class="fkz_module" id='mod_activites'>
-			<div class="fkz_titre"><span id="affiches_logo"><xsl:text> </xsl:text></span><span id="affiches">Activités</span></div>
+			<div class="fkz_titre"><span id="affiches_logo"><xsl:text> </xsl:text></span><span id="affiches">ActivitÃ©s</span></div>
 			<div class="fkz_module_corps">
 				<xsl:apply-templates select="annonce" mode="activites"/>
 			</div>

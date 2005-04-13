@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un sondage
 	
 	$Log$
+	Revision 1.22  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.21  2005/03/04 23:11:33  pico
 	Restriction des sondages par promo/section/binet
-
+	
 	Revision 1.20  2005/03/02 07:24:49  pico
 	corrige une petite erreur d'url
 	
@@ -37,12 +40,12 @@
 	Fonction pour savoir si interne
 	
 	Revision 1.16  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
+	Changement de "TrÃ¨s BRment, l'automate"
 	
 	Revision 1.15  2005/01/14 09:19:31  pico
 	Corrections bug mail
 	+
-	Sondages maintenant public ou privé (ne s'affichant pas dans le cadre)
+	Sondages maintenant public ou privÃ© (ne s'affichant pas dans le cadre)
 	Ceci sert pour les sondages section par exemple
 	
 	Revision 1.14  2005/01/13 17:10:58  pico
@@ -61,7 +64,7 @@
 	Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
 	
 	Revision 1.9  2004/12/14 13:39:20  pico
-	Y'avait de la merde au niveau des locks, ça ça marche, ce serait bien si tu pouvais y jeter un coup d'oeil, kikx
+	Y'avait de la merde au niveau des locks, Ã§a Ã§a marche, ce serait bien si tu pouvais y jeter un coup d'oeil, kikx
 	
 	Revision 1.8  2004/12/13 16:40:46  kikx
 	Protection de la validation des sondages
@@ -93,12 +96,12 @@
 	
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('web'))
 	acces_interdit();
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -108,7 +111,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <h1>Validation des sondages</h1>
 
 <?
-// On traite les différents cas de figure d'enrigistrement et validation de qdj :)
+// On traite les diffÃ©rents cas de figure d'enrigistrement et validation de qdj :)
 
 // Enregistrer ...
 $DB_valid->query("LOCK TABLES valid_sondages AS v WRITE,valid_sondages WRITE, trombino.eleves AS e READ");
@@ -127,22 +130,22 @@ foreach ($_POST AS $keys => $val){
 			$DB_valid->query("SELECT titre FROM valid_sondages WHERE sondage_id={$temp[1]}");
 			list($titre) = $DB_valid->next_row() ;
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," refusé le sondage '$titre'") ;
+			log_admin($_SESSION['user']->uid," refusÃ© le sondage '$titre'") ;
 			
 			$DB_valid->query("DELETE FROM valid_sondages WHERE sondage_id='{$temp[1]}'");
 			
 			$bla = "explication_".$temp[1] ;
 			$contenu = "<strong>Bonjour</strong>, <br><br>".
-						"Nous sommes désolé mais ton sondage n'a pas été validé par le BR pour la raison suivante : <br>".
+						"Nous sommes dÃ©solÃ© mais ton sondage n'a pas Ã©tÃ© validÃ© par le BR pour la raison suivante : <br>".
 						$_POST[$bla]."<br>".
 						"<br>" .
-						"Très Cordialement<br>" .
+						"TrÃ¨s Cordialement<br>" .
 						"Le Webmestre de Frankiz<br>"  ;
 		
-			couriel($temp[2],"[Frankiz] Ton sondage a été refusé ",$contenu,WEBMESTRE_ID);
-			echo "<warning>Envoie d'un mail <br/>Le prévient que sa demande n'est pas acceptée</warning>" ;
+			couriel($temp[2],"[Frankiz] Ton sondage a Ã©tÃ© refusÃ© ",$contenu,WEBMESTRE_ID);
+			echo "<warning>Envoie d'un mail <br/>Le prÃ©vient que sa demande n'est pas acceptÃ©e</warning>" ;
 		} else {
-			echo "<warning>Requête deja traitée par un autre administrateur</warning>";
+			echo "<warning>RequÃªte deja traitÃ©e par un autre administrateur</warning>";
 		}
 	}
 	// On accepte le sondage
@@ -156,7 +159,7 @@ foreach ($_POST AS $keys => $val){
 			list($date,$questions,$titre,$eleve_id,$restriction,$nom, $prenom, $promo) = $DB_valid->next_row() ;
 			
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," validé le sondage '$titre'") ;
+			log_admin($_SESSION['user']->uid," validÃ© le sondage '$titre'") ;
 
 			$DB_web->query("INSERT INTO sondage_question SET eleve_id=$eleve_id, questions='$questions', titre='$titre', perime='$date', restriction='$restriction'") ;
 			$index = mysql_insert_id($DB_web->link) ;
@@ -164,26 +167,26 @@ foreach ($_POST AS $keys => $val){
 			
 			$bla = "explication_".$temp[1] ;
 			$contenu = "<strong>Bonjour</strong>, <br><br>".
-						"Ton sondage vient d'être mis en ligne par le BR <br>";
-			$contenu .= "Il est accessible à l'adresse suivante: ".BASE_URL."/sondage.php?id=".$index."<br>";
+						"Ton sondage vient d'Ãªtre mis en ligne par le BR <br>";
+			$contenu .= "Il est accessible Ã  l'adresse suivante: ".BASE_URL."/sondage.php?id=".$index."<br>";
 			$contenu .= $_POST[$bla]."<br>".
 						"<br>" .
-						"Très Cordialement<br>" .
+						"TrÃ¨s Cordialement<br>" .
 						"Le Webmestre de Frankiz<br>"  ;
 		
-			couriel($temp[2],"[Frankiz] Ton sondage a été validé ",$contenu,WEBMESTRE_ID);
-			echo "<commentaire>Envoie d'un mail <br/>Prévient $prenom $nom que sa demande est acceptée</commentaire>" ;
+			couriel($temp[2],"[Frankiz] Ton sondage a Ã©tÃ© validÃ© ",$contenu,WEBMESTRE_ID);
+			echo "<commentaire>Envoie d'un mail <br/>PrÃ©vient $prenom $nom que sa demande est acceptÃ©e</commentaire>" ;
 		} else {
-			echo "<warning>Requête deja traitée par un autre administrateur</warning>";
+			echo "<warning>RequÃªte deja traitÃ©e par un autre administrateur</warning>";
 		}
 	}
 	if ($temp[0] == "modif") {
 		$DB_valid->query("SELECT 0 FROM valid_sondages WHERE sondage_id='{$temp[1]}'");
 		if ($DB_valid->num_rows()!=0) {
 			$DB_valid->query("UPDATE valid_sondages SET questions='{$_POST['contenu_form']}', titre='{$_POST['titre_sondage']}', perime=FROM_UNIXTIME({$_POST['date']}) WHERE sondage_id={$temp[1]}");
-			echo "<commentaire>Modification effectuée</commentaire>" ;
+			echo "<commentaire>Modification effectuÃ©e</commentaire>" ;
 		 } else {
-			echo "<warning>Requête deja traitée par un autre administrateur</warning>";
+			echo "<warning>RequÃªte deja traitÃ©e par un autre administrateur</warning>";
 		}
 	}
 
@@ -205,10 +208,10 @@ $DB_trombino->query("UNLOCK TABLES");
 		</formulaire>
 
 		<formulaire id="sond_<? echo $id ?>" titre="Validation de '<?=$titre?>'" action="admin/valid_sondages.php">
-			<note>Sondage proposé par <?=$prenom?> <?=$nom?> (<?=$promo?>)</note>
-			<zonetext titre="La raison du choix du modérateur (Surtout si refus)" id="explication_<? echo $id ;?>"></zonetext>
-			<textsimple id='restriction' valeur='Restriction demandée: <?=$restriction?>'/><br/>
-			<choix titre="Sondage jusqu'à " id="date" type="combo" valeur="<? echo $date ;?>">
+			<note>Sondage proposÃ© par <?=$prenom?> <?=$nom?> (<?=$promo?>)</note>
+			<zonetext titre="La raison du choix du modÃ©rateur (Surtout si refus)" id="explication_<? echo $id ;?>"></zonetext>
+			<textsimple id='restriction' valeur='Restriction demandÃ©e: <?=$restriction?>'/><br/>
+			<choix titre="Sondage jusqu'Ã  " id="date" type="combo" valeur="<? echo $date ;?>">
 			<?	for ($i=1 ; $i<=MAX_PEREMPTION ; $i++) {
 				$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
 				$date_value = date("d/m/y" , $date_id);
@@ -224,12 +227,12 @@ $DB_trombino->query("UNLOCK TABLES");
 				Pour un champ: ###champ///Le nom du champ<br/>
 				Pour un texte: ###text///Ma question<br/>
 				Pour un radio: ###radio///ma question///option1///option2///option3<br/>
-				Pour une boite déroulante: ###combo///ma question///option1///option2///option3<br/>
+				Pour une boite dÃ©roulante: ###combo///ma question///option1///option2///option3<br/>
 				Pour une checkbox: ###check///ma question///option1///option2///option3<br/>
 			</note>
 			<champ id="titre_sondage" titre="Titre" valeur="<?=$titre?>"/>
-			<zonetext id="contenu_form" titre="Zone d'édition avancée" type="grand"><?=$questions?></zonetext>
-			<bouton titre="Mettre à jour le sondage" id="modif_<? echo $id ?>_<? echo $eleve_id ?>" />
+			<zonetext id="contenu_form" titre="Zone d'Ã©dition avancÃ©e" type="grand"><?=$questions?></zonetext>
+			<bouton titre="Mettre Ã  jour le sondage" id="modif_<? echo $id ?>_<? echo $eleve_id ?>" />
 			<bouton id='valid_<? echo $id ?>_<? echo $eleve_id ?>' titre='Valider' onClick="return window.confirm('Valider ce sondage ?')"/>
 			<bouton id='suppr_<? echo $id ?>_<? echo $eleve_id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce sondage ?!!!!!')"/>
 		</formulaire>

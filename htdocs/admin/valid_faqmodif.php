@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -22,11 +22,14 @@
 	
 
 	$Log$
+	Revision 1.15  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.14  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
-
+	
 	Revision 1.13  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
+	Changement de "TrÃ¨s BRment, l'automate"
 	
 	Revision 1.12  2005/01/18 13:45:31  pico
 	Plus de droits pour les web
@@ -34,7 +37,7 @@
 	Revision 1.11  2005/01/14 09:19:31  pico
 	Corrections bug mail
 	+
-	Sondages maintenant public ou privé (ne s'affichant pas dans le cadre)
+	Sondages maintenant public ou privÃ© (ne s'affichant pas dans le cadre)
 	Ceci sert pour les sondages section par exemple
 	
 	Revision 1.10  2005/01/13 17:10:58  pico
@@ -56,13 +59,13 @@
 	Oups /.me boulet
 	
 	Revision 1.4  2004/12/14 23:09:52  kikx
-	Pour avoir qd meme la page modifié
+	Pour avoir qd meme la page modifiÃ©
 	
 	Revision 1.3  2004/12/14 23:06:06  schmurtz
 	Ajout du support zonetext grand pour les faqs
 	
 	Revision 1.1  2004/12/14 22:49:53  kikx
-	oups désolé
+	oups dÃ©solÃ©
 	
 
 */
@@ -70,12 +73,12 @@
 require_once "../include/global.inc.php";
 require_once "../include/wiki.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin') && !verifie_permission('faq')&& !verifie_permission('web'))
 	acces_interdit();
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -85,7 +88,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <h1>Validation de Modif FAQ</h1>
 
 <?
-// On traite les différents cas de figure d'enrigistrement et validation de qdj :)
+// On traite les diffÃ©rents cas de figure d'enrigistrement et validation de qdj :)
 
 // Enregistrer ...
 $DB_valid->query("LOCK TABLE valid_modiffaq WRITE");
@@ -101,11 +104,11 @@ foreach ($_POST AS $keys => $val){
 
 			$DB_valid->query("UPDATE valid_modiffaq SET faq_modif='{$_POST['faq_modif']}'  WHERE faq_id='{$temp[1]}'");
 		?>
-			<commentaire>Modification effectuée</commentaire>
+			<commentaire>Modification effectuÃ©e</commentaire>
 		<?
 		} else {
 	?>
-			<warning>Requête deja traitée par un autre administrateur</warning>
+			<warning>RequÃªte deja traitÃ©e par un autre administrateur</warning>
 	<?
 		}
 	}
@@ -116,12 +119,12 @@ foreach ($_POST AS $keys => $val){
 
 			list($eleve_id) = $DB_valid->next_row() ;
 				
-			// On remplace le fichier par la faq modifié
+			// On remplace le fichier par la faq modifiÃ©
 			$DB_faq->query("SELECT question,reponse FROM faq WHERE faq_id='{$temp[1]}'") ;
 			if (list($question,$reponse) = $DB_faq->next_row()) {
 				
 				//Log l'action de l'admin
-				log_admin($_SESSION['user']->uid," accepté la modification de la faq '$question'") ;
+				log_admin($_SESSION['user']->uid," acceptÃ© la modification de la faq '$question'") ;
 				
 				$filename = BASE_DATA."/faq/".$reponse;
 				
@@ -129,7 +132,7 @@ foreach ($_POST AS $keys => $val){
 				$somecontent = str_replace(array('&amp;','&lt;','&gt;','&apos;','&quot;',''), array('&','<','>','\'','"','\\'),$somecontent);
 				
 				$erreur =0 ;
-				// Assurons nous que le fichier est accessible en écriture
+				// Assurons nous que le fichier est accessible en Ã©criture
 				if (is_writable($filename)) {
 
 					// Mode remplacement
@@ -143,27 +146,27 @@ foreach ($_POST AS $keys => $val){
 					fclose($handle);
 				} else {
 		?>
-					<warning>Erreur écriture : remplacement de la FAQ impossible</warning>
+					<warning>Erreur Ã©criture : remplacement de la FAQ impossible</warning>
 		<?
 				}
 				
 				if ($erreur ==0){
 					$DB_valid->query("DELETE FROM valid_modiffaq WHERE faq_id='{$temp[1]}'") ;
 		?>
-					<commentaire>Validation effectuée</commentaire>
+					<commentaire>Validation effectuÃ©e</commentaire>
 					
 		<?
 					$contenu = "<strong>Bonjour,</strong><br><br>".
-						"Ta modification de la FAQ vient d'être prise en compte par le BR.<br>".
-						"Nous te remercions sincèrement de ta modification.<br>".
-						"<br>Sincèrement<br>" .
+						"Ta modification de la FAQ vient d'Ãªtre prise en compte par le BR.<br>".
+						"Nous te remercions sincÃ¨rement de ta modification.<br>".
+						"<br>SincÃ¨rement<br>" .
 						"Le Faqmestre<br>"  ;
 				
-					couriel($eleve_id,"[Frankiz] Ta modification de la FAQ vient d'être prise en compte",$contenu,FAQMESTRE_ID);
+					couriel($eleve_id,"[Frankiz] Ta modification de la FAQ vient d'Ãªtre prise en compte",$contenu,FAQMESTRE_ID);
 
 				} else {
 		?>
-					<warning>Erreur écriture : remplacement de la FAQ impossible</warning>
+					<warning>Erreur Ã©criture : remplacement de la FAQ impossible</warning>
 		<?
 				}
 			}
@@ -177,7 +180,7 @@ foreach ($_POST AS $keys => $val){
 			$DB_faq->query("SELECT question FROM faq WHERE faq_id='{$temp[1]}'") ;
 			list($question) = $DB_faq->next_row() ;
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," refusé la modification de la faq '$question'") ;
+			log_admin($_SESSION['user']->uid," refusÃ© la modification de la faq '$question'") ;
 			
 			list($eleve_id) = $DB_valid->next_row() ;
 			$DB_valid->query("DELETE FROM valid_modiffaq WHERE faq_id='{$temp[1]}'") ;
@@ -186,7 +189,7 @@ foreach ($_POST AS $keys => $val){
 		<?
 		} else {
 	?>
-			<warning>Requête deja traitée par un autre administrateur</warning>
+			<warning>RequÃªte deja traitÃ©e par un autre administrateur</warning>
 	<?
 		}
 
@@ -234,10 +237,10 @@ $DB_valid->query("UNLOCK TABLES");
 			</cadre>
 			
 			<formulaire id='modif_faq' titre='Modification' action= 'admin/valid_faqmodif.php'>
-				<note>Modification apportée par <? echo "$prenom $nom ($promo)"?></note>
+				<note>Modification apportÃ©e par <? echo "$prenom $nom ($promo)"?></note>
 				<zonetext titre="FAQ" id='faq_modif' type="grand"><?=$faq_modif?></zonetext>
 				<bouton id='modif_<?=$id?>' titre="Modifier"/>
-				<bouton id='valid_<?=$id?>' titre='Valider' onClick="return window.confirm('Voulez vous vraiment validé cette modification ?')"/>
+				<bouton id='valid_<?=$id?>' titre='Valider' onClick="return window.confirm('Voulez vous vraiment validÃ© cette modification ?')"/>
 				<bouton id='suppr_<?=$id?>' titre='Supprimer' onClick="return window.confirm('Voulez vous vraiment supprimer cette modification de FAQ ?')"/>
 	
 			</formulaire>

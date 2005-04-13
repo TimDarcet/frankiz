@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,17 +18,20 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Mail promo permettant l'envoie de pièce jointes et de formatage HTML
+	Mail promo permettant l'envoie de piÃ¨ce jointes et de formatage HTML
 	
 	$Log$
-	Revision 1.20  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
+	Revision 1.21  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.20  2005/01/20 20:09:03  pico
+	Changement de "TrÃ¨s BRment, l'automate"
+	
 	Revision 1.19  2005/01/18 19:50:31  pico
-	Ce sont les kessiers et dei qui reçoivent les notifications de mail promo
+	Ce sont les kessiers et dei qui reÃ§oivent les notifications de mail promo
 	
 	Revision 1.18  2005/01/04 21:44:40  pico
-	Remise en place du lien vers l'helpwiki parce que le résumé en bas de page est incomprehensible
+	Remise en place du lien vers l'helpwiki parce que le rÃ©sumÃ© en bas de page est incomprehensible
 	
 	Revision 1.17  2004/12/15 03:37:42  kikx
 	Photo d'ortho
@@ -90,7 +93,7 @@
 	Modification mineur de la page d'envoie de mail promo !
 	
 	Revision 1.1  2004/10/04 21:21:10  kikx
-	oubli desolé
+	oubli desolÃ©
 	
 	
 */
@@ -98,10 +101,10 @@
 // En-tetes
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_MINIMUM);
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 require_once BASE_LOCAL."/include/wiki.inc.php";
@@ -116,8 +119,8 @@ if (!isset($_REQUEST['envoie'])) {
 ?>
 	<formulaire id="mail_promo" titre="Mail Promo" action="proposition/mail_promo.php">
 		<note>
-			Le texte du mail promo utilise le format wiki rappelé en bas de la page et décrit dans l'<lien url="helpwiki.php" titre="aide wiki"/><br/>
-			Pour toute remarque particulière, envoyer un mail à <lien url="mailto:mailpromo@frankiz.polytechnique.fr" titre="mailpromo@frankiz"/>
+			Le texte du mail promo utilise le format wiki rappelÃ© en bas de la page et dÃ©crit dans l'<lien url="helpwiki.php" titre="aide wiki"/><br/>
+			Pour toute remarque particuliÃ¨re, envoyer un mail Ã  <lien url="mailto:mailpromo@frankiz.polytechnique.fr" titre="mailpromo@frankiz"/>
 		</note>
 		<choix titre="Promo" id="promo" type="combo" valeur="<? if (isset($_POST['promo'])) echo  $_POST['promo'] ;?>">
 		<?
@@ -158,18 +161,18 @@ if (!isset($_REQUEST['envoie'])) {
 } else {
 ?>
 	<commentaire>
-		Merci d'avoir proposé un mail promo. Le responsable au BR essayera de te le valider le plus tôt possible.
+		Merci d'avoir proposÃ© un mail promo. Le responsable au BR essayera de te le valider le plus tÃ´t possible.
 	</commentaire>
 <?
 	// Stockage dans la base SQL
 	$DB_valid->query("INSERT INTO valid_mailpromo SET mail='{$_REQUEST['mail']}', titre='{$_REQUEST['sujet']}',eleve_id={$_SESSION['user']->uid}, promo='{$_REQUEST['promo']}'") ;
 
-	//Envoie du mail à l'admin pour la validation
+	//Envoie du mail Ã  l'admin pour la validation
 	$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
 	
 	
 	$contenu = "<strong>Bonjour,</strong><br><br>".
-			"$prenom $nom a demandé la validation d'un mail promo : <br>".
+			"$prenom $nom a demandÃ© la validation d'un mail promo : <br>".
 			$_POST['sujet']."<br><br>".
 			"Pour valider ou non cette demande va sur la page suivante<br>".
 			"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_mailpromo.php'>".

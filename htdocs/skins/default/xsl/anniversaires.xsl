@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -47,7 +47,7 @@
 	</xsl:if>
  		<xsl:value-of select="@prenom" />
  		<xsl:text> </xsl:text>
- 		<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzéèàçê','ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊ')" />
+ 		<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzÃ©Ã¨Ã Ã§Ãª','ABCDEFGHIJKLMNOPQRSTUVWXYZÃ‰ÃˆÃ€Ã‡ÃŠ')" />
 	<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
 </xsl:template>
 

@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -20,30 +20,33 @@
 /*
 	
 	$Log$
+	Revision 1.3  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.2  2005/01/24 09:13:05  pico
 	Stats xnet
-
+	
 	Revision 1.1  2005/01/23 16:30:10  pico
-	Ajout d'une page pour surveiller les entrées dns
+	Ajout d'une page pour surveiller les entrÃ©es dns
 	
 	
 */
 /*
-<Fruneau> 1 - pour la suppression faut faire un match qui correspond à la première et la dernière colonne
-<Fruneau> 2 - faut aussi incrémenter le sérial (dans la table sérial)
-<Fruneau> le 1 pour être sur de bien supprimer la bonne entrée
-<Fruneau> le 2 pour la réplication de la base
+<Fruneau> 1 - pour la suppression faut faire un match qui correspond Ã  la premiÃ¨re et la derniÃ¨re colonne
+<Fruneau> 2 - faut aussi incrÃ©menter le sÃ©rial (dans la table sÃ©rial)
+<Fruneau> le 1 pour Ãªtre sur de bien supprimer la bonne entrÃ©e
+<Fruneau> le 2 pour la rÃ©plication de la base
 */
 
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
 	acces_interdit();
 
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -66,8 +69,8 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	
 	echo "<liste id='liste_2' titre='Une IP avec 2 pseudos dans la base client' selectionnable='non'>";
 	echo "<entete id='user' titre='IP'/>";
-	echo "<entete id='ip1' titre='Nom Utilisé'/>";
-	echo "<entete id='ip2' titre='Nom oublié'/>";
+	echo "<entete id='ip1' titre='Nom UtilisÃ©'/>";
+	echo "<entete id='ip2' titre='Nom oubliÃ©'/>";
 	$DB_xnet->query("SELECT p1.lastip, p1.username, p2.username FROM clients as p1, clients as p2 WHERE p1.lastip=p2.lastip  AND p1.timestamp>p2.timestamp ORDER BY  p1.lastip");
 	while(list($user,$ip1,$ip2) = $DB_xnet->next_row()){
 		echo "<element id='$user'>
@@ -78,7 +81,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	}
 	echo "</liste>";
 	
-	echo "<liste id='liste_3' titre='Noms DNS qui correspondent à 2 IPs' selectionnable='non'>";
+	echo "<liste id='liste_3' titre='Noms DNS qui correspondent Ã  2 IPs' selectionnable='non'>";
 	echo "<entete id='user' titre='Nom'/>";
 	echo "<entete id='ip1' titre='Bonne IP'/>";
 	echo "<entete id='ip2' titre='Mauvaise IP'/>";
@@ -92,10 +95,10 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	}
 	echo "</liste>";
 	
-	echo "<liste id='liste_4' titre='Plusieurs noms associés à une même IP' selectionnable='non'>";
+	echo "<liste id='liste_4' titre='Plusieurs noms associÃ©s Ã  une mÃªme IP' selectionnable='non'>";
 	echo "<entete id='user' titre='IP'/>";
 	echo "<entete id='ip1' titre='Nom correct'/>";
-	echo "<entete id='ip2' titre='Entrée erronnée'/>";
+	echo "<entete id='ip2' titre='EntrÃ©e erronnÃ©e'/>";
 	$DB_xnet->query("SELECT p1.rdata,  p2.username,  p1.name FROM DNS AS p1,  clients AS p2 WHERE p1.rdata = p2.lastip  AND p1.name !=CONCAT(p2.username, '.eleves.polytechnique.fr')  AND p1.rdtype = 'A' ORDER BY p1.rdata");
 	while(list($user,$ip1,$ip2) = $DB_xnet->next_row()){
 		echo "<element id='$user'>

@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,17 +18,20 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Page d'accueil de frankiz pour les personnes non loguées.
+	Page d'accueil de frankiz pour les personnes non loguÃ©es.
 	
 	$Log$
-	Revision 1.48  2005/04/12 09:29:17  pico
-	Font chier les gens qui font des modifs de merdes et qui en plus se plaignent qu'on les intègre pas
+	Revision 1.49  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.48  2005/04/12 09:29:17  pico
+	Font chier les gens qui font des modifs de merdes et qui en plus se plaignent qu'on les intÃ¨gre pas
+	
 	Revision 1.47  2005/04/12 09:22:53  pico
 	Remodif d'alban
 	
 	Revision 1.46  2005/04/12 09:15:55  pico
-	Je l'avais pas vue celle là
+	Je l'avais pas vue celle lÃ 
 	
 	Revision 1.45  2005/04/12 09:09:39  pico
 	Modif de la modif d'alban
@@ -44,17 +47,17 @@
 	Plus qu'une seule requete sql
 	
 	Revision 1.41  2005/02/15 09:25:03  pico
-	ça devrait être plus propre comme ça
+	Ã§a devrait Ãªtre plus propre comme Ã§a
 	
 	Revision 1.40  2005/02/15 09:03:35  pico
-	Version qui va ptèt mieux marcher
+	Version qui va ptÃ¨t mieux marcher
 	
 	Revision 1.39  2005/02/10 22:25:42  pico
-	On revient à une version précédente
+	On revient Ã  une version prÃ©cÃ©dente
 	
 	Revision 1.31  2005/02/10 21:37:53  pico
-	- Pour les ids de news, fait en fonction de la date de péremption, c'est mieux que seulement par id, mais y'a tjs un pb avec les nouvelles fraiches
-	- Correction pour éviter que des gens postent des annonces qui sont déjà périmées
+	- Pour les ids de news, fait en fonction de la date de pÃ©remption, c'est mieux que seulement par id, mais y'a tjs un pb avec les nouvelles fraiches
+	- Correction pour Ã©viter que des gens postent des annonces qui sont dÃ©jÃ  pÃ©rimÃ©es
 	
 	Revision 1.30  2005/02/08 21:57:56  pico
 	Correction bug #62
@@ -68,12 +71,12 @@
 	NE PAS COMMITER EN PROD ... car pas encore terminer
 	il faut maintenant reflechir a comment on gere les compte xorg ...
 	
-	J'attend vos avis eclairés :)
+	J'attend vos avis eclairÃ©s :)
 	
 	Revision 1.27  2005/01/18 19:30:34  pico
 	Place la boite du sudo dans la boite avec les infos de connexion.
-	Pbs d'encodage des variables passées à sablotron réglés
-	Pb du su quand on est pas loggué par mot de passe réglé
+	Pbs d'encodage des variables passÃ©es Ã  sablotron rÃ©glÃ©s
+	Pb du su quand on est pas logguÃ© par mot de passe rÃ©glÃ©
 	
 	Revision 1.26  2005/01/12 17:17:19  pico
 	hum
@@ -82,14 +85,14 @@
 	Correction bug #30
 	
 	Revision 1.24  2005/01/02 10:50:25  pico
-	Passage de certaines pages en visibles de l'intérieur (non loggué)
+	Passage de certaines pages en visibles de l'intÃ©rieur (non logguÃ©)
 	
 	Revision 1.23  2004/12/17 10:55:44  kikx
-	Ca avait déja ete fait ?
+	Ca avait dÃ©ja ete fait ?
 	pige pas ...
 	
 	Revision 1.22  2004/12/17 09:41:53  pico
-	Solution simple pour éviter de mettre 2 fois la même entrée dans la base des annonces lues
+	Solution simple pour Ã©viter de mettre 2 fois la mÃªme entrÃ©e dans la base des annonces lues
 	
 	Revision 1.21  2004/12/14 18:42:28  schmurtz
 	Bugs sur les annonces
@@ -101,25 +104,25 @@
 	- suppression de la page affichant toutes les annonces
 	
 	Revision 1.19  2004/12/13 21:28:25  pico
-	Le lien est mieux à la fin de l'annonce
+	Le lien est mieux Ã  la fin de l'annonce
 	
 	Revision 1.18  2004/12/13 20:03:25  pico
-	Les liens ne forment pas de blocs, il faut donc le spécifier
+	Les liens ne forment pas de blocs, il faut donc le spÃ©cifier
 	
 	Revision 1.17  2004/12/12 09:29:26  kikx
-	Disparition du lien faire disparaitrre si l'utilisateur n'est pas logué ou et si l'utilisateur a deja lu cette annonce et qu'il se situe sur la page pour toute les voir
+	Disparition du lien faire disparaitrre si l'utilisateur n'est pas loguÃ© ou et si l'utilisateur a deja lu cette annonce et qu'il se situe sur la page pour toute les voir
 	
-	Desolé Psycow ... j'ai pourri ta skin :(
+	DesolÃ© Psycow ... j'ai pourri ta skin :(
 	
 	Revision 1.16  2004/12/10 20:06:18  kikx
 	Pour faire plaisir a fruneau
 	
 	Revision 1.15  2004/12/10 19:49:28  kikx
 	YESSSSSS
-	Pour permettre au utilisateurs de supprimer les annonces qu'ils ont déjà lues
+	Pour permettre au utilisateurs de supprimer les annonces qu'ils ont dÃ©jÃ  lues
 	
 	Revision 1.14  2004/12/09 19:29:13  pico
-	Rajoute le tel dans le trombino, ça pourrait être utile...
+	Rajoute le tel dans le trombino, Ã§a pourrait Ãªtre utile...
 	
 	Revision 1.13  2004/11/24 22:56:18  schmurtz
 	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
@@ -154,7 +157,7 @@ function get_categorie($en_haut,$stamp,$perime) {
 	else return "reste";
 }
 
-// génération de la page
+// gÃ©nÃ©ration de la page
 require "include/page_header.inc.php";
 echo "<page id='annonces' titre='Frankiz : annonces'>\n";
 ?>
@@ -165,16 +168,16 @@ $annonces_lues1="";
 $annonces_lues2=" 1 ";
 if (!est_interne() && !est_authentifie(AUTH_MINIMUM))  {
 ?>
-<annonce id="0"  titre="Bienvenue sur le site web des élèves de l'École Polytechnique." visible="oui" categorie="important" date="<?php echo date("d/m/Y") ?>">
-	Pour un élève de l'École des promos 1998 à 2004, il est possible de <a href="login.php">se connecter</a> pour accéder à l'ensemble des services proposés.
+<annonce id="0"  titre="Bienvenue sur le site web des Ã©lÃ¨ves de l'Ã‰cole Polytechnique." visible="oui" categorie="important" date="<?php echo date("d/m/Y") ?>">
+	Pour un Ã©lÃ¨ve de l'Ã‰cole des promos 1998 Ã  2004, il est possible de <a href="login.php">se connecter</a> pour accÃ©der Ã  l'ensemble des services proposÃ©s.
 	<br/>
 	Sinon, une partie du site reste accesible. Il est en effet possible de consulter :
 	<ul>
-		<li> Certaines <a href="activites.php">activités</a> de la semaine qui se dérouleront sur le campus.</li>
-		<li> Une base de <a href="xshare.php">téléchargement</a> de logiciels libres.</li>
-		<li> Une <a href="faq.php">Foire Aux Questions</a> sur des problèmes informatiques ou sur le campus</li>
-		<li> Des descriptions et des sites de <a href="binets.php">clubs de l'école</a> (les binets).</li>
-		<li> Des <a href="siteseleves.php">sites d'élèves</a> de l'école.</li>
+		<li> Certaines <a href="activites.php">activitÃ©s</a> de la semaine qui se dÃ©rouleront sur le campus.</li>
+		<li> Une base de <a href="xshare.php">tÃ©lÃ©chargement</a> de logiciels libres.</li>
+		<li> Une <a href="faq.php">Foire Aux Questions</a> sur des problÃ¨mes informatiques ou sur le campus</li>
+		<li> Des descriptions et des sites de <a href="binets.php">clubs de l'Ã©cole</a> (les binets).</li>
+		<li> Des <a href="siteseleves.php">sites d'Ã©lÃ¨ves</a> de l'Ã©cole.</li>
 		<li> Une liste du <a href="vocabulaire.php">vocabulaire</a> propre aux X.</li>
 	</ul>
 	<br/>
@@ -230,7 +233,7 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 		echo wikiVersXML($contenu);
 		echo "<eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"$promo\" surnom=\"$surnom\" mail=\"$mail\"/>\n";
 		if(est_authentifie(AUTH_MINIMUM))
-			echo "<lien url=\"?lu=$id#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
+			echo "<lien url=\"?lu=$id#annonce_$id\" titre=\"Faire disparaÃ®tre\" id=\"annonces_lues\"/><br/>\n";
 		echo "</annonce>";
 }
 echo "</page>\n";

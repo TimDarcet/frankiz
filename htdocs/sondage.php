@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet RÈseau
+	Copyright (C) 2004 Binet R√©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,11 +21,14 @@
 	affichage d'un sondage
 
 	$Log$
-	Revision 1.12  2005/03/16 19:36:09  pico
-	Pour que le gars qui soumet un sondage puisse avoir les rÈsultats
+	Revision 1.13  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.12  2005/03/16 19:36:09  pico
+	Pour que le gars qui soumet un sondage puisse avoir les r√©sultats
+	
 	Revision 1.11  2005/03/16 19:32:45  pico
-	Petite correction pour Èviter que les gens de l'Ècole voient les rÈsultats des sondages.
+	Petite correction pour √©viter que les gens de l'√©cole voient les r√©sultats des sondages.
 	
 	Revision 1.10  2005/03/04 23:11:33  pico
 	Restriction des sondages par promo/section/binet
@@ -34,20 +37,20 @@
 	nettoyage
 	
 	Revision 1.8  2005/01/25 20:16:20  pico
-	Quand on a votÈ, on voit le nombre de votants
-	Cela fait patienter le gars qui soumet le sondage, et lui fait poster une annonce au pire si personne n'a votÈ.
+	Quand on a vot√©, on voit le nombre de votants
+	Cela fait patienter le gars qui soumet le sondage, et lui fait poster une annonce au pire si personne n'a vot√©.
 	
 	Revision 1.7  2004/12/16 16:04:15  kikx
-	Pour eviter d'avoir des erreurs php si le mec met n'importe quoi comme sondage ou s'il met pas de sondage ‡ previsualiser ...
+	Pour eviter d'avoir des erreurs php si le mec met n'importe quoi comme sondage ou s'il met pas de sondage √† previsualiser ...
 	
 	Revision 1.6  2004/12/16 13:00:41  pico
 	INNER en LEFT
 	
 	Revision 1.5  2004/12/16 12:52:57  pico
-	Passage des paramËtres lors d'un login
+	Passage des param√®tres lors d'un login
 	
 	Revision 1.4  2004/12/14 22:42:18  kikx
-	Legere modif des sondages pÙur que ca soit plus intuitif
+	Legere modif des sondages p√¥ur que ca soit plus intuitif
 	
 	Revision 1.3  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
@@ -66,7 +69,7 @@ demande_authentification(AUTH_FORT);
 
 
 //---------------------------------------------------------------------------------
-// Fonction de dÈcodage du sondage (rÈsultat !)
+// Fonction de d√©codage du sondage (r√©sultat !)
 //---------------------------------------------------------------------------------
 function resultat_sondage($string,$sondage_id) {
 	global $DB_web ;
@@ -74,7 +77,7 @@ function resultat_sondage($string,$sondage_id) {
 	$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_REQUEST['id']}'");
 	$nombre_votants = $DB_web->num_rows() ;
 	echo "<p>==========================================================</p>" ;
-	echo "<p>== $nombre_votants personnes ont rÈpondu ‡ ce sondage</p>" ;
+	echo "<p>== $nombre_votants personnes ont r√©pondu √† ce sondage</p>" ;
 	echo "<p>==========================================================</p>" ;
 	$string = explode("###",$string) ;
 	for ($i=1 ; $i<count($string) ; $i++) {
@@ -84,7 +87,7 @@ function resultat_sondage($string,$sondage_id) {
 		}
 		if (($temp[0]=="champ")||($temp[0]=="text")) {
 			$DB_web->query("SELECT reponse FROM sondage_reponse WHERE question_num='$i' AND sondage_id='$sondage_id' AND reponse !=''") ;
-			echo "<p>$temp[1] (".($DB_web->num_rows())." rÈponses)</p>\n" ;
+			echo "<p>$temp[1] (".($DB_web->num_rows())." r√©ponses)</p>\n" ;
 			while (list($rep) = $DB_web->next_row()) {
 				echo "<p>$rep</p>" ;
 			}
@@ -107,7 +110,7 @@ function resultat_sondage($string,$sondage_id) {
 $message = "" ;
 
 
-// GÈnÈration de la page
+// G√©n√©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -117,7 +120,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <?
 if (!isset($_REQUEST['id'])) {
 	?>
-	<warning>Le sondage que tu demandes n'existes plus ou n'a jamais existÈ</warning>
+	<warning>Le sondage que tu demandes n'existes plus ou n'a jamais exist√©</warning>
 	<?
 } else {
 	$DB_web->query("SELECT restriction,eleve_id FROM sondage_question WHERE sondage_id='{$_REQUEST['id']}'");
@@ -148,17 +151,17 @@ if (!isset($_REQUEST['id'])) {
 		if ($DB_web->num_rows()>=1) {
 			$a_vote = "oui" ;
 		?>
-			<warning>Tu as dÈj‡ votÈ pour ce sondage...</warning>
+			<warning>Tu as d√©j√† vot√© pour ce sondage...</warning>
 		<?
 		$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_REQUEST['id']}'");
 		$nombre_votants = $DB_web->num_rows() ;
-		echo "<note>$nombre_votants personnes ont rÈpondu ‡ ce sondage</note>" ;
+		echo "<note>$nombre_votants personnes ont r√©pondu √† ce sondage</note>" ;
 		}
 	
 		// Si la personne a valider on stock son vote ...
 		//=================================================================
 		
-		// La personne a t'elle cliquÈ sur le vouton de validation ?
+		// La personne a t'elle cliqu√© sur le vouton de validation ?
 		if (isset($_POST['valid'])) {
 			$DB_web->query("SELECT (TO_DAYS(perime) - TO_DAYS(NOW())) FROM sondage_question WHERE sondage_id='{$_REQUEST['id']}'");
 			// Y a t'il yn sondage qui existe sous cette id ?
@@ -167,11 +170,11 @@ if (!isset($_REQUEST['id'])) {
 				
 				// La date permet elle encore de voter ?
 				if ($delta >= 0) {
-					// Verifie que le mec a pas dÈja votÈ !
+					// Verifie que le mec a pas d√©ja vot√© !
 					$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_REQUEST['id']}' AND eleve_id='".$_SESSION['user']->uid."'");
 					if ($DB_web->num_rows()==0) {
-						// Il a donc pas votÈ
-						//on le marque donc comme ayant votÈ
+						// Il a donc pas vot√©
+						//on le marque donc comme ayant vot√©
 						$DB_web->query("INSERT INTO sondage_votants SET sondage_id='{$_REQUEST['id']}', eleve_id='".$_SESSION['user']->uid."'");
 						$a_vote = "oui" ;
 						// On va lire les variables du sondage
@@ -193,10 +196,10 @@ if (!isset($_REQUEST['id'])) {
 				}
 			}
 			?>
-			<commentaire>Merci d'avoir votÈ</commentaire>
+			<commentaire>Merci d'avoir vot√©</commentaire>
 			<?
 		} else {
-			// DÈvut du formulaire !
+			// D√©vut du formulaire !
 			//======================================================
 			echo $message ;
 			
@@ -206,7 +209,7 @@ if (!isset($_REQUEST['id'])) {
 				
 				// Le Formulaire pour repondre ...
 			?>
-				<note>Sondage proposÈ par <? echo "$prenom $nom ($promo)" ?></note> 
+				<note>Sondage propos√© par <? echo "$prenom $nom ($promo)" ?></note> 
 			<?
 				if ($delta>=0) {
 			?>
@@ -222,7 +225,7 @@ if (!isset($_REQUEST['id'])) {
 					</formulaire>
 					<?
 				} else {
-					// Les rÈsultats du sondage !
+					// Les r√©sultats du sondage !
 					?>
 					<cadre id="form" titre="<?=$titre?> (<?=date("d/m",strtotime($date))?>)">
 					<?
@@ -232,11 +235,11 @@ if (!isset($_REQUEST['id'])) {
 					<?
 				}
 			} else {
-				echo "<warning>Le sondage que tu demandes n'existes plus ou n'a jamais existÈ</warning>";
+				echo "<warning>Le sondage que tu demandes n'existes plus ou n'a jamais exist√©</warning>";
 			}
 		}
 	}else{
-			echo "<warning>Ce sondage a un accËs restreint et tu n'es pas autorisÈ ‡ y participer</warning>";
+			echo "<warning>Ce sondage a un acc√®s restreint et tu n'es pas autoris√© √† y participer</warning>";
 	}
 }
 	?>

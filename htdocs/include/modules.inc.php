@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,17 +18,20 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Inclu les modules nécessaires.
+	Inclu les modules nÃ©cessaires.
 	
-	Il est possible d'en modifier le comportement à l'aide de variables GET :
-	- 'modules[blahblah]' :	'on' pour forcé l'affichage du module 'blahblah',
+	Il est possible d'en modifier le comportement Ã  l'aide de variables GETÂ :
+	- 'modules[blahblah]'Â :	'on' pour forcÃ© l'affichage du module 'blahblah',
 							'off' pour forcer le non affichage
-	- 'modules[tous]' :		valeur par défaut pour l'affichage des modules
+	- 'modules[tous]'Â :		valeur par dÃ©faut pour l'affichage des modules
 
 	$Log$
-	Revision 1.13  2004/12/16 12:52:57  pico
-	Passage des paramètres lors d'un login
+	Revision 1.14  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.13  2004/12/16 12:52:57  pico
+	Passage des paramÃ¨tres lors d'un login
+	
 	Revision 1.12  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
 	
@@ -40,10 +43,10 @@
 	
 */
 
-// Cette directive "global" est utile dans le cas où cette page est inclue depuis
-// header.inc.php lui même inclu depuis la fonction demande_authentification()
-// de login.inc.php. En effet, dans ce cas PHP considère que l'on est dans une fonction
-// donc empèche l'accès direct aux variables globales.
+// Cette directive "global" est utile dans le cas oÃ¹ cette page est inclue depuis
+// header.inc.php lui mÃªme inclu depuis la fonction demande_authentification()
+// de login.inc.php. En effet, dans ce cas PHP considÃ¨re que l'on est dans une fonction
+// donc empÃ¨che l'accÃ¨s direct aux variables globales.
 global $DB_web,$DB_trombino,$DB_admin;
 
 function existant_et_egal_a($variable,$index,$valeur) {

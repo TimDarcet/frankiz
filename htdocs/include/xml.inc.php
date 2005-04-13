@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -22,9 +22,12 @@
 	forme d'arbre du contenu du fichier XML.
 	
 	$Log$
+	Revision 1.5  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.4  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.3  2004/09/15 23:19:31  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	
@@ -34,7 +37,7 @@
 */
 
 /*
-	Exemple : le fichier contenant le code XML suivant
+	ExempleÂ : le fichier contenant le code XML suivant
 				<xml>
 					<blah>coucou</blah>
 					<chombier etat="inexistant">
@@ -43,7 +46,7 @@
 					</chombier>
 				</xml>
 	
-	donnera l'arbre :
+	donnera l'arbreÂ :
 	
 				array (
 					[0] => array (

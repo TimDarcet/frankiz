@@ -1,6 +1,6 @@
 <?php
 /*
-        Copyright (C) 2004 Binet Réseau
+        Copyright (C) 2004 Binet RÃ©seau
         http://www.polytechnique.fr/eleves/binets/br/
         This program is free software; you can redistribute it and/or
         modify it under the terms of the GNU General Public License
@@ -21,13 +21,13 @@
 	require "../include/page_header.inc.php";
 	include ("newsmestres.inc");
 ?>
-<page id="grosposteur" titre="Frankiz : Boulétiseurs de news">
+<page id="grosposteur" titre="Frankiz : BoulÃ©tiseurs de news">
 	<?	
 		if($newsmestres==1) {
-			echo "<h2>Bienvenue à toi ô très cher Maître</h2>";
+			echo "<h2>Bienvenue Ã  toi Ã´ trÃ¨s cher MaÃ®tre</h2>";
 			include("news_data");
 		} else {
-			echo "<h2>Hé hé</h2>";
+			echo "<h2>HÃ© hÃ©</h2>";
 			echo "Tu viens de te faire avoir... cette page est private";
 		}
 	?>

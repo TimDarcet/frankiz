@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -20,25 +20,28 @@
 /*
 	Gestion du login et de la session PHP.
 	
-	Les informations sur l'utilisateur sont stockées dans une variable de session,
+	Les informations sur l'utilisateur sont stockÃ©es dans une variable de session,
 	$_SESSION['user'], contenant une instance d'un objet User.
 	
 	L'authentification par mot de passe utilise les variables POST 'passwd' et 'login'.
 	L'authentification par mail utilise les varibales GET 'hash' et 'uid'.
-	L'authentification par cookie utilise le cookie 'auth' contenant un tableau à deux entrées,
-	'hash' et 'uid', sérialisé et encodé en base64.
+	L'authentification par cookie utilise le cookie 'auth' contenant un tableau Ã  deux entrÃ©es,
+	'hash' et 'uid', sÃ©rialisÃ© et encodÃ© en base64.
 	Une authentification permettant de faire un su. L'id de l'utilisateur dont on veut prendre
-	l'identité la variable GET 'su'. (pour les admins uniquement)
+	l'identitÃ© la variable GET 'su'. (pour les admins uniquement)
 	
 	Le logout s'effectue en mettant une variable GET 'logout' sur n'importe quelle page.
 	
-	Ce fichier définie aussi la fonction demande_authentification qui vérifie si le client est
-	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
+	Ce fichier dÃ©finie aussi la fonction demande_authentification qui vÃ©rifie si le client est
+	authentifiÃ©, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
 
 	$Log$
+	Revision 1.19  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.18  2005/04/07 00:48:35  schmurtz
 	Protection contre le vol de session
-
+	
 	Revision 1.17  2005/02/08 21:57:56  pico
 	Correction bug #62
 	
@@ -46,7 +49,7 @@
 	Suppression d'un reste
 	
 	Revision 1.15  2005/01/25 14:47:48  kikx
-	Retour en arrière car fait pas l'unanimité
+	Retour en arriÃ¨re car fait pas l'unanimitÃ©
 	
 	Revision 1.14  2005/01/24 18:02:54  kikx
 	Permet de pas toujours se logguer sous l'auth xorg
@@ -57,7 +60,7 @@
 	NE PAS COMMITER EN PROD ... car pas encore terminer
 	il faut maintenant reflechir a comment on gere les compte xorg ...
 	
-	J'attend vos avis eclairés :)
+	J'attend vos avis eclairÃ©s :)
 	
 	Revision 1.12  2005/01/21 16:50:37  pico
 	Erreur
@@ -67,14 +70,14 @@
 	
 	Revision 1.10  2005/01/18 19:30:34  pico
 	Place la boite du sudo dans la boite avec les infos de connexion.
-	Pbs d'encodage des variables passées à sablotron réglés
-	Pb du su quand on est pas loggué par mot de passe réglé
+	Pbs d'encodage des variables passÃ©es Ã  sablotron rÃ©glÃ©s
+	Pb du su quand on est pas logguÃ© par mot de passe rÃ©glÃ©
 	
 	Revision 1.9  2005/01/11 17:42:25  pico
 	coquille
 	
 	Revision 1.8  2004/12/16 23:00:12  schmurtz
-	Suppression du lien Se deconnecter si l'utilisateur est loguÃ© par cookie.
+	Suppression du lien Se deconnecter si l'utilisateur est loguÃƒÂ© par cookie.
 	Ca evite de le faire sans le vouloir et de devoir remettre le cookie.
 	
 	Pour rester coherent, se deloguer quand on est authentifie par mot de passe
@@ -86,10 +89,10 @@
 	affichant une page "y a un bug, contacter l'admin"
 	
 	Revision 1.6  2004/12/16 12:52:57  pico
-	Passage des paramètres lors d'un login
+	Passage des paramÃ¨tres lors d'un login
 	
 	Revision 1.5  2004/12/15 23:38:30  pico
-	Corrections pour rendre ça valide
+	Corrections pour rendre Ã§a valide
 	
 	Revision 1.4  2004/12/02 11:47:30  pico
 	C'est bizarre, le // marche pas partout :(
@@ -131,21 +134,21 @@ require_once "user.inc.php";
 session_start();
 
 /*
-	Protection contre le vol de session : une session est associé à une IP,
+	Protection contre le vol de session : une session est associÃ© Ã  une IP,
 	si l'IP change pendant la session, c'est qu'il y a eu vol.
 */
 if(!isset($_SESSION['ip'])) {
 	$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
 	
 } else if($_SESSION['ip'] != $_SERVER['REMOTE_ADDR']) {
-	// vol : on détruit la session
+	// vol : on dÃ©truit la session
 	session_unset();
 	session_destroy();
 	rediriger_vers("/");
 }
 
 /*
-	Si un logout a été effectué, on détruit la session, puis on la recrer, vierge.
+	Si un logout a Ã©tÃ© effectuÃ©, on dÃ©truit la session, puis on la recrer, vierge.
 	Si un su est en cours, on en sort.
 */
 if(isset($_REQUEST['logout'])) {
@@ -171,7 +174,7 @@ if(isset($_POST['login']) && isset($_POST['passwd'])) {
 		ajoute_erreur(ERR_LOGIN);
 		ajouter_access_log("erreur de mot de passe login={$_POST['login']}");
 	}
-	// Un message d'erreur s'affichera automatiquement par la page à l'origine
+	// Un message d'erreur s'affichera automatiquement par la page Ã  l'origine
 	// de cette authentification.
 	
 // Login par mail
@@ -184,26 +187,26 @@ if(isset($_POST['login']) && isset($_POST['passwd'])) {
 		ajouter_access_log("erreur de log par mail uid={$_REQUEST['uid']} hash=$hash stamp=$hashstamp");
 	}
 	
-	// Quel que soit le résultat, on supprime le hash d'authentification par mail.
+	// Quel que soit le rÃ©sultat, on supprime le hash d'authentification par mail.
 	$DB_web->query("UPDATE compte_frankiz SET hashstamp=0 WHERE eleve_id='".$_REQUEST['uid']."'");
 	
-	// On affiche un message d'erreur si l'authentification a échouée.
+	// On affiche un message d'erreur si l'authentification a Ã©chouÃ©e.
 	if(a_erreur(ERR_MAILLOGIN)) {
-		require_once "init_skin.inc.php";	// init_skin.inc.php est inclus juste après login.inc.php, donc
+		require_once "init_skin.inc.php";	// init_skin.inc.php est inclus juste aprÃ¨s login.inc.php, donc
 											// c'est pas encore fait
 		require "page_header.inc.php";
 ?>
 		<page id="login" titre="Frankiz : erreur">
-			<p>Une erreur est survenue lors de la vérification du lien d'authentification. Il s'agit
-			peut être d'un dépassement des 6 heures de validité du lien. Si c'est le cas, recommence
-			la procédure en cliquant <lien titre="ici" href="<?php echo BASE_URL.'/profil/mdp_perdu.php'?>"/>.</p>
+			<p>Une erreur est survenue lors de la vÃ©rification du lien d'authentification. Il s'agit
+			peut Ãªtre d'un dÃ©passement des 6 heures de validitÃ© du lien. Si c'est le cas, recommence
+			la procÃ©dure en cliquant <lien titre="ici" href="<?php echo BASE_URL.'/profil/mdp_perdu.php'?>"/>.</p>
 		</page>
 <?php
 		require "page_footer.inc.php";
 		
 		exit;
 	}
-// Login par cookie (si la session est déjà existante, on oublie le cookie)
+// Login par cookie (si la session est dÃ©jÃ  existante, on oublie le cookie)
 } else if(!isset($_SESSION['user']) && isset($_COOKIE['auth'])) {
 	$cookie = unserialize(base64_decode(wordwrap($_COOKIE['auth'])));
 	$_SESSION['user'] = new User(false,$cookie['uid']);
@@ -217,7 +220,7 @@ if(isset($_REQUEST['su']) && verifie_permission('admin')) {
 	
 	$newuser = new User(false,$_REQUEST['su']);
 	if($newuser->uid == 0) {
-		require_once "init_skin.inc.php";	// init_skin.inc.php est inclus juste après login.inc.php, donc
+		require_once "init_skin.inc.php";	// init_skin.inc.php est inclus juste aprÃ¨s login.inc.php, donc
 											// c'est pas encore fait
 		require "page_header.inc.php";
 		echo "<page id='su' titre='Frankiz : erreur'>\n";
@@ -235,14 +238,14 @@ if(isset($_REQUEST['su']) && verifie_permission('admin')) {
 }
 
 // Aucune information de login. Si la variable de session 'user' n'existe toujours pas
-// on crée un utilisateur anonyme.
+// on crÃ©e un utilisateur anonyme.
 if(!isset($_SESSION['user']))
 	$_SESSION['user'] = new User(false,'');
 
 
 /*
-	Fonction de gestion de la demande d'authentification ($minimum est la méthode
-	d'authentification minimale pour laquelle une réauthentification par mot de passe
+	Fonction de gestion de la demande d'authentification ($minimum est la mÃ©thode
+	d'authentification minimale pour laquelle une rÃ©authentification par mot de passe
 	n'est pas indispensable).
 */
 function demande_authentification($minimum) {
@@ -253,7 +256,7 @@ function demande_authentification($minimum) {
 ?>
 	<page id="login" titre="Frankiz : connexion">
 		<?php if(a_erreur(ERR_LOGIN)):?>
-			<warning>Une erreur est survenue lors de l'authentification. Vérifie qu'il n'y a pas d'erreur
+			<warning>Une erreur est survenue lors de l'authentification. VÃ©rifie qu'il n'y a pas d'erreur
 			dans le login ou le mot de passe.</warning>
 		<?php endif; ?>
 		<note>Ton login est loginpoly.promo</note>
@@ -267,7 +270,7 @@ function demande_authentification($minimum) {
 			<champ id="passwd" titre="Mot de passe" valeur=""/>
 			<bouton id="connect" titre="Connexion"/>
 		</formulaire>
-		<p>Si tu as oublié ton mot de passe ou que tu n'as pas encore de compte,
+		<p>Si tu as oubliÃ© ton mot de passe ou que tu n'as pas encore de compte,
 		clique <a href="<?php echo BASE_URL.'/profil/mdp_perdu.php'?>">ici</a>.</p>
 	</page>
 <?php

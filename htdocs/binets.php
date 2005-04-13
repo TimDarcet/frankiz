@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,9 +21,12 @@
 	Affichage de la liste des binets ayant un site web.
 
 	$Log$
+	Revision 1.11  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.10  2005/01/24 19:51:48  pico
 	Pour modifier un comportement quantique
-
+	
 	Revision 1.9  2005/01/22 17:58:38  pico
 	Modif des images
 	
@@ -37,13 +40,13 @@
 	Fonction pour savoir si interne
 	
 	Revision 1.5  2005/01/11 14:36:41  pico
-	Binets triés ext/int + url auto si binet sur le serveur
+	Binets triÃ©s ext/int + url auto si binet sur le serveur
 	
 	Revision 1.4  2005/01/02 10:50:25  pico
-	Passage de certaines pages en visibles de l'intérieur (non loggué)
+	Passage de certaines pages en visibles de l'intÃ©rieur (non logguÃ©)
 	
 	Revision 1.3  2004/12/16 12:52:57  pico
-	Passage des paramètres lors d'un login
+	Passage des paramÃ¨tres lors d'un login
 	
 	Revision 1.2  2004/12/15 01:31:29  schmurtz
 	bugs
@@ -56,7 +59,7 @@
 	
 	Revision 1.11  2004/11/11 19:22:52  kikx
 	Permet de gerer l'affichage externe interne des binets
-	Permet de pas avoir de binet sans catégorie valide
+	Permet de pas avoir de binet sans catÃ©gorie valide
 	
 	Revision 1.10  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
@@ -68,7 +71,7 @@
 	Enorme modification pour la fusion des bases des binets (Merci Schmurtz)
 	
 	Revision 1.7  2004/09/16 13:56:32  kikx
-	Modification de skins (détails)
+	Modification de skins (dÃ©tails)
 	
 	Revision 1.4  2004/09/15 23:20:39  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
@@ -81,7 +84,7 @@ require_once "include/global.inc.php";
 
 // demande_authentification(AUTH_MINIMUM);
 
-// Récupération d'une image
+// RÃ©cupÃ©ration d'une image
 if(isset($_REQUEST['image'])){
 	$DB_trombino->query("SELECT image,format FROM binets WHERE binet_id='{$_REQUEST['id']}'");
 	list($image,$format) = $DB_trombino->next_row() ;

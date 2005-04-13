@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -19,21 +19,24 @@
 */
 /*
 	Gestion du stockage et de la relecture de la skin de l'utilisateur. On utilise
-	les principes suivants :
-	- les données sont stockées dans la variable de session 'skin'
+	les principes suivantsÂ :
+	- les donnÃ©es sont stockÃ©es dans la variable de session 'skin'
 	
-	Deux autres variables de session permettent de stocker des informations sur l'utilisateur :
+	Deux autres variables de session permettent de stocker des informations sur l'utilisateurÂ :
 	- 'rss', contenant la liste des flux rss
 	- 'liens_rss', contenant la liste des liens perso.
 
 	
 	$Log$
+	Revision 1.6  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.5  2005/04/07 21:27:21  fruneau
-	Repassage Ã  la version sans sdbr...
-	Pour les nostalgiques, la version boulette est taguÃ©e sdbr.
-
-	ie cvs up -r sdbr init_skin.inc.php pour la rÃ©cupÃ©rer
-
+	Repassage ÃƒÂ  la version sans sdbr...
+	Pour les nostalgiques, la version boulette est taguÃƒÂ©e sdbr.
+	
+	ie cvs up -r sdbr init_skin.inc.php pour la rÃƒÂ©cupÃƒÂ©rer
+	
 	Revision 1.2  2004/11/25 00:44:35  schmurtz
 	Ajout de init_ devant les fichier d'include servant d'initialisation de page
 	Permet de mieux les distinguer des autres fichiers d'include ne faisant que definir
@@ -70,21 +73,21 @@ require_once "user.inc.php";
 require_once "skin.inc.php";
 
 /*
-	Recharge les données de skin si elles ne sont pas chargées (ça arrive lorsqu'un utilisateur arrive sur le
-	site et n'est pas logué) ou si l'utilisateur vient de se loguer
+	Recharge les donnÃ©es de skin si elles ne sont pas chargÃ©es (Ã§a arrive lorsqu'un utilisateur arrive sur le
+	site et n'est pas loguÃ©) ou si l'utilisateur vient de se loguer
 */
 if( !isset($_SESSION['skin']) || nouveau_login() ) {
 	
-	// Si l'utilisateur est authentifié, chercher dans la BD
+	// Si l'utilisateur est authentifiÃ©, chercher dans la BD
 	if(est_authentifie(AUTH_MINIMUM)) {
 		ajouter_debug_log("Chargement de la skin depuis la BD.");
 		$DB_web->query("SELECT skin FROM compte_frankiz WHERE eleve_id='{$_SESSION['user']->uid}'") ;
 		if($DB_web->num_rows()!=0) {
 			list($skin) = $DB_web->next_row();
-			$cookie = $skin;		// hack bizarre pour être sur que php considère $cookie comme un string
+			$cookie = $skin;		// hack bizarre pour Ãªtre sur que php considÃ¨re $cookie comme un string
 //			$cookie = "sdbr2k3";
 									// ce qui est indispensable pour la fonction base64_encode (si on met
-									// directement $skin, php considère que c'est un array alors que c'est faux)
+									// directement $skin, php considÃ¨re que c'est un array alors que c'est faux)
 			skin_parse($cookie);
 			SetCookie("skin",base64_encode($cookie),time()+3*365*24*3600,"/");
 		}
@@ -97,16 +100,16 @@ if( !isset($_SESSION['skin']) || nouveau_login() ) {
 	}
 	
 	// Si vraiment on ne trouve pas, ou si une erreur c'est produite avant, on utilise des
-	// valeurs par défaut
+	// valeurs par dÃ©faut
 	if(!isset($_SESSION['skin'])) {
-		ajouter_debug_log("Chargement de la skin depuis les valeurs par défaut.");
+		ajouter_debug_log("Chargement de la skin depuis les valeurs par dÃ©faut.");
 		unset($_SESSION['skin']);
 		skin_valider();
 	}
 }
 
 /*
-	D'autres informations sur l'utilisateur, stockées dans une variable de session.
+	D'autres informations sur l'utilisateur, stockÃ©es dans une variable de session.
 */
 
 if( !isset($_SESSION['rss']) || nouveau_login() ) {

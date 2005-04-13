@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,12 +18,15 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 -->
 <!--
-	Affichage des éléments de formulaire
+	Affichage des Ã©lÃ©ments de formulaire
 	
 	$Log$
-	Revision 1.12  2005/03/23 21:44:17  pico
-	Marche ptèt mieux
+	Revision 1.13  2005/04/13 17:10:06  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.12  2005/03/23 21:44:17  pico
+	Marche ptÃ¨t mieux
+	
 	Revision 1.11  2005/03/23 21:12:12  pico
 	Normalement tout ce qui faut pour passer en UTF8
 	
@@ -33,7 +36,7 @@
 	Revision 1.9  2005/01/23 20:56:11  pico
 	Pour ajouter les hidden dans les formulaires, sinon y'a comportement quantique...
 	
-	(j'ai essayé d'appeler psycow pour le préviendre, mais il est pas là)
+	(j'ai essayÃ© d'appeler psycow pour le prÃ©viendre, mais il est pas lÃ )
 	
 	Revision 1.8  2004/12/17 02:01:12  psycow
 	Gros changement dans les Formulaires, mieux pour les sondages
@@ -42,7 +45,7 @@
 	Commit du boulot de l'apres midi, a la place de l'EA
 	
 	Revision 1.5  2004/12/12 17:45:33  psycow
-	Modification Mineure, pre-test IE: la dernière étape
+	Modification Mineure, pre-test IE: la derniÃ¨re Ã©tape
 	
 	Revision 1.4  2004/12/10 14:31:28  psycow
 	Elimination du Bug des Formulaires, etapes suivantes tests sous IE
@@ -79,8 +82,8 @@
 
 <!-- Formulaires -->
 <xsl:template match="formulaire">
-	<!-- la déco -->
-	<form enctype="multipart/form-data" method="post" class="formulaire" accept-charset="ISO-8859-1">
+	<!-- la dÃ©co -->
+	<form enctype="multipart/form-data" method="post" class="formulaire" accept-charset="UTF-8">
 			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<fieldset>
@@ -110,12 +113,12 @@
 				<!--<xsl:if test="boolean(@titre)">
 					<label class="gauche">
 						<xsl:attribute name='for'><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
-						<xsl:value-of select="@titre"/> :
+						<xsl:value-of select="@titre"/>Â :
 					</label>
 				</xsl:if>-->
 				
 				<xsl:if test="boolean(@titre)">
-					<p class="titre"><xsl:value-of select="@titre"/> :</p>
+					<p class="titre"><xsl:value-of select="@titre"/>Â :</p>
 				</xsl:if>
 				<xsl:choose>
 					<xsl:when test="name()!='warning' and name()!='commentaire' and name()!='note' and name()!='notice'">

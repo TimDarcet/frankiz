@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,9 +21,12 @@
 	Gestion arpwatch	
 	
 	$Log$
-	Revision 1.10  2005/03/16 17:13:40  pico
-	Les admin@windows ont accès à la liste des ips et à l'arpwatch
+	Revision 1.11  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.10  2005/03/16 17:13:40  pico
+	Les admin@windows ont accÃ¨s Ã  la liste des ips et Ã  l'arpwatch
+	
 	Revision 1.9  2005/02/13 11:37:21  kikx
 	Permet d'avoir les details de l'arpwatch de facon plus lisible pour une personne ! (pour NC)
 	
@@ -45,7 +48,7 @@ set_time_limit(0) ;
 
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('windows'))
 	acces_interdit();
@@ -53,7 +56,7 @@ if(!verifie_permission('admin')&&!verifie_permission('windows'))
 $message = "" ;
 $blabla = "" ;
 
-// Gestion des détails d'une personne
+// Gestion des dÃ©tails d'une personne
 $montrer_detail=0 ;
 
  foreach ($_REQUEST AS $keys => $val){
@@ -81,7 +84,7 @@ function toutes_macs(){
 
 function maj_mac_dans_bdd($fich) {
 	global $DB_admin ;
-	// On efface toute les entrées avant de recommencer
+	// On efface toute les entrÃ©es avant de recommencer
 	$DB_admin->query("DELETE FROM prise_mac") ;
 	
 	// On re-remplit la base !
@@ -129,7 +132,7 @@ function maj_mac_dans_bdd($fich) {
 }
 
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -145,14 +148,14 @@ if ($montrer_detail==1) {
 	echo "<br/>Prise : $id_prise<br/>" ;
 	echo "Chambre : $id_piece<br/>" ;
 	
-	echo "<h2>Mac autorisées</h2>" ;	
+	echo "<h2>Mac autorisÃ©es</h2>" ;	
 	$DB_admin->query("SELECT DISTINCT pm.mac FROM prises as p LEFT JOIN trombino.eleves as e ON e.piece_id=p.piece_id LEFT JOIN prise_mac as pm ON pm.prise=p.prise_id WHERE e.promo='$promo_detail' AND e.login='$login_detail'");
 	
 	while(list($mac) = $DB_admin->next_row()) {
 		echo "$mac<br/>" ;
 	}
 	
-	echo "<h2>IP autorisées</h2>" ;	
+	echo "<h2>IP autorisÃ©es</h2>" ;	
 	$DB_admin->query("SELECT DISTINCT p.ip,p.type FROM prises as p LEFT JOIN trombino.eleves as e ON e.piece_id=p.piece_id LEFT JOIN prise_mac as pm ON pm.prise=p.prise_id WHERE e.promo='$promo_detail' AND e.login='$login_detail'");
 	$count =0;
 	while(list($ip) = $DB_admin->next_row()) {
@@ -161,7 +164,7 @@ if ($montrer_detail==1) {
 		$count ++ ;
 	}
 	
-	echo "<h2>IP non autorisées et prises</h2>" ;	
+	echo "<h2>IP non autorisÃ©es et prises</h2>" ;	
 	$DB_admin->query("SELECT al.ts,al.ip FROM prises as p LEFT JOIN trombino.eleves as e ON e.piece_id=p.piece_id LEFT JOIN prise_mac as pm ON pm.prise=p.prise_id LEFT JOIN arpwatch_log as al ON al.mac=pm.mac WHERE e.promo='$promo_detail' AND e.login='$login_detail' ORDER BY al.ts DESC");
 	$ip_array= "#".implode($ip_array,",") ;
 	while(list($ts,$ip) = $DB_admin->next_row()) {
@@ -188,14 +191,14 @@ if ($montrer_detail==1) {
 	
 	?>
 		<formulaire id="update_prise" titre="Mise a jour" action="admin/arpwatch.php">
-			<commentaire>Mettez à jour grâce à ce bouton la correspondance des prises et des macs</commentaire>
+			<commentaire>Mettez Ã  jour grÃ¢ce Ã  ce bouton la correspondance des prises et des macs</commentaire>
 			<bouton titre="Update" id="update"/>
 		</formulaire>
 		
 		<formulaire id="recherche" titre="Recherche" action="admin/arpwatch.php">
-			<commentaire>Le nombre de résultat sera limité à 100 </commentaire>
+			<commentaire>Le nombre de rÃ©sultat sera limitÃ© Ã  100 </commentaire>
 			<champ titre="Login" id="rech_login" valeur="<? if (isset($_REQUEST['rech_login'])) echo $_REQUEST['rech_login']?>" />
-			<champ titre="Pièce" id="rech_kzert" valeur="<? if (isset($_REQUEST['rech_kzert'])) echo $_REQUEST['rech_kzert']?>" />
+			<champ titre="PiÃ¨ce" id="rech_kzert" valeur="<? if (isset($_REQUEST['rech_kzert'])) echo $_REQUEST['rech_kzert']?>" />
 			<champ titre="Prise" id="rech_prise" valeur="<? if (isset($_REQUEST['rech_prise'])) echo $_REQUEST['rech_prise']?>" />
 			<champ titre="Ip" id="rech_ip" valeur="<? if (isset($_REQUEST['rech_ip'])) echo $_REQUEST['rech_ip']?>" />
 			<bouton titre="Recherche" id="recherche"/>
@@ -205,7 +208,7 @@ if ($montrer_detail==1) {
 	if (isset($_REQUEST['update']) ) {
 		$toutes_macs = toutes_macs() ;
 		maj_mac_dans_bdd($toutes_macs) ;
-		echo "<commentaire>La base vient d'être correctement mise à jour</commentaire>" ;
+		echo "<commentaire>La base vient d'Ãªtre correctement mise Ã  jour</commentaire>" ;
 	}
 	
 	if (isset($_REQUEST['recherche']) ) {
@@ -247,7 +250,7 @@ if ($montrer_detail==1) {
 						$t_ip_theorique .= $ip_theorique ;
 					$t_ip_theorique = str_replace("<br/><br/>","<br/>",$t_ip_theorique) ;
 	
-				//et on gere les ips qui ne sont prise de facon non autorisé
+				//et on gere les ips qui ne sont prise de facon non autorisÃ©
 					if ($ip_prise!="") {
 						$t_ip_prise .= "<br/>".$ip_prise." (par $mac le $date)" ;
 					}
@@ -256,11 +259,11 @@ if ($montrer_detail==1) {
 					if ($t_id_piece!="") {	
 						echo "\t\t<element id=\"$id_prise\">\n";			
 						if (strlen($t_login)>0 ) {
-							$t_login2 = "<bouton titre='Détails' id='detail_{$t_login}_{$t_promo}' type='detail'/>" ;
+							$t_login2 = "<bouton titre='DÃ©tails' id='detail_{$t_login}_{$t_promo}' type='detail'/>" ;
 							$t_login2 = $t_login2.$t_login ;
 						}
 						if (strlen($t_ip_theorique)>0 ) {
-							$t_ip_theorique2 = "<bouton titre='Détails' id='plus_{$t_login}_{$t_promo}' type='detail'/>" ;
+							$t_ip_theorique2 = "<bouton titre='DÃ©tails' id='plus_{$t_login}_{$t_promo}' type='detail'/>" ;
 							$t_ip_theorique2 = $t_ip_theorique2.$t_ip_theorique ;
 						}
 						echo "\t\t\t<colonne id=\"login\">$t_login2<br/><br/><br/></colonne>\n";
@@ -283,11 +286,11 @@ if ($montrer_detail==1) {
 			if ($t_id_piece!="") {	
 				echo "\t\t<element id=\"$id_prise\">\n";			
 				if (strlen($t_login)>0 ) {
-					$t_login2 = "<bouton titre='Détails' id='detail_{$t_login}_{$t_promo}' type='detail'/>" ;
+					$t_login2 = "<bouton titre='DÃ©tails' id='detail_{$t_login}_{$t_promo}' type='detail'/>" ;
 					$t_login2 = $t_login2.$t_login ;
 				}
 				if (strlen($t_ip_theorique)>0 ) {
-					$t_ip_theorique2 = "<bouton titre='Détails' id='plus_{$t_login}_{$t_promo}' type='detail'/>" ;
+					$t_ip_theorique2 = "<bouton titre='DÃ©tails' id='plus_{$t_login}_{$t_promo}' type='detail'/>" ;
 					$t_ip_theorique2 = $t_ip_theorique2.$t_ip_theorique ;
 				}
 				echo "\t\t\t<colonne id=\"login\">$t_login2</colonne>\n";

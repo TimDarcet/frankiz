@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,13 +18,16 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Page principale d'administration : affiche la liste des pages d'administration auxquelles
-	l'utilisateur courant à accès.
+	Page principale d'administrationÂ : affiche la liste des pages d'administration auxquelles
+	l'utilisateur courant Ã  accÃ¨s.
 
 	$Log$
+	Revision 1.4  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.3  2005/02/15 19:51:22  kikx
 	Passage a 100 logs
-
+	
 	Revision 1.2  2005/02/15 19:50:10  kikx
 	commit pour la forme
 	
@@ -37,18 +40,18 @@
 // En-tetes
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
 	acces_interdit();
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
 <page id="admin" titre="Frankiz : administration">
 <h2>Log de la partie d'administration</h2>
-<commentaire>Voici les 100 dernières actions des administrateurs</commentaire>
+<commentaire>Voici les 100 derniÃ¨res actions des administrateurs</commentaire>
 <?
 	$DB_admin->query("SELECT l.date,l.log,e.nom, e.prenom, e.promo FROM log_admin as l LEFT JOIN trombino.eleves as e ON e.eleve_id=l.id_admin ORDER BY date DESC LIMIT 100") ;
 	while (list($date,$log,$nom,$prenom,$promo) = $DB_admin->next_row()) {

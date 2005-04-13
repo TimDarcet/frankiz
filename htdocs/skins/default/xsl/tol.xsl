@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
             <span class="droitehaut"><xsl:text> </xsl:text></span><span>TOL</span>
           </dt>
 		<dd class="contenu">
-			<form enctype="multipart/form-data" method="post" class="cadretol" accept-charset="ISO-8859-1">
+			<form enctype="multipart/form-data" method="post" class="cadretol" accept-charset="UTF-8">
 				<xsl:attribute name="action"><xsl:value-of select="formulaire/@action"/></xsl:attribute>
 				<div class="center">
 					<xsl:apply-templates select="formulaire/hidden"/>

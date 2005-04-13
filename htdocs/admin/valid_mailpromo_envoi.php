@@ -1,6 +1,6 @@
 <?
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,10 +21,13 @@
 	Page d'envoi des mails promo.
 	
 	$Log$
-	Revision 1.8  2005/01/20 13:07:02  pico
-	On envoit par ordre d'id d'élève (plus facile de voir si un id a été sauté)
-	Devrait mettre ça dans un nouveau fichier de log maintenant.
+	Revision 1.9  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.8  2005/01/20 13:07:02  pico
+	On envoit par ordre d'id d'Ã©lÃ¨ve (plus facile de voir si un id a Ã©tÃ© sautÃ©)
+	Devrait mettre Ã§a dans un nouveau fichier de log maintenant.
+	
 	Revision 1.7  2005/01/17 20:15:38  pico
 	Mail promo pour les kessiers
 	
@@ -69,15 +72,15 @@ if ($_REQUEST['promo'] == '') {
 	$to = " promo=".$_REQUEST['promo'] ;
 }
 
-$mail_contenu = wikiVersXML($mail,true)  ; // On met true pour dire que c'est du HTML qu'on récupere
+$mail_contenu = wikiVersXML($mail,true)  ; // On met true pour dire que c'est du HTML qu'on rÃ©cupere
 
 //
-// Envoi du mail à propremeent parler ...
+// Envoi du mail Ã  propremeent parler ...
 //-------------------------------------------------------------------------
 
 	$DB_trombino->query("SELECT eleve_id,nom,prenom,promo FROM eleves WHERE ".$to." ORDER BY eleve_id ASC") ;
 	
-	// On crée le fichier de log qui va bien
+	// On crÃ©e le fichier de log qui va bien
 	$fich_log = BASE_DATA."mailpromo/mail.log.{$_REQUEST['id']}"; 
 	touch($fich_log) ;
 	
@@ -91,15 +94,15 @@ $mail_contenu = wikiVersXML($mail,true)  ; // On met true pour dire que c'est du
 		//print $from."<br>" ;
 		
 		$DB_trombino->pop_result() ;
-		print("Envoi à $nom $prenom ($promo) [".($cnt+1)."]<br>") ;
+		print("Envoi Ã  $nom $prenom ($promo) [".($cnt+1)."]<br>") ;
 		flush() ;
 		$cnt ++ ;
-		exec("echo \"Mail envoyé à $nom $prenom ($eleve_id)\n\" >>".$fich_log) ;
+		exec("echo \"Mail envoyÃ© Ã  $nom $prenom ($eleve_id)\n\" >>".$fich_log) ;
 		usleep(100000); // Attends 100 millisecondes
 		//break ;////////////////////////////////////////////////////////////////////////////////////
 	}
 	
-	// fin de la procédure
+	// fin de la procÃ©dure
 	
 	
 	$DB_valid->query("DELETE FROM valid_mailpromo WHERE mail_id='{$_REQUEST['id']}'") ;

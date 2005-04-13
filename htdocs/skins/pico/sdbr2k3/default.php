@@ -1,7 +1,7 @@
 <?php header('Content-type: text/css'); ?>
 /* $Id$ */
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -680,7 +680,7 @@ if ($tmp<50){
 	text-align:right;
 	font-weight: bold;
 }
-/* Logos Catégories d'annonce */
+/* Logos CatÃ©gories d'annonce */
 
 span.fkz_annonces_vieux,span.fkz_annonces_nouveau, span.fkz_annonces_important,span.fkz_annonces_reste,span.fkz_annonces_reste {
 	background-repeat:no-repeat;
@@ -706,7 +706,7 @@ span.fkz_annonces_vieux {
   
  span.fkz_annonces_cat {display:none;}
  
- /* Fin Logos Catégories d'annonce */
+ /* Fin Logos CatÃ©gories d'annonce */
  
  /* Logos W3C */
 

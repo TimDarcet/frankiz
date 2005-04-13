@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="skins">
-<form method="GET" action="profil/skin.php" accept-charset="ISO-8859-1">
+<form method="GET" action="profil/skin.php" accept-charset="UTF-8">
     <div style="text-align: center"><b><xsl:text>Quelle skin voulez-vous pour le site ?</xsl:text></b></div>
     <xsl:for-each select="skin">
       <input type="radio" name="newskin">
@@ -45,43 +45,43 @@
 	<xsl:if test="contains(@annonces_complet,'false')">
         <select name="annonces_complet">
         <option value="0" selected="true">Non</option>
-      	<option value="1">Non triées</option>
-      	<option value="2">Triées</option>
+      	<option value="1">Non triÃ©es</option>
+      	<option value="2">TriÃ©es</option>
       	</select>
       	</xsl:if>
       	<xsl:if test="contains(@annonces_complet,'pas_tri')">
         <select name="annonces_complet">
         <option value="0">Non</option>
-      	<option value="1" selected="true">Non triées</option>
-      	<option value="2">Triées</option>
+      	<option value="1" selected="true">Non triÃ©es</option>
+      	<option value="2">TriÃ©es</option>
       	</select>
       	</xsl:if>
       	<xsl:if test="contains(@annonces_complet,'trie')">
         <select name="annonces_complet">
         <option value="0">Non</option>
-      	<option value="1">Non triées</option>
-      	<option value="2" selected="true">Triées</option>
+      	<option value="1">Non triÃ©es</option>
+      	<option value="2" selected="true">TriÃ©es</option>
       	</select>
       	</xsl:if>
 <br/>Afficher le sommaire des annonces	<xsl:if test="contains(@annonces_sommaire,'false')">
         <select name="annonces_sommaire">
         <option value="0" selected="true">Non</option>
-      	<option value="1">Non triées</option>
-      	<option value="2">Triées</option>
+      	<option value="1">Non triÃ©es</option>
+      	<option value="2">TriÃ©es</option>
       	</select>
       	</xsl:if>
       	<xsl:if test="contains(@annonces_sommaire,'pas_tri')">
         <select name="annonces_sommaire">
         <option value="0">Non</option>
-      	<option value="1" selected="true">Non triées</option>
-      	<option value="2">Triées</option>
+      	<option value="1" selected="true">Non triÃ©es</option>
+      	<option value="2">TriÃ©es</option>
       	</select>
       	</xsl:if>
       	<xsl:if test="contains(@annonces_sommaire,'trie')">
         <select name="annonces_sommaire">
         <option value="0">Non</option>
-      	<option value="1">Non triées</option>
-      	<option value="2" selected="true">Triées</option>
+      	<option value="1">Non triÃ©es</option>
+      	<option value="2" selected="true">TriÃ©es</option>
       	</select>
       	</xsl:if>
 <br/><input type="checkbox" value= "1" name="activites">
@@ -100,7 +100,7 @@
         <xsl:if test="contains(@qdj_hier,'true')">
         <xsl:attribute name="checked">true</xsl:attribute>
         </xsl:if>
-        Afficher les résultats de la QDJ d'hier
+        Afficher les rÃ©sultats de la QDJ d'hier
         </input>
 <br/><input type="checkbox" value= "1" name="anniversaires">
         <xsl:if test="contains(@anniversaires,'true')">
@@ -118,13 +118,13 @@
         <xsl:if test="contains(@liens_br,'true')">
         <xsl:attribute name="checked">true</xsl:attribute>
         </xsl:if>
-        Afficher les liens du BR (ne PAS décocher)
+        Afficher les liens du BR (ne PAS dÃ©cocher)
         </input>
 <br/><input type="checkbox" value= "1" name="liens_ecole">
         <xsl:if test="contains(@liens_ecole,'true')">
         <xsl:attribute name="checked">true</xsl:attribute>
         </xsl:if>
-        Afficher les liens de l'école
+        Afficher les liens de l'Ã©cole
         </input>
 <br/><input type="checkbox" value= "1" name="tours_kawa">
         <xsl:if test="contains(@tours_kawa,'true')">

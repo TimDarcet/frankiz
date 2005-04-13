@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,15 +18,18 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Divers fonctions pouvant être utile dans n'importe quelles pages.
-	Pas de fonctionnalités spécifiques à quelques pages.
+	Divers fonctions pouvant Ãªtre utile dans n'importe quelles pages.
+	Pas de fonctionnalitÃ©s spÃ©cifiques Ã  quelques pages.
 
 	$Log$
+	Revision 1.53  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.52  2005/04/13 14:32:47  dei
 	Ajout du module "annonce virus"...
-
+	
 	Revision 1.51  2005/02/15 20:27:55  pico
-	Voir si ça fixe le pb de Bery
+	Voir si Ã§a fixe le pb de Bery
 	
 	Revision 1.50  2005/02/15 19:50:10  kikx
 	commit pour la forme
@@ -38,12 +41,12 @@
 	Ajout d'un droit pour les admin@windows pour valider les demandes de licences
 	
 	Revision 1.47  2005/01/27 15:23:17  pico
-	La boucle locale est considérée comme interne
+	La boucle locale est considÃ©rÃ©e comme interne
 	Tests de photos normalement plus cools.
-	Après le reste.... je sais plus
+	AprÃ¨s le reste.... je sais plus
 	
 	Revision 1.46  2005/01/25 14:53:43  pico
-	Modifications relatives à la version de prod, à l'accès extérieur, tout ça...
+	Modifications relatives Ã  la version de prod, Ã  l'accÃ¨s extÃ©rieur, tout Ã§a...
 	
 	Revision 1.45  2005/01/25 14:50:56  kikx
 	Suppression fonction xorg
@@ -53,7 +56,7 @@
 	NE PAS COMMITER EN PROD ... car pas encore terminer
 	il faut maintenant reflechir a comment on gere les compte xorg ...
 	
-	J'attend vos avis eclairés :)
+	J'attend vos avis eclairÃ©s :)
 	
 	Revision 1.43  2005/01/21 17:01:31  pico
 	Fonction pour savoir si interne
@@ -62,7 +65,7 @@
 	Mail promo pour les kessiers
 	
 	Revision 1.41  2005/01/12 22:40:39  pico
-	Ajout des fêtes à souhaiter
+	Ajout des fÃªtes Ã  souhaiter
 	
 	Revision 1.40  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
@@ -70,13 +73,13 @@
 	Revision 1.39  2004/12/14 01:02:43  paxal
 	Ajout d'un random pour portage de la skin aubade et celio
 	
-	Si je me suis planté n'hésitez pas à me blatter
+	Si je me suis plantÃ© n'hÃ©sitez pas Ã  me blatter
 	
 	Revision 1.38  2004/12/14 00:30:22  kikx
 	Pour preparer le terrain a la modification de la FAQ
 	
 	Revision 1.37  2004/12/07 12:13:47  kikx
-	Une fonction de diff pour autoriser au gens de modifier les faqs en live ... ca demande la validation mais le webmestre voit de suite ce qui a été modifié
+	Une fonction de diff pour autoriser au gens de modifier les faqs en live ... ca demande la validation mais le webmestre voit de suite ce qui a Ã©tÃ© modifiÃ©
 	
 	Revision 1.36  2004/11/29 20:48:45  kikx
 	Simplification des rajouts des droits des personnes ... ce fait grace a des cases a cocher ... (pour les autistes ca devrait etre bon ...) Comme ca pas d'erreur de syntaxe possibles...
@@ -87,7 +90,7 @@
 	Regroupement des fonctions zip unzip deldir et download dans le meme fichier
 	
 	Revision 1.34  2004/11/24 21:09:04  pico
-	Sauvegarde avant mise à jour skins
+	Sauvegarde avant mise Ã  jour skins
 	
 	Revision 1.33  2004/11/24 20:07:12  pico
 	Ajout des liens persos
@@ -119,23 +122,23 @@
 	Mise ne place d'un titre dan sles sondages
 	
 	Revision 1.25  2004/11/16 14:02:37  pico
-	- Nouvelle fonction qui permet de dl le contenu d'un répertoire
+	- Nouvelle fonction qui permet de dl le contenu d'un rÃ©pertoire
 	- Mise en place sur la page de la FAQ
 	
 	Revision 1.24  2004/11/10 21:39:44  pico
 	Corrections skin + fonction deldir + faq
 	
 	Revision 1.23  2004/11/08 11:57:58  pico
-	Déplacement de la fonction deldir (pas une fonction de compression)
+	DÃ©placement de la fonction deldir (pas une fonction de compression)
 	
 	Revision 1.22  2004/11/06 20:52:08  kikx
 	Reordonnancement des liens
 	
 	Revision 1.21  2004/10/28 14:49:47  kikx
-	Mise en place de la météo en module : TODO eviter de repliquer 2 fois le code de la météo
+	Mise en place de la mÃ©tÃ©o en module : TODO eviter de repliquer 2 fois le code de la mÃ©tÃ©o
 	
 	Revision 1.20  2004/10/28 11:29:07  kikx
-	Mise en place d'un cache pour 30 min pour la météo
+	Mise en place d'un cache pour 30 min pour la mÃ©tÃ©o
 	
 	Revision 1.19  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
@@ -148,7 +151,7 @@
 	
 	Revision 1.16  2004/09/18 16:04:52  kikx
 	Beaucoup de modifications ...
-	Amélioration des pages qui gèrent les annonces pour les rendre compatible avec la nouvelle norme de formatage xml -> balise web et balise image qui permette d'afficher une image et la signature d'une personne
+	AmÃ©lioration des pages qui gÃ¨rent les annonces pour les rendre compatible avec la nouvelle norme de formatage xml -> balise web et balise image qui permette d'afficher une image et la signature d'une personne
 	
 	Revision 1.15  2004/09/17 17:41:23  kikx
 	Bon ct plein de bugs partout et ca ressemblait  a rien mais bon c'est certainement la faute de Schmurtz :))))))
@@ -157,7 +160,7 @@
 	Suppression de la fonction suppression qui ne sert pas.
 	
 	Revision 1.11  2004/09/16 15:32:56  schmurtz
-	Suppression de la fonction afficher_identifiant(), utilisation de <![CDATA[......]]> aÌ€ la place.
+	Suppression de la fonction afficher_identifiant(), utilisation de <![CDATA[......]]> aÃŒÂ€ la place.
 	
 	Revision 1.10  2004/09/15 23:19:31  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
@@ -189,7 +192,7 @@ function aucune_erreur() {
 }
 
 /*
-	Crée un hash aléatoire de 16 caractères.
+	CrÃ©e un hash alÃ©atoire de 16 caractÃ¨res.
 */
 function nouveau_hash() {
     $fp = fopen('/dev/urandom', 'r');
@@ -199,12 +202,12 @@ function nouveau_hash() {
 }
 
 /*
-	Envoi les données nécessaire pour faire une redirection vers la page donnée.
-	Arrète l'exécution du code PHP.
+	Envoi les donnÃ©es nÃ©cessaire pour faire une redirection vers la page donnÃ©e.
+	ArrÃ¨te l'exÃ©cution du code PHP.
 */
 function rediriger_vers($page) {
 	header("Location: ".BASE_URL.$page);
-	echo "<p>Si ton navigateur n'est pas automatiquement redirigé, <a href=\"".BASE_URL.$page."\">clique ici</a>.</p>";
+	echo "<p>Si ton navigateur n'est pas automatiquement redirigÃ©, <a href=\"".BASE_URL.$page."\">clique ici</a>.</p>";
 	exit;
 }
 
@@ -223,7 +226,7 @@ function est_interne() {
 }
 
 /*
-	Renvoi la liste des modules disponibles sous la forme d'une liste :
+	Renvoi la liste des modules disponibles sous la forme d'une listeÂ :
 		"nom du fichier moins le .php" => "Nom affichable du module"
 	
 	Si le nom affichage est vide, cela signifie que le module est toujours visible.
@@ -234,23 +237,23 @@ function liste_modules() {
 		"liens_navigation"	=> "",
 		"liens_propositions"	=> "",
         "random"            => "",
-		"liens_utiles"		=> "Liens école",
+		"liens_utiles"		=> "Liens Ã©cole",
 		"qdj"				=> "Question du jour",
 		"qdj_hier"			=> "Question de la veille",
-		"meteo"			=> "Météo",
-		"activites"			=> "Activités",
+		"meteo"			=> "MÃ©tÃ©o",
+		"activites"			=> "ActivitÃ©s",
 		"tour_kawa"		=> "Tours kawa",
 		"anniversaires"		=> "Anniversaires",
-		"fetes"		=> "Fête du jour",
+		"fetes"		=> "FÃªte du jour",
 		"stats"			=> "Statistiques",
 		"sondages"		=> "Sondages",
 		"lien_tol"			=> "Lien rapide vers le tol",
-		"rss"				=> "News Extérieures",
+		"rss"				=> "News ExtÃ©rieures",
 		"liens_perso"		=> "Liens Perso",
 		"annonce_virus"	=> "Attention Virus !" 
 		);
 }/*
-	Renvoi la liste des droits disponibles sous la forme d'une liste :
+	Renvoi la liste des droits disponibles sous la forme d'une listeÂ :
 		"nom" => "droits"
 	
 	Si le nom affichage est vide, cela signifie que le module est toujours visible.
@@ -271,19 +274,19 @@ function liste_droits() {
 }
 
 /*
-	Gestion des caches :
+	Gestion des cachesÂ :
 	 - cache_supprimer() supprime un fichier de cache
-	 - cache_recuperer() récupère et affiche le fichier de cache s'il est à jour
-		sinon renvoie faux et ouvre un buffer pour récupérer la sortie à mettre en cache.
-	 - cache_sauver() récupère le contenu du buffer ouvert par cache_recuperer(), l'écrit
+	 - cache_recuperer() rÃ©cupÃ¨re et affiche le fichier de cache s'il est Ã  jour
+		sinon renvoie faux et ouvre un buffer pour rÃ©cupÃ©rer la sortie Ã  mettre en cache.
+	 - cache_sauver() rÃ©cupÃ¨re le contenu du buffer ouvert par cache_recuperer(), l'Ã©crit
 		dans le fichier de cache et sur la sortie.
 */
 function cache_supprimer($cache_id) {
 	unlink(BASE_CACHE.$cache_id);
 }
 
-global $_CACHE_SAVED_BUFFER;	// TODO corriger ce hack tout moche qui se résoud avec PHP 4.2.0
-								// qui autorise d'avoir des buffers imbriqués
+global $_CACHE_SAVED_BUFFER;	// TODO corriger ce hack tout moche qui se rÃ©soud avec PHP 4.2.0
+								// qui autorise d'avoir des buffers imbriquÃ©s
 								// Il suffira alors de supprimer les lignes finisant par "// hack"
 
 function cache_recuperer($cache_id,$date_valide_max) {
@@ -314,7 +317,7 @@ function cache_sauver($cache_id) {
 }
 
 /*
-	Fonction de décodage du sondage
+	Fonction de dÃ©codage du sondage
 */
 function decode_sondage($string) {
 	$string = explode("###",$string) ;

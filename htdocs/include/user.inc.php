@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,7 +18,7 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Défini une classe de gestion d'un utilisateur. Cette classe n'est faite que pour la gestion
+	DÃ©fini une classe de gestion d'un utilisateur. Cette classe n'est faite que pour la gestion
 	de l'authentification, donc il est inutile d'y inclure toute les informations du trombino, ni
 	pour modifier le trombino.
 	
@@ -26,9 +26,12 @@
 	informations provenant des tables du trombino (avec jointure sur l'uid).
 
 	$Log$
+	Revision 1.22  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.21  2005/03/24 08:02:25  pico
 	Acces admin de l'exterieur (utile federez)
-
+	
 	Revision 1.20  2005/02/08 21:57:56  pico
 	Correction bug #62
 	
@@ -47,7 +50,7 @@
 	INNER en LEFT
 	
 	Revision 1.15  2004/11/24 15:55:34  pico
-	Code pour gérer les liens perso + les rss au lancement de la session
+	Code pour gÃ©rer les liens perso + les rss au lancement de la session
 	
 	Revision 1.14  2004/11/22 07:59:00  pico
 	Correction du login pour le su.
@@ -81,14 +84,14 @@
 	
 */
 
-define("AUTH_AUCUNE",0);	// Client non authentifié
-define("AUTH_INTERNE",1);   // Client accédant depuis l'intérieur de l'x (ip en 129.104.*.*)
-define("AUTH_COOKIE",2);	// Client authentifié par un cookie (authentification faible, mais automatique)
-define("AUTH_MAIL",3);		// Client authentifié par un hash récupéré dans un mail (perte de mot de passe)
-define("AUTH_MDP",4);		// Client authentifié par mot de passe
+define("AUTH_AUCUNE",0);	// Client non authentifiÃ©
+define("AUTH_INTERNE",1);   // Client accÃ©dant depuis l'intÃ©rieur de l'x (ip en 129.104.*.*)
+define("AUTH_COOKIE",2);	// Client authentifiÃ© par un cookie (authentification faible, mais automatique)
+define("AUTH_MAIL",3);		// Client authentifiÃ© par un hash rÃ©cupÃ©rÃ© dans un mail (perte de mot de passe)
+define("AUTH_MDP",4);		// Client authentifiÃ© par mot de passe
 
-define("AUTH_MINIMUM",2);   // Valeur minimum correspondant à un client authentifié
-define("AUTH_FORT",3);		// Valeur minimum correspondant à un client authentifié avec une méthode sécurisé
+define("AUTH_MINIMUM",2);   // Valeur minimum correspondant Ã  un client authentifiÃ©
+define("AUTH_FORT",3);		// Valeur minimum correspondant Ã  un client authentifiÃ© avec une mÃ©thode sÃ©curisÃ©
 
 global $_NOUVEAU_LOGIN;	// indique si l'utilisateur vient de se loguer
 $_NOUVEAU_LOGIN = false;
@@ -103,15 +106,15 @@ class User {
 	var $mailhash;
 	var $cookiehash;
 	
-	// Méthode d'authentification utilisée
+	// MÃ©thode d'authentification utilisÃ©e
 	var $methode;
 	
-	// Construit un objet à partir du login ou d'un id.
-	// On suppose que l'on est déjà connecté à la base de données
+	// Construit un objet Ã  partir du login ou d'un id.
+	// On suppose que l'on est dÃ©jÃ  connectÃ© Ã  la base de donnÃ©es
 	function User($islogin,$value) {
 		global $DB_web;
 		if(empty($value)) {
-			// construit un objet à partir de rien : utilisateur anonyme.
+			// construit un objet Ã  partir de rien : utilisateur anonyme.
 			$this->devient_anonyme();
 			return;
 		}
@@ -142,8 +145,8 @@ class User {
 		$this->perms = array();
 	}
 	
-	// Authentification par mot de passe, cookie, mail. Si l'authentification échoue, on revient à
-	// un utilisateur anonyme. Renvoie vrai si l'authentification à réussie.
+	// Authentification par mot de passe, cookie, mail. Si l'authentification Ã©choue, on revient Ã 
+	// un utilisateur anonyme. Renvoie vrai si l'authentification Ã  rÃ©ussie.
 	function verifie_mdp($_mdp) {
 		global $_NOUVEAU_LOGIN;
 		if($this->uid != 0 && md5($_mdp) == $this->passwd) {
@@ -180,9 +183,9 @@ class User {
 		}
 	}
 	
-	// Vérifie que l'utilisateur à la permission demandée.
-	// Pour les permissions prez/webmestre, il est préférable d'utiliser les fonctions dédiées
-	// afin de rester indépendant de la manière dont on stocke les informations dans la base.
+	// VÃ©rifie que l'utilisateur Ã  la permission demandÃ©e.
+	// Pour les permissions prez/webmestre, il est prÃ©fÃ©rable d'utiliser les fonctions dÃ©diÃ©es
+	// afin de rester indÃ©pendant de la maniÃ¨re dont on stocke les informations dans la base.
 	function verifie_permission($perm) {
 		if( $this->methode < AUTH_MINIMUM) return false;
 		for ($i = 0 ; $i<count($this->perms) ; $i++)
@@ -203,16 +206,16 @@ class User {
 		return $this->verifie_permission("webmestre_$binet");
 	}
 	
-	// Vérifie l'état d'authentification. Renvoie faux si c'est pas au moins $minimum
-	// (AUTH_MINIMUM ou AUTH_FORT en général, pour vérifié si un utilisateur est authentifié par
-	// une méthode quelconque, ou pour vérifié que l'utilisateur est authentifié par une méthode
-	// sécurisée).
+	// VÃ©rifie l'Ã©tat d'authentification. Renvoie faux si c'est pas au moins $minimum
+	// (AUTH_MINIMUM ou AUTH_FORT en gÃ©nÃ©ral, pour vÃ©rifiÃ© si un utilisateur est authentifiÃ© par
+	// une mÃ©thode quelconque, ou pour vÃ©rifiÃ© que l'utilisateur est authentifiÃ© par une mÃ©thode
+	// sÃ©curisÃ©e).
 	function est_authentifie($minimum) {
 		return $this->methode >= $minimum;
 	}
 }
 
-// Fonctions simplifiées, utilisant $_SESSION['user'] directement
+// Fonctions simplifiÃ©es, utilisant $_SESSION['user'] directement
 function verifie_permission($perm) {
 	return $_SESSION['user']->verifie_permission($perm);
 }

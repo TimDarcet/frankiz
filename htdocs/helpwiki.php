@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet RÈseau
+	Copyright (C) 2004 Binet R√©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,12 +21,15 @@
 	Help WIKI
 	
 	$Log$
-	Revision 1.10  2005/01/26 13:58:20  pico
-	Correction de pbs sur le wiki et les pages qui y font rÈfÈrence
-	(genre le <p><h1>blah</h1></p> ...)
+	Revision 1.11  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.10  2005/01/26 13:58:20  pico
+	Correction de pbs sur le wiki et les pages qui y font r√©f√©rence
+	(genre le <p><h1>blah</h1></p> ...)
+	
 	Revision 1.9  2005/01/23 16:30:10  pico
-	Ajout d'une page pour surveiller les entrÈes dns
+	Ajout d'une page pour surveiller les entr√©es dns
 	
 	Revision 1.8  2005/01/03 18:37:24  pico
 	C'est mieux avec une page d'aide correcte
@@ -35,7 +38,7 @@
 	Help wiki pour les listes
 	
 	Revision 1.6  2004/11/28 00:06:32  pico
-	Ajout des images avec lÈgende (et donc "alt") dans le wiki
+	Ajout des images avec l√©gende (et donc "alt") dans le wiki
 	
 	Revision 1.5  2004/11/27 23:30:34  pico
 	Passage des xshare et faq en wiki
@@ -59,7 +62,7 @@
 
 require_once "include/wiki.inc.php";
 
-// gÈnÈration de la page
+// g√©n√©ration de la page
 require "include/page_header.inc.php";
 ?>
 <page id='aidewiki' titre='Frankiz : aide WIKI'>
@@ -67,9 +70,9 @@ require "include/page_header.inc.php";
 <h1>Aide de syntaxe pour wiki</h1>
 <h2>Qu'est ce que le wiki</h2>
 
-Le nom Wiki provient d'un adjectif hawaiien wikiwiki, qui signifie rapide. C'est une forme ‡ redoublement de l'adjectif wiki. Ward Cunningham, crÈateur du systËme Wiki en 1995, a choisi ce terme pour dÈsigner le premier site utilisant ce principe, le WikiWikiWeb.
+Le nom Wiki provient d'un adjectif hawaiien wikiwiki, qui signifie rapide. C'est une forme √† redoublement de l'adjectif wiki. Ward Cunningham, cr√©ateur du syst√®me Wiki en 1995, a choisi ce terme pour d√©signer le premier site utilisant ce principe, le WikiWikiWeb.
 
-<note>Si tu veux tester une page wiki sur ce site, va sur <lien url="bacasable.php" titre="le bac ‡ sable"/></note>
+<note>Si tu veux tester une page wiki sur ce site, va sur <lien url="bacasable.php" titre="le bac √† sable"/></note>
 
 <liste modifiable="non" titre="Syntaxe du WIKI sur ce site">
 		<entete id="type" titre=""/>
@@ -103,13 +106,13 @@ Le nom Wiki provient d'un adjectif hawaiien wikiwiki, qui signifie rapide. C'est
 		</element>
 		<element id="">
 			<colonne id="type">Lien</colonne>
-			<colonne id="syntaxe"><p>http://frankiz/</p><p>[http://frankiz|Ici c'est le site ÈlËve]</p><p>[mailto:moi@moi|Mon email]</p></colonne>
-			<colonne id="exemple"><?=wikiVersXML("http://frankiz/").wikiVersXML("[http://frankiz/|Ici c'est le site ÈlËve]").wikiVersXML("[mailto:moi@moi|Mon email]")?></colonne>
+			<colonne id="syntaxe"><p>http://frankiz/</p><p>[http://frankiz|Ici c'est le site √©l√®ve]</p><p>[mailto:moi@moi|Mon email]</p></colonne>
+			<colonne id="exemple"><?=wikiVersXML("http://frankiz/").wikiVersXML("[http://frankiz/|Ici c'est le site √©l√®ve]").wikiVersXML("[mailto:moi@moi|Mon email]")?></colonne>
 		</element>
 		<element id="">
 			<colonne id="type">Image</colonne>
-			<colonne id="syntaxe"><p>[http://binets/icones/reseau.png]</p><p>[http://binets/icones/reseau.png|Logo binet rÈseau]</p></colonne>
-			<colonne id="exemple"><?=wikiVersXML("[http://binets/icones/reseau.png]").wikiVersXML("[http://binets/icones/reseau.png|Logo binet rÈseau]")?></colonne>
+			<colonne id="syntaxe"><p>[http://binets/icones/reseau.png]</p><p>[http://binets/icones/reseau.png|Logo binet r√©seau]</p></colonne>
+			<colonne id="exemple"><?=wikiVersXML("[http://binets/icones/reseau.png]").wikiVersXML("[http://binets/icones/reseau.png|Logo binet r√©seau]")?></colonne>
 		</element>
 </liste>
 

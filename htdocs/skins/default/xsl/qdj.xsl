@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -124,7 +124,7 @@
 		</xsl:choose>
 		<br/>
 		<xsl:if test="count(qdj/dernier)">
-			<div>Derniers à répondre :</div>
+			<div>Derniers Ã  rÃ©pondre :</div>
 			<ul class="liste">
 			<xsl:for-each select="qdj/dernier[position()&lt;=5]">
 				<li class="fkz_qdj_last"><xsl:value-of select="@ordre"/>. <xsl:apply-templates select="eleve" mode="signature"/></li>

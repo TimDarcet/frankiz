@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,13 +18,16 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Affiche la liste des IPs attribuer aux élèves.
+	Affiche la liste des IPs attribuer aux Ã©lÃ¨ves.
 	Permet aussi de supprimer des IPs.
 	
 	$Log$
-	Revision 1.34  2005/03/16 17:13:40  pico
-	Les admin@windows ont accès à la liste des ips et à l'arpwatch
+	Revision 1.35  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.34  2005/03/16 17:13:40  pico
+	Les admin@windows ont accÃ¨s Ã  la liste des ips et Ã  l'arpwatch
+	
 	Revision 1.33  2005/03/04 08:25:11  pico
 	correction bug #71
 	
@@ -38,7 +41,7 @@
 	Ajout d'une belle page d'erreur.
 	
 	Revision 1.29  2004/12/17 14:26:20  pico
-	Pas d'action pour les listes non sélectionnables
+	Pas d'action pour les listes non sÃ©lectionnables
 	
 	Revision 1.28  2004/12/13 16:15:22  kikx
 	legere modif sur la page des ips
@@ -56,10 +59,10 @@
 	Bug de ma part que je viens de corriger
 	
 	Revision 1.23  2004/10/28 11:29:07  kikx
-	Mise en place d'un cache pour 30 min pour la météo
+	Mise en place d'un cache pour 30 min pour la mÃ©tÃ©o
 	
 	Revision 1.22  2004/10/26 16:57:44  kikx
-	Pour la méteo ... ca envoie du paté !!
+	Pour la mÃ©teo ... ca envoie du patÃ© !!
 	
 	Revision 1.21  2004/10/25 19:17:12  kikx
 	Juste un petit warning
@@ -92,7 +95,7 @@ set_time_limit(0) ;
 
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('windows'))
 	acces_interdit();
@@ -100,7 +103,7 @@ if(!verifie_permission('admin')&&!verifie_permission('windows'))
 $message = "" ;
 $blabla = "" ;
 
-// Gestion des détails d'une personne
+// Gestion des dÃ©tails d'une personne
  foreach ($_POST AS $keys => $val){
         //echo "<p>$keys # $val</p>";
 	$temp = explode("_",$keys) ;
@@ -133,7 +136,7 @@ function mac($id_prise,$fich){
 
 
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -158,7 +161,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <note>Si la page ne marche pas trop, allez sur la page de la <lien titre="DSI" url="http://<?=DSI_URL?>/SMAC/"/></note>
 	<formulaire id="recherche" titre="Recherche" action="admin/ip.php">
 		<champ titre="Login" id="rech_login" valeur="<? if (isset($_POST['rech_login'])) echo $_POST['rech_login']?>" />
-		<champ titre="Pièce" id="rech_kzert" valeur="<? if (isset($_POST['rech_kzert'])) echo $_POST['rech_kzert']?>" />
+		<champ titre="PiÃ¨ce" id="rech_kzert" valeur="<? if (isset($_POST['rech_kzert'])) echo $_POST['rech_kzert']?>" />
 		<champ titre="Prise" id="rech_prise" valeur="<? if (isset($_POST['rech_prise'])) echo $_POST['rech_prise']?>" />
 		<champ titre="Ip" id="rech_ip" valeur="<? if (isset($_POST['rech_ip'])) echo $_POST['rech_ip']?>" />
 		<bouton titre="Recherche" id="recherche"/>
@@ -189,7 +192,7 @@ if (isset($_POST['recherche']) ) {
 			$login2 ="" ;
 			$promo2 ="" ;
 			
-			// Si l'ip est une ip rajouté
+			// Si l'ip est une ip rajoutÃ©
 			//=====================
 			if (($temp_piece==$id_piece)&&($temp_prise==$id_prise)&& ($type=="secondaire")) {
 				echo "\t\t\t<colonne id=\"login\">-</colonne>\n";
@@ -202,7 +205,7 @@ if (isset($_POST['recherche']) ) {
 //				$texte_brut=file_get_contents("http://intranet.polytechnique.fr/SYSRES/SMAC/search.php?id_prise=$id_prise");
 			} else {
 			
-			// Si l'ip est l'ip par défaut sur la prise
+			// Si l'ip est l'ip par dÃ©faut sur la prise
 			//=====================
 			
 				if (($temp_piece==$id_piece)&&($temp_prise==$id_prise)){
@@ -211,7 +214,7 @@ if (isset($_POST['recherche']) ) {
 				}
 				
 				if (strlen($login)>0 ) 
-					$login = "<bouton titre='Détails' id='detail_{$login}_{$promo}' type='detail'/>".$login ;
+					$login = "<bouton titre='DÃ©tails' id='detail_{$login}_{$promo}' type='detail'/>".$login ;
 				
 				echo "\t\t\t<colonne id=\"login\">$login</colonne>\n";
 				echo "\t\t\t<colonne id=\"promo\">$promo</colonne>\n";

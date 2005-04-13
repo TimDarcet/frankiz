@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,9 +21,12 @@
 	Moteur Wiki (TipiWiki)
 	
 	$Log$
-	Revision 1.23  2005/01/03 19:09:22  pico
-	Correction ç
+	Revision 1.24  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.23  2005/01/03 19:09:22  pico
+	Correction Ã§
+	
 	Revision 1.22  2004/12/15 01:36:52  kikx
 	Specification de la taille des images sous le WIKI
 	
@@ -64,10 +67,10 @@
 	Ajout du 2 eme niveau de listes
 	
 	Revision 1.10  2004/12/01 12:17:53  pico
-	Début de mise en forme html des listes (pas de 2eme niveau)
+	DÃ©but de mise en forme html des listes (pas de 2eme niveau)
 	
 	Revision 1.9  2004/12/01 12:06:14  pico
-	Gestion des listes à 2 niveaux en wiki
+	Gestion des listes Ã  2 niveaux en wiki
 	
 	Revision 1.8  2004/11/29 16:51:26  schmurtz
 	Correction d'un bug de traduction wiki => xml avec un texte du genre "=== blah ="
@@ -76,21 +79,21 @@
 	Gestion des listes sur le wiki (arbre + feuille)
 	
 	Revision 1.6  2004/11/28 00:06:32  pico
-	Ajout des images avec légende (et donc "alt") dans le wiki
+	Ajout des images avec lÃ©gende (et donc "alt") dans le wiki
 	
 	Revision 1.5  2004/11/27 23:30:34  pico
 	Passage des xshare et faq en wiki
 	Ajout des images dans l'aide du wiki
 	
 	Revision 1.4  2004/11/27 18:46:50  pico
-	Correction wiki: gestion des liens (génère du xml et plus des balises <a>)
-	Correction des skins pour validité xhtml
+	Correction wiki: gestion des liens (gÃ©nÃ¨re du xml et plus des balises <a>)
+	Correction des skins pour validitÃ© xhtml
 	
 	Revision 1.3  2004/11/25 00:26:55  schmurtz
 	Permet de convertir le wiki en html veritable.
 	
 	Revision 1.2  2004/11/24 12:51:02  kikx
-	Pour commencer la compatibilité wiki
+	Pour commencer la compatibilitÃ© wiki
 	
 	Revision 1.1  2004/11/24 00:26:09  schmurtz
 	Debut de gestion de wiki
@@ -100,7 +103,7 @@
 function wikiVersXML($filtered,$enhtml=false) {
 	// from Simon Schoar <simon@schoar.de> :
 	$regexURL = "((http:\/\/|https:\/\/|ftp:\/\/|mailto:)[\w\.\:\@\?\&\~\%\=\+\-\/\_\;]+)";
-	$regexURLText = "([\w\.\:\'\@\?\&\~\%\=\+\-\/\_\ \;\,\$éèàùç]+)";
+	$regexURLText = "([\w\.\:\'\@\?\&\~\%\=\+\-\/\_\ \;\,\$Ã©Ã¨Ã Ã¹Ã§]+)";
 	
 	// php-specific
 	$filtered = "\n".str_replace("\r\n","\n",$filtered)."\n\n";
@@ -129,9 +132,9 @@ function wikiVersXML($filtered,$enhtml=false) {
 	$filtered = "<p>".preg_replace("/\n+/","</p>\n<p>",$filtered)."</p>";
 
 	// Headlines <h1><h2><h3>
-	$filtered = preg_replace("/<p>===([^=].*[^=])===[\t  ]*<\/p>/","<h2>\\1</h2>",$filtered);
-	$filtered = preg_replace("/<p>==([^=].*[^=])==[\t  ]*<\/p>/","<h3>\\1</h3>",$filtered);
-	$filtered = preg_replace("/<p>=([^=].*[^=])=[\t  ]*<\/p>/","<h4>\\1</h4>",$filtered);
+	$filtered = preg_replace("/<p>===([^=].*[^=])===[\t Â ]*<\/p>/","<h2>\\1</h2>",$filtered);
+	$filtered = preg_replace("/<p>==([^=].*[^=])==[\t Â ]*<\/p>/","<h3>\\1</h3>",$filtered);
+	$filtered = preg_replace("/<p>=([^=].*[^=])=[\t Â ]*<\/p>/","<h4>\\1</h4>",$filtered);
 
 	// lists <ul>
 	$filtered = preg_replace("/<p>--(.+)<\/p>/","<ul><li><ul><li>\\1</li></ul></li></ul>",$filtered); // Liste 2 eme niveau
@@ -153,9 +156,9 @@ function wikiVersXML($filtered,$enhtml=false) {
 
 function affiche_syntaxe_wiki() {
 	echo "<html>&lt;small&gt;".
-		"Formatage : **gras** ' 'italic' ' |code|    Listes : -élément --sousélément &lt;br/&gt;".
-		"Liens/image : [http://exemple.fr/|Titre] [http://exemple.fr/image.png]&lt;br/&gt;".
-		"Titres : ===titre1=== ==titre2== =titre3=&lt;br/&gt;".
+		"FormatageÂ : **gras** 'Â 'italic'Â ' |code|Â Â Â Â ListesÂ : -Ã©lÃ©ment --sousÃ©lÃ©ment &lt;br/&gt;".
+		"Liens/imageÂ : [http://exemple.fr/|Titre] [http://exemple.fr/image.png]&lt;br/&gt;".
+		"TitresÂ : ===titre1=== ==titre2== =titre3=&lt;br/&gt;".
 		"&lt;/small&gt;</html>";
 }
 

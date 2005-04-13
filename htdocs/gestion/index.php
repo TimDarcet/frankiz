@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet RÈseau
+	Copyright (C) 2004 Binet R√©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,15 +18,18 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Page principale d'administration†: affiche la liste des pages d'administration auxquelles
-	l'utilisateur courant ‡ accËs.
+	Page principale d'administration¬†: affiche la liste des pages d'administration auxquelles
+	l'utilisateur courant √† acc√®s.
 
 	$Log$
-	Revision 1.43  2005/04/13 14:43:31  dei
-	ajout du lien qvb pour la gestion de la base des virus dÈtectÈs
+	Revision 1.44  2005/04/13 17:09:59  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.43  2005/04/13 14:43:31  dei
+	ajout du lien qvb pour la gestion de la base des virus d√©tect√©s
+	
 	Revision 1.42  2005/03/16 17:13:40  pico
-	Les admin@windows ont accËs ‡ la liste des ips et ‡ l'arpwatch
+	Les admin@windows ont acc√®s √† la liste des ips et √† l'arpwatch
 	
 	Revision 1.41  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
@@ -35,7 +38,7 @@
 	Ajout d'un droit pour les admin@windows pour valider les demandes de licences
 	
 	Revision 1.39  2005/01/23 16:30:10  pico
-	Ajout d'une page pour surveiller les entrÈes dns
+	Ajout d'une page pour surveiller les entr√©es dns
 	
 	Revision 1.38  2005/01/18 18:26:56  pico
 	Pb d'accent
@@ -44,7 +47,7 @@
 	Plus de droits pour les web
 	
 	Revision 1.36  2005/01/18 12:11:49  pico
-	Etat de la kËs + validation des mails promos dans l'interface de la KËs
+	Etat de la k√®s + validation des mails promos dans l'interface de la K√®s
 	
 	Revision 1.35  2005/01/17 23:46:28  pico
 	Bug fix
@@ -67,7 +70,7 @@
 	Dans les annonces maintenant c'est 400x300 mais < ou egal
 	
 	Revision 1.29  2004/12/17 13:18:47  kikx
-	Rajout des numÈros utiles car c'est une demande importante
+	Rajout des num√©ros utiles car c'est une demande importante
 	
 	Revision 1.28  2004/12/15 23:40:35  kikx
 	Pour gerer les mots de vocabulaires
@@ -79,19 +82,19 @@
 	Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
 	
 	Revision 1.25  2004/12/13 20:03:25  pico
-	Les liens ne forment pas de blocs, il faut donc le spÈcifier
+	Les liens ne forment pas de blocs, il faut donc le sp√©cifier
 	
 	Revision 1.24  2004/12/07 12:11:13  pico
 	Un peu plus de droits pour le webmestre
 	
 	Revision 1.23  2004/12/07 08:36:39  pico
-	Ajout d'une page pour pouvoir vider un peu les bases de donnÈes (genre pas garder les news qui datent de vieux)
+	Ajout d'une page pour pouvoir vider un peu les bases de donn√©es (genre pas garder les news qui datent de vieux)
 	
 	Revision 1.22  2004/11/27 21:31:18  pico
-	Ajout du lien vers la gestion de l'Ètat du bob
+	Ajout du lien vers la gestion de l'√©tat du bob
 	
 	Revision 1.21  2004/11/27 16:10:52  pico
-	Correction d'erreur de redirection et ajout des web ‡ la validation des activitÈs.
+	Correction d'erreur de redirection et ajout des web √† la validation des activit√©s.
 	
 	Revision 1.20  2004/11/27 15:39:54  pico
 	Ajout des droits trombino
@@ -106,17 +109,17 @@
 	Gestion desdrits dans l'index des pages admin
 	
 	Revision 1.16  2004/11/27 14:56:15  pico
-	Debut de mise en place de droits spÈciaux (qdj + affiches)
-	+ gÈnÈration de la page d'admin qui va bien
+	Debut de mise en place de droits sp√©ciaux (qdj + affiches)
+	+ g√©n√©ration de la page d'admin qui va bien
 	
 	Revision 1.15  2004/11/27 14:30:16  pico
-	rÈorganisation page d'admin
+	r√©organisation page d'admin
 	
 	Revision 1.14  2004/11/27 14:16:19  pico
-	Ajout du lien de modif dans la page d'admin, rÈorganisation de la page
+	Ajout du lien de modif dans la page d'admin, r√©organisation de la page
 	
 	Revision 1.13  2004/11/27 12:58:23  pico
-	jout du lien vers la planification des activitÈs
+	jout du lien vers la planification des activit√©s
 	
 	Revision 1.12  2004/11/25 02:03:29  kikx
 	Bug d'administration des binets
@@ -185,7 +188,7 @@
 	Mise en place d'une page pour la gestion des sites des binets
 	
 	Revision 1.16  2004/10/13 22:14:32  pico
-	Premier jet de page pour affecter une date de publication aux qdj validÈes
+	Premier jet de page pour affecter une date de publication aux qdj valid√©es
 	
 	Revision 1.14  2004/10/06 14:12:27  kikx
 	Page de mail promo quasiment en place ...
@@ -200,7 +203,7 @@
 	
 	Revision 1.11  2004/09/17 16:14:43  kikx
 	Pffffff ...
-	Je sais plus trop ce que j'ai fait donc allez voir le code parce que la ca me fait chiÈ de reflÈchir
+	Je sais plus trop ce que j'ai fait donc allez voir le code parce que la ca me fait chi√© de refl√©chir
 	
 	Revision 1.10  2004/09/16 15:22:51  kikx
 	Rajout de la ligne qui va bien pour les parametres (pour ne pas perdre de page d'administration ca serait balot)
@@ -221,7 +224,7 @@ demande_authentification(AUTH_FORT);
 if (count($_SESSION['user']->perms)<=1)
 	acces_interdit();
 
-// GÈnÈration de la page
+// G√©n√©ration de la page
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
 $permissions_user = $_SESSION['user']->perms ;
@@ -249,7 +252,7 @@ $permissions_user = $_SESSION['user']->perms ;
 	}
 	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('web')||verifie_permission('trombino')||verifie_permission('kes')){
 	?>
-	<h3>Validations VariÈes</h3>
+	<h3>Validations Vari√©es</h3>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('trombino')){
@@ -278,7 +281,7 @@ $permissions_user = $_SESSION['user']->perms ;
 		$DB_valid->query("SELECT eleve_id FROM valid_affiches") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les activitÈs (<?=$nb?>)" url="admin/valid_affiches.php"/><br/>
+		<lien titre="Valider les activit√©s (<?=$nb?>)" url="admin/valid_affiches.php"/><br/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('web')){
@@ -320,7 +323,7 @@ $permissions_user = $_SESSION['user']->perms ;
 	
 	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('web')){
 	?>
-	<h3>Administration des donnÈes validÈes</h3>
+	<h3>Administration des donn√©es valid√©es</h3>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('qdjmaster')){
@@ -331,25 +334,25 @@ $permissions_user = $_SESSION['user']->perms ;
 	}
 	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('web')){
 	?>
-		<lien titre="Planifier les activitÈs" url="admin/planif_affiches.php"/><br/>
+		<lien titre="Planifier les activit√©s" url="admin/planif_affiches.php"/><br/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('web')){
 	?>
 		<lien titre="Modifier les annonces" url="admin/modif_annonces.php"/><br/>
-		<lien titre="Nettoyer les bases de donnÈes" url="admin/nettoyage.php"/><br/>
+		<lien titre="Nettoyer les bases de donn√©es" url="admin/nettoyage.php"/><br/>
 	<?
 	}
 	
 	
 	if (verifie_permission('admin')||verifie_permission('web')||verifie_permission('xshare')||verifie_permission('faq')||verifie_permission('trombino')){
 	?>
-	<h3>Administration des donnÈes de Frankiz</h3>
+	<h3>Administration des donn√©es de Frankiz</h3>
 	<?
 	}
 	if (verifie_permission('admin')){
 	?>
-		<lien titre="Liste des droits accordÈs" url="admin/liste_droits.php"/><br/>
+		<lien titre="Liste des droits accord√©s" url="admin/liste_droits.php"/><br/>
 		<lien titre="Changer les variables globales" url="admin/parametre.php"/><br/>
 	<?
 	}
@@ -381,14 +384,14 @@ $permissions_user = $_SESSION['user']->perms ;
 	}
 	if (verifie_permission('admin')||verifie_permission('windows')){
 	?>
-	<h3>Administration du rÈseau ÈlËve</h3>
+	<h3>Administration du r√©seau √©l√®ve</h3>
 	<?
 	}
 	if (verifie_permission('admin')){
 		$DB_valid->query("SELECT eleve_id FROM valid_ip") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="GÈrer les demandes d'ajout d'ips (<?=$nb?>)" url="admin/valid_ip.php"/><br/>
+		<lien titre="G√©rer les demandes d'ajout d'ips (<?=$nb?>)" url="admin/valid_ip.php"/><br/>
 		<lien titre="Surveiller la DNS" url="admin/dns.php"/><br/>
 		<?
 	}
@@ -400,8 +403,8 @@ $permissions_user = $_SESSION['user']->perms ;
 		$DB_msdnaa->query("SELECT eleve_id FROM valid_licence") ;
 		$nb = $DB_msdnaa->num_rows() ;
 		?>
-		<lien titre="GÈrer les demandes de licences (<?=$nb?>)" url="admin/valid_licences.php"/><br/>
-		<lien titre="GÈrer les virus detectÈs sur le rÈseau " url="admin/nettoyer_virus.php"/><br/>
+		<lien titre="G√©rer les demandes de licences (<?=$nb?>)" url="admin/valid_licences.php"/><br/>
+		<lien titre="G√©rer les virus detect√©s sur le r√©seau " url="admin/nettoyer_virus.php"/><br/>
 	<?
 	}
 	
@@ -422,7 +425,7 @@ $permissions_user = $_SESSION['user']->perms ;
 			$DB_trombino->query("SELECT nom FROM binets WHERE binet_id=$binet");
 			list($nom) = $DB_trombino->next_row() ;
 
-			echo "<lien titre=\"GÈrer la page du binet : $nom\" url=\"gestion/binet.php?binet=".$binet."\"/><br/>" ;
+			echo "<lien titre=\"G√©rer la page du binet : $nom\" url=\"gestion/binet.php?binet=".$binet."\"/><br/>" ;
 		}
 	}
 
@@ -445,7 +448,7 @@ $permissions_user = $_SESSION['user']->perms ;
 			list($nom) = $DB_trombino->next_row() ;
 
 				
-			echo "<lien titre=\"GÈrer les membres du binet : $nom\" url=\"gestion/binet.php?binet=".$binet."\"/><br/>" ;
+			echo "<lien titre=\"G√©rer les membres du binet : $nom\" url=\"gestion/binet.php?binet=".$binet."\"/><br/>" ;
 		}
 	}
 
@@ -454,17 +457,17 @@ $permissions_user = $_SESSION['user']->perms ;
 	// Pour le bob
 	//======================================
 	if (verifie_permission('admin')||verifie_permission('bob')){
-		echo "<h2>Gestion du BÙB</h2>" ;
-		echo "<lien titre=\"GÈrer l'ouverture du BÙB\" url=\"gestion/etat_bob.php\"/><br/>" ;
-		echo "<lien titre=\"GÈrer les tours kawa\" url=\"gestion/etat_bob.php\"/><br/>" ;
+		echo "<h2>Gestion du B√¥B</h2>" ;
+		echo "<lien titre=\"G√©rer l'ouverture du B√¥B\" url=\"gestion/etat_bob.php\"/><br/>" ;
+		echo "<lien titre=\"G√©rer les tours kawa\" url=\"gestion/etat_bob.php\"/><br/>" ;
 	}
 	
 	//
-	// Pour la KËs
+	// Pour la K√®s
 	//======================================
 	if (verifie_permission('admin')||verifie_permission('kes')){
-		echo "<h2>Gestion de la KËs</h2>" ;
-		echo "<lien titre=\"GÈrer l'ouverture de la KËs\" url=\"gestion/etat_kes.php\"/><br/>" ;
+		echo "<h2>Gestion de la K√®s</h2>" ;
+		echo "<lien titre=\"G√©rer l'ouverture de la K√®s\" url=\"gestion/etat_kes.php\"/><br/>" ;
 		$DB_valid->query("SELECT eleve_id FROM valid_mailpromo") ;
 		$nb = $DB_valid->num_rows() ;
 		echo "<lien titre=\"Valider les mails promos ($nb)\" url=\"admin/valid_mailpromo.php\"/><br/>";

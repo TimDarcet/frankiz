@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,9 +21,12 @@
 	Pour faire peur aux gens qui ont des virus...
 	
 	$Log$
+	Revision 1.6  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.5  2005/04/13 16:14:34  pico
 	test
-
+	
 	Revision 1.4  2005/04/13 16:09:20  pico
 	Correction
 	
@@ -31,11 +34,11 @@
 	les logs qui vont bien pour savoir qui devirusise les gens
 	
 	Revision 1.2  2005/04/13 14:10:30  dei
-	j'avais oublié ça , ça ne servait que pour le test...
+	j'avais oubliÃ© Ã§a , Ã§a ne servait que pour le test...
 	
 	Revision 1.1  2005/04/13 13:58:16  dei
-	Voilà qui devrait faire peur à certains
-	Basé sur le script de fruneau module sur la page principale + page d'admin...
+	VoilÃ  qui devrait faire peur Ã  certains
+	BasÃ© sur le script de fruneau module sur la page principale + page d'admin...
 	
 	
 */
@@ -43,22 +46,22 @@
 
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('windows'))
 	acces_interdit();
 
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
 
 <page id="nettoyer_virus" titre="Frankiz : gestion des virus">
-<h2>Liste des personnes infectées ou ayant eu un virus.</h2>
-<note>Cette page sert à signaler qu'un virus detecté a bien été enlevé de l'ordinateur sur l'ip considérée, après s'en être assuré !</note>
-<note>Les virus listés ici sont ceux les plus susceptibles de pourrir le cache de la matrice.</note>
+<h2>Liste des personnes infectÃ©es ou ayant eu un virus.</h2>
+<note>Cette page sert Ã  signaler qu'un virus detectÃ© a bien Ã©tÃ© enlevÃ© de l'ordinateur sur l'ip considÃ©rÃ©e, aprÃ¨s s'en Ãªtre assurÃ© !</note>
+<note>Les virus listÃ©s ici sont ceux les plus susceptibles de pourrir le cache de la matrice.</note>
 <?
 	foreach ($_POST AS $keys => $val){
 		$temp = explode("_",$keys) ;
@@ -68,13 +71,13 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[2]}'");
 			list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
 			//log de la partie admin...
-			log_admin($_SESSION['user']->uid," certifié que $temp[3] a bien été supprimé de l'ordinateur de $nom $prenom ($promo) ") ;
+			log_admin($_SESSION['user']->uid," certifiÃ© que $temp[3] a bien Ã©tÃ© supprimÃ© de l'ordinateur de $nom $prenom ($promo) ") ;
 			
-			echo "<note> Le virus est considéré comme enlevé de l'odinateur. On le signale par mail à l'utilisateur.</note>";
+			echo "<note> Le virus est considÃ©rÃ© comme enlevÃ© de l'odinateur. On le signale par mail Ã  l'utilisateur.</note>";
 			$contenu="Nous avons bien pris en compte la suppression du virus $temp[3] de ton ordinateur.<br><br>".
-			"Nous te rappellons qu'il est de ta responsabilité d'assurer la sécurité de ton pc. Si tu ne sais pas comment faire utilise le domaine windows, il est là pour ça. Tu trouveras tout les renseignements nécessaires dans l'infoBR.<br>".
-			"N'hésites pas à nous signaler tout problème !<br><br>".
-			"Très Cordialement<br>".
+			"Nous te rappellons qu'il est de ta responsabilitÃ© d'assurer la sÃ©curitÃ© de ton pc. Si tu ne sais pas comment faire utilise le domaine windows, il est lÃ  pour Ã§a. Tu trouveras tout les renseignements nÃ©cessaires dans l'infoBR.<br>".
+			"N'hÃ©sites pas Ã  nous signaler tout problÃ¨me !<br><br>".
+			"TrÃ¨s Cordialement<br>".
 			"Le BR<br>"  ;
 			couriel($temp[2],"[Virus] Suppression de $temp[3]",$contenu,WINDOWS_ID);
 		}
@@ -93,13 +96,13 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	while(list($ip,$date,$solved,$login,$eleve_id,$nomv,$id)= $DB_admin->next_row()){
 		$statut="";
 		if ($solved==0){
-			$statut="Non signalé";
+			$statut="Non signalÃ©";
 		}elseif ($solved==1){
-			$statut="Signalé";
+			$statut="SignalÃ©";
 		}elseif ($solved==2){
-			$statut="Résolu";
+			$statut="RÃ©solu";
 		}elseif ($solved==3){
-			$statut="Réseau coupé";
+			$statut="RÃ©seau coupÃ©";
 		}
 		echo "\t\t<element id=\"$id\">\n";
 			echo "\t\t\t<colonne id=\"ip\">$ip</colonne>\n";
@@ -112,7 +115,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <?
 		if ($solved!=2){
 ?>
-				<bouton titre="Nettoyer" id="suppr_<?echo "$id";?>_<?echo "$eleve_id";?>_<?echo "$nomv";?>" onClick="return window.confirm('Vous déclarez que ce virus a été éradiqué chez la personne considérée ?')"/>
+				<bouton titre="Nettoyer" id="suppr_<?echo "$id";?>_<?echo "$eleve_id";?>_<?echo "$nomv";?>" onClick="return window.confirm('Vous dÃ©clarez que ce virus a Ã©tÃ© Ã©radiquÃ© chez la personne considÃ©rÃ©e ?')"/>
 <?
 		}
 ?>

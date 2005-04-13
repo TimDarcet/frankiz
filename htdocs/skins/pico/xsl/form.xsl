@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -23,22 +23,22 @@
 
 <!-- Formulaires -->
 <xsl:template match="formulaire[@type='discret']">
-	<!-- le formulaire lui même, mis en page avec une table -->
-	<form enctype="multipart/form-data" method="post" accept-charset="ISO-8859-1">
+	<!-- le formulaire lui mÃªme, mis en page avec une table -->
+	<form enctype="multipart/form-data" method="post" accept-charset="UTF-8">
 		<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 		<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<div class="formulaire">
 		<!-- les options du formulaire -->
 			<xsl:apply-templates select="*[name()!='bouton']"/>
-		<!-- les boutons gérant les actions du formulaire -->
+		<!-- les boutons gÃ©rant les actions du formulaire -->
 			<xsl:apply-templates select="bouton"/>
 		</div>
 	</form>
 </xsl:template>
 
 <xsl:template match="formulaire">
-	<!-- la déco -->
-	<form enctype="multipart/form-data" method="post" accept-charset="ISO-8859-1">
+	<!-- la dÃ©co -->
+	<form enctype="multipart/form-data" method="post" accept-charset="UTF-8">
 			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<xsl:if test="boolean(@titre)">
@@ -62,12 +62,12 @@
 				<xsl:if test="boolean(@titre)">
 					<label class="gauche" >
 						<xsl:attribute name='for'><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
-						<xsl:value-of select="@titre"/> :
+						<xsl:value-of select="@titre"/>Â :
 					</label>
 				</xsl:if>
 				</div>
 			</xsl:for-each>
-			<!-- les boutons gérant les actions du formulaire -->
+			<!-- les boutons gÃ©rant les actions du formulaire -->
 			<div>
 			<span class="boutons">
 				<xsl:apply-templates select="bouton"/>
@@ -206,7 +206,7 @@
 </xsl:template>
 
 <xsl:template match="bouton[@type='detail']">
-	<input type="image" src="skins/pico/images/detail.gif" alt="détails">
+	<input type="image" src="skins/pico/images/detail.gif" alt="dÃ©tails">
 	<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 	<xsl:attribute name="value"></xsl:attribute>
 	</input>

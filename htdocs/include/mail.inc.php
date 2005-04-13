@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,15 +18,18 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Classe permettant de gérer la création et les envois de mails.
+	Classe permettant de gÃ©rer la crÃ©ation et les envois de mails.
 	Support les mails en mime multipart.
 	
 	$Log$
-	Revision 1.22  2005/01/18 19:50:30  pico
-	Ce sont les kessiers et dei qui reçoivent les notifications de mail promo
+	Revision 1.23  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.22  2005/01/18 19:50:30  pico
+	Ce sont les kessiers et dei qui reÃ§oivent les notifications de mail promo
+	
 	Revision 1.21  2005/01/05 20:56:35  pico
-	Pour un blattage injustifié dans l'IK, la modif est sortie avant la parution officielle :)
+	Pour un blattage injustifiÃ© dans l'IK, la modif est sortie avant la parution officielle :)
 	
 	Revision 1.20  2005/01/03 18:37:24  pico
 	C'est mieux avec une page d'aide correcte
@@ -38,7 +41,7 @@
 	Correction des l'erreur lors de l'envoi des mails pour les gens avec une ' dans leur nom
 	
 	Revision 1.17  2004/12/17 18:48:43  pico
-	Fatigué moi..
+	FatiguÃ© moi..
 	
 	Revision 1.16  2004/12/17 18:47:19  pico
 	Oubli
@@ -90,10 +93,10 @@
 	
 */
 
-// envoi d'un mail à un élève
+// envoi d'un mail Ã  un Ã©lÃ¨ve
 function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID,$sender_string="") {
 
-	// On gère l'envoyeur !
+	// On gÃ¨re l'envoyeur !
 	
 	if ($sender_id==WEBMESTRE_ID) {
 		$sender = "Webmestre de Frankiz <".MAIL_WEBMESTRE.">" ;
@@ -104,7 +107,7 @@ function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID,$sender_string="") {
 	} else if ($sender_id==BR_ID) {
 		$sender = "Le BR <".MAIL_BR.">" ;
 	} else if ($sender_id==PREZ_ID) {
-		$sender = "Président du BR <".MAIL_PREZ.">" ;
+		$sender = "PrÃ©sident du BR <".MAIL_PREZ.">" ;
 	} else if ($sender_id==ROOT_ID) {
 		$sender = "Root du BR <".MAIL_ROOT.">" ;
 	} else if ($sender_id==TROMBINOMEN_ID) {
@@ -140,7 +143,7 @@ function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID,$sender_string="") {
 		$nom = "" ;
 		$adresse = MAIL_FAQMESTRE ;
 	} else if ($eleve_id==PREZ_ID) {
-		$prenom = "Président du BR" ;
+		$prenom = "PrÃ©sident du BR" ;
 		$nom = "" ;
 		$adresse = MAIL_PREZ ;
 	} else if ($eleve_id==ROOT_ID) {
@@ -209,7 +212,7 @@ class Mail {
 	var $from, $to, $cc, $bcc;
 	var $subject, $boundary;
 	
-	// Création d'un nouveau mail
+	// CrÃ©ation d'un nouveau mail
 	function Mail($from, $to, $subject, $multipart=false, $cc="", $bcc="") {
 		$this->from = $from;
 		$this->to = $to;
@@ -231,7 +234,7 @@ class Mail {
 	    }
 	}
 	
-	// Ajout d'entêtes
+	// Ajout d'entÃªtes
 	function addHeader($text) {
 		$this->header .= "$text\n";
 	}
@@ -260,7 +263,7 @@ class Mail {
 		$this->addPart("text/html",$html,"8bit",$charset);
 	}
 	
-	// définission du contenu d'un mail non multipart
+	// dÃ©finission du contenu d'un mail non multipart
 	function setBody($text) {
 		if (!$this->boundary) {
 			$this->body = $text;
@@ -269,7 +272,7 @@ class Mail {
 		}
 	}
 	
-	// pour les envois multiples du même mail à plusieurs personnes
+	// pour les envois multiples du mÃªme mail Ã  plusieurs personnes
 	function setTo($to) {
 		$this->to = $to;
 	}

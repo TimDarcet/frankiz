@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -20,14 +20,17 @@
 /*
 	Affichage de la QDJ actuelle et gestion des votes.
 	
-	TODO traiter le cas ou le qdj master est à la bourre (garder l'ancienne qdj par exemple).
+	TODO traiter le cas ou le qdj master est Ã  la bourre (garder l'ancienne qdj par exemple).
 
 	$Log$
-	Revision 1.13  2005/01/06 23:31:31  pico
-	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
+	Revision 1.14  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.13  2005/01/06 23:31:31  pico
+	La QDJ change Ã  0h00 (ce n'est plus la question du jour plus un petit peu)
+	
 	Revision 1.12  2004/12/16 12:52:57  pico
-	Passage des paramètres lors d'un login
+	Passage des paramÃ¨tres lors d'un login
 	
 	Revision 1.11  2004/11/02 17:46:39  pico
 	Modification de la gestion des caches de la qdj
@@ -50,7 +53,7 @@ require_once BASE_LOCAL."/include/qdj.inc.php";
 
 if(est_authentifie(AUTH_MINIMUM)) {
 
-	// On cherche si l'utilisateur a déjà voté ou non
+	// On cherche si l'utilisateur a dÃ©jÃ  votÃ© ou non
 	$date_aujourdhui = date("Y-m-d", time());
 	$DB_web->query("SELECT 0 FROM qdj_votes WHERE date='$date_aujourdhui' and eleve_id='".$_SESSION['user']->uid."' LIMIT 1");
 	$a_vote = $DB_web->num_rows() != 0;

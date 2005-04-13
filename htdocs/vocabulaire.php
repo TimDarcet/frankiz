@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,9 +21,12 @@
 	Vocabulaire de l'X
 	
 	$Log$
-	Revision 1.3  2004/12/17 14:26:20  pico
-	Pas d'action pour les listes non sélectionnables
+	Revision 1.4  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.3  2004/12/17 14:26:20  pico
+	Pas d'action pour les listes non sÃ©lectionnables
+	
 	Revision 1.2  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
 	Nettoyage de vielles balises qui trainaient.
@@ -34,11 +37,11 @@
 
 require_once "include/global.inc.php";
 
-// génération de la page
+// gÃ©nÃ©ration de la page
 require "include/page_header.inc.php";
 ?>
 <page id='vocabulaire' titre='Frankiz : vocabulaire'>
-<h1>Vocabulaire propre à l'X</h1>
+<h1>Vocabulaire propre Ã  l'X</h1>
 	<liste id="liste_voc" selectionnable="non">
 		<entete id="mot" titre="Expression"/>
 		<entete id="description" titre="Description"/>

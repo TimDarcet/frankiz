@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
-	Revision 1.32  2005/03/23 21:44:17  pico
-	Marche ptèt mieux
+	Revision 1.33  2005/04/13 17:10:01  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.32  2005/03/23 21:44:17  pico
+	Marche ptÃ¨t mieux
+	
 	Revision 1.31  2005/03/23 21:12:12  pico
 	Normalement tout ce qui faut pour passer en UTF8
 	
@@ -35,13 +38,13 @@
 	Simplication du code.
 	
 	Revision 1.28  2004/12/13 21:02:59  pico
-	Voilà !
+	VoilÃ  !
 	
 	Revision 1.27  2004/12/13 20:51:23  pico
 	New balises :)
 	
 	Revision 1.26  2004/11/30 21:33:18  pico
-	Rajout des feuilles à la base d'un arbre
+	Rajout des feuilles Ã  la base d'un arbre
 	
 	Revision 1.25  2004/11/29 17:27:33  schmurtz
 	Modifications esthetiques.
@@ -61,14 +64,14 @@
 	........
 	
 	Revision 1.20  2004/10/29 17:42:36  kikx
-	Petit bug que je ne comprend pas pourquoi ca ne marchait pas avant et que ca marche now (c'est pour faire une phrase correct et comprehensible en français)
+	Petit bug que je ne comprend pas pourquoi ca ne marchait pas avant et que ca marche now (c'est pour faire une phrase correct et comprehensible en franÃ§ais)
 	
 	Revision 1.19  2004/10/29 16:42:31  kikx
 	Rajout des id sur les liens de navigation
-	Ca pêrmet au skinneur soit de mettre en gras certain liens specifique soit de remplacer les liens par des images comme il le souhaite
+	Ca pÃªrmet au skinneur soit de mettre en gras certain liens specifique soit de remplacer les liens par des images comme il le souhaite
 	
 	Revision 1.18  2004/10/21 22:43:11  kikx
-	Bug fix et mise en place de la possibilité de modifier la photo du trombino
+	Bug fix et mise en place de la possibilitÃ© de modifier la photo du trombino
 	
 	Revision 1.17  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
@@ -91,13 +94,13 @@
 	
 	Revision 1.11  2004/10/20 19:58:02  pico
 	Changement skin pico -> valide html strict
-	Changement des balises qui étaient pas valides
+	Changement des balises qui Ã©taient pas valides
 	
 	Revision 1.10  2004/10/20 18:47:07  kikx
 	Pour rajouter des lignes non selectionnables dans une liste
 	
 	Revision 1.9  2004/10/18 19:14:27  pico
-	Changement balises pour me conformer à la dtd
+	Changement balises pour me conformer Ã  la dtd
 	
 	Revision 1.8  2004/10/17 17:09:43  pico
 	Gestion des listes
@@ -112,7 +115,7 @@
 	Revision 1.5  2004/09/16 11:09:38  kikx
 	C'est les vacances maintenant ...
 	Bon bref .. c'est dur aussi
-	Bon j'ai un peu arrangé la page des binets
+	Bon j'ai un peu arrangÃ© la page des binets
 	
 	Revision 1.4  2004/09/15 23:19:56  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
@@ -178,7 +181,7 @@
 		<h2><xsl:value-of select="@titre"/></h2>
 	</xsl:if>
 	<xsl:apply-templates select="commentaire"/>
-	<form method="post" accept-charset="ISO-8859-1"><xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
+	<form method="post" accept-charset="UTF-8"><xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<xsl:variable name="nombre_colonnes" select="count(entete)+count(@selectionnable)"/>
 		<table class="liste" cellspacing="0" cellpadding="0">
 			<tr>
@@ -335,7 +338,7 @@
 <xsl:template match="old_string">
 	<span style="color: red; text-decoration: line-through"><xsl:apply-templates/></span>
 </xsl:template>
-<xsl:template match="html"><!-- très moche car impossible à skinner, mais parfois indispensable -->
+<xsl:template match="html"><!-- trÃ¨s moche car impossible Ã  skinner, mais parfois indispensable -->
 	<xsl:value-of disable-output-escaping="yes" select="text()"/>
 </xsl:template>
 

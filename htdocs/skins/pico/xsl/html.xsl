@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@
 		<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
 		<xsl:if test="boolean(@key)">
 			<xsl:attribute name="accesskey"><xsl:value-of select="@key"/></xsl:attribute>
-			<xsl:attribute name="title">Accès rapide: <xsl:value-of select="@key"/></xsl:attribute>
+			<xsl:attribute name="title">AccÃ¨s rapide: <xsl:value-of select="@key"/></xsl:attribute>
 		</xsl:if>
 		<xsl:if test="boolean(@id)">
 			<xsl:attribute name="class"><xsl:value-of select="@id"/></xsl:attribute>
@@ -67,7 +67,7 @@
 
 
 <xsl:template match="liste[(@selectionnable='oui') or (@action!='')]">
-	<form method="post" accept-charset="ISO-8859-1">
+	<form method="post" accept-charset="UTF-8">
 	<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 	<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 	<xsl:apply-templates select="commentaire | warning | note"/>
@@ -140,7 +140,7 @@
 	<li><xsl:apply-templates/></li>
 </xsl:template>
 <xsl:template match="p[@id='selected']">
-	<img src="skins/pico/fleche.gif" alt="[selectionné]"/>
+	<img src="skins/pico/fleche.gif" alt="[selectionnÃ©]"/>
 </xsl:template>
 
 <xsl:template match="h1">
@@ -194,7 +194,7 @@
 		<xsl:attribute name="href"><xsl:value-of select="@href"/></xsl:attribute><xsl:apply-templates/>
 	</a>
 </xsl:template>
-<xsl:template match="html"><!-- très moche car impossible à skinner, mais parfois indispensable -->
+<xsl:template match="html"><!-- trÃ¨s moche car impossible Ã  skinner, mais parfois indispensable -->
 	<xsl:value-of disable-output-escaping="yes" select="text()"/>
 </xsl:template>
 

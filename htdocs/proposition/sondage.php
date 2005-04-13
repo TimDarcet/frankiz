@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,23 +21,26 @@
 	Page pour demander les sondages !
 	
 	$Log$
+	Revision 1.15  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.14  2005/03/04 23:11:33  pico
 	Restriction des sondages par promo/section/binet
-
+	
 	Revision 1.13  2005/02/10 21:37:53  pico
-	- Pour les ids de news, fait en fonction de la date de péremption, c'est mieux que seulement par id, mais y'a tjs un pb avec les nouvelles fraiches
-	- Correction pour éviter que des gens postent des annonces qui sont déjà périmées
+	- Pour les ids de news, fait en fonction de la date de pÃ©remption, c'est mieux que seulement par id, mais y'a tjs un pb avec les nouvelles fraiches
+	- Correction pour Ã©viter que des gens postent des annonces qui sont dÃ©jÃ  pÃ©rimÃ©es
 	
 	Revision 1.12  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
+	Changement de "TrÃ¨s BRment, l'automate"
 	
 	Revision 1.11  2005/01/18 10:35:02  pico
-	Interface avancée d'édition de sondages (on édite le code, utile pour faire plusieurs sondages de même type)
+	Interface avancÃ©e d'Ã©dition de sondages (on Ã©dite le code, utile pour faire plusieurs sondages de mÃªme type)
 	
 	Revision 1.10  2005/01/14 09:19:32  pico
 	Corrections bug mail
 	+
-	Sondages maintenant public ou privé (ne s'affichant pas dans le cadre)
+	Sondages maintenant public ou privÃ© (ne s'affichant pas dans le cadre)
 	Ceci sert pour les sondages section par exemple
 	
 	Revision 1.9  2004/12/14 00:27:40  kikx
@@ -73,7 +76,7 @@
 
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_MINIMUM);
 
 $DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM eleves WHERE eleve_id='".$_SESSION['user']->uid."'");
@@ -83,8 +86,8 @@ $msg="" ;
 
  if(!isset($_REQUEST["avance"])) $_REQUEST["avance"]=1;
  if(isset($_REQUEST["btn_avance"])){
- 	if($_REQUEST["btn_avance"]=="Interface simplifiée") $_REQUEST["avance"]=0;
- 	if($_REQUEST["btn_avance"]=="Interface avancée") $_REQUEST["avance"]=1;
+ 	if($_REQUEST["btn_avance"]=="Interface simplifiÃ©e") $_REQUEST["avance"]=0;
+ 	if($_REQUEST["btn_avance"]=="Interface avancÃ©e") $_REQUEST["avance"]=1;
 }
 
 //---------------------------------------------------------------------------------
@@ -151,7 +154,7 @@ if (isset($_POST['valid'])) {
 		$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
 	
 		$contenu = "<strong>Bonjour,</strong><br><br>".
-			"$prenom $nom a demandé la validation d'un sondage : <br>".
+			"$prenom $nom a demandÃ© la validation d'un sondage : <br>".
 			"<br>".
 			"Pour valider ou non cette demande va sur la page suivante<br>".
 			"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_sondages.php'>".
@@ -168,7 +171,7 @@ if (isset($_POST['valid'])) {
 
 //=================
 //===============
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 //=================
 
@@ -185,10 +188,10 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 if ((isset($_POST['valid']))&&($erreur==0)) {
 ?>
 	<commentaire>
-		Tu as demandé à un webmestre de valider ton sondage<br/>
-		Il faut compter 24h pour que ton sondage soit prise en compte par notre système<br/>
+		Tu as demandÃ© Ã  un webmestre de valider ton sondage<br/>
+		Il faut compter 24h pour que ton sondage soit prise en compte par notre systÃ¨me<br/>
 		<br/>
-		Nous te remercions d'avoir soumis un sondage et nous essayerons d'y répondre le plus rapidement possible<br/>
+		Nous te remercions d'avoir soumis un sondage et nous essayerons d'y rÃ©pondre le plus rapidement possible<br/>
 	</commentaire>
 	
 	
@@ -208,7 +211,7 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 		<?
 	}
 ?>
-<formulaire id="form" titre="Aperçu de ton sondage">	
+<formulaire id="form" titre="AperÃ§u de ton sondage">	
 	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
 	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
 	<h2><?=$titre_sondage?></h2>
@@ -217,7 +220,7 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 	decode_sondage($contenu_form) ;
 ?>
 	
-	<choix titre="Sondage jusqu'à " id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
+	<choix titre="Sondage jusqu'Ã  " id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
 <?	for ($i=1 ; $i<=MAX_PEREMPTION ; $i++) {
 		$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
 		$date_value = date("d/m/y" , $date_id);
@@ -227,7 +230,7 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 	}
 ?>
 	</choix>
-	<note>Si tu souhaite que ce sondage soit réservé à certaines personnes, définis le ici</note>
+	<note>Si tu souhaite que ce sondage soit rÃ©servÃ© Ã  certaines personnes, dÃ©finis le ici</note>
 	<choix titre="Restreindre" id="restriction" type="radio" valeur="<? echo (isset($_REQUEST['restriction'])) ? $_REQUEST['restriction']:"aucune" ;?>">
 		<option id="aucune" titre="Aucune"/>
 		<option id="promo" titre="A une promo"/>
@@ -260,13 +263,13 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 	</choix>
 	<br/>
 	<bouton titre="Valider le sondage" id="valid" onClick="return window.confirm('Voulez vous vraiment valider votre sondage ?')" />
-	<bouton titre="Interface <?= ($_REQUEST["avance"]==1)?"simplifiée":"avancée";?>" id="btn_avance"/>
+	<bouton titre="Interface <?= ($_REQUEST["avance"]==1)?"simplifiÃ©e":"avancÃ©e";?>" id="btn_avance"/>
 </formulaire>
 
 <formulaire id="ajout_titre" titre="OBLIGATOIRE: le titre du sondage" action="proposition/sondage.php">
 	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
 	<champ id="titre_sondage" titre="Titre" valeur="<?=$titre_sondage?>"/>
-	<bouton titre="Mettre à jour le titre" id="ok_titre" />
+	<bouton titre="Mettre Ã  jour le titre" id="ok_titre" />
 </formulaire>
 	
 <? if(isset($_REQUEST["avance"])&&$_REQUEST["avance"]==1){ ?>
@@ -277,12 +280,12 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 			Pour un champ: ###champ///Le nom du champ<br/>
 			Pour un texte: ###text///Ma question<br/>
 			Pour un radio: ###radio///ma question///option1///option2///option3<br/>
-			Pour une boite déroulante: ###combo///ma question///option1///option2///option3<br/>
+			Pour une boite dÃ©roulante: ###combo///ma question///option1///option2///option3<br/>
 			Pour une checkbox: ###check///ma question///option1///option2///option3<br/>
 		</note>
-		<zonetext id="contenu_form" titre="Zone d'édition avancée" type="grand"><?=$contenu_form?></zonetext>
+		<zonetext id="contenu_form" titre="Zone d'Ã©dition avancÃ©e" type="grand"><?=$contenu_form?></zonetext>
 		<hidden id="titre_sondage" titre="Titre" valeur="<?=$titre_sondage?>"/>
-		<bouton titre="Mettre à jour le sondage" id="ok_sondage" />
+		<bouton titre="Mettre Ã  jour le sondage" id="ok_sondage" />
 		<hidden id="avance" valeur="1"/>
 	</formulaire>
 <? }else{ ?>
@@ -311,7 +314,7 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
 		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
 		<champ id="question" titre="Question" valeur=""/>
-		<textsimple titre="Maintenant rajouter les réponses possibles"/>
+		<textsimple titre="Maintenant rajouter les rÃ©ponses possibles"/>
 		<champ id="reponse1" titre="Reponse 1" valeur=""/>
 		<champ id="reponse2" titre="Reponse 2" valeur=""/>
 		<champ id="reponse3" titre="Reponse 3" valeur=""/>
@@ -325,7 +328,7 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
 		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
 		<champ id="question" titre="Question" valeur=""/>
-		<textsimple titre="Maintenant rajouter les réponses possibles"/>
+		<textsimple titre="Maintenant rajouter les rÃ©ponses possibles"/>
 		<champ id="reponse1" titre="Reponse 1" valeur=""/>
 		<champ id="reponse2" titre="Reponse 2" valeur=""/>
 		<champ id="reponse3" titre="Reponse 3" valeur=""/>
@@ -335,11 +338,11 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 		<hidden id="avance" valeur="0"/>
 		<bouton titre="Ajouter" id="ok_check" />
 	</formulaire>
-	<formulaire id="ajout_champ" titre="Rajoute une question de type 'liste déroulante'" action="proposition/sondage.php">	
+	<formulaire id="ajout_champ" titre="Rajoute une question de type 'liste dÃ©roulante'" action="proposition/sondage.php">	
 		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
 		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
 		<champ id="question" titre="Question" valeur=""/>
-		<textsimple titre="Maintenant rajouter les réponses possibles"/>
+		<textsimple titre="Maintenant rajouter les rÃ©ponses possibles"/>
 		<champ id="reponse1" titre="Reponse 1" valeur=""/>
 		<champ id="reponse2" titre="Reponse 2" valeur=""/>
 		<champ id="reponse3" titre="Reponse 3" valeur=""/>

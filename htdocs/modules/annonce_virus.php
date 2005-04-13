@@ -1,6 +1,6 @@
  <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,29 +21,32 @@
 	Pour faire peur aux gens qui ont des virus...
 	
 	$Log$
-	Revision 1.2  2005/04/13 15:36:08  dei
-	comme ça le compte a rebours marche vraiment...
+	Revision 1.3  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.2  2005/04/13 15:36:08  dei
+	comme Ã§a le compte a rebours marche vraiment...
+	
 	Revision 1.1  2005/04/13 13:58:16  dei
-	Voilà qui devrait faire peur à certains
-	Basé sur le script de fruneau module sur la page principale + page d'admin...
+	VoilÃ  qui devrait faire peur Ã  certains
+	BasÃ© sur le script de fruneau module sur la page principale + page d'admin...
 	
 	
 	
 */
 
 if(est_authentifie(AUTH_INTERNE)) {
-	/*On cherche dans la base les vilains qui ont un status solved différent de 2, donc qui a priori sont infestés. La personne est identifiée par son ip, de l'ip on remonte à la chambre puis au mec.*/
+	/*On cherche dans la base les vilains qui ont un status solved diffÃ©rent de 2, donc qui a priori sont infestÃ©s. La personne est identifiÃ©e par son ip, de l'ip on remonte Ã  la chambre puis au mec.*/
 	$DB_admin->query("SELECT e.eleve_id,p.piece_id,i.ip,i.date,i.date+10-CURDATE(),i.solved,i.id,l.nom FROM prises as p LEFT JOIN infections as i ON p.ip=i.ip LEFT JOIN liste_virus as l ON l.port=i.port LEFT JOIN trombino.eleves as e ON e.piece_id=p.piece_id WHERE NOT( i.solved='2') AND i.ip='{$_SERVER['REMOTE_ADDR']}'");
 	if($DB_admin->num_rows()!=0){
 		echo "<module id=\"virus\" titre=\"Important !\">\n";
 		echo "<warning>";
 		if($DB_admin->num_rows()==1){
-			echo "<h2>Ton ordinateur est actuellement infecté par un virus !</h2>";
+			echo "<h2>Ton ordinateur est actuellement infectÃ© par un virus !</h2>";
 		}else{
-			echo "<h2>Ton ordinateur est actuellement infecté par des virus !</h2>";
+			echo "<h2>Ton ordinateur est actuellement infectÃ© par des virus !</h2>";
 		}
-		echo "<p>Tu as choppé :</p>";
+		echo "<p>Tu as choppÃ© :</p>";
 		echo "<ui>";
 		$temp_rebours=10;
 		list($eleve_id,$piece,$ip,$date,$rebours,$solved,$id,$nomv)=$DB_admin->next_row();
@@ -51,7 +54,7 @@ if(est_authentifie(AUTH_INTERNE)) {
 		$min_date=$date;
 		do
 		{
-			/*Calcul du nombre de jours avant coupure du réseau.*/
+			/*Calcul du nombre de jours avant coupure du rÃ©seau.*/
 			if($rebours<$temp_rebours)
 				$temp_rebours=$rebours;
 			/*Date de la plus ancienne infection courrante*/
@@ -61,16 +64,16 @@ if(est_authentifie(AUTH_INTERNE)) {
 		}
 		while(list($eleve_id,$piece,$ip,$date,$rebours,$solved,$id,$nomv)=$DB_admin->next_row());
 		echo "</ui>";
-		$avert="<p>Depuis le ".preg_replace('/^(.{4})-(.{2})-(.{2})$/','$3-$2-$1', $min_date)." tu mets en danger le réseau...";
+		$avert="<p>Depuis le ".preg_replace('/^(.{4})-(.{2})-(.{2})$/','$3-$2-$1', $min_date)." tu mets en danger le rÃ©seau...";
 		if ($temp_rebours>0){
-			$avert=$avert." Afin d'éviter la propagation des virus, nous allons devoir te couper le réseau dans $temp_rebours jours . Lorsque tu t'en sera débarrassé signale le à un admin@windows.</p>";
+			$avert=$avert." Afin d'Ã©viter la propagation des virus, nous allons devoir te couper le rÃ©seau dans $temp_rebours jours . Lorsque tu t'en sera dÃ©barrassÃ© signale le Ã  un admin@windows.</p>";
 		} else {
-			$avert=$avert." Nous avons du te couper le réseau... Lorsque tu te sera débarrassé de ce virus signale le à un admin@windows.</p>";
+			$avert=$avert." Nous avons du te couper le rÃ©seau... Lorsque tu te sera dÃ©barrassÃ© de ce virus signale le Ã  un admin@windows.</p>";
 		}
 		echo "$avert";
 		echo "</warning>";
 		echo "</module>\n";
-		/*On signale que l'utilisateur est prévenu...*/
+		/*On signale que l'utilisateur est prÃ©venu...*/
 		$DB_admin->query("UPDATE infections SET solved='1' WHERE solved='0' AND ip='{$_SERVER['REMOTE_ADDR']}'");
 	}
 }

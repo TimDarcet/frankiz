@@ -1,6 +1,6 @@
 <?
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,11 +21,14 @@
 	Affichage de flux rss externes sous forme de module.
 
 	$Log$
+	Revision 1.10  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.9  2005/01/04 23:11:29  pico
 	Bugfix ?
-
+	
 	Revision 1.8  2004/11/24 23:07:59  pico
-	Là !²
+	LÃ  !Â²
 	
 	Revision 1.7  2004/11/24 23:06:46  pico
 	BugFix
@@ -35,10 +38,10 @@
 	globale pour tous les fichiers.
 	
 	Revision 1.5  2004/11/24 19:00:32  pico
-	Bon, là ça devrait être bon...
+	Bon, lÃ  Ã§a devrait Ãªtre bon...
 	
 	Revision 1.4  2004/11/24 18:53:31  pico
-	J'espère que ça sera fixé cette fois
+	J'espÃ¨re que Ã§a sera fixÃ© cette fois
 	
 	Revision 1.3  2004/11/24 18:39:02  pico
 	WarningFix si variable vide

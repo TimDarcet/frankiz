@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,9 +21,12 @@
 	Fonction servant pour la gestion des skins.
 	
 	$Log$
+	Revision 1.18  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.17  2005/04/07 21:34:01  fruneau
 	Idem pour skin.inc.php
-
+	
 	Revision 1.15  2004/12/14 17:14:53  schmurtz
 	modification de la gestion des annonces lues :
 	- toutes les annonces sont envoyees dans le XML
@@ -31,7 +34,7 @@
 	- suppression de la page affichant toutes les annonces
 	
 	Revision 1.14  2004/12/06 00:01:42  kikx
-	Passage de la skin par défaut en parametre du site et non pas stocké en dur
+	Passage de la skin par dÃ©faut en parametre du site et non pas stockÃ© en dur
 	
 	Revision 1.13  2004/11/24 23:38:38  schmurtz
 	Gestion des skins perso + corrections dans la skin default
@@ -45,37 +48,37 @@ require_once "xml.inc.php";
 
 /*
 	Lit le contenu d'un fichier de description d'une skin.
-	Renvoi un arbre ayant la structure suivante :
+	Renvoi un arbre ayant la structure suivanteÂ :
 	array (
-		[nom] => «nom de la skin»
-		[description] => «sa description»
-		[chemin] => «chemin d'accès au dossier xsl»
-		[parametres] => array (				//liste des paramètres de la skin
-			[«id du premier paramètre»] => array (
-				[id] => «id du premier paramètre»
-				[description] => «description du paramètre»
-				[valeurs] => array (		// liste des valeurs que peut prendre le paramètre
-					[«id de la première valeur»] => [«nom de la première valeur»]
-					[«id de la deuxième valeur»] => [«nom de la deuxième valeur»]
+		[nom] => Â«nom de la skinÂ»
+		[description] => Â«sa descriptionÂ»
+		[chemin] => Â«chemin d'accÃ¨s au dossier xslÂ»
+		[parametres] => array (				//liste des paramÃ¨tres de la skin
+			[Â«id du premier paramÃ¨treÂ»] => array (
+				[id] => Â«id du premier paramÃ¨treÂ»
+				[description] => Â«description du paramÃ¨treÂ»
+				[valeurs] => array (		// liste des valeurs que peut prendre le paramÃ¨tre
+					[Â«id de la premiÃ¨re valeurÂ»] => [Â«nom de la premiÃ¨re valeurÂ»]
+					[Â«id de la deuxiÃ¨me valeurÂ»] => [Â«nom de la deuxiÃ¨me valeurÂ»]
 				)
 			)
-			[«id du deuxième paramêtre»] => array (
+			[Â«id du deuxiÃ¨me paramÃªtreÂ»] => array (
 				...
 			)
 		)
 	)
 	
-	Le code XML étant :
+	Le code XML Ã©tantÂ :
 	<skin>
-		<nom>«nom de la skin»</nom>
-		<descrition>«sa description»</description>
-		<chemin>«chemin d'accès au dossier xsl: "xsl" ou "." en général»</chemin>
-		<parametre id="«id du premier paramètre»">
-			<description>«description du paramètre»</description>
-			<valeur id="«id de la première valeur»">«nom de la première valeur»</valeur>
-			<valeur id="«id de la deuxième valeur»">«nom de la deuxième valeur»</valeur>
+		<nom>Â«nom de la skinÂ»</nom>
+		<descrition>Â«sa descriptionÂ»</description>
+		<chemin>Â«chemin d'accÃ¨s au dossier xsl: "xsl" ou "." en gÃ©nÃ©ralÂ»</chemin>
+		<parametre id="Â«id du premier paramÃ¨treÂ»">
+			<description>Â«description du paramÃ¨treÂ»</description>
+			<valeur id="Â«id de la premiÃ¨re valeurÂ»">Â«nom de la premiÃ¨re valeurÂ»</valeur>
+			<valeur id="Â«id de la deuxiÃ¨me valeurÂ»">Â«nom de la deuxiÃ¨me valeurÂ»</valeur>
 		</parametre>
-		<parametre id="«id du deuxième paramètre»">
+		<parametre id="Â«id du deuxiÃ¨me paramÃ¨treÂ»">
 			...
 		</parametre>
 	</skin>
@@ -87,11 +90,11 @@ function lire_description_skin($fichier) {
 	if(!file_exists($fichier)) return array();
 	$parsed_xml = xml_get_tree($fichier);
 	
-	// Vérification de la structure de l'arbre et stockage des données qui nous servent
+	// VÃ©rification de la structure de l'arbre et stockage des donnÃ©es qui nous servent
 	// sous la forme d'un arbre.
 	$desc = array('description'=>"", 'chemin'=>".", 'parametres'=>array());
 	if( $parsed_xml[0]['tag'] == 'skin' ) {
-		// pour chaque élément de <skin>
+		// pour chaque Ã©lÃ©ment de <skin>
 		$element_list = $parsed_xml[0]['children'];
 		foreach($element_list as $element) {
 			switch($element['tag']) {
@@ -108,7 +111,7 @@ function lire_description_skin($fichier) {
 					$param['id'] = $element['attributes']['id'];
 					if(empty($param['id'])) break;  // le nom est obligatoire
 
-					// pour chaque élément de <parametre>
+					// pour chaque Ã©lÃ©ment de <parametre>
 					$param_element_list = $element['children'];
 					foreach($param_element_list as $param_element) {
 						switch($param_element['tag']) {
@@ -125,10 +128,10 @@ function lire_description_skin($fichier) {
 						}
 					}
 					
-					// enregistrement du paramètre avec si besoin une valeur par défaut de la
+					// enregistrement du paramÃ¨tre avec si besoin une valeur par dÃ©faut de la
 					// description
 					if( empty($param['description']) )
-						$param['description'] = "Paramètre «".$param['id']."»";
+						$param['description'] = "ParamÃ¨tre Â«".$param['id']."Â»";
 					$desc['parametres'][$param['id']] = $param;
 					break;
 			}
@@ -145,7 +148,7 @@ function lire_description_skin($fichier) {
 function lire_description_css($css_dir) {
 	$description="";
 	if(file_exists("$css_dir/description.txt")) {
-		// Lecture du fichier de description et suppression des éventuelles balises html
+		// Lecture du fichier de description et suppression des Ã©ventuelles balises html
 		$fd = fopen("$css_dir/description.txt","r");
 		$description=fread($fd,filesize("$css_dir/description.txt"));
 		$description=htmlspecialchars($description, ENT_QUOTES);
@@ -155,7 +158,7 @@ function lire_description_css($css_dir) {
 }
 
 /*
-	Renvoi les paramètres de la skin par défaut
+	Renvoi les paramÃ¨tres de la skin par dÃ©faut
 */
 function skin_defaut() {
 	global $DB_web ;
@@ -173,7 +176,7 @@ function skin_defaut() {
 }
 
 /*
-	Vérifie la validité des paramètres d'une skin. Corrige ce qui peut l'être et
+	VÃ©rifie la validitÃ© des paramÃ¨tres d'une skin. Corrige ce qui peut l'Ãªtre et
 	au pire utilise la skin par defaut.
 */
 function skin_valider() {
@@ -182,11 +185,11 @@ function skin_valider() {
 		!empty($_SESSION['skin']['skin_css']) && !is_dir(BASE_LOCAL."/skins/{$_SESSION['skin']['skin_nom']}/{$_SESSION['skin']['skin_css']}") )
 		$_SESSION['skin'] = skin_defaut();
 	
-	// Vérification de l'existance de de skin_visible et skin_parametres
+	// VÃ©rification de l'existance de de skin_visible et skin_parametres
 	if(!isset($_SESSION['skin']['skin_visible']))		$_SESSION['skin']['skin_visible'] = array();
 	if(!isset($_SESSION['skin']['skin_parametres']))	$_SESSION['skin']['skin_parametres'] = array();
 	
-	// Calcul d'éléments utiles
+	// Calcul d'Ã©lÃ©ments utiles
 	$description = lire_description_skin(BASE_LOCAL."/skins/{$_SESSION['skin']['skin_nom']}");
 	if(!empty($description)) {
 		$_SESSION['skin']['skin_xsl_chemin'] = BASE_LOCAL."/skins/{$_SESSION['skin']['skin_nom']}/{$description['chemin']}/skin.xsl";

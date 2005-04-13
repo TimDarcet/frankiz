@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,16 +18,19 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Gestion des erreurs php et mysql :
-	- on évite de les afficher à l'utilisateur.
-	- on les affiches en haut de la page pour les webmestres, met on ne les fait pas apparaître
+	Gestion des erreurs php et mysqlÂ :
+	- on Ã©vite de les afficher Ã  l'utilisateur.
+	- on les affiches en haut de la page pour les webmestres, met on ne les fait pas apparaÃ®tre
 	  dans la sortie XML.
-	- affichage des requètes mysql en commentaire dans
+	- affichage des requÃ¨tes mysql en commentaire dans
 	
 	$Log$
+	Revision 1.8  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.7  2005/03/15 11:54:36  pico
 	Devrait logguer aussi les variables en cas d'erreur
-
+	
 	Revision 1.6  2005/02/08 21:57:56  pico
 	Correction bug #62
 	
@@ -73,14 +76,14 @@
 */
 
 error_reporting(E_ERROR|E_CORE_ERROR|E_COMPILE_ERROR|E_PARSE);
-	// TODO actuellement on n'arrive pas à récupérer ces erreurs, donc on les affiches quand
-	// même à l'utilisateur.
+	// TODO actuellement on n'arrive pas Ã  rÃ©cupÃ©rer ces erreurs, donc on les affiches quand
+	// mÃªme Ã  l'utilisateur.
 
 set_error_handler("ajouter_erreur_php");
 
-$_ERREURS_PHPMYSQL = array();	// contient des : array('errname'=>"",'errmsg'=>"",'file'=>"",'line'=>"",'query'=>"")
+$_ERREURS_PHPMYSQL = array();	// contient desÂ : array('errname'=>"",'errmsg'=>"",'file'=>"",'line'=>"",'query'=>"")
 $_ERREUR_FATAL = false;			// indique si une erreur fatale est survenue, si c'est le cas on affiche pas la page
-								// pour éviter d'afficher une demi page qui fera de toute façon planter le xslt.
+								// pour Ã©viter d'afficher une demi page qui fera de toute faÃ§on planter le xslt.
 $_DEBUG_LOG = array();			// contient des : string.
 
 $_ERREURS_PHP_NOMS = array(
@@ -123,13 +126,13 @@ function ajouter_erreur_mysql($query) {
 	$_ERREUR_FATAL = true;
 }
 
-// Ajout dans les logs de débogage
+// Ajout dans les logs de dÃ©bogage
 function ajouter_debug_log($string) {
 	global $_DEBUG_LOG;
 	$_DEBUG_LOG[] = $string;
 }
 
-// Ajout dans les logs d'accès. Ces logs sont conservés dans la version en prod du site.
+// Ajout dans les logs d'accÃ¨s. Ces logs sont conservÃ©s dans la version en prod du site.
 function ajouter_access_log($string) {
 	$file = fopen(LOG_ACCESS, 'a');
 	fwrite($file, "[".date("d/m/Y H:i:s",time())."] ".$string."\n");
@@ -172,7 +175,7 @@ function affiche_erreurs_php() {
 		
 		if($_ERREUR_FATAL) {
 			echo "<warning>Une erreur inconnue est survenue.\n"
-				." Pour informer le Webmestre de cette erreur et expliquer la manipulation qui l'a déclenchée,"
+				." Pour informer le Webmestre de cette erreur et expliquer la manipulation qui l'a dÃ©clenchÃ©e,"
 				." cliquez <a href=\"mailto:".MAIL_WEBMESTRE."?Subject=%5BFrankiz%20Erreur%20$timestamp%5D%20\">ici</a>.</warning>\n";
 			exit;
 		}

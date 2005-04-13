@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,14 +21,17 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.33  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.32  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
-
+	
 	Revision 1.31  2005/01/22 17:58:38  pico
 	Modif des images
 	
 	Revision 1.30  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
+	Changement de "TrÃ¨s BRment, l'automate"
 	
 	Revision 1.29  2005/01/13 17:10:58  pico
 	Mails de validations From le validateur qui va plus ou moins bien
@@ -80,7 +83,7 @@
 	Correction mineur
 	
 	Revision 1.12  2004/10/29 14:58:36  kikx
-	Passage en HTML la page de validation des annonces, de plus il y a la possibilité de mettre pourquoi on refuse la validation d'une annonce
+	Passage en HTML la page de validation des annonces, de plus il y a la possibilitÃ© de mettre pourquoi on refuse la validation d'une annonce
 	
 	Revision 1.11  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
@@ -99,7 +102,7 @@
 	
 	Pour la validation des annonces, il manquait un champ -> erreur sql.
 	
-	Il faudrait pas rajouter les options pour définir l'annonce en haut ou visible de l'extérieur ??
+	Il faudrait pas rajouter les options pour dÃ©finir l'annonce en haut ou visible de l'extÃ©rieur ??
 	
 	Revision 1.7  2004/10/06 14:12:27  kikx
 	Page de mail promo quasiment en place ...
@@ -108,7 +111,7 @@
 	
 	Revision 1.6  2004/09/18 16:04:52  kikx
 	Beaucoup de modifications ...
-	Amélioration des pages qui gèrent les annonces pour les rendre compatible avec la nouvelle norme de formatage xml -> balise web et balise image qui permette d'afficher une image et la signature d'une personne
+	AmÃ©lioration des pages qui gÃ¨rent les annonces pour les rendre compatible avec la nouvelle norme de formatage xml -> balise web et balise image qui permette d'afficher une image et la signature d'une personne
 	
 	Revision 1.5  2004/09/17 22:49:29  kikx
 	Rajout de ce qui faut pour pouvoir faire des telechargeement de fichiers via des formulaires (ie des champs 'file' des champ 'hidden') de plus maintenant le formulaire sont en enctype="multipart/form-data" car sinon il parait que ca marche pas !
@@ -119,14 +122,14 @@
 require_once "../include/global.inc.php";
 require_once "../include/wiki.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('web'))
 	acces_interdit();
 
 
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -135,7 +138,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <h1>Validation d'annonces</h1>
 
 <?
-// On traite les différents cas de figure d'enrigistrement et validation d'annonce :)
+// On traite les diffÃ©rents cas de figure d'enrigistrement et validation d'annonce :)
 
 // Enregistrer ...
 $DB_valid->query("LOCK TABLE valid_annonces WRITE");
@@ -154,12 +157,12 @@ foreach ($_POST AS $keys => $val){
 			$DB_valid->query("UPDATE valid_annonces SET perime='{$_POST['date']}', titre='{$_POST['titre']}', contenu='{$_POST['text']}' WHERE annonce_id='{$temp[1]}'");
 			if ($temp[0]!='valid') {
 	?>
-				<commentaire>Modif effectuée</commentaire>
+				<commentaire>Modif effectuÃ©e</commentaire>
 	<?	
 			}
 		} else {
 	?>
-			<warning>Requête deja traitée par un autre administrateur</warning>
+			<warning>RequÃªte deja traitÃ©e par un autre administrateur</warning>
 	<?			
 		}
 	}
@@ -170,15 +173,15 @@ foreach ($_POST AS $keys => $val){
 			list($eleve_id) = $DB_valid->next_row() ;
 			
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid,"validé l'annonce '{$_POST['titre']}' ") ;
+			log_admin($_SESSION['user']->uid,"validÃ© l'annonce '{$_POST['titre']}' ") ;
 			
 			// envoi du mail
-			$contenu = 	"Ton annonce vient d'être validé par le BR... Elle est dès à present visible sur la page d'accueil<br><br> ".
+			$contenu = 	"Ton annonce vient d'Ãªtre validÃ© par le BR... Elle est dÃ¨s Ã  present visible sur la page d'accueil<br><br> ".
 						$_POST['explication']."<br>".
 						"Merci de ta participation <br><br>".
 						"Cordialement,<br>" .
 						"Le Webmestre de Frankiz<br>"  ;
-			couriel($eleve_id,"[Frankiz] Ton annonce a été validé par le BR",$contenu,WEBMESTRE_ID);
+			couriel($eleve_id,"[Frankiz] Ton annonce a Ã©tÃ© validÃ© par le BR",$contenu,WEBMESTRE_ID);
 			
 			if (isset($_REQUEST['ext_auth']))
 				$temp_ext = '1'  ;
@@ -192,14 +195,14 @@ foreach ($_POST AS $keys => $val){
 				
 			$DB_web->query("INSERT INTO annonces  SET stamp=NOW(), perime='{$_POST['date']}', titre='{$_POST['titre']}', contenu='{$_POST['text']}', eleve_id=$eleve_id, exterieur=$temp_ext $temp_imp");
 			
-			// On déplace l'image si elle existe dans le répertoire prevu à cette effet
+			// On dÃ©place l'image si elle existe dans le rÃ©pertoire prevu Ã  cette effet
 			$index = mysql_insert_id($DB_web->link) ;
 			if (file_exists(DATA_DIR_LOCAL."annonces/a_valider_{$temp[1]}")){
 				rename(DATA_DIR_LOCAL."annonces/a_valider_{$temp[1]}",DATA_DIR_LOCAL."annonces/$index") ;
 			}
 			$DB_valid->query("DELETE FROM valid_annonces WHERE annonce_id='{$temp[1]}'") ;
 		?>
-			<commentaire>Validation effectuée</commentaire>
+			<commentaire>Validation effectuÃ©e</commentaire>
 		<?	
 		} 
 		
@@ -210,15 +213,15 @@ foreach ($_POST AS $keys => $val){
 			list($eleve_id) = $DB_valid->next_row() ;
 			
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid,"supprimé l'annonce '{$_POST['titre']}' ") ;
+			log_admin($_SESSION['user']->uid,"supprimÃ© l'annonce '{$_POST['titre']}' ") ;
 			
 			// envoi du mail
-			$contenu = 	"Ton annonce n'a pas été validé par le BR pour la raison suivante :<br>".
+			$contenu = 	"Ton annonce n'a pas Ã©tÃ© validÃ© par le BR pour la raison suivante :<br>".
 						$_POST['explication']."<br>".
-						"Désolé <br><br>".
+						"DÃ©solÃ© <br><br>".
 						"Cordialement,<br>" .
 						"Le Webmestre de Frankiz<br>"  ;
-			couriel($eleve_id,"[Frankiz] Ton annonce n'a pas été validé par le BR",$contenu,WEBMESTRE_ID);
+			couriel($eleve_id,"[Frankiz] Ton annonce n'a pas Ã©tÃ© validÃ© par le BR",$contenu,WEBMESTRE_ID);
 	
 			$DB_valid->query("DELETE FROM valid_annonces WHERE annonce_id='{$temp[1]}'") ;
 			//On supprime aussi l'image si elle existe ...
@@ -226,14 +229,14 @@ foreach ($_POST AS $keys => $val){
 			$supp_image = "" ;
 			if (file_exists(DATA_DIR_LOCAL."annonces/a_valider_{$temp[1]}")){
 				unlink(DATA_DIR_LOCAL."annonces/a_valider_{$temp[1]}") ;
-				$supp_image = " et de son image associée" ;
+				$supp_image = " et de son image associÃ©e" ;
 			}
 		?>
 			<warning>Suppression d'une annonce<? echo $supp_image?></warning>
 		<?
 		} else {
 	?>
-			<warning>Requête deja traitée par un autre administrateur</warning>
+			<warning>RequÃªte deja traitÃ©e par un autre administrateur</warning>
 	<?
 		}
 	}
@@ -267,29 +270,29 @@ $DB_valid->query("UNLOCK TABLES");
 		<formulaire id="annonce_<? echo $id ?>" titre="L'annonce" action="admin/valid_annonces.php">
 			<? 
 			if ($ext==1) {
-				echo "<warning>L'utilisateur a demandé que son activité soit visible de l'exterieur</warning>" ;
+				echo "<warning>L'utilisateur a demandÃ© que son activitÃ© soit visible de l'exterieur</warning>" ;
 				$ext_temp='ext' ; 
 			} else $ext_temp="" ;
 			?>
 
 			<champ id="titre" titre="Le titre" valeur="<? echo $titre ;?>"/>
 			<zonetext id="text" titre="Le texte"><?=$contenu?></zonetext>
-			<note>La signature sera automatiquement générée</note>
-			<champ id="date" titre="Date de péremption" valeur="<? echo $date ;?>"/>
+			<note>La signature sera automatiquement gÃ©nÃ©rÃ©e</note>
+			<champ id="date" titre="Date de pÃ©remption" valeur="<? echo $date ;?>"/>
 			
-			<choix titre="Éxtérieur" id="exterieur" type="checkbox" valeur="<? echo $ext_temp." " ; if ((isset($_REQUEST['ext_auth']))&&(isset($_REQUEST['modif_'.$id]))) echo 'ext_auth' ;?>">
+			<choix titre="Ã‰xtÃ©rieur" id="exterieur" type="checkbox" valeur="<? echo $ext_temp." " ; if ((isset($_REQUEST['ext_auth']))&&(isset($_REQUEST['modif_'.$id]))) echo 'ext_auth' ;?>">
 				<option id="ext" titre="Demande de l'utilisateur" modifiable='non'/>
-				<option id="ext_auth" titre="Décision du Webmestre"/>
+				<option id="ext_auth" titre="DÃ©cision du Webmestre"/>
 			</choix>
-			<note>Si l'annonce est très très importante</note>
+			<note>Si l'annonce est trÃ¨s trÃ¨s importante</note>
 			<choix titre="Important" id="important" type="checkbox" valeur="<? if ((isset($_REQUEST['important']))&&(isset($_REQUEST['modif_'.$id]))) echo 'important' ;?>">
 				<option id="important" titre=""/>
 			</choix>
-			<zonetext id="explication" titre="La raison du choix du modérateur (Surtout si refus)"></zonetext>
+			<zonetext id="explication" titre="La raison du choix du modÃ©rateur (Surtout si refus)"></zonetext>
 
 			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
-			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Cette annonce apparaitra dès maintenant sur la page d'accueil de frankiz... Voulez vous valider cette annonce ?')"/>
-			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Si vous supprimer cette annonce, celle-ci sera supprimé de façon definitive ... Voulez vous vraiment la supprimer ?')"/>
+			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Cette annonce apparaitra dÃ¨s maintenant sur la page d'accueil de frankiz... Voulez vous valider cette annonce ?')"/>
+			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Si vous supprimer cette annonce, celle-ci sera supprimÃ© de faÃ§on definitive ... Voulez vous vraiment la supprimer ?')"/>
 		</formulaire>
 <?
 		affiche_syntaxe_wiki();

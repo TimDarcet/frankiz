@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,11 +21,14 @@
 	Page des contacts utiles
 	
 	$Log$
+	Revision 1.6  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.5  2004/11/04 16:36:42  schmurtz
 	Modifications cosmetiques
-
+	
 	Revision 1.4  2004/10/31 18:20:24  kikx
-	Rajout d'une page pour les plan (venir à l'X)
+	Rajout d'une page pour les plan (venir Ã  l'X)
 	
 	Revision 1.3  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
@@ -40,46 +43,46 @@
 require_once "include/global.inc.php";
 
 
-// génération de la page
+// gÃ©nÃ©ration de la page
 require "include/page_header.inc.php";
 ?>
 <page id='contact' titre='Frankiz : contact'>
 <h1>Contacts utiles</h1>
 
-<cadre titre="Contacter la Kès">
-	<p>La "Kès" est le Bureau des Élèves communément appelé "BdE" dans les autres Grandes Écoles.
-	Elle est en charge pendant un an de la vie des élèves.</p>
-	<p>Si vous désirez des <a href="mailto:<?=MAIL_CONTACT?>?subject=K%E8s%20:%20Cours%20Particuliers">cours particuliers</a> donnés par un élève de l'École.</p>
-	<p>Si vous désirez des <a href="mailto:<?=MAIL_CONTACT?>?subject=K%E8s%20:%20Informations%20diverses">informations</a> sur polytechnique et les élèves.</p>
+<cadre titre="Contacter la KÃ¨s">
+	<p>La "KÃ¨s" est le Bureau des Ã‰lÃ¨ves communÃ©ment appelÃ© "BdE" dans les autres Grandes Ã‰coles.
+	Elle est en charge pendant un an de la vie des Ã©lÃ¨ves.</p>
+	<p>Si vous dÃ©sirez des <a href="mailto:<?=MAIL_CONTACT?>?subject=K%E8s%20:%20Cours%20Particuliers">cours particuliers</a> donnÃ©s par un Ã©lÃ¨ve de l'Ã‰cole.</p>
+	<p>Si vous dÃ©sirez des <a href="mailto:<?=MAIL_CONTACT?>?subject=K%E8s%20:%20Informations%20diverses">informations</a> sur polytechnique et les Ã©lÃ¨ves.</p>
 </cadre>
 
-<cadre titre="Contacter un élève">
+<cadre titre="Contacter un Ã©lÃ¨ve">
 	<h3>Par email (ou mel)</h3>
-	<p>Si tu veux joindre un élève, rien de plus facile :</p>
-	<p><strong>prénom.nom@polytechnique.fr</strong> (Où, bien sûr, on remplace le nom et le prénom de l'élève dans cette adresse :op)</p>
+	<p>Si tu veux joindre un Ã©lÃ¨ve, rien de plus facileÂ :</p>
+	<p><strong>prÃ©nom.nom@polytechnique.fr</strong> (OÃ¹, bien sÃ»r, on remplace le nom et le prÃ©nom de l'Ã©lÃ¨ve dans cette adresse :op)</p>
 
 	<h3>Par la poste</h3>
-	<p>Qui a dit que ce moyen de communication était démodé ????!!!!</p>
-	<p>Bon voilà la typographie type (car sinon la lettre risque de ne jamais arriver) :</p>
+	<p>Qui a dit que ce moyen de communication Ã©tait dÃ©modÃ©Â ????!!!!</p>
+	<p>Bon voilÃ  la typographie type (car sinon la lettre risque de ne jamais arriver)Â :</p>
 <html><![CDATA[
 	<p style="text-align: center"><strong>
-		Prénom Nom<br />
+		PrÃ©nom Nom<br />
 		Promotion X(1)/(2) Cie<br />
-		École Polytechnique<br />
+		Ã‰cole Polytechnique<br />
 		91128 Palaiseau Cedex
 	</strong></p>
 ]]></html>
 	<p>Dont 2 choses importantes :</p>
 <html><![CDATA[
 	<ul>
-		<li>(1) est remplacé par la Promotion de l'élève (année d'intégration)</li>
-		<li>(2) est remplacé par le numéro de sa compagnie (ben... ça faut lui demander !)</li>
+		<li>(1) est remplacÃ© par la Promotion de l'Ã©lÃ¨ve (annÃ©e d'intÃ©gration)</li>
+		<li>(2) est remplacÃ© par le numÃ©ro de sa compagnie (ben... Ã§a faut lui demander !)</li>
 	</ul>
 ]]></html>
 </cadre>
 
 <cadre titre="Contacter le Webmestre">
-	<p>Car tu as un problème avec le site, des suggestions, des questions... N'hésite pas !
+	<p>Car tu as un problÃ¨me avec le site, des suggestions, des questions... N'hÃ©site pasÂ !
 	<a href="mailto:<?=MAIL_WEBMESTRE?>?subject=Webmestre">Clique ici</a></p>
 </cadre>
 

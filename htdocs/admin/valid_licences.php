@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet RÈseau
+	Copyright (C) 2004 Binet R√©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,11 +21,14 @@
 	Page qui permet l'administration des licences windows.
 	
 	$Log$
-	Revision 1.21  2005/02/16 21:32:55  dei
-	pour pas faire le boulet a stocker plein de fois la meme clÈ
+	Revision 1.22  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.21  2005/02/16 21:32:55  dei
+	pour pas faire le boulet a stocker plein de fois la meme cl√©
+	
 	Revision 1.20  2005/02/16 21:20:23  dei
-	ajout de la gestion des clÈs uniques, sans trop "pourrir" la page
+	ajout de la gestion des cl√©s uniques, sans trop "pourrir" la page
 	
 	Revision 1.19  2005/02/16 20:41:24  dei
 	gestion autres logiciels (Access...)
@@ -40,23 +43,23 @@
 	bug de LOCK TABLES
 	
 	Revision 1.15  2005/01/23 21:37:26  dei
-	voil‡ version finale ! (j'espËre)
+	voil√† version finale ! (j'esp√®re)
 	
 	Revision 1.14  2005/01/23 21:05:02  dei
-	la Áa devrait mieux marcher
+	la √ßa devrait mieux marcher
 	
 	Revision 1.13  2005/01/23 20:28:48  dei
 	correction bug attribution automatique licence
 	
 	Revision 1.12  2005/01/21 21:44:24  dei
 	Ajout d'une fonction pour rentrer les licences en vrac depuis un
-	fichier, sÈparÈes par des ";"
+	fichier, s√©par√©es par des ";"
 	
 	Revision 1.11  2005/01/20 12:47:22  dei
 	rajout du warning dans la liste
 	
 	Revision 1.10  2005/01/20 12:32:19  dei
-	ajout de la gestion des clÈs libres
+	ajout de la gestion des cl√©s libres
 	
 	Revision 1.9  2005/01/19 19:28:58  dei
 	Corrections des recherches sql qui pouvaient vider la base par erreur...
@@ -65,17 +68,17 @@
 	debug gestion d'ajout de licence sur demande
 	
 	Revision 1.7  2005/01/18 22:40:44  dei
-	ajout d'une fonction pour mettre des clÈs dans la base ‡ la main
+	ajout d'une fonction pour mettre des cl√©s dans la base √† la main
 	
 	Revision 1.6  2005/01/18 21:38:41  dei
-	ajout de fonctionnalitÈ de recherche et correction test des clÈs
+	ajout de fonctionnalit√© de recherche et correction test des cl√©s
 	
 	Revision 1.5  2005/01/18 12:52:31  pico
 	Page d'admin windows (debug)
 	
 	Revision 1.4  2005/01/18 12:25:09  dei
-	ajout test du formatage de la clÈ
-	ajout interface de recherche dans la base des clÈs
+	ajout test du formatage de la cl√©
+	ajout interface de recherche dans la base des cl√©s
 	
 	Revision 1.3  2005/01/17 23:46:28  pico
 	Bug fix
@@ -94,32 +97,32 @@ set_time_limit(0) ;
 
 require_once "../include/global.inc.php";
 
-// VÈrification des droits
+// V√©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('windows'))
 	acces_interdit();
 //
 //
-// GÈnÈration de la page
+// G√©n√©ration de la page
 //===============	
 require_once BASE_LOCAL."/include/page_header.inc.php";	
 ?>
 <page id="valid_licences" titre="Frankiz : gestion des licences Microsoft">
 <?
 $log=array('visualstudio' => 'Visual Studio .NET','winxp' => 'Windows XP Professionnel','2k3serv' => 'Windows Serveur 2003','2k3access'=>'Access 2003','2k3onenote'=>'One Note 2003','2k3visiopro'=>'Visio Professionnel 2003','win2k'=>'Windows 2000 Professionnel');
-//on teste si la cle entrÈe ‡ la main a une forme standard...
+//on teste si la cle entr√©e √† la main a une forme standard...
 function test_cle($key){
 	$key=explode("-",$key);
 	if(sizeof($key)==5){
 		for($i=0;$i<sizeof($key);$i++){
 			if(!ereg('^[[:alnum:]]+$', $key[$i])){
-				echo "<warning>Cette clÈ n'a pas le bon formatage !</warning>";
+				echo "<warning>Cette cl√© n'a pas le bon formatage !</warning>";
 				return false;
 			}
 		}
 		return true;
 	}
-	echo "<warning>$key : cette clÈ n'a pas le bon formatage !</warning>";
+	echo "<warning>$key : cette cl√© n'a pas le bon formatage !</warning>";
 	return false;
 }
 
@@ -136,88 +139,88 @@ $temp = explode("_",$keys) ;
 		$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
 		list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
 		//Log l'action de l'admin
-		log_admin($_SESSION['user']->uid," refusÈ la licence de $prenom $nom ($promo) ") ;
+		log_admin($_SESSION['user']->uid," refus√© la licence de $prenom $nom ($promo) ") ;
 		
 		$DB_msdnaa->query("DELETE FROM valid_licence WHERE eleve_id='{$temp[1]}'");
 		$bla = "refus_".$temp[1] ;
 		$contenu = "Bonjour, <br><br>".
-					"Nous sommes dÈsolÈs de pas pouvoir t'attribuer une licence pour la raison suivante†:<br>".
+					"Nous sommes d√©sol√©s de pas pouvoir t'attribuer une licence pour la raison suivante¬†:<br>".
 					$_POST[$bla]."<br>".
-					"Il y a certainement une autre faÁon de procÈder pour atteindre ton but.<br>".
+					"Il y a certainement une autre fa√ßon de proc√©der pour atteindre ton but.<br>".
 					"<br>" .
-					"TrËs Cordialement<br>" .
+					"Tr√®s Cordialement<br>" .
 					"Le BR<br>"  ;
 	
-		couriel($temp[1],"[Frankiz] Ta demande a ÈtÈ refusÈe ",$contenu,WINDOWS_ID);
-		echo "<commentaire>Envoie d'un mail. On prÈvient l'utilisateur que sa demande n'a pas ÈtÈ acceptÈe.</commentaire>" ;
+		couriel($temp[1],"[Frankiz] Ta demande a √©t√© refus√©e ",$contenu,WINDOWS_ID);
+		echo "<commentaire>Envoie d'un mail. On pr√©vient l'utilisateur que sa demande n'a pas √©t√© accept√©e.</commentaire>" ;
 	}
-	// On accepte la demande de licence supplÈmentaire
+	// On accepte la demande de licence suppl√©mentaire
 	//===========================
 	if ($temp[0] == "ok"){
 		$temp2 = "ajout_licence_".$temp[1] ;
 		if(test_cle($_POST[$temp2])) {
-			//on vÈrifie que la requete existe encore...
+			//on v√©rifie que la requete existe encore...
 			$DB_msdnaa->query("SELECT 0 FROM valid_licence WHERE eleve_id='{$temp[1]}'");
 			if($DB_msdnaa->num_rows()!=0){
-				//on regarde si le logiciel a pas une clÈ unique
+				//on regarde si le logiciel a pas une cl√© unique
 				$DB_msdnaa->query("SELECT 0 FROM cles_admin WHERE log='{$temp[2]}'");
 				if($DB_msdnaa->num_rows()!=0){
 					$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
 					list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
 					//Log l'action de l'admin
-					log_admin($_SESSION['user']->uid," acceptÈ la licence de $prenom $nom ($promo) ") ;
+					log_admin($_SESSION['user']->uid," accept√© la licence de $prenom $nom ($promo) ") ;
 					
 					echo "<note>c'est bon</note>";
 					$DB_msdnaa->query("DELETE FROM valid_licence WHERE eleve_id='{$temp[1]}'");
 					
 					$contenu = "Bonjour, <br><br>".
-							"Nous t'avons attribuÈ la licence suivante†:<br>".
+							"Nous t'avons attribu√© la licence suivante¬†:<br>".
 							$_POST[$temp2]."<br>".
 							"<br>" .
-							"TrËs Cordialement<br>" .
+							"Tr√®s Cordialement<br>" .
 							"Le BR<br>";
 			
-					couriel($temp[1],"[Frankiz] Ta demande a ÈtÈ acceptÈe",$contenu,WINDOWS_ID);
-					couriel(WINDOWS_ID,"[Frankiz] Ta demande a ÈtÈ acceptÈe",$contenu,$temp[1]);
-					echo "<commentaire>Envoie d'un mail. On prÈvient l'utilisateur que sa demande a ÈtÈ acceptÈe (nouvelle licence†: ".$_POST[$temp2].")</commentaire>" ;
+					couriel($temp[1],"[Frankiz] Ta demande a √©t√© accept√©e",$contenu,WINDOWS_ID);
+					couriel(WINDOWS_ID,"[Frankiz] Ta demande a √©t√© accept√©e",$contenu,$temp[1]);
+					echo "<commentaire>Envoie d'un mail. On pr√©vient l'utilisateur que sa demande a √©t√© accept√©e (nouvelle licence¬†: ".$_POST[$temp2].")</commentaire>" ;
 				}else{
-				//on cherche ds les clÈs attribuÈes au logiciel..
+				//on cherche ds les cl√©s attribu√©es au logiciel..
 				$DB_msdnaa->query("SELECT 0 FROM cles_$temp[2] WHERE cle='{$_POST[$temp2]}'");
-				// S'il n'y a aucune entrÈe avec cette licence dans la base
+				// S'il n'y a aucune entr√©e avec cette licence dans la base
 				if($DB_msdnaa->num_rows()==0){
 				
 					$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
 					list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
 					//Log l'action de l'admin
-					log_admin($_SESSION['user']->uid," acceptÈ la licence de $prenom $nom ($promo) ") ;
+					log_admin($_SESSION['user']->uid," accept√© la licence de $prenom $nom ($promo) ") ;
 					
 					echo "<note>c'est bon</note>";
 					$DB_msdnaa->query("DELETE FROM valid_licence WHERE eleve_id='{$temp[1]}'");
 					$DB_msdnaa->query("DELETE FROM cles_libres WHERE cle='{$_POST[$temp2]}' AND logiciel='{$temp[2]}'");
-					//on l'ajoute ‡ la base concernÈe...
+					//on l'ajoute √† la base concern√©e...
 					$DB_msdnaa->query("INSERT cles_$temp[2] SET eleve_id='{$temp[1]}', attrib='1', cle='$_POST[$temp2]'");
 					$contenu = "Bonjour, <br><br>".
-							"Nous t'avons attribuÈ la licence suivante†:<br>".
+							"Nous t'avons attribu√© la licence suivante¬†:<br>".
 							$_POST[$temp2]."<br>".
 							"<br>" .
-							"TrËs Cordialement<br>" .
+							"Tr√®s Cordialement<br>" .
 							"Le BR<br>";
 			
-					couriel($temp[1],"[Frankiz] Ta demande a ÈtÈ acceptÈe",$contenu,WINDOWS_ID);
-					couriel(WINDOWS_ID,"[Frankiz] Ta demande a ÈtÈ acceptÈe",$contenu,$temp[1]);
-					echo "<commentaire>Envoie d'un mail. On prÈvient l'utilisateur que sa demande a ÈtÈ acceptÈe (nouvelle licence†: ".$_POST[$temp2].")</commentaire>" ;
+					couriel($temp[1],"[Frankiz] Ta demande a √©t√© accept√©e",$contenu,WINDOWS_ID);
+					couriel(WINDOWS_ID,"[Frankiz] Ta demande a √©t√© accept√©e",$contenu,$temp[1]);
+					echo "<commentaire>Envoie d'un mail. On pr√©vient l'utilisateur que sa demande a √©t√© accept√©e (nouvelle licence¬†: ".$_POST[$temp2].")</commentaire>" ;
 				}else{
-					echo "<warning>La clÈ ".$_POST[$temp2]." existe dÈj‡ et est attribuÈe. Elle a ÈtÈ supprimÈe de la base des clÈs libres.</warning>";
+					echo "<warning>La cl√© ".$_POST[$temp2]." existe d√©j√† et est attribu√©e. Elle a √©t√© supprim√©e de la base des cl√©s libres.</warning>";
 					$DB_msdnaa->query("DELETE FROM cles_libres WHERE cle='{$_POST[$temp2]}' AND logiciel='{$temp[2]}'");
 				}
 				}
 			}else{
-				echo "<warning>La demande a dÈj‡ ÈtÈ traitÈe par un autre administrateur du systeme</warning>";
+				echo "<warning>La demande a d√©j√† √©t√© trait√©e par un autre administrateur du systeme</warning>";
 			}
 		}
-		// S'il y  a deja une entrÈe comme celle demandÈ dans la base !
+		// S'il y  a deja une entr√©e comme celle demand√© dans la base !
 		else {
-			echo "<warning>IMPOSSIBLE D'ATTRIBUER CETTE LICENCE. L'utilisateur en possËde dÈj‡ une.</warning>" ;
+			echo "<warning>IMPOSSIBLE D'ATTRIBUER CETTE LICENCE. L'utilisateur en poss√®de d√©j√† une.</warning>" ;
 		}
 	}
 }
@@ -226,14 +229,14 @@ $DB_msdnaa->query("UNLOCK TABLES");
 <h2>Liste des personnes demandant une licence</h2>
 	<liste id="liste" selectionnable="non" action="admin/valid_licences.php">
 		<entete id="logiciel" titre="Logiciel"/>
-		<entete id="eleve" titre="…lËve"/>
+		<entete id="eleve" titre="√âl√®ve"/>
 		<entete id="raison" titre="Raison"/>
 		<entete id="licence" titre="licence"/>
 <?php
 		$DB_msdnaa->query("SELECT v.raison,v.logiciel,e.nom,e.prenom,e.eleve_id FROM valid_licence as v LEFT JOIN trombino.eleves as e ON e.eleve_id=v.eleve_id");
 		while(list($raison,$logiciel,$nom,$prenom,$eleve_id) = $DB_msdnaa->next_row()) {
 			$DB_msdnaa->push_result();
-			//on regarde si le logiciel a pas une clÈ unique
+			//on regarde si le logiciel a pas une cl√© unique
 			$DB_msdnaa->query("SELECT cle FROM cles_admin WHERE log='{$logiciel}'");
 			if($DB_msdnaa->num_rows()!=0){
 				list($cle_libre)=$DB_msdnaa->next_row();
@@ -243,7 +246,7 @@ $DB_msdnaa->query("UNLOCK TABLES");
 			}
 			$DB_msdnaa->pop_result();
 			if($cle_libre==""){
-				echo "<warning>Plus de clÈs libres pour $logiciel</warning>";
+				echo "<warning>Plus de cl√©s libres pour $logiciel</warning>";
 			}
 ?>
 			<element id="<? echo $eleve_id ;?>">
@@ -280,14 +283,14 @@ if(isset($_POST['chercher'])){
 	}
 	$DB_msdnaa->query($req);
 ?>
-	<h2>RÈsultats de la recherche</h2>
+	<h2>R√©sultats de la recherche</h2>
 	<liste id="liste" selectionnable="non" action="admin/valid_licences.php">
 		<entete id="logiciel" titre="Logiciel"/>
 		<entete id="promo" titre="Promo"/>
-		<entete id="eleve" titre="…lËve"/>
+		<entete id="eleve" titre="√âl√®ve"/>
 		<entete id="login" titre="Login"/>
 		<entete id="licence" titre="Licence"/>
-		<entete id="attrib" titre="AttribuÈe"/>
+		<entete id="attrib" titre="Attribu√©e"/>
 <?
 	while(list($nom,$prenom,$login,$eleve_id,$promo,$cle,$attrib) = $DB_msdnaa->next_row()){
 ?>
@@ -310,11 +313,11 @@ if((isset($_POST['ajout']))&&test_cle($_POST['cle'])&&$_POST['login']!=""){
 	$DB_msdnaa->query("SELECT 0 FROM cles_{$_POST['logiciel']} WHERE cle='{$_POST['cle']}'");
 	if($DB_msdnaa->num_rows()==0){
 		$DB_msdnaa->query("INSERT cles_{$_POST['logiciel']} SET eleve_id='{$eleve_id}', attrib='0', cle='{$_POST['cle']}'");
-		echo "<note>La clÈ a bien ÈtÈ ajoutÈe</note>";
+		echo "<note>La cl√© a bien √©t√© ajout√©e</note>";
 	} else {
 		if($DB_msdnaa->num_rows()!=0){
 			$DB_msdnaa->query("UPDATE cles_{$_POST['logiciel']} SET attrib='0', cle='{$_POST['cle']}' WHERE eleve_id='{$eleve_id}' LIMIT 1");
-			echo "<note>La clÈ a bien ÈtÈ mise ‡ jour</note>";
+			echo "<note>La cl√© a bien √©t√© mise √† jour</note>";
 		}
 	}
 }
@@ -324,14 +327,14 @@ if(isset($_POST['effacer'])&&$_POST['login']!=""){
 	$DB_msdnaa->query("SELECT 0 FROM cles_{$_POST['logiciel']} WHERE eleve_id='{$eleve_id}'");
 	if($DB_msdnaa->num_rows()!=0){
 		$DB_msdnaa->query("DELETE FROM cles_{$_POST['logiciel']} WHERE eleve_id='{$eleve_id}' LIMIT 1");
-		echo "<note>La clÈ a bien ÈtÈ supprimÈe</note>";
+		echo "<note>La cl√© a bien √©t√© supprim√©e</note>";
 	}
 }
 
 ?>
-<h2>Recherche/Ajout/Suppression d'une clÈ dans la base</h2>
+<h2>Recherche/Ajout/Suppression d'une cl√© dans la base</h2>
 	<formulaire id="ajout" action="admin/valid_licences.php">
-		<note>Cette fonction sert seulement ‡ corriger un oubli ou une erreur !</note>
+		<note>Cette fonction sert seulement √† corriger un oubli ou une erreur !</note>
 		<champ titre="Login poly" id="login" valeur=""/>
 		<choix titre="Promo" id="promo" type="combo" valeur="">
 <?php
@@ -350,7 +353,7 @@ if(isset($_POST['effacer'])&&$_POST['login']!=""){
 		</choix>
 		<bouton id='chercher' titre='Rechercher'/>
 		<bouton id='ajout' titre="Ajouter"/>
-		<bouton id='effacer' titre="Supprimer" onClick="return window.confirm('Es-tu s˚r de vouloir supprimer cette licence†?')"/>
+		<bouton id='effacer' titre="Supprimer" onClick="return window.confirm('Es-tu s√ªr de vouloir supprimer cette licence¬†?')"/>
 	</formulaire>
 <?php
 
@@ -383,7 +386,7 @@ if(isset($_POST['update'])&&is_readable($_FILES['file']['tmp_name'])){
 				}
 				list($eleve_id)=$DB_trombino->next_row();
 			}else{
-				echo "<warning>La clÈ $cle_tmp existe dÈj‡ dans les bases !</warning>";
+				echo "<warning>La cl√© $cle_tmp existe d√©j√† dans les bases !</warning>";
 				$i++;
 			}
 		}else{
@@ -414,14 +417,14 @@ if(isset($_POST['update'])&&is_readable($_FILES['file']['tmp_name'])){
 				if($DB_msdnaa->num_rows()==0){
 					$DB_msdnaa->query("INSERT cles_libres SET logiciel='{$_POST['logiciel']}', cle='{$cle_tmp}'");
 				}else{
-					echo "<warning>La clÈ $cle_tmp existe dÈj‡ dans les bases !</warning>";
+					echo "<warning>La cl√© $cle_tmp existe d√©j√† dans les bases !</warning>";
 				}
 			}
 		}
 	}
 }
 ?>
-<h2>Ajout des clÈs pour une promo dans la base</h2>
+<h2>Ajout des cl√©s pour une promo dans la base</h2>
 	<formulaire id="ajout" action="admin/valid_licences.php">
 		<choix titre="Promo" id="promo" type="combo" valeur="">
 <?php

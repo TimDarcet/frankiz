@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,19 +18,22 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Cette page gère l'attribution d'adresses IP supplémentaires aux élèves.
-	L'élève fait une demande grâce à la page profil/demande_ip.php, on valide
+	Cette page gÃ¨re l'attribution d'adresses IP supplÃ©mentaires aux Ã©lÃ¨ves.
+	L'Ã©lÃ¨ve fait une demande grÃ¢ce Ã  la page profil/demande_ip.php, on valide
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.21  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.20  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
-
+	
 	Revision 1.19  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
+	Changement de "TrÃ¨s BRment, l'automate"
 	
 	Revision 1.18  2005/01/18 13:55:42  pico
-	Correction d'entête
+	Correction d'entÃªte
 	
 	Revision 1.17  2005/01/18 13:45:31  pico
 	Plus de droits pour les web
@@ -38,7 +41,7 @@
 	Revision 1.16  2005/01/14 09:19:31  pico
 	Corrections bug mail
 	+
-	Sondages maintenant public ou privé (ne s'affichant pas dans le cadre)
+	Sondages maintenant public ou privÃ© (ne s'affichant pas dans le cadre)
 	Ceci sert pour les sondages section par exemple
 	
 	Revision 1.15  2005/01/13 17:10:58  pico
@@ -66,7 +69,7 @@
 	INNER en LEFT
 	
 	Revision 1.6  2004/12/13 20:03:25  pico
-	Les liens ne forment pas de blocs, il faut donc le spécifier
+	Les liens ne forment pas de blocs, il faut donc le spÃ©cifier
 	
 	Revision 1.5  2004/12/13 16:23:47  kikx
 	Passage en secure validation pour les page perso + note sur les commentaires
@@ -89,12 +92,12 @@
 
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('web'))
 	acces_interdit();
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -103,7 +106,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 <?
 // On regarde quel cas c'est ...
-// On envoie chié le mec pour son changement d'ip et on le supprime de la base
+// On envoie chiÃ© le mec pour son changement d'ip et on le supprime de la base
 // On accepte le changement et on l'inscrit dans la base
 $DB_valid->query("LOCK TABLE valid_pageperso WRITE");
 $DB_valid->query("SET AUTOCOMMIT=0");
@@ -111,7 +114,7 @@ $DB_valid->query("SET AUTOCOMMIT=0");
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
 	
-	// On refuse la demande d'ip supplémentaire
+	// On refuse la demande d'ip supplÃ©mentaire
 	//==========================
 	if ($temp[0] == "vtff") {
 		$DB_valid->query("SELECT 0 FROM valid_pageperso WHERE eleve_id='{$temp[1]}'");
@@ -120,27 +123,27 @@ foreach ($_POST AS $keys => $val){
 			$DB_trombino->query("SELECT nom,prenom,promo FROM eleves WHERE eleve_id='{$temp[1]}'");
 			list($nom,$prenom,$promo) = $DB_trombino->next_row();
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," refusé la page perso de $nom $prenom ($promo) ") ;
+			log_admin($_SESSION['user']->uid," refusÃ© la page perso de $nom $prenom ($promo) ") ;
 
 			$DB_valid->query("DELETE FROM valid_pageperso WHERE eleve_id='{$temp[1]}'");
 			
 			$bla = "refus_".$temp[1] ;
 			$contenu = "<b>Bonjour,</b> <br><br>".
-				"Nous sommes désolé mais le BR n'a pas approuvé ta demande pour la raison suivante <br>".
+				"Nous sommes dÃ©solÃ© mais le BR n'a pas approuvÃ© ta demande pour la raison suivante <br>".
 				$_POST[$bla]."<br>".
 				"<br>" .
-				"Très Cordialement<br>" .
+				"TrÃ¨s Cordialement<br>" .
 				"Le Webmestre de Frankiz<br>"  ;
 		
-			couriel($temp[1],"[Frankiz] La demande pour ton site a été refusée ",$contenu,WEBMESTRE_ID);
-			echo "<warning>Envoie d'un mail <br/>Le prévient que sa demande n'est pas acceptée</warning>" ;
+			couriel($temp[1],"[Frankiz] La demande pour ton site a Ã©tÃ© refusÃ©e ",$contenu,WEBMESTRE_ID);
+			echo "<warning>Envoie d'un mail <br/>Le prÃ©vient que sa demande n'est pas acceptÃ©e</warning>" ;
 		} else {
 	?>
-			<warning>Requête deja traitée par un autre administrateur</warning>
+			<warning>RequÃªte deja traitÃ©e par un autre administrateur</warning>
 	<?
 		}
 	}
-	// On accepte la demande d'ip supplémentaire
+	// On accepte la demande d'ip supplÃ©mentaire
 	//===========================
 	if ($temp[0] == "ok") {
 		$DB_valid->query("SELECT 0 FROM valid_pageperso WHERE eleve_id='{$temp[1]}'");
@@ -149,7 +152,7 @@ foreach ($_POST AS $keys => $val){
 			$DB_trombino->query("SELECT nom,prenom,promo FROM eleves WHERE eleve_id='{$temp[1]}'");
 			list($nom,$prenom,$promo) = $DB_trombino->next_row();
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," accepté la page perso de $nom $prenom ($promo) ") ;
+			log_admin($_SESSION['user']->uid," acceptÃ© la page perso de $nom $prenom ($promo) ") ;
 		
 			$DB_web->query("INSERT INTO sites_eleves SET eleve_id='{$temp[1]}'");
 			$DB_trombino->query("SELECT login,promo FROM eleves WHERE eleve_id='{$temp[1]}'");
@@ -157,18 +160,18 @@ foreach ($_POST AS $keys => $val){
 			symlink (BASE_PAGESPERSOS."$login-$promo",BASE_PAGESPERSOS_EXT."$login-$promo");
 			
 			$contenu = "<b>Bonjour,</b> <br><br>".
-					"Ton site perso apparaitra desormais sur le site élève<br>".
+					"Ton site perso apparaitra desormais sur le site Ã©lÃ¨ve<br>".
 					"<br>" .
-					"Très Cordialement<br>" .
+					"TrÃ¨s Cordialement<br>" .
 					"Le Webmestre de Frankiz<br>"  ;
 			
-			couriel($temp[1],"[Frankiz] La demande pour ton site perso a été acceptée",$contenu,WEBMESTRE_ID);
-				echo "<commentaire>Envoie d'un mail<br/>Le prévient que sa demande à été acceptée</commentaire>" ;
+			couriel($temp[1],"[Frankiz] La demande pour ton site perso a Ã©tÃ© acceptÃ©e",$contenu,WEBMESTRE_ID);
+				echo "<commentaire>Envoie d'un mail<br/>Le prÃ©vient que sa demande Ã  Ã©tÃ© acceptÃ©e</commentaire>" ;
 				
 			$DB_valid->query("DELETE FROM valid_pageperso WHERE eleve_id='{$temp[1]}'");
 		} else {
 	?>
-			<warning>Requête deja traitée par un autre administrateur</warning>
+			<warning>RequÃªte deja traitÃ©e par un autre administrateur</warning>
 	<?
 		}
 	}
@@ -177,9 +180,9 @@ $DB_valid->query("COMMIT");
 $DB_valid->query("UNLOCK TABLES");
 ?>
 <note>Si tu refuses une demande, met un commentaire pour que la personne comprenne pourquoi le BR ne veux pas valider sa demande</note>
-<h2>Liste des personnes demandant une entrée sur la page des sites élèves</h2>
+<h2>Liste des personnes demandant une entrÃ©e sur la page des sites Ã©lÃ¨ves</h2>
 	<liste id="liste" selectionnable="non" action="admin/valid_pageperso.php">
-		<entete id="eleve" titre="Élève"/>
+		<entete id="eleve" titre="Ã‰lÃ¨ve"/>
 		<entete id="url" titre="Url"/>
 <?
 		$DB_valid->query("SELECT e.eleve_id,e.nom,e.prenom,e.promo,e.login FROM valid_pageperso as v LEFT JOIN trombino.eleves as e USING(eleve_id)");

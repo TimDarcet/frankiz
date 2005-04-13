@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,15 +18,18 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Page d'envoi dee mail par catégories
+	Page d'envoi dee mail par catÃ©gories
 	
 	$Log$
-	Revision 1.2  2005/03/22 20:52:28  dei
-	bon comme d'hab c crade, mais là c corrigé
-	ajout du log de la validation
+	Revision 1.3  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.2  2005/03/22 20:52:28  dei
+	bon comme d'hab c crade, mais lÃ  c corrigÃ©
+	ajout du log de la validation
+	
 	Revision 1.1  2005/03/22 19:46:15  dei
-	pour envoyer des mails à un batiment, un étage, un binet, une section,
+	pour envoyer des mails Ã  un batiment, un Ã©tage, un binet, une section,
 	aux prez, webmestres...
 	
 
@@ -34,10 +37,10 @@
 // En-tetes
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_MINIMUM);
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 require_once BASE_LOCAL."/include/wiki.inc.php";
@@ -46,13 +49,13 @@ $DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM ele
 list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_row();
 
 ?>
-<page id="admin_mailcategorie" titre="Frankiz : Envoi des mails par catégories">
+<page id="admin_mailcategorie" titre="Frankiz : Envoi des mails par catÃ©gories">
 <?
 if (!isset($_POST['envoie'])||isset($_POST['continuer'])) {
 ?>
-	<formulaire id="mail_categorie" titre="Mail par catégorie" action="admin/mail_categorie.php">
+	<formulaire id="mail_categorie" titre="Mail par catÃ©gorie" action="admin/mail_categorie.php">
 		<note>
-			Le texte du mail promo utilise le format wiki rappelé en bas de la page et décrit dans l'<lien url="helpwiki.php" titre="aide wiki"/><br/>
+			Le texte du mail promo utilise le format wiki rappelÃ© en bas de la page et dÃ©crit dans l'<lien url="helpwiki.php" titre="aide wiki"/><br/>
 		</note>
 		<choix titre="Promo" id="promo" type="combo" valeur="">
 			<option titre="Sur le campus" id="campus"/>
@@ -89,7 +92,7 @@ if (!isset($_POST['envoie'])||isset($_POST['continuer'])) {
 			<option titre="Prez" id="prez"/>
 			<option titre="Webmestre" id="web"/>
 		</choix>
-		<note>Le numéro de casert est auto-complété par la droite, ce qui permet de selectionner un étage, un batiment...</note>
+		<note>Le numÃ©ro de casert est auto-complÃ©tÃ© par la droite, ce qui permet de selectionner un Ã©tage, un batiment...</note>
 		<champ titre="Casert" id="casert" valeur="" />
 		
 		<champ titre="Sujet" id="sujet" valeur="<? if (isset($_POST['sujet'])) echo $_POST['sujet']?>" />
@@ -119,7 +122,7 @@ if (!isset($_POST['envoie'])||isset($_POST['continuer'])) {
 //==================================================
 } elseif($_POST['sujet']==""){
 ?>
-	<formulaire id="mail_categorie" titre="Mail par catégorie" action="admin/mail_categorie.php">"
+	<formulaire id="mail_categorie" titre="Mail par catÃ©gorie" action="admin/mail_categorie.php">"
 		<note>Il faut mettre un sujet !</note>
 <?php
 		if(isset($_POST['mail'])){ 
@@ -134,8 +137,8 @@ if (!isset($_POST['envoie'])||isset($_POST['continuer'])) {
 <?php
 } elseif($_POST['from']==""){
 ?>
-	<formulaire id="mail_categorie" titre="Mail par catégorie" action="admin/mail_categorie.php">"
-		<note>Il faut mettre un expéditeur !</note>
+	<formulaire id="mail_categorie" titre="Mail par catÃ©gorie" action="admin/mail_categorie.php">"
+		<note>Il faut mettre un expÃ©diteur !</note>
 <?php
 		if(isset($_POST['mail'])){ 
 			echo "<hidden id=\"mail\" valeur=\"".$_POST['mail']."\" />"; 
@@ -149,8 +152,8 @@ if (!isset($_POST['envoie'])||isset($_POST['continuer'])) {
 <?php
 } elseif($_POST['mail']==""){
 ?>
-	<formulaire id="mail_categorie" titre="Mail par catégorie" action="admin/mail_categorie.php">
-		<note>Le corps du mail ne doit pas être vide !</note>
+	<formulaire id="mail_categorie" titre="Mail par catÃ©gorie" action="admin/mail_categorie.php">
+		<note>Le corps du mail ne doit pas Ãªtre vide !</note>
 <?php
 		if(isset($_POST['sujet'])){ 
 			echo "<hidden id=\"sujet\" valeur=\"".$_POST['sujet']."\" />";
@@ -164,11 +167,11 @@ if (!isset($_POST['envoie'])||isset($_POST['continuer'])) {
 <?php
 } else {
 	//envoi du mail...
-	//on vérifie qu'un champ au moins est rempli, autre que "promo"
+	//on vÃ©rifie qu'un champ au moins est rempli, autre que "promo"
 	if($_POST['section']!=""||$_POST['casert']!=""||$_POST['binet']!=""||$_POST['postes']!=""){
 		//construction requete
 		$req="SELECT e.eleve_id,e.nom,e.prenom,e.promo FROM eleves as e LEFT JOIN frankiz2.compte_frankiz as cpt ON e.eleve_id=cpt.eleve_id";
-		$log=" envoyé un mail groupé";
+		$log=" envoyÃ© un mail groupÃ©";
 		if(isset($_POST['binet']) && $_POST['binet']!=""){
 			$req=$req." LEFT JOIN membres as m ON e.eleve_id=m.eleve_id WHERE 1 AND m.binet_id='{$_POST['binet']}'";
 			$DB_trombino->query("SELECT nom FROM binets WHERE binet_id='{$_POST['binet']}' LIMIT 0,1");
@@ -181,7 +184,7 @@ if (!isset($_POST['envoie'])||isset($_POST['continuer'])) {
 			$req=$req." AND e.section_id='{$_POST['section']}'";
 			$DB_trombino->query("SELECT nom FROM sections WHERE section_id='{$_POST['section']}' LIMIT 0,1");
 			list($nom_section)=$DB_trombino->next_row();
-			$log=$log." à la section $nom_section";
+			$log=$log." Ã  la section $nom_section";
 		}
 		if(isset($_POST['casert']) && $_POST['casert']!=""){
 			$req=$req." AND e.piece_id LIKE '{$_POST['casert']}%'";
@@ -205,7 +208,7 @@ if (!isset($_POST['envoie'])||isset($_POST['continuer'])) {
 				$log=$log." aux promos sur le campus";
 			} else {
 				$req=$req." AND e.promo='{$_POST['promo']}'";
-				$log=$log." à la promo {$_POST['promo']}";
+				$log=$log." Ã  la promo {$_POST['promo']}";
 			}
 		}
 		//log de l'action
@@ -216,31 +219,31 @@ if (!isset($_POST['envoie'])||isset($_POST['continuer'])) {
 		$cnt = 0 ;
 		$mail_contenu = wikiVersXML($mail,true) ;
 		$titre_mail = $_POST['sujet'];
-		// On crée le fichier de log qui va bien
+		// On crÃ©e le fichier de log qui va bien
 		/*$fich_log = BASE_DATA."mailcategorie/mail.log.{$_POST['id']}"; 
 		touch($fich_log) ;
 		$from = html_entity_decode(base64_decode($_POST['sender'])) ;
 		exec("echo \"".$mail_contenu."\" >>".$fich_log) ;*/
 ?>
-<formulaire id="mail_categorie" titre="Mail par catégorie" action="admin/mail_categorie.php">"
+<formulaire id="mail_categorie" titre="Mail par catÃ©gorie" action="admin/mail_categorie.php">"
 <?
 		while(list($eleve_id,$nom,$prenom,$promo)=$DB_trombino->next_row()){
 			$DB_trombino->push_result() ;
 			//couriel($eleve_id,"".$titre_mail,$mail_contenu, STRINGMAIL_ID, $from) ;
 			$DB_trombino->pop_result() ;
-			/*print("Envoi à $nom $prenom ($promo) [".($cnt+1)."]<br>") ;
+			/*print("Envoi Ã  $nom $prenom ($promo) [".($cnt+1)."]<br>") ;
 			flush() ;*/
 			$cnt ++ ;
-			//exec("echo \"Mail envoyé à $nom $prenom ($eleve_id)\n\" >>".$fich_log) ;
+			//exec("echo \"Mail envoyÃ© Ã  $nom $prenom ($eleve_id)\n\" >>".$fich_log) ;
 			usleep(100000); // Attends 100 millisecondes
-			echo "<note>Mail envoyé à : $prenom $nom ($promo)</note>";
+			echo "<note>Mail envoyÃ© Ã  : $prenom $nom ($promo)</note>";
 		}
 ?>
 		<bouton titre="Continuer" id="continuer"/>
 	</formulaire>
 <?php
 	}else{
-		echo "<note>Ceci ne sert pas à envoyer de mails promos !</note>";
+		echo "<note>Ceci ne sert pas Ã  envoyer de mails promos !</note>";
 	}
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,15 +18,18 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Cette page gère l'attribution d'adresses IP supplémentaires aux élèves.
-	L'élève fait une demande grâce à la page profil/demande_ip.php, on valide
+	Cette page gÃ¨re l'attribution d'adresses IP supplÃ©mentaires aux Ã©lÃ¨ves.
+	L'Ã©lÃ¨ve fait une demande grÃ¢ce Ã  la page profil/demande_ip.php, on valide
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.42  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.41  2005/03/04 20:22:58  pico
 	Demande de nouvelle adresse MAC
 	Fixe les bugs #60 et #70
-
+	
 	Revision 1.40  2005/03/04 12:06:55  pico
 	Fixe bug #66
 	On propose automatiquement une 2 eme ip
@@ -50,7 +53,7 @@
 	BugFix
 	
 	Revision 1.32  2005/01/10 08:25:40  pico
-	Plus sûr
+	Plus sÃ»r
 	
 	Revision 1.31  2005/01/10 08:20:57  pico
 	Ajoute le numero de prise
@@ -106,7 +109,7 @@
 	GPLisation des fichiers du site
 	
 	Revision 1.13  2004/09/17 12:45:22  kikx
-	Permet de voi quel sont les ips que la personne a déjà avant de valider ... en particulier ca permet de pas se planter de sous réseau !!!!!!!!!!!!!
+	Permet de voi quel sont les ips que la personne a dÃ©jÃ  avant de valider ... en particulier ca permet de pas se planter de sous rÃ©seau !!!!!!!!!!!!!
 	
 	Revision 1.10  2004/09/15 23:20:18  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
@@ -118,12 +121,12 @@
 
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
 	acces_interdit();
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -132,7 +135,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 <?
 // On regarde quel cas c'est ...
-// On envoie chié le mec pour son changement d'ip et on le supprime de la base
+// On envoie chiÃ© le mec pour son changement d'ip et on le supprime de la base
 // On accepte le changement et on l'inscrit dans la base
 
 $DB_valid->query("LOCK TABLE valid_ip WRITE");
@@ -141,7 +144,7 @@ $DB_valid->query("SET AUTOCOMMIT=0");
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
 	
-	// On refuse la demande d'ip supplémentaire
+	// On refuse la demande d'ip supplÃ©mentaire
 	//==========================
 	if ($temp[0] == "vtff") {
 		$DB_valid->query("DELETE FROM valid_ip WHERE eleve_id='{$temp[1]}'");
@@ -149,22 +152,22 @@ foreach ($_POST AS $keys => $val){
 		$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
 		list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
 		//Log l'action de l'admin
-		log_admin($_SESSION['user']->uid," refusé l'ajout d'une ip à $prenom $nom ($promo) ") ;
+		log_admin($_SESSION['user']->uid," refusÃ© l'ajout d'une ip Ã  $prenom $nom ($promo) ") ;
 		
 		$bla = "refus_".$temp[1] ;
 		$contenu = "Bonjour, <br><br>".
-					"Nous sommes désolés de pas pouvoir d'attribuer une adresse IP supplémentaire pour la raison suivante :<br>".
+					"Nous sommes dÃ©solÃ©s de pas pouvoir d'attribuer une adresse IP supplÃ©mentaire pour la raison suivanteÂ :<br>".
 					$_POST[$bla]."<br>".
-					"Il y a certainement une autre façon de procéder pour atteindre ton but.<br>".
+					"Il y a certainement une autre faÃ§on de procÃ©der pour atteindre ton but.<br>".
 					"<br>" .
-					"Très Cordialement<br>" .
+					"TrÃ¨s Cordialement<br>" .
 					"Le BR<br>"  ;
 	
-		couriel($temp[1],"[Frankiz] Ta demande a été refusée ",$contenu,ROOT_ID);
-		echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande n'a pas été acceptée.</commentaire>" ;
+		couriel($temp[1],"[Frankiz] Ta demande a Ã©tÃ© refusÃ©e ",$contenu,ROOT_ID);
+		echo "<commentaire>Envoie d'un mail. On prÃ©vient l'utilisateur que sa demande n'a pas Ã©tÃ© acceptÃ©e.</commentaire>" ;
 	}
 	
-	// On accepte la demande d'ip supplémentaire
+	// On accepte la demande d'ip supplÃ©mentaire
 	//===========================
 	if ($temp[0] == "ok") {
 		$temp2 = "ajout_ip_".$temp[1] ;
@@ -174,34 +177,34 @@ foreach ($_POST AS $keys => $val){
 		
 		$DB_admin->query("SELECT 0 FROM prises WHERE ip='{$_POST[$temp2]}'");
 		
-		// S'il n'y a aucune entrée avec cette ip dans la base
+		// S'il n'y a aucune entrÃ©e avec cette ip dans la base
 		if ($DB_admin->num_rows()==0){
 			$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
 			list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," accepté l'ajout d'une ip à $prenom $nom ($promo) ") ;
+			log_admin($_SESSION['user']->uid," acceptÃ© l'ajout d'une ip Ã  $prenom $nom ($promo) ") ;
 			
 			$DB_valid->query("DELETE FROM valid_ip WHERE eleve_id='{$temp[1]}'");
 			$DB_admin->query("INSERT prises SET prise_id='$id_prise',piece_id='$kzert',ip='{$_POST[$temp2]}',type='secondaire'");
 			
 			$contenu = "Bonjour, <br><br>".
-						"Nous t'avons attribué l'adresse IP suivante :<br>".
+						"Nous t'avons attribuÃ© l'adresse IP suivanteÂ :<br>".
 						$_POST[$temp2]."<br>".
 						"<br>" .
-						"Très Cordialement<br>" .
+						"TrÃ¨s Cordialement<br>" .
 						"Le BR<br>";
 		
-			couriel($temp[1],"[Frankiz] Ta demande a été acceptée",$contenu,ROOT_ID);
-			echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande a été acceptée (nouvelle adresse IP : ".$_POST[$temp2].")</commentaire>" ;
+			couriel($temp[1],"[Frankiz] Ta demande a Ã©tÃ© acceptÃ©e",$contenu,ROOT_ID);
+			echo "<commentaire>Envoie d'un mail. On prÃ©vient l'utilisateur que sa demande a Ã©tÃ© acceptÃ©e (nouvelle adresse IPÂ : ".$_POST[$temp2].")</commentaire>" ;
 			
-		// S'il y  a deja une entrée comme celle demandé dans la base !
+		// S'il y  a deja une entrÃ©e comme celle demandÃ© dans la base !
 		} else {
-			echo "<warning>IMPOSSIBLE D'ATTRIBUER CETTE IP. Une autre personne la posséde déjà.</warning>" ;
+			echo "<warning>IMPOSSIBLE D'ATTRIBUER CETTE IP. Une autre personne la possÃ©de dÃ©jÃ .</warning>" ;
 		}
 		
 	}
 	
-	// On refuse la demande de mac supplémentaire
+	// On refuse la demande de mac supplÃ©mentaire
 	//==========================
 	if ($temp[0] == "vtffmac") {
 		$DB_valid->query("DELETE FROM valid_ip WHERE eleve_id='{$temp[1]}'");
@@ -209,40 +212,40 @@ foreach ($_POST AS $keys => $val){
 		$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
 		list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
 		//Log l'action de l'admin
-		log_admin($_SESSION['user']->uid," refusé l'ajout d'une @mac à $prenom $nom ($promo) ") ;
+		log_admin($_SESSION['user']->uid," refusÃ© l'ajout d'une @mac Ã  $prenom $nom ($promo) ") ;
 		
 		$bla = "refus_".$temp[1] ;
 		$contenu = "Bonjour, <br><br>".
-					"Nous sommes désolés de pas pouvoir t'enregistrer une adresse MAC supplémentaire pour la raison suivante :<br>".
+					"Nous sommes dÃ©solÃ©s de pas pouvoir t'enregistrer une adresse MAC supplÃ©mentaire pour la raison suivanteÂ :<br>".
 					$_POST[$bla]."<br>".
-					"Très Cordialement<br>" .
+					"TrÃ¨s Cordialement<br>" .
 					"Le BR<br>"  ;
 	
-		couriel($temp[1],"[Frankiz] Ta demande a été refusée ",$contenu,ROOT_ID);
-		echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande n'a pas été acceptée.</commentaire>" ;
+		couriel($temp[1],"[Frankiz] Ta demande a Ã©tÃ© refusÃ©e ",$contenu,ROOT_ID);
+		echo "<commentaire>Envoie d'un mail. On prÃ©vient l'utilisateur que sa demande n'a pas Ã©tÃ© acceptÃ©e.</commentaire>" ;
 	}
 	
-	// On accepte la demande de mac supplémentaire
+	// On accepte la demande de mac supplÃ©mentaire
 	//===========================
 	if ($temp[0] == "okmac") {
 		$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
 		list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
 		//Log l'action de l'admin
-		log_admin($_SESSION['user']->uid," accepté l'ajout d'une @mac à $prenom $nom ($promo) ") ;
+		log_admin($_SESSION['user']->uid," acceptÃ© l'ajout d'une @mac Ã  $prenom $nom ($promo) ") ;
 
 		$DB_valid->query("DELETE FROM valid_ip WHERE eleve_id='{$temp[1]}'");
 		
 		$contenu = "Bonjour, <br><br>".
-					"Nous avons rajouté l'adresse MAC que tu nous a donné dans notre base.<br>".
+					"Nous avons rajoutÃ© l'adresse MAC que tu nous a donnÃ© dans notre base.<br>".
 					"<br>" .
-					"Très Cordialement<br>" .
+					"TrÃ¨s Cordialement<br>" .
 					"Le BR<br>";
 	
-		couriel($temp[1],"[Frankiz] Ta demande a été acceptée",$contenu,ROOT_ID);
-		echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande a été acceptée</commentaire>" ;
+		couriel($temp[1],"[Frankiz] Ta demande a Ã©tÃ© acceptÃ©e",$contenu,ROOT_ID);
+		echo "<commentaire>Envoie d'un mail. On prÃ©vient l'utilisateur que sa demande a Ã©tÃ© acceptÃ©e</commentaire>" ;
 	}
 	
-	// On vire une ip qu'on avait validé
+	// On vire une ip qu'on avait validÃ©
 	//===========================
 	if ($temp[0] == "suppr") {
 		$temp2 = str_replace("x",".",$temp[1]) ; // euh c'est pas bo je suis d'accord mais bon c'est pour que ca marche sans trop de trick
@@ -251,16 +254,16 @@ foreach ($_POST AS $keys => $val){
 		$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[2]}'") ;
 		list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
 		//Log l'action de l'admin
-		log_admin($_SESSION['user']->uid," supprimé une ip à $prenom $nom ($promo) ") ;
+		log_admin($_SESSION['user']->uid," supprimÃ© une ip Ã  $prenom $nom ($promo) ") ;
 		
 		$contenu = "Bonjour, <br><br>".
-					"Nous avons supprimé l'adresse IP suivante qui t'était actuellement attribuée :<br><br>".
+					"Nous avons supprimÃ© l'adresse IP suivante qui t'Ã©tait actuellement attribuÃ©e :<br><br>".
 					$temp2."<br><br>".
-					"Très Cordialement<br>" .
+					"TrÃ¨s Cordialement<br>" .
 					"Le BR<br>"  ;
 	
 		couriel($temp[2],"[Frankiz] Suppression d'une adresse IP",$contenu,ROOT_ID);
-		echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que son adresse IP $temp2 vient d'être supprimée.</commentaire>" ;
+		echo "<commentaire>Envoie d'un mail. On prÃ©vient l'utilisateur que son adresse IP $temp2 vient d'Ãªtre supprimÃ©e.</commentaire>" ;
 
 	}
 }
@@ -271,7 +274,7 @@ $DB_admin->query("UNLOCK TABLES");
 <h2>Liste des personnes demandant</h2>
 	<liste id="liste" selectionnable="non" action="admin/valid_ip.php">
 		<entete id="prise" titre="Prise"/>
-		<entete id="eleve" titre="Élève"/>
+		<entete id="eleve" titre="Ã‰lÃ¨ve"/>
 		<entete id="raison" titre="Raison"/>
 		<entete id="ip" titre="IP"/>
 <?
@@ -287,10 +290,10 @@ $DB_admin->query("UNLOCK TABLES");
 						echo "<em>";
 						switch($type){
 							case 1: 
-								echo "J'ai remplacé l'ordinateur qui était dans mon casert et je souhaite juste pouvoir acceder au réseau avec (l'ancien ne pourra plus y accéder)<br/>";
+								echo "J'ai remplacÃ© l'ordinateur qui Ã©tait dans mon casert et je souhaite juste pouvoir acceder au rÃ©seau avec (l'ancien ne pourra plus y accÃ©der)<br/>";
 								break;
 							case 2:
-								echo "J'ai installé un 2ème ordinateur dans mon casert et je souhaite avoir une nouvelle adresse pour cette machine<br/>";
+								echo "J'ai installÃ© un 2Ã¨me ordinateur dans mon casert et je souhaite avoir une nouvelle adresse pour cette machine<br/>";
 								break;
 							default:
 								echo "Autre raison<br/>";
@@ -339,12 +342,12 @@ $DB_admin->query("UNLOCK TABLES");
 	
 	
 	
-	<h2>Liste des personnes ayant eu leurs ips supplémentaires</h2>
+	<h2>Liste des personnes ayant eu leurs ips supplÃ©mentaires</h2>
 	<liste id="liste" selectionnable="non" action="admin/valid_ip.php">
 		<entete id="prise" titre="Prise"/>
 		<entete id="ip" titre="IP"/>
 		<entete id="degage" titre=""/>
-		<entete id="eleve" titre="Élève"/>
+		<entete id="eleve" titre="Ã‰lÃ¨ve"/>
 
 <?
 
@@ -355,7 +358,7 @@ $DB_admin->query("UNLOCK TABLES");
 			<element id="<? echo str_replace(".","x",$ip) ;?>">
 				<colonne id="prise"><? echo "$prise" ?></colonne>
 				<colonne id="ip"><? echo $ip ;?></colonne>
-				<colonne id="degage"><bouton titre="Dégage!" id="suppr_<? echo str_replace(".","x",$ip) ;?>_<? echo $id?>" onClick="return window.confirm('Voulez vous vraiment supprimez cette ip ?')"/></colonne>
+				<colonne id="degage"><bouton titre="DÃ©gage!" id="suppr_<? echo str_replace(".","x",$ip) ;?>_<? echo $id?>" onClick="return window.confirm('Voulez vous vraiment supprimez cette ip ?')"/></colonne>
 				<colonne id="eleve"><? echo "$nom $prenom ($promo)" ?></colonne>
 			</element>
 <?

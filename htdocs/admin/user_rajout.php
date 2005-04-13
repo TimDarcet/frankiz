@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,11 +21,14 @@
 	Ajout d'un utilisateur !
 	
 	$Log$
-	Revision 1.3  2005/01/27 15:23:17  pico
-	La boucle locale est considérée comme interne
-	Tests de photos normalement plus cools.
-	Après le reste.... je sais plus
+	Revision 1.4  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.3  2005/01/27 15:23:17  pico
+	La boucle locale est considÃ©rÃ©e comme interne
+	Tests de photos normalement plus cools.
+	AprÃ¨s le reste.... je sais plus
+	
 	Revision 1.2  2005/01/18 23:24:42  pico
 	Ajout fonction tdb
 	Modif taille images trombi
@@ -38,14 +41,14 @@
 	
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('trombino'))
 	rediriger_vers("/gestion/");
 
-// On vérifie que la personne envoie bien l'id sinon ca sert a rien ...
+// On vÃ©rifie que la personne envoie bien l'id sinon ca sert a rien ...
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -60,7 +63,7 @@ if (isset($_POST['ajout'])) {
 	
 		$img = $_FILES['file']['tmp_name'] ;
 	
-			//récupere les données de l'images
+			//rÃ©cupere les donnÃ©es de l'images
 			//--------------------------------------
 			
 		$type_img =  $_FILES["file"]["type"];
@@ -72,7 +75,7 @@ if (isset($_POST['ajout'])) {
 		$data = addslashes($data);
 	
 			//
-			// On verifie que le truc télécharger est une image ...
+			// On verifie que le truc tÃ©lÃ©charger est une image ...
 			// + bonne taille !
 			//--------------------------------------
 		if (($original_size = getimagesize($_FILES['file']['tmp_name']))&&($original_size[0]<=300)&&($original_size[1]<=400)) {
@@ -83,7 +86,7 @@ if (isset($_POST['ajout'])) {
 			
 			$DB_trombino->query("INSERT INTO eleves SET  nom='".$_POST['nom']."', prenom='".$_POST['prenom']."' ,surnom='".$_POST['surnom']."' ,date_nais='".$_POST['date_nais']."' ,sexe='".$_POST['sexe']."' ,piece_id='".$_POST['piece_id']."' ,section_id='".$_POST['section']."' ,cie='".$_POST['cie']."' ,promo='".$_POST['promo']."' ,login='".$_POST['login']."' ,mail='".$_POST['mail']."'");
 			?>
-			<commentaire>Utilisateur rajouté</commentaire>
+			<commentaire>Utilisateur rajoutÃ©</commentaire>
 			<?
 		} else {
 		?>
@@ -94,20 +97,20 @@ if (isset($_POST['ajout'])) {
 	
 	} else {
 		?>
-		<warning>Données manquantes</warning>
+		<warning>DonnÃ©es manquantes</warning>
 		<?
 		$erreur = 1 ;
 	}
 }
 if ((!isset($_POST['ajout']))&&($erreur==0)) {
-// Modification de ses variables génériques
+// Modification de ses variables gÃ©nÃ©riques
 ?>
-<warning> ATTENTION : Normalement ceci n'arrive quasiment jamais de rajouter une unique personne dans le trombino ... Seuls les élèves (+ promo), les PI (+ promo de rattachement), Zaza (+Kes), et les pits (+Capitaine) en font parti c'est tout !!!!!!!!!!</warning>
+<warning> ATTENTION : Normalement ceci n'arrive quasiment jamais de rajouter une unique personne dans le trombino ... Seuls les Ã©lÃ¨ves (+ promo), les PI (+ promo de rattachement), Zaza (+Kes), et les pits (+Capitaine) en font parti c'est tout !!!!!!!!!!</warning>
  
-	<formulaire id="" titre="Général" action="admin/user_rajout.php">
+	<formulaire id="" titre="GÃ©nÃ©ral" action="admin/user_rajout.php">
 
 		<champ id="nom" titre="Nom*" valeur="<? if (isset($_POST['nom'])) echo $_POST['nom']?>"/>
-		<champ id='prenom' titre='Prénom*' valeur='<? if (isset($_POST['prenom'])) echo $_POST['prenom']?>'/>
+		<champ id='prenom' titre='PrÃ©nom*' valeur='<? if (isset($_POST['prenom'])) echo $_POST['prenom']?>'/>
 		<champ id='surnom' titre='Surnom' valeur='<? if (isset($_POST['surnom'])) echo $_POST['surnom']?>'/>
 		<champ id='login' titre='Login*' valeur='<? if (isset($_POST['login'])) echo $_POST['login']?>'/>
 		<note>Bien respecter le formatage si vous voulez pas avoir d'erreur</note>
@@ -116,7 +119,7 @@ if ((!isset($_POST['ajout']))&&($erreur==0)) {
 				<option titre="Homme" id="1"/>
 				<option titre="Femme" id="2"/>
 		</choix>
-		<note>Avant de remplir cette case, vérifie la syntaxe de la piece <lien url="admin/ip.php" titre="ici"/></note>
+		<note>Avant de remplir cette case, vÃ©rifie la syntaxe de la piece <lien url="admin/ip.php" titre="ici"/></note>
 		<champ id='piece_id' titre='Ksert*' valeur='<? if (isset($_POST['piece_id'])) echo $_POST['piece_id']?>'/>
 		<choix titre="Section" id="section" type="combo" valeur="<? if (isset($_POST['section'])) echo $_POST['section']?>">
 <?php

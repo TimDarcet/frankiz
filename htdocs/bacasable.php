@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet RÈseau
+	Copyright (C) 2004 Binet R√©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -19,12 +19,15 @@
 */
 /*
 	$Log$
-	Revision 1.5  2005/01/26 13:58:20  pico
-	Correction de pbs sur le wiki et les pages qui y font rÈfÈrence
-	(genre le <p><h1>blah</h1></p> ...)
+	Revision 1.6  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.5  2005/01/26 13:58:20  pico
+	Correction de pbs sur le wiki et les pages qui y font r√©f√©rence
+	(genre le <p><h1>blah</h1></p> ...)
+	
 	Revision 1.4  2005/01/04 21:44:40  pico
-	Remise en place du lien vers l'helpwiki parce que le rÈsumÈ en bas de page est incomprehensible
+	Remise en place du lien vers l'helpwiki parce que le r√©sum√© en bas de page est incomprehensible
 	
 	Revision 1.3  2004/12/14 22:16:06  schmurtz
 	Correction de bug du moteur wiki.
@@ -47,13 +50,13 @@ if(!isset($_POST['contenu']))
 
 require "include/page_header.inc.php";
 ?>
-<page id="bacasable" titre="Frankiz : bac ‡ sable">
+<page id="bacasable" titre="Frankiz : bac √† sable">
 	<cadre id="resultat" titre="Contenu">
 		<?php echo wikiVersXML($_POST['contenu']) ?>
 	</cadre>
-	<formulaire id="form_bacasable" titre="Bac ‡ sable" action="bacasable.php">
+	<formulaire id="form_bacasable" titre="Bac √† sable" action="bacasable.php">
 		<note>
-			Le texte utilise le format wiki rappelÈ en bas de la page et dÈcrit dans l'<lien url="helpwiki.php" titre="aide wiki"/>
+			Le texte utilise le format wiki rappel√© en bas de la page et d√©crit dans l'<lien url="helpwiki.php" titre="aide wiki"/>
 		</note>
 		<zonetext id="contenu" titre="contenu" type="grand"><?=$_POST['contenu']?></zonetext>
 		<bouton id="tester" titre="Tester"/>

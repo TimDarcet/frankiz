@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
-	Revision 1.18  2005/01/06 23:31:31  pico
-	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
+	Revision 1.19  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.18  2005/01/06 23:31:31  pico
+	La QDJ change Ã  0h00 (ce n'est plus la question du jour plus un petit peu)
+	
 	Revision 1.17  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
 	
@@ -41,17 +44,17 @@
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
 	
 	Revision 1.12  2004/11/27 14:56:15  pico
-	Debut de mise en place de droits spéciaux (qdj + affiches)
-	+ génération de la page d'admin qui va bien
+	Debut de mise en place de droits spÃ©ciaux (qdj + affiches)
+	+ gÃ©nÃ©ration de la page d'admin qui va bien
 	
 	Revision 1.11  2004/11/16 18:32:34  schmurtz
 	Petits problemes d'interpretation de <note> et <commentaire>
 	
 	Revision 1.10  2004/11/02 17:54:12  pico
 	Correction bug:
-	- derniere qdj planifiée
-	- possibilité de déprogrammer une qdj en remettant 0000-00-00 comme date
-	- compte des qdj planifiées
+	- derniere qdj planifiÃ©e
+	- possibilitÃ© de dÃ©programmer une qdj en remettant 0000-00-00 comme date
+	- compte des qdj planifiÃ©es
 	
 	Revision 1.9  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
@@ -60,26 +63,26 @@
 	.
 	
 	Revision 1.7  2004/10/15 20:49:46  pico
-	Affichage plus compressé pour plus de lisibilité
+	Affichage plus compressÃ© pour plus de lisibilitÃ©
 	
 	Revision 1.6  2004/10/15 20:32:01  pico
 	Reorganisation de la page
 	
 	Revision 1.5  2004/10/14 22:15:24  pico
-	- Ajout de boutons "un jour plus tôt" "un jour plus tard"
-	- Empèche de définir une date passée pour la qdj
+	- Ajout de boutons "un jour plus tÃ´t" "un jour plus tard"
+	- EmpÃ¨che de dÃ©finir une date passÃ©e pour la qdj
 	
 	Revision 1.4  2004/10/14 19:59:37  pico
 	Correction de bug
 	
 	Revision 1.3  2004/10/14 19:21:41  pico
 	- Affichage de la planification existante
-	- Possibilité de replanifier une QDJ
+	- PossibilitÃ© de replanifier une QDJ
 	
 	Revision 1.2  2004/10/14 13:48:13  pico
-	Amélioration du comportement de la planification des qdj
-	- possibilité d'insérer une qdj et de décaler les autres
-	- ou remplacer la qdj déjà placée par la courante et remettre l'ancienne dans les qdj à planifier
+	AmÃ©lioration du comportement de la planification des qdj
+	- possibilitÃ© d'insÃ©rer une qdj et de dÃ©caler les autres
+	- ou remplacer la qdj dÃ©jÃ  placÃ©e par la courante et remettre l'ancienne dans les qdj Ã  planifier
 	
 
 	
@@ -88,14 +91,14 @@
 	
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin') && !verifie_permission('qdjmaster'))
 	acces_interdit();
 
 
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -106,12 +109,12 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
 
-	// Fixe une date de parution à la QDJ
+	// Fixe une date de parution Ã  la QDJ
 	
 	if ($temp[0]=='valid') {
 		if((strtotime($_REQUEST['date']) <(time() ))&&($_REQUEST['date']!="0000-00-00"))
 		{ ?>
-			<warning>ERREUR: Veuillez choisir une date supérieure à aujourd'hui</warning>
+			<warning>ERREUR: Veuillez choisir une date supÃ©rieure Ã  aujourd'hui</warning>
 		<?
 		}
 		else
@@ -119,14 +122,14 @@ foreach ($_POST AS $keys => $val){
 			$DB_web->query("SELECT qdj_id FROM qdj WHERE date='{$_REQUEST['date']}' LIMIT 1");
 			if($DB_web->num_rows())
 			{
-				if(!(isset($_REQUEST['decalage']))) //On remplace la qdj prévue par la qdj selectionnée, l'ancienne est remise dans la liste des qdj à planifier
+				if(!(isset($_REQUEST['decalage']))) //On remplace la qdj prÃ©vue par la qdj selectionnÃ©e, l'ancienne est remise dans la liste des qdj Ã  planifier
 				{
 					list($qdj_id) = ($DB_web->next_row()); 
 					$DB_web->query("UPDATE qdj SET date='0000-00-00' WHERE qdj_id='{$qdj_id}'");
 				}
-				else //On insère cette qdj et on repousse toutes les autres.
+				else //On insÃ¨re cette qdj et on repousse toutes les autres.
 				{
-					//nb de qdj planifiées
+					//nb de qdj planifiÃ©es
 					
 					$DB_web->query("SELECT qdj_id,date FROM qdj WHERE date>='{$_REQUEST['date']}'  ORDER BY date ASC");
 					while(list($id,$date_tmp) = $DB_web->next_row()) 
@@ -135,7 +138,7 @@ foreach ($_POST AS $keys => $val){
 						$date_tmp = date("Y-m-d",strtotime($date_tmp)+24*3600);
 						$DB_web->query("UPDATE qdj SET date='{$date_tmp}' WHERE qdj_id='{$id}'");
 						$DB_web->query("SELECT qdj_id FROM qdj WHERE date='$date_tmp'");
-						if(($DB_web->num_rows())<2) break; //plus rien à décaler
+						if(($DB_web->num_rows())<2) break; //plus rien Ã  dÃ©caler
 						$DB_web->pop_result() ;
 					} 
 					
@@ -145,19 +148,19 @@ foreach ($_POST AS $keys => $val){
 			$DB_web->query("UPDATE qdj SET date='{$_REQUEST['date']}'WHERE qdj_id='{$temp[1]}'");
 	
 		?>
-			<commentaire>Planification effectuée</commentaire>
+			<commentaire>Planification effectuÃ©e</commentaire>
 		<?
 		}	
 	}
 	
-	// Déplacer un jour après
+	// DÃ©placer un jour aprÃ¨s
 	if ($temp[0]=='augdate') {
 		$date1 = date("Y-m-d",strtotime($temp[2])+24*3600);
 		$DB_web->query("UPDATE qdj SET date='{$temp[2]}'  WHERE date='{$date1}'");
 		$DB_web->query("UPDATE qdj SET date='{$date1}' WHERE qdj_id='{$temp[1]}'");
 	}
 	
-	// Déplacer un jour avant
+	// DÃ©placer un jour avant
 	if ($temp[0]=='reddate') {
 		$date1 = date("Y-m-d",strtotime($temp[2])-24*3600);
 		$DB_web->query("UPDATE qdj SET date='{$temp[2]}'   WHERE date='{$date1}'");
@@ -165,14 +168,14 @@ foreach ($_POST AS $keys => $val){
 		$DB_web->query("UPDATE qdj SET date='{$date1}' WHERE qdj_id='{$temp[1]}'");
 	}
 	
-	// Formulaire pour modifier la date de parution de la QDJ déjà planifiée
+	// Formulaire pour modifier la date de parution de la QDJ dÃ©jÃ  planifiÃ©e
 	
 	if($temp[0]=='modif') {
 		$DB_web->query("SELECT question,reponse1,reponse2 FROM qdj WHERE qdj_id='{$temp[1]}'");
 		list($question,$reponse1,$reponse2) = $DB_web->next_row(); 
 		$id = $temp[1];
 ?>
-		<warning>Cette QDJ est déjà planifiée pour le <?echo $temp[2] ?></warning>
+		<warning>Cette QDJ est dÃ©jÃ  planifiÃ©e pour le <?echo $temp[2] ?></warning>
 		<module titre="QDJ">
 			<qdj type="aujourdhui" >
 				<question><?php echo $question ?></question>
@@ -183,7 +186,7 @@ foreach ($_POST AS $keys => $val){
 		<formulaire id="qdj_<? echo $id ?>" action="admin/planif_qdj.php">
 			<champ id="date" titre="date" valeur="<? echo $temp[2] ?>"/>
 			<choix type="checkbox">
-				<option id="decalage" titre="Décaler si necessaire ?"/>
+				<option id="decalage" titre="DÃ©caler si necessaire ?"/>
 			</choix>
 			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider la planification de cette qdj ?')"/>
 			
@@ -203,10 +206,10 @@ foreach ($_POST AS $keys => $val){
 	}
 }
 
-//nb de qdj planifiées
+//nb de qdj planifiÃ©es
 $date = date("Y-m-d", time());
 ?>
-	<p>Nous sommes le : <?= $date ?></p>
+	<p>Nous sommes leÂ : <?= $date ?></p>
 <?
 //Cherche la date de la prochaine qdj libre
 for ($i = 0; ; $i++) 
@@ -216,9 +219,9 @@ for ($i = 0; ; $i++)
 	if(!$DB_web->num_rows()) break;
 }
 ?>
-	<p>La planification est faite jusqu'au : <?= $date_last ?></p>
+	<p>La planification est faite jusqu'auÂ : <?= $date_last ?></p>
 	<? $DB_web->query("SELECT qdj_id FROM qdj WHERE date>'$date' "); ?>
-	<p>Nb de QDJ planifiées: <? echo $DB_web->num_rows() ?></p>
+	<p>Nb de QDJ planifiÃ©es: <? echo $DB_web->num_rows() ?></p>
 	<? $DB_web->query("SELECT qdj_id FROM qdj WHERE date='0000-00-00' "); ?>
 	<p>Nb de QDJ disponibles: <? echo $DB_web->num_rows() ?></p>
 	
@@ -226,7 +229,7 @@ for ($i = 0; ; $i++)
 // Affiche la planification existante
 if(isset($_REQUEST['show'])) {
 	?>
-	<h2>Prévisions</h2>
+	<h2>PrÃ©visions</h2>
 	<?
 
 	$date = date("Y-m-d", time() + 24*3600);
@@ -239,7 +242,7 @@ if(isset($_REQUEST['show'])) {
 			<note><?= $question ?></note>
 			<note><?= "$reponse1 / $reponse2" ?></note>
 		
-			<? if(strtotime($date) >time() + 24*3600){ ?><bouton titre="Un jour plus tôt" id="reddate_<? echo $id ?>_<? echo $date ?>"/><? } ?>
+			<? if(strtotime($date) >time() + 24*3600){ ?><bouton titre="Un jour plus tÃ´t" id="reddate_<? echo $id ?>_<? echo $date ?>"/><? } ?>
 			<bouton titre="Un jour plus tard" id="augdate_<? echo $id ?>_<? echo $date ?>"/>
 			<bouton id='modif_<? echo $id ?>_<? echo $date ?>' titre='Modifier la date manuellement'/>
 			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette qdj ?!!!!!')"/>
@@ -251,7 +254,7 @@ if(isset($_REQUEST['show'])) {
 }
 
 
-// Afficher le bouton pour montrer la plaification déjà établie
+// Afficher le bouton pour montrer la plaification dÃ©jÃ  Ã©tablie
 if(!isset($_REQUEST['show']))
 {
 ?>
@@ -263,13 +266,13 @@ if(!isset($_REQUEST['show']))
 
 
 //===============================
-// Affiche la qdj de demain et après demain
+// Affiche la qdj de demain et aprÃ¨s demain
 	$date = date("Y-m-d", time() + 24*3600);
 	
 	$DB_web->query("SELECT question,reponse1,reponse2 FROM qdj WHERE date='$date' LIMIT 1");
 	list($question,$reponse1,$reponse2) = $DB_web->next_row(); 
 ?>
-		<h2>Prévue demain</h2>
+		<h2>PrÃ©vue demain</h2>
 		<module titre="QDJ">
 			<qdj type="aujourdhui" >
 				<question><?php echo $question ?></question>
@@ -283,7 +286,7 @@ if(!isset($_REQUEST['show']))
 	$DB_web->query("SELECT question,reponse1,reponse2 FROM qdj WHERE date='$date' LIMIT 1");
 	list($question,$reponse1,$reponse2) = $DB_web->next_row(); 
 ?>
-		<h2>Prévue après-demain</h2>
+		<h2>PrÃ©vue aprÃ¨s-demain</h2>
 		<module titre="QDJ">
 			<qdj type="aujourdhui" >
 				<question><?php echo $question ?></question>
@@ -298,7 +301,7 @@ if(!isset($_REQUEST['show']))
  
 
 		
-<!-- Affiche les QDJ à planifier -->
+<!-- Affiche les QDJ Ã  planifier -->
 		<h2>Disponibles</h2>
 <?
 	$DB_web->query("SELECT qdj_id,question, reponse1, reponse2 FROM qdj WHERE date = '0000-00-00'");
@@ -315,7 +318,7 @@ if(!isset($_REQUEST['show']))
 
 			<champ id="date" titre="date" valeur="<? echo $date_last ?>"/>
 			<choix type="checkbox">
-				<option id="decalage" titre="Décaler si necessaire ?"/>
+				<option id="decalage" titre="DÃ©caler si necessaire ?"/>
 			</choix>
 			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider la planification de cette qdj ?')"/>
 			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette qdj ?!!!!!')"/>

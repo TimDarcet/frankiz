@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,33 +18,36 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Cette page permet de déterminer si la Kès est ouvert ou non.
+	Cette page permet de dÃ©terminer si la KÃ¨s est ouvert ou non.
 	
 	$Log$
-	Revision 1.1  2005/01/18 12:11:49  pico
-	Etat de la kès + validation des mails promos dans l'interface de la Kès
+	Revision 1.2  2005/04/13 17:09:59  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.1  2005/01/18 12:11:49  pico
+	Etat de la kÃ¨s + validation des mails promos dans l'interface de la KÃ¨s
+	
 	
 */
 
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!(verifie_permission('admin')||verifie_permission('kes')))
 	acces_interdit();
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
-<page id="etat_bob" titre="Frankiz : Etat de la kès">
+<page id="etat_bob" titre="Frankiz : Etat de la kÃ¨s">
 <?
 if(isset($_POST['envoie'])){
 ?>
 	<commentaire>
-		L'état de la Kès vient d'être changé
+		L'Ã©tat de la KÃ¨s vient d'Ãªtre changÃ©
 	</commentaire>
 <?
 	$DB_web->query("UPDATE parametres SET valeur='".$_REQUEST['etat']."' WHERE nom='kes'");
@@ -54,9 +57,9 @@ $DB_web->query("SELECT valeur FROM parametres WHERE nom='kes'");
 list($valeur) = $DB_web->next_row();
 
 ?>
-	<formulaire id="kes" titre="Ouverture de la kès" action="gestion/etat_kes.php">
-		<choix titre="La Kès est:" id="etat" type="radio" valeur="<?= $valeur ?>">
-				<option titre="Fermée" id="0"/>
+	<formulaire id="kes" titre="Ouverture de la kÃ¨s" action="gestion/etat_kes.php">
+		<choix titre="La KÃ¨s est:" id="etat" type="radio" valeur="<?= $valeur ?>">
+				<option titre="FermÃ©e" id="0"/>
 				<option titre="ouverte" id="1"/>
 		</choix>
 		<bouton titre="Valider" id="envoie" onClick="return window.confirm('Voulez vous vraiment changer cette valeur ?')"/>

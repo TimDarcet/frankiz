@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,33 +21,36 @@
 	Page qui permet aux utilisateurs de demander le rajout d'une annonce
 	
 	$Log$
-	Revision 1.45  2005/02/10 21:37:53  pico
-	- Pour les ids de news, fait en fonction de la date de péremption, c'est mieux que seulement par id, mais y'a tjs un pb avec les nouvelles fraiches
-	- Correction pour éviter que des gens postent des annonces qui sont déjà périmées
+	Revision 1.46  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.45  2005/02/10 21:37:53  pico
+	- Pour les ids de news, fait en fonction de la date de pÃ©remption, c'est mieux que seulement par id, mais y'a tjs un pb avec les nouvelles fraiches
+	- Correction pour Ã©viter que des gens postent des annonces qui sont dÃ©jÃ  pÃ©rimÃ©es
+	
 	Revision 1.44  2005/01/31 15:28:40  alban
 	
-	Un petit message après le renvoi vers wiki pour les activites
+	Un petit message aprÃ¨s le renvoi vers wiki pour les activites
 	
 	Revision 1.43  2005/01/27 17:27:50  pico
-	/me vérifiera ses parenthèses la prochaine fois
+	/me vÃ©rifiera ses parenthÃ¨ses la prochaine fois
 	
 	Revision 1.42  2005/01/27 15:23:17  pico
-	La boucle locale est considérée comme interne
+	La boucle locale est considÃ©rÃ©e comme interne
 	Tests de photos normalement plus cools.
-	Après le reste.... je sais plus
+	AprÃ¨s le reste.... je sais plus
 	
 	Revision 1.41  2005/01/22 17:58:39  pico
 	Modif des images
 	
 	Revision 1.40  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
+	Changement de "TrÃ¨s BRment, l'automate"
 	
 	Revision 1.39  2005/01/14 11:09:44  pico
 	suite du bug je sais plus combien
 	
 	Revision 1.38  2005/01/04 21:44:40  pico
-	Remise en place du lien vers l'helpwiki parce que le résumé en bas de page est incomprehensible
+	Remise en place du lien vers l'helpwiki parce que le rÃ©sumÃ© en bas de page est incomprehensible
 	
 	Revision 1.37  2004/12/17 16:29:29  kikx
 	Dans le trombino maintenant les promo sont dynamiques
@@ -69,7 +72,7 @@
 	
 	Revision 1.32  2004/12/14 07:26:33  pico
 	Correction du module random
-	La politique est de na pas rajouter des balises si elles ne sont pas utiles ailleurs, là, je pense que l'on peut s'en passer et avoir tout de même l'effet recherché.
+	La politique est de na pas rajouter des balises si elles ne sont pas utiles ailleurs, lÃ , je pense que l'on peut s'en passer et avoir tout de mÃªme l'effet recherchÃ©.
 	
 	Revision 1.31  2004/12/14 00:27:40  kikx
 	Pour que le FROM des mails de validation soit au nom du mec qui demande la validation... (qu'est ce que je ferai pas pour les TOS :))
@@ -88,14 +91,14 @@
 	Passage des annonces en wiki !
 	
 	Revision 1.26  2004/11/24 12:51:02  kikx
-	Pour commencer la compatibilité wiki
+	Pour commencer la compatibilitÃ© wiki
 	
 	Revision 1.25  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
 	(return fantomes)
 	
 	Revision 1.24  2004/11/22 23:38:42  kikx
-	Ajout de <note></note> un peu partout pour plus de compréhension !
+	Ajout de <note></note> un peu partout pour plus de comprÃ©hension !
 	
 	Revision 1.23  2004/11/07 22:43:10  pico
 	correction faute d'orthograffe
@@ -140,14 +143,14 @@
 	
 	Revision 1.11  2004/09/18 16:04:52  kikx
 	Beaucoup de modifications ...
-	Amélioration des pages qui gèrent les annonces pour les rendre compatible avec la nouvelle norme de formatage xml -> balise web et balise image qui permette d'afficher une image et la signature d'une personne
+	AmÃ©lioration des pages qui gÃ¨rent les annonces pour les rendre compatible avec la nouvelle norme de formatage xml -> balise web et balise image qui permette d'afficher une image et la signature d'une personne
 	
 	Revision 1.8  2004/09/17 16:14:43  kikx
 	Pffffff ...
-	Je sais plus trop ce que j'ai fait donc allez voir le code parce que la ca me fait chié de refléchir
+	Je sais plus trop ce que j'ai fait donc allez voir le code parce que la ca me fait chiÃ© de reflÃ©chir
 	
 	Revision 1.7  2004/09/17 14:19:58  kikx
-	Page de demande d'annonce terminé
+	Page de demande d'annonce terminÃ©
 	Ajout d'une page de validations d'annonces
 	
 */
@@ -155,7 +158,7 @@
 require_once "../include/global.inc.php";
 require_once "../include/wiki.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_MINIMUM);
 
 $DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM eleves WHERE eleve_id='".$_SESSION['user']->uid."'");
@@ -169,11 +172,11 @@ list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_ro
 //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
 //--//
 //--// Norme de nommage des images que nous uploadons
-//--// dans le rep prévu a cette effet : 
-//--// # annonce_{$id_eleves} qd l'annonce n'a pas été soumise à validation
-//--// # {$id_annonce_a_valider}_annonce qd l'annonce est soumise à validation
+//--// dans le rep prÃ©vu a cette effet : 
+//--// # annonce_{$id_eleves} qd l'annonce n'a pas Ã©tÃ© soumise Ã  validation
+//--// # {$id_annonce_a_valider}_annonce qd l'annonce est soumise Ã  validation
 //--//
-//--// Ceci permet de faire la différence entre les fichiers tempo et les fichiers a valider
+//--// Ceci permet de faire la diffÃ©rence entre les fichiers tempo et les fichiers a valider
 //--//
 //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
 
@@ -193,7 +196,7 @@ if ((isset($_FILES['file']))&&($_FILES['file']['size']!=0))  {
 	}
 }
 //================================================
-// On Supprime l'image qui a été uploadé (si elle existe bien sur :))
+// On Supprime l'image qui a Ã©tÃ© uploadÃ© (si elle existe bien sur :))
 //================================================
 
 if (isset($_POST['suppr_img'])) {
@@ -203,7 +206,7 @@ if (isset($_POST['suppr_img'])) {
 	}
 }
 //================================================
-// On valide l'annonce et en envoie un mail aux webmestres pour les prévenir 
+// On valide l'annonce et en envoie un mail aux webmestres pour les prÃ©venir 
 //================================================
 
 if (isset($_POST['valid'])) {
@@ -217,7 +220,7 @@ if (isset($_POST['valid'])) {
 
 	$DB_valid->query("INSERT INTO valid_annonces SET perime=FROM_UNIXTIME({$_POST['date']}), eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',contenu='".$_POST['text']."', exterieur=$temp_ext");
 	
-	// on modifie le nom du fichier qui a été téléchargé si celui ci existe
+	// on modifie le nom du fichier qui a Ã©tÃ© tÃ©lÃ©chargÃ© si celui ci existe
 	// selon la norme de nommage ci-dessus
 	//----------------------------------------------------------------------------------------------
 	
@@ -226,7 +229,7 @@ if (isset($_POST['valid'])) {
 		rename(DATA_DIR_LOCAL."annonces/temp_$eleve_id",DATA_DIR_LOCAL."annonces/a_valider_{$index}") ; 
 	}
 	$contenu = "<strong>Bonjour,</strong><br><br>".
-			"$prenom $nom a demandé la validation d'une annonce : <br>".
+			"$prenom $nom a demandÃ© la validation d'une annonce : <br>".
 			$_POST['titre']."<br><br>".
 			"Pour valider ou non cette demande va sur la page suivante<br>".
 			"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_annonces.php'>".
@@ -238,7 +241,7 @@ if (isset($_POST['valid'])) {
 }
 //=================
 //===============
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 //=================
 
@@ -255,7 +258,7 @@ if ($erreur_upload==1) {
 }
 //=========================================
 // PREVISUALISATION :
-// On teste l'affichage de l'annonce pour voir à quoi ça ressemble
+// On teste l'affichage de l'annonce pour voir Ã  quoi Ã§a ressemble
 //=========================================
 
 if (!isset($_POST['text'])) $_POST['text']="" ;
@@ -283,7 +286,7 @@ if (!isset($_POST['titre']))  $_POST['titre']="Titre" ;
 
 if (isset($_POST['valid'])) {
 ?>
-	<commentaire>Ta nouvelle annonce a été prise en compte et sera validée dans les meilleurs délais.</commentaire>
+	<commentaire>Ta nouvelle annonce a Ã©tÃ© prise en compte et sera validÃ©e dans les meilleurs dÃ©lais.</commentaire>
 <?	
 } else {
 //====================
@@ -295,17 +298,17 @@ if (isset($_POST['valid'])) {
 		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
 
 		<note>
-			Le texte de l'annonce utilise le format wiki rappelé en bas de la page et décrit dans l'<lien url="helpwiki.php" titre="aide wiki"/><br/>
-			Pour toute remarque particulière, envoyer un mail à <lien url="mailto:web@frankiz.polytechnique.fr" titre="web@frankiz"/><br/><br/>
-         Il est rappelé qu'une annonce n'est pas une activité et que si l'annonce concerne une activité, nous ne la validerons que si elle est accompagnée d'une proposition d'activité et si l'activité a lieu dans plus de quatres jours (une semaine c'est mieux).
+			Le texte de l'annonce utilise le format wiki rappelÃ© en bas de la page et dÃ©crit dans l'<lien url="helpwiki.php" titre="aide wiki"/><br/>
+			Pour toute remarque particuliÃ¨re, envoyer un mail Ã  <lien url="mailto:web@frankiz.polytechnique.fr" titre="web@frankiz"/><br/><br/>
+         Il est rappelÃ© qu'une annonce n'est pas une activitÃ© et que si l'annonce concerne une activitÃ©, nous ne la validerons que si elle est accompagnÃ©e d'une proposition d'activitÃ© et si l'activitÃ© a lieu dans plus de quatres jours (une semaine c'est mieux).
 		</note>
 		<zonetext id="text" titre="Le texte" type="grand"><? if (isset($_POST['text'])) echo $_POST['text'];?></zonetext>
 
-		<note>L'image doit être un fichier gif, png ou jpeg ne dépassant pas 400x300 pixels et 250Ko.</note>
+		<note>L'image doit Ãªtre un fichier gif, png ou jpeg ne dÃ©passant pas 400x300 pixels et 250Ko.</note>
 		<fichier id="file" titre="Ton image" taille="250000"/>
 
-		<note>Ton annonce disparaîtra le jour de la date de péremption.</note>
-		<choix titre="Date de péremption" id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
+		<note>Ton annonce disparaÃ®tra le jour de la date de pÃ©remption.</note>
+		<choix titre="Date de pÃ©remption" id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
 <?		for ($i=1 ; $i<=MAX_PEREMPTION ; $i++) {
 			$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
 			$date_value = date("d/m/y" , $date_id);
@@ -316,8 +319,8 @@ if (isset($_POST['valid'])) {
 ?>
 		</choix>
 		
-		<note>Si tu souhaites que ton annonce soit visible de l'extérieur, clique ici.</note>
-		<choix titre="Extérieur" id="exterieur" type="checkbox" valeur="<? if (isset($_REQUEST['ext'])) echo 'ext' ;?>">
+		<note>Si tu souhaites que ton annonce soit visible de l'extÃ©rieur, clique ici.</note>
+		<choix titre="ExtÃ©rieur" id="exterieur" type="checkbox" valeur="<? if (isset($_REQUEST['ext'])) echo 'ext' ;?>">
 			<option id="ext" titre=""/>
 		</choix>
 

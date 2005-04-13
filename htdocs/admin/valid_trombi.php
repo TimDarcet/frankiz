@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,20 +18,23 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Page qui permet aux admins de valider une activité
+	Page qui permet aux admins de valider une activitÃ©
 	
 	$Log$
+	Revision 1.16  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.15  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
-
+	
 	Revision 1.14  2005/01/22 17:58:38  pico
 	Modif des images
 	
 	Revision 1.13  2005/01/21 20:38:50  pico
-	Légende des images pour qu'on sache qui est quoi
+	LÃ©gende des images pour qu'on sache qui est quoi
 	
 	Revision 1.12  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
+	Changement de "TrÃ¨s BRment, l'automate"
 	
 	Revision 1.11  2005/01/13 17:10:58  pico
 	Mails de validations From le validateur qui va plus ou moins bien
@@ -43,7 +46,7 @@
 	On affiche la photo a sa vraie taille pour valider un changement trombi
 	
 	Revision 1.8  2004/12/15 12:33:19  pico
-	quand on déplace un fichier, on vérifie que ça fout pas la merde ailleurs :(
+	quand on dÃ©place un fichier, on vÃ©rifie que Ã§a fout pas la merde ailleurs :(
 	
 	Revision 1.7  2004/12/13 16:47:07  kikx
 	oups !
@@ -72,12 +75,12 @@
 	
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('trombino'))
 	acces_interdit();
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 $message ="" ;
@@ -86,7 +89,7 @@ $message ="" ;
 <h1>Validation des modifications des photos trombi</h1>
 
 <?
-// On traite les différents cas de figure d'enrigistrement et validation d'affiche :)
+// On traite les diffÃ©rents cas de figure d'enrigistrement et validation d'affiche :)
 
 // Enregistrer ...
 
@@ -99,19 +102,19 @@ foreach ($_POST AS $keys => $val){
 			list($prenom,$nom,$promo,$login) = $DB_trombino->next_row() ;
 			
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid,"validé l'image trombi de $prenom $nom") ;
+			log_admin($_SESSION['user']->uid,"validÃ© l'image trombi de $prenom $nom") ;
 			
 			rename(DATA_DIR_LOCAL."trombino/a_valider_{$temp[1]}",BASE_PHOTOS."$promo/$login.jpg") ;
 			
-			$message .= "<commentaire> Image validée pour $prenom $nom</commentaire>" ;
+			$message .= "<commentaire> Image validÃ©e pour $prenom $nom</commentaire>" ;
 			
-			$contenu = "Ton image trombino est validée <br><br>".
+			$contenu = "Ton image trombino est validÃ©e <br><br>".
 			"Cordialement,<br>" .
 			"Le Tolmestre<br>"  ;
-			couriel($temp[1],"[Frankiz] Ton image trombino est validée",$contenu,TROMBINOMEN_ID);
+			couriel($temp[1],"[Frankiz] Ton image trombino est validÃ©e",$contenu,TROMBINOMEN_ID);
 		} else {
 	?>
-			<warning>Requête deja traitée par un autre administrateur</warning>
+			<warning>RequÃªte deja traitÃ©e par un autre administrateur</warning>
 	<?			
 		}
 
@@ -124,20 +127,20 @@ foreach ($_POST AS $keys => $val){
 			list($prenom,$nom,$promo,$login) = $DB_trombino->next_row() ;
 			
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," refusé l'image trombi de $prenom $nom") ;
+			log_admin($_SESSION['user']->uid," refusÃ© l'image trombi de $prenom $nom") ;
 			
 			unlink(DATA_DIR_LOCAL."trombino/a_valider_{$temp[1]}") ;
 			
-			$message .= "<warning> Image non  validée pour $prenom $nom</warning>" ;
+			$message .= "<warning> Image non  validÃ©e pour $prenom $nom</warning>" ;
 			
-			$contenu = "Ton image trombino n'est pas validée pour la raison suivante ;<br>".
+			$contenu = "Ton image trombino n'est pas validÃ©e pour la raison suivante ;<br>".
 			$_POST['refus']."<br><br>".
 			"Cordialement,<br>" .
 			"Le Tolmestre<br>"  ;
-			couriel($temp[1],"[Frankiz] Ton image trombino n'est pas validée",$contenu,TROMBINOMEN_ID);
+			couriel($temp[1],"[Frankiz] Ton image trombino n'est pas validÃ©e",$contenu,TROMBINOMEN_ID);
 		} else {
 	?>
-			<warning>Requête deja traitée par un autre administrateur</warning>
+			<warning>RequÃªte deja traitÃ©e par un autre administrateur</warning>
 	<?			
 		}
 	
@@ -162,7 +165,7 @@ foreach ($_POST AS $keys => $val){
 			<formulaire id="trombi_<? echo $id ?>" titre="<? echo "$prenom $nom (X$promo)"?>" action="admin/valid_trombi.php">
 				<image source="trombino.php?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>&amp;original=1" texte="photo originale" legende="photo originale" />
 				<image source="trombino.php?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>" texte="photo actuelle" legende="photo actuelle"/>
-				<image source="profil/profil.php?image=true&amp;id=<?=$id ?>" texte="photo à valider" legende="photo à valider"/>
+				<image source="profil/profil.php?image=true&amp;id=<?=$id ?>" texte="photo Ã  valider" legende="photo Ã  valider"/>
 				<zonetext id="refus" titre="La raison du refus si refus"></zonetext>
 				<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider cette photo ?')"/>
 				<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Supprimer cette photo ?!)"/>

@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,15 +18,18 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Fichier de définition de variables et constantes utiles dans tout le projet.
+	Fichier de dÃ©finition de variables et constantes utiles dans tout le projet.
 	C'est de ce script que sont inclus tous les fichiers inclus pour toutes les pages
 	et _qui inclus du code en dehors de fonctions_ comme erreursphp.inc.php, login.inc.php,
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
 	$Log$
+	Revision 1.51  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.50  2005/03/31 17:17:01  pico
 	Frankiz exterieur
-
+	
 	Revision 1.49  2005/01/26 22:15:32  schmurtz
 	Oups, maintenant c'est vraiment corrige
 	
@@ -34,10 +37,10 @@
 	Gestion de l'echappement des \
 	
 	Revision 1.47  2005/01/25 14:53:43  pico
-	Modifications relatives à la version de prod, à l'accès extérieur, tout ça...
+	Modifications relatives Ã  la version de prod, Ã  l'accÃ¨s extÃ©rieur, tout Ã§a...
 	
 	Revision 1.46  2004/12/02 21:26:23  pico
-	Base URL: distinction pour éviter les http://frankiz//index.php
+	Base URL: distinction pour Ã©viter les http://frankiz//index.php
 	
 	Revision 1.45  2004/11/26 16:12:47  pico
 	La Faq utilise la $DB_faq au lieu de $DB_web
@@ -67,24 +70,24 @@
 	Ajout des news externes en tant que module
 	
 	Revision 1.37  2004/11/24 15:55:34  pico
-	Code pour gérer les liens perso + les rss au lancement de la session
+	Code pour gÃ©rer les liens perso + les rss au lancement de la session
 	
 	Revision 1.36  2004/11/24 12:51:02  kikx
-	Pour commencer la compatibilité wiki
+	Pour commencer la compatibilitÃ© wiki
 	
 	Revision 1.35  2004/11/09 19:42:15  pico
-	Passage de tous les paramètres de conf dans etc/config.php
+	Passage de tous les paramÃ¨tres de conf dans etc/config.php
 	
 	
 */
 
-// Définition générique des différentes bases pour l'accès aux fichiers
+// DÃ©finition gÃ©nÃ©rique des diffÃ©rentes bases pour l'accÃ¨s aux fichiers
 foreach(Array('.', '..', '../..', '../../..') as $dir)
 if(file_exists("$dir/frankiz.dtd"))
 	$href = $dir;
 $https = ($_SERVER['HTTPS']=='on')? 'https':'http';
 define('BASE_LOCAL',realpath(dirname(__FILE__)."/.."));
-// Base URL: distinction pour éviter les http://frankiz//index.php
+// Base URL: distinction pour Ã©viter les http://frankiz//index.php
 if($_SERVER["HTTP_X_FORWARDED_HOST"]=="www.polytechnique.fr")
         define('BASE_URL',$https.'://www.polytechnique.fr/eleves');
 else if(substr((dirname($_SERVER['PHP_SELF'])), 1))
@@ -98,8 +101,8 @@ else
 require_once "mysql.inc.php";
 
 // Gestion des erreurs PHP et MySQL
-// Il est important d'inclure ce fichier le plus tôt possible, mais comme il a besoin
-// des paramètres du site on ne l'inclu que maintenant.
+// Il est important d'inclure ce fichier le plus tÃ´t possible, mais comme il a besoin
+// des paramÃ¨tres du site on ne l'inclu que maintenant.
 require_once "init_erreurs.inc.php";	// TODO : mettre avant l'ouverture des connexions aux bases mysql
 
 require_once BASE_LOCAL."/../etc/config.php";
@@ -117,12 +120,12 @@ define('ERR_EMAIL_NON_VALIDE',$i++);
 define('ERR_TROP_COURT',$i++);
 define('ERR_SELECTION_VIDE',$i++);
 
-// Nettoyage des éléments récupérés par $_POST, $_GET et $_REQUEST
+// Nettoyage des Ã©lÃ©ments rÃ©cupÃ©rÃ©s par $_POST, $_GET et $_REQUEST
 function nettoyage_balise($tableau) {
 	foreach($tableau as $cle => $valeur)
 		if(is_array($valeur)) $tableau[$cle] = nettoyage_balise($valeur);
 		else $tableau[$cle] = str_replace(array('&','<','>','\\\'','\\"','\\\\'),array('&amp;','&lt;','&gt;','&apos;','&quot;','&#92;'),$valeur);
-// Si l'échappement automatique de PHP n'est pas activé :
+// Si l'Ã©chappement automatique de PHP n'est pas activÃ©Â :
 //		else $tableau[$cle] = str_replace(array('&','<','>','\'','"','\\'),array('&amp;','&lt;','&gt;','&apos;','&quot;','&#92;'),$valeur);
 	return $tableau;
 }

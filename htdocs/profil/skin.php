@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -23,27 +23,30 @@
 	contient des informations importantes pour l'application de la transformation XSL et la configuration
 	de la skin par l'utilisateur.
 	
-	Toutes les configurations de l'utilisateur sont stockées dans un cookie. Ce cookie est l'encodage
-	en base64 de la version sérialisée d'une structure de la forme :
+	Toutes les configurations de l'utilisateur sont stockÃ©es dans un cookie. Ce cookie est l'encodage
+	en base64 de la version sÃ©rialisÃ©e d'une structure de la formeÂ :
 	array (
-		[skin_nom]  => «nom de la skin»
-		[skin_css]  => «nom du fichier css»
+		[skin_nom]  => Â«nom de la skinÂ»
+		[skin_css]  => Â«nom du fichier cssÂ»
 		[skin_parametres] => array (
-			[«param 1] => «valeur»
-			[«param 2»] => «valeur»
+			[Â«param 1] => Â«valeurÂ»
+			[Â«param 2Â»] => Â«valeurÂ»
 		)
 		[skin_visible] => array (
-			[«module 1»] => «true/false»
-			[«module 2»] => «true/false»
+			[Â«module 1Â»] => Â«true/falseÂ»
+			[Â«module 2Â»] => Â«true/falseÂ»
 		)
 	)
 	
 	$Log$
+	Revision 1.31  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.30  2005/02/15 15:41:33  pico
 	En pourcentage pour Kikx
-
+	
 	Revision 1.29  2005/02/15 11:38:05  pico
-	Que les gens qui ont choisi une skin sont listés.
+	Que les gens qui ont choisi une skin sont listÃ©s.
 	
 	Fixe le bug #51
 	
@@ -75,8 +78,8 @@
 	- suppression de la page affichant toutes les annonces
 	
 	Revision 1.20  2004/12/07 19:53:05  pico
-	Remise en place des paramètres de skin
-	Mise à jour css classique
+	Remise en place des paramÃ¨tres de skin
+	Mise Ã  jour css classique
 	
 	Revision 1.19  2004/12/07 14:39:26  schmurtz
 	Bugs et orthographe
@@ -88,7 +91,7 @@
 	Reorganisation des skins (affichage melange skin/css + depacement des css)
 	
 	Revision 1.16  2004/11/22 23:38:42  kikx
-	Ajout de <note></note> un peu partout pour plus de compréhension !
+	Ajout de <note></note> un peu partout pour plus de comprÃ©hension !
 	
 	Revision 1.15  2004/11/16 12:17:26  schmurtz
 	Deplacement des skins de trombino.eleves vers frankiz.compte_frankiz
@@ -104,16 +107,16 @@
 	Rajout d'un id pour pouvoir skinner les titres des formulaires
 	
 	Revision 1.11  2004/11/06 10:40:46  pico
-	Maintenant, ça doit marcher
+	Maintenant, Ã§a doit marcher
 	
 	Revision 1.10  2004/11/06 10:23:15  pico
 	BugFix au niveau de l'affichage du choix de css
 	
-	Lorsqu'on change de skin, la css est la css "style.css" du répertoire de la skin.
-	Cela permet d'éviter de garder la css d'une autre skin, sinon ça rend tout pas beau.
+	Lorsqu'on change de skin, la css est la css "style.css" du rÃ©pertoire de la skin.
+	Cela permet d'Ã©viter de garder la css d'une autre skin, sinon Ã§a rend tout pas beau.
 	
 	Revision 1.9  2004/11/06 10:13:27  pico
-	Mise à jour fichier choix skin
+	Mise Ã  jour fichier choix skin
 	
 	Revision 1.8  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
@@ -130,7 +133,7 @@ require_once "../include/global.inc.php";
 
 demande_authentification(AUTH_MINIMUM);
 
-// récupération des modifications de l'utilisateur
+// rÃ©cupÃ©ration des modifications de l'utilisateur
 $new_skin = array();
 
 if(!empty($_REQUEST['OK_skin'])) {
@@ -148,13 +151,13 @@ if(!empty($_REQUEST['OK_skin'])) {
 	if(!empty($_REQUEST['newcss_perso']))
 		$new_skin['skin_css_perso'] = urldecode($_REQUEST['newcss_perso']);
 	
-	// Paramètres
+	// ParamÃ¨tres
 	$new_skin['skin_parametres'] = array();
 	if(!empty($_REQUEST['param']))
 		foreach($_REQUEST['param'] as $module => $valeur)
 			$new_skin['skin_parametres'][$module] = $valeur;
 	
-	// Visibilité
+	// VisibilitÃ©
 	foreach(liste_modules() as $module => $nom)
 		if($nom != "")
 			$new_skin['skin_visible'][$module] = false;
@@ -164,7 +167,7 @@ if(!empty($_REQUEST['OK_skin'])) {
 			$new_skin['skin_visible'][$module] = true;
 }
 
-// Si la skin a été modifié, on rajoute un cookie de validité 3 ans et on stocke la skin dans nos bases.
+// Si la skin a Ã©tÃ© modifiÃ©, on rajoute un cookie de validitÃ© 3 ans et on stocke la skin dans nos bases.
 if(!empty($new_skin)) {
 	$cookie = serialize($new_skin);
 	SetCookie("skin",base64_encode($cookie),time()+3*365*24*3600,"/");
@@ -172,7 +175,7 @@ if(!empty($new_skin)) {
 	$DB_web->query("UPDATE compte_frankiz SET skin='$cookie' WHERE eleve_id='{$_SESSION['user']->uid}'");
 }
 
-// Récupération du contenu de la page (en XML)
+// RÃ©cupÃ©ration du contenu de la page (en XML)
 require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="choix_skin" titre="Frankiz : choix skin">
@@ -233,10 +236,10 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<bouton titre="Appliquer" id="OK_skin" />
 	</formulaire>
 	
-	<formulaire id="form_param_skin" titre="Paramètres de la skin <? echo $_SESSION['skin']['skin_nom'] ?>" action="profil/skin.php">
-		<note>Tu peux choisir des paramètres spéciaux pour la skin courante.</note>
+	<formulaire id="form_param_skin" titre="ParamÃ¨tres de la skin <? echo $_SESSION['skin']['skin_nom'] ?>" action="profil/skin.php">
+		<note>Tu peux choisir des paramÃ¨tres spÃ©ciaux pour la skin courante.</note>
 <?php
-		// Paramètres spécifique à la skin
+		// ParamÃ¨tres spÃ©cifique Ã  la skin
 		$description = lire_description_skin(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']);
 		foreach($description['parametres'] as $parametre_id => $parametre) {
 			if(empty($parametre['valeurs'])) {
@@ -251,9 +254,9 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			}
 		}
 ?>
-		<note>Tu peux aussi ne pas faire apparaître tous les éléments de la skin. Tu gagneras ainsi de la
-			  place. Choisis donc les éléments que tu veux afficher.</note>
-		<choix titre="Eléments" id="newskin" type="checkbox" valeur="<?php
+		<note>Tu peux aussi ne pas faire apparaÃ®tre tous les Ã©lÃ©ments de la skin. Tu gagneras ainsi de la
+			  place. Choisis donc les Ã©lÃ©ments que tu veux afficher.</note>
+		<choix titre="ElÃ©ments" id="newskin" type="checkbox" valeur="<?php
 			foreach(liste_modules() as $module => $nom)
 				if($nom != "" && (!isset($_SESSION['skin']['skin_visible'][$module])
 								  || $_SESSION['skin']['skin_visible'][$module]      ) )
@@ -265,7 +268,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 		</choix>
 
-		<note>Si tu souhaites personnaliser ta skin plus en profondeur, tu peux créer ta propre feuille de style CSS
+		<note>Si tu souhaites personnaliser ta skin plus en profondeur, tu peux crÃ©er ta propre feuille de style CSS
 			(ceci s'adresse aux experts).</note>
 		<champ titre="CSS perso" id="newcss_perso" valeur="<?php if(isset($_SESSION['skin']['skin_css_perso'])) echo $_SESSION['skin']['skin_css_perso'];?>"/>
 		<bouton titre="Appliquer" id="OK_param" />

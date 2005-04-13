@@ -1,7 +1,7 @@
 <!DOCTYPE frankiz [
 <!--
 
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -99,10 +99,10 @@
 		action  CDATA   #IMPLIED>
 <!ELEMENT element (colonne+)>
 <!ATTLIST element
-		id		CDATA   #IMPLIED>   <!-- l'id doit exister si la liste est sélectionnable -->
+		id		CDATA   #IMPLIED>   <!-- l'id doit exister si la liste est sÃ©lectionnable -->
 <!ELEMENT colonne (&texte.formate;|champ|choix|bouton)>
 <!ATTLIST colonne
-		id		CDATA   #REQUIRED>  <!-- un id de colonne doit correspondre à un id d'entête -->
+		id		CDATA   #REQUIRED>  <!-- un id de colonne doit correspondre Ã  un id d'entÃªte -->
 
 <!-- formulaires -->
 <!ELEMENT formulaire (note?,warning?,(champ|choix)*,bouton+)>
@@ -118,7 +118,7 @@
 		valeur  CDATA   #IMPLIED
 		modifiable (oui|non) "oui">
 
-<!-- élément de formulaire -->
+<!-- Ã©lÃ©ment de formulaire -->
 <!ELEMENT zonetext EMPTY>
 <!ATTLIST zonetext
 		id		ID		#REQUIRED

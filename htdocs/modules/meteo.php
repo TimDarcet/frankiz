@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,24 +18,27 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Permet de donner la météo sur Paris (cf. meteo_func.inc.php)
+	Permet de donner la mÃ©tÃ©o sur Paris (cf. meteo_func.inc.php)
 		
 	$Log$
+	Revision 1.4  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.3  2004/11/04 22:07:19  schmurtz
 	Suppression du parser xml de la meteo : utilisation d'une conversion xsl a
 	la place
-
+	
 	Revision 1.2  2004/10/28 16:08:14  kikx
-	Ne fait qu'une page de fonctions pour la météo car sinon ça devient ingérable
+	Ne fait qu'une page de fonctions pour la mÃ©tÃ©o car sinon Ã§a devient ingÃ©rable
 	
 	Revision 1.1  2004/10/28 14:49:47  kikx
-	Mise en place de la météo en module : TODO eviter de repliquer 2 fois le code de la météo
+	Mise en place de la mÃ©tÃ©o en module : TODO eviter de repliquer 2 fois le code de la mÃ©tÃ©o
 	
 
 */
 require_once BASE_LOCAL."/include/meteo_func.inc.php";
 
-echo "<module id=\"meteo\" titre=\"Météo\">\n";
+echo "<module id=\"meteo\" titre=\"MÃ©tÃ©o\">\n";
 
 if(!cache_recuperer('meteo',strtotime(date("Y-m-d H:i:00",time()-60*30)))) { // le cache est valide pendant 30min ...
 	weather_xml();

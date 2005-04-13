@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,12 +18,15 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 -->
 <!--
-	Affichage des éléments de formulaire
+	Affichage des Ã©lÃ©ments de formulaire
 	
 	$Log$
-	Revision 1.30  2005/03/23 21:44:17  pico
-	Marche ptèt mieux
+	Revision 1.31  2005/04/13 17:10:01  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.30  2005/03/23 21:44:17  pico
+	Marche ptÃ¨t mieux
+	
 	Revision 1.29  2005/03/23 21:12:12  pico
 	Normalement tout ce qui faut pour passer en UTF8
 	
@@ -67,7 +70,7 @@
 	
 	Revision 1.17  2004/10/20 19:58:02  pico
 	Changement skin pico -> valide html strict
-	Changement des balises qui étaient pas valides
+	Changement des balises qui Ã©taient pas valides
 	
 	Revision 1.16  2004/10/19 18:16:24  kikx
 	hum
@@ -77,10 +80,10 @@
 	l'element champ, qui actuellement est un peu acrobatique).
 	
 	Revision 1.14  2004/10/16 00:30:56  kikx
-	Permet de modifier des binets déjà existants
+	Permet de modifier des binets dÃ©jÃ  existants
 	
 	Revision 1.13  2004/10/10 22:31:41  kikx
-	Voilà ... Maintenant le webmestre prut ou non valider des activité visibles de l'exterieur
+	VoilÃ  ... Maintenant le webmestre prut ou non valider des activitÃ© visibles de l'exterieur
 	
 	Revision 1.12  2004/10/04 21:48:54  kikx
 	Modification du champs fichier pour uploader des fichiers
@@ -92,7 +95,7 @@
 	
 	Revision 1.10  2004/09/17 09:05:32  kikx
 	La personne peut maintenant rajouter une annonce
-	Ceci dit je ne comprend pas trop comment on protège les champs avec les <!CDATA
+	Ceci dit je ne comprend pas trop comment on protÃ¨ge les champs avec les <!CDATA
 	-> j'ai laisser ca comme ca mais faudra modifier
 	
 	Revision 1.9  2004/09/15 23:19:56  schmurtz
@@ -103,26 +106,26 @@
 
 <!-- Formulaires -->
 <xsl:template match="formulaire[@type='discret']">
-	<!-- le formulaire lui même, mis en page avec une table -->
-	<form enctype="multipart/form-data" method="post" accept-charset="ISO-8859-1">
+	<!-- le formulaire lui mÃªme, mis en page avec une table -->
+	<form enctype="multipart/form-data" method="post" accept-charset="UTF-8">
 		<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<!-- les options du formulaire -->
 		<xsl:for-each select="*[not (self::bouton or self::commentaire or self::warning)]">
 			<xsl:apply-templates select="."/>
 		</xsl:for-each>
-		<!-- les boutons gérant les actions du formulaire -->
+		<!-- les boutons gÃ©rant les actions du formulaire -->
 		<xsl:apply-templates select="bouton"/>
 	</form>
 </xsl:template>
 
 <xsl:template match="formulaire">
-	<!-- la déco -->
+	<!-- la dÃ©co -->
 	<xsl:if test="boolean(@titre)">
 		<h2><xsl:value-of select="@titre"/></h2>
 	</xsl:if>
 
-	<!-- le formulaire lui même, mis en page avec une table -->
-	<form enctype="multipart/form-data" method="post" accept-charset="ISO-8859-1">
+	<!-- le formulaire lui mÃªme, mis en page avec une table -->
+	<form enctype="multipart/form-data" method="post" accept-charset="UTF-8">
 			<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<table class="formulaire" cellspacing="0" cellpadding="0">
 			<!-- le titre du formulaire -->
@@ -135,13 +138,13 @@
 					<tr><td colspan="2"><xsl:apply-templates select="."/></td></tr>
 				</xsl:when><xsl:otherwise>
 					<tr><td class="gauche">
-						<xsl:if test="boolean(@titre)"><xsl:value-of select="@titre"/> :</xsl:if>
+						<xsl:if test="boolean(@titre)"><xsl:value-of select="@titre"/>Â :</xsl:if>
 					</td><td class="droite">
 						<xsl:apply-templates select="."/>
 					</td></tr>
 				</xsl:otherwise></xsl:choose>
 			</xsl:for-each>
-			<!-- les boutons gérant les actions du formulaire -->
+			<!-- les boutons gÃ©rant les actions du formulaire -->
 			<tr><td class="boutons" colspan="2">
 				<xsl:apply-templates select="bouton"/>
 			</td></tr>

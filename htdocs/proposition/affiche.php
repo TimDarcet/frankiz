@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,28 +18,31 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Page qui permet aux utilisateurs de demander le rajout d'une activité
+	Page qui permet aux utilisateurs de demander le rajout d'une activitÃ©
 	
 	$Log$
-	Revision 1.23  2005/01/31 11:11:45  pico
-	Corrige la taille maxi des images pour une activité (celle affichée n'était pas celle appliquée)
+	Revision 1.24  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.23  2005/01/31 11:11:45  pico
+	Corrige la taille maxi des images pour une activitÃ© (celle affichÃ©e n'Ã©tait pas celle appliquÃ©e)
+	
 	Revision 1.22  2005/01/27 17:27:50  pico
-	/me vérifiera ses parenthèses la prochaine fois
+	/me vÃ©rifiera ses parenthÃ¨ses la prochaine fois
 	
 	Revision 1.21  2005/01/27 15:23:17  pico
-	La boucle locale est considérée comme interne
+	La boucle locale est considÃ©rÃ©e comme interne
 	Tests de photos normalement plus cools.
-	Après le reste.... je sais plus
+	AprÃ¨s le reste.... je sais plus
 	
 	Revision 1.20  2005/01/25 14:18:07  pico
 	Pour le lien des activites
 	
 	Revision 1.19  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
+	Changement de "TrÃ¨s BRment, l'automate"
 	
 	Revision 1.18  2005/01/17 21:52:04  pico
-	Page des activités
+	Page des activitÃ©s
 	
 	Revision 1.17  2004/12/15 00:05:04  schmurtz
 	Plus beau
@@ -55,19 +58,19 @@
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
 	
 	Revision 1.13  2004/11/26 00:13:22  pico
-	Affiche l'heure à laquelle est prévue l'activité
+	Affiche l'heure Ã  laquelle est prÃ©vue l'activitÃ©
 	
 	Revision 1.12  2004/11/25 23:50:04  pico
-	Possibilité de rajouter une heure pour l'activité (ex: scéances du BRC)
+	PossibilitÃ© de rajouter une heure pour l'activitÃ© (ex: scÃ©ances du BRC)
 	
 	Revision 1.11  2004/11/25 11:52:10  pico
 	Correction des liens mysql_id
 	
 	Revision 1.10  2004/11/25 10:47:56  pico
-	Histoire d'éviter que le même pb se retrouve ici
+	Histoire d'Ã©viter que le mÃªme pb se retrouve ici
 	
 	Revision 1.9  2004/11/22 23:38:42  kikx
-	Ajout de <note></note> un peu partout pour plus de compréhension !
+	Ajout de <note></note> un peu partout pour plus de comprÃ©hension !
 	
 	Revision 1.8  2004/11/16 18:32:34  schmurtz
 	Petits problemes d'interpretation de <note> et <commentaire>
@@ -83,7 +86,7 @@
 	l'element champ, qui actuellement est un peu acrobatique).
 	
 	Revision 1.4  2004/10/10 21:40:49  kikx
-	Pour permettre aux eleves de demander à mettre une activité visible de l'exterieur
+	Pour permettre aux eleves de demander Ã  mettre une activitÃ© visible de l'exterieur
 	
 	Revision 1.3  2004/10/07 22:52:20  kikx
 	Correction de la page des activites (modules + proposition + administration)
@@ -105,7 +108,7 @@
 require_once "../include/global.inc.php";
 require_once "../include/wiki.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_MINIMUM);
 
 $DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM eleves WHERE eleve_id='".$_SESSION['user']->uid."'");
@@ -121,7 +124,7 @@ if (!isset($_POST['heure']))  $_POST['heure']="00:00";
 
 $date_complete = $_POST['date'];
 
-// Vérifie si le format d'heure est bon avant de le mettre dans l'affichage
+// VÃ©rifie si le format d'heure est bon avant de le mettre dans l'affichage
 if (ereg("(((^[0-9]{1})|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])", $_POST['heure'], $regs)) {
 	list ($H, $i)  = explode(':', $_POST['heure']);
 	$date_complete = $date_complete + $H * 3600 + $i * 60;
@@ -134,11 +137,11 @@ else $_POST['heure']="00:00";
 //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
 //--//
 //--// Norme de nommage des images que nous uploadons
-//--// dans le rep prévu a cette effet : 
-//--// # temp_{$id_eleves} qd l'annonce n'a pas été soumise à validation
-//--// # a_valider_{$id_affiche} qd l'annonce est soumise à validation
+//--// dans le rep prÃ©vu a cette effet : 
+//--// # temp_{$id_eleves} qd l'annonce n'a pas Ã©tÃ© soumise Ã  validation
+//--// # a_valider_{$id_affiche} qd l'annonce est soumise Ã  validation
 //--//
-//--// Ceci permet de faire la différence entre les fichiers tempo et les fichiers a valider
+//--// Ceci permet de faire la diffÃ©rence entre les fichiers tempo et les fichiers a valider
 //--//
 //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
 
@@ -159,7 +162,7 @@ if ((isset($_FILES['file']))&&($_FILES['file']['size']!=0))  {
 
 }
 //================================================
-// On Supprime l'image qui a été uploadé (si elle existe bien sur :))
+// On Supprime l'image qui a Ã©tÃ© uploadÃ© (si elle existe bien sur :))
 //================================================
 
 if (isset($_POST['suppr_img'])) {
@@ -169,7 +172,7 @@ if (isset($_POST['suppr_img'])) {
 	}
 }
 //================================================
-// On valide l'annonce et en envoie un mail aux webmestres pour les prévenir 
+// On valide l'annonce et en envoie un mail aux webmestres pour les prÃ©venir 
 //================================================
 
 if (isset($_POST['valid'])) {
@@ -185,7 +188,7 @@ if (isset($_POST['valid'])) {
 
 		$DB_valid->query("INSERT INTO valid_affiches SET date=FROM_UNIXTIME({$date_complete}), eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',url='".$_POST['url']."', description='".$_POST['text']."',exterieur=".$temp_ext);
 		
-		// on modifie le nom du fichier qui a été téléchargé si celui ci existe
+		// on modifie le nom du fichier qui a Ã©tÃ© tÃ©lÃ©chargÃ© si celui ci existe
 		// selon la norme de nommage ci-dessus
 		//----------------------------------------------------------------------------------------------
 		
@@ -193,7 +196,7 @@ if (isset($_POST['valid'])) {
 		rename(DATA_DIR_LOCAL."affiches/temp_$eleve_id",DATA_DIR_LOCAL."affiches/a_valider_{$index}") ; 
 	
 		$contenu = "<strong>Bonjour,</strong><br><br>".
-					"$prenom $nom a demandé la validation d'une activité : <br>".
+					"$prenom $nom a demandÃ© la validation d'une activitÃ© : <br>".
 					$_POST['titre']."<br><br>".
 					"Pour valider ou non cette demande va sur la page suivante<br>".
 					"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_affiches.php'>".
@@ -201,25 +204,25 @@ if (isset($_POST['valid'])) {
 					"Cordialement,<br>" .
 					"Le Webmestre de Frankiz<br>"  ;
 					
-		couriel(WEBMESTRE_ID,"[Frankiz] Validation d'une activité",$contenu,$eleve_id);
+		couriel(WEBMESTRE_ID,"[Frankiz] Validation d'une activitÃ©",$contenu,$eleve_id);
 	} else {
 		
-		$msg .= "<warning> Il faut soumettre une image pour les activités </warning>" ;
+		$msg .= "<warning> Il faut soumettre une image pour les activitÃ©s </warning>" ;
 		
 	}
 
 }
 //=================
 //===============
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 //=================
 
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
-<page id="propoz_affiche" titre="Frankiz : Propose une activité">
-<h1>Proposition d'activité</h1>
+<page id="propoz_affiche" titre="Frankiz : Propose une activitÃ©">
+<h1>Proposition d'activitÃ©</h1>
 
  <?
  echo $msg ;
@@ -229,14 +232,14 @@ if ($erreur_upload==1)
 
 //=========================================
 // PREVISUALISATION :
-// On teste l'affichage de l'annonce pour voir à quoi ça ressemble
+// On teste l'affichage de l'annonce pour voir Ã  quoi Ã§a ressemble
 //=========================================
 
-	echo "<module id=\"activites\" titre=\"Activités\">\n";
+	echo "<module id=\"activites\" titre=\"ActivitÃ©s\">\n";
 
 ?>
 	<annonce date="<? echo date('Y-m-d H:i:s',$date_complete)  ?>">
-		<note>NB : Cette activité sera affichée le <?php echo date("d/m/y",$_POST['date']) ;?></note>
+		<note>NB : Cette activitÃ© sera affichÃ©e le <?php echo date("d/m/y",$_POST['date']) ;?></note>
 		<lien url="<?php echo ($_POST['url']!="")?$_POST['url']:"affiches.php" ;?>">
 		<?
 		if ((!isset($_POST['valid']))&&(file_exists(DATA_DIR_LOCAL."affiches/temp_$eleve_id"))) {
@@ -264,7 +267,7 @@ if ($erreur_upload==1)
 
 if ((isset($_POST['valid']))&&(isset($index))&&file_exists(DATA_DIR_LOCAL."affiches/a_valider_{$index}")) {
 ?>
-	<commentaire>Ta nouvelle annonce a été prise en compte et sera validée dans les meilleurs délais.</commentaire>
+	<commentaire>Ta nouvelle annonce a Ã©tÃ© prise en compte et sera validÃ©e dans les meilleurs dÃ©lais.</commentaire>
 <?	
 } else {
 //====================
@@ -272,21 +275,21 @@ if ((isset($_POST['valid']))&&(isset($index))&&file_exists(DATA_DIR_LOCAL."affic
 //====================
 ?>
 
-	<formulaire id="propoz_activite" titre="Ton activité" action="proposition/affiche.php">
+	<formulaire id="propoz_activite" titre="Ton activitÃ©" action="proposition/affiche.php">
 		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
-		<champ id="url" titre="Lien vers une page décrivant l'activité" valeur="<? if (isset($_POST['url'])) echo $_POST['url'] ;?>"/>
-		<zonetext id="text" titre="Description plus détaillée"><? if (isset($_POST['text'])) echo $_POST['text'];?></zonetext>
-		<note>L'image doit être un fichier gif, png ou jpeg ne dépassant pas 200x300 pixels et 250Ko.</note>
+		<champ id="url" titre="Lien vers une page dÃ©crivant l'activitÃ©" valeur="<? if (isset($_POST['url'])) echo $_POST['url'] ;?>"/>
+		<zonetext id="text" titre="Description plus dÃ©taillÃ©e"><? if (isset($_POST['text'])) echo $_POST['text'];?></zonetext>
+		<note>L'image doit Ãªtre un fichier gif, png ou jpeg ne dÃ©passant pas 200x300 pixels et 250Ko.</note>
 		<fichier id="file" titre="Ton image" taille="100000"/>
 
-		<note>Si tu souhaites que ton activité soit visible de l'extérieur, clique ici.</note>
-		<choix titre="Extérieur" id="exterieur" type="checkbox" valeur="<? if (isset($_REQUEST['ext'])) echo 'ext' ;?>">
+		<note>Si tu souhaites que ton activitÃ© soit visible de l'extÃ©rieur, clique ici.</note>
+		<choix titre="ExtÃ©rieur" id="exterieur" type="checkbox" valeur="<? if (isset($_REQUEST['ext'])) echo 'ext' ;?>">
 			<option id="ext" titre=""/>
 		</choix>
 		
-		<note>Ton activité ne sera affichée qu'un seul jour. Choisis donc la date de ton événement.</note>
+		<note>Ton activitÃ© ne sera affichÃ©e qu'un seul jour. Choisis donc la date de ton Ã©vÃ©nement.</note>
 
-		<choix titre="Date de l'activité" id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
+		<choix titre="Date de l'activitÃ©" id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
 <?		for ($i=0 ; $i<MAX_PEREMPTION ; $i++) {
 			$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
 			$date_value = date("d/m/y" , $date_id);
@@ -296,7 +299,7 @@ if ((isset($_POST['valid']))&&(isset($index))&&file_exists(DATA_DIR_LOCAL."affic
 		}
 ?>
 		</choix>
-		<champ id="heure" titre="Heure de l'activité" valeur="<? if (isset($_POST['heure'])) echo $_POST['heure'] ;?>"/>
+		<champ id="heure" titre="Heure de l'activitÃ©" valeur="<? if (isset($_POST['heure'])) echo $_POST['heure'] ;?>"/>
 
 		<bouton id='suppr_img' titre="Supprimer l'image"/>
 		<bouton id='test' titre="Tester"/>

@@ -3,16 +3,16 @@ require_once "../include/global.inc.php";
 
 demande_authentification(AUTH_MINIMUM);
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
 <page id="stat_xnet" titre="Frankiz : Statistiques Xnet">
-	<image source="stats/xnet_connections.php" texte="Nombre de connectés ces dernières 24h"/>
+	<image source="stats/xnet_connections.php" texte="Nombre de connectÃ©s ces derniÃ¨res 24h"/>
 	<image source="stats/xnet_connections_week.php" texte="Evolution au cours de la semaine"/>
-	<image source="stats/xnet_clients.php" texte="Répartition des clients"/>
-	<image source="stats/xnet_os.php" texte="Répartition des os"/>
+	<image source="stats/xnet_clients.php" texte="RÃ©partition des clients"/>
+	<image source="stats/xnet_os.php" texte="RÃ©partition des os"/>
 	<image source="stats/xnet_serveurs.php" texte="Statistiques des serveurs"/>
 </page>
 <?php

@@ -1,6 +1,6 @@
 <? 
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
+		Revision 1.41  2005/04/13 17:09:58  pico
+		Passage de tous les fichiers en utf8.
+
 		Revision 1.40  2005/01/18 13:45:31  pico
 		Plus de droits pour les web
-
+		
 		Revision 1.39  2005/01/11 16:47:10  pico
 		Bug #26
 		
@@ -35,10 +38,10 @@
 		Ajout d'une belle page d'erreur.
 		
 		Revision 1.35  2004/12/16 12:52:57  pico
-		Passage des paramètres lors d'un login
+		Passage des paramÃ¨tres lors d'un login
 		
 		Revision 1.34  2004/12/14 18:29:53  pico
-		Là, les modifs marchent mieux
+		LÃ , les modifs marchent mieux
 		
 		Revision 1.33  2004/12/14 18:23:38  pico
 		Gros bug...
@@ -64,7 +67,7 @@
 		Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
 		
 		Revision 1.26  2004/11/25 12:45:36  pico
-		Duble emploi de htmlspecialchar vu que les entrées dans la bdd sont déjà transformées
+		Duble emploi de htmlspecialchar vu que les entrÃ©es dans la bdd sont dÃ©jÃ  transformÃ©es
 		
 		Revision 1.25  2004/11/24 22:12:57  schmurtz
 		Regroupement des fonctions zip unzip deldir et download dans le meme fichier
@@ -74,7 +77,7 @@
 		(return fantomes)
 		
 		Revision 1.23  2004/11/15 22:17:24  pico
-		On doit pouvoir changer le texte d'une faq à présent
+		On doit pouvoir changer le texte d'une faq Ã  prÃ©sent
 		TODO: script pour dl le contenu de la faq existante
 		
 		Revision 1.22  2004/11/15 20:54:18  pico
@@ -87,16 +90,16 @@
 		........
 		
 		Revision 1.19  2004/11/06 15:11:34  pico
-		Corrections page admin xshare + modification possible des logiciels (j'avais oublié de le faire)
+		Corrections page admin xshare + modification possible des logiciels (j'avais oubliÃ© de le faire)
 		
 		Revision 1.18  2004/10/21 22:19:37  schmurtz
 		GPLisation des fichiers du site
 		
 		Revision 1.17  2004/10/20 23:18:49  pico
-		Derniers fixes, ça marche !!
+		Derniers fixes, Ã§a marche !!
 		
 		Revision 1.16  2004/10/20 23:04:06  pico
-		Affichage de l'arbre mieux respecté
+		Affichage de l'arbre mieux respectÃ©
 		
 		Revision 1.15  2004/10/20 22:28:27  pico
 		Encore des corrections
@@ -108,7 +111,7 @@
 		Changements Noeuds/Feuilles
 		
 		Revision 1.12  2004/10/20 19:58:46  pico
-		BugFix: génération des balises plus conforme
+		BugFix: gÃ©nÃ©ration des balises plus conforme
 		
 		Revision 1.11  2004/10/19 14:58:42  schmurtz
 		Creation d'un champ de formulaire specifique pour les fichiers (sans passer
@@ -125,12 +128,12 @@ require_once "../include/global.inc.php";
 require_once "../include/transferts.inc.php";
 require_once "../include/wiki.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!(verifie_permission('admin')||verifie_permission('xshare')||verifie_permission('web')))
 	acces_interdit();
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -145,7 +148,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
 
-	// Supprimer le répertoire
+	// Supprimer le rÃ©pertoire
 	
 	if ($temp[0]=='rmdir') {
 		$DB_web->query("SELECT lien FROM xshare WHERE id='{$temp[1]}' ");
@@ -154,7 +157,7 @@ foreach ($_POST AS $keys => $val){
 		deldir($dir);
 		$DB_web->query("DELETE FROM xshare WHERE id='{$temp[1]}'");
 		$DB_web->query("DELETE FROM xshare WHERE id_parent='{$temp[1]}'");
-		echo "<warning>Repertoire Supprimé</warning>";
+		echo "<warning>Repertoire SupprimÃ©</warning>";
 	}
 	
 	if (($temp[0]=='adddir') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='')) {
@@ -162,12 +165,12 @@ foreach ($_POST AS $keys => $val){
 		$DB_web->query("SELECT lien FROM xshare WHERE id='{$temp[1]}' ");
 		list($dir) = $DB_web->next_row();
 		$dir=$dir."/".strtolower(str_replace(" ","",$nom));
-		$tofind = "ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ";
+		$tofind = "Ã€ÃÃ‚ÃƒÃ„Ã…Ã Ã¡Ã¢Ã£Ã¤Ã¥Ã’Ã“Ã”Ã•Ã–Ã˜Ã²Ã³Ã´ÃµÃ¶Ã¸ÃˆÃ‰ÃŠÃ‹Ã¨Ã©ÃªÃ«Ã‡Ã§ÃŒÃÃŽÃÃ¬Ã­Ã®Ã¯Ã™ÃšÃ›ÃœÃ¹ÃºÃ»Ã¼Ã¿Ã‘Ã±";
 		$replac = "AAAAAAaaaaaaOOOOOOooooooEEEEeeeeCcIIIIiiiiUUUUuuuuyNn";
 		$dir = strtr($dir,$tofind,$replac);
 		$DB_web-> query("INSERT INTO xshare SET id_parent='{$temp[1]}',nom='{$nom}',lien='{$dir}'");
 		mkdir(BASE_DATA."xshare/".$dir);
-		echo "<commentaire>Repertoire crée</commentaire>";
+		echo "<commentaire>Repertoire crÃ©e</commentaire>";
 	}
 	
 	if (($temp[0]=='ajout') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='') && (isset($_FILES['file']))&&($_FILES['file']['name']!='')) {
@@ -185,7 +188,7 @@ foreach ($_POST AS $keys => $val){
 		
 		$DB_web-> query("INSERT INTO xshare SET id_parent='{$temp[1]}' , nom='{$nom}' , lien='{$filename}' $version $importance $site $licence $descript");
 	
-		echo "<commentaire>Fichier ajouté</commentaire>";
+		echo "<commentaire>Fichier ajoutÃ©</commentaire>";
 	}
 	
 	if (($temp[0]=='modif') && isset($_REQUEST['nom']) && ($_REQUEST['nom']!='')) {
@@ -207,7 +210,7 @@ foreach ($_POST AS $keys => $val){
 		if(isset($_REQUEST['descript'])) $descript = ", descript='{$_REQUEST['descript']}'"; else $descript =", descript= ''";
 		$DB_web-> query("UPDATE xshare SET nom='{$nom}' $lien $version $importance $site $licence $descript WHERE id={$temp[1]}");
 	
-		echo "<commentaire>Fichier modifié</commentaire>";
+		echo "<commentaire>Fichier modifiÃ©</commentaire>";
 	}
 	
 	if ($temp[0]=='suppr') {
@@ -215,7 +218,7 @@ foreach ($_POST AS $keys => $val){
 		list($dir) = $DB_web->next_row();
 		unlink(BASE_DATA."xshare/".$dir);
 		$DB_web->query("DELETE FROM xshare WHERE id='{$temp[1]}'");
-		echo "<warning>Fichier Supprimé</warning>";
+		echo "<warning>Fichier SupprimÃ©</warning>";
 	}
 }
 
@@ -247,7 +250,7 @@ function rech_fils($id_parent) {
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer);
 			echo "'>\n\r" ;
 			if (isset($_REQUEST['dir_id']) && ($id == $_REQUEST['dir_id'])) {
-				echo "<p id='selected'>[séléctionné]</p>\n\r" ;
+				echo "<p id='selected'>[sÃ©lÃ©ctionnÃ©]</p>\n\r" ;
 			}
 			$DB_web->push_result();
 			rech_fils($id) ;
@@ -264,7 +267,7 @@ function rech_fils($id_parent) {
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "'>\n\r" ;
 			if (isset($_REQUEST['dir_id']) && ($id == $_REQUEST['dir_id'])) {
-				echo "<p id='selected'>[séléctionné]</p>\n\r" ;
+				echo "<p id='selected'>[sÃ©lÃ©ctionnÃ©]</p>\n\r" ;
 			}
 			echo "</feuille>\n\r" ;
 		}
@@ -289,8 +292,8 @@ function affiche_element_xshare($idfold){
 }
 
 //
-//Petit programme qui crée
-// la liste des folder à 
+//Petit programme qui crÃ©e
+// la liste des folder Ã  
 // afficher !
 //------------------------------
 
@@ -307,7 +310,7 @@ function all_elt_affich($idfold){
 		}
 		
 	}
-	if (!$retire) $str .= "/".$idfold ;		// si je ne l'ai pas supprimé c'est k'il faut le rajouter justement !
+	if (!$retire) $str .= "/".$idfold ;		// si je ne l'ai pas supprimÃ© c'est k'il faut le rajouter justement !
 	
 	return $str ;
 }
@@ -332,7 +335,7 @@ function rech_parent($id) {
 			$DB_web->query("SELECT id_parent FROM xshare WHERE id='{$id}'") ;
 			$id = $DB_web->next_row() ;
 			if (($id != "")&&($id != 0)){ // on rajoute ssi c'est pas le racine
-				$liste .= $id."/";		  // car on la deja rajouté !
+				$liste .= $id."/";		  // car on la deja rajoutÃ© !
 			}
 		}
 		return $liste ; 
@@ -348,7 +351,7 @@ function rech_parent($id) {
 
       
 
-<p><strong>Visualisation des différents téléchargements : </strong> </p>
+<p><strong>Visualisation des diffÃ©rents tÃ©lÃ©chargements : </strong> </p>
 <?
 
 //
@@ -366,7 +369,7 @@ echo "</arbre>";
 <?
 
 //
-// Corps du Documents pour les réponses
+// Corps du Documents pour les rÃ©ponses
 //---------------------------------------------------
 
   	if(isset($_REQUEST['idpopup'])) $id = $_REQUEST['idpopup']; else $id = "";
@@ -382,7 +385,7 @@ echo "</arbre>";
 				<option id="1" titre="Important"/>
 				<option id="2" titre="Indispensable"/>
 	</choix>
-	<champ id="site" titre="Site de l'éditeur" valeur="<? echo $site ?>" />
+	<champ id="site" titre="Site de l'Ã©diteur" valeur="<? echo $site ?>" />
 	<champ id="licence" titre="Licence" valeur="<? echo $licence ?>" />
 	<zonetext id="descript" titre="Description"><?=$descript?></zonetext>
 	<fichier id="file" titre="Nouveau fichier" taille="1000000000"/>
@@ -407,7 +410,7 @@ echo "</arbre>";
 		if(!strstr($keys,"rmdir")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 		}
 	?>
-	<bouton id='rmdir_<? echo  $dir_id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce répertoire et tous ses fichiers ?!!!!!')"/>
+	<bouton id='rmdir_<? echo  $dir_id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce rÃ©pertoire et tous ses fichiers ?!!!!!')"/>
 	</formulaire>
 	
 	<!-- Ajouter un sous-dossier -->
@@ -417,7 +420,7 @@ echo "</arbre>";
 		if(!strstr($keys,"adddir")&&!strstr($keys,"nom")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 		}
 	?>
-	<bouton id='adddir_<? echo $dir_id ?>' titre='Ajouter' onClick="return window.confirm('!!!!!!Créer ce répertoire ?!!!!!')"/>
+	<bouton id='adddir_<? echo $dir_id ?>' titre='Ajouter' onClick="return window.confirm('!!!!!!CrÃ©er ce rÃ©pertoire ?!!!!!')"/>
 	</formulaire>
 	
 	<!-- Ajouter un fichier -->
@@ -429,7 +432,7 @@ echo "</arbre>";
 				<option id="1" titre="Important"/>
 				<option id="2" titre="Indispensable"/>
 	</choix>
-	<champ id="site" titre="Site de l'éditeur" />
+	<champ id="site" titre="Site de l'Ã©diteur" />
 	<champ id="licence" titre="Licence" />
 	<zonetext id="descript" titre="Description"></zonetext>
 	<? foreach ($_REQUEST AS $keys => $val){

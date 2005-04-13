@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,11 +21,14 @@
 	Numero utiles
 	
 	$Log$
-	Revision 1.2  2004/12/17 14:26:20  pico
-	Pas d'action pour les listes non sélectionnables
+	Revision 1.3  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.2  2004/12/17 14:26:20  pico
+	Pas d'action pour les listes non sÃ©lectionnables
+	
 	Revision 1.1  2004/12/17 13:18:47  kikx
-	Rajout des numéros utiles car c'est une demande importante
+	Rajout des numÃ©ros utiles car c'est une demande importante
 	
 	Revision 1.2  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
@@ -37,10 +40,10 @@
 
 require_once "include/global.inc.php";
 
-// génération de la page
+// gÃ©nÃ©ration de la page
 require "include/page_header.inc.php";
 ?>
-<page id='num_utiles' titre='Frankiz : Numéros utiles'>
+<page id='num_utiles' titre='Frankiz : NumÃ©ros utiles'>
 <h1>Numeros Utiles</h1>
 <?
 $DB_web->query("SELECT DISTINCT categorie FROM num_utiles GROUP BY categorie") ;

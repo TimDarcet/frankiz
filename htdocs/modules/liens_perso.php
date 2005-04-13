@@ -1,6 +1,6 @@
 <?
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,26 +21,29 @@
 	Affichage des liens personnels.
 
 	$Log$
-	Revision 1.9  2004/12/13 20:03:25  pico
-	Les liens ne forment pas de blocs, il faut donc le spécifier
+	Revision 1.10  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.9  2004/12/13 20:03:25  pico
+	Les liens ne forment pas de blocs, il faut donc le spÃ©cifier
+	
 	Revision 1.8  2004/12/05 23:19:27  pico
 	Evite d'afficher une boite vide
 	
 	Revision 1.7  2004/11/30 19:56:32  pico
-	On a plus besoin du lien vers la conf des liens perso, puisqu'elle est dans la page de préférences
+	On a plus besoin du lien vers la conf des liens perso, puisqu'elle est dans la page de prÃ©fÃ©rences
 	
 	Revision 1.6  2004/11/24 22:08:09  pico
 	Ajout lien vers page feed RSS dans le cadre liens_perso
 	
 	Revision 1.5  2004/11/24 21:09:04  pico
-	Sauvegarde avant mise à jour skins
+	Sauvegarde avant mise Ã  jour skins
 	
 	Revision 1.4  2004/11/24 19:00:32  pico
-	Bon, là ça devrait être bon...
+	Bon, lÃ  Ã§a devrait Ãªtre bon...
 	
 	Revision 1.3  2004/11/24 18:53:31  pico
-	J'espère que ça sera fixé cette fois
+	J'espÃ¨re que Ã§a sera fixÃ© cette fois
 	
 	Revision 1.2  2004/11/24 18:39:02  pico
 	WarningFix si variable vide

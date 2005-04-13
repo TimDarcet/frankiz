@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -19,9 +19,12 @@
 */
 /*
 		$Log$
-		Revision 1.8  2005/01/20 20:09:03  pico
-		Changement de "Très BRment, l'automate"
+		Revision 1.9  2005/04/13 17:10:00  pico
+		Passage de tous les fichiers en utf8.
 
+		Revision 1.8  2005/01/20 20:09:03  pico
+		Changement de "TrÃ¨s BRment, l'automate"
+		
 		Revision 1.7  2004/12/15 20:07:01  kikx
 		Correction
 		
@@ -32,7 +35,7 @@
 		Oups /.me boulet
 		
 		Revision 1.4  2004/12/14 23:09:52  kikx
-		Pour avoir qd meme la page modifié
+		Pour avoir qd meme la page modifiÃ©
 		
 		Revision 1.3  2004/12/14 23:06:06  schmurtz
 		Ajout du support zonetext grand pour les faqs
@@ -48,11 +51,11 @@
 */
 require_once "../include/global.inc.php";
 require_once "../include/wiki.inc.php";
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_MINIMUM);
 
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -73,7 +76,7 @@ if (isset($_REQUEST['valid'])) {
 		$DB_valid->query("INSERT INTO valid_modiffaq SET faq_modif='{$_REQUEST['faq_modif']}', faq_id='{$_REQUEST['id']}', eleve_id='{$_SESSION['user']->uid}'") ;
 		
 		$contenu = "<strong>Bonjour,</strong><br><br>".
-			"$prenom $nom a demandé la modification d'une FAQ<br>".
+			"$prenom $nom a demandÃ© la modification d'une FAQ<br>".
 			"Pour valider ou non cette demande va sur la page suivante<br>".
 			"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_faqmodif.php'>".
 			"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_faqmodif.php</a></div><br><br>" .
@@ -83,17 +86,17 @@ if (isset($_REQUEST['valid'])) {
 		couriel(FAQMESTRE_ID,"[Frankiz] Validation d'une modification d'une FAQ",$contenu,$eleve_id);
 		
 		?>
-		<commentaire>Tu as soumis au FAQmestre une modification d'une des FAQ. Nous t'en remercions... Elle sera traité le plus rapidement possible</commentaire>
+		<commentaire>Tu as soumis au FAQmestre une modification d'une des FAQ. Nous t'en remercions... Elle sera traitÃ© le plus rapidement possible</commentaire>
 		<?
 	} else {
 	?>
-		<warning>Il y a déjà une demande de modification pour cette FAQ et les FAQmestres ne peuvent pas les gérer en même temps... Attend 1 jour et retente...</warning>
+		<warning>Il y a dÃ©jÃ  une demande de modification pour cette FAQ et les FAQmestres ne peuvent pas les gÃ©rer en mÃªme temps... Attend 1 jour et retente...</warning>
 	<?
 	}
 
 } else {
 //
-// Corps du Documents pour les réponses
+// Corps du Documents pour les rÃ©ponses
 //---------------------------------------------------
 	$DB_valid->query("SELECT 0 FROM valid_modiffaq WHERE faq_id='{$_REQUEST['id']}'") ;
 	if ($DB_valid->num_rows()==0) {
@@ -153,7 +156,7 @@ if (isset($_REQUEST['valid'])) {
 					
 					?></zonetext>
 					<bouton id='test' titre="Tester"/>
-					<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment soumettre cette FAQ modifiée aux webmestres ?')"/>
+					<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment soumettre cette FAQ modifiÃ©e aux webmestres ?')"/>
 		
 				</formulaire>
 				<?
@@ -167,7 +170,7 @@ if (isset($_REQUEST['valid'])) {
 		}
 	} else {
 		?>
-			<warning>Il y a déjà une demande de modification pour cette FAQ et les FAQmestres ne peuvent pas les gérer en même temps... Attend 1 jour et retente...</warning>
+			<warning>Il y a dÃ©jÃ  une demande de modification pour cette FAQ et les FAQmestres ne peuvent pas les gÃ©rer en mÃªme temps... Attend 1 jour et retente...</warning>
 		<?
 	}
 }

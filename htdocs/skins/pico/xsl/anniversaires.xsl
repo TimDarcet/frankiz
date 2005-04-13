@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@
 				</xsl:if>
  				<xsl:value-of select="@prenom" />
  				<xsl:text> </xsl:text>
- 				<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzéèàçêëù','ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊËÙ')" />
+ 				<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzÃ©Ã¨Ã Ã§ÃªÃ«Ã¹','ABCDEFGHIJKLMNOPQRSTUVWXYZÃ‰ÃˆÃ€Ã‡ÃŠÃ‹Ã™')" />
 				<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
 			</xsl:for-each>
 		</div>
@@ -48,7 +48,7 @@
 <xsl:template match="module[@id='fetes']">
 	<xsl:if test="count(eleve) != 0">
         <div class="fkz_module" id="mod_fetes">
-		<div class="fkz_titre"><span id="fetes_logo"><xsl:text> </xsl:text></span><span id="fetes">Bonne fête: </span></div>
+		<div class="fkz_titre"><span id="fetes_logo"><xsl:text> </xsl:text></span><span id="fetes">Bonne fÃªte: </span></div>
 		<div class="fkz_module_corps">
 			<xsl:for-each select="eleve">
  				<xsl:value-of select="@prenom" />

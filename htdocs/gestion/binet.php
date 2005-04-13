@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -22,25 +22,28 @@
 	description), le prez peut en plus modifier les membres de son binet et leur commentaire dans
 	le trombino.
 	
-	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
+	L'ID du binet Ã  administrer est passer dans le paramÃ¨tre GET 'binet'.
 	
 	$Log$
-	Revision 1.37  2005/03/16 17:07:56  pico
-	Micro correction de merde, mais ça faisait longtemps que ça me soulait ;)
+	Revision 1.38  2005/04/13 17:09:59  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.37  2005/03/16 17:07:56  pico
+	Micro correction de merde, mais Ã§a faisait longtemps que Ã§a me soulait ;)
+	
 	Revision 1.36  2005/03/15 11:45:47  pico
 	Correction du pb de myk
 	
 	Je sais pas si l'affichage de l'arbo sert vraiment en fait...
 	
 	Revision 1.35  2005/01/27 17:27:50  pico
-	/me vérifiera ses parenthèses la prochaine fois
+	/me vÃ©rifiera ses parenthÃ¨ses la prochaine fois
 	
 	Revision 1.34  2005/01/27 16:13:39  pico
-	Tiens, j'avais oublié celui là
+	Tiens, j'avais oubliÃ© celui lÃ 
 	
 	Revision 1.33  2005/01/27 06:33:22  pico
-	Pour éviter que quand un prez vire quelqu'un de son binet, tous les binets du gars soient effacés !
+	Pour Ã©viter que quand un prez vire quelqu'un de son binet, tous les binets du gars soient effacÃ©s !
 	
 	Revision 1.32  2005/01/22 17:58:38  pico
 	Modif des images
@@ -49,7 +52,7 @@
 	BugFix
 	
 	Revision 1.30  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
+	Changement de "TrÃ¨s BRment, l'automate"
 	
 	Revision 1.29  2005/01/06 20:08:11  pico
 	Changement d'adresse mail
@@ -64,13 +67,13 @@
 	INNER en LEFT
 	
 	Revision 1.25  2004/12/16 12:52:57  pico
-	Passage des paramètres lors d'un login
+	Passage des paramÃ¨tres lors d'un login
 	
 	Revision 1.24  2004/12/01 20:29:48  kikx
 	Oubli pour les webmestres
 	
 	Revision 1.23  2004/11/27 16:10:52  pico
-	Correction d'erreur de redirection et ajout des web à la validation des activités.
+	Correction d'erreur de redirection et ajout des web Ã  la validation des activitÃ©s.
 	
 	Revision 1.22  2004/11/25 11:52:10  pico
 	Correction des liens mysql_id
@@ -92,7 +95,7 @@
 	Correction pour les telechargement des fichiers (visiblement ca depend de la version de php)
 	
 	Revision 1.16  2004/11/08 11:55:13  pico
-	Maintenant ça supprime bien tous les fichiers
+	Maintenant Ã§a supprime bien tous les fichiers
 	
 	Revision 1.15  2004/11/08 09:15:50  kikx
 	Effacement du repertoire avant le telechargement
@@ -126,7 +129,7 @@
 	Enorme modification pour la fusion des bases des binets (Merci Schmurtz)
 	
 	Revision 1.5  2004/10/17 23:30:44  kikx
-	Juste un petit bug si on supprime zero entrées
+	Juste un petit bug si on supprime zero entrÃ©es
 	
 	Revision 1.4  2004/10/17 23:17:18  kikx
 	Maintenant le prez peut supprimer les personnes qui sont dans son binet et modifier leur commentaires
@@ -138,7 +141,7 @@
 	Micro modif avant que j'oublie
 	
 	Revision 1.1  2004/10/17 15:22:05  kikx
-	Mise en place d'un repertoire de gestion qui se différencie de admin car ce n'est pas l'admin :)
+	Mise en place d'un repertoire de gestion qui se diffÃ©rencie de admin car ce n'est pas l'admin :)
 	En gros il servira a tout les modification des prez des webmestres , des pages persos, ...
 	
 	Revision 1.4  2004/09/15 23:20:18  schmurtz
@@ -152,7 +155,7 @@
 // En-tetes
 require_once "../include/global.inc.php";
 
-// Récupération d'une image
+// RÃ©cupÃ©ration d'une image
 if(isset($_REQUEST['image'])){
 	$DB_valid->query("SELECT image,format FROM valid_binet WHERE binet_id='{$_REQUEST['id']}'");
 	list($image,$format) = $DB_valid->next_row() ;
@@ -161,7 +164,7 @@ if(isset($_REQUEST['image'])){
 	exit;
 }
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if ((empty($_REQUEST['binet'])) || ((!verifie_permission_webmestre($_REQUEST['binet'])) && (!verifie_permission_prez($_REQUEST['binet']))))
 	acces_interdit();
@@ -173,7 +176,7 @@ $message2 ="" ;
 
 
 //=================================
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //=================================
 
 require_once BASE_LOCAL."/include/page_header.inc.php";
@@ -199,7 +202,7 @@ if(verifie_permission_prez($_REQUEST['binet'])){
 				$ids .= (empty($ids) ? "" : ",") . "'$id'";
 			}
 			$DB_trombino->query("DELETE FROM membres  WHERE eleve_id IN ($ids) AND binet_id='{$_REQUEST['binet']}'");
-			$message .= "<warning>".count($_POST['elements'])." personnes viennent d'être supprimées.</warning>\n";
+			$message .= "<warning>".count($_POST['elements'])." personnes viennent d'Ãªtre supprimÃ©es.</warning>\n";
 		}
 	}
 	//=================================
@@ -210,14 +213,14 @@ if(verifie_permission_prez($_REQUEST['binet'])){
 		foreach($_POST['description'] as $id => $on) {
 			$DB_trombino->query("UPDATE membres SET remarque='$on' WHERE eleve_id='$id' AND binet_id='".$_REQUEST['binet']."'");
 		}
-		$message .= "<commentaire> Sauvegardes des commentaires des différents membres du binet</commentaire>\n";
+		$message .= "<commentaire> Sauvegardes des commentaires des diffÃ©rents membres du binet</commentaire>\n";
 	}
 
 	$DB_trombino->query("SELECT promo FROM eleves WHERE eleve_id='".$_SESSION['user']->uid."'");
 	list($promo_prez) = $DB_trombino->next_row() ;
 	?>
 	<h1>Administration par le </h1>
-	<h1>prèz du binet <?=$nom_binet?></h1>
+	<h1>prÃ¨z du binet <?=$nom_binet?></h1>
 	<?
 	echo $message ;
 	?>
@@ -260,17 +263,17 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 		$DB_trombino->query("SELECT format,exterieur,nom,image,folder FROM binets as b WHERE binet_id=".$_REQUEST['binet']);
 		list($format,$exterieur,$nom,$image,$folder) = $DB_trombino->next_row() ;
 
-		// On verifie d'abord que le binet n'a pas une autre entrée dans la table de validation
+		// On verifie d'abord que le binet n'a pas une autre entrÃ©e dans la table de validation
 		//------------------------------------
 	
 		$DB_valid->query("SELECT binet_id FROM valid_binet WHERE binet_id={$_POST['id']}");
 		if ($DB_valid->num_rows()!=0) {
-			$message2 .= "<warning>Vous aviez déjà demandé une modification, seule la demande que vous venez de poster sera prise en compte</warning>" ;
+			$message2 .= "<warning>Vous aviez dÃ©jÃ  demandÃ© une modification, seule la demande que vous venez de poster sera prise en compte</warning>" ;
 			$DB_valid->query("DELETE FROM valid_binet WHERE binet_id={$_POST['id']}");
 		} else {
 			$tempo = explode("gestion",$_SERVER['REQUEST_URI']) ;
 
-			$contenu = "Le webmestre du binet $nom a demandé la modification de l'affichage de son binet <br><br>".
+			$contenu = "Le webmestre du binet $nom a demandÃ© la modification de l'affichage de son binet <br><br>".
 				"Pour valider ou non cette demande va sur la page suivante : <br>".
 				"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_binets.php'>".
 				"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_binets.php</a></div><br><br>" .
@@ -291,7 +294,7 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 		//--------------------------------------------------------
 		if (($_FILES['file']['tmp_name']!='none')&&($_FILES['file']['tmp_name']!='')) {
 			$img = $_FILES['file']['tmp_name'] ;
-				//récupere les données de l'images
+				//rÃ©cupere les donnÃ©es de l'images
 				//--------------------------------------
 				
 			$type_img =  $_FILES["file"]["type"];
@@ -303,7 +306,7 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 			$data = addslashes($data);
 		
 				//
-				// On verifie que le truc télécharger est une image ...
+				// On verifie que le truc tÃ©lÃ©charger est une image ...
 				//--------------------------------------
 			//echo $dim[0]."x".$dim[1] ;
 			if (($dim = getimagesize($img))&&($dim[0]<=100)&&($dim[1]<=100)) {
@@ -313,7 +316,7 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 				$message2 .= "<warning>Ton image n'est pas au bon format (taille ou extension... $type_img / $dim[0]x$dim[1] pxl)</warning>" ;
 			}
 		}
-		$message2 .= "<commentaire>La demande de modification du binet '$nom'  $texte_image a été effectuée</commentaire>" ;
+		$message2 .= "<commentaire>La demande de modification du binet '$nom'  $texte_image a Ã©tÃ© effectuÃ©e</commentaire>" ;
 	}
 	
 //============================================
@@ -326,7 +329,7 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 	$DB_valid->query("SELECT binet_id,nom,description,http,catego_id,exterieur,folder FROM valid_binet WHERE binet_id=".$_REQUEST['binet']);
 	if ($DB_valid->num_rows()!=0) {
 		list($id,$nom,$descript,$http,$cat_id,$exterieur,$folder) = $DB_valid->next_row() ;
-		$message2 .= "<commentaire>L'aperçu que vous avez maintenant n'a pas encore été validé par le BR. Il faut encore attendre pour que celui ci soit pris en compte</commentaire>" ;
+		$message2 .= "<commentaire>L'aperÃ§u que vous avez maintenant n'a pas encore Ã©tÃ© validÃ© par le BR. Il faut encore attendre pour que celui ci soit pris en compte</commentaire>" ;
 		$image_link = "<image source=\"gestion/binet.php?image=1&amp;id=$id\" texte=\"image\"/>" ;
 	} else {
 		$DB_trombino->query("SELECT binet_id,nom,description,http,catego_id,exterieur,folder FROM binets WHERE binet_id=".$_REQUEST['binet']);
@@ -344,7 +347,7 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 	<note> Si tu ne souhaites pas que ton binet apparaisse dans la liste des binets sur le site, alors supprime le champs Http</note>
 		<formulaire id="binet_web" titre="<? echo $nom?>" action="gestion/binet.php?binet=<?=$_REQUEST['binet']?>">
 			<hidden id="id" titre="" valeur="<? echo $id?>"/>
-			<choix titre="Catégorie" id="catego" type="combo" valeur="<?=$cat_id?>">
+			<choix titre="CatÃ©gorie" id="catego" type="combo" valeur="<?=$cat_id?>">
 <?php
 				echo $liste_catego ;
 ?>
@@ -374,7 +377,7 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 			}
 		}
 	}
-	// si le folder du binet n'existe pas alors on le crée
+	// si le folder du binet n'existe pas alors on le crÃ©e
 	if($folder!=''){
 		if (!is_dir(BASE_BINETS.$folder)) {
 			mkdir (BASE_BINETS.$folder) ;

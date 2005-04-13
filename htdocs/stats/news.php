@@ -1,6 +1,6 @@
 <?php 
 /*
-        Copyright (C) 2004 Binet Réseau
+        Copyright (C) 2004 Binet RÃ©seau
         http://www.polytechnique.fr/eleves/binets/br/
         This program is free software; you can redistribute it and/or
         modify it under the terms of the GNU General Public License
@@ -25,10 +25,10 @@
 
 <page id='statnews' titre='Frankiz : Statistiques des news'>
 	<?php if ($newsmestres==1) {
-		echo "<h2>Bienvenue à toi ô tres cher Maître</h2>";
+		echo "<h2>Bienvenue Ã  toi Ã´ tres cher MaÃ®tre</h2>";
 		echo "Tu peux aussi consulter ".
 		"<a href=\"stats/news_gros_posteurs.php\">la liste des boulets</a>,";
-		echo " page réservée aux newsmestres (filtrage par IP).";
+		echo " page rÃ©servÃ©e aux newsmestres (filtrage par IP).";
 		echo "<h3>Etat du serveur de news</h3>";
 		include ("server_status");
 	} ?>
@@ -41,13 +41,13 @@
 	<h3>Le mot des newsmestres</h3>
 	Pour les windowsiens et les makkeux les newsmestres conseillent d'utiliser
 	<a href="http://frankiz/xshare.php?affich_elt=MC8zLzU0LzQ3LzE4NA==">Thunderbird</a> comme lecteur news.<br/>
-	Les linuxiens peuvent quant à eux choisir entre 
+	Les linuxiens peuvent quant Ã  eux choisir entre 
 	<a href="http://knode.sourceforge.net">Knode</a> et
 	<a href="http://www.mozilla.org/products/thunderbird/">Thunderbird</a>.
 	
 	<h3>Ecrire aux newsmestres</h3>
 	Pour toute remarque ou demande concernant le serveur de news, tu peux 
-	<a href="mailto:news@frankiz">écrire</a>
+	<a href="mailto:news@frankiz">Ã©crire</a>
 	aux irresponsables de la page news..
 
 </page>

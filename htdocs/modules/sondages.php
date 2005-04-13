@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,20 +21,23 @@
 	Affichage des liens vers les sondages
 
 	$Log$
+	Revision 1.9  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.8  2005/03/04 23:11:33  pico
 	Restriction des sondages par promo/section/binet
-
+	
 	Revision 1.7  2005/01/14 09:19:31  pico
 	Corrections bug mail
 	+
-	Sondages maintenant public ou privé (ne s'affichant pas dans le cadre)
+	Sondages maintenant public ou privÃ© (ne s'affichant pas dans le cadre)
 	Ceci sert pour les sondages section par exemple
 	
 	Revision 1.6  2004/12/14 13:43:30  pico
 	bugfix
 	
 	Revision 1.5  2004/12/13 20:03:25  pico
-	Les liens ne forment pas de blocs, il faut donc le spécifier
+	Les liens ne forment pas de blocs, il faut donc le spÃ©cifier
 	
 	Revision 1.4  2004/12/07 12:48:31  pico
 	N'affiche pas le module sondage si il est vide

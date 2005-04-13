@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -48,7 +48,7 @@
 	<dl id="service" class="boite">
 		<dt class="titre">
 			<span class="droitehaut"><xsl:text> </xsl:text></span>
-			<span>Statistiques :</span>	
+			<span>StatistiquesÂ :</span>	
 		</dt>
 		<dd class="contenu">
 			<ul class="services contacts">

@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,14 +18,17 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Gestion de la création d'un compte et de la perte de mot de passe.
+	Gestion de la crÃ©ation d'un compte et de la perte de mot de passe.
 	
 	$Log$
+	Revision 1.24  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.23  2005/04/06 06:46:51  pico
 	COrrection mail ouverture de compte
-
+	
 	Revision 1.22  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
+	Changement de "TrÃ¨s BRment, l'automate"
 	
 	Revision 1.21  2004/12/16 17:26:10  schmurtz
 	Ajout d'un exemple pour login.promo, ca evitera les dupond.x2002.
@@ -47,7 +50,7 @@
 	Passage de l'envoi de mail en "couriel"
 	
 	Revision 1.15  2004/11/03 12:15:32  pico
-	La fonction qui remplissait le corps du mail n'existait plus -> le mail était vide !!! (merci mYk d'avoir signalé ça)
+	La fonction qui remplissait le corps du mail n'existait plus -> le mail Ã©tait vide !!! (merci mYk d'avoir signalÃ© Ã§a)
 	
 	Revision 1.14  2004/10/21 22:19:38  schmurtz
 	GPLisation des fichiers du site
@@ -82,7 +85,7 @@ if(!empty($_REQUEST['loginpoly'])) {
 		list($id,$login,$prenom,$nom,$promo,$mail) = $DB_trombino->next_row();
 		$hash = nouveau_hash();
 		
-		// Si le compte existe déjà on met à jour le hash, sinon on crée le compte
+		// Si le compte existe dÃ©jÃ  on met Ã  jour le hash, sinon on crÃ©e le compte
 		//$DB_web->query("INSERT INTO compte_frankiz SET eleve_id='$id',passwd='',perms='',hash='$hash',hashstamp=NOW()+3600*6 "
 		//		   ."ON DUPLICATE KEY UPDATE hash='$hash',hashstamp=NOW()+3600*6");
 		// (MySQL 4.1 uniquement)
@@ -96,16 +99,16 @@ if(!empty($_REQUEST['loginpoly'])) {
 		$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
 		$contenu = "<b>Bonjour</b><br>
 				Pour te connecter sur Frankiz, il te suffit de cliquer sur le".
-				   "lien ci-dessous :<br/>\n\n".
+				   "lien ci-dessousÂ :<br/>\n\n".
 				   "<a href=\"".
 				   BASE_URL."/profil/profil.php?uid=${id}&hash=${hash}".
 				   "\">".
 				   BASE_URL."/profil/profil.php?uid=${id}&hash=${hash}".
 				   "</a>\n\n".
-				   "N'oublie pas ensuite de modifier ton mot de passe.<br><br> Très cordialement<br>Le BR";
+				   "N'oublie pas ensuite de modifier ton mot de passe.<br><br> TrÃ¨s cordialement<br>Le BR";
 		if (($mail=="")||($mail=="NULL")) $mail = $login."@poly.polytechnique.fr" ;
 		
-		couriel($id,"[Frankiz] Création de compte/perte de mot de passe",$contenu);
+		couriel($id,"[Frankiz] CrÃ©ation de compte/perte de mot de passe",$contenu);
 		
 		$mail_envoye = true;
 		
@@ -118,16 +121,16 @@ require "../include/page_header.inc.php";
 echo "<page id='mdp_perdu' titre='Frankiz : creation de compte/perte de mot de passe'>\n";
 
 if($mail_envoye) { ?>
-	<commentaire>Le mail a été envoyé avec succès à l'adresse <?php echo $mail?>.
+	<commentaire>Le mail a Ã©tÃ© envoyÃ© avec succÃ¨s Ã  l'adresse <?php echo $mail?>.
 	Il te permettra de te connecter une fois au site web Frankiz pour changer ton mot de passe
-	ou choisir ton mot de passe si tu n'en a pas encore défini un.</commentaire>
+	ou choisir ton mot de passe si tu n'en a pas encore dÃ©fini un.</commentaire>
 	
 <?php } else { ?>
-	<?php if(a_erreur(ERR_LOGINPOLY)) echo "<warning>Le login que tu a donné n'existe pas.</warning>\n"?>
+	<?php if(a_erreur(ERR_LOGINPOLY)) echo "<warning>Le login que tu a donnÃ© n'existe pas.</warning>\n"?>
 	<formulaire id="mdp_perdu" titre="Perte de mot de passe/ouverture de compte" action="profil/mdp_perdu.php">
-		<note>Si tu souhaites créer ton compte Frankiz, ou si tu as perdu ton mot de passe, entre ton
+		<note>Si tu souhaites crÃ©er ton compte Frankiz, ou si tu as perdu ton mot de passe, entre ton
 		loginpoly.promo (par exemple dupont.2002) dans le champs si dessous. Tu receveras dans les minutes qui suivent un mail
-		te permettant d'accéder à la partie réservée de Frankiz. Une fois authentifié grâce
+		te permettant d'accÃ©der Ã  la partie rÃ©servÃ©e de Frankiz. Une fois authentifiÃ© grÃ¢ce
 		au lien contenu dans le mail, n'oublie pas de changer ton mot de passe.</note>
 		<champ id="loginpoly" titre="login.promo" valeur=""/>
 		<bouton id="valider" titre="Valider"/>

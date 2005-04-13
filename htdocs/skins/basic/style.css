@@ -1,6 +1,6 @@
 /* $Id$ */
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,13 +18,13 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-/* paramètres par défaut */
+/* paramÃ¨tres par dÃ©faut */
 table {
 	width: 100%;
 	border: 0;
 }
 
-/* affichage général */
+/* affichage gÃ©nÃ©ral */
 #frankiz {
 	color: inherit;
 	background: #DDDDDD;
@@ -92,7 +92,7 @@ table.annonce td {
 	text-align: right;
 }
 
-/* État des serveurs */
+/* Ã‰tat des serveurs */
 .serveur_up {
 	color: inherit;
 	background: lime;
@@ -221,8 +221,8 @@ H2 {
 }
 
 /*
-	Autres classes définie mais sans style particulier :
-	- .image, pour les image créer avec la balise <image>
-	- .legende, pour les légendes des images
-	- .lien, pour les liens créer avec la balise <lien>
+	Autres classes dÃ©finie mais sans style particulierÂ :
+	- .image, pour les image crÃ©er avec la balise <image>
+	- .legende, pour les lÃ©gendes des images
+	- .lien, pour les liens crÃ©er avec la balise <lien>
 */

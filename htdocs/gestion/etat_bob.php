@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,17 +18,20 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Cette page permet de déterminer si le Bôb est ouvert ou non.
+	Cette page permet de dÃ©terminer si le BÃ´b est ouvert ou non.
 	
 	$Log$
+	Revision 1.7  2005/04/13 17:09:59  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.6  2005/03/08 11:58:06  pico
 	Correction bug, permet d'effacer des tours kawa
-
+	
 	Revision 1.5  2005/01/06 23:31:31  pico
-	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
+	La QDJ change Ã  0h00 (ce n'est plus la question du jour plus un petit peu)
 	
 	Revision 1.4  2005/01/04 13:30:13  pico
-	Ajout possibilité de virer des tours kawa
+	Ajout possibilitÃ© de virer des tours kawa
 	
 	Revision 1.3  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
@@ -46,7 +49,7 @@
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
 	
 	Revision 1.1  2004/11/27 18:23:53  pico
-	Ajout de l'annonce: 'le bob est ouvert' dans les activités + page de gestion du bob
+	Ajout de l'annonce: 'le bob est ouvert' dans les activitÃ©s + page de gestion du bob
 	
 
 	
@@ -55,22 +58,22 @@
 
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!(verifie_permission('admin')||verifie_permission('bob')))
 	acces_interdit();
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
-<page id="etat_bob" titre="Frankiz : Etat du Bôb">
+<page id="etat_bob" titre="Frankiz : Etat du BÃ´b">
 <?
 if(isset($_POST['envoie'])){
 ?>
 	<commentaire>
-		L'état du bôb vient d'être changé
+		L'Ã©tat du bÃ´b vient d'Ãªtre changÃ©
 	</commentaire>
 <?
 	$DB_web->query("UPDATE parametres SET valeur='".$_REQUEST['etat']."' WHERE nom='bob'");
@@ -78,21 +81,21 @@ if(isset($_POST['envoie'])){
 
 if(isset($_POST['ajout_kawa']) &&(strtotime($_REQUEST['date']) >(time()))&&($_REQUEST['date']!="0000-00-00")){
 	$DB_web->query("INSERT INTO kawa SET date='".$_POST['date']."', section_id='".$_POST['section']."' ");
-	echo"<commentaire>Tour kawa ajouté</commentaire>";
+	echo"<commentaire>Tour kawa ajoutÃ©</commentaire>";
 }
 
 if(isset($_GET['del'])){
 	$DB_web->query("DELETE FROM kawa WHERE date='".$_GET['del']."'");
-	echo"<commentaire>Tour kawa supprimé</commentaire>";
+	echo"<commentaire>Tour kawa supprimÃ©</commentaire>";
 }
 
 $DB_web->query("SELECT valeur FROM parametres WHERE nom='bob'");
 list($valeur) = $DB_web->next_row();
 
 ?>
-	<formulaire id="bob" titre="Ouverture du bôb" action="gestion/etat_bob.php">
-		<choix titre="Le bôb est:" id="etat" type="radio" valeur="<?= $valeur ?>">
-				<option titre="Fermé" id="0"/>
+	<formulaire id="bob" titre="Ouverture du bÃ´b" action="gestion/etat_bob.php">
+		<choix titre="Le bÃ´b est:" id="etat" type="radio" valeur="<?= $valeur ?>">
+				<option titre="FermÃ©" id="0"/>
 				<option titre="ouvert" id="1"/>
 		</choix>
 		<bouton titre="Valider" id="envoie" onClick="return window.confirm('Voulez vous vraiment changer cette valeur ?')"/>
@@ -107,15 +110,15 @@ list($valeur) = $DB_web->next_row();
 				echo "\t\t\t<option titre=\"$section_nom\" id=\"$section_id\"/>\n";
 ?>
 		</choix>
-		<champ id="date" titre="Date (année-mois-jour)" valeur="0000-00-00"/>
+		<champ id="date" titre="Date (annÃ©e-mois-jour)" valeur="0000-00-00"/>
 		<bouton titre="Valider" id="ajout_kawa" onClick="return window.confirm('Voulez vous vraiment ajouter ce tour ?')"/>
 	</formulaire>
 	
 <?
-	// Génération des tours kawa
+	// GÃ©nÃ©ration des tours kawa
 	$DB_web->query("SELECT kawa.date,sections.nom FROM kawa LEFT JOIN trombino.sections ON kawa.section_id=sections.section_id WHERE (kawa.date>=\"".date("Y-m-d",time())."\")");
 	$i = 0;
-	 echo "<liste id=\"tour_kawa\" titre=\"Liste des tours kawa prévus\" selectionnable=\"non\">\n";
+	 echo "<liste id=\"tour_kawa\" titre=\"Liste des tours kawa prÃ©vus\" selectionnable=\"non\">\n";
 	 echo "<entete id=\"jour\" titre=\"Date\"/>";
 	 echo "<entete id=\"kawa\" titre=\"Section\"/>";
 	while(list($date,$groupe)=$DB_web->next_row()){

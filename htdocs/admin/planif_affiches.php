@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet RÈseau
+	Copyright (C) 2004 Binet R√©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,17 +21,20 @@
 	Page qui permet aux admins de valider une qdj
 	
 	$Log$
+	Revision 1.15  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.14  2005/01/20 20:25:33  pico
 	Boulet !
-
+	
 	Revision 1.13  2005/01/20 20:24:33  pico
-	Plus (+) de modifs possibles sur une affiche validÈe
+	Plus (+) de modifs possibles sur une affiche valid√©e
 	
 	Revision 1.12  2005/01/17 22:51:47  pico
-	Liens vers les activitÈs + rÈorganisation
+	Liens vers les activit√©s + r√©organisation
 	
 	Revision 1.11  2005/01/06 23:31:31  pico
-	La QDJ change ‡ 0h00 (ce n'est plus la question du jour plus un petit peu)
+	La QDJ change √† 0h00 (ce n'est plus la question du jour plus un petit peu)
 	
 	Revision 1.10  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
@@ -40,7 +43,7 @@
 	Passage du nettoyage en formulaire
 	
 	Revision 1.8  2004/12/07 08:36:39  pico
-	Ajout d'une page pour pouvoir vider un peu les bases de donnÈes (genre pas garder les news qui datent de vieux)
+	Ajout d'une page pour pouvoir vider un peu les bases de donn√©es (genre pas garder les news qui datent de vieux)
 	
 	Revision 1.7  2004/11/29 17:27:32  schmurtz
 	Modifications esthetiques.
@@ -50,21 +53,21 @@
 	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
 	
 	Revision 1.5  2004/11/27 16:10:52  pico
-	Correction d'erreur de redirection et ajout des web ‡ la validation des activitÈs.
+	Correction d'erreur de redirection et ajout des web √† la validation des activit√©s.
 	
 	Revision 1.4  2004/11/27 15:29:22  pico
 	Mise en place des droits web (validation d'annonces + sondages)
 	
 	Revision 1.3  2004/11/27 14:12:31  pico
-	Ajout d'un lien pour supprimmer les annonces pÈrimÈes depuis plus de 5 jours
+	Ajout d'un lien pour supprimmer les annonces p√©rim√©es depuis plus de 5 jours
 	(histoire de pas garder des archives inutiles)
 	
 	Revision 1.2  2004/11/26 22:51:21  pico
 	Correction du SU dans les pages d'admin
-	Les utilisateurs avec le droit 'affiches' peuvent changer les dates des activitÈs qu'ils ont postÈes, si celles ci ont ÈtÈ prÈalablement validÈes par le br
+	Les utilisateurs avec le droit 'affiches' peuvent changer les dates des activit√©s qu'ils ont post√©es, si celles ci ont √©t√© pr√©alablement valid√©es par le br
 	
 	Revision 1.1  2004/11/26 22:28:58  pico
-	Ajout d'une page pour pouvoir modifier la date d'une activitÈ ou la supprimer
+	Ajout d'une page pour pouvoir modifier la date d'une activit√© ou la supprimer
 	
 	
 */
@@ -72,7 +75,7 @@
 require_once "../include/global.inc.php";
 require_once "../include/wiki.inc.php";
 
-// VÈrification des droits
+// V√©rification des droits
 demande_authentification(AUTH_FORT);
 if(verifie_permission('admin')||verifie_permission('web'))
 	$user_id = '%';
@@ -83,23 +86,23 @@ else
 
 
 
-// GÈnÈration de la page
+// G√©n√©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
-<page id="planif_affiches" titre="Frankiz : Planifie tes activitÈs">
-<h1>Planification des activitÈs</h1>
+<page id="planif_affiches" titre="Frankiz : Planifie tes activit√©s">
+<h1>Planification des activit√©s</h1>
 <?
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
 
-	// Fixe une date de parution ‡ la QDJ
+	// Fixe une date de parution √† la QDJ
 	
 	if ($temp[0]=='valid') {
 		if((strtotime($_REQUEST['date']) <=time())&&($_REQUEST['date']!="0000-00-00 00:00"))
 		{ ?>
-			<warning>ERREUR: Veuillez choisir une date supÈrieure ‡ aujourd'hui</warning>
+			<warning>ERREUR: Veuillez choisir une date sup√©rieure √† aujourd'hui</warning>
 		<?
 		}
 		else
@@ -107,31 +110,31 @@ foreach ($_POST AS $keys => $val){
 			$DB_web->query("UPDATE affiches SET titre='{$_REQUEST['titre']}', url='{$_REQUEST['url']}', description='{$_REQUEST['text']}', date='{$_REQUEST['date']}' WHERE affiche_id='{$temp[1]}'");
 	
 		?>
-			<commentaire>Modification effectuÈe</commentaire>
+			<commentaire>Modification effectu√©e</commentaire>
 		<?
 		}	
 	}
 	
-	// DÈplacer un jour aprËs
+	// D√©placer un jour apr√®s
 	if ($temp[0]=='augdate') {
 		$date1 = date('Y-m-d H:i:s',strtotime(base64_decode($temp[2]))+24*3600);
 		$DB_web->query("UPDATE affiches SET date='{$date1}' WHERE affiche_id='{$temp[1]}'");
 	}
 	
-	// DÈplacer un jour avant
+	// D√©placer un jour avant
 	if ($temp[0]=='reddate') {
 		$date1 = date('Y-m-d H:i:s',strtotime(base64_decode($temp[2]))-24*3600);
 		$DB_web->query("UPDATE affiches SET date='{$date1}' WHERE affiche_id='{$temp[1]}'");
 	}
 	
-	// Formulaire pour modifier la date de parution de la QDJ dÈj‡ planifiÈe
+	// Formulaire pour modifier la date de parution de la QDJ d√©j√† planifi√©e
 	
 	if($temp[0]=='modif') {
 		$DB_web->query("SELECT affiche_id,titre,url,date,description FROM affiches WHERE affiche_id='{$temp[1]}' AND eleve_id LIKE '$user_id'");
 		list($id,$titre,$url,$date,$texte) = $DB_web->next_row(); 
 		$id = $temp[1];
 ?>
-		<warning>Cette ActivitÈ est dÈj‡ planifiÈe pour le <?echo $date ?></warning>
+		<warning>Cette Activit√© est d√©j√† planifi√©e pour le <?echo $date ?></warning>
 		<annonce date="<? echo $date ?>">
 			<lien url="<?php echo $url?>"><image source="<?php echo DATA_DIR_URL.'affiches/'.$id?>" texte="Affiche" legende="<?php echo $titre?>"/></lien>
 			<? echo wikiVersXML($texte); ?>
@@ -140,9 +143,9 @@ foreach ($_POST AS $keys => $val){
 			<champ id="date" titre="date" valeur="<? echo $date ?>"/>
 			<champ id="titre" titre="Le titre" valeur="<?  echo $titre ;?>"/>
 			<champ id="url" titre="URL du lien" valeur="<? echo $url ;?>"/>
-			<zonetext id="text" titre="Description plus dÈtaillÈe"><?=$texte?></zonetext>
+			<zonetext id="text" titre="Description plus d√©taill√©e"><?=$texte?></zonetext>
 			<champ id="date" titre="Date d'affichage" valeur="<? echo $date ;?>"/>
-			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider la planification de cette activitÈ ?')"/>
+			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider la planification de cette activit√© ?')"/>
 		</formulaire>
 <?	
 	}
@@ -155,7 +158,7 @@ foreach ($_POST AS $keys => $val){
 				unlink(DATA_DIR_LOCAL."affiches/{$temp[1]}") ;
 		}
 	?>
-		<warning>Suppression d'une activitÈ</warning>
+		<warning>Suppression d'une activit√©</warning>
 	<?
 	}
 
@@ -172,7 +175,7 @@ $date = date("Y-m-d", time());
 
 // Affiche la planification existante
 ?>
-	<h2>PrÈvisions</h2>
+	<h2>Pr√©visions</h2>
 <?
 $DB_web->query("SELECT affiche_id,titre,url,date,description FROM affiches WHERE TO_DAYS(date)>=TO_DAYS(NOW()) AND eleve_id LIKE '$user_id'");
 while(list($id,$titre,$url,$date,$texte) = $DB_web->next_row()){
@@ -184,9 +187,9 @@ while(list($id,$titre,$url,$date,$texte) = $DB_web->next_row()){
 		</annonce>
 	<formulaire id="<? echo $id ?>" action="admin/planif_affiches.php">
 		<note><? echo $date ?></note>
-		<? if(strtotime($date) >time() + 24*3600){ ?><bouton titre="Un jour plus tÙt" id="reddate_<? echo $id ?>_<? echo base64_encode($date) ?>"/><? } ?>
+		<? if(strtotime($date) >time() + 24*3600){ ?><bouton titre="Un jour plus t√¥t" id="reddate_<? echo $id ?>_<? echo base64_encode($date) ?>"/><? } ?>
 		<bouton titre="Un jour plus tard" id="augdate_<? echo $id ?>_<? echo base64_encode($date) ?>"/>
-		<bouton id='modif_<? echo $id ?>_<? echo base64_encode($date) ?>' titre="Modifier l'activitÈ"/>
+		<bouton id='modif_<? echo $id ?>_<? echo base64_encode($date) ?>' titre="Modifier l'activit√©"/>
 		<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette affiche ?!!!!!')"/>
 		<hidden id="show"/>
 	

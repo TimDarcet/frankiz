@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,17 +18,20 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Affichage des anniversaires avec gestion d'un cache mis à jour une fois par jour.
+	Affichage des anniversaires avec gestion d'un cache mis Ã  jour une fois par jour.
 	
 	$Log$
-	Revision 1.16  2005/01/02 10:50:25  pico
-	Passage de certaines pages en visibles de l'intérieur (non loggué)
+	Revision 1.17  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.16  2005/01/02 10:50:25  pico
+	Passage de certaines pages en visibles de l'intÃ©rieur (non logguÃ©)
+	
 	Revision 1.15  2004/12/15 20:57:59  pico
 	Affiche un lien vers la fiche trombi pour les anniversaires...
 	
 	Revision 1.14  2004/11/23 07:43:25  pico
-	Les différentes promos ne sont plus codées en dur, mais utilisent la variable sql
+	Les diffÃ©rentes promos ne sont plus codÃ©es en dur, mais utilisent la variable sql
 	
 	Revision 1.13  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site

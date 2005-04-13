@@ -1,5 +1,5 @@
 <?/*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -17,23 +17,26 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Fonction qui donne la météo sur Paris.
+	Fonction qui donne la mÃ©tÃ©o sur Paris.
 
 	Fonctionnement : Pour obtenir un compte GRATUIT sur www.weather.com aller sur http://www.weather.com/services/oapintellicast.html et remplir le formulaire
-		A partir de ce moment vous aurez un partner_id et une clé ! (Elle est privée donc n'utiliser pas celle qui est afficher dans la page merci)
-		taper http://xoap.weather.com/search/search?location=[yourlocation] et la page vous retourne du xml avec les id des différents lieu dans le monde qui
+		A partir de ce moment vous aurez un partner_id et une clÃ© ! (Elle est privÃ©e donc n'utiliser pas celle qui est afficher dans la page merci)
+		taper http://xoap.weather.com/search/search?location=[yourlocation] et la page vous retourne du xml avec les id des diffÃ©rents lieu dans le monde qui
 		comporte ce nom (choisissez le bon !)
-		le reste est bien expliqué
-		Sinon pour ce qui concerne la légalité, je crois qu'il faut juste faire apparaitre leur logo en bas ...
+		le reste est bien expliquÃ©
+		Sinon pour ce qui concerne la lÃ©galitÃ©, je crois qu'il faut juste faire apparaitre leur logo en bas ...
 		option supplementaire de l'url 
 			c=* pour avoir la temperature , l'humidite , etc ...
-			unit=m pour avoir les unité en métrique
+			unit=m pour avoir les unitÃ© en mÃ©trique
 			dayf=8 pour avoir 7 jour de previsions
 
 	$Log$
+	Revision 1.5  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.4  2005/03/23 21:12:12  pico
 	Normalement tout ce qui faut pour passer en UTF8
-
+	
 	Revision 1.3  2004/11/17 22:27:24  pico
 	Corrections et bugfix divers
 	
@@ -42,13 +45,13 @@
 	la place
 	
 	Revision 1.1  2004/10/28 16:08:14  kikx
-	Ne fait qu'une page de fonctions pour la météo car sinon ça devient ingérable
+	Ne fait qu'une page de fonctions pour la mÃ©tÃ©o car sinon Ã§a devient ingÃ©rable
 	
 
 */
 
 function weather_xml() {
-	// Récupération de la météo
+	// RÃ©cupÃ©ration de la mÃ©tÃ©o
 	$proxy = "kuzh.polytechnique.fr";
 	$port = 8080;
 
@@ -58,10 +61,10 @@ function weather_xml() {
 	while(!feof($fp)){
 		$xml .= fgets($fp, 4000);
 	}
-	$xml = strstr($xml,"<?xml");	// TODO corriger ce gros hack, vérifier aussi que la requète
-									// http à réussie
+	$xml = strstr($xml,"<?xml");	// TODO corriger ce gros hack, vÃ©rifier aussi que la requÃ¨te
+									// http Ã  rÃ©ussie
 	
-	// traduction de la météo dans notre format
+	// traduction de la mÃ©tÃ©o dans notre format
 	if(strstr($xml,"<weather")){
 		$xh = xslt_create();
 		xslt_set_encoding($xh, "utf8");

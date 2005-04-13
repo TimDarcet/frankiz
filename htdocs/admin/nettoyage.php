@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,12 +18,15 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Page qui permet aux admins de vider la bdd des activités périmées
+	Page qui permet aux admins de vider la bdd des activitÃ©s pÃ©rimÃ©es
 	
 	$Log$
-	Revision 1.8  2005/01/06 23:31:31  pico
-	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
+	Revision 1.9  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.8  2005/01/06 23:31:31  pico
+	La QDJ change Ã  0h00 (ce n'est plus la question du jour plus un petit peu)
+	
 	Revision 1.7  2004/12/17 19:55:44  pico
 	Ajout d'une page pour voir l'historique des qdj
 	
@@ -31,11 +34,11 @@
 	Ajout d'une belle page d'erreur.
 	
 	Revision 1.5  2004/12/10 20:23:50  kikx
-	Pour supprimer les entrées des annonces non lues si celle ci n'existe plus ... evite d'exploser les tables
+	Pour supprimer les entrÃ©es des annonces non lues si celle ci n'existe plus ... evite d'exploser les tables
 	
 	Revision 1.4  2004/12/07 19:53:05  pico
-	Remise en place des paramètres de skin
-	Mise à jour css classique
+	Remise en place des paramÃ¨tres de skin
+	Mise Ã  jour css classique
 	
 	Revision 1.3  2004/12/07 13:10:56  pico
 	Passage du nettoyage en formulaire
@@ -44,30 +47,30 @@
 	Nettoyage des qdj
 	
 	Revision 1.1  2004/12/07 08:36:39  pico
-	Ajout d'une page pour pouvoir vider un peu les bases de données (genre pas garder les news qui datent de vieux)
+	Ajout d'une page pour pouvoir vider un peu les bases de donnÃ©es (genre pas garder les news qui datent de vieux)
 		
 */
 	
 require_once "../include/global.inc.php";
 
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('web'))
 	acces_interdit();
 
 
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
-<page id="nettoyage" titre="Frankiz : Nettoyage des bases de données du site.">
+<page id="nettoyage" titre="Frankiz : Nettoyage des bases de donnÃ©es du site.">
 <h1>Modification d'annonces</h1>
 
 <?
-// On traite les différents cas de figure d'enrigistrement et validation d'annonce :)
+// On traite les diffÃ©rents cas de figure d'enrigistrement et validation d'annonce :)
 
 // Enregistrer ...
 
@@ -90,7 +93,7 @@ foreach ($_POST AS $keys => $val){
 		$DB_web->query("DELETE FROM annonces WHERE perime<".date("Ymd000000",time()- 5 * 24 * 3600)."") ;
 
 	?>
-		<warning>Suppression de <? echo $compteur?> annonces périmées</warning>
+		<warning>Suppression de <? echo $compteur?> annonces pÃ©rimÃ©es</warning>
 	<?
 	}
 	
@@ -99,7 +102,7 @@ foreach ($_POST AS $keys => $val){
 		$compteur = $DB_web->num_rows();
 		$DB_web->query("DELETE FROM affiches WHERE date<'".date("Y-m-d 00:00",time()- 5 * 24 * 3600)."' ") ;
 	?>
-		<warning>Suppression de <? echo $compteur?> affiches périmées</warning>
+		<warning>Suppression de <? echo $compteur?> affiches pÃ©rimÃ©es</warning>
 	<?
 	}
 	
@@ -108,7 +111,7 @@ foreach ($_POST AS $keys => $val){
 		$compteur = $DB_web->num_rows();
 		$DB_web->query("DELETE FROM qdj WHERE date<'".date("Y-m-d", time() - 365 * 24 * 3600)."' AND date>'0000-00-00'");
 	?>
-		<warning>Suppression de <? echo $compteur?> qdj périmées</warning>
+		<warning>Suppression de <? echo $compteur?> qdj pÃ©rimÃ©es</warning>
 	<?
 	}
 	
@@ -120,18 +123,18 @@ foreach ($_POST AS $keys => $val){
 		}
 		$DB_web->query("DELETE FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) <-60");
 	?>
-		<warning>Suppression de <? echo $compteur?> sondages périmés et de leurs résultats</warning>
+		<warning>Suppression de <? echo $compteur?> sondages pÃ©rimÃ©s et de leurs rÃ©sultats</warning>
 	<?
 	}
 }
 
 ?>
 	<formulaire id="nett_fkz" titre="Nettoyer les bdd Fkz" action="admin/nettoyage.php">
-		<choix titre="Eléments à vider" id="element" type="checkbox">
-			<option  titre="Supprimer les annonces périmées depuis plus de 5 jours" id="annonces"/>
-			<option  titre="Supprimer les affiches périmées depuis plus de 5 jours" id="affiches"/>
-			<option  titre="Supprimer les qdj périmées depuis plus de 365 jours" id="qdj"/>
-			<option  titre="Supprimer les sondages périmés depuis plus de 60 jours" id="sondage"/>
+		<choix titre="ElÃ©ments Ã  vider" id="element" type="checkbox">
+			<option  titre="Supprimer les annonces pÃ©rimÃ©es depuis plus de 5 jours" id="annonces"/>
+			<option  titre="Supprimer les affiches pÃ©rimÃ©es depuis plus de 5 jours" id="affiches"/>
+			<option  titre="Supprimer les qdj pÃ©rimÃ©es depuis plus de 365 jours" id="qdj"/>
+			<option  titre="Supprimer les sondages pÃ©rimÃ©s depuis plus de 60 jours" id="sondage"/>
 		</choix>
 		<bouton id='mod_compte_fkz' titre='Changer'/>
 	</formulaire>

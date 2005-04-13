@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,9 +21,12 @@
 	Modif du vocabulaire
 	
 	$Log$
+	Revision 1.6  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.5  2005/01/18 13:45:31  pico
 	Plus de droits pour les web
-
+	
 	Revision 1.4  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
 	
@@ -31,12 +34,12 @@
 	J'avais fait de la merde...
 	
 	Revision 1.1  2004/12/15 23:40:35  kikx
-	Pour gérer les mots de vocabulaires
+	Pour gÃ©rer les mots de vocabulaires
 */
 
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if (!verifie_permission('admin')&&!verifie_permission('web'))
 	acces_interdit();
@@ -62,7 +65,7 @@ foreach ($_POST AS $keys => $val){
 }
 
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>

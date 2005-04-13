@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -22,9 +22,12 @@
 	
 
 	$Log$
+	Revision 1.17  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.16  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
-
+	
 	Revision 1.15  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
 	
@@ -32,7 +35,7 @@
 	INNER en LEFT
 	
 	Revision 1.13  2004/12/13 20:03:25  pico
-	Les liens ne forment pas de blocs, il faut donc le spécifier
+	Les liens ne forment pas de blocs, il faut donc le spÃ©cifier
 	
 	Revision 1.12  2004/12/13 16:32:14  kikx
 	Protection de la validation d'une QDJ ...
@@ -44,8 +47,8 @@
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
 	
 	Revision 1.9  2004/11/27 14:56:15  pico
-	Debut de mise en place de droits spéciaux (qdj + affiches)
-	+ génération de la page d'admin qui va bien
+	Debut de mise en place de droits spÃ©ciaux (qdj + affiches)
+	+ gÃ©nÃ©ration de la page d'admin qui va bien
 	
 	Revision 1.8  2004/10/29 15:48:43  kikx
 	Mise ne forme du php
@@ -60,22 +63,22 @@
 	Correction de bug
 	
 	Revision 1.4  2004/10/14 13:48:13  pico
-	Amélioration du comportement de la planification des qdj
-	- possibilité d'insérer une qdj et de décaler les autres
-	- ou remplacer la qdj déjà placée par la courante et remettre l'ancienne dans les qdj à planifier
+	AmÃ©lioration du comportement de la planification des qdj
+	- possibilitÃ© d'insÃ©rer une qdj et de dÃ©caler les autres
+	- ou remplacer la qdj dÃ©jÃ  placÃ©e par la courante et remettre l'ancienne dans les qdj Ã  planifier
 	
 	Revision 1.3  2004/10/13 22:14:32  pico
-	Premier jet de page pour affecter une date de publication aux qdj validées
+	Premier jet de page pour affecter une date de publication aux qdj validÃ©es
 */
 	
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin') && !verifie_permission('qdjmaster'))
 	acces_interdit();
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -85,7 +88,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <h1>Validation de qdj</h1>
 
 <?
-// On traite les différents cas de figure d'enrigistrement et validation de qdj :)
+// On traite les diffÃ©rents cas de figure d'enrigistrement et validation de qdj :)
 
 // Enregistrer ...
 $DB_valid->query("LOCK TABLE valid_qdj WRITE");
@@ -101,11 +104,11 @@ foreach ($_POST AS $keys => $val){
 
 			$DB_valid->query("UPDATE valid_qdj SET question='{$_POST['question']}', reponse1='{$_POST['reponse1']}', reponse2='{$_POST['reponse2']}' WHERE qdj_id='{$temp[1]}'");
 		?>
-			<commentaire>Modif effectuée</commentaire>
+			<commentaire>Modif effectuÃ©e</commentaire>
 		<?
 		} else {
 	?>
-			<warning>Requête deja traitée par un autre administrateur</warning>
+			<warning>RequÃªte deja traitÃ©e par un autre administrateur</warning>
 	<?
 		}
 	}
@@ -115,7 +118,7 @@ foreach ($_POST AS $keys => $val){
 		if ($DB_valid->num_rows()!=0) {
 		
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," validé la qdj '{$_POST['question']}'") ;
+			log_admin($_SESSION['user']->uid," validÃ© la qdj '{$_POST['question']}'") ;
 
 			list($eleve_id) = $DB_valid->next_row() ;
 				
@@ -123,7 +126,7 @@ foreach ($_POST AS $keys => $val){
 			
 			$DB_valid->query("DELETE FROM valid_qdj WHERE qdj_id='{$temp[1]}'") ;
 		?>
-			<commentaire>Validation effectuée</commentaire>
+			<commentaire>Validation effectuÃ©e</commentaire>
 		<?
 		}
 	}
@@ -132,7 +135,7 @@ foreach ($_POST AS $keys => $val){
 		if ($DB_valid->num_rows()!=0) {
 		
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," refusé la qdj '{$_POST['question']}'") ;
+			log_admin($_SESSION['user']->uid," refusÃ© la qdj '{$_POST['question']}'") ;
 	
 			list($eleve_id) = $DB_valid->next_row() ;
 			$DB_valid->query("DELETE FROM valid_qdj WHERE qdj_id='{$temp[1]}'") ;
@@ -141,7 +144,7 @@ foreach ($_POST AS $keys => $val){
 		<?
 		} else {
 	?>
-			<warning>Requête deja traitée par un autre administrateur</warning>
+			<warning>RequÃªte deja traitÃ©e par un autre administrateur</warning>
 	<?
 		}
 
@@ -170,8 +173,8 @@ $DB_valid->query("UNLOCK TABLES");
 ?>
 		<formulaire id="qdj_<? echo $id ?>" titre="La QDJ" action="admin/valid_qdj.php">
 			<champ id="question" titre="La question" valeur="<? echo $question ;?>"/>
-			<champ id="reponse1" titre="Réponse1" valeur="<? echo $reponse1 ;?>"/>
-			<champ id="reponse2" titre="Réponse2" valeur="<? echo $reponse2 ;?>"/>
+			<champ id="reponse1" titre="RÃ©ponse1" valeur="<? echo $reponse1 ;?>"/>
+			<champ id="reponse2" titre="RÃ©ponse2" valeur="<? echo $reponse2 ;?>"/>
 			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
 			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider cette qdj ?')"/>
 			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette qdj ?!!!!!')"/>

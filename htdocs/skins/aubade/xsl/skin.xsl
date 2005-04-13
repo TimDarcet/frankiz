@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -82,7 +82,7 @@
         <xsl:attribute name="class">fond<xsl:value-of select="1 + (frankiz/module[@id='random']/p[1] mod 13)" /></xsl:attribute>
 		<div class="fkz_entetes">
 			<div class="fkz_logo"><a href="index.php"><span class="fkz_logo">Frankiz,</span></a></div>
-			<div  class="fkz_logo_eleves"><span class="fkz_logo_eleves">le site Web des élèves de l'École Polytechnique</span></div>
+			<div  class="fkz_logo_eleves"><span class="fkz_logo_eleves">le site Web des Ã©lÃ¨ves de l'Ã‰cole Polytechnique</span></div>
 		</div>
 		<div class="fkz_page">
 			<div class="fkz_centre">
@@ -138,7 +138,7 @@
 
 <xsl:template match="/frankiz/page[@id='meteo']">
     <div class="fkz_page_meteo">
-        <div class="fkz_page_titre">Météo</div>
+        <div class="fkz_page_titre">MÃ©tÃ©o</div>
         <div class="fkz_page_corps"><xsl:apply-templates/></div>
     </div>
 </xsl:template>

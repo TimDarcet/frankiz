@@ -1,9 +1,12 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- 
 	$Log$
+	Revision 1.2  2005/04/13 17:10:10  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.1  2004/11/24 20:26:43  schmurtz
 	Reorganisation des skins (affichage melange skin/css + depacement des css)
-
+	
 	Revision 1.8  2004/11/15 20:54:19  pico
 	Commit global de retour de gwz
 	
@@ -16,7 +19,7 @@
 	 Revision 1.5  2004/11/05 13:48:50  pico
 	Corrections diverses skin
 
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or

@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -19,18 +19,21 @@
 */
 /*
 		$Log$
+		Revision 1.20  2005/04/13 17:09:58  pico
+		Passage de tous les fichiers en utf8.
+
 		Revision 1.19  2005/03/15 12:01:40  pico
 		oups
-
+		
 		Revision 1.18  2005/03/15 11:59:55  pico
 		Correction bug #74
 		
 		Revision 1.17  2005/02/08 22:41:17  pico
 		Correction du bug de recherche sur la faq. (#55)
 		
-		c'est vraiment très bizarre la gestion des variables, là...
+		c'est vraiment trÃ¨s bizarre la gestion des variables, lÃ ...
 		
-		enfin bon, ça marche...
+		enfin bon, Ã§a marche...
 		
 		Revision 1.16  2005/01/22 17:58:38  pico
 		Modif des images
@@ -39,7 +42,7 @@
 		Bug #26
 		
 		Revision 1.14  2004/12/15 05:17:57  falco
-		Cohérence tutoiement
+		CohÃ©rence tutoiement
 		
 		Revision 1.13  2004/12/15 00:05:04  schmurtz
 		Plus beau
@@ -74,7 +77,7 @@
 		La Faq utilise la $DB_faq au lieu de $DB_web
 		
 		Revision 1.3  2004/11/25 12:45:36  pico
-		Duble emploi de htmlspecialchar vu que les entrées dans la bdd sont déjà transformées
+		Duble emploi de htmlspecialchar vu que les entrÃ©es dans la bdd sont dÃ©jÃ  transformÃ©es
 		
 		Revision 1.2  2004/11/25 00:58:08  kikx
 		faqs-> faq
@@ -98,7 +101,7 @@
 		Petits problemes d'interpretation de <note> et <commentaire>
 		
 		Revision 1.23  2004/11/15 22:59:54  pico
-		Affiche correctement les faq/folder + possibilité de modifier des faq
+		Affiche correctement les faq/folder + possibilitÃ© de modifier des faq
 		
 		Revision 1.22  2004/10/21 22:19:37  schmurtz
 		GPLisation des fichiers du site
@@ -106,7 +109,7 @@
 		Revision 1.21  2004/10/21 17:46:05  pico
 		Corrections diverses
 		Affiche l'host correspondant aux ip dans la page du profil
-		Début de gestion du password xnet
+		DÃ©but de gestion du password xnet
 		
 		Revision 1.20  2004/10/21 12:23:17  pico
 		Un doublon qui servait pas
@@ -118,7 +121,7 @@
 		Chgts divers pour matcher avec la balise <html>
 		
 		Revision 1.17  2004/10/20 23:04:06  pico
-		Affichage de l'arbre mieux respecté
+		Affichage de l'arbre mieux respectÃ©
 		
 		Revision 1.16  2004/10/20 22:41:01  pico
 		Encore un ptit truc
@@ -136,7 +139,7 @@
 		Chgt noeuds
 		
 		Revision 1.11  2004/10/20 20:00:37  pico
-		Génération des balises plus conforme
+		GÃ©nÃ©ration des balises plus conforme
 		
 		Revision 1.10  2004/10/19 22:00:50  pico
 		Pas d'authentification
@@ -149,7 +152,7 @@
 		Corrections diverses
 		
 		Revision 1.7  2004/10/18 23:37:03  pico
-		BugFix Recherche (pas 2 requetes sql en même temps !)
+		BugFix Recherche (pas 2 requetes sql en mÃªme temps !)
 		
 		Revision 1.6  2004/10/18 22:17:45  pico
 		Ajout des logs dans le fichier
@@ -157,11 +160,11 @@
 */
 require_once "include/global.inc.php";
 require_once "include/wiki.inc.php";
-// Vérification des droits
+// VÃ©rification des droits
 //demande_authentification(AUTH_MINIMUM);
 
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -199,7 +202,7 @@ function rech_fils($parent) {
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "' titre='".$question."'>" ;
 			if (eregi("/".$id."/",$a_marquer)) {
-				echo "<image source='images/fleche_folder.gif' texte=\"marqué\"/>" ;
+				echo "<image source='images/fleche_folder.gif' texte=\"marquÃ©\"/>" ;
 			}
 			$DB_faq->push_result();
 			rech_fils($id) ;
@@ -218,7 +221,7 @@ function rech_fils($parent) {
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer) ;
 			echo "#reponse' titre='".$question."'>" ;
 			if (eregi("/".$id."/",$a_marquer)) {
-				echo "<image source='images/fleche.gif' texte=\"marqué\"/>" ;
+				echo "<image source='images/fleche.gif' texte=\"marquÃ©\"/>" ;
 			}
 			echo "</feuille>\n\r" ;
 		}
@@ -242,8 +245,8 @@ function affiche_element_faq($idfold){
 }
 
 //
-//Petit programme qui crée
-// la liste des folder à 
+//Petit programme qui crÃ©e
+// la liste des folder Ã  
 // afficher !
 //------------------------------
 
@@ -260,7 +263,7 @@ function all_elt_affich($idfold){
 		}
 		
 	}
-	if (!$retire) $str .= "/".$idfold ;		// si je ne l'ai pas supprimé c'est k'il faut le rajouter justement !
+	if (!$retire) $str .= "/".$idfold ;		// si je ne l'ai pas supprimÃ© c'est k'il faut le rajouter justement !
 	
 	return $str ;
 }
@@ -287,7 +290,7 @@ function rech_parent($id2) {
 			while(list($id3) = $DB_faq->next_row()){
 				$id =$id3;
 				if (($id != "")&&($id != 0)){ // on rajoute ssi c'est pas le racine
-					$liste = $liste."/".$id;		  // car on la deja rajouté !
+					$liste = $liste."/".$id;		  // car on la deja rajoutÃ© !
 				}
 			}
 		}
@@ -310,7 +313,7 @@ if (($mots!="")||($a_marquer!="")) {
 <?
 } else {
 ?>
-<p><strong>Liste des différentes questions de la FAQ :</strong></p>
+<p><strong>Liste des diffÃ©rentes questions de la FAQÂ :</strong></p>
 <?
 }
 
@@ -324,7 +327,7 @@ if ($mots!="") {
 	$DB_faq->query("SELECT faq_id,question,reponse FROM faq") ;
 	$recherche = 0 ;
 	$a_marquer = "/" ;			// liste des elements qui contiendront les mots
-	$affich_elt = "0" ;		// liste des elements à afficher
+	$affich_elt = "0" ;		// liste des elements Ã  afficher
 	$result = explode(" ",$mots) ;
 	$n = count($result) ;
 	while(list($id,$question,$reponse) = $DB_faq->next_row()) {
@@ -339,7 +342,7 @@ if ($mots!="") {
 		}
 	}
 	if (!$recherche)
-		echo "<warning>Recherche infructueuse. Essayer avec d'autres critères.</warning>\n";
+		echo "<warning>Recherche infructueuse. Essayer avec d'autres critÃ¨res.</warning>\n";
 }
 
 //
@@ -354,14 +357,14 @@ echo "</arbre>";
 
 
 <formulaire id="form" action="faq.php">
-	<note>Tous les mots seront dans la description. Sépare les par un blanc.</note>
+	<note>Tous les mots seront dans la description. SÃ©pare les par un blanc.</note>
 	<champ id="mots" titre="Mots-clefs" valeur="<? echo $mots ;?>"/>
 	<bouton id="Submit" titre="Chercher"/>
 </formulaire>
 <?
 
 //
-// Corps du Documents pour les réponses
+// Corps du Documents pour les rÃ©ponses
 //---------------------------------------------------
 
 if(isset($_REQUEST['idpopup'])) $id = $_REQUEST['idpopup'] ; else $id = "";
@@ -389,7 +392,7 @@ if ($id != "") {
 				fclose($texte);
 				if (est_authentifie(AUTH_MINIMUM)) {
 					?>
-					<lien url="proposition/faq_modif.php?id=<?=$id?>" titre="Éditer"/>
+					<lien url="proposition/faq_modif.php?id=<?=$id?>" titre="Ã‰diter"/>
 					<?
 				}
 			}

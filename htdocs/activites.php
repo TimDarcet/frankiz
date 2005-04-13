@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet RÈseau
+	Copyright (C) 2004 Binet R√©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,17 +21,20 @@
 	Page d'activites de frankiz.
 	
 	$Log$
-	Revision 1.4  2005/01/18 13:00:21  pico
-	Affichage Ètat BÙb et KËs sur la page des activitÈs
+	Revision 1.5  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.4  2005/01/18 13:00:21  pico
+	Affichage √©tat B√¥b et K√®s sur la page des activit√©s
+	
 	Revision 1.3  2005/01/17 21:55:18  pico
-	sert ‡ rien, mais me plait mieux :)
+	sert √† rien, mais me plait mieux :)
 	
 	Revision 1.2  2005/01/17 21:52:04  pico
-	Page des activitÈs
+	Page des activit√©s
 	
 	Revision 1.1  2005/01/17 21:13:45  pico
-	Ajout d'une page pour des activitÈs plus complËtes...
+	Ajout d'une page pour des activit√©s plus compl√®tes...
 	
 	
 	
@@ -40,11 +43,11 @@
 require_once "include/wiki.inc.php";
 
 
-// gÈnÈration de la page
+// g√©n√©ration de la page
 require "include/page_header.inc.php";
-echo "<page id='activites' titre='Frankiz : activitÈs de la semaine'>\n";
+echo "<page id='activites' titre='Frankiz : activit√©s de la semaine'>\n";
 
-// Etat du bÙb
+// Etat du b√¥b
 $DB_web->query("SELECT valeur FROM parametres WHERE nom='bob'");
 list($valeurBob) = $DB_web->next_row();
 // Etat de la Kes
@@ -54,11 +57,11 @@ list($valeurKes) = $DB_web->next_row();
 
 	
 if(est_authentifie(AUTH_INTERNE)){ 
-	echo ($valeurBob == 1)?"<annonce titre=\"Le BÙB est ouvert\"/>":"<annonce><em>Le BÙB est fermÈ</em></annonce>";
-	echo ($valeurKes == 1)?"<annonce titre=\"La KËs est ouverte\"/>":"<annonce><em>La KËs est fermÈe</em></annonce>";
+	echo ($valeurBob == 1)?"<annonce titre=\"Le B√¥B est ouvert\"/>":"<annonce><em>Le B√¥B est ferm√©</em></annonce>";
+	echo ($valeurKes == 1)?"<annonce titre=\"La K√®s est ouverte\"/>":"<annonce><em>La K√®s est ferm√©e</em></annonce>";
 }
 
-$date_legend = array("Aujourd'hui","Demain","AprËs-demain","Dans 3 jours","Dans 4 jours","Dans 5 jours","Dans une semaine");
+$date_legend = array("Aujourd'hui","Demain","Apr√®s-demain","Dans 3 jours","Dans 4 jours","Dans 5 jours","Dans une semaine");
 if(!est_authentifie(AUTH_INTERNE)) $exterieur=" AND exterieur='1' ";
 
 for($i= 0; $i<7;$i++){

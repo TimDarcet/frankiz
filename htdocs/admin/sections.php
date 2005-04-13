@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -20,15 +20,18 @@
 /*
 	Gestion de la liste des sections.
 	
-	ATTENTION : Il est volontairement interdit de supprimer une section. Cela pose
-	en effet des problèmes de cohérence de la base de donnée : pour supprimer une
-	section, il faut d'abord qu'il n'y ait personne de rattaché à la section à
+	ATTENTIONÂ : Il est volontairement interdit de supprimer une section. Cela pose
+	en effet des problÃ¨mes de cohÃ©rence de la base de donnÃ©eÂ : pour supprimer une
+	section, il faut d'abord qu'il n'y ait personne de rattachÃ© Ã  la section Ã 
 	supprimer. Il est cependant possible de marquer un binet comme disparu.
 	
 	$Log$
+	Revision 1.11  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.10  2005/01/18 13:45:31  pico
 	Plus de droits pour les web
-
+	
 	Revision 1.9  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
 	
@@ -49,7 +52,7 @@
 // En-tetes
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('web')&&!verifie_permission('trombino'))
 	acces_interdit();
@@ -66,17 +69,17 @@ if(isset($_POST['existe']) || isset($_POST['existeplus'])) {
 		
 		$DB_trombino->query("UPDATE sections SET existe='$section_existe' WHERE section_id IN ($ids)");
 		
-		$message = "<p>".count($_POST['elements'])." sections viennent d'être marquées comme disparues avec succés.</p>\n";
+		$message = "<p>".count($_POST['elements'])." sections viennent d'Ãªtre marquÃ©es comme disparues avec succÃ©s.</p>\n";
 	} else {
 		ajoute_erreur(ERR_SELECTION_VIDE);
 	}
 }
 
-// Gestion de la création
+// Gestion de la crÃ©ation
 if(isset($_POST['nouvelle'])) {
 	if(!empty($_POST['nom'])) {
 		$DB_trombino->query("INSERT sections SET nom='".$_POST['nom']."'");
-		$message = "<p>La section ".$_POST['nom']." vient d'être créée.</p>\n";
+		$message = "<p>La section ".$_POST['nom']." vient d'Ãªtre crÃ©Ã©e.</p>\n";
 	} else {
 		ajoute_erreur(ERR_TROP_COURT);
 	}
@@ -87,10 +90,10 @@ if(isset($_POST['maj'])) {
 	foreach($_POST['maj'] as $id => $val)
 		$DB_trombino->query("UPDATE sections SET nom='{$_POST['nom'][$id]}' WHERE section_id='$id'");
 	
-	$message = "<p>Le nom de la section a été modifié avec succés.</p>\n";
+	$message = "<p>Le nom de la section a Ã©tÃ© modifiÃ© avec succÃ©s.</p>\n";
 }
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="admin_sections" titre="Frankiz : liste des sections">
@@ -99,18 +102,18 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	if(!empty($message))
 		echo "<p>$message</p>\n";
 	if(a_erreur(ERR_SELECTION_VIDE))
-		echo "<p>Aucune section n'est sélectionnée.</p>\n";
+		echo "<p>Aucune section n'est sÃ©lectionnÃ©e.</p>\n";
 	if(a_erreur(ERR_TROP_COURT))
 		echo "<p>Le nom choisi est trop court.</p>\n";
 ?>
 	<liste id="liste_sections" selectionnable="oui" action="admin/sections.php">
 		<entete id="nom" titre="Nom"/>
-		<entete id="existe" titre="État"/>
+		<entete id="existe" titre="Ã‰tat"/>
 <?php
 		$DB_trombino->query("SELECT nom,existe,section_id FROM sections ORDER BY nom ASC, existe DESC");
 		while(list($nom,$existe,$id) = $DB_trombino->next_row()) {
 			echo "\t\t<element id=\"$id\">\n";
-			echo "\t\t\t<colonne id=\"nom\"><champ id=\"nom[$id]\" valeur=\"$nom\"/><bouton titre=\"Mise à jour\" id=\"maj[$id]\"/></colonne>\n";
+			echo "\t\t\t<colonne id=\"nom\"><champ id=\"nom[$id]\" valeur=\"$nom\"/><bouton titre=\"Mise Ã  jour\" id=\"maj[$id]\"/></colonne>\n";
 			echo "\t\t\t<colonne id=\"existe\">".($existe?"existante":"disparue")."</colonne>\n";
 			echo "\t\t</element>\n";
 		}

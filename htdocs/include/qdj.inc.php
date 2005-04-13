@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,16 +18,19 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Affichage de la QDJ. Le fait d'avoir un fichier inclus permet d'éviter d'avoir du code
-	dupliquer dans qdj.php et qdj_hier.php. Ça évite aussi de devoir regrouper les deux modules
-	dans le même fichier (et donc passer autre le principe 1 module = 1 fichier).
+	Affichage de la QDJ. Le fait d'avoir un fichier inclus permet d'Ã©viter d'avoir du code
+	dupliquer dans qdj.php et qdj_hier.php. Ã‡a Ã©vite aussi de devoir regrouper les deux modules
+	dans le mÃªme fichier (et donc passer autre le principe 1 module = 1 fichier).
 	
-	TODO traiter le cas ou le qdj master est à la bourre (garder l'ancienne qdj par exemple).
+	TODO traiter le cas ou le qdj master est Ã  la bourre (garder l'ancienne qdj par exemple).
 	
 	$Log$
-	Revision 1.16  2005/01/06 23:31:31  pico
-	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
+	Revision 1.17  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.16  2005/01/06 23:31:31  pico
+	La QDJ change Ã  0h00 (ce n'est plus la question du jour plus un petit peu)
+	
 	Revision 1.15  2004/12/16 00:22:53  pico
 	Coreection cache qdj, sinon la qdh devient la qdah...
 	
@@ -38,7 +41,7 @@
 	Modification de la gestion des caches de la qdj
 	
 	Revision 1.12  2004/11/02 17:29:22  pico
-	Ne crée plus de qdj qd il n'y en a pas.
+	Ne crÃ©e plus de qdj qd il n'y en a pas.
 	
 	Revision 1.11  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
@@ -47,7 +50,7 @@
 	Mise en place d'un systeme de cache propre
 	
 	Revision 1.9  2004/09/17 15:28:20  schmurtz
-	Utilisation de la balise <eleve> pour les derniers votants aÌ€ la qdj, les anniversaires, la signature des annoncesâ€¦
+	Utilisation de la balise <eleve> pour les derniers votants aÃŒÂ€ la qdj, les anniversaires, la signature des annoncesÃ¢Â€Â¦
 	
 	Revision 1.8  2004/09/15 23:19:31  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
@@ -64,7 +67,7 @@ function qdj_affiche($hier,$deja_vote) {
 	global $DB_web;
 	$date = date("Y-m-d", time() - ($hier ? 24*3600 : 0));
 	$cache_id = "qdj_".($hier?"hier_":"courante_").($deja_vote?"reponse":"question");
-	// Récupération des noms des derniers votants à la question en cours
+	// RÃ©cupÃ©ration des noms des derniers votants Ã  la question en cours
 	if(!cache_recuperer($cache_id,strtotime(date("Y-m-d 00:50:25", time())))) {
 		$DB_web->query("SELECT question,reponse1,reponse2,compte1,compte2 FROM qdj WHERE date='$date' LIMIT 1");
 		while(list($question,$reponse1,$reponse2,$compte1,$compte2) = $DB_web->next_row()){
@@ -77,7 +80,7 @@ function qdj_affiche($hier,$deja_vote) {
 					<reponse id="2" votes="<?php echo $compte2?>"><?php echo $reponse2?></reponse>
 <?php
 	
-					// interrogation de la base de données
+					// interrogation de la base de donnÃ©es
 					$DB_web->query("SELECT ordre,nom,prenom,promo,surnom FROM qdj_votes LEFT JOIN trombino.eleves USING(eleve_id) WHERE date='$date' ORDER BY ordre DESC LIMIT 20");
 					while(list($ordre,$nom,$prenom,$promo,$surnom) = $DB_web->next_row())
 						echo "\t\t\t\t\t<dernier ordre=\"$ordre\"><eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"$promo\" surnom=\"$surnom\"/></dernier>\n";

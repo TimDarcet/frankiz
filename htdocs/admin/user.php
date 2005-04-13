@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,20 +18,23 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Gestion des utilisateurs et de leur droits. L'accès se fait par le trombino,
-	après une recherche.
+	Gestion des utilisateurs et de leur droits. L'accÃ¨s se fait par le trombino,
+	aprÃ¨s une recherche.
 	
-	ATTENTION : il n'y a volontairement pas de pages web d'administration permettant l'ajout
+	ATTENTIONÂ : il n'y a volontairement pas de pages web d'administration permettant l'ajout
 	ou la suppression d'un utilisateur. En effet, il n'y a aucune raison de supprimer un utilisateur,
-	et pour l'ajout d'utilisateur, l'opération a lieu par bloc pour toute une promo or c'est beaucoup
-	plus facile de le faire via un fichier de commande MySQL ou avec un interface web dédiée.
+	et pour l'ajout d'utilisateur, l'opÃ©ration a lieu par bloc pour toute une promo or c'est beaucoup
+	plus facile de le faire via un fichier de commande MySQL ou avec un interface web dÃ©diÃ©e.
 	
-	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
+	L'ID de l'utilisateur Ã  modifier est passer dans le paramÃ¨tre GET 'user'.
 	
 	$Log$
+	Revision 1.27  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.26  2005/01/03 20:39:13  pico
 	pour la route
-
+	
 	Revision 1.25  2005/01/03 20:37:16  pico
 	Je suis un gros boulet
 	
@@ -52,7 +55,7 @@
 	INNER en LEFT
 	
 	Revision 1.19  2004/12/16 12:52:57  pico
-	Passage des paramètres lors d'un login
+	Passage des paramÃ¨tres lors d'un login
 	
 	Revision 1.18  2004/12/15 17:03:06  pico
 	2vite les renvois sur /trombino/
@@ -73,7 +76,7 @@
 	
 	Revision 1.13  2004/11/26 22:51:21  pico
 	Correction du SU dans les pages d'admin
-	Les utilisateurs avec le droit 'affiches' peuvent changer les dates des activités qu'ils ont postées, si celles ci ont été préalablement validées par le br
+	Les utilisateurs avec le droit 'affiches' peuvent changer les dates des activitÃ©s qu'ils ont postÃ©es, si celles ci ont Ã©tÃ© prÃ©alablement validÃ©es par le br
 	
 	Revision 1.12  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
@@ -97,17 +100,17 @@
 	
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('trombino'))
 	acces_interdit();
 
-// On vérifie que la personne envoie bien l'id sinon ca sert a rien ...
+// On vÃ©rifie que la personne envoie bien l'id sinon ca sert a rien ...
 if(!isset($_REQUEST['id']))
 	rediriger_vers("trombino.php");
 
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -119,7 +122,7 @@ $id = $_REQUEST['id'] ;
 // Traitement des demandes de modifications !
 //============================
 
-// Modification de la partie "général"
+// Modification de la partie "gÃ©nÃ©ral"
 
 if (isset($_POST['mod_generale'])) {
 	$nom = $_POST['nom'];
@@ -135,7 +138,7 @@ if (isset($_POST['mod_generale'])) {
 	$mail = $_POST['mail'];
 	$DB_trombino->query("UPDATE eleves SET nom='$nom', prenom='$prenom', surnom='$surnom', date_nais='$date_nais', sexe='$sexe', piece_id='$piece_id', section_id='$section_id', cie='$cie', promo='$promo', login='$login', mail='$mail' WHERE eleve_id=$id ");
 	
-	echo "<commentaire>Modification de la partie générale faite avec succès</commentaire>" ;
+	echo "<commentaire>Modification de la partie gÃ©nÃ©rale faite avec succÃ¨s</commentaire>" ;
 }
 
 // Modification de la partie "binets"
@@ -149,7 +152,7 @@ if (isset($_POST['mod_binet'])) {
 		$key = $key[1] ;
 		$DB_trombino->query("UPDATE membres SET remarque='$val' WHERE eleve_id=$id AND binet_id=$key");
  	}
-	echo "Modification de la partie binets faite avec succès" ;
+	echo "Modification de la partie binets faite avec succÃ¨s" ;
 }
 */
 // Modification de la partie "compte FrankizII"
@@ -158,7 +161,7 @@ if (verifie_permission('admin') && isset($_POST['mod_compte_fkz'])) {
 	if ($_POST['pass']!="") {
 		$pass2 = md5($_POST['pass']) ;
 		$DB_web->query("UPDATE compte_frankiz SET passwd='$pass2' WHERE eleve_id=$id");
-		echo "<commentaire>Modification du mot de passe réalisée correctement</commentaire>" ;
+		echo "<commentaire>Modification du mot de passe rÃ©alisÃ©e correctement</commentaire>" ;
 	}
         $perms = "" ;
         foreach(liste_droits() as $droits => $nom) {
@@ -169,18 +172,18 @@ if (verifie_permission('admin') && isset($_POST['mod_compte_fkz'])) {
 		$perms .= $_POST['perms_binets'];
 	$DB_web->query("UPDATE compte_frankiz SET perms='$perms' WHERE eleve_id=$id");
 	
-	echo "<commentaire>Modification de la partie Compte Frankiz faite avec succès</commentaire>" ;
+	echo "<commentaire>Modification de la partie Compte Frankiz faite avec succÃ¨s</commentaire>" ;
 }
 
-// Modification de ses variables génériques
+// Modification de ses variables gÃ©nÃ©riques
 ?>
-	<formulaire id="user_general" titre="Général" action="admin/user.php?id=<? echo $id?>">
+	<formulaire id="user_general" titre="GÃ©nÃ©ral" action="admin/user.php?id=<? echo $id?>">
 <?
 		$DB_trombino->query("SELECT nom,prenom,surnom,date_nais,sexe,piece_id,section_id,cie,promo,login,mail FROM eleves WHERE eleve_id=$id ORDER BY nom ASC");
 		list($nom,$prenom,$surnom,$date_nais,$sexe,$piece_id,$section,$cie,$promo,$login,$mail) = $DB_trombino->next_row() ;
 ?>
 		<champ id="nom" titre="Nom" valeur="<? echo $nom?>"/>
-		<champ id='prenom' titre='Prénom' valeur='<? echo $prenom?>'/>
+		<champ id='prenom' titre='PrÃ©nom' valeur='<? echo $prenom?>'/>
 		<champ id='surnom' titre='Surnom' valeur='<? echo $surnom?>'/>
 		<champ id='login' titre='Login' valeur='<? echo $login?>'/>
 		<champ id='date_nais' titre='Date de naissance' valeur='<? echo $date_nais?>'/>
@@ -221,13 +224,13 @@ if(verifie_permission('admin')){
 <?
 
 
-// Modification de ses préferences FrankizII
+// Modification de ses prÃ©ferences FrankizII
 		$DB_web->query("SELECT perms FROM compte_frankiz WHERE eleve_id=$id");
 		list($perms) = $DB_web->next_row();
 		$perms = split(",",$perms);
 ?>
 	<formulaire id="user_compt_fkz" titre="Compte Frankiz" action="admin/user.php?id=<? echo $id?>">
-                <note>Pour le mot de passe : Si vous le laissez vide, il ne sera pas modifié !</note>
+                <note>Pour le mot de passe : Si vous le laissez vide, il ne sera pas modifiÃ© !</note>
 		<champ id="pass" titre="Mot de passe" valeur=""/>
                 <note>Pour les webmestres et prez de binets, il faut allez dans le binet en question pour les modifier</note>
 		<choix titre="Droits" id="droits" type="checkbox" valeur="<?php

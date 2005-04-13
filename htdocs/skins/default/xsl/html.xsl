@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,9 +21,12 @@
 	Balises de formatage.
 	
 	$Log$
-	Revision 1.17  2005/03/23 21:44:17  pico
-	Marche ptèt mieux
+	Revision 1.18  2005/04/13 17:10:06  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.17  2005/03/23 21:44:17  pico
+	Marche ptÃ¨t mieux
+	
 	Revision 1.16  2005/03/23 21:12:12  pico
 	Normalement tout ce qui faut pour passer en UTF8
 	
@@ -34,7 +37,7 @@
 	Modif sur la skin default, ajout d'activites, nettoyage
 	
 	Revision 1.13  2004/12/15 22:11:37  psycow
-	Gestion anniversaire et activités
+	Gestion anniversaire et activitÃ©s
 	
 	Revision 1.12  2004/12/15 07:04:35  schmurtz
 	epsilon
@@ -49,7 +52,7 @@
 	Modification de la qdj et du sommaire de la page annonces, suite des test IE
 	
 	Revision 1.8  2004/12/13 21:02:59  pico
-	Voilà !
+	VoilÃ  !
 	
 	Revision 1.7  2004/12/13 20:51:24  pico
 	New balises :)
@@ -61,7 +64,7 @@
 	Resolution du probleme des boites sous Firefox, reste un probleme sur le positionnement des formulaires dans les boites...
 	
 	Revision 1.4  2004/11/30 21:33:18  pico
-	Rajout des feuilles à la base d'un arbre
+	Rajout des feuilles Ã  la base d'un arbre
 	
 	Revision 1.3  2004/11/28 01:33:33  pico
 	Gestion des listes sur le wiki (arbre + feuille)
@@ -82,7 +85,7 @@
 	Un bon debut mais plus compatible IE j'en ai peur
 	
 	Revision 1.3  2004/11/03 23:38:39  psycow
-	Un bon début
+	Un bon dÃ©but
 	
 	
 -->
@@ -121,7 +124,7 @@
 <!-- Listes -->
 <xsl:template match="liste">
 	<xsl:apply-templates select="commentaire"/>
-	<form method="post" accept-charset="ISO-8859-1"><xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
+	<form method="post" accept-charset="UTF-8"><xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 		<xsl:variable name="nombre_colonnes" select="count(entete)+count(@selectionnable)"/>
 		<table class="liste" cellspacing="0" cellpadding="0">
 			<thead>
@@ -239,7 +242,7 @@
 <xsl:template match="old_string">
 	<span style="color: red; text-decoration: line-through"><xsl:apply-templates/></span>
 </xsl:template>
-<xsl:template match="html"><!-- très moche car impossible à skinner, mais parfois indispensable -->
+<xsl:template match="html"><!-- trÃ¨s moche car impossible Ã  skinner, mais parfois indispensable -->
 	<xsl:value-of disable-output-escaping="yes" select="text()"/>
 </xsl:template>
 

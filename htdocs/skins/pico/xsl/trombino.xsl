@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 	<h3 class="nom">
 		<xsl:value-of select="@prenom" />
 		<xsl:text> </xsl:text>
-		<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzéèàçêëù','ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊËÙ')" />
+		<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzÃ©Ã¨Ã Ã§ÃªÃ«Ã¹','ABCDEFGHIJKLMNOPQRSTUVWXYZÃ‰ÃˆÃ€Ã‡ÃŠÃ‹Ã™')" />
 	</h3>
 	<div class="fkz_trombino_photo">
 		<a>
@@ -51,7 +51,7 @@
 		<a>
 			<xsl:attribute name="href"><xsl:text>trombino.php?sections=</xsl:text><xsl:value-of select="@section"/></xsl:attribute>
 			<img height="84" width="63">
-			<xsl:attribute name="src">skins/pico/default/images/sections/<xsl:value-of select="translate(@section,'ABCDEFGHIJKLMNOPQRSTUVWXYZéè','abcdefghijklmnopqrstuvwxyzee')"/><xsl:value-of select="@promo mod 2"/>.jpg</xsl:attribute>
+			<xsl:attribute name="src">skins/pico/default/images/sections/<xsl:value-of select="translate(@section,'ABCDEFGHIJKLMNOPQRSTUVWXYZÃ©Ã¨','abcdefghijklmnopqrstuvwxyzee')"/><xsl:value-of select="@promo mod 2"/>.jpg</xsl:attribute>
 			<xsl:attribute name="alt"><xsl:value-of select="@section"/></xsl:attribute>
 			</img>
 		</a>
@@ -89,8 +89,8 @@
 </xsl:template>
 
 <xsl:template match="formulaire[../@id='trombino']">
-	<!-- le formulaire lui même-->
-	<form class="trombino" enctype="multipart/form-data" method="post"  accept-charset="ISO-8859-1">
+	<!-- le formulaire lui mÃªme-->
+	<form class="trombino" enctype="multipart/form-data" method="post"  accept-charset="UTF-8">
 		<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
 			<div  class="fkz_trombino_eleve">
 			<h3>Rechercher sur le trombino</h3>
@@ -99,21 +99,21 @@
 						<td>
 						<label class="gauche" >
 							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'prenom')"/></xsl:attribute>
-							Prénom :
+							PrÃ©nomÂ :
 						</label>
 						<xsl:apply-templates select="champ[@id='prenom']"/>
 						</td>
 						<td>
 						<label class="gauche" >
 							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'nom')"/></xsl:attribute>
-							Nom :
+							NomÂ :
 						</label>
 						<xsl:apply-templates select="champ[@id='nom']"/>
 						</td>
 						<td>
 						<label class="gauche" >
 							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'surnom')"/></xsl:attribute>
-							Surnom :
+							SurnomÂ :
 						</label>
 							<xsl:apply-templates select="champ[@id='surnom']"/>
 						</td>
@@ -122,21 +122,21 @@
 						<td>
 						<label class="gauche" >
 							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'promo')"/></xsl:attribute>
-							Promo :
+							PromoÂ :
 						</label>
 							<xsl:apply-templates select="choix[@id='promo']"/>
 						</td>
 						<td>
 						<label class="gauche" >
 							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'section')"/></xsl:attribute>
-							Section :
+							SectionÂ :
 						</label>
 							<xsl:apply-templates select="choix[@id='section']"/>
 						</td>
 						<td>
 						<label class="gauche" >
 							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'binet')"/></xsl:attribute>
-							Binet :
+							BinetÂ :
 						</label>
 							<xsl:apply-templates select="choix[@id='binet']"/>
 						</td>
@@ -145,21 +145,21 @@
 						<td>
 						<label class="gauche" >
 							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'loginpoly')"/></xsl:attribute>
-							Login :
+							LoginÂ :
 						</label>
 							<xsl:apply-templates select="champ[@id='loginpoly']"/>
 						</td>
 						<td>
 						<label class="gauche" >
 							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'phone')"/></xsl:attribute>
-							Tel :
+							TelÂ :
 						</label>
 							<xsl:apply-templates select="champ[@id='phone']"/>
 						</td>
 						<td>
 						<label class="gauche" >
 							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'casert')"/></xsl:attribute>
-							Casert :
+							CasertÂ :
 						</label>
 							<xsl:apply-templates select="champ[@id='casert']"/>
 						</td>

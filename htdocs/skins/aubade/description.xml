@@ -5,8 +5,8 @@
 	<chemin>xsl</chemin>
 	<parametre id="sommaire">
 		<description>Afficher le sommaire des annonces</description>
-		<valeur id="trie">Trié</valeur>
-		<valeur id="pas_trie">Non trié</valeur>
+		<valeur id="trie">TriÃ©</valeur>
+		<valeur id="pas_trie">Non triÃ©</valeur>
 		<valeur id="cache">Ne pas afficher</valeur>
 	</parametre>
 	<parametre id="trier_annonces">

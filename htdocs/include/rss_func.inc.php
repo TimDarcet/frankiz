@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,14 +21,17 @@
 		Fonction pour parser des rss
 		
 		$Log$
+		Revision 1.16  2005/04/13 17:10:00  pico
+		Passage de tous les fichiers en utf8.
+
 		Revision 1.15  2005/03/23 21:12:12  pico
 		Normalement tout ce qui faut pour passer en UTF8
-
+		
 		Revision 1.14  2005/01/19 18:29:15  pico
-		Parce que wget c'est quand même mieux que lynx
+		Parce que wget c'est quand mÃªme mieux que lynx
 		
 		Revision 1.13  2005/01/19 17:47:46  pico
-		Pour que les rss marchent même quand l'entrée est gzippée
+		Pour que les rss marchent mÃªme quand l'entrÃ©e est gzippÃ©e
 		
 		Revision 1.12  2005/01/11 13:13:36  pico
 		Histoire d'avoir un cache des flux rss
@@ -43,19 +46,19 @@
 		Tri dans le flux css
 		
 		Revision 1.8  2004/11/24 23:31:11  pico
-		Affichage plus correct des rss (les &#232; sont maintenant afichés par le navigateur)
+		Affichage plus correct des rss (les &#232; sont maintenant afichÃ©s par le navigateur)
 		
 		Revision 1.7  2004/11/24 21:51:16  pico
-		Passage du mode d'affichage en paramètre dans la xsl
+		Passage du mode d'affichage en paramÃ¨tre dans la xsl
 		
 		Revision 1.6  2004/11/24 21:09:04  pico
-		Sauvegarde avant mise à jour skins
+		Sauvegarde avant mise Ã  jour skins
 		
 		Revision 1.5  2004/11/24 17:15:54  pico
-		Marche mieux comme ça, sinon le premier parsage xsl fait de la merde avec les accents
+		Marche mieux comme Ã§a, sinon le premier parsage xsl fait de la merde avec les accents
 		
 		Revision 1.4  2004/11/23 17:36:02  pico
-		Rajout de balises link pour les navigateurs texte et pour indiquer la précense du feed rss
+		Rajout de balises link pour les navigateurs texte et pour indiquer la prÃ©cense du feed rss
 		
 		Revision 1.3  2004/11/22 21:59:28  pico
 		2 modes d'affichage des rss: complet ou liste de liens
@@ -64,7 +67,7 @@
 		Premier jet de page pour afficher des news externes
 		
 		Revision 1.1  2004/11/17 22:39:45  pico
-		Fonction pour parser des rss extérieures
+		Fonction pour parser des rss extÃ©rieures
 		
 */
 
@@ -73,7 +76,7 @@
 	mode = 'sommaire' :	seulement les titres et lien vers l'article
 */
 function rss_xml($site,$mode = 'complet') {
-	// Récupération de la météo
+	// RÃ©cupÃ©ration de la mÃ©tÃ©o
 	$proxy = "http://kuzh.polytechnique.fr";
 	$port = 8080;
 	$date_valide = time()-600; //cache 10min

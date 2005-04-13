@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
-<!-- 	Copyright (C) 2004 Binet Réseau
+<!-- 	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
             <span class="droitehaut"><xsl:text> </xsl:text></span><span><xsl:value-of select="@titre"/></span>
           </dt>
 		<dd class="contenu">
-				<strong><xsl:value-of select="meteo/now/temperature"/>°C</strong><br />
+				<strong><xsl:value-of select="meteo/now/temperature"/>Â°C</strong><br />
 				<a href="meteo.php">
 					<img alt="meteo" width="64" height="64">
 						<xsl:attribute name="src">skins/default/images/meteo/<xsl:value-of select="meteo/now/image"/>.gif</xsl:attribute>
@@ -46,18 +46,18 @@
 	<dl id="page_meteo" class="boite">
 		<dt class="titre">
 			<span class="droitehaut"><xsl:text> </xsl:text></span>
-			<span>Météo sur le Platâl aujourd'hui :</span>	
+			<span>MÃ©tÃ©o sur le PlatÃ¢l aujourd'huiÂ :</span>	
 		</dt>
 		<dd class="contenu">
 			<dl class="meteo pair">
 				<dt class="quand top">Aujourd'hui</dt>
 				<dd class="prevision">
-					Le soleil est présent de <xsl:value-of select="now/sunrise"/> à <xsl:value-of select="now/sunset"/><br />
-					La température actuelle est de <xsl:value-of select="now/temperature"/>°C<br />
+					Le soleil est prÃ©sent de <xsl:value-of select="now/sunrise"/> Ã  <xsl:value-of select="now/sunset"/><br />
+					La tempÃ©rature actuelle est de <xsl:value-of select="now/temperature"/>Â°C<br />
 					La pression est de <xsl:value-of select="now/pression"/> millibar<br />
 					Pour ce qui est du vent <xsl:value-of select="now/vent"/><br />
-					Et l'humidité s'élève à <xsl:value-of select="now/humidite"/>%<br />
-					L'état du ciel : <xsl:value-of select="now/ciel"/><br />
+					Et l'humiditÃ© s'Ã©lÃ¨ve Ã  <xsl:value-of select="now/humidite"/>%<br />
+					L'Ã©tat du ciel : <xsl:value-of select="now/ciel"/><br />
 					<img alt="meteo" width="64" height="64">
 					<xsl:attribute name="src">skins/default/images/meteo/<xsl:value-of select="now/image"/>.gif</xsl:attribute>
 						</img>
@@ -71,7 +71,7 @@
 	<dl class="boite">
 		<dt class="titre">
 			<span class="droitehaut"><xsl:text> </xsl:text></span>
-			<span>Prévisions météo :</span>	
+			<span>PrÃ©visions mÃ©tÃ©o :</span>	
 		</dt>
 		<dd class="contenu">
 			<xsl:for-each select="jour[@date=0 or @date=1 or @date=2]">
@@ -86,12 +86,12 @@
 								Demain
 							</xsl:when>
 							<xsl:when test="@date=2">
-								Après-Demain
+								AprÃ¨s-Demain
 							</xsl:when>
 						</xsl:choose>
 					</dt>
 					<dd class="prevision">
-						<span>La température : </span><xsl:if test="@date!=0"><xsl:value-of select="temperature_hi"/>°C pendant la journée et</xsl:if> <xsl:value-of select="temperature_low"/>°C la nuit<br />	
+						<span>La tempÃ©rature : </span><xsl:if test="@date!=0"><xsl:value-of select="temperature_hi"/>Â°C pendant la journÃ©e et</xsl:if> <xsl:value-of select="temperature_low"/>Â°C la nuit<br />	
 						<span>Etat du ciel le jour : </span><xsl:value-of select="cieljour"/>
 						<img alt="meteo" width="32" height="32">
 							<xsl:attribute name="src">skins/default/images/meteo/<xsl:value-of select="imagejour"/>.gif</xsl:attribute>

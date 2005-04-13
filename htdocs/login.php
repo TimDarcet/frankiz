@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,17 +18,20 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Page permettant de se loguer sur le site. Cette page ne gère pas le login elle même, mais
-	grace à la fonction demande_authentification() définie dans login.inc.php. Ça permet d'afficher
-	la boîte de login dans d'autres pages qui requiert une authentification.
+	Page permettant de se loguer sur le site. Cette page ne gÃ¨re pas le login elle mÃªme, mais
+	grace Ã  la fonction demande_authentification() dÃ©finie dans login.inc.php. Ã‡a permet d'afficher
+	la boÃ®te de login dans d'autres pages qui requiert une authentification.
 	
 	$Log$
+	Revision 1.11  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.10  2004/12/14 17:14:52  schmurtz
 	modification de la gestion des annonces lues :
 	- toutes les annonces sont envoyees dans le XML
 	- annonces lues avec l'attribut visible="non"
 	- suppression de la page affichant toutes les annonces
-
+	
 	Revision 1.9  2004/11/04 16:36:42  schmurtz
 	Modifications cosmetiques
 	
@@ -49,13 +52,13 @@
 require "include/global.inc.php";
 demande_authentification(AUTH_MDP);
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="accueil" titre="Frankiz : accueil">
-	<h2>Tu es bien authentifié !</h2>
-	<p>Te voilà prêt à accéder au fabuleux monde du campus de l'X.</p>
-	<p>Si tu veux éviter de te ré-identifier à chaque fois que tu accèdes à cette page, active l'authentification
-	par cookie dans tes <a href="profil/profil.php">préférences</a>.</p>
+	<h2>Tu es bien authentifiÃ©Â !</h2>
+	<p>Te voilÃ  prÃªt Ã  accÃ©der au fabuleux monde du campus de l'X.</p>
+	<p>Si tu veux Ã©viter de te rÃ©-identifier Ã  chaque fois que tu accÃ¨des Ã  cette page, active l'authentification
+	par cookie dans tes <a href="profil/profil.php">prÃ©fÃ©rences</a>.</p>
 </page>
 <? require_once BASE_LOCAL."/include/page_footer.inc.php" ?>

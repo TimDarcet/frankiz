@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -19,13 +19,16 @@
 */
 /*
 	$Log$
+	Revision 1.2  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.1  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
-
+	
 */
 
 $erreur_textes = array(
-	403 => 'Accès interdit',
+	403 => 'AccÃ¨s interdit',
 	404 => 'Page inexistante',
 	500 => 'Erreur interne du serveur');
 
@@ -35,7 +38,7 @@ $erreur_texte = isset($erreur_textes[$erreur_num]) ? "({$erreur_textes[$erreur_n
 require "include/page_header.inc.php";
 ?>
 <page id="erreur" titre="Frankiz : erreur <?=$erreur_num?>">
-	<warning>Une erreur <?=$erreur_num?> <?=$erreur_texte?> est survenue, empéchant
-		l'accès à la page demandée.</warning>
+	<warning>Une erreur <?=$erreur_num?> <?=$erreur_texte?> est survenue, empÃ©chant
+		l'accÃ¨s Ã  la page demandÃ©e.</warning>
 </page>
 <?php require "include/page_footer.inc.php" ?>

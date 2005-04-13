@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,12 +18,15 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Affichage des résultats de la DQJ de la veille.
+	Affichage des rÃ©sultats de la DQJ de la veille.
 	
 	$Log$
+	Revision 1.7  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.6  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
-
+	
 	Revision 1.5  2004/09/15 23:20:29  schmurtz
 	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
 	

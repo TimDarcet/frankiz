@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -20,9 +20,12 @@
 /*
 	
 	$Log$
+	Revision 1.6  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.5  2005/01/18 13:31:21  pico
 	Ajout liste des webmestres et des prez
-
+	
 	Revision 1.4  2005/01/03 23:27:05  pico
 	Petites modifs
 	
@@ -41,13 +44,13 @@
 	
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin'))
 	acces_interdit();
 
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 

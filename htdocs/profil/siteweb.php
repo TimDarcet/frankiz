@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,35 +21,38 @@
 	Pour gerer son site web perso
 		
 	$Log$
-	Revision 1.14  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
+	Revision 1.15  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
 
+	Revision 1.14  2005/01/20 20:09:03  pico
+	Changement de "TrÃ¨s BRment, l'automate"
+	
 	Revision 1.13  2005/01/06 19:42:54  pico
 	e
 	
 	Revision 1.12  2005/01/06 19:41:35  pico
-	Commentaire précisé
+	Commentaire prÃ©cisÃ©
 	
 	Revision 1.11  2005/01/06 17:32:33  pico
 	Pb de taille d'upload...
 	
 	Revision 1.10  2005/01/06 17:31:33  pico
-	Mise à jour de l'explication
+	Mise Ã  jour de l'explication
 	
 	Revision 1.9  2005/01/06 17:22:17  pico
-	Pour que ce soient les root qui recoivent les mails d'acces externe aux sites des élèves.
+	Pour que ce soient les root qui recoivent les mails d'acces externe aux sites des Ã©lÃ¨ves.
 	
 	Revision 1.8  2004/12/16 13:00:42  pico
 	INNER en LEFT
 	
 	Revision 1.7  2004/12/15 21:46:37  pico
-	Ptèt que là ça marchera mieux
+	PtÃ¨t que lÃ  Ã§a marchera mieux
 	
 	Revision 1.6  2004/12/14 22:17:32  kikx
 	Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
 	
 	Revision 1.5  2004/12/13 20:03:25  pico
-	Les liens ne forment pas de blocs, il faut donc le spécifier
+	Les liens ne forment pas de blocs, il faut donc le spÃ©cifier
 	
 	Revision 1.4  2004/12/07 14:39:26  schmurtz
 	Bugs et orthographe
@@ -61,7 +64,7 @@
 	Regroupement des fonctions zip unzip deldir et download dans le meme fichier
 	
 	Revision 1.1  2004/11/24 18:12:27  kikx
-	Séparation de la page du site web et du profil personnel
+	SÃ©paration de la page du site web et du profil personnel
 	
 	
 */
@@ -73,7 +76,7 @@ demande_authentification(AUTH_FORT);
 
 $message="";
 
-// Données sur l'utilisateur
+// DonnÃ©es sur l'utilisateur
 $DB_trombino->query("SELECT eleves.nom,prenom,surnom,mail,login,promo,sections.nom,cie,piece_id FROM eleves LEFT JOIN sections USING(section_id) WHERE eleve_id='".$_SESSION['user']->uid."'");
 list($nom,$prenom,$surnom,$mail,$login,$promo,$section,$cie,$casert) = $DB_trombino->next_row();
 
@@ -88,7 +91,7 @@ if (isset($_POST['up_page'])) {
 		$filename = $chemin.$_FILES['file']['name'];
 		move_uploaded_file($_FILES['file']['tmp_name'], $filename);
 		unzip($filename, $chemin , true);
-		$message .= "<commentaire>Ton site personnel vient d'être mis à jour.</commentaire>" ;
+		$message .= "<commentaire>Ton site personnel vient d'Ãªtre mis Ã  jour.</commentaire>" ;
 	}
 }
 if(isset($_REQUEST['download_type'])){
@@ -106,13 +109,13 @@ if(isset($_POST['ext'])){
 	$DB_web->query("SELECT site_id FROM sites_eleves WHERE eleve_id='{$_SESSION['user']->uid}'") ;
 	$deux = $DB_valid->num_rows() ;
 	
-	// On verifie que la personne n'a pas dejà demandé d'avoir un site accessible de l'ext
+	// On verifie que la personne n'a pas dejÃ  demandÃ© d'avoir un site accessible de l'ext
 	if( $un==0 && $deux==0 ) {
 		$DB_valid->query("INSERT INTO valid_pageperso SET eleve_id='{$_SESSION['user']->uid}'") ;
 		
 		$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
 
-		$contenu = "$nom $prenom ($promo) a demandé que sa page perso apparaisse sur la liste des sites personnels <br><br>".
+		$contenu = "$nom $prenom ($promo) a demandÃ© que sa page perso apparaisse sur la liste des sites personnels <br><br>".
 			"Pour valider ou non cette demande va sur la page suivante : <br>".
 			"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_pageperso.php'>".
 			"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_pageperso.php</a></div><br><br>" .
@@ -120,16 +123,16 @@ if(isset($_POST['ext'])){
 			"Le Webmestre de Frankiz<br>"  ;
 			
 		couriel(WEBMESTRE_ID,"[Frankiz] Demande de page perso de $nom $prenom",$contenu,$_SESSION['user']->uid);
-		$message .= "<commentaire>Ta demande d'accessibilité depuis l'extérieur a été prise en compte et sera validée dans les meilleurs délai.</commentaire>" ;
+		$message .= "<commentaire>Ta demande d'accessibilitÃ© depuis l'extÃ©rieur a Ã©tÃ© prise en compte et sera validÃ©e dans les meilleurs dÃ©lai.</commentaire>" ;
 
 	} else if($un != 0) {
-		$message .="<warning>Tu as déjà demandé que ton site soit accessible depuis l'extérieur. Ta demande sera validée dans les meilleurs délai.</warning>" ;
+		$message .="<warning>Tu as dÃ©jÃ  demandÃ© que ton site soit accessible depuis l'extÃ©rieur. Ta demande sera validÃ©e dans les meilleurs dÃ©lai.</warning>" ;
 	} else {
-		$message .="<warning>Ton site est déjà accessible depuis l'extérieur.</warning>" ;
+		$message .="<warning>Ton site est dÃ©jÃ  accessible depuis l'extÃ©rieur.</warning>" ;
 	}
 }
 
-// Génération du la page XML
+// GÃ©nÃ©ration du la page XML
 require "../include/page_header.inc.php";
  
 ?>
@@ -138,20 +141,20 @@ require "../include/page_header.inc.php";
 	<? echo $message ?>
 	
 	<formulaire id="mod_pageperso" titre="Ton site web" action="profil/siteweb.php">
-		<note>Tu peux soumettre des archives .zip, .tar.gz, .tar ou .tar.bz2 qui seront décompressées (ou tout autre fichier qui sera mis tel quel) <br/>
-		Tu remplaceras l'intégralité de ton site perso. <br/>Attention tu es limité à 10Mo.</note>
+		<note>Tu peux soumettre des archives .zip, .tar.gz, .tar ou .tar.bz2 qui seront dÃ©compressÃ©es (ou tout autre fichier qui sera mis tel quel) <br/>
+		Tu remplaceras l'intÃ©gralitÃ© de ton site perso. <br/>Attention tu es limitÃ© Ã  10Mo.</note>
 		<fichier id="file" titre="Ton site" taille="10000000"/>
 		<?
 		if (is_dir(BASE_PAGESPERSOS.$login."-".$promo)){
 		?>
-			<note>Nous te conseillons de sauvegarder ton site avant d'uploader le nouveau en cas de problème.</note>
-			<lien titre="Télécharger en .zip" url="profil/siteweb.php?download_type=zip" /><br/>
-			<lien titre="Télécharger en .tar.gz" url="profil/siteweb.php?download_type=tar.gz" /><br/>
+			<note>Nous te conseillons de sauvegarder ton site avant d'uploader le nouveau en cas de problÃ¨me.</note>
+			<lien titre="TÃ©lÃ©charger en .zip" url="profil/siteweb.php?download_type=zip" /><br/>
+			<lien titre="TÃ©lÃ©charger en .tar.gz" url="profil/siteweb.php?download_type=tar.gz" /><br/>
 			<note>
-				Si tu souhaites que ton site apparaisse sur la liste des sites élèves visibles de l'extérieur, clique sur le bouton "Extérieur", cette demande est soumise à validation.<br/>
-				Dans tous les cas, ton site sera listé sur la liste des sites perso accessibles pour les gens loggués.
+				Si tu souhaites que ton site apparaisse sur la liste des sites Ã©lÃ¨ves visibles de l'extÃ©rieur, clique sur le bouton "ExtÃ©rieur", cette demande est soumise Ã  validation.<br/>
+				Dans tous les cas, ton site sera listÃ© sur la liste des sites perso accessibles pour les gens logguÃ©s.
 			</note>
-			<bouton id="ext" titre="Extérieur"/>
+			<bouton id="ext" titre="ExtÃ©rieur"/>
 		<?
 		}
 		?>

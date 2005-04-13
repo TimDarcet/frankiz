@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 
 <xsl:template match="module[@id='stats']">
 	<div class="fkz_module">
-		<div class="fkz_titre"><span id="serveurs_logo"><xsl:text> </xsl:text></span><span id="serveurs">État des serveurs :</span></div>
+		<div class="fkz_titre"><span id="serveurs_logo"><xsl:text> </xsl:text></span><span id="serveurs">Ã‰tat des serveursÂ :</span></div>
 		<div class="fkz_module_corps">
 			<ul class="fkz_stats">
 				<xsl:text> </xsl:text><!-- bug catch -->

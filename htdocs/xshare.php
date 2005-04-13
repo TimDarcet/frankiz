@@ -1,6 +1,6 @@
 <?php 
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -19,9 +19,12 @@
 */
 /*
 	$Log$
+	Revision 1.13  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.12  2005/02/09 16:54:41  pico
 	Correction pour la recherche dans le xshare
-
+	
 	Revision 1.11  2005/01/22 17:58:38  pico
 	Modif des images
 	
@@ -32,13 +35,13 @@
 	Bug #26
 	
 	Revision 1.8  2005/01/10 13:31:34  pico
-	Affichage des logiciels à l'intérieur de l'arborescence
+	Affichage des logiciels Ã  l'intÃ©rieur de l'arborescence
 	
 	Revision 1.7  2005/01/10 10:24:33  pico
 	Bug #16
 	
 	Revision 1.6  2004/12/15 05:19:13  falco
-	cohérence
+	cohÃ©rence
 	
 	Revision 1.5  2004/12/09 20:53:27  pico
 	Faute d'orthographe
@@ -52,7 +55,7 @@
 	Ajout des images dans l'aide du wiki
 	
 	Revision 1.2  2004/11/25 12:45:36  pico
-	Duble emploi de htmlspecialchar vu que les entrées dans la bdd sont déjà transformées
+	Duble emploi de htmlspecialchar vu que les entrÃ©es dans la bdd sont dÃ©jÃ  transformÃ©es
 	
 	Revision 1.1  2004/11/25 00:10:30  schmurtz
 	Suppression des dossiers ne contenant qu'un unique fichier index.php
@@ -73,10 +76,10 @@
 	Gestion des recherches
 	
 	Revision 1.18  2004/10/20 23:18:49  pico
-	Derniers fixes, ça marche !!
+	Derniers fixes, Ã§a marche !!
 	
 	Revision 1.17  2004/10/20 23:04:06  pico
-	Affichage de l'arbre mieux respecté
+	Affichage de l'arbre mieux respectÃ©
 	
 	Revision 1.16  2004/10/20 22:28:27  pico
 	Encore des corrections
@@ -88,7 +91,7 @@
 	Changements Noeuds/Feuilles
 	
 	Revision 1.13  2004/10/20 20:00:37  pico
-	Génération des balises plus conforme
+	GÃ©nÃ©ration des balises plus conforme
 	
 	Revision 1.12  2004/10/19 22:04:23  pico
 	Pas d'aut
@@ -98,7 +101,7 @@
 	Corrections diverses
 	
 	Revision 1.10  2004/10/18 23:37:03  pico
-	BugFix Recherche (pas 2 requetes sql en même temps !)
+	BugFix Recherche (pas 2 requetes sql en mÃªme temps !)
 	
 	Revision 1.9  2004/10/18 22:17:45  pico
 	Ajout des logs dans le fichier
@@ -106,11 +109,11 @@
 */
 require_once "include/global.inc.php";
 require_once "include/wiki.inc.php";
-// Vérification des droits
+// VÃ©rification des droits
 // demande_authentification(AUTH_MINIMUM);
 
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -149,7 +152,7 @@ function rech_fils($id_parent) {
 			if ($a_marquer != "") echo "&amp;a_marquer=".base64_encode($a_marquer);
 			echo "'>\n\r" ;
 			if (eregi("/".$id."/",$a_marquer)) {
-				echo "<image source='images/fleche_folder.gif' texte=\"marqué\"/>\n\r" ;
+				echo "<image source='images/fleche_folder.gif' texte=\"marquÃ©\"/>\n\r" ;
 			}
 			$DB_web->push_result();
 			rech_fils($id) ;
@@ -164,15 +167,15 @@ function rech_fils($id_parent) {
 		while(list($id,$nom) = $DB_web->next_row()) {
 			echo "\n\r<feuille  id='".$id."'  titre='".$nom."'>\n\r" ;
 			if (eregi("/".$id."/",$a_marquer)) {
-				echo "<image source='images/fleche.gif' texte=\"marqué\"/>\n\r" ;
+				echo "<image source='images/fleche.gif' texte=\"marquÃ©\"/>\n\r" ;
 			}
 			$DB_web->push_result();
 			$DB_web->query("SELECT * FROM xshare WHERE id='{$id}'") ;
 			if (list($id,$id_parent,$nom,$licence,$lien,$importance,$date,$descript,$version,$site) = $DB_web->next_row()) { 
-				echo "<lien titre='Site de l&apos;éditeur' url='".$site."'/> | <lien titre='Télécharger ici' url='data/xshare/".$lien."'/><br/><br/>";
+				echo "<lien titre='Site de l&apos;Ã©diteur' url='".$site."'/> | <lien titre='TÃ©lÃ©charger ici' url='data/xshare/".$lien."'/><br/><br/>";
 				if($importance == 1) echo "Logiciel important<br/>";
 				if($importance == 2) echo "<strong>Logiciel indispensable</strong><br/>";
-				echo "Dernière modification le ".substr($date, 6, 2)."/".substr($date, 4, 2)."/".substr($date, 0, 4)."<br/><br/>" ;
+				echo "DerniÃ¨re modification le ".substr($date, 6, 2)."/".substr($date, 4, 2)."/".substr($date, 0, 4)."<br/><br/>" ;
 				if($version != '') echo "Version: ".$version."<br/>";
 				if($licence != '') echo "Licence: ".$licence."<br/>";
 				echo "Description: ".wikiVersXML($descript)."<br/>";
@@ -180,7 +183,7 @@ function rech_fils($id_parent) {
 		
 			} else {
 				?>
-				<warning>Erreur : Impossible de trouver cette description </warning>
+				<warning>ErreurÂ : Impossible de trouver cette description </warning>
 				<?
 			}
 			$DB_web->pop_result();
@@ -206,8 +209,8 @@ function affiche_element_xshare($idfold){
 }
 
 //
-//Petit programme qui crée
-// la liste des folder à 
+//Petit programme qui crÃ©e
+// la liste des folder Ã  
 // afficher !
 //------------------------------
 
@@ -224,7 +227,7 @@ function all_elt_affich($idfold){
 		}
 		
 	}
-	if (!$retire) $str .= "/".$idfold ;		// si je ne l'ai pas supprimé c'est k'il faut le rajouter justement !
+	if (!$retire) $str .= "/".$idfold ;		// si je ne l'ai pas supprimÃ© c'est k'il faut le rajouter justement !
 	
 	return $str ;
 }
@@ -251,7 +254,7 @@ function rech_parent($id2) {
 			while(list($id3) = $DB_web->next_row()){
 				$id =$id3;
 				if (($id != "")&&($id != 0)){ // on rajoute ssi c'est pas le racine
-					$liste = $liste."/".$id;		  // car on la deja rajouté !
+					$liste = $liste."/".$id;		  // car on la deja rajoutÃ© !
 				}
 			}
 		}
@@ -271,11 +274,11 @@ function rech_parent($id2) {
 
 if (($mots!="")||($a_marquer!="")) {
 ?>
-<p><strong>Résultats de la recherche</strong></p>
+<p><strong>RÃ©sultats de la recherche</strong></p>
 <?
 } else {
 ?>
-<p><strong>Logiciels disponibles en téléchargement :</strong></p>
+<p><strong>Logiciels disponibles en tÃ©lÃ©chargementÂ :</strong></p>
 <?
 }
 
@@ -289,7 +292,7 @@ if ($mots!="") {
 	$DB_web->query("SELECT id,nom,descript FROM xshare") ;
 	$recherche = 0 ;
 	$a_marquer = "/" ;			// liste des elements qui contiendront les mots
-	$affich_elt = "0/" ;		// liste des elements à afficher
+	$affich_elt = "0/" ;		// liste des elements Ã  afficher
 	while(list($id,$nom,$descript) = $DB_web->next_row()) {
 		$result = explode(" ",$mots) ;
 		$n = count($result) ;
@@ -305,7 +308,7 @@ if ($mots!="") {
 	}
 	if (!$recherche) {
 ?>
-  <warning>Recherche infructueuse. Essayer avec d'autres critères.</warning>
+  <warning>Recherche infructueuse. Essayer avec d'autres critÃ¨res.</warning>
 <?
 	} 
 }
@@ -320,7 +323,7 @@ echo "</arbre>";
 ?>
 
 	<formulaire id="form" action="xshare.php">
-		<note>Tous les mots seront dans la description. Sépare les par un blanc.</note>
+		<note>Tous les mots seront dans la description. SÃ©pare les par un blanc.</note>
 		<champ id="mots" titre="Mots-clefs" valeur="<? echo $mots ;?>"/>
 		<bouton id="Submit" titre="Chercher"/>
 	</formulaire>

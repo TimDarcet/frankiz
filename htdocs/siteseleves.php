@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,9 +21,12 @@
 	Sites Eleves
 	
 	$Log$
+	Revision 1.9  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.8  2005/01/21 17:01:31  pico
 	Fonction pour savoir si interne
-
+	
 	Revision 1.7  2005/01/21 16:49:41  pico
 	erreur
 	
@@ -31,7 +34,7 @@
 	Modifs de chemins
 	
 	Revision 1.5  2004/12/17 14:26:20  pico
-	Pas d'action pour les listes non sélectionnables
+	Pas d'action pour les listes non sÃ©lectionnables
 	
 	Revision 1.4  2004/12/16 13:00:41  pico
 	INNER en LEFT
@@ -51,11 +54,11 @@
 
 require_once "include/global.inc.php";
 
-// génération de la page
+// gÃ©nÃ©ration de la page
 require "include/page_header.inc.php";
 ?>
-<page id='siteseleves' titre='Frankiz : Sites élèves'>
-<h1>Sites de certains élèves de l'X</h1>
+<page id='siteseleves' titre='Frankiz : Sites Ã©lÃ¨ves'>
+<h1>Sites de certains Ã©lÃ¨ves de l'X</h1>
 	<liste id="page_eleves" selectionnable="non">
 		<entete id="eleves" titre=""/>
 <?

@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -22,11 +22,14 @@
 	sous forme d'archive.
 	
 	$Log$
+	Revision 1.2  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.1  2004/11/24 22:12:57  schmurtz
 	Regroupement des fonctions zip unzip deldir et download dans le meme fichier
-
+	
 	Revision 1.11  2004/11/22 21:16:23  pico
-	La création de zip devrait marcher
+	La crÃ©ation de zip devrait marcher
 	
 	Revision 1.10  2004/11/22 20:40:00  pico
 	Patch fonction tar
@@ -38,14 +41,14 @@
 	Nouvelle version, devrait mieux marcher
 	
 	Revision 1.7  2004/11/22 18:38:03  pico
-	Changements fonction de décompression (ne cherche plus sur les mimetypes)
+	Changements fonction de dÃ©compression (ne cherche plus sur les mimetypes)
 	
 	Revision 1.6  2004/11/16 14:02:37  pico
-	- Nouvelle fonction qui permet de dl le contenu d'un répertoire
+	- Nouvelle fonction qui permet de dl le contenu d'un rÃ©pertoire
 	- Mise en place sur la page de la FAQ
 	
 	Revision 1.5  2004/11/08 12:03:32  pico
-	Ben zut, il a pas voulu me commiter celle là !
+	Ben zut, il a pas voulu me commiter celle lÃ  !
 	
 	Revision 1.4  2004/11/08 11:48:26  pico
 	Modif fonction deldir
@@ -61,8 +64,8 @@
 */
 
 /*
-	Décompresse un fichier $file dans le repertoire $dir. $del est un booleen qui dit si le
-	fichier zip doit être supprimé après decompression.
+	DÃ©compresse un fichier $file dans le repertoire $dir. $del est un booleen qui dit si le
+	fichier zip doit Ãªtre supprimÃ© aprÃ¨s decompression.
 */
 function unzip($file,$dir,$del){
 	if (eregi("(.zip)$",basename($file))) {
@@ -107,7 +110,7 @@ function zip($file,$dir,$type){
 }
 
 /*
-	Supprime un répertoire complet et renvoit true lorsque tout c'est bien passé
+	Supprime un rÃ©pertoire complet et renvoit true lorsque tout c'est bien passÃ©
 */
 function deldir($dir) {
 	if (!file_exists($dir)) {
@@ -136,7 +139,7 @@ function deldir($dir) {
 }
 
 /*
-	Zippe et envoit le contenu d'un répertoire
+	Zippe et envoit le contenu d'un rÃ©pertoire
 */
 function download($dir,$type = 'zip', $filename = "temp"){
 	$file = "/tmp/".$filename;

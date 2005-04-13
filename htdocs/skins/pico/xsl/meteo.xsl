@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -24,13 +24,13 @@
 
 
 <xsl:template match="page/meteo">
-	<h2>Météo sur le Platâl aujourd'hui :</h2><br />
-		Le soleil est présent de <xsl:value-of select="now/sunrise"/> à <xsl:value-of select="now/sunset"/><br />
-		La température actuelle est de <xsl:value-of select="now/temperature"/>°C<br />
+	<h2>MÃ©tÃ©o sur le PlatÃ¢l aujourd'huiÂ :</h2><br />
+		Le soleil est prÃ©sent de <xsl:value-of select="now/sunrise"/> Ã  <xsl:value-of select="now/sunset"/><br />
+		La tempÃ©rature actuelle est de <xsl:value-of select="now/temperature"/>Â°C<br />
 		La pression est de <xsl:value-of select="now/pression"/> millibar<br />
 		Pour ce qui est du vent <xsl:value-of select="now/vent"/><br />
-		Et l'humidité s'élève à <xsl:value-of select="now/humidite"/>%<br />
-		L'état du ciel : <xsl:value-of select="now/ciel"/><br />
+		Et l'humiditÃ© s'Ã©lÃ¨ve Ã  <xsl:value-of select="now/humidite"/>%<br />
+		L'Ã©tat du ciel : <xsl:value-of select="now/ciel"/><br />
 		<span  class="meteo"><img alt="meteo" width="64" height="64">
 			<xsl:choose>
 				<xsl:when test="now/image!='-'">
@@ -41,17 +41,17 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</img></span>
-	<h2>Prévisions météo :</h2><br />
+	<h2>PrÃ©visions mÃ©tÃ©o :</h2><br />
 		<xsl:for-each select="jour">
 			<xsl:if test="@date &lt;= '2'">
 			<div class="meteo">
 			<xsl:if test="@date = '0'"><h3>Aujourd'hui</h3></xsl:if>
 			<xsl:if test="@date = '1'"><h3>Demain</h3></xsl:if>
-			<xsl:if test="@date = '2'"><h3>Après demain</h3></xsl:if>
+			<xsl:if test="@date = '2'"><h3>AprÃ¨s demain</h3></xsl:if>
 			<dl>
-				<dt>La température : </dt>
+				<dt>La tempÃ©rature : </dt>
 				<dd>
-					<xsl:value-of select="temperature_hi"/>°C pendant la journée et <xsl:value-of select="temperature_low"/>°C la nuit
+					<xsl:value-of select="temperature_hi"/>Â°C pendant la journÃ©e et <xsl:value-of select="temperature_low"/>Â°C la nuit
 				</dd>
 				<dt>Etat du ciel le jour : </dt>
 				<dd>
@@ -89,10 +89,10 @@
 
 <xsl:template match="module[@id='meteo']">
 	<div class="fkz_module"  id='mod_meteo'>
-		<div class="fkz_titre"><span id="meteo_logo"><xsl:text> </xsl:text></span><span id="meteo">La météo</span></div>
+		<div class="fkz_titre"><span id="meteo_logo"><xsl:text> </xsl:text></span><span id="meteo">La mÃ©tÃ©o</span></div>
 		<div class="fkz_module_corps">
 			<span  class="meteo">
-			<xsl:value-of select="meteo/now/temperature"/>°C<br />
+			<xsl:value-of select="meteo/now/temperature"/>Â°C<br />
 			<a href="meteo.php">
 			<img alt="meteo" width="64" height="64">
 				<xsl:choose>

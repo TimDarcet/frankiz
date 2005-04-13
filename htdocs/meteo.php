@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,17 +18,20 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Permet de donner la météo sur Paris (cf. meteo_func.inc.php)
+	Permet de donner la mÃ©tÃ©o sur Paris (cf. meteo_func.inc.php)
 			
 	$Log$
+	Revision 1.5  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.4  2005/01/22 17:58:38  pico
 	Modif des images
-
+	
 	Revision 1.3  2004/12/14 23:32:07  schmurtz
 	Bug dans l'url d'affichage du logo weather.com
 	
 	Revision 1.2  2004/12/13 20:03:25  pico
-	Les liens ne forment pas de blocs, il faut donc le spécifier
+	Les liens ne forment pas de blocs, il faut donc le spÃ©cifier
 	
 	Revision 1.1  2004/11/25 00:10:30  schmurtz
 	Suppression des dossiers ne contenant qu'un unique fichier index.php
@@ -41,19 +44,19 @@
 	Modifications cosmetiques
 	
 	Revision 1.4  2004/11/02 13:04:25  pico
-	Correction météo (othograffe + skin pico)
+	Correction mÃ©tÃ©o (othograffe + skin pico)
 	
 	Revision 1.3  2004/10/28 16:08:14  kikx
-	Ne fait qu'une page de fonctions pour la météo car sinon ça devient ingérable
+	Ne fait qu'une page de fonctions pour la mÃ©tÃ©o car sinon Ã§a devient ingÃ©rable
 	
 	Revision 1.2  2004/10/28 11:29:07  kikx
-	Mise en place d'un cache pour 30 min pour la météo
+	Mise en place d'un cache pour 30 min pour la mÃ©tÃ©o
 	
 	Revision 1.1  2004/10/26 17:52:07  kikx
 	J'essaie de respecter la charte de weather.com mais c'est chaud car il demande le mettre leur nom en gras ... et je peux pas le faire avec la skin
 	
 	Revision 1.1  2004/10/26 16:57:44  kikx
-	Pour la méteo ... ca envoie du paté !!
+	Pour la mÃ©teo ... ca envoie du patÃ© !!
 	
 	
 */
@@ -61,11 +64,11 @@
 require_once "include/global.inc.php";
 require_once BASE_LOCAL."/include/meteo_func.inc.php";
 
-// génération de la page
+// gÃ©nÃ©ration de la page
 require BASE_LOCAL."/include/page_header.inc.php";
 ?>
-<page id='meteo' titre='Frankiz : méteo'>
-<h1>La météo du platâl</h1>
+<page id='meteo' titre='Frankiz : mÃ©teo'>
+<h1>La mÃ©tÃ©o du platÃ¢l</h1>
 <?php
 	if(!cache_recuperer('meteo',strtotime(date("Y-m-d H:i:00",time()-60*30)))) { // le cache est valide pendant 30min ...
 		weather_xml();
@@ -73,6 +76,6 @@ require BASE_LOCAL."/include/page_header.inc.php";
 	}
 ?>
 <lien url="http://www.weather.com/?prod=xoap&amp;par=1006415841"><image source="images/Weather.com.png" texte="Logo Weather.com"/></lien><br/>
-<lien url="http://www.weather.com/?prod=xoap&amp;par=1006415841">Météo fournie grâce à weather.com&#174;</lien>
+<lien url="http://www.weather.com/?prod=xoap&amp;par=1006415841">MÃ©tÃ©o fournie grÃ¢ce Ã  weather.com&#174;</lien>
 </page>
 <?php require_once BASE_LOCAL."/include/page_footer.inc.php"; ?>

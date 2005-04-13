@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,17 +21,20 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.34  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.33  2005/02/17 09:56:37  dei
 	pour que le titre apparaisse dans les logs : $_POST...
-
+	
 	Revision 1.32  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
 	
 	Revision 1.31  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
+	Changement de "TrÃ¨s BRment, l'automate"
 	
 	Revision 1.30  2005/01/18 19:50:30  pico
-	Ce sont les kessiers et dei qui reçoivent les notifications de mail promo
+	Ce sont les kessiers et dei qui reÃ§oivent les notifications de mail promo
 	
 	Revision 1.29  2005/01/17 20:15:38  pico
 	Mail promo pour les kessiers
@@ -67,8 +70,8 @@
 	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
 	
 	Revision 1.18  2004/11/25 00:53:03  kikx
-	Voilà... la validation des mails promo est faite en wiki
-	j'en ai profité pour cooriger un oubli ?... de pourvoir changer l'expediter du mai par exemple au om de son binet
+	VoilÃ ... la validation des mails promo est faite en wiki
+	j'en ai profitÃ© pour cooriger un oubli ?... de pourvoir changer l'expediter du mai par exemple au om de son binet
 	
 	Revision 1.17  2004/11/23 23:30:20  schmurtz
 	Modification de la balise textarea pour corriger un bug
@@ -94,7 +97,7 @@
 	C'est ce qui est maintenant utilise dans les annonces/cadres
 	
 	Revision 1.10  2004/10/13 21:21:14  kikx
-	Le rend opérationnel
+	Le rend opÃ©rationnel
 	
 	Revision 1.9  2004/10/13 21:19:52  kikx
 	Rajout de bug fix
@@ -119,7 +122,7 @@
 	Mail promo != mail bi-promo
 	
 	Revision 1.2  2004/10/06 19:29:53  kikx
-	La page d'envoi de mail promo est terminéééééééééééééééééééééééé
+	La page d'envoi de mail promo est terminÃ©Ã©Ã©Ã©Ã©Ã©Ã©Ã©Ã©Ã©Ã©Ã©Ã©Ã©Ã©Ã©Ã©Ã©Ã©Ã©Ã©Ã©Ã©Ã©
 	
 	Revision 1.1  2004/10/06 14:12:27  kikx
 	Page de mail promo quasiment en place ...
@@ -131,14 +134,14 @@
 require_once "../include/global.inc.php";
 require_once "../include/wiki.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('kes'))
 	acces_interdit();
 	
 $message ="" ;
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 
 if ((isset($_POST['promo']))&&($_POST['promo'] == "")) {
@@ -147,7 +150,7 @@ if ((isset($_POST['promo']))&&($_POST['promo'] == "")) {
 	$titre_mail = "Mail Promo :" ;
 }
 		
-// On traite les différents cas de figure d'enrigistrement et validation d'affiche :)
+// On traite les diffÃ©rents cas de figure d'enrigistrement et validation d'affiche :)
 
 // Enregistrer ...
 $DB_valid->query("LOCK TABLE valid_mailpromo WRITE");
@@ -163,10 +166,10 @@ foreach ($_POST AS $keys => $val){
 
 			$DB_valid->query("UPDATE valid_mailpromo SET titre='{$_POST['titre']}', mail='{$_POST['mail']}', promo='{$_POST['promo']}' WHERE mail_id='{$temp[1]}'");	
 			if ($temp[0]!='valid') {
-				$message .= "<commentaire>Modification effectuée</commentaire>" ;
+				$message .= "<commentaire>Modification effectuÃ©e</commentaire>" ;
 			}
 		} else {
-			$message .= "<warning>Requête deja traitée par un autre administrateur</warning>" ;		
+			$message .= "<warning>RequÃªte deja traitÃ©e par un autre administrateur</warning>" ;		
 		}	
 	}
 	
@@ -177,14 +180,14 @@ foreach ($_POST AS $keys => $val){
 			list($eleve_id) = $DB_valid->next_row() ;
 			
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," accepté le mail promo '{$_POST['titre']}' ") ;
+			log_admin($_SESSION['user']->uid," acceptÃ© le mail promo '{$_POST['titre']}' ") ;
 			
 			// envoi du mail
-			$contenu = 	"Ton mail promo a été validé par le BR<br><br>".
+			$contenu = 	"Ton mail promo a Ã©tÃ© validÃ© par le BR<br><br>".
 						"Merci de ta participation<br><br>".
 						"Cordialement,<br>" .
 						"Le BR<br>"  ;
-			couriel($eleve_id,"[Frankiz] Ton mail promo a été validé par le BR",$contenu,MAILPROMO_ID);
+			couriel($eleve_id,"[Frankiz] Ton mail promo a Ã©tÃ© validÃ© par le BR",$contenu,MAILPROMO_ID);
 			
 			if ((isset($_POST['promo']))&&($_POST['promo'] == "")) {
 				$promo = '' ;
@@ -206,14 +209,14 @@ foreach ($_POST AS $keys => $val){
 
 			list($eleve_id) = $DB_valid->next_row() ;
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," refusé le mail promo '{$_POST['titre']}' ") ;
+			log_admin($_SESSION['user']->uid," refusÃ© le mail promo '{$_POST['titre']}' ") ;
 			// envoi du mail
-			$contenu = 	"Ton mail promo n'a pas été validé par le BR pour la raison suivante<br>".
+			$contenu = 	"Ton mail promo n'a pas Ã©tÃ© validÃ© par le BR pour la raison suivante<br>".
 						$_POST['refus']."<br><br>".
-						"Désolé <br>".
+						"DÃ©solÃ© <br>".
 						"Cordialement,\n" .
 						"le BR\n"  ;
-			couriel($eleve_id,"[Frankiz] Ton mail promo n'a pas été validé par le BR",$contenu,MAILPROMO_ID);
+			couriel($eleve_id,"[Frankiz] Ton mail promo n'a pas Ã©tÃ© validÃ© par le BR",$contenu,MAILPROMO_ID);
 	
 			$DB_valid->query("DELETE FROM valid_mailpromo WHERE mail_id='{$temp[1]}'") ;
 	
@@ -221,7 +224,7 @@ foreach ($_POST AS $keys => $val){
 			$message .= "<warning>Suppression d'un mail promo</warning>" ;
 		
 		} else {
-			$message .= "<warning>Requête deja traitée par un autre administrateur</warning>" ;		
+			$message .= "<warning>RequÃªte deja traitÃ©e par un autre administrateur</warning>" ;		
 		}	
 	}
 }
@@ -245,8 +248,8 @@ while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $prom
 ?>
 	<commentaire>
 		<em>FROM</em>: <?php  echo "$prenom $nom &lt;$mail&gt; " ?><br/>
-		Posté le 
-			<?php  echo substr($date,6,2) ."/".substr($date,4,2) ."/".substr($date,2,2)." à ".substr($date,8,2).":".substr($date,10,2) ?>
+		PostÃ© le 
+			<?php  echo substr($date,6,2) ."/".substr($date,4,2) ."/".substr($date,2,2)." Ã  ".substr($date,8,2).":".substr($date,10,2) ?>
 	</commentaire>
 	<cadre titre="<?php  echo $titre_mail." ".$titre ?>">
 			<?php echo wikiVersXML($mailpromo) ?>

@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -57,7 +57,7 @@
 				<xsl:if test="count(annonce[@categorie='nouveau']) != 0">
 					<tr>
 						<td colspan="2" class="center">
-							<strong><span class="flag_nouveau"><xsl:text> </xsl:text></span> Nouvelles Fraîches</strong><br/>
+							<strong><span class="flag_nouveau"><xsl:text> </xsl:text></span> Nouvelles FraÃ®ches</strong><br/>
 						</td>
 					</tr>
 					

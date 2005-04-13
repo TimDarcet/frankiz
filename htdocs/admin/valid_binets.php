@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -21,12 +21,15 @@
 	Page de validation d'une modification d'un binet
 	
 	$Log$
+	Revision 1.17  2005/04/13 17:09:58  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.16  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
-
+	
 	Revision 1.15  2005/01/26 16:36:32  pico
-	Devrait éviter l'erreur de Bery tout à l'heure
-	(pb de création de fichier)
+	Devrait Ã©viter l'erreur de Bery tout Ã  l'heure
+	(pb de crÃ©ation de fichier)
 	
 	Revision 1.14  2005/01/22 17:58:38  pico
 	Modif des images
@@ -35,13 +38,13 @@
 	Plus de droits pour les web
 	
 	Revision 1.12  2005/01/11 14:36:42  pico
-	Binets triés ext/int + url auto si binet sur le serveur
+	Binets triÃ©s ext/int + url auto si binet sur le serveur
 	
 	Revision 1.11  2004/12/17 17:25:08  schmurtz
 	Ajout d'une belle page d'erreur.
 	
 	Revision 1.10  2004/12/13 20:03:25  pico
-	Les liens ne forment pas de blocs, il faut donc le spécifier
+	Les liens ne forment pas de blocs, il faut donc le spÃ©cifier
 	
 	Revision 1.9  2004/12/08 12:48:07  kikx
 	oups
@@ -73,12 +76,12 @@
 	
 require_once "../include/global.inc.php";
 
-// Vérification des droits
+// VÃ©rification des droits
 demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('web'))
 	acces_interdit();
 
-// Génération de la page
+// GÃ©nÃ©ration de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
@@ -87,7 +90,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <h1>Validation des modifications des binets</h1>
 
 <?
-// On traite les différents cas de figure d'enrigistrement et validation :)
+// On traite les diffÃ©rents cas de figure d'enrigistrement et validation :)
 
 // Enregistrer ...
 $message = "" ;
@@ -108,14 +111,14 @@ if (isset($_POST['valid'])) {
 		}
 		
 		//Log l'action de l'admin
-		log_admin($_SESSION['user']->uid," accepté la modification du binet $nom") ;
+		log_admin($_SESSION['user']->uid," acceptÃ© la modification du binet $nom") ;
 	
 		$DB_trombino->query("UPDATE binets SET image=\"".addslashes($image)."\" ,format='$format' ,description='$description' , http='$http', catego_id=$categorie, exterieur=$temp_ext, folder='$folder' WHERE binet_id={$_POST['id']}");
 		
 		$DB_valid->query("DELETE FROM valid_binet WHERE binet_id={$_POST['id']}");
-		$message .= "<commentaire>Le binet $nom vient d'être mis à jour</commentaire>" ;
+		$message .= "<commentaire>Le binet $nom vient d'Ãªtre mis Ã  jour</commentaire>" ;
 	} else {
-		$message .= "<warning>Requête deja traitée par un autre administrateur</warning>" ;
+		$message .= "<warning>RequÃªte deja traitÃ©e par un autre administrateur</warning>" ;
 	}
 }
 if (isset($_POST['suppr'])) {
@@ -124,12 +127,12 @@ if (isset($_POST['suppr'])) {
 		list($nom) = $DB_valid->next_row() ;
 		
 		//Log l'action de l'admin
-		log_admin($_SESSION['user']->uid," refusé la modification du binet $nom") ;
+		log_admin($_SESSION['user']->uid," refusÃ© la modification du binet $nom") ;
 	
 		$DB_valid->query("DELETE FROM valid_binet WHERE binet_id={$_POST['id']}");
-		$message .= "<warning>Vous n'avez pas validé le changement du binet $nom</warning>" ;
+		$message .= "<warning>Vous n'avez pas validÃ© le changement du binet $nom</warning>" ;
 	} else {
-		$message .= "<warning>Requête deja traitée par un autre administrateur</warning>" ;
+		$message .= "<warning>RequÃªte deja traitÃ©e par un autre administrateur</warning>" ;
 	}
 
 }
@@ -144,7 +147,7 @@ $DB_valid->query("UNLOCK TABLES");
 ?>
 		<formulaire id="binet_web" titre="<? echo $nom?>" action="admin/valid_binets.php">
 			<hidden id="id" titre="ID" valeur="<? echo $binet_id?>"/>
-			<champ titre="Catégorie" valeur="<? echo $categorie?>" modifiable="non"/>
+			<champ titre="CatÃ©gorie" valeur="<? echo $categorie?>" modifiable="non"/>
 			<image source="gestion/binet.php?image=1&amp;id=<?=$binet_id?>" texte="<?=$nom?>"/>
 			<lien url="<? echo $http?>" titre="<? echo $http?>"/><br/>
 			<champ titre="Description" valeur="<? echo stripslashes($description)?>" modifiable="non"/>

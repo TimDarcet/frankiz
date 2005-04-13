@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2004 Binet RÃ©seau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,22 +18,25 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Gestion des connexions aux bases de données :
+	Gestion des connexions aux bases de donnÃ©esÂ :
 	- une seule connexion par base (avec l'utilisation de variable globales)
-	- destruction automatique des résultats
+	- destruction automatique des rÃ©sultats
 
 	$Log$
+	Revision 1.21  2005/04/13 17:10:00  pico
+	Passage de tous les fichiers en utf8.
+
 	Revision 1.20  2005/02/08 21:57:56  pico
 	Correction bug #62
-
+	
 	Revision 1.19  2004/12/10 17:55:24  kikx
 	Je sais pas trop ...
 	
 	Revision 1.18  2004/12/06 00:01:42  kikx
-	Passage de la skin par défaut en parametre du site et non pas stocké en dur
+	Passage de la skin par dÃ©faut en parametre du site et non pas stockÃ© en dur
 	
 	Revision 1.17  2004/11/27 16:27:33  pico
-	établit la connexion à la bdd qu'à la première requete.
+	Ã©tablit la connexion Ã  la bdd qu'Ã  la premiÃ¨re requete.
 	Utile si on n'a pas besoin de la connexion (genre xnet ou trombino)
 	
 	Revision 1.16  2004/11/17 22:18:45  schmurtz
@@ -44,10 +47,10 @@
 	permet de loguer des infos autre que les commandes SQL (pour debugage)
 	
 	Revision 1.14  2004/11/08 18:27:34  pico
-	là aussi ça devrait marcher, à tester
+	lÃ  aussi Ã§a devrait marcher, Ã  tester
 	
 	Revision 1.13  2004/11/08 18:20:03  pico
-	Devrait mieux marcher comme ça
+	Devrait mieux marcher comme Ã§a
 	
 	Revision 1.12  2004/11/08 17:01:22  schmurtz
 	oups
@@ -57,7 +60,7 @@
 	
 	Revision 1.10  2004/11/05 07:55:59  pico
 	Gwz a maintenant php > 4.2
-	Le code donnait des warning, car on reselectionne 2 fois la même base dans le cas de xnet.
+	Le code donnait des warning, car on reselectionne 2 fois la mÃªme base dans le cas de xnet.
 	
 	Revision 1.9  2004/10/21 22:19:37  schmurtz
 	GPLisation des fichiers du site
@@ -84,7 +87,7 @@ class DB {
 	var $saved_results;
 	
 	/*
-		Création d'une connexion à une base MySQL
+		CrÃ©ation d'une connexion Ã  une base MySQL
 	*/
 	function DB($host,$base,$user,$pass) {
 		global $_ERREURS_PHPMYSQL;
@@ -102,10 +105,10 @@ class DB {
 	}
 	
 	/*
-		Exécution d'une requète
+		ExÃ©cution d'une requÃ¨te
 	*/
 	function query($query) {
-		// Connection lors de la première requete.
+		// Connection lors de la premiÃ¨re requete.
 		if($this->link == null){
 			$this->link = mysql_connect($this->host,$this->user,$this->pass,true);
 			if(mysql_errno() == 0)
@@ -118,7 +121,7 @@ class DB {
 		if($this->result)
 			mysql_free_result($this->result);
 		
-		ajouter_debug_log("Requète SQL \"$query\"");
+		ajouter_debug_log("RequÃ¨te SQL \"$query\"");
 		$this->result = mysql_query($query,$this->link);
 		
 		if(mysql_errno() != 0 || is_bool($this->result) && $this->result == false)
@@ -131,7 +134,7 @@ class DB {
 	}
 	
 	/*
-		Récupération du résultat de la dernière requète.
+		RÃ©cupÃ©ration du rÃ©sultat de la derniÃ¨re requÃ¨te.
 		(SELECT uniquement)
 	*/
 	function next_row() {
@@ -143,7 +146,7 @@ class DB {
 	}
 	
 	/*
-		Informations sur les modifications effectuées à la base lors de la dernière requète
+		Informations sur les modifications effectuÃ©es Ã  la base lors de la derniÃ¨re requÃ¨te
 	*/
 	function affected_rows() {
 		return mysql_affected_rows($this->link);
@@ -154,7 +157,7 @@ class DB {
 	}
 	
 	/*
-		Sauvegarde du résultat d'une requète
+		Sauvegarde du rÃ©sultat d'une requÃ¨te
 	*/
 	function push_result() {
 		$this->saved_results[count($this->saved_results)] = $this->result;
