@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.43  2005/04/13 14:43:31  dei
+	ajout du lien qvb pour la gestion de la base des virus détectés
+
 	Revision 1.42  2005/03/16 17:13:40  pico
 	Les admin@windows ont accès à la liste des ips et à l'arpwatch
-
+	
 	Revision 1.41  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
 	
@@ -398,6 +401,7 @@ $permissions_user = $_SESSION['user']->perms ;
 		$nb = $DB_msdnaa->num_rows() ;
 		?>
 		<lien titre="Gérer les demandes de licences (<?=$nb?>)" url="admin/valid_licences.php"/><br/>
+		<lien titre="Gérer les virus detectés sur le réseau " url="admin/nettoyer_virus.php"/><br/>
 	<?
 	}
 	
