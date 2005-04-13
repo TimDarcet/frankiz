@@ -22,9 +22,12 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.52  2005/04/13 14:32:47  dei
+	Ajout du module "annonce virus"...
+
 	Revision 1.51  2005/02/15 20:27:55  pico
 	Voir si ça fixe le pb de Bery
-
+	
 	Revision 1.50  2005/02/15 19:50:10  kikx
 	commit pour la forme
 	
@@ -243,7 +246,8 @@ function liste_modules() {
 		"sondages"		=> "Sondages",
 		"lien_tol"			=> "Lien rapide vers le tol",
 		"rss"				=> "News Extérieures",
-		"liens_perso"		=> "Liens Perso"
+		"liens_perso"		=> "Liens Perso",
+		"annonce_virus"	=> "Attention Virus !" 
 		);
 }/*
 	Renvoi la liste des droits disponibles sous la forme d'une liste :
