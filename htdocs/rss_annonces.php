@@ -9,7 +9,7 @@ function get_categorie($en_haut,$stamp,$perime) {
 	else return "reste";
 }
  
-echo"<?xml version=\"1.0\" encoding=\"iso-8859-15\" ?>";
+echo"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
 
 ?>
 
