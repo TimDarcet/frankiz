@@ -22,9 +22,12 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.10  2005/04/13 18:02:22  pico
+	Pour l'utf8
+
 	Revision 1.9  2005/01/18 19:50:00  pico
 	Ajout MailPromo
-
+	
 	Revision 1.8  2005/01/11 14:35:58  pico
 	Binets externes
 	
@@ -147,11 +150,11 @@ define('MAX_PEREMPTION',8);
 
 // Connexions aux bases mysql
 $DB_xnet = new DB("frankiz2","xnet","web","kokouije?.");
-$DB_faq = new DB("gwz","frankiz2","web","kouije?");
-$DB_web = new DB("gwz","frankiz2","web","kouije?");
-$DB_admin = new DB("gwz","admin","web","kouije?");
-$DB_trombino = new DB("gwz","trombino","web","kouije?");
-$DB_valid = new DB("gwz","a_valider","web","kouije?");
-$DB_msdnaa = new DB("gwz","msdnaa","web","kouije?");
+$DB_faq = new DB("gwz","frankiz2_utf8","web","kouije?");
+$DB_web = new DB("gwz","frankiz2_utf8","web","kouije?");
+$DB_admin = new DB("gwz","admin_utf8","web","kouije?");
+$DB_trombino = new DB("gwz","trombino_utf8","web","kouije?");
+$DB_valid = new DB("gwz","a_valider_utf8","web","kouije?");
+$DB_msdnaa = new DB("gwz","msdnaa_utf8","web","kouije?");
 
 ?>
