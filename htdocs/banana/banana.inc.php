@@ -40,9 +40,6 @@ class Banana
         $nom = $_SESSION['user']->nom;
         $prenom = $_SESSION['user']->prenom;
 	$uid = $_SESSION['user']->uid;
-	$pseudo;
-	$mail;
-	$login;
 
 	global $DB_trombino;
 	$DB_trombino->query("SELECT surnom, login, mail FROM eleves WHERE eleve_id = $uid");
