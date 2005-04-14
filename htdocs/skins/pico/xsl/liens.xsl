@@ -73,8 +73,8 @@
 		<div class="fkz_module_corps">
 			<ul class="fkz_liens_nav">
 				<xsl:for-each select="lien">
-					<xsl:if test="@id='deconnect'"><br/></xsl:if>
 					<li class="fkz_liens_nav">
+						<xsl:if test="@id='connect'"><xsl:attribute name="id">connect</xsl:attribute></xsl:if>
 						<a>
 							<xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
 							<xsl:if test="boolean(@key)">

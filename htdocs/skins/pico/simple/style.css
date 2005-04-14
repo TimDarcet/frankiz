@@ -73,9 +73,25 @@ a:hover, a:active {
 
 #mod_liens_profil{
 	position: absolute;
+	right: 10px;
+	top: 2px;
+	text-align: right;
+}
+#mod_liens_nav{
+	position: absolute;
 	left: 0px;
 	width: 100%;
-	top: 2px;
+	top: 7em;
+	text-align: left;
+}
+
+#mod_liens_nav .fkz_titre{ display:none;}
+#mod_liens_nav div{display:inline;}
+
+#connect{
+	position: absolute;
+	right: 10px;
+	top: -7em;
 	text-align: right;
 }
 
@@ -84,8 +100,7 @@ a:hover, a:active {
 
 #mod_lien_tol{
 	position: absolute;
-	left: 0px;
-	width: 100%;
+	right: 10px;
 	top: 5em;
 	text-align: right;
 }
@@ -113,16 +128,7 @@ span.valid_css {
  
  /* Fin Logos W3C */
  
-#mod_liens_nav{
-	position: absolute;
-	left: 0px;
-	width: 100%;
-	top: 7em;
-	text-align: left;
-}
 
-#mod_liens_nav .fkz_titre{ display:none;}
-#mod_liens_nav div{display:inline;}
 
 .fkz_centre {
 	position: absolute;
