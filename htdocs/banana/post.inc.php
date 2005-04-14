@@ -89,7 +89,8 @@ class BananaPost
         if (function_exists('hook_checkcancel')) {
             return hook_checkcancel($this->headers);
         }
-        return ($this->headers['from'] == $_SESSION['name']." <".$_SESSION['mail'].">");
+	global $banana;
+        return ($this->headers['from'] == $banana->pseudo." <".$banana->mail.">");
     }
 
     function to_html()

@@ -35,6 +35,9 @@ class Banana
     var $post;
     var $spool;
 
+    var $mail;
+    var $pseudo;
+
     function Banana()
     {
         $nom = $_SESSION['user']->nom;
