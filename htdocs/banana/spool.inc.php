@@ -150,7 +150,7 @@ class BananaSpool
         global $banana;
         $url = parse_url($banana->host);
         $file = $url['host'].'_'.$url['port'].'_'.$this->group;
-        return dirname(dirname(__FILE__)).'/spool/'.$file;
+        return dirname(dirname(__FILE__)).'/../cache/banana/'.$file;
     }
 
     function _updateSpool($arg)
