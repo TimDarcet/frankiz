@@ -1,0 +1,2 @@
+Ce répertoire est nécessaire pour faire fonctionnner banana.
+Ce fichier est dedans pour être sûr de ne pas avoir un rep vide.
