@@ -43,9 +43,11 @@ class BananaPost
             }
         }
 
-        if (preg_match('!charset=([^;]*)\s*(;|$)!', $this->headers['content-type'], $matches)) {
+        if(isset($this->headers['content-type']) && preg_match('!charset=([^;]*)\s*(;|$)!', $this->headers['content-type'], $matches)) {
             $this->body = iconv($matches[1], 'UTF-8', $this->body);
-        }
+        } else {
+	    $this->body = iconv('ISO-8859-1', 'UTF-8', $this->body);
+	}
     }
 
     function _header()
