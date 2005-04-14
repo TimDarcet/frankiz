@@ -21,9 +21,12 @@
 	Liens de navigation dans le site web.	
 	
 	$Log$
+	Revision 1.39  2005/04/14 13:47:18  pico
+	Mopufle
+
 	Revision 1.38  2005/04/13 17:10:00  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.37  2005/02/08 21:57:56  pico
 	Correction bug #62
 	
@@ -169,7 +172,7 @@
 </module>
 
 <?php if(est_authentifie(AUTH_MINIMUM)): ?>
-<module id="liens_profil" titre="Preférences">
+<module id="liens_profil" titre="Préférences">
 <?
 	if(isset($_SESSION['sueur']))
 		echo "<warning>ATTENTION, su en cours. Pour revenir à ta vrai identité, clique <a href='index.php?logout=1'>ici</a></warning>";
