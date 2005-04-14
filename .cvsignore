@@ -2,7 +2,6 @@
 .FBCLockFolder
 *~
 *.bak
-cache
 webperso
 data
 binets
