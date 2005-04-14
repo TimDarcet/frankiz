@@ -162,7 +162,7 @@ class BananaSpool
         $msgids   = $banana->nntp->xhdr('Message-ID', $arg);
         $refs     = $banana->nntp->xhdr('References', $arg);
 
-        if (is_array($this->ids)) {
+        if (isset($this->ids) && is_array($this->ids)) {
             $this->ids = array_merge($this->ids, array_flip($msgids));
         } else {
             $this->ids = array_flip($msgids);
@@ -376,7 +376,7 @@ class BananaSpool
         }
 
         $index = 1;
-        if (sizeof($this->overview)) {
+        if (isset($this->overview) && sizeof($this->overview)) {
             foreach ($this->roots as $id) {
                 $res   .= $this->_to_html($id, $index, $_first, $_last, $_ref);
                 $index += $this->overview[$id]->desc ;

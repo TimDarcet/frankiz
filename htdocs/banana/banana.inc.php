@@ -169,7 +169,7 @@ class Banana
     {
         $this->_newSpool($group, $this->profile['display'], $this->profile['lastnews']);
 
-        if ($first > count($this->spool->overview)) {
+        if (isset($this->spool->overview) && $first > count($this->spool->overview)) {
             $first = count($this->spool->overview);
         }
 

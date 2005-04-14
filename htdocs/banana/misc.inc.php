@@ -154,7 +154,7 @@ function displayshortcuts($first = -1) {
 
     if (is_null($artid)) {
         $res .= "[<a href=\"banana.php?group=$group&amp;action=new\">Nouveau message</a>] ";
-        if (sizeof($banana->spool->overview)>$banana->tmax) {
+        if (isset($banana->spool->overview) && sizeof($banana->spool->overview)>$banana->tmax) {
             $res .= '<br />';
             $n = intval(log(count($banana->spool->overview), 10))+1;
             for ($ndx=1; $ndx <= sizeof($banana->spool->overview); $ndx += $banana->tmax) {
