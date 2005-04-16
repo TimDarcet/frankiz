@@ -1,14 +1,14 @@
 #!/usr/bin/perl
 
-# Script pour les stats du nb de connectés xnet sur une semaine
-# Garde 168 résultats, soit 7 * 24: Une semaine avec un enregistrement toutes les heures.
+# Script pour les stats du nb de connectÃ©s xnet sur une semaine
+# Garde 168 rÃ©sultats, soit 7 * 24: Une semaine avec un enregistrement toutes les heures.
 
 $file="/home/frankiz2/cache/stats-xnet-week";
 use DBI();
 
 my $dbh = DBI->connect("DBI:mysql:database=xnet:host=heol","web","kokouije?.",{'RaiseError'=>1});
 
-$reqt="select sum(isconnected) as 'Connectés' from clients";
+$reqt="select sum(isconnected) as 'ConnectÃ©s' from clients";
 my $rep = $dbh->prepare($reqt);
 $rep->execute;
 $non_vide=(($nombre)=$rep->fetchrow_array());

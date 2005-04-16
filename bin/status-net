@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Copyright (C) 2004 Binet Réseau
+# Copyright (C) 2004 Binet RÃ©seau
 # http://www.polytechnique.fr/eleves/binets/br/
 # 
 # This program is free software; you can redistribute it and/or
@@ -19,6 +19,9 @@
 #
 
 # $Log$
+# Revision 1.7  2005/04/16 08:05:07  pico
+# Passage en utf comme le reste
+#
 # Revision 1.6  2004/12/16 23:18:24  schmurtz
 # Simplification de status-net
 #
@@ -26,7 +29,7 @@
 # incoherence
 #
 # Revision 1.4  2004/11/30 16:24:51  pico
-# Ajout du serveur de news au script de test de l'état des serveurs
+# Ajout du serveur de news au script de test de l'Ã©tat des serveurs
 #
 # Revision 1.3  2004/10/21 22:19:37  schmurtz
 # GPLisation des fichiers du site
@@ -36,7 +39,7 @@ $file="/home/frankiz2/cache/status";
 
 use Net::Telnet;
 
-@services=("frankiz","newsgroups","ircserver","xnetserver","polynews","kuzh","sil","poly:réception","poly:envoi");
+@services=("frankiz","newsgroups","ircserver","xnetserver","polynews","kuzh","sil","poly:rÃ©ception","poly:envoi");
 @hotes=("frankiz","newsgroups","ircserver","xnetserver","polynews","kuzh","sil","poly","poly");
 @ports=(80,119,6667,5053,119,8080,1080,995,25);
 

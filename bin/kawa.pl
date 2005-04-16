@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-#Script destiné a envoyer sur les news les rappels de convocation de tour kawa
+#Script destinÃ© a envoyer sur les news les rappels de convocation de tour kawa
 
 use DBI();
 use Net::NNTP;
@@ -72,7 +72,7 @@ sub traiter_jour {
 	    }
 	else 
 	    {
-	    print "Pas de post envoyé\n";
+	    print "Pas de post envoyÃ©\n";
 	    }
 	}
     else {
@@ -84,7 +84,7 @@ sub traiter_jour {
 sub selection {
 # definir la date
 	my $name = "Tour kawa";
-	my @subject = ("Au Bôb à 12h15","Un petit café demain?","Dans deux jours tour kawa");
+	my @subject = ("Au BÃ´b Ã  12h15","Un petit cafÃ© demain?","Dans deux jours tour kawa");
 	my $body = "";
 	my $date;
 	for ($i=0; $i<3; $i++) {
