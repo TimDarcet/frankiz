@@ -1,4 +1,4 @@
- <?php
+<?php
 /*
 	Copyright (C) 2004 Binet Réseau
 	http://www.polytechnique.fr/eleves/binets/br/
@@ -21,9 +21,13 @@
 	Pour faire peur aux gens qui ont des virus...
 	
 	$Log$
+	Revision 1.4  2005/04/17 22:15:42  dei
+	c plus clair comme �a...
+	+ le lien vers le mail, plus simple
+
 	Revision 1.3  2005/04/13 17:10:00  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.2  2005/04/13 15:36:08  dei
 	comme ça le compte a rebours marche vraiment...
 	
@@ -66,9 +70,9 @@ if(est_authentifie(AUTH_INTERNE)) {
 		echo "</ui>";
 		$avert="<p>Depuis le ".preg_replace('/^(.{4})-(.{2})-(.{2})$/','$3-$2-$1', $min_date)." tu mets en danger le réseau...";
 		if ($temp_rebours>0){
-			$avert=$avert." Afin d'éviter la propagation des virus, nous allons devoir te couper le réseau dans $temp_rebours jours . Lorsque tu t'en sera débarrassé signale le à un admin@windows.</p>";
+			$avert=$avert." Afin d'éviter la propagation des virus, nous allons devoir te couper le réseau dans $temp_rebours jours . Lorsque tu t'en sera débarrassé ou si tu a des problèmes pour enlever les virus de ton pc, signale le à un <a href='mailto:windows@frankiz.polytechnique.fr'>admin@windows</a>.</p>";
 		} else {
-			$avert=$avert." Nous avons du te couper le réseau... Lorsque tu te sera débarrassé de ce virus signale le à un admin@windows.</p>";
+			$avert=$avert." Nous avons du te couper le réseau... Lorsque tu te sera débarrassé de ce virus signale le à un <a href='mailto:windows@frankiz.polytechnique.fr'>admin@windows</a>.</p>";
 		}
 		echo "$avert";
 		echo "</warning>";
