@@ -21,9 +21,14 @@
 	Pour faire peur aux gens qui ont des virus...
 	
 	$Log$
+	Revision 1.7  2005/04/17 23:16:28  dei
+	quelques modif :
+	on signale au roots quand un ordinateur est clean si il avait le r�seau coup�on
+	peut pr�venir les gens qui lisent pas frankiz par mail
+
 	Revision 1.6  2005/04/13 17:09:58  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.5  2005/04/13 16:14:34  pico
 	test
 	
@@ -66,13 +71,11 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	foreach ($_POST AS $keys => $val){
 		$temp = explode("_",$keys) ;
 		if ($temp[0] == "suppr") {
-			$DB_admin->query("UPDATE infections SET solved='2' WHERE id='{$temp[1]}'");
 			//sur qui est faite la manip ?
-			$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[2]}'");
-			list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
+			$DB_trombino->query("SELECT nom,prenom,promo,piece_id FROM eleves WHERE eleve_id='{$temp[2]}'");
+			list($nom,$prenom,$promo,$ksert) = $DB_trombino->next_row() ;
 			//log de la partie admin...
 			log_admin($_SESSION['user']->uid," certifié que $temp[3] a bien été supprimé de l'ordinateur de $nom $prenom ($promo) ") ;
-			
 			echo "<note> Le virus est considéré comme enlevé de l'odinateur. On le signale par mail à l'utilisateur.</note>";
 			$contenu="Nous avons bien pris en compte la suppression du virus $temp[3] de ton ordinateur.<br><br>".
 			"Nous te rappellons qu'il est de ta responsabilité d'assurer la sécurité de ton pc. Si tu ne sais pas comment faire utilise le domaine windows, il est là pour ça. Tu trouveras tout les renseignements nécessaires dans l'infoBR.<br>".
@@ -80,10 +83,30 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			"Très Cordialement<br>".
 			"Le BR<br>"  ;
 			couriel($temp[2],"[Virus] Suppression de $temp[3]",$contenu,WINDOWS_ID);
+			//on vérifie qu'il est clean...
+			$DB_admin->query("SELECT id FROM infections WHERE ip='{$temp[5]}' AND NOT(solved='2')");
+			if ($temp[4]==3 && $DB_admin->num_rows()==0){
+				$contenu="L'ordinateur de $nom $prenom ($promo, ksert : $ksert) a été débarassé de ses virus, merci donc de bien vouloir lui remettre le réseau !<br><br>".
+				"Très Cordialement<br>".
+				"Le BR<br>"  ;
+				couriel(ROOT_ID,"[Virus] L'ordinateur de $nom $prenom ($promo) est clean !",$contenu,WINDOWS_ID);
+			}
+			// on le prends en compte....
+			$DB_admin->query("UPDATE infections SET solved='2' WHERE id='{$temp[1]}'");
+		}
+		if($temp[0]=="prev"){
+			$contenu="Attention ! ton ordinateur est actuellement infecté par le virus $temp[3] depuis le ".preg_replace('/^(.{4})-(.{2})-(.{2})$/','$3-$2-$1', $temp[1]).". Dans $temp[4] jours nous serons obligés de te couper le réseau !<br><br>".
+			"Nous te rappellons qu'il est de ta responsabilité d'assurer la sécurité de ton pc. Si tu ne sais pas comment faire pour enlever ce virus, contacte un <a href='mailto:windows@frankiz.polytechnique.fr'>admin@windows</a>.<br>".
+			"N'hésites pas à nous signaler tout problème !<br><br>".
+			"Très Cordialement<br>".
+			"Le BR<br>";
+			couriel($temp[2],"[Virus] ton pc est infecté par $temp[3] !",$contenu,WINDOWS_ID);
+			//voilà il est préviendu
+			$DB_admin->query("UPDATE infections SET solved='1' WHERE id='{$temp[6]}'");
 		}
 	}
 	
-	$DB_admin->query("SELECT i.ip,i.date,i.solved,e.login,e.eleve_id,l.nom,i.id FROM prises as p LEFT JOIN trombino.eleves as e ON e.piece_id=p.piece_id LEFT JOIN liste_virus as l ON l.port=i.port INNER JOIN infections as i ON p.ip=i.ip WHERE 1 ORDER BY i.ip, i.solved, l.nom");
+	$DB_admin->query("SELECT i.ip,i.date,i.date+10-CURDATE(),i.solved,e.login,e.eleve_id,l.nom,i.id FROM prises as p LEFT JOIN trombino.eleves as e ON e.piece_id=p.piece_id LEFT JOIN liste_virus as l ON l.port=i.port INNER JOIN infections as i ON p.ip=i.ip WHERE 1 ORDER BY i.ip, i.solved, l.nom");
 ?>
 	<liste id="liste_virus" selectionnable="non" action="admin/nettoyer_virus.php">
 		<entete id="ip" titre="IP"/>
@@ -92,8 +115,9 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<entete id="statut" titre="Statut"/>
 		<entete id="nomv" titre="Nom du virus"/>
 		<entete id="nettoyer" titre=""/>
+		<entete id="prevenir" titre=""/>
 <?
-	while(list($ip,$date,$solved,$login,$eleve_id,$nomv,$id)= $DB_admin->next_row()){
+	while(list($ip,$date,$rebour,$solved,$login,$eleve_id,$nomv,$id)= $DB_admin->next_row()){
 		$statut="";
 		if ($solved==0){
 			$statut="Non signalé";
@@ -115,7 +139,16 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <?
 		if ($solved!=2){
 ?>
-				<bouton titre="Nettoyer" id="suppr_<?echo "$id";?>_<?echo "$eleve_id";?>_<?echo "$nomv";?>" onClick="return window.confirm('Vous déclarez que ce virus a été éradiqué chez la personne considérée ?')"/>
+				<bouton titre="Nettoyer" id="suppr_<?echo "$id";?>_<?echo "$eleve_id";?>_<?echo "$nomv";?>_<?echo "$solved";?>_<?echo "$ip";?>" onClick="return window.confirm('Vous déclarez que ce virus a été éradiqué chez la personne considérée ?')"/>
+<?
+		}
+?>
+			</colonne>
+			<colonne id="nettoyer">
+<?
+		if($rebour<5 && $rebour>-1 && $solved==0){
+?>
+				<bouton titre="Prévenir" id="prev_<?echo "$date";?>_<?echo "$eleve_id";?>_<?echo "$nomv";?>_<?echo "$rebour";?>_<?echo "$ip";?>_<?echo "$id";?>" onClick="return window.confirm('Voulez vous prévenir par mail cette personne quelle est infectée ?')"/>
 <?
 		}
 ?>
