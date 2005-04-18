@@ -13,13 +13,14 @@
 
 function _b_($str) { return utf8_decode(dgettext('banana', utf8_encode($str))); }
 
+function _h_($str) { return htmlentities($str, ENT_COMPAT, 'ISO-8859-1'); }
+
 /********************************************************************************
  *  HEADER STUFF
  */
 
 function _headerdecode($charset, $c, $str) {
     $s = ($c == 'Q') ? quoted_printable_decode($str) : base64_decode($str);
-    $s = iconv($charset, 'UTF-8', $s);
     return str_replace('_', ' ', $s);
 }
  
@@ -93,7 +94,7 @@ function formatDisplayHeader($_header,$_text) {
             {
                 return $res;
             }
-            return htmlentities($_text);
+            return _h_($_text);
     }
 }
 
@@ -127,15 +128,15 @@ function formatFrom($text) {
 #     From: Mark Horton <mark@cbosgd.ATT.COM>
     $mailto = '<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;';
 
-    $result = htmlentities($text);
+    $result = _h_($text);
     if (preg_match("/^([^ ]+)@([^ ]+)$/",$text,$regs)) {
-        $result="$mailto{$regs[1]}&#64;{$regs[2]}\">".htmlentities($regs[1]."&#64;".$regs[2])."</a>";
+        $result="$mailto{$regs[1]}&#64;{$regs[2]}\">"._h_($regs[1]."&#64;".$regs[2])."</a>";
     }
     if (preg_match("/^([^ ]+)@([^ ]+) \((.*)\)$/",$text,$regs)) {
-        $result="$mailto{$regs[1]}&#64;{$regs[2]}\">".htmlentities($regs[3])."</a>";
+        $result="$mailto{$regs[1]}&#64;{$regs[2]}\">"._h_($regs[3])."</a>";
     }
     if (preg_match("/^\"?([^<>\"]+)\"? +<(.+)@(.+)>$/",$text,$regs)) {
-        $result="$mailto{$regs[2]}&#64;{$regs[3]}\">".htmlentities($regs[1])."</a>";
+        $result="$mailto{$regs[2]}&#64;{$regs[3]}\">"._h_($regs[1])."</a>";
     }
     return preg_replace("/\\\(\(|\))/","\\1",$result);
 }

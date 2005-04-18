@@ -254,15 +254,15 @@ class Banana
         $cuts  = displayshortcuts();
         $html  = '<h1>Nouveau message</h1>'.$cuts;
 	$html .= "<formulaire id=\"nvmsg\" titre=\"Nouveau Message\" action=\"banana.php?group=$group\">\n";
-	$html .= "\t<champ id=\"nom\" titre=\"Nom\" valeur=\"".htmlentities($this->profile['name'])."\" modificable = \"non\"/>\n";
-	$html .= "\t<champ id=\"subject\" titre=\"Sujet\" valeur=\"".htmlentities($subject)."\"/>\n";
-	$html .= "\t<champ id=\"forum\" titre=\"Forums\" valeur=\"".htmlentities($target)."\"/>\n";
+	$html .= "\t<champ id=\"nom\" titre=\"Nom\" valeur=\""._h_($this->profile['name'])."\" modificable = \"non\"/>\n";
+	$html .= "\t<champ id=\"subject\" titre=\"Sujet\" valeur=\""._h_($subject)."\"/>\n";
+	$html .= "\t<champ id=\"forum\" titre=\"Forums\" valeur=\""._h_($target)."\"/>\n";
 	$html .= "\t<champ id=\"fup\" titre=\"Suivi a\" valeur=\"\"/>\n";
 	$html .= "\t<champ id=\"orga\" titre=\"Organisation\" valeur=\"".$this->profile['org']."\"/>\n";
 	if($id > 0) {
 	    $html .= "\t<champ id=\"artid\" titre=\"Reference\" valeur=\"$id\"/>\n";
 	}	
-	$html .= "\t<zonetext id=\"body\" titre=\"Texte du message\">".htmlentities($body).($this->profile['sig'] ? "\n\n-- \n".htmlentities($this->profile['sig']) : '')."</zonetext>\n";
+	$html .= "\t<zonetext id=\"body\" titre=\"Texte du message\" type=\"grand\">".$body.($this->profile['sig'] ? "\n\n-- \n"._h_($this->profile['sig']) : '')."</zonetext>\n";
 	
         $html .= "\t<bouton id=\"new\" titre=\"Nouveau\"/>\n";
         $html .= "\t<bouton id=\"submit\" titre=\"Poster\"/>\n";

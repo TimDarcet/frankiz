@@ -19,6 +19,8 @@ class BananaPost
     var $body;
     /** poster name */
     var $name;
+    /** encoding */
+    var $encoding;
 
     /** constructor
      * @param $_id STRING MSGNUM or MSGID (a group should be selected in this case)  
@@ -28,13 +30,9 @@ class BananaPost
         global $banana;
         $this->id = $_id;
         $this->_header();
+	$this->_body();
+	if($this == null) return null;
 
-        if ($body = $banana->nntp->body($_id)) {
-            $this->body = join("\n", $body);
-        } else {
-            return ($this = null);
-        }
-        
         if (isset($this->headers['content-transfer-encoding'])) {
             if (preg_match("/base64/", $this->headers['content-transfer-encoding'])) {
                 $this->body = base64_decode($this->body);
@@ -43,13 +41,71 @@ class BananaPost
             }
         }
 
-        if(isset($this->headers['content-type']) && preg_match('!charset=([^;]*)\s*(;|$)!', $this->headers['content-type'], $matches)) {
-            $this->body = iconv($matches[1], 'UTF-8', $this->body);
+        if(isset($this->headers['content-type'])
+                && preg_match('!charset=([^;]*)\s*(;|$)!', $this->headers['content-type'], $matches)) 
+	{
+                $this->encoding = $matches[1];
         } else {
-	    $this->body = iconv('ISO-8859-1', 'UTF-8', $this->body);
+             $this->encoding = 'ISO-8859-1';
+	}								     
+
+        $this->body = iconv($this->encoding, 'UTF-8', $this->body);
+     }
+
+    function _body()
+    {
+    	global $banana;
+        if (!($body = $banana->nntp->body($this->id))) {
+           return ($this = null);
+	}
+								    
+    	if(isset($this->headers['content-type']) 
+		&& preg_match('!multipart!', $this->headers['content-type']))
+	{
+		if(preg_match('!boundary="(.*)"!', $this->headers['content-type'], $matches)) {
+			$inheader = 0;
+			$intext = 0;
+			$this->body = "";
+			$hdr = "";
+			foreach($body as $line) {
+				if(preg_match("/".$matches[1]."/", $line)) {
+					$inheader = 1;
+					$intext = 0;
+                               	} elseif($inheader && $line == "") {
+			        	$inheader = 0;
+					$intext = 1;
+				} elseif($inheader) {
+					$hdr = $this->_read_header($line, $hdr);
+				} elseif($intext 
+					&& preg_match('!text/plain!', $this->headers['content-type'])) {
+					$this->body .= $line."\n";
+				}
+			}
+		}
+	}
+	else {
+	        $this->body = join("\n", $body);
 	}
     }
 
+    function _read_header($line, $hdr)
+    {
+    	global $banana;
+        if (preg_match("/^[\t\r ]+/", $line)) {
+            $line = ($hdr=="X-Face"?"":" ").ltrim($line);
+            if (in_array($hdr, $banana->parse_hdr))  {
+                 $this->headers[$hdr] .= $line;
+	    }
+	} else {
+	    list($hdr, $val) = split(":[ \t\r]*", $line, 2);
+	    $hdr = strtolower($hdr);
+	    if (in_array($hdr, $banana->parse_hdr)) {
+	         $this->headers[$hdr] = $val;
+	    }
+	}
+	return $hdr;
+    }
+   
     function _header()
     {
         global $banana;
@@ -60,25 +116,16 @@ class BananaPost
         }
 
         // parse headers
+	$hdr = "";
         foreach ($hdrs as $line) {
-            if (preg_match("/^[\t\r ]+/", $line)) {
-                $line = ($hdr=="X-Face"?"":" ").ltrim($line);
-                if (in_array($hdr, $banana->parse_hdr))  {
-                    $this->headers[$hdr] .= $line;
-                }
-            } else {
-                list($hdr, $val) = split(":[ \t\r]*", $line, 2);
-                $hdr = strtolower($hdr);
-                if (in_array($hdr, $banana->parse_hdr)) {
-                    $this->headers[$hdr] = $val;
-                }
-            }
+	    $hdr = $this->_read_header($line, $hdr);
         }
+
         // decode headers
         foreach ($banana->hdecode as $hdr) {
             if (isset($this->headers[$hdr])) {
-                $this->headers[$hdr] = headerDecode($this->headers[$hdr]);
-            }
+	      	$this->headers[$hdr] = headerDecode($this->headers[$hdr]);
+ 	    }
         }
 
         $this->name = $this->headers['from'];
