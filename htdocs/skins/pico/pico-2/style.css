@@ -72,6 +72,7 @@ a:hover, a:active {
 	position: absolute;
 	font-size: 9pt;
 	left: 21%;
+	top: 80px;
 	width: 78%;
 	margin-top: 20px;
 }
