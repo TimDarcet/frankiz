@@ -133,6 +133,7 @@ span.valid_css {
 .fkz_centre {
 	position: absolute;
 	left: 20%;
+	top: 160px;
 	width: 78%;
 	margin-top: 20px;
 }
