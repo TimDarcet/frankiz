@@ -1,0 +1,27 @@
+- récupérer le XSl de psycow pour du vacabulaire coloré 1 ligne sur 2 et l'intégrer au XSL pico
+
+- uniformiser les modules virus :
+
+                    <div class="fkz_module" id="mod_virus">
+                      <div class="fkz_titre">
+                        <span id="virus_logo"> </span><span id="virus">Important !</span></div>
+                      <div class="fkz_module_corps">
+
+ et les modules anniversaires/annonces :
+
+                    <div class="fkz_module" id="mod_anniversaires">
+                      <div class="fkz_anniversaire_titre">
+                        <span id="anniversaires_logo"> </span><span id="anniversaires">Joyeux anniversaire: </span></div>
+                      <div class="fkz_anniversaire">
+
+                    <div class="fkz_sommaire">
+                      <div class="fkz_sommaire_titre">
+                        <span class="fkz_annonces_nouveau"> </span> Nouvelles Fraîches</div>
+                      <div class="fkz_sommaire_corps">
+
+parce que là c'est le bordel pour skinner
+
+- mettre des majuscules aux titres de cadre dans le XSL pico : exemple :
+                    <div class="fkz_page_divers" id="vocabulaire">
+                      <div class="fkz_page_titre">vocabulaire</div>
+                      <div class="fkz_page_corps">
