@@ -23,9 +23,12 @@
 	C'est d'ici qu'est appelé la fonction qui affiche les erreurs en haut de la page.
 	
 	$Log$
+	Revision 1.15  2005/04/18 08:16:01  pico
+	Y'a plus besoin de ça, on travaille déjà en utf8
+
 	Revision 1.14  2005/04/13 17:10:00  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.13  2005/03/23 21:12:12  pico
 	Normalement tout ce qui faut pour passer en UTF8
 	
@@ -80,10 +83,10 @@ xslt_set_encoding($xh, "utf8");
 
 // Les paramètres à passer à sablotron sont en UTF8
 $parameters = array (
-  'user_nom' => utf8_encode($_SESSION['user']->nom),
-  'user_prenom' => utf8_encode($_SESSION['user']->prenom),
-  'date' => utf8_encode(date("d/m/Y")),
-  'heure' => utf8_encode(date("H:i"))
+  'user_nom' => $_SESSION['user']->nom,
+  'user_prenom' => $_SESSION['user']->prenom,
+  'date' => date("d/m/Y"),
+  'heure' => date("H:i")
 );
 
 $resultat = xslt_process($xh, 'arg:/_xml', $_SESSION['skin']['skin_xsl_chemin'], NULL, array('/_xml'=>$xml),array_merge($_SESSION['skin']['skin_parametres'],$parameters));
