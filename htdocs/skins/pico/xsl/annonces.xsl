@@ -44,15 +44,22 @@
 <xsl:template match="page[@id='annonces']" mode="sommaire">
 	<xsl:if test="$sommaire='pas_tri'">
 		<xsl:if test="count(annonce) != 0">
+			<div class="fkz_sommaire_1"><div class="fkz_sommaire_2">
+			<div class="fkz_sommaire_3"><div class="fkz_sommaire_4">
+			<div class="fkz_sommaire_5"><div class="fkz_sommaire_6">
 			<div class="fkz_sommaire">
 				<xsl:apply-templates select="annonce" mode="sommaire"/>
 				<xsl:apply-templates select="lien"/>
 			</div>
+			</div></div></div></div></div></div>
 			<br/>
 		</xsl:if>
 	</xsl:if>
 	<xsl:if test="$trier_annonces!='pas_tri' and $sommaire!='cache'">
 		<xsl:if test="count(annonce) != 0">
+			<div class="fkz_sommaire_1"><div class="fkz_sommaire_2">
+			<div class="fkz_sommaire_3"><div class="fkz_sommaire_4">
+			<div class="fkz_sommaire_5"><div class="fkz_sommaire_6">
 			<div class="fkz_sommaire">
 				<xsl:if test="count(annonce[@categorie='important']) != 0">
 					<div class="fkz_sommaire_titre">
@@ -74,16 +81,21 @@
 				</xsl:if>
 				<xsl:apply-templates select="lien"/>
 			</div>
+			</div></div></div></div></div></div>
 			<br/>
 		</xsl:if>
 	</xsl:if>
 </xsl:template>
+
 
 <xsl:template match="annonce" mode="complet">
 	<a><xsl:attribute name="name"><xsl:value-of select="concat('annonce_',@id)"/></xsl:attribute>
 		<xsl:text> </xsl:text>
 	</a>
 	<xsl:if test="@visible!='non'">
+	<div class="fkz_annonces_1"><div class="fkz_annonces_2">
+	<div class="fkz_annonces_3"><div class="fkz_annonces_4">
+	<div class="fkz_annonces_5"><div class="fkz_annonces_6">
 	<div class="fkz_annonces">
 		<xsl:attribute name="id"><xsl:value-of select="concat('annonce_',@id)"/></xsl:attribute>
 		<div class="fkz_annonces_titre">
@@ -101,9 +113,11 @@
 			<xsl:apply-templates/>
 		</div>
 	</div>
+	</div></div></div></div></div></div>
 	<br/>
 	</xsl:if>
 </xsl:template>
+
 
 <xsl:template match="annonce">
 		<div>

@@ -78,17 +78,9 @@
 			<div class="fkz_logo"><a href="index.php"><span class="fkz_logo">Frankiz,</span></a></div>
 			<div  class="fkz_logo_eleves"><span class="fkz_logo_eleves">le site Web des élèves de l'École Polytechnique</span></div>
 		</div>
-		<div class="fkz_page">
-			<div class="fkz_centre">
-				<xsl:apply-templates select="frankiz/module[@id='anniversaires']"/>
-				<xsl:apply-templates select="frankiz/module[@id='virus']"/>
-				<xsl:apply-templates select="frankiz/page[@id='annonces']" mode="sommaire"/>
-				<xsl:apply-templates select="frankiz/page[@id='annonces']" mode="complet"/>
-				<xsl:apply-templates select="frankiz/page[@id='trombino']"/>
-				<xsl:apply-templates select="frankiz/page[@id!='annonces' and @id!='trombino']"/>
-			</div>
 
-	
+		<div class="fkz_page">
+
 			<div class="fkz_droite">
 				<xsl:apply-templates select="frankiz/module[@id='fetes']"/>
 				<xsl:apply-templates select="frankiz/module[@id='lien_tol']"/>
@@ -119,7 +111,18 @@
 				<xsl:apply-templates select="frankiz/module[@id='liens_ecole']"/>
 				<xsl:apply-templates select="frankiz/module[@id='stats']"/>
 			</div>
+
+			<div class="fkz_centre">
+				<xsl:apply-templates select="frankiz/module[@id='anniversaires']"/>
+				<xsl:apply-templates select="frankiz/module[@id='virus']"/>
+				<xsl:apply-templates select="frankiz/page[@id='annonces']" mode="sommaire"/>
+				<xsl:apply-templates select="frankiz/page[@id='annonces']" mode="complet"/>
+				<xsl:apply-templates select="frankiz/page[@id='trombino']"/>
+				<xsl:apply-templates select="frankiz/page[@id!='annonces' and @id!='trombino']"/>
+			</div>
+
 		</div>
+
 		<div class="fkz_end_page"><xsl:text> </xsl:text></div>
 	</body>
 	</html>
@@ -127,6 +130,9 @@
 
 
 <xsl:template match="/frankiz/page[@id!='annonces' and @id!='trombino']">
+	<div class="fkz_divers_1"><div class="fkz_divers_2">
+	<div class="fkz_divers_3"><div class="fkz_divers_4">
+	<div class="fkz_divers_5"><div class="fkz_divers_6">
 	<div class="fkz_page_divers">
 		<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 		<xsl:if test="@id != ''">
@@ -134,13 +140,18 @@
 		</xsl:if>
 		<div class="fkz_page_corps"><xsl:apply-templates/></div>
 	</div>
+	</div></div></div></div></div></div>
 </xsl:template>
 
 <xsl:template match="/frankiz/page[@id='meteo']">
+	<div class="fkz_meteo_1"><div class="fkz_meteo_2">
+	<div class="fkz_meteo_3"><div class="fkz_meteo_4">
+	<div class="fkz_meteo_5"><div class="fkz_meteo_6">
 	<div class="fkz_page_meteo">
 		<div class="fkz_page_titre">Météo</div>
 		<div class="fkz_page_corps"><xsl:apply-templates/></div>
 	</div>
+	</div></div></div></div></div></div>
 </xsl:template>
 
 
@@ -175,6 +186,9 @@
 
 
 <xsl:template match="module[@id='rss']">
+	<div class="fkz_module_1"><div class="fkz_module_2">
+	<div class="fkz_module_3"><div class="fkz_module_4">
+	<div class="fkz_module_5"><div class="fkz_module_6">
 	 <div class="fkz_module" id='mod_rss'>
 		<div class="fkz_titre">
 			<a>
@@ -199,10 +213,14 @@
 			</dl>
 		</div>
 	</div>
+	</div></div></div></div></div></div>
 </xsl:template>
 
 <xsl:template match="module">
 	<xsl:if test="false = starts-with(@visible,'false')">
+		<div class="fkz_module_1"><div class="fkz_module_2">
+		<div class="fkz_module_3"><div class="fkz_module_4">
+		<div class="fkz_module_5"><div class="fkz_module_6">
 		<div class="fkz_module"><xsl:attribute name="id">mod_<xsl:value-of select="@id"/></xsl:attribute>
 			<div class="fkz_titre">
 				<span><xsl:attribute name="id"><xsl:value-of select="@id"/>_logo</xsl:attribute><xsl:text> </xsl:text></span>
@@ -212,6 +230,7 @@
 				<xsl:apply-templates/>
 			</div>
 		</div>
+		</div></div></div></div></div></div>
 	</xsl:if>
 </xsl:template>
 

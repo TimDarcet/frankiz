@@ -22,6 +22,9 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="eleve">
+	<div class="fkz_trombino_eleve_1"><div class="fkz_trombino_eleve_2">
+	<div class="fkz_trombino_eleve_3"><div class="fkz_trombino_eleve_4">
+	<div class="fkz_trombino_eleve_5"><div class="fkz_trombino_eleve_6">
 	<div class="fkz_trombino_eleve">
 	<h3 class="nom">
 		<xsl:value-of select="@prenom" />
@@ -80,19 +83,27 @@
 	</div>
 		<xsl:apply-templates select="*[name()!='binet']"/>
 	</div>
+	</div></div></div></div></div></div>
 </xsl:template>
 
 <xsl:template match="page[@id='trombino']">
+	<div class="fkz_trombino_1"><div class="fkz_trombino_2">
+	<div class="fkz_trombino_3"><div class="fkz_trombino_4">
+	<div class="fkz_trombino_5"><div class="fkz_trombino_6">
 	<div class="fkz_trombino">
 		<xsl:apply-templates/>
 	</div>
+	</div></div></div></div></div></div>
 </xsl:template>
 
 <xsl:template match="formulaire[../@id='trombino']">
 	<!-- le formulaire lui même-->
 	<form class="trombino" enctype="multipart/form-data" method="post"  accept-charset="UTF-8">
 		<xsl:attribute name="action"><xsl:value-of select="@action"/></xsl:attribute>
-			<div  class="fkz_trombino_eleve">
+			<div class="fkz_trombino_eleve_1"><div class="fkz_trombino_eleve_2">
+			<div class="fkz_trombino_eleve_3"><div class="fkz_trombino_eleve_4">
+			<div class="fkz_trombino_eleve_5"><div class="fkz_trombino_eleve_6">
+			<div class="fkz_trombino_eleve">
 			<h3>Rechercher sur le trombino</h3>
 				<table>
 					<tr>
@@ -170,6 +181,7 @@
 				<xsl:apply-templates select="bouton"/>
 			</p>
 			</div>
+			</div></div></div></div></div></div>
 	</form>
 	<br/>
 </xsl:template>

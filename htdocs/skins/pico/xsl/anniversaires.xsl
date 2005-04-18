@@ -23,7 +23,10 @@
 
 <xsl:template match="module[@id='anniversaires']">
 	<xsl:if test="count(eleve) != 0">
-        <div class="fkz_module" id="mod_anniversaires">
+		<div class="fkz_module_1"><div class="fkz_module_2">
+		<div class="fkz_module_3"><div class="fkz_module_4">
+		<div class="fkz_module_5"><div class="fkz_module_6">
+		<div class="fkz_module" id="mod_anniversaires">
 		<div class="fkz_anniversaire_titre"><span id="anniversaires_logo"><xsl:text> </xsl:text></span><span id="anniversaires">Joyeux anniversaire: </span></div>
 		<div class="fkz_anniversaire">
 			<xsl:for-each select="eleve">
@@ -40,14 +43,18 @@
 				<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
 			</xsl:for-each>
 		</div>
-		<br/> 
+		<br/>
 		</div>
+		</div></div></div></div></div></div>
 	</xsl:if>
 </xsl:template>
 
 <xsl:template match="module[@id='fetes']">
 	<xsl:if test="count(eleve) != 0">
-        <div class="fkz_module" id="mod_fetes">
+		<div class="fkz_module_1"><div class="fkz_module_2">
+		<div class="fkz_module_3"><div class="fkz_module_4">
+		<div class="fkz_module_5"><div class="fkz_module_6">
+		<div class="fkz_module" id="mod_fetes">
 		<div class="fkz_titre"><span id="fetes_logo"><xsl:text> </xsl:text></span><span id="fetes">Bonne fête: </span></div>
 		<div class="fkz_module_corps">
 			<xsl:for-each select="eleve">
@@ -57,6 +64,7 @@
 		</div>
 		<br/> 
 		</div>
+		</div></div></div></div></div></div>
 	</xsl:if>
 </xsl:template>
 

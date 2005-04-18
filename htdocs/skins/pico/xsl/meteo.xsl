@@ -88,7 +88,10 @@
 </xsl:template>
 
 <xsl:template match="module[@id='meteo']">
-	<div class="fkz_module"  id='mod_meteo'>
+	<div class="fkz_module_1"><div class="fkz_module_2">
+	<div class="fkz_module_3"><div class="fkz_module_4">
+	<div class="fkz_module_5"><div class="fkz_module_6">
+	<div class="fkz_module" id='mod_meteo'>
 		<div class="fkz_titre"><span id="meteo_logo"><xsl:text> </xsl:text></span><span id="meteo">La météo</span></div>
 		<div class="fkz_module_corps">
 			<span  class="meteo">
@@ -108,6 +111,7 @@
 			</span>
 		</div>
 	</div>
+	</div></div></div></div></div></div>
 </xsl:template>
 
 </xsl:stylesheet>

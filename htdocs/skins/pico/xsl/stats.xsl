@@ -22,6 +22,9 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="module[@id='stats']">
+	<div class="fkz_module_1"><div class="fkz_module_2">
+	<div class="fkz_module_3"><div class="fkz_module_4">
+	<div class="fkz_module_5"><div class="fkz_module_6">
 	<div class="fkz_module">
 		<div class="fkz_titre"><span id="serveurs_logo"><xsl:text> </xsl:text></span><span id="serveurs">État des serveurs :</span></div>
 		<div class="fkz_module_corps">
@@ -37,7 +40,11 @@
 			</ul>
 		</div>
 	</div>
+	</div></div></div></div></div></div>
 
+	<div class="fkz_module_1"><div class="fkz_module_2">
+	<div class="fkz_module_3"><div class="fkz_module_4">
+	<div class="fkz_module_5"><div class="fkz_module_6">
 	<div class="fkz_module">
 		<div class="fkz_titre"><span id="stats_logo"><xsl:text> </xsl:text></span><span id="stats">Statistiques</span></div>
 		<div class="fkz_module_corps">
@@ -53,6 +60,7 @@
 			</ul>
 		</div>
 	</div>
+	</div></div></div></div></div></div>
 </xsl:template>
 
 
