@@ -24,4 +24,8 @@ parce que là c'est le bordel pour skinner
 - mettre des majuscules aux titres de cadre dans le XSL pico : exemple :
                     <div class="fkz_page_divers" id="vocabulaire">
                       <div class="fkz_page_titre">vocabulaire</div>
-                      <div class="fkz_page_corps">
+		<div class="fkz_page_corps">
+
+
+- faire la page du vocabulaire avec des dl, dt, dd (parce qu'avec des tables c'est très moche et puis autant utiliser les outils fais pour)
+- toujours sur cette page, mettre des classes pair/impaire pour un tableau bicolore par lignes (plus joli)
