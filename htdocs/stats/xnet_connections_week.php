@@ -53,7 +53,7 @@ ImageLine ($im, 10, 30, 10, $hauteur-40, $noir);
 // on affiche les legendes sur les deux axes ainsi que différents textes (note : pour que le script trouve la police verdana, vous devrez placer la police verdana dans un repertoire /fonts/)
 imagestring($im, 4, $largeur-70, $hauteur-20, "Jour", $noir);
 imagestring($im, 4, 10, $hauteur-20, "Maximum: $max_os", $noir);
-imagestring($im, 4, 10, 0, "Nombre de connectés cette semaine.", $noir);
+imagestring($im, 4, 10, 0, utf8_decode("Nombre de connectés cette semaine."), $noir);
 
  
 $i=0;
