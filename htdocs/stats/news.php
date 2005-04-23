@@ -34,7 +34,7 @@
 	} ?>
 	
 	<h2>Statistiques diverses</h2>
-	<?php include("news_data_premiers_posteurs"); ?><br/>
+	<?php include(BASE_CACHE."news_data_premiers_posteurs"); ?><br/>
 	<image source="stats/news_stats.png" texte="Nombre de postes"/>
 	
 	<h2>Et avec ceci...</h2>
