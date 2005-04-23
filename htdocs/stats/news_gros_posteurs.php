@@ -19,11 +19,10 @@
 */
 	require_once("../include/global.inc.php");
 	require "../include/page_header.inc.php";
-	include ("newsmestres.inc");
 ?>
 <page id="grosposteur" titre="Frankiz : Boulétiseurs de news">
 	<?	
-		if($newsmestres==1) {
+		if(verifie_permission('admin')||verifie_permission('news')) {
 			echo "<h2>Bienvenue à toi ô très cher Maître</h2>";
 			include("news_data");
 		} else {

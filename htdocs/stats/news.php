@@ -20,11 +20,10 @@
 
 	require_once("../include/global.inc.php");
 	require "../include/page_header.inc.php";
-	include ("newsmestres.inc");
 ?>
 
 <page id='statnews' titre='Frankiz : Statistiques des news'>
-	<?php if ($newsmestres==1) {
+	<?php if(verifie_permission('admin')||verifie_permission('news')) {
 		echo "<h2>Bienvenue à toi ô tres cher Maître</h2>";
 		echo "Tu peux aussi consulter ".
 		"<a href=\"stats/news_gros_posteurs.php\">la liste des boulets</a>,";
