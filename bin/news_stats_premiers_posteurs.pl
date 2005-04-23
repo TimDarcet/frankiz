@@ -5,6 +5,8 @@
 use DBI();
 #use Net::NNTP;
 use HTTP::Date;
+use Unicode::String ;
+Unicode::String->stringify_as('utf8');
 
 my $dbh = DBI->connect("DBI:mysql:database=news:host=localhost","news",
         "ug0yc1jo",{'RaiseError'=>1});
@@ -49,6 +51,7 @@ my $rep = $dbh->prepare($reqt);
  $rep->execute;
 
        while (my $ref = $rep->fetchrow_hashref()) {
+	$ref->{'pseudo_news'}=Unicode::String::latin1($ref->{'pseudo_news'});
 	print("Traitement de ".$ref->{'pseudo_news'}."\n");
            if ( !filtrage($ref) )
 	   {
