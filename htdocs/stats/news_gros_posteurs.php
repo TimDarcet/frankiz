@@ -24,7 +24,7 @@
 	<?	
 		if(verifie_permission('admin')||verifie_permission('news')) {
 			echo "<h2>Bienvenue à toi ô très cher Maître</h2>";
-			include("news_data");
+			include(BASE_CACHE."news_data");
 		} else {
 			echo "<h2>Hé hé</h2>";
 			echo "Tu viens de te faire avoir... cette page est private";
