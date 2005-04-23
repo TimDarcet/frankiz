@@ -22,9 +22,14 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.28  2005/04/23 22:11:29  fruneau
+	Pour que les en-tête des mails restent correctement encodées (ie latin1).
+
+	A tester... mais ça a l'air de marcher.
+
 	Revision 1.27  2005/04/13 18:25:12  pico
 	/me slaps himself en fait
-
+	
 	Revision 1.26  2005/04/13 18:23:56  pico
 	/me slaps les erreurs �la con
 	
@@ -226,11 +231,11 @@ class Mail {
 	
 	// Création d'un nouveau mail
 	function Mail($from, $to, $subject, $multipart=false, $cc="", $bcc="") {
-		$this->from = $from;
-		$this->to = $to;
+		$this->from = iconv('UTF-8', 'ISO-8859-1', $from);
+		$this->to = iconv('UTF-8', 'ISO-8859-1', $to);
 		$this->cc = $cc;
 		$this->bcc = $bcc;
-		$this->subject = $subject;
+		$this->subject = iconv('UTF-8', 'ISO-8859-1', $subject);
 		$this->body = "";
 		$this->header = "X-Mailer: PHP/" . phpversion()."\n".
 						"Mime-Version: 1.0\n";
@@ -248,7 +253,7 @@ class Mail {
 	
 	// Ajout d'entêtes
 	function addHeader($text) {
-		$this->header .= "$text\n";
+		$this->header .= iconv('UTF-8', 'ISO-8859-1', "$text\n");
 	}
 	
 	// Gestion des mails multipart
@@ -286,7 +291,7 @@ class Mail {
 	
 	// pour les envois multiples du même mail à plusieurs personnes
 	function setTo($to) {
-		$this->to = $to;
+		$this->to = iconv('UTF-8', 'ISO-8859-1', $to);
 	}
 	
 	// envoie d'un mail
