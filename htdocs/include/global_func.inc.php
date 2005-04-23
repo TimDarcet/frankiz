@@ -22,9 +22,12 @@
 	Pas de fonctionnalités spécifiques à quelques pages.
 
 	$Log$
+	Revision 1.54  2005/04/23 06:48:14  pico
+	Ajout de l'utilisateur news
+
 	Revision 1.53  2005/04/13 17:10:00  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.52  2005/04/13 14:32:47  dei
 	Ajout du module "annonce virus"...
 	
@@ -262,6 +265,7 @@ function liste_droits() {
 	return array(
 		"admin"		=>	"Administrateur Total",
 		"web"		=>	"Webmestre de Frankiz",
+		"news"		=>	"Newsmestre de Frankiz",
 		"qdjmaster"	=>	"QdjMaster",
 		"xshare"		=>	"Xshare",
 		"faq"			=>	"Faqmestre",
