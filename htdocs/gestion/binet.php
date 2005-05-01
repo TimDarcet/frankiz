@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.39  2005/05/01 16:43:24  pico
+	Correction pour avoir les noms de fichier en utf8
+
 	Revision 1.38  2005/04/13 17:09:59  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.37  2005/03/16 17:07:56  pico
 	Micro correction de merde, mais ça faisait longtemps que ça me soulait ;)
 	
@@ -366,6 +369,7 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 			while( FALSE !== ($fich = readdir($dir)) ) {
 				if ($fich != "." && $fich != "..") {
 					$chemin = "$rep/$fich";
+					$fich = utf8_encode($fich);
 					if (is_dir($chemin)) {
 						echo "<noeud titre=\"#".htmlentities($fich,ENT_QUOTES)."\">";
 							parcours_arbo1($chemin);
