@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.40  2005/05/02 07:17:18  pico
+	Pour plus avoir de pbs de dossiers avec les droits apache:binets au lieu de binets:binets
+
 	Revision 1.39  2005/05/01 16:43:24  pico
 	Correction pour avoir les noms de fichier en utf8
-
+	
 	Revision 1.38  2005/04/13 17:09:59  pico
 	Passage de tous les fichiers en utf8.
 	
@@ -382,10 +385,7 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 		}
 	}
 	// si le folder du binet n'existe pas alors on le crée
-	if($folder!=''){
-		if (!is_dir(BASE_BINETS.$folder)) {
-			mkdir (BASE_BINETS.$folder) ;
-		}
+	if($folder!='' && is_dir(BASE_BINETS.$folder)) {
 		
 		echo "<h2>Gestion des fichiers du site $nom_binet</h2>";
 		
