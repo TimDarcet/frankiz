@@ -23,9 +23,13 @@
 	ou refuse la demande ici.
 	
 	$Log$
+	Revision 1.43  2005/05/06 21:35:34  fruneau
+	Prévient que le réseau arrivera dans la demi-heure si on a ajouté la mac.
+	Affiche le casert pour la demande de nouvelle ip, beaucoup plus pratique pour l'interface de la DSI (il n'en reste pas moins qu'il faudra tout de même regarder si l'entrée est bien prise en compte)
+
 	Revision 1.42  2005/04/13 17:09:58  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.41  2005/03/04 20:22:58  pico
 	Demande de nouvelle adresse MAC
 	Fixe les bugs #60 et #70
@@ -236,7 +240,9 @@ foreach ($_POST AS $keys => $val){
 		$DB_valid->query("DELETE FROM valid_ip WHERE eleve_id='{$temp[1]}'");
 		
 		$contenu = "Bonjour, <br><br>".
-					"Nous avons rajouté l'adresse MAC que tu nous a donné dans notre base.<br>".
+					"Nous avons rajouté l'adresse MAC que tu nous a donné dans notre base. ".
+					"Ton ordinateur devrait pouvoir accéder au réseau d'ici une demi-heure.<br><br>".
+					"En cas de problème, n'hésite pas à envoyer un mail à root@frankiz.<br>".
 					"<br>" .
 					"Très Cordialement<br>" .
 					"Le BR<br>";
@@ -274,6 +280,7 @@ $DB_admin->query("UNLOCK TABLES");
 <h2>Liste des personnes demandant</h2>
 	<liste id="liste" selectionnable="non" action="admin/valid_ip.php">
 		<entete id="prise" titre="Prise"/>
+		<entete id="casert" titre="Casert"/>
 		<entete id="eleve" titre="Élève"/>
 		<entete id="raison" titre="Raison"/>
 		<entete id="ip" titre="IP"/>
@@ -283,6 +290,7 @@ $DB_admin->query("UNLOCK TABLES");
 ?>
 			<element id="<? echo $eleve_id ;?>">
 				<colonne id="prise"><? echo "$prise" ?></colonne>
+				<colonne id="casert"><? echo "$piece" ?></colonne>
 				<colonne id="eleve"><? echo "$nom $prenom" ?></colonne>
 				<colonne id="raison">
 					<strong>Nouvelle @MAC: </strong><? echo $mac ?><br/>
