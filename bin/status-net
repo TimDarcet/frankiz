@@ -19,6 +19,9 @@
 #
 
 # $Log$
+# Revision 1.8  2005/05/16 00:12:56  nc
+# On perturbe pas l'ircd pour le moment...
+#
 # Revision 1.7  2005/04/16 08:05:07  pico
 # Passage en utf comme le reste
 #
@@ -41,7 +44,7 @@ use Net::Telnet;
 
 @services=("frankiz","newsgroups","ircserver","xnetserver","polynews","kuzh","sil","poly:réception","poly:envoi");
 @hotes=("frankiz","newsgroups","ircserver","xnetserver","polynews","kuzh","sil","poly","poly");
-@ports=(80,119,6667,5053,119,8080,1080,995,25);
+@ports=(80,119,5053,119,8080,1080,995,25);
 
 open(STATUS,">$file");
 
