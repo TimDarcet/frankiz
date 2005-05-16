@@ -19,6 +19,9 @@
 #
 
 # $Log$
+# Revision 1.9  2005/05/16 00:17:39  nc
+# Completion de la modif precedente
+#
 # Revision 1.8  2005/05/16 00:12:56  nc
 # On perturbe pas l'ircd pour le moment...
 #
@@ -42,8 +45,8 @@ $file="/home/frankiz2/cache/status";
 
 use Net::Telnet;
 
-@services=("frankiz","newsgroups","ircserver","xnetserver","polynews","kuzh","sil","poly:réception","poly:envoi");
-@hotes=("frankiz","newsgroups","ircserver","xnetserver","polynews","kuzh","sil","poly","poly");
+@services=("frankiz","newsgroups","xnetserver","polynews","kuzh","sil","poly:réception","poly:envoi");
+@hotes=("frankiz","newsgroups","xnetserver","polynews","kuzh","sil","poly","poly");
 @ports=(80,119,5053,119,8080,1080,995,25);
 
 open(STATUS,">$file");
