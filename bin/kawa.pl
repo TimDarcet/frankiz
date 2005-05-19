@@ -5,9 +5,11 @@
 use DBI();
 use Net::NNTP;
 use Net::Cmd;
+use Text::Iconv;
 use Time::localtime;
 
 my $dbh = DBI->connect("DBI:mysql:database=frankiz2:host=localhost","web","kokouije?.",{'RaiseError'=>1});
+my $converter = Text::Iconv->new("UTF-8", "iso-8859-1");
 
 sub post {
         local ($serveur) = "129.104.201.51";
@@ -21,7 +23,7 @@ sub post {
 	if ($type==1) {
 		$nntp->datasend("From: ".$name." <news\@frankiz.eleves.polytechnique.fr>\n");
 		$nntp->datasend("Newsgroups: ". $ng ."\n");
-		$nntp->datasend("Subject: [Tour Kawa ".$groupe."] ".$subject."\n");
+		$nntp->datasend("Subject: [Tour Kawa ".$groupe."] ".$converter->convert($subject)."\n");
 		$nntp->datasend("X-Newsreader:Tour Kawa Reminder v1.0\n");
 		$nntp->datasend("\n\n");
 		$nntp->datasend($body."\n");
