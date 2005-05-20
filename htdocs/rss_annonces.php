@@ -20,7 +20,7 @@ echo"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
 		<description>Frankiz : Le serveur des élèves de l'école polytechnique.</description>
 		<ttl>10</ttl>
 		<image>
-			<url><? echo BASE_URL ?>/skins/pico/images/home_logo.png</url>
+			<url><? echo BASE_URL ?>/skins/pico/default/images/home_logo.png</url>
 			<title>Frankiz : Annonces</title>
 			<link><? echo BASE_URL ?></link>
 		</image>
@@ -40,12 +40,10 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 		<pubDate><?php echo $stamp ?></pubDate>
 		<description>
 <?php
-		echo wikiVersXML($contenu);
+		echo htmlspecialchars(wikiVersXML($contenu,true),ENT_COMPAT,UTF-8);
 
 			if (file_exists(DATA_DIR_LOCAL."annonces/$id")) {
-			?>
-				<img src="<?echo DATA_DIR_URL."annonces/$id" ; ?>" alt=" "/>
-			<? 
+				echo htmlspecialchars("<p><img src='http://www.frankiz.net/data/annonces/".$id."' alt=''/></p>");
 			}
 ?>		</description>
 		<author><?=$mail?> (<?=$nom?> <?=$prenom?>)</author>
