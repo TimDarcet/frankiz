@@ -22,9 +22,12 @@
 	
 
 	$Log$
+	Revision 1.16  2005/05/23 14:49:13  pico
+	Correction grammaire
+
 	Revision 1.15  2005/04/13 17:09:58  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.14  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
 	
@@ -240,7 +243,7 @@ $DB_valid->query("UNLOCK TABLES");
 				<note>Modification apportée par <? echo "$prenom $nom ($promo)"?></note>
 				<zonetext titre="FAQ" id='faq_modif' type="grand"><?=$faq_modif?></zonetext>
 				<bouton id='modif_<?=$id?>' titre="Modifier"/>
-				<bouton id='valid_<?=$id?>' titre='Valider' onClick="return window.confirm('Voulez vous vraiment validé cette modification ?')"/>
+				<bouton id='valid_<?=$id?>' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider cette modification ?')"/>
 				<bouton id='suppr_<?=$id?>' titre='Supprimer' onClick="return window.confirm('Voulez vous vraiment supprimer cette modification de FAQ ?')"/>
 	
 			</formulaire>

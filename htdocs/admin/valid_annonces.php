@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider une annonce
 	
 	$Log$
+	Revision 1.34  2005/05/23 14:49:13  pico
+	Correction grammaire
+
 	Revision 1.33  2005/04/13 17:09:58  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.32  2005/02/15 19:30:40  kikx
 	Mise en place de log pour surveiller l'admin :)
 	
@@ -176,12 +179,12 @@ foreach ($_POST AS $keys => $val){
 			log_admin($_SESSION['user']->uid,"validé l'annonce '{$_POST['titre']}' ") ;
 			
 			// envoi du mail
-			$contenu = 	"Ton annonce vient d'être validé par le BR... Elle est dès à present visible sur la page d'accueil<br><br> ".
+			$contenu = 	"Ton annonce vient d'être validée par le BR... Elle est dès à present visible sur la page d'accueil<br><br> ".
 						$_POST['explication']."<br>".
 						"Merci de ta participation <br><br>".
 						"Cordialement,<br>" .
 						"Le Webmestre de Frankiz<br>"  ;
-			couriel($eleve_id,"[Frankiz] Ton annonce a été validé par le BR",$contenu,WEBMESTRE_ID);
+			couriel($eleve_id,"[Frankiz] Ton annonce a été validée par le BR",$contenu,WEBMESTRE_ID);
 			
 			if (isset($_REQUEST['ext_auth']))
 				$temp_ext = '1'  ;
@@ -216,12 +219,12 @@ foreach ($_POST AS $keys => $val){
 			log_admin($_SESSION['user']->uid,"supprimé l'annonce '{$_POST['titre']}' ") ;
 			
 			// envoi du mail
-			$contenu = 	"Ton annonce n'a pas été validé par le BR pour la raison suivante :<br>".
+			$contenu = 	"Ton annonce n'a pas été validée par le BR pour la raison suivante :<br>".
 						$_POST['explication']."<br>".
 						"Désolé <br><br>".
 						"Cordialement,<br>" .
 						"Le Webmestre de Frankiz<br>"  ;
-			couriel($eleve_id,"[Frankiz] Ton annonce n'a pas été validé par le BR",$contenu,WEBMESTRE_ID);
+			couriel($eleve_id,"[Frankiz] Ton annonce n'a pas été validée par le BR",$contenu,WEBMESTRE_ID);
 	
 			$DB_valid->query("DELETE FROM valid_annonces WHERE annonce_id='{$temp[1]}'") ;
 			//On supprime aussi l'image si elle existe ...
