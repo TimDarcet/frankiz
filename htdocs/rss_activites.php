@@ -32,9 +32,9 @@ for($i= 0; $i<7;$i++){
 	while (list($id,$titre,$url,$date,$texte)=$DB_web->next_row()) {
 ?>
 		<item>
-			<title><?php echo $titre ?></title>
+			<title><?php echo date("d/m/Y H:m",strtotime($date)).": ".$titre ?></title>
 			<link><? echo $url ?></link>
-			<pubDate><?php echo $date ?></pubDate>
+			<pubDate><?php echo $stamp ?></pubDate>
 			<description>
 <?
 				echo htmlspecialchars(wikiVersXML($texte,true),ENT_COMPAT,UTF-8);
