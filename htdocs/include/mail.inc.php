@@ -22,9 +22,12 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.31  2005/05/23 18:49:26  pico
+	Gros boulet
+
 	Revision 1.30  2005/05/23 18:48:42  pico
 	un oubli
-
+	
 	Revision 1.29  2005/05/23 14:58:24  pico
 	Pour des entetes de mails bien encodées (à tester)
 	
@@ -154,7 +157,7 @@ function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID,$sender_string="") {
 		$prenom1 = "Admins Windows";
 		$nom1= "";
 		$adresse1 = MAIL_WINDOWS ;
-	else if ($sender_id==BR_ID) {
+	} else if ($sender_id==BR_ID) {
 		$prenom1 = "Le BR";
 		$nom1= "";
 		$adresse1 = MAIL_BR ;
