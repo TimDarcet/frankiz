@@ -3,12 +3,12 @@
 #Script destiné a envoyer sur les news les rappels de convocation de tour kawa
 
 use DBI();
-use MIME::Base64 ();
+use Encode qw/encode decode/;
 use Net::NNTP;
 use Net::Cmd;
 use Time::localtime;
 
-my $dbh = DBI->connect("DBI:mysql:database=frankiz2:host=localhost","web","kokouije?.",{'RaiseError'=>1});
+my $dbh = DBI->connect("DBI:mysql:database=frankiz2:host=gwz","web","kouije?",{'RaiseError'=>1});
 
 sub post {
         local ($serveur) = "129.104.201.51";
@@ -22,7 +22,7 @@ sub post {
 	if ($type==1) {
 		$nntp->datasend("From: ".$name." <news\@frankiz.eleves.polytechnique.fr>\n");
 		$nntp->datasend("Newsgroups: ". $ng ."\n");
-		$nntp->datasend("Subject: =?UTF-8?b?".MIME::Base64::encode("[Tour Kawa ".$groupe."] ".$subject)."?= \n");
+		$nntp->datasend("Subject: ".encode('MIME-Q', "[Tour Kawa ".$groupe."] ".$subject)."\n");
 		$nntp->datasend("X-Newsreader:Tour Kawa Reminder v1.0\n");
 		$nntp->datasend("Mime-Version: 1.0\n");
 		$nntp->datasend("Content-Type: text/plain; charset=utf-8\n");
