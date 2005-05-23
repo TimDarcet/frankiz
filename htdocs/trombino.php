@@ -21,9 +21,13 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.63  2005/05/23 14:52:23  pico
+	Pour plus avoir les accents dans les noms des fiches poly.org
+	(je croyais avoir commité ça depuis longtemps, c'est un oubli)
+
 	Revision 1.62  2005/04/13 17:09:58  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.61  2005/04/07 21:51:46  fruneau
 	Juste pour qu'on puisse laisser les fakes dans la base avec une promo 0000
 	
@@ -343,7 +347,12 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 			// Echappe les espaces
 			$nompolyorg = str_replace( " " , "-" , $nompolyorg );
 			$prenompolyorg = str_replace( " " , "-" , $prenompolyorg );
-			
+
+			// Supprime les accents
+			$nompolyorg = strtr($nompolyorg, "ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ","aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn");
+			$prenompolyorg = strtr($prenompolyorg, "ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ","aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn");
+
+
 			echo "<lien url='https://www.polytechnique.org/fiche.php?user=$prenompolyorg.$nompolyorg.$promo' titre='Fiche sur polytechnique.org'/><br/>\n";
 			
 			// Liens d'administration
