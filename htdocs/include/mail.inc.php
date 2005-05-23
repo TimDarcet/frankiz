@@ -22,9 +22,12 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.30  2005/05/23 18:48:42  pico
+	un oubli
+
 	Revision 1.29  2005/05/23 14:58:24  pico
 	Pour des entetes de mails bien encodées (à tester)
-
+	
 	Revision 1.28  2005/04/23 22:11:29  fruneau
 	Pour que les en-tête des mails restent correctement encodées (ie latin1).
 	
@@ -151,6 +154,10 @@ function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID,$sender_string="") {
 		$prenom1 = "Admins Windows";
 		$nom1= "";
 		$adresse1 = MAIL_WINDOWS ;
+	else if ($sender_id==BR_ID) {
+		$prenom1 = "Le BR";
+		$nom1= "";
+		$adresse1 = MAIL_BR ;
 	} else { // C'est une personne physique
 		global $DB_trombino;
 		$DB_trombino->query("SELECT nom,prenom,mail,login FROM eleves WHERE eleve_id=$sender_id") ;
