@@ -3,7 +3,7 @@
 #Script destiné a envoyer sur les news les rappels de convocation de tour kawa
 
 use DBI();
-use MIME::QuotedPrint ();
+use MIME::Base64 ();
 use Net::NNTP;
 use Net::Cmd;
 use Time::localtime;
@@ -22,10 +22,10 @@ sub post {
 	if ($type==1) {
 		$nntp->datasend("From: ".$name." <news\@frankiz.eleves.polytechnique.fr>\n");
 		$nntp->datasend("Newsgroups: ". $ng ."\n");
-		$nntp->datasend("Subject: [Tour Kawa ".$groupe."] ".MIME::QuotedPrint::encode($subject)."\n");
+		$nntp->datasend("Subject: =?UTF-8?b?".MIME::Base64::encode("[Tour Kawa ".$groupe."] ".$subject)."?= \n");
 		$nntp->datasend("X-Newsreader:Tour Kawa Reminder v1.0\n");
 		$nntp->datasend("Mime-Version: 1.0\n");
-		$nntp->datasend("Content-Type: text/plain; charset=iso-8859-1\n");
+		$nntp->datasend("Content-Type: text/plain; charset=utf-8\n");
 		$nntp->datasend("Content-Transfer-Encoding: 8Bit\n");
 		$nntp->datasend("\n\n");
 		$nntp->datasend($body."\n");
