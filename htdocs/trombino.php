@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.65  2005/05/23 15:38:37  pico
+	oublié les "L'"
+
 	Revision 1.64  2005/05/23 15:26:57  pico
 	Bon en fait, je l'avais pas commité parce que ça marchait pas. Maintenant, ça devrait marcher, à tester aussi
-
+	
 	Revision 1.63  2005/05/23 14:52:23  pico
 	Pour plus avoir les accents dans les noms des fiches poly.org
 	(je croyais avoir commité ça depuis longtemps, c'est un oubli)
@@ -342,15 +345,17 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 				echo "<binet nom='$binet_nom' id='$binet_id'>$remarque</binet>\n";
 			$DB_trombino->pop_result();
 			
-			
 			// Supprime les accents
-			$nompolyorg    = htmlentities(strtolower(utf8_decode($nom)));
+			$nompolyorg = str_replace( "&apos;" , "" , $nom );
+			$nompolyorg    = htmlentities(strtolower(utf8_decode($nompolyorg)));
 			$nompolyorg    = preg_replace("/&(.)(acute|cedil|circ|ring|tilde|uml);/", "$1", $nompolyorg);
-
-
-			$prenompolyorg    = htmlentities(strtolower(utf8_decode($prenom)));
+			$nompolyorg = str_replace( " " , "-" , $nompolyorg );
+			
+			$prenompolyorg = str_replace( "&apos;" , "" , $prenom );
+			$prenompolyorg    = htmlentities(strtolower(utf8_decode($prenompolyorg)));
 			$prenompolyorg    = preg_replace("/&(.)(acute|cedil|circ|ring|tilde|uml);/", "$1", $prenompolyorg);
-
+			$prenompolyorg = str_replace( " " , "-" , $prenompolyorg );
+			
 
 			echo "<lien url='https://www.polytechnique.org/fiche.php?user=$prenompolyorg.$nompolyorg.$promo' titre='Fiche sur polytechnique.org'/><br/>\n";
 			
