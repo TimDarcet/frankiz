@@ -8,7 +8,7 @@ use Net::NNTP;
 use Net::Cmd;
 use Time::localtime;
 
-my $dbh = DBI->connect("DBI:mysql:database=frankiz2:host=gwz","web","kouije?",{'RaiseError'=>1});
+my $dbh = DBI->connect("DBI:mysql:database=frankiz2:host=localhost","web","kokouije?.",{'RaiseError'=>1});
 
 sub post {
         local ($serveur) = "129.104.201.51";
