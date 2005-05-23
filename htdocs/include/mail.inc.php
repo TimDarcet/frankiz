@@ -22,11 +22,14 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.29  2005/05/23 14:58:24  pico
+	Pour des entetes de mails bien encodées (à tester)
+
 	Revision 1.28  2005/04/23 22:11:29  fruneau
 	Pour que les en-tête des mails restent correctement encodées (ie latin1).
-
+	
 	A tester... mais ça a l'air de marcher.
-
+	
 	Revision 1.27  2005/04/13 18:25:12  pico
 	/me slaps himself en fait
 	
@@ -115,26 +118,39 @@ function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID,$sender_string="") {
 
 	// On gère l'envoyeur !
 	
+	
 	if ($sender_id==WEBMESTRE_ID) {
-		$sender = "Webmestre de Frankiz <".MAIL_WEBMESTRE.">" ;
+		$prenom1 = "Webmestre de Frankiz" ;
+		$nom1 = "" ;
+		$adresse1 = MAIL_WEBMESTRE ;
 	} else if ($sender_id==QDJMASTER_ID) {
-		$sender = "QDJmaster de Frankiz <".MAIL_QDJMASTER.">" ;
+		$prenom1 = "QDJmaster de Frankiz" ;
+		$nom1 = "" ;
+		$adresse1 = MAIL_QDJMASTER ;
 	} else if ($sender_id==FAQMESTRE_ID) {
-		$sender = "FAQmestre de Frankiz <".MAIL_FAQMESTRE.">" ;
-	} else if ($sender_id==BR_ID) {
-		$sender = "Le BR <".MAIL_BR.">" ;
+		$prenom1 = "FAQmestre de Frankiz" ;
+		$nom1 = "" ;
+		$adresse1 = MAIL_FAQMESTRE ;
 	} else if ($sender_id==PREZ_ID) {
-		$sender = "Président du BR <".MAIL_PREZ.">" ;
+		$prenom1 = "Président du BR" ;
+		$nom1 = "" ;
+		$adresse1 = MAIL_PREZ ;
 	} else if ($sender_id==ROOT_ID) {
-		$sender = "Root du BR <".MAIL_ROOT.">" ;
+		$prenom1 = "Root du BR" ;
+		$nom1 = "" ;
+		$adresse1 = MAIL_ROOT ;
 	} else if ($sender_id==TROMBINOMEN_ID) {
-		$sender = "Trombino <".MAIL_TROMBINOMEN.">" ;
+		$prenom1 = "Trombino" ;
+		$nom1 = "" ;
+		$adresse1 = MAIL_TROMBINOMEN ;
 	} else if ($sender_id==MAILPROMO_ID) {
-		$sender = "Mail Promo <".MAIL_MAILPROMO.">" ;
+		$prenom1 = "Mail Promo";
+		$nom1 = "" ;
+		$adresse1 = MAIL_MAILPROMO;
 	} else if ($sender_id==WINDOWS_ID) {
-		$sender = "Admins Windows <".MAIL_WINDOWS.">" ;
-	} else if ($sender_id==STRINGMAIL_ID) {
-		$sender = $sender_string ;
+		$prenom1 = "Admins Windows";
+		$nom1= "";
+		$adresse1 = MAIL_WINDOWS ;
 	} else { // C'est une personne physique
 		global $DB_trombino;
 		$DB_trombino->query("SELECT nom,prenom,mail,login FROM eleves WHERE eleve_id=$sender_id") ;
@@ -142,7 +158,6 @@ function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID,$sender_string="") {
 		if(empty($adresse1)) $adresse1=$login1."@poly.polytechnique.fr" ;
 		$prenom1 = str_replace(array('&amp;','&lt;','&gt;','&apos;','&quot;',''),array('&','<','>','\'','"','\\'),$prenom1);
 		$nom1 = str_replace(array('&amp;','&lt;','&gt;','&apos;','&quot;',''),array('&','<','>','\'','"','\\'),$nom1);
-		$sender = "$prenom1 $nom1 <$adresse1>" ;
 	}
 	
 	// On gere le destinataire
@@ -188,7 +203,7 @@ function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID,$sender_string="") {
 		$nom = str_replace(array('&amp;','&lt;','&gt;','&apos;','&quot;',''),array('&','<','>','\'','"','\\'),$nom);
 	}
 	
-	$mail = new Mail($sender,"$prenom $nom <$adresse>",html2plain($titre),true);
+	$mail = new Mail("=?UTF-8?b?".base64_encode("$prenom1 $nom1")."?= <$adresse1>","=?UTF-8?b?".base64_encode("$prenom $nom")."?= <$adresse>",html2plain($titre),true);
 	$mail->addPartText(html2plain($contenu));
 	$mail->addPartHtml($contenu);
 	$mail->send();
@@ -216,6 +231,11 @@ function html2plain($html) {
 	return trim(strip_tags($ret));
 }
 
+// Converti les entetes:
+function header_encode($text){
+	return "=?UTF-8?b?".base64_encode($text)."?=";
+}
+
 // convertit un message plaintext en un message HTML avec des liens clickables.
 /*function plain2html($text) {
 	$html = ereg_replace("[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]",
@@ -231,11 +251,11 @@ class Mail {
 	
 	// Création d'un nouveau mail
 	function Mail($from, $to, $subject, $multipart=false, $cc="", $bcc="") {
-		$this->from = iconv('UTF-8', 'ISO-8859-1', $from);
-		$this->to = iconv('UTF-8', 'ISO-8859-1', $to);
+		$this->from = $from;
+		$this->to = $to;
 		$this->cc = $cc;
 		$this->bcc = $bcc;
-		$this->subject = iconv('UTF-8', 'ISO-8859-1', $subject);
+		$this->subject = "=?UTF-8?b?".base64_encode($subject)."?=";
 		$this->body = "";
 		$this->header = "X-Mailer: PHP/" . phpversion()."\n".
 						"Mime-Version: 1.0\n";
@@ -253,7 +273,7 @@ class Mail {
 	
 	// Ajout d'entêtes
 	function addHeader($text) {
-		$this->header .= iconv('UTF-8', 'ISO-8859-1', "$text\n");
+		$this->header .= "=?UTF-8?b?".base64_encode($text)."?=";
 	}
 	
 	// Gestion des mails multipart
@@ -291,7 +311,7 @@ class Mail {
 	
 	// pour les envois multiples du même mail à plusieurs personnes
 	function setTo($to) {
-		$this->to = iconv('UTF-8', 'ISO-8859-1', $to);
+		$this->to = $to;
 	}
 	
 	// envoie d'un mail

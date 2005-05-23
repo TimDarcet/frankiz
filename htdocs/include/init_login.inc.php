@@ -36,9 +36,12 @@
 	authentifié, et si ce n'est pas le cas affiche la page d'authentifictaion par mot de passe.
 
 	$Log$
+	Revision 1.20  2005/05/23 14:58:24  pico
+	Pour des entetes de mails bien encodées (à tester)
+
 	Revision 1.19  2005/04/13 17:10:00  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.18  2005/04/07 00:48:35  schmurtz
 	Protection contre le vol de session
 	
@@ -196,7 +199,7 @@ if(isset($_POST['login']) && isset($_POST['passwd'])) {
 											// c'est pas encore fait
 		require "page_header.inc.php";
 ?>
-		<page id="login" titre="Frankiz : erreur">
+		<page id="page_login" titre="Frankiz : erreur">
 			<p>Une erreur est survenue lors de la vérification du lien d'authentification. Il s'agit
 			peut être d'un dépassement des 6 heures de validité du lien. Si c'est le cas, recommence
 			la procédure en cliquant <lien titre="ici" href="<?php echo BASE_URL.'/profil/mdp_perdu.php'?>"/>.</p>
