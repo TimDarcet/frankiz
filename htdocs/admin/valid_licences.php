@@ -21,9 +21,12 @@
 	Page qui permet l'administration des licences windows.
 	
 	$Log$
+	Revision 1.23  2005/05/24 09:51:55  pico
+	Ã§a a l'air de marcher come Ã§a
+
 	Revision 1.22  2005/04/13 17:09:58  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.21  2005/02/16 21:32:55  dei
 	pour pas faire le boulet a stocker plein de fois la meme clé
 	
@@ -366,7 +369,7 @@ if(isset($_POST['update'])&&is_readable($_FILES['file']['tmp_name'])){
 	fclose($file); 
 	$ligne=explode(";",$ligne);
 	$nb_cle=sizeof($ligne);
-	$DB_trombino->query("SELECT eleve_id FROM eleves WHERE promo='{$_POST['promo']}'");
+	$DB_trombino->query("SELECT c.eleve_id FROM eleves LEFT JOIN msdnaa.cles_{$_POST['logiciel']} as c ON eleves.eleve_id=c.eleve_id WHERE promo='{$_POST['promo']}' AND c.cle=''");
 	$nb_eleves=$DB_trombino->num_rows();
 	$nb_diff=0;
 	list($eleve_id)=$DB_trombino->next_row();
@@ -393,7 +396,9 @@ if(isset($_POST['update'])&&is_readable($_FILES['file']['tmp_name'])){
 			$i++;
 		}
 	}
+	echo "<commentaire>Cles assignees aux eleves</commentaire>";
 	if($nb_cle<$nb_eleves){
+		echo "<commentaire> Pas assez de clef</commentaire>";
 		$DB_msdnaa->query("SELECT cle FROM cles_libres WHERE logiciel='{$_POST['logiciel']}'");
 		while(list($cle_tmp)=$DB_msdnaa->next_row()){
 			$DB_msdnaa->push_result();
@@ -410,6 +415,7 @@ if(isset($_POST['update'])&&is_readable($_FILES['file']['tmp_name'])){
 			$DB_msdnaa->pop_result();
 		}
 	}else{
+		echo "<commentaire>trop de cle</commentaire>";
 		for($i=$nb_min ; $i<$nb_max ; $i++){
 			$cle_tmp=trim($ligne[$i]);
 			if(test_cle($cle_tmp)){
