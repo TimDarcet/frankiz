@@ -66,6 +66,7 @@ foreach ($os as $nom => $nombre) {
 }
 
 // on dessine le tout
+imagecolortransparent ($im,$blanc);
 Imagepng ($im);
 cache_sauver($cache_id);
 }
