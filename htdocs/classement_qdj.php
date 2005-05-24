@@ -19,9 +19,12 @@
 */
 /*
 	$Log$
+	Revision 1.2  2005/05/24 16:53:09  pico
+	ajout transparence
+
 	Revision 1.1  2005/05/24 16:39:38  pico
 	Ajout du classement QDJ
-
+	
 	
 */
 require_once "include/global.inc.php";
@@ -75,7 +78,7 @@ if(isset($_REQUEST["graph"])){
 			Il y a 9 façons de gagner ou de perdre des points:<br/>
 			- Voter premier rapporte 5 points<br/>
 			- Voter second rapporte 2 points<br/>
-			- Voter troisième rapporte 3 points<br/>
+			- Voter troisième rapporte 1 points<br/>
 			- Voter 42 rapporte 4.2 points<br/>
 			- Voter 69 rapporte 6.9 points<br/>
 			- Voter 314 rapporte 3.14 points<br/>
