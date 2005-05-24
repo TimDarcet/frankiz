@@ -25,9 +25,12 @@
 	TODO traiter le cas ou le qdj master est à la bourre (garder l'ancienne qdj par exemple).
 	
 	$Log$
+	Revision 1.18  2005/05/24 17:05:36  pico
+	Ajout d'un lien vers le classement
+
 	Revision 1.17  2005/04/13 17:10:00  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.16  2005/01/06 23:31:31  pico
 	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
 	
@@ -86,6 +89,7 @@ function qdj_affiche($hier,$deja_vote) {
 						echo "\t\t\t\t\t<dernier ordre=\"$ordre\"><eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"$promo\" surnom=\"$surnom\"/></dernier>\n";
 ?>
 				</qdj>
+				<? echo $hier? "":"<lien id=\"class_qdj\" titre=\"Classement QDJ\" url=\"classement_qdj.php\"/>\n"; ?>
 			</module>
 <?php
 		}

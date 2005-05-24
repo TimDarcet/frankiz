@@ -86,6 +86,7 @@
 						</xsl:for-each>
 					</ul>
 				</xsl:if>
+				<xsl:apply-templates select="lien"/>
 			</div>
 		</div>
 	</div>

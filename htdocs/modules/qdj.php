@@ -23,9 +23,12 @@
 	TODO traiter le cas ou le qdj master est à la bourre (garder l'ancienne qdj par exemple).
 
 	$Log$
+	Revision 1.16  2005/05/24 17:05:36  pico
+	Ajout d'un lien vers le classement
+
 	Revision 1.15  2005/05/24 14:35:55  pico
 	Le vote à la qdj met à jour le classement (reste à afficher le classement)
-
+	
 	Revision 1.14  2005/04/13 17:10:00  pico
 	Passage de tous les fichiers en utf8.
 	
@@ -102,6 +105,6 @@ if(est_authentifie(AUTH_MINIMUM)) {
 
 	// Affichage de la QDJ courante 
 	qdj_affiche(false,$a_vote);		
-
 }
 ?>
+
