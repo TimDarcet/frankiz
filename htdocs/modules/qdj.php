@@ -23,9 +23,12 @@
 	TODO traiter le cas ou le qdj master est à la bourre (garder l'ancienne qdj par exemple).
 
 	$Log$
+	Revision 1.15  2005/05/24 14:35:55  pico
+	Le vote à la qdj met à jour le classement (reste à afficher le classement)
+
 	Revision 1.14  2005/04/13 17:10:00  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.13  2005/01/06 23:31:31  pico
 	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
 	
@@ -60,13 +63,40 @@ if(est_authentifie(AUTH_MINIMUM)) {
 
 	// Gestion du vote
 	if(isset($_REQUEST['qdj']) && $date_aujourdhui==$_REQUEST['qdj'] && !$a_vote && ($_REQUEST['vote']==1 || $_REQUEST['vote']==2)) {
+		// On stocke le vote
 		cache_supprimer("qdj_courante_question");
 		cache_supprimer("qdj_courante_reponse");
 		$DB_web->query("LOCK TABLE qdj_votes WRITE");
 		$DB_web->query("SELECT @max:=IFNULL(MAX(ordre),0) FROM qdj_votes WHERE date='$date_aujourdhui'");
+		list($position) = $DB_web->next_row();
+		$position++;
 		$DB_web->query("INSERT INTO qdj_votes SET date='$date_aujourdhui',eleve_id='".$_SESSION['user']->uid."',ordre=@max+1");
 		$DB_web->query("UNLOCK TABLES");
 		$DB_web->query("UPDATE qdj SET compte".$_REQUEST['vote']."=compte".$_REQUEST['vote']."+1 WHERE date='$date_aujourdhui'");
+		
+		// On gère le classement:
+		$nbpoints = 0;
+		$regle = 0;
+		switch($position){
+			case 1:	$nbpoints = 5;	$regle = 1;	break;
+			case 2:	$nbpoints = 2;	$regle = 2;	break;
+			case 3:	$nbpoints = 1;	$regle = 3;	break;
+			case 13: $nbpoints = -13;	$regle = 4;	break; // Faut pas spoofer la passerelle !
+			case 42:	$nbpoints = 4.2;	$regle = 5;	break;
+			case 69:	$nbpoints = 6.9;	$regle = 6;	break;
+			case 314:	$nbpoints = 3.14;	$regle = 7;	break;
+			case (substr($_SESSION['ip'], 12, 3)): 	$nbpoints = 3;	$regle = 8;	break; // C'est bien d'avoir la bonne ip ;-)
+			case 100+date("d",time()): 	$nbpoints = 7;	$regle = 9;	break; // Permet de mettre un peu des points au réveil, vers midi...
+		}
+		if($nbpoints!=0){
+			$DB_web->query("SELECT 0 FROM qdj_points WHERE eleve_id=".$_SESSION['user']->uid);
+			if($DB_web->num_rows()!=0){
+				$DB_web->query("UPDATE qdj_points SET total=total+$nbpoints, nb$regle=nb$regle+1 WHERE eleve_id=".$_SESSION['user']->uid);
+			}else{
+				$DB_web->query("INSERT INTO qdj_points SET total=$nbpoints, nb$regle=1, eleve_id=".$_SESSION['user']->uid);
+			}
+		}
+
 		rediriger_vers("/");
 	}
 
