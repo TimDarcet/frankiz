@@ -19,9 +19,12 @@
 */
 /*
 	$Log$
+	Revision 1.3  2005/05/25 08:31:57  pico
+	Une mopufle
+
 	Revision 1.2  2005/05/24 16:53:09  pico
 	ajout transparence
-
+	
 	Revision 1.1  2005/05/24 16:39:38  pico
 	Ajout du classement QDJ
 	
@@ -96,7 +99,7 @@ if(isset($_REQUEST["graph"])){
 		
 		while(list($eleve_id,$nom,$prenom,$surnom,$promo,$total,$nb1,$nb2,$nb3,$nb4,$nb5,$nb6,$nb7,$nb8,$nb9) = $DB_web->next_row()) {
 			echo "\t\t<element id=\"$eleve_id\">\n";
-				echo "\t\t\t<colonne id=\"nom\">".($surnom="" ?$surnom:$nom." ".$prenom)." (X$promo)</colonne>\n";
+				echo "\t\t\t<colonne id=\"nom\">".($surnom!="" ?$surnom:$nom." ".$prenom)." (X$promo)</colonne>\n";
 				echo "\t\t\t<colonne id=\"total\">$total</colonne>\n";
 				echo "\t\t\t<colonne id=\"detail\"><image source=\"classement_qdj.php?graph&amp;nb1=$nb1&amp;nb2=$nb2&amp;nb3=$nb3&amp;nb4=$nb4&amp;nb5=$nb5&amp;nb6=$nb6&amp;nb7=$nb7&amp;nb8=$nb8&amp;nb9=$nb9\" texte=\"image\"/></colonne>\n";
 			echo "\t\t</element>\n";
