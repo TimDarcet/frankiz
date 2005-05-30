@@ -19,7 +19,7 @@
 */
 
 body {
-	font-size: 12pt;
+	font-size: 10px;
 	font-family: Aria,Helvetica,Verdana, sans-serif;
 	color:#000;
 	background-color:#fff;
@@ -161,7 +161,6 @@ span#contacts_logo,span#liens_ecole_logo,span#meteo_logo,span#stats_logo,span#se
 
 
 .fkz_qdj_question {
-    font-size: 11pt;
     text-align: center;
     width: 99%;
     /*border: 1px solid black ; SUPP*/
