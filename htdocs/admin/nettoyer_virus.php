@@ -21,11 +21,14 @@
 	Pour faire peur aux gens qui ont des virus...
 	
 	$Log$
+	Revision 1.8  2005/05/31 12:36:18  fruneau
+	Pour n'afficher que les virus qui sont dans les promos sur le plateau... sinon c'est boulet
+
 	Revision 1.7  2005/04/17 23:16:28  dei
 	quelques modif :
 	on signale au roots quand un ordinateur est clean si il avait le réseau coupéon
 	peut prévenir les gens qui lisent pas frankiz par mail
-
+	
 	Revision 1.6  2005/04/13 17:09:58  pico
 	Passage de tous les fichiers en utf8.
 	
@@ -105,8 +108,10 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			$DB_admin->query("UPDATE infections SET solved='1' WHERE id='{$temp[6]}'");
 		}
 	}
-	
-	$DB_admin->query("SELECT i.ip,i.date,i.date+10-CURDATE(),i.solved,e.login,e.eleve_id,l.nom,i.id FROM prises as p LEFT JOIN trombino.eleves as e ON e.piece_id=p.piece_id LEFT JOIN liste_virus as l ON l.port=i.port INNER JOIN infections as i ON p.ip=i.ip WHERE 1 ORDER BY i.ip, i.solved, l.nom");
+
+        $DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
+	list($promo_temp) = $DB_web->next_row() ;
+	$DB_admin->query("SELECT i.ip,i.date,i.date+10-CURDATE(),i.solved,e.login,e.eleve_id,l.nom,i.id FROM prises as p LEFT JOIN trombino.eleves as e ON e.piece_id=p.piece_id LEFT JOIN liste_virus as l ON l.port=i.port INNER JOIN infections as i ON p.ip=i.ip and (e.promo = $promo_temp OR e.promo = ".($promo_temp-1).")  WHERE 1 ORDER BY i.ip, i.solved, l.nom");
 ?>
 	<liste id="liste_virus" selectionnable="non" action="admin/nettoyer_virus.php">
 		<entete id="ip" titre="IP"/>
