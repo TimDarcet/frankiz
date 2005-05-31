@@ -21,9 +21,12 @@
 	Pour faire peur aux gens qui ont des virus...
 	
 	$Log$
+	Revision 1.9  2005/05/31 15:30:02  fruneau
+	Page d'administration des virus plus lisible
+
 	Revision 1.8  2005/05/31 12:36:18  fruneau
 	Pour n'afficher que les virus qui sont dans les promos sur le plateau... sinon c'est boulet
-
+	
 	Revision 1.7  2005/04/17 23:16:28  dei
 	quelques modif :
 	on signale au roots quand un ordinateur est clean si il avait le r�seau coup�on
@@ -59,6 +62,25 @@ demande_authentification(AUTH_FORT);
 if(!verifie_permission('admin')&&!verifie_permission('windows'))
 	acces_interdit();
 
+function makedelete($id,$eleve_id,$nomv,$solved,$ip) {
+        if ($solved!=2){
+		return "<bouton titre=\"Nettoyer\" id=\"suppr_{$id}_{$eleve_id}_{$nomv}_{$solved}_{$ip}\" onClick=\"return window.confirm('Vous déclarez que ce virus a été éradiqué chez la personne)\"/>";
+	}
+	return "";
+}
+
+function getstate($solved) {
+	if ($solved==0){
+		return "Non signalé";
+	}elseif ($solved==1){
+		return "Signalé";
+	}elseif ($solved==2){
+		return "Résolu";
+	}elseif ($solved==3){
+		return "Réseau coupé";
+	}
+	return "";
+}
 
 // Génération de la page
 //===============
@@ -67,7 +89,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 
 <page id="nettoyer_virus" titre="Frankiz : gestion des virus">
-<h2>Liste des personnes infectées ou ayant eu un virus.</h2>
+<h2>Liste des infections.</h2>
 <note>Cette page sert à signaler qu'un virus detecté a bien été enlevé de l'ordinateur sur l'ip considérée, après s'en être assuré !</note>
 <note>Les virus listés ici sont ceux les plus susceptibles de pourrir le cache de la matrice.</note>
 <?
@@ -107,13 +129,34 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			//voilà il est préviendu
 			$DB_admin->query("UPDATE infections SET solved='1' WHERE id='{$temp[6]}'");
 		}
+		if($temp[0]=="detail" && $temp[2] == "x") {
+			$DB_admin->query("SELECT i.id, i.ip, i.date, i.solved, v.nom, t.eleve_id FROM infections as i left join liste_virus as v on v.port = i.port left join prises as p on p.ip = i.ip left join trombino.eleves as t on t.piece_id = p.piece_id where t.login = '{$temp[1]}' order by i.ip, i.date");
+		echo "<liste id='liste_login' selectionnable='non' titre='Historique de {$temp[1]}' action='admin/nettoyer_virus.php'>\n";
+?>
+			<entete id="ip" titre="IP"/>
+			<entete id="date" titre="Infection"/>
+			<entete id="nom" titre="Nom du virus"/>
+			<entete id="statut" titre="Statut"/>
+			<entete id="nettoyer" titre=""/>
+<?
+			while(list($id,$ip,$date,$solved,$nomv,$eleve_id) = $DB_admin->next_row()) {
+				echo "\t\t<element id='$id'>\n";
+				echo "\t\t\t<colonne id='ip'>$ip</colonne>\n";
+				echo "\t\t\t<colonne id='date'>$date</colonne>\n";
+				echo "\t\t\t<colonne id='nom'>$nomv</colonne>\n";
+				echo "\t\t\t<colonne id='statut'>".(getstate($solved))."</colonne>\n";
+				echo "\t\t\t<colonne id='nettoyer'>".(makedelete($id,$eleve_id,$nomv,$solved,$ip))."</colonne>\n";
+				echo "\t\t</element>\n";
+			}
+			echo "</liste>\n";
+		}
 	}
 
         $DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
 	list($promo_temp) = $DB_web->next_row() ;
-	$DB_admin->query("SELECT i.ip,i.date,i.date+10-CURDATE(),i.solved,e.login,e.eleve_id,l.nom,i.id FROM prises as p LEFT JOIN trombino.eleves as e ON e.piece_id=p.piece_id LEFT JOIN liste_virus as l ON l.port=i.port INNER JOIN infections as i ON p.ip=i.ip and (e.promo = $promo_temp OR e.promo = ".($promo_temp-1).")  WHERE 1 ORDER BY i.ip, i.solved, l.nom");
+	$DB_admin->query("SELECT i.ip,i.date,i.date+10-CURDATE(),i.solved,e.login,e.eleve_id,l.nom,i.id FROM prises as p LEFT JOIN trombino.eleves as e ON e.piece_id=p.piece_id and (e.promo = $promo_temp OR e.promo = ".($promo_temp-1).")  LEFT JOIN liste_virus as l ON l.port=i.port INNER JOIN infections as i ON p.ip=i.ip WHERE i.solved != 2 ORDER BY i.ip, i.solved, l.nom");
 ?>
-	<liste id="liste_virus" selectionnable="non" action="admin/nettoyer_virus.php">
+	<liste id="liste_virus" selectionnable="non" titre="Infections courantes"  action="admin/nettoyer_virus.php">
 		<entete id="ip" titre="IP"/>
 		<entete id="login" titre="login"/>
 		<entete id="date" titre="Depuis le"/>
@@ -123,33 +166,16 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<entete id="prevenir" titre=""/>
 <?
 	while(list($ip,$date,$rebour,$solved,$login,$eleve_id,$nomv,$id)= $DB_admin->next_row()){
-		$statut="";
-		if ($solved==0){
-			$statut="Non signalé";
-		}elseif ($solved==1){
-			$statut="Signalé";
-		}elseif ($solved==2){
-			$statut="Résolu";
-		}elseif ($solved==3){
-			$statut="Réseau coupé";
-		}
 		echo "\t\t<element id=\"$id\">\n";
-			echo "\t\t\t<colonne id=\"ip\">$ip</colonne>\n";
-			echo "\t\t\t<colonne id=\"login\">$login</colonne>\n";
-			echo "\t\t\t<colonne id=\"date\">".preg_replace('/^(.{4})-(.{2})-(.{2})$/','$3-$2-$1', $date)."</colonne>\n";
-			echo "\t\t\t<colonne id=\"statut\">$statut</colonne>\n";
-			echo "\t\t\t<colonne id=\"nomv\">$nomv</colonne>\n";
+		$ip1 = "<bouton titre='Historique' id='detail_$login' type='detail'/>$ip";
+		echo "\t\t\t<colonne id=\"ip\">$ip1</colonne>\n";
+		echo "\t\t\t<colonne id=\"login\">$login</colonne>\n";
+		echo "\t\t\t<colonne id=\"date\">".preg_replace('/^(.{4})-(.{2})-(.{2})$/','$3-$2-$1', $date)."</colonne>\n";
+		echo "\t\t\t<colonne id=\"statut\">".(getstate($solved))."</colonne>\n";
+		echo "\t\t\t<colonne id=\"nomv\">$nomv</colonne>\n";
+		echo "\t\t\t<colonne id=\"nettoyer\">".(makedelete($ip,$eleve_id,$nomv,$solved,$ip))."</colonne>\n";
 ?>
-			<colonne id="nettoyer">
-<?
-		if ($solved!=2){
-?>
-				<bouton titre="Nettoyer" id="suppr_<?echo "$id";?>_<?echo "$eleve_id";?>_<?echo "$nomv";?>_<?echo "$solved";?>_<?echo "$ip";?>" onClick="return window.confirm('Vous déclarez que ce virus a été éradiqué chez la personne considérée ?')"/>
-<?
-		}
-?>
-			</colonne>
-			<colonne id="nettoyer">
+			<colonne id="prevenir">
 <?
 		if($rebour<5 && $rebour>-1 && $solved==0){
 ?>
