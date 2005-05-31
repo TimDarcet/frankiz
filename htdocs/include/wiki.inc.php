@@ -21,9 +21,13 @@
 	Moteur Wiki (TipiWiki)
 	
 	$Log$
+	Revision 1.25  2005/05/31 15:41:59  pico
+	Correction truc schoppi,
+	faudrait voir à refaire la partie wiki..
+
 	Revision 1.24  2005/04/13 17:10:00  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.23  2005/01/03 19:09:22  pico
 	Correction ç
 	
@@ -103,7 +107,7 @@
 function wikiVersXML($filtered,$enhtml=false) {
 	// from Simon Schoar <simon@schoar.de> :
 	$regexURL = "((http:\/\/|https:\/\/|ftp:\/\/|mailto:)[\w\.\:\@\?\&\~\%\=\+\-\/\_\;]+)";
-	$regexURLText = "([\w\.\:\'\@\?\&\~\%\=\+\-\/\_\ \;\,\$éèàùç]+)";
+	$regexURLText = "([\w\.\:\'\@\?\&\~\%\=\+\-\/\_\ \;\,\$éèêàùç]+)";
 	
 	// php-specific
 	$filtered = "\n".str_replace("\r\n","\n",$filtered)."\n\n";
