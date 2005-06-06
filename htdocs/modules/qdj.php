@@ -23,9 +23,12 @@
 	TODO traiter le cas ou le qdj master est à la bourre (garder l'ancienne qdj par exemple).
 
 	$Log$
+	Revision 1.17  2005/06/06 17:36:26  pico
+	il faut bien changer un peu le bonus pour que Ã§a reste un bonus...
+
 	Revision 1.16  2005/05/24 17:05:36  pico
 	Ajout d'un lien vers le classement
-
+	
 	Revision 1.15  2005/05/24 14:35:55  pico
 	Le vote à la qdj met à jour le classement (reste à afficher le classement)
 	
@@ -89,7 +92,7 @@ if(est_authentifie(AUTH_MINIMUM)) {
 			case 69:	$nbpoints = 6.9;	$regle = 6;	break;
 			case 314:	$nbpoints = 3.14;	$regle = 7;	break;
 			case (substr($_SESSION['ip'], 12, 3)): 	$nbpoints = 3;	$regle = 8;	break; // C'est bien d'avoir la bonne ip ;-)
-			case 100+date("d",time()): 	$nbpoints = 7;	$regle = 9;	break; // Permet de mettre un peu des points au réveil, vers midi...
+			case 100+date("d",time())+date("m",time()): 	$nbpoints = 7;	$regle = 9;	break; // Permet de mettre un peu des points au réveil, vers midi...
 		}
 		if($nbpoints!=0){
 			$DB_web->query("SELECT 0 FROM qdj_points WHERE eleve_id=".$_SESSION['user']->uid);
