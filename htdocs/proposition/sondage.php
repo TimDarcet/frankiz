@@ -21,9 +21,12 @@
 	Page pour demander les sondages !
 	
 	$Log$
+	Revision 1.16  2005/06/09 14:58:08  pico
+	modif pour mYk
+
 	Revision 1.15  2005/04/13 17:10:00  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.14  2005/03/04 23:11:33  pico
 	Restriction des sondages par promo/section/binet
 	
@@ -211,7 +214,7 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 		<?
 	}
 ?>
-<formulaire id="form" titre="Aperçu de ton sondage">	
+<formulaire id="form" titre="Aperçu de ton sondage"  action="proposition/sondage.php">	
 	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
 	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
 	<h2><?=$titre_sondage?></h2>
