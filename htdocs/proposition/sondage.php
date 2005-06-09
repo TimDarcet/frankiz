@@ -21,9 +21,12 @@
 	Page pour demander les sondages !
 	
 	$Log$
+	Revision 1.17  2005/06/09 15:05:44  pico
+	autre petite modif
+
 	Revision 1.16  2005/06/09 14:58:08  pico
 	modif pour mYk
-
+	
 	Revision 1.15  2005/04/13 17:10:00  pico
 	Passage de tous les fichiers en utf8.
 	
@@ -270,6 +273,7 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 </formulaire>
 
 <formulaire id="ajout_titre" titre="OBLIGATOIRE: le titre du sondage" action="proposition/sondage.php">
+	<hidden id="avance" valeur="<?=$_REQUEST["avance"]?>"/>  
 	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
 	<champ id="titre_sondage" titre="Titre" valeur="<?=$titre_sondage?>"/>
 	<bouton titre="Mettre à jour le titre" id="ok_titre" />
