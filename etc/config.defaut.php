@@ -22,9 +22,12 @@
 	lors d'un installation.
 	
 	$Log$
+	Revision 1.1  2005/06/11 16:31:33  nc
+	Pas de mots de passe ou d'autre Ã©lÃ©ment scritiques sur la cvs !
+
 	Revision 1.17  2005/03/07 17:13:18  pico
 	On supprime l'adresse spammée
-
+	
 	Revision 1.16  2005/02/06 22:51:07  pico
 	Pour une faq avec des images
 	
@@ -81,18 +84,14 @@
 	en remplacement du config.php...
 */
 
-// ================ ATTENTION ==============
-/*
-	Élements à ne pas mettre dans la distribution libre du code car il y a les mot de passe
-	et les comptes www.weather.com
-*/
 
-define('WEATHER_DOT_COM',"http://xoap.weather.com/weather/local/FRXX0076?prod=xoap&par=1006415841&key=5064537abefac140&unit=m&cc=*&dayf=8");
+// ATTENTION
+// Ce fichier n'est qu'une base pour écrire le config.php
 
-// ================== FIN ==================
+// Compte www.weather.com
+define('WEATHER_DOT_COM',"http://xoap.weather.com/weather/local/**********");
 
 // Configuration du site
-
 define('AFFICHER_LES_ERREURS',0); 
 define('BASE_DATA',"/home/frankiz2/data/");
 define('BASE_PHOTOS',"/home/frankiz2/data/photos/");
@@ -144,12 +143,12 @@ define('STRINGMAIL_ID',$i--);
 define('MAX_PEREMPTION',8);
 
 // Connexions aux bases mysql
-$DB_xnet = new DB("frankiz2","xnet","web","kokouije?.");
-$DB_faq = new DB("frankiz","frankiz2","web","kokouije?.");
-$DB_web = new DB("frankiz","frankiz2","web","kokouije?.");
-$DB_admin = new DB("frankiz","admin","web","kokouije?.");
-$DB_trombino = new DB("frankiz","trombino","web","kokouije?.");
-$DB_valid = new DB("frankiz","a_valider","web","kokouije?.");
-$DB_msdnaa = new DB("frankiz","msdnaa","web","kokouije?.");
+$DB_xnet = new DB("frankiz2","xnet","web","**********");
+$DB_faq = new DB("frankiz","frankiz2","web","**********");
+$DB_web = new DB("frankiz","frankiz2","web","**********");
+$DB_admin = new DB("frankiz","admin","web","**********");
+$DB_trombino = new DB("frankiz","trombino","web","**********");
+$DB_valid = new DB("frankiz","a_valider","web","**********");
+$DB_msdnaa = new DB("frankiz","msdnaa","web","**********");
 
 ?>
