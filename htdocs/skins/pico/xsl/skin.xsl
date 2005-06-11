@@ -35,6 +35,7 @@
 <xsl:include href="html.xsl"/>
 <xsl:include href="form.xsl"/>
 <xsl:include href="arbre.xsl"/>
+<xsl:include href="admin.xsl"/>
 
 <xsl:include href="annonces.xsl"/>
 <xsl:include href="skins.xsl"/>

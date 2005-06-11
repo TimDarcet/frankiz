@@ -71,8 +71,9 @@
 		</p>
 	</div>
 	<div class="binets">
+		<xsl:apply-templates select="prise"/>
 		<xsl:if test="count(binet) != 0">
-		Binets:
+		Binets :
 			<ul>
 			<xsl:for-each select="binet">
 				<li><a>	<xsl:attribute name="href"><xsl:text>trombino.php?binets=</xsl:text><xsl:value-of select="@nom"/></xsl:attribute><xsl:value-of select="@nom"/></a><xsl:text>  </xsl:text><xsl:if test="text()!=''"><em>(<xsl:value-of select="text()"/>)</em></xsl:if></li>
@@ -81,7 +82,7 @@
 		</xsl:if>
 		<xsl:text> </xsl:text>
 	</div>
-		<xsl:apply-templates select="*[name()!='binet']"/>
+		<xsl:apply-templates select="*[name()!='binet' and name()!='prise']"/>
 	</div>
 	</div></div></div></div></div></div>
 </xsl:template>
@@ -175,6 +176,42 @@
 							<xsl:apply-templates select="champ[@id='casert']"/>
 						</td>
 					</tr>
+					<xsl:if test="count(champ) > 6">
+                                        <tr>
+                                                <td>
+                                                <label class="gauche" >
+                                                        <xsl:attribute name='for'><xsl:value-of select="concat(@id,'ip')"/></xsl:attribute>
+                                                	IP :
+                                                </label>
+                                                        <xsl:apply-templates select="champ[@id='ip']"/>
+                                                </td>
+                                                <td>
+                                                <label class="gauche" >
+							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'dns')"/></xsl:attribute>
+                                                	DNS :
+                                                </label>
+                                                        <xsl:apply-templates select="champ[@id='dns']"/>
+                                                </td>
+                                                <td>
+                                                <label class="gauche" >
+                                                         <xsl:attribute name='for'><xsl:value-of select="concat(@id,'prise')"/></xsl:attribute>
+                                                	Prise :
+                                                </label>
+                                                         <xsl:apply-templates select="champ[@id='prise']"/>
+                                                </td>
+                                        </tr>
+					<tr>
+						<td></td>
+						<td>
+						<label class="gauche" >
+							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'mac')"/></xsl:attribute>
+							@mac :
+						</label>
+							<xsl:apply-templates select="champ[@id='mac']"/>
+						</td>
+						<td></td>
+					</tr>
+					</xsl:if>
 				</table>
 			<p class="bouton">
 				<xsl:apply-templates select="hidden"/>

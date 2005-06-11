@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.45  2005/06/11 14:56:29  fruneau
+	Ajout du super trombino
+
 	Revision 1.44  2005/04/13 17:09:59  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.43  2005/04/13 14:43:31  dei
 	ajout du lien qvb pour la gestion de la base des virus détectés
 	
@@ -237,10 +240,14 @@ $permissions_user = $_SESSION['user']->perms ;
 		<h2>Administration frankiz</h2>
 	<? 
 	}
-	if (verifie_permission('admin')||verifie_permission('trombino')){
+	if (verifie_permission('admin')||verifie_permission('trombino')||verifie_permission('windows')){
 	?>
 		<h3>Gestion de l'utilisateur</h3>
-			<lien titre="Modifier un utilisateur" url="trombino.php"/><br/>
+			<lien titre="Rerchercher/modifier un utilisateur" url="admin/admin_trombi.php"/><br/>
+	<?
+	}
+	if (verifie_permission('admin')||verifie_permission('trombino')){
+	?>
 			<lien titre="Ajouter un utilisateur" url="admin/user_rajout.php"/>
 	<?
 	}
