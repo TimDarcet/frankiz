@@ -22,7 +22,7 @@ $max_os = max($os);
 
 // on définit la largeur et la hauteur de notre image
 $largeur = 550;
-$hauteur = 600;
+$hauteur = 610;
 
 // on crée une ressource pour notre image qui aura comme largeur $largeur et $hauteur comme hauteur (on place également un or die si la création se passait mal afin d'avoir un petit message d'alerte)
 $im = @ImageCreate ($largeur, $hauteur) or die ("Erreur lors de la création de l'image");
@@ -37,17 +37,21 @@ $bleu_clair = ImageColorAllocate ($im, 95, 160, 240);
 
 
 // on dessine un trait horizontal pour représenter l'axe du temps     
-ImageLine ($im, 20, $hauteur-40, $largeur-15, $hauteur-40, $noir);
+ImageLine ($im, 20, $hauteur-50, $largeur-15, $hauteur-50, $noir);
 
 // on affiche le numéro des 12 mois
 $i=0;
 foreach ($os as $nom => $nombre) {
 	$i++;
-        ImageString ($im, 2, $i*$largeur/(count($os)+1), $hauteur-38, $nom, $noir);
+	if($i%2 == 0) {
+        	ImageString ($im, 2, $i*$largeur/(count($os)+1)-25, $hauteur-35, $nom, $noir);
+	} else {
+		ImageString ($im, 2, $i*$largeur/(count($os)+1)-25, $hauteur-48, $nom, $noir);
+	}
 }
 
 // on dessine un trait vertical pour représenter le nombre de pages vues
-ImageLine ($im, 20, 30, 20, $hauteur-40, $noir);
+ImageLine ($im, 20, 30, 20, $hauteur-50, $noir);
 
 // on affiche les legendes sur les deux axes ainsi que différents textes (note : pour que le script trouve la police verdana, vous devrez placer la police verdana dans un repertoire /fonts/)
 imagestring($im, 4, $largeur-70, $hauteur-20, "Client", $noir);
@@ -58,10 +62,10 @@ foreach ($os as $nom => $nombre) {
 		$i++;
 		// on calcule la hauteur du baton
 		$hauteurImageRectangle = ceil((($nombre*($hauteur-60))/$max_os));
-		imagestring($im, 2, $i*$largeur/(count($os)+1),min($hauteur-$hauteurImageRectangle-60,$hauteur-61), $nombre, $noir);
-		ImageFilledRectangle ($im, $i*$largeur/(count($os)+1), $hauteur-$hauteurImageRectangle-40, $i*$largeur/(count($os)+1)+14, $hauteur-41, $noir);
-		ImageFilledRectangle ($im, $i*$largeur/(count($os)+1)+2, $hauteur-$hauteurImageRectangle+2-40, $i*$largeur/(count($os)+1)+12, $hauteur-41-1, $bleu_fonce);
-		ImageFilledRectangle ($im, $i*$largeur/(count($os)+1)+6, $hauteur-$hauteurImageRectangle+2-40, $i*$largeur/(count($os)+1)+8, $hauteur-41-1, $bleu_clair);
+		imagestring($im, 2, $i*$largeur/(count($os)+1),min($hauteur-$hauteurImageRectangle-60,$hauteur-71), $nombre, $noir);
+		ImageFilledRectangle ($im, $i*$largeur/(count($os)+1), $hauteur-$hauteurImageRectangle-40, $i*$largeur/(count($os)+1)+14, $hauteur-51, $noir);
+		ImageFilledRectangle ($im, $i*$largeur/(count($os)+1)+2, $hauteur-$hauteurImageRectangle+2-40, $i*$largeur/(count($os)+1)+12, $hauteur-51-1, $bleu_fonce);
+		ImageFilledRectangle ($im, $i*$largeur/(count($os)+1)+6, $hauteur-$hauteurImageRectangle+2-40, $i*$largeur/(count($os)+1)+8, $hauteur-51-1, $bleu_clair);
 }
 
 // on dessine le tout
