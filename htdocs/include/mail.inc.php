@@ -22,9 +22,12 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.34  2005/06/15 13:41:21  pico
+	les mails viennent du webmestre par d�faut
+
 	Revision 1.33  2005/06/15 07:58:31  pico
 	Implémentation wish #78
-
+	
 	Revision 1.32  2005/05/26 16:05:34  pico
 	Correction pour mails promo (mais le from sera pas encodé)
 	
@@ -126,7 +129,7 @@
 */
 
 // envoi d'un mail à un élève
-function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID,$sender_string="") {
+function couriel($eleve_id,$titre,$contenu,$sender_id=WEBMESTRE_ID,$sender_string="") {
 
 	// On gère l'envoyeur !
 	
