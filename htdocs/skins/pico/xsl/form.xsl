@@ -55,16 +55,15 @@
 			<!-- les options du formulaire -->
 			<xsl:for-each select="*[name()!='bouton']">
 				<div>
-
+				<xsl:if test="boolean(@titre)">
+					<span class="gauche" >
+						<xsl:attribute name='for'><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
+						<xsl:value-of select="@titre"/> :
+					</span>
+				</xsl:if>
 				<span class="droite">
 					<xsl:apply-templates select="."/>
 				</span>
-				<xsl:if test="boolean(@titre)">
-					<label class="gauche" >
-						<xsl:attribute name='for'><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
-						<xsl:value-of select="@titre"/> :
-					</label>
-				</xsl:if>
 				</div>
 			</xsl:for-each>
 			<!-- les boutons gérant les actions du formulaire -->
