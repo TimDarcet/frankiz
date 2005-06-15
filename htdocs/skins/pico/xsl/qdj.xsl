@@ -70,9 +70,9 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			<!--<br/>-->
-			<div class="fkz_end_page" style="text-align: center"><br/>
+			<div class="fkz_end_qdj"><br/>
 				<xsl:if test="count(qdj/dernier)">
-					<div>Derniers à répondre :</div>
+					<div class="fkz_qdj_dernier_votant">Derniers à répondre :</div>
 					<ul class="fkz_qdj_last">
 						<xsl:for-each select="qdj/dernier[position()&lt;=6]">
 							<li class="fkz_qdj_last"><xsl:value-of select="@ordre"/>.
