@@ -22,9 +22,12 @@
 	Support les mails en mime multipart.
 	
 	$Log$
+	Revision 1.33  2005/06/15 07:58:31  pico
+	Implémentation wish #78
+
 	Revision 1.32  2005/05/26 16:05:34  pico
 	Correction pour mails promo (mais le from sera pas encodé)
-
+	
 	Revision 1.31  2005/05/23 18:49:26  pico
 	Gros boulet
 	
@@ -215,7 +218,7 @@ function couriel($eleve_id,$titre,$contenu,$sender_id=BR_ID,$sender_string="") {
 		$prenom = str_replace(array('&amp;','&lt;','&gt;','&apos;','&quot;',''),array('&','<','>','\'','"','\\'),$prenom);
 		$nom = str_replace(array('&amp;','&lt;','&gt;','&apos;','&quot;',''),array('&','<','>','\'','"','\\'),$nom);
 	}
-	$mail = new Mail( ($sender_id!=STRINGMAIL_ID)?"=?UTF-8?b?".base64_encode("$prenom1 $nom1")."?= <$adresse1>":$sender_string  , "=?UTF-8?b?".base64_encode("$prenom $nom")."?= <$adresse>" , html2plain($titre),true);
+	$mail = new Mail( ($sender_id!=STRINGMAIL_ID)?"=?UTF-8?b?".base64_encode("$prenom1 $nom1")."?= <$adresse1>":$sender_string  , "=?UTF-8?b?".base64_encode("$prenom $nom")."?= <$adresse>" , html2plain($titre),true,"", ($sender_id<0)?"=?UTF-8?b?".base64_encode("$prenom1 $nom1")."?= <$adresse1>":"");
 	$mail->addPartText(html2plain($contenu));
 	$mail->addPartHtml($contenu);
 	$mail->send();
