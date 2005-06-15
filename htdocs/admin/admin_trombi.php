@@ -178,7 +178,7 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 				while(list($mac, $ts,$vendor) = $DB_admin->next_row()) {
 					if(!empty($mac)) {
 						if(empty($vendor)) $vendor = "<inconnu>";
-						$vendor = str_replace("'", "&apos;", $vendor);
+						$vendor = htmlentities($vendor, ENT_QUOTES);
 						echo "<mac id='$mac' time='$ts' constructeur='$vendor'/>";
 					}
 				}
