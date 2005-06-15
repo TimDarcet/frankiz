@@ -42,9 +42,7 @@ a:visited {
 	}
 a:hover {
 	color: #36c;
-	text-decoration: none;
-	border-top: thin solid #36c;
-	border-bottom: thin solid #36c;
+	text-decoration: underline;
 }
 a:active {
 	color: #fff;
@@ -59,7 +57,7 @@ a:active {
 .fkz_page {
 	clear: both;
 	width: 100%;
-	min-width: 720px;
+	min-width: 940px;
 }
 
 .fkz_entetes {
@@ -69,7 +67,7 @@ a:active {
 }
 
 .fkz_gauche {
-	width: 208px;
+	width: 220px;
 	float: left;
 	margin: 0px;
 	padding: 6px;
@@ -77,7 +75,7 @@ a:active {
 }
 
 .fkz_droite {
-	width: 168px;
+	width: 220px;
 	float: right;
 	margin: 0px;
 	padding: 6px;
@@ -85,7 +83,7 @@ a:active {
 }
 
 .fkz_centre {
-	margin: 0px 180px 0px 220px;
+	margin: 0px 232px 0px 232px;
 	padding: 6px;
 }
 
@@ -210,19 +208,23 @@ span#contacts_logo, span#liens_ecole_logo, span#meteo_logo, span#stats_logo, spa
 /* Ensemble, titre et corps des modules */
 
 .fkz_module {
-	margin: 0px 0px 12px 0px;
+	margin: 0px 0px 8px 0px;
 	padding: 0px;
 }
 
 .fkz_titre {
-	font-weight: bold;
+	font-size: 110%;
 	text-align: center;
-	padding: 8px 8px 4px 8px;
+	font-style: italic;
+	text-decoration: underline;
+	color: #339;
+	margin: 0px;
+	padding: 8px 8px 2px 8px;
 	margin: 0px;
 }
 
 .fkz_module_corps {
-	padding: 4px 8px 8px 8px;
+	padding: 4px 8px 4px 8px;
 	margin: 0px;
 }
 
@@ -252,21 +254,31 @@ li.fkz_liens_nav, li.fkz_liens, li.fkz_contact, li.fkz_stats {
 
 /* Ensemble, titre et corps des grandes boîtes */
 
-.fkz_page_divers, .fkz_sommaire, .fkz_annonces {
-	margin: 0px 0px 12px 0px;
+.fkz_page_divers, .fkz_sommaire {
+	margin: 0px;
 	padding: 8px;
 }
-
+.fkz_annonces {
+	margin: 0px;
+	padding: 8px 8px 2px 8px;
+}
 .fkz_page_titre, .fkz_sommaire_titre, .fkz_annonces_titre {
-	font-size: 150%;
+	font-size: 110%;
 	font-style: italic;
-	color: #36f;
-	padding: 12px 36px 8px 36px;
+	color: #339;
+	padding: 4px 48px 4px 48px;
 	margin: 0px;
 }
+.fkz_sommaire_titre {
+	text-decoration: underline;
+}
 
-.fkz_page_corps, .fkz_sommaire_corps, .fkz_annonces_corps {
-	padding: 4px 8px 8px 8px;
+.fkz_sommaire_corps {
+	padding: 0px 20px 3px 20px;
+	margin: 0px;
+}
+.fkz_page_corps, .fkz_annonces_corps {
+	padding: 0px 8px 3px 8px;
 	margin: 0px;
 }
 
@@ -359,61 +371,65 @@ span.fkz_annonces_vieux {
 
 .fkz_qdj_question {
     text-align: center;
-    width: 95%;
+    padding: 0px 16px;
+    margin: 4px 0px;
 }
 
 .fkz_qdj_jone, div.fkz_qdj_rouje, div.fkz_qdj_jone_reponse, div.fkz_qdj_rouje_reponse{
-	/*background-repeat:no-repeat;
-	background-position: center center;
-	height:60px;*/
 	text-align: center;
-	width: 45%;
-	/*border: 1px solid black ; SUPP*/
+	width: 96px;
 }
 
 .fkz_qdj_jone {
-	/*background-image:url("images/pointjone.gif");*/
 	float: right;
 }
-
 .fkz_qdj_rouje {
-	/*background-image:url("images/pointrouje.gif");*/
 	float: left;
 }
-
 
 .fkz_qdj_jone a {
-	color: red;
+	color: #f00;
 	font-weight: bold;
 }
-
 .fkz_qdj_rouje a {
-	color: #FFBB00;
+	color: #fb0;
 	font-weight: bold;
 }
-
 
 .fkz_qdj_jone_reponse {
-	color: #FFBB00;
+	color: #fb0;
 	float: right;
 }
-
 .fkz_qdj_rouje_reponse {
+	color: #f00;
 	float: left;
-	color: red;
 }
 
 .fkz_qdj_last{
-	list-style-type:  none;  
-	text-align:left; 
+	list-style-type: none;
+	text-align: left;
 }
-
+.fkz_qdj_dernier_votants {
+	font-style: italic;
+	margin-left: 20px;
+}
+ul.fkz_qdj_last {
+	list-style-type: none;
+	padding: 2px 20px 6px 4px;
+	margin: 0px;
+}
+li.fkz_qdj_last {
+	padding: 0px;
+	margin: 0px;
+}
+a.class_qdj {
+}
 .col {
-	height:50px;
+	height: 48px;
 }
 .col span {
-	display:block;
-	height:50px;
+	display: block;
+	height: 48px;
 }
 .col span.jone {
 	background:url(../images/jaune.gif) repeat-y top center;
@@ -549,6 +565,12 @@ div.image {
 	text-align: center;
 }
 
+/* Sondages */
+
+
+
+
+/* Fin sondages */
 
 /* Tables ==> Vocabulaire */
 
