@@ -33,7 +33,7 @@ img {
 }
 
 a:link { 
-	color: #36c;
+	color: #36f;
 	text-decoration: none;
 	}
 a:visited { 
@@ -41,13 +41,13 @@ a:visited {
 	text-decoration: none;
 	}
 a:hover {
-	color: #36c;
+	color: #36f;
 	text-decoration: underline;
 }
 a:active {
 	color: #fff;
 	text-decoration: none;
-	background-color: #36c;
+	background-color: #36f;
 }
 
 /* Fin définitions générales */
@@ -212,11 +212,11 @@ span#contacts_logo, span#liens_ecole_logo, span#meteo_logo, span#stats_logo, spa
 	padding: 0px;
 }
 
-.fkz_titre {
+.fkz_titre, .fkz_anniversaire_titre {
 	font-size: 110%;
 	text-align: center;
 	font-style: italic;
-	text-decoration: underline;
+	font-weight: bold;
 	color: #339;
 	margin: 0px;
 	padding: 8px 8px 2px 8px;
@@ -228,15 +228,8 @@ span#contacts_logo, span#liens_ecole_logo, span#meteo_logo, span#stats_logo, spa
 	margin: 0px;
 }
 
-.fkz_anniversaire_titre {
-	font-weight: bold;
-	text-align: center;
-	padding: 8px 8px 4px 8px;
-	margin: 0px;
-}
-
 .fkz_anniversaire {
-	padding: 4px 8px 8px 8px;
+	padding: 4px 48px 0px 48px;
 	margin: 0px;
 }
 
@@ -262,15 +255,26 @@ li.fkz_liens_nav, li.fkz_liens, li.fkz_contact, li.fkz_stats {
 	margin: 0px;
 	padding: 8px 8px 2px 8px;
 }
-.fkz_page_titre, .fkz_sommaire_titre, .fkz_annonces_titre {
-	font-size: 110%;
+.fkz_annonces img{
+	margin: 6px;
+	padding: 0px;
+}
+div.fkz_page_titre, div.fkz_sommaire_titre, div.fkz_annonces_titre {
 	font-style: italic;
 	color: #339;
 	padding: 4px 48px 4px 48px;
 	margin: 0px;
 }
+div.fkz_page_titre{
+	font-size: 140%;
+	font-weight: bold;
+}
+div.fkz_annonces_titre {
+	font-size: 125%;
+}
 .fkz_sommaire_titre {
-	text-decoration: underline;
+	font-size: 110%;
+	font-weight: bold;
 }
 
 .fkz_sommaire_corps {
@@ -286,31 +290,43 @@ li.fkz_liens_nav, li.fkz_liens, li.fkz_contact, li.fkz_stats {
 
 /* Trombino */
 
-.fkz_trombino,.fkz_sommaire{
+.fkz_trombino {
+	margin: 0px;
+	padding: 8px;
+}
+.fkz_trombino_eleve {
+	margin: 4px;
+	padding: 4px 8px;
 }
 
-.nom{
+h3.nom{
+	color: #339;
+	font-size: 120%;
 	text-align:center;
 }
 	
 .fkz_trombino_photo{
 	float:left;
-	margin-left:5px;
+	padding: 6px;
 }
 .fkz_trombino_section{
 	float:right;
-	margin-right:5px;
+	padding: 6px;
 }
 .fkz_trombino_infos{
 	float:left;
-	margin-left:5px;
+	padding: 6px;
 }
 .fkz_trombino_infos2{
 	float:right;
-	margin-right:5px;
+	padding: 6px;
 }
-.binets{
-//	clear:both;
+.binets {
+	margin: 150px 20px 8px 100px;
+	padding: 0px;
+}
+.binets ul {
+	margin: 0px;
 }
 
 .fkz_signature{
@@ -318,8 +334,9 @@ li.fkz_liens_nav, li.fkz_liens, li.fkz_contact, li.fkz_stats {
 	font-weight: bold;
 }
 
-form.trombino { 
-	padding:20px 0px;
+form.trombino {
+	padding: 0px;
+	margin: 0px;
 }
 
 form.trombino div{
@@ -331,7 +348,7 @@ form.trombino table{
 }
 
 form.trombino input,form.trombino select {
-	width:150px;
+	width: 150px;
 }
 
 .fkz_signature{
@@ -343,9 +360,8 @@ form.trombino input,form.trombino select {
 
 span.fkz_annonces_vieux,span.fkz_annonces_nouveau, span.fkz_annonces_important,span.fkz_annonces_reste,span.fkz_annonces_reste {
 	background-repeat:no-repeat;
-	height:16px;
-	padding-left:16px;
- }
+	height: 16px;
+}
 
 span.fkz_annonces_vieux {
 	background-image:url("../default/images/vieux.gif");
@@ -490,29 +506,29 @@ span.valid_css {
 .noeud_ouvert{list-style-image:url('../default/images/fold_open.gif')}
 .feuille{margin:5px; border: thin dotted #ccc; list-style-image:url('../default/images/question.gif')}
 
+
 /* Commentaires et Warning */
 
 .commentaire,.warning,.note {
 	color: inherit;
-	padding: 6px;
-	margin:5px;
-	margin-left:5px;
-	margin-right:5px;
-	margin-top:5px;
-	margin-bottom:5px;
-	display:block;
+	font-size: 90%;
+	font-style: italic;
+	font-weight: bold;
+	padding: 4px;
+	margin: 8px;
+	display: block;
 }
 
 .commentaire {
-	border: 1px solid #FFDD00;
+	border: medium ridge #33c;
 }
 
 .warning {
-	border: 1px solid #FF3333;
+	border: medium ridge #f33;
 }
 
 .note {
-	border: 1px solid #FFDD00;
+	border: medium ridge #9c0;
 }
 
 /* Formulaires */
@@ -532,6 +548,7 @@ div.formulaire span.gauche{
 	width:20%;
 	padding-left:5px;
 }
+
 div.formulaire div{
 }
 
@@ -546,9 +563,7 @@ div.formulaire span.boutons{
 }
 /* Formulaires */
 
-
-
-#choix_skin h1, #profil h1,.fkz_page_meteo h1,#xshare  h1,#faq  h1,#vocabulaire  h1{
+#choix_skin h1, #profil h1, .fkz_page_meteo h1, #xshare h1,#faq  h1,#vocabulaire  h1 {
 	display:none;
 }
 
@@ -568,25 +583,23 @@ div.image {
 /* Sondages */
 
 
-
-
 /* Fin sondages */
 
 /* Tables ==> Vocabulaire */
 
 table.liste{
-	width: 92%;
+	margin: 0px 20px;
 }
 
 table.liste .entete{
 	padding: 4px;
 	font-style: italic;
-	width: 92px;
+	min-width: 120px;
 }
 
 table.liste .element{
 	padding: 4px;
-	border-top: thin dashed white;
+	border-top: thin solid white;
 }
 
 /* Fin vocabulaire */
