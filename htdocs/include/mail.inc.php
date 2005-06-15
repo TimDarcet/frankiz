@@ -22,9 +22,12 @@
 	Support les mails en mime multipart.
 	
 	$Log$
-	Revision 1.34  2005/06/15 13:41:21  pico
-	les mails viennent du webmestre par défaut
+	Revision 1.35  2005/06/15 13:45:21  pico
+	on évite de recevoir plusieurs fois le même mail
 
+	Revision 1.34  2005/06/15 13:41:21  pico
+	les mails viennent du webmestre par dï¿½aut
+	
 	Revision 1.33  2005/06/15 07:58:31  pico
 	ImplÃ©mentation wish #78
 	
@@ -221,7 +224,7 @@ function couriel($eleve_id,$titre,$contenu,$sender_id=WEBMESTRE_ID,$sender_strin
 		$prenom = str_replace(array('&amp;','&lt;','&gt;','&apos;','&quot;',''),array('&','<','>','\'','"','\\'),$prenom);
 		$nom = str_replace(array('&amp;','&lt;','&gt;','&apos;','&quot;',''),array('&','<','>','\'','"','\\'),$nom);
 	}
-	$mail = new Mail( ($sender_id!=STRINGMAIL_ID)?"=?UTF-8?b?".base64_encode("$prenom1 $nom1")."?= <$adresse1>":$sender_string  , "=?UTF-8?b?".base64_encode("$prenom $nom")."?= <$adresse>" , html2plain($titre),true,"", ($sender_id<0)?"=?UTF-8?b?".base64_encode("$prenom1 $nom1")."?= <$adresse1>":"");
+	$mail = new Mail( ($sender_id!=STRINGMAIL_ID)?"=?UTF-8?b?".base64_encode("$prenom1 $nom1")."?= <$adresse1>":$sender_string  , "=?UTF-8?b?".base64_encode("$prenom $nom")."?= <$adresse>" , html2plain($titre),true,"", (($sender_id<0) && ($sender_id!=$eleve_id))?"=?UTF-8?b?".base64_encode("$prenom1 $nom1")."?= <$adresse1>":"");
 	$mail->addPartText(html2plain($contenu));
 	$mail->addPartHtml($contenu);
 	$mail->send();
