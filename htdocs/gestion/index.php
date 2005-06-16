@@ -22,9 +22,12 @@
 	l'utilisateur courant à accès.
 
 	$Log$
+	Revision 1.46  2005/06/16 12:42:11  pico
+	modification du lien pour obtenir le tol admin
+
 	Revision 1.45  2005/06/11 14:56:29  fruneau
 	Ajout du super trombino
-
+	
 	Revision 1.44  2005/04/13 17:09:59  pico
 	Passage de tous les fichiers en utf8.
 	
@@ -243,7 +246,7 @@ $permissions_user = $_SESSION['user']->perms ;
 	if (verifie_permission('admin')||verifie_permission('trombino')||verifie_permission('windows')){
 	?>
 		<h3>Gestion de l'utilisateur</h3>
-			<lien titre="Rerchercher/modifier un utilisateur" url="admin/admin_trombi.php"/><br/>
+			<lien titre="Rerchercher/modifier un utilisateur" url="trombino.php?toladmin"/><br/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('trombino')){
