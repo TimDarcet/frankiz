@@ -57,7 +57,6 @@
 				<div>
 				<xsl:if test="boolean(@titre)">
 					<span class="gauche" >
-						<xsl:attribute name='for'><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
 						<xsl:value-of select="@titre"/> :
 					</span>
 				</xsl:if>
