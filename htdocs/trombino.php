@@ -21,9 +21,12 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.66  2005/06/16 12:51:33  pico
+	Merge du trombi et du trombi admin
+
 	Revision 1.65  2005/05/23 15:38:37  pico
 	oublié les "L'"
-
+	
 	Revision 1.64  2005/05/23 15:26:57  pico
 	Bon en fait, je l'avais pas commité parce que ça marchait pas. Maintenant, ça devrait marcher, à tester aussi
 	
@@ -205,6 +208,13 @@
 require_once "include/global.inc.php";
 demande_authentification(AUTH_INTERNE);
 
+$tol_admin = false;
+if(verifie_permission('admin')||verifie_permission('windows')||verifie_permission('trombino'))
+	$tol_admin = true;
+
+if(isset($_REQUEST['toladmin']))
+	demande_authentification(AUTH_FORT);
+
 // Récupération d'une image
 if((isset($_GET['image']))&&($_GET['image'] == "true") && ($_GET['image'] != "")){
 	require_once "include/global.inc.php";
@@ -305,7 +315,7 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 		$where_like = array(
 				'nom' => 'eleves.nom',	'prenom' => 'prenom',   'casert' => 'eleves.piece_id',
 				'phone' => 'pieces.tel',		'surnom' => 'surnom',   'mail' => 'mail',
-				'loginpoly' => 'login');
+				'loginpoly' => 'login', 'prise' => 'p.prise_id', 'ip' => 'p.ip', 'mac' => 'a.mac');
 		foreach($where_like as $post_arg => $db_field)
 			if(!empty($_REQUEST[$post_arg]))
 				$where .= (empty($where) ? "" : " AND") . " $db_field LIKE '%".$_REQUEST[$post_arg]."%'";
@@ -315,6 +325,29 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 			$where .= (empty($where) ? "" : " AND") . " binet_id='".$_REQUEST['binet']."'";
 		}
 		
+		if($tol_admin){
+			if(isset($_REQUEST['mac']) || isset($_REQUEST['prise']) || isset($_REQUEST['mac']) || isset($_REQUEST['ip'])) {
+				$join .= " LEFT JOIN admin.prises as p ON p.piece_id = pieces.piece_id";
+				if(isset($_REQUEST['mac'])) {
+					$join .= " LEFT JOIN admin.arpwatch_log as a ON a.ip = p.ip";
+				}
+			}
+		
+			if(!empty($_REQUEST['dns'])) {
+				$DB_xnet->query("SELECT lastip FROM clients WHERE username LIKE '%{$_REQUEST['dns']}%'");
+				if($DB_xnet->num_rows() > 0) {
+					list($ip) = $DB_xnet->next_row();
+					$where .= (empty($where) ? "" : " AND") . " (p.ip like '$ip'";
+					while(list($ip) = $DB_xnet->next_row()) {
+						$where .= " OR p.ip LIKE '$ip'";
+					}
+					$where .= ")";
+				} else {
+					$where .= (empty($where) ? "" : " AND") . " 0";
+				}
+			}
+		}
+
 		if(isset($_GET['jeveuxvoirlesfillesdelecole'])){
 			$where .= (empty($where) ? "" : " AND") . " sexe='1'";
 		}
@@ -323,20 +356,60 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 	// Génération de la page si il y a au moins un critère.
 	if(!empty($where)) {	
 		
-		$DB_trombino->query("SELECT $champs FROM eleves $join WHERE $where ORDER BY promo,eleves.nom,prenom ASC LIMIT 80");
+		$DB_trombino->query("SELECT $champs FROM eleves $join WHERE $where GROUP BY eleves.eleve_id ORDER BY promo,eleves.nom,prenom ASC LIMIT 80");
 		
 		// Génération d'un message d'erreur si aucun élève ne correspond
 		if($DB_trombino->num_rows()==0)
 		echo "<warning> Désolé, aucun élève ne correspond à ta recherche </warning>";
 		if($DB_trombino->num_rows()==80)
 		echo "<warning>Trop de résultats: seulement les 80 premiers sont affichés</warning>";
-		// Génération des fiches des élèves
+		
+
+// Génération des fiches des élèves
 		while(list($eleve_id,$nom,$prenom,$surnom,$date_nais,$piece_id,$section,$section_id,$cie,$promo,$login,$mail,$tel) = $DB_trombino->next_row()) {
 			$date_nais = date("d/m/Y",strtotime($date_nais));
 			echo "<eleve nom='$nom' prenom='$prenom' promo='$promo' login='$login' surnom='$surnom' date_nais='$date_nais' "
 				."tel='$tel' mail='".(empty($mail)?"$login@poly.polytechnique.fr":$mail)."' casert='$piece_id' "
 				."section='$section' cie='$cie'>\n";
 			
+			if($tol_admin && isset($_REQUEST['toladmin'])){
+				// Génération de la liste des ips
+				$DB_admin->query("SELECT prise_id,p.ip FROM prises as p WHERE piece_id = '$piece_id'");
+				$old_prise = "";
+				while(list($prise,$ip) = $DB_admin->next_row()) {
+					if($prise != $old_prise) {
+						if($old_prise != "") {
+							echo "</prise>";
+						}
+						echo "<prise id='$prise'>";
+						$old_prise = $prise;
+					}
+	
+					$DB_xnet->query("SELECT username,if( ((options & 0x1c0) >> 6) = 1, 'Windows 9x', if( ((options & 0x1c0) >> 6)= 2, 'Windows XP', if( ((options & 0x1c0) >> 6) = 3, 'Linux', if( ((options & 0x1c0) >> 6)= 4, 'MacOS', if( ((options & 0x1c0) >> 6), 'MacOS X', 'Inconnu'))))),s.name FROM clients LEFT JOIN software as s ON clients.version = s.version  WHERE lastip like '$ip'");
+					list($dns,$os,$client) = $DB_xnet->next_row();
+					if(empty($client)) $client = 'Pas de client';
+					if(empty($dns)) $dns = "&lt;none>";
+					echo "<ip id='$ip' dns='$dns' os='$os' clientxnet='$client'>";
+	
+					// Toutes les macs qui ont été associées à cette ip
+					// On ne prend en compte que les macs qui correspondent à la période où la promo est sur le campus
+					$DB_admin->push_result();
+					$DB_admin->query("SELECT mac,ts,vendor FROM arpwatch_log LEFT JOIN arpwatch_vendors ON mac like CONCAT(debut_mac,':%') WHERE ip = '$ip' and ts > '".($promo+1)."-05-01' GROUP BY mac, ts ORDER BY ts");	
+					while(list($mac, $ts,$vendor) = $DB_admin->next_row()) {
+						if(!empty($mac)) {
+							if(empty($vendor)) $vendor = "<inconnu>";
+							$vendor = htmlentities($vendor, ENT_QUOTES);
+							echo "<mac id='$mac' time='$ts' constructeur='$vendor'/>";
+						}
+					}
+					$DB_admin->pop_result();
+					echo "</ip>";
+				}
+				if($old_prise != "") {
+					echo "</prise>";
+				}
+			}
+
 			// Génération de la liste des binets
 			$DB_trombino->push_result();
 			$DB_trombino->query("SELECT remarque,nom,membres.binet_id FROM membres "
@@ -412,7 +485,17 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 		<champ titre="Login poly" id="loginpoly" valeur="" />
 		<champ titre="Téléphone" id="phone" valeur="" />
 		<champ titre="Casert" id="casert" valeur="" />
-		
+
+<? if($tol_admin){ ?>
+		<champ titre="Prise" id="prise" valeur="" />
+		<champ titre="IP" id="ip" valeur="" />
+		<champ titre="Nom Rezix" id="dns" valeur="" />
+		<champ titre="Mac" id="mac" valeur="" />
+		<choix titre="Tol Admin" id="admin" type="checkbox" valeur="<? if(isset($_REQUEST['toladmin'])) echo 'toladmin' ;?>">
+				<option id="toladmin" titre=""/>
+		</choix>
+<? } ?>
+
 		<bouton titre="Effacer" id="reset" />
 		<bouton titre="Chercher" id="chercher" />
 	</formulaire>
