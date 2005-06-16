@@ -101,7 +101,7 @@ div.fkz_end_page{
 	background-repeat: no-repeat;
 	background-position: center center;
 	height: 72px;
-	padding: 4px;
+	padding: 0px;
 }
 
 span.fkz_logo {
@@ -261,16 +261,17 @@ li.fkz_liens_nav, li.fkz_liens, li.fkz_contact, li.fkz_stats {
 }
 div.fkz_page_titre, div.fkz_sommaire_titre, div.fkz_annonces_titre {
 	font-style: italic;
+	font-variant: small-caps;
 	color: #339;
 	padding: 4px 48px 4px 48px;
 	margin: 0px;
 }
 div.fkz_page_titre{
-	font-size: 140%;
+	font-size: 180%;
 	font-weight: bold;
 }
 div.fkz_annonces_titre {
-	font-size: 125%;
+	font-size: 140%;
 }
 .fkz_sommaire_titre {
 	font-size: 110%;
@@ -297,6 +298,9 @@ div.fkz_annonces_titre {
 .fkz_trombino_eleve {
 	margin: 4px;
 	padding: 4px 8px;
+}
+div.fkz_trombino_eleve table {
+	width: 90%;
 }
 
 h3.nom{
@@ -557,7 +561,8 @@ div.formulaire div{
 
 div.formulaire span.boutons{
 	display: block;
-	padding: 2px 12px;
+	padding: 2px;
+	margin-left: 300px;
 }
 
 .fkz_module_corps div.formulaire span.droite,.fkz_module_corps div.formulaire span.gauche{
