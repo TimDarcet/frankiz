@@ -541,7 +541,7 @@ div.formulaire{
 	display: block;
 }
 
-div.formulaire span.gauche{
+div.formulaire label.gauche{
 	font-style: italic;
 	display: block;
 	padding: 2px 8px;
@@ -565,7 +565,7 @@ div.formulaire span.boutons{
 	margin-left: 300px;
 }
 
-.fkz_module_corps div.formulaire span.droite,.fkz_module_corps div.formulaire span.gauche{
+.fkz_module_corps div.formulaire span.droite, .fkz_module_corps div.formulaire label.gauche{
 	display:block;
 }
 
