@@ -22,12 +22,10 @@ div {
 	border: thin black solid; // pour voir ce qui se passe
 }
 
-/* Structure de la page */
-
 .fkz_page {
 	clear: both;
 	width: 100%;
-	min-width: 900px;
+	min-width: 1000px;
 }
 
 .fkz_entetes {
@@ -35,27 +33,22 @@ div {
 }
 
 .fkz_gauche {
-	width: 250px;
+	width: 19%;
 	min-height: 800px;
 	float: left;
 }
 
 .fkz_droite {
-	width: 250px;
+	width: 19%;
 	min-height: 800px;
 	float: right;
 }
 
 .fkz_centre {
-	margin: 0px 260px;
+	position: absolute;
+	left: 21%;
+	width: 58%;
 }
-
-div.fkz_end_page{
-}
-
-/* Fin structure de la page */
-
-/* Logos modules */
 
 span#contacts, span#liens_ecole, span#meteo, span#stats ,span#serveurs, span#tour_kawa, span#qdj_hier, span#qdj, span#anniversaires, span#affiches, span#fetes, span#sondages, span#lien_tol, span#perso, span#virus { // pas de span pour les news exterieures
 }
@@ -63,10 +56,6 @@ span#contacts, span#liens_ecole, span#meteo, span#stats ,span#serveurs, span#tou
 span#contacts_logo, span#liens_ecole_logo, span#meteo_logo, span#stats_logo, span#serveurs_logo, span#tour_kawa_logo, span#qdj_hier_logo, span#qdj_logo, span#anniversaires_logo, span#affiches_logo, span#fetes_logo, span#sondages_logo, span#lien_tol_logo, span#perso_logo, span#virus_logo {
 	display:none;
 }
-
-/* Fin logos modules */
-
-/* Modules et boites */
 
 .fkz_annonces_1, .fkz_sommaire_1, .fkz_module_1, .fkz_trombino_1, .fkz_meteo_1, .fkz_divers_1, .fkz_trombino_eleve_1,
 .fkz_annonces_2, .fkz_sommaire_2, .fkz_module_2, .fkz_trombino_2, .fkz_meteo_2, .fkz_divers_2, .fkz_trombino_eleve_2,
@@ -76,211 +65,99 @@ span#contacts_logo, span#liens_ecole_logo, span#meteo_logo, span#stats_logo, spa
 .fkz_annonces_6, .fkz_sommaire_6, .fkz_module_6, .fkz_trombino_6, .fkz_meteo_6, .fkz_divers_6, .fkz_trombino_eleve_6 {
 	margin: 0px;
 	padding: 0px;
+	border: none;
 }
 
 .fkz_annonces_1, .fkz_sommaire_1, .fkz_module_1, .fkz_trombino_1, .fkz_meteo_1, .fkz_divers_1 {
-	background-image: url(images/boite_milieu_gauche.png);
 	background-repeat: repeat-y;
 	background-position: top left;
 }
 
 .fkz_annonces_2, .fkz_sommaire_2, .fkz_module_2, .fkz_trombino_2, .fkz_meteo_2, .fkz_divers_2 {
-	background-image: url(images/boite_milieu_droite.png);
 	background-repeat: repeat-y;
 	background-position: top right;
 }
 
 .fkz_annonces_3, .fkz_sommaire_3, .fkz_module_3, .fkz_trombino_3, .fkz_meteo_3, .fkz_divers_3 {
-	background-image: url(images/boite_haut_gauche.png);
 	background-repeat: no-repeat;
 	background-position: top left;
 }
 
 .fkz_annonces_4, .fkz_sommaire_4, .fkz_module_4, .fkz_trombino_4, .fkz_meteo_4, .fkz_divers_4 {
-	background-image: url(images/boite_haut_droite.png);
 	background-repeat: no-repeat;
 	background-position: top right;
 }
 
 .fkz_annonces_5, .fkz_sommaire_5, .fkz_module_5, .fkz_trombino_5, .fkz_meteo_5, .fkz_divers_5 {
-	background-image: url(images/boite_bas_gauche.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
 .fkz_annonces_6, .fkz_sommaire_6, .fkz_module_6, .fkz_trombino_6, .fkz_meteo_6, .fkz_divers_6 {
-	background-image: url(images/boite_bas_droite.png);
 	background-repeat: no-repeat;
 	background-position: bottom right;
 }
 
 .fkz_trombino_eleve_1 {
-	background-image: url(images/boite2_milieu_gauche.png);
 	background-repeat: repeat-y;
 	background-position: top left;
 }
 
 .fkz_trombino_eleve_2 {
-	background-image: url(images/boite2_milieu_droite.png);
 	background-repeat: repeat-y;
 	background-position: top right;
 }
 
 .fkz_trombino_eleve_3 {
-	background-image: url(images/boite2_haut_gauche.png);
 	background-repeat: no-repeat;
 	background-position: top left;
 }
 
 .fkz_trombino_eleve_4 {
-	background-image: url(images/boite2_haut_droite.png);
 	background-repeat: no-repeat;
 	background-position: top right;
 }
 
 .fkz_trombino_eleve_5 {
-	background-image: url(images/boite2_bas_gauche.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
 .fkz_trombino_eleve_6 {
-	background-image: url(images/boite2_bas_droite.png);
 	background-repeat: no-repeat;
 	background-position: bottom right;
 }
 
-/* Ensemble, titre et corps des modules */
-
-.fkz_module {
-	margin: 0px 0px 8px 0px;
-	padding: 0px;
-}
-
 .fkz_titre, .fkz_anniversaire_titre {
-	font-size: 110%;
 	text-align: center;
-	font-style: italic;
-	font-weight: bold;
-	color: #339;
-	margin: 0px;
-	padding: 8px 8px 2px 8px;
-	margin: 0px;
 }
 
-.fkz_module_corps {
-	padding: 4px 8px 4px 8px;
-	margin: 0px;
-}
-
-.fkz_anniversaire {
-	padding: 4px 48px 0px 48px;
-	margin: 0px;
-}
-
-/* et les listes */
-
-ul.fkz_liens_nav, ul.fkz_liens, ul.fkz_contact, ul.fkz_stats {
-	list-style-type: none;
-	padding-left: 20px;
-	margin: 0px;
-}
-
-li.fkz_liens_nav, li.fkz_liens, li.fkz_contact, li.fkz_stats {
-	padding: 2px;
-}
-
-/* Ensemble, titre et corps des grandes boîtes */
-
-.fkz_page_divers, .fkz_sommaire {
-	margin: 0px;
-	padding: 8px;
-}
-.fkz_annonces {
-	margin: 0px;
-	padding: 8px 8px 2px 8px;
-}
-.fkz_annonces img{
-	margin: 6px;
-	padding: 0px;
-}
 div.fkz_page_titre, div.fkz_sommaire_titre, div.fkz_annonces_titre {
-	font-style: italic;
 	font-variant: small-caps;
-	color: #339;
-	padding: 4px 48px 4px 48px;
-	margin: 0px;
-}
-div.fkz_page_titre{
-	font-size: 180%;
-	font-weight: bold;
-}
-div.fkz_annonces_titre {
-	font-size: 140%;
-}
-.fkz_sommaire_titre {
-	font-size: 110%;
-	font-weight: bold;
-}
-
-.fkz_sommaire_corps {
-	padding: 0px 20px 3px 20px;
-	margin: 0px;
-}
-.fkz_page_corps, .fkz_annonces_corps {
-	padding: 0px 8px 3px 8px;
-	margin: 0px;
-}
-
-/* Fin boîtes */
-
-/* Trombino */
-
-.fkz_trombino {
-	margin: 0px;
-	padding: 8px;
-}
-.fkz_trombino_eleve {
-	margin: 4px;
-	padding: 4px 8px;
-}
-div.fkz_trombino_eleve table {
-	width: 90%;
-}
-
-h3.nom{
-	color: #339;
-	font-size: 120%;
-	text-align:center;
-}
-	
-.fkz_trombino_photo{
-	float:left;
-	padding: 6px;
-}
-.fkz_trombino_section{
-	float:right;
-	padding: 6px;
-}
-.fkz_trombino_infos{
-	float:left;
-	padding: 6px;
-}
-.fkz_trombino_infos2{
-	float:right;
-	padding: 6px;
-}
-.binets {
-	margin: 150px 20px 8px 100px;
-	padding: 0px;
-}
-.binets ul {
-	margin: 0px;
 }
 
 .fkz_signature{
 	text-align:right;
-	font-weight: bold;
+}
+
+div.fkz_trombino_eleve table {
+	width: 100%;
+}
+
+.fkz_trombino_photo{
+	float: left;
+}
+.fkz_trombino_section{
+	float: right;
+}
+.fkz_trombino_infos{
+	float: left;
+}
+.fkz_trombino_infos2{
+	float: right;
+}
+.binets {
+	clear : both;
 }
 
 form.trombino {
@@ -296,41 +173,22 @@ form.trombino table{
 	text-align:right;
 }
 
-form.trombino input,form.trombino select {
-	width: 150px;
+form.trombino input, form.trombino select {
+	width: 160px;
 }
-
-.fkz_signature{
-	text-align:right;
-	font-weight: bold;
+form.trombino span.gauche {
+	min-width: 80px;
 }
-
-/* Logos Catégories d'annonce */
 
 span.fkz_annonces_vieux,span.fkz_annonces_nouveau, span.fkz_annonces_important,span.fkz_annonces_reste,span.fkz_annonces_reste {
 	background-repeat:no-repeat;
 	height: 16px;
 }
 
-span.fkz_annonces_vieux {
-	background-image:url("../default/images/vieux.gif");
+span.fkz_annonces_cat {
+	display:none;
 }
 
- span.fkz_annonces_nouveau {
-	background-image:url("../default/images/nouveau.gif");
-}
- 
- span.fkz_annonces_important {
-	background-image:url("../default/images/important.gif");
- } 
- 
- span.fkz_annonces_reste {
-	background-image:url("../default/images/reste.gif");
- } 
-  
- span.fkz_annonces_cat {display:none;}
- 
- /* Fin Logos Catégories d'annonce */
 
 /* QDJ */
 
@@ -538,24 +396,3 @@ div.meteo{
 div.image {
 	text-align: center;
 }
-
-/* Fin formulaires (sondages) */
-
-/* Tables ==> Vocabulaire */
-
-table.liste{
-	margin: 0px 20px;
-}
-
-table.liste .entete{
-	padding: 4px;
-	font-style: italic;
-	min-width: 120px;
-}
-
-table.liste .element{
-	padding: 4px;
-	border-top: thin solid white;
-}
-
-/* Fin vocabulaire */
