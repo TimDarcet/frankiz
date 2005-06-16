@@ -109,111 +109,97 @@
 				<table>
 					<tr>
 						<td>
-						<label class="gauche" >
-							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'prenom')"/></xsl:attribute>
+						<span class="gauche" >
 							Prénom :
-						</label>
+						</span>
 						<xsl:apply-templates select="champ[@id='prenom']"/>
 						</td>
 						<td>
-						<label class="gauche" >
-							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'nom')"/></xsl:attribute>
+						<span class="gauche" >
 							Nom :
-						</label>
+						</span>
 						<xsl:apply-templates select="champ[@id='nom']"/>
 						</td>
 						<td>
-						<label class="gauche" >
-							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'surnom')"/></xsl:attribute>
+						<span class="gauche" >
 							Surnom :
-						</label>
+						</span>
 							<xsl:apply-templates select="champ[@id='surnom']"/>
 						</td>
 					</tr>
 					<tr>
 						<td>
-						<label class="gauche" >
-							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'promo')"/></xsl:attribute>
+						<span class="gauche" >
 							Promo :
-						</label>
+						</span>
 							<xsl:apply-templates select="choix[@id='promo']"/>
 						</td>
 						<td>
-						<label class="gauche" >
-							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'section')"/></xsl:attribute>
+						<span class="gauche" >
 							Section :
-						</label>
+						</span>
 							<xsl:apply-templates select="choix[@id='section']"/>
 						</td>
 						<td>
-						<label class="gauche" >
-							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'binet')"/></xsl:attribute>
+						<span class="gauche" >
 							Binet :
-						</label>
+						</span>
 							<xsl:apply-templates select="choix[@id='binet']"/>
 						</td>
 					</tr>
 					<tr>
 						<td>
-						<label class="gauche" >
-							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'loginpoly')"/></xsl:attribute>
+						<span class="gauche" >
 							Login :
-						</label>
+						</span>
 							<xsl:apply-templates select="champ[@id='loginpoly']"/>
 						</td>
 						<td>
-						<label class="gauche" >
-							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'phone')"/></xsl:attribute>
+						<span class="gauche" >
 							Tel :
-						</label>
+						</span>
 							<xsl:apply-templates select="champ[@id='phone']"/>
 						</td>
 						<td>
-						<label class="gauche" >
-							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'casert')"/></xsl:attribute>
+						<span class="gauche" >
 							Casert :
-						</label>
+						</span>
 							<xsl:apply-templates select="champ[@id='casert']"/>
 						</td>
 					</tr>
 					<xsl:if test="count(champ) > 6">
                                         <tr>
                                                 <td>
-                                                <label class="gauche" >
-                                                        <xsl:attribute name='for'><xsl:value-of select="concat(@id,'ip')"/></xsl:attribute>
-                                                	IP :
-                                                </label>
+                                                <span class="gauche" >
+							IP :
+                                                </span>
                                                         <xsl:apply-templates select="champ[@id='ip']"/>
                                                 </td>
                                                 <td>
-                                                <label class="gauche" >
-							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'dns')"/></xsl:attribute>
-                                                	DNS :
-                                                </label>
+                                                <span class="gauche" >
+							DNS :
+                                                </span>
                                                         <xsl:apply-templates select="champ[@id='dns']"/>
                                                 </td>
                                                 <td>
-                                                <label class="gauche" >
-                                                         <xsl:attribute name='for'><xsl:value-of select="concat(@id,'prise')"/></xsl:attribute>
-                                                	Prise :
-                                                </label>
+                                                <span class="gauche" >
+							Prise :
+                                                </span>
                                                          <xsl:apply-templates select="champ[@id='prise']"/>
                                                 </td>
                                         </tr>
 					<tr>
 						<td></td>
 						<td>
-						<label class="gauche" >
-							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'mac')"/></xsl:attribute>
+						<span class="gauche" >
 							@mac :
-						</label>
+						</span>
 							<xsl:apply-templates select="champ[@id='mac']"/>
 						</td>
 						<td>
-						<label class="gauche" >
-							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'admin')"/></xsl:attribute>
+						<span class="gauche" >
 							Tol Admin :
-						</label>
+						</span>
 							<xsl:apply-templates select="choix[@id='admin']"/>
 						</td>
 						<td></td>

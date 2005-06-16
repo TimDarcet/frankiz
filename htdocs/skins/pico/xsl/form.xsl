@@ -56,10 +56,9 @@
 			<xsl:for-each select="*[name()!='bouton']">
 				<div>
 				<xsl:if test="boolean(@titre)">
-					<label class="gauche" >
-						<xsl:attribute name='for'><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
+					<span class="gauche">
 						<xsl:value-of select="@titre"/> :
-					</label>
+					</span>
 				</xsl:if>
 				<span class="droite">
 					<xsl:apply-templates select="."/>
