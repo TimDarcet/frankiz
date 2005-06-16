@@ -209,6 +209,13 @@
 						</label>
 							<xsl:apply-templates select="champ[@id='mac']"/>
 						</td>
+						<td>
+						<label class="gauche" >
+							<xsl:attribute name='for'><xsl:value-of select="concat(@id,'admin')"/></xsl:attribute>
+							Tol Admin :
+						</label>
+							<xsl:apply-templates select="choix[@id='admin']"/>
+						</td>
 						<td></td>
 					</tr>
 					</xsl:if>
