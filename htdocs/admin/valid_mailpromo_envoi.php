@@ -21,9 +21,12 @@
 	Page d'envoi des mails promo.
 	
 	$Log$
+	Revision 1.10  2005/06/20 14:25:52  pico
+	Pour avoir un encodage correct sur les entetes des mails promo
+
 	Revision 1.9  2005/04/13 17:09:58  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.8  2005/01/20 13:07:02  pico
 	On envoit par ordre d'id d'élève (plus facile de voir si un id a été sauté)
 	Devrait mettre ça dans un nouveau fichier de log maintenant.
@@ -75,7 +78,7 @@ if ($_REQUEST['promo'] == '') {
 $mail_contenu = wikiVersXML($mail,true)  ; // On met true pour dire que c'est du HTML qu'on récupere
 
 //
-// Envoi du mail à propremeent parler ...
+// Envoi du mail à proprement parler ...
 //-------------------------------------------------------------------------
 
 	$DB_trombino->query("SELECT eleve_id,nom,prenom,promo FROM eleves WHERE ".$to." ORDER BY eleve_id ASC") ;
@@ -86,7 +89,7 @@ $mail_contenu = wikiVersXML($mail,true)  ; // On met true pour dire que c'est du
 	
 	//$from = str_replace("&gt;",">",str_replace("&lt;","<",$_REQUEST['sender'])) ;
 	//echo base64_decode($_REQUEST['sender'])."<br>" ;
-	$from = html_entity_decode(base64_decode($_REQUEST['sender'])) ; 
+	$from = "=?UTF-8?b?".base64_encode(html_entity_decode(base64_decode($_REQUEST['sendername'])))."?= <".html_entity_decode(base64_decode($_REQUEST['sendermail'])).">" ; 
 	exec("echo \"".$mail_contenu."\" >>".$fich_log) ;
 	while(list($eleve_id,$nom,$prenom,$promo) = $DB_trombino->next_row() ) {
 		$DB_trombino->push_result() ;

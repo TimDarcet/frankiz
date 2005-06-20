@@ -21,9 +21,12 @@
 	Page qui permet aux admins de valider un mail promo
 	
 	$Log$
+	Revision 1.35  2005/06/20 14:25:52  pico
+	Pour avoir un encodage correct sur les entetes des mails promo
+
 	Revision 1.34  2005/04/13 17:09:58  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.33  2005/02/17 09:56:37  dei
 	pour que le titre apparaisse dans les logs : $_POST...
 	
@@ -194,12 +197,16 @@ foreach ($_POST AS $keys => $val){
 			} else {
 				$promo = $_POST['promo'] ;
 			}
-			if (!isset($_POST["from_{$temp[1]}"]))
-				$sender = "$prenom $nom &lt;$mail&gt; " ;
+			if (!isset($_POST["from_name_{$temp[1]}"]))
+				$sendername = "$prenom $nom" ;
 			else
-				$sender = base64_encode($_POST["from_{$temp[1]}"]) ;
-				
-			rediriger_vers("/admin/valid_mailpromo_envoi.php?id={$temp[1]}&promo=$promo&sender=$sender") ;
+				$sendername = base64_encode($_POST["from_name_{$temp[1]}"]) ;
+			
+			if (!isset($_POST["from_mail_{$temp[1]}"]))
+				$sendermail = "$mail" ;
+			else
+				$sendermail = base64_encode($_POST["from_mail_{$temp[1]}"]) ;
+			rediriger_vers("/admin/valid_mailpromo_envoi.php?id={$temp[1]}&promo=$promo&sendername=$sendername&sendermail=$sendermail") ;
 
 		}
 	}
@@ -262,10 +269,13 @@ while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $prom
 	<formulaire id="mailpromo_<? echo $id ?>" titre="Mail Promo" action="admin/valid_mailpromo.php">
 		<champ id="titre" titre="Sujet " valeur="<?  echo $titre ;?>"/>
 		<?
-			if ((!isset($_POST["from_$id"]))||((isset($temp))&&($temp[1]!=$id)))
-				$_POST["from_$id"] = "$prenom $nom &lt;$mail&gt; " ;
+			if ((!isset($_POST["from_name_$id"]))||((isset($temp))&&($temp[1]!=$id)))
+				$_POST["from_name_$id"] = "$prenom $nom" ;
+			if ((!isset($_POST["from_mail_$id"]))||((isset($temp))&&($temp[1]!=$id)))
+				$_POST["from_mail_$id"] = "$mail" ;
 		?>
-		<champ titre="From " id="from_<?=$id?>"  valeur="<? echo  $_POST["from_$id"] ?>"/>
+		<champ titre="From Nom" id="from_name_<?=$id?>"  valeur="<? echo  $_POST["from_name_$id"] ?>"/>
+		<champ titre="From Mail" id="from_mail_<?=$id?>"  valeur="<? echo  $_POST["from_mail_$id"] ?>"/>
 		<zonetext id="mail" titre="Mail"><?=$mailpromo?></zonetext>
 		<choix titre="Promo" id="promo" type="combo" valeur="<?echo $promo_mail ;?>">
 		<?
