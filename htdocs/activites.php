@@ -21,9 +21,15 @@
 	Page d'activites de frankiz.
 	
 	$Log$
+	Revision 1.6  2005/06/21 22:43:55  pico
+	Possiblité de forcer l'usage d'une skin pour la durée d'une session avec ?forceskin=nomdelaskin
+	(utile pour avoir une version wap, rss ou même texte pour links)
+
+	(correction d'un bug des activités au passage)
+
 	Revision 1.5  2005/04/13 17:09:58  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.4  2005/01/18 13:00:21  pico
 	Affichage état Bôb et Kès sur la page des activités
 	
@@ -62,6 +68,7 @@ if(est_authentifie(AUTH_INTERNE)){
 }
 
 $date_legend = array("Aujourd'hui","Demain","Après-demain","Dans 3 jours","Dans 4 jours","Dans 5 jours","Dans une semaine");
+$exterieur = "";
 if(!est_authentifie(AUTH_INTERNE)) $exterieur=" AND exterieur='1' ";
 
 for($i= 0; $i<7;$i++){

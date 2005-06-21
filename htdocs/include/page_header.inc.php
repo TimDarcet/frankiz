@@ -21,9 +21,15 @@
 	Page d'entête pour la transformation du XML. Met en place un cache de sortie.
 
 	$Log$
+	Revision 1.13  2005/06/21 22:43:55  pico
+	Possiblité de forcer l'usage d'une skin pour la durée d'une session avec ?forceskin=nomdelaskin
+	(utile pour avoir une version wap, rss ou même texte pour links)
+
+	(correction d'un bug des activités au passage)
+
 	Revision 1.12  2005/04/13 17:10:00  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.11  2005/04/11 20:29:27  pico
 	Passage en utf8 suite Ã  une connerie
 	
@@ -59,10 +65,15 @@ require_once "global.inc.php";
 // mise en place du cache de sortie
 ob_start();
 
+if (isset($_GET['forceskin']) && is_dir(BASE_LOCAL."/skins/{$_GET['forceskin']}")) {
+	$_SESSION['skin']['skin_css_url'] = BASE_URL."/skins/{$_SESSION['skin']['skin_nom']}/default/style.css";
+	$_SESSION['skin']['skin_xsl_chemin'] = BASE_LOCAL."/skins/{$_GET['forceskin']}/xsl/skin.xsl";
+}
+
 // en-tetes XML
 echo "<?xml version='1.0' encoding='UTF-8' ?>\n";
 echo "<!DOCTYPE frankiz PUBLIC \"-//BR//DTD FRANKIZ 1.0//FR\" \"http://frankiz.polytechnique.fr/frankiz.dtd\">\n";
-echo "<frankiz base='".BASE_URL."/' css='".$_SESSION['skin']['skin_css_url']."'>\n";
+echo "<frankiz base='".BASE_URL."/' css='{$_SESSION['skin']['skin_css_url']}'>\n";
 
 require "modules.inc.php";
 ?>
