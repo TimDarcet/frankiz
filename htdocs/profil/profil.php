@@ -24,9 +24,12 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.51  2005/06/21 19:29:48  pico
+	comme ça ça plait mieux à mYk
+
 	Revision 1.50  2005/06/21 19:21:25  myk
 	Pour aider les gens a proposer de bonnes photos.
-
+	
 	Revision 1.49  2005/06/21 19:08:36  pico
 	Ajout du champ de commentaire perso dans le trombi
 	(on va pouvoir faire du ménage :)
@@ -419,7 +422,7 @@ require "../include/page_header.inc.php";
 		</element>
 
 		<element id="-2" selectionnable="non">
-			<colonne id="binet">Binets non listés</colonne>
+			<colonne id="binet">Autres commentaires</colonne>
 			<colonne id="commentaire">
 				<zonetext id="perso" titre="Commentaire perso" type="moyen"><? echo $commentaire;?></zonetext>
 			</colonne>
