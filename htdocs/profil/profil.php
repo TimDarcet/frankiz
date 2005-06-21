@@ -24,10 +24,13 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.50  2005/06/21 19:21:25  myk
+	Pour aider les gens a proposer de bonnes photos.
+
 	Revision 1.49  2005/06/21 19:08:36  pico
 	Ajout du champ de commentaire perso dans le trombi
 	(on va pouvoir faire du ménage :)
-
+	
 	Revision 1.48  2005/04/13 17:10:00  pico
 	Passage de tous les fichiers en utf8.
 	
@@ -380,7 +383,7 @@ require "../include/page_header.inc.php";
 		<?php else: ?>
 			<image source="trombino.php?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>" texte="photo" height="95" width="80"/>
 		<?php endif; ?>
-		<note>Tu peux personnaliser le trombino en changeant ta photo (elle ne doit pas dépasser 200Ko et 300x400 px)</note>
+		<note>Tu peux personnaliser le trombino en changeant ta photo. Attention, elle ne doit pas dépasser 200Ko ou 300x400 pixels. Les TOLmestres te rappellent que cette photo doit permettre de te reconnaître facilement. Propose donc plutôt une photo sur laquelle tu es seul, et ou on voit bien ton visage.</note>
 		<fichier id="file" titre="Nouvelle photo" taille="200000"/>
 
 		<bouton id="changer_trombino" titre="Changer"/>
