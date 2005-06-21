@@ -24,9 +24,13 @@
 	TODO modification de sa photo et de ses binets.
 	
 	$Log$
+	Revision 1.49  2005/06/21 19:08:36  pico
+	Ajout du champ de commentaire perso dans le trombi
+	(on va pouvoir faire du ménage :)
+
 	Revision 1.48  2005/04/13 17:10:00  pico
 	Passage de tous les fichiers en utf8.
-
+	
 	Revision 1.47  2005/01/28 21:17:21  pico
 	Correction bug affichage photo
 	
@@ -173,8 +177,8 @@ if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "true") && ($_REQUEST['im
 $message="";
 
 // Données sur l'utilisateur
-$DB_trombino->query("SELECT eleves.nom,prenom,surnom,mail,login,promo,sections.nom,cie,piece_id FROM eleves LEFT JOIN sections USING(section_id) WHERE eleve_id='{$_SESSION['user']->uid}'");
-list($nom,$prenom,$surnom,$mail,$login,$promo,$section,$cie,$casert) = $DB_trombino->next_row();
+$DB_trombino->query("SELECT eleves.nom,prenom,surnom,mail,login,promo,sections.nom,cie,piece_id,commentaire FROM eleves LEFT JOIN sections USING(section_id) WHERE eleve_id='{$_SESSION['user']->uid}'");
+list($nom,$prenom,$surnom,$mail,$login,$promo,$section,$cie,$casert,$commentaire) = $DB_trombino->next_row();
 
 if(isset($_POST['changer_frankiz'])) {
 	// Modification du mot de passe
@@ -221,6 +225,7 @@ if(isset($_POST['changer_frankiz'])) {
 	if(aucune_erreur()) {
 		$surnom = $_POST['surnom'];
 		$mail = $_POST['email'];
+		
 		$DB_trombino->query("UPDATE eleves SET surnom='$surnom',mail=".(empty($mail)?"NULL":"'$mail'")." WHERE eleve_id='{$_SESSION['user']->uid}'");
 		$message.="<commentaire>L'email et le surnom ont été modifiés.</commentaire>";
 	}
@@ -286,6 +291,8 @@ if(isset($_POST['changer_frankiz'])) {
 if (isset($_POST['mod_binet'])) {
 	foreach($_POST['commentaire'] as $key=>$val)
 		$DB_trombino->query("UPDATE membres SET remarque='$val' WHERE eleve_id='{$_SESSION['user']->uid}' AND binet_id='$key'");
+	$DB_trombino->query("UPDATE eleves SET commentaire='{$_POST['perso']}' WHERE eleve_id='{$_SESSION['user']->uid}'");
+	$commentaire = $_POST['perso'];
 	$message .= "<commentaire>Modification de la partie binets effectuée avec succès.</commentaire>";
 }
 
@@ -392,8 +399,8 @@ require "../include/page_header.inc.php";
 			</element>
 		<? endwhile; ?>
 		
-		<note>Si tu viens d'adhérer à un binet, n'hésite pas à le montrer et inscrit-y toi sur le TOL</note>
-		<element id="<?=$binet_id?>" selectionnable="non">
+		<note>Si tu viens d'adhérer à un binet, n'hésite pas à le montrer et inscris le sur le TOL</note>
+		<element id="-1" selectionnable="non">
 			<colonne id="binet">Rajouter un binet</colonne>
 			<colonne id="commentaire">
 				<choix id="liste_binet"  type="combo" valeur="Ajout">
@@ -407,7 +414,13 @@ require "../include/page_header.inc.php";
 				<bouton id='add_binet' titre='Ajouter'/>
 			</colonne>
 		</element>
-		
+
+		<element id="-2" selectionnable="non">
+			<colonne id="binet">Binets non listés</colonne>
+			<colonne id="commentaire">
+				<zonetext id="perso" titre="Commentaire perso" type="moyen"><? echo $commentaire;?></zonetext>
+			</colonne>
+		</element>
 		<bouton id='suppr_binet' titre='Supprimer' onClick="return window.confirm('Es-tu sûr de vouloir supprimer ce binet ?')"/>
 		<bouton id='mod_binet' titre='Enregistrer les commentaires'/>
 	</liste>

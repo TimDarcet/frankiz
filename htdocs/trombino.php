@@ -21,9 +21,13 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.67  2005/06/21 19:08:36  pico
+	Ajout du champ de commentaire perso dans le trombi
+	(on va pouvoir faire du ménage :)
+
 	Revision 1.66  2005/06/16 12:51:33  pico
 	Merge du trombi et du trombi admin
-
+	
 	Revision 1.65  2005/05/23 15:38:37  pico
 	oublié les "L'"
 	
@@ -206,6 +210,8 @@
 */
 
 require_once "include/global.inc.php";
+require_once "include/wiki.inc.php";
+
 demande_authentification(AUTH_INTERNE);
 
 $tol_admin = false;
@@ -261,7 +267,7 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 
 	$where = "";
 		$join = "LEFT JOIN sections ON eleves.section_id=sections.section_id LEFT JOIN pieces ON eleves.piece_id = pieces.piece_id ";
-		$champs = "eleves.eleve_id,eleves.nom,prenom,surnom,date_nais,eleves.piece_id,sections.nom,eleves.section_id,cie,promo,login,mail,pieces.tel";
+		$champs = "eleves.eleve_id,eleves.nom,prenom,surnom,date_nais,eleves.commentaire,eleves.piece_id,sections.nom,eleves.section_id,cie,promo,login,mail,pieces.tel";
 	
 	// Création de la requête si anniversaire appelle
 	if(isset($_REQUEST['anniversaire'])) {
@@ -366,7 +372,7 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 		
 
 // Génération des fiches des élèves
-		while(list($eleve_id,$nom,$prenom,$surnom,$date_nais,$piece_id,$section,$section_id,$cie,$promo,$login,$mail,$tel) = $DB_trombino->next_row()) {
+		while(list($eleve_id,$nom,$prenom,$surnom,$date_nais,$commentaire,$piece_id,$section,$section_id,$cie,$promo,$login,$mail,$tel) = $DB_trombino->next_row()) {
 			$date_nais = date("d/m/Y",strtotime($date_nais));
 			echo "<eleve nom='$nom' prenom='$prenom' promo='$promo' login='$login' surnom='$surnom' date_nais='$date_nais' "
 				."tel='$tel' mail='".(empty($mail)?"$login@poly.polytechnique.fr":$mail)."' casert='$piece_id' "
@@ -418,6 +424,9 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 				echo "<binet nom='$binet_nom' id='$binet_id'>$remarque</binet>\n";
 			$DB_trombino->pop_result();
 			
+			echo wikiVersXML($commentaire);
+
+
 			// Supprime les accents
 			$nompolyorg = str_replace( "&apos;" , "" , $nom );
 			$nompolyorg    = htmlentities(strtolower(utf8_decode($nompolyorg)));
