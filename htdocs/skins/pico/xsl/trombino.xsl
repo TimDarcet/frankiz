@@ -81,8 +81,9 @@
 			</ul>
 		</xsl:if>
 		<xsl:text> </xsl:text>
+		<xsl:apply-templates select="cadre"/>
 	</div>
-		<xsl:apply-templates select="*[name()!='binet' and name()!='prise']"/>
+		<xsl:apply-templates select="*[name()!='binet' and name()!='prise' and name()!='cadre']"/>
 	</div>
 	</div></div></div></div></div></div>
 </xsl:template>

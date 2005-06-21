@@ -157,10 +157,12 @@
 
 
 <xsl:template match="cadre">
-	<h2>
-		<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
-		<xsl:value-of select="@titre"/>
-	</h2>
+	<xsl:if test="@titre!=''">
+		<h2>
+			<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+			<xsl:value-of select="@titre"/>
+		</h2>
+	</xsl:if>
 	<xsl:apply-templates/>
 </xsl:template>
 

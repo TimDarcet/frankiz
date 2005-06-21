@@ -21,10 +21,13 @@
 	Recherche dans le trombino.
 
 	$Log$
+	Revision 1.68  2005/06/21 20:27:12  pico
+	Modifs de mise en forme commentaire perso
+
 	Revision 1.67  2005/06/21 19:08:36  pico
 	Ajout du champ de commentaire perso dans le trombi
 	(on va pouvoir faire du ménage :)
-
+	
 	Revision 1.66  2005/06/16 12:51:33  pico
 	Merge du trombi et du trombi admin
 	
@@ -424,7 +427,7 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 				echo "<binet nom='$binet_nom' id='$binet_id'>$remarque</binet>\n";
 			$DB_trombino->pop_result();
 			
-			echo wikiVersXML($commentaire);
+			echo "<cadre>".wikiVersXML($commentaire)."</cadre>";
 
 
 			// Supprime les accents
