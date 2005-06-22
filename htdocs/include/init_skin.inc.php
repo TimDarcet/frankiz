@@ -27,46 +27,8 @@
 	- 'liens_rss', contenant la liste des liens perso.
 
 	
-	$Log$
-	Revision 1.6  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.5  2005/04/07 21:27:21  fruneau
-	Repassage Ã  la version sans sdbr...
-	Pour les nostalgiques, la version boulette est taguÃ©e sdbr.
-	
-	ie cvs up -r sdbr init_skin.inc.php pour la rÃ©cupÃ©rer
-	
-	Revision 1.2  2004/11/25 00:44:35  schmurtz
-	Ajout de init_ devant les fichier d'include servant d'initialisation de page
-	Permet de mieux les distinguer des autres fichiers d'include ne faisant que definir
-	des fonctions.
-	
-	Revision 1.1  2004/11/24 20:26:38  schmurtz
-	Reorganisation des skins (affichage melange skin/css + depacement des css)
-	
-	Revision 1.11  2004/11/16 14:55:46  schmurtz
-	On evite les appels frequents a la BD pour recuperer la skin
-	
-	Revision 1.10  2004/11/16 12:17:25  schmurtz
-	Deplacement des skins de trombino.eleves vers frankiz.compte_frankiz
-	
-	Revision 1.9  2004/11/13 00:12:24  schmurtz
-	Ajout du su
-	
-	Revision 1.8  2004/11/11 21:15:52  kikx
-	Rajout d'un champs dans le trombino pour stocker la skin du mec ...
-	le cookie est prioritaire, mais si il n'existe pas ou qu'il a ppartient a quelqu'un d'autre, alors on va cherhcer dans la BDD
-	
-	Revision 1.7  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.6  2004/09/15 23:19:31  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.5  2004/09/15 21:42:08  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
-	
 */
 
 require_once "user.inc.php";

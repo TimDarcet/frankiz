@@ -23,62 +23,8 @@
 	et _qui inclus du code en dehors de fonctions_ comme erreursphp.inc.php, login.inc.php,
 	skin.inc.php mais pas user.inc.php, xml.inc.php
 	
-	$Log$
-	Revision 1.51  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.50  2005/03/31 17:17:01  pico
-	Frankiz exterieur
-	
-	Revision 1.49  2005/01/26 22:15:32  schmurtz
-	Oups, maintenant c'est vraiment corrige
-	
-	Revision 1.48  2005/01/26 21:56:39  schmurtz
-	Gestion de l'echappement des \
-	
-	Revision 1.47  2005/01/25 14:53:43  pico
-	Modifications relatives à la version de prod, à l'accès extérieur, tout ça...
-	
-	Revision 1.46  2004/12/02 21:26:23  pico
-	Base URL: distinction pour éviter les http://frankiz//index.php
-	
-	Revision 1.45  2004/11/26 16:12:47  pico
-	La Faq utilise la $DB_faq au lieu de $DB_web
-	
-	Revision 1.44  2004/11/25 01:33:45  schmurtz
-	re
-	
-	Revision 1.43  2004/11/25 01:31:55  schmurtz
-	Pour debuguer
-	
-	Revision 1.42  2004/11/25 00:44:35  schmurtz
-	Ajout de init_ devant les fichier d'include servant d'initialisation de page
-	Permet de mieux les distinguer des autres fichiers d'include ne faisant que definir
-	des fonctions.
-	
-	Revision 1.41  2004/11/24 22:56:18  schmurtz
-	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
-	globale pour tous les fichiers.
-	
-	Revision 1.40  2004/11/24 22:12:57  schmurtz
-	Regroupement des fonctions zip unzip deldir et download dans le meme fichier
-	
-	Revision 1.39  2004/11/24 20:26:38  schmurtz
-	Reorganisation des skins (affichage melange skin/css + depacement des css)
-	
-	Revision 1.38  2004/11/24 16:37:09  pico
-	Ajout des news externes en tant que module
-	
-	Revision 1.37  2004/11/24 15:55:34  pico
-	Code pour gérer les liens perso + les rss au lancement de la session
-	
-	Revision 1.36  2004/11/24 12:51:02  kikx
-	Pour commencer la compatibilité wiki
-	
-	Revision 1.35  2004/11/09 19:42:15  pico
-	Passage de tous les paramètres de conf dans etc/config.php
-	
-	
 */
 
 // Définition générique des différentes bases pour l'accès aux fichiers

@@ -24,46 +24,8 @@
 	
 	TODO traiter le cas ou le qdj master est à la bourre (garder l'ancienne qdj par exemple).
 	
-	$Log$
-	Revision 1.18  2005/05/24 17:05:36  pico
-	Ajout d'un lien vers le classement
+	$Id$
 
-	Revision 1.17  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
-	
-	Revision 1.16  2005/01/06 23:31:31  pico
-	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
-	
-	Revision 1.15  2004/12/16 00:22:53  pico
-	Coreection cache qdj, sinon la qdh devient la qdah...
-	
-	Revision 1.14  2004/12/14 17:36:33  pico
-	Correction action
-	
-	Revision 1.13  2004/11/02 17:46:39  pico
-	Modification de la gestion des caches de la qdj
-	
-	Revision 1.12  2004/11/02 17:29:22  pico
-	Ne crée plus de qdj qd il n'y en a pas.
-	
-	Revision 1.11  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.10  2004/09/20 20:33:47  schmurtz
-	Mise en place d'un systeme de cache propre
-	
-	Revision 1.9  2004/09/17 15:28:20  schmurtz
-	Utilisation de la balise <eleve> pour les derniers votants aÌ la qdj, les anniversaires, la signature des annoncesâ¦
-	
-	Revision 1.8  2004/09/15 23:19:31  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.7  2004/09/15 23:01:21  schmurtz
-	Bug de la qdj : renvoie maintenant sur la page courante (et non index.php)
-	
-	Revision 1.6  2004/09/15 21:42:08  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
-	
 */
 
 function qdj_affiche($hier,$deja_vote) {

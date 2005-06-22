@@ -24,54 +24,7 @@
 	  dans la sortie XML.
 	- affichage des requètes mysql en commentaire dans
 	
-	$Log$
-	Revision 1.8  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.7  2005/03/15 11:54:36  pico
-	Devrait logguer aussi les variables en cas d'erreur
-	
-	Revision 1.6  2005/02/08 21:57:56  pico
-	Correction bug #62
-	
-	Revision 1.5  2004/12/16 16:45:14  schmurtz
-	Correction d'un bug dans la gestion des authentifications par cookies
-	Ajout de fonctionnalitees de log d'erreur de connexions ou lors des bugs
-	affichant une page "y a un bug, contacter l'admin"
-	
-	Revision 1.4  2004/12/14 14:18:12  schmurtz
-	Suppression de la page de doc wiki : doc directement dans les pages concernees.
-	
-	Revision 1.3  2004/11/29 17:27:32  schmurtz
-	Modifications esthetiques.
-	Nettoyage de vielles balises qui trainaient.
-	
-	Revision 1.2  2004/11/27 20:16:55  pico
-	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-	
-	Revision 1.1  2004/11/25 00:44:35  schmurtz
-	Ajout de init_ devant les fichier d'include servant d'initialisation de page
-	Permet de mieux les distinguer des autres fichiers d'include ne faisant que definir
-	des fonctions.
-	
-	Revision 1.11  2004/11/16 14:54:12  schmurtz
-	Affichage des erreurs "Parse Error"
-	permet de loguer des infos autre que les commandes SQL (pour debugage)
-	
-	Revision 1.10  2004/11/02 20:41:22  kikx
-	Code d'erreur mysql
-	
-	Revision 1.9  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.8  2004/09/17 11:00:07  schmurtz
-	Bug dans l'affichage des erreurs
-	
-	Revision 1.7  2004/09/15 23:19:31  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.6  2004/09/15 21:42:08  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
+	$Id$
 	
 */
 

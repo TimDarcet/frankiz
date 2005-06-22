@@ -25,62 +25,7 @@
 	La table d'authentification contient les champs 'eleve_id', 'login', 'passwd' et 'perms', les autres
 	informations provenant des tables du trombino (avec jointure sur l'uid).
 
-	$Log$
-	Revision 1.22  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.21  2005/03/24 08:02:25  pico
-	Acces admin de l'exterieur (utile federez)
-	
-	Revision 1.20  2005/02/08 21:57:56  pico
-	Correction bug #62
-	
-	Revision 1.19  2005/01/24 13:52:07  pico
-	Pas de droits pour les utilisateurs externes
-	
-	Revision 1.18  2005/01/21 16:09:16  pico
-	Test
-	
-	Revision 1.17  2004/12/16 16:45:14  schmurtz
-	Correction d'un bug dans la gestion des authentifications par cookies
-	Ajout de fonctionnalitees de log d'erreur de connexions ou lors des bugs
-	affichant une page "y a un bug, contacter l'admin"
-	
-	Revision 1.16  2004/12/16 13:00:41  pico
-	INNER en LEFT
-	
-	Revision 1.15  2004/11/24 15:55:34  pico
-	Code pour gérer les liens perso + les rss au lancement de la session
-	
-	Revision 1.14  2004/11/22 07:59:00  pico
-	Correction du login pour le su.
-	
-	Revision 1.13  2004/11/17 22:40:50  schmurtz
-	Bug lors du login par mdp si l'utilisateur ne mets pas son login sous la forme
-	loginpoly.promo
-	
-	Revision 1.12  2004/11/16 15:09:15  kikx
-	Le login est now login.promo
-	
-	Revision 1.11  2004/11/16 14:55:46  schmurtz
-	On evite les appels frequents a la BD pour recuperer la skin
-	
-	Revision 1.10  2004/11/13 00:12:24  schmurtz
-	Ajout du su
-	
-	Revision 1.9  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.8  2004/10/17 17:13:20  kikx
-	Pour rendre la page d'administration plus belle
-	n'affiche le truc d'admin que si on est admin
-	meme chsoe pour le prez et le webmestre
-	
-	Revision 1.7  2004/09/15 23:19:31  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.6  2004/09/15 21:42:08  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
+	$Id$
 	
 */
 

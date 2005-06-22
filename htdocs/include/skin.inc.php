@@ -20,28 +20,8 @@
 /*
 	Fonction servant pour la gestion des skins.
 	
-	$Log$
-	Revision 1.18  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.17  2005/04/07 21:34:01  fruneau
-	Idem pour skin.inc.php
-	
-	Revision 1.15  2004/12/14 17:14:53  schmurtz
-	modification de la gestion des annonces lues :
-	- toutes les annonces sont envoyees dans le XML
-	- annonces lues avec l'attribut visible="non"
-	- suppression de la page affichant toutes les annonces
-	
-	Revision 1.14  2004/12/06 00:01:42  kikx
-	Passage de la skin par défaut en parametre du site et non pas stocké en dur
-	
-	Revision 1.13  2004/11/24 23:38:38  schmurtz
-	Gestion des skins perso + corrections dans la skin default
-	
-	Revision 1.12  2004/11/24 20:26:38  schmurtz
-	Reorganisation des skins (affichage melange skin/css + depacement des css)
-	
 */
 
 require_once "xml.inc.php";

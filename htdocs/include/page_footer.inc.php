@@ -22,48 +22,8 @@
 	transformation XSLT.
 	C'est d'ici qu'est appelé la fonction qui affiche les erreurs en haut de la page.
 	
-	$Log$
-	Revision 1.15  2005/04/18 08:16:01  pico
-	Y'a plus besoin de ça, on travaille déjà en utf8
+	$Id$
 
-	Revision 1.14  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
-	
-	Revision 1.13  2005/03/23 21:12:12  pico
-	Normalement tout ce qui faut pour passer en UTF8
-	
-	Revision 1.12  2005/02/08 21:57:56  pico
-	Correction bug #62
-	
-	Revision 1.11  2005/01/18 19:30:34  pico
-	Place la boite du sudo dans la boite avec les infos de connexion.
-	Pbs d'encodage des variables passées à sablotron réglés
-	Pb du su quand on est pas loggué par mot de passe réglé
-	
-	Revision 1.10  2005/01/14 10:07:46  pico
-	Passage d'infos à la skin
-	
-	Revision 1.9  2004/12/16 12:52:57  pico
-	Passage des paramètres lors d'un login
-	
-	Revision 1.8  2004/11/24 20:26:38  schmurtz
-	Reorganisation des skins (affichage melange skin/css + depacement des css)
-	
-	Revision 1.7  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.6  2004/09/20 20:33:47  schmurtz
-	Mise en place d'un systeme de cache propre
-	
-	Revision 1.5  2004/09/16 15:32:56  schmurtz
-	Suppression de la fonction afficher_identifiant(), utilisation de <![CDATA[......]]> aÌ la place.
-	
-	Revision 1.4  2004/09/15 23:19:31  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.3  2004/09/15 21:42:08  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
-	
 */
 
 echo "</frankiz>\n";

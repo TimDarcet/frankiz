@@ -18,57 +18,10 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-		Fonction pour parser des rss
-		
-		$Log$
-		Revision 1.16  2005/04/13 17:10:00  pico
-		Passage de tous les fichiers en utf8.
+	Fonction pour parser des rss
 
-		Revision 1.15  2005/03/23 21:12:12  pico
-		Normalement tout ce qui faut pour passer en UTF8
-		
-		Revision 1.14  2005/01/19 18:29:15  pico
-		Parce que wget c'est quand même mieux que lynx
-		
-		Revision 1.13  2005/01/19 17:47:46  pico
-		Pour que les rss marchent même quand l'entrée est gzippée
-		
-		Revision 1.12  2005/01/11 13:13:36  pico
-		Histoire d'avoir un cache des flux rss
-		
-		Revision 1.11  2004/11/25 00:16:02  pico
-		Ne traite plus le flux rss si celui ci n'est pas du xml valide
-		
-		Revision 1.10  2004/11/24 23:51:40  pico
-		Oubli
-		
-		Revision 1.9  2004/11/24 23:50:42  pico
-		Tri dans le flux css
-		
-		Revision 1.8  2004/11/24 23:31:11  pico
-		Affichage plus correct des rss (les &#232; sont maintenant afichés par le navigateur)
-		
-		Revision 1.7  2004/11/24 21:51:16  pico
-		Passage du mode d'affichage en paramètre dans la xsl
-		
-		Revision 1.6  2004/11/24 21:09:04  pico
-		Sauvegarde avant mise à jour skins
-		
-		Revision 1.5  2004/11/24 17:15:54  pico
-		Marche mieux comme ça, sinon le premier parsage xsl fait de la merde avec les accents
-		
-		Revision 1.4  2004/11/23 17:36:02  pico
-		Rajout de balises link pour les navigateurs texte et pour indiquer la précense du feed rss
-		
-		Revision 1.3  2004/11/22 21:59:28  pico
-		2 modes d'affichage des rss: complet ou liste de liens
-		
-		Revision 1.2  2004/11/18 12:11:58  pico
-		Premier jet de page pour afficher des news externes
-		
-		Revision 1.1  2004/11/17 22:39:45  pico
-		Fonction pour parser des rss extérieures
-		
+	$Id$
+
 */
 
 /* 

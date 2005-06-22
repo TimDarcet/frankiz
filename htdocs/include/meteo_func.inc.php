@@ -30,23 +30,7 @@
 			unit=m pour avoir les unité en métrique
 			dayf=8 pour avoir 7 jour de previsions
 
-	$Log$
-	Revision 1.5  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.4  2005/03/23 21:12:12  pico
-	Normalement tout ce qui faut pour passer en UTF8
-	
-	Revision 1.3  2004/11/17 22:27:24  pico
-	Corrections et bugfix divers
-	
-	Revision 1.2  2004/11/04 22:07:19  schmurtz
-	Suppression du parser xml de la meteo : utilisation d'une conversion xsl a
-	la place
-	
-	Revision 1.1  2004/10/28 16:08:14  kikx
-	Ne fait qu'une page de fonctions pour la météo car sinon ça devient ingérable
-	
+	$Id$
 
 */
 

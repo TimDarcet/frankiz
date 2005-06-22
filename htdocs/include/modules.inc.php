@@ -25,22 +25,8 @@
 							'off' pour forcer le non affichage
 	- 'modules[tous]' :		valeur par défaut pour l'affichage des modules
 
-	$Log$
-	Revision 1.14  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.13  2004/12/16 12:52:57  pico
-	Passage des paramètres lors d'un login
-	
-	Revision 1.12  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.11  2004/09/15 23:19:31  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.10  2004/09/15 21:42:08  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
-	
 */
 
 // Cette directive "global" est utile dans le cas où cette page est inclue depuis
