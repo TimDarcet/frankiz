@@ -18,27 +18,8 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	$Log$
-	Revision 1.6  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.5  2005/01/26 13:58:20  pico
-	Correction de pbs sur le wiki et les pages qui y font référence
-	(genre le <p><h1>blah</h1></p> ...)
-	
-	Revision 1.4  2005/01/04 21:44:40  pico
-	Remise en place du lien vers l'helpwiki parce que le résumé en bas de page est incomprehensible
-	
-	Revision 1.3  2004/12/14 22:16:06  schmurtz
-	Correction de bug du moteur wiki.
-	Simplication du code.
-	
-	Revision 1.2  2004/12/14 14:18:11  schmurtz
-	Suppression de la page de doc wiki : doc directement dans les pages concernees.
-	
-	Revision 1.1  2004/11/24 00:26:09  schmurtz
-	Debut de gestion de wiki
-	
 */
 
 require "include/wiki.inc.php";

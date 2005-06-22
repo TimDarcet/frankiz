@@ -22,30 +22,7 @@
 	grace à la fonction demande_authentification() définie dans login.inc.php. Ça permet d'afficher
 	la boîte de login dans d'autres pages qui requiert une authentification.
 	
-	$Log$
-	Revision 1.11  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.10  2004/12/14 17:14:52  schmurtz
-	modification de la gestion des annonces lues :
-	- toutes les annonces sont envoyees dans le XML
-	- annonces lues avec l'attribut visible="non"
-	- suppression de la page affichant toutes les annonces
-	
-	Revision 1.9  2004/11/04 16:36:42  schmurtz
-	Modifications cosmetiques
-	
-	Revision 1.8  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.7  2004/09/16 13:57:49  schmurtz
-	word wrap
-	
-	Revision 1.6  2004/09/15 23:19:45  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.5  2004/09/15 21:42:15  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
+	$Id$
 	
 */
 

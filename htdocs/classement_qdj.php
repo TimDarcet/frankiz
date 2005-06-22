@@ -18,16 +18,7 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	$Log$
-	Revision 1.3  2005/05/25 08:31:57  pico
-	Une mopufle
-
-	Revision 1.2  2005/05/24 16:53:09  pico
-	ajout transparence
-	
-	Revision 1.1  2005/05/24 16:39:38  pico
-	Ajout du classement QDJ
-	
+	$Id$
 	
 */
 require_once "include/global.inc.php";

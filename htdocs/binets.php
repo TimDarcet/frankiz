@@ -20,65 +20,8 @@
 /*
 	Affichage de la liste des binets ayant un site web.
 
-	$Log$
-	Revision 1.11  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.10  2005/01/24 19:51:48  pico
-	Pour modifier un comportement quantique
-	
-	Revision 1.9  2005/01/22 17:58:38  pico
-	Modif des images
-	
-	Revision 1.8  2005/01/21 17:05:40  pico
-	Groumf
-	
-	Revision 1.7  2005/01/21 17:04:28  pico
-	Erreur
-	
-	Revision 1.6  2005/01/21 17:01:31  pico
-	Fonction pour savoir si interne
-	
-	Revision 1.5  2005/01/11 14:36:41  pico
-	Binets triés ext/int + url auto si binet sur le serveur
-	
-	Revision 1.4  2005/01/02 10:50:25  pico
-	Passage de certaines pages en visibles de l'intérieur (non loggué)
-	
-	Revision 1.3  2004/12/16 12:52:57  pico
-	Passage des paramètres lors d'un login
-	
-	Revision 1.2  2004/12/15 01:31:29  schmurtz
-	bugs
-	
-	Revision 1.1  2004/11/11 20:15:19  kikx
-	Deplacemeent du fichier des binets pour que ca erste logique
-	
-	Revision 1.12  2004/11/11 19:38:55  kikx
-	Micro bug
-	
-	Revision 1.11  2004/11/11 19:22:52  kikx
-	Permet de gerer l'affichage externe interne des binets
-	Permet de pas avoir de binet sans catégorie valide
-	
-	Revision 1.10  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.9  2004/10/19 13:45:00  schmurtz
-	Classement des binets par categorie puis par nom
-	
-	Revision 1.8  2004/10/18 20:29:44  kikx
-	Enorme modification pour la fusion des bases des binets (Merci Schmurtz)
-	
-	Revision 1.7  2004/09/16 13:56:32  kikx
-	Modification de skins (détails)
-	
-	Revision 1.4  2004/09/15 23:20:39  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.3  2004/09/15 21:42:36  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
-	
 */
 require_once "include/global.inc.php";
 

@@ -18,36 +18,8 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-		$Log$
-		Revision 1.9  2005/04/13 17:10:00  pico
-		Passage de tous les fichiers en utf8.
-
-		Revision 1.8  2005/01/20 20:09:03  pico
-		Changement de "Très BRment, l'automate"
-		
-		Revision 1.7  2004/12/15 20:07:01  kikx
-		Correction
-		
-		Revision 1.6  2004/12/14 23:15:38  kikx
-		Pour avoir la source + affichage
-		
-		Revision 1.5  2004/12/14 23:11:11  kikx
-		Oups /.me boulet
-		
-		Revision 1.4  2004/12/14 23:09:52  kikx
-		Pour avoir qd meme la page modifié
-		
-		Revision 1.3  2004/12/14 23:06:06  schmurtz
-		Ajout du support zonetext grand pour les faqs
-		
-		Revision 1.2  2004/12/14 23:00:50  kikx
-		Car c'est trop la merde sinon
-		
-		Revision 1.1  2004/12/14 22:17:32  kikx
-		Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
-		
-
-		
+		$Id$
+	
 */
 require_once "../include/global.inc.php";
 require_once "../include/wiki.inc.php";

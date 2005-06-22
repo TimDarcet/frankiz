@@ -20,15 +20,7 @@
 /*
 	Plan pour venir à l'X
 	
-	$Log$
-	Revision 1.3  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.2  2004/11/04 16:36:42  schmurtz
-	Modifications cosmetiques
-	
-	Revision 1.1  2004/10/31 18:20:24  kikx
-	Rajout d'une page pour les plan (venir à l'X)
+	$Id$
 
 */
 

@@ -20,44 +20,7 @@
 /*
 	Permet de donner la météo sur Paris (cf. meteo_func.inc.php)
 			
-	$Log$
-	Revision 1.5  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.4  2005/01/22 17:58:38  pico
-	Modif des images
-	
-	Revision 1.3  2004/12/14 23:32:07  schmurtz
-	Bug dans l'url d'affichage du logo weather.com
-	
-	Revision 1.2  2004/12/13 20:03:25  pico
-	Les liens ne forment pas de blocs, il faut donc le spécifier
-	
-	Revision 1.1  2004/11/25 00:10:30  schmurtz
-	Suppression des dossiers ne contenant qu'un unique fichier index.php
-	
-	Revision 1.6  2004/11/04 22:07:19  schmurtz
-	Suppression du parser xml de la meteo : utilisation d'une conversion xsl a
-	la place
-	
-	Revision 1.5  2004/11/04 16:36:42  schmurtz
-	Modifications cosmetiques
-	
-	Revision 1.4  2004/11/02 13:04:25  pico
-	Correction météo (othograffe + skin pico)
-	
-	Revision 1.3  2004/10/28 16:08:14  kikx
-	Ne fait qu'une page de fonctions pour la météo car sinon ça devient ingérable
-	
-	Revision 1.2  2004/10/28 11:29:07  kikx
-	Mise en place d'un cache pour 30 min pour la météo
-	
-	Revision 1.1  2004/10/26 17:52:07  kikx
-	J'essaie de respecter la charte de weather.com mais c'est chaud car il demande le mettre leur nom en gras ... et je peux pas le faire avec la skin
-	
-	Revision 1.1  2004/10/26 16:57:44  kikx
-	Pour la méteo ... ca envoie du paté !!
-	
+	$Id$
 	
 */
 

@@ -20,34 +20,8 @@
 /*
 	Permet de proposer une QDJ
 	
-	$Log$
-	Revision 1.11  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.10  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
-	
-	Revision 1.9  2004/12/15 00:05:04  schmurtz
-	Plus beau
-	
-	Revision 1.8  2004/12/14 00:27:40  kikx
-	Pour que le FROM des mails de validation soit au nom du mec qui demande la validation... (qu'est ce que je ferai pas pour les TOS :))
-	
-	Revision 1.7  2004/11/29 17:27:33  schmurtz
-	Modifications esthetiques.
-	Nettoyage de vielles balises qui trainaient.
-	
-	Revision 1.6  2004/11/27 20:16:55  pico
-	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-	
-	Revision 1.5  2004/10/29 14:38:37  kikx
-	Mise en format HTML des mails pour les validation de la qdj, des mails promos, et des annonces
-	
-	Revision 1.4  2004/10/21 22:19:38  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.3  2004/10/13 21:25:59  pico
-	Oublié ça aussi :(	
 */
 
 // En-tetes

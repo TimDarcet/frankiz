@@ -20,64 +20,8 @@
 /*
 	Page pour demander les sondages !
 	
-	$Log$
-	Revision 1.17  2005/06/09 15:05:44  pico
-	autre petite modif
+	$Id$
 
-	Revision 1.16  2005/06/09 14:58:08  pico
-	modif pour mYk
-	
-	Revision 1.15  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
-	
-	Revision 1.14  2005/03/04 23:11:33  pico
-	Restriction des sondages par promo/section/binet
-	
-	Revision 1.13  2005/02/10 21:37:53  pico
-	- Pour les ids de news, fait en fonction de la date de péremption, c'est mieux que seulement par id, mais y'a tjs un pb avec les nouvelles fraiches
-	- Correction pour éviter que des gens postent des annonces qui sont déjà périmées
-	
-	Revision 1.12  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
-	
-	Revision 1.11  2005/01/18 10:35:02  pico
-	Interface avancée d'édition de sondages (on édite le code, utile pour faire plusieurs sondages de même type)
-	
-	Revision 1.10  2005/01/14 09:19:32  pico
-	Corrections bug mail
-	+
-	Sondages maintenant public ou privé (ne s'affichant pas dans le cadre)
-	Ceci sert pour les sondages section par exemple
-	
-	Revision 1.9  2004/12/14 00:27:40  kikx
-	Pour que le FROM des mails de validation soit au nom du mec qui demande la validation... (qu'est ce que je ferai pas pour les TOS :))
-	
-	Revision 1.8  2004/11/27 20:16:55  pico
-	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-	
-	Revision 1.7  2004/11/23 23:30:20  schmurtz
-	Modification de la balise textarea pour corriger un bug
-	(return fantomes)
-	
-	Revision 1.6  2004/11/17 23:46:21  kikx
-	Prepa pour le votes des sondages
-	
-	Revision 1.5  2004/11/17 13:32:18  kikx
-	Mise en place du lien pour l'admin
-	
-	Revision 1.4  2004/11/17 13:27:06  kikx
-	Mise ne place d'un titre dan sles sondages
-	
-	Revision 1.3  2004/11/17 12:13:45  kikx
-	Preparation de la validation d'un sondage
-	
-	Revision 1.2  2004/11/16 18:17:57  kikx
-	Mise ne place quasi definitive des proposition de sondages
-	
-	Revision 1.1  2004/11/16 15:35:27  kikx
-	Pour les sondages
-
-	
 */
 
 require_once "../include/global.inc.php";

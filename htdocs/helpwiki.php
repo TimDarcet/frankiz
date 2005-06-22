@@ -20,43 +20,7 @@
 /*
 	Help WIKI
 	
-	$Log$
-	Revision 1.11  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.10  2005/01/26 13:58:20  pico
-	Correction de pbs sur le wiki et les pages qui y font référence
-	(genre le <p><h1>blah</h1></p> ...)
-	
-	Revision 1.9  2005/01/23 16:30:10  pico
-	Ajout d'une page pour surveiller les entrées dns
-	
-	Revision 1.8  2005/01/03 18:37:24  pico
-	C'est mieux avec une page d'aide correcte
-	
-	Revision 1.7  2004/12/01 23:37:35  pico
-	Help wiki pour les listes
-	
-	Revision 1.6  2004/11/28 00:06:32  pico
-	Ajout des images avec légende (et donc "alt") dans le wiki
-	
-	Revision 1.5  2004/11/27 23:30:34  pico
-	Passage des xshare et faq en wiki
-	Ajout des images dans l'aide du wiki
-	
-	Revision 1.4  2004/11/24 22:56:18  schmurtz
-	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
-	globale pour tous les fichiers.
-	
-	Revision 1.3  2004/11/24 13:48:17  kikx
-	Met un lien vers la page bac a sable a partir de la page d'aide wiki
-	
-	Revision 1.2  2004/11/24 13:32:23  kikx
-	Passage des annonces en wiki !
-	
-	Revision 1.1  2004/11/24 12:51:58  kikx
-	Oubli de ma part
-	
+	$Id$
 
 */
 

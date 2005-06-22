@@ -18,18 +18,10 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Vocabulaire de l'X
+	Liens
 	
-	$Log$
-	Revision 1.3  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.2  2004/12/17 14:26:20  pico
-	Pas d'action pour les listes non sélectionnables
-	
-	Revision 1.1  2004/11/06 20:26:00  kikx
-	Page de liens pour éviter de surcharger la page principale
-	
 */
 
 require_once "include/global.inc.php";

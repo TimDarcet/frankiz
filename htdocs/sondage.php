@@ -20,47 +20,8 @@
 /*
 	affichage d'un sondage
 
-	$Log$
-	Revision 1.13  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.12  2005/03/16 19:36:09  pico
-	Pour que le gars qui soumet un sondage puisse avoir les résultats
-	
-	Revision 1.11  2005/03/16 19:32:45  pico
-	Petite correction pour éviter que les gens de l'école voient les résultats des sondages.
-	
-	Revision 1.10  2005/03/04 23:11:33  pico
-	Restriction des sondages par promo/section/binet
-	
-	Revision 1.9  2005/01/25 20:23:12  pico
-	nettoyage
-	
-	Revision 1.8  2005/01/25 20:16:20  pico
-	Quand on a voté, on voit le nombre de votants
-	Cela fait patienter le gars qui soumet le sondage, et lui fait poster une annonce au pire si personne n'a voté.
-	
-	Revision 1.7  2004/12/16 16:04:15  kikx
-	Pour eviter d'avoir des erreurs php si le mec met n'importe quoi comme sondage ou s'il met pas de sondage à previsualiser ...
-	
-	Revision 1.6  2004/12/16 13:00:41  pico
-	INNER en LEFT
-	
-	Revision 1.5  2004/12/16 12:52:57  pico
-	Passage des paramètres lors d'un login
-	
-	Revision 1.4  2004/12/14 22:42:18  kikx
-	Legere modif des sondages pôur que ca soit plus intuitif
-	
-	Revision 1.3  2004/11/29 17:27:32  schmurtz
-	Modifications esthetiques.
-	Nettoyage de vielles balises qui trainaient.
-	
-	Revision 1.2  2004/11/19 17:14:31  kikx
-	Gestion complete et enfin FINIIIIIIIIIIIIIIII des sondages !!! bon ok c'est assez moche l'affichage des resultats mais .... j'en ai marrrrrrrrrrre
-	
-	Revision 1.1  2004/11/17 23:46:21  kikx
-	Prepa pour le votes des sondages
 */
 
 require_once "include/global.inc.php";

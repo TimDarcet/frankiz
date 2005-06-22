@@ -20,30 +20,8 @@
 /*
 	Page d'activites de frankiz.
 	
-	$Log$
-	Revision 1.6  2005/06/21 22:43:55  pico
-	Possiblité de forcer l'usage d'une skin pour la durée d'une session avec ?forceskin=nomdelaskin
-	(utile pour avoir une version wap, rss ou même texte pour links)
+	$Id$
 
-	(correction d'un bug des activités au passage)
-
-	Revision 1.5  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-	
-	Revision 1.4  2005/01/18 13:00:21  pico
-	Affichage état Bôb et Kès sur la page des activités
-	
-	Revision 1.3  2005/01/17 21:55:18  pico
-	sert à rien, mais me plait mieux :)
-	
-	Revision 1.2  2005/01/17 21:52:04  pico
-	Page des activités
-	
-	Revision 1.1  2005/01/17 21:13:45  pico
-	Ajout d'une page pour des activités plus complètes...
-	
-	
-	
 */
 
 require_once "include/wiki.inc.php";

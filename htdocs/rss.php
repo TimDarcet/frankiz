@@ -20,41 +20,7 @@
 /*
 	Affichage de flux rss externes.
 
-	$Log$
-	Revision 1.20  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.19  2005/01/02 22:14:33  pico
-	Devrait fixer les pbs concernant les flux rss
-	
-	Revision 1.18  2004/11/24 22:56:18  schmurtz
-	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
-	globale pour tous les fichiers.
-	
-	Revision 1.17  2004/11/24 16:37:09  pico
-	Ajout des news externes en tant que module
-	
-	Revision 1.16  2004/11/24 16:24:09  pico
-	Passage du formulaire de choix des rss à afficher dans une page spéciale
-	
-	Revision 1.15  2004/11/24 15:55:33  pico
-	Code pour gérer les liens perso + les rss au lancement de la session
-	
-	Revision 1.14  2004/11/24 15:37:37  pico
-	Lis et sauvegarde les infos de session depuis la sql
-	
-	Revision 1.13  2004/11/24 15:18:19  pico
-	Mise en place des liens sur une base sql
-	
-	Revision 1.12  2004/11/24 13:45:24  pico
-	Modifs skins pour le wiki et l'id de la page d'annonces
-	
-	Revision 1.11  2004/11/24 13:31:42  pico
-	Modifs pages liens rss
-	
-	Revision 1.10  2004/11/23 21:17:41  pico
-	Ne charge qu'au login ou à l'établissemnt de la session (ce code va buger, je fais juste un travail préparatoire)
-	
+	$Id$
 	
 */
 

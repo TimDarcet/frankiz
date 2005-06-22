@@ -20,24 +20,8 @@
 /*
 	Page des contacts utiles
 	
-	$Log$
-	Revision 1.6  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.5  2004/11/04 16:36:42  schmurtz
-	Modifications cosmetiques
-	
-	Revision 1.4  2004/10/31 18:20:24  kikx
-	Rajout d'une page pour les plan (venir à l'X)
-	
-	Revision 1.3  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.2  2004/10/21 12:24:48  kikx
-	Correction d'un bug suite a un commit
-	
-	Revision 1.1  2004/10/20 22:19:08  kikx
-	Une belle page de contact :)
 */
 
 require_once "include/global.inc.php";

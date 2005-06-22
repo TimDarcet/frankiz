@@ -18,12 +18,7 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	$Log$
-	Revision 1.2  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.1  2004/12/17 17:25:08  schmurtz
-	Ajout d'une belle page d'erreur.
+	$Id$
 	
 */
 

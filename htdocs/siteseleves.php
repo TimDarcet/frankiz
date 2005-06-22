@@ -20,35 +20,7 @@
 /*
 	Sites Eleves
 	
-	$Log$
-	Revision 1.9  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.8  2005/01/21 17:01:31  pico
-	Fonction pour savoir si interne
-	
-	Revision 1.7  2005/01/21 16:49:41  pico
-	erreur
-	
-	Revision 1.6  2005/01/21 16:48:29  pico
-	Modifs de chemins
-	
-	Revision 1.5  2004/12/17 14:26:20  pico
-	Pas d'action pour les listes non sélectionnables
-	
-	Revision 1.4  2004/12/16 13:00:41  pico
-	INNER en LEFT
-	
-	Revision 1.3  2004/12/15 01:54:43  kikx
-	Bug sinon sur la ersion de dev
-	
-	Revision 1.2  2004/12/15 01:51:04  kikx
-	Car finalement on s'en fout des commentaires
-	
-	Revision 1.1  2004/11/24 12:51:58  kikx
-	Oubli de ma part
-	
-
+	$Id$
 
 */
 
