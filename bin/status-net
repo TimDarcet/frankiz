@@ -19,6 +19,9 @@
 #
 
 # $Log$
+# Revision 1.10  2005/06/22 12:49:33  pico
+# On ne teste pas fkz:80 alors que ça s'affiche sur le site ...
+#
 # Revision 1.9  2005/05/16 00:17:39  nc
 # Completion de la modif precedente
 #
@@ -45,9 +48,9 @@ $file="/home/frankiz2/cache/status";
 
 use Net::Telnet;
 
-@services=("frankiz","newsgroups","xnetserver","polynews","kuzh","sil","poly:réception","poly:envoi");
-@hotes=("frankiz","newsgroups","xnetserver","polynews","kuzh","sil","poly","poly");
-@ports=(80,119,5053,119,8080,1080,995,25);
+@services=("newsgroups","xnetserver","polynews","kuzh","sil","poly:réception","poly:envoi");
+@hotes=("newsgroups","xnetserver","polynews","kuzh","sil","poly","poly");
+@ports=(119,5053,119,8080,1080,995,25);
 
 open(STATUS,">$file");
 
