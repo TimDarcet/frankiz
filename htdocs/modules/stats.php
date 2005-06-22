@@ -29,9 +29,12 @@
 	de bande passante, de cpu). 
 	
 	$Log$
+	Revision 1.21  2005/06/22 12:56:10  pico
+	Plus joli dans ce sens
+
 	Revision 1.20  2005/06/22 12:51:08  pico
 	Pour afficher les uptimes
-
+	
 	Revision 1.19  2005/04/13 17:10:00  pico
 	Passage de tous les fichiers en utf8.
 	
@@ -90,8 +93,9 @@ if(est_authentifie(AUTH_MINIMUM)) { ?>
 			<service nom="web binets (old)" stat="http://gwennoz.polytechnique.fr/webalizer/" />
 			<service nom="news" stat="stats/news.php" />
 			<service nom="xnet" stat="stats/xnet.php" />
-		<? if(file_exists(BASE_CACHE."status")) include BASE_CACHE."status"; else echo "<serveur nom='status' etat='down'/>\n"?>
 		<? if(file_exists(BASE_CACHE."uptime")) include BASE_CACHE."uptime"; ?>
+		<? if(file_exists(BASE_CACHE."status")) include BASE_CACHE."status"; else echo "<serveur nom='status' etat='down'/>\n"?>
+		
 		</statistiques>
 	</module>
 <?php } ?>
