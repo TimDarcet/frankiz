@@ -20,63 +20,8 @@
 /*
 	Page qui permet de demander une clé windows
 	
-	$Log$
-	Revision 1.24  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.23  2005/03/16 18:51:25  dei
-	bon oui je suis un boulet et alors ?
-	
-	Revision 1.22  2005/02/16 21:20:42  dei
-	lui aussi a changé...
-	
-	Revision 1.21  2005/02/02 14:31:11  dei
-	la recherche de la dernière promo se fait dans la bonne base...
-	
-	Revision 1.20  2005/01/30 21:57:06  dei
-	là ça marchera mieux...
-	
-	Revision 1.19  2005/01/30 21:35:46  dei
-	-----------------------------------------------------------------------
-	le probleme de l'attribution des licences est transparent pour
-	l'utilisateur
-	
-	Revision 1.18  2005/01/18 20:52:17  dei
-	c'est plus clair comme ça
-	
-	Revision 1.17  2005/01/18 15:56:06  dei
-	l'utilisateur doit donner une raison non vide pour demander des licences
-	supplémentaires
-	
-	Revision 1.16  2005/01/17 23:46:28  pico
-	Bug fix
-	
-	Revision 1.15  2005/01/17 23:25:08  pico
-	Suite des corrections dei
-	
-	Revision 1.14  2005/01/17 23:15:37  pico
-	debug pages de dei
-	
-	Revision 1.13  2005/01/17 22:07:33  dei
-	mise a jour de la page, compatible avec admin/admin_licences.php
-	
-	Revision 1.12  2004/12/17 21:46:16  falco
-	un peu de rigueur ne fait pas de mal
-	
-	Revision 1.11  2004/12/17 21:09:14  dei
-	<br/>...
-	mopufles!
-	
-	Revision 1.10  2004/12/17 20:33:54  dei
-	Bugfix affichage
-	
-	Revision 1.9  2004/12/17 20:27:02  pico
-	On va éviter une ptite erreur
-	
-	Revision 1.8  2004/12/17 20:25:20  pico
-	Ajout des logs
-	
-	
 */
 	
 

@@ -21,60 +21,8 @@
 	Page permettant de modifier ses informations relatives au réseau interne de l'x : le nom de
 	ses machines, son compte xnet.
 	
-	$Log$
-	Revision 1.24  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.23  2005/01/02 19:41:31  pico
-	Fixe une requete sql
-	
-	Revision 1.22  2004/12/17 21:52:50  pico
-	Ne buggue plus si pas de kazert
-	
-	Revision 1.21  2004/12/16 13:00:42  pico
-	INNER en LEFT
-	
-	Revision 1.20  2004/11/27 20:16:55  pico
-	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-	
-	Revision 1.19  2004/11/22 23:38:42  kikx
-	Ajout de <note></note> un peu partout pour plus de compréhension !
-	
-	Revision 1.18  2004/11/08 23:19:17  pico
-	Modification des titres pour pouvoir les reperer dans le code (avec un id)
-	
-	Revision 1.17  2004/11/07 16:56:46  pico
-	Indique le nb de caractères mini pour le mdp xnet
-	
-	Revision 1.16  2004/11/04 23:31:44  pico
-	Erreur d'incrémentation -> pas de changement de mdp xnet possible si on n'avait qu'une seule ip
-	
-	Revision 1.15  2004/11/01 19:23:56  pico
-	Affiche les messages d'erreur
-	
-	Revision 1.14  2004/10/31 18:20:24  kikx
-	Rajout d'une page pour les plan (venir à l'X)
-	
-	Revision 1.13  2004/10/29 17:42:36  kikx
-	Petit bug que je ne comprend pas pourquoi ca ne marchait pas avant et que ca marche now (c'est pour faire une phrase correct et comprehensible en français)
-	
-	Revision 1.12  2004/10/22 06:53:39  pico
-	Modification du mdp qrezix
-	
-	Revision 1.11  2004/10/21 22:19:38  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.10  2004/10/21 17:46:05  pico
-	Corrections diverses
-	Affiche l'host correspondant aux ip dans la page du profil
-	Début de gestion du password xnet
-	
-	Revision 1.9  2004/09/15 23:20:07  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.8  2004/09/15 21:42:21  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
-	
 */
 
 require_once "../include/global.inc.php";

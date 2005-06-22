@@ -20,41 +20,8 @@
 /*
 	Page permettant de modifier son profil 
 	
-	$Log$
-	Revision 1.10  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.9  2005/03/04 20:24:09  pico
-	Ajout d'une entrée dans le menu pour enregistrer une nouvelle Mac
-	
-	Revision 1.8  2005/02/08 21:57:56  pico
-	Correction bug #62
-	
-	Revision 1.7  2005/01/02 22:14:33  pico
-	Devrait fixer les pbs concernant les flux rss
-	
-	Revision 1.6  2004/12/17 21:52:50  pico
-	Ne buggue plus si pas de kazert
-	
-	Revision 1.5  2004/12/16 16:45:14  schmurtz
-	Correction d'un bug dans la gestion des authentifications par cookies
-	Ajout de fonctionnalitees de log d'erreur de connexions ou lors des bugs
-	affichant une page "y a un bug, contacter l'admin"
-	
-	Revision 1.4  2004/12/15 06:13:30  kikx
-	Ct trop la merde ....
-	pico tu le remettra qd tu auras debuggué car la moi je peux plus :(
-	
-	Revision 1.3  2004/12/13 20:03:25  pico
-	Les liens ne forment pas de blocs, il faut donc le spécifier
-	
-	Revision 1.2  2004/11/27 17:10:37  pico
-	Hum.. commentaires qui vont pas bien
-	
-	Revision 1.1  2004/11/27 17:09:02  pico
-	Page de choix des prefs à modifier
-	
-	
 */
 
 require_once "../include/global.inc.php";

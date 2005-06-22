@@ -20,50 +20,8 @@
 /*
 	Gestion de la création d'un compte et de la perte de mot de passe.
 	
-	$Log$
-	Revision 1.24  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.23  2005/04/06 06:46:51  pico
-	COrrection mail ouverture de compte
-	
-	Revision 1.22  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
-	
-	Revision 1.21  2004/12/16 17:26:10  schmurtz
-	Ajout d'un exemple pour login.promo, ca evitera les dupond.x2002.
-	
-	Revision 1.20  2004/12/13 20:22:10  pico
-	un s de trop..
-	
-	Revision 1.19  2004/11/25 01:42:38  kikx
-	Truc tout moche pour corriger le probleme de l'affichage du lien administration alors que l'on est pas administrateur
-	
-	Revision 1.18  2004/11/24 22:56:18  schmurtz
-	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
-	globale pour tous les fichiers.
-	
-	Revision 1.17  2004/11/03 17:23:43  pico
-	Remise en forme du mail html
-	
-	Revision 1.16  2004/11/03 17:03:29  pico
-	Passage de l'envoi de mail en "couriel"
-	
-	Revision 1.15  2004/11/03 12:15:32  pico
-	La fonction qui remplissait le corps du mail n'existait plus -> le mail était vide !!! (merci mYk d'avoir signalé ça)
-	
-	Revision 1.14  2004/10/21 22:19:38  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.13  2004/10/16 01:47:44  schmurtz
-	Bug dans l'envoi d'un mail
-	
-	Revision 1.12  2004/09/15 23:20:07  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.11  2004/09/15 21:42:21  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
-	
 */
 
 require_once "../include/global.inc.php";

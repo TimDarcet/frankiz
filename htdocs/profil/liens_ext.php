@@ -20,77 +20,8 @@
 /*
 	Gestions des liens perso / des flux rss.
 
-	$Log$
-	Revision 1.22  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.21  2005/04/11 20:29:27  pico
-	Passage en utf8 suite Ã  une connerie
-	
-	Revision 1.20  2005/02/06 22:21:13  pico
-	je remet ça prore, je chercherais plus tard
-	
-	Revision 1.19  2005/02/06 22:18:54  pico
-	et là ?
-	(ça me saoule un peu)
-	
-	Revision 1.18  2005/02/06 22:13:21  pico
-	on va voir si ça donne qqch de mieux
-	
-	Revision 1.17  2005/02/06 22:02:56  pico
-	Quand on supprime un flux, ne supprime pas le flux perso
-	
-	ça marche maintenant chez moi, à voir en prod...
-	
-	Revision 1.16  2005/02/06 21:42:16  pico
-	Correction bug #53
-	
-	Revision 1.15  2005/01/04 23:35:30  pico
-	comportement quantique
-	
-	Revision 1.14  2005/01/04 23:33:52  pico
-	et un de plus
-	
-	Revision 1.13  2005/01/04 23:32:22  pico
-	hum hum hum
-	
-	Revision 1.12  2005/01/04 23:30:37  pico
-	gni²
-	
-	Revision 1.11  2005/01/04 23:25:06  pico
-	oups
-	
-	Revision 1.10  2005/01/04 23:22:03  pico
-	Encore des corrections
-	
-	Revision 1.9  2005/01/04 23:15:23  pico
-	oubli
-	
-	Revision 1.8  2005/01/02 22:14:33  pico
-	Devrait fixer les pbs concernant les flux rss
-	
-	Revision 1.7  2004/12/15 06:13:30  kikx
-	Ct trop la merde ....
-	pico tu le remettra qd tu auras debuggué car la moi je peux plus :(
-	
-	Revision 1.6  2004/11/29 17:27:32  schmurtz
-	Modifications esthetiques.
-	Nettoyage de vielles balises qui trainaient.
-	
-	Revision 1.5  2004/11/24 21:09:04  pico
-	Sauvegarde avant mise à jour skins
-	
-	Revision 1.4  2004/11/24 20:07:12  pico
-	Ajout des liens persos
-	
-	Revision 1.3  2004/11/24 19:02:37  pico
-	Applique les changements tout de suite
-	
-	Revision 1.2  2004/11/24 18:48:01  pico
-	Encore un warning
-	
-	Revision 1.1  2004/11/24 16:24:09  pico
-	Passage du formulaire de choix des rss à afficher dans une page spéciale
 */
 
 require_once "../include/global.inc.php";

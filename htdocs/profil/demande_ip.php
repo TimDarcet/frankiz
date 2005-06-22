@@ -21,52 +21,8 @@
 	Page permettant de faire une demande d'adresse IP supplémentaire pour mettre
 	une seconde machine dans son casert.
 	
-	$Log$
-	Revision 1.18  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.17  2005/03/04 20:22:58  pico
-	Demande de nouvelle adresse MAC
-	Fixe les bugs #60 et #70
-	
-	Revision 1.16  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
-	
-	Revision 1.15  2004/12/16 17:26:10  schmurtz
-	Ajout d'un exemple pour login.promo, ca evitera les dupond.x2002.
-	
-	Revision 1.14  2004/12/14 00:52:02  kikx
-	Envoie les demandes de changement au nom du mec qui demande ... pour faire plaisir au gens ...
-	
-	Revision 1.13  2004/11/29 17:27:32  schmurtz
-	Modifications esthetiques.
-	Nettoyage de vielles balises qui trainaient.
-	
-	Revision 1.12  2004/11/23 23:30:20  schmurtz
-	Modification de la balise textarea pour corriger un bug
-	(return fantomes)
-	
-	Revision 1.11  2004/11/16 18:32:34  schmurtz
-	Petits problemes d'interpretation de <note> et <commentaire>
-	
-	Revision 1.10  2004/10/29 15:41:48  kikx
-	Passage des mail en HTML pour les ip
-	
-	Revision 1.9  2004/10/21 22:19:38  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.8  2004/09/20 08:29:24  kikx
-	Rajout d'une page pour envoyer des mail d'amour a ses webmestres adorés
-	
-	Revision 1.7  2004/09/17 11:34:10  kikx
-	Bla
-	
-	Revision 1.6  2004/09/15 23:20:07  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.5  2004/09/15 21:42:21  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
-	
 */
 
 require_once "../include/global.inc.php";

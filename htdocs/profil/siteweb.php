@@ -20,53 +20,8 @@
 /*
 	Pour gerer son site web perso
 		
-	$Log$
-	Revision 1.15  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.14  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
-	
-	Revision 1.13  2005/01/06 19:42:54  pico
-	e
-	
-	Revision 1.12  2005/01/06 19:41:35  pico
-	Commentaire précisé
-	
-	Revision 1.11  2005/01/06 17:32:33  pico
-	Pb de taille d'upload...
-	
-	Revision 1.10  2005/01/06 17:31:33  pico
-	Mise à jour de l'explication
-	
-	Revision 1.9  2005/01/06 17:22:17  pico
-	Pour que ce soient les root qui recoivent les mails d'acces externe aux sites des élèves.
-	
-	Revision 1.8  2004/12/16 13:00:42  pico
-	INNER en LEFT
-	
-	Revision 1.7  2004/12/15 21:46:37  pico
-	Ptèt que là ça marchera mieux
-	
-	Revision 1.6  2004/12/14 22:17:32  kikx
-	Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
-	
-	Revision 1.5  2004/12/13 20:03:25  pico
-	Les liens ne forment pas de blocs, il faut donc le spécifier
-	
-	Revision 1.4  2004/12/07 14:39:26  schmurtz
-	Bugs et orthographe
-	
-	Revision 1.3  2004/11/24 22:29:52  kikx
-	blu
-	
-	Revision 1.2  2004/11/24 22:12:57  schmurtz
-	Regroupement des fonctions zip unzip deldir et download dans le meme fichier
-	
-	Revision 1.1  2004/11/24 18:12:27  kikx
-	Séparation de la page du site web et du profil personnel
-	
-	
 */
 
 require_once "../include/global.inc.php";
