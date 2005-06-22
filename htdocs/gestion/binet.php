@@ -25,9 +25,12 @@
 	L'ID du binet à administrer est passer dans le paramètre GET 'binet'.
 	
 	$Log$
+	Revision 1.42  2005/06/22 09:01:37  pico
+	Groumf
+
 	Revision 1.41  2005/06/22 09:00:24  pico
 	Suppression de l'arbo du site d'un binet. C'est pas très utile (et c'est source d'erreurs à cause de l'utf8)
-
+	
 	Revision 1.40  2005/05/02 07:17:18  pico
 	Pour plus avoir de pbs de dossiers avec les droits apache:binets au lieu de binets:binets
 	
@@ -399,9 +402,9 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 		$arbo = parcours_arbo1(BASE_BINETS.$folder);
 		echo "</noeud>" ;
 		echo "</arbre>";
-	}
+	}*/
 }
-*/
+
 ?>
 </page>
 <?php
