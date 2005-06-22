@@ -22,39 +22,7 @@
 	
 	TODO traiter le cas ou le qdj master est à la bourre (garder l'ancienne qdj par exemple).
 
-	$Log$
-	Revision 1.17  2005/06/06 17:36:26  pico
-	il faut bien changer un peu le bonus pour que Ã§a reste un bonus...
-
-	Revision 1.16  2005/05/24 17:05:36  pico
-	Ajout d'un lien vers le classement
-	
-	Revision 1.15  2005/05/24 14:35:55  pico
-	Le vote à la qdj met à jour le classement (reste à afficher le classement)
-	
-	Revision 1.14  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
-	
-	Revision 1.13  2005/01/06 23:31:31  pico
-	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
-	
-	Revision 1.12  2004/12/16 12:52:57  pico
-	Passage des paramètres lors d'un login
-	
-	Revision 1.11  2004/11/02 17:46:39  pico
-	Modification de la gestion des caches de la qdj
-	
-	Revision 1.10  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.9  2004/10/15 22:56:42  schmurtz
-	Finission de la gestion du cache qdj
-	
-	Revision 1.8  2004/09/15 23:20:29  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.7  2004/09/15 21:42:32  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
+	$Id$
 	
 */
 

@@ -20,56 +20,8 @@
 /*
 	Script de création de la partie activités contenant des images type "affiche".
 	
-	$Log$
-	Revision 1.19  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.18  2005/01/25 14:18:07  pico
-	Pour le lien des activites
-	
-	Revision 1.17  2005/01/17 22:51:47  pico
-	Liens vers les activités + réorganisation
-	
-	Revision 1.16  2005/01/17 08:16:01  pico
-	Passage de l'ouverture du bob en gras
-	
-	Revision 1.15  2005/01/12 23:20:30  pico
-	Activités extérieures, et triées par heure...
-	
-	Revision 1.14  2005/01/02 10:50:25  pico
-	Passage de certaines pages en visibles de l'intérieur (non loggué)
-	
-	Revision 1.13  2004/12/13 08:50:48  pico
-	Correction mineure
-	
-	Revision 1.12  2004/11/27 18:23:53  pico
-	Ajout de l'annonce: 'le bob est ouvert' dans les activités + page de gestion du bob
-	
-	Revision 1.11  2004/11/25 10:40:08  pico
-	Correction activités (sinon l'image était tjs écrite en tant que 0 et ct pas glop du coup)
-	
-	Revision 1.10  2004/10/29 16:30:56  kikx
-	Ca evite que les activité apparaissent si il n'y a rein dedans ...
-	
-	Revision 1.9  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.8  2004/10/07 22:52:20  kikx
-	Correction de la page des activites (modules + proposition + administration)
-		rajout de variables globales : DATA_DIR_LOCAL
-						DATA_DIR_URL
-	
-	Comme ca si ca change, on est safe :)
-	
-	Revision 1.7  2004/09/17 22:49:29  kikx
-	Rajout de ce qui faut pour pouvoir faire des telechargeement de fichiers via des formulaires (ie des champs 'file' des champ 'hidden') de plus maintenant le formulaire sont en enctype="multipart/form-data" car sinon il parait que ca marche pas !
-	
-	Revision 1.6  2004/09/15 23:20:29  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.5  2004/09/15 21:42:32  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
-	
 */
 
 

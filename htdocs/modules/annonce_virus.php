@@ -20,22 +20,7 @@
 /*
 	Pour faire peur aux gens qui ont des virus...
 	
-	$Log$
-	Revision 1.4  2005/04/17 22:15:42  dei
-	c plus clair comme �a...
-	+ le lien vers le mail, plus simple
-
-	Revision 1.3  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
-	
-	Revision 1.2  2005/04/13 15:36:08  dei
-	comme ça le compte a rebours marche vraiment...
-	
-	Revision 1.1  2005/04/13 13:58:16  dei
-	Voilà qui devrait faire peur à certains
-	Basé sur le script de fruneau module sur la page principale + page d'admin...
-	
-	
+	$Id$
 	
 */
 

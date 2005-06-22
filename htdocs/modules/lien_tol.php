@@ -20,23 +20,8 @@
 /*
 	Affichage d'un lien sur la page d'accueil vers le tol.
 	
-	$Log$
-	Revision 1.6  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.5  2005/01/13 17:10:58  pico
-	Mails de validations From le validateur qui va plus ou moins bien
-	
-	Revision 1.4  2005/01/12 20:58:08  pico
-	Recherche trombi par appui sur enter
-	
-	Revision 1.3  2005/01/02 10:50:25  pico
-	Passage de certaines pages en visibles de l'intérieur (non loggué)
-	
-	Revision 1.2  2004/11/24 13:05:23  schmurtz
-	Ajout d'un attribut type='discret' pour les liste et formulaire, afin d'avoir
-	une presentation par defaut sans gros cadres autour.
-	
 */
 
 if(est_authentifie(AUTH_INTERNE)) {

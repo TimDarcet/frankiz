@@ -20,34 +20,8 @@
 /*
 	Affichage des anniversaires avec gestion d'un cache mis à jour une fois par jour.
 	
-	$Log$
-	Revision 1.17  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.16  2005/01/02 10:50:25  pico
-	Passage de certaines pages en visibles de l'intérieur (non loggué)
-	
-	Revision 1.15  2004/12/15 20:57:59  pico
-	Affiche un lien vers la fiche trombi pour les anniversaires...
-	
-	Revision 1.14  2004/11/23 07:43:25  pico
-	Les différentes promos ne sont plus codées en dur, mais utilisent la variable sql
-	
-	Revision 1.13  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.12  2004/09/20 20:33:47  schmurtz
-	Mise en place d'un systeme de cache propre
-	
-	Revision 1.11  2004/09/17 16:27:26  schmurtz
-	Simplification de l'affichage des anniversaires et correction d'un bug d'affichage.
-	
-	Revision 1.10  2004/09/15 23:20:29  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.9  2004/09/15 21:42:32  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
-	
 */
 
 if(est_authentifie(AUTH_INTERNE)) {

@@ -20,19 +20,8 @@
 /*
 	Affichage des résultats de la DQJ de la veille.
 	
-	$Log$
-	Revision 1.7  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.6  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.5  2004/09/15 23:20:29  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.4  2004/09/15 21:42:32  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
-	
+	$Id$
+		
 */
 
 require_once BASE_LOCAL."/include/qdj.inc.php";

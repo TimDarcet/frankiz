@@ -20,38 +20,7 @@
 /*
 	Affichage de flux rss externes sous forme de module.
 
-	$Log$
-	Revision 1.10  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.9  2005/01/04 23:11:29  pico
-	Bugfix ?
-	
-	Revision 1.8  2004/11/24 23:07:59  pico
-	Là !²
-	
-	Revision 1.7  2004/11/24 23:06:46  pico
-	BugFix
-	
-	Revision 1.6  2004/11/24 22:56:18  schmurtz
-	Inclusion de wiki.inc.php par les fichiers concerne uniquement et non de facon
-	globale pour tous les fichiers.
-	
-	Revision 1.5  2004/11/24 19:00:32  pico
-	Bon, là ça devrait être bon...
-	
-	Revision 1.4  2004/11/24 18:53:31  pico
-	J'espère que ça sera fixé cette fois
-	
-	Revision 1.3  2004/11/24 18:39:02  pico
-	WarningFix si variable vide
-	
-	Revision 1.2  2004/11/24 17:34:23  pico
-	Module liens perso + bugfix
-	
-	Revision 1.1  2004/11/24 16:37:09  pico
-	Ajout des news externes en tant que module
-	
+	$Id$
 
 */
 

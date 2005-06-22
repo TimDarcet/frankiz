@@ -20,37 +20,8 @@
 /*
 	Gestion du tour kawa.
 	
-	$Log$
-	Revision 1.13  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.12  2004/12/16 13:00:42  pico
-	INNER en LEFT
-	
-	Revision 1.11  2004/12/07 21:54:09  pico
-	Interface d'ajout des tours kawa pour le bob
-	
-	Revision 1.10  2004/12/07 20:56:35  pico
-	Changement de la base de données de gestion des tours kawa
-	
-	Revision 1.9  2004/11/24 13:05:23  schmurtz
-	Ajout d'un attribut type='discret' pour les liste et formulaire, afin d'avoir
-	une presentation par defaut sans gros cadres autour.
-	
-	Revision 1.8  2004/11/05 08:29:23  pico
-	Mise en forme de la sortie xml du tour kawa:
-	on balançait du texte formaté, ce qui n'était du coup que très peu skinable, j'ai mis ça sous la forme d'une liste, ce sera plus pratique
-	(la skin basique affiche ça, la skin pico aussi, la skin défaut n'affiche pas encore les tours kawa...)
-	
-	Revision 1.7  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.6  2004/09/15 23:20:29  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.5  2004/09/15 21:42:32  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
-	
 */
 
 if(est_authentifie(AUTH_MINIMUM)) {

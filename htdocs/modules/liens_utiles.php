@@ -20,56 +20,8 @@
 /*
 	Liens permettants d'accéder aux autres sites de l'école.
 	
-	$Log$
-	Revision 1.11  2005/04/13 17:10:00  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.10  2005/02/03 09:28:59  kikx
-	erreur (desloé)
-	
-	Revision 1.8  2005/01/26 17:26:27  pico
-	Pas de liens morts à l'extérieur...
-	
-	Revision 1.7  2005/01/17 23:46:28  pico
-	Bug fix
-	
-	Revision 1.6  2005/01/10 07:43:05  pico
-	Bug #20
-	
-	Revision 1.5  2005/01/02 10:50:25  pico
-	Passage de certaines pages en visibles de l'intérieur (non loggué)
-	
-	Revision 1.4  2004/11/09 22:39:06  pico
-	Ajout des accesskeys dans les liens de navigation
-	
-	Revision 1.3  2004/11/08 08:47:57  kikx
-	Pour la gestion online des sites de binets
-	
-	Revision 1.2  2004/11/06 20:57:13  kikx
-	correction pour etre plus clair
-	
-	Revision 1.1  2004/11/06 20:52:08  kikx
-	Reordonnancement des liens
-	
-	Revision 1.7  2004/11/06 20:07:01  kikx
-	Id des liens pour les liens ecole
-	
-	Revision 1.6  2004/11/06 20:03:06  kikx
-	Suppression de liens inutiles
-	
-	Revision 1.5  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.4  2004/10/19 22:14:49  pico
-	Suppression du lien corrige ton poly
-	Redirection des mails que si authentifié
-	
-	Revision 1.3  2004/09/15 23:20:29  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.2  2004/09/15 21:42:32  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
-	
 */
 $DB_trombino->query("SELECT promo FROM eleves WHERE eleve_id='{$_SESSION['user']->uid}'");
 list($promo) = $DB_trombino->next_row();
