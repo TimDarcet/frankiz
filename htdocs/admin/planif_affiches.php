@@ -20,55 +20,7 @@
 /*
 	Page qui permet aux admins de valider une qdj
 	
-	$Log$
-	Revision 1.15  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.14  2005/01/20 20:25:33  pico
-	Boulet !
-	
-	Revision 1.13  2005/01/20 20:24:33  pico
-	Plus (+) de modifs possibles sur une affiche validée
-	
-	Revision 1.12  2005/01/17 22:51:47  pico
-	Liens vers les activités + réorganisation
-	
-	Revision 1.11  2005/01/06 23:31:31  pico
-	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
-	
-	Revision 1.10  2004/12/17 17:25:08  schmurtz
-	Ajout d'une belle page d'erreur.
-	
-	Revision 1.9  2004/12/07 13:10:56  pico
-	Passage du nettoyage en formulaire
-	
-	Revision 1.8  2004/12/07 08:36:39  pico
-	Ajout d'une page pour pouvoir vider un peu les bases de données (genre pas garder les news qui datent de vieux)
-	
-	Revision 1.7  2004/11/29 17:27:32  schmurtz
-	Modifications esthetiques.
-	Nettoyage de vielles balises qui trainaient.
-	
-	Revision 1.6  2004/11/27 20:16:55  pico
-	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-	
-	Revision 1.5  2004/11/27 16:10:52  pico
-	Correction d'erreur de redirection et ajout des web à la validation des activités.
-	
-	Revision 1.4  2004/11/27 15:29:22  pico
-	Mise en place des droits web (validation d'annonces + sondages)
-	
-	Revision 1.3  2004/11/27 14:12:31  pico
-	Ajout d'un lien pour supprimmer les annonces périmées depuis plus de 5 jours
-	(histoire de pas garder des archives inutiles)
-	
-	Revision 1.2  2004/11/26 22:51:21  pico
-	Correction du SU dans les pages d'admin
-	Les utilisateurs avec le droit 'affiches' peuvent changer les dates des activités qu'ils ont postées, si celles ci ont été préalablement validées par le br
-	
-	Revision 1.1  2004/11/26 22:28:58  pico
-	Ajout d'une page pour pouvoir modifier la date d'une activité ou la supprimer
-	
+	$Id$
 	
 */
 	

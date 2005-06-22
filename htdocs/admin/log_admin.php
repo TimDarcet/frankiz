@@ -21,19 +21,7 @@
 	Page principale d'administration : affiche la liste des pages d'administration auxquelles
 	l'utilisateur courant à accès.
 
-	$Log$
-	Revision 1.4  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.3  2005/02/15 19:51:22  kikx
-	Passage a 100 logs
-	
-	Revision 1.2  2005/02/15 19:50:10  kikx
-	commit pour la forme
-	
-	Revision 1.1  2005/02/15 19:31:39  kikx
-	c'est mieux comme ca ...
-
+	$Id$
 	
 */
 	

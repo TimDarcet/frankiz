@@ -20,35 +20,8 @@
 /*
 	Page qui permet aux admins de vider la bdd des activités périmées
 	
-	$Log$
-	Revision 1.9  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.8  2005/01/06 23:31:31  pico
-	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
-	
-	Revision 1.7  2004/12/17 19:55:44  pico
-	Ajout d'une page pour voir l'historique des qdj
-	
-	Revision 1.6  2004/12/17 17:25:08  schmurtz
-	Ajout d'une belle page d'erreur.
-	
-	Revision 1.5  2004/12/10 20:23:50  kikx
-	Pour supprimer les entrées des annonces non lues si celle ci n'existe plus ... evite d'exploser les tables
-	
-	Revision 1.4  2004/12/07 19:53:05  pico
-	Remise en place des paramètres de skin
-	Mise à jour css classique
-	
-	Revision 1.3  2004/12/07 13:10:56  pico
-	Passage du nettoyage en formulaire
-	
-	Revision 1.2  2004/12/07 08:45:13  pico
-	Nettoyage des qdj
-	
-	Revision 1.1  2004/12/07 08:36:39  pico
-	Ajout d'une page pour pouvoir vider un peu les bases de données (genre pas garder les news qui datent de vieux)
-		
 */
 	
 require_once "../include/global.inc.php";

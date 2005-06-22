@@ -21,72 +21,7 @@
 	Affiche la liste des IPs attribuer aux élèves.
 	Permet aussi de supprimer des IPs.
 	
-	$Log$
-	Revision 1.35  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.34  2005/03/16 17:13:40  pico
-	Les admin@windows ont accès à la liste des ips et à l'arpwatch
-	
-	Revision 1.33  2005/03/04 08:25:11  pico
-	correction bug #71
-	
-	Revision 1.32  2005/02/03 17:41:22  nc
-	Correction du lien vers la page d'admin SMAC
-	
-	Revision 1.31  2005/01/20 08:50:42  pico
-	Wish #42
-	
-	Revision 1.30  2004/12/17 17:25:08  schmurtz
-	Ajout d'une belle page d'erreur.
-	
-	Revision 1.29  2004/12/17 14:26:20  pico
-	Pas d'action pour les listes non sélectionnables
-	
-	Revision 1.28  2004/12/13 16:15:22  kikx
-	legere modif sur la page des ips
-	
-	Revision 1.27  2004/12/06 22:32:08  kikx
-	Juste pour eviter de timeouter
-	
-	Revision 1.26  2004/11/27 15:02:17  pico
-	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-	
-	Revision 1.25  2004/11/24 17:29:30  kikx
-	Permet de ne pas faire 1000 requete sur le serveur de la DSI et de plus permet de rendre la page fonctionnel
-	
-	Revision 1.24  2004/10/28 11:42:16  kikx
-	Bug de ma part que je viens de corriger
-	
-	Revision 1.23  2004/10/28 11:29:07  kikx
-	Mise en place d'un cache pour 30 min pour la météo
-	
-	Revision 1.22  2004/10/26 16:57:44  kikx
-	Pour la méteo ... ca envoie du paté !!
-	
-	Revision 1.21  2004/10/25 19:17:12  kikx
-	Juste un petit warning
-	
-	Revision 1.20  2004/10/25 17:19:24  kikx
-	Parsage de la page de la DSI pour trouver les mac associer aux prises
-	
-	Revision 1.19  2004/10/25 15:36:47  kikx
-	Recherhce par login
-	
-	Revision 1.18  2004/10/25 14:05:09  kikx
-	Correction d'un bug sur la page
-	
-	Revision 1.17  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.16  2004/10/20 18:47:07  kikx
-	Pour rajouter des lignes non selectionnables dans une liste
-	
-	Revision 1.15  2004/09/15 23:20:18  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.14  2004/09/15 21:42:27  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
+	$Id$
 	
 */
 

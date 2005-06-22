@@ -25,27 +25,7 @@
 	section, il faut d'abord qu'il n'y ait personne de rattaché à la section à
 	supprimer. Il est cependant possible de marquer un binet comme disparu.
 	
-	$Log$
-	Revision 1.11  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.10  2005/01/18 13:45:31  pico
-	Plus de droits pour les web
-	
-	Revision 1.9  2004/12/17 17:25:08  schmurtz
-	Ajout d'une belle page d'erreur.
-	
-	Revision 1.8  2004/11/27 15:02:17  pico
-	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-	
-	Revision 1.7  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.6  2004/09/15 23:20:18  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.5  2004/09/15 21:42:27  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
+	$Id$
 	
 */
 

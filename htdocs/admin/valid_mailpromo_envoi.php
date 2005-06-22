@@ -20,25 +20,7 @@
 /*
 	Page d'envoi des mails promo.
 	
-	$Log$
-	Revision 1.10  2005/06/20 14:25:52  pico
-	Pour avoir un encodage correct sur les entetes des mails promo
-
-	Revision 1.9  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-	
-	Revision 1.8  2005/01/20 13:07:02  pico
-	On envoit par ordre d'id d'élève (plus facile de voir si un id a été sauté)
-	Devrait mettre ça dans un nouveau fichier de log maintenant.
-	
-	Revision 1.7  2005/01/17 20:15:38  pico
-	Mail promo pour les kessiers
-	
-	Revision 1.6  2005/01/13 17:10:58  pico
-	Mails de validations From le validateur qui va plus ou moins bien
-	
-	Revision 1.5  2004/12/17 17:25:08  schmurtz
-	Ajout d'une belle page d'erreur.
+	$Id$
 	
 */
 

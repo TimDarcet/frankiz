@@ -20,61 +20,7 @@
 /*
 	Page qui permet aux admins de modifier une annonce validée
 	
-	$Log$
-	Revision 1.17  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.16  2005/01/22 17:58:38  pico
-	Modif des images
-	
-	Revision 1.15  2005/01/12 17:20:59  pico
-	Bug #30 suite pour l'admin
-	
-	Revision 1.14  2005/01/04 21:44:40  pico
-	Remise en place du lien vers l'helpwiki parce que le résumé en bas de page est incomprehensible
-	
-	Revision 1.13  2005/01/04 21:23:37  pico
-	Pour pouvoir remettre une annonce périmée depuis moins de 2 jours
-	
-	Revision 1.12  2004/12/17 17:25:08  schmurtz
-	Ajout d'une belle page d'erreur.
-	
-	Revision 1.11  2004/12/16 13:00:41  pico
-	INNER en LEFT
-	
-	Revision 1.10  2004/12/14 14:18:12  schmurtz
-	Suppression de la page de doc wiki : doc directement dans les pages concernees.
-	
-	Revision 1.9  2004/12/13 19:36:21  kikx
-	Pour changer exterieur ou non apres la validation de l'annonce (Pour Alban)
-	
-	Revision 1.8  2004/12/07 13:10:56  pico
-	Passage du nettoyage en formulaire
-	
-	Revision 1.7  2004/12/07 12:06:17  kikx
-	Ben c'est un lien cassé
-	
-	Revision 1.6  2004/12/07 08:36:39  pico
-	Ajout d'une page pour pouvoir vider un peu les bases de données (genre pas garder les news qui datent de vieux)
-	
-	Revision 1.5  2004/11/27 20:16:55  pico
-	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-	
-	Revision 1.4  2004/11/27 15:29:22  pico
-	Mise en place des droits web (validation d'annonces + sondages)
-	
-	Revision 1.3  2004/11/27 14:56:15  pico
-	Debut de mise en place de droits spéciaux (qdj + affiches)
-	+ génération de la page d'admin qui va bien
-	
-	Revision 1.2  2004/11/27 14:12:31  pico
-	Ajout d'un lien pour supprimmer les annonces périmées depuis plus de 5 jours
-	(histoire de pas garder des archives inutiles)
-	
-	Revision 1.1  2004/11/27 13:59:27  pico
-	Page pour modifier les annonces validées
-	
-
+	$Id$
 	
 */
 	

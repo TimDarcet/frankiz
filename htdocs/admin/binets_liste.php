@@ -20,31 +20,7 @@
 /*
 	Gestion de la liste des binets.
 
-	$Log$
-	Revision 1.7  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.6  2005/01/18 13:45:31  pico
-	Plus de droits pour les web
-	
-	Revision 1.5  2004/12/17 17:25:08  schmurtz
-	Ajout d'une belle page d'erreur.
-	
-	Revision 1.4  2004/11/27 15:02:17  pico
-	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-	
-	Revision 1.3  2004/11/25 11:52:10  pico
-	Correction des liens mysql_id
-	
-	Revision 1.2  2004/11/11 19:22:52  kikx
-	Permet de gerer l'affichage externe interne des binets
-	Permet de pas avoir de binet sans catégorie valide
-	
-	Revision 1.1  2004/11/11 17:42:26  kikx
-	pour avoir la liste des binets
-	
-
-	
+	$Id$
 	
 */
 

@@ -20,37 +20,7 @@
 /*
 	Pour faire peur aux gens qui ont des virus...
 	
-	$Log$
-	Revision 1.9  2005/05/31 15:30:02  fruneau
-	Page d'administration des virus plus lisible
-
-	Revision 1.8  2005/05/31 12:36:18  fruneau
-	Pour n'afficher que les virus qui sont dans les promos sur le plateau... sinon c'est boulet
-	
-	Revision 1.7  2005/04/17 23:16:28  dei
-	quelques modif :
-	on signale au roots quand un ordinateur est clean si il avait le r�seau coup�on
-	peut pr�venir les gens qui lisent pas frankiz par mail
-	
-	Revision 1.6  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-	
-	Revision 1.5  2005/04/13 16:14:34  pico
-	test
-	
-	Revision 1.4  2005/04/13 16:09:20  pico
-	Correction
-	
-	Revision 1.3  2005/04/13 15:02:00  dei
-	les logs qui vont bien pour savoir qui devirusise les gens
-	
-	Revision 1.2  2005/04/13 14:10:30  dei
-	j'avais oublié ça , ça ne servait que pour le test...
-	
-	Revision 1.1  2005/04/13 13:58:16  dei
-	Voilà qui devrait faire peur à certains
-	Basé sur le script de fruneau module sur la page principale + page d'admin...
-	
+	$Id$
 	
 */
 // En-tetes

@@ -20,56 +20,7 @@
 /*
 	Page qui permet aux faqmestres de valider une modification FAQ
 	
-
-	$Log$
-	Revision 1.16  2005/05/23 14:49:13  pico
-	Correction grammaire
-
-	Revision 1.15  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-	
-	Revision 1.14  2005/02/15 19:30:40  kikx
-	Mise en place de log pour surveiller l'admin :)
-	
-	Revision 1.13  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
-	
-	Revision 1.12  2005/01/18 13:45:31  pico
-	Plus de droits pour les web
-	
-	Revision 1.11  2005/01/14 09:19:31  pico
-	Corrections bug mail
-	+
-	Sondages maintenant public ou privé (ne s'affichant pas dans le cadre)
-	Ceci sert pour les sondages section par exemple
-	
-	Revision 1.10  2005/01/13 17:10:58  pico
-	Mails de validations From le validateur qui va plus ou moins bien
-	
-	Revision 1.9  2004/12/17 17:25:08  schmurtz
-	Ajout d'une belle page d'erreur.
-	
-	Revision 1.8  2004/12/16 16:53:37  falco
-	typo
-	
-	Revision 1.7  2004/12/16 13:00:41  pico
-	INNER en LEFT
-	
-	Revision 1.6  2004/12/14 23:15:38  kikx
-	Pour avoir la source + affichage
-	
-	Revision 1.5  2004/12/14 23:11:11  kikx
-	Oups /.me boulet
-	
-	Revision 1.4  2004/12/14 23:09:52  kikx
-	Pour avoir qd meme la page modifié
-	
-	Revision 1.3  2004/12/14 23:06:06  schmurtz
-	Ajout du support zonetext grand pour les faqs
-	
-	Revision 1.1  2004/12/14 22:49:53  kikx
-	oups désolé
-	
+	$Id$
 
 */
 	

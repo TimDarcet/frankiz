@@ -20,25 +20,8 @@
 /*
 	Numero utiles
 	
-	$Log$
-	Revision 1.4  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.3  2005/01/18 13:45:31  pico
-	Plus de droits pour les web
-	
-	Revision 1.2  2004/12/17 14:26:20  pico
-	Pas d'action pour les listes non sélectionnables
-	
-	Revision 1.1  2004/12/17 13:18:47  kikx
-	Rajout des numéros utiles car c'est une demande importante
-	
-	Revision 1.2  2004/11/29 17:27:32  schmurtz
-	Modifications esthetiques.
-	Nettoyage de vielles balises qui trainaient.
-	
-	Revision 1.1  2004/10/31 22:14:52  kikx
-	Oubli
 */
 
 require_once "../include/global.inc.php";

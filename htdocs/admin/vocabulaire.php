@@ -20,21 +20,8 @@
 /*
 	Modif du vocabulaire
 	
-	$Log$
-	Revision 1.6  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.5  2005/01/18 13:45:31  pico
-	Plus de droits pour les web
-	
-	Revision 1.4  2004/12/17 17:25:08  schmurtz
-	Ajout d'une belle page d'erreur.
-	
-	Revision 1.3  2004/12/17 14:34:18  pico
-	J'avais fait de la merde...
-	
-	Revision 1.1  2004/12/15 23:40:35  kikx
-	Pour gérer les mots de vocabulaires
 */
 
 require_once "../include/global.inc.php";

@@ -20,23 +20,8 @@
 /*
 	Ajout d'un utilisateur !
 	
-	$Log$
-	Revision 1.4  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.3  2005/01/27 15:23:17  pico
-	La boucle locale est considérée comme interne
-	Tests de photos normalement plus cools.
-	Après le reste.... je sais plus
+	$Id$
 	
-	Revision 1.2  2005/01/18 23:24:42  pico
-	Ajout fonction tdb
-	Modif taille images trombi
-	
-	Revision 1.1  2004/12/17 16:30:31  kikx
-	Interface pour ajouter un seul et unique utilisateurs ... utiles pour les PITs et les PI qui ne sont pas dans le tol !
-	
-
 */
 	
 require_once "../include/global.inc.php";

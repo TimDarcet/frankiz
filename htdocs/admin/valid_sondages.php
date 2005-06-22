@@ -20,77 +20,7 @@
 /*
 	Page qui permet aux admins de valider un sondage
 	
-	$Log$
-	Revision 1.22  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.21  2005/03/04 23:11:33  pico
-	Restriction des sondages par promo/section/binet
-	
-	Revision 1.20  2005/03/02 07:24:49  pico
-	corrige une petite erreur d'url
-	
-	Revision 1.19  2005/02/15 19:45:14  pico
-	Pour modifier les sondages lors de la validation
-	
-	Revision 1.18  2005/02/15 19:30:40  kikx
-	Mise en place de log pour surveiller l'admin :)
-	
-	Revision 1.17  2005/01/21 17:01:31  pico
-	Fonction pour savoir si interne
-	
-	Revision 1.16  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
-	
-	Revision 1.15  2005/01/14 09:19:31  pico
-	Corrections bug mail
-	+
-	Sondages maintenant public ou privé (ne s'affichant pas dans le cadre)
-	Ceci sert pour les sondages section par exemple
-	
-	Revision 1.14  2005/01/13 17:10:58  pico
-	Mails de validations From le validateur qui va plus ou moins bien
-	
-	Revision 1.13  2005/01/05 21:59:48  pico
-	Envoit de commentaire dans le mail de validation d'annonce
-	
-	Revision 1.12  2004/12/17 17:25:08  schmurtz
-	Ajout d'une belle page d'erreur.
-	
-	Revision 1.11  2004/12/16 13:00:41  pico
-	INNER en LEFT
-	
-	Revision 1.10  2004/12/14 22:17:32  kikx
-	Permet now au utilisateur de modifier les Faqqqqqqqqqqqqqqqq :)
-	
-	Revision 1.9  2004/12/14 13:39:20  pico
-	Y'avait de la merde au niveau des locks, ça ça marche, ce serait bien si tu pouvais y jeter un coup d'oeil, kikx
-	
-	Revision 1.8  2004/12/13 16:40:46  kikx
-	Protection de la validation des sondages
-	
-	Revision 1.7  2004/11/27 20:16:55  pico
-	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-	
-	Revision 1.6  2004/11/27 15:29:22  pico
-	Mise en place des droits web (validation d'annonces + sondages)
-	
-	Revision 1.5  2004/11/27 15:02:17  pico
-	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-	
-	Revision 1.4  2004/11/23 23:30:20  schmurtz
-	Modification de la balise textarea pour corriger un bug
-	(return fantomes)
-	
-	Revision 1.3  2004/11/17 22:19:15  kikx
-	Pour avoir un module sondage
-	
-	Revision 1.2  2004/11/17 21:17:21  kikx
-	Validation d'un sondage par l'admin
-	
-	Revision 1.1  2004/11/17 13:49:49  kikx
-	Preparation de la page de validation des sondages
-	
+	$Id$
 
 */
 	

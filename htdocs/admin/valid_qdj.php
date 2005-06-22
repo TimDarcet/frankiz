@@ -20,55 +20,8 @@
 /*
 	Page qui permet aux admins de valider une qdj
 	
+	$Id$
 
-	$Log$
-	Revision 1.17  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.16  2005/02/15 19:30:40  kikx
-	Mise en place de log pour surveiller l'admin :)
-	
-	Revision 1.15  2004/12/17 17:25:08  schmurtz
-	Ajout d'une belle page d'erreur.
-	
-	Revision 1.14  2004/12/16 13:00:41  pico
-	INNER en LEFT
-	
-	Revision 1.13  2004/12/13 20:03:25  pico
-	Les liens ne forment pas de blocs, il faut donc le spécifier
-	
-	Revision 1.12  2004/12/13 16:32:14  kikx
-	Protection de la validation d'une QDJ ...
-	
-	Revision 1.11  2004/11/27 20:16:55  pico
-	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-	
-	Revision 1.10  2004/11/27 15:02:17  pico
-	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-	
-	Revision 1.9  2004/11/27 14:56:15  pico
-	Debut de mise en place de droits spéciaux (qdj + affiches)
-	+ génération de la page d'admin qui va bien
-	
-	Revision 1.8  2004/10/29 15:48:43  kikx
-	Mise ne forme du php
-	
-	Revision 1.7  2004/10/29 15:47:34  kikx
-	Ca ne sert a rien d'envoyer des mails qd on valide ou qu'on refuse les qdj ...
-	
-	Revision 1.6  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.5  2004/10/14 19:59:37  pico
-	Correction de bug
-	
-	Revision 1.4  2004/10/14 13:48:13  pico
-	Amélioration du comportement de la planification des qdj
-	- possibilité d'insérer une qdj et de décaler les autres
-	- ou remplacer la qdj déjà placée par la courante et remettre l'ancienne dans les qdj à planifier
-	
-	Revision 1.3  2004/10/13 22:14:32  pico
-	Premier jet de page pour affecter une date de publication aux qdj validées
 */
 	
 require_once "../include/global.inc.php";

@@ -19,26 +19,7 @@
 */
 /*
 	
-	$Log$
-	Revision 1.6  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.5  2005/01/18 13:31:21  pico
-	Ajout liste des webmestres et des prez
-	
-	Revision 1.4  2005/01/03 23:27:05  pico
-	Petites modifs
-	
-	Revision 1.3  2005/01/03 20:05:07  pico
-	Corrections diverses
-	
-	Revision 1.2  2005/01/03 19:55:22  pico
-	Modif pour pouvoir mieux administrer
-	
-	Revision 1.1  2005/01/03 19:52:47  pico
-	Ajout page pour voir la liste des droits sur le site
-	
-
+	$Id$
 	
 */
 	

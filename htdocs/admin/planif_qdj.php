@@ -20,72 +20,7 @@
 /*
 	Page qui permet aux admins de valider une qdj
 	
-	$Log$
-	Revision 1.19  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.18  2005/01/06 23:31:31  pico
-	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
-	
-	Revision 1.17  2004/12/17 17:25:08  schmurtz
-	Ajout d'une belle page d'erreur.
-	
-	Revision 1.16  2004/12/07 08:45:13  pico
-	Nettoyage des qdj
-	
-	Revision 1.15  2004/11/29 17:27:32  schmurtz
-	Modifications esthetiques.
-	Nettoyage de vielles balises qui trainaient.
-	
-	Revision 1.14  2004/11/27 20:16:55  pico
-	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-	
-	Revision 1.13  2004/11/27 15:02:17  pico
-	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-	
-	Revision 1.12  2004/11/27 14:56:15  pico
-	Debut de mise en place de droits spéciaux (qdj + affiches)
-	+ génération de la page d'admin qui va bien
-	
-	Revision 1.11  2004/11/16 18:32:34  schmurtz
-	Petits problemes d'interpretation de <note> et <commentaire>
-	
-	Revision 1.10  2004/11/02 17:54:12  pico
-	Correction bug:
-	- derniere qdj planifiée
-	- possibilité de déprogrammer une qdj en remettant 0000-00-00 comme date
-	- compte des qdj planifiées
-	
-	Revision 1.9  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.8  2004/10/17 18:55:50  pico
-	.
-	
-	Revision 1.7  2004/10/15 20:49:46  pico
-	Affichage plus compressé pour plus de lisibilité
-	
-	Revision 1.6  2004/10/15 20:32:01  pico
-	Reorganisation de la page
-	
-	Revision 1.5  2004/10/14 22:15:24  pico
-	- Ajout de boutons "un jour plus tôt" "un jour plus tard"
-	- Empèche de définir une date passée pour la qdj
-	
-	Revision 1.4  2004/10/14 19:59:37  pico
-	Correction de bug
-	
-	Revision 1.3  2004/10/14 19:21:41  pico
-	- Affichage de la planification existante
-	- Possibilité de replanifier une QDJ
-	
-	Revision 1.2  2004/10/14 13:48:13  pico
-	Amélioration du comportement de la planification des qdj
-	- possibilité d'insérer une qdj et de décaler les autres
-	- ou remplacer la qdj déjà placée par la courante et remettre l'ancienne dans les qdj à planifier
-	
-
-	
+	$Id$
 	
 */
 	

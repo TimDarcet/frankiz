@@ -20,18 +20,7 @@
 /*
 	Page d'envoi dee mail par catégories
 	
-	$Log$
-	Revision 1.3  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.2  2005/03/22 20:52:28  dei
-	bon comme d'hab c crade, mais là c corrigé
-	ajout du log de la validation
-	
-	Revision 1.1  2005/03/22 19:46:15  dei
-	pour envoyer des mails à un batiment, un étage, un binet, une section,
-	aux prez, webmestres...
-	
+	$Id$
 
 */
 // En-tetes

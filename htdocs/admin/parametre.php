@@ -23,38 +23,8 @@
 	# la dernière promo qui est sur le site
 	# la dernière promo qui est dans le trombi (qui normalment devrait être mis a jour automatiquement)
 	
-	$Log$
-	Revision 1.13  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.12  2004/12/17 17:25:08  schmurtz
-	Ajout d'une belle page d'erreur.
-	
-	Revision 1.11  2004/12/17 14:34:18  pico
-	J'avais fait de la merde...
-	
-	Revision 1.9  2004/11/29 20:57:31  kikx
-	Mise en forme
-	
-	Revision 1.8  2004/11/29 17:27:32  schmurtz
-	Modifications esthetiques.
-	Nettoyage de vielles balises qui trainaient.
-	
-	Revision 1.7  2004/11/27 20:16:55  pico
-	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-	
-	Revision 1.6  2004/11/27 15:02:17  pico
-	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-	
-	Revision 1.5  2004/11/22 19:10:01  pico
-	Corrections mineures
-	
-	Revision 1.4  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.3  2004/09/16 15:30:09  schmurtz
-	Ajout de la variable cvs "Log", suppression de return inutiles
-	
 */
 
 require_once "../include/global.inc.php";

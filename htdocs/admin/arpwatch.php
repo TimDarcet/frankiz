@@ -20,26 +20,7 @@
 /*
 	Gestion arpwatch	
 	
-	$Log$
-	Revision 1.11  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.10  2005/03/16 17:13:40  pico
-	Les admin@windows ont accès à la liste des ips et à l'arpwatch
-	
-	Revision 1.9  2005/02/13 11:37:21  kikx
-	Permet d'avoir les details de l'arpwatch de facon plus lisible pour une personne ! (pour NC)
-	
-	Revision 1.8  2005/02/09 20:24:55  kikx
-	Allegement de la page de l'arpwatch ... 1 seul requete de zamer qui fait tout d'y coup
-	
-	Revision 1.7  2005/01/31 00:34:38  kikx
-	Avancement de l'arpwatch ... les roots vous pouvez me dire ce que vous voulez sur cette page ?
-	
-	Revision 1.6  2005/01/23 18:30:48  kikx
-	Debut d'une page d'arp watch pour frankiz
-	
-
+	$Id$
 	
 */
 

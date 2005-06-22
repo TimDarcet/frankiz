@@ -28,73 +28,7 @@
 	
 	L'ID de l'utilisateur à modifier est passer dans le paramètre GET 'user'.
 	
-	$Log$
-	Revision 1.27  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.26  2005/01/03 20:39:13  pico
-	pour la route
-	
-	Revision 1.25  2005/01/03 20:37:16  pico
-	Je suis un gros boulet
-	
-	Revision 1.24  2005/01/03 20:30:25  pico
-	Pour garder les droits d'admin de binets
-	Et ne pas marquer les webmestres de binets comme webmestres de frankiz
-	
-	Revision 1.23  2005/01/03 20:07:47  pico
-	Correction du SU
-	
-	Revision 1.22  2005/01/03 20:05:07  pico
-	Corrections diverses
-	
-	Revision 1.21  2004/12/17 17:25:08  schmurtz
-	Ajout d'une belle page d'erreur.
-	
-	Revision 1.20  2004/12/16 13:00:41  pico
-	INNER en LEFT
-	
-	Revision 1.19  2004/12/16 12:52:57  pico
-	Passage des paramètres lors d'un login
-	
-	Revision 1.18  2004/12/15 17:03:06  pico
-	2vite les renvois sur /trombino/
-	
-	Revision 1.17  2004/11/29 20:57:31  kikx
-	Mise en forme
-	
-	Revision 1.16  2004/11/29 20:48:45  kikx
-	Simplification des rajouts des droits des personnes ... ce fait grace a des cases a cocher ... (pour les autistes ca devrait etre bon ...) Comme ca pas d'erreur de syntaxe possibles...
-	
-	La liste des droits possibles est dans global_func.inc.php
-	
-	Revision 1.15  2004/11/27 15:39:54  pico
-	Ajout des droits trombino
-	
-	Revision 1.14  2004/11/27 15:02:17  pico
-	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-	
-	Revision 1.13  2004/11/26 22:51:21  pico
-	Correction du SU dans les pages d'admin
-	Les utilisateurs avec le droit 'affiches' peuvent changer les dates des activités qu'ils ont postées, si celles ci ont été préalablement validées par le br
-	
-	Revision 1.12  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.11  2004/10/21 20:37:59  kikx
-	C'est moche mais c'est achement pratique
-	
-	Revision 1.10  2004/10/19 20:15:24  kikx
-	Pour Schmurtz
-	
-	Revision 1.9  2004/10/19 20:01:54  kikx
-	Car ca ne sert a rien si on met en place un 'su'
-	
-	Revision 1.8  2004/09/15 23:20:18  schmurtz
-	Suppression de la variable CVS "Id" (fait double emploi avec "Log")
-	
-	Revision 1.7  2004/09/15 21:42:27  schmurtz
-	Commentaires et ajout de la variable cvs "Log"
+	$Id$
 	
 */
 	

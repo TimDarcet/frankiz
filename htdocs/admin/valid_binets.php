@@ -20,57 +20,7 @@
 /*
 	Page de validation d'une modification d'un binet
 	
-	$Log$
-	Revision 1.17  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.16  2005/02/15 19:30:40  kikx
-	Mise en place de log pour surveiller l'admin :)
-	
-	Revision 1.15  2005/01/26 16:36:32  pico
-	Devrait éviter l'erreur de Bery tout à l'heure
-	(pb de création de fichier)
-	
-	Revision 1.14  2005/01/22 17:58:38  pico
-	Modif des images
-	
-	Revision 1.13  2005/01/18 13:45:31  pico
-	Plus de droits pour les web
-	
-	Revision 1.12  2005/01/11 14:36:42  pico
-	Binets triés ext/int + url auto si binet sur le serveur
-	
-	Revision 1.11  2004/12/17 17:25:08  schmurtz
-	Ajout d'une belle page d'erreur.
-	
-	Revision 1.10  2004/12/13 20:03:25  pico
-	Les liens ne forment pas de blocs, il faut donc le spécifier
-	
-	Revision 1.9  2004/12/08 12:48:07  kikx
-	oups
-	
-	Revision 1.8  2004/12/08 12:46:50  kikx
-	Protection de la validation des binets
-	
-	Revision 1.7  2004/11/29 17:27:32  schmurtz
-	Modifications esthetiques.
-	Nettoyage de vielles balises qui trainaient.
-	
-	Revision 1.6  2004/11/27 15:02:17  pico
-	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-	
-	Revision 1.5  2004/11/08 18:26:40  kikx
-	Coorige des bugs
-	
-	Revision 1.4  2004/10/21 22:19:37  schmurtz
-	GPLisation des fichiers du site
-	
-	Revision 1.3  2004/10/19 19:08:17  kikx
-	Permet a l'administrateur de valider les modification des binets
-	
-	Revision 1.2  2004/10/19 18:16:24  kikx
-	hum
-	
+	$Id$
 
 */
 	

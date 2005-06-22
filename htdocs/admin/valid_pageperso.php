@@ -22,71 +22,7 @@
 	L'élève fait une demande grâce à la page profil/demande_ip.php, on valide
 	ou refuse la demande ici.
 	
-	$Log$
-	Revision 1.21  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.20  2005/02/15 19:30:40  kikx
-	Mise en place de log pour surveiller l'admin :)
-	
-	Revision 1.19  2005/01/20 20:09:03  pico
-	Changement de "Très BRment, l'automate"
-	
-	Revision 1.18  2005/01/18 13:55:42  pico
-	Correction d'entête
-	
-	Revision 1.17  2005/01/18 13:45:31  pico
-	Plus de droits pour les web
-	
-	Revision 1.16  2005/01/14 09:19:31  pico
-	Corrections bug mail
-	+
-	Sondages maintenant public ou privé (ne s'affichant pas dans le cadre)
-	Ceci sert pour les sondages section par exemple
-	
-	Revision 1.15  2005/01/13 17:10:58  pico
-	Mails de validations From le validateur qui va plus ou moins bien
-	
-	Revision 1.14  2005/01/11 13:42:17  pico
-	pff
-	
-	Revision 1.13  2005/01/11 13:41:27  pico
-	Oups erreur
-	
-	Revision 1.12  2005/01/11 13:40:26  pico
-	/me boulet
-	
-	Revision 1.11  2005/01/11 13:35:34  pico
-	Ajout des pages perso externes au bon endroit
-	
-	Revision 1.10  2004/12/17 17:25:08  schmurtz
-	Ajout d'une belle page d'erreur.
-	
-	Revision 1.9  2004/12/17 14:34:18  pico
-	J'avais fait de la merde...
-	
-	Revision 1.7  2004/12/16 13:00:41  pico
-	INNER en LEFT
-	
-	Revision 1.6  2004/12/13 20:03:25  pico
-	Les liens ne forment pas de blocs, il faut donc le spécifier
-	
-	Revision 1.5  2004/12/13 16:23:47  kikx
-	Passage en secure validation pour les page perso + note sur les commentaires
-	
-	Revision 1.4  2004/11/27 20:30:52  pico
-	Correction de commentaire
-	
-	Revision 1.3  2004/11/27 20:16:55  pico
-	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-	
-	Revision 1.2  2004/11/27 15:02:17  pico
-	Droit xshare et faq + redirection vers /gestion et non /admin en cas de pbs de droits
-	
-	Revision 1.1  2004/11/24 12:51:58  kikx
-	Oubli de ma part
-	
-
+	$Id$
 	
 */
 

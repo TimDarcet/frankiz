@@ -20,35 +20,7 @@
 /*
 	Page qui permet aux admins de voir l'historique des qdj
 	
-	$Log$
-	Revision 1.9  2005/04/13 17:09:58  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.8  2005/02/04 17:36:35  pico
-	ce sera ptèt mieux comme ça
-	
-	Revision 1.7  2005/02/04 17:32:26  pico
-	Correction bug division par zero
-	
-	Revision 1.6  2005/01/06 23:31:31  pico
-	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
-	
-	Revision 1.5  2004/12/17 20:40:48  pico
-	Mise en forme
-	
-	Revision 1.4  2004/12/17 20:28:02  pico
-	Plus joli
-	
-	Revision 1.3  2004/12/17 20:11:54  pico
-	Un peu moins précis..
-	
-	Revision 1.2  2004/12/17 20:08:38  pico
-	Affichage plus condensé
-	
-	Revision 1.1  2004/12/17 19:55:44  pico
-	Ajout d'une page pour voir l'historique des qdj
-	
-
+	$Id$
 	
 */
 	
