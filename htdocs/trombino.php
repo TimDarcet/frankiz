@@ -233,8 +233,7 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 
 			// Génération de la liste des binets
 			$DB_trombino->push_result();
-			$DB_trombino->query("SELECT remarque,nom,membres.binet_id FROM membres "
-							   ."LEFT JOIN binets USING(binet_id) WHERE eleve_id='$eleve_id'");
+			$DB_trombino->query("SELECT remarque,nom,membres.binet_id FROM membres LEFT JOIN binets USING(binet_id) WHERE eleve_id='$eleve_id' ORDER BY nom ASC");
 			while(list($remarque,$binet_nom,$binet_id) = $DB_trombino->next_row())
 				echo "<binet nom='$binet_nom' id='$binet_id'>$remarque</binet>\n";
 			$DB_trombino->pop_result();
