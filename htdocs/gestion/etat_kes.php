@@ -20,14 +20,8 @@
 /*
 	Cette page permet de déterminer si la Kès est ouvert ou non.
 	
-	$Log$
-	Revision 1.2  2005/04/13 17:09:59  pico
-	Passage de tous les fichiers en utf8.
+	$Id$
 
-	Revision 1.1  2005/01/18 12:11:49  pico
-	Etat de la kès + validation des mails promos dans l'interface de la Kès
-	
-	
 */
 
 require_once "../include/global.inc.php";

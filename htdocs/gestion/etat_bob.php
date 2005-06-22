@@ -20,39 +20,7 @@
 /*
 	Cette page permet de déterminer si le Bôb est ouvert ou non.
 	
-	$Log$
-	Revision 1.7  2005/04/13 17:09:59  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.6  2005/03/08 11:58:06  pico
-	Correction bug, permet d'effacer des tours kawa
-	
-	Revision 1.5  2005/01/06 23:31:31  pico
-	La QDJ change à 0h00 (ce n'est plus la question du jour plus un petit peu)
-	
-	Revision 1.4  2005/01/04 13:30:13  pico
-	Ajout possibilité de virer des tours kawa
-	
-	Revision 1.3  2004/12/17 17:25:08  schmurtz
-	Ajout d'une belle page d'erreur.
-	
-	Revision 1.2  2004/12/16 13:00:41  pico
-	INNER en LEFT
-	
-	Revision 1.1  2004/12/15 01:44:15  schmurtz
-	deplacement de la page d'admin du bob de admin vers gestion
-	
-	Revision 1.3  2004/12/07 21:54:09  pico
-	Interface d'ajout des tours kawa pour le bob
-	
-	Revision 1.2  2004/11/27 20:16:55  pico
-	Eviter le formatage dans les balises <note> <commentaire> et <warning> lorsque ce n'est pas necessaire
-	
-	Revision 1.1  2004/11/27 18:23:53  pico
-	Ajout de l'annonce: 'le bob est ouvert' dans les activités + page de gestion du bob
-	
-
-	
+	$Id$
 	
 */
 
