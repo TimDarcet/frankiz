@@ -188,6 +188,7 @@ $permissions_user = $_SESSION['user']->perms ;
 	if (verifie_permission('admin')||verifie_permission('web')){
 	?>
 		<lien titre="Gestion du Vocabulaire" url="admin/vocabulaire.php"/><br/>
+		<lien titre="Gestion des liens utiles" url="admin/liens_utiles.php"/><br/>
 	<?
 	}
 	if (verifie_permission('admin')||verifie_permission('trombino')){
