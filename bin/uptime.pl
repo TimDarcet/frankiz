@@ -32,8 +32,10 @@ for ($i = 0; $i <= $#cache; $i++) {
 		@uptime=split(/:+/,$champ[2]);
 		$up ="".$uptime[0]."h";
 	}
-	$res="<serveur nom='".$champ[0]."' etat='".$champ[1]."' uptime='".$up."' />\n";
-	print STATUS $res;
+	if($champ[0] ne "lunedenn"){
+		$res="<serveur nom='".$champ[0]."' etat='".$champ[1]."' uptime='".$up."' />\n";
+		print STATUS $res;
+	}
 } ; 
 
 close STATUS;
