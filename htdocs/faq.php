@@ -242,12 +242,13 @@ if ($id != "") {
 				while(!feof($texte))
 				{
 					$ligne = fgets($texte,2000);
+					if($ligne[0]=='[') $ligne = " ".$ligne;
 					// Remplace les liens locaux pour les images et les liens, car sinon conflit avec le BASE_HREF
-					$patterns[0] ='(\[(?!http://)(?!ftp://)(?!#))';
-					$patterns[1] ='(\[#)';
+					$patterns[0] ='( \[(?!http://)(?!ftp://)(?!#))';
+					$patterns[1] ='( \[#)';
 					$replacements[1] = '['.dirname(URL_DATA."faq/$reponse")."/";
 					$replacements[0] = '['.getenv('SCRIPT_NAME')."?".getenv('QUERY_STRING')."#";
-					$ligne = str_replace(array('&','<','>','\'','"','\\'),array('&amp;','&lt;','&gt;','&apos;','&quot;',''),$ligne);
+					$ligne = str_replace(array('&','<','>','\'','"'),array('&amp;','&lt;','&gt;','&apos;','&quot;'),$ligne);
 					$ligne = preg_replace($patterns,$replacements, $ligne);
 					$wiki.= $ligne;
 				}
