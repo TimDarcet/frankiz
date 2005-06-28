@@ -1,30 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- 
-	$Log$
-	Revision 1.3  2005/04/18 10:48:04  myk
-	Modif de la skin pico-2
-	de la skin simple
-
-
-	et enfin du XSL pour pouvoir faire des zoulies boites
-
-	Revision 1.2  2005/04/13 17:10:10  pico
-	Passage de tous les fichiers en utf8.
-	
-	Revision 1.1  2004/11/24 20:26:43  schmurtz
-	Reorganisation des skins (affichage melange skin/css + depacement des css)
-	
-	Revision 1.8  2004/11/15 20:54:19  pico
-	Commit global de retour de gwz
-	
-	Revision 1.7  2004/11/05 19:38:02  pico
-	Nouvelle Css un peu plus jolie pour la skin pico
-	
-	Revision 1.6  2004/11/05 14:08:22  pico
-	BugFix
-	
-	 Revision 1.5  2004/11/05 13:48:50  pico
-	Corrections diverses skin
+	$Id$
 
 	Copyright (C) 2004 Binet Réseau
 	http://www.polytechnique.fr/eleves/binets/br/

@@ -20,62 +20,7 @@
 <!--
 	Affichage des éléments de formulaire
 	
-	$Log$
-	Revision 1.13  2005/04/13 17:10:06  pico
-	Passage de tous les fichiers en utf8.
-
-	Revision 1.12  2005/03/23 21:44:17  pico
-	Marche ptèt mieux
-	
-	Revision 1.11  2005/03/23 21:12:12  pico
-	Normalement tout ce qui faut pour passer en UTF8
-	
-	Revision 1.10  2005/01/25 12:50:42  pico
-	Ajoute un accept-encoding dans les formulaires pour pas avoir de pbs de charset
-	
-	Revision 1.9  2005/01/23 20:56:11  pico
-	Pour ajouter les hidden dans les formulaires, sinon y'a comportement quantique...
-	
-	(j'ai essayé d'appeler psycow pour le préviendre, mais il est pas là)
-	
-	Revision 1.8  2004/12/17 02:01:12  psycow
-	Gros changement dans les Formulaires, mieux pour les sondages
-	
-	Revision 1.7  2004/12/15 00:38:30  psycow
-	Commit du boulot de l'apres midi, a la place de l'EA
-	
-	Revision 1.5  2004/12/12 17:45:33  psycow
-	Modification Mineure, pre-test IE: la dernière étape
-	
-	Revision 1.4  2004/12/10 14:31:28  psycow
-	Elimination du Bug des Formulaires, etapes suivantes tests sous IE
-	
-	Revision 1.3  2004/12/10 03:04:31  psycow
-	Resolution du probleme des boites sous Firefox, reste un probleme sur le positionnement des formulaires dans les boites...
-	
-	Revision 1.2  2004/12/09 14:00:07  psycow
-	Bonne modification et resolutions des principaux problemes de versions... et oui je suis un boulet qui ecrase les bons fichier et mets les mauvais en commit...
-	
-	Revision 1.1  2004/11/24 20:26:40  schmurtz
-	Reorganisation des skins (affichage melange skin/css + depacement des css)
-	
-	Revision 1.6  2004/11/23 23:32:22  schmurtz
-	oubli
-	
-	Revision 1.5  2004/11/12 00:23:04  psycow
-	Modification du trombi, gestion graphique des formulaires; c'est pas trop mal on touche a la fin
-	
-	Revision 1.4  2004/11/09 01:50:48  psycow
-	Commit predodo, debut de modification des formulaires...
-	
-	Revision 1.3  2004/11/08 12:00:37  psycow
-	Grosse Modification du WE
-	
-	Revision 1.2  2004/11/03 21:23:03  psycow
-	auvegarde de mon debut dans les xsl
-	
-	Revision 1.1  2004/11/03 18:21:32  psycow
-	*** empty log message ***
+	$Id$
 	
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">

@@ -33,20 +33,20 @@
 <xsl:param name="blending"/>
 
 <!-- a modifier -->
-<xsl:include href="../../pico/xsl/html.xsl"/>
-<xsl:include href="../../pico/xsl/form.xsl"/>
-<xsl:include href="../../pico/xsl/arbre.xsl"/>
-<xsl:include href="../../pico/xsl/annonces.xsl"/>
+<xsl:include href="../../xhtml/xsl/html.xsl"/>
+<xsl:include href="../../xhtml/xsl/form.xsl"/>
+<xsl:include href="../../xhtml/xsl/arbre.xsl"/>
+<xsl:include href="../../xhtml/xsl/annonces.xsl"/>
 <xsl:include href="annonces.xsl"/>
-<xsl:include href="../../pico/xsl/skins.xsl"/>
-<xsl:include href="../../pico/xsl/liens.xsl"/>
-<xsl:include href="../../pico/xsl/qdj.xsl"/>
-<xsl:include href="../../pico/xsl/anniversaires.xsl"/>
-<xsl:include href="../../pico/xsl/activites.xsl"/>
-<xsl:include href="../../pico/xsl/tours_kawa.xsl"/>
-<xsl:include href="../../pico/xsl/trombino.xsl"/>
-<xsl:include href="../../pico/xsl/stats.xsl"/>
-<xsl:include href="../../pico/xsl/meteo.xsl"/>
+<xsl:include href="../../xhtml/xsl/skins.xsl"/>
+<xsl:include href="../../xhtml/xsl/liens.xsl"/>
+<xsl:include href="../../xhtml/xsl/qdj.xsl"/>
+<xsl:include href="../../xhtml/xsl/anniversaires.xsl"/>
+<xsl:include href="../../xhtml/xsl/activites.xsl"/>
+<xsl:include href="../../xhtml/xsl/tours_kawa.xsl"/>
+<xsl:include href="../../xhtml/xsl/trombino.xsl"/>
+<xsl:include href="../../xhtml/xsl/stats.xsl"/>
+<xsl:include href="../../xhtml/xsl/meteo.xsl"/>
 
 <xsl:template match="/">
 	<html lang="fr" xml:lang="fr">

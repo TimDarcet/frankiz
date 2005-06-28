@@ -20,7 +20,7 @@ echo"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
 		<description>Frankiz : Le serveur des élèves de l'école polytechnique.</description>
 		<ttl>10</ttl>
 		<image>
-			<url><? echo BASE_URL ?>/skins/pico/default/images/frankiz.png</url>
+			<url><? echo BASE_URL ?>/skins/xhtml/default/images/frankiz.png</url>
 			<title>Frankiz : Activités</title>
 			<link><? echo BASE_URL ?></link>
 		</image>
