@@ -50,6 +50,7 @@ if ($DB_valid->num_rows()>0) { ?>
 			Donne nous plus d'explications sur cette demande. (Surtout si tu as déjà plusieurs ordinateurs enregistrés sur le réseau)
 		</note>
 		<zonetext titre="Raison" id="raison"></zonetext>
+<!-- Le SMAC est désactivé
 		<note>
 			Il nous faut aussi connaitre l'adresse MAC de la machine.<br/>
 			<ul>
@@ -69,7 +70,7 @@ if ($DB_valid->num_rows()>0) { ?>
 			</ul>
 		</note>
 		<champ id="adresse_mac" titre="Adresse MAC"/>
-
+-->
 		<bouton titre="Demander" id="demander"/>
 	</formulaire>
 	

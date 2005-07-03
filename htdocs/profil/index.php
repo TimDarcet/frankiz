@@ -48,6 +48,5 @@ require "../include/page_header.inc.php";
 		<lien titre="Gérer mes données réseau" url="profil/reseau.php"/><br/>
 		<lien titre="Modifier le mot de passe Xnet" url="profil/reseau.php#mod_xnet_0"/><br/>
 		<lien titre="Demander une nouvelle adresse ip" url="profil/demande_ip.php"/><br/>
-		<lien titre="Demander l'ajout d'une nouvelle machine sur le réseau" url="profil/demande_ip.php"/><br/>
 </page>
 <?php require_once BASE_LOCAL."/include/page_footer.inc.php"; ?>
