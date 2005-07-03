@@ -41,8 +41,8 @@ if ($DB_valid->num_rows()>0) { ?>
 		
 <?php } else if(!isset($_POST['demander'])) { ?>
 	<formulaire id="demandeip" titre="Demande d'une nouvelle machine" action="profil/demande_ip.php">
-		<choix titre="Je fait cette demande parce que" id="type" type="radio" valeur="1">
-			<option titre="J'ai remplacé l'ordinateur qui était dans mon casert et je souhaite juste pouvoir acceder au réseau avec (l'ancien ne pourra plus y accéder)" id="1"/>
+		<choix titre="Je fais cette demande parce que" id="type" type="radio" valeur="1">
+			<option titre="J'ai remplacé l'ordinateur qui était dans mon casert et je souhaite juste pouvoir acceder au réseau avec (je n'utilise plus l'ancien)" id="1"/>
 			<option titre="J'ai installé un 2ème ordinateur dans mon casert et je souhaite avoir une nouvelle adresse pour cette machine" id="2"/>
 			<option titre="Autre raison" id="3"/>
 		</choix>
