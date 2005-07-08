@@ -19,7 +19,7 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="mac">
-	<xsl:value-of select="@time" /> : <a><xsl:attribute name="href"><xsl:text>admin/admin_trombi.php?chercher&amp;mac=</xsl:text><xsl:value-of select="@id" /></xsl:attribute><xsl:value-of select="@id" /></a> <em>(<xsl:value-of select='@constructeur'/>)</em>
+	<xsl:value-of select="@time" /> : <a><xsl:attribute name="href"><xsl:text>admin/trombino.php?chercher&amp;mac=</xsl:text><xsl:value-of select="@id" /></xsl:attribute><xsl:value-of select="@id" /></a> <em>(<xsl:value-of select='@constructeur'/>)</em>
         <xsl:if test="count(ip) != 0">
                 <ul>
                         <xsl:for-each select="ip">
