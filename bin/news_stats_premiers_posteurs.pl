@@ -157,12 +157,11 @@ print ("Random choisi: 06".$RAN."\n\n");
 
 
 
-open (DATA ,">/home/frankiz2/cache/news_data_premiers_posteurs.test");
+open (DATA ,">/home/frankiz2/cache/news_data_premiers_posteurs");
 
 $result=premier_posteur();
 
 print DATA "<br/>";
-#exec("iconv -t utf8 /home/frankiz2/cache/news_data_premiers_posteurs.tmp > /home/frankiz2/cache/news_data_premiers_posteurs");
 
 $result=dernier_posteur($result);
 
