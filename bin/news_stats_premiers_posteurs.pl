@@ -5,8 +5,7 @@
 use DBI();
 #use Net::NNTP;
 use HTTP::Date;
-use Unicode::String ;
-Unicode::String->stringify_as('utf8');
+use Unicode::String qw(latin1);
 
 my $dbh = DBI->connect("DBI:mysql:database=news:host=localhost","news",
         "ug0yc1jo",{'RaiseError'=>1});
@@ -51,7 +50,7 @@ my $rep = $dbh->prepare($reqt);
  $rep->execute;
 
        while (my $ref = $rep->fetchrow_hashref()) {
-	$ref->{'pseudo_news'}=Unicode::String::latin1($ref->{'pseudo_news'});
+	$ref->{'pseudo_news'}= latin1($ref->{'pseudo_news'});
 	print("Traitement de ".$ref->{'pseudo_news'}."\n");
            if ( !filtrage($ref) )
 	   {
@@ -100,6 +99,7 @@ my $rep = $dbh->prepare($reqt);
  $rep->execute;
 
        while (my $ref = $rep->fetchrow_hashref()) {
+        $ref->{'pseudo_news'} = latin1($ref->{'pseudo_news'});
 	print("Traitement de ".$ref->{'pseudo_news'}."\n");
            if ( !filtrage($ref) )
 	   {
@@ -157,11 +157,12 @@ print ("Random choisi: 06".$RAN."\n\n");
 
 
 
-open (DATA ,">/home/frankiz2/cache/news_data_premiers_posteurs");
+open (DATA ,">/home/frankiz2/cache/news_data_premiers_posteurs.test");
 
 $result=premier_posteur();
 
 print DATA "<br/>";
+#exec("iconv -t utf8 /home/frankiz2/cache/news_data_premiers_posteurs.tmp > /home/frankiz2/cache/news_data_premiers_posteurs");
 
 $result=dernier_posteur($result);
 
