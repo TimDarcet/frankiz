@@ -36,7 +36,7 @@
 	<image source="stats/news_stats.png" texte="Nombre de postes"/>
 
 	<h3>Utilisation des clients news</h3>
-	<p>3Voici la liste des différents clients utilisés les 10 derniers jours. Pour l'instant ils sont classés par nombre de posts, mais lors d'un prochain upgrade de MySQL ce classement pourra facilement passer en nombre d'utilisateur par client.</p>
+	<p>Voici la liste des différents clients utilisés les 10 derniers jours. Pour l'instant ils sont classés par nombre de posts, mais lors d'un prochain upgrade de MySQL ce classement pourra facilement passer en nombre d'utilisateur par client.</p>
 	<?php
 		$DB_web->query("SELECT IF(LENGTH(client) > 0, client, 'Client non conforme'), count(*) as c FROM news.news WHERE DATE_SUB(CURDATE(), INTERVAL 10 DAY) <= date AND client NOT LIKE 'mail2news' GROUP BY client ORDER BY c DESC");
 		$i = 1;
@@ -48,7 +48,7 @@
 			$i++;
 		}
 	?>
-	<p>Les clients non conformes sont des clients qui utilisent l'en-tête User-Agent au lieu de X-Newsreader pour s'identifier. La structure interne du serveur news ne permet alors pas de les identifier. A priori, sur le réseau, les clients non-conformes sont <strong>Thunderbird</strong> et <strong>Opera</strong></p>
+	<p>Les clients non conformes sont des clients qui utilisent l'en-tête User-Agent au lieu de X-Newsreader pour s'identifier. La structure interne du serveur news ne permet alors pas de les repérer. A priori, sur le réseau, les clients en question sont <strong>Thunderbird</strong> et <strong>Opera</strong>.</p>
 	
 	<h2>Et avec ceci...</h2>
 	<h3>Le mot des newsmestres</h3>
