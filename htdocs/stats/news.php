@@ -36,17 +36,19 @@
 	<image source="stats/news_stats.png" texte="Nombre de postes"/>
 
 	<h3>Utilisation des clients news</h3>
-	<p>Voici la liste des différents clients utilisés les 10 derniers jours. Pour l'instant ils sont classés par nombre de posts, mais lors d'un prochain upgrade de MySQL ce classement pourra facilement passer en nombre d'utilisateur par client.</p>
+	<p>Voici la liste des différents clients utilisés les 10 derniers jours.</p>
 	<?php
-		$DB_web->query("SELECT client, count(*) as c FROM news.news WHERE DATE_SUB(CURDATE(), INTERVAL 10 DAY) <= date AND LENGTH(client) > 0 AND client NOT LIKE 'mail2news' AND forum NOT LIKE 'control.cancel' GROUP BY client ORDER BY c DESC");
+		$DB_web->query("CREATE TEMPORARY TABLE news_users SELECT client FROM news.news WHERE DATE_SUB(CURDATE(), INTERVAL 10 DAY) <= date AND LENGTH(client) > 0 AND client NOT LIKE 'mail2news' AND forum NOT LIKE 'control.cancel' GROUP BY pseudo_news");
+		$DB_web->query("SELECT client, count(*) as c FROM news_users GROUP BY client ORDER BY c DESC");
 		$i = 1;
 		while(list($client, $count) = $DB_web->next_row())
 		{
 			if($i == 1) echo "<strong>";
-			echo "$i - ".htmlentities(iconv("ISO-8859-1", "UTF-8", $client))." : $count posts<br/>";
+			echo "$i - ".htmlentities(iconv("ISO-8859-1", "UTF-8", $client))." : $count utilisateurs<br/>";
 			if($i == 1) echo "</strong>";
 			$i++;
 		}
+		$DB_web->query("DROP TABLE news_users");
 	?>
 	
 	<h2>Et avec ceci...</h2>
