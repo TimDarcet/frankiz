@@ -21,15 +21,24 @@
 	require "../include/page_header.inc.php";
 ?>
 <page id="grosposteur" titre="Frankiz : Boulétiseurs de news">
-	<?	
-		if(verifie_permission('admin')||verifie_permission('news')) {
-			echo "<h2>Bienvenue à toi ô très cher Maître</h2>";
-			include(BASE_CACHE."news_data");
-		} else {
-			echo "<h2>Hé hé</h2>";
-			echo "Tu viens de te faire avoir... cette page est private";
+<?php
+	if(verifie_permission('admin')||verifie_permission('news')) {
+		echo "<h2>Bienvenue...</h2>";
+		echo "<p>Voici la liste des 200 plus gros posteurs des news lors des 10 derniers jours...</p>";
+		echo "<p>Cette liste n'est accessibles qu'aux newsmestres et aux administrateurs totaux de Frankiz pour éviter qu'elle puisse être la source d'une bataille pour le classement qui entraînerait un pourrissage absurde des newsgroups</p>";
+		$DB_web->query("select pseudo_news, count(*) as c from news.news where DATE_SUB(CURDATE(), INTERVAL 10 DAY) <= date and pseudo_news NOT LIKE '(%)' and length(pseudo_news) > 0  group by pseudo_news order by c DESC limit 200");
+		$i = 1;
+		while(list($pseudo,$nb_post) = $DB_web->next_row()) {
+			if($i < 6) echo "<strong>";
+			echo "$i - ".iconv("ISO-8859-1", "UTF-8", $pseudo)." : $nb_post<br/>";
+			if($i < 6) echo "</strong>";
+			$i++;
 		}
-	?>
+	} else {
+		echo "<h2>Hé hé</h2>";
+		echo "Tu viens de te faire avoir... cette page est private";
+	}
+?>
 </page>
 <?php
 	require_once "../include/page_footer.inc.php";

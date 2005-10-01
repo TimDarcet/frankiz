@@ -23,18 +23,32 @@
 ?>
 
 <page id='statnews' titre='Frankiz : Statistiques des news'>
-	<?php if(verifie_permission('admin')||verifie_permission('news')) {
-		echo "<h2>Bienvenue à toi ô tres cher Maître</h2>";
-		echo "Tu peux aussi consulter ".
-		"<a href=\"stats/news_gros_posteurs.php\">la liste des boulets</a>,";
-		echo " page réservée aux newsmestres (filtrage par IP).";
-		echo "<h3>Etat du serveur de news</h3>";
-		include ("server_status");
-	} ?>
+	<?php if(verifie_permission('admin')||verifie_permission('news')) { ?>
+		<h2>Bienvenue à toi ô tres cher Maître</h2>
+		Tu peux aussi consulter <a href="stats/news_gros_posteurs.php">la liste des boulets</a> page réservée aux newsmestres.
+	<?php } ?>
 	
 	<h2>Statistiques diverses</h2>
+	<h3>Posteurs insomniques</h3>
 	<?php include(BASE_CACHE."news_data_premiers_posteurs"); ?><br/>
+
+	<h3>Activité des newsgroups les 4 derniers jours</h3>
 	<image source="stats/news_stats.png" texte="Nombre de postes"/>
+
+	<h3>Utilisation des clients news</h3>
+	<p>3Voici la liste des différents clients utilisés les 10 derniers jours. Pour l'instant ils sont classés par nombre de posts, mais lors d'un prochain upgrade de MySQL ce classement pourra facilement passer en nombre d'utilisateur par client.</p>
+	<?php
+		$DB_web->query("SELECT IF(LENGTH(client) > 0, client, 'Client non conforme'), count(*) as c FROM news.news WHERE DATE_SUB(CURDATE(), INTERVAL 10 DAY) <= date AND client NOT LIKE 'mail2news' GROUP BY client ORDER BY c DESC");
+		$i = 1;
+		while(list($client, $count) = $DB_web->next_row())
+		{
+			if($i == 1) echo "<strong>";
+			echo "$i - ".htmlentities(iconv("ISO-8859-1", "UTF-8", $client))." : $count posts<br/>";
+			if($i == 1) echo "</strong>";
+			$i++;
+		}
+	?>
+	<p>Les clients non conformes sont des clients qui utilisent l'en-tête User-Agent au lieu de X-Newsreader pour s'identifier. La structure interne du serveur news ne permet alors pas de les identifier. A priori, sur le réseau, les clients non-conformes sont <strong>Thunderbird</strong> et <strong>Opera</strong></p>
 	
 	<h2>Et avec ceci...</h2>
 	<h3>Le mot des newsmestres</h3>
