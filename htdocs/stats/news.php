@@ -39,15 +39,28 @@
 	<p>Voici la liste des différents clients utilisés les 10 derniers jours.</p>
 	<?php
 		$DB_web->query("CREATE TEMPORARY TABLE news_users SELECT client FROM news.news WHERE DATE_SUB(CURDATE(), INTERVAL 10 DAY) <= date AND LENGTH(client) > 0 AND client NOT LIKE 'mail2news' AND forum NOT LIKE 'control.cancel' GROUP BY pseudo_news");
-		$DB_web->query("SELECT client, count(*) as c FROM news_users GROUP BY client ORDER BY c DESC");
+		$DB_web->query("SELECT client, count(*) as c FROM news_users GROUP BY client ORDER BY c DESC, client");
+
+		echo "<p><strong>Clients importants :</strong></p>";
 		$i = 1;
 		while(list($client, $count) = $DB_web->next_row())
 		{
+			if($count == 1) break;
 			if($i == 1) echo "<strong>";
 			echo "$i - ".htmlentities(iconv("ISO-8859-1", "UTF-8", $client))." : $count utilisateurs<br/>";
 			if($i == 1) echo "</strong>";
 			$i++;
 		}
+
+		echo "<p><strong>Clients rares ou hacks de geeks :</strong></p>";
+		$i = 1;
+		do
+		{
+			echo "$i - ".htmlentities(iconv("ISO-8859-1", "UTF-8", $client))." : $count utilisateurs<br/>";
+			$i++;
+		}
+		while(list($client, $count) = $DB_web->next_row());
+		
 		$DB_web->query("DROP TABLE news_users");
 	?>
 	
