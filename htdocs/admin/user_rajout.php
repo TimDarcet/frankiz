@@ -44,47 +44,48 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 // Modification de la partie "compte FrankizII"
 $erreur=0 ;
 if (isset($_POST['ajout'])) {
-	if (($_POST['nom']!="") &&($_POST['prenom']!="") &&($_POST['login']!="") &&($_POST['date_nais']!="") &&($_POST['sexe']!="") &&($_POST['piece_id']!="") &&($_POST['section']!="") &&($_POST['cie']!="") &&($_POST['promo']!="") &&($_POST['mail']!="")&&($_FILES['file']['tmp_name']!='')) {
-	
+	if($_FILES['file']['tmp_name']!=''){
 		$img = $_FILES['file']['tmp_name'] ;
-	
-			//récupere les données de l'images
-			//--------------------------------------
-			
-		$type_img =  $_FILES["file"]["type"];
+
+		//récupere les données de l'images
+		//--------------------------------------
 		
+		$type_img =  $_FILES["file"]["type"];
+	
 		$fp = fopen($img,"rb"); // (b est pour lui dire que c'est bineaire !)
 		$size = filesize($img) ;
 		$data = fread($fp,$size);
 		fclose($fp);
 		$data = addslashes($data);
-	
-			//
-			// On verifie que le truc télécharger est une image ...
-			// + bonne taille !
-			//--------------------------------------
+
+		//
+		// On verifie que le truc télécharger est une image ...
+		// + bonne taille !
+		//--------------------------------------
 		if (($original_size = getimagesize($_FILES['file']['tmp_name']))&&($original_size[0]<=300)&&($original_size[1]<=400)) {
 			$filename = BASE_PHOTOS.$_REQUEST['promo']."/".$_REQUEST['login']."_original.jpg" ;
 			$filename2 = BASE_PHOTOS.$_REQUEST['promo']."/".$_REQUEST['login'].".jpg" ;
 			move_uploaded_file($_FILES['file']['tmp_name'], $filename) ;
 			copy($filename,$filename2) ;
 			
-			$DB_trombino->query("INSERT INTO eleves SET  nom='".$_POST['nom']."', prenom='".$_POST['prenom']."' ,surnom='".$_POST['surnom']."' ,date_nais='".$_POST['date_nais']."' ,sexe='".$_POST['sexe']."' ,piece_id='".$_POST['piece_id']."' ,section_id='".$_POST['section']."' ,cie='".$_POST['cie']."' ,promo='".$_POST['promo']."' ,login='".$_POST['login']."' ,mail='".$_POST['mail']."'");
-			?>
-			<commentaire>Utilisateur rajouté</commentaire>
-			<?
 		} else {
 		?>
 			<warning>Ton image n'est pas au bon format, ou est trop grande.</warning>
 		<?
 			$erreur=1 ;
 		}
-	
-	} else {
+	}
+	if (($_POST['nom']=="") || ($_POST['prenom']=="") || ($_POST['login']=="") || ($_POST['date_nais']=="") || ($_POST['sexe']=="") || ($_POST['promo']=="")) {
 		?>
 		<warning>Données manquantes</warning>
 		<?
 		$erreur = 1 ;
+	}
+	if($erreur==0){
+		$DB_trombino->query("INSERT INTO eleves SET  nom='".$_POST['nom']."', prenom='".$_POST['prenom']."' ,surnom='".$_POST['surnom']."' ,date_nais='".$_POST['date_nais']."' ,sexe='".$_POST['sexe']."' ,piece_id='".$_POST['piece_id']."' ,section_id='".$_POST['section']."' ,cie='".$_POST['cie']."' ,promo='".$_POST['promo']."' ,login='".$_POST['login']."' ,mail='".$_POST['mail']."'");
+		?>
+		<commentaire>Utilisateur rajouté</commentaire>
+		<?
 	}
 }
 if ((!isset($_POST['ajout']))&&($erreur==0)) {
@@ -101,8 +102,8 @@ if ((!isset($_POST['ajout']))&&($erreur==0)) {
 		<note>Bien respecter le formatage si vous voulez pas avoir d'erreur</note>
 		<champ id='date_nais' titre='Date de naissance*' valeur='<? if (isset($_POST['date_nais'])) echo $_POST['date_nais'] ; else echo "0000-00-00"?>'/>
 		<choix titre="Sexe*" id="sexe" type="combo" valeur="<? if (isset($_POST['sexe'])) echo $_POST['sexe']?>">
-				<option titre="Homme" id="1"/>
-				<option titre="Femme" id="2"/>
+				<option titre="Homme" id="0"/>
+				<option titre="Femme" id="1"/>
 		</choix>
 		<note>Avant de remplir cette case, vérifie la syntaxe de la piece <lien url="admin/ip.php" titre="ici"/></note>
 		<champ id='piece_id' titre='Ksert*' valeur='<? if (isset($_POST['piece_id'])) echo $_POST['piece_id']?>'/>
