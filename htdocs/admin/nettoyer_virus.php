@@ -143,7 +143,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		echo "\t\t\t<colonne id=\"date\">".preg_replace('/^(.{4})-(.{2})-(.{2})$/','$3-$2-$1', $date)."</colonne>\n";
 		echo "\t\t\t<colonne id=\"statut\">".(getstate($solved))."</colonne>\n";
 		echo "\t\t\t<colonne id=\"nomv\">$nomv</colonne>\n";
-		echo "\t\t\t<colonne id=\"nettoyer\">".(makedelete($ip,$eleve_id,$nomv,$solved,$ip))."</colonne>\n";
+		echo "\t\t\t<colonne id=\"nettoyer\">".(makedelete($id,$eleve_id,$nomv,$solved,$ip))."</colonne>\n";
 ?>
 			<colonne id="prevenir">
 <?
