@@ -158,7 +158,7 @@ foreach ($_POST AS $keys => $val){
 	//===========================
 	if ($temp[0] == "suppr") {
 		$temp2 = str_replace("x",".",$temp[1]) ; // euh c'est pas bo je suis d'accord mais bon c'est pour que ca marche sans trop de trick
-		$DB_admin->query("DELETE FROM prises WHERE type='secondaire' AND ip='$temp2' AND prise_id=''");
+		$DB_admin->query("DELETE FROM prises WHERE type='secondaire' AND ip='$temp2'");
 		
 		$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[2]}'") ;
 		list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
