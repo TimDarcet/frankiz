@@ -61,6 +61,9 @@ class DB {
 		// Connection lors de la première requete.
 		if($this->link == null){
 			$this->link = mysql_connect($this->host,$this->user,$this->pass,true);
+			if(mysql_get_server_info()>"4.1")
+				mysql_query("SET NAMES 'utf8'",$this->link);
+
 			if(mysql_errno() == 0)
 				mysql_select_db($this->base,$this->link) || ajouter_erreur_mysql("USE ".$this->base);
 			else {
