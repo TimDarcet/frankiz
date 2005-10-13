@@ -47,7 +47,7 @@
 		{
 			if($count == 1) break;
 			if($i == 1) echo "<strong>";
-			echo "$i - ".htmlentities(iconv("ISO-8859-1", "UTF-8", $client))." : $count utilisateurs<br/>";
+			echo "$i - ".htmlentities($client)." : $count utilisateurs<br/>";
 			if($i == 1) echo "</strong>";
 			$i++;
 		}
@@ -56,7 +56,7 @@
 		$i = 1;
 		do
 		{
-			echo "$i - ".htmlentities(iconv("ISO-8859-1", "UTF-8", $client))." : $count utilisateurs<br/>";
+			echo "$i - ".htmlentities($client)."<br/>";
 			$i++;
 		}
 		while(list($client, $count) = $DB_web->next_row());

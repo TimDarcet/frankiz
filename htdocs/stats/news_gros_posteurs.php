@@ -30,7 +30,7 @@
 		$i = 1;
 		while(list($pseudo,$nb_post) = $DB_web->next_row()) {
 			if($i < 6) echo "<strong>";
-			echo "$i - ".iconv("ISO-8859-1", "UTF-8", $pseudo)." : $nb_post<br/>";
+			echo "$i - $pseudo : $nb_post<br/>";
 			if($i < 6) echo "</strong>";
 			$i++;
 		}
