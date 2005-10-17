@@ -41,15 +41,9 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <h2>Log de la partie d'administration</h2>
 <commentaire>Voici les 100 dernières actions des administrateurs</commentaire>
 <?
-	$DB_admin->query("SELECT l.date,l.log,e.nom, e.prenom, e.promo FROM log_admin as l LEFT JOIN trombino.eleves as e ON e.eleve_id=l.id_admin ORDER BY date DESC LIMIT 100") ;
+	$DB_admin->query("SELECT DATE_FORMAT(l.date,'%d/%m/%Y %H:%i:%s'),l.log,e.nom, e.prenom, e.promo FROM log_admin as l LEFT JOIN trombino.eleves as e ON e.eleve_id=l.id_admin ORDER BY date DESC LIMIT 100") ;
 	while (list($date,$log,$nom,$prenom,$promo) = $DB_admin->next_row()) {
-		$y = substr($date,0,4) ;
-		$m = substr($date,4,2) ;
-		$j = substr($date,6,2) ;
-		$h = substr($date,8,2) ;
-		$min = substr($date,10,2) ;
-		$s = substr($date,12,2) ;
-		echo "<p>$j/$m/$y $h:$min:$s : $prenom $nom ($promo) a $log</p>" ;
+		echo "<p>$date : $prenom $nom ($promo) a $log</p>" ;
 	}
 ?>
 
