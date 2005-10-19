@@ -28,8 +28,8 @@ require_once "include/wiki.inc.php";
 
 function get_categorie($en_haut,$stamp,$perime) {
 	if($en_haut==1) return "important";
-	elseif($stamp > date("Y-m-d H:i:s",time()-12*3600)) return "nouveau";
-	elseif($perime < date("Y-m-d H:i:s",time()+24*3600)) return "vieux";
+	elseif($stamp > date("d/m/Y",time()-12*3600)) return "nouveau";
+	elseif($perime < date("d/m/Y",time()+24*3600)) return "vieux";
 	else return "reste";
 }
 
@@ -81,7 +81,7 @@ if (!est_interne() && !est_authentifie(AUTH_MINIMUM))  {
 }
 
 // Affichage des annonces
-$DB_web->query("SELECT annonces.annonce_id,stamp,perime,titre,contenu,en_haut,exterieur,nom,prenom,surnom,promo,"
+$DB_web->query("SELECT annonces.annonce_id,DATE_FORMAT(stamp,'%d/%m/%Y'),DATE_FORMAT(perime,'%d/%m/%Y'),titre,contenu,en_haut,exterieur,nom,prenom,surnom,promo,"
 					 ."IFNULL(mail,CONCAT(login,'@poly.polytechnique.fr')) as mail, $annonces_lues2 "
 					 ."FROM annonces LEFT JOIN trombino.eleves USING(eleve_id) $annonces_lues1"
 					 ."WHERE (perime>'".date("Y-m-d H:i:s",time())."') ORDER BY perime DESC");
@@ -102,7 +102,7 @@ while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$
 	<annonce id="<?php echo $id ?>" 
 		titre="<?php echo $titre ?>" visible="<?=$visible?"oui":"non" ?>"
 		categorie="<?php echo get_categorie($en_haut, $stamp, $perime) ?>"
-		date="<?php echo substr($stamp,8,2)."/".substr($stamp,5,2)."/".substr($stamp,0,4) ?>">
+		date="<?php echo $stamp ?>">
 <?php
 		if (file_exists(DATA_DIR_LOCAL."annonces/$id"))
 			echo "<image source=\"".DATA_DIR_URL."annonces/$id\" texte=\"logo\"/>\n";

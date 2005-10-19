@@ -164,7 +164,7 @@ if (!isset($_REQUEST['id'])) {
 			//======================================================
 			echo $message ;
 			
-			$DB_web->query("SELECT v.perime,(TO_DAYS(perime) - TO_DAYS(NOW())), v.sondage_id,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM sondage_question as v LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE sondage_id='{$_REQUEST['id']}'");
+			$DB_web->query("SELECT DATE_FORMAT(v.perime,'%d/%m'),(TO_DAYS(perime) - TO_DAYS(NOW())), v.sondage_id,v.questions,v.titre,v.eleve_id, e.nom, e.prenom, e.promo FROM sondage_question as v LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE sondage_id='{$_REQUEST['id']}'");
 			if ($DB_web->num_rows()==1) {
 				list($date,$delta,$id,$questions,$titre,$eleve_id,$nom, $prenom, $promo) = $DB_web->next_row() ;
 				
@@ -174,7 +174,7 @@ if (!isset($_REQUEST['id'])) {
 			<?
 				if ($delta>=0) {
 			?>
-					<formulaire id="form" titre="<?=$titre?> (<?=date("d/m",strtotime($date))?>)" action="sondage.php?id=<?=$_REQUEST['id']?>">
+					<formulaire id="form" titre="<?=$titre?> (<?=$date?>)" action="sondage.php?id=<?=$_REQUEST['id']?>">
 					<?
 					decode_sondage($questions) ;
 					if ($a_vote=="non") {
@@ -188,7 +188,7 @@ if (!isset($_REQUEST['id'])) {
 				} else {
 					// Les résultats du sondage !
 					?>
-					<cadre id="form" titre="<?=$titre?> (<?=date("d/m",strtotime($date))?>)">
+					<cadre id="form" titre="<?=$titre?> (<?=$date?>)">
 					<?
 					resultat_sondage($questions,$_REQUEST['id']) ;
 					?>

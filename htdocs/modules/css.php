@@ -32,7 +32,7 @@
 	while($file_css = readdir($dir_css)) {
 		// uniquement pour les dossiers non particuliers
 		if(!is_dir(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']."/$file_css") || $file_css == "." || $file_css == ".." ||
-			$file_css == "CVS" || $file_css{0} == "#" || $file_css == $description['chemin']) continue;
+			$file_css == ".svn" || $file_css{0} == "#" || $file_css == $description['chemin']) continue;
 		
 		$description_css = lire_description_css(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']."/$file_css");
 		echo "<lien titre=\"$file_css ($description_css)\" url=\"".BASE_URL."/skins/".$_SESSION['skin']['skin_nom']."/$file_css/style.css\"/><br/>";

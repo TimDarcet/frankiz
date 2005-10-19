@@ -139,14 +139,14 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <?
 echo $message ;
 
-$DB_valid->query("SELECT v.mail_id,v.stamp, v.titre,v.promo, v.mail, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_mailpromo as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
+$DB_valid->query("SELECT v.mail_id,DATE_FORMAT(v.stamp,'%d/%m/%Y %H:%i:%s'), v.titre,v.promo, v.mail, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_mailpromo as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
 while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
 	if (empty($mail)) $mail="$login@poly" ;
 ?>
 	<commentaire>
 		<em>FROM</em>: <?php  echo "$prenom $nom &lt;$mail&gt; " ?><br/>
 		Posté le 
-			<?php  echo substr($date,6,2) ."/".substr($date,4,2) ."/".substr($date,2,2)." à ".substr($date,8,2).":".substr($date,10,2) ?>
+			<?php  echo $date; ?>
 	</commentaire>
 	<cadre titre="<?php  echo $titre_mail." ".$titre ?>">
 			<?php echo wikiVersXML($mailpromo) ?>

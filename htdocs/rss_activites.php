@@ -2,13 +2,6 @@
 require_once "include/global.inc.php";
 require_once "include/wiki.inc.php";
 
-function get_categorie($en_haut,$stamp,$perime) {
-	if($en_haut==1) return "important";
-	elseif($stamp > date("Y-m-d H:i:s",time()-12*3600)) return "nouveau";
-	elseif($perime < date("Y-m-d H:i:s",time()+24*3600)) return "vieux";
-	else return "reste";
-}
- 
 echo"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
 
 ?>
@@ -28,13 +21,13 @@ echo"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
 $date_legend = array("Aujourd'hui","Demain","Après-demain","Dans 3 jours","Dans 4 jours","Dans 5 jours","Dans une semaine");
 if(!est_authentifie(AUTH_INTERNE)) $exterieur=" AND exterieur='1' ";
 for($i= 0; $i<7;$i++){
-	$DB_web->query("SELECT affiche_id,titre,url,date,description FROM affiches WHERE TO_DAYS(date)=TO_DAYS(NOW() + INTERVAL $i DAY) $exterieur ORDER BY date");
+	$DB_web->query("SELECT affiche_id,titre,url,DATE_FORMAT(date,'%d/%m/%Y %H:%i:%s'),description FROM affiches WHERE TO_DAYS(date)=TO_DAYS(NOW() + INTERVAL $i DAY) $exterieur ORDER BY date");
 	while (list($id,$titre,$url,$date,$texte)=$DB_web->next_row()) {
 ?>
 		<item>
-			<title><?php echo date("d/m/Y H:m",strtotime($date)).": ".$titre ?></title>
+			<title><?php echo $date.": ".$titre ?></title>
 			<link><? echo $url ?></link>
-			<pubDate><?php echo $stamp ?></pubDate>
+			<pubDate><?php echo $date ?></pubDate>
 			<description>
 <?
 				echo htmlspecialchars(wikiVersXML($texte,true),ENT_COMPAT,UTF-8);

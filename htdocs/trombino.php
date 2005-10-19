@@ -82,7 +82,7 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 
 	$where = "";
 		$join = "LEFT JOIN sections ON eleves.section_id=sections.section_id LEFT JOIN pieces ON eleves.piece_id = pieces.piece_id ";
-		$champs = "eleves.eleve_id,eleves.nom,prenom,surnom,date_nais,eleves.commentaire,eleves.piece_id,sections.nom,eleves.section_id,cie,promo,login,mail,pieces.tel";
+		$champs = "eleves.eleve_id,eleves.nom,prenom,surnom,DATE_FORMAT(date_nais,'%d/%m/%Y'),eleves.commentaire,eleves.piece_id,sections.nom,eleves.section_id,cie,promo,login,mail,pieces.tel";
 	
 	// Création de la requête si anniversaire appelle
 	if(isset($_REQUEST['anniversaire'])) {
@@ -188,7 +188,6 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 
 // Génération des fiches des élèves
 		while(list($eleve_id,$nom,$prenom,$surnom,$date_nais,$commentaire,$piece_id,$section,$section_id,$cie,$promo,$login,$mail,$tel) = $DB_trombino->next_row()) {
-			$date_nais = date("d/m/Y",strtotime($date_nais));
 			echo "<eleve nom='$nom' prenom='$prenom' promo='$promo' login='$login' surnom='$surnom' date_nais='$date_nais' "
 				."tel='$tel' mail='".(empty($mail)?"$login@poly.polytechnique.fr":$mail)."' casert='$piece_id' "
 				."section='$section' cie='$cie'>\n";

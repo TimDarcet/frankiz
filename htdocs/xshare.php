@@ -84,12 +84,12 @@ function rech_fils($id_parent) {
 				echo "<image source='images/fleche.gif' texte=\"marqué\"/>\n\r" ;
 			}
 			$DB_web->push_result();
-			$DB_web->query("SELECT * FROM xshare WHERE id='{$id}'") ;
+			$DB_web->query("SELECT id,id_parent,nom,licence,lien,importance,DATE_FORMAT(date,'%d/%m/%Y'),descript,version,site FROM xshare WHERE id='{$id}'") ;
 			if (list($id,$id_parent,$nom,$licence,$lien,$importance,$date,$descript,$version,$site) = $DB_web->next_row()) { 
 				echo "<lien titre='Site de l&apos;éditeur' url='".$site."'/> | <lien titre='Télécharger ici' url='data/xshare/".$lien."'/><br/><br/>";
 				if($importance == 1) echo "Logiciel important<br/>";
 				if($importance == 2) echo "<strong>Logiciel indispensable</strong><br/>";
-				echo "Dernière modification le ".substr($date, 6, 2)."/".substr($date, 4, 2)."/".substr($date, 0, 4)."<br/><br/>" ;
+				echo "Dernière modification le $date<br/><br/>" ;
 				if($version != '') echo "Version: ".$version."<br/>";
 				if($licence != '') echo "Licence: ".$licence."<br/>";
 				echo "Description: ".wikiVersXML($descript)."<br/>";
