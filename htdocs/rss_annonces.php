@@ -4,8 +4,8 @@ require_once "include/wiki.inc.php";
 
 function get_categorie($en_haut,$stamp,$perime) {
 	if($en_haut==1) return "important";
-	elseif($stamp > date("d/m/Y",time()-12*3600)) return "nouveau";
-	elseif($perime < date("d/m/Y",time()+24*3600)) return "vieux";
+	elseif($stamp > date("Y-m-d H:i:s",time()-12*3600)) return "nouveau";
+	elseif($perime < date("Y-m-d H:i:s",time()+24*3600)) return "vieux";
 	else return "reste";
 }
  
@@ -26,18 +26,18 @@ echo"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
 		</image>
 			
 <?
-$DB_web->query("SELECT annonce_id,DATE_FORMAT(stamp,'%d/%m/%Y'),DATE_FORMAT(perime,'%d/%m/%Y'),titre,contenu,en_haut,exterieur,nom,prenom,surnom,promo,"
+$DB_web->query("SELECT annonce_id,DATE_FORMAT(stamp,'%d/%m/%Y'),stamp,perime,titre,contenu,en_haut,exterieur,nom,prenom,surnom,promo,"
 					 ."IFNULL(mail,CONCAT(login,'@poly.polytechnique.fr')) as mail "
 					 ."FROM annonces LEFT JOIN trombino.eleves USING(eleve_id) "
-					 ."WHERE (perime>=".date("Ymd000000",time()).") ORDER BY perime DESC");
-while(list($id,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail)=$DB_web->next_row()) {
+					 ."WHERE (perime>=NOW()) ORDER BY perime DESC");
+while(list($id,$date,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$prenom,$surnom,$promo,$mail)=$DB_web->next_row()) {
 	if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
 ?>
 	<item>
 		<title><?php echo $titre ?></title>
 		<link><? echo BASE_URL."?nonlu=$id#annonce_$id" ?></link>
 		<category><?php echo get_categorie($en_haut, $stamp, $perime) ?></category>
-		<pubDate><?php echo $stamp ?></pubDate>
+		<pubDate><?php echo $date ?></pubDate>
 		<description>
 <?php
 		echo htmlspecialchars(wikiVersXML($contenu,true),ENT_COMPAT,UTF-8);
