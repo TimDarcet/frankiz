@@ -41,13 +41,14 @@ define("AUTH_FORT",3);		// Valeur minimum correspondant à un client authentifi�
 global $_NOUVEAU_LOGIN;	// indique si l'utilisateur vient de se loguer
 $_NOUVEAU_LOGIN = false;
 
+
 class User {
 	// description de l'utilisateur
 	var $uid;
 	var $nom;
 	var $prenom;
 	var $perms;
-	var $passwd;		// hash md5 du mot de passe
+	var $passwd;		// hash du mot de passe
 	var $mailhash;
 	var $cookiehash;
 	
@@ -93,10 +94,15 @@ class User {
 	// Authentification par mot de passe, cookie, mail. Si l'authentification échoue, on revient à
 	// un utilisateur anonyme. Renvoie vrai si l'authentification à réussie.
 	function verifie_mdp($_mdp) {
-		global $_NOUVEAU_LOGIN;
-		if($this->uid != 0 && md5($_mdp) == $this->passwd) {
+		global $_NOUVEAU_LOGIN,$DB_web;
+		if($this->uid != 0 && crypt($_mdp,$this->passwd) == $this->passwd){ // Nouvelle méthode d'authentification
 			$this->methode = AUTH_MDP;
 			$_NOUVEAU_LOGIN = true;
+			return true;
+		}else if($this->uid != 0 && md5($_mdp) == $this->passwd) { // Ancienne méthode d'authentification
+			$this->methode = AUTH_MDP;
+			$_NOUVEAU_LOGIN = true;
+			$DB_web->query("UPDATE compte_frankiz SET passwd='".hash_shadow($_mdp)."' WHERE eleve_id='{$this->uid}'"); // Mise à jour vers le nouveau format
 			return true;
 		} else {
 			$this->devient_anonyme();

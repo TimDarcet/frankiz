@@ -56,7 +56,7 @@ if(isset($_POST['changer_frankiz'])) {
 	} else if(strlen($_POST['passwd']) < 8) {
 		ajoute_erreur(ERR_MDP_TROP_PETIT);
 	} else {
-		$DB_web->query("UPDATE compte_frankiz SET passwd='".md5($_POST['passwd'])."' WHERE eleve_id='{$_SESSION['user']->uid}'");
+		$DB_web->query("UPDATE compte_frankiz SET passwd='".hash_shadow($_POST['passwd'])."' WHERE eleve_id='{$_SESSION['user']->uid}'");
 		$message.="<commentaire>Le mot de passe vient d'être changé.</commentaire>";
 	}
 
