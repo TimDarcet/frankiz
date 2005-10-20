@@ -93,7 +93,7 @@ if (isset($_POST['mod_binet'])) {
 
 if (verifie_permission('admin') && isset($_POST['mod_compte_fkz'])) {
 	if ($_POST['pass']!="") {
-		$pass2 = md5($_POST['pass']) ;
+		$pass2 = hash_shadow($_POST['pass']) ;
 		$DB_web->query("UPDATE compte_frankiz SET passwd='$pass2' WHERE eleve_id=$id");
 		echo "<commentaire>Modification du mot de passe réalisée correctement</commentaire>" ;
 	}
