@@ -84,7 +84,7 @@ if(isset($_POST['changer_frankiz'])) {
 	if(strlen($_POST['surnom']) < 2 && !empty($_POST['surnom']))
 		ajoute_erreur(ERR_SURNOM_TROP_PETIT);
 	if(strlen($_POST['surnom']) > 32)
-		ajoute_erreur(ERR_SURNOM_TROP_GRAND);	
+		ajoute_erreur(ERR_SURNOM_TROP_LONG);	
 	if($_POST['email'] == "$login@poly" || $_POST['email'] == "$login@poly.polytechnique.fr")
 		$_POST['email'] = "";
 	if(!ereg("^[a-zA-Z0-9_+.-]+@[a-zA-Z0-9.-]+$",$_POST['email']) && !empty($_POST['email']))
