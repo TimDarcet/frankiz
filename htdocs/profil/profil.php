@@ -83,7 +83,8 @@ if(isset($_POST['changer_frankiz'])) {
 } else if(isset($_POST['changer_trombino'])) {
 	if(strlen($_POST['surnom']) < 2 && !empty($_POST['surnom']))
 		ajoute_erreur(ERR_SURNOM_TROP_PETIT);
-		
+	if(strlen($_POST['surnom']) > 32)
+		ajoute_erreur(ERR_SURNOM_TROP_GRAND);	
 	if($_POST['email'] == "$login@poly" || $_POST['email'] == "$login@poly.polytechnique.fr")
 		$_POST['email'] = "";
 	if(!ereg("^[a-zA-Z0-9_+.-]+@[a-zA-Z0-9.-]+$",$_POST['email']) && !empty($_POST['email']))
@@ -207,6 +208,8 @@ require "../include/page_header.inc.php";
 			echo "<warning>Il faut mettre un mot de passe plus long (au moins 8 caractères). Le mot de passe n'a pas été modifié.</warning>\n";
 		if(a_erreur(ERR_SURNOM_TROP_PETIT))
 			echo "<warning>Il faut mettre un surnom plus long (au moins 2 caractères). Le surnom n'a pas été modifié.</warning>\n";
+		if(a_erreur(ERR_SURNOM_TROP_LONG))
+			echo "<warning>Il faut mettre un surnom moins long (au maximum 32 caractères). Le surnom n'a pas été modifié.</warning>\n";
 		if(a_erreur(ERR_EMAIL_NON_VALIDE))
 			echo "<warning>L'email n'est pas valide. L'adresse email n'a pas été modifié.</warning>\n";
 ?>
