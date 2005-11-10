@@ -294,6 +294,8 @@ div.fkz_annonces_titre {
 	padding: 8px;
 }
 .fkz_trombino_eleve {
+	display: table;
+	width: 98%;
 	margin: 4px;
 	padding: 4px 8px;
 }
@@ -323,7 +325,9 @@ h3.nom{
 	float:right;
 	padding: 6px;
 }
+
 .binets {
+	clear: both;
 	margin: 150px 20px 8px 100px;
 	padding: 0px;
 }
