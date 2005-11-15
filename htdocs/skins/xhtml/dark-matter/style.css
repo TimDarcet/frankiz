@@ -1,25 +1,20 @@
 /***********************************/
-/* Corps                           */
+/* Généralites                     */
 /***********************************/
 
 body {
 	background-color: black;
-	color: white;
+	color: inherit;
 	font-family: Tahoma, Verdana, Arial, sans-serif;
-	font-size: 10px;
-	margin: 0px;
+	font-size: 12px;
+	font-weight: bold;
 	padding: 0px;
-	text-align:center;
+	text-align:justify;
 }
 
 .fkz_page  {
-    width:30px;
-    padding-left:auto;
-    padding-right:auto;
+    width:100%;
     padding-left:20px;
-    left:auto;
-    right:auto;
-    margin-left:auto;
 }
 
 .fkz_gauche ul {
@@ -35,10 +30,11 @@ body {
 /* Liens */
 
 a {
-	color: #333333;
+	color: #555555;
 	background-color: inherit;
-	font-weight: bold;
+	font-weight: bolder;
 	text-decoration: none;
+	opacity:0.75
 }
 
 a:hover {
@@ -47,18 +43,23 @@ a:hover {
 }
 
 /***********************************/
-/* Mise en page générale           */
+/* Global Layout                   */
+/* This should use relative sizes, but it would probably require some serious */
+/* modification to the way the frames are handled.                            */
 /***********************************/
 
 .fkz_gauche {
     position:absolute;
+    top:40px;
     left:0px;
+    margin:0 0 0 0;
     width:186px;
 }
 
 .fkz_centre {
     position:absolute;
-	left:187px;
+    top:40px;
+	left:190px;
 	width: 520px;
 	padding:0px;
 }
