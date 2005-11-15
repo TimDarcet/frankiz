@@ -1,0 +1,620 @@
+/***********************************/
+/* Généralités                     */
+/***********************************/
+
+body {
+	background-color: black;
+	color: inherit;
+	font-family: Tahoma, Verdana, Arial, sans-serif;
+	font-size: 12px;
+    font-weight: bold;
+	text-align:justify;
+	padding: 0px;
+<<<<<<< .mine
+=======
+	text-align:center;
+>>>>>>> .r1534
+}
+
+.fkz_page  {
+    width:100%;
+    padding-left:20px;
+}
+
+/* Liens */
+
+a {
+	color: #555555;
+	background-color: inherit;
+	font-weight: bolder;
+	text-decoration: none;
+	opacity:0.75;
+}
+
+a:hover {
+	color: #333333;
+	background-color: white;
+	opacity:0.5;
+}
+
+/***********************************/
+/* Global Layout                   */
+/* This should use relative sizes, but it would probably require some serious */
+/* modification to the way the frames are handled.                            */
+/***********************************/
+
+    .fkz_gauche {
+        position:absolute;
+        top:40px;
+        left:0px;
+        margin:0 0 0 0;
+        width:186px;
+    }
+
+    .fkz_centre {
+        position:absolute;
+        top:40px;
+        left:190px;
+        margin:0 0 0 0;
+        width: 520px;
+    }
+    
+    .fkz_droite {
+        position:absolute;
+        top:40px;
+        left:718px;
+        margin:0 0 0 0;
+        text-align:center;
+        width:256px;
+    }
+    
+    
+    .fkz_centre span.image {
+        max-width:485px;
+    }
+    
+    .fkz_centre span.image img {
+        max-width:485px;
+    }
+    
+    .fkz_gauche img {
+        max-width:176px;
+    }
+    
+    em {
+        font-weight:bold;
+    }
+
+/********/
+/* LOGO */
+/********/
+
+    div.fkz_logo {
+        color: inherit;
+        background: #000000 url(images/logo.png) 50% 0% no-repeat;
+        height: 40px;
+        width:100%;
+        padding: 0px;
+        margin:0px;
+    }
+    
+    .fkz_logo a {
+        display: block;
+        background-color: transparent;
+        height: 40px;
+        width: 100%;
+    }
+    
+    .fkz_logo a:hover {
+        color:inherit;
+        background: #000000 url(images/logo_hover.png) 50% 0% no-repeat;
+    }
+    
+    .fkz_entetes span {
+        display:none;
+    }
+
+/***********************************/
+/* Grands cadres jaunes            */
+/***********************************/
+
+.fkz_annonces_1, .fkz_divers_1, .fkz_trombino_1, fkz_meteo_1 {
+	background-image: url(images/boite_haut.png);
+	background-position: top;
+	background-repeat: no-repeat;
+	padding-top: 34px;
+}
+
+.fkz_trombino_1 {
+	padding-top:3px;
+}
+
+.fkz_annonces_2, .fkz_divers_2, .fkz_trombino_2, fkz_meteo_2 {
+	background-image: url(images/boite_bas.png);
+	background-position: bottom;
+	background-repeat: no-repeat;
+	padding-bottom: 34px;
+}
+
+.fkz_annonces_3, .fkz_divers_3, .fkz_trombino_3, fkz_meteo_3 {
+	background-image: url(images/boite_centre.png);
+	background-position: center;
+	background-repeat: repeat-y;
+	padding-left: 26px;
+	padding-right: 35px;
+	color: #333333;
+	background-color: inherit;
+}
+
+.fkz_annonces_titre, .fkz_page_titre, fkz_meteo_titre {
+    text-align:right;
+    color:#111111;
+	background-color: inherit;
+    font-size:18px;
+	font-variant: small-caps;
+	font-weight: bold;
+    position:relative;
+    top:-17px;
+}
+
+.fkz_page_titre {
+    top:-34px;
+}
+
+.fkz_annonces_cat {
+    display:none;
+}
+
+.fkz_signature {
+    text-align:right;
+    margin-right:24px;
+}
+
+.fkz_centre p {
+    padding-left:20px;
+    padding-bottom:0px;
+    margin:0px;
+}
+
+.fkz_centre h3 {
+    padding-left:30px;
+}
+
+/* SOMMAIRE */
+
+.fkz_sommaire_1 {
+    margin-top:8px;
+}
+
+.fkz_sommaire_2 {
+	background-image: url(images/sommaire_top.png);
+	background-position: top;
+	background-repeat: no-repeat;
+	padding-top: 34px;
+}
+
+.fkz_sommaire_3 {
+    display:none;
+	background-image: url(images/boite_bas.png);
+	background-position: bottom;
+	background-repeat: no-repeat;
+	padding-bottom: 34px;
+}
+
+.fkz_sommaire_4 {
+	background-image: url(images/boite_centre.png);
+	background-position: center;
+	background-repeat: repeat-y;
+	padding-left: 26px;
+	padding-right: 35px;
+	color: #333333;
+	background-color: inherit;
+}
+
+.fkz_sommaire_1:hover .fkz_sommaire_3 {
+    display:block;
+}
+
+.fkz_sommaire_1:hover .fkz_sommaire_2 {
+	background-image: url(images/boite_haut.png);
+}
+
+.fkz_sommaire_titre {
+    text-align:right;
+    color:#111111;
+	background-color: inherit;
+    font-size:18px;
+	font-variant: small-caps;
+	font-weight: bold;
+    position:relative;
+}
+
+/* Trombino */
+
+.fkz_trombino_eleve div {
+    display:none;
+}
+
+.fkz_trombino_eleve:hover div {
+    display:block;
+}
+
+
+/***********************/
+/* ANNIVERSAIRES       */
+/* S'affiche en orange */
+/***********************/
+
+.fkz_centre .fkz_module_1 {
+    background-image: url(images/module_orange_haut.png);
+    background-position: top center;
+    padding-top: 7px;
+    background-repeat: no-repeat;
+    margin:4px;
+}
+.fkz_centre .fkz_module_2 {
+    background-image: url(images/module_orange_bas.png);
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    padding-bottom:1px;
+}
+.fkz_centre .fkz_module_3 {
+    background-image: url(images/module_orange_centre.png);
+    background-position: center;
+    background-repeat: repeat-y;
+    padding-left:8px;
+    padding-right:8px;
+    color: #FFFFFF;
+	background-color: inherit;
+}
+
+.fkz_centre .fkz_module {
+    margin-left: auto;
+    margin-right: auto;
+    width:251px;
+}
+
+.fkz_anniversaire {
+    text-align:center;
+}
+
+.fkz_anniversaire_titre {
+    font-size:14px;
+	font-variant: small-caps;
+	font-weight: bold;
+	text-align: center;
+}
+
+.fkz_module#mod_anniversaires {
+    margin-bottom:8px;
+}
+
+.fkz_titre {
+    font-size:14px;
+	font-variant: small-caps;
+	font-weight: bold;
+	text-align: center;
+}
+
+.fkz_centre .fkz_module br {
+    display:none;
+}
+
+.fkz_centre .fkz_module .fkz_anniversaire br {
+        display:inline;
+}
+
+/* Bidouillage pour que ça marche correctement */
+
+.fkz_module_corps {
+    margin-bottom:8px;
+}
+
+/***********************************/
+/* Modules en bleu                 */
+/***********************************/
+
+.fkz_gauche .fkz_module_1 {
+    background-image: url(images/module_bleu_haut.png);
+    background-position: top left;
+    padding-top: 8px;
+    background-repeat: no-repeat;
+    margin:4px;
+}
+
+.fkz_gauche .fkz_module_2 {
+    background-image: url(images/module_bleu_bas.png);
+    background-position: bottom left;
+    background-repeat: no-repeat;
+    padding-bottom:1px;
+    margin:0px;
+}
+
+.fkz_gauche .fkz_module_3 {
+    background-image: url(images/module_bleu_centre.png);
+    background-position: left;
+    background-repeat: repeat-y;
+    padding-left:8px;
+    padding-right:8px;
+    color: #FFFFFF;
+	background-color: inherit;
+    margin-bottom:-1px;
+}
+
+.fkz_module a {
+    color: #EEEEEE;
+	background-color: inherit;
+}
+
+.fkz_module a:hover {
+    color:#BBBBBB;
+    background-color:white;
+}
+
+.fkz_gauche .fkz_module_corps {
+    margin:0px;
+    text-align:left;
+}
+
+.fkz_gauche img {
+    max-width:180px;
+}
+
+/* Listes */
+.fkz_gauche ul {
+    list-style-type:none;
+    padding-left:0px;
+    margin-left:0px;
+}
+
+.fkz_gauche li {
+    list-style-type:none;
+}
+
+/*******************/
+/* MODULES EN VERT */
+/*******************/
+
+.fkz_droite .fkz_module_1 {
+    background-image: url(images/module_vert_haut.png);
+    background-position: top left;
+    padding-top: 7px;
+    background-repeat: no-repeat;
+    margin:4px;
+}
+
+.fkz_droite .fkz_module_2 {
+    background-image: url(images/module_vert_bas.png);
+    background-position: bottom left;
+    background-repeat: no-repeat;
+    padding-bottom:1px;
+}
+
+.fkz_droite .fkz_module_3 {
+    background-image: url(images/module_vert_centre.png);
+    background-position: left;
+    background-repeat: repeat-y;
+    padding-left:8px;
+    padding-right:8px;
+    color: #FFFFFF;
+	background-color: inherit;
+}
+
+.fkz_droite br {
+    display:none;
+}
+
+.fkz_droite #mod_sondages br {
+    display:block;
+}
+
+/***********************************/
+/* QDJ                             */
+/***********************************/
+
+.fkz_qdj_jone, div.fkz_qdj_rouje, div.fkz_qdj_jone_reponse, div.fkz_qdj_rouje_reponse {
+	text-align: center;
+	width: 110px;
+	font-weight:bold;
+}
+
+.fkz_qdj_jone {
+	color: #FFFF33;
+	background-color: inherit;
+	float: right;
+}
+
+.fkz_qdj_rouje {
+	color: #FF0000;
+	background-color: inherit;
+	float: left;
+}
+
+.fkz_qdj_jone_reponse {
+	color: #FFFF33;
+	background-color: inherit;
+	float:right;
+}
+
+.fkz_qdj_rouje_reponse {
+	color: #FF0000;
+	background-color: inherit;
+	float: left;
+}
+
+div.fkz_qdj_rouje_reponse br, div.fkz_qdj_jone_reponse br {
+    display:inline;
+}
+
+.fkz_qdj_last {
+    clear:none;
+	list-style-type: none;
+	text-align: left;
+}
+
+.fkz_qdj_dernier_votants {
+	font-style: italic;
+	margin-left: 20px;
+}
+
+ul.fkz_qdj_last {
+	list-style-type: none;
+	margin: 0px;
+	padding-bottom: 6px;
+	padding-left: 4px;
+	padding-right: 20px;
+	padding-top: 2px;
+}
+
+li.fkz_qdj_last {
+	margin: 0px;
+	padding: 0px;
+}
+
+.fkz_end_qdj {
+    margin-bottom:8px;
+}
+
+.col {
+	height: 48px;
+}
+
+.col span {
+	display: block;
+	height: 48px;
+}
+
+.col span.jone {
+	background-image: url(images/jaune.png);
+	background-position: center;
+	background-repeat: repeat-y;
+}
+
+.col span.rouje {
+	background-image: url(images/rouge.png);
+	background-position: center;
+	background-repeat: repeat-y;
+}
+
+/*********************/
+/*VALIDITE DE LA PAGE*/
+/*********************/
+
+p.valid  {
+    margin-left:auto;
+    margin-right:auto;
+}
+
+span.valid_xhtml,span.valid_css {
+	display: block;
+	height: 15px;
+	position: relative;
+	width: 80px;
+}
+
+span.valid_xhtml {
+	background-image: url(images/xhtml10.png);
+	height: 15px;
+	width: 80px;
+}
+
+span.valid_css {
+	background-image: url(images/css2.png);
+	left: 88px;
+	top: -15px;
+}
+
+/*********/
+/* METEO */
+/*********/
+
+.fkz_module#mod_meteo {
+    text-align:center;
+}
+
+/***************/
+/* Formulaires */
+/***************/
+
+div.formulaire {
+	display: block;
+}
+
+div.formulaire label.gauche {
+	display: block;
+	padding: 2px 8px;
+	margin: 0px 40px;
+}
+
+div.formulaire span.gauche {
+	text-decoration: underline;
+}
+div.formulaire span.droite{
+    text-align:left;
+	display: block;
+	padding: 0px 4px;
+	margin: 0px 0px 0px 100px;
+}
+
+div.formulaire div{
+	display: inline;
+}
+
+div.formulaire span.boutons{
+	display: block;
+	padding: 2px;
+	margin-left: 300px;
+}
+
+.fkz_module_corps div.formulaire span.droite, .fkz_module_corps div.formulaire label.gauche{
+	display:block;
+}
+
+form {
+    margin:0px;
+}
+
+/**************************/
+/* autres */
+/**************************/
+
+#choix_skin h1, #profil h1, .fkz_page_meteo h1, #xshare h1,#faq  h1,#vocabulaire  h1 {
+	display:none;
+}
+
+span.meteo{
+	display: block;
+	text-align:center;
+}
+
+div.meteo{
+	display:block;
+}
+
+div.image {
+	text-align: center;
+}
+
+/**************************/
+/* Tables ==> Vocabulaire */
+/**************************/
+
+table.liste {
+	max-width:485px;
+}
+
+table.liste .entete {
+	padding: 4px;
+	font-style: italic;
+	min-width: 100px;
+}
+
+table.liste .element {
+	padding: 4px;
+	border-top: thin solid white;
+}
+
+table.liste p {
+    margin:0px;
+    padding:0px;
+}
