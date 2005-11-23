@@ -234,16 +234,16 @@ SPAN.fkz_annonces_reste {
 	PADDING-LEFT: 25px; BACKGROUND-REPEAT: no-repeat; HEIGHT: 25px
 }
 SPAN.fkz_annonces_vieux {
-	BACKGROUND-IMAGE: url(images/demainfini.gif)
+	BACKGROUND-IMAGE: url(images/important.png)
 }
 SPAN.fkz_annonces_nouveau {
-	BACKGROUND-IMAGE: url(images/nllefraiche.gif)
+	BACKGROUND-IMAGE: url(images/important.png)
 }
 SPAN.fkz_annonces_important {
-	BACKGROUND-IMAGE: url(images/important.gif)
+	BACKGROUND-IMAGE: url(images/important.png)
 }
 SPAN.fkz_annonces_reste {
-	BACKGROUND-IMAGE: url(images/enattendant.gif)
+	BACKGROUND-IMAGE: url(images/important.png)
 }
 SPAN.fkz_annonces_cat {
 	DISPLAY: none
