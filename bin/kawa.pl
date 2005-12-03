@@ -2,13 +2,18 @@
 
 #Script destiné a envoyer sur les news les rappels de convocation de tour kawa
 
+$script_dir = `/bin/dirname $0`;
+$script_dir =~ s/\n//gs;
+require "$script_dir/../etc/config.pl";
+
 use DBI();
 use Encode qw/encode decode/;
 use Net::NNTP;
 use Net::Cmd;
 use Time::localtime;
 
-my $dbh = DBI->connect("DBI:mysql:database=frankiz2:host=localhost","web","kokouije?.",{'RaiseError'=>1});
+my $dbh = DBI->connect("DBI:mysql:database=$mysql_frankiz2{database}:host=$mysql_frankiz2{host}",
+        "$mysql_frankiz2{user}","$mysql_frankiz2{password}",{'RaiseError'=>1});
 
 sub post {
         local ($serveur) = "129.104.201.51";
