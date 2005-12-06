@@ -2,15 +2,17 @@
 
 #Script destiné a faire les stats pour les afficher
 
+$script_dir = `/bin/dirname $0`;
+$script_dir =~ s/\n//gs;
+require "$script_dir/../etc/config.pl";
+
 use DBI();
 #use Net::NNTP;
 use HTTP::Date;
 use Unicode::String qw(latin1);
 
-my $dbh = DBI->connect("DBI:mysql:database=news:host=localhost","news",
-        "ug0yc1jo",{'RaiseError'=>1});
-
-
+my $dbh = DBI->connect("DBI:mysql:database=$mysql_news{database}:host=$mysql_news{host}",
+        "$mysql_news{user}","$mysql_news{password}",{'RaiseError'=>1});
 
 sub filtrage($){  # si c'est TRUE, on vire
 return (   

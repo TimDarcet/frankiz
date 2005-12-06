@@ -15,3 +15,11 @@
 	user		=> '',
 	password	=> ''
 );
+
+# Base des stats news
+%mysql_news = (
+	host        => '',
+	database    => '',
+	user        => '',
+	password    => ''
+);
