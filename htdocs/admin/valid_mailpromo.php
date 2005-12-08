@@ -76,11 +76,11 @@ foreach ($_POST AS $keys => $val){
 			log_admin($_SESSION['user']->uid," accepté le mail promo '{$_POST['titre']}' ") ;
 			
 			// envoi du mail
-			$contenu = 	"Ton mail promo a été validé par le BR<br><br>".
+			$contenu = 	"Ton mail promo a été validé par la Kès<br><br>".
 						"Merci de ta participation<br><br>".
 						"Cordialement,<br>" .
-						"Le BR<br>"  ;
-			couriel($eleve_id,"[Frankiz] Ton mail promo a été validé par le BR",$contenu,MAILPROMO_ID);
+						"La Kès<br>"  ;
+			couriel($eleve_id,"[Frankiz] Ton mail promo a été validé par la Kès",$contenu,MAILPROMO_ID);
 			
 			if ((isset($_POST['promo']))&&($_POST['promo'] == "")) {
 				$promo = '' ;
@@ -108,12 +108,12 @@ foreach ($_POST AS $keys => $val){
 			//Log l'action de l'admin
 			log_admin($_SESSION['user']->uid," refusé le mail promo '{$_POST['titre']}' ") ;
 			// envoi du mail
-			$contenu = 	"Ton mail promo n'a pas été validé par le BR pour la raison suivante<br>".
+			$contenu = 	"Ton mail promo n'a pas été validé par la Kès pour la raison suivante<br>".
 						$_POST['refus']."<br><br>".
 						"Désolé <br>".
 						"Cordialement,\n" .
-						"le BR\n"  ;
-			couriel($eleve_id,"[Frankiz] Ton mail promo n'a pas été validé par le BR",$contenu,MAILPROMO_ID);
+						"la Kès\n"  ;
+			couriel($eleve_id,"[Frankiz] Ton mail promo n'a pas été validé par la Kès",$contenu,MAILPROMO_ID);
 	
 			$DB_valid->query("DELETE FROM valid_mailpromo WHERE mail_id='{$temp[1]}'") ;
 	
