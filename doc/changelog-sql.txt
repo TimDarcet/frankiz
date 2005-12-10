@@ -1,0 +1,4 @@
+* Mise à jour des tables frankiz2.annonces et a_valider.valid_annonces
+* ajout d'un champ de commentaire à l'attentiondes webmestres
+ALTER TABLE frankiz2.annonces ADD commentaire TEXT NOT NULL ;
+ALTER TABLE a_valider.valid_annonces ADD commentaire TEXT NOT NULL ;
