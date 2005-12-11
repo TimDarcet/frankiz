@@ -87,7 +87,7 @@ if (isset($_POST['valid'])) {
 	else 
 		$temp_ext = '0' ;
 
-	$DB_valid->query("INSERT INTO valid_annonces SET perime=FROM_UNIXTIME({$_POST['date']}), eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',contenu='".$_POST['text']."', exterieur=$temp_ext");
+	$DB_valid->query("INSERT INTO valid_annonces SET perime=FROM_UNIXTIME({$_POST['date']}), eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',contenu='".$_POST['text']."', exterieur=$temp_ext, commentaire='".$_POST['comment']."'");
 	
 	// on modifie le nom du fichier qui a été téléchargé si celui ci existe
 	// selon la norme de nommage ci-dessus
@@ -188,10 +188,19 @@ if (isset($_POST['valid'])) {
 ?>
 		</choix>
 		
-		<note>Si tu souhaites que ton annonce soit visible de l'extérieur, clique ici.</note>
+		<note>
+			Si tu souhaites que ton annonce soit visible de l'extérieur, clique ici.
+		</note>
 		<choix titre="Extérieur" id="exterieur" type="checkbox" valeur="<? if (isset($_REQUEST['ext'])) echo 'ext' ;?>">
 			<option id="ext" titre=""/>
 		</choix>
+
+		<note>
+			Tu peux laisser un commentaire à l'attention des Webmestres (il n'apparaîtra pas dans l'annonce),
+			en particulier si tu souhaites que l'annonce soit visible de l'extérieur :
+			une justification facilitera la décision des Webmestres.
+		</note>
+		<zonetext id="comment" titre="Commentaire"></zonetext>
 
 		<bouton id='suppr_img' titre="Supprimer l'image"/>
 		<bouton id='test' titre="Tester"/>

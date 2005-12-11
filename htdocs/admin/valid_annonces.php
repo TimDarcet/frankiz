@@ -57,6 +57,44 @@ foreach ($_POST AS $keys => $val){
 	
 	if (($temp[0]=='modif')||($temp[0]=='valid')) {
 		$DB_valid->query("SELECT 0 FROM valid_annonces WHERE annonce_id='{$temp[1]}'");
+		
+		
+		// modification de l'image
+		$erreur_upload = 0;
+		$imgfilename=DATA_DIR_LOCAL."annonces/a_valider_".$temp[1];
+		if ((isset($_FILES['file']))&&($_FILES['file']['size']!=0)) {
+			if($original_size = getimagesize($_FILES['file']['tmp_name'])) {
+				$larg = $original_size[0];
+				$haut = $original_size[1];
+				if (($larg>400)||($haut>300)) {
+					$erreur_upload = 1;
+				} else {
+					if (file_exists($imgfilename)) {
+						unlink($imgfilename);
+					}
+					move_uploaded_file($_FILES['file']['tmp_name'],$imgfilename);
+				}
+			} else {
+				$erreur_upload = 1;
+			}
+		}
+
+		// suppression de l'image si demandée
+		if (isset($_POST['supprimg'])) {
+			if (file_exists($imgfilename)) {
+				unlink($imgfilename);
+			}
+			$erreur_upload=0;
+		}
+
+		// affichage de l'erreur éventuelle (à l'upload de l'image)
+		if ($erreur_upload == 1) {
+			echo "<warning>L'image n'est pas au bon format, ou est trop grande.</warning>\n";
+		}
+
+
+
+		
 		if ($DB_valid->num_rows()!=0) {
 	
 			$DB_valid->query("UPDATE valid_annonces SET perime='{$_POST['date']}', titre='{$_POST['titre']}', contenu='{$_POST['text']}' WHERE annonce_id='{$temp[1]}'");
@@ -72,10 +110,10 @@ foreach ($_POST AS $keys => $val){
 		}
 	}
 	
-	if ($temp[0]=='valid') {
-		$DB_valid->query("SELECT eleve_id FROM valid_annonces WHERE annonce_id='{$temp[1]}'");
+	if ($temp[0]=='valid' and $erreur_upload==0){
+		$DB_valid->query("SELECT eleve_id,commentaire FROM valid_annonces WHERE annonce_id='{$temp[1]}'");
 		if ($DB_valid->num_rows()!=0) {
-			list($eleve_id) = $DB_valid->next_row() ;
+			list($eleve_id,$commentaire) = $DB_valid->next_row() ;
 			
 			//Log l'action de l'admin
 			log_admin($_SESSION['user']->uid,"validé l'annonce '{$_POST['titre']}' ") ;
@@ -98,7 +136,7 @@ foreach ($_POST AS $keys => $val){
 			else 
 				$temp_imp = '' ;
 				
-			$DB_web->query("INSERT INTO annonces  SET stamp=NOW(), perime='{$_POST['date']}', titre='{$_POST['titre']}', contenu='{$_POST['text']}', eleve_id=$eleve_id, exterieur=$temp_ext $temp_imp");
+			$DB_web->query("INSERT INTO annonces  SET stamp=NOW(), perime='{$_POST['date']}', titre='{$_POST['titre']}', contenu='{$_POST['text']}', eleve_id=$eleve_id, commentaire='$commentaire', exterieur=$temp_ext $temp_imp");
 			
 			// On déplace l'image si elle existe dans le répertoire prevu à cette effet
 			$index = mysql_insert_id($DB_web->link) ;
@@ -153,8 +191,8 @@ $DB_valid->query("UNLOCK TABLES");
 
 //===============================
 
-	$DB_valid->query("SELECT v.exterieur, v.annonce_id,v.perime, v.titre, v.contenu, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_annonces as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
-	while(list($ext, $id,$date,$titre,$contenu,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
+	$DB_valid->query("SELECT v.exterieur, v.annonce_id,v.perime, v.titre, v.contenu, v.commentaire, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_annonces as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
+	while(list($ext, $id,$date,$titre,$contenu,$commentaire,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
 ?>
 		<annonce titre="<?php  echo $titre ?>" 
 				categorie=""
@@ -175,17 +213,29 @@ $DB_valid->query("UNLOCK TABLES");
 		<formulaire id="annonce_<? echo $id ?>" titre="L'annonce" action="admin/valid_annonces.php">
 			<? 
 			if ($ext==1) {
-				echo "<warning>L'utilisateur a demandé que son activité soit visible de l'exterieur</warning>" ;
+				echo "<warning>L'utilisateur a demandé que son annonce soit visible de l'exterieur</warning>" ;
 				$ext_temp='ext' ; 
 			} else $ext_temp="" ;
+			
+			if ($commentaire != "") {
+				echo "<commentaire>Commentaire : ".$commentaire."</commentaire>";
+			}
 			?>
 
 			<champ id="titre" titre="Le titre" valeur="<? echo $titre ;?>"/>
 			<zonetext id="text" titre="Le texte"><?=$contenu?></zonetext>
+			
+			<note>L'image doit être un fichier gif, png ou jpeg ne dépassant pas 400x300 pixels et 250Ko.</note>
+			<fichier id="file" titre="Modifier l'image" taille="250000" />
+			<choix titre="Supprimer l'image" id="supprimg" type="checkbox">
+				<option id="supprimg" titre=""/>
+			</choix>
+
 			<note>La signature sera automatiquement générée</note>
+			
 			<champ id="date" titre="Date de péremption" valeur="<? echo $date ;?>"/>
 			
-			<choix titre="Éxtérieur" id="exterieur" type="checkbox" valeur="<? echo $ext_temp." " ; if ((isset($_REQUEST['ext_auth']))&&(isset($_REQUEST['modif_'.$id]))) echo 'ext_auth' ;?>">
+			<choix titre="Extérieur" id="exterieur" type="checkbox" valeur="<? echo $ext_temp." " ; if ((isset($_REQUEST['ext_auth']))&&(isset($_REQUEST['modif_'.$id]))) echo 'ext_auth' ;?>">
 				<option id="ext" titre="Demande de l'utilisateur" modifiable='non'/>
 				<option id="ext_auth" titre="Décision du Webmestre"/>
 			</choix>

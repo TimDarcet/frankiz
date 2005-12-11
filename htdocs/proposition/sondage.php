@@ -34,7 +34,8 @@ list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_ro
 
 $msg="" ;
 
- if(!isset($_REQUEST["avance"])) $_REQUEST["avance"]=1;
+// Choix de l'interface par défaut
+ if(!isset($_REQUEST["avance"])) $_REQUEST["avance"]=0;
  if(isset($_REQUEST["btn_avance"])){
  	if($_REQUEST["btn_avance"]=="Interface simplifiée") $_REQUEST["avance"]=0;
  	if($_REQUEST["btn_avance"]=="Interface avancée") $_REQUEST["avance"]=1;
@@ -48,9 +49,18 @@ if (isset($_REQUEST['contenu_form']))
 else
 	$contenu_form="" ;
 	
-
 $titre_sondage="" ;
-	
+
+if (isset($_REQUEST['restriction']))
+	$restriction=$_REQUEST['restriction'];
+else
+	$restriction = "";
+
+if (isset($_REQUEST['perimdate']))
+	$perimdate = $_REQUEST['perimdate'];
+else
+	$perimdate = mktime(0, 0, 0, date("m") , date("d") + 1, date("Y"));
+
 $erreur = 0 ;
 	
 // Rajout un champ
@@ -94,12 +104,15 @@ if (isset($_POST['ok_check'])) {
 if (isset($_POST['titre_sondage']))
 	$titre_sondage=$_POST['titre_sondage'] ;
 
+if (isset($_POST['ok_infosgen'])) {
+	if(($_REQUEST['restriction']!='aucune')&&($_REQUEST[$_REQUEST['restriction']])!='')
+		$restriction = $_REQUEST['restriction']."_".$_REQUEST[$_REQUEST['restriction']];
+}
+
 if (isset($_POST['valid'])) {
 	if ($titre_sondage!="") {
-		$restriction = '';
-		if(($_REQUEST['restriction']!='aucune')&&($_REQUEST[$_REQUEST['restriction']])!='')
-			$restriction = ",restriction='{$_REQUEST['restriction']}_{$_REQUEST[$_REQUEST['restriction']]}'";
-		$DB_valid->query("INSERT INTO valid_sondages SET eleve_id =".$_SESSION['user']->uid.", questions='$contenu_form', titre='$titre_sondage', perime=FROM_UNIXTIME({$_POST['date']}) $restriction") ;
+		if ($restriction != "") $restriction = ", restriction='".$restriction."'";
+		$DB_valid->query("INSERT INTO valid_sondages SET eleve_id =".$_SESSION['user']->uid.", questions='$contenu_form', titre='$titre_sondage', perime=FROM_UNIXTIME($perimdate) $restriction") ;
 		
 		$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
 	
@@ -164,13 +177,25 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 <formulaire id="form" titre="Aperçu de ton sondage"  action="proposition/sondage.php">	
 	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
 	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
+	<hidden id="perimdate" valeur="<?=$perimdate?>"/>
+	<hidden id="restriction" valeur="<?=$restriction?>"/>
 	<h2><?=$titre_sondage?></h2>
 		
 <?
 	decode_sondage($contenu_form) ;
 ?>
 	
-	<choix titre="Sondage jusqu'à " id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
+	<bouton titre="Valider le sondage" id="valid" onClick="return window.confirm('Voulez vous vraiment valider votre sondage ?')" />
+	<bouton titre="Interface <?= ($_REQUEST["avance"]==1)?"simplifiée":"avancée";?>" id="btn_avance"/>
+</formulaire>
+
+<warning>Bien mettre à jour chaque portion ci-dessous avant de valider le sondage (les informations non mises à jour ne sont pas enregistrées)</warning>
+
+<formulaire id="infos_generales" titre="Informations générales"  action="proposition/sondage.php">	
+	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
+	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
+	<hidden id="avance" valeur="<?=$_REQUEST["avance"]?>"/>  
+	<choix titre="Sondage jusqu'à " id="perimdate" type="combo" valeur="<?=$perimdate?>">
 <?	for ($i=1 ; $i<=MAX_PEREMPTION ; $i++) {
 		$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
 		$date_value = date("d/m/y" , $date_id);
@@ -181,13 +206,17 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 ?>
 	</choix>
 	<note>Si tu souhaite que ce sondage soit réservé à certaines personnes, définis le ici</note>
-	<choix titre="Restreindre" id="restriction" type="radio" valeur="<? echo (isset($_REQUEST['restriction'])) ? $_REQUEST['restriction']:"aucune" ;?>">
+<?
+if ($restriction != "") $temp = explode("_",$restriction);
+else $temp = array("aucune","");
+?>
+	<choix titre="Restreindre" id="restriction" type="radio" valeur="<?=$temp[0]?>">
 		<option id="aucune" titre="Aucune"/>
 		<option id="promo" titre="A une promo"/>
 		<option id="section" titre="A une section"/>
 		<option id="binet" titre="A un binet"/>
 	</choix>
-	<choix titre="Promo" id="promo" type="combo" valeur="">
+	<choix titre="Promo" id="promo" type="combo" valeur="<? if ($temp[0]=="promo") echo $temp[1];?>">
 		<option titre="Toutes" id="" />
 <?php
 		$DB_trombino->query("SELECT DISTINCT promo FROM eleves ORDER BY promo DESC");
@@ -195,7 +224,7 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 			echo "\t\t\t<option titre=\"$promo\" id=\"$promo\"/>\n";
 ?>
 	</choix>
-	<choix titre="Section" id="section" type="combo" valeur="">
+	<choix titre="Section" id="section" type="combo" valeur="<? if ($temp[0]=="section") echo $temp[1];?>">
 		<option titre="Toutes" id=""/>
 <?php
 		$DB_trombino->query("SELECT section_id,nom FROM sections ORDER BY nom ASC");
@@ -203,7 +232,7 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 			echo "\t\t\t<option titre=\"$section_nom\" id=\"$section_id\"/>\n";
 ?>
 	</choix>
-	<choix titre="Binet" id="binet" type="combo" valeur="">
+	<choix titre="Binet" id="binet" type="combo" valeur="<? if ($temp[0]=="binet") echo $temp[1];?>">
 		<option titre="Tous" id=""/>
 <?php
 		$DB_trombino->query("SELECT binet_id,nom FROM binets ORDER BY nom ASC");
@@ -212,19 +241,24 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 ?>
 	</choix>
 	<br/>
-	<bouton titre="Valider le sondage" id="valid" onClick="return window.confirm('Voulez vous vraiment valider votre sondage ?')" />
-	<bouton titre="Interface <?= ($_REQUEST["avance"]==1)?"simplifiée":"avancée";?>" id="btn_avance"/>
+	<bouton titre="Mettre à jour les informations générales" id="ok_infosgen" />
 </formulaire>
 
 <formulaire id="ajout_titre" titre="OBLIGATOIRE: le titre du sondage" action="proposition/sondage.php">
-	<hidden id="avance" valeur="<?=$_REQUEST["avance"]?>"/>  
 	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
+	<hidden id="perimdate" valeur="<?=$perimdate?>"/>
+	<hidden id="restriction" valeur="<?=$restriction?>"/>
+	<hidden id="avance" valeur="<?=$_REQUEST["avance"]?>"/>  
 	<champ id="titre_sondage" titre="Titre" valeur="<?=$titre_sondage?>"/>
 	<bouton titre="Mettre à jour le titre" id="ok_titre" />
 </formulaire>
 	
 <? if(isset($_REQUEST["avance"])&&$_REQUEST["avance"]==1){ ?>
 	<formulaire id="edit" titre="Edite ton sondage" action="proposition/sondage.php">
+		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
+		<hidden id="perimdate" valeur="<?=$perimdate?>"/>
+		<hidden id="restriction" valeur="<?=$restriction?>"/>
+		<hidden id="avance" valeur="1"/>
 		<note>
 			La syntaxe est la suivante:<br/>
 			Pour une explication: ###expli///Mon texte<br/>
@@ -235,35 +269,42 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 			Pour une checkbox: ###check///ma question///option1///option2///option3<br/>
 		</note>
 		<zonetext id="contenu_form" titre="Zone d'édition avancée" type="grand"><?=$contenu_form?></zonetext>
-		<hidden id="titre_sondage" titre="Titre" valeur="<?=$titre_sondage?>"/>
 		<bouton titre="Mettre à jour le sondage" id="ok_sondage" />
-		<hidden id="avance" valeur="1"/>
 	</formulaire>
 <? }else{ ?>
 	<formulaire id="ajout_simple" titre="Rajoute une explication" action="proposition/sondage.php">
-		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
 		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-		<zonetext id="explication" titre="Explication"></zonetext>
+		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
+		<hidden id="perimdate" valeur="<?=$perimdate?>"/>
+		<hidden id="restriction" valeur="<?=$restriction?>"/>
 		<hidden id="avance" valeur="0"/>
+		<zonetext id="explication" titre="Explication"></zonetext>
 		<bouton titre="Ajouter" id="ok_expli" />
 	</formulaire>
 	<formulaire id="ajout_champ" titre="Rajoute une question de type 'champ'" action="proposition/sondage.php">
-		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
 		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-		<champ id="question" titre="Question" valeur=""/>
+		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
+		<hidden id="perimdate" valeur="<?=$perimdate?>"/>
+		<hidden id="restriction" valeur="<?=$restriction?>"/>
 		<hidden id="avance" valeur="0"/>
+		<champ id="question" titre="Question" valeur=""/>
 		<bouton titre="Ajouter" id="ok_champ" />
 	</formulaire>
 	<formulaire id="ajout_champ" titre="Rajoute une question de type 'textarea'" action="proposition/sondage.php">	
-		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
 		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-		<champ id="question" titre="Question" valeur=""/>
+		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
+		<hidden id="perimdate" valeur="<?=$perimdate?>"/>
+		<hidden id="restriction" valeur="<?=$restriction?>"/>
 		<hidden id="avance" valeur="0"/>
+		<champ id="question" titre="Question" valeur=""/>
 		<bouton titre="Ajouter" id="ok_text" />
 	</formulaire>
 	<formulaire id="ajout_champ" titre="Rajoute une question de type 'radio'" action="proposition/sondage.php">	
-		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
 		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
+		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
+		<hidden id="perimdate" valeur="<?=$perimdate?>"/>
+		<hidden id="restriction" valeur="<?=$restriction?>"/>
+		<hidden id="avance" valeur="0"/>
 		<champ id="question" titre="Question" valeur=""/>
 		<textsimple titre="Maintenant rajouter les réponses possibles"/>
 		<champ id="reponse1" titre="Reponse 1" valeur=""/>
@@ -272,12 +313,14 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 		<champ id="reponse4" titre="Reponse 4" valeur=""/>
 		<champ id="reponse5" titre="Reponse 5" valeur=""/>
 		<champ id="reponse6" titre="Reponse 6" valeur=""/>
-		<hidden id="avance" valeur="0"/>
 		<bouton titre="Ajouter" id="ok_radio" />
 	</formulaire>
 	<formulaire id="ajout_champ" titre="Rajoute une question de type 'checkbox'" action="proposition/sondage.php">	
-		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
 		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
+		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
+		<hidden id="perimdate" valeur="<?=$perimdate?>"/>
+		<hidden id="restriction" valeur="<?=$restriction?>"/>
+		<hidden id="avance" valeur="0"/>
 		<champ id="question" titre="Question" valeur=""/>
 		<textsimple titre="Maintenant rajouter les réponses possibles"/>
 		<champ id="reponse1" titre="Reponse 1" valeur=""/>
@@ -286,12 +329,14 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 		<champ id="reponse4" titre="Reponse 4" valeur=""/>
 		<champ id="reponse5" titre="Reponse 5" valeur=""/>
 		<champ id="reponse6" titre="Reponse 6" valeur=""/>
-		<hidden id="avance" valeur="0"/>
 		<bouton titre="Ajouter" id="ok_check" />
 	</formulaire>
 	<formulaire id="ajout_champ" titre="Rajoute une question de type 'liste déroulante'" action="proposition/sondage.php">	
-		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
 		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
+		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
+		<hidden id="perimdate" valeur="<?=$perimdate?>"/>
+		<hidden id="restriction" valeur="<?=$restriction?>"/>
+		<hidden id="avance" valeur="0"/>
 		<champ id="question" titre="Question" valeur=""/>
 		<textsimple titre="Maintenant rajouter les réponses possibles"/>
 		<champ id="reponse1" titre="Reponse 1" valeur=""/>
@@ -300,7 +345,6 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 		<champ id="reponse4" titre="Reponse 4" valeur=""/>
 		<champ id="reponse5" titre="Reponse 5" valeur=""/>
 		<champ id="reponse6" titre="Reponse 6" valeur=""/>
-		<hidden id="avance" valeur="0"/>
 		<bouton titre="Ajouter" id="ok_combo" />
 	</formulaire>
 <?
