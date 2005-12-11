@@ -213,7 +213,7 @@ $DB_valid->query("UNLOCK TABLES");
 		<formulaire id="annonce_<? echo $id ?>" titre="L'annonce" action="admin/valid_annonces.php">
 			<? 
 			if ($ext==1) {
-				echo "<warning>L'utilisateur a demandé que son activité soit visible de l'exterieur</warning>" ;
+				echo "<warning>L'utilisateur a demandé que son annonce soit visible de l'exterieur</warning>" ;
 				$ext_temp='ext' ; 
 			} else $ext_temp="" ;
 			
