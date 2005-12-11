@@ -78,6 +78,19 @@ foreach ($_POST AS $keys => $val){
 			echo "<warning>Requête deja traitée par un autre administrateur</warning>";
 		}
 	}
+
+	// On modifie le sondage
+	//==========================
+	if ($temp[0] == "modif" or $temp[0] == "valid") {
+		$DB_valid->query("SELECT 0 FROM valid_sondages WHERE sondage_id='{$temp[1]}'");
+		if ($DB_valid->num_rows()!=0) {
+			$DB_valid->query("UPDATE valid_sondages SET questions='{$_POST['contenu_form']}', titre='{$_POST['titre_sondage']}', perime=FROM_UNIXTIME({$_POST['date']}) WHERE sondage_id={$temp[1]}");
+			echo "<commentaire>Modification effectuée</commentaire>" ;
+		 } else {
+			echo "<warning>Requête deja traitée par un autre administrateur</warning>";
+		}
+	}
+
 	// On accepte le sondage
 	//==========================
 	if ($temp[0] == "valid") {
@@ -110,15 +123,6 @@ foreach ($_POST AS $keys => $val){
 			echo "<warning>Requête deja traitée par un autre administrateur</warning>";
 		}
 	}
-	if ($temp[0] == "modif") {
-		$DB_valid->query("SELECT 0 FROM valid_sondages WHERE sondage_id='{$temp[1]}'");
-		if ($DB_valid->num_rows()!=0) {
-			$DB_valid->query("UPDATE valid_sondages SET questions='{$_POST['contenu_form']}', titre='{$_POST['titre_sondage']}', perime=FROM_UNIXTIME({$_POST['date']}) WHERE sondage_id={$temp[1]}");
-			echo "<commentaire>Modification effectuée</commentaire>" ;
-		 } else {
-			echo "<warning>Requête deja traitée par un autre administrateur</warning>";
-		}
-	}
 
 }
 
@@ -141,7 +145,7 @@ $DB_trombino->query("UNLOCK TABLES");
 			<note>Sondage proposé par <?=$prenom?> <?=$nom?> (<?=$promo?>)</note>
 			<zonetext titre="La raison du choix du modérateur (Surtout si refus)" id="explication_<? echo $id ;?>"></zonetext>
 			<textsimple id='restriction' valeur='Restriction demandée: <?=$restriction?>'/><br/>
-			<choix titre="Sondage jusqu'à " id="date" type="combo" valeur="<? echo $date ;?>">
+			<choix titre="Sondage jusqu'à " id="date" type="combo" valeur="<? echo strtotime($date);?>">
 			<?	for ($i=1 ; $i<=MAX_PEREMPTION ; $i++) {
 				$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
 				$date_value = date("d/m/y" , $date_id);
