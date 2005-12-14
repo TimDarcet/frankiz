@@ -79,7 +79,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			"Le BR<br>"  ;
 			couriel($temp[2],"[Virus] Suppression de $temp[3]",$contenu,WINDOWS_ID);
 			//on vérifie qu'il est clean...
-			$DB_admin->query("SELECT id FROM infections WHERE ip='{$temp[5]}' AND NOT(solved='2')");
+			$DB_admin->query("SELECT id FROM infections WHERE ip='{$temp[5]}' AND NOT(solved='2') GROUP BY port, ip");
 			if ($temp[4]==3 && $DB_admin->num_rows()==0){
 				$contenu="L'ordinateur de $nom $prenom ($promo, ksert : $ksert) a été débarassé de ses virus, merci donc de bien vouloir lui remettre le réseau !<br><br>".
 				"Très Cordialement<br>".
@@ -87,7 +87,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 				couriel(ROOT_ID,"[Virus] L'ordinateur de $nom $prenom ($promo) est clean !",$contenu,WINDOWS_ID);
 			}
 			// on le prends en compte....
-			$DB_admin->query("UPDATE infections SET solved='2' WHERE id='{$temp[1]}'");
+			$DB_admin->query("UPDATE infections AS i1, infections AS i2 SET i1.solved='2' WHERE i2.id='{$temp[1]}' AND i1.ip = i2.ip AND i1.port = i2.port");
 		}
 		if($temp[0]=="prev"){
 			$contenu="Attention ! ton ordinateur est actuellement infecté par le virus $temp[3] depuis le ".preg_replace('/^(.{4})-(.{2})-(.{2})$/','$3-$2-$1', $temp[1]).". Dans $temp[4] jours nous serons obligés de te couper le réseau !<br><br>".
@@ -100,7 +100,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			$DB_admin->query("UPDATE infections SET solved='1' WHERE id='{$temp[6]}'");
 		}
 		if($temp[0]=="detail" && $temp[2] == "x") {
-			$DB_admin->query("SELECT i.id, i.ip, i.date, i.solved, v.nom, t.eleve_id FROM infections as i left join liste_virus as v on v.port = i.port left join prises as p on p.ip = i.ip left join trombino.eleves as t on t.piece_id = p.piece_id where t.login = '{$temp[1]}' order by i.ip, i.date");
+			$DB_admin->query("SELECT i.id, i.ip, i.date, i.solved, v.nom, t.eleve_id FROM infections AS i LEFT JOIN liste_virus AS v ON v.port = i.port LEFT JOIN prises AS p ON p.ip = i.ip LEFT JOIN trombino.eleves AS t ON t.piece_id = p.piece_id WHERE i.date > '0000-00-00' AND t.login = '{$temp[1]}' ORDER BY i.ip, i.date");
 		echo "<liste id='liste_login' selectionnable='non' titre='Historique de {$temp[1]}' action='admin/nettoyer_virus.php'>\n";
 ?>
 			<entete id="ip" titre="IP"/>
@@ -124,7 +124,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
         $DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
 	list($promo_temp) = $DB_web->next_row() ;
-	$DB_admin->query("SELECT i.ip,i.date,i.date+10-CURDATE(),i.solved,e.login,e.eleve_id,l.nom,i.id FROM prises as p LEFT JOIN trombino.eleves as e ON e.piece_id=p.piece_id and (e.promo = $promo_temp OR e.promo = ".($promo_temp-1).")  LEFT JOIN liste_virus as l ON l.port=i.port INNER JOIN infections as i ON p.ip=i.ip WHERE i.solved != 2 ORDER BY i.ip, i.solved, l.nom");
+	$DB_admin->query("SELECT i.ip,i.date,i.date+10-CURDATE(),i.solved,e.login,e.eleve_id,l.nom,i.id FROM prises as p LEFT JOIN trombino.eleves as e ON e.piece_id=p.piece_id and (e.promo = $promo_temp OR e.promo = ".($promo_temp-1).")  LEFT JOIN liste_virus AS l ON l.port=i.port INNER JOIN infections AS i ON p.ip=i.ip WHERE i.solved != 2 GROUP BY i.port, i.ip ORDER BY i.ip, i.solved, l.nom");
 ?>
 	<liste id="liste_virus" selectionnable="non" titre="Infections courantes"  action="admin/nettoyer_virus.php">
 		<entete id="ip" titre="IP"/>
