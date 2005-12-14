@@ -119,27 +119,32 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 				echo "\t\t</element>\n";
 			}
 			echo "</liste>\n";
+//			echo "<lien titre=\"Voir la fiche TOL de {$temp[1]}\" url=\"trombino.php?chercher&login={$temp[1]}\" /><br/>\n";
+			echo "<lien titre=\"Voir la fiche TOL de {$temp[1]}\" url=\"trombino.php?chercher&amp;loginpoly={$temp[1]}\" />";
 		}
 	}
+	
 
         $DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
 	list($promo_temp) = $DB_web->next_row() ;
-	$DB_admin->query("SELECT i.ip,i.date,i.date+10-CURDATE(),i.solved,e.login,e.eleve_id,l.nom,i.id FROM prises as p LEFT JOIN trombino.eleves as e ON e.piece_id=p.piece_id and (e.promo = $promo_temp OR e.promo = ".($promo_temp-1).")  LEFT JOIN liste_virus AS l ON l.port=i.port INNER JOIN infections AS i ON p.ip=i.ip WHERE i.solved != 2 GROUP BY i.port, i.ip ORDER BY i.ip, i.solved, l.nom");
+	$DB_admin->query("SELECT i.ip,i.date,i.date+10-CURDATE(),i.solved,e.login,pi.tel,e.eleve_id,l.nom,i.id FROM prises as p LEFT JOIN trombino.eleves as e ON e.piece_id=p.piece_id and (e.promo = $promo_temp OR e.promo = ".($promo_temp-1).") LEFT JOIN trombino.pieces as pi ON pi.piece_id = p.piece_id  LEFT JOIN liste_virus AS l ON l.port=i.port INNER JOIN infections AS i ON p.ip=i.ip WHERE i.solved != 2 GROUP BY i.port, i.ip ORDER BY i.ip, i.solved, l.nom");
 ?>
 	<liste id="liste_virus" selectionnable="non" titre="Infections courantes"  action="admin/nettoyer_virus.php">
 		<entete id="ip" titre="IP"/>
 		<entete id="login" titre="login"/>
+		<entete id="tel" titre="N°Tel"/>
 		<entete id="date" titre="Depuis le"/>
 		<entete id="statut" titre="Statut"/>
 		<entete id="nomv" titre="Nom du virus"/>
 		<entete id="nettoyer" titre=""/>
 		<entete id="prevenir" titre=""/>
 <?
-	while(list($ip,$date,$rebour,$solved,$login,$eleve_id,$nomv,$id)= $DB_admin->next_row()){
+	while(list($ip,$date,$rebour,$solved,$login,$tel,$eleve_id,$nomv,$id)= $DB_admin->next_row()){
 		echo "\t\t<element id=\"$id\">\n";
 		$ip1 = "<bouton titre='Historique' id='detail_$login' type='detail'/>$ip";
 		echo "\t\t\t<colonne id=\"ip\">$ip1</colonne>\n";
 		echo "\t\t\t<colonne id=\"login\">$login</colonne>\n";
+		echo "\t\t\t<colonne id=\"tel\">$tel</colonne>\n";
 		echo "\t\t\t<colonne id=\"date\">".preg_replace('/^(.{4})-(.{2})-(.{2})$/','$3-$2-$1', $date)."</colonne>\n";
 		echo "\t\t\t<colonne id=\"statut\">".(getstate($solved))."</colonne>\n";
 		echo "\t\t\t<colonne id=\"nomv\">$nomv</colonne>\n";
