@@ -76,19 +76,50 @@ if (isset($_POST['mod_generale'])) {
 }
 
 // Modification de la partie "binets"
-/*
-if (isset($_POST['mod_binet'])) {
-	//$commentaire = $_POST['commentaire'];
 
-	foreach($_POST as $key=>$val) {
-		if ($key == "mod_binet") break ;
-		$key = explode("_",$key) ;
-		$key = $key[1] ;
-		$DB_trombino->query("UPDATE membres SET remarque='$val' WHERE eleve_id=$id AND binet_id=$key");
- 	}
-	echo "Modification de la partie binets faite avec succès" ;
+// Modification d'un commentaire sur un binet
+if (isset($_POST["mod_binet"])) {
+	foreach($_POST["commentaire"] as $key=>$val)
+		$DB_trombino->query("UPDATE membres SET remarque='$val' WHERE eleve_id='$id' AND binet_id='$key'");
+	$DB_trombino->query("UPDATE eleves SET commentaire='{$_POST['perso']}' WHERE eleve_id='$id'");
+	$commentaire = $_POST['perso'];
+	echo "<commentaire>Modification des commentaires effectuée avec succès</commentaire>";
 }
-*/
+
+// Suppression d'un binet
+if (isset($_POST["suppr_binet"])) {
+	$count = 0;
+	if (isset($_POST['elements'])) {
+		$ids = "";
+		foreach($_POST['elements'] as $key => $value) {
+			if ($value == "on") $ids .= (empty($ids) ? "" : ",") . "'$key'";
+			$count ++;
+		}
+	}
+	if ($count >= 1) {
+		$DB_trombino->query("DELETE FROM membres WHERE binet_id IN ($ids) AND eleve_id='$id'");
+		echo "<commentaire>Suppression de $count binet(s).</commentaire>";
+	} else {
+		echo "<warning>Aucun binet n'est sélectionné. Aucun binet n'a donc été supprimé de la liste de ses binets.</warning>";
+	}
+}
+
+// Ajout d'un binet
+if (isset($_POST['add_binet'])) {
+	if ($_POST['liste_binet'] != 'default') {
+		$DB_trombino->query("INSERT INTO membres SET eleve_id='$id', binet_id='{$_POST['liste_binet']}'");
+		echo "<commentaire>Binet correctement ajouté</commentaire>";
+	} else {
+		echo "<warning>Aucun binet sélectionné. Aucun binet n'a donc été ajouté à la liste de ses binets.</warning>";
+	}
+}
+
+
+
+
+
+
+
 // Modification de la partie "compte FrankizII"
 
 if (verifie_permission('admin') && isset($_POST['mod_compte_fkz'])) {
@@ -113,8 +144,8 @@ if (verifie_permission('admin') && isset($_POST['mod_compte_fkz'])) {
 ?>
 	<formulaire id="user_general" titre="Général" action="admin/user.php?id=<? echo $id?>">
 <?
-		$DB_trombino->query("SELECT nom,prenom,surnom,date_nais,sexe,piece_id,section_id,cie,promo,login,mail FROM eleves WHERE eleve_id=$id ORDER BY nom ASC");
-		list($nom,$prenom,$surnom,$date_nais,$sexe,$piece_id,$section,$cie,$promo,$login,$mail) = $DB_trombino->next_row() ;
+		$DB_trombino->query("SELECT nom,prenom,surnom,date_nais,sexe,piece_id,section_id,cie,promo,login,mail,commentaire FROM eleves WHERE eleve_id=$id ORDER BY nom ASC");
+		list($nom,$prenom,$surnom,$date_nais,$sexe,$piece_id,$section,$cie,$promo,$login,$mail,$commentaire) = $DB_trombino->next_row() ;
 ?>
 		<champ id="nom" titre="Nom" valeur="<? echo $nom?>"/>
 		<champ id='prenom' titre='Prénom' valeur='<? echo $prenom?>'/>
@@ -130,24 +161,54 @@ if (verifie_permission('admin') && isset($_POST['mod_compte_fkz'])) {
 		
 		<bouton id='mod_generale' titre='Changer'/>
 	</formulaire>
-	
+
 <?
 // Modification de ses binets et des commentaires sur les binets  
-/*
 ?>
-	<formulaire id="user_binets" titre="Ses binets" action="admin/user.php?id=<? echo $id?>">
+	<liste id="user_binets" selectionnable="oui" action="admin/user.php?id=<? echo $id; ?>" titre="Ses Binets">
+		<entete id="binet" titre="Binet" />
+		<entete id="commentaire" titre="Commentaire" />
 <?
-		$DB_trombino->query("SELECT membres.remarque,membres.binet_id,binets.nom FROM membres LEFT JOIN binets ON membres.binet_id=binets.binet_id WHERE eleve_id=$id ORDER BY membres.binet_id ASC");
-		while (list($remarque,$binet_id,$nom) = $DB_trombino->next_row()) { ?>
-			<champ id="binet_<? echo $binet_id?>" titre="<? echo $nom?>" valeur="<? echo $remarque?>"/>
-<?
-		 }
+$DB_trombino->query("SELECT membres.remarque,membres.binet_id,binets.nom FROM membres LEFT JOIN binets USING(binet_id) WHERE eleve_id=$id ORDER BY binets.nom ASC");
+while (list($remarque,$binet_id,$nom) = $DB_trombino->next_row()) {
 ?>
-		<bouton id='mod_binet' titre='Changer'/>
-	</formulaire>
-	
+		<element id="<?=$binet_id?>">
+			<colonne id="binet"><?=$nom?> :</colonne>
+			<colonne id="commentaire"><champ id="commentaire[<?=$binet_id?>]" titre="" valeur="<?=$remarque?>"/></colonne>
+		</element>
 <?
-*/
+}
+?>
+		<element id="-1" selectionnable="non">
+			<colonne id="binet">Rajouter un binet</colonne>
+			<colonne id="commentaire">
+				<choix id="liste_binet" type="combo" valeur="Ajout">
+					<option titre="" id="default"/>
+<?
+$DB_trombino->query("SELECT nom,binet_id FROM binets ORDER BY nom ASC");
+while (list($nom_binet,$binet_id) = $DB_trombino->next_row()) {
+?>
+					<option titre="<?=$nom_binet?>" id="<?=$binet_id?>"/>
+<?
+}
+?>
+				</choix>
+				<bouton id="add_binet" titre="Ajouter" />
+			</colonne>
+		</element>
+
+		<element id="-2" selectionnable="non">
+			<colonne id="binet">Autres commentaires</colonne>
+			<colonne id="commentaire">
+				<zonetext id="perso" titre="Commentaire perso" type="moyen"><?=$commentaire?></zonetext>
+			</colonne>
+		</element>
+		<bouton id="suppr_binet" titre="Supprimer" onClick="return window.confirm('Es-tu sûr de vouloir supprimer ce binet ?')"/>
+		<bouton id="mod_binet" titre="Enregistrer les commentaires"/>
+	</liste>
+
+
+<?
 
 // SU et modifs du compte frankiz => seul l'admin peut le faire.
 if(verifie_permission('admin')){

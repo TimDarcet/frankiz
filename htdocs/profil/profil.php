@@ -170,7 +170,7 @@ if (isset($_POST['suppr_binet'])) {
 	if (isset($_POST['elements'])) {
 		$ids = "" ;
 		foreach($_POST['elements'] as $id => $on) {
-			if($on='on') $ids .= (empty($ids) ? "" : ",") . "'$id'";
+			if($on=='on') $ids .= (empty($ids) ? "" : ",") . "'$id'";
 			$count ++ ;
 		}
 	}
@@ -178,7 +178,7 @@ if (isset($_POST['suppr_binet'])) {
 		$DB_trombino->query("DELETE FROM membres WHERE binet_id IN ($ids) AND  eleve_id='{$_SESSION['user']->uid}'");
 		$message .= "<commentaire>Suppression de $count binet(s).</commentaire>";
 	} else {
-		$message .= "<warning>Aucun binet n'est séléctionné. Aucun binet n'a donc été supprimé de la liste de tes binets.</warning>";
+		$message .= "<warning>Aucun binet n'est sélectionné. Aucun binet n'a donc été supprimé de la liste de tes binets.</warning>";
 	}
 }
 
@@ -188,7 +188,7 @@ if (isset($_POST['add_binet'])) {
 		$DB_trombino->query("INSERT INTO membres SET eleve_id='{$_SESSION['user']->uid}',binet_id='{$_POST['liste_binet']}'");
 		$message .= "<commentaire>Binet correctement ajouté</commentaire>";
 	} else {
-		$message .= "<warning>Aucun binet séléctionné. Aucun binet n'a donc été ajouté à la liste de tes binets.</warning>";
+		$message .= "<warning>Aucun binet sélectionné. Aucun binet n'a donc été ajouté à la liste de tes binets.</warning>";
 	}
 }
 
