@@ -150,5 +150,6 @@ $DB_admin = new DB("frankiz","admin","web","**********");
 $DB_trombino = new DB("frankiz","trombino","web","**********");
 $DB_valid = new DB("frankiz","a_valider","web","**********");
 $DB_msdnaa = new DB("frankiz","msdnaa","web","**********");
+$DB_wifi = new DB("lunedenn", "Radius", "web", "**********");
 
 ?>

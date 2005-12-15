@@ -94,7 +94,7 @@ class User {
 	// Authentification par mot de passe, cookie, mail. Si l'authentification échoue, on revient à
 	// un utilisateur anonyme. Renvoie vrai si l'authentification à réussie.
 	function verifie_mdp($_mdp) {
-		global $_NOUVEAU_LOGIN,$DB_web;
+		global $_NOUVEAU_LOGIN,$DB_web,$DB_wifi;
 		if($this->uid != 0 && crypt($_mdp,$this->passwd) == $this->passwd){ // Nouvelle méthode d'authentification
 			$this->methode = AUTH_MDP;
 			$_NOUVEAU_LOGIN = true;
