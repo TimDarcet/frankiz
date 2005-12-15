@@ -94,7 +94,7 @@ class User {
 	// Authentification par mot de passe, cookie, mail. Si l'authentification échoue, on revient à
 	// un utilisateur anonyme. Renvoie vrai si l'authentification à réussie.
 	function verifie_mdp($_mdp) {
-		global $_NOUVEAU_LOGIN,$DB_web;
+		global $_NOUVEAU_LOGIN,$DB_web,$DB_wifi;
 		if($this->uid != 0 && crypt($_mdp,$this->passwd) == $this->passwd){ // Nouvelle méthode d'authentification
 			$this->methode = AUTH_MDP;
 			$_NOUVEAU_LOGIN = true;
@@ -102,7 +102,9 @@ class User {
 		}else if($this->uid != 0 && md5($_mdp) == $this->passwd) { // Ancienne méthode d'authentification
 			$this->methode = AUTH_MDP;
 			$_NOUVEAU_LOGIN = true;
-			$DB_web->query("UPDATE compte_frankiz SET passwd='".hash_shadow($_mdp)."' WHERE eleve_id='{$this->uid}'"); // Mise à jour vers le nouveau format
+			$_hash_shadow = hash_shadow($_mdp);
+			$DB_web->query("UPDATE compte_frankiz SET passwd='$_hash_shadow' WHERE eleve_id='{$this->uid}'"); // Mise à jour vers le nouveau format
+			$DB_wifi->query("UPDATE alias SET Password='$_hash_shadow' WHERE Alias='{$this->login}' AND Method='TTLS';"); // Synchronisation avec le wifi
 			return true;
 		} else {
 			$this->devient_anonyme();
