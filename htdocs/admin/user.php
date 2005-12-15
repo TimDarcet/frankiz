@@ -127,7 +127,7 @@ if (verifie_permission('admin') && isset($_POST['mod_compte_fkz'])) {
 		$pass2 = hash_shadow($_POST['pass']) ;
 		$DB_web->query("UPDATE compte_frankiz SET passwd='$pass2' WHERE eleve_id=$id");
 
-		$DB_trombino("SELECT login FROM eleves WHERE eleve_id = $id LIMIT 0,1");
+		$DB_trombino->query("SELECT login FROM eleves WHERE eleve_id = $id LIMIT 0,1");
 		list($login) = $DB_trombino->next_row();
 		if (isset($login))
 		{
