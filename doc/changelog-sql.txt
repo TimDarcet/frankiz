@@ -2,3 +2,27 @@
 * ajout d'un champ de commentaire à l'attentiondes webmestres
 ALTER TABLE frankiz2.annonces ADD commentaire TEXT NOT NULL ;
 ALTER TABLE a_valider.valid_annonces ADD commentaire TEXT NOT NULL ;
+
+* Mise a jour des tables admin.liste_virus et admin.infections
+* Le champ 'port' de infections devient 'virus_id'
+* Le champ 'port' de liste_virus peut maintenat prendre une valeur nulle
+desribe infections;
++----------+-------------+------+-----+------------+----------------+
+| Field    | Type        | Null | Key | Default    | Extra          |
++----------+-------------+------+-----+------------+----------------+
+| id       | int(11)     |      | PRI | NULL       | auto_increment |
+| ip       | varchar(16) |      | MUL |            |                |
+| date     | date        |      |     | 0000-00-00 |                |
+| virus_id | int(11)     |      | MUL | 0          |                |
+| solved   | int(11)     |      |     | 0          |                |
++----------+-------------+------+-----+------------+----------------+
+
+describe liste_virus;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| virus_id | int(11)     |      | PRI | NULL    | auto_increment |
+| port     | int(11)     |      | MUL | 0       |                |
+| nom      | varchar(16) |      |     |         |                |
++----------+-------------+------+-----+---------+----------------+
+
