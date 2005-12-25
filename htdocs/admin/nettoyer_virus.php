@@ -215,7 +215,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <?
 // Ajouter un nouveau virus dans la base
 ?>
-	<liste id="ajouter" selectionable="non" titre="" action="admin/nettoyer_virus.php">
+	<liste id="ajouter" selectionable="non" titre="Répertorier un nouveau virus" action="admin/nettoyer_virus.php">
 		<entete id="nomv" titre="Nom du virus"/>
 		<entete id="port" titre="Port caractéristique"/>
 		<entete id="ajouter" titre=""/>
