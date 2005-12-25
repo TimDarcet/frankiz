@@ -26,7 +26,7 @@
 
 if(est_authentifie(AUTH_INTERNE)) {
 	/*On cherche dans la base les vilains qui ont un status solved différent de 2, donc qui a priori sont infestés. La personne est identifiée par son ip, de l'ip on remonte à la chambre puis au mec.*/
-	$DB_admin->query("SELECT e.eleve_id,p.piece_id,i.ip,i.date,i.date+10-CURDATE(),i.solved,i.id,l.nom FROM prises as p LEFT JOIN infections as i ON p.ip=i.ip LEFT JOIN liste_virus as l ON l.port=i.port LEFT JOIN trombino.eleves as e ON e.piece_id=p.piece_id WHERE NOT( i.solved='2') AND i.ip='{$_SERVER['REMOTE_ADDR']}'");
+	$DB_admin->query("SELECT e.eleve_id,p.piece_id,i.ip,i.date,i.date+10-CURDATE(),i.solved,i.id,l.nom FROM prises as p LEFT JOIN infections as i ON p.ip=i.ip LEFT JOIN liste_virus as l ON l.virus_id=i.virus_id LEFT JOIN trombino.eleves as e ON e.piece_id=p.piece_id WHERE NOT( i.solved='2') AND i.ip='{$_SERVER['REMOTE_ADDR']}'");
 	if($DB_admin->num_rows()!=0){
 		echo "<module id=\"virus\" titre=\"Important !\">\n";
 		echo "<warning>";
