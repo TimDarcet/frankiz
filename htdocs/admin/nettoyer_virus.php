@@ -64,6 +64,24 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <note>Cette page permet également de rajouter une infection manuellemet ou encore de définir un nouveau virus</note>
 <note>Les virus listés ici sont ceux les plus susceptibles de pourrir le cache de la matrice.</note>
 <?
+	//  Notification d'une nouvelle infection
+	if (isset($_POST['notifier'])) {
+		$ip = $_POST['ip'];
+		$virus_id = $_POST['v_id'];
+		$DB_admin->query("INSERT into `infections` (`id`, `ip`, `date`, `virus_id`, `solved`) VALUES ('','$ip',CURDATE(),'$virus_id','');");
+	}
+?>
+
+<?
+	// Ajout d'un virus dans la table liste_virus
+	if (isset($_POST['ajouter'])) {
+		$port = $_POST['port'];
+		$nomv = $_POST['nomv'];
+		$DB_admin->query("INSERT INTO `liste_virus` (`virus_id`, `port`, `nom`) VALUES ('','$port','$nomv');");
+	}
+?>
+
+<?
 	foreach ($_POST AS $keys => $val){
 		$temp = explode("_",$keys) ;
 		if ($temp[0] == "suppr") {
@@ -101,7 +119,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			$DB_admin->query("UPDATE infections SET solved='1' WHERE id='{$temp[6]}'");
 		}
 		if($temp[0]=="detail" && $temp[2] == "x") {
-			$DB_admin->query("SELECT i.id, i.ip, i.date, i.solved, v.nom, t.eleve_id FROM infections AS i LEFT JOIN liste_virus AS v ON v.port = i.port LEFT JOIN prises AS p ON p.ip = i.ip LEFT JOIN trombino.eleves AS t ON t.piece_id = p.piece_id WHERE i.date > '0000-00-00' AND t.login = '{$temp[1]}' ORDER BY i.ip, i.date");
+			$DB_admin->query("SELECT i.id, i.ip, i.date, i.solved, v.nom, t.eleve_id FROM infections AS i LEFT JOIN liste_virus AS v ON v.virus_id = i.virus_id LEFT JOIN prises AS p ON p.ip = i.ip LEFT JOIN trombino.eleves AS t ON t.piece_id = p.piece_id WHERE i.date > '0000-00-00' AND t.login = '{$temp[1]}' ORDER BY i.ip, i.date");
 		echo "<liste id='liste_login' selectionnable='non' titre='Historique de {$temp[1]}' action='admin/nettoyer_virus.php'>\n";
 ?>
 			<entete id="ip" titre="IP"/>
@@ -166,7 +184,49 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 	</liste>
 
-	
+<?
+// Notifier la presence d'une nouvelle infection
+?>
+	<liste id="notifier" selectionable="non" titre="Notifier la présence d'une nouvelle infection" action="admin/nettoyer_virus.php">
+		<entete id="ip" titre="IP"/>
+		<entete id="virus" titre="Virus"/>
+		<entete id="notifier" titre=""/>
+
+		<element id="notifier">
+			<colonne id="ip">
+				<champ id="ip" titre="" valeur=""/>
+			</colonne>
+			<colonne id="virus">
+				<choix id="v_id"  type="combo" valeur="Ajout">
+                                       <option titre="" id="default"/>
+					<?
+                                        $DB_admin->query("SELECT virus_id,nom FROM liste_virus");
+					while (list($virus_id,$nomv) = $DB_admin->next_row())
+					echo "<option titre=\"$nomv\" id=\"$virus_id\"/>\n";
+					?>
+				</choix>
+			</colonne>
+			<colonne id="notifier">
+				<bouton id="notifier" titre="Notifier"/>
+			</colonne>
+		</element>
+	</liste>
+
+<?
+// Ajouter un nouveau virus dans la base
+?>
+	<liste id="ajouter" selectionable="non" titre="" action="admin/nettoyer_virus.php">
+		<entete id="nomv" titre="Nom du virus"/>
+		<entete id="port" titre="Port caractéristique"/>
+		<entete id="ajouter" titre=""/>
+
+		<element id="ajouter">
+			<colonne id="nomv"><champ id="nomv" titre="" valeur=""/></colonne>
+			<colonne id="port"><champ id="port" titre="" valeur=""/></colonne>
+			<colonne id="ajouter"><bouton id="ajouter" titre="Ajouter"/></colonne>
+		</element>
+	</liste>
+		
 </page>
 
 <?php
