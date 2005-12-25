@@ -31,12 +31,12 @@ CREATE TABLE `infections` (
 	`solved` int(11) not NULL,
 	UNIQUE key `id` (`id`),
 	key `ip` (`ip`),
-	key `virus_id`
+	key `virus_id` (`virus_id`)
 	)
 	type=MyISAM AUTO_INCREMENT=1;
 
 CREATE TABLE `liste_virus` (
-	`virus_id` int(11) not NULL AUT_INCREMENT,
+	`virus_id` int(11) not NULL AUTO_INCREMENT,
 	`port` int(11),
 	`nom` varchar(16) not NULL,
 	UNIQUE key `virus_id` (`virus_id`),
@@ -45,9 +45,9 @@ CREATE TABLE `liste_virus` (
 	type=MyISAM AUTO_INCREMENT=1;
 
 etape 5: importer les anciennes donnees
-LOAD LOCAL DATE INFILE '/tmp/liste_virus' INTO TABLE `liste_virus` FIELDS
-TERMINATED BY ';' OPTIONALLY ENCLOSED BY '"' ESCAPED BY '\\'LINES TERMINATED BY '\n';
-LOAD LOCAL DATE INFILE '/tmp/infections2' INTO TABLE `infections` FIELDS
+LOAD DATA LOCAL INFILE '/tmp/liste_virus' INTO TABLE `liste_virus` FIELDS
+TERMINATED BY ';' OPTIONALLY ENCLOSED BY '"' ESCAPED BY '\\' LINES TERMINATED BY '\n';
+LOAD DATA LOCAL INFILE '/tmp/infections2' INTO TABLE `infections` FIELDS
 TERMINATED BY ';' OPTIONALLY ENCLOSED BY '"' ESCAPE BY '\\' LINES TERMINATED
 BY '\n';
 
