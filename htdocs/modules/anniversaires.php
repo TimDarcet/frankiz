@@ -32,7 +32,7 @@ if(est_authentifie(AUTH_INTERNE)) {
 		list($promo_temp) = $DB_web->next_row() ;
 		$DB_trombino->query("SELECT nom,prenom,surnom,promo,mail,login FROM eleves "
 							   ."WHERE MONTH(date_nais)=MONTH(NOW()) AND DAYOFMONTH(date_nais)=DAYOFMONTH(NOW()) "
-							   ."AND (promo=$promo_temp OR promo=".($promo_temp -1).")");
+							   ."AND (promo=$promo_temp OR promo=".($promo_temp -1).") ORDER BY promo;");
 		while(list($nom,$prenom,$surnom,$promo,$mail,$login) = $DB_trombino->next_row())
 			echo "\t<eleve nom='$nom' prenom='$prenom' surnom='$surnom' promo='$promo' mail='$mail' login='$login'/>\n";
 		
