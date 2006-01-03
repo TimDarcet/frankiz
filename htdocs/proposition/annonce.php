@@ -200,7 +200,7 @@ if (isset($_POST['valid'])) {
 			en particulier si tu souhaites que l'annonce soit visible de l'extérieur :
 			une justification facilitera la décision des Webmestres.
 		</note>
-		<zonetext id="comment" titre="Commentaire"></zonetext>
+		<zonetext id="comment" titre="Commentaire"><? if (isset($_REQUEST['comment'])) echo $_REQUEST['comment']; ?></zonetext>
 
 		<bouton id='suppr_img' titre="Supprimer l'image"/>
 		<bouton id='test' titre="Tester"/>
