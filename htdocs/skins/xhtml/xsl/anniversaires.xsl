@@ -30,17 +30,21 @@
 		<div class="fkz_anniversaire_titre"><span id="anniversaires_logo"><xsl:text> </xsl:text></span><span id="anniversaires">Joyeux anniversaire: </span></div>
 		<div class="fkz_anniversaire">
 			<xsl:for-each select="eleve">
-				<xsl:if test="preceding-sibling::eleve[1]/@promo != @promo or position() = 1">
-					<xsl:if test="position()!=1"><br/></xsl:if>
-					<a>
-						<xsl:attribute name="href">trombino.php?anniversaire&amp;promo=<xsl:value-of select="@promo" /></xsl:attribute>
-						<xsl:value-of select="@promo" /> 
-					</a>: 
-				</xsl:if>
+				<xsl:choose>
+					<xsl:when test="preceding-sibling::eleve[1]/@promo != @promo or position() = 1">
+						<xsl:if test="position()!=1"><br/></xsl:if>
+						<a>
+							<xsl:attribute name="href">trombino.php?anniversaire&amp;promo=<xsl:value-of select="@promo" /></xsl:attribute>
+							<xsl:value-of select="@promo" /> 
+						</a>: 
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>, </xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
  				<xsl:value-of select="@prenom" />
  				<xsl:text> </xsl:text>
  				<xsl:value-of select="translate(@nom,'abcdefghijklmnopqrstuvwxyzéèàçêëù','ABCDEFGHIJKLMNOPQRSTUVWXYZÉÈÀÇÊËÙ')" />
-				<xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if>
 			</xsl:for-each>
 		</div>
 		<br/>
