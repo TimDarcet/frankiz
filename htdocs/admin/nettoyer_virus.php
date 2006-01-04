@@ -173,7 +173,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <?
 		if($rebours<5 && $rebours>-1 && $solved==0){
 ?>
-				<bouton titre="Prévenir" id="prev_<?echo "$date";?>_<?echo "$eleve_id";?>_<?echo "$nomv";?>_<?echo "$";?>_<?echo "$ip";?>_<?echo "$id";?>" onClick="return window.confirm('Voulez vous prévenir par mail cette personne quelle est infectée ?')"/>
+				<bouton titre="Prévenir" id="prev_<?echo "$date";?>_<?echo "$eleve_id";?>_<?echo "$nomv";?>_<?echo "$rebours";?>_<?echo "$ip";?>_<?echo "$id";?>" onClick="return window.confirm('Voulez vous prévenir par mail cette personne quelle est infectée ?')"/>
 <?
 		}
 ?>
