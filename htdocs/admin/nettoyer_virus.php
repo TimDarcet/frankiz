@@ -146,7 +146,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
         $DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
 	list($promo_temp) = $DB_web->next_row() ;
-	$DB_admin->query("SELECT i.ip,i.date,i.date+10-CURDATE(),i.solved,e.login,pi.tel,e.eleve_id,l.nom,i.id FROM prises as p LEFT JOIN trombino.eleves as e ON e.piece_id=p.piece_id and (e.promo = $promo_temp OR e.promo = ".($promo_temp-1).") LEFT JOIN trombino.pieces as pi ON pi.piece_id = p.piece_id  LEFT JOIN liste_virus AS l ON l.virus_id=i.virus_id INNER JOIN infections AS i ON p.ip=i.ip WHERE i.solved != 2 GROUP BY i.virus_id, i.ip ORDER BY i.ip, i.solved, l.nom");
+	$DB_admin->query("SELECT i.ip,i.date,DATEDIFF(DATE_ADD(i.date,INTERVAL 10 DAY),CURDATE()),i.solved,e.login,pi.tel,e.eleve_id,l.nom,i.id FROM infections AS i LEFT JOIN prises as p ON p.ip=i.ip LEFT JOIN trombino.eleves as e ON e.piece_id=p.piece_id LEFT JOIN trombino.pieces as pi ON pi.piece_id = p.piece_id  LEFT JOIN liste_virus AS l ON l.virus_id=i.virus_id INNER JOIN infections WHERE i.solved != 2 GROUP BY i.virus_id, i.ip ORDER BY i.ip, i.solved, l.nom");
 ?>
 	<liste id="liste_virus" selectionnable="non" titre="Infections courantes"  action="admin/nettoyer_virus.php">
 		<entete id="ip" titre="IP"/>
@@ -158,7 +158,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<entete id="nettoyer" titre=""/>
 		<entete id="prevenir" titre=""/>
 <?
-	while(list($ip,$date,$rebour,$solved,$login,$tel,$eleve_id,$nomv,$id)= $DB_admin->next_row()){
+	while(list($ip,$date,$rebours,$solved,$login,$tel,$eleve_id,$nomv,$id)= $DB_admin->next_row()){
 		echo "\t\t<element id=\"$id\">\n";
 		$ip1 = "<bouton titre='Historique' id='detail_$login' type='detail'/>$ip";
 		echo "\t\t\t<colonne id=\"ip\">$ip1</colonne>\n";
@@ -171,9 +171,9 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 			<colonne id="prevenir">
 <?
-		if($rebour<5 && $rebour>-1 && $solved==0){
+		if($rebours<5 && $rebours>-1 && $solved==0){
 ?>
-				<bouton titre="Prévenir" id="prev_<?echo "$date";?>_<?echo "$eleve_id";?>_<?echo "$nomv";?>_<?echo "$rebour";?>_<?echo "$ip";?>_<?echo "$id";?>" onClick="return window.confirm('Voulez vous prévenir par mail cette personne quelle est infectée ?')"/>
+				<bouton titre="Prévenir" id="prev_<?echo "$date";?>_<?echo "$eleve_id";?>_<?echo "$nomv";?>_<?echo "$";?>_<?echo "$ip";?>_<?echo "$id";?>" onClick="return window.confirm('Voulez vous prévenir par mail cette personne quelle est infectée ?')"/>
 <?
 		}
 ?>
