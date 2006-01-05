@@ -51,3 +51,50 @@ LOAD DATA LOCAL INFILE '/tmp/infections2' INTO TABLE `infections` FIELDS
 TERMINATED BY ';' OPTIONALLY ENCLOSED BY '"' ESCAPE BY '\\' LINES TERMINATED
 BY '\n';
 
+
+
+
+MODIFICATION DES TABLES RELATIVES A LA QDJ
+
+Etape 1  : ça ne sert vraiment à rien de pouvoir stoquer le nombre de vote
+dans une catégorie d'une personne sur un entier de 4 octets.. Un seul, non
+signé, est amplement suffisant 
+
+ALTER TABLE `qdj_points` CHANGE `nb1` `nb1` TINYINT UNSIGNED NOT NULL DEFAULT
+'0',
+CHANGE `nb2` `nb2` TINYINT UNSIGNED NOT NULL DEFAULT '0',
+CHANGE `nb3` `nb3` TINYINT UNSIGNED NOT NULL DEFAULT '0',
+CHANGE `nb4` `nb4` TINYINT UNSIGNED NOT NULL DEFAULT '0',
+CHANGE `nb5` `nb5` TINYINT UNSIGNED NOT NULL DEFAULT '0',
+CHANGE `nb6` `nb6` TINYINT UNSIGNED NOT NULL DEFAULT '0',
+CHANGE `nb7` `nb7` TINYINT UNSIGNED NOT NULL DEFAULT '0',
+CHANGE `nb8` `nb8` TINYINT UNSIGNED NOT NULL DEFAULT '0',
+CHANGE `nb9` `nb9` TINYINT UNSIGNED NOT NULL DEFAULT '0';
+
+
+
+Etape 2 : on rajoute un champs supplémentaire dans la table qdj_points pour la
+10eme rêgle introduite par le QDJmestre (7.1 points en plus quand il valide la
+QDJ de quelqu'un)
+
+ALTER TABLE `qdj_points` ADD `nb10` TINYINT UNSIGNED NOT NULL DEFAULT '0';
+
+
+Etape 3 : pour pouvoir reconstruire la table qdj_points pour les 2 mois
+d'avant, on stoque le numéro de la rêgle validé par lg pour chaque
+enregistrement dans qdj_votes
+
+ALTER TABLE `qdj_votes` ADD `idRegle` TINYINT UNSIGNED NOT NULL ;
+
+Etape 4 : Stocker l'identifiant de la personne proposant une QDJ afin de lui
+rajouter des points si elle est acceptée.
+
+ALTER TABLE `qdj` ADD `id_eleve` SMALLINT UNSIGNED NOT NULL ;
+
+
+Etape 5 : copier la requete si dessous et que je n'expliquerai pas pour ne pas
+avoir droit aux sarcasmes de certains
+
+UPDATE qdj SET eleve_id = 6649 where eleve_id = 0;
+
+

@@ -69,13 +69,16 @@ foreach ($_POST AS $keys => $val){
 	if ($temp[0]=='valid') {
 		$DB_valid->query("SELECT eleve_id FROM valid_qdj WHERE qdj_id='{$temp[1]}'");
 		if ($DB_valid->num_rows()!=0) {
-		
+			//on récupère l'identifiant de la personne ayant proposé la QDJ
+			$ligne = $DB_valid->next_row();
+			$eleveId =$ligne[0];
+			
 			//Log l'action de l'admin
 			log_admin($_SESSION['user']->uid," validé la qdj '{$_POST['question']}'") ;
 
 			list($eleve_id) = $DB_valid->next_row() ;
 				
-			$DB_web->query("INSERT INTO qdj SET question='{$_POST['question']}', reponse1='{$_POST['reponse1']}', reponse2='{$_POST['reponse2']}'");
+			$DB_web->query("INSERT INTO qdj SET question='{$_POST['question']}', reponse1='{$_POST['reponse1']}', reponse2='{$_POST['reponse2']}', eleve_id='$eleveId';");
 			
 			$DB_valid->query("DELETE FROM valid_qdj WHERE qdj_id='{$temp[1]}'") ;
 		?>
