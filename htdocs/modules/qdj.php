@@ -32,7 +32,7 @@ if(est_authentifie(AUTH_MINIMUM)) {
 
 	// On cherche si l'utilisateur a déjà voté ou non
 	$date_aujourdhui = date("Y-m-d", time());
-	$DB_web->query("SELECT 0 FROM qdj_votes WHERE date='$date_aujourdhui' and eleve_id='".$_SESSION['user']->uid."' LIMIT 1");
+	$DB_web->query("SELECT 0 FROM qdj_votes WHERE date='$date_aujourdhui' and eleve_id='".$_SESSION['user']->uid."' AND ordre > 0 LIMIT 1");
 	$a_vote = $DB_web->num_rows() != 0;
 
 	// Gestion du vote
@@ -40,28 +40,50 @@ if(est_authentifie(AUTH_MINIMUM)) {
 		// On stocke le vote
 		cache_supprimer("qdj_courante_question");
 		cache_supprimer("qdj_courante_reponse");
-		$DB_web->query("LOCK TABLE qdj_votes WRITE");
+		$DB_web->query("LOCK TABLE qdj_votes, qdj_points WRITE");
 		$DB_web->query("SELECT @max:=IFNULL(MAX(ordre),0) FROM qdj_votes WHERE date='$date_aujourdhui'");
 		list($position) = $DB_web->next_row();
 		$position++;
-		$DB_web->query("INSERT INTO qdj_votes SET date='$date_aujourdhui',eleve_id='".$_SESSION['user']->uid."',ordre=@max+1");
-		$DB_web->query("UNLOCK TABLES");
-		$DB_web->query("UPDATE qdj SET compte".$_REQUEST['vote']."=compte".$_REQUEST['vote']."+1 WHERE date='$date_aujourdhui'");
-		
 		// On gère le classement:
 		$nbpoints = 0;
 		$regle = 0;
 		switch($position){
-			case 1:	$nbpoints = 5;	$regle = 1;	break;
-			case 2:	$nbpoints = 2;	$regle = 2;	break;
-			case 3:	$nbpoints = 1;	$regle = 3;	break;
-			case 13: $nbpoints = -13;	$regle = 4;	break; // Faut pas spoofer la passerelle !
-			case 42:	$nbpoints = 4.2;	$regle = 5;	break;
+			case 13:	$nbpoints = -13;	$regle = 4;	break; // Faut pas spoofer la passerelle !
+			case 100+date("d",time())+date("m",time()): 	$nbpoints = 7;	$regle = 9;	break; // Permet de mettre un peu des points au réveil, vers midi...
 			case 69:	$nbpoints = 6.9;	$regle = 6;	break;
+			case 1:		$nbpoints = 5;		$regle = 1;	break;
+			case 42:	$nbpoints = 4.2;	$regle = 5;	break;
 			case 314:	$nbpoints = 3.14;	$regle = 7;	break;
 			case (substr($_SESSION['ip'], 12, 3)): 	$nbpoints = 3;	$regle = 8;	break; // C'est bien d'avoir la bonne ip ;-)
-			case 100+date("d",time())+date("m",time()): 	$nbpoints = 7;	$regle = 9;	break; // Permet de mettre un peu des points au réveil, vers midi...
+			case 2:		$nbpoints = 2;		$regle = 2;	break;
+			case 3:		$nbpoints = 1;		$regle = 3;	break;
 		}
+		
+			
+		$DB_web->query("INSERT INTO qdj_votes SET date='$date_aujourdhui',eleve_id='".$_SESSION['user']->uid."',idRegle = '$regle', ordre=@max+1;");
+		
+		if($position == 1&&((date("m", time())%2==1&&date("d", time())==1)||date("Y-m-d",time())=="2006-01-05")){
+			//die("ouais");
+			//$position=12;
+			$DB_web->query('TRUNCATE TABLE `qdj_points`;');
+		}
+		
+		$DB_web->query("UNLOCK TABLES");
+		$DB_web->query("UPDATE qdj SET compte".$_REQUEST['vote']."=compte".$_REQUEST['vote']."+1 WHERE date='$date_aujourdhui'");
+		
+		if($position == 15){  //on met des points à la personne dont la QDJ a été acceptée
+		
+			$DB_web->query("SELECT eleve_id FROM qdj WHERE date='$date_aujourdhui';");
+			list($eleveId) = $DB_web->next_row();
+			$DB_web->query("INSERT INTO qdj_votes SET date='$date_aujourdhui', eleve_id='$eleveId', ordre=0, idRegle=10;");
+			$DB_web->query("SELECT 0 FROM qdj_points WHERE eleve_id='$eleveId';");
+			if($DB_web->num_rows()!=0){
+				$DB_web->query("UPDATE qdj_points SET total=total+7.1, nb10=nb10+1 WHERE eleve_id='$eleveId'");
+			}else{
+				$DB_web->query("INSERT INTO qdj_points SET total=7.1, nb10=1, eleve_id=$eleveId");
+			}
+		}
+		
 		if($nbpoints!=0){
 			$DB_web->query("SELECT 0 FROM qdj_points WHERE eleve_id=".$_SESSION['user']->uid);
 			if($DB_web->num_rows()!=0){

@@ -35,8 +35,8 @@ if(isset($_REQUEST["graph"])){
 	$max_nb = max($nb);
 	// on définit la largeur et la hauteur de notre image
 	$largeur = 300;
-	$hauteur = 70;
-	// on crée une ressource pour notre image qui aura comme largeur $largeur et $hauteur comme hauteur (on place également un or die si la création se passait mal afin d'avoir un petit message d'alerte)
+	$hauteur = 82;
+	//on crée une ressource pour notre image qui aura comme largeur $largeur et $hauteur comme hauteur (on place également un or die si la création se passait mal afin d'avoir un petit message d'alerte)
 	$im = @ImageCreate ($largeur, $hauteur) or die ("Erreur lors de la création de l'image");
 	$blanc = ImageColorAllocate ($im, 255, 255, 255);  
 	$noir = ImageColorAllocate ($im, 0, 0, 0);  
@@ -49,15 +49,25 @@ if(isset($_REQUEST["graph"])){
 	foreach ($nb as $nom => $nombre) {
 		$i++;
 		ImageString ($im, 2, $i*$largeur/(count($nb)+1), $hauteur-18, $nom, $noir);
+//		ImageString ($im, 2, $i*$largeur/(count($nb)+1), $hauteur-18, '('.$nombre.')', $noir);
 	}
 	$i=0;
 	foreach ($nb as $nom => $nombre) {
 			$i++;
 			// on calcule la hauteur du baton
-			$hauteurImageRectangle = ceil((($nombre*($hauteur-20))/$max_nb));
+			$hauteurImageRectangle = ceil((($nombre*($hauteur-32))/$max_nb));
 			ImageFilledRectangle ($im, $i*$largeur/(count($nb)+1), $hauteur-$hauteurImageRectangle-20, $i*$largeur/(count($nb)+1)+14, $hauteur-21, $noir);
 			ImageFilledRectangle ($im, $i*$largeur/(count($nb)+1)+2, $hauteur-$hauteurImageRectangle+2-20, $i*$largeur/(count($nb)+1)+12, $hauteur-21-1, $bleu_fonce);
 			ImageFilledRectangle ($im, $i*$largeur/(count($nb)+1)+6, $hauteur-$hauteurImageRectangle+2-20, $i*$largeur/(count($nb)+1)+8, $hauteur-21-1, $bleu_clair);
+			if($nombre <10){
+				ImageString($im, 2, $i*$largeur/(count($nb)+1)+5, $hauteur-$hauteurImageRectangle-20-12, $nombre, $noir);
+			}
+			elseif($nombre<100){
+				ImageString($im, 2, $i*$largeur/(count($nb)+1)+2, $hauteur-$hauteurImageRectangle-20-12, $nombre, $noir);
+			}
+			else{
+				ImageString($im, 2, $i*$largeur/(count($nb)+1)-1, $hauteur-$hauteurImageRectangle-20-12, $nombre, $noir);
+			}
 	}
 	// on dessine le tout
 	imagecolortransparent ($im,$blanc);

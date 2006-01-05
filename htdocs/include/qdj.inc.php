@@ -46,7 +46,7 @@ function qdj_affiche($hier,$deja_vote) {
 <?php
 	
 					// interrogation de la base de données
-					$DB_web->query("SELECT ordre,nom,prenom,promo,surnom FROM qdj_votes LEFT JOIN trombino.eleves USING(eleve_id) WHERE date='$date' ORDER BY ordre DESC LIMIT 20");
+					$DB_web->query("SELECT ordre,nom,prenom,promo,surnom FROM qdj_votes LEFT JOIN trombino.eleves USING(eleve_id) WHERE date='$date' AND ordre>0 ORDER BY ordre DESC LIMIT 20");
 					while(list($ordre,$nom,$prenom,$promo,$surnom) = $DB_web->next_row())
 						echo "\t\t\t\t\t<dernier ordre=\"$ordre\"><eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"$promo\" surnom=\"$surnom\"/></dernier>\n";
 ?>
