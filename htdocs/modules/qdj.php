@@ -48,15 +48,15 @@ if(est_authentifie(AUTH_MINIMUM)) {
 		$nbpoints = 0;
 		$regle = 0;
 		switch($position){
-			case 13: $nbpoints = -13;	$regle = 4;	break; // Faut pas spoofer la passerelle !
+			case 13:	$nbpoints = -13;	$regle = 4;	break; // Faut pas spoofer la passerelle !
 			case 100+date("d",time())+date("m",time()): 	$nbpoints = 7;	$regle = 9;	break; // Permet de mettre un peu des points au réveil, vers midi...
-			case 1:	$nbpoints = 5;	$regle = 1;	break;
-			case (substr($_SESSION['ip'], 12, 3)): 	$nbpoints = 3;	$regle = 8;	break; // C'est bien d'avoir la bonne ip ;-)
-			case 2:	$nbpoints = 2;	$regle = 2;	break;
-			case 3:	$nbpoints = 1;	$regle = 3;	break;
-			case 42:	$nbpoints = 4.2;	$regle = 5;	break;
 			case 69:	$nbpoints = 6.9;	$regle = 6;	break;
+			case 1:		$nbpoints = 5;		$regle = 1;	break;
+			case 42:	$nbpoints = 4.2;	$regle = 5;	break;
 			case 314:	$nbpoints = 3.14;	$regle = 7;	break;
+			case (substr($_SESSION['ip'], 12, 3)): 	$nbpoints = 3;	$regle = 8;	break; // C'est bien d'avoir la bonne ip ;-)
+			case 2:		$nbpoints = 2;		$regle = 2;	break;
+			case 3:		$nbpoints = 1;		$regle = 3;	break;
 		}
 		
 			
