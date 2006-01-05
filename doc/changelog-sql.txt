@@ -54,7 +54,8 @@ BY '\n';
 
 
 
-MODIFICATION DES TABLES RELATIVES A LA QDJ
+*Mise à jour des tables frankiz2.qdj_points, frankiz2.qdj et
+frankiz2.qdj_votes
 
 Etape 1  : ça ne sert vraiment à rien de pouvoir stoquer le nombre de vote
 dans une catégorie d'une personne sur un entier de 4 octets.. Un seul, non
@@ -92,9 +93,12 @@ rajouter des points si elle est acceptée.
 ALTER TABLE `qdj` ADD `id_eleve` SMALLINT UNSIGNED NOT NULL ;
 
 
-Etape 5 : copier la requete si dessous et que je n'expliquerai pas pour ne pas
-avoir droit aux sarcasmes de certains
+Etape 5 : Donner les anciene QDJ au QDJmestre
 
 UPDATE qdj SET eleve_id = 6649 where eleve_id = 0;
 
+Etape 6 : modification de l'index
+
+ALTER TABLE `qdj_votes` DROP INDEX `eleve` ,
+ADD UNIQUE `eleve` ( `date` , `eleve_id` , `ordre` ) ;
 
