@@ -71,7 +71,7 @@ if(est_authentifie(AUTH_MINIMUM)) {
 		$DB_web->query("UNLOCK TABLES");
 		$DB_web->query("UPDATE qdj SET compte".$_REQUEST['vote']."=compte".$_REQUEST['vote']."+1 WHERE date='$date_aujourdhui'");
 		
-		if($position == 3){  //on met des points à la personne dont la QDJ a été acceptée
+		if($position == 15){  //on met des points à la personne dont la QDJ a été acceptée
 		
 			$DB_web->query("SELECT eleve_id FROM qdj WHERE date='$date_aujourdhui';");
 			list($eleveId) = $DB_web->next_row();
