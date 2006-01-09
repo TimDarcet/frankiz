@@ -30,7 +30,7 @@ require_once "include/wiki.inc.php";
 demande_authentification(AUTH_INTERNE);
 
 $tol_admin = false;
-if(verifie_permission('admin')||verifie_permission('windows')||verifie_permission('trombino'))
+if(verifie_permission('admin')||verifie_permission('windows')||verifie_permission('trombino')||verifie_permission('news')||verifie_permission('support'))
 	$tol_admin = true;
 
 if(isset($_REQUEST['toladmin']))
