@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*
 	Copyright (C) 2004 Binet Réseau
 	http://www.polytechnique.fr/eleves/binets/br/
@@ -47,20 +47,57 @@ require "include/page_header.inc.php";
 
 	<h3>Par la poste</h3>
 	<p>Qui a dit que ce moyen de communication était démodé ????!!!!</p>
-	<p>Bon voilà la typographie type (car sinon la lettre risque de ne jamais arriver) :</p>
+	<p>Bon voilà la typographie type (car sinon la lettre risque de ne jamais arriver), selon le type de bâtiment concerné :</p>
+	
+	<h4>Bâtiments Joffre, Foch, Maunoury, Fayolle et PEM</h4>
 <html><![CDATA[
 	<p style="text-align: center"><strong>
 		Prénom Nom<br />
 		Promotion X(1)/(2) Cie<br />
 		École Polytechnique<br />
-		91128 Palaiseau Cedex
+		91128 PALAISEAU Cedex
 	</strong></p>
 ]]></html>
-	<p>Dont 2 choses importantes :</p>
+	<p>Sachant que :</p>
 <html><![CDATA[
 	<ul>
 		<li>(1) est remplacé par la Promotion de l'élève (année d'intégration)</li>
-		<li>(2) est remplacé par le numéro de sa compagnie (ben... ça faut lui demander !)</li>
+		<li>(2) est remplacé par le numéro de sa compagnie</li>
+	</ul>
+]]></html>
+
+	<h4>Bâtiments 70 à 80</h4>
+<html><![CDATA[
+	<p style="text-align: center"><strong>
+		Prénom Nom<br />
+		Bât. (1) App. (2)<br />
+		Résidence (3)<br />
+		91120 PALAISEAU
+	</strong></p>
+]]></html>
+	<p>Sachant que :</p>
+<html><![CDATA[
+	<ul>
+		<li>(1) est remplacé par le numéro de bâtiment (entre 70 et 80)</li>
+		<li>(2) est remplacé par le numéro d'appartement, composé de quatre chiffres</li>
+		<li>(3) est remplacé par le nom de résidence : Lemonnier pour les bâtiments 70 à 75, Schaeffer pour les bâtiments 76 à 80</li>
+	</ul>
+]]></html>
+
+	<h4>Bâtiments Élèves Mariés (BEM)</h4>
+<html><![CDATA[
+	<p style="text-align: center"><strong>
+		M. et Mme Untel<br />
+		Bât. (1) App. (2)<br />
+		Place André Citroën<br />
+		91120 PALAISEAU
+	</strong></p>
+]]></html>
+	<p>Sachant que :</p>
+<html><![CDATA[
+	<ul>
+		<li>(1) est remplacé par le numéro de bâtiment</li>
+		<li>(2) est remplacé par le numéro d'appartement</li>
 	</ul>
 ]]></html>
 </cadre>
