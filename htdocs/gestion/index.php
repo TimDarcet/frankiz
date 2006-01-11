@@ -163,9 +163,13 @@ $permissions_user = $_SESSION['user']->perms ;
 	<h3>Administration des données de Frankiz</h3>
 	<?
 	}
-	if (verifie_permission('admin')){
+	if (verifie_permission('admin')||verifie_permission('web')){
 	?>
 		<lien titre="Liste des droits accordés" url="admin/liste_droits.php"/><br/>
+	<?
+	}
+	if (verifie_permission('admin')){
+	?>
 		<lien titre="Changer les variables globales" url="admin/parametre.php"/><br/>
 	<?
 	}
