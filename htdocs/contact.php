@@ -43,7 +43,7 @@ require "include/page_header.inc.php";
 <cadre titre="Contacter un élève">
 	<h3>Par email (ou mel)</h3>
 	<p>Si tu veux joindre un élève, rien de plus facile :</p>
-	<p><strong>prénom.nom@polytechnique.fr</strong> (Où, bien sûr, on remplace le nom et le prénom de l'élève dans cette adresse :op)</p>
+	<p><strong>prénom.nom@polytechnique.edu</strong> (Où, bien sûr, on remplace le nom et le prénom de l'élève dans cette adresse :op)</p>
 
 	<h3>Par la poste</h3>
 	<p>Qui a dit que ce moyen de communication était démodé ????!!!!</p>
