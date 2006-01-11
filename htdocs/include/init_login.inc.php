@@ -173,7 +173,7 @@ function demande_authentification($minimum) {
 		<note>Ton login est loginpoly.promo</note>
 		<formulaire id="login" titre="Connexion" action=
 		<?php
-			echo '"'. $_SERVER['REQUEST_URI'].'"';
+			echo '"'.htmlentities($_SERVER['REQUEST_URI']).'"';
 		?>
 		>
 		<?  foreach ($_REQUEST AS $keys => $val){
