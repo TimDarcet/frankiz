@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /*
 	Copyright (C) 2004 Binet Réseau
 	http://www.polytechnique.fr/eleves/binets/br/
@@ -49,7 +49,7 @@ require "include/page_header.inc.php";
 	<p>Qui a dit que ce moyen de communication était démodé ????!!!!</p>
 	<p>Bon voilà la typographie type (car sinon la lettre risque de ne jamais arriver), selon le type de bâtiment concerné :</p>
 	
-	<h4>Bâtiments Joffre, Foch, Maunoury, Fayolle et PEM</h4>
+	<h4>Bâtiments Joffre, Foch, Maunoury, Fayolle et PEM (promotion impaire)</h4>
 <html><![CDATA[
 	<p style="text-align: center"><strong>
 		Prénom Nom<br />
@@ -66,7 +66,7 @@ require "include/page_header.inc.php";
 	</ul>
 ]]></html>
 
-	<h4>Bâtiments 70 à 80</h4>
+	<h4>Bâtiments 70 à 80 (promotion paire)</h4>
 <html><![CDATA[
 	<p style="text-align: center"><strong>
 		Prénom Nom<br />
