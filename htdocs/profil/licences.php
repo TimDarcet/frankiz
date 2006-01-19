@@ -59,7 +59,15 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 			?>
 			<commentaire>Ta clé va t'être expédiée sur ta boite mail.</commentaire>
 			<?php
-				$contenu="La clé qui vous a été attribuée pour ".$log[$_POST['logiciel']]." est : $cle <br><br>".
+				//si la demande concerne un OS qui permet la connection au domaine, on rajoute un peu de "pub" dans le mail...
+				if($_POST['logiciel']=='winxp' || $_POST['logiciel']=='win2k'){
+					$contenu_ajout="Avec ".$log[$_POST['logiciel']].", tu disposes maintenant d'une machine qui peut se connecter au domaine. <br>".
+						"Tu trouveras dans l'infoBR les informations te permettant de mener à bien cette opération.<br><br>".
+						"Grâce au domaine, le réseau de l'X est plus sûr et tes demandes d'assistance seront simplifiées et donc accélérées.<br><br>";
+				} else {
+					$contenu_ajout="";
+				}
+				$contenu="La clé qui vous a été attribuée pour ".$log[$_POST['logiciel']]." est : $cle <br><br>". $contenu_ajout .
 					"Très Cordialement<br>" .
 					"Le BR<br>"  ;
 				couriel($eleve_id,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,WINDOWS_ID);
@@ -79,7 +87,14 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 					?>
 					<commentaire>Tu as déjà demandé ta clé, elle va t'être ré-expédiée sur ta boite mail.</commentaire>
 					<?php
-					$contenu="La clé qui vous a déjà été attribuée pour ".$log[$_POST['logiciel']]." est : $cle <br><br>".
+					if($_POST['logiciel']=='winxp' || $_POST['logiciel']=='win2k'){
+						$contenu_ajout="Avec ".$log[$_POST['logiciel']].", tu disposes maintenant d'une machine qui peut se connecter au domaine. <br>".
+							"Tu trouveras dans l'infoBR les informations te permettant de mener à bien cette opération.<br><br>".
+							"Grâce au domaine, le réseau de l'X est plus sûr et tes demandes d'assistance seront simplifiées et donc accélérées.<br><br>";
+					} else {
+						$contenu_ajout="";
+					}
+					$contenu="La clé qui vous a déjà été attribuée pour ".$log[$_POST['logiciel']]." est : $cle <br><br>". $contenu_ajout .
 						"Très Cordialement<br>" .
 						"Le BR<br>"  ;
 					//a completer couriel(WEBMESTRE_ID,"[Frankiz] Validation d'une annonce",$contenu,$eleve_id);
@@ -94,10 +109,17 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 					<?php
 					// sinon on l'ajoute... et on update la base...
 						$DB_msdnaa->query("UPDATE cles_{$_POST['logiciel']} SET attrib='1' WHERE eleve_id='".$_SESSION['user']->uid."'");
-						$contenu="La clé qui vous a été attribuée pour ".$log[$_POST['logiciel']]." est : $cle <br><br>".
+						if($_POST['logiciel']=='winxp' || $_POST['logiciel']=='win2k'){
+							$contenu_ajout="Avec ".$log[$_POST['logiciel']].", tu disposes maintenant d'une machine qui peut se connecter au domaine. <br>".
+								"Tu trouveras dans l'infoBR les informations te permettant de mener à bien cette opération.<br><br>".
+								"Grâce au domaine, le réseau de l'X est plus sûr et tes demandes d'assistance seront simplifiées et donc accélérées.<br><br>";
+						} else {
+							$contenu_ajout="";
+						}
+						$contenu="La clé qui vous a été attribuée pour ".$log[$_POST['logiciel']]." est : $cle <br><br>". $contenu_ajout .
 							"Très Cordialement<br>" .
 							"Le BR<br>"  ;
-					couriel($eleve_id,"[Frankiz] Demande de licence Microsoft $nom $prenom X $promo ",$contenu,WINDOWS_ID);
+					couriel($eleve_id,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo ",$contenu,WINDOWS_ID);
 					$contenu="La clé attribuée à $nom $prenom X $promo pour ".$log[$_POST['logiciel']]." est : $cle <br><br>".
 						"Très Cordialement<br>" .
 						"Le BR<br>"  ;
@@ -113,7 +135,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 					?>
 				
 				<formulaire id="dem_licence" titre= "Les licences pour les logiciels Microsoft" action="profil/licences.php">
-					<note>Ta requéte a bien été prise en compte, un admin@windows s'en occupe.</note>
+					<note>Ta requête a bien été prise en compte, un admin@windows s'en occupe.</note>
 					<hidden id="raison" valeur="sur le platal"/>
 					<? if(isset($_POST['logiciel'])){ echo "<hidden id=\"logiciel\" valeur=\"".$_POST['logiciel']."\" />"; } ?>
 					<bouton id='envoyer' titre='Continuer'/>
