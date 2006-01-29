@@ -98,14 +98,10 @@ function affiche_erreurs_php() {
 	
 	if(AFFICHER_LES_ERREURS) {
 		foreach($_ERREURS_PHPMYSQL as $erreur)
-			echo "<p><b>{$erreur['errname']}</b> : {$erreur['errmsg']}"
-				. (!empty($erreur['query']) ? " in query <b>\"{$erreur['query']}\"</b>" : "")
- 				. (!empty($erreur['file']) ? " in <b>{$erreur['file']}</b> on line <b>{$erreur['line']}</b>" : "")
-				. "</p>\n";
-
-		foreach($_DEBUG_LOG as $entree)
-			echo "<!-- $entree -->\n";
-	
+			echo '<p><b>'.$erreur['errname'].'</b> : '.$erreur['errmsg']
+				. (!empty($erreur['query']) ? ' in query <b>"'.$erreur['query'].'"</b>' : '')
+ 				. (!empty($erreur['file']) ? ' in <b>'.$erreur['file'].'</b> on line <b>'.$erreur['line'].'</b>' : '')
+				. '</p>\n';
 	} else if($_ERREUR_FATAL) {
 		// On log l'erreur
 		$timestamp = time();
@@ -135,4 +131,12 @@ function affiche_erreurs_php() {
 	}
 }
 
+function affiche_debug_php() {
+	global $_DEBUG_LOG;
+	if(AFFICHER_LES_ERREURS) {
+		foreach($_DEBUG_LOG as $entree) {
+			echo "<!-- ".$entree." -->\n";
+		}
+	}
+}
 ?>

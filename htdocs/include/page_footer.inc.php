@@ -56,4 +56,5 @@ xslt_free($xh);
 // Envoi la page vers le navigateur
 affiche_erreurs_php();
 echo $resultat;
+affiche_debug_php();
 ?>
