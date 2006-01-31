@@ -1,4 +1,4 @@
-<?php 
+﻿<?php 
 /*
         Copyright (C) 2004 Binet Réseau
         http://www.polytechnique.fr/eleves/binets/br/
@@ -29,7 +29,7 @@
 	<?php } ?>
 	
 	<h2>Statistiques diverses</h2>
-	<h3>Posteurs insomniques</h3>
+	<h3>Posteurs insomniaques</h3>
 	<?php include(BASE_CACHE."news_data_premiers_posteurs"); ?><br/>
 
 	<h3>Activité des newsgroups les 4 derniers jours</h3>
