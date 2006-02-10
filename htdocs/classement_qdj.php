@@ -96,8 +96,27 @@ if(isset($_REQUEST["graph"])){
 				<entete id="total" titre="Total"/>
 				<entete id="detail" titre="Détail"/>
 		<?
-		$DB_web->query("SELECT t.eleve_id,t.nom,t.prenom,t.surnom,t.promo,p.total,p.nb1,p.nb2,p.nb3,p.nb4,p.nb5,p.nb6,p.nb7,p.nb8,p.nb9 FROM qdj_points as p LEFT JOIN trombino.eleves AS t USING(eleve_id) ORDER BY p.total DESC");
-		
+		$DB_web->query("
+					SELECT
+						t.eleve_id, t.nom, t.prenom, t.surnom, t.promo,
+						p.total, p.nb1, p.nb2, p.nb3, p.nb4, p.nb5, p.nb6, p.nb7, p.nb8, p.nb9
+					FROM
+						qdj_points AS p
+					LEFT JOIN
+						trombino.eleves AS t USING(eleve_id)
+					WHERE
+						t.eleve_id != (SELECT
+											te.eleve_id
+										FROM
+											frankiz2.compte_frankiz
+										LEFT JOIN
+											trombino.eleves AS te USING(eleve_id)
+										WHERE
+											perms LIKE '%qdjmaster,%'
+										ORDER BY te.promo DESC
+										LIMIT 0,1)
+					ORDER BY p.total DESC");
+
 		while(list($eleve_id,$nom,$prenom,$surnom,$promo,$total,$nb1,$nb2,$nb3,$nb4,$nb5,$nb6,$nb7,$nb8,$nb9) = $DB_web->next_row()) {
 			echo "\t\t<element id=\"$eleve_id\">\n";
 				echo "\t\t\t<colonne id=\"nom\">".($surnom!="" ?$surnom:$nom." ".$prenom)." (X$promo)</colonne>\n";
