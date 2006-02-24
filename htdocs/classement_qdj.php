@@ -78,17 +78,23 @@ if(isset($_REQUEST["graph"])){
 	<page id="classement_qdj" titre="Frankiz : Classement QDJ">
 		<h2>Le Classement QDJ</h2>
 		<commentaire>
-			Les règles du classement QDJ sont simples. Suivant le moment de la journée où vous votez, vous obtenez plus ou moins de points. Le but étant d'en accumuler le maximum :)<br/>
-			Il y a 9 façons de gagner ou de perdre des points:<br/>
-			- Voter premier rapporte 5 points<br/>
-			- Voter second rapporte 2 points<br/>
-			- Voter troisième rapporte 1 points<br/>
-			- Voter 42 rapporte 4.2 points<br/>
-			- Voter 69 rapporte 6.9 points<br/>
-			- Voter 314 rapporte 3.14 points<br/>
-			- Voter avec la même position que les derniers chiffres de l'ip fait gagner 3 points (c'est bien de savoir lire l'infoBR :)<br/>
-			- Voter treizième vous fait perdre 13 points, (C'est mal d'essayer de prendre l'ip de la passerelle !)<br/>
-			- règle bonus qui rapporte 7 points au réveil !<br/>
+			Le classement QDJ est remis à jour tous les deux mois (1er mars, 1er mai, ...).<br />
+			A l'issue de ces deux mois, le premier du classement se voit décerner une coupe, le dernier une cuillère en bois et celui qui a le diagramme le plus "homogène" un coup au Bôb avec les deux autres.<br />
+			 <br />
+			 Les règles du classement QDJ sont simples. Suivant le moment de la journée où vous votez, vous obtenez plus ou moins de points. Le but étant d'en accumuler le maximum :)<br />
+			 Il y a 10 façons de gagner ou de perdre des points:
+			<ul><li>Voter premier rapporte 5 points</li>
+			<li>Voter second rapporte 2 points</li>
+			<li>Voter troisième rapporte 1 points</li>
+			<li>Voter 42 rapporte 4.2 points</li>
+			<li>Voter 69 rapporte 6.9 points</li>
+			<li>Voter 314 rapporte 3.14 points</li>
+			<li>Voter avec la même position que les derniers chiffres de l'ip fait gagner 3 points (c'est bien de savoir lire l'infoBR :) )</li>
+			<li>Voter treizième vous fait perdre 13 points, (C'est mal d'essayer de prendre l'ip de la passerelle !)</li>
+			<li>Règle bonus qui rapporte 7 points au réveil !</li>
+			<li>Enfin, proposer une "bonne" QDJ, c'est-à-dire que le QDJMaster acceptera de passer, rapporte 7.1 points le jour où elle passe (utilisez votre cerveau pour battre ceux qui utilisent des scripts)</li></ul>
+			 Amusez-vous bien et surtout, lisez-la QDJ avant de voter.
+		
 		</commentaire>
 		
 		<liste id="liste_qdj" selectionnable="non">
