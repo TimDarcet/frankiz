@@ -234,7 +234,7 @@ if(isset($_REQUEST["graph"])){
 		$ecartype = 0;
 		while(list($eleve_id,$nom,$prenom,$surnom,$promo,$total,$nb1,$nb2,$nb3,$nb4,$nb5,$nb6,$nb7,$nb8,$nb9,$nb10) = $DB_web->next_row()) {
 			$moy = ($nb1 + $nb2 + $nb3 + $nb4 + $nb5 + $nb6 + $nb7 + $nb8 + $nb9 + $nb10)/10;
-			$ecartype =sqrt(($nb1^2 + $nb2^2 + $nb3^2 + $nb4^2 + $nb5^2 + $nb6^2 + $nb7^2 + $nb8^2 + $nb9^2 + $nb10^2)/10 - $moy^2);
+			$ecartype =sqrt((pow($nb1,2) + pow($nb2,2) + pow($nb3,2) + pow($nb4,2) + pow($nb5,2) + pow($nb6,2) + pow($nb7,2) + pow($nb8,2) + pow($nb9,2) + pow($nb10,2))/10 - pow($moy,2));
 			$ecartype = round($ecartype, 2);
 			echo "\t\t<element id=\"$eleve_id\">\n";
 				echo "\t\t\t<colonne id=\"nom\">".($surnom!="" ?$surnom:$nom." ".$prenom)." (X$promo)</colonne>\n";

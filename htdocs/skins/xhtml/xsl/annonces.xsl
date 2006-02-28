@@ -38,6 +38,17 @@
 			<xsl:apply-templates/>
 		</xsl:otherwise>
 	</xsl:choose>
+	<div class="fkz_annonces_1"><div class="fkz_annonces_2">
+	<div class="fkz_annonces_3"><div class="fkz_annonces_4">
+	<div class="fkz_annonces_5"><div class="fkz_annonces_6">
+	<div class="fkz_annonces" id="reaffichertout">
+		<div class="fkz_sommaire_corps">
+			<a href="?toutlu=1">Masquer toutes les annonces</a><br/>
+			<a href="?toutnonlu=1">Réafficher toutes les annonces</a>
+		</div>
+	</div>
+	</div></div></div></div></div></div>
+	<br/>
 </xsl:template>
 
 
