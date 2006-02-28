@@ -1,4 +1,4 @@
-* Mise à jour des tables frankiz2.annonces et a_valider.valid_annonces
+﻿* Mise à jour des tables frankiz2.annonces et a_valider.valid_annonces
 * ajout d'un champ de commentaire à l'attentiondes webmestres
 ALTER TABLE frankiz2.annonces ADD commentaire TEXT NOT NULL ;
 ALTER TABLE a_valider.valid_annonces ADD commentaire TEXT NOT NULL ;
@@ -102,3 +102,9 @@ Etape 6 : modification de l'index
 ALTER TABLE `qdj_votes` DROP INDEX `eleve` ,
 ADD UNIQUE `eleve` ( `date` , `eleve_id` , `ordre` ) ;
 
+
+
+
+*Mise à jour de la table frankiz2.liens
+
+ALTER TABLE `liens` ADD `visible_ext` INT( 1 ) NOT NULL  
