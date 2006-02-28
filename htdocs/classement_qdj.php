@@ -110,7 +110,48 @@ if(isset($_REQUEST["graph"])){
 				<entete id="detail" titre="Détail"/>
 				<entete id="total" titre="Total (moyenne, écart type)"/>
 		<?
-		$DB_web->query("
+		$DB_web->query("SELECT MIN(date) as dateMin, MAX(date) as dateMax
+				FROM qdj_votes WHERE idRegle > 0;");
+		list($dateMin, $dateMax)=$DB_web->next_row();
+		$anneeMin = substr($dateMin, 0, 4);
+		$anneeMax = substr($dateMax, 0, 4);
+		$moisMin = substr($dateMin, 5, 2);
+		$moisMin = floor(($moisMin -1) / 2) * 2 + 1;
+		$moisMax = substr($dateMax, 5, 2);
+		$moisMax = (floor(($moisMax + 1) / 2) - 1) * 2;  //bidouille pour recuperer le mois avant le groupe en cours...
+		$nbrIntervals = floor( ( 12 * ($anneeMax - $anneeMin) + $moisMax - $moisMin) /2 ) + 1;
+		$datesDebut = array();
+		$datesDebutAffichage = array();
+		$datesFin = array();
+		$datesFinAffichage = array();
+		$annee = 0;
+		$mois = 0;
+		for ($i=0; $i<$nbrIntervals; $i++){
+			$annee = $anneeMin + floor(($moisMin + 2 * $i) / 12);
+			$mois = ($moisMin + 2 * $i -1) %12 + 1;
+			$datesDebut[$i] = $annee."-".$mois."-01";
+			$datesDebutAffichage[$i] = "01-".$mois."-".$annee;
+			$datesFin[$i] = $annee."-".($mois + 1)."-31";
+			$datesFinAffichage[$i] = "01-".($mois + 1)."-".$annee;
+
+		}
+		if (isset($_POST['periode'])){
+			$periode = $_POST['periode'];
+		}else{
+			$periode = "actuelle";
+		}
+		echo "<formulaire id='form' titre='Choix de la période' action='classement_qdj.php'>\n";
+		echo "<choix titre='Quelle période afficher ?' id='periode' type='combo' valeur='$periode'>\n";
+		echo "<option titre='La période actuelle' id='actuelle' />\n";
+		echo "<option titre='Tous les scores' id='tout' />\n";
+		for($i=0; $i<$nbrIntervals; $i++){
+			echo "<option titre='Du {$datesDebutAffichage[$i]} au {$datesFinAffichage[$i]}' id='$i' />\n";
+		}
+		echo '</choix>';
+		echo "<bouton id='afficher' titre='afficher' />\n";
+		echo '</formulaire>';
+
+		$requete = "
 					SELECT
 						t.eleve_id, t.nom, t.prenom, t.surnom, t.promo,
 						p.total, p.nb1, p.nb2, p.nb3, p.nb4, p.nb5, p.nb6, p.nb7, p.nb8, p.nb9, p.nb10
@@ -129,7 +170,65 @@ if(isset($_REQUEST["graph"])){
 											perms LIKE '%qdjmaster,%'
 										ORDER BY te.promo DESC
 										LIMIT 0,1)
-					ORDER BY p.total DESC");
+					ORDER BY p.total DESC";
+		$debutRequete = "
+		SELECT
+						t.eleve_id, t.nom, t.prenom, t.surnom, t.promo,
+						p.total, p.nb1, p.nb2, p.nb3, p.nb4, p.nb5, p.nb6, p.nb7, p.nb8, p.nb9, p.nb10
+					FROM	
+		(SELECT eleve_id,
+		   SUM( _vote1*5 + _vote2*2 + _vote3 - _vote4*13 + _vote5*4.2 + _vote6*6.9 + _vote7*3.14 + _vote8*3 + _vote9*7 + _vote10*7.1) as total,
+		   SUM(_vote1) as nb1,
+		   SUM(_vote2) as nb2,
+		   SUM(_vote3) as nb3,
+		   SUM(_vote4) as nb4,
+		   SUM(_vote5) as nb5,
+		   SUM(_vote6) as nb6,
+		   SUM(_vote7) as nb7,
+		   SUM(_vote8) as nb8,
+		   SUM(_vote9) as nb9,
+		   SUM(_vote10) as nb10
+		   FROM (
+		      SELECT eleve_id,
+		      if(idRegle = 1, count(*), 0) as _vote1,
+		      if(idRegle = 2, count(*), 0) as _vote2,
+		      if(idRegle = 3, count(*), 0) as _vote3,
+		      if(idRegle = 4, count(*), 0) as _vote4,
+		      if(idRegle = 5, count(*), 0) as _vote5,
+		      if(idRegle = 6, count(*), 0) as _vote6,
+		      if(idRegle = 7, count(*), 0) as _vote7,
+		      if(idRegle = 8, count(*), 0) as _vote8,
+		      if(idRegle = 9, count(*), 0) as _vote9,
+		      if(idRegle = 10, count(*), 0) as _vote10
+		      FROM qdj_votes 
+		      WHERE idRegle >0 ";
+		$finRequete = "  GROUP BY idRegle, eleve_id
+		 ) AS aux1
+		  GROUP BY eleve_id) as p
+		  LEFT JOIN
+											trombino.eleves AS te USING(eleve_id)
+										WHERE
+											perms LIKE '%qdjmaster,%'
+										ORDER BY te.promo DESC
+										LIMIT 0,1)
+					ORDER BY p.total DESC";
+		/***********************************************
+		POUR TEST 
+		***********************************************/
+		$_POST['periode']="tout";
+		/***********************************************
+		POUR TEST 
+		***********************************************/
+		if(isset($_POST['periode'])){
+			if(is_int($_POST['periode']) && $_POST['periode'] >= 0 && $_POST['periode'] < $nbrIntervals) {
+				$requete = $debutRequete . " AND date >= {$datesDebut[$_POST['periode']]} AND date <= {$datesFin[$_POST['periode']]}"
+				.$finRequete;
+			}
+			if($_POST['periode']=="tout"){
+				$requete = $debutRequete.$finRequete;
+			}
+		}
+		$DB_web->query($requete);
 		$moy = 0;
 		$ecartype = 0;
 		while(list($eleve_id,$nom,$prenom,$surnom,$promo,$total,$nb1,$nb2,$nb3,$nb4,$nb5,$nb6,$nb7,$nb8,$nb9,$nb10) = $DB_web->next_row()) {
