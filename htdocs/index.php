@@ -26,7 +26,6 @@
 require_once "include/global.inc.php";
 require_once "include/wiki.inc.php";
 
-
 function get_categorie($en_haut,$stamp,$perime) {
 	if($en_haut==1) return "important";
 	elseif($stamp > date("Y-m-d H:i:s",time()-12*3600)) return "nouveau";
@@ -73,23 +72,9 @@ if (!est_interne() && !est_authentifie(AUTH_MINIMUM))  {
 		}
 	}
 
-/* Humf ca ne marche pas pour l'instant
-	if (isset($_REQUEST['toutlu'])) {
-		$DB_web->query("SELECT annonce_id,perime FROM annonces WHERE (perime>NOW())");
-		while (list($annonce_id,$annonce_perime)=$DB_web->next_row()) {
-			$DB_web->query("SELECT 0 FROM annonces_lues WHERE annonce_id='$annonce_id' AND eleve_id='{$_SESSION['user']->uid}'");
-			if ($DB_web->num_rows()==0) {
-				$DB_web->query("INSERT INTO annonces_lues SET annonce_id='$annonce_id',eleve_id='{$_SESSION['user']->uid}'");
-			}
-		}
-	}
-*/
-
+	
 	if (isset($_REQUEST['nonlu']))
 		$DB_web->query("DELETE FROM annonces_lues WHERE annonce_id='{$_REQUEST['nonlu']}' AND eleve_id='{$_SESSION['user']->uid}'");
-	
-	if (isset($_REQUEST['toutnonlu']))
-		$DB_web->query("DELETE FROM annonces_lues WHERE eleve_id='{$_SESSION['user']->uid}'");
 	
 	$annonces_lues1=" LEFT JOIN annonces_lues ON annonces_lues.annonce_id=annonces.annonce_id AND annonces_lues.eleve_id='{$_SESSION['user']->uid}'" ;
 	$annonces_lues2=" ISNULL(annonces_lues.annonce_id) ";
