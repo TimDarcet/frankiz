@@ -62,9 +62,7 @@ if(est_authentifie(AUTH_MINIMUM)) {
 			
 		$DB_web->query("INSERT INTO qdj_votes SET date='$date_aujourdhui',eleve_id='".$_SESSION['user']->uid."',idRegle = '$regle', ordre=@max+1;");
 		
-		if($position == 1&&((date("m", time())%2==1&&date("d", time())==1)||date("Y-m-d",time())=="2006-01-05")){
-			//die("ouais");
-			//$position=12;
+		if($position == 1 && (date("m", time()) % 2 == 1) && (date("d", time()) == 1)) {
 			$DB_web->query('TRUNCATE TABLE `qdj_points`;');
 		}
 		
