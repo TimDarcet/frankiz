@@ -105,10 +105,6 @@ if(isset($_REQUEST["graph"])){
 		
 		</commentaire>
 		
-		<liste id="liste_qdj" selectionnable="non">
-				<entete id="nom" titre="Nom"/>
-				<entete id="detail" titre="Détail"/>
-				<entete id="total" titre="Total (moyenne, écart type)"/>
 		<?
 		$DB_web->query("SELECT MIN(date) as dateMin, MAX(date) as dateMax
 				FROM qdj_votes WHERE idRegle > 0;");
@@ -150,7 +146,12 @@ if(isset($_REQUEST["graph"])){
 		echo '</choix>';
 		echo "<bouton id='afficher' titre='afficher' />\n";
 		echo '</formulaire>';
-
+?>
+		<liste id="liste_qdj" selectionnable="non">
+				<entete id="nom" titre="Nom"/>
+				<entete id="detail" titre="Détail"/>
+				<entete id="total" titre="Total (moyenne, écart type)"/>
+<?php
 		$requete = "
 					SELECT
 						t.eleve_id, t.nom, t.prenom, t.surnom, t.promo,
@@ -206,19 +207,19 @@ if(isset($_REQUEST["graph"])){
 		 ) AS aux1
 		  GROUP BY eleve_id) as p
 		  LEFT JOIN
+						trombino.eleves AS t USING(eleve_id)
+					WHERE
+						t.eleve_id != (SELECT
+											te.eleve_id
+										FROM
+											frankiz2.compte_frankiz
+										LEFT JOIN
 											trombino.eleves AS te USING(eleve_id)
 										WHERE
 											perms LIKE '%qdjmaster,%'
 										ORDER BY te.promo DESC
 										LIMIT 0,1)
 					ORDER BY p.total DESC";
-		/***********************************************
-		POUR TEST 
-		***********************************************/
-		$_POST['periode']="tout";
-		/***********************************************
-		POUR TEST 
-		***********************************************/
 		if(isset($_POST['periode'])){
 			if(is_int($_POST['periode']) && $_POST['periode'] >= 0 && $_POST['periode'] < $nbrIntervals) {
 				$requete = $debutRequete . " AND date >= {$datesDebut[$_POST['periode']]} AND date <= {$datesFin[$_POST['periode']]}"
