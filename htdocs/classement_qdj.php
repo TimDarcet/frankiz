@@ -107,8 +107,8 @@ if(isset($_REQUEST["graph"])){
 		
 		<liste id="liste_qdj" selectionnable="non">
 				<entete id="nom" titre="Nom"/>
-				<entete id="total" titre="Total (moyenne, écart type)"/>
 				<entete id="detail" titre="Détail"/>
+				<entete id="total" titre="Total (moyenne, écart type)"/>
 		<?
 		$DB_web->query("
 					SELECT
@@ -138,8 +138,8 @@ if(isset($_REQUEST["graph"])){
 			$ecartype = round($ecartype, 2);
 			echo "\t\t<element id=\"$eleve_id\">\n";
 				echo "\t\t\t<colonne id=\"nom\">".($surnom!="" ?$surnom:$nom." ".$prenom)." (X$promo)</colonne>\n";
-				echo "\t\t\t<colonne id=\"total\">$total ($moy, $ecartype)</colonne>\n";
 				echo "\t\t\t<colonne id=\"detail\"><image source=\"classement_qdj.php?graph&amp;nb1=$nb1&amp;nb2=$nb2&amp;nb3=$nb3&amp;nb4=$nb4&amp;nb5=$nb5&amp;nb6=$nb6&amp;nb7=$nb7&amp;nb8=$nb8&amp;nb9=$nb9&amp;nb10=$nb10\" texte=\"image\"/></colonne>\n";
+				echo "\t\t\t<colonne id=\"total\">$total ($moy, $ecartype)</colonne>\n";
 			echo "\t\t</element>\n";
 		}
 		?>
