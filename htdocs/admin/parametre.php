@@ -59,11 +59,11 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 <note>
 Cette page est une page pour pouvoir modifier directement les paramètres du sites : si vous
-devez créer des varibles dans la table essayer qu'elles soient assez explicite.
+devez créer des variables dans la table essayer qu'elles soient assez explicite.
 </note>
 <h2>Paramètres du site</h2>
 	<liste id="liste" selectionnable="non" action="admin/parametre.php">
-		<entete id="nom_var" titre="Nom de la varible"/>
+		<entete id="nom_var" titre="Nom de la variable"/>
 		<entete id="valeur" titre="Valeur"/>
 <?
 		$DB_web->query("SELECT nom,valeur FROM parametres ORDER by nom");
