@@ -106,33 +106,29 @@ if(isset($_REQUEST["graph"])){
 		</commentaire>
 		
 		<?
-		$DB_web->query("SELECT MIN(date) as dateMin, MAX(date) as dateMax
+		$DB_web->query("SELECT UNIX_TIMESTAMP(MIN(date)) as dateMin, UNIX_TIMESTAMP(MAX(date)) as dateMax
 				FROM qdj_votes WHERE idRegle > 0;");
 		list($dateMin, $dateMax)=$DB_web->next_row();
-		$anneeMin = substr($dateMin, 0, 4);
-		$anneeMax = substr($dateMax, 0, 4);
-		$moisMin = substr($dateMin, 5, 2);
+		$anneeMin = date("Y",$dateMin);
+		$anneeMax = date("Y",$dateMax);
+		$moisMin = date("n",$dateMin);
+		$moisMax = date("n",$dateMax);
 		$moisMin = floor(($moisMin -1) / 2) * 2 + 1;
-		$moisMax = substr($dateMax, 5, 2);
 		$moisMax = (floor(($moisMax + 1) / 2) - 1) * 2;  //bidouille pour recuperer le mois avant le groupe en cours...
 		$nbrIntervals = floor( ( 12 * ($anneeMax - $anneeMin) + $moisMax - $moisMin) /2 ) + 1;
 		$datesDebut = array();
 		$datesDebutAffichage = array();
-		$datesFin = array();
-		$datesFinAffichage = array();
 		$annee = 0;
 		$mois = 0;
-		for ($i=0; $i<$nbrIntervals; $i++){
+		for ($i=0; $i<=$nbrIntervals; $i++){
 			$annee = $anneeMin + floor(($moisMin + 2 * $i) / 12);
-			$mois = ($moisMin + 2 * $i -1) %12 + 1;
-			$datesDebut[$i] = $annee."-".$mois."-01";
-			$datesDebutAffichage[$i] = "01-".$mois."-".$annee;
-			$datesFin[$i] = $annee."-".($mois + 1)."-31";
-			$datesFinAffichage[$i] = "01-".($mois + 1)."-".$annee;
-
+			$mois = ($moisMin + 2 * $i) %12;
+			$datesDebut[$i] = mktime(0,0,0,$mois,1,$annee);
+			$datesDebutAffichage[$i] = date("d-m-Y",$datesDebut[$i]);
 		}
 		if (isset($_POST['periode'])){
 			$periode = $_POST['periode'];
+			if (is_numeric($periode)) $periode=intval($periode);
 		}else{
 			$periode = "actuelle";
 		}
@@ -141,7 +137,7 @@ if(isset($_REQUEST["graph"])){
 		echo "<option titre='La période actuelle' id='actuelle' />\n";
 		echo "<option titre='Tous les scores' id='tout' />\n";
 		for($i=0; $i<$nbrIntervals; $i++){
-			echo "<option titre='Du {$datesDebutAffichage[$i]} au {$datesFinAffichage[$i]}' id='$i' />\n";
+			echo "<option titre='Du {$datesDebutAffichage[$i]} au {$datesDebutAffichage[$i+1]}' id='$i' />\n";
 		}
 		echo '</choix>';
 		echo "<bouton id='afficher' titre='afficher' />\n";
@@ -220,14 +216,11 @@ if(isset($_REQUEST["graph"])){
 										ORDER BY te.promo DESC
 										LIMIT 0,1)
 					ORDER BY p.total DESC";
-		if(isset($_POST['periode'])){
-			if(is_int($_POST['periode']) && $_POST['periode'] >= 0 && $_POST['periode'] < $nbrIntervals) {
-				$requete = $debutRequete . " AND date >= {$datesDebut[$_POST['periode']]} AND date <= {$datesFin[$_POST['periode']]}"
-				.$finRequete;
-			}
-			if($_POST['periode']=="tout"){
-				$requete = $debutRequete.$finRequete;
-			}
+		if (is_int($periode) && $periode >= 0 && $periode < $nbrIntervals) {
+			$requete = $debutRequete . " AND UNIX_TIMESTAMP(date) >= {$datesDebut[$periode]} AND UNIX_TIMESTAMP(date) < {$datesDebut[$periode+1]}"
+					.$finRequete;
+		} elseif ($periode == "tout"){
+			$requete = $debutRequete.$finRequete;
 		}
 		$DB_web->query($requete);
 		$moy = 0;
