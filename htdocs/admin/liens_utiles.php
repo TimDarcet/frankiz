@@ -75,7 +75,9 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		while(list($lien_id,$titre,$url,$description,$visible_ext) = $DB_web->next_row()) {
 			echo "\t\t<element id=\"$lien_id\">\n";
 				echo "\t\t\t<colonne id=\"titre\"><champ titre=\"\" id='titre_$lien_id' valeur=\"$titre\"/></colonne>\n";
-				echo "\t\t\t<colonne id=\"url\"><champ titre=\"\" id='url_$lien_id' valeur=\"$url\"/><choix type=\"radio\" titre=\"Visible\" id='visible_$lien_id' valeur=\"$visible_ext\"><option titre=\"oui\" id=\"0\"/><option titre=\"non\" id=\"1\"/></choix></colonne>\n";
+				echo "\t\t\t<colonne id=\"url\"><champ titre=\"\" id='url_$lien_id' valeur=\"$url\"/></colonne>\n";
+				echo "\t\t\t<colonne id=\"ext\"><choix type=\"radio\" titre=\"Visible\" id='visible_$lien_id' valeur=\"$visible_ext\">
+					<option titre=\"non\" id=\"0\"/><option titre=\"oui\" id=\"1\"/></choix></colonne>\n";
 				echo "\t\t\t<colonne id=\"descr\"><zonetext titre=\"\" id='descr_$lien_id'>$description</zonetext><bouton titre='Suppr' id='suppr_$lien_id'/></colonne>\n";
 			echo "\t\t</element>\n";
 		}
@@ -87,8 +89,8 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<champ id="urllien" titre="url" valeur=""/>
 		<zonetext id="explilien" titre="description"></zonetext>
 		<choix titre="Lien visible de l'extérieur" id="visiblelien" type="radio">
-						<option titre="oui" id="0"/>
-						<option titre="non" id="1"/>
+						<option titre="non" id="0"/>
+						<option titre="oui" id="1"/>
 		</choix>
 		<bouton id="rajoutlien" titre="Ajouter"/>
 	</formulaire>
