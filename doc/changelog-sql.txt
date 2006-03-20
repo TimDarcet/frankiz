@@ -108,3 +108,7 @@ ADD UNIQUE `eleve` ( `date` , `eleve_id` , `ordre` ) ;
 *Mise à jour de la table frankiz2.liens
 
 ALTER TABLE `liens` ADD `visible_ext` INT( 1 ) NOT NULL  
+
+* Mise à jour des tables de sondages pour pouvoir obtenir des résultats groupés.
+
+ALTER TABLE sondage_reponse ADD COLUMN answer_id INTEGER(10) NOT NULL DEFAULT 0;
