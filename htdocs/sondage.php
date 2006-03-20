@@ -32,7 +32,7 @@ demande_authentification(AUTH_FORT);
 //---------------------------------------------------------------------------------
 // Fonction de décodage du sondage (résultat !)
 //---------------------------------------------------------------------------------
-function resultat_sondage($string,$sondage_id) {
+function resultat_sondage($string, $sondage_id) {
 	global $DB_web ;
 	
 	$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_REQUEST['id']}'");
@@ -66,6 +66,21 @@ function resultat_sondage($string,$sondage_id) {
 		}
 	}
 }
+
+//---------------------------------------------------------------------------------
+// Génère un answer id pour le sondage
+//---------------------------------------------------------------------------------
+function answer_id($sondage_id) {
+    global $DB_web;
+
+    $DB_web->query("SELECT MAX(answer_id) + 1 AS aid FROM sondage_reponse WHERE sondage_id='$sondage_id'");
+    list($aid) = $DB_web->next_row();
+    if (!isset($aid)) {
+        $aid = 0;
+    }
+    return $aid;
+}
+
 //======================================================================================================
 
 $message = "" ;
@@ -106,7 +121,7 @@ if (!isset($_REQUEST['id'])) {
 			}
 		}
 	}
-	if($restrOki){
+	if($restrOki) {
 		$a_vote="non" ;
 		$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_REQUEST['id']}' AND eleve_id='".$_SESSION['user']->uid."'");
 		if ($DB_web->num_rows()>=1) {
@@ -138,6 +153,10 @@ if (!isset($_REQUEST['id'])) {
 						//on le marque donc comme ayant voté
 						$DB_web->query("INSERT INTO sondage_votants SET sondage_id='{$_REQUEST['id']}', eleve_id='".$_SESSION['user']->uid."'");
 						$a_vote = "oui" ;
+                        
+                        // Lock la table et stocke les résultats
+                        $DB_web->query("LOCK TABLE sondage_reponse WRITE");
+                        $aid = answer_id($_REQUEST['id']);
 						// On va lire les variables du sondage
 						foreach($_POST as $keys => $val) {
 							if ($keys != 'valid') {
@@ -150,9 +169,11 @@ if (!isset($_REQUEST['id'])) {
 									$qnum = $keys ;
 									$reponse = $val ;
 								}
-								$DB_web->query("INSERT INTO sondage_reponse SET sondage_id='{$_REQUEST['id']}', question_num='".$qnum."', reponse='$reponse' ");
+								$DB_web->query("INSERT INTO sondage_reponse SET sondage_id='{$_REQUEST['id']}', question_num='".$qnum."', reponse='$reponse', answer_id=$aid");
 							}
 						}
+                        // On rend la table
+                        $DB_web->query("UNLOCK TABLES");
 					}
 				}
 			}
