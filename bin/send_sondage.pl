@@ -14,6 +14,7 @@ use DBI();
 my       $dbh = DBI->connect("DBI:mysql:database=$mysql_frankiz2{database}:host=$mysql_frankiz2{host}",
                              "$mysql_frankiz2{user}","$mysql_frankiz2{password}",{'RaiseError'=>1});
 my $separator = "|";
+my    $in_sep = "#";
 my   $my_mail = 'web@frankiz.polytechnique.fr';
 
 # Retourne l'adresse mail du propriétaire du sondage
@@ -45,6 +46,8 @@ sub make_CSV($) {
             $last_qid = 0;
             $last_aid = $answer_id;
             $csv .= "\n";
+        } elsif ($last_qid == $question_num) {
+            $csv .= $in_sep;
         }
         while ($last_qid < $question_num) {
             $csv .= $separator;
