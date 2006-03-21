@@ -112,3 +112,10 @@ ALTER TABLE `liens` ADD `visible_ext` INT( 1 ) NOT NULL
 * Mise à jour des tables de sondages pour pouvoir obtenir des résultats groupés.
 
 ALTER TABLE sondage_reponse ADD COLUMN answer_id INTEGER(10) NOT NULL DEFAULT 0;
+
+* Mise en place d'un indicateur pour dire si les résultats du sondage ont été envoyés
+et protection verrouillage de tous les anciens sondages
+
+ALTER TABLE sondage_question ADD COLUMN sent INTEGER(1) NOT NULL DEFAULT 0;
+UPDATE sondage_question SET sent = 1;
+
