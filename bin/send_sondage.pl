@@ -51,7 +51,7 @@ sub make_CSV($) {
             $last_qid++;
         }
         $reponse =~ s/\n/<br\/>/g;
-        $reponse =~ s/|/!/g;
+        $reponse =~ s/\|/!/g;
         $csv .= $reponse;
     }
 
