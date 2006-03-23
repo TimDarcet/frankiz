@@ -67,14 +67,14 @@ if (isset($_POST['modif'])) {
 			while(list($perms,$eleve_id) = $DB_web->next_row()) {
 				$perms = str_replace("prez_".$binet_id.",","",$perms) ;
 				$DB_web->query("UPDATE compte_frankiz SET perms='$perms' WHERE eleve_id='$eleve_id'");
-				$message .= "<commentaire>$prez_login n'a plus ses droit de prez du binet $nomdubinet</commentaire>\n";
+				$message .= "<commentaire>$prez_login n'a plus ses droits de prez du binet $nomdubinet</commentaire>\n";
 			}
 		}
 		// on donne les droits au nouveau prez
 		if ($_POST['prez']!="") {
 			$DB_web->query("SELECT perms,e.eleve_id FROM compte_frankiz LEFT JOIN trombino.eleves as e USING(eleve_id) WHERE login='".$_POST['prez']."' AND (promo='$promo_temp' OR promo='$promo_temp2')" );
 			if ($DB_web->num_rows()==0) 
-				$message .= "<warning>Ce login n'existe pas ou ne s'est jamais connecté a Frankiz</warning>" ;
+				$message .= "<warning>Ce login n'existe pas ou ne s'est jamais connecté à Frankiz</warning>" ;
 			while(list($perms,$eleve_id) = $DB_web->next_row()) {
 				$perms = $perms."prez_".$binet_id."," ;
 				$DB_web->query("UPDATE compte_frankiz SET perms='$perms' WHERE eleve_id='$eleve_id'");
@@ -101,7 +101,7 @@ if (isset($_POST['modif'])) {
 			while(list($perms,$eleve_id) = $DB_web->next_row()) {
 				$perms = str_replace("webmestre_".$binet_id.",","",$perms) ;
 				$DB_web->query("UPDATE compte_frankiz SET perms='$perms' WHERE eleve_id='$eleve_id'");
-				$message .= "<commentaire>$web_login n'a plus ses droit de webmestre du binet $nomdubinet</commentaire>\n";
+				$message .= "<commentaire>$web_login n'a plus ses droits de webmestre du binet $nomdubinet</commentaire>\n";
 			}
 		}
 		// on donne les droits au nouveau webmestre
@@ -233,7 +233,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if ($exterieur==1) echo 'ext' ;?>">
 			<option id="ext" titre=""/>
 		</choix>
-		<note>Vous ne pouvez pas mettre plusieurs personnes par poste (il faut mettre les login dans les champs suivants)</note>
+		<note>Vous ne pouvez pas mettre plusieurs personnes par poste (il faut mettre les logins dans les champs suivants)</note>
 		<champ id="prez" titre="President" valeur="<?=$prez_login?>"/>
 		<champ id="webmestre" titre="Webmestre" valeur="<?=$web_login?>"/>
 
