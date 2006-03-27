@@ -169,7 +169,9 @@ if (!isset($_REQUEST['id'])) {
 									$qnum = $keys ;
 									$reponse = $val ;
 								}
-								$DB_web->query("INSERT INTO sondage_reponse SET sondage_id='{$_REQUEST['id']}', question_num='".$qnum."', reponse='$reponse', answer_id=$aid");
+                                if ($qnum > 0) {
+    								$DB_web->query("INSERT INTO sondage_reponse SET sondage_id='{$_REQUEST['id']}', question_num='".$qnum."', reponse='$reponse', answer_id=$aid");
+                                }
 							}
 						}
                         // On rend la table

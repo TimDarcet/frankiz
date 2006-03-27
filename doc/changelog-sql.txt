@@ -119,3 +119,6 @@ et protection verrouillage de tous les anciens sondages
 ALTER TABLE sondage_question ADD COLUMN sent INTEGER(1) NOT NULL DEFAULT 0;
 UPDATE sondage_question SET sent = 1;
 
+* Suppression des informations de session stockées dans la table sondage_reponse.
+
+DELETE FROM sondage_reponse WHERE question_num = 0;
