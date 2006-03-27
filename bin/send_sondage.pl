@@ -36,14 +36,14 @@ sub get_mail($) {
 sub make_CSV($) {
     my ($sondage_id) = @_;
     my          $csv = "";
-    my      $answers = $dbh->prepare("SELECT answer_id, question_num, reponse FROM sondage_reponse WHERE sondage_id='$sondage_id' ORDER BY answer_id, question_num");
+    my      $answers = $dbh->prepare("SELECT answer_id, question_num, reponse FROM sondage_reponse WHERE sondage_id='$sondage_id' AND question_num >= 1 ORDER BY answer_id, question_num");
     $answers->execute();
 
     my $last_aid = 0;
-    my $last_qid = 0;
+    my $last_qid = 1;
     while(($answer_id, $question_num, $reponse) = $answers->fetchrow_array()) {
         if ($last_aid != $answer_id) {
-            $last_qid = 0;
+            $last_qid = 1;
             $last_aid = $answer_id;
             $csv .= "\n";
         } elsif ($last_qid == $question_num) {
@@ -54,6 +54,7 @@ sub make_CSV($) {
             $last_qid++;
         }
         $reponse =~ s/\n/<br\/>/g;
+        $reponse =~ s/\r//g;
         $reponse =~ s/\|/!/g;
         $csv .= $reponse;
     }
