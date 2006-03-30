@@ -93,7 +93,7 @@ sub send_result($$$) {
 
 # Recherche les sondages pour lesquels il faut envoyer un mail et réalise cet envoie
 sub send_all() {
-    my $sondages = $dbh->prepare("SELECT sondage_id, eleve_id, titre FROM sondage_question WHERE perime < NOW() AND sent = 0");
+    my $sondages = $dbh->prepare("SELECT sondage_id, eleve_id, titre FROM sondage_question WHERE (TO_DAYS(perime) - TO_DAYS(NOW()) < 0) AND sent = 0");
     $sondages->execute();
 
     while(($sondage_id, $eleve_id, $titre) = $sondages->fetchrow_array()) {
