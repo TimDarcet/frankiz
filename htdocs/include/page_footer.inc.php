@@ -37,9 +37,17 @@ if(isset($_REQUEST['xml'])) {
 	exit;
 }
 
-// Application des feuilles de styles XSL
-$xh = xslt_create();
-xslt_set_encoding($xh, "utf8");
+// Feuille de style
+$dom_xsl = new DOMDocument ();
+$dom_xsl->load($_SESSION['skin']['skin_xsl_chemin']);
+
+// XML
+$dom_xml = new DOMDocument ();
+$dom_xml->loadXML($xml);
+
+// Transformer XSLT
+$xslt = new XSLTProcessor();
+$xslt->importStyleSheet($dom_xsl);
 
 // Les paramètres à passer à sablotron sont en UTF8
 $parameters = array (
@@ -49,10 +57,15 @@ $parameters = array (
   'heure' => date("H:i")
 );
 
-$resultat = xslt_process($xh, 'arg:/_xml', $_SESSION['skin']['skin_xsl_chemin'], NULL, array('/_xml'=>$xml),array_merge($_SESSION['skin']['skin_parametres'],$parameters));
-echo xslt_error($xh);
-xslt_free($xh);
+// Transformation
+$xslt->setParameter('', array_merge($_SESSION['skin']['skin_parametres'],$parameters));
+$resultat = $xslt->transformToXML($dom_xml);
 
+if ($resultat === false)
+{
+	echo "Erreur lors de la transformation XSLT";
+}
+	
 // Envoi la page vers le navigateur
 affiche_erreurs_php();
 echo $resultat;

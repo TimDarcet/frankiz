@@ -160,9 +160,9 @@ function header_encode($text){
 }*/ //Utile ? (kikx)
 
 class Mail {
-	var $header, $body;
-	var $from, $to, $cc, $bcc;
-	var $subject, $boundary;
+	private $header, $body;
+	private $from, $to, $cc, $bcc;
+	private $subject, $boundary;
 	
 	// Création d'un nouveau mail
 	function Mail($from, $to, $subject, $multipart=false, $cc="", $bcc="") {

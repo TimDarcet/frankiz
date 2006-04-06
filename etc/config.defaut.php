@@ -88,6 +88,9 @@
 // ATTENTION
 // Ce fichier n'est qu'une base pour écrire le config.php
 
+// Timezone
+define('TIMEZONE', "Europe/Paris");
+
 // Compte www.weather.com
 define('WEATHER_DOT_COM',"http://xoap.weather.com/weather/local/**********");
 

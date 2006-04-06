@@ -50,10 +50,16 @@ function weather_xml() {
 	
 	// traduction de la météo dans notre format
 	if(strstr($xml,"<weather")){
-		$xh = xslt_create();
-		xslt_set_encoding($xh, "utf8");
-		echo xslt_process($xh, 'arg:/_xml', BASE_LOCAL.'/include/meteo_convert.xsl', NULL, array('/_xml'=>$xml));
-		xslt_free($xh);
+		$dom_xsl = new DOMDocument ();
+		$dom_xsl->load(BASE_LOCAL.'/include/meteo_convert.xsl');
+
+		$dom_xml = new DOMDocument ();
+		$dom_xml->loadXML($xml);
+
+		$xslt = new XSLTProcessor();
+		$xslt->importStyleSheet($dom_xsl);
+
+		echo $xslt->transformToXML($dom_xml);
 	}
 }
 ?>
