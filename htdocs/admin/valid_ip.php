@@ -228,14 +228,19 @@ $DB_admin->query("UNLOCK TABLES");
 					$new_ip="129.104.";
 					$ssrezo=substr($ip0, 8, 3);
 					$new_ip.=$ssrezo.".";
-					if($ssrezo==203)
-						$new_ip.=(substr($ip0, 12, 3)+50);
-					else if($ssrezo==204)
-						$new_ip.=(substr($ip0, 12, 3)+25);
-					else if($ssrezo==214)
-						$new_ip.=(substr($ip0, 12, 3)+110);
-					else if(($ssrezo<=222)&&($ssrezo>=203)&&($ssrezo!=213))
-						$new_ip.=(substr($ip0, 12, 3)+70);
+
+					// BEM /PEM: +128
+					if($ssrezo == 203 || $ssrezo == 204 || $ssrezo == 205)
+						$new_ip .= (substr($ip0, 12, 3)+128);
+					// Foch, Fayolle, Joffre: +64
+					else if ($ssrezo >= 208 && $ssrezo <= 219)
+						$new_ip .= (substr($ip0, 12, 3)+64);
+					// Nouveaux batiments: +64
+					else if ($ssrezo >= 224 && $ssrezo <= 229)
+						$new_ip .= (substr($ip0, 12, 3)+64);
+					// Maunoury: +64
+					else if ($ssrezo >= 232 && $ssrezo <= 235)
+						$new_ip .= (substr($ip0, 12, 3)+64);
 ?>
 					<champ titre="" id="ajout_ip_<? echo $eleve_id ;?>" valeur="<? echo $new_ip ?>" /> 
 					<bouton titre="Ok" id="ok_<? echo $eleve_id ;?>" />
