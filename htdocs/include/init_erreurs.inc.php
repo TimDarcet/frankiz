@@ -51,7 +51,7 @@ $_ERREURS_PHP_NOMS = array(
 	E_USER_ERROR		=> "User error",
 	E_USER_WARNING		=> "User warning",
 	E_USER_NOTICE		=> "User notice",
-	2048				=> "Not strict"		// E_STRICT, PHP 5 uniquement
+	E_STRICT			=> "Not strict"		// E_STRICT, PHP 5 uniquement
 );
 
 // Ajout d'une erreur dans la liste des erreurs

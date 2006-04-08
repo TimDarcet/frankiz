@@ -53,6 +53,11 @@ require_once "init_erreurs.inc.php";	// TODO : mettre avant l'ouverture des conn
 
 require_once BASE_LOCAL."/../etc/config.php";
 
+// Timezone
+if (defined('TIMEZONE'))
+	date_default_timezone_set(TIMEZONE);
+else
+	date_default_timezone_set("Europe/Paris");
 
 // Gestion des erreurs dans les formulaires
 $i=1;

@@ -214,7 +214,7 @@
 	<input type="submit">
 		<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 		<xsl:attribute name="value"><xsl:value-of select="@titre"/></xsl:attribute>
-		<xsl:when test="@onClick"><xsl:attribute name="onclick"><xsl:value-of select="@onClick"/></xsl:attribute></xsl:when>
+		<xsl:choose><xsl:when test="@onClick"><xsl:attribute name="onclick"><xsl:value-of select="@onClick"/></xsl:attribute></xsl:when></xsl:choose>
 	</input>
 </xsl:template>
 

@@ -59,11 +59,17 @@ function rss_xml($site,$mode = 'complet') {
 	$p = xml_parser_create();
 	xml_parser_set_option($p, XML_OPTION_CASE_FOLDING,0);
 	if(xml_parse($p, $xml, true) && strstr($xml,"<rss")){
-		$xh = xslt_create();
-		xslt_set_encoding($xh, "utf8");
-		$params = array('mode'=>$mode);
-		echo xslt_process($xh, 'arg:/_xml', BASE_LOCAL.'/include/rss_convert.xsl', NULL, array('/_xml'=>$xml),$params);
-		xslt_free($xh);
+                $dom_xsl = new DOMDocument ();
+                $dom_xsl->load(BASE_LOCAL.'/include/rss_convert.xsl');
+
+                $dom_xml = new DOMDocument ();
+                $dom_xml->loadXML($xml);
+
+                $xslt = new XSLTProcessor();
+		$xslt->setParameter('', 'mode', $mode);
+                $xslt->importStyleSheet($dom_xsl);
+
+		echo $xslt->transformToXML($dom_xml);
 	}
 }
 ?>

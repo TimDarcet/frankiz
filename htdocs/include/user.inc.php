@@ -44,16 +44,16 @@ $_NOUVEAU_LOGIN = false;
 
 class User {
 	// description de l'utilisateur
-	var $uid;
-	var $nom;
-	var $prenom;
-	var $perms;
-	var $passwd;		// hash du mot de passe
-	var $mailhash;
-	var $cookiehash;
+	public $uid;
+	public $nom;
+	public $prenom;
+	public $perms;
+	public $passwd;		// hash du mot de passe
+	public $mailhash;
+	public $cookiehash;
 	
 	// Méthode d'authentification utilisée
-	var $methode;
+	public $methode;
 	
 	// Construit un objet à partir du login ou d'un id.
 	// On suppose que l'on est déjà connecté à la base de données

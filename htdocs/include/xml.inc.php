@@ -76,7 +76,8 @@ function xml_get_tree($file) {
 	xml_parse_into_struct($p, $data, $values);
 	xml_parser_free($p);
 
-	return xml_get_children($values, $i=0);
+	$i = 0;
+	return xml_get_children($values, $i);
 }
 
 function xml_get_child(&$v, $children=NULL) {
