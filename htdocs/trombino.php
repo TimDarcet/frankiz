@@ -243,12 +243,12 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 			// Supprime les accents
 			$nompolyorg = str_replace( "&apos;" , "" , $nom );
 			$nompolyorg    = htmlentities(strtolower(utf8_decode($nompolyorg)));
-			$nompolyorg    = preg_replace("/&(.)(acute|cedil|circ|ring|tilde|uml);/", "$1", $nompolyorg);
+			$nompolyorg    = preg_replace("/&(.)(acute|grave|cedil|circ|ring|tilde|uml);/", "$1", $nompolyorg);
 			$nompolyorg = str_replace( " " , "-" , $nompolyorg );
 			
 			$prenompolyorg = str_replace( "&apos;" , "" , $prenom );
 			$prenompolyorg    = htmlentities(strtolower(utf8_decode($prenompolyorg)));
-			$prenompolyorg    = preg_replace("/&(.)(acute|cedil|circ|ring|tilde|uml);/", "$1", $prenompolyorg);
+			$prenompolyorg    = preg_replace("/&(.)(acute|grave|cedil|circ|ring|tilde|uml);/", "$1", $prenompolyorg);
 			$prenompolyorg = str_replace( " " , "-" , $prenompolyorg );
 			
 
