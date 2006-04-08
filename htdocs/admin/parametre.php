@@ -75,7 +75,7 @@ Si vous devez créer des variables dans la table, essayez de faire qu'elles soie
 <?
 				// Cas Particuliers traité à la main
 				if ($nom=="lastpromo_ontrombino") {
-					echo $valeur." &nbsp; " ;
+					echo $valeur." &#160; " ;
 					echo "<bouton titre='Update' id='update_lastpromo_ontrombino'/>" ;
 				} else {
 				// fin des cas particuliers 
