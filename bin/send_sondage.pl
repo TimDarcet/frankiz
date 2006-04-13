@@ -54,6 +54,7 @@ sub make_CSV($) {
             $last_qid++;
         }
         $reponse =~ s/(\r?\n|\r)/<br\/>/g;
+        $reponse =~ s/&apos;/'/g;
         $reponse =~ s/\|/!/g;
         $csv .= $reponse;
     }
@@ -85,7 +86,7 @@ sub send_result($$$) {
                        "-- \n".
                        "Les Webmestres de Frankiz";
     attach $msg
-            Type    => 'text/plain; charset=utf-8',
+            Type    => 'text/plain; charset=iso-8859-15',
             Filename => 'resultats.csv',
             Data    => make_CSV($sondage_id);
     $msg->send();
@@ -93,7 +94,7 @@ sub send_result($$$) {
 
 # Recherche les sondages pour lesquels il faut envoyer un mail et réalise cet envoie
 sub send_all() {
-    my $sondages = $dbh->prepare("SELECT sondage_id, eleve_id, titre FROM sondage_question WHERE (TO_DAYS(perime) - TO_DAYS(NOW()) < 0) AND sent = 0");
+    my $sondages = $dbh->prepare("SELECT sondage_id, eleve_id, titre FROM sondage_question WHERE TO_DAYS(perime) < TO_DAYS(NOW()) AND sent = 0");
     $sondages->execute();
 
     while(($sondage_id, $eleve_id, $titre) = $sondages->fetchrow_array()) {
