@@ -47,28 +47,37 @@ $delta = 300;
 if (!file_exists($image) || @filemtime($image) < $date_rrd)
 {
 	// Appel du rrdtool
-	$rrdtool = "rrdtool graph $image --lazy --slope-mode --vertical-label 'clients' ";
+	$rrdtool = "rrdtool graph $image --lazy --vertical-label 'clients' ";
 	switch ($type)
 	{
-		case "weekly":  $rrdtool .= "--start -8d   --title 'Statistiques xNet (une semaine)' "; break;
-		case "monthly": $rrdtool .= "--start -36d  --title 'Statistiques xNet (un mois)' "; break;
-		case "yearly":  $rrdtool .= "--start -396d --title 'Statistiques xNet (un an)' "; break;
-		default:	$rrdtool .= "--start -30h  --title 'Statistiques xNet (24 heures)' "; break;
+		case "weekly":
+			$rrdtool .= "--start -8d   --title 'Statistiques xNet (une semaine)' ";
+			break;
+		case "monthly":
+			$rrdtool .= "--start -36d  --title 'Statistiques xNet (un mois)' ";
+			break;
+		case "yearly":
+			$rrdtool .= "--start -396d --title 'Statistiques xNet (un an)' ";
+			break;
+		default:
+			$rrdtool .= "--slope-mode ";
+			$rrdtool .= "--start -30h  --title 'Statistiques xNet (24 heures)' ";
+			break;
 	}
 	$rrdtool .= "DEF:clients=$rrd:clients:AVERAGE ";
 	$rrdtool .= "DEF:maxclients=$rrd:clients:MAX ";
 	if ($type == "daily")
 	{
 		$rrdtool .= "VDEF:last=clients,LAST ";
-		$rrdtool .= "GPRINT:last:'".
-			xnet_prepare_text("Connect&eacute;s\\: %4.0lf%S clients\\l' ");
+		$rrdtool .= "GPRINT:last:'".xnet_prepare_text("Connect&eacute;s\\: %4.0lf%S clients      ' ");
+		$rrdtool .= "AREA:clients#00ff00:'".xnet_prepare_text("clients connect&eacute;s")."' ";
 	}
-	$rrdtool .= "VDEF:max=clients,MAXIMUM ";
-	$rrdtool .= "GPRINT:max:'Maximum\\:   %4.0lf%S clients' ";
-	$rrdtool .= "AREA:clients#00ff00 ";
-	if ($type != "daily")
+	else
 	{
-		$rrdtool .= "LINE1:maxclients#0000ff ";
+		$rrdtool .= "VDEF:max=clients,MAXIMUM ";
+		$rrdtool .= "GPRINT:max:'Maximum\\:   %4.0lf%S clients      ' ";
+		$rrdtool .= "AREA:clients#00ff00:'moyenne' ";
+		$rrdtool .= "LINE1:maxclients#0000ff:maximum ";
 	}
 
 	$lines = array();
