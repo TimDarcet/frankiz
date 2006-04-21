@@ -74,7 +74,7 @@ if (!file_exists($image) || @filemtime($image) < $date_rrd)
 	}
 	else
 	{
-		$rrdtool .= "VDEF:max=clients,MAXIMUM ";
+		$rrdtool .= "VDEF:max=maxclients,MAXIMUM ";
 		$rrdtool .= "GPRINT:max:'Maximum\\:   %4.0lf%S clients      ' ";
 		$rrdtool .= "AREA:clients#00ff00:'moyenne' ";
 		$rrdtool .= "LINE1:maxclients#0000ff:maximum ";
