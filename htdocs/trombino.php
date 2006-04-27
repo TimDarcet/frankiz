@@ -214,7 +214,7 @@ if(isset($_REQUEST['chercher'])||isset($_REQUEST['sections'])||isset($_REQUEST['
 					// Toutes les macs qui ont été associées à cette ip
 					// On ne prend en compte que les macs qui correspondent à la période où la promo est sur le campus
 					$DB_admin->push_result();
-					$DB_admin->query("SELECT mac,ts,vendor FROM arpwatch_log LEFT JOIN arpwatch_vendors ON mac like CONCAT(debut_mac,':%') WHERE ip = '$ip' and ts > '".($promo+1)."-05-01' GROUP BY mac, ts ORDER BY ts");	
+					$DB_admin->query("SELECT mac,ts,vendor FROM arpwatch_log LEFT JOIN arpwatch_vendors ON mac like CONCAT(debut_mac,':%') WHERE ip = '$ip' and ts > '".($promo+1)."-04-15' GROUP BY mac, ts ORDER BY ts");	
 					while(list($mac, $ts,$vendor) = $DB_admin->next_row()) {
 						if(!empty($mac)) {
 							if(empty($vendor)) $vendor = "<inconnu>";
