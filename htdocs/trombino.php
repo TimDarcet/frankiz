@@ -246,21 +246,19 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 		if (isset($_GET['jeveuxvoirlesfillesdelecole'])){
 			$where .= (empty($where) ? '' : ' AND')." sexe = '1'";
 		}
-
 	}
 
 	switch ($typeRecherchePromo) {
 		case RECHERCHE_HABITE_SUR_LE_PLATAL:
-			$where .= ' AND eleves.piece_id IS NOT NULL';
+			$where .= (empty($where) ? '' : ' AND').' eleves.piece_id IS NOT NULL';
 			break;
 		case RECHERCHE_UNE_SEULE_PROMO:
-			$where .= " AND promo = '{$_REQUEST['promo']}'";
+			$where .= (empty($where) ? '' : ' AND')." promo = '{$_REQUEST['promo']}'";
 			break;
 		case RECHERCHE_TOUTES_PROMOS:
-			$where .= ' AND true';
 			break;
 		case RECHERCHE_PROMOS_ACTUELLES:
-			$where .= " AND ((promo = $promoTOS) OR (promo = $promoTOS - 1))";
+			$where .= (empty($where) ? '' : ' AND')." ((promo = $promoTOS) OR (promo = $promoTOS - 1))";
 			break;
 		default:
 			break;
@@ -401,8 +399,9 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 
 <?php
 			$DB_trombino->query("SELECT DISTINCT promo FROM eleves WHERE promo != '0000' ORDER BY promo DESC");
-			while( list($promo) = $DB_trombino->next_row() )
+			while (list($promo) = $DB_trombino->next_row()) {
 				echo "\t\t\t<option titre=\"$promo\" id=\"$promo\"/>\n";
+			}
 ?>
 
 		</choix>
