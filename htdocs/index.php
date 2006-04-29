@@ -108,7 +108,7 @@ while(list($id,$date,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$pr
 			echo "<image source=\"".DATA_DIR_URL."annonces/$id\" texte=\"logo\"/>\n";
 		echo wikiVersXML($contenu);
 		if($nom=="Lemarchand") echo "<eleve nom=\"\" prenom=\"\" promo=\"\" surnom=\"GeneK\" mail=\"\"/>\n";
-		else echo "<eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"$promo\" surnom=\"$promo\" mail=\"$mail\"/>\n";
+		else echo "<eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"$promo\" surnom=\"$surnom\" mail=\"$mail\"/>\n";
 		if(est_authentifie(AUTH_MINIMUM))
 			echo "<lien url=\"?lu=$id#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
 		echo "</annonce>";
