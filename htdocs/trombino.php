@@ -389,11 +389,11 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 // Affichage du formulaire de recherche
 ?>
 	<formulaire id="trombino" action="trombino.php">
-		<champ titre="Nom" id="nom" valeur="" />
-		<champ titre="Prénom" id="prenom" valeur="" />
-		<champ titre="Surnom" id="surnom" valeur="" />
+		<champ titre="Nom" id="nom" valeur="<?php echo empty($_REQUEST['nom']) ? '' : $_REQUEST['nom']; ?>" />
+		<champ titre="Prénom" id="prenom" valeur="<?php echo empty($_REQUEST['prenom']) ? '' : $_REQUEST['prenom']; ?>" />
+		<champ titre="Surnom" id="surnom" valeur="<?php echo empty($_REQUEST['surnom']) ? '' : $_REQUEST['surnom']; ?>" />
 
-		<choix titre="Promo" id="promo" type="combo" valeur="">
+		<choix titre="Promo" id="promo" type="combo" valeur="<?php echo empty($_REQUEST['promo']) ? '' : $_REQUEST['promo']; ?>">
 			<option titre="Sur le campus" id=""/>
 			<option titre="Toutes" id="toutes" />
 
@@ -406,7 +406,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 
 		</choix>
 
-		<choix titre="Section" id="section" type="combo" valeur="">
+		<choix titre="Section" id="section" type="combo" valeur="<?php echo empty($_REQUEST['section']) ? '' : $_REQUEST['section']; ?>">
 			<option titre="Toutes" id=""/>
 <?php
 			$DB_trombino->query("SELECT section_id,nom FROM sections ORDER BY nom ASC");
@@ -415,7 +415,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 ?>
 		</choix>
 
-		<choix titre="Binet" id="binet" type="combo" valeur="">
+		<choix titre="Binet" id="binet" type="combo" valeur="<?php echo empty($_REQUEST['binet']) ? '' : $_REQUEST['binet']; ?>">
 			<option titre="Tous" id=""/>
 <?php
 			$DB_trombino->query("SELECT binet_id,nom FROM binets ORDER BY nom ASC");
@@ -424,15 +424,15 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 ?>
 		</choix>
 
-		<champ titre="Login poly" id="loginpoly" valeur="" />
-		<champ titre="Téléphone" id="phone" valeur="" />
-		<champ titre="Casert" id="casert" valeur="" />
+		<champ titre="Login poly" id="loginpoly" valeur="<?php echo empty($_REQUEST['loginpoly']) ? '' : $_REQUEST['loginpoly']; ?>" />
+		<champ titre="Téléphone" id="phone" valeur="<?php echo empty($_REQUEST['phone']) ? '' : $_REQUEST['phone']; ?>" />
+		<champ titre="Casert" id="casert" valeur="<?php echo empty($_REQUEST['casert']) ? '' : $_REQUEST['casert']; ?>" />
 
 <? if($tol_admin){ ?>
-		<champ titre="Prise" id="prise" valeur="" />
-		<champ titre="IP" id="ip" valeur="" />
-		<champ titre="Nom Rezix" id="dns" valeur="" />
-		<champ titre="Mac" id="mac" valeur="" />
+		<champ titre="Prise" id="prise" valeur="<?php echo empty($_REQUEST['prise']) ? '' : $_REQUEST['prise']; ?>" />
+		<champ titre="IP" id="ip" valeur="<?php echo empty($_REQUEST['ip']) ? '' : $_REQUEST['ip']; ?>" />
+		<champ titre="Nom Rezix" id="dns" valeur="<?php echo empty($_REQUEST['dns']) ? '' : $_REQUEST['dns']; ?>" />
+		<champ titre="Mac" id="mac" valeur="<?php echo empty($_REQUEST['mac']) ? '' : $_REQUEST['mac']; ?>" />
 		<choix titre="Tol Admin" id="admin" type="checkbox" valeur="<? if(isset($_REQUEST['toladmin'])) echo 'toladmin' ;?>">
 				<option id="toladmin" titre=""/>
 		</choix>
