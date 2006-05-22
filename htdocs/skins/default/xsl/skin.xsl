@@ -99,13 +99,14 @@
 					<xsl:apply-templates select="module[@id='liens_contacts']"/>
 					<xsl:apply-templates select="module[@id='liens_ecole']"/>
 					<xsl:apply-templates select="module[@id='stats']"/>
-					<xsl:apply-templates select="module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id='liens_profil' and @id!='activites' and @id!='liens_navigation' and @id!='liens_perso' and @id!='anniversaires' and @id!='liste_css' and @id!='lien_tol' and @id='fetes']"/>
+					<xsl:apply-templates select="module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @idi!='liens_profil' and @id!='activites' and @id!='liens_navigation' and @id!='liens_perso' and @id!='anniversaires' and @id!='liste_css' and @id!='lien_tol' and @id!='fetes' and @id !='postit']"/>
 				</div><!--fin #droite -->
 			
 				<div id="centre">
 					<xsl:apply-templates select="module[@id='virus']"/>
 					<xsl:if test="/frankiz/page[@id='annonces' or @id='accueil']">
 						<xsl:apply-templates select="module[@id='anniversaires']"/>
+						<xsl:apply-templates select="module[@id='postit']"/>
 					</xsl:if>
 					<xsl:apply-templates select="page[@id='annonces']" mode="sommaire"/>
 					<xsl:apply-templates select="page[@id='annonces']" mode="complet"/>
@@ -166,4 +167,18 @@
 	</xsl:if>
 </xsl:template>
 
+<xsl:template match="module[@id='postit']">
+	<xsl:if test="not (boolean(@visible))">
+		<dl id="autres" class="boite">
+			<dt class="titre">
+				<span class="droitehaut"><xsl:text> </xsl:text></span>
+				<span>Post-it : <xsl:value-of select="@titre"/></span>	
+			</dt>
+			<dd  class="contenu">
+				<xsl:apply-templates/>
+			</dd>
+			<dd class="bas"><span class="droitebas"><xsl:text> </xsl:text></span></dd>
+		</dl>
+	</xsl:if>
+</xsl:template>
 </xsl:stylesheet>

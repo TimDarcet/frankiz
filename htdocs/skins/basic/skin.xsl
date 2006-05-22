@@ -60,7 +60,8 @@
 				
 			</td></tr><tr><td id="modules">
 				<table cellspacing="0" cellpadding="0">
-					<xsl:apply-templates select="/frankiz/module"/>
+					<xsl:apply-templates select="/frankiz/module[@id='postit']"/>
+					<xsl:apply-templates select="/frankiz/module[@id!='postit']"/>
 				</table>
 				
 			</td><td id="contenu">

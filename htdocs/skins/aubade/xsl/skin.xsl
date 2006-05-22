@@ -88,6 +88,7 @@
 			<div class="fkz_centre">
 				<xsl:apply-templates select="frankiz/module[@id='anniversaires']"/>
 				<xsl:apply-templates select="frankiz/module[@id='virus']"/>
+				<xsl:apply-templates select="frankiz/module[@id='postit']"/>
 				<xsl:apply-templates select="frankiz/page[@id='annonces']" mode="sommaire"/>
 				<xsl:apply-templates select="frankiz/page[@id='annonces']" mode="complet"/>
 				<xsl:apply-templates select="frankiz/page[@id='trombino']"/>
@@ -110,7 +111,7 @@
 				<xsl:apply-templates select="frankiz/module[@id='qdj']"/>
 				<xsl:apply-templates select="frankiz/module[@id='qdj_hier']"/>
 				<xsl:apply-templates select="frankiz/module[@id='meteo']"/>
-				<xsl:apply-templates select="frankiz/module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id!='activites' and @id!='liens_navigation' and @id!='liens_profil' and @id!='liens_perso' and @id!='anniversaires' and @id!='liste_css' and @id!='lien_tol' and @id!='virus']"/>
+				<xsl:apply-templates select="frankiz/module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id!='activites' and @id!='liens_navigation' and @id!='liens_profil' and @id!='liens_perso' and @id!='anniversaires' and @id!='liste_css' and @id!='lien_tol' and @id!='virus' and @id!='postit']"/>
 				<xsl:if test="count(frankiz/module[@id!='stats' and @id!='liens_ecole' and @id!='activites' and @id!='liens_navigation' and @id!='liens_contacts' and @id!='anniversaires' and @id!='liste_css'])">
 					<p class="valid">
 						<a href="http://validator.w3.org/check?uri=referer">
@@ -210,7 +211,27 @@
         </div>
     </xsl:if>
 </xsl:template>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
 
+
+<xsl:template match="module[@id='postit']">
+	<xsl:param name="n" />
+	<div class="fkz_annonces" id="postit">
+		<div class="fkz_annonces_titre">
+            <span class="lecon">Le</span><span class="lecon_cedille">ç</span><span class="lecon">on n°0</span><span class="lecon_cedille"> :</span>
+			<b>
+				<span>
+					<xsl:attribute name="class">fkz_annonces_important</xsl:attribute>
+					<xsl:text> </xsl:text>
+				</span>
+				<xsl:text> </xsl:text>
+				<span class="fkz_annonces_titre"><xsl:value-of select="@titre"/></span>
+			</b>
+		</div>
+		<div class="fkz_annonces_corps">
+			<xsl:apply-templates/>
+
+		</div>
+	</div>
+</xsl:template>
 
 </xsl:stylesheet>
