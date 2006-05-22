@@ -24,7 +24,7 @@ i	Affichage du module "Post-it"
 require_once "include/wiki.inc.php";
 
 // Vérification des droits
-if (est_interne() && est_authentifie(AUTH_MINIMUM)) {
+if (est_authentifie(AUTH_MINIMUM)) {
 
 
 
