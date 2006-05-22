@@ -35,6 +35,7 @@ function get_categorie($en_haut,$stamp,$perime) {
 
 // génération de la page
 require "include/page_header.inc.php";
+require "modules/postit.php";
 echo "<page id='annonces' titre='Frankiz : annonces'>\n";
 ?>
 

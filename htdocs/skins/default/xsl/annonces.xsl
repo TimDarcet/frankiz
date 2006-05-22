@@ -168,7 +168,7 @@
 						<xsl:if test="@visible='non'">
 							<xsl:text>?nonlu=</xsl:text><xsl:value-of select="@id"/>
 						</xsl:if>
-						<xsl:text>#a</xsl:text><xsl:value-of select="@id"/>
+						<xsl:text>#annonce_</xsl:text><xsl:value-of select="@id"/>
 					</xsl:attribute>
 					<xsl:value-of select="@titre"/>
 				</a>

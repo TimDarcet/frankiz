@@ -290,6 +290,16 @@ $permissions_user = $_SESSION['user']->perms ;
 		$nb = $DB_valid->num_rows() ;
 		echo "<lien titre=\"Valider les mails promos ($nb)\" url=\"admin/valid_mailpromo.php\"/><br/>";
 	}
+
+	//
+	// Pour le module 'Post-it'
+	//======================================
+	if (verifie_permission('admin')||verifie_permission('web')||verifie_permission('postit')) {
+?>
+		<h2>Gestion du module Post-it</h2>
+		<lien titre="Gérer le module Post-it" url="gestion/module_postit.php"/><br/>
+<?php
+	}
 ?>
 
 </page>

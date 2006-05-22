@@ -121,7 +121,7 @@ function liste_modules() {
 		"lien_tol"			=> "Lien rapide vers le tol",
 		"rss"				=> "News Extérieures",
 		"liens_perso"		=> "Liens Perso",
-		"annonce_virus"	=> "Attention Virus !" 
+		"annonce_virus"	=> "Attention Virus !"
 		);
 }/*
 	Renvoi la liste des droits disponibles sous la forme d'une liste :
@@ -142,7 +142,8 @@ function liste_droits() {
 		"support"	=>	"support@windows",
 		"kes"		=>	"(EXT) Kessiers (mail promo)",
 		"bob"		=>	"(EXT) BobarMen",
-		"affiches"		=>	"(EXT) Affiches (ex BRC...)"
+		"affiches"	=>	"(EXT) Affiches (ex BRC...)",
+		"postit"	=>	"(EXT) Postit (droit temporaire, pour le .gamma par expl)"
 		);
 }
 
@@ -341,4 +342,39 @@ function log_admin($id,$log) {
 	$log2 = str_replace(array('&','<','>','\'','\"','\\'),array('&amp;','&lt;','&gt;','&apos;','&quot;','&#92;'),$log);
 	$DB_admin->query("INSERT INTO log_admin SET log='$log2', id_admin='$id'") ;
 }
+
+
+// pour gérer les échappements de chaines de caractères comme il faut en fonction de magic_quotes_gpc et magic_quotes_runtime
+function gpc_stripslashes($var) {
+	if (is_array($var)) {
+		reset($var);
+		while (list($key,$value) = each($var)) {
+			$var[$key] = gpc_stripslashes($value);
+		}
+	} elseif (ini_get('magic_quotes_sybase')) $var = str_replace('\'\'','\'',$var);
+	elseif (get_magic_quotes_gpc()) $var = stripslashes($var);
+	return $var;
+}
+
+function mysql_addslashes($var,$gpc=true) {
+	if (is_array($var)) {
+		reset($var);
+		while (list($key,$value) = each($var)) {
+			$var[$key] = mysql_addslashes($value);
+		}
+	} elseif ($gpc) $var = mysql_real_escape_string(gpc_stripslashes($var));
+	else $var = mysql_real_escape_string($var);
+	return $var;
+}
+
+function extdata_stripslashes($var) {
+	if (is_array($var)) {
+		reset($var);
+		while (list($key,$value) = each($var)) {
+			$var[$key] = extdata_stripslashes($value);
+		}
+	} elseif (get_magic_quotes_runtime()) $var = stripslashes($var);
+	return $var;
+}
+
 ?>

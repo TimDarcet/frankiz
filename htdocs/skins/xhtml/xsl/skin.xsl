@@ -90,7 +90,7 @@
 				<xsl:apply-templates select="frankiz/module[@id='qdj']"/>
 				<xsl:apply-templates select="frankiz/module[@id='qdj_hier']"/>
 				<xsl:apply-templates select="frankiz/module[@id='meteo']"/>
-				<xsl:apply-templates select="frankiz/module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id!='activites' and @id!='liens_navigation' and @id!='liens_profil' and @id!='liens_perso' and @id!='anniversaires' and @id!='fetes' and @id!='liste_css' and @id!='lien_tol' and @id!='sondages' and @id!='virus']"/>
+				<xsl:apply-templates select="frankiz/module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id!='activites' and @id!='liens_navigation' and @id!='liens_profil' and @id!='liens_perso' and @id!='anniversaires' and @id!='fetes' and @id!='liste_css' and @id!='lien_tol' and @id!='sondages' and @id!='virus'] and @id!='postit'"/>
 				<xsl:if test="count(frankiz/module[@id!='stats' and @id!='liens_ecole' and @id!='activites' and @id!='liens_navigation' and @id!='liens_contacts' and @id!='anniversaires' and @id!='liste_css'])">
 					<p class="valid">
 						<a href="http://validator.w3.org/check?uri=referer">
@@ -116,6 +116,7 @@
 			<div class="fkz_centre">
 				<xsl:apply-templates select="frankiz/module[@id='anniversaires']"/>
 				<xsl:apply-templates select="frankiz/module[@id='virus']"/>
+				<xsl:apply-templates select="frankiz/module[@id='postit']"/>
 				<xsl:apply-templates select="frankiz/page[@id='annonces']" mode="sommaire"/>
 				<xsl:apply-templates select="frankiz/page[@id='annonces']" mode="complet"/>
 				<xsl:apply-templates select="frankiz/page[@id='trombino']"/>
@@ -237,4 +238,29 @@
 	</xsl:if>
 </xsl:template>
 
+
+
+<xsl:template match="module[@id='postit']">
+	<div class="fkz_annonces_1"><div class="fkz_annonces_2">
+	<div class="fkz_annonces_3"><div class="fkz_annonces_4">
+	<div class="fkz_annonces_5"><div class="fkz_annonces_6">
+	<div class="fkz_annonces">
+		<xsl:attribute name="id"><xsl:value-of select="concat('annonce_',@id)"/></xsl:attribute>
+		<div class="fkz_annonces_titre">
+			<b>
+				<span>
+					<xsl:attribute name="class">fkz_annonces_important</xsl:attribute>
+					<xsl:text> </xsl:text>
+				</span>
+				<xsl:text> </xsl:text>
+				<span class="fkz_annonces_titre">Post-it : <xsl:value-of select="@titre"/></span>
+			</b>
+		</div>
+		<div class="fkz_annonces_corps">
+			<xsl:apply-templates/>
+		</div>
+	</div>
+	</div></div></div></div></div></div>
+	<br/>
+</xsl:template>
 </xsl:stylesheet>
