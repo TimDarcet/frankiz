@@ -149,12 +149,28 @@ $postit_dir = BASE_DATA."postit/";
 		if (file_exists($postit_dir."info.txt")) {
 			unlink($postit_dir."info.txt");
 		}
-		file_put_contents($postit_dir."info.txt",$_POST["titre"]."\n".$_SESSION['user']->uid);
+		$eleve_id = $_SESSION['user']->uid;
+		file_put_contents($postit_dir."info.txt",$_POST["titre"]."\n".$eleve_id);
 		
 		if (file_exists($postit_dir."contenu.txt")) {
 			unlink($postit_dir."contenu.txt");
 		}
 		file_put_contents($postit_dir."contenu.txt",$_POST["contenu"]);
+
+		$DB_web->query("DELETE FROM annonces_lues WHERE annonce_id=1;");
+
+		
+		$DB_trombino->query("SELECT nom,prenom,surnom,promo FROM eleves WHERE eleve_id='".$eleve_id."';");
+		list($nom,$prenom,$surnom,$promo) = extdata_stripslashes($DB_trombino->next_row());
+		$mailcontenu = "<strong>Bonjour,</strong><br/><br/>".
+			"$prenom $nom a modifié le module Post-it : <br/>".
+			$_POST['titre']."<br/><br/>".
+			"Cette modification entraînant la réapparition du module Post-it chez tous les élèves qui l'auraient effacés, ".
+			"veuillez vous assurer qu'il s'agit bien d'une modification légitime et non d'un abus ".
+			"auquel cas un retrait du droit attribué à $prenom $nom peut être envisagé.<br/><br/>".
+			"Cordialement,<br/>".
+			"Le Webmestre de Frankiz<br>";
+		couriel(WEBMESTRE_ID,"[Frankiz] Modification du module Post-it",$mailcontenu,$eleve_id);
 
 	?>
 		<commentaire>Edition effectuée</commentaire>
