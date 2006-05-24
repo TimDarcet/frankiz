@@ -35,7 +35,6 @@ function get_categorie($en_haut,$stamp,$perime) {
 
 // génération de la page
 require "include/page_header.inc.php";
-require "modules/postit.php";
 echo "<page id='annonces' titre='Frankiz : annonces'>\n";
 ?>
 
@@ -79,6 +78,10 @@ if (!est_interne() && !est_authentifie(AUTH_MINIMUM))  {
 	
 	$annonces_lues1=" LEFT JOIN annonces_lues ON annonces_lues.annonce_id=annonces.annonce_id AND annonces_lues.eleve_id='{$_SESSION['user']->uid}'" ;
 	$annonces_lues2=" ISNULL(annonces_lues.annonce_id) ";
+	
+// C'est ici qu'on inclue le module postit
+require "modules/postit.php";
+
 }
 
 // Affichage des annonces
