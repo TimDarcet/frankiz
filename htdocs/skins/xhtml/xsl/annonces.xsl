@@ -146,7 +146,7 @@
 	</div>
 </xsl:template>
 
-<xsl:template match="eleve[name(..)='annonce' or ../@id='postit']">
+<xsl:template match="eleve[name(..)='annonce']">
 	<p class="fkz_signature">
 		<xsl:choose>
 			<xsl:when test="@surnom != ''">
