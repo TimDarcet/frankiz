@@ -42,11 +42,17 @@ $binet_id = $_REQUEST['id'] ;
 $DB_trombino->query("SELECT nom FROM binets WHERE binet_id=".$_REQUEST['id']);
 list($nomdubinet) = $DB_trombino->next_row() ;
 
+// ruse pour supprimer les droits avant de supprimer le binet
+if (isset($_POST['suppr'])) {
+	$_POST['prez'] = "";
+	$_POST['webmestre'] = "";
+}
 	
-	// On modifie un binet
-	//==========================
-	
-if (isset($_POST['modif'])) {
+// On modifie un binet
+//==========================
+
+// d'abord juste les droits, que l'on supprime aussi dans le cas de la suppression du binet
+if (isset($_POST['modif']) || isset($_POST['suppr'])) {
 
 	$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
 	list($promo_temp) = $DB_web->next_row() ;
@@ -118,7 +124,10 @@ if (isset($_POST['modif'])) {
 	}
 		
 
+}
 
+// autres modifs (qu'il est inutile de faire dans le cas de la suppression d'un binet
+if (isset($_POST['modif'])) {
 
 
 	if ((isset($_POST['ext']))&&($_POST['ext']=='on')) {
