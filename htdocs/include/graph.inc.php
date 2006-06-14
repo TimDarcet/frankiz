@@ -102,10 +102,11 @@ class Graph
 		$row = $this->rows[$nom];
 		$width = $this->width($pos);	
 
+		$textpos = $width + 7 - (strlen($nom) * 3);
 	    if($pos%2 != 0 && $this->alternate) {
-    	    ImageString ($this->im, 2, $width - 25, $this->hauteur - 48, $nom, $this->noir);
+    	    ImageString ($this->im, 2, $textpos, $this->hauteur - 48, $nom, $this->noir);
     	} else {
-			ImageString ($this->im, 2, $width - 25, $this->hauteur - 28, $nom, $this->noir);
+			ImageString ($this->im, 2, $textpos, $this->hauteur - 28, $nom, $this->noir);
 		}
 
         $base    = $this->hauteur - $padding - 1;
@@ -125,7 +126,7 @@ class Graph
         if($oranje != 0) {
 			ImageFilledRectangle($this->im, $width, $base - $oranje + 1, $width + 14, $base, $this->orange);
 		}
-		ImageString($this->im, 2, $width, min($this->hauteur - $taille - 70, $this->hauteur - 21), $row['total'], $this->noir);
+		ImageString($this->im, 2, $width, min($this->hauteur - $taille - $padding, $this->hauteur) - 21, $row['total'], $this->noir);
 	}
 
 	/** Réalise le dessin à partir des informations en stock

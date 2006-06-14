@@ -14,15 +14,20 @@ if(!cache_recuperer($cache_id, time()-600)) {
 		exit;
     }
     
-	$DB_xnet->query('SELECT p1.name AS clients, COUNT(p2.jone) AS users, SUM(p2.rouje) AS roujes, SUM(p2.jone) AS jones, (COUNT(p2.jone) - SUM(p2.rouje) - SUM(p2.jone)) AS oranjes
-		               FROM software AS p1
+	$DB_xnet->query('SELECT s.name AS clients,
+							SUM(c.jone) AS jones, 
+							SUM(c.rouje) AS roujes, 
+							(COUNT(c.jone) - SUM(c.rouje) - SUM(c.jone)) AS oranjes
+		               FROM software AS s
 					        RIGHT JOIN
-							    (SELECT if(((options >> 9) & 3) = 2, 1, 0) AS rouje, if(((options >> 9) & 3) = 3, 1, 0) AS jone, version
+							    (SELECT IF(((options >> 9) & 3) = 2, 1, 0) AS rouje, 
+								        IF(((options >> 9) & 3) = 3, 1, 0) AS jone, 
+										version
 								   FROM clients) 
-								AS p2 USING(version)
-				   GROUP BY p1.version');
+								AS c USING(version)
+				   GROUP BY s.version');
 
-	while(list($nom, $nb, $roujes, $jones, $oranjes) = $DB_xnet->next_row()){
+	while(list($nom, $roujes, $jones, $oranjes) = $DB_xnet->next_row()){
 		if($nom != '') {
 			$graph->addRow($jones, $roujes, $oranjes, $nom);
 		}
@@ -30,6 +35,6 @@ if(!cache_recuperer($cache_id, time()-600)) {
 
 	$graph->run();
 
-//	cache_sauver($cache_id);
+	cache_sauver($cache_id);
 }
 ?>
