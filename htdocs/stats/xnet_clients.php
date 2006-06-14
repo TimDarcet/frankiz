@@ -22,7 +22,7 @@ $max_os = max($os);
 
 // on définit la largeur et la hauteur de notre image
 $largeur = 550;
-$hauteur = 610;
+$hauteur = 590;
 
 // on crée une ressource pour notre image qui aura comme largeur $largeur et $hauteur comme hauteur (on place également un or die si la création se passait mal afin d'avoir un petit message d'alerte)
 $im = @ImageCreate ($largeur, $hauteur) or die ("Erreur lors de la création de l'image");
@@ -61,11 +61,11 @@ $i=0;
 foreach ($os as $nom => $nombre) {
 		$i++;
 		// on calcule la hauteur du baton
-		$hauteurImageRectangle = ceil((($nombre*($hauteur-60))/$max_os));
-		imagestring($im, 2, $i*$largeur/(count($os)+1),min($hauteur-$hauteurImageRectangle-60,$hauteur-71), $nombre, $noir);
-		ImageFilledRectangle ($im, $i*$largeur/(count($os)+1), $hauteur-$hauteurImageRectangle-40, $i*$largeur/(count($os)+1)+14, $hauteur-51, $noir);
-		ImageFilledRectangle ($im, $i*$largeur/(count($os)+1)+2, $hauteur-$hauteurImageRectangle+2-40, $i*$largeur/(count($os)+1)+12, $hauteur-51-1, $bleu_fonce);
-		ImageFilledRectangle ($im, $i*$largeur/(count($os)+1)+6, $hauteur-$hauteurImageRectangle+2-40, $i*$largeur/(count($os)+1)+8, $hauteur-51-1, $bleu_clair);
+		$hauteurImageRectangle = ceil((($nombre*($hauteur-80))/$max_os));
+		ImageFilledRectangle ($im, $i*$largeur/(count($os)+1), $hauteur-$hauteurImageRectangle-60, $i*$largeur/(count($os)+1)+14, $hauteur-51, $noir);
+		ImageFilledRectangle ($im, $i*$largeur/(count($os)+1)+2, $hauteur-$hauteurImageRectangle+2-60, $i*$largeur/(count($os)+1)+12, $hauteur-51-1, $bleu_fonce);
+		ImageFilledRectangle ($im, $i*$largeur/(count($os)+1)+6, $hauteur-$hauteurImageRectangle+2-60, $i*$largeur/(count($os)+1)+8, $hauteur-51-1, $bleu_clair);
+        imagestring($im, 2, $i*$largeur/(count($os)+1),min($hauteur-$hauteurImageRectangle-80,$hauteur-21), $nombre, $noir);
 }
 
 // on dessine le tout
