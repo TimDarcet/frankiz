@@ -219,7 +219,7 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 	<?
 	echo $message2 ;
 	?>
-	<note> Si tu ne souhaites pas que ton binet apparaisse dans la liste des binets sur le site, alors supprime le champs Http</note>
+	<note> Si tu ne souhaites pas que ton binet apparaisse dans la liste des binets sur le site, alors supprime le champ Http</note>
 		<formulaire id="binet_web" titre="<? echo $nom?>" action="gestion/binet.php?binet=<?=$_REQUEST['binet']?>">
 			<hidden id="id" titre="" valeur="<? echo $id?>"/>
 			<choix titre="Catégorie" id="catego" type="combo" valeur="<?=$cat_id?>">
