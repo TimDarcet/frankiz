@@ -41,7 +41,7 @@ if(!verifie_permission('admin')&&!verifie_permission('kes'))
 // Procedure d'envoie de masse
 //
 $DB_valid->query("SELECT titre, mail FROM valid_mailpromo WHERE mail_id={$_REQUEST['id']}");
-list($titre, $mail) = $DB_valid->next_row() ;
+list($titre, $mail) = extdata_stripslashes($DB_valid->next_row());
 
 $log = "" ;
 $cnt = 0 ;
@@ -54,26 +54,25 @@ if ($_REQUEST['promo'] == '') {
 	$titre_mail="Mail BiPromo :" ;
 } else {
 	$titre_mail="Mail Promo :" ;
-	$to = " promo=".$_REQUEST['promo'] ;
+	$to = " promo=".intval($_REQUEST['promo']);
 }
 
 $mail_contenu = wikiVersXML($mail,true)  ; // On met true pour dire que c'est du HTML qu'on récupere
-
 //
 // Envoi du mail à proprement parler ...
 //-------------------------------------------------------------------------
 
 	$DB_trombino->query("SELECT eleve_id,nom,prenom,promo FROM eleves WHERE ".$to." ORDER BY eleve_id ASC") ;
-	
+
 	// On crée le fichier de log qui va bien
-	$fich_log = BASE_DATA."mailpromo/mail.log.{$_REQUEST['id']}"; 
+	$fich_log = BASE_DATA."mailpromo/mail.log".intval($_REQUEST['id']); 
 	touch($fich_log) ;
 	
 	//$from = str_replace("&gt;",">",str_replace("&lt;","<",$_REQUEST['sender'])) ;
 	//echo base64_decode($_REQUEST['sender'])."<br>" ;
-	$from = "=?UTF-8?b?".base64_encode(html_entity_decode(base64_decode($_REQUEST['sendername'])))."?= <".html_entity_decode(base64_decode($_REQUEST['sendermail'])).">" ; 
-	exec("echo \"".$mail_contenu."\" >>".$fich_log) ;
-	while(list($eleve_id,$nom,$prenom,$promo) = $DB_trombino->next_row() ) {
+	$from = "=?UTF-8?b?".base64_encode(html_entity_decode(base64_decode(gpc_stripslashes($_REQUEST['sendername']))))."?= <".html_entity_decode(base64_decode(gpc_stripslashes($_REQUEST['sendermail']))).">" ; 
+	exec("echo \"".$mail_contenu."\" >>".$fich_log);
+	while(list($eleve_id,$nom,$prenom,$promo) = extdata_stripslashes($DB_trombino->next_row()) ) {
 		$DB_trombino->push_result() ;
 		couriel($eleve_id, $titre_mail." ".$titre,$mail_contenu, STRINGMAIL_ID, $from) ;
 		//print $from."<br>" ;
@@ -90,5 +89,5 @@ $mail_contenu = wikiVersXML($mail,true)  ; // On met true pour dire que c'est du
 	// fin de la procédure
 	
 	
-	$DB_valid->query("DELETE FROM valid_mailpromo WHERE mail_id='{$_REQUEST['id']}'") ;
+	$DB_valid->query("DELETE FROM valid_mailpromo WHERE mail_id='".intval($_REQUEST['id'])."'") ;
 ?>
