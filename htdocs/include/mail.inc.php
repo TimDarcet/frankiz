@@ -120,7 +120,7 @@ function couriel($eleve_id,$titre,$contenu,$sender_id=WEBMESTRE_ID,$sender_strin
 	}
 	$mail = new Mail( ($sender_id!=STRINGMAIL_ID)?"=?UTF-8?b?".base64_encode("$prenom1 $nom1")."?= <$adresse1>":$sender_string  , "=?UTF-8?b?".base64_encode("$prenom $nom")."?= <$adresse>" , html2plain($titre),true,"", (($sender_id<0) && ($sender_id!=$eleve_id) && ($sender_id!=STRINGMAIL_ID))?"=?UTF-8?b?".base64_encode("$prenom1 $nom1")."?= <$adresse1>":"");
 	$mail->addPartText(html2plain($contenu));
-	$mail->addPartHtml($contenu);
+	$mail->addPartHtml(vrais_caract_spec($contenu));
 	$mail->send();
 }
 

@@ -57,7 +57,7 @@ foreach ($_POST AS $keys => $val){
 		$DB_valid->query("SELECT 0 FROM valid_mailpromo WHERE mail_id='{$temp[1]}'");
 		if ($DB_valid->num_rows()!=0) {
 
-			$DB_valid->query("UPDATE valid_mailpromo SET titre='{$_POST['titre']}', mail='{$_POST['mail']}', promo='{$_POST['promo']}' WHERE mail_id='{$temp[1]}'");	
+			$DB_valid->query("UPDATE valid_mailpromo SET titre='".mysql_addslashes($_POST['titre'],true)."', mail='".mysql_addslashes($_POST['mail'],true)."', promo='".intval($_POST['promo'])."' WHERE mail_id='{$temp[1]}'");	
 			if ($temp[0]!='valid') {
 				$message .= "<commentaire>Modification effectuée</commentaire>" ;
 			}
@@ -73,7 +73,7 @@ foreach ($_POST AS $keys => $val){
 			list($eleve_id) = $DB_valid->next_row() ;
 			
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," accepté le mail promo '{$_POST['titre']}' ") ;
+			log_admin($_SESSION['user']->uid," accepté le mail promo '".gpc_stripslashes($_POST['titre'])."' ") ;
 			
 			// envoi du mail
 			$contenu = 	"Ton mail promo a été validé par la Kès<br><br>".
@@ -90,12 +90,12 @@ foreach ($_POST AS $keys => $val){
 			if (!isset($_POST["from_name_{$temp[1]}"]))
 				$sendername = "$prenom $nom" ;
 			else
-				$sendername = base64_encode($_POST["from_name_{$temp[1]}"]) ;
+				$sendername = base64_encode(gpc_stripslashes($_POST["from_name_{$temp[1]}"])) ;
 			
 			if (!isset($_POST["from_mail_{$temp[1]}"]))
 				$sendermail = "$mail" ;
 			else
-				$sendermail = base64_encode($_POST["from_mail_{$temp[1]}"]) ;
+				$sendermail = base64_encode(gpc_stripslashes($_POST["from_mail_{$temp[1]}"])) ;
 			rediriger_vers("/admin/valid_mailpromo_envoi.php?id={$temp[1]}&promo=$promo&sendername=$sendername&sendermail=$sendermail") ;
 
 		}
@@ -106,7 +106,7 @@ foreach ($_POST AS $keys => $val){
 
 			list($eleve_id) = $DB_valid->next_row() ;
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," refusé le mail promo '{$_POST['titre']}' ") ;
+			log_admin($_SESSION['user']->uid," refusé le mail promo '".gpc_stripslashes($_POST['titre'])."' ") ;
 			// envoi du mail
 			$contenu = 	"Ton mail promo n'a pas été validé par la Kès pour la raison suivante<br>".
 						$_POST['refus']."<br><br>".
@@ -140,7 +140,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 echo $message ;
 
 $DB_valid->query("SELECT v.mail_id,DATE_FORMAT(v.stamp,'%d/%m/%Y %H:%i:%s'), v.titre,v.promo, v.mail, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_mailpromo as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
-while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
+while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $promo,$mail,$login) = extdata_stripslashes($DB_valid->next_row())) {
 	if (empty($mail)) $mail="$login@poly" ;
 ?>
 	<commentaire>
@@ -161,8 +161,10 @@ while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $prom
 		<?
 			if ((!isset($_POST["from_name_$id"]))||((isset($temp))&&($temp[1]!=$id)))
 				$_POST["from_name_$id"] = "$prenom $nom" ;
+			else $_POST["from_name_$id"] = gpc_stripslashes($_POST["from_name_$id"]);
 			if ((!isset($_POST["from_mail_$id"]))||((isset($temp))&&($temp[1]!=$id)))
 				$_POST["from_mail_$id"] = "$mail" ;
+			else $_POST["from_mail_$id"] = gpc_stripslashes($_POST["from_mail_$id"]);
 		?>
 		<champ titre="From Nom" id="from_name_<?=$id?>"  valeur="<? echo  $_POST["from_name_$id"] ?>"/>
 		<champ titre="From Mail" id="from_mail_<?=$id?>"  valeur="<? echo  $_POST["from_mail_$id"] ?>"/>

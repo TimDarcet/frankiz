@@ -48,7 +48,7 @@ if (!isset($_REQUEST['envoie'])) {
 			Le texte du mail promo utilise le format wiki rappelé en bas de la page et décrit dans l'<lien url="helpwiki.php" titre="aide wiki"/><br/>
 			Pour toute remarque particulière, envoyer un mail à <lien url="mailto:mailpromo@frankiz.polytechnique.fr" titre="mailpromo@frankiz"/>
 		</note>
-		<choix titre="Promo" id="promo" type="combo" valeur="<? if (isset($_POST['promo'])) echo  $_POST['promo'] ;?>">
+		<choix titre="Promo" id="promo" type="combo" valeur="<? if (isset($_POST['promo'])) echo  gpc_stripslashes($_POST['promo']); ?>">
 		<?
 			$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
 			list($promo_temp) = $DB_web->next_row() ;
@@ -60,8 +60,8 @@ if (!isset($_REQUEST['envoie'])) {
 		?>
 		</choix>
 
-		<champ titre="Sujet" id="sujet" valeur="<? if (isset($_REQUEST['sujet'])) echo $_REQUEST['sujet']?>" />
-		<zonetext titre="Mail" id="mail" type="grand"><? if (isset($_REQUEST['mail'])) echo $_REQUEST['mail']?></zonetext>
+		<champ titre="Sujet" id="sujet" valeur="<? if (isset($_REQUEST['sujet'])) echo gpc_stripslashes($_REQUEST['sujet']); ?>" />
+		<zonetext titre="Mail" id="mail" type="grand"><? if (isset($_REQUEST['mail'])) echo gpc_stripslashes($_REQUEST['mail']); ?></zonetext>
 		<bouton titre="Tester" id="upload"/>
 		<bouton titre="Envoyer" id="envoie"  onClick="return window.confirm('Voulez vous vraiment envoyer ce mail ?')"/>
 	</formulaire>
@@ -74,8 +74,8 @@ if (!isset($_REQUEST['envoie'])) {
 //==================================================
 	if (isset($_REQUEST['upload'])) {
 ?>
-		<cadre  titre="Mail Promo : <? if (isset($_REQUEST['sujet'])) echo $_REQUEST['sujet']?>" >
-			<? echo wikiVersXML($_REQUEST['mail']) ; ?>
+		<cadre  titre="Mail Promo : <? if (isset($_REQUEST['sujet'])) echo gpc_stripslashes($_REQUEST['sujet']); ?>" >
+			<? echo wikiVersXML(gpc_stripslashes($_REQUEST['mail'])) ; ?>
 		</cadre>
 <?
 	}
@@ -87,11 +87,11 @@ if (!isset($_REQUEST['envoie'])) {
 } else {
 ?>
 	<commentaire>
-		Merci d'avoir proposé un mail promo. Le responsable au BR essayera de te le valider le plus tôt possible.
+		Merci d'avoir proposé un mail promo. Le responsable à la Kès essayera de te le valider le plus tôt possible.
 	</commentaire>
 <?
 	// Stockage dans la base SQL
-	$DB_valid->query("INSERT INTO valid_mailpromo SET mail='{$_REQUEST['mail']}', titre='{$_REQUEST['sujet']}',eleve_id={$_SESSION['user']->uid}, promo='{$_REQUEST['promo']}'") ;
+	$DB_valid->query("INSERT INTO valid_mailpromo SET mail='".mysql_addslashes($_REQUEST['mail'],true)."', titre='".mysql_addslashes($_REQUEST['sujet'],true)."',eleve_id={$_SESSION['user']->uid}, promo='".intval($_REQUEST['promo'])."'") ;
 
 	//Envoie du mail à l'admin pour la validation
 	$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
@@ -99,7 +99,7 @@ if (!isset($_REQUEST['envoie'])) {
 	
 	$contenu = "<strong>Bonjour,</strong><br><br>".
 			"$prenom $nom a demandé la validation d'un mail promo : <br>".
-			$_POST['sujet']."<br><br>".
+			gpc_stripslashes($_POST['sujet'])."<br><br>".
 			"Pour valider ou non cette demande va sur la page suivante<br>".
 			"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_mailpromo.php'>".
 			"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_mailpromo.php</a></div><br><br>" .

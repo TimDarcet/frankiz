@@ -360,7 +360,7 @@ function mysql_addslashes($var,$gpc=true) {
 	if (is_array($var)) {
 		reset($var);
 		while (list($key,$value) = each($var)) {
-			$var[$key] = mysql_addslashes($value);
+			$var[$key] = mysql_addslashes($value,$gpc);
 		}
 	} elseif ($gpc) $var = mysql_real_escape_string(gpc_stripslashes($var));
 	else $var = mysql_real_escape_string($var);
@@ -377,4 +377,10 @@ function extdata_stripslashes($var) {
 	return $var;
 }
 
+// une fonction pour transformer les &amp; &apos; &quot; &lt; &gt; en &#38; &#39; &#34; &#139; &#155;
+function vrais_caract_spec($string) {
+	$fauxCaractSpec = array('&amp;','&apos;','&quot;','&lt;','&gt;');
+	$vraisCaractSpec = array('&#38;','&#39;','&#34;','&#139;','&#155;');
+	return str_replace($fauxCaractSpec,$vraisCaractSpec,$string);
+}
 ?>

@@ -51,8 +51,8 @@ $xslt->importStyleSheet($dom_xsl);
 
 // Les paramètres à passer à sablotron sont en UTF8
 $parameters = array (
-  'user_nom' => $_SESSION['user']->nom,
-  'user_prenom' => $_SESSION['user']->prenom,
+  'user_nom' => str_replace("&apos;","'",$_SESSION['user']->nom),
+  'user_prenom' => str_replace("&apos;","'",$_SESSION['user']->prenom),
   'date' => date("d/m/Y"),
   'heure' => date("H:i")
 );
