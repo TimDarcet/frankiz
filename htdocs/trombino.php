@@ -43,14 +43,22 @@ if (isset($_REQUEST['toladmin'])) {
 if (!empty($_GET['image']) && ($_GET['image'] == 'true')){
 	require_once "include/global.inc.php";
 	if (!isset($_GET['original']) && (file_exists(BASE_PHOTOS.$_GET['promo'].'/'.$_GET['login'].'.jpg'))) {
-		$size = getimagesize(BASE_PHOTOS.$_GET['promo']."/".$_GET['login'].".jpg");
-		header("Content-type: {$size['mime']}");
-		readfile(BASE_PHOTOS.$_GET['promo']."/".$_GET['login'].".jpg");
+		$file = BASE_PHOTOS.$_GET['promo']."/".$_GET['login'].".jpg";
 	} else {
-		$size = getimagesize(BASE_PHOTOS.$_GET['promo']."/".$_GET['login']."_original.jpg");
-		header("Content-type: {$size['mime']}");
-		readfile(BASE_PHOTOS.$_GET['promo'].'/'.$_GET['login'].'_original.jpg');
+		$file = BASE_PHOTOS.$_GET['promo'].'/'.$_GET['login'].'_original.jpg';
 	}
+
+	$size = getimagesize($file);
+	$maxage = 180*60;
+	$expires = time() + $maxage;
+
+	session_cache_limiter("public");
+	header("Content-type: {$size['mime']}");
+	header("Expires: " . gmdate("D, d M Y H:i:s", $expires) . " GMT");
+	header("Cache-Control: public, max-age=" . $maxage);
+	header("Pragma: public");
+
+	readfile($file);
 	exit;
 }
 
