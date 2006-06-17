@@ -141,15 +141,20 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 		$typeRecherchePromo = RECHERCHE_PROMOS_ACTUELLES;
 	} elseif (isset($_REQUEST['cherchertol'])) {
 		// Création de la requête si lien_tol appelle
-		$where_like = array(
-			'nom' => 'eleves.nom',
-			'prenom' => 'prenom',
-			'surnom' => 'surnom');
-		foreach($where_like as $post_arg => $db_field) {
-			$where .= (empty($where) ? '(' : ' OR')." $db_field LIKE '%".$_REQUEST['q_search']."%'";
+		$where_like = 'CAST(CONCAT_WS(\' \', eleves.nom, prenom, surnom, login, promo, eleves.piece_id) AS CHAR)';
+	    $typeRecherchePromo = RECHERCHE_HABITE_SUR_LE_PLATAL;
+		$quick = explode(' ', $_REQUEST['q_search']);
+		if (count($quick) == 0) {
+			$where = ' 0';
+		} else {
+			foreach ($quick as $word) {
+				$where .= (empty($where) ? '(' : ' AND '). $where_like . ' ' . ' LIKE \'%' . $word . '%\'';
+				if (is_numeric($word)) {
+					$typeRecherchePromo = RECHERCHE_TOUTES_PROMOS;
+				}
+			}
+			$where .= ')';
 		}
-		$where .= ')';
-		$typeRecherchePromo = RECHERCHE_HABITE_SUR_LE_PLATAL;
 	} elseif (isset($_REQUEST['chercher'])) {
 		// l'ordre ci-dessous permet de filtrer correctement la promo, la forme
 		// la plus restrictive l'emportant
