@@ -32,7 +32,17 @@ $DB_admin->query("SELECT ip.piece_id,ip.prise_id,ip.ip,ip.type FROM prises as ip
 				."LEFT JOIN trombino.eleves as e USING(piece_id) WHERE e.eleve_id='{$_SESSION['user']->uid}' "
 				."ORDER BY ip.type ASC");
 $id_ip = 0;
-list($kzert,$prise,$ip{$id_ip},$type) = $DB_admin->next_row();
+list($kzert,$prise{$id_ip},$ip{$id_ip},$type) = $DB_admin->next_row();
+
+// Récupération de toutes les ips
+$bool_ip = $ip{$id_ip}!=$_SERVER['REMOTE_ADDR'];
+$id_ip++;
+if($DB_admin->num_rows()>1) {
+	while(list($kzert,$prise{$id_ip},$ip{$id_ip},$type) = $DB_admin->next_row()) {
+		$bool_ip = $bool_ip&&($ip{$id_ip}!=$_SERVER['REMOTE_ADDR']) ;
+		$id_ip++;
+	}
+}
 
 // Génération du la page XML
 require "../include/page_header.inc.php";
@@ -55,6 +65,12 @@ if(isset($_POST['changer_xnet'])) {
 	if(strlen($_POST['passwd']) < 6) {
 		ajoute_erreur(ERR_MDP_TROP_PETIT);
 	}
+	
+	// Vérification de sécurité
+	if (!in_array($_POST['ip_xnet'], $ip)) {
+		ajoute_erreur(ERR_VIOLATION_SECURITE);
+	}
+	
 	if(aucune_erreur()) {
 		$pass = md5($_POST['passwd']."Vive le BR");
 		$DB_xnet->query("UPDATE clients SET password='$pass' WHERE lastip='{$_POST['ip_xnet']}'");
@@ -69,20 +85,18 @@ if(isset($_POST['changer_xnet'])) {
 			echo "<warning>Les valeurs des deux champs de mot de passe n'étaient pas identiques.</warning>\n";
 		if(a_erreur(ERR_MDP_TROP_PETIT))
 			echo "<warning>Il faut mettre un mot de passe plus long (au moins 6 caractères).</warning>\n";
+		if(a_erreur(ERR_VIOLATION_SECURITE))
+			echo "<warning>Vous n'avez pas le droit de réaliser cette opération.</warning>\n";
 ?>
 	<h2 id="reseau_ip">Infos divers</h2>
-	<p>Normalement tu as l'ip <?=$ip{$id_ip}?> (car ta prise est la <?=$prise?>)</p>
+	<p>Normalement tu as l'ip <?=$ip{0}?> (car ta prise est la <?=$prise{0}?>)</p>
 	<p>
 	<note>Si tu souhaite une nouvelle ip clique <lien titre='ici' url='profil/demande_ip.php'/>
 <?
-		$bool_ip = $ip{$id_ip}!=$_SERVER['REMOTE_ADDR'];
-		$id_ip++;
-		if($DB_admin->num_rows()>1) {
+		if($id_ip > 1) {
 			echo "<br/>Tu as en plus fait rajouter ces ips à tes ip autorisées :<br/>" ;
-			while(list($kzert,$prise,$ip{$id_ip},$type) = $DB_admin->next_row()) { 
-				echo $ip{$id_ip}."<br/>" ;
-				$bool_ip = $bool_ip&&($ip{$id_ip}!=$_SERVER['REMOTE_ADDR']) ;
-				$id_ip++;
+			for ($i = 1; $i < $id_ip; $i++) {
+				echo $ip{$i}."<br/>" ;
 			}
 		}
 ?>

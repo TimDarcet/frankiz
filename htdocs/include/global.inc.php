@@ -71,6 +71,7 @@ define('ERR_SURNOM_TROP_LONG',$i++);
 define('ERR_EMAIL_NON_VALIDE',$i++);
 define('ERR_TROP_COURT',$i++);
 define('ERR_SELECTION_VIDE',$i++);
+define('ERR_VIOLATION_SECURITE',$i++);
 
 // Nettoyage des éléments récupérés par $_POST, $_GET et $_REQUEST
 function nettoyage_balise($tableau) {
