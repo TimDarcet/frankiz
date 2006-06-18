@@ -27,7 +27,7 @@ if(!cache_recuperer($cache_id, time()-600)) {
 								AS c USING(version)
 				   GROUP BY s.version');
 
-	while(list($nom, $roujes, $jones, $oranjes) = $DB_xnet->next_row()){
+	while(list($nom, $jones, $roujes, $oranjes) = $DB_xnet->next_row()){
 		if($nom != '') {
 			$graph->addRow($jones, $roujes, $oranjes, $nom);
 		}
