@@ -137,7 +137,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 		echo "<commentaire>Liste des personnes fêtant leur anniversaire entre le ".date("d/m",strtotime($date1))." et le ".date("d/m",strtotime($date2))."</commentaire>";
 		$where .= " DAYOFYEAR(date_nais + INTERVAL (YEAR(NOW()) - YEAR(date_nais)) YEAR) >= DAYOFYEAR('$date1')
 			AND DAYOFYEAR(date_nais + INTERVAL (YEAR(NOW()) - YEAR(date_nais)) YEAR) <= DAYOFYEAR('$date1'+ INTERVAL 7 DAY)";
-		$typeRecherchePromo = RECHERCHE_TOUTES_PROMOS;
+		$typeRecherchePromo = RECHERCHE_PROMOS_ACTUELLES;
 	} elseif(isset($_REQUEST['sections'])) {
 		// Création de la requête si sections appelle
 		$where .= " sections.nom = '{$_REQUEST['sections']}'  AND (promo = $promoTOS OR promo=".($promoTOS -1).")";
