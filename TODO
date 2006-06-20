@@ -1,31 +1,71 @@
-- récupérer le XSl de psycow pour du vacabulaire coloré 1 ligne sur 2 et l'intégrer au XSL pico
+# XSLT
+* Finalisation de la dtd. Corrections
+* Modifications de skinnage xslt très lourds pour l'instant, on en reste donc dans une première phase à faire *une xslt propre, unique*.
+		
+# Au niveau du php.
+* Revoir la structure de la base SQL qui n'est pas optimisée
+* Revoir par exemple la gestion des droits : "Pourquoi avoir mis la liste des droits d'une personne dans un champs texte ? un champs booleen par type de droit serait bien plus optimal. Et pour les webmestre/prez de binet, il suffit de stocker l'eleveId dans la table binet... Enfin moi ça me paraît logique de regrouper les infos qui concernent les binets dans la table binet. "
 
-- uniformiser les modules virus :
+# Améliorations de Fonctions
+* La structure des X-shares, et de la recherche . s'en occupe.
+** Révision de fond à faire
+** Inscription pour un suivi des versions
+** Vision différente du X-share linux
+** X-share s'enquiert des màj
+** Il y a un PSC qui s'occupe de faire un algorithme sachant répondre à des questions, ca pourrait être éventuellement intéressant (contact = François-Xavier CANNELLE) 
+* De même pour la FAQ 
+** Augmenter le caractère non informatique de la FAQ	
+** Passer en wiki : moteur wiki skinné ou codage à partir de zéro ? s'en occupe.
+* Alléger la QDJ 
+** modthrottle (root)
+** Nouvelle page unique
+* Annonces personnalisées (au niveau d'un binet, d'une section, d'un bâtiment, etc. ) 
+** complexe et redondant
+** mail section plus rentable
+* Admin qdj : classement et Déprpgrammation
+** Déprogrammation déjà possible (date=0)
+* Revoir les liens utiles : numéros utiles par exemple
+** (web@frankiz)
+* Portable dans le tol?
+** cnil
+** doublon poly.org
+* correction flux RSS, date
+* Ajouter une fonction 'Marquer toutes les annonces comme non-lues/lues".
+* Revoir dans certaines skins/navigateurs, l'apparition de certains liens (admin, déconnection).
+* Module liens utiles
+** création de catégories
+** interface de gestion des catégories pour les web
+* Envoi de mail via frankiz : ajouter une entête X-Originating-IP avec l'IP de la machine qui envoie le mail
 
-                    <div class="fkz_module" id="mod_virus">
-                      <div class="fkz_titre">
-                        <span id="virus_logo"> </span><span id="virus">Important !</span></div>
-                      <div class="fkz_module_corps">
+# Modifications du TOL
+Les événements de la campagne Kes ont montre la nécessité de revoir notre politique concernant le TOL. Je (mYk) fais donc les suggestions suivantes:
 
- et les modules anniversaires/annonces :
+* politique concernant les binets : sans doute un point crucial. Je propose de créer deux categories : BINETS et COMMUNAUTES (ou GROUPES) (le termes est pas top mais j ai pas encore trouve mieux). La premiere regrouperait les 'vrais' binets, c'est a dire ceux qui ont une activité structurée autour d'un projet reconductible ou poursuivi d'année en année. La seconde regrouperait les associations qui, malgré le nom de 'binet' qui leur est parfois trop vite accorde, ne sont liées qu'aux personnes de la promotion en cours et ne survivront pas au depart du platal (ex : binet Charles, binet Guillaume, binet Mangue, KestorsLapons...) Les Kes pipo comme sérieuses se retrouveraient tout a fait dans cette catégorie.
 
-                    <div class="fkz_module" id="mod_anniversaires">
-                      <div class="fkz_anniversaire_titre">
-                        <span id="anniversaires_logo"> </span><span id="anniversaires">Joyeux anniversaire: </span></div>
-                      <div class="fkz_anniversaire">
+A cela plusieurs intérêts :
 
-                    <div class="fkz_sommaire">
-                      <div class="fkz_sommaire_titre">
-                        <span class="fkz_annonces_nouveau"> </span> Nouvelles Fraîches</div>
-                      <div class="fkz_sommaire_corps">
+* on soumet les validations comme binet a l'arbitraire du TOLmestre, par contre on est très coulant sur les validations de communauté comme ca les GENS ne font pas chier.
+* on s'engage a maintenir les binets dans le temps : comme il n'y a plus que des vrais binets c'est moins le bordel, et la liste reste propres et maintenable (objectif numéro 1)
+* les communautés peuvent par contre être virées quand elles ne servent plus a rien (elle sont même éventuellement rattachées a une promo) ; mais a la limite on s'en fout puisque ca ne pollue pas la liste des binets !
+* en interne on pourrait voir les binets et les communautés, en externe seulement les binets : comme ca on peut valider a peu près n'importe quoi comme communauté sans problème (c'est d'ailleurs l'objectif)
+* en espérant que ca aura plus de succès que les champs perso qui n'ont pas eu la publicité nécessaire
 
-parce que là c'est le bordel pour skinner
+Et un problème : un jour il va falloir faire le tri :(
 
-- mettre des majuscules aux titres de cadre dans le XSL pico : exemple :
-                    <div class="fkz_page_divers" id="vocabulaire">
-                      <div class="fkz_page_titre">vocabulaire</div>
-		<div class="fkz_page_corps">
+* ajouter nationalité, filière d'origine, portable : certainement une bonne idée. Il faut réfléchir a un système qui "force" presque chacun a remplir sa fiche TOL a sa premiere connexion sur frankiz : limitera les problèmes pour les gens pour lesquels on a pas les données (masters, docotrants et compagnie) . Le problème de la CNIL n'en est plus un avec la nouvelle loi, c'est juste un papier a faire.
 
+* enfin, ce système peut-il s'adapter aux news ???
 
-- faire la page du vocabulaire avec des dl, dt, dd (parce qu'avec des tables c'est très moche et puis autant utiliser les outils fais pour)
-- toujours sur cette page, mettre des classes pair/impaire pour un tableau bicolore par lignes (plus joli)
+* ajouter une colonne type pour identifier les élèves (lien vers polytechnique.org), les PI, les doctorants (lien sur le site xdoc ?), les masters... 
+
+# Ajouts de Fonctions
+ Ce projet va attendre que les projets plus fondamentaux aient avancé.
+* Calendrier pour la Kes/les binets/les élèves/l'emploi du temps
+* Faire du cache sur certaines pages pour alléger la génération répétée 
+** déjà presque complètement fait
+* Une page pour soumettre des côtes à l'IKman? 
+
+# Correctifs Mineurs
+ Il faudrait que tout le monde travaille à cette partie, selon ce qui le touche
+* Documentation du code
+* Flyspray, un tout nouveau moteur de gestion des bugs et améliorations : ne pas hésiter à l'utiliser
