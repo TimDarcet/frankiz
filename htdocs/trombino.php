@@ -150,13 +150,13 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 	} elseif (isset($_REQUEST['cherchertol'])) {
 		// Création de la requête si lien_tol appelle
 		$where_like = 'CAST(CONCAT_WS(\' \', eleves.nom, prenom, surnom, login, promo, eleves.piece_id) AS CHAR)';
-	    $typeRecherchePromo = RECHERCHE_HABITE_SUR_LE_PLATAL;
+		$typeRecherchePromo = RECHERCHE_HABITE_SUR_LE_PLATAL;
 		$quick = explode(' ', $_REQUEST['q_search']);
 		if (count($quick) == 0) {
 			$where = ' 0';
 		} else {
 			foreach ($quick as $word) {
-				$where .= (empty($where) ? '(' : ' AND '). $where_like . ' ' . ' LIKE \'%' . $word . '%\'';
+				$where .= (empty($where) ? '(promo != "0000" AND ' : ' AND '). $where_like . ' LIKE \'%' . $word . '%\'';
 				if (is_numeric($word)) {
 					$typeRecherchePromo = RECHERCHE_TOUTES_PROMOS;
 				}
