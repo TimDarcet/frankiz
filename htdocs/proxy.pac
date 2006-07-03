@@ -3,7 +3,7 @@ function FindProxyForURL(url, host)
     var sProxy = "PROXY 129.104.247.2:8080; DIRECT";
     var sDirect = "DIRECT";
 
-    if ((isResolvable(host)) && ((isPlainHostName(host)) || (dnsDomainIs(host, ".eleves.polytechnique.fr")) || (dnsDomainIs(host, ".polytechnique.fr")) || (isInNet(host, "129.104.0.0", "255.255.0.0")) || (host=="localhost") || (host=="loopback") || (host.substring(0,5)=="127.0"))) {
+    if ((isResolvable(host)) && ((isPlainHostName(host)) || (dnsDomainIs(host, ".eleves.polytechnique.fr")) || (dnsDomainIs(host, ".polytechnique.fr")) || (isInNet(host, "129.104.0.0", "255.255.0.0")) || (isInNet(host, "192.168.0.0", "255.255.0.0")) || (host=="localhost") || (host=="loopback") || (host.substring(0,5)=="127.0"))) {
        // il s'agit d'une machine de l'X, et on connait son IP
        // pour savoir si on peut y acceder directement,
        // on regarde si l'IP est du type 129.104.a.b avec a.b > 196.0
