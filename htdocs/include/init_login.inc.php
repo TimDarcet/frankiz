@@ -49,9 +49,9 @@ session_start();
 	si l'IP change pendant la session, c'est qu'il y a eu vol.
 */
 if (!isset($_SESSION['ip'])) {
-	$_SESSION['ip'] = get_ip();
+	$_SESSION['ip'] = ip_get();
 	
-} elseif ($_SESSION['ip'] != get_ip()) {
+} elseif ($_SESSION['ip'] != ip_get()) {
 	// vol : on détruit la session
 	session_unset();
 	session_destroy();
