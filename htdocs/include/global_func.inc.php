@@ -403,11 +403,19 @@ function ip_get() {
 
 	if ($ip === '129.104.30.4') {
 		// C'est l'adresse du portail w3x
-		// Plus fiable que $_SERVER
+		
+		// More reliable than $_SERVER due to case and -/_ folding
 		$headers = apache_request_headers();
+		
 		if (isset($headers['X-Forwarded-For'])) {
 			$listeIPs = explode(',', $headers['X-Forwarded-For']);
-			$ipForwardee = end($listeIPs);
+			
+			// Le dernier de cette liste est celui ajoute par w3x, qui est un
+			// proxy fiable. Toute cette verification a pour objectif de ne pas
+			// permettre l'ip spoofing
+			// (trim : le séparateur entre les ips dans $headers['X-Forwarded-For'] est ', ')
+			$ipForwardee = trim(end($listeIPs));
+			
 			if (preg_match("/([0-9]{1,3}\.){3}[0-9]{1,3}/", $ipForwardee)) {
 				$ip = $ipForwardee;
 			}
