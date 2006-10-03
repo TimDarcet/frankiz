@@ -48,10 +48,10 @@ session_start();
 	Protection contre le vol de session : une session est associé à une IP,
 	si l'IP change pendant la session, c'est qu'il y a eu vol.
 */
-if(!isset($_SESSION['ip'])) {
-	$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
+if (!isset($_SESSION['ip'])) {
+	$_SESSION['ip'] = ip_get();
 	
-} else if($_SESSION['ip'] != $_SERVER['REMOTE_ADDR']) {
+} elseif ($_SESSION['ip'] != ip_get()) {
 	// vol : on détruit la session
 	session_unset();
 	session_destroy();

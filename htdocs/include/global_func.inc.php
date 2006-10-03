@@ -92,8 +92,10 @@ function acces_interdit() {
 	exit;
 }
 
-function est_interne() {
-	return ($_SERVER['REMOTE_ADDR'] =="127.0.0.1" || (substr($_SERVER['REMOTE_ADDR'],0,8) == "129.104." &&  $_SERVER['REMOTE_ADDR'] != "129.104.30.4" ));
+function est_interne()
+{
+	$ip = ip_get();
+	return $ip == '127.0.0.1' || (substr($ip, 0, 8) == '129.104.' && $ip != '129.104.30.4');
 }
 
 /*
@@ -107,7 +109,7 @@ function liste_modules() {
 		"css"				=> "",
 		"liens_navigation"	=> "",
 		"liens_propositions"	=> "",
-        "random"            => "",
+	"random"	    => "",
 		"liens_utiles"		=> "Liens école",
 		"qdj"				=> "Question du jour",
 		"qdj_hier"			=> "Question de la veille",
@@ -182,7 +184,7 @@ function cache_sauver($cache_id) {
 
 	$file = fopen(BASE_CACHE.$cache_id, 'w');
 	fwrite($file, $contenu);
-	fclose($file);                 
+	fclose($file);		 
 
 	global $_CACHE_SAVED_BUFFER;					// hack
 	ob_start();										// hack
@@ -324,7 +326,7 @@ function diff_to_xml($oldString, $newString) {
        $post = "</old_string>";
        break;
      case "2":
-        $pre = "<new_string>";
+	$pre = "<new_string>";
        $post = "</new_string>";
        break;
      case "b":
@@ -383,4 +385,36 @@ function vrais_caract_spec($string) {
 	$vraisCaractSpec = array('&#38;','&#39;','&#34;','&#139;','&#155;');
 	return str_replace($fauxCaractSpec,$vraisCaractSpec,$string);
 }
+
+/**
+ * Déterminer l'adresse ip réelle du client, s'il est derrière le portail web de
+ * l'école en particulier
+ * 
+ * @return string l'ip
+ * @author alakazam
+ **/
+function ip_get() {
+	if (isset($_SERVER['REMOTE_ADDR'])) {
+		$ip = $_SERVER['REMOTE_ADDR'];
+	} else {
+		// CLI
+		$ip = '127.0.0.1';
+	}
+
+	if ($ip === '129.104.30.4') {
+		// C'est l'adresse du portail w3x
+		// Plus fiable que $_SERVER
+		$headers = apache_request_headers();
+		if (isset($headers['X-Forwarded-For'])) {
+			$listeIPs = explode(',', $headers['X-Forwarded-For']);
+			$ipForwardee = end($listeIPs);
+			if (preg_match("/([0-9]{1,3}\.){3}[0-9]{1,3}/", $ipForwardee)) {
+				$ip = $ipForwardee;
+			}
+		}
+	}
+
+	return $ip;
+}
+
 ?>
