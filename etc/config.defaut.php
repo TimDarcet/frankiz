@@ -94,6 +94,9 @@ define('TIMEZONE', "Europe/Paris");
 // Compte www.weather.com
 define('WEATHER_DOT_COM',"http://xoap.weather.com/weather/local/**********");
 
+// URL AppleOnCampus
+define('PARTENAIRES_AOC_URL', "");
+
 // Configuration du site
 define('AFFICHER_LES_ERREURS',0); 
 define('BASE_DATA',"/home/frankiz2/data/");
