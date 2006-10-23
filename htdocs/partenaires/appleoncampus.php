@@ -91,7 +91,7 @@ p.top {
 												<p><b>Comment b&eacute;n&eacute;ficier d&egrave;s aujourd'hui de votre avantage ?</b><br>
 													<br>
 													Rien de plus simple :</p>
-												<p><b>En ligne :</b> disponible 24 heures sur 24 et sp&eacute;cialement con&ccedil;u pour votre Universit&eacute;. Cliquez ici pour acc&egrave;dez &agrave; votre Apple on Campus en ligne.</p>
+												<p><b>En ligne :</b> disponible 24 heures sur 24 et sp&eacute;cialement con&ccedil;u pour votre Universit&eacute;. Cliquez <a href="http://www.polytechnique.fr/eleves/partenaires/applytoaoc.php">ici</a> pour acc&egrave;dez &agrave; votre Apple on Campus en ligne.</p>
 												<p><b>Par t&eacute;l&eacute;phone :</b> d&eacute;finissez la configuration la plus adpat&eacute;e &agrave; vos besoin avec l'aide de l'un de nos conseillers au <img src="../images/partenaires/aoc_phone.gif" alt="" width="98" height="17" border="0"> (num&eacute;ro vert) du lundi au vendredi de 8h30 &agrave; 23h00, le samedi de 10h00 &agrave; 18h00. N'oubliez pas de pr&eacute;ciser le nom de votre Universit&eacute; ainsi que sa participation au programme Apple on Campus.</p>
 											</td>
 										</tr>
@@ -194,7 +194,7 @@ p.top {
 																		<td width="160" CLASS="G10">100% en ligne sur votre site Apple on Campus d&eacute;di&eacute;
 																			<p></p>
 																			<div align="center">
-																				<p><img src="../images/partenaires/aoc_buynow.gif" alt="" height="48" width="56" border="0"></p>
+																				<p><a href="http://www.polytechnique.fr/eleves/partenaires/applytoaoc.php"><img src="../images/partenaires/aoc_buynow.gif" alt="" height="48" width="56" border="0"></a></p>
 																			</div>
 																		</td>
 																	</tr>
