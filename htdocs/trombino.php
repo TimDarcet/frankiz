@@ -24,6 +24,10 @@
 
 */
 
+// ceci doit être fait avant le session_start et donc avant l'include de global.inc.php
+if (!empty($_GET['image']) && ($_GET['image'] == 'true')) session_cache_limiter("public");
+else session_cache_limiter("private_no_expire");
+
 require_once "include/global.inc.php";
 require_once "include/wiki.inc.php";
 
@@ -49,14 +53,8 @@ if (!empty($_GET['image']) && ($_GET['image'] == 'true')){
 	}
 
 	$size = getimagesize($file);
-	$maxage = 180*60;
-	$expires = time() + $maxage;
 
-	session_cache_limiter("public");
 	header("Content-type: {$size['mime']}");
-	header("Expires: " . gmdate("D, d M Y H:i:s", $expires) . " GMT");
-	header("Cache-Control: public, max-age=" . $maxage);
-	header("Pragma: public");
 
 	readfile($file);
 	exit;
