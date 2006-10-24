@@ -37,10 +37,14 @@ ajouter_access_log(
 // Redirection
 if (defined('PARTENAIRES_AOC_URL'))
 {
-	header("Location: " . PARTENAIRES_AOC_URL);
+	echo "<html>\n";
+	echo "<head><meta http-equiv=\"Refresh\" content=\"0; URL=". PARTENAIRES_AOC_URL ."\"></head>";
+	echo "<body>Vous devriez &ecirc;tre redirig&eacute; imm&eacute;diatement vers ";
+	echo "<a href=\"". PARTENAIRES_AOC_URL ."\">la boutique Apple On Campus</a>.<br />\n";
+	echo "Si ca n'&eacute;tait pas le cas, cliquez sur le lien ci-dessus.</body>\n";
+
 	die();
 }
-
 // Sinon ...
 require '../include/page_header.inc.php';
 ?>
