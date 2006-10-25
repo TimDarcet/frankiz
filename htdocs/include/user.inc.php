@@ -109,7 +109,11 @@ class User {
 			$_NOUVEAU_LOGIN = true;
 			$_hash_shadow = hash_shadow($_mdp);
 			$DB_web->query("UPDATE compte_frankiz SET passwd='$_hash_shadow' WHERE eleve_id='{$this->uid}'"); // Mise à jour vers le nouveau format
-			$DB_wifi->query("UPDATE alias SET Password='$_hash_shadow' WHERE Alias='{$this->login}' AND Method='TTLS';"); // Synchronisation avec le wifi
+
+			// Synchronisation avec le wifi
+			$DB_wifi->query("UPDATE alias SET Password='$_hash_shadow' WHERE Alias='{$this->login}' AND Method='TTLS';");
+			$DB_wifi->query("UPDATE radcheck SET Value='$_hash_shadow' WHERE UserName='{$this->login}' AND Attribute='Crypt-Password';");
+
 			return true;
 		} else {
 			$this->devient_anonyme();
