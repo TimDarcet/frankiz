@@ -131,7 +131,9 @@ if (verifie_permission('admin') && isset($_POST['mod_compte_fkz'])) {
 		list($login) = $DB_trombino->next_row();
 		if (isset($login))
 		{
-			$DB_wifi->query("UPDATE alias SET Password='$pass2' WHERE Alias='$login' AND Method='TTLS';"); // Synchronisation avec le wifi
+			// Synchronisation avec le wifi
+			$DB_wifi->query("UPDATE alias SET Password='$pass2' WHERE Alias='$login' AND Method='TTLS';");
+			$DB_wifi->query("UPDATE radcheck SET Value='$pass2' WHERE UserName='$login' AND Attribute='Crypt-Password';");
 		}
 		echo "<commentaire>Modification du mot de passe réalisée correctement</commentaire>" ;
 	}

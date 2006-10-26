@@ -58,7 +58,11 @@ if(isset($_POST['changer_frankiz'])) {
 	} else {
 		$_hash_shadow = hash_shadow($_POST['passwd']);
 		$DB_web->query("UPDATE compte_frankiz SET passwd='$_hash_shadow' WHERE eleve_id='{$_SESSION['user']->uid}'");
-		$DB_wifi->query("UPDATE alias SET Password='$_hash_shadow' WHERE Alias='{$_SESSION['user']->login}' AND Method='TTLS';"); // Synchronisation avec le wifi
+
+		// Synchronisation avec le wifi
+		$DB_wifi->query("UPDATE alias SET Password='$_hash_shadow' WHERE Alias='{$_SESSION['user']->login}' AND Method='TTLS';");
+		$DB_wifi->query("UPDATE radcheck SET Value='$_hash_shadow' WHERE UserName='{$_SESSION['user']->login}' AND Attribute='Crypt-Password';");
+
 		$message.="<commentaire>Le mot de passe vient d'être changé.</commentaire>";
 	}
 
