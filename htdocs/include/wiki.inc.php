@@ -27,7 +27,7 @@
 function wikiVersXML($filtered,$enhtml=false) {
 	// from Simon Schoar <simon@schoar.de> :
 	$regexURL = "((http:\/\/|https:\/\/|ftp:\/\/|mailto:)[\w\.\:\@\?\&\~\%\=\+\-\/\_\;#]+)";
-	$regexURLText = "([\w\.\:\'\@\?\&\~\%\=\+\-\/\_\ \;\,\$éèêàùç]+)";
+	$regexURLText = "([^\[\]\|]+)";
 	
 	// php-specific
 	$filtered = "\n".str_replace("\r\n","\n",$filtered)."\n\n";
