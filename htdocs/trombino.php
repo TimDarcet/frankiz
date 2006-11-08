@@ -39,7 +39,7 @@ if (isset($_REQUEST['toladmin'])) {
 	demande_authentification(AUTH_FORT);
 }
 
-// Récupération d'une image
+// Recuperation d'une image
 if (!empty($_GET['image']) && ($_GET['image'] == 'true')){
 	require_once "include/global.inc.php";
 	if (!isset($_GET['original']) && (file_exists(BASE_PHOTOS.$_GET['promo'].'/'.$_GET['login'].'.jpg'))) {
@@ -75,7 +75,7 @@ require 'include/page_header.inc.php';
 ?><page id='trombino' titre='Frankiz : Trombino'>
 <?php
 
-// Récupération d'une image dans une page
+// Recuperation d'une image dans une page
 if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 	if (!isset($_GET['original'])) {
 		echo "<image source=\"trombino.php?image=true&amp;login={$_GET['login']}&amp;promo={$_GET['promo']}\" texte=\"photo\"  legende=\"{$_GET['login']} ({$_GET['promo']})\"/>";
@@ -88,9 +88,9 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 	|| (isset($_REQUEST['anniversaire']) && isset($_REQUEST['promo'])) || isset($_REQUEST['anniversaire_week'])
 	|| (isset($_REQUEST['cherchertol']) && (!(empty($_REQUEST['q_search']))))) {
 
-	// Affichage des réponses dans le cas d'une recherche
+	// Affichage des reponses dans le cas d'une recherche
 	
-	// Récupération de la dernière promotion arrivée sur le campus
+	// Recuperation de la derniere promotion arrivee sur le campus
 	$DB_web->query('
 		SELECT
 			valeur
@@ -149,7 +149,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 		$typeRecherchePromo = RECHERCHE_PROMOS_ACTUELLES;
 	} elseif (isset($_REQUEST['cherchertol'])) {
 		// Création de la requête si lien_tol appelle
-		$where_like = 'CAST(CONCAT_WS(\' \', eleves.nom, prenom, surnom, login, promo, eleves.piece_id) AS CHAR)';
+		$where_like = 'CAST(CONCAT_WS(\' \', eleves.nom, prenom, surnom, login, promo, eleves.piece_id, pieces.tel) AS CHAR)';
 		$typeRecherchePromo = RECHERCHE_HABITE_SUR_LE_PLATAL;
 		$quick = explode(' ', $_REQUEST['q_search']);
 		if (count($quick) == 0) {
@@ -157,7 +157,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 		} else {
 			foreach ($quick as $word) {
 				$where .= (empty($where) ? '(promo != "0000" AND ' : ' AND '). $where_like . ' LIKE \'%' . $word . '%\'';
-				if (is_numeric($word)) {
+				if (is_numeric($word) and (($word>=0 and $word<=($promoTOS%100)) or $word==98 or $word==99 or ($word>=1998 and $word<=$promoTOS))) {
 					$typeRecherchePromo = RECHERCHE_TOUTES_PROMOS;
 				}
 			}
