@@ -384,7 +384,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 			$prenompolyorg = preg_replace("/&(.)(acute|grave|cedil|circ|ring|tilde|uml);/", "$1", $prenompolyorg);
 			$prenompolyorg = str_replace( " " , "-" , $prenompolyorg );
 
-			echo "<lien url='https://www.polytechnique.org/fiche.php?user=$prenompolyorg.$nompolyorg.$promo' titre='Fiche sur polytechnique.org'/><br/>\n";
+			echo "<lien url='https://www.polytechnique.org/profile/$prenompolyorg.$nompolyorg.$promo' titre='Fiche sur polytechnique.org'/><br/>\n";
 
 			// Liens d'administration
 			if(verifie_permission('admin')||verifie_permission('trombino')) {
