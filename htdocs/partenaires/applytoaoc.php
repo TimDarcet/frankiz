@@ -38,10 +38,9 @@ ajouter_access_log(
 if (defined('PARTENAIRES_AOC_URL'))
 {
 	echo "<html>\n";
-	echo "<head><meta http-equiv=\"Refresh\" content=\"0; URL=". PARTENAIRES_AOC_URL ."\"></head>";
-	echo "<body>Vous devriez &ecirc;tre redirig&eacute; imm&eacute;diatement vers ";
-	echo "<a href=\"". PARTENAIRES_AOC_URL ."\">la boutique Apple On Campus</a>.<br />\n";
-	echo "Si ca n'&eacute;tait pas le cas, cliquez sur le lien ci-dessus.</body>\n";
+	echo "<head><title>Boutique Apple On Campus</title></head>";
+	echo "<body>Cliquez sur le lien pour entrer dans ";
+	echo "<a href=\"". PARTENAIRES_AOC_URL ."\">la boutique Apple On Campus</a>.</body>\n";
 
 	die();
 }
