@@ -94,17 +94,24 @@ $DB_valid->query("UNLOCK TABLES");
 	$DB_valid->query("SELECT binet_id,nom,description,http,categorie,exterieur FROM valid_binet LEFT JOIN trombino.binets_categorie USING(catego_id)");
 	echo $message ;
 	while(list($binet_id,$nom,$description,$http,$categorie,$exterieur) = $DB_valid->next_row()) {
+		$DB_trombino->query("SELECT description,http,categorie,exterieur FROM binets LEFT JOIN binets_categorie USING(catego_id) WHERE binet_id=".$binet_id.";");
+		list($description_old,$http_old,$categorie_old,$exterieur_old) = extdata_stripslashes($DB_trombino->next_row());
 ?>
 		<formulaire id="binet_web" titre="<? echo $nom?>" action="admin/valid_binets.php">
 			<hidden id="id" titre="ID" valeur="<? echo $binet_id?>"/>
-			<champ titre="Catégorie" valeur="<? echo $categorie?>" modifiable="non"/>
+			<champ titre="Catégorie" valeur="<? echo $categorie; ?>" modifiable="non"/>
+			<champ titre="(précédemment" valeur="<?php echo $categorie_old; ?>)" modifiable="non"/>
 			<image source="gestion/binet.php?image=1&amp;id=<?=$binet_id?>" texte="<?=$nom?>"/>
 			<lien url="<? echo $http?>" titre="<? echo $http?>"/><br/>
-			<champ titre="Description" valeur="<? echo stripslashes($description)?>" modifiable="non"/>
+			<champ titre="(précédemment" valeur="<?php echo $http_old; ?>)" modifiable="non"/>
+			
+			<champ titre="Description" valeur="<? echo stripslashes($description); ?>" modifiable="non"/>
+			<champ titre="(précédemment" valeur="<?php echo $description_old; ?>)" modifiable="non"/>
 
-			<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if ($exterieur==1) echo 'exterieur' ;?>" >
+			<choix titre="Extérieur" id="exterieur" type="checkbox" valeur="<? if ($exterieur==1) echo 'exterieur' ;?>" >
 				<option id="exterieur" titre=""/>
 			</choix>
+			<champ titre="(précédemment" valeur="<?php echo ($exterieur_old)?'oui':'non'; ?>)" modifiable="non"/>
 			
 			<bouton id='valid' titre="Valider" onClick="return window.confirm('Souhaitez vous valider les modifications ?')"/>
 			<bouton id='suppr' titre="Ne pas valider" onClick="return window.confirm('Souhaitez vous ne pas valider les changements de ce binet ?')"/>
