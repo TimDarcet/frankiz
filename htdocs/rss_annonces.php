@@ -26,7 +26,7 @@ echo"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
 		</image>
 			
 <?
-$DB_web->query("SELECT annonce_id,DATE_FORMAT(stamp,'%d/%m/%Y'),stamp,perime,titre,contenu,en_haut,exterieur,nom,prenom,surnom,promo,"
+$DB_web->query("SELECT annonce_id,UNIX_TIMESTAMP(stamp),stamp,perime,titre,contenu,en_haut,exterieur,nom,prenom,surnom,promo,"
 					 ."IFNULL(mail,CONCAT(login,'@poly.polytechnique.fr')) as mail "
 					 ."FROM annonces LEFT JOIN trombino.eleves USING(eleve_id) "
 					 ."WHERE (perime>=NOW()) ORDER BY perime DESC");
@@ -37,7 +37,7 @@ while(list($id,$date,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$pr
 		<title><?php echo $titre ?></title>
 		<link><? echo BASE_URL."?nonlu=$id#annonce_$id" ?></link>
 		<category><?php echo get_categorie($en_haut, $stamp, $perime) ?></category>
-		<pubDate><?php echo $date ?></pubDate>
+		<pubDate><?php echo date(DATE_RFC822,$date) ?></pubDate>
 		<description>
 <?php
 		echo htmlspecialchars(wikiVersXML($contenu,true),ENT_COMPAT,UTF-8);
@@ -46,6 +46,7 @@ while(list($id,$date,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$pr
 				echo htmlspecialchars("<p><img src='http://www.frankiz.net/data/annonces/".$id."' alt=''/></p>");
 			}
 ?>		</description>
+		<guid isPermaLink="false"><? echo BASE_URL."?nonlu=$id#annonce_$id" ?></guid>
 		<author><?=$mail?> (<?=$nom?> <?=$prenom?>)</author>
 	</item>
 <?php } ?>
