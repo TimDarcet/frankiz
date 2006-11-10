@@ -34,10 +34,10 @@ while(list($id,$date,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$pr
 	if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
 ?>
 	<item>
-		<title><?php echo $titre ?></title>
-		<link><? echo BASE_URL."?nonlu=$id#annonce_$id" ?></link>
-		<category><?php echo get_categorie($en_haut, $stamp, $perime) ?></category>
-		<pubDate><?php echo date(DATE_RFC822,$date) ?></pubDate>
+		<title><?php echo $titre; ?></title>
+		<link><?php echo BASE_URL."?nonlu=$id#annonce_$id"; ?></link>
+		<category><?php echo get_categorie($en_haut, $stamp, $perime); ?></category>
+		<pubDate><?php echo date(DATE_RFC822,$date); ?></pubDate>
 		<description>
 <?php
 		echo htmlspecialchars(wikiVersXML($contenu,true),ENT_COMPAT,UTF-8);
@@ -46,7 +46,7 @@ while(list($id,$date,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$pr
 				echo htmlspecialchars("<p><img src='http://www.frankiz.net/data/annonces/".$id."' alt=''/></p>");
 			}
 ?>		</description>
-		<guid isPermaLink="false"><? echo BASE_URL."?nonlu=$id#annonce_$id" ?></guid>
+		<guid isPermaLink="false"><?php echo BASE_URL."?nonlu=$id#annonce_$id"; ?></guid>
 		<author><?=$mail?> (<?=$nom?> <?=$prenom?>)</author>
 	</item>
 <?php } ?>
