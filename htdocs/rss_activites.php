@@ -25,9 +25,9 @@ for($i= 0; $i<7;$i++){
 	while (list($id,$titre,$url,$date,$texte)=$DB_web->next_row()) {
 ?>
 		<item>
-			<title><?php echo $date.": ".$titre ?></title>
-			<link><? echo $url ?></link>
-			<pubDate><?php echo $date ?></pubDate>
+			<title><?php echo $date.": ".$titre; ?></title>
+			<link><?php echo ( ($url == "")? BASE_URL : $url ); ?></link>
+			<pubDate><?php echo date(DATE_RFC822,$date); ?></pubDate>
 			<description>
 <?
 				echo htmlspecialchars(wikiVersXML($texte,true),ENT_COMPAT,UTF-8);
@@ -36,6 +36,7 @@ for($i= 0; $i<7;$i++){
 				}
 ?>
 			</description>
+			<guid isPermaLink="false"><?php echo $id; ?></guid>
 		</item>
 <?
 	}
