@@ -99,11 +99,10 @@
 <xsl:template match="annonce" mode="complet">
 	<xsl:param name="n" />
          
+	<a> <xsl:attribute name="name">	<xsl:value-of select="concat('annonce_',@id)"/> </xsl:attribute> </a>
+
 	<xsl:if test="@visible!='non'">
 	<div class="fkz_annonces">
-		<xsl:attribute name="id">
-			<xsl:value-of select="concat('annonce_',@id)"/>
-		</xsl:attribute>
 		<div class="fkz_annonces_titre">
             <span class="lecon">Le</span><span class="lecon_cedille">ç</span><span class="lecon">on n°<xsl:value-of select="$n + position() - 1" /></span><span class="lecon_cedille"> :</span>
 			<b>
