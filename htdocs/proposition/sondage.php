@@ -146,7 +146,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 <page id="propoz_sondage" titre="Frankiz : Propose un sondage">
 <h1>Proposition de sondage</h1>
-<?
+<?php
 
 if ((isset($_POST['valid']))&&($erreur==0)) {
 ?>
@@ -158,12 +158,12 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 	</commentaire>
 	
 	
-	<formulaire id="form" titre="<?=$titre_sondage?>">	
-<?
+	<formulaire id="form" titre="<?php echo $titre_sondage; ?>">	
+<?php
 	decode_sondage($contenu_form) ;
 ?>
 	</formulaire>
-<?	
+<?php	
 
 } else {
 	if ($erreur==1) {
@@ -171,52 +171,52 @@ if ((isset($_POST['valid']))&&($erreur==0)) {
 		<warning>
 		Remplis le titre du sondage, merci.
 		</warning>
-		<?
+		<?php
 	}
 ?>
 <formulaire id="form" titre="Aperçu de ton sondage"  action="proposition/sondage.php">	
-	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
-	<hidden id="perimdate" valeur="<?=$perimdate?>"/>
-	<hidden id="restriction" valeur="<?=$restriction?>"/>
-	<h2><?=$titre_sondage?></h2>
+	<hidden id="contenu_form" valeur="<?php echo $contenu_form; ?>"/> 	
+	<hidden id="titre_sondage" valeur="<?php echo $titre_sondage; ?>"/>
+	<hidden id="perimdate" valeur="<?php echo $perimdate; ?>"/>
+	<hidden id="restriction" valeur="<?php echo $restriction; ?>"/>
+	<h2><?php echo $titre_sondage; ?></h2>
 		
-<?
+<?php
 	decode_sondage($contenu_form) ;
 ?>
 	
 	<bouton titre="Valider le sondage" id="valid" onClick="return window.confirm('Voulez vous vraiment valider votre sondage ?')" />
-	<bouton titre="Interface <?= ($_REQUEST["avance"]==1)?"simplifiée":"avancée";?>" id="btn_avance"/>
+	<bouton titre="Interface <?php echo $_REQUEST['avance'] == 1 ? 'simplifiée' : 'avancée'; ?>" id="btn_avance"/>
 </formulaire>
 
 <warning>Bien mettre à jour chaque portion ci-dessous avant de valider le sondage (les informations non mises à jour ne sont pas enregistrées)</warning>
 
 <formulaire id="infos_generales" titre="Informations générales"  action="proposition/sondage.php">	
-	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-	<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
-	<hidden id="avance" valeur="<?=$_REQUEST["avance"]?>"/>  
-	<choix titre="Sondage jusqu'à " id="perimdate" type="combo" valeur="<?=$perimdate?>">
-<?	for ($i=1 ; $i<=MAX_PEREMPTION ; $i++) {
+	<hidden id="contenu_form" valeur="<?php echo $contenu_form; ?>"/> 	
+	<hidden id="titre_sondage" valeur="<?php echo $titre_sondage; ?>"/>
+	<hidden id="avance" valeur="<?php echo $_REQUEST['avance']; ?>"/>  
+	<choix titre="Sondage jusqu'à " id="perimdate" type="combo" valeur="<?php echo $perimdate; ?>">
+<?php	for ($i=1 ; $i<=MAX_PEREMPTION ; $i++) {
 		$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
 		$date_value = date("d/m/y" , $date_id);
 ?>
-		<option titre="<? echo $date_value?>" id="<? echo $date_id?>" />
-<?
+		<option titre="<?php echo $date_value?>" id="<?php echo $date_id?>" />
+<?php
 	}
 ?>
 	</choix>
 	<note>Si tu souhaite que ce sondage soit réservé à certaines personnes, définis le ici</note>
-<?
+<?php
 if ($restriction != "") $temp = explode("_",$restriction);
 else $temp = array("aucune","");
 ?>
-	<choix titre="Restreindre" id="restriction" type="radio" valeur="<?=$temp[0]?>">
+	<choix titre="Restreindre" id="restriction" type="radio" valeur="<?php echo $temp[0]; ?>">
 		<option id="aucune" titre="Aucune"/>
 		<option id="promo" titre="A une promo"/>
 		<option id="section" titre="A une section"/>
 		<option id="binet" titre="A un binet"/>
 	</choix>
-	<choix titre="Promo" id="promo" type="combo" valeur="<? if ($temp[0]=="promo") echo $temp[1];?>">
+	<choix titre="Promo" id="promo" type="combo" valeur="<?php if ($temp[0]=="promo") echo $temp[1];?>">
 		<option titre="Toutes" id="" />
 <?php
 		$DB_trombino->query("SELECT DISTINCT promo FROM eleves ORDER BY promo DESC");
@@ -224,7 +224,7 @@ else $temp = array("aucune","");
 			echo "\t\t\t<option titre=\"$promo\" id=\"$promo\"/>\n";
 ?>
 	</choix>
-	<choix titre="Section" id="section" type="combo" valeur="<? if ($temp[0]=="section") echo $temp[1];?>">
+	<choix titre="Section" id="section" type="combo" valeur="<?php if ($temp[0]=="section") echo $temp[1];?>">
 		<option titre="Toutes" id=""/>
 <?php
 		$DB_trombino->query("SELECT section_id,nom FROM sections ORDER BY nom ASC");
@@ -232,7 +232,7 @@ else $temp = array("aucune","");
 			echo "\t\t\t<option titre=\"$section_nom\" id=\"$section_id\"/>\n";
 ?>
 	</choix>
-	<choix titre="Binet" id="binet" type="combo" valeur="<? if ($temp[0]=="binet") echo $temp[1];?>">
+	<choix titre="Binet" id="binet" type="combo" valeur="<?php if ($temp[0]=="binet") echo $temp[1];?>">
 		<option titre="Tous" id=""/>
 <?php
 		$DB_trombino->query("SELECT binet_id,nom FROM binets ORDER BY nom ASC");
@@ -245,19 +245,19 @@ else $temp = array("aucune","");
 </formulaire>
 
 <formulaire id="ajout_titre" titre="OBLIGATOIRE: le titre du sondage" action="proposition/sondage.php">
-	<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-	<hidden id="perimdate" valeur="<?=$perimdate?>"/>
-	<hidden id="restriction" valeur="<?=$restriction?>"/>
-	<hidden id="avance" valeur="<?=$_REQUEST["avance"]?>"/>  
-	<champ id="titre_sondage" titre="Titre" valeur="<?=$titre_sondage?>"/>
+	<hidden id="contenu_form" valeur="<?php echo $contenu_form; ?>"/> 	
+	<hidden id="perimdate" valeur="<?php echo $perimdate; ?>"/>
+	<hidden id="restriction" valeur="<?php echo $restriction; ?>"/>
+	<hidden id="avance" valeur="<?php echo $_REQUEST['avance']; ?>"/>  
+	<champ id="titre_sondage" titre="Titre" valeur="<?php echo $titre_sondage; ?>"/>
 	<bouton titre="Mettre à jour le titre" id="ok_titre" />
 </formulaire>
 	
-<? if(isset($_REQUEST["avance"])&&$_REQUEST["avance"]==1){ ?>
+<?php if(isset($_REQUEST["avance"])&&$_REQUEST["avance"]==1){ ?>
 	<formulaire id="edit" titre="Edite ton sondage" action="proposition/sondage.php">
-		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
-		<hidden id="perimdate" valeur="<?=$perimdate?>"/>
-		<hidden id="restriction" valeur="<?=$restriction?>"/>
+		<hidden id="titre_sondage" valeur="<?php echo $titre_sondage; ?>"/>
+		<hidden id="perimdate" valeur="<?php echo $perimdate; ?>"/>
+		<hidden id="restriction" valeur="<?php echo $restriction; ?>"/>
 		<hidden id="avance" valeur="1"/>
 		<note>
 			La syntaxe est la suivante:<br/>
@@ -268,42 +268,42 @@ else $temp = array("aucune","");
 			Pour une boite déroulante: ###combo///ma question///option1///option2///option3<br/>
 			Pour une checkbox: ###check///ma question///option1///option2///option3<br/>
 		</note>
-		<zonetext id="contenu_form" titre="Zone d'édition avancée" type="grand"><?=$contenu_form?></zonetext>
+		<zonetext id="contenu_form" titre="Zone d'édition avancée" type="grand"><?php echo $contenu_form; ?></zonetext>
 		<bouton titre="Mettre à jour le sondage" id="ok_sondage" />
 	</formulaire>
-<? }else{ ?>
+<?php }else{ ?>
 	<formulaire id="ajout_simple" titre="Rajoute une explication" action="proposition/sondage.php">
-		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
-		<hidden id="perimdate" valeur="<?=$perimdate?>"/>
-		<hidden id="restriction" valeur="<?=$restriction?>"/>
+		<hidden id="contenu_form" valeur="<?php echo $contenu_form; ?>"/> 	
+		<hidden id="titre_sondage" valeur="<?php echo $titre_sondage; ?>"/>
+		<hidden id="perimdate" valeur="<?php echo $perimdate; ?>"/>
+		<hidden id="restriction" valeur="<?php echo $restriction; ?>"/>
 		<hidden id="avance" valeur="0"/>
 		<zonetext id="explication" titre="Explication"></zonetext>
 		<bouton titre="Ajouter" id="ok_expli" />
 	</formulaire>
 	<formulaire id="ajout_champ" titre="Rajoute une question de type 'champ'" action="proposition/sondage.php">
-		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
-		<hidden id="perimdate" valeur="<?=$perimdate?>"/>
-		<hidden id="restriction" valeur="<?=$restriction?>"/>
+		<hidden id="contenu_form" valeur="<?php echo $contenu_form; ?>"/> 	
+		<hidden id="titre_sondage" valeur="<?php echo $titre_sondage; ?>"/>
+		<hidden id="perimdate" valeur="<?php echo $perimdate; ?>"/>
+		<hidden id="restriction" valeur="<?php echo $restriction; ?>"/>
 		<hidden id="avance" valeur="0"/>
 		<champ id="question" titre="Question" valeur=""/>
 		<bouton titre="Ajouter" id="ok_champ" />
 	</formulaire>
 	<formulaire id="ajout_champ" titre="Rajoute une question de type 'textarea'" action="proposition/sondage.php">	
-		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
-		<hidden id="perimdate" valeur="<?=$perimdate?>"/>
-		<hidden id="restriction" valeur="<?=$restriction?>"/>
+		<hidden id="contenu_form" valeur="<?php echo $contenu_form; ?>"/> 	
+		<hidden id="titre_sondage" valeur="<?php echo $titre_sondage; ?>"/>
+		<hidden id="perimdate" valeur="<?php echo $perimdate; ?>"/>
+		<hidden id="restriction" valeur="<?php echo $restriction; ?>"/>
 		<hidden id="avance" valeur="0"/>
 		<champ id="question" titre="Question" valeur=""/>
 		<bouton titre="Ajouter" id="ok_text" />
 	</formulaire>
 	<formulaire id="ajout_champ" titre="Rajoute une question de type 'radio'" action="proposition/sondage.php">	
-		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
-		<hidden id="perimdate" valeur="<?=$perimdate?>"/>
-		<hidden id="restriction" valeur="<?=$restriction?>"/>
+		<hidden id="contenu_form" valeur="<?php echo $contenu_form; ?>"/> 	
+		<hidden id="titre_sondage" valeur="<?php echo $titre_sondage; ?>"/>
+		<hidden id="perimdate" valeur="<?php echo $perimdate; ?>"/>
+		<hidden id="restriction" valeur="<?php echo $restriction; ?>"/>
 		<hidden id="avance" valeur="0"/>
 		<champ id="question" titre="Question" valeur=""/>
 		<textsimple titre="Maintenant rajouter les réponses possibles"/>
@@ -316,10 +316,10 @@ else $temp = array("aucune","");
 		<bouton titre="Ajouter" id="ok_radio" />
 	</formulaire>
 	<formulaire id="ajout_champ" titre="Rajoute une question de type 'checkbox'" action="proposition/sondage.php">	
-		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
-		<hidden id="perimdate" valeur="<?=$perimdate?>"/>
-		<hidden id="restriction" valeur="<?=$restriction?>"/>
+		<hidden id="contenu_form" valeur="<?php echo $contenu_form; ?>"/> 	
+		<hidden id="titre_sondage" valeur="<?php echo $titre_sondage; ?>"/>
+		<hidden id="perimdate" valeur="<?php echo $perimdate; ?>"/>
+		<hidden id="restriction" valeur="<?php echo $restriction; ?>"/>
 		<hidden id="avance" valeur="0"/>
 		<champ id="question" titre="Question" valeur=""/>
 		<textsimple titre="Maintenant rajouter les réponses possibles"/>
@@ -332,10 +332,10 @@ else $temp = array("aucune","");
 		<bouton titre="Ajouter" id="ok_check" />
 	</formulaire>
 	<formulaire id="ajout_champ" titre="Rajoute une question de type 'liste déroulante'" action="proposition/sondage.php">	
-		<hidden id="contenu_form" valeur="<?=$contenu_form?>"/> 	
-		<hidden id="titre_sondage" valeur="<?=$titre_sondage?>"/>
-		<hidden id="perimdate" valeur="<?=$perimdate?>"/>
-		<hidden id="restriction" valeur="<?=$restriction?>"/>
+		<hidden id="contenu_form" valeur="<?php echo $contenu_form; ?>"/> 	
+		<hidden id="titre_sondage" valeur="<?php echo $titre_sondage; ?>"/>
+		<hidden id="perimdate" valeur="<?php echo $perimdate; ?>"/>
+		<hidden id="restriction" valeur="<?php echo $restriction; ?>"/>
 		<hidden id="avance" valeur="0"/>
 		<champ id="question" titre="Question" valeur=""/>
 		<textsimple titre="Maintenant rajouter les réponses possibles"/>
@@ -347,7 +347,7 @@ else $temp = array("aucune","");
 		<champ id="reponse6" titre="Reponse 6" valeur=""/>
 		<bouton titre="Ajouter" id="ok_combo" />
 	</formulaire>
-<?
+<?php
 	}
 }
 ?>

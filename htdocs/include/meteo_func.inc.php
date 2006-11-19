@@ -1,4 +1,4 @@
-<?/*
+<?php /*
 	Copyright (C) 2004 Binet Réseau
 	http://www.polytechnique.fr/eleves/binets/br/
 	

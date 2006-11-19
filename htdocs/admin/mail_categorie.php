@@ -39,7 +39,7 @@ list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_ro
 
 ?>
 <page id="admin_mailcategorie" titre="Frankiz : Envoi des mails par catégories">
-<?
+<?php
 if (!isset($_POST['envoie'])||isset($_POST['continuer'])) {
 ?>
 	<formulaire id="mail_categorie" titre="Mail par catégorie" action="admin/mail_categorie.php">
@@ -84,14 +84,14 @@ if (!isset($_POST['envoie'])||isset($_POST['continuer'])) {
 		<note>Le numéro de casert est auto-complété par la droite, ce qui permet de selectionner un étage, un batiment...</note>
 		<champ titre="Casert" id="casert" valeur="" />
 		
-		<champ titre="Sujet" id="sujet" valeur="<? if (isset($_POST['sujet'])) echo $_POST['sujet']?>" />
-		<champ titre="From" id="from" valeur="<? if (isset($_POST['from'])){ echo $_POST['from'] ;} else {echo "$prenom $nom &lt;".$mail."&gt;" ;} ?>" />
-		<zonetext titre="Mail" id="mail" type="grand"><? if (isset($_POST['mail'])) echo $_POST['mail']?></zonetext>
+		<champ titre="Sujet" id="sujet" valeur="<?php if (isset($_POST['sujet'])) echo $_POST['sujet']?>" />
+		<champ titre="From" id="from" valeur="<?php if (isset($_POST['from'])){ echo $_POST['from'] ;} else {echo "$prenom $nom &lt;".$mail."&gt;" ;} ?>" />
+		<zonetext titre="Mail" id="mail" type="grand"><?php if (isset($_POST['mail'])) echo $_POST['mail']?></zonetext>
 		<bouton titre="Tester" id="upload"/>
 		<bouton titre="Envoyer" id="envoie"  onClick="return window.confirm('Voulez vous vraiment envoyer ce mail ?')"/>
 	</formulaire>
 	<?php affiche_syntaxe_wiki() ?>
-<?
+<?php
 //==================================================
 //=
 //= Permet de visualiser son mail avant de l'envoyer
@@ -99,10 +99,10 @@ if (!isset($_POST['envoie'])||isset($_POST['continuer'])) {
 //==================================================
 	if (isset($_POST['upload'])) {
 ?>
-		<cadre  titre="Mail Promo : <? if (isset($_POST['sujet'])) echo $_POST['sujet']?>" >
-			<? echo wikiVersXML($_POST['mail']) ; ?>
+		<cadre  titre="Mail Promo : <?php if (isset($_POST['sujet'])) echo $_POST['sujet']?>" >
+			<?php echo wikiVersXML($_POST['mail']) ; ?>
 		</cadre>
-<?
+<?php
 	}
 //==================================================
 //=
@@ -215,7 +215,7 @@ if (!isset($_POST['envoie'])||isset($_POST['continuer'])) {
 		exec("echo \"".$mail_contenu."\" >>".$fich_log) ;*/
 ?>
 <formulaire id="mail_categorie" titre="Mail par catégorie" action="admin/mail_categorie.php">"
-<?
+<?php
 		while(list($eleve_id,$nom,$prenom,$promo)=$DB_trombino->next_row()){
 			$DB_trombino->push_result() ;
 			//couriel($eleve_id,"".$titre_mail,$mail_contenu, STRINGMAIL_ID, $from) ;

@@ -143,7 +143,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="propoz_affiche" titre="Frankiz : Propose une activité">
 <h1>Proposition d'activité</h1>
 
- <?
+ <?php
  echo $msg ;
 if ($erreur_upload==1)
 	echo "<warning>Ton image n'est pas au bon format, ou est trop grande.</warning>\n";
@@ -157,27 +157,27 @@ if ($erreur_upload==1)
 	echo "<module id=\"activites\" titre=\"Activités\">\n";
 
 ?>
-	<annonce date="<? echo date('Y-m-d H:i:s',$date_complete)  ?>">
+	<annonce date="<?php echo date('Y-m-d H:i:s',$date_complete)  ?>">
 		<note>NB : Cette activité sera affichée le <?php echo date("d/m/y",$_POST['date']) ;?></note>
 		<lien url="<?php echo ($_POST['url']!="")?$_POST['url']:"affiches.php" ;?>">
-		<?
+		<?php
 		if ((!isset($_POST['valid']))&&(file_exists(DATA_DIR_LOCAL."affiches/temp_$eleve_id"))) {
 		?>
-		<image source="<?echo DATA_DIR_URL."affiches/temp_".$eleve_id ; ?>" texte="Affiche" legende="<?php echo  $_POST['titre']?>"/>
-		<? 
+		<image source="<?php echo DATA_DIR_URL."affiches/temp_".$eleve_id ; ?>" texte="Affiche" legende="<?php echo  $_POST['titre']?>"/>
+		<?php 
 		} else if ((isset($index))&&(file_exists(DATA_DIR_LOCAL."affiches/a_valider_{$index}"))){
 		?>
-		<image source="<? echo DATA_DIR_URL."affiches/a_valider_{$index}" ; ?>" texte="Affiche" legende="<?php echo $_POST['titre']?>"/>
-		<?
+		<image source="<?php echo DATA_DIR_URL."affiches/a_valider_{$index}" ; ?>" texte="Affiche" legende="<?php echo $_POST['titre']?>"/>
+		<?php
 		}
 		?>
 		</lien>
-		<?  if (isset($_POST['text'])) echo wikiVersXML($_POST['text']); ?>
-		<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
+		<?php  if (isset($_POST['text'])) echo wikiVersXML($_POST['text']); ?>
+		<eleve nom="<?php echo $nom; ?>" prenom="<?php echo $prenom; ?>" promo="<?php echo $promo; ?>" surnom="<?php echo $surnom; ?>" mail="<?php echo $mail; ?>"/>
 		
 	</annonce>
 		
-<?
+<?php
 	echo "</module>\n" ;
 
 //=========================
@@ -187,7 +187,7 @@ if ($erreur_upload==1)
 if ((isset($_POST['valid']))&&(isset($index))&&file_exists(DATA_DIR_LOCAL."affiches/a_valider_{$index}")) {
 ?>
 	<commentaire>Ta nouvelle annonce a été prise en compte et sera validée dans les meilleurs délais.</commentaire>
-<?	
+<?php	
 } else {
 //====================
 // Zone de saisie de l'annonce
@@ -195,36 +195,36 @@ if ((isset($_POST['valid']))&&(isset($index))&&file_exists(DATA_DIR_LOCAL."affic
 ?>
 
 	<formulaire id="propoz_activite" titre="Ton activité" action="proposition/affiche.php">
-		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
-		<champ id="url" titre="Lien vers une page décrivant l'activité" valeur="<? if (isset($_POST['url'])) echo $_POST['url'] ;?>"/>
-		<zonetext id="text" titre="Description plus détaillée"><? if (isset($_POST['text'])) echo $_POST['text'];?></zonetext>
+		<champ id="titre" titre="Le titre" valeur="<?php if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
+		<champ id="url" titre="Lien vers une page décrivant l'activité" valeur="<?php if (isset($_POST['url'])) echo $_POST['url'] ;?>"/>
+		<zonetext id="text" titre="Description plus détaillée"><?php if (isset($_POST['text'])) echo $_POST['text'];?></zonetext>
 		<note>L'image doit être un fichier gif, png ou jpeg ne dépassant pas 200x300 pixels et 250Ko.</note>
 		<fichier id="file" titre="Ton image" taille="100000"/>
 
 		<note>Si tu souhaites que ton activité soit visible de l'extérieur, clique ici.</note>
-		<choix titre="Extérieur" id="exterieur" type="checkbox" valeur="<? if (isset($_REQUEST['ext'])) echo 'ext' ;?>">
+		<choix titre="Extérieur" id="exterieur" type="checkbox" valeur="<?php if (isset($_REQUEST['ext'])) echo 'ext' ;?>">
 			<option id="ext" titre=""/>
 		</choix>
 		
 		<note>Ton activité ne sera affichée qu'un seul jour. Choisis donc la date de ton événement.</note>
 
-		<choix titre="Date de l'activité" id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
-<?		for ($i=0 ; $i<MAX_PEREMPTION ; $i++) {
+		<choix titre="Date de l'activité" id="date" type="combo" valeur="<?php if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
+<?php		for ($i=0 ; $i<MAX_PEREMPTION ; $i++) {
 			$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
 			$date_value = date("d/m/y" , $date_id);
 ?>
-			<option titre="<? echo $date_value?>" id="<? echo $date_id?>" />
-<?
+			<option titre="<?php echo $date_value?>" id="<?php echo $date_id?>" />
+<?php
 		}
 ?>
 		</choix>
-		<champ id="heure" titre="Heure de l'activité" valeur="<? if (isset($_POST['heure'])) echo $_POST['heure'] ;?>"/>
+		<champ id="heure" titre="Heure de l'activité" valeur="<?php if (isset($_POST['heure'])) echo $_POST['heure'] ;?>"/>
 
 		<bouton id='suppr_img' titre="Supprimer l'image"/>
 		<bouton id='test' titre="Tester"/>
 		<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider votre annonce ?')"/>
 	</formulaire>
-<?
+<?php
 }
 ?>
 

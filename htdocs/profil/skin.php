@@ -149,7 +149,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<bouton titre="Appliquer" id="OK_skin" />
 	</formulaire>
 	
-	<formulaire id="form_param_skin" titre="Paramètres de la skin <? echo $_SESSION['skin']['skin_nom'] ?>" action="profil/skin.php">
+	<formulaire id="form_param_skin" titre="Paramètres de la skin <?php echo $_SESSION['skin']['skin_nom'] ?>" action="profil/skin.php">
 		<note>Tu peux choisir des paramètres spéciaux pour la skin courante.</note>
 <?php
 		// Paramètres spécifique à la skin

@@ -42,7 +42,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="nettoyage" titre="Frankiz : Nettoyage des bases de données du site.">
 <h1>Modification d'annonces</h1>
 
-<?
+<?php
 // On traite les différents cas de figure d'enrigistrement et validation d'annonce :)
 
 // Enregistrer ...
@@ -66,8 +66,8 @@ foreach ($_POST AS $keys => $val){
 		$DB_web->query("DELETE FROM annonces WHERE perime<".date("Ymd000000",time()- 5 * 24 * 3600)."") ;
 
 	?>
-		<warning>Suppression de <? echo $compteur?> annonces périmées</warning>
-	<?
+		<warning>Suppression de <?php echo $compteur?> annonces périmées</warning>
+	<?php
 	}
 	
 	if ($temp[0]=='affiches') {
@@ -75,8 +75,8 @@ foreach ($_POST AS $keys => $val){
 		$compteur = $DB_web->num_rows();
 		$DB_web->query("DELETE FROM affiches WHERE date<'".date("Y-m-d 00:00",time()- 5 * 24 * 3600)."' ") ;
 	?>
-		<warning>Suppression de <? echo $compteur?> affiches périmées</warning>
-	<?
+		<warning>Suppression de <?php echo $compteur?> affiches périmées</warning>
+	<?php
 	}
 	
 	if ($temp[0]=='qdj') {
@@ -84,8 +84,8 @@ foreach ($_POST AS $keys => $val){
 		$compteur = $DB_web->num_rows();
 		$DB_web->query("DELETE FROM qdj WHERE date<'".date("Y-m-d", time() - 365 * 24 * 3600)."' AND date>'0000-00-00'");
 	?>
-		<warning>Suppression de <? echo $compteur?> qdj périmées</warning>
-	<?
+		<warning>Suppression de <?php echo $compteur?> qdj périmées</warning>
+	<?php
 	}
 	
 	if ($temp[0] == "sondage") {
@@ -96,8 +96,8 @@ foreach ($_POST AS $keys => $val){
 		}
 		$DB_web->query("DELETE FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) <-60");
 	?>
-		<warning>Suppression de <? echo $compteur?> sondages périmés et de leurs résultats</warning>
-	<?
+		<warning>Suppression de <?php echo $compteur?> sondages périmés et de leurs résultats</warning>
+	<?php
 	}
 }
 

@@ -47,7 +47,7 @@ $postit_dir = BASE_DATA."postit/";
 <page id="modif_annonce" titre="Frankiz : Module Post-it">
 <h1>Edition du module Post-it</h1>
 
-<?
+<?php
 // On traite les différents cas de figure d'enrigistrement et validation d'annonce :)
 
 
@@ -174,7 +174,7 @@ $postit_dir = BASE_DATA."postit/";
 
 	?>
 		<commentaire>Edition effectuée</commentaire>
-	<?	
+	<?php	
 	}
 
 // Cas de la suppression du module
@@ -193,8 +193,8 @@ $postit_dir = BASE_DATA."postit/";
 			$supp_image = " et de son image associée" ;
 		}
 	?>
-		<warning>Suppression du module Post-it<? echo $supp_image?></warning>
-	<?
+		<warning>Suppression du module Post-it<?php echo $supp_image?></warning>
+	<?php
 	}
 
 //===============================
@@ -234,7 +234,7 @@ $postit_dir = BASE_DATA."postit/";
 				}
 				echo wikiVersXML($contenu) ;
 				?>
-				<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>"/>
+				<eleve nom="<?php echo $nom; ?>" prenom="<?php echo $prenom; ?>" promo="<?php echo $promo; ?>" surnom="<?php echo $surnom; ?>"/>
 		</annonce>
 <?php
 	} else {
@@ -281,7 +281,7 @@ $postit_dir = BASE_DATA."postit/";
 	}
 ?>
 		</formulaire>
-<?
+<?php
 		affiche_syntaxe_wiki();
 ?>
 </page>

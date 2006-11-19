@@ -178,7 +178,7 @@ function demande_authentification($minimum, $charte=true) {
 			echo '"'.htmlentities($_SERVER['REQUEST_URI']).'"';
 		?>
 		>
-		<?  foreach ($_REQUEST AS $keys => $val){
+		<?php  foreach ($_REQUEST AS $keys => $val){
 			echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 			}
 		?>

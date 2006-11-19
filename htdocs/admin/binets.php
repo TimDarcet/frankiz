@@ -200,7 +200,7 @@ if (isset($_POST['suppr'])) {
 require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="binets_web" titre="Frankiz : Binets Web">
-<? echo $message ;?>
+<?php echo $message ;?>
 <?php
 	$liste_catego ="" ;
 	$DB_trombino->query("SELECT catego_id,categorie FROM binets_categorie ORDER BY categorie ASC");
@@ -211,7 +211,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 <h1>Modification du binet</h1>
 
-	<?
+	<?php
 	$categorie_precedente = -1;
 	
 	// Les infos du Binet en générale
@@ -227,24 +227,24 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	list($web_login) = $DB_web->next_row() ;
 
 ?>
-	<formulaire id="binet_web_<? echo $binet_id?>" titre="<? echo $nom_binet?>" action="admin/binets.php?id=<?=$_REQUEST['id']?>">
-		<champ id="nom" titre="Nom" valeur="<? echo $nom_binet?>"/>
-		<choix titre="Catégorie" id="catego" type="combo" valeur="<?=$cat_id?>">
+	<formulaire id="binet_web_<?php echo $binet_id?>" titre="<?php echo $nom_binet?>" action="admin/binets.php?id=<?php echo $_REQUEST['id']; ?>">
+		<champ id="nom" titre="Nom" valeur="<?php echo $nom_binet?>"/>
+		<choix titre="Catégorie" id="catego" type="combo" valeur="<?php echo $cat_id; ?>">
 <?php
 			echo $liste_catego ;
 ?>
 		</choix>
-		<champ id="http" titre="Http" valeur="<? echo $http?>"/>
-		<champ id="folder" titre="Folder de stockage" valeur="<? echo $folder?>"/>
-		<zonetext id="descript" titre="Description"><?=$descript?></zonetext>
-		<image source="binets/?image=1&amp;id=<?=$binet_id?>" texte="<?=$nom_binet ?>"/>
+		<champ id="http" titre="Http" valeur="<?php echo $http?>"/>
+		<champ id="folder" titre="Folder de stockage" valeur="<?php echo $folder?>"/>
+		<zonetext id="descript" titre="Description"><?php echo $descript; ?></zonetext>
+		<image source="binets/?image=1&amp;id=<?php echo $binet_id; ?>" texte="<?php echo $nom_binet; ?>"/>
 		<fichier id="file" titre="Ton image de 100x100 px" taille="50000"/>
-		<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? if ($exterieur==1) echo 'ext' ;?>">
+		<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<?php if ($exterieur==1) echo 'ext' ;?>">
 			<option id="ext" titre=""/>
 		</choix>
 		<note>Vous ne pouvez pas mettre plusieurs personnes par poste (il faut mettre les logins dans les champs suivants)</note>
-		<champ id="prez" titre="President" valeur="<?=$prez_login?>"/>
-		<champ id="webmestre" titre="Webmestre" valeur="<?=$web_login?>"/>
+		<champ id="prez" titre="President" valeur="<?php echo $prez_login; ?>"/>
+		<champ id="webmestre" titre="Webmestre" valeur="<?php echo $web_login; ?>"/>
 
 		<bouton id='modif' titre="Modifier"/>
 		<bouton id='suppr' titre="Supprimer" onClick="return window.confirm('Voulez vous vraiment supprimer ce binet ?')"/>

@@ -56,10 +56,10 @@ require BASE_LOCAL."/include/page_header.inc.php";
 				else $http="binets/$folder/";
 			}
 ?>
-		<binet id="<?=$id?>" categorie="<?=$categorie?>" nom="<?=$nom?>">
-			<image source="binets.php?image=1&amp;id=<?=$id?>"  texte="<?=$nom?>"/>
-			<description><?=stripslashes($description)?></description>
-			<? if($http!="") echo "<url>$http</url>"; ?>
+		<binet id="<?php echo $id; ?>" categorie="<?php echo $categorie; ?>" nom="<?php echo $nom; ?>">
+			<image source="binets.php?image=1&amp;id=<?php echo $id; ?>"  texte="<?php echo $nom; ?>"/>
+			<description><?php echo stripslashes($description); ?></description>
+			<?php if($http!="") echo "<url>$http</url>"; ?>
 		</binet>
 <?php
 	}

@@ -37,7 +37,7 @@ if ($DB_web->num_rows()!=0 || $valeur=='1'){
 	while (list($id,$titre,$url,$date,$exterieur)=$DB_web->next_row()) { 
 		if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
 	?>
-		<annonce date="<? echo $date ?>">
+		<annonce date="<?php echo $date ?>">
 		<lien url="<?php echo ($url!="")?$url:"activites.php";?>"><image source="<?php echo DATA_DIR_URL.'affiches/'.$id?>" texte="Affiche" legende="<?php echo $titre?>"/></lien>
 		</annonce>
 <?php }

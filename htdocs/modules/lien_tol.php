@@ -33,4 +33,4 @@ if(est_authentifie(AUTH_INTERNE)) {
 		<bouton titre="Chercher" id="ok" />
 	</formulaire>
 </module>
-<? } ?>
+<?php } ?>

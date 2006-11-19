@@ -41,7 +41,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 <h1>Validation de Modif FAQ</h1>
 
-<?
+<?php
 // On traite les différents cas de figure d'enrigistrement et validation de qdj :)
 
 // Enregistrer ...
@@ -59,11 +59,11 @@ foreach ($_POST AS $keys => $val){
 			$DB_valid->query("UPDATE valid_modiffaq SET faq_modif='{$_POST['faq_modif']}'  WHERE faq_id='{$temp[1]}'");
 		?>
 			<commentaire>Modification effectuée</commentaire>
-		<?
+		<?php
 		} else {
 	?>
 			<warning>Requête deja traitée par un autre administrateur</warning>
-	<?
+	<?php
 		}
 	}
 	
@@ -101,7 +101,7 @@ foreach ($_POST AS $keys => $val){
 				} else {
 		?>
 					<warning>Erreur écriture : remplacement de la FAQ impossible</warning>
-		<?
+		<?php
 				}
 				
 				if ($erreur ==0){
@@ -109,7 +109,7 @@ foreach ($_POST AS $keys => $val){
 		?>
 					<commentaire>Validation effectuée</commentaire>
 					
-		<?
+		<?php
 					$contenu = "<strong>Bonjour,</strong><br><br>".
 						"Ta modification de la FAQ vient d'être prise en compte par le BR.<br>".
 						"Nous te remercions sincèrement de ta modification.<br>".
@@ -121,7 +121,7 @@ foreach ($_POST AS $keys => $val){
 				} else {
 		?>
 					<warning>Erreur écriture : remplacement de la FAQ impossible</warning>
-		<?
+		<?php
 				}
 			}
 			
@@ -140,11 +140,11 @@ foreach ($_POST AS $keys => $val){
 			$DB_valid->query("DELETE FROM valid_modiffaq WHERE faq_id='{$temp[1]}'") ;
 		?>
 			<warning>Suppression d'une modification d'une FAQ</warning>
-		<?
+		<?php
 		} else {
 	?>
 			<warning>Requête deja traitée par un autre administrateur</warning>
-	<?
+	<?php
 		}
 
 	}
@@ -185,24 +185,24 @@ $DB_valid->query("UNLOCK TABLES");
 			} else {
 			?>
 				<warning>Erreur : impossible de trouver cette question</warning>
-			<?
+			<?php
 			}
 			?>
 			</cadre>
 			
 			<formulaire id='modif_faq' titre='Modification' action= 'admin/valid_faqmodif.php'>
-				<note>Modification apportée par <? echo "$prenom $nom ($promo)"?></note>
-				<zonetext titre="FAQ" id='faq_modif' type="grand"><?=$faq_modif?></zonetext>
-				<bouton id='modif_<?=$id?>' titre="Modifier"/>
-				<bouton id='valid_<?=$id?>' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider cette modification ?')"/>
-				<bouton id='suppr_<?=$id?>' titre='Supprimer' onClick="return window.confirm('Voulez vous vraiment supprimer cette modification de FAQ ?')"/>
+				<note>Modification apportée par <?php echo "$prenom $nom ($promo)"?></note>
+				<zonetext titre="FAQ" id='faq_modif' type="grand"><?php echo $faq_modif; ?></zonetext>
+				<bouton id='modif_<?php echo $id; ?>' titre="Modifier"/>
+				<bouton id='valid_<?php echo $id; ?>' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider cette modification ?')"/>
+				<bouton id='suppr_<?php echo $id; ?>' titre='Supprimer' onClick="return window.confirm('Voulez vous vraiment supprimer cette modification de FAQ ?')"/>
 	
 			</formulaire>
-			<?
+			<?php
 		} else {
 		?>
 			<warning>Erreur : impossible de trouver cette question</warning>
-		<?
+		<?php
 		}
 		
 

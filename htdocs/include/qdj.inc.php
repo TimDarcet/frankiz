@@ -51,7 +51,7 @@ function qdj_affiche($hier,$deja_vote) {
 						echo "\t\t\t\t\t<dernier ordre=\"$ordre\"><eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"$promo\" surnom=\"$surnom\"/></dernier>\n";
 ?>
 				</qdj>
-				<? echo $hier? "":"<lien id=\"class_qdj\" titre=\"Classement QDJ\" url=\"classement_qdj.php\"/>\n"; ?>
+				<?php echo $hier? "":"<lien id=\"class_qdj\" titre=\"Classement QDJ\" url=\"classement_qdj.php\"/>\n"; ?>
 			</module>
 <?php
 		}

@@ -37,13 +37,13 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
 <page id="etat_bob" titre="Frankiz : Etat de la kès">
-<?
+<?php
 if(isset($_POST['envoie'])){
 ?>
 	<commentaire>
 		L'état de la Kès vient d'être changé
 	</commentaire>
-<?
+<?php
 	$DB_web->query("UPDATE parametres SET valeur='".$_REQUEST['etat']."' WHERE nom='kes'");
 }
 
@@ -52,7 +52,7 @@ list($valeur) = $DB_web->next_row();
 
 ?>
 	<formulaire id="kes" titre="Ouverture de la kès" action="gestion/etat_kes.php">
-		<choix titre="La Kès est:" id="etat" type="radio" valeur="<?= $valeur ?>">
+		<choix titre="La Kès est:" id="etat" type="radio" valeur="<?php echo $valeur; ?>">
 				<option titre="Fermée" id="0"/>
 				<option titre="ouverte" id="1"/>
 		</choix>

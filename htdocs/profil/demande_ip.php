@@ -99,7 +99,7 @@ if ($DB_valid->num_rows()>0) { ?>
 		indiquée ci-dessous. Nous allons la traiter dans les plus brefs délais.</p>
 	<p>Raison de la demande :</p> 
 	<commentaire>
-		<?= $_POST['raison'] ?>
+		<?php echo $_POST['raison']; ?>
 	</commentaire>
 	
 <?php } ?>

@@ -33,7 +33,7 @@ require "include/page_header.inc.php";
 <h1>Sites de certains élèves de l'X</h1>
 	<liste id="page_eleves" selectionnable="non">
 		<entete id="eleves" titre=""/>
-<?
+<?php
 		$DB_web->query("SELECT e.eleve_id,e.nom,e.prenom,e.promo,commentaires,e.login FROM sites_eleves LEFT JOIN trombino.eleves as e USING(eleve_id) ORDER BY promo DESC") ;
 		while(list($id,$nom,$prenom,$promo,$commentaire,$login) = $DB_web->next_row()) {
 			echo "\t\t<element id=\"$id\">\n";
@@ -46,6 +46,6 @@ require "include/page_header.inc.php";
 ?>
 	</liste>
 </page>
-<?
+<?php
 require_once "include/page_footer.inc.php";
 ?>

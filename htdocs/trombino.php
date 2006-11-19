@@ -439,20 +439,20 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 		<champ titre="Téléphone" id="phone" valeur="<?php echo empty($_REQUEST['phone']) ? '' : $_REQUEST['phone']; ?>" />
 		<champ titre="Casert" id="casert" valeur="<?php echo empty($_REQUEST['casert']) ? '' : $_REQUEST['casert']; ?>" />
 
-<? if($tol_admin){ ?>
+<?php if($tol_admin){ ?>
 		<champ titre="Prise" id="prise" valeur="<?php echo empty($_REQUEST['prise']) ? '' : $_REQUEST['prise']; ?>" />
 		<champ titre="IP" id="ip" valeur="<?php echo empty($_REQUEST['ip']) ? '' : $_REQUEST['ip']; ?>" />
 		<champ titre="Nom Rezix" id="dns" valeur="<?php echo empty($_REQUEST['dns']) ? '' : $_REQUEST['dns']; ?>" />
 		<champ titre="Mac" id="mac" valeur="<?php echo empty($_REQUEST['mac']) ? '' : $_REQUEST['mac']; ?>" />
-		<choix titre="Tol Admin" id="admin" type="checkbox" valeur="<? if(isset($_REQUEST['toladmin'])) echo 'toladmin' ;?>">
+		<choix titre="Tol Admin" id="admin" type="checkbox" valeur="<?php if(isset($_REQUEST['toladmin'])) echo 'toladmin' ;?>">
 				<option id="toladmin" titre=""/>
 		</choix>
-<? } ?>
+<?php } ?>
 
 		<bouton titre="Effacer" id="reset" />
 		<bouton titre="Chercher" id="chercher" />
 	</formulaire>
-	<lien url="trombino.php?anniversaire_week&amp;depart=<?echo date("Y-m-d"); ?>" titre="Anniversaires à souhaiter dans la semaine"/><br/>
+	<lien url="trombino.php?anniversaire_week&amp;depart=<?php echo date("Y-m-d"); ?>" titre="Anniversaires à souhaiter dans la semaine"/><br/>
 	<lien url="num_utiles.php" titre="Numéros Utiles"/>
 </page>
 <?php require "include/page_footer.inc.php" ?>

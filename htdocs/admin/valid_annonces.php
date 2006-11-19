@@ -42,7 +42,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="valid_annonce" titre="Frankiz : Valide une annonce">
 <h1>Validation d'annonces</h1>
 
-<?
+<?php
 // On traite les différents cas de figure d'enrigistrement et validation d'annonce :)
 
 // Enregistrer ...
@@ -101,12 +101,12 @@ foreach ($_POST AS $keys => $val){
 			if ($temp[0]!='valid') {
 	?>
 				<commentaire>Modif effectuée</commentaire>
-	<?	
+	<?php	
 			}
 		} else {
 	?>
 			<warning>Requête deja traitée par un autre administrateur</warning>
-	<?			
+	<?php			
 		}
 	}
 	
@@ -146,7 +146,7 @@ foreach ($_POST AS $keys => $val){
 			$DB_valid->query("DELETE FROM valid_annonces WHERE annonce_id='{$temp[1]}'") ;
 		?>
 			<commentaire>Validation effectuée</commentaire>
-		<?	
+		<?php	
 		} 
 		
 	}
@@ -175,12 +175,12 @@ foreach ($_POST AS $keys => $val){
 				$supp_image = " et de son image associée" ;
 			}
 		?>
-			<warning>Suppression d'une annonce<? echo $supp_image?></warning>
-		<?
+			<warning>Suppression d'une annonce<?php echo $supp_image?></warning>
+		<?php
 		} else {
 	?>
 			<warning>Requête deja traitée par un autre administrateur</warning>
-	<?
+	<?php
 		}
 	}
 	
@@ -197,21 +197,21 @@ $DB_valid->query("UNLOCK TABLES");
 		<annonce titre="<?php  echo $titre ?>" 
 				categorie=""
 				auteur="<?php echo empty($surnom) ? $prenom.' '.$nom : $surnom .' (X'.$promo.')'?>"
-				date="<? echo $date?>">
-				<?
+				date="<?php echo $date?>">
+				<?php
 				if (file_exists(DATA_DIR_LOCAL."annonces/a_valider_$id"))
 					echo "<image source=\"".DATA_DIR_URL."annonces/a_valider_$id\" texte=\"image\"/>\n";
 				
 				echo wikiVersXML($contenu) ;
 				?>
-				<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
+				<eleve nom="<?php echo $nom; ?>" prenom="<?php echo $prenom; ?>" promo="<?php echo $promo; ?>" surnom="<?php echo $surnom; ?>" mail="<?php echo $mail; ?>"/>
 		</annonce>
-<?
+<?php
 // Zone de saisie de l'annonce
 ?>
 
-		<formulaire id="annonce_<? echo $id ?>" titre="L'annonce" action="admin/valid_annonces.php">
-			<? 
+		<formulaire id="annonce_<?php echo $id ?>" titre="L'annonce" action="admin/valid_annonces.php">
+			<?php 
 			if ($ext==1) {
 				echo "<warning>L'utilisateur a demandé que son annonce soit visible de l'exterieur</warning>" ;
 				$ext_temp='ext' ; 
@@ -222,8 +222,8 @@ $DB_valid->query("UNLOCK TABLES");
 			}
 			?>
 
-			<champ id="titre" titre="Le titre" valeur="<? echo $titre ;?>"/>
-			<zonetext id="text" titre="Le texte"><?=$contenu?></zonetext>
+			<champ id="titre" titre="Le titre" valeur="<?php echo $titre ;?>"/>
+			<zonetext id="text" titre="Le texte"><?php echo $contenu; ?></zonetext>
 			
 			<note>L'image doit être un fichier gif, png ou jpeg ne dépassant pas 400x300 pixels et 250Ko.</note>
 			<fichier id="file" titre="Modifier l'image" taille="250000" />
@@ -233,23 +233,23 @@ $DB_valid->query("UNLOCK TABLES");
 
 			<note>La signature sera automatiquement générée</note>
 			
-			<champ id="date" titre="Date de péremption" valeur="<? echo $date ;?>"/>
+			<champ id="date" titre="Date de péremption" valeur="<?php echo $date ;?>"/>
 			
-			<choix titre="Extérieur" id="exterieur" type="checkbox" valeur="<? echo $ext_temp." " ; if ((isset($_REQUEST['ext_auth']))&&(isset($_REQUEST['modif_'.$id]))) echo 'ext_auth' ;?>">
+			<choix titre="Extérieur" id="exterieur" type="checkbox" valeur="<?php echo $ext_temp." " ; if ((isset($_REQUEST['ext_auth']))&&(isset($_REQUEST['modif_'.$id]))) echo 'ext_auth' ;?>">
 				<option id="ext" titre="Demande de l'utilisateur" modifiable='non'/>
 				<option id="ext_auth" titre="Décision du Webmestre"/>
 			</choix>
 			<note>Si l'annonce est très très importante</note>
-			<choix titre="Important" id="important" type="checkbox" valeur="<? if ((isset($_REQUEST['important']))&&(isset($_REQUEST['modif_'.$id]))) echo 'important' ;?>">
+			<choix titre="Important" id="important" type="checkbox" valeur="<?php if ((isset($_REQUEST['important']))&&(isset($_REQUEST['modif_'.$id]))) echo 'important' ;?>">
 				<option id="important" titre=""/>
 			</choix>
 			<zonetext id="explication" titre="La raison du choix du modérateur (Surtout si refus)"></zonetext>
 
-			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
-			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Cette annonce apparaitra dès maintenant sur la page d'accueil de frankiz... Voulez vous valider cette annonce ?')"/>
-			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Si vous supprimer cette annonce, celle-ci sera supprimé de façon definitive ... Voulez vous vraiment la supprimer ?')"/>
+			<bouton id='modif_<?php echo $id ?>' titre="Modifier"/>
+			<bouton id='valid_<?php echo $id ?>' titre='Valider' onClick="return window.confirm('Cette annonce apparaitra dès maintenant sur la page d'accueil de frankiz... Voulez vous valider cette annonce ?')"/>
+			<bouton id='suppr_<?php echo $id ?>' titre='Supprimer' onClick="return window.confirm('Si vous supprimer cette annonce, celle-ci sera supprimé de façon definitive ... Voulez vous vraiment la supprimer ?')"/>
 		</formulaire>
-<?
+<?php
 		affiche_syntaxe_wiki();
 	}
 ?>

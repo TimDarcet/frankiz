@@ -57,7 +57,7 @@ $message2 ="" ;
 require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="admin_binet" titre="Frankiz : administration binet">
-<?
+<?php
 //==============================================================
 //
 // Si le mec est PREZIDENT
@@ -95,18 +95,18 @@ if(verifie_permission_prez($_REQUEST['binet'])){
 	list($promo_prez) = $DB_trombino->next_row() ;
 	?>
 	<h1>Administration par le </h1>
-	<h1>prèz du binet <?=$nom_binet?></h1>
-	<?
+	<h1>prèz du binet <?php echo $nom_binet; ?></h1>
+	<?php
 	echo $message ;
 	?>
 	<h2>Liste des membres</h2>
-	<?
+	<?php
 	$DB_trombino->query("SELECT m.eleve_id,remarque,nom,prenom,surnom,promo FROM membres as m LEFT JOIN eleves USING(eleve_id) WHERE binet_id=".$_REQUEST['binet']." AND promo>=$promo_prez ORDER BY promo ASC,nom ASC");
 	?>
-	<liste id="liste_binets" selectionnable="oui" action="gestion/binet.php?binet=<?=$_REQUEST['binet']?>">
+	<liste id="liste_binets" selectionnable="oui" action="gestion/binet.php?binet=<?php echo $_REQUEST['binet']; ?>">
 		<entete id="nom" titre="Nom"/>
 		<entete id="description" titre="Description"/>
-	<?
+	<?php
 	while(list($id,$remarque,$nom,$prenom,$surnom,$promo) = $DB_trombino->next_row()) {
 			echo "\t\t<element id=\"$id\">\n";
 			$surnom = (empty($surnom) ? "" : " (".$surnom.")") ; 
@@ -119,7 +119,7 @@ if(verifie_permission_prez($_REQUEST['binet'])){
 		<bouton titre="Supprimer" id="suppr" onClick="return window.confirm('Supprimer cette personne de mon binet ?')"/>
 		<bouton titre="Modifier tous les commentaires" id="modif"/>
 	</liste>
-<?
+<?php
 }
 //==============================================================
 //
@@ -215,23 +215,23 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 
 ?>
 	<h1>Administration par le </h1>
-	<h1>webmestre du binet <?=$nom_binet?></h1>
-	<?
+	<h1>webmestre du binet <?php echo $nom_binet; ?></h1>
+	<?php
 	echo $message2 ;
 	?>
 	<note> Si tu ne souhaites pas que ton binet apparaisse dans la liste des binets sur le site, alors supprime le champ Http</note>
-		<formulaire id="binet_web" titre="<? echo $nom?>" action="gestion/binet.php?binet=<?=$_REQUEST['binet']?>">
-			<hidden id="id" titre="" valeur="<? echo $id?>"/>
-			<choix titre="Catégorie" id="catego" type="combo" valeur="<?=$cat_id?>">
+		<formulaire id="binet_web" titre="<?php echo $nom?>" action="gestion/binet.php?binet=<?php echo $_REQUEST['binet']; ?>">
+			<hidden id="id" titre="" valeur="<?php echo $id?>"/>
+			<choix titre="Catégorie" id="catego" type="combo" valeur="<?php echo $cat_id; ?>">
 <?php
 				echo $liste_catego ;
 ?>
 			</choix>
-			<champ id="http" titre="Http" valeur="<? echo $http?>"/>
-			<zonetext id="descript" titre="Description"><?=$descript?></zonetext>
-			<?=$image_link?>
+			<champ id="http" titre="Http" valeur="<?php echo $http?>"/>
+			<zonetext id="descript" titre="Description"><?php echo $descript; ?></zonetext>
+			<?php echo $image_link; ?>
 			<fichier id="file" titre="Ton image de 100x100 px" taille="100000"/>
-			<champ id="exterieur" titre="Exterieur" valeur="<? if ($exterieur==1) echo 'Oui' ; else echo 'Non'?>" modifiable="non"/>
+			<champ id="exterieur" titre="Exterieur" valeur="<?php if ($exterieur==1) echo 'Oui' ; else echo 'Non'?>" modifiable="non"/>
 
 			<bouton id='modif2' titre="Modifier" onClick="return window.confirm('Souhaitez vous valider les changements')"/>
 		</formulaire>

@@ -37,7 +37,7 @@ list($promo) = $DB_trombino->next_row();
 		<lien id="emploi_temps" titre="Emploi du temps" url="http://de.polytechnique.fr/index.php?page=edt"/>
 		<lien id="utile_licence" titre="Licences Msdnaa" url="profil/licences.php"/>
 		<lien id="utile_redmail" titre="Redirection des mails" url="http://poly.polytechnique.fr/" /> 
-	<? } ?>
+	<?php } ?>
 	<?php if(est_authentifie(AUTH_INTERNE)): ?><lien id="utile_irc" titre="Accéder à l'IRC" url="http://ircserver.eleves.polytechnique.fr/"/><?php endif; ?>
 	<lien id="utile_ecole" titre="Site de l'école" url="http://www.polytechnique.fr/" />
 	<lien id="utile_ecole_de" titre="Site de la DE" url="http://www.edu.polytechnique.fr/" key="d"/>

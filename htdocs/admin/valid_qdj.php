@@ -40,7 +40,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 <h1>Validation de qdj</h1>
 
-<?
+<?php
 // On traite les différents cas de figure d'enrigistrement et validation de qdj :)
 
 // Enregistrer ...
@@ -58,11 +58,11 @@ foreach ($_POST AS $keys => $val){
 			$DB_valid->query("UPDATE valid_qdj SET question='{$_POST['question']}', reponse1='{$_POST['reponse1']}', reponse2='{$_POST['reponse2']}' WHERE qdj_id='{$temp[1]}'");
 		?>
 			<commentaire>Modif effectuée</commentaire>
-		<?
+		<?php
 		} else {
 	?>
 			<warning>Requête deja traitée par un autre administrateur</warning>
-	<?
+	<?php
 		}
 	}
 	
@@ -83,7 +83,7 @@ foreach ($_POST AS $keys => $val){
 			$DB_valid->query("DELETE FROM valid_qdj WHERE qdj_id='{$temp[1]}'") ;
 		?>
 			<commentaire>Validation effectuée</commentaire>
-		<?
+		<?php
 		}
 	}
 	if ($temp[0]=='suppr') {
@@ -97,11 +97,11 @@ foreach ($_POST AS $keys => $val){
 			$DB_valid->query("DELETE FROM valid_qdj WHERE qdj_id='{$temp[1]}'") ;
 		?>
 			<warning>Suppression d'une qdj</warning>
-		<?
+		<?php
 		} else {
 	?>
 			<warning>Requête deja traitée par un autre administrateur</warning>
-	<?
+	<?php
 		}
 
 	}
@@ -113,7 +113,7 @@ $DB_valid->query("UNLOCK TABLES");
 
 <lien titre="Planifier les qdj" url="<?php echo BASE_URL?>/admin/planif_qdj.php"/><br/>
 
-<?
+<?php
 	$DB_valid->query("SELECT v.qdj_id,v.question, v.reponse1, v.reponse2, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_qdj as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
 	while(list($id,$question,$reponse1,$reponse2,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
 ?>
@@ -124,18 +124,18 @@ $DB_valid->query("UNLOCK TABLES");
 			<reponse id="2"><?php echo $reponse2?></reponse>
 		</qdj>
 	</module>
-<?
+<?php
 // Zone de saisie de la qdj
 ?>
-		<formulaire id="qdj_<? echo $id ?>" titre="La QDJ" action="admin/valid_qdj.php">
-			<champ id="question" titre="La question" valeur="<? echo $question ;?>"/>
-			<champ id="reponse1" titre="Réponse1" valeur="<? echo $reponse1 ;?>"/>
-			<champ id="reponse2" titre="Réponse2" valeur="<? echo $reponse2 ;?>"/>
-			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
-			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider cette qdj ?')"/>
-			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette qdj ?!!!!!')"/>
+		<formulaire id="qdj_<?php echo $id ?>" titre="La QDJ" action="admin/valid_qdj.php">
+			<champ id="question" titre="La question" valeur="<?php echo $question ;?>"/>
+			<champ id="reponse1" titre="Réponse1" valeur="<?php echo $reponse1 ;?>"/>
+			<champ id="reponse2" titre="Réponse2" valeur="<?php echo $reponse2 ;?>"/>
+			<bouton id='modif_<?php echo $id ?>' titre="Modifier"/>
+			<bouton id='valid_<?php echo $id ?>' titre='Valider' onClick="return window.confirm('Valider cette qdj ?')"/>
+			<bouton id='suppr_<?php echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette qdj ?!!!!!')"/>
 		</formulaire>
-<?
+<?php
 	}
 ?>
 </page>

@@ -37,13 +37,13 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
 <page id="etat_bob" titre="Frankiz : Etat du Bôb">
-<?
+<?php
 if(isset($_POST['envoie'])){
 ?>
 	<commentaire>
 		L'état du bôb vient d'être changé
 	</commentaire>
-<?
+<?php
 	$DB_web->query("UPDATE parametres SET valeur='".$_REQUEST['etat']."' WHERE nom='bob'");
 }
 
@@ -62,7 +62,7 @@ list($valeur) = $DB_web->next_row();
 
 ?>
 	<formulaire id="bob" titre="Ouverture du bôb" action="gestion/etat_bob.php">
-		<choix titre="Le bôb est:" id="etat" type="radio" valeur="<?= $valeur ?>">
+		<choix titre="Le bôb est:" id="etat" type="radio" valeur="<?php echo $valeur; ?>">
 				<option titre="Fermé" id="0"/>
 				<option titre="ouvert" id="1"/>
 		</choix>
@@ -72,7 +72,7 @@ list($valeur) = $DB_web->next_row();
 	
 	<formulaire id="kawa" titre="Ajouter un tour kawa" action="gestion/etat_bob.php">
 		<choix titre="Section" id="section" type="combo" valeur="">
-<?
+<?php
 			$DB_trombino->query("SELECT section_id,nom FROM sections ORDER BY nom ASC");
 			while( list($section_id,$section_nom) = $DB_trombino->next_row() )
 				echo "\t\t\t<option titre=\"$section_nom\" id=\"$section_id\"/>\n";
@@ -82,7 +82,7 @@ list($valeur) = $DB_web->next_row();
 		<bouton titre="Valider" id="ajout_kawa" onClick="return window.confirm('Voulez vous vraiment ajouter ce tour ?')"/>
 	</formulaire>
 	
-<?
+<?php
 	// Génération des tours kawa
 	$DB_web->query("SELECT kawa.date,sections.nom FROM kawa LEFT JOIN trombino.sections ON kawa.section_id=sections.section_id WHERE (kawa.date>=\"".date("Y-m-d",time())."\")");
 	$i = 0;

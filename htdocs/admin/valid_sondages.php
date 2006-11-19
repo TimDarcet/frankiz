@@ -40,7 +40,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 <h1>Validation des sondages</h1>
 
-<?
+<?php
 // On traite les différents cas de figure d'enrigistrement et validation de qdj :)
 
 // Enregistrer ...
@@ -135,23 +135,23 @@ $DB_trombino->query("UNLOCK TABLES");
 	$DB_valid->query("SELECT v.perime, v.sondage_id,v.questions,v.titre,v.eleve_id,v.restriction, e.nom, e.prenom, e.promo FROM valid_sondages as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
 	while(list($date,$id,$questions,$titre,$eleve_id,$restriction,$nom, $prenom, $promo) = $DB_valid->next_row()) {
 	?>
-		<formulaire id="form" titre="<?=$titre?> (<?=date("d/m",strtotime($date))?>)">	
-	<?
+		<formulaire id="form" titre='<?php echo $titre; ?> (<?php echo date("d/m", strtotime($date)); ?>)'>	
+	<?php
 		decode_sondage($questions) ;
 	?>
 		</formulaire>
 
-		<formulaire id="sond_<? echo $id ?>" titre="Validation de '<?=$titre?>'" action="admin/valid_sondages.php">
-			<note>Sondage proposé par <?=$prenom?> <?=$nom?> (<?=$promo?>)</note>
-			<zonetext titre="La raison du choix du modérateur (Surtout si refus)" id="explication_<? echo $id ;?>"></zonetext>
-			<textsimple id='restriction' valeur='Restriction demandée: <?=$restriction?>'/><br/>
-			<choix titre="Sondage jusqu'à " id="date" type="combo" valeur="<? echo strtotime($date);?>">
-			<?	for ($i=1 ; $i<=MAX_PEREMPTION ; $i++) {
+		<formulaire id="sond_<?php echo $id ?>" titre="Validation de '<?php echo $titre; ?>'" action="admin/valid_sondages.php">
+			<note>Sondage proposé par <?php echo $prenom; ?> <?php echo $nom; ?> (<?php echo $promo; ?>)</note>
+			<zonetext titre="La raison du choix du modérateur (Surtout si refus)" id="explication_<?php echo $id ;?>"></zonetext>
+			<textsimple id='restriction' valeur='Restriction demandée: <?php echo $restriction; ?>'/><br/>
+			<choix titre="Sondage jusqu'à " id="date" type="combo" valeur="<?php echo strtotime($date);?>">
+			<?php	for ($i=1 ; $i<=MAX_PEREMPTION ; $i++) {
 				$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
 				$date_value = date("d/m/y" , $date_id);
 				?>
-				<option titre="<? echo $date_value?>" id="<? echo $date_id?>" />
-				<?
+				<option titre="<?php echo $date_value?>" id="<?php echo $date_id?>" />
+				<?php
 			}
 			?>
 			</choix>
@@ -164,13 +164,13 @@ $DB_trombino->query("UNLOCK TABLES");
 				Pour une boite déroulante: ###combo///ma question///option1///option2///option3<br/>
 				Pour une checkbox: ###check///ma question///option1///option2///option3<br/>
 			</note>
-			<champ id="titre_sondage" titre="Titre" valeur="<?=$titre?>"/>
-			<zonetext id="contenu_form" titre="Zone d'édition avancée" type="grand"><?=$questions?></zonetext>
-			<bouton titre="Mettre à jour le sondage" id="modif_<? echo $id ?>_<? echo $eleve_id ?>" />
-			<bouton id='valid_<? echo $id ?>_<? echo $eleve_id ?>' titre='Valider' onClick="return window.confirm('Valider ce sondage ?')"/>
-			<bouton id='suppr_<? echo $id ?>_<? echo $eleve_id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce sondage ?!!!!!')"/>
+			<champ id="titre_sondage" titre="Titre" valeur="<?php echo $titre; ?>"/>
+			<zonetext id="contenu_form" titre="Zone d'édition avancée" type="grand"><?php echo $questions; ?></zonetext>
+			<bouton titre="Mettre à jour le sondage" id="modif_<?php echo $id ?>_<?php echo $eleve_id ?>" />
+			<bouton id='valid_<?php echo $id ?>_<?php echo $eleve_id ?>' titre='Valider' onClick="return window.confirm('Valider ce sondage ?')"/>
+			<bouton id='suppr_<?php echo $id ?>_<?php echo $eleve_id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce sondage ?!!!!!')"/>
 		</formulaire>
-	<?
+	<?php
 	}
 ?>
 </page>

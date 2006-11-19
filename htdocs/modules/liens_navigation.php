@@ -47,7 +47,7 @@
 
 <?php if(est_authentifie(AUTH_MINIMUM)): ?>
 <module id="liens_profil" titre="Préférences">
-<?
+<?php
 	if(isset($_SESSION['sueur']))
 		echo "<warning>ATTENTION, su en cours. Pour revenir à ta vrai identité, clique <a href='index.php?logout=1'>ici</a></warning>";
 ?>

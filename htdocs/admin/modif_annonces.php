@@ -42,7 +42,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="modif_annonce" titre="Frankiz : Modifie une annonce">
 <h1>Modification d'annonces</h1>
 
-<?
+<?php
 // On traite les différents cas de figure d'enrigistrement et validation d'annonce :)
 
 // Enregistrer ...
@@ -108,7 +108,7 @@ foreach ($_POST AS $keys => $val){
 		$DB_web->query("UPDATE annonces SET perime='{$_POST['date']}', titre='{$_POST['titre']}', contenu='{$_POST['text']}',exterieur=$temp_ext, en_haut=$temp_imp  WHERE annonce_id='{$temp[1]}'");	
 	?>
 		<commentaire>Modif effectuée</commentaire>
-	<?	
+	<?php	
 	}
 	
 	if ($temp[0]=='suppr') {
@@ -121,8 +121,8 @@ foreach ($_POST AS $keys => $val){
 			$supp_image = " et de son image associée" ;
 		}
 	?>
-		<warning>Suppression d'une annonce<? echo $supp_image?></warning>
-	<?
+		<warning>Suppression d'une annonce<?php echo $supp_image?></warning>
+	<?php
 	}
 }
 $DB_valid->query("COMMIT");
@@ -136,31 +136,31 @@ $DB_valid->query("UNLOCK TABLES");
 		<annonce titre="<?php  echo $titre ?>" 
 				categorie=""
 				auteur="<?php echo empty($surnom) ? $prenom.' '.$nom : $surnom .' (X'.$promo.')'?>"
-				date="<? echo $date?>">
-				<? echo wikiVersXML($contenu) ;
+				date="<?php echo $date?>">
+				<?php echo wikiVersXML($contenu) ;
 				if (file_exists(DATA_DIR_LOCAL."annonces/{$id}")){
 				?>
-					<image source="<? echo DATA_DIR_URL."annonces/{$id}" ; ?>" texte="image"/>
-				<?
+					<image source="<?php echo DATA_DIR_URL."annonces/{$id}" ; ?>" texte="image"/>
+				<?php
 				}
 				?>
-				<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
+				<eleve nom="<?php echo $nom; ?>" prenom="<?php echo $prenom; ?>" promo="<?php echo $promo; ?>" surnom="<?php echo $surnom; ?>" mail="<?php echo $mail; ?>"/>
 		</annonce>
-<?
+<?php
 // Zone de saisie de l'annonce
 ?>
 
-		<formulaire id="annonce_<? echo $id ?>" titre="L'annonce" action="admin/modif_annonces.php">
+		<formulaire id="annonce_<?php echo $id ?>" titre="L'annonce" action="admin/modif_annonces.php">
 			<note>
 				Le texte de l'annonce utilise le format wiki rappelé en bas de la page et décrit dans l'<lien url="helpwiki.php" titre="aide wiki"/><br/>
 			</note>
-			<?
+			<?php
 			if ($commentaire != "") {
 				echo "<commentaire>Commentaire : $commentaire</commentaire>";
 			}
 			?>
-			<champ id="titre" titre="Le titre" valeur="<? echo $titre ;?>"/>
-			<zonetext id="text" titre="Le texte"><?=$contenu?></zonetext>
+			<champ id="titre" titre="Le titre" valeur="<?php echo $titre ;?>"/>
+			<zonetext id="text" titre="Le texte"><?php echo $contenu; ?></zonetext>
 			
 			<note>L'image doit être un fichier gif, png ou jpeg ne dépassant pas 400x300 pixels et 250Ko.</note>
 			<fichier id="file" titre="Modifier l'image" taille="250000"/>
@@ -168,18 +168,18 @@ $DB_valid->query("UNLOCK TABLES");
 				<option id="supprimg" titre="" />
 			</choix>
 			
-			<champ id="date" titre="Date de péremption" valeur="<? echo $date ;?>"/>
-			<choix titre="Extérieur" id="exterieur" type="checkbox" valeur="<? if ($ext==1) echo "ext_auth" ?>">
+			<champ id="date" titre="Date de péremption" valeur="<?php echo $date ;?>"/>
+			<choix titre="Extérieur" id="exterieur" type="checkbox" valeur="<?php if ($ext==1) echo "ext_auth" ?>">
 				<option id="ext_auth" titre="Décision du Webmestre"/>
 			</choix>
-			<choix titre="Important" id="important" type="checkbox" valeur="<? if ($enhaut==1) echo "important" ?>">
+			<choix titre="Important" id="important" type="checkbox" valeur="<?php if ($enhaut==1) echo "important" ?>">
 				<option id="important" titre="" />
 			</choix>
 
-			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
-			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Si vous supprimer cette annonce, celle-ci sera supprimé de façon definitive ... Voulez vous vraiment la supprimer ?')"/>
+			<bouton id='modif_<?php echo $id ?>' titre="Modifier"/>
+			<bouton id='suppr_<?php echo $id ?>' titre='Supprimer' onClick="return window.confirm('Si vous supprimer cette annonce, celle-ci sera supprimé de façon definitive ... Voulez vous vraiment la supprimer ?')"/>
 		</formulaire>
-<?
+<?php
 		affiche_syntaxe_wiki();
 	}
 ?>

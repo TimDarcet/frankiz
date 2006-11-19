@@ -62,7 +62,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	<liste id="liste_voc" selectionnable="non" action="admin/vocabulaire.php">
 		<entete id="mot" titre="Expression"/>
 		<entete id="descr" titre="Description"/>
-<?
+<?php
 		$DB_web->query("SELECT vocab_id,mot,explication FROM vocabulaire ORDER BY mot") ;
 		while(list($vocab_id,$mot,$explication) = $DB_web->next_row()) {
 			echo "\t\t<element id=\"$vocab_id\">\n";

@@ -35,7 +35,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="faq" titre="Frankiz : FAQ">
 <h1>FAQ</h1>
 
-<?
+<?php
 //
 // Corps du Documents
 //---------------------------------------------------
@@ -166,18 +166,18 @@ function rech_parent($id2) {
 /////////////////////////////////////////////////////////////////////////////////
 ?>
   
-<?
+<?php
 // Entete !
 //-------------------------
 
 if (($mots!="")||($a_marquer!="")) {
 ?>
 <p><strong>Recherche</strong></p>
-<?
+<?php
 } else {
 ?>
 <p><strong>Liste des différentes questions de la FAQ :</strong></p>
-<?
+<?php
 }
 
 //////////////////////////////
@@ -221,10 +221,10 @@ echo "</arbre>";
 
 <formulaire id="form" action="faq.php">
 	<note>Tous les mots seront dans la description. Sépare les par un blanc.</note>
-	<champ id="mots" titre="Mots-clefs" valeur="<? echo $mots ;?>"/>
+	<champ id="mots" titre="Mots-clefs" valeur="<?php echo $mots ;?>"/>
 	<bouton id="Submit" titre="Chercher"/>
 </formulaire>
-<?
+<?php
 
 //
 // Corps du Documents pour les réponses
@@ -256,20 +256,20 @@ if ($id != "") {
 				fclose($texte);
 				if (est_authentifie(AUTH_MINIMUM)) {
 					?>
-					<lien url="proposition/faq_modif.php?id=<?=$id?>" titre="Éditer"/>
-					<?
+					<lien url="proposition/faq_modif.php?id=<?php echo $id; ?>" titre="Éditer"/>
+					<?php
 				}
 			}
 		} else {
 		?>
 			<warning>Erreur : Impossible de trouver cette question </warning>
-		<?
+		<?php
 		}
 		echo "\n</cadre>";	
 	} else {
 	?>
 		<warning>Erreur : Impossible de trouver cette question </warning>
-	<?
+	<?php
 	}
 }
 
@@ -278,7 +278,7 @@ if ($id != "") {
 // Pied de page ...
 //---------------------------------------------------
 ?>
-<note>Pour tout commentaire, contactez les <lien url="mailto:<?= MAIL_FAQMESTRE ?>" titre="FaqMestres"/></note>
+<note>Pour tout commentaire, contactez les <lien url="mailto:<?php echo MAIL_FAQMESTRE; ?>" titre="FaqMestres"/></note>
 </page>
 <?php
 

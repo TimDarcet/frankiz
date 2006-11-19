@@ -75,26 +75,26 @@ if ($warning!="")
 require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="binets_web" titre="Frankiz : Binets Web">
-<? echo $message ;?>
+<?php echo $message ;?>
 
 <h1>Liste des Binets</h1>
 
-	<?
+	<?php
 	$categorie_precedente = -1;
 	
 	$DB_trombino->query("SELECT nom,binet_id FROM binets ORDER BY nom ASC");
 	?>
 	<liste id='liste_binet' titre='Liste de binets' selectionnable='non'>
 		<entete id="login" titre="Login"/>
-	<?
+	<?php
 		while(list($nom_binet,$binet_id) = $DB_trombino->next_row()) {
 		?>
-			<element id="<?=$binet_id?>">
+			<element id="<?php echo $binet_id; ?>">
 				<colonne id="login">
-				<lien titre="<?=$nom_binet?>" url="admin/binets.php?id=<?=$binet_id?>"/>
+				<lien titre="<?php echo $nom_binet; ?>" url="admin/binets.php?id=<?php echo $binet_id; ?>"/>
 				</colonne>
 			</element>
-		<?
+		<?php
 		}
 	?>	
 	</liste>

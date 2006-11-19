@@ -55,11 +55,11 @@ for($i= 0; $i<7;$i++){
 		echo "<h3>{$date_legend[$i]}</h3>";
 		while (list($id,$titre,$url,$date,$texte)=$DB_web->next_row()) { 
 		?>
-			<annonce date="<? echo $date ?>">
+			<annonce date="<?php echo $date ?>">
 			<lien url="<?php echo $url?>"><image source="<?php echo DATA_DIR_URL.'affiches/'.$id?>" texte="Affiche" legende="<?php echo $titre?>"/></lien>
-			<? echo wikiVersXML($texte); ?>
+			<?php echo wikiVersXML($texte); ?>
 			</annonce>
-		<?
+		<?php
 		}
 	}
 }

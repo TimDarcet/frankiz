@@ -32,6 +32,6 @@ if(est_authentifie(AUTH_MINIMUM)) {
 		<lien id="propo_sondage" titre="Proposer un sondage" url="proposition/sondage.php" />
 		<lien id="propo_mailpromo" titre="Demander un mail promo" url="proposition/mail_promo.php" />
 </module>
-<?
+<?php
 }
 ?>

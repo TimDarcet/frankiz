@@ -39,7 +39,7 @@ require "include/page_header.inc.php";
 		<note>
 			Le texte utilise le format wiki rappelé en bas de la page et décrit dans l'<lien url="helpwiki.php" titre="aide wiki"/>
 		</note>
-		<zonetext id="contenu" titre="contenu" type="grand"><?=$_POST['contenu']?></zonetext>
+		<zonetext id="contenu" titre="contenu" type="grand"><?php echo $_POST['contenu']; ?></zonetext>
 		<bouton id="tester" titre="Tester"/>
 	</formulaire>
 	<?php affiche_syntaxe_wiki() ?>

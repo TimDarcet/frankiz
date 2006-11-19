@@ -36,48 +36,48 @@ img {
 }
 
 a:link { 
-<?
+<?php
 $tmp=rand() % 100;
 if ($tmp<50){
 ?>
 	color:#d5e2ce;
-<?
+<?php
 }else{
 ?>
 	color:#D37C00;
-<?
+<?php
 }
 ?>
 	text-decoration:none;
 	}
 a:visited { 
-<?
+<?php
 $tmp=rand() % 100;
 if ($tmp<50){
 ?>
 	color:#d5e2ce;
-<?
+<?php
 }else{
 ?>
 	color:#D37C00;
-<?
+<?php
 }
 ?>
 	text-decoration:none;
 	}
 a:hover, a:active { 
-<?
+<?php
 $tmp=rand() % 100;
 if ($tmp<50){
 ?>
 	color:#d5e2ce;
 	border-bottom:1px dashed #D37C00;
-<?
+<?php
 }else{
 ?>
 	color:#D37C00;
 	border-bottom:1px dashed #d5e2ce;
-<?
+<?php
 }
 ?>
 	text-decoration:none;
@@ -94,7 +94,7 @@ if ($tmp<50){
 
 .fkz_entetes {
 }
-<?
+<?php
 $tmp=rand() % 100;
 if ($tmp<33){
 	$tmp2=rand() % 100;
@@ -121,7 +121,7 @@ if ($tmp<33){
 	width: 58%;
 	margin-top: 20px;
 }
-<?
+<?php
 	}else{
 ?>
 .fkz_gauche {
@@ -145,7 +145,7 @@ if ($tmp<33){
 	width: 58%;
 	margin-top: 20px;
 }
-<?
+<?php
 	}
 }elseif ($tmp<66){
 ?>
@@ -170,7 +170,7 @@ if ($tmp<33){
 	width: 58%;
 	margin-top: 20px;
 }
-<?
+<?php
 }else{
 ?>
 .fkz_gauche {
@@ -194,7 +194,7 @@ if ($tmp<33){
 	width: 58%;
 	margin-top: 20px;
 }
-<?
+<?php
 }
 ?>
 
@@ -231,16 +231,16 @@ div.fkz_logo {
 /* QDJ */
 
 .fkz_qdj_question {
-<?
+<?php
 $tmp=rand() % 100;
 if ($tmp<50){
 ?>
 	color:#d5e2ce;
-<?
+<?php
 }else{
 ?>
 	color:#D37C00;
-<?
+<?php
 }
 ?>
     font-size: 11pt;
@@ -267,39 +267,39 @@ $tmp=rand() % 100;
 if ($tmp<50){
 ?>
 .fkz_qdj_jone a {
-<?
+<?php
 $tmp=rand() % 100;
 if ($tmp<50){
 ?>
 	color:#d5e2ce;
-<?
+<?php
 }else{
 ?>
 	color:red;
-<?
+<?php
 }
 ?>
 	font-weight:bold;
 }
-<?
+<?php
 }else{
 ?>
 .fkz_qdj_jone a {
-<?
+<?php
 $tmp=rand() % 100;
 if ($tmp<50){
 ?>
 	color:#d5e2ce;
-<?
+<?php
 }else{
 ?>
 	color:#FFBB00;
-<?
+<?php
 }
 ?>
 	font-weight:bold;
 }
-<?
+<?php
 }
 $tmp=rand() % 100;
 if ($tmp<50){
@@ -308,7 +308,7 @@ if ($tmp<50){
 	color:red;
 	font-weight:bold;
 }
-<?
+<?php
 }
 else{
 ?>
@@ -316,7 +316,7 @@ else{
 	color:#FFBB00;
 	font-weight:bold;
 }
-<?
+<?php
 }
 ?>
 
@@ -329,7 +329,7 @@ if ($tmp<50){
 	font-weight: bold;
 	float: right;
 }
-<?
+<?php
 }else{
 ?>
 .fkz_qdj_jone_reponse {
@@ -337,7 +337,7 @@ if ($tmp<50){
 	font-weight: bold;
 	float: right;
 }
-<?
+<?php
 }
 $tmp=rand() % 100;
 if ($tmp<50){
@@ -347,7 +347,7 @@ if ($tmp<50){
 	font-weight: bold;
 	float: left;
 }
-<?
+<?php
 }else{
 ?>
 .fkz_qdj_rouje_reponse {
@@ -355,7 +355,7 @@ if ($tmp<50){
 	font-weight: bold;
 	float: left;
 }
-<?
+<?php
 }
 ?>
 
@@ -398,16 +398,16 @@ div.fkz_anniversaire_titre,div.fkz_page_titre,div.fkz_annonces_titre {
 	font-variant:small-caps;
 	font-style:oblique;
 	/*color:#D37C00;*/
-<?
+<?php
 $tmp=rand() % 100;
 if ($tmp<50){
 ?>
 	color:aacaca;
-<?
+<?php
 }else{
 ?>
 	color:#FFBB00;
-<?
+<?php
 }
 ?>
 	font-weight:bold;
@@ -443,16 +443,16 @@ div.fkz_page_titre {
 	border:2px solid #D37C00;
 	margin:0px;
 	padding:0px;
-<?
+<?php
 $tmp=rand() % 100;
 if ($tmp<50){
 ?>
 	color:aacaca;
-<?
+<?php
 }else{
 ?>
 	color:#FFBB00;
-<?
+<?php
 }
 ?>
 	text-align : center;
@@ -481,16 +481,16 @@ if ($tmp<50){
 	font-size: 9pt;
 	text-align: left;
 	width: 100%;
-<?
+<?php
 $tmp=rand() % 100;
 if ($tmp<50){
 ?>
 	color:d5e2ce;
-<?
+<?php
 }else{
 ?>
 	color:#FFBB00;
-<?
+<?php
 }
 ?>
  
@@ -522,16 +522,16 @@ if ($tmp<50){
 	background-image:url(images/BR2.png);
 	background-repeat: no-repeat;
 	background-attachment: fixed;
-<?
+<?php
 $tmp=rand() % 100;
 if ($tmp<50){
 ?>
 	color:d5e2ce;
-<?
+<?php
 }else{
 ?>
 	color:#FFBB00;
-<?
+<?php
 }
 ?>
 }
@@ -547,16 +547,16 @@ if ($tmp<50){
 
 .nom{
 	text-align:center;
-<?
+<?php
 $tmp=rand() % 100;
 if ($tmp<50){
 ?>
 	color:d5e2ce;
-<?
+<?php
 }else{
 ?>
 	color:black;
-<?
+<?php
 }
 ?>
 }
@@ -570,35 +570,35 @@ if ($tmp<50){
 	float:right;
 	margin-right:5px;
 }
-<?
+<?php
 $tmp=rand() % 100;
 if ($tmp<50){
 ?>
 .fkz_trombino_infos{
 	float:left;
 	margin-left:5px;
-<?
+<?php
 	$tmp2=rand() % 100;
 	if ($tmp2<50){
 ?>
 	color:#d5e2ce;
-<?
+<?php
 	}
 ?>
 }
 .fkz_trombino_infos2{
 	float:right;
 	margin-right:5px;
-<?
+<?php
 	$tmp2=rand() % 100;
 	if ($tmp2<50){
 ?>
 	color:#d5e2ce;
-<?
+<?php
 	}
 ?>
 }
-<?
+<?php
 }else{
 ?>
 .fkz_trombino_infos{
@@ -609,21 +609,21 @@ if ($tmp<50){
 	float:left;
 	margin-right:5px;
 }
-<?
+<?php
 }
 ?>
 .binets{
 	clear:both;
-<?
+<?php
 $tmp=rand() % 100;
 if ($tmp<50){
 ?>
 	color:d5e2ce;
-<?
+<?php
 }else{
 ?>
 	color:aacaca;
-<?
+<?php
 }
 ?>
 }
@@ -632,16 +632,16 @@ if ($tmp<50){
 .fkz_signature{
 	text-align:right;
 	font-weight: bold;
-<?
+<?php
 $tmp=rand() % 100;
 if ($tmp<50){
 ?>
 	color:d5e2ce;
-<?
+<?php
 }else{
 ?>
 	color:aacaca;
-<?
+<?php
 }
 ?>
 }
@@ -662,16 +662,16 @@ form.trombino table{
 
 
 form.trombino input,form.trombino select {
-<?
+<?php
 $tmp=rand() % 100;
 if ($tmp<50){
 ?>
 	width:150px;
-<?
+<?php
 }else{
 ?>
 	width:1px;
-<?
+<?php
 }
 ?>
 }
@@ -774,32 +774,32 @@ span.valid_css {
 
 .commentaire {
 	border: 1px solid #FFDD00;
-<?
+<?php
 $tmp=rand() % 100;
 if ($tmp<50){
 ?>
 	background:red;
-<?
+<?php
 }else{
 ?>
 	background:inherit;
-<?
+<?php
 }
 ?>
 }
 
 .warning {
 	border: 1px solid #FF3333;
-<?
+<?php
 $tmp=rand() % 100;
 if ($tmp<50){
 ?>
 	background:black;
-<?
+<?php
 }else{
 ?>
 	background:inherit;
-<?
+<?php
 }
 ?>
 }
@@ -807,16 +807,16 @@ if ($tmp<50){
 .note {
 	font-size: 75%;
 	border: 1px solid #FFDD00;
-<?
+<?php
 $tmp=rand() % 100;
 if ($tmp<50){
 ?>
 	background:pink;
-<?
+<?php
 }else{
 ?>
 	background:inherit;
-<?
+<?php
 }
 ?>
 }

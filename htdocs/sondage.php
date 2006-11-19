@@ -93,11 +93,11 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="sondage" titre="Frankiz : Sondage">
 
-<?
+<?php
 if (!isset($_REQUEST['id'])) {
 	?>
 	<warning>Le sondage que tu demandes n'existes plus ou n'a jamais existé</warning>
-	<?
+	<?php
 } else {
 	$DB_web->query("SELECT restriction,eleve_id FROM sondage_question WHERE sondage_id='{$_REQUEST['id']}'");
 	$restrOki=true;
@@ -128,7 +128,7 @@ if (!isset($_REQUEST['id'])) {
 			$a_vote = "oui" ;
 		?>
 			<warning>Tu as déjà voté pour ce sondage...</warning>
-		<?
+		<?php
 		$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_REQUEST['id']}'");
 		$nombre_votants = $DB_web->num_rows() ;
 		echo "<note>$nombre_votants personnes ont répondu à ce sondage</note>" ;
@@ -181,7 +181,7 @@ if (!isset($_REQUEST['id'])) {
 			}
 			?>
 			<commentaire>Merci d'avoir voté</commentaire>
-			<?
+			<?php
 		} else {
 			// Dévut du formulaire !
 			//======================================================
@@ -193,30 +193,30 @@ if (!isset($_REQUEST['id'])) {
 				
 				// Le Formulaire pour repondre ...
 			?>
-				<note>Sondage proposé par <? echo "$prenom $nom ($promo)" ?></note> 
-			<?
+				<note>Sondage proposé par <?php echo "$prenom $nom ($promo)" ?></note> 
+			<?php
 				if ($delta>=0) {
 			?>
-					<formulaire id="form" titre="<?=$titre?> (<?=$date?>)" action="sondage.php?id=<?=$_REQUEST['id']?>">
-					<?
+					<formulaire id="form" titre="<?php echo $titre; ?> (<?php echo $date; ?>)" action="sondage.php?id=<?php echo $_REQUEST['id']; ?>">
+					<?php
 					decode_sondage($questions) ;
 					if ($a_vote=="non") {
 					?>
 						<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider le vote pour ce sondage?')"/>	
-				<?
+				<?php
 					}
 					?>
 					</formulaire>
-					<?
+					<?php
 				} else {
 					// Les résultats du sondage !
 					?>
-					<cadre id="form" titre="<?=$titre?> (<?=$date?>)">
-					<?
+					<cadre id="form" titre="<?php echo $titre; ?> (<?php echo $date; ?>)">
+					<?php
 					resultat_sondage($questions,$_REQUEST['id']) ;
 					?>
 					</cadre>
-					<?
+					<?php
 				}
 			} else {
 				echo "<warning>Le sondage que tu demandes n'existes plus ou n'a jamais existé</warning>";

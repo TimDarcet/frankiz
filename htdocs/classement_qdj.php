@@ -105,7 +105,7 @@ if(isset($_REQUEST["graph"])){
 		
 		</commentaire>
 		
-		<?
+		<?php
 		$DB_web->query("SELECT UNIX_TIMESTAMP(MIN(date)) as dateMin, UNIX_TIMESTAMP(MAX(date)) as dateMax
 				FROM qdj_votes WHERE idRegle > 0;");
 		list($dateMin, $dateMax)=$DB_web->next_row();

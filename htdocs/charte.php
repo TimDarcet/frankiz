@@ -43,7 +43,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	<p>Je reconnais donner tous les droits sur mon pauvre PC aux admins@windows sans jamais les blatter.</p>
 	<p>J'accepte de verser la somme minime de 50 (cinquante) euros par mois au BR.</p>
 	<p>J'accepte de dire "tiens un prez à la rue!" lorsque je verrai alakazam</p>
-<?
+<?php
 if(!$_SESSION['user']->charte)
 {
 ?>
@@ -57,8 +57,8 @@ if(!$_SESSION['user']->charte)
 		</choix>
 		<bouton id="valid" titre="Validation"/>
 	</formulaire>
-<?
+<?php
 }
 ?>
 </page>
-<? require_once BASE_LOCAL."/include/page_footer.inc.php" ?>
+<?php require_once BASE_LOCAL."/include/page_footer.inc.php" ?>

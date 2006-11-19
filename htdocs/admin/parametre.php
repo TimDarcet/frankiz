@@ -65,14 +65,14 @@ Si vous devez créer des variables dans la table, essayez de faire qu'elles soie
 	<liste id="liste" selectionnable="non" action="admin/parametre.php">
 		<entete id="nom_var" titre="Nom de la variable"/>
 		<entete id="valeur" titre="Valeur"/>
-<?
+<?php
 		$DB_web->query("SELECT nom,valeur FROM parametres ORDER by nom");
 		while(list($nom,$valeur) = $DB_web->next_row()) {
 ?>
-			<element id="<? echo $nom ;?>">
-				<colonne id="eleve"><? echo "$nom" ?></colonne>
+			<element id="<?php echo $nom ;?>">
+				<colonne id="eleve"><?php echo "$nom" ?></colonne>
 				<colonne id="valeur">
-<?
+<?php
 				// Cas Particuliers traité à la main
 				if ($nom=="lastpromo_ontrombino") {
 					echo $valeur." &#160; " ;
@@ -80,14 +80,14 @@ Si vous devez créer des variables dans la table, essayez de faire qu'elles soie
 				} else {
 				// fin des cas particuliers 
 ?>
-					<champ titre="" id="id_<? echo $nom ;?>" valeur="<? echo $valeur ;?>"/>
-					<bouton titre='Ok' id='modif_<? echo $nom ;?>'/>
-<?
+					<champ titre="" id="id_<?php echo $nom ;?>" valeur="<?php echo $valeur ;?>"/>
+					<bouton titre='Ok' id='modif_<?php echo $nom ;?>'/>
+<?php
 				}
 ?>
 				</colonne>
 			</element>
-<?
+<?php
 		}
 ?>
 	</liste>

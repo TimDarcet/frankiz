@@ -39,17 +39,17 @@ list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_ro
 
 ?>
 <page id="propoz_qdj" titre="Frankiz : Proposition de QDJ">
-<?
+<?php
 if (!isset($_REQUEST['envoie'])) {
 ?>
 	<formulaire id="qdj" titre="QDJ" action="proposition/qdj.php">
-		<champ titre="Question" id="question" valeur="<? if (isset($_REQUEST['question'])) echo $_REQUEST['question']?>" />
-		<champ titre="Réponse 1" id="reponse1" valeur="<? if (isset($_REQUEST['reponse1'])) echo $_REQUEST['reponse1']?>" />
-		<champ titre="Réponse 2" id="reponse2" valeur="<? if (isset($_REQUEST['reponse2'])) echo $_REQUEST['reponse2']?>" />
+		<champ titre="Question" id="question" valeur="<?php if (isset($_REQUEST['question'])) echo $_REQUEST['question']?>" />
+		<champ titre="Réponse 1" id="reponse1" valeur="<?php if (isset($_REQUEST['reponse1'])) echo $_REQUEST['reponse1']?>" />
+		<champ titre="Réponse 2" id="reponse2" valeur="<?php if (isset($_REQUEST['reponse2'])) echo $_REQUEST['reponse2']?>" />
 		<bouton titre="Tester" id="upload"/>
 		<bouton titre="Proposer" id="envoie"  onClick="return window.confirm('Voulez vous vraiment proposer cette QDJ ?')"/>
 	</formulaire>
-<?
+<?php
 //==================================================
 //=
 //= Permet de visualiser sa qdj avant de l'envoyer
@@ -64,7 +64,7 @@ if (!isset($_REQUEST['envoie'])) {
 			<reponse id="2"><?php echo $_REQUEST['reponse2'] ?></reponse>
 		</qdj>
 	</module>		
-<?
+<?php
 	}
 //==================================================
 //=
@@ -76,7 +76,7 @@ if (!isset($_REQUEST['envoie'])) {
 	<commentaire>
 		Merci d'avoir proposé une QDJ. Le responsable au BR essayera de la publier le plus tôt possible.
 	</commentaire>
-<?
+<?php
 	// Stockage dans la base SQL
 	$DB_valid->query("INSERT INTO valid_qdj SET eleve_id='{$_SESSION['user']->uid}',question='{$_REQUEST['question']}',reponse1='{$_REQUEST['reponse1']}',reponse2='{$_REQUEST['reponse2']}'") ;
 

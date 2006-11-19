@@ -58,7 +58,7 @@ if (est_authentifie(AUTH_MINIMUM)) {
 			$DB_web->query("SELECT 0 FROM annonces_lues WHERE annonce_id=1 AND eleve_id=".$_SESSION["user"]->uid.";");
 			$postit_visible = $DB_web->num_rows() == 0;
 ?>
-	<annonce id="1" titre="Post-it : <?php echo $postit_titre ?>" visible="<?=$postit_visible?"oui":"non" ?>" categorie="important">
+	<annonce id="1" titre="Post-it : <?php echo $postit_titre ?>" visible="<?php echo $postit_visible ? 'oui' : 'non'; ?>" categorie="important">
 <?php
 			if (file_exists($postit_dir."image")) {
 ?>
@@ -67,7 +67,7 @@ if (est_authentifie(AUTH_MINIMUM)) {
 			}
 			echo wikiVersXML($postit_contenu) ;
 ?>
-		<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>"/>
+		<eleve nom="<?php echo $nom; ?>" prenom="<?php echo $prenom; ?>" promo="<?php echo $promo; ?>" surnom="<?php echo $surnom; ?>"/>
 		<lien url="?lu=1#annonce_1" titre="Faire disparaître" id="annonces_lues"/>
 		<br/>
 	</annonce>
