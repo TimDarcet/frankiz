@@ -55,7 +55,7 @@ while(list($id,$nom) = $DB_trombino->next_row()) {
 	$DB_trombino->pop_result() ;
 }
 if ($warning!="")
-	$message .= "<warning> <p>Les binets suivant n'avaient pas de categorie valide :</p><p>$warning</p><p>Leur categorie vient d'être remis à 'Divers'</p></warning>" ;
+	$message .= "<warning> <p>Les binets suivants n'avaient pas de catégorie valide :</p><p>$warning</p><p>Leur catégorie vient d'être remise à 'Divers'.</p></warning>" ;
 
 // =====================================
 // Modification d'un binet
