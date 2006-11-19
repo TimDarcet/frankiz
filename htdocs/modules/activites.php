@@ -43,3 +43,4 @@ if ($DB_web->num_rows()!=0 || $valeur=='1'){
 <?php }
 	echo "</module>\n";
 }
+?>

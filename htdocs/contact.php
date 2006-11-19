@@ -40,6 +40,10 @@ require "include/page_header.inc.php";
 	<p>Si vous désirez des <a href="mailto:<?=MAIL_CONTACT?>?subject=K%E8s%20:%20Informations%20diverses">informations</a> sur polytechnique et les élèves.</p>
 </cadre>
 
+<cadre titre="Téléphone">
+	<lien url="num_utiles.php" titre="Numéros Utiles"/>
+</cadre>
+
 <cadre titre="Contacter un élève">
 	<h3>Par email (ou mel)</h3>
 	<p>Si tu veux joindre un élève, rien de plus facile :</p>

@@ -30,7 +30,7 @@ require_once "include/global.inc.php";
 require "include/page_header.inc.php";
 ?>
 <page id='num_utiles' titre='Frankiz : Numéros utiles'>
-<h1>Numeros Utiles</h1>
+<h1>Numéros Utiles</h1>
 <?
 $DB_web->query("SELECT DISTINCT categorie FROM num_utiles GROUP BY categorie") ;
 while(list($categorie) = $DB_web->next_row()) {
