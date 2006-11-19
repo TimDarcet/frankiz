@@ -255,4 +255,3 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <?php
 require_once BASE_LOCAL."/include/page_footer.inc.php";
 ?>
-

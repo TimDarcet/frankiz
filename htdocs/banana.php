@@ -23,4 +23,3 @@ $res = Banana::run();
 <?php
 require_once "include/page_footer.inc.php";
 ?>
-

@@ -1,5 +1,7 @@
 $Id$
 
+## OBSOLETE ##
+
 Version de développement dans son home perso :
 - l'installer sur gwennoz dans ~/public_html/
 - créer le lien symbolique vers la configuration : ln -s config.php.dev ~/public_html/etc.config.php
