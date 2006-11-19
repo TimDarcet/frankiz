@@ -44,7 +44,4 @@ list($promo) = $DB_trombino->next_row();
 	<?php if(est_authentifie(AUTH_INTERNE)): ?><lien id="utile_intranet" titre="Intranet" url="http://intranet.polytechnique.fr/" key="i"/><?php endif; ?>
 	<lien id="utile_xorg" titre="Polytechnique.org" url="http://www.polytechnique.org/" key="o"/>
 	<lien id="utile_net" titre="Polytechnique.net" url="http://www.polytechnique.net/" key="n"/>
-	<?php if (est_authentifie(AUTH_MINIMUM)) { ?>
-		<lien id="utile_wikix" titre="Wikix" url="http://frankiz.polytechnique.fr/binets/wikix/Accueil" key="w"/>
-	<?php } ?>
 </module>
