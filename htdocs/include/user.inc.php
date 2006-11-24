@@ -55,9 +55,6 @@ class User {
 	// Méthode d'authentification utilisée
 	public $methode;
 	
-	//Indique si la charte a été approuvée
-	public $charte;
-	
 	// Construit un objet à partir du login ou d'un id.
 	// On suppose que l'on est déjà connecté à la base de données
 	function User($islogin,$value) {
@@ -85,7 +82,6 @@ class User {
 			list($this->uid,$this->login,$this->perms,$this->nom,$this->prenom,$this->passwd,$this->mailhash,$this->cookiehash) = $DB_web->next_row();
 			$this->perms = split(",",$this->perms);
 			$this->methode = AUTH_AUCUNE;
-			$this->charte = false;
 		}
 	}
 	
@@ -93,7 +89,6 @@ class User {
 		$this->uid = 0;
 		$this->methode = est_interne() ? AUTH_INTERNE : AUTH_AUCUNE;
 		$this->perms = array();
-		$this->charte=false;
 	}
 	
 	// Authentification par mot de passe, cookie, mail. Si l'authentification échoue, on revient à
@@ -174,19 +169,6 @@ class User {
 	// sécurisée).
 	function est_authentifie($minimum) {
 		return $this->methode >= $minimum;
-	}
-	
-	function charte_validee(){
-	global $DB_web;
-	if ($this->charte)
-		return true;
-	$DB_web->query("SELECT charte FROM compte_frankiz WHERE eleve_id='{$this->uid}'");
-	$row = $DB_web->next_row();
-	if(!$row[0])
-		rediriger_vers("/charte.php");
-	else
-		$this->charte = true;
-	return true;
 	}
 }
 

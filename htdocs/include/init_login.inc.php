@@ -159,10 +159,8 @@ if(!isset($_SESSION['user']))
 	d'authentification minimale pour laquelle une réauthentification par mot de passe
 	n'est pas indispensable).
 */
-function demande_authentification($minimum, $charte=true) {
-	if($_SESSION['user']->est_authentifie($minimum))
-		if (!$charte || $_SESSION['user']->charte_validee())
-			return;
+function demande_authentification($minimum) {
+	if($_SESSION['user']->est_authentifie($minimum)) return;
 	
 	require_once "init_skin.inc.php"; // n'y est pas encore dans le cas d'un "su"
 	require "page_header.inc.php";
