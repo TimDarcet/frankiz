@@ -60,17 +60,17 @@ require "../include/page_header.inc.php";
 ?>
 <page id='num_utiles' titre='Frankiz : Numéros utiles'>
 <h1>Numeros Utiles</h1>
-<?
+<?php
 $DB_web->query("SELECT DISTINCT categorie FROM num_utiles GROUP BY categorie") ;
 while(list($categorie) = $DB_web->next_row()) {
 ?>
-	<h2><?=$categorie?></h2>
+	<h2><?php echo $categorie; ?></h2>
 	<liste id="liste_num" selectionnable="non">
 		<entete id="categorie" titre="Catégorie"/>
 		<entete id="endroit" titre="Nom"/>
 		<entete id="poste" titre="num. Poste"/>
 		<entete id="suppr" titre=""/>
-<?		
+<?php		
 		$DB_web->push_result() ;
 		$DB_web->query("SELECT num_id,endroit,poste FROM num_utiles WHERE categorie='$categorie' ORDER BY endroit") ;
 		while(list($id,$endroit,$poste) = $DB_web->next_row()) {
@@ -85,7 +85,7 @@ while(list($categorie) = $DB_web->next_row()) {
 ?>
 		<bouton id='save' titre='Enregistrer toutes les modifs'/>
 	</liste>
-<?
+<?php
 }
 
 ?>
@@ -101,6 +101,6 @@ while(list($categorie) = $DB_web->next_row()) {
 		
 
 </page>
-<?
+<?php
 require_once "../include/page_footer.inc.php";
 ?>

@@ -34,7 +34,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="modif_faq" titre="Frankiz : Modification de la FAQ">
 <h1>Modification FAQ</h1>
-<?
+<?php
 $tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
 
 
@@ -59,11 +59,11 @@ if (isset($_REQUEST['valid'])) {
 		
 		?>
 		<commentaire>Tu as soumis au FAQmestre une modification d'une des FAQ. Nous t'en remercions... Elle sera traité le plus rapidement possible</commentaire>
-		<?
+		<?php
 	} else {
 	?>
 		<warning>Il y a déjà une demande de modification pour cette FAQ et les FAQmestres ne peuvent pas les gérer en même temps... Attend 1 jour et retente...</warning>
-	<?
+	<?php
 	}
 
 } else {
@@ -113,13 +113,13 @@ if (isset($_REQUEST['valid'])) {
 				} else {
 				?>
 					<warning>Erreur : Impossible de trouver cette question </warning>
-				<?
+				<?php
 				}
 				?>
 				</cadre>
 				
-				<formulaire id='modif_faq' titre='Modification' action='proposition/faq_modif.php?id=<?=$id?>'>
-					<zonetext titre="FAQ" id='faq_modif' type="grand"><?
+				<formulaire id='modif_faq' titre='Modification' action='proposition/faq_modif.php?id=<?php echo $id; ?>'>
+					<zonetext titre="FAQ" id='faq_modif' type="grand"><?php
 					if (isset($_REQUEST['faq_modif']))
 						print($_POST['faq_modif']);
 					else 
@@ -131,11 +131,11 @@ if (isset($_REQUEST['valid'])) {
 					<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment soumettre cette FAQ modifiée aux webmestres ?')"/>
 		
 				</formulaire>
-				<?
+				<?php
 			} else {
 			?>
 				<warning>Erreur : Impossible de trouver cette question </warning>
-			<?
+			<?php
 			}
 			
 	
@@ -143,7 +143,7 @@ if (isset($_REQUEST['valid'])) {
 	} else {
 		?>
 			<warning>Il y a déjà une demande de modification pour cette FAQ et les FAQmestres ne peuvent pas les gérer en même temps... Attend 1 jour et retente...</warning>
-		<?
+		<?php
 	}
 }
 //

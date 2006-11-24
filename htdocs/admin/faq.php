@@ -1,4 +1,4 @@
-<? 
+<?php 
 /*
 	Copyright (C) 2004 Binet Réseau
 	http://www.polytechnique.fr/eleves/binets/br/
@@ -41,7 +41,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="faq" titre="Frankiz : FAQ">
 <h1>FAQ</h1>
 
-<?
+<?php
 
 
 
@@ -285,7 +285,7 @@ function rech_parent($id) {
       
 
 <p><strong>Visualisation des différentes FAQ : </strong> </p>
-<?
+<?php
 
 //
 // on affiche  l'arbre 
@@ -299,7 +299,7 @@ echo "</arbre>";
 
 
 
-<?
+<?php
 
 //
 // Corps du Documents pour les réponses
@@ -310,60 +310,60 @@ echo "</arbre>";
 		$DB_faq->query("SELECT * FROM faq WHERE faq_id='{$id}'") ;
 		if (list($id,$parent,$question,$reponse) = $DB_faq->next_row()) {
 	?>
-	<formulaire id="mod_faq_<? echo $id ?>" titre="La réponse" action="admin/faq.php">
-	<champ id="question" titre="Question" valeur="<? echo $question ?>" />
-	<champ id="nom" titre="Nom du sous-dossier de la faq" valeur="<? echo dirname($reponse) ?>" />
+	<formulaire id="mod_faq_<?php echo $id ?>" titre="La réponse" action="admin/faq.php">
+	<champ id="question" titre="Question" valeur="<?php echo $question ?>" />
+	<champ id="nom" titre="Nom du sous-dossier de la faq" valeur="<?php echo dirname($reponse) ?>" />
 	<fichier id="file" titre="Changer fichier réponse (fichier .html, .zip ou .tar)" taille="1000000000"/>
-	<lien titre="Télécharger la faq en .zip" url="admin/faq.php?download=<? echo base64_encode(dirname($reponse)) ?>&amp;download_type=zip" /><br/>
-	<lien titre="Télécharger la faq en .tar" url="admin/faq.php?download=<? echo base64_encode(dirname($reponse)) ?>&amp;download_type=tar" /><br/>
-	<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
-	<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette FAQ ?!!!!!')"/>
+	<lien titre="Télécharger la faq en .zip" url="admin/faq.php?download=<?php echo base64_encode(dirname($reponse)) ?>&amp;download_type=zip" /><br/>
+	<lien titre="Télécharger la faq en .tar" url="admin/faq.php?download=<?php echo base64_encode(dirname($reponse)) ?>&amp;download_type=tar" /><br/>
+	<bouton id='modif_<?php echo $id ?>' titre="Modifier"/>
+	<bouton id='suppr_<?php echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette FAQ ?!!!!!')"/>
 	</formulaire>
-	<? 
+	<?php 
 	
 		} else {
 	?>
 	<warning>Erreur : Impossible de trouver cette description </warning>
-	<?
+	<?php
 		}
 	}
 	else
 	{
 	?>
 	<!-- Supprimer le dossier en cours -->
-	<? if(isset($_REQUEST['dir_id'])) $dir_id = $_REQUEST['dir_id']; else $dir_id="1"; ?>
-	<formulaire id="del_dir_faq_<? echo $dir_id ?>" titre="Supprimer ce dossier" action="admin/faq.php">
-	<? foreach ($_REQUEST AS $keys => $val){
+	<?php if(isset($_REQUEST['dir_id'])) $dir_id = $_REQUEST['dir_id']; else $dir_id="1"; ?>
+	<formulaire id="del_dir_faq_<?php echo $dir_id ?>" titre="Supprimer ce dossier" action="admin/faq.php">
+	<?php foreach ($_REQUEST AS $keys => $val){
 		if(!strstr($keys,"rmdir")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 		}
 	?>
-	<bouton id='rmdir_<? echo  $dir_id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce répertoire et tous ses fichiers ?!!!!!')"/>
+	<bouton id='rmdir_<?php echo  $dir_id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce répertoire et tous ses fichiers ?!!!!!')"/>
 	</formulaire>
 	
 	<!-- Ajouter un sous-dossier -->
-	<formulaire id="add_sub_faq_<? echo $dir_id ?>" titre="Ajouter un sous-dossier" action="admin/faq.php">
+	<formulaire id="add_sub_faq_<?php echo $dir_id ?>" titre="Ajouter un sous-dossier" action="admin/faq.php">
 	<champ id="nom" titre="Nom du sous-dossier" valeur="" />
 	<champ id="desc" titre="Description du sous-dossier" valeur="" />
-	<? foreach ($_REQUEST AS $keys => $val){
+	<?php foreach ($_REQUEST AS $keys => $val){
 		if(!strstr($keys,"adddir") && !strstr($keys,"nom") && !strstr($keys,"desc")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 		}
 	?>
-	<bouton id='adddir_<? echo $dir_id ?>' titre='Ajouter' onClick="return window.confirm('!!!!!!Créer ce répertoire ?!!!!!')"/>
+	<bouton id='adddir_<?php echo $dir_id ?>' titre='Ajouter' onClick="return window.confirm('!!!!!!Créer ce répertoire ?!!!!!')"/>
 	</formulaire>
 	
 	<!-- Ajouter un fichier -->
-	<formulaire id="add_faq_<? echo $dir_id ?>" titre="Nouvelle FAQ" action="admin/faq.php">
+	<formulaire id="add_faq_<?php echo $dir_id ?>" titre="Nouvelle FAQ" action="admin/faq.php">
 	<champ id="question" titre="Question" valeur="" />
 	<champ id="nom" titre="Nom du sous-dossier de la faq" valeur="" />
-	<? foreach ($_REQUEST AS $keys => $val){
+	<?php foreach ($_REQUEST AS $keys => $val){
 		if(!strstr($keys,"ajout") && !strstr($keys,"question") && !strstr($keys,"nom")&& !strstr($keys,"file")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 	}
 	?>
 	<fichier id="file" titre="Fichier réponse (fichier .html, .zip ou .tar)" taille="1000000000"/>
-	<bouton id='ajout_<? echo $dir_id ?>' titre="Ajouter" onClick="return window.confirm('!!!!!!Ajouter ce fichier ?!!!!!')"/>
+	<bouton id='ajout_<?php echo $dir_id ?>' titre="Ajouter" onClick="return window.confirm('!!!!!!Ajouter ce fichier ?!!!!!')"/>
 	</formulaire>
 	
-<?
+<?php
 	}
 //
 // Pied de page ...

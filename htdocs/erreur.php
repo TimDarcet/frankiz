@@ -32,8 +32,8 @@ $erreur_texte = isset($erreur_textes[$erreur_num]) ? "({$erreur_textes[$erreur_n
 
 require "include/page_header.inc.php";
 ?>
-<page id="erreur" titre="Frankiz : erreur <?=$erreur_num?>">
-	<warning>Une erreur <?=$erreur_num?> <?=$erreur_texte?> est survenue, empéchant
+<page id="erreur" titre="Frankiz : erreur <?php echo $erreur_num; ?>">
+	<warning>Une erreur <?php echo $erreur_num; ?> <?php echo $erreur_texte; ?> est survenue, empéchant
 		l'accès à la page demandée.</warning>
 </page>
 <?php require "include/page_footer.inc.php" ?>

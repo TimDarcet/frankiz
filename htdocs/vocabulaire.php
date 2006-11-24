@@ -34,7 +34,7 @@ require "include/page_header.inc.php";
 	<liste id="liste_voc" selectionnable="non">
 		<entete id="mot" titre="Expression"/>
 		<entete id="description" titre="Description"/>
-<?
+<?php
 		$DB_web->query("SELECT vocab_id,mot,explication FROM vocabulaire ORDER BY mot") ;
 		while(list($vocab_id,$mot,$explication) = $DB_web->next_row()) {
 			echo "\t\t<element id=\"$vocab_id\">\n";
@@ -45,6 +45,6 @@ require "include/page_header.inc.php";
 ?>
 	</liste>
 </page>
-<?
+<?php
 require_once "include/page_footer.inc.php";
 ?>

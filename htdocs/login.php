@@ -38,4 +38,4 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	<p>Si tu veux éviter de te ré-identifier à chaque fois que tu accèdes à cette page, active l'authentification
 	par cookie dans tes <a href="profil/profil.php">préférences</a>.</p>
 </page>
-<? require_once BASE_LOCAL."/include/page_footer.inc.php" ?>
+<?php require_once BASE_LOCAL."/include/page_footer.inc.php" ?>

@@ -34,7 +34,7 @@ require "include/page_header.inc.php";
 	<liste id="liste_liens" selectionnable="non">
 		<entete id="mot" titre="Lien"/>
 		<entete id="description" titre="Description"/>
-<?
+<?php
 		$DB_web->query("SELECT lien_id,url,titre,description,visible_ext FROM liens ORDER BY titre") ;
 		while(list($lien_id,$url,$titre,$description,$visible) = $DB_web->next_row()) {
 			if ($visible == 0 && !est_interne()) continue;
@@ -46,6 +46,6 @@ require "include/page_header.inc.php";
 ?>
 	</liste>
 </page>
-<?
+<?php
 require_once "include/page_footer.inc.php";
 ?>

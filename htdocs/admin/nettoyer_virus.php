@@ -63,7 +63,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <note>Cette page sert à signaler qu'un virus detecté a bien été enlevé de l'ordinateur sur l'ip considérée, après s'en être assuré !</note>
 <note>Cette page permet également de rajouter une infection manuellemet ou encore de définir un nouveau virus</note>
 <note>Les virus listés ici sont ceux les plus susceptibles de pourrir le cache de la matrice.</note>
-<?
+<?php
 	//  Notification d'une nouvelle infection
 	if (isset($_POST['notifier'])) {
 		$ip = $_POST['ip'];
@@ -72,7 +72,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	}
 ?>
 
-<?
+<?php
 	// Ajout d'un virus dans la table liste_virus
 	if (isset($_POST['ajouter'])) {
 		$port = $_POST['port'];
@@ -81,7 +81,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	}
 ?>
 
-<?
+<?php
 	foreach ($_POST AS $keys => $val){
 		$temp = explode("_",$keys) ;
 		if ($temp[0] == "suppr") {
@@ -127,7 +127,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			<entete id="nom" titre="Nom du virus"/>
 			<entete id="statut" titre="Statut"/>
 			<entete id="nettoyer" titre=""/>
-<?
+<?php
 			while(list($id,$ip,$date,$solved,$nomv,$eleve_id) = $DB_admin->next_row()) {
 				echo "\t\t<element id='$id'>\n";
 				echo "\t\t\t<colonne id='ip'>$ip</colonne>\n";
@@ -157,7 +157,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<entete id="nomv" titre="Nom du virus"/>
 		<entete id="nettoyer" titre=""/>
 		<entete id="prevenir" titre=""/>
-<?
+<?php
 	while(list($ip,$date,$rebours,$solved,$login,$tel,$eleve_id,$nomv,$id)= $DB_admin->next_row()){
 		echo "\t\t<element id=\"$id\">\n";
 		$ip1 = "<bouton titre='Historique' id='detail_$login' type='detail'/>$ip";
@@ -170,21 +170,21 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		echo "\t\t\t<colonne id=\"nettoyer\">".(makedelete($id,$eleve_id,$nomv,$solved,$ip))."</colonne>\n";
 ?>
 			<colonne id="prevenir">
-<?
+<?php
 		if($rebours<5 && $rebours>-1 && $solved==0){
 ?>
-				<bouton titre="Prévenir" id="prev_<?echo "$date";?>_<?echo "$eleve_id";?>_<?echo "$nomv";?>_<?echo "$rebours";?>_<?echo "$ip";?>_<?echo "$id";?>" onClick="return window.confirm('Voulez vous prévenir par mail cette personne quelle est infectée ?')"/>
-<?
+				<bouton titre="Prévenir" id="prev_<?php echo "$date";?>_<?php echo "$eleve_id";?>_<?php echo "$nomv";?>_<?php echo "$rebours";?>_<?php echo "$ip";?>_<?php echo "$id";?>" onClick="return window.confirm('Voulez vous prévenir par mail cette personne quelle est infectée ?')"/>
+<?php
 		}
 ?>
 			</colonne>
-<?
+<?php
 		echo "\t\t</element>\n";
 	}
 ?>
 	</liste>
 
-<?
+<?php
 // Notifier la presence d'une nouvelle infection
 ?>
 	<liste id="notifier" selectionable="non" titre="Notifier la présence d'une nouvelle infection" action="admin/nettoyer_virus.php">
@@ -199,7 +199,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			<colonne id="virus">
 				<choix id="v_id"  type="combo" valeur="Ajout">
                                        <option titre="" id="default"/>
-					<?
+					<?php
                                         $DB_admin->query("SELECT virus_id,nom FROM liste_virus");
 					while (list($virus_id,$nomv) = $DB_admin->next_row())
 					echo "<option titre=\"$nomv\" id=\"$virus_id\"/>\n";
@@ -212,7 +212,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		</element>
 	</liste>
 
-<?
+<?php
 // Ajouter un nouveau virus dans la base
 ?>
 	<liste id="ajouter" selectionable="non" titre="Répertorier un nouveau virus" action="admin/nettoyer_virus.php">

@@ -46,41 +46,41 @@ Le nom Wiki provient d'un adjectif hawaiien wikiwiki, qui signifie rapide. C'est
 		<element id="">
 			<colonne id="type">Gras</colonne>
 			<colonne id="syntaxe">**Gras**</colonne>
-			<colonne id="exemple"><?=wikiVersXML("**Gras**")?></colonne>
+			<colonne id="exemple"><?php echo wikiVersXML("**Gras**"); ?></colonne>
 		</element>
 		<element id="">
 			<colonne id="type">Italique</colonne>
 			<colonne id="syntaxe">''Italique''</colonne>
-			<colonne id="exemple"><?=wikiVersXML("&apos;&apos;Italique&apos;&apos;")?></colonne>
+			<colonne id="exemple"><?php echo wikiVersXML("&apos;&apos;Italique&apos;&apos;"); ?></colonne>
 		</element>
 		<element id="">
 			<colonne id="type">Font-Fixed</colonne>
 			<colonne id="syntaxe">|Font|</colonne>
-			<colonne id="exemple"><?=wikiVersXML("|Font|")?></colonne>
+			<colonne id="exemple"><?php echo wikiVersXML("|Font|");?></colonne>
 		</element>
 		<element id="">
 			<colonne id="type">Titre</colonne>
 			<colonne id="syntaxe"><p>===titre1===</p><p>==titre2==</p><p>=titre3=</p></colonne>
-			<colonne id="exemple"><?=wikiVersXML("===titre1===").wikiVersXML("==titre2==").wikiVersXML("=titre3=")?></colonne>
+			<colonne id="exemple"><?php echo wikiVersXML("===titre1===").wikiVersXML("==titre2==").wikiVersXML("=titre3="); ?></colonne>
 		</element>
 		<element id="">
 			<colonne id="type">Liste</colonne>
 			<colonne id="syntaxe"><p>- 1 niveau</p><p>- titre niveau 2</p><p>-- 2e niveau</p></colonne>
-			<colonne id="exemple"><?=wikiVersXML("- 1 niveau").wikiVersXML("- titre niveau 2\n-- 2e niveau")?></colonne>
+			<colonne id="exemple"><?php echo wikiVersXML("- 1 niveau").wikiVersXML("- titre niveau 2\n-- 2e niveau");?></colonne>
 		</element>
 		<element id="">
 			<colonne id="type">Lien</colonne>
 			<colonne id="syntaxe"><p>http://frankiz/</p><p>[http://frankiz|Ici c'est le site élève]</p><p>[mailto:moi@moi|Mon email]</p></colonne>
-			<colonne id="exemple"><?=wikiVersXML("http://frankiz/").wikiVersXML("[http://frankiz/|Ici c'est le site élève]").wikiVersXML("[mailto:moi@moi|Mon email]")?></colonne>
+			<colonne id="exemple"><?php echo wikiVersXML("http://frankiz/").wikiVersXML("[http://frankiz/|Ici c'est le site élève]").wikiVersXML("[mailto:moi@moi|Mon email]"); ?></colonne>
 		</element>
 		<element id="">
 			<colonne id="type">Image</colonne>
 			<colonne id="syntaxe"><p>[http://binets/icones/reseau.png]</p><p>[http://binets/icones/reseau.png|Logo binet réseau]</p></colonne>
-			<colonne id="exemple"><?=wikiVersXML("[http://binets/icones/reseau.png]").wikiVersXML("[http://binets/icones/reseau.png|Logo binet réseau]")?></colonne>
+			<colonne id="exemple"><?php echo wikiVersXML("[http://binets/icones/reseau.png]").wikiVersXML("[http://binets/icones/reseau.png|Logo binet réseau]"); ?></colonne>
 		</element>
 </liste>
 
 </page>
-<?
+<?php
 require_once "include/page_footer.inc.php";
 ?>

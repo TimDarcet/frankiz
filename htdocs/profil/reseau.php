@@ -89,10 +89,10 @@ if(isset($_POST['changer_xnet'])) {
 			echo "<warning>Vous n'avez pas le droit de réaliser cette opération.</warning>\n";
 ?>
 	<h2 id="reseau_ip">Infos divers</h2>
-	<p>Normalement tu as l'ip <?=$ip{0}?> (car ta prise est la <?=$prise{0}?>)</p>
+	<p>Normalement tu as l'ip <?php echo $ip{0}; ?> (car ta prise est la <?php echo $prise{0}; ?>)</p>
 	<p>
 	<note>Si tu souhaite une nouvelle ip clique <lien titre='ici' url='profil/demande_ip.php'/>
-<?
+<?php
 		if($id_ip > 1) {
 			echo "<br/>Tu as en plus fait rajouter ces ips à tes ip autorisées :<br/>" ;
 			for ($i = 1; $i < $id_ip; $i++) {
@@ -101,7 +101,7 @@ if(isset($_POST['changer_xnet'])) {
 		}
 ?>
 	</note>
-<? 
+<?php 
 
 	if(substr($_SERVER['REMOTE_ADDR'],0,7)=="129.104" && $bool_ip) {
 		echo "<warning>ATTENTION : " ;
@@ -113,23 +113,23 @@ if(isset($_POST['changer_xnet'])) {
 	<h2 id="nom_machine">Nom de tes machines</h2>
 	<note>Ceci est la liste de tes ordinateurs</note>
 <div>
-<? 
+<?php 
 for ($i = 0; $i < $id_ip; $i++) {
 	echo "<p>".gethostbyaddr($ip{$i})." (".$ip{$i}.")</p>" ;
 } 
 ?>
 </div>
 <br />
-<? for ($i = 0; $i < $id_ip; $i++) {
+<?php for ($i = 0; $i < $id_ip; $i++) {
 ?>
-	<formulaire id="mod_xnet_<? echo $i ?>" titre="Modification du mot de passe Xnet (<? echo $ip{$i} ?>)" action="profil/reseau.php">
-		<hidden id="ip_xnet" valeur="<? echo $ip{$i} ?>"/>
+	<formulaire id="mod_xnet_<?php echo $i ?>" titre="Modification du mot de passe Xnet (<?php echo $ip{$i} ?>)" action="profil/reseau.php">
+		<hidden id="ip_xnet" valeur="<?php echo $ip{$i} ?>"/>
 		<note>Il faut que ton mot de passe fasse au moins 6 caractères</note>
 		<champ id="passwd" titre="Mot de passe" valeur="12345678"/>
 		<champ id="passwd2" titre="Retaper le" valeur="87654321"/>
 		<bouton id="changer_xnet" titre="Changer"/>
 	</formulaire>
-<? } 
+<?php } 
 }else{ 
 	echo "<warning>Cette page n'est pas utile pour une personne qui ne loge pas dans l'école</warning>";
 }

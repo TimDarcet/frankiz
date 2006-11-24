@@ -1,4 +1,4 @@
-<?
+<?php
 require_once "include/global.inc.php";
 require_once "include/wiki.inc.php";
 
@@ -16,16 +16,16 @@ echo"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
 <rss version="2.0">
 	<channel>
 		<title>Frankiz : Annonces</title>
-		<link><? echo BASE_URL ?></link>
+		<link><?php echo BASE_URL ?></link>
 		<description>Frankiz : Le serveur des élèves de l'école polytechnique.</description>
 		<ttl>10</ttl>
 		<image>
-			<url><? echo BASE_URL ?>/skins/xhtml/default/images/frankiz.png</url>
+			<url><?php echo BASE_URL ?>/skins/xhtml/default/images/frankiz.png</url>
 			<title>Frankiz : Annonces</title>
-			<link><? echo BASE_URL ?></link>
+			<link><?php echo BASE_URL ?></link>
 		</image>
 			
-<?
+<?php
 $DB_web->query("SELECT annonce_id,UNIX_TIMESTAMP(stamp),stamp,perime,titre,contenu,en_haut,exterieur,nom,prenom,surnom,promo,"
 					 ."IFNULL(mail,CONCAT(login,'@poly.polytechnique.fr')) as mail "
 					 ."FROM annonces LEFT JOIN trombino.eleves USING(eleve_id) "
@@ -47,7 +47,7 @@ while(list($id,$date,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$pr
 			}
 ?>		</description>
 		<guid isPermaLink="false"><?php echo BASE_URL."?nonlu=$id#annonce_$id"; ?></guid>
-		<author><?=$mail?> (<?=$nom?> <?=$prenom?>)</author>
+		<author><?php echo $mail; ?> (<?php echo $nom; ?> <?php echo $prenom; ?>)</author>
 	</item>
 <?php } ?>
 	</channel>

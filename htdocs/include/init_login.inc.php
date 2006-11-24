@@ -172,7 +172,7 @@ function demande_authentification($minimum) {
 		<?php endif; ?>
 		<note>Ton login est loginpoly.promo</note>
 		<formulaire id="login" titre="Connexion" action="">
-		<?  foreach ($_REQUEST AS $keys => $val){
+		<?php  foreach ($_REQUEST AS $keys => $val){
 			echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 			}
 		?>

@@ -37,7 +37,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
 <page id="admin_droits" titre="Frankiz : Liste des droits">
-<?
+<?php
 foreach(liste_droits() as $droit => $description){
 	echo "<h3>$droit: $description</h3>";
 	$DB_trombino->query("SELECT eleves.eleve_id,eleves.nom,prenom,surnom,promo FROM eleves LEFT JOIN frankiz2.compte_frankiz AS cpt ON eleves.eleve_id=cpt.eleve_id WHERE  cpt.perms LIKE '%{$droit},%' ORDER BY eleves.nom,prenom ASC");

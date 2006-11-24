@@ -40,7 +40,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="valid_qdj" titre="Frankiz : Planifie tes qdj">
 <h1>Planification des qdj</h1>
-<?
+<?php
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
 
@@ -50,7 +50,7 @@ foreach ($_POST AS $keys => $val){
 		if((strtotime($_REQUEST['date']) <(time() ))&&($_REQUEST['date']!="0000-00-00"))
 		{ ?>
 			<warning>ERREUR: Veuillez choisir une date supérieure à aujourd'hui</warning>
-		<?
+		<?php
 		}
 		else
 		{
@@ -84,7 +84,7 @@ foreach ($_POST AS $keys => $val){
 	
 		?>
 			<commentaire>Planification effectuée</commentaire>
-		<?
+		<?php
 		}	
 	}
 	
@@ -110,7 +110,7 @@ foreach ($_POST AS $keys => $val){
 		list($question,$reponse1,$reponse2) = $DB_web->next_row(); 
 		$id = $temp[1];
 ?>
-		<warning>Cette QDJ est déjà planifiée pour le <?echo $temp[2] ?></warning>
+		<warning>Cette QDJ est déjà planifiée pour le <?php echo $temp[2] ?></warning>
 		<module titre="QDJ">
 			<qdj type="aujourdhui" >
 				<question><?php echo $question ?></question>
@@ -118,15 +118,15 @@ foreach ($_POST AS $keys => $val){
 				<reponse id="2"><?php echo $reponse2?></reponse>
 			</qdj>
 		</module>
-		<formulaire id="qdj_<? echo $id ?>" action="admin/planif_qdj.php">
-			<champ id="date" titre="date" valeur="<? echo $temp[2] ?>"/>
+		<formulaire id="qdj_<?php echo $id ?>" action="admin/planif_qdj.php">
+			<champ id="date" titre="date" valeur="<?php echo $temp[2] ?>"/>
 			<choix type="checkbox">
 				<option id="decalage" titre="Décaler si necessaire ?"/>
 			</choix>
-			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider la planification de cette qdj ?')"/>
+			<bouton id='valid_<?php echo $id ?>' titre='Valider' onClick="return window.confirm('Valider la planification de cette qdj ?')"/>
 			
 		</formulaire>
-<?	
+<?php	
 	}
 	
 	// Supprime la qdj de la liste
@@ -137,15 +137,15 @@ foreach ($_POST AS $keys => $val){
 
 	?>
 		<warning>Suppression d'une qdj</warning>
-	<?
+	<?php
 	}
 }
 
 //nb de qdj planifiées
 $date = date("Y-m-d", time());
 ?>
-	<p>Nous sommes le : <?= $date ?></p>
-<?
+	<p>Nous sommes le : <?php echo $date; ?></p>
+<?php
 //Cherche la date de la prochaine qdj libre
 for ($i = 0; ; $i++) 
 {
@@ -154,37 +154,37 @@ for ($i = 0; ; $i++)
 	if(!$DB_web->num_rows()) break;
 }
 ?>
-	<p>La planification est faite jusqu'au : <?= $date_last ?></p>
-	<? $DB_web->query("SELECT qdj_id FROM qdj WHERE date>'$date' "); ?>
-	<p>Nb de QDJ planifiées: <? echo $DB_web->num_rows() ?></p>
-	<? $DB_web->query("SELECT qdj_id FROM qdj WHERE date='0000-00-00' "); ?>
-	<p>Nb de QDJ disponibles: <? echo $DB_web->num_rows() ?></p>
+	<p>La planification est faite jusqu'au : <?php echo $date_last; ?></p>
+	<?php $DB_web->query("SELECT qdj_id FROM qdj WHERE date>'$date' "); ?>
+	<p>Nb de QDJ planifiées: <?php echo $DB_web->num_rows() ?></p>
+	<?php $DB_web->query("SELECT qdj_id FROM qdj WHERE date='0000-00-00' "); ?>
+	<p>Nb de QDJ disponibles: <?php echo $DB_web->num_rows() ?></p>
 	
-<?
+<?php
 // Affiche la planification existante
 if(isset($_REQUEST['show'])) {
 	?>
 	<h2>Prévisions</h2>
-	<?
+	<?php
 
 	$date = date("Y-m-d", time() + 24*3600);
 	$DB_web->query("SELECT qdj_id,date,question,reponse1,reponse2 FROM qdj WHERE date>='$date'  ORDER BY date ASC");
 	while(list($id,$date,$question,$reponse1,$reponse2) = $DB_web->next_row()){
 
 ?>
-		<formulaire id="<? echo $id ?>" action="admin/planif_qdj.php">
-			<note><?= $date ?></note>
-			<note><?= $question ?></note>
-			<note><?= "$reponse1 / $reponse2" ?></note>
+		<formulaire id="<?php echo $id ?>" action="admin/planif_qdj.php">
+			<note><?php echo $date; ?></note>
+			<note><?php echo $question; ?></note>
+			<note><?php echo $reponse1; ?> / <?php echo $reponse2; ?></note>
 		
-			<? if(strtotime($date) >time() + 24*3600){ ?><bouton titre="Un jour plus tôt" id="reddate_<? echo $id ?>_<? echo $date ?>"/><? } ?>
-			<bouton titre="Un jour plus tard" id="augdate_<? echo $id ?>_<? echo $date ?>"/>
-			<bouton id='modif_<? echo $id ?>_<? echo $date ?>' titre='Modifier la date manuellement'/>
-			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette qdj ?!!!!!')"/>
+			<?php if(strtotime($date) >time() + 24*3600){ ?><bouton titre="Un jour plus tôt" id="reddate_<?php echo $id ?>_<?php echo $date ?>"/><?php } ?>
+			<bouton titre="Un jour plus tard" id="augdate_<?php echo $id ?>_<?php echo $date ?>"/>
+			<bouton id='modif_<?php echo $id ?>_<?php echo $date ?>' titre='Modifier la date manuellement'/>
+			<bouton id='suppr_<?php echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette qdj ?!!!!!')"/>
 			<hidden id="show"/>
 		
 		</formulaire>
-<? 
+<?php 
 	}
 }
 
@@ -196,7 +196,7 @@ if(!isset($_REQUEST['show']))
 	<formulaire action="admin/planif_qdj.php">
 			<bouton id='show' titre='Voir la planification existante' />
 	</formulaire>
-<?
+<?php
 
 
 
@@ -215,7 +215,7 @@ if(!isset($_REQUEST['show']))
 				<reponse id="2"><?php echo $reponse2?></reponse>
 			</qdj>
 		</module>
-<?
+<?php
 	$date = date("Y-m-d", time() + 48*3600);
 	
 	$DB_web->query("SELECT question,reponse1,reponse2 FROM qdj WHERE date='$date' LIMIT 1");
@@ -230,7 +230,7 @@ if(!isset($_REQUEST['show']))
 			</qdj>
 		</module>
 
-<?
+<?php
 }
 ?>
  
@@ -238,7 +238,7 @@ if(!isset($_REQUEST['show']))
 		
 <!-- Affiche les QDJ à planifier -->
 		<h2>Disponibles</h2>
-<?
+<?php
 	$DB_web->query("SELECT qdj_id,question, reponse1, reponse2 FROM qdj WHERE date = '0000-00-00'");
 	while(list($id,$question,$reponse1,$reponse2) = $DB_web->next_row()) {
 ?>
@@ -249,16 +249,16 @@ if(!isset($_REQUEST['show']))
 				<reponse id="2"><?php echo $reponse2?></reponse>
 			</qdj>
 		</module>
-		<formulaire id="qdj_<? echo $id ?>" action="admin/planif_qdj.php">
+		<formulaire id="qdj_<?php echo $id ?>" action="admin/planif_qdj.php">
 
-			<champ id="date" titre="date" valeur="<? echo $date_last ?>"/>
+			<champ id="date" titre="date" valeur="<?php echo $date_last ?>"/>
 			<choix type="checkbox">
 				<option id="decalage" titre="Décaler si necessaire ?"/>
 			</choix>
-			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider la planification de cette qdj ?')"/>
-			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette qdj ?!!!!!')"/>
+			<bouton id='valid_<?php echo $id ?>' titre='Valider' onClick="return window.confirm('Valider la planification de cette qdj ?')"/>
+			<bouton id='suppr_<?php echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette qdj ?!!!!!')"/>
 		</formulaire>
-<?
+<?php
 	}
 ?>
 </page>

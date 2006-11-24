@@ -40,7 +40,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="admin_valid_perso" titre="Frankiz : Valider les pages perso">
 
-<?
+<?php
 // On regarde quel cas c'est ...
 // On envoie chié le mec pour son changement d'ip et on le supprime de la base
 // On accepte le changement et on l'inscrit dans la base
@@ -76,7 +76,7 @@ foreach ($_POST AS $keys => $val){
 		} else {
 	?>
 			<warning>Requête deja traitée par un autre administrateur</warning>
-	<?
+	<?php
 		}
 	}
 	// On accepte la demande d'ip supplémentaire
@@ -108,7 +108,7 @@ foreach ($_POST AS $keys => $val){
 		} else {
 	?>
 			<warning>Requête deja traitée par un autre administrateur</warning>
-	<?
+	<?php
 		}
 	}
 }
@@ -120,21 +120,21 @@ $DB_valid->query("UNLOCK TABLES");
 	<liste id="liste" selectionnable="non" action="admin/valid_pageperso.php">
 		<entete id="eleve" titre="Élève"/>
 		<entete id="url" titre="Url"/>
-<?
+<?php
 		$DB_valid->query("SELECT e.eleve_id,e.nom,e.prenom,e.promo,e.login FROM valid_pageperso as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
 		while(list($id,$nom,$prenom,$promo,$login) = $DB_valid->next_row()) {
 ?>
-			<element id="<? echo $id ;?>">
-				<colonne id="eleve"><? echo "$nom $prenom ($promo)" ?></colonne>
+			<element id="<?php echo $id ;?>">
+				<colonne id="eleve"><?php echo "$nom $prenom ($promo)" ?></colonne>
 				<colonne id="url">
-					<lien id="<?=$id?>" titre="Site" url="<? echo URL_PAGEPERSO."$login-$promo"?>"/><br/>
-					<zonetext titre="Raison du Refus si refus" id="refus_<? echo $id ;?>" valeur=""/>
-					<bouton titre="Ok" id="ok_<? echo $id ;?>" />
-					<bouton titre="Vtff" id="vtff_<? echo $id ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette page ?')"/>
+					<lien id="<?php echo $id; ?>" titre="Site" url="<?php echo URL_PAGEPERSO."$login-$promo"?>"/><br/>
+					<zonetext titre="Raison du Refus si refus" id="refus_<?php echo $id ;?>" valeur=""/>
+					<bouton titre="Ok" id="ok_<?php echo $id ;?>" />
+					<bouton titre="Vtff" id="vtff_<?php echo $id ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette page ?')"/>
 
 				</colonne>
 			</element>
-<?
+<?php
 		}
 ?>
 	</liste>

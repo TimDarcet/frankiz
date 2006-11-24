@@ -42,7 +42,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	<liste id='info_1' titre='Alias DNS' selectionnable='non'>
 	<entete id='alias' titre='Alias'/>
 	<entete id='cible' titre='Cible'/>
-<?
+<?php
 	$DB_xnet->query("SELECT name, rdata from DNS where rdtype = 'Cname' order by rdata");
 	while(list($alias,$cible) = $DB_xnet->next_row()) {
 		echo "<element id='alias'>
@@ -58,7 +58,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	<entete id='user' titre='Nom'/>
 	<entete id='ip1' titre='1ere IP'/>
 	<entete id='ip2' titre='2eme IP'/>
-<?
+<?php
 	$DB_xnet->query("SELECT p1.username,  p1.lastip,  p2.lastip FROM clients AS p1,  clients AS p2 WHERE p1.username = p2.username AND p1.lastip > p2.lastip");
 	while(list($user,$ip1,$ip2) = $DB_xnet->next_row()){
 		echo "<element id='$user'>
@@ -74,7 +74,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	<entete id='user' titre='IP'/>
 	<entete id='ip1' titre='Nom Utilisé'/>
 	<entete id='ip2' titre='Nom oublié'/>
-<?
+<?php
 	$DB_xnet->query("SELECT p1.lastip, p1.username, p2.username FROM clients as p1 inner join clients as p2 ON p1.lastip=p2.lastip AND p1.timestamp>p2.timestamp, DNS as d1 inner join DNS as d2 on d2.rdata = d1.rdata where d1.name = concat(p1.username, '.eleves.polytechnique.fr') and d1.rdata = p1.lastip and d2.name = concat(p2.username, '.eleves.polytechnique.fr') ORDER BY  p1.lastip");
 	while(list($user,$ip1,$ip2) = $DB_xnet->next_row()){
 		echo "<element id='$user'>
@@ -90,7 +90,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	<entete id='user' titre='Nom'/>
 	<entete id='ip1' titre='Bonne IP'/>
 	<entete id='ip2' titre='Mauvaise IP'/>
-<?
+<?php
 	$DB_xnet->query("SELECT p2.username,p2.lastip,p1.rdata FROM DNS AS p1, clients AS p2 inner join DNS as p3 on p3.name = concat(p2.username, '.eleves.polytechnique.fr') WHERE p1.name = p3.name  AND p1.rdata != p2.lastip and p1.rdtype = 'A'");
 	while(list($user,$ip1,$ip2) = $DB_xnet->next_row()){
 			echo "<element id='$user'>
@@ -106,7 +106,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	<entete id='user' titre='IP'/>
 	<entete id='ip1' titre='Nom correct'/>
 	<entete id='ip2' titre='Entrée erronnée'/>
-<?
+<?php
 	$DB_xnet->query("SELECT p1.rdata,  p2.username,  p1.name FROM DNS AS p1,  clients AS p2 inner join DNS as p3 on p3.name = concat(p2.username, '.eleves.polytechnique.fr') and p3.rdtype = 'A' WHERE  p1.rdata = p2.lastip  AND p1.name != p3.name AND p1.rdtype = 'A' ORDER BY p1.rdata");
 	while(list($user,$ip1,$ip2) = $DB_xnet->next_row()){
 		echo "<element id='$user'>
@@ -122,7 +122,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	<entete id='user' titre='Nom'/>
 	<entete id='ip1' titre='Bonne IP'/>
 	<entete id='ip2' titre='Mauvaise IP'/>
-<?
+<?php
 	$DB_xnet->query("SELECT p1.name, p1.rdata, p2.rdata FROM reverse_DNS as p1 inner join clients as p3 on p1.rdata = concat(p3.username, '.eleves.polytechnique.fr'),  reverse_DNS as p2 WHERE p1.name = p2.name AND p1.rdata != p2.rdata  ORDER BY p1.rdata");
 	while(list($user,$ip1,$ip2) = $DB_xnet->next_row()){
 			echo "<element id='$user'>
@@ -136,6 +136,6 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 </page>
 
-<?
+<?php
 require_once BASE_LOCAL."/include/page_footer.inc.php";
 ?>

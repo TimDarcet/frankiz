@@ -39,7 +39,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
 <page id="admin_user" titre="Frankiz : rajout des utilisateurs">
-<?
+<?php
 
 // Modification de la partie "compte FrankizII"
 $erreur=0 ;
@@ -71,21 +71,21 @@ if (isset($_POST['ajout'])) {
 		} else {
 		?>
 			<warning>Ton image n'est pas au bon format, ou est trop grande.</warning>
-		<?
+		<?php
 			$erreur=1 ;
 		}
 	}
 	if (($_POST['nom']=="") || ($_POST['prenom']=="") || ($_POST['login']=="") || ($_POST['date_nais']=="") || ($_POST['sexe']=="") || ($_POST['promo']=="")) {
 		?>
 		<warning>Données manquantes</warning>
-		<?
+		<?php
 		$erreur = 1 ;
 	}
 	if($erreur==0){
 		$DB_trombino->query("INSERT INTO eleves SET  nom='".$_POST['nom']."', prenom='".$_POST['prenom']."' ,surnom='".$_POST['surnom']."' ,date_nais='".$_POST['date_nais']."' ,sexe='".$_POST['sexe']."' ,piece_id='".$_POST['piece_id']."' ,section_id='".$_POST['section']."' ,cie='".$_POST['cie']."' ,promo='".$_POST['promo']."' ,login='".$_POST['login']."' ,mail='".$_POST['mail']."'");
 		?>
 		<commentaire>Utilisateur rajouté</commentaire>
-		<?
+		<?php
 	}
 }
 if ((!isset($_POST['ajout']))&&($erreur==0)) {
@@ -95,33 +95,33 @@ if ((!isset($_POST['ajout']))&&($erreur==0)) {
  
 	<formulaire id="" titre="Général" action="admin/user_rajout.php">
 
-		<champ id="nom" titre="Nom*" valeur="<? if (isset($_POST['nom'])) echo $_POST['nom']?>"/>
-		<champ id='prenom' titre='Prénom*' valeur='<? if (isset($_POST['prenom'])) echo $_POST['prenom']?>'/>
-		<champ id='surnom' titre='Surnom' valeur='<? if (isset($_POST['surnom'])) echo $_POST['surnom']?>'/>
-		<champ id='login' titre='Login*' valeur='<? if (isset($_POST['login'])) echo $_POST['login']?>'/>
+		<champ id="nom" titre="Nom*" valeur="<?php if (isset($_POST['nom'])) echo $_POST['nom']?>"/>
+		<champ id='prenom' titre='Prénom*' valeur='<?php if (isset($_POST['prenom'])) echo $_POST['prenom']?>'/>
+		<champ id='surnom' titre='Surnom' valeur='<?php if (isset($_POST['surnom'])) echo $_POST['surnom']?>'/>
+		<champ id='login' titre='Login*' valeur='<?php if (isset($_POST['login'])) echo $_POST['login']?>'/>
 		<note>Bien respecter le formatage si vous voulez pas avoir d'erreur</note>
-		<champ id='date_nais' titre='Date de naissance*' valeur='<? if (isset($_POST['date_nais'])) echo $_POST['date_nais'] ; else echo "0000-00-00"?>'/>
-		<choix titre="Sexe*" id="sexe" type="combo" valeur="<? if (isset($_POST['sexe'])) echo $_POST['sexe']?>">
+		<champ id='date_nais' titre='Date de naissance*' valeur='<?php if (isset($_POST['date_nais'])) echo $_POST['date_nais'] ; else echo "0000-00-00"?>'/>
+		<choix titre="Sexe*" id="sexe" type="combo" valeur="<?php if (isset($_POST['sexe'])) echo $_POST['sexe']?>">
 				<option titre="Homme" id="0"/>
 				<option titre="Femme" id="1"/>
 		</choix>
 		<note>Avant de remplir cette case, vérifie la syntaxe de la piece <lien url="admin/ip.php" titre="ici"/></note>
-		<champ id='piece_id' titre='Ksert*' valeur='<? if (isset($_POST['piece_id'])) echo $_POST['piece_id']?>'/>
-		<choix titre="Section" id="section" type="combo" valeur="<? if (isset($_POST['section'])) echo $_POST['section']?>">
+		<champ id='piece_id' titre='Ksert*' valeur='<?php if (isset($_POST['piece_id'])) echo $_POST['piece_id']?>'/>
+		<choix titre="Section" id="section" type="combo" valeur="<?php if (isset($_POST['section'])) echo $_POST['section']?>">
 <?php
 			$DB_trombino->query("SELECT section_id,nom FROM sections ORDER BY nom ASC");
 			while( list($section_id,$section_nom) = $DB_trombino->next_row() )
 				echo "\t\t\t<option titre=\"$section_nom\" id=\"$section_id\"/>\n";
 ?>
 		</choix>
-		<choix titre="Compagnie" id="cie" type="combo" valeur="<? if (isset($_POST['cie'])) echo $_POST['cie']?>">
+		<choix titre="Compagnie" id="cie" type="combo" valeur="<?php if (isset($_POST['cie'])) echo $_POST['cie']?>">
 <?php
 			$DB_trombino->query("SELECT DISTINCT cie FROM eleves ORDER BY cie ASC");
 			while( list($cie) = $DB_trombino->next_row() )
 				echo "\t\t\t<option titre=\"$cie\" id=\"$cie\"/>\n";
 ?>
 		</choix>
-		<choix titre="Promo" id="promo" type="combo" valeur="<? if (isset($_POST['promo'])) echo $_POST['promo']?>">
+		<choix titre="Promo" id="promo" type="combo" valeur="<?php if (isset($_POST['promo'])) echo $_POST['promo']?>">
 <?php
 			$DB_trombino->query("SELECT DISTINCT promo FROM eleves ORDER BY promo DESC");
 			while( list($promo) = $DB_trombino->next_row() )
@@ -129,13 +129,13 @@ if ((!isset($_POST['ajout']))&&($erreur==0)) {
 ?>
 		</choix>
 
-		<champ id='mail' titre='Mail*' valeur='<? if (isset($_POST['mail'])) echo $_POST['mail']?>'/>
+		<champ id='mail' titre='Mail*' valeur='<?php if (isset($_POST['mail'])) echo $_POST['mail']?>'/>
 		<note>Pour mettre la photo original en JPG !!! : 300x400 max et 200ko max :)</note>
 		<fichier id="file" titre="Photo original"/>
 		<bouton id='test' titre='Tester'/>
 		<bouton id='ajout' titre='Rajouter' onClick="return window.confirm('Voulez vous vraiment ajouter cette personne au trombino ? Normalement ceci n'arrive quasiment jamais donc soyez sur de vous ...')"/>
 	</formulaire>
-<?
+<?php
 }
 ?>
 </page>

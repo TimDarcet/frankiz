@@ -60,6 +60,6 @@ require "include/page_header.inc.php";
 </cadre>
 
 </page>
-<?
+<?php
 require_once "include/page_footer.inc.php";
 ?>

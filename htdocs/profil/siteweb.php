@@ -93,13 +93,13 @@ require "../include/page_header.inc.php";
 ?>
 <page id="profil" titre="Frankiz : modification du profil">
 	<h1>Site Web Personnel</h1>
-	<? echo $message ?>
+	<?php echo $message ?>
 	
 	<formulaire id="mod_pageperso" titre="Ton site web" action="profil/siteweb.php">
 		<note>Tu peux soumettre des archives .zip, .tar.gz, .tar ou .tar.bz2 qui seront décompressées (ou tout autre fichier qui sera mis tel quel) <br/>
 		Tu remplaceras l'intégralité de ton site perso. <br/>Attention tu es limité à 10Mo.</note>
 		<fichier id="file" titre="Ton site" taille="10000000"/>
-		<?
+		<?php
 		if (is_dir(BASE_PAGESPERSOS.$login."-".$promo)){
 		?>
 			<note>Nous te conseillons de sauvegarder ton site avant d'uploader le nouveau en cas de problème.</note>
@@ -110,12 +110,12 @@ require "../include/page_header.inc.php";
 				Dans tous les cas, ton site sera listé sur la liste des sites perso accessibles pour les gens loggués.
 			</note>
 			<bouton id="ext" titre="Extérieur"/>
-		<?
+		<?php
 		}
 		?>
 		<bouton id="up_page" titre="Upload"/>
 	</formulaire>
-	<?
+	<?php
 	function parcours_arbo1($rep) {
 		if( $dir = opendir($rep) ) {
 			while( FALSE !== ($fich = readdir($dir)) ) {

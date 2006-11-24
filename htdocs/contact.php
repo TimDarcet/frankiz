@@ -36,8 +36,12 @@ require "include/page_header.inc.php";
 <cadre titre="Contacter la Kès">
 	<p>La "Kès" est le Bureau des Élèves communément appelé "BdE" dans les autres Grandes Écoles.
 	Elle est en charge pendant un an de la vie des élèves.</p>
-	<p>Si vous désirez des <a href="mailto:<?=MAIL_CONTACT?>?subject=K%E8s%20:%20Cours%20Particuliers">cours particuliers</a> donnés par un élève de l'École.</p>
-	<p>Si vous désirez des <a href="mailto:<?=MAIL_CONTACT?>?subject=K%E8s%20:%20Informations%20diverses">informations</a> sur polytechnique et les élèves.</p>
+	<p>Si vous désirez des <a href="mailto:<?php echo MAIL_CONTACT; ?>?subject=K%E8s%20:%20Cours%20Particuliers">cours particuliers</a> donnés par un élève de l'École.</p>
+	<p>Si vous désirez des <a href="mailto:<?php echo MAIL_CONTACT; ?>?subject=K%E8s%20:%20Informations%20diverses">informations</a> sur polytechnique et les élèves.</p>
+</cadre>
+
+<cadre titre="Téléphone">
+	<lien url="num_utiles.php" titre="Numéros Utiles"/>
 </cadre>
 
 <cadre titre="Contacter un élève">
@@ -104,10 +108,10 @@ require "include/page_header.inc.php";
 
 <cadre titre="Contacter le Webmestre">
 	<p>Car tu as un problème avec le site, des suggestions, des questions... N'hésite pas !
-	<a href="mailto:<?=MAIL_WEBMESTRE?>?subject=Webmestre">Clique ici</a></p>
+	<a href="mailto:<?php echo MAIL_WEBMESTRE; ?>?subject=Webmestre">Clique ici</a></p>
 </cadre>
 
 </page>
-<?
+<?php
 require_once "include/page_footer.inc.php";
 ?>

@@ -37,3 +37,4 @@ if(est_authentifie(AUTH_INTERNE)) {
 
 	echo "</module>\n";
 }
+?>

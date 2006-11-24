@@ -40,8 +40,8 @@ if(est_authentifie(AUTH_MINIMUM)) { ?>
 			<service nom="web binets (old)" stat="http://gwennoz.polytechnique.fr/webalizer/" />
 			<service nom="news" stat="stats/news.php" />
 			<service nom="xnet" stat="stats/xnet.php" />
-		<? if(file_exists(BASE_CACHE."uptime")) include BASE_CACHE."uptime"; ?>
-		<? if(file_exists(BASE_CACHE."status")) include BASE_CACHE."status"; else echo "<serveur nom='status' etat='down'/>\n"?>
+		<?php if(file_exists(BASE_CACHE."uptime")) include BASE_CACHE."uptime"; ?>
+		<?php if(file_exists(BASE_CACHE."status")) include BASE_CACHE."status"; else echo "<serveur nom='status' etat='down'/>\n"?>
 		
 		</statistiques>
 	</module>

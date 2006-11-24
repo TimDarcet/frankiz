@@ -188,3 +188,5 @@ function skin_parse($skin_str) {
 	$_SESSION['skin'] = unserialize($skin_str);
 	skin_valider();
 }
+?>
+

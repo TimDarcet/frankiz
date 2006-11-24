@@ -42,13 +42,13 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 
 ?>
 <page id="licences" titre="Frankiz : Les Licences">
-<?	
+<?php	
 	$log=array('visualstudio' => 'Visual Studio .NET','winxp' => 'Windows XP Professionnel','2k3serv' => 'Windows Serveur 2003','2k3access'=>'Access 2003','2k3onenote'=>'One Note 2003','2k3visiopro'=>'Visio Professionnel 2003','win2k'=>'Windows 2000 Professionnel');
 	//on vérifie que la raison n'est pas vide... si elle l'est il se tape tout le formulaire pour recommencer.
 	if(isset($_POST['raison'])&&$_POST['raison']==""){
 ?>
 		 <warning>Il faut une raison pour obtenir ces licences !</warning>
-<?
+<?php
 	}
 	//on vérifie que la demande est faite pour windows xp pro
 	if(isset($_POST['accord'])){
@@ -137,7 +137,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 				<formulaire id="dem_licence" titre= "Les licences pour les logiciels Microsoft" action="profil/licences.php">
 					<note>Ta requête a bien été prise en compte, un admin@windows s'en occupe.</note>
 					<hidden id="raison" valeur="sur le platal"/>
-					<? if(isset($_POST['logiciel'])){ echo "<hidden id=\"logiciel\" valeur=\"".$_POST['logiciel']."\" />"; } ?>
+					<?php if(isset($_POST['logiciel'])){ echo "<hidden id=\"logiciel\" valeur=\"".$_POST['logiciel']."\" />"; } ?>
 					<bouton id='envoyer' titre='Continuer'/>
 				</formulaire>	
 				<?php 
@@ -148,11 +148,11 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 					<p>Seuls les étudiants sur le platâl peuvent faire une demande pour une license Microsoft dans le cadre MSDNAA, s'il s'agit d'une erreur tu peux le signaler aux admin@windows.</p>
 					<p>Si c'est le cas indique la raison de ta demande :</p>
 					<zonetext titre="Raison" id="raison"></zonetext>
-					<? if(isset($_POST['logiciel'])){ echo "<hidden id=\"logiciel\" valeur=\"".$_POST['logiciel']."\" />"; } ?>
+					<?php if(isset($_POST['logiciel'])){ echo "<hidden id=\"logiciel\" valeur=\"".$_POST['logiciel']."\" />"; } ?>
 					<bouton id='envoyer' titre='Continuer'/>
 					<bouton id='' titre='Ne rien faire'/>
 				</formulaire>
-				<?
+				<?php
 					}
 				}
 			
@@ -162,7 +162,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 				<formulaire id="dem_licence" titre= "Les licences pour les logiciels Microsoft" action="profil/licences.php">
 					<warning>Vu le faible nombre de licences que nous possédons pour ce logiciel, il nous faut une raison valable pour te l'attribuer.</warning>
 					<zonetext titre="Raison" id="raison"></zonetext>
-					<? if(isset($_POST['logiciel'])){ echo "<hidden id=\"logiciel\" valeur=\"".$_POST['logiciel']."\" />"; } ?>
+					<?php if(isset($_POST['logiciel'])){ echo "<hidden id=\"logiciel\" valeur=\"".$_POST['logiciel']."\" />"; } ?>
 					<bouton id='envoyer' titre='Envoyer'/>
 					<bouton id='' titre='Ne rien faire'/>
 				</formulaire>
@@ -191,7 +191,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 		<p>Vous pouvez utiliser les logiciels à des fins non lucratives, notamment à des fins d'enseignement, de recherche et/ou de conception, de développement et de test dans le cadre de projets pédagogiques personnels. Il est interdit d'utiliser les logiciels MSDNAA pour le développement de logiciels à but lucratif.</p>
 		<p>Lorsque vous n'êtes plus inscrit à aucun cours dispensé par l'établissement abonné, vous ne pouvez plus vous procurer des logiciels MSDNAA. Toutefois, vous pouvez continuer à utiliser les produits précédemment installés sur votre ordinateur, à condition de vous conformer toujours aux instructions du programme MSDNAA.</p>
 		<p>Si vous contrevenez aux termes et conditions stipulés dans le CLUF et l'Amendement du Contrat de Licence, l'administrateur du programme MSDNAA exigera la confirmation de la désinstallation des logiciels de votre ordinateur personnel.</p>
-		<? if(isset($_POST['logiciel'])){ echo "<hidden id=\"logiciel\" valeur=\"".$_POST['logiciel']."\" />"; } ?>
+		<?php if(isset($_POST['logiciel'])){ echo "<hidden id=\"logiciel\" valeur=\"".$_POST['logiciel']."\" />"; } ?>
 		<bouton id='accord' titre="J'accepte" /> 
 		<bouton id='refus' titre="Je refuse" onClick="return window.confirm('Tu refuses ta clé gratuite ?')"/>
 		
@@ -234,7 +234,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 			</choix>	
 			<bouton id='valid' titre='Envoyer'/>
 		</formulaire>
-	<?
+	<?php
 	}
 	?>
 	

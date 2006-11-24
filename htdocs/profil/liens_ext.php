@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 	Copyright (C) 2004 Binet Réseau
 	http://www.polytechnique.fr/eleves/binets/br/
@@ -111,7 +111,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="profil_liens_ext" titre="Frankiz : Gestion des liens externes">
 
 	<formulaire id="form_liens" titre="Choix des Liens perso" action="profil/liens_ext.php">
-<?
+<?php
 	if(isset($_SESSION['liens_perso']) && !empty($_SESSION['liens_perso']) && count($_SESSION['liens_perso'])>0)
 		foreach($_SESSION['liens_perso'] as $titre => $url)
 			echo "<note>$titre: $url <lien titre=\"supprimer\" url=\"profil/liens_ext.php?del_lien=".base64_encode($url)."\"/></note>";
@@ -120,12 +120,12 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<bouton titre="Ajouter" id="OK_liens" />
 </formulaire>
 
-<?
+<?php
 
 ?>
 	<formulaire id="form_rss" titre="Choix des RSS" action="profil/liens_ext.php">
 		<note>Choisis quelles infos tu veux avoir sur ta page de news externes</note>
-<?
+<?php
 		$liens = array();
 		$liens = $_SESSION['rss'];
  		foreach(array('sommaire','complet') as $mode){ 
@@ -142,7 +142,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		} 
 ?>
 		<note>Choisis quelles infos tu veux avoir sur toutes tes pages Frankiz</note>
-<?
+<?php
 		
  		foreach(array('module') as $mode){ 
 				echo "<choix titre=\"Affichage sommaire en module\" id=\"newrss\" type=\"checkbox\" valeur=\"";
@@ -157,7 +157,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		} 
 ?>
 		<note>Liste des flux RSS perso</note>
-<?
+<?php
 		if(is_array($liens)){
 			foreach($liens as $url => $mode){
 				$urltest=$url;
@@ -170,7 +170,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		}
 ?>
 		<note>Ajouter un flux RSS perso</note>
-<?
+<?php
 		foreach(array('sommaire','complet','module') as $mode){ 
 			echo "<champ id=\"rss_perso_".$mode."\" titre=\"$mode\"/>\n";
 		}
@@ -178,10 +178,10 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 		<bouton titre="Appliquer" id="OK_rss" />
 	</formulaire>
-<?
+<?php
 
 ?>
 </page>
-<?
+<?php
 require_once BASE_LOCAL."/include/page_footer.inc.php";
 ?>

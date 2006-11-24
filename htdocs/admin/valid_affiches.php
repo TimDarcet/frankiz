@@ -43,7 +43,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="valid_activité" titre="Frankiz : Valide une activité">
 <h1>Validation des activités</h1>
 
-<?
+<?php
 // On traite les différents cas de figure d'enrigistrement et validation d'affiche :)
 
 // Enregistrer ...
@@ -61,12 +61,12 @@ foreach ($_POST AS $keys => $val){
 			if ($temp[0]!='valid') {
 		?>
 				<commentaire>Modif effectuée</commentaire>
-		<?
+		<?php
 			}
 		} else {
 	?>
 			<warning>Requête deja traitée par un autre administrateur</warning>
-	<?
+	<?php
 		}
 	}
 	
@@ -100,7 +100,7 @@ foreach ($_POST AS $keys => $val){
 			$DB_valid->query("DELETE FROM valid_affiches WHERE affiche_id='{$temp[1]}'") ;
 		?>
 			<commentaire>Validation effectuée</commentaire>
-		<?	
+		<?php	
 		} 
 	}
 	if ($temp[0]=='suppr') {
@@ -128,12 +128,12 @@ foreach ($_POST AS $keys => $val){
 			
 	
 		?>
-			<warning>Suppression d'une affiche<? echo $supp_image?></warning>
-		<?
+			<warning>Suppression d'une affiche<?php echo $supp_image?></warning>
+		<?php
 		}else {
 	?>
 			<warning>Requête deja traitée par un autre administrateur</warning>
-	<?
+	<?php
 		}
 	}
 	
@@ -147,30 +147,30 @@ $DB_valid->query("UNLOCK TABLES");
 	while(list($ext,$id,$date,$titre,$url,$description,$nom, $prenom, $surnom, $promo,$mail,$login) = $DB_valid->next_row()) {
 		echo "<module id=\"activites\" titre=\"Activités\">\n";
 ?>
-	<annonce date="<? echo $date ?>">
+	<annonce date="<?php echo $date ?>">
 		<lien url="<?php echo $url ;?>">
-		<?
+		<?php
 		if(file_exists(DATA_DIR_LOCAL."affiches/a_valider_{$id}")){
 		?>
-		<image source="<? echo DATA_DIR_URL."affiches/a_valider_{$id}" ; ?>" texte="Affiche" legende="<?php echo $titre?>"/>
-		<?
+		<image source="<?php echo DATA_DIR_URL."affiches/a_valider_{$id}" ; ?>" texte="Affiche" legende="<?php echo $titre?>"/>
+		<?php
 		}
 		?>
 		</lien>
-		<? echo wikiVersXML($description); ?>
-		<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
+		<?php echo wikiVersXML($description); ?>
+		<eleve nom="<?php echo $nom; ?>" prenom="<?php echo $prenom; ?>" promo="<?php echo $promo; ?>" surnom="<?php echo $surnom; ?>" mail="<?php echo $mail; ?>"/>
 	</annonce>
-<?
+<?php
 		echo "</module>\n" ;
 // Zone de saisie de l'affiche
 ?>
 
-		<formulaire id="affiche_<? echo $id ?>" titre="L'activité" action="admin/valid_affiches.php">
-			<champ id="titre" titre="Le titre" valeur="<?  echo $titre ;?>"/>
-			<champ id="url" titre="URL du lien" valeur="<? echo $url ;?>"/>
-			<zonetext id="text" titre="Description plus détaillée"><?=$description?></zonetext>
-			<champ id="date" titre="Date d'affichage" valeur="<? echo $date ;?>"/>
-			<? 
+		<formulaire id="affiche_<?php echo $id ?>" titre="L'activité" action="admin/valid_affiches.php">
+			<champ id="titre" titre="Le titre" valeur="<?php  echo $titre ;?>"/>
+			<champ id="url" titre="URL du lien" valeur="<?php echo $url ;?>"/>
+			<zonetext id="text" titre="Description plus détaillée"><?php echo $description; ?></zonetext>
+			<champ id="date" titre="Date d'affichage" valeur="<?php echo $date ;?>"/>
+			<?php 
 			if ($ext==1) {
 				echo "<warning>L'utilisateur a demandé que son activité soit visible de l'exterieur</warning>" ;
 				$ext_temp='ext' ; 
@@ -179,21 +179,21 @@ $DB_valid->query("UNLOCK TABLES");
 			// L'utilisateur qui a les droits de valider ses propres affiches ne peut pas les afficher à l'exterieur, seul un admin le peut.
 			if(!verifie_permission('affiches')){
 			?>
-				<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<? echo $ext_temp." " ; if ((isset($_REQUEST['ext_auth']))&&(isset($_REQUEST['modif_'.$id]))) echo 'ext_auth' ;?>">
+				<choix titre="Exterieur" id="exterieur" type="checkbox" valeur="<?php echo $ext_temp." " ; if ((isset($_REQUEST['ext_auth']))&&(isset($_REQUEST['modif_'.$id]))) echo 'ext_auth' ;?>">
 					<option id="ext" titre="Demande de l'utilisateur" modifiable='non'/>
 					<option id="ext_auth" titre="Décision du Webmestre"/>
 				</choix>
-			<?
+			<?php
 			}
 			?>
 			<zonetext id="explication" titre="La raison du choix du modérateur (Surtout si refus)"></zonetext>
 
-			<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
-			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Cette annonce apparaitra dès maintenant sur le site ... Voulez vous valider cette activité ?')"/>
-			<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Si vous supprimer cette activité, celle-ci sera supprimé de façon definitive ... Voulez vous vraiment la supprimer ?')"/>
+			<bouton id='modif_<?php echo $id ?>' titre="Modifier"/>
+			<bouton id='valid_<?php echo $id ?>' titre='Valider' onClick="return window.confirm('Cette annonce apparaitra dès maintenant sur le site ... Voulez vous valider cette activité ?')"/>
+			<bouton id='suppr_<?php echo $id ?>' titre='Supprimer' onClick="return window.confirm('Si vous supprimer cette activité, celle-ci sera supprimé de façon definitive ... Voulez vous vraiment la supprimer ?')"/>
 
 		</formulaire>
-<?
+<?php
 	}
 ?>
 </page>

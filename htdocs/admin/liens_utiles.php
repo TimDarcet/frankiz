@@ -70,7 +70,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 		<entete id="url" titre="url - visible de l'extérieur"/>
 		<entete id="description" titre="Description"/>
 
-<?
+<?php
 		$DB_web->query("SELECT lien_id,titre,url,description,visible_ext FROM liens ORDER BY titre") ;
 		while(list($lien_id,$titre,$url,$description,$visible_ext) = $DB_web->next_row()) {
 			echo "\t\t<element id=\"$lien_id\">\n";

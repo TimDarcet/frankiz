@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 	Copyright (C) 2004 Binet Réseau
 	http://www.polytechnique.fr/eleves/binets/br/
@@ -39,7 +39,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="rss" titre="Frankiz : News Externes">
 
-<?
+<?php
 
 $liens = $_SESSION['rss'];
 if(is_array($liens)){
@@ -49,6 +49,6 @@ if(is_array($liens)){
 }
 ?>
 </page>
-<?
+<?php
 require_once BASE_LOCAL."/include/page_footer.inc.php";
 ?>

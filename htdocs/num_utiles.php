@@ -30,16 +30,16 @@ require_once "include/global.inc.php";
 require "include/page_header.inc.php";
 ?>
 <page id='num_utiles' titre='Frankiz : Numéros utiles'>
-<h1>Numeros Utiles</h1>
-<?
+<h1>Numéros Utiles</h1>
+<?php
 $DB_web->query("SELECT DISTINCT categorie FROM num_utiles GROUP BY categorie") ;
 while(list($categorie) = $DB_web->next_row()) {
 ?>
-	<h2><?=$categorie?></h2>
+	<h2><?php echo $categorie; ?></h2>
 	<liste id="liste_num" selectionnable="non">
 		<entete id="endroit" titre=""/>
 		<entete id="poste" titre="num. Poste"/>
-<?		
+<?php		
 		$DB_web->push_result() ;
 		$DB_web->query("SELECT endroit,poste FROM num_utiles WHERE categorie='$categorie' ORDER BY endroit") ;
 		while(list($endroit,$poste) = $DB_web->next_row()) {
@@ -51,10 +51,10 @@ while(list($categorie) = $DB_web->next_row()) {
 		$DB_web->pop_result();
 ?>
 	</liste>
-<?
+<?php
 }
 ?>
 </page>
-<?
+<?php
 require_once "include/page_footer.inc.php";
 ?>

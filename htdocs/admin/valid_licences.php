@@ -39,7 +39,7 @@ if(!verifie_permission('admin')&&!verifie_permission('windows'))
 require_once BASE_LOCAL."/include/page_header.inc.php";	
 ?>
 <page id="valid_licences" titre="Frankiz : gestion des licences Microsoft">
-<?
+<?php
 $log=array('visualstudio' => 'Visual Studio .NET','winxp' => 'Windows XP Professionnel','2k3serv' => 'Windows Serveur 2003','2k3access'=>'Access 2003','2k3onenote'=>'One Note 2003','2k3visiopro'=>'Visio Professionnel 2003','win2k'=>'Windows 2000 Professionnel');
 //on teste si la cle entrée à la main a une forme standard...
 function test_cle($key){
@@ -180,23 +180,23 @@ $DB_msdnaa->query("UNLOCK TABLES");
 				echo "<warning>Plus de clés libres pour $logiciel</warning>";
 			}
 ?>
-			<element id="<? echo $eleve_id ;?>">
-				<colonne id="logiciel"><? echo $log[$logiciel] ?></colonne>
-				<colonne id="eleve"><? echo "$nom $prenom" ?></colonne>
+			<element id="<?php echo $eleve_id ;?>">
+				<colonne id="logiciel"><?php echo $log[$logiciel] ?></colonne>
+				<colonne id="eleve"><?php echo "$nom $prenom" ?></colonne>
 				<colonne id="raison">
-					<p><textsimple titre="" id="raison_<? echo $eleve_id ;?>" valeur="Raison = <? echo $raison ;?>"/></p>
-					<p><textsimple titre="" id="raison2_<? echo $eleve_id ;?>" valeur="Raison si refus :"/></p>
-					<zonetext titre="Raison du Refus si refus" id="refus_<? echo $eleve_id ;?>"></zonetext>
+					<p><textsimple titre="" id="raison_<?php echo $eleve_id ;?>" valeur="Raison = <?php echo $raison ;?>"/></p>
+					<p><textsimple titre="" id="raison2_<?php echo $eleve_id ;?>" valeur="Raison si refus :"/></p>
+					<zonetext titre="Raison du Refus si refus" id="refus_<?php echo $eleve_id ;?>"></zonetext>
 				</colonne>
 				<colonne id="licence">
 					<p>
-						<champ titre="" id="ajout_licence_<? echo $eleve_id ;?>" valeur="<? echo $cle_libre ; ?>"/>
-						<bouton titre="Ok" id="ok_<? echo $eleve_id ;?>_<? echo $logiciel ;?>" />
-						<bouton titre="Refuser" id="vtff_<? echo $eleve_id ;?>_<? echo $logiciel ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette licence ?')"/>
+						<champ titre="" id="ajout_licence_<?php echo $eleve_id ;?>" valeur="<?php echo $cle_libre ; ?>"/>
+						<bouton titre="Ok" id="ok_<?php echo $eleve_id ;?>_<?php echo $logiciel ;?>" />
+						<bouton titre="Refuser" id="vtff_<?php echo $eleve_id ;?>_<?php echo $logiciel ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette licence ?')"/>
 					</p>
 				</colonne>
 			</element>
-<?
+<?php
 		}
 ?>
 	</liste>
@@ -222,16 +222,16 @@ if(isset($_POST['chercher'])){
 		<entete id="login" titre="Login"/>
 		<entete id="licence" titre="Licence"/>
 		<entete id="attrib" titre="Attribuée"/>
-<?
+<?php
 	while(list($nom,$prenom,$login,$eleve_id,$promo,$cle,$attrib) = $DB_msdnaa->next_row()){
 ?>
-		<element id="<? echo $eleve_id ;?>">
-				<colonne id="logiciel"><? echo  $_POST['logiciel']; ?></colonne>
-				<colonne id="promo"><? echo $_POST['promo'] ?></colonne>
-				<colonne id="eleve"><? echo "$nom $prenom" ?></colonne>
-				<colonne id="login"><? echo "$login" ?></colonne>
-				<colonne id="licence"><? echo "$cle" ?></colonne>
-				<colonne id="attrib"><? if($attrib!="0" && $attrib!=""){echo "oui";}else{echo "non";} ?></colonne>
+		<element id="<?php echo $eleve_id ;?>">
+				<colonne id="logiciel"><?php echo  $_POST['logiciel']; ?></colonne>
+				<colonne id="promo"><?php echo $_POST['promo'] ?></colonne>
+				<colonne id="eleve"><?php echo "$nom $prenom" ?></colonne>
+				<colonne id="login"><?php echo "$login" ?></colonne>
+				<colonne id="licence"><?php echo "$cle" ?></colonne>
+				<colonne id="attrib"><?php if($attrib!="0" && $attrib!=""){echo "oui";}else{echo "non";} ?></colonne>
 		</element>
 <?php
 	}

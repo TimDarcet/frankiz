@@ -136,7 +136,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="valid_mailpromo" titre="Frankiz : Valide un mail promo">
 <h1>Validation des mails promos</h1>
 
-<?
+<?php
 echo $message ;
 
 $DB_valid->query("SELECT v.mail_id,DATE_FORMAT(v.stamp,'%d/%m/%Y %H:%i:%s'), v.titre,v.promo, v.mail, e.nom, e.prenom, e.surnom, e.promo, e.mail, e.login FROM valid_mailpromo as v LEFT JOIN trombino.eleves as e USING(eleve_id)");
@@ -151,14 +151,14 @@ while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $prom
 	<cadre titre="<?php  echo $titre_mail." ".$titre ?>">
 			<?php echo wikiVersXML($mailpromo) ?>
 	</cadre>
-<?
+<?php
 
 // Zone de saisie de l'affiche
 ?>
 
-	<formulaire id="mailpromo_<? echo $id ?>" titre="Mail Promo" action="admin/valid_mailpromo.php">
-		<champ id="titre" titre="Sujet " valeur="<?  echo $titre ;?>"/>
-		<?
+	<formulaire id="mailpromo_<?php echo $id ?>" titre="Mail Promo" action="admin/valid_mailpromo.php">
+		<champ id="titre" titre="Sujet " valeur="<?php  echo $titre ;?>"/>
+		<?php
 			if ((!isset($_POST["from_name_$id"]))||((isset($temp))&&($temp[1]!=$id)))
 				$_POST["from_name_$id"] = "$prenom $nom" ;
 			else $_POST["from_name_$id"] = gpc_stripslashes($_POST["from_name_$id"]);
@@ -166,11 +166,11 @@ while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $prom
 				$_POST["from_mail_$id"] = "$mail" ;
 			else $_POST["from_mail_$id"] = gpc_stripslashes($_POST["from_mail_$id"]);
 		?>
-		<champ titre="From Nom" id="from_name_<?=$id?>"  valeur="<? echo  $_POST["from_name_$id"] ?>"/>
-		<champ titre="From Mail" id="from_mail_<?=$id?>"  valeur="<? echo  $_POST["from_mail_$id"] ?>"/>
-		<zonetext id="mail" titre="Mail"><?=$mailpromo?></zonetext>
-		<choix titre="Promo" id="promo" type="combo" valeur="<?echo $promo_mail ;?>">
-		<?
+		<champ titre="From Nom" id="from_name_<?php echo $id; ?>"  valeur="<?php echo  $_POST["from_name_$id"] ?>"/>
+		<champ titre="From Mail" id="from_mail_<?php echo $id; ?>"  valeur="<?php echo  $_POST["from_mail_$id"] ?>"/>
+		<zonetext id="mail" titre="Mail"><?php echo $mailpromo; ?></zonetext>
+		<choix titre="Promo" id="promo" type="combo" valeur="<?php echo $promo_mail ;?>">
+		<?php
 			$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
 			list($promo_temp) = $DB_web->next_row() ;
 			$promo1 = $promo_temp ;
@@ -182,11 +182,11 @@ while(list($id,$date,$titre,$promo_mail,$mailpromo,$nom, $prenom, $surnom, $prom
 		</choix>
 		<zonetext id="refus" titre="La raison du refus si refus"></zonetext>
 
-		<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
-		<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Envoyer ce mail promo ?')"/>
-		<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Supprimer ce mail promo et ne pas l'envoyer ?')"/>
+		<bouton id='modif_<?php echo $id ?>' titre="Modifier"/>
+		<bouton id='valid_<?php echo $id ?>' titre='Valider' onClick="return window.confirm('Envoyer ce mail promo ?')"/>
+		<bouton id='suppr_<?php echo $id ?>' titre='Supprimer' onClick="return window.confirm('Supprimer ce mail promo et ne pas l'envoyer ?')"/>
 	</formulaire>
-<?
+<?php
 	affiche_syntaxe_wiki();
 }
 

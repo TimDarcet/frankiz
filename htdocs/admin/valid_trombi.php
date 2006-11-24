@@ -39,7 +39,7 @@ $message ="" ;
 <page id="valid_trombi" titre="Frankiz : Valide une modification d'image trombino">
 <h1>Validation des modifications des photos trombi</h1>
 
-<?
+<?php
 // On traite les différents cas de figure d'enrigistrement et validation d'affiche :)
 
 // Enregistrer ...
@@ -66,7 +66,7 @@ foreach ($_POST AS $keys => $val){
 		} else {
 	?>
 			<warning>Requête deja traitée par un autre administrateur</warning>
-	<?			
+	<?php			
 		}
 
 	}
@@ -92,7 +92,7 @@ foreach ($_POST AS $keys => $val){
 		} else {
 	?>
 			<warning>Requête deja traitée par un autre administrateur</warning>
-	<?			
+	<?php			
 		}
 	
 	}
@@ -113,15 +113,15 @@ foreach ($_POST AS $keys => $val){
 			list($prenom,$nom,$promo,$login) = $DB_trombino->next_row() ;
 
 ?>
-			<formulaire id="trombi_<? echo $id ?>" titre="<? echo "$prenom $nom (X$promo)"?>" action="admin/valid_trombi.php">
-				<image source="trombino.php?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>&amp;original=1" texte="photo originale" legende="photo originale" />
-				<image source="trombino.php?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>" texte="photo actuelle" legende="photo actuelle"/>
-				<image source="profil/profil.php?image=true&amp;id=<?=$id ?>" texte="photo à valider" legende="photo à valider"/>
+			<formulaire id="trombi_<?php echo $id ?>" titre="<?php echo "$prenom $nom (X$promo)"?>" action="admin/valid_trombi.php">
+				<image source="trombino.php?image=true&amp;login=<?php echo $login; ?>&amp;promo=<?php echo $promo; ?>&amp;original=1" texte="photo originale" legende="photo originale" />
+				<image source="trombino.php?image=true&amp;login=<?php echo $login; ?>&amp;promo=<?php echo $promo; ?>" texte="photo actuelle" legende="photo actuelle"/>
+				<image source="profil/profil.php?image=true&amp;id=<?php echo $id; ?>" texte="photo à valider" legende="photo à valider"/>
 				<zonetext id="refus" titre="La raison du refus si refus"></zonetext>
-				<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider cette photo ?')"/>
-				<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('Supprimer cette photo ?!)"/>
+				<bouton id='valid_<?php echo $id ?>' titre='Valider' onClick="return window.confirm('Valider cette photo ?')"/>
+				<bouton id='suppr_<?php echo $id ?>' titre='Supprimer' onClick="return window.confirm('Supprimer cette photo ?!)"/>
 			</formulaire>
-<?
+<?php
 		}
 	}
 	closedir($dir);

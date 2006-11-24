@@ -220,15 +220,15 @@ require "../include/page_header.inc.php";
 			echo "<warning>L'email n'est pas valide. L'adresse email n'a pas été modifié.</warning>\n";
 ?>
 	<formulaire id="mod_frankiz" titre="Modification du compte Frankiz" action="profil/profil.php">
-		<?
+		<?php
 		if (isset($_REQUEST['hash'])) {
 		?>
 			<note>Remplace vite ton mot de passe</note>
-		<?	
+		<?php	
 		}else{ 
 		?>
 			<note>Ne pas toucher ou laisser vide pour conserver l'ancien mot de passe</note>
-		<?
+		<?php
 		}
 		?>
 		<champ id="passwd" titre="Mot de passe" valeur="12345678"/>
@@ -252,9 +252,9 @@ require "../include/page_header.inc.php";
 		<champ id="email" titre="Email" valeur="<?php echo empty($mail) ? $login.'@poly.polytechnique.fr' : $mail ?>"/>
 		<?php if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$_SESSION['user']->uid}")): ?>
 			<note>Cette image trombino n'a pas encore été validée par le BR</note>
-			<image source="profil/profil.php?image=true&amp;id=<?=$_SESSION['user']->uid?>" texte="photo" height="95" width="80"/>
+			<image source="profil/profil.php?image=true&amp;id=<?php echo $_SESSION['user']->uid; ?>" texte="photo" height="95" width="80"/>
 		<?php else: ?>
-			<image source="trombino.php?image=true&amp;login=<?=$login?>&amp;promo=<?=$promo?>" texte="photo" height="95" width="80"/>
+			<image source="trombino.php?image=true&amp;login=<?php echo $login; ?>&amp;promo=<?php echo $promo; ?>" texte="photo" height="95" width="80"/>
 		<?php endif; ?>
 		<note>Tu peux personnaliser le trombino en changeant ta photo. Attention, elle ne doit pas dépasser 200Ko ou 300x400 pixels. Les TOLmestres te rappellent que cette photo doit permettre de te reconnaître facilement. Propose donc plutôt une photo sur laquelle tu es seul, et ou on voit bien ton visage.</note>
 		<fichier id="file" titre="Nouvelle photo" taille="200000"/>
@@ -266,14 +266,14 @@ require "../include/page_header.inc.php";
 		<entete id="binet" titre="Binet"/>
 		<entete id="commentaire" titre="Commentaire"/>
 		
-		<?
+		<?php
 		$DB_trombino->query("SELECT membres.remarque,membres.binet_id,binets.nom FROM membres LEFT JOIN binets USING(binet_id) WHERE eleve_id='{$_SESSION['user']->uid}' ORDER BY binets.nom ASC");
 		while (list($remarque,$binet_id,$nom) = $DB_trombino->next_row()): ?>
-			<element id="<?=$binet_id?>">
-				<colonne id="binet"><? echo $nom?> :</colonne>
-				<colonne id="commentaire"><champ id="commentaire[<? echo $binet_id?>]" titre="" valeur="<? echo $remarque?>"/></colonne>
+			<element id="<?php echo $binet_id; ?>">
+				<colonne id="binet"><?php echo $nom?> :</colonne>
+				<colonne id="commentaire"><champ id="commentaire[<?php echo $binet_id?>]" titre="" valeur="<?php echo $remarque?>"/></colonne>
 			</element>
-		<? endwhile; ?>
+		<?php endwhile; ?>
 		
 		<note>Si tu viens d'adhérer à un binet, n'hésite pas à le montrer et inscris le sur le TOL</note>
 		<element id="-1" selectionnable="non">
@@ -281,7 +281,7 @@ require "../include/page_header.inc.php";
 			<colonne id="commentaire">
 				<choix id="liste_binet"  type="combo" valeur="Ajout">
 					<option titre="" id="default"/>
-<?
+<?php
 					$DB_trombino->query("SELECT nom,binet_id FROM binets  ORDER BY nom ASC");
 					while (list($nom_binet,$binet_id) = $DB_trombino->next_row())
 						echo "<option titre=\"$nom_binet\" id=\"$binet_id\"/>\n";
@@ -294,7 +294,7 @@ require "../include/page_header.inc.php";
 		<element id="-2" selectionnable="non">
 			<colonne id="binet">Autres commentaires</colonne>
 			<colonne id="commentaire">
-				<zonetext id="perso" titre="Commentaire perso" type="moyen"><? echo $commentaire;?></zonetext>
+				<zonetext id="perso" titre="Commentaire perso" type="moyen"><?php echo $commentaire;?></zonetext>
 			</colonne>
 		</element>
 		<bouton id='suppr_binet' titre='Supprimer' onClick="return window.confirm('Es-tu sûr de vouloir supprimer ce binet ?')"/>

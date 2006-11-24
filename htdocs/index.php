@@ -39,7 +39,7 @@ echo "<page id='annonces' titre='Frankiz : annonces'>\n";
 ?>
 
 <h2>Bienvenue sur Frankiz</h2>
-<?
+<?php
 $annonces_lues1="";
 $annonces_lues2=" 1 ";
 if (!est_interne() && !est_authentifie(AUTH_MINIMUM))  {
@@ -61,7 +61,7 @@ if (!est_interne() && !est_authentifie(AUTH_MINIMUM))  {
 	Les webmestres de Frankiz
 </annonce>
 
-<?
+<?php
 } else {
 // Pour marquer les annonces comme lues ou non
 
@@ -104,7 +104,7 @@ while(list($id,$date,$stamp,$perime,$titre,$contenu,$en_haut,$exterieur,$nom,$pr
 	if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
 ?>
 	<annonce id="<?php echo $id ?>" 
-		titre="<?php echo $titre ?>" visible="<?=$visible?"oui":"non" ?>"
+		titre="<?php echo $titre ?>" visible="<?php echo $visible ? 'oui' : 'non'; ?>"
 		categorie="<?php echo get_categorie($en_haut, $stamp, $perime) ?>"
 		date="<?php echo $date ?>">
 <?php

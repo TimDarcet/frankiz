@@ -40,33 +40,33 @@ $permissions_user = $_SESSION['user']->perms ;
 
 ?>
 <page id="admin" titre="Frankiz : administration">
-	<? 
+	<?php 
 	if (verifie_permission('admin')||verifie_permission('web')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('xshare')||verifie_permission('faq')){
 	?>
 		<h2>Administration frankiz</h2>
-	<? 
+	<?php 
 	}
 	if (verifie_permission('admin')||verifie_permission('trombino')||verifie_permission('windows')){
 	?>
 		<h3>Gestion de l'utilisateur</h3>
 			<lien titre="Rerchercher/modifier un utilisateur" url="trombino.php?toladmin"/><br/>
-	<?
+	<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('trombino')){
 	?>
 			<lien titre="Ajouter un utilisateur" url="admin/user_rajout.php"/>
-	<?
+	<?php
 	}
 	if (verifie_permission('admin')){
 	?>
 		<h3>Gestion du site</h3>
 			<lien titre="Log de la partie d'administration" url="admin/log_admin.php"/><br/>
-	<?
+	<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('web')||verifie_permission('trombino')||verifie_permission('kes')){
 	?>
 	<h3>Validations Variées</h3>
-	<?
+	<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('trombino')){
 		$nb =0 ;
@@ -80,150 +80,150 @@ $permissions_user = $_SESSION['user']->perms ;
 			}
 		}
 		?>
-		<lien titre="Valider les changements de photo trombino (<?=$nb?>)" url="admin/valid_trombi.php"/><br/>
-	<?
+		<lien titre="Valider les changements de photo trombino (<?php echo $nb; ?>)" url="admin/valid_trombi.php"/><br/>
+	<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('web')){
 		$DB_valid->query("SELECT eleve_id FROM valid_annonces") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les annonces (<?=$nb?>)" url="admin/valid_annonces.php"/><br/>
-	<?
+		<lien titre="Valider les annonces (<?php echo $nb; ?>)" url="admin/valid_annonces.php"/><br/>
+	<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('web')){
 		$DB_valid->query("SELECT eleve_id FROM valid_affiches") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les activités (<?=$nb?>)" url="admin/valid_affiches.php"/><br/>
-	<?
+		<lien titre="Valider les activités (<?php echo $nb; ?>)" url="admin/valid_affiches.php"/><br/>
+	<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('web')){
 		$DB_valid->query("SELECT eleve_id FROM valid_sondages") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les sondages (<?=$nb?>)" url="admin/valid_sondages.php"/><br/>
-	<?
+		<lien titre="Valider les sondages (<?php echo $nb; ?>)" url="admin/valid_sondages.php"/><br/>
+	<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('qdjmaster')){
 		$DB_valid->query("SELECT eleve_id FROM valid_qdj") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les qdj (<?=$nb?>)" url="admin/valid_qdj.php"/><br/>
-	<?
+		<lien titre="Valider les qdj (<?php echo $nb; ?>)" url="admin/valid_qdj.php"/><br/>
+	<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('web')){
 		$DB_valid->query("SELECT id FROM valid_pageperso") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les page persos (<?=$nb?>)" url="admin/valid_pageperso.php"/><br/>
-	<?
+		<lien titre="Valider les page persos (<?php echo $nb; ?>)" url="admin/valid_pageperso.php"/><br/>
+	<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('trombino')||verifie_permission('web')){
 		$DB_valid->query("SELECT binet_id FROM valid_binet") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les changements des Binets (<?=$nb?>)" url="admin/valid_binets.php"/><br/>
-	<?
+		<lien titre="Valider les changements des Binets (<?php echo $nb; ?>)" url="admin/valid_binets.php"/><br/>
+	<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('faq')||verifie_permission('web')){
 		$DB_valid->query("SELECT 0 FROM valid_modiffaq") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les modification des FAQ (<?=$nb?>)" url="admin/valid_faqmodif.php"/><br/>
-	<?
+		<lien titre="Valider les modification des FAQ (<?php echo $nb; ?>)" url="admin/valid_faqmodif.php"/><br/>
+	<?php
 	}
 	
 	
 	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('qdjmaster')||verifie_permission('web')){
 	?>
 	<h3>Administration des données validées</h3>
-	<?
+	<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('qdjmaster')){
 	?>
 		<lien titre="Planifier les qdj" url="admin/planif_qdj.php"/><br/>
 		<lien titre="Historique des qdj" url="admin/histo_qdj.php"/><br/>
-	<?
+	<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('affiches')||verifie_permission('web')){
 	?>
 		<lien titre="Planifier les activités" url="admin/planif_affiches.php"/><br/>
-	<?
+	<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('web')){
 	?>
 		<lien titre="Modifier les annonces" url="admin/modif_annonces.php"/><br/>
 		<lien titre="Nettoyer les bases de données" url="admin/nettoyage.php"/><br/>
-	<?
+	<?php
 	}
 	
 	
 	if (verifie_permission('admin')||verifie_permission('web')||verifie_permission('xshare')||verifie_permission('faq')||verifie_permission('trombino')){
 	?>
 	<h3>Administration des données de Frankiz</h3>
-	<?
+	<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('web')){
 	?>
 		<lien titre="Liste des droits accordés" url="admin/liste_droits.php"/><br/>
-	<?
+	<?php
 	}
 	if (verifie_permission('admin')){
 	?>
 		<lien titre="Changer les variables globales" url="admin/parametre.php"/><br/>
-	<?
+	<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('trombino')||verifie_permission('web')){
 	?>
 		<lien titre="Liste des Binets" url="admin/binets_liste.php"/><br/>
 		<lien titre="Liste des sections" url="admin/sections.php"/><br/>
-	<?
+	<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('xshare')||verifie_permission('web')){
 	?>
 		<lien titre="Gestion xshare" url="admin/xshare.php"/><br/>
-	<?
+	<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('faq')||verifie_permission('web')){
 	?>
 		<lien titre="Gestion FAQ" url="admin/faq.php"/><br/>
-	<?
+	<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('web')){
 	?>
 		<lien titre="Gestion du Vocabulaire" url="admin/vocabulaire.php"/><br/>
 		<lien titre="Gestion des liens utiles" url="admin/liens_utiles.php"/><br/>
-	<?
+	<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('trombino')){
 	?>
 		<lien titre="Gestion des num utiles" url="admin/num_utiles.php"/><br/>
-	<?
+	<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('windows')){
 	?>
 	<h3>Administration du réseau élève</h3>
-	<?
+	<?php
 	}
 	if (verifie_permission('admin')){
 		$DB_valid->query("SELECT eleve_id FROM valid_ip") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Gérer les demandes d'ajout d'ips (<?=$nb?>)" url="admin/valid_ip.php"/><br/>
+		<lien titre="Gérer les demandes d'ajout d'ips (<?php echo $nb; ?>)" url="admin/valid_ip.php"/><br/>
 		<lien titre="Surveiller la DNS" url="admin/dns.php"/><br/>
-		<?
+		<?php
 	}
 	if (verifie_permission('admin')||verifie_permission('windows')){
 		?>
 		<lien titre="Liste des IPs" url="admin/ip.php"/><br/>
 		<lien titre="Arpwatch" url="admin/arpwatch.php"/><br/>
-		<?
+		<?php
 		$DB_msdnaa->query("SELECT eleve_id FROM valid_licence") ;
 		$nb = $DB_msdnaa->num_rows() ;
 		?>
-		<lien titre="Gérer les demandes de licences (<?=$nb?>)" url="admin/valid_licences.php"/><br/>
+		<lien titre="Gérer les demandes de licences (<?php echo $nb; ?>)" url="admin/valid_licences.php"/><br/>
 		<lien titre="Gérer les virus detectés sur le réseau " url="admin/nettoyer_virus.php"/><br/>
-	<?
+	<?php
 	}
 	
 	//

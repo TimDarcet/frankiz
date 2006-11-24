@@ -77,7 +77,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
 <page id="admin_arp" titre="Frankiz : gestion des logs ip">
-<?
+<?php
 	if(!empty($message))
 		echo "<commentaire>$message</commentaire>\n";
 		
@@ -93,15 +93,15 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 
 ?>
-<note>Si la page ne marche pas trop, allez sur la page de la <lien titre="DSI" url="http://<?=DSI_URL?>/SMAC/"/></note>
+<note>Si la page ne marche pas trop, allez sur la page de la <lien titre="DSI" url="http://<?php echo DSI_URL; ?>/SMAC/"/></note>
 	<formulaire id="recherche" titre="Recherche" action="admin/ip.php">
-		<champ titre="Login" id="rech_login" valeur="<? if (isset($_POST['rech_login'])) echo $_POST['rech_login']?>" />
-		<champ titre="Pièce" id="rech_kzert" valeur="<? if (isset($_POST['rech_kzert'])) echo $_POST['rech_kzert']?>" />
-		<champ titre="Prise" id="rech_prise" valeur="<? if (isset($_POST['rech_prise'])) echo $_POST['rech_prise']?>" />
-		<champ titre="Ip" id="rech_ip" valeur="<? if (isset($_POST['rech_ip'])) echo $_POST['rech_ip']?>" />
+		<champ titre="Login" id="rech_login" valeur="<?php if (isset($_POST['rech_login'])) echo $_POST['rech_login']?>" />
+		<champ titre="Pièce" id="rech_kzert" valeur="<?php if (isset($_POST['rech_kzert'])) echo $_POST['rech_kzert']?>" />
+		<champ titre="Prise" id="rech_prise" valeur="<?php if (isset($_POST['rech_prise'])) echo $_POST['rech_prise']?>" />
+		<champ titre="Ip" id="rech_ip" valeur="<?php if (isset($_POST['rech_ip'])) echo $_POST['rech_ip']?>" />
 		<bouton titre="Recherche" id="recherche"/>
 	</formulaire>
-<?
+<?php
 echo $message ;
 
 if (isset($_POST['recherche']) ) {
@@ -169,7 +169,7 @@ if (isset($_POST['recherche']) ) {
 		}
 ?>
 	</liste>
-<?
+<?php
 
 }
 ?>

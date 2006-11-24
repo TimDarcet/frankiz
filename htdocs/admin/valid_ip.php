@@ -40,7 +40,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="admin_valid_ip" titre="Frankiz : Attribuer une nouvelle adresse IP/MAC">
 
-<?
+<?php
 // On regarde quel cas c'est ...
 // On envoie chié le mec pour son changement d'ip et on le supprime de la base
 // On accepte le changement et on l'inscrit dans la base
@@ -187,17 +187,17 @@ $DB_admin->query("UNLOCK TABLES");
 		<entete id="eleve" titre="Élève"/>
 		<entete id="raison" titre="Raison"/>
 		<entete id="ip" titre="IP"/>
-<?
+<?php
 		$DB_valid->query("SELECT v.raison,e.nom,e.prenom,e.piece_id,e.eleve_id,p.prise_id,p.ip,v.mac,v.type FROM valid_ip as v LEFT JOIN trombino.eleves as e USING(eleve_id) LEFT JOIN admin.prises AS p USING(piece_id) WHERE p.type='principale'");
 		while(list($raison,$nom,$prenom,$piece,$eleve_id,$prise,$ip0,$mac,$type) = $DB_valid->next_row()) {
 ?>
-			<element id="<? echo $eleve_id ;?>">
-				<colonne id="prise"><? echo "$prise" ?></colonne>
-				<colonne id="casert"><? echo "$piece" ?></colonne>
-				<colonne id="eleve"><? echo "$nom $prenom" ?></colonne>
+			<element id="<?php echo $eleve_id ;?>">
+				<colonne id="prise"><?php echo "$prise" ?></colonne>
+				<colonne id="casert"><?php echo "$piece" ?></colonne>
+				<colonne id="eleve"><?php echo "$nom $prenom" ?></colonne>
 				<colonne id="raison">
-					<strong>Nouvelle @MAC: </strong><? echo $mac ?><br/>
-					<? 
+					<strong>Nouvelle @MAC: </strong><?php echo $mac ?><br/>
+					<?php 
 						echo "<em>";
 						switch($type){
 							case 1: 
@@ -213,11 +213,11 @@ $DB_admin->query("UNLOCK TABLES");
 						echo "Commentaire: $raison"; 
 					?>
 					<br/><br/>
-					<textsimple titre="" id="raison2_<? echo $eleve_id ;?>" valeur="Raison si refus :"/><br/>
-					<zonetext titre="Raison du Refus si refus" id="refus_<? echo $eleve_id ;?>"></zonetext>
+					<textsimple titre="" id="raison2_<?php echo $eleve_id ;?>" valeur="Raison si refus :"/><br/>
+					<zonetext titre="Raison du Refus si refus" id="refus_<?php echo $eleve_id ;?>"></zonetext>
 				</colonne>
 				<colonne id="ip">
-<?
+<?php
 				$DB_admin->query("SELECT ip FROM prises WHERE piece_id='$piece'") ;
 				while(list($ip)=$DB_admin->next_row()) {
 					echo "<p>" ;
@@ -242,16 +242,16 @@ $DB_admin->query("UNLOCK TABLES");
 					else if ($ssrezo >= 232 && $ssrezo <= 235)
 						$new_ip .= (substr($ip0, 12, 3)+64);
 ?>
-					<champ titre="" id="ajout_ip_<? echo $eleve_id ;?>" valeur="<? echo $new_ip ?>" /> 
-					<bouton titre="Ok" id="ok_<? echo $eleve_id ;?>" />
-					<bouton titre="Vtff" id="vtff_<? echo $eleve_id ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette demande ?')"/>
-<? 				} else {?>
-					<bouton titre="Ok" id="okmac_<? echo $eleve_id ;?>" />
-					<bouton titre="Vtff" id="vtffmac_<? echo $eleve_id ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette demande ?')"/>
-<? 				}?>
+					<champ titre="" id="ajout_ip_<?php echo $eleve_id ;?>" valeur="<?php echo $new_ip ?>" /> 
+					<bouton titre="Ok" id="ok_<?php echo $eleve_id ;?>" />
+					<bouton titre="Vtff" id="vtff_<?php echo $eleve_id ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette demande ?')"/>
+<?php 				} else {?>
+					<bouton titre="Ok" id="okmac_<?php echo $eleve_id ;?>" />
+					<bouton titre="Vtff" id="vtffmac_<?php echo $eleve_id ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette demande ?')"/>
+<?php 				}?>
 				</colonne>
 			</element>
-<?
+<?php
 		}
 ?>
 	</liste>
@@ -265,19 +265,19 @@ $DB_admin->query("UNLOCK TABLES");
 		<entete id="degage" titre=""/>
 		<entete id="eleve" titre="Élève"/>
 
-<?
+<?php
 
 
 		$DB_admin->query("SELECT e.eleve_id,e.nom,e.promo,e.prenom,prises.ip,prises.prise_id FROM prises LEFT JOIN trombino.eleves as e USING(piece_id) WHERE type='secondaire' ORDER BY prises.prise_id ASC, prises.ip ASC, e.nom ASC, e.prenom ASC");
 		while(list($id,$nom,$promo,$prenom,$ip,$prise) = $DB_admin->next_row()) {
 ?>
-			<element id="<? echo str_replace(".","x",$ip) ;?>">
-				<colonne id="prise"><? echo "$prise" ?></colonne>
-				<colonne id="ip"><? echo $ip ;?></colonne>
-				<colonne id="degage"><bouton titre="Dégage!" id="suppr_<? echo str_replace(".","x",$ip) ;?>_<? echo $id?>" onClick="return window.confirm('Voulez vous vraiment supprimez cette ip ?')"/></colonne>
-				<colonne id="eleve"><? echo "$nom $prenom ($promo)" ?></colonne>
+			<element id="<?php echo str_replace(".","x",$ip) ;?>">
+				<colonne id="prise"><?php echo "$prise" ?></colonne>
+				<colonne id="ip"><?php echo $ip ;?></colonne>
+				<colonne id="degage"><bouton titre="Dégage!" id="suppr_<?php echo str_replace(".","x",$ip) ;?>_<?php echo $id?>" onClick="return window.confirm('Voulez vous vraiment supprimez cette ip ?')"/></colonne>
+				<colonne id="eleve"><?php echo "$nom $prenom ($promo)" ?></colonne>
 			</element>
-<?
+<?php
 		}
 ?>
 	</liste>

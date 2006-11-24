@@ -1,4 +1,4 @@
-<? 
+<?php 
 /*
 	Copyright (C) 2004 Binet Réseau
 	http://www.polytechnique.fr/eleves/binets/br/
@@ -39,7 +39,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="xshare" titre="Frankiz : Xshare">
 <h1>Xshare</h1>
 
-<?
+<?php
 
 
 
@@ -250,7 +250,7 @@ function rech_parent($id) {
       
 
 <p><strong>Visualisation des différents téléchargements : </strong> </p>
-<?
+<?php
 
 //
 // on affiche  l'arbre 
@@ -264,7 +264,7 @@ echo "</arbre>";
 
 
 
-<?
+<?php
 
 //
 // Corps du Documents pour les réponses
@@ -275,54 +275,54 @@ echo "</arbre>";
 		$DB_web->query("SELECT * FROM xshare WHERE id='{$id}'") ;
 		if (list($id,$id_parent,$nom,$licence,$lien,$importance,$date,$descript,$version,$site) = $DB_web->next_row()) {
 	?>
-	<formulaire id="xshare_<? echo $id ?>" titre="Le logiciel" action="admin/xshare.php">
-	<champ id="nom" titre="Nom du logiciel" valeur="<? echo $nom ?>" />
-	<champ id="version" titre="Version" valeur="<? echo $version ?>" />
-	<choix titre="Importance" id="importance" type="combo" valeur="<? echo $importance ?>">
+	<formulaire id="xshare_<?php echo $id ?>" titre="Le logiciel" action="admin/xshare.php">
+	<champ id="nom" titre="Nom du logiciel" valeur="<?php echo $nom ?>" />
+	<champ id="version" titre="Version" valeur="<?php echo $version ?>" />
+	<choix titre="Importance" id="importance" type="combo" valeur="<?php echo $importance ?>">
 				<option id="0" titre="Normal"/>
 				<option id="1" titre="Important"/>
 				<option id="2" titre="Indispensable"/>
 	</choix>
-	<champ id="site" titre="Site de l'éditeur" valeur="<? echo $site ?>" />
-	<champ id="licence" titre="Licence" valeur="<? echo $licence ?>" />
-	<zonetext id="descript" titre="Description"><?=$descript?></zonetext>
+	<champ id="site" titre="Site de l'éditeur" valeur="<?php echo $site ?>" />
+	<champ id="licence" titre="Licence" valeur="<?php echo $licence ?>" />
+	<zonetext id="descript" titre="Description"><?php echo $descript; ?></zonetext>
 	<fichier id="file" titre="Nouveau fichier" taille="1000000000"/>
-	<bouton id='modif_<? echo $id ?>' titre="Modifier"/>
-	<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce logiciel ?!!!!!')"/>
+	<bouton id='modif_<?php echo $id ?>' titre="Modifier"/>
+	<bouton id='suppr_<?php echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce logiciel ?!!!!!')"/>
 	</formulaire>
-	<? 
+	<?php 
 			affiche_syntaxe_wiki();
 		} else {
 	?>
 	<warning>Erreur : Impossible de trouver cette description </warning>
-	<?
+	<?php
 		}
 	}
 	else
 	{
 	?>
 	<!-- Supprimer le dossier en cours -->
-	<? if(isset($_REQUEST['dir_id'])) $dir_id = $_REQUEST['dir_id']; else $dir_id="0"; ?>
-	<formulaire id="xshare_<? echo $dir_id ?>" titre="Supprimer ce dossier" action="admin/xshare.php">
-	<? foreach ($_REQUEST AS $keys => $val){
+	<?php if(isset($_REQUEST['dir_id'])) $dir_id = $_REQUEST['dir_id']; else $dir_id="0"; ?>
+	<formulaire id="xshare_<?php echo $dir_id ?>" titre="Supprimer ce dossier" action="admin/xshare.php">
+	<?php foreach ($_REQUEST AS $keys => $val){
 		if(!strstr($keys,"rmdir")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 		}
 	?>
-	<bouton id='rmdir_<? echo  $dir_id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce répertoire et tous ses fichiers ?!!!!!')"/>
+	<bouton id='rmdir_<?php echo  $dir_id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer ce répertoire et tous ses fichiers ?!!!!!')"/>
 	</formulaire>
 	
 	<!-- Ajouter un sous-dossier -->
-	<formulaire id="xshare_<? echo $dir_id ?>" titre="Ajouter un sous-dossier" action="admin/xshare.php">
+	<formulaire id="xshare_<?php echo $dir_id ?>" titre="Ajouter un sous-dossier" action="admin/xshare.php">
 	<champ id="nom" titre="Nom du sous-dossier" valeur="" />
-	<? foreach ($_REQUEST AS $keys => $val){
+	<?php foreach ($_REQUEST AS $keys => $val){
 		if(!strstr($keys,"adddir")&&!strstr($keys,"nom")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 		}
 	?>
-	<bouton id='adddir_<? echo $dir_id ?>' titre='Ajouter' onClick="return window.confirm('!!!!!!Créer ce répertoire ?!!!!!')"/>
+	<bouton id='adddir_<?php echo $dir_id ?>' titre='Ajouter' onClick="return window.confirm('!!!!!!Créer ce répertoire ?!!!!!')"/>
 	</formulaire>
 	
 	<!-- Ajouter un fichier -->
-	<formulaire id="xshare_<? echo $dir_id ?>" titre="Ajouter un logiciel" action="admin/xshare.php">
+	<formulaire id="xshare_<?php echo $dir_id ?>" titre="Ajouter un logiciel" action="admin/xshare.php">
 	<champ id="nom" titre="Nom du logiciel" valeur="" />
 	<champ id="version" titre="Version" valeur="" />
 	<choix titre="Importance" id="importance" type="combo" valeur="0">
@@ -333,15 +333,15 @@ echo "</arbre>";
 	<champ id="site" titre="Site de l'éditeur" />
 	<champ id="licence" titre="Licence" />
 	<zonetext id="descript" titre="Description"></zonetext>
-	<? foreach ($_REQUEST AS $keys => $val){
+	<?php foreach ($_REQUEST AS $keys => $val){
 		if(!strstr($keys,"ajout")&&!strstr($keys,"nom")&&!strstr($keys,"version")&&!strstr($keys,"importance")&&!strstr($keys,"site")&&!strstr($keys,"licence")&&!strstr($keys,"descript")&&!strstr($keys,"file")) echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 	}
 	?>
 	<fichier id="file" titre="Fichier" taille="1000000000"/>
-	<bouton id='ajout_<? echo $dir_id ?>' titre="Ajouter" onClick="return window.confirm('!!!!!!Ajouter ce fichier ?!!!!!')"/>
+	<bouton id='ajout_<?php echo $dir_id ?>' titre="Ajouter" onClick="return window.confirm('!!!!!!Ajouter ce fichier ?!!!!!')"/>
 	</formulaire>
 	
-<?
+<?php
 	}
 //
 // Pied de page ...

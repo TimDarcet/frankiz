@@ -50,7 +50,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
 <page id="admin_user" titre="Frankiz : gestion des utilisateurs">
-<?
+<?php
 
 $id = $_REQUEST['id'] ;
 // Traitement des demandes de modifications !
@@ -151,41 +151,41 @@ if (verifie_permission('admin') && isset($_POST['mod_compte_fkz'])) {
 
 // Modification de ses variables génériques
 ?>
-	<formulaire id="user_general" titre="Général" action="admin/user.php?id=<? echo $id?>">
-<?
+	<formulaire id="user_general" titre="Général" action="admin/user.php?id=<?php echo $id?>">
+<?php
 		$DB_trombino->query("SELECT nom,prenom,surnom,date_nais,sexe,piece_id,section_id,cie,promo,login,mail,commentaire FROM eleves WHERE eleve_id=$id ORDER BY nom ASC");
 		list($nom,$prenom,$surnom,$date_nais,$sexe,$piece_id,$section,$cie,$promo,$login,$mail,$commentaire) = $DB_trombino->next_row() ;
 ?>
-		<champ id="nom" titre="Nom" valeur="<? echo $nom?>"/>
-		<champ id='prenom' titre='Prénom' valeur='<? echo $prenom?>'/>
-		<champ id='surnom' titre='Surnom' valeur='<? echo $surnom?>'/>
-		<champ id='login' titre='Login' valeur='<? echo $login?>'/>
-		<champ id='date_nais' titre='Date de naissance' valeur='<? echo $date_nais?>'/>
-		<champ id='sexe' titre='Sexe' valeur='<? echo $sexe?>'/>
-		<champ id='piece_id' titre='Ksert' valeur='<? echo $piece_id?>'/>
-		<champ id='section_id' titre='Section' valeur='<? echo $section?>'/>
-		<champ id='cie' titre='Cie' valeur='<? echo $cie?>'/>		
-		<champ id='promo' titre='Promo' valeur='<? echo $promo?>'/>
-		<champ id='mail' titre='Mail' valeur='<? echo $mail?>'/>
+		<champ id="nom" titre="Nom" valeur="<?php echo $nom?>"/>
+		<champ id='prenom' titre='Prénom' valeur='<?php echo $prenom?>'/>
+		<champ id='surnom' titre='Surnom' valeur='<?php echo $surnom?>'/>
+		<champ id='login' titre='Login' valeur='<?php echo $login?>'/>
+		<champ id='date_nais' titre='Date de naissance' valeur='<?php echo $date_nais?>'/>
+		<champ id='sexe' titre='Sexe' valeur='<?php echo $sexe?>'/>
+		<champ id='piece_id' titre='Ksert' valeur='<?php echo $piece_id?>'/>
+		<champ id='section_id' titre='Section' valeur='<?php echo $section?>'/>
+		<champ id='cie' titre='Cie' valeur='<?php echo $cie?>'/>		
+		<champ id='promo' titre='Promo' valeur='<?php echo $promo?>'/>
+		<champ id='mail' titre='Mail' valeur='<?php echo $mail?>'/>
 		
 		<bouton id='mod_generale' titre='Changer'/>
 	</formulaire>
 
-<?
+<?php
 // Modification de ses binets et des commentaires sur les binets  
 ?>
-	<liste id="user_binets" selectionnable="oui" action="admin/user.php?id=<? echo $id; ?>" titre="Ses Binets">
+	<liste id="user_binets" selectionnable="oui" action="admin/user.php?id=<?php echo $id; ?>" titre="Ses Binets">
 		<entete id="binet" titre="Binet" />
 		<entete id="commentaire" titre="Commentaire" />
-<?
+<?php
 $DB_trombino->query("SELECT membres.remarque,membres.binet_id,binets.nom FROM membres LEFT JOIN binets USING(binet_id) WHERE eleve_id=$id ORDER BY binets.nom ASC");
 while (list($remarque,$binet_id,$nom) = $DB_trombino->next_row()) {
 ?>
-		<element id="<?=$binet_id?>">
-			<colonne id="binet"><?=$nom?> :</colonne>
-			<colonne id="commentaire"><champ id="commentaire[<?=$binet_id?>]" titre="" valeur="<?=$remarque?>"/></colonne>
+		<element id="<?php echo $binet_id; ?>">
+			<colonne id="binet"><?php echo $nom; ?> :</colonne>
+			<colonne id="commentaire"><champ id="commentaire[<?php echo $binet_id; ?>]" titre="" valeur="<?php echo $remarque; ?>"/></colonne>
 		</element>
-<?
+<?php
 }
 ?>
 		<element id="-1" selectionnable="non">
@@ -193,12 +193,12 @@ while (list($remarque,$binet_id,$nom) = $DB_trombino->next_row()) {
 			<colonne id="commentaire">
 				<choix id="liste_binet" type="combo" valeur="Ajout">
 					<option titre="" id="default"/>
-<?
+<?php
 $DB_trombino->query("SELECT nom,binet_id FROM binets ORDER BY nom ASC");
 while (list($nom_binet,$binet_id) = $DB_trombino->next_row()) {
 ?>
-					<option titre="<?=$nom_binet?>" id="<?=$binet_id?>"/>
-<?
+					<option titre="<?php echo $nom_binet; ?>" id="<?php echo $binet_id; ?>"/>
+<?php
 }
 ?>
 				</choix>
@@ -209,7 +209,7 @@ while (list($nom_binet,$binet_id) = $DB_trombino->next_row()) {
 		<element id="-2" selectionnable="non">
 			<colonne id="binet">Autres commentaires</colonne>
 			<colonne id="commentaire">
-				<zonetext id="perso" titre="Commentaire perso" type="moyen"><?=$commentaire?></zonetext>
+				<zonetext id="perso" titre="Commentaire perso" type="moyen"><?php echo $commentaire; ?></zonetext>
 			</colonne>
 		</element>
 		<bouton id="suppr_binet" titre="Supprimer" onClick="return window.confirm('Es-tu sûr de vouloir supprimer ce binet ?')"/>
@@ -217,15 +217,15 @@ while (list($nom_binet,$binet_id) = $DB_trombino->next_row()) {
 	</liste>
 
 
-<?
+<?php
 
 // SU et modifs du compte frankiz => seul l'admin peut le faire.
 if(verifie_permission('admin')){
 ?>
-	<formulaire id="user_su" titre="Se Logguer en tant que cet utilisateur" action="?su=<? echo $id?>">
+	<formulaire id="user_su" titre="Se Logguer en tant que cet utilisateur" action="?su=<?php echo $id?>">
 		<bouton id='do_su' titre='SU'/>
 	</formulaire>
-<?
+<?php
 
 
 // Modification de ses préferences FrankizII
@@ -233,7 +233,7 @@ if(verifie_permission('admin')){
 		list($perms) = $DB_web->next_row();
 		$perms = split(",",$perms);
 ?>
-	<formulaire id="user_compt_fkz" titre="Compte Frankiz" action="admin/user.php?id=<? echo $id?>">
+	<formulaire id="user_compt_fkz" titre="Compte Frankiz" action="admin/user.php?id=<?php echo $id?>">
                 <note>Pour le mot de passe : Si vous le laissez vide, il ne sera pas modifié !</note>
 		<champ id="pass" titre="Mot de passe" valeur=""/>
                 <note>Pour les webmestres et prez de binets, il faut allez dans le binet en question pour les modifier</note>
@@ -251,7 +251,7 @@ if(verifie_permission('admin')){
 					echo "\t\t\t<option titre=\"$nom\" id=\"$droits\"/>\n";
 ?>
 		</choix>
-<?			$perms_binets = "";
+<?php			$perms_binets = "";
 			foreach($perms as $tmp => $perm)
 					if(eregi("webmestre_",$perm)||eregi("prez_",$perm)){
 						$perms_binets .= "$perm,";
@@ -261,7 +261,7 @@ if(verifie_permission('admin')){
 ?>
 		<bouton id='mod_compte_fkz' titre='Changer'/>
 	</formulaire>
-<? 
+<?php 
 } 
 ?>
 

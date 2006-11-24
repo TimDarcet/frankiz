@@ -119,8 +119,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
 <page id="admin_arp" titre="Frankiz : gestion de l'arpwatch">
-<?
-if ($montrer_detail==1) {
+<?phpif ($montrer_detail==1) {
 	$DB_admin->query("SELECT e.nom,e.prenom,p.prise_id, p.piece_id FROM prises as p LEFT JOIN trombino.eleves as e ON e.piece_id=p.piece_id WHERE e.promo='$promo_detail' AND e.login='$login_detail' LIMIT 1");
 	
 	list($nom,$prenom,$id_prise,$id_piece) = $DB_admin->next_row() ;
@@ -157,7 +156,7 @@ if ($montrer_detail==1) {
 	?>
 	<h2>Log de la semaine</h2>
 	
-	<?
+	<?php
 		if(!empty($message))
 			echo "<commentaire>$message</commentaire>\n";
 			
@@ -178,13 +177,13 @@ if ($montrer_detail==1) {
 		
 		<formulaire id="recherche" titre="Recherche" action="admin/arpwatch.php">
 			<commentaire>Le nombre de résultat sera limité à 100 </commentaire>
-			<champ titre="Login" id="rech_login" valeur="<? if (isset($_REQUEST['rech_login'])) echo $_REQUEST['rech_login']?>" />
-			<champ titre="Pièce" id="rech_kzert" valeur="<? if (isset($_REQUEST['rech_kzert'])) echo $_REQUEST['rech_kzert']?>" />
-			<champ titre="Prise" id="rech_prise" valeur="<? if (isset($_REQUEST['rech_prise'])) echo $_REQUEST['rech_prise']?>" />
-			<champ titre="Ip" id="rech_ip" valeur="<? if (isset($_REQUEST['rech_ip'])) echo $_REQUEST['rech_ip']?>" />
+			<champ titre="Login" id="rech_login" valeur="<?php if (isset($_REQUEST['rech_login'])) echo $_REQUEST['rech_login']?>" />
+			<champ titre="Pièce" id="rech_kzert" valeur="<?php if (isset($_REQUEST['rech_kzert'])) echo $_REQUEST['rech_kzert']?>" />
+			<champ titre="Prise" id="rech_prise" valeur="<?php if (isset($_REQUEST['rech_prise'])) echo $_REQUEST['rech_prise']?>" />
+			<champ titre="Ip" id="rech_ip" valeur="<?php if (isset($_REQUEST['rech_ip'])) echo $_REQUEST['rech_ip']?>" />
 			<bouton titre="Recherche" id="recherche"/>
 		</formulaire>
-	<?
+	<?php
 	echo $message ;
 	if (isset($_REQUEST['update']) ) {
 		$toutes_macs = toutes_macs() ;
@@ -284,7 +283,7 @@ if ($montrer_detail==1) {
 			
 	?>
 		</liste>
-	<?
+	<?php
 	
 	}
 }

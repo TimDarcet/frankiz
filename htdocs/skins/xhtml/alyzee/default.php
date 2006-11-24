@@ -18,6 +18,6 @@
 	along with this program; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
-<? $i = rand(0, 13);
+<?php $i = rand(0, 13);
 echo "body {    background-image: url('images/fond$i.jpg');}"
 ?>

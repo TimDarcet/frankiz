@@ -35,7 +35,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="xshare" titre="Frankiz : Xshare">
 <h1>Xshare</h1>
 
-<?
+<?php
 //
 // Corps du Documents
 //---------------------------------------------------
@@ -98,7 +98,7 @@ function rech_fils($id_parent) {
 			} else {
 				?>
 				<warning>Erreur : Impossible de trouver cette description </warning>
-				<?
+				<?php
 			}
 			$DB_web->pop_result();
 			echo "</feuille>\n\r" ;
@@ -182,18 +182,18 @@ function rech_parent($id2) {
 ?>
       
 
-<?
+<?php
 // Entete !
 //-------------------------
 
 if (($mots!="")||($a_marquer!="")) {
 ?>
 <p><strong>Résultats de la recherche</strong></p>
-<?
+<?php
 } else {
 ?>
 <p><strong>Logiciels disponibles en téléchargement :</strong></p>
-<?
+<?php
 }
 
 //////////////////////////////
@@ -223,7 +223,7 @@ if ($mots!="") {
 	if (!$recherche) {
 ?>
   <warning>Recherche infructueuse. Essayer avec d'autres critères.</warning>
-<?
+<?php
 	} 
 }
 //
@@ -238,10 +238,10 @@ echo "</arbre>";
 
 	<formulaire id="form" action="xshare.php">
 		<note>Tous les mots seront dans la description. Sépare les par un blanc.</note>
-		<champ id="mots" titre="Mots-clefs" valeur="<? echo $mots ;?>"/>
+		<champ id="mots" titre="Mots-clefs" valeur="<?php echo $mots ;?>"/>
 		<bouton id="Submit" titre="Chercher"/>
 	</formulaire>
-<?
+<?php
 
 //
 // Pied de page ...

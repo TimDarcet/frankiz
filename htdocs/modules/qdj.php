@@ -95,7 +95,7 @@ if(est_authentifie(AUTH_MINIMUM)) {
 	}
 
 	// Affichage de la QDJ courante 
-	qdj_affiche(false,$a_vote);		
+	qdj_affiche(false,$a_vote);
 }
 ?>
 

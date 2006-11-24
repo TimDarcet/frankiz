@@ -120,7 +120,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <page id="propoz_annonce" titre="Frankiz : Propose une annonce">
 <h1>Proposition d'annonce</h1>
 
-<?
+<?php
 if ($erreur_upload==1) {
 	echo "<warning>Ton image n'est pas au bon format, ou est trop grande.</warning>\n";
 
@@ -136,8 +136,8 @@ if (!isset($_POST['titre']))  $_POST['titre']="Titre" ;
 ?>
 	<annonce titre="<?php echo $_POST['titre'] ; ?>" 
 			categorie=""
-			date="<? echo date("d/m/y") ?>">
-			<? 
+			date="<?php echo date("d/m/y") ?>">
+			<?php 
 			if (!isset($_POST['valid']) && file_exists(DATA_DIR_LOCAL."annonces/temp_$eleve_id")) {
 				echo "<image source=\"".DATA_DIR_URL."annonces/temp_$eleve_id\" texte=\"image\"/>\n";
 			} else if (isset($index) && file_exists(DATA_DIR_LOCAL."annonces/a_valider_{$index}")){
@@ -145,9 +145,9 @@ if (!isset($_POST['titre']))  $_POST['titre']="Titre" ;
 			}
 			echo wikiVersXML($_POST['text']) ;
 			?>
-			<eleve nom="<?=$nom?>" prenom="<?=$prenom?>" promo="<?=$promo?>" surnom="<?=$surnom?>" mail="<?=$mail?>"/>
+			<eleve nom="<?php echo $nom; ?>" prenom="<?php echo $prenom; ?>" promo="<?php echo $promo; ?>" surnom="<?php echo $surnom; ?>" mail="<?php echo $mail; ?>"/>
 	</annonce>
-<?
+<?php
 
 //=========================
 // On met le commentaire qui va bien 
@@ -156,7 +156,7 @@ if (!isset($_POST['titre']))  $_POST['titre']="Titre" ;
 if (isset($_POST['valid'])) {
 ?>
 	<commentaire>Ta nouvelle annonce a été prise en compte et sera validée dans les meilleurs délais.</commentaire>
-<?	
+<?php	
 } else {
 //====================
 // Zone de saisie de l'annonce
@@ -164,26 +164,26 @@ if (isset($_POST['valid'])) {
 ?>
 
 	<formulaire id="propoz_annonce" titre="Ton annonce" action="proposition/annonce.php">
-		<champ id="titre" titre="Le titre" valeur="<? if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
+		<champ id="titre" titre="Le titre" valeur="<?php if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
 
 		<note>
 			Le texte de l'annonce utilise le format wiki rappelé en bas de la page et décrit dans l'<lien url="helpwiki.php" titre="aide wiki"/><br/>
 			Pour toute remarque particulière, envoyer un mail à <lien url="mailto:web@frankiz.polytechnique.fr" titre="web@frankiz"/><br/><br/>
          Il est rappelé qu'une annonce n'est pas une activité et que si l'annonce concerne une activité, nous ne la validerons que si elle est accompagnée d'une proposition d'activité et si l'activité a lieu dans plus de quatres jours (une semaine c'est mieux).
 		</note>
-		<zonetext id="text" titre="Le texte" type="grand"><? if (isset($_POST['text'])) echo $_POST['text'];?></zonetext>
+		<zonetext id="text" titre="Le texte" type="grand"><?php if (isset($_POST['text'])) echo $_POST['text'];?></zonetext>
 
 		<note>L'image doit être un fichier gif, png ou jpeg ne dépassant pas 400x300 pixels et 250Ko.</note>
 		<fichier id="file" titre="Ton image" taille="250000"/>
 
 		<note>Ton annonce disparaîtra le jour de la date de péremption.</note>
-		<choix titre="Date de péremption" id="date" type="combo" valeur="<? if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
-<?		for ($i=1 ; $i<=MAX_PEREMPTION ; $i++) {
+		<choix titre="Date de péremption" id="date" type="combo" valeur="<?php if (isset($_REQUEST['date'])) echo $_REQUEST['date'] ;?>">
+<?php		for ($i=1 ; $i<=MAX_PEREMPTION ; $i++) {
 			$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;
 			$date_value = date("d/m/y" , $date_id);
 ?>
-			<option titre="<? echo $date_value?>" id="<? echo $date_id?>" />
-<?
+			<option titre="<?php echo $date_value?>" id="<?php echo $date_id?>" />
+<?php
 		}
 ?>
 		</choix>
@@ -191,7 +191,7 @@ if (isset($_POST['valid'])) {
 		<note>
 			Si tu souhaites que ton annonce soit visible de l'extérieur, clique ici.
 		</note>
-		<choix titre="Extérieur" id="exterieur" type="checkbox" valeur="<? if (isset($_REQUEST['ext'])) echo 'ext' ;?>">
+		<choix titre="Extérieur" id="exterieur" type="checkbox" valeur="<?php if (isset($_REQUEST['ext'])) echo 'ext' ;?>">
 			<option id="ext" titre=""/>
 		</choix>
 
@@ -200,13 +200,13 @@ if (isset($_POST['valid'])) {
 			en particulier si tu souhaites que l'annonce soit visible de l'extérieur :
 			une justification facilitera la décision des Webmestres.
 		</note>
-		<zonetext id="comment" titre="Commentaire"><? if (isset($_REQUEST['comment'])) echo $_REQUEST['comment']; ?></zonetext>
+		<zonetext id="comment" titre="Commentaire"><?php if (isset($_REQUEST['comment'])) echo $_REQUEST['comment']; ?></zonetext>
 
 		<bouton id='suppr_img' titre="Supprimer l'image"/>
 		<bouton id='test' titre="Tester"/>
 		<bouton id='valid' titre='Valider' onClick="return window.confirm('Voulez vous vraiment valider votre annonce ?')"/>
 	</formulaire>
-<?
+<?php
 	affiche_syntaxe_wiki();
 }
 ?>

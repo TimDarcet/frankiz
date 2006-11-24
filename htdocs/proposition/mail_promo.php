@@ -40,7 +40,7 @@ list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_ro
 
 ?>
 <page id="admin_mailpromo" titre="Frankiz : Envoi des mails promos">
-<?
+<?php
 if (!isset($_REQUEST['envoie'])) {
 ?>
 	<formulaire id="mail_promo" titre="Mail Promo" action="proposition/mail_promo.php">
@@ -48,8 +48,8 @@ if (!isset($_REQUEST['envoie'])) {
 			Le texte du mail promo utilise le format wiki rappelé en bas de la page et décrit dans l'<lien url="helpwiki.php" titre="aide wiki"/><br/>
 			Pour toute remarque particulière, envoyer un mail à <lien url="mailto:mailpromo@frankiz.polytechnique.fr" titre="mailpromo@frankiz"/>
 		</note>
-		<choix titre="Promo" id="promo" type="combo" valeur="<? if (isset($_POST['promo'])) echo  gpc_stripslashes($_POST['promo']); ?>">
-		<?
+		<choix titre="Promo" id="promo" type="combo" valeur="<?php if (isset($_POST['promo'])) echo  gpc_stripslashes($_POST['promo']); ?>">
+		<?php
 			$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
 			list($promo_temp) = $DB_web->next_row() ;
 			$promo1 = $promo_temp ;
@@ -60,13 +60,13 @@ if (!isset($_REQUEST['envoie'])) {
 		?>
 		</choix>
 
-		<champ titre="Sujet" id="sujet" valeur="<? if (isset($_REQUEST['sujet'])) echo gpc_stripslashes($_REQUEST['sujet']); ?>" />
-		<zonetext titre="Mail" id="mail" type="grand"><? if (isset($_REQUEST['mail'])) echo gpc_stripslashes($_REQUEST['mail']); ?></zonetext>
+		<champ titre="Sujet" id="sujet" valeur="<?php if (isset($_REQUEST['sujet'])) echo gpc_stripslashes($_REQUEST['sujet']); ?>" />
+		<zonetext titre="Mail" id="mail" type="grand"><?php if (isset($_REQUEST['mail'])) echo gpc_stripslashes($_REQUEST['mail']); ?></zonetext>
 		<bouton titre="Tester" id="upload"/>
 		<bouton titre="Envoyer" id="envoie"  onClick="return window.confirm('Voulez vous vraiment envoyer ce mail ?')"/>
 	</formulaire>
 	<?php affiche_syntaxe_wiki() ?>
-<?
+<?php
 //==================================================
 //=
 //= Permet de visualiser son mail avant de l'envoyer
@@ -74,10 +74,10 @@ if (!isset($_REQUEST['envoie'])) {
 //==================================================
 	if (isset($_REQUEST['upload'])) {
 ?>
-		<cadre  titre="Mail Promo : <? if (isset($_REQUEST['sujet'])) echo gpc_stripslashes($_REQUEST['sujet']); ?>" >
-			<? echo wikiVersXML(gpc_stripslashes($_REQUEST['mail'])) ; ?>
+		<cadre  titre="Mail Promo : <?php if (isset($_REQUEST['sujet'])) echo gpc_stripslashes($_REQUEST['sujet']); ?>" >
+			<?php echo wikiVersXML(gpc_stripslashes($_REQUEST['mail'])) ; ?>
 		</cadre>
-<?
+<?php
 	}
 //==================================================
 //=
@@ -89,7 +89,7 @@ if (!isset($_REQUEST['envoie'])) {
 	<commentaire>
 		Merci d'avoir proposé un mail promo. Le responsable à la Kès essayera de te le valider le plus tôt possible.
 	</commentaire>
-<?
+<?php
 	// Stockage dans la base SQL
 	$DB_valid->query("INSERT INTO valid_mailpromo SET mail='".mysql_addslashes($_REQUEST['mail'],true)."', titre='".mysql_addslashes($_REQUEST['sujet'],true)."',eleve_id={$_SESSION['user']->uid}, promo='".intval($_REQUEST['promo'])."'") ;
 

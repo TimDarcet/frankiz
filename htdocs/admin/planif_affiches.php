@@ -45,7 +45,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="planif_affiches" titre="Frankiz : Planifie tes activités">
 <h1>Planification des activités</h1>
-<?
+<?php
 foreach ($_POST AS $keys => $val){
 	$temp = explode("_",$keys) ;
 
@@ -55,7 +55,7 @@ foreach ($_POST AS $keys => $val){
 		if((strtotime($_REQUEST['date']) <=time())&&($_REQUEST['date']!="0000-00-00 00:00"))
 		{ ?>
 			<warning>ERREUR: Veuillez choisir une date supérieure à aujourd'hui</warning>
-		<?
+		<?php
 		}
 		else
 		{
@@ -63,7 +63,7 @@ foreach ($_POST AS $keys => $val){
 	
 		?>
 			<commentaire>Modification effectuée</commentaire>
-		<?
+		<?php
 		}	
 	}
 	
@@ -86,20 +86,20 @@ foreach ($_POST AS $keys => $val){
 		list($id,$titre,$url,$date,$texte) = $DB_web->next_row(); 
 		$id = $temp[1];
 ?>
-		<warning>Cette Activité est déjà planifiée pour le <?echo $date ?></warning>
-		<annonce date="<? echo $date ?>">
+		<warning>Cette Activité est déjà planifiée pour le <?php echo $date ?></warning>
+		<annonce date="<?php echo $date ?>">
 			<lien url="<?php echo $url?>"><image source="<?php echo DATA_DIR_URL.'affiches/'.$id?>" texte="Affiche" legende="<?php echo $titre?>"/></lien>
-			<? echo wikiVersXML($texte); ?>
+			<?php echo wikiVersXML($texte); ?>
 		</annonce>
-		<formulaire id="affiche_<? echo $id ?>" action="admin/planif_affiches.php">
-			<champ id="date" titre="date" valeur="<? echo $date ?>"/>
-			<champ id="titre" titre="Le titre" valeur="<?  echo $titre ;?>"/>
-			<champ id="url" titre="URL du lien" valeur="<? echo $url ;?>"/>
-			<zonetext id="text" titre="Description plus détaillée"><?=$texte?></zonetext>
-			<champ id="date" titre="Date d'affichage" valeur="<? echo $date ;?>"/>
-			<bouton id='valid_<? echo $id ?>' titre='Valider' onClick="return window.confirm('Valider la planification de cette activité ?')"/>
+		<formulaire id="affiche_<?php echo $id ?>" action="admin/planif_affiches.php">
+			<champ id="date" titre="date" valeur="<?php echo $date ?>"/>
+			<champ id="titre" titre="Le titre" valeur="<?php  echo $titre ;?>"/>
+			<champ id="url" titre="URL du lien" valeur="<?php echo $url ;?>"/>
+			<zonetext id="text" titre="Description plus détaillée"><?php echo $texte; ?></zonetext>
+			<champ id="date" titre="Date d'affichage" valeur="<?php echo $date ;?>"/>
+			<bouton id='valid_<?php echo $id ?>' titre='Valider' onClick="return window.confirm('Valider la planification de cette activité ?')"/>
 		</formulaire>
-<?	
+<?php	
 	}
 	
 	// Supprime la qdj de la liste
@@ -111,7 +111,7 @@ foreach ($_POST AS $keys => $val){
 		}
 	?>
 		<warning>Suppression d'une activité</warning>
-	<?
+	<?php
 	}
 
 }
@@ -119,34 +119,34 @@ foreach ($_POST AS $keys => $val){
 $date = date("Y-m-d", time());
 ?>
 <commentaire>
-	Nous sommes le: <? echo $date ?>
+	Nous sommes le: <?php echo $date ?>
 </commentaire>
 
-<?
+<?php
 
 
 // Affiche la planification existante
 ?>
 	<h2>Prévisions</h2>
-<?
+<?php
 $DB_web->query("SELECT affiche_id,titre,url,date,description FROM affiches WHERE TO_DAYS(date)>=TO_DAYS(NOW()) AND eleve_id LIKE '$user_id'");
 while(list($id,$titre,$url,$date,$texte) = $DB_web->next_row()){
 
 ?>
-		<annonce date="<? echo $date ?>">
+		<annonce date="<?php echo $date ?>">
 			<lien url="<?php echo $url?>"><image source="<?php echo DATA_DIR_URL.'affiches/'.$id?>" texte="Affiche" legende="<?php echo $titre?>"/></lien>
-			<? echo wikiVersXML($texte); ?>
+			<?php echo wikiVersXML($texte); ?>
 		</annonce>
-	<formulaire id="<? echo $id ?>" action="admin/planif_affiches.php">
-		<note><? echo $date ?></note>
-		<? if(strtotime($date) >time() + 24*3600){ ?><bouton titre="Un jour plus tôt" id="reddate_<? echo $id ?>_<? echo base64_encode($date) ?>"/><? } ?>
-		<bouton titre="Un jour plus tard" id="augdate_<? echo $id ?>_<? echo base64_encode($date) ?>"/>
-		<bouton id='modif_<? echo $id ?>_<? echo base64_encode($date) ?>' titre="Modifier l'activité"/>
-		<bouton id='suppr_<? echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette affiche ?!!!!!')"/>
+	<formulaire id="<?php echo $id ?>" action="admin/planif_affiches.php">
+		<note><?php echo $date ?></note>
+		<?php if(strtotime($date) >time() + 24*3600){ ?><bouton titre="Un jour plus tôt" id="reddate_<?php echo $id ?>_<?php echo base64_encode($date) ?>"/><?php } ?>
+		<bouton titre="Un jour plus tard" id="augdate_<?php echo $id ?>_<?php echo base64_encode($date) ?>"/>
+		<bouton id='modif_<?php echo $id ?>_<?php echo base64_encode($date) ?>' titre="Modifier l'activité"/>
+		<bouton id='suppr_<?php echo $id ?>' titre='Supprimer' onClick="return window.confirm('!!!!!!Supprimer cette affiche ?!!!!!')"/>
 		<hidden id="show"/>
 	
 	</formulaire>
-<? 
+<?php 
 }
 ?>
 
