@@ -145,6 +145,9 @@
 			<xsl:text> </xsl:text>
 			<xsl:apply-templates select="*[not(self::lien/@id='annonces_lues') and name()!='image']"/>
 		</p>
+		<p class="lien_disparaitre">
+			<xsl:apply-templates select="*[self::lien/@id='annonces_lues']" />
+		</p>
 		<p class="signature">
 			<xsl:text> </xsl:text>
 			<xsl:apply-templates select="eleve" mode="signature"/>
