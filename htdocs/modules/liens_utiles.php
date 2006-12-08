@@ -32,13 +32,13 @@ list($promo) = $DB_trombino->next_row();
 	<?php if(!est_authentifie(AUTH_INTERNE)): ?>
 		<lien id="utile_plan" titre="Venir à l'X" url="plan.php" />
 	<?php endif; ?>
-	<lien id="utile_liens" titre="Liens utiles" url="liens.php" />
 	<?php if(est_authentifie(AUTH_MINIMUM)){ ?>
 		<lien id="emploi_temps" titre="Emploi du temps" url="http://de.polytechnique.fr/index.php?page=edt"/>
 		<lien id="utile_licence" titre="Licences Msdnaa" url="profil/licences.php"/>
 		<lien id="utile_redmail" titre="Redirection des mails" url="http://poly.polytechnique.fr/" /> 
 	<?php } ?>
 	<?php if(est_authentifie(AUTH_INTERNE)): ?><lien id="utile_irc" titre="Accéder à l'IRC" url="http://ircserver.eleves.polytechnique.fr/"/><?php endif; ?>
+	<lien id="wikibr" titre="Docs BR" url="http://www.polytechnique.fr/eleves/binets/reseau"/>
 	<lien id="utile_ecole" titre="Site de l'école" url="http://www.polytechnique.fr/" />
 	<lien id="utile_ecole_de" titre="Site de la DE" url="http://www.edu.polytechnique.fr/" key="d"/>
 	<?php if(est_authentifie(AUTH_INTERNE)): ?><lien id="utile_intranet" titre="Intranet" url="http://intranet.polytechnique.fr/" key="i"/><?php endif; ?>
@@ -47,5 +47,6 @@ list($promo) = $DB_trombino->next_row();
 	<?php if (est_interne() || est_authentifie(AUTH_MINIMUM)) { ?>
 		<lien id="partenariats" titre="Partenariats" url="partenaires.php"/>
 	<?php } ?>
+	<lien id="utile_liens" titre="Autres liens" url="liens.php" />
 	<lien id="anciennefaq" titre="Ancienne FAQ" url="faq.php"/>
 </module>

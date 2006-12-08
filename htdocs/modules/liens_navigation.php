@@ -34,7 +34,6 @@
 		<lien id="trombino" titre="Trombino" url="trombino.php" key="t"/>
 	<?php } ?>
 	<lien id="xshare" titre="Télécharger" url="xshare.php" key="x"/>
-	<lien id="wikibr" titre="Info services" url="http://www.polytechnique.fr/eleves/binets/reseau" key="i"/>
 	<lien id="wikix" titre="Wikix" url="http://wikix.polytechnique.org" key="w"/>
 	<lien id="binets"  titre="Binets" url="binets.php" key="b"/>
 	<?php if(est_authentifie(AUTH_MINIMUM) && est_interne()): ?>
