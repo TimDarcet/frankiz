@@ -47,4 +47,5 @@ list($promo) = $DB_trombino->next_row();
 	<?php if (est_interne() || est_authentifie(AUTH_MINIMUM)) { ?>
 		<lien id="partenariats" titre="Partenariats" url="partenaires.php"/>
 	<?php } ?>
+	<lien id="anciennefaq" titre="Ancienne FAQ" url="faq.php"/>
 </module>
