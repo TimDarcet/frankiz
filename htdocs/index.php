@@ -46,7 +46,7 @@ $annonces_lues2=" 1 ";
 if (!est_interne() && !est_authentifie(AUTH_MINIMUM))  {
 ?>
 <annonce id="0"  titre="Bienvenue sur le site web des élèves de l'École Polytechnique." visible="oui" categorie="important" date="<?php echo date("d/m/Y") ?>">
-	Pour un élève de l'École des promos 1998 à 2004, il est possible de <a href="login.php">se connecter</a> pour accéder à l'ensemble des services proposés.
+	Pour un élève de l'École des promos 1998 à 2005, il est possible de <a href="login.php">se connecter</a> pour accéder à l'ensemble des services proposés.
 	<br/>
 	Sinon, une partie du site reste accessible. Il est en effet possible de consulter :
 	<ul>

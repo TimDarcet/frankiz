@@ -222,6 +222,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 	?>
 		<formulaire id="dem_licence" titre= "Les licences pour les logiciels Microsoft" action="profil/licences.php">
 			<note>Dans le cadre de l'accord MSDNAA, chaque étudiant de polytechnique à le droit à une version de Windows XP Pro gratuite, légale et attibuée à vie</note>
+			<note>Si tu as besoin d'une clé pour un logiciel téléchargé sur ftp://enez/, et qu'il n'est pas proposé dans la liste, envoi un mail aux <lien url="mailto:windows@frankiz.polytechnique.fr" titre="Admins Windows"/>.</note>
 			<p>Les licences disponibles</p>
 			<choix titre="Logiciels" id="logiciel" type="combo" valeur="">
 				<option titre="Windows XP Pro" id="winxp"/>

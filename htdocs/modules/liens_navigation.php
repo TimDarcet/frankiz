@@ -30,11 +30,11 @@
 	<?php endif; ?>
 	<lien id="annonces" titre="Annonces" url="." key="a"/>
 	<lien id="activites" titre="Activités" url="activites.php"/>
-	<lien id="xshare" titre="Télécharger" url="xshare.php" key="x"/>
-	<lien id="faq" titre="FAQ" url="faq.php" key="f"/>
 	<?php if(est_authentifie(AUTH_INTERNE)){ ?>
 		<lien id="trombino" titre="Trombino" url="trombino.php" key="t"/>
 	<?php } ?>
+	<lien id="xshare" titre="Télécharger" url="xshare.php" key="x"/>
+	<lien id="wikix" titre="Wikix" url="http://wikix.polytechnique.org" key="w"/>
 	<lien id="binets"  titre="Binets" url="binets.php" key="b"/>
 	<?php if(est_authentifie(AUTH_MINIMUM) && est_interne()): ?>
 		<lien id="siteseleves" titre="Sites élèves" url="http://perso.frankiz"/>
@@ -42,7 +42,6 @@
 		<lien id="siteseleves" titre="Sites élèves" url="siteseleves.php"/>
 	<?php endif; ?>
 	<lien id="meteo" titre="Météo" url="meteo.php" key="m"/>
-	<lien id="vocab" titre="Vocabulaire" url="vocabulaire.php" key="v"/>
 </module>
 
 <?php if(est_authentifie(AUTH_MINIMUM)): ?>
