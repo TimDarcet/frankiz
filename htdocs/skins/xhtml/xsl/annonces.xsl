@@ -89,7 +89,9 @@
 
 
 <xsl:template match="annonce" mode="complet">
-	<a> <xsl:attribute name="id"><xsl:value-of select="concat('annonce_',@id)"/></xsl:attribute> </a>
+	<a> <xsl:attribute name="id"><xsl:value-of select="concat('annonce_',@id)"/></xsl:attribute> 
+	  	<xsl:text> </xsl:text> 
+	</a>
 
 	<xsl:if test="@visible!='non'">
 	<div class="fkz_annonces_1"><div class="fkz_annonces_2">
