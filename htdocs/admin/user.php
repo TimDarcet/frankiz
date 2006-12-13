@@ -65,12 +65,16 @@ if (isset($_POST['mod_generale'])) {
 	$date_nais = $_POST['date_nais'];
 	$sexe = $_POST['sexe'];
 	$piece_id = $_POST['piece_id'];
+	if ($piece_id == "")
+		$piece_id = "NULL";
+	else
+		$piece_id = "'$piece_id'";
 	$section_id = $_POST['section_id'];
 	$cie = $_POST['cie'];
 	$promo = $_POST['promo'];
 	$login = $_POST['login'];
 	$mail = $_POST['mail'];
-	$DB_trombino->query("UPDATE eleves SET nom='$nom', prenom='$prenom', surnom='$surnom', date_nais='$date_nais', sexe='$sexe', piece_id='$piece_id', section_id='$section_id', cie='$cie', promo='$promo', login='$login', mail='$mail' WHERE eleve_id=$id ");
+	$DB_trombino->query("UPDATE eleves SET nom='$nom', prenom='$prenom', surnom='$surnom', date_nais='$date_nais', sexe='$sexe', piece_id=$piece_id, section_id='$section_id', cie='$cie', promo='$promo', login='$login', mail='$mail' WHERE eleve_id=$id ");
 	
 	echo "<commentaire>Modification de la partie générale faite avec succès</commentaire>" ;
 }
