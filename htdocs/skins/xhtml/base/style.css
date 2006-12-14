@@ -50,7 +50,7 @@ div {
 	width: 58%;
 }
 
-span#contacts, span#liens_ecole, span#meteo, span#stats ,span#serveurs, span#tour_kawa, span#qdj_hier, span#qdj, span#anniversaires, span#affiches, span#fetes, span#sondages, span#lien_tol, span#perso, span#virus { // pas de span pour les news exterieures
+span#contacts, span#liens_ecole, span#meteo, span#stats ,span#serveurs, span#tour_kawa, span#qdj_hier, span#qdj, span#anniversaires, span#affiches, span#fetes, span#sondages, span#lien_tol, span#lien_wikix, span#perso, span#virus { // pas de span pour les news exterieures
 }
 
 span#contacts_logo, span#liens_ecole_logo, span#meteo_logo, span#stats_logo, span#serveurs_logo, span#tour_kawa_logo, span#qdj_hier_logo, span#qdj_logo, span#anniversaires_logo, span#affiches_logo, span#fetes_logo, span#sondages_logo, span#lien_tol_logo, span#perso_logo, span#virus_logo {

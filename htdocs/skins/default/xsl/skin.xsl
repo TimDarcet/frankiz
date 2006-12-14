@@ -86,6 +86,7 @@
 					<xsl:apply-templates select="module[@id='liens_navigation']" />
 					<xsl:apply-templates select="module[@id='meteo']"/>
 					<xsl:apply-templates select="module[@id='lien_tol']"/>
+					<xsl:apply-templates select="module[@id='lien_wikix']"/>
 					<xsl:apply-templates select="module[@id='liens_perso']"/>
 					<xsl:apply-templates select="module[@id='tour_kawa']"/>
 					<xsl:apply-templates select="module[@id='activites']"/>	
@@ -99,7 +100,7 @@
 					<xsl:apply-templates select="module[@id='liens_contacts']"/>
 					<xsl:apply-templates select="module[@id='liens_ecole']"/>
 					<xsl:apply-templates select="module[@id='stats']"/>
-					<xsl:apply-templates select="module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id='liens_profil' and @id!='activites' and @id!='liens_navigation' and @id!='liens_perso' and @id!='anniversaires' and @id!='liste_css' and @id!='lien_tol' and @id='fetes']"/>
+					<xsl:apply-templates select="module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id='liens_profil' and @id!='activites' and @id!='liens_navigation' and @id!='liens_perso' and @id!='anniversaires' and @id!='liste_css' and @id!='lien_tol' and @id!='lien_wikix' and @id='fetes']"/>
 				</div><!--fin #droite -->
 			
 				<div id="centre">
