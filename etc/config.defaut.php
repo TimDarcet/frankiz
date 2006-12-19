@@ -160,7 +160,7 @@ $DB_wifi = new DB("lunedenn", "Radius", "web", "**********");
 
 
 // Configurations relatives au changement automatique de statut du bôb
-define('IP_DU_BOB', '129.104.224.37');
-define('MDP_DU_BOB', '153a37d6aed7dc7666fa3d9c345003aa');
+define('IP_DU_BOB', '**********');
+define('MDP_DU_BOB', '153a37d6aed7dc7666fa3d9c345003aa'); //md5("le bob rend alcoolique";
 
 ?>

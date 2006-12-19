@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<jnlp spec="1.0+" codebase="http://gwennoz.eleves.polytechnique.fr/~pilki/frankiz/htdocs/gestion/bob/" href="ETRON.jnlp">
+<jnlp spec="1.0+" codebase="http://frankiz/gestion/bob/" href="ETRON.jnlp">
   <information>
     <title>ETRON</title>
     <vendor>Binet Réseau</vendor> 
