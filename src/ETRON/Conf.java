@@ -19,6 +19,6 @@
 public class Conf{
     public static String mdpBob = "le bob rend alcoolique";
     public static String racine = "http://frankiz/gestion/bob/";
-    public static int intervalContactable = 10000;
-    public static int intervalIncontactable = 10000;
+    public static int intervalContactable = 300000;
+    public static int intervalIncontactable = 30000;
 }
