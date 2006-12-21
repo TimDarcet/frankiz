@@ -177,8 +177,10 @@ function demande_authentification($minimum) {
 		?>
 		>
 		<?php  foreach ($_REQUEST AS $keys => $val){
-			echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
-			}
+				if ($keys != "login" && $keys != "passwd") {
+					echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
+				}
+		       }
 		?>
 			
 			<champ id="login" titre="Login" valeur="<?php if(isset($_POST['login'])) echo $_POST['login']?>"/>
