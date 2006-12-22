@@ -79,11 +79,11 @@ if(isset($_REQUEST['logout'])) {
 	Gestion du login (mot de passe, mail, cookie, su, annonyme)
 */
 // Login par mot de passe
-if(isset($_POST['login']) && isset($_POST['passwd'])) {
-	$_SESSION['user'] = new User(true,$_POST['login']);
-	if(!$_SESSION['user']->verifie_mdp($_POST['passwd'])) {
+if(isset($_POST['login_login']) && isset($_POST['passwd_login'])) {
+	$_SESSION['user'] = new User(true,$_POST['login_login']);
+	if(!$_SESSION['user']->verifie_mdp($_POST['passwd_login'])) {
 		ajoute_erreur(ERR_LOGIN);
-		ajouter_access_log("erreur de mot de passe login={$_POST['login']}");
+		ajouter_access_log("erreur de mot de passe login={$_POST['login_login']}");
 	}
 	// Un message d'erreur s'affichera automatiquement par la page à l'origine
 	// de cette authentification.
@@ -177,14 +177,14 @@ function demande_authentification($minimum) {
 		?>
 		>
 		<?php  foreach ($_REQUEST AS $keys => $val){
-				if ($keys != "login" && $keys != "passwd") {
+				if ($keys != "login_login" && $keys != "passwd_login") {
 					echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
 				}
 		       }
 		?>
 			
-			<champ id="login" titre="Login" valeur="<?php if(isset($_POST['login'])) echo $_POST['login']?>"/>
-			<champ id="passwd" titre="Mot de passe" valeur=""/>
+			<champ id="login_login" titre="Login" valeur="<?php if(isset($_POST['login_login'])) echo $_POST['login_login']?>"/>
+			<champ id="passwd_login" titre="Mot de passe" valeur=""/>
 			<bouton id="connect" titre="Connexion"/>
 		</formulaire>
 		<p>Si tu as oublié ton mot de passe ou que tu n'as pas encore de compte,
