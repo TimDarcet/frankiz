@@ -25,10 +25,10 @@
 */
 
 if(est_authentifie(AUTH_MINIMUM)) {
+	echo "<module id=\"sondages\" titre=\"Sondages\">\n";
 	if(!cache_recuperer('sondages',strtotime(date("Y-m-d",time())))) {
 		$DB_web->query("SELECT sondage_id,titre,perime FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) >=-7");
 		if($DB_web->num_rows()>0){
-			echo "<module id=\"sondages\" titre=\"Sondages\">\n";
 			$DB_web->query("SELECT sondage_id,titre,DATE_FORMAT(perime,'%d/%m') FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) >=0");
 			if($DB_web->num_rows()>0){
 				echo "<p>En Cours</p>" ;
@@ -44,9 +44,17 @@ if(est_authentifie(AUTH_MINIMUM)) {
 					echo "<lien id='sondage_ancien' titre='$titre ($date)' url='sondage.php?id=$id'/><br/>\n";
 				}
 			}
-			echo "</module>\n";
 		}
 		cache_sauver('sondages');
 	}
+
+	$DB_web->query("SELECT sondage_id,titre,DATE_FORMAT(perime,'%d/%m') FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) < -7 AND eleve_id = ".$_SESSION['user']->uid);
+	if ($DB_web->num_rows() > 0) {
+		echo "<p>Mes anciens sondages</p>";
+		while (list($id,$titre,$date) = $DB_web->next_row()) {
+			echo "<lien id='sondage_ancien' titre='$titre' url='sondage.php?id=$id' /><br />\n";
+		}
+	}
+	echo "</module>";
 }
 ?>
