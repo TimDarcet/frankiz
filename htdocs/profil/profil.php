@@ -256,7 +256,7 @@ require "../include/page_header.inc.php";
 		<?php else: ?>
 			<image source="trombino.php?image=true&amp;login=<?php echo $login; ?>&amp;promo=<?php echo $promo; ?>" texte="photo" height="95" width="80"/>
 		<?php endif; ?>
-		<note>Tu peux personnaliser le trombino en changeant ta photo. Attention, elle ne doit pas dépasser 200Ko ou 300x400 pixels. Les TOLmestres te rappellent que cette photo doit permettre de te reconnaître facilement. Propose donc plutôt une photo sur laquelle tu es seul, et ou on voit bien ton visage.</note>
+		<note>Tu peux personnaliser le trombino en changeant ta photo. Attention, elle ne doit pas dépasser 200Ko ou 300x400 pixels. Les TOLmestres te rappellent que cette photo doit permettre de te reconnaître facilement. Propose donc plutôt une photo sur laquelle tu es seul, et où on voit bien ton visage.</note>
 		<fichier id="file" titre="Nouvelle photo" taille="200000"/>
 
 		<bouton id="changer_trombino" titre="Changer"/>
