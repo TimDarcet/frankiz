@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+" codebase="http://frankiz/BITE" href="BITE.jnlp">
+  <information>
+    <title>BITE</title>
+    <vendor>Binet Réseau</vendor> 
+    <homepage href="http://frankiz/"/>
+    <description> Boitier Informatique de Télétransmission d'Ethanol</description>
+    <offline-allowed/>
+    <shortcut online="true" >
+        <desktop />
+    </shortcut>
+  </information>
+  <security> 
+  </security>
+  <resources>
+    <j2se version="1.5+"/>
+    <jar href="BITE.jar"/>
+  </resources>
+  <application-desc />
+</jnlp>
