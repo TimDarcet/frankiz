@@ -27,13 +27,18 @@
 
 // Etat du bôb
 $DB_web->query("SELECT valeur FROM parametres WHERE nom='bob'");
-list($valeur) = $DB_web->next_row();
+list($val) = extdata_stripslashes($DB_web->next_row());
+$valeur = intval($val);
+if ($valeur && (time()-$valeur > 36000)) {
+	$DB_web->query("UPDATE parametres SET valeur='0' WHERE nom='bob';");
+	$valeur = 0;
+}
 
 $DB_web->query("SELECT affiche_id,titre,url,date,exterieur FROM affiches WHERE TO_DAYS(date)=TO_DAYS(NOW()) ORDER BY date");
 	
-if ($DB_web->num_rows()!=0 || $valeur=='1'){
+if ($DB_web->num_rows()!=0 || $valeur){
 	echo "<module id=\"activites\" titre=\"Activités\">\n";
-	if(est_authentifie(AUTH_INTERNE) && $valeur == 1) echo "<annonce titre=\"Le BôB est ouvert\"/>";
+	if(est_authentifie(AUTH_INTERNE) && $valeur) echo "<annonce titre=\"Le BôB est ouvert\"/>";
 	while (list($id,$titre,$url,$date,$exterieur)=$DB_web->next_row()) { 
 		if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
 	?>
