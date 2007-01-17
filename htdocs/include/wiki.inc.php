@@ -82,6 +82,7 @@ function affiche_syntaxe_wiki() {
 	echo "<html>&lt;small&gt;".
 		"Formatage : **gras** ' 'italic' ' |code|    Listes : -élément --sousélément &lt;br/&gt;".
 		"Liens/image : [http://exemple.fr/|Titre] [http://exemple.fr/image.png]&lt;br/&gt;".
+		"Lien pour envoyer un courriel : [mailto:exemple@poly|Mailez-moi] &lt;br/&gt;".
 		"Titres : ===titre1=== ==titre2== =titre3=&lt;br/&gt;".
 		"&lt;/small&gt;</html>";
 }

@@ -129,7 +129,7 @@ $permissions_user = $_SESSION['user']->perms ;
 		$DB_valid->query("SELECT 0 FROM valid_modiffaq") ;
 		$nb = $DB_valid->num_rows() ;
 		?>
-		<lien titre="Valider les modification des FAQ (<?php echo $nb; ?>)" url="admin/valid_faqmodif.php"/><br/>
+		<lien titre="Valider les modifications des FAQ (<?php echo $nb; ?>)" url="admin/valid_faqmodif.php"/><br/>
 	<?php
 	}
 	
