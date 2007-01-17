@@ -31,8 +31,13 @@ $verifIP = true;
 // si demande d'information concernant l'état du bob
 if(isset($_GET['estOuvert'])){
 	$DB_web->query("SELECT valeur FROM parametres WHERE nom='bob'");
-	list($valeur) = $DB_web->next_row();
-	if($valeur == '1'){
+	list($val) = $DB_web->next_row();
+	$valeur = intval($val);
+	if ($valeur && (time()-$valeur > 36000)) {
+		$DB_web->query("UPDATE parametres SET valeur='0' WHERE nom='bob';");
+		$valeur = 0;
+	}
+	if($valeur){
 		echo "1"; 
 		//echo "Le message a afficher";
 	}
@@ -44,7 +49,7 @@ if(isset($_GET['estOuvert'])){
 else{ //sinon c'est normalement une demande de modification
 	if(isset($_REQUEST["nouvel_etat"])&&((!$verifIP)||($_SERVER['REMOTE_ADDR']== IP_DU_BOB))&& isset($_REQUEST['mdp_bob'])&&(md5($_REQUEST['mdp_bob'])== MDP_DU_BOB)){
 		if ($_REQUEST["nouvel_etat"] == "1"){
-			$DB_web->query("UPDATE parametres SET valeur='1' WHERE nom='bob'");
+			$DB_web->query("UPDATE parametres SET valeur='".time()."' WHERE nom='bob'");
 		}
 		else{
 			$DB_web->query("UPDATE parametres SET valeur='0' WHERE nom='bob'");
