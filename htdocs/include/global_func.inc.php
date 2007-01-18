@@ -426,4 +426,35 @@ function ip_get() {
 	return $ip;
 }
 
+// fonction qui recupere l'etat du bob, verifie sa "coherence" et modifie eventuellement en fonction
+function getEtatBob() {
+	global $DB_web;
+	$DB_web->query("SELECT valeur FROM parametres WHERE nom='bob'");
+	list($val) = extdata_stripslashes($DB_web->next_row());
+	$valeur  = intval($val);
+	$month	 = date("n");
+	$day     = date("j");
+	$year    = date("Y");
+	$huitH   = mktime(8,0,0,$month,$day,$year);
+	$quinzeH = mktime(15,0,0,$month,$day,$year);
+	$now     = time();
+	if ($valeur && ( ($now > $huitH && $valeur < $huitH) || ($now > $quinzeH && $valeur < $quinzeH) )) {
+		fermerBob();
+		$valeur = 0;
+	}
+	return ($valeur)? 1 : 0;
+}
+
+function ouvrirBob() {
+	global $DB_web;
+	$DB_web->query("UPDATE parametres SET valeur='".time()."' WHERE nom='bob';");
+	return true;
+}
+
+function fermerBob() {
+	global $DB_web;
+	$DB_web->query("UPDATE parametres SET valeur='0' WHERE nom='bob';");
+	return true;
+}
+
 ?>

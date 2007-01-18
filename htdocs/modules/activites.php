@@ -26,13 +26,7 @@
 
 
 // Etat du bôb
-$DB_web->query("SELECT valeur FROM parametres WHERE nom='bob'");
-list($val) = extdata_stripslashes($DB_web->next_row());
-$valeur = intval($val);
-if ($valeur && (time()-$valeur > 36000)) {
-	$DB_web->query("UPDATE parametres SET valeur='0' WHERE nom='bob';");
-	$valeur = 0;
-}
+$valeur = getEtatBob();
 
 $DB_web->query("SELECT affiche_id,titre,url,date,exterieur FROM affiches WHERE TO_DAYS(date)=TO_DAYS(NOW()) ORDER BY date");
 	

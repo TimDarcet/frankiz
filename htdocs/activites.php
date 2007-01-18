@@ -32,8 +32,7 @@ require "include/page_header.inc.php";
 echo "<page id='activites' titre='Frankiz : activités de la semaine'>\n";
 
 // Etat du bôb
-$DB_web->query("SELECT valeur FROM parametres WHERE nom='bob'");
-list($valeurBob) = $DB_web->next_row();
+$valeurBob = getEtatBob();
 // Etat de la Kes
 $DB_web->query("SELECT valeur FROM parametres WHERE nom='kes'");
 list($valeurKes) = $DB_web->next_row();

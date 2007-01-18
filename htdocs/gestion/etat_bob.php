@@ -44,7 +44,11 @@ if(isset($_POST['envoie'])){
 		L'état du bôb vient d'être changé
 	</commentaire>
 <?php
-	$DB_web->query("UPDATE parametres SET valeur='".( ($_REQUEST['etat'] == "1")? time() : 0 )."' WHERE nom='bob'");
+	if ($_REQUEST['etat'] == "1") {
+		ouvrirBob();
+	} else {
+		fermerBob();
+	}
 }
 
 if(isset($_POST['ajout_kawa']) &&(strtotime($_REQUEST['date']) >(time()))&&($_REQUEST['date']!="0000-00-00")){
@@ -57,14 +61,7 @@ if(isset($_GET['del'])){
 	echo"<commentaire>Tour kawa supprimé</commentaire>";
 }
 
-$DB_web->query("SELECT valeur FROM parametres WHERE nom='bob'");
-list($val) = $DB_web->next_row();
-$valeur = intval($val);
-if ($valeur && (time()-$valeur > 36000)) {
-	$DB_web->query("UPDATE parametres SET valeur='0' WHERE nom='bob';");
-	$valeur = 0;
-}
-if ($valeur) $valeur = 1;
+$valeur = getEtatBob();
 
 
 ?>
