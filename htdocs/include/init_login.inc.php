@@ -42,6 +42,7 @@
 require_once "global.inc.php";
 require_once "user.inc.php";
 
+session_name("frankiz");
 session_start();
 
 /*

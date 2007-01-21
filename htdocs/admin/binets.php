@@ -135,7 +135,10 @@ if (isset($_POST['modif'])) {
 		if(!file_exists(BASE_BINETS_EXT.$_POST['folder'])) symlink (BASE_BINETS.$_POST['folder'],BASE_BINETS_EXT.$_POST['folder']);
 	}else{
 		$ext = 0;
-		if($_POST['folder']!='' && file_exists(BASE_BINETS_EXT.$_POST['folder'])) unlink(BASE_BINETS_EXT.$_POST['folder']);
+		if($_POST['folder']!='' && (file_exists(BASE_BINETS_EXT.$_POST['folder']) || is_link(BASE_BINETS_EXT.$_POST['folder'])))
+		{
+			unlink(BASE_BINETS_EXT.$_POST['folder']);
+		}
 	}
 	// si on demande la modification de l'image
 	//--------------------------------------------------------
