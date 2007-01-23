@@ -105,13 +105,14 @@
 			</div>
 	
 			<div class="fkz_droite">
+				<xsl:apply-templates select="frankiz/module[@id='lienik']"/>
 				<xsl:apply-templates select="frankiz/module[@id='lien_tol']"/>
 				<xsl:apply-templates select="frankiz/module[@id='lien_wikix']"/>
 				<xsl:apply-templates select="frankiz/module[@id='tour_kawa']"/>
 				<xsl:apply-templates select="frankiz/module[@id='qdj']"/>
 				<xsl:apply-templates select="frankiz/module[@id='qdj_hier']"/>
 				<xsl:apply-templates select="frankiz/module[@id='meteo']"/>
-				<xsl:apply-templates select="frankiz/module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id!='activites' and @id!='liens_navigation' and @id!='liens_profil' and @id!='liens_perso' and @id!='anniversaires' and @id!='liste_css' and @id!='lien_tol' and @id!='lien_wikix' and @id!='virus']"/>
+				<xsl:apply-templates select="frankiz/module[@id!='tour_kawa' and @id!='qdj' and @id!='qdj_hier' and @id!='meteo' and @id!='stats' and @id!='liens_ecole' and @id!='liens_contacts' and @id!='activites' and @id!='liens_navigation' and @id!='liens_profil' and @id!='liens_perso' and @id!='anniversaires' and @id!='liste_css' and @id!='lien_tol' and @id!='lien_wikix' and @id!='virus' and @id!='lienik']"/>
 				<xsl:if test="count(frankiz/module[@id!='stats' and @id!='liens_ecole' and @id!='activites' and @id!='liens_navigation' and @id!='liens_contacts' and @id!='anniversaires' and @id!='liste_css'])">
 					<p class="valid">
 						<a href="http://validator.w3.org/check?uri=referer">
