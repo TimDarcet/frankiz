@@ -286,6 +286,7 @@ $permissions_user = $_SESSION['user']->perms ;
 	if (verifie_permission('admin')||verifie_permission('kes')){
 		echo "<h2>Gestion de la Kès</h2>" ;
 		echo "<lien titre=\"Gérer l'ouverture de la Kès\" url=\"gestion/etat_kes.php\"/><br/>" ;
+		echo "<lien titre=\"Modifier le lien vers l'IK électronique\" url=\"gestion/etat_kes.php\" /><br />";
 		$DB_valid->query("SELECT eleve_id FROM valid_mailpromo") ;
 		$nb = $DB_valid->num_rows() ;
 		echo "<lien titre=\"Valider les mails promos ($nb)\" url=\"admin/valid_mailpromo.php\"/><br/>";

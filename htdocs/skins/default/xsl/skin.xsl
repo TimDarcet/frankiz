@@ -93,6 +93,7 @@
 				</div>
 			
 				<div id="droite">
+					<xsl:apply-templates select="module[@id='lienik']"/>
 					<xsl:apply-templates select="module[@id='qdj']"/>
 					<xsl:apply-templates select="module[@id='qdj_hier']"/>
 					<xsl:apply-templates select="module[@id='liens_profil']"/>

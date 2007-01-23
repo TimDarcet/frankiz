@@ -111,6 +111,7 @@ function liste_modules() {
 		"liens_propositions"	=> "",
 	"random"	    => "",
 		"liens_utiles"		=> "Liens école",
+		"lienik"		=> "Lien vers l'IK électronique", 
 		"qdj"				=> "Question du jour",
 		"qdj_hier"			=> "Question de la veille",
 		"meteo"			=> "Météo",

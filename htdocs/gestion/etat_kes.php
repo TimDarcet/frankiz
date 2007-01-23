@@ -47,6 +47,36 @@ if(isset($_POST['envoie'])){
 	$DB_web->query("UPDATE parametres SET valeur='".$_REQUEST['etat']."' WHERE nom='kes'");
 }
 
+if (isset($_POST['envoie_lienik'])) {
+	
+	$file = rawurldecode($_POST['ik']);
+	$file_encode = rawurlencode($file);
+	$url = BASE_URL."/binets/ik/".urlencode($file);
+	$path = escapeshellarg(BASE_LOCAL."/binets/ik/".$file);
+	$path2 = escapeshellarg(BASE_LOCAL."/../data/ik_thumbnails/".$file.".png");
+
+	$ret = exec ("convert ".$path."[0] -resize '150x212' ".$path2."; echo $?");
+
+	if ($ret != 0) {
+?>
+		<warning>
+			Echec de la mise à jour du lien vers l'IK électronique.
+		</warning>
+<?
+	} else {
+
+		$DB_web->query("UPDATE parametres SET valeur = '".$file_encode."' WHERE nom='lienik'");
+
+		cache_supprimer ('lienik');
+?>
+		<commentaire>
+			Le lien vers l'IK électronique vient d'être changé		
+		</commentaire>
+
+<?
+	}
+}
+
 $DB_web->query("SELECT valeur FROM parametres WHERE nom='kes'");
 list($valeur) = $DB_web->next_row();
 
@@ -59,6 +89,57 @@ list($valeur) = $DB_web->next_row();
 		<bouton titre="Valider" id="envoie" onClick="return window.confirm('Voulez vous vraiment changer cette valeur ?')"/>
 	</formulaire>
 
+<?
+$DB_web->query("SELECT valeur FROM parametres WHERE nom='lienik'");
+list($lienik) = $DB_web->next_row();
+
+$iks = glob(BASE_LOCAL."/binets/ik/*.pdf");
+
+$choix_possibles = array();
+
+foreach ($iks as $ik)
+{
+	if (is_file($ik)) 
+	{
+		$key = filemtime($ik);
+		while (isset($choix_possibles[$key])) {
+			$key++;
+		}
+		$choix_possibles[$key] = basename($ik);
+	}
+}
+
+krsort($choix_possibles);
+
+?>
+
+	<formulaire id="lienik" titre="Lien vers l'IK electronique" action="gestion/etat_kes.php">
+		<choix titre="Selectionnez le nouvel IK" type='radio' id="ik" valeur="<? echo $lienik; ?>">
+<?
+		if (!isset($_REQUEST['voirtout'])) {
+			$nbr_ik = 5;
+		} else {
+			$nbr_ik = 0;
+		}
+
+		$count = 0;
+		foreach ($choix_possibles as $ik) {
+			echo "hello";
+
+			echo "<option titre=\"$ik\" id=\"".rawurlencode($ik)."\" />";
+
+			$count++;
+			if ($count == $nbr_ik) {
+				break;
+			}
+		}
+
+?>
+		</choix>
+
+		<bouton titre="Voir tous les IK" id="voirtout" />
+		<bouton titre="Modifier" id="envoie_lienik" />
+	</formulaire>
 </page>
 
 <?php require_once BASE_LOCAL."/include/page_footer.inc.php" ?>
