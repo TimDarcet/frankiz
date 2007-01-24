@@ -18,8 +18,10 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-echo "<module id=\"lienik\" titre=\"IK électronique\">\n";
 if (est_interne()) {
+?>
+<module id="lienik" titre="IK électronique">
+<?php
 	if(!cache_recuperer('lienik',0)) {
 		$DB_web->query("SELECT valeur FROM parametres WHERE nom='lienik'");
 		list($lienik) = $DB_web->next_row();
@@ -29,7 +31,9 @@ if (est_interne()) {
 		
 		cache_sauver('lienik');
 	}
-
-	echo "</module>\n";
+?>
+</module>
+<?php
 }
 ?>
+
