@@ -105,8 +105,8 @@
 			</div>
 	
 			<div class="fkz_droite">
-				<xsl:apply-templates select="frankiz/module[@id='lienik']"/>
 				<xsl:apply-templates select="frankiz/module[@id='lien_tol']"/>
+				<xsl:apply-templates select="frankiz/module[@id='lienik']"/>
 				<xsl:apply-templates select="frankiz/module[@id='lien_wikix']"/>
 				<xsl:apply-templates select="frankiz/module[@id='tour_kawa']"/>
 				<xsl:apply-templates select="frankiz/module[@id='qdj']"/>
