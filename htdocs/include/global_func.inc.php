@@ -429,15 +429,21 @@ function getEtatBob() {
 	$DB_web->query("SELECT valeur FROM parametres WHERE nom='bob'");
 	list($val) = extdata_stripslashes($DB_web->next_row());
 	$valeur  = intval($val);
-	$month	 = date("n");
+	$month   = date("n");
 	$day     = date("j");
 	$year    = date("Y");
-	$huitH   = mktime(8,0,0,$month,$day,$year);
-	$quinzeH = mktime(15,0,0,$month,$day,$year);
+	$horaires = array(mktime(6,0,0,$month,$day,$year), mktime(10,0,0,$month,$day,$year), mktime(15,0,0,$month,$day,$year));
 	$now     = time();
-	if ($valeur && ( ($now > $huitH && $valeur < $huitH) || ($now > $quinzeH && $valeur < $quinzeH) )) {
-		fermerBob();
-		$valeur = 0;
+	if ($valeur) {
+		foreach ($horaires as $value) {
+			if ($now > $value && $valeur < $value) {
+				$valeur = 0;
+				break;
+			}
+		}
+		if (!$valeur) {
+			fermerBob();
+		}
 	}
 	return ($valeur)? 1 : 0;
 }
