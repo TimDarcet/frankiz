@@ -53,27 +53,33 @@ my $rep = $dbh->prepare($reqt);
 
        while (my $ref = $rep->fetchrow_hashref()) {
 	$ref->{'pseudo_news'}= latin1($ref->{'pseudo_news'});
-	print("Traitement de ".$ref->{'pseudo_news'}."\n");
+	print("Traitement de ".$ref->{'pseudo_news'}." (".$ref->{'mail'}.")\n");
            if ( !filtrage($ref) )
 	   {
+		if ($ref->{'pseudo_news'} =~ m/\w/) {
+			$pseudo = $ref->{'pseudo_news'};
+		} else {
+			$pseudo = $ref->{'mail'};
+		}
+
 		if (!$count){			
 			$count++;
-		 	print DATA "<strong>".$ref->{'pseudo_news'}."</strong> est soit un couche-très-tard, soit un lève-très-tôt! Il a posté ce matin à ".
+		 	print DATA "<strong>".$pseudo."</strong> est soit un couche-très-tard, soit un lève-très-tôt! Il a posté ce matin à ".
  			substr($ref->{'date'},-8,2)."h".substr($ref->{'date'},-5,2)." sur le ".$ref->{'forum'}." !<br/>\n";
 			print ("** C\'est le numéro 1! :) **\n");
-			$posteur=$ref->{'pseudo_news'};
+			$posteur=$pseudo;
 		}
 		if ($count eq 1){
-			if ($ref->{'pseudo_news'} ne $posteur){
-		 	print DATA "<strong>".$ref->{'pseudo_news'}."</strong> n'est pas mauvais non plus, avec un post à ".
+			if ($pseudo ne $posteur){
+		 	print DATA "<strong>".$pseudo."</strong> n'est pas mauvais non plus, avec un post à ".
  			substr($ref->{'date'},-8,2)."h".substr($ref->{'date'},-5,2)." sur le ".$ref->{'forum'}." !<br/>\n";
 			print ("** Ce n\'est que le numéro 2 **\n");
-			$posteur2=$ref->{'pseudo_news'};
+			$posteur2=$pseudo;
 			$count++;
 		}       }
 		if ($count eq 2){
-		 if (  ($ref->{'pseudo_news'} ne $posteur) && ($ref->{'pseudo_news'} ne $posteur2) ){	
-		 	print DATA "<strong>".$ref->{'pseudo_news'}."</strong>: peut mieux faire! Un post à ".
+		 if (  ($pseudo ne $posteur) && ($pseudo ne $posteur2) ){	
+		 	print DATA "<strong>".$pseudo."</strong>: peut mieux faire! Un post à ".
  			substr($ref->{'date'},-8,2)."h".substr($ref->{'date'},-5,2)." sur le ".$ref->{'forum'}." .<br/><br/>\n";
 			print ("** Ce n\'est que le numéro 3 :( **\n");
 			return 3;
@@ -102,27 +108,33 @@ my $rep = $dbh->prepare($reqt);
 
        while (my $ref = $rep->fetchrow_hashref()) {
         $ref->{'pseudo_news'} = latin1($ref->{'pseudo_news'});
-	print("Traitement de ".$ref->{'pseudo_news'}."\n");
+	print("Traitement de ".$ref->{'pseudo_news'}." (".$ref->{'mail'}.")\n");
            if ( !filtrage($ref) )
 	   {
+		if ($ref->{'pseudo_news'} =~ m/\w/) {
+			$pseudo = $ref->{'pseudo_news'};
+		} else {
+			$pseudo = $ref->{'mail'};
+		}
+		
 		if (!$count){			
 			$count++;
-		 	print DATA "<strong>".$ref->{'pseudo_news'}."</strong> doit être insomniaque! Il a posté cette nuit à ".
+		 	print DATA "<strong>".$pseudo."</strong> doit être insomniaque! Il a posté cette nuit à ".
  			substr($ref->{'date'},-8,2)."h".substr($ref->{'date'},-5,2)." sur le ".$ref->{'forum'}." !<br/>\n";
 			print ("** Autiste numéro 1! :) **\n");
-			$posteur=$ref->{'pseudo_news'};
+			$posteur=$pseudo;
 		}
 		  if ($count eq 1){
-			if ($ref->{'pseudo_news'} ne $posteur){
-		 	print DATA "<strong>".$ref->{'pseudo_news'}."</strong> a un bon potentiel, avec un post à ".
+			if ($pseudo ne $posteur){
+		 	print DATA "<strong>".$pseudo."</strong> a un bon potentiel, avec un post à ".
  			substr($ref->{'date'},-8,2)."h".substr($ref->{'date'},-5,2)." sur le ".$ref->{'forum'}." !<br/>\n";
 			print ("** Autiste numéro 2 **\n");
-			$posteur2=$ref->{'pseudo_news'};
+			$posteur2=$pseudo;
 			$count++;
 		   }    }
 		if ($count eq 2){
-		 if (  ($ref->{'pseudo_news'} ne $posteur) && ($ref->{'pseudo_news'} ne $posteur2) ){	
-		 	print DATA "<strong>".$ref->{'pseudo_news'}."</strong> a encore un effort à faire... il a posté à ".
+		 if (  ($pseudo ne $posteur) && ($pseudo ne $posteur2) ){	
+		 	print DATA "<strong>".$pseudo."</strong> a encore un effort à faire... il a posté à ".
  			substr($ref->{'date'},-8,2)."h".substr($ref->{'date'},-5,2)." sur le ".$ref->{'forum'}." .<br/>\n";
 			print ("** Autiste numéro 3 :( **\n");
 			return 3;
