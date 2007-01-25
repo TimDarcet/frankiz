@@ -167,9 +167,9 @@ if (isset($_POST['valid'])) {
 		<champ id="titre" titre="Le titre" valeur="<?php if (isset($_POST['titre'])) echo $_POST['titre'] ;?>"/>
 
 		<note>
-			Le texte de l'annonce utilise le format wiki rappelé en bas de la page et décrit dans l'<lien url="helpwiki.php" titre="aide wiki"/><br/>
-			Pour toute remarque particulière, envoyer un mail à <lien url="mailto:web@frankiz.polytechnique.fr" titre="web@frankiz"/><br/><br/>
-         Il est rappelé qu'une annonce n'est pas une activité et que si l'annonce concerne une activité, nous ne la validerons que si elle est accompagnée d'une proposition d'activité et si l'activité a lieu dans plus de quatres jours (une semaine c'est mieux).
+			Le texte de l'annonce utilise le format wiki rappelé en bas de la page et décrit dans l'<lien url="helpwiki.php" titre="aide wiki"/>.<br/>
+			Pour toute remarque particulière, envoyer un mail à <lien url="mailto:web@frankiz.polytechnique.fr" titre="web@frankiz"/>.<br/><br/>
+         Il est rappelé qu'une annonce n'est pas une activité et que si l'annonce concerne une activité, nous ne la validerons que si elle est accompagnée d'une proposition d'activité et si l'activité a lieu dans plus de quatre jours (une semaine c'est mieux).
 		</note>
 		<zonetext id="text" titre="Le texte" type="grand"><?php if (isset($_POST['text'])) echo $_POST['text'];?></zonetext>
 

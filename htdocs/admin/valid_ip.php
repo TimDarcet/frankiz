@@ -38,11 +38,11 @@ if(!verifie_permission('admin'))
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
-<page id="admin_valid_ip" titre="Frankiz : Attribuer une nouvelle adresse IP/MAC">
+<page id="admin_valid_ip" titre="Frankiz : Attribuer une nouvelle adresse IP">
 
 <?php
 // On regarde quel cas c'est ...
-// On envoie chié le mec pour son changement d'ip et on le supprime de la base
+// On envoie chier le mec pour son changement d'ip et on le supprime de la base
 // On accepte le changement et on l'inscrit dans la base
 
 $DB_valid->query("LOCK TABLE valid_ip WRITE");
@@ -63,15 +63,15 @@ foreach ($_POST AS $keys => $val){
 		
 		$bla = "refus_".$temp[1] ;
 		$contenu = "Bonjour, <br><br>".
-					"Nous sommes désolés de pas pouvoir d'attribuer une adresse IP supplémentaire pour la raison suivante :<br>".
+					"Nous sommes désolés de ne pas pouvoir t'attribuer une adresse IP supplémentaire pour la raison suivante :<br>".
 					$_POST[$bla]."<br>".
-					"Il y a certainement une autre façon de procéder pour atteindre ton but.<br>".
+					"Tu peux contacter les roots (root@frankiz) pour de plus amples informations.<br>".
 					"<br>" .
 					"Très Cordialement<br>" .
 					"Le BR<br>"  ;
 	
 		couriel($temp[1],"[Frankiz] Ta demande a été refusée ",$contenu,ROOT_ID);
-		echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande n'a pas été acceptée.</commentaire>" ;
+		echo "<commentaire>Envoi d'un mail. On prévient l'utilisateur que sa demande n'a pas été acceptée.</commentaire>" ;
 	}
 	
 	// On accepte la demande d'ip supplémentaire
@@ -102,7 +102,7 @@ foreach ($_POST AS $keys => $val){
 						"Le BR<br>";
 		
 			couriel($temp[1],"[Frankiz] Ta demande a été acceptée",$contenu,ROOT_ID);
-			echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande a été acceptée (nouvelle adresse IP : ".$_POST[$temp2].")</commentaire>" ;
+			echo "<commentaire>Envoi d'un mail. On prévient l'utilisateur que sa demande a été acceptée (nouvelle adresse IP : ".$_POST[$temp2].").</commentaire>" ;
 			
 		// S'il y  a deja une entrée comme celle demandé dans la base !
 		} else {
@@ -110,7 +110,9 @@ foreach ($_POST AS $keys => $val){
 		}
 		
 	}
-	
+
+/* Plus de SMAC
+
 	// On refuse la demande de mac supplémentaire
 	//==========================
 	if ($temp[0] == "vtffmac") {
@@ -129,7 +131,7 @@ foreach ($_POST AS $keys => $val){
 					"Le BR<br>"  ;
 	
 		couriel($temp[1],"[Frankiz] Ta demande a été refusée ",$contenu,ROOT_ID);
-		echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande n'a pas été acceptée.</commentaire>" ;
+		echo "<commentaire>Envoi d'un mail. On prévient l'utilisateur que sa demande n'a pas été acceptée.</commentaire>" ;
 	}
 	
 	// On accepte la demande de mac supplémentaire
@@ -151,10 +153,12 @@ foreach ($_POST AS $keys => $val){
 					"Le BR<br>";
 	
 		couriel($temp[1],"[Frankiz] Ta demande a été acceptée",$contenu,ROOT_ID);
-		echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande a été acceptée</commentaire>" ;
+		echo "<commentaire>Envoi d'un mail. On prévient l'utilisateur que sa demande a été acceptée</commentaire>" ;
 	}
-	
-	// On vire une ip qu'on avait validé
+*/	
+
+
+	// On vire une ip qu'on avait validée
 	//===========================
 	if ($temp[0] == "suppr") {
 		$temp2 = str_replace("x",".",$temp[1]) ; // euh c'est pas bo je suis d'accord mais bon c'est pour que ca marche sans trop de trick
@@ -172,7 +176,7 @@ foreach ($_POST AS $keys => $val){
 					"Le BR<br>"  ;
 	
 		couriel($temp[2],"[Frankiz] Suppression d'une adresse IP",$contenu,ROOT_ID);
-		echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que son adresse IP $temp2 vient d'être supprimée.</commentaire>" ;
+		echo "<commentaire>Envoi d'un mail. On prévient l'utilisateur que son adresse IP $temp2 vient d'être supprimée.</commentaire>" ;
 
 	}
 }
@@ -180,7 +184,7 @@ $DB_valid->query("UNLOCK TABLES");
 $DB_admin->query("UNLOCK TABLES");
 ?>
 
-<h2>Liste des personnes demandant</h2>
+<h2>Liste des personnes demandant une IP supplémentaire :</h2>
 	<liste id="liste" selectionnable="non" action="admin/valid_ip.php">
 		<entete id="prise" titre="Prise"/>
 		<entete id="casert" titre="Casert"/>
@@ -188,29 +192,25 @@ $DB_admin->query("UNLOCK TABLES");
 		<entete id="raison" titre="Raison"/>
 		<entete id="ip" titre="IP"/>
 <?php
-		$DB_valid->query("SELECT v.raison,e.nom,e.prenom,e.piece_id,e.eleve_id,p.prise_id,p.ip,v.mac,v.type FROM valid_ip as v LEFT JOIN trombino.eleves as e USING(eleve_id) LEFT JOIN admin.prises AS p USING(piece_id) WHERE p.type='principale'");
-		while(list($raison,$nom,$prenom,$piece,$eleve_id,$prise,$ip0,$mac,$type) = $DB_valid->next_row()) {
+		$DB_valid->query("SELECT v.raison,e.nom,e.prenom,e.piece_id,e.eleve_id,p.prise_id,p.ip,v.type FROM valid_ip as v LEFT JOIN trombino.eleves as e USING(eleve_id) LEFT JOIN admin.prises AS p USING(piece_id) WHERE p.type='principale'");
+		while(list($raison,$nom,$prenom,$piece,$eleve_id,$prise,$ip0,$type) = $DB_valid->next_row()) {
 ?>
 			<element id="<?php echo $eleve_id ;?>">
 				<colonne id="prise"><?php echo "$prise" ?></colonne>
 				<colonne id="casert"><?php echo "$piece" ?></colonne>
 				<colonne id="eleve"><?php echo "$nom $prenom" ?></colonne>
 				<colonne id="raison">
-					<strong>Nouvelle @MAC: </strong><?php echo $mac ?><br/>
 					<?php 
 						echo "<em>";
 						switch($type){
-							case 1: 
-								echo "J'ai remplacé l'ordinateur qui était dans mon casert et je souhaite juste pouvoir acceder au réseau avec (l'ancien ne pourra plus y accéder)<br/>";
-								break;
-							case 2:
-								echo "J'ai installé un 2ème ordinateur dans mon casert et je souhaite avoir une nouvelle adresse pour cette machine<br/>";
+							case 1:
+								echo "J'ai installé un 2ème ordinateur dans mon casert et je souhaite avoir une nouvelle adresse pour cette machine.<br/>";
 								break;
 							default:
 								echo "Autre raison<br/>";
 						}
 						echo "</em><br/>";
-						echo "Commentaire: $raison"; 
+						echo "Commentaire : $raison"; 
 					?>
 					<br/><br/>
 					<textsimple titre="" id="raison2_<?php echo $eleve_id ;?>" valeur="Raison si refus :"/><br/>
@@ -224,31 +224,31 @@ $DB_admin->query("UNLOCK TABLES");
 						echo $ip ;
 					echo "</p>" ;
 				}
-				if($type!=1){
-					$new_ip="129.104.";
-					$ssrezo=substr($ip0, 8, 3);
-					$new_ip.=$ssrezo.".";
 
-					// BEM /PEM: +128
-					if($ssrezo == 203 || $ssrezo == 204 || $ssrezo == 205)
-						$new_ip .= (substr($ip0, 12, 3)+128);
-					// Foch, Fayolle, Joffre: +64
-					else if ($ssrezo >= 208 && $ssrezo <= 219)
-						$new_ip .= (substr($ip0, 12, 3)+64);
-					// Nouveaux batiments: +64
-					else if ($ssrezo >= 224 && $ssrezo <= 229)
-						$new_ip .= (substr($ip0, 12, 3)+64);
-					// Maunoury: +64
-					else if ($ssrezo >= 232 && $ssrezo <= 235)
-						$new_ip .= (substr($ip0, 12, 3)+64);
+				$new_ip="129.104.";
+				$ssrezo=substr($ip0, 8, 3);
+				$new_ip.=$ssrezo.".";
+
+				// BEM /PEM: +128
+				if($ssrezo == 203 || $ssrezo == 204 || $ssrezo == 205)
+					$new_ip .= (substr($ip0, 12, 3)+128);
+				// Foch, Fayolle, Joffre: +64
+				else if ($ssrezo >= 208 && $ssrezo <= 219)
+					$new_ip .= (substr($ip0, 12, 3)+64);
+				// Nouveaux batiments: +64
+				else if ($ssrezo >= 224 && $ssrezo <= 229)
+					$new_ip .= (substr($ip0, 12, 3)+64);
+				// Maunoury: +64
+				else if ($ssrezo >= 232 && $ssrezo <= 235)
+					$new_ip .= (substr($ip0, 12, 3)+64);
 ?>
-					<champ titre="" id="ajout_ip_<?php echo $eleve_id ;?>" valeur="<?php echo $new_ip ?>" /> 
-					<bouton titre="Ok" id="ok_<?php echo $eleve_id ;?>" />
-					<bouton titre="Vtff" id="vtff_<?php echo $eleve_id ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette demande ?')"/>
-<?php 				} else {?>
-					<bouton titre="Ok" id="okmac_<?php echo $eleve_id ;?>" />
-					<bouton titre="Vtff" id="vtffmac_<?php echo $eleve_id ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette demande ?')"/>
-<?php 				}?>
+				<champ titre="" id="ajout_ip_<?php echo $eleve_id ;?>" valeur="<?php echo $new_ip ?>" /> 
+				<bouton titre="Ok" id="ok_<?php echo $eleve_id ;?>" />
+				<bouton titre="Vtff" id="vtff_<?php echo $eleve_id ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette demande ?')"/>
+<?php /* Plus de SMAC
+				<bouton titre="Ok" id="okmac_<?php echo $eleve_id ;?>" />
+				<bouton titre="Vtff" id="vtffmac_<?php echo $eleve_id ;?>" onClick="return window.confirm('Voulez vous vraiment ne pas valider cette demande ?')"/>
+*/ ?>
 				</colonne>
 			</element>
 <?php
@@ -258,7 +258,7 @@ $DB_admin->query("UNLOCK TABLES");
 	
 	
 	
-	<h2>Liste des personnes ayant eu leurs ips supplémentaires</h2>
+	<h2>Liste des personnes ayant eu leurs IPs supplémentaires :</h2>
 	<liste id="liste" selectionnable="non" action="admin/valid_ip.php">
 		<entete id="prise" titre="Prise"/>
 		<entete id="ip" titre="IP"/>

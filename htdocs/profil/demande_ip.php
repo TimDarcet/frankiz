@@ -41,15 +41,18 @@ if ($DB_valid->num_rows()>0) { ?>
 		
 <?php } else if(!isset($_POST['demander'])) { ?>
 	<formulaire id="demandeip" titre="Demande d'une nouvelle machine" action="profil/demande_ip.php">
+		<note>
+			Si tu as juste changé d'ordinateur, garde la même IP (et la même configuration réseau) !
+		</note>
 		<choix titre="Je fais cette demande parce que" id="type" type="radio" valeur="1">
-			<option titre="J'ai remplacé l'ordinateur qui était dans mon casert et je souhaite juste pouvoir acceder au réseau avec (je n'utilise plus l'ancien)" id="1"/>
-			<option titre="J'ai installé un 2ème ordinateur dans mon casert et je souhaite avoir une nouvelle adresse pour cette machine" id="2"/>
-			<option titre="Autre raison" id="3"/>
+			<option titre="J'ai installé un 2ème ordinateur dans mon casert et je souhaite avoir une nouvelle adresse pour cette machine." id="1"/>
+			<option titre="Autre raison :" id="2"/>
 		</choix>
 		<note>
-			Donne nous plus d'explications sur cette demande. (Surtout si tu as déjà plusieurs ordinateurs enregistrés sur le réseau)
+			Donne-nous plus d'explications sur cette demande. (Surtout si tu as déjà plusieurs ordinateurs enregistrés sur le réseau.)
 		</note>
 		<zonetext titre="Raison" id="raison"></zonetext>
+
 <!-- Le SMAC est désactivé
 		<note>
 			Il nous faut aussi connaitre l'adresse MAC de la machine.<br/>
@@ -71,13 +74,14 @@ if ($DB_valid->num_rows()>0) { ?>
 		</note>
 		<champ id="adresse_mac" titre="Adresse MAC"/>
 -->
+		
 		<bouton titre="Demander" id="demander"/>
 	</formulaire>
 	
 <?php } else {
-	$DB_valid->query("INSERT valid_ip SET type='{$_POST['type']}',raison='{$_POST['raison']}',mac='{$_POST['adresse_mac']}',eleve_id='{$_SESSION['user']->uid}'");
+	$DB_valid->query("INSERT valid_ip SET type='{$_POST['type']}',raison='{$_POST['raison']}',eleve_id='{$_SESSION['user']->uid}'");
 	
-	// Envoie du mail au webmestre pour le prévenir d'une demande d'ip
+	// Envoie du mail aux roots pour le prévenir d'une demande d'ip
 	$DB_trombino->query("SELECT nom,prenom FROM eleves WHERE eleve_id='{$_SESSION['user']->uid}'");
 	list($nom,$prenom)=$DB_trombino->next_row();
 	
@@ -85,7 +89,7 @@ if ($DB_valid->num_rows()>0) { ?>
 	
 	$contenu = "$prenom $nom a demandé l'enregistrement d'une nouvelle machine pour la raison suivante : <br>".
 				$_POST['raison']."<br><br>".
-				"Pour valider ou non cette demande va sur la page : <br><br>".
+				"Pour valider ou non cette demande, va sur la page : <br><br>".
 				"<div align='center'><a href='".BASE_URL."/admin/valid_ip.php'>".
 				BASE_URL."/admin/valid_ip.php</a></div><br><br>" .
 				"Cordialement,<br>" .
