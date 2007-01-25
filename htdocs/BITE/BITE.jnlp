@@ -5,6 +5,7 @@
     <vendor>Binet Réseau</vendor> 
     <homepage href="http://frankiz.polytechnique.fr/"/>
     <description> Boitier Informatique de Télétransmission d'Ethanol</description>
+    <icon href="logoBITE.gif" />
     <offline-allowed/>
     <shortcut online="true" >
         <desktop />
