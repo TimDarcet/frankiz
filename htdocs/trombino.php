@@ -366,7 +366,8 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 				ORDER BY
 					nom ASC");
 			while (list($remarque,$binet_nom,$binet_id) = $DB_trombino->next_row())
-				echo "<binet nom='$binet_nom' id='$binet_id'>$remarque</binet>\n";
+				// Mais que c'est moche!. TODO: Remplacer par escape-uri (XSLT 2.0) 
+				echo "<binet nom='$binet_nom' nom_encode='".rawurlencode(str_replace("&apos;", "'", html_entity_decode($binet_nom)))."' id='$binet_id'>$remarque</binet>\n";
 			$DB_trombino->pop_result();
 
 			echo "<cadre>".wikiVersXML($commentaire)."</cadre>";
