@@ -53,8 +53,8 @@ if (est_authentifie(AUTH_MINIMUM)) {
 			$postit_contenu = file_get_contents($postit_dir."contenu.txt");
 		}
 		if (!$vide) {
-			$DB_trombino->query("SELECT nom,prenom,surnom,promo FROM eleves WHERE eleve_id='".$eleve_id."';");
-			list($nom,$prenom,$surnom,$promo) = extdata_stripslashes($DB_trombino->next_row());
+			$DB_trombino->query("SELECT nom,prenom,surnom,promo,login FROM eleves WHERE eleve_id='".$eleve_id."';");
+			list($nom,$prenom,$surnom,$promo,$login) = extdata_stripslashes($DB_trombino->next_row());
 			$DB_web->query("SELECT 0 FROM annonces_lues WHERE annonce_id=1 AND eleve_id=".$_SESSION["user"]->uid.";");
 			$postit_visible = $DB_web->num_rows() == 0;
 ?>
@@ -67,7 +67,7 @@ if (est_authentifie(AUTH_MINIMUM)) {
 			}
 			echo wikiVersXML($postit_contenu) ;
 ?>
-		<eleve nom="<?php echo $nom; ?>" prenom="<?php echo $prenom; ?>" promo="<?php echo $promo; ?>" surnom="<?php echo $surnom; ?>"/>
+		<eleve nom="<?php echo $nom; ?>" prenom="<?php echo $prenom; ?>" promo="<?php echo $promo; ?>" surnom="<?php echo $surnom; ?>" login="<?php echo $login; ?>" lien="oui" />
 		<lien url="?lu=1#annonce_1" titre="Faire disparaître" id="annonces_lues"/>
 		<br/>
 	</annonce>

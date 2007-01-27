@@ -145,7 +145,7 @@ if (!isset($_POST['titre']))  $_POST['titre']="Titre" ;
 			}
 			echo wikiVersXML($_POST['text']) ;
 			?>
-			<eleve nom="<?php echo $nom; ?>" prenom="<?php echo $prenom; ?>" promo="<?php echo $promo; ?>" surnom="<?php echo $surnom; ?>" mail="<?php echo $mail; ?>"/>
+			<eleve nom="<?php echo $nom; ?>" prenom="<?php echo $prenom; ?>" promo="<?php echo $promo; ?>" surnom="<?php echo $surnom; ?>" mail="<?php echo $mail; ?>" login="<?php echo $login; ?>" lien="oui"/>
 	</annonce>
 <?php
 
