@@ -173,8 +173,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 			'nom'		=>	'eleves.nom',
 			'prenom'	=>	'prenom',
 			'surnom'	=>	'surnom',
-			'mail'		=>	'mail',
-			'loginpoly'	=>	'login');
+			'mail'		=>	'mail');
 
 		$correspondanceWhereTypeRecherchePromo = array(
 			'casert'	=>	RECHERCHE_TOUTES_PROMOS,
@@ -185,8 +184,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 			'nom'		=>	RECHERCHE_HABITE_SUR_LE_PLATAL,
 			'prenom'	=>	RECHERCHE_HABITE_SUR_LE_PLATAL,
 			'surnom'	=>	RECHERCHE_HABITE_SUR_LE_PLATAL,
-			'mail'		=>	RECHERCHE_HABITE_SUR_LE_PLATAL,
-			'loginpoly'	=>	RECHERCHE_HABITE_SUR_LE_PLATAL);
+			'mail'		=>	RECHERCHE_HABITE_SUR_LE_PLATAL);
 
 		foreach ($where_like as $post_arg => $db_field) {
 			if (!empty($_REQUEST[$post_arg])) {
@@ -210,6 +208,11 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 			$join = "LEFT JOIN membres USING(eleve_id) ".$join;
 			$where .= (empty($where) ? "" : " AND")." binet_id='".$_REQUEST['binet']."'";
 			$typeRecherchePromo = RECHERCHE_PROMOS_ACTUELLES;
+		}
+
+		if(!empty($_REQUEST['loginpoly'])) {
+			$where .= (empty($where) ? '' : ' AND ')." login ='".$_REQUEST['loginpoly']."'";
+			$typeRecherchePromo = RECHERCHE_HABITE_SUR_LE_PLATAL;
 		}
 
 		if (!empty($_REQUEST['promo'])) {
