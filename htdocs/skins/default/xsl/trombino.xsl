@@ -121,7 +121,7 @@
 
 <xsl:template match="binet" mode="trombino">
 	<a>
-		<xsl:attribute name="href"><xsl:text>trombino.php?binets=</xsl:text><xsl:value-of select="@nom"/></xsl:attribute>
+		<xsl:attribute name="href"><xsl:text>trombino.php?binets=</xsl:text><xsl:value-of select="@nom_encode"/></xsl:attribute>
 			<xsl:value-of select="@nom"/>
 		</a>
 	<xsl:if test="current()!=''"><xsl:text> (</xsl:text><em><xsl:value-of select="."/></em><xsl:text>) </xsl:text></xsl:if>

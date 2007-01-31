@@ -76,7 +76,7 @@
 		Binets :
 			<ul>
 			<xsl:for-each select="binet">
-				<li><a>	<xsl:attribute name="href"><xsl:text>trombino.php?binets=</xsl:text><xsl:value-of select="@nom"/></xsl:attribute><xsl:value-of select="@nom"/></a><xsl:text>  </xsl:text><xsl:if test="text()!=''"><em>(<xsl:value-of select="text()"/>)</em></xsl:if></li>
+				<li><a>	<xsl:attribute name="href"><xsl:text>trombino.php?binets=</xsl:text><xsl:value-of select="@nom_encode"/></xsl:attribute><xsl:value-of select="@nom"/></a><xsl:text>  </xsl:text><xsl:if test="text()!=''"><em>(<xsl:value-of select="text()"/>)</em></xsl:if></li>
 			</xsl:for-each>
 			</ul>
 		</xsl:if>

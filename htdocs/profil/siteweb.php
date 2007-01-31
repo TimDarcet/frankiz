@@ -122,11 +122,11 @@ require "../include/page_header.inc.php";
 				if ($fich != "." && $fich != "..") {
 					$chemin = "$rep/$fich";
 					if (is_dir($chemin)) {
-						echo "<noeud titre=\"$fich\">";
+						echo "<noeud titre=\"".htmlentities($fich)."\">";
 							parcours_arbo1($chemin);
 						echo "</noeud>" ;
 					} else {
-						echo "<feuille titre=\"$fich\"></feuille>";
+						echo "<feuille titre=\"".htmlentities($fich)."\"></feuille>";
 					}
 				}
 			}
