@@ -25,7 +25,7 @@ if (est_interne()) {
 	if(!cache_recuperer('lienik',0)) {
 		$DB_web->query("SELECT valeur FROM parametres WHERE nom='lienik'");
 		list($lienik) = $DB_web->next_row();
-		$lienik_full = BASE_URL."/binets/ik/".$lienik;
+		$lienik_full = URL_BINETS."ik/".$lienik;
 
 		echo "<a href=\"$lienik_full\"><image source=\"".BASE_URL."/data/ik_thumbnails/$lienik.png\" texte=\"IK de la semaine\"/></a> \n";
 		
