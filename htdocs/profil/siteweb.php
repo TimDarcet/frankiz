@@ -40,12 +40,13 @@ list($nom,$prenom,$surnom,$mail,$login,$promo,$section,$cie,$casert) = $DB_tromb
 if (isset($_POST['up_page'])) {
 	if ((isset($_FILES['file'])) &&($_FILES['file']['name']!='')) {
 		$chemin = BASE_PAGESPERSOS."$login-$promo/" ;
-		deldir($chemin);
-		mkdir ($chemin) ;
+		deldir($chemin, WEBPERSO_USER);
 		
-		$filename = $chemin.$_FILES['file']['name'];
+		$filename = "/tmp/$login-$promo-".$_FILES['file']['name'];
 		move_uploaded_file($_FILES['file']['tmp_name'], $filename);
-		unzip($filename, $chemin , true);
+		chmod($filename, 0640);
+		chgrp($filename, WEBPERSO_GROUP);
+		unzip($filename, $chemin , true, WEBPERSO_USER);
 		$message .= "<commentaire>Ton site personnel vient d'être mis à jour.</commentaire>" ;
 	}
 }

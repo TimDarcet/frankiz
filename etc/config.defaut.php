@@ -119,6 +119,9 @@ define('DATA_DIR_URL',URL_DATA);
 
 define('DSI_URL',"reseaux.polytechnique.fr") ;
 
+define('WEBPERSO_USER', 'webperso');
+define('WEBPERSO_GROUP', 'webperso');
+
 // Emails
 $i = -1 ;
 define('MAIL_WEBMESTRE',"web@frankiz.polytechnique.fr");
