@@ -28,7 +28,7 @@
 require_once "../include/global.inc.php";
 demande_authentification(AUTH_FORT);
 
-// Génération du la page XML
+// Génération de la page XML
 require "../include/page_header.inc.php";
 ?>
 <page id="profil_demandeip" titre="Frankiz : Demande d'enregistrement d'une nouvelle machine">
@@ -45,8 +45,8 @@ if ($DB_valid->num_rows()>0) { ?>
 			Si tu as juste changé d'ordinateur, garde la même IP (et la même configuration réseau) !
 		</note>
 		<choix titre="Je fais cette demande parce que" id="type" type="radio" valeur="1">
-			<option titre="J'ai installé un 2ème ordinateur dans mon casert et je souhaite avoir une nouvelle adresse pour cette machine." id="1"/>
-			<option titre="Autre raison :" id="2"/>
+			<option titre="J'ai installé un 2ème ordinateur dans mon casert et je souhaite avoir une nouvelle adresse IP pour cette machine." id="1"/>
+			<option titre="Autre raison (justifie ta demande ci-dessous) :" id="2"/>
 		</choix>
 		<note>
 			Donne-nous plus d'explications sur cette demande. (Surtout si tu as déjà plusieurs ordinateurs enregistrés sur le réseau.)
@@ -87,24 +87,30 @@ if ($DB_valid->num_rows()>0) { ?>
 	
 	$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
 	
-	$contenu = "$prenom $nom a demandé l'enregistrement d'une nouvelle machine pour la raison suivante : <br>".
-				$_POST['raison']."<br><br>".
-				"Pour valider ou non cette demande, va sur la page : <br><br>".
-				"<div align='center'><a href='".BASE_URL."/admin/valid_ip.php'>".
-				BASE_URL."/admin/valid_ip.php</a></div><br><br>" .
-				"Cordialement,<br>" .
-				"Le BR<br>";
-				
+	$contenu = "$prenom $nom a demandé l'enregistrement d'une nouvelle machine pour la raison suivante : <br>";
+
+	if ($_POST['type'] == 1) { $contenu .= "J'ai installé un 2ème ordinateur dans mon casert et je souhaite avoir une nouvelle adresse IP pour cette machine. <br>"; }
+	else { $contenu .= "Autre raison qu'un 2ème ordinateur : <br>"; }
+
+	$contenu .= $_POST['raison']."<br><br>".
+		"Pour valider ou non cette demande, va sur la page : <br><br>".
+		"<div align='center'><a href='".BASE_URL."/admin/valid_ip.php'>".
+		BASE_URL."/admin/valid_ip.php</a></div><br><br>" .
+		"Cordialement,<br>" .
+		"Le BR<br>";
+			
 	couriel(ROOT_ID,"[Frankiz] Demande d'enregistrement d'une nouvelle machine",$contenu,$_SESSION['user']->uid);
-	
+
 	// Affichage d'un message d'information
 ?>
 	<p>Nous avons bien pris en compte ta demande d'enregistrement de machine pour la raison
 		indiquée ci-dessous. Nous allons la traiter dans les plus brefs délais.</p>
 	<p>Raison de la demande :</p> 
+
 	<commentaire>
-		<?php echo $_POST['raison']; ?>
-	</commentaire>
+		<?php if ($_POST['type'] == 1) { echo "J'ai installé un 2ème ordinateur dans mon casert et je souhaite avoir une nouvelle adresse IP pour cette machine.<br/>".$_POST['raison'];  }
+			else { echo "Autre raison qu'un 2ème ordinateur : <br/>".$_POST['raison']; } ?>
+	</commentaire> 
 	
 <?php } ?>
 
