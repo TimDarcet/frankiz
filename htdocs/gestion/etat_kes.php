@@ -51,7 +51,6 @@ if (isset($_POST['envoie_lienik'])) {
 	
 	$file = rawurldecode($_POST['ik']);
 	$file_encode = rawurlencode($file);
-	$url = BASE_URL."/binets/ik/".urlencode($file);
 	$path = escapeshellarg(BASE_LOCAL."/binets/ik/".$file);
 	$path2 = escapeshellarg(BASE_LOCAL."/../data/ik_thumbnails/".$file.".png");
 
