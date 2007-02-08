@@ -106,7 +106,7 @@ if(isset($_POST['changer_xnet'])) {
 	if(substr($_SERVER['REMOTE_ADDR'],0,7)=="129.104" && $bool_ip) {
 		echo "<warning>ATTENTION : " ;
 		echo "Ton ip est actuellement ".$_SERVER['REMOTE_ADDR'] ; 
-		echo " et ceci ne devrait pas être le cas si tu te connecte de ton kzert</warning>";
+		echo " et ceci ne devrait pas être le cas si tu te connectes de ton kzert</warning>";
 	}
 ?>
 	</p>

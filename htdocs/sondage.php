@@ -96,7 +96,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 <?php
 if (!isset($_REQUEST['id'])) {
 	?>
-	<warning>Le sondage que tu demandes n'existes plus ou n'a jamais existé</warning>
+	<warning>Le sondage que tu demandes n'existe plus ou n'a jamais existé.</warning>
 	<?php
 } else {
 	$DB_web->query("SELECT restriction,eleve_id FROM sondage_question WHERE sondage_id='{$_REQUEST['id']}'");
@@ -131,16 +131,16 @@ if (!isset($_REQUEST['id'])) {
 		<?php
 		$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_REQUEST['id']}'");
 		$nombre_votants = $DB_web->num_rows() ;
-		echo "<note>$nombre_votants personnes ont répondu à ce sondage</note>" ;
+		echo "<note>$nombre_votants personnes ont répondu à ce sondage.</note>" ;
 		}
 	
-		// Si la personne a valider on stock son vote ...
+		// Si la personne a validé on stocke son vote ...
 		//=================================================================
 		
-		// La personne a t'elle cliqué sur le vouton de validation ?
+		// La personne a t'elle cliqué sur le bouton de validation ?
 		if (isset($_POST['valid'])) {
 			$DB_web->query("SELECT (TO_DAYS(perime) - TO_DAYS(NOW())) FROM sondage_question WHERE sondage_id='{$_REQUEST['id']}'");
-			// Y a t'il yn sondage qui existe sous cette id ?
+			// Y a t'il un sondage qui existe sous cette id ?
 			if ($DB_web->num_rows()==1) {
 				list($delta) = $DB_web->next_row() ;
 				
@@ -150,7 +150,7 @@ if (!isset($_REQUEST['id'])) {
 					$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_REQUEST['id']}' AND eleve_id='".$_SESSION['user']->uid."'");
 					if ($DB_web->num_rows()==0) {
 						// Il a donc pas voté
-						//on le marque donc comme ayant voté
+						// on le marque donc comme ayant voté
 						$DB_web->query("INSERT INTO sondage_votants SET sondage_id='{$_REQUEST['id']}', eleve_id='".$_SESSION['user']->uid."'");
 						$a_vote = "oui" ;
                         
@@ -183,7 +183,7 @@ if (!isset($_REQUEST['id'])) {
 			<commentaire>Merci d'avoir voté</commentaire>
 			<?php
 		} else {
-			// Dévut du formulaire !
+			// Début du formulaire !
 			//======================================================
 			echo $message ;
 			
@@ -219,11 +219,11 @@ if (!isset($_REQUEST['id'])) {
 					<?php
 				}
 			} else {
-				echo "<warning>Le sondage que tu demandes n'existes plus ou n'a jamais existé</warning>";
+				echo "<warning>Le sondage que tu demandes n'existe plus ou n'a jamais existé.</warning>";
 			}
 		}
 	}else{
-			echo "<warning>Ce sondage a un accès restreint et tu n'es pas autorisé à y participer</warning>";
+			echo "<warning>Ce sondage a un accès restreint et tu n'es pas autorisé à y participer.</warning>";
 	}
 }
 	?>
