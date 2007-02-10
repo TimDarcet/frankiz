@@ -97,7 +97,7 @@ $DB_web->query("
 		annonces.annonce_id,
 		DATE_FORMAT(stamp, '%d/%m/%Y'),
 		stamp, perime, titre, contenu, en_haut, exterieur,
-		nom, prenom, surnom, promo,
+		nom, prenom, surnom, promo, login,
 		IFNULL(mail, CONCAT(login, '@poly.polytechnique.fr')) AS mail,
 		$annonces_lues2 
 	FROM annonces
@@ -110,7 +110,7 @@ $DB_web->query("
 
 while (list(
 	$id, $date, $stamp, $perime, $titre, $contenu, $en_haut, $exterieur,
-	$nom, $prenom, $surnom, $promo, $mail, $visible) = $DB_web->next_row())
+	$nom, $prenom, $surnom, $promo, $login, $mail, $visible) = $DB_web->next_row())
 {
 	if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
 ?>
@@ -122,7 +122,7 @@ while (list(
 		if (file_exists(DATA_DIR_LOCAL.'annonces/'.$id))
 			echo "<image source=\"".DATA_DIR_URL."annonces/$id\" texte=\"logo\"/>\n";
 		echo wikiVersXML($contenu);
-		echo "<eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"".(intval($promo) === 0 ? '' : $promo)."\" surnom=\"$surnom\" mail=\"$mail\"/>\n";
+		echo "<eleve nom=\"$nom\" prenom=\"$prenom\" promo=\"".(intval($promo) === 0 ? '' : $promo)."\" surnom=\"$surnom\" mail=\"$mail\" login=\"$login\" lien=\"". (est_authentifie(AUTH_INTERNE) ? 'oui' : 'non')."\" />\n";
 		if(est_authentifie(AUTH_MINIMUM))
 			echo "<lien url=\"?lu=$id#annonce_$id\" titre=\"Faire disparaître\" id=\"annonces_lues\"/><br/>\n";
 		echo "</annonce>";

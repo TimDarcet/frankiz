@@ -152,11 +152,31 @@
 <xsl:template match="eleve[name(..)='annonce']">
 	<p class="fkz_signature">
 		<xsl:choose>
-			<xsl:when test="@surnom != ''">
-				<xsl:value-of select="@surnom"/>
+			<xsl:when test="@lien='oui'">
+				<a>
+					<xsl:attribute name="href">
+						<xsl:text>trombino.php?chercher=&amp;loginpoly=</xsl:text>
+						<xsl:value-of select="@login"/>
+					</xsl:attribute>
+					<xsl:choose>
+						<xsl:when test="@surnom != ''">
+							<xsl:value-of select="@surnom"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="@prenom"/><xsl:text>  </xsl:text><xsl:value-of select="@nom"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</a>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="@prenom"/><xsl:text>  </xsl:text><xsl:value-of select="@nom"/>
+				<xsl:choose>
+					<xsl:when test="@surnom != ''">
+						<xsl:value-of select="@surnom"/>
+			                </xsl:when>
+			                <xsl:otherwise>
+				                <xsl:value-of select="@prenom"/><xsl:text>  </xsl:text><xsl:value-of select="@nom"/>
+				        </xsl:otherwise>
+				</xsl:choose>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:if test="@promo!=''">(<xsl:value-of select="@promo"/>)</xsl:if>
