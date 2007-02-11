@@ -204,7 +204,7 @@ $DB_valid->query("UNLOCK TABLES");
 				
 				echo wikiVersXML($contenu) ;
 				?>
-				<eleve nom="<?php echo $nom; ?>" prenom="<?php echo $prenom; ?>" promo="<?php echo $promo; ?>" surnom="<?php echo $surnom; ?>" mail="<?php echo $mail; ?>"/>
+				<eleve nom="<?php echo $nom; ?>" prenom="<?php echo $prenom; ?>" promo="<?php echo $promo; ?>" surnom="<?php echo $surnom; ?>" mail="<?php echo $mail; ?>" login="<?php echo $login; ?>" lien="oui" />
 		</annonce>
 <?php
 // Zone de saisie de l'annonce
