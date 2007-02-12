@@ -119,7 +119,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 
 ?>
 <page id="admin_arp" titre="Frankiz : gestion de l'arpwatch">
-<?phpif ($montrer_detail==1) {
+<?php if ($montrer_detail==1) {
 	$DB_admin->query("SELECT e.nom,e.prenom,p.prise_id, p.piece_id FROM prises as p LEFT JOIN trombino.eleves as e ON e.piece_id=p.piece_id WHERE e.promo='$promo_detail' AND e.login='$login_detail' LIMIT 1");
 	
 	list($nom,$prenom,$id_prise,$id_piece) = $DB_admin->next_row() ;

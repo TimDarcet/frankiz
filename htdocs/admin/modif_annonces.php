@@ -144,7 +144,7 @@ $DB_valid->query("UNLOCK TABLES");
 				<?php
 				}
 				?>
-				<eleve nom="<?php echo $nom; ?>" prenom="<?php echo $prenom; ?>" promo="<?php echo $promo; ?>" surnom="<?php echo $surnom; ?>" mail="<?php echo $mail; ?>"/>
+					<eleve nom="<?php echo $nom; ?>" prenom="<?php echo $prenom; ?>" promo="<?php echo $promo; ?>" surnom="<?php echo $surnom; ?>" mail="<?php echo $mail; ?>" login="<?php echo $login; ?>" lien="oui" />
 		</annonce>
 <?php
 // Zone de saisie de l'annonce
@@ -177,7 +177,7 @@ $DB_valid->query("UNLOCK TABLES");
 			</choix>
 
 			<bouton id='modif_<?php echo $id ?>' titre="Modifier"/>
-			<bouton id='suppr_<?php echo $id ?>' titre='Supprimer' onClick="return window.confirm('Si vous supprimer cette annonce, celle-ci sera supprimé de façon definitive ... Voulez vous vraiment la supprimer ?')"/>
+			<bouton id='suppr_<?php echo $id ?>' titre='Supprimer' onClick="return window.confirm('Si vous supprimez cette annonce, celle-ci sera supprimée de façon definitive ... Voulez-vous vraiment la supprimer ?')"/>
 		</formulaire>
 <?php
 		affiche_syntaxe_wiki();
