@@ -51,8 +51,8 @@ if (isset($_POST['envoie_lienik'])) {
 	
 	$file = rawurldecode($_POST['ik']);
 	$file_encode = rawurlencode($file);
-	$path = escapeshellarg(BASE_LOCAL."/binets/ik/".$file);
-	$path2 = escapeshellarg(BASE_LOCAL."/../data/ik_thumbnails/".$file.".png");
+	$path = escapeshellarg(BASE_BINETS."ik/".$file);
+	$path2 = escapeshellarg(BASE_DATA."ik_thumbnails/".$file.".png");
 
 	$ret = exec ("convert ".$path."[0] -resize '150x212' ".$path2."; echo $?");
 
@@ -92,7 +92,7 @@ list($valeur) = $DB_web->next_row();
 $DB_web->query("SELECT valeur FROM parametres WHERE nom='lienik'");
 list($lienik) = $DB_web->next_row();
 
-$iks = glob(BASE_LOCAL."/binets/ik/*.pdf");
+$iks = glob(BASE_BINETS."ik/*.pdf");
 
 $choix_possibles = array();
 
