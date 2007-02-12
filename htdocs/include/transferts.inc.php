@@ -28,26 +28,40 @@
 /*
 	Décompresse un fichier $file dans le repertoire $dir. $del est un booleen qui dit si le
 	fichier zip doit être supprimé après decompression.
+	
+	La fonction sera éxécutée sous l'identité de $user
 */
-function unzip($file,$dir,$del){
+function unzip($file,$dir,$del, $user = ""){
+	if ($user) {
+		$sudo = "sudo -u $user" ;
+	} else {
+		$sudo = "" ;
+	}
+
+	exec ("$sudo mkdir -p $dir 2>&1", $text, $ret);
+
+	if ($ret != 0) {
+		return false;
+	}
+
 	if (eregi("(.zip)$",basename($file))) {
-			$cde = "/usr/bin/unzip $file -d $dir";
+			$cde = "$sudo /usr/bin/unzip $file -d $dir";
 			exec($cde);
 			if($del = true) unlink($file);
 	}
 	else if (eregi("(.tar.gz|.tgz)$",basename($file))){
-			$cde = "cd $dir && /bin/tar zxvf $file";
+			$cde = "$sudo /bin/tar zxvf $file -C $dir";
 			exec($cde);
 			if($del = true) unlink($file);
 	}
 	else if (eregi("(.tar)$",basename($file))){
-			$cde = "cd $dir && /bin/tar xvf $file";
+			$cde = "$sudo /bin/tar xvf $file -C $dir";
 			exec($cde);
 			if($del = true) unlink($file);
 	}
 	else if (eregi("(.tar.bz2)$",basename($file))){
-			$cde = "cd $dir && /bin/tar jxvf $file";
-			exec($cde);
+			$cde = "$sudo /bin/tar jxvf $file -C $dir";
+			exec($cde, $text);
 			if($del = true) unlink($file);
 	}
 	else return false;
@@ -74,30 +88,19 @@ function zip($file,$dir,$type){
 /*
 	Supprime un répertoire complet et renvoit true lorsque tout c'est bien passé
 */
-function deldir($dir) {
-	if (!file_exists($dir)) {
-		return false;
-	}
-	if (is_file($dir)) {
-		return unlink($dir);
-	}
-	$dh=opendir($dir);
-	while ($file=readdir($dh)) {
-		if($file!="." && $file!="..") {
-			$fullpath=$dir."/".$file;
-			if(!is_dir($fullpath)) {
-			unlink($fullpath);
-			} else {
-			deldir($fullpath);
-			}
-		}
-	}
-	closedir($dh);
-	if(rmdir($dir)) {
-		return true;
+function deldir($dir, $user = "") {
+	if ($user) {
+		$sudo = "sudo -u $user";
 	} else {
+		$sudo = "";
+	}
+
+        if (!file_exists($dir)) {
 		return false;
 	}
+
+	exec ("$sudo rm -rf $dir", $dummy, $ret);
+	return $ret == 0;
 }
 
 /*
