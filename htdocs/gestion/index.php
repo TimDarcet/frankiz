@@ -153,6 +153,7 @@ $permissions_user = $_SESSION['user']->perms ;
 	if (verifie_permission('admin')||verifie_permission('web')){
 	?>
 		<lien titre="Modifier les annonces" url="admin/modif_annonces.php"/><br/>
+		<lien titre="Modifier les sondages" url="admin/modif_sondages.php"/><br/>
 		<lien titre="Nettoyer les bases de données" url="admin/nettoyage.php"/><br/>
 	<?php
 	}
