@@ -43,7 +43,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 ?>
 <page id="licences" titre="Frankiz : Les Licences">
 <?php	
-	$log=array('visualstudio' => 'Visual Studio .NET','winxp' => 'Windows XP Professionnel','2k3serv' => 'Windows Serveur 2003','2k3access'=>'Access 2003','2k3onenote'=>'One Note 2003','2k3visiopro'=>'Visio Professionnel 2003','win2k'=>'Windows 2000 Professionnel');
+	$log=array('visualstudio' => 'Visual Studio .NET','winxp' => 'Windows XP Professionnel','winvista' => 'Windows Vista Business','2k3serv' => 'Windows Serveur 2003','2k3access'=>'Access 2003','2k3onenote'=>'One Note 2003','2k3visiopro'=>'Visio Professionnel 2003','win2k'=>'Windows 2000 Professionnel');
 	//on vérifie que la raison n'est pas vide... si elle l'est il se tape tout le formulaire pour recommencer.
 	if(isset($_POST['raison'])&&$_POST['raison']==""){
 ?>
@@ -60,7 +60,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 			<commentaire>Ta clé va t'être expédiée sur ta boite mail.</commentaire>
 			<?php
 				//si la demande concerne un OS qui permet la connection au domaine, on rajoute un peu de "pub" dans le mail...
-				if($_POST['logiciel']=='winxp' || $_POST['logiciel']=='win2k'){
+				if($_POST['logiciel']=='winxp' || $_POST['logiciel']=='win2k' || $_POST['logiciel']=='winvista'){
 					$contenu_ajout="Avec ".$log[$_POST['logiciel']].", tu disposes maintenant d'une machine qui peut se connecter au domaine. <br>".
 						"Tu trouveras dans l'infoBR les informations te permettant de mener à bien cette opération.<br><br>".
 						"Grâce au domaine, le réseau de l'X est plus sûr et tes demandes d'assistance seront simplifiées et donc accélérées.<br><br>";
@@ -87,7 +87,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 					?>
 					<commentaire>Tu as déjà demandé ta clé, elle va t'être ré-expédiée sur ta boite mail.</commentaire>
 					<?php
-					if($_POST['logiciel']=='winxp' || $_POST['logiciel']=='win2k'){
+					if($_POST['logiciel']=='winxp' || $_POST['logiciel']=='win2k' || $_POST['logiciel']=='winvista'){
 						$contenu_ajout="Avec ".$log[$_POST['logiciel']].", tu disposes maintenant d'une machine qui peut se connecter au domaine. <br>".
 							"Tu trouveras dans l'infoBR les informations te permettant de mener à bien cette opération.<br><br>".
 							"Grâce au domaine, le réseau de l'X est plus sûr et tes demandes d'assistance seront simplifiées et donc accélérées.<br><br>";
@@ -109,7 +109,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 					<?php
 					// sinon on l'ajoute... et on update la base...
 						$DB_msdnaa->query("UPDATE cles_{$_POST['logiciel']} SET attrib='1' WHERE eleve_id='".$_SESSION['user']->uid."'");
-						if($_POST['logiciel']=='winxp' || $_POST['logiciel']=='win2k'){
+						if($_POST['logiciel']=='winxp' || $_POST['logiciel']=='win2k' || $_POST['logiciel']=='winvista'){
 							$contenu_ajout="Avec ".$log[$_POST['logiciel']].", tu disposes maintenant d'une machine qui peut se connecter au domaine. <br>".
 								"Tu trouveras dans l'infoBR les informations te permettant de mener à bien cette opération.<br><br>".
 								"Grâce au domaine, le réseau de l'X est plus sûr et tes demandes d'assistance seront simplifiées et donc accélérées.<br><br>";
@@ -128,7 +128,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 			} else {
 				//on prévient les admins@windows qu'il ya une clée à rajouter à la main...
 				//et le gens donne sa raison
-				if($_POST['logiciel']=="winxp"){
+				if($_POST['logiciel']=="winxp" || $_POST['logiciel']=="winvista"){
 					$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
 					list($promo_temp) = $DB_web->next_row() ;
 					if($promo==$promo_temp-1 || $promo==$promo_temp){
@@ -221,12 +221,13 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 		}
 	?>
 		<formulaire id="dem_licence" titre= "Les licences pour les logiciels Microsoft" action="profil/licences.php">
-			<note>Dans le cadre de l'accord MSDNAA, chaque étudiant de polytechnique à le droit à une version de Windows XP Pro gratuite, légale et attibuée à vie</note>
-			<note>Si tu as besoin d'une clé pour un logiciel téléchargé sur ftp://enez/, et qu'il n'est pas proposé dans la liste, envoi un mail aux <lien url="mailto:windows@frankiz.polytechnique.fr" titre="Admins Windows"/>.</note>
+			<note>Dans le cadre de l'accord MSDNAA, chaque étudiant de polytechnique à le droit à une version de Windows XP Pro et une de Windows Vista Business gratuites, légales et attibuées à vie</note>
+			<note>Si tu as besoin d'une clé pour un logiciel téléchargé sur ftp://enez/, et qu'il n'est pas proposé dans la liste, envoi un mail aux <lien url="mailto:msdnaa-licences@frankiz.polytechnique.fr" titre="Admins Windows"/>.</note>
 			<p>Les licences disponibles</p>
 			<choix titre="Logiciels" id="logiciel" type="combo" valeur="">
 				<option titre="Windows XP Pro" id="winxp"/>
-				<option titre="Windows 2003 Serveur" id="2k3serv"/>
+				<option titre="Windows Vista Business" id="winvista"/>
+		                <option titre="Windows 2003 Serveur" id="2k3serv"/>
 				<option titre="Windows 2000 Professionnel" id="win2k"/>
 				<option titre="Access 2003" id="2k3access"/>
 				<option titre="One Note 2003" id="2k3onenote"/>
