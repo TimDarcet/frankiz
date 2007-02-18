@@ -75,15 +75,15 @@ $temp = explode("_",$keys) ;
 		$DB_msdnaa->query("DELETE FROM valid_licence WHERE eleve_id='{$temp[1]}'");
 		$bla = "refus_".$temp[1] ;
 		$contenu = "Bonjour, <br><br>".
-					"Nous sommes désolés de pas pouvoir t'attribuer une licence pour la raison suivante :<br>".
+					"Nous sommes désolés de ne pas pouvoir t'attribuer une licence pour la raison suivante :<br>".
 					$_POST[$bla]."<br>".
-					"Il y a certainement une autre façon de procéder pour atteindre ton but.<br>".
+					"Tu peux contacter les admins windows (windows@frankiz) pour de plus amples informations.<br>".
 					"<br>" .
 					"Très Cordialement<br>" .
 					"Le BR<br>"  ;
 	
 		couriel($temp[1],"[Frankiz] Ta demande a été refusée ",$contenu,WINDOWS_ID);
-		echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande n'a pas été acceptée.</commentaire>" ;
+		echo "<commentaire>Envoi d'un mail. On prévient l'utilisateur que sa demande n'a pas été acceptée.</commentaire>" ;
 	}
 	// On accepte la demande de licence supplémentaire
 	//===========================
@@ -113,7 +113,7 @@ $temp = explode("_",$keys) ;
 			
 					couriel($temp[1],"[Frankiz] Ta demande a été acceptée",$contenu,WINDOWS_ID);
 					couriel(WINDOWS_ID,"[Frankiz] Ta demande a été acceptée",$contenu,$temp[1]);
-					echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande a été acceptée (nouvelle licence : ".$_POST[$temp2].")</commentaire>" ;
+					echo "<commentaire>Envoi d'un mail. On prévient l'utilisateur que sa demande a été acceptée (nouvelle licence : ".$_POST[$temp2].")</commentaire>" ;
 				}else{
 				//on cherche ds les clés attribuées au logiciel..
 				$DB_msdnaa->query("SELECT 0 FROM cles_$temp[2] WHERE cle='{$_POST[$temp2]}'");
@@ -139,14 +139,14 @@ $temp = explode("_",$keys) ;
 			
 					couriel($temp[1],"[Frankiz] Ta demande a été acceptée",$contenu,WINDOWS_ID);
 					couriel(WINDOWS_ID,"[Frankiz] Ta demande a été acceptée",$contenu,$temp[1]);
-					echo "<commentaire>Envoie d'un mail. On prévient l'utilisateur que sa demande a été acceptée (nouvelle licence : ".$_POST[$temp2].")</commentaire>" ;
+					echo "<commentaire>Envoi d'un mail. On prévient l'utilisateur que sa demande a été acceptée (nouvelle licence : ".$_POST[$temp2].")</commentaire>" ;
 				}else{
 					echo "<warning>La clé ".$_POST[$temp2]." existe déjà et est attribuée. Elle a été supprimée de la base des clés libres.</warning>";
 					$DB_msdnaa->query("DELETE FROM cles_libres WHERE cle='{$_POST[$temp2]}' AND logiciel='{$temp[2]}'");
 				}
 				}
 			}else{
-				echo "<warning>La demande a déjà été traitée par un autre administrateur du systeme</warning>";
+				echo "<warning>La demande a déjà été traitée par un autre administrateur du systeme.</warning>";
 			}
 		}
 		// S'il y  a deja une entrée comme celle demandé dans la base !

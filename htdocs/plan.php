@@ -44,7 +44,7 @@ require "include/page_header.inc.php";
 
 <cadre titre="En voiture">
 	<h3>1ère méthode : par l'A6</h3>
-	<p>Sur le périphérique extérieur, juste après la porte d'orléans, vous avez une sortie vers l'A6
+	<p>Sur le périphérique extérieur, juste après la porte d'orléans, vous avez une sortie vers l'A6.
 	5km plus loin, il y aura une séparation d'autoroute : Suivez l'A6a/E50 en direction d'Orléans/Palaiseau (9.7km).
 	Ensuite direction A10 en suivant Palaiseau (6.1km).</p>
 	<p>Au panneau "Cité Scientifique" vous quittez l'A10 et vous vous engagez sur la N444 (1.2km).
