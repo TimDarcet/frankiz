@@ -29,19 +29,51 @@ if(est_authentifie(AUTH_MINIMUM)) {
 	if(!cache_recuperer('sondages',strtotime(date("Y-m-d",time())))) {
 		$DB_web->query("SELECT sondage_id,titre,perime FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) >=-7");
 		if($DB_web->num_rows()>0){
-			$DB_web->query("SELECT sondage_id,titre,DATE_FORMAT(perime,'%d/%m') FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) >=0");
+			$DB_web->query("SELECT sondage_id,titre,DATE_FORMAT(perime,'%d/%m'),restriction FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) >=0");
 			if($DB_web->num_rows()>0){
 				echo "<p>En Cours</p>" ;
-				while(list($id,$titre,$date) = $DB_web->next_row()) {
-					echo "<lien id='sondage_encours' titre='$titre ($date)' url='sondage.php?id=$id'/><br/>\n";
+				while(list($id,$titre,$date,$restriction) = $DB_web->next_row()) {
+
+					if ($restriction != "aucune") {
+						$restr = explode("_",$restriction);
+						if ($restr[0]=="promo") $restriction_nom = $restr[1];
+						if ($restr[0]=="section") {
+							$DB_trombino->query("SELECT nom FROM sections WHERE section_id = $restr[1]");
+							list($restriction_nom) = $DB_trombino->next_row();
+						}
+						if ($restr[0]=="binet") {
+							$DB_trombino->query("SELECT nom FROM binets WHERE binet_id = $restr[1]");
+							list($restriction_nom) = $DB_trombino->next_row();
+						}
+						$restriction_nom = "[".$restriction_nom."] ";
+					}
+					else {$restriction_nom = "";}
+
+					echo "<lien id='sondage_encours' titre='$restriction_nom$titre ($date)' url='sondage.php?id=$id'/><br/>\n";
 				}
 			}
 			
-			$DB_web->query("SELECT sondage_id,titre,DATE_FORMAT(perime,'%d/%m') FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) <0 AND TO_DAYS(perime) - TO_DAYS(NOW()) >=-7");
+			$DB_web->query("SELECT sondage_id,titre,DATE_FORMAT(perime,'%d/%m'),restriction FROM sondage_question WHERE TO_DAYS(perime) - TO_DAYS(NOW()) <0 AND TO_DAYS(perime) - TO_DAYS(NOW()) >=-7");
 			if($DB_web->num_rows()>0){
 				echo "<p>Anciens</p>" ;
-				while(list($id,$titre,$date) = $DB_web->next_row()) {
-					echo "<lien id='sondage_ancien' titre='$titre ($date)' url='sondage.php?id=$id'/><br/>\n";
+				while(list($id,$titre,$date,$restriction) = $DB_web->next_row()) {
+
+					if ($restriction != "aucune") {
+						$restr = explode("_",$restriction);
+						if ($restr[0]=="promo") $restriction_nom = $restr[1];
+						if ($restr[0]=="section") {
+							$DB_trombino->query("SELECT nom FROM sections WHERE section_id = $restr[1]");
+							list($restriction_nom) = $DB_trombino->next_row();
+						}
+						if ($restr[0]=="binet") {
+							$DB_trombino->query("SELECT nom FROM binets WHERE binet_id = $restr[1]");
+							list($restriction_nom) = $DB_trombino->next_row();
+						}
+						$restriction_nom = "[".$restriction_nom."] ";
+					}
+					else {$restriction_nom = "";}
+
+					echo "<lien id='sondage_ancien' titre='$restriction_nom$titre ($date)' url='sondage.php?id=$id'/><br/>\n";
 				}
 			}
 		}
