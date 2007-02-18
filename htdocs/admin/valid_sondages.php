@@ -66,7 +66,7 @@ foreach ($_POST AS $keys => $val){
 			
 			$bla = "explication_".$temp[1] ;
 			$contenu = "<strong>Bonjour</strong>, <br><br>".
-						"Nous sommes désolé mais ton sondage n'a pas été validé par le BR pour la raison suivante : <br>".
+						"Nous sommes désolés mais ton sondage n'a pas été validé par le BR pour la raison suivante : <br>".
 						$_POST[$bla]."<br>".
 						"<br>" .
 						"Très Cordialement<br>" .
@@ -110,8 +110,8 @@ foreach ($_POST AS $keys => $val){
 			
 			$bla = "explication_".$temp[1] ;
 			$contenu = "<strong>Bonjour</strong>, <br><br>".
-						"Ton sondage vient d'être mis en ligne par le BR <br>";
-			$contenu .= "Il est accessible à l'adresse suivante: ".BASE_URL."/sondage.php?id=".$index."<br>";
+						"Ton sondage vient d'être mis en ligne par le BR. <br>";
+			$contenu .= "Il est accessible à l'adresse suivante : ".BASE_URL."/sondage.php?id=".$index."<br>";
 			$contenu .= $_POST[$bla]."<br>".
 						"<br>" .
 						"Très Cordialement<br>" .
@@ -144,7 +144,26 @@ $DB_trombino->query("UNLOCK TABLES");
 		<formulaire id="sond_<?php echo $id ?>" titre="Validation de '<?php echo $titre; ?>'" action="admin/valid_sondages.php">
 			<note>Sondage proposé par <?php echo $prenom; ?> <?php echo $nom; ?> (<?php echo $promo; ?>)</note>
 			<zonetext titre="La raison du choix du modérateur (Surtout si refus)" id="explication_<?php echo $id ;?>"></zonetext>
-			<textsimple id='restriction' valeur='Restriction demandée: <?php echo $restriction; ?>'/><br/>
+			<textsimple id='restriction' valeur='Restriction demandée :
+				<?php 
+				if ($restriction != "aucune") {
+					$restr = explode("_",$restriction);
+					if ($restr[0]=="promo") $restriction_nom = "Promo ".$restr[1];
+					if ($restr[0]=="section") {
+						$DB_trombino->query("SELECT nom FROM sections WHERE section_id = $restr[1]");
+						list($restriction_nom) = $DB_trombino->next_row();
+						$restriction_nom = "Section ".$restriction_nom;
+					}
+					if ($restr[0]=="binet") {
+						$DB_trombino->query("SELECT nom FROM binets WHERE binet_id = $restr[1]");
+						list($restriction_nom) = $DB_trombino->next_row();
+						$restriction_nom = "Binet ".$restriction_nom;
+					}
+				}
+				else {$restriction_nom = "Aucune";}
+
+			echo $restriction_nom;	?>'/><br/>
+	
 			<choix titre="Sondage jusqu'à " id="date" type="combo" valeur="<?php echo strtotime($date);?>">
 			<?php	for ($i=1 ; $i<=MAX_PEREMPTION ; $i++) {
 				$date_id = mktime(0, 0, 0, date("m") , date("d") + $i, date("Y")) ;

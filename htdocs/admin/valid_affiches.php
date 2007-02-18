@@ -189,8 +189,8 @@ $DB_valid->query("UNLOCK TABLES");
 			<zonetext id="explication" titre="La raison du choix du modérateur (Surtout si refus)"></zonetext>
 
 			<bouton id='modif_<?php echo $id ?>' titre="Modifier"/>
-			<bouton id='valid_<?php echo $id ?>' titre='Valider' onClick="return window.confirm('Cette annonce apparaitra dès maintenant sur le site ... Voulez vous valider cette activité ?')"/>
-			<bouton id='suppr_<?php echo $id ?>' titre='Supprimer' onClick="return window.confirm('Si vous supprimer cette activité, celle-ci sera supprimé de façon definitive ... Voulez vous vraiment la supprimer ?')"/>
+			<bouton id='valid_<?php echo $id ?>' titre='Valider' onClick="return window.confirm('Cette annonce apparaitra dès maintenant sur le site ... Voulez-vous valider cette activité ?')"/>
+			<bouton id='suppr_<?php echo $id ?>' titre='Supprimer' onClick="return window.confirm('Si vous supprimez cette activité, celle-ci sera supprimée de façon definitive ... Voulez-vous vraiment la supprimer ?')"/>
 
 		</formulaire>
 <?php

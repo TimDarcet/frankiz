@@ -117,9 +117,9 @@ if (isset($_POST['valid'])) {
 		$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
 	
 		$contenu = "<strong>Bonjour,</strong><br><br>".
-			"$prenom $nom a demandé la validation d'un sondage : <br>".
+			"$prenom $nom a demandé la validation d'un sondage. <br>".
 			"<br>".
-			"Pour valider ou non cette demande va sur la page suivante<br>".
+			"Pour valider ou non cette demande va sur la page suivante :<br>".
 			"<div align='center'><a href='http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_sondages.php'>".
 			"http://".$_SERVER['SERVER_NAME'].$tempo[0]."admin/valid_sondages.php</a></div><br><br>" .
 			"Cordialement,<br>" .
