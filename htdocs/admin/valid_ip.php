@@ -204,10 +204,10 @@ $DB_admin->query("UNLOCK TABLES");
 						echo "<em>";
 						switch($type){
 							case 1:
-								echo "J'ai installé un 2ème ordinateur dans mon casert et je souhaite avoir une nouvelle adresse pour cette machine.<br/>";
+								echo "J'ai installé un 2ème ordinateur dans mon casert et je souhaite avoir une nouvelle adresse IP pour cette machine.<br/>";
 								break;
 							default:
-								echo "Autre raison<br/>";
+								echo "Autre raison qu'un 2ème ordinateur.<br/>";
 						}
 						echo "</em><br/>";
 						echo "Commentaire : $raison"; 
