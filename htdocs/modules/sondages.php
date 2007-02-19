@@ -35,7 +35,7 @@ if(est_authentifie(AUTH_MINIMUM)) {
 				while(list($id,$titre,$date,$restriction) = $DB_web->next_row()) {
 
 					$restriction_nom = "";
-					if ($restriction != "aucune") {
+					if ($restriction && $restriction != "aucune") {
 						$restr = explode("_",$restriction);
 						if ($restr[0]=="promo") $restriction_nom = $restr[1];
 						if ($restr[0]=="section") {
@@ -46,7 +46,8 @@ if(est_authentifie(AUTH_MINIMUM)) {
 							$DB_trombino->query("SELECT nom FROM binets WHERE binet_id = $restr[1]");
 							list($restriction_nom) = $DB_trombino->next_row();
 						}
-						$restriction_nom = "[".$restriction_nom."] ";
+						
+					        $restriction_nom = "[".$restriction_nom."] ";
 					}
 
 					echo "<lien id='sondage_encours' titre='$restriction_nom$titre ($date)' url='sondage.php?id=$id'/><br/>\n";
@@ -59,7 +60,7 @@ if(est_authentifie(AUTH_MINIMUM)) {
 				while(list($id,$titre,$date,$restriction) = $DB_web->next_row()) {
 
 					$restriction_nom = "";
-					if ($restriction != "aucune") {
+					if ($restriction && $restriction != "aucune") {
 						$restr = explode("_",$restriction);
 						if ($restr[0]=="promo") $restriction_nom = $restr[1];
 						if ($restr[0]=="section") {
