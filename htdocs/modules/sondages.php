@@ -58,6 +58,7 @@ if(est_authentifie(AUTH_MINIMUM)) {
 				echo "<p>Anciens</p>" ;
 				while(list($id,$titre,$date,$restriction) = $DB_web->next_row()) {
 
+					$restriction_nom = "";
 					if ($restriction != "aucune") {
 						$restr = explode("_",$restriction);
 						if ($restr[0]=="promo") $restriction_nom = $restr[1];
@@ -71,7 +72,6 @@ if(est_authentifie(AUTH_MINIMUM)) {
 						}
 						$restriction_nom = "[".$restriction_nom."] ";
 					}
-					else {$restriction_nom = "";}
 
 					echo "<lien id='sondage_ancien' titre='$restriction_nom$titre ($date)' url='sondage.php?id=$id'/><br/>\n";
 				}
