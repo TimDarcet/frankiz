@@ -146,7 +146,8 @@ $DB_trombino->query("UNLOCK TABLES");
 			<zonetext titre="La raison du choix du modérateur (Surtout si refus)" id="explication_<?php echo $id ;?>"></zonetext>
 			<textsimple id='restriction' valeur='Restriction demandée :
 				<?php 
-				if ($restriction != "aucune") {
+				$restriction_nom = "Aucune";
+				if ($restriction && $restriction != "aucune") {
 					$restr = explode("_",$restriction);
 					if ($restr[0]=="promo") $restriction_nom = "Promo ".$restr[1];
 					if ($restr[0]=="section") {
@@ -160,7 +161,6 @@ $DB_trombino->query("UNLOCK TABLES");
 						$restriction_nom = "Binet ".$restriction_nom;
 					}
 				}
-				else {$restriction_nom = "Aucune";}
 
 			echo $restriction_nom;	?>'/><br/>
 	
