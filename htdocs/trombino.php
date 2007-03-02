@@ -25,8 +25,8 @@
 */
 
 // ceci doit être fait avant le session_start et donc avant l'include de global.inc.php
-if (!empty($_GET['image']) && ($_GET['image'] == 'true')) session_cache_limiter("public");
 // -- provoque des tas de problème de non-actualisation
+//if (!empty($_GET['image']) && ($_GET['image'] == 'true')) session_cache_limiter("public");
 //else session_cache_limiter("private_no_expire");
 
 require_once "include/global.inc.php";
