@@ -199,8 +199,13 @@ function cache_sauver($cache_id) {
 */
 function decode_sondage($string) {
 	$string = explode("###",$string) ;
-	for ($i=1 ; $i<count($string) ; $i++) {
-		$temp = explode("///",$string[$i]) ;
+	$i = 1;
+	foreach ($string as $string_part) {
+		if (!$string_part) {
+			continue;
+		}
+
+		$temp = explode("///",$string_part) ;
 		if ($temp[0]=="expli") {
 			echo "<note>$temp[1]</note>\n" ;
 		}
@@ -231,6 +236,72 @@ function decode_sondage($string) {
 			}	
 			echo "</choix><br/>\n" ;
 		}
+		if (($temp[0]=="radiolntab") || ($temp[0]=="checktab") || ($temp[0]=="radiotab"))
+		{
+			if (count($temp) != 3)
+			{
+				echo "<warning>Erreur de syntaxe en edition avancee</warning>";
+				continue;
+			}
+
+			$is_per_line = ($temp[0] == "radiolntab");
+
+			if ($is_per_line == false) {
+				echo "<choix type='".($temp[0] == "radiotab" ? "radio" : "checkbox")."' id='$i'>";
+			}
+
+
+			$tabheaders = explode("%%%", $temp[1]);
+			$tablines = explode("%%%", $temp[2]);
+			echo "<table>\n<tr><th></th>";
+
+			foreach ($tabheaders as $tabheader)
+			{
+				echo "<th>$tabheader</th>";
+			}
+
+			echo "</tr>\n";
+
+			for ($j = 0; $j < count($tablines); $j++)
+			{
+				if ($is_per_line) {
+					echo "<choix type='radio' id='$i' >";
+				}
+
+				echo "<tr><td>".$tablines[$j]."</td>";
+
+				for ($k = 0; $k < count($tabheaders); $k++)
+				{
+					echo "<td>";					
+					switch ($temp[0])
+					{
+					case 'radiotab':
+					case 'radiolntab':
+						echo "<option id='{$j}x{$k}' />";
+						break;
+					case 'checktab':
+						echo "<option id='{$i}_{$j}x{$k}' />";
+						break;
+					}
+					echo "</td>";
+				}
+
+				echo "</tr>\n";
+			
+				if ($is_per_line) {
+					echo "</choix>";
+					$i++;
+				}
+
+			}
+
+			echo "</table>";
+
+			if ($is_per_line == false) {
+				echo "</choix>";
+			}
+		}
+		$i++;
 	}
 }
 // Returns a nicely formatted html string

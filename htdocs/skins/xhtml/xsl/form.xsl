@@ -154,28 +154,81 @@
 </xsl:template>
 
 <xsl:template match="choix[@type='radio']">
-	<xsl:for-each select="option">
+	<xsl:apply-templates mode='radio' />
+</xsl:template>
+
+<xsl:template match="option" mode='radio'>
 		<input type="radio">
-			<xsl:attribute name="id"><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
-			<xsl:attribute name="name"><xsl:value-of select="../@id"/></xsl:attribute>
+			<xsl:attribute name="id"><xsl:value-of select="concat(ancestor::choix/@id,@id)"/></xsl:attribute>
+			<xsl:attribute name="name"><xsl:value-of select="ancestor::choix/@id"/></xsl:attribute>
 			<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
-			<xsl:if test="../@valeur = @id"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+			<xsl:if test="ancestor::choix/@valeur = @id"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 		</input>
 		<xsl:value-of select="@titre"/><br/>
-	</xsl:for-each>
 </xsl:template>
 
 <xsl:template match="choix[@type='checkbox']">
-	<xsl:for-each select="option">
-		<input type="checkbox">
-			<xsl:attribute name="id"><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
-			<xsl:if test="@modifiable='non'"><xsl:attribute name="disabled"/></xsl:if>
-			<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-			<xsl:if test="contains(../@valeur,@id)"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-		</input>
-		<xsl:value-of select="@titre"/><br/>
-	</xsl:for-each>
+	<xsl:apply-templates mode='checkbox' />
 </xsl:template>
+
+<xsl:template match="option" mode='checkbox'>
+	<input type="checkbox">
+		<xsl:attribute name="id"><xsl:value-of select="concat(ancestor::choix/@id,@id)"/></xsl:attribute>
+		<xsl:if test="@modifiable='non'"><xsl:attribute name="disabled"/></xsl:if>
+		<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+		<xsl:if test="contains(ancestor::choix/@valeur,@id)"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+	</input>
+	<xsl:value-of select="@titre"/><br/>
+</xsl:template>
+
+<xsl:template match="table" mode="radio">
+	<table border='1'><xsl:apply-templates mode="radio" /></table>
+</xsl:template>
+
+<xsl:template match="th" mode="radio">
+	<th><xsl:apply-templates mode="radio" /></th>
+</xsl:template>
+
+<xsl:template match="tr" mode="radio">
+	<tr><xsl:apply-templates mode="radio" /></tr>
+</xsl:template>
+
+<xsl:template match="td" mode="radio">
+	<td><xsl:apply-templates mode="radio" /></td>
+</xsl:template>
+
+<xsl:template match="table" mode="checkbox">
+	<table border='1'><xsl:apply-templates mode="checkbox" /></table>
+</xsl:template>
+
+<xsl:template match="th" mode="checkbox">
+	<th><xsl:apply-templates mode="checkbox" /></th>
+</xsl:template>
+
+<xsl:template match="tr" mode="checkbox">
+	<tr><xsl:apply-templates mode="checkbox" /></tr>
+</xsl:template>
+
+<xsl:template match="td" mode="checkbox">
+	<td><xsl:apply-templates mode="checkbox" /></td>
+</xsl:template>
+
+<xsl:template match="table">
+	<table border='1'><xsl:apply-templates /></table>
+</xsl:template>
+
+<xsl:template match="th">
+	<th><xsl:apply-templates /></th>
+</xsl:template>
+
+<xsl:template match="tr">
+	<tr><xsl:apply-templates /></tr>
+</xsl:template>
+
+<xsl:template match="td">
+	<td><xsl:apply-templates /></td>
+</xsl:template>
+
 
 <!-- autres -->
 <xsl:template match="fichier">
