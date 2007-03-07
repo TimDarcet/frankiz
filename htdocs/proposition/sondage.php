@@ -109,6 +109,50 @@ if (isset($_POST['ok_infosgen'])) {
 		$restriction = $_REQUEST['restriction']."_".$_REQUEST[$_REQUEST['restriction']];
 }
 
+if (isset($_POST['ok_tab']))
+{
+	switch ($_REQUEST['tabtype'])
+	{
+	case 'radiotab':
+		$tabstr = "###radiotab";
+		break;
+	case 'radiolntab':
+		$tabstr = "###radiolntab";
+		break;
+	case 'checktab':
+		$tabstr = "###checktab";
+		break;
+	default:
+		break;
+	}
+
+	if ($_POST['line1'] != "") $tabstr .= "///".$_POST['line1'];
+	else $warning = "Un tableau doit contenir au moins une ligne";
+	if ($_POST['line2'] != "") $tabstr .= "%%%".$_POST['line2'];
+	if ($_POST['line3'] != "") $tabstr .= "%%%".$_POST['line3'];
+	if ($_POST['line4'] != "") $tabstr .= "%%%".$_POST['line4'];
+	if ($_POST['line5'] != "") $tabstr .= "%%%".$_POST['line5'];
+	if ($_POST['line6'] != "") $tabstr .= "%%%".$_POST['line6'];
+	if ($_POST['line7'] != "") $tabstr .= "%%%".$_POST['line7'];
+	if ($_POST['line8'] != "") $tabstr .= "%%%".$_POST['line8'];
+	if ($_POST['line9'] != "") $tabstr .= "%%%".$_POST['line9'];
+	if ($_POST['line10'] != "") $tabstr .= "%%%".$_POST['line10'];
+
+	if ($_POST['col1'] != "") $tabstr .= "///".$_POST['col1'];
+	else $warning = "Un tableau doit contenir au moins une colonne";
+	if ($_POST['col2'] != "") $tabstr .= "%%%".$_POST['col2'];
+	if ($_POST['col3'] != "") $tabstr .= "%%%".$_POST['col3'];
+	if ($_POST['col4'] != "") $tabstr .= "%%%".$_POST['col4'];
+	if ($_POST['col5'] != "") $tabstr .= "%%%".$_POST['col5'];
+	if ($_POST['col6'] != "") $tabstr .= "%%%".$_POST['col6'];
+
+	if (isset($warning)) {
+		echo "<warning>$warning</warning>";
+	} else {
+		$contenu_form .= $tabstr;	
+	}
+}
+
 if (isset($_POST['valid'])) {
 	if ($titre_sondage!="") {
 		if ($restriction != "") $restriction = ", restriction='".$restriction."'";
@@ -346,6 +390,37 @@ else $temp = array("aucune","");
 		<champ id="reponse5" titre="Reponse 5" valeur=""/>
 		<champ id="reponse6" titre="Reponse 6" valeur=""/>
 		<bouton titre="Ajouter" id="ok_combo" />
+	</formulaire>
+	<formulaire id="ajout_champ" titre="Rajoute une question de type tabulaire" action="proposition/sondage.php">	
+		<hidden id="contenu_form" valeur="<?php echo $contenu_form; ?>"/> 	
+		<hidden id="titre_sondage" valeur="<?php echo $titre_sondage; ?>"/>
+		<hidden id="perimdate" valeur="<?php echo $perimdate; ?>"/>
+		<hidden id="restriction" valeur="<?php echo $restriction; ?>"/>
+		<hidden id="avance" valeur="0"/>
+		<choix id="tabtype" type="combo" titre="Nombre de choix possibles par tableau" valeur="radiolntab">
+			<option titre="Un choix par ligne" id="radiolntab" />
+			<option titre="Un choix pour l'ensemble du tableau" id="radiotab" />
+			<option titre="Pas de restriction" id="checktab" />
+		</choix>
+		<textsimple titre="Rajouter les en-têtes des lignes"/>
+		<champ id="line1" titre="Ligne 1" valeur=""/>
+		<champ id="line2" titre="Ligne 2" valeur=""/>
+		<champ id="line3" titre="Ligne 3" valeur=""/>
+		<champ id="line4" titre="Ligne 4" valeur=""/>
+		<champ id="line5" titre="Ligne 5" valeur=""/>
+		<champ id="line6" titre="Ligne 6" valeur=""/>
+		<champ id="line7" titre="Ligne 7" valeur=""/>
+		<champ id="line8" titre="Ligne 8" valeur=""/>
+		<champ id="line9" titre="Ligne 9" valeur=""/>
+		<champ id="line10" titre="Ligne 10" valeur=""/>
+		<textsimple titre="Rajouter les en-têtes des colonnes"/>
+		<champ id="col1" titre="Colonne 1" valeur=""/>
+		<champ id="col2" titre="Colonne 2" valeur=""/>
+		<champ id="col3" titre="Colonne 3" valeur=""/>
+		<champ id="col4" titre="Colonne 4" valeur=""/>
+		<champ id="col5" titre="Colonne 5" valeur=""/>
+		<champ id="col6" titre="Colonne 6" valeur=""/>
+		<bouton titre="Ajouter" id="ok_tab" />
 	</formulaire>
 <?php
 	}
