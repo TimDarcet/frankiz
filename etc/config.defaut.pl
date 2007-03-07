@@ -23,3 +23,5 @@
 	user        => '',
 	password    => ''
 );
+
+my   $web_mail = 'web@frankiz.polytechnique.fr';
