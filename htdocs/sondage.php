@@ -40,9 +40,14 @@ function resultat_sondage($string, $sondage_id) {
 	echo "<p>==========================================================</p>" ;
 	echo "<p>== $nombre_votants personnes ont répondu à ce sondage</p>" ;
 	echo "<p>==========================================================</p>" ;
-	$string = explode("###",$string) ;
-	for ($i=1 ; $i<count($string) ; $i++) {
-		$temp = explode("///",$string[$i]) ;
+	$stringtab = explode ("###", $string);
+	$i = 1;
+	foreach ($stringtab as $string_part) {
+		if (!$string_part) {
+			continue;
+		}
+
+		$temp = explode("///",$string_part) ;
 		if ($temp[0]=="expli") {
 			echo "<note>$temp[1]</note>\n" ;
 		}
@@ -64,6 +69,44 @@ function resultat_sondage($string, $sondage_id) {
 			}	
 			echo "<p>=====================</p>" ;
 		}
+	
+		if (($temp[0]=="radiolntab") || ($temp[0]=="checktab") || ($temp[0]=="radiotab"))
+		{
+			$tabheaders = explode("%%%", $temp[1]);
+			$tablines = explode("%%%", $temp[2]);
+			echo "<table>\n<tr><th></th>";
+
+			foreach ($tabheaders as $tabheader)
+			{
+				echo "<th>$tabheader</th>";
+			}
+
+			echo "</tr>\n";
+
+			for ($j = 0; $j < count($tablines); $j++)
+			{
+				echo "<tr><td>".$tablines[$j]."</td>";
+
+				for ($k = 0; $k < count($tabheaders); $k++)
+				{
+
+					$DB_web->query("SELECT reponse FROM sondage_reponse WHERE question_num = '$i' AND sondage_id = '$sondage_id' AND reponse = '{$j}x{$k}'");
+
+					echo "<td>".$DB_web->num_rows()."</td>";
+				}
+
+				echo "</tr>\n";
+				
+				if ($temp[0] == "radiolntab") 
+				{
+					$i++;
+				}
+			}
+
+			echo "</table>";
+		}
+
+		$i++;
 	}
 }
 

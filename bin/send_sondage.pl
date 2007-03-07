@@ -15,7 +15,6 @@ my       $dbh = DBI->connect("DBI:mysql:database=$mysql_frankiz2{database}:host=
                              "$mysql_frankiz2{user}","$mysql_frankiz2{password}",{'RaiseError'=>1});
 my $separator = "|";
 my    $in_sep = "#";
-my   $my_mail = 'web@frankiz.polytechnique.fr';
 
 # Retourne l'adresse mail du propriétaire du sondage
 # @param eleve_id INTEGER
@@ -70,9 +69,9 @@ sub send_result($$$) {
     my ($sondage_id, $eleve_id, $nom) = @_;
 
     my $msg = new MIME::Lite
-            From    => $my_mail,
+            From    => $web_mail,
             To      => get_mail($eleve_id),
-            CC      => $my_mail,
+            CC      => $web_mail,
             Type    => 'multipart/mixed',
             Subject => encode('MIME-Q', "Résultat de ton sondage Frankiz : $nom");
     attach $msg
