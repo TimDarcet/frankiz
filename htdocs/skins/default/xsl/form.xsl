@@ -181,7 +181,7 @@
 </xsl:template>
 
 <xsl:template match="th" mode="radio">
-	<th><xsl:apply-templates mode="radio" /></th>
+	<th align='center'><xsl:apply-templates mode="radio" /></th>
 </xsl:template>
 
 <xsl:template match="tr" mode="radio">
@@ -189,7 +189,7 @@
 </xsl:template>
 
 <xsl:template match="td" mode="radio">
-	<td><xsl:apply-templates mode="radio" /></td>
+	<td align='center'><xsl:apply-templates mode="radio" /></td>
 </xsl:template>
 
 <xsl:template match="table" mode="checkbox">
@@ -197,7 +197,7 @@
 </xsl:template>
 
 <xsl:template match="th" mode="checkbox">
-	<th><xsl:apply-templates mode="checkbox" /></th>
+	<th align='center'><xsl:apply-templates mode="checkbox" /></th>
 </xsl:template>
 
 <xsl:template match="tr" mode="checkbox">
@@ -205,7 +205,7 @@
 </xsl:template>
 
 <xsl:template match="td" mode="checkbox">
-	<td><xsl:apply-templates mode="checkbox" /></td>
+	<td align='center'><xsl:apply-templates mode="checkbox" /></td>
 </xsl:template>
 
 <xsl:template match="table">
@@ -213,7 +213,7 @@
 </xsl:template>
 
 <xsl:template match="th">
-	<th><xsl:apply-templates /></th>
+	<th align='center'><xsl:apply-templates /></th>
 </xsl:template>
 
 <xsl:template match="tr">
@@ -221,7 +221,7 @@
 </xsl:template>
 
 <xsl:template match="td">
-	<td><xsl:apply-templates /></td>
+	<td align='center'><xsl:apply-templates /></td>
 </xsl:template>
 
 
