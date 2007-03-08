@@ -191,7 +191,7 @@ if (isset($_POST['suppr_binet'])) {
 // Ajout d'un binet
 if (isset($_POST['add_binet'])) {
 	if ($_POST['liste_binet'] != 'default') {
-		$DB_trombino->query("INSERT INTO membres SET eleve_id='{$_SESSION['user']->uid}',binet_id='{$_POST['liste_binet']}'");
+		$DB_trombino->query("REPLACE INTO membres SET eleve_id='{$_SESSION['user']->uid}',binet_id='{$_POST['liste_binet']}'");
 		$message .= "<commentaire>Binet correctement ajouté</commentaire>";
 	} else {
 		$message .= "<warning>Aucun binet sélectionné. Aucun binet n'a donc été ajouté à la liste de tes binets.</warning>";
