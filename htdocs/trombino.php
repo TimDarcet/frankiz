@@ -295,14 +295,14 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 				promo,
 				eleves.nom,
 				prenom ASC
-			LIMIT 80");
+			LIMIT 100");
 
 		$nombreDeLignes = $DB_trombino->num_rows();
 		// Génération d'un message d'erreur si aucun élève ne correspond
 		if ($nombreDeLignes == 0) {
 			?><warning> Désolé, aucun élève ne correspond à ta recherche </warning><?php
-		} elseif ($nombreDeLignes == 80) {
-			?><warning>Trop de résultats: seulement les 80 premiers sont affichés</warning><?php
+		} elseif ($nombreDeLignes == 100) {
+			?><warning>Trop de résultats: seulement les 100 premiers sont affichés</warning><?php
 		} else {
 			echo "<commentaire> $nombreDeLignes résultat".($nombreDeLignes == 1 ? '' : 's').' trouvé'.($nombreDeLignes == 1 ? '' : 's').'</commentaire>';
 		}
