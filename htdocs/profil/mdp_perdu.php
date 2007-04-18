@@ -87,9 +87,9 @@ if($mail_envoye) { ?>
 	<?php if(a_erreur(ERR_LOGINPOLY)) echo "<warning>Le login que tu a donné n'existe pas.</warning>\n"?>
 	<formulaire id="mdp_perdu" titre="Perte de mot de passe/ouverture de compte" action="profil/mdp_perdu.php">
 		<note>Si tu souhaites créer ton compte Frankiz, ou si tu as perdu ton mot de passe, entre ton
-		loginpoly.promo (par exemple dupont.2002) dans le champs si dessous. Tu receveras dans les minutes qui suivent un mail
+		loginpoly.promo (par exemple dupont.2002) dans le champs ci dessous. Tu recevras dans les minutes qui suivent un courriel
 		te permettant d'accéder à la partie réservée de Frankiz. Une fois authentifié grâce
-		au lien contenu dans le mail, n'oublie pas de changer ton mot de passe.</note>
+		au lien contenu dans le courriel, n'oublie pas de changer ton mot de passe.</note>
 		<champ id="loginpoly" titre="login.promo" valeur=""/>
 		<bouton id="valider" titre="Valider"/>
 	</formulaire>
