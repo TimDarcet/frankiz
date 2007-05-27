@@ -114,7 +114,7 @@ function liste_modules() {
 		"lienik"		=> "Lien vers l'IK électronique", 
 		"qdj"				=> "Question du jour",
 		"qdj_hier"			=> "Question de la veille",
-		"meteo"			=> "Météo",
+#		"meteo"			=> "Météo",
 		"activites"			=> "Activités",
 		"tour_kawa"		=> "Tours kawa",
 		"anniversaires"		=> "Anniversaires",
@@ -122,7 +122,7 @@ function liste_modules() {
 		"stats"			=> "Statistiques",
 		"sondages"		=> "Sondages",
 		"lien_tol"			=> "Lien rapide vers le tol",
-		"rss"				=> "News Extérieures",
+#		"rss"				=> "News Extérieures",
 		"liens_perso"		=> "Liens Perso",
 		"annonce_virus"	=> "Attention Virus !"
 		);
