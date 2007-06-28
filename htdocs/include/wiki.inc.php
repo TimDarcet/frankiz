@@ -27,26 +27,10 @@
 function wikiVersXML($filtered,$enhtml=false) {
 	// from Simon Schoar <simon@schoar.de> :
 	$regexURL = "((http:\/\/|https:\/\/|ftp:\/\/|mailto:)[\w\.\:\@\?\&\~\%\=\+\-\/\_\;#]+)";
-	$regexURLImage = "((http:\/\/|https:\/\/|ftp:\/\/)[\w\.\~\%\+\-\/\_]+)";
 	$regexURLText = "([^\[\]\|]+)";
 	
 	// php-specific
 	$filtered = "\n".str_replace("\r\n","\n",$filtered)."\n\n";
-	
-	// pictures [ url ]
-	$filtered = preg_replace("/\[($regexURLImage\.(png|gif|jpg))\]/i",$enhtml?"<img src=\"\\1\"/>":"<image source=\"\\1\"/>",$filtered);
-	
-	// pictures [ url | alt ]
-	$filtered = preg_replace("/\[($regexURLImage\.(png|gif|jpg))\|$regexURLText\]/i",$enhtml?"<img src=\"\\1\"alt=\"\\5\"/>":"<image source=\"\\1\" texte=\"\\5\"/>",$filtered);
-	
-	// pictures [ url | alt | largeur]
-	$filtered = preg_replace("/\[($regexURLImage\.(png|gif|jpg))\|$regexURLText\|([0-9]+)\]/i",$enhtml?"<img src=\"\\1\"alt=\"\\5\" width=\"\\6\"/>":"<image source=\"\\1\" texte=\"\\5\" width=\"\\6\"/>",$filtered);
-	
-	// pictures [ url | alt | haut | largeur]
-	$filtered = preg_replace("/\[($regexURLImage\.(png|gif|jpg))\|$regexURLText\|([0-9]+)\|([0-9]+)\]/i",$enhtml?"<img src=\"\\1\"alt=\"\\5\" height=\"\\6\" width=\"\\7\"/>":"<image source=\"\\1\" texte=\"\\5\" height=\"\\6\" width=\"\\7\"/>",$filtered);
-	
-	// [ url | link ] external links
-	$filtered = preg_replace("/\[$regexURL\|$regexURLText\]/i","<a href=\"\\1\">\\3</a>", $filtered);
 	
 	// plain urls in the text
 	$filtered = preg_replace("/(?<![\"\[])$regexURL(?!\")/","<a href=\"\\0\">\\0</a>",$filtered);
@@ -82,7 +66,7 @@ function wikiVersXML($filtered,$enhtml=false) {
 function affiche_syntaxe_wiki() {
 	echo "<html>&lt;small&gt;".
 		"Formatage : **gras** ' 'italic' ' |code|    Listes : -élément --sousélément &lt;br/&gt;".
-		"Liens/image : [http://exemple.fr/|Titre] [http://exemple.fr/image.png]&lt;br/&gt;".
+		"Liens : [http://exemple.fr/|Titre]&lt;br/&gt;".
 		"Lien pour envoyer un courriel : [mailto:exemple@poly|Mailez-moi] &lt;br/&gt;".
 		"Titres : ===titre1=== ==titre2== =titre3=&lt;br/&gt;".
 		"&lt;/small&gt;</html>";
