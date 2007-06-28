@@ -27,22 +27,23 @@
 function wikiVersXML($filtered,$enhtml=false) {
 	// from Simon Schoar <simon@schoar.de> :
 	$regexURL = "((http:\/\/|https:\/\/|ftp:\/\/|mailto:)[\w\.\:\@\?\&\~\%\=\+\-\/\_\;#]+)";
+	$regexURLImage = "((http:\/\/|https:\/\/|ftp:\/\/)[\w\.\~\%\+\-\/\_]+)";
 	$regexURLText = "([^\[\]\|]+)";
 	
 	// php-specific
 	$filtered = "\n".str_replace("\r\n","\n",$filtered)."\n\n";
 	
 	// pictures [ url ]
-	$filtered = preg_replace("/\[($regexURL\.(png|gif|jpg))\]/i",$enhtml?"<img src=\"\\1\"/>":"<image source=\"\\1\"/>",$filtered);
+	$filtered = preg_replace("/\[($regexURLImage\.(png|gif|jpg))\]/i",$enhtml?"<img src=\"\\1\"/>":"<image source=\"\\1\"/>",$filtered);
 	
 	// pictures [ url | alt ]
-	$filtered = preg_replace("/\[($regexURL\.(png|gif|jpg))\|$regexURLText\]/i",$enhtml?"<img src=\"\\1\"alt=\"\\5\"/>":"<image source=\"\\1\" texte=\"\\5\"/>",$filtered);
+	$filtered = preg_replace("/\[($regexURLImage\.(png|gif|jpg))\|$regexURLText\]/i",$enhtml?"<img src=\"\\1\"alt=\"\\5\"/>":"<image source=\"\\1\" texte=\"\\5\"/>",$filtered);
 	
 	// pictures [ url | alt | largeur]
-	$filtered = preg_replace("/\[($regexURL\.(png|gif|jpg))\|$regexURLText\|([0-9]+)\]/i",$enhtml?"<img src=\"\\1\"alt=\"\\5\" width=\"\\6\"/>":"<image source=\"\\1\" texte=\"\\5\" width=\"\\6\"/>",$filtered);
+	$filtered = preg_replace("/\[($regexURLImage\.(png|gif|jpg))\|$regexURLText\|([0-9]+)\]/i",$enhtml?"<img src=\"\\1\"alt=\"\\5\" width=\"\\6\"/>":"<image source=\"\\1\" texte=\"\\5\" width=\"\\6\"/>",$filtered);
 	
 	// pictures [ url | alt | haut | largeur]
-	$filtered = preg_replace("/\[($regexURL\.(png|gif|jpg))\|$regexURLText\|([0-9]+)\|([0-9]+)\]/i",$enhtml?"<img src=\"\\1\"alt=\"\\5\" height=\"\\6\" width=\"\\7\"/>":"<image source=\"\\1\" texte=\"\\5\" height=\"\\6\" width=\"\\7\"/>",$filtered);
+	$filtered = preg_replace("/\[($regexURLImage\.(png|gif|jpg))\|$regexURLText\|([0-9]+)\|([0-9]+)\]/i",$enhtml?"<img src=\"\\1\"alt=\"\\5\" height=\"\\6\" width=\"\\7\"/>":"<image source=\"\\1\" texte=\"\\5\" height=\"\\6\" width=\"\\7\"/>",$filtered);
 	
 	// [ url | link ] external links
 	$filtered = preg_replace("/\[$regexURL\|$regexURLText\]/i","<a href=\"\\1\">\\3</a>", $filtered);
