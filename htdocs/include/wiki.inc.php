@@ -31,6 +31,9 @@ function wikiVersXML($filtered,$enhtml=false) {
 	
 	// php-specific
 	$filtered = "\n".str_replace("\r\n","\n",$filtered)."\n\n";
+
+	// [ url | link ] external links
+	$filtered = preg_replace("/\[$regexURL\|$regexURLText\]/i","<a href=\"\\1\">\\3</a>", $filtered);
 	
 	// plain urls in the text
 	$filtered = preg_replace("/(?<![\"\[])$regexURL(?!\")/","<a href=\"\\0\">\\0</a>",$filtered);
