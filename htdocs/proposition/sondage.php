@@ -126,6 +126,14 @@ if (isset($_POST['ok_tab']))
 		break;
 	}
 
+	if ($_POST['col1'] != "") $tabstr .= "///".$_POST['col1'];
+	else $warning = "Un tableau doit contenir au moins une colonne";
+	if ($_POST['col2'] != "") $tabstr .= "%%%".$_POST['col2'];
+	if ($_POST['col3'] != "") $tabstr .= "%%%".$_POST['col3'];
+	if ($_POST['col4'] != "") $tabstr .= "%%%".$_POST['col4'];
+	if ($_POST['col5'] != "") $tabstr .= "%%%".$_POST['col5'];
+	if ($_POST['col6'] != "") $tabstr .= "%%%".$_POST['col6'];
+
 	if ($_POST['line1'] != "") $tabstr .= "///".$_POST['line1'];
 	else $warning = "Un tableau doit contenir au moins une ligne";
 	if ($_POST['line2'] != "") $tabstr .= "%%%".$_POST['line2'];
@@ -137,14 +145,6 @@ if (isset($_POST['ok_tab']))
 	if ($_POST['line8'] != "") $tabstr .= "%%%".$_POST['line8'];
 	if ($_POST['line9'] != "") $tabstr .= "%%%".$_POST['line9'];
 	if ($_POST['line10'] != "") $tabstr .= "%%%".$_POST['line10'];
-
-	if ($_POST['col1'] != "") $tabstr .= "///".$_POST['col1'];
-	else $warning = "Un tableau doit contenir au moins une colonne";
-	if ($_POST['col2'] != "") $tabstr .= "%%%".$_POST['col2'];
-	if ($_POST['col3'] != "") $tabstr .= "%%%".$_POST['col3'];
-	if ($_POST['col4'] != "") $tabstr .= "%%%".$_POST['col4'];
-	if ($_POST['col5'] != "") $tabstr .= "%%%".$_POST['col5'];
-	if ($_POST['col6'] != "") $tabstr .= "%%%".$_POST['col6'];
 
 	if (isset($warning)) {
 		echo "<warning>$warning</warning>";
