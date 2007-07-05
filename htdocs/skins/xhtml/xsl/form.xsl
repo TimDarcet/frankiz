@@ -113,6 +113,7 @@
 			</xsl:attribute>
 			<xsl:attribute name="cols">50</xsl:attribute>
 			<xsl:value-of select="text()"/>
+			<xsl:text> </xsl:text>
 		</textarea>
 	</xsl:otherwise></xsl:choose>
 </xsl:template>
