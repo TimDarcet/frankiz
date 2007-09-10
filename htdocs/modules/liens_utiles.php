@@ -41,6 +41,7 @@ list($promo) = $DB_trombino->next_row();
 	<lien id="wikibr" titre="Docs BR" url="http://www.polytechnique.fr/eleves/binets/reseau"/>
 	<lien id="utile_ecole" titre="Site de l'école" url="http://www.polytechnique.fr/" />
 	<lien id="utile_ecole_de" titre="Site de la DE" url="http://www.edu.polytechnique.fr/" key="d"/>
+	<lien id="utile_ecole_4a" titre="Orientation 4eme année" url="http://www.polytechnique.fr/sites/orientation4a/pages_orientation/"/>
 	<?php if(est_authentifie(AUTH_INTERNE)): ?><lien id="utile_intranet" titre="Intranet" url="http://intranet.polytechnique.fr/" key="i"/><?php endif; ?>
 	<lien id="utile_xorg" titre="Polytechnique.org" url="http://www.polytechnique.org/" key="o"/>
 	<lien id="utile_net" titre="Polytechnique.net" url="http://www.polytechnique.net/" key="n"/>
