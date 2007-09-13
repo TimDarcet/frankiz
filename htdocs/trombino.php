@@ -458,6 +458,6 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 		<bouton titre="Chercher" id="chercher" />
 	</formulaire>
 	<lien url="trombino.php?anniversaire_week&amp;depart=<?php echo date("Y-m-d"); ?>" titre="Anniversaires à souhaiter dans la semaine"/><br/>
-	<lien url="num_utiles.php" titre="Numéros Utiles"/>
+	<lien url="wikix/Num%C3%A9ros_utiles" titre="Numéros Utiles"/>
 </page>
 <?php require "include/page_footer.inc.php" ?>
