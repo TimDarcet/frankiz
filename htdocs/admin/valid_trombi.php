@@ -59,9 +59,11 @@ foreach ($_POST AS $keys => $val){
 			
 			$message .= "<commentaire> Image validée pour $prenom $nom</commentaire>" ;
 			
-			$contenu = "Ton image trombino est validée <br><br>".
-			"Cordialement,<br>" .
-			"Le Tolmestre<br>"  ;
+			$contenu = "Ton image trombino est validée.<br>".
+				   "Si tu as l'impression que ta photo n'a pas changé, n'oublie pas de recharger ".
+				   "le cache de ton navigateur (Ctrl+F5 en général).<br><br>".
+			           "Cordialement,<br>" .
+				   "Le Tolmestre<br>"  ;
 			couriel($temp[1],"[Frankiz] Ton image trombino est validée",$contenu,TROMBINOMEN_ID);
 		} else {
 	?>

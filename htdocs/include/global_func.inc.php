@@ -122,6 +122,7 @@ function liste_modules() {
 		"stats"			=> "Statistiques",
 		"sondages"		=> "Sondages",
 		"lien_tol"			=> "Lien rapide vers le tol",
+		"lien_wikix"			=> "Lien rapide vers le Wikix",
 		"rss"				=> "News Extérieures",
 		"liens_perso"		=> "Liens Perso",
 		"annonce_virus"	=> "Attention Virus !"
