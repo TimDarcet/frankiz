@@ -82,12 +82,44 @@ function rediriger_vers($page) {
 	exit;
 }
 
+/* 
+	Renvoie au client le fichier passe en argument
+
+	La fonction retourne false si le fichier ne peut etre lu,
+	et vrai si le fichier a ete envoye.
+*/
+function return_file($file)
+{
+	if (!file_exists($file)) {
+		return false;
+	}
+
+	$size = getimagesize($file);
+
+	header("Content-type: {$size['mime']}");
+
+	readfile($file);
+	return true;
+}
+
 /*
 	Simule une erreur 403
 */
-function acces_interdit() {
+function acces_interdit() 
+{
 	header("HTTP/1.1 403 Forbidden");
 	$_GET['erreur'] = 403;
+	require BASE_LOCAL."/erreur.php";
+	exit;
+}
+
+/*
+	Simule une erreur 404
+*/
+function not_found() 
+{
+	header("HTTP/1.1 404 Forbidden");
+	$_GET['erreur'] = 404;
 	require BASE_LOCAL."/erreur.php";
 	exit;
 }
