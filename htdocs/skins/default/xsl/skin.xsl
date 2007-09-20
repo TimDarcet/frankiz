@@ -51,6 +51,7 @@
 <xsl:include href="stats.xsl"/>
 <xsl:include href="activites.xsl"/>
 <xsl:include href="tol.xsl"/>
+<xsl:include href="wikix.xsl"/>
 <xsl:include href="faq_xshare.xsl"/>
 
 <xsl:output method="xml" indent="yes" encoding="utf-8"
