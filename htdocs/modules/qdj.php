@@ -30,6 +30,8 @@ require_once BASE_LOCAL."/include/qdj.inc.php";
 
 if(est_authentifie(AUTH_MINIMUM)) {
 
+	$DB_web->query("LOCK TABLES qdj_votes WRITE, qdj_points WRITE, qdj WRITE");
+
 	// On cherche si l'utilisateur a déjà voté ou non
 	$date_aujourdhui = date("Y-m-d", time());
 	$DB_web->query("SELECT 0 FROM qdj_votes WHERE date='$date_aujourdhui' and eleve_id='".$_SESSION['user']->uid."' AND ordre > 0 LIMIT 1");
@@ -40,7 +42,6 @@ if(est_authentifie(AUTH_MINIMUM)) {
 		// On stocke le vote
 		cache_supprimer("qdj_courante_question");
 		cache_supprimer("qdj_courante_reponse");
-		$DB_web->query("LOCK TABLE qdj_votes, qdj_points WRITE");
 		$DB_web->query("SELECT @max:=IFNULL(MAX(ordre),0) FROM qdj_votes WHERE date='$date_aujourdhui'");
 		list($position) = $DB_web->next_row();
 		$position++;
@@ -66,7 +67,6 @@ if(est_authentifie(AUTH_MINIMUM)) {
 			$DB_web->query('TRUNCATE TABLE `qdj_points`;');
 		}
 		
-		$DB_web->query("UNLOCK TABLES");
 		$DB_web->query("UPDATE qdj SET compte".$_REQUEST['vote']."=compte".$_REQUEST['vote']."+1 WHERE date='$date_aujourdhui'");
 		
 		if($position == 15){  //on met des points à la personne dont la QDJ a été acceptée
@@ -93,6 +93,8 @@ if(est_authentifie(AUTH_MINIMUM)) {
 
 		rediriger_vers("/");
 	}
+
+	$DB_web->query("UNLOCK TABLES");
 
 	// Affichage de la QDJ courante 
 	qdj_affiche(false,$a_vote);

@@ -180,7 +180,7 @@ function demande_authentification($minimum) {
 		       }
 		?>
 			
-			<champ id="login_login" titre="Login" valeur="<?php if(isset($_POST['login_login'])) echo $_POST['login_login']?>"/>
+			<champ id="login_login" titre="Identifiant" valeur="<?php if(isset($_POST['login_login'])) echo $_POST['login_login']?>"/>
 			<champ id="passwd_login" titre="Mot de passe" valeur=""/>
 			<bouton id="connect" titre="Connexion"/>
 		</formulaire>

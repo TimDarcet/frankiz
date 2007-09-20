@@ -45,7 +45,7 @@ require "include/page_header.inc.php";
 </cadre>
 
 <cadre titre="Contacter un élève">
-	<h3>Par email (ou mel)</h3>
+	<h3>Par courriel</h3>
 	<p>Si tu veux joindre un élève, rien de plus facile :</p>
 	<p><strong>prénom.nom@polytechnique.edu</strong> (Où, bien sûr, on remplace le nom et le prénom de l'élève dans cette adresse :op)</p>
 
