@@ -18,7 +18,7 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-if (est_interne()) {
+if(est_authentifie(AUTH_INTERNE)) {
 ?>
 <module id="lienik" titre="IK électronique">
 <?php
@@ -28,8 +28,11 @@ if (est_interne()) {
 		$lienik_full = "ik.php?id=".$lienik;
 
 		echo "<a href=\"$lienik_full\"><image source=\"".BASE_URL."/data/ik_thumbnails/$lienik.png\" texte=\"IK de la semaine\"/></a> \n";
-		
+
 		cache_sauver('lienik');
+	}
+	if (est_interne()) {
+		echo "<a href='".URL_BINETS."ik/'>Archive de l'IK</a>";
 	}
 ?>
 </module>
