@@ -1,8 +1,7 @@
 <?php
 	require_once "include/global_func.inc.php";
 	header("Content-Type","application/opensearchdescription+xml");
-	if (est_interne()) $prefix="frankiz.polytechnique.fr";
-	else $prefix="www.polytechnique.fr/eleves";
+	$prefix="www.polytechnique.fr/eleves";
 	echo '<?xml version="1.0" ?>';
 ?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">

@@ -558,7 +558,7 @@ div.formulaire span.droite{
 	text-align:left;
 	display: block;
 	padding: 0px 4px;
-	margin: 0px 0px 0px 100px;
+	margin: 0px 0px 0px 12%;
 }
 
 
@@ -569,7 +569,7 @@ div.formulaire div{
 div.formulaire span.boutons{
 	display: block;
 	padding: 2px;
-	margin-left: 300px;
+	margin-left: 45%;
 }
 
 .fkz_module_corps div.formulaire span.droite, .fkz_module_corps div.formulaire label.gauche{

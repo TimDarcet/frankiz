@@ -402,7 +402,7 @@ else $temp = array("aucune","");
 			<option titre="Un choix pour l'ensemble du tableau" id="radiotab" />
 			<option titre="Pas de restriction" id="checktab" />
 		</choix>
-		<textsimple titre="Rajouter les en-têtes des lignes"/>
+		<textsimple titre="Rajouter les en-têtes des lignes\n"/>
 		<champ id="line1" titre="Ligne 1" valeur=""/>
 		<champ id="line2" titre="Ligne 2" valeur=""/>
 		<champ id="line3" titre="Ligne 3" valeur=""/>
