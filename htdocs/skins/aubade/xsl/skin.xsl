@@ -75,6 +75,7 @@
 		<link rel="start" href="index.php"/>
 		<link href="mailto:web@fkz" rev="made" />
 		<link rel="shortcut icon" href="favicon.ico" />
+		<link rel="search" type="application/opensearchdescription+xml" href="opensearch.xml.php" title="Trombino" />
 		<xsl:apply-templates select="frankiz/module[@id='liens_navigation']" mode="link"/>
 		<xsl:apply-templates select="frankiz/module[@id='liens_perso']" mode="link"/>
 	</head>

@@ -1,6 +1,6 @@
 <?php
 	require_once "include/global_func.inc.php";
-	header("Content-Type","application/opensearchdescription+xml");
+	header("Content-Type: application/opensearchdescription+xml");
 	$prefix="www.polytechnique.fr/eleves";
 	echo '<?xml version="1.0" ?>';
 ?>
