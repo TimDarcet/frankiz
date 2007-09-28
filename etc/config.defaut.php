@@ -97,6 +97,9 @@ define('WEATHER_DOT_COM',"http://xoap.weather.com/weather/local/**********");
 // URL AppleOnCampus
 define('PARTENAIRES_AOC_URL', "");
 
+// Permet de differencier les sessions quand plusieurs versions du site se trouvent sur le meme serveur
+define('FRANKIZ_SESSION_NAME', "frankiz");
+
 // Configuration du site
 define('AFFICHER_LES_ERREURS',0); 
 define('BASE_DATA',"/home/frankiz2/data/");
