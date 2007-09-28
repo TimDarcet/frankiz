@@ -19,7 +19,8 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 -->
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+			      xmlns="http://www.w3.org/1999/xhtml">
 
 <!-- Formulaires -->
 <xsl:template match="formulaire[@type='discret']">
@@ -102,6 +103,7 @@
 		<span>
 			<xsl:attribute name="id"><xsl:value-of select="concat(../@id,@id)"/></xsl:attribute>
 			<xsl:value-of select="@valeur"/>
+			<xsl:comment> </xsl:comment>
 		</span>
 	</xsl:when>
 	<xsl:otherwise>
@@ -113,7 +115,7 @@
 			</xsl:attribute>
 			<xsl:attribute name="cols">50</xsl:attribute>
 			<xsl:value-of select="text()"/>
-			<xsl:text> </xsl:text>
+			<xsl:comment> </xsl:comment>
 		</textarea>
 	</xsl:otherwise></xsl:choose>
 </xsl:template>

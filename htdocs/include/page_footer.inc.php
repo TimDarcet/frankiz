@@ -32,6 +32,8 @@ echo "</frankiz>\n";
 $xml = ob_get_contents();
 ob_end_clean();
 
+header('Content-Type: text/html');
+
 if(isset($_REQUEST['xml'])) {
 	echo $xml;
 	exit;

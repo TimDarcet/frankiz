@@ -19,7 +19,8 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 -->
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+			      xmlns="http://www.w3.org/1999/xhtml">
 
 <!-- Images -->
 <xsl:template match="image">
@@ -45,7 +46,8 @@
 			<xsl:attribute name="class"><xsl:value-of select="@id"/></xsl:attribute>
 		</xsl:if>
 		<xsl:value-of select="@titre"/>
-			<xsl:apply-templates/>
+		<xsl:comment> </xsl:comment>
+		<xsl:apply-templates/>
 	</a>
 </xsl:template>
 

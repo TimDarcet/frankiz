@@ -17,7 +17,8 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 -->
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+			      xmlns="http://www.w3.org/1999/xhtml">
 <xsl:template match="mac">
 	<xsl:value-of select="@time" /> : <a><xsl:attribute name="href"><xsl:text>trombino.php?chercher&amp;mac=</xsl:text><xsl:value-of select="@id" /></xsl:attribute><xsl:value-of select="@id" /></a> <em>(<xsl:value-of select='@constructeur'/>)</em>
         <xsl:if test="count(ip) != 0">

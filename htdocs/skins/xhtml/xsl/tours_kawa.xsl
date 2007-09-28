@@ -20,7 +20,8 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 -->
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+			      xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:template match="module[@id='tour_kawa']">
 	<xsl:if test="count(liste/element) !=0">

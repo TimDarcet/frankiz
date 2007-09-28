@@ -23,7 +23,8 @@
 	$Id$
 	
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+			      xmlns="http://www.w3.org/1999/xhtml">
 
 <!-- Formulaires -->
 <xsl:template match="formulaire">
@@ -111,7 +112,7 @@
 				<xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
 				
 				<xsl:value-of select="text()"/>
-				<xsl:text> </xsl:text>
+				<xsl:comment> </xsl:comment>
 			</textarea>
 		</xsl:otherwise></xsl:choose>
 </xsl:template>
