@@ -39,9 +39,17 @@ if(isset($_REQUEST['image'])){
 
 // Affichage de la liste des binets
 require BASE_LOCAL."/include/page_header.inc.php";
-?>
-<page id="binets" titre="Frankiz : Binets">
-<?php
+
+class BinetsModule extends PLModule
+{
+	function run()
+	{
+		global $DB_trombino;
+
+		$this->assign('title', "Frankiz : Binets");
+
+	echo "<page id="binets">"
+	
 	$auth = "" ;
 	if(!$_SESSION['user']->est_authentifie(AUTH_INTERNE)) $auth = " exterieur=1 AND " ;
 
@@ -65,4 +73,9 @@ require BASE_LOCAL."/include/page_header.inc.php";
 	}
 ?>
 </page>
-<?php require "include/page_footer.inc.php" ?>
+<?php 
+	}
+}
+$smarty = new BinetsModule;
+
+require "include/page_footer.inc.php" ?>

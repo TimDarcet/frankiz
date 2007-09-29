@@ -50,32 +50,6 @@
 <xsl:include href="meteo.xsl"/>
 
 <xsl:template match="/">
-	<html xml:lang="fr">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-		<title><xsl:value-of select="frankiz/page/@titre"/></title>
-		<base>
-			<xsl:attribute name="href">
-			<xsl:value-of select="frankiz/@base"/>
-			</xsl:attribute>
-		</base>
-		<link rel="stylesheet" type="text/css">
-			<xsl:attribute name="href">
-			<xsl:value-of select="frankiz/@css"/>
-			</xsl:attribute>
-		</link>
-		<xsl:apply-templates select="frankiz/module[@id='liste_css']" mode="css"/>
-		<link rel="alternate" type="application/rss+xml" title="Version RSS" href="rss_annonces.php" />
-		<link rel="glossary" title="Vocabulaire" href="vocabulaire.php" />
-		<link rel="help" title="Contact" href="contact.php"/>
-		<link rel="index" href="index.php"/>
-		<link rel="start" href="index.php"/>
-		<link href="mailto:web@fkz" rev="made" />
-		<link rel="shortcut icon" href="favicon.ico" />
-		<link rel="search" type="application/opensearchdescription+xml" href="opensearch.xml.php" title="Trombino" />
-		<xsl:apply-templates select="frankiz/module[@id='liens_navigation']" mode="link"/>
-		<xsl:apply-templates select="frankiz/module[@id='liens_perso']" mode="link"/>
-	</head>
 	<body>
 		<div class="fkz_entetes">
 			<div class="fkz_logo"><a href="index.php"><span class="fkz_logo">Frankiz,</span></a></div>
@@ -130,7 +104,6 @@
 
 		<div class="fkz_end_page"><xsl:text> </xsl:text></div>
 	</body>
-	</html>
 </xsl:template>
 
 

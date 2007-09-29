@@ -33,10 +33,5 @@ if (isset($_GET['forceskin']) && is_dir(BASE_LOCAL."/skins/{$_GET['forceskin']}"
 	$_SESSION['skin']['skin_xsl_chemin'] = BASE_LOCAL."/skins/{$_GET['forceskin']}/xsl/skin.xsl";
 }
 
-// en-tetes XML
-echo "<?xml version='1.0' encoding='UTF-8' ?>\n";
-echo "<!DOCTYPE frankiz PUBLIC \"-//BR//DTD FRANKIZ 1.0//FR\" \"http://frankiz.polytechnique.fr/frankiz.dtd\">\n";
-echo "<frankiz base='".BASE_URL."/' css='{$_SESSION['skin']['skin_css_url']}'>\n";
 
-require "modules.inc.php";
 ?>

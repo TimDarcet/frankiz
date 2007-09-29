@@ -34,15 +34,7 @@ require_once "include/wiki.inc.php";
 
 demande_authentification(AUTH_INTERNE);
 
-$tol_admin = false;
-if (verifie_permission('admin') || verifie_permission('windows')
-	|| verifie_permission('trombino') || verifie_permission('news')
-	|| verifie_permission('support'))
-	$tol_admin = true;
 
-if (isset($_REQUEST['toladmin'])) {
-	demande_authentification(AUTH_FORT);
-}
 
 // Recuperation d'une image
 if (!empty($_GET['image']) && ($_GET['image'] == 'true')){
@@ -70,7 +62,24 @@ if (isset($_GET['tdb']) && isset($_GET['promo'])){
 	exit;
 }
 
-require 'include/page_header.inc.php';
+class TrombinoModule extends PLModule
+{
+	function run()
+	{
+		global $DB_web, $DB_trombino;
+
+		$this->assign('title', "Frankiz : Trombino");
+
+		$tol_admin = false;
+		if (verifie_permission('admin') || verifie_permission('windows')
+		 || verifie_permission('trombino') || verifie_permission('news')
+		 || verifie_permission('support'))
+			$tol_admin = true;
+
+		if (isset($_REQUEST['toladmin'])) {
+			demande_authentification(AUTH_FORT);
+		}
+
 ?><page id='trombino' titre='Frankiz : Trombino'>
 <?php
 
@@ -460,4 +469,11 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 	<lien url="trombino.php?anniversaire_week&amp;depart=<?php echo date("Y-m-d"); ?>" titre="Anniversaires à souhaiter dans la semaine"/><br/>
 	<lien url="wikix/Num%C3%A9ros_utiles" titre="Numéros Utiles"/>
 </page>
-<?php require "include/page_footer.inc.php" ?>
+<?
+	}
+}
+
+require 'include/page_header.inc.php';
+$smarty = new TrombinoModule;
+require "include/page_footer.inc.php" 
+?>

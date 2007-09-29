@@ -121,21 +121,6 @@ function lire_description_skin($fichier) {
 	return $desc;
 }
 
-/*
-	Lit la description d'une feuille de style css
-	$css_dir est le dossier contenant les fichiers de la css
-*/
-function lire_description_css($css_dir) {
-	$description="";
-	if(file_exists("$css_dir/description.txt")) {
-		// Lecture du fichier de description et suppression des éventuelles balises html
-		$fd = fopen("$css_dir/description.txt","r");
-		$description=fread($fd,filesize("$css_dir/description.txt"));
-		$description=htmlspecialchars($description, ENT_QUOTES);
-		fclose($fd);
-	}
-	return $description;
-}
 
 /*
 	Renvoi les paramètres de la skin par défaut
@@ -188,4 +173,75 @@ function skin_parse($skin_str) {
 	$_SESSION['skin'] = unserialize($skin_str);
 	skin_valider();
 }
+
+class Skin
+{
+	public $description;
+	public $css_path;
+
+	/**
+	 * Lit la description d'une feuille de style css
+	 * @param css_dir chemin vers le dossier contenant la skin
+	 * @return une chaine de caractères contenant la description
+	 */
+	private static function lire_description($css_dir)
+	{
+		if (!file_exists("$css_dir/description.txt")) 
+			return "";
+
+		// Lecture du fichier de description et suppression des éventuelles balises html
+		$fd = fopen("$css_dir/description.txt","r");
+		$description = fread($fd,filesize("$css_dir/description.txt"));
+		$description = htmlspecialchars($description, ENT_QUOTES);
+		fclose($fd);
+	
+		return $description;
+	}
+
+	/**
+	 * Construit une nouvelle skin, contenue dans $path
+	 * @param path chemin vers le dossier contenant la skin
+	 * @return la nouvelle skin
+	 */
+	public static function load($path)
+	{
+		$skin = new Skin;
+
+		$skin->description = Skin::lire_description($path);
+		$skin->css_path = $path;
+	
+		if ($skin->description)
+			return $skin;
+		else
+			return null;
+	}
+
+	/**
+	 * @return la liste des skins disponibles 
+	 */
+	public static function get_list()
+	{
+		$dir_css = opendir(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']);
+		$description = lire_description_skin(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']);
+
+		$skins = array();
+		while ($file_css = readdir($dir_css)) 
+		{
+			// uniquement pour les dossiers non particuliers
+			if(!is_dir(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']."/$file_css") || 
+			   $file_css == "." || $file_css == ".." ||
+			   $file_css == ".svn" || $file_css{0} == "#" || 
+			   $file_css == $description['chemin']) 
+			  	continue;
+		
+			$skin = Skin::load("skins/".$_SESSION['skin']['skin_nom']."/$file_css");
+			if ($skin)
+				$skins[] = $skin;
+		}
+		closedir($dir_css);
+		
+		return $skins;
+	}
+}
+
 ?>

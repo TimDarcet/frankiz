@@ -10,22 +10,24 @@
 require_once("banana/banana.inc.php");
 
 // C'est moche...
-foreach ($_COOKIE as $key => $value)
+function strip_rec(&$s)
 {
-	$_COOKIE[$key] = stripslashes($value);
+	if (is_array($s))
+	{
+		foreach (array_keys($s) as $key)
+		{
+			strip_rec($s[$key]);
+		}
+	}
+	else
+	{
+		$s = stripslashes($s);
+	}
 }
-foreach ($_GET as $key => $value)
-{
-	$_GET[$key] = stripslashes($value);
-}
-foreach ($_POST as $key => $value)
-{
-	$_POST[$key] = stripslashes($value);
-}
-foreach ($_REQUEST as $key => $value)
-{
-	$_REQUEST[$key] = stripslashes($value);
-}
+strip_rec($_COOKIE);
+strip_rec($_GET);
+strip_rec($_POST);
+strip_rec($_REQUEST);
 
 session_start();
 

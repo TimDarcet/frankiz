@@ -109,6 +109,7 @@ define('BASE_BINETS',"/home/frankiz2/binets/");
 define('BASE_BINETS_EXT',"/home/frankiz2/htdocs/binets/");
 define('BASE_PAGESPERSOS',"/home/frankiz2/webperso/");
 define('BASE_PAGESPERSOS_EXT',"/home/frankiz2/htdocs/webperso/");
+define('BASE_TEMPLATES', "/home/frankiz2/templates/");
 
 define('URL_DATA',BASE_URL.'/data/');
 define('URL_BINETS','http://binets.frankiz.eleves.polytechnique.fr/');

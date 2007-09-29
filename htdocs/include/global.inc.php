@@ -97,4 +97,10 @@ ajouter_debug_log(var_export($_GET,true));
 ajouter_debug_log(var_export($_POST,true));
 ajouter_debug_log(var_export($_COOKIE,true));
 ajouter_debug_log(var_export($_SESSION,true));
+
+// Pendant la transition a Plat/al
+require_once 'smarty/libs/Smarty.class.php';
+class PLModule extends Smarty
+{
+}
 ?>

@@ -30,8 +30,15 @@ if(!isset($_POST['contenu']))
 	$_POST['contenu'] = "";
 
 require "include/page_header.inc.php";
+
+class BacASableModule extends PLModule
+{
+	function run()
+	{
+		$this->assign('title', "Frankiz : bac à sable");
+
 ?>
-<page id="bacasable" titre="Frankiz : bac à sable">
+<page id="bacasable">
 	<cadre id="resultat" titre="Contenu">
 		<?php echo wikiVersXML($_POST['contenu']) ?>
 	</cadre>
@@ -44,4 +51,10 @@ require "include/page_header.inc.php";
 	</formulaire>
 	<?php affiche_syntaxe_wiki() ?>
 </page>
-<?php require "include/page_footer.inc.php" ?>
+
+<?php 
+	}
+}
+$smarty = new BacASableModule;
+	
+require "include/page_footer.inc.php" ?>

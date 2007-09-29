@@ -26,6 +26,10 @@
 
 */
 
+echo "<frankiz>";
+require "modules.inc.php";
+
+$smarty->run();
 echo "</frankiz>\n";
 
 // Récupération du cache de sortie
@@ -33,11 +37,6 @@ $xml = ob_get_contents();
 ob_end_clean();
 
 header('Content-Type: text/html');
-
-if(isset($_REQUEST['xml'])) {
-	echo $xml;
-	exit;
-}
 
 // Feuille de style
 $dom_xsl = new DOMDocument ();
@@ -67,9 +66,18 @@ if ($resultat === false)
 {
 	echo "Erreur lors de la transformation XSLT";
 }
-	
-// Envoi la page vers le navigateur
+
+$smarty->compile_check = AFFICHER_LES_ERREURS;
+$smarty->template_dir  = BASE_TEMPLATES;
+$smarty->compile_dir   = BASE_CACHE . 'templates_c/';
+
+$smarty->assign('xml', $resultat);
+$smarty->assign('css', $_SESSION['skin']['skin_css_url']);
+$smarty->assign('css_list', Skin::get_list());
+$smarty->assign('base', BASE_URL);
+
+
 affiche_erreurs_php();
-echo $resultat;
+$smarty->display("main.tpl");
 affiche_debug_php();
 ?>

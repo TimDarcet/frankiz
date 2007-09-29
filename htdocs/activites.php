@@ -29,7 +29,16 @@ require_once "include/wiki.inc.php";
 
 // génération de la page
 require "include/page_header.inc.php";
-echo "<page id='activites' titre='Frankiz : activités de la semaine'>\n";
+
+class ActivitesModule extends PLModule
+{
+	function run()
+	{
+		global $DB_web;
+	
+		$this->assign('title', 'Frankiz : activités de la semaine');
+
+echo "<page id='activites'>\n";
 
 // Etat du bôb
 $valeurBob = getEtatBob();
@@ -64,5 +73,10 @@ for($i= 0; $i<7;$i++){
 }
 
 echo "</page>\n";
+
+	}
+}
+$smarty = new ActivitesModule;
+
 require_once "include/page_footer.inc.php";
 ?>

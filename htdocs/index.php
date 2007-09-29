@@ -36,8 +36,15 @@ function get_categorie($en_haut,$stamp,$perime) {
 // génération de la page
 require "include/page_header.inc.php";
 
+class AnnoncesModule extends PLModule
+{
+	function run()
+	{
+		global $DB_web;
+
+		$this->assign('title', "Frankiz : annonces");
 ?>
-<page id="annonces" titre="Frankiz : annonces">
+<page id="annonces">
 
 <h2>Bienvenue sur Frankiz</h2>
 <?php
@@ -129,5 +136,9 @@ while (list(
 }
 ?></page>
 <?php
+	}
+}
+$smarty = new AnnoncesModule;
+
 require_once "include/page_footer.inc.php";
 ?>

@@ -138,10 +138,9 @@ function est_interne()
 */
 function liste_modules() {
 	return array(
-		"css"				=> "",
 		"liens_navigation"	=> "",
 		"liens_propositions"	=> "",
-	"random"	    => "",
+		"random"	    => "",
 		"liens_utiles"		=> "Liens école",
 		"lienik"		=> "Lien vers l'IK électronique", 
 		"qdj"				=> "Question du jour",
