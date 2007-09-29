@@ -130,6 +130,35 @@ function est_interne()
 	return $ip == '127.0.0.1' || (substr($ip, 0, 8) == '129.104.' && $ip != '129.104.30.4');
 }
 
+// Classe de transition en attendant Platal::Session
+
+class Session
+{
+	function est_interne()
+	{
+		return est_interne();
+	}
+
+	function est_auth()
+	{
+		return est_authentifie(AUTH_MINIMUM);
+	}
+
+	function est_auth_fort()
+	{
+		return est_authentifie(AUTH_FORT);
+	}
+
+	function is_admin()
+	{
+		return $_SESSION['user']->perms > 1 && $_SESSION['user']->perms[0] != "";
+	}
+}
+// Pendant la transition a Plat/al
+require_once 'smarty/libs/Smarty.class.php';
+class PLModule extends Smarty
+{
+}
 /*
 	Renvoi la liste des modules disponibles sous la forme d'une liste :
 		"nom du fichier moins le .php" => "Nom affichable du module"
@@ -138,24 +167,13 @@ function est_interne()
 */
 function liste_modules() {
 	return array(
-		"liens_navigation"	=> "",
-		"liens_propositions"	=> "",
-		"random"	    => "",
-		"liens_utiles"		=> "Liens école",
 		"lienik"		=> "Lien vers l'IK électronique", 
 		"qdj"				=> "Question du jour",
 		"qdj_hier"			=> "Question de la veille",
-		"meteo"			=> "Météo",
-		"activites"			=> "Activités",
 		"tour_kawa"		=> "Tours kawa",
 		"anniversaires"		=> "Anniversaires",
-		"fetes"		=> "Fête du jour",
 		"stats"			=> "Statistiques",
-		"sondages"		=> "Sondages",
-		"lien_tol"			=> "Lien rapide vers le tol",
-		"lien_wikix"			=> "Lien rapide vers le Wikix",
 		"rss"				=> "News Extérieures",
-		"liens_perso"		=> "Liens Perso",
 		"annonce_virus"	=> "Attention Virus !"
 		);
 }/*

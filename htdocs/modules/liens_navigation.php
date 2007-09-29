@@ -23,39 +23,18 @@
 	$Id$
 
 */
-?>
-<module id="liens_navigation" titre="Frankiz">
-	<?php if(!est_authentifie(AUTH_MINIMUM)): ?>
-		<lien id="connect" titre="Se connecter" url="login.php" key="l"/>
-	<?php endif; ?>
-	<lien id="annonces" titre="Annonces" url="." key="a"/>
-	<lien id="activites" titre="Activités" url="activites.php"/>
-	<?php if(est_authentifie(AUTH_INTERNE)){ ?>
-		<lien id="trombino" titre="Trombino" url="trombino.php" key="t"/>
-	<?php } ?>
-	<lien id="xshare" titre="Télécharger" url="xshare.php" key="x"/>
-	<lien id="wikix" titre="Wikix" url="http://wikix.polytechnique.org" key="w"/>
-	<lien id="binets"  titre="Binets" url="binets.php" key="b"/>
-	<?php if(est_authentifie(AUTH_MINIMUM) && est_interne()): ?>
-		<lien id="siteseleves" titre="Sites élèves" url="http://perso.frankiz"/>
-	<?php else: ?>
-		<lien id="siteseleves" titre="Sites élèves" url="siteseleves.php"/>
-	<?php endif; ?>
-	<lien id="meteo" titre="Météo" url="meteo.php" key="m"/>
-</module>
 
-<?php if(est_authentifie(AUTH_MINIMUM)): ?>
-<module id="liens_profil" titre="Préférences">
-<?php
-	if(isset($_SESSION['sueur']))
-		echo "<warning>ATTENTION, su en cours. Pour revenir à ta vrai identité, clique <a href='index.php?logout=1'>ici</a></warning>";
-?>
-	<lien id="profil"  titre="Préférences" url="profil/index.php" key="p"/>
-	<?php if ((count($_SESSION['user']->perms)>1)&&($_SESSION['user']->perms[0]!="")) { ?>
-		<lien id="admin" titre="Administration" url="gestion/" key="g"/>
-	<?php } ?>
-		<?php if(est_authentifie(AUTH_FORT)): ?>
-		<lien id="deconnect" titre="Se déconnecter" url="index.php?logout=1" key="l"/>
-	<?php endif; ?>
-</module>
-<?php endif; ?>
+class LiensNavigationMiniModule extends FrankizMiniModule
+{
+	public function __construct()
+	{
+		$this->tpl = "minimodules/liens_navigation/main.tpl";
+		$this->header_tpl = "minimodules/liens_navigation/header.tpl";
+		$this->titre = "Navigation dans le site";
+	}
+
+	public static function check_auth()
+	{
+		return true;
+	}
+}

@@ -31,6 +31,12 @@ demande_authentification(AUTH_MDP);
 
 // Génération de la page
 require_once BASE_LOCAL."/include/page_header.inc.php";
+
+class Module extends PLModule
+{
+	public function run()
+	{
+		$this->assign('title', "Frankiz : accueil");
 ?>
 <page id="accueil" titre="Frankiz : accueil">
 	<h2>Tu es bien authentifié !</h2>
@@ -38,4 +44,10 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	<p>Si tu veux éviter de te ré-identifier à chaque fois que tu accèdes à cette page, active l'authentification
 	par cookie dans tes <a href="profil/profil.php">préférences</a>.</p>
 </page>
-<?php require_once BASE_LOCAL."/include/page_footer.inc.php" ?>
+
+<?php 
+	}
+}
+$smarty = new Module;
+
+require_once BASE_LOCAL."/include/page_footer.inc.php" ?>

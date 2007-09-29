@@ -49,4 +49,5 @@ foreach(liste_modules() as $module => $modifiable)
 			existant_et_egal_a($_REQUEST['modules'],'tous','on')
 			&& !existant_et_egal_a($_REQUEST['modules'],$module,'off') )
 		require BASE_LOCAL."/modules/$module.php";
+
 ?>

@@ -25,12 +25,53 @@
 */
 require_once BASE_LOCAL."/include/meteo_func.inc.php";
 
-echo "<module id=\"meteo\" titre=\"Météo\">\n";
+class MeteoMiniModule extends FrankizMiniModule
+{
+	private $meteo;
 
-if(!cache_recuperer('meteo',strtotime(date("Y-m-d H:i:00",time()-60*30)))) { // le cache est valide pendant 30min ...
-	weather_xml();
-	cache_sauver('meteo');
+	public function __construct()
+	{
+		global $globals;
+		
+		if (!$this->get_data())
+			return;
+
+		$globals->smarty->assign("meteo", $meteo);
+		$this->tpl = "minimodules/meteo/meteo.tpl";
+	}
+
+	private function get_data()
+	{
+		// Récupération de la météo
+		$proxy = "kuzh.polytechnique.fr";
+		$port = 8080;
+
+		$fp = fsockopen($proxy, $port);
+		fputs($fp, "GET ".WEATHER_DOT_COM." HTTP/1.0\r\nHost: $proxy\r\n\r\n");
+		$xml = "";
+		while(!feof($fp)){
+			$xml .= fgets($fp, 4000);
+		}
+		$xml = strstr($xml,"<?xml");	// TODO corriger ce gros hack, vérifier aussi que la requète
+						// http à réussie
+	
+		// traduction de la météo dans notre format
+		if (!strstr($xml,"<weather"))
+			return false;
+
+		$dom_xml = new DOMDocument ();
+		$dom_xml->loadXML($xml);
+
+		$dom_xml_ext = new DOMXPath($dom_xml);
+		$this->meteo['sunrise'] = $dom_xml_ext->query("/weather/loc/sunr/text()");
+		$this->meteo['sunset'] = $dom_xml_ext->query("/weather/loc/suns/text()");
+		$this->meteo['temperature'] = $dom_xml_ext->query("/weather/cc/tmp/text()");
+		$this->meteo['ciel_icon'] = $dom_xml_ext->query("/weather/cc/icon/text()");
+		$this->meteo['pression'] = $dom_xml_ext->query("/weather/cc/bar/r/text()");
+		$this->meteo['vent'] = $dom_xml_ext->query("/weather/cc/wind/s/text()");
+		$this->meteo['humidite'] = $dom_xml_ext->query("/weather/cc/hmid/text()");
+
+		return true;
+	}
 }
-
-echo "</module>\n";
 ?>

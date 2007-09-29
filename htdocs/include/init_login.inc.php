@@ -154,35 +154,33 @@ if(isset($_REQUEST['su']) && verifie_permission('admin')) {
 if(!isset($_SESSION['user']))
 	$_SESSION['user'] = new User(false,'');
 
+require_once "global_func.inc.php";
+// c'était vraiment une idée à la con d'utiliser ce type de classe pour la transtion, mais bon, puisqu'il ne
+// m'en reste qu'une à écrire..
+class AuthModule extends PLModule
+{
+	public function run()
+	{
+		$this->assign("title", "Frankiz : connexion");
 
-/*
-	Fonction de gestion de la demande d'authentification ($minimum est la méthode
-	d'authentification minimale pour laquelle une réauthentification par mot de passe
-	n'est pas indispensable).
-*/
-function demande_authentification($minimum) {
-	if($_SESSION['user']->est_authentifie($minimum)) return;
-	
-	require_once "init_skin.inc.php"; // n'y est pas encore dans le cas d'un "su"
-	require "page_header.inc.php";
 ?>
-	<page id="page_login" titre="Frankiz : connexion">
-		<?php if(a_erreur(ERR_LOGIN)):?>
-			<warning>Une erreur est survenue lors de l'authentification. Vérifie qu'il n'y a pas d'erreur
+	<page id="page_login">
+	<?php if(a_erreur(ERR_LOGIN)):?>
+		<warning>Une erreur est survenue lors de l'authentification. Vérifie qu'il n'y a pas d'erreur
 			dans le login ou le mot de passe.</warning>
-		<?php endif; ?>
-		<note>Ton login est loginpoly.promo</note>
-		<formulaire id="login" titre="Connexion" action=
-		<?php
-			echo '"'.htmlentities($_SERVER['REQUEST_URI']).'"';
-		?>
-		>
-		<?php  foreach ($_REQUEST AS $keys => $val){
-				if ($keys != "login_login" && $keys != "passwd_login") {
-					echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
-				}
-		       }
-		?>
+	<?php endif; ?>
+	<note>Ton login est loginpoly.promo</note>
+	<formulaire id="login" titre="Connexion" action=
+	<?php
+		echo '"'.htmlentities($_SERVER['REQUEST_URI']).'"';
+	?>
+	>
+	<?php  foreach ($_REQUEST AS $keys => $val){
+			if ($keys != "login_login" && $keys != "passwd_login") {
+				echo "<hidden id=\"".$keys."\" valeur=\"".$val."\" />";
+			}
+	       }
+	?>
 			
 			<champ id="login_login" titre="Identifiant" valeur="<?php if(isset($_POST['login_login'])) echo $_POST['login_login']?>"/>
 			<champ id="passwd_login" titre="Mot de passe" valeur=""/>
@@ -191,7 +189,22 @@ function demande_authentification($minimum) {
 		<p>Si tu as oublié ton mot de passe ou que tu n'as pas encore de compte,
 		clique <a href="<?php echo BASE_URL.'/profil/mdp_perdu.php'?>">ici</a>.</p>
 	</page>
-<?php
+<?
+	}
+}
+/*
+	Fonction de gestion de la demande d'authentification ($minimum est la méthode
+	d'authentification minimale pour laquelle une réauthentification par mot de passe
+	n'est pas indispensable).
+*/
+function demande_authentification($minimum) {
+	global $smarty, $globals;
+
+	if($_SESSION['user']->est_authentifie($minimum)) return;
+	
+	require_once "init_skin.inc.php"; // n'y est pas encore dans le cas d'un "su"
+	require "page_header.inc.php";
+	$smarty = new AuthModule;
 	require "page_footer.inc.php";
 	
 	exit;

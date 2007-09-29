@@ -22,6 +22,7 @@ i	Affichage du module "Post-it"
 */
 	
 require_once "include/wiki.inc.php";
+global $DB_trombino;
 
 // Vérification des droits
 if (est_authentifie(AUTH_MINIMUM)) {

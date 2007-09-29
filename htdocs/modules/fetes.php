@@ -24,17 +24,28 @@
 	
 */
 
-if(est_authentifie(AUTH_INTERNE)) {
-	echo "<module id=\"fetes\" titre=\"Fête du jour\">\n";
+class FetesMiniModule extends FrankizMiniModule
+{
+	public function __construct()
+	{
+		global $globals, $DB_trombino;
 
-	if(!cache_recuperer('fetes',strtotime(date("Y-m-d",time())))) {
-		$DB_trombino->query("SELECT prenom FROM fetes WHERE MONTH(date)=MONTH(NOW()) AND DAYOFMONTH(date)=DAYOFMONTH(NOW()) ");
-		while(list($prenom) = $DB_trombino->next_row())
-			echo "\t<eleve prenom='$prenom'/>\n";
-		
-		cache_sauver('fetes');
+		$DB_trombino->query("SELECT prenom 
+		                       FROM fetes 
+				      WHERE MONTH(date) = MONTH(NOW()) AND DAYOFMONTH(date) = DAYOFMONTH(NOW())");
+
+		$fetes = array();
+		while (list($prenom) = $DB_trombino->next_row())
+			$fetes[] = $prenom;
+	
+		$globals->smarty->assign("fetes", $fetes);
+		$this->tpl = "minimodules/fetes/fetes.tpl";
+		$this->titre = "Fêtes du jour";
 	}
 
-	echo "</module>\n";
+	public static function check_auth()
+	{
+		return est_authentifie(AUTH_INTERNE);
+	}
 }
 ?>

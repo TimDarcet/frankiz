@@ -23,23 +23,40 @@
 	$Id$
 
 */
+class ActivitesMiniModule extends FrankizMiniModule
+{
+	public function __construct()
+	{
+		global $globals, $DB_web;
+		
+		$DB_web->query("SELECT affiche_id, titre, url, date, exterieur 
+				  FROM affiches 
+				 WHERE TO_DAYS(date) = TO_DAYS(NOW())
+			      ORDER BY date");
 
+		$activites = array();
+		while ($row = $DB_web->next_row())
+		{
+			$activites[] = array('titre' => $row['titre'],
+					     'url' => $row['url'],
+					     'date' => $row['date'],
+					     'exterieur' => $row['exterieur'],
+					     'image' => $row['affiche_id']);
+		}
 
-// Etat du bôb
-$valeur = getEtatBob();
+		if (!getEtatBob() && count($activites) == 0)
+			return;
 
-$DB_web->query("SELECT affiche_id,titre,url,date,exterieur FROM affiches WHERE TO_DAYS(date)=TO_DAYS(NOW()) ORDER BY date");
-	
-if ($DB_web->num_rows()!=0 || $valeur){
-	echo "<module id=\"activites\" titre=\"Activités\">\n";
-	if(est_authentifie(AUTH_INTERNE) && $valeur) echo "<annonce titre=\"Le BôB est ouvert\"/>";
-	while (list($id,$titre,$url,$date,$exterieur)=$DB_web->next_row()) { 
-		if(!$exterieur && !est_authentifie(AUTH_INTERNE)) continue;
-	?>
-		<annonce date="<?php echo $date ?>">
-		<lien url="<?php echo ($url!="")?$url:"activites.php";?>"><image source="<?php echo DATA_DIR_URL.'affiches/'.$id?>" texte="Affiche" legende="<?php echo $titre?>"/></lien>
-		</annonce>
-<?php }
-	echo "</module>\n";
+		$globals->smarty->assign('activites_etat_bob', getEtatBob());
+		$globals->smarty->assign('activites' , $activites);
+		$this->tpl = "minimodules/activites/activites.tpl";
+		$this->titre = "Activités";
+	}
+
+	public static function check_auth()
+	{
+		return est_authentifie(AUTH_INTERNE);
+	}
 }
-?>
+	
+?>	

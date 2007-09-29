@@ -26,10 +26,34 @@
 
 */
 
-echo "<frankiz>";
-require "modules.inc.php";
 
-$smarty->run();
+// Classe de transition...
+class Globals
+{
+	public $smarty;
+}
+
+$globals = new Globals;
+$globals->smarty = $smarty;
+
+// Le vrai code maintenant
+echo "<frankiz>";
+
+require_once "include/modules.inc.php";
+require_once "include/minimodules.inc.php";
+require_once "modules/liens_perso.php";
+require_once "modules/liens_navigation.php";
+require_once "modules/liens_profil.php";
+require_once "modules/liens_utiles.php";
+require_once "modules/activites.php";
+require_once "modules/sondages.php";
+require_once "modules/fetes.php";
+require_once "modules/lien_tol.php";
+require_once "modules/lien_wikix.php";
+
+$minimodules = FrankizMiniModule::load_modules('LienTol', 'LienWikix', 'Fetes', 'Sondages', 'Activites', 'LiensPerso', 'LiensNavigation', 'LiensProfil', 'LiensUtiles');
+
+$globals->smarty->run();
 echo "</frankiz>\n";
 
 // Récupération du cache de sortie
@@ -75,7 +99,10 @@ $smarty->assign('xml', $resultat);
 $smarty->assign('css', $_SESSION['skin']['skin_css_url']);
 $smarty->assign('css_list', Skin::get_list());
 $smarty->assign('base', BASE_URL);
-
+$smarty->assign('session', new Session);
+$smarty->assign('minimodules', $minimodules);
+if (isset($_SESSION['sueur']))
+	$smarty->assign('sueur', $_SESSION['sueur']);
 
 affiche_erreurs_php();
 $smarty->display("main.tpl");

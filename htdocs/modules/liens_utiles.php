@@ -23,31 +23,17 @@
 	$Id$
 
 */
-$DB_trombino->query("SELECT promo FROM eleves WHERE eleve_id='{$_SESSION['user']->uid}'");
-list($promo) = $DB_trombino->next_row();
+class LiensUtilesMiniModule extends FrankizMiniModule
+{
+	public function __construct()
+	{
+		$this->tpl = "minimodules/liens_utiles/liens_utiles.tpl";
+		$this->titre = "Liens Utiles";
+	}
+
+	public static function check_auth()
+	{
+		return true;
+	}
+}
 ?>
-<module id="liens_ecole" titre="Liens utiles">
-	
-	<lien id="utile_contact" titre="Contacter les élèves" url="contact.php" key="c"/>
-	<?php if(!est_authentifie(AUTH_INTERNE)): ?>
-		<lien id="utile_plan" titre="Venir à l'X" url="plan.php" />
-	<?php endif; ?>
-	<?php if(est_authentifie(AUTH_MINIMUM)){ ?>
-		<lien id="emploi_temps" titre="Emploi du temps" url="http://de.polytechnique.fr/index.php?page=edt"/>
-		<lien id="utile_licence" titre="Licences Msdnaa" url="profil/licences.php"/>
-		<lien id="utile_redmail" titre="Redirection des mails" url="http://poly.polytechnique.fr/" /> 
-	<?php } ?>
-	<?php if(est_authentifie(AUTH_INTERNE)): ?><lien id="utile_irc" titre="Accéder à l'IRC" url="http://ircserver.eleves.polytechnique.fr/"/><?php endif; ?>
-	<lien id="wikibr" titre="Docs BR" url="http://www.polytechnique.fr/eleves/binets/reseau"/>
-	<lien id="utile_ecole" titre="Site de l'école" url="http://www.polytechnique.fr/" />
-	<lien id="utile_ecole_de" titre="Site de la DE" url="http://www.edu.polytechnique.fr/" key="d"/>
-	<lien id="utile_ecole_4a" titre="Orientation 4eme année" url="http://www.polytechnique.fr/sites/orientation4a/pages_orientation/"/>
-	<?php if(est_authentifie(AUTH_INTERNE)): ?><lien id="utile_intranet" titre="Intranet" url="http://intranet.polytechnique.fr/" key="i"/><?php endif; ?>
-	<lien id="utile_xorg" titre="Polytechnique.org" url="http://www.polytechnique.org/" key="o"/>
-	<lien id="utile_net" titre="Polytechnique.net" url="http://www.polytechnique.net/" key="n"/>
-	<?php if (est_interne() || est_authentifie(AUTH_MINIMUM)) { ?>
-		<lien id="partenariats" titre="Partenariats" url="partenaires.php"/>
-	<?php } ?>
-	<lien id="utile_liens" titre="Autres liens" url="liens.php" />
-	<lien id="anciennefaq" titre="Ancienne FAQ" url="faq.php"/>
-</module>

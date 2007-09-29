@@ -18,22 +18,22 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Affichage d'un lien sur la page d'accueil vers le tol.
+	Liens de navigation dans le site web.	
 	
-	$Id$
+	$Id: liens_profil.php 1805 2006-12-08 23:28:37Z pika $
 
 */
-class LienTolMiniModule extends FrankizMiniModule
+
+class LiensProfilMiniModule extends FrankizMiniModule
 {
 	public function __construct()
 	{
-		$this->tpl = "minimodules/lien_tol/lien_tol.tpl";
-		$this->titre = "Tol";
+		$this->tpl = "minimodules/liens_profil/main.tpl";
+		$this->titre = "Profil : {$_SESSION['user']->prenom} {$_SESSION['user']->nom}";
 	}
 
 	public static function check_auth()
 	{
-		return est_authentifie(AUTH_INTERNE);
+		return est_authentifie(AUTH_MINIMUM);
 	}
 }
-?>

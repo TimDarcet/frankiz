@@ -23,11 +23,28 @@
 	$Id$
 
 */
-if(isset($_SESSION['liens_perso']) && !empty($_SESSION['liens_perso']) && count($_SESSION['liens_perso'])>0){
-	echo "<module id=\"liens_perso\" titre=\"Liens Perso\">";
-	foreach($_SESSION['liens_perso'] as $titre => $url){
-		echo "<lien titre=\"$titre\" url=\"$url\" /><br/>";
+
+class LiensPersoMiniModule extends FrankizMiniModule
+{
+	public function __construct()
+	{
+		global $globals;
+
+		if (!isset($_SESSION['liens_perso']) || $_SESSION['liens_perso'] == "" || count($_SESSION['liens_perso']) == 0)
+			return;
+			
+		$liens = array();
+		foreach ($_SESSION['liens_perso'] as $titre => $url)
+			$liens[] = array('title' => $titre, 'url' => $url);
+
+		$globals->smarty->assign('liens_perso', $liens);
+		$this->tpl = "minimodules/liens_perso/main.tpl";
+		$this->header_tpl = "minimodules/liens_perso/header.tpl";
 	}
-	echo "</module>";
+
+	public static function check_auth()
+	{
+		return true;
+	}
 }
 ?>

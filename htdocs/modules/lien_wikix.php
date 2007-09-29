@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2006 Binet Réseau
+	Copyright (C) 2004 Binet Réseau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,21 +18,22 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Affichage d'un champs de recherche pour le wikix
+	Affichage d'un lien sur la page d'accueil vers le tol.
 	
 	$Id$
 
 */
+class LienWikixMiniModule extends FrankizMiniModule
+{
+	public function __construct()
+	{
+		$this->tpl = "minimodules/lien_wikix/lien_wikix.tpl";
+		$this->titre = "WikiX";
+	}
 
-if (est_authentifie(AUTH_INTERNE)) {
-?>
-<module id="lien_wikix" titre="WikiX">
-	<formulaire id="lien_wiki_x" action="wikix/Special:Search" type="discret">
-		<hidden id="fulltext" valeur="Rechercher" />
-		<champ titre="Rechercher" id="search" valeur="" />
-		<bouton titre="Chercher" id="ok" />
-	</formulaire>
-</module>
-<?php
+	public static function check_auth()
+	{
+		return est_authentifie(AUTH_INTERNE);
+	}
 }
 ?>
