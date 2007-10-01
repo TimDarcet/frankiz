@@ -104,7 +104,7 @@ class AnnoncesModule extends PLModule
 		
 		$page->assign('title', "Annonces");
 		$page->assign('annonces', $annonces);
-		$page->changeTpl('annonces.tpl');
+		$page->changeTpl('annonces/annonces.tpl');
 	}
 }
 ?>

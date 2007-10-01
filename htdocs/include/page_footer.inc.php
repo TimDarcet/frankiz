@@ -42,7 +42,7 @@ require_once BASE_LOCAL."/modules/sondages.php";
 require_once BASE_LOCAL."/modules/fetes.php";
 require_once BASE_LOCAL."/modules/lien_tol.php";
 require_once BASE_LOCAL."/modules/lien_wikix.php";
-require_once BASE_LOCAL."/modules/lienik.php";
+require_once BASE_LOCAL."/modules/lien_ik.php";
 require_once BASE_LOCAL."/modules/meteo.php";
 require_once BASE_LOCAL."/modules/annonce_virus.php";
 require_once BASE_LOCAL."/modules/anniversaires.php";
