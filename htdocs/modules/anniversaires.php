@@ -24,21 +24,38 @@
 
 */
 
-if(est_authentifie(AUTH_INTERNE)) {
-	echo "<module id=\"anniversaires\" titre=\"Anniversaires\">\n";
+class AnniversairesMiniModule extends FrankizMiniModule
+{
+	public function __construct()
+	{
+		global $page, $DB_web, $DB_trombino;
 
-	if(!cache_recuperer('anniversaires',strtotime(date("Y-m-d",time())))) {
 		$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
 		list($promo_temp) = $DB_web->next_row() ;
-		$DB_trombino->query("SELECT nom,prenom,surnom,promo,mail,login FROM eleves "
-							   ."WHERE MONTH(date_nais)=MONTH(NOW()) AND DAYOFMONTH(date_nais)=DAYOFMONTH(NOW()) "
-							   ."AND (promo=$promo_temp OR promo=".($promo_temp -1).") ORDER BY promo;");
-		while(list($nom,$prenom,$surnom,$promo,$mail,$login) = $DB_trombino->next_row())
-			echo "\t<eleve nom='$nom' prenom='$prenom' surnom='$surnom' promo='$promo' mail='$mail' login='$login'/>\n";
+		$DB_trombino->query("SELECT nom,prenom,surnom,promo,mail,login 
+				       FROM eleves 
+				      WHERE MONTH(date_nais) = MONTH(NOW()) AND 
+				            DAYOFMONTH(date_nais) = DAYOFMONTH(NOW()) AND 
+					    (promo=$promo_temp OR promo=($promo_temp-1)) 
+			           ORDER BY promo;");
+
+	
+		$anniversaires = array($promo_temp-1 => array(),
+				       $promo_temp   => array());
+		while(list($nom, $prenom, $surnom, $promo, $mail, $login) = $DB_trombino->next_row())
+			$anniversaires[$promo][] = array('nom'    => $nom,
+							 'prenom' => $prenom,
+							 'surnom' => $surnom,
+							 'mail'   => $mail,
+							 'login'  => $login); 
 		
-		cache_sauver('anniversaires');
+		$page->assign('anniversaires', $anniversaires);
+		$this->tpl = "minimodules/anniversaires/anniversaires.tpl";
 	}
 
-	echo "</module>\n";
+	public static function check_auth()
+	{
+		return est_authentifie(AUTH_INTERNE);
+	}
 }
 ?>

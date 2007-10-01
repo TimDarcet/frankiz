@@ -28,7 +28,7 @@ class FetesMiniModule extends FrankizMiniModule
 {
 	public function __construct()
 	{
-		global $globals, $DB_trombino;
+		global $page, $DB_trombino;
 
 		$DB_trombino->query("SELECT prenom 
 		                       FROM fetes 
@@ -38,7 +38,7 @@ class FetesMiniModule extends FrankizMiniModule
 		while (list($prenom) = $DB_trombino->next_row())
 			$fetes[] = $prenom;
 	
-		$globals->smarty->assign("fetes", $fetes);
+		$page->assign("fetes", $fetes);
 		$this->tpl = "minimodules/fetes/fetes.tpl";
 		$this->titre = "Fêtes du jour";
 	}

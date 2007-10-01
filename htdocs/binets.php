@@ -39,43 +39,6 @@ if(isset($_REQUEST['image'])){
 
 // Affichage de la liste des binets
 require BASE_LOCAL."/include/page_header.inc.php";
-
-class BinetsModule extends PLModule
-{
-	function run()
-	{
-		global $DB_trombino;
-
-		$this->assign('title', "Frankiz : Binets");
-
-	echo "<page id="binets">"
-	
-	$auth = "" ;
-	if(!$_SESSION['user']->est_authentifie(AUTH_INTERNE)) $auth = " exterieur=1 AND " ;
-
-	$categorie_precedente = -1;
-	$DB_trombino->query("SELECT binet_id,nom,description,http,folder,b.catego_id,categorie ".
- 						"FROM binets as b LEFT JOIN binets_categorie as c USING(catego_id) ".
-						"WHERE $auth NOT(http IS NULL AND folder='')".
-						"ORDER BY b.catego_id ASC, b.nom ASC");
-	while(list($id,$nom,$description,$http,$folder,$cat_id,$categorie) = $DB_trombino->next_row()) {
-			if($folder!=""){ 
-				if(est_interne()) $http=URL_BINETS.$folder."/";
-				else $http="binets/$folder/";
-			}
-?>
-		<binet id="<?php echo $id; ?>" categorie="<?php echo $categorie; ?>" nom="<?php echo $nom; ?>">
-			<image source="binets.php?image=1&amp;id=<?php echo $id; ?>"  texte="<?php echo $nom; ?>"/>
-			<description><?php echo stripslashes($description); ?></description>
-			<?php if($http!="") echo "<url>$http</url>"; ?>
-		</binet>
-<?php
-	}
-?>
-</page>
-<?php 
-	}
-}
-$smarty = new BinetsModule;
-
+require BASE_MODULES."/trombino.php";
+call ("TrombinoModule", "binets");
 require "include/page_footer.inc.php" ?>

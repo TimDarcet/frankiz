@@ -22,18 +22,20 @@
 	
 */
 
-$erreur_textes = array(
-	403 => 'Accès interdit',
-	404 => 'Page inexistante',
-	500 => 'Erreur interne du serveur');
-
-$erreur_num = empty($_GET['erreur']) ? 500 : $_GET['erreur'];
-$erreur_texte = isset($erreur_textes[$erreur_num]) ? "({$erreur_textes[$erreur_num]})" : "";
-
 require "include/page_header.inc.php";
+
+switch ($_GET["id"])
+{
+case '403':
+	call('CoreModule', 'handle_403');
+	break;
+case '404':
+	call('CoreModule', 'handle_404');
+	break;
+default:
+	call('CoreModule', 'handle_500');
+	break;
+}
+
+require "include/page_footer.inc.php"
 ?>
-<page id="erreur" titre="Frankiz : erreur <?php echo $erreur_num; ?>">
-	<warning>Une erreur <?php echo $erreur_num; ?> <?php echo $erreur_texte; ?> est survenue, empéchant
-		l'accès à la page demandée.</warning>
-</page>
-<?php require "include/page_footer.inc.php" ?>

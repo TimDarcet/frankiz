@@ -41,7 +41,7 @@
 	{include file="minimodule.tpl" module_name="Stats"}
       </div>
       <div class="fkz_centre">
-        {$xml}
+	{include file="content.tpl"}
       </div>
     </div>
     <div class="fkz_end_page"></div>

@@ -38,7 +38,6 @@
 <xsl:include href="arbre.xsl"/>
 <xsl:include href="admin.xsl"/>
 
-<xsl:include href="annonces.xsl"/>
 <xsl:include href="skins.xsl"/>
 <xsl:include href="liens.xsl"/>
 <xsl:include href="qdj.xsl"/>
@@ -50,8 +49,6 @@
 <xsl:include href="meteo.xsl"/>
 
 <xsl:template match="/">
-	<xsl:apply-templates select="frankiz/module[@id='anniversaires']"/>
-	<xsl:apply-templates select="frankiz/module[@id='virus']"/>
 	<xsl:apply-templates select="frankiz/page[@id='annonces']" mode="sommaire"/>
 	<xsl:apply-templates select="frankiz/page[@id='annonces']" mode="complet"/>
 	<xsl:apply-templates select="frankiz/page[@id='trombino']"/>
@@ -59,31 +56,9 @@
 </xsl:template>
 
 
-<xsl:template match="/frankiz/page[@id!='annonces' and @id!='trombino']">
-	<div class="fkz_divers_1"><div class="fkz_divers_2">
-	<div class="fkz_divers_3"><div class="fkz_divers_4">
-	<div class="fkz_divers_5"><div class="fkz_divers_6">
-	<div class="fkz_page_divers">
-		<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
-		<xsl:if test="@id != ''">
-			<div class="fkz_page_titre"><xsl:value-of select="substring-after(@titre,'Frankiz : ')"/></div>
-		</xsl:if>
-		<div class="fkz_page_corps"><xsl:apply-templates/></div>
-	</div>
-	</div></div></div></div></div></div>
+<xsl:template match="/frankiz/page">
+	<div class="fkz_page_corps"><xsl:apply-templates/></div>
 </xsl:template>
-
-<xsl:template match="/frankiz/page[@id='meteo']">
-	<div class="fkz_meteo_1"><div class="fkz_meteo_2">
-	<div class="fkz_meteo_3"><div class="fkz_meteo_4">
-	<div class="fkz_meteo_5"><div class="fkz_meteo_6">
-	<div class="fkz_page_meteo">
-		<div class="fkz_page_titre">Météo</div>
-		<div class="fkz_page_corps"><xsl:apply-templates/></div>
-	</div>
-	</div></div></div></div></div></div>
-</xsl:template>
-
 
 <xsl:template match="cadre">
 	<xsl:if test="@titre!=''">

@@ -23,7 +23,6 @@
 	$Id$
 
 */
-require_once BASE_LOCAL."/include/meteo_func.inc.php";
 
 class MeteoMiniModule extends FrankizMiniModule
 {
@@ -31,13 +30,14 @@ class MeteoMiniModule extends FrankizMiniModule
 
 	public function __construct()
 	{
-		global $globals;
+		global $page;
 		
 		if (!$this->get_data())
 			return;
 
-		$globals->smarty->assign("meteo", $meteo);
+		$page->assign("meteo", $this->meteo);
 		$this->tpl = "minimodules/meteo/meteo.tpl";
+		$this->titre = "Météo";
 	}
 
 	private function get_data()
@@ -71,6 +71,11 @@ class MeteoMiniModule extends FrankizMiniModule
 		$this->meteo['vent'] = $dom_xml_ext->query("/weather/cc/wind/s/text()");
 		$this->meteo['humidite'] = $dom_xml_ext->query("/weather/cc/hmid/text()");
 
+		return true;
+	}
+
+	public static function check_auth()
+	{
 		return true;
 	}
 }

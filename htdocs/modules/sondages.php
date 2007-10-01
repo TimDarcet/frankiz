@@ -60,24 +60,25 @@ class SondagesMiniModule extends FrankizMiniModule
 	
 	public function __construct()
 	{
-		global $globals, $DB_web;
+		global $page, $DB_web;
 
 		$DB_web->query("SELECT sondage_id, titre, DATE_FORMAT(perime,'%d/%m'), restriction 
 		                  FROM sondage_question
 				 WHERE TO_DAYS(perime) - TO_DAYS(NOW()) >=-7");
-		$globals->smarty->assign("sondages_courants", $this->get_sondages());
+		$page->assign("sondages_courants", $this->get_sondages());
 
 		$DB_web->query("SELECT sondage_id, titre, DATE_FORMAT(perime,'%d/%m'), restriction 
 		                  FROM sondage_question 
 				 WHERE TO_DAYS(perime) - TO_DAYS(NOW()) < 0 AND TO_DAYS(perime) - TO_DAYS(NOW()) >= -7");
-		$globals->smarty->assign("sondages_anciens", $this->get_sondages());
+		$page->assign("sondages_anciens", $this->get_sondages());
 		
 		$DB_web->query("SELECT sondage_id, titre, DATE_FORMAT(perime,'%d/%m'), restriction
 		                  FROM sondage_question 
 				 WHERE TO_DAYS(perime) - TO_DAYS(NOW()) < -7 AND eleve_id = {$_SESSION['user']->uid}");
-		$globals->smarty->assign("sondages_anciens_user", $this->get_sondages());
+		$page->assign("sondages_anciens_user", $this->get_sondages());
 
 		$this->tpl = "minimodules/sondages/sondages.tpl";
+		$this->titre = "Sondages";
 	}
 
 	public static function check_auth()

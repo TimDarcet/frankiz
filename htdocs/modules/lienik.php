@@ -17,26 +17,26 @@
 	along with this program; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
+class LienIKMiniModule extends FrankizMiniModule
+{
+	public function __construct()
+	{
+		global $page, $DB_web;
 
-if(est_authentifie(AUTH_INTERNE)) {
-?>
-<module id="lienik" titre="IK électronique">
-<?php
-	if(!cache_recuperer('lienik',0)) {
 		$DB_web->query("SELECT valeur FROM parametres WHERE nom='lienik'");
 		list($lienik) = $DB_web->next_row();
-		$lienik_full = "ik.php?id=".$lienik;
 
-		echo "<a href=\"$lienik_full\"><image source=\"".BASE_URL."/data/ik_thumbnails/$lienik.png\" texte=\"IK de la semaine\"/></a> \n";
+		$page->assign("lien_ik_url", "ik.php?id=$lienik");
+		$page->assign("lien_ik_img", BASE_URL."/data/ik_thumbnails/$lienik.png");
+		$this->tpl = "minimodules/lien_ik/lien_ik.tpl";
+		$this->titre = "IK Electronique";
+	}
 
-		cache_sauver('lienik');
+	public static function check_auth()
+	{
+		return est_authentifie(AUTH_INTERNE);
 	}
-	if (est_interne()) {
-		echo "<a href='".URL_BINETS."ik/'>Archive de l'IK</a>";
-	}
-?>
-</module>
-<?php
 }
+
 ?>
 

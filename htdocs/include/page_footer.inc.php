@@ -25,42 +25,42 @@
 	$Id$
 
 */
-
-
-// Classe de transition...
-class Globals
-{
-	public $smarty;
-}
-
-$globals = new Globals;
-$globals->smarty = $smarty;
-
-// Le vrai code maintenant
-echo "<frankiz>";
-
-require_once "include/modules.inc.php";
-require_once "include/minimodules.inc.php";
-require_once "modules/liens_perso.php";
-require_once "modules/liens_navigation.php";
-require_once "modules/liens_profil.php";
-require_once "modules/liens_utiles.php";
-require_once "modules/activites.php";
-require_once "modules/sondages.php";
-require_once "modules/fetes.php";
-require_once "modules/lien_tol.php";
-require_once "modules/lien_wikix.php";
-
-$minimodules = FrankizMiniModule::load_modules('LienTol', 'LienWikix', 'Fetes', 'Sondages', 'Activites', 'LiensPerso', 'LiensNavigation', 'LiensProfil', 'LiensUtiles');
-
-$globals->smarty->run();
 echo "</frankiz>\n";
-
 // Récupération du cache de sortie
 $xml = ob_get_contents();
 ob_end_clean();
-
 header('Content-Type: text/html');
+
+require_once BASE_LOCAL."/include/minimodules.inc.php";
+
+require_once BASE_LOCAL."/modules/liens_perso.php";
+require_once BASE_LOCAL."/modules/liens_navigation.php";
+require_once BASE_LOCAL."/modules/liens_profil.php";
+require_once BASE_LOCAL."/modules/liens_utiles.php";
+require_once BASE_LOCAL."/modules/activites.php";
+require_once BASE_LOCAL."/modules/sondages.php";
+require_once BASE_LOCAL."/modules/fetes.php";
+require_once BASE_LOCAL."/modules/lien_tol.php";
+require_once BASE_LOCAL."/modules/lien_wikix.php";
+require_once BASE_LOCAL."/modules/lienik.php";
+require_once BASE_LOCAL."/modules/meteo.php";
+require_once BASE_LOCAL."/modules/annonce_virus.php";
+require_once BASE_LOCAL."/modules/anniversaires.php";
+
+$minimodules = FrankizMiniModule::load_modules('Activites',
+					       'Anniversaires',
+					       'Fetes', 
+					       'Meteo',
+					       'LienIK', 
+					       'LienTol', 
+					       'LienWikix', 
+					       'LiensNavigation', 
+					       'LiensPerso', 
+					       'LiensProfil', 
+					       'LiensUtiles',
+					       'Sondages',
+					       'Virus');
+
 
 // Feuille de style
 $dom_xsl = new DOMDocument ();
@@ -91,20 +91,21 @@ if ($resultat === false)
 	echo "Erreur lors de la transformation XSLT";
 }
 
-$smarty->compile_check = AFFICHER_LES_ERREURS;
-$smarty->template_dir  = BASE_TEMPLATES;
-$smarty->compile_dir   = BASE_CACHE . 'templates_c/';
+$page->compile_check = AFFICHER_LES_ERREURS;
+$page->template_dir  = BASE_TEMPLATES;
+$page->compile_dir   = BASE_CACHE . 'templates_c/';
 
-$smarty->assign('xml', $resultat);
-$smarty->assign('css', $_SESSION['skin']['skin_css_url']);
-$smarty->assign('css_list', Skin::get_list());
-$smarty->assign('base', BASE_URL);
-$smarty->assign('session', new Session);
-$smarty->assign('minimodules', $minimodules);
+$page->assign('xml', $resultat);
+$page->assign('css', $_SESSION['skin']['skin_css_url']);
+$page->assign('css_list', Skin::get_list());
+$page->assign('base', BASE_URL);
+$page->assign('session', new Session);
+$page->assign('minimodules', $minimodules);
+$page->assign('template_name', $page->tpl_name);
 if (isset($_SESSION['sueur']))
 	$smarty->assign('sueur', $_SESSION['sueur']);
 
 affiche_erreurs_php();
-$smarty->display("main.tpl");
+$page->display("main.tpl");
 affiche_debug_php();
 ?>

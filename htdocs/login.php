@@ -26,28 +26,9 @@
 	
 */
 
-require "include/global.inc.php";
-demande_authentification(AUTH_MDP);
-
 // Génération de la page
-require_once BASE_LOCAL."/include/page_header.inc.php";
+require_once "include/page_header.inc.php";
 
-class Module extends PLModule
-{
-	public function run()
-	{
-		$this->assign('title', "Frankiz : accueil");
-?>
-<page id="accueil" titre="Frankiz : accueil">
-	<h2>Tu es bien authentifié !</h2>
-	<p>Te voilà prêt à accéder au fabuleux monde du campus de l'X.</p>
-	<p>Si tu veux éviter de te ré-identifier à chaque fois que tu accèdes à cette page, active l'authentification
-	par cookie dans tes <a href="profil/profil.php">préférences</a>.</p>
-</page>
+call('CoreModule', "login");
 
-<?php 
-	}
-}
-$smarty = new Module;
-
-require_once BASE_LOCAL."/include/page_footer.inc.php" ?>
+require_once "include/page_footer.inc.php" ?>

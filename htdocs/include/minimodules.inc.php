@@ -18,10 +18,10 @@ class FrankizMiniModule
 	 */
 	public function print_template_header()
 	{
-		global $globals;
+		global $page;
 
 		if ($this->header_tpl)
-			$globals->smarty->display($this->header_tpl);
+			$page->display($this->header_tpl);
 	}
 
 	/**
@@ -30,10 +30,10 @@ class FrankizMiniModule
 	 */
 	public function print_template()
 	{
-		global $globals;
+		global $page;
 
 		if ($this->tpl)
-			$globals->smarty->display($this->tpl);
+			$page->display($this->tpl);
 	}
 
 	/**

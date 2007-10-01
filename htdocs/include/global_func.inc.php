@@ -156,9 +156,38 @@ class Session
 }
 // Pendant la transition a Plat/al
 require_once 'smarty/libs/Smarty.class.php';
-class PLModule extends Smarty
+class PlatalPage extends Smarty
 {
+	public $tpl_name = "xml.tpl";
+
+	function changeTpl($tpl)
+	{
+		$this->tpl_name = $tpl;
+	}
 }
+$page = new PlatalPage;
+
+class PLModule 
+{
+	function make_hook($dummy, $perm)
+	{	
+		return array("perms" => $perm); 
+	}
+}
+
+function call($module_name, $function_name)
+{
+	global $page;
+
+	$mod = new $module_name;
+	$desc = $mod->handlers();
+
+	if (!est_authentifie($desc[$function_name]["perms"]))
+		call('CoreModule', 'do_login');
+	else
+		call_user_func(array($mod, "handle_$function_name"), $page);
+}
+
 /*
 	Renvoi la liste des modules disponibles sous la forme d'une liste :
 		"nom du fichier moins le .php" => "Nom affichable du module"
@@ -167,14 +196,11 @@ class PLModule extends Smarty
 */
 function liste_modules() {
 	return array(
-		"lienik"		=> "Lien vers l'IK électronique", 
 		"qdj"				=> "Question du jour",
 		"qdj_hier"			=> "Question de la veille",
 		"tour_kawa"		=> "Tours kawa",
-		"anniversaires"		=> "Anniversaires",
 		"stats"			=> "Statistiques",
 		"rss"				=> "News Extérieures",
-		"annonce_virus"	=> "Attention Virus !"
 		);
 }/*
 	Renvoi la liste des droits disponibles sous la forme d'une liste :
