@@ -1,3 +1,3 @@
-{foreach from=$fetes item=fete}
-{$fete}{if !$smarty.foreach.last}, {/if}
+{foreach from=$fetes item=fete name=foo}
+{$fete}{if !$smarty.foreach.foo.last}, {/if}
 {/foreach}

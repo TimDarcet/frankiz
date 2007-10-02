@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2006 Binet Réseau
+	Copyright (C) 2004 Binet Réseau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -17,19 +17,18 @@
 	along with this program; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
-class LienIKMiniModule extends FrankizMiniModule
+/*
+	Affichage d'un lien sur la page d'accueil vers le tol.
+	
+	$Id$
+
+*/
+class LienTolMiniModule extends FrankizMiniModule
 {
 	public function __construct()
 	{
-		global $page, $DB_web;
-
-		$DB_web->query("SELECT valeur FROM parametres WHERE nom='lienik'");
-		list($lienik) = $DB_web->next_row();
-
-		$page->assign("lien_ik_url", "ik.php?id=$lienik");
-		$page->assign("lien_ik_img", BASE_URL."/data/ik_thumbnails/$lienik.png");
-		$this->tpl = "minimodules/lien_ik/lien_ik.tpl";
-		$this->titre = "IK Electronique";
+		$this->tpl = "minimodules/lien_tol/lien_tol.tpl";
+		$this->titre = "Tol";
 	}
 
 	public static function check_auth()
@@ -37,6 +36,6 @@ class LienIKMiniModule extends FrankizMiniModule
 		return est_authentifie(AUTH_INTERNE);
 	}
 }
+FrankizMiniModule::register_module('lien_tol', 'LienTolMiniModule');
 
 ?>
-

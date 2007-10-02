@@ -10,6 +10,8 @@ class FrankizMiniModule
 	protected $header_tpl = null;
 	protected $titre = "Not Defined!";
 
+	private static $params;
+	private static $registered_modules = array();
 	private static $loaded_modules = array();
 
 	/**
@@ -20,8 +22,10 @@ class FrankizMiniModule
 	{
 		global $page;
 
+		$page->assign("minimodule", $this->params);
 		if ($this->header_tpl)
 			$page->display($this->header_tpl);
+		$page->assign("minimodule", null);
 	}
 
 	/**
@@ -31,9 +35,11 @@ class FrankizMiniModule
 	public function print_template()
 	{
 		global $page;
-
+		
+		$page->assign("minimodule", $this->params);
 		if ($this->tpl)
 			$page->display($this->tpl);
+		$page->assign("minimodule", null);
 	}
 
 	/**
@@ -55,26 +61,41 @@ class FrankizMiniModule
 	}
 	
 	/**
-	 * Load a minimodule
-	 * @param name Module name. This must match a filename in modules/
-	 * @return the load module
+	 * Assigne une variable pour la template du minimodule uniquement. Ces variables seront accessibles dans 
+	 * $minimodule.var_name à l'intérieur des template.
+	 */
+	protected function assign($key, $value)
+	{
+		$this->params[$key] = $value;
+	}
+	
+	/**
+	 * Charge un minimodule.
+	 * @param name Nom du module. C'est le nom utilisé lors de l'appel a register_module.
+	 * @return le module chargé
 	 */
 	public static function load($name)
 	{
-		$name_full = $name."MiniModule";
-		if (!call_user_func(array($name_full, "check_auth")))
+		if (!isset(FrankizMiniModule::$registered_modules[$name]))
 			return 0;
-		
-		$module = new $name_full;
-		FrankizMiniModule::$loaded_modules[$name] = $module;
 
-		return $module;
+		$desc = FrankizMiniModule::$registered_modules[$name];
+		
+		if (!call_user_func(array($desc['classname'], 'check_auth')))
+			return 0;
+
+		
+		$reflect = new ReflectionClass($desc['classname']);
+		$mod = $reflect->newInstanceArgs($desc['params']);
+		FrankizMiniModule::$loaded_modules[$name] = $mod;
+
+		return $mod;
 	}
 
 	/**
-	 * Load a list of modules 
-	 * @param ... a vararg list of modules
-	 * @return the list of modules currently loaded
+	 * Charge une liste de modules. 
+	 * @param ... une liste vararg de modules.
+	 * @return La liste des modules actuellement chargée
 	 */
 	public static function load_modules()
 	{
@@ -87,6 +108,31 @@ class FrankizMiniModule
 		return FrankizMiniModule::$loaded_modules;
 	}
 
+	/**
+	 * Enregistre un module parmi les modules disponibles
+	 * @param classname Nom de la classe.
+	 * @param params (optionnel) Parametres à passer au constructeur de la classe.
+	 */
+	public static function register_module($name, $classname, $params = array())
+	{
+		FrankizMiniModule::$registered_modules[$name] = array('classname' => $classname,
+								     'params' => $params);
+	}
 }
+
+// Inclus tous les fichiers contenant des minimodules. Ces fichiers se chargent d'eux mêmes d'enregistrer
+// leurs modules.
+require_once BASE_MODULES."minimodules/activites.php";
+require_once BASE_MODULES."minimodules/anniversaires.php";
+require_once BASE_MODULES."minimodules/fetes.php";
+require_once BASE_MODULES."minimodules/lien_ik.php";
+require_once BASE_MODULES."minimodules/lien_tol.php";
+require_once BASE_MODULES."minimodules/lien_wikix.php";
+require_once BASE_MODULES."minimodules/liens_navigation.php";
+require_once BASE_MODULES."minimodules/liens_profil.php";
+require_once BASE_MODULES."minimodules/liens_utiles.php";
+require_once BASE_MODULES."minimodules/meteo.php";
+require_once BASE_MODULES."minimodules/qdj.php";
+require_once BASE_MODULES."minimodules/annonce_virus.php";
 
 ?>

@@ -101,49 +101,21 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			$DB_web->query("SELECT COUNT(*) FROM compte_frankiz WHERE skin!=''");
 			list($nbutilisateurtotal) = $DB_web->next_row();
 			
-			
-			
-			// Parcourt des skins XSL
-			$dir_xsl=opendir(BASE_LOCAL."/skins");
-			while($file_xsl = readdir($dir_xsl)) {
+			// Parcourt des feuilles de style css
+			$dir_css=opendir(BASE_LOCAL."/skins/xhtml/");
+			while($file_css = readdir($dir_css)) {
 				// uniquement pour les dossiers non particuliers
-				if(!is_dir(BASE_LOCAL."/skins/$file_xsl") || $file_xsl == "." || $file_xsl == ".." ||
-					$file_xsl == "CVS" || $file_xsl{0} == "#") continue;
+				if(!is_dir(BASE_LOCAL."/skins/xhtml/$file_css") || $file_css == "." || $file_css == ".." ||
+					$file_css == "CVS" || $file_css{0} == "#" || $file_css == "xsl") continue;
 				
-				$description = lire_description_skin(BASE_LOCAL."/skins/$file_xsl");
-				if(empty($description)) {
-					ajouter_debug_log("Erreur de lecture de la description de la skin xsl $file_xsl");
-					continue;
-				}
-				
-				// Si c'est une skin sans CSS
-				if($description['chemin'] == ".") {
-					$DB_web->query("SELECT COUNT(*) FROM compte_frankiz WHERE skin LIKE '%$file_css%$file_xsl%'");
+				$description_css = Skin::lire_description(BASE_LOCAL."/skins/xhtml/$file_css");
+				if($description_css!=""){
+					$DB_web->query("SELECT COUNT(*) FROM compte_frankiz WHERE skin LIKE '%$file_css%xhtml%'");
 					list($nbutilisateur) = $DB_web->next_row();
-					echo "<option titre=\"{$description['nom']}: {$description['description']} (".round(100*$nbutilisateur/$nbutilisateurtotal)."%)\" id=\"$file_xsl/\"/>";
-					continue;
+					echo "<option titre=\"$file_css: $description_css (".round(100*$nbutilisateur/$nbutilisateurtotal)."%)\" id=\"xhtml/$file_css\"/>";
 				}
-				
-				// Parcourt des feuilles de style css
-				$dir_css=opendir(BASE_LOCAL."/skins/$file_xsl");
-				while($file_css = readdir($dir_css)) {
-					// uniquement pour les dossiers non particuliers
-					if(!is_dir(BASE_LOCAL."/skins/$file_xsl/$file_css") || $file_css == "." || $file_css == ".." ||
-						$file_css == "CVS" || $file_css{0} == "#" || $file_css == $description['chemin']) continue;
-					
-					$description_css = lire_description_css(BASE_LOCAL."/skins/$file_xsl/$file_css");
-					if($description_css!=""){
-						$DB_web->query("SELECT COUNT(*) FROM compte_frankiz WHERE skin LIKE '%$file_css%$file_xsl%'");
-						list($nbutilisateur) = $DB_web->next_row();
-						if($file_css!="default")
-							echo "<option titre=\"$file_css: $description_css (".round(100*$nbutilisateur/$nbutilisateurtotal)."%)\" id=\"$file_xsl/$file_css\"/>";
-						else
-							echo "<option titre=\"$file_xsl: $description_css (".round(100*$nbutilisateur/$nbutilisateurtotal)."%)\" id=\"$file_xsl/$file_css\"/>";
-					}
-				}
-				closedir($dir_css);
 			}
-			closedir($dir_xsl);
+			closedir($dir_css);
 ?>
 		</choix>
 		<bouton titre="Appliquer" id="OK_skin" />

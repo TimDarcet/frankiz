@@ -76,10 +76,9 @@ class DB {
 		
 		ajouter_debug_log("Requète SQL \"$query\"");
 		$this->result = mysql_query($query,$this->link);
-		
-		if(mysql_errno() != 0 || is_bool($this->result) && $this->result == false)
-			// FIXME : mysql_errno() renvoi anormalement toujours 0
-			ajouter_erreur_mysql($query);
+
+		if (mysql_errno($this->link) != 0 || is_bool($this->result) && !$this->result)
+			ajouter_erreur_mysql($query, $this->link);
 
 		if(is_bool($this->result) && $this->result)
 			$this->result = false;

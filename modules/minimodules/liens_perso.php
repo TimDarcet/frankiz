@@ -18,45 +18,34 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Script de création de la partie activités contenant des images type "affiche".
-	
+	Affichage des liens personnels.
+
 	$Id$
 
 */
-class ActivitesMiniModule extends FrankizMiniModule
+
+class LiensPersoMiniModule extends FrankizMiniModule
 {
 	public function __construct()
 	{
-		global $globals, $DB_web;
-		
-		$DB_web->query("SELECT affiche_id, titre, url, date, exterieur 
-				  FROM affiches 
-				 WHERE TO_DAYS(date) = TO_DAYS(NOW())
-			      ORDER BY date");
+		global $globals;
 
-		$activites = array();
-		while ($row = $DB_web->next_row())
-		{
-			$activites[] = array('titre' => $row['titre'],
-					     'url' => $row['url'],
-					     'date' => $row['date'],
-					     'exterieur' => $row['exterieur'],
-					     'image' => $row['affiche_id']);
-		}
-
-		if (!getEtatBob() && count($activites) == 0)
+		if (!isset($_SESSION['liens_perso']) || $_SESSION['liens_perso'] == "" || count($_SESSION['liens_perso']) == 0)
 			return;
+			
+		$liens = array();
+		foreach ($_SESSION['liens_perso'] as $titre => $url)
+			$liens[] = array('title' => $titre, 'url' => $url);
 
-		$globals->smarty->assign('activites_etat_bob', getEtatBob());
-		$globals->smarty->assign('activites' , $activites);
-		$this->tpl = "minimodules/activites/activites.tpl";
-		$this->titre = "Activités";
+		$globals->smarty->assign('liens_perso', $liens);
+		$this->tpl = "minimodules/liens_perso/main.tpl";
+		$this->header_tpl = "minimodules/liens_perso/header.tpl";
 	}
 
 	public static function check_auth()
 	{
-		return est_authentifie(AUTH_INTERNE);
+		return true;
 	}
 }
-	
-?>	
+FrankizMiniModule::register_module('liens_perso', "LiensPersoMiniModule");
+?>

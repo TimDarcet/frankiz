@@ -67,11 +67,11 @@ function ajouter_erreur_php($errno, $errmsg, $file, $line, $vars) {
 	$_ERREUR_FATAL = $_ERREUR_FATAL || ($errno!=E_NOTICE && $errno<E_USER_NOTICE);
 }
 
-function ajouter_erreur_mysql($query) {
+function ajouter_erreur_mysql($query, $link) {
 	global $_ERREURS_PHPMYSQL,$_ERREUR_FATAL;
 	$_ERREURS_PHPMYSQL[] = array(
 		'errname'	=> "MYSQL Error ",
-		'errmsg'	=> mysql_error()." (".mysql_errno().")",
+		'errmsg'	=> mysql_error($link)." (".mysql_errno($link).")",
 		'file'		=> "",
 		'line'		=> "",
 		'query'		=> $query

@@ -33,38 +33,26 @@ header('Content-Type: text/html');
 
 require_once BASE_LOCAL."/include/minimodules.inc.php";
 
-require_once BASE_LOCAL."/modules/liens_perso.php";
-require_once BASE_LOCAL."/modules/liens_navigation.php";
-require_once BASE_LOCAL."/modules/liens_profil.php";
-require_once BASE_LOCAL."/modules/liens_utiles.php";
-require_once BASE_LOCAL."/modules/activites.php";
-require_once BASE_LOCAL."/modules/sondages.php";
-require_once BASE_LOCAL."/modules/fetes.php";
-require_once BASE_LOCAL."/modules/lien_tol.php";
-require_once BASE_LOCAL."/modules/lien_wikix.php";
-require_once BASE_LOCAL."/modules/lien_ik.php";
-require_once BASE_LOCAL."/modules/meteo.php";
-require_once BASE_LOCAL."/modules/annonce_virus.php";
-require_once BASE_LOCAL."/modules/anniversaires.php";
-
-$minimodules = FrankizMiniModule::load_modules('Activites',
-					       'Anniversaires',
-					       'Fetes', 
-					       'Meteo',
-					       'LienIK', 
-					       'LienTol', 
-					       'LienWikix', 
-					       'LiensNavigation', 
-					       'LiensPerso', 
-					       'LiensProfil', 
-					       'LiensUtiles',
-					       'Sondages',
-					       'Virus');
+$minimodules = FrankizMiniModule::load_modules('activites',
+					       'anniversaires',
+					       'fetes', 
+					       'meteo',
+					       'lien_ik', 
+					       'lien_tol', 
+					       'lien_wikix', 
+					       'liens_navigation', 
+					       'liens_perso', 
+					       'liens_profil', 
+					       'liens_utiles',
+					       'sondages',
+					       'qdj',
+					       'qdj_hier',
+					       'virus');
 
 
 // Feuille de style
 $dom_xsl = new DOMDocument ();
-$dom_xsl->load($_SESSION['skin']['skin_xsl_chemin']);
+$dom_xsl->load("skins/xhtml/xsl/skin.xsl");
 
 // XML
 $dom_xml = new DOMDocument ();
@@ -83,7 +71,6 @@ $parameters = array (
 );
 
 // Transformation
-$xslt->setParameter('', array_merge($_SESSION['skin']['skin_parametres'],$parameters));
 $resultat = $xslt->transformToXML($dom_xml);
 
 if ($resultat === false)
@@ -96,7 +83,10 @@ $page->template_dir  = BASE_TEMPLATES;
 $page->compile_dir   = BASE_CACHE . 'templates_c/';
 
 $page->assign('xml', $resultat);
-$page->assign('css', $_SESSION['skin']['skin_css_url']);
+if (isset($_SESSION['skin']))
+	$page->assign('css', $_SESSION['skin']['skin_css_url']);
+else
+	$page->assign('css', "xhtml/cocoa");
 $page->assign('css_list', Skin::get_list());
 $page->assign('base', BASE_URL);
 $page->assign('session', new Session);

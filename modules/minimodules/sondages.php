@@ -86,4 +86,5 @@ class SondagesMiniModule extends FrankizMiniModule
 		return est_authentifie(AUTH_MINIMUM);
 	}
 }
+FrankizMiniModule::register_module("sondages", "SondagesMiniModule");
 ?>

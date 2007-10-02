@@ -20,21 +20,23 @@
 /*
 	Liens de navigation dans le site web.	
 	
-	$Id$
+	$Id: liens_profil.php 1805 2006-12-08 23:28:37Z pika $
 
 */
 
-class LiensNavigationMiniModule extends FrankizMiniModule
+class LiensProfilMiniModule extends FrankizMiniModule
 {
 	public function __construct()
 	{
-		$this->tpl = "minimodules/liens_navigation/main.tpl";
-		$this->header_tpl = "minimodules/liens_navigation/header.tpl";
-		$this->titre = "Navigation dans le site";
+		$this->tpl = "minimodules/liens_profil/main.tpl";
+		$this->titre = "Profil : {$_SESSION['user']->prenom} {$_SESSION['user']->nom}";
 	}
 
 	public static function check_auth()
 	{
-		return true;
+		return est_authentifie(AUTH_MINIMUM);
 	}
 }
+FrankizMiniModule::register_module('liens_profil', "LiensProfilMiniModule");
+
+?>

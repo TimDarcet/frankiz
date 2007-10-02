@@ -21,36 +21,26 @@
 	Affichage des anniversaires avec gestion d'un cache mis à jour une fois par jour.
 	
 	$Id$
-
+	
 */
 
-class AnniversairesMiniModule extends FrankizMiniModule
+class FetesMiniModule extends FrankizMiniModule
 {
 	public function __construct()
 	{
-		global $page, $DB_web, $DB_trombino;
+		global $page, $DB_trombino;
 
-		$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
-		list($promo_temp) = $DB_web->next_row() ;
-		$DB_trombino->query("SELECT nom,prenom,surnom,promo,mail,login 
-				       FROM eleves 
-				      WHERE MONTH(date_nais) = MONTH(NOW()) AND 
-				            DAYOFMONTH(date_nais) = DAYOFMONTH(NOW()) AND 
-					    (promo=$promo_temp OR promo=($promo_temp-1)) 
-			           ORDER BY promo;");
+		$DB_trombino->query("SELECT prenom 
+		                       FROM fetes 
+				      WHERE MONTH(date) = MONTH(NOW()) AND DAYOFMONTH(date) = DAYOFMONTH(NOW())");
 
+		$fetes = array();
+		while (list($prenom) = $DB_trombino->next_row())
+			$fetes[] = $prenom;
 	
-		$anniversaires = array($promo_temp-1 => array(),
-				       $promo_temp   => array());
-		while(list($nom, $prenom, $surnom, $promo, $mail, $login) = $DB_trombino->next_row())
-			$anniversaires[$promo][] = array('nom'    => $nom,
-							 'prenom' => $prenom,
-							 'surnom' => $surnom,
-							 'mail'   => $mail,
-							 'login'  => $login); 
-		
-		$page->assign('anniversaires', $anniversaires);
-		$this->tpl = "minimodules/anniversaires/anniversaires.tpl";
+		$page->assign("fetes", $fetes);
+		$this->tpl = "minimodules/fetes/fetes.tpl";
+		$this->titre = "Fêtes du jour";
 	}
 
 	public static function check_auth()
@@ -58,4 +48,6 @@ class AnniversairesMiniModule extends FrankizMiniModule
 		return est_authentifie(AUTH_INTERNE);
 	}
 }
+FrankizMiniModule::register_module('fetes', 'FetesMiniModule');
+
 ?>

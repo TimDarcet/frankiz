@@ -18,22 +18,24 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Liens de navigation dans le site web.	
+	Affichage d'un lien sur la page d'accueil vers le tol.
 	
-	$Id: liens_profil.php 1805 2006-12-08 23:28:37Z pika $
+	$Id$
 
 */
-
-class LiensProfilMiniModule extends FrankizMiniModule
+class LienWikixMiniModule extends FrankizMiniModule
 {
 	public function __construct()
 	{
-		$this->tpl = "minimodules/liens_profil/main.tpl";
-		$this->titre = "Profil : {$_SESSION['user']->prenom} {$_SESSION['user']->nom}";
+		$this->tpl = "minimodules/lien_wikix/lien_wikix.tpl";
+		$this->titre = "WikiX";
 	}
 
 	public static function check_auth()
 	{
-		return est_authentifie(AUTH_MINIMUM);
+		return est_authentifie(AUTH_INTERNE);
 	}
 }
+FrankizMiniModule::register_module('lien_wikix', "LienWikixMiniModule");
+
+?>

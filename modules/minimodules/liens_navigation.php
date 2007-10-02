@@ -18,34 +18,26 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Affichage des anniversaires avec gestion d'un cache mis à jour une fois par jour.
+	Liens de navigation dans le site web.	
 	
 	$Id$
-	
+
 */
 
-class FetesMiniModule extends FrankizMiniModule
+class LiensNavigationMiniModule extends FrankizMiniModule
 {
 	public function __construct()
 	{
-		global $page, $DB_trombino;
-
-		$DB_trombino->query("SELECT prenom 
-		                       FROM fetes 
-				      WHERE MONTH(date) = MONTH(NOW()) AND DAYOFMONTH(date) = DAYOFMONTH(NOW())");
-
-		$fetes = array();
-		while (list($prenom) = $DB_trombino->next_row())
-			$fetes[] = $prenom;
-	
-		$page->assign("fetes", $fetes);
-		$this->tpl = "minimodules/fetes/fetes.tpl";
-		$this->titre = "Fêtes du jour";
+		$this->tpl = "minimodules/liens_navigation/main.tpl";
+		$this->header_tpl = "minimodules/liens_navigation/header.tpl";
+		$this->titre = "Navigation dans le site";
 	}
 
 	public static function check_auth()
 	{
-		return est_authentifie(AUTH_INTERNE);
+		return true;
 	}
 }
+FrankizMiniModule::register_module('liens_navigation', "LiensNavigationMiniModule");
+
 ?>

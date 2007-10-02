@@ -2,10 +2,10 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>Frankiz : {$title}</title>
 	<base href="{$base}" />
-	<link rel="stylesheet" type="text/css" href="{$css}">
+	<link rel="stylesheet" type="text/css" href="{$css}" />
 	{foreach from=$css_list item=css_alt}
 	<link rel="alternate stylesheet" type="text/css" href="{$css_alt->css_path}" 
-	      title="{$css_alt->css_path} ({$css_alt->description})">
+	      title="{$css_alt->css_path} ({$css_alt->description})" />
 	{/foreach}
 	<link rel="alternate" type="application/rss+xml" title="Version RSS" href="rss_annonces.php" />
 	<link rel="glossary" title="Vocabulaire" href="vocabulaire.php" />

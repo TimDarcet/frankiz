@@ -8,7 +8,7 @@
             <div class="fkz_module" id="{$module_name}">
 	      <div class="fkz_titre">
 	        <span id="{$module_name}_logo"></span>
-		<span id="{$module_name}">{$minimodules.$module_name->get_titre()}</span>
+		{$minimodules.$module_name->get_titre()}
 	      </div>
 	      <div class="fkz_module_corps">
 	        {$minimodules.$module_name->print_template()}

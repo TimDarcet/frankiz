@@ -9,7 +9,8 @@
 	      {include file="annonces/annonces_sommaire_categorie.tpl" categorie="nouveau"}
 	      {include file="annonces/annonces_sommaire_categorie.tpl" categorie="vieux"}
 	      {include file="annonces/annonces_sommaire_categorie.tpl" categorie="reste"}
-          </div>
+            </div>
+	  </div>
 	</div>
       </div>
     </div>

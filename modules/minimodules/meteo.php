@@ -79,4 +79,5 @@ class MeteoMiniModule extends FrankizMiniModule
 		return true;
 	}
 }
+FrankizMiniModule::register_module("meteo", "MeteoMiniModule");
 ?>

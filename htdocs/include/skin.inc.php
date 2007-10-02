@@ -184,7 +184,7 @@ class Skin
 	 * @param css_dir chemin vers le dossier contenant la skin
 	 * @return une chaine de caractères contenant la description
 	 */
-	private static function lire_description($css_dir)
+	public static function lire_description($css_dir)
 	{
 		if (!file_exists("$css_dir/description.txt")) 
 			return "";
