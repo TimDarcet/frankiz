@@ -1,0 +1,5 @@
+RewriteEngine on
+
+RewriteBase /ik
+RewriteRule (.*.pdf) ik.php?id=$1
+
