@@ -18,7 +18,7 @@
 		</span>
                 {/if}
 		{$annonce.contenu}
-		<p class="fkz_signature"><a href="trombino.php?chercher&loginpoly={$annonce.eleve.login}">
+		<p class="fkz_signature"><a href="trombino.php?chercher&loginpoly={$annonce.eleve.login}&promo={$annonce.eleve.promo}">
 		  {if $annonce.eleve.surnom}{$annonce.eleve.surnom}{else}{$annonce.eleve.prenom} {$annonce.eleve.nom}{/if}
 		  {if $annonce.eleve.promo}({$annonce.eleve.promo}){/if}
 		</a></p>
