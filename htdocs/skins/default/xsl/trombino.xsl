@@ -18,7 +18,8 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 -->
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+			      xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:template match="page[@id='trombino']">
 	<xsl:if test="boolean(eleve)">
@@ -78,6 +79,7 @@
 							<p class="left"><br/>
 								<strong>Tel : </strong><xsl:value-of select="@tel"/><br/>
 								<strong>Kzt : </strong><xsl:value-of select="@casert"/><br/>
+								<strong>Nat. : </strong><xsl:value-of select="@nation"/><br/>
 								<strong>Mail : </strong><a><xsl:attribute name="href"><xsl:text>mailto:</xsl:text><xsl:value-of select="@login"/><xsl:text>@poly</xsl:text></xsl:attribute><xsl:value-of select="@login"/><xsl:text>@poly</xsl:text></a><br/>
 							</p>
 							<p class="binets">
@@ -149,6 +151,11 @@
 						<td><xsl:apply-templates select="champ[@id='loginpoly']" mode="trombino"/></td>
 						<td><xsl:apply-templates select="champ[@id='phone']" mode="trombino"/></td>
 						<td><xsl:apply-templates select="champ[@id='casert']" mode="trombino"/></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><xsl:apply-templates select="champ[@id='nation']" mode="trombino"/></td>
+						<td></td>
 					</tr>
 				</table>
 			</div>

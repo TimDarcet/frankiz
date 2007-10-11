@@ -107,7 +107,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 	$typeRecherchePromo = RECHERCHE_HABITE_SUR_LE_PLATAL;
 
 	$champs = '
-		eleves.eleve_id, eleves.nom, prenom, surnom, login, mail,
+		eleves.eleve_id, eleves.nom, prenom, surnom, nation, login, mail,
 		DATE_FORMAT(date_nais, "%d/%m/%Y"),
 		eleves.piece_id, pieces.tel,
 		eleves.commentaire, promo, cie, eleves.section_id, sections.nom';
@@ -148,7 +148,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 		$typeRecherchePromo = RECHERCHE_PROMOS_ACTUELLES;
 	} elseif (isset($_REQUEST['cherchertol'])) {
 		// Création de la requête si lien_tol appelle
-		$where_like = 'CAST(CONCAT_WS(\' \', eleves.nom, prenom, surnom, login, promo, eleves.piece_id, pieces.tel) AS CHAR)';
+		$where_like = 'CAST(CONCAT_WS(\' \', eleves.nom, prenom, surnom, nation, login, promo, eleves.piece_id, pieces.tel) AS CHAR)';
 		$typeRecherchePromo = RECHERCHE_HABITE_SUR_LE_PLATAL;
 		$quick = explode(' ', $_REQUEST['q_search']);
 		if (count($quick) == 0) {
@@ -174,6 +174,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 			'nom'		=>	'eleves.nom',
 			'prenom'	=>	'prenom',
 			'surnom'	=>	'surnom',
+			'nation'	=>	'nation',
 			'mail'		=>	'mail');
 
 		$correspondanceWhereTypeRecherchePromo = array(
@@ -185,6 +186,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 			'nom'		=>	RECHERCHE_HABITE_SUR_LE_PLATAL,
 			'prenom'	=>	RECHERCHE_HABITE_SUR_LE_PLATAL,
 			'surnom'	=>	RECHERCHE_HABITE_SUR_LE_PLATAL,
+			'nation'	=>	RECHERCHE_HABITE_SUR_LE_PLATAL,
 			'mail'		=>	RECHERCHE_HABITE_SUR_LE_PLATAL);
 
 		foreach ($where_like as $post_arg => $db_field) {
@@ -213,6 +215,11 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 
 		if(!empty($_REQUEST['loginpoly'])) {
 			$where .= (empty($where) ? '' : ' AND ')." login ='".$_REQUEST['loginpoly']."'";
+			$typeRecherchePromo = RECHERCHE_HABITE_SUR_LE_PLATAL;
+		}
+
+		if(!empty($_REQUEST['nation'])) {
+			$where .= (empty($where) ? '' : ' AND ')." nation ='".$_REQUEST['nation']."'";
 			$typeRecherchePromo = RECHERCHE_HABITE_SUR_LE_PLATAL;
 		}
 
@@ -309,12 +316,12 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 		
 		// Génération des fiches des élèves
 		while (list(
-			$eleve_id, $nom, $prenom, $surnom, $login, $mail,
+			$eleve_id, $nom, $prenom, $surnom, $nation, $login, $mail,
 			$date_nais,
 			$piece_id, $tel,
 			$commentaire, $promo, $cie, $section_id, $section) = $DB_trombino->next_row()) {
 
-			echo "<eleve nom='$nom' prenom='$prenom' promo='$promo' login='$login' surnom='$surnom' date_nais='$date_nais' "
+			echo "<eleve nom='$nom' prenom='$prenom' promo='$promo' login='$login' surnom='$surnom' nation='$nation' date_nais='$date_nais' "
 				."tel='$tel' mail='".(empty($mail)?"$login@poly.polytechnique.fr":$mail)."' casert='$piece_id' "
 				."section='$section' cie='$cie'>\n";
 
@@ -408,6 +415,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 		<champ titre="Nom" id="nom" valeur="<?php echo empty($_REQUEST['nom']) ? '' : $_REQUEST['nom']; ?>" />
 		<champ titre="Prénom" id="prenom" valeur="<?php echo empty($_REQUEST['prenom']) ? '' : $_REQUEST['prenom']; ?>" />
 		<champ titre="Surnom" id="surnom" valeur="<?php echo empty($_REQUEST['surnom']) ? '' : $_REQUEST['surnom']; ?>" />
+		<champ titre="Nationalité" id="nation" valeur="<?php echo empty($_REQUEST['nation']) ? '' : $_REQUEST['nation']; ?>" />
 
 		<choix titre="Promo" id="promo" type="combo" valeur="<?php echo empty($_REQUEST['promo']) ? '' : $_REQUEST['promo']; ?>">
 			<option titre="Sur le campus" id=""/>

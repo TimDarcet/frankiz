@@ -19,7 +19,8 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 -->
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+			      xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:template match="eleve">
 	<div class="fkz_trombino_eleve_1"><div class="fkz_trombino_eleve_2">
@@ -48,6 +49,8 @@
 	<p class="casert">Casert: <xsl:value-of select="@casert"/>
 	</p>
 	<p class="section">Section: <xsl:value-of select="@section"/>
+	</p>
+	<p class="nation">Nationalité: <xsl:value-of select="@nation"/>
 	</p>
 	</div>
 	<div class="fkz_trombino_section">
@@ -168,7 +171,19 @@
 							<xsl:apply-templates select="champ[@id='casert']"/>
 						</td>
 					</tr>
-					<xsl:if test="count(champ) > 6">
+					<xsl:if test="count(champ) = 7">
+					<tr>
+						<td></td>	
+						<td>
+						<span class="gauche" >
+							Nationalité :
+						</span>
+							<xsl:apply-templates select="champ[@id='nation']"/>
+						</td>
+						<td></td>	
+					</tr>
+					</xsl:if>
+					<xsl:if test="count(champ) > 7">
                                         <tr>
                                                 <td>
                                                 <span class="gauche" >
@@ -190,7 +205,12 @@
                                                 </td>
                                         </tr>
 					<tr>
-						<td></td>
+						<td>
+						<span class="gauche" >
+							Nationalité :
+						</span>
+							<xsl:apply-templates select="champ[@id='nation']"/>
+						</td>
 						<td>
 						<span class="gauche" >
 							@mac :
