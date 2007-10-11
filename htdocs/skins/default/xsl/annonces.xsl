@@ -212,8 +212,8 @@
                                         <xsl:attribute name="href">
                                                 <xsl:text>trombino.php?chercher=&amp;loginpoly=</xsl:text>
                                                 <xsl:value-of select="@login"/>
-                                                <xsl:text>&amp;promo=</xls:text>
-						<xsl:value-of select="@promo"/>
+						<xsl:text>&amp;promo=</xsl:text>
+                                                <xsl:value-of select="@promo"/>
                                         </xsl:attribute>
 	                                <xsl:choose>
 		                                <xsl:when test="@surnom != ''">
