@@ -219,7 +219,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 		}
 
 		if(!empty($_REQUEST['nation'])) {
-			$where .= (empty($where) ? '' : ' AND ')." nation ='".$_REQUEST['nation']."' OR nation like'% et ".$_REQUEST['nation']."' OR nation like'".$_REQUEST['nation']." et %'";
+			$where .= (empty($where) ? '' : ' AND ')." (nation ='".$_REQUEST['nation']."' OR nation like'% et ".$_REQUEST['nation']."' OR nation like'".$_REQUEST['nation']." et %') ";
 			$typeRecherchePromo = RECHERCHE_HABITE_SUR_LE_PLATAL;
 		}
 
