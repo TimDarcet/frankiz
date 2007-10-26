@@ -38,35 +38,35 @@ require_once "skin.inc.php";
 	Recharge les données de skin si elles ne sont pas chargées (ça arrive lorsqu'un utilisateur arrive sur le
 	site et n'est pas logué) ou si l'utilisateur vient de se loguer
 */
-if( !isset($_SESSION['skin']) || nouveau_login() ) {
-	
+if (!isset($_SESSION['skin']) || !$_SESSION['skin'] || nouveau_login() ) {
 	// Si l'utilisateur est authentifié, chercher dans la BD
-	if(est_authentifie(AUTH_MINIMUM)) {
+	if (est_authentifie(AUTH_MINIMUM)) 
+	{
 		ajouter_debug_log("Chargement de la skin depuis la BD.");
 		$DB_web->query("SELECT skin FROM compte_frankiz WHERE eleve_id='{$_SESSION['user']->uid}'") ;
-		if($DB_web->num_rows()!=0) {
+		if ($DB_web->num_rows() != 0) 
+		{
 			list($skin) = $DB_web->next_row();
 			$cookie = $skin;		// hack bizarre pour être sur que php considère $cookie comme un string
-//			$cookie = "sdbr2k3";
-									// ce qui est indispensable pour la fonction base64_encode (si on met
-									// directement $skin, php considère que c'est un array alors que c'est faux)
-			skin_parse($cookie);
-			SetCookie("skin",base64_encode($cookie),time()+3*365*24*3600,"/");
+							// ce qui est indispensable pour la fonction base64_encode (si on met
+							// directement $skin, php considère que c'est un array alors que c'est faux)
+			$_SESSION['skin'] = Skin::unserialize($cookie);
+			SetCookie(FRANKIZ_SESSION_NAME."_skin", base64_encode($cookie), time()+3*365*24*3600, "/");
 		}
-		
+	} 
 	// Sinon on cherche dans un cookie
-	} else if(isset($_COOKIE['skin'])) {
+	else if(isset($_COOKIE['skin'])) 
+	{
 		ajouter_debug_log("Chargement de la skin depuis le cookie.");
-		skin_parse(base64_decode($_COOKIE['skin']));
-		
+		$_SESSION['skin'] = Skin::unserialize(base64_decode($_COOKIE['skin']));
 	}
 	
 	// Si vraiment on ne trouve pas, ou si une erreur c'est produite avant, on utilise des
 	// valeurs par défaut
-	if(!isset($_SESSION['skin'])) {
+	if(!isset($_SESSION['skin']) || !$_SESSION['skin']) 
+	{
 		ajouter_debug_log("Chargement de la skin depuis les valeurs par défaut.");
-		unset($_SESSION['skin']);
-		skin_valider();
+		$_SESSION['skin'] = Skin::load_skin_default();
 	}
 }
 
@@ -74,7 +74,7 @@ if( !isset($_SESSION['skin']) || nouveau_login() ) {
 	D'autres informations sur l'utilisateur, stockées dans une variable de session.
 */
 
-if( !isset($_SESSION['rss']) || nouveau_login() ) {
+if (!isset($_SESSION['rss']) || nouveau_login() ) {
 	$_SESSION['rss'] = array();
 	$DB_web->query("SELECT liens_rss FROM compte_frankiz WHERE eleve_id='{$_SESSION['user']->uid}'") ;
 	if($DB_web->num_rows()!=0) {
@@ -83,7 +83,7 @@ if( !isset($_SESSION['rss']) || nouveau_login() ) {
 	}
 }
 
-if( !isset($_SESSION['liens_perso']) || nouveau_login() ) {
+if (!isset($_SESSION['liens_perso']) || nouveau_login() ) {
 	$_SESSION['liens_perso'] = array();
 	$DB_web->query("SELECT liens_perso FROM compte_frankiz WHERE eleve_id='{$_SESSION['user']->uid}'") ;
 	if($DB_web->num_rows()!=0) {

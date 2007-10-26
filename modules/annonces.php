@@ -41,7 +41,7 @@ class AnnoncesModule extends PLModule
 			return "reste";
 	}
 
-	function handle_annonces(&$page)
+	function handler_annonces(&$page)
 	{
 		global $DB_web;
 

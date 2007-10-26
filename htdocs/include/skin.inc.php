@@ -26,221 +26,160 @@
 
 require_once "xml.inc.php";
 
-/*
-	Lit le contenu d'un fichier de description d'une skin.
-	Renvoi un arbre ayant la structure suivante :
-	array (
-		[nom] => «nom de la skin»
-		[description] => «sa description»
-		[chemin] => «chemin d'accès au dossier xsl»
-		[parametres] => array (				//liste des paramètres de la skin
-			[«id du premier paramètre»] => array (
-				[id] => «id du premier paramètre»
-				[description] => «description du paramètre»
-				[valeurs] => array (		// liste des valeurs que peut prendre le paramètre
-					[«id de la première valeur»] => [«nom de la première valeur»]
-					[«id de la deuxième valeur»] => [«nom de la deuxième valeur»]
-				)
-			)
-			[«id du deuxième paramêtre»] => array (
-				...
-			)
-		)
-	)
-	
-	Le code XML étant :
-	<skin>
-		<nom>«nom de la skin»</nom>
-		<descrition>«sa description»</description>
-		<chemin>«chemin d'accès au dossier xsl: "xsl" ou "." en général»</chemin>
-		<parametre id="«id du premier paramètre»">
-			<description>«description du paramètre»</description>
-			<valeur id="«id de la première valeur»">«nom de la première valeur»</valeur>
-			<valeur id="«id de la deuxième valeur»">«nom de la deuxième valeur»</valeur>
-		</parametre>
-		<parametre id="«id du deuxième paramètre»">
-			...
-		</parametre>
-	</skin>
-*/
-
-function lire_description_skin($fichier) {
-	$fichier = "$fichier/description.xml";
-	// Parsage du code XML
-	if(!file_exists($fichier)) return array();
-	$parsed_xml = xml_get_tree($fichier);
-	
-	// Vérification de la structure de l'arbre et stockage des données qui nous servent
-	// sous la forme d'un arbre.
-	$desc = array('description'=>"", 'chemin'=>".", 'parametres'=>array());
-	if( $parsed_xml[0]['tag'] == 'skin' ) {
-		// pour chaque élément de <skin>
-		$element_list = $parsed_xml[0]['children'];
-		foreach($element_list as $element) {
-			switch($element['tag']) {
-				case 'nom':
-				case 'description':
-				case 'chemin':
-					$desc[$element['tag']] = $element['value'];
-					break;
-					
-				case 'parametre':
-					$param = array();
-					$param['valeurs'] = array();
-
-					$param['id'] = $element['attributes']['id'];
-					if(empty($param['id'])) break;  // le nom est obligatoire
-
-					// pour chaque élément de <parametre>
-					$param_element_list = $element['children'];
-					foreach($param_element_list as $param_element) {
-						switch($param_element['tag']) {
-							case 'description':
-								$param['description'] = $param_element['value'];
-								break;
-								
-							case 'valeur':
-								$id = !empty($param_element['attributes']) && !empty($param_element['attributes']['id']) ?
-										$param_element['attributes']['id'] :
-										$param_element['value'];
-								$param['valeurs'][$id] = $param_element['value'];
-								break;
-						}
-					}
-					
-					// enregistrement du paramètre avec si besoin une valeur par défaut de la
-					// description
-					if( empty($param['description']) )
-						$param['description'] = "Paramètre «".$param['id']."»";
-					$desc['parametres'][$param['id']] = $param;
-					break;
-			}
-		}
-	}
-	
-	return $desc;
-}
-
-
-/*
-	Renvoi les paramètres de la skin par défaut
-*/
-function skin_defaut() {
-	global $DB_web ;
-	
-	$DB_web->query("SELECT valeur FROM parametres WHERE nom='skin_default'") ; 
-	list($skin) = $DB_web->next_row() ;
-	$DB_web->query("SELECT valeur FROM parametres WHERE nom='css_default'") ; 
-	list($css) = $DB_web->next_row() ;
-	return array (
-			"skin_nom" => "$skin",
-			"skin_css" => "$css",
-			"skin_parametres" => array(),
-			"skin_visible" => array(),
-	);
-}
-
-/*
-	Vérifie la validité des paramètres d'une skin. Corrige ce qui peut l'être et
-	au pire utilise la skin par defaut.
-*/
-function skin_valider() {
-	// Test de l'existence de la skin et de la CSS
-	if( !isset($_SESSION['skin']) || empty($_SESSION['skin']['skin_nom']) || !is_dir(BASE_LOCAL."/skins/{$_SESSION['skin']['skin_nom']}") ||
-		!empty($_SESSION['skin']['skin_css']) && !is_dir(BASE_LOCAL."/skins/{$_SESSION['skin']['skin_nom']}/{$_SESSION['skin']['skin_css']}") )
-		$_SESSION['skin'] = skin_defaut();
-	
-	// Vérification de l'existance de de skin_visible et skin_parametres
-	if(!isset($_SESSION['skin']['skin_visible']))		$_SESSION['skin']['skin_visible'] = array();
-	if(!isset($_SESSION['skin']['skin_parametres']))	$_SESSION['skin']['skin_parametres'] = array();
-	
-	// Calcul d'éléments utiles
-	$description = lire_description_skin(BASE_LOCAL."/skins/{$_SESSION['skin']['skin_nom']}");
-	if(!empty($description)) {
-		$_SESSION['skin']['skin_xsl_chemin'] = BASE_LOCAL."/skins/{$_SESSION['skin']['skin_nom']}/{$description['chemin']}/skin.xsl";
-		if(isset($_SESSION['skin']['skin_css_perso']))
-			$_SESSION['skin']['skin_css_url'] = $_SESSION['skin']['skin_css_perso'];
-		else
-			$_SESSION['skin']['skin_css_url'] = BASE_URL."/skins/{$_SESSION['skin']['skin_nom']}/{$_SESSION['skin']['skin_css']}/style.css";
-	} else {
-		ajouter_debug_log("Erreur de lecture de la skin {$_SESSION['skin']['skin_nom']}");
-		$_SESSION['skin'] = skin_defaut();
-		skin_valider();
-	}
-}
-
-function skin_parse($skin_str) {
-	$_SESSION['skin'] = unserialize($skin_str);
-	skin_valider();
-}
-
+/**
+ * La liste des skins est definie dans skins/index.xml, et a la structure suivante:
+ *      <default>«identifiant de la skin par default»</default>
+ *	<skin id='id_de_la_skin'>
+ *		<description>«sa description»</description>
+ *		<css>«chemin d'accès à la feuille de style»</css>
+ *	</skin>
+ *      <skin>
+ *        ...
+ *      </skin>
+ */
 class Skin
 {
-	public $description;
-	public $css_path;
+	public $id;          // Identifiant unique pour la skin (lisible par un humain)
+	public $description; // Description de la skin
+	public $css_path;    // Chemin vers la feuille de style
+	public $minimodules; // Liste des modules demandés par l'utilisateur.
 
 	/**
-	 * Lit la description d'une feuille de style css
-	 * @param css_dir chemin vers le dossier contenant la skin
-	 * @return une chaine de caractères contenant la description
+	 * Charge la skin par defaut avec tous les minimodules
 	 */
-	public static function lire_description($css_dir)
+	public function __construct()
 	{
-		if (!file_exists("$css_dir/description.txt")) 
-			return "";
-
-		// Lecture du fichier de description et suppression des éventuelles balises html
-		$fd = fopen("$css_dir/description.txt","r");
-		$description = fread($fd,filesize("$css_dir/description.txt"));
-		$description = htmlspecialchars($description, ENT_QUOTES);
-		fclose($fd);
-	
-		return $description;
+		set_skin_default();
+		set_minimodules_default();
 	}
-
-	/**
-	 * Construit une nouvelle skin, contenue dans $path
-	 * @param path chemin vers le dossier contenant la skin
-	 * @return la nouvelle skin
-	 */
-	public static function load($path)
-	{
-		$skin = new Skin;
-
-		$skin->description = Skin::lire_description($path);
-		$skin->css_path = $path;
 	
-		if ($skin->description)
-			return $skin;
+	// ----------------------------- Minimodules ---------------------------------
+	public function set_minimodule_visible($module, $visible)
+	{
+		if ($visible)
+			$this->minimodules[$module] = 1;
 		else
-			return null;
+			unset($this->minimodules[$module]);
+	}
+
+	public function est_minimodule_visible($module)
+	{
+		return isset($this->minimodules[$module]);
+	}
+
+	public function get_minimodules_list()
+	{
+		return array_keys($this->minimodules);
+	}
+
+	public function set_minimodules_default()
+	{
+		$list = FrankizMiniModule::get_minimodule_list();
+
+		$this->minimodules = array();
+		foreach ($list as $id => $desc)
+			$this->set_minimodule_visible($id, true);
+	}
+
+	// ---------------------------------- Skin ------------------------------------
+	/**
+	 * Modifie la skin actuelle. Les parametres de la skin seront perdus, mais les minimodules
+	 * actifs conservés.
+	 *
+	 * @param id l'identifiant de la skin ou la chaine vide pour recuperer la skin par defaut
+	 * @return un booleen indiquant si la modification s'est faite correctement. En cas d'echec,
+	 * l'ancienne skin est conservée.
+	 */
+	public function change_skin($id)
+	{
+		$xml_doc = new DOMDocument;
+		$xml_doc->load(BASE_SKIN_INDEX);
+
+		$xpath = new DOMXPath($xml_doc);
+	
+		if ($id == "")
+			$id = xpath_evaluate($xpath, "/skins/default/text()");
+
+		$node_list = $xpath->query("//skin[@id='$id']");
+	
+		if ($node_list->length == 0)
+			return false;
+
+		$node = $node_list->item(0);
+
+		$this->id = $id;
+		$this->description = xpath_evaluate_context($xpath, "description/text()", $node);
+		$this->css_path = "skins/".xpath_evaluate_context($xpath, "css_path/text()", $node);
 	}
 
 	/**
-	 * @return la liste des skins disponibles 
+	 * Lit la liste des skins disponibles (skins/index.xml)
+	 * @return Un tableau indexé par les identifiants des skins donnant vers les descriptions.
 	 */
-	public static function get_list()
+	public static function get_skin_list()
 	{
-		$dir_css = opendir(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']);
-		$description = lire_description_skin(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']);
+		$xml_doc = new DOMDocument;
+		$xml_doc->load(BASE_SKIN_INDEX);
 
-		$skins = array();
-		while ($file_css = readdir($dir_css)) 
+		$xpath = new DOMXPath($xml_doc);
+		$node_list = $xpath->query("//skin");
+
+		$skin_list = array();
+		foreach ($node_list as $node)
 		{
-			// uniquement pour les dossiers non particuliers
-			if(!is_dir(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']."/$file_css") || 
-			   $file_css == "." || $file_css == ".." ||
-			   $file_css == ".svn" || $file_css{0} == "#" || 
-			   $file_css == $description['chemin']) 
-			  	continue;
-		
-			$skin = Skin::load("skins/".$_SESSION['skin']['skin_nom']."/$file_css");
-			if ($skin)
-				$skins[] = $skin;
+			$id = xpath_evaluate_context($xpath, "./@id", $node);
+			$skin_list[$id] = xpath_evaluate_context($xpath, "./description/text()", $node);
 		}
-		closedir($dir_css);
-		
-		return $skins;
+
+		return $skin_list;
+	}
+
+
+	/**
+	 * Renvoie la skin par defaut.
+	 */
+	public static function set_skin_default()
+	{
+		return Skin::change_skin("");
+	}
+
+
+	// --------------------------------------------------------------------------------
+	/**
+	 * Transforme l'objet en une chaine de caractères pouvant ensuite être regenéré par
+	 * unserialize.
+	 */
+	public function serialize()
+	{
+		return serialize(array('id'           => $this->id,
+			               'minimodules'  => $this->minimodules));
+	}
+
+	/**
+	 * Regénère un objet sauvegardé par serialize(). Fait les vérifications d'usage sur la
+	 * chaine en paramètre, il est donc possible de donner du contenu utilisateur.
+	 *
+	 * Renvoie false en cas d'echec.
+	 */
+	public function unserialize($str)
+	{
+		$data = unserialize($str);
+	
+		if (!isset($data['id']) || !is_string($data['id']))
+			return false;
+
+		foreach ($data['modules'] as $key => $v)
+		{
+			if (!is_string($key) || $v != 1)
+				return false;
+		}
+	
+		if (!$this->change_skin($data['id']))
+			return false;
+
+		$skin->minimodules = $data['minimodules'];
+
+		return $skin;	
 	}
 }
 

@@ -10,7 +10,7 @@ class CoreModule extends PLModule
 			     'do_login' => $this->make_hook('do_login', AUTH_AUCUNE));
 	}
 
-	function handle_403(&$page)
+	function handler_403(&$page)
 	{
 		header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
 		$page->assign("title", "403 Forbidden");
@@ -21,7 +21,7 @@ class CoreModule extends PLModule
 <?
 	}
 
-	function handle_404(&$page)
+	function handler_404(&$page)
 	{
 		header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
 		$page->assign("title", "404 Not Found");
@@ -32,7 +32,7 @@ class CoreModule extends PLModule
 <?
 	}
 
-	function handle_500(&$page)
+	function handler_500(&$page)
 	{
 		header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Error');
 		$page->assign("title", "500 Internal Error");
@@ -43,7 +43,7 @@ class CoreModule extends PLModule
 <?
 	}
 
-	function handle_login(&$page)
+	function handler_login(&$page)
 	{
 		$page->assign('title', "Accueil");
 
@@ -57,7 +57,7 @@ class CoreModule extends PLModule
 <?
 	}
 
-	function handle_do_login(&$page)
+	function handler_do_login(&$page)
 	{
 		$page->assign('title', "Connexion");
 ?>

@@ -1,5 +1,5 @@
 <ul class='fkz_liens'>
-  <li class='fkz_liens'><a href="contact.php" key="c">Contacter les élèves</a></li>
+  <li class='fkz_liens'><a href="contact.php" accesskey="c">Contacter les élèves</a></li>
   {if !$session->est_interne()}
   <li class='fkz_liens'><a href="plan.php">Venir à l'X</a></li>
   {/if}
@@ -16,10 +16,10 @@
   <li class='fkz_liens'><a href="http://www.edu.polytechnique.fr/">Site de la DE</a></li>
   <li class='fkz_liens'><a href="http://www.polytechnique.fr/sites/orientation4a/pages_orientation/">Orientation 4eme année</a></li>
   {if $session->est_interne() || $session->est_auth()}
-  <li class='fkz_liens'><a href="http://intranet.polytechnique.fr/" key="i">Intranet</a></li>
+  <li class='fkz_liens'><a href="http://intranet.polytechnique.fr/" accesskey="i">Intranet</a></li>
   {/if}
-  <li class='fkz_liens'><a href="http://www.polytechnique.org/" key="o">Polytechnique.org</a></li>
-  <li class='fkz_liens'><a href="http://www.polytechnique.net/" key="n">Polytechnique.net</a></li>
+  <li class='fkz_liens'><a href="http://www.polytechnique.org/" accesskey="o">Polytechnique.org</a></li>
+  <li class='fkz_liens'><a href="http://www.polytechnique.net/" accesskey="n">Polytechnique.net</a></li>
   {if $session->est_interne() || $session->est_auth()}
   <li class='fkz_liens'><a href="partenaires.php">Partenariats</a></li>
   {/if}

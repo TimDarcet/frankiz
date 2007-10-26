@@ -12,6 +12,6 @@
 {if !$session->est_auth() and !$session->est_interne() }
 <link ref="navigation" href="http://perso.frankiz/" title="Sites élèves" />
 {else}
-<link ref="navigation" href="http://siteseleves.php" title="Sites élèves" />
+<link ref="navigation" href="siteseleves.php" title="Sites élèves" />
 {/if}
 

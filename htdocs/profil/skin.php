@@ -42,125 +42,18 @@
 
 */
 
-require_once "../include/global.inc.php";
+require_once "../include/page_header.inc.php";
 
-demande_authentification(AUTH_MINIMUM);
-
-// récupération des modifications de l'utilisateur
-$new_skin = array();
-
-if(!empty($_REQUEST['OK_skin'])) {
-	list($new_skin['skin_nom'],$new_skin['skin_css']) = split("/",$_REQUEST['newskin']."/");
-	$new_skin['skin_parametres'] = array();
-	$new_skin['skin_visible'] = $_SESSION['skin']['skin_visible'];
-
-} else if(!empty($_REQUEST['OK_param'])) {
-	// recopie des infos sur la skin
-	$new_skin['skin_nom'] = $_SESSION['skin']['skin_nom'] ;
-	$new_skin['skin_css'] = $_SESSION['skin']['skin_css'];
-
-
-	// CSS perso
-	if(!empty($_REQUEST['newcss_perso']))
-		$new_skin['skin_css_perso'] = urldecode($_REQUEST['newcss_perso']);
-	
-	// Paramètres
-	$new_skin['skin_parametres'] = array();
-	if(!empty($_REQUEST['param']))
-		foreach($_REQUEST['param'] as $module => $valeur)
-			$new_skin['skin_parametres'][$module] = $valeur;
-	
-	// Visibilité
-	foreach(liste_modules() as $module => $nom)
-		if($nom != "")
-			$new_skin['skin_visible'][$module] = false;
-	
-	if(!empty($_REQUEST['vis']))
-		foreach($_REQUEST['vis'] as $module => $visible)
-			$new_skin['skin_visible'][$module] = true;
+require_once "../../modules/profil.php";
+if (!empty($_REQUEST['OK_skin'])) {
+	call('ProfilModule', 'profil/skin/change_skin');
+} else if (!empty($_REQUEST['OK_param'])) {
+	call('ProfilModule', 'profil/skin/change_params');
+} else {
+	call('ProfilModule', 'profil/skin');
 }
 
-// Si la skin a été modifié, on rajoute un cookie de validité 3 ans et on stocke la skin dans nos bases.
-if(!empty($new_skin)) {
-	$cookie = serialize($new_skin);
-	SetCookie("skin",base64_encode($cookie),time()+3*365*24*3600,"/");
-	skin_parse($cookie);
-	$DB_web->query("UPDATE compte_frankiz SET skin='$cookie' WHERE eleve_id='{$_SESSION['user']->uid}'");
-}
-
-// Récupération du contenu de la page (en XML)
-require_once BASE_LOCAL."/include/page_header.inc.php";
-?>
-<page id="choix_skin" titre="Frankiz : choix skin">
-	<h1>Personnalisation de Frankiz II</h1>
-	
-	<formulaire id="form_choix_skin" titre="Choix de la skin" action="profil/skin.php">
-		<choix titre="Skin" id="newskin" type="radio" valeur="<?php echo $_SESSION['skin']['skin_nom']."/".$_SESSION['skin']['skin_css'] ?>">
-<?php
-			//NB total d'utilisateurs
-			$DB_web->query("SELECT COUNT(*) FROM compte_frankiz WHERE skin!=''");
-			list($nbutilisateurtotal) = $DB_web->next_row();
-			
-			// Parcourt des feuilles de style css
-			$dir_css=opendir(BASE_LOCAL."/skins/xhtml/");
-			while($file_css = readdir($dir_css)) {
-				// uniquement pour les dossiers non particuliers
-				if(!is_dir(BASE_LOCAL."/skins/xhtml/$file_css") || $file_css == "." || $file_css == ".." ||
-					$file_css == "CVS" || $file_css{0} == "#" || $file_css == "xsl") continue;
-				
-				$description_css = Skin::lire_description(BASE_LOCAL."/skins/xhtml/$file_css");
-				if($description_css!=""){
-					$DB_web->query("SELECT COUNT(*) FROM compte_frankiz WHERE skin LIKE '%$file_css%xhtml%'");
-					list($nbutilisateur) = $DB_web->next_row();
-					echo "<option titre=\"$file_css: $description_css (".round(100*$nbutilisateur/$nbutilisateurtotal)."%)\" id=\"xhtml/$file_css\"/>";
-				}
-			}
-			closedir($dir_css);
-?>
-		</choix>
-		<bouton titre="Appliquer" id="OK_skin" />
-	</formulaire>
-	
-	<formulaire id="form_param_skin" titre="Paramètres de la skin <?php echo $_SESSION['skin']['skin_nom'] ?>" action="profil/skin.php">
-		<note>Tu peux choisir des paramètres spéciaux pour la skin courante.</note>
-<?php
-		// Paramètres spécifique à la skin
-		$description = lire_description_skin(BASE_LOCAL."/skins/".$_SESSION['skin']['skin_nom']);
-		foreach($description['parametres'] as $parametre_id => $parametre) {
-			if(empty($parametre['valeurs'])) {
-				echo "<champ titre=\"".$parametre['description']."\" id=\"param[$parametre_id]\" valeur=\""
-						.(isset($_SESSION['skin']['skin_parametres'][$parametre_id]) ? $_SESSION['skin']['skin_parametres'][$parametre_id] : "")."\"/>\n";
-			} else {
-				echo "<choix titre=\"".$parametre['description']."\" id=\"param[$parametre_id]\" valeur=\""
-						.(isset($_SESSION['skin']['skin_parametres'][$parametre_id]) ? $_SESSION['skin']['skin_parametres'][$parametre_id] : "")."\" type=\"combo\">\n";
-				foreach($parametre['valeurs'] as $param_id => $param_desc)
-					echo "\t<option titre=\"$param_desc\" id=\"$param_id\"/>\n";
-				echo "</choix>\n";
-			}
-		}
-?>
-		<note>Tu peux aussi ne pas faire apparaître tous les éléments de la skin. Tu gagneras ainsi de la
-			  place. Choisis donc les éléments que tu veux afficher.</note>
-		<choix titre="Eléments" id="newskin" type="checkbox" valeur="<?php
-			foreach(liste_modules() as $module => $nom)
-				if($nom != "" && (!isset($_SESSION['skin']['skin_visible'][$module])
-								  || $_SESSION['skin']['skin_visible'][$module]      ) )
-					echo "vis[$module] ";?>">
-<?php
-			foreach(liste_modules() as $module => $nom)
-				if($nom != "")
-					echo "\t\t\t<option titre=\"$nom\" id=\"vis[$module]\"/>\n";
-?>
-		</choix>
-
-		<note>Si tu souhaites personnaliser ta skin plus en profondeur, tu peux créer ta propre feuille de style CSS
-			(ceci s'adresse aux experts).</note>
-		<champ titre="CSS perso" id="newcss_perso" valeur="<?php if(isset($_SESSION['skin']['skin_css_perso'])) echo $_SESSION['skin']['skin_css_perso'];?>"/>
-		<bouton titre="Appliquer" id="OK_param" />
-	</formulaire>
-</page>
-<?php
 
 // Applique les transformations
-require_once BASE_LOCAL."/include/page_footer.inc.php";
+require_once "../include/page_footer.inc.php";
 ?>

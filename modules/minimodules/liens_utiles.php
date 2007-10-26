@@ -36,4 +36,5 @@ class LiensUtilesMiniModule extends FrankizMiniModule
 		return true;
 	}
 }
+FrankizMiniModule::register_module("liens_utiles", "LiensUtilesMiniModule", "Liens Utiles");
 ?>

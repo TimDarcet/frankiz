@@ -223,8 +223,8 @@ class QdjMiniModule extends FrankizMiniModule
 						    eleve_id = $uid");
 	}	
 }
-FrankizMiniModule::register_module('qdj', "QdjMiniModule", array(0, true));
-FrankizMiniModule::register_module('qdj_hier', "QdjMiniModule", array(-1, false));
+FrankizMiniModule::register_module('qdj', "QdjMiniModule", "QDJ du jour", array(0, true));
+FrankizMiniModule::register_module('qdj_hier', "QdjMiniModule", "QDJ de la veille", array(-1, false));
 
 ?>
 

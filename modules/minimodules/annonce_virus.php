@@ -65,6 +65,6 @@ class VirusMiniModule extends FrankizMiniModule
 		return est_authentifie(AUTH_MINIMUM);
 	}
 }
-FrankizMiniModule::register_module('virus', 'VirusMiniModule');
+FrankizMiniModule::register_module('virus', 'VirusMiniModule', "Annonces Virus (important)");
 
 ?>

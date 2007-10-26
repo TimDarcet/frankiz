@@ -52,7 +52,7 @@ $minimodules = FrankizMiniModule::load_modules('activites',
 
 // Feuille de style
 $dom_xsl = new DOMDocument ();
-$dom_xsl->load("skins/xhtml/xsl/skin.xsl");
+$dom_xsl->load(BASE_SKIN."xsl/skin.xsl");
 
 // XML
 $dom_xml = new DOMDocument ();
@@ -83,17 +83,16 @@ $page->template_dir  = BASE_TEMPLATES;
 $page->compile_dir   = BASE_CACHE . 'templates_c/';
 
 $page->assign('xml', $resultat);
-if (isset($_SESSION['skin']))
-	$page->assign('css', $_SESSION['skin']['skin_css_url']);
-else
-	$page->assign('css', "xhtml/cocoa");
-$page->assign('css_list', Skin::get_list());
+$page->assign('skin', $_SESSION['skin']);
 $page->assign('base', BASE_URL);
 $page->assign('session', new Session);
 $page->assign('minimodules', $minimodules);
 $page->assign('template_name', $page->tpl_name);
 if (isset($_SESSION['sueur']))
 	$smarty->assign('sueur', $_SESSION['sueur']);
+
+$page->register_function("minimodule", array('FrankizMiniModule', "print_template"));
+$page->register_function("minimodule_header", array('FrankizMiniModule', "print_template_header"));
 
 affiche_erreurs_php();
 $page->display("main.tpl");

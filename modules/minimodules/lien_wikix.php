@@ -36,6 +36,6 @@ class LienWikixMiniModule extends FrankizMiniModule
 		return est_authentifie(AUTH_INTERNE);
 	}
 }
-FrankizMiniModule::register_module('lien_wikix', "LienWikixMiniModule");
+FrankizMiniModule::register_module('lien_wikix', "LienWikixMiniModule", "Lien rapide vers le WikiX");
 
 ?>

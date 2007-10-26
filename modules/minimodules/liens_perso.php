@@ -47,5 +47,5 @@ class LiensPersoMiniModule extends FrankizMiniModule
 		return true;
 	}
 }
-FrankizMiniModule::register_module('liens_perso', "LiensPersoMiniModule");
+FrankizMiniModule::register_module('liens_perso', "LiensPersoMiniModule", "Liens personnels");
 ?>

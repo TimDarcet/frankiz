@@ -41,6 +41,7 @@
 
 require_once "global.inc.php";
 require_once "user.inc.php";
+require_once "skin.inc.php";
 
 session_name(FRANKIZ_SESSION_NAME);
 session_start();
@@ -157,7 +158,7 @@ if(!isset($_SESSION['user']))
 require_once "global_func.inc.php";
 // c'était vraiment une idée à la con d'utiliser ce type de classe pour la transtion, mais bon, puisqu'il ne
 // m'en reste qu'une à écrire..
-class AuthModule extends PLModule
+class AuthPage
 {
 	public function run()
 	{
@@ -204,7 +205,8 @@ function demande_authentification($minimum) {
 	
 	require_once "init_skin.inc.php"; // n'y est pas encore dans le cas d'un "su"
 	require "page_header.inc.php";
-	$smarty = new AuthModule;
+	$smarty = new AuthPage;
+	$smarty->run();
 	require "page_footer.inc.php";
 	
 	exit;

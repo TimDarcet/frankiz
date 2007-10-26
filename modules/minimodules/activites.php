@@ -58,6 +58,6 @@ class ActivitesMiniModule extends FrankizMiniModule
 		return est_authentifie(AUTH_INTERNE);
 	}
 }
-FrankizMiniModule::register_module('activites', "ActivitesMiniModule");
+FrankizMiniModule::register_module('activites', "ActivitesMiniModule", "Activités du jour");
 
 ?>	

@@ -36,6 +36,6 @@ class LienTolMiniModule extends FrankizMiniModule
 		return est_authentifie(AUTH_INTERNE);
 	}
 }
-FrankizMiniModule::register_module('lien_tol', 'LienTolMiniModule');
+FrankizMiniModule::register_module('lien_tol', 'LienTolMiniModule', "Lien rapide vers le TOL");
 
 ?>

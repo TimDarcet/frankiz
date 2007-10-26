@@ -167,13 +167,9 @@ class PlatalPage extends Smarty
 }
 $page = new PlatalPage;
 
-class PLModule 
-{
-	function make_hook($dummy, $perm)
-	{	
-		return array("perms" => $perm); 
-	}
-}
+
+require_once 'platal.inc.php';
+require_once BASE_FRANKIZ.'platal-classes/plmodule.php';
 
 function call($module_name, $function_name)
 {
@@ -185,7 +181,7 @@ function call($module_name, $function_name)
 	if (!est_authentifie($desc[$function_name]["perms"]))
 		call('CoreModule', 'do_login');
 	else
-		call_user_func(array($mod, "handle_$function_name"), $page);
+		call_user_func($desc[$function_name]["hook"], $page);
 }
 
 /*

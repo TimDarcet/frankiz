@@ -48,6 +48,6 @@ class FetesMiniModule extends FrankizMiniModule
 		return est_authentifie(AUTH_INTERNE);
 	}
 }
-FrankizMiniModule::register_module('fetes', 'FetesMiniModule');
+FrankizMiniModule::register_module('fetes', 'FetesMiniModule', "Fetes du jour");
 
 ?>

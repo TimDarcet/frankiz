@@ -37,6 +37,6 @@ class LiensProfilMiniModule extends FrankizMiniModule
 		return est_authentifie(AUTH_MINIMUM);
 	}
 }
-FrankizMiniModule::register_module('liens_profil', "LiensProfilMiniModule");
+FrankizMiniModule::register_module('liens_profil', "LiensProfilMiniModule", "Liens vers le profil (indispensable)");
 
 ?>

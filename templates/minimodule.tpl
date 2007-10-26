@@ -1,4 +1,6 @@
-{if isset($minimodules.$module_name) and not $minimodules.$module_name->is_empty()}
+{if isset($minimodules.$module_name) and 
+    not $minimodules.$module_name->is_empty() and 
+    $skin->est_minimodule_visible($module_name)}
 <div class="fkz_module_1">
   <div class="fkz_module_2">
     <div class="fkz_module_3">

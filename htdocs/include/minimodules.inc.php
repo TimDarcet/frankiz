@@ -10,7 +10,6 @@ class FrankizMiniModule
 	protected $header_tpl = null;
 	protected $titre = "Not Defined!";
 
-	private static $params;
 	private static $registered_modules = array();
 	private static $loaded_modules = array();
 
@@ -22,10 +21,8 @@ class FrankizMiniModule
 	{
 		global $page;
 
-		$page->assign("minimodule", $this->params);
 		if ($this->header_tpl)
 			$page->display($this->header_tpl);
-		$page->assign("minimodule", null);
 	}
 
 	/**
@@ -36,10 +33,8 @@ class FrankizMiniModule
 	{
 		global $page;
 		
-		$page->assign("minimodule", $this->params);
 		if ($this->tpl)
 			$page->display($this->tpl);
-		$page->assign("minimodule", null);
 	}
 
 	/**
@@ -109,14 +104,32 @@ class FrankizMiniModule
 	}
 
 	/**
+	 * Renvoie un tableau des descriptions des minimodules indexé par les 
+	 * identifiants des minimodules.
+	 */
+	public static function get_minimodule_list()
+	{
+		$module_list = array();
+
+		foreach (FrankizMiniModule::$registered_modules as $id => $module)
+		{
+			$module_list[$id] = $module['description'];
+		}
+
+		return $module_list;
+	}
+
+
+	/**
 	 * Enregistre un module parmi les modules disponibles
 	 * @param classname Nom de la classe.
 	 * @param params (optionnel) Parametres à passer au constructeur de la classe.
 	 */
-	public static function register_module($name, $classname, $params = array())
+	public static function register_module($name, $classname, $description, $params = array())
 	{
 		FrankizMiniModule::$registered_modules[$name] = array('classname' => $classname,
-								     'params' => $params);
+								      'params' => $params,
+								      'description' => $description);
 	}
 }
 

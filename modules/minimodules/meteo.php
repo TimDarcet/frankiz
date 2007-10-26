@@ -63,13 +63,13 @@ class MeteoMiniModule extends FrankizMiniModule
 		$dom_xml->loadXML($xml);
 
 		$dom_xml_ext = new DOMXPath($dom_xml);
-		$this->meteo['sunrise'] = $dom_xml_ext->query("/weather/loc/sunr/text()");
-		$this->meteo['sunset'] = $dom_xml_ext->query("/weather/loc/suns/text()");
-		$this->meteo['temperature'] = $dom_xml_ext->query("/weather/cc/tmp/text()");
-		$this->meteo['ciel_icon'] = $dom_xml_ext->query("/weather/cc/icon/text()");
-		$this->meteo['pression'] = $dom_xml_ext->query("/weather/cc/bar/r/text()");
-		$this->meteo['vent'] = $dom_xml_ext->query("/weather/cc/wind/s/text()");
-		$this->meteo['humidite'] = $dom_xml_ext->query("/weather/cc/hmid/text()");
+		$this->meteo['sunrise'] = xpath_evaluate($dom_xml_ext, "/weather/loc/sunr/text()");
+		$this->meteo['sunset'] = xpath_evaluate($dom_xml_ext, "/weather/loc/suns/text()");
+		$this->meteo['temperature'] = xpath_evaluate($dom_xml_ext, "/weather/cc/tmp/text()");
+		$this->meteo['ciel_icon'] = xpath_evaluate($dom_xml_ext, "/weather/cc/icon/text()");
+		$this->meteo['pression'] = xpath_evaluate($dom_xml_ext, "/weather/cc/bar/r/text()");
+		$this->meteo['vent'] = xpath_evaluate($dom_xml_ext, "/weather/cc/wind/s/text()");
+		$this->meteo['humidite'] = xpath_evaluate($dom_xml_ext, "/weather/cc/hmid/text()");
 
 		return true;
 	}
@@ -79,5 +79,5 @@ class MeteoMiniModule extends FrankizMiniModule
 		return true;
 	}
 }
-FrankizMiniModule::register_module("meteo", "MeteoMiniModule");
+FrankizMiniModule::register_module("meteo", "MeteoMiniModule", "Météo actuelle");
 ?>

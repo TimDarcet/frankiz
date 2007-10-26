@@ -38,6 +38,6 @@ class LiensNavigationMiniModule extends FrankizMiniModule
 		return true;
 	}
 }
-FrankizMiniModule::register_module('liens_navigation', "LiensNavigationMiniModule");
+FrankizMiniModule::register_module('liens_navigation', "LiensNavigationMiniModule", "Liens pour naviguer sur le site (indispensable)");
 
 ?>

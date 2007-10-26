@@ -1,0 +1,91 @@
+<skins>
+  <default>xhtml-default</default>
+  <skin id='alyzee'>
+    <css_path>alyzee/style.css</css_path>
+    <description>Pour les pervers, sur le theme d'aubade...</description>
+  </skin>
+  <skin id='base'>
+    <css_path>base/style.css</css_path>
+    <description>Plus un exemple pour des codeurs de skins qu'une skin
+    vraiment utilisable</description>
+  </skin>
+  <skin id='br'>
+    <css_path>br/style.css</css_path>
+    <description>Skin aux couleurs du Binet Réseau</description>
+  </skin>
+  <skin id='classique'>
+    <css_path>classique/style.css</css_path>
+    <description>Identique à celle par défaut sur l'ancien Frankiz (non
+    compatible IE)</description>
+  </skin>
+  <skin id='cocoa'>
+    <css_path>cocoa/style.css</css_path>
+    <description>Skin inspirée de Mac OS X, très agréable (meuh non, je suis
+    pas partial...)</description>
+  </skin>
+  <skin id='dark-matter'>
+    <css_path>dark-matter/style.css</css_path>
+    <description>Pas finie, on se demande même pourquoi elle a droit à une
+    entrée dans la liste des skins </description>
+  </skin>
+  <skin id='dotclear'>
+    <css_path>dotclear/style.css</css_path>
+    <description>Aucune</description>
+  </skin>
+  <skin id='ey'>
+    <css_path>ey/style.css</css_path>
+    <description>Aucune</description>
+  </skin>
+  <skin id='grass'>
+    <css_path>grass/style.css</css_path>
+    <description>Aucune</description>
+  </skin>
+  <skin id='Harrixpotter'>
+    <css_path>Harrixpotter/style.css</css_path>
+    <description>Aucune</description>
+  </skin>
+  <skin id='kestors'>
+    <css_path>kestors/style.css</css_path>
+    <description>Aucune</description>
+  </skin>
+  <skin id='metal'>
+    <css_path>metal/style.css</css_path>
+    <description>Aucune</description>
+  </skin>
+  <skin id='modern'>
+    <css_path>modern/style.css</css_path>
+    <description>Aucune</description>
+  </skin>
+  <skin id='noel'>
+    <css_path>noel/style.css</css_path>
+    <description>Aucune</description>
+  </skin>
+  <skin id='pico'>
+    <css_path>pico/style.css</css_path>
+    <description>Aucune</description>
+  </skin>
+  <skin id='pico-2'>
+    <css_path>pico-2/style.css</css_path>
+    <description>Aucune</description>
+  </skin>
+  <skin id='pico-sobre'>
+    <css_path>pico-sobre/style.css</css_path>
+    <description>Aucune</description>
+  </skin>
+  <skin id='sdbr2k3'>
+    <css_path>sdbr2k3/style.css</css_path>
+    <description>Aucune</description>
+  </skin>
+  <skin id='simple'>
+    <css_path>simple/style.css</css_path>
+    <description>Aucune</description>
+  </skin>
+  <skin id='tranquille'>
+    <css_path>tranquille/style.css</css_path>
+    <description>Aucune</description>
+  </skin>
+  <skin id='xhtml-default'>
+    <css_path>xhtml-default/style.css</css_path>
+    <description>Aucune</description>
+  </skin>
+</skins>

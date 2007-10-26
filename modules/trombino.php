@@ -23,6 +23,7 @@
 	$Id: trombino.php 1969 2007-09-29 13:02:41Z elscouta $
 
 */
+require_once BASE_LOCAL."/include/wiki.inc.php";
 
 class TrombinoModule extends PLModule
 {
@@ -32,7 +33,7 @@ class TrombinoModule extends PLModule
 			     'binets'   => $this->make_hook('binets', AUTH_AUCUNE));
 	}
 
-	function handle_tol(&$page)
+	function handler_tol(&$page)
 	{
 		global $DB_web, $DB_trombino;
 
@@ -440,7 +441,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 <?
 	}
 
-	function handle_binets(&$page)
+	function handler_binets(&$page)
 	{
 		global $DB_trombino;
 

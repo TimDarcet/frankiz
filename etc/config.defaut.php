@@ -101,15 +101,21 @@ define('PARTENAIRES_AOC_URL', "");
 define('FRANKIZ_SESSION_NAME', "frankiz");
 
 // Configuration du site
-define('AFFICHER_LES_ERREURS',0); 
-define('BASE_DATA',"/home/frankiz2/data/");
-define('BASE_PHOTOS',"/home/frankiz2/data/photos/");
-define('BASE_CACHE',"/home/frankiz2/cache/");
-define('BASE_BINETS',"/home/frankiz2/binets/");
-define('BASE_BINETS_EXT',"/home/frankiz2/htdocs/binets/");
-define('BASE_PAGESPERSOS',"/home/frankiz2/webperso/");
-define('BASE_PAGESPERSOS_EXT',"/home/frankiz2/htdocs/webperso/");
-define('BASE_TEMPLATES', "/home/frankiz2/templates/");
+define('AFFICHER_LES_ERREURS',0);
+
+define('BASE_FRANKIZ', "/home/frankiz2");
+
+define('BASE_DATA',            BASE_FRANKIZ."data/");
+define('BASE_PHOTOS',          BASE_FRANKIZ."data/photos/");
+define('BASE_CACHE',           BASE_FRANKIZ."cache/");
+define('BASE_BINETS',          BASE_FRANKIZ."binets/");
+define('BASE_BINETS_EXT',      BASE_FRANKIZ."binets/");
+define('BASE_MODULES',         BASE_FRANKIZ."modules/");
+define('BASE_PAGESPERSOS',     BASE_FRANKIZ."webperso/");
+define('BASE_PAGESPERSOS_EXT', BASE_FRANKIZ."htdocs/webperso/");
+define('BASE_SKIN',            BASE_FRANKIZ."htdocs/skins/");
+define('BASE_SKIN_INDEX',      BASE_SKIN."index.txt");
+define('BASE_TEMPLATES',       BASE_FRANKIZ."templates/");
 
 define('URL_DATA',BASE_URL.'/data/');
 define('URL_BINETS','http://binets.frankiz.eleves.polytechnique.fr/');
