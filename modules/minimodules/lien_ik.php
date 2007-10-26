@@ -40,4 +40,3 @@ class LienIKMiniModule extends FrankizMiniModule
 FrankizMiniModule::register_module('lien_ik', 'LienIKMiniModule', "Lien vers l'IK électronique");
 
 ?>
-

@@ -25,6 +25,7 @@
 */
 
 require_once "xml.inc.php";
+require_once "minimodules.inc.php";
 
 /**
  * La liste des skins est definie dans skins/index.xml, et a la structure suivante:
@@ -49,8 +50,8 @@ class Skin
 	 */
 	public function __construct()
 	{
-		set_skin_default();
-		set_minimodules_default();
+		$this->set_skin_default();
+		$this->set_minimodules_default();
 	}
 	
 	// ----------------------------- Minimodules ---------------------------------
@@ -138,9 +139,9 @@ class Skin
 	/**
 	 * Renvoie la skin par defaut.
 	 */
-	public static function set_skin_default()
+	public function set_skin_default()
 	{
-		return Skin::change_skin("");
+		return $this->change_skin("");
 	}
 
 

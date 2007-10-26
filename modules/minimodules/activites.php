@@ -60,4 +60,4 @@ class ActivitesMiniModule extends FrankizMiniModule
 }
 FrankizMiniModule::register_module('activites', "ActivitesMiniModule", "Activités du jour");
 
-?>	
+?>

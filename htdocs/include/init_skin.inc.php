@@ -66,7 +66,7 @@ if (!isset($_SESSION['skin']) || !$_SESSION['skin'] || nouveau_login() ) {
 	if(!isset($_SESSION['skin']) || !$_SESSION['skin']) 
 	{
 		ajouter_debug_log("Chargement de la skin depuis les valeurs par défaut.");
-		$_SESSION['skin'] = Skin::load_skin_default();
+		$_SESSION['skin'] = new Skin;
 	}
 }
 

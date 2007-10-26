@@ -227,4 +227,3 @@ FrankizMiniModule::register_module('qdj', "QdjMiniModule", "QDJ du jour", array(
 FrankizMiniModule::register_module('qdj_hier', "QdjMiniModule", "QDJ de la veille", array(-1, false));
 
 ?>
-
