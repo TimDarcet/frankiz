@@ -27,7 +27,7 @@ if(est_authentifie(AUTH_INTERNE)) {
 		list($lienik) = $DB_web->next_row();
 		$lienik_full = "ik/".$lienik;
 
-		echo "<a href=\"$lienik_full\"><image source=\"".BASE_URL."/data/ik_thumbnails/$lienik.png\" texte=\"IK de la semaine\"/></a> \n";
+		echo "<a href=\"$lienik_full\"><image source=\"data/ik_thumbnails/$lienik.png\" texte=\"IK de la semaine\"/></a> \n";
 
 		cache_sauver('lienik');
 	}
