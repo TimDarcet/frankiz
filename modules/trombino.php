@@ -24,6 +24,7 @@
 
 */
 require_once BASE_LOCAL."/include/wiki.inc.php";
+require_once BASE_LOCAL."/include/session.inc.php";
 
 class TrombinoModule extends PLModule
 {
@@ -35,7 +36,7 @@ class TrombinoModule extends PLModule
 
 	function handler_tol(&$page)
 	{
-		global $DB_web, $DB_trombino;
+		global $DB_admin, $DB_web, $DB_trombino, $DB_xnet;
 
 		$page->assign('title', "Frankiz : Trombino");
 
@@ -450,7 +451,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 	echo "<page id='binets'>";
 	
 	$auth = "" ;
-	if(!$_SESSION['user']->est_authentifie(AUTH_INTERNE)) $auth = " exterieur=1 AND " ;
+	if(!FrankizSession::est_authentifie(AUTH_INTERNE)) $auth = " exterieur=1 AND " ;
 
 	$categorie_precedente = -1;
 	$DB_trombino->query("SELECT binet_id,nom,description,http,folder,b.catego_id,categorie ".
@@ -459,7 +460,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 						"ORDER BY b.catego_id ASC, b.nom ASC");
 	while(list($id,$nom,$description,$http,$folder,$cat_id,$categorie) = $DB_trombino->next_row()) {
 			if($folder!=""){ 
-				if(est_interne()) $http=URL_BINETS.$folder."/";
+				if(FrankizSession::est_interne()) $http=URL_BINETS.$folder."/";
 				else $http="binets/$folder/";
 			}
 ?>

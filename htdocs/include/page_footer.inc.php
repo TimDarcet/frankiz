@@ -25,7 +25,6 @@
 	$Id$
 
 */
-echo "</frankiz>\n";
 // Récupération du cache de sortie
 $xml = ob_get_contents();
 ob_end_clean();
@@ -50,42 +49,40 @@ $minimodules = FrankizMiniModule::load_modules('activites',
 					       'virus');
 
 
-// Feuille de style
-$dom_xsl = new DOMDocument ();
-$dom_xsl->load(BASE_SKIN."xsl/skin.xsl");
-
-// XML
-$dom_xml = new DOMDocument ();
-$dom_xml->loadXML($xml);
-
-// Transformer XSLT
-$xslt = new XSLTProcessor();
-$xslt->importStyleSheet($dom_xsl);
-
-// Les paramètres à passer à sablotron sont en UTF8
-$parameters = array (
-  'user_nom' => str_replace("&apos;","'",$_SESSION['user']->nom),
-  'user_prenom' => str_replace("&apos;","'",$_SESSION['user']->prenom),
-  'date' => date("d/m/Y"),
-  'heure' => date("H:i")
-);
-
-// Transformation
-$resultat = $xslt->transformToXML($dom_xml);
-
-if ($resultat === false)
+if ($xml)
 {
-	echo "Erreur lors de la transformation XSLT";
+	$dom_xsl = new DOMDocument ();
+	$dom_xsl->load(BASE_SKIN."xsl/skin.xsl");
+
+	$dom_xml = new DOMDocument ();
+	$dom_xml->loadXML("<frankiz>$xml</frankiz>");
+
+	$xslt = new XSLTProcessor();
+	$xslt->importStyleSheet($dom_xsl);
+
+	// Les paramètres à passer à sablotron sont en UTF8
+	$parameters = array (
+	  'user_nom' => str_replace("&apos;","'",$_SESSION['user']->nom),
+	  'user_prenom' => str_replace("&apos;","'",$_SESSION['user']->prenom),
+	  'date' => date("d/m/Y"),
+	  'heure' => date("H:i")
+	);
+
+	$resultat = $xslt->transformToXML($dom_xml);
+
+	if ($resultat === false)
+		echo "Erreur lors de la transformation XSLT";
+
+	$page->assign('xml', $resultat);
 }
 
 $page->compile_check = AFFICHER_LES_ERREURS;
 $page->template_dir  = BASE_TEMPLATES;
 $page->compile_dir   = BASE_CACHE . 'templates_c/';
 
-$page->assign('xml', $resultat);
 $page->assign('skin', $_SESSION['skin']);
 $page->assign('base', BASE_URL);
-$page->assign('session', new Session);
+$page->assign('session', new FrankizSession);
 $page->assign('minimodules', $minimodules);
 $page->assign('template_name', $page->tpl_name);
 if (isset($_SESSION['sueur']))

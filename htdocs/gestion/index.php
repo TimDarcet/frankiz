@@ -28,15 +28,14 @@
 // En-tetes
 require_once "../include/global.inc.php";
 
-demande_authentification(AUTH_FORT);
-
-if (count($_SESSION['user']->perms)<=1)
+if (!FrankizSession::is_admin())
 	acces_interdit();
 
 // Génération de la page
 require_once BASE_LOCAL."/include/page_header.inc.php";
+demande_authentification(AUTH_FORT);
 
-$permissions_user = $_SESSION['user']->perms ;
+$permissions_user = $_SESSION['fkz_perms']->perms ;
 
 ?>
 <page id="admin" titre="Frankiz : administration">

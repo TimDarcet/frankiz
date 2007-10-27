@@ -111,6 +111,8 @@ class Skin
 		$this->id = $id;
 		$this->description = xpath_evaluate_context($xpath, "description/text()", $node);
 		$this->css_path = "skins/".xpath_evaluate_context($xpath, "css_path/text()", $node);
+	
+		return true;
 	}
 
 	/**
@@ -165,11 +167,11 @@ class Skin
 	public function unserialize($str)
 	{
 		$data = unserialize($str);
-	
+		
 		if (!isset($data['id']) || !is_string($data['id']))
 			return false;
 
-		foreach ($data['modules'] as $key => $v)
+		foreach ($data['minimodules'] as $key => $v)
 		{
 			if (!is_string($key) || $v != 1)
 				return false;
@@ -178,9 +180,8 @@ class Skin
 		if (!$this->change_skin($data['id']))
 			return false;
 
-		$skin->minimodules = $data['minimodules'];
-
-		return $skin;	
+		$this->minimodules = $data['minimodules'];
+		return true;
 	}
 }
 

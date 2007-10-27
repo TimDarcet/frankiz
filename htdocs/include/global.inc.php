@@ -91,7 +91,6 @@ $_REQUEST = nettoyage_balise($_REQUEST);
 require_once "global_func.inc.php";
 require_once "mail.inc.php";
 require_once "init_login.inc.php";
-require_once "init_skin.inc.php";
 
 ajouter_debug_log(var_export($_GET,true));
 ajouter_debug_log(var_export($_POST,true));

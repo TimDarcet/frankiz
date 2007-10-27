@@ -34,5 +34,4 @@ if (isset($_GET['forceskin']) && is_dir(BASE_LOCAL."/skins/{$_GET['forceskin']}"
 	$_SESSION['skin']['skin_xsl_chemin'] = BASE_LOCAL."/skins/{$_GET['forceskin']}/xsl/skin.xsl";
 }
 
-echo "<frankiz>";
 ?>

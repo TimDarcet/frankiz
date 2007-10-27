@@ -124,36 +124,6 @@ function not_found()
 	exit;
 }
 
-function est_interne()
-{
-	$ip = ip_get();
-	return $ip == '127.0.0.1' || (substr($ip, 0, 8) == '129.104.' && $ip != '129.104.30.4');
-}
-
-// Classe de transition en attendant Platal::Session
-
-class Session
-{
-	function est_interne()
-	{
-		return est_interne();
-	}
-
-	function est_auth()
-	{
-		return est_authentifie(AUTH_MINIMUM);
-	}
-
-	function est_auth_fort()
-	{
-		return est_authentifie(AUTH_FORT);
-	}
-
-	function is_admin()
-	{
-		return $_SESSION['user']->perms > 1 && $_SESSION['user']->perms[0] != "";
-	}
-}
 // Pendant la transition a Plat/al
 require_once 'smarty/libs/Smarty.class.php';
 class PlatalPage extends Smarty
@@ -169,7 +139,10 @@ $page = new PlatalPage;
 
 
 require_once 'platal.inc.php';
+require_once BASE_FRANKIZ.'platal-classes/flagset.php';
 require_once BASE_FRANKIZ.'platal-classes/plmodule.php';
+require_once BASE_FRANKIZ.'platal-includes/globals.inc.php';
+$globals = new PlatalGlobals("FrankizSession");
 
 function call($module_name, $function_name)
 {
@@ -178,27 +151,13 @@ function call($module_name, $function_name)
 	$mod = new $module_name;
 	$desc = $mod->handlers();
 
-	if (!est_authentifie($desc[$function_name]["perms"]))
+	if (!est_authentifie($desc[$function_name]["auth"]))
 		call('CoreModule', 'do_login');
 	else
 		call_user_func($desc[$function_name]["hook"], $page);
 }
 
 /*
-	Renvoi la liste des modules disponibles sous la forme d'une liste :
-		"nom du fichier moins le .php" => "Nom affichable du module"
-	
-	Si le nom affichage est vide, cela signifie que le module est toujours visible.
-*/
-function liste_modules() {
-	return array(
-		"qdj"				=> "Question du jour",
-		"qdj_hier"			=> "Question de la veille",
-		"tour_kawa"		=> "Tours kawa",
-		"stats"			=> "Statistiques",
-		"rss"				=> "News Extérieures",
-		);
-}/*
 	Renvoi la liste des droits disponibles sous la forme d'une liste :
 		"nom" => "droits"
 	
@@ -220,49 +179,6 @@ function liste_droits() {
 		"affiches"	=>	"(EXT) Affiches (ex BRC...)",
 		"postit"	=>	"(EXT) Postit (droit temporaire, pour le .gamma par expl)"
 		);
-}
-
-/*
-	Gestion des caches :
-	 - cache_supprimer() supprime un fichier de cache
-	 - cache_recuperer() récupère et affiche le fichier de cache s'il est à jour
-		sinon renvoie faux et ouvre un buffer pour récupérer la sortie à mettre en cache.
-	 - cache_sauver() récupère le contenu du buffer ouvert par cache_recuperer(), l'écrit
-		dans le fichier de cache et sur la sortie.
-*/
-function cache_supprimer($cache_id) {
-	unlink(BASE_CACHE.$cache_id);
-}
-
-global $_CACHE_SAVED_BUFFER;	// TODO corriger ce hack tout moche qui se résoud avec PHP 4.2.0
-								// qui autorise d'avoir des buffers imbriqués
-								// Il suffira alors de supprimer les lignes finisant par "// hack"
-
-function cache_recuperer($cache_id,$date_valide_max) {
-	if(file_exists(BASE_CACHE.$cache_id) && filemtime(BASE_CACHE.$cache_id) > $date_valide_max) {
-		readfile(BASE_CACHE.$cache_id);
-		return true;
-	} else {
-		global $_CACHE_SAVED_BUFFER;				// hack
-		$_CACHE_SAVED_BUFFER = ob_get_contents();	// hack
-		ob_end_clean();								// hack
-		ob_start();
-		return false;
-	}
-}
-
-function cache_sauver($cache_id) {
-	$contenu = ob_get_contents();
-	ob_end_clean();
-
-	$file = fopen(BASE_CACHE.$cache_id, 'w');
-	fwrite($file, $contenu);
-	fclose($file);		 
-
-	global $_CACHE_SAVED_BUFFER;					// hack
-	ob_start();										// hack
-	echo $_CACHE_SAVED_BUFFER;						// hack
-	echo $contenu;
 }
 
 /*

@@ -29,7 +29,7 @@ class LiensProfilMiniModule extends FrankizMiniModule
 	public function __construct()
 	{
 		$this->tpl = "minimodules/liens_profil/main.tpl";
-		$this->titre = "Profil : {$_SESSION['user']->prenom} {$_SESSION['user']->nom}";
+		$this->titre = "Profil : {$_SESSION['prenom']} {$_SESSION['nom']}";
 	}
 
 	public static function check_auth()

@@ -23,6 +23,7 @@
 	$Id$
 
 */
+require_once BASE_FRANKIZ."htdocs/include/xml.inc.php";
 
 class MeteoMiniModule extends FrankizMiniModule
 {
