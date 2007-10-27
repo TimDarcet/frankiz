@@ -27,7 +27,7 @@ class LienIKMiniModule extends FrankizMiniModule
 		list($lienik) = $DB_web->next_row();
 
 		$page->assign("lien_ik_url", "ik.php?id=$lienik");
-		$page->assign("lien_ik_img", BASE_URL."/data/ik_thumbnails/$lienik.png");
+		$page->assign("lien_ik_img", "data/ik_thumbnails/$lienik.png");
 		$this->tpl = "minimodules/lien_ik/lien_ik.tpl";
 		$this->titre = "IK Electronique";
 	}
