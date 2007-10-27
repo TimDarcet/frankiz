@@ -59,7 +59,7 @@ class ProfilModule extends PLModule
 		$page->assign('profil_fkz_surnom', $surnom);
 		$page->assign('profil_fkz_loginpoly', $login);
 		$page->assign('profil_fkz_promo', $promo);
-		$page->assign('profil_fkz_mail', $mail ? $mail : "$login@poly.polytechnique.fr");
+		$page->assign('profil_fkz_email', $mail ? $mail : "$login@poly.polytechnique.fr");
 		$page->assign('profil_fkz_casert', $casert);
 		$page->assign('profil_fkz_section', $section);
 		$page->assign('profil_fkz_cie', $cie);

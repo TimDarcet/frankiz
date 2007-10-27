@@ -73,7 +73,7 @@
     <div>
       <span class="gauche">Kazert :</span>
       <span class="droite">
-        <span id="mod_trombinocasert">{profil_fkz_casert}</span>
+        <span id="mod_trombinocasert">{$profil_fkz_casert}</span>
       </span>
     </div>
     <div>
