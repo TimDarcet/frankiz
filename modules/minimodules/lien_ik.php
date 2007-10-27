@@ -21,13 +21,13 @@ class LienIKMiniModule extends FrankizMiniModule
 {
 	public function __construct()
 	{
-		global $page, $DB_web;
+		global $DB_web;
 
 		$DB_web->query("SELECT valeur FROM parametres WHERE nom='lienik'");
 		list($lienik) = $DB_web->next_row();
 
-		$page->assign("lien_ik_url", "ik.php?id=$lienik");
-		$page->assign("lien_ik_img", "data/ik_thumbnails/$lienik.png");
+		$this->assign("lien_ik_url", "ik.php?id=$lienik");
+		$this->assign("lien_ik_img", "data/ik_thumbnails/$lienik.png");
 		$this->tpl = "minimodules/lien_ik/lien_ik.tpl";
 		$this->titre = "IK Electronique";
 	}

@@ -28,7 +28,7 @@ class VirusMiniModule extends FrankizMiniModule
 {
 	public function __construct()
 	{
-		global $DB_admin, $page;
+		global $DB_admin;
 
 		/* On cherche dans la base les vilains qui ont un status solved différent de 2,
 		 * donc qui a priori sont infestés. La personne est identifiée par son ip, 
@@ -56,7 +56,7 @@ class VirusMiniModule extends FrankizMiniModule
 		}
 		while (list($eleve_id, $piece, $ip, $date, $rebours, $solved, $id, $nomv) = $DB_admin->next_row());
 
-		$page->assign('virus_infections', $infections);
+		$this->assign('infections', $infections);
 		$this->tpl = "minimodules/virus/virus.tpl";
 	}
 

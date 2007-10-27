@@ -23,15 +23,20 @@
 	$Id$
 
 */
-if(est_authentifie(AUTH_MINIMUM)) {
-?>
-<module id="liens_contacts" titre="Contribuer">
-		<lien id="propo_annonce" titre="Proposer une annonce" url="proposition/annonce.php" />
-		<lien id="propo_activite" titre="Proposer une activité" url="proposition/affiche.php" />
-		<lien id="propo_qdj" titre="Proposer une qdj" url="proposition/qdj.php" />
-		<lien id="propo_sondage" titre="Proposer un sondage" url="proposition/sondage.php" />
-		<lien id="propo_mailpromo" titre="Demander un mail promo" url="proposition/mail_promo.php" />
-</module>
-<?php
+class LiensPropositionsMiniModule extends FrankizMiniModule
+{
+	public function __construct()
+	{
+		$this->tpl = "minimodules/liens_propositions/liens_propositions.tpl";
+		$this->titre = "Contribuer";
+	}
+
+	public static function check_auth()
+	{
+		return true;
+	return FrankizSession::est_authentifie(AUTH_MINIMUM);
+	}
 }
+FrankizMiniModule::register_module("liens_propositions", "LiensPropositionsMiniModule", "Liens pour proposer du contenu sur Frankiz");
+
 ?>

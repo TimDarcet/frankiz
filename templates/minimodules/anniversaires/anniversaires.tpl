@@ -1,4 +1,4 @@
-{foreach from=$anniversaires key=promo item=anniversaires_promo}
+{foreach from=$minimodule.anniversaires key=promo item=anniversaires_promo}
 {if count($anniversaires_promo)}
 <a href='trombino.php/anniversaires&amp;romo={$promo}'>{$promo}</a>: 
 {/if}

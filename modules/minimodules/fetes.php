@@ -38,7 +38,7 @@ class FetesMiniModule extends FrankizMiniModule
 		while (list($prenom) = $DB_trombino->next_row())
 			$fetes[] = $prenom;
 	
-		$page->assign("fetes", $fetes);
+		$this->assign("fetes", $fetes);
 		$this->tpl = "minimodules/fetes/fetes.tpl";
 		$this->titre = "Fêtes du jour";
 	}

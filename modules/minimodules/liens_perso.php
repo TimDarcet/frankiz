@@ -37,7 +37,7 @@ class LiensPersoMiniModule extends FrankizMiniModule
 		foreach ($_SESSION['liens_perso'] as $titre => $url)
 			$liens[] = array('title' => $titre, 'url' => $url);
 
-		$globals->smarty->assign('liens_perso', $liens);
+		$this->assign('liens', $liens);
 		$this->tpl = "minimodules/liens_perso/main.tpl";
 		$this->header_tpl = "minimodules/liens_perso/header.tpl";
 	}

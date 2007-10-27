@@ -10,6 +10,7 @@ class FrankizMiniModule
 	protected $header_tpl = null;
 	protected $titre = "Not Defined!";
 
+	private $params = array();
 	private static $registered_modules = array();
 	private static $loaded_modules = array();
 
@@ -21,8 +22,10 @@ class FrankizMiniModule
 	{
 		global $page;
 
+		$page->assign('minimodule', $this->params);
 		if ($this->header_tpl)
 			$page->display($this->header_tpl);
+		$page->assign('minimodule', null);
 	}
 
 	/**
@@ -33,8 +36,10 @@ class FrankizMiniModule
 	{
 		global $page;
 		
+		$page->assign('minimodule', $this->params);
 		if ($this->tpl)
 			$page->display($this->tpl);
+		$page->assign('minimodule', $params);
 	}
 
 	/**
@@ -143,6 +148,7 @@ require_once BASE_MODULES."minimodules/lien_tol.php";
 require_once BASE_MODULES."minimodules/lien_wikix.php";
 require_once BASE_MODULES."minimodules/liens_navigation.php";
 require_once BASE_MODULES."minimodules/liens_profil.php";
+require_once BASE_MODULES."minimodules/liens_propositions.php";
 require_once BASE_MODULES."minimodules/liens_utiles.php";
 require_once BASE_MODULES."minimodules/meteo.php";
 require_once BASE_MODULES."minimodules/qdj.php";

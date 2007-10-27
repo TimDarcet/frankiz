@@ -1,6 +1,6 @@
-<a href="{$lien_ik_url}">
+<a href="{$minimodule.lien_ik_url}">
   <span class="image" style="display:block;text-align:center">
-    <img src="{$lien_ik_img}" alt="IK de la semaine"/>
+    <img src="{$minimodule.lien_ik_img}" alt="IK de la semaine"/>
   </span>
 </a>
 {if $session->est_interne()}

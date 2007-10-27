@@ -28,7 +28,7 @@ class AnniversairesMiniModule extends FrankizMiniModule
 {
 	public function __construct()
 	{
-		global $page, $DB_web, $DB_trombino;
+		global $DB_web, $DB_trombino;
 
 		$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
 		list($promo_temp) = $DB_web->next_row();
@@ -49,7 +49,7 @@ class AnniversairesMiniModule extends FrankizMiniModule
 							 'mail'   => $mail,
 							 'login'  => $login); 
 		
-		$page->assign('anniversaires', $anniversaires);
+		$this->assign('anniversaires', $anniversaires);
 		$this->tpl = "minimodules/anniversaires/anniversaires.tpl";
 		$this->titre = "Joyeux anniversaire!";
 	}

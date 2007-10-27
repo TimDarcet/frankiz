@@ -27,7 +27,7 @@ class ActivitesMiniModule extends FrankizMiniModule
 {
 	public function __construct()
 	{
-		global $globals, $DB_web;
+		global $DB_web;
 		
 		$DB_web->query("SELECT affiche_id, titre, url, date, exterieur 
 				  FROM affiches 
@@ -47,15 +47,15 @@ class ActivitesMiniModule extends FrankizMiniModule
 		if (!getEtatBob() && count($activites) == 0)
 			return;
 
-		$globals->smarty->assign('activites_etat_bob', getEtatBob());
-		$globals->smarty->assign('activites' , $activites);
+		$this->assign('activites_etat_bob', getEtatBob());
+		$this->assign('activites' , $activites);
 		$this->tpl = "minimodules/activites/activites.tpl";
 		$this->titre = "Activités";
 	}
 
 	public static function check_auth()
 	{
-		return est_authentifie(AUTH_INTERNE);
+		return true;
 	}
 }
 FrankizMiniModule::register_module('activites', "ActivitesMiniModule", "Activités du jour");

@@ -36,7 +36,7 @@ class MeteoMiniModule extends FrankizMiniModule
 		if (!$this->get_data())
 			return;
 
-		$page->assign("meteo", $this->meteo);
+		$this->assign("meteo", $this->meteo);
 		$this->tpl = "minimodules/meteo/meteo.tpl";
 		$this->titre = "Météo";
 	}
