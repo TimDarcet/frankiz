@@ -89,7 +89,8 @@ class AnnoncesModule extends PLModule
 	
 			
 			$categorie = $this->get_categorie($en_haut, $stamp, $perime);
-			$annonces[$categorie]['annonces'][$id] = array('titre'  => $titre,
+			$annonces[$categorie]['annonces'][$id] = array('id'     => $id,
+								       'titre'  => $titre,
 					       		               'date'   => $date,
 							               'img'    => file_exists(DATA_DIR_LOCAL.'annonces/'.$id),
 							               'eleve'  => array('nom'    => $nom,
