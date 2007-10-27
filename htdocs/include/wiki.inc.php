@@ -24,7 +24,7 @@
 
 */
 
-function wikiVersXML($filtered,$enhtml=false) {
+function wikiVersXML($filtered, $enhtml = false) {
 	// from Simon Schoar <simon@schoar.de> :
 	$regexURL = "((http:\/\/|https:\/\/|ftp:\/\/|mailto:)[\w\.\:\@\?\&\~\%\=\+\-\/\_\;#]+)";
 	$regexURLText = "([^\[\]\|]+)";

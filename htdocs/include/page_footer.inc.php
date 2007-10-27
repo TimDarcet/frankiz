@@ -31,6 +31,7 @@ ob_end_clean();
 header('Content-Type: text/html');
 
 require_once BASE_LOCAL."/include/minimodules.inc.php";
+require_once BASE_LOCAL."/include/wiki.inc.php";
 
 $minimodules = FrankizMiniModule::load_modules('activites',
 					       'anniversaires',
@@ -90,6 +91,7 @@ if (isset($_SESSION['sueur']))
 
 $page->register_function("minimodule", array('FrankizMiniModule', "print_template"));
 $page->register_function("minimodule_header", array('FrankizMiniModule', "print_template_header"));
+$page->register_modifier("wiki_vers_html", "wikiVersXML");
 
 affiche_erreurs_php();
 $page->display("main.tpl");
