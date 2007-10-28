@@ -25,28 +25,9 @@
 */
 
 require_once "../include/global.inc.php";
-demande_authentification(AUTH_COOKIE);
 
-// Génération du la page XML
-require "../include/page_header.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/page_header.inc.php";
+require_once BASE_FRANKIZ."modules/profil.php";
+call('ProfilModule', 'profil');
+require_once BASE_FRANKIZ."htdocs/include/page_footer.inc.php"; 
 ?>
-
-<page id="profil" titre="Frankiz : modification des préférences">
-	<h1>Modification de ses préférences</h1>
-
-	<h2>Changer mon profil sur le site</h2>
-		<lien titre="Modifier mon compte frankiz" url="profil/profil.php"/><br/>
-		<lien titre="Modifier ma fiche trombino" url="profil/profil.php#mod_trombino"/><br/>
-		<lien titre="Modifier mon site perso" url="profil/siteweb.php"/><br/>
-		
-	<h2>Changer l'apparence du site</h2>
-		<lien titre="Changer de skin" url="profil/skin.php"/><br/>
-		<lien titre="Gérer mes liens perso" url="profil/liens_ext.php"/><br/>
-		<lien titre="Gérer mes annonces externes" url="profil/liens_ext.php#form_rss"/><br/>
-
-	<h2>Changer mon profil sur le réseau</h2>
-		<lien titre="Gérer mes données réseau" url="profil/reseau.php"/><br/>
-		<lien titre="Modifier le mot de passe Xnet" url="profil/reseau.php#mod_xnet_0"/><br/>
-		<lien titre="Demander une nouvelle adresse ip" url="profil/demande_ip.php"/><br/>
-</page>
-<?php require_once BASE_LOCAL."/include/page_footer.inc.php"; ?>

@@ -30,7 +30,8 @@ class ProfilModule extends PLModule
 {
 	public function handlers()
 	{
-		return array('profil/fkz'                => $this->make_hook('fkz', AUTH_COOKIE),
+		return array('profil'			 => $this->make_hook('profil', AUTH_COOKIE),
+			     'profil/fkz'                => $this->make_hook('fkz', AUTH_COOKIE),
 			     'profil/fkz/change_mdp'     => $this->make_hook('fkz_change_mdp', AUTH_MDP),
 		             'profil/fkz/change_tol'     => $this->make_hook('fkz_change_tol', AUTH_COOKIE),
 			     'profil/fkz/change_binet'   => $this->make_hook('fkz_change_binet', AUTH_COOKIE),
@@ -41,6 +42,11 @@ class ProfilModule extends PLModule
 			     'profil/skin/change_params' => $this->make_hook('skin_params', AUTH_COOKIE));
 	}
 
+	public function handler_profil(&$page)
+	{
+		$page->assign('title', "Modification des préférences");
+		$page->changeTpl('profil/index.tpl');
+	}
 
 	public function handler_fkz(&$page)
 	{

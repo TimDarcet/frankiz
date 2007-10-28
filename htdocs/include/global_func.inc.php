@@ -141,6 +141,8 @@ class FrankizPage extends PlatalPage
 	public function __construct($tpl, $type = SKINNED)
 	{
 		parent::__construct($tpl, $type);
+		$this->assign('page_base', BASE_URL);
+		$this->assign('page_no_title', 0);
 	}
 
 	public function run()
@@ -148,7 +150,6 @@ class FrankizPage extends PlatalPage
 		global $minimodules;
 
 		$this->assign('skin', $_SESSION['skin']);
-		$this->assign('base', BASE_URL);
 		$this->assign('session', new FrankizSession);
 		$this->assign('minimodules', $minimodules);
 		if (isset($_SESSION['sueur']))
