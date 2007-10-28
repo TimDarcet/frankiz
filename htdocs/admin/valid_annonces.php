@@ -28,7 +28,7 @@ require_once "../include/global.inc.php";
 require_once "../include/wiki.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 if(!verifie_permission('admin')&&!verifie_permission('web'))
 	acces_interdit();
 
@@ -116,7 +116,7 @@ foreach ($_POST AS $keys => $val){
 			list($eleve_id,$commentaire) = $DB_valid->next_row() ;
 			
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid,"validé l'annonce '{$_POST['titre']}' ") ;
+			log_admin($_SESSION['uid'],"validé l'annonce '{$_POST['titre']}' ") ;
 			
 			// envoi du mail
 			$contenu = 	"Ton annonce vient d'être validée par le BR... Elle est dès à present visible sur la page d'accueil<br><br> ".
@@ -156,7 +156,7 @@ foreach ($_POST AS $keys => $val){
 			list($eleve_id) = $DB_valid->next_row() ;
 			
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid,"supprimé l'annonce '{$_POST['titre']}' ") ;
+			log_admin($_SESSION['uid'],"supprimé l'annonce '{$_POST['titre']}' ") ;
 			
 			// envoi du mail
 			$contenu = 	"Ton annonce n'a pas été validée par le BR pour la raison suivante :<br>".

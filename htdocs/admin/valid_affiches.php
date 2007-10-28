@@ -31,7 +31,7 @@ require_once "../include/wiki.inc.php";
 if(verifie_permission('admin')||verifie_permission('web'))
 	$user_id = '%';
 else if(verifie_permission('affiches'))
-	$user_id = $_SESSION['user']->uid;
+	$user_id = $_SESSION['uid'];
 else
 	acces_interdit();
 	
@@ -75,7 +75,7 @@ foreach ($_POST AS $keys => $val){
 		if ($DB_valid->num_rows()!=0) {
 			list($eleve_id) = $DB_valid->next_row() ;
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," accepté l'affiche {$_POST['titre']}") ;
+			log_admin($_SESSION['uid']," accepté l'affiche {$_POST['titre']}") ;
 			// envoi du mail
 			$contenu = 	"Ton activité vient d'être validée par le BR... Elle est dès à present visible sur le site<br><br> ".
 						$_POST['explication']."<br>".
@@ -108,7 +108,7 @@ foreach ($_POST AS $keys => $val){
 		if ($DB_valid->num_rows()!=0) {
 			list($eleve_id) = $DB_valid->next_row() ;
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," refusé l'affiche {$_POST['titre']}") ;
+			log_admin($_SESSION['uid']," refusé l'affiche {$_POST['titre']}") ;
 			// envoi du mail
 			$contenu = 	"Ton activité n'a pas été validée par le BR pour la raison suivante :<br>".
 						$_POST['explication']."<br>".

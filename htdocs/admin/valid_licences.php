@@ -29,7 +29,7 @@ set_time_limit(0) ;
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 if(!verifie_permission('admin')&&!verifie_permission('windows'))
 	acces_interdit();
 //
@@ -70,7 +70,7 @@ $temp = explode("_",$keys) ;
 		$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
 		list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
 		//Log l'action de l'admin
-		log_admin($_SESSION['user']->uid," refusé la licence de $prenom $nom ($promo) ") ;
+		log_admin($_SESSION['uid']," refusé la licence de $prenom $nom ($promo) ") ;
 		
 		$DB_msdnaa->query("DELETE FROM valid_licence WHERE eleve_id='{$temp[1]}'");
 		$bla = "refus_".$temp[1] ;
@@ -99,7 +99,7 @@ $temp = explode("_",$keys) ;
 					$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
 					list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
 					//Log l'action de l'admin
-					log_admin($_SESSION['user']->uid," accepté la licence de $prenom $nom ($promo) ") ;
+					log_admin($_SESSION['uid']," accepté la licence de $prenom $nom ($promo) ") ;
 					
 					echo "<note>c'est bon</note>";
 					$DB_msdnaa->query("DELETE FROM valid_licence WHERE eleve_id='{$temp[1]}'");
@@ -123,7 +123,7 @@ $temp = explode("_",$keys) ;
 					$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
 					list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
 					//Log l'action de l'admin
-					log_admin($_SESSION['user']->uid," accepté la licence de $prenom $nom ($promo) ") ;
+					log_admin($_SESSION['uid']," accepté la licence de $prenom $nom ($promo) ") ;
 					
 					echo "<note>c'est bon</note>";
 					$DB_msdnaa->query("DELETE FROM valid_licence WHERE eleve_id='{$temp[1]}'");

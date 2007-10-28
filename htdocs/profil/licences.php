@@ -28,11 +28,11 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 
 
 // Données sur l'utilisateur
-$DB_trombino->query("SELECT eleve_id,eleves.nom,prenom,promo,mail FROM eleves WHERE eleve_id='{$_SESSION['user']->uid}'");
+$DB_trombino->query("SELECT eleve_id,eleves.nom,prenom,promo,mail FROM eleves WHERE eleve_id='{$_SESSION['uid']}'");
 list($eleve_id,$nom,$prenom,$promo,$mail) = $DB_trombino->next_row();
 
 // Génération de la page
@@ -77,7 +77,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 				couriel(WINDOWS_ID,"[Frankiz] Demande de licence Microsoft de $nom $prenom X $promo",$contenu,$eleve_id);
 		} else {
 			//on lance la requête qui va bien pour voir la clé
-			$DB_msdnaa->query("SELECT cle,attrib FROM cles_{$_POST['logiciel']} WHERE eleve_id='".$_SESSION['user']->uid."' LIMIT 0,1");
+			$DB_msdnaa->query("SELECT cle,attrib FROM cles_{$_POST['logiciel']} WHERE eleve_id='".$_SESSION['uid']."' LIMIT 0,1");
 			//on verifie que le demandeur existe dans la base
 			if($DB_msdnaa->num_rows()!=0){
 				//on a la clé attribuée de manière unique par le BR.
@@ -108,7 +108,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 					<commentaire>Ta nouvelle clé va t'être expédiée sur ta boite mail.</commentaire>
 					<?php
 					// sinon on l'ajoute... et on update la base...
-						$DB_msdnaa->query("UPDATE cles_{$_POST['logiciel']} SET attrib='1' WHERE eleve_id='".$_SESSION['user']->uid."'");
+						$DB_msdnaa->query("UPDATE cles_{$_POST['logiciel']} SET attrib='1' WHERE eleve_id='".$_SESSION['uid']."'");
 						if($_POST['logiciel']=='winxp' || $_POST['logiciel']=='win2k' || $_POST['logiciel']=='winvista'){
 							$contenu_ajout="Avec ".$log[$_POST['logiciel']].", tu disposes maintenant d'une machine qui peut se connecter au domaine. <br>".
 								"Tu trouveras dans l'infoBR les informations te permettant de mener à bien cette opération.<br><br>".
@@ -200,7 +200,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 	} else {
 		if(isset($_POST['envoyer'])&&$_POST['raison']!=""){
 			//on teste si il n'y a pas déjà une demande en attente
-			$DB_msdnaa->query("SELECT 0 FROM valid_licence WHERE eleve_id='{$_SESSION['user']->uid}'");
+			$DB_msdnaa->query("SELECT 0 FROM valid_licence WHERE eleve_id='{$_SESSION['uid']}'");
 			if ($DB_msdnaa->num_rows()>0) { 
 	?>
 		<warning>Tu as déjà fait une demande d'attribution d'une licence Windows. Le BR s'en occupe...</warning>
@@ -208,7 +208,7 @@ require_once BASE_LOCAL."/include/rss_func.inc.php";
 	<?php	
 			} else {
 				//on prends en compte la demande...
-				$DB_msdnaa->query("INSERT valid_licence SET raison='{$_POST['raison']}', logiciel='{$_POST['logiciel']}', eleve_id='{$_SESSION['user']->uid}'");
+				$DB_msdnaa->query("INSERT valid_licence SET raison='{$_POST['raison']}', logiciel='{$_POST['logiciel']}', eleve_id='{$_SESSION['uid']}'");
 	?>
 			<warning>Ta requête a bien été prise en compte.</warning>
 			<?php

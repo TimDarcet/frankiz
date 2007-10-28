@@ -23,7 +23,7 @@
 */
 
 require_once "include/global.inc.php";
-demande_authentification(AUTH_INTERNE);
+demande_permission('interne');
 
 // Partenaires
 // <lien titre="" url=""/> 

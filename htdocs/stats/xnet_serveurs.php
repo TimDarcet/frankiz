@@ -1,6 +1,6 @@
 <?php
 require_once "../include/global.inc.php";
-demande_authentification(AUTH_MINIMUM);
+demande_authentification(AUTH_COOKIE);
 // on spécifie le type d'image que l'on va créer, ici ce sera une image au format PNG
 header ("Content-type: image/png");  
 

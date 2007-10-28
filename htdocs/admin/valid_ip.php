@@ -29,7 +29,7 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 if(!verifie_permission('admin'))
 	acces_interdit();
 
@@ -59,7 +59,7 @@ foreach ($_POST AS $keys => $val){
 		$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
 		list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
 		//Log l'action de l'admin
-		log_admin($_SESSION['user']->uid," refusé l'ajout d'une ip à $prenom $nom ($promo) ") ;
+		log_admin($_SESSION['uid']," refusé l'ajout d'une ip à $prenom $nom ($promo) ") ;
 		
 		$bla = "refus_".$temp[1] ;
 		$contenu = "Bonjour, <br><br>".
@@ -89,7 +89,7 @@ foreach ($_POST AS $keys => $val){
 			$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
 			list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," accepté l'ajout d'une ip à $prenom $nom ($promo) ") ;
+			log_admin($_SESSION['uid']," accepté l'ajout d'une ip à $prenom $nom ($promo) ") ;
 			
 			$DB_valid->query("DELETE FROM valid_ip WHERE eleve_id='{$temp[1]}'");
 			$DB_admin->query("INSERT prises SET prise_id='$id_prise',piece_id='$kzert',ip='{$_POST[$temp2]}',type='secondaire'");
@@ -121,7 +121,7 @@ foreach ($_POST AS $keys => $val){
 		$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
 		list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
 		//Log l'action de l'admin
-		log_admin($_SESSION['user']->uid," refusé l'ajout d'une @mac à $prenom $nom ($promo) ") ;
+		log_admin($_SESSION['uid']," refusé l'ajout d'une @mac à $prenom $nom ($promo) ") ;
 		
 		$bla = "refus_".$temp[1] ;
 		$contenu = "Bonjour, <br><br>".
@@ -140,7 +140,7 @@ foreach ($_POST AS $keys => $val){
 		$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[1]}'") ;
 		list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
 		//Log l'action de l'admin
-		log_admin($_SESSION['user']->uid," accepté l'ajout d'une @mac à $prenom $nom ($promo) ") ;
+		log_admin($_SESSION['uid']," accepté l'ajout d'une @mac à $prenom $nom ($promo) ") ;
 
 		$DB_valid->query("DELETE FROM valid_ip WHERE eleve_id='{$temp[1]}'");
 		
@@ -167,7 +167,7 @@ foreach ($_POST AS $keys => $val){
 		$DB_trombino->query("SELECT nom,prenom, promo FROM eleves WHERE eleve_id='{$temp[2]}'") ;
 		list($nom,$prenom,$promo) = $DB_trombino->next_row() ;
 		//Log l'action de l'admin
-		log_admin($_SESSION['user']->uid," supprimé une ip à $prenom $nom ($promo) ") ;
+		log_admin($_SESSION['uid']," supprimé une ip à $prenom $nom ($promo) ") ;
 		
 		$contenu = "Bonjour, <br><br>".
 					"Nous avons supprimé l'adresse IP suivante qui t'était actuellement attribuée :<br><br>".

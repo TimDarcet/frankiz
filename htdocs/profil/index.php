@@ -25,7 +25,7 @@
 */
 
 require_once "../include/global.inc.php";
-demande_authentification(AUTH_MINIMUM);
+demande_authentification(AUTH_COOKIE);
 
 // Génération du la page XML
 require "../include/page_header.inc.php";

@@ -27,7 +27,7 @@ class AnnoncesModule extends PLModule
 {
 	public function handlers() 
 	{
-		return array("annonces" => $this->make_hook("annonces", AUTH_AUCUNE));
+		return array("annonces" => $this->make_hook("annonces", AUTH_PUBLIC));
 	}
 
 	private function get_categorie($en_haut, $stamp, $perime) {
@@ -50,7 +50,7 @@ class AnnoncesModule extends PLModule
 		{
 			$DB_web->query("REPLACE annonces_lues
 					    SET	annonce_id = '{$_REQUEST['lu']}',
-						eleve_id   = '{$_SESSION['user']->uid}'");
+						eleve_id   = '{$_SESSION['uid']}'");
 		}
 		
 	
@@ -58,9 +58,22 @@ class AnnoncesModule extends PLModule
 		{
 			$DB_web->query("DELETE FROM annonces_lues
 					      WHERE annonce_id = '{$_REQUEST['nonlu']}' AND
-						    eleve_id ='{$_SESSION['user']->uid}");
+						    eleve_id ='{$_SESSION['uid']}");
 		}
 	
+		if (isset($_SESSION['uid']))
+		{
+			$est_annonce_non_lue = "ISNULL(annonces_lues.annonce_id)";
+			$left_join_annonces_lues = "LEFT JOIN annonces_lues 
+			                                   ON annonces_lues.annonce_id = annonces.annonce_id
+			                                  AND annonces_lues.eleve_id = '{$_SESSION['uid']}'";
+		}
+		else
+		{
+			$est_annonce_non_lue = "1";
+			$left_join_annonces_lues = "";
+		}
+		
 
 		$DB_web->query("
 			SELECT	annonces.annonce_id,
@@ -68,12 +81,11 @@ class AnnoncesModule extends PLModule
 				stamp, perime, titre, contenu, en_haut, exterieur,
 				nom, prenom, surnom, promo, login,
 				IFNULL(mail, CONCAT(login, '@poly.polytechnique.fr')) AS mail,
-				ISNULL(annonces_lues.annonce_id)
+			  	$est_annonce_non_lue
 			  FROM  annonces
 		     LEFT JOIN  trombino.eleves USING(eleve_id)
-		     LEFT JOIN  annonces_lues ON annonces_lues.annonce_id = annonces.annonce_id 
-		                             AND annonces_lues.eleve_id = '{$_SESSION['user']->uid}'
-		  	 WHERE	perime > NOW()
+		  	 	$left_join_annonces_lues
+			 WHERE	perime > NOW()
   		      ORDER BY	perime DESC");
 
 		$annonces = array('vieux'     => array('desc' => "Demain, c'est fini", 'annonces' => array()),
@@ -84,7 +96,7 @@ class AnnoncesModule extends PLModule
 		while (list($id, $date, $stamp, $perime, $titre, $contenu, $en_haut, $exterieur,
 			    $nom, $prenom, $surnom, $promo, $login, $mail, $visible) = $DB_web->next_row())
 		{
-			if (!$exterieur && !est_authentifie(AUTH_INTERNE))
+			if (!$exterieur && !verifie_permission('interne'))
 				continue;
 	
 			

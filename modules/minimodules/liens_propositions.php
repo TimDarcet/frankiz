@@ -34,7 +34,7 @@ class LiensPropositionsMiniModule extends FrankizMiniModule
 	public static function check_auth()
 	{
 		return true;
-	return FrankizSession::est_authentifie(AUTH_MINIMUM);
+	return FrankizSession::est_authentifie(AUTH_COOKIE);
 	}
 }
 FrankizMiniModule::register_module("liens_propositions", "LiensPropositionsMiniModule", "Liens pour proposer du contenu sur Frankiz");

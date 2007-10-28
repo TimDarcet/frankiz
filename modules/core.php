@@ -3,11 +3,11 @@ class CoreModule extends PLModule
 {
 	function handlers()
 	{
-		return array('403' 	=> $this->make_hook('403', 	AUTH_AUCUNE),
-			     '4O4' 	=> $this->make_hook('404', 	AUTH_AUCUNE),
-			     '500'      => $this->make_hook('500',      AUTH_AUCUNE),
-			     'login'	=> $this->make_hook('login', 	AUTH_FORT),
-			     'do_login' => $this->make_hook('do_login', AUTH_AUCUNE));
+		return array('403' 	=> $this->make_hook('403', 	AUTH_PUBLIC),
+			     '4O4' 	=> $this->make_hook('404', 	AUTH_PUBLIC),
+			     '500'      => $this->make_hook('500',      AUTH_PUBLIC),
+			     'login'	=> $this->make_hook('login', 	AUTH_MDP),
+			     'do_login' => $this->make_hook('do_login', AUTH_PUBLIC));
 	}
 
 	function handler_403(&$page)

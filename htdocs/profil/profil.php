@@ -33,7 +33,7 @@ require_once "../../modules/profil.php";
 // Récupération d'une image
 if((isset($_REQUEST['image'])) && ($_REQUEST['image'] == "true") && ($_REQUEST['image'] != ""))
 {
-	demande_authentification(AUTH_MAIL);
+	demande_authentification(AUTH_MDP);
 	ob_end();
 	$size = getimagesize(BASE_DATA."trombino/a_valider_".$_REQUEST['id']);
 	header("Content-type: {$size['mime']}");

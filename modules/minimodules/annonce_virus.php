@@ -62,7 +62,7 @@ class VirusMiniModule extends FrankizMiniModule
 
 	public static function check_auth()
 	{
-		return est_authentifie(AUTH_MINIMUM);
+		return est_authentifie(AUTH_COOKIE);
 	}
 }
 FrankizMiniModule::register_module('virus', 'VirusMiniModule', "Annonces Virus (important)");

@@ -27,7 +27,7 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_MINIMUM);
+demande_authentification(AUTH_COOKIE);
 
 
 $DB_web->query("SELECT url,description FROM liens_rss");
@@ -54,7 +54,7 @@ if(isset($_REQUEST['OK_rss'])) {
 	// Mise à jour des infos de session et de la base de données
 	$_SESSION['rss'] = $rss;
 	$rss2 = serialize($rss);
-	$DB_web->query("UPDATE compte_frankiz SET liens_rss='$rss2' WHERE eleve_id='{$_SESSION['user']->uid}'");	
+	$DB_web->query("UPDATE compte_frankiz SET liens_rss='$rss2' WHERE eleve_id='{$_SESSION['uid']}'");	
 }
 
 // Supprime une rss perso
@@ -72,7 +72,7 @@ if(!empty($_REQUEST['del_rss'])) {
 	}
 	$_SESSION['rss'] = $rss;
 	$rss2 = serialize($rss);
-	$DB_web->query("UPDATE compte_frankiz SET liens_rss='$rss2' WHERE eleve_id='{$_SESSION['user']->uid}'");
+	$DB_web->query("UPDATE compte_frankiz SET liens_rss='$rss2' WHERE eleve_id='{$_SESSION['uid']}'");
 }
 
 // Ajoute un lien perso
@@ -86,7 +86,7 @@ if(!empty($_REQUEST['OK_liens'])) {
 	}
 	$_SESSION['liens_perso'] = $liens;
 	$liens = serialize($liens);
-	$DB_web->query("UPDATE compte_frankiz SET liens_perso='$liens' WHERE eleve_id='{$_SESSION['user']->uid}'");
+	$DB_web->query("UPDATE compte_frankiz SET liens_perso='$liens' WHERE eleve_id='{$_SESSION['uid']}'");
 }
 
 // Supprime un lien perso
@@ -99,7 +99,7 @@ if(!empty($_REQUEST['del_lien'])) {
 	}
 	$_SESSION['liens_perso'] = $liens;
 	$liens = serialize($liens);
-	$DB_web->query("UPDATE compte_frankiz SET liens_perso='$liens' WHERE eleve_id='{$_SESSION['user']->uid}'");
+	$DB_web->query("UPDATE compte_frankiz SET liens_perso='$liens' WHERE eleve_id='{$_SESSION['uid']}'");
 }
 	
 

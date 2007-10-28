@@ -28,14 +28,14 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_MINIMUM);
+demande_authentification(AUTH_COOKIE);
 
 // Génération de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 require_once BASE_LOCAL."/include/wiki.inc.php";
 
-$DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM eleves WHERE eleve_id='".$_SESSION['user']->uid."'");
+$DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM eleves WHERE eleve_id='".$_SESSION['uid']."'");
 list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_row();
 
 ?>
@@ -91,7 +91,7 @@ if (!isset($_REQUEST['envoie'])) {
 	</commentaire>
 <?php
 	// Stockage dans la base SQL
-	$DB_valid->query("INSERT INTO valid_mailpromo SET mail='".mysql_addslashes($_REQUEST['mail'],true)."', titre='".mysql_addslashes($_REQUEST['sujet'],true)."',eleve_id={$_SESSION['user']->uid}, promo='".intval($_REQUEST['promo'])."'") ;
+	$DB_valid->query("INSERT INTO valid_mailpromo SET mail='".mysql_addslashes($_REQUEST['mail'],true)."', titre='".mysql_addslashes($_REQUEST['sujet'],true)."',eleve_id={$_SESSION['uid']}, promo='".intval($_REQUEST['promo'])."'") ;
 
 	//Envoie du mail à l'admin pour la validation
 	$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
@@ -106,7 +106,7 @@ if (!isset($_REQUEST['envoie'])) {
 			"Cordialement,<br>" .
 			"Le BR<br>"  ;
 			
-	couriel(MAILPROMO_ID,"[Frankiz] Validation d'un mail promo",$contenu,$_SESSION['user']->uid);
+	couriel(MAILPROMO_ID,"[Frankiz] Validation d'un mail promo",$contenu,$_SESSION['uid']);
 
 }
 ?>

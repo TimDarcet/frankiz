@@ -126,23 +126,45 @@ function not_found()
 
 // Pendant la transition a Plat/al
 require_once 'smarty/libs/Smarty.class.php';
-class PlatalPage extends Smarty
-{
-	public $tpl_name = "xml.tpl";
 
-	function changeTpl($tpl)
-	{
-		$this->tpl_name = $tpl;
-	}
-}
-$page = new PlatalPage;
-
-
-require_once 'platal.inc.php';
+$DONT_FIX_GPC = true;
+require_once BASE_FRANKIZ."platal-classes/platalpage.php";
 require_once BASE_FRANKIZ.'platal-classes/flagset.php';
 require_once BASE_FRANKIZ.'platal-classes/plmodule.php';
+require_once BASE_FRANKIZ.'platal-classes/env.php';
+require_once BASE_FRANKIZ.'platal-classes/plbacktrace.php';
+require_once BASE_FRANKIZ.'platal-includes/platal.inc.php';
 require_once BASE_FRANKIZ.'platal-includes/globals.inc.php';
+
+class FrankizPage extends PlatalPage
+{
+	public function __construct($tpl, $type = SKINNED)
+	{
+		parent::__construct($tpl, $type);
+	}
+
+	public function run()
+	{
+		global $minimodules;
+
+		$this->assign('skin', $_SESSION['skin']);
+		$this->assign('base', BASE_URL);
+		$this->assign('session', new FrankizSession);
+		$this->assign('minimodules', $minimodules);
+		if (isset($_SESSION['sueur']))
+			$this->assign('sueur', $_SESSION['sueur']);
+	
+		$this->register_function("minimodule", array('FrankizMiniModule', "print_template"));
+		$this->register_function("minimodule_header", array('FrankizMiniModule', "print_template_header"));
+		$this->register_modifier("wiki_vers_html", "wikiVersXML");
+
+		affiche_erreurs_php();
+		$this->_run("main.tpl");
+		affiche_debug_php();
+	}
+}
 $globals = new PlatalGlobals("FrankizSession");
+$page = new FrankizPage("xml.tpl");
 
 function call($module_name, $function_name)
 {

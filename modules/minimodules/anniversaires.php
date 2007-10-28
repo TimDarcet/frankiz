@@ -56,7 +56,7 @@ class AnniversairesMiniModule extends FrankizMiniModule
 
 	public static function check_auth()
 	{
-		return est_authentifie(AUTH_INTERNE);
+		return verifie_permission('interne');
 	}
 }
 FrankizMiniModule::register_module('anniversaires', 'AnniversairesMiniModule', "Anniversaires du Jour");

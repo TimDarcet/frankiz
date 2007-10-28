@@ -29,7 +29,7 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 if(!verifie_permission('admin')&&!verifie_permission('web'))
 	acces_interdit();
 
@@ -59,7 +59,7 @@ foreach ($_POST AS $keys => $val){
 			$DB_trombino->query("SELECT nom,prenom,promo FROM eleves WHERE eleve_id='{$temp[1]}'");
 			list($nom,$prenom,$promo) = $DB_trombino->next_row();
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," refusé la page perso de $nom $prenom ($promo) ") ;
+			log_admin($_SESSION['uid']," refusé la page perso de $nom $prenom ($promo) ") ;
 
 			$DB_valid->query("DELETE FROM valid_pageperso WHERE eleve_id='{$temp[1]}'");
 			
@@ -88,7 +88,7 @@ foreach ($_POST AS $keys => $val){
 			$DB_trombino->query("SELECT nom,prenom,promo FROM eleves WHERE eleve_id='{$temp[1]}'");
 			list($nom,$prenom,$promo) = $DB_trombino->next_row();
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," accepté la page perso de $nom $prenom ($promo) ") ;
+			log_admin($_SESSION['uid']," accepté la page perso de $nom $prenom ($promo) ") ;
 		
 			$DB_web->query("INSERT INTO sites_eleves SET eleve_id='{$temp[1]}'");
 			$DB_trombino->query("SELECT login,promo FROM eleves WHERE eleve_id='{$temp[1]}'");

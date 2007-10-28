@@ -27,7 +27,7 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 if(!(verifie_permission('admin')||verifie_permission('kes')))
 	acces_interdit();
 

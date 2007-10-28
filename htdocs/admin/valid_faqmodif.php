@@ -28,7 +28,7 @@ require_once "../include/global.inc.php";
 require_once "../include/wiki.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 if(!verifie_permission('admin') && !verifie_permission('faq')&& !verifie_permission('web'))
 	acces_interdit();
 
@@ -78,7 +78,7 @@ foreach ($_POST AS $keys => $val){
 			if (list($question,$reponse) = $DB_faq->next_row()) {
 				
 				//Log l'action de l'admin
-				log_admin($_SESSION['user']->uid," accepté la modification de la faq '$question'") ;
+				log_admin($_SESSION['uid']," accepté la modification de la faq '$question'") ;
 				
 				$filename = BASE_DATA."/faq/".$reponse;
 				
@@ -134,7 +134,7 @@ foreach ($_POST AS $keys => $val){
 			$DB_faq->query("SELECT question FROM faq WHERE faq_id='{$temp[1]}'") ;
 			list($question) = $DB_faq->next_row() ;
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," refusé la modification de la faq '$question'") ;
+			log_admin($_SESSION['uid']," refusé la modification de la faq '$question'") ;
 			
 			list($eleve_id) = $DB_valid->next_row() ;
 			$DB_valid->query("DELETE FROM valid_modiffaq WHERE faq_id='{$temp[1]}'") ;

@@ -22,7 +22,7 @@
 	
 */
 require_once "include/global.inc.php";
-demande_authentification(AUTH_INTERNE);
+demande_permission('interne');
 
 class QDJModule extends PLModule
 {

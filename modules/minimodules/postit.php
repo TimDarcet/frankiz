@@ -25,10 +25,10 @@ require_once "include/wiki.inc.php";
 global $DB_trombino;
 
 // Vérification des droits
-if (est_authentifie(AUTH_MINIMUM)) {
+if (est_authentifie(AUTH_COOKIE)) {
 	$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus';");
 	list($lastpromo) = extdata_stripslashes($DB_web->next_row());
-	$DB_trombino->query("SELECT promo FROM eleves WHERE eleve_id=".$_SESSION['user']->uid.";");
+	$DB_trombino->query("SELECT promo FROM eleves WHERE eleve_id=".$_SESSION['uid'].";");
 	list($promo) = extdata_stripslashes($DB_trombino->next_row());
 	if ($promo == $lastpromo || $promo == $lastpromo-1) {
 

@@ -25,7 +25,7 @@
 */
 require_once "include/global.inc.php";
 
-// demande_authentification(AUTH_MINIMUM);
+// demande_authentification(AUTH_COOKIE);
 
 // Récupération d'une image
 if(isset($_REQUEST['image'])){

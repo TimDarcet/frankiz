@@ -28,9 +28,9 @@ require_once "../include/global.inc.php";
 require_once "../include/wiki.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_MINIMUM);
+demande_authentification(AUTH_COOKIE);
 
-$DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM eleves WHERE eleve_id='".$_SESSION['user']->uid."'");
+$DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM eleves WHERE eleve_id='".$_SESSION['uid']."'");
 list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_row();
 
 $msg="" ;
@@ -105,7 +105,7 @@ if (isset($_POST['valid'])) {
 		else 
 			$temp_ext = '0' ;
 
-		$DB_valid->query("INSERT INTO valid_affiches SET date=FROM_UNIXTIME({$date_complete}), eleve_id='".$_SESSION['user']->uid."', titre='".$_POST['titre']."',url='".$_POST['url']."', description='".$_POST['text']."',exterieur=".$temp_ext);
+		$DB_valid->query("INSERT INTO valid_affiches SET date=FROM_UNIXTIME({$date_complete}), eleve_id='".$_SESSION['uid']."', titre='".$_POST['titre']."',url='".$_POST['url']."', description='".$_POST['text']."',exterieur=".$temp_ext);
 		
 		// on modifie le nom du fichier qui a été téléchargé si celui ci existe
 		// selon la norme de nommage ci-dessus

@@ -30,15 +30,15 @@ class ProfilModule extends PLModule
 {
 	public function handlers()
 	{
-		return array('profil/fkz'                => $this->make_hook('fkz', AUTH_MINIMUM),
-			     'profil/fkz/change_mdp'     => $this->make_hook('fkz_change_mdp', AUTH_FORT),
-		             'profil/fkz/change_tol'     => $this->make_hook('fkz_change_tol', AUTH_MINIMUM),
-			     'profil/fkz/change_binet'   => $this->make_hook('fkz_change_binet', AUTH_MINIMUM),
-			     'profil/fkz/suppr_binet'    => $this->make_hook('fkz_suppr_binet', AUTH_MINIMUM),
-		             'profil/fkz/ajout_binet'    => $this->make_hook('fkz_ajout_binet', AUTH_MINIMUM),
-			     'profil/skin'               => $this->make_hook('skin', AUTH_MINIMUM),
-			     'profil/skin/change_skin'   => $this->make_hook('skin_change', AUTH_MINIMUM),
-			     'profil/skin/change_params' => $this->make_hook('skin_params', AUTH_MINIMUM));
+		return array('profil/fkz'                => $this->make_hook('fkz', AUTH_COOKIE),
+			     'profil/fkz/change_mdp'     => $this->make_hook('fkz_change_mdp', AUTH_MDP),
+		             'profil/fkz/change_tol'     => $this->make_hook('fkz_change_tol', AUTH_COOKIE),
+			     'profil/fkz/change_binet'   => $this->make_hook('fkz_change_binet', AUTH_COOKIE),
+			     'profil/fkz/suppr_binet'    => $this->make_hook('fkz_suppr_binet', AUTH_COOKIE),
+		             'profil/fkz/ajout_binet'    => $this->make_hook('fkz_ajout_binet', AUTH_COOKIE),
+			     'profil/skin'               => $this->make_hook('skin', AUTH_COOKIE),
+			     'profil/skin/change_skin'   => $this->make_hook('skin_change', AUTH_COOKIE),
+			     'profil/skin/change_params' => $this->make_hook('skin_params', AUTH_COOKIE));
 	}
 
 
@@ -297,7 +297,7 @@ class ProfilModule extends PLModule
 		if ($_POST['liste_binet'] != 'default') 
 		{
 			$DB_trombino->query("REPLACE INTO membres 
-			                              SET eleve_id='{$_SESSION['user']->uid}',binet_id='{$_POST['liste_binet']}'");
+			                              SET eleve_id='{$_SESSION['uid']}',binet_id='{$_POST['liste_binet']}'");
 			$page->append('fkz_tol_results',
 				      array('type' => 'commentaire',
 				            'text' => 'Binet correctement ajouté'));

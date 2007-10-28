@@ -30,8 +30,8 @@ class TrombinoModule extends PLModule
 {
 	function handlers()
 	{
-		return array('tol'	=> $this->make_hook('tol', AUTH_INTERNE),
-			     'binets'   => $this->make_hook('binets', AUTH_AUCUNE));
+		return array('tol'	=> $this->make_hook('tol', AUTH_COOKIE), // @@TODO@@ This must be fixed!!!!!!!!!!!!!!
+			     'binets'   => $this->make_hook('binets', AUTH_PUBLIC));
 	}
 
 	function handler_tol(&$page)
@@ -47,7 +47,7 @@ class TrombinoModule extends PLModule
 			$tol_admin = true;
 
 		if (isset($_REQUEST['toladmin'])) {
-			demande_authentification(AUTH_FORT);
+			demande_authentification(AUTH_MDP);
 		}
 
 ?><page id='trombino' titre='Frankiz : Trombino'>
@@ -451,7 +451,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 	echo "<page id='binets'>";
 	
 	$auth = "" ;
-	if(!FrankizSession::est_authentifie(AUTH_INTERNE)) $auth = " exterieur=1 AND " ;
+	if(!FrankizSession::verifie_permission('interne')) $auth = " exterieur=1 AND " ;
 
 	$categorie_precedente = -1;
 	$DB_trombino->query("SELECT binet_id,nom,description,http,folder,b.catego_id,categorie ".

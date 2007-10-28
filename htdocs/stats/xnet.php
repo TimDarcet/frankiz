@@ -1,7 +1,7 @@
 <?php
 require_once "../include/global.inc.php";
 
-demande_authentification(AUTH_MINIMUM);
+demande_authentification(AUTH_COOKIE);
 
 // Génération de la page
 //===============

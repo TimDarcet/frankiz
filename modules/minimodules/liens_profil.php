@@ -34,7 +34,7 @@ class LiensProfilMiniModule extends FrankizMiniModule
 
 	public static function check_auth()
 	{
-		return est_authentifie(AUTH_MINIMUM);
+		return est_authentifie(AUTH_COOKIE);
 	}
 }
 FrankizMiniModule::register_module('liens_profil', "LiensProfilMiniModule", "Liens vers le profil (indispensable)");

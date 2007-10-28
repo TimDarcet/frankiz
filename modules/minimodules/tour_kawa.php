@@ -24,7 +24,7 @@
 
 */
 
-if(est_authentifie(AUTH_MINIMUM)) {
+if(est_authentifie(AUTH_COOKIE)) {
 
 	echo "<module id=\"tour_kawa\" titre=\"Tour Kawa\">\n";
 	$tour_existe = false;

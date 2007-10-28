@@ -4,7 +4,7 @@
 if (!empty($_GET['image']) && ($_GET['image'] == 'true')){
 	require_once "include/global.inc.php";
 
-	if (!est_authentifie(AUTH_INTERNE))
+	if (!verifie_permission('interne'))
 		exit;
 
 	if (!isset($_GET['original']) && (file_exists(BASE_PHOTOS.$_GET['promo'].'/'.$_GET['login'].'.jpg'))) {

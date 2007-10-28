@@ -27,7 +27,7 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 if(!verifie_permission('admin')&&!verifie_permission('web'))
 	acces_interdit();
 
@@ -61,7 +61,7 @@ if (isset($_POST['valid'])) {
 		}
 		
 		//Log l'action de l'admin
-		log_admin($_SESSION['user']->uid," accepté la modification du binet $nom") ;
+		log_admin($_SESSION['uid']," accepté la modification du binet $nom") ;
 	
 		$DB_trombino->query("UPDATE binets SET image=\"".addslashes($image)."\" ,format='$format' ,description='$description' , http='$http', catego_id=$categorie, exterieur=$temp_ext, folder='$folder' WHERE binet_id={$_POST['id']}");
 		
@@ -77,7 +77,7 @@ if (isset($_POST['suppr'])) {
 		list($nom) = $DB_valid->next_row() ;
 		
 		//Log l'action de l'admin
-		log_admin($_SESSION['user']->uid," refusé la modification du binet $nom") ;
+		log_admin($_SESSION['uid']," refusé la modification du binet $nom") ;
 	
 		$DB_valid->query("DELETE FROM valid_binet WHERE binet_id={$_POST['id']}");
 		$message .= "<warning>Vous n'avez pas validé le changement du binet $nom</warning>" ;

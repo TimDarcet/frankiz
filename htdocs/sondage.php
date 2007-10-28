@@ -26,7 +26,7 @@
 
 require_once "include/global.inc.php";
 
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 
 
 //---------------------------------------------------------------------------------
@@ -146,19 +146,19 @@ if (!isset($_REQUEST['id'])) {
 	$restrOki=true;
 	if ($DB_web->num_rows()==1) {
 		list($restriction,$eleve_id) = $DB_web->next_row() ;
-		if(($_SESSION['user']->uid!=$eleve_id)&&($restriction!='')){
+		if(($_SESSION['uid']!=$eleve_id)&&($restriction!='')){
 			$restr = explode("_",$restriction);
 			switch($restr[0]){
 				case "promo":
-					$DB_trombino->query("SELECT promo FROM eleves WHERE promo='{$restr[1]}' AND eleve_id='".$_SESSION['user']->uid."'");
+					$DB_trombino->query("SELECT promo FROM eleves WHERE promo='{$restr[1]}' AND eleve_id='".$_SESSION['uid']."'");
 					if($DB_trombino->num_rows()==0) $restrOki=false;
 					break;
 				case "section":
-					$DB_trombino->query("SELECT section_id FROM eleves WHERE section_id='{$restr[1]}' AND eleve_id='".$_SESSION['user']->uid."'");
+					$DB_trombino->query("SELECT section_id FROM eleves WHERE section_id='{$restr[1]}' AND eleve_id='".$_SESSION['uid']."'");
 					if($DB_trombino->num_rows()==0) $restrOki=false;
 					break;
 				case "binet":
-					$DB_trombino->query("SELECT binet_id FROM membres WHERE binet_id='{$restr[1]}' AND eleve_id='".$_SESSION['user']->uid."'");
+					$DB_trombino->query("SELECT binet_id FROM membres WHERE binet_id='{$restr[1]}' AND eleve_id='".$_SESSION['uid']."'");
 					if($DB_trombino->num_rows()==0) $restrOki=false;
 					break;
 			}
@@ -166,7 +166,7 @@ if (!isset($_REQUEST['id'])) {
 	}
 	if($restrOki) {
 		$a_vote="non" ;
-		$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_REQUEST['id']}' AND eleve_id='".$_SESSION['user']->uid."'");
+		$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_REQUEST['id']}' AND eleve_id='".$_SESSION['uid']."'");
 		if ($DB_web->num_rows()>=1) {
 			$a_vote = "oui" ;
 		?>
@@ -190,11 +190,11 @@ if (!isset($_REQUEST['id'])) {
 				// La date permet elle encore de voter ?
 				if ($delta >= 0) {
 					// Verifie que le mec a pas déja voté !
-					$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_REQUEST['id']}' AND eleve_id='".$_SESSION['user']->uid."'");
+					$DB_web->query("SELECT sondage_id FROM sondage_votants WHERE sondage_id='{$_REQUEST['id']}' AND eleve_id='".$_SESSION['uid']."'");
 					if ($DB_web->num_rows()==0) {
 						// Il a donc pas voté
 						// on le marque donc comme ayant voté
-						$DB_web->query("INSERT INTO sondage_votants SET sondage_id='{$_REQUEST['id']}', eleve_id='".$_SESSION['user']->uid."'");
+						$DB_web->query("INSERT INTO sondage_votants SET sondage_id='{$_REQUEST['id']}', eleve_id='".$_SESSION['uid']."'");
 						$a_vote = "oui" ;
                         
                         // Lock la table et stocke les résultats

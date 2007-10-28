@@ -26,7 +26,7 @@
 
 require_once "include/global.inc.php";
 
-demande_authentification(AUTH_INTERNE);
+demande_permission('interne');
 
 // Recuperation d'une image
 if (!empty($_GET['id']))

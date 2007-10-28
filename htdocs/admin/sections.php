@@ -33,7 +33,7 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 if(!verifie_permission('admin')&&!verifie_permission('web')&&!verifie_permission('trombino'))
 	acces_interdit();
 

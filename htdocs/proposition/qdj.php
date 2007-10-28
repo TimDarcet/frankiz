@@ -28,13 +28,13 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_MINIMUM);
+demande_authentification(AUTH_COOKIE);
 
 // Génération de la page
 //===============
 require_once BASE_LOCAL."/include/page_header.inc.php";
 
-$DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM eleves WHERE eleve_id='".$_SESSION['user']->uid."'");
+$DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM eleves WHERE eleve_id='".$_SESSION['uid']."'");
 list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_row();
 
 ?>
@@ -78,7 +78,7 @@ if (!isset($_REQUEST['envoie'])) {
 	</commentaire>
 <?php
 	// Stockage dans la base SQL
-	$DB_valid->query("INSERT INTO valid_qdj SET eleve_id='{$_SESSION['user']->uid}',question='{$_REQUEST['question']}',reponse1='{$_REQUEST['reponse1']}',reponse2='{$_REQUEST['reponse2']}'") ;
+	$DB_valid->query("INSERT INTO valid_qdj SET eleve_id='{$_SESSION['uid']}',question='{$_REQUEST['question']}',reponse1='{$_REQUEST['reponse1']}',reponse2='{$_REQUEST['reponse2']}'") ;
 
 	//Envoie du mail à l'admin pour la validation
 	$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
@@ -95,7 +95,7 @@ if (!isset($_REQUEST['envoie'])) {
 			"Cordialement,<br>" .
 			"Le QDJmaster<br>"  ;
 			
-	couriel(QDJMASTER_ID,"[Frankiz] Validation d'une QDJ",$contenu,$_SESSION['user']->uid);
+	couriel(QDJMASTER_ID,"[Frankiz] Validation d'une QDJ",$contenu,$_SESSION['uid']);
 
 }
 ?>

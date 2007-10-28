@@ -27,12 +27,12 @@
 require_once "../include/global.inc.php";
 require_once "../include/transferts.inc.php";
 
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 
 $message="";
 
 // Données sur l'utilisateur
-$DB_trombino->query("SELECT eleves.nom,prenom,surnom,mail,login,promo,sections.nom,cie,piece_id FROM eleves LEFT JOIN sections USING(section_id) WHERE eleve_id='".$_SESSION['user']->uid."'");
+$DB_trombino->query("SELECT eleves.nom,prenom,surnom,mail,login,promo,sections.nom,cie,piece_id FROM eleves LEFT JOIN sections USING(section_id) WHERE eleve_id='".$_SESSION['uid']."'");
 list($nom,$prenom,$surnom,$mail,$login,$promo,$section,$cie,$casert) = $DB_trombino->next_row();
 
 // Modification de la partie "Page perso"
@@ -60,14 +60,14 @@ if(isset($_REQUEST['download_type'])){
 	}
 }
 if(isset($_POST['ext'])){
-	$DB_valid->query("SELECT id FROM valid_pageperso WHERE eleve_id='{$_SESSION['user']->uid}'") ;
+	$DB_valid->query("SELECT id FROM valid_pageperso WHERE eleve_id='{$_SESSION['uid']}'") ;
 	$un = $DB_valid->num_rows() ;
-	$DB_web->query("SELECT site_id FROM sites_eleves WHERE eleve_id='{$_SESSION['user']->uid}'") ;
+	$DB_web->query("SELECT site_id FROM sites_eleves WHERE eleve_id='{$_SESSION['uid']}'") ;
 	$deux = $DB_valid->num_rows() ;
 	
 	// On verifie que la personne n'a pas dejà demandé d'avoir un site accessible de l'ext
 	if( $un==0 && $deux==0 ) {
-		$DB_valid->query("INSERT INTO valid_pageperso SET eleve_id='{$_SESSION['user']->uid}'") ;
+		$DB_valid->query("INSERT INTO valid_pageperso SET eleve_id='{$_SESSION['uid']}'") ;
 		
 		$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
 
@@ -78,7 +78,7 @@ if(isset($_POST['ext'])){
 			"Cordialement,<br>" .
 			"Le Webmestre de Frankiz<br>"  ;
 			
-		couriel(WEBMESTRE_ID,"[Frankiz] Demande de page perso de $nom $prenom",$contenu,$_SESSION['user']->uid);
+		couriel(WEBMESTRE_ID,"[Frankiz] Demande de page perso de $nom $prenom",$contenu,$_SESSION['uid']);
 		$message .= "<commentaire>Ta demande d'accessibilité depuis l'extérieur a été prise en compte et sera validée dans les meilleurs délai.</commentaire>" ;
 
 	} else if($un != 0) {

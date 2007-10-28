@@ -19,7 +19,7 @@ echo"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
 		</image>
 <?php
 $date_legend = array("Aujourd'hui","Demain","Après-demain","Dans 3 jours","Dans 4 jours","Dans 5 jours","Dans une semaine");
-if(!est_authentifie(AUTH_INTERNE)) $exterieur=" AND exterieur='1' ";
+if(!verifie_permission('interne')) $exterieur=" AND exterieur='1' ";
 for($i= 0; $i<7;$i++){
 	$DB_web->query("SELECT affiche_id,titre,url,DATE_FORMAT(date,'%d/%m/%Y %H:%i:%s'),description FROM affiches WHERE TO_DAYS(date)=TO_DAYS(NOW() + INTERVAL $i DAY) $exterieur ORDER BY date");
 	while (list($id,$titre,$url,$date,$texte)=$DB_web->next_row()) {

@@ -26,7 +26,7 @@
 */
 
 require_once "../include/global.inc.php";
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 
 // Génération de la page XML
 require "../include/page_header.inc.php";
@@ -34,7 +34,7 @@ require "../include/page_header.inc.php";
 <page id="profil_demandeip" titre="Frankiz : Demande d'enregistrement d'une nouvelle machine">
 
 <?php
-$DB_valid->query("SELECT 0 FROM valid_ip WHERE eleve_id='{$_SESSION['user']->uid}'");
+$DB_valid->query("SELECT 0 FROM valid_ip WHERE eleve_id='{$_SESSION['uid']}'");
 if ($DB_valid->num_rows()>0) { ?>
 	<warning>Tu as déjà fait une demande d'enregistrement d'une nouvelle machine. Attends que le
 		BR te valide la première pour en faire une seconde si cela est justifié.</warning>
@@ -79,10 +79,10 @@ if ($DB_valid->num_rows()>0) { ?>
 	</formulaire>
 	
 <?php } else {
-	$DB_valid->query("INSERT valid_ip SET type='{$_POST['type']}',raison='{$_POST['raison']}',eleve_id='{$_SESSION['user']->uid}'");
+	$DB_valid->query("INSERT valid_ip SET type='{$_POST['type']}',raison='{$_POST['raison']}',eleve_id='{$_SESSION['uid']}'");
 	
 	// Envoie du mail aux roots pour le prévenir d'une demande d'ip
-	$DB_trombino->query("SELECT nom,prenom FROM eleves WHERE eleve_id='{$_SESSION['user']->uid}'");
+	$DB_trombino->query("SELECT nom,prenom FROM eleves WHERE eleve_id='{$_SESSION['uid']}'");
 	list($nom,$prenom)=$DB_trombino->next_row();
 	
 	$tempo = explode("profil",$_SERVER['REQUEST_URI']) ;
@@ -99,7 +99,7 @@ if ($DB_valid->num_rows()>0) { ?>
 		"Cordialement,<br>" .
 		"Le BR<br>";
 			
-	couriel(ROOT_ID,"[Frankiz] Demande d'enregistrement d'une nouvelle machine",$contenu,$_SESSION['user']->uid);
+	couriel(ROOT_ID,"[Frankiz] Demande d'enregistrement d'une nouvelle machine",$contenu,$_SESSION['uid']);
 
 	// Affichage d'un message d'information
 ?>

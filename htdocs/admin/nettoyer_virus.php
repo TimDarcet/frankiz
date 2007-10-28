@@ -28,7 +28,7 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 if(!verifie_permission('admin')&&!verifie_permission('windows'))
 	acces_interdit();
 
@@ -89,7 +89,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 			$DB_trombino->query("SELECT nom,prenom,promo,piece_id FROM eleves WHERE eleve_id='{$temp[2]}'");
 			list($nom,$prenom,$promo,$ksert) = $DB_trombino->next_row() ;
 			//log de la partie admin...
-			log_admin($_SESSION['user']->uid," certifié que $temp[3] a bien été supprimé de l'ordinateur de $nom $prenom ($promo) ") ;
+			log_admin($_SESSION['uid']," certifié que $temp[3] a bien été supprimé de l'ordinateur de $nom $prenom ($promo) ") ;
 			echo "<note> Le virus est considéré comme enlevé de l'odinateur. On le signale par mail à l'utilisateur.</note>";
 			$contenu="Nous avons bien pris en compte la suppression du virus $temp[3] de ton ordinateur.<br><br>".
 			"Nous te rappellons qu'il est de ta responsabilité d'assurer la sécurité de ton pc. Si tu ne sais pas comment faire utilise le domaine windows, il est là pour ça. Tu trouveras tout les renseignements nécessaires dans l'infoBR.<br>".

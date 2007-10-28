@@ -65,7 +65,7 @@ class QdjMiniModule extends FrankizMiniModule
 
 	public static function check_auth()
 	{
-		return est_authentifie(AUTH_MINIMUM);
+		return est_authentifie(AUTH_COOKIE);
 	}
 
 	
@@ -77,7 +77,7 @@ class QdjMiniModule extends FrankizMiniModule
 		global $DB_web;
 
 		$DB_web->query("SELECT 0 FROM qdj_votes 
-		                 WHERE date='$date_qdj' and eleve_id='{$_SESSION['user']->uid}' AND ordre > 0
+		                 WHERE date='$date_qdj' and eleve_id='{$_SESSION['uid']}' AND ordre > 0
 				 LIMIT 1");
 		return $DB_web->num_rows() != 0;
 	}
@@ -121,7 +121,7 @@ class QdjMiniModule extends FrankizMiniModule
 			
 		$DB_web->query("INSERT INTO qdj_votes 
 					SET date = '$date_qdj', 
-					    eleve_id = '{$_SESSION['user']->uid}',
+					    eleve_id = '{$_SESSION['uid']}',
 					    idRegle = '$regle', 
 					    ordre = @max+1");
 		
@@ -208,7 +208,7 @@ class QdjMiniModule extends FrankizMiniModule
 		global $DB_web;
 
 		if ($uid === null)
-			$uid = $_SESSION['user']->uid;
+			$uid = $_SESSION['uid'];
 		
 		$DB_web->query("SELECT 0 FROM qdj_points WHERE eleve_id = $uid");
 		if ($DB_web->num_rows() != 0)

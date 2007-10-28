@@ -27,7 +27,7 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 if(!verifie_permission('admin')&&!verifie_permission('trombino'))
 	acces_interdit();
 
@@ -53,7 +53,7 @@ foreach ($_POST AS $keys => $val){
 			list($prenom,$nom,$promo,$login) = $DB_trombino->next_row() ;
 			
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid,"validé l'image trombi de $prenom $nom") ;
+			log_admin($_SESSION['uid'],"validé l'image trombi de $prenom $nom") ;
 			
 			rename(DATA_DIR_LOCAL."trombino/a_valider_{$temp[1]}",BASE_PHOTOS."$promo/$login.jpg") ;
 			
@@ -80,7 +80,7 @@ foreach ($_POST AS $keys => $val){
 			list($prenom,$nom,$promo,$login) = $DB_trombino->next_row() ;
 			
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," refusé l'image trombi de $prenom $nom") ;
+			log_admin($_SESSION['uid']," refusé l'image trombi de $prenom $nom") ;
 			
 			unlink(DATA_DIR_LOCAL."trombino/a_valider_{$temp[1]}") ;
 			

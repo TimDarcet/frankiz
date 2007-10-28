@@ -27,7 +27,7 @@ require_once "../include/global_func.inc.php";
 require_once "../include/wiki.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 if(!verifie_permission('admin')&&!verifie_permission('web')&&!verifie_permission('postit'))
 	acces_interdit();
 
@@ -149,7 +149,7 @@ $postit_dir = BASE_DATA."postit/";
 		if (file_exists($postit_dir."info.txt")) {
 			unlink($postit_dir."info.txt");
 		}
-		$eleve_id = $_SESSION['user']->uid;
+		$eleve_id = $_SESSION['uid'];
 		file_put_contents($postit_dir."info.txt",$_POST["titre"]."\n".$eleve_id);
 		
 		if (file_exists($postit_dir."contenu.txt")) {

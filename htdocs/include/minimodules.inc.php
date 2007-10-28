@@ -39,7 +39,7 @@ class FrankizMiniModule
 		$page->assign('minimodule', $this->params);
 		if ($this->tpl)
 			$page->display($this->tpl);
-		$page->assign('minimodule', $params);
+		$page->assign('minimodule', null);
 	}
 
 	/**

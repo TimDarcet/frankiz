@@ -28,11 +28,11 @@ require_once "../include/global.inc.php";
 require_once "../include/wiki.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 if(verifie_permission('admin')||verifie_permission('web'))
 	$user_id = '%';
 else if(verifie_permission('affiches'))
-	$user_id = $_SESSION['user']->uid;
+	$user_id = $_SESSION['uid'];
 else
 	acces_interdit();
 

@@ -27,7 +27,7 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 if(!verifie_permission('admin')&&!verifie_permission('web'))
 	acces_interdit();
 
@@ -60,7 +60,7 @@ foreach ($_POST AS $keys => $val){
 			$DB_valid->query("SELECT titre FROM valid_sondages WHERE sondage_id={$temp[1]}");
 			list($titre) = $DB_valid->next_row() ;
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," refusé le sondage '$titre'") ;
+			log_admin($_SESSION['uid']," refusé le sondage '$titre'") ;
 			
 			$DB_valid->query("DELETE FROM valid_sondages WHERE sondage_id='{$temp[1]}'");
 			
@@ -102,7 +102,7 @@ foreach ($_POST AS $keys => $val){
 			list($date,$questions,$titre,$eleve_id,$restriction,$nom, $prenom, $promo) = $DB_valid->next_row() ;
 			
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," validé le sondage '$titre'") ;
+			log_admin($_SESSION['uid']," validé le sondage '$titre'") ;
 
 			$DB_web->query("INSERT INTO sondage_question SET eleve_id=$eleve_id, questions='$questions', titre='$titre', perime='$date', restriction='$restriction'") ;
 			$index = mysql_insert_id($DB_web->link) ;

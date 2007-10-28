@@ -27,7 +27,7 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 if(!verifie_permission('admin') && !verifie_permission('qdjmaster'))
 	acces_interdit();
 
@@ -74,7 +74,7 @@ foreach ($_POST AS $keys => $val){
 			$eleveId =$ligne[0];
 			
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," validé la qdj '{$_POST['question']}'") ;
+			log_admin($_SESSION['uid']," validé la qdj '{$_POST['question']}'") ;
 
 			list($eleve_id) = $DB_valid->next_row() ;
 				
@@ -91,7 +91,7 @@ foreach ($_POST AS $keys => $val){
 		if ($DB_valid->num_rows()!=0) {
 		
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," refusé la qdj '{$_POST['question']}'") ;
+			log_admin($_SESSION['uid']," refusé la qdj '{$_POST['question']}'") ;
 	
 			list($eleve_id) = $DB_valid->next_row() ;
 			$DB_valid->query("DELETE FROM valid_qdj WHERE qdj_id='{$temp[1]}'") ;

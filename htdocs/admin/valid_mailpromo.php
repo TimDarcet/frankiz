@@ -28,7 +28,7 @@ require_once "../include/global.inc.php";
 require_once "../include/wiki.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 if(!verifie_permission('admin')&&!verifie_permission('kes'))
 	acces_interdit();
 	
@@ -73,7 +73,7 @@ foreach ($_POST AS $keys => $val){
 			list($eleve_id) = $DB_valid->next_row() ;
 			
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," accepté le mail promo '".gpc_stripslashes($_POST['titre'])."' ") ;
+			log_admin($_SESSION['uid']," accepté le mail promo '".gpc_stripslashes($_POST['titre'])."' ") ;
 			
 			// envoi du mail
 			$contenu = 	"Ton mail promo a été validé par la Kès<br><br>".
@@ -106,7 +106,7 @@ foreach ($_POST AS $keys => $val){
 
 			list($eleve_id) = $DB_valid->next_row() ;
 			//Log l'action de l'admin
-			log_admin($_SESSION['user']->uid," refusé le mail promo '".gpc_stripslashes($_POST['titre'])."' ") ;
+			log_admin($_SESSION['uid']," refusé le mail promo '".gpc_stripslashes($_POST['titre'])."' ") ;
 			// envoi du mail
 			$contenu = 	"Ton mail promo n'a pas été validé par la Kès pour la raison suivante<br>".
 						$_POST['refus']."<br><br>".

@@ -24,7 +24,7 @@
 require_once "../include/global.inc.php";
 require_once "../include/wiki.inc.php";
 
-demande_authentification(AUTH_INTERNE);
+demande_permission('interne');
 
 // Récupération de l'IP
 $ip = ip_get();
@@ -32,7 +32,7 @@ $ip = ip_get();
 // Log
 ajouter_access_log(
 	"AppleOnCampus: acces depuis $ip / user " .
-	(is_object($_SESSION['user']) ? $_SESSION['user']->uid : -1 ));
+	(is_object($_SESSION['user']) ? $_SESSION['uid'] : -1 ));
 
 // Redirection
 if (defined('PARTENAIRES_AOC_URL'))

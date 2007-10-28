@@ -27,9 +27,9 @@
 require_once "../include/global.inc.php";
 
 // Vérification des droits
-demande_authentification(AUTH_MINIMUM);
+demande_authentification(AUTH_COOKIE);
 
-$DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM eleves WHERE eleve_id='".$_SESSION['user']->uid."'");
+$DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM eleves WHERE eleve_id='".$_SESSION['uid']."'");
 list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_row();
 
 $msg="" ;
@@ -156,7 +156,7 @@ if (isset($_POST['ok_tab']))
 if (isset($_POST['valid'])) {
 	if ($titre_sondage!="") {
 		if ($restriction != "") $restriction = ", restriction='".$restriction."'";
-		$DB_valid->query("INSERT INTO valid_sondages SET eleve_id =".$_SESSION['user']->uid.", questions='$contenu_form', titre='$titre_sondage', perime=FROM_UNIXTIME($perimdate) $restriction") ;
+		$DB_valid->query("INSERT INTO valid_sondages SET eleve_id =".$_SESSION['uid'].", questions='$contenu_form', titre='$titre_sondage', perime=FROM_UNIXTIME($perimdate) $restriction") ;
 		
 		$tempo = explode("proposition",$_SERVER['REQUEST_URI']) ;
 	
@@ -169,7 +169,7 @@ if (isset($_POST['valid'])) {
 			"Cordialement,<br>" .
 			"Le Webmestre de Frankiz<br>"  ;
 					
-		couriel(WEBMESTRE_ID,"[Frankiz] Validation d'un sondage",$contenu,$_SESSION['user']->uid);
+		couriel(WEBMESTRE_ID,"[Frankiz] Validation d'un sondage",$contenu,$_SESSION['uid']);
 	} else {
 		$erreur = 1 ;
 	}

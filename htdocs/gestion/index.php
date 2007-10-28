@@ -33,9 +33,9 @@ if (!FrankizSession::is_admin())
 
 // Génération de la page
 require_once BASE_LOCAL."/include/page_header.inc.php";
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 
-$permissions_user = $_SESSION['fkz_perms']->perms ;
+$permissions_user = array_keys($_SESSION['fkz_perms']);
 
 ?>
 <page id="admin" titre="Frankiz : administration">

@@ -26,10 +26,10 @@
 */
 
 require_once "../include/global.inc.php";
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 
 $DB_admin->query("SELECT ip.piece_id,ip.prise_id,ip.ip,ip.type FROM prises as ip "
-				."LEFT JOIN trombino.eleves as e USING(piece_id) WHERE e.eleve_id='{$_SESSION['user']->uid}' "
+				."LEFT JOIN trombino.eleves as e USING(piece_id) WHERE e.eleve_id='{$_SESSION['uid']}' "
 				."ORDER BY ip.type ASC");
 $id_ip = 0;
 list($kzert,$prise{$id_ip},$ip{$id_ip},$type) = $DB_admin->next_row();
@@ -51,7 +51,7 @@ require "../include/page_header.inc.php";
 <page id="profil_reseau" titre="Frankiz : modification du profil réseau">
 
 <?php
-$DB_trombino->query("SELECT e.piece_id FROM eleves as e WHERE e.eleve_id='{$_SESSION['user']->uid}' AND NOT (e.piece_id IS NULL)");
+$DB_trombino->query("SELECT e.piece_id FROM eleves as e WHERE e.eleve_id='{$_SESSION['uid']}' AND NOT (e.piece_id IS NULL)");
 if($DB_trombino->num_rows()!=0){
 
 if(isset($_POST['changer_xnet'])) {

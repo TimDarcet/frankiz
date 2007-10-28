@@ -33,6 +33,8 @@ header('Content-Type: text/html');
 require_once BASE_LOCAL."/include/minimodules.inc.php";
 require_once BASE_LOCAL."/include/wiki.inc.php";
 
+global $page;
+
 $minimodules = FrankizMiniModule::load_modules('activites',
 					       'anniversaires',
 					       'fetes', 
@@ -64,8 +66,8 @@ if ($xml)
 
 	// Les paramètres à passer à sablotron sont en UTF8
 	$parameters = array (
-	  'user_nom' => str_replace("&apos;","'",$_SESSION['user']->nom),
-	  'user_prenom' => str_replace("&apos;","'",$_SESSION['user']->prenom),
+	  'user_nom' => str_replace("&apos;", "'", isset($_SESSION['nom']) ? $_SESSION['nom'] : ""),
+	  'user_prenom' => str_replace("&apos;", "'", isset($_SESSION['prenom']) ? $_SESSION['prenom'] : ""),
 	  'date' => date("d/m/Y"),
 	  'heure' => date("H:i")
 	);
@@ -78,23 +80,6 @@ if ($xml)
 	$page->assign('xml', $resultat);
 }
 
-$page->compile_check = AFFICHER_LES_ERREURS;
-$page->template_dir  = BASE_TEMPLATES;
-$page->compile_dir   = BASE_CACHE . 'templates_c/';
+$page->run();
 
-$page->assign('skin', $_SESSION['skin']);
-$page->assign('base', BASE_URL);
-$page->assign('session', new FrankizSession);
-$page->assign('minimodules', $minimodules);
-$page->assign('template_name', $page->tpl_name);
-if (isset($_SESSION['sueur']))
-	$smarty->assign('sueur', $_SESSION['sueur']);
-
-$page->register_function("minimodule", array('FrankizMiniModule', "print_template"));
-$page->register_function("minimodule_header", array('FrankizMiniModule', "print_template_header"));
-$page->register_modifier("wiki_vers_html", "wikiVersXML");
-
-affiche_erreurs_php();
-$page->display("main.tpl");
-affiche_debug_php();
 ?>

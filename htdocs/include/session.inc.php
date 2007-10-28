@@ -23,15 +23,6 @@ require_once BASE_FRANKIZ."platal-classes/s.php";
 require_once BASE_FRANKIZ."platal-includes/globals.inc.php";
 require_once BASE_FRANKIZ."htdocs/include/skin.inc.php";
 
-define("AUTH_AUCUNE",  0); // Client non authentifié
-define("AUTH_INTERNE", 1); // Client accédant depuis l'intérieur de l'x (ip en 129.104.*.*)
-define("AUTH_COOKIE",  2); // Client authentifié par un cookie (authentification faible, mais automatique)
-define("AUTH_MAIL",    3); // Client authentifié par un hash récupéré dans un mail (perte de mot de passe)
-define("AUTH_MDP",     4); // Client authentifié par mot de passe
-
-define("AUTH_MINIMUM", 2); // Valeur minimum correspondant à un client authentifié
-define("AUTH_FORT",    3); // Valeur minimum correspondant à un client authentifié avec une méthode sécurisé
-
 define("COOKIE_AUTH", FRANKIZ_SESSION_NAME."_auth");
 define("COOKIE_SKIN", FRANKIZ_SESSION_NAME."_skin");
 
@@ -61,12 +52,10 @@ class FrankizSession extends Session
 			S::destroy();
 
 		if (!FrankizSession::doAuth(false))
-		{
-			if (FrankizSession::est_interne())
-				$_SESSION['auth'] = AUTH_INTERNE;
-			else
-				$_SESSION['auth'] = AUTH_NONE;
-		}
+			$_SESSION['auth'] = AUTH_PUBLIC;
+	
+		if (est_interne())
+			$_SESSION['fkz_perms']['interne'] = 1;
 
 		FrankizSession::load_skin(false);
 	}
@@ -89,11 +78,11 @@ class FrankizSession extends Session
 
 		if (FrankizSession::doAuth_mdp())
 			return FrankizSession::start_session();
-	
+		
 		if (FrankizSession::doAuth_mail())
 			return FrankizSession::start_session();
 
-		if (S::identified())
+		if (S::logged())
 			return true;
 
 		if (FrankizSession::doAuth_cookie())
@@ -133,7 +122,6 @@ class FrankizSession extends Session
 		else if ($uid == 0 || crypt($_POST['passwd_login'], $passwd) != $passwd)
 			return false;
 
-
 		$_SESSION['uid'] = $uid;
 		$_SESSION['auth'] = AUTH_MDP;
 		
@@ -160,7 +148,7 @@ class FrankizSession extends Session
 			return false;
 
 		$_SESSION['uid'] = $uid;
-		$_SESSION['auth'] = AUTH_MAIL;
+		$_SESSION['auth'] = AUTH_MDP;
 	}
 	
 	/**
@@ -202,7 +190,19 @@ class FrankizSession extends Session
 
 		$_SESSION['nom'] = $nom;
 		$_SESSION['prenom'] = $prenom;
-		$_SESSION['fkz_perms'] = explode(",", $perms);
+		
+		foreach (explode(",", $perms) as $perm)
+		{
+			if ($perm)
+			{
+				$_SESSION['fkz_perms'][$perm] = 1;
+				$_SESSION['fkz_perms']['semiadmin'] = 1;
+			}
+		}
+		
+		$_SESSION['fkz_perms']["user"] = 1;
+		$_SESSION['fkz_perms']["interne"] = 1;
+
 
 		// Mise à jour de la skin.
 		$_SESSION['skin'] = new Skin;
@@ -291,16 +291,7 @@ class FrankizSession extends Session
 
 	public static function verifie_permission($perm) 
 	{
-		if (!isset($_SESSION['uid'])) 
-			return false;
-		
-		for ($i = 0; $i < count($_SESSION['fkz_perms']); $i++)
-		{
-			if ($_SESSION['fkz_perms'][$i] == $perm) 
-				return true;
-		}
-
-		return false;
+		return isset($_SESSION['fkz_perms'][$perm]); 
 	}
 	
 	public static function verifie_permission_prez($binet) 
@@ -315,7 +306,7 @@ class FrankizSession extends Session
 	
 	/**
 	 * Vérifie l'état d'authentification. Renvoie faux si c'est pas au moins $minimum
-	 * (AUTH_MINIMUM ou AUTH_FORT en général, pour vérifié si un utilisateur est authentifié par
+	 * (AUTH_COOKIE ou AUTH_MDP en général, pour vérifié si un utilisateur est authentifié par
 	 * une méthode quelconque, ou pour vérifié que l'utilisateur est authentifié par une méthode
 	 * sécurisée).
 	 */
@@ -336,17 +327,17 @@ class FrankizSession extends Session
 	// ------------------------------ FONCTIONS SIMPLIFIEES POUR LES TEMPLATES --------------------------------
 	public static function est_auth()
 	{
-		return FrankizSession::est_authentifie(AUTH_MINIMUM);
+		return FrankizSession::est_authentifie(AUTH_COOKIE);
 	}
 
 	public static function est_auth_fort()
 	{
-		return FrankizSession::est_authentifie(AUTH_FORT);
+		return FrankizSession::est_authentifie(AUTH_MDP);
 	}
 
 	public static function is_admin()
 	{
-		return count($_SESSION['fkz_perms']) > 1;
+		return FrankizSession::verifie_permission("semiadmin"); 
 	}
 }
 
@@ -367,12 +358,24 @@ function demande_authentification($minimum) {
 	if (est_authentifie($minimum))
 		return;
 
-	require_once BASE_LOCAL."include/page_header.inc.php";
+	require_once BASE_LOCAL."/include/page_header.inc.php";
 
 	call('CoreModule', 'do_login');
-	require_once BASE_LOCAL."include/page_footer.inc.php";
+	require_once BASE_LOCAL."/include/page_footer.inc.php";
 	exit;
 }
+function demande_permission($perm)
+{
+	if (verifie_permission($perm))
+		return;
+
+	require_once BASE_LOCAL."/include/page_header.inc.php";
+
+	call('CoreModule', 'do_login');
+	require_once BASE_LOCAL."/include/page_footer.inc.php";
+	exit;
+}
+
 function est_interne() {
 	return FrankizSession::est_interne();
 }

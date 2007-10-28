@@ -31,7 +31,7 @@
 	$Id$
 
 */
-if(est_authentifie(AUTH_MINIMUM)) { ?>
+if(est_authentifie(AUTH_COOKIE)) { ?>
 	<module id="stats" titre="Statistiques">
 		<statistiques>
 			<service nom="web frankiz" stat="webalizer/" />

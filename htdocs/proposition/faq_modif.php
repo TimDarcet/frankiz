@@ -24,7 +24,7 @@
 require_once "../include/global.inc.php";
 require_once "../include/wiki.inc.php";
 // Vérification des droits
-demande_authentification(AUTH_MINIMUM);
+demande_authentification(AUTH_COOKIE);
 
 
 // Génération de la page
@@ -42,10 +42,10 @@ if (isset($_REQUEST['valid'])) {
 	$DB_valid->query("SELECT 0 FROM valid_modiffaq WHERE faq_id='{$_REQUEST['id']}'") ;
 	if ($DB_valid->num_rows()==0) {
 
-		$DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM eleves WHERE eleve_id='".$_SESSION['user']->uid."'");
+		$DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM eleves WHERE eleve_id='".$_SESSION['uid']."'");
 		list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_row();
 	
-		$DB_valid->query("INSERT INTO valid_modiffaq SET faq_modif='{$_REQUEST['faq_modif']}', faq_id='{$_REQUEST['id']}', eleve_id='{$_SESSION['user']->uid}'") ;
+		$DB_valid->query("INSERT INTO valid_modiffaq SET faq_modif='{$_REQUEST['faq_modif']}', faq_id='{$_REQUEST['id']}', eleve_id='{$_SESSION['uid']}'") ;
 		
 		$contenu = "<strong>Bonjour,</strong><br><br>".
 			"$prenom $nom a demandé la modification d'une FAQ<br>".

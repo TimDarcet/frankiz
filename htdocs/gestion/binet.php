@@ -40,7 +40,7 @@ if(isset($_REQUEST['image'])){
 }
 
 // Vérification des droits
-demande_authentification(AUTH_FORT);
+demande_authentification(AUTH_MDP);
 if ((empty($_REQUEST['binet'])) || ((!verifie_permission_webmestre($_REQUEST['binet'])) && (!verifie_permission_prez($_REQUEST['binet']))))
 	acces_interdit();
 	
@@ -91,7 +91,7 @@ if(verifie_permission_prez($_REQUEST['binet'])){
 		$message .= "<commentaire> Sauvegardes des commentaires des différents membres du binet</commentaire>\n";
 	}
 
-	$DB_trombino->query("SELECT promo FROM eleves WHERE eleve_id='".$_SESSION['user']->uid."'");
+	$DB_trombino->query("SELECT promo FROM eleves WHERE eleve_id='".$_SESSION['uid']."'");
 	list($promo_prez) = $DB_trombino->next_row() ;
 	?>
 	<h1>Administration par le </h1>

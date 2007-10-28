@@ -74,7 +74,7 @@ class SondagesMiniModule extends FrankizMiniModule
 		
 		$DB_web->query("SELECT sondage_id, titre, DATE_FORMAT(perime,'%d/%m'), restriction
 		                  FROM sondage_question 
-				 WHERE TO_DAYS(perime) - TO_DAYS(NOW()) < -7 AND eleve_id = {$_SESSION['user']->uid}");
+				 WHERE TO_DAYS(perime) - TO_DAYS(NOW()) < -7 AND eleve_id = {$_SESSION['uid']}");
 		$this->assign("anciens_user", $this->get_sondages());
 
 		$this->tpl = "minimodules/sondages/sondages.tpl";
@@ -83,7 +83,7 @@ class SondagesMiniModule extends FrankizMiniModule
 
 	public static function check_auth()
 	{
-		return est_authentifie(AUTH_MINIMUM);
+		return est_authentifie(AUTH_COOKIE);
 	}
 }
 FrankizMiniModule::register_module("sondages", "SondagesMiniModule", "Sondages");

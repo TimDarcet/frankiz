@@ -34,7 +34,7 @@ class LienIKMiniModule extends FrankizMiniModule
 
 	public static function check_auth()
 	{
-		return est_authentifie(AUTH_INTERNE);
+		return verifie_permission('interne');
 	}
 }
 FrankizMiniModule::register_module('lien_ik', 'LienIKMiniModule', "Lien vers l'IK électronique");

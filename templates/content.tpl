@@ -7,7 +7,7 @@
 	    <div class="fkz_titre">
 	      {$title}
 	    </div>
-	    {include file=$template_name}
+	    {include file=$xorg_tpl}
 	  </div>
 	</div>
       </div>
