@@ -78,9 +78,29 @@ class QDJModule extends PLModule
 		
 
 		// ------------------------------------- Requetes SQLs -----------------------------------------------
-		$debutRequete = "
+		$requete = "
 					SELECT
 						t.eleve_id, t.nom, t.prenom, t.surnom, t.login, t.promo,
+						p.total, p.nb1, p.nb2, p.nb3, p.nb4, p.nb5, p.nb6, p.nb7, p.nb8, p.nb9, p.nb10
+					FROM
+						qdj_points AS p
+					LEFT JOIN
+						trombino.eleves AS t USING(eleve_id)
+					WHERE
+						t.eleve_id != (SELECT
+											te.eleve_id
+										FROM
+											frankiz2.compte_frankiz
+										LEFT JOIN
+											trombino.eleves AS te USING(eleve_id)
+										WHERE
+											perms LIKE '%qdjmaster,%'
+										ORDER BY te.promo DESC
+										LIMIT 0,1)
+					ORDER BY p.total DESC";
+		$debutRequete = "
+					SELECT
+						t.eleve_id, t.nom, t.prenom, t.surnom, t.promo,
 						p.total, p.nb1, p.nb2, p.nb3, p.nb4, p.nb5, p.nb6, p.nb7, p.nb8, p.nb9, p.nb10
 					FROM	
 		(SELECT eleve_id,
