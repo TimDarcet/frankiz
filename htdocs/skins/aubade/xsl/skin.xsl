@@ -57,6 +57,9 @@
 			<meta http-equiv="Page-Enter" content="blendTrans(Duration=0.3)"/>
 		</xsl:if>
 		<title><xsl:value-of select="frankiz/page/@titre"/></title>
+		<xsl:if test="frankiz/page/@id='xshare'">
+			<meta name="robots" content="noindex,nofollow" />
+		</xsl:if>
 		<base>
 			<xsl:attribute name="href">
 			<xsl:value-of select="frankiz/@base"/>

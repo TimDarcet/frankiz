@@ -63,6 +63,9 @@
 	<html>
 	<head>
 		<title><xsl:value-of select="@titre"/></title>
+		<xsl:if test="frankiz/page/@id='xshare'">
+			<meta name="robots" content="noindex,nofollow" />
+		</xsl:if>
 		<!-- semble ne pas marcher avec certains navigateurs lorsque la base est relative -->
 		<base>
 			<xsl:attribute name="href">

@@ -52,6 +52,9 @@
 	<html xml:lang="fr">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<xsl:if test="frankiz/page/@id='xshare'">
+			<meta name="robots" content="noindex,nofollow" />
+		</xsl:if>
 		<title><xsl:value-of select="frankiz/page/@titre"/></title>
 		<base>
 			<xsl:attribute name="href">
