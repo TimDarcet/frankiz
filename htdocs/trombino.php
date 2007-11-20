@@ -109,7 +109,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 	$champs = '
 		eleves.eleve_id, eleves.nom, prenom, surnom, nation, login, mail,
 		DATE_FORMAT(date_nais, "%d/%m/%Y"),
-		eleves.piece_id, pieces.tel,
+		eleves.piece_id, pieces.tel, eleves.portable,
 		eleves.commentaire, promo, cie, eleves.section_id, sections.nom';
 	$join = '
 		LEFT JOIN sections ON
@@ -318,11 +318,11 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 		while (list(
 			$eleve_id, $nom, $prenom, $surnom, $nation, $login, $mail,
 			$date_nais,
-			$piece_id, $tel,
+			$piece_id, $tel, $portable,
 			$commentaire, $promo, $cie, $section_id, $section) = $DB_trombino->next_row()) {
 
 			echo "<eleve nom='$nom' prenom='$prenom' promo='$promo' login='$login' surnom='$surnom' nation='$nation' date_nais='$date_nais' "
-				."tel='$tel' mail='".(empty($mail)?"$login@poly.polytechnique.fr":$mail)."' casert='$piece_id' "
+				."tel='$tel' portable='$portable' mail='".(empty($mail)?"$login@poly.polytechnique.fr":$mail)."' casert='$piece_id' "
 				."section='$section' cie='$cie'>\n";
 
 			if ($tol_admin && isset($_REQUEST['toladmin'])) {

@@ -42,7 +42,7 @@
 		</a>
 	</div>
 	<div class="fkz_trombino_infos">
-	<p class="telephone">Tel: <xsl:value-of select="@tel"/>
+	<p class="telephone">Tel: <xsl:value-of select="@tel"/> Cel: <xsl:value-of select="@portable"/>
 	</p>
 	<p class="mail">Mail: <a><xsl:attribute name="href">mailto:<xsl:value-of select="@mail"/></xsl:attribute><xsl:value-of select="@mail"/></a>
 	</p>

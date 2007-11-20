@@ -44,8 +44,8 @@ if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "true") && ($_REQUEST['im
 $message="";
 
 // Données sur l'utilisateur
-$DB_trombino->query("SELECT eleves.nom,prenom,surnom,mail,login,promo,sections.nom,cie,piece_id,commentaire FROM eleves LEFT JOIN sections USING(section_id) WHERE eleve_id='{$_SESSION['user']->uid}'");
-list($nom,$prenom,$surnom,$mail,$login,$promo,$section,$cie,$casert,$commentaire) = $DB_trombino->next_row();
+$DB_trombino->query("SELECT eleves.nom,prenom,surnom,mail,portable,login,promo,sections.nom,cie,piece_id,commentaire FROM eleves LEFT JOIN sections USING(section_id) WHERE eleve_id='{$_SESSION['user']->uid}'");
+list($nom,$prenom,$surnom,$mail,$portable,$login,$promo,$section,$cie,$casert,$commentaire) = $DB_trombino->next_row();
 
 if(isset($_POST['changer_frankiz'])) {
 	// Modification du mot de passe
@@ -95,13 +95,18 @@ if(isset($_POST['changer_frankiz'])) {
 		$_POST['email'] = "";
 	if(!ereg("^[a-zA-Z0-9_+.-]+@[a-zA-Z0-9.-]+$",$_POST['email']) && !empty($_POST['email']))
 		ajoute_erreur(ERR_EMAIL_NON_VALIDE);
+	if(strlen($_POST['portable']) < 8 && !empty($_POST['portable']))
+		ajoute_erreur(ERR_PORTABLE_TROP_PETIT);
+	if(strlen($_POST['portable']) > 14)
+		ajoute_erreur(ERR_PORTABLE_TROP_LONG);
 	
 	if(aucune_erreur()) {
 		$surnom = $_POST['surnom'];
 		$mail = $_POST['email'];
+		$portable = $_POST['portable'];
 		
-		$DB_trombino->query("UPDATE eleves SET surnom='$surnom',mail=".(empty($mail)?"NULL":"'$mail'")." WHERE eleve_id='{$_SESSION['user']->uid}'");
-		$message.="<commentaire>L'email et le surnom ont été modifiés.</commentaire>";
+		$DB_trombino->query("UPDATE eleves SET portable='$portable',surnom='$surnom',mail=".(empty($mail)?"NULL":"'$mail'")." WHERE eleve_id='{$_SESSION['user']->uid}'");
+		$message.="<commentaire>L'email, le surnom et le portable ont été modifiés.</commentaire>";
 	}
 	
 	//===================================
@@ -218,6 +223,10 @@ require "../include/page_header.inc.php";
 			echo "<warning>Il faut mettre un surnom moins long (au maximum 32 caractères). Le surnom n'a pas été modifié.</warning>\n";
 		if(a_erreur(ERR_EMAIL_NON_VALIDE))
 			echo "<warning>L'email n'est pas valide. L'adresse email n'a pas été modifié.</warning>\n";
+		if(a_erreur(ERR_PORTABLE_TROP_PETIT))
+			echo "<warning>Un portable a besoin d'au moins 8 chifres pout être identifié. Le portable n'a pas été modifié.</warning>\n";
+		if(a_erreur(ERR_PORTABLE_TROP_LONG))
+			echo "<warning>Le champ \"Portable\" n'accepte plus que 14 caractères. Le portable n'a pas été modifié.</warning>\n";
 ?>
 	<formulaire id="mod_frankiz" titre="Modification du compte Frankiz" action="profil/profil.php">
 		<?php
@@ -250,6 +259,7 @@ require "../include/page_header.inc.php";
 		<champ id="casert" titre="Kazert" valeur="<?php echo $casert ?>" modifiable="non"/>
 		<champ id="surnom" titre="Surnom" valeur="<?php echo $surnom ?>"/>
 		<champ id="email" titre="Email" valeur="<?php echo empty($mail) ? $login.'@poly.polytechnique.fr' : $mail ?>"/>
+		<champ id="portable" titre="Portable" valeur="<?php echo $portable ?>"/>
 		<?php if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$_SESSION['user']->uid}")): ?>
 			<note>Cette image trombino n'a pas encore été validée par le BR</note>
 			<image source="profil/profil.php?image=true&amp;id=<?php echo $_SESSION['user']->uid; ?>" texte="photo" height="95" width="80"/>
