@@ -415,8 +415,18 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 		<champ titre="Nom" id="nom" valeur="<?php echo empty($_REQUEST['nom']) ? '' : $_REQUEST['nom']; ?>" />
 		<champ titre="Prénom" id="prenom" valeur="<?php echo empty($_REQUEST['prenom']) ? '' : $_REQUEST['prenom']; ?>" />
 		<champ titre="Surnom" id="surnom" valeur="<?php echo empty($_REQUEST['surnom']) ? '' : $_REQUEST['surnom']; ?>" />
-		<champ titre="Nationalité" id="nation" valeur="<?php echo empty($_REQUEST['nation']) ? '' : $_REQUEST['nation']; ?>" />
 
+		<choix titre="Nation" id="nation" type="combo" valeur="<?php echo empty($_REQUEST['nation']) ? '' : $_REQUEST['nation']; ?>">
+			<option titre="Toutes" id=""/>
+
+<?php
+			$DB_trombino->query("SELECT name FROM nations WHERE existe = 1 ORDER BY name ASC");
+			while (list($nation) = $DB_trombino->next_row()) {
+				echo "\t\t\t<option titre=\"$nation\" id=\"$nation\"/>\n";
+			}
+?>
+
+		</choix>
 		<choix titre="Promo" id="promo" type="combo" valeur="<?php echo empty($_REQUEST['promo']) ? '' : $_REQUEST['promo']; ?>">
 			<option titre="Sur le campus" id=""/>
 			<option titre="Toutes" id="toutes" />

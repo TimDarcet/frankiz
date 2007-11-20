@@ -154,7 +154,7 @@
 					</tr>
 					<tr>
 						<td></td>
-						<td><xsl:apply-templates select="champ[@id='nation']" mode="trombino"/></td>
+						<td><xsl:apply-templates select="choix[@id='nation']" mode="trombino"/></td>
 						<td></td>
 					</tr>
 				</table>

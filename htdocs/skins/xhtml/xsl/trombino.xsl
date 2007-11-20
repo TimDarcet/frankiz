@@ -171,19 +171,19 @@
 							<xsl:apply-templates select="champ[@id='casert']"/>
 						</td>
 					</tr>
-					<xsl:if test="count(champ) = 7">
+					<xsl:if test="count(champ) = 6">
 					<tr>
 						<td></td>	
 						<td>
 						<span class="gauche" >
 							Nationalité :
 						</span>
-							<xsl:apply-templates select="champ[@id='nation']"/>
+							<xsl:apply-templates select="choix[@id='nation']"/>
 						</td>
 						<td></td>	
 					</tr>
 					</xsl:if>
-					<xsl:if test="count(champ) > 7">
+					<xsl:if test="count(champ) > 6">
                                         <tr>
                                                 <td>
                                                 <span class="gauche" >
@@ -209,7 +209,7 @@
 						<span class="gauche" >
 							Nationalité :
 						</span>
-							<xsl:apply-templates select="champ[@id='nation']"/>
+							<xsl:apply-templates select="choix[@id='nation']"/>
 						</td>
 						<td>
 						<span class="gauche" >
