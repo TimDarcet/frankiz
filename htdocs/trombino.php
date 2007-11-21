@@ -107,7 +107,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 	$typeRecherchePromo = RECHERCHE_HABITE_SUR_LE_PLATAL;
 
 	$champs = '
-		eleves.eleve_id, eleves.nom, prenom, surnom, nation, login, mail,
+		eleves.eleve_id, eleves.nom, prenom, surnom, nation, login, mail, polyorg,
 		DATE_FORMAT(date_nais, "%d/%m/%Y"),
 		eleves.piece_id, pieces.tel, eleves.portable,
 		eleves.commentaire, promo, cie, eleves.section_id, sections.nom';
@@ -316,12 +316,12 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 		
 		// Génération des fiches des élèves
 		while (list(
-			$eleve_id, $nom, $prenom, $surnom, $nation, $login, $mail,
+			$eleve_id, $nom, $prenom, $surnom, $nation, $login, $mail, $polyorg,
 			$date_nais,
 			$piece_id, $tel, $portable,
 			$commentaire, $promo, $cie, $section_id, $section) = $DB_trombino->next_row()) {
 
-			echo "<eleve nom='$nom' prenom='$prenom' promo='$promo' login='$login' surnom='$surnom' nation='$nation' date_nais='$date_nais' "
+			echo "<eleve nom='$nom' prenom='$prenom' promo='$promo' login='$login' surnom='$surnom' nation='$nation' polyorg='$polyorg' date_nais='$date_nais' "
 				."tel='$tel' portable='$portable' mail='".(empty($mail)?"$login@poly.polytechnique.fr":$mail)."' casert='$piece_id' "
 				."section='$section' cie='$cie'>\n";
 
@@ -383,18 +383,10 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 
 			echo "<cadre>".wikiVersXML($commentaire)."</cadre>";
 
-			// Supprime les accents
-			$nompolyorg = str_replace("&apos;", "", $nom);
-			$nompolyorg = htmlentities(strtolower(utf8_decode($nompolyorg)));
-			$nompolyorg = preg_replace("/&(.)(acute|grave|cedil|circ|ring|tilde|uml);/", "$1", $nompolyorg);
-			$nompolyorg = str_replace(" ", "-", $nompolyorg);
-
-			$prenompolyorg = str_replace( "&apos;" , "" , $prenom );
-			$prenompolyorg = htmlentities(strtolower(utf8_decode($prenompolyorg)));
-			$prenompolyorg = preg_replace("/&(.)(acute|grave|cedil|circ|ring|tilde|uml);/", "$1", $prenompolyorg);
-			$prenompolyorg = str_replace( " " , "-" , $prenompolyorg );
-
-			echo "<lien url='https://www.polytechnique.org/profile/$prenompolyorg.$nompolyorg.$promo' titre='Fiche sur polytechnique.org'/><br/>\n";
+			// Lien en bas de page vers le profil polytechnique.org
+			if(!empty($polyorg)){
+				echo "<lien url='https://www.polytechnique.org/profile/$polyorg' titre='Fiche sur polytechnique.org'/><br/>\n";
+			}
 
 			// Liens d'administration
 			if(verifie_permission('admin')||verifie_permission('trombino')) {
