@@ -97,8 +97,10 @@ if(isset($_POST['changer_frankiz'])) {
 		ajoute_erreur(ERR_EMAIL_NON_VALIDE);
 	if(strlen($_POST['portable']) < 8 && !empty($_POST['portable']))
 		ajoute_erreur(ERR_PORTABLE_TROP_PETIT);
-	if(strlen($_POST['portable']) > 14)
+	if(strlen($_POST['portable']) > 32)
 		ajoute_erreur(ERR_PORTABLE_TROP_LONG);
+	if(!ereg("^[()+ 0-9]+$", $_POST['portable']))
+		ajoute_erreur(ERR_PORTABLE_FORMAT);
 	
 	if(aucune_erreur()) {
 		$surnom = $_POST['surnom'];
@@ -106,7 +108,7 @@ if(isset($_POST['changer_frankiz'])) {
 		$portable = $_POST['portable'];
 		
 		$DB_trombino->query("UPDATE eleves SET portable='$portable',surnom='$surnom',mail=".(empty($mail)?"NULL":"'$mail'")." WHERE eleve_id='{$_SESSION['user']->uid}'");
-		$message.="<commentaire>L'email, le surnom et le portable ont été modifiés.</commentaire>";
+		$message.="<commentaire>L'email, le surnom et ton numéro de portable ont été modifiés.</commentaire>";
 	}
 	
 	//===================================
@@ -226,7 +228,9 @@ require "../include/page_header.inc.php";
 		if(a_erreur(ERR_PORTABLE_TROP_PETIT))
 			echo "<warning>Un portable a besoin d'au moins 8 chifres pout être identifié. Le portable n'a pas été modifié.</warning>\n";
 		if(a_erreur(ERR_PORTABLE_TROP_LONG))
-			echo "<warning>Le champ \"Portable\" n'accepte plus que 14 caractères. Le portable n'a pas été modifié.</warning>\n";
+			echo "<warning>Le champ \"Portable\" n'accepte pas plus de 32 caractères. Le portable n'a pas été modifié.</warning>\n";
+		if(a_erreur(ERR_PORTABLE_FORMAT))
+			echo "<warning>Le champ \"Portable\" n'accepte que des chiffres, espace, (, ) ou + . Le portable n'a pas été modifié.</warning>\n";
 ?>
 	<formulaire id="mod_frankiz" titre="Modification du compte Frankiz" action="profil/profil.php">
 		<?php
