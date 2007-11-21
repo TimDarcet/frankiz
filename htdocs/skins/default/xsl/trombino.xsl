@@ -77,7 +77,7 @@
 								<br/>
 							</p>
 							<p class="left"><br/>
-								<strong>Tel/Cel : </strong><xsl:value-of select="@tel"/>/<xsl:value-of select="@portable"/><br/>
+								<strong>Tel/Port : </strong><xsl:value-of select="@tel"/>/<xsl:value-of select="@portable"/><br/>
 								<strong>Kzt : </strong><xsl:value-of select="@casert"/><br/>
 								<strong>Nat. : </strong><xsl:value-of select="@nation"/><br/>
 								<strong>Mail : </strong><a><xsl:attribute name="href"><xsl:text>mailto:</xsl:text><xsl:value-of select="@login"/><xsl:text>@poly</xsl:text></xsl:attribute><xsl:value-of select="@login"/><xsl:text>@poly</xsl:text></a><br/>
