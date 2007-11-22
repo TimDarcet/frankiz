@@ -99,7 +99,7 @@ if(isset($_POST['changer_frankiz'])) {
 		ajoute_erreur(ERR_PORTABLE_TROP_PETIT);
 	if(strlen($_POST['portable']) > 32)
 		ajoute_erreur(ERR_PORTABLE_TROP_LONG);
-	if(!ereg("^[()+ 0-9]+$", $_POST['portable']))
+	if(!ereg("^[-()+. 0-9]+$", $_POST['portable']))
 		ajoute_erreur(ERR_PORTABLE_FORMAT);
 	
 	if(aucune_erreur()) {
