@@ -197,7 +197,7 @@ class Mail {
 			$this->body .= "--{$this->boundary}\n".
 						   "Content-Type: $type; charset=$charset\n".
 						   "Content-Transfer-Encoding: $encoding\n".
-						   "$value\n";
+						   "\n$value\n";
 		} else {
 			echo "<b>Erreur : addPart s'applique uniquement aux messages multipart!</b>";
 		}
