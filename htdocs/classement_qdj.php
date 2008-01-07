@@ -115,12 +115,12 @@ if(isset($_REQUEST["graph"])){
 		$moisMax = date("n",$dateMax);
 		$moisMin = floor(($moisMin -1) / 2) * 2 + 1;
 		$moisMax = (floor(($moisMax + 1) / 2) - 1) * 2;  //bidouille pour recuperer le mois avant le groupe en cours...
-		$nbrIntervals = floor( ( 12 * ($anneeMax - $anneeMin) + $moisMax - $moisMin) /2 ) + 2;
+		$nbrIntervals = floor( ( 12 * ($anneeMax - $anneeMin) + $moisMax - $moisMin) /2 ) + 1;
 		$datesDebut = array();
 		$datesDebutAffichage = array();
 		$annee = 0;
 		$mois = 0;
-		for ($i=0; $i<=$nbrIntervals; $i++){
+		for ($i=0; $i<=$nbrIntervals+1; $i++){
 			$annee = $anneeMin + floor(($moisMin + 2 * $i) / 12);
 			$mois = ($moisMin + 2 * $i) %12;
 			$datesDebut[$i] = mktime(0,0,0,$mois,1,$annee);
@@ -130,13 +130,13 @@ if(isset($_REQUEST["graph"])){
 			$periode = $_POST['periode'];
 			if (is_numeric($periode)) $periode=intval($periode);
 		} else {
-			$periode = $nbrIntervals - 1; // Periode actuelle
+			$periode = "actuelle"; // Periode actuelle
 		}
 		echo "<formulaire id='form' titre='Choix de la période' action='classement_qdj.php'>\n";
 		echo "<choix titre='Quelle période afficher ?' id='periode' type='combo' valeur='$periode'>\n";
-		echo "<option titre='La période actuelle' id='".($nbrIntervals-1)."' />\n";
+		echo "<option titre='La période actuelle' id='actuelle' />\n";
 		echo "<option titre='Tous les scores' id='tout' />\n";
-		for($i=0; $i<$nbrIntervals-1; $i++){
+		for($i=0; $i<$nbrIntervals; $i++){
 			echo "<option titre='Du {$datesDebutAffichage[$i]} au {$datesDebutAffichage[$i+1]}' id='$i' />\n";
 		}
 		echo '</choix>';
@@ -199,6 +199,8 @@ if(isset($_REQUEST["graph"])){
 		if (is_int($periode) && $periode >= 0 && $periode < $nbrIntervals) {
 			$requete = $debutRequete . " AND UNIX_TIMESTAMP(date) >= {$datesDebut[$periode]} AND UNIX_TIMESTAMP(date) < {$datesDebut[$periode+1]}"
 					.$finRequete;
+		} else if ($periode == 'actuelle') {
+			$requete = $debutRequete . " AND UNIX_TIMESTAMP(date) >= {$datesDebut[$nbrIntervals]} " . $finRequete;
 		} else { // $periode == 'tout'
 			$requete = $debutRequete.$finRequete;
 		}
