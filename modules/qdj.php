@@ -80,7 +80,7 @@ class QDJModule extends PLModule
 		// ------------------------------------- Requetes SQLs -----------------------------------------------
 		$debutRequete = "
 					SELECT
-						t.eleve_id, t.nom, t.prenom, t.surnom, t.promo,
+						t.eleve_id, t.nom, t.prenom, t.surnom, t.login, t.promo,
 						p.total, p.nb1, p.nb2, p.nb3, p.nb4, p.nb5, p.nb6, p.nb7, p.nb8, p.nb9, p.nb10
 					FROM	
 		(SELECT eleve_id,
