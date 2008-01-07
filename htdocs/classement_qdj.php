@@ -115,7 +115,7 @@ if(isset($_REQUEST["graph"])){
 		$moisMax = date("n",$dateMax);
 		$moisMin = floor(($moisMin -1) / 2) * 2 + 1;
 		$moisMax = (floor(($moisMax + 1) / 2) - 1) * 2;  //bidouille pour recuperer le mois avant le groupe en cours...
-		$nbrIntervals = floor( ( 12 * ($anneeMax - $anneeMin) + $moisMax - $moisMin) /2 ) + 1;
+		$nbrIntervals = floor( ( 12 * ($anneeMax - $anneeMin) + $moisMax - $moisMin) /2 ) + 2;
 		$datesDebut = array();
 		$datesDebutAffichage = array();
 		$annee = 0;
@@ -129,14 +129,14 @@ if(isset($_REQUEST["graph"])){
 		if (isset($_POST['periode'])){
 			$periode = $_POST['periode'];
 			if (is_numeric($periode)) $periode=intval($periode);
-		}else{
-			$periode = "actuelle";
+		} else {
+			$periode = $nbrIntervals - 1; // Periode actuelle
 		}
 		echo "<formulaire id='form' titre='Choix de la période' action='classement_qdj.php'>\n";
 		echo "<choix titre='Quelle période afficher ?' id='periode' type='combo' valeur='$periode'>\n";
-		echo "<option titre='La période actuelle' id='actuelle' />\n";
+		echo "<option titre='La période actuelle' id='".($nbrIntervals-1)."' />\n";
 		echo "<option titre='Tous les scores' id='tout' />\n";
-		for($i=0; $i<$nbrIntervals; $i++){
+		for($i=0; $i<$nbrIntervals-1; $i++){
 			echo "<option titre='Du {$datesDebutAffichage[$i]} au {$datesDebutAffichage[$i+1]}' id='$i' />\n";
 		}
 		echo '</choix>';
@@ -148,26 +148,6 @@ if(isset($_REQUEST["graph"])){
 				<entete id="detail" titre="Détail"/>
 				<entete id="total" titre="Total (moyenne, écart type)"/>
 <?php
-		$requete = "
-					SELECT
-						t.eleve_id, t.nom, t.prenom, t.surnom, t.promo,
-						p.total, p.nb1, p.nb2, p.nb3, p.nb4, p.nb5, p.nb6, p.nb7, p.nb8, p.nb9, p.nb10
-					FROM
-						qdj_points AS p
-					LEFT JOIN
-						trombino.eleves AS t USING(eleve_id)
-					WHERE
-						t.eleve_id != (SELECT
-											te.eleve_id
-										FROM
-											frankiz2.compte_frankiz
-										LEFT JOIN
-											trombino.eleves AS te USING(eleve_id)
-										WHERE
-											perms LIKE '%qdjmaster,%'
-										ORDER BY te.promo DESC
-										LIMIT 0,1)
-					ORDER BY p.total DESC";
 		$debutRequete = "
 		SELECT
 						t.eleve_id, t.nom, t.prenom, t.surnom, t.promo,
@@ -219,7 +199,7 @@ if(isset($_REQUEST["graph"])){
 		if (is_int($periode) && $periode >= 0 && $periode < $nbrIntervals) {
 			$requete = $debutRequete . " AND UNIX_TIMESTAMP(date) >= {$datesDebut[$periode]} AND UNIX_TIMESTAMP(date) < {$datesDebut[$periode+1]}"
 					.$finRequete;
-		} elseif ($periode == "tout"){
+		} else { // $periode == 'tout'
 			$requete = $debutRequete.$finRequete;
 		}
 		$DB_web->query($requete);
