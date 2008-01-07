@@ -48,11 +48,11 @@ class QDJModule extends PLModule
 		$moisMin = floor(($moisMin -1) / 2) * 2 + 1;
 		$moisMax = (floor(($moisMax + 1) / 2) - 1) * 2;
 
-		$nbrIntervals = floor( ( 12 * ($anneeMax - $anneeMin) + $moisMax - $moisMin) /2 ) + 1;
+		$nbrIntervals = floor( ( 12 * ($anneeMax - $anneeMin) + $moisMax - $moisMin) / 2 ) + 1;
 		
 		$annee = 0;
 		$mois = 0;
-		for ($i = 0; $i <= $nbrIntervals; $i++)
+		for ($i = 0; $i <= $nbrIntervals+1; $i++)
 		{
 			$annee = $anneeMin + floor(($moisMin + 2 * $i) / 12);
 			$mois = ($moisMin + 2 * $i) % 12;
@@ -78,26 +78,6 @@ class QDJModule extends PLModule
 		
 
 		// ------------------------------------- Requetes SQLs -----------------------------------------------
-		$requete = "
-					SELECT
-						t.eleve_id, t.nom, t.prenom, t.surnom, t.login, t.promo,
-						p.total, p.nb1, p.nb2, p.nb3, p.nb4, p.nb5, p.nb6, p.nb7, p.nb8, p.nb9, p.nb10
-					FROM
-						qdj_points AS p
-					LEFT JOIN
-						trombino.eleves AS t USING(eleve_id)
-					WHERE
-						t.eleve_id != (SELECT
-											te.eleve_id
-										FROM
-											frankiz2.compte_frankiz
-										LEFT JOIN
-											trombino.eleves AS te USING(eleve_id)
-										WHERE
-											perms LIKE '%qdjmaster,%'
-										ORDER BY te.promo DESC
-										LIMIT 0,1)
-					ORDER BY p.total DESC";
 		$debutRequete = "
 					SELECT
 						t.eleve_id, t.nom, t.prenom, t.surnom, t.promo,
@@ -154,11 +134,21 @@ class QDJModule extends PLModule
 			           AND UNIX_TIMESTAMP(date) < {$datesDebut[$periode+1]} 
 				   $finRequete";
 		} 
+		elseif ($periode == "actuelle")
+		{
+			$requete = "$debutRequete
+			           AND UNIX_TIMESTAMP(date) >= {$datesDebut[$nbrIntervals]}
+				   $finRequete";
+		}
 		elseif ($periode == "tout")
 		{
 			$requete = $debutRequete.$finRequete;
 		}
-		
+		else
+		{
+			$page->raise_error("Période invalide.");
+		}
+
 		$DB_web->query($requete);
 		$moy = 0;
 		$ecartype = 0;
