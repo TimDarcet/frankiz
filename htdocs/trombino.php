@@ -385,7 +385,12 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 
 			// Lien en bas de page vers le profil polytechnique.org
 			if(!empty($polyorg)){
-				echo "<lien url='https://www.polytechnique.org/profile/$polyorg' titre='Fiche sur polytechnique.org'/><br/>\n";
+				if($polyorg!="X"){
+					echo "<lien url='https://www.polytechnique.org/profile/$polyorg' titre='Fiche sur polytechnique.org'/><br/>\n";
+				}
+				else{
+					echo "<cadre><em>Pas encore de fiche sur polytechnique.org... C'est mal!</em></cadre>\n";
+				}
 			}
 
 			// Liens d'administration
