@@ -13,7 +13,7 @@
     <ul class="fkz_qdj_last">
       {foreach from=$minimodule.votants item=votant name=foo}
       {if $smarty.foreach.foo.iteration <= 6}
-      <li class="fkz_qdj_last">{$votant.order} {$votant.eleve.surnom}</li>
+      <li class="fkz_qdj_last">{$votant.ordre} {$votant.eleve.surnom}</li>
       {/if}
       {/foreach}
     </ul>

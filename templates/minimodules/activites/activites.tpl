@@ -1,7 +1,7 @@
 {foreach from=$minimodule.activites item=activite}
 {if $activite.exterieur or $session->est_authentifie(AUTH_INTERNE)}
 <div style="text-align:center">
-  <strong><span>{$titre}</span></strong>
+  <strong><span>{$activite.titre}</span></strong>
 </div>
 <div style="text-align:center">
   {if $activite.date neq ""}{$activite.date|date_format:"A %H:%M"}<br />{/if}
@@ -11,8 +11,9 @@
   </a>
 </div>
 {/if}
+<br />
 {/foreach}
-{if $minimodule.activite_etat_bob and $session->est_authentifie(AUTH_INTERNE)}
+{if $minimodule.activites_etat_bob and $session->est_authentifie(AUTH_INTERNE)}
 <div style="text-align:center">
   <strong><span>Le Bôb est ouvert!</span></strong>
 </div>
