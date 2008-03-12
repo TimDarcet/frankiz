@@ -4,9 +4,9 @@
   <strong><span>{$titre}</span></strong>
 </div>
 <div style="text-align:center">
-  {if $annonce.date neq ""}{$activite.date}{/if}
+  {if $activite.date neq ""}{$activite.date|date_format:"A %H:%M"}<br />{/if}
   <a href="{if $activite.url neq ""}{$activite.url}{else}activites.php{/if}">
-    <img src="{$activite.image}" alt="Affiche">
+    <img src="{$activite.image}" alt="Affiche" /><br />
     <span class="legende">{$activite.titre}</span>
   </a>
 </div>

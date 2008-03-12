@@ -1,4 +1,4 @@
-{if isset($sueur) }
+{if $session->v('sueur') }
 <span class='warning'>ATTENTION, su en cours. Pour revenir à ta vraie identité, clique <a href="index.php?logout=1">ici</a></span>
 {/if}
 <ul class="fkz_liens">

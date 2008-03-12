@@ -35,13 +35,13 @@ class ActivitesMiniModule extends FrankizMiniModule
 			      ORDER BY date");
 
 		$activites = array();
-		while ($row = $DB_web->next_row())
+		while (list($affiche_id, $titre, $url, $date, $exterieur) = $DB_web->next_row())
 		{
-			$activites[] = array('titre' => $row['titre'],
-					     'url' => $row['url'],
-					     'date' => $row['date'],
-					     'exterieur' => $row['exterieur'],
-					     'image' => $row['affiche_id']);
+			$activites[] = array('titre' => $titre,
+					     'url' => $url,
+					     'date' => $date,
+					     'exterieur' => $exterieur,
+					     'image' => "data/affiches/$affiche_id");
 		}
 
 		if (!getEtatBob() && count($activites) == 0)
