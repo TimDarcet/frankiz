@@ -135,37 +135,9 @@ require_once BASE_FRANKIZ.'platal-classes/env.php';
 require_once BASE_FRANKIZ.'platal-classes/plbacktrace.php';
 require_once BASE_FRANKIZ.'platal-includes/platal.inc.php';
 require_once BASE_FRANKIZ.'platal-includes/globals.inc.php';
+require_once BASE_FRANKIZ.'htdocs/include/frankiz.inc.php';
 
-class FrankizPage extends PlatalPage
-{
-	public function __construct($tpl, $type = SKINNED)
-	{
-		parent::__construct($tpl, $type);
-		$this->assign('page_base', BASE_URL);
-		$this->assign('page_no_title', 0);
-	}
-
-	public function run()
-	{
-		global $minimodules;
-
-		$this->assign('skin', $_SESSION['skin']);
-		$this->assign('session', new FrankizSession);
-		$this->assign('minimodules', $minimodules);
-		if (isset($_SESSION['sueur']))
-			$this->assign('sueur', $_SESSION['sueur']);
-	
-		$this->register_function("minimodule", array('FrankizMiniModule', "print_template"));
-		$this->register_function("minimodule_header", array('FrankizMiniModule', "print_template_header"));
-		$this->register_modifier("wiki_vers_html", "wikiVersXML");
-
-		affiche_erreurs_php();
-		$this->_run("main.tpl");
-		affiche_debug_php();
-	}
-}
 $globals = new PlatalGlobals("FrankizSession");
-$page = new FrankizPage("xml.tpl");
 
 function call($module_name, $function_name)
 {

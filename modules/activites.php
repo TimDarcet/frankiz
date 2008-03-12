@@ -39,7 +39,7 @@ class ActivitesModule extends PLModule
 			$activites[$date][] = array('id' => $id,
 					            'titre' => $titre,
 						    'url' => $url,
-						    'date' => $date,
+						    'date' => $datetime,
 						    'texte' => $texte);
 		}
 		$page->assign('activites', $activites);

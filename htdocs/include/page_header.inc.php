@@ -26,6 +26,8 @@
 require_once "global.inc.php";
 require_once BASE_MODULES."/core.php";
 
+$page = new FrankizPage("xml.tpl");
+
 // mise en place du cache de sortie
 ob_start();
 

@@ -1,8 +1,8 @@
 {if !$session->est_auth() }
 <link ref="navigation" href="login.php" title="Se connecter" />
 {/if}
-<link ref="navigation" href="index.php" title="Annonces" />
-<link ref="navigation" href="activites.php" title="Activités" />
+<link ref="navigation" href="annonces/" title="Annonces" />
+<link ref="navigation" href="activites/" title="Activités" />
 {if !$session->est_auth() or !$session->est_interne() }
 <link ref="navigation" href="trombino.php" title="Trombino" />
 {/if}

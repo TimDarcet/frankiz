@@ -1,6 +1,6 @@
-<?php
+<?
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2008 Binet Réseau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -18,16 +18,18 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Page d'activites de frankiz.
+	Charge les modules et lance platal
 	
-	$Id$
+	$Id: activites.php 1981 2007-10-26 01:20:26Z elscouta $
 
 */
 
-// génération de la page
-require_once "include/page_header.inc.php";
-require_once "../modules/activites.php";
-call("ActivitesModule", "activites");
+require_once dirname(__FILE__)."/include/global.inc.php";
+require_once "../platal-classes/platal.php";
+require_once "include/minimodules.inc.php";
+require_once "include/wiki.inc.php";
 
-require_once "include/page_footer.inc.php";
+$p = new Platal('core', 'activites', 'annonces', 'qdj');
+$p->run();
+
 ?>

@@ -2,8 +2,8 @@
   {if !$session->est_auth() }
   <li class="fkz_liens"><a href="login.php" accesskey="l">Se connecter</a></li>
   {/if}
-  <li class="fkz_liens"><a href="index.php" accesskey="a">Annonces</a></li>
-  <li class="fkz_liens"><a href="activites.php">Activités</a></li>
+  <li class="fkz_liens"><a href="annonces/" accesskey="a">Annonces</a></li>
+  <li class="fkz_liens"><a href="activites/">Activités</a></li>
   {if !$session->est_auth() or !$session->est_interne() }
   <li class="fkz_liens"><a href="trombino.php" accesskey="t">Trombino</a></li>
   {/if}
