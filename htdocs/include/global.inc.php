@@ -87,14 +87,12 @@ $_GET = nettoyage_balise($_GET);
 $_POST = nettoyage_balise($_POST);
 $_REQUEST = nettoyage_balise($_REQUEST);
 
+
 // divers fichiers inclus pour effectuer des actions avant l'affichage de la page
 require_once "global_func.inc.php";
 require_once "mail.inc.php";
-require_once "init_login.inc.php";
 
-ajouter_debug_log(var_export($_GET,true));
-ajouter_debug_log(var_export($_POST,true));
-ajouter_debug_log(var_export($_COOKIE,true));
-ajouter_debug_log(var_export($_SESSION,true));
+// A RETIRER! Duplica avec la meme ligne dans index.php
+FrankizSession::init();
 
 ?>

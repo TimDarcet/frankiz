@@ -46,16 +46,20 @@ class FrankizSession extends Session
 			$_SESSION['ip'] = ip_get();
 		} elseif ($_SESSION['ip'] != ip_get()) {
 			S::destroy();
+			S::init();
 		}
 		
 		if (isset($_REQUEST['logout']))
+		{
 			S::destroy();
+			S::init();
+		}
 
 		if (!FrankizSession::doAuth(false))
 			$_SESSION['auth'] = AUTH_PUBLIC;
 	
 		if (est_interne())
-			$_SESSION['fkz_perms']['interne'] = 1;
+			$_SESSION['perms']->addFlag('interne');
 
 		FrankizSession::load_skin(false);
 	}
@@ -98,10 +102,10 @@ class FrankizSession extends Session
 	{
 		global $DB_web;
 		
-		if (!isset($_POST['login_login']) || !isset($_POST['passwd_login']))
+		if (!isset($_POST['start_connexion']))
 			return false;
-		
-		$value = explode(".",$_POST['login_login']) ;
+	
+		$value = explode(".",$_POST['login']);
 		if (count($value) != 2)
 			return false;
 
@@ -114,12 +118,12 @@ class FrankizSession extends Session
 		                 WHERE e.login = '$login' AND e.promo = '$promo'");
 		list ($uid, $passwd) = $DB_web->next_row();
 
-		if ($uid != 0 && md5($_POST['passwd_login']) == $passwd) 
+		if ($uid != 0 && md5($_POST['password']) == $passwd) 
 		{
-			$_hash_shadow = hash_shadow($_POST['passwd_login']);
+			$_hash_shadow = hash_shadow($_POST['password']);
 			$DB_web->query("UPDATE compte_frankiz SET passwd='$_hash_shadow' WHERE eleve_id='{$uid}'");
 		}
-		else if ($uid == 0 || crypt($_POST['passwd_login'], $passwd) != $passwd)
+		else if ($uid == 0 || crypt($_POST['password'], $passwd) != $passwd)
 			return false;
 
 		$_SESSION['uid'] = $uid;
@@ -195,13 +199,13 @@ class FrankizSession extends Session
 		{
 			if ($perm)
 			{
-				$_SESSION['fkz_perms'][$perm] = 1;
-				$_SESSION['fkz_perms']['semiadmin'] = 1;
+				$_SESSION['perms']->addFlag($perm);
+				$_SESSION['perms']->addFlag('semiadmin');
 			}
 		}
 		
-		$_SESSION['fkz_perms']["user"] = 1;
-		$_SESSION['fkz_perms']["interne"] = 1;
+		$_SESSION['perms']->addFlag("user");
+		$_SESSION['perms']->addFlag("interne");
 
 
 		// Mise à jour de la skin.
@@ -291,7 +295,7 @@ class FrankizSession extends Session
 
 	public static function verifie_permission($perm) 
 	{
-		return isset($_SESSION['fkz_perms'][$perm]); 
+		return $_SESSION['perms']->hasFlag($perm); 
 	}
 	
 	public static function verifie_permission_prez($binet) 

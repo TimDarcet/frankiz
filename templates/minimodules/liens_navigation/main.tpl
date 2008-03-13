@@ -1,6 +1,6 @@
 <ul class="fkz_liens">
   {if !$session->est_auth() }
-  <li class="fkz_liens"><a href="login.php" accesskey="l">Se connecter</a></li>
+  <li class="fkz_liens"><a href="login/" accesskey="l">Se connecter</a></li>
   {/if}
   <li class="fkz_liens"><a href="annonces/" accesskey="a">Annonces</a></li>
   <li class="fkz_liens"><a href="activites/">Activités</a></li>

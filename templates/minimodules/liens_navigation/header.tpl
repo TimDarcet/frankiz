@@ -1,17 +1,17 @@
 {if !$session->est_auth() }
-<link ref="navigation" href="login.php" title="Se connecter" />
+<link rel="navigation" href="login/" title="Se connecter" />
 {/if}
-<link ref="navigation" href="annonces/" title="Annonces" />
-<link ref="navigation" href="activites/" title="Activités" />
+<link rel="navigation" href="annonces/" title="Annonces" />
+<link rel="navigation" href="activites/" title="Activités" />
 {if !$session->est_auth() or !$session->est_interne() }
-<link ref="navigation" href="trombino.php" title="Trombino" />
+<link rel="navigation" href="trombino.php" title="Trombino" />
 {/if}
-<link ref="navigation" href="xshare.php" title="Télécharger" />
-<link ref="navigation" href="http://wikix.polytechnique.org" title="WikiX" />
-<link ref="navigation" href="binets.php" title="Binets" />
+<link rel="navigation" href="xshare.php" title="Télécharger" />
+<link rel="navigation" href="http://wikix.polytechnique.org" title="WikiX" />
+<link rel="navigation" href="binets.php" title="Binets" />
 {if !$session->est_auth() and !$session->est_interne() }
-<link ref="navigation" href="http://perso.frankiz/" title="Sites élèves" />
+<link rel="navigation" href="http://perso.frankiz/" title="Sites élèves" />
 {else}
-<link ref="navigation" href="siteseleves.php" title="Sites élèves" />
+<link rel="navigation" href="siteseleves.php" title="Sites élèves" />
 {/if}
 

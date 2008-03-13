@@ -1,9 +1,15 @@
 RewriteEngine on
 RewriteBase /~elscouta/frankiz/htdocs/
 
+# Temporaire - en attendant le déplacement des répertoires
 RewriteRule ^data/ - [L]
 RewriteRule ^skins/ - [L]
 
+# Temporaire - en attendant que profil soit entierement migre
+RewriteRule ^profil/$ index.php?n=profil [L,QSA]
+
+RewriteRule ^$ index.php?n=annonces [L,QSA]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ platalwrap.php?n=$1 [L,QSA]
+RewriteRule ^(.*)$ index.php?n=$1 [L,QSA]

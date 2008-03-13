@@ -136,6 +136,7 @@ require_once BASE_FRANKIZ.'platal-classes/plbacktrace.php';
 require_once BASE_FRANKIZ.'platal-includes/platal.inc.php';
 require_once BASE_FRANKIZ.'platal-includes/globals.inc.php';
 require_once BASE_FRANKIZ.'htdocs/include/frankiz.inc.php';
+require_once BASE_FRANKIZ.'htdocs/include/session.inc.php';
 
 $globals = new PlatalGlobals("FrankizSession");
 

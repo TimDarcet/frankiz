@@ -25,7 +25,9 @@
 */
 require_once "global.inc.php";
 require_once BASE_MODULES."/core.php";
+require_once "session.inc.php";
 
+FrankizSession::init();
 $page = new FrankizPage("xml.tpl");
 
 // mise en place du cache de sortie

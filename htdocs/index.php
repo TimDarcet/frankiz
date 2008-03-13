@@ -28,8 +28,12 @@ require_once dirname(__FILE__)."/include/global.inc.php";
 require_once "../platal-classes/platal.php";
 require_once "include/minimodules.inc.php";
 require_once "include/wiki.inc.php";
+require_once "include/session.inc.php";
 
-$p = new Platal('core', 'activites', 'annonces', 'qdj');
+FrankizSession::init();
+
+
+$p = new Platal('core', 'activites', 'annonces', 'profil', 'qdj');
 $p->run();
 
 ?>
