@@ -28,8 +28,7 @@
         Raison:
       </span>
       <span class='droite'>
-        <textarea name='raison' rows='7' cols='50'>
-        </textarea>
+        <textarea name='raison' rows='7' cols='50'></textarea>
       </span>
     </div>
     <div>

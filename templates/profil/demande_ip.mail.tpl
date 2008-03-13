@@ -1,6 +1,7 @@
+{config_load file="mails.conf" section="demande_ip"}
 {if $mail_part eq "head"}
-{from full="Les Roots du BR <root@frankiz.polytechnique.fr>"}
-{to addr=root@frankiz.polytechnique.fr}
+{from full=#from#}
+{to full=#to#}
 {subject text="[Frankiz] Demande d'enregistrement d'une nouvelle machine"}
 {/if}
 {if $mail_part eq "html"}
