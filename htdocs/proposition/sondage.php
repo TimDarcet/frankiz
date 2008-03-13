@@ -182,7 +182,7 @@ if (isset($_POST['valid'])) {
 //===============
 //=================
 
-require_once BASE_LOCAL."/include/page_header.inc.php";
+require_once BASE_FRANKIZ."include/page_header.inc.php";
 
 ?>
 
@@ -430,5 +430,5 @@ else $temp = array("aucune","");
 </page>
 <?php
 
-require_once BASE_LOCAL."/include/page_footer.inc.php";
+require_once BASE_FRANKIZ."include/page_footer.inc.php";
 ?>

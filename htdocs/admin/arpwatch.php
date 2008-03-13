@@ -115,7 +115,7 @@ function maj_mac_dans_bdd($fich) {
 
 // Génération de la page
 //===============
-require_once BASE_LOCAL."/include/page_header.inc.php";
+require_once BASE_FRANKIZ."include/page_header.inc.php";
 
 ?>
 <page id="admin_arp" titre="Frankiz : gestion de l'arpwatch">
@@ -292,5 +292,5 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 </page>
 
 <?php
-require_once BASE_LOCAL."/include/page_footer.inc.php";
+require_once BASE_FRANKIZ."include/page_footer.inc.php";
 ?>

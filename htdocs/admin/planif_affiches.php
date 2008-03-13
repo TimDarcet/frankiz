@@ -40,7 +40,7 @@ else
 
 // Génération de la page
 //===============
-require_once BASE_LOCAL."/include/page_header.inc.php";
+require_once BASE_FRANKIZ."include/page_header.inc.php";
 
 ?>
 <page id="planif_affiches" titre="Frankiz : Planifie tes activités">
@@ -154,5 +154,5 @@ while(list($id,$titre,$url,$date,$texte) = $DB_web->next_row()){
 </page>
 
 <?php
-require_once BASE_LOCAL."/include/page_footer.inc.php";
+require_once BASE_FRANKIZ."include/page_footer.inc.php";
 ?>

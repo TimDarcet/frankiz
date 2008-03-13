@@ -115,4 +115,4 @@ if ($DB_valid->num_rows()>0) { ?>
 <?php } ?>
 
 </page>
-<?php require_once BASE_LOCAL."/include/page_footer.inc.php"; ?>
+<?php require_once BASE_FRANKIZ."include/page_footer.inc.php"; ?>

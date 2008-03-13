@@ -25,10 +25,10 @@
 */
 
 require_once "include/global.inc.php";
-require_once BASE_LOCAL."/include/meteo_func.inc.php";
+require_once BASE_FRANKIZ."include/meteo_func.inc.php";
 
 // génération de la page
-require BASE_LOCAL."/include/page_header.inc.php";
+require BASE_FRANKIZ."include/page_header.inc.php";
 ?>
 <page id='meteo' titre='Frankiz : méteo'>
 <h1>La météo du platâl</h1>
@@ -41,4 +41,4 @@ require BASE_LOCAL."/include/page_header.inc.php";
 <lien url="http://www.weather.com/?prod=xoap&amp;par=1006415841"><image source="images/Weather.com.png" texte="Logo Weather.com"/></lien><br/>
 <lien url="http://www.weather.com/?prod=xoap&amp;par=1006415841">Météo fournie grâce à weather.com&#174;</lien>
 </page>
-<?php require_once BASE_LOCAL."/include/page_footer.inc.php"; ?>
+<?php require_once BASE_FRANKIZ."include/page_footer.inc.php"; ?>

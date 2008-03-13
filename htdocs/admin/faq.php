@@ -35,7 +35,7 @@ if(isset($_REQUEST['download'])&&isset($_REQUEST['download_type'])){
 
 // Génération de la page
 //===============
-require_once BASE_LOCAL."/include/page_header.inc.php";
+require_once BASE_FRANKIZ."include/page_header.inc.php";
 
 ?>
 <page id="faq" titre="Frankiz : FAQ">
@@ -373,5 +373,5 @@ echo "</arbre>";
 </page>
 <?php
 
-require_once BASE_LOCAL."/include/page_footer.inc.php";
+require_once BASE_FRANKIZ."include/page_footer.inc.php";
 ?>

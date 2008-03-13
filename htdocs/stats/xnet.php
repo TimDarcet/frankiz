@@ -5,7 +5,7 @@ demande_authentification(AUTH_COOKIE);
 
 // Génération de la page
 //===============
-require_once BASE_LOCAL."/include/page_header.inc.php";
+require_once BASE_FRANKIZ."include/page_header.inc.php";
 
 ?>
 <page id="stat_xnet" titre="Frankiz : Statistiques Xnet">
@@ -18,5 +18,5 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 	<image source="stats/xnet_serveurs.php" texte="Statistiques des serveurs"/>
 </page>
 <?php
-require_once BASE_LOCAL."/include/page_footer.inc.php";
+require_once BASE_FRANKIZ."include/page_footer.inc.php";
 ?>

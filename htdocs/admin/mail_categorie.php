@@ -31,8 +31,8 @@ demande_authentification(AUTH_COOKIE);
 
 // Génération de la page
 //===============
-require_once BASE_LOCAL."/include/page_header.inc.php";
-require_once BASE_LOCAL."/include/wiki.inc.php";
+require_once BASE_FRANKIZ."include/page_header.inc.php";
+require_once BASE_FRANKIZ."include/wiki.inc.php";
 
 $DB_trombino->query("SELECT eleve_id,nom,prenom,surnom,mail,login,promo FROM eleves WHERE eleve_id='".$_SESSION['uid']."'");
 list($eleve_id,$nom,$prenom,$surnom,$mail,$login,$promo) = $DB_trombino->next_row();
@@ -239,5 +239,5 @@ if (!isset($_POST['envoie'])||isset($_POST['continuer'])) {
 </page>
 
 <?php
-require_once BASE_LOCAL."/include/page_footer.inc.php";
+require_once BASE_FRANKIZ."include/page_footer.inc.php";
 ?>

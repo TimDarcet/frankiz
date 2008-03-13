@@ -96,5 +96,5 @@ if($mail_envoye) { ?>
 <?php }
 
 echo "</page>\n";
-require_once BASE_LOCAL."/include/page_footer.inc.php";
+require_once BASE_FRANKIZ."include/page_footer.inc.php";
 ?>

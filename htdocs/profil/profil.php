@@ -54,5 +54,5 @@ else if (isset($_POST['add_binet']))
 else
 	call('ProfilModule', 'profil/fkz');
 
-require_once BASE_LOCAL."/include/page_footer.inc.php";
+require_once BASE_FRANKIZ."include/page_footer.inc.php";
 ?>

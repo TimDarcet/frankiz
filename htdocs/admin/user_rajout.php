@@ -35,7 +35,7 @@ if(!verifie_permission('admin')&&!verifie_permission('trombino'))
 
 // Génération de la page
 //===============
-require_once BASE_LOCAL."/include/page_header.inc.php";
+require_once BASE_FRANKIZ."include/page_header.inc.php";
 
 ?>
 <page id="admin_user" titre="Frankiz : rajout des utilisateurs">
@@ -141,5 +141,5 @@ if ((!isset($_POST['ajout']))&&($erreur==0)) {
 </page>
 <?php
 
-require_once BASE_LOCAL."/include/page_footer.inc.php";
+require_once BASE_FRANKIZ."include/page_footer.inc.php";
 ?>

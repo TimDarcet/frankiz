@@ -6,7 +6,7 @@ class FrankizPage extends PlatalPage
 	{
 		parent::__construct($tpl, $type);
 		$this->assign('page_base', BASE_URL);
-		$this->assign('page_no_title', 0);
+		$this->assign('page_raw', 0);
 	}
 
 	private function load_minimodules()

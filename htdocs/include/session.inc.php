@@ -362,10 +362,10 @@ function demande_authentification($minimum) {
 	if (est_authentifie($minimum))
 		return;
 
-	require_once BASE_LOCAL."/include/page_header.inc.php";
+	require_once BASE_FRANKIZ."include/page_header.inc.php";
 
 	call('CoreModule', 'do_login');
-	require_once BASE_LOCAL."/include/page_footer.inc.php";
+	require_once BASE_FRANKIZ."include/page_footer.inc.php";
 	exit;
 }
 function demande_permission($perm)
@@ -373,10 +373,10 @@ function demande_permission($perm)
 	if (verifie_permission($perm))
 		return;
 
-	require_once BASE_LOCAL."/include/page_header.inc.php";
+	require_once BASE_FRANKIZ."include/page_header.inc.php";
 
 	call('CoreModule', 'do_login');
-	require_once BASE_LOCAL."/include/page_footer.inc.php";
+	require_once BASE_FRANKIZ."include/page_footer.inc.php";
 	exit;
 }
 

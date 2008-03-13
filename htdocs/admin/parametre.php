@@ -53,7 +53,7 @@ foreach ($_POST AS $keys => $val){
 
 // Génération de la page
 //===============
-require_once BASE_LOCAL."/include/page_header.inc.php";
+require_once BASE_FRANKIZ."include/page_header.inc.php";
 ?>
 <page id="admin_parametre" titre="Frankiz : Modifier les paramètres globaux">
 
@@ -94,4 +94,4 @@ Si vous devez créer des variables dans la table, essayez de faire qu'elles soie
 	
 </page>
 
-<?php require_once BASE_LOCAL."/include/page_footer.inc.php" ?>
+<?php require_once BASE_FRANKIZ."include/page_footer.inc.php" ?>

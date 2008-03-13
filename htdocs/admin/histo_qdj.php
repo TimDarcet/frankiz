@@ -35,7 +35,7 @@ if(!verifie_permission('admin') && !verifie_permission('qdjmaster'))
 
 // Génération de la page
 //===============
-require_once BASE_LOCAL."/include/page_header.inc.php";
+require_once BASE_FRANKIZ."include/page_header.inc.php";
 
 ?>
 <page id="Histo_qdj" titre="Frankiz : Historique des qdj">
@@ -72,5 +72,5 @@ $date = date("Y-m-d", time());
 </page>
 
 <?php
-require_once BASE_LOCAL."/include/page_footer.inc.php";
+require_once BASE_FRANKIZ."include/page_footer.inc.php";
 ?>

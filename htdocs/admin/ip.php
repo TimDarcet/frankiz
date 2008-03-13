@@ -73,7 +73,7 @@ function mac($id_prise,$fich){
 
 // Génération de la page
 //===============
-require_once BASE_LOCAL."/include/page_header.inc.php";
+require_once BASE_FRANKIZ."include/page_header.inc.php";
 
 ?>
 <page id="admin_arp" titre="Frankiz : gestion des logs ip">
@@ -177,5 +177,5 @@ if (isset($_POST['recherche']) ) {
 </page>
 
 <?php
-require_once BASE_LOCAL."/include/page_footer.inc.php";
+require_once BASE_FRANKIZ."include/page_footer.inc.php";
 ?>

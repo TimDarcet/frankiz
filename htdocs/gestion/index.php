@@ -32,7 +32,7 @@ if (!FrankizSession::is_admin())
 	acces_interdit();
 
 // Génération de la page
-require_once BASE_LOCAL."/include/page_header.inc.php";
+require_once BASE_FRANKIZ."include/page_header.inc.php";
 demande_authentification(AUTH_MDP);
 
 $permissions_user = array_keys($_SESSION['fkz_perms']);
@@ -304,4 +304,4 @@ $permissions_user = array_keys($_SESSION['fkz_perms']);
 ?>
 
 </page>
-<?php require_once BASE_LOCAL."/include/page_footer.inc.php"; ?>
+<?php require_once BASE_FRANKIZ."include/page_footer.inc.php"; ?>

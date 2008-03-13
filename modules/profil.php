@@ -35,6 +35,7 @@ class ProfilModule extends PLModule
 			     'profil/fkz/change_mdp'     => $this->make_hook('fkz_change_mdp', AUTH_MDP),
 		             'profil/fkz/change_tol'     => $this->make_hook('fkz_change_tol', AUTH_COOKIE),
 			     'profil/fkz/mod_binets'     => $this->make_hook('fkz_mod_binets', AUTH_COOKIE),
+			     'profil/reseau'		 => $this->make_hook('reseau', AUTH_MDP),
 			     'profil/skin'               => $this->make_hook('skin', AUTH_COOKIE),
 			     'profil/skin/change_skin'   => $this->make_hook('skin_change', AUTH_COOKIE),
 			     'profil/skin/change_params' => $this->make_hook('skin_params', AUTH_COOKIE));
@@ -360,6 +361,68 @@ class ProfilModule extends PLModule
 
 		$this->handler_skin($page);
 	}
+
+	function handler_reseau(&$page)
+	{
+		global $DB_admin, $DB_trombino, $DB_xnet;
+
+		$DB_admin->query("SELECT  ip.piece_id, ip.prise_id, ip.ip 
+		                    FROM  prises AS ip
+			       LEFT JOIN  trombino.eleves AS e USING(piece_id)
+			           WHERE  e.eleve_id='{$_SESSION['uid']}'
+			        ORDER BY  ip.type ASC");
+
+		//////
+		// On détermine si une IP de l'élève correspond à l'ordi depuis lequel il se connecte.
+		//
+		$id_ip = 0;
+		$ip = array();
+		$prise = array();
+		$match_ip = false;
+		while (list ($ksert, $prise[$id_ip], $ip[$id_ip]) = $DB_admin->next_row())
+		{
+			$match_ip = $match_ip || $ip[$id_ip] == $_SERVER['REMOTE_ADDR'];
+			$id_ip++;
+		}
+
+		
+		//////
+		// Mise en place des variables Smarty
+		//
+		$page->changeTpl('profil/reseau.tpl');
+		$page->assign('title', "Modification du profil réseau");
+		$page->assign('xnet_mdp_changed', 0);
+		$page->assign('xnet_match_ip', $match_ip);
+		$page->assign('xnet_ip', array_slice($ip, 0, $id_ip));
+		$page->assign('xnet_ip_current', $_SERVER['REMOTE_ADDR']);
+		$page->assign('xnet_prise', $prise[0]);
+
+		//////
+		// Changement du mot de passe
+		//
+		if (empty($_POST['passwd']) && empty($_POST['passwd2']) || $_POST['passwd'] == '12345678' && $_POST['passwd2'] == '87654321')
+		{
+		}
+		else if ($_POST['passwd'] != $_POST['passwd2'])
+		{
+			$page->trig('Les deux mots de passes rentrés ne concordent pas');
+		}
+		else if (strlen($_POST['passwd']) < 6)
+		{
+			$page->trig('Ton nouveau mot de passe est trop court');
+		}
+		else if (!in_array($_POST['ip_xnet'], $ip))
+		{
+			$page->trig("Un problème de sécurité vient de survenir. Ton mot de passe n'a pas été changé.");
+		}
+		else
+		{
+			$pass = md5($_POST['passwd']."Vive le BR");
+			$DB_xnet->query("UPDATE  clients
+			                    SET  password='$pass'
+					  WHERE  lastip='{$_POST['ip_xnet']}'");
+			$this->assign('xnet_mdp_changed', 1);
+		}
+	}
 }
 ?>
-

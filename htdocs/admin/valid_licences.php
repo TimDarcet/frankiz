@@ -36,7 +36,7 @@ if(!verifie_permission('admin')&&!verifie_permission('windows'))
 //
 // Génération de la page
 //===============	
-require_once BASE_LOCAL."/include/page_header.inc.php";	
+require_once BASE_FRANKIZ."include/page_header.inc.php";	
 ?>
 <page id="valid_licences" titre="Frankiz : gestion des licences Microsoft">
 <?php
@@ -381,5 +381,5 @@ if(isset($_POST['update'])&&is_readable($_FILES['file']['tmp_name'])){
 	</formulaire>
 </page>
 <?php
-require_once BASE_LOCAL."/include/page_footer.inc.php";
+require_once BASE_FRANKIZ."include/page_footer.inc.php";
 ?>
