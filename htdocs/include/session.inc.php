@@ -42,17 +42,27 @@ class FrankizSession extends Session
 	
 		// Protection contre le vol de session : une session est associée à un IP,
 		// si l'IP change pendant la session, il y a eu vol.
-		if (!isset($_SESSION['ip'])) {
+		if (!isset($_SESSION['ip'])) 
+		{
 			$_SESSION['ip'] = ip_get();
-		} elseif ($_SESSION['ip'] != ip_get()) {
+		}
+		elseif ($_SESSION['ip'] != ip_get()) 
+		{
 			S::destroy();
 			S::init();
 		}
 		
 		if (isset($_REQUEST['logout']))
 		{
-			S::destroy();
-			S::init();
+			if (isset($_SESSION['sueur']))
+			{
+				$_SESSION = $_SESSION['sueur'];
+			}
+			else
+			{
+				S::destroy();
+				S::init();
+			}
 		}
 
 		if (!FrankizSession::doAuth(false))
@@ -194,7 +204,8 @@ class FrankizSession extends Session
 
 		$_SESSION['nom'] = $nom;
 		$_SESSION['prenom'] = $prenom;
-		
+		$_SESSION['perms'] = new FlagSet();
+
 		foreach (explode(",", $perms) as $perm)
 		{
 			if ($perm)
@@ -215,7 +226,23 @@ class FrankizSession extends Session
 	
 		return true;
 	}
-	
+
+	/**
+	 * Permet à l'utilisateur de prendre l'identité de quelqu'un d'autre
+	 */
+	public static function su($target_uid)
+	{
+		$session = $_SESSION;
+		S::destroy();
+		S::init();
+
+		$_SESSION['sueur'] = $session;
+		
+		$_SESSION['uid'] = $target_uid;
+		$_SESSION['auth'] = $_SESSION['sueur']['auth'];
+		FrankizSession::start_session();
+	}
+
 	/**
 	 * Active ou désactive le cookie d'authentification.
 	 * @param $activer Indique si l'on doit activer ou désactiver le cookie

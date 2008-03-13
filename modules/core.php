@@ -7,7 +7,8 @@ class CoreModule extends PLModule
 			     '4O4' 	=> $this->make_hook('404', 	AUTH_PUBLIC),
 			     '500'      => $this->make_hook('500',      AUTH_PUBLIC),
 			     'login'	=> $this->make_hook('login', 	AUTH_MDP),
-			     'do_login' => $this->make_hook('do_login', AUTH_PUBLIC));
+			     'do_login' => $this->make_hook('do_login', AUTH_PUBLIC),
+			     'su'	=> $this->make_hook('su',	AUTH_MDP,	'admin'));
 	}
 
 	function handler_403(&$page)
@@ -41,6 +42,14 @@ class CoreModule extends PLModule
 	{
 		$page->assign('title', "Connexion");
 		$page->changeTpl('core/password_prompt.tpl');
+	}
+
+	function handler_su(&$page)
+	{
+		global $platal;
+		
+		FrankizSession::su($platal->argv[1]);
+		pl_redirect('/');
 	}
 }
 ?>

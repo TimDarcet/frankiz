@@ -373,7 +373,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 				echo "<lien url='".BASE_URL."/admin/user.php?id=$eleve_id' titre='Administrer $prenom $nom'/><br/>\n" ;
 			}
 			if(verifie_permission('admin')) {
-				echo "<lien url='".BASE_URL."/?su=$eleve_id' titre='Prendre l&apos;identité de $prenom $nom'/><br/>\n" ;
+				echo "<lien url='".BASE_URL."/su/$eleve_id' titre='Prendre l&apos;identité de $prenom $nom'/><br/>\n" ;
 			}
 			echo "</eleve>\n";
 			echo "<br/>";
