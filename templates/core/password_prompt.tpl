@@ -17,6 +17,6 @@
   </div>
   <p>
     Si tu as oublié ton mot de passe ou que tu n'as pas encore de compte, clique
-    <a href='gestion/mdp_perdu.php'>ici</a>.
+    <a href='profil/mdp_perdu'>ici</a>.
   </p>
 </form>

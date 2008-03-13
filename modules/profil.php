@@ -30,16 +30,17 @@ class ProfilModule extends PLModule
 {
 	public function handlers()
 	{
-		return array('profil'			 => $this->make_hook('profil', AUTH_COOKIE),
-			     'profil/fkz'                => $this->make_hook('fkz', AUTH_COOKIE),
-			     'profil/fkz/change_mdp'     => $this->make_hook('fkz_change_mdp', AUTH_MDP),
-		             'profil/fkz/change_tol'     => $this->make_hook('fkz_change_tol', AUTH_COOKIE),
-			     'profil/fkz/mod_binets'     => $this->make_hook('fkz_mod_binets', AUTH_COOKIE),
-			     'profil/reseau'		 => $this->make_hook('reseau', AUTH_MDP),
-			     'profil/reseau/demande_ip'  => $this->make_hook('demande_ip', AUTH_COOKIE),
-			     'profil/skin'               => $this->make_hook('skin', AUTH_COOKIE),
-			     'profil/skin/change_skin'   => $this->make_hook('skin_change', AUTH_COOKIE),
-			     'profil/skin/change_params' => $this->make_hook('skin_params', AUTH_COOKIE));
+		return array('profil'			 => $this->make_hook('profil', 		AUTH_COOKIE),
+			     'profil/fkz'                => $this->make_hook('fkz', 		AUTH_COOKIE),
+			     'profil/fkz/change_mdp'     => $this->make_hook('fkz_change_mdp', 	AUTH_MDP),
+		             'profil/fkz/change_tol'     => $this->make_hook('fkz_change_tol', 	AUTH_COOKIE),
+			     'profil/fkz/mod_binets'     => $this->make_hook('fkz_mod_binets', 	AUTH_COOKIE),
+			     'profil/mdp_perdu'		 => $this->make_hook('mdp_perdu', 	AUTH_PUBLIC),
+			     'profil/reseau'		 => $this->make_hook('reseau', 		AUTH_MDP),
+			     'profil/reseau/demande_ip'  => $this->make_hook('demande_ip', 	AUTH_COOKIE),
+			     'profil/skin'               => $this->make_hook('skin', 		AUTH_COOKIE),
+			     'profil/skin/change_skin'   => $this->make_hook('skin_change', 	AUTH_COOKIE),
+			     'profil/skin/change_params' => $this->make_hook('skin_params', 	AUTH_COOKIE));
 	}
 
 	public function handler_profil(&$page)
@@ -68,8 +69,8 @@ class ProfilModule extends PLModule
 		$page->assign('profil_fkz_email', $mail ? $mail : "$login@poly.polytechnique.fr");
 		$page->assign('profil_fkz_casert', $casert);
 		$page->assign('profil_fkz_section', $section);
-		$page->assign('profil_fkz_cie', $cie);
-		$page->assign('profil_fkz_commentaire', $commentaire);
+		$page->assign('profil_fkz_compagnie', $cie);
+		$page->assign('profil_fkz_comment', $commentaire);
 		
 
 		$DB_trombino->query("SELECT binet_id, binets.nom, membres.remarque
@@ -467,6 +468,63 @@ class ProfilModule extends PLModule
 			$mail->send();
 
 			$page->assign('nouvelle_demande', 1);
+		}
+	}
+
+	public function handler_mdp_perdu(&$page)
+	{
+		global $DB_trombino, $DB_web;
+		
+		$page->changeTpl('profil/mdp_perdu.tpl');
+		$page->assign('title', "Mot de passe perdu");	
+		$page->assign('demande', 0);
+
+		if (!empty($_REQUEST['loginpoly']))
+		{
+			list($login, $promo) = explode('.', $_REQUEST['loginpoly']);
+
+			$DB_trombino->query("SELECT  eleve_id, login, prenom, nom, promo, mail
+			                       FROM  eleves
+					      WHERE  login = '$login'
+					        AND  promo = '$promo'
+				           ORDER BY  promo DESC
+					      LIMIT  1");
+
+			if ($DB_trombino->num_rows() != 1)
+			{
+				$page->trig("Ce loginpoly n'existe pas");
+				return;
+			}
+			
+			list ($id, $login, $prenom, $nom, $promo, $mail) = $DB_trombino->next_row();
+			$hash = nouveau_hash(); 
+
+			$DB_web->query("SELECT 0 FROM compte_frankiz WHERE eleve_id = '$id'");
+			if ($DB_web->num_rows() > 0)
+			{
+				$DB_web->query("UPDATE  compte_frankiz 
+					           SET  hash = '$hash', 
+						        hashstamp = DATE_ADD(NOW(), INTERVAL 6 HOUR) 
+					         WHERE  eleve_id = '$id'");
+			}
+			else
+			{
+				$DB_web->query("INSERT INTO  compte_frankiz 
+				                        SET  eleve_id = '$id',
+							     passwd = '',
+							     perms = '',
+							     hash = '$hash',
+							     hashstamp = DATE_ADD(NOW(), INTERVAL 6 HOUR)");
+			}
+
+			$mail = new PlMailer('profil/mdp_perdu.mail.tpl');
+			$mail->assign('base', BASE_URL);
+			$mail->assign('hash', $hash);
+			$mail->assign('uid', $id);
+			$mail->addTo("$login@poly.polytechnique.fr");
+			$mail->send();
+		
+			$page->assign('demande', 1);
 		}
 	}
 }

@@ -151,7 +151,7 @@ class FrankizSession extends Session
 		
 		if (empty($_REQUEST['hash']) || !isset($_REQUEST['uid']))
 			return false;
-
+		
 		$DB_web->query("SELECT eleve_id,hash
 		                  FROM compte_frankiz
 				 WHERE eleve_id = '{$_REQUEST['uid']}'");
@@ -163,6 +163,8 @@ class FrankizSession extends Session
 
 		$_SESSION['uid'] = $uid;
 		$_SESSION['auth'] = AUTH_MDP;
+
+		return true;
 	}
 	
 	/**

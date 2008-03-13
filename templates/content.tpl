@@ -12,7 +12,7 @@
 	      <div class="fkz_page_corps">
 {/if}
 		{foreach from=$xorg_errors item=error}
-		<span class='erreur'>{$error}</span>
+		<span class='warning'>{$error}</span>
 		<br />
 		{/foreach}
 		{include file=$xorg_tpl}

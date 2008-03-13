@@ -1,4 +1,4 @@
-<form enctype="multipart/form-data" method="post" accept-charset="UTF-8" id="form_choix_skin" action="profil/skin.php">
+<form enctype="multipart/form-data" method="post" accept-charset="UTF-8" id="form_choix_skin" action="profil/skin/change">
   <h2>
     <span>Choix de la skin</span>
   </h2>
@@ -20,7 +20,7 @@
   </div>
 </form>
 
-<form enctype="multipart/form-data" method="post" accept-charset="UTF-8" id="form_param_skin" action="profil/skin.php">
+<form enctype="multipart/form-data" method="post" accept-charset="UTF-8" id="form_param_skin" action="profil/skin/params">
   <h2>
     <span>Paramètres de la skin</span>
   </h2>

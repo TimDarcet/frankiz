@@ -4,7 +4,7 @@
 <a class="lien" href="profil/siteweb.php">Modifier mon site perso</a><br/>
 		
 <h2><span>Changer l'apparence du site</span></h2>
-<a class="lien" href="profil/skin.php">Changer de skin</a><br/>
+<a class="lien" href="profil/skin">Changer de skin</a><br/>
 <a class="lien" href="profil/liens_ext.php">Gérer mes liens perso</a><br/>
 <a class="lien" href="profil/liens_ext.php#form_rss">Gérer mes annonces externes</a><br/>
 
