@@ -27,6 +27,8 @@ require_once "global.inc.php";
 require_once BASE_MODULES."/core.php";
 require_once "session.inc.php";
 
+global $page;
+
 FrankizSession::init();
 $page = new FrankizPage("xml.tpl");
 

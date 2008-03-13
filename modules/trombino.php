@@ -30,8 +30,8 @@ class TrombinoModule extends PLModule
 {
 	function handlers()
 	{
-		return array('tol'	=> $this->make_hook('tol', AUTH_COOKIE), // @@TODO@@ This must be fixed!!!!!!!!!!!!!!
-			     'binets'   => $this->make_hook('binets', AUTH_PUBLIC));
+		return array('tol'		=> $this->make_hook('tol', 	AUTH_COOKIE), // @@TODO@@ This must be fixed!!!!!!!!!!!!!!
+			     'tol/binets'   	=> $this->make_hook('binets', 	AUTH_PUBLIC));
 	}
 
 	function handler_tol(&$page)

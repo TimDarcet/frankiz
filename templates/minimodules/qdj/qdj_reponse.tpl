@@ -37,7 +37,7 @@
       {/foreach}
     </ul>
     <br />
-    <a class="class_qdj" href="classement_qdj.php">Classement QDJ</a>
+    <a class="class_qdj" href="qdj/">Classement QDJ</a>
     {/if}
   </div>
 </div>

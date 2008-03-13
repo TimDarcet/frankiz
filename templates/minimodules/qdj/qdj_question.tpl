@@ -18,6 +18,6 @@
       {/foreach}
     </ul>
     {/if}
-    <a class="class_qdj" href="classement_qdj.php">Classement QDJ</a>
+    <a class="class_qdj" href="qdj/">Classement QDJ</a>
   </div>
 </div>

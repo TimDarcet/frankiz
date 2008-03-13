@@ -80,11 +80,4 @@ if(isset($_REQUEST["graph"])){
 	imagecolortransparent ($im,$blanc);
 	Imagepng ($im);
 }
-else
-{
-	require_once BASE_FRANKIZ."htdocs/include/page_header.inc.php";
-	require_once BASE_FRANKIZ."modules/qdj.php";
-	call("QdjModule", "qdj");
-	require_once BASE_FRANKIZ."htdocs/include/page_footer.inc.php";
-}
 ?>

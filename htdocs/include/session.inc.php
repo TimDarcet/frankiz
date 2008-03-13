@@ -393,7 +393,9 @@ function demande_authentification($minimum) {
 
 	require_once BASE_FRANKIZ."htdocs/include/page_header.inc.php";
 
-	call('CoreModule', 'do_login');
+	$mod = new CoreModule;
+	$mod->handler_do_login($page);
+	
 	require_once BASE_FRANKIZ."htdocs/include/page_footer.inc.php";
 	exit;
 }
@@ -404,7 +406,9 @@ function demande_permission($perm)
 
 	require_once BASE_FRANKIZ."htdocs/include/page_header.inc.php";
 
-	call('CoreModule', 'do_login');
+	$mod = new CoreModule;
+	$mod->handler_do_login($page);
+	
 	require_once BASE_FRANKIZ."htdocs/include/page_footer.inc.php";
 	exit;
 }
