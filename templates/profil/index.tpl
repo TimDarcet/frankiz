@@ -1,6 +1,6 @@
 <h2><span>Changer mon profil sur le site</span></h2>
-<a class="lien" href="profil/profil.php">Modifier mon compte frankiz</a><br/>
-<a class="lien" href="profil/profil.php#mod_trombino">Modifier ma fiche trombino</a><br/>
+<a class="lien" href="profil/fkz/">Modifier mon compte frankiz</a><br/>
+<a class="lien" href="profil/fkz/#mod_trombino">Modifier ma fiche trombino</a><br/>
 <a class="lien" href="profil/siteweb.php">Modifier mon site perso</a><br/>
 		
 <h2><span>Changer l'apparence du site</span></h2>

@@ -1,5 +1,5 @@
 <h1><span>Modification de son profil</span></h1>
-<form enctype="multipart/form-data" method="post" accept-charset="UTF-8" id="mod_frankiz" action="profil/profil.php">
+<form enctype="multipart/form-data" method="post" id="mod_frankiz" action="profil/fkz/change_mdp">
   <h2><span>Modification du compte Frankiz</span></h2>
   <div class="formulaire">
     <div>
@@ -43,7 +43,7 @@
   </div>
 </form>
     
-<form enctype="multipart/form-data" method="post" accept-charset="UTF-8" id="mod_trombino" action="profil/profil.php">
+<form enctype="multipart/form-data" method="post" id="mod_trombino" action="profil/fkz/change_tol">
   <h2><span>Changement de la fiche trombino</span></h2>
   <div class="formulaire">
     <div>
@@ -118,7 +118,7 @@
   </div>
 </form>
   
-<form method="post" accept-charset="UTF-8" action="profil/profil.php" id="liste_binet">
+<form method="post" action="profil/fkz/mod_binets" id="liste_binet">
   <span class="note">
     Si tu viens d'adhérer à un binet, n'hésite pas à le montrer et inscris le sur le TOL</span>
   <h2><span>Mes Binets</span></h2>

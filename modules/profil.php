@@ -34,9 +34,7 @@ class ProfilModule extends PLModule
 			     'profil/fkz'                => $this->make_hook('fkz', AUTH_COOKIE),
 			     'profil/fkz/change_mdp'     => $this->make_hook('fkz_change_mdp', AUTH_MDP),
 		             'profil/fkz/change_tol'     => $this->make_hook('fkz_change_tol', AUTH_COOKIE),
-			     'profil/fkz/change_binet'   => $this->make_hook('fkz_change_binet', AUTH_COOKIE),
-			     'profil/fkz/suppr_binet'    => $this->make_hook('fkz_suppr_binet', AUTH_COOKIE),
-		             'profil/fkz/ajout_binet'    => $this->make_hook('fkz_ajout_binet', AUTH_COOKIE),
+			     'profil/fkz/mod_binets'     => $this->make_hook('fkz_mod_binets', AUTH_COOKIE),
 			     'profil/skin'               => $this->make_hook('skin', AUTH_COOKIE),
 			     'profil/skin/change_skin'   => $this->make_hook('skin_change', AUTH_COOKIE),
 			     'profil/skin/change_params' => $this->make_hook('skin_params', AUTH_COOKIE));
@@ -159,7 +157,7 @@ class ProfilModule extends PLModule
 				            'text' => "Le cookie d'authentification a été désactivé"));
 		}
 	
-		handler_fkz($page);
+		$this->handler_fkz($page);
 	}
 
 	public static function handler_fkz_change_tol(&$page)
@@ -242,12 +240,25 @@ class ProfilModule extends PLModule
 			}
 		}
 
-		handler_fkz($page);
+		$this->handler_fkz($page);
 	}
 	
-
-	public function handler_fkz_change_binet(&$page)
+	public function handler_fkz_mod_binets(&$page)
 	{
+		if (isset($_POST['mod_binet']))
+			$this->handler_fkz_change_binet(&$page);
+		if (isset($_POST['suppr_binet']))
+			$this->handler_fkz_suppr_binet(&$page);
+		if (isset($_POST['add_binet']))
+			$this->handler_fkz_ajout_binet(&$page);
+
+		$this->handler_fkz(&$page);
+	}
+
+	private function handler_fkz_change_binet(&$page)
+	{	
+		global $DB_trombino;
+
 		foreach ($_POST['commentaire'] as $key => $val)
 		{
 			$DB_trombino->query("UPDATE membres 
@@ -262,13 +273,13 @@ class ProfilModule extends PLModule
 			      array('type' => 'commentaire',
 			      	    'text' => "Modification de la partie binets effectuée avec succès."));
 
-	
-		handler_fkz($page);
 	}
 
 
-	public function handler_fkz_suppr_binet(&$page)
+	private function handler_fkz_suppr_binet(&$page)
 	{
+		global $DB_trombino;
+
 		$count = 0;
 		if (isset($_POST['elements'])) 
 		{
@@ -294,12 +305,12 @@ class ProfilModule extends PLModule
 				      array('type' => 'commentaire',
 				            'text' => "Aucun binet n'est sélectionné. Aucun binet n'a donc été supprimé de la liste de tes binets."));
 		}
-
-		handler_fkz($page);
 	}
 
-	public function handler_fkz_ajout_binet(&$page)
+	private function handler_fkz_ajout_binet(&$page)
 	{
+		global $DB_trombino;
+
 		if ($_POST['liste_binet'] != 'default') 
 		{
 			$DB_trombino->query("REPLACE INTO membres 
