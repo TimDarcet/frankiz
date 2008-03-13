@@ -102,28 +102,6 @@ function return_file($file)
 	return true;
 }
 
-/*
-	Simule une erreur 403
-*/
-function acces_interdit() 
-{
-	header("HTTP/1.1 403 Forbidden");
-	$_GET['erreur'] = 403;
-	require BASE_LOCAL."/erreur.php";
-	exit;
-}
-
-/*
-	Simule une erreur 404
-*/
-function not_found() 
-{
-	header("HTTP/1.1 404 Forbidden");
-	$_GET['erreur'] = 404;
-	require BASE_LOCAL."/erreur.php";
-	exit;
-}
-
 // Pendant la transition a Plat/al
 require_once 'smarty/libs/Smarty.class.php';
 
