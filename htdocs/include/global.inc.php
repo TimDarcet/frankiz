@@ -46,11 +46,6 @@ else
 // Connexions aux bases mysql
 require_once "mysql.inc.php";
 
-// Gestion des erreurs PHP et MySQL
-// Il est important d'inclure ce fichier le plus tôt possible, mais comme il a besoin
-// des paramètres du site on ne l'inclu que maintenant.
-require_once "init_erreurs.inc.php";	// TODO : mettre avant l'ouverture des connexions aux bases mysql
-
 require_once BASE_LOCAL."/../etc/config.php";
 
 // Timezone

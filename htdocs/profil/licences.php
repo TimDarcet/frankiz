@@ -37,8 +37,8 @@ list($eleve_id,$nom,$prenom,$promo,$mail) = $DB_trombino->next_row();
 
 // Génération de la page
 //===============
-require_once BASE_FRANKIZ."include/page_header.inc.php";
-require_once BASE_FRANKIZ."include/rss_func.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/page_header.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/rss_func.inc.php";
 
 ?>
 <page id="licences" titre="Frankiz : Les Licences">
@@ -241,4 +241,4 @@ require_once BASE_FRANKIZ."include/rss_func.inc.php";
 	?>
 	
 </page>
-<?php require_once BASE_FRANKIZ."include/page_footer.inc.php" ?>
+<?php require_once BASE_FRANKIZ."htdocs/include/page_footer.inc.php" ?>

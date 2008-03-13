@@ -131,7 +131,7 @@ $message = "" ;
 
 // Génération de la page
 //===============
-require_once BASE_FRANKIZ."include/page_header.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/page_header.inc.php";
 
 ?>
 <page id="sondage" titre="Frankiz : Sondage">

@@ -36,6 +36,7 @@ class ProfilModule extends PLModule
 		             'profil/fkz/change_tol'     => $this->make_hook('fkz_change_tol', AUTH_COOKIE),
 			     'profil/fkz/mod_binets'     => $this->make_hook('fkz_mod_binets', AUTH_COOKIE),
 			     'profil/reseau'		 => $this->make_hook('reseau', AUTH_MDP),
+			     'profil/reseau/demande_ip'  => $this->make_hook('demande_ip', AUTH_COOKIE),
 			     'profil/skin'               => $this->make_hook('skin', AUTH_COOKIE),
 			     'profil/skin/change_skin'   => $this->make_hook('skin_change', AUTH_COOKIE),
 			     'profil/skin/change_params' => $this->make_hook('skin_params', AUTH_COOKIE));
@@ -422,6 +423,50 @@ class ProfilModule extends PLModule
 			                    SET  password='$pass'
 					  WHERE  lastip='{$_POST['ip_xnet']}'");
 			$this->assign('xnet_mdp_changed', 1);
+		}
+	}
+
+	public function handler_demande_ip(&$page)
+	{
+		global $DB_valid;
+
+		//////
+		// Vérification que l'utilisateur n'a pas déja une demande en attente
+		//
+		$DB_valid->query("SELECT 0 FROM valid_ip WHERE eleve_id = '{$_SESSION['uid']}'");
+		$demande_en_cours = ($DB_valid->num_rows() > 0);
+
+		//////
+		// Mise en place des variables Smarty
+		//
+		$page->changeTpl('profil/demande_ip.tpl');
+		$page->assign('title', "Demande de nouvelle adresse IP");
+		$page->assign('demande_en_cours', $demande_en_cours);
+		$page->assign('nouvelle_demande', 0);
+	
+		//////
+		// Traitement d'une demande éventuelle
+		//
+		if (!empty($_POST['demander']) && !$demande_en_cours)
+		{
+			$DB_valid->query("INSERT  valid_ip
+			                     SET  type = '{$_POST['type']}',
+					     	  raison = '{$_POST['raison']}',
+						  eleve_id = '{$_SESSION['uid']}'");
+			
+			if ($_POST['type'] == 1)
+				$raison = "J'ai installé un 2ème ordinateur dans mon casert et je souhaite avoir une nouvelle adresse IP pour cette machine.";
+			else
+				$raison = $_POST['raison'];
+			
+			$mail = new PlMailer('profil/demande_ip.mail.tpl');
+			$mail->assign('nom', $_SESSION['nom']);
+			$mail->assign('prenom', $_SESSION['prenom']);
+			$mail->assign('raison', $raison); 
+			$mail->assign('base', BASE_URL);
+			$mail->send();
+
+			$page->assign('nouvelle_demande', 1);
 		}
 	}
 }

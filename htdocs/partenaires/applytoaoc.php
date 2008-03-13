@@ -30,9 +30,9 @@ demande_permission('interne');
 $ip = ip_get();
 
 // Log
-ajouter_access_log(
-	"AppleOnCampus: acces depuis $ip / user " .
-	(is_object($_SESSION['user']) ? $_SESSION['uid'] : -1 ));
+//ajouter_access_log(
+//	"AppleOnCampus: acces depuis $ip / user " .
+//	(is_object($_SESSION['user']) ? $_SESSION['uid'] : -1 ));
 
 // Redirection
 if (defined('PARTENAIRES_AOC_URL'))

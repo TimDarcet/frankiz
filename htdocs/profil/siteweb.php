@@ -146,5 +146,5 @@ require "../include/page_header.inc.php";
 
 </page>
 <?php
-require_once BASE_FRANKIZ."include/page_footer.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/page_footer.inc.php";
 ?>

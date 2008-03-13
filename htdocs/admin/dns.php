@@ -34,7 +34,7 @@ if(!verifie_permission('admin'))
 
 // Génération de la page
 //===============
-require_once BASE_FRANKIZ."include/page_header.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/page_header.inc.php";
 
 ?>
 <page id="admin_droits" titre="Frankiz : Gestion des DNS">
@@ -137,5 +137,5 @@ require_once BASE_FRANKIZ."include/page_header.inc.php";
 </page>
 
 <?php
-require_once BASE_FRANKIZ."include/page_footer.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/page_footer.inc.php";
 ?>

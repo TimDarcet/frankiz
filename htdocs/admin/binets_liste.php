@@ -72,7 +72,7 @@ if ($warning!="")
 	
 
 // Génération de la page
-require_once BASE_FRANKIZ."include/page_header.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/page_header.inc.php";
 ?>
 <page id="binets_web" titre="Frankiz : Binets Web">
 <?php echo $message ;?>
@@ -112,5 +112,5 @@ require_once BASE_FRANKIZ."include/page_header.inc.php";
 
 </page>
 <?php
-require_once BASE_FRANKIZ."include/page_footer.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/page_footer.inc.php";
 ?>

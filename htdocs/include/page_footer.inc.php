@@ -30,8 +30,8 @@ $xml = ob_get_contents();
 ob_end_clean();
 header('Content-Type: text/html');
 
-require_once BASE_FRANKIZ."include/minimodules.inc.php";
-require_once BASE_FRANKIZ."include/wiki.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/minimodules.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/wiki.inc.php";
 
 global $page;
 

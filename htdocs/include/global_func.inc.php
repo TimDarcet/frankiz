@@ -106,11 +106,13 @@ function return_file($file)
 require_once 'smarty/libs/Smarty.class.php';
 
 $DONT_FIX_GPC = true;
-require_once BASE_FRANKIZ."platal-classes/platalpage.php";
-require_once BASE_FRANKIZ.'platal-classes/flagset.php';
-require_once BASE_FRANKIZ.'platal-classes/plmodule.php';
 require_once BASE_FRANKIZ.'platal-classes/env.php';
+require_once BASE_FRANKIZ.'platal-classes/flagset.php';
+require_once BASE_FRANKIZ.'platal-classes/miniwiki.php';
+require_once BASE_FRANKIZ.'platal-classes/platalpage.php';
 require_once BASE_FRANKIZ.'platal-classes/plbacktrace.php';
+require_once BASE_FRANKIZ.'platal-classes/plmailer.php';
+require_once BASE_FRANKIZ.'platal-classes/plmodule.php';
 require_once BASE_FRANKIZ.'platal-includes/platal.inc.php';
 require_once BASE_FRANKIZ.'platal-includes/globals.inc.php';
 require_once BASE_FRANKIZ.'htdocs/include/frankiz.inc.php';

@@ -43,9 +43,7 @@ class FrankizPage extends PlatalPage
 		$this->register_function("minimodule_header", array('FrankizMiniModule', "print_template_header"));
 		$this->register_modifier("wiki_vers_html", "wikiVersXML");
 
-		affiche_erreurs_php();
 		$this->_run("main.tpl");
-		affiche_debug_php();
 	}
 }
 

@@ -54,7 +54,7 @@ $message2 ="" ;
 // Génération de la page
 //=================================
 
-require_once BASE_FRANKIZ."include/page_header.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/page_header.inc.php";
 ?>
 <page id="admin_binet" titre="Frankiz : administration binet">
 <?php
@@ -271,5 +271,5 @@ if(verifie_permission_webmestre($_REQUEST['binet'])){
 ?>
 </page>
 <?php
-require_once BASE_FRANKIZ."include/page_footer.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/page_footer.inc.php";
 ?>

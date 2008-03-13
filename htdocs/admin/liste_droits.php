@@ -33,7 +33,7 @@ if(!(verifie_permission('admin')||verifie_permission('web')))
 
 // Génération de la page
 //===============
-require_once BASE_FRANKIZ."include/page_header.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/page_header.inc.php";
 
 ?>
 <page id="admin_droits" titre="Frankiz : Liste des droits">
@@ -85,5 +85,5 @@ foreach(liste_droits() as $droit => $description){
 
 </page>
 <?php
-require_once BASE_FRANKIZ."include/page_footer.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/page_footer.inc.php";
 ?>

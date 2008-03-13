@@ -34,7 +34,7 @@ if(!verifie_permission('admin') && !verifie_permission('faq')&& !verifie_permiss
 
 // Génération de la page
 //===============
-require_once BASE_FRANKIZ."include/page_header.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/page_header.inc.php";
 
 ?>
 <page id="valid_qdj" titre="Frankiz : Valide les modif FAQ">
@@ -211,5 +211,5 @@ $DB_valid->query("UNLOCK TABLES");
 </page>
 
 <?php
-require_once BASE_FRANKIZ."include/page_footer.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/page_footer.inc.php";
 ?>

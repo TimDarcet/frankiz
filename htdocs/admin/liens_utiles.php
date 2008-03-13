@@ -60,7 +60,7 @@ foreach ($_POST AS $keys => $val){
 
 // Génération de la page
 //===============
-require_once BASE_FRANKIZ."include/page_header.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/page_header.inc.php";
 ?>
 <page id="admin_liens" titre="Frankiz : Modifier le Vocabulaire">
 
@@ -97,4 +97,4 @@ require_once BASE_FRANKIZ."include/page_header.inc.php";
 
 </page>
 
-<?php require_once BASE_FRANKIZ."include/page_footer.inc.php" ?>
+<?php require_once BASE_FRANKIZ."htdocs/include/page_footer.inc.php" ?>

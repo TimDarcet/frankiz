@@ -74,7 +74,7 @@ if(isset($_POST['maj'])) {
 }
 
 // Génération de la page
-require_once BASE_FRANKIZ."include/page_header.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/page_header.inc.php";
 ?>
 <page id="admin_sections" titre="Frankiz : liste des sections">
 	<h2>Liste des sections</h2>
@@ -109,5 +109,5 @@ require_once BASE_FRANKIZ."include/page_header.inc.php";
 <?php
 
 
-require_once BASE_FRANKIZ."include/page_footer.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/page_footer.inc.php";
 ?>

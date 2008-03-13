@@ -35,7 +35,7 @@ if(!verifie_permission('admin'))
 
 // Génération de la page
 //===============
-require_once BASE_FRANKIZ."include/page_header.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/page_header.inc.php";
 
 ?>
 <page id="admin_valid_ip" titre="Frankiz : Attribuer une nouvelle adresse IP">
@@ -284,4 +284,4 @@ $DB_admin->query("UNLOCK TABLES");
 
 </page>
 
-<?php require_once BASE_FRANKIZ."include/page_footer.inc.php" ?>
+<?php require_once BASE_FRANKIZ."htdocs/include/page_footer.inc.php" ?>

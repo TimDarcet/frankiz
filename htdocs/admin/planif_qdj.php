@@ -35,7 +35,7 @@ if(!verifie_permission('admin') && !verifie_permission('qdjmaster'))
 
 // Génération de la page
 //===============
-require_once BASE_FRANKIZ."include/page_header.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/page_header.inc.php";
 
 ?>
 <page id="valid_qdj" titre="Frankiz : Planifie tes qdj">
@@ -264,5 +264,5 @@ if(!isset($_REQUEST['show']))
 </page>
 
 <?php
-require_once BASE_FRANKIZ."include/page_footer.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/page_footer.inc.php";
 ?>

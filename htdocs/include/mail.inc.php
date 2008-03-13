@@ -118,7 +118,7 @@ function couriel($eleve_id,$titre,$contenu,$sender_id=WEBMESTRE_ID,$sender_strin
 		$prenom = str_replace(array('&amp;','&lt;','&gt;','&apos;','&quot;',''),array('&','<','>','\'','"','\\'),$prenom);
 		$nom = str_replace(array('&amp;','&lt;','&gt;','&apos;','&quot;',''),array('&','<','>','\'','"','\\'),$nom);
 	}
-	$mail = new Mail( ($sender_id!=STRINGMAIL_ID)?"=?UTF-8?b?".base64_encode("$prenom1 $nom1")."?= <$adresse1>":$sender_string  , "=?UTF-8?b?".base64_encode("$prenom $nom")."?= <$adresse>" , html2plain($titre),true,"", (($sender_id<0) && ($sender_id!=$eleve_id) && ($sender_id!=STRINGMAIL_ID))?"=?UTF-8?b?".base64_encode("$prenom1 $nom1")."?= <$adresse1>":"");
+	$mail = new FkzMail( ($sender_id!=STRINGMAIL_ID)?"=?UTF-8?b?".base64_encode("$prenom1 $nom1")."?= <$adresse1>":$sender_string  , "=?UTF-8?b?".base64_encode("$prenom $nom")."?= <$adresse>" , html2plain($titre),true,"", (($sender_id<0) && ($sender_id!=$eleve_id) && ($sender_id!=STRINGMAIL_ID))?"=?UTF-8?b?".base64_encode("$prenom1 $nom1")."?= <$adresse1>":"");
 	$mail->addPartText(html2plain($contenu));
 	$mail->addPartHtml(vrais_caract_spec($contenu));
 	$mail->send();
@@ -159,13 +159,13 @@ function header_encode($text){
 	return "<html><body>\n$html\n</body></html>";
 }*/ //Utile ? (kikx)
 
-class Mail {
+class FkzMail {
 	private $header, $body;
 	private $from, $to, $cc, $bcc;
 	private $subject, $boundary;
 	
 	// Création d'un nouveau mail
-	function Mail($from, $to, $subject, $multipart=false, $cc="", $bcc="") {
+	function FkzMail($from, $to, $subject, $multipart=false, $cc="", $bcc="") {
 		$this->from = $from;
 		$this->to = $to;
 		$this->cc = $cc;

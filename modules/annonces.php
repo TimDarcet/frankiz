@@ -116,6 +116,7 @@ class AnnoncesModule extends PLModule
 		}
 		
 		$page->assign('title', "Annonces");
+		$page->assign('page_raw', 1);
 		$page->assign('annonces', $annonces);
 		$page->changeTpl('annonces/annonces.tpl');
 	}

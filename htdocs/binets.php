@@ -38,7 +38,7 @@ if(isset($_REQUEST['image'])){
 
 
 // Affichage de la liste des binets
-require BASE_FRANKIZ."include/page_header.inc.php";
+require BASE_FRANKIZ."htdocs/include/page_header.inc.php";
 require BASE_MODULES."/trombino.php";
 call ("TrombinoModule", "binets");
 require "include/page_footer.inc.php" ?>
