@@ -26,336 +26,257 @@
 require_once BASE_LOCAL."/include/wiki.inc.php";
 require_once BASE_LOCAL."/include/session.inc.php";
 
-class TrombinoModule extends PLModule
+define ('EXACT_MATCH', 0);             // Correspondance exacte
+define ('EXACT_MATCH_NO_QUOTES', 1);   // Correspondance exacte, mais le texte de référence n'est pas inclus dans des guillemets
+define ('NEAR_MATCH', 2);		     // Correspondance à base d'un LIKE
+define ('NOT_NULL', 3);		     // Le champ est NOT NULL
+define ('DAYOFYEAR_MATCH', 4);	     // (DATE & DATETIME uniquement) Le champ correspond au jour de l'année près.
+define ('WEEK_MATCH', 5);              // (DATE & DATETIME uniquement) Le champ correspond à une semaine près
+define ('TRUE_MATCH', 6);		     // Tout le temps vrai
+
+/**
+ * Une classe permettant de générer une requête de recherche dans le TOL.
+ */
+class TrombinoRequest
 {
-	function handlers()
-	{
-		return array('tol'		=> $this->make_hook('tol', 	AUTH_COOKIE), // @@TODO@@ This must be fixed!!!!!!!!!!!!!!
-			     'tol/binets'   	=> $this->make_hook('binets', 	AUTH_PUBLIC));
-	}
-
-	function handler_tol(&$page)
-	{
-		global $DB_admin, $DB_web, $DB_trombino, $DB_xnet;
-
-		$page->assign('title', "Frankiz : Trombino");
-
-		$tol_admin = false;
-		if (verifie_permission('admin') || verifie_permission('windows')
-		 || verifie_permission('trombino') || verifie_permission('news')
-		 || verifie_permission('support'))
-			$tol_admin = true;
-
-		if (isset($_REQUEST['toladmin'])) {
-			demande_authentification(AUTH_MDP);
-		}
-
-?><page id='trombino' titre='Frankiz : Trombino'>
-<?php
-
-// Recuperation d'une image dans une page
-if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
-	if (!isset($_GET['original'])) {
-		echo "<image source=\"trombino.php?image=true&amp;login={$_GET['login']}&amp;promo={$_GET['promo']}\" texte=\"photo\"  legende=\"{$_GET['login']} ({$_GET['promo']})\"/>";
-		echo "<lien url=\"trombino.php?original&amp;image=show&amp;login={$_GET['login']}&amp;promo={$_GET['promo']}\" titre=\"Voir l'image originale\"/><br/>\n" ;
-	} else {
-		echo "<image source=\"trombino.php?original&amp;image=true&amp;login={$_GET['login']}&amp;promo={$_GET['promo']}\"  texte=\"photo originale\" legende=\"{$_GET['login']} ({$_GET['promo']}) - originale\"/>";
-		echo "<lien url=\"trombino.php?image=show&amp;login={$_GET['login']}&amp;promo={$_GET['promo']}\" titre=\"Voir l'image actuelle\"/><br/>\n" ;
-	}
-} elseif (isset($_REQUEST['chercher']) || isset($_REQUEST['sections']) || isset($_REQUEST['binets'])
-	|| (isset($_REQUEST['anniversaire']) && isset($_REQUEST['promo'])) || isset($_REQUEST['anniversaire_week'])
-	|| (isset($_REQUEST['cherchertol']) && (!(empty($_REQUEST['q_search']))))) {
-
-	// Affichage des reponses dans le cas d'une recherche
+	private $constraints;
+	private $constraint_groups;
 	
-	// Recuperation de la derniere promotion arrivee sur le campus
-	$DB_web->query('
-		SELECT
-			valeur
-		FROM
-			parametres
-		WHERE
-			nom = "lastpromo_oncampus"');
-	list($promoTOS) = $DB_web->next_row() ;
-
-	define('RECHERCHE_HABITE_SUR_LE_PLATAL', 0);
-	define('RECHERCHE_UNE_SEULE_PROMO', 1);
-	define('RECHERCHE_TOUTES_PROMOS', 2);
-	define('RECHERCHE_PROMOS_ACTUELLES', 3);
-
-	$typeRecherchePromo = RECHERCHE_HABITE_SUR_LE_PLATAL;
-
-	$champs = '
-		eleves.eleve_id, eleves.nom, prenom, surnom, login, mail,
-		DATE_FORMAT(date_nais, "%d/%m/%Y"),
-		eleves.piece_id, pieces.tel,
-		eleves.commentaire, promo, cie, eleves.section_id, sections.nom';
-	$join = '
-		LEFT JOIN sections ON
-			eleves.section_id = sections.section_id
-		LEFT JOIN pieces ON
-			eleves.piece_id = pieces.piece_id ';
-	$where = '';
-
-	if (isset($_REQUEST['anniversaire'])) {
-		// Création de la requête si anniversaire appelle
-		$where .= '
-			MONTH(date_nais) = MONTH(NOW())
-			AND DAYOFMONTH(date_nais) = DAYOFMONTH(NOW())';
-		$typeRecherchePromo = RECHERCHE_UNE_SEULE_PROMO;
-	} elseif (isset($_REQUEST['anniversaire_week'])) {
-		// Création de la requête si anniversaire appelle
-		if (isset($_REQUEST['depart'])) {
-			$date1 = $_REQUEST['depart'];
-		} else {
-			$date1 = date('Y-m-d');
-		}
-		
-		$date2 = date('Y-m-d', strtotime($date1) + 7 * 24 * 3600);
-		echo "<commentaire>Liste des personnes fêtant leur anniversaire entre le ".date("d/m",strtotime($date1))." et le ".date("d/m",strtotime($date2))."</commentaire>";
-		$where .= " DAYOFYEAR(date_nais + INTERVAL (YEAR(NOW()) - YEAR(date_nais)) YEAR) >= DAYOFYEAR('$date1')
-			AND DAYOFYEAR(date_nais + INTERVAL (YEAR(NOW()) - YEAR(date_nais)) YEAR) <= DAYOFYEAR('$date1'+ INTERVAL 7 DAY)";
-		$typeRecherchePromo = RECHERCHE_PROMOS_ACTUELLES;
-	} elseif(isset($_REQUEST['sections'])) {
-		// Création de la requête si sections appelle
-		$where .= " sections.nom = '{$_REQUEST['sections']}'  AND (promo = $promoTOS OR promo=".($promoTOS -1).")";
-		$typeRecherchePromo = RECHERCHE_PROMOS_ACTUELLES;
-	} elseif (isset($_REQUEST['binets'])) {
-		// Création de la requête si binet appelle
-		$join = "LEFT JOIN membres USING(eleve_id) LEFT JOIN binets ON membres.binet_id = binets.binet_id ".$join;
-		$where .= (empty($where) ? "" : " AND")." binets.nom = '".$_REQUEST['binets']."'";
-		$typeRecherchePromo = RECHERCHE_PROMOS_ACTUELLES;
-	} elseif (isset($_REQUEST['cherchertol'])) {
-		// Création de la requête si lien_tol appelle
-		$where_like = 'CAST(CONCAT_WS(\' \', eleves.nom, prenom, surnom, login, promo, eleves.piece_id, pieces.tel) AS CHAR)';
-		$typeRecherchePromo = RECHERCHE_HABITE_SUR_LE_PLATAL;
-		$quick = explode(' ', $_REQUEST['q_search']);
-		if (count($quick) == 0) {
-			$where = ' 0';
-		} else {
-			foreach ($quick as $word) {
-				$where .= (empty($where) ? '(promo != "0000" AND ' : ' AND '). $where_like . ' LIKE \'%' . $word . '%\'';
-				if (is_numeric($word) and (($word>=0 and $word<=($promoTOS%100)) or $word==98 or $word==99 or ($word>=1998 and $word<=$promoTOS))) {
-					$typeRecherchePromo = RECHERCHE_TOUTES_PROMOS;
-				}
-			}
-			$where .= ')';
-		}
-	} elseif (isset($_REQUEST['chercher'])) {
-		// l'ordre ci-dessous permet de filtrer correctement la promo, la forme
-		// la plus restrictive l'emportant
-		$where_like = array(
-			'casert'	=>	'eleves.piece_id',
-			'phone'		=>	'pieces.tel',
-			'prise'		=>	'p.prise_id',
-			'ip'		=>	'p.ip',
-			'mac'		=>	'a.mac',
-			'nom'		=>	'eleves.nom',
-			'prenom'	=>	'prenom',
-			'surnom'	=>	'surnom',
-			'mail'		=>	'mail');
-
-		$correspondanceWhereTypeRecherchePromo = array(
-			'casert'	=>	RECHERCHE_TOUTES_PROMOS,
-			'phone'		=>	RECHERCHE_TOUTES_PROMOS,
-			'prise'		=>  RECHERCHE_TOUTES_PROMOS,
-			'ip'		=>  RECHERCHE_TOUTES_PROMOS,
-			'mac'		=>  RECHERCHE_TOUTES_PROMOS,
-			'nom'		=>	RECHERCHE_HABITE_SUR_LE_PLATAL,
-			'prenom'	=>	RECHERCHE_HABITE_SUR_LE_PLATAL,
-			'surnom'	=>	RECHERCHE_HABITE_SUR_LE_PLATAL,
-			'mail'		=>	RECHERCHE_HABITE_SUR_LE_PLATAL);
-
-		foreach ($where_like as $post_arg => $db_field) {
-			if (!empty($_REQUEST[$post_arg])) {
-				$where .= (empty($where) ? '' : ' AND')." $db_field LIKE '%".$_REQUEST[$post_arg]."%'";
-				$typeRecherchePromo = $correspondanceWhereTypeRecherchePromo[$post_arg];
-			}
-		}
-
-		if (!empty($_REQUEST['section'])) {
-			$where .= (empty($where) ? '' : ' AND').' eleves.section_id = '.$_REQUEST['section'];
-			$typeRecherchePromo = RECHERCHE_PROMOS_ACTUELLES;
-
-		}
-
-		if (!empty($_REQUEST['cie'])) {
-			$where .= (empty($where) ? '' : ' AND').' cie = '.$_REQUEST['cie'];
-			$typeRecherchePromo = RECHERCHE_PROMOS_ACTUELLES;
-		}
-
-		if(!empty($_REQUEST['binet'])) {
-			$join = "LEFT JOIN membres USING(eleve_id) ".$join;
-			$where .= (empty($where) ? "" : " AND")." binet_id='".$_REQUEST['binet']."'";
-			$typeRecherchePromo = RECHERCHE_PROMOS_ACTUELLES;
-		}
-
-		if(!empty($_REQUEST['loginpoly'])) {
-			$where .= (empty($where) ? '' : ' AND ')." login ='".$_REQUEST['loginpoly']."'";
-			$typeRecherchePromo = RECHERCHE_HABITE_SUR_LE_PLATAL;
-		}
-
-		if (!empty($_REQUEST['promo'])) {
-			if ($_REQUEST['promo'] == 'toutes') {
-				$typeRecherchePromo = RECHERCHE_TOUTES_PROMOS;
-			} else {
-				$typeRecherchePromo = RECHERCHE_UNE_SEULE_PROMO;
-			}
-		}
-
-		if ($tol_admin) {
-			if (isset($_REQUEST['mac']) || isset($_REQUEST['prise']) || isset($_REQUEST['mac']) || isset($_REQUEST['ip'])) {
-				$join .= '
-					LEFT JOIN admin.prises AS p ON
-						p.piece_id = pieces.piece_id';
-				if (isset($_REQUEST['mac'])) {
-					$join .= '
-						LEFT JOIN admin.arpwatch_log AS a ON
-							a.ip = p.ip';
-				}
-			}
-
-			if (!empty($_REQUEST['dns'])) {
-				$DB_xnet->query("
-					SELECT
-						lastip
-					FROM
-						clients
-					WHERE
-						username LIKE '%{$_REQUEST['dns']}%'");
-				if ($DB_xnet->num_rows() > 0) {
-					list($ip) = $DB_xnet->next_row();
-					$where .= (empty($where) ? '' : ' AND')." (p.ip LIKE '$ip'";
-					while (list($ip) = $DB_xnet->next_row()) {
-						$where .= " OR p.ip LIKE '$ip'";
-					}
-					$where .= ')';
-				} else {
-					$where .= (empty($where) ? '' : ' AND').' 0';
-				}
-				$typeRecherchePromo = RECHERCHE_TOUTES_PROMOS;
-			}
-		}
-
-		if (isset($_GET['jeveuxvoirlesfillesdelecole'])){
-			$where .= (empty($where) ? '' : ' AND')." sexe = '1'";
-		}
+	/**
+	 * Initialisation de la classe
+	 */
+	public function __construct()
+	{
+		$this->constraints = array();
+		$this->constraint_groups = array();
 	}
 
-	switch ($typeRecherchePromo) {
-		case RECHERCHE_HABITE_SUR_LE_PLATAL:
-			$where .= (empty($where) ? '' : ' AND').' eleves.piece_id IS NOT NULL';
-			break;
-		case RECHERCHE_UNE_SEULE_PROMO:
-			$where .= (empty($where) ? '' : ' AND')." promo = '{$_REQUEST['promo']}'";
-			break;
-		case RECHERCHE_TOUTES_PROMOS:
-			break;
-		case RECHERCHE_PROMOS_ACTUELLES:
-			$where .= (empty($where) ? '' : ' AND')." ((promo = $promoTOS) OR (promo = $promoTOS - 1))";
-			break;
+	// -------------------------------- Configuration de la requête ------------------------------------------
+
+	/**
+	 * Ajoute une contrainte sur la requete.
+	 * @param $column la colonne de la base de donnee sur laquelle s'applique la contrainte
+	 * @param $pattern le texte devant correspondre
+	 * @param $match Si la correspondance doit etre exacte (EXACT_MATCH), ou si un LIKE suffit (NEAR_MATCH)
+	 */
+	public function add_constraint($column, $pattern, $match)
+	{
+		$this->constraints[] = array('column'  => $column,
+		          		     'pattern' => $pattern,
+				             'match'   => $match);
+	}
+
+	/**
+	 * Supprime un groupe de contraintes
+	 */
+	public function reset_constraint_group($group)
+	{
+		unset($this->constraints_groups[$group]);
+	}
+
+	/**
+	 * Ajoute une contrainte optionnelle.
+	 * La contrainte ne devra pas être nécessairement satisfaite, à partir du moment ou au moins une contrainte
+	 * du groupe l'est.
+	 * @param $group L'identifiant du groupe. Si le groupe de contrainte n'existe pas encore, il sera crée.
+	 * @param $column la colonne de la base de donnee sur laquelle s'applique la contrainte
+	 * @param $pattern le texte devant correspondre
+	 * @param $match Si la correspondance doit etre exacte (EXACT_MATCH), ou si un LIKE suffit (NEAR_MATCH)
+	 * @param $value Si la contrainte est satisfaite, $value sera ajouté au score de la correspondance
+	 */
+	public function add_option_to_constraint_group($group, $column, $pattern, $match, $value)
+	{
+		$this->constraint_groups[$group][] = array('column'  => $column,
+						           'pattern' => $pattern,
+						           'match'   => $match,
+						           'value'   => $value);
+	}
+
+	/**
+	 * Ajoute une contrainte optionnelle, qui ne sera qu'à rajouter éventuellement du score à un résultat.
+	 * @param $column la colonne de la base de donnee sur laquelle s'applique la contrainte
+	 * @param $pattern le texte devant correspondre
+	 * @param $match Si la correspondance doit etre exacte (EXACT_MATCH), ou si un LIKE suffit (NEAR_MATCH)
+	 * @param $value Si la contrainte est satisfaite, $value sera ajouté au score de la correspondance
+	 */
+	public function add_option($column, $pattern, $match, $value)
+	{
+		// NOT IMPLEMENTED
+	}
+
+	// ------------------------------------ Génération de la requête -------------------------------------------
+
+	/**
+	 * Renvoie une chaine de caractère correspondant à la contrainte.
+	 * @param $constraint Doit être un tableau avec des champs 'column', 'pattern' et 'match'.
+	 */
+	static private function format_constraint($constraint)
+	{
+		$column = $constraint['column'];
+		$pattern = $constraint['pattern'];
+		$match = $constraint['match'];
+
+		switch ($match)
+		{
+		case EXACT_MATCH:
+			return "$column = '$pattern'";
+		case EXACT_MATCH_NO_QUOTES:
+			return "$column = $pattern";
+		case NEAR_MATCH:
+			return "$column LIKE '%$pattern%'";
+		case NOT_NULL:
+			return "NOT ISNULL($column)";
+		case DAYOFYEAR_MATCH:
+			return "DAYOFYEAR($column) = DAYOFYEAR($pattern)";
+		case WEEK_MATCH:
+			return "(DAYOFYEAR($column) >= DAYOFYEAR($pattern) AND 
+				 DAYOFYEAR($column) <= DAYOFYEAR($pattern + INTERVAL 7 DAY))";
+		case TRUE_MATCH:
+			return "TRUE";
 		default:
-			break;
+			trigger_error("Invalid match_type");
+			exit;
+		}
 	}
 
-	// Génération de la page si il y a au moins un critère.
-	if (!empty($where)) {
-		$DB_trombino->query("
-			SELECT
-				$champs
-			FROM
-				eleves
-				$join
-			WHERE
-				$where
-			GROUP BY
-				eleves.eleve_id
-			ORDER BY
-				promo,
-				eleves.nom,
-				prenom ASC
-			LIMIT 100");
-
-		$nombreDeLignes = $DB_trombino->num_rows();
-		// Génération d'un message d'erreur si aucun élève ne correspond
-		if ($nombreDeLignes == 0) {
-			?><warning> Désolé, aucun élève ne correspond à ta recherche </warning><?php
-		} elseif ($nombreDeLignes == 100) {
-			?><warning>Trop de résultats: seulement les 100 premiers sont affichés</warning><?php
-		} else {
-			echo "<commentaire> $nombreDeLignes résultat".($nombreDeLignes == 1 ? '' : 's').' trouvé'.($nombreDeLignes == 1 ? '' : 's').'</commentaire>';
-		}
+	/**
+	 * Lance la requete. $DB_trombino contient ensuite le résultat.
+	 */
+	public function query($tol_admin)
+	{
+		global $DB_trombino, $DB_admin, $DB_xnet;
 		
-		// Génération des fiches des élèves
-		while (list(
-			$eleve_id, $nom, $prenom, $surnom, $login, $mail,
-			$date_nais,
-			$piece_id, $tel,
-			$commentaire, $promo, $cie, $section_id, $section) = $DB_trombino->next_row()) {
+		//////
+		// Création de la clause 'WHERE'
+		//
+		$format_callback = array('TrombinoRequest', 'format_constraint');
+		
+		$constraints_string = array_map($format_callback, $this->constraints);
+		foreach ($this->constraint_groups as $constraint_array)
+		{
+			$string_array = array_map($format_callback, $constraint_array);
+			$constraints_string[] = "(".implode(" OR ", $string_array).")";
+		}
+		$where_clause = implode(" AND ", $constraints_string);
 
-			echo "<eleve nom='$nom' prenom='$prenom' promo='$promo' login='$login' surnom='$surnom' date_nais='$date_nais' "
-				."tel='$tel' mail='".(empty($mail)?"$login@poly.polytechnique.fr":$mail)."' casert='$piece_id' "
-				."section='$section' cie='$cie'>\n";
+		
+		//////
+		// Requête
+		//
+		$DB_trombino->query("
+			SELECT  eleves.eleve_id, eleves.nom, eleves.prenom, eleves.surnom, eleves.login, eleves.mail, eleves.date_nais,
+				eleves.piece_id, pieces.tel, eleves.portable, eleves.commentaire, eleves.promo, eleves.cie, eleves.section_id, 
+				sections.nom, prises.prise_id, eleves.nation
+			  FROM	eleves
+		     LEFT JOIN	sections ON eleves.section_id = sections.section_id
+		     LEFT JOIN  pieces ON eleves.piece_id = pieces.piece_id
+		     LEFT JOIN  membres ON eleves.eleve_id = membres.eleve_id
+		     LEFT JOIN  binets ON membres.binet_id = binets.binet_id
+		     LEFT JOIN  admin.prises AS prises ON prises.piece_id = pieces.piece_id
+		     LEFT JOIN  admin.arpwatch_log AS arpwatch ON arpwatch.ip = prises.ip
+			 WHERE  $where_clause
+		      GROUP BY  eleves.eleve_id
+		      ORDER BY	eleves.promo ASC,
+				eleves.nom ASC,
+				eleves.prenom ASC
+			 LIMIT  100");
+		
+		//////
+		// Génération des résultats sous formes d'arbres nommés
+		//
+		$resultats = array();
+		while (list($eleve_id, $nom, $prenom, $surnom, $login, $mail, $date_nais,
+			    $piece_id, $tel, $port, $commentaire, $promo, $cie, $section_id, 
+			    $section, $prise, $nation) = $DB_trombino->next_row()) 
+		{
+			//////
+			// Si admin, génération de la liste des IPs
+			//
+			if ($tol_admin) 
+			{
+				$DB_admin->query("SELECT  prise_id, p.ip 
+				                    FROM  prises AS p 
+						   WHERE  piece_id = '$piece_id'
+						ORDER BY  prise_id");
+				
+				$prise_log = array();
+				while (list($prise, $ip) = $DB_admin->next_row()) 
+				{
+					$DB_xnet->query("SELECT  username, 
+							         if( ((options & 0x1c0) >> 6) = 1, 'Windows 9x', 
+								 if( ((options & 0x1c0) >> 6) = 2, 'Windows XP', 
+								 if( ((options & 0x1c0) >> 6) = 3, 'Linux', 
+								 if( ((options & 0x1c0) >> 6)= 4, 'MacOS', 
+								 if( ((options & 0x1c0) >> 6), 'MacOS X', 'Inconnu'))))),
+								 s.name 
+						           FROM  clients 
+						      LEFT JOIN  software AS s ON clients.version = s.version  
+						          WHERE  lastip = '$ip'");
 
-			if ($tol_admin && isset($_REQUEST['toladmin'])) {
-				// Génération de la liste des ips
-				$DB_admin->query("SELECT prise_id, p.ip FROM prises as p WHERE piece_id = '$piece_id'");
-				$old_prise = '';
-				while (list($prise,$ip) = $DB_admin->next_row()) {
-					if ($prise != $old_prise) {
-						if ($old_prise != '') {
-							echo "</prise>";
-						}
-						echo "<prise id='$prise'>";
-						$old_prise = $prise;
-					}
+					list($dns, $os, $client) = $DB_xnet->next_row();
+					
+					if (empty($client)) 
+						$client = 'Pas de client';
+					if (empty($dns)) 
+						$dns = "<aucune>";
 
-					$DB_xnet->query("SELECT username,if( ((options & 0x1c0) >> 6) = 1, 'Windows 9x', if( ((options & 0x1c0) >> 6)= 2, 'Windows XP', if( ((options & 0x1c0) >> 6) = 3, 'Linux', if( ((options & 0x1c0) >> 6)= 4, 'MacOS', if( ((options & 0x1c0) >> 6), 'MacOS X', 'Inconnu'))))),s.name FROM clients LEFT JOIN software as s ON clients.version = s.version  WHERE lastip like '$ip'");
-					list($dns,$os,$client) = $DB_xnet->next_row();
-					if(empty($client)) $client = 'Pas de client';
-					if(empty($dns)) $dns = "&lt;none>";
-					echo "<ip id='$ip' dns='$dns' os='$os' clientxnet='$client'>";
-
+					//////
 					// Toutes les macs qui ont été associées à cette ip
 					// On ne prend en compte que les macs qui correspondent à la période où la promo est sur le campus
+					//
 					$DB_admin->push_result();
-					$DB_admin->query("SELECT mac,ts,vendor FROM arpwatch_log LEFT JOIN arpwatch_vendors ON mac like CONCAT(debut_mac,':%') WHERE ip = '$ip' and ts > '".($promo+1)."-04-15' GROUP BY mac, ts ORDER BY ts");
-					while(list($mac, $ts,$vendor) = $DB_admin->next_row()) {
-						if(!empty($mac)) {
-							if(empty($vendor)) $vendor = "<inconnu>";
-							$vendor = htmlentities($vendor, ENT_QUOTES);
-							echo "<mac id='$mac' time='$ts' constructeur='$vendor'/>";
+					$DB_admin->query("SELECT  mac, ts, vendor 
+					                    FROM  arpwatch_log 
+						       LEFT JOIN  arpwatch_vendors ON mac LIKE CONCAT(debut_mac,':%') 
+						           WHERE  ip = '$ip' and ts > '".($promo+1)."-04-15' 
+							GROUP BY  mac, ts 
+							ORDER BY  ts");
+
+					$mac_log = array();
+					while (list($mac, $ts, $vendor) = $DB_admin->next_row())
+					{
+						if (!empty($mac))
+						{
+							if (empty($vendor)) 
+								$vendor = "<inconnu>";
+
+							$mac_log[] = array('id'     	  => $mac,
+									   'time'    	  => $ts,
+									   'constructeur' => $vendor);
 						}
 					}
 					$DB_admin->pop_result();
-					echo "</ip>";
-				}
-				if($old_prise != '') {
-					echo "</prise>";
+					
+					$prise_log[] = array('ip'      => $ip,
+							     'dns'     => $dns,
+							     'client'  => $client,
+							     'os'      => $os,
+							     'mac_log' => $mac_log);
 				}
 			}
 
+			//////
 			// Génération de la liste des binets
+			//
 			$DB_trombino->push_result();
-			$DB_trombino->query("
-				SELECT
-					remarque, nom, membres.binet_id
-				FROM
-					membres
-				LEFT JOIN binets
-					USING(binet_id)
-				WHERE
-					eleve_id = '$eleve_id'
-				ORDER BY
-					nom ASC");
-			while (list($remarque,$binet_nom,$binet_id) = $DB_trombino->next_row())
-				// Mais que c'est moche!. TODO: Remplacer par escape-uri (XSLT 2.0) 
-				echo "<binet nom='$binet_nom' nom_encode='".rawurlencode(str_replace("&apos;", "'", html_entity_decode($binet_nom)))."' id='$binet_id'>$remarque</binet>\n";
+			$DB_trombino->query("SELECT  remarque, nom, membres.binet_id
+					       FROM  membres
+				          LEFT JOIN  binets USING(binet_id)
+					      WHERE  eleve_id = '$eleve_id'
+					   ORDER BY  nom ASC");
+
+			$binets = array();
+			while (list($remarque, $binet_nom, $binet_id) = $DB_trombino->next_row())
+			{
+				$binets[] = array('nom'      => $binet_nom,
+						  'id'       => $binet_id,
+						  'remarque' => $remarque);
+			}
 			$DB_trombino->pop_result();
 
-			echo "<cadre>".wikiVersXML($commentaire)."</cadre>";
-
-			// Supprime les accents
+			//////
+			// Génère les noms et prénoms poly.org en supprimant les accents
+			//
 			$nompolyorg = str_replace("&apos;", "", $nom);
 			$nompolyorg = htmlentities(strtolower(utf8_decode($nompolyorg)));
 			$nompolyorg = preg_replace("/&(.)(acute|grave|cedil|circ|ring|tilde|uml);/", "$1", $nompolyorg);
@@ -366,80 +287,269 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 			$prenompolyorg = preg_replace("/&(.)(acute|grave|cedil|circ|ring|tilde|uml);/", "$1", $prenompolyorg);
 			$prenompolyorg = str_replace( " " , "-" , $prenompolyorg );
 
-			echo "<lien url='https://www.polytechnique.org/profile/$prenompolyorg.$nompolyorg.$promo' titre='Fiche sur polytechnique.org'/><br/>\n";
+			//////
+			// Envoi des données à smarty
+			$resultats[] = array('id' 		=> $eleve_id,
+				   	    'nom'		=> $nom,		
+				  	    'prenom' 		=> $prenom,
+				       	    'nompolyorg'     	=> $nompolyorg,
+				       	    'prenompolyorg'  	=> $prenompolyorg,
+				            'surnom' 		=> $surnom,
+				            'login' 		=> $login,
+				            'mail' 		=> $mail ? $mail : "$login@poly.polytechnique.fr",
+				            'nation'		=> $nation,
+					    'date_nais' 	=> $date_nais,
+				            'piece_id' 		=> $piece_id,
+				            'tel' 		=> $tel,
+				            'port'		=> $port,
+					    'commentaire' 	=> $commentaire,
+				            'promo' 		=> $promo,
+				            'cie' 		=> $cie,
+				            'section_id' 	=> $section_id,
+				            'section' 		=> $section,
+				            'prise_log'     	=> $tol_admin ? $prise_log : null,
+				            'prise'	        => $tol_admin ? $prise : null,
+					    'binets'		=> $binets);
 
-			// Liens d'administration
-			if(verifie_permission('admin')||verifie_permission('trombino')) {
-				echo "<lien url='".BASE_URL."/admin/user.php?id=$eleve_id' titre='Administrer $prenom $nom'/><br/>\n" ;
-			}
-			if(verifie_permission('admin')) {
-				echo "<lien url='".BASE_URL."/su/$eleve_id' titre='Prendre l&apos;identité de $prenom $nom'/><br/>\n" ;
-			}
-			echo "</eleve>\n";
-			echo "<br/>";
 		}
+
+		return $resultats;
 	}
 }
 
-// Affichage du formulaire de recherche
-?>
-	<formulaire id="trombino" action="trombino.php">
-		<champ titre="Nom" id="nom" valeur="<?php echo empty($_REQUEST['nom']) ? '' : $_REQUEST['nom']; ?>" />
-		<champ titre="Prénom" id="prenom" valeur="<?php echo empty($_REQUEST['prenom']) ? '' : $_REQUEST['prenom']; ?>" />
-		<champ titre="Surnom" id="surnom" valeur="<?php echo empty($_REQUEST['surnom']) ? '' : $_REQUEST['surnom']; ?>" />
+class TrombinoModule extends PLModule
+{
+	function handlers()
+	{
+		return array('tol'		=> $this->make_hook('tol', 		AUTH_PUBLIC,	"interne"), 
+			     'tol/binets'   	=> $this->make_hook('binets', 		AUTH_PUBLIC),
+			     'tol/photo'	=> $this->make_hook('tol_photo',	AUTH_PUBLIC,	"interne"),
+			     'tol/photo/img'	=> $this->make_hook('tol_photo_img',	AUTH_PUBLIC, 	"interne"));
+				
+	}
 
-		<choix titre="Promo" id="promo" type="combo" valeur="<?php echo empty($_REQUEST['promo']) ? '' : $_REQUEST['promo']; ?>">
-			<option titre="Sur le campus" id=""/>
-			<option titre="Toutes" id="toutes" />
+	private function get_nations()
+	{
+		global $DB_trombino;
 
-<?php
-			$DB_trombino->query("SELECT DISTINCT promo FROM eleves WHERE promo != '0000' ORDER BY promo DESC");
-			while (list($promo) = $DB_trombino->next_row()) {
-				echo "\t\t\t<option titre=\"$promo\" id=\"$promo\"/>\n";
+		$DB_trombino->query("SELECT  nation_id, name 
+		                       FROM  nations
+				      WHERE  existe");
+
+		$nations = array();
+		while (list($id, $name) = $DB_trombino->next_row())
+			$nations[$id] = $name;
+
+		return $nations;
+	}
+
+	private function get_sections()
+	{
+		global $DB_trombino;
+
+		$DB_trombino->query("SELECT  section_id, nom 
+		                       FROM  sections
+				      WHERE  existe");
+
+		$nations = array();
+		while (list($id, $name) = $DB_trombino->next_row())
+			$nations[$id] = $name;
+
+		return $nations;
+	}
+
+	private function get_promos()
+	{
+		global $DB_trombino;
+
+		$DB_trombino->query("SELECT  promo
+		                       FROM  eleves
+				      WHERE  promo != '0000'
+				   GROUP BY  promo");
+
+		$promos = array();
+		while (list($promo) = $DB_trombino->next_row())
+			$promos[$promo] = $promo;
+
+		return $promos;
+	}
+
+	private function get_binets()
+	{
+		global $DB_trombino;
+
+		$DB_trombino->query("SELECT  binet_id, nom
+		                       FROM  binets
+				   ORDER BY  nom ASC");
+
+		$binets = array();
+		while (list($id, $name) = $DB_trombino->next_row())
+			$binets[$id] = $name;
+
+		return $binets;
+	}
+
+	function handler_tol(&$page)
+	{
+		global $DB_admin, $DB_web, $DB_trombino, $DB_xnet;
+
+		//////
+		// Permissions
+		//
+		$tol_admin = FrankizSession::verifie_permission('admin') || 
+		   	     FrankizSession::verifie_permission('windows') ||
+		    	     FrankizSession::verifie_permission('trombino') ||
+		    	     FrankizSession::verifie_permission('news') ||
+		    	     FrankizSession::verifie_permission('support');
+
+		if (isset($_REQUEST['tol_admin']) && !$tol_admin)
+			return PL_DO_AUTH;
+
+		//////
+		// Assignation des variables smarty
+		//
+		$page->changeTpl('trombino/tol.tpl');
+		$page->assign('title', "Frankiz : Trombino");
+		$page->assign('tol_admin', $tol_admin);
+		$page->assign('page_raw', 1);
+		$page->assign('nations', array('toutes' => 'Toutes') + $this->get_nations());
+		$page->assign('sections', array('toutes' => 'Toutes') + $this->get_sections());
+		$page->assign('binets', array('tous' => 'Toutes') + $this->get_binets());
+
+		$promos = array();
+		$promos['courantes'] = "Promos courantes";
+		$promos['toutes'] = "Toutes les promos";
+		$promos = $promos + $this->get_promos();
+		$page->assign('promos', $promos);
+
+		//////
+		// On vérifie que nous avons bien une requete en cours.
+		//
+		if (!isset($_REQUEST['chercher']) &&
+		    !isset($_REQUEST['section']) && 
+		    !isset($_REQUEST['binet']) &&
+		    !isset($_REQUEST['anniversaire']) && 
+		    !isset($_REQUEST['promo']) && 
+		    !isset($_REQUEST['anniversaire_week']) &&
+		    !isset($_REQUEST['cherchertol']) && 
+		    !isset($_REQUEST['q_search'])) 
+			return;
+
+		//////
+		// Recuperation de la derniere promotion arrivee sur le campus
+		//
+		$DB_web->query('SELECT 	valeur
+				  FROM  parametres
+				 WHERE  nom = "lastpromo_oncampus"');
+		list($promo_tos) = $DB_web->next_row();
+
+		//////
+		// Initialisation de la requete
+		//
+		$request = new TrombinoRequest;
+		$request->add_option_to_constraint_group('valid_promo', 'eleves.piece_id', "", NOT_NULL, 1);
+
+
+		//////
+		// Requêtes des anniversaires
+		// 
+		if (isset($_REQUEST['anniversaire'])) 
+			$request->add_constraint('eleves.date_nais', 'NOW()', DAYOFYEAR_MATCH);
+
+		if (isset($_REQUEST['anniversaire_week']))
+			$request->add_constraint('eleves.date_nais', 'NOW()', WEEK_MATCH);
+		
+		//////
+		// Recherche tol rapide
+		//
+		if (isset($_REQUEST['cherchertol']))
+		{
+			$tokens = explode(" ", $_REQUEST['q_search']);
+
+			foreach ($tokens as $token)
+			{
+				$request->add_option_to_constraint_group('valid_qsearch', 'eleves.nom', 	$token, NEAR_MATCH, 1);
+				$request->add_option_to_constraint_group('valid_qsearch', 'eleves.prenom', 	$token, NEAR_MATCH, 1);
+				$request->add_option_to_constraint_group('valid_qsearch', 'eleves.surnom',	$token, NEAR_MATCH, 1);
+				$request->add_option_to_constraint_group('valid_qsearch', 'eleves.login',	$token, NEAR_MATCH, 1);
+				$request->add_option_to_constraint_group('valid_qsearch', 'eleves.piece_id',	$token, EXACT_MATCH, 1);
+				$request->add_option_to_constraint_group('valid_qsearch', 'pieces.tel',		$token, EXACT_MATCH, 1);
+				$request->add_option_to_constraint_group('valid_qsearch', 'eleves.surnom',	$token, NEAR_MATCH, 1);
+				
+				$request->add_option_to_constraint_group('valid_promo',   'eleves.promo',	$token, EXACT_MATCH, 1);
 			}
-?>
+		}
 
-		</choix>
+		//////
+		// Prise en compte des champs standard ne nécessitant qu'un LIKE
+		//
+		$field_assoc = array('casert'	=>	'eleves.piece_id',
+				     'phone'	=>	'pieces.tel',
+				     'prise'	=>	'pieces.prise_id',
+				     'ip'	=>	'pieces.ip',
+				     'mac'	=>	'arpwatch.mac',
+				     'nom'	=>	'eleves.nom',
+				     'prenom'	=>	'eleves.prenom',
+				     'surnom'	=>	'eleves.surnom',
+				     'mail'	=>	'eleves.mail');
 
-		<choix titre="Section" id="section" type="combo" valeur="<?php echo empty($_REQUEST['section']) ? '' : $_REQUEST['section']; ?>">
-			<option titre="Toutes" id=""/>
-<?php
-			$DB_trombino->query("SELECT section_id,nom FROM sections ORDER BY nom ASC");
-			while( list($section_id,$section_nom) = $DB_trombino->next_row() )
-				echo "\t\t\t<option titre=\"$section_nom\" id=\"$section_id\"/>\n";
-?>
-		</choix>
 
-		<choix titre="Binet" id="binet" type="combo" valeur="<?php echo empty($_REQUEST['binet']) ? '' : $_REQUEST['binet']; ?>">
-			<option titre="Tous" id=""/>
-<?php
-			$DB_trombino->query("SELECT binet_id,nom FROM binets ORDER BY nom ASC");
-			while( list($binet_id,$binet_nom) = $DB_trombino->next_row() )
-				echo "\t\t\t<option titre=\"$binet_nom\" id=\"$binet_id\"/>\n";
-?>
-		</choix>
+		foreach ($field_assoc as $field => $column)
+		{
+			if (!empty($_REQUEST[$field]))
+				$request->add_constraint($column, $_REQUEST[$field], NEAR_MATCH);
+		}
 
-		<champ titre="Login poly" id="loginpoly" valeur="<?php echo empty($_REQUEST['loginpoly']) ? '' : $_REQUEST['loginpoly']; ?>" />
-		<champ titre="Téléphone" id="phone" valeur="<?php echo empty($_REQUEST['phone']) ? '' : $_REQUEST['phone']; ?>" />
-		<champ titre="Casert" id="casert" valeur="<?php echo empty($_REQUEST['casert']) ? '' : $_REQUEST['casert']; ?>" />
+		//////
+		// Champs plus complexes à gérer
+		//
+		if (!empty($_REQUEST['section']) && $_REQUEST['section'] != 'toutes')
+		{
+			$request->add_constraint('sections.section_id', $_REQUEST['section'], EXACT_MATCH);
+			$request->reset_constraint_group('valid_promo');
+			$request->add_option_to_constraint_group('valid_promo', 'eleves.promo', $promo_tos, EXACT_MATCH_NO_QUOTES);
+			$request->add_option_to_constraint_group('valid_promo', 'eleves.promo', $promo_tos-1, EXACT_MATCH_NO_QUOTES);
+		}
+		
+		if (!empty($_REQUEST['nation']) && $_REQUEST['nation'] != 'Toutes')
+			$request->add_constraint('eleves.nation', $_REQUEST['nation'], EXACT_MATCH);
 
-<?php if($tol_admin){ ?>
-		<champ titre="Prise" id="prise" valeur="<?php echo empty($_REQUEST['prise']) ? '' : $_REQUEST['prise']; ?>" />
-		<champ titre="IP" id="ip" valeur="<?php echo empty($_REQUEST['ip']) ? '' : $_REQUEST['ip']; ?>" />
-		<champ titre="Nom Rezix" id="dns" valeur="<?php echo empty($_REQUEST['dns']) ? '' : $_REQUEST['dns']; ?>" />
-		<champ titre="Mac" id="mac" valeur="<?php echo empty($_REQUEST['mac']) ? '' : $_REQUEST['mac']; ?>" />
-		<choix titre="Tol Admin" id="admin" type="checkbox" valeur="<?php if(isset($_REQUEST['toladmin'])) echo 'toladmin' ;?>">
-				<option id="toladmin" titre=""/>
-		</choix>
-<?php } ?>
+		if (!empty($_REQUEST['binet']) && $_REQUEST['binet'] != 'tous')
+			$request->add_constraint('binets.binet_id', $_REQUEST['binet'], EXACT_MATCH);
 
-		<bouton titre="Effacer" id="reset" />
-		<bouton titre="Chercher" id="chercher" />
-	</formulaire>
-	<lien url="trombino.php?anniversaire_week&amp;depart=<?php echo date("Y-m-d"); ?>" titre="Anniversaires à souhaiter dans la semaine"/><br/>
-	<lien url="wikix/Num%C3%A9ros_utiles" titre="Numéros Utiles"/>
-</page>
-<?
+		if (!empty($_REQUEST['loginpoly'])) 
+			$request->add_constraint('eleves.login', $_REQUEST['loginpoly'], EXACT_MATCH);
+
+		if (!empty($_REQUEST['dns']))
+		{
+			$DB_xnet->query("SELECT  lastip
+					   FROM  clients
+					  WHERE  username LIKE '%{$_REQUEST['dns']}%'");
+			
+			while (list($ip) = $DB_xnet->next_row())
+				$request->add_option_to_constraint_group('valid_dns', 'pieces.ip', $ip, EXACT_MATCH, 1);
+		}
+
+		if (isset($_GET['jeveuxvoirlesfillesdelecole']))
+			$request->add_constraint('eleves.sexe', 1, EXACT_MATCH);
+		
+		//////
+		// Attention! Le champ promo effaçant des conditions implicites sur la promo définies par d'autres champs, il est nécessaire de
+		// le vérifier en dernier.
+		//
+		if (!empty($_REQUEST['promo']) && $_REQUEST['promo'] != 'courantes')
+		{
+			$request->reset_constraint_group('valid_promo');
+			if ($_REQUEST['promo'] != 'toutes')
+				$request->add_option_to_constraint_group('valid_promo', 'eleves.promo', $_REQUEST['promo'], EXACT_MATCH, 1);
+		}
+
+		//////
+		// Envoi des résultats à Smarty
+		//
+		$results = $request->query($tol_admin);
+		$page->assign('nbr_results', count($results));
+		$page->assign('results', $results);
 	}
 
 	function handler_binets(&$page)
@@ -448,17 +558,17 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 
 		$page->assign('title', "Binets");
 
-	echo "<page id='binets'>";
+		echo "<page id='binets'>";
 	
-	$auth = "" ;
-	if(!FrankizSession::verifie_permission('interne')) $auth = " exterieur=1 AND " ;
+		$auth = "" ;
+		if(!FrankizSession::verifie_permission('interne')) $auth = " exterieur=1 AND " ;
 
-	$categorie_precedente = -1;
-	$DB_trombino->query("SELECT binet_id,nom,description,http,folder,b.catego_id,categorie ".
+		$categorie_precedente = -1;
+		$DB_trombino->query("SELECT binet_id,nom,description,http,folder,b.catego_id,categorie ".
  						"FROM binets as b LEFT JOIN binets_categorie as c USING(catego_id) ".
 						"WHERE $auth NOT(http IS NULL AND folder='')".
 						"ORDER BY b.catego_id ASC, b.nom ASC");
-	while(list($id,$nom,$description,$http,$folder,$cat_id,$categorie) = $DB_trombino->next_row()) {
+		while(list($id,$nom,$description,$http,$folder,$cat_id,$categorie) = $DB_trombino->next_row()) {
 			if($folder!=""){ 
 				if(FrankizSession::est_interne()) $http=URL_BINETS.$folder."/";
 				else $http="binets/$folder/";
@@ -470,10 +580,17 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 			<?php if($http!="") echo "<url>$http</url>"; ?>
 		</binet>
 <?php
+		}
+		echo "</page>";
 	}
-?>
-</page>
-<?php 
+	
+	function handler_tol_photo(&$page)
+	{
+		global $platal;
+		
+		$page->changeTpl('trombino/photo.tpl');
+		$page->assign('title', "Photo");
+		$page->assign('original', ($platal->argv[2] == 'original'));
 	}
 }
 ?>
