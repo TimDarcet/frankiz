@@ -72,7 +72,7 @@ class TrombinoRequest
 	 */
 	public function reset_constraint_group($group)
 	{
-		unset($this->constraints_groups[$group]);
+		unset($this->constraint_groups[$group]);
 	}
 
 	/**
