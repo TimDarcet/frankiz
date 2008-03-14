@@ -3,7 +3,7 @@
 {/if}
 <link rel="navigation" href="annonces/" title="Annonces" />
 <link rel="navigation" href="activites/" title="Activités" />
-{if !$session->est_auth() or !$session->est_interne() }
+{if $session->est_auth() or $session->est_interne() }
 <link rel="navigation" href="trombino.php" title="Trombino" />
 {/if}
 <link rel="navigation" href="xshare.php" title="Télécharger" />

@@ -4,7 +4,7 @@
   {/if}
   <li class="fkz_liens"><a href="annonces/" accesskey="a">Annonces</a></li>
   <li class="fkz_liens"><a href="activites/">Activités</a></li>
-  {if !$session->est_auth() or !$session->est_interne() }
+  {if $session->est_auth() or $session->est_interne() }
   <li class="fkz_liens"><a href="trombino.php" accesskey="t">Trombino</a></li>
   {/if}
   <li class="fkz_liens"><a href="xshare.php" accesskey="x">Télécharger</a></li>

@@ -35,7 +35,7 @@ if (!FrankizSession::is_admin())
 require_once BASE_FRANKIZ."htdocs/include/page_header.inc.php";
 demande_authentification(AUTH_MDP);
 
-$permissions_user = array_keys($_SESSION['fkz_perms']);
+$permissions_user = explode(".", $_SESSION['perms']->flags());
 
 ?>
 <page id="admin" titre="Frankiz : administration">
