@@ -26,13 +26,14 @@
 require_once BASE_LOCAL."/include/wiki.inc.php";
 require_once BASE_LOCAL."/include/session.inc.php";
 
-define ('EXACT_MATCH', 0);             // Correspondance exacte
-define ('EXACT_MATCH_NO_QUOTES', 1);   // Correspondance exacte, mais le texte de référence n'est pas inclus dans des guillemets
-define ('NEAR_MATCH', 2);		     // Correspondance à base d'un LIKE
-define ('NOT_NULL', 3);		     // Le champ est NOT NULL
-define ('DAYOFYEAR_MATCH', 4);	     // (DATE & DATETIME uniquement) Le champ correspond au jour de l'année près.
-define ('WEEK_MATCH', 5);              // (DATE & DATETIME uniquement) Le champ correspond à une semaine près
-define ('TRUE_MATCH', 6);		     // Tout le temps vrai
+define ('EXACT_MATCH', 			0);     // Correspondance exacte
+define ('EXACT_MATCH_NO_QUOTES', 	1);	// Correspondance exacte, mais le texte de référence n'est pas inclus dans des guillemets
+define ('NEAR_MATCH', 			2);	// Correspondance à base d'un LIKE
+define ('PROMO_MATCH',			3);	// Considère 99 = 1999 et 03 = 2003
+define ('NOT_NULL', 			4);	// Le champ est NOT NULL
+define ('DAYOFYEAR_MATCH', 		5);	// (DATE & DATETIME uniquement) Le champ correspond au jour de l'année près.
+define ('WEEK_MATCH', 			6);     // (DATE & DATETIME uniquement) Le champ correspond à une semaine près
+define ('TRUE_MATCH', 			7);	// Tout le temps vrai
 
 /**
  * Une classe permettant de générer une requête de recherche dans le TOL.
@@ -124,6 +125,15 @@ class TrombinoRequest
 			return "$column = $pattern";
 		case NEAR_MATCH:
 			return "$column LIKE '%$pattern%'";
+		case PROMO_MATCH:
+			if (!is_numeric($pattern))
+				return "FALSE";
+			else if ($pattern < 30)
+				return "$column = '20$pattern'";
+			else if ($pattern < 100)
+				return "$column = '19$pattern'";
+			else
+				return "$column = '$pattern'";
 		case NOT_NULL:
 			return "NOT ISNULL($column)";
 		case DAYOFYEAR_MATCH:
@@ -290,26 +300,26 @@ class TrombinoRequest
 			//////
 			// Envoi des données à smarty
 			$resultats[] = array('id' 		=> $eleve_id,
-				   	    'nom'		=> $nom,		
-				  	    'prenom' 		=> $prenom,
-				       	    'nompolyorg'     	=> $nompolyorg,
-				       	    'prenompolyorg'  	=> $prenompolyorg,
-				            'surnom' 		=> $surnom,
-				            'login' 		=> $login,
-				            'mail' 		=> $mail ? $mail : "$login@poly.polytechnique.fr",
-				            'nation'		=> $nation,
-					    'date_nais' 	=> $date_nais,
-				            'piece_id' 		=> $piece_id,
-				            'tel' 		=> $tel,
-				            'port'		=> $port,
-					    'commentaire' 	=> $commentaire,
-				            'promo' 		=> $promo,
-				            'cie' 		=> $cie,
-				            'section_id' 	=> $section_id,
-				            'section' 		=> $section,
-				            'prise_log'     	=> $tol_admin ? $prise_log : null,
-				            'prise'	        => $tol_admin ? $prise : null,
-					    'binets'		=> $binets);
+				   	     'nom'		=> $nom,		
+				  	     'prenom' 		=> $prenom,
+				       	     'nompolyorg'     	=> $nompolyorg,
+				       	     'prenompolyorg'  	=> $prenompolyorg,
+				             'surnom' 		=> $surnom,
+				             'login' 		=> $login,
+				             'mail' 		=> $mail ? $mail : "$login@poly.polytechnique.fr",
+				             'nation'		=> $nation,
+					     'date_nais' 	=> $date_nais,
+				             'piece_id' 		=> $piece_id,
+				             'tel' 		=> $tel,
+				             'port'		=> $port,
+					     'commentaire' 	=> $commentaire,
+				             'promo' 		=> $promo,
+				             'cie' 		=> $cie,
+				             'section_id' 	=> $section_id,
+				             'section' 		=> $section,
+				             'prise_log'     	=> $tol_admin ? $prise_log : null,
+				             'prise'	        => $tol_admin ? $prise : null,
+					     'binets'		=> $binets);
 
 		}
 
@@ -409,7 +419,7 @@ class TrombinoModule extends PLModule
 		// Assignation des variables smarty
 		//
 		$page->changeTpl('trombino/tol.tpl');
-		$page->assign('title', "Frankiz : Trombino");
+		$page->assign('title', "Trombino");
 		$page->assign('tol_admin', $tol_admin);
 		$page->assign('page_raw', 1);
 		$page->assign('nations', array('toutes' => 'Toutes') + $this->get_nations());
@@ -431,8 +441,7 @@ class TrombinoModule extends PLModule
 		    !isset($_REQUEST['anniversaire']) && 
 		    !isset($_REQUEST['promo']) && 
 		    !isset($_REQUEST['anniversaire_week']) &&
-		    !isset($_REQUEST['cherchertol']) && 
-		    !isset($_REQUEST['q_search'])) 
+		    empty($_REQUEST['q_search'])) 
 			return;
 
 		//////
@@ -466,17 +475,20 @@ class TrombinoModule extends PLModule
 		{
 			$tokens = explode(" ", $_REQUEST['q_search']);
 
+			$id = 0;
 			foreach ($tokens as $token)
 			{
-				$request->add_option_to_constraint_group('valid_qsearch', 'eleves.nom', 	$token, NEAR_MATCH, 1);
-				$request->add_option_to_constraint_group('valid_qsearch', 'eleves.prenom', 	$token, NEAR_MATCH, 1);
-				$request->add_option_to_constraint_group('valid_qsearch', 'eleves.surnom',	$token, NEAR_MATCH, 1);
-				$request->add_option_to_constraint_group('valid_qsearch', 'eleves.login',	$token, NEAR_MATCH, 1);
-				$request->add_option_to_constraint_group('valid_qsearch', 'eleves.piece_id',	$token, EXACT_MATCH, 1);
-				$request->add_option_to_constraint_group('valid_qsearch', 'pieces.tel',		$token, EXACT_MATCH, 1);
-				$request->add_option_to_constraint_group('valid_qsearch', 'eleves.surnom',	$token, NEAR_MATCH, 1);
-				
-				$request->add_option_to_constraint_group('valid_promo',   'eleves.promo',	$token, EXACT_MATCH, 1);
+				$id++;
+
+				$request->add_option_to_constraint_group("valid_qsearch_$id", 'eleves.nom', 		$token, NEAR_MATCH, 1);
+				$request->add_option_to_constraint_group("valid_qsearch_$id", 'eleves.prenom', 		$token, NEAR_MATCH, 1);
+				$request->add_option_to_constraint_group("valid_qsearch_$id", 'eleves.surnom',		$token, NEAR_MATCH, 1);
+				$request->add_option_to_constraint_group("valid_qsearch_$id", 'eleves.login',		$token, NEAR_MATCH, 1);
+				$request->add_option_to_constraint_group("valid_qsearch_$id", 'eleves.piece_id',	$token, EXACT_MATCH, 1);
+				$request->add_option_to_constraint_group("valid_qsearch_$id", 'pieces.tel',		$token, EXACT_MATCH, 1);
+				$request->add_option_to_constraint_group("valid_qsearch_$id", 'eleves.promo',		$token, PROMO_MATCH, 1);
+
+				$request->add_option_to_constraint_group('valid_promo',	      'eleves.promo',		$token, PROMO_MATCH, 1);
 			}
 		}
 

@@ -65,7 +65,7 @@ class DB {
 				mysql_query("SET NAMES 'utf8'",$this->link);
 
 			if(mysql_errno() == 0)
-				mysql_select_db($this->base,$this->link) || ajouter_erreur_mysql("USE ".$this->base);
+				mysql_select_db($this->base,$this->link);//|| ajouter_erreur_mysql("USE ".$this->base);
 //			else {
 //				ajouter_erreur_mysql("CONNECT ".$this->user."@".$this->host);
 //			}

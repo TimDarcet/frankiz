@@ -56,6 +56,7 @@
 	<input type='text' name='casert' value='' />
       </td>
     </tr>
+{if $tol_admin}
     <tr>
       <td>
         <span class='gauche'>IP :</span>
@@ -70,6 +71,7 @@
 	<input type='text' name='prise' value='' />
       </td>
     </tr>
+{/if}
     <tr>
       <td>
         <span class='gauche'>Nationalité :</span>
@@ -79,6 +81,7 @@
 	  {/foreach}
 	</select>
       </td>
+{if $tol_admin}
       <td>
         <span class='gauche'>@Mac :</span>
 	<input type='text' name='mac' value='' />
@@ -87,6 +90,12 @@
         <span class='gauche'>Tol Admin :</span>
 	<input type='checkbox' name='toladmin' />
       </td>
+{else}
+      <td>
+      </td>
+      <td>
+      </td>
+{/if}
     </tr>
   </table>
   <p class='bouton'>

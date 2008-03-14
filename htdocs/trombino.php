@@ -29,9 +29,4 @@ if (isset($_GET['tdb']) && isset($_GET['promo'])){
 	echo "#\n";
 	exit;
 }
-
-require_once "include/page_header.inc.php";
-require_once BASE_MODULES."/trombino.php";
-call('TrombinoModule', "tol");
-require_once "include/page_footer.inc.php";
 ?>
