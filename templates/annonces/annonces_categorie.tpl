@@ -18,10 +18,7 @@
 		</span>
                 {/if}
 		{$annonce.contenu|wiki_vers_html}
-		<p class="fkz_signature"><a href="trombino.php?chercher&loginpoly={$annonce.eleve.login}&promo={$annonce.eleve.promo}">
-		  {if $annonce.eleve.surnom}{$annonce.eleve.surnom}{else}{$annonce.eleve.prenom} {$annonce.eleve.nom}{/if}
-		  {if $annonce.eleve.promo}({$annonce.eleve.promo}){/if}
-		</a></p>
+		<p class="fkz_signature">{print_eleve_name eleve=$annonce.eleve show_promo=1}</p>
 	      </div>
 	    </div>
 	  </div>

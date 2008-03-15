@@ -91,7 +91,7 @@
     <div>
       <span class="droite">
         <span class="image" style="display:block;text-align:center">
-          <img src="trombino.php?image=true&amp;login={$profil_fkz_loginpoly}&amp;promo={$profil_fkz_promo}" 
+          <img src="tol/photo/{$profil_fkz_promo}/{$profil_fkz_loginpoly}" 
                alt="photo" height="95" width="80" />
         </span>
        </span>

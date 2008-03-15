@@ -10,7 +10,7 @@ function smarty_function_print_eleve_name($params, &$smarty)
 		$name = "$name (X{$params['eleve']['promo']})";
 
 	if (FrankizSession::verifie_permission("interne"))
-		$name = "<a href='tol.php?chercher&loginpoly={$params['eleve']['loginpoly']}&promo={$params['eleve']['promo']}'>$name</a>";
+		$name = "<a href='tol/chercher&loginpoly={$params['eleve']['loginpoly']}&promo={$params['eleve']['promo']}'>$name</a>";
 	
 	return $name;
 }

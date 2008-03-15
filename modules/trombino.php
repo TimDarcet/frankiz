@@ -333,6 +333,7 @@ class TrombinoModule extends PLModule
 	{
 		return array('tol'		=> $this->make_hook('tol', 		AUTH_PUBLIC,	"interne"), 
 			     'tol/binets'   	=> $this->make_hook('binets', 		AUTH_PUBLIC),
+			     'tol/binets/logo'  => $this->make_hook('binets_logo',	AUTH_PUBLIC),
 			     'tol/photo'	=> $this->make_hook('tol_photo',	AUTH_PUBLIC,	"interne"),
 			     'tol/photo/img'	=> $this->make_hook('tol_photo_img',	AUTH_PUBLIC, 	"interne"));
 				
@@ -568,32 +569,42 @@ class TrombinoModule extends PLModule
 	{
 		global $DB_trombino;
 
+		$page->changeTpl('trombino/binets.tpl');
 		$page->assign('title', "Binets");
 
-		echo "<page id='binets'>";
-	
-		$auth = "" ;
-		if(!FrankizSession::verifie_permission('interne')) $auth = " exterieur=1 AND " ;
-
-		$categorie_precedente = -1;
-		$DB_trombino->query("SELECT binet_id,nom,description,http,folder,b.catego_id,categorie ".
- 						"FROM binets as b LEFT JOIN binets_categorie as c USING(catego_id) ".
-						"WHERE $auth NOT(http IS NULL AND folder='')".
-						"ORDER BY b.catego_id ASC, b.nom ASC");
-		while(list($id,$nom,$description,$http,$folder,$cat_id,$categorie) = $DB_trombino->next_row()) {
-			if($folder!=""){ 
-				if(FrankizSession::est_interne()) $http=URL_BINETS.$folder."/";
-				else $http="binets/$folder/";
+		$DB_trombino->query("SELECT  binet_id, nom, description, http, folder,b.catego_id, categorie
+ 				       FROM  binets as b 
+				  LEFT JOIN  binets_categorie as c USING(catego_id)
+				      WHERE  NOT(http IS NULL AND folder='')
+				   ORDER BY  b.catego_id ASC, b.nom ASC");
+		
+		$binets = array();
+		$categories = array();
+		while (list($id, $nom, $description, $http, $folder, $cat_id, $categorie) = $DB_trombino->next_row()) 
+		{
+			if ($folder != "")
+			{
+				if (FrankizSession::est_interne())
+					$http = URL_BINETS."$folder/";
+				else 
+					$http = "binets/$folder/";
 			}
-?>
-		<binet id="<?php echo $id; ?>" categorie="<?php echo $categorie; ?>" nom="<?php echo $nom; ?>">
-			<image source="binets.php?image=1&amp;id=<?php echo $id; ?>"  texte="<?php echo $nom; ?>"/>
-			<description><?php echo stripslashes($description); ?></description>
-			<?php if($http!="") echo "<url>$http</url>"; ?>
-		</binet>
-<?php
+		
+			if (!isset($categories[$cat_id]))
+			{
+				$categories[$cat_id] = $categorie;
+				$binets[$cat_id] = array();
+			}
+
+			$binets[$cat_id][] = array('id'          => $id,
+					  	   'nom'         => $nom,
+						   'description' => $description,
+						   'http'        => $http,
+						   'folder'      => $folder);
 		}
-		echo "</page>";
+
+		$page->assign('binets', $binets);
+		$page->assign('categories', $categories);
 	}
 	
 	function handler_tol_photo(&$page)
@@ -602,7 +613,39 @@ class TrombinoModule extends PLModule
 		
 		$page->changeTpl('trombino/photo.tpl');
 		$page->assign('title', "Photo");
-		$page->assign('original', ($platal->argv[2] == 'original'));
+		$page->assign('promo', $platal->argv[1]);
+		$page->assign('login', $platal->argv[2]);
+		$page->assign('original', ($platal->argv[3] == 'original'));
+	}
+
+	function handler_binets_logo(&$page)
+	{
+		global $DB_trombino, $platal;
+
+		$binet_id = $platal->argv[1];
+		
+		$DB_trombino->query("SELECT image, format FROM binets WHERE binet_id='$binet_id'");
+		list ($image, $format) = $DB_trombino->next_row() ;
+	
+		header("Content-type: $format");
+		echo $image;
+		exit;
+	}
+
+	function handler_tol_photo_img(&$page)
+	{
+		global $DB_trombino, $platal;
+
+		$promo = $platal->argv[1];
+		$login = $platal->argv[2];
+		$original = isset($platal->argv[3]) && $platal->argv[3] == 'original';
+
+		if ($original)
+			$file = BASE_PHOTOS."/{$promo}/{$login}_original.jpg";
+		else
+			$file = BASE_PHOTOS."/{$promo}/{$login}.jpg";
+	
+		return_file($file);
 	}
 }
 ?>

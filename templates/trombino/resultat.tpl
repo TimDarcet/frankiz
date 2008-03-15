@@ -1,8 +1,8 @@
 {css_block class='fkz_trombino_eleve'}
 <h3 class='nom'>{$eleve.prenom} {$eleve.nom}</h3>
 <div class='fkz_trombino_photo'>
-  <a href="trombino.php?image=show&amp;login={$eleve.login}&amp;promo={$eleve.promo}">
-    <img height='122' src='trombino.php?image=true&amp;login={$eleve.login}&amp;promo={$eleve.promo}' />
+  <a href="tol/photo/{$eleve.promo}/{$eleve.login}">
+    <img height='122' src='tol/photo/img/{$eleve.promo}/{$eleve.login}' />
   </a>
 </div>
 <div class='fkz_trombino_infos'>
@@ -77,6 +77,6 @@
 <a class='lien' href='https://www.polytechnique.org/profile/{$eleve.prenompolyorg}.{$eleve.nompolyorg}.{$eleve.promo}'>Fiche sur polytechnique.org</a><br />
 {if $tol_admin}
 <a class='lien' href='admin/user.php?id={$eleve.id}'>Administrer {$eleve.prenom} {$eleve.nom}</a><br />
-<a class='lien' href='?su={$eleve.id}'>Prendre l'identité de {$eleve.prenom} {$eleve.nom}</a><br />
+<a class='lien' href='su/{$eleve.id}'>Prendre l'identité de {$eleve.prenom} {$eleve.nom}</a><br />
 {/if}
 {/css_block}

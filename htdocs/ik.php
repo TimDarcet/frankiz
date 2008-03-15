@@ -18,9 +18,9 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Recherche dans le trombino.
+	Renvoie l'ik.
 
-	$Id: trombino.php 1943 2007-09-13 21:44:09Z elscouta $
+	$Id: ik.php 1943 2007-09-13 21:44:09Z elscouta $
 
 */
 

@@ -5,11 +5,11 @@
   <li class="fkz_liens"><a href="annonces/" accesskey="a">Annonces</a></li>
   <li class="fkz_liens"><a href="activites/">Activités</a></li>
   {if $session->est_auth() or $session->est_interne() }
-  <li class="fkz_liens"><a href="trombino.php" accesskey="t">Trombino</a></li>
+  <li class="fkz_liens"><a href="tol/" accesskey="t">Trombino</a></li>
   {/if}
   <li class="fkz_liens"><a href="xshare.php" accesskey="x">Télécharger</a></li>
   <li class="fkz_liens"><a href="http://wikix.polytechnique.org" accesskey="w">WikiX</a></li>
-  <li class="fkz_liens"><a href="binets.php" accesskey="b">Binets</a></li>
+  <li class="fkz_liens"><a href="tol/binets/" accesskey="b">Binets</a></li>
   {if !$session->est_auth() && !$session->est_interne() }
   <li class="fkz_liens"><a href="http://perso.frankiz/">Sites élèves</a></li>
   {else}
