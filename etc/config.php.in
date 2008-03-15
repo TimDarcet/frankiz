@@ -134,26 +134,26 @@ define('WEBPERSO_GROUP', 'webperso');
 
 // Emails
 $i = -1 ;
-define('MAIL_WEBMESTRE',"web@frankiz.polytechnique.fr");
+define('MAIL_WEBMESTRE',"%MAIL:web@frankiz.polytechnique.fr%");
 define('WEBMESTRE_ID',$i--);
-define('MAIL_QDJMASTER',"qdj@frankiz.polytechnique.fr");
+define('MAIL_QDJMASTER',"%MAIL:qdj@frankiz.polytechnique.fr%");
 define('QDJMASTER_ID',$i--);
-define('MAIL_PREZ',"prez@frankiz.polytechnique.fr");
+define('MAIL_PREZ',"%MAIL:prez@frankiz.polytechnique.fr%");
 define('PREZ_ID',$i--);
-define('MAIL_ROOT',"root@frankiz.polytechnique.fr");
+define('MAIL_ROOT',"%MAIL:root@frankiz.polytechnique.fr%");
 define('ROOT_ID',$i--);
-define('MAIL_MAILPROMO',"mailpromo@frankiz.polytechnique.fr");
+define('MAIL_MAILPROMO',"%MAIL:mailpromo@frankiz.polytechnique.fr%");
 define('MAILPROMO_ID',$i--);
-define('MAIL_BR',"br@frankiz");
+define('MAIL_BR',"%MAIL:br@frankiz%");
 define('BR_ID',$i--);
 
-define('MAIL_CONTACT',"eleves@polytechnique.fr");
+define('MAIL_CONTACT',"%MAIL:eleves@polytechnique.fr%");
 define('CONTACT_ID',$i--);
-define('MAIL_FAQMESTRE',"faq@frankiz");
+define('MAIL_FAQMESTRE',"%MAIL:faq@frankiz%");
 define('FAQMESTRE_ID',$i--);
-define('MAIL_TROMBINOMEN',"tol@frankiz");
+define('MAIL_TROMBINOMEN',"%MAIL:tol@frankiz%");
 define('TROMBINOMEN_ID',$i--);
-define('MAIL_WINDOWS',"msdnaa-licences@frankiz");
+define('MAIL_WINDOWS',"%MAIL:msdnaa-licences@frankiz%");
 define('WINDOWS_ID',$i--);
 
 define('STRINGMAIL_ID',$i--);
