@@ -40,11 +40,7 @@
 
 <xsl:include href="skins.xsl"/>
 <xsl:include href="liens.xsl"/>
-<xsl:include href="qdj.xsl"/>
-<xsl:include href="anniversaires.xsl"/>
-<xsl:include href="activites.xsl"/>
 <xsl:include href="tours_kawa.xsl"/>
-<xsl:include href="trombino.xsl"/>
 <xsl:include href="stats.xsl"/>
 <xsl:include href="meteo.xsl"/>
 

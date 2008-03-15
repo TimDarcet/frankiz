@@ -1,8 +1,8 @@
 <div class="fkz_qdj_question">{$minimodule.question}</div>
 <div>
   {if $minimodule.compte1 + $minimodule.compte2 == 0}
-    {assign='rouje' value=0}
-    {assign='jone'  value=0}
+    {assign var='rouje' value=0}
+    {assign var='jone'  value=0}
   {else}
     {math assign='rouje' equation="(100 * x) / (x + y)" x=$minimodule.compte1 y=$minimodule.compte2 format="%.1f"}
     {math assign='jone'  equation="(100 * y) / (x + y)" x=$minimodule.compte1 y=$minimodule.compte2 format="%.1f"}

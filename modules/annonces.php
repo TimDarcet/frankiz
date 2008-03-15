@@ -105,12 +105,12 @@ class AnnoncesModule extends PLModule
 								       'titre'  => $titre,
 					       		               'date'   => $date,
 							               'img'    => file_exists(DATA_DIR_LOCAL.'annonces/'.$id),
-							               'eleve'  => array('nom'    => $nom,
-					   			     			 'prenom' => $prenom,
-								       			 'promo'  => $promo,
-								      			 'surnom' => $surnom,
-								       			 'mail'   => $mail,
-								       			 'login'  => $login),
+							               'eleve'  => array('nom'    	=> $nom,
+					   			     			 'prenom' 	=> $prenom,
+								       			 'promo'  	=> $promo,
+								      			 'surnom' 	=> $surnom,
+								       			 'mail'   	=> $mail,
+								       			 'loginpoly'  	=> $login),
 							   	       'contenu' => $contenu,
 							   	       'visible' => $visible);
 		}

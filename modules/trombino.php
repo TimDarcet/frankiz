@@ -627,6 +627,9 @@ class TrombinoModule extends PLModule
 		$DB_trombino->query("SELECT image, format FROM binets WHERE binet_id='$binet_id'");
 		list ($image, $format) = $DB_trombino->next_row() ;
 	
+		if (!$image)
+			return PL_NOT_FOUND;
+
 		header("Content-type: $format");
 		echo $image;
 		exit;
@@ -645,7 +648,8 @@ class TrombinoModule extends PLModule
 		else
 			$file = BASE_PHOTOS."/{$promo}/{$login}.jpg";
 	
-		return_file($file);
+		if (!return_file($file))
+			return PL_NOT_FOUND;
 	}
 }
 ?>
