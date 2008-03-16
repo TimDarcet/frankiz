@@ -25,22 +25,27 @@
 */
 require_once BASE_FRANKIZ."htdocs/include/minimodules.inc.php";
 require_once BASE_FRANKIZ."htdocs/include/session.inc.php";
+require_once BASE_FRANKIZ."htdocs/include/transferts.inc.php";
 
 class ProfilModule extends PLModule
 {
 	public function handlers()
 	{
-		return array('profil'			 => $this->make_hook('profil', 		AUTH_COOKIE),
-			     'profil/fkz'                => $this->make_hook('fkz', 		AUTH_COOKIE),
-			     'profil/fkz/change_mdp'     => $this->make_hook('fkz_change_mdp', 	AUTH_MDP),
-		             'profil/fkz/change_tol'     => $this->make_hook('fkz_change_tol', 	AUTH_COOKIE),
-			     'profil/fkz/mod_binets'     => $this->make_hook('fkz_mod_binets', 	AUTH_COOKIE),
-			     'profil/mdp_perdu'		 => $this->make_hook('mdp_perdu', 	AUTH_PUBLIC),
-			     'profil/reseau'		 => $this->make_hook('reseau', 		AUTH_MDP),
-			     'profil/reseau/demande_ip'  => $this->make_hook('demande_ip', 	AUTH_COOKIE),
-			     'profil/skin'               => $this->make_hook('skin', 		AUTH_COOKIE),
-			     'profil/skin/change_skin'   => $this->make_hook('skin_change', 	AUTH_COOKIE),
-			     'profil/skin/change_params' => $this->make_hook('skin_params', 	AUTH_COOKIE));
+		return array('profil'			  => $this->make_hook('profil', 		AUTH_COOKIE),
+			     'profil/fkz'                 => $this->make_hook('fkz', 			AUTH_COOKIE),
+			     'profil/fkz/change_mdp'      => $this->make_hook('fkz_change_mdp', 	AUTH_MDP),
+		             'profil/fkz/change_tol'      => $this->make_hook('fkz_change_tol', 	AUTH_COOKIE),
+			     'profil/fkz/mod_binets'      => $this->make_hook('fkz_mod_binets', 	AUTH_COOKIE),
+			     'profil/mdp_perdu'		  => $this->make_hook('mdp_perdu', 		AUTH_PUBLIC),
+			     'profil/reseau'		  => $this->make_hook('reseau', 		AUTH_MDP),
+			     'profil/reseau/demande_ip'   => $this->make_hook('demande_ip', 		AUTH_COOKIE),
+			     'profil/skin'                => $this->make_hook('skin', 			AUTH_COOKIE),
+			     'profil/skin/change_skin'    => $this->make_hook('skin_change', 		AUTH_COOKIE),
+			     'profil/skin/change_params'  => $this->make_hook('skin_params', 		AUTH_COOKIE),
+			     'profil/siteweb'		  => $this->make_hook('siteweb',		AUTH_MDP),
+			     'profil/siteweb/download'	  => $this->make_hook('siteweb_download',	AUTH_MDP),
+			     'profil/siteweb/upload'	  => $this->make_hook('siteweb_upload',		AUTH_MDP),
+			     'profil/siteweb/demande_ext' => $this->make_hook('siteweb_ext',		AUTH_MDP));
 	}
 
 	public function handler_profil(&$page)
@@ -526,6 +531,83 @@ class ProfilModule extends PLModule
 		
 			$page->assign('demande', 1);
 		}
+	}
+
+	public function handler_siteweb(&$page)
+	{
+		$page->changeTpl('profil/siteweb.tpl');
+		$page->assign('title', "Gestion du site web personnel");
+	}
+
+
+	public function handler_siteweb_upload(&$page)
+	{
+		$page->changeTpl('profil/siteweb.tpl');
+		$page->assign('title', 'Upload de site web');
+
+		if (!isset($_FILES['file']) || !$_FILES['file']['name'])
+			return;
+
+		$chemin = BASE_PAGESPERSOS."{$_SESSION['loginpoly']}-{$_SESSION['promo']}";
+		deldir($chemin, WEBPERSO_USER);
+
+		$filename = "/tmp/{$_SESSION['loginpoly']}-{$_SESSION['promo']}-{$_FILES['file']['name']}";
+		move_uploaded_file($_FILES['file']['tmp_name'], $filename);
+		chmod($filename, 0640);
+		chgrp($filename, WEBPERSO_GROUP);
+		unzip($filename, $chemin, true, WEBPERSO_USER);
+
+		$page->assign('siteweb_updated', 1);
+	}
+
+	public function handler_siteweb_download(&$page)
+	{
+		global $platal, $globals;
+
+		$download_type = $platal->argv[1];
+		$chemin = "{$globals->paths->pagespersos}/{$_SESSION['loginpoly']}-{$_SESSION['promo']}";
+
+		if (is_dir($chemin))
+		{
+			download($chemin, $download_type, "siteweb-{$_SESSION['loginpoly']}-{$_SESSION['promo']}");
+			return PL_NOT_FOUND; // Peut mieux faire...
+		}
+		else
+			$page->trig("Il n'y a aucun fichier sur ton site web");
+	
+		$page->changeTpl('profil/siteweb.tpl');
+		$page->assign('title', "Echec du téléchargement");
+	}
+
+	public function handler_siteweb_ext(&$page)
+	{
+		global $DB_valid, $DB_web;
+		
+		$page->changeTpl('profil/siteweb.tpl');
+		$page->assign('title', "Demande d'acces extérieur");
+
+		$DB_valid->query("SELECT id FROM valid_pageperso WHERE eleve_id='{$_SESSION['uid']}'");
+		if ($DB_valid->num_rows() > 0)
+		{
+			$page->trig("Tu as déja demandé que ton site soit accessible depuis l'extérieur. Ta demande sera validée dans les meilleurs délais.");
+			return;
+		}
+
+		$DB_web->query("SELECT site_id FROM sites_eleves WHERE eleve_id='{$_SESSION['uid']}'");
+		if ($DB_valid->num_rows() > 0)
+		{
+			$page->trig("Ton site est déja accessible depuis l'extérieur.");
+			return;
+		}
+
+		$DB_valid->query("INSERT INTO valid_pageperso SET eleve_id='{$_SESSION['uid']}'");
+
+		$mail = new PlMailer('profil/siteweb_ext.mail.tpl');
+		$mail->assign('nom', $_SESSION['nom']);
+		$mail->assign('prenom', $_SESSION['prenom']);
+		$mail->send();
+
+		$page->assign('demande_ext', 1);
 	}
 }
 ?>

@@ -198,14 +198,16 @@ class FrankizSession extends Session
 	{
 		global $DB_web;
 
-		$DB_web->query("SELECT e.eleve_id, e.nom, e.prenom, c.perms, c.skin
+		$DB_web->query("SELECT e.eleve_id, e.nom, e.prenom, e.login, e.promo, c.perms, c.skin
 		                  FROM compte_frankiz AS c
 			     LEFT JOIN trombino.eleves AS e USING(eleve_id)
 				 WHERE eleve_id = '{$_SESSION['uid']}'");
-		list ($uid, $nom, $prenom, $perms, $skin) = $DB_web->next_row();
+		list ($uid, $nom, $prenom, $login, $promo, $perms, $skin) = $DB_web->next_row();
 
 		$_SESSION['nom'] = $nom;
 		$_SESSION['prenom'] = $prenom;
+		$_SESSION['loginpoly'] = $login;
+		$_SESSION['promo'] = $promo;
 		$_SESSION['perms'] = new FlagSet();
 
 		foreach (explode(",", $perms) as $perm)

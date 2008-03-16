@@ -36,15 +36,17 @@ function regenerate()
 	  then
 	  	echo "$2 is out of date"
 		return;
+	  else
+	  	echo "Regenerating $2 from $1 ..."
 	fi
 	
 	sed -e "s/@VERSION@/$version/" < $1 > /tmp/regenerate.step1
 
 	if [ ! -z "$redirect_mail" ]
 	  then
-		sed -e "s/%MAIL:([^%]*)%/$redirect_mail/" < /tmp/regenerate.step1 > /tmp/regenerate.step2
+		sed -e "s/%MAIL:\([^%]*\)%/$redirect_mail/" < /tmp/regenerate.step1 > /tmp/regenerate.step2
 	  else
-	        sed -e "s/%MAIL:([^%]*)%/$1/" < /tmp/regenerate.step1 > /tmp/regenerate.step2
+	        sed -e "s/%MAIL:\([^%]*\)%/\1/" < /tmp/regenerate.step1 > /tmp/regenerate.step2
 	fi
 
 	cp /tmp/regenerate.step2 $2

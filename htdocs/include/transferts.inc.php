@@ -31,35 +31,38 @@
 	
 	La fonction sera éxécutée sous l'identité de $user
 */
-function unzip($file,$dir,$del, $user = ""){
-	if ($user) {
+function unzip($file, $dir, $del, $user = "")
+{
+	if ($user)
 		$sudo = "sudo -u $user" ;
-	} else {
+	else
 		$sudo = "" ;
-	}
 
 	exec ("$sudo mkdir -p $dir 2>&1", $text, $ret);
 
-	if ($ret != 0) {
+	if ($ret != 0)
 		return false;
-	}
 
-	if (eregi("(.zip)$",basename($file))) {
+	if (eregi("(.zip)$",basename($file)))
+	{
 			$cde = "$sudo /usr/bin/unzip $file -d $dir";
 			exec($cde);
 			if($del = true) unlink($file);
 	}
-	else if (eregi("(.tar.gz|.tgz)$",basename($file))){
+	else if (eregi("(.tar.gz|.tgz)$",basename($file)))
+	{
 			$cde = "$sudo /bin/tar zxvf $file -C $dir";
 			exec($cde);
 			if($del = true) unlink($file);
 	}
-	else if (eregi("(.tar)$",basename($file))){
+	else if (eregi("(.tar)$",basename($file)))
+	{
 			$cde = "$sudo /bin/tar xvf $file -C $dir";
 			exec($cde);
 			if($del = true) unlink($file);
 	}
-	else if (eregi("(.tar.bz2)$",basename($file))){
+	else if (eregi("(.tar.bz2)$",basename($file)))
+	{
 			$cde = "$sudo /bin/tar jxvf $file -C $dir";
 			exec($cde, $text);
 			if($del = true) unlink($file);
@@ -70,48 +73,80 @@ function unzip($file,$dir,$del, $user = ""){
 /*
 	Compresse le dossier $dir dans l'archive $file, de type $type
 */
-function zip($file,$dir,$type){
-	if($type == "zip"){
+function zip($file, $dir, $type)
+{
+	if ($type == "zip")
+	{
 		$cde = "cd $dir && /usr/bin/zip -r $file.zip *";
 		exec($cde);
 	}
-	if($type == "tar"){
+	else if ($type == "tar")
+	{
 		$cde = "cd $dir && /bin/tar cvf $file.tar *";
 		exec($cde);
 	}
-	if($type == "tar.gz"){
+	else if ($type == "tar.gz")
+	{
 		$cde = "cd $dir && /bin/tar zcvf $file.tar.gz *";
 		exec($cde);
 	}
+	else
+		return false;
+
+	return true;
 }
 
 /*
 	Supprime un répertoire complet et renvoit true lorsque tout c'est bien passé
 */
-function deldir($dir, $user = "") {
-	if ($user) {
+function deldir($dir, $user = "") 
+{
+	if ($user)
 		$sudo = "sudo -u $user";
-	} else {
+	else
 		$sudo = "";
-	}
 
-        if (!file_exists($dir)) {
+        if (!file_exists($dir)) 
 		return false;
-	}
 
 	exec ("$sudo rm -rf $dir", $dummy, $ret);
 	return $ret == 0;
 }
 
 /*
-	Zippe et envoit le contenu d'un répertoire
+	Zippe et envoit le contenu d'un répertoire.
+	En cas de succès, la fonction ne rend pas la main.
 */
-function download($dir,$type = 'zip', $filename = "temp"){
+function download($dir,$type = 'zip', $filename = "temp")
+{
 	$file = "/tmp/".$filename;
-	zip($file,$dir,$type);
+	if (!zip ($file, $dir, $type))
+		return;
+
 	header("Content-type: application/force-download");
 	header("Content-Disposition: attachment; filename=$filename.$type");
 	readfile($file.".".$type);
+	exit;
+}
+
+/* 
+	Renvoie au client le fichier passe en argument
+
+	La fonction retourne false si le fichier ne peut etre lu,
+	et vrai si le fichier a ete envoye.
+*/
+function return_file($file)
+{
+	if (!file_exists($file)) {
+		return false;
+	}
+
+	$size = getimagesize($file);
+
+	header("Content-type: {$size['mime']}");
+
+	readfile($file);
+	return true;
 }
 
 ?>

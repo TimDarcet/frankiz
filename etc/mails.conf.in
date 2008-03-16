@@ -1,7 +1,12 @@
 [demande_ip]
-from=Les Roots du Devel <%MAIL:devel-web@frankiz.polytechnique.fr%>
-to=The Devel <%MAIL:remi.bonnet@polytechnique.edu%>
+from=Les Roots du BR <%MAIL:root@frankiz.polytechnique.fr%>
+to=Les Roots du BR <%MAIL:root@frankiz.polytechnique.fr%>
 
 [mdp_perdu]
-from=Les Roots du Devel <%MAIL:devel-web@frankiz.polytechnique.fr%>
+from=Les Webmestres de Frankiz <%MAIL:web@frankiz.polytechnique.fr%>
 to=
+
+[siteweb_ext]
+from=Les Webmestres de Frankiz <%MAIL:web@frankiz.polytechnique.fr%>
+to=Les Webmestres de Frankiz <%MAIL:web@frankiz.polytechnique.fr%>
+

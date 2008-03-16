@@ -82,26 +82,6 @@ function rediriger_vers($page) {
 	exit;
 }
 
-/* 
-	Renvoie au client le fichier passe en argument
-
-	La fonction retourne false si le fichier ne peut etre lu,
-	et vrai si le fichier a ete envoye.
-*/
-function return_file($file)
-{
-	if (!file_exists($file)) {
-		return false;
-	}
-
-	$size = getimagesize($file);
-
-	header("Content-type: {$size['mime']}");
-
-	readfile($file);
-	return true;
-}
-
 // Pendant la transition a Plat/al
 require_once 'smarty/libs/Smarty.class.php';
 
