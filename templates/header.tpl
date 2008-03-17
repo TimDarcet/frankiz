@@ -1,8 +1,8 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>Frankiz : {$title}</title>
-	<base href="{$page_base}" />
-	<link rel="stylesheet" type="text/css" href="{$skin->css_path}" />
+	<base href="{$globals->baseurl}/" />
+	<link rel="stylesheet" type="text/css" href="{$smarty.session.skin->css_path}" />
 	<link rel="alternate" type="application/rss+xml" title="Version RSS" href="rss_annonces.php" />
 	<link rel="glossary" title="Vocabulaire" href="vocabulaire.php" />
 	<link rel="help" title="Contact" href="contact.php"/>

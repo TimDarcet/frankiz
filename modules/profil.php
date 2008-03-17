@@ -45,7 +45,13 @@ class ProfilModule extends PLModule
 			     'profil/siteweb'		  => $this->make_hook('siteweb',		AUTH_MDP),
 			     'profil/siteweb/download'	  => $this->make_hook('siteweb_download',	AUTH_MDP),
 			     'profil/siteweb/upload'	  => $this->make_hook('siteweb_upload',		AUTH_MDP),
-			     'profil/siteweb/demande_ext' => $this->make_hook('siteweb_ext',		AUTH_MDP));
+			     'profil/siteweb/demande_ext' => $this->make_hook('siteweb_ext',		AUTH_MDP),
+			     'profil/rss'		  => $this->make_hook('rss',			AUTH_COOKIE),
+			     'profil/rss/update'	  => $this->make_hook('rss_update',		AUTH_COOKIE),
+			     'profil/rss/add'		  => $this->make_hook('rss_add',		AUTH_COOKIE),
+			     'profil/liens_perso'	  => $this->make_hook('liens_perso',		AUTH_COOKIE),
+			     'profil/liens_perso/add'	  => $this->make_hook('liens_perso_add',	AUTH_COOKIE),
+			     'profil/liens_perso/del'	  => $this->make_hook('liens_perso_del',	AUTH_COOKIE));
 	}
 
 	public function handler_profil(&$page)
@@ -469,7 +475,6 @@ class ProfilModule extends PLModule
 			$mail->assign('nom', $_SESSION['nom']);
 			$mail->assign('prenom', $_SESSION['prenom']);
 			$mail->assign('raison', $raison); 
-			$mail->assign('base', BASE_URL);
 			$mail->send();
 
 			$page->assign('nouvelle_demande', 1);
@@ -523,7 +528,6 @@ class ProfilModule extends PLModule
 			}
 
 			$mail = new PlMailer('profil/mdp_perdu.mail.tpl');
-			$mail->assign('base', BASE_URL);
 			$mail->assign('hash', $hash);
 			$mail->assign('uid', $id);
 			$mail->addTo("$login@poly.polytechnique.fr");
@@ -608,6 +612,96 @@ class ProfilModule extends PLModule
 		$mail->send();
 
 		$page->assign('demande_ext', 1);
+	}
+
+	public function handler_rss_update(&$page)
+	{
+		for ($i = 0; $i < $_REQUEST['nbr_rss']; $i++)
+		{
+			if (!isset($_REQUEST["rss_lien_$i"]))
+				break;
+
+			$rss_lien = $_REQUEST["rss_lien_$i"];
+
+			$_SESSION['liens_rss'][$rss_lien]['module'] = !empty($_REQUEST["rss_module_$i"]);
+			$_SESSION['liens_rss'][$rss_lien]['sommaire'] = !empty($_REQUEST["rss_sommaire_$i"]);
+			$_SESSION['liens_rss'][$rss_lien]['complet'] = !empty($_REQUEST["rss_complet_$i"]);
+		
+			if (!empty($_REQUEST["rss_del_$i"]))
+				unset ($_SESSION['liens_rss'][$rss_lien]);
+		}
+		FrankizSession::save_liens_rss();
+
+		$page->assign('rss_update', 1);
+		$this->handler_rss($page);
+	}
+
+	public function handler_rss_add(&$page)
+	{
+		$_SESSION['liens_rss'][$_REQUEST['rss_lien_add']] = array('description' => $_REQUEST['rss_lien_add'],
+									  'module'      => 0,
+									  'sommaire'    => 0,
+									  'complet'     => 0);
+		FrankizSession::save_liens_rss();
+
+		$page->assign('rss_add', 1);
+		$this->handler_rss($page);
+	}
+
+	public function handler_rss(&$page)
+	{
+		global $DB_web;
+
+		$DB_web->query("SELECT  url, description
+				  FROM  liens_rss");
+		
+		$nodelete = array();
+		while (list($url, $description) = $DB_web->next_row())
+		{
+			$nodelete[$url] = 1;
+			
+			if (!is_array($_SESSION['liens_rss'][$url]))
+				$_SESSION['liens_rss'][$url] = array();
+				
+			if (!isset($_SESSION['liens_rss'][$url]['module']))
+				$_SESSION['liens_rss'][$url]['module'] = 0;
+
+			if (!isset($_SESSION['liens_rss'][$url]['sommaire']))
+				$_SESSION['liens_rss'][$url]['sommaire'] = 0;
+
+			if (!isset($_SESSION['liens_rss'][$url]['complet']))
+				$_SESSION['liens_rss'][$url]['complet'] = 0;
+
+			$_SESSION['liens_rss'][$url]['description'] = $description;
+		}
+
+		$page->changeTpl('profil/rss.tpl');
+		$page->assign('title', "Gestion des flux rss");
+		$page->assign('nodelete', $nodelete);
+	}
+
+	public function handler_liens_perso_add(&$page)
+	{
+		$page->changeTpl('profil/liens_perso.tpl');
+		$page->assign('title', "Ajout d'un lien perso");
+	
+		$_SESSION['liens_perso'][$_REQUEST['lien_perso']] = $_REQUEST['lien_perso'];
+		FrankizSession::save_liens_perso();
+	}
+
+	public function handler_liens_perso_del(&$page)
+	{
+		$page->changeTpl('profil/liens_perso.tpl');
+		$page->assign('title', "Suppression d'un lien perso");
+	
+		unset($_SESSION['liens_perso'][$_REQUEST['lien_perso']]);
+		FrankizSession::save_liens_perso();
+	}
+
+	public function handler_liens_perso(&$page)
+	{
+		$page->changeTpl('profil/liens_perso.tpl');
+		$page->assign('title', "Gestion des liens persos");
 	}
 }
 ?>

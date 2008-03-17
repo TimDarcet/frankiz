@@ -198,18 +198,26 @@ class FrankizSession extends Session
 	{
 		global $DB_web;
 
-		$DB_web->query("SELECT e.eleve_id, e.nom, e.prenom, e.login, e.promo, c.perms, c.skin
+		$DB_web->query("SELECT e.eleve_id, e.nom, e.prenom, e.login, e.promo, e.mail, c.perms, c.liens_rss, c.liens_perso, c.skin
 		                  FROM compte_frankiz AS c
 			     LEFT JOIN trombino.eleves AS e USING(eleve_id)
 				 WHERE eleve_id = '{$_SESSION['uid']}'");
-		list ($uid, $nom, $prenom, $login, $promo, $perms, $skin) = $DB_web->next_row();
+		list ($uid, $nom, $prenom, $login, $promo, $mail, $perms, $liens_rss, $liens_perso, $skin) = $DB_web->next_row();
 
+		//////
+		// Champs génériques
+		//
 		$_SESSION['nom'] = $nom;
 		$_SESSION['prenom'] = $prenom;
 		$_SESSION['loginpoly'] = $login;
 		$_SESSION['promo'] = $promo;
+		$_SESSION['mail'] = $mail ? $mail : "$login@poly.polytechnique.fr";
 		$_SESSION['perms'] = new FlagSet();
 
+
+		//////
+		// Permissions
+		//
 		foreach (explode(",", $perms) as $perm)
 		{
 			if ($perm)
@@ -222,12 +230,19 @@ class FrankizSession extends Session
 		$_SESSION['perms']->addFlag("user");
 		$_SESSION['perms']->addFlag("interne");
 
-
+		//////
 		// Mise à jour de la skin.
+		//
 		$_SESSION['skin'] = new Skin;
 		$_SESSION['skin']->unserialize($skin);
 		FrankizSession::update_skin_cookie();
 	
+		//////
+		// Liens personnels & RSS
+		//
+		$_SESSION['liens_rss'] = $liens_rss ? unserialize($liens_rss) : array();
+		$_SESSION['liens_perso'] = $liens_perso ? unserialize($liens_perso) : array();
+
 		return true;
 	}
 
@@ -305,6 +320,7 @@ class FrankizSession extends Session
 		if (isset($_SESSION['uid']))
 		{
 			$skin = $_SESSION['skin']->serialize();
+			$skin = mysql_escape_string($skin);
 			$DB_web->query("UPDATE compte_frankiz
 			                   SET skin='$skin'
 					 WHERE eleve_id='{$_SESSION['uid']}'");
@@ -320,6 +336,29 @@ class FrankizSession extends Session
 	{
 		$skin = $_SESSION['skin']->serialize();
 		setcookie(COOKIE_SKIN, $skin, time() + 365*24*3600, "/");
+	}
+
+	// ------------------------------------ Liens persos & RSS -----------------------------------------------
+	public static function save_liens_rss()
+	{
+		global $DB_web;
+
+		$liens_rss = serialize($_SESSION['liens_rss']);
+		$liens_rss = mysql_escape_string($liens_rss);
+		$DB_web->query("UPDATE  compte_frankiz
+		                   SET  liens_rss = '$liens_rss'
+				 WHERE  eleve_id = '{$_SESSION['uid']}'");
+	}
+	
+	public static function save_liens_perso()
+	{
+		global $DB_web;
+
+		$liens_perso = serialize($_SESSION['liens_perso']);
+		$liens_perso = mysql_escape_string($liens_perso);
+		$DB_web->query("UPDATE  compte_frankiz
+		                   SET  liens_perso = '$liens_perso'
+				 WHERE  eleve_id = '{$_SESSION['uid']}'");
 	}
 
 	// ----------------------------------------- QUERIES -----------------------------------------------------

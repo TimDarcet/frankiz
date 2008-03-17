@@ -12,7 +12,7 @@
 <p>
 Pour valider ou non cette demande, va sur la page:<br /><br />
 <div align='center'>
-  <a href='{$base}/admin/valid_ip.php'>{$base}/admin/valid_ip.php</a>
+  <a href='{$globals->baseurl}/admin/valid_ip.php'>{$globals->baseurl}/admin/valid_ip.php</a>
 </div>
 </p>
 Cordialement,<br />

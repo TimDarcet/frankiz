@@ -8,7 +8,7 @@
 <b>Bonjour,</b><br />
 <br />
 Pour te connecter sur Frankiz, il te suffit de cliquer sur le lien ci-dessous: <br />
-<a href='{$base}/profil/fkz?uid={$uid}&hash={$hash}'>{$base}/profil/fkz?uid={$uid}&hash={$hash}</a><br />
+<a href='{$globals->baseurl}/profil/fkz?uid={$uid}&hash={$hash}'>{$globals->baseurl}/profil/fkz?uid={$uid}&hash={$hash}</a><br />
 <br />
 N'oublie pas ensuite de modifier ton mot de passe.<br />
 <br />

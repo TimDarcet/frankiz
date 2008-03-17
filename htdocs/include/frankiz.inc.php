@@ -5,7 +5,6 @@ class FrankizPage extends PlatalPage
 	public function __construct($tpl, $type = SKINNED)
 	{
 		parent::__construct($tpl, $type);
-		$this->assign('page_base', BASE_URL);
 		$this->assign('page_raw', 0);
 	}
 
