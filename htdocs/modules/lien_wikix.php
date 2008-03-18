@@ -30,7 +30,7 @@ if (est_authentifie(AUTH_INTERNE)) {
 <? if (est_interne()) { ?>
         <formulaire id="lien_wiki_x" action="http://frankiz.polytechnique.fr/eleves/wikix/Special:Search" type="discret">
 <? } else { ?>
-	<formulaire id="lien_wiki_x" action="http://www.polytechnique.fr/eleves/wikix/Special:Search" type="discret">
+	<formulaire id="lien_wiki_x" action="http://wikix.polytechnique.org/eleves/wikix/Special:Search" type="discret">
 <? } ?>
 		<hidden id="go" valeur="Consulter" />
 		<champ titre="Rechercher" id="search" valeur="" />
