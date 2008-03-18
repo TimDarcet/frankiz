@@ -27,8 +27,12 @@
 if (est_authentifie(AUTH_INTERNE)) {
 ?>
 <module id="lien_wikix" titre="WikiX">
-	<formulaire id="lien_wiki_x" action="wikix/Special:Search" type="discret">
-		<hidden id="fulltext" valeur="Rechercher" />
+<? if (est_interne()) { ?>
+        <formulaire id="lien_wiki_x" action="http://frankiz.polytechnique.fr/eleves/wikix/Special:Search" type="discret">
+<? } else { ?>
+	<formulaire id="lien_wiki_x" action="http://www.polytechnique.fr/eleves/wikix/Special:Search" type="discret">
+<? } ?>
+		<hidden id="go" valeur="Consulter" />
 		<champ titre="Rechercher" id="search" valeur="" />
 		<bouton titre="Chercher" id="ok" />
 	</formulaire>
