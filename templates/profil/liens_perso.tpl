@@ -1,9 +1,9 @@
 <table>
-  {foreach from=$smarty.session.liens_perso item=lien}
+  {foreach from=$smarty.session.liens_perso key=k item=lien}
   <form method='post' action='profil/liens_perso/del'>
     <tr>
       <td>
-        <input type='hidden' name='lien_perso' value='{$lien}' />
+        <input type='hidden' name='lien_perso' value='{$k}' />
         {$lien}
       </td>
       <td>
