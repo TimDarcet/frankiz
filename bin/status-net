@@ -50,7 +50,7 @@ use Net::Telnet;
 
 @services=("newsgroups","xnetserver","polynews","kuzh","sil","poly:réception","poly:envoi");
 @hotes=("newsgroups","xnetserver","polynews","kuzh","sil","poly","poly");
-@ports=(119,5053,119,8080,1080,995,25);
+@ports=(119,5053,119,8080,21,995,25);
 
 open(STATUS,">$file");
 
