@@ -7,7 +7,7 @@ function FindProxyForURL(url, host)
        // 129.104.a.b avec a.b > 196.0 : zone privee
        // 129.104.30.0/24 : DMZ publique
 
-       if (isInNet(host, "129.104.192.0", "255.255.192.0") || isInNet(host, "127.0.0.0", "255.0.0.0") || isInNet(host, "192.168.0.0", "255.255.0.0") || isInNet(host, "129.104.30.0", "255.255.255.0")) {
+       if (isInNet(host, "129.104.192.0", "255.255.192.0") || isInNet(host, "127.0.0.0", "255.0.0.0") || isInNet(host, "192.168.0.0", "255.255.0.0") || isInNet(host, "129.104.30.0", "255.255.255.0") || localHostOrDomainIs(host, "localhost")) {
            return sDirect;
        }
        else {
