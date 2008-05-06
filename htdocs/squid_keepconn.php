@@ -24,10 +24,10 @@ if($msg == "logout"){
 	die();
 }else{
 	list($dist_id, $dist_rand) = split ("-", $msg);
-	if(!is_numeric($dist_id) || $dist_rand != $rand || $dist_id != $id){
+	if(!is_numeric($dist_id) || is_null($id) || $id==0 || $dist_rand != $rand || $dist_id != $id){
 		die("ERR");
 	}
-	$req="UPDATE squid_auth SET date_auth=NOW() WHERE ip='".mysql_real_escape_string($ip)."'";//On maintient la connexion
+	$req="UPDATE squid_auth SET eleve_id='$id', date_auth=NOW() WHERE ip='".mysql_real_escape_string($ip)."'";//On maintient la connexion
 	mysql_query($req) or die("ERR");
 	echo("OK");
 }
