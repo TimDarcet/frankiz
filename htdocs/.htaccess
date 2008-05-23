@@ -1,13 +1,13 @@
 RewriteEngine on
-RewriteBase /~elscouta/frankiz/htdocs/
+RewriteBase /~xelnor/frankiz_dev/htdocs/
 
 # Temporaire - en attendant le déplacement des répertoires
 RewriteRule ^data/ - [L]
 RewriteRule ^skins/ - [L]
 
 # Temporaire - en attendant que profil soit entierement migre
-RewriteRule ^profil/$ index.php?n=profil [L,QSA]
-RewriteRule ^(profil/fkz.*)$ index.php?n=$1 [L,QSA]
+#RewriteRule ^profil/$ index.php?n=profil [L,QSA]
+#RewriteRule ^(profil/fkz.*)$ index.php?n=$1 [L,QSA]
 
 RewriteRule ^$ index.php?n=annonces [L,QSA]
 

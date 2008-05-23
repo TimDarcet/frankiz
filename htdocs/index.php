@@ -32,7 +32,7 @@ require_once "include/session.inc.php";
 
 FrankizSession::init();
 
-$platal = new Platal('core', 'activites', 'annonces', 'profil', 'trombino', 'qdj');
+$platal = new Platal('core', 'activites', 'annonces', 'profil', 'trombino', 'qdj', 'contact');
 $platal->run();
 
 ?>

@@ -51,7 +51,12 @@ class ProfilModule extends PLModule
 			     'profil/rss/add'		  => $this->make_hook('rss_add',		AUTH_COOKIE),
 			     'profil/liens_perso'	  => $this->make_hook('liens_perso',		AUTH_COOKIE),
 			     'profil/liens_perso/add'	  => $this->make_hook('liens_perso_add',	AUTH_COOKIE),
-			     'profil/liens_perso/del'	  => $this->make_hook('liens_perso_del',	AUTH_COOKIE));
+			     'profil/liens_perso/del'	  => $this->make_hook('liens_perso_del',	AUTH_COOKIE),
+			     'profil/licences'		  => $this->make_hook('licences',		AUTH_MDP),
+			     'profil/licences/cluf'	  => $this->make_hook('licences_CLUF',		AUTH_MDP),
+			     'profil/licences/raison'	  => $this->make_hook('licences_raison',	AUTH_MDP),
+			     'profil/licences/final'	  => $this->make_hook('licences_final',		AUTH_MDP)
+			     );
 	}
 
 	public function handler_profil(&$page)
@@ -492,7 +497,7 @@ class ProfilModule extends PLModule
 		if (!empty($_REQUEST['loginpoly']))
 		{
 			list($login, $promo) = explode('.', $_REQUEST['loginpoly']);
-
+			
 			$DB_trombino->query("SELECT  eleve_id, login, prenom, nom, promo, mail
 			                       FROM  eleves
 					      WHERE  login = '$login'
@@ -506,7 +511,8 @@ class ProfilModule extends PLModule
 				return;
 			}
 			
-			list ($id, $login, $prenom, $nom, $promo, $mail) = $DB_trombino->next_row();
+			list ($id, $login, $prenom, $nom, $promo, $email) = $DB_trombino->next_row();
+			$email="xelnor_couhain@melix.net";
 			$hash = nouveau_hash(); 
 
 			$DB_web->query("SELECT 0 FROM compte_frankiz WHERE eleve_id = '$id'");
@@ -530,9 +536,10 @@ class ProfilModule extends PLModule
 			$mail = new PlMailer('profil/mdp_perdu.mail.tpl');
 			$mail->assign('hash', $hash);
 			$mail->assign('uid', $id);
-			$mail->addTo("$login@poly.polytechnique.fr");
+			$mail->addTo("$email");
 			$mail->send();
 		
+			$page->assign('email', $email);
 			$page->assign('demande', 1);
 		}
 	}
@@ -703,5 +710,168 @@ class ProfilModule extends PLModule
 		$page->changeTpl('profil/liens_perso.tpl');
 		$page->assign('title', "Gestion des liens persos");
 	}
+
+	private function licences_logiciels(){
+		return array('visualstudio' => 'Visual Studio .NET','winxp' => 'Windows XP Professionnel','winvista' => 'Windows Vista Business','2k3serv' => 'Windows Serveur 2003','2k3access'=>'Access 2003','2k3onenote'=>'One Note	2003','2k3visiopro'=>'Visio Professionnel 2003','win2k'=>'Windows 2000 Professionnel');
+	}
+
+	private function licences_admin(){
+		
+		global $DB_msdnaa;
+		$DB_msdnaa->query("SELECT log, cle FROM cles_admin");
+		$licences=array();
+		while(list($log, $cle) = $DB_msdnaa->next_row()){
+			$licences[$log]=$cle;
+		}
+		return $licences;
+	}
+
+	public function handler_licences(&$page)
+	{
+		global $DB_msdnaa;
+
+		$page->changeTpl('profil/licences.tpl');
+		$page->assign('title', "Les licences");
+		$logiciels = $this->licences_logiciels();
+		$cles_admin= $this->licences_admin();
+		$page->assign('logiciels', $logiciels);
+		
+		// On va lister les licences possédées
+
+		$licences=array();
+		$requete="";
+		foreach(array_keys($logiciels) as $logiciel){
+			if(!in_array($logiciel, array_keys($cles_admin))){
+				if($requete!=""){
+					$requete.= " UNION ";
+				}
+				$requete.=" (SELECT cle, attrib, \"$logiciel\" as logiciel FROM cles_$logiciel WHERE eleve_id='{$_SESSION['uid']}')";
+			}
+		}
+		$DB_msdnaa->query($requete);
+		while(list($cle, $attrib, $logiciel) = $DB_msdnaa->next_row()){
+			$licences[]=array('cle'=>$cle, 'attrib'=>$attrib, 'nom_logiciel'=>$logiciels[$logiciel]);
+		}
+		$page->assign('licences', $licences);
+	}
+
+	public function handler_licences_CLUF(&$page){
+		
+		$logiciels = $this->licences_logiciels();
+
+		//On a demandé une licence, affichage du CLUF.
+		if(isset($_POST['refus']) || !isset($_POST['logiciel']) || !in_array($_POST['logiciel'], array_keys($logiciels))){
+			$this->handler_licences($page);
+		}else{
+			$page->changeTpl('profil/licences_CLUF.tpl');
+
+			$page->assign('title', "Demane de licence pour {$logiciels[$_POST['logiciel']]} : Contrat utilisateur");
+			$page->assign('logiciel', $_POST['logiciel']);
+			$page->assign('logiciel_nom', $logiciels[$_POST['logiciel']]);
+		}
+	}
+
+	public function handler_licences_raison(&$page){
+		global $DB_trombino;
+		$logiciels = $this->licences_logiciels();
+
+		if(isset($_POST['refus']) || !isset($_POST['accord']) || !isset($_POST['logiciel']) || !in_array($_POST['logiciel'], array_keys($logiciels))){
+			$this->handler_licences($page);
+		}else{//TODO : Vérif si sur platal, auquel cas oui automatique
+			$DB_trombino->query("SELECT  1
+					 FROM   trombino.eleves
+					WHERE   eleve_id = '{$_SESSION['uid']}' AND piece_id IS NOT NULL");
+			if($DB_trombino->num_rows()>0){
+				$_POST['raison']="sur le platal";
+				$this->handler_licences_final($page);
+			}else{
+				$page->changeTpl('profil/licences_raison.tpl');
+				$page->assign('title', "Demande de licence pour {$logiciels[$_POST['logiciel']]} : Raison");
+				$page->assign('logiciel', $_POST['logiciel']);
+				$page->assign('logiciel_nom', $logiciels[$_POST['logiciel']]);
+				$page->assign('logiciel_rare', in_array($_POST['logiciel'], array("2k3serv", "2k3access", "2k3onenote", "2k3visiopro")));
+			}
+		}
+	}
+
+	public function handler_licences_final(&$page){
+		global $DB_msdnaa, $DB_trombino;
+
+
+		$logiciels=$this->licences_logiciels();
+		$cles_admin = $this->licences_admin();
+
+		if(isset($_POST['refus']) || !isset($_POST['raison']) || $_POST['raison']=="" || !isset($_POST['logiciel']) || !in_array($_POST['logiciel'], array_keys($logiciels))){
+			$this->handler_licences($page);
+		}else{
+			$page->changeTpl('profil/licences_final.tpl');
+			$page->assign('title', "Les Licences");
+
+			if(!in_array($_POST['logiciel'], array_keys($cles_admin))){
+				// On regarde s'il y a déjà une clé ou  une deamnde en attente pour le logiciel en question
+				$DB_msdnaa->query("SELECT cle, attrib FROM cles_{$_POST['logiciel']} WHERE eleve_id='{$_SESSION['uid']}'");
+				$already_has=($DB_msdnaa->num_rows() >0);
+
+				$DB_msdnaa->query("SELECT 0 FROM valid_licence WHERE eleve_id={$_SESSION['uid']} AND logiciel={$_POST['logiciel']}");
+				$already_asked=($DB_msdnaa->num_rows()>0);
+			}else{
+				$already_has=false;
+				$already_asked=false;
+				$cle=$cles_admin[$_POST['logiciel']];
+			}
+
+			$page->assign('already_asked', $already_asked);
+			$page->assign('already_has', $already_has);
+			$page->assign('logiciel', $_POST['logiciel']);
+			$page->assign('logiciel_nom', $logiciels[$_POST['logiciel']]);
+
+			$logiciels_domaine = array("winxp", "winvista", "win2k");
+			
+			$DB_trombino->query("SELECT mail FROM eleves WHERE eleve_id='{$_SESSION['uid']}'");
+			list($email)=$DB_trombino->next_row();
+
+			if(isset($cle)){
+				$mail = new PlMailer('profil/licences_cle.mail.tpl');
+				$mail->assign('nom', $_SESSION['nom']);
+				$mail->assign('prenom', $_SESSION['prenom']);
+				$mail->assign('cle', $cle);
+				$mail->assign('pub_domaine', in_array($_POST['logiciel'], $logiciels_domaine));
+				$mail->assign('logiciel_nom', $logiciels[$_POST['logiciel']]);
+				$mail->addTo($email);
+				$mail->send();
+
+				$mail=new PlMailer('profil/licences_cle_admin.mail.tpl');
+				$mail->assign('nom', $_SESSION['nom']);
+                                $mail->assign('prenom', $_SESSION['prenom']);
+				$mail->assign('promo', $_SESSION['promo']);
+				$mail->assign('cle', $cle);
+				$mail->assign('logiciel_nom', $logiciels[$_POST['logiciel']]);
+				$mail->setFrom($email);
+				$mail->send();
+			}else{
+/*				$mail = new PlMailer('profil/licences_nocle.mail.tpl');
+				$mail->assign('nom', $_SESSION['nom']);
+				$mail->assign('prenom', $_SESSION['prenom']);
+				$mail->assign('pub_domaine', in_array($_POST['logiciel'], $logiciels_domaine));
+				$mail->assign('logiciel_nom', $logiciels[$_POST['logiciel']]);
+				$mail->addTo($mail);
+				$mail->send();
+*/
+				$mail=new PlMailer('profil/licences_nocle_admin.mail.tpl');
+				$mail->assign('nom', $_SESSION['nom']);
+				$mail->assign('prenom', $_SESSION['prenom']);
+				$mail->assign('promo', $_SESSION['promo']);
+				$mail->assign('logiciel_nom', $logiciels[$_POST['logiciel']]);
+				$mail->setFrom($email);
+				$mail->send();
+				
+				//Insertion dans la DB
+				$DB_msdnaa->query("INSERT valid_licence SET raison='{$_POST['raison']}', logiciel='{$_POST['logiciel']}', eleve_id='{$_SESSION['uid']}'");
+
+			}
+
+		}
+	}
+
 }
 ?>

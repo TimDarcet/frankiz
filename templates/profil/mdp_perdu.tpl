@@ -1,10 +1,9 @@
 {if $demande}
 <span class='note'>
-  Le mail a été envoyé avec succès à l'adresse {$mail}. Il te permettra de te connecter une fois au site
+  Le mail a été envoyé avec succès à l'adresse {$email}. Il te permettra de te connecter une fois au site
   web Frankiz pour changer ton mot de passe ou choisir ton mot de passe si tu n'en as pas encore défini un.
 </span>
 {/if}
-
 <form enctype='multipart/form-data' method='post' action='profil/mdp_perdu'>
   <span class='note'>
     Si tu souhaites créer ton compte Frankiz, ou si tu as perdu ton mot de passe, entre ton loginpoly.promo

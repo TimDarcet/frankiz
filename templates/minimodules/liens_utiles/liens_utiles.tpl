@@ -5,7 +5,7 @@
   {/if}
   {if $session->est_auth()}
   <li class='fkz_liens'><a href="http://de.polytechnique.fr/index.php?page=edt">Emploi du temps</a></li>
-  <li class='fkz_liens'><a href="profil/licenses.php">Licences Msdnaa</a></li>
+  <li class='fkz_liens'><a href="profil/licences">Licences Msdnaa</a></li>
   <li class='fkz_liens'><a href="http://poly.polytechnique.fr">Redirection des mails</a></li>
   {/if}
   {if $session->est_interne()}
