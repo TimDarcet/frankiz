@@ -4,7 +4,6 @@ session_start();
 
 
 $not_authed = true;
-$target = $_GET['target'];
 
 require_once "./robotran_mysql.php";
 if(isset($_POST['forlife']) && isset($_POST['mdp'])){
@@ -65,7 +64,7 @@ Pour accéder à la page demandée, tu dois t'identifier.
 Pour cela, indique ton adresse mail polytechnique.edu (prenom.nom) et ton mot de passe de ce site.
 Si celle là est ta première connection il faut que tu crées ta compte 
 <a href="new_account.php">ici</a>.
-<form name="login_robotran" method = "post" action="index.php?target=<?php echo $target?>">
+<form name="login_robotran" method = "post" action="index.php">
 <table>
 	<tr><td>Login :</td><td><input type=text name="forlife">@polytechnique.edu</td></tr>
 	<tr><td>Mot de passe :</td><td><input type=password name="mdp"></td></tr>
@@ -103,7 +102,7 @@ if($errdemande != ""){
 	echo("<h3 class=red>$errdemande</h3>\n");
 }
 ?>
-<form name="forlife" method = "post" action="index.php?target=<?php echo $target?>">
+<form name="forlife" method = "post" action="index.php">
 <table>
 	<tr><td>Groupe de machines :</td><td>
 		<select name="batiment">

@@ -22,8 +22,6 @@ require_once "../htdocs/include/mail.inc.php";
 session_start();
 
 
-$target = $_GET['target'];
-
 if(isset($_POST['forlife'])){
 require_once "./robotran_mysql.php";
 	$forlife=$_POST['forlife'];
@@ -75,7 +73,7 @@ if(isset($msg)){
 	echo '<h4 class=red>'.$msg.'</h4>';
 }
 ?>
-<form name="forlife" method = "post" action="new_account.php?target=<?php echo $target?>">
+<form name="forlife" method = "post" action="new_account.php">
 <table>
 	<tr><td>Forlife :</td><td><input type=text name="forlife">@polytechnique.edu</td></tr>
 	<tr><td colspan=2 align=center><input type=submit value="Continuer"></td></tr>
