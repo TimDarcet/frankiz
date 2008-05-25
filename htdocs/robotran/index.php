@@ -9,10 +9,10 @@ $not_authed = true;
 
 require_once "./robotran_mysql.php";
 // Login (sans session frankiz)
-if(isset($_POST['forlife']) && isset($_POST['passwd_robotran'])){
-	$forlife=$_POST['forlife'];
+if(isset($_POST['login_edu']) && isset($_POST['passwd_robotran'])){
+	$login_edu=$_POST['login_edu'];
 	$mdp=$_POST['passwd_robotran'];
-	$req="SELECT mdp FROM robotran.auth WHERE forlife=\"".$forlife."\" AND mdp='".md5($mdp)."';";
+	$req="SELECT mdp FROM robotran.auth WHERE login_edu=\"".$login_edu."\" AND mdp='".md5($mdp)."';";
 	$res=mysql_query($req);
 	if(mysql_num_rows($res)!=1){
 		$errmsg = "Erreur de connexion. Le couple identifiant/mot de passe ne correspond pas.";
@@ -22,13 +22,13 @@ if(isset($_POST['forlife']) && isset($_POST['passwd_robotran'])){
 	}
 }
 // Demande de nouveau code
-else if(isset($_SESSION['forlife']) && isset($_POST['batiment'])){
+else if(isset($_SESSION['login_edu']) && isset($_POST['batiment'])){
 	$not_authed = false;
 	$bat=$_POST['batiment'];
-	$forlife=$_SESSION['forlife'];
-	$libre = "SELECT code FROM robotran.codes WHERE forlife IS NULL AND batiment = \"".$bat."\";";
-	$verif="SELECT code FROM robotran.codes WHERE forlife=\"".$forlife."\" AND timestamp >= (NOW() - INTERVAL 1 WEEK);";
-	$getcode="UPDATE robotran.codes SET forlife=\"".$forlife."\",timestamp=now() WHERE batiment=\"".$bat."\" AND forlife IS NULL LIMIT 1;";
+	$login_edu=$_SESSION['login_edu'];
+	$libre = "SELECT code FROM robotran.codes WHERE login_edu IS NULL AND batiment = \"".$bat."\" LIMIT 1;";// Savoir s'il reste au moins un code non attribué
+	$verif="SELECT code FROM robotran.codes WHERE login_edu=\"".$login_edu."\" AND timestamp >= (NOW() - INTERVAL 1 WEEK);";
+	$getcode="UPDATE robotran.codes SET login_edu=\"".$login_edu."\",timestamp=now() WHERE batiment=\"".$bat."\" AND login_edu IS NULL LIMIT 1;";
 	if($bat==''){
 		$errdemande = "Il faut que tu choisisses un groupe de machines à laver.";
 	}
@@ -51,11 +51,11 @@ else if(isset($_SESSION['forlife']) && isset($_POST['batiment'])){
 // Login (session frankiz)
 if(isset($_SESSION['user'])) {
   $eleve_id = $_SESSION['user']->uid;
-  $polyedu = "SELECT polyedu FROM trombino.eleves WHERE eleve_id = $eleve_id";
-  $res = mysql_query($polyedu);
+  $req_polyedu = "SELECT polyedu FROM trombino.eleves WHERE eleve_id = $eleve_id";
+  $res = mysql_query($req_polyedu);
   if (mysql_num_rows($res)==1) {
     $row = mysql_fetch_array($res, MYSQL_ASSOC);
-    $forlife = $row['polyedu'];
+    $login_edu = $row['polyedu'];
     $not_authed = false;
   }
 }
@@ -76,27 +76,27 @@ if( isset($errmsg) && $errmsg != ""){
 <h1>Authentification requise</h1>
 Pour accéder à la page demandée, tu dois t'identifier.
 Si tu as un compte frankiz, il suffit que tu <a href="login.php">te connectes</a> pour être identifié ;
-sinon il faut que tu te logges avec le formulaire ici en bas.
+sinon il faut que tu te logges avec le formulaire ci-dessous.
 
-<p>Si celle-là est ta première connexion et que tu n'as pas de compte frankiz, tu peux créer ton compte <a href="robotran/new_account.php">ici</a>.</p>
+<p>S'il s'agit de ta première connexion et que tu n'as pas de compte frankiz, tu peux créer ton compte <a href="robotran/new_account.php">ici</a>.</p>
 
-<note>Ton identifiant est la partie de ton adresse mail qui vient avant @polytechnique.edu. (En général, prenom.nom)</note>
+<note>Ton identifiant est la partie de ton adresse mail qui vient avant @polytechnique.edu, en général <em>prenom.nom</em>.</note>
 <formulaire id="login_robotran" titre="Connexion" action="robotran/">
-	<champ id="forlife" titre="Identifiant" valeur="<?php if(isset($_POST['forlife'])) echo $_POST['forlife']?>"/>
+	<champ id="login_edu" titre="Identifiant" valeur="<?php if(isset($_POST['login_edu'])) echo $_POST['login_edu']?>"/>
 	<champ id="passwd_robotran" titre="Mot de passe" valeur=""/>
 	<bouton id="connect" titre="Continuer"/>
 </formulaire>
 
 <?php
 }else{
-	$_SESSION['forlife']=$forlife;
+	$_SESSION['login_edu']=$login_edu;
 ?>
-<h1>Tu es maintenant authentifié en tant que <?php echo "$forlife"?>.</h1>
+<h1>Tu es maintenant authentifié en tant que <?php echo "$login_edu"?>.</h1>
 
-<h2>Liste de codes dont tu disposes déjà:</h2>
+<h2>Voici la liste des codes dont tu disposes :</h2>
 <?php
 require_once "./robotran_mysql.php";
-$lst="SELECT code,batiment FROM robotran.codes WHERE forlife = \"".$forlife."\" ORDER BY timestamp;";
+$lst="SELECT code,batiment FROM robotran.codes WHERE login_edu = \"".$login_edu."\" ORDER BY timestamp DESC;";
 $res=mysql_query($lst);
 while ($row = mysql_fetch_array($res, MYSQL_ASSOC)) {
 	$code=$row['code'];
@@ -104,7 +104,7 @@ while ($row = mysql_fetch_array($res, MYSQL_ASSOC)) {
 	echo "<p>*".$code."# (".$bat.")</p>";
 }
 ?>
-<formulaire id="forlife" titre="Demande de nouveau code" action="robotran/">
+<formulaire id="ask_code" titre="Demande de nouveau code" action="robotran/">
 <?php
 if(isset($errdemande) && $errdemande != ""){
 	echo("<warning>$errdemande</warning>\n");
