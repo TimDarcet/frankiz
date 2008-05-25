@@ -80,7 +80,7 @@ Pour cela, indique ton adresse mail polytechnique.edu (de la forme prenom.nom) e
 <p>Si celle-là est ta première connexion, tu peux créer ton compte <a href="robotran/new_account.php">ici</a>.</p>
 
 <note>Ton identifiant est la partie de ton adresse mail qui vient avant @polytechnique.edu. (En général, prenom.nom)</note>
-<formulaire id="login_robotran" titre="Connexion" action="">
+<formulaire id="login_robotran" titre="Connexion" action="robotran/">
 	<champ id="forlife" titre="Identifiant" valeur="<?php if(isset($_POST['forlife'])) echo $_POST['forlife']?>"/>
 	<champ id="passwd_robotran" titre="Mot de passe" valeur=""/>
 	<bouton id="connect" titre="Continuer"/>
