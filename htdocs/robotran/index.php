@@ -75,9 +75,10 @@ if( isset($errmsg) && $errmsg != ""){
 
 <h1>Authentification requise</h1>
 Pour accéder à la page demandée, tu dois t'identifier.
-Pour cela, indique ton adresse mail polytechnique.edu (de la forme prenom.nom) et ton mot de passe pour ce site.
+Si tu as un compte frankiz, il suffit que tu <a href="login.php">te connectes</a> pour être identifié ;
+sinon il faut que tu te logges avec le formulaire ici en bas.
 
-<p>Si celle-là est ta première connexion, tu peux créer ton compte <a href="robotran/new_account.php">ici</a>.</p>
+<p>Si celle-là est ta première connexion et que tu n'as pas de compte frankiz, tu peux créer ton compte <a href="robotran/new_account.php">ici</a>.</p>
 
 <note>Ton identifiant est la partie de ton adresse mail qui vient avant @polytechnique.edu. (En général, prenom.nom)</note>
 <formulaire id="login_robotran" titre="Connexion" action="robotran/">
