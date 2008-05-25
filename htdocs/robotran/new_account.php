@@ -63,7 +63,7 @@ if(isset($errmsg) && $errmsg != ""){
 }
 ?>
 
-<h1>Comptes Robotran</h1>
+<h2>Comptes Robotran</h2>
 Cette page te permet de créer un compte pour demander des codes pour les machines traditionnelles 
 de Robotran à Fayolle ou au PEM.
 <?php

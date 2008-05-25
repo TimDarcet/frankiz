@@ -40,7 +40,7 @@ else if(isset($_SESSION['login_edu']) && isset($_POST['batiment'])){
 		else{
 			$res=mysql_query($verif);
 			if(mysql_num_rows($res)>=4){
-				$errdemande = "Tu as déjà demandé 4 codes pour les machines à laver cette semaine ! Pour en avoir plus, entrer en contact avec <a href=\"mailto:robotran@frankiz.polytechnique.fr\">robotran@frankiz.polytechnique.fr</a> en justifiant le besoin de plus de 4 codes.";
+				$errdemande = "Tu as déjà demandé 4 codes pour les machines à laver cette semaine ! Pour en avoir plus, entre en contact avec <a href=\"mailto:robotran@frankiz.polytechnique.fr\">robotran@frankiz.polytechnique.fr</a> en justifiant le besoin de plus de 4 codes.";
 			}
 			else{
 				$res=mysql_query($getcode);
@@ -73,15 +73,17 @@ if( isset($errmsg) && $errmsg != ""){
 }
 ?>
 
-<h1>Authentification requise</h1>
+<h2>Authentification requise</h2>
 Pour accéder à la page demandée, tu dois t'identifier.
-Si tu as un compte frankiz, il suffit que tu <a href="login.php">te connectes</a> pour être identifié ;
-sinon il faut que tu te logges avec le formulaire ci-dessous.
+<h3>Si tu as un compte frankiz :</h3>
+Il suffit que tu <a href="login.php">te connectes</a> pour être identifié.
 
-<p>S'il s'agit de ta première connexion et que tu n'as pas de compte frankiz, tu peux créer ton compte <a href="robotran/new_account.php">ici</a>.</p>
+<h3>Dans le cas contraire :</h3>
+<p>S'il s'agit de ta première connexion, tu peux créer ton compte <a href="robotran/new_account.php">ici</a>.</p>
 
+Une fois cela effectué, utilises le formulaire ci-dessous pour t'identifier.
 <note>Ton identifiant est la partie de ton adresse mail qui vient avant @polytechnique.edu, en général <em>prenom.nom</em>.</note>
-<formulaire id="login_robotran" titre="Connexion" action="robotran/">
+<formulaire id="login_robotran" titre="Connexion Robotran" action="robotran/">
 	<champ id="login_edu" titre="Identifiant" valeur="<?php if(isset($_POST['login_edu'])) echo $_POST['login_edu']?>"/>
 	<champ id="passwd_robotran" titre="Mot de passe" valeur=""/>
 	<bouton id="connect" titre="Continuer"/>
@@ -91,9 +93,9 @@ sinon il faut que tu te logges avec le formulaire ci-dessous.
 }else{
 	$_SESSION['login_edu']=$login_edu;
 ?>
-<h1>Tu es maintenant authentifié en tant que <?php echo "$login_edu"?>.</h1>
+<h2>Tu es maintenant authentifié en tant que <?php echo "$login_edu"?>.</h2>
 
-<h2>Voici la liste des codes dont tu disposes :</h2>
+<h3>Voici la liste des codes dont tu disposes :</h3>
 <?php
 require_once "./robotran_mysql.php";
 $lst="SELECT code,batiment FROM robotran.codes WHERE login_edu = \"".$login_edu."\" ORDER BY timestamp DESC;";
