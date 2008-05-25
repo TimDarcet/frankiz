@@ -12,7 +12,7 @@ function mdp($length = 8)
 }
 
 function sendmdp($forlife,$mdp){
-require_once "../htdocs/include/mail.inc.php";
+require_once "../include/mail.inc.php";
         $mail = new Mail( "Codes Robotran <robotran@frankiz.polytechnique.fr>"  , $forlife."@polytechnique.edu" , "Ton nouveau mot de passe pour demander des codes pour robotran",false,"", "robotran@frankiz.polytechnique.fr");
         $mail->setBody("Bonjour,\n\nTon nouveau mot de passe pour le site de distribution des codes d'acces aux machines à laver robotran (http://frankiz.polytechnique.fr/robotran/) est ".$mdp."\n\nTrès cordialement,\n--\nLe BR (pour la distribution des codes robotran)");
         $mail->send();
