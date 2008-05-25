@@ -73,7 +73,7 @@ if(isset($msg)){
 ?>
 
 <note>Ton identifiant est la partie de ton adresse mail qui vient avant @polytechnique.edu. (En général, prenom.nom)</note>
-<formulaire id="createaccount" action="new_account.php" titre="Création de compte">
+<formulaire id="createaccount" action="robotran/new_account.php" titre="Création de compte">
   <champ id="forlife" titre="Identifiant"/>
   <bouton id="envoyer" value="Continuer" titre="Créer"/>
 </formulaire>

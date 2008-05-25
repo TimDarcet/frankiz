@@ -103,7 +103,7 @@ while ($row = mysql_fetch_array($res, MYSQL_ASSOC)) {
 	echo "<p>*".$code."# (".$bat.")</p>";
 }
 ?>
-<formulaire id="forlife" titre="Demande de nouveau code" action="">
+<formulaire id="forlife" titre="Demande de nouveau code" action="robotran/">
 <?php
 if(isset($errdemande) && $errdemande != ""){
 	echo("<warning>$errdemande</warning>\n");
