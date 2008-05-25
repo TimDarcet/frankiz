@@ -46,10 +46,10 @@ require_once "./robotran_mysql.php";
 		$res=mysql_query($ins);
 		if($res){
 			sendmdp($forlife,$mdp);
-			$msg = "Compte mise à jour avec succès. Un mail a été envoyé à ton adresse $forlife@polytechnique.edu avec ton mot de passe. Tu peux retourner maintenant à la <a href=\"index.php\">page d'accueil</a>.";
+			$msg = "Mot de passe mis à jour avec succès. Un mail a été envoyé à ton adresse $forlife@polytechnique.edu avec ton nouveau mot de passe. Tu peux retourner maintenant à la <a href=\"robotran/\">page d'accueil</a>.";
 		}
 		else{
-			$msg = "Un problème est survenu et ton compte n'a pas pu être changé. Contacte un <a href=\"mailto:robotran@frankiz.polytechnique.fr\">administrateur du système</a>";
+			$msg = "Un problème est survenu et le mot de passe de ton compte n'a pas pu être changé. Contacte un <a href=\"mailto:robotran@frankiz.polytechnique.fr\">administrateur du système</a>";
 		}
 	}
 }
