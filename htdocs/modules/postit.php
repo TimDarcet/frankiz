@@ -24,7 +24,7 @@ i	Affichage du module "Post-it"
 require_once "include/wiki.inc.php";
 
 // Vérification des droits
-if (est_authentifie(AUTH_MINIMUM)) {
+if (est_interne() || est_authentifie(AUTH_MINIMUM)) {
 	$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus';");
 	list($lastpromo) = extdata_stripslashes($DB_web->next_row());
 	$DB_trombino->query("SELECT promo FROM eleves WHERE eleve_id=".$_SESSION['user']->uid.";");
