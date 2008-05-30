@@ -29,7 +29,7 @@ if (est_interne() || est_authentifie(AUTH_MINIMUM)) {
 	list($lastpromo) = extdata_stripslashes($DB_web->next_row());
 	$DB_trombino->query("SELECT promo FROM eleves WHERE eleve_id=".$_SESSION['user']->uid.";");
 	list($promo) = extdata_stripslashes($DB_trombino->next_row());
-	if ($promo == $lastpromo || $promo == $lastpromo-1) {
+	if ($promo == $lastpromo || $promo == $lastpromo-1 || est_interne()) {
 
 
 	$postit_dir = BASE_DATA."postit/";
@@ -68,7 +68,9 @@ if (est_interne() || est_authentifie(AUTH_MINIMUM)) {
 			echo wikiVersXML($postit_contenu) ;
 ?>
 		<eleve nom="<?php echo $nom; ?>" prenom="<?php echo $prenom; ?>" promo="<?php echo $promo; ?>" surnom="<?php echo $surnom; ?>" login="<?php echo $login; ?>" lien="oui" />
+		<?php if(est_authentifie(AUTH_MINIMUM)){ ?>
 		<lien url="?lu=1#annonce_1" titre="Faire disparaître" id="annonces_lues"/>
+		<?php } ?>
 		<br/>
 	</annonce>
 <?php
