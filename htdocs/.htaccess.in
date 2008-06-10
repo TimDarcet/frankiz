@@ -1,5 +1,5 @@
 RewriteEngine on
-RewriteBase /~xelnor/frankiz_dev/htdocs/
+RewriteBase /
 
 # Temporaire - en attendant le déplacement des répertoires
 RewriteRule ^data/ - [L]
