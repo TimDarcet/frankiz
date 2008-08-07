@@ -19,18 +19,22 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-require_once dirname(__FILE__).'/../include/frankiz.inc.php';
-
-$platal = new Platal('core', 'activites', 'annonces', 'profil', 'trombino', 'qdj', 'contact');
-
-if (!($path = Env::v('n')) || ($path{0} < 'A' || $path{0} > 'Z')) {
-    $platal->run();
-    exit;
+function __autoload($cls)
+{
+    if (!pl_autoload($cls)) {
+        $cls = strtolower($cls);
+/*        if (substr($cls, -3, 3) == 'req') {
+            @include 'validations.inc.php';
+            return;
+        }*/
+	/*else if (substr($cls, 0, 6) == 'banana') {
+            require_once 'banana/banana.inc.php';
+            Banana::load(substr($cls, 6));
+            return;
+        }*/
+        @include "$cls.inc.php";
+    }
 }
-
-/*** WIKI CODE ***/
-
-include pl_core_include('wiki/engine.php');
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
 ?>
