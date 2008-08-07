@@ -1,6 +1,6 @@
-[submodule "platal"]
-	path = platal
-	url = git://git.polytechnique.org/platal
 [submodule "core"]
 	path = core
+	url = git://git.polytechnique.org/platal.git
+[submodule "platal"]
+	path = platal
 	url = git://git.polytechnique.org/platal.git
