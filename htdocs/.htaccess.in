@@ -1,16 +1,16 @@
 RewriteEngine on
-RewriteBase /
+RewriteBase @REWRITE_BASE@
 
 # Temporaire - en attendant le déplacement des répertoires
 RewriteRule ^data/ - [L]
 RewriteRule ^skins/ - [L]
 
 # Temporaire - en attendant que profil soit entierement migre
-#RewriteRule ^profil/$ index.php?n=profil [L,QSA]
-#RewriteRule ^(profil/fkz.*)$ index.php?n=$1 [L,QSA]
+#RewriteRule ^profil/$ frankiz.php?n=profil [L,QSA]
+#RewriteRule ^(profil/fkz.*)$ frankiz.php?n=$1 [L,QSA]
 
-RewriteRule ^$ index.php?n=annonces [L,QSA]
+RewriteRule ^$ frankiz.php?n=annonces [L,QSA]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php?n=$1 [L,QSA]
+RewriteRule ^(.*)$ frankiz.php?n=$1 [L,QSA]

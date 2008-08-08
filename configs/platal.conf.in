@@ -1,13 +1,16 @@
-[core]
-baseurl   = "http://gwennoz.eleves.polytechnique.fr/~user/frankiz_dev/htdocs"
-spoolroot = "~user/public_html/frankiz_dev/"
+; {{{ [Core]
 
-dbdb      = "frankiz2"
-dbhost    = "localhost"
-dbuser    = "web"
-dbpwd     = "********"
+[Core]
 
-debug     = 7;
+debug      = 7
+dbuser     = "web"
+dbpwd      = "********"
+
+baseurl = "http://frankiz/"
+
+admin_email = "web@frankiz"
+
+; }}}
 
 [paths]
 pagespersos = "~user/public_html/frankiz_dev/webperso

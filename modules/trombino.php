@@ -23,8 +23,8 @@
 	$Id: trombino.php 1969 2007-09-29 13:02:41Z elscouta $
 
 */
-require_once BASE_LOCAL."/include/wiki.inc.php";
-require_once BASE_LOCAL."/include/session.inc.php";
+#require_once BASE_LOCAL."/include/wiki.inc.php";
+#require_once BASE_LOCAL."/include/session.inc.php";
 
 define ('EXACT_MATCH', 			0);     // Correspondance exacte
 define ('EXACT_MATCH_NO_QUOTES', 	1);	// Correspondance exacte, mais le texte de référence n'est pas inclus dans des guillemets

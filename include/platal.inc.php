@@ -1,1 +1,0 @@
-../platal/include/platal.inc.php

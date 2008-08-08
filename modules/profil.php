@@ -23,9 +23,9 @@
 	$Id: annonces.php 1969 2007-09-29 13:02:41Z elscouta $
 
 */
-require_once BASE_FRANKIZ."htdocs/include/minimodules.inc.php";
-require_once BASE_FRANKIZ."htdocs/include/session.inc.php";
-require_once BASE_FRANKIZ."htdocs/include/transferts.inc.php";
+#require_once BASE_FRANKIZ."htdocs/include/minimodules.inc.php";
+#require_once BASE_FRANKIZ."htdocs/include/session.inc.php";
+#require_once BASE_FRANKIZ."htdocs/include/transferts.inc.php";
 
 class ProfilModule extends PLModule
 {

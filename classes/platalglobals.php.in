@@ -42,11 +42,11 @@ class PlatalGlobals extends PlGlobals
 
     public function init()
     {
-        $this->bootstrap(array('NbIns'), array($this, 'updateNbIns'));
-        $this->bootstrap(array('NbValid'), array($this, 'updateNbValid'));
+//        $this->bootstrap(array('NbIns'), array($this, 'updateNbIns'));
+//        $this->bootstrap(array('NbValid'), array($this, 'updateNbValid'));
     }
 
-    public function asso($key=null)
+/*    public function asso($key=null)
     {
         static $aid = null;
 
@@ -78,8 +78,8 @@ class PlatalGlobals extends PlGlobals
             return null;
         }
     }
-
-
+*/
+/*
     public function updateNbIns()
     {
         $res = XDB::query("SELECT  COUNT(*)
@@ -96,7 +96,7 @@ class PlatalGlobals extends PlGlobals
         $this->changeDynamicConfig(array('NbValid' => $res->fetchOneCell()));
     }
 }
-
+*/
 
 /******************************************************************************
  * Dynamic configuration update/edition stuff
