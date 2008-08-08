@@ -75,7 +75,7 @@ class AnnoncesModule extends PLModule
 		}
 		
 
-		$DB_web->query("
+		$res=XDB::query("
 			SELECT	annonces.annonce_id,
 				DATE_FORMAT(stamp, '%d/%m/%Y'),
 				stamp, perime, titre, contenu, en_haut, exterieur,
@@ -87,18 +87,21 @@ class AnnoncesModule extends PLModule
 		  	 	$left_join_annonces_lues
 			 WHERE	perime > NOW()
   		      ORDER BY	perime DESC");
+		$annonces_liste = $res->fetchAllRow();
 
 		$annonces = array('vieux'     => array('desc' => "Demain, c'est fini", 'annonces' => array()),
 				  'nouveau'   => array('desc' => "Nouvelles fraiches", 'annonces' => array()),
 				  'important' => array('desc' => "Important", 'annonces' => array()),
 				  'reste'     => array('desc' => "En attendant", 'annonces' => array()));
 
-		while (list($id, $date, $stamp, $perime, $titre, $contenu, $en_haut, $exterieur,
-			    $nom, $prenom, $surnom, $promo, $login, $mail, $visible) = $DB_web->next_row())
+		foreach ($annonces_liste as $annonce)
 		{
-			if (!$exterieur && !verifie_permission('interne'))
+		list($id, $date, $stamp, $perime, $titre, $contenu, $en_haut, $exterieur,
+			    $nom, $prenom, $surnom, $promo, $login, $mail, $visible) = $annonce;
+		
+			if (!$exterieur && !verifie_permission('interne')){
 				continue;
-	
+			}
 			
 			$categorie = $this->get_categorie($en_haut, $stamp, $perime);
 			$annonces[$categorie]['annonces'][$id] = array('id'     => $id,
