@@ -34,6 +34,11 @@ class FrankizSession extends PlSession
     {
     }
 
+    private function tryCookie()
+    {
+        
+    }
+
     protected function startSessionAs($uid, $level)
     {
     }

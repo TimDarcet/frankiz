@@ -1,12 +1,15 @@
+; contains all variable config
+
 ; {{{ [Core]
 
 [Core]
 
 debug      = 7
 dbuser     = "web"
-dbpwd      = "********"
+dbpwd      = "****"
 
-baseurl = "http://frankiz/"
+sitename   = "Frankiz"
+baseurl = "/"
 
 admin_email = "web@frankiz"
 

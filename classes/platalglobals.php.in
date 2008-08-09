@@ -25,10 +25,10 @@ class PlatalGlobals extends PlGlobals
     public $version = '@VERSION@';
 
     /** db params */
-    public $dbdb               = 'x4dat';
-    public $dbhost             = 'localhost';
-    public $dbuser             = 'x4dat';
-    public $dbpwd              = 'x4dat';
+    public $dbdb               = 'conf';
+    public $dbhost             = 'conf';
+    public $dbuser             = 'conf';
+    public $dbpwd              = 'conf';
     public $dbcharset          = 'utf8';
 
     /** default skin */
