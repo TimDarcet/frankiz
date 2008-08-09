@@ -23,10 +23,15 @@ class FrankizPage extends PlPage
     public function __construct()
     {
        parent::__construct();
+
+       // Set the default page
+       $this->changeTpl('annonces.tpl');
     }
 
     public function run()
     {
+    	//Run with the default skin
+    	$this->_run('main.tpl');
     }
 }
 
