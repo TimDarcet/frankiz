@@ -37,7 +37,7 @@ class PlatalGlobals extends PlGlobals
 
     public function __construct()
     {
-        parent::__construct(array('platal.ini', 'platal.conf'));
+        parent::__construct(array('frankiz.ini', 'frankiz.conf'));
     }
 
     public function init()
@@ -95,8 +95,8 @@ class PlatalGlobals extends PlGlobals
                              FROM  requests");
         $this->changeDynamicConfig(array('NbValid' => $res->fetchOneCell()));
     }
-}
 */
+}
 
 /******************************************************************************
  * Dynamic configuration update/edition stuff

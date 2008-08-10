@@ -27,11 +27,33 @@ class FrankizPage extends PlPage
        // Set the default page
        $this->changeTpl('annonces.tpl');
     }
+    
+    private function load_minimodules()
+    {
+        return FrankizMiniModule::load_modules('activites',
+				'anniversaires',
+				'fetes', 
+				'meteo',
+				'lien_ik', 
+				'lien_tol', 
+				'lien_wikix', 
+				'liens_navigation', 
+				'liens_perso', 
+				'liens_profil', 
+				'liens_propositions',
+				'liens_utiles',
+				'sondages',
+				'qdj',
+				'qdj_hier',
+				'virus');
+    }
 
     public function run()
     {
-    	//Run with the default skin
-    	$this->_run('main.tpl');
+    	$skin = new FrankizSkin(1);
+    	S::set('skin', $skin);
+	//Run with the default skin disposition (i.e disposition du contenu)
+    	$this->_run("skin/{$skin->base}.tpl");
     }
 }
 
