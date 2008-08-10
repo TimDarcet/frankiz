@@ -1,3 +1,4 @@
+platal/*
 spool/*
 classes/platalglobals.php
 configs/frankiz.conf
