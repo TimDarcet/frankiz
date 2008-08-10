@@ -16,4 +16,3 @@ DELETE FROM `parametres` WHERE CONVERT( `parametres`.`nom` USING utf8 ) = 'mail_
 DELETE FROM `parametres` WHERE CONVERT( `parametres`.`nom` USING utf8 ) = 'skin_default' LIMIT 1 ;
 DELETE FROM `parametres` WHERE CONVERT( `parametres`.`nom` USING utf8 ) = 'css_default' LIMIT 1 ;
 DELETE FROM `parametres` WHERE CONVERT( `parametres`.`nom` USING utf8 ) = 'mail_root' LIMIT 1 ;
-

@@ -17,7 +17,8 @@
 		  <img src="http://frankiz/data/annonces/{$annonce.id}" alt="logo" />
 		</span>
                 {/if}
-		{$annonce.contenu|wiki_vers_html}
+		{*{$annonce.contenu|wiki_vers_html}*}
+		{$annonce.contenu}
 		<p class="fkz_signature">{print_eleve_name eleve=$annonce.eleve show_promo=1}</p>
 	      </div>
 	    </div>

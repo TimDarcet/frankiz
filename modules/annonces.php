@@ -78,7 +78,7 @@ class AnnoncesModule extends PLModule
 		$res=XDB::query("
 			SELECT	annonces.annonce_id,
 				DATE_FORMAT(stamp, '%d/%m/%Y'),
-				stamp, perime, titre, contenu, en_haut, exterieur,
+				stamp, perime, titre, contenu, important, exterieur,
 				nom, prenom, surnom, promo, login,
 				IFNULL(mail, CONCAT(login, '@poly.polytechnique.fr')) AS mail,
 			  	$est_annonce_non_lue

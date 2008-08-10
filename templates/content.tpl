@@ -11,11 +11,11 @@
 	      </div>
 	      <div class="fkz_page_corps">
 {/if}
-		{foreach from=$xorg_errors item=error}
-		<span class='warning'>{$error}</span>
-		<br />
-		{/foreach}
-		{include file=$xorg_tpl}
+		{if !$pl_no_errors || $pl_failure}
+		{include file="skin/common.errors.tpl"}
+		{/if}
+		
+		{include file=$pl_tpl}
 {if not $page_raw}
 	      </div>
 	    </div>
