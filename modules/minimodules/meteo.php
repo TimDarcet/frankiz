@@ -23,13 +23,18 @@
 	$Id$
 
 */
-require_once BASE_FRANKIZ."htdocs/include/xml.inc.php";
+//require_once BASE_FRANKIZ."htdocs/include/xml.inc.php";
 
 class MeteoMiniModule extends FrankizMiniModule
 {
 	private $meteo;
 
-	public function __construct()
+	public function init()
+	{
+		FrankizMiniModule::register('meteo', AUTH_PUBLIC);
+	}
+
+	public function run()
 	{
 		global $page;
 		

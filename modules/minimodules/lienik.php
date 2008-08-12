@@ -17,26 +17,31 @@
 	along with this program; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
-
-if(est_authentifie(AUTH_INTERNE)) {
-?>
-<module id="lienik" titre="IK électronique">
-<?php
-	if(!cache_recuperer('lienik',0)) {
-		$DB_web->query("SELECT valeur FROM parametres WHERE nom='lienik'");
-		list($lienik) = $DB_web->next_row();
-		$lienik_full = "ik.php?id=".$lienik;
-
-		echo "<a href=\"$lienik_full\"><image source=\"".BASE_URL."/data/ik_thumbnails/$lienik.png\" texte=\"IK de la semaine\"/></a> \n";
-
-		cache_sauver('lienik');
+class LienIKMiniModule extends FrankizMiniModule
+{
+	public function init()
+	{
+		FrankizMiniModule::register('lienIK', AUTH_PUBLIC);
 	}
-	if (est_interne()) {
-		echo "<a href='".URL_BINETS."ik/'>Archive de l'IK</a>";
+
+	public function run()
+	{
+		global $DB_web;
+
+/*		$DB_web->query("SELECT valeur FROM parametres WHERE nom='lienik'");
+		list($lienik) = $DB_web->next_row();*/
+
+//		$this->assign("lien_ik_url", "ik.php?id=$lienik");
+//		$this->assign("lien_ik_img", "data/ik_thumbnails/$lienik.png");
+		$this->tpl = "minimodules/lien_ik/lien_ik.tpl";
+		$this->titre = "IK Electronique";
 	}
-?>
-</module>
-<?php
+
+	public static function check_auth()
+	{
+		return verifie_permission('interne');
+	}
 }
-?>
+FrankizMiniModule::register_module('lien_ik', 'LienIKMiniModule', "Lien vers l'IK électronique");
 
+?>

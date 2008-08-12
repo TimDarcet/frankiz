@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2008 Binet Réseau
+	Copyright (C) 2004 Binet Réseau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -17,19 +17,29 @@
 	along with this program; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
+/*
+	Liens permettants d'accéder aux autres sites de l'école.
+	
+	$Id$
 
-require_once dirname(__FILE__).'/../include/frankiz.inc.php';
+*/
+class LiensUtilesMiniModule extends FrankizMiniModule
+{
+	public function init()
+	{
+		FrankizMiniModule::register('liensUtiles', AUTH_PUBLIC);
+	}
+	
+	public function run()
+	{
+		$this->tpl = "minimodules/liens_utiles/liens_utiles.tpl";
+		$this->titre = "Liens Utiles";
+	}
 
-$platal = new Platal('activites', 'annonces', 'profil', 'trombino', 'qdj');
-
-if (!($path = Env::v('n')) || ($path{0} < 'A' || $path{0} > 'Z')) {
-    $platal->run();
-    exit;
+	public static function check_auth()
+	{
+		return true;
+	}
 }
-
-/*** WIKI CODE ***/
-
-include pl_core_include('wiki/engine.php');
-
-// vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
+FrankizMiniModule::register_module("liens_utiles", "LiensUtilesMiniModule", "Liens Utiles");
 ?>

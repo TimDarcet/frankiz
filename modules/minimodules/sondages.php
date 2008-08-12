@@ -30,7 +30,7 @@ class SondagesMiniModule extends FrankizMiniModule
 		global $DB_web;
 
 		$sondages = array();
-		while (list($id,$titre,$date,$restriction) = $DB_web->next_row())
+/*		while (list($id,$titre,$date,$restriction) = $DB_web->next_row())
 		{
 			$restriction_nom = "";
 			
@@ -54,27 +54,32 @@ class SondagesMiniModule extends FrankizMiniModule
 					    'url' => "sondage.php?id=$id",
 					    'restriction' => $restriction);
 		}
-
+*/
 		return $sondages;
 	}
 	
-	public function __construct()
+	public function init()
+	{
+		FrankizMiniModule::register('sondages', AUTH_PUBLIC);
+	}
+
+	public function run()
 	{
 		global $page, $DB_web;
 
-		$DB_web->query("SELECT sondage_id, titre, DATE_FORMAT(perime,'%d/%m'), restriction 
+/*		$DB_web->query("SELECT sondage_id, titre, DATE_FORMAT(perime,'%d/%m'), restriction 
 		                  FROM sondage_question
-				 WHERE TO_DAYS(perime) - TO_DAYS(NOW()) >=-7");
+				 WHERE TO_DAYS(perime) - TO_DAYS(NOW()) >=-7");*/
 		$this->assign("courants", $this->get_sondages());
 
-		$DB_web->query("SELECT sondage_id, titre, DATE_FORMAT(perime,'%d/%m'), restriction 
+/*		$DB_web->query("SELECT sondage_id, titre, DATE_FORMAT(perime,'%d/%m'), restriction 
 		                  FROM sondage_question 
-				 WHERE TO_DAYS(perime) - TO_DAYS(NOW()) < 0 AND TO_DAYS(perime) - TO_DAYS(NOW()) >= -7");
+				 WHERE TO_DAYS(perime) - TO_DAYS(NOW()) < 0 AND TO_DAYS(perime) - TO_DAYS(NOW()) >= -7");*/
 		$this->assign("anciens", $this->get_sondages());
 		
-		$DB_web->query("SELECT sondage_id, titre, DATE_FORMAT(perime,'%d/%m'), restriction
+/*		$DB_web->query("SELECT sondage_id, titre, DATE_FORMAT(perime,'%d/%m'), restriction
 		                  FROM sondage_question 
-				 WHERE TO_DAYS(perime) - TO_DAYS(NOW()) < -7 AND eleve_id = {$_SESSION['uid']}");
+				 WHERE TO_DAYS(perime) - TO_DAYS(NOW()) < -7 AND eleve_id = {$_SESSION['uid']}");*/
 		$this->assign("anciens_user", $this->get_sondages());
 
 		$this->tpl = "minimodules/sondages/sondages.tpl";

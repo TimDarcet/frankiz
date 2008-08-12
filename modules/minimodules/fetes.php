@@ -26,17 +26,22 @@
 
 class FetesMiniModule extends FrankizMiniModule
 {
-	public function __construct()
+	public function init()
+	{
+		FrankizMiniModule::register('fetes', AUTH_PUBLIC);
+	}
+
+	public function run()
 	{
 		global $page, $DB_trombino;
 
-		$DB_trombino->query("SELECT prenom 
+/*		$DB_trombino->query("SELECT prenom 
 		                       FROM fetes 
-				      WHERE MONTH(date) = MONTH(NOW()) AND DAYOFMONTH(date) = DAYOFMONTH(NOW())");
+				      WHERE MONTH(date) = MONTH(NOW()) AND DAYOFMONTH(date) = DAYOFMONTH(NOW())");*/
 
 		$fetes = array();
-		while (list($prenom) = $DB_trombino->next_row())
-			$fetes[] = $prenom;
+/*		while (list($prenom) = $DB_trombino->next_row())
+			$fetes[] = $prenom;*/
 	
 		$this->assign("fetes", $fetes);
 		$this->tpl = "minimodules/fetes/fetes.tpl";

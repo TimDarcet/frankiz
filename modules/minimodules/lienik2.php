@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2004 Binet Réseau
+	Copyright (C) 2006 Binet Réseau
 	http://www.polytechnique.fr/eleves/binets/br/
 	
 	This program is free software; you can redistribute it and/or
@@ -17,35 +17,26 @@
 	along with this program; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
-/*
-	Affichage des liens personnels.
 
-	$Id$
-
-*/
-
-class LiensPersoMiniModule extends FrankizMiniModule
-{
-	public function __construct()
-	{
-		global $globals;
-
-		if (!isset($_SESSION['liens_perso']) || $_SESSION['liens_perso'] == "" || count($_SESSION['liens_perso']) == 0)
-			return;
-			
-		$liens = array();
-		foreach ($_SESSION['liens_perso'] as $titre => $url)
-			$liens[] = array('title' => $titre, 'url' => $url);
-
-		$this->assign('liens', $liens);
-		$this->tpl = "minimodules/liens_perso/main.tpl";
-		$this->header_tpl = "minimodules/liens_perso/header.tpl";
-	}
-
-	public static function check_auth()
-	{
-		return true;
-	}
-}
-FrankizMiniModule::register_module('liens_perso', "LiensPersoMiniModule", "Liens personnels");
+if(est_authentifie(AUTH_INTERNE)) {
 ?>
+<module id="lienik" titre="IK électronique">
+<?php
+	if(!cache_recuperer('lienik',0)) {
+		$DB_web->query("SELECT valeur FROM parametres WHERE nom='lienik'");
+		list($lienik) = $DB_web->next_row();
+		$lienik_full = "ik.php?id=".$lienik;
+
+		echo "<a href=\"$lienik_full\"><image source=\"".BASE_URL."/data/ik_thumbnails/$lienik.png\" texte=\"IK de la semaine\"/></a> \n";
+
+		cache_sauver('lienik');
+	}
+	if (est_interne()) {
+		echo "<a href='".URL_BINETS."ik/'>Archive de l'IK</a>";
+	}
+?>
+</module>
+<?php
+}
+?>
+

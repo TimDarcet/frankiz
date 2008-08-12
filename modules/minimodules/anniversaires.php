@@ -26,11 +26,17 @@
 
 class AnniversairesMiniModule extends FrankizMiniModule
 {
-	public function __construct()
+
+	public function init()
+	{
+		FrankizMiniModule::register('anniversaires', AUTH_PUBLIC);
+	}
+
+	public function run()
 	{
 		global $DB_web, $DB_trombino;
 
-		$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
+	/*	$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
 		list($promo_temp) = $DB_web->next_row();
 
 		$DB_trombino->query("SELECT nom,prenom,surnom,promo,mail,login 
@@ -39,26 +45,20 @@ class AnniversairesMiniModule extends FrankizMiniModule
 				            DAYOFMONTH(date_nais) = DAYOFMONTH(NOW()) AND 
 					    (promo=$promo_temp OR promo=($promo_temp-1)) 
 			           ORDER BY promo;");
-	
+	*/
 		$anniversaires = array($promo_temp-1 => array(),
 				       $promo_temp   => array());
-		while(list($nom, $prenom, $surnom, $promo, $mail, $login) = $DB_trombino->next_row())
+	/*	while(list($nom, $prenom, $surnom, $promo, $mail, $login) = $DB_trombino->next_row())
 			$anniversaires[$promo][] = array('nom'    => $nom,
 							 'prenom' => $prenom,
 							 'surnom' => $surnom,
 							 'mail'   => $mail,
 							 'login'  => $login); 
-		
+	*/	
 		$this->assign('anniversaires', $anniversaires);
 		$this->tpl = "minimodules/anniversaires/anniversaires.tpl";
 		$this->titre = "Joyeux anniversaire!";
 	}
-
-	public static function check_auth()
-	{
-		return verifie_permission('interne');
-	}
 }
-FrankizMiniModule::register_module('anniversaires', 'AnniversairesMiniModule', "Anniversaires du Jour");
 
 ?>

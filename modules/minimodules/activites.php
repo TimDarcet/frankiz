@@ -25,17 +25,21 @@
 */
 class ActivitesMiniModule extends FrankizMiniModule
 {
-	public function __construct()
+	public function init(){
+		FrankizMiniModule::register('activites', AUTH_PUBLIC); 
+	}
+	
+	public function run()
 	{
 		global $DB_web;
 		
-		$DB_web->query("SELECT affiche_id, titre, url, date, exterieur 
+	/*	$DB_web->query("SELECT affiche_id, titre, url, date, exterieur 
 				  FROM affiches 
 				 WHERE TO_DAYS(date) = TO_DAYS(NOW())
-			      ORDER BY date");
+			      ORDER BY date");*/
 
 		$activites = array();
-		while (list($affiche_id, $titre, $url, $date, $exterieur) = $DB_web->next_row())
+/*		while (list($affiche_id, $titre, $url, $date, $exterieur) = $DB_web->next_row())
 		{
 			$activites[] = array('titre' => $titre,
 					     'url' => $url,
@@ -43,11 +47,11 @@ class ActivitesMiniModule extends FrankizMiniModule
 					     'exterieur' => $exterieur,
 					     'image' => "data/affiches/$affiche_id");
 		}
-
-		if (!getEtatBob() && count($activites) == 0)
+*/
+/*		if (!getEtatBob() && count($activites) == 0)
 			return;
-
-		$this->assign('activites_etat_bob', getEtatBob());
+*/
+//		$this->assign('activites_etat_bob', getEtatBob());
 		$this->assign('activites' , $activites);
 		$this->tpl = "minimodules/activites/activites.tpl";
 		$this->titre = "Activités";
@@ -58,6 +62,5 @@ class ActivitesMiniModule extends FrankizMiniModule
 		return true;
 	}
 }
-FrankizMiniModule::register_module('activites', "ActivitesMiniModule", "Activités du jour");
 
 ?>

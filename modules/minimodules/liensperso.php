@@ -18,24 +18,39 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Affichage d'un lien sur la page d'accueil vers le tol.
-	
+	Affichage des liens personnels.
+
 	$Id$
 
 */
-class LienWikixMiniModule extends FrankizMiniModule
+
+class LiensPersoMiniModule extends FrankizMiniModule
 {
-	public function __construct()
+	public function init()
 	{
-		$this->tpl = "minimodules/lien_wikix/lien_wikix.tpl";
-		$this->titre = "WikiX";
+		FrankizMiniModule::register('liensPerso', AUTH_COOKIE);
+	}
+	
+	public function run()
+	{
+		global $globals;
+
+		if (!isset($_SESSION['liens_perso']) || $_SESSION['liens_perso'] == "" || count($_SESSION['liens_perso']) == 0)
+			return;
+			
+		$liens = array();
+		foreach ($_SESSION['liens_perso'] as $titre => $url)
+			$liens[] = array('title' => $titre, 'url' => $url);
+
+		$this->assign('liens', $liens);
+		$this->tpl = "minimodules/liens_perso/main.tpl";
+		$this->header_tpl = "minimodules/liens_perso/header.tpl";
 	}
 
 	public static function check_auth()
 	{
-		return verifie_permission('interne');
+		return true;
 	}
 }
-FrankizMiniModule::register_module('lien_wikix', "LienWikixMiniModule", "Lien rapide vers le WikiX");
-
+FrankizMiniModule::register_module('liens_perso', "LiensPersoMiniModule", "Liens personnels");
 ?>

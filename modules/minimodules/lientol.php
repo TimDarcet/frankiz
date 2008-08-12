@@ -18,26 +18,28 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Liens de navigation dans le site web.	
+	Affichage d'un lien sur la page d'accueil vers le tol.
 	
 	$Id$
 
 */
-
-class LiensNavigationMiniModule extends FrankizMiniModule
+class LienTolMiniModule extends FrankizMiniModule
 {
-	public function __construct()
+	public function init(){
+		FrankizMiniModule::register('lienTol', AUTH_PUBLIC);
+	}
+
+	public function run()
 	{
-		$this->tpl = "minimodules/liens_navigation/main.tpl";
-		$this->header_tpl = "minimodules/liens_navigation/header.tpl";
-		$this->titre = "Navigation dans le site";
+		$this->tpl = "minimodules/lien_tol/lien_tol.tpl";
+		$this->titre = "Tol";
 	}
 
 	public static function check_auth()
 	{
-		return true;
+		return verifie_permission('interne');
 	}
 }
-FrankizMiniModule::register_module('liens_navigation', "LiensNavigationMiniModule", "Liens pour naviguer sur le site (indispensable)");
+FrankizMiniModule::register_module('lien_tol', 'LienTolMiniModule', "Lien rapide vers le TOL");
 
 ?>

@@ -28,32 +28,27 @@ class FrankizPage extends PlPage
        $this->changeTpl('annonces.tpl');
     }
     
-    private function load_minimodules()
+    private function get_minimodules()
     {
-        return FrankizMiniModule::load_modules('activites',
-				'anniversaires',
-				'fetes', 
-				'meteo',
-				'lien_ik', 
-				'lien_tol', 
-				'lien_wikix', 
-				'liens_navigation', 
-				'liens_perso', 
-				'liens_profil', 
-				'liens_propositions',
-				'liens_utiles',
-				'sondages',
-				'qdj',
-				'qdj_hier',
-				'virus');
+    	require_once "minimodules.inc.php";
+		return $minimodules_list;
     }
+
+	private function load_skin()
+	{
+    	$skin = new FrankizSkin(1);
+    	S::set('skin', $skin);
+		//TODO : do only if we are serving the webpage, not the RSS or a webservice/minipage
+		$skin->select_minimodules($this->get_minimodules());
+		return $skin;
+	}
 
     public function run()
     {
-    	$skin = new FrankizSkin(1);
-    	S::set('skin', $skin);
+		$skin = $this->load_skin();
 	//Run with the default skin disposition (i.e disposition du contenu)
-    	$this->_run("skin/{$skin->base}.tpl");
+    	call_user_func_array(array('FrankizMiniModule', 'load_modules'), array_keys($skin->minimodules));
+		$this->_run("skin/{$skin->base}.tpl");
     }
 }
 

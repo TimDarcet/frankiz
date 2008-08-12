@@ -18,25 +18,30 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Liens permettants de contacter les webmestres et faire des demandes.
+	Liens de navigation dans le site web.	
 	
-	$Id$
+	$Id: liens_profil.php 1805 2006-12-08 23:28:37Z pika $
 
 */
-class LiensPropositionsMiniModule extends FrankizMiniModule
+
+class LiensProfilMiniModule extends FrankizMiniModule
 {
-	public function __construct()
+	public function init()
 	{
-		$this->tpl = "minimodules/liens_propositions/liens_propositions.tpl";
-		$this->titre = "Contribuer";
+		FrankizMiniModule::register('liensProfil', AUTH_COOKIE);
+	}
+	
+	public function run()
+	{
+		$this->tpl = "minimodules/liens_profil/main.tpl";
+		$this->titre = "Profil : {$_SESSION['prenom']} {$_SESSION['nom']}";
 	}
 
 	public static function check_auth()
 	{
-		return true;
-	return FrankizSession::est_authentifie(AUTH_COOKIE);
+		return est_authentifie(AUTH_COOKIE);
 	}
 }
-FrankizMiniModule::register_module("liens_propositions", "LiensPropositionsMiniModule", "Liens pour proposer du contenu sur Frankiz");
+FrankizMiniModule::register_module('liens_profil', "LiensProfilMiniModule", "Liens vers le profil (indispensable)");
 
 ?>

@@ -18,23 +18,29 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /*
-	Liens permettants d'accéder aux autres sites de l'école.
+	Affichage d'un lien sur la page d'accueil vers le tol.
 	
 	$Id$
 
 */
-class LiensUtilesMiniModule extends FrankizMiniModule
+class LienWikixMiniModule extends FrankizMiniModule
 {
-	public function __construct()
+	public function init()
 	{
-		$this->tpl = "minimodules/liens_utiles/liens_utiles.tpl";
-		$this->titre = "Liens Utiles";
+		FrankizMiniModule::register('lienWikix', AUTH_PUBLIC);
+	}
+	
+	public function run()
+	{
+		$this->tpl = "minimodules/lien_wikix/lien_wikix.tpl";
+		$this->titre = "WikiX";
 	}
 
 	public static function check_auth()
 	{
-		return true;
+		return verifie_permission('interne');
 	}
 }
-FrankizMiniModule::register_module("liens_utiles", "LiensUtilesMiniModule", "Liens Utiles");
+FrankizMiniModule::register_module('lien_wikix', "LienWikixMiniModule", "Lien rapide vers le WikiX");
+
 ?>

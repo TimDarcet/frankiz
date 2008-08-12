@@ -26,14 +26,19 @@
 
 class VirusMiniModule extends FrankizMiniModule
 {
-	public function __construct()
+	public function init()
+	{
+		FrankizMiniModule::register('virus', AUTH_COOKIE);
+	}
+	
+	public function run()
 	{
 		global $DB_admin;
 
 		/* On cherche dans la base les vilains qui ont un status solved différent de 2,
 		 * donc qui a priori sont infestés. La personne est identifiée par son ip, 
 		 * de l'ip on remonte à la chambre puis au mec.*/
-		$DB_admin->query("SELECT e.eleve_id, p.piece_id, i.ip, i.date, i.date+10-CURDATE(), i.solved, i.id, l.nom
+/*		$DB_admin->query("SELECT e.eleve_id, p.piece_id, i.ip, i.date, i.date+10-CURDATE(), i.solved, i.id, l.nom
 		                    FROM prises AS p 
 			       LEFT JOIN infections AS i ON p.ip = i.ip 
 			       LEFT JOIN liste_virus AS l ON l.virus_id = i.virus_id
@@ -44,17 +49,17 @@ class VirusMiniModule extends FrankizMiniModule
 			return;
 		
 		/* On signale que l'utilisateur est prévenu... */
-		$DB_admin->query("UPDATE infections SET solved='1' WHERE solved='0' AND ip='{$_SERVER['REMOTE_ADDR']}'");
+/*		$DB_admin->query("UPDATE infections SET solved='1' WHERE solved='0' AND ip='{$_SERVER['REMOTE_ADDR']}'");*/
 			
-		list($eleve_id, $piece, $ip, $date, $rebours, $solved, $id, $nomv) = $DB_admin->next_row();
+//		list($eleve_id, $piece, $ip, $date, $rebours, $solved, $id, $nomv) = $DB_admin->next_row();
 		
 		$infections = array();
-		do
+/*		do
 		{
 			$infections[] = array('date' => $date,
 					      'nom_virus' => $nom_virus);
 		}
-		while (list($eleve_id, $piece, $ip, $date, $rebours, $solved, $id, $nomv) = $DB_admin->next_row());
+		while (list($eleve_id, $piece, $ip, $date, $rebours, $solved, $id, $nomv) = $DB_admin->next_row());*/
 
 		$this->assign('infections', $infections);
 		$this->tpl = "minimodules/virus/virus.tpl";

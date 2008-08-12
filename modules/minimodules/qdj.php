@@ -37,11 +37,18 @@ class QdjMiniModule extends FrankizMiniModule
 	 * @param jour Offset du jour dont on doit afficher la qdj (0 = aujourd'hui, -1 = hier, etc...)
 	 * @param peut_voter Est ce que la qdj est ouverte aux votes. Si faux, affiche les resultats.
 	 */
-	public function __construct($jour, $peut_voter)
+	public function run(){
+
+	}
+	public function init()
+	{
+		FrankizMiniModule::register('qdj', AUTH_PUBLIC);
+	}
+	public function construct($jour, $peut_voter)
 	{
 		global $DB_web;
 
-		$DB_web->query("LOCK TABLES qdj_votes WRITE, qdj_points WRITE, qdj WRITE, trombino.eleves READ");
+/*		$DB_web->query("LOCK TABLES qdj_votes WRITE, qdj_points WRITE, qdj WRITE, trombino.eleves READ");*/
 		$date_qdj = date("Y-m-d", time() + $jour * 24 * 3600);
 
 		if ($peut_voter)
@@ -60,7 +67,7 @@ class QdjMiniModule extends FrankizMiniModule
 			$this->titre = "QDJ";
 		}
 
-		$DB_web->query("UNLOCK TABLES");
+//		$DB_web->query("UNLOCK TABLES");
 	}
 
 	public static function check_auth()
@@ -76,10 +83,10 @@ class QdjMiniModule extends FrankizMiniModule
 	{
 		global $DB_web;
 
-		$DB_web->query("SELECT 0 FROM qdj_votes 
+/*		$DB_web->query("SELECT 0 FROM qdj_votes 
 		                 WHERE date='$date_qdj' and eleve_id='{$_SESSION['uid']}' AND ordre > 0
 				 LIMIT 1");
-		return $DB_web->num_rows() != 0;
+		return $DB_web->num_rows() != 0;*/
 	}
 	
 	/**
@@ -97,9 +104,9 @@ class QdjMiniModule extends FrankizMiniModule
 		if ($_REQUEST["vote"] != "1" && $_REQUEST["vote"] != "2")
 			return false;
 
-		$DB_web->query("SELECT @max := IFNULL(MAX(ordre),0) 
+/*		$DB_web->query("SELECT @max := IFNULL(MAX(ordre),0) 
 		                  FROM qdj_votes 
-				 WHERE date='$date_qdj'");
+				 WHERE date='$date_qdj'");*/
 		list($position) = $DB_web->next_row();
 		$position++;
 
@@ -119,18 +126,18 @@ class QdjMiniModule extends FrankizMiniModule
 		}
 		
 			
-		$DB_web->query("INSERT INTO qdj_votes 
+/*		$DB_web->query("INSERT INTO qdj_votes 
 					SET date = '$date_qdj', 
 					    eleve_id = '{$_SESSION['uid']}',
 					    idRegle = '$regle', 
 					    ordre = @max+1");
-		
+*/		
 		if ($position == 1 && (date("m", time()) % 2 == 1) && (date("d", time()) == 1)) {
 			// A déplacer dès que possible dans un truc cron.
-			$DB_web->query('TRUNCATE TABLE `qdj_points`');
+//			$DB_web->query('TRUNCATE TABLE `qdj_points`');
 		}
 		
-		$DB_web->query("UPDATE qdj 
+/*		$DB_web->query("UPDATE qdj 
 		                   SET compte{$_REQUEST['vote']} = compte{$_REQUEST['vote']}+1 
 		                 WHERE date='$date_qdj'");
 		
@@ -153,7 +160,7 @@ class QdjMiniModule extends FrankizMiniModule
 
 			ajouter_points($eleveId, 10, 7.1);
 		}
-
+*/
 		return true;
 	}
 		
@@ -165,7 +172,7 @@ class QdjMiniModule extends FrankizMiniModule
 	{
 		global $DB_web;
 
-		$DB_web->query("SELECT question, reponse1, reponse2, compte1, compte2 
+/*		$DB_web->query("SELECT question, reponse1, reponse2, compte1, compte2 
 		                  FROM qdj 
 				 WHERE date='$date_qdj' LIMIT 1");
 		if (!list($question, $reponse1, $reponse2, $compte1, $compte2) = $DB_web->next_row())
@@ -187,7 +194,7 @@ class QdjMiniModule extends FrankizMiniModule
 							    'promo'  => $promo,
 							    'surnom' => $surnom));
 		}
-
+*/
 		$this->assign('question', $question);
 		$this->assign('date', $date_qdj);
 		$this->assign('reponse1', $reponse1);
@@ -209,7 +216,7 @@ class QdjMiniModule extends FrankizMiniModule
 
 		if ($uid === null)
 			$uid = $_SESSION['uid'];
-		
+/*		
 		$DB_web->query("SELECT 0 FROM qdj_points WHERE eleve_id = $uid");
 		if ($DB_web->num_rows() != 0)
 			$DB_web->query("UPDATE qdj_points 
@@ -220,10 +227,10 @@ class QdjMiniModule extends FrankizMiniModule
 			$DB_web->query("INSERT INTO qdj_points 
 			                        SET total = $points, 
 						    nb$regle = 1, 
-						    eleve_id = $uid");
+						    eleve_id = $uid");*/
 	}	
 }
-FrankizMiniModule::register_module('qdj', "QdjMiniModule", "QDJ du jour", array(0, true));
-FrankizMiniModule::register_module('qdj_hier', "QdjMiniModule", "QDJ de la veille", array(-1, false));
+//FrankizMiniModule::register_module('qdj', "QdjMiniModule", "QDJ du jour", array(0, true));
+//FrankizMiniModule::register_module('qdj_hier', "QdjMiniModule", "QDJ de la veille", array(-1, false));
 
 ?>
