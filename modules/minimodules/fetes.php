@@ -39,7 +39,7 @@ class FetesMiniModule extends FrankizMiniModule
 		                       FROM fetes 
 				      WHERE MONTH(date) = MONTH(NOW()) AND DAYOFMONTH(date) = DAYOFMONTH(NOW())");*/
 
-		$fetes = array();
+		$fetes = array('xel');
 /*		while (list($prenom) = $DB_trombino->next_row())
 			$fetes[] = $prenom;*/
 	

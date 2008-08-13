@@ -46,6 +46,7 @@ class AnniversairesMiniModule extends FrankizMiniModule
 					    (promo=$promo_temp OR promo=($promo_temp-1)) 
 			           ORDER BY promo;");
 	*/
+		$promo_temp = 42;
 		$anniversaires = array($promo_temp-1 => array(),
 				       $promo_temp   => array());
 	/*	while(list($nom, $prenom, $surnom, $promo, $mail, $login) = $DB_trombino->next_row())
