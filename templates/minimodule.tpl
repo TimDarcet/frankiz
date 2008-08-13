@@ -1,6 +1,4 @@
-{if array_key_exists($module_name, $minimodules) and 
-    not $minimodules.$module_name->is_empty() and 
-    $skin->est_minimodule_visible($module_name)}
+{if not $minimodules.$module_name->is_empty()}
 <div class="fkz_module_1">
   <div class="fkz_module_2">
     <div class="fkz_module_3">
@@ -13,7 +11,7 @@
 		{$minimodules.$module_name->get_titre()}
 	      </div>
 	      <div class="fkz_module_corps">
-	        {$minimodules.$module_name->print_template()}
+	        {include file="minimodules/$module_name/$module_name.tpl" minimodule=$minimodules.$module_name->get_params()}
 	      </div>
             </div>
           </div>

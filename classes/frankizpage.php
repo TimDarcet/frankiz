@@ -48,6 +48,7 @@ class FrankizPage extends PlPage
 		$skin = $this->load_skin();
 	//Run with the default skin disposition (i.e disposition du contenu)
     	call_user_func_array(array('FrankizMiniModule', 'load_modules'), array_keys($skin->minimodules));
+		$this->assign('minimodules', FrankizMiniModule::$minimodules);
 		$this->_run("skin/{$skin->base}.tpl");
     }
 }

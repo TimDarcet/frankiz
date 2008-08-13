@@ -13,7 +13,7 @@
     </div>
     <div class="fkz_page">
       <div class="fkz_droite">
-{*        {include file="minimodule.tpl" module_name="fetes"} *}
+        {include file="minimodule.tpl" module_name="fetes"}
 {*        {include file="minimodule.tpl" module_name="lien_tol"} *}
 {*        {include file="minimodule.tpl" module_name="lien_ik"} *}
 {*        {include file="minimodule.tpl" module_name="lien_wikix"} *}

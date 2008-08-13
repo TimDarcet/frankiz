@@ -28,7 +28,7 @@ class FetesMiniModule extends FrankizMiniModule
 {
 	public function init()
 	{
-		FrankizMiniModule::register('fetes', AUTH_PUBLIC);
+		FrankizMiniModule::register('fetes',  AUTH_PUBLIC);
 	}
 
 	public function run()

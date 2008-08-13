@@ -21,7 +21,7 @@
 $minimodules_list=array('activites',
 			'anniversaires',
 			'fetes', 
-			'meteo',
+//			'meteo',
 			'lienIK', 
 			'lienTol', 
 			'lienWikix', 
@@ -30,9 +30,10 @@ $minimodules_list=array('activites',
 			'liensProfil', 
 			'liensPropositions',
 			'liensUtiles',
-			'sondages',
-			'qdj',
+//			'sondages',
+//			'qdj',
 //			'qdjHier',
-			'virus');
+//			'virus'
+			);
 
 ?>

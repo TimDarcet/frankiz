@@ -12,34 +12,10 @@ abstract class FrankizMiniModule
 
 	private $params = array();
 	
-	/**
-	 * Smarty callbask, used to print the template header of the minimodule
-	 * @param $params[module] Name of the module
-	 */
-	public function print_template_header()
+	public function get_params()
 	{
-		global $page;
-
-		$page->assign('minimodule', $this->params);
-		if ($this->header_tpl)
-			$page->display($this->header_tpl);
-		$page->assign('minimodule', null);
+		return $this->params;
 	}
-
-	/**
-	 * Smarty callbask, used to print the template of the minimodule
-	 * @param $params[module] Name of the module
-	 */
-	public function print_template()
-	{
-		global $page;
-		
-		$page->assign('minimodule', $this->params);
-		if ($this->tpl)
-			$page->display($this->tpl);
-		$page->assign('minimodule', null);
-	}
-
 	/**
 	 * Returns the title of the module
 	 * This is different from the identifier.
@@ -77,7 +53,7 @@ abstract class FrankizMiniModule
 	/* static stuff */
 	private static $registered_modules = array();
 	//private static $loaded_modules = array();
-
+	public static $minimodules = array();
 
 	public static function register($name, $auth, $perms='user')
 	{
@@ -111,6 +87,7 @@ abstract class FrankizMiniModule
 			return 0;
 		}
 		$minimodule->run();
+		FrankizMiniModule::$minimodules[$name] = &$minimodule;
 	}
     
 	private static function check_perms($minimodule)
@@ -120,7 +97,8 @@ abstract class FrankizMiniModule
 			return true;
 		}
 		$s_perms = S::v('perms');
-		return $s_perms->hasFlagCombination($perms);
+//		return $s_perms->hasFlagCombination($perms);
+		return true;
 	}
 
 	/**
