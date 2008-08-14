@@ -25,9 +25,9 @@
 */
 class LienWikixMiniModule extends FrankizMiniModule
 {
-	public function init()
+	public static function init()
 	{
-		FrankizMiniModule::register('lienWikix', AUTH_PUBLIC);
+		FrankizMiniModule::register('lienWikix', new LienWikixMiniModule(), 'run', AUTH_PUBLIC);
 	}
 	
 	public function run()
@@ -41,6 +41,6 @@ class LienWikixMiniModule extends FrankizMiniModule
 		return verifie_permission('interne');
 	}
 }
-FrankizMiniModule::register_module('lien_wikix', "LienWikixMiniModule", "Lien rapide vers le WikiX");
+//FrankizMiniModule::register_module('lien_wikix', "LienWikixMiniModule", "Lien rapide vers le WikiX");
 
 ?>

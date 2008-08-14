@@ -26,140 +26,117 @@ abstract class FrankizMiniModule
 		return $this->titre;
 	}
 
-	/**
-	 * Returns if the module contains data
-	 */
-	public function is_empty()
-	{
-		return $this->tpl == null;
-	}
-	
+    public function get_template()
+    {
+        return $this->tpl;
+    }
 	/**
 	 * Assigne une variable pour la template du minimodule uniquement. Ces variables seront accessibles dans 
 	 * $minimodule.var_name à l'intérieur des template.
 	 */
 	protected function assign($key, $value)
 	{
-		$this->params[$key] = $value;
+        $this->params[$key] = $value;
 	}
 	
 	
-	//Initializesa minimodule, which should then register with FrankizMiniModule::register()
-	abstract function init();
-
-	//Executes the minimodule's code
-	abstract function run();
+	//Initializes a minimodule, which should then register with FrankizMiniModule::register()
+	abstract static function init();
 
 	/* static stuff */
-	private static $registered_modules = array();
-	//private static $loaded_modules = array();
-	public static $minimodules = array();
+	private static $minimodules = array();
+    //Stores minimodules handlers
+    private static $minimodules_handlers = array();
+    //stores the name of the module being executed
+    private static $curr_name;
+    /**
+     * registers the list of minimodules
+     */
+    public static function register_modules()
+    {
+        // Load list of available minimodules
+        require_once 'minimodules.inc.php';
+        foreach($minimodules_list as $name)
+        {
+            FrankizMiniModule::_init($name);
+        }
+    }
 
-	public static function register($name, $auth, $perms='user')
-	{
-		FrankizMiniModule::$registered_modules[$name]=array(
-			'auth'  => $auth, 
-			'perms' => $perms);
-    	}
+    //Includes
+    private static function _init($name)
+    {
+        global $globals;
+        $cls=ucfirst($name)."MiniModule";
+        $path=$globals->spoolroot . "/modules/minimodules/" . strtolower($name) . ".php";
+        include_once $path;
+        call_user_func(array($cls, 'init'));
+    }
 
-	
-	/**
-	 * Charge un minimodule.
-	 * @param name Nom du module. C'est le nom utilisé lors de l'appel a register_module.
-	 * @return le module chargé
-	 */
-	public static function load($name)
+    /** registers a minimmodule
+     * @param name name of the minimodule
+     * @param minimodule object of the minimodule class
+     * @param handler name of the function that realizes the minimodule
+     * @param auth minimal auth to see the minimodule
+     * @param perms minimal perms to see the minimodule
+     */
+	public static function register($name, $minimodule, $handler, $auth, $perms='user')
 	{
-		if (!isset(FrankizMiniModule::$registered_modules[$name]))
-		{
-			global $globals;
-			$cls=ucfirst($name)."MiniModule";
-			$path=strtolower($name);
-			if(!include_once $globals->spoolroot . "/modules/minimodules/$path.php")
-			{
-				return 0;
-			}
-		}
-		$minimodule = new $cls;
-		$minimodule->init();
-		if(!FrankizMiniModule::check_perms($name)){
-			unset(FrankizMiniModule::$registered_modules[$name]);
-			return 0;
-		}
-		$minimodule->run();
-		FrankizMiniModule::$minimodules[$name] = &$minimodule;
-	}
-    
-	private static function check_perms($minimodule)
-    	{
-		$perms = FrankizMiniModule::$registered_modules[$minimodule]['perms'];
-		if (!$perms) { // No perms, no check
+        if(!FrankizSkin::is_minimodule_disabled($name)){
+            FrankizMiniModule::$minimodules[$name]=array(
+                'object' => $minimodule,
+                'handler' => array($minimodule, $handler),
+		    	'auth'  => $auth,
+			    'perms' => $perms);
+        }
+    }
+
+    /** runs the modules
+     */
+    public static function run_modules()
+    {
+        foreach(self::$minimodules as $name=>$data)
+        {
+            if(self::check_perms($data))
+            {
+                $data['object']->name = $name;
+                call_user_func($data['handler']);
+            }else{
+                unset(self::$minimodules[$name]);
+            }
+        }
+    }
+	private static function check_perms($data)
+    {
+        return true;
+        if($data['auth'] > S::v('auth'))
+        {
+            return false;
+        }
+
+		if (!array_key_exists('perms', $data)) 
+        { // No perms, no check
 			return true;
 		}
 		$s_perms = S::v('perms');
-//		return $s_perms->hasFlagCombination($perms);
-		return true;
+		return $s_perms->hasFlagCombination($data['perms']);
+//		return true;
 	}
-
-	/**
-	 * Charge une liste de modules. 
-	 * @param ... une liste vararg de modules.
-	 * @return La liste des modules actuellement chargée
-	 */
-	public static function load_modules()
-	{
-		$modules = func_get_args();
-		foreach ($modules as $module)
-		{
-			FrankizMiniModule::load($module);
-		}
-
-	}
-
-	/**
+	
+    /**
 	 * Renvoie un tableau des descriptions des minimodules indexé par les 
 	 * identifiants des minimodules.
 	 */
-	public static function get_minimodule_list()
+	public static function get_minimodules()
 	{
-		$module_list = array();
-
-		foreach (FrankizMiniModule::$registered_modules as $id => $module)
-		{
-			$module_list[$id] = $module['description'];
-		}
-
-		return $module_list;
-	}
+	    $res=array();
+        foreach(self::$minimodules as $name => $data)
+        {
+            $res[$name] = $data['object'];
+        }
+        return $res;
+    }
 
 
-	/**
-	 * Enregistre un module parmi les modules disponibles
-	 * @param classname Nom de la classe.
-	 * @param params (optionnel) Parametres à passer au constructeur de la classe.
-	 */
-	public static function register_module($name, $classname, $description, $params = array())
-	{
-		FrankizMiniModule::$registered_modules[$name] = array('classname' => $classname,
-								      'params' => $params,
-								      'description' => $description);
-	}
 }
 
-// Inclus tous les fichiers contenant des minimodules. Ces fichiers se chargent d'eux mêmes d'enregistrer
-// leurs modules.
-/*require_once BASE_MODULES."minimodules/activites.php";
-require_once BASE_MODULES."minimodules/anniversaires.php";
-require_once BASE_MODULES."minimodules/fetes.php";
-require_once BASE_MODULES."minimodules/lien_ik.php";
-require_once BASE_MODULES."minimodules/lien_tol.php";
-require_once BASE_MODULES."minimodules/lien_wikix.php";
-require_once BASE_MODULES."minimodules/liens_navigation.php";
-require_once BASE_MODULES."minimodules/liens_profil.php";
-require_once BASE_MODULES."minimodules/liens_propositions.php";
-require_once BASE_MODULES."minimodules/liens_utiles.php";
-require_once BASE_MODULES."minimodules/meteo.php";
-require_once BASE_MODULES."minimodules/qdj.php";
-require_once BASE_MODULES."minimodules/annonce_virus.php";
-*/
 ?>

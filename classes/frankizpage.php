@@ -22,34 +22,29 @@ class FrankizPage extends PlPage
 {
     public function __construct()
     {
-       parent::__construct();
+        parent::__construct();
+        FrankizMiniModule::register_modules();
 
-       // Set the default page
-       $this->changeTpl('annonces.tpl');
+        // Set the default page
+        $this->changeTpl('annonces.tpl');
     }
     
-    private function get_minimodules()
+    private function load_skin()
     {
-    	require_once "minimodules.inc.php";
-		return $minimodules_list;
+        $skin = new FrankizSkin(1);
+	//TODO : do only if we are serving the webpage, not the RSS or a webservice/minipage
+	// filter minimodules
+	S::set('skin', $skin);
+	return $skin;
     }
-
-	private function load_skin()
-	{
-    	$skin = new FrankizSkin(1);
-    	S::set('skin', $skin);
-		//TODO : do only if we are serving the webpage, not the RSS or a webservice/minipage
-		$skin->select_minimodules($this->get_minimodules());
-		return $skin;
-	}
 
     public function run()
     {
-		$skin = $this->load_skin();
-	//Run with the default skin disposition (i.e disposition du contenu)
-    	call_user_func_array(array('FrankizMiniModule', 'load_modules'), array_keys($skin->minimodules));
-		$this->assign('minimodules', FrankizMiniModule::$minimodules);
-		$this->_run("skin/{$skin->base}.tpl");
+    	$skin = $this->load_skin();
+	    FrankizMiniModule::run_modules();
+        $this->assign('minimodules', FrankizMiniModule::get_minimodules());
+	    //Run with the default skin disposition (i.e content disposition)
+        $this->_run("skin/{$skin->base}.tpl");
     }
 }
 

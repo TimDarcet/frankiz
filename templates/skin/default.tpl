@@ -14,12 +14,12 @@
     <div class="fkz_page">
       <div class="fkz_droite">
         {include file="minimodule.tpl" module_name="fetes"}
-{*        {include file="minimodule.tpl" module_name="lien_tol"} *}
-{*        {include file="minimodule.tpl" module_name="lien_ik"} *}
-{*        {include file="minimodule.tpl" module_name="lien_wikix"} *}
-{*        {include file="minimodule.tpl" module_name="tour_kawa"} *}
-{*        {include file="minimodule.tpl" module_name="sondages"} *}
-{*        {include file="minimodule.tpl" module_name="qdj"} *}
+        {include file="minimodule.tpl" module_name="lienTol"}
+{*        {include file="minimodule.tpl" module_name="lienIK"} *}
+{*         {include file="minimodule.tpl" module_name="lien_wikix"} *}
+{*         {include file="minimodule.tpl" module_name="tour_kawa"} *}
+{*         {include file="minimodule.tpl" module_name="sondages"} *}
+{*         {include file="minimodule.tpl" module_name="qdj"} *}
 {*        {include file="minimodule.tpl" module_name="qdj_hier"} *}
 {*        {include file="minimodule.tpl" module_name="meteo"} *}
         <p class="valid">
@@ -32,14 +32,14 @@
 	</p>
       </div>
       <div class="fkz_gauche">
-    {*    {include file="minimodule.tpl" module_name="activites"} *}
-   {*     {include file="minimodule.tpl" module_name="liens_navigation"} *}
-  {*      {include file="minimodule.tpl" module_name="liens_profil"} *}
- {*       {include file="minimodule.tpl" module_name="liens_propositions"} *}
-{*	{include file="minimodule.tpl" module_name="liens_perso"} *}
-{*	{include file="minimodule.tpl" module_name="liens_contacts"} *}
-{*	{include file="minimodule.tpl" module_name="liens_utiles"} *}
-{*	{include file="minimodule.tpl" module_name="stats"} *}
+{*         {include file="minimodule.tpl" module_name="activites"} *}
+{*         {include file="minimodule.tpl" module_name="liens_navigation"} *}
+{*         {include file="minimodule.tpl" module_name="liens_profil"} *}
+{*         {include file="minimodule.tpl" module_name="liens_propositions"} *}
+{* 	{include file="minimodule.tpl" module_name="liens_perso"} *}
+{* 	{include file="minimodule.tpl" module_name="liens_contacts"} *}
+{* 	{include file="minimodule.tpl" module_name="liens_utiles"} *}
+{* 	{include file="minimodule.tpl" module_name="stats"} *}
       </div>
       <div class="fkz_centre">
  {*       {include file="minimodule.tpl" module_name="anniversaires"} *}

@@ -25,8 +25,8 @@
 */
 class LienTolMiniModule extends FrankizMiniModule
 {
-	public function init(){
-		FrankizMiniModule::register('lienTol', AUTH_PUBLIC);
+	public static function init(){
+		FrankizMiniModule::register('lienTol', new LienTolMiniModule(), 'run', AUTH_PUBLIC);
 	}
 
 	public function run()
@@ -40,6 +40,6 @@ class LienTolMiniModule extends FrankizMiniModule
 		return verifie_permission('interne');
 	}
 }
-FrankizMiniModule::register_module('lien_tol', 'LienTolMiniModule', "Lien rapide vers le TOL");
+//FrankizMiniModule::register_module('lien_tol', 'LienTolMiniModule', "Lien rapide vers le TOL");
 
 ?>

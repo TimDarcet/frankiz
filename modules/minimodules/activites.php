@@ -25,8 +25,8 @@
 */
 class ActivitesMiniModule extends FrankizMiniModule
 {
-	public function init(){
-		FrankizMiniModule::register('activites', AUTH_PUBLIC); 
+	public static function init(){
+		FrankizMiniModule::register('activites', new ActivitesMiniModule(), 'run', AUTH_PUBLIC); 
 	}
 	
 	public function run()

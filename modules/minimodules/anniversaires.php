@@ -27,9 +27,9 @@
 class AnniversairesMiniModule extends FrankizMiniModule
 {
 
-	public function init()
+	public static function init()
 	{
-		FrankizMiniModule::register('anniversaires', AUTH_PUBLIC);
+		FrankizMiniModule::register('anniversaires', new AnniversairesMiniModule(), 'run', AUTH_PUBLIC);
 	}
 
 	public function run()

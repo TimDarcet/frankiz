@@ -18,7 +18,10 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-
+define('COOKIE_INCOMPLETE', -1);
+define('COOKIE_OK', 0);
+define('COOKIE_WRONG_HASH', 1);
+define('COOKIE_WRONG_UID', -2);
 class FrankizSession extends PlSession
 {
     public function __construct()
@@ -26,30 +29,155 @@ class FrankizSession extends PlSession
        parent::__construct();
     }
 
+	//Tells if we have enough information to determine the current user
     public function startAvailableAuth()
     {
+    	if(!S::logged())
+		{
+			$cookie = $this->tryCookie();
+			if($cookie == COOKIE_OK)
+			{
+				return $this->start(AUTH_COOKIE);
+			} else if($cookie == COOKIE_WRONG_HASH || $cookie == COOKIE_WRONG_UID)
+			{
+				return false;
+			}
+		}
+		return true;
     }
+
+	/* checks the cookie and set user_id according in auth_by_cookie variable */
+
+	private function tryCookie()
+	{
+		S::kill('cookie_uid'); //Remove previously stored id
+		if(!Cookie::has('uid') || !Cookie::has('hash')){
+			return COOKIE_INCOMPLETE;
+		}
+		$res = XDB::query('SELECT eleve_id, hash_cookie FROM compte_frankiz WHERE user_id = {?}', Cookie::i('uid'));
+		if($res->numRows() == 1)
+		{
+			list($uid, $hash_cookie) = $res->fetchOneRow();
+			if($hash_cookie == Cookie::v('hash'))
+			{
+				S::set('cookie_uid', $uid);
+				return COOKIE_OK;
+			} else {
+				return COOKIE_WRONG_HASH;
+			}
+		}
+		return COOKIE_WRONG_UID;
+	}
 
     protected function doAuth($level)
     {
-    }
+    	//If only AUTH_COOKIE is required, and we haven't checked the presence of a cookie, do it noz
+		if ($level == AUTH_COOKIE && !S::has('cookie_uid'))
+		{
+			$this->tryCookie();
+		}
+		//If AUTH_COOKIE is required, and it has succeeded
+		if($level == AUTH_COOKIE && S::has('cookie_uid'))
+		{
+			if(!S::logged())
+			{
+				S::set('auth', AUTH_COOKIE);
+			}
+			return S::i('cookie_uid');
+		}
 
-    private function tryCookie()
-    {
-        
-    }
+		/*If we are here, we want AUTH_MDP
+		  So we check if the required fields are here */
+		if(!Post::has('login') || !Post::has('domain') || !Post::has('password') || !Post::has('challenge') || !S::has('challenge'))
+		{
+			return null;
+		}
+
+		/* So we come from an authentication form */
+		$uid = $this->checkPassword(Post::v('login'), Post::v('domain'), Post::v('password'), Post::v('challenge'));
+		if(!is_null($uid))
+		{
+			S::set('auth', AUTH_MDP);
+			S::kill('challenge');
+		}
+		return $uid;
+	}
+
+	private function checkPassword($login, $domain, $password, $challenge)
+	{
+		if($challenge != S::v('challenge'))
+		{
+			return null;
+		}
+
+		$res = XDB::query('SELECT eleve_id, password FROM compte_frankiz WHERE login={?} AND domain={?}', $login, $domain);
+		if(list($uid, $db_password) = $res->fetchOneRow())
+		{
+			if(!crypt($password, $db_password) == $db_password)
+			{
+				return null;
+			}
+			return $uid;
+		}
+		return null;
+	}
 
     protected function startSessionAs($uid, $level)
     {
-    }
+    	/* Session data and required data mismatch */
+		if ((!is_null(S::v('user')) && S::i('user') != $uid) || (S::has('uid') && S::i('uid') != $uid))
+		{
+			return false;
+		} else if (S::has('uid')) {
+			return true;
+		}
+		/* If we want to do a SUID */
+		if ($level == -1)
+		{
+			S::set('auth', AUTH_COOKIE);
+		}
+
+		/* Load main user data */
+		$res = XDB::query('SELECT eleve_id as uid, nom, prenom, perms FROM compte_frankiz WHERE eleve_id = {?}', $uid);
+		$sess = $res->fetchOneAssoc();
+		/* store perms in $perms, for sess will be merged into $_SESSION, and $perms is a PlFlagSet */
+		$perms = $sess['perms'];
+		unset($sess['perms']);
+
+		/* Load data into the real session */
+		$_SESSION = array_merge($_SESSION, $sess);
+		
+		$this->makePerms($perms);
+		
+		/* Clean temp var 'cookie_uid' */
+		S::kill('cookie_uid');
+		return true;
+	}
 
     public function tokenAuth($login, $token)
     {
+		/* Load main user data */
+		$res = XDB::query('SELECT eleve_id as uid, nom, prenom, perms FROM compte_frankiz WHERE eleve_id = {?} AND token = {?}', $login, $token);
+		if($res->numRows()==1)
+		{
+			$sess = $res->fetchOneAssoc();
+			/* if no current session */
+			if(!S::has('uid'))
+			{
+				$_SESSION = $sess;
+				$this->makePerms($sess['perms']);
+				return S::i('uid');
+			} else if (S::i('uid') == $sess['uid']){
+				return S::i('uid');
+			}
+		}
+		return null;
     }
 
     public function sureLevel()
     {
-    }
+    	return AUTH_MDP;
+	}
 }
 
 ?>

@@ -19,9 +19,9 @@
 */
 class LienIKMiniModule extends FrankizMiniModule
 {
-	public function init()
+	public static function init()
 	{
-		FrankizMiniModule::register('lienIK', AUTH_PUBLIC);
+		FrankizMiniModule::register('lienIK', new LienIKMiniModule(), 'run', AUTH_PUBLIC);
 	}
 
 	public function run()
@@ -42,6 +42,6 @@ class LienIKMiniModule extends FrankizMiniModule
 		return verifie_permission('interne');
 	}
 }
-FrankizMiniModule::register_module('lien_ik', 'LienIKMiniModule', "Lien vers l'IK électronique");
+//FrankizMiniModule::register_module('lien_ik', 'LienIKMiniModule', "Lien vers l'IK électronique");
 
 ?>

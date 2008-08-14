@@ -26,9 +26,9 @@
 
 class FetesMiniModule extends FrankizMiniModule
 {
-	public function init()
+	public static function init()
 	{
-		FrankizMiniModule::register('fetes',  AUTH_PUBLIC);
+		FrankizMiniModule::register('fetes', new FetesMiniModule(), 'run', AUTH_PUBLIC);
 	}
 
 	public function run()
@@ -53,6 +53,6 @@ class FetesMiniModule extends FrankizMiniModule
 		return verifie_permission('interne');
 	}
 }
-FrankizMiniModule::register_module('fetes', 'FetesMiniModule', "Fetes du jour");
+//FrankizMiniModule::register_module('fetes', 'FetesMiniModule', "Fetes du jour");
 
 ?>
