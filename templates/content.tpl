@@ -1,4 +1,4 @@
-{if not $page_raw}
+{* {if not $page_raw} *}
 <div class="fkz_divers_1">
   <div class="fkz_divers_2">
     <div class="fkz_divers_3">
@@ -10,13 +10,13 @@
 	        {$title}
 	      </div>
 	      <div class="fkz_page_corps">
-{/if}
+{* {/if} *}
 		{if !$pl_no_errors || $pl_failure}
 		{include file="skin/common.errors.tpl"}
 		{/if}
 		
 		{include file=$pl_tpl}
-{if not $page_raw}
+{* {if not $page_raw} *}
 	      </div>
 	    </div>
 	  </div>
@@ -25,4 +25,4 @@
     </div>
   </div>
 </div>
-{/if}
+{* {/if} *}

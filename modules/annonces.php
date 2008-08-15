@@ -83,7 +83,7 @@ class AnnoncesModule extends PLModule
 				IFNULL(mail, CONCAT(login, '@poly.polytechnique.fr')) AS mail,
 			  	$est_annonce_non_lue
 			  FROM  annonces
-		     LEFT JOIN  trombino.eleves USING(eleve_id)
+		     LEFT JOIN  eleves USING(eleve_id)
 		  	 	$left_join_annonces_lues
 			 WHERE	perime > NOW()
   		      ORDER BY	perime DESC");

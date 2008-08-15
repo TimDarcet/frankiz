@@ -32,10 +32,12 @@ class FrankizSession extends PlSession
 	//Tells if we have enough information to determine the current user
     public function startAvailableAuth()
     {
-    	if(!S::logged())
+        //User not logged in, check if there is a cookie
+        if(!S::logged())
 		{
 			$cookie = $this->tryCookie();
-			if($cookie == COOKIE_OK)
+			//there is a cookie, and it's ok : log the user in
+            if($cookie == COOKIE_OK)
 			{
 				return $this->start(AUTH_COOKIE);
 			} else if($cookie == COOKIE_WRONG_HASH || $cookie == COOKIE_WRONG_UID)
@@ -88,13 +90,14 @@ class FrankizSession extends PlSession
 
 		/*If we are here, we want AUTH_MDP
 		  So we check if the required fields are here */
-		if(!Post::has('login') || !Post::has('domain') || !Post::has('password') || !Post::has('challenge') || !S::has('challenge'))
+        
+		if(!Post::has('login') || !Post::has('password') || !S::has('challenge'))
 		{
 			return null;
 		}
-
+        
 		/* So we come from an authentication form */
-		$uid = $this->checkPassword(Post::v('login'), Post::v('domain'), Post::v('password'), Post::v('challenge'));
+		$uid = $this->checkPassword(Post::v('login'), Post::v('password'));
 		if(!is_null($uid))
 		{
 			S::set('auth', AUTH_MDP);
@@ -103,14 +106,11 @@ class FrankizSession extends PlSession
 		return $uid;
 	}
 
-	private function checkPassword($login, $domain, $password, $challenge)
+	private function checkPassword($login, $password)
 	{
-		if($challenge != S::v('challenge'))
-		{
-			return null;
-		}
+        $login=explode('.', $login, 2);
 
-		$res = XDB::query('SELECT eleve_id, password FROM compte_frankiz WHERE login={?} AND domain={?}', $login, $domain);
+		$res = XDB::query('SELECT eleve_id, passwd FROM compte_frankiz LEFT JOIN eleves USING (eleve_id) WHERE login={?} AND promo={?}', $login[0], $login[1]);
 		if(list($uid, $db_password) = $res->fetchOneRow())
 		{
 			if(!crypt($password, $db_password) == $db_password)
@@ -138,7 +138,7 @@ class FrankizSession extends PlSession
 		}
 
 		/* Load main user data */
-		$res = XDB::query('SELECT eleve_id as uid, nom, prenom, perms FROM compte_frankiz WHERE eleve_id = {?}', $uid);
+		$res = XDB::query('SELECT eleve_id as uid, nom, prenom, perms FROM compte_frankiz LEFT JOIN eleves USING (eleve_id) WHERE eleve_id = {?}', $uid);
 		$sess = $res->fetchOneAssoc();
 		/* store perms in $perms, for sess will be merged into $_SESSION, and $perms is a PlFlagSet */
 		$perms = $sess['perms'];
@@ -153,6 +153,13 @@ class FrankizSession extends PlSession
 		S::kill('cookie_uid');
 		return true;
 	}
+
+    public function makePerms($perm)
+    {
+        $flags = new PlFlagSet();
+        $flags->addFlag(PERMS_USER);
+        S::set('perms', $flags);
+    }
 
     public function tokenAuth($login, $token)
     {

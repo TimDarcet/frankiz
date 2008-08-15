@@ -52,6 +52,7 @@ class ActivitesMiniModule extends FrankizMiniModule
 			return;
 */
 //		$this->assign('activites_etat_bob', getEtatBob());
+        $this->assign('activites_etat_bob', true);
 		$this->assign('activites' , $activites);
 		$this->tpl = "minimodules/activites/activites.tpl";
 		$this->titre = "Activités";

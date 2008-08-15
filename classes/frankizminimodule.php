@@ -85,8 +85,10 @@ abstract class FrankizMiniModule
             FrankizMiniModule::$minimodules[$name]=array(
                 'object' => $minimodule,
                 'handler' => array($minimodule, $handler),
-		    	'auth'  => $auth,
-			    'perms' => $perms);
+		    	'auth'  => $auth);
+                if(!is_null($perms)){
+    		        FrankizMiniModule::$minimodules[$name]['perms']=$perms;
+                }
         }
     }
 
@@ -107,7 +109,6 @@ abstract class FrankizMiniModule
     }
 	private static function check_perms($data)
     {
-        return true;
         if($data['auth'] > S::v('auth'))
         {
             return false;

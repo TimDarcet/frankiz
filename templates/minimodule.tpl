@@ -1,5 +1,4 @@
-{$module_name}
-{* {if not $minimodules.$module_name->is_empty()} *}
+{if isset($minimodules.$module_name|smarty:nodefaults)}
 <div class="fkz_module_1">
   <div class="fkz_module_2">
     <div class="fkz_module_3">
@@ -21,4 +20,4 @@
     </div>
   </div>
 </div>
-{* {/if} *}
+{/if}

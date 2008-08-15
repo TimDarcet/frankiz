@@ -25,9 +25,9 @@
 */
 class LiensPropositionsMiniModule extends FrankizMiniModule
 {
-	public function init()
+	public static function init()
 	{
-		FrankizMiniModule::register('liensPropositions', AUTH_COOKIE);
+		FrankizMiniModule::register('lienspropositions', new LiensPropositionsMiniModule(), 'run', AUTH_COOKIE);
 	}
 	
 	public function run()
@@ -42,6 +42,6 @@ class LiensPropositionsMiniModule extends FrankizMiniModule
 	return FrankizSession::est_authentifie(AUTH_COOKIE);
 	}
 }
-FrankizMiniModule::register_module("liens_propositions", "LiensPropositionsMiniModule", "Liens pour proposer du contenu sur Frankiz");
+//FrankizMiniModule::register_module("liens_propositions", "LiensPropositionsMiniModule", "Liens pour proposer du contenu sur Frankiz");
 
 ?>

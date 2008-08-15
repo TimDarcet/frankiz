@@ -26,9 +26,9 @@
 
 class LiensPersoMiniModule extends FrankizMiniModule
 {
-	public function init()
+	public static function init()
 	{
-		FrankizMiniModule::register('liensPerso', AUTH_COOKIE);
+		FrankizMiniModule::register('liensPerso', new LiensPersoMiniModule(), 'run', AUTH_COOKIE);
 	}
 	
 	public function run()
@@ -52,5 +52,5 @@ class LiensPersoMiniModule extends FrankizMiniModule
 		return true;
 	}
 }
-FrankizMiniModule::register_module('liens_perso', "LiensPersoMiniModule", "Liens personnels");
+//FrankizMiniModule::register_module('liens_perso', "LiensPersoMiniModule", "Liens personnels");
 ?>

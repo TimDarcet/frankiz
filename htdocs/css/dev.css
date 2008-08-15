@@ -1,0 +1,23 @@
+.backtrace h1 {
+    font-size: 10pt;
+}
+
+#dev {
+    width: auto;
+    text-align: center;
+    padding: 1px;
+
+    color: #003399;
+    background: #e0ffff;
+
+    font-family: 'Bauhaus Md BT','Bitstream Vera',sans-serif;
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+#dev a { text-decoration: underline; }
+#dev a:hover { color: #003399; background: #c0e0e0; }
+
+.backtrace div.hide       { display: none; }
+.backtrace:hover div.hide { display: block }
+

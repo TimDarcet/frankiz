@@ -20,7 +20,7 @@
 
 require_once dirname(__FILE__).'/../include/frankiz.inc.php';
 
-$platal = new Platal('activites', 'annonces', 'profil', 'trombino', 'qdj');
+$platal = new Platal('frankiz', 'activites', 'annonces', 'profil', 'trombino', 'qdj');
 
 if (!($path = Env::v('n')) || ($path{0} < 'A' || $path{0} > 'Z')) {
     $platal->run();

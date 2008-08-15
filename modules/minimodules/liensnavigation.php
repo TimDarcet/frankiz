@@ -26,9 +26,9 @@
 
 class LiensNavigationMiniModule extends FrankizMiniModule
 {
-	public function init()
+	public static function init()
 	{
-		FrankizMiniModule::register('liensNavigation', AUTH_PUBLIC);
+		FrankizMiniModule::register('liensnavigation', new LiensNavigationMiniModule(), 'run', AUTH_PUBLIC, null);
 	}
 
 	public function run()
@@ -43,6 +43,6 @@ class LiensNavigationMiniModule extends FrankizMiniModule
 		return true;
 	}
 }
-FrankizMiniModule::register_module('liens_navigation', "LiensNavigationMiniModule", "Liens pour naviguer sur le site (indispensable)");
+//FrankizMiniModule::register_module('liens_navigation', "LiensNavigationMiniModule", "Liens pour naviguer sur le site (indispensable)");
 
 ?>
