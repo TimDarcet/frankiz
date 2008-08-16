@@ -31,20 +31,25 @@ class FrankizPage extends PlPage
     
     private function load_skin()
     {
-        $skin = new FrankizSkin(1);
-	//TODO : do only if we are serving the webpage, not the RSS or a webservice/minipage
-	// filter minimodules
-	S::set('skin', $skin);
-	return $skin;
+        global $globals;
+        if(!S::has('skin')){
+	        //TODO : do only if we are serving the webpage, not the RSS or a webservice/minipage
+            $skin_id = $globals->skin;
+        	S::set('skin', $skin_id);
+        }else{
+            $skin_id=S::v('skin');
+        }
+        return $skin_id;
     }
 
     public function run()
     {
-    	$skin = $this->load_skin();
+    	global $globals;
+        $globals->skin = $this->load_skin();
 	    FrankizMiniModule::run_modules();
         $this->assign('minimodules', FrankizMiniModule::get_minimodules());
 	    //Run with the default skin disposition (i.e content disposition)
-        $this->_run("skin/{$skin->base}.tpl");
+        $this->_run("skin/{$globals->skin}.tpl");
     }
 }
 

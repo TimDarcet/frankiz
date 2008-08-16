@@ -138,7 +138,7 @@ class FrankizSession extends PlSession
 		}
 
 		/* Load main user data */
-		$res = XDB::query('SELECT eleve_id as uid, nom, prenom, perms FROM compte_frankiz LEFT JOIN eleves USING (eleve_id) WHERE eleve_id = {?}', $uid);
+		$res = XDB::query('SELECT eleve_id as uid, nom, prenom, perms, skin FROM compte_frankiz LEFT JOIN eleves USING (eleve_id) WHERE eleve_id = {?}', $uid);
 		$sess = $res->fetchOneAssoc();
 		/* store perms in $perms, for sess will be merged into $_SESSION, and $perms is a PlFlagSet */
 		$perms = $sess['perms'];

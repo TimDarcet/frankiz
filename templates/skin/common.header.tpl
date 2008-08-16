@@ -1,4 +1,3 @@
-	<link rel="stylesheet" type="text/css" href="css/{$smarty.session.skin->base}/{$smarty.session.skin->path}.css" />
 	<link rel="stylesheet" type="text/css" href="css/dev.css" />
     <link rel="alternate" type="application/rss+xml" title="Version RSS" href="rss_annonces.php" />
 	<link rel="glossary" title="Vocabulaire" href="vocabulaire.php" />

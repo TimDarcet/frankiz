@@ -1,5 +1,5 @@
 {include file="skin/common.doctype.tpl"}
-    <link rel="stylesheet" type="text/css" href="css/default.css" media=all />
+    <link rel="stylesheet" type="text/css" href="css/tranquille.css" media=all />
 {include file="skin/common.header.tpl"}
   </head>
   <body>
