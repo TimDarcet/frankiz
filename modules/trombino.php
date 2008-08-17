@@ -173,7 +173,7 @@ class TrombinoRequest
 		//////
 		// Requête
 		//
-		$DB_trombino->query("
+		$res = XDB::query("
 			SELECT  eleves.eleve_id, eleves.nom, eleves.prenom, eleves.surnom, eleves.login, eleves.mail, eleves.date_nais,
 				eleves.piece_id, pieces.tel, eleves.portable, eleves.commentaire, eleves.promo, eleves.cie, eleves.section_id, 
 				sections.nom, prises.prise_id, eleves.nation
@@ -182,37 +182,38 @@ class TrombinoRequest
 		     LEFT JOIN  pieces ON eleves.piece_id = pieces.piece_id
 		     LEFT JOIN  membres ON eleves.eleve_id = membres.eleve_id
 		     LEFT JOIN  binets ON membres.binet_id = binets.binet_id
-		     LEFT JOIN  admin.prises AS prises ON prises.piece_id = pieces.piece_id
-		     LEFT JOIN  admin.arpwatch_log AS arpwatch ON arpwatch.ip = prises.ip
+		     LEFT JOIN  prises AS prises ON prises.piece_id = pieces.piece_id
+		     LEFT JOIN  arpwatch_log AS arpwatch ON arpwatch.ip = prises.ip
 			 WHERE  $where_clause
 		      GROUP BY  eleves.eleve_id
 		      ORDER BY	eleves.promo ASC,
 				eleves.nom ASC,
 				eleves.prenom ASC
 			 LIMIT  100");
-		
+		$data = $res->fetchAllRow();
 		//////
 		// Génération des résultats sous formes d'arbres nommés
 		//
 		$resultats = array();
-		while (list($eleve_id, $nom, $prenom, $surnom, $login, $mail, $date_nais,
+        foreach($data as $row){
+        list($eleve_id, $nom, $prenom, $surnom, $login, $mail, $date_nais,
 			    $piece_id, $tel, $port, $commentaire, $promo, $cie, $section_id, 
-			    $section, $prise, $nation) = $DB_trombino->next_row()) 
-		{
+			    $section, $prise, $nation) = $row;
 			//////
 			// Si admin, génération de la liste des IPs
 			//
 			if ($tol_admin) 
 			{
-				$DB_admin->query("SELECT  prise_id, p.ip 
+				$res_prises = XDB::query("SELECT  prise_id, p.ip 
 				                    FROM  prises AS p 
-						   WHERE  piece_id = '$piece_id'
-						ORDER BY  prise_id");
-				
+						   WHERE  piece_id = {?}
+						ORDER BY  prise_id", $piece_id);
+				$data_prises = $res_prises->fetchAllRow();
 				$prise_log = array();
-				while (list($prise, $ip) = $DB_admin->next_row()) 
-				{
-					$DB_xnet->query("SELECT  username, 
+				foreach ($data_prises as $row_prises)
+                {
+                    list($prise, $ip) = $row_prises;
+					$res_xnet = XDB::query("SELECT  username, 
 							         if( ((options & 0x1c0) >> 6) = 1, 'Windows 9x', 
 								 if( ((options & 0x1c0) >> 6) = 2, 'Windows XP', 
 								 if( ((options & 0x1c0) >> 6) = 3, 'Linux', 
@@ -221,10 +222,10 @@ class TrombinoRequest
 								 s.name 
 						           FROM  clients 
 						      LEFT JOIN  software AS s ON clients.version = s.version  
-						          WHERE  lastip = '$ip'");
+						          WHERE  lastip = {?}", $ip);
 
-					list($dns, $os, $client) = $DB_xnet->next_row();
-					
+					list($dns, $os, $client) = $res_xnet->fetchOneRow();
+				    $res_xnet->free();	
 					if (empty($client)) 
 						$client = 'Pas de client';
 					if (empty($dns)) 
@@ -234,16 +235,15 @@ class TrombinoRequest
 					// Toutes les macs qui ont été associées à cette ip
 					// On ne prend en compte que les macs qui correspondent à la période où la promo est sur le campus
 					//
-					$DB_admin->push_result();
-					$DB_admin->query("SELECT  mac, ts, vendor 
+					$res_macs = XDB::query("SELECT  mac, ts, vendor 
 					                    FROM  arpwatch_log 
 						       LEFT JOIN  arpwatch_vendors ON mac LIKE CONCAT(debut_mac,':%') 
-						           WHERE  ip = '$ip' and ts > '".($promo+1)."-04-15' 
+						           WHERE  ip = {?} and ts > {?}-04-15' 
 							GROUP BY  mac, ts 
-							ORDER BY  ts");
+							ORDER BY  ts", $ip, $promo+1);
 
 					$mac_log = array();
-					while (list($mac, $ts, $vendor) = $DB_admin->next_row())
+					while (list($mac, $ts, $vendor) = $res_macs->fetchOneRow())
 					{
 						if (!empty($mac))
 						{
@@ -255,7 +255,6 @@ class TrombinoRequest
 									   'constructeur' => $vendor);
 						}
 					}
-					$DB_admin->pop_result();
 					
 					$prise_log[] = array('ip'      => $ip,
 							     'dns'     => $dns,
@@ -268,22 +267,21 @@ class TrombinoRequest
 			//////
 			// Génération de la liste des binets
 			//
-			$DB_trombino->push_result();
-			$DB_trombino->query("SELECT  remarque, nom, membres.binet_id
+			$res_binets = XDB::query("SELECT  remarque, nom, membres.binet_id
 					       FROM  membres
 				          LEFT JOIN  binets USING(binet_id)
-					      WHERE  eleve_id = '$eleve_id'
-					   ORDER BY  nom ASC");
+					      WHERE  eleve_id = {?}
+					   ORDER BY  nom ASC", $eleve_id);
 
 			$binets = array();
-			while (list($remarque, $binet_nom, $binet_id) = $DB_trombino->next_row())
-			{
+            $data_binets = $res_binets->fetchAllRow();
+            foreach($data_binets as $data_binet)
+            {
+    			list($remarque, $binet_nom, $binet_id) = $data_binet;
 				$binets[] = array('nom'      => $binet_nom,
 						  'id'       => $binet_id,
 						  'remarque' => $remarque);
 			}
-			$DB_trombino->pop_result();
-
 			//////
 			// Génère les noms et prénoms poly.org en supprimant les accents
 			//
@@ -341,9 +339,9 @@ class TrombinoModule extends PLModule
 
 	private function get_nations()
 	{
-		global $DB_trombino;
+/*		global $DB_trombino;
 
-		$DB_trombino->query("SELECT  nation_id, name 
+		$res = XDB::query("SELECT  nation_id, name 
 		                       FROM  nations
 				      WHERE  existe");
 
@@ -351,12 +349,16 @@ class TrombinoModule extends PLModule
 		while (list($id, $name) = $DB_trombino->next_row())
 			$nations[$id] = $name;
 
-		return $nations;
+		return $nations;*/
+        return XDB::iterator('SELECT nation_id, 
+                                     name as nation_name 
+                                FROM nations 
+                               WHERE existe');
 	}
 
 	private function get_sections()
 	{
-		global $DB_trombino;
+/*		global $DB_trombino;
 
 		$DB_trombino->query("SELECT  section_id, nom 
 		                       FROM  sections
@@ -366,12 +368,15 @@ class TrombinoModule extends PLModule
 		while (list($id, $name) = $DB_trombino->next_row())
 			$nations[$id] = $name;
 
-		return $nations;
+		return $nations;*/
+        return XDB::iterator('SELECT section_id, 
+                                     nom as section_nom 
+                                FROM sections');
 	}
 
 	private function get_promos()
 	{
-		global $DB_trombino;
+/*		global $DB_trombino;
 
 		$DB_trombino->query("SELECT  promo
 		                       FROM  eleves
@@ -382,12 +387,16 @@ class TrombinoModule extends PLModule
 		while (list($promo) = $DB_trombino->next_row())
 			$promos[$promo] = $promo;
 
-		return $promos;
+		return $promos;*/
+        return XDB::iterator('SELECT DISTINCT promo
+                                FROM eleves
+                               WHERE promo != \'0000\'
+                            GROUP BY promo');
 	}
 
 	private function get_binets()
 	{
-		global $DB_trombino;
+/*		global $DB_trombino;
 
 		$DB_trombino->query("SELECT  binet_id, nom
 		                       FROM  binets
@@ -397,7 +406,11 @@ class TrombinoModule extends PLModule
 		while (list($id, $name) = $DB_trombino->next_row())
 			$binets[$id] = $name;
 
-		return $binets;
+		return $binets;*/
+        return XDB::iterator('SELECT binet_id, 
+                                     nom as binet_nom
+                                FROM binets
+                            ORDER BY binet_nom ASC');
 	}
 
 	function handler_tol(&$page)
@@ -407,11 +420,11 @@ class TrombinoModule extends PLModule
 		//////
 		// Permissions
 		//
-		$tol_admin = FrankizSession::verifie_permission('admin') || 
-		   	     FrankizSession::verifie_permission('windows') ||
-		    	     FrankizSession::verifie_permission('trombino') ||
-		    	     FrankizSession::verifie_permission('news') ||
-		    	     FrankizSession::verifie_permission('support');
+		$tol_admin = Platal::session()->checkPerms('admin') || 
+    		   	     Platal::session()->checkPerms('windows') ||
+		    	     Platal::session()->checkPerms('trombino') ||
+		    	     Platal::session()->checkPerms('news') ||
+		    	     Platal::session()->checkPerms('support');
 
 		if (isset($_REQUEST['tol_admin']) && !$tol_admin)
 			return PL_DO_AUTH;
@@ -423,15 +436,15 @@ class TrombinoModule extends PLModule
 		$page->assign('title', "Trombino");
 		$page->assign('tol_admin', $tol_admin);
 		$page->assign('page_raw', 1);
-		$page->assign('nations', array('toutes' => 'Toutes') + $this->get_nations());
-		$page->assign('sections', array('toutes' => 'Toutes') + $this->get_sections());
-		$page->assign('binets', array('tous' => 'Toutes') + $this->get_binets());
+		$page->assign('nations', $this->get_nations());
+		$page->assign('sections', $this->get_sections());
+		$page->assign('binets', $this->get_binets());
 
-		$promos = array();
+/*		$promos = array();
 		$promos['courantes'] = "Promos courantes";
 		$promos['toutes'] = "Toutes les promos";
-		$promos = $promos + $this->get_promos();
-		$page->assign('promos', $promos);
+		$promos = $promos + $this->get_promos();*/
+		$page->assign('promos', $this->get_promos());
 
 		//////
 		// On vérifie que nous avons bien une requete en cours.
@@ -448,10 +461,8 @@ class TrombinoModule extends PLModule
 		//////
 		// Recuperation de la derniere promotion arrivee sur le campus
 		//
-		$DB_web->query('SELECT 	valeur
-				  FROM  parametres
-				 WHERE  nom = "lastpromo_oncampus"');
-		list($promo_tos) = $DB_web->next_row();
+		global $globals;
+        $promo_tos = $globals->lastpromo;
 
 		//////
 		// Initialisation de la requete
@@ -524,7 +535,7 @@ class TrombinoModule extends PLModule
 			$request->add_option_to_constraint_group('valid_promo', 'eleves.promo', $promo_tos-1, EXACT_MATCH_NO_QUOTES);
 		}
 		
-		if (!empty($_REQUEST['nation']) && $_REQUEST['nation'] != 'Toutes')
+		if (!empty($_REQUEST['nation']) && $_REQUEST['nation'] != 'toutes')
 			$request->add_constraint('eleves.nation', $_REQUEST['nation'], EXACT_MATCH);
 
 		if (!empty($_REQUEST['binet']) && $_REQUEST['binet'] != 'tous')

@@ -20,25 +20,29 @@
       <td>
         <span class='gauche'>Promo :<span>
 	<select name='promo'>
-	  {foreach from=$promos key=id item=promo}
-	  <option value='{$id}'>{$promo}</option>
-	  {/foreach}
+	  <option value='courantes'>Promos courantes</option>
+	  <option value='toutes'>Toutes les promos</option>
+      {iterate from=$promos item=promo}
+	  <option value='{$promo.promo}'>{$promo.promo}</option>
+	  {/iterate}
 	</select>
       </td>
       <td>
         <span class='gauche'>Section :</span>
 	<select name='section'>
-	  {foreach from=$sections key=id item=sect}
-	  <option value='{$id}'>{$sect}</option>
-	  {/foreach}
+      <option value='toutes'>Toutes</option>
+	  {iterate from=$sections item=sect}
+	  <option value='{$sect.section_id}'>{$sect.section_nom}</option>
+	  {/iterate}
 	</select>
       </td>
       <td>
         <span class='gauche'>Binet :</span>
 	<select name='binet'>
-	  {foreach from=$binets key=id item=binet}
-	  <option value='{$id}'>{$binet}</option>
-	  {/foreach}
+      <option value='tous'>Tous</option>
+	  {iterate from=$binets item=binet}
+	  <option value='{$binet.binet_id}'>{$binet.binet_nom}</option>
+	  {/iterate}
 	</select>
       </td>
     </tr>
@@ -76,9 +80,10 @@
       <td>
         <span class='gauche'>Nationalité :</span>
 	<select name='nation'>
-	  {foreach from=$nations key=id item=nation}
-	  <option value='{$nation}'>{$nation}</option>
-	  {/foreach}
+      <option value='toutes'>Toutes</option>
+	  {iterate from=$nations item=nation}
+	  <option value='{$nation.nation_id}'>{$nation.nation_name}</option>
+	  {/iterate}
 	</select>
       </td>
 {if $tol_admin}

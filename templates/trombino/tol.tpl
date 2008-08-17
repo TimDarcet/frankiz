@@ -1,5 +1,5 @@
 {css_block class='fkz_trombino'}
-{if isset($results)}
+{if isset($results|smarty:nodefaults)}
 {if count($results) > 99}
 <span class='warning'>Trop de résultats : seuls les 100 premiers sont affichés</span>
 {elseif count($results) > 0}
