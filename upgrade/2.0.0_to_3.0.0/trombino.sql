@@ -1,3 +1,6 @@
+=====================
+Gestion des données élèves (binets, promo, ...)
+
 CREATE TABLE `frankiz3`.`binets` (
 `binet_id` INT( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT ,
  `nom` TINYTEXT NOT NULL ,
