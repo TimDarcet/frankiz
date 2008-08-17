@@ -27,7 +27,7 @@ class LienWikixMiniModule extends FrankizMiniModule
 {
 	public static function init()
 	{
-		FrankizMiniModule::register('lienWikix', new LienWikixMiniModule(), 'run', AUTH_PUBLIC);
+		FrankizMiniModule::register('lienWikix', new LienWikixMiniModule(), 'run', AUTH_INTERNE, null);
 	}
 	
 	public function run()

@@ -18,6 +18,14 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+define('AUTH_PUBLIC', 0);//Anyone
+define('AUTH_INTERNE', 1);//Connecting from inside
+/*
+define('AUTH_ELEVE', 2);//Connecting from eleve zone (binets, Kserts, wifi ; not pits, ...)
+*/
+define('AUTH_COOKIE', 5);//Has a cookie
+define('AUTH_MDP', 10);//Has entered password during session
+
 define('COOKIE_INCOMPLETE', -1);
 define('COOKIE_OK', 0);
 define('COOKIE_WRONG_HASH', 1);
@@ -26,7 +34,10 @@ class FrankizSession extends PlSession
 {
     public function __construct()
     {
-       parent::__construct();
+        parent::__construct();
+        if(S::i('auth') < AUTH_INTERNE && est_interne()){
+            S::set('auth', AUTH_INTERNE);
+        }
     }
 
 	//Tells if we have enough information to determine the current user
@@ -179,6 +190,11 @@ class FrankizSession extends PlSession
 			}
 		}
 		return null;
+    }
+
+    public function loggedLevel()
+    {
+        return AUTH_COOKIE;
     }
 
     public function sureLevel()

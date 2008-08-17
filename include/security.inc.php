@@ -22,6 +22,40 @@
 /******************************************************************************
  * Security functions
  *****************************************************************************/
+function ip_get() {
+    if (isset($_SERVER['REMOTE_ADDR'])) {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    } else {
+        // CLI
+        $ip = '127.0.0.1';
+    }
+
+    if ($ip === '129.104.30.4') {
+        // C'est l'adresse du portail w3x
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $listeIPs = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            
+            // Le dernier de cette liste est celui ajoute par w3x, qui est un
+            // proxy fiable. Toute cette verification a pour objectif de ne pas
+            // permettre l'ip spoofing
+            // (trim : le séparateur entre les ips dans $headers['X-Forwarded-For'] est ', ')
+            $ipForwardee = trim(end($listeIPs));
+            
+            if (preg_match("/([0-9]{1,3}\.){3}[0-9]{1,3}/", $ipForwardee)) {
+                $ip = $ipForwardee;
+            }
+        }
+    }
+
+    return $ip;
+}
+    
+function est_interne()
+{
+    $ip = ip_get();
+    return $ip == '127.0.0.1' || (substr($ip, 0, 8) == '129.104.' && $ip != '129.104.30.4');
+}
+
 /*
 function check_ip($level)
 {
