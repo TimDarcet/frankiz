@@ -1,5 +1,5 @@
 {include file="skin/common.doctype.tpl"}
-    <link rel="stylesheet" type="text/css" href="css/tranquille.css" media=all />
+    <link rel="stylesheet" type="text/css" href="css/tranquille/tranquille.css" media=all />
 {include file="skin/common.header.tpl"}
   </head>
   <body>
@@ -17,7 +17,7 @@
         {include file="minimodule.tpl" module_name="fetes"}
         {include file="minimodule.tpl" module_name="lienTol"}
 {*        {include file="minimodule.tpl" module_name="lienIK"} *}
-{*         {include file="minimodule.tpl" module_name="lien_wikix"} *}
+        {include file="minimodule.tpl" module_name="lien_wikix"}
 {*         {include file="minimodule.tpl" module_name="tour_kawa"} *}
 {*         {include file="minimodule.tpl" module_name="sondages"} *}
 {*         {include file="minimodule.tpl" module_name="qdj"} *}

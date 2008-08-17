@@ -58,7 +58,7 @@ abstract class FrankizMiniModule
         require_once 'minimodules.inc.php';
         foreach($minimodules_list as $name)
         {
-            FrankizMiniModule::_init($name);
+            self::_init($name);
         }
     }
 
@@ -81,16 +81,24 @@ abstract class FrankizMiniModule
      */
 	public static function register($name, $minimodule, $handler, $auth, $perms='user')
 	{
-        if(!FrankizSkin::is_minimodule_disabled($name)){
-            FrankizMiniModule::$minimodules[$name]=array(
+        if(!self::is_minimodule_disabled($name)){
+            self::$minimodules[$name]=array(
                 'object' => $minimodule,
                 'handler' => array($minimodule, $handler),
 		    	'auth'  => $auth);
                 if(!is_null($perms)){
-    		        FrankizMiniModule::$minimodules[$name]['perms']=$perms;
+    		        self::$minimodules[$name]['perms']=$perms;
                 }
         }
     }
+    
+    public static function is_minimodule_disabled($name)
+    {
+        //Returns false if no list of minimodules exists
+        S::has('minimodules_disabled') && return  in_array($name, S::v('minimodules_disabled'));
+        return false;
+    }
+
 
     /** runs the modules
      */
