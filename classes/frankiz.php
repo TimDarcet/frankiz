@@ -18,18 +18,20 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-require_once dirname(__FILE__).'/../include/frankiz.inc.php';
-
-$platal = new Frankiz('frankiz', 'activites', 'annonces', 'profil', 'trombino', 'qdj');
-
-if (!($path = Env::v('n')) || ($path{0} < 'A' || $path{0} > 'Z')) {
-    $platal->run();
-    exit;
+class Frankiz extends Platal
+{
+    public function force_login(PlPage &$page)
+    {
+        header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
+        if (S::logged()) {
+            $page->changeTpl('core/password_prompt_logged.tpl');
+        } else {
+            $page->changeTpl('core/password_prompt.tpl');
+        }
+        $page->assign_by_ref('platal', $this);
+        $page->run();
+    }
 }
-
-/*** WIKI CODE ***/
-
-include pl_core_include('wiki/engine.php');
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
 ?>
