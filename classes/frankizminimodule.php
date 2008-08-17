@@ -95,7 +95,9 @@ abstract class FrankizMiniModule
     public static function is_minimodule_disabled($name)
     {
         //Returns false if no list of minimodules exists
-        S::has('minimodules_disabled') && return  in_array($name, S::v('minimodules_disabled'));
+        if(S::has('minimodules_disabled')){
+            return  in_array($name, S::v('minimodules_disabled'));
+        }
         return false;
     }
 
