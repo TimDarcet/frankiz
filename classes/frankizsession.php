@@ -151,7 +151,7 @@ class FrankizSession extends PlSession
 		/* Load main user data */
 		$res = XDB::query('SELECT eleve_id as uid, nom, prenom, perms, skin FROM compte_frankiz LEFT JOIN eleves USING (eleve_id) WHERE eleve_id = {?}', $uid);
 		$sess = $res->fetchOneAssoc();
-		/* store perms in $perms, for sess will be merged into $_SESSION, and $perms is a PlFlagSet */
+        /* store perms in $perms, for sess will be merged into $_SESSION, and $perms is a PlFlagSet */
 		$perms = $sess['perms'];
 		unset($sess['perms']);
 
@@ -167,7 +167,7 @@ class FrankizSession extends PlSession
 
     public function makePerms($perm)
     {
-        $flags = new PlFlagSet();
+        $flags = new PlFlagSet($perm, ',');
         $flags->addFlag(PERMS_USER);
         S::set('perms', $flags);
     }

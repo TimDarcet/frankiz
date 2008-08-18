@@ -238,13 +238,15 @@ class TrombinoRequest
 					$res_macs = XDB::query("SELECT  mac, ts, vendor 
 					                    FROM  arpwatch_log 
 						       LEFT JOIN  arpwatch_vendors ON mac LIKE CONCAT(debut_mac,':%') 
-						           WHERE  ip = {?} and ts > {?}-04-15' 
+						           WHERE  ip = {?} and ts > {?}-04-15 
 							GROUP BY  mac, ts 
 							ORDER BY  ts", $ip, $promo+1);
 
 					$mac_log = array();
-					while (list($mac, $ts, $vendor) = $res_macs->fetchOneRow())
-					{
+                    $data_macs = $res_macs->fetchAllRow();
+                    foreach($data_macs as $data_mac)
+                    {
+					list($mac, $ts, $vendor) = $data_mac;
 						if (!empty($mac))
 						{
 							if (empty($vendor)) 

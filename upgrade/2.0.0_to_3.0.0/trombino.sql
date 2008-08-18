@@ -94,3 +94,45 @@ SELECT *
 FROM `trombino`.`membres` ;
 
 
+CREATE TABLE `frankiz3`.`clients` (
+`iconid` VARCHAR( 8 ) DEFAULT NULL ,
+ `username` VARCHAR( 64 ) NOT NULL DEFAULT '',
+ `password` VARCHAR( 64 ) NOT NULL DEFAULT '',
+ `id` INT( 11 ) NOT NULL AUTO_INCREMENT ,
+ `lastip` VARCHAR( 16 ) DEFAULT NULL ,
+ `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
+ `status` SMALLINT( 6 ) NOT NULL DEFAULT '0',
+ `isconnected` TINYINT( 4 ) NOT NULL DEFAULT '0',
+ `options` INT( 11 ) UNSIGNED NOT NULL DEFAULT '0',
+ `version` INT( 11 ) UNSIGNED NOT NULL DEFAULT '0',
+ UNIQUE KEY `id` ( `id` ) ,
+ KEY `username` ( `username` ) ,
+ KEY `lastip` ( `lastip` ) 
+) ENGINE = MYISAM DEFAULT CHARSET = latin1 AUTO_INCREMENT =1884;
+
+ INSERT INTO `frankiz3`.`clients` 
+SELECT * 
+FROM `xnet`.`clients` ;
+
+CREATE TABLE `frankiz3`.`software` (
+`version` INT( 10 ) UNSIGNED NOT NULL DEFAULT '0',
+ `capabilities` INT( 10 ) UNSIGNED NOT NULL DEFAULT '0',
+ `name` VARCHAR( 64 ) NOT NULL DEFAULT '',
+ PRIMARY KEY ( `version` ) 
+) ENGINE = MYISAM DEFAULT CHARSET = latin1;
+
+ INSERT INTO `frankiz3`.`software` 
+SELECT * 
+FROM `xnet`.`software` ;
+
+CREATE TABLE `frankiz3`.`arpwatch_vendors` (
+`debut_mac` VARCHAR( 8 ) NOT NULL DEFAULT '',
+ `vendor` TINYTEXT NOT NULL ,
+ PRIMARY KEY ( `debut_mac` ) 
+) ENGINE = MYISAM DEFAULT CHARSET = latin1;
+
+ INSERT INTO `frankiz3`.`arpwatch_vendors` 
+SELECT * 
+FROM `admin`.`arpwatch_vendors` ;
+
+
