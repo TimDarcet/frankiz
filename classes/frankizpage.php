@@ -31,7 +31,7 @@ class FrankizPage extends PlPage
     private function load_skin()
     {
         global $globals;
-        if(!S::has('skin')){
+        if(!S::has('skin') || S::v('skin') == ""){
 	        //TODO : do only if we are serving the webpage, not the RSS or a webservice/minipage
             if(!($skin_id = $this->try_skin_cookie())){
                 $skin_id = $globals->skin;
