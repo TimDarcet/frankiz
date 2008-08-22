@@ -1,5 +1,5 @@
-{if $smarty.session.suid }
-<span class='warning'>ATTENTION, su en cours. Pour revenir à ta vraie identité, clique <a href="?logout=1">ici</a></span>
+{if isset($smarty.session.suid|smarty:nodefaults) }
+<span class='warning'>ATTENTION, su en cours. Pour revenir à ta vraie identité, clique <a href="exit/">ici</a></span>
 {/if}
 <ul class="fkz_liens">
   <li class="fkz_liens"><a href="profil/" accesskey="p">Préférences</a></li>

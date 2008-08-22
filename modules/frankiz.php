@@ -1,6 +1,6 @@
 <?php
-/* Contains all global stuff (exit, register, ...) */
-class FrankizModule extends PLModule
+/* contains all global stuff (exit, register, ...) */
+class FrankizModule extends PlModule
 {
     function handlers()
     {
@@ -11,6 +11,10 @@ class FrankizModule extends PLModule
 
     function handler_exit(&$page)
     {
+        if(S::has('suid')) {
+            Platal::session()->stopSUID();
+            pl_redirect('/');
+        }
         Platal::session()->destroy();
         $page->changeTpl('exit.tpl');
     }

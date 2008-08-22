@@ -39,7 +39,7 @@
   </p>
 </div>
 <div class='binets'>
-  {if $tol_admin}
+  {if hasPerm('admin')}
   Prise: {$eleve.prise}
   <ul>
     {foreach from=$eleve.prise_log item=log}
@@ -75,8 +75,8 @@
   <p>{$eleve.commentaire}</p>
 </div>
 <a class='lien' href='https://www.polytechnique.org/profile/{$eleve.prenompolyorg}.{$eleve.nompolyorg}.{$eleve.promo}'>Fiche sur polytechnique.org</a><br />
-{if $tol_admin}
+{if hasPerm('tol')}
 <a class='lien' href='admin/user.php?id={$eleve.id}'>Administrer {$eleve.prenom} {$eleve.nom}</a><br />
-<a class='lien' href='su/{$eleve.id}'>Prendre l'identité de {$eleve.prenom} {$eleve.nom}</a><br />
+<a class='lien' href='admin/su/{$eleve.id}'>Prendre l'identité de {$eleve.prenom} {$eleve.nom}</a><br />
 {/if}
 {/css_block}
