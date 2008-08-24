@@ -25,7 +25,7 @@ endef
 
 all: build
 
-build: core
+build: core conf
 
 q:
 	@echo -e "Code statistics\n"
@@ -41,7 +41,15 @@ q:
 ## core
 ##
 
-core: spool/templates_c spool/mails_c classes/platalglobals.php htdocs/.htaccess spool/conf spool/tmp
+core:
+	[ -d core ] || ( git submodule init && git submodule update )
+	make -C core all
+
+##
+## conf
+##
+
+conf: spool/templates_c spool/mails_c classes/platalglobals.php htdocs/.htaccess spool/conf spool/tmp
 
 spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp:
 	mkdir -p $@
