@@ -1,0 +1,730 @@
+body {
+	padding-right: 2px;
+ padding-left: 2px;
+ font-size: 80%;
+ padding-bottom: 2px;
+ margin-right: 3px;
+ margin-left: 3px;
+ color: #000;
+ padding-top: 2px;
+ font-family: arial;
+ background-color: #000;
+ background-image: url("images/ebtztr.jpg");
+}
+img {
+	border-right: 0px;
+ border-top: 0px;
+ border-left: 0px;
+ border-bottom: 0px;
+ ;
+}
+a:link {
+	color: #000;
+ font-style: italic;
+ font-weight: bold;
+ text-decoration: none;
+}
+a:visited {
+	color: #606060;
+ font-style: italic;
+ font-weight: bold;
+ text-decoration: none;
+}
+a:hover {
+	color: #f10102;
+ font-weight: bold;
+ text-decoration: none;
+}
+a:active {
+	color: #f10102;
+ font-weight: bold;
+ text-decoration: none;
+}
+#rss .fkz_titre a:link {
+	color: #000;
+ font-style: italic;
+ font-weight: bold;
+ text-decoration: none;
+}
+#rss .fkz_titre a:visited {
+	color: #606060;
+ font-style: italic;
+ font-weight: bold;
+ text-decoration: none;
+}
+#rss .fkz_titre a:hover {
+	color: #f10102;
+ font-weight: bold;
+ text-decoration: none;
+}
+#rss .fkz_titre a:active {
+	color: #f10102;
+ font-weight: bold;
+ text-decoration: none;
+}
+.fkz_page {
+	clear: both;
+ width: 100%;
+}
+.fkz_entetes {
+	;
+}
+.fkz_gauche {
+	margin-top: 20px;
+ font-size: 9pt;
+ min-height: 800px;
+ float: left;
+ width: 20%;
+}
+.fkz_droite {
+	margin-top: 20px;
+ font-size: 9pt;
+ min-height: 800px;
+ float: right;
+ width: 20%;
+}
+.fkz_centre {
+	margin-top: 20px;
+ font-size: 9pt;
+ left: 21%;
+ width: 58%;
+ position: absolute;
+}
+div.fkz_end_page {
+	clear: both;
+ margin: 3px;
+}
+div.fkz_logo {
+	background-position: center 50%;
+ background-image: url("images/logo.gif");
+ background-repeat: no-repeat;
+ height: 300px;
+;
+	;
+}
+span.fkz_logo {
+	display: none;
+}
+span.fkz_logo_eleves {
+	display: none;
+}
+.fkz_qdj_question {
+	font-size: 10pt;
+ font-weight: bold;
+ width: 100%;
+ text-align: center;
+ padding-bottom: 15px;
+}
+div.fkz_qdj_jone {
+	width: 50%;
+ text-align: center;
+}
+div.fkz_qdj_rouje {
+	width: 50%;
+ text-align: center;
+}
+div.fkz_qdj_jone_reponse {
+	width: 50%;
+ text-align: center;
+}
+div.fkz_qdj_rouje_reponse {
+	width: 50%;
+ text-align: center;
+}
+.fkz_qdj_jone {
+	float: right;
+}
+.fkz_qdj_rouje {
+	float: left;
+}
+.fkz_qdj_jone a {
+	float: right;
+ font-weight: bold;
+ background-color: #ffff80;
+ color: #000;
+ width: 100%;
+}
+.fkz_qdj_jone a:hover {
+	font-weight: bold;
+ background-color: #ffdd00;
+ color: #000;
+}
+.fkz_qdj_jone a:active {
+	font-weight: bold;
+ background-color: #ffdd00;
+ color: #000;
+}
+.fkz_qdj_rouje a {
+	float: left;
+ font-weight: bold;
+ background-color: #ff8080;
+ color: #000;
+ width: 100%;
+}
+.fkz_qdj_rouje a:hover {
+	font-weight: bold;
+ background-color: red;
+ color: #000;
+}
+.fkz_qdj_rouje a:active {
+	font-weight: bold;
+ background-color: red;
+ color: #000;
+}
+.fkz_qdj_jone_reponse {
+	font-weight: bold;
+ float: right;
+ background-color: #ffff80;
+ color: #606060;
+ width: 80%;
+}
+.fkz_qdj_rouje_reponse {
+	font-weight: bold;
+ float: left;
+ background-color: #ff8080;
+ color: #606060;
+ width: 80%;
+}
+.fkz_qdj_last {
+	list-style-type: none;
+ text-align: left;
+}
+.fkz_anniversaire_titre {
+	border-right: #83f613 3px solid;
+ border-top: #83f613 3px solid;
+ border-left: #83f613 3px solid;
+ border-bottom: #83f613  3px solid;
+}
+.fkz_titre {
+	border-right: #83f613 3px solid;
+ border-top: #83f613 3px solid;
+ border-left: #83f613 3px solid;
+ border-bottom: #83f613  3px solid;
+}
+.fkz_sommaire {
+	border-right: #83f613 3px solid;
+ border-top: #83f613 3px solid;
+ border-left: #83f613 3px solid;
+ border-bottom: #83f613  3px solid;
+}
+.fkz_trombino {
+	border-right: #83f613 3px solid;
+ border-top: #83f613 3px solid;
+ border-left: #83f613 3px solid;
+ border-bottom: #83f613  3px solid;
+}
+.fkz_liens {
+	color: #000;
+ list-style-type: none;
+ position: relative;
+ left: -10px;
+}
+.fkz_contact {
+	color: #000;
+ list-style-type: none;
+ position: relative;
+ left: -10px;
+}
+.fkz_stats {
+	color: #000;
+ list-style-type: none;
+ position: relative;
+ left: -10px;
+}
+.fkz_liens_nav {
+	color: #000;
+ list-style-type: none;
+ position: relative;
+ left: -10px;
+}
+div.fkz_annonces_titre {
+	padding-right: 2%;
+ padding-left: 2%;
+ z-index: 20;
+ padding-bottom: 15px;
+ color: #000;
+ padding-top: 2px;
+ font-family: arial black;
+ font-size: 11pt;
+ padding-bottom: 2px;
+ background-color: #f10102;
+ text-align: center;
+ border: #f10102 3px solid;
+ width: 95.7% !important;
+ width: 100%;
+}
+div.fkz_page_titre {
+	padding-right: 2%;
+ padding-left: 2%;
+ z-index: 20;
+ padding-bottom: 10px;
+ color: #000;
+ padding-top: 2px;
+ font-family: arial black;
+ font-size: 11pt;
+ text-transform: uppercase;
+ padding-bottom: 2px;
+ position: relative;
+ background-color: #f10102;
+ text-align: center;
+ border: #f10102 3px solid;
+ width: 95.7% !important;
+ width: 100%;
+;
+}
+.fkz_annonces_corps {
+	border: #f10102 3px solid;
+ padding-right: 2%;
+ padding-top: 15px;
+ padding-left: 2%;
+ position: relative;
+ background-color: #ffffff;
+ width: 95.7% !important;
+ width: 100%;
+ margin-bottom: 40px;
+;
+}
+.fkz_annonces_corps .image {
+	text-align: center;
+}
+div.fkz_page_corps {
+	border: #f10102 3px solid;
+ padding-right: 2%;
+ padding-top: 20px;
+ padding-left: 2%;
+ position: relative;
+ background-color: #ffffff;
+ margin-bottom: 40px;
+ padding-bottom: 20px;
+ width: 95.7% !important;
+ width: 100%;
+ margin-bottom: 40px;
+;
+}
+div.fkz_anniversaire_titre {
+	padding-right: 0px;
+ padding-left: 0px;
+ font-size: 10pt;
+ font-family: arial black;
+ padding-bottom: 0px;
+ margin: 0px;
+ color: #000;
+ padding-top: 0px;
+ height: 20px;
+ background-color: #f10102;
+ text-align: center;
+ padding-left: 2%;
+ padding-right: 2%;
+ width: 95.7% !important;
+ width: 100%;
+}
+.fkz_titre {
+	padding-right: 2%;
+ padding-left: 2%;
+ padding-bottom: 0px;
+ color: #000;
+ padding-top: 0px;
+ height: 20px;
+ background-color: #f10102;
+ text-align: center;
+ font-family: arial black;
+ font-size: 10pt;
+ width: 92% !important;
+ width: 98%;
+}
+.fkz_titre a {
+	font-weight: normal;
+ font-style: normal;
+ color: #000;
+}
+.fkz_titre a:hover {
+	font-weight: normal;
+ font-style: normal;
+ color: #000;
+}
+.fkz_titre a:active {
+	font-weight: normal;
+ font-style: normal;
+ color: #000;
+}
+.fkz_anniversaire {
+	border-right: #83f613 3px solid;
+ padding-right: 2%;
+ border-top: #83f613 3px solid;
+ padding-left: 2%;
+ margin-bottom: 40px;
+ padding-bottom: 10px;
+ border-left: #83f613 3px solid;
+ color: #333;
+ padding-top: 10px;
+ border-bottom: #83f613  3px solid;
+ background-color: #ffffff;
+ width: 95.7% !important;
+ width: 100%;
+}
+.fkz_module_corps {
+	border-right: #83f613 3px solid;
+ padding-right: 2%;
+ border-top: #83f613 3px solid;
+ padding-left: 2%;
+ margin-bottom: 20px;
+ padding-bottom: 15px;
+ border-left: #83f613 3px solid;
+ color: #333;
+ padding-top: 15px;
+ border-bottom: #83f613  3px solid;
+ background-color: #ffffff;
+ width: 92% !important;
+ width: 98%;
+}
+div.fkz_liens_nav {
+	border-right: #83f613 3px solid;
+ padding-right: 2px;
+ border-top: #83f613 3px solid;
+ padding-left: 2px;
+ margin-bottom: 20px;
+ padding-bottom: 2px;
+ border-left: #83f613 3px solid;
+ color: #333;
+ padding-top: 2px;
+ border-bottom: #83f613  3px solid;
+ background-color: #ffffff}
+.fkz_sommaire_corps {
+	font-size: 9pt;
+ width: 96%;
+ background-color: #ffffff;
+ text-align: left;
+ padding-left: 2%;
+ padding-right: 2%;
+ padding-bottom: 10px;
+}
+.fkz_sommaire_titre {
+	padding-right: 0px;
+ padding-left: 0px;
+ font-weight: normal;
+ font-size: 10pt;
+ font-family: arial black;
+ padding-bottom: 6px;
+ width: 100%;
+ background-color: #f10102;
+ text-align: center;
+ border-bottom: #ffffff10px solid;
+;
+}
+.fkz_trombino {
+	border-right: #83f613 3px solid;
+ border-top: #83f613 3px solid;
+ font-size: 9pt;
+ border-left: #83f613 3px solid;
+ border-bottom: #83f613  3px solid;
+ background-color: #ffffff;
+ text-align: center;
+ margin-bottom: 40px;
+ padding-right: 2%;
+ padding-left: 2%;
+ width: 95.7% !important;
+ width: 100%;
+;
+}
+.fkz_sommaire {
+	border-right: #83f613 3px solid;
+ border-top: #83f613 3px solid;
+ font-size: 9pt;
+ border-left: #83f613 3px solid;
+ border-bottom: #83f613  3px solid;
+ background-color: #ffffff;
+ text-align: left;
+ margin-bottom: 40px;
+}
+.fkz_trombino_eleve {
+	border-right: #83f613 3px solid;
+ border-top: #83f613 3px solid;
+ border-left: #83f613 3px solid;
+ border-bottom: #83f613  3px solid;
+ background-color: #dddddd;
+  margin-left: 2%;
+ margin-right: 2%;
+ text-align: left;
+ margin-top: 1%;
+}
+.nom {
+	text-align: center;
+}
+.fkz_trombino_photo {
+	float: left;
+ margin-left: 5px;
+}
+.fkz_trombino_section {
+	float: right;
+ margin-right: 5px;
+}
+.fkz_trombino_infos {
+	float: left;
+ margin-left: 5px;
+}
+.fkz_trombino_infos2 {
+	float: right;
+ margin-right: 5px;
+}
+.binets {
+	clear: both;
+}
+.fkz_signature {
+	font-weight: bold;
+ text-align: right;
+}
+form.trombino {
+	padding-right: 0px;
+ padding-left: 0px;
+ padding-bottom: 20px;
+ padding-top: 20px;
+}
+form.trombino div {
+	padding-right: 7px;
+ padding-left: 7px;
+ padding-bottom: 7px;
+ padding-top: 7px;
+}
+form.trombino table {
+	font-size: 9pt;
+ text-align: right;
+}
+form.trombino input {
+	width: 150px;
+}
+form.trombino select {
+	width: 150px;
+}
+span.fkz_annonces_vieux {
+	padding-left: 25px;
+ background-repeat: no-repeat;
+ height: 25px;
+}
+span.fkz_annonces_nouveau {
+	padding-left: 25px;
+ background-repeat: no-repeat;
+ height: 25px;
+}
+span.fkz_annonces_important {
+	padding-left: 25px;
+ background-repeat: no-repeat;
+ height: 25px;
+}
+span.fkz_annonces_reste {
+	padding-left: 25px;
+ background-repeat: no-repeat;
+ height: 25px;
+}
+span.fkz_annonces_vieux {
+	background-image: url(images/newsnoir.gif);
+}
+span.fkz_annonces_nouveau {
+	background-image: url(images/newsblanc.gif);
+}
+span.fkz_annonces_important {
+	background-image: url(images/newsvert.gif);
+}
+span.fkz_annonces_reste {
+	background-image: url(images/newsgris.gif);
+}
+span.fkz_annonces_cat {
+	display: none;
+}
+span.valid_xhtml {
+	display: block;
+ width: 88px;
+ position: relative;
+ height: 31px;
+}
+span.valid_css {
+	display: block;
+ width: 88px;
+ position: relative;
+ height: 31px;
+}
+span.valid_xhtml {
+	left: 5px;
+ background-image: url(http://www.w3.org/icons/valid-xhtml10);
+}
+span.valid_css {
+	left: 98px;
+ background-image: url(http://www.w3.org/icons/valid-css);
+ top: -31px;
+}
+.fkz_stats {
+	list-style-type: none;
+}
+.serveur_nom {
+	left: 5px;
+ position: relative;
+}
+.serveur_up {
+	background: lime;
+}
+.serveur_down {
+	background: red;
+}
+.noeud_ferme {
+	list-style-image: url(images/repferme.gif);
+}
+.noeud_ouvert {
+	list-style-image: url(images/repouvert.gif);
+}
+.feuille {
+	list-style-image: url(images/text.gif);
+}
+.commentaire {
+	padding-right: 1%;
+ display: block;
+ padding-left: 1%;
+ padding-bottom: 6px;
+ margin-top: 10px;
+ margin-bottom: 10px;
+ padding-top: 6px;
+}
+.warning {
+	padding-right: 1%;
+ display: block;
+ padding-left: 1%;
+ padding-bottom: 6px;
+ margin-top: 10px;
+ margin-bottom: 10px;
+ padding-top: 6px;
+}
+.note {
+	padding-right: 1%;
+ display: block;
+ padding-left: 1%;
+ padding-bottom: 6px;
+ margin-top: 10px;
+ margin-bottom: 10px;
+ padding-top: 6px;
+}
+.commentaire {
+	border-right: #83f613 1px solid;
+ border-top: #83f613 1px solid;
+ border-left: #83f613 1px solid;
+ border-bottom: #83f613  1px solid;
+}
+.warning {
+	border-right: #ff3333 1px solid;
+ border-top: #ff3333 1px solid;
+ border-left: #ff3333 1px solid;
+ border-bottom: #ff3333 1px solid;
+}
+.note {
+	border-right: #83f613 1px solid;
+ border-top: #83f613 1px solid;
+ border-left: #83f613 1px solid;
+ border-bottom: #83f613  1px solid;
+}
+div.formulaire {
+	display: block;
+ width: 100%;
+ text-align: center;
+}
+div.formulaire label.gauche {
+	float: left;
+ width: 38% !important;
+ width: 40%;
+ text-align: right;
+ margin-top: 10px;
+ font-weight: bold;
+ display: table-cell;
+ padding-right: 2%;
+ padding-top: 8px;
+}
+div.formulaire span.droite {
+	float: right;
+ width: 60%;
+ text-align: left;
+ margin-top: 10px;
+ display: table-cell;
+padding-top: 5px;
+}
+div.formulaire span.droite span.note {
+	position: relative !important;
+ position: static;
+ left: -66.67% !important;
+ left: 0px;
+ background-color: #ffffff;
+ width: 164.2% !important;
+ width: 166.67%;
+ margin-top: 30px;
+}
+div.formulaire div {
+	clear: both;
+}
+.fkz_module_corps div.formulaire span.droite {
+	display: block;
+}
+.fkz_module_corps div.formulaire span.gauche {
+	display: block;
+}
+div.formulaire span.boutons {
+	display: block;
+ padding-bottom: 20px;
+ padding-top: 10px;
+ text-align: center;
+}
+table.liste {
+	clear: both;
+ margin-top: 5px;
+ width: 100%;
+ border: #f10102 1px solid;
+ background-color: #f10102;
+ border-bottom: none;
+ border-collapse: collapse;
+}
+table.liste .entete {
+	font-family: arial black;
+ font-size: 9pt;
+ padding-bottom: 5px;
+ padding-top: 5px;
+ padding-left: 5px;
+}
+table.liste .element {
+	font-size: 9pt;
+ padding-bottom: 5px;
+ padding-top: 5px;
+ font-weight: bold;
+ border-bottom: #83f613  1px solid;
+ background-color: #ffffff;
+ padding-left: 5px;
+}
+table.liste .boutons {
+	position: relative;
+ top: -1px;
+ padding-bottom: 10px;
+ padding-top: 10px;
+ text-align: center;
+}
+#choix_skin h1 {
+	display: none;
+}
+#profil h1 {
+	display: none;
+}
+.fkz_page_meteo h1 {
+	display: none;
+}
+#xshare h1 {
+	display: none;
+}
+#faq h1 {
+	display: none;
+}
+#vocabulaire h1 {
+	display: none;
+}
+span.meteo {
+	display: block;
+ text-align: center;
+}
+div.meteo {
+	border-top: #83f613 3px solid;
+ display: block;
+}
+p.image {
+	text-align: center;
+}
