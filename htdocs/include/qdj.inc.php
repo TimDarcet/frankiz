@@ -39,7 +39,7 @@ function qdj_affiche($hier,$deja_vote) {
 ?>
 	
 			<module id="<?php echo $hier ? 'qdj_hier' : 'qdj' ?>" titre="QDJ<?php if($hier) echo ' d\'hier' ?>">
-				<qdj type="<?php echo $hier ? 'aujourdhui' : 'hier' ?>" id="<?php echo $date?>" <?php if(!$deja_vote && !$hier) echo " action=\"?qdj=$date&amp;vote=\""; ?>>
+				<qdj type="<?php echo $hier ? 'hier' : 'aujourdhui' ?>" id="<?php echo $date?>" <?php if(!$deja_vote && !$hier) echo " action=\"?qdj=$date&amp;vote=\""; ?>>
 					<question><?php echo $question ?></question>
 					<reponse id="1" votes="<?php echo $compte1?>"><?php echo $reponse1?></reponse>
 					<reponse id="2" votes="<?php echo $compte2?>"><?php echo $reponse2?></reponse>

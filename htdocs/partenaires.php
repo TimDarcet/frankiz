@@ -19,7 +19,7 @@
 */
 /*
 	Partenariats BR/entreprises
-	$Id: partenaires.php 1801 2006-12-07 10:26:46Z vinz2 $
+	$Id$
 */
 
 require_once "include/global.inc.php";
