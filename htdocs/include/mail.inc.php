@@ -228,7 +228,17 @@ class Mail {
 	function setTo($to) {
 		$this->to = $to;
 	}
-	
+
+  // comportement d'escapeshellarg modifi'e : do not replace empty string by ''
+    function myescapeshellarg($arg) {
+        if($arg == "") {
+            return "";
+        } else {
+            return escapeshellarg($arg);
+        }
+    }
+
+
 	// envoie d'un mail
 	function send() {
 		$this->header .= "From: {$this->from}\n";
@@ -240,7 +250,7 @@ class Mail {
 		if($this->boundary)
 			$this->body .= "--{$this->boundary}--\n";
 		
-		$fp = popen('/usr/sbin/sendmail -oi -f '.escapeshellarg($this->from).' '.escapeshellarg($this->to).' '.escapeshellarg($this->cc).' '.escapeshellarg($this->bcc),'w');
+	        $fp = popen('/usr/sbin/sendmail -oi -f '.escapeshellarg($this->from).' '.escapeshellarg($this->to).' '.$this->myescapeshellarg($this->cc).' '.$this->myescapeshellarg($this->bcc),'w');
 		if($fp) {
 			if(fwrite($fp, $this->header) == -1) return false;
 			if(fwrite($fp, $this->body) == -1) return false;
