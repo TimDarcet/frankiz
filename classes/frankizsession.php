@@ -165,7 +165,7 @@ class FrankizSession extends PlSession
 		return true;
 	}
 
-    public function makePerms($perm)
+    public function makePerms($perm, $is_admin)
     {
         $flags = new PlFlagSet($perm, ',');
         $flags->addFlag(PERMS_USER);
