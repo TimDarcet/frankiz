@@ -19,10 +19,11 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class PlatalGlobals extends PlGlobals
+class FrankizGlobals extends PlGlobals
 {
     /** The x.org version */
     public $version = '@VERSION@';
+    public $coreversion = PLATAL_CORE_VERSION;
 
     /** db params */
     public $dbdb               = 'conf';
@@ -34,6 +35,8 @@ class PlatalGlobals extends PlGlobals
     /** default skin */
     public $skin;
     public $register_skin;
+
+    public $cookie_ns = "BR";
 
     public function __construct()
     {

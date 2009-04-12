@@ -18,7 +18,7 @@
 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-define('PL_GLOBALS_CLASS', 'PlatalGlobals');
+define('PL_GLOBALS_CLASS', 'FrankizGlobals');
 define('PL_SESSION_CLASS', 'FrankizSession');
 define('PL_PAGE_CLASS', 'FrankizPage');
 

@@ -1,5 +1,5 @@
 platal/*
 spool/*
-classes/platalglobals.php
+classes/frankizglobals.php
 configs/frankiz.conf
 htdocs/.htaccess
