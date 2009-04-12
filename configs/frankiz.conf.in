@@ -5,7 +5,9 @@
 [Core]
 
 debug      = 7
+dbdb       = "frankiz3"
 dbuser     = "web"
+dbhost     = "localhost"
 dbpwd      = "****"
 
 sitename   = "Frankiz"
