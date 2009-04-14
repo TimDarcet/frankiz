@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *  Copyright (C) 2008 Binet Réseau                                       *
+ *  Copyright (C) 2009 Binet Réseau                                       *
  *  http://www.polytechnique.fr/eleves/binets/reseau/                     *
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
