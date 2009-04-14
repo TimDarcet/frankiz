@@ -1,28 +1,24 @@
 <?php
-/*
-	Copyright (C) 2007 Binet Réseau
-	http://www.polytechnique.fr/eleves/binets/br/
-	
-	This program is free software; you can redistribute it and/or
-	modify it under the terms of the GNU General Public License
-	as published by the Free Software Foundation; either version 2
-	of the License, or (at your option) any later version.
-	
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-	
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-*/
-/*
-	Module d'annonces
+/***************************************************************************
+ *  Copyright (C) 2008 Binet Réseau                                       *
+ *  http://www.polytechnique.fr/eleves/binets/reseau/                     *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
 
-	$Id: annonces.php 1969 2007-09-29 13:02:41Z elscouta $
-
-*/
 #require_once BASE_FRANKIZ."htdocs/include/minimodules.inc.php";
 #require_once BASE_FRANKIZ."htdocs/include/session.inc.php";
 #require_once BASE_FRANKIZ."htdocs/include/transferts.inc.php";
@@ -874,4 +870,6 @@ class ProfilModule extends PLModule
 	}
 
 }
+
+// vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
 ?>

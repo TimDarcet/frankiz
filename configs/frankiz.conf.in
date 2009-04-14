@@ -16,6 +16,10 @@ baseurl = "/"
 admin_email = "web@frankiz"
 
 ; }}}
+; {{{ [Paths]
 
 [paths]
 pagespersos = "~user/public_html/frankiz_dev/webperso
+
+; }}}
+

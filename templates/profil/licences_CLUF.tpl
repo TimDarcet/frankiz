@@ -1,3 +1,25 @@
+{**************************************************************************}
+{*                                                                        *}
+{*  Copyright (C) 2009 Binet Réseau                                       *}
+{*  http://www.polytechnique.fr/eleves/binets/reseau/                     *}
+{*                                                                        *}
+{*  This program is free software; you can redistribute it and/or modify  *}
+{*  it under the terms of the GNU General Public License as published by  *}
+{*  the Free Software Foundation; either version 2 of the License, or     *}
+{*  (at your option) any later version.                                   *}
+{*                                                                        *}
+{*  This program is distributed in the hope that it will be useful,       *}
+{*  but WITHOUT ANY WARRANTY; without even the implied warranty of        *}
+{*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *}
+{*  GNU General Public License for more details.                          *}
+{*                                                                        *}
+{*  You should have received a copy of the GNU General Public License     *}
+{*  along with this program; if not, write to the Free Software           *}
+{*  Foundation, Inc.,                                                     *}
+{*  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA               *}
+{*                                                                        *}
+{**************************************************************************}
+
 <h2><span>Contrat d'utilisation étudiant</span></h2>
   <p>En sa qualité de membre de MSDN® Academic Alliance (MSDNAA), l'établissement auquel vous êtes inscrit est autorisé à vous fournir des logiciels à utiliser sur votre ordinateur personnel. Vous devez respecter les instructions d'utilisation générales de MSDNAA citées ci-dessous, ainsi que les termes et conditions du Contrat de Licence Utilisateur final (CLUF) MSDN, l'Amendement du Contrat de Licence et les conditions imposées par votre établissement.</p>
   <p>L'administrateur du programme MSDNAA de votre établissement devra consigner toutes les données relatives à l'utilisation des éléves, fournir des données consolidées à Microsoft® sur demande et s'assurer que tous les utilisateurs, notamment les élèves, les enseignants et le personnel technique, respectent strictement toutes les conditions du programme.</p>
@@ -22,3 +44,5 @@
   </div>
 </form>
 
+
+{* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

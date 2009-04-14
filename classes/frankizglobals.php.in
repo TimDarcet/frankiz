@@ -1,7 +1,7 @@
 <?php
 /***************************************************************************
- *  Copyright (C) 2003-2008 Polytechnique.org                              *
- *  http://opensource.polytechnique.org/                                   *
+ *  Copyright (C) 2008 Binet Réseau                                       *
+ *  http://www.polytechnique.fr/eleves/binets/reseau/                     *
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
  *  it under the terms of the GNU General Public License as published by   *
@@ -19,10 +19,16 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+/**
+ * Class containing all global data
+ * Accessible through $globals
+ */
+
 class FrankizGlobals extends PlGlobals
 {
-    /** The x.org version */
+    /** The frankiz version */
     public $version = '@VERSION@';
+	/** The plat/al core version */
     public $coreversion = PLATAL_CORE_VERSION;
 
     /** db params */

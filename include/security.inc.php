@@ -1,7 +1,7 @@
 <?php
 /***************************************************************************
- *  Copyright (C) 2003-2008 Polytechnique.org                              *
- *  http://opensource.polytechnique.org/                                   *
+ *  Copyright (C) 2008 Binet Réseau                                       *
+ *  http://www.polytechnique.fr/eleves/binets/reseau/                     *
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
  *  it under the terms of the GNU General Public License as published by   *
