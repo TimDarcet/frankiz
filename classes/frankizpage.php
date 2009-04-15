@@ -37,11 +37,11 @@ class FrankizPage extends PlPage
     {
         global $globals;
         if(!S::has('skin') || S::v('skin') == ""){
-	        //TODO : do only if we are serving the webpage, not the RSS or a webservice/minipage
+            //TODO : do only if we are serving the webpage, not the RSS or a webservice/minipage
             if(!($skin_id = $this->try_skin_cookie())){
                 $skin_id = $globals->skin;
             }
-        	S::set('skin', $skin_id);
+            S::set('skin', $skin_id);
         }else{
             $skin_id=S::v('skin');
             if(S::v('auth')>= AUTH_COOKIE && Cookie::v('skin') != S::v('skin')){
@@ -55,7 +55,10 @@ class FrankizPage extends PlPage
     {
 //    var_dump($_COOKIE);
         if(Cookie::has('skin')){
-            $res = XDB::query("SELECT skin_id FROM skins WHERE name = {?}", Cookie::v('skin'));
+            $res = XDB::query('SELECT   skin_id
+                                 FROM   skins
+                                WHERE   name = {?}',
+                            Cookie::v('skin'));
             if($res->numRows() != 1){
                 return false;
             }
@@ -63,13 +66,14 @@ class FrankizPage extends PlPage
         }
         return false;
     }
+
     public function run()
     {
-    	global $globals;
+        global $globals;
         $globals->skin = $this->load_skin();
-	    FrankizMiniModule::run_modules();
+        FrankizMiniModule::run_modules();
         $this->assign('minimodules', FrankizMiniModule::get_minimodules());
-	    //Run with the default skin disposition (i.e content disposition)
+        //Run with the default skin disposition (i.e content disposition)
         $this->_run("skin/{$globals->skin}.tpl");
     }
 }

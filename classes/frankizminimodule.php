@@ -26,49 +26,54 @@
 
 abstract class FrankizMiniModule
 {
-	protected $tpl = null;
-	protected $header_tpl = null;
-	protected $titre = "Not Defined!";
+    protected $tpl = null;
+    protected $header_tpl = null;
+    protected $titre = "Not Defined!";
 
-	private $params = array();
-	
-	public function get_params()
-	{
-		return $this->params;
-	}
-	/**
-	 * Returns the title of the module
-	 * This is different from the identifier.
-	 * @return Title of the module
-	 */
-	public function get_titre()
-	{
-		return $this->titre;
-	}
+    private $params = array();
+
+    public function get_params()
+    {
+        return $this->params;
+    }
+
+    /**
+     * Returns the title of the module
+     * This is different from the identifier.
+     * @return Title of the module
+     */
+    public function get_titre()
+    {
+        return $this->titre;
+    }
 
     public function get_template()
     {
         return $this->tpl;
     }
-	/**
-	 * Assigne une variable pour la template du minimodule uniquement. Ces variables seront accessibles dans 
-	 * $minimodule.var_name à l'intérieur des template.
-	 */
-	protected function assign($key, $value)
-	{
-        $this->params[$key] = $value;
-	}
-	
-	
-	//Initializes a minimodule, which should then register with FrankizMiniModule::register()
-	abstract static function init();
 
-	/* static stuff */
-	private static $minimodules = array();
+    /**
+     * Assigne une variable pour la template du minimodule uniquement. Ces variables seront accessibles dans 
+     * $minimodule.var_name à l'intérieur des template.
+     */
+    protected function assign($key, $value)
+    {
+        $this->params[$key] = $value;
+    }
+
+
+    //Initializes a minimodule, which should then register with FrankizMiniModule::register()
+    abstract static function init();
+
+    /* static stuff */
+    private static $minimodules = array();
+    
     //Stores minimodules handlers
     private static $minimodules_handlers = array();
+    
     //stores the name of the module being executed
     private static $curr_name;
+    
     /**
      * registers the list of minimodules
      */
@@ -99,15 +104,15 @@ abstract class FrankizMiniModule
      * @param auth minimal auth to see the minimodule
      * @param perms minimal perms to see the minimodule
      */
-	public static function register($name, $minimodule, $handler, $auth, $perms='user')
-	{
+    public static function register($name, $minimodule, $handler, $auth, $perms='user')
+    {
         if(!self::is_minimodule_disabled($name)){
             self::$minimodules[$name]=array(
                 'object' => $minimodule,
                 'handler' => array($minimodule, $handler),
-		    	'auth'  => $auth);
+                'auth'  => $auth);
                 if(!is_null($perms)){
-    		        self::$minimodules[$name]['perms']=$perms;
+                    self::$minimodules[$name]['perms']=$perms;
                 }
         }
     }
@@ -137,36 +142,40 @@ abstract class FrankizMiniModule
             }
         }
     }
-	private static function check_perms($data)
+
+    /**
+     * Check perms for the minimodule : 
+     * if auth or perms for the minimodule are higher than session, return false
+     */
+    private static function check_perms($data)
     {
         if($data['auth'] > S::v('auth'))
         {
             return false;
         }
 
-		if (!array_key_exists('perms', $data)) 
+        if (!array_key_exists('perms', $data)) 
         { // No perms, no check
-			return true;
-		}
-		$s_perms = S::v('perms');
-		return $s_perms->hasFlagCombination($data['perms']);
-//		return true;
-	}
-	
+            return true;
+        }
+        $s_perms = S::v('perms');
+        return $s_perms->hasFlagCombination($data['perms']);
+//      return true;
+    }
+
     /**
-	 * Renvoie un tableau des descriptions des minimodules indexé par les 
-	 * identifiants des minimodules.
-	 */
-	public static function get_minimodules()
-	{
-	    $res=array();
+     * Renvoie un tableau des descriptions des minimodules indexé par les
+     * identifiants des minimodules.
+     */
+    public static function get_minimodules()
+    {
+        $res=array();
         foreach(self::$minimodules as $name => $data)
         {
             $res[$name] = $data['object'];
         }
         return $res;
     }
-
 
 }
 
