@@ -22,9 +22,7 @@
 define('AUTH_SUID', -1);    // When we want to do SUID
 define('AUTH_PUBLIC', 0);   //Anyone
 define('AUTH_INTERNE', 1);  //Connecting from inside
-/*
 define('AUTH_ELEVE', 2);//Connecting from eleve zone (binets, Kserts, wifi ; not pits, ...)
-*/
 define('AUTH_COOKIE', 5);   //Has a cookie
 define('AUTH_MDP', 10);     //Has entered password during session
 
@@ -40,8 +38,11 @@ class FrankizSession extends PlSession
         parent::__construct();
 
         // Set auth as AUTH_INTERNE when inside and had weaker auth
-        if(S::i('auth') < AUTH_INTERNE && est_interne()){
+        if(S::i('auth') < AUTH_INTERNE && ip_internal()){
             S::set('auth', AUTH_INTERNE);
+        }
+        if(S::i('auth') < AUTH_ELEVE && ip_eleve()){
+            S::set('auth', AUTH_ELEVE);
         }
     }
 
@@ -73,14 +74,16 @@ class FrankizSession extends PlSession
         if(!Cookie::has('uid') || !Cookie::has('hash')){
             return COOKIE_INCOMPLETE;
         }
-        $res = XDB::query('SELECT   eleve_id, hash_cookie
-                             FROM   compte_frankiz
-                            WHERE   user_id = {?}',
+        $res = XDB::query('SELECT   eleve_id, password
+                             FROM   account
+                            WHERE   user_id = {?} AND perms IN(\'admin\', \'user\')',
                         Cookie::i('uid'));
         if($res->numRows() == 1)
         {
-            list($uid, $hash_cookie) = $res->fetchOneRow();
-            if($hash_cookie == Cookie::v('hash'))
+            list($uid, $password) = $res->fetchOneRow();
+            require_once 'secure_hash.inc.php';
+            $expected_value = hash_encrypt($password);
+            if($expected_value == Cookie::v('hash'))
             {
                 S::set('cookie_uid', $uid);
                 return COOKIE_OK;
@@ -112,16 +115,35 @@ class FrankizSession extends PlSession
 
         /*If we are here, we want AUTH_MDP
           So we check if the required fields are here */
-        
-        if(!Post::has('login') || !Post::has('password') || !S::has('challenge'))
+
+        // FIXME : lesser checks until new mechanism is ready
+        //if(!Post::has('username') || !Post::has('response') || !S::has('challenge'))
+        if(!Post::has('username') || !Post::has('password'))
         {
             return null;
         }
         
         /* So we come from an authentication form */
-        $uid = $this->checkPassword(Post::v('login'), Post::v('password'));
-        if(!is_null($uid))
-        {
+        if (S::has('suid')) {
+            $suid = S::v('suid');
+            $login = $suid['uid'];
+            $redirect = false;
+        } else {
+            $login = Env::v('username');
+            $redirect = false;
+        }
+
+        // FIXME : using Post::v('password') until new authentication mechanism is ready
+        $uid = $this->checkPassword($login, Post::v('password'), is_numeric($login) ? 'eleve_id' : 'alias');
+        if (!is_null($uid) && S::has('suid')) {
+            $suid = S::v('uid');
+            if ($suid['uid'] == $uid) {
+                $uid = S::i('uid');
+            } else {
+                $uid = null;
+            }
+        }
+        if (!is_null($uid)) {
             S::set('auth', AUTH_MDP);
             S::kill('challenge');
         }
@@ -129,24 +151,41 @@ class FrankizSession extends PlSession
     }
 
     /** Check whether a password is valid
+     * login_type can be eleve_id, alias (for an email alias), hruid
      */
-    private function checkPassword($login, $password)
+    private function checkPassword($login, $response, $login_type = 'eleve_id')
     {
-        $login=explode('.', $login, 2);
+        if ($login_type == 'alias') {
+            list($forlife, $domain) = explode('@', $login, 2);
+            $res = XDB::query('SELECT   a.eleve_id
+                                 FROM   studies AS s
+                            LEFT JOIN   formations AS f on (f.formation_id = s.formation_id AND f.domain = {?})
+                                WHERE   s.forlife = {?}',
+                              $domain, $forlife);
+            $login = $res->fetchOneCell();
+            $login_type = 'eleve_id';
+        }
 
-        $res = XDB::query('SELECT   eleve_id, passwd
-                             FROM   compte_frankiz
-                        LEFT JOIN   eleves USING (eleve_id)
-                            WHERE   login={?} AND promo={?}',
-                        $login[0], $login[1]);
-        if(list($uid, $db_password) = $res->fetchOneRow())
-        {
-            if(!crypt($password, $db_password) == $db_password)
-            {
+        $res = XDB::query('SELECT   eleve_id, password, hruid
+                             FROM   account
+                            WHERE   '.$login_type.' = {?}',
+                        $login);
+        // FIXME : temporary, simple password check
+        if(list($uid, $password, $hruid) = $res->fetchOneRow()) {
+            //require_once 'secure_hash.inc.php';
+            //$expected_response = hash_encrypt("$hruid:$password:".S::v('challenge'));
+            //if ($response != $expected_response){
+            if ($password != $response) {
+                if (!S::logged()) {
+                    Platal::page()->trigError('Mot de passe ou nom d\'utilisateur invalide');
+                } else {
+                    Platal::page()->trigError('Mot de passe invalide');
+                }
                 return null;
             }
             return $uid;
         }
+        Platal::page()->trigError('Mot de passe ou nom d\'utilisateur invalide');
         return null;
     }
 
@@ -168,9 +207,9 @@ class FrankizSession extends PlSession
         }
 
         /* Load main user data */
-        $res = XDB::query('SELECT   eleve_id as uid, nom, prenom, perms, skin
-                             FROM   compte_frankiz
-                        LEFT JOIN   eleves USING (eleve_id)
+        $res = XDB::query('SELECT   eleve_id AS uid, name, forename, perms, skin, skin_params
+                             FROM   account
+                        LEFT JOIN   trombino USING (eleve_id)
                             WHERE   eleve_id = {?}',
                         $uid);
         $sess = $res->fetchOneAssoc();
@@ -181,6 +220,10 @@ class FrankizSession extends PlSession
         /* Load data into the real session */
         $_SESSION = array_merge($_SESSION, $sess);
 
+        if (S::has('suid')) {
+            $suid = S::v('suid');
+        }
+
         $this->makePerms($perms);
 
         /* Clean temp var 'cookie_uid' */
@@ -188,12 +231,20 @@ class FrankizSession extends PlSession
         return true;
     }
 
+
     /** Convert $perm into a PlFlagSet
      */
     public function makePerms($perm, $is_admin)
     {
         $flags = new PlFlagSet($perm, ',');
+        if ($perm == 'disabled') {
+            S::set('perms', $flags);
+            return;
+        }
         $flags->addFlag(PERMS_USER);
+        if ($perm == 'admin') {
+            $flags->addFlag(PERMS_ADMIN);
+        }
         S::set('perms', $flags);
     }
 
@@ -202,22 +253,15 @@ class FrankizSession extends PlSession
     public function tokenAuth($login, $token)
     {
         /* Load main user data */
-        $res = XDB::query('SELECT   eleve_id as uid, nom, prenom, perms
-                             FROM   compte_frankiz
-                            WHERE   eleve_id = {?} AND token = {?}',
+        $res = XDB::query('SELECT   eleve_id as uid, perms, hruid, name, forename, skin_params
+                             FROM   account
+                        LEFT JOIN   trombino USING (eleve_id)
+                            WHERE   eleve_id = {?} AND hash_rss = {?}',
                         $login, $token);
         if($res->numRows()==1)
         {
             $sess = $res->fetchOneAssoc();
-            /* if no current session */
-            if(!S::has('uid'))
-            {
-                $_SESSION = $sess;
-                $this->makePerms($sess['perms']);
-                return S::i('uid');
-            } else if (S::i('uid') == $sess['uid']){
-                return S::i('uid');
-            }
+            return new User($sess['hruid'], $sess);
         }
         return null;
     }

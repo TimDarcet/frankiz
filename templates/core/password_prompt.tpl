@@ -27,7 +27,7 @@
   <div class='formulaire'>
     <div>
       <span class='gauche'>Identifiant:</span>
-      <span class='droite'><input type='text' name='login' value='' /></span>
+      <span class='droite'><input type='text' name='username' value='' /></span>
     </div>
     <div>
       <span class='gauche'>Mot de passe:</span>

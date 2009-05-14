@@ -50,10 +50,17 @@ function ip_get() {
     return $ip;
 }
     
-function est_interne()
+function ip_internal()
 {
     $ip = ip_get();
     return $ip == '127.0.0.1' || (substr($ip, 0, 8) == '129.104.' && $ip != '129.104.30.4');
+}
+
+function ip_eleve()
+{
+    $ip = ip_get();
+    // Test rudimentaire de vérification du subnet
+    return $ip == '127.0.0.1' || (substr($ip, 0, 9) == '129.104.2');
 }
 
 /*
