@@ -25,7 +25,7 @@
     <img src="{$minimodule.lien_ik_img}" alt="IK de la semaine"/>
   </span>
 </a>
-{if $session->est_interne()}
+{if $smarty.session.auth >= AUTH_INTERNE}
 <a href="http://binets.frankiz.eleves.polytechnique.fr/ik/">Archive de l'IK</a>
 {/if}
 

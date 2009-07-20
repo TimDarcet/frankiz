@@ -34,7 +34,7 @@ class LienWikixMiniModule extends FrankizMiniModule
 
 	public static function check_auth()
 	{
-		return verifie_permission('interne');
+		return S::checkAuth(AUTH_INTERNE);
 	}
 }
 //FrankizMiniModule::register_module('lien_wikix', "LienWikixMiniModule", "Lien rapide vers le WikiX");

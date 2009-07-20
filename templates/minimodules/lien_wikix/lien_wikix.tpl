@@ -20,7 +20,7 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if $session->est_interne()}
+{if ip_internal()}
 {assign var=wikix_url value="http://frankiz.polytechnique.fr/eleves/wikix"}
 {else}
 {assign var=wikix_url value="http://www.polytechnique.fr/eleves/wikix"}

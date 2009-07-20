@@ -32,7 +32,7 @@ if(est_authentifie(AUTH_INTERNE)) {
 
 		cache_sauver('lienik');
 	}
-	if (est_interne()) {
+	if (S::checkAuth(AUTH_INTERNE)) {
 		echo "<a href='".URL_BINETS."ik/'>Archive de l'IK</a>";
 	}
 ?>

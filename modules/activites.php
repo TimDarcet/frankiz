@@ -42,7 +42,7 @@ class ActivitesModule extends PLModule
 		$page->assign('kes_ouverte', $valeur_kes);
 
 		// Autres activités
-		if (!FrankizSession::est_interne()) 
+		if (!S::checkAuth(AUTH_INTERNE)) 
 			$exterieur_rule = "AND  exterieur = '1'";
 		else
 			$exterieur_rule = "";

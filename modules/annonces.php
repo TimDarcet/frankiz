@@ -95,7 +95,7 @@ class AnnoncesModule extends PLModule
 		list($id, $date, $stamp, $perime, $titre, $contenu, $en_haut, $exterieur,
 			    $nom, $prenom, $surnom, $promo, $login, $mail, $visible) = $annonce;
 		
-			if (!$exterieur && !verifie_permission('interne')){
+			if (!$exterieur && S::checkAuth(AUTH_INTERNE)){
 				continue;
 			}
 			

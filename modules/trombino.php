@@ -593,7 +593,7 @@ class TrombinoModule extends PLModule
 		{
 			if ($folder != "")
 			{
-				if (FrankizSession::est_interne())
+				if (ip_internal())
 					$http = URL_BINETS."$folder/";
 				else 
 					$http = "binets/$folder/";

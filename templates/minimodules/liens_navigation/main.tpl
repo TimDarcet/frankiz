@@ -32,7 +32,7 @@
   <li class="fkz_liens"><a href="xshare.php" accesskey="x">Télécharger</a></li>
   <li class="fkz_liens"><a href="http://wikix.polytechnique.org" accesskey="w">WikiX</a></li>
   <li class="fkz_liens"><a href="tol/binets/" accesskey="b">Binets</a></li>
-  {if est_interne() }
+  {if $smarty.session.auth >= AUTH_INTERNE }
   <li class="fkz_liens"><a href="http://perso.frankiz/">Sites élèves</a></li>
   {else}
   <li class="fkz_liens"><a href="siteseleves.php">Sites élèves</a></li>
