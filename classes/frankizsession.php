@@ -26,13 +26,13 @@ define('AUTH_ELEVE', 2);//Connecting from eleve zone (binets, Kserts, wifi ; not
 define('AUTH_COOKIE', 5);   //Has a cookie
 define('AUTH_MDP', 10);     //Has entered password during session
 
-define('COOKIE_INCOMPLETE', -1);
-define('COOKIE_OK', 0);
-define('COOKIE_WRONG_HASH', 1);
-define('COOKIE_WRONG_UID', -2);
-
 class FrankizSession extends PlSession
 {
+    const COOKIE_INCOMPLETE = -1;
+    const COOKIE_SUCCESS = 0;
+    const COOKIE_WRONG_HASH = 1;
+    const COOKIE_WRONG_UID = -2;
+
     public function __construct()
     {
         parent::__construct();
@@ -53,13 +53,15 @@ class FrankizSession extends PlSession
         //User not logged in, check if there is a cookie
         if(!S::logged())
         {
-            $cookie = $this->tryCookie();
-            //there is a cookie, and it's ok : log the user in
-            if($cookie == COOKIE_OK)
-            {
-                return $this->start(AUTH_COOKIE);
-            } else if($cookie == COOKIE_WRONG_HASH || $cookie == COOKIE_WRONG_UID)
-            {
+            switch ($this->tryCookie()) {
+            case self::COOKIE_SUCCESS:
+                //there is a cookie, and it's ok : log the user in
+                if (!$this->start(AUTH_COOKIE)) {
+                    return false;
+                }
+                break;
+            case self::COOKIE_WRONG_HASH:
+            case self::COOKIE_WRONG_UID:
                 return false;
             }
         }
@@ -72,7 +74,7 @@ class FrankizSession extends PlSession
     {
         S::kill('cookie_uid'); //Remove previously stored id
         if(!Cookie::has('uid') || !Cookie::has('hash')){
-            return COOKIE_INCOMPLETE;
+            return self::COOKIE_INCOMPLETE;
         }
         $res = XDB::query('SELECT   eleve_id, password
                              FROM   account
@@ -86,12 +88,12 @@ class FrankizSession extends PlSession
             if($expected_value == Cookie::v('hash'))
             {
                 S::set('cookie_uid', $uid);
-                return COOKIE_OK;
+                return self::COOKIE_SUCCESS;
             } else {
-                return COOKIE_WRONG_HASH;
+                return self::COOKIE_WRONG_HASH;
             }
         }
-        return COOKIE_WRONG_UID;
+        return self::COOKIE_WRONG_UID;
     }
 
     /** Check that we have at least $level auth
@@ -99,18 +101,15 @@ class FrankizSession extends PlSession
     protected function doAuth($level)
     {
         //If only AUTH_COOKIE is required, and we haven't checked the presence of a cookie, do it now
-        if ($level == AUTH_COOKIE && !S::has('cookie_uid'))
-        {
+        if ($level == AUTH_COOKIE && !S::has('cookie_uid')) {
             $this->tryCookie();
         }
         //If AUTH_COOKIE is required, and it has succeeded
-        if($level == AUTH_COOKIE && S::has('cookie_uid'))
-        {
-            if(!S::logged())
-            {
+        if($level == AUTH_COOKIE && S::has('cookie_uid')) {
+            if(!S::logged()) {
                 S::set('auth', AUTH_COOKIE);
             }
-            return S::i('cookie_uid');
+            return User::getSilentWithUID(S::i('cookie_uid'));
         }
 
         /*If we are here, we want AUTH_MDP
@@ -118,15 +117,13 @@ class FrankizSession extends PlSession
 
         // FIXME : lesser checks until new mechanism is ready
         //if(!Post::has('username') || !Post::has('response') || !S::has('challenge'))
-        if(!Post::has('username') || !Post::has('password'))
-        {
+        if(!Post::has('username') || !Post::has('password')) {
             return null;
         }
         
         /* So we come from an authentication form */
-        if (S::has('suid')) {
-            $suid = S::v('suid');
-            $login = $suid['uid'];
+        if (S::suid()) {
+            $login = S::suid('uid');
             $redirect = false;
         } else {
             $login = Env::v('username');
@@ -135,9 +132,8 @@ class FrankizSession extends PlSession
 
         // FIXME : using Post::v('password') until new authentication mechanism is ready
         $uid = $this->checkPassword($login, Post::v('password'), is_numeric($login) ? 'eleve_id' : 'alias');
-        if (!is_null($uid) && S::has('suid')) {
-            $suid = S::v('uid');
-            if ($suid['uid'] == $uid) {
+        if (!is_null($uid) && S::suid()) {
+            if (S::suid('uid') == $uid) {
                 $uid = S::i('uid');
             } else {
                 $uid = null;
@@ -147,7 +143,7 @@ class FrankizSession extends PlSession
             S::set('auth', AUTH_MDP);
             S::kill('challenge');
         }
-        return $uid;
+        return User::getSilentWithUID($uid);
     }
 
     /** Check whether a password is valid
@@ -157,7 +153,7 @@ class FrankizSession extends PlSession
     {
         if ($login_type == 'alias') {
             list($forlife, $domain) = explode('@', $login, 2);
-            $res = XDB::query('SELECT   a.eleve_id
+            $res = XDB::query('SELECT   s.eleve_id
                                  FROM   studies AS s
                             LEFT JOIN   formations AS f on (f.formation_id = s.formation_id AND f.domain = {?})
                                 WHERE   s.forlife = {?}',
@@ -189,12 +185,12 @@ class FrankizSession extends PlSession
         return null;
     }
 
-    /** Start a session as user $uid
+    /** Start a session as user $user
      */
-    protected function startSessionAs($uid, $level)
+    protected function startSessionAs($user, $level)
     {
         /* Session data and required data mismatch */
-        if ((!is_null(S::v('user')) && S::i('user') != $uid) || (S::has('uid') && S::i('uid') != $uid))
+        if ((!is_null(S::v('user')) && S::v('user')->id() != $user->id()) || (S::has('uid') && S::i('uid') != $user->id()))
         {
             return false;
         } else if (S::has('uid')) {
@@ -206,46 +202,13 @@ class FrankizSession extends PlSession
             S::set('auth', AUTH_MDP);
         }
 
-        /* Load main user data */
-        $res = XDB::query('SELECT   eleve_id AS uid, name, forename, perms, skin, skin_params
-                             FROM   account
-                        LEFT JOIN   trombino USING (eleve_id)
-                            WHERE   eleve_id = {?}',
-                        $uid);
-        $sess = $res->fetchOneAssoc();
-        /* store perms in $perms, for sess will be merged into $_SESSION, and $perms is a PlFlagSet */
-        $perms = $sess['perms'];
-        unset($sess['perms']);
-
-        /* Load data into the real session */
-        $_SESSION = array_merge($_SESSION, $sess);
-
-        if (S::has('suid')) {
-            $suid = S::v('suid');
-        }
-
-        $this->makePerms($perms);
+        S::set('user', $user);
+        S::set('uid', $user->id());
 
         /* Clean temp var 'cookie_uid' */
         S::kill('cookie_uid');
+
         return true;
-    }
-
-
-    /** Convert $perm into a PlFlagSet
-     */
-    public function makePerms($perm, $is_admin)
-    {
-        $flags = new PlFlagSet($perm, ',');
-        if ($perm == 'disabled') {
-            S::set('perms', $flags);
-            return;
-        }
-        $flags->addFlag(PERMS_USER);
-        if ($perm == 'admin') {
-            $flags->addFlag(PERMS_ADMIN);
-        }
-        S::set('perms', $flags);
     }
 
     /** Token auth, for RSS feeds
@@ -264,6 +227,13 @@ class FrankizSession extends PlSession
             return new User($sess['hruid'], $sess);
         }
         return null;
+    }
+
+    /** Old function, still needed by core, but should disappear quickly
+     */
+    protected function makePerms($perm, $is_admin)
+    {
+        S::set('perms', User::makePerms($perm, $is_admin));
     }
 
     public function loggedLevel()
