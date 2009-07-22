@@ -19,12 +19,14 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-define('AUTH_SUID', -1);    // When we want to do SUID
-define('AUTH_PUBLIC', 0);   //Anyone
+// Auth levels
+// Those are defined in core/classes/plsession.php :
+// AUTH_SUID = -1
+// AUTH_PUBLIC = 0
+// AUTH_COOKIE = 5
+// AUTH_MDP = 10
 define('AUTH_INTERNE', 1);  //Connecting from inside
 define('AUTH_ELEVE', 2);//Connecting from eleve zone (binets, Kserts, wifi ; not pits, ...)
-define('AUTH_COOKIE', 5);   //Has a cookie
-define('AUTH_MDP', 10);     //Has entered password during session
 
 class FrankizSession extends PlSession
 {
@@ -204,6 +206,9 @@ class FrankizSession extends PlSession
 
         S::set('user', $user);
         S::set('uid', $user->id());
+
+        // Set session perms from User perms
+        $this->makePerms($user->perms, S::b('is_admin'));
 
         /* Clean temp var 'cookie_uid' */
         S::kill('cookie_uid');
