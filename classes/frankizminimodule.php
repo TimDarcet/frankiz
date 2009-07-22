@@ -149,17 +149,16 @@ abstract class FrankizMiniModule
      */
     private static function check_perms($data)
     {
-        if($data['auth'] > S::v('auth'))
-        {
+        if($data['auth'] > S::v('auth', AUTH_PUBLIC)) {
             return false;
         }
 
-        if (!array_key_exists('perms', $data)) 
-        { // No perms, no check
+        if (!array_key_exists('perms', $data) || !S::logged()) {
+            // No perms, no check ; if not logged, no perms exist
             return true;
         }
-        $s_perms = S::v('perms');
-        return $s_perms->hasFlagCombination($data['perms']);
+
+        return S::user()->checkPerms($data['perms']);
 //      return true;
     }
 
