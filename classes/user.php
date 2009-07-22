@@ -131,10 +131,9 @@ class User extends PlUser
     // Return the password of the user
     public function password()
     {
-        return "********";
-        //return XDB::fetchOneCell('SELECT  a.password
-        //                            FROM  account AS a
-        //                           WHERE  a.eleve_id = {?}', $this->id());
+        return XDB::fetchOneCell('SELECT  a.password
+                                    FROM  account AS a
+                                   WHERE  a.eleve_id = {?}', $this->id());
     }
 
     // Return permission flags for a given permission level.

@@ -33,6 +33,10 @@
       <span class='gauche'>Mot de passe:</span>
       <span class='droite'><input type='password' name='password' value='' /></span>
     </div>
+    <div>
+    <input type="checkbox" name="remember" id="remember" /><label for="remember">Se souvenir de moi (Cookie)</label>
+    </div>
+    </div>
   </div>
   <div>
     <span class='boutons'><input type='submit' name='start_connexion' value='Connexion' /></span>

@@ -70,7 +70,7 @@ class FrankizSession extends PlSession
         return true;
     }
 
-    /** Checks the cookie and set user_id according in auth_by_cookie variable
+    /** Checks the cookie and set user_id according in cookie_uid variable
      */
     private function tryCookie()
     {
@@ -80,14 +80,12 @@ class FrankizSession extends PlSession
         }
         $res = XDB::query('SELECT   eleve_id, password
                              FROM   account
-                            WHERE   user_id = {?} AND perms IN(\'admin\', \'user\')',
+                            WHERE   eleve_id = {?} AND perms IN(\'admin\', \'user\')',
                         Cookie::i('uid'));
         if($res->numRows() == 1)
         {
             list($uid, $password) = $res->fetchOneRow();
-            require_once 'secure_hash.inc.php';
-            $expected_value = hash_encrypt($password);
-            if($expected_value == Cookie::v('hash'))
+            if(sha1($password) == Cookie::v('hash'))
             {
                 S::set('cookie_uid', $uid);
                 return self::COOKIE_SUCCESS;
@@ -207,6 +205,15 @@ class FrankizSession extends PlSession
         S::set('user', $user);
         S::set('uid', $user->id());
 
+        if (!S::suid()) {
+            Cookie::set('uid', $user->id(), 300);
+            if (S::i('cookie_uid') == $user->id() || Post::v('remember', 'false') == 'on') {
+                $this->setAccessCookie(false);
+            } else {
+                $this->killAccessCookie();
+            }
+        }
+
         // Set session perms from User perms
         $this->makePerms($user->perms, S::b('is_admin'));
 
@@ -249,6 +256,18 @@ class FrankizSession extends PlSession
     public function sureLevel()
     {
         return AUTH_MDP;
+    }
+
+    public function setAccessCookie($replace = false) {
+        if (S::suid() || ($replace && !Cookie::blank('hash'))) {
+            return;
+        }
+        // FIXME : should switch to true instead of false for HTTPS safety
+        Cookie::set('hash', sha1(S::user()->password()), 300, false);
+    }
+
+    public function killAccessCookie() {
+        Cookie::kill('hash');
     }
 }
 
