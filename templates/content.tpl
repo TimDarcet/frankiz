@@ -33,7 +33,7 @@
 	      </div>
 	      <div class="fkz_page_corps">
 {* {/if} *}
-		{if (isset($pl_no_errors|smarty:nodefaults) && !$pl_no_errors) || $pl_failure}
+		{if (isset($pl_no_errors|smarty:nodefaults) && !$pl_no_errors) || $pl_failure || $pl_errors}
 		{include file="skin/common.errors.tpl"}
 		{/if}
 		
