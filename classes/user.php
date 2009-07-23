@@ -166,6 +166,55 @@ class User extends PlUser
     {
         return true;
     }
+
+    // Tries to find the user forlife from data in cookies
+    public static function getForlifeFromCookie() {
+        if (!Cookie::has('uid')) {
+            return "";
+        }
+        $uid = Cookie::i('uid');
+        if (Cookie::has('domain')) {
+            $res = XDB::query("SELECT s.forlife
+                                 FROM studies AS s
+                            LEFT JOIN formations AS f USING (formation_id)
+                                WHERE s.eleve_id = {?} AND f.domain = {?}",
+                                $uid, Cookie::s('domain'));
+            // If a forlife was found, send it ; otherwise, domain wasn't consistent
+            if ($res->numRows()) {
+                return $res->fetchOneCell();
+            }
+        }
+        $res = XDB::query("SELECT s.forlife
+                             FROM studies AS s
+                        LEFT JOIN account AS a ON (a.main_formation = s.formation_id)
+                            WHERE a.eleve_id = {?}",
+                            $uid);
+        if ($res->numRows()) {
+            return $res->fetchOneCell();
+        }
+        return "";
+    }
+
+    // Tries to find the user domain from data in cookies
+    public static function getDomainFromCookie() {
+        if(Cookie::has('domain')) {
+            return Cookie::s('domain', '');
+        }
+        if(Cookie::has('uid')) {
+            $uid = Cookie::i('uid');
+            $res = XDB::query("SELECT f.domain
+                                 FROM formations AS f
+                            LEFT JOIN account AS a ON (a.main_formation = f.formation_id)
+                                WHERE a.eleve_id = {?}",
+                                $uid);
+            if ($res->numRows()) {
+                return $res->fetchOneCell();
+            }
+        }
+        return "";
+    }
+
+
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

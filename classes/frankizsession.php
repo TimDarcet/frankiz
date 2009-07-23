@@ -128,6 +128,9 @@ class FrankizSession extends PlSession
         } else {
             $login = Env::v('username');
             $redirect = false;
+            if (Post::has('domain')) {
+                Cookie::set('domain', Post::v('domain'), 300);
+            }
         }
 
         // FIXME : using Post::v('password') until new authentication mechanism is ready
@@ -268,6 +271,11 @@ class FrankizSession extends PlSession
 
     public function killAccessCookie() {
         Cookie::kill('hash');
+    }
+
+    public function killLoginFormCookies() {
+        Cookie::kill('uid');
+        Cookie::kill('domain');
     }
 }
 

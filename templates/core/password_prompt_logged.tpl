@@ -29,12 +29,13 @@
 <br />
 
 <form enctype='multipart/form-data' method='post' action='{$smarty.server.REQUEST_URI}'>
+{xsrf_token_field}
   <input type="hidden" name="username" value="{$smarty.session.uid}" />
   <h2><span>Connexion</span></h2>
   <div class='formulaire'>
     <div>
       <span class='gauche'>Identifiant:</span>
-      <span class='droite'>{$smarty.session.user->hruid}</span>
+      <span class='droite'>{$smarty.session.user->bestalias}</span>
     </div>
     <div>
       <span class='gauche'>Mot de passe:</span>

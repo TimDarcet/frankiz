@@ -19,31 +19,8 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-/* contains all global stuff (exit, register, ...) */
-class FrankizModule extends PlModule
-{
-    function handlers()
-    {
-        return array(
-            'exit'      => $this->make_hook('exit', AUTH_PUBLIC),
-        );
-    }
-
-    function handler_exit(&$page, $level = null)
-    {
-        if(S::has('suid')) {
-            Platal::session()->stopSUID();
-            pl_redirect('/');
-        }
-        if ($level == 'forget' || $level == 'forgetall') {
-            Platal::session()->killAccessCookie();
-        }
-        if ($level == 'forgetuid' || $level == 'forgetall') {
-            Platal::session()->killLoginFormCookies();
-        }
-        Platal::session()->destroy();
-        $page->changeTpl('exit.tpl');
-    }
+function smarty_function_get_forlife_from_cookie($params, &$smarty) {
+    return User::getForlifeFromCookie();
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
