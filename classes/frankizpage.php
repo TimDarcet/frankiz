@@ -38,33 +38,19 @@ class FrankizPage extends PlPage
         global $globals;
         if(!S::has('skin') || S::v('skin') == ""){
             //TODO : do only if we are serving the webpage, not the RSS or a webservice/minipage
-            if(!($skin_id = $this->try_skin_cookie())){
+            if (Cookie::has('skin')) {
+                $skin_id = Cookie::v('skin');
+            } else {
                 $skin_id = $globals->skin;
             }
             S::set('skin', $skin_id);
-        }else{
+        } else {
             $skin_id=S::v('skin');
-            if(S::v('auth')>= AUTH_COOKIE && Cookie::v('skin') != S::v('skin')){
-                setcookie('skin', $skin_id, (time() + 25920000), '/', '', 0);
+            if (S::v('auth')>= AUTH_COOKIE && Cookie::v('skin') != $skin_id){
+                Cookie::set('skin', $skin_id, 300);
             }
         }
         return $skin_id;
-    }
-
-    private function try_skin_cookie()
-    {
-//    var_dump($_COOKIE);
-        if(Cookie::has('skin')){
-            $res = XDB::query('SELECT   skin_id
-                                 FROM   skins
-                                WHERE   name = {?}',
-                            Cookie::v('skin'));
-            if($res->numRows() != 1){
-                return false;
-            }
-            return Cookie::v('skin');
-        }
-        return false;
     }
 
     public function run()

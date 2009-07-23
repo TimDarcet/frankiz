@@ -207,6 +207,7 @@ class FrankizSession extends PlSession
 
         S::set('user', $user);
         S::set('uid', $user->id());
+        S::set('skin', $user->skin());
 
         if (!S::suid()) {
             Cookie::set('uid', $user->id(), 300);

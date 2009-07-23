@@ -36,6 +36,8 @@ class User extends PlUser
 
     protected $on_platal = null;
 
+    protected $skin = null;
+
     // Implementation of the login to uid method.
     protected function getLogin($login)
     {
@@ -85,12 +87,13 @@ class User extends PlUser
         if ($this->hruid !== null && $this->display_name !== null
             && $this->full_name !== null && $this->gender !== null
             && $this->on_platal !== null && $this->email_format !== null
-            && $this->perms !== null && $this->bestalias !== null) {
+            && $this->perms !== null && $this->bestalias !== null
+            && $this->skin !== null ) {
             return;
         }
 
         global $globals;
-        $res = XDB::query("SELECT   a.hruid, a.perms,
+        $res = XDB::query("SELECT   a.hruid, a.perms, sk.name AS skin,
                                     CONCAT(t.forename, ' ', t.name) AS full_name,
                                     t.gender, t.on_platal, a.email_format,
                                     IF(t.surname = '', CONCAT(t.forename, ' ', t.name), t.surname) AS display_name,
@@ -99,6 +102,7 @@ class User extends PlUser
                         LEFT JOIN   trombino AS t USING (eleve_id)
                         LEFT JOIN   formations AS f ON (f.formation_id = a.main_formation)
                         LEFT JOIN   studies AS s ON (s.formation_id = a.main_formation AND s.eleve_id = a.eleve_id)
+                        LEFT JOIN   skins AS sk ON (a.skin = sk.skin_id)
                             WHERE  a.eleve_id = {?}", $this->user_id);
         $this->fillFromArray($res->fetchOneAssoc());
     }
@@ -134,6 +138,11 @@ class User extends PlUser
         return XDB::fetchOneCell('SELECT  a.password
                                     FROM  account AS a
                                    WHERE  a.eleve_id = {?}', $this->id());
+    }
+
+    public function skin()
+    {
+        return $this->skin;
     }
 
     // Return permission flags for a given permission level.
