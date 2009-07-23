@@ -20,6 +20,30 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{include file=core/password_prompt.tpl}
+<h1>Page sécurisée</h1>
+
+<div>
+  La page que tu as demandée est classée comme sensible. Il est nécessaire de taper ton mot de passe
+  pour y accéder, même avec l'accès permanent activé.
+</div>
+<br />
+
+<form enctype='multipart/form-data' method='post' action='{$smarty.server.REQUEST_URI}'>
+  <input type="hidden" name="username" value="{$smarty.session.uid}" />
+  <h2><span>Connexion</span></h2>
+  <div class='formulaire'>
+    <div>
+      <span class='gauche'>Identifiant:</span>
+      <span class='droite'>{$smarty.session.user->hruid}</span>
+    </div>
+    <div>
+      <span class='gauche'>Mot de passe:</span>
+      <span class='droite'><input type='password' name='password' value='' /></span>
+    </div>
+    <div>
+      <span class='boutons'><input type='submit' name='start_connexion' value='Connexion' /></span>
+    </div>
+  </div>
+</form>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
