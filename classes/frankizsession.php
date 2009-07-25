@@ -80,7 +80,7 @@ class FrankizSession extends PlSession
         }
         $res = XDB::query('SELECT   eleve_id, password
                              FROM   account
-                            WHERE   eleve_id = {?} AND perms IN(\'admin\', \'user\')',
+                            WHERE   eleve_id = {?} AND state = \'active\'',
                         Cookie::i('uid'));
         if($res->numRows() == 1)
         {
@@ -235,7 +235,7 @@ class FrankizSession extends PlSession
         $res = XDB::query('SELECT   eleve_id as uid, perms, hruid, name, forename, skin_params
                              FROM   account
                         LEFT JOIN   trombino USING (eleve_id)
-                            WHERE   eleve_id = {?} AND hash_rss = {?}',
+                            WHERE   eleve_id = {?} AND hash_rss = {?} and state = \'active\'',
                         $login, $token);
         if($res->numRows()==1)
         {

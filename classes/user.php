@@ -31,10 +31,13 @@ class User extends PlUser
      * gender       GENDER_MALE | GENDER_FEMALE
      * email_format FORMAT_HTML | FORMAT_TEXT
      * perm_flags   Flag combination describing user perms
+     * state        Status : active | pending | disabled
      * on_platal    resides on platal
      */
 
     protected $on_platal = null;
+
+    protected $state = null;
 
     protected $skin = null;
 
@@ -88,12 +91,12 @@ class User extends PlUser
             && $this->full_name !== null && $this->gender !== null
             && $this->on_platal !== null && $this->email_format !== null
             && $this->perms !== null && $this->bestalias !== null
-            && $this->skin !== null ) {
+            && $this->skin !== null && $this->state !== null) {
             return;
         }
 
         global $globals;
-        $res = XDB::query("SELECT   a.hruid, a.perms, sk.name AS skin,
+        $res = XDB::query("SELECT   a.hruid, a.perms, sk.name AS skin, a.state
                                     CONCAT(t.forename, ' ', t.name) AS full_name,
                                     t.gender, t.on_platal, a.email_format,
                                     IF(t.surname = '', CONCAT(t.forename, ' ', t.name), t.surname) AS display_name,
@@ -222,8 +225,6 @@ class User extends PlUser
         }
         return "";
     }
-
-
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
