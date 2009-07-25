@@ -78,9 +78,9 @@ class FrankizSession extends PlSession
         if(!Cookie::has('uid') || !Cookie::has('hash')){
             return self::COOKIE_INCOMPLETE;
         }
-        $res = XDB::query('SELECT   eleve_id, password
+        $res = XDB::query('SELECT   uid, password
                              FROM   account
-                            WHERE   eleve_id = {?} AND state = \'active\'',
+                            WHERE   uid = {?} AND state = \'active\'',
                         Cookie::i('uid'));
         if($res->numRows() == 1)
         {
@@ -134,7 +134,7 @@ class FrankizSession extends PlSession
         }
 
         // FIXME : using Post::v('password') until new authentication mechanism is ready
-        $uid = $this->checkPassword($login, Post::v('password'), is_numeric($login) ? 'eleve_id' : 'alias');
+        $uid = $this->checkPassword($login, Post::v('password'), is_numeric($login) ? 'uid' : 'alias');
         if (!is_null($uid) && S::suid()) {
             if (S::suid('uid') == $uid) {
                 $uid = S::i('uid');
@@ -150,13 +150,13 @@ class FrankizSession extends PlSession
     }
 
     /** Check whether a password is valid
-     * login_type can be eleve_id, alias (for an email alias), hruid
+     * login_type can be uid, alias (for an email alias), hruid
      */
-    private function checkPassword($login, $response, $login_type = 'eleve_id')
+    private function checkPassword($login, $response, $login_type = 'uid')
     {
         if ($login_type == 'alias') {
             list($forlife, $domain) = explode('@', $login, 2);
-            $res = XDB::query('SELECT   s.eleve_id
+            $res = XDB::query('SELECT   s.uid
                                  FROM   studies AS s
                             LEFT JOIN   formations AS f on (f.formation_id = s.formation_id AND f.domain = {?})
                                 WHERE   s.forlife = {?}',
@@ -165,7 +165,7 @@ class FrankizSession extends PlSession
             $login_type = 'eleve_id';
         }
 
-        $res = XDB::query('SELECT   eleve_id, password, hruid
+        $res = XDB::query('SELECT   uid, password, hruid
                              FROM   account
                             WHERE   '.$login_type.' = {?}',
                         $login);
@@ -232,10 +232,10 @@ class FrankizSession extends PlSession
     public function tokenAuth($login, $token)
     {
         /* Load main user data */
-        $res = XDB::query('SELECT   eleve_id as uid, perms, hruid, name, forename, skin_params
+        $res = XDB::query('SELECT   uid, perms, hruid, name, forename, skin_params
                              FROM   account
-                        LEFT JOIN   trombino USING (eleve_id)
-                            WHERE   eleve_id = {?} AND hash_rss = {?} and state = \'active\'',
+                        LEFT JOIN   trombino USING (uid)
+                            WHERE   uid = {?} AND hash_rss = {?} and state = \'active\'',
                         $login, $token);
         if($res->numRows()==1)
         {

@@ -52,7 +52,7 @@ class User extends PlUser
 
         // If $data is an integer, fetches directly the result.
         if (is_numeric($login)) {
-            $res = XDB::query("SELECT eleve_id FROM account WHERE eleve_id = {?}", $login);
+            $res = XDB::query("SELECT uid FROM account WHERE uid = {?}", $login);
             if ($res->numRows()) {
                 return $res->fetchOneCell();
             }
@@ -61,7 +61,7 @@ class User extends PlUser
         }
 
         // Checks whether $login is a valid hruid or not.
-        $res = XDB::query("SELECT eleve_id FROM account WHERE hruid = {?}", $login);
+        $res = XDB::query("SELECT uid FROM account WHERE hruid = {?}", $login);
         if ($res->numRows()) {
             return $res->fetchOneCell();
         }
@@ -74,7 +74,7 @@ class User extends PlUser
 
         // Checks if $login is a valid alias on the main domains.
         list($mbox, $fqdn) = explode('@', $login);
-        $res = XDB::query("SELECT  s.eleve_id
+        $res = XDB::query("SELECT  s.uid
                              FROM  studies AS s
                        INNER JOIN  formations AS f ON (f.formation_id = s.formation_id )
                             WHERE  s.forlife = {?} AND f.domain = {?}", $mbox, $fqdn);
@@ -102,11 +102,11 @@ class User extends PlUser
                                     IF(t.surname = '', CONCAT(t.forename, ' ', t.name), t.surname) AS display_name,
                                     CONCAT(s.forlife, '@', f.domain) AS bestalias
                              FROM   account AS a
-                        LEFT JOIN   trombino AS t USING (eleve_id)
+                        LEFT JOIN   trombino AS t USING (uid)
                         LEFT JOIN   formations AS f ON (f.formation_id = a.main_formation)
-                        LEFT JOIN   studies AS s ON (s.formation_id = a.main_formation AND s.eleve_id = a.eleve_id)
+                        LEFT JOIN   studies AS s ON (s.formation_id = a.main_formation AND s.uid = a.uid)
                         LEFT JOIN   skins AS sk ON (a.skin = sk.skin_id)
-                            WHERE  a.eleve_id = {?}", $this->user_id);
+                            WHERE  a.uid = {?}", $this->user_id);
         $this->fillFromArray($res->fetchOneAssoc());
     }
 
@@ -140,7 +140,7 @@ class User extends PlUser
     {
         return XDB::fetchOneCell('SELECT  a.password
                                     FROM  account AS a
-                                   WHERE  a.eleve_id = {?}', $this->id());
+                                   WHERE  a.uid = {?}', $this->id());
     }
 
     public function skin()
@@ -189,7 +189,7 @@ class User extends PlUser
             $res = XDB::query("SELECT s.forlife
                                  FROM studies AS s
                             LEFT JOIN formations AS f USING (formation_id)
-                                WHERE s.eleve_id = {?} AND f.domain = {?}",
+                                WHERE s.uid = {?} AND f.domain = {?}",
                                 $uid, Cookie::s('domain'));
             // If a forlife was found, send it ; otherwise, domain wasn't consistent
             if ($res->numRows()) {
@@ -199,7 +199,7 @@ class User extends PlUser
         $res = XDB::query("SELECT s.forlife
                              FROM studies AS s
                         LEFT JOIN account AS a ON (a.main_formation = s.formation_id)
-                            WHERE a.eleve_id = {?}",
+                            WHERE a.uid = {?}",
                             $uid);
         if ($res->numRows()) {
             return $res->fetchOneCell();
@@ -217,7 +217,7 @@ class User extends PlUser
             $res = XDB::query("SELECT f.domain
                                  FROM formations AS f
                             LEFT JOIN account AS a ON (a.main_formation = f.formation_id)
-                                WHERE a.eleve_id = {?}",
+                                WHERE a.uid = {?}",
                                 $uid);
             if ($res->numRows()) {
                 return $res->fetchOneCell();
