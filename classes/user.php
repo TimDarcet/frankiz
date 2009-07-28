@@ -97,9 +97,9 @@ class User extends PlUser
 
         global $globals;
         $res = XDB::query("SELECT   a.hruid, a.perms, sk.name AS skin, a.state
-                                    CONCAT(t.forename, ' ', t.name) AS full_name,
+                                    CONCAT(t.firstname, ' ', t.lastname) AS full_name,
                                     t.gender, t.on_platal, a.email_format,
-                                    IF(t.surname = '', CONCAT(t.forename, ' ', t.name), t.surname) AS display_name,
+                                    IF(t.nickname = '', CONCAT(t.firstname, ' ', t.lastname), t.nickname) AS display_name,
                                     CONCAT(s.forlife, '@', f.domain) AS bestalias
                              FROM   account AS a
                         LEFT JOIN   trombino AS t USING (uid)
