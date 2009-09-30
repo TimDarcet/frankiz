@@ -54,6 +54,7 @@ if (isset($_POST['envoie_lienik'])) {
 	$path = escapeshellarg(BASE_BINETS."ik/".$file);
 	$path2 = escapeshellarg(BASE_DATA."ik_thumbnails/".$file.".png");
 
+	putenv("PATH=/bin:/usr/bin");
 	$ret = exec ("convert ".$path."[0] -resize '150x212' ".$path2."; echo $?");
 
 	if ($ret != 0) {
