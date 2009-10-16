@@ -23,6 +23,7 @@
 {if isset($smarty.session.suid|smarty:nodefaults) }
 <span class='warning'>ATTENTION, su en cours. Pour revenir à ta vraie identité, clique <a href="exit/">ici</a></span>
 {/if}
+Bienvenue {$smarty.session.user->displayName() }.
 <ul class="fkz_liens">
   <li class="fkz_liens"><a href="profil/" accesskey="p">Préférences</a></li>
   {if hasPerm('admin') }

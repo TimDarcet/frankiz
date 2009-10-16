@@ -162,7 +162,7 @@ class FrankizSession extends PlSession
                                 WHERE   s.forlife = {?}',
                               $domain, $forlife);
             $login = $res->fetchOneCell();
-            $login_type = 'eleve_id';
+            $login_type = 'uid';
         }
 
         $res = XDB::query('SELECT   uid, password, hruid
@@ -234,7 +234,6 @@ class FrankizSession extends PlSession
         /* Load main user data */
         $res = XDB::query('SELECT   uid, perms, hruid, name, forename, skin_params
                              FROM   account
-                        LEFT JOIN   trombino USING (uid)
                             WHERE   uid = {?} AND hash_rss = {?} and state = \'active\'',
                         $login, $token);
         if($res->numRows()==1)

@@ -96,13 +96,12 @@ class User extends PlUser
         }
 
         global $globals;
-        $res = XDB::query("SELECT   a.hruid, a.perms, sk.name AS skin, a.state
-                                    CONCAT(t.firstname, ' ', t.lastname) AS full_name,
-                                    t.gender, t.on_platal, a.email_format,
-                                    IF(t.nickname = '', CONCAT(t.firstname, ' ', t.lastname), t.nickname) AS display_name,
+        $res = XDB::query("SELECT   a.hruid, a.perms, sk.name AS skin, a.state,
+                                    CONCAT(a.firstname, ' ', a.lastname) AS full_name,
+                                    a.gender, a.on_platal, a.email_format,
+                                    IF(a.nickname = '', a.firstname, a.nickname) AS display_name,
                                     CONCAT(s.forlife, '@', f.domain) AS bestalias
                              FROM   account AS a
-                        LEFT JOIN   trombino AS t USING (uid)
                         LEFT JOIN   formations AS f ON (f.formation_id = a.main_formation)
                         LEFT JOIN   studies AS s ON (s.formation_id = a.main_formation AND s.uid = a.uid)
                         LEFT JOIN   skins AS sk ON (a.skin = sk.skin_id)
