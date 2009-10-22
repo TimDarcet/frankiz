@@ -3,6 +3,9 @@
  *  Copyright (C) 2009 Binet Réseau                                        *
  *  http://www.polytechnique.fr/eleves/binets/reseau/                      *
  *                                                                         *
+ *  Copyright (C) 2003-2009 Polytechnique.org                              *
+ *  http://opensource.polytechnique.org/                                   *
+ *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
  *  it under the terms of the GNU General Public License as published by   *
  *  the Free Software Foundation; either version 2 of the License, or      *
@@ -22,10 +25,18 @@
 /******
  * Doc
  ******/
-// For joins, $ME designs the key and $UID the user id (as in "INNER JOIN blah AS b ON ($ME.coin = $UID)" == "INNER JOIN blah AS b ON (b.coin = a.user_id))"
-// UFC stands for "UserFilterCondition"
-// pd stands for profileDisplay
-// edu stands for profileEducation
+/* For joins, $ME is the key and $UID the user id (as in "INNER JOIN blah AS b ON ($ME.coin = $UID)" == "INNER JOIN blah AS b ON (b.coin = a.user_id))"
+ * UFC stands for "UserFilterCondition", UFO for "UserFilterOrder"
+ *
+ * A UFC can use addEducationFilter or other such methods to notify UserFilter that education-related joins will be needed.
+ *  This method returns a suffix which can be used to identify the version of the "edu" table which has been joined here
+ *  (this functionality isn't used for the moment)
+ *
+ * In the query, short names are used :
+ *  a       stands for  account
+ *  edu     stands for  studies (left join on users)
+ *  eduf    stands for  formations (left join on studies)
+ */
 
 
 /******************
