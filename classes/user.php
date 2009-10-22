@@ -175,7 +175,31 @@ class User extends PlUser
     // Implementation of the static email locality checker.
     public static function isForeignEmailAddress($email)
     {
+        @list($user, $domain) = explode('@', $email);
+        if ($domain == "polytechnique.edu") {
+            return false;
+        }
         return true;
+    }
+
+    const FIRST_NAME    = 1;
+    const LAST_NAME     = 2;
+    const NICK_NAME     = 4;
+    const ANY_NAME      = 7;
+
+    public static function getNameVariants($name)
+    {
+        $ret = array();
+        if($name & self::FIRST_NAME) {
+            $ret[] = self::FIRST_NAME;
+        }
+        if($name & self::LAST_NAME) {
+            $ret[] = self::LAST_NAME;
+        }
+        if($name & self::NICK_NAME) {
+            $ret[] = self::NICK_NAME;
+        }
+        return $ret;
     }
 
     // Tries to find the user forlife from data in cookies
