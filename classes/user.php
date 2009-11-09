@@ -41,6 +41,8 @@ class User extends PlUser
 
     protected $skin = null;
 
+    protected $main_promo = null;
+
     // Implementation of the login to uid method.
     protected function getLogin($login)
     {
@@ -91,7 +93,8 @@ class User extends PlUser
             && $this->full_name !== null && $this->gender !== null
             && $this->on_platal !== null && $this->email_format !== null
             && $this->perms !== null && $this->bestalias !== null
-            && $this->skin !== null && $this->state !== null) {
+            && $this->skin !== null && $this->state !== null
+            && $this->main_promo !== null) {
             return;
         }
 
@@ -100,7 +103,8 @@ class User extends PlUser
                                     CONCAT(a.firstname, ' ', a.lastname) AS full_name,
                                     a.gender, a.on_platal, a.email_format,
                                     IF(a.nickname = '', a.firstname, a.nickname) AS display_name,
-                                    CONCAT(s.forlife, '@', f.domain) AS bestalias
+                                    CONCAT(s.forlife, '@', f.domain) AS bestalias,
+                                    CONCAT(f.abbrev, s.promo) AS main_promo
                              FROM   account AS a
                         LEFT JOIN   formations AS f ON (f.formation_id = a.main_formation)
                         LEFT JOIN   studies AS s ON (s.formation_id = a.main_formation AND s.uid = a.uid)
@@ -145,6 +149,11 @@ class User extends PlUser
     public function skin()
     {
         return $this->skin;
+    }
+
+    public function promo()
+    {
+        return $this->main_promo;
     }
 
     // Return permission flags for a given permission level.
