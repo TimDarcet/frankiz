@@ -31,7 +31,11 @@ class AnnoncesModule extends PLModule
 
     public function handlers()
     {
-        return array("annonces" => $this->make_hook("annonces", AUTH_PUBLIC));
+        return array(
+            "annonces" => $this->make_hook("annonces", AUTH_PUBLIC),
+            "annonces/hide" => $this->make_hook("annonces_hide", AUTH_COOKIE),
+            "annonces/show" => $this->make_hook("annonces_show", AUTH_COOKIE),
+        );
     }
 
     private static function get_cat($flags, $begin, $end) {
@@ -46,16 +50,51 @@ class AnnoncesModule extends PLModule
         }
     }
 
+    function handler_annonces_hide(&$page, $annonce_id = 0)
+    {
+        if (S::logged() && $annonce_id != 0) {
+            XDB::execute("INSERT INTO   annonces_hide
+                                  SET   uid = {?}, annonce_id = {?}",
+                                  S::user()->id(),
+                                  $annonce_id);
+        }
+        return $this->handler_annonces($page);
+    }
+
+    function handler_annonces_show(&$page, $annonce_id = 0)
+    {
+        if (S::logged() && $annonce_id != 0) {
+            XDB::execute("DELETE FROM   annonces_hide
+                                WHERE   uid = {?} AND annonce_id = {?}",
+                                  S::user()->id(),
+                                  $annonce_id);
+        }
+        return $this->handler_annonces($page);
+    }
+
+
     function handler_annonces(&$page)
     {
 
+        if (S::logged()) {
+            $uid = S::user()->id();
+            $show_field = "ISNULL( ah.annonce_id )";
+            $show_join = "LEFT JOIN  annonces_hide AS ah ON (ah.annonce_id = a.annonce_id AND ah.uid = $uid)";
+        } else {
+            $show_field = "1";
+            $show_join = "";
+        }
+
+
         $res=XDB::query("
-            SELECT  annonce_id,
-                    DATE_FORMAT(begin, '%d/%m/%Y') as date,
-                    begin, end, title, content, flags, eleve_id
-              FROM  annonces
-             WHERE  end > NOW()
-          ORDER BY  end DESC");
+            SELECT  a.annonce_id,
+                    $show_field,
+                    DATE_FORMAT(a.begin, '%d/%m/%Y') as date,
+                    a.begin, a.end, a.title, a.content, a.flags, a.uid
+              FROM  annonces AS a
+        $show_join
+             WHERE  a.end > NOW()
+          ORDER BY  a.end DESC");
         $annonces_liste = $res->fetchAllRow();
 
         $annonces = array(
@@ -66,11 +105,9 @@ class AnnoncesModule extends PLModule
 
         foreach ($annonces_liste as $annonce)
         {
-            list($id, $date, $begin, $end, $title, $content, $sql_flags, $eleve_id) = $annonce;
+            list($id, $show, $date, $begin, $end, $title, $content, $sql_flags, $uid) = $annonce;
 
-            $eleve = new User($eleve_id);
-            // FIXME : implement "hide" functionnality
-            $visible = true;
+            $eleve = new User($uid);
             $flags = new PlFlagSet($sql_flags);
 
             // Skip internal items when outside
@@ -80,13 +117,13 @@ class AnnoncesModule extends PLModule
 
             $cat = self::get_cat($flags, $begin, $end);
             $annonces[$cat]['annonces'][$id] = array(
-                'id'     => $id,
-                'title'  => $title,
-                'date'   => $date,
-                'img'    => file_exists(DATA_DIR_LOCAL.'annonces/'.$id),
-                'eleve'  => $eleve,
-                'content' => $content,
-                'visible' => $visible);
+                'id'        => $id,
+                'title'     => $title,
+                'date'      => $date,
+                'img'       => file_exists(DATA_DIR_LOCAL.'annonces/'.$id),
+                'eleve'     => $eleve,
+                'content'   => $content,
+                'show'      => $show);
         }
 
         $page->assign('title', "Annonces");

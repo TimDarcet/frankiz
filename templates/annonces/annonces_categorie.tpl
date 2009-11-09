@@ -28,24 +28,35 @@
         <div class="fkz_annonces_5">
           <div class="fkz_annonces_6">
             <div class="fkz_annonces">
-	      <div class="fkz_annonces_titre"><b>
-	        <span class="fkz_annonces_{$categorie}"></span>
-		<span class="fkz_annonces_cat">({$categorie})</span>
-		<span class="fkz_annonces_titre">{$annonce.title}</span>
-	      </div></b>
-	      <div class="fkz_annonces_corps">
+              <div class="fkz_annonces_titre"><b>
+                <span class="fkz_annonces_{$categorie}"></span>
+                <span class="fkz_annonces_cat">({$categorie})</span>
+                <span class="fkz_annonces_titre">{$annonce.title}</span>
+                {if $logged}
+                <span class="fkz_annonces_hideshowlink">
+                {if $annonce.show}
+                  <a href="annonces/hide/{$annonce.id}">Masquer</a>
+                {else}
+                  <a href="annonces/show/{$annonce.id}">Afficher</a>
+                {/if}
+                </span>
+              {/if}
+              </div></b>
+              {if $annonce.show}
+	          <div class="fkz_annonces_corps">
                 {if $annonce.img}
                 <span class="image" style="display:block;text-align:center">
-		  <img src="http://frankiz/data/annonces/{$annonce.id}" alt="logo" />
-		</span>
+		          <img src="http://frankiz/data/annonces/{$annonce.id}" alt="logo" />
+		        </span>
                 {/if}
-		{*{$annonce.content|wiki_vers_html}*}
-		{$annonce.content}
-		<p class="fkz_signature">{print_eleve_name eleve=$annonce.eleve show_promo=1}</p>
+        		{*{$annonce.content|wiki_vers_html}*}
+		        {$annonce.content}
+		        <p class="fkz_signature">{print_eleve_name eleve=$annonce.eleve show_promo=1}</p>
+	          </div>
+            {/if}
+	        </div>
 	      </div>
 	    </div>
-	  </div>
-	</div>
       </div>
     </div>
   </div>
