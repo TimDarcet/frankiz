@@ -21,104 +21,78 @@
 
 class AnnoncesModule extends PLModule
 {
-	public function handlers() 
-	{
-		return array("annonces" => $this->make_hook("annonces", AUTH_PUBLIC));
-	}
+    const FLAG_IMPORTANT = 'important';
+    const FLAG_EXT = 'ext';
 
-	private function get_categorie($en_haut, $stamp, $perime) {
-		if ($en_haut==1) 
-			return "important";
-		elseif ($stamp > date("Y-m-d H:i:s",time()-12*3600)) 
-			return "nouveau";
-		elseif ($perime < date("Y-m-d H:i:s",time()+24*3600))
-			return "vieux";
-		else 
-			return "reste";
-	}
+    const CAT_IMPORTANT = 'important';
+    const CAT_NEW = 'new';
+    const CAT_OLD = 'old';
+    const CAT_OTHER = 'other';
 
-	function handler_annonces(&$page)
-	{
-		global $DB_web;
+    public function handlers()
+    {
+        return array("annonces" => $this->make_hook("annonces", AUTH_PUBLIC));
+    }
 
-		// Pour marquer les annonces comme lues ou non
-		if (isset($_REQUEST['lu']))
-		{
-			$DB_web->query("REPLACE annonces_lues
-					    SET	annonce_id = '{$_REQUEST['lu']}',
-						eleve_id   = '{$_SESSION['uid']}'");
-		}
-		
-	
-		if (isset($_REQUEST['nonlu'])) 
-		{
-			$DB_web->query("DELETE FROM annonces_lues
-					      WHERE annonce_id = '{$_REQUEST['nonlu']}' AND
-						    eleve_id ='{$_SESSION['uid']}");
-		}
-	
-		if (isset($_SESSION['uid']))
-		{
-			$est_annonce_non_lue = "ISNULL(annonces_lues.annonce_id)";
-			$left_join_annonces_lues = "LEFT JOIN annonces_lues 
-			                                   ON annonces_lues.annonce_id = annonces.annonce_id
-			                                  AND annonces_lues.eleve_id = '{$_SESSION['uid']}'";
-		}
-		else
-		{
-			$est_annonce_non_lue = "1";
-			$left_join_annonces_lues = "";
-		}
-		
+    private static function get_cat($flags, $begin, $end) {
+        if ($flags.hasFlag(self::FLAG_IMPORTANT)) {
+            return self::CAT_IMPORTANT;
+        } else if ($begin > date("Y-m-d H:i:s", time() - 12*3600)) {
+            return self::CAT_NEW;
+        } else if ($end < date("Y-m-d H:i:s", time() + 24*3600)) {
+            return self::CAT_OLD;
+        } else {
+            return self::CAT_OTHER;
+        }
+    }
 
-		$res=XDB::query("
-			SELECT	annonces.annonce_id,
-				DATE_FORMAT(stamp, '%d/%m/%Y'),
-				stamp, perime, titre, contenu, important, exterieur,
-				nom, prenom, surnom, promo, login,
-				IFNULL(mail, CONCAT(login, '@poly.polytechnique.fr')) AS mail,
-			  	$est_annonce_non_lue
-			  FROM  annonces
-		     LEFT JOIN  eleves USING(eleve_id)
-		  	 	$left_join_annonces_lues
-			 WHERE	perime > NOW()
-  		      ORDER BY	perime DESC");
-		$annonces_liste = $res->fetchAllRow();
+    function handler_annonces(&$page)
+    {
 
-		$annonces = array('vieux'     => array('desc' => "Demain, c'est fini", 'annonces' => array()),
-				  'nouveau'   => array('desc' => "Nouvelles fraiches", 'annonces' => array()),
-				  'important' => array('desc' => "Important", 'annonces' => array()),
-				  'reste'     => array('desc' => "En attendant", 'annonces' => array()));
+        $res=XDB::query("
+            SELECT  annonce_id,
+                    DATE_FORMAT(begin, '%d/%m/%Y') as date,
+                    begin, end, title, content, flags, eleve_id
+              FROM  annonces
+             WHERE  end > NOW()
+          ORDER BY  end DESC");
+        $annonces_liste = $res->fetchAllRow();
 
-		foreach ($annonces_liste as $annonce)
-		{
-		list($id, $date, $stamp, $perime, $titre, $contenu, $en_haut, $exterieur,
-			    $nom, $prenom, $surnom, $promo, $login, $mail, $visible) = $annonce;
-		
-			if (!$exterieur && S::checkAuth(AUTH_INTERNE)){
-				continue;
-			}
-			
-			$categorie = $this->get_categorie($en_haut, $stamp, $perime);
-			$annonces[$categorie]['annonces'][$id] = array('id'     => $id,
-								       'titre'  => $titre,
-					       		               'date'   => $date,
-							               'img'    => file_exists(DATA_DIR_LOCAL.'annonces/'.$id),
-							               'eleve'  => array('nom'    	=> $nom,
-					   			     			 'prenom' 	=> $prenom,
-								       			 'promo'  	=> $promo,
-								      			 'surnom' 	=> $surnom,
-								       			 'mail'   	=> $mail,
-								       			 'loginpoly'  	=> $login),
-							   	       'contenu' => $contenu,
-							   	       'visible' => $visible);
-		}
-		
-		$page->assign('title', "Annonces");
-		$page->assign('page_raw', 1);
-		$page->assign('annonces', $annonces);
-		$page->changeTpl('annonces/annonces.tpl');
-	}
+        $annonces = array(
+            self::CAT_OLD       => array('desc' => "Demain, c'est fini", 'annonces' => array()),
+            self::CAT_NEW       => array('desc' => "Nouvelles fraiches", 'annonces' => array()),
+            self::CAT_IMPORTANT => array('desc' => "Important", 'annonces' => array()),
+            self::CAT_OTHER     => array('desc' => "En attendant", 'annonces' => array()));
+
+        foreach ($annonces_liste as $annonce)
+        {
+            list($id, $date, $begin, $end, $title, $content, $sql_flags, $eleve_id) = $annonce;
+
+            $eleve = User($eleve_id);
+            // FIXME : implement "hide" functionnality
+            $visible = true;
+            $flags = PlFlagSet($sql_flags);
+
+            // Skip internal items when outside
+            if (!$flags.hasFlag(self::FLAG_EXT) && !S::checkAuth(AUTH_INTERNE)){
+                continue;
+            }
+
+            $cat = self::get_cat($flags, $begin, $end);
+            $annonces[$categorie]['annonces'][$id] = array(
+                'id'     => $id,
+                'title'  => $titre,
+                'date'   => $date,
+                'img'    => file_exists(DATA_DIR_LOCAL.'annonces/'.$id),
+                'eleve'  => $eleve,
+                'content' => $contenu,
+                'visible' => $visible);
+        }
+
+        $page->assign('title', "Annonces");
+        $page->assign('annonces', $annonces);
+        $page->changeTpl('annonces/annonces.tpl');
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

@@ -28,9 +28,9 @@
           <div class="fkz_sommaire_6">
             <div class="fkz_sommaire">
 	      {include file="annonces/annonces_sommaire_categorie.tpl" categorie="important"}
-	      {include file="annonces/annonces_sommaire_categorie.tpl" categorie="nouveau"}
-	      {include file="annonces/annonces_sommaire_categorie.tpl" categorie="vieux"}
-	      {include file="annonces/annonces_sommaire_categorie.tpl" categorie="reste"}
+	      {include file="annonces/annonces_sommaire_categorie.tpl" categorie="new"}
+	      {include file="annonces/annonces_sommaire_categorie.tpl" categorie="old"}
+	      {include file="annonces/annonces_sommaire_categorie.tpl" categorie="other"}
             </div>
 	  </div>
 	</div>
@@ -39,8 +39,8 @@
   </div>
 </div>
 {include file="annonces/annonces_categorie.tpl" categorie="important"}
-{include file="annonces/annonces_categorie.tpl" categorie="nouveau"}
-{include file="annonces/annonces_categorie.tpl" categorie="vieux"}
-{include file="annonces/annonces_categorie.tpl" categorie="reste"}
+{include file="annonces/annonces_categorie.tpl" categorie="new"}
+{include file="annonces/annonces_categorie.tpl" categorie="old"}
+{include file="annonces/annonces_categorie.tpl" categorie="other"}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

@@ -26,7 +26,7 @@
 </div>
 {foreach from=$annonces.$categorie.annonces item=annonce}
 <div class="fkz_sommaire_corps">
-  <a href="annonce_{$annonce.id}">{$annonce.titre}</a>
+  <a href="annonce_{$annonce.id}">{$annonce.title}</a>
 </div>
 {/foreach}
 {/if}

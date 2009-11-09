@@ -31,7 +31,7 @@
 	      <div class="fkz_annonces_titre"><b>
 	        <span class="fkz_annonces_{$categorie}"></span>
 		<span class="fkz_annonces_cat">({$categorie})</span>
-		<span class="fkz_annonces_titre">{$annonce.titre}</span>
+		<span class="fkz_annonces_titre">{$annonce.title}</span>
 	      </div></b>
 	      <div class="fkz_annonces_corps">
                 {if $annonce.img}
@@ -39,8 +39,8 @@
 		  <img src="http://frankiz/data/annonces/{$annonce.id}" alt="logo" />
 		</span>
                 {/if}
-		{*{$annonce.contenu|wiki_vers_html}*}
-		{$annonce.contenu}
+		{*{$annonce.content|wiki_vers_html}*}
+		{$annonce.content}
 		<p class="fkz_signature">{print_eleve_name eleve=$annonce.eleve show_promo=1}</p>
 	      </div>
 	    </div>
