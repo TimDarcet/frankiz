@@ -29,7 +29,7 @@ function smarty_function_print_eleve_name($params, &$smarty)
         $name .= " (" . $user->promo() .")";
     }
 
-    if (FrankizSession::checkAuth(AUTH_INTERNE)) {
+    if (S::v('auth', AUTH_PUBLIC) >= AUTH_INTERNE) {
         $name = "<a href='tol/" . $user->login() . "'>" . $name . "</a>";
     }
 
