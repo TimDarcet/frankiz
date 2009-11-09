@@ -22,16 +22,17 @@
 
 function smarty_function_print_eleve_name($params, &$smarty)
 {
-	$name = $params['eleve']['surnom'] ? 
-		$params['eleve']['surnom'] :
-		"{$params['eleve']['nom']} {$params['eleve']['prenom']}";
+    $user = $params['eleve'];
+    $name = $user->displayName();
 
-	if (isset($params['show_promo']))
-		$name = "$name (X{$params['eleve']['promo']})";
+	if (isset($params['show_promo'])) {
+        $name .= " (" . $user->promo() .")";
+    }
 
-	if (FrankizSession::verifie_permission("interne"))
-		$name = "<a href='tol/chercher&loginpoly={$params['eleve']['loginpoly']}&promo={$params['eleve']['promo']}'>$name</a>";
-	
+    if (FrankizSession::checkAuth(AUTH_INTERNE)) {
+        $name = "<a href='tol/" . $user->login() . "'>" . $name . "</a>";
+    }
+
 	return $name;
 }
 
