@@ -35,7 +35,7 @@ class AnnoncesModule extends PLModule
     }
 
     private static function get_cat($flags, $begin, $end) {
-        if ($flags.hasFlag(self::FLAG_IMPORTANT)) {
+        if ($flags->hasFlag(self::FLAG_IMPORTANT)) {
             return self::CAT_IMPORTANT;
         } else if ($begin > date("Y-m-d H:i:s", time() - 12*3600)) {
             return self::CAT_NEW;
@@ -68,24 +68,24 @@ class AnnoncesModule extends PLModule
         {
             list($id, $date, $begin, $end, $title, $content, $sql_flags, $eleve_id) = $annonce;
 
-            $eleve = User($eleve_id);
+            $eleve = new User($eleve_id);
             // FIXME : implement "hide" functionnality
             $visible = true;
-            $flags = PlFlagSet($sql_flags);
+            $flags = new PlFlagSet($sql_flags);
 
             // Skip internal items when outside
-            if (!$flags.hasFlag(self::FLAG_EXT) && !S::checkAuth(AUTH_INTERNE)){
+            if (!$flags->hasFlag(self::FLAG_EXT) && S::v('auth', AUTH_PUBLIC) < AUTH_INTERNE){
                 continue;
             }
 
             $cat = self::get_cat($flags, $begin, $end);
-            $annonces[$categorie]['annonces'][$id] = array(
+            $annonces[$cat]['annonces'][$id] = array(
                 'id'     => $id,
-                'title'  => $titre,
+                'title'  => $title,
                 'date'   => $date,
                 'img'    => file_exists(DATA_DIR_LOCAL.'annonces/'.$id),
                 'eleve'  => $eleve,
-                'content' => $contenu,
+                'content' => $content,
                 'visible' => $visible);
         }
 
