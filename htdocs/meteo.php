@@ -25,7 +25,7 @@
 */
 
 require_once "include/global.inc.php";
-require_once BASE_LOCAL."/include/meteo_func.inc.php";
+// require_once BASE_LOCAL."/include/meteo_func.inc.php";
 
 // génération de la page
 require BASE_LOCAL."/include/page_header.inc.php";
@@ -33,11 +33,11 @@ require BASE_LOCAL."/include/page_header.inc.php";
 <page id='meteo' titre='Frankiz : méteo'>
 <h1>La météo du platâl</h1>
 <?php
-	if(!cache_recuperer('meteo',strtotime(date("Y-m-d H:i:00",time()-60*30)))) { // le cache est valide pendant 30min ...
-		weather_xml();
-		cache_sauver('meteo');
-	}
-?>
+//	if(!cache_recuperer('meteo',strtotime(date("Y-m-d H:i:00",time()-60*30)))) { // le cache est valide pendant 30min ...
+//		weather_xml();
+//		cache_sauver('meteo');
+//	}
+// ?>
 <lien url="http://www.weather.com/?prod=xoap&amp;par=1006415841"><image source="images/Weather.com.png" texte="Logo Weather.com"/></lien><br/>
 <lien url="http://www.weather.com/?prod=xoap&amp;par=1006415841">Météo fournie grâce à weather.com&#174;</lien>
 </page>

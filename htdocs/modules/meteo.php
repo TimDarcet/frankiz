@@ -23,7 +23,7 @@
 	$Id$
 
 */
-require_once BASE_LOCAL."/include/meteo_func.inc.php";
+/*require_once BASE_LOCAL."/include/meteo_func.inc.php";
 
 echo "<module id=\"meteo\" titre=\"Météo\">\n";
 
@@ -32,5 +32,5 @@ if(!cache_recuperer('meteo',strtotime(date("Y-m-d H:i:00",time()-60*30)))) { // 
 	cache_sauver('meteo');
 }
 
-echo "</module>\n";
+echo "</module>\n";*/
 ?>
