@@ -32,7 +32,10 @@ if(est_authentifie(AUTH_MINIMUM)) {
 	// Génération des tours kawa
 	$jour = array("Aujourd'hui","Demain");
 	for ($i = 0; $i <= 1; $i++) {
-		$DB_web->query("SELECT sections.nom FROM kawa LEFT JOIN trombino.sections ON kawa.section_id=sections.section_id WHERE (date=\"".date("Y-m-d",time()+$i * 3600 *24)."\")");
+		$DB_web->query("SELECT groupes_kawa.nom FROM kawa2 LEFT JOIN groupes_kawa ON kawa2.groupe_id=groupes_kawa.groupe_id WHERE (date=\"".date("Y-m-d",time()+$i * 3600 *24)."\")");
+//ancienne commande pour les tours kawa section
+//	$DB_web->query("SELECT sections.nom FROM kawa LEFT JOIN trombino.sections ON kawa.section_id=sections.section_id WHERE (date=\"".date("Y-m-d",time()+$i * 3600 *24)."\")");
+	
 		list($groupe)=$DB_web->next_row();
 		
 		if(strcasecmp("personne", $groupe) != 0 && $groupe != "") {

@@ -51,6 +51,9 @@ if(isset($_POST['envoie'])){
 	}
 }
 
+//ancienne version des tours kawa sections
+
+/*
 if(isset($_POST['ajout_kawa']) &&(strtotime($_REQUEST['date']) >(time()))&&($_REQUEST['date']!="0000-00-00")){
 	$DB_web->query("INSERT INTO kawa SET date='".$_POST['date']."', section_id='".$_POST['section']."' ");
 	echo"<commentaire>Tour kawa ajouté</commentaire>";
@@ -60,6 +63,20 @@ if(isset($_GET['del'])){
 	$DB_web->query("DELETE FROM kawa WHERE date='".$_GET['del']."'");
 	echo"<commentaire>Tour kawa supprimé</commentaire>";
 }
+*/
+
+//pour pouvoir ajouter des binets aux tours kawa
+
+if(isset($_POST['ajout_kawa']) &&(strtotime($_REQUEST['date']) >(time()))&&($_REQUEST['date']!="0000-00-00")){
+        $DB_web->query("INSERT INTO kawa2 SET date='".$_POST['date']."', groupe_id='".$_POST['section']."' ");
+        echo"<commentaire>Tour kawa ajouté</commentaire>";
+}
+
+if(isset($_GET['del'])){
+        $DB_web->query("DELETE FROM kawa2 WHERE date='".$_GET['del']."'");
+        echo"<commentaire>Tour kawa supprimé</commentaire>";
+}
+
 
 $valeur = getEtatBob();
 
@@ -75,11 +92,14 @@ $valeur = getEtatBob();
 
 	
 	<formulaire id="kawa" titre="Ajouter un tour kawa" action="gestion/etat_bob.php">
-		<choix titre="Section" id="section" type="combo" valeur="">
+		<choix titre="Section-Binet" id="section" type="combo" valeur="">
 <?php
-			$DB_trombino->query("SELECT section_id,nom FROM sections ORDER BY nom ASC");
-			while( list($section_id,$section_nom) = $DB_trombino->next_row() )
-				echo "\t\t\t<option titre=\"$section_nom\" id=\"$section_id\"/>\n";
+			$DB_trombino->query("SELECT groupe_id,nom FROM frankiz2.groupes_kawa ORDER BY groupe_id ASC");
+
+//ancienne commande pour les tours kawa section
+// 		$DB_trombino->query("SELECT section_id,nom FROM sections ORDER BY nom ASC");
+			while( list($groupe_id,$groupe_nom) = $DB_trombino->next_row() )
+				echo "\t\t\t<option titre=\"$groupe_nom\" id=\"$groupe_id\"/>\n";
 ?>
 		</choix>
 		<champ id="date" titre="Date (année-mois-jour)" valeur="0000-00-00"/>
@@ -88,11 +108,17 @@ $valeur = getEtatBob();
 	
 <?php
 	// Génération des tours kawa
-	$DB_web->query("SELECT kawa.date,sections.nom FROM kawa LEFT JOIN trombino.sections ON kawa.section_id=sections.section_id WHERE (kawa.date>=\"".date("Y-m-d",time())."\")");
-	$i = 0;
+     	$DB_web->query("SELECT kawa2.date,groupes_kawa.nom FROM kawa2 LEFT JOIN groupes_kawa ON kawa2.groupe_id=groupes_kawa.groupe_id WHERE (kawa2.date>=\"".date("Y-m-d",time())."\")");
+
+
+//ancienne commande pour les tours kawa section
+//	$DB_web->query("SELECT kawa.date,sections.nom FROM kawa LEFT JOIN trombino.sections ON kawa.section_id=sections.section_id WHERE (kawa.date>=\"".date("Y-m-d",time())."\")");
+
+
+$i = 0;
 	 echo "<liste id=\"tour_kawa\" titre=\"Liste des tours kawa prévus\" selectionnable=\"non\">\n";
 	 echo "<entete id=\"jour\" titre=\"Date\"/>";
-	 echo "<entete id=\"kawa\" titre=\"Section\"/>";
+	 echo "<entete id=\"kawa\" titre=\"Section-Binet\"/>";
 	while(list($date,$groupe)=$DB_web->next_row()){
 		if(strcasecmp("personne", $groupe) != 0 && $groupe != "") {
 			// si c'est le premier tour kawa, on ouvre la liste

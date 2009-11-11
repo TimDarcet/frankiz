@@ -62,7 +62,7 @@ sub post {
 sub traiter_jour {
     my ($date,$name,$subject,$body) =@_;
     print "Date : " . $date . "\n";                                     #DEBUG
-    $reqt="SELECT sections.nom,sections.newsgroup FROM kawa INNER JOIN trombino.sections ON kawa.section_id=sections.section_id WHERE date='$date'";
+    $reqt="SELECT groupes_kawa.nom,groupes_kawa.newsgroup FROM kawa2 INNER JOIN frankiz2.groupes_kawa ON kawa2.groupe_id=groupes_kawa.groupe_id WHERE date='$date'";
     my $rep = $dbh->prepare($reqt);
     $rep->execute;
     $non_vide=(($groupe,$newsgroup)=$rep->fetchrow_array());
