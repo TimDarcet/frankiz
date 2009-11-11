@@ -62,6 +62,7 @@ if (isset($_POST['mod_generale'])) {
 	$nom = $_POST['nom'];
 	$prenom = $_POST['prenom'];
 	$surnom = $_POST['surnom'];
+	$instrument = $_POST['instrument'];
 	$date_nais = $_POST['date_nais'];
 	$sexe = $_POST['sexe'];
 	$piece_id = $_POST['piece_id'];
@@ -74,7 +75,7 @@ if (isset($_POST['mod_generale'])) {
 	$promo = $_POST['promo'];
 	$login = $_POST['login'];
 	$mail = $_POST['mail'];
-	$DB_trombino->query("UPDATE eleves SET nom='$nom', prenom='$prenom', surnom='$surnom', date_nais='$date_nais', sexe='$sexe', piece_id=$piece_id, section_id='$section_id', cie='$cie', promo='$promo', login='$login', mail='$mail' WHERE eleve_id=$id ");
+	$DB_trombino->query("UPDATE eleves SET nom='$nom', prenom='$prenom', surnom='$surnom', instrument='$instrument', date_nais='$date_nais', sexe='$sexe', piece_id=$piece_id, section_id='$section_id', cie='$cie', promo='$promo', login='$login', mail='$mail' WHERE eleve_id=$id ");
 	
 	echo "<commentaire>Modification de la partie générale faite avec succès</commentaire>" ;
 }
@@ -157,12 +158,13 @@ if (verifie_permission('admin') && isset($_POST['mod_compte_fkz'])) {
 ?>
 	<formulaire id="user_general" titre="Général" action="admin/user.php?id=<?php echo $id?>">
 <?php
-		$DB_trombino->query("SELECT nom,prenom,surnom,date_nais,sexe,piece_id,section_id,cie,promo,login,mail,commentaire FROM eleves WHERE eleve_id=$id ORDER BY nom ASC");
-		list($nom,$prenom,$surnom,$date_nais,$sexe,$piece_id,$section,$cie,$promo,$login,$mail,$commentaire) = $DB_trombino->next_row() ;
+		$DB_trombino->query("SELECT nom,prenom,surnom,instrument,date_nais,sexe,piece_id,section_id,cie,promo,login,mail,commentaire FROM eleves WHERE eleve_id=$id ORDER BY nom ASC");
+		list($nom,$prenom,$surnom,$instrument,$date_nais,$sexe,$piece_id,$section,$cie,$promo,$login,$mail,$commentaire) = $DB_trombino->next_row() ;
 ?>
 		<champ id="nom" titre="Nom" valeur="<?php echo $nom?>"/>
 		<champ id='prenom' titre='Prénom' valeur='<?php echo $prenom?>'/>
 		<champ id='surnom' titre='Surnom' valeur='<?php echo $surnom?>'/>
+		<champ id='instrument' titre='Instrument' valeur='<?php echo $instrument?>'/>
 		<champ id='login' titre='Login' valeur='<?php echo $login?>'/>
 		<champ id='date_nais' titre='Date de naissance' valeur='<?php echo $date_nais?>'/>
 		<champ id='sexe' titre='Sexe' valeur='<?php echo $sexe?>'/>

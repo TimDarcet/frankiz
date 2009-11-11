@@ -81,6 +81,9 @@
 								<strong>Kzt : </strong><xsl:value-of select="@casert"/><br/>
 								<strong>Nat. : </strong><xsl:value-of select="@nation"/><br/>
 								<strong>Mail : </strong><a><xsl:attribute name="href"><xsl:text>mailto:</xsl:text><xsl:value-of select="@login"/><xsl:text>@poly</xsl:text></xsl:attribute><xsl:value-of select="@login"/><xsl:text>@poly</xsl:text></a><br/>
+								<strong>Instr. : </strong><xsl:value-of select="@instrument"/><br/>
+
+
 							</p>
 							<p class="binets">
 								<xsl:if test="count(binet)!=0">
@@ -153,8 +156,8 @@
 						<td><xsl:apply-templates select="champ[@id='casert']" mode="trombino"/></td>
 					</tr>
 					<tr>
-						<td></td>
 						<td><xsl:apply-templates select="choix[@id='nation']" mode="trombino"/></td>
+						<td><xsl:apply-templates select="champ[@id='instrument']" mode="trombino"/></td>
 						<td></td>
 					</tr>
 				</table>

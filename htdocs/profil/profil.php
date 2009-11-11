@@ -44,8 +44,8 @@ if((isset($_REQUEST['image']))&&($_REQUEST['image'] == "true") && ($_REQUEST['im
 $message="";
 
 // Données sur l'utilisateur
-$DB_trombino->query("SELECT eleves.nom,prenom,surnom,mail,portable,login,promo,sections.nom,cie,piece_id,commentaire FROM eleves LEFT JOIN sections USING(section_id) WHERE eleve_id='{$_SESSION['user']->uid}'");
-list($nom,$prenom,$surnom,$mail,$portable,$login,$promo,$section,$cie,$casert,$commentaire) = $DB_trombino->next_row();
+$DB_trombino->query("SELECT eleves.nom,prenom,surnom,instrument,mail,portable,login,promo,sections.nom,cie,piece_id,commentaire FROM eleves LEFT JOIN sections USING(section_id) WHERE eleve_id='{$_SESSION['user']->uid}'");
+list($nom,$prenom,$surnom,$instrument,$mail,$portable,$login,$promo,$section,$cie,$casert,$commentaire) = $DB_trombino->next_row();
 
 if(isset($_POST['changer_frankiz'])) {
 	// Modification du mot de passe
@@ -90,7 +90,13 @@ if(isset($_POST['changer_frankiz'])) {
 	if(strlen($_POST['surnom']) < 2 && !empty($_POST['surnom']))
 		ajoute_erreur(ERR_SURNOM_TROP_PETIT);
 	if(strlen($_POST['surnom']) > 32)
-		ajoute_erreur(ERR_SURNOM_TROP_LONG);	
+		ajoute_erreur(ERR_SURNOM_TROP_LONG);
+
+	if(strlen($_POST['instrument']) < 2 && !empty($_POST['instrument']))
+		ajoute_erreur(ERR_INSTRUMENT_TROP_PETIT);
+	if(strlen($_POST['instrument']) > 32)
+	        ajoute_erreur(ERR_INSTRUMENT_TROP_LONG);
+
 	if($_POST['email'] == "$login@poly" || $_POST['email'] == "$login@poly.polytechnique.fr")
 		$_POST['email'] = "";
 	if(!ereg("^[a-zA-Z0-9_+.-]+@[a-zA-Z0-9.-]+$",$_POST['email']) && !empty($_POST['email']))
@@ -104,11 +110,12 @@ if(isset($_POST['changer_frankiz'])) {
 	
 	if(aucune_erreur()) {
 		$surnom = $_POST['surnom'];
+		$instrument = $_POST['instrument'];
 		$mail = $_POST['email'];
 		$portable = $_POST['portable'];
 		
-		$DB_trombino->query("UPDATE eleves SET portable='$portable',surnom='$surnom',mail=".(empty($mail)?"NULL":"'$mail'")." WHERE eleve_id='{$_SESSION['user']->uid}'");
-		$message.="<commentaire>L'email, le surnom et ton numéro de portable ont été modifiés.</commentaire>";
+		$DB_trombino->query("UPDATE eleves SET portable='$portable',surnom='$surnom',instrument='$instrument',mail=".(empty($mail)?"NULL":"'$mail'")." WHERE eleve_id='{$_SESSION['user']->uid}'");
+		$message.="<commentaire>L'email, le surnom, l'instrument et ton numéro de portable ont été modifiés.</commentaire>";
 	}
 	
 	//===================================
@@ -223,6 +230,12 @@ require "../include/page_header.inc.php";
 			echo "<warning>Il faut mettre un surnom plus long (au moins 2 caractères). Le surnom n'a pas été modifié.</warning>\n";
 		if(a_erreur(ERR_SURNOM_TROP_LONG))
 			echo "<warning>Il faut mettre un surnom moins long (au maximum 32 caractères). Le surnom n'a pas été modifié.</warning>\n";
+
+  		if(a_erreur(ERR_INSTRUMENT_TROP_PETIT))
+                        echo "<warning>Il faut mettre un instrument plus long (au moins 2 caractères). L'instrument n'a pas été modifié.</warning>\n";
+		if(a_erreur(ERR_INSTRUMENT_TROP_LONG))
+		        echo "<warning>Il faut mettre un instrument moins long (au maximum 32 caractères). L'instrument n'a pas été modifié.</warning>\n";
+								   
 		if(a_erreur(ERR_EMAIL_NON_VALIDE))
 			echo "<warning>L'email n'est pas valide. L'adresse email n'a pas été modifié.</warning>\n";
 		if(a_erreur(ERR_PORTABLE_TROP_PETIT))
@@ -262,6 +275,9 @@ require "../include/page_header.inc.php";
 		<champ id="section" titre="Section" valeur="<?php echo $section.' (compagnie '.$cie.')' ?>" modifiable="non"/>
 		<champ id="casert" titre="Kazert" valeur="<?php echo $casert ?>" modifiable="non"/>
 		<champ id="surnom" titre="Surnom" valeur="<?php echo $surnom ?>"/>
+
+		<champ id="instrument" titre="Instrument" valeur="<?php echo $instrument ?>"/>
+
 		<champ id="email" titre="Email" valeur="<?php echo empty($mail) ? $login.'@poly.polytechnique.fr' : $mail ?>"/>
 		<champ id="portable" titre="Portable" valeur="<?php echo $portable ?>"/>
 		<?php if (file_exists(DATA_DIR_LOCAL."trombino/a_valider_{$_SESSION['user']->uid}")): ?>

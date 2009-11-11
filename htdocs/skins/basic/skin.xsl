@@ -203,11 +203,14 @@
 				<xsl:attribute name="src">trombino.php?image=true&amp;login=<xsl:value-of select="@login"/>&amp;promo=<xsl:value-of select="@promo"/></xsl:attribute>
 			</img>
 		</td><td width="100%">
-			Surnom : <xsl:value-of select="@surnom"/><br />
+			Surnom : <xsl:value-of select="@surnom"/><br /> 
+		    
+		
 			Tel : <xsl:value-of select="@tel"/><br />
 			Kazert : <xsl:value-of select="@casert"/><br />
 			Mail : <xsl:value-of select="@mail"/><br />
 			Section : <xsl:value-of select="@section"/> (<xsl:value-of select="@cie"/>e Cie)<br />
+			Instrument : <xsl:value-of select="@instrument"/><br />
 			Binets : <xsl:apply-templates select="binet"/><br />
 		</td></tr>
 	</table>

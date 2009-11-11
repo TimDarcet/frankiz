@@ -52,6 +52,8 @@
 	</p>
 	<p class="nation">Nationalité: <xsl:value-of select="@nation"/>
 	</p>
+	<p class="instrument">Instrument: <xsl:value-of select="@instrument"/>
+	</p>
 	</div>
 	<div class="fkz_trombino_section">
 		<a>
@@ -171,19 +173,25 @@
 							<xsl:apply-templates select="champ[@id='casert']"/>
 						</td>
 					</tr>
-					<xsl:if test="count(champ) = 6">
+					<xsl:if test="count(champ) = 7">
 					<tr>
-						<td></td>	
 						<td>
 						<span class="gauche" >
 							Nationalité :
 						</span>
 							<xsl:apply-templates select="choix[@id='nation']"/>
 						</td>
-						<td></td>	
+						<td>
+						 <span class="gauche" >
+						        Instrument :
+						</span>
+							<xsl:apply-templates select="champ[@id='instrument']"/>
+						</td>
+						<td>
+						</td>
 					</tr>
 					</xsl:if>
-					<xsl:if test="count(champ) > 6">
+					<xsl:if test="count(champ) > 7">
                                         <tr>
                                                 <td>
                                                 <span class="gauche" >
@@ -222,6 +230,16 @@
 							Tol Admin :
 						</span>
 							<xsl:apply-templates select="choix[@id='admin']"/>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+                                                <td>
+						<span class="gauche" >
+							Instrument :
+						</span>	
+							<xsl:apply-templates select="champ[@id='instrument']"/>
 						</td>
 						<td></td>
 					</tr>

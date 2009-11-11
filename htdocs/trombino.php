@@ -70,6 +70,26 @@ if (isset($_GET['tdb']) && isset($_GET['promo'])){
 	exit;
 }
 
+if (isset($_GET['tolkzrt']) && isset($_GET['kzrt']) && is_numeric($_GET['kzrt'])){
+	$DB_trombino->query("
+	SELECT
+		eleves.nom, prenom, pieces.tel, eleves.portable, mail, eleves.piece_id, sections.nom  
+	FROM
+		eleves
+	LEFT JOIN sections ON
+		eleves.section_id = sections.section_id
+	LEFT JOIN pieces ON
+		eleves.piece_id = pieces.piece_id
+	WHERE
+	        eleves.piece_id='{$_GET['kzrt']}'
+	LIMIT 1
+	");
+	echo "Nom\tPrenom\tTel\tPortable\tMail\tPiece\tSection\n";
+	while (list($nom,$prenom,$tel,$portable,$mail,$piece,$section) = $DB_trombino->next_row())
+		echo "$nom\t$prenom\t$tel\t$portable\t$mail\t$piece\t$section\n";
+	exit;
+}
+
 require 'include/page_header.inc.php';
 ?><page id='trombino' titre='Frankiz : Trombino'>
 <?php
@@ -107,7 +127,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 	$typeRecherchePromo = RECHERCHE_HABITE_SUR_LE_PLATAL;
 
 	$champs = '
-		eleves.eleve_id, eleves.nom, prenom, surnom, nation, login, mail, polyorg,
+		eleves.eleve_id, eleves.nom, prenom, surnom, instrument, nation, login, mail, polyorg,
 		DATE_FORMAT(date_nais, "%d/%m/%Y"),
 		eleves.piece_id, pieces.tel, eleves.portable,
 		eleves.commentaire, promo, cie, eleves.section_id, sections.nom';
@@ -148,7 +168,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 		$typeRecherchePromo = RECHERCHE_PROMOS_ACTUELLES;
 	} elseif (isset($_REQUEST['cherchertol'])) {
 		// Création de la requête si lien_tol appelle
-		$where_like = 'CAST(CONCAT_WS(\' \', eleves.nom, prenom, surnom, nation, login, promo, eleves.piece_id, pieces.tel) AS CHAR)';
+		$where_like = 'CAST(CONCAT_WS(\' \', eleves.nom, prenom, surnom, instrument, nation, login, promo, eleves.piece_id, pieces.tel) AS CHAR)';
 		$typeRecherchePromo = RECHERCHE_HABITE_SUR_LE_PLATAL;
 		$quick = explode(' ', $_REQUEST['q_search']);
 		if (count($quick) == 0) {
@@ -174,6 +194,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 			'nom'		=>	'eleves.nom',
 			'prenom'	=>	'prenom',
 			'surnom'	=>	'surnom',
+                        'instrument'    =>      'instrument',
 			'nation'	=>	'nation',
 			'mail'		=>	'mail');
 
@@ -186,6 +207,7 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 			'nom'		=>	RECHERCHE_HABITE_SUR_LE_PLATAL,
 			'prenom'	=>	RECHERCHE_HABITE_SUR_LE_PLATAL,
 			'surnom'	=>	RECHERCHE_HABITE_SUR_LE_PLATAL,
+			'instrument'    =>      RECHERCHE_HABITE_SUR_LE_PLATAL,
 			'nation'	=>	RECHERCHE_HABITE_SUR_LE_PLATAL,
 			'mail'		=>	RECHERCHE_HABITE_SUR_LE_PLATAL);
 
@@ -316,12 +338,12 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 		
 		// Génération des fiches des élèves
 		while (list(
-			$eleve_id, $nom, $prenom, $surnom, $nation, $login, $mail, $polyorg,
+			$eleve_id, $nom, $prenom, $surnom, $instrument, $nation, $login, $mail, $polyorg,
 			$date_nais,
 			$piece_id, $tel, $portable,
 			$commentaire, $promo, $cie, $section_id, $section) = $DB_trombino->next_row()) {
 
-			echo "<eleve nom='$nom' prenom='$prenom' promo='$promo' login='$login' surnom='$surnom' nation='$nation' polyorg='$polyorg' date_nais='$date_nais' "
+			echo "<eleve nom='$nom' prenom='$prenom' promo='$promo' login='$login' surnom='$surnom' instrument='$instrument' nation='$nation' polyorg='$polyorg' date_nais='$date_nais' "
 				."tel='$tel' portable='$portable' mail='".(empty($mail)?"$login@poly.polytechnique.fr":$mail)."' casert='$piece_id' "
 				."section='$section' cie='$cie'>\n";
 
@@ -412,6 +434,8 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 		<champ titre="Nom" id="nom" valeur="<?php echo empty($_REQUEST['nom']) ? '' : $_REQUEST['nom']; ?>" />
 		<champ titre="Prénom" id="prenom" valeur="<?php echo empty($_REQUEST['prenom']) ? '' : $_REQUEST['prenom']; ?>" />
 		<champ titre="Surnom" id="surnom" valeur="<?php echo empty($_REQUEST['surnom']) ? '' : $_REQUEST['surnom']; ?>" />
+	       
+	        <champ titre="Instrument" id="instrument" valeur="<?php echo empty($_REQUEST['instrument']) ? '' : $_REQUEST['instrument']; ?>" />
 
 		<choix titre="Nation" id="nation" type="combo" valeur="<?php echo empty($_REQUEST['nation']) ? '' : $_REQUEST['nation']; ?>">
 			<option titre="Toutes" id=""/>
@@ -474,5 +498,6 @@ if (!empty($_GET['image']) && ($_GET['image'] === 'show')){
 	</formulaire>
 	<lien url="trombino.php?anniversaire_week&amp;depart=<?php echo date("Y-m-d"); ?>" titre="Anniversaires à souhaiter dans la semaine"/><br/>
 	<lien url="wikix/Num%C3%A9ros_utiles" titre="Numéros Utiles"/>
+
 </page>
 <?php require "include/page_footer.inc.php" ?>
