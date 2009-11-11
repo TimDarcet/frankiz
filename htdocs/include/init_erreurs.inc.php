@@ -125,7 +125,7 @@ function affiche_erreurs_php() {
 		if($_ERREUR_FATAL) {
 			echo "<warning>Une erreur inconnue est survenue.\n"
 				." Pour informer le Webmestre de cette erreur et expliquer la manipulation qui l'a déclenchée,"
-				." cliquez <a href=\"mailto:".MAIL_WEBMESTRE."?Subject=%5BFrankiz%20Erreur%20$timestamp%5D%20\">ici</a>.</warning>\n";
+				." cliquez <a href=\"mailto:".MAIL_ROOT."?Subject=%5BFrankiz%20Erreur%20$timestamp%5D%20\">ici</a>.</warning>\n";
 			exit;
 		}
 	}
