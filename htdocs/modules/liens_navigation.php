@@ -41,7 +41,30 @@
 	<?php else: ?>
 		<lien id="siteseleves" titre="Sites élèves" url="siteseleves.php"/>
 	<?php endif; ?>
-	<lien id="meteo" titre="Météo" url="meteo.php" key="m"/>
+	<lien id="agenda" titre="Agenda" url="http://frankiz.polytechnique.fr/assos/kes/agenda/" />
+	<lien id="radio" titre="X-Ray" url="http://binets.eleves.polytechnique.fr/xray/" />
+<!--	<script type="text/javascript">
+	function playPause() {
+		document.getElementById('flashPlayer').playpause(1);
+		if(document.getElementById('status').value == 0) { 
+			document.getElementById('button').src = "pause.jpg";
+			document.getElementById('status').value = 1;
+		}
+		else {
+			document.getElementById('button').src = "play.jpg";
+			document.getElementById('status').value = 0;
+		}
+	}
+	</script>
+	<object id="flashPlayer" type="application/x-shockwave-flash" data="minicaster.swf" width="1" height="1">
+	  <param name="movie" value="minicaster.swf" />
+	    <param name="wmode" value="transparent" />
+	      <param name="allowScriptAccess" value="always" />
+	      </object>
+	      <input type="hidden" name="status" id="status" value="0" />
+
+	      <a href="#" onClick="playPause(); return false;"><img src="play.jpg" id="button" style="outline: 0;" /></a>
+-->
 </module>
 
 <?php if(est_authentifie(AUTH_MINIMUM)): ?>
