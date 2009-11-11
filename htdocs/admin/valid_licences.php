@@ -40,7 +40,7 @@ require_once BASE_LOCAL."/include/page_header.inc.php";
 ?>
 <page id="valid_licences" titre="Frankiz : gestion des licences Microsoft">
 <?php
-$log=array('visualstudio' => 'Visual Studio .NET','winxp' => 'Windows XP Professionnel', 'winvista' => 'Windows Vista Business','2k3serv' => 'Windows Serveur 2003','2k3access'=>'Access 2003','2k3onenote'=>'One Note 2003','2k3visiopro'=>'Visio Professionnel 2003','win2k'=>'Windows 2000 Professionnel');
+$log=array('visualstudio' => 'Visual Studio .NET','winxp' => 'Windows XP Professionnel','winvista' => 'Windows Vista Business','win7' => 'Windows Seven Professional','2k3serv' => 'Windows Serveur 2003','2k3access'=>'Access 2003','2k3onenote'=>'One Note 2003','2k3visiopro'=>'Visio Professionnel 2003','win2k'=>'Windows 2000 Professionnel');
 //on teste si la cle entrée à la main a une forme standard...
 function test_cle($key){
 	$key=explode("-",$key);
@@ -57,7 +57,7 @@ function test_cle($key){
 	return false;
 }
 
-$DB_msdnaa->query("LOCK TABLES valid_licence WRITE ,cles_winxp WRITE, cles_winvista WRITE,cles_2k3serv WRITE,cles_libres WRITE,cles_2k3access WRITE, cles_2k3onenote WRITE, cles_2k3visiopro WRITE, cles_admin WRITE");
+$DB_msdnaa->query("LOCK TABLES valid_licence WRITE ,cles_winxp WRITE, cles_win7 WRITE, cles_winvista WRITE,cles_2k3serv WRITE,cles_libres WRITE,cles_2k3access WRITE, cles_2k3onenote WRITE, cles_2k3visiopro WRITE, cles_admin WRITE");
 $DB_msdnaa->query("SET AUTOCOMMIT=0");
 
 foreach ($_POST AS $keys => $val){
@@ -276,9 +276,10 @@ if(isset($_POST['effacer'])&&$_POST['login']!=""){
 		</choix>
 		<champ titre="Licence" id="cle" valeur=""/>
 		<choix titre="Logiciel" id="logiciel" type="combo" valeur="">
-			<option titre="Windows XP Pro" id="winxp"/>
+			<option titre="Windows Seven Professional (32 et 64 bits)" id="win7"/>
+			<option titre="Windows XP Pro" id="winxp"/>			
 			<option titre="Windows Vista Business" id="winvista"/>
-           		<option titre="Windows 2003 Serveur" id="2k3serv"/>
+            <option titre="Windows 2003 Serveur" id="2k3serv"/>
 			<option titre="Access 2003" id="2k3access"/>
 			<option titre="One Note 2003" id="2k3onenote"/>
 			<option titre="Visio 2003 Professionnel" id="2k3visiopro"/>
@@ -370,8 +371,9 @@ if(isset($_POST['update'])&&is_readable($_FILES['file']['tmp_name'])){
 		</choix>
 		<fichier id="file" titre="Nouvelles Licences" taille="200000"/>
 		<choix titre="Logiciel" id="logiciel" type="combo" valeur="">
+			<option titre="Windows Seven Professional (32 et 64 bits)" id="win7"/>
 			<option titre="Windows XP Pro" id="winxp"/>
-            		<option titre="Windows Vista Business" id="winvista"/>
+            <option titre="Windows Vista Business" id="winvista"/>
 			<option titre="Windows 2003 Serveur" id="2k3serv"/>
 			<option titre="Access 2003" id="2k3access"/>
 			<option titre="One Note 2003" id="2k3onenote"/>
