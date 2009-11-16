@@ -109,7 +109,7 @@ class User extends PlUser
                         LEFT JOIN   formations AS f ON (f.formation_id = a.main_formation)
                         LEFT JOIN   studies AS s ON (s.formation_id = a.main_formation AND s.uid = a.uid)
                         LEFT JOIN   skins AS sk ON (a.skin = sk.skin_id)
-                            WHERE  a.uid = {?}", $this->user_id);
+                            WHERE   a.uid = {?}", $this->user_id);
         $this->fillFromArray($res->fetchOneAssoc());
     }
 
