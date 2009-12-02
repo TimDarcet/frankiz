@@ -42,6 +42,7 @@
 		<lien id="siteseleves" titre="Sites élèves" url="siteseleves.php"/>
 	<?php endif; ?>
 	<lien id="agenda" titre="Agenda" url="http://frankiz.polytechnique.fr/assos/kes/agenda/" />
+	<lien id="jtx" titre="JTX" url="http://jtx" />
 	<lien id="radio" titre="X-Ray" url="http://binets.eleves.polytechnique.fr/xray/" />
 <!--	<script type="text/javascript">
 	function playPause() {
