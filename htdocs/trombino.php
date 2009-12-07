@@ -76,7 +76,7 @@ if (isset($_GET['tolip']) && isset($_GET['ip']) && strlen($_GET['ip'])<=15){
 	while (list($kzrt) = $DB_admin->next_row()){
 		$DB_trombino->query("
 		SELECT
-			eleves.nom, prenom, surnom, pieces.tel, eleves.portable, mail, eleves.piece_id, sections.nom, eleves.promo
+			'{$_GET['ip']}', eleves.nom, prenom, surnom, pieces.tel, eleves.portable, mail, eleves.piece_id, sections.nom, eleves.promo
 		FROM
 			eleves
 		LEFT JOIN sections ON
@@ -87,9 +87,9 @@ if (isset($_GET['tolip']) && isset($_GET['ip']) && strlen($_GET['ip'])<=15){
 		        eleves.piece_id='{$kzrt}'
 		LIMIT 1
 		");
-		echo "Nom\tPrenom\nSurnom\tTelephone\tPortable\tE-mail\tPiece\tSection\tPromo\n";
-		while (list($nom,$prenom,$surnom,$tel,$portable,$mail,$piece,$section,$promo) = $DB_trombino->next_row())
-			echo "$nom\t$prenom\t$surnom\t$tel\t$portable\t$mail\t$piece\t$section\t$promo\n";
+		echo "IP\tNom\tPrenom\nSurnom\tTelephone\tPortable\tE-mail\tPiece\tSection\tPromo\n";
+		while (list($ip,$nom,$prenom,$surnom,$tel,$portable,$mail,$piece,$section,$promo) = $DB_trombino->next_row())
+			echo "$ip\t$nom\t$prenom\t$surnom\t$tel\t$portable\t$mail\t$piece\t$section\t$promo\n";
 		
 	}
 	exit;
