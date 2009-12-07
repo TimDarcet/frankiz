@@ -70,23 +70,28 @@ if (isset($_GET['tdb']) && isset($_GET['promo'])){
 	exit;
 }
 
-if (isset($_GET['tolkzrt']) && isset($_GET['kzrt']) && is_numeric($_GET['kzrt'])){
-	$DB_trombino->query("
-	SELECT
-		eleves.nom, prenom, pieces.tel, eleves.portable, mail, eleves.piece_id, sections.nom  
-	FROM
-		eleves
-	LEFT JOIN sections ON
-		eleves.section_id = sections.section_id
-	LEFT JOIN pieces ON
-		eleves.piece_id = pieces.piece_id
-	WHERE
-	        eleves.piece_id='{$_GET['kzrt']}'
-	LIMIT 1
-	");
-	echo "Nom\tPrenom\tTel\tPortable\tMail\tPiece\tSection\n";
-	while (list($nom,$prenom,$tel,$portable,$mail,$piece,$section) = $DB_trombino->next_row())
-		echo "$nom\t$prenom\t$tel\t$portable\t$mail\t$piece\t$section\n";
+if (isset($_GET['tolip']) && isset($_GET['ip']) && strlen($_GET['ip'])<=15){
+
+	$DB_admin->query("SELECT piece_id FROM prises WHERE ip = '{$_GET['ip']}'");
+	while (list($kzrt) = $DB_admin->next_row()){
+		$DB_trombino->query("
+		SELECT
+			eleves.nom, prenom, surnom, pieces.tel, eleves.portable, mail, eleves.piece_id, sections.nom, eleves.promo
+		FROM
+			eleves
+		LEFT JOIN sections ON
+			eleves.section_id = sections.section_id
+		LEFT JOIN pieces ON
+			eleves.piece_id = pieces.piece_id
+		WHERE
+		        eleves.piece_id='{$kzrt}'
+		LIMIT 1
+		");
+		echo "Nom\tPrenom\nSurnom\tTelephone\tPortable\tE-mail\tPiece\tSection\tPromo\n";
+		while (list($nom,$prenom,$surnom,$tel,$portable,$mail,$piece,$section,$promo) = $DB_trombino->next_row())
+			echo "$nom\t$prenom\t$surnom\t$tel\t$portable\t$mail\t$piece\t$section\t$promo\n";
+		
+	}
 	exit;
 }
 
