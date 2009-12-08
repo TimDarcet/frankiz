@@ -87,7 +87,7 @@ if (isset($_GET['tolip']) && isset($_GET['ip']) && strlen($_GET['ip'])<=15){
 		        eleves.piece_id='{$kzrt}'
 		LIMIT 1
 		");
-		echo "IP\tNom\tPrenom\nSurnom\tTelephone\tPortable\tE-mail\tPiece\tSection\tPromo\n";
+		echo "IP\tNom\tPrenom\tSurnom\tTelephone\tPortable\tE-mail\tPiece\tSection\tPromo\n";
 		while (list($ip,$nom,$prenom,$surnom,$tel,$portable,$mail,$piece,$section,$promo) = $DB_trombino->next_row())
 			echo "$ip\t$nom\t$prenom\t$surnom\t$tel\t$portable\t$mail\t$piece\t$section\t$promo\n";
 		
