@@ -37,6 +37,7 @@ class FrankizGlobals extends PlGlobals
     public $dbuser             = 'conf';
     public $dbpwd              = 'conf';
     public $dbcharset          = 'utf8';
+    public $dbprefix           = '';
 
     /** default skin */
     public $skin;
