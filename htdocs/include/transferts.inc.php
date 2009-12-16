@@ -33,15 +33,9 @@
 */
 function unzip($file,$dir,$del, $user = ""){
 	if ($user) {
-		$sudo = "sudo -u $user" ;
+		$sudo = "/usr/bin/sudo -u $user" ;
 	} else {
 		$sudo = "" ;
-	}
-
-	exec ("$sudo mkdir -p $dir 2>&1", $text, $ret);
-
-	if ($ret != 0) {
-		return false;
 	}
 
 	if (eregi("(.zip)$",basename($file))) {
@@ -65,6 +59,7 @@ function unzip($file,$dir,$del, $user = ""){
 			if($del = true) unlink($file);
 	}
 	else return false;
+	return true;
 }
 
 /*
@@ -89,17 +84,17 @@ function zip($file,$dir,$type){
 	Supprime un répertoire complet et renvoit true lorsque tout c'est bien passé
 */
 function deldir($dir, $user = "") {
-	if ($user) {
-		$sudo = "sudo -u $user";
+	if ($user != "") {
+		$sudo = "/usr/bin/sudo -u $user";
 	} else {
 		$sudo = "";
 	}
 
-        if (!file_exists($dir)) {
+	if (!file_exists($dir)) {
 		return false;
 	}
 
-	exec ("$sudo rm -rf $dir", $dummy, $ret);
+	exec ("$sudo /bin/rm -rf $dir", $dummy, $ret);
 	return $ret == 0;
 }
 

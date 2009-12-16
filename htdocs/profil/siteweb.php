@@ -40,14 +40,19 @@ list($nom,$prenom,$surnom,$mail,$login,$promo,$section,$cie,$casert) = $DB_tromb
 if (isset($_POST['up_page'])) {
 	if ((isset($_FILES['file'])) &&($_FILES['file']['name']!='')) {
 		$chemin = BASE_PAGESPERSOS."$login-$promo/" ;
-		deldir($chemin, WEBPERSO_USER);
-		
+		if (! deldir($chemin, WEBPERSO_USER)) {
+			$message .= "<commentaire>Nous avons rencontré une erreur dans la suppression de ton ancien site.</commentaire>";
+		}
+
 		$filename = "/tmp/$login-$promo-".$_FILES['file']['name'];
 		move_uploaded_file($_FILES['file']['tmp_name'], $filename);
 		chmod($filename, 0640);
 		chgrp($filename, WEBPERSO_GROUP);
-		unzip($filename, $chemin , true, WEBPERSO_USER);
-		$message .= "<commentaire>Ton site personnel vient d'être mis à jour.</commentaire>" ;
+		if (unzip($filename, $chemin , true, WEBPERSO_USER)) {
+			$message .= "<commentaire>Ton site personnel vient d'être mis à jour.</commentaire>" ;
+		} else {
+			$message .= "<commentaire>Nous avons rencontré un problème dans la décompression du fichier que tu as soumis.</commentaire>";
+		}
 	}
 }
 if(isset($_REQUEST['download_type'])){
