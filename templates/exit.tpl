@@ -24,4 +24,22 @@
     Déconnexion effectuée
 </h1>
 
+{if $smarty.cookies.BRhash}
+
+<p>Tu as activé les cookies, donc cette déconnexion ne t'empêche pas d'utiliser la plupart des fonctionnalités du site.</p>
+<p>
+Tu peux donc aussi te <a href='exit/forget'>déconnecter complètement</a>
+</p>
+
+<p>En outre, pour faciliter ta prochaine connexion, ton adresse email est mémorisée par ton navigateur. Si tu utilises un ordinateur public ou que tu désires l'utiliser, tu peux <a href='exit/forgetall'>supprimer cette information et te déconnecter complètement</a>
+</p>
+
+{elseif $smarty.cookies.BRuid}
+<p>
+Ton adresse email est toujours en mémoire dans ton navigateur afin de faciliter ta prochaine
+connexion. Si tu utilises un ordinateur public ou que tu désires l'effacer, tu peux
+<a href='exit/forgetuid'>supprimer cette information</a>.
+</p>
+{/if}
+
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
