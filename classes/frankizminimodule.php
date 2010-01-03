@@ -92,7 +92,7 @@ abstract class FrankizMiniModule
     {
         global $globals;
         $cls=ucfirst($name)."MiniModule";
-        $path=$globals->spoolroot . "/modules/minimodules/" . strtolower($name) . ".php";
+        $path=$globals->spoolroot . "/minimodules/" . strtolower($name) . ".php";
         include_once $path;
         call_user_func(array($cls, 'init'));
     }
