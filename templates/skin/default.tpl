@@ -55,9 +55,8 @@
 	</p>
       </div>
       <div class="fkz_gauche">
+         {include file="skin/common.menu.tpl"}
          {include file="minimodule.tpl" module_name="activites"}
-         {include file="minimodule.tpl" module_name="liensnavigation"}
-         {include file="minimodule.tpl" module_name="liensprofil"}
          {include file="minimodule.tpl" module_name="lienspropositions"}
 {* 	{include file="minimodule.tpl" module_name="liens_perso"} *}
 {* 	{include file="minimodule.tpl" module_name="liens_contacts"} *}

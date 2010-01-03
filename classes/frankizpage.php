@@ -30,7 +30,7 @@ class FrankizPage extends PlPage
         parent::__construct();
         FrankizMiniModule::register_modules();
         // Set the default page
-        $this->changeTpl('annonces.tpl');
+        $this->changeTpl('frankiz.tpl');
     }
     
     private function load_skin()

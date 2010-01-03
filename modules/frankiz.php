@@ -25,8 +25,15 @@ class FrankizModule extends PlModule
     function handlers()
     {
         return array(
+            'accueil'   => $this->make_hook('accueil', AUTH_PUBLIC),
             'exit'      => $this->make_hook('exit', AUTH_PUBLIC),
         );
+    }
+
+    function handler_accueil(&$page)
+    {
+        $page->assign('title', 'Accueil');
+        $page->changeTpl('frankiz/accueil.tpl');
     }
 
     function handler_exit(&$page, $level = null)
