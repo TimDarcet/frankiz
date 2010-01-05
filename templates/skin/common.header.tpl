@@ -29,9 +29,6 @@
 	<link href="mailto:web@fkz" rev="made" />
 	<link rel="shortcut icon" href="favicon.ico" />
 	<link rel="search" type="application/opensearchdescription+xml" href="opensearch.xml.php" title="Trombino" />
-{*	{foreach from=$minimodules item=mini}*}
-{*	  {$mini->print_template_header()}*}
-{*	{/foreach}*}
-</head>
+    {include file='../core/templates/plpage.header.tpl'}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
