@@ -60,7 +60,7 @@ class FrankizPage extends PlPage
         $this->assign('minimodules', FrankizMiniModule::get_minimodules());
         $this->assign('logged', S::logged());
         //Run with the default skin disposition (i.e content disposition)
-        $this->_run("skin/{$skin}.tpl");
+        $this->_run("skin/{$skin}/frankiz.tpl");
     }
 }
 

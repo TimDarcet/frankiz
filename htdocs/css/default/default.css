@@ -259,33 +259,33 @@ span.fkz_annonces_vieux {
 	background-color: #e8e7f3;
 }
 
-.fkz_page {
+#center {
 	padding-top:40px;
 	clear: both;
 	width: 100%;     
 }
 
-
-.fkz_gauche {
-        width: 20%;
-        float: left;
-	font-size: 9pt;
-	margin-top: 0.5%;
+#navigation {
+    width: 20%;
+    float: left;
+    font-size: 9pt;
+    margin-top: 0.5%;
 }
 
 .fkz_droite {
-        float: right;
-        width: 20%;
-	font-size: 9pt;
-	margin-top: 0.5%;
+    float: right;
+    width: 20%;
+    font-size: 9pt;
+    margin-top: 0.5%;
+    /*display:none;*/
 }
 
-.fkz_centre {
-	font-size: 9pt;
-	position: absolute;
-	left: 20.5%;
-	width: 59%;
-	margin-top: 0.5%;
+#module {
+    font-size: 9pt;
+    position: absolute;
+    left: 20.5%;
+    width: 59%;
+    margin-top: 0.5%;
 }
 
 /* Stats */
@@ -410,6 +410,121 @@ div.formulaire span.boutons{
 .fkz_module_corps div.formulaire span.droite,.fkz_module_corps div.formulaire span.gauche{
 	display:block;
 }
+
+.activite {
+    margin-bottom:2px;
+}
+
+.activite .content{
+    display:none;
+}
+
+.activite:hover .content{
+    display:block;
+}
+
+#activities_filters {
+    position:relative;
+    width:48%;
+    margin-bottom:18px;
+    border:1px black solid;
+    background-color:#BBD1D2;
+}
+
+#activities_details {
+    float:right;
+    width:48%;
+    height:auto;
+    border:1px black solid;
+    background-color:#BBD1D2;
+}
+
+#activities_calendar {
+    position:relative;
+    width:100%;
+    overflow:hidden;
+    margin:0;
+    padding:0;
+    background-color:white;
+    border:1px solid black;
+}
+
+.scroller {
+    position:relative;
+    width:100%;
+    margin:0;
+    padding:0;
+}
+
+#activities_calendar table{
+    position:relative;
+    top:0;
+    left:0;
+    width:700%;
+    margin:0;
+    padding:0;
+    border-collapse: collapse;
+}
+
+#activities_calendar tr{
+    margin:0;
+    padding:0;
+}
+
+#activities_calendar thead th{
+    width:14.29%;
+    height:40px;
+    margin:0;
+    padding:0;
+    border:1px solid black;
+    border-top:0;
+    background-color:gray;
+}
+
+#activities_calendar tbody tr{
+    height:50px;
+}
+
+#activities_calendar tbody tr td{
+    border-left:1px solid black;
+    border-right:1px solid black;
+}
+
+#activities_calendar div.holder{
+    position:absolute;
+    top:40px;
+    left:0;
+    width:700%;
+    margin:0;
+    padding:0;
+}
+
+#activities_calendar div.line{
+    position:relative;
+    top:0px;
+    width:100%;
+    height:52px;
+    overflow:hidden;
+    margin-bottom:-1px;
+}
+
+#activities_calendar div.line div.activity_instance{
+    position:absolute;
+    top:0;
+    height:50px;
+    min-width:80px;
+    border:1px black solid;
+    background-color:#BBD1D2;
+}
+
+#activities_calendar div.line div.activity_instance div.timing{
+    text-align:left;
+}
+
+#activities_calendar div.line div.activity_instance div.timing span{
+    float:right;
+}
+
 /* Formulaires *
 
 .fkz_page_titre{display:none;}

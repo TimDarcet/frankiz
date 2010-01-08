@@ -20,22 +20,6 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if !$session->est_auth() }
-<link rel="navigation" href="login/" title="Se connecter" />
-{/if}
-<link rel="navigation" href="annonces/" title="Annonces" />
-<link rel="navigation" href="activites/" title="Activités" />
-{if $smart.session.auth >= AUTH_INTERNE }
-<link rel="navigation" href="tol/" title="Trombino" />
-{/if}
-<link rel="navigation" href="xshare.php" title="Télécharger" />
-<link rel="navigation" href="http://wikix.polytechnique.org" title="WikiX" />
-<link rel="navigation" href="tol/binets/" title="Binets" />
-{if $smart.session.auth >= AUTH_INTERNE }
-<link rel="navigation" href="http://perso.frankiz/" title="Sites élèves" />
-{else}
-<link rel="navigation" href="siteseleves.php" title="Sites élèves" />
-{/if}
-
+    <link rel="stylesheet" type="text/css" href="css/default/default.css" media="all"/>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

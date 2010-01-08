@@ -20,15 +20,24 @@
 {*                                                                        *}
 {**************************************************************************}
 
-    <link rel="stylesheet" type="text/css" href="css/dev.css" />
-    <link rel="alternate" type="application/rss+xml" title="Version RSS" href="rss_annonces.php" />
-    <link rel="glossary" title="Vocabulaire" href="vocabulaire.php" />
-    <link rel="help" title="Contact" href="contact.php"/>
-    <link rel="index" href="index.php"/>
-    <link rel="start" href="index.php"/>
-    <link href="mailto:web@fkz" rev="made" />
-    <link rel="shortcut icon" href="favicon.ico" />
-    <link rel="search" type="application/opensearchdescription+xml" href="opensearch.xml.php" title="Trombino" />
-    {include file='../core/templates/plpage.header.tpl'}
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>Frankiz : {$title}</title>
+        <base href="{$globals->baseurl}/" />
+        <link rel="stylesheet" type="text/css" href="css/dev.css" />
+        <link rel="alternate" type="application/rss+xml" title="Version RSS" href="rss_annonces.php" />
+        <link rel="glossary" title="Vocabulaire" href="vocabulaire.php" />
+        <link rel="help" title="Contact" href="contact.php"/>
+        <link rel="index" href="index.php"/>
+        <link rel="start" href="index.php"/>
+        <link href="mailto:web@fkz" rev="made" />
+        <link rel="shortcut icon" href="favicon.ico" />
+        <link rel="search" type="application/opensearchdescription+xml" href="opensearch.xml.php" title="Trombino" />
+        {include file='../core/templates/plpage.header.tpl'}
+        {if $more} {include file=$more} {/if}
+    </head>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
