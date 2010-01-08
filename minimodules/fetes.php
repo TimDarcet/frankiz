@@ -21,35 +21,26 @@
 
 class FetesMiniModule extends FrankizMiniModule
 {
-	public static function init()
-	{
-		FrankizMiniModule::register('fetes', new FetesMiniModule(), 'run', AUTH_PUBLIC);
-	}
+        public static function init()
+        {
+                FrankizMiniModule::register('fetes', new FetesMiniModule(), 'run', AUTH_PUBLIC);
+        }
 
-	public function run()
-	{
-		global $page, $DB_trombino;
-
-/*		$DB_trombino->query("SELECT prenom 
-		                       FROM fetes 
-				      WHERE MONTH(date) = MONTH(NOW()) AND DAYOFMONTH(date) = DAYOFMONTH(NOW())");*/
-
-		$fetes = array('xel');
-/*		while (list($prenom) = $DB_trombino->next_row())
-			$fetes[] = $prenom;*/
-	
-		$this->assign("fetes", $fetes);
-		$this->tpl = "minimodules/fetes/fetes.tpl";
-		$this->titre = "Fêtes du jour";
-	}
-
-	public static function check_auth()
-	{
-		return S::checkAuth(AUTH_INTERNE);
-	}
+        public function run()
+        {
+                $today = date('d');
+                $month = date('m');
+                $res = XDB::query("
+                        SELECT name
+                        FROM days
+                        WHERE day=$today AND month=$month
+                        ");
+                $fetes = $res->fetchColumn(0);
+                $this->assign("fetes", $fetes);
+                $this->tpl = "minimodules/fetes/fetes.tpl";
+                $this->titre = "Fêtes du jour";
+        }
 }
-//FrankizMiniModule::register_module('fetes', 'FetesMiniModule', "Fetes du jour");
-
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
 ?>
