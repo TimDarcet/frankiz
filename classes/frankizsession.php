@@ -40,10 +40,10 @@ class FrankizSession extends PlSession
         parent::__construct();
 
         // Set auth as AUTH_INTERNE when inside and had weaker auth
-        if(S::i('auth') < AUTH_INTERNE && ip_internal()){
+        if(S::i('auth') < AUTH_INTERNE && IP::is_internal()){
             S::set('auth', AUTH_INTERNE);
         }
-        if(S::i('auth') < AUTH_ELEVE && ip_eleve()){
+        if(S::i('auth') < AUTH_ELEVE && (IP::is_casert() || IP::is_local())){
             S::set('auth', AUTH_ELEVE);
         }
     }
