@@ -19,15 +19,13 @@
 {*  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA               *}
 {*                                                                        *}
 {**************************************************************************}
-
-{foreach from=$minimodule.anniversaires key=promo item=anniversaires_promo}
-{if count($anniversaires_promo)}
-<a href='tol/?anniversaire&amp;promo={$promo}'>{$promo}</a>: 
-{/if}
-{foreach from=$anniversaires_promo item=anniv name=foo}
-{$anniv.prenom} {$anniv.nom}{if !$smarty.foreach.foo.last}, {/if}
+{foreach from=$minimodule.anniversaires item=annivs key=promo name=looppromos}
+  {$promo} :
+  {foreach from=$annivs item=anniv name=loopnames}
+    {$anniv.firstname} {$anniv.lastname}{if !$smarty.foreach.loopnames.last}, {/if}
+  {/foreach}
+  {if !$smarty.foreach.looppromos.last}
+    <br />
+  {/if}
 {/foreach}
-<br />
-{/foreach}
-
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

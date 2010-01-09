@@ -47,7 +47,7 @@
              {* {include file="minimodule.tpl" module_name="liens_contacts"} *}
              {* {include file="minimodule.tpl" module_name="liens_utiles"} *}
              {* {include file="minimodule.tpl" module_name="stats"} *}
-             {* {include file="minimodule.tpl" module_name="anniversaires"} *}
+                {include file="minimodule.tpl" module_name="anniversaires"}
              {* {include file="minimodule.tpl" module_name="virus"} *}
                 <p class="valid">
                     <a href="http://validator.w3.org/check?uri=referer">

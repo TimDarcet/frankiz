@@ -65,7 +65,7 @@
 {*      {include file="minimodule.tpl" module_name="stats"} *}
       </div>
       <div class="fkz_centre">
-{*      {include file="minimodule.tpl" module_name="anniversaires"} *}
+        {include file="minimodule.tpl" module_name="anniversaires"}
 {*      {include file="minimodule.tpl" module_name="virus"} *}
         {include file="content.tpl"}
       </div>

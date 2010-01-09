@@ -22,39 +22,35 @@
 class AnniversairesMiniModule extends FrankizMiniModule
 {
 
-	public static function init()
-	{
-		FrankizMiniModule::register('anniversaires', new AnniversairesMiniModule(), 'run', AUTH_PUBLIC);
-	}
+        public static function init()
+        {
+                FrankizMiniModule::register('anniversaires', new AnniversairesMiniModule(), 'run', AUTH_INTERNE);
+        }
 
-	public function run()
-	{
-		global $DB_web, $DB_trombino;
+        public function run()
+        {
 
-	/*	$DB_web->query("SELECT valeur FROM parametres WHERE nom='lastpromo_oncampus'");
-		list($promo_temp) = $DB_web->next_row();
+                $today= date('Y-m-d');
+                $res = XDB::query("SELECT  a.firstname, a.lastname, s.promo
+                                     FROM  account AS a
+                               INNER JOIN  studies AS s ON  a.uid=s.uid
+                                    WHERE  a.next_birthday=CURDATE() AND a.on_platal=1
+                                           AND s.formation_id=1
+                                 ORDER BY  s.promo");
+                $raw_annivs = $res->fetchAllAssoc();
+                $anniversaires = array();
+                foreach ($raw_annivs as $anniv) {
+                    $promo = $anniv['promo'];
+                    if (!array_key_exists($promo, $anniversaires)) {
+                        $anniversaires[$promo] = array();
+                    }
+                    $anniversaires[$promo][] = $anniv;
+                }
+                $this->assign('anniversaires', $anniversaires);
+                $this->tpl = "minimodules/anniversaires/anniversaires.tpl";
+                $this->titre = "Joyeux anniversaire!";
+        }
 
-		$DB_trombino->query("SELECT nom,prenom,surnom,promo,mail,login 
-				       FROM eleves 
-				      WHERE MONTH(date_nais) = MONTH(NOW()) AND 
-				            DAYOFMONTH(date_nais) = DAYOFMONTH(NOW()) AND 
-					    (promo=$promo_temp OR promo=($promo_temp-1)) 
-			           ORDER BY promo;");
-	*/
-		$promo_temp = 42;
-		$anniversaires = array($promo_temp-1 => array(),
-				       $promo_temp   => array());
-	/*	while(list($nom, $prenom, $surnom, $promo, $mail, $login) = $DB_trombino->next_row())
-			$anniversaires[$promo][] = array('nom'    => $nom,
-							 'prenom' => $prenom,
-							 'surnom' => $surnom,
-							 'mail'   => $mail,
-							 'login'  => $login); 
-	*/	
-		$this->assign('anniversaires', $anniversaires);
-		$this->tpl = "minimodules/anniversaires/anniversaires.tpl";
-		$this->titre = "Joyeux anniversaire!";
-	}
 }
 
 
