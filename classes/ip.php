@@ -59,25 +59,25 @@ class IP
     public static function is_internal($ip = null)
     {
         $ip = ($ip == null) ? $ip : self::get();
-        return (origin($ip) > self::EXTERNAL);
+        return (self::origin($ip) > self::EXTERNAL);
     }
     
     public static function is_casert($ip = null)
     {
         $ip = ($ip == null) ? $ip : self::get();
-        return (origin($ip) == self::CASERT);
+        return (self::origin($ip) == self::CASERT);
     }
     
     public static function is_local($ip = null)
     {
         $ip = ($ip == null) ? $ip : self::get();
-        return (origin($ip) == self::LOCAL);
+        return (self::origin($ip) == self::LOCAL);
     }
     
     public static function is_autres($ip = null)
     {
         $ip = ($ip == null) ? $ip : self::get();
-        return (origin($ip) == self::AUTRES);
+        return (self::origin($ip) == self::AUTRES);
     }
     
     public static function origin($ip = null)            // Where is the IP from ?
@@ -114,7 +114,7 @@ class IP
             } 
             else
             {
-                $origin = self::EXTERNE;
+                $origin = self::EXTERNAL;
             }
             
             self::$originCache[$ip] = $origin;
