@@ -21,6 +21,8 @@
 {**************************************************************************}
 {include file="skin/common.header.tpl" more="skin/default/header.tpl"}
     <body>
+        <div id="errorBox" title="Erreur"></div>
+
         {include file=skin/common.devel.tpl}
         <div id="header">
             <div class="fkz_logo">

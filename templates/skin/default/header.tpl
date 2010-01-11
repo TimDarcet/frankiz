@@ -21,5 +21,5 @@
 {**************************************************************************}
 
     <link rel="stylesheet" type="text/css" href="css/default/default.css" media="all"/>
-
+    <link type="text/css" href="css/default/jquery-ui.css" rel="stylesheet" />
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

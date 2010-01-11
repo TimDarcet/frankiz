@@ -37,6 +37,8 @@
         <link rel="shortcut icon" href="favicon.ico" />
         <link rel="search" type="application/opensearchdescription+xml" href="opensearch.xml.php" title="Trombino" />
         <script type="text/javascript" src="javascript/3.0.0beta/jquery.js"></script>
+        <script type="text/javascript" src="javascript/3.0.0beta/jquery-ui.js"></script>
+        <script type="text/javascript" src="javascript/3.0.0beta/common.js"></script>
         {if $smarty.session.auth >= AUTH_COOKIE }
         <script type="text/javascript" src="javascript/3.0.0beta/minimodules/qdj.js"></script>
         {/if}

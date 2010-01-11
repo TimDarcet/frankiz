@@ -2,7 +2,6 @@ var qdj_id = -1;
 var reversedId = 0;
 
 $(document).ready(function(){
-    $.ajaxSetup({ cache: false });
     loadQDJ();
 });
 
@@ -11,7 +10,12 @@ function vote(answer)
     if (reversedId == 0)
     {
         $.getJSON('qdj/ajax/vote/'+answer, function(json){
-            loadQDJ();
+            if (json.already_voted)
+            {
+                showError(json.message);
+            } else {
+                loadQDJ();
+            }
         });
     }
 }

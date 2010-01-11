@@ -50,6 +50,7 @@ class QDJModule extends PLModule
 
     public function handler_ajax_get(&$page, $daysShift = 0)
     {
+        $daysShift = intval($daysShift);
         $res=XDB::query('SELECT qdj_id, date, question, answer1, answer2, count1, count2
                            FROM qdj
                           ORDER BY date DESC
@@ -83,106 +84,122 @@ class QDJModule extends PLModule
 
         $page->assign('qdj', $qdj);
         $page->assign('voted', $voted);
-        pl_headers("text/javascript", "utf-8");
+        pl_content_headers("text/javascript", "utf-8");
         $page->changeTpl('qdj/get.js.tpl', NO_SKIN);
     }
 
     public function handler_ajax_vote(&$page, $answer = 0)
     {
-        $executed = true;
-
         // Get the id of the last QDJ
-        $res=XDB::query("SELECT qdj_id
+        $res=XDB::query('SELECT qdj_id
                            FROM qdj
                        ORDER BY date DESC
-                          LIMIT 1");
+                          LIMIT 1');
         $qdj_id = $res->fetchOneCell();
 
-        // Let's vote
-        XDB::execute('INSERT INTO qdj_votes
-                              SET qdj_id = {?},
-                                     uid = {?},
-                                    rank = 0,
-                                    rule = "null"',
-                        $qdj_id,
-                        S::user()->id()
-                    );
-        $vote_id = XDB::insertID();
-
-        // Get the rank
-        $res=XDB::query('SELECT COUNT(*)
+        // Already voted ?
+        $res=XDB::query('SELECT vote_id
                            FROM qdj_votes
-                          WHERE qdj_id = {?}
-                            AND vote_id <= {?}',
+                          WHERE qdj_id = {?} AND uid = {?}
+                          LIMIT 1',
                             $qdj_id,
+                            S::user()->id()
+                        );
+        $already_voted = ($res->fetchOneCell() == 1) ? true : false;
+
+        if (!$already_voted)
+        {
+            // Let's vote
+            XDB::execute('INSERT INTO qdj_votes
+                                  SET qdj_id = {?},
+                                         uid = {?},
+                                        rank = 0,
+                                        rule = "null"',
+                            $qdj_id,
+                            S::user()->id()
+                        );
+            $vote_id = XDB::insertID();
+
+            // Get the rank
+            $res=XDB::query('SELECT COUNT(*)
+                               FROM qdj_votes
+                              WHERE qdj_id = {?} AND vote_id <= {?}',
+                                $qdj_id,
+                                $vote_id
+                            );
+            $rank = $res->fetchOneCell();
+
+            $rule = null;
+            $points = 0;
+            switch($rank)
+            {
+                case 1:
+                    $rule = '1';
+                    $points = 5;
+                break;
+
+                case 2:
+                    $rule = '2';
+                    $points = 2;
+                break;
+
+                case 3:
+                    $rule = '3';
+                    $points = 1;
+                break;
+
+                case 13:
+                    $rule = '13';
+                    $points = -13;
+                break;
+
+                case 42:
+                    $rule = '42';
+                    $points = 4.2;
+                break;
+
+                case 69:
+                    $rule = '69';
+                    $points = 6.9;
+                break;
+
+                case 314:
+                    $rule = '314';
+                    $points = 3.14;
+                break;
+
+                case substr(IP::get(), -3):
+                    $rule = 'ip';
+                    $points = 3;
+                break;
+            }
+
+            XDB::execute('UPDATE qdj_votes
+                             SET rank = {?},
+                                 rule = {?}
+                           WHERE vote_id = {?}',
+                            $rank,
+                            $rule,
                             $vote_id
                         );
-        $rank = $res->fetchOneCell();
 
-        $rule = null;
-        $points = 0;
-        switch($rank)
-        {
-            case 1:
-                $rule = '1';
-                $points = 5;
-            break;
+            if ($answer == 1) {
+                XDB::execute('UPDATE qdj SET count1 = count1+1 WHERE qdj_id={?}',$qdj_id);
+            } else {
+                XDB::execute('UPDATE qdj SET count2 = count2+1 WHERE qdj_id={?}',$qdj_id);
+            }
 
-            case 2:
-                $rule = '2';
-                $points = 2;
-            break;
-
-            case 3:
-                $rule = '3';
-                $points = 1;
-            break;
-
-            case 13:
-                $rule = '13';
-                $points = -13;
-            break;
-
-            case 42:
-                $rule = '42';
-                $points = 4.2;
-            break;
-
-            case 69:
-                $rule = '69';
-                $points = 6.9;
-            break;
-
-            case 314:
-                $rule = '314';
-                $points = 3.14;
-            break;
-
-            case substr(IP::get(), -3):
-                $rule = 'ip';
-                $points = 3;
-            break;
+            XDB::execute('INSERT INTO qdj_scores
+                                  SET uid = {?}, total = {?}, bonus = 0
+              ON DUPLICATE KEY UPDATE total = total+{?}',
+                        S::user()->id(),
+                        $points,
+                        $points
+                        );
         }
 
-        XDB::execute('UPDATE qdj_votes
-                         SET rank = {?},
-                             rule = {?},
-                         WHERE vote_id = {?}',
-                        $rank,
-                        $rule,
-                        $vote_id
-                    );
-
-        if ($answer == 1) {
-            XDB::execute('UPDATE qdj SET count1 = count1+1 WHERE qdj_id={?}',$qdj_id);
-        } else {
-            XDB::execute('UPDATE qdj SET count2 = count2+1 WHERE qdj_id={?}',$qdj_id);
-        }
-
-        XDB::execute('UPDATE qdj_scores SET total = total+('.$points.') WHERE uid='.S::user()->id());
-
-        $page->assign('executed', $executed);
-        pl_headers("text/javascript", "utf-8");
+        $page->assign('already_voted', json_encode($already_voted));
+        pl_content_headers("text/javascript", "utf-8");
         $page->changeTpl('qdj/vote.js.tpl', NO_SKIN);
     }
 }

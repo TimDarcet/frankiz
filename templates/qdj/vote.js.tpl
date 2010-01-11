@@ -21,7 +21,8 @@
 {**************************************************************************}
 
 {ldelim}
-    "executed": {$executed}
+    "already_voted": {$already_voted},
+    "message": {if $already_voted} "Vous avez déjà voté" {/if}
 {rdelim}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
