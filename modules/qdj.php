@@ -83,7 +83,7 @@ class QDJModule extends PLModule
 
         $page->assign('qdj', $qdj);
         $page->assign('voted', $voted);
-        pl_headers("text/javascript", "utf-8")
+        pl_headers("text/javascript", "utf-8");
         $page->changeTpl('qdj/get.js.tpl', NO_SKIN);
     }
 
@@ -182,7 +182,7 @@ class QDJModule extends PLModule
         XDB::execute('UPDATE qdj_scores SET total = total+('.$points.') WHERE uid='.S::user()->id());
 
         $page->assign('executed', $executed);
-        pl_headers("text/javascript", "utf-8")
+        pl_headers("text/javascript", "utf-8");
         $page->changeTpl('qdj/vote.js.tpl', NO_SKIN);
     }
 }
