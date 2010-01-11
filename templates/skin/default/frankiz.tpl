@@ -38,7 +38,7 @@
                 {include file="minimodule.tpl" module_name="lien_wikix"}
              {* {include file="minimodule.tpl" module_name="tour_kawa"} *}
              {* {include file="minimodule.tpl" module_name="sondages"} *}
-             {* {include file="minimodule.tpl" module_name="qdj"} *}
+                {include file="minimodule.tpl" module_name="qdj"}
              {* {include file="minimodule.tpl" module_name="qdj_hier"} *}
              {* {include file="minimodule.tpl" module_name="meteo"} *}
                 {include file="minimodule.tpl" module_name="activites"}

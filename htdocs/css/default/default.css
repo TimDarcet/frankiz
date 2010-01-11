@@ -47,6 +47,35 @@ a:hover, a:active {
     text-decoration: underline overline;
 }
 
+#center {
+	padding-top:40px;
+	clear: both;
+	width: 100%;
+}
+
+#navigation {
+    width: 20%;
+    float: left;
+    font-size: 9pt;
+    margin-top: 0.5%;
+}
+
+.fkz_droite {
+    float: right;
+    width: 20%;
+    font-size: 9pt;
+    margin-top: 0.5%;
+    /*display:none;*/
+}
+
+#module {
+    font-size: 9pt;
+    position: absolute;
+    left: 20.5%;
+    width: 59%;
+    margin-top: 0.5%;
+}
+
 div.fkz_liens {
 	font-size: 8pt;
 	border-bottom: 1px solid #1f118c;
@@ -91,42 +120,132 @@ ul.fkz_liens_nav{
 	display: inline;
 }
 
-
-.fkz_qdj_question {
-    font-size: 11pt;
-    text-align: center;   
-}
-
-.fkz_qdj_jone {
-	float: right;
-	text-align: center;
-	width: 49%;
-}
-
-.fkz_qdj_rouje {
-    float: left;
-    text-align: center;
-    width: 49%;
-}
-
-.fkz_qdj_jone_reponse {
-	float: right;
-	text-align: center;
-	width: 49%;
-	color: yellow;
-}
-
-.fkz_qdj_rouje_reponse {
-    float: left;
-    text-align: center;
-    width: 49%;
-    color: red;
-}
-
 div.col {height: 50px;}
 div.col span { height: 50px; display: block;}
 span.rouge { background-image: url("../images/rouge.gif") repeat-y top center ;}
 span.jaune { background-image: url("../images/jaune.gif") repeat-y top center ;}
+
+/* Minimodules */
+
+.minimodule {
+
+}
+
+.minimodule .header {
+	color: white;
+	background-color: #1f118c;
+	padding: 2px;
+	text-align : center;
+	font-size: 11pt;
+	font-style: italic;
+	font-weight: bold;
+	border-bottom: 1px solid #1f118c;
+	border-right: 1px solid #1f118c;
+	border-left: 1px solid #1f118c;
+	border-top: 1px solid #1f118c;
+}
+
+.minimodule .body {
+	background: white;
+	border-bottom: 1px solid #1f118c;
+	padding: 2px;
+	border-right: 1px solid #1f118c;
+	border-left: 1px solid #1f118c;
+	margin-bottom: 20px;
+}
+
+/* |->QDJ */
+
+#minimodule_qdj .navigation  {
+    height:25px;
+    border:1px solid black;
+    margin-bottom:2px;
+    text-align: center;
+}
+
+#minimodule_qdj .navigation .before  {
+    float: left;
+}
+
+#minimodule_qdj .navigation .after  {
+    float: right;
+}
+
+#minimodule_qdj .qdj  {
+    border:1px solid black;
+    margin-bottom:2px;
+    padding-bottom:2px;
+}
+
+#minimodule_qdj .question  {
+    font-size: 11pt;
+    text-align: center;
+    font-weight: bold;
+}
+
+#minimodule_qdj .jone  {
+    color:#FFBB00;
+}
+
+#minimodule_qdj .rouje  {
+    color:red;
+}
+
+#minimodule_qdj .jone  .count {
+    background:#FFBB00;
+}
+
+#minimodule_qdj .rouje  .count{
+    background:red;
+}
+
+#minimodule_qdj table  {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#minimodule_qdj table td  {
+    width: 50%;
+    text-align:center;
+}
+
+#minimodule_qdj table tr.answers td  {
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+#minimodule_qdj table tr.counts  {
+    display: none;
+}
+
+#minimodule_qdj table tr.counts td  {
+    vertical-align: top;
+    font-size: 10pt;
+    font-weight: bold;
+    color: white;
+}
+
+#minimodule_qdj table tr.counts td .count  {
+    position: relative;
+    left: 34%;
+    width: 34%;
+    color: white;
+}
+
+#minimodule_qdj .voters {
+    margin-top: 2px;
+    font-size: 9pt;
+    text-align: left;
+    display: none;
+}
+
+#minimodule_qdj .toModule {
+    margin-top:2px;
+    border: 1px solid black;
+    font-size: 9pt;
+    text-align: center;
+}
+
 
 .fkz_anniversaire_titre {
 	color: white;
@@ -259,34 +378,7 @@ span.fkz_annonces_vieux {
 	background-color: #e8e7f3;
 }
 
-#center {
-	padding-top:40px;
-	clear: both;
-	width: 100%;     
-}
 
-#navigation {
-    width: 20%;
-    float: left;
-    font-size: 9pt;
-    margin-top: 0.5%;
-}
-
-.fkz_droite {
-    float: right;
-    width: 20%;
-    font-size: 9pt;
-    margin-top: 0.5%;
-    /*display:none;*/
-}
-
-#module {
-    font-size: 9pt;
-    position: absolute;
-    left: 20.5%;
-    width: 59%;
-    margin-top: 0.5%;
-}
 
 /* Stats */
  

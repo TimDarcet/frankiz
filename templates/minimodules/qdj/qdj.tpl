@@ -20,48 +20,44 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="fkz_qdj_question">{$minimodule.question}</div>
-<div>
-  {if $minimodule.compte1 + $minimodule.compte2 == 0}
-    {assign var='rouje' value=0}
-    {assign var='jone'  value=0}
-  {else}
-    {math assign='rouje' equation="(100 * x) / (x + y)" x=$minimodule.compte1 y=$minimodule.compte2 format="%.1f"}
-    {math assign='jone'  equation="(100 * y) / (x + y)" x=$minimodule.compte1 y=$minimodule.compte2 format="%.1f"}
-  {/if}
-  <div class="fkz_qdj_rouje_reponse">
-    <div class="col">
-      <span class="blanc" style="height:{$jone}%"></span>
-      <span class="rouje" style="height:{$rouje}%"></span>
-      <br />
+<div class="navigation">
+    <span class="before"><a onclick="backward();"><-</a></span>
+    <span class="after"><a onclick="forward();">-></a></span>
+    <span class="date">{$minimodule.date}</span>
+</div>
+
+<div class="qdj">
+    <div class="question">{$minimodule.question}</div>
+    
+    <table>
+        <tr class="answers">
+            <td class="case1">
+                <a onclick="vote(1);">{$minimodule.answer1}</a>
+            </td>
+            <td class="case2">
+                <a onclick="vote(2);">{$minimodule.answer2}</a>
+            </td>
+        </tr>
+        <tr class="counts">
+            <td class="case1">
+                <div class="count"></div>
+            </td>
+            <td class="case2">
+                <div class="count"></div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="voters">Derniers à répondre :
+        <ul>
+            <li>2. Brice SLAMA</li>
+            <li>1. Brice SLAMA</li>
+        </ul>
     </div>
-    {$minimodule.reponse1}<br />
-    {$minimodule.compte1} soit {$rouje}%<br />
-  </div>
-  <div class="fkz_qdj_jone_reponse">
-    <div class="col">
-      <span class="blanc" style="height:{$rouje}%"></span>
-      <span class="jone"  style="height:{$jone}%"></span>
-      <br />
-    </div>
-    {$minimodule.reponse2}<br />
-    {$minimodule.compte2} soit {$jone}%<br />
-  </div>
-  <div class="fkz_end_qdj">
-    <br />
-    {if count($minimodule.votants)}
-    <div class="fkz_qdj_dernier_votant">Derniers à répondre :</div>
-    <ul class="fkz_qdj_last">
-      {foreach from=$minimodule.votants item=votant name=foo}
-      {if $smarty.foreach.foo.iteration <= 6}
-      <li class="fkz_qdj_last">{$votant.ordre}. {$votant.eleve.surnom}</li>
-      {/if}
-      {/foreach}
-    </ul>
-    <br />
-    <a class="class_qdj" href="qdj/">Classement QDJ</a>
-    {/if}
-  </div>
+</div>
+    
+<div class="toModule">
+    <a href="qdj">Classement QDJ</a>
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
