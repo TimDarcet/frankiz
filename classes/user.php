@@ -155,6 +155,17 @@ class User extends PlUser
     {
         return $this->main_promo;
     }
+    
+    public function groups()
+    {
+        $groups = array();
+        $res = XDB::query('SELECT gid, perms
+                             FROM groups_members
+                            WHERE uid = {?}',
+                            $this->id());
+        $groups = $res->fetchAllRow(0);
+        return $groups;
+    }
 
     // Return permission flags for a given permission level.
     public static function makePerms($perms)

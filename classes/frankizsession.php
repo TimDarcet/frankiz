@@ -46,6 +46,23 @@ class FrankizSession extends PlSession
         if(S::i('auth') < AUTH_ELEVE && (IP::is_casert() || IP::is_local())){
             S::set('auth', AUTH_ELEVE);
         }
+
+        // Get user's groups with associated permissions
+        
+        // User is connected => show his groups with the corresponding permissions
+        if (S::i('auth') >= AUTH_COOKIE)                   
+        {
+            $groups = S::user()->groups();
+        }
+        // User is not connected => try to find ip associated groups, but without permissions
+        else
+        {
+            $groups = array();
+            $gids = IP::getGroups();
+            foreach($gids as $gid) { $groups[$gid[0]] = 0; }
+        }
+
+        S::set('groups', $groups);
     }
 
     /** Tells if we have enough information to determine the current user

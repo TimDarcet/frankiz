@@ -58,31 +58,31 @@ class IP
     
     public static function is_internal($ip = null)
     {
-        $ip = ($ip == null) ? $ip : self::get();
+        $ip = ($ip == null) ? self::get() : $ip;
         return (self::origin($ip) > self::EXTERNAL);
     }
     
     public static function is_casert($ip = null)
     {
-        $ip = ($ip == null) ? $ip : self::get();
+        $ip = ($ip == null) ? self::get() : $ip;
         return (self::origin($ip) == self::CASERT);
     }
     
     public static function is_local($ip = null)
     {
-        $ip = ($ip == null) ? $ip : self::get();
+        $ip = ($ip == null) ? self::get() : $ip;
         return (self::origin($ip) == self::LOCAL);
     }
     
     public static function is_autres($ip = null)
     {
-        $ip = ($ip == null) ? $ip : self::get();
+        $ip = ($ip == null) ? self::get() : $ip;
         return (self::origin($ip) == self::AUTRES);
     }
     
     public static function origin($ip = null)            // Where is the IP from ?
     {
-        $ip = ($ip == null) ? $ip : self::get();
+        $ip = ($ip == null) ? self::get() : $ip;
         if (array_key_exists($ip, self::$originCache))
         {
             return self::$originCache[$ip];
@@ -92,11 +92,11 @@ class IP
             $origin = -1;
             if($ip == '127.0.0.1' || (substr($ip, 0, 8) == '129.104.' && $ip != '129.104.30.4')) 
             {
-                $res=XDB::query("SELECT ro.owner_type 
+                $res=XDB::query('SELECT ro.owner_type
                                    FROM rooms_ip AS ri
-                             INNER JOIN rooms_owners AS ro 
+                             INNER JOIN rooms_owners AS ro
                                      ON ro.rid = ri.rid
-                                  WHERE ri.ip = '{$ip}'");
+                                  WHERE ri.ip = {?}', $ip);
                 $cell = $res->fetchOneCell();
                 switch($cell)
                 {
@@ -120,6 +120,46 @@ class IP
             self::$originCache[$ip] = $origin;
             return $origin;
         }
+    }
+    
+    public static function getGroups($ip = null)
+    {
+        $ip = ($ip == null) ? self::get() : $ip;
+        
+        switch(self::origin($ip))
+        {
+            case self::CASERT:                                        // Connected from the student's room => show his groups
+                $res = XDB::query('SELECT gm.gid 
+                                     FROM rooms_ip AS ri
+                               INNER JOIN rooms_owners AS ro
+                                       ON ro.rid = ri.rid
+                               INNER JOIN groups_members AS gm
+                                       ON gm.uid = ro.owner_id
+                                    WHERE ri.IP = {?}',
+                                  IP::get());
+                $gids = $res->fetchAllRow();
+                break;
+                
+            case self::LOCAL:                                         // Connected from premises => show associated groups
+                $res = XDB::query('SELECT ro.owner_id 
+                                     FROM rooms_ip AS ri
+                               LEFT JOIN rooms_owners AS ro
+                                       ON ro.rid = ri.rid
+                                    WHERE ri.IP = {?}',
+                                  IP::get());
+                $gids = $res->fetchAllRow();
+                break;
+                
+            case self::AUTRES:                                        // Connected from elsewhere on the platal (pit's, ...) => show a selection
+                $res = XDB::query('SELECT gid FROM groups_selection');
+                $gids = $res->fetchAllRow();
+                break;
+                
+            default:                                                  // Connected from outside => show only public group (gid=0)
+                $gids = array(0);
+        } 
+        
+        return $gids;
     }
 
 }
