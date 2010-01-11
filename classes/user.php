@@ -156,15 +156,14 @@ class User extends PlUser
         return $this->main_promo;
     }
     
-    public function groups()
+    public function clusters()
     {
-        $groups = array();
-        $res = XDB::query('SELECT gid, perms
-                             FROM groups_members
+        $clusters = array();
+        $res = XDB::query('SELECT cid
+                             FROM users_clusters
                             WHERE uid = {?}',
                             $this->id());
-        $groups = $res->fetchAllRow(0);
-        return $groups;
+        return $res->fetchColumn();
     }
 
     // Return permission flags for a given permission level.

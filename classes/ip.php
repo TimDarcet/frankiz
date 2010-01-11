@@ -122,40 +122,42 @@ class IP
         }
     }
     
-    public static function getGroups($ip = null)
+    public static function getClusters($ip = null)
     {
         $ip = ($ip == null) ? self::get() : $ip;
         
         switch(self::origin($ip))
         {
-            case self::CASERT:                                        // Connected from the student's room => show his groups
-                $res = XDB::query('SELECT gm.gid 
+            case self::CASERT:                                        // Connected from the student's room => show his clusters
+                $res = XDB::query('SELECT uc.cid 
                                      FROM rooms_ip AS ri
                                INNER JOIN rooms_owners AS ro
                                        ON ro.rid = ri.rid
-                               INNER JOIN groups_members AS gm
-                                       ON gm.uid = ro.owner_id
+                               INNER JOIN users_clusters AS uc
+                                       ON uc.uid = ro.owner_id
                                     WHERE ri.IP = {?}',
                                   IP::get());
                 $gids = $res->fetchAllRow();
                 break;
                 
-            case self::LOCAL:                                         // Connected from premises => show associated groups
-                $res = XDB::query('SELECT ro.owner_id 
+            case self::LOCAL:                                         // Connected from premises => show associated clusters
+                $res = XDB::query('SELECT c.cid 
                                      FROM rooms_ip AS ri
                                LEFT JOIN rooms_owners AS ro
                                        ON ro.rid = ri.rid
-                                    WHERE ri.IP = {?}',
+                               LEFT JOIN cluster AS c
+                                       ON c.gid = ro.owner_id
+                                    WHERE ri.IP = {?} AND c.type = "lobby"',
                                   IP::get());
                 $gids = $res->fetchAllRow();
                 break;
                 
             case self::AUTRES:                                        // Connected from elsewhere on the platal (pit's, ...) => show a selection
-                $res = XDB::query('SELECT gid FROM groups_selection');
+                $res = XDB::query('SELECT cid FROM clusters_selection');
                 $gids = $res->fetchAllRow();
                 break;
                 
-            default:                                                  // Connected from outside => show only public group (gid=0)
+            default:                                                  // Connected from outside => show only the lobby of the public group (cid=0 and gid=0)
                 $gids = array(0);
         } 
         

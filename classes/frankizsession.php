@@ -49,20 +49,18 @@ class FrankizSession extends PlSession
 
         // Get user's groups with associated permissions
         
-        // User is connected => show his groups with the corresponding permissions
+        // User is connected => show his clusters
         if (S::i('auth') >= AUTH_COOKIE)                   
         {
-            $groups = S::user()->groups();
+            $clusters = S::user()->clusters();
         }
-        // User is not connected => try to find ip associated groups, but without permissions
+        // User is not connected => try to find ip associated clusters, but no admin clusters
         else
         {
-            $groups = array();
-            $gids = IP::getGroups();
-            foreach($gids as $gid) { $groups[$gid[0]] = 0; }
+            $clusters = IP::getClusters();
         }
 
-        S::set('groups', $groups);
+        S::set('clusters', $clusters);
     }
 
     /** Tells if we have enough information to determine the current user
