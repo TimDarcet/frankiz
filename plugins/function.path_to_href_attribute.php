@@ -19,10 +19,12 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
- // Params :
- // - path : the path you would write in the href attribute
- // - iftrue : the attribute you want to return if the current path is the one you gave (default value : 'class="on"')
- // - iffalse : the contrary (default value : '')
+/** This function will add an attribute to a <a> tag if
+ *     the current path matches the argument
+ * @param $path     The path to write in the href attribute
+ * @param $iftrue   The attribute to add if current path is $path
+ * @param $iffalse  The attribute to add otherwise (defaults to '')
+ */
 function smarty_function_path_to_href_attribute($params, &$smarty) {
     $on = (isset($params['iftrue'])) ? $params['iftrue'] : 'class="on"';
     $off = (isset($params['iffalse'])) ? $params['iffalse'] : '';
@@ -34,7 +36,7 @@ function smarty_function_path_to_href_attribute($params, &$smarty) {
     }
     $attribute = ($attribute == '') ? '' : ' '.$attribute;    
     
-    return 'href="'.$params['path'].'"'.$attribute;
+    return 'href="' . $params['path'] . '"' . $attribute;
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
