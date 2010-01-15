@@ -32,8 +32,9 @@ function smarty_function_path_to_href_attribute($params, &$smarty) {
     } else {
         $attribute = $off;
     }
+    $attribute = ($attribute == '') ? '' : ' '.$attribute;    
     
-    return 'href="'.$params['path'].'" "'.$attribute;
+    return 'href="'.$params['path'].'"'.$attribute;
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
