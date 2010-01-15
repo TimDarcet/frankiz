@@ -20,77 +20,75 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="fkz_module" id="liensnavigation">
-    <div class="fkz_titre">
-        <span id="liensnavigation_logo"></span>
-        Navigation
-    </div>
-    <div class="fkz_module_corps">
-       <ul class="fkz_liens">
-            <li class="fkz_liens"><a href="accueil/" accesskey="a">Accueil</a>
-                <ul>
-                    <li><a href="annonces/">Annonces</a></li>
-                    <li><a href="activites/">Activités</a></li>
-                </ul>
-            </li>
-            <li class="fkz_liens"><a href="profil/" accesskey="c">Compte</a>
-                {if isset($smarty.session.suid|smarty:nodefaults) }
-                <span class="warning">ATTENTION, su en cours. Pour revenir à ta vraie identité, clique <a href="exit/">ici</a></span>
+<div class="head">
+    Navigation
+</div>
+<div class="body">
+    <ul class="level0">
+        <li><a {path_to_href_attribute path="accueil"} accesskey="a">Accueil</a>
+            <ul class="level1">
+                <li><a {path_to_href_attribute path="annonces"}>Annonces</a></li>
+                <li><a {path_to_href_attribute path="activites"}>Activités</a></li>
+            </ul>
+        </li>
+        <li><a {path_to_href_attribute path="profil"} accesskey="c">Compte</a>
+            {if isset($smarty.session.suid|smarty:nodefaults) }
+            <span class="warning">ATTENTION, su en cours. Pour revenir à ta vraie identité, clique <a href="exit/">ici</a></span>
+            {/if}
+            <ul class="level1">
+                {if $smarty.session.auth < AUTH_COOKIE }
+                <li><a {path_to_href_attribute path="login"} accesskey="l">Se connecter</a></li>
                 {/if}
-                <ul>
-                    {if $smarty.session.auth < AUTH_COOKIE }
-                    <li><a href="login/" accesskey="l">Se connecter</a></li>
-                    {/if}
-                    {if $smarty.session.auth >= AUTH_COOKIE }
-                    <li>Préférences</a></li>
-                    <li><a href="exit/" accesskey="l">Se déconnecter de {$smarty.session.user->displayName() }</a></li>
-                    {/if}
-                    <li><a href="profil/fkz">Profil</a></li>
-                    <li><a href="profil/skin">Skin</a></li>
-                </ul>  
-            </li>
-            {if $smarty.session.auth >= AUTH_INTERNE }
-            <li class="fkz_liens"><a href="tol/" accesskey="t">Trombino</a></li>
-            {/if}
-            {if $smarty.session.auth >= AUTH_COOKIE }
-            <li class="fkz_liens">Binets
-                <ul>
-                    <li>BR</li>
-                </ul>
-            </li>
-            {/if}
-            <li class="fkz_liens">Contribuer
-                <ul>
-                  <li>
-                    <a href="proposition/annonce">Proposer une annonce</a>
-                  </li>
-                  <li>
-                    <a href="proposition/affiche">Proposer une activité</a>
-                  </li>
-                  <li>
-                    <a href="proposition/qdj">Proposer une qdj</a>
-                  </li>
-                  <li>
-                    <a href="proposition/sondage">Proposer un sondage</a>
-                  </li>
-                  <li>
-                    <a href="proposition/mail_promo">Demander un mail promo</a>
-                  </li>
-                </ul>
-            </li>
-            <li class="fkz_liens"><a href="xshare.php" accesskey="x">Télécharger</a></li>
-            <li class="fkz_liens"><a href="http://wikix.polytechnique.org" accesskey="w">WikiX</a></li>
-            <li class="fkz_liens"><a href="tol/binets/" accesskey="b">Binets</a></li>
-            {if $smarty.session.auth >= AUTH_INTERNE }
-            <li class="fkz_liens"><a href="http://perso.frankiz/">Sites élèves</a></li>
-            {else}
-            <li class="fkz_liens"><a href="siteseleves.php">Sites élèves</a></li>
-            {/if}
-            {if hasPerm('admin') }
-                <li class="fkz_liens"><a href="gestion/" accesskey="g">Administration</a></li>
-            {/if}
-        </ul>
-    </div>
+                {if $smarty.session.auth >= AUTH_COOKIE }
+                <li><a {path_to_href_attribute path="exit"} accesskey="l">Se déconnecter de {$smarty.session.user->displayName() }</a></li>
+                {/if}
+                <li><a {path_to_href_attribute path="profil/fkz"}>Profil</a></li>
+                <li><a {path_to_href_attribute path="profil/skin"}>Skin</a></li>
+            </ul>  
+        </li>
+        {if $smarty.session.auth >= AUTH_INTERNE }
+        <li><a {path_to_href_attribute path="tol"} accesskey="t">Trombino</a></li>
+        {/if}
+        {if $smarty.session.auth >= AUTH_COOKIE }
+        <li><a>Binets</a>
+            <ul class="level1">
+                <li>
+                    <a>BR</a>
+                </li>
+            </ul>
+        </li>
+        {/if}
+        <li><a>Contribuer</a>
+            <ul class="level1">
+              <li>
+                <a {path_to_href_attribute path="proposition/annonce"}>Proposer une annonce</a> 
+              </li>
+              <li>
+                <a {path_to_href_attribute path="proposition/affiche"}>Proposer une activité</a>
+              </li>
+              <li>
+                <a {path_to_href_attribute path="proposition/qdj"}>Proposer une qdj</a>
+              </li>
+              <li>
+                <a {path_to_href_attribute path="proposition/sondage"}>Proposer un sondage</a>
+              </li>
+              <li>
+                <a {path_to_href_attribute path="proposition/mail_promo"}>Demander un mail promo</a>
+              </li>
+            </ul>
+        </li>
+        <li><a href="xshare.php" accesskey="x">Télécharger</a></li>
+        <li><a href="http://wikix.polytechnique.org" accesskey="w">WikiX</a></li>
+        <li><a href="tol/binets/" accesskey="b">Binets</a></li>
+        {if $smarty.session.auth >= AUTH_INTERNE }
+        <li><a href="http://perso.frankiz/">Sites élèves</a></li>
+        {else}
+        <li><a href="siteseleves.php">Sites élèves</a></li>
+        {/if}
+        {if hasPerm('admin') }
+        <li><a {path_to_href_attribute path="gestion"} accesskey="g">Administration</a></li>
+        {/if}
+    </ul>
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
