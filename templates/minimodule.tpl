@@ -23,7 +23,7 @@
 {if isset($minimodules.$module_name|smarty:nodefaults)}
 
 <div class="minimodule" id="minimodule_{$module_name}">
-    <div class="header">
+    <div class="head">
         <span id="{$module_name}_logo"></span>
         {$minimodules.$module_name->get_titre()}
     </div>

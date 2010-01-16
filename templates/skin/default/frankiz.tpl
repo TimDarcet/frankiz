@@ -25,11 +25,8 @@
 
         {include file=skin/common.devel.tpl}
         <div id="header">
-            <div class="fkz_logo">
-                <a href="index.php"><span class="fkz_logo">Frankiz</span></a>
-            </div>
-            <div class="fkz_logo_eleves">
-                <span class="fkz_logo_eleves">le site Web des élèves de l'École Polytechnique</span>
+            <div id="logo">
+                <a href="accueil"></a>
             </div>
         </div>
         <div id="center">

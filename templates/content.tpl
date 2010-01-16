@@ -21,32 +21,20 @@
 {**************************************************************************}
 
 {* {if not $page_raw} *}
-<div class="fkz_divers_1">
-  <div class="fkz_divers_2">
-    <div class="fkz_divers_3">
-      <div class="fkz_divers_4">
-        <div class="fkz_divers_5">
-	  <div class="fkz_divers_6">
-	    <div class="fkz_page_divers">
-	      <div class="fkz_page_titre">
-	        {$title}
-	      </div>
-	      <div class="fkz_page_corps">
-{* {/if} *}
-		{if (isset($pl_no_errors|smarty:nodefaults) && !$pl_no_errors) || $pl_failure || $pl_errors}
-		{include file="skin/common.errors.tpl"}
-		{/if}
-		
-		{include file=$pl_tpl}
-{* {if not $page_raw} *}
-	      </div>
-	    </div>
-	  </div>
-	</div>
-      </div>
-    </div>
-  </div>
+
+<div class="head">
+    {$title}
 </div>
+<div class="body {if $level=='0'}level0{else}level1{/if}">
+    {* {/if} *}
+    {if (isset($pl_no_errors|smarty:nodefaults) && !$pl_no_errors) || $pl_failure || $pl_errors}
+    {include file="skin/common.errors.tpl"}
+    {/if}
+
+    {include file=$pl_tpl}
+    {* {if not $page_raw} *}
+</div>
+
 {* {/if} *}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

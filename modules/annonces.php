@@ -32,9 +32,9 @@ class AnnoncesModule extends PLModule
     public function handlers()
     {
         return array(
-            "annonces" => $this->make_hook("annonces", AUTH_PUBLIC),
-            "annonces/hide" => $this->make_hook("annonces_hide", AUTH_COOKIE),
-            "annonces/show" => $this->make_hook("annonces_show", AUTH_COOKIE),
+            "accueil/annonces" => $this->make_hook("annonces", AUTH_PUBLIC),
+            "accueil/annonces/hide" => $this->make_hook("annonces_hide", AUTH_COOKIE),
+            "accueil/annonces/show" => $this->make_hook("annonces_show", AUTH_COOKIE),
         );
     }
 
@@ -120,7 +120,7 @@ class AnnoncesModule extends PLModule
                 'id'        => $id,
                 'title'     => $title,
                 'date'      => $date,
-                'img'       => file_exists(DATA_DIR_LOCAL.'annonces/'.$id),
+                'img'       => file_exists(/*DATA_DIR_LOCAL.*/'annonces/'.$id),
                 'eleve'     => $eleve,
                 'content'   => $content,
                 'show'      => $show);

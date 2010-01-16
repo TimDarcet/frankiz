@@ -23,7 +23,7 @@ class ActivitesModule extends PLModule
 {
 	function handlers()
 	{
-		return array("activites" => $this->make_hook("activites", AUTH_PUBLIC));
+		return array('accueil/activites' => $this->make_hook('activites', AUTH_PUBLIC));
 	}
 	
 	function handler_activites(&$page)

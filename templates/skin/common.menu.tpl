@@ -27,8 +27,8 @@
     <ul class="level0">
         <li><a {path_to_href_attribute path="accueil"} accesskey="a">Accueil</a>
             <ul class="level1">
-                <li><a {path_to_href_attribute path="annonces"}>Annonces</a></li>
-                <li><a {path_to_href_attribute path="activites"}>Activités</a></li>
+                <li><a {path_to_href_attribute path="accueil/annonces"}>Annonces</a></li>
+                <li><a {path_to_href_attribute path="accueil/activites"}>Activités</a></li>
             </ul>
         </li>
         <li><a {path_to_href_attribute path="profil"} accesskey="c">Compte</a>

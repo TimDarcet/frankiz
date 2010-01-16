@@ -59,6 +59,7 @@ class FrankizPage extends PlPage
         FrankizMiniModule::run_modules();
         $this->assign('minimodules', FrankizMiniModule::get_minimodules());
         $this->assign('logged', S::logged());
+        $this->assign('level', substr_count(trim(Get::v('n'),'/'),'/'));
         //Run with the default skin disposition (i.e content disposition)
         $this->_run("skin/{$skin}/frankiz.tpl");
     }
