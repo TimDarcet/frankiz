@@ -25,8 +25,9 @@
 // AUTH_PUBLIC = 0
 // AUTH_COOKIE = 5
 // AUTH_MDP = 10
-define('AUTH_INTERNE', 1);  //Connecting from inside
-define('AUTH_ELEVE', 2);//Connecting from eleve zone (binets, Kserts, wifi ; not pits, ...)
+define('AUTH_INTERNE', 1);    //Connecting from inside
+define('AUTH_LOCAL'  , 2);    //Connecting from a binets or a bar d'étage
+define('AUTH_CASERT' , 3);    //Connecting from a student's room
 
 class FrankizSession extends PlSession
 {
@@ -39,12 +40,26 @@ class FrankizSession extends PlSession
     {
         parent::__construct();
 
-        // Set auth as AUTH_INTERNE when inside and had weaker auth
-        if(S::i('auth') < AUTH_INTERNE && IP::is_internal()){
-            S::set('auth', AUTH_INTERNE);
-        }
-        if(S::i('auth') < AUTH_ELEVE && (IP::is_casert() || IP::is_local())){
-            S::set('auth', AUTH_ELEVE);
+        // Try to set better auth than AUTH_PUBLIC depending on the origin of the IP
+        if(S::i('auth') < AUTH_INTERNE) {
+            switch(IP::origin())
+            {
+                case IP::LOCAL:
+                    $auth = AUTH_LOCAL;
+                    break;
+
+                case IP::CASERT:
+                    $auth = AUTH_CASERT;
+                    break;
+
+                case IP::AUTRES:
+                    $auth = AUTH_INTERNE;
+                    break;
+
+                default:
+                    $auth = AUTH_PUBLIC;
+            }
+            S::set('auth', $auth);
         }
 
         // Get user's groups with associated permissions
