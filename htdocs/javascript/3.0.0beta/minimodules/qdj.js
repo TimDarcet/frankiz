@@ -59,14 +59,16 @@ function loadQDJ()
 
         if (json.voted)
         {
-            var total = json.qdj.count1 + json.qdj.count2;
+            var count1 = parseInt(json.qdj.count1);
+            var count2 = parseInt(json.qdj.count2);
+            var total = count1 + count2;
             $("#minimodule_qdj .counts").show();
-            $("#minimodule_qdj .counts .case1 .count").height(json.qdj.count1/total*200);
-            $("#minimodule_qdj .counts .case1 .count").html(json.qdj.count1);
+            $("#minimodule_qdj .counts .case1 .count").height(count1/total*200);
+            $("#minimodule_qdj .counts .case1 .count").html(count1);
             $("#minimodule_qdj .counts .case1 .count").hide();
             $("#minimodule_qdj .counts .case1 .count").slideDown('slow');
-            $("#minimodule_qdj .counts .case2 .count").height(json.qdj.count2/total*200);
-            $("#minimodule_qdj .counts .case2 .count").html(json.qdj.count2);
+            $("#minimodule_qdj .counts .case2 .count").height(count2/total*200);
+            $("#minimodule_qdj .counts .case2 .count").html(count2);
             $("#minimodule_qdj .counts .case2 .count").hide();
             $("#minimodule_qdj .counts .case2 .count").slideDown('slow');
         } else {

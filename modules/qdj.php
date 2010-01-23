@@ -26,8 +26,8 @@ class QDJModule extends PLModule
     {
         return array(
             'qdj'           => $this->make_hook('qdj', AUTH_COOKIE),
-            'qdj/ajax/get'  => $this->make_hook('ajax_get', AUTH_COOKIE),
-            'qdj/ajax/vote' => $this->make_hook('ajax_vote', AUTH_COOKIE),
+            'qdj/ajax/get'  => $this->make_hook('ajax_get', AUTH_COOKIE, '', NO_AUTH),
+            'qdj/ajax/vote' => $this->make_hook('ajax_vote', AUTH_COOKIE, '', NO_AUTH),
         );
     }
 
@@ -35,17 +35,6 @@ class QDJModule extends PLModule
     {
         $page->assign('title', "Classement QDJ");
         $page->changeTpl('qdj/qdj.tpl');
-    }
-
-    public static function assocToJSON($assoc)
-    {
-        $temp = array();
-
-        foreach ($assoc as $key => $value)
-        {
-            $temp[] = '"'.$key.'": '.((is_numeric($value)) ? $value : json_encode($value)).'';
-        }
-        return implode(', ', $temp);
     }
 
     public function handler_ajax_get(&$page, $daysShift = 0)
@@ -80,7 +69,7 @@ class QDJModule extends PLModule
             $voted = 'false';
         }
 
-        $qdj = '{'.self::assocToJSON($array_qdj).'}';
+        $qdj = json_encode($array_qdj);
 
         $page->assign('qdj', $qdj);
         $page->assign('voted', $voted);
