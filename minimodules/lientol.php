@@ -21,23 +21,14 @@
 
 class LienTolMiniModule extends FrankizMiniModule
 {
-	public static function init(){
-		FrankizMiniModule::register('lienTol', new LienTolMiniModule(), 'run', AUTH_PUBLIC);
-	}
 
-	public function run()
-	{
-		$this->tpl = "minimodules/lien_tol/lien_tol.tpl";
-		$this->titre = "Tol";
-	}
+    public function __construct()
+    {
+        $this->tpl = "minimodules/lien_tol/lien_tol.tpl";
+        $this->titre = "Tol";
+    }
 
-	public static function check_auth()
-	{
-		return S::checkAuth(AUTH_INTERNE);
-	}
 }
-//FrankizMiniModule::register_module('lien_tol', 'LienTolMiniModule', "Lien rapide vers le TOL");
-
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
 ?>

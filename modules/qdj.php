@@ -37,9 +37,11 @@ class QDJModule extends PLModule
         $page->changeTpl('qdj/qdj.tpl');
     }
 
-    public function handler_ajax_get(&$page, $daysShift = 0)
+    public function handler_ajax_get(&$page)
     {
-        $daysShift = intval($daysShift);
+        $json = json_decode(Env::v('json'));
+
+        $daysShift = intval($json->{'daysShift'});
         $res=XDB::query('SELECT qdj_id, date, question, answer1, answer2, count1, count2
                            FROM qdj
                           ORDER BY date DESC
@@ -62,23 +64,23 @@ class QDJModule extends PLModule
 
         if ($voted == 1)
         {
-            $voted = 'true';
+            $voted = true;
         } else {
             $array_qdj['count1'] = -1;
             $array_qdj['count2'] = -1;
-            $voted = 'false';
+            $voted = false;
         }
 
-        $qdj = json_encode($array_qdj);
-
-        $page->assign('qdj', $qdj);
-        $page->assign('voted', $voted);
-        pl_content_headers("text/javascript", "utf-8");
-        $page->changeTpl('qdj/get.js.tpl', NO_SKIN);
+        $page->jsonAssign('success', true);
+        $page->jsonAssign('voted', $voted);
+        $page->jsonAssign('qdj', $array_qdj);
     }
 
-    public function handler_ajax_vote(&$page, $answer = 0)
+    public function handler_ajax_vote(&$page)
     {
+        $json = json_decode(Env::v('json'));
+
+        $vote = intval($json->{'vote'});
         // Get the id of the last QDJ
         $res=XDB::query('SELECT qdj_id
                            FROM qdj
@@ -172,7 +174,7 @@ class QDJModule extends PLModule
                             $vote_id
                         );
 
-            if ($answer == 1) {
+            if ($vote == 1) {
                 XDB::execute('UPDATE qdj SET count1 = count1+1 WHERE qdj_id={?}',$qdj_id);
             } else {
                 XDB::execute('UPDATE qdj SET count2 = count2+1 WHERE qdj_id={?}',$qdj_id);
@@ -185,11 +187,10 @@ class QDJModule extends PLModule
                         $points,
                         $points
                         );
+        } else {
+            $page->jsonAssign('error', 'Tu as déjà voté');
         }
-
-        $page->assign('already_voted', json_encode($already_voted));
-        pl_content_headers("text/javascript", "utf-8");
-        $page->changeTpl('qdj/vote.js.tpl', NO_SKIN);
+        $page->jsonAssign('success', !$already_voted);
     }
 }
 

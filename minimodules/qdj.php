@@ -21,27 +21,26 @@
 
 class QdjMiniModule extends FrankizMiniModule
 {
-        public static function init()
-        {
-                FrankizMiniModule::register('qdj', new QdjMiniModule(), 'run', AUTH_COOKIE);
-        }
+    const auth  = AUTH_COOKIE;
+    const perms = 'user';
+    const js    = 'minimodules/qdj.js';
 
-        public function run()
-        {
-            $res=XDB::query('SELECT qdj_id, date, question, answer1, answer2, count1, count2
-                               FROM qdj
-                              ORDER BY date DESC
-                              LIMIT 1');
-            $array_qdj = $res->fetchOneAssoc();
+    public function __construct()
+    {
+        $res=XDB::query('SELECT qdj_id, date, question, answer1, answer2, count1, count2
+                           FROM qdj
+                          ORDER BY date DESC
+                          LIMIT 1');
+        $array_qdj = $res->fetchOneAssoc();
 
-            $this->assign('date', $array_qdj['date']);          // Limited support for browser with javascript disabled
-            $this->assign('question', $array_qdj['question']);
-            $this->assign('answer1', $array_qdj['answer1']);
-            $this->assign('answer2', $array_qdj['answer2']);
-            
-            $this->tpl = "minimodules/qdj/qdj.tpl";
-            $this->titre = "QDJ";
-        }
+        $this->assign('date', $array_qdj['date']);          // Limited support for browser with javascript disabled
+        $this->assign('question', $array_qdj['question']);
+        $this->assign('answer1', $array_qdj['answer1']);
+        $this->assign('answer2', $array_qdj['answer2']);
+
+        $this->tpl = "minimodules/qdj/qdj.tpl";
+        $this->titre = "QDJ";
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

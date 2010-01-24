@@ -21,12 +21,7 @@
 
 class FetesMiniModule extends FrankizMiniModule
 {
-        public static function init()
-        {
-                FrankizMiniModule::register('fetes', new FetesMiniModule(), 'run', AUTH_PUBLIC);
-        }
-
-        public function run()
+        public function __construct()
         {
                 $today = date('d');
                 $month = date('m');

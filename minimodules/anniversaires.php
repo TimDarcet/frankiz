@@ -22,14 +22,8 @@
 class AnniversairesMiniModule extends FrankizMiniModule
 {
 
-        public static function init()
+        public function __construct()
         {
-                FrankizMiniModule::register('anniversaires', new AnniversairesMiniModule(), 'run', AUTH_INTERNE);
-        }
-
-        public function run()
-        {
-
                 $today= date('Y-m-d');
                 $res = XDB::query("SELECT  a.firstname, a.lastname, s.promo
                                      FROM  account AS a

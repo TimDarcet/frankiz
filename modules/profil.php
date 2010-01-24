@@ -51,7 +51,8 @@ class ProfilModule extends PLModule
                      'profil/licences'            => $this->make_hook('licences',           AUTH_MDP),
                      'profil/licences/cluf'       => $this->make_hook('licences_CLUF',      AUTH_MDP),
                      'profil/licences/raison'     => $this->make_hook('licences_raison',    AUTH_MDP),
-                     'profil/licences/final'      => $this->make_hook('licences_final',     AUTH_MDP)
+                     'profil/licences/final'      => $this->make_hook('licences_final',     AUTH_MDP),
+                     'profil/minimodules'         => $this->make_hook('layout',             AUTH_COOKIE),
                     );
     }
 
@@ -861,6 +862,33 @@ class ProfilModule extends PLModule
             }
 
         }
+    }
+
+    function handler_layout(&$page)
+    {
+        $iter = XDB::iterator('SELECT um.uid uid, m.name name, m.long_name long_name, m.description description
+                                 FROM minimodules AS m
+                            LEFT JOIN users_minimodules AS um
+                                   ON (m.name = um.name AND um.uid = {?})
+                                GROUP BY m.name
+                                ORDER BY m.col, m.row',
+                                S::user()->id());
+
+        $liste_minimodules = array();
+        while ($minimodule = $iter->next()) {
+            $localDatas = FrankizMiniModule::getlocalData($minimodule['name']);
+            if (Platal::session()->checkAuthAndPerms($localDatas['auth'], $localDatas['perms']))
+            {
+                $liste_minimodules[] = array('activated' => !is_null($minimodule['uid']),
+                                                  'name' => $minimodule['name'],
+                                             'long_name' => $minimodule['long_name'],
+                                           'description' => $minimodule['description']);
+            }
+        }
+
+        $page->assign('title', 'Gestion des minimodules');
+        $page->assign('liste_minimodules', $liste_minimodules);
+        $page->changeTpl('profil/minimodules.tpl');
     }
 
 }

@@ -30,39 +30,23 @@
             </div>
         </div>
         <div id="center">
-            <div class="fkz_droite">
-                {include file="minimodule.tpl" module_name="fetes"}
-                {include file="minimodule.tpl" module_name="lienTol"}
-             {* {include file="minimodule.tpl" module_name="lienIK"} *}
-                {include file="minimodule.tpl" module_name="lien_wikix"}
-             {* {include file="minimodule.tpl" module_name="tour_kawa"} *}
-             {* {include file="minimodule.tpl" module_name="sondages"} *}
-                {include file="minimodule.tpl" module_name="qdj"}
-             {* {include file="minimodule.tpl" module_name="qdj_hier"} *}
-             {* {include file="minimodule.tpl" module_name="meteo"} *}
-                {include file="minimodule.tpl" module_name="activites"}
-                {include file="minimodule.tpl" module_name="lienspropositions"}
-             {* {include file="minimodule.tpl" module_name="liens_perso"} *}
-             {* {include file="minimodule.tpl" module_name="liens_contacts"} *}
-             {* {include file="minimodule.tpl" module_name="liens_utiles"} *}
-             {* {include file="minimodule.tpl" module_name="stats"} *}
-                {include file="minimodule.tpl" module_name="anniversaires"}
-             {* {include file="minimodule.tpl" module_name="virus"} *}
-                <p class="valid">
-                    <a href="http://validator.w3.org/check?uri=referer">
-                    <span class="valid_html"></span>
-                    </a>
-                    <a href="http://jigsaw.w3.org/css-validator/check/referer">
-                    <span class="valid_css"></span>
-                    </a>
-                </p>
-            </div>
             <div id="navigation">
                 {include file="skin/common.menu.tpl"}
             </div>
-            <div id="module">
-                {include file="content.tpl"}
-            </div>
+            <table id="bigandminimodules">
+                <tr>
+                    <td id="module">
+                        {include file="content.tpl"}
+                    </td>
+                    <td id="column" class="{if ($minimodules_layout[4]|@count) == 0}empty{else}full{/if}">
+                        <ul id="column4" class="minimodules_zone">
+                            {foreach from=$minimodules_layout[4] item=module}
+                                {include file="minimodule.tpl" module_name=$module}
+                            {/foreach}
+                        </ul>
+                    </td>
+                </tr>
+            </table>
         </div>
         <div id="footer"></div>
     </body>

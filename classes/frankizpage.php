@@ -28,7 +28,7 @@ class FrankizPage extends PlPage
     public function __construct()
     {
         parent::__construct();
-        FrankizMiniModule::register_modules();
+        FrankizMiniModule::preload(FrankizMiniModule::FLOAT_RIGHT);
         // Set the default page
         $this->changeTpl('frankiz.tpl');
     }
@@ -56,8 +56,11 @@ class FrankizPage extends PlPage
     public function run()
     {
         $skin = $this->load_skin();
-        FrankizMiniModule::run_modules();
+        FrankizMiniModule::run();
         $this->assign('minimodules', FrankizMiniModule::get_minimodules());
+        $this->assign('minimodules_layout', FrankizMiniModule::get_layout());
+        $this->assign('minimodules_js', FrankizMiniModule::get_js());
+
         $this->assign('logged', S::logged());
         $this->assign('level', substr_count(trim(Get::v('n'),'/'),'/'));
         //Run with the default skin disposition (i.e content disposition)

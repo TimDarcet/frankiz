@@ -37,12 +37,13 @@
             {/if}
             <ul class="level1">
                 {if $smarty.session.auth < AUTH_COOKIE }
-                <li><a {path_to_href_attribute path="login"} accesskey="l">Se connecter</a></li>
+                    <li><a {path_to_href_attribute path="login"} accesskey="l">Se connecter</a></li>
                 {/if}
                 {if $smarty.session.auth >= AUTH_COOKIE }
-                <li><a {path_to_href_attribute path="exit"} accesskey="l">Se déconnecter de {$smarty.session.user->displayName() }</a></li>
+                    <li><a {path_to_href_attribute path="exit"} accesskey="l">Se déconnecter de {$smarty.session.user->displayName() }</a></li>
+                    <li><a {path_to_href_attribute path="profil/fkz"}>Profil</a></li>
+                    <li><a {path_to_href_attribute path="profil/minimodules"}>Minimodules</a></li>
                 {/if}
-                <li><a {path_to_href_attribute path="profil/fkz"}>Profil</a></li>
                 <li><a {path_to_href_attribute path="profil/skin"}>Skin</a></li>
             </ul>  
         </li>

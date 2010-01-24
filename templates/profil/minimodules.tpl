@@ -20,9 +20,36 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{ldelim}
-    "voted": {$voted}, 
-    "qdj": {$qdj}
-{rdelim}
+<div class="profil_minimodules">
+    <p>
+        Les minimodules permettent d'afficher rapidement des informations fréquemment actualisées sur la page d'accueil ou dans la troisième colonne optionnelle. Il est possible de les déplacer en faisant glisser leur barre de titre. 
+    </p>
+    <table>
+        <tr>
+            <th>
+                ?
+            </th>
+            <th>
+                Nom
+            </th>
+             <th>
+                Description
+            </th>
+        </tr>
+        {foreach from=$liste_minimodules item=minimodule}
+        <tr>
+            <td>
+                <input name="{$minimodule.name}" type="checkbox" {if $minimodule.activated}checked="checked"{/if} onclick="{literal}if (!this.checked) {removeMinimodule(this.name, this);} else {addMinimodule(this.name, this);}{/literal}"/>
+            </td>
+            <td>            
+                {$minimodule.long_name}
+            </td>
+            <td>            
+                {$minimodule.description}
+            </td>
+        </tr>
+        {/foreach}
+    </table>
+</div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

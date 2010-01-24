@@ -218,6 +218,15 @@ class FrankizSession extends PlSession
         return null;
     }
 
+    /** Check both auth level and perms existence
+     */
+    public function checkAuthAndPerms($auth, $perms)
+    {
+        if ($auth < $this->loggedLevel()) return $auth <= S::i('auth');
+
+        return ($auth <= S::i('auth')) && S::user()->checkPerms($perms);
+    }
+
     /** Start a session as user $user
      */
     protected function startSessionAs($user, $level)

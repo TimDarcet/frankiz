@@ -22,15 +22,15 @@
 
 {if isset($minimodules.$module_name|smarty:nodefaults)}
 
-<div class="minimodule" id="minimodule_{$module_name}">
-    <div class="head">
-        <span id="{$module_name}_logo"></span>
-        {$minimodules.$module_name->get_titre()}
-    </div>
-    <div class="body">
-        {include file=$minimodules.$module_name->get_template() minimodule=$minimodules.$module_name->get_params()}
-    </div>
-</div>
+<li name="{$module_name}" class="minimodule" id="minimodule_{$module_name}">
+        <div class="head">
+            <span id="{$module_name}_logo"></span>
+            {$minimodules.$module_name->get_titre()}
+        </div>
+        <div class="body">
+            {include file=$minimodules.$module_name->get_template() minimodule=$minimodules.$module_name->get_params()}
+        </div>
+</li>
 
 {/if}
 

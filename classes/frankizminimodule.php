@@ -26,6 +26,15 @@
 
 abstract class FrankizMiniModule
 {
+    const MAIN_LEFT = 1;
+    const MAIN_MIDDLE = 2;
+    const MAIN_RIGHT = 3;
+    const FLOAT_RIGHT = 4;
+
+    const auth  = AUTH_PUBLIC;
+    const perms = '';
+    const js    = '';
+
     protected $tpl = null;
     protected $header_tpl = null;
     protected $titre = "Not Defined!";
@@ -61,105 +70,98 @@ abstract class FrankizMiniModule
         $this->params[$key] = $value;
     }
 
-
-    //Initializes a minimodule, which should then register with FrankizMiniModule::register()
-    abstract static function init();
-
     /* static stuff */
     private static $minimodules = array();
-    
-    //Stores minimodules handlers
-    private static $minimodules_handlers = array();
-    
+    private static $minimodules_layout = array(self::MAIN_LEFT=>array(), self::MAIN_MIDDLE=>array(), self::MAIN_RIGHT=>array(), self::FLOAT_RIGHT=>array());
+    private static $cols;
+    private static $oneShotName = '';
+
     //stores the name of the module being executed
     private static $curr_name;
-    
+
     /**
-     * registers the list of minimodules
+     * preload the list of minimodules
      */
-    public static function register_modules()
+    public static function preload($_cols)
     {
-        // Load list of available minimodules
-        require_once 'minimodules.inc.php';
-        foreach($minimodules_list as $name)
+         if (is_array($_cols)) {
+            self::$cols = array_merge(self::$cols, $_cols);
+         } else {
+            self::$cols[] = $_cols;
+         }
+    }
+
+    public static function oneShot($name)
+    {
+        self::$oneShotName = $name;
+        self::run();
+    }
+
+    public static function run()
+    {
+        if (self::$oneShotName == '')
         {
-            self::_init($name);
+            if (S::logged())
+            {
+                $res = XDB::query('SELECT m.name name, um.col col, um.row row
+                                     FROM users_minimodules AS um
+                               INNER JOIN minimodules AS m
+                                       ON m.name = um.name
+                                    WHERE um.uid = {?} AND um.col IN '.XDB::formatArray(self::$cols).'
+                                    ORDER BY um.col, um.row',
+                                  S::user()->id());
+            } else {
+                $res = XDB::query('SELECT name, col, row
+                                     FROM minimodules
+                                    WHERE bydefault = 1 AND col IN '.XDB::formatArray(self::$cols).'
+                                    ORDER BY col, row');
+            }
+        }
+        else
+        {
+            $res = XDB::query('SELECT name, col, row
+                                 FROM minimodules
+                                WHERE name = {?}
+                                ORDER BY col, row',
+                              self::$oneShotName);
+        }
+        $minimodules_list = $res->fetchAllAssoc();
+
+        foreach($minimodules_list as $minimodule)
+        {
+            $name = $minimodule['name'];
+
+            if (!array_key_exists($name, self::$minimodules))
+            {
+                $localDatas = self::getlocalData($name);
+                if (Platal::session()->checkAuthAndPerms($localDatas['auth'], $localDatas['perms']))
+                {
+                    $cls = $localDatas['name'];
+                    $localDatas['object'] = new $cls();
+                    self::$minimodules[$name] = $localDatas;
+
+                    self::$minimodules_layout[$minimodule['col']][$minimodule['row']] = $name;
+                }
+            }
         }
     }
 
-    //Includes
-    private static function _init($name)
+    // Load datas contained in the Minimodule (auth, perms, js), but doesn't instanciate them
+    public static function getlocalData($name)
     {
         global $globals;
         $cls=ucfirst($name)."MiniModule";
         $path=$globals->spoolroot . "/minimodules/" . strtolower($name) . ".php";
         include_once $path;
-        call_user_func(array($cls, 'init'));
-    }
 
-    /** registers a minimmodule
-     * @param name name of the minimodule
-     * @param minimodule object of the minimodule class
-     * @param handler name of the function that realizes the minimodule
-     * @param auth minimal auth to see the minimodule
-     * @param perms minimal perms to see the minimodule
-     */
-    public static function register($name, $minimodule, $handler, $auth, $perms='user')
-    {
-        if(!self::is_minimodule_disabled($name)){
-            self::$minimodules[$name]=array(
-                'object' => $minimodule,
-                'handler' => array($minimodule, $handler),
-                'auth'  => $auth);
-                if(!is_null($perms)){
-                    self::$minimodules[$name]['perms']=$perms;
-                }
-        }
-    }
-    
-    public static function is_minimodule_disabled($name)
-    {
-        //Returns false if no list of minimodules exists
-        if(S::has('minimodules_disabled')){
-            return  in_array($name, S::v('minimodules_disabled'));
-        }
-        return false;
-    }
+        $auth  = constant($cls.'::auth');
+        $perms = constant($cls.'::perms');
+        $js    = constant($cls.'::js');
 
-
-    /** runs the modules
-     */
-    public static function run_modules()
-    {
-        foreach(self::$minimodules as $name=>$data)
-        {
-            if(self::check_perms($data))
-            {
-                $data['object']->name = $name;
-                call_user_func($data['handler']);
-            }else{
-                unset(self::$minimodules[$name]);
-            }
-        }
-    }
-
-    /**
-     * Check perms for the minimodule : 
-     * if auth or perms for the minimodule are higher than session, return false
-     */
-    private static function check_perms($data)
-    {
-        if($data['auth'] > S::v('auth', AUTH_PUBLIC)) {
-            return false;
-        }
-
-        if (!array_key_exists('perms', $data) || !S::logged()) {
-            // No perms, no check ; if not logged, no perms exist
-            return true;
-        }
-
-        return S::user()->checkPerms($data['perms']);
-//      return true;
+        return array(  'name' => $cls,
+                       'auth' => $auth,
+                      'perms' => $perms,
+                         'js' => $js);
     }
 
     /**
@@ -172,6 +174,21 @@ abstract class FrankizMiniModule
         foreach(self::$minimodules as $name => $data)
         {
             $res[$name] = $data['object'];
+        }
+        return $res;
+    }
+
+    public static function get_layout()
+    {
+        return self::$minimodules_layout;
+    }
+
+    public static function get_js()
+    {
+        $res=array();
+        foreach(self::$minimodules as $name => $data)
+        {
+            $res[$name] = $data['js'];
         }
         return $res;
     }

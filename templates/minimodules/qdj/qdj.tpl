@@ -21,8 +21,8 @@
 {**************************************************************************}
 
 <div class="navigation">
-    <span class="before"><a onclick="backward();"><-</a></span>
-    <span class="after"><a onclick="forward();">-></a></span>
+    <span class="before"><a onclick="qdj.backward();"><-</a></span>
+    <span class="after"><a onclick="qdj.forward();">-></a></span>
     <span class="date">{$minimodule.date}</span>
 </div>
 
@@ -32,10 +32,10 @@
     <table>
         <tr class="answers">
             <td class="case1">
-                <a onclick="vote(1);">{$minimodule.answer1}</a>
+                <a onclick="qdj.vote(1);">{$minimodule.answer1}</a>
             </td>
             <td class="case2">
-                <a onclick="vote(2);">{$minimodule.answer2}</a>
+                <a onclick="qdj.vote(2);">{$minimodule.answer2}</a>
             </td>
         </tr>
         <tr class="counts">
@@ -47,13 +47,6 @@
             </td>
         </tr>
     </table>
-
-    <div class="voters">Derniers à répondre :
-        <ul>
-            <li>2. Brice SLAMA</li>
-            <li>1. Brice SLAMA</li>
-        </ul>
-    </div>
 </div>
     
 <div class="toModule">
