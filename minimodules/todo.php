@@ -19,18 +19,26 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-require_once dirname(__FILE__).'/../include/frankiz.inc.php';
+class TodoMiniModule extends FrankizMiniModule
+{
+    const auth  = AUTH_COOKIE;
+    const perms = 'user';
+    const js    = 'minimodules/todo.js';
 
-$platal = new Frankiz('frankiz', 'admin', 'activites', 'annonces', 'profil', 'trombino', 'qdj', 'todo');
+    public function __construct()
+    {
+        $res=XDB::query('SELECT todo_id, sent, checked, tobedone
+                           FROM todo
+                          WHERE uid = {?}
+                          ORDER BY sent DESC',
+                          S::user()->id());
+        $array_todo = $res->fetchAllAssoc();
 
-if (!($path = Env::v('n')) || ($path{0} < 'A' || $path{0} > 'Z')) {
-    $platal->run();
-    exit;
+        $this->assign('list', $array_todo);
+        $this->tpl = "minimodules/todo/todo.tpl";
+        $this->titre = "To-Do";
+    }
 }
-
-/*** WIKI CODE ***/
-
-include pl_core_include('wiki/engine.php');
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
 ?>

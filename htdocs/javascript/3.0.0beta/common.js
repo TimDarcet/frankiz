@@ -13,6 +13,13 @@ $(document).ready(function(){
             }
         }
     })
+    
+    $('#clubsList').sortable({
+         distance: 5,
+         tolerance: 'pointer',
+         opacity: 0.6,
+         revert: false
+    });
 });
 
 function showError(message)

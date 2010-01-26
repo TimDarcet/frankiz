@@ -21,7 +21,7 @@
 body {
     background-color: #ffffff;
     margin: 0;
-    padding: 0px;
+    padding: 0;
     font-family: arial, helvetica, arial, sans-serif;
 }
 
@@ -251,18 +251,19 @@ div.col span { height: 50px; display: block;}
     border-collapse: separate;
 }
 
-.accueil table td{
+.accueil td{
     padding:2px;
     vertical-align: top;
-    width: 30%;
 }
 
 .accueil td.full {
     display: table-cell;
+    width: 30%;
 }
 
 .accueil td.empty {
     display: none;
+    width: 30%;
 }
 
 .accueil td ul.minimodules_zone {
@@ -281,7 +282,6 @@ div.col span { height: 50px; display: block;}
 .profil_minimodules td, th {
     border: 1px black solid;
 }
-
 
 
 /* Minimodules */
@@ -437,6 +437,90 @@ div.col span { height: 50px; display: block;}
     border: 1px solid black;
     font-size: 9pt;
     text-align: center;
+}
+
+/* |->todo */
+
+#minimodule_todo .body  {
+    padding: 0;
+}
+
+#todo_list {
+    width: 100%;
+    max-height: 300px;
+    overflow: auto;
+}
+
+#todo_list td {
+    border-top: 1px dashed #17758A;
+    width: 100%;
+}
+
+#todo_list tr:first-child td {
+    border-top: none;
+}
+
+#todo_list td:first-child {
+    width: auto;
+}
+
+#minimodule_todo .addTodo  {
+    border-top: 1px solid #002334;
+    padding: 2px;
+    text-align: center;
+    background-color: #7599AB;
+}
+
+#minimodule_todo input  {
+    font-weight: bold;
+    border: 1px solid #002334;
+    color: white;
+    background-color: #002334;
+}
+
+#minimodule_todo input:hover  {
+    color: #002334;
+    background-color: #FFBA00;
+}
+
+#minimodule_todo span.clear  {
+    display: block;
+    background: url(../default/images/todo_trash.png) no-repeat top left;
+    width: 18px;
+    height: 18px;
+    overflow: hidden;
+    text-indent: 20px;
+    float: left;
+}
+
+#minimodule_todo input.add  {
+    color: green;
+    font-weight: 900;
+    width: 7%;
+    float: right;
+    text-align: center;
+}
+
+#minimodule_todo input.tobedone  {
+    width: 80%;
+}
+
+.checkbox  {
+    width: 24px;
+    height: 24px;
+    background: url(../default/images/checkbox.png) no-repeat;
+}
+
+.checkbox:hover  {
+    background-position: 0 -24px;
+}
+
+.checkbox[checked=checked]  {
+    background-position: 0 -48px;
+}
+
+.checkbox[checked=checked]:hover  {
+    background-position: 0 -72px;
 }
 
 
@@ -666,6 +750,11 @@ span.valid_css {
  /* Fin Logos W3C */
  
 /* Formulaires */
+
+form {
+    padding: 0;
+    margin: 0;
+}
 
 div.formulaire{
 	display:block;
