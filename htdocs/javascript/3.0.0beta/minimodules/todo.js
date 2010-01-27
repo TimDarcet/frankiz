@@ -46,6 +46,6 @@ var todo = {
     },
     
     "clear" : function() {
-        request('todo/ajax/clear', {}, {"success": function (json) { $('#todo_list div[checked="checked"]').parent().parent().remove(); } });
+        request('todo/ajax/clear', {}, {"success": function (json) { $('#todo_list div[checked="checked"]').parent().parent().fadeOut('slow', function() {this.parentNode.removeChild(this);}); } });
     }
 };
