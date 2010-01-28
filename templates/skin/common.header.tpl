@@ -45,6 +45,7 @@
             {foreach from=$minimodules_js key=name item=js}
                 minimodulesJs['{$name}'] = "{$js}";
             {/foreach}
+            var nav_layout = {$nav_layout|smarty:nodefaults};
         </script>
         {include file='../core/templates/plpage.header.tpl'}
         {if $more} {include file=$more} {/if}

@@ -31,6 +31,8 @@ class FrankizModule extends PlModule
             'minimodules/ajax/add'     => $this->make_hook('ajax_minimodules_add',    AUTH_PUBLIC),
             'minimodules/ajax/remove'  => $this->make_hook('ajax_minimodules_remove', AUTH_PUBLIC),
             'minimodules/ajax/get'     => $this->make_hook('ajax_minimodules_get',    AUTH_PUBLIC),
+            'navigation/ajax/order'    => $this->make_hook('ajax_navigation_order',   AUTH_PUBLIC),
+            'navigation/ajax/layout'   => $this->make_hook('ajax_navigation_layout',    AUTH_PUBLIC),
         );
     }
 
@@ -168,6 +170,58 @@ class FrankizModule extends PlModule
             $page->jsonAssign('error', 'Requête erronée');
         }
     }
+
+    // Save the order the user selects for his groups
+    function handler_ajax_navigation_order(&$page)
+    {
+        $json = json_decode(Env::v('json'));
+
+        $layout = array();
+
+        if (isset($json->{'layout'}))
+        {
+            foreach ($json->{'layout'} as $rank => $gid)
+            {
+                $layout[] = '('.S::user()->id().', '.$gid.', '.$rank.', "temp", "")';
+            }
+        }
+
+
+        XDB::execute('INSERT INTO users_groups (uid, gid, rank, job, title)
+                           VALUES '.implode(', ', $layout).'
+          ON DUPLICATE KEY UPDATE rank = VALUES(rank)');
+
+        if (XDB::affectedRows() > 0) {
+            $page->jsonAssign('success', true);
+        } else {
+            $page->jsonAssign('success', false);
+            $page->jsonAssign('error', "Réagencement du menu impossible");
+        }
+        XDB::execute('DELETE FROM users_groups WHERE job = "temp"');
+    }
+
+    // Save the state of the sub-menus : collapsed or not
+    function handler_ajax_navigation_layout(&$page)
+    {
+        $json = json_decode(Env::v('json'));
+
+        if (isset($json->{'layout'}))
+        {
+            XDB::execute('UPDATE account
+                             SET nav_layout = {?}
+                           WHERE uid = {?}',
+                        json_encode($json->{'layout'}),
+                        S::user()->id());
+        }
+
+        if (XDB::affectedRows() > 0) {
+            $page->jsonAssign('success', true);
+        } else {
+            $page->jsonAssign('success', false);
+            $page->jsonAssign('error', "Réagencement du menu impossible");
+        }
+    }
+
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

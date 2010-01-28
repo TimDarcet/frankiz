@@ -61,6 +61,17 @@ class FrankizPage extends PlPage
         $this->assign('minimodules_layout', FrankizMiniModule::get_layout());
         $this->assign('minimodules_js', FrankizMiniModule::get_js());
 
+        if (S::logged())
+        {
+            $this->assign('clubs_layout', group::getLayout(group::CLUB));
+            $this->assign('free_layout' , group::getLayout(group::FREE));
+            //nav_layout contains the json datas describing if a sub-menu is collapsed or not
+            $this->assign('nav_layout'  , S::user()->nav_layout());
+        } else {
+            //if not logged, show all sub-menus
+            $this->assign('nav_layout'  , '{}');
+        }
+
         $this->assign('logged', S::logged());
         $this->assign('level', substr_count(trim(Get::v('n'),'/'),'/'));
         //Run with the default skin disposition (i.e content disposition)

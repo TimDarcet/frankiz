@@ -26,7 +26,7 @@
  * @param $iffalse  The attribute to add otherwise (defaults to '')
  */
 function smarty_function_path_to_href_attribute($params, &$smarty) {
-    $on = (isset($params['iftrue'])) ? $params['iftrue'] : 'class="on"';
+    $on = (isset($params['iftrue'])) ? $params['iftrue'] : 'on';
     $off = (isset($params['iffalse'])) ? $params['iffalse'] : '';
     
     if (trim($params['path'],'/') == trim(Get::v('n'),'/')) {
@@ -36,7 +36,7 @@ function smarty_function_path_to_href_attribute($params, &$smarty) {
     }
     $attribute = ($attribute == '') ? '' : ' '.$attribute;    
     
-    return 'href="' . $params['path'] . '"' . $attribute;
+    return 'href="' . $params['path'] . '" class="link' . $attribute . '"';
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

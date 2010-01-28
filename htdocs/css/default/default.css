@@ -93,8 +93,10 @@ a:hover, a:active {
     display: block;
 }
 
+
+
 #navigation ul.level0 {
-    margin:0;
+    margin: 0;
     padding: 0 0 0 4px;
     list-style-type: none;
     text-indent: 2px;
@@ -106,34 +108,77 @@ a:hover, a:active {
     margin-bottom: 5px;
 }
 
-#navigation ul.level0 li a {
+/* Etat normal des liens dans le menu */
+#navigation ul.level0 li a.link {
+    text-indent: 19px;
     line-height: 20px;
 }
 
-#navigation ul.level0 li a {
-    line-height: 20px;
-}
-
-#navigation ul.level0 li a.on {
+/* Etat s'il s'agit de la page en cours */
+#navigation ul.level0 li a.link.on {
     background-color: white;
     color: #002334;
 }
 
-#navigation ul.level0 li a:hover {
+/* Etat si la souris est au dessus */
+#navigation ul.level0 li a.link:hover {
     background-color: white;
     color: #002334;
 }
+
+/* La flèche est gérée spécialement par le javascript, le comportement est donc particulier */
+
+/* ->Sous-menu déplié */
+#navigation ul.level0 li .arrow {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: url(../default/images/arrows.png) no-repeat 0 -36px;
+}
+
+/* ->Sous-menu replié */
+#navigation ul.level0 li .arrow.hidden{
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: url(../default/images/arrows.png) no-repeat 0 0;
+}
+
+/* Etat s'il s'agit de la page en cours */
+/* ->Sous-menu déplié */
+#navigation ul.level0 li .arrow.on {
+    background: url(../default/images/arrows.png) no-repeat 0 -54px;
+}
+
+/* ->Sous-menu replié */
+#navigation ul.level0 li .arrow.on.hidden {
+    background: url(../default/images/arrows.png) no-repeat 0 -18px;
+}
+
+/* Etat si la souris est au dessus du lien adjacent => ne pas utiliser :hover, le javascript se charge de rajouter la classe .hover */
+/* ->Sous-menu déplié */
+#navigation ul.level0 li .arrow.hover {
+    background: url(../default/images/arrows.png) no-repeat 0 -54px;
+}
+
+/* ->Sous-menu replié */
+#navigation ul.level0 li .arrow.hover.hidden {
+    background: url(../default/images/arrows.png) no-repeat 0 -18px;
+}
+
 
 #navigation ul.level1 {
     padding: 0 0 0 4px;
     list-style-type: none;
     text-indent: 8px;
     font-size: 0.9em;
+    margin: 0;
 }
 
 #navigation ul.level1 li {
     border-top: 0;
     margin-bottom: 0;
+    margin: 0;
 }
 
 #navigation ul.level1 li a{

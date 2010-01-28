@@ -40,6 +40,7 @@ class User extends PlUser
     protected $state = null;
 
     protected $skin = null;
+    protected $nav_layout = null;
 
     protected $main_promo = null;
 
@@ -104,7 +105,8 @@ class User extends PlUser
                                     a.gender, a.on_platal, a.email_format,
                                     IF(a.nickname = '', a.firstname, a.nickname) AS display_name,
                                     CONCAT(s.forlife, '@', f.domain) AS bestalias,
-                                    CONCAT(f.abbrev, s.promo) AS main_promo
+                                    CONCAT(f.abbrev, s.promo) AS main_promo,
+                                    a.nav_layout AS nav_layout
                              FROM   account AS a
                         LEFT JOIN   formations AS f ON (f.formation_id = a.main_formation)
                         LEFT JOIN   studies AS s ON (s.formation_id = a.main_formation AND s.uid = a.uid)
@@ -149,6 +151,11 @@ class User extends PlUser
     public function skin()
     {
         return $this->skin;
+    }
+
+    public function nav_layout()
+    {
+        return $this->nav_layout;
     }
 
     public function promo()

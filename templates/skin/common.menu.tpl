@@ -24,14 +24,14 @@
     Navigation
 </div>
 <div class="body">
-    <ul class="level0">
-        <li><a {path_to_href_attribute path="accueil"} accesskey="a">Accueil</a>
+    <ul id="nav_menu" class="level0">
+        <li><a class="arrow" /><a {path_to_href_attribute path="accueil"} accesskey="a">Accueil</a>
             <ul class="level1">
                 <li><a {path_to_href_attribute path="accueil/annonces"}>Annonces</a></li>
                 <li><a {path_to_href_attribute path="accueil/activites"}>Activités</a></li>
             </ul>
         </li>
-        <li><a {path_to_href_attribute path="profil"} accesskey="c">Compte</a>
+        <li><a class="arrow" /><a {path_to_href_attribute path="profil"} accesskey="c">Compte</a>
             {if isset($smarty.session.suid|smarty:nodefaults) }
             <span class="warning">ATTENTION, su en cours. Pour revenir à ta vraie identité, clique <a href="exit/">ici</a></span>
             {/if}
@@ -48,18 +48,29 @@
             </ul>  
         </li>
         {if $smarty.session.auth >= AUTH_INTERNE }
-        <li><a {path_to_href_attribute path="tol"} accesskey="t">Trombino</a></li>
+        <li><a class="arrow" /><a {path_to_href_attribute path="tol"} accesskey="t">Trombino</a></li>
         {/if}
         {if $smarty.session.auth >= AUTH_COOKIE }
-        <li><a>Binets</a>
-            <ul class="level1">
-                <li>
-                    <a>BR</a>
+        <li><a class="arrow" /><a {path_to_href_attribute path="club"} >Binets</a>
+            <ul id="nav_club" class="level1">
+                {foreach from=$clubs_layout item=club}
+                <li gid="{$club.gid}">
+                    <a {path_to_href_attribute path="groups/show/"|cat:$club.name}>{$club.long_name}</a>
                 </li>
+                {/foreach}
+            </ul>
+        </li>
+        <li><a class="arrow" /><a {path_to_href_attribute path="free"} >Groupes</a>
+            <ul id="nav_free" class="level1">
+                {foreach from=$free_layout item=free}
+                <li gid="{$free.gid}">
+                    <a {path_to_href_attribute path="groups/show/"|cat:$free.name}>{$free.long_name}</a>
+                </li>
+                {/foreach}
             </ul>
         </li>
         {/if}
-        <li><a>Contribuer</a>
+        <li><a class="arrow" /><a {path_to_href_attribute path="contrib"}>Contribuer</a>
             <ul class="level1">
               <li>
                 <a {path_to_href_attribute path="proposition/annonce"}>Proposer une annonce</a> 
@@ -87,7 +98,7 @@
         <li><a href="siteseleves.php">Sites élèves</a></li>
         {/if}
         {if hasPerm('admin') }
-        <li><a {path_to_href_attribute path="gestion"} accesskey="g">Administration</a></li>
+        <li><a class="arrow" /><a {path_to_href_attribute path="gestion"} accesskey="g">Administration</a></li>
         {/if}
     </ul>
 </div>
