@@ -103,25 +103,25 @@ a:hover, a:active {
     font-size: 1.2em;
 }
 
-#navigation ul.level0 li {
+#navigation ul.level0 > li {
     border-top: 1px solid white;
     margin-bottom: 5px;
 }
 
 /* Etat normal des liens dans le menu */
-#navigation ul.level0 li a.link {
+#navigation ul.level0 > li > a.link {
     text-indent: 19px;
     line-height: 20px;
 }
 
 /* Etat s'il s'agit de la page en cours */
-#navigation ul.level0 li a.link.on {
+#navigation ul.level0 > li > a.link.on {
     background-color: white;
     color: #002334;
 }
 
 /* Etat si la souris est au dessus */
-#navigation ul.level0 li a.link:hover {
+#navigation ul.level0 > li > a.link:hover {
     background-color: white;
     color: #002334;
 }
@@ -129,7 +129,7 @@ a:hover, a:active {
 /* La flèche est gérée spécialement par le javascript, le comportement est donc particulier */
 
 /* ->Sous-menu déplié */
-#navigation ul.level0 li .arrow {
+#navigation ul.level0 > li .arrow {
     position: absolute;
     width: 18px;
     height: 18px;
@@ -137,7 +137,7 @@ a:hover, a:active {
 }
 
 /* ->Sous-menu replié */
-#navigation ul.level0 li .arrow.hidden{
+#navigation ul.level0 > li .arrow.hidden{
     position: absolute;
     width: 18px;
     height: 18px;
@@ -146,23 +146,23 @@ a:hover, a:active {
 
 /* Etat s'il s'agit de la page en cours */
 /* ->Sous-menu déplié */
-#navigation ul.level0 li .arrow.on {
+#navigation ul.level0 > li .arrow.on {
     background: url(../default/images/arrows.png) no-repeat 0 -54px;
 }
 
 /* ->Sous-menu replié */
-#navigation ul.level0 li .arrow.on.hidden {
+#navigation ul.level0 > li .arrow.on.hidden {
     background: url(../default/images/arrows.png) no-repeat 0 -18px;
 }
 
 /* Etat si la souris est au dessus du lien adjacent => ne pas utiliser :hover, le javascript se charge de rajouter la classe .hover */
 /* ->Sous-menu déplié */
-#navigation ul.level0 li .arrow.hover {
+#navigation ul.level0 > li .arrow.hover {
     background: url(../default/images/arrows.png) no-repeat 0 -54px;
 }
 
 /* ->Sous-menu replié */
-#navigation ul.level0 li .arrow.hover.hidden {
+#navigation ul.level0 > li .arrow.hover.hidden {
     background: url(../default/images/arrows.png) no-repeat 0 -18px;
 }
 

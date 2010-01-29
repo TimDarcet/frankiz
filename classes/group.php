@@ -19,7 +19,7 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class group
+class Group
 {
     const HIDDEN  = 'hidden';   // Hidden groups
     const FORCED  = 'forced';   // Forced groups (formations, ...)

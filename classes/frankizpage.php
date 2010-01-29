@@ -63,8 +63,8 @@ class FrankizPage extends PlPage
 
         if (S::logged())
         {
-            $this->assign('clubs_layout', group::getLayout(group::CLUB));
-            $this->assign('free_layout' , group::getLayout(group::FREE));
+            $this->assign('clubs_layout', Group::getLayout(group::CLUB));
+            $this->assign('free_layout' , Group::getLayout(group::FREE));
             //nav_layout contains the json datas describing if a sub-menu is collapsed or not
             $this->assign('nav_layout'  , S::user()->nav_layout());
         } else {
