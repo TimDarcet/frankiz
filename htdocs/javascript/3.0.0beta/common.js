@@ -59,8 +59,8 @@ function request(path, data, callbacks, stringify)
                 callback = function(json) { if (json.success) { callbacks.success(json); } else { callbacks.fail(json); } };
             } else if (callbacks.success) {
                 callback = function(json) { if (json.success) { callbacks.success(json); } else { showError(json.error); } };
-            } else if (callbacks.success) {
-                callback = function(json) { if (json.fail) { callbacks.fail(json); } };
+            } else if (callbacks.fail) {
+                callback = function(json) { if (!json.success) { callbacks.fail(json); } };
             }
         }
     } else {
@@ -75,11 +75,9 @@ function makeNav()
 {
     $('#nav_menu > li a.link').hover(
     function(eventObject) {
-        //$(this).addClass('hover');
         $(this).prev().addClass('hover');
     },
     function(eventObject) {
-        //$(this).removeClass('hover');
         $(this).prev().removeClass('hover');
     }
     );
