@@ -32,7 +32,7 @@ class FrankizModule extends PlModule
             'minimodules/ajax/remove'  => $this->make_hook('ajax_minimodules_remove', AUTH_PUBLIC),
             'minimodules/ajax/get'     => $this->make_hook('ajax_minimodules_get',    AUTH_PUBLIC),
             'navigation/ajax/order'    => $this->make_hook('ajax_navigation_order',   AUTH_PUBLIC),
-            'navigation/ajax/layout'   => $this->make_hook('ajax_navigation_layout',    AUTH_PUBLIC),
+            'navigation/ajax/layout'   => $this->make_hook('ajax_navigation_layout',  AUTH_PUBLIC),
         );
     }
 
@@ -186,7 +186,6 @@ class FrankizModule extends PlModule
             }
         }
 
-
         XDB::execute('INSERT INTO users_groups (uid, gid, rank, job, title)
                            VALUES '.implode(', ', $layout).'
           ON DUPLICATE KEY UPDATE rank = VALUES(rank)');
@@ -198,6 +197,8 @@ class FrankizModule extends PlModule
             $page->jsonAssign('error', "Réagencement du menu impossible");
         }
         XDB::execute('DELETE FROM users_groups WHERE job = "temp"');
+
+        S::user()->buildGroups();
     }
 
     // Save the state of the sub-menus : collapsed or not

@@ -19,18 +19,18 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class Group
+class Cluster
 {
-    const SPECIAL  = 'special';  // Singleton group continaing the special clusters (external, internal, ...)
-    const FORCED   = 'forced';   // Forced groups (formations, sections, promo, ...)
-    const CLUB     = 'club';     // Binets, ...
-    const FREE     = 'free';     // Fun, psc, ...
+    const SPECIAL = 'special'; // special clusters (external, internal, ...)
+    const LOBBY   = 'lobby';   // Default cluster for new members
+    const MEMBER  = 'member';  // Belonging to one of thoses clusters means you're a validated member
+    const WRITER  = 'writer';  // Can write and valid group's news/events
+    const ADMIN   = 'admin';   // Can manage users and clusters
 
+    protected $cid;
     protected $gid;
     protected $type;
     protected $name;
-    protected $long_name;
-    protected $description;
 
     public function __construct($raw)
     {
@@ -44,6 +44,11 @@ class Group
                 $this->$key = $value;
             }
         }
+    }
+
+    public function cid()
+    {
+        return $this->cid;
     }
 
     public function gid()
@@ -61,32 +66,36 @@ class Group
         return $this->name;
     }
 
-    public function long_name()
+    public static function checkConsistency($clusters, $groups)
     {
-        return $this->long_name;
-    }
-
-    public function description()
-    {
-        return $this->description;
-    }
-    
-    public static function checkConsistency($groups, $clusters)
-    {
-        $knowngids = array();
+        $unconsistencies = array();
         foreach($clusters as $cluster)
         {
-            $knowngids[] = $cluster->gid();
-        }
-        
-        $unconsistencies = array();
-        foreach($groups as $group)
-        {
-            if (!in_array($group->gid(), $knowngids))
-                $unconsistencies[] = $group;
+            if (!array_key_exists($cluster->gid(), $groups))
+                $unconsistencies[] = $cluster;
         }
         return $unconsistencies;
     }
+
+    public static function getSpecial($whichOne)
+    {
+        // # Temporary, we could think of other special clusters
+        switch($whichOne) {
+            case 'external':
+                return new Cluster(array('cid' => -2, 'gid' => -1, 'type' => Cluster::SPECIAL, 'name' => 'external'));
+                
+            case 'internal':
+                return new Cluster(array('cid' => -1, 'gid' => -1, 'type' => 'special', 'name' => 'internal'));
+        }
+        
+        return false;
+    }
+
+    public static function inline($clusters)
+    {
+        return XDB::formatArray(array_keys($clusters));
+    }
+
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

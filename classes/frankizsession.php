@@ -61,21 +61,6 @@ class FrankizSession extends PlSession
             }
             S::set('auth', $auth);
         }
-
-        // Get user's groups with associated permissions
-        
-        // User is connected => show his clusters
-        if (S::i('auth') >= AUTH_COOKIE)                   
-        {
-            $clusters = S::user()->clusters();
-        }
-        // User is not connected => try to find ip associated clusters, but no admin clusters
-        else
-        {
-            $clusters = IP::getClusters();
-        }
-
-        S::set('clusters', $clusters);
     }
 
     /** Tells if we have enough information to determine the current user
@@ -97,6 +82,16 @@ class FrankizSession extends PlSession
                 return false;
             }
         }
+
+        // Load clusters and groups
+        if (S::logged()) {
+            if (!S::has('groups')) S::user()->buildGroups();
+            if (!S::has('clusters')) S::user()->buildClusters();
+        } else {
+            if (!S::has('groups')) IP::buildGroups();
+            if (!S::has('clusters')) IP::buildClusters();
+        }
+
         return true;
     }
 
@@ -263,6 +258,10 @@ class FrankizSession extends PlSession
         /* Clean temp var 'cookie_uid' */
         S::kill('cookie_uid');
 
+        // Load clusters and groups
+        $user->buildGroups();
+        $user->buildClusters();
+
         return true;
     }
 
@@ -310,6 +309,10 @@ class FrankizSession extends PlSession
 
     public function killAccessCookie() {
         Cookie::kill('hash');
+
+        // Load clusters and groups
+        IP::buildGroups();
+        IP::buildClusters();
     }
 
     public function killLoginFormCookies() {

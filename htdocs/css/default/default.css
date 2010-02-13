@@ -93,8 +93,6 @@ a:hover, a:active {
     display: block;
 }
 
-
-
 #navigation ul.level0 {
     margin: 0;
     padding: 0 0 0 4px;
@@ -242,47 +240,6 @@ a:hover, a:active {
 #module .level1{
     background: #CAD7DC;
 }
-
-div.fkz_liens {
-    font-size: 8pt;
-    border-bottom: 1px solid #1f118c;
-    border-right: 1px solid #1f118c;
-    border-left: 1px solid #1f118c;
-    border-top: 1px solid #1f118c;
-}
-
-#mod_liens_nav {
-    position: absolute;
-    top: 160px;
-    width: 100%;
-    font-size: 9pt;
-    font-weight: bold;
-    background-color: #e8e7f3;
-    border: 1px solid #1f118c;
-    padding: 2px 5px 2px 5px;
-    text-align: center;
-}
-
-#mod_liens_nav  .fkz_titre{
-    display: none;
-}
-#mod_liens_nav  div{display:inline; border:none; background:none}
-
-.fkz_liens,.fkz_contact,.fkz_stats {
-	list-style-type:none;
-}
-
-li.fkz_liens_nav{
-	list-style-type:none;
-	display: inline;
-	padding-right:5px;
-}
-ul.fkz_liens_nav{
-	display: inline;
-}
-
-div.col {height: 50px;}
-div.col span { height: 50px; display: block;}
 
 .clear {
     clear: both;
@@ -497,8 +454,11 @@ div.col span { height: 50px; display: block;}
 }
 
 #todo_list td {
+    padding: 0;
+    padding-top: 1px;
     border-top: 1px dashed #17758A;
     width: 100%;
+    vertical-align: middle;
 }
 
 #todo_list tr:first-child td {
@@ -550,6 +510,37 @@ div.col span { height: 50px; display: block;}
     width: 80%;
 }
 
+/* |->news */
+
+#minimodule_news .body  {
+    padding: 0;
+}
+
+#news_list {
+    width: 100%;
+    max-height: 300px;
+    overflow: auto;
+}
+
+#news_list table {
+    border-collapse: collapse;
+}
+
+#news_list td {
+    padding-top: 1px;
+    border-top: 1px dashed #17758A;
+    width: 100%;
+    vertical-align: middle;
+}
+
+#news_list tr:first-child td {
+    border-top: none;
+}
+
+#news_list td:first-child {
+    width: auto;
+}
+
 .checkbox  {
     width: 24px;
     height: 24px;
@@ -566,210 +557,6 @@ div.col span { height: 50px; display: block;}
 
 .checkbox[checked=checked]:hover  {
     background-position: 0 -72px;
-}
-
-
-.fkz_anniversaire_titre {
-	color: white;
-	background: #1f118c;
-	padding: 2px;
-	text-align : center;
-	font-size: 11pt;
-	font-style: italic;
-	font-weight: bold;
-	border-bottom: 1px solid #1f118c;
-	border-right: 1px solid #1f118c;
-	border-left: 1px solid #1f118c;
-	border-top: 1px solid #1f118c;
-}
-
-.fkz_anniversaire {
-	font-size: 9pt;
-	background-color: #e8e7f3;
-	max-width: 100%; 
-	border-bottom: 1px solid #1f118c;
-	padding: 2px;
-	border-right: 1px solid #1f118c;
-	border-left: 1px solid #1f118c;
-}
-
-.fkz_titre, .fkz_page_titre {
-	color: white;
-	background-color: #1f118c;
-	padding: 2px;
-	text-align : center;
-	font-size: 11pt;
-	font-style: italic;
-	font-weight: bold;
-	border-bottom: 1px solid #1f118c;
-	border-right: 1px solid #1f118c;
-	border-left: 1px solid #1f118c;
-	border-top: 1px solid #1f118c;
-}
-
-.fkz_module_corps, .fkz_page_corps {
-	background: #e8e7f3;
-	border-bottom: 1px solid #1f118c;
-	padding: 2px;
-	border-right: 1px solid #1f118c;
-	border-left: 1px solid #1f118c;
-	margin-bottom: 20px;
-}
-
-.fkz_sommaire {
-    font-size: 9pt;
-    text-align: left;
-    max-width: 100%; 
-    background-color: #e8e7f3;
-    border: 1px solid #1f118c;
-}
-
-.fkz_sommaire_titre, .fkz_annonces_titre {
-	color: white;
-	background-color: #1f118c;
-	font-size: 11pt;
-	font-weight: bold;
-	text-align: center;
-	font-style: italic;
-	padding: 2px;
-}
-
-.fkz_signature {
-	text-align: right;
-	font-style: italic;
-}
-
-.fkz_annonces_titre {
-	margin-left: -5px;
-	margin-right: -5px;
-}
-
-.fkz_annonces {
-	padding-left: 5px;
-	padding-right: 5px;
-	font-size: 9pt;
-	text-align: left;
-	max-width: 100%; 
-	background-color: #e8e7f3;
-	border-bottom: 1px solid #1f118c;
-	border-right: 1px solid #1f118c;
-	border-left: 1px solid #1f118c;
-	border-top: 1px solid #1f118c;
-}
-
-span.fkz_annonces_vieux {
-	background-image:url("../default/images/vieux.gif");
-	background-repeat:no-repeat;
-	height:16px;
-	padding-left:16px;
- }
-
- span.fkz_annonces_nouveau {
-	background-image:url("../default/images/nouveau.gif");
-	background-repeat:no-repeat;
-	height:16px;
-	padding-left:16px;
- }
- 
- span.fkz_annonces_important {
-	background-image:url("../default/images/important.gif");
-	background-repeat:no-repeat;
-	height:16px;
-	padding-left:16px;
- } 
- 
- span.fkz_annonces_reste {
-	background-image:url("../default/images/reste.gif");
-	background-repeat:no-repeat;
-	height:16px;
-	padding-left:16px;
- } 
- 
- span.fkz_annonces_cat {
- 	display:none;
- }
-
-.fkz_trombino {
-	font-size: 9pt;
-   text-align: left;
-   max-width: 100%; 
-   border-bottom: 1px solid #1f118c;
-	border-right: 1px solid #1f118c;
-	border-left: 1px solid #1f118c;
-	border-top: 1px solid #1f118c;
-	background-color: #e8e7f3;
-}
-
-
-
-/* Stats */
- 
-.fkz_stats{list-style-type:  none; }
-
-.serveur_nom {
-/*	display: block;*/
-	color: inherit;
-}
-
-.serveur_up {
-	color: inherit;
-	background: lime;
-	position: relative;
-	left: 120px;
-/*	top: 16px;*/
-}
-
-.serveur_down {
-	color: inherit;
-	background: red;
-	position: relative;
-	left: 120px;
-/*	top: 16px;*/
-}
-/* FAQ et Xshare */
-.noeud_ferme {
-	list-style-image: url('../default/fold_close.gif');
-}
-
-.noeud_ouvert {
-	list-style-image: url('../default/fold_open.gif');
-}
-
-.feuille {
-	list-style-image: url('../default/question.gif');
-}
-
-
-
-.fkz_qdj_last {
-	list-style-type: none;  
-	text-align: left; 
-	background-color: #d2cff3;
-}
-
-.commentaire {
-	color: inherit;
-	background: #d2cff3;
-	padding: 6px;
-	border: 1px solid #9c94f3;
-	display: block;
-}
-
-.warning {
-	color: inherit;
-	background: #ffd4d4;
-	padding: 6px;
-	border: 1px solid #FF3333;
-	display: block;
-}
-
-.note {
-	color: inherit;
-	background: #fdffd0;
-	border: 1px solid #fbff80;
-	font-size: 75%;
-	padding: 6px;
-	display: block;
 }
 
  /* Logos W3C */
@@ -824,10 +611,6 @@ div.formulaire span.boutons{
 	display:block;
 	padding-left: 22%;
 	padding-top:10px;
-}
-
-.fkz_module_corps div.formulaire span.droite,.fkz_module_corps div.formulaire span.gauche{
-	display:block;
 }
 
 .activite {

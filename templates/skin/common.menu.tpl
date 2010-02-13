@@ -54,8 +54,8 @@
         <li><a class="arrow" /><a {path_to_href_attribute path="club"} >Binets</a>
             <ul id="nav_club" class="level1">
                 {foreach from=$clubs_layout item=club}
-                <li gid="{$club.gid}">
-                    <a {path_to_href_attribute path="groups/show/"|cat:$club.name}>{$club.long_name}</a>
+                <li gid="{$club->gid()}">
+                    <a {path_to_href_attribute path="groups/show/"|cat:$club->name()}>{$club->long_name()}</a>
                 </li>
                 {/foreach}
             </ul>
@@ -63,8 +63,8 @@
         <li><a class="arrow" /><a {path_to_href_attribute path="free"} >Groupes</a>
             <ul id="nav_free" class="level1">
                 {foreach from=$free_layout item=free}
-                <li gid="{$free.gid}">
-                    <a {path_to_href_attribute path="groups/show/"|cat:$free.name}>{$free.long_name}</a>
+                <li gid="{$free->gid()}">
+                    <a {path_to_href_attribute path="groups/show/"|cat:$free->name()}>{$free->long_name()}</a>
                 </li>
                 {/foreach}
             </ul>
