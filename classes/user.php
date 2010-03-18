@@ -48,7 +48,6 @@ class User extends PlUser
     protected function getLogin($login)
     {
         global $globals;
-
         if (!$login) {
             throw new UserNotFoundException();
         }
@@ -189,7 +188,7 @@ class User extends PlUser
         S::set('groups_layout', $groups_layout);
     }
 
-    public static function buildClusters()
+    public function buildClusters()
     {
         $external = Cluster::getSpecial('external');
         $internal = Cluster::getSpecial('internal');
@@ -200,7 +199,7 @@ class User extends PlUser
                            INNER JOIN clusters AS c
                                    ON uc.cid = c.cid
                                 WHERE uc.uid = {?}',
-                              S::user()->id());
+                              $this->user_id);
 
         while ($cluster = $iter->next()) {
             $clusters[$cluster['cid']] = new Cluster($cluster);
