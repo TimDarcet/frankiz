@@ -194,12 +194,8 @@ class FrankizSession extends PlSession
                              FROM   account
                             WHERE   '.$login_type.' = {?}',
                         $login);
-        // FIXME : temporary, simple password check
         if(list($uid, $password, $hruid) = $res->fetchOneRow()) {
-            //require_once 'secure_hash.inc.php';
-            //$expected_response = hash_encrypt("$hruid:$password:".S::v('challenge'));
-            //if ($response != $expected_response){
-            if ($password != $response) {
+            if (hash_compare($password, $response)) {
                 if (!S::logged()) {
                     Platal::page()->trigError('Mot de passe ou nom d\'utilisateur invalide');
                 } else {

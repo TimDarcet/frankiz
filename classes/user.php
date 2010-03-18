@@ -147,6 +147,12 @@ class User extends PlUser
                                    WHERE  a.uid = {?}', $this->id());
     }
 
+    public function setPassword($password)
+    {
+        XDB::execute('UPDATE account SET password = {?} WHERE uid = {?}',
+                     hash_encrypt($password), $this->id());
+    }
+
     public function skin()
     {
         return $this->skin;

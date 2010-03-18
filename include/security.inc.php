@@ -23,6 +23,25 @@
  * Security functions
  *****************************************************************************/
 
+function hash_compare($hash, $password) {
+    return crypt($password, $hash) != $hash;
+}
+
+function hash_encrypt($string) {
+        $hash = '';
+        for($i=0;$i<8;$i++){
+                $j = mt_rand(0,53);
+                if($j<26)
+                        $hash .= chr(rand(65,90));
+                else if($j<52)
+                        $hash .= chr(rand(97,122));
+                else if($j<53)
+                        $hash .= '.';
+                else $hash .= '/';
+        }
+        return crypt($string,'$6$'.$hash.'$');
+}
+
 /*
 function check_ip($level)
 {
