@@ -23,7 +23,7 @@ class User extends PlUser
 {
     /* List of available fields, with examples
      * hruid        prenom.nom.X / prenom.nom.SUPOP / ...
-     * uid      42666
+     * user_id      42666
      * forlife      main for-life address
      * bestalias    preferred email address
      * display_name Pseudo
@@ -62,8 +62,8 @@ class User extends PlUser
 
         // If the user id was not part of the known values, determines it from
         // the login.
-        if (!$this->uid) {
-            $this->uid = $this->getLogin($login);
+        if (!$this->user_id) {
+            $this->user_id = $this->getLogin($login);
         }
 
         if (!$lazy) {
@@ -73,7 +73,7 @@ class User extends PlUser
         }
     }
 
-    // Implementation of the login to uid method.
+    // Implementation of the login to user_id method.
     protected function getLogin($login)
     {
         global $globals;
@@ -139,7 +139,7 @@ class User extends PlUser
                         LEFT JOIN   formations AS f ON (f.formation_id = a.main_formation)
                         LEFT JOIN   studies AS s ON (s.formation_id = a.main_formation AND s.uid = a.uid)
                         LEFT JOIN   skins AS sk ON (a.skin = sk.skin_id)
-                            WHERE   a.uid = {?}", $this->uid);
+                            WHERE   a.uid = {?}", $this->id());
         $this->fillFromArray($res->fetchOneAssoc());
     }
 
@@ -230,7 +230,7 @@ class User extends PlUser
                                    ON ug.gid = g.gid
                                 WHERE ug.uid = {?}
                              ORDER BY ug.rank ASC',
-                                $this->uid);
+                                $this->id());
 
         while ($group = $iter->next()) {
             $gid  = $group['gid'];
@@ -255,7 +255,7 @@ class User extends PlUser
                            INNER JOIN clusters AS c
                                    ON uc.cid = c.cid
                                 WHERE uc.uid = {?}',
-                              $this->uid);
+                              $this->id());
 
         while ($cluster = $iter->next()) {
             $clusters[$cluster['cid']] = new Cluster($cluster);
