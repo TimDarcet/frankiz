@@ -327,7 +327,7 @@ class UFC_Group implements UserFilterCondition
 /** Filters users based on group membership
  * @param $val Room's Id
  */
-abstract class UFC_Casert implements UserFilterCondition
+class UFC_Casert implements UserFilterCondition
 {
     private $val;
 
@@ -619,7 +619,7 @@ class UserFilter extends PlFilter
 
     public function getUID($pos = 0)
     {
-        $uids =$this->getUIDList(null, new PlFilter(1, $pos));
+        $uids = $this->getUIDList(null, new PlFilter(1, $pos));
         if (count($uids) == 0) {
             return null;
         } else {
@@ -795,6 +795,10 @@ class UserFilter extends PlFilter
         }
         return $joins;
     }
+
+    // Temporary
+    public function filter(array $objects, $limit = null) {}
+
 }
 // }}}
 
