@@ -29,6 +29,23 @@ img {
     border: 0;
 }
 
+form {
+	padding: 0;
+	margin: 0;
+}
+
+input  {
+    font-weight: bold;
+    border: 1px solid #002334;
+    color: white;
+    background-color: #002334;
+}
+
+input:hover {
+    color: #002334;
+    background-color: #FFBA00;
+}
+
 #logo {
     left:0;
     background-image: url("../default/images/home_logo.png");
@@ -228,9 +245,10 @@ a:hover, a:active {
 }
 
 #module>.body{
+	position: relative;
     padding: 10px;
-    border: 1px solid #002334;
-    border-left: 0;
+    border: 0;
+    border-top: 1px solid #002334;
 }
 
 #module .level0{
@@ -272,6 +290,7 @@ a:hover, a:active {
     width: 100%;
 }
 
+
 /* |->profil */
 
 /* |->|->minimodules */
@@ -284,6 +303,48 @@ a:hover, a:active {
 .profil_minimodules td, th {
     border: 1px black solid;
 }
+
+
+/* |->trombino */
+#tol_searcher {
+    position: relative;
+    float: right;
+
+    width: 200px;
+    height: auto;
+    background-color: #CAD7DC;
+    border: 1px #002334 solid;
+}
+
+#tol_searcher legend {
+    color: white;
+    background-color: #002334;
+    border: 1px #002334 solid;
+}
+
+#tol_searcher ul {
+	margin: 0;
+	padding: 0;
+	text-indent: 0;
+}
+
+#tol_searcher fieldset {
+	border: 1px white solid;
+	margin-bottom: 2px;
+}
+
+#tol_searcher li {
+    list-style: none;
+}
+
+#tol_searcher label {
+	text-align: left;
+}
+
+#tol_searcher label input {
+	width: 100%;
+}
+
 
 
 /* Minimodules */
@@ -759,27 +820,4 @@ div.formulaire span.boutons{
 .fkz_signature{
 	text-align:right;
 	font-weight: bold;
-}
-
-form.trombino { 
-	
-	padding:20px 0px;
-}
-
-form.trombino div{
-	text-align:center;
-	padding:7px;
-}
-form.trombino table{
-	font-size: 9pt;
-	text-align:right;
-}
-
-form.trombino input,form.trombino select {
-	width:150px;
-}
-
-span.meteo {
-	text-align: center;
-	display: block;
 }
