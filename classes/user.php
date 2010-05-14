@@ -23,7 +23,7 @@ class User extends PlUser
 {
     /* List of available fields, with examples
      * hruid        prenom.nom.X / prenom.nom.SUPOP / ...
-     * user_id      42666
+     * uid      42666
      * forlife      main for-life address
      * bestalias    preferred email address
      * display_name Pseudo
@@ -35,6 +35,11 @@ class User extends PlUser
      * on_platal    resides on platal
      */
 
+    const ACCOUNT = 0x01;
+    const ROOM    = 0x02;
+
+    protected $depth = 0;    
+
     protected $on_platal = null;
 
     protected $state = null;
@@ -43,6 +48,30 @@ class User extends PlUser
     protected $nav_layout = null;
 
     protected $main_promo = null;
+
+    /**
+     * Constructs the User object
+     *
+     * @param $login An user login.
+     * @param $values List of known user properties.
+     * @param $lazy If datas are missing, should the constructor fetch them in the database ?
+     */
+    public function __construct($login, $values = array(), $lazy = false)
+    {
+        $this->fillFromArray($values);
+
+        // If the user id was not part of the known values, determines it from
+        // the login.
+        if (!$this->uid) {
+            $this->uid = $this->getLogin($login);
+        }
+
+        if (!$lazy) {
+	        // Preloads main properties (assumes the loader will lazily get them
+	        // from variables already set in the object).
+	        $this->loadMainFields();
+        }
+    }
 
     // Implementation of the login to uid method.
     protected function getLogin($login)
@@ -110,7 +139,7 @@ class User extends PlUser
                         LEFT JOIN   formations AS f ON (f.formation_id = a.main_formation)
                         LEFT JOIN   studies AS s ON (s.formation_id = a.main_formation AND s.uid = a.uid)
                         LEFT JOIN   skins AS sk ON (a.skin = sk.skin_id)
-                            WHERE   a.uid = {?}", $this->user_id);
+                            WHERE   a.uid = {?}", $this->uid);
         $this->fillFromArray($res->fetchOneAssoc());
     }
 
@@ -124,6 +153,27 @@ class User extends PlUser
             $values['gender'] = (bool) ($values['gender'] == 'woman');
         }
         parent::fillFromArray($values);
+    }
+
+    public static function getBulkUsersWithUIDs(array $UIDs, $level = User::ACCOUNT)
+    {
+        $users = Array();
+
+        $iter = XDB::iterator("SELECT  a.uid, a.hruid, a.skin, a.state,
+                                       CONCAT(a.firstname, ' ', a.lastname) AS full_name,
+                                       a.gender, a.on_platal, a.email_format,
+                                       IF(a.nickname = '', a.firstname, a.nickname) AS display_name,
+                                       a.hruid AS bestalias,
+                                       a.nav_layout AS nav_layout
+                                 FROM  account AS a
+                                WHERE  a.uid IN {?}", $UIDs);
+
+    	while ($datas = $iter->next())
+		{
+			$users[$datas['uid']] = new User($datas['uid'], $datas, true);
+		}
+
+		return $users;
     }
 
     // Specialization of the buildPerms method
@@ -180,7 +230,7 @@ class User extends PlUser
                                    ON ug.gid = g.gid
                                 WHERE ug.uid = {?}
                              ORDER BY ug.rank ASC',
-                                $this->user_id);
+                                $this->uid);
 
         while ($group = $iter->next()) {
             $gid  = $group['gid'];
@@ -205,7 +255,7 @@ class User extends PlUser
                            INNER JOIN clusters AS c
                                    ON uc.cid = c.cid
                                 WHERE uc.uid = {?}',
-                              $this->user_id);
+                              $this->uid);
 
         while ($cluster = $iter->next()) {
             $clusters[$cluster['cid']] = new Cluster($cluster);
