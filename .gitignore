@@ -3,3 +3,6 @@ spool/*
 classes/frankizglobals.php
 configs/frankiz.conf
 htdocs/.htaccess
+.buildpath
+.project
+.settings/*
