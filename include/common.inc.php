@@ -23,18 +23,32 @@ function __autoload($cls)
 {
     if (!pl_autoload($cls)) {
         $cls = strtolower($cls);
-	
-/*        if (substr($cls, -3, 3) == 'req') {
-            @include 'validations.inc.php';
+        if (substr($cls, 0, 4) == 'ufc_' || substr($cls, 0, 4) == 'ufo_') {
+            __autoload('userfilter');
             return;
-        }*/
-	/*else if (substr($cls, 0, 6) == 'banana') {
-            require_once 'banana/banana.inc.php';
-            Banana::load(substr($cls, 6));
+        } else if (substr($cls, 0, 4) == 'pfc_' || substr($cls, 0, 4) == 'pfo_' || substr($cls, 0, 8) == 'plfilter') {
+            __autoload('plfilter');
             return;
-        }*/
-        @include "$cls.inc.php";
+        }
+        include "$cls.inc.php";
     }
+}
+
+function format_phone_number($tel)
+{
+    $tel = trim($tel);
+
+    if (substr($tel, 0, 3) === '(0)')
+        $tel = '33' . $tel;
+
+    $tel = preg_replace('/\(0\)/',  '', $tel);
+    $tel = preg_replace('/[^0-9]/', '', $tel);
+    if (substr($tel, 0, 2) === '00') {
+        $tel = substr($tel, 2);
+    } else if(substr($tel, 0, 1) === '0') {
+        $tel = '33' . substr($tel, 1);
+    }
+    return $tel;
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
