@@ -6,3 +6,4 @@ htdocs/.htaccess
 .buildpath
 .project
 .settings/*
+htdocs/data/*
