@@ -52,23 +52,28 @@ class FrankizPage extends PlPage
         }
         return $skin;
     }
-    
-    public function changeTpl($tpl, $type = SKINNED)
+
+    public static function getTplPath($tpl)
     {
         global $globals;
 
         // Check if their is a skin-specific template, otherwise fallback on default template
         if (file_exists($globals->spoolroot . '/templates/' . S::v('skin') . '/' . $tpl))
-            parent::changeTpl(S::v('skin') . '/' . $tpl, $type);
+            return S::v('skin') . '/' . $tpl;
         else
-            parent::changeTpl($globals->skin . '/' . $tpl, $type);
+            return $globals->skin . '/' . $tpl;
+    }
+
+    public function changeTpl($tpl, $type = SKINNED)
+    {
+        parent::changeTpl(self::getTplPath($tpl), $type);
     }
 
     public function run()
     {
         $skin = $this->load_skin();
         $this->assign('skin', S::v('skin'));
-        
+
         FrankizMiniModule::run();
         $this->assign('minimodules', FrankizMiniModule::get_minimodules());
         $this->assign('minimodules_layout', FrankizMiniModule::get_layout());
