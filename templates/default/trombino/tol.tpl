@@ -33,13 +33,15 @@
             <span class="warning">Aucun résultat trouvé</span>
         {/if}
         </div>
+    {/if}
 
-        <ul id="tol_results">
+    <ul id="tol_results">
+        {if isset($results|smarty:nodefaults)}
         {foreach from=$results item=result}
             {include file=default/trombino/microfiche.tpl eleve=$result}
         {/foreach}
-        </ul>
-    {/if}
+        {/if}
+    </ul>
 </div>
 
 <div class="clear" />

@@ -94,6 +94,7 @@ class FrankizPage extends PlPage
             $this->assign('nav_layout'  , '{}');
         }
 
+        $this->assign('casertConnected', IP::is_casert());
         $this->assign('logged', S::logged());
         $this->assign('level', substr_count(trim(Get::v('n'),'/'),'/'));
         //Run with the default skin disposition (i.e content disposition)

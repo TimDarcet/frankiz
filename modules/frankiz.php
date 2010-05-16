@@ -45,17 +45,15 @@ class FrankizModule extends PlModule
 
     function handler_exit(&$page, $level = null)
     {
+        global $globals;
+
         if(S::has('suid')) {
             Platal::session()->stopSUID();
             pl_redirect('/');
         }
-        if ($level == 'forget' || $level == 'forgetall') {
-            Platal::session()->killAccessCookie();
-        }
-        if ($level == 'forgetuid' || $level == 'forgetall') {
-            Platal::session()->killLoginFormCookies();
-        }
+
         Platal::session()->destroy();
+        http_redirect($globals->baseurl_http);
         $page->changeTpl('exit.tpl');
     }
 

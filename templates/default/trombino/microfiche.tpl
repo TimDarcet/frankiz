@@ -20,7 +20,7 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<li class="microfiche">
+<li uid="{$result->id()}" class="microfiche">
     <div class="name">{$result->displayName()}</div>
     <div class="img"><img src="data/tol/origin/small/{$result->login()}.jpg" /></div>
 </li>

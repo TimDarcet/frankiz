@@ -25,9 +25,10 @@ class Frankiz extends Platal
     {
         header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
         if (S::logged()) {
-            $page->changeTpl('core/password_prompt_logged.tpl');
+            $page->changeTpl('password_prompt_logged.tpl');
         } else {
-            $page->changeTpl('core/password_prompt.tpl');
+            $page->assign('title', 'Connexion');
+            $page->changeTpl('password_prompt.tpl');
         }
         $page->assign_by_ref('platal', $this);
         $page->run();

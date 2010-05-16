@@ -303,18 +303,13 @@ class FrankizSession extends PlSession
         Cookie::set('hash', sha1(S::user()->password()), 300, false);
     }
 
-    public function killAccessCookie() {
-        Cookie::kill('hash');
-
-        // Load clusters and groups
-        IP::buildGroups();
-        IP::buildClusters();
-    }
-
-    public function killLoginFormCookies() {
+    public function destroy()
+    {
         Cookie::kill('uid');
-        Cookie::kill('domain');
+        Cookie::kill('hash');
+        parent::destroy();
     }
+
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

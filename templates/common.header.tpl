@@ -20,8 +20,6 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{include file='../core/templates/plpage.header.tpl'}
-
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title>Frankiz : {$title}</title>
 <base href="{$globals->baseurl}/" />
@@ -53,5 +51,7 @@
     {/foreach}
     var nav_layout = {$nav_layout|smarty:nodefaults};
 </script>
+
+{include file='../core/templates/plpage.header.tpl'}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
