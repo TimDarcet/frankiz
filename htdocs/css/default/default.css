@@ -29,12 +29,23 @@ img {
     border: 0;
 }
 
+fieldset {
+    background-color: #CAD7DC;
+    border: 1px #002334 solid;
+}
+
+fieldset legend {
+    color: white;
+    background-color: #002334;
+    border: 1px #002334 solid;
+}
+
 form {
 	padding: 0;
 	margin: 0;
 }
 
-input  {
+input {
     font-weight: bold;
     border: 1px solid #002334;
     color: white;
@@ -46,6 +57,22 @@ input:hover {
     background-color: #FFBA00;
 }
 
+input:focus {
+	color: white;
+    border: 2px #D7B66E solid;
+    background-color: #002334;
+}
+
+input:active {
+	color: white;
+    border: 2px #D7B66E solid;
+    background-color: #002334;
+}
+
+.warning {
+	color: red;
+}
+
 #logo {
     left:0;
     background-image: url("../default/images/home_logo.png");
@@ -55,18 +82,25 @@ input:hover {
     width: 374px;
  }
 
-#logo a{
+#logo a, a:link, a:hover, a:active{
     display: block;
     width: 100%;
     height: 100%;
+    text-decoration: none;
+    background-color: transparent;
 }
  
 a, a:link {
-    text-decoration: none;
+    text-decoration: underline;
+    color: #002334;
+    
 }
 
 a:hover, a:active {
-    text-decoration: underline overline;
+	text-decoration: none;
+	font-weight: bold;
+	color: #D7B66E;
+	background-color: #002334;
 }
 
 #center {
@@ -99,12 +133,14 @@ a:hover, a:active {
 }
 
 #navigation a {
+	font-weight: normal;
     text-decoration: none;
     color: white;
     display: block;
 }
 
 #navigation a:hover, a:active , a:link {
+	font-weight: normal;
     text-decoration: none;
     color: inherit;
     display: block;
@@ -265,6 +301,42 @@ a:hover, a:active {
 
 /* Modules */
 
+/* |->login */
+
+.login table {
+    width: 55%;
+    margin-top: 15px;
+    border-collapse: separate;
+}
+
+.login .remember {
+	display: block;
+    margin-top: 10px;
+    margin-left: 25px;
+    margin-bottom: 0;
+}
+
+.login div.send {
+	position: relative;
+	width: 50%;
+	text-align: right;
+	padding-right: 50px;
+}
+
+.login div.send input {
+    margin-right: 135px;
+}
+
+.login .forgot {
+	margin-top: 25px;
+	padding-top: 25px;
+    border-top: 1px solid #002334;
+}
+
+.login .forgot a {
+    display: inline;
+}
+
 /* |->accueil */
 .accueil table {
     width: 100%;
@@ -345,7 +417,36 @@ a:hover, a:active {
 	width: 100%;
 }
 
+#tol_searcher input[type=reset] {
+    float: right;
+}
 
+.trombino #tol_results {
+    padding: 0;
+}
+
+.trombino .microfiche {
+	display: inline-block;
+    position: relative;
+    width: 150px;
+    height: 200px;
+    margin: 3px;
+    overflow: hidden;
+    text-align: center;
+    border: 1px #002334 solid;
+    background-color: #CAD7DC;
+}
+
+.trombino .microfiche .img {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.trombino .microfiche .img img {
+    height: 150px;
+    max-width: 190px;
+}
 
 /* Minimodules */
 
@@ -620,35 +721,11 @@ a:hover, a:active {
     background-position: 0 -72px;
 }
 
- /* Logos W3C */
 
-span.valid_xhtml,span.valid_css {
-	width: 80px;
-	height:15px;
-	position: relative;
-	display:block;
-}
- 
-span.valid_xhtml {
-	background-image:url("../images/xhtml10.png");
-	left: 5px;
-}
 
-span.valid_css {
-	background-image:url("../images/css2.png");
-	left: 90px;
-	top: -15px;
-}
- 
- /* Fin Logos W3C */
- 
-/* Formulaires */
 
-form {
-    padding: 0;
-    margin: 0;
-}
 
+ /* OLD */
 div.formulaire{
 	display:block;
 }
@@ -812,9 +889,6 @@ div.formulaire span.boutons{
 .fkz_trombino_infos2{
 	float:right;
 	margin-right:5px;
-}
-.binets{
-	clear:both;
 }
 
 .fkz_signature{
