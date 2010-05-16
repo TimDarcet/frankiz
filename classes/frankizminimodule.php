@@ -58,7 +58,13 @@ abstract class FrankizMiniModule
 
     public function get_template()
     {
-        return $this->tpl;
+        global $globals;
+
+        // Check if their is a skin-specific minimodule-template, otherwise fallback on default template
+        if (file_exists($globals->spoolroot . '/templates/' . S::v('skin') . '/' . $this->tpl))
+           return S::v('skin') . '/' . $this->tpl;
+        else
+            return $globals->skin . '/' . $this->tpl;
     }
 
     /**
