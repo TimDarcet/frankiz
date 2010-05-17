@@ -238,13 +238,10 @@ class FrankizSession extends PlSession
         S::set('user', $user);
         S::set('uid', $user->id());
         S::set('skin', $user->skin());
-
+        
         if (!S::suid()) {
-            Cookie::set('uid', $user->id(), 300);
-            if (S::i('cookie_uid') == $user->id() || Post::v('remember', 'false') == 'on') {
+            if (Post::v('remember', 'false') == 'on') {
                 $this->setAccessCookie(false);
-            } else {
-                $this->killAccessCookie();
             }
         }
 
@@ -296,6 +293,7 @@ class FrankizSession extends PlSession
     }
 
     public function setAccessCookie($replace = false) {
+        Cookie::set('uid', $user->id(), 300);
         if (S::suid() || ($replace && !Cookie::blank('hash'))) {
             return;
         }
