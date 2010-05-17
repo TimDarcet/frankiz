@@ -62,8 +62,8 @@ class User extends PlUser
 
         // If the user id was not part of the known values, determines it from
         // the login.
-        if (!$this->user_id) {
-            $this->user_id = $this->getLogin($login);
+        if (!$this->id()) {
+            $this->uid = $this->getLogin($login);
         }
 
         if (!$lazy) {
@@ -159,21 +159,21 @@ class User extends PlUser
     {
         $users = Array();
 
-        $iter = XDB::iterator("SELECT  a.uid, a.hruid, a.skin, a.state,
-                                       CONCAT(a.firstname, ' ', a.lastname) AS full_name,
-                                       a.gender, a.on_platal, a.email_format,
-                                       IF(a.nickname = '', a.firstname, a.nickname) AS display_name,
-                                       a.hruid AS bestalias,
-                                       a.nav_layout AS nav_layout
-                                 FROM  account AS a
-                                WHERE  a.uid IN {?}", $UIDs);
+        if (count($UIDs) > 0)
+        {
+            $iter = XDB::iterator("SELECT  a.uid, a.hruid, a.skin, a.state,
+                                           CONCAT(a.firstname, ' ', a.lastname) AS full_name,
+                                           a.gender, a.on_platal, a.email_format,
+                                           IF(a.nickname = '', a.firstname, a.nickname) AS display_name,
+                                           a.hruid AS bestalias,
+                                           a.nav_layout AS nav_layout
+                                     FROM  account AS a
+                                    WHERE  a.uid IN {?}", $UIDs);
+            while ($datas = $iter->next())
+                $users[$datas['uid']] = new User($datas['uid'], $datas, true);
+        }
 
-    	while ($datas = $iter->next())
-		{
-			$users[$datas['uid']] = new User($datas['uid'], $datas, true);
-		}
-
-		return $users;
+        return $users;
     }
 
     // Specialization of the buildPerms method
