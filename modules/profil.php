@@ -888,6 +888,7 @@ class ProfilModule extends PLModule
 
         $page->assign('title', 'Gestion des minimodules');
         $page->assign('liste_minimodules', $liste_minimodules);
+        $page->addCssLink('profil.css');
         $page->changeTpl('profil/minimodules.tpl');
     }
 

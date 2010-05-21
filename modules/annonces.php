@@ -75,7 +75,6 @@ class AnnoncesModule extends PLModule
 
     function handler_annonces(&$page)
     {
-
         if (S::logged()) {
             $uid = S::user()->id();
             $show_field = "ISNULL( ah.annonce_id )";
@@ -128,6 +127,7 @@ class AnnoncesModule extends PLModule
 
         $page->assign('title', "Annonces");
         $page->assign('annonces', $annonces);
+        $page->addCssLink('news.css');
         $page->changeTpl('annonces/annonces.tpl');
     }
 }

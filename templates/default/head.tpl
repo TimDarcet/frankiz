@@ -20,28 +20,9 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="trombino">
-    {include file=default/trombino/recherche.tpl}
-
-    {if isset($results|smarty:nodefaults)}
-        <div class="nav">
-        {if count($results) > 99}
-            <span class="warning">Trop de résultats : seuls les 100 premiers sont affichés</span>
-        {elseif count($results) > 0}
-            <span class="note">{$results|@count} résultats trouvés</span>
-        {else}
-            <span class="warning">Aucun résultat trouvé</span>
-        {/if}
-        </div>
-    {/if}
-
-    <ul id="tol_results">
-        {if isset($results|smarty:nodefaults)}
-        {foreach from=$results item=result}
-            {include file=default/trombino/microfiche.tpl eleve=$result}
-        {/foreach}
-        {/if}
-    </ul>
-</div>
-
+<link rel="stylesheet" type="text/css" href="css/default/base.css" media="all"/>
+<link rel="stylesheet" type="text/css" href="css/default/minimodules.css" media="all"/>
+<link type="text/css" href="css/default/jquery-ui.css" rel="stylesheet" />
+<link type="text/css" href="css/default/jquery_tree/style.css" rel="stylesheet" />
+        
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

@@ -33,6 +33,7 @@
             <li id="phtml_5"><a href="#"><ins>&nbsp;</ins>Root node 2</a></li>
 
         </ul>
+        </div>
 
 
 

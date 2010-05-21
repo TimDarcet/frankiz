@@ -40,6 +40,8 @@ function includeAndRun(name, path)
 function startSorting(event, ui)
 {
     $('.minimodules_zone').parent().show();
+    $('body').removeClass('disabledAside');
+    $('body').addClass('enabledAside');
     $('.minimodules_zone').addClass('sorting');
     $('.minimodules_zone').sortable('refreshPositions');
 }
@@ -59,13 +61,18 @@ function stopSorting(event, ui)
 
 function cleanEmptyColumns()
 {
-    for (var i = (($('.minimodules_zone').size() == 4) ? 1 : 4); i<=4; i++)
-    {
-        if ($('#column'+i).sortable('toArray').length == 0)
-        {
-            $('#column'+i).parent().hide();
-        }
-    }
+	if ($('.minimodules_zone').size() == 4) {
+	    for (var i = 1; i <= 3; i++)
+	    {
+	        if ($('#column'+i).sortable('toArray').length == 0)
+	            $('#column'+i).parent().hide();
+	    }
+	}
+	
+	if ($('#column4').sortable('toArray').length == 0) {
+	    $('body').removeClass('enabledAside');
+	    $('body').addClass('disabledAside');
+	}
 }
 
 function getLayout()
@@ -97,7 +104,8 @@ function saveLayout(layout)
 function addMinimodule(name, sender)
 {
     sender.disabled = true;
-    $('#column4').parent().show();
+    $('body').removeClass('disabledAside');
+    $('body').addClass('enabledAside');
     request('minimodules/ajax/add', {"name":name});
     request('minimodules/ajax/get', {"name":name}, {"success": 
         function (json) {

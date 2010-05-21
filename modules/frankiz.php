@@ -153,7 +153,7 @@ class FrankizModule extends PlModule
             if (count($minimodules) == 1) {
                 $page->assign('minimodules', $minimodules);
                 $page->jsonAssign('name', $name);
-                $page->jsonAssign('html', $page->fetch('minimodule.tpl'));
+                $page->jsonAssign('html', $page->fetch(FrankizPage::getTplPath('minimodule.tpl')));
                 $js = FrankizMiniModule::get_js();
                 if ($js[$name] != '') $page->jsonAssign('js', $js[$name]);
                 $page->jsonAssign('success', true);

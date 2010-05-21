@@ -53,20 +53,43 @@ class FrankizPage extends PlPage
         return $skin;
     }
 
-    public static function getTplPath($tpl)
+    private static function bestSkin($path, $folder)
     {
         global $globals;
 
-        // Check if their is a skin-specific template, otherwise fallback on default template
-        if (file_exists($globals->spoolroot . '/templates/' . S::v('skin') . '/' . $tpl))
-            return S::v('skin') . '/' . $tpl;
+        $parentSkin = explode('.', S::v('skin'));
+        $parentSkin = (count($parentSkin) == 2) ? $parentSkin[0] : false;
+
+        /* Check if their is a skin-specific template/css,
+         * otherwise fallback on parent skin
+         * and on default template/css if still nonexistent
+         */
+        if (file_exists($folder . S::v('skin') . '/' . $path))
+            return S::v('skin') . '/' . $path;
+        else if ($parentSkin && file_exists($folder . $parentSkin . '/' . $path))
+            return $parentSkin . '/' . $path;
         else
-            return $globals->skin . '/' . $tpl;
+            return $globals->skin . '/' . $path;
+    }
+
+    public static function getTplPath($tpl)
+    {
+        return self::bestSkin($tpl, '../templates/');
+    }
+
+    public static function getCssPath($css)
+    {
+        return self::bestSkin($css, '../htdocs/css/');
     }
 
     public function changeTpl($tpl, $type = SKINNED)
     {
         parent::changeTpl(self::getTplPath($tpl), $type);
+    }
+
+    public function addCssLink($css)
+    {
+        parent::addCssLink(self::getCssPath($css));
     }
 
     public function run()
@@ -96,9 +119,7 @@ class FrankizPage extends PlPage
 
         $this->assign('casertConnected', IP::is_casert());
         $this->assign('logged', S::logged());
-        $this->assign('level', substr_count(trim(Get::v('n'),'/'),'/'));
-        //Run with the default skin disposition (i.e content disposition)
-        $this->_run($skin . '/frankiz.tpl');
+        $this->_run(self::getTplPath('frankiz.tpl'));
     }
 }
 

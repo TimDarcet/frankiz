@@ -1,0 +1,94 @@
+/***************************************************************************
+ *  Copyright (C) 2009 Binet Réseau                                        *
+ *  http://www.polytechnique.fr/eleves/binets/reseau/                      *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
+
+/*******************************************************************************
+     0   Styles par défauts
+
+*******************************************************************************/
+
+#tol_searcher {
+    position: relative;
+    float: right;
+
+    width: 200px;
+    height: auto;
+    background-color: #CAD7DC;
+    border: 1px #002334 solid;
+}
+
+#tol_searcher legend {
+    color: white;
+    background-color: #002334;
+    border: 1px #002334 solid;
+}
+
+#tol_searcher ul {
+	margin: 0;
+	padding: 0;
+	text-indent: 0;
+}
+
+#tol_searcher fieldset {
+	border: 1px white solid;
+	margin-bottom: 2px;
+}
+
+#tol_searcher li {
+    list-style: none;
+}
+
+#tol_searcher label {
+	text-align: left;
+}
+
+#tol_searcher label input {
+	width: 100%;
+}
+
+#tol_searcher input[type=reset] {
+    float: right;
+}
+
+.trombino #tol_results {
+    padding: 0;
+}
+
+.trombino .microfiche {
+	display: inline-block;
+    position: relative;
+    width: 150px;
+    height: 200px;
+    margin: 3px;
+    overflow: hidden;
+    text-align: center;
+    border: 1px #002334 solid;
+    background-color: #CAD7DC;
+}
+
+.trombino .microfiche .img {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.trombino .microfiche .img img {
+    height: 150px;
+    max-width: 190px;
+}

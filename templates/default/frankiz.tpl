@@ -24,41 +24,33 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
     <head>
-        {include file="common.header.tpl"}
-
-        <link rel="stylesheet" type="text/css" href="css/default/default.css" media="all"/>
-        <link type="text/css" href="css/default/jquery-ui.css" rel="stylesheet" />
-        <link type="text/css" href="css/default/jquery_tree/style.css" rel="stylesheet" />
+        {include file="common.head.tpl"}
+        {include file="head.tpl"|rel}
     </head>
-    <body>
-        <div id="errorBox" title="Erreur"></div>
 
+    <body class="{if ($minimodules_layout[4]|@count) == 0}disabledAside{else}enabledAside{/if}">
+        <div id="errorBox" title="Erreur"></div>
         {include file=common.devel.tpl}
+
         <div id="header">
-            <div id="logo">
-                <a href="accueil"></a>
-            </div>
+            {include file="header.tpl"|rel}
         </div>
-        <div id="center">
-            <div id="navigation">
-                {include file="default/menu.tpl"}
-            </div>
-            <table id="bigandminimodules">
-                <tr>
-                    <td id="module">
-                        {include file="default/content.tpl"}
-                    </td>
-                    <td id="column" class="{if ($minimodules_layout[4]|@count) == 0}empty{else}full{/if}">
-                        <ul id="column4" class="minimodules_zone">
-                            {foreach from=$minimodules_layout[4] item=module}
-                                {include file="default/minimodule.tpl" module_name=$module}
-                            {/foreach}
-                        </ul>
-                    </td>
-                </tr>
-            </table>
+
+        <div id="nav">
+            {include file="nav.tpl"|rel}
         </div>
-        <div id="footer"></div>
+
+        <div id="section">
+            {include file="section.tpl"|rel}
+        </div>
+
+        <div id="aside">
+            {include file="aside.tpl"|rel}
+        </div>
+
+        <div id="footer">
+            {include file="footer.tpl"|rel}
+        </div>
     </body>
 </html>
 
