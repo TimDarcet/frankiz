@@ -22,22 +22,22 @@
 
 <fieldset>
     <legend>Objets perdus</legend>
-    <form class="trombino" enctype="multipart/form-data" method="post" action="laf/">
+    <form enctype="multipart/form-data" method="post" action="laf/">
         <label>Chercher : <input type="text" name="ping_obj" /></label>
         <input type="submit" name="chercher_ping" value="Chercher" />
     </form>
     
     {if isset($lost|smarty:nodefaults)}
-    <ul id="laf_ping">
+    <ul>
     <table>
     	<tr><th> Objet </th> <th> Circonstances </th> <th> Retrouvé </th> <th> Suppression de l'objet </th></tr>
         {foreach from=$lost item=result}
             <tr> <td> {$result[4]} </td> <td> {$result[5]} </td> <td> 
-    			<form class="trombino" enctype="multipart/form-data" method="post" action="laf/{$result[0]}">
+    			<form enctype="multipart/form-data" method="post" action="laf/{$result[0]}">
     				<input type="submit" name="ping" value="Trouvé !" />
     			</form>
  				</td> <td> 
-    			<form class="trombino" enctype="multipart/form-data" method="post" action="laf/{$result[0]}">
+    			<form enctype="multipart/form-data" method="post" action="laf/{$result[0]}">
     				<input type="submit" name="del_ping" value="Supprimer" />
     			</form>
  				</td>

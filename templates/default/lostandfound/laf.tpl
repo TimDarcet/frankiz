@@ -20,25 +20,23 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="trombino">
+<div class="lostandfound">
 	{if isset($message|smarty:nodefaults)}
-		<div> {$message} </div>
+		<div class="warning"> {$message} </div>
 	{/if}
 
 	{if isset($not_logged|smarty:nodefaults)}
-		<div> Tu dois t'identifier pour pouvoir faire cette action </div>
+		<div class="warning"> Tu dois t'identifier pour pouvoir faire cette action </div>
 	{/if}
 
-    {include file=default/lostandfound/perdu.tpl}
+    {include file="lostandfound/perdu.tpl"|rel}
 
-    {include file=default/lostandfound/trouve.tpl}
+    {include file="lostandfound/trouve.tpl"|rel}
 
-    {include file=default/lostandfound/ping.tpl lost=$losts}
+    {include file="lostandfound/ping.tpl"|rel lost=$losts}
     
-    {include file=default/lostandfound/pong.tpl found=$founds}
+    {include file="lostandfound/pong.tpl"|rel found=$founds}
     
 </div>
-
-<div class="clear" />
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

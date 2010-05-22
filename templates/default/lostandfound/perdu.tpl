@@ -22,7 +22,7 @@
 
 <fieldset>
     <legend>Signaler un objet perdu</legend>
-    <form class="trombino" enctype="multipart/form-data" method="post" action="laf/">
+    <form enctype="multipart/form-data" method="post" action="laf/">
         <label>Description : <input type="text" name="obj_ping" /></label>
 		<label>Circonstances : <input type="text" name="desc_ping" /></label>
         <input type="submit" name="perdu" value="Perdu !" />

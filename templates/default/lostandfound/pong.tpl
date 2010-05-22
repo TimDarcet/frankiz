@@ -22,22 +22,22 @@
 
 <fieldset>
     <legend>Objets trouvés</legend>
-    <form class="trombino" enctype="multipart/form-data" method="post" action="laf/">
+    <form enctype="multipart/form-data" method="post" action="laf/">
         <label>Chercher : <input type="text" name="pong_obj" /></label>
         <input type="submit" name="chercher_pong" value="Chercher" />
     </form>
 
     {if isset($found|smarty:nodefaults)}
-    <ul id="laf_pong">
+    <ul>
     <table>
     	<tr><th> Objet </th> <th> Circonstances </th> <th> Propriétaire </th> <th> Suppression de l'objet </th></tr>
         {foreach from=$found item=result}
             <tr> <td> {$result[4]} </td> <td> {$result[5]} </td> <td> 
-    			<form class="trombino" enctype="multipart/form-data" method="post" action="laf/{$result[0]}">
+    			<form enctype="multipart/form-data" method="post" action="laf/{$result[0]}">
     				<input type="submit" name="pong" value="Trouvé !" />
    				</form>
  				</td> <td> 
-    			<form class="trombino" enctype="multipart/form-data" method="post" action="laf/{$result[0]}">
+    			<form enctype="multipart/form-data" method="post" action="laf/{$result[0]}">
     				<input type="submit" name="del_ong" value="Supprimer" />
    				</form>
  				</td>

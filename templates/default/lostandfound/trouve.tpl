@@ -22,7 +22,7 @@
 
 <fieldset>
     <legend>Signaler un objet trouvé</legend>
-    <form class="trombino" enctype="multipart/form-data" method="post" action="laf/">
+    <form enctype="multipart/form-data" method="post" action="laf/">
         <label>Description : <input type="text" name="obj_pong" /></label>
 		<label>Circonstances : <input type="text" name="desc_pong" /></label>
         <input type="submit" name="trouve" value="Trouvé !" />

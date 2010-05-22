@@ -141,6 +141,9 @@ class LostandfoundModule extends PLModule
             $res = XDB::query("SELECT * FROM laf WHERE ISNULL(lost) ORDER BY found DESC LIMIT 10");
             $founds = $res->fetchAllRow();
         }
+        
+        
+        $page->addCssLink('laf.css');
 
         $page->assign('title', 'Objets Trouvés');
         $page->assign('losts', $losts);
