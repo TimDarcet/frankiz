@@ -222,3 +222,26 @@
 #news_list td:first-child {
     width: auto;
 }
+
+
+/*******************************************************************************
+     4   IK
+
+*******************************************************************************/
+
+#minimodule_ik .body  {
+    padding: 0;
+}
+
+#ik_last {
+    width: 100%;
+    max-height: 300px;
+    overflow: auto;
+    text-align: center;
+}
+
+#ik_archive a, a:link {
+    font-size: 10pt;
+    font-style: italic;
+	text-decoration: none;
+}
