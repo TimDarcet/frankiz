@@ -239,7 +239,7 @@ class FrankizSession extends PlSession
         S::set('uid' , $user->id());
         S::set('skin', $user->skin());
         S::set('nav_layout', $user->nav_layout());
-        
+
         if (!S::suid()) {
             if (Post::v('remember', 'false') == 'on') {
                 $this->setAccessCookie(false);

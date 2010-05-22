@@ -208,9 +208,16 @@ class User extends PlUser
         return $this->skin;
     }
 
-    public function nav_layout()
+    public function nav_layout($new_layout = false)
     {
-        return $this->nav_layout;
+        if (!$new_layout) {
+            return $this->nav_layout;
+        } else {
+            $this->nav_layout = $new_layout;
+            XDB::execute('UPDATE account SET nav_layout = {?} WHERE uid = {?}',
+                                                     $new_layout,$this->id());
+            return (XDB::affectedRows() > 0);
+        }
     }
 
     public function promo()

@@ -204,17 +204,15 @@ class FrankizModule extends PlModule
     {
         $json = json_decode(Env::v('json'));
 
-        if (isset($json->{'layout'}))
+        $success = isset($json->{'layout'});
+        if ($success)
         {
             S::set('nav_layout', json_encode($json->{'layout'}));
-            XDB::execute('UPDATE account
-                             SET nav_layout = {?}
-                           WHERE uid = {?}',
-                        json_encode($json->{'layout'}),
-                        S::user()->id());
+            if (S::logged())
+                $success = S::user()->nav_layout(json_encode($json->{'layout'}));
         }
 
-        if (XDB::affectedRows() > 0) {
+        if ($success) {
             $page->jsonAssign('success', true);
         } else {
             $page->jsonAssign('success', false);
