@@ -5,22 +5,21 @@ var includedJs = new Array();
 $(document).ready(function(){
     tempLayout = getLayout();
 
-    $('.minimodules_zone').sortable({
-         handle: '.head',
-         tolerance: 'pointer',
-         connectWith: '.minimodules_zone',
-         opacity: 0.6,
-         revert: false,
-         activate: startSorting,
-         stop: stopSorting
-    });
-    
-    for (name in minimodulesJs)
-    {
+    if (logged) {
+	    $('.minimodules_zone').sortable({
+	         handle: '.head',
+	         tolerance: 'pointer',
+	         connectWith: '.minimodules_zone',
+	         opacity: 0.6,
+	         revert: false,
+	         activate: startSorting,
+	         stop: stopSorting
+	    });
+    }
+
+    for (name in minimodulesJs) {
         if (minimodulesJs[name] != '')
-        {
             includeAndRun(name, minimodulesJs[name]);
-        }
     }
 });
 

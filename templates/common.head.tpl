@@ -46,6 +46,7 @@
 <script type="text/javascript" src="javascript/3.0.0beta/plugins/jquery.tree.themeroller.js"></script>
         
 <script type="text/javascript">
+    var logged = {if $smarty.session.auth >= AUTH_COOKIE}true{else}false{/if};
     {foreach from=$minimodules_js key=name item=js}
         minimodulesJs['{$name}'] = "{$js}";
     {/foreach}
