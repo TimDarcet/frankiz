@@ -206,6 +206,7 @@ class FrankizModule extends PlModule
 
         if (isset($json->{'layout'}))
         {
+            S::set('nav_layout', json_encode($json->{'layout'}));
             XDB::execute('UPDATE account
                              SET nav_layout = {?}
                            WHERE uid = {?}',
