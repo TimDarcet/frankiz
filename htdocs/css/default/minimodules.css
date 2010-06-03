@@ -240,7 +240,7 @@
     text-align: center;
 }
 
-#ik_archive a, a:link {
+#ik_archive a, #ik_archive a:link {
     font-size: 10pt;
     font-style: italic;
 	text-decoration: none;

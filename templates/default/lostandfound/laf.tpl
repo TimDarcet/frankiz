@@ -22,11 +22,11 @@
 
 <div class="lostandfound">
 	{if isset($message|smarty:nodefaults)}
-		<div class="warning"> {$message} </div>
+		<div> {$message} </div>
 	{/if}
 
 	{if isset($not_logged|smarty:nodefaults)}
-		<div class="warning"> Tu dois t'identifier pour pouvoir faire cette action </div>
+		<div> Tu dois t'identifier pour pouvoir faire cette action </div>
 	{/if}
 
     {include file="lostandfound/perdu.tpl"|rel}

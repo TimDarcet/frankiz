@@ -24,8 +24,8 @@ class IkMiniModule extends FrankizMiniModule
 
     public function __construct()
     {
-        $res = XDB::query("SELECT * FROM ik ORDER BY date DESC LIMIT 1", $id)->fetchAllRow();
-        $this->assign('ik', $res[0]);
+        $res = XDB::query("SELECT * FROM ik ORDER BY date DESC", $id)->fetchOneRow();
+        $this->assign('ik', $res);
         $this->tpl = "minimodules/ik/last_ik.tpl";
         $this->titre = "IK électronique";
     }

@@ -21,7 +21,7 @@
 {**************************************************************************}
 
 <div id="ik_last">
-<a href="data/ik/{$minimodule.ik[1]}"><img src="data/ik_thumbnails/{$minimodule.ik[1]}.png" alt="IK de la semaine"/></a>
+<a href="data/ik/{$minimodule.ik[1]}"><img src="data/ik/thumbnails/{$minimodule.ik[1]}.png" alt="IK de la semaine"/></a>
 </div>
 
 </br>
