@@ -19,18 +19,26 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-require_once dirname(__FILE__).'/../include/frankiz.inc.php';
+class ForumsModule extends PLModule
+{
+    function handlers()
+    {
+        return array(
+            'banana'         => $this->make_hook('banana',      AUTH_COOKIE),
+        );
+    }
 
-$platal = new Frankiz('frankiz', 'admin', 'activites', 'annonces', 'profil', 'trombino', 'qdj', 'todo', 'lostandfound', 'forums');
+    function handler_banana(&$page, $group = null, $action = null, $artid = null)
+    {
+        $page->addCssLink('banana.css');
+        $page->assign('title', 'Les brs');
+        $page->changeTpl('forums/index.tpl');
 
-if (!($path = Env::v('n')) || ($path{0} < 'A' || $path{0} > 'Z')) {
-    $platal->run();
-    exit;
+        require_once 'banana/forum.inc.php';
+        get_banana_params($get, $group, $action, $artid);
+        run_banana($page, 'FrankizBanana', $get);
+    }
 }
-
-/*** WIKI CODE ***/
-
-include pl_core_include('wiki/engine.php');
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
 ?>

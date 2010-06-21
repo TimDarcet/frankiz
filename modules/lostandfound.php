@@ -37,6 +37,15 @@ class LostandfoundModule extends PLModule
                                   SET   uid = {?}, found = NOW(), description = {?}, context = {?}",
                                   S::user()->id(), Env::t('obj_pong'), Env::t('desc_pong'));
                 $page->assign('message', 'Pense à supprimer l\'objet une fois rendu à son propriétaire.');
+        		require_once 'banana/hooks.inc.php';
+        		$body = 'L\'objet ' . Env::t('obj_pong') . ' a été retrouvé';
+        		if (Env::t('desc_pong') != '')
+        		{
+        			$body .= ' dans les circonstances suivantes : ' . Env::t('desc_pong');
+        		}
+        		$body .= '.\n\n' . S::user()->displayName() . '\n\n\n'
+        					. 'Ceci est un message automatique, merci de le signaler sur frankiz une fois l\'objet rendu.';
+       	 		send_message('br.pa', 'pong ' . Env::t('obj_pong'), $body);
 	        }
 	        else {
 	            $page->assign('not_logged', 'true');
@@ -52,6 +61,15 @@ class LostandfoundModule extends PLModule
                                   SET   uid = {?}, lost = NOW(), description = {?}, context = {?}",
                                   S::user()->id(), Env::t('obj_ping'), Env::t('desc_ping'));
                 $page->assign('message', 'Pense à supprimer l\'objet dès que celui-ci est retrouvé.');
+                require_once 'banana/hooks.inc.php';
+        		$body = 'L\'objet ' . Env::t('obj_ping') . ' a été perdu';
+        		if (Env::t('desc_ping') != '')
+        		{
+        			$body .= ' dans les circonstances suivantes : ' . Env::t('desc_ping');
+        		}
+        		$body .= '.\n\n' . S::user()->displayName() . '\n\n\n'
+        					. 'Ceci est un message automatique, merci de le signaler sur frankiz une fois l\'objet retrouvé.';
+       	 		send_message('br.pa', 'ping ' . Env::t('obj_ping'), $body);
 	        }
 	        else
 	        {
@@ -120,8 +138,10 @@ class LostandfoundModule extends PLModule
         
         if (Env::has('ping_obj'))
         {
-            $res = XDB::query("SELECT * FROM laf WHERE ISNULL(found) AND description " .
-                        XDB::formatWildcards(XDB::WILDCARD_CONTAINS, Env::t('ping_obj')) . " ORDER BY lost DESC LIMIT 10");
+            $res = XDB::query("SELECT * FROM laf WHERE ISNULL(found) 
+            				AND description " . XDB::formatWildcards(XDB::WILDCARD_CONTAINS, Env::t('ping_obj')) . "
+            				OR context " . XDB::formatWildcards(XDB::WILDCARD_CONTAINS, Env::t('ping_obj')) . "
+            				ORDER BY lost DESC LIMIT 20");
             $losts = $res->fetchAllRow();
         }
         else
@@ -132,8 +152,10 @@ class LostandfoundModule extends PLModule
         
         if (Env::has('pong_obj'))
         {
-            $res = XDB::query("SELECT * FROM laf WHERE ISNULL(lost) AND description " .
-                        XDB::formatWildcards(XDB::WILDCARD_CONTAINS, Env::t('pong_obj')) . " ORDER BY found DESC LIMIT 10");
+            $res = XDB::query("SELECT * FROM laf WHERE ISNULL(lost) 
+            				AND description " . XDB::formatWildcards(XDB::WILDCARD_CONTAINS, Env::t('pong_obj')) . "
+            				OR context " . XDB::formatWildcards(XDB::WILDCARD_CONTAINS, Env::t('ping_obj')) . "
+            				ORDER BY found DESC LIMIT 20");
             $losts = $res->fetchAllRow();
         }
         else
@@ -141,7 +163,6 @@ class LostandfoundModule extends PLModule
             $res = XDB::query("SELECT * FROM laf WHERE ISNULL(lost) ORDER BY found DESC LIMIT 10");
             $founds = $res->fetchAllRow();
         }
-        
         
         $page->addCssLink('laf.css');
 
@@ -159,7 +180,7 @@ class LostandfoundModule extends PLModule
             $body = 'L\'objet : '.$res[4].' appartient à '.$us.' ('.S::user()->bestEmail().").\nPense à le supprimer de la liste des objets trouvés.\n\nLes webs.";
             
             $user = plUser::getWithUID($res[1]);
-            $message = 'Un message a été envoyé à '.$user->displayName().' ('.$user()->bestEmail().') pour lui signaler que tu es le propriétaire de cet objet.';
+            $message = 'Un message a été envoyé à '.$user->displayName().' ('.$user->bestEmail().') pour lui signaler que tu es le propriétaire de cet objet.';
             $page->assign('message', $message);
         
 	        $mymail = new PlMailer();

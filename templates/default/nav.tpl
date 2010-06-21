@@ -70,6 +70,7 @@
             </ul>
         </li>
         {/if}
+        <li><a class="arrow" /><a {path_to_href_attribute path="banana"} accesskey="b">Newsgroups</a></li>
 		<li><a class="arrow" /><a {path_to_href_attribute path="laf"} accesskey="o">Objets Trouvés</a></li>
         <li><a class="arrow" /><a {path_to_href_attribute path="contrib"}>Contribuer</a>
             <ul class="level1">

@@ -1,0 +1,137 @@
+/********************************************************************************
+* css/style.css : Default css
+* ---------------
+*
+* This file is part of the banana distribution
+* Copyright: See COPYING files that comes with this distribution
+********************************************************************************/
+
+
+/** Bicolor table**/
+
+table.bicol {
+    border-collapse: collapse;
+    border: 1px solid #a2c2e1;
+    width: 100%;
+}
+
+table.bicol tr.impair { }
+table.bicol tr.pair   { color: inherit; background: #eee; }
+
+table.bicol th {
+    color: #369;
+    background: #d6e1ec;
+    padding: 0px 4px;
+}
+
+table.bicol td { padding: 0px 4px; }
+
+
+.banana {
+    margin-bottom: 1em;
+}
+
+/** GROUP LIST **/
+.banana .grp { text-align: left; }
+.banana .dsc { text-align: left; }
+
+/** THREAD VIEW **/
+.banana table.thread td, .banana table.thread tr {
+    white-space: nowrap;
+    height: 20px;
+    vertical-align: middle;
+    padding-top: 0;
+    margin-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.banana table.thread .new { font-weight: bold; }
+
+.banana table.thread .date { width: 15%; text-align: center; }
+.banana table.thread .subj { text-align: left; overflow: hidden; }
+.banana table.thread .from { text-align: left; }
+
+.banana table.thread .cur { font-style: italic; }
+.banana table.thread .subs { padding: 0%; }
+
+/** MESSAGE VIEW **/
+.banana table.message .hdr { width: 15%; text-align: right; font-weight: bold; padding-right: 1em; }
+.banana table.message .xface { text-align: right; }
+.banana table.message .subject { font-size: 120%; }
+.banana table.message .body { padding-top: 1em; padding-bottom: 0.5em; }
+.banana table.message blockquote {
+    color: blue;
+    font-style: italic;
+    margin-left: 0;
+    padding-left: 1ex;
+    border-left: solid 1px;
+    border-color: blue;
+    background: inherit;
+}
+.banana table.message blockquote blockquote {
+	color: green;
+	border-color: green;
+    background: inherit;
+}
+.banana table.message blockquote blockquote blockquote {
+	color: #cc0000;
+	border-color: #cc0000;
+    background: inherit;
+}
+.banana table.message blockquote blockquote blockquote blockquote {
+    color: #aaaa00;
+    border-color: #aaaa00;
+    background: inherit;
+}
+.banana table.message img.multipart {
+    max-width: 200px;
+    max-height: 200px;
+}
+.banana table.message .body .default {
+    background-color: #fff;
+}
+
+.banana .thread_tree {
+  white-space: nowrap;
+}
+
+.banana .thread_tree input {
+    width: 14px;
+    height: 14px;
+    padding: 2px 0;
+    margin: 0;
+}
+
+.banana .thread_tree img {
+    margin: 0;
+    padding: 0;
+    width: 14px;
+    height: 18px;
+}
+
+.banana .thread_tree .tree {
+    overflow-y: hidden;
+    overflow-x: auto;
+    margin: 0;
+    padding-left: 2em;
+    padding-bottom: 1em;
+}
+
+
+/** MISC **/
+
+.banana .center { text-align: center; padding: 1em; }
+.banana .error { color: red; padding-left: 1em; }
+.banana pre.error {
+    margin-left: 2em;
+    font-size: 90%;
+}
+.banana .pages {
+    font-size: 80%;
+    text-align: center;
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
+}
+.banana div.action { float: right; }
+.banana div.menu { float: left; }
