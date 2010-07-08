@@ -21,11 +21,6 @@
 
 class Group
 {
-    const SPECIAL  = 'special';  // Singleton group continaing the special clusters (external, internal, ...)
-    const FORCED   = 'forced';   // Forced groups (formations, sections, promo, ...)
-    const CLUB     = 'club';     // Binets, ...
-    const FREE     = 'free';     // Fun, psc, ...
-
     protected $gid;
     protected $type;
     protected $name;
@@ -69,23 +64,6 @@ class Group
     public function description()
     {
         return $this->description;
-    }
-    
-    public static function checkConsistency($groups, $clusters)
-    {
-        $knowngids = array();
-        foreach($clusters as $cluster)
-        {
-            $knowngids[] = $cluster->gid();
-        }
-        
-        $unconsistencies = array();
-        foreach($groups as $group)
-        {
-            if (!in_array($group->gid(), $knowngids))
-                $unconsistencies[] = $group;
-        }
-        return $unconsistencies;
     }
 }
 

@@ -86,10 +86,8 @@ class FrankizSession extends PlSession
         // Load clusters and groups
         if (S::logged()) {
             if (!S::has('groups')) S::user()->buildGroups();
-            if (!S::has('clusters')) S::user()->buildClusters();
         } else {
             if (!S::has('groups')) IP::buildGroups();
-            if (!S::has('clusters')) IP::buildClusters();
         }
 
         return true;
@@ -254,7 +252,6 @@ class FrankizSession extends PlSession
 
         // Load clusters and groups
         $user->buildGroups();
-        $user->buildClusters();
 
         return true;
     }

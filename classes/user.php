@@ -227,48 +227,20 @@ class User extends PlUser
 
     public function buildGroups()
     {
-        $groups = array(-1 => new Group(array('gid' => -1, 'type' => Group::SPECIAL, 'name' => 'specialgroup', 'long_name' => 'SpecialGroup')));
-        $groups_layout = array();
+        $groups = array();
 
-        $iter = XDB::iterator('SELECT g.gid gid, g.type type, g.name name, g.long_name long_name,
-                                      ug.rank rank
-                                 FROM users_groups AS ug
-                           INNER JOIN groups AS g
-                                   ON ug.gid = g.gid
-                                WHERE ug.uid = {?}
-                             ORDER BY ug.rank ASC',
+        $iter = XDB::iterator('SELECT g.gid, ug.rights, g.type type, g.name name, g.long_name long_name
+                                 FROM groups AS g
+                           INNER JOIN users_groups AS ug ON ug.gid = g.gid
+                                WHERE ug.uid = {?}',
                                 $this->id());
 
         while ($group = $iter->next()) {
             $gid  = $group['gid'];
-            $type = $group['type'];
-
             $groups[$gid] = new Group($group);
-            $groups_layout[$type][] = $groups[$gid];
         }
 
         S::set('groups', $groups);
-        S::set('groups_layout', $groups_layout);
-    }
-
-    public function buildClusters()
-    {
-        $external = Cluster::getSpecial('external');
-        $internal = Cluster::getSpecial('internal');
-        $clusters = array($external->cid() => $external, $internal->cid() => $internal);
-
-        $iter = XDB::iterator('SELECT c.cid cid, c.gid gid, c.type type, c.name name
-                                 FROM users_clusters AS uc
-                           INNER JOIN clusters AS c
-                                   ON uc.cid = c.cid
-                                WHERE uc.uid = {?}',
-                              $this->id());
-
-        while ($cluster = $iter->next()) {
-            $clusters[$cluster['cid']] = new Cluster($cluster);
-        }
-
-        S::set('clusters', $clusters);
     }
 
     // Return permission flags for a given permission level.

@@ -125,62 +125,29 @@ class IP
 
     public static function buildGroups()
     {
-        $groups = array(-1 => new Group(array('gid' => -1, 'type' => Group::SPECIAL, 'name' => 'specialgroup', 'long_name' => 'SpecialGroup')));
-        $groups_layout = array();
+        $groups = array();
 
         // If connecting from a local, find associated groups
         if (self::origin() == self::LOCAL)
         {
-            $iter = XDB::iterator('SELECT g.gid gid, g.type type, g.name name, g.long_name long_name
+            $iter = XDB::iterator('SELECT g.gid, g.type, g.name, g.long_name
                                      FROM rooms_ip AS ri
                                INNER JOIN rooms_owners AS ro
                                        ON ro.rid = ri.rid
                                INNER JOIN groups AS g
                                        ON g.gid = ro.owner_id
                                     WHERE ri.IP = {?}',
-                                 self::get());
+                                        self::get());
 
             while ($group = $iter->next()) {
                 $gid  = $group['gid'];
-                $type = $group['type'];
-                
                 $groups[$gid] = new Group($group);
-                $groups_layout[$type][$gid] = $groups[$gid];
             }
         }
+
         S::set('groups', $groups);
-        S::set('groups_layout', $groups_layout);
     }
 
-    public static function buildClusters()
-    {
-        $external = Cluster::getSpecial('external');
-        $clusters = array($external->cid() => $external);
-
-        if (self::is_internal()) {
-            $internal = Cluster::getSpecial('internal');
-            $clusters[$internal->cid()] = $internal;
-        }
-
-        // If connecting from a local, find associated clusters (#only lobby types ?)
-        if (self::origin() == self::LOCAL)
-        {
-            $iter = XDB::iterator('SELECT c.cid cid, c.gid gid, c.type type, c.name name
-                                     FROM rooms_ip AS ri
-                               INNER JOIN rooms_owners AS ro
-                                       ON ro.rid = ri.rid
-                               INNER JOIN cluster AS c
-                                       ON c.gid = ro.owner_id
-                                    WHERE ri.IP = {?} AND c.type = "lobby"',
-                                 self::get());
-
-            while ($cluster = $iter->next()) {
-                $clusters[$cluster['cid']] = new Cluster($cluster);
-            }
-        }
-
-        S::set('clusters', $clusters);
-    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
