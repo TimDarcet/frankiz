@@ -81,13 +81,8 @@ class FrankizSession extends PlSession
             case self::COOKIE_WRONG_UID:
                 return false;
             }
-        }
 
-        // Load clusters and groups
-        if (S::logged()) {
-            if (!S::has('groups')) S::user()->buildGroups();
-        } else {
-            if (!S::has('groups')) IP::buildGroups();
+            if (!S::has('groups')) S::set('groups', IP::loadGroups());
         }
 
         return true;
@@ -237,6 +232,7 @@ class FrankizSession extends PlSession
         S::set('uid' , $user->id());
         S::set('skin', $user->skin());
         S::set('nav_layout', $user->nav_layout());
+        S::set('groups', $user->loadGroups());
 
         if (!S::suid()) {
             if (Post::v('remember', 'false') == 'on') {
@@ -249,9 +245,6 @@ class FrankizSession extends PlSession
 
         /* Clean temp var 'cookie_uid' */
         S::kill('cookie_uid');
-
-        // Load clusters and groups
-        $user->buildGroups();
 
         return true;
     }

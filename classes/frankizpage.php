@@ -107,10 +107,10 @@ class FrankizPage extends PlPage
         $this->assign('minimodules_layout', FrankizMiniModule::get_layout());
         $this->assign('minimodules_js', FrankizMiniModule::get_js());
 
+        $this->assign('GroupFactory', GroupFactory::gf()->groups());
+
         if (S::logged())
         {
-            $this->assign('groups', S::v('groups'));
-
             //$groups_layout = S::v('groups_layout');
             //$this->assign('clubs_layout', $groups_layout[Group::CLUB]);
             //$this->assign('free_layout' , $groups_layout[Group::FREE]);

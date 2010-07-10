@@ -25,7 +25,8 @@ class AdminModule extends PlModule
     function handlers()
     {
         return array(
-            'admin/su'      => $this->make_hook('su', AUTH_MDP, 'admin'),
+            'admin/su'      => $this->make_hook('su'  , AUTH_MDP, 'admin'),
+            'admin/tree'    => $this->make_hook('tree', AUTH_MDP, 'admin'),
         );
     }
 
@@ -45,7 +46,23 @@ class AdminModule extends PlModule
                 pl_redirect('');
             }
         }
+    }
+    
 
+    
+    function handler_tree(&$page)
+    {
+        $iter = XDB::iterator("SELECT  gid, type, L, R, name, long_name
+                                 FROM  groups
+                             ORDER BY  L ASC");
+        while ($array_group = $iter->next())
+            $group = Group::feed($array_group);
+
+        $tree = Group::groupsToTree(true);
+
+        $page->assign('title', "Arbre des groupes");
+        $page->assign('tree', $tree);
+        $page->changeTpl('admin/wholetree.tpl');
     }
 }
 

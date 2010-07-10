@@ -20,19 +20,15 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div style="position:absolute; right:0; width:60%; z-index:666">
-    {if #globals.debug#}
-    @@BACKTRACE@@
-
-      <div id="dev">
-        @HOOK@
-        Groupes : 
-        {foreach from=$smarty.session.groups key="gid" item="rights"}
-            {$GroupFactory[$gid]->name()} ({$gid}) , 
-        {/foreach}
-      </div>
-    {/if}
-</div>
+{if $tree}
+<ul>
+{foreach from=$tree key="gid" item="subtree"}
+    <li>
+        {$groups[$gid]->long_name()} ({$groups[$gid]->name()})
+        {include file="admin/tree.tpl"|rel tree=$subtree}
+    </li>
+{/foreach}
+</ul>
+{/if}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
-

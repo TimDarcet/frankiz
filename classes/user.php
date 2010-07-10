@@ -49,6 +49,8 @@ class User extends PlUser
 
     protected $main_promo = null;
 
+    protected $groups = null;
+
     /**
      * Constructs the User object
      *
@@ -225,22 +227,25 @@ class User extends PlUser
         return $this->main_promo;
     }
 
-    public function buildGroups()
+    public function loadGroups()
     {
-        $groups = array();
-
         $iter = XDB::iterator('SELECT g.gid, ug.rights, g.type type, g.name name, g.long_name long_name
                                  FROM groups AS g
                            INNER JOIN users_groups AS ug ON ug.gid = g.gid
                                 WHERE ug.uid = {?}',
                                 $this->id());
 
-        while ($group = $iter->next()) {
-            $gid  = $group['gid'];
-            $groups[$gid] = new Group($group);
+        while ($array_group = $iter->next()) {
+            $group = GroupFactory::gf()->feed($array_group);
+            $this->groups[$group->gid()] = new PlFlagSet($array_group['rights']);
         }
 
-        S::set('groups', $groups);
+        return $this->groups;
+    }
+
+    public function groups()
+    {
+        return $this->groups;
     }
 
     // Return permission flags for a given permission level.

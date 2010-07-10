@@ -23,6 +23,8 @@ class Group
 {
     protected $gid;
     protected $type;
+    protected $L;
+    protected $R;
     protected $name;
     protected $long_name;
     protected $description;
@@ -49,6 +51,16 @@ class Group
     public function type()
     {
         return $this->type;
+    }
+
+    public function L()
+    {
+        return $this->L;
+    }
+
+    public function R()
+    {
+        return $this->R;
     }
 
     public function name()
