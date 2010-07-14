@@ -48,9 +48,9 @@ class Group
         return $this->gid;
     }
 
-    public function type()
+    public function type($default)
     {
-        return $this->type;
+        return (is_null($this->type)) ? $default : $this->type;
     }
 
     public function L()
@@ -68,14 +68,86 @@ class Group
         return $this->name;
     }
 
-    public function long_name()
+    public function long_name($default)
     {
-        return $this->long_name;
+        return (is_null($this->long_name)) ? $default : $this->long_name;
     }
 
-    public function description()
+    public function description($default)
     {
-        return $this->description;
+        return (is_null($this->description)) ? $default : $this->description;
+    }
+
+    public function addTo($parent)
+    {
+        $parent = GroupFactory::gf()->group(self::toGid($parent));
+
+        XDB::execute('LOCK TABLES groups WRITE');
+
+        $parent->refresh();
+
+        $this->L = $parent->R();
+        $this->R = $this->L + 1;
+
+        XDB::execute('UPDATE  groups
+                         SET  R = R + 2
+                       WHERE  R >= {?}', $parent->R());
+
+        XDB::execute('UPDATE  groups
+                         SET  L = L + 2
+                       WHERE  L >= {?}', $parent->R());
+
+        XDB::execute('INSERT INTO  groups
+                              SET  type = {?}, L = {?}, R = {?},
+                                   name = {?}, long_name = {?}, description = {?}',
+                                $this->type('open'), $this->L, $this->R,
+                                $this->name(), $this->long_name(''), $this->description(''));
+
+        $gid = XDB::insertId();
+
+        XDB::execute('UNLOCK TABLES');
+
+        GroupFactory::gf()->feed($this);
+    }
+
+    public function remove()
+    {
+        XDB::execute('LOCK TABLES groups WRITE');
+
+        $this->refresh();
+
+        XDB::execute('DELETE FROM  groups
+                            WHERE  gid = {?}', $this->gid);
+
+        XDB::execute('UPDATE  groups
+                         SET  L = L - 2
+                       WHERE  L >= {?}', $this->L);
+
+        XDB::execute('UPDATE  groups
+                         SET  R = R - 2
+                       WHERE  R >= {?}', $this->L);
+
+        XDB::execute('UNLOCK TABLES');
+
+        GroupFactory::gf()->unfeed($this->gid);
+    }
+
+    public function refresh()
+    {
+        $res = XDB::query('SELECT  gid, type, L, R, name, long_name
+                             FROM  groups
+                            WHERE  gid = {?}', $this->gid());
+        $this->fillFromArray($res->fetchOneAssoc());
+    }
+
+    static function toGid($group)
+    {
+        if ($group instanceof Group)
+            return $group->gid();
+        else if (is_numeric($group))
+            return $group;
+        else
+            return false;
     }
 }
 

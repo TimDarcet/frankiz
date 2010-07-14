@@ -24,7 +24,7 @@
 <ul>
 {foreach from=$tree key="gid" item="subtree"}
     <li>
-        {$groups[$gid]->long_name()} ({$groups[$gid]->name()})
+        {$GroupFactory[$gid]->name()} ({$gid})
         {include file="admin/tree.tpl"|rel tree=$subtree}
     </li>
 {/foreach}

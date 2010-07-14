@@ -47,20 +47,24 @@ class AdminModule extends PlModule
             }
         }
     }
-    
 
-    
     function handler_tree(&$page)
     {
+//        $parent = GroupFactory::gf()->group(42);
+//        $group = new Group(array('name' => 'test'));
+//        $group->addTo($parent);
+
         $iter = XDB::iterator("SELECT  gid, type, L, R, name, long_name
                                  FROM  groups
                              ORDER BY  L ASC");
         while ($array_group = $iter->next())
-            $group = Group::feed($array_group);
+            $group = GroupFactory::gf()->feed($array_group);
 
-        $tree = Group::groupsToTree(true);
+        $tree = GroupFactory::gf()->groupsToTree(true);
 
-        $page->assign('title', "Arbre des groupes");
+        //GroupFactory::gf()->group(47)->remove();
+
+        $page->assign('title', 'Arbre des groupes');
         $page->assign('tree', $tree);
         $page->changeTpl('admin/wholetree.tpl');
     }

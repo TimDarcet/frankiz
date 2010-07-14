@@ -26,7 +26,7 @@
 
       <div id="dev">
         @HOOK@
-        Groupes : 
+        Factory:{$GroupFactory|@count} | Groupes:
         {foreach from=$smarty.session.groups key="gid" item="rights"}
             {$GroupFactory[$gid]->name()} ({$gid}) , 
         {/foreach}

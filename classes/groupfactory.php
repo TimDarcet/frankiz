@@ -36,14 +36,24 @@ class GroupFactory
         return S::v('GroupFactory');
     }
 
-    function feed(array $values)
+    function feed($values)
     {
-        if (isset($values['gid'])) {
-            $this->groups[$values['gid']] = new Group($values);
-            return $this->groups[$values['gid']];
+        if ($values instanceof Group) {
+            $this->groups[$values->gid()] = $values;
         } else {
-            return false;
+            if (isset($values['gid'])) {
+                $this->groups[$values['gid']] = new Group($values);
+                return $this->groups[$values['gid']];
+            } else {
+                return false;
+            }
         }
+    }
+
+    function unfeed($group)
+    {
+        $gid = Group::toGid($group);
+        unset($this->groups[$gid]);
     }
 
     function groups()
@@ -51,47 +61,51 @@ class GroupFactory
         return $this->groups;
     }
 
-    // TODO: make it work with partial trees
-    function groupsToTree($gids) {
-        $L2gid = array();
-        $max = 0;
-
-        if ($gids === true) {
-            foreach ($this->groups as $group) {
-                $L2gid[$group->L()] = $group->gid();
-                if ($group->R() - $group->L() > $max) {
-                    $max  = $group->R() - $group->L() > $max;
-                    $root = $group;
-                }
-            }
-        } else {
-            foreach ($gids as $gid) {
-                $group = self::$groups[$gid];
-                $L2gid[$group->L()] = $gid;
-                if ($group->R() - $group->L() > $max) {
-                    $max  = $group->R() - $group->L() > $max;
-                    $root = $group;
-                }
-            }
-        }
-
-        return array($root->gid() => self::buildTree($L2gid, $root));
+    function group($gid)
+    {
+        return $this->groups[$gid];
     }
 
-    static function buildTree($L2gid, $parent) {
-        $pos = $parent->L() + 1;
+    function boundaryFilter($L, $R, $old_gids)
+    {
+        $gids = array();
+        foreach ($old_gids as $gid) {
+            if (($this->group($gid)->L() > $L) && ($this->group($gid)->R() < $R))
+                $gids[] = $gid;
+        }
+        return $gids;
+    }
+
+    function groupsToTree($gids) {
+        if ($gids === true)
+            $gids = array_keys($this->groups);
+
+        $gid2weight = array();
+
+        foreach ($gids as $gid)
+            $gid2weight[$gid] = $this->group($gid)->R() - $this->group($gid)->L();
+
+        asort($gid2weight);
+
+        $sortedGids = array_keys($gid2weight);
+
+        $root = $this->group(array_pop($sortedGids));
+
+        return array($root->gid() => $this->buildTree($sortedGids));
+    }
+
+    function buildTree(array $sortedGids) {
         $tree = array();
-
-        while ($pos != $parent->R()) {
-            $enfant = self::$groups[$L2gid[$pos]];
-            $delta = $enfant->R() - $enfant->L();
-
-            if ($delta == 1)
-                $tree[$enfant->gid()] = NULL;
-            else
-                $tree[$enfant->gid()] = self::buildTree($L2gid, $enfant);
-
-            $pos += $delta + 1;
+        while (count($sortedGids) > 0)
+        {
+            $widest = $this->group(array_pop($sortedGids));
+            if ($widest->L() == $widest->R() - 1) {
+                $tree[$widest->gid()] = NULL;
+            } else {
+                $filtered_gids = $this->boundaryFilter($widest->L(), $widest->R(), $sortedGids);
+                $sortedGids = array_diff($sortedGids, $filtered_gids);
+                $tree[$widest->gid()] = $this->buildTree($filtered_gids, $widest);
+            }
         }
 
         return $tree;

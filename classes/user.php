@@ -248,6 +248,16 @@ class User extends PlUser
         return $this->groups;
     }
 
+    public function addToGroup($gid, PlFlagSet $rights)
+    {
+        // TODO
+    }
+
+    public function removeFromGroup($gid)
+    {
+        // TODO
+    }
+
     // Return permission flags for a given permission level.
     public static function makePerms($perms)
     {

@@ -24,4 +24,12 @@ Tout l'arbre des groupes
 
 {include file="admin/tree.tpl"|rel}
 
+Ajouter un groupe
+
+<form method="POST" action="#">
+Parent - sfsd <br />
+Nom court <input type="text" /> <br />
+<input type="submit" value="Ajouter"> 
+</form>
+
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
