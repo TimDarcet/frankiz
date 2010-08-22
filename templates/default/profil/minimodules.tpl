@@ -42,7 +42,7 @@
                 <input name="{$minimodule.name}" type="checkbox" {if $minimodule.activated}checked="checked"{/if} onclick="{literal}if (!this.checked) {removeMinimodule(this.name, this);} else {addMinimodule(this.name, this);}{/literal}"/>
             </td>
             <td>            
-                {$minimodule.long_name}
+                {$minimodule.label}
             </td>
             <td>            
                 {$minimodule.description}

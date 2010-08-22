@@ -866,7 +866,7 @@ class ProfilModule extends PLModule
 
     function handler_layout(&$page)
     {
-        $iter = XDB::iterator('SELECT um.uid uid, m.name name, m.long_name long_name, m.description description
+        $iter = XDB::iterator('SELECT um.uid uid, m.name name, m.label label, m.description description
                                  FROM minimodules AS m
                             LEFT JOIN users_minimodules AS um
                                    ON (m.name = um.name AND um.uid = {?})
@@ -881,7 +881,7 @@ class ProfilModule extends PLModule
             {
                 $liste_minimodules[] = array('activated' => !is_null($minimodule['uid']),
                                                   'name' => $minimodule['name'],
-                                             'long_name' => $minimodule['long_name'],
+                                                 'label' => $minimodule['label'],
                                            'description' => $minimodule['description']);
             }
         }

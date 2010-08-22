@@ -26,7 +26,7 @@ class Group
     protected $L;
     protected $R;
     protected $name;
-    protected $long_name;
+    protected $label;
     protected $description;
 
     static protected $groups;
@@ -71,9 +71,9 @@ class Group
         return $this->name;
     }
 
-    public function long_name($default)
+    public function label($default)
     {
-        return (is_null($this->long_name)) ? $default : $this->long_name;
+        return (is_null($this->label)) ? $default : $this->label;
     }
 
     public function description($default)
@@ -102,9 +102,9 @@ class Group
 
         XDB::execute('INSERT INTO  groups
                               SET  type = {?}, L = {?}, R = {?},
-                                   name = {?}, long_name = {?}, description = {?}',
+                                   name = {?}, label = {?}, description = {?}',
                                 $this->type('open'), $this->L, $this->R,
-                                $this->name(), $this->long_name(''), $this->description(''));
+                                $this->name(), $this->label(''), $this->description(''));
 
         $gid = XDB::insertId();
 
@@ -139,7 +139,7 @@ class Group
 
     public function refresh()
     {
-        $res = XDB::query('SELECT  gid, type, L, R, name, long_name
+        $res = XDB::query('SELECT  gid, type, L, R, name, label
                              FROM  groups
                             WHERE  gid = {?}', $this->gid());
         $this->fillFromArray($res->fetchOneAssoc());
@@ -173,7 +173,7 @@ class Group
     static function getTop()
     {
         if (self::$topGroup == null) {
-            $res = XDB::query('SELECT  gid, type, L, R, name, long_name
+            $res = XDB::query('SELECT  gid, type, L, R, name, label
                                  FROM  groups
                                 WHERE  (R - L + 1) / 2 = (SELECT COUNT(*) FROM groups)');
             self::$topGroup = new Group($res->fetchOneAssoc());
@@ -210,15 +210,15 @@ class Group
             }
 
             if (count($gidToBeFetched) == 0)
-                $iter = XDB::iterator('SELECT  gid, type, name, long_name
+                $iter = XDB::iterator('SELECT  gid, type, name, label
                                          FROM  groups
                                         WHERE  name IN {?}', $nameToBeFetched);
             else if (count($nameToBeFetched) == 0)
-                $iter = XDB::iterator('SELECT  gid, type, name, long_name
+                $iter = XDB::iterator('SELECT  gid, type, name, label
                                          FROM  groups
                                         WHERE  gid IN {?}', $gidToBeFetched);
             else
-                $iter = XDB::iterator('SELECT  gid, type, name, long_name
+                $iter = XDB::iterator('SELECT  gid, type, name, label
                                          FROM  groups
                                         WHERE  ( gid IN {?} ) OR ( name IN {?} )',
                                             $gidToBeFetched, $nameToBeFetched);
@@ -241,11 +241,11 @@ class Group
                 return self::$groups[$g];
 
             if (self::isGid($g)) {
-                $res = XDB::query('SELECT  gid, type, name, long_name
+                $res = XDB::query('SELECT  gid, type, name, label
                                      FROM  groups
                                     WHERE  gid = {?}', $g);
             } else {
-                $res = XDB::query('SELECT  gid, type, name, long_name
+                $res = XDB::query('SELECT  gid, type, name, label
                                      FROM  groups
                                     WHERE  name = {?}', $g);
             }
