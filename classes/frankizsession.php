@@ -81,8 +81,6 @@ class FrankizSession extends PlSession
             case self::COOKIE_WRONG_UID:
                 return false;
             }
-
-            if (!S::has('groups')) S::set('groups', IP::loadGroups());
         }
 
         return true;
@@ -232,7 +230,6 @@ class FrankizSession extends PlSession
         S::set('uid' , $user->id());
         S::set('skin', $user->skin());
         S::set('nav_layout', $user->nav_layout());
-        S::set('groups', $user->loadGroups());
 
         if (!S::suid()) {
             if (Post::v('remember', 'false') == 'on') {

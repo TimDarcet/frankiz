@@ -123,36 +123,6 @@ class IP
         }
     }
 
-    public static function loadGroups()
-    {
-        // By default, everybody can read the top-level group (0 - fkz - Frankiz.net)
-        $res = XDB::query('SELECT  gid, type, L, R, name, long_name
-                             FROM  groups
-                            WHERE  (R - L + 1) / 2 = (SELECT COUNT(*) FROM groups)');
-        $root = GroupFactory::gf()->feed($res->fetchOneAssoc());
-        $groups = array($root->gid() => new PlFlagSet());
-
-        // If connecting from a local, find associated groups
-        if (self::origin() == self::LOCAL)
-        {
-            $iter = XDB::iterator('SELECT g.gid, g.type, g.L, g.R, g.name, g.long_name
-                                     FROM rooms_ip AS ri
-                               INNER JOIN rooms_owners AS ro
-                                       ON ro.rid = ri.rid
-                               INNER JOIN groups AS g
-                                       ON g.gid = ro.owner_id
-                                    WHERE ri.IP = {?}',
-                                        self::get());
-
-            while ($array_group = $iter->next()) {
-                $group = GroupFactory::gf()->feed($array_group);
-                $groups[$group->gid()] = new PlFlagSet();
-            }
-        }
-
-        return $groups;
-    }
-
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

@@ -227,24 +227,19 @@ class User extends PlUser
         return $this->main_promo;
     }
 
-    public function loadGroups()
-    {
-        $iter = XDB::iterator('SELECT g.gid, ug.rights, g.type type, g.name name, g.long_name long_name
-                                 FROM groups AS g
-                           INNER JOIN users_groups AS ug ON ug.gid = g.gid
-                                WHERE ug.uid = {?}',
-                                $this->id());
-
-        while ($array_group = $iter->next()) {
-            $group = GroupFactory::gf()->feed($array_group);
-            $this->groups[$group->gid()] = new PlFlagSet($array_group['rights']);
-        }
-
-        return $this->groups;
-    }
-
     public function groups()
     {
+        if ($this->groups == null) {
+            $iter = XDB::iterator('SELECT  g.gid, ug.rights
+                                     FROM  groups AS g
+                               INNER JOIN  users_groups AS ug ON ug.gid = g.gid
+                                    WHERE  ug.uid = {?}',
+                                    $this->id());
+
+            while ($array_group = $iter->next())
+                $this->groups[$array_group['gid']] = new PlFlagSet($array_group['rights']);
+        }
+
         return $this->groups;
     }
 
@@ -358,6 +353,14 @@ class User extends PlUser
             }
         }
         return "";
+    }
+
+    public static function getSilentWithValues($login, $values)
+    {
+        if ($login == 0)
+            return new AnonymousUser();
+        else
+            return parent::getSilentWithValues($login, $values);
     }
 }
 

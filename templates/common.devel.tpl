@@ -26,10 +26,20 @@
 
       <div id="dev">
         @HOOK@
-        Factory:{$GroupFactory|@count} | Groupes:
-        {foreach from=$smarty.session.groups key="gid" item="rights"}
-            {$GroupFactory[$gid]->name()} ({$gid}) , 
-        {/foreach}
+        User->groups() - 
+        {php}
+            echo implode(array_keys(S::user()->groups()), " ");
+        {/php}
+        <br />
+        Group::groups() - 
+        {php}
+            foreach (Group::groups() as $key => $g)
+            {
+                if (Group::isGid($key)) {
+                    echo $g->name().'('.$key.') ';
+                }
+            }
+        {/php}
       </div>
     {/if}
 </div>

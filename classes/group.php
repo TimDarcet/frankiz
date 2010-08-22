@@ -29,6 +29,9 @@ class Group
     protected $long_name;
     protected $description;
 
+    static protected $groups;
+    static protected $topGroup = null;
+
     public function __construct($raw)
     {
         $this->fillFromArray($raw);
@@ -80,7 +83,7 @@ class Group
 
     public function addTo($parent)
     {
-        $parent = GroupFactory::gf()->group(self::toGid($parent));
+        $parent = self::get($parent);
 
         XDB::execute('LOCK TABLES groups WRITE');
 
@@ -107,7 +110,8 @@ class Group
 
         XDB::execute('UNLOCK TABLES');
 
-        GroupFactory::gf()->feed($this);
+        self::$groups[$this->gid()]  = $this;
+        self::$groups[$this->name()] = $this;
     }
 
     public function remove()
@@ -129,7 +133,8 @@ class Group
 
         XDB::execute('UNLOCK TABLES');
 
-        GroupFactory::gf()->unfeed($this->gid);
+        self::$groups[$this->gid()]  = null;
+        self::$groups[$this->name()] = null;
     }
 
     public function refresh()
@@ -140,14 +145,122 @@ class Group
         $this->fillFromArray($res->fetchOneAssoc());
     }
 
-    static function toGid($group)
+     /**
+     * Try to find the gid associated with the paramater
+     *
+     * @param $g a Group, a gid or a gname
+     */
+    static function toGid($g)
     {
-        if ($group instanceof Group)
-            return $group->gid();
-        else if (is_numeric($group))
-            return $group;
-        else
+        if ($g instanceof Group) return $g->gid();
+        if (self::isGid($g)) return $g;
+        return nameToGid($name);
+    }
+
+    static function nameToGid($name)
+    {
+        foreach (self::$groups as $group)
+            if ($group->name() == $g)
+                return $group->gid();
+        return false;
+    }
+
+    static function isGid($g)
+    {
+        return strval(intval($g)) == $g;
+    }
+
+    static function getTop()
+    {
+        if (self::$topGroup == null) {
+            $res = XDB::query('SELECT  gid, type, L, R, name, long_name
+                                 FROM  groups
+                                WHERE  (R - L + 1) / 2 = (SELECT COUNT(*) FROM groups)');
+            self::$topGroup = new Group($res->fetchOneAssoc());
+            self::$groups[self::$topGroup->gid()]  = self::$topGroup;
+            self::$groups[self::$topGroup->name()] = self::$topGroup;
+        }
+        return self::$topGroup;
+    }
+
+    static function get($g)
+    {
+        if (is_array($g) && count($g) == 0)
             return false;
+
+        if (is_array($g) && count($g) == 1)
+            $g = array_pop($g);
+
+        if (is_array($g))
+        {
+            $results = array();
+            $gidToBeFetched = array();
+            $nameToBeFetched = array();
+            foreach ($g as $gid_gname) {
+                if (isset(self::$groups[$gid_gname])) {
+                    $group = self::$groups[$gid_gname];
+                    $results[$group->gid()]  = $group;
+                    $results[$group->name()] = $group;
+                } else {
+                    if (self::isGid($gid_gname))
+                        $gidToBeFetched[]  = $gid_gname;
+                    else
+                        $nameToBeFetched[] = $gid_gname;
+                }
+            }
+
+            if (count($gidToBeFetched) == 0)
+                $iter = XDB::iterator('SELECT  gid, type, name, long_name
+                                         FROM  groups
+                                        WHERE  name IN {?}', $nameToBeFetched);
+            else if (count($nameToBeFetched) == 0)
+                $iter = XDB::iterator('SELECT  gid, type, name, long_name
+                                         FROM  groups
+                                        WHERE  gid IN {?}', $gidToBeFetched);
+            else
+                $iter = XDB::iterator('SELECT  gid, type, name, long_name
+                                         FROM  groups
+                                        WHERE  ( gid IN {?} ) OR ( name IN {?} )',
+                                            $gidToBeFetched, $nameToBeFetched);
+
+            while ($array_group = $iter->next()) {
+                $group = new Group($array_group);
+                self::$groups[$group->gid()]  = $group;
+                self::$groups[$group->name()] = $group;
+                $results[$group->gid()]  = $group;
+                $results[$group->name()] = $group;
+            }
+            return $results;
+        }
+        else
+        {
+            if ($g instanceof Group)
+                return $g;
+
+            if (isset(self::$groups[$g]))
+                return self::$groups[$g];
+
+            if (self::isGid($g)) {
+                $res = XDB::query('SELECT  gid, type, name, long_name
+                                     FROM  groups
+                                    WHERE  gid = {?}', $g);
+            } else {
+                $res = XDB::query('SELECT  gid, type, name, long_name
+                                     FROM  groups
+                                    WHERE  name = {?}', $g);
+            }
+            $group = new Group($res->fetchOneRow());
+            self::$groups[$group->gid()]  = $group;
+            self::$groups[$group->name()] = $group;
+
+            return $group;
+        }
+    }
+
+    // Only for debug
+    public static function groups()
+    {
+        return self::$groups;
     }
 }
 
