@@ -31,13 +31,13 @@ class AnonymousUser extends User
         if ($this->groups == null)
         {
             // By default, everybody can read the top-level group (0 - fkz - Frankiz.net)
-            $root = Group::getTop();
+            $root = Group::topLevel();
             $this->groups = array($root->gid() => new PlFlagSet());
 
             // If connecting from a local, find associated groups
             if (IP::is_local())
             {
-                $res = XDB::iterator('SELECT g.gid
+                $iter = XDB::iterator('SELECT g.gid
                                          FROM rooms_ip AS ri
                                    INNER JOIN rooms_owners AS ro
                                            ON ro.rid = ri.rid

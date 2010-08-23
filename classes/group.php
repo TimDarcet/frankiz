@@ -21,13 +21,18 @@
 
 class Group
 {
+    const GID  = 0x01;
+    const NAME = 0X02;
+
     protected $gid;
     protected $type;
     protected $L;
     protected $R;
+    protected $depth;
     protected $name;
     protected $label;
     protected $description;
+    protected $children = null;
 
     static protected $groups;
     static protected $topGroup = null;
@@ -66,6 +71,11 @@ class Group
         return $this->R;
     }
 
+    public function depth()
+    {
+        return $this->depth;
+    }
+
     public function name()
     {
         return $this->name;
@@ -81,6 +91,38 @@ class Group
         return (is_null($this->description)) ? $default : $this->description;
     }
 
+    private function _children($groups)
+    {
+        $this->children = self::depthFilter($groups);
+
+        foreach($this->children as $key => $child)
+                $child->_children(self::boundariesFilter($groups, $child->L(), $child->R()));
+    }
+
+    /**
+     * Get the childrens of the group
+     *
+     * @param $depth is the depth of the tree fetching
+     */
+    public function children($depth = 1)
+    {
+        if ($this->children == null)
+        {
+            $this->children = array();
+            $res = XDB::query('SELECT  g.gid
+                                 FROM  groups AS g
+                           INNER JOIN  groups AS current ON current.gid = {?}
+                                WHERE       g.L > current.L
+                                       AND  g.R < current.R
+                                       AND  g.depth <= current.depth + {?}',
+                                  $this->gid(), $depth);
+            $groups = self::get($res->fetchColumn(), self::GID);
+
+            $this->_children($groups);
+        }
+        return $this->children;
+    }
+
     public function addTo($parent)
     {
         $parent = self::get($parent);
@@ -91,6 +133,7 @@ class Group
 
         $this->L = $parent->R();
         $this->R = $this->L + 1;
+        $this->depth = $parent->depth() + 1;
 
         XDB::execute('UPDATE  groups
                          SET  R = R + 2
@@ -101,9 +144,9 @@ class Group
                        WHERE  L >= {?}', $parent->R());
 
         XDB::execute('INSERT INTO  groups
-                              SET  type = {?}, L = {?}, R = {?},
+                              SET  type = {?}, L = {?}, R = {?}, depth = {?}
                                    name = {?}, label = {?}, description = {?}',
-                                $this->type('open'), $this->L, $this->R,
+                                $this->type('open'), $this->L, $this->R, $this->depth,
                                 $this->name(), $this->label(''), $this->description(''));
 
         $gid = XDB::insertId();
@@ -139,10 +182,46 @@ class Group
 
     public function refresh()
     {
-        $res = XDB::query('SELECT  gid, type, L, R, name, label
+        $res = XDB::query('SELECT  gid, type, L, R, depth, name, label
                              FROM  groups
                             WHERE  gid = {?}', $this->gid());
         $this->fillFromArray($res->fetchOneAssoc());
+    }
+
+    public static function boundariesFilter($groups, $L, $R, $extract = true)
+    {
+        $filtered = array();
+        foreach ($groups as $key => $group)
+        {
+            if (($group->L() > $L) && ($group->R() < $R)) {
+                $filtered[$key] = $group;
+                if ($extract)
+                    unset($groups[$key]);
+            }
+        }
+        return $filtered;
+    }
+
+    public static function depthFilter($groups, $depth = 'min', $extract = true)
+    {
+        if ($depth == 'min') {
+            $minDepth = -1;
+            foreach($groups as $key => $group)
+                    if ($group->depth() < $minDepth || $minDepth == -1)
+                        $minDepth = $group->depth();
+            $depth = $minDepth;
+        }
+
+        $filtered = array();
+        foreach ($groups as $key => $group)
+        {
+            if ($group->depth() == $depth) {
+                $filtered[$key] = $group;
+                if ($extract)
+                    unset($groups[$key]);
+            }
+        }
+        return $filtered;
     }
 
      /**
@@ -150,14 +229,14 @@ class Group
      *
      * @param $g a Group, a gid or a gname
      */
-    static function toGid($g)
+    public static function toGid($g)
     {
         if ($g instanceof Group) return $g->gid();
         if (self::isGid($g)) return $g;
         return nameToGid($name);
     }
 
-    static function nameToGid($name)
+    public static function nameToGid($name)
     {
         foreach (self::$groups as $group)
             if ($group->name() == $g)
@@ -165,15 +244,15 @@ class Group
         return false;
     }
 
-    static function isGid($g)
+    public static function isGid($g)
     {
         return strval(intval($g)) == $g;
     }
 
-    static function getTop()
+    public static function topLevel()
     {
         if (self::$topGroup == null) {
-            $res = XDB::query('SELECT  gid, type, L, R, name, label
+            $res = XDB::query('SELECT  gid, type, L, R, depth, name, label
                                  FROM  groups
                                 WHERE  (R - L + 1) / 2 = (SELECT COUNT(*) FROM groups)');
             self::$topGroup = new Group($res->fetchOneAssoc());
@@ -183,7 +262,18 @@ class Group
         return self::$topGroup;
     }
 
-    static function get($g)
+    protected static function feed($group)
+    {
+        self::$groups[$group->gid()]  = $group;
+        self::$groups[$group->name()] = $group;
+    }
+
+    protected static function has($g)
+    {
+        return isset(self::$groups[$g]);
+    }
+
+    public static function get($g, $flag = self::GID)
     {
         if (is_array($g) && count($g) == 0)
             return false;
@@ -199,8 +289,10 @@ class Group
             foreach ($g as $gid_gname) {
                 if (isset(self::$groups[$gid_gname])) {
                     $group = self::$groups[$gid_gname];
-                    $results[$group->gid()]  = $group;
-                    $results[$group->name()] = $group;
+                    if ($flag & self::GID)
+                        $results[$group->gid()]  = $group;
+                    if ($flag & self::NAME)
+                        $results[$group->name()] = $group;
                 } else {
                     if (self::isGid($gid_gname))
                         $gidToBeFetched[]  = $gid_gname;
@@ -210,25 +302,26 @@ class Group
             }
 
             if (count($gidToBeFetched) == 0)
-                $iter = XDB::iterator('SELECT  gid, type, name, label
+                $iter = XDB::iterator('SELECT  gid, type, L, R, depth, name, label
                                          FROM  groups
                                         WHERE  name IN {?}', $nameToBeFetched);
             else if (count($nameToBeFetched) == 0)
-                $iter = XDB::iterator('SELECT  gid, type, name, label
+                $iter = XDB::iterator('SELECT  gid, type, L, R, depth, name, label
                                          FROM  groups
                                         WHERE  gid IN {?}', $gidToBeFetched);
             else
-                $iter = XDB::iterator('SELECT  gid, type, name, label
+                $iter = XDB::iterator('SELECT  gid, type, L, R, depth, name, label
                                          FROM  groups
                                         WHERE  ( gid IN {?} ) OR ( name IN {?} )',
                                             $gidToBeFetched, $nameToBeFetched);
 
             while ($array_group = $iter->next()) {
                 $group = new Group($array_group);
-                self::$groups[$group->gid()]  = $group;
-                self::$groups[$group->name()] = $group;
-                $results[$group->gid()]  = $group;
-                $results[$group->name()] = $group;
+                self::feed($group);
+                if ($flag & self::GID)
+                    $results[$group->gid()]  = $group;
+                if ($flag & self::NAME)
+                    $results[$group->name()] = $group;
             }
             return $results;
         }
@@ -241,17 +334,15 @@ class Group
                 return self::$groups[$g];
 
             if (self::isGid($g)) {
-                $res = XDB::query('SELECT  gid, type, name, label
+                $res = XDB::query('SELECT  gid, type, L, R, depth, name, label
                                      FROM  groups
                                     WHERE  gid = {?}', $g);
             } else {
-                $res = XDB::query('SELECT  gid, type, name, label
+                $res = XDB::query('SELECT  gid, type, L, R, depth, name, label
                                      FROM  groups
                                     WHERE  name = {?}', $g);
             }
-            $group = new Group($res->fetchOneRow());
-            self::$groups[$group->gid()]  = $group;
-            self::$groups[$group->name()] = $group;
+            self::feed(new Group($res->fetchOneRow()));
 
             return $group;
         }
