@@ -181,13 +181,3 @@ function key_exists(key, search) {
     return key in search;
 }
 
-$(function () { 
-    $("#demo_1").tree({
-        ui : {
-            theme_name : "checkbox"
-        },
-        plugins : { 
-            checkbox : { }
-        }
-    });
-});
