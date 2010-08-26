@@ -31,7 +31,7 @@ class AnonymousUser extends User
         if ($this->groups == null)
         {
             // By default, everybody can read the top-level group (0 - fkz - Frankiz.net)
-            $root = Group::topLevel();
+            $root = Group::root();
             $this->groups = array($root->gid() => new PlFlagSet());
 
             // If connecting from a local, find associated groups
