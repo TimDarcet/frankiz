@@ -21,6 +21,8 @@
 
 class Group
 {
+    const maxDepth = 666;
+
     protected $gid;
     protected $type;
     protected $L;
@@ -30,10 +32,13 @@ class Group
     protected $label;
     protected $description;
     protected $children = array();
+    protected $partialChildren =  array();
     protected $father = null;
 
-    static protected $groups;
+    static protected $groups = array();
+    static protected $nameToGroup = array();
     static protected $root = null;
+    static protected $partialTreesRoots = array();
 
     public function __construct($raw)
     {
@@ -114,7 +119,8 @@ class Group
     protected function fathersLoaded($depth)
     {
         if ($depth == 0) return true;
-        if ($this->father === null && $this->gid() != self::root()->gid()) return false;
+        if ($this->gid() == self::root()->gid()) return true;
+        if ($this->father === null) return false;
         return $this->father->fathersLoaded($depth - 1);
     }
 
@@ -182,6 +188,20 @@ class Group
         return $this->children;
     }
 
+    /**
+     * Return the children of the Group in a partial tree
+     * Children *must* be loaded before : INABIAF
+     *
+     * @param $ptid id of the partial tree
+     */
+    public function partialChildren($ptid = null)
+    {
+        if ($ptid === null)
+            return $this->children;
+        else
+            return $this->partialChildren[$ptid];
+    }
+
     public function fathers($depth = 1)
     {
         self::batchFathers($this, $depth);
@@ -238,8 +258,8 @@ class Group
 
     protected static function feed($group)
     {
-        self::$groups[$group->gid()]  = $group;
-        self::$groups[$group->name()] = $group;
+        self::$groups[$group->gid()]       = $group;
+        self::$nameToGroup[$group->name()] = $group;
     }
 
     public static function groupsToGids($gs)
@@ -263,18 +283,32 @@ class Group
     */
     public static function root()
     {
+        global $globals;
+
         if (self::$root === null) {
-            $res = XDB::query('SELECT  gid
-                                 FROM  groups
-                                WHERE  (R - L + 1) / 2 = (SELECT COUNT(*) FROM groups)');
-            self::$root = self::get($res->fetchColumn());
+            // If the name or gid of the root groop is specified in the conf file
+            // We don't have to query for it !
+            if (isset($globals->root) && ($globals->root != '')) {
+                self::$root = self::get($globals->root);
+            } else {
+                $res = XDB::query('SELECT  gid
+                                     FROM  groups
+                                    WHERE  (R - L + 1) / 2 = (SELECT COUNT(*) FROM groups)');
+                self::$root = self::get($res->fetchColumn());
+            }
         }
         return self::$root;
     }
 
-    protected static function isLoaded($g)
+    protected static function ifLoaded($g)
     {
-        return isset(self::$groups[$g]);
+        if ($g instanceof Group && isset(self::$groups[$g->gid()]))
+            return $g;
+        if (isset(self::$groups[$g]))
+            return self::$groups[$g];
+        if (isset(self::$nameToGroup[$g]))
+            return self::$nameToGroup[$g];
+        return false;
     }
 
     protected function isFatherOf($g)
@@ -337,11 +371,9 @@ class Group
         $results = array();
         $gidsToBeFetched = array();
         $namesToBeFetched = array();
-        foreach ($gs as $g)
-            if ($g instanceof Group) {
-                $results[$g->gid()] = $g;
-            } else if (self::isLoaded($g)) {
-                $group = self::$groups[$g];
+        foreach ($gs as $g) {
+            $group = self::ifLoaded($g);
+            if ($group != false) {
                 $results[$group->gid()] = $group;
             } else {
                 if (self::isGid($g))
@@ -349,7 +381,7 @@ class Group
                 else
                     $namesToBeFetched[] = $g;
             }
-
+        }
         // Return the results and the newly loaded groups
         return self::flatten($results + self::_load($gidsToBeFetched, $namesToBeFetched));
     }
@@ -385,7 +417,7 @@ class Group
     }
 
     /**
-    * Load the childrens of groups with a certain depth
+    * Load the childrens of groups within a certain depth
     *
     * @param $gs an array of gids, names or groups
     * @param $depth is the depth of the search for children
@@ -412,12 +444,14 @@ class Group
     }
 
     /**
-    * Load the fathers of groups with a certain depth
+    * Load the fathers of groups within a certain depth
+    * Returns an array containing all the fathers encoutered
     *
     * @param $gs an array of gids, names or groups
     * @param $depth is the depth of the search for fathers
     */
-    public static function batchFathers($gs, $depth)
+    // TODO : return ?
+    public static function batchFathers($gs, $depth = 1)
     {
         $gs = self::unflatten(self::get($gs));
 
@@ -437,6 +471,37 @@ class Group
             self::get($res->fetchColumn());
         }
     }
+
+    protected function _ascendingPartialTree($ptid, $depth)
+    {
+        if ($depth == 0 || $this->gid() == self::root()->gid()) {
+            self::$partialTreesRoots[$ptid][$this->gid()] = $this;
+        } else {
+            $this->father()->partialChildren[$ptid][$this->gid()] = $this;
+            $this->father()->_ascendingPartialTree($ptid, $depth - 1);
+        }
+    }
+
+    public static function partialTreeRoots($ptid)
+    {
+        echo 'plop';
+        return self::$partialTreesRoots[$ptid];
+    }
+
+    public static function ascendingPartialTree($gs, $depth)
+    {
+        $gs = self::unflatten(self::get($gs));
+        self::batchFathers($gs, $depth);
+
+        $ptid = uniqid();
+        self::$partialTreesRoots[$ptid] = array();
+
+        foreach ($gs as $g)
+            $g->_ascendingPartialTree($ptid, $depth);
+
+        return $ptid;
+    }
+
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
