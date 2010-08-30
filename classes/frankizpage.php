@@ -59,7 +59,7 @@ class FrankizPage extends PlPage
     {
         global $globals;
 
-        $parents = explode('.', S::v('skin'));
+        $parents = explode('.', S::v('skin', $globals->skin));
 
         /* Check if their is a skin-specific template/css,
          * otherwise fallback on parent skin while their is one
