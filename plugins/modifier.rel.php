@@ -19,14 +19,12 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-/** This function will add an attribute to a <a> tag if
- *     the current path matches the argument
- * @param $path     The path to write in the href attribute
- * @param $iftrue   The attribute to add if current path is $path
- * @param $iffalse  The attribute to add otherwise (defaults to '')
- */
-function smarty_modifier_rel($tpl) {
-    return FrankizPage::getTplPath($tpl);
+
+function smarty_modifier_rel($path) {
+    if (substr($path, -3) == 'css')
+        return FrankizPage::getCssPath($path);
+    else
+        return FrankizPage::getTplPath($path);
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
