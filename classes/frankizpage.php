@@ -30,7 +30,7 @@ class FrankizPage extends PlPage
         parent::__construct();
         FrankizMiniModule::preload(FrankizMiniModule::FLOAT_RIGHT);
         // Set the default page
-        $this->changeTpl('frankiz.tpl');
+        $this->changeTpl('500.tpl');
     }
     
     private function load_skin()
@@ -53,23 +53,27 @@ class FrankizPage extends PlPage
         return $skin;
     }
 
-    private static function bestSkin($path, $folder)
+    // TODO: Might be necessary to cache the negative results
+    // file_exists caches only positive results.
+    private static function bestSkin($file, $folder)
     {
         global $globals;
 
-        $parentSkin = explode('.', S::v('skin'));
-        $parentSkin = (count($parentSkin) == 2) ? $parentSkin[0] : false;
+        $parents = explode('.', S::v('skin'));
 
         /* Check if their is a skin-specific template/css,
-         * otherwise fallback on parent skin
-         * and on default template/css if still nonexistent
+         * otherwise fallback on parent skin while their is one
          */
-        if (file_exists($folder . S::v('skin') . '/' . $path))
-            return S::v('skin') . '/' . $path;
-        else if ($parentSkin && file_exists($folder . $parentSkin . '/' . $path))
-            return $parentSkin . '/' . $path;
-        else
-            return $globals->skin . '/' . $path;
+        while (count($parents) > 0)
+        {
+            if (file_exists($folder . implode('.', $parents) . '/' . $file))
+                return implode('.', $parents) . '/' . $file;
+
+            array_pop($parents);
+        }
+
+        // We want to be warned if a template/css can't be loaded
+        throw new Exception('Impossible de trouver le fichier ' . $file);
     }
 
     public static function getTplPath($tpl)
@@ -86,8 +90,8 @@ class FrankizPage extends PlPage
     {
         parent::changeTpl(self::getTplPath($tpl), $type);
     }
-    
-	public function coreTpl($tpl, $type = SKINNED)
+
+    public function coreTpl($tpl, $type = SKINNED)
     {
         parent::changeTpl(self::getTplPath('platal/' . $tpl), $type);
     }
@@ -119,7 +123,12 @@ class FrankizPage extends PlPage
 
         $this->assign('casertConnected', IP::is_casert());
         $this->assign('logged', S::logged());
-        $this->_run(self::getTplPath('frankiz.tpl'));
+
+        // TODO: Enable JSON loading of the module only
+        if (Env::has('solo'))
+            echo $this->raw();
+        else
+            $this->_run(self::getTplPath('frankiz.tpl'));
     }
 }
 
