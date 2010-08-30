@@ -93,7 +93,7 @@ class FrankizPage extends PlPage
 
     public function coreTpl($tpl, $type = SKINNED)
     {
-        parent::changeTpl(self::getTplPath('platal/' . $tpl), $type);
+        parent::changeTpl(self::getCoreTpl($tpl), $type);
     }
 
     public function addCssLink($css)
