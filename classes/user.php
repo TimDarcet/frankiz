@@ -19,6 +19,29 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+class Rights
+{
+    const prez   = 'prez';
+    const web    = 'web' ;
+    const admin  = 'admin';
+    const member = 'member';
+    const friend = 'friend';
+
+    public static function get()
+    {
+        $rights = array();
+        $reflectionRights = new ReflectionClass('Rights');
+        foreach ($reflectionRights->getConstants() as $right)
+            $rights[] = $right;
+        return $rights;
+    }
+
+    public static function inheritance()
+    {
+    // Todo: describe the inheritances types of the rights
+    }
+}
+
 class User extends PlUser
 {
     /* List of available fields, with examples
@@ -35,9 +58,6 @@ class User extends PlUser
      * on_platal    resides on platal
      */
 
-    const ACCOUNT = 0x01;
-    const ROOM    = 0x02;
-
     protected $depth = 0;    
 
     protected $on_platal = null;
@@ -49,7 +69,7 @@ class User extends PlUser
 
     protected $main_promo = null;
 
-    protected $groups = null;
+    protected $gids = null;
 
     /**
      * Constructs the User object
@@ -157,7 +177,7 @@ class User extends PlUser
         parent::fillFromArray($values);
     }
 
-    public static function getBulkUsersWithUIDs(array $UIDs, $level = User::ACCOUNT)
+    public static function getBulkUsersWithUIDs(array $UIDs)
     {
         $users = Array();
 
@@ -205,8 +225,24 @@ class User extends PlUser
                      hash_encrypt($password), $this->id());
     }
 
-    public function skin()
+    /**
+    * Returns the skin name of the User
+    * If you specify an argument, it will update the User skin
+    *
+    * @param $skin name of the skin to associate with the User
+    */
+    public function skin($skin = null)
     {
+        if ($skin != null)
+        {
+            $res = XDB::query('SELECT skin_id FROM skins WHERE name = {?}', $skin);
+
+            if ($res->numRows() != 1)
+                throw new Exception ("Cette skin n'existe pas et ne peut donc pas être choisie");
+
+            $this->skin = $res->fetchOneField();
+            XDB::execute('UPDATE account SET skin = {?} WHERE uid = {?}', $this->skin, $this->id());
+        }
         return $this->skin;
     }
 
@@ -227,9 +263,25 @@ class User extends PlUser
         return $this->main_promo;
     }
 
-    public function groups()
+    public function groups(PlFlagSet $rights)
     {
-        if ($this->groups == null) {
+        // We load all the groups at once,
+        // but return only a restriction.
+        Group::get($this->gids());
+        return Group::get($this->gids($rights));
+    }
+
+    /**
+    * Return the gids associated with the user
+    * This function is to be used for building queries
+    * involving the groups of the user
+    *
+    * @param $rights restrict the gids returned with the rights
+    */
+    public function gids($rights = null)
+    {
+        if ($this->gids === null)
+        {
             $iter = XDB::iterator('SELECT  g.gid, ug.rights
                                      FROM  groups AS g
                                INNER JOIN  users_groups AS ug ON ug.gid = g.gid
@@ -237,10 +289,17 @@ class User extends PlUser
                                     $this->id());
 
             while ($array_group = $iter->next())
-                $this->groups[$array_group['gid']] = new PlFlagSet($array_group['rights']);
+                    $this->gids[$array_group['gid']] = new PlFlagSet($array_group['rights']);
+
+            // Todo: Use the inheritances types to load the rest
         }
 
-        return $this->groups;
+        $results = array();
+        foreach ($this->gids as $gid => $flagSet)
+            if ($rights === null || $flagSet->hasFlagCombination($rights))
+                $results[] = $gid;
+
+        return $results;
     }
 
     public function addToGroup($gid, PlFlagSet $rights)

@@ -240,6 +240,9 @@ class FrankizSession extends PlSession
         // Set session perms from User perms
         $this->makePerms($user->perms, S::b('is_admin'));
 
+        // Load gids and rights associated
+        $user->gids();
+
         /* Clean temp var 'cookie_uid' */
         S::kill('cookie_uid');
 

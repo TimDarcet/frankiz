@@ -35,7 +35,7 @@ class ProfilModule extends PLModule
                      'profil/mdp_perdu'           => $this->make_hook('mdp_perdu',          AUTH_PUBLIC),
                      'profil/reseau'              => $this->make_hook('reseau',             AUTH_MDP),
                      'profil/reseau/demande_ip'   => $this->make_hook('demande_ip',         AUTH_COOKIE),
-                     'profil/skin'                => $this->make_hook('skin',               AUTH_COOKIE),
+                     'profil/skin'                => $this->make_hook('skin',               AUTH_PUBLIC),
                      'profil/skin/change_skin'    => $this->make_hook('skin_change',        AUTH_COOKIE),
                      'profil/skin/change_params'  => $this->make_hook('skin_params',        AUTH_COOKIE),
                      'profil/siteweb'             => $this->make_hook('siteweb',            AUTH_MDP),
@@ -342,18 +342,23 @@ class ProfilModule extends PLModule
 
     function handler_skin(&$page)
     {
-        // Recupére la liste des mini modules et verifie leur visibilite
-        $minimodule_list = FrankizMiniModule::get_minimodule_list();
-        $my_minimodule_list = array();
-        foreach ($minimodule_list as $id => $desc)
-            $my_minimodule_list[] = array('id'          => $id,
-                                          'est_visible' => $_SESSION['skin']->est_minimodule_visible($id),
-                              'desc'        => $desc);
+        if (Env::v('skin', '') != '')
+        {
+            S::set('skin', Env::v('skin'));
+            if (S::logged())
+                S::user()->skin($skin);
+        }
 
-        $page->assign('liste_skins', Skin::get_skin_list());
-        $page->assign('liste_minimodules', $my_minimodule_list);
+        $res = XDB::query('SELECT  s.skin_id, s.name, s.label, s.description, COUNT(a.skin) frequence
+                             FROM  skins AS s
+                       INNER JOIN  account AS a ON a.skin = s.skin_id
+                         GROUP BY  s.skin_id
+                         ORDER BY  frequence DESC');
+        $skins = $res->fetchAllAssoc();
+
+        $page->assign('skinsList', $skins);
         $page->assign('title', "Modification de l'apparence de Frankiz");
-        $page->changeTpl("profil/skin.tpl");
+        $page->changeTpl("profil/skins.tpl");
     }
 
     function handler_skin_change(&$page)
