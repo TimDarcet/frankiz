@@ -29,9 +29,6 @@
     </head>
 
     <body class="{if ($minimodules_layout[4]|@count) == 0}disabledAside{else}enabledAside{/if}">
-        <div id="errorBox" title="Erreur"></div>
-        {include file=common.devel.tpl}
-
         <div id="header">
             {include file="header.tpl"|rel}
         </div>
@@ -51,6 +48,8 @@
         <div id="footer">
             {include file="footer.tpl"|rel}
         </div>
+
+        {include file=common.devel.tpl}
     </body>
 </html>
 

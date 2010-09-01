@@ -23,7 +23,7 @@
          [ balises sans attributs ou classes sans contexte ]
 *******************************************************************************/
 body {
-	position: relative;
+    position: relative;
     background-color: #ffffff;
     margin: 0;
     padding: 0;
@@ -35,24 +35,47 @@ img {
 }
 
 .warning {
-	color: red;
+    color: red;
 }
 
 a, a:link {
     text-decoration: underline;
-    color: #002334;
+    color: #003757;
 }
 
 a:hover, a:active {
     text-decoration: none;
     font-weight: bold;
     color: #D7B66E;
-    background-color: #002334;
+    background-color: #003757;
 }
 
 .clear {
     clear: both;
 }
+
+#debug .platal {
+    position: absolute;
+    top: 36px;
+    left: 8px;
+    width: 45%;
+    border: 1px solid black;
+    background-color: white;
+    opacity: .9;
+    z-index: 2;
+}
+
+#debug .fkz {
+    position: absolute;
+    top: 36px;
+    right: 8px;
+    width: 45%;
+    border: 1px solid black;
+    background-color: white;
+    opacity: .9;
+    z-index: 2;
+}
+
 
 /*******************************************************************************
      1   Header
@@ -60,21 +83,17 @@ a:hover, a:active {
 *******************************************************************************/
 
 #header #logo {
-    left:0;
+    position: absolute;
+    left: 0;
+    top: 35px;
+    height: 90px;
+    width: 100%;
     background-image: url("../default/images/home_logo.png");
     background-repeat: no-repeat;
     background-position: center;
-    height: 90px;
-    width: 374px;
+    z-index: 0;
  }
 
-#header #logo a, #logo a:link, #logo a:hover, #logo a:active{
-    display: block;
-    width: 100%;
-    height: 100%;
-    text-decoration: none;
-    background-color: transparent;
-}
 
 /*******************************************************************************
      2   Nav
@@ -83,138 +102,110 @@ a:hover, a:active {
  
 #nav {
     position: absolute;
-    top: 90px;
+    top: 0;
     left: 0;
-    width: 20%;
-    background: #002334;
-    color: white;
+    width: 100%;
+    padding: 0;
+    margin: 0;
     font-size: 1em;
 }
 
-#nav .head {
-    text-align: right;
-    font-size: 2em;
-    padding-right: 5px;
-    height:37px;
+#nav table, #nav tbody, #nav tr, #nav td {
+    margin: 0;
+    padding: 0;
+}
+
+#nav > table {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0;
+    margin: 0;
+    height: 35px;
+    width: 100%;
+    text-align: center;
+    font-size: 21px;
+    font-variant: small-caps;
+    border-collapse: collapse;
+    border: 1px #003757 solid;
+    border-bottom: none;
+}
+
+#nav > table > tbody > tr > td {
+    margin: 0;
+    padding: 0;
+    background-color: #BDD5E3;
+    border-bottom: 1px #003757 solid;
+}
+
+#nav > table > tbody > tr > td:hover {
+    background-color: white;
+    border-bottom: white;
+}
+
+#nav > table > tbody > tr > td:hover .subnavwithoutjs {
+    display: block;
+}
+
+#nav .subnav {
+    position: absolute;
+    top: 35px;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    display: none;
+    text-align: center;
+    border: 1px #003757 solid;
+    border-top: none;
+    z-index:20;
+}
+
+#nav .subnav .bkg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: .85;
+    background-color: white;
+    height: 90px;
+    z-index:0;
+}
+
+#nav .subnav .body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    z-index:10;
+}
+
+#nav .subnav table {
+    text-align: center;
 }
 
 #nav a {
     font-weight: normal;
     text-decoration: none;
-    color: white;
+    color: #003757;
     display: block;
 }
 
-#nav a:hover, #nav a:active, #nav a:link {
+#nav a:hover, #nav a:active {
     font-weight: normal;
     text-decoration: none;
     color: inherit;
     display: block;
+    background-color: transparent;
 }
 
-#nav ul.level0 {
-    margin: 0;
-    padding: 0 0 0 4px;
-    list-style-type: none;
-    text-indent: 2px;
-    font-size: 1.2em;
-}
-
-#nav ul.level0 > li {
-    border-top: 1px solid white;
-    margin-bottom: 5px;
-}
-
-/* Etat normal des liens dans le menu */
-#nav ul.level0 > li > a.link {
-    text-indent: 19px;
-    line-height: 20px;
-}
-
-/* Etat s'il s'agit de la page en cours */
-#nav ul.level0 > li > a.link.on {
-    background-color: white;
-    color: #002334;
-}
-
-/* Etat si la souris est au dessus */
-#nav ul.level0 > li > a.link:hover {
-    background-color: white;
-    color: #002334;
-}
-
-/* La flèche est gérée spécialement par le javascript, le comportement est donc particulier */
-
-/* ->Sous-menu déplié */
-#nav ul.level0 > li .arrow {
+#subnav_account table {
+    width: 100%;
+    font-size: 26px;
+    bottom:0;
     position: absolute;
-    width: 18px;
-    height: 18px;
-    background: url(../default/images/arrows.png) no-repeat 0 -36px;
 }
 
-/* ->Sous-menu replié */
-#nav ul.level0 > li .arrow.hidden{
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    background: url(../default/images/arrows.png) no-repeat 0 0;
-}
-
-/* Etat s'il s'agit de la page en cours */
-/* ->Sous-menu déplié */
-#nav ul.level0 > li .arrow.on {
-    background: url(../default/images/arrows.png) no-repeat 0 -54px;
-}
-
-/* ->Sous-menu replié */
-#nav ul.level0 > li .arrow.on.hidden {
-    background: url(../default/images/arrows.png) no-repeat 0 -18px;
-}
-
-/* Etat si la souris est au dessus du lien adjacent => ne pas utiliser :hover, le javascript se charge de rajouter la classe .hover */
-/* ->Sous-menu déplié */
-#nav ul.level0 > li .arrow.hover {
-    background: url(../default/images/arrows.png) no-repeat 0 -54px;
-}
-
-/* ->Sous-menu replié */
-#nav ul.level0 > li .arrow.hover.hidden {
-    background: url(../default/images/arrows.png) no-repeat 0 -18px;
-}
-
-
-#nav ul.level1 {
-    padding: 0 0 0 4px;
-    list-style-type: none;
-    text-indent: 8px;
-    font-size: 0.9em;
-    margin: 0;
-}
-
-#nav ul.level1 li {
-    border-top: 0;
-    margin-bottom: 0;
-    margin: 0;
-}
-
-#nav ul.level1 li a{
-    line-height: 20px;
-    border-top: 1px dashed #17758A;
-    background: url(../default/images/puce_over.png) repeat-y left;
-}
-
-#nav ul.level1 li a.on{
-    background: url(../default/images/puce_on.png) repeat-y left;
-    background-color: white;
-    color: #002334;
-}
-
-#nav ul.level1 li a:hover {
-    background: url(../default/images/puce_off.png) repeat-y left;
-    background-color: #FFBA00;
-    color: #002334;
-}
  
 /*******************************************************************************
      3   Section
@@ -223,36 +214,34 @@ a:hover, a:active {
 
 #section {
     position: absolute;
-    top: 90px;
+    top: 135px;
     left: 0;
     margin: 0;
     padding: 0;
-    margin-left: 20%;
     clear: both;
-    width: 80%;
-}
-
-body.enabledAside > #section {
-    width: 60%;
+    width: 100%;
 }
 
 #section > .header {
-    padding-left: 56px;
-    text-align: left;
-    border-color: #002334;
+    text-align: center;
+    border-color: #003757;
     border-width: 0 1px 0 0;
-    color: white;
+    color: #003757;
     font-size: 2em;
-    background: url(../default/images/arrow_right_off.png) no-repeat 12px center;
-    background-color: #002334;
+    background-color: #BDD5E3;
     height: 36px;
+    font-variant:small-caps;
 }
 
 #content {
     position: relative;
     padding: 10px;
     border: 0;
-    border-top: 1px solid #002334;
+    margin-left: 12px;
+}
+
+body.enabledAside #content {
+    width: 75%;
 }
 
 
@@ -262,13 +251,14 @@ body.enabledAside > #section {
 *******************************************************************************/
 
 #aside {
-	display: block;
+    display: block;
     position: absolute;
+    top: 180px;
     right: 0;
     margin: 0;
     padding: 0;
     clear: both;
-    width: 20%;
+    width: 22%;
 }
 
 body.disabledAside > #aside {
@@ -328,7 +318,7 @@ body.disabledAside > #aside {
 
 .sorting {
     background-color: #CAD7DC;
-    border: 1px #002334 dashed;
+    border: 1px #003757 dashed;
     min-width:30%;
 }
 
@@ -341,13 +331,13 @@ body.disabledAside > #aside {
 }
 
 .minimodule {
-    border: 1px solid #002334;
+    border: 1px solid #003757;
     margin-bottom: 20px;
 }
 
 .minimodule>.head {
-    color: white;
-    background-color: #002334;
+    color: #003757;
+    background-color: #BDD5E3;
     padding: 2px;
     text-align : center;
     font-size: 11pt;
@@ -368,13 +358,13 @@ body.disabledAside > #aside {
 
 fieldset {
     background-color: #CAD7DC;
-    border: 1px #002334 solid;
+    border: 1px #003757 solid;
 }
 
 fieldset legend {
     color: white;
-    background-color: #002334;
-    border: 1px #002334 solid;
+    background-color: #003757;
+    border: 1px #003757 solid;
 }
 
 form {
@@ -384,26 +374,26 @@ form {
 
 input {
     font-weight: bold;
-    border: 1px solid #002334;
+    border: 1px solid #003757;
     color: white;
-    background-color: #002334;
+    background-color: #003757;
 }
 
 input:hover {
-    color: #002334;
+    color: #003757;
     background-color: #FFBA00;
 }
 
 input:focus {
     color: white;
     border: 2px #D7B66E solid;
-    background-color: #002334;
+    background-color: #003757;
 }
 
 input:active {
     color: white;
     border: 2px #D7B66E solid;
-    background-color: #002334;
+    background-color: #003757;
 }
 
 .checkbox  {
@@ -457,7 +447,7 @@ input:active {
 .login .forgot {
 	margin-top: 25px;
 	padding-top: 25px;
-    border-top: 1px solid #002334;
+    border-top: 1px solid #003757;
 }
 
 .login .forgot a {

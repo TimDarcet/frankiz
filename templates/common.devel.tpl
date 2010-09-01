@@ -20,29 +20,73 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div style="position:absolute; right:0; width:60%; z-index:666">
-    {if #globals.debug#}
-    @@BACKTRACE@@
+{if #globals.debug#}
+<div id="debug">
+    <div class="platal">
+        <span id="debug_hook">
+            @HOOK@
+        </span>
 
-      <div id="dev">
-        @HOOK@
-        User->groups() - 
-        {php}
-            echo implode(array_keys(S::user()->groups()), " ");
-        {/php}
-        <br />
-        Group::groups() - 
-        {php}
-            foreach (Group::groups() as $key => $g)
-            {
-                if (Group::isGid($key)) {
-                    echo $g->name().'('.$key.') ';
+        @@BACKTRACE@@
+        {literal}
+        <script>
+            $("#debug_hook .erreur").hide();
+
+            $(".backtrace .hide").hide();
+            $(".backtrace .hide").addClass("blah42");
+            $(".backtrace .hide").removeClass("hide");
+            $(".backtrace h1").click(function(){
+                $(".backtrace .blah42").toggle();
+            });
+        </script>
+        {/literal}
+    </div>
+
+    <div class="fkz">
+        
+        <div style="font-weight:bold" onclick="$('#debug_groups').toggle()">Groups</div>
+        <div id="debug_groups" style="display:none">
+            {php}
+                foreach (Group::groups() as $key => $g)
+                {
+                    if (Group::isGid($key)) {
+                        echo $g->name().'('.$key.') ';
+                    }
+                }
+            {/php}
+        </div>
+
+        <div style="font-weight:bold" onclick="$('#debug_rights').toggle()">Rights</div>
+        <div id="debug_rights" style="display: none">
+            {php}
+            if (class_exists('Rights')) {
+                $rights = Rights::get();
+                foreach ($rights as $right) {
+                    echo $right . ' : ' . implode(S::user()->gids($right), " ");
+                    echo '<br />';
                 }
             }
-        {/php}
-      </div>
-    {/if}
+            {/php}
+        </div>
+
+        <div style="font-weight:bold" onclick="$('#debug_debug').toggle()">{php}count(Debug::$postflush);{/php} Debug(s)</div>
+        <div id="debug_debug">
+            {php}
+            if (class_exists('Debug')) {
+                $debugs = Debug::$postflush;
+                foreach ($debugs as $debug) {
+                    $id = uniqid;
+                    echo '<pre onclick="$(\'#'. $id . '\').toggle()" >' . $debug['var'] . '</pre>';
+                    echo '<pre id="' . $id . '" style="display:none">' . $debug['trace'] . '</pre>';
+                    echo '<br />';
+                }
+            }
+            {/php}
+        </div>
+    </div>
+
 </div>
+{/if}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
 

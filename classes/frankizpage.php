@@ -118,9 +118,6 @@ class FrankizPage extends PlPage
             //$this->assign('free_layout' , $groups_layout[Group::FREE]);
         }
 
-        //nav_layout contains the json datas describing if a sub-menu is collapsed or not
-        $this->assign('nav_layout'  , S::v('nav_layout', '{}'));
-
         $this->assign('casertConnected', IP::is_casert());
         $this->assign('logged', S::logged());
 
