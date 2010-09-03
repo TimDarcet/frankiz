@@ -19,56 +19,37 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class Rights
-{
-    const prez   = 'prez';
-    const web    = 'web' ;
-    const admin  = 'admin';
-    const member = 'member';
-    const friend = 'friend';
-
-    public static function get()
-    {
-        $rights = array();
-        $reflectionRights = new ReflectionClass('Rights');
-        foreach ($reflectionRights->getConstants() as $right)
-            $rights[] = $right;
-        return $rights;
-    }
-
-    public static function inheritance()
-    {
-    // Todo: describe the inheritances types of the rights
-    }
-}
-
 class User extends PlUser
 {
-    /* List of available fields, with examples
-     * hruid        prenom.nom.X / prenom.nom.SUPOP / ...
-     * user_id      42666
-     * forlife      main for-life address
-     * bestalias    preferred email address
-     * display_name Pseudo
-     * full_name    Prenom Nom
-     * gender       GENDER_MALE | GENDER_FEMALE
-     * email_format FORMAT_HTML | FORMAT_TEXT
-     * perm_flags   Flag combination describing user perms
-     * state        Status : active | pending | disabled
-     * on_platal    resides on platal
+    /*Reminder of PlUser fields
+     * uid           id()
+     * hruid         login()              prenom.nom.x / prenom.nom.supop / ...
+     * bestalias     bestEmail()          preferred email address
+     * display_name  displayName()        Pseudo
+     * full_name     fullName()           Prenom Nom
+     * gender        isFemale()           GENDER_MALE | GENDER_FEMALE
+     * email_format  isEmailFormatHtml()  FORMAT_HTML | FORMAT_TEXT
+     * perms                              Serialized perm_flags
+     * perm_flags    checkPerms()         Flag combination describing user perms
+     * DON'T USE! NOT IMPLEMENTED IN FRANKIZ :
+     * forlife       forlifeEmail()
      */
 
-    protected $depth = 0;    
+    // TODO: try to write something like the Group class, where
+    // the queries are factorised and the Users are stored in a
+    // private field (careful : PlUser::get() already exists and
+    // it might be hard to redefin the constructor ...)
 
+    // boolean to specify if the user is present on the platal
     protected $on_platal = null;
 
+    // enum('active','pending','unregistered','disabled')
     protected $state = null;
 
+    // The name of the user's prefered skin
     protected $skin = null;
-    protected $nav_layout = null;
 
-    protected $main_promo = null;
-
+    // Array of the Gids and the rights associated
     protected $gids = null;
 
     /**
@@ -144,24 +125,18 @@ class User extends PlUser
             && $this->full_name !== null && $this->gender !== null
             && $this->on_platal !== null && $this->email_format !== null
             && $this->perms !== null && $this->bestalias !== null
-            && $this->skin !== null && $this->state !== null
-            && $this->main_promo !== null) {
+            && $this->skin !== null && $this->state !== null) {
             return;
         }
 
         global $globals;
-        $res = XDB::query("SELECT   a.hruid, a.perms, sk.name AS skin, a.state,
-                                    CONCAT(a.firstname, ' ', a.lastname) AS full_name,
-                                    a.gender, a.on_platal, a.email_format,
-                                    IF(a.nickname = '', a.firstname, a.nickname) AS display_name,
-                                    CONCAT(s.forlife, '@', f.domain) AS bestalias,
-                                    CONCAT(f.abbrev, s.promo) AS main_promo,
-                                    a.nav_layout AS nav_layout
-                             FROM   account AS a
-                        LEFT JOIN   formations AS f ON (f.formation_id = a.main_formation)
-                        LEFT JOIN   studies AS s ON (s.formation_id = a.main_formation AND s.uid = a.uid)
-                        LEFT JOIN   skins AS sk ON (a.skin = sk.skin_id)
-                            WHERE   a.uid = {?}", $this->id());
+        $res = XDB::query("SELECT  a.hruid, a.perms, sk.name AS skin, a.state,
+                                   CONCAT(a.firstname, ' ', a.lastname) AS full_name,
+                                   a.gender, a.on_platal, a.email_format, a.bestalias,
+                                   IF(a.nickname = '', a.firstname, a.nickname) AS display_name
+                             FROM  account AS a
+                        LEFT JOIN  skins AS sk ON (a.skin = sk.skin_id)
+                            WHERE  a.uid = {?}", $this->id());
         $this->fillFromArray($res->fetchOneAssoc());
     }
 
@@ -183,13 +158,12 @@ class User extends PlUser
 
         if (count($UIDs) > 0)
         {
-            $iter = XDB::iterator("SELECT  a.uid, a.hruid, a.skin, a.state,
+            $iter = XDB::iterator("SELECT   a.hruid, a.perms, sk.name AS skin, a.state,
                                            CONCAT(a.firstname, ' ', a.lastname) AS full_name,
-                                           a.gender, a.on_platal, a.email_format,
-                                           IF(a.nickname = '', a.firstname, a.nickname) AS display_name,
-                                           a.hruid AS bestalias,
-                                           a.nav_layout AS nav_layout
+                                           a.gender, a.on_platal, a.email_format, a.bestalias,
+                                           IF(a.nickname = '', a.firstname, a.nickname) AS display_name
                                      FROM  account AS a
+                                LEFT JOIN  skins AS sk ON (a.skin = sk.skin_id)
                                     WHERE  a.uid IN {?}", $UIDs);
             while ($datas = $iter->next())
                 $users[$datas['uid']] = new User($datas['uid'], $datas, true);
@@ -246,29 +220,63 @@ class User extends PlUser
         return $this->skin;
     }
 
-    public function nav_layout($new_layout = false)
-    {
-        if (!$new_layout) {
-            return $this->nav_layout;
-        } else {
-            $this->nav_layout = $new_layout;
-            XDB::execute('UPDATE account SET nav_layout = {?} WHERE uid = {?}',
-                                                     $new_layout,$this->id());
-            return (XDB::affectedRows() > 0);
-        }
-    }
-
-    public function promo()
-    {
-        return $this->main_promo;
-    }
-
     public function groups(PlFlagSet $rights)
     {
         // We load all the groups at once,
         // but return only a restriction.
         Group::get($this->gids());
         return Group::get($this->gids($rights));
+    }
+
+    // TODO: Add the groups of the Local (factor with AnonymousUser)
+    protected function loadGids()
+    {
+        // Load the directly associated groups from the database
+        $iter = XDB::iterator('SELECT  g.gid, ug.rights
+                                 FROM  groups AS g
+                           INNER JOIN  users_groups AS ug ON ug.gid = g.gid
+                                WHERE  ug.uid = {?}',
+                                $this->id());
+
+        while ($array_group = $iter->next())
+                $this->gids[$array_group['gid']] = new PlFlagSet($array_group['rights']);
+
+        // Load the undirect groups
+        $rightsInheritances = Rights::get();
+
+        $rightsGids = array();
+        foreach ($rightsInheritances as $right => $inheritance)
+            $rightsGids[$right] = array();
+
+        foreach ($this->gids as $gid => $rights)
+            foreach($rightsInheritances as $right => $inheritance)
+                if ($rights->hasFlag($right))
+                    $rightsGids[$right][] = $gid;
+
+        foreach($rightsInheritances as $right => $inheritance)
+            if ($inheritance == Rights::ASCENDING)
+                $this->addGids(Group::batchFathersGids($rightsGids[$right], Group::maxDepth), $right);
+            else if ($inheritance == Rights::ASCENDING)
+                $this->addGids(Group::batchChildrenGids($rightsGids[$right], Group::maxDepth), $right);
+    }
+
+    protected function addGids($gids, $right)
+    {
+        foreach ($gids as $gid)
+            if (isset($this->gids[$gid]))
+                $this->gids[$gid]->addFlag($right);
+            else
+                $this->gids[$gid] = new PlFlagSet($right);
+    }
+
+    protected function gidsFilter($rights = null)
+    {
+        $results = array();
+        foreach ($this->gids as $gid => $flagSet)
+            if ($rights === null || $flagSet->hasFlagCombination($rights))
+                $results[] = $gid;
+
+        return $results;
     }
 
     /**
@@ -281,25 +289,9 @@ class User extends PlUser
     public function gids($rights = null)
     {
         if ($this->gids === null)
-        {
-            $iter = XDB::iterator('SELECT  g.gid, ug.rights
-                                     FROM  groups AS g
-                               INNER JOIN  users_groups AS ug ON ug.gid = g.gid
-                                    WHERE  ug.uid = {?}',
-                                    $this->id());
+            $this->loadGids();
 
-            while ($array_group = $iter->next())
-                    $this->gids[$array_group['gid']] = new PlFlagSet($array_group['rights']);
-
-            // Todo: Use the inheritances types to load the rest
-        }
-
-        $results = array();
-        foreach ($this->gids as $gid => $flagSet)
-            if ($rights === null || $flagSet->hasFlagCombination($rights))
-                $results[] = $gid;
-
-        return $results;
+        return $this->gidsFilter($rights);
     }
 
     public function addToGroup($gid, PlFlagSet $rights)

@@ -19,44 +19,40 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class AnonymousUser extends User
+class Rights
 {
-    public function __construct()
+    // Types of inheritance for the rights
+    const ASCENDING  = 'ascending';
+    const DESCENDING = 'descending';
+    const NONE       = 'none';
+
+    // Existing rights
+    const PREZ   = 'prez';
+    const WEB    = 'web' ;
+    const ADMIN  = 'admin';
+    const MEMBER = 'member';
+    const FRIEND = 'friend';
+
+    public static function get()
     {
-        $this->uid = 0;
+        $rights = array();
+        $reflectionRights = new ReflectionClass('Rights');
+        foreach ($reflectionRights->getConstants() as $right)
+            if ($right != self::ASCENDING && $right != self::DESCENDING && $right != self::NONE)
+               $rights[$right] = self::inheritance($right);
+
+        return $rights;
     }
 
-    protected function loadGids()
+    public static function inheritance($right)
     {
-        // By default, everybody is a member of the top-level group
-        $root = Group::root();
-        $this->gids[$root->gid()] = new PlFlagSet(Rights::MEMBER);
-
-        // If connecting from a local, find associated groups
-        if (IP::is_local())
-        {
-            $iter = XDB::iterator('SELECT  g.gid
-                                     FROM  rooms_ip AS ri
-                               INNER JOIN  rooms_owners AS ro
-                                       ON  ro.rid = ri.rid
-                               INNER JOIN  groups AS g
-                                       ON  g.gid = ro.owner_id
-                                    WHERE  ri.IP = {?}', IP::get());
-
-            while ($array_group = $iter->next())
-                $this->gids[$array_group['gid']] = new PlFlagSet(Rights::MEMBER);
-        }
-    }
-
-    public function loadMainFields()
-    {
-        $this->uid = 0;
-        $this->perms = 'anonymous';
-    }
-
-    public static function makePerms($perms)
-    {
-        return new PlFlagSet();
+        $inheritances = array(
+            self::PREZ   => self::DESCENDING,
+            self::ADMIN  => self::DESCENDING,
+            self::MEMBER => self::ASCENDING,
+        );
+        
+        return (isset($inheritances[$right])) ? $inheritances[$right] : self::NONE;
     }
 }
 

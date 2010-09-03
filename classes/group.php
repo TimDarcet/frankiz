@@ -367,6 +367,8 @@ class Group
     {
         $gs = self::unflatten($gs);
 
+        if (count($gs) == 0) return array();
+
         // Dissociate already loaded groups of the others
         $results = array();
         $gidsToBeFetched = array();
@@ -417,6 +419,29 @@ class Group
     }
 
     /**
+    * Returns the gids of the children within a certain depth
+    * Careful : results are *not* cached
+    *
+    * @param $gs an array of gids *only*
+    * @param $depth is the depth of the search for children
+    */
+    public static function batchChildrenGids($gs, $depth = 1)
+    {
+        $gs = self::unflatten(self::get($gs));
+        if (count($gs) > 0) {
+            $res = XDB::query('SELECT  g.gid
+                                 FROM  groups AS g
+                           INNER JOIN  groups AS current ON current.gid IN {?}
+                                WHERE       g.L > current.L
+                                       AND  g.R < current.R
+                                       AND  g.depth <= current.depth + {?}',
+                                       $gs, $depth);
+            return $res->fetchColumn();
+        }
+        return array();
+    }
+
+    /**
     * Load the childrens of groups within a certain depth
     *
     * @param $gs an array of gids, names or groups
@@ -431,16 +456,30 @@ class Group
             if ($g->childrenLoaded($depth))
                 unset($gs[$key]);
 
+        self::get(self::batchChildrenGids(self::groupsToGids($gs), $depth));
+    }
+
+    /**
+    * Returns the gids of the fathers within a certain depth
+    * Careful : results are *not* cached
+    *
+    * @param $gs an array of gids *only*
+    * @param $depth is the depth of the search for fathers
+    */
+    public static function batchFathersGids($gs, $depth = 1)
+    {
+        $gs = self::unflatten($gs);
         if (count($gs) > 0) {
             $res = XDB::query('SELECT  g.gid
                                  FROM  groups AS g
                            INNER JOIN  groups AS current ON current.gid IN {?}
-                                WHERE       g.L > current.L
-                                       AND  g.R < current.R
-                                       AND  g.depth <= current.depth + {?}',
-                                       self::groupsToGids($gs), $depth);
-            self::get($res->fetchColumn());
+                                WHERE       g.L < current.L
+                                       AND  g.R > current.R
+                                       AND  g.depth >= current.depth - {?}',
+                                       $gs, $depth);
+            return $res->fetchColumn();
         }
+        return array();
     }
 
     /**
@@ -450,7 +489,6 @@ class Group
     * @param $gs an array of gids, names or groups
     * @param $depth is the depth of the search for fathers
     */
-    // TODO : return ?
     public static function batchFathers($gs, $depth = 1)
     {
         $gs = self::unflatten(self::get($gs));
@@ -460,16 +498,7 @@ class Group
             if ($g->fathersLoaded($depth))
                 unset($gs[$key]);
 
-        if (count($gs) > 0) {
-            $res = XDB::query('SELECT  g.gid
-                                 FROM  groups AS g
-                           INNER JOIN  groups AS current ON current.gid IN {?}
-                                WHERE       g.L < current.L
-                                       AND  g.R > current.R
-                                       AND  g.depth >= current.depth - {?}',
-                                       self::groupsToGids($gs), $depth);
-            self::get($res->fetchColumn());
-        }
+        self::get(self::batchFathersGids(self::groupsToGids($gs), $depth));
     }
 
     protected function _ascendingPartialTree($ptid, $depth)

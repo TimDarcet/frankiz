@@ -60,7 +60,7 @@
         <div id="debug_rights" style="display: none">
             {php}
             if (class_exists('Rights')) {
-                $rights = Rights::get();
+                $rights = array_keys(Rights::get());
                 foreach ($rights as $right) {
                     echo $right . ' : ' . implode(S::user()->gids($right), " ");
                     echo '<br />';
