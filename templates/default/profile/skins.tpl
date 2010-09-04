@@ -20,32 +20,29 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{config_load file="mails.conf" section="mdp_perdu"}
-{if $mail_part eq "head"}
-  {from full=#from#}
-  {subject text="[Frankiz] Création de compte / Perte de mot de passe"}
-{/if}
-{if $mail_part eq "html"}
-<b>Bonjour,</b><br />
-<br />
-Pour te connecter sur Frankiz, il te suffit de cliquer sur le lien ci-dessous: <br />
-<a href='{$globals->baseurl}/profil/fkz?uid={$uid}&hash={$hash}'>{$globals->baseurl}/profil/fkz?uid={$uid}&hash={$hash}</a><br />
-<br />
-N'oublie pas ensuite de modifier ton mot de passe.<br />
-<br />
-Très cordialement,<br />
-Le BR.
-{/if}
-{if $mail_part eq "text"}
-Bonjour,
+<form enctype="multipart/form-data" method="post" action="profile/skin">
+        <table>
+            <tr>
+                <th></th>
+                <th>Frequence</th>
+                <th>Nom</th>
+                <th>Description</th>
+            </tr>
+            {foreach from=$skinsList item=someskin}
+                <tr>
+                    <td>
+                        <input type="radio" name="skin" value="{$someskin.name}" 
+                            {if $skin == $someskin.name} checked {/if} />
+                    </td>
+                    <td>{$someskin.frequence}</td>
+                    <td>{$someskin.label}</td>
+                    <td>{$someskin.description}</td>
+                </tr>
+            {/foreach}
+        </table>
+        <input type="submit" value="Changer de skin" />
+    </fieldset>
+</form>
 
-Pour te connecter sur Frankiz, il te suffit de te rendre à l'adresse suivante :
-{$globals->baseurl}/profil/fkz?uid={$uid}&hash={$hash}
-
-N'oublie pas ensuite de modifier ton mot de passe.
-
-Très cordialement,
-Le BR.
-{/if}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

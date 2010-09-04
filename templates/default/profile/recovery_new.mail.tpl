@@ -20,29 +20,34 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<form enctype="multipart/form-data" method="post" action="profil/skin">
-        <table>
-            <tr>
-                <th></th>
-                <th>Frequence</th>
-                <th>Nom</th>
-                <th>Description</th>
-            </tr>
-            {foreach from=$skinsList item=someskin}
-                <tr>
-                    <td>
-                        <input type="radio" name="skin" value="{$someskin.name}" 
-                            {if $skin == $someskin.name} checked {/if} />
-                    </td>
-                    <td>{$someskin.frequence}</td>
-                    <td>{$someskin.label}</td>
-                    <td>{$someskin.description}</td>
-                </tr>
-            {/foreach}
-        </table>
-        <input type="submit" value="Changer de skin" />
-    </fieldset>
-</form>
+{if $isHTML}
 
+<b>Bonjour,</b>
+<br />
+<br />
+Voici le nouveau mot de passe pour se connecter à Frankiz.
+<br />
+{$new_password}
+<br />
+N'oublie pas ensuite de le modifier au pus vite.
+<br />
+<br />
+Très cordialement,
+<br />
+Le BR.
+    
+{else}
+
+Bonjour,
+
+Voici le nouveau mot de passe pour se connecter à Frankiz.
+{$new_password}
+
+N'oublie pas ensuite de le modifier au pus vite.
+
+Très cordialement,
+Le BR.
+
+{/if}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

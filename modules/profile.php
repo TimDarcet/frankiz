@@ -23,43 +23,41 @@
 #require_once BASE_FRANKIZ."htdocs/include/session.inc.php";
 #require_once BASE_FRANKIZ."htdocs/include/transferts.inc.php";
 
-class ProfilModule extends PLModule
+class ProfileModule extends PLModule
 {
     public function handlers()
     {
-        return array('profil'                     => $this->make_hook('profil',             AUTH_COOKIE),
-                     'profil/fkz'                 => $this->make_hook('fkz',                AUTH_COOKIE),
-                     'profil/fkz/change_mdp'      => $this->make_hook('fkz_change_mdp',     AUTH_MDP),
-                     'profil/fkz/change_tol'      => $this->make_hook('fkz_change_tol',     AUTH_COOKIE),
-                     'profil/fkz/mod_binets'      => $this->make_hook('fkz_mod_binets',     AUTH_COOKIE),
-                     'profil/mdp_perdu'           => $this->make_hook('mdp_perdu',          AUTH_PUBLIC),
-                     'profil/reseau'              => $this->make_hook('reseau',             AUTH_MDP),
-                     'profil/reseau/demande_ip'   => $this->make_hook('demande_ip',         AUTH_COOKIE),
-                     'profil/skin'                => $this->make_hook('skin',               AUTH_PUBLIC),
-                     'profil/skin/change_skin'    => $this->make_hook('skin_change',        AUTH_COOKIE),
-                     'profil/skin/change_params'  => $this->make_hook('skin_params',        AUTH_COOKIE),
-                     'profil/siteweb'             => $this->make_hook('siteweb',            AUTH_MDP),
-                     'profil/siteweb/download'    => $this->make_hook('siteweb_download',   AUTH_MDP),
-                     'profil/siteweb/upload'      => $this->make_hook('siteweb_upload',     AUTH_MDP),
-                     'profil/siteweb/demande_ext' => $this->make_hook('siteweb_ext',        AUTH_MDP),
-                     'profil/rss'                 => $this->make_hook('rss',                AUTH_COOKIE),
-                     'profil/rss/update'          => $this->make_hook('rss_update',         AUTH_COOKIE),
-                     'profil/rss/add'             => $this->make_hook('rss_add',            AUTH_COOKIE),
-                     'profil/liens_perso'         => $this->make_hook('liens_perso',        AUTH_COOKIE),
-                     'profil/liens_perso/add'     => $this->make_hook('liens_perso_add',    AUTH_COOKIE),
-                     'profil/liens_perso/del'     => $this->make_hook('liens_perso_del',    AUTH_COOKIE),
-                     'profil/licences'            => $this->make_hook('licences',           AUTH_MDP),
-                     'profil/licences/cluf'       => $this->make_hook('licences_CLUF',      AUTH_MDP),
-                     'profil/licences/raison'     => $this->make_hook('licences_raison',    AUTH_MDP),
-                     'profil/licences/final'      => $this->make_hook('licences_final',     AUTH_MDP),
-                     'profil/minimodules'         => $this->make_hook('layout',             AUTH_COOKIE),
+        return array('profile'                     => $this->make_hook('profile',            AUTH_COOKIE),
+                     'profile/fkz'                 => $this->make_hook('fkz',                AUTH_COOKIE),
+                     'profile/password'            => $this->make_hook('password',           AUTH_MDP),
+                     'profile/fkz/change_tol'      => $this->make_hook('fkz_change_tol',     AUTH_COOKIE),
+                     'profile/fkz/mod_binets'      => $this->make_hook('fkz_mod_binets',     AUTH_COOKIE),
+                     'profile/recovery'            => $this->make_hook('recovery',           AUTH_PUBLIC),
+                     'profile/reseau'              => $this->make_hook('reseau',             AUTH_MDP),
+                     'profile/reseau/demande_ip'   => $this->make_hook('demande_ip',         AUTH_COOKIE),
+                     'profile/skin'                => $this->make_hook('skin',               AUTH_PUBLIC),
+                     'profile/siteweb'             => $this->make_hook('siteweb',            AUTH_MDP),
+                     'profile/siteweb/download'    => $this->make_hook('siteweb_download',   AUTH_MDP),
+                     'profile/siteweb/upload'      => $this->make_hook('siteweb_upload',     AUTH_MDP),
+                     'profile/siteweb/demande_ext' => $this->make_hook('siteweb_ext',        AUTH_MDP),
+                     'profile/rss'                 => $this->make_hook('rss',                AUTH_COOKIE),
+                     'profile/rss/update'          => $this->make_hook('rss_update',         AUTH_COOKIE),
+                     'profile/rss/add'             => $this->make_hook('rss_add',            AUTH_COOKIE),
+                     'profile/liens_perso'         => $this->make_hook('liens_perso',        AUTH_COOKIE),
+                     'profile/liens_perso/add'     => $this->make_hook('liens_perso_add',    AUTH_COOKIE),
+                     'profile/liens_perso/del'     => $this->make_hook('liens_perso_del',    AUTH_COOKIE),
+                     'profile/licences'            => $this->make_hook('licences',           AUTH_MDP),
+                     'profile/licences/cluf'       => $this->make_hook('licences_CLUF',      AUTH_MDP),
+                     'profile/licences/raison'     => $this->make_hook('licences_raison',    AUTH_MDP),
+                     'profile/licences/final'      => $this->make_hook('licences_final',     AUTH_MDP),
+                     'profile/minimodules'         => $this->make_hook('layout',             AUTH_COOKIE),
                     );
     }
 
-    public function handler_profil(&$page)
+    public function handler_profile(&$page)
     {
         $page->assign('title', "Modification des préférences");
-        $page->changeTpl('profil/index.tpl');
+        $page->changeTpl('profile/index.tpl');
     }
 
     public function handler_fkz(&$page)
@@ -113,65 +111,19 @@ class ProfilModule extends PLModule
         $page->changeTpl('profil/fkz.tpl');
     }
 
-    public function handler_fkz_change_mdp(&$page)
+    public function handler_password(&$page)
     {
-        global $DB_web;
+        $page->assign('recovery', Env::v('hash','') != '');
+        $page->assign('changed', false);
 
-        // Modification du mot de passe
-        if (empty($_POST['passwd']) && empty($_POST['passwd2']) ||
-            $_POST['passwd'] == '12345678' && $_POST['passwd2'] == '87654321')
-
+        if (Env::has('new_password'))
         {
-            // RAS.
-        }
-        else if ($_POST['passwd'] != $_POST['passwd2'])
-        {
-            $page->append("profil_fkz_results", array('type' => 'erreur',
-                                  'text' => 'Les mots de passe ne correspondent pas.'));
-        }
-        else if(strlen($_POST['passwd']) < 8)
-        {
-            $page->append("profil_fkz_results", array('type' => 'erreur',
-                                      'text' => 'Mot de passe trop court : 8 caractères minimum.'));
-        }
-        else
-        {
-            $_hash_shadow = hash_shadow($_POST['passwd']);
-            $DB_web->query("UPDATE compte_frankiz
-                               SET passwd = '$_hash_shadow'
-                     WHERE eleve_id = '{$_SESSION['uid']}");
-
-            // Synchronisation avec le wifi
-            $DB_wifi->query("UPDATE alias
-                                SET Password='$_hash_shadow'
-                      LEFT JOIN trombino.eleves as e ON(alias.Alias = e.login)
-                      WHERE e.eleve_id = '{$_SESSION['uid']}' AND Method = 'TTLS'");
-            $DB_wifi->query("UPDATE radcheck
-                                SET Value='$_hash_shadow'
-                      LEFT JOIN trombino.eleves AS e ON(radcheck.UserName = e.login)
-                      WHERE e.eleve_id = '{$_SESSION['user']->login}' AND Attribute = 'Crypt-Password'");
-
-            $page->append("profil_fkz_results", array('type' => 'commentaire',
-                                      'text' => "Le mot de passe vient d'être changé"));
+            S::user()->password(Env::v('new_password'));
+            $page->assign('changed', true);
         }
 
-        // Modification du cookie d'authentification
-        if($_POST['cookie'] == 'oui')
-        {
-            FrankizSession::activer_auth_cookie(true);
-            $page->append("profil_fkz_results",
-                          array('type' => 'commentaire',
-                        'text' => "Le cookie d'authentification a été activé"));
-        }
-        else
-        {
-            FrankizSession::activer_auth_cookie(false);
-            $page->append("profil_fkz_results",
-                      array('type' => 'commentaire',
-                            'text' => "Le cookie d'authentification a été désactivé"));
-        }
-
-        $this->handler_fkz($page);
+        $page->assign('title', 'Modification du mot de passe');
+        $page->changeTpl('profile/password.tpl');
     }
 
     public static function handler_fkz_change_tol(&$page)
@@ -358,25 +310,7 @@ class ProfilModule extends PLModule
 
         $page->assign('skinsList', $skins);
         $page->assign('title', "Modification de l'apparence de Frankiz");
-        $page->changeTpl("profil/skins.tpl");
-    }
-
-    function handler_skin_change(&$page)
-    {
-        $_SESSION['skin']->change_skin($_REQUEST['newskin']);
-        FrankizSession::save_skin();
-
-        $this->handler_skin($page);
-    }
-
-    function handler_skin_params(&$page)
-    {
-        $minimodule_list = FrankizMiniModule::get_minimodule_list();
-        foreach (array_keys($minimodule_list) as $module)
-            $_SESSION['skin']->set_minimodule_visible($module, isset($_REQUEST["vis_$module"]));
-        FrankizSession::save_skin();
-
-        $this->handler_skin($page);
+        $page->changeTpl("profile/skins.tpl");
     }
 
     function handler_reseau(&$page)
@@ -484,61 +418,60 @@ class ProfilModule extends PLModule
         }
     }
 
-    public function handler_mdp_perdu(&$page)
+    public function handler_recovery(&$page)
     {
-        global $DB_trombino, $DB_web;
+        global $globals;
 
-        $page->changeTpl('profil/mdp_perdu.tpl');
-        $page->assign('title', "Mot de passe perdu");
-        $page->assign('demande', 0);
+        $page->changeTpl('profile/recovery.tpl');
+        $page->assign('title', 'Nouveau mot de passe');
+        
+        // Step 1 : Ask the email
+        $page->assign('step', 'ask');
 
-        if (!empty($_REQUEST['loginpoly']))
+        // Step 2 : Send the recovery mail
+        if (Env::v('mail','') != '')
         {
-            list($login, $promo) = explode('.', $_REQUEST['loginpoly']);
+            // TODO: Accept forlife too
+            $uf = new UserFilter(new UFC_Bestalias(Env::v('mail')));
+            $user = $uf->getUser();
 
-            $DB_trombino->query("SELECT  eleve_id, login, prenom, nom, promo, mail
-                                   FROM  eleves
-                          WHERE  login = '$login'
-                            AND  promo = '$promo'
-                           ORDER BY  promo DESC
-                          LIMIT  1");
+            $page->assign('email', $user->bestEmail());
 
-            if ($DB_trombino->num_rows() != 1)
-            {
-                $page->trig("Ce loginpoly n'existe pas");
-                return;
-            }
+            $mail = new FrankizMailer('profile/recovery.mail.tpl');
 
-            list ($id, $login, $prenom, $nom, $promo, $email) = $DB_trombino->next_row();
-            $email="xelnor_couhain@melix.net";
-            $hash = nouveau_hash();
+            $hash = rand_url_id();
+            $user->hash($hash);
 
-            $DB_web->query("SELECT 0 FROM compte_frankiz WHERE eleve_id = '$id'");
-            if ($DB_web->num_rows() > 0)
-            {
-                $DB_web->query("UPDATE  compte_frankiz
-                               SET  hash = '$hash',
-                                hashstamp = DATE_ADD(NOW(), INTERVAL 6 HOUR)
-                             WHERE  eleve_id = '$id'");
-            }
-            else
-            {
-                $DB_web->query("INSERT INTO  compte_frankiz
-                                        SET  eleve_id = '$id',
-                                 passwd = '',
-                                 perms = '',
-                                 hash = '$hash',
-                                 hashstamp = DATE_ADD(NOW(), INTERVAL 6 HOUR)");
-            }
-
-            $mail = new PlMailer('profil/mdp_perdu.mail.tpl');
             $mail->assign('hash', $hash);
-            $mail->assign('uid', $id);
-            $mail->addTo("$email");
-            $mail->send();
+            $mail->assign('uid', $user->id());
+            $mail->SetFrom('web@frankiz.polytechnique.fr', 'Les Webmestres de Frankiz');
+            $mail->AddAddress($user->bestEmail(), $user->displayName());
 
-            $page->assign('email', $email);
-            $page->assign('demande', 1);
+            $mail->Send($user->isEmailFormatHtml());
+
+            $page->assign('step', 'mail');
+        }
+
+        // Step 2 : Send a new password
+        if (Env::v('hash','') != '' && Env::v('uid','') != '')
+        {
+            $user = new User(Env::v('uid'));
+            if (Env::v('hash') == $user->hash())
+            {
+                // TODO: log the session opening
+                $mail = new FrankizMailer('profile/recovery_new.mail.tpl');
+                $new = rand_url_id();
+                $user->hash('');
+                $user->password($new);
+                $mail->assign('new_password', $new);
+                $mail->SetFrom('web@frankiz.polytechnique.fr', 'Les Webmestres de Frankiz');
+                $mail->AddAddress($user->bestEmail(), $user->displayName());
+    
+                $mail->Send($user->isEmailFormatHtml());
+                $page->assign('step', 'password');
+            } else {
+                $page->assign('step', 'expired');
+            }
         }
     }
 
@@ -893,8 +826,8 @@ class ProfilModule extends PLModule
 
         $page->assign('title', 'Gestion des minimodules');
         $page->assign('liste_minimodules', $liste_minimodules);
-        $page->addCssLink('profil.css');
-        $page->changeTpl('profil/minimodules.tpl');
+        $page->addCssLink('profile.css');
+        $page->changeTpl('profile/minimodules.tpl');
     }
 
 }
