@@ -52,6 +52,9 @@ class User extends PlUser
     // Array of the Gids and the rights associated
     protected $gids = null;
 
+    // Contains the hash sent by mail to recover the password
+    protected $hash = null;
+
     /**
      * Constructs the User object
      *
@@ -125,12 +128,13 @@ class User extends PlUser
             && $this->full_name !== null && $this->gender !== null
             && $this->on_platal !== null && $this->email_format !== null
             && $this->perms !== null && $this->bestalias !== null
-            && $this->skin !== null && $this->state !== null) {
+            && $this->skin !== null && $this->state !== null
+            && $this->hash !== null) {
             return;
         }
 
         global $globals;
-        $res = XDB::query("SELECT  a.hruid, a.perms, sk.name AS skin, a.state,
+        $res = XDB::query("SELECT  a.hruid, a.perms, sk.name AS skin, a.state, a.hash,
                                    CONCAT(a.firstname, ' ', a.lastname) AS full_name,
                                    a.gender, a.on_platal, a.email_format, a.bestalias,
                                    IF(a.nickname = '', a.firstname, a.nickname) AS display_name
@@ -158,7 +162,7 @@ class User extends PlUser
 
         if (count($UIDs) > 0)
         {
-            $iter = XDB::iterator("SELECT   a.hruid, a.perms, sk.name AS skin, a.state,
+            $iter = XDB::iterator("SELECT  a.uid, a.hruid, a.perms, sk.name AS skin, a.state, a.hash,
                                            CONCAT(a.firstname, ' ', a.lastname) AS full_name,
                                            a.gender, a.on_platal, a.email_format, a.bestalias,
                                            IF(a.nickname = '', a.firstname, a.nickname) AS display_name
@@ -185,23 +189,26 @@ class User extends PlUser
         $this->perm_flags = self::makePerms($this->perms);
     }
 
-    // Return the password of the user
-    public function password()
+    /**
+    * Returns the password of the User
+    * If you specify an argument, it will update the User's password
+    *
+    * @param $password password to be hashed and put in the database
+    */
+    public function password($password = null)
     {
-        return XDB::fetchOneCell('SELECT  a.password
-                                    FROM  account AS a
-                                   WHERE  a.uid = {?}', $this->id());
-    }
-
-    public function setPassword($password)
-    {
-        XDB::execute('UPDATE account SET password = {?} WHERE uid = {?}',
-                     hash_encrypt($password), $this->id());
+        if ($password != null)
+        {
+            $this->password = hash_encrypt($password);
+            XDB::execute('UPDATE account SET password = {?} WHERE uid = {?}',
+                                                 $this->password, $this->id());
+        }
+        return XDB::fetchOneCell('SELECT  password FROM  account WHERE  uid = {?}', $this->id());
     }
 
     /**
     * Returns the skin name of the User
-    * If you specify an argument, it will update the User skin
+    * If you specify an argument, it will update the User's skin
     *
     * @param $skin name of the skin to associate with the User
     */
@@ -218,6 +225,21 @@ class User extends PlUser
             XDB::execute('UPDATE account SET skin = {?} WHERE uid = {?}', $this->skin, $this->id());
         }
         return $this->skin;
+    }
+
+    /**
+    * Returns the hash sent by password to recover the password
+    * If you specify an argument, it will update the hash
+    *
+    * @param $hash
+    */
+    public function hash($hash = null)
+    {
+        if ($hash != null) {
+            $this->hash = $hash;
+            XDB::execute('UPDATE account SET hash = {?} WHERE uid = {?}', $this->hash, $this->id());
+        }
+        return $this->hash;
     }
 
     public function groups(PlFlagSet $rights)
