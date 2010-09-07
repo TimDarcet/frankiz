@@ -35,9 +35,6 @@ function groups_picker(id, data, check)
     	flat.hide();
     }
 
-    // Where to load the skin from ?
-    $.jstree._themes = platal_baseurl + "css/" + skin + "/";
-
     // We build the tree
     tree.jstree({
     	"core" : {
@@ -104,9 +101,6 @@ function groups_modifier(id, data)
 {
 	// Principal blocks
 	var tree = $("#" + id);
-
-    // Where to load the skin from ?
-    $.jstree._themes = platal_baseurl + "css/" + skin + "/";
 
     // We build the tree
     tree.jstree({
