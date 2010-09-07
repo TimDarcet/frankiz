@@ -154,18 +154,6 @@
     background-color: #7599AB;
 }
 
-#minimodule_todo input  {
-    font-weight: bold;
-    border: 1px solid #002334;
-    color: white;
-    background-color: #002334;
-}
-
-#minimodule_todo input:hover  {
-    color: #002334;
-    background-color: #FFBA00;
-}
-
 #minimodule_todo span.clear  {
     display: block;
     background: url(../default/images/todo_trash.png) no-repeat top left;

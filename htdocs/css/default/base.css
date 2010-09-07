@@ -17,6 +17,15 @@
  *  Foundation, Inc.,                                                      *
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
+ 
+/*******************************************************************************
+Colors description:
+
+background : #BDD5E3
+border     : #002334
+color      : #003757
+*******************************************************************************/
+ 
 
 /*******************************************************************************
      0   Styles par défauts
@@ -105,9 +114,11 @@ a:hover, a:active {
     top: 0;
     left: 0;
     width: 100%;
+    height: 134px;
     padding: 0;
     margin: 0;
     font-size: 1em;
+    overflow: hidden;
 }
 
 #nav table, #nav tbody, #nav tr, #nav td {
@@ -127,7 +138,7 @@ a:hover, a:active {
     font-size: 21px;
     font-variant: small-caps;
     border-collapse: collapse;
-    border: 1px #003757 solid;
+    border: 1px #002334 solid;
     border-bottom: none;
 }
 
@@ -149,7 +160,7 @@ a:hover, a:active {
 
 #nav .subnav {
     position: absolute;
-    top: 35px;
+    top: 34px;
     left: 0;
     width: 100%;
     height: 90px;
@@ -237,7 +248,8 @@ a:hover, a:active {
     position: relative;
     padding: 10px;
     border: 0;
-    margin-left: 12px;
+    padding-left: 12px;
+    background-color: white;
 }
 
 body.enabledAside #content {
@@ -357,7 +369,7 @@ body.disabledAside > #aside {
 *******************************************************************************/
 
 fieldset {
-    background-color: #CAD7DC;
+    background-color: #BDD5E3;
     border: 1px #003757 solid;
 }
 
@@ -372,27 +384,26 @@ form {
     margin: 0;
 }
 
-input {
+input, .groups_picker > ul {
     font-weight: bold;
-    border: 1px solid #003757;
+    border: 1px solid #002334;
     color: white;
     background-color: #003757;
 }
 
-input:hover {
+.groups_picker > ul {
+    font-weight: normal;
+}
+
+input:hover, .groups_picker > ul:hover {
     color: #003757;
     background-color: #FFBA00;
+    border: 1px solid #FFBA00;
 }
 
-input:focus {
+input:focus, .groups_picker > ul:focus {
     color: white;
-    border: 2px #D7B66E solid;
-    background-color: #003757;
-}
-
-input:active {
-    color: white;
-    border: 2px #D7B66E solid;
+    border: 1px #FFBA00 solid;
     background-color: #003757;
 }
 
@@ -420,31 +431,33 @@ input:active {
 
 *******************************************************************************/
 
+.login {
+	text-align: center;
+}
+
+.login fieldset {
+	margin-left: 20%;
+    width: 60%;	
+}
+
 .login table {
-    width: 55%;
+	display: inline-block;
+	text-align: left;
     margin-top: 15px;
     border-collapse: separate;
 }
 
 .login .remember {
-	display: block;
-    margin-top: 10px;
-    margin-left: 25px;
-    margin-bottom: 0;
+	text-align: left;
 }
 
-.login div.send {
-	position: relative;
-	width: 50%;
+.login .send {
 	text-align: right;
-	padding-right: 50px;
-}
-
-.login div.send input {
-    margin-right: 135px;
+	padding-right: 20px;
 }
 
 .login .forgot {
+	text-align: right;
 	margin-top: 25px;
 	padding-top: 25px;
     border-top: 1px solid #003757;

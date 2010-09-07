@@ -20,61 +20,66 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if $referer || $platal->pl_self() neq 'login'}
-<p>
-    La page que tu as demandée (<strong>{if $referer}{$smarty.server.HTTP_REFERER}{else}{$globals->baseurl}/{$platal->pl_self()}{/if}</strong>) nécessite une authentification.
-</p>
-{/if}
+<div class="login">
 
-<form class="login" enctype='multipart/form-data' method='post' action='{$smarty.server.REQUEST_URI}'>
-{xsrf_token_field}
-    <fieldset>
-        <legend>Connexion</legend>
-        <table>
-            <tr>
-                <td><label for="username">Identifiant:</label></td>
-                <td>
-                    <input type="text" name="username" value="{get_forlife_from_cookie}" />
-                    &nbsp;@&nbsp;
-                    <select name="domain">
-                        {select_domains}
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="password">Mot de passe:</label></td>
-                <td>
-                    <input type="password" name="password" value="" />
-                </td>
-            </tr>
-        </table>
+    {if $platal->pl_self() != 'login'}
+    <p>
+        La page que tu as demandée (<strong>{$globals->baseurl}/{$platal->pl_self()}</strong>) nécessite une authentification.
+    </p>
+    {/if}
 
-        <label class="remember">
-            <input type="checkbox" {if $casertConnected}checked="checked"{/if} name="remember" id="remember" />
-            Se souvenir de moi (Cookie)
-        </label>
-                    
-        <div class="send">
-            <input type="submit" name="start_connexion" value="Connexion" />
-        </div>
+    <form enctype="multipart/form-data" method="post" action="{$smarty.server.REQUEST_URI}">
+    {xsrf_token_field}
+        <fieldset>
+            <table>
+                <tr>
+                    <td><label for="username">Identifiant:</label></td>
+                    <td>
+                        <input type="text" name="username" value="{get_forlife_from_cookie}" />
+                        &nbsp;@&nbsp;
+                        <select name="domain">
+                            {select_domains}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="password">Mot de passe:</label></td>
+                    <td>
+                        <input type="password" name="password" value="" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="remember">
+                        <input type="checkbox" {if $casertConnected}checked="checked"{/if} name="remember" id="remember" />
+                Se souvenir de moi (Cookie)
+                    </td>
+                </tr>
+               <tr>
+                    <td colspan="2" class="send">
+                        <input type="submit" name="start_connexion" value="Connexion" />
+                    </td>
+                </tr>
+            </table>
 
-        <p class="forgot">
-          Si tu as oublié ton mot de passe ou que tu n'as pas encore de compte, <a href="profil/mdp_perdu">clique ici</a>.
-        </p>
-    </fieldset>
-</form>
+            <p class="forgot">
+              Si tu as oublié ton mot de passe ou que tu n'as pas encore de compte, <a href="profile/recovery">clique ici</a>.
+            </p>
+        </fieldset>
+    </form>
 
-{literal}
-<script type="text/javascript">
-  <!--
-  // Activate the appropriate input form field.
-  if ($("form.login input[name='username']").val() == '') {
-    $("form.login input[name='username']").focus();
-  } else {
-    $("form.login input[name='password']").focus();
-  }
-  // -->
-</script>
-{/literal}
+    {literal}
+    <script type="text/javascript">
+      <!--
+      // Activate the appropriate input form field.
+      if ($("form.login input[name='username']").val() == '') {
+        $("form.login input[name='username']").focus();
+      } else {
+        $("form.login input[name='password']").focus();
+      }
+      // -->
+    </script>
+    {/literal}
+
+</div>
 
 {* vim:set et sw=4 sts=4 sws=4 enc=utf-8: *}

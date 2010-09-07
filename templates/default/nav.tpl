@@ -36,7 +36,7 @@
     </td>
 
     <td>
-        <a {path_to_href_attribute path="profil"} accesskey="c">Compte</a>
+        <a {path_to_href_attribute path="profile"} accesskey="c">Compte</a>
         <div id="subnav_account" class="subnav subnavwithoutjs" style="font-size: 26px;">
             <div class="bkg" />
             <div class="body">
@@ -54,10 +54,10 @@
                 <table>
                     <tr>
                         {if $smarty.session.auth >= AUTH_COOKIE }
-                            <td><a {path_to_href_attribute path="profil/fkz"}>Profil</a></td>
-                            <td><a {path_to_href_attribute path="profil/minimodules"}>Minimodules</a></td>
+                            <td><a {path_to_href_attribute path="profile/fkz"}>Profil</a></td>
+                            <td><a {path_to_href_attribute path="profile/minimodules"}>Minimodules</a></td>
                         {/if}
-                        <td><a {path_to_href_attribute path="profil/skin"}>Skin</a></td>
+                        <td><a {path_to_href_attribute path="profile/skin"}>Skin</a></td>
                     </tr>
                 </table>
             </div>
@@ -108,7 +108,17 @@
     <td><a href="xshare.php" accesskey="x">Télécharger</a></td>
     <td><a href="http://wikix.polytechnique.org" accesskey="w">WikiX</a></td>
     {if hasPerm('admin') }
-        <td><a {path_to_href_attribute path="gestion"} accesskey="g">Administration</a></td>
+        <td>
+            <a {path_to_href_attribute path="admin"} accesskey="g">Administration</a>
+            <div class="subnav subnavwithoutjs">
+                <div class="bkg" />
+                <table class="body">
+                    <tr>
+                        <td><a {path_to_href_attribute path="admin/tree"}>Arborescence</a></td>
+                    </tr>
+                </table>
+            </div>
+        </td>
     {/if}
 </tr>
 </tbody></table>

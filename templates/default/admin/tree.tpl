@@ -20,15 +20,8 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if $tree}
-<ul>
-{foreach from=$tree key="gid" item="subtree"}
-    <li>
-        {$GroupFactory[$gid]->name()} ({$gid})
-        {include file="admin/tree.tpl"|rel tree=$subtree}
-    </li>
-{/foreach}
-</ul>
-{/if}
+Toute l'arborescence
+
+{include file="groups_modifier.tpl"|rel id="groups_modifier" visibility=2}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
