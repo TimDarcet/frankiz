@@ -50,7 +50,9 @@
                 foreach (Group::groups() as $key => $g)
                 {
                     if (Group::isGid($key)) {
-                        echo $g->name().'('.$key.') ';
+                        echo '<div>';
+                        echo $key . ': ' . $g->name() . ' &nbsp;[ ' . $g->L() . ' ' . $g->R() . ' ]';
+                        echo '</div>';
                     }
                 }
             {/php}
@@ -75,7 +77,7 @@
             if (class_exists('Debug')) {
                 $debugs = Debug::$postflush;
                 foreach ($debugs as $debug) {
-                    $id = uniqid;
+                    $id = uniqid();
                     echo '<pre onclick="$(\'#'. $id . '\').toggle()" >' . $debug['var'] . '</pre>';
                     echo '<pre id="' . $id . '" style="display:none">' . $debug['trace'] . '</pre>';
                     echo '<br />';

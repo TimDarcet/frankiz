@@ -20,7 +20,7 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Frankiz : {$title}</title>
 <base href="{$globals->baseurl}/" />
 
@@ -34,23 +34,24 @@
 <link rel="shortcut icon" href="favicon.ico" />
 <link rel="search" type="application/opensearchdescription+xml" href="opensearch.xml.php" title="Trombino" />
 
+<script type="text/javascript">
+    var logged = {if $smarty.session.auth >= AUTH_COOKIE}true{else}false{/if};
+</script>
+
 <script type="text/javascript" src="javascript/3.0.0beta/jquery.js"></script>
 <script type="text/javascript" src="javascript/3.0.0beta/jquery-ui.js"></script>
 <script type="text/javascript" src="javascript/3.0.0beta/json2.js"></script>
 <script type="text/javascript" src="javascript/3.0.0beta/common.js"></script>
 <script type="text/javascript" src="javascript/3.0.0beta/minimodules.js"></script>
+<script type="text/javascript" src="javascript/3.0.0beta/groups.js"></script>
 
-<script type="text/javascript" src="javascript/3.0.0beta/jquery.tree.js"></script>
-<script type="text/javascript" src="javascript/3.0.0beta/plugins/jquery.tree.checkbox.js"></script>
-<script type="text/javascript" src="javascript/3.0.0beta/plugins/jquery.tree.contextmenu.js"></script>
-<script type="text/javascript" src="javascript/3.0.0beta/plugins/jquery.tree.themeroller.js"></script>
-        
+<script type="text/javascript" src="javascript/3.0.0beta/jquery.jstree.js"></script>
+
 <script type="text/javascript">
-    var logged = {if $smarty.session.auth >= AUTH_COOKIE}true{else}false{/if};
+    var skin = "{$skin}";
     {foreach from=$minimodules_js key=name item=js}
         minimodulesJs['{$name}'] = "{$js}";
     {/foreach}
-    var nav_layout = {$nav_layout|smarty:nodefaults};
 </script>
 
 {include file='../core/templates/plpage.header.tpl'}
