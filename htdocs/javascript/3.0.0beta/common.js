@@ -2,12 +2,6 @@ $(document).ready(function(){
     $.ajaxSetup({ cache: false });
 });
 
-function showError(message)
-{
-    $('#errorBox').html(message);
-    $('#errorBox').dialog('open');
-}
-
 function trueFormReset(target)
 {
 	$.each($(target).find("input[type=text]"), function(index, value) {
