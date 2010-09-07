@@ -23,14 +23,14 @@ class Group
 {
     const maxDepth = 666;
 
-    protected $gid;
-    protected $type;
+    protected $gid = null;
+    protected $type = null;
     protected $L;
     protected $R;
     protected $depth;
-    protected $name;
-    protected $label;
-    protected $description;
+    protected $name = null;
+    protected $label = null;
+    protected $description = null;
     protected $children = array();
     protected $partialChildren =  array();
     protected $father = null;
@@ -43,12 +43,15 @@ class Group
     public function __construct($raw)
     {
         $this->fillFromArray($raw);
+        if ($this->label == null) $this->label = 'No Name';
+        if ($this->type == null) $this->type = 'open';
+        if ($this->description == null) $this->description = '';
     }
 
     protected function fillFromArray(array $values)
     {
         foreach ($values as $key => $value) {
-            if (property_exists($this, $key) && !isset($this->$key)) {
+            if (property_exists($this, $key)) {
                 $this->$key = $value;
             }
         }
@@ -84,8 +87,13 @@ class Group
         return $this->name;
     }
 
-    public function label()
+    public function label($label = null)
     {
+        if ($label != null)
+        {
+            $this->label = $label;
+            XDB::execute('UPDATE groups SET label = {?} WHERE gid = {?}', $this->label, $this->gid);
+        }
         return $this->label;
     }
 
@@ -104,9 +112,9 @@ class Group
         $indexedByL = self::indexedByL($this->children);
         $L = $this->L() + 1;
         while (isset($indexedByL[$L])) {
-            $L = $indexedByL[$L]->R() + 1;
             if ($depth > 1 && !$indexedByL[$L]->childrenLoaded($depth - 1))
                 return false;
+            $L = $indexedByL[$L]->R() + 1;
         }
         return $L == $this->R();
     }
@@ -142,39 +150,123 @@ class Group
         }
     }
 
-    // TODO: all the parameters don't work for the time being
     public function addTo($parent)
     {
+        if ($this->gid != null)
+            throw new Exception('This group already exists');
+
         $parent = self::get($parent);
 
         XDB::execute('LOCK TABLES groups WRITE');
 
         $parent->refresh();
 
-        $this->L = $parent->R();
+        $this->L = $parent->R;
         $this->R = $this->L + 1;
-        $this->depth = $parent->depth() + 1;
+        $this->depth = $parent->depth + 1;
 
         XDB::execute('UPDATE  groups
                          SET  R = R + 2
-                       WHERE  R >= {?}', $parent->R());
+                       WHERE  R >= {?}', $parent->R);
 
         XDB::execute('UPDATE  groups
                          SET  L = L + 2
-                       WHERE  L >= {?}', $parent->R());
+                       WHERE  L >= {?}', $parent->R);
 
         XDB::execute('INSERT INTO  groups
-                              SET  type = {?}, L = {?}, R = {?}, depth = {?}
+                              SET  type = {?}, L = {?}, R = {?}, depth = {?},
                                    name = {?}, label = {?}, description = {?}',
-                                $this->type(), $this->L, $this->R, $this->depth,
-                                $this->name(), $this->label(), $this->description());
-
-        $gid = XDB::insertId();
+                                $this->type, $this->L, $this->R, $this->depth,
+                                $this->name, $this->label, $this->description);
+        $this->gid = XDB::insertId();
 
         XDB::execute('UNLOCK TABLES');
 
-        self::$groups[$this->gid()]  = $this;
-        self::$groups[$this->name()] = $this;
+        $this->feed();
+        $this->buildLinks(array($parent));
+    }
+
+    protected function shift($delta, $depth)
+    {
+        $depth++;
+        $this->L     += $delta;
+        $this->R     += $delta;
+        $this->depth  = $depth;
+        foreach ($children as $child)
+            $child->shift($delta, $depth);
+    }
+
+    public function moveTo($parent)
+    {
+        $parent = self::get($parent);
+
+        // Check if the move is possible
+        if ($this->gid() == Group::root()->gid() ||
+            ($parent->L >= $this->L && $parent->R <= $this->R) ||
+            $this->isChildOf($parent) )
+            throw new Exception('This move is unpossible');
+
+        XDB::execute('LOCK TABLES groups WRITE');
+
+        self::batchRefresh(array($this, $parent));
+        $delta = $this->R - $this->L;
+
+        $min = min($this->R, $parent->L);
+        $max = max($this->R, $parent->L);
+
+        $signe = ($min == $this->R) ? -1 : 1;
+        $signeSQL = ($signe == -1) ? '-' : '+';
+        if ($signe == 1) {
+            $shift = $parent->L - $this->L + 1;
+        } else {
+            $shift = $parent->L - $this->R;
+        }
+
+        // 1. We move the subtree away on the left
+        $init_shift = $this->R + 1000;
+        XDB::execute('UPDATE  groups
+                         SET  R = R - {?}, L = L - {?}
+                       WHERE  L >= {?} AND R <= {?}', 
+                    $init_shift, $init_shift, $this->L, $this->R);
+
+        // 2. We shit the L and R to the left
+        XDB::execute('UPDATE  groups
+                         SET  L = L '.$signeSQL.' {?}
+                       WHERE  L > {?} AND L <= {?}', $delta + 1, $min, $max);
+        XDB::execute('UPDATE  groups
+                         SET  R = R '.$signeSQL.' {?}
+                       WHERE  R > {?} AND R < {?}', $delta + 1, $min, $max);
+
+        // 3. We move the subtree to its spot
+        $end_shift = $init_shift + $shift;
+        XDB::execute('UPDATE  groups
+                         SET  R = R + {?}, L = L + {?}, depth = depth + {?}
+                       WHERE  L >= {?} AND R <= {?}', 
+                        $end_shift, $end_shift, $parent->depth - $this->depth + 1,
+                        $this->L - $init_shift, $this->R - $init_shift);
+
+        XDB::execute('UNLOCK TABLES');
+
+        // Update the local datas
+        foreach (self::$groups as $g) {
+            if ($g->L < $this->L || $g->R > $this->R) {
+                if ($max >= $g->L && $g->L > $min)
+                    $g->L += $signe * ($delta + 1);
+                if ($max > $g->R && $g->R > $min)
+                    $g->R += $signe * ($delta + 1);
+            }
+        }
+
+        $this->shift($shift, $parent->depth);
+
+        // Destroy the links
+        if ($this->fathersLoaded(1)) {
+            unset($this->father->children[$this->gid]);
+            $this->father = null;
+        }
+
+        // Build the new ones
+        $this->buildLinks(array($parent));
     }
 
     /**
@@ -216,13 +308,9 @@ class Group
     /**
     * Refresh the datas of the Group
     */
-    // TODO: handle parameters specifying the asked datas 
     public function refresh()
     {
-        $res = XDB::query('SELECT  gid, type, L, R, depth, name, label
-                             FROM  groups
-                            WHERE  gid = {?}', $this->gid());
-        $this->fillFromArray($res->fetchOneAssoc());
+        self::batchRefresh($this);
     }
 
     public function remove()
@@ -230,36 +318,67 @@ class Group
         XDB::execute('LOCK TABLES groups WRITE');
 
         $this->refresh();
+        $delta = $this->R - $this->L + 1;
 
         XDB::execute('DELETE FROM  groups
-                            WHERE  gid = {?}', $this->gid);
+                            WHERE  L >= {?} AND R <= {?}', $this->L, $this->R);
 
         XDB::execute('UPDATE  groups
-                         SET  L = L - 2
-                       WHERE  L >= {?}', $this->L);
+                         SET  L = L - {?}
+                       WHERE  L >= {?}', $delta, $this->L);
 
         XDB::execute('UPDATE  groups
-                         SET  R = R - 2
-                       WHERE  R >= {?}', $this->L);
+                         SET  R = R - {?}
+                       WHERE  R >= {?}', $delta, $this->L);
 
         XDB::execute('UNLOCK TABLES');
 
-        self::$groups[$this->gid()]  = null;
-        self::$groups[$this->name()] = null;
+        // Destroy the links
+        if ($this->fathersLoaded(1)) {
+            unset($this->father->children[$this->gid]);
+            $this->father = null;
+        }
+
+        $this->unfeed();
     }
 
-    // TODO: handle parameters specifying the asked datas
-    public function toJson()
+    public function toJson($depth = 0, $visiblity = 0, $ptid = null)
     {
-        return array( "gid"   => $this->gid(),
-                      "name"  => $this->name(),
-                      "label" => $this->label() );
+        $json = array("data"  => array(
+                                        "title" => $this->label()
+                                      ),
+                      "attr"  => array(
+                                        "gid"   => $this->gid(),
+                                        "name"  => $this->name(),
+                                        "title" => $this->name(),
+                                        "label" => $this->label()
+                                      )
+                       );
+
+        if ($this->hasChildren())
+        {
+            $json['state'] = ($visiblity > 0) ? "open" : "closed";
+            if ($depth > 0) {
+                $json['children'] = array();
+                $children = $this->partialChildren($ptid);
+                foreach($children as $child)
+                    $json['children'][] = $child->toJson($depth - 1, $visiblity - 1, $ptid);
+            }
+        }
+
+        return $json;
     }
 
-    protected static function feed($group)
+    protected function feed()
     {
-        self::$groups[$group->gid()]       = $group;
-        self::$nameToGroup[$group->name()] = $group;
+        self::$groups[$this->gid()]       = $this;
+        self::$nameToGroup[$this->name()] = $this;
+    }
+
+    protected function unfeed()
+    {
+        unset(self::$groups[$this->gid()]);
+        unset(self::$nameToGroup[$this->name()]);
     }
 
     public static function groupsToGids($gs)
@@ -321,7 +440,12 @@ class Group
         return ($this->L() > $g->L()) && ($this->R() < $g->R()) && ($this->depth() == $g->depth() + 1);
     }
 
-    protected static function _load($gidsToBeFetched, $namesToBeFetched)
+    protected function hasChildren()
+    {
+        return ($this->L() + 1 != $this->R());
+    }
+
+    protected static function _load($gidsToBeFetched, $namesToBeFetched, $create = true)
     {
         $loaded = array();
         if (count($gidsToBeFetched) > 0 || count($namesToBeFetched) > 0)
@@ -341,8 +465,14 @@ class Group
                                             $gidsToBeFetched, $namesToBeFetched);
 
             while ($array_group = $iter->next()) {
-                $group = new Group($array_group);
-                self::feed($group);
+                if ($create) {
+                    $group = new Group($array_group);
+                } else {
+                    $group = self::$groups[$array_group['gid']];
+                    $group->unfeed();
+                    $group->fillFromArray($array_group);
+                }
+                $group->feed();
                 $loaded[$group->gid()] = $group;
             }
 
@@ -418,6 +548,11 @@ class Group
             return $g;
     }
 
+    public static function batchRefresh($gs)
+    {
+        self::_load(self::groupsToGids(self::unflatten($gs)), array(), false);
+    }
+
     /**
     * Returns the gids of the children within a certain depth
     * Careful : results are *not* cached
@@ -427,7 +562,7 @@ class Group
     */
     public static function batchChildrenGids($gs, $depth = 1)
     {
-        $gs = self::unflatten(self::get($gs));
+        $gs = self::unflatten($gs);
         if (count($gs) > 0) {
             $res = XDB::query('SELECT  g.gid
                                  FROM  groups AS g
@@ -501,32 +636,31 @@ class Group
         self::get(self::batchFathersGids(self::groupsToGids($gs), $depth));
     }
 
-    protected function _ascendingPartialTree($ptid, $depth)
+    protected function _ascendingPartialTree($ptid)
     {
-        if ($depth == 0 || $this->gid() == self::root()->gid()) {
+        if ($this->gid() == self::root()->gid()) {
             self::$partialTreesRoots[$ptid][$this->gid()] = $this;
         } else {
             $this->father()->partialChildren[$ptid][$this->gid()] = $this;
-            $this->father()->_ascendingPartialTree($ptid, $depth - 1);
+            $this->father()->_ascendingPartialTree($ptid);
         }
     }
 
     public static function partialTreeRoots($ptid)
     {
-        echo 'plop';
         return self::$partialTreesRoots[$ptid];
     }
 
-    public static function ascendingPartialTree($gs, $depth)
+    public static function ascendingPartialTree($gs)
     {
         $gs = self::unflatten(self::get($gs));
-        self::batchFathers($gs, $depth);
+        self::batchFathers($gs, self::maxDepth);
 
         $ptid = uniqid();
         self::$partialTreesRoots[$ptid] = array();
 
         foreach ($gs as $g)
-            $g->_ascendingPartialTree($ptid, $depth);
+            $g->_ascendingPartialTree($ptid);
 
         return $ptid;
     }
