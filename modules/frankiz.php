@@ -34,14 +34,14 @@ class FrankizModule extends PlModule
         );
     }
 
-    function handler_accueil(&$page)
+    function handler_accueil($page)
     {
         FrankizMiniModule::preload(array(FrankizMiniModule::MAIN_LEFT, FrankizMiniModule::MAIN_MIDDLE, FrankizMiniModule::MAIN_RIGHT));
         $page->assign('title', 'Accueil');
         $page->changeTpl('frankiz/accueil.tpl');
     }
 
-    function handler_exit(&$page, $level = null)
+    function handler_exit($page, $level = null)
     {
         global $globals;
 
@@ -55,7 +55,7 @@ class FrankizModule extends PlModule
         $page->changeTpl('exit.tpl');
     }
 
-    function handler_ajax_minimodules_layout(&$page)
+    function handler_ajax_minimodules_layout($page)
     {
         $json = json_decode(Env::v('json'));
 
@@ -83,7 +83,7 @@ class FrankizModule extends PlModule
         }
     }
 
-    function handler_ajax_minimodules_add(&$page)
+    function handler_ajax_minimodules_add($page)
     {
         $json = json_decode(Env::v('json'));
 
@@ -110,7 +110,7 @@ class FrankizModule extends PlModule
         }
     }
 
-    function handler_ajax_minimodules_remove(&$page)
+    function handler_ajax_minimodules_remove($page)
     {
         $json = json_decode(Env::v('json'));
 
@@ -136,7 +136,7 @@ class FrankizModule extends PlModule
         }
     }
 
-    function handler_ajax_minimodules_get(&$page)
+    function handler_ajax_minimodules_get($page)
     {
         $json = json_decode(Env::v('json'));
         $name = $json->{'name'};

@@ -31,13 +31,13 @@ class QDJModule extends PLModule
         );
     }
 
-    public function handler_qdj(&$page)
+    public function handler_qdj($page)
     {
         $page->assign('title', "Classement QDJ");
         $page->changeTpl('qdj/qdj.tpl');
     }
 
-    public function handler_ajax_get(&$page)
+    public function handler_ajax_get($page)
     {
         $json = json_decode(Env::v('json'));
 
@@ -76,7 +76,7 @@ class QDJModule extends PLModule
         $page->jsonAssign('qdj', $array_qdj);
     }
 
-    public function handler_ajax_vote(&$page)
+    public function handler_ajax_vote($page)
     {
         $json = json_decode(Env::v('json'));
 
