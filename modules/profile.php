@@ -54,13 +54,13 @@ class ProfileModule extends PLModule
                     );
     }
 
-    public function handler_profile(&$page)
+    public function handler_profile($page)
     {
         $page->assign('title', "Modification des préférences");
         $page->changeTpl('profile/index.tpl');
     }
 
-    public function handler_fkz(&$page)
+    public function handler_fkz($page)
     {
         global $DB_trombino;
 
@@ -111,7 +111,7 @@ class ProfileModule extends PLModule
         $page->changeTpl('profil/fkz.tpl');
     }
 
-    public function handler_password(&$page)
+    public function handler_password($page)
     {
         $page->assign('recovery', Env::v('hash','') != '');
         $page->assign('changed', false);
@@ -126,7 +126,7 @@ class ProfileModule extends PLModule
         $page->changeTpl('profile/password.tpl');
     }
 
-    public static function handler_fkz_change_tol(&$page)
+    public static function handler_fkz_change_tol($page)
     {
         global $DB_trombino;
 
@@ -209,19 +209,19 @@ class ProfileModule extends PLModule
         $this->handler_fkz($page);
     }
 
-    public function handler_fkz_mod_binets(&$page)
+    public function handler_fkz_mod_binets($page)
     {
         if (isset($_POST['mod_binet']))
-            $this->handler_fkz_change_binet(&$page);
+            $this->handler_fkz_change_binet($page);
         if (isset($_POST['suppr_binet']))
-            $this->handler_fkz_suppr_binet(&$page);
+            $this->handler_fkz_suppr_binet($page);
         if (isset($_POST['add_binet']))
-            $this->handler_fkz_ajout_binet(&$page);
+            $this->handler_fkz_ajout_binet($page);
 
-        $this->handler_fkz(&$page);
+        $this->handler_fkz($page);
     }
 
-    private function handler_fkz_change_binet(&$page)
+    private function handler_fkz_change_binet($page)
     {
         global $DB_trombino;
 
@@ -241,7 +241,7 @@ class ProfileModule extends PLModule
 
     }
 
-    private function handler_fkz_suppr_binet(&$page)
+    private function handler_fkz_suppr_binet($page)
     {
         global $DB_trombino;
 
@@ -272,7 +272,7 @@ class ProfileModule extends PLModule
         }
     }
 
-    private function handler_fkz_ajout_binet(&$page)
+    private function handler_fkz_ajout_binet($page)
     {
         global $DB_trombino;
 
@@ -292,7 +292,7 @@ class ProfileModule extends PLModule
         }
     }
 
-    function handler_skin(&$page)
+    function handler_skin($page)
     {
         if (Env::v('skin', '') != '')
         {
@@ -313,7 +313,7 @@ class ProfileModule extends PLModule
         $page->changeTpl("profile/skins.tpl");
     }
 
-    function handler_reseau(&$page)
+    function handler_reseau($page)
     {
         global $DB_admin, $DB_trombino, $DB_xnet;
 
@@ -375,7 +375,7 @@ class ProfileModule extends PLModule
         }
     }
 
-    public function handler_demande_ip(&$page)
+    public function handler_demande_ip($page)
     {
         global $DB_valid;
 
@@ -418,7 +418,7 @@ class ProfileModule extends PLModule
         }
     }
 
-    public function handler_recovery(&$page)
+    public function handler_recovery($page)
     {
         global $globals;
 
@@ -475,13 +475,13 @@ class ProfileModule extends PLModule
         }
     }
 
-    public function handler_siteweb(&$page)
+    public function handler_siteweb($page)
     {
         $page->changeTpl('profil/siteweb.tpl');
         $page->assign('title', "Gestion du site web personnel");
     }
 
-    public function handler_siteweb_upload(&$page)
+    public function handler_siteweb_upload($page)
     {
         $page->changeTpl('profil/siteweb.tpl');
         $page->assign('title', 'Upload de site web');
@@ -501,7 +501,7 @@ class ProfileModule extends PLModule
         $page->assign('siteweb_updated', 1);
     }
 
-    public function handler_siteweb_download(&$page)
+    public function handler_siteweb_download($page)
     {
         global $platal, $globals;
 
@@ -520,7 +520,7 @@ class ProfileModule extends PLModule
         $page->assign('title', "Echec du téléchargement");
     }
 
-    public function handler_siteweb_ext(&$page)
+    public function handler_siteweb_ext($page)
     {
         global $DB_valid, $DB_web;
 
@@ -551,7 +551,7 @@ class ProfileModule extends PLModule
         $page->assign('demande_ext', 1);
     }
 
-    public function handler_rss_update(&$page)
+    public function handler_rss_update($page)
     {
         for ($i = 0; $i < $_REQUEST['nbr_rss']; $i++)
         {
@@ -573,7 +573,7 @@ class ProfileModule extends PLModule
         $this->handler_rss($page);
     }
 
-    public function handler_rss_add(&$page)
+    public function handler_rss_add($page)
     {
         $_SESSION['liens_rss'][$_REQUEST['rss_lien_add']] = array('description' => $_REQUEST['rss_lien_add'],
                                       'module'      => 0,
@@ -585,7 +585,7 @@ class ProfileModule extends PLModule
         $this->handler_rss($page);
     }
 
-    public function handler_rss(&$page)
+    public function handler_rss($page)
     {
         global $DB_web;
 
@@ -617,7 +617,7 @@ class ProfileModule extends PLModule
         $page->assign('nodelete', $nodelete);
     }
 
-    public function handler_liens_perso_add(&$page)
+    public function handler_liens_perso_add($page)
     {
         $page->changeTpl('profil/liens_perso.tpl');
         $page->assign('title', "Ajout d'un lien perso");
@@ -626,7 +626,7 @@ class ProfileModule extends PLModule
         FrankizSession::save_liens_perso();
     }
 
-    public function handler_liens_perso_del(&$page)
+    public function handler_liens_perso_del($page)
     {
         $page->changeTpl('profil/liens_perso.tpl');
         $page->assign('title', "Suppression d'un lien perso");
@@ -635,7 +635,7 @@ class ProfileModule extends PLModule
         FrankizSession::save_liens_perso();
     }
 
-    public function handler_liens_perso(&$page)
+    public function handler_liens_perso($page)
     {
         $page->changeTpl('profil/liens_perso.tpl');
         $page->assign('title', "Gestion des liens persos");
@@ -655,7 +655,7 @@ class ProfileModule extends PLModule
         return $licences;
     }
 
-    public function handler_licences(&$page)
+    public function handler_licences($page)
     {
         global $DB_msdnaa;
 
@@ -684,7 +684,7 @@ class ProfileModule extends PLModule
         $page->assign('licences', $licences);
     }
 
-    public function handler_licences_CLUF(&$page){
+    public function handler_licences_CLUF($page){
 
         $logiciels = $this->licences_logiciels();
 
@@ -700,7 +700,7 @@ class ProfileModule extends PLModule
         }
     }
 
-    public function handler_licences_raison(&$page){
+    public function handler_licences_raison($page){
         global $DB_trombino;
         $logiciels = $this->licences_logiciels();
 
@@ -723,7 +723,7 @@ class ProfileModule extends PLModule
         }
     }
 
-    public function handler_licences_final(&$page){
+    public function handler_licences_final($page){
         global $DB_msdnaa, $DB_trombino;
 
 
@@ -802,7 +802,7 @@ class ProfileModule extends PLModule
         }
     }
 
-    function handler_layout(&$page)
+    function handler_layout($page)
     {
         $iter = XDB::iterator('SELECT um.uid uid, m.name name, m.label label, m.description description
                                  FROM minimodules AS m
