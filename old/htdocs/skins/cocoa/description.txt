@@ -1,1 +1,0 @@
-Skin inspirée du look'n'feel Cocoa de Mac OS X. Compatible IE.

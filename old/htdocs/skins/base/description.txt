@@ -1,5 +1,0 @@
-Skin très basique, avec juste les placements.
-
-Regroupe tout ce qui doit être commun à la plupart des skins.
-
-Ces caractéristiques peuvent être modifiées dans la skin.
