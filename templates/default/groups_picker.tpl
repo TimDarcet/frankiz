@@ -20,7 +20,7 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{groups_picker from=$from depth=$depth to=$to visibility=$visibility out_json="json"}
+{groups_picker type=$type groups=$groups depth=$depth visibility=$visibility behead=$behead out_json="json"}
 
 <div class="groups_picker" id="container_{$id}">
 

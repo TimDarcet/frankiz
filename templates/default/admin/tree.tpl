@@ -22,6 +22,6 @@
 
 Toute l'arborescence
 
-{include file="groups_modifier.tpl"|rel id="groups_modifier" visibility=2}
+{include file="groups_modifier.tpl"|rel id="groups_modifier" visibility=2 behead=false}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

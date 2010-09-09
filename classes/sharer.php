@@ -19,52 +19,40 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-function __autoload($cls)
+class Sharer
 {
-    if (!pl_autoload($cls)) {
-        $cls = strtolower($cls);
-        if (substr($cls, 0, 4) == 'ufc_' || substr($cls, 0, 4) == 'ufo_') {
-            __autoload('userfilter');
-            return;
-        } else if (substr($cls, 0, 4) == 'pfc_' || substr($cls, 0, 4) == 'pfo_' || substr($cls, 0, 8) == 'plfilter') {
-            __autoload('plfilter');
-            return;
-        }
-        include "$cls.inc.php";
+    protected $id = null;
+
+    static protected $shared = array();
+
+    public function __construct($ns, $id)
+    {
+        $this->id = $ns . $id;
+
+        if (!isset(self::$shared[$this->id]))
+            self::$shared[$this->id] = array();
     }
-}
 
-function format_phone_number($tel)
-{
-    $tel = trim($tel);
-
-    if (substr($tel, 0, 3) === '(0)')
-        $tel = '33' . $tel;
-
-    $tel = preg_replace('/\(0\)/',  '', $tel);
-    $tel = preg_replace('/[^0-9]/', '', $tel);
-    if (substr($tel, 0, 2) === '00') {
-        $tel = substr($tel, 2);
-    } else if(substr($tel, 0, 1) === '0') {
-        $tel = '33' . substr($tel, 1);
+    public function v($key, $default = null)
+    {
+        return isset(self::$shared[$this->id][$key]) ? self::$shared[$this->id][$key] : $default;
     }
-    return $tel;
-}
 
-function flatten($var)
-{
-    if (is_array($var) && count($var) <= 1)
-        return array_pop($var);
-    else
-        return $var;
-}
+    public function set($key, $value)
+    {
+        self::$shared[$this->id][$key] =& $value;
+    }
 
-function unflatten($var)
-{
-    if (!is_array($var))
-        return array($var);
-    else
-        return $var;
+    public function has($key, $value)
+    {
+        return isset(self::$shared[$this->id][$key]);
+    }
+
+    public function fill(array $datas)
+    {
+        foreach ($datas as $key => $value)
+            $this->set($key, $value);
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

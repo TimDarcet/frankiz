@@ -20,7 +20,7 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{groups_modifier from=$from depth=$depth visibility=$visibility out_json="json"}
+{groups_modifier groups=$groups depth=$depth visibility=$visibility behead=$behead out_json="json"}
 
 <div class="groups_modifier" id="container_{$id}">
 

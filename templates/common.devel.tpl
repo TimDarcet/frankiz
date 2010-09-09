@@ -43,29 +43,16 @@
     </div>
 
     <div class="fkz">
-        
-        <div style="font-weight:bold" onclick="$('#debug_groups').toggle()">Groups</div>
-        <div id="debug_groups" style="display:none">
-            {php}
-                foreach (Group::groups() as $key => $g)
-                {
-                    if (Group::isGid($key)) {
-                        echo '<div>';
-                        echo $key . ': ' . $g->name() . ' &nbsp;[ ' . $g->L() . ' ' . $g->R() . ' ]';
-                        echo '</div>';
-                    }
-                }
-            {/php}
-        </div>
 
         <div style="font-weight:bold" onclick="$('#debug_rights').toggle()">Rights</div>
         <div id="debug_rights" style="display: none">
             {php}
             if (class_exists('Rights')) {
-                $rights = array_keys(Rights::get());
-                foreach ($rights as $right) {
-                    echo $right . ' : ' . implode(S::user()->gids($right), " ");
-                    echo '<br />';
+                foreach(Rights::inheritances() as $inheritance => $rights) {
+                    foreach ($rights as $right) {
+                        echo $right . ' : ' . implode(S::user()->gids($right), " ");
+                        echo '<br />';
+                    }
                 }
             }
             {/php}

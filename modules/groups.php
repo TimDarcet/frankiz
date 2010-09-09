@@ -33,75 +33,40 @@ class GroupsModule extends PLModule
         );
     }
 
-    function handler_groups(&$page)
+    function handler_groups($page)
     {
-        // $root = Group::root();
-        // Group::get(42);
-        
-        // $ptid = Group::ascendingPartialTree(array(42, 22), 2);
-        // print_r(array_keys(Group::$partialTreesRoots[$ptid]));
-        // $fathers = Group::get(42)->fathers(1);
-
         $page->assign('title', "Groupes");
-        // $page->assign('depth', $depth);
-        // $g = Group::get(42);
-        // $g = Group::get(23);
-        // Group::get(2);
-        // print_r(Group::get(2)->father());
-        // Group::batchChildren(2, 1);
-        // print_r(array_keys(Group::get(2)->children(1))); // Juste pour faire chier l'algo
-        // print_r(array_keys(Group::get(0)->children(6))); // Juste pour faire chier l'algo
-        // print_r(array_keys(Group::get(2)->fathers(6)));
-        // $fathers = Group::batchFathers($g);
-        // $tree = $fathers + array($g);
-        // print_r(array_keys(Group::get(2)->loadedChildren($tree)));
-
-//        $br = Group::get(42);
-//        $new = new Group(array("name" => 'plop', "label" => 'plup'));
-//        $new->addTo($br);
-        
-//        $bd = Group::get(5);
-//        $info = Group::get(23);
-//        $lois = Group::get(21);
-//        $bde = Group::get(19);
-//        
-//        Group::get($bd)->moveTo($lois);
-
         $page->changeTpl('groups/groups.tpl');
     }
 
-    function handler_ajax_children(&$page)
+    function handler_ajax_children($page)
     {
         $json = json_decode(Env::v('json'));
 
-        $children = Group::get($json->{'gid'})->children();
-
-        $json_array = array();
-        foreach ($children as $child)
-            $json_array[] = $child->toJson();
+        $tree = new Tree(GroupsTreeInfo::get());
+        $tree->descending(array(new Group($json->{'gid'})), 1)->load(Group::BASE)->behead();
 
         $page->jsonAssign('success', true);
-        $page->jsonAssign('children', $json_array);
+        $page->jsonAssign('children', $tree->toJson(0));
     }
 
-    function handler_ajax_move(&$page)
+    function handler_ajax_move($page)
     {
         $json = json_decode(Env::v('json'));
 
-        $moved  = $json->{'moved'};
-        $target = $json->{'target'};
+        $moved  = new Group($json->{'moved'});
+        $target = new Group($json->{'target'});
 
-        Group::get(array($moved, $target));
         // TODO: check the rights
         $page->jsonAssign('success', true);
         try {
-            Group::get($moved)->moveTo($target);
+            $moved->moveTo($target);
         } catch(Exception $e) {
             $page->jsonAssign('success', false);
         }
     }
 
-    function handler_ajax_create(&$page)
+    function handler_ajax_create($page)
     {
         $json = json_decode(Env::v('json'));
 
@@ -109,7 +74,7 @@ class GroupsModule extends PLModule
         $label  = $json->{'label'};
         $name   = uniqid();
 
-        $parent = Group::get($parent);
+        $parent = new Group($parent);
 
         $new = new Group(array("name" => $name, "label" => $label));
 
@@ -123,14 +88,14 @@ class GroupsModule extends PLModule
         }
     }
 
-    function handler_ajax_rename(&$page)
+    function handler_ajax_rename($page)
     {
         $json = json_decode(Env::v('json'));
 
         $group = $json->{'group'};
-        $label  = $json->{'label'};
+        $label = $json->{'label'};
 
-        $group = Group::get($group);
+        $group = new Group($group);
 
         // TODO: check the rights
         $page->jsonAssign('success', true);
@@ -141,12 +106,12 @@ class GroupsModule extends PLModule
         }
     }
 
-    function handler_ajax_remove(&$page)
+    function handler_ajax_remove($page)
     {
         $json = json_decode(Env::v('json'));
 
         $group = $json->{'group'};
-        $group = Group::get($group);
+        $group = new Group($group);
 
         // TODO: check the rights
         $page->jsonAssign('success', true);

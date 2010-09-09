@@ -22,55 +22,47 @@
 /**
 * return the code necessary to create a group-picker
 *
-* @param $root the root group
-* @param $depth the initial depth of the tree
-* @param $target target url when clicking on a group
-* @param $gids groups to load
-* @param $restrict disabled groups
-* @param $type static, checkbox
+* @param $type ascending or descending or fixed (default: fixed)
+* @param $groups groups from which the tree originates (default: main root)
+* @param $depth the depth to search for childrens or fathers
+* @param $visibility the depth to which the nodes are open
+* @param $behead boolean defining if the roots must be hidden or not (default: false)
+*
+* @param $out_json
 */
 function smarty_function_groups_picker($params, &$smarty)
 {
-    $visibility = (isset($params['visibility'])) ? $params['visibility'] : Group::maxDepth;
-    
-    $ptid = null;
-    if (isset($params['from']))
-    {
-        $depth = (isset($params['depth'])) ? $params['depth'] : Group::maxDepth;
+    $gI = GroupsTreeInfo::get();
 
-        $from = $params['from'];
-        Group::batchChildren($from, $depth);
+    $type       = (empty($params['type']))       ? 'fixed'                : $params['type'];
+    $visibility = (empty($params['visibility'])) ? $gI->maxDepth()        : $params['visibility'];
+    $depth      = (empty($params['depth']))      ? $gI->maxDepth()        : $params['depth'];
+    $behead     = (empty($params['behead']))     ? false                  : $params['behead'];
+    $groups     = (empty($params['groups']))     ? unflatten($gI->root()) : Group::fromIds(unflatten($params['groups']));
 
-        $roots = Group::unflatten(Group::get($from));
-    } 
-    else if (isset($params['to']))
-    {
-        $depth = Group::maxDepth;
+    $tree = new Tree($gI);
 
-        $to = $params['to'];
-        if ($to == 'all') {
-            $to = S::user()->gids();
-        }
-
-        $ptid = Group::ascendingPartialTree($to);
-        
-        // TODO: Allow restriction to the groups under a specified root 
-        // (without depth, partialTreeRoots() is useless as Group::root() is *always* the root)
-        $roots = Group::partialTreeRoots($ptid);
+    switch ($type) {
+        case 'descending':
+            $tree->descending($groups, $depth);
+            break;
+        case 'ascending':
+            $tree->ascending($groups, $depth);
+            break;
+        default:
+            $tree->fixed($groups);
     }
 
-    // If there is only one root, get rid of it
-    if (count($roots) == 1) {
+    $tree->load(Group::BASE);
+
+    if (!$behead) {
+        $json = $tree->toJson($visibility);
+    } else {
         $visibility--;
-        $root = array_pop($roots);
-        $roots = $root->partialChildren($ptid);
+        $tree->behead();
     }
 
-    $json = array();
-    foreach ($roots as $root)
-        $json[] = $root->toJson($depth, $visibility, $ptid);
-
-    $smarty->assign($params['out_json'], json_encode($json));
+    $smarty->assign($params['out_json'], json_encode($tree->toJson($visibility)));
 }
 
 

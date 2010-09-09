@@ -20,30 +20,36 @@
  ***************************************************************************/
 
 /**
-* return the code necessary to create a group-picker
+* return the code necessary to create a group-modifier
 *
-* @param $root the root group
-* @param $depth the initial depth of the tree
-* @param $target target url when clicking on a group
-* @param $gids groups to load
-* @param $restrict disabled groups
-* @param $type static, checkbox
+* @param $groups groups from which the tree originates (default: main root)
+* @param $depth the depth to search for childrens or fathers
+* @param $visibility the depth to which the nodes are open
+* @param $behead boolean defining if the roots must be hidden or not (default: false)
+*
+* @param $out_json
 */
 function smarty_function_groups_modifier($params, &$smarty)
 {
-    $visibility = (isset($params['visibility'])) ? $params['visibility'] : Group::maxDepth;
-    $depth = (isset($params['depth'])) ? $params['depth'] : Group::maxDepth;
-    $from = (isset($params['from'])) ? $params['from'] : Group::root();
+    $gI = GroupsTreeInfo::get();
 
-    Group::batchChildren($from, $depth);
+    $visibility = (empty($params['visibility'])) ? $gI->maxDepth()        : $params['visibility'];
+    $depth      = (empty($params['depth']))      ? $gI->maxDepth()        : $params['depth'];
+    $behead     = (empty($params['behead']))     ? false                  : $params['behead'];
+    $groups     = (empty($params['groups']))     ? unflatten($gI->root()) : Group::fromIds(unflatten($params['groups']));
 
-    $roots = Group::unflatten(Group::get($from));
+    $tree = new Tree($gI);
 
-    $json = array();
-    foreach ($roots as $root)
-        $json[] = $root->toJson($depth, $visibility);
+    $tree->descending($groups, $depth)->load(Group::BASE);
 
-    $smarty->assign($params['out_json'], json_encode($json));
+    if (!$behead) {
+        $json = $tree->toJson($visibility);
+    } else {
+        $visibility--;
+        $tree->behead();
+    }
+
+    $smarty->assign($params['out_json'], json_encode($tree->toJson($visibility)));
 }
 
 
