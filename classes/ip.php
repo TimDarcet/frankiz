@@ -94,10 +94,10 @@ class IP
             if($ip == '127.0.0.1' || (substr($ip, 0, 8) == '129.104.' && $ip != '129.104.30.4')) 
             {
                 $res=XDB::query('SELECT ro.owner_type
-                                   FROM rooms_ip AS ri
+                                   FROM ips
                              INNER JOIN rooms_owners AS ro
-                                     ON ro.rid = ri.rid
-                                  WHERE ri.ip = {?}', $ip);
+                                     ON ro.rid = ips.rid
+                                  WHERE ips.ip = {?}', $ip);
                 $cell = $res->fetchOneCell();
                 switch($cell)
                 {

@@ -29,19 +29,19 @@ class AnonymousUser extends User
     protected function loadGids()
     {
         // By default, everybody is a member of the top-level group
-        $root = Group::root();
+        $root = GroupsTreeInfo::get()->root();
         $this->gids[$root->gid()] = new PlFlagSet(Rights::MEMBER);
 
         // If connecting from a local, find associated groups
         if (IP::is_local())
         {
             $iter = XDB::iterator('SELECT  g.gid
-                                     FROM  rooms_ip AS ri
+                                     FROM  ips
                                INNER JOIN  rooms_owners AS ro
-                                       ON  ro.rid = ri.rid
+                                       ON  ro.rid = ips.rid
                                INNER JOIN  groups AS g
                                        ON  g.gid = ro.owner_id
-                                    WHERE  ri.IP = {?}', IP::get());
+                                    WHERE  ips.ip = {?}', IP::get());
 
             while ($array_group = $iter->next())
                 $this->gids[$array_group['gid']] = new PlFlagSet(Rights::MEMBER);
