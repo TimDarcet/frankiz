@@ -137,7 +137,10 @@ abstract class Node
     {
         $result = array();
         foreach ($nodes as $n)
-            $result[] = $n->id;
+            if ($n instanceof Node)
+                $result[] = $n->id;
+            else
+                $result[] = $n;
         return $result;
     }
 
@@ -155,16 +158,18 @@ abstract class Node
     * Example with a table called group :
         CREATE PROCEDURE groups_remove(IN g_gid INT)
         BEGIN
-            DECLARE g_R INT DEFAULT 1;
-            DECLARE g_L INT DEFAULT 1;
-            DECLARE delta INT DEFAULT 1;
+            DECLARE g_R INT DEFAULT NULL;
+            DECLARE g_L INT DEFAULT NULL;
+            DECLARE delta INT DEFAULT NULL;
 
             START TRANSACTION;
-            SELECT R, L INTO g_R, g_L FROM groups WHERE gid = g_gid;
-            SET delta = g_R - g_L + 1;
-            DELETE FROM groups WHERE L >= g_L AND R <= g_R;
-            UPDATE groups SET L = L - delta WHERE L >= g_L;
-            UPDATE groups SET R = R - delta WHERE R >= g_L;
+                SELECT R, L INTO g_R, g_L FROM groups WHERE gid = g_gid;
+                IF !ISNULL(g_R) THEN
+                    SET delta = g_R - g_L + 1;
+                    DELETE FROM groups WHERE  L >= g_L AND R <= g_R;
+                    UPDATE groups SET L = L - delta WHERE L >= g_L;
+                    UPDATE groups SET  R = R - delta WHERE R >= g_L;
+                END IF;
             COMMIT;
         END|
     *
@@ -185,15 +190,19 @@ abstract class Node
     * Example with a table called group :
         CREATE PROCEDURE groups_addTo(IN parent_gid INT, OUT new_id INT)
         BEGIN
-            DECLARE parent_R INT DEFAULT 1;
-            DECLARE parent_depth INT DEFAULT 1;
+            DECLARE parent_R INT DEFAULT NULL;
+            DECLARE parent_depth INT DEFAULT NULL;
 
             START TRANSACTION;
-            SELECT R, depth INTO parent_R, parent_depth FROM groups WHERE gid = parent_gid;
-            UPDATE groups SET R = R + 2 WHERE R >= parent_R;
-            UPDATE groups SET L = L + 2 WHERE L >= parent_R;
-            INSERT INTO groups SET L = parent_R, R = (parent_R + 1), depth = (parent_depth + 1);
-            SELECT LAST_INSERT_ID() INTO new_id FROM groups;
+                SELECT R, depth INTO parent_R, parent_depth FROM groups WHERE gid = parent_gid;
+                IF ISNULL(parent_R) THEN
+                    SET new_id = NULL;
+                ELSE
+                    UPDATE groups SET R = R + 2 WHERE R >= parent_R;
+                    UPDATE groups SET L = L + 2 WHERE L >= parent_R;
+                    INSERT INTO groups SET L = parent_R, R = (parent_R + 1), depth = (parent_depth + 1);
+                    SELECT LAST_INSERT_ID() INTO new_id;
+                END IF;
             COMMIT;
         END|
     *
@@ -216,31 +225,35 @@ abstract class Node
     * Example with a table called group :
         CREATE PROCEDURE groups_moveTo(IN g_gid INT, IN t_gid INT)
         BEGIN
-            DECLARE g_R INT DEFAULT 1;
-            DECLARE g_L INT DEFAULT 1;
-            DECLARE g_depth INT DEFAULT 1;
-            DECLARE t_L INT DEFAULT 1;
-            DECLARE t_depth INT DEFAULT 1;
-            DECLARE delta INT DEFAULT 1;
-            DECLARE zone_min INT DEFAULT 1;
-            DECLARE zone_max INT DEFAULT 1;
-            DECLARE zone_sign INT DEFAULT 1;
-            DECLARE init_shift INT DEFAULT 1;
-            DECLARE end_shift INT DEFAULT 1;
+            DECLARE g_R INT DEFAULT NULL;
+            DECLARE g_L INT DEFAULT NULL;
+            DECLARE g_depth INT DEFAULT NULL;
+            DECLARE t_L INT DEFAULT NULL;
+            DECLARE t_depth INT DEFAULT NULL;
+            DECLARE delta INT DEFAULT NULL;
+            DECLARE zone_min INT DEFAULT NULL;
+            DECLARE zone_max INT DEFAULT NULL;
+            DECLARE zone_sign INT DEFAULT NULL;
+            DECLARE init_shift INT DEFAULT NULL;
+            DECLARE end_shift INT DEFAULT NULL;
 
             START TRANSACTION;
-            SELECT R, L, depth INTO g_R, g_L, g_depth FROM groups WHERE gid = g_gid;
-            SELECT L, depth INTO t_L, t_depth FROM groups WHERE gid = t_gid;
-            SET delta = g_R - g_L;
-            SET zone_min  = LEAST(g_R, t_L);
-            SET zone_max  = GREATEST(g_R, t_L);
-            SET zone_sign = SIGN(g_R - t_L);
-            SET init_shift = g_R + 1000;
-            UPDATE groups SET R = R - init_shift, L = L - init_shift WHERE L >= g_L AND R <= g_R;
-            UPDATE groups SET L = L + (zone_sign * (delta + 1)) WHERE L > zone_min AND L <= zone_max;
-            UPDATE groups SET R = R + (zone_sign * (delta + 1)) WHERE R > zone_min AND R < zone_max;
-            SET end_shift = init_shift + IF(zone_sign = 1, t_L - g_L + 1, t_L - g_R);
-            UPDATE groups SET R = R + end_shift, L = L + end_shift, depth = depth + (t_depth - g_depth + 1) WHERE L >= (g_L - init_shift) AND R <= (g_R - init_shift);
+                SELECT R, L, depth INTO g_R, g_L, g_depth FROM groups WHERE gid = g_gid;
+                SELECT L, depth INTO t_L, t_depth FROM groups WHERE gid = t_gid;
+
+                IF !ISNULL(g_R) AND !ISNULL(t_L) THEN
+                    SET delta = g_R - g_L;
+                    SET zone_min  = LEAST(g_R, t_L);
+                    SET zone_max  = GREATEST(g_R, t_L);
+                    SET zone_sign = SIGN(g_R - t_L);
+                    SET init_shift = g_R + 1000;
+                    SET end_shift = init_shift + IF(zone_sign = 1, t_L - g_L + 1, t_L - g_R);
+
+                    UPDATE groups SET R = R - init_shift, L = L - init_shift WHERE L >= g_L AND R <= g_R;
+                    UPDATE groups SET L = L + (zone_sign * (delta + 1)) WHERE L > zone_min AND L <= zone_max;
+                    UPDATE groups SET R = R + (zone_sign * (delta + 1)) WHERE R > zone_min AND R < zone_max;
+                    UPDATE groups SET R = R + end_shift, L = L + end_shift, depth = depth + (t_depth - g_depth + 1) WHERE L >= (g_L - init_shift) AND R <= (g_R - init_shift);
+                END IF;
             COMMIT;
         END|
     *
