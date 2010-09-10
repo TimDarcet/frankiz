@@ -55,6 +55,12 @@ class User extends PlUser
     // Contains the hash sent by mail to recover the password
     protected $hash = null;
 
+    // Contains the iid of the original picture
+    protected $original = null;
+
+    // Contains the iid of the current picture
+    protected $photo = null;
+
     /**
      * Constructs the User object
      *
@@ -134,9 +140,10 @@ class User extends PlUser
         }
 
         global $globals;
-        $res = XDB::query("SELECT  a.hruid, a.perms, sk.name AS skin, a.state, a.hash,
+        $res = XDB::query("SELECT  a.hruid, a.perms, sk.name AS skin, a.state,
+                                   a.hash, a.original, a.photo, a.gender,
+                                   a.on_platal, a.email_format, a.bestalias,
                                    CONCAT(a.firstname, ' ', a.lastname) AS full_name,
-                                   a.gender, a.on_platal, a.email_format, a.bestalias,
                                    IF(a.nickname = '', a.firstname, a.nickname) AS display_name
                              FROM  account AS a
                         LEFT JOIN  skins AS sk ON (a.skin = sk.skin_id)
@@ -162,9 +169,10 @@ class User extends PlUser
 
         if (count($UIDs) > 0)
         {
-            $iter = XDB::iterator("SELECT  a.uid, a.hruid, a.perms, sk.name AS skin, a.state, a.hash,
+            $iter = XDB::iterator("SELECT  a.uid, a.hruid, a.perms, sk.name AS skin, a.state,
+                                           a.hash, a.original, a.photo, a.gender,
+                                           a.on_platal, a.email_format, a.bestalias,
                                            CONCAT(a.firstname, ' ', a.lastname) AS full_name,
-                                           a.gender, a.on_platal, a.email_format, a.bestalias,
                                            IF(a.nickname = '', a.firstname, a.nickname) AS display_name
                                      FROM  account AS a
                                 LEFT JOIN  skins AS sk ON (a.skin = sk.skin_id)
@@ -204,6 +212,14 @@ class User extends PlUser
                                                  $this->password, $this->id());
         }
         return XDB::fetchOneCell('SELECT  password FROM  account WHERE  uid = {?}', $this->id());
+    }
+
+    /**
+    * Returns the original picture iid if their isn't better one
+    */
+    public function bestImage()
+    {
+        return ($this->photo != 0) ? $this->photo : $this->original;
     }
 
     /**
@@ -254,32 +270,31 @@ class User extends PlUser
     protected function loadGids()
     {
         // Load the directly associated groups from the database
-        $iter = XDB::iterator('SELECT  g.gid, ug.rights
-                                 FROM  groups AS g
-                           INNER JOIN  users_groups AS ug ON ug.gid = g.gid
-                                WHERE  ug.uid = {?}',
+        $iter = XDB::iterator('SELECT  gid, rights
+                                 FROM  users_groups
+                                WHERE  uid = {?}',
                                 $this->id());
 
         while ($array_group = $iter->next())
                 $this->gids[$array_group['gid']] = new PlFlagSet($array_group['rights']);
-
+// TODO
         // Load the undirect groups
-        $rightsInheritances = Rights::get();
+//        $rightsInheritances = Rights::get();
 
-        $rightsGids = array();
-        foreach ($rightsInheritances as $right => $inheritance)
-            $rightsGids[$right] = array();
-
-        foreach ($this->gids as $gid => $rights)
-            foreach($rightsInheritances as $right => $inheritance)
-                if ($rights->hasFlag($right))
-                    $rightsGids[$right][] = $gid;
-
-        foreach($rightsInheritances as $right => $inheritance)
-            if ($inheritance == Rights::ASCENDING)
-                $this->addGids(Group::batchFathersGids($rightsGids[$right], Group::maxDepth), $right);
-            else if ($inheritance == Rights::ASCENDING)
-                $this->addGids(Group::batchChildrenGids($rightsGids[$right], Group::maxDepth), $right);
+//        $rightsGids = array();
+//        foreach ($rightsInheritances as $right => $inheritance)
+//            $rightsGids[$right] = array();
+//
+//        foreach ($this->gids as $gid => $rights)
+//            foreach($rightsInheritances as $right => $inheritance)
+//                if ($rights->hasFlag($right))
+//                    $rightsGids[$right][] = $gid;
+//
+//        foreach($rightsInheritances as $right => $inheritance)
+//            if ($inheritance == Rights::ASCENDING)
+//                $this->addGids(Group::batchFathersGids($rightsGids[$right], Group::maxDepth), $right);
+//            else if ($inheritance == Rights::ASCENDING)
+//                $this->addGids(Group::batchChildrenGids($rightsGids[$right], Group::maxDepth), $right);
     }
 
     protected function addGids($gids, $right)
