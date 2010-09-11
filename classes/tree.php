@@ -44,7 +44,7 @@ class Tree
     {
         $results = $this->treeInfo->batchLoad($this->nodes, $fields);
         foreach ($results as $id => $datas)
-            $this->nodes[$id]->fill($datas);
+            $this->nodes[$id]->fillFromArray($datas);
 
         return $this;
     }

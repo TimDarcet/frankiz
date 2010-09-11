@@ -23,30 +23,29 @@ abstract class Node
 {
     protected $id = null;
 
+    protected $L = null;
+    protected $R = null;
+    protected $depth = null;
+
     protected $children = array();
     protected $father = null;
 
-    protected $sharer = null;
-
     public function __construct($datas)
     {
-        // Passed an id ?
         if (!is_array($datas))
             $this->id =$datas;
-        else if (isset($datas['id']))
-            $this->id = $datas['id'];
 
-        // Create the Sharer object and fill it
-        $this->sharer = new Sharer('node', $this->id);
         if (is_array($datas))
-            $this->fill($datas);
+            $this->fillFromArray($datas);
     }
 
     abstract public function treeInfo();
 
-    public function fill(array $datas)
+    public function fillFromArray(array $values)
     {
-        $this->sharer->fill($datas);
+        foreach ($values as $key => $value)
+            if (property_exists($this, $key))
+                $this->$key = $value;
     }
 
     public function id()
@@ -71,17 +70,17 @@ abstract class Node
 
     protected function L()
     {
-        return $this->sharer->v('L');
+        return $this->L;
     }
 
     protected function R()
     {
-        return $this->sharer->v('R');
+        return $this->R;
     }
 
     protected function depth()
     {
-        return $this->sharer->v('depth');
+        return $this->depth;
     }
 
     protected function isFatherOf($n)
@@ -274,6 +273,11 @@ class Group extends Node
     const BASE        = 0x01;
     const DESCRIPTION = 0x02;
 
+    protected $type = null;
+    protected $name = null;
+    protected $label = null;
+    protected $description = null;
+
     public static function batchLoad($nodes, $bits)
     {
         $fields = '';
@@ -292,7 +296,7 @@ class Group extends Node
     public function load($bits)
     {
         $datas = batchLoad($this, $bits);
-        $this->fill($datas[$this->id]);
+        $this->fillFromArray($datas[$this->id]);
     }
 
     public function __construct($datas)
@@ -312,27 +316,27 @@ class Group extends Node
 
     public function type()
     {
-        return $this->sharer->v('type');
+        return $this->type;
     }
 
     public function name()
     {
-        return $this->sharer->v('name');
+        return $this->name;
     }
 
     public function label($label = null)
     {
         if ($label != null)
         {
-            $this->sharer->set('label', $label);
+            $this->label = $label;
             XDB::execute('UPDATE groups SET label = {?} WHERE gid = {?}', $label, $this->id);
         }
-        return $this->sharer->v('label');
+        return $this->label;
     }
 
     public function description()
     {
-        return $this->sharer->v('description');
+        return $this->description;
     }
 
     public static function fromNames(array $names)
