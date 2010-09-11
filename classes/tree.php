@@ -19,40 +19,32 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class Tree
+class Tree extends Collection
 {
     protected $treeInfo;
 
-    protected $nodes = array();
+    protected $collected = array();
     protected $roots = array();
 
-    public function __construct(TreeInfo $treeInfo)
+    public function __construct($collected_class)
     {
-        $this->treeInfo = $treeInfo;
+        $this->treeInfo = $collected_class::_treeInfo();
+        parent::__construct($collected_class);
     }
 
-    public function toJson($visibility = 0)
+    public function toJson()
     {
         $json = array();
         $roots = $this->roots();
         foreach ($roots as $root)
-            $json[] = $root->toJson($visibility);
+            $json[] = $root->toJson();
         return $json;
-    }
-
-    public function load($fields)
-    {
-        $results = $this->treeInfo->batchLoad($this->nodes, $fields);
-        foreach ($results as $id => $datas)
-            $this->nodes[$id]->fillFromArray($datas);
-
-        return $this;
     }
 
     public function roots()
     {
         if (empty($this->roots))
-            $this->roots = Node::roots($this->nodes);
+            $this->roots = Node::roots($this->collected);
 
         return $this->roots;
     }
@@ -88,9 +80,9 @@ class Tree
                                        Node::toIds($nodes), $depth);
 
         while ($node = $iter->next())
-            $this->nodes[$node['id']] = $this->treeInfo->buildNode($node);
+            $this->collected[$node['id']] = $this->treeInfo->buildNode($node);
 
-        Node::buildLinks($this->nodes);
+        Node::buildLinks($this->collected);
 
         return $this;
     }
@@ -114,9 +106,9 @@ class Tree
                                        Node::toIds($nodes), $depth);
 
         while ($node = $iter->next())
-            $this->nodes[$node['id']] = $this->treeInfo->buildNode($node);
+            $this->collected[$node['id']] = $this->treeInfo->buildNode($node);
 
-        Node::buildLinks($this->nodes);
+        Node::buildLinks($this->collected);
         
         return $this;
     }
@@ -135,9 +127,9 @@ class Tree
                                 WHERE  n.$id IN {?}", Node::toIds($nodes));
 
         while ($node = $iter->next())
-            $this->nodes[$node['id']] = $this->treeInfo->buildNode($node);
+            $this->collected[$node['id']] = $this->treeInfo->buildNode($node);
 
-        Node::buildLinks($this->nodes);
+        Node::buildLinks($this->collected);
 
         return $this;
     }

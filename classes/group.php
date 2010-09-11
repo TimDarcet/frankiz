@@ -278,25 +278,25 @@ class Group extends Node
     protected $label = null;
     protected $description = null;
 
-    public static function batchLoad($nodes, $bits)
+    protected static function _batchSelect(array $nodes, $fields)
     {
-        $fields = '';
-        if ($bits & self::BASE)
-            $fields .= ', name, label';
-        if ($bits & self::DESCRIPTION)
-            $fields .= ', description';
+        $cols = '';
+        if ($fields & self::BASE)
+            $cols .= ', name, label';
+        if ($fields & self::DESCRIPTION)
+            $cols .= ', description';
 
-        $res = XDB::query("SELECT  gid $fields
+        $res = XDB::query("SELECT  gid AS id $cols
                              FROM  groups
-                            WHERE  gid IN {?}",
-                             Node::toIds($nodes));
-        return $res->fetchAllAssoc('gid');
+                            WHERE  gid IN {?}", Node::toIds($nodes));
+        return $res->fetchAllAssoc('id');
     }
 
-    public function load($bits)
+    public static function batchSelect(array $nodes, $fields)
     {
-        $datas = batchLoad($this, $bits);
-        $this->fillFromArray($datas[$this->id]);
+        $ids_datas = self::_batchSelect($nodes, $fields);
+        foreach ($nodes as $node)
+            $node->fillFromArray($ids_datas[$node->id]);
     }
 
     public function __construct($datas)
@@ -305,6 +305,11 @@ class Group extends Node
     }
 
     public function treeInfo()
+    {
+        return GroupsTreeInfo::get();
+    }
+
+    static public function _treeInfo()
     {
         return GroupsTreeInfo::get();
     }
@@ -361,7 +366,7 @@ class Group extends Node
                    $this->name(), $this->label(), $this->description(), $this->id);
     }
 
-    public function toJson($visibility = 0)
+    public function toJson()
     {
         $json = array("data"  => array(
                                         "title" => $this->label()
@@ -376,10 +381,10 @@ class Group extends Node
 
         if ($this->hasChildren())
         {
-            $json['state'] = ($visibility > 0) ? "open" : "closed";
+            $json['state'] = (empty($this->children)) ? "closed" : "open";
             $json['children'] = array();
             foreach($this->children as $child)
-                $json['children'][] = $child->toJson($visibility - 1);
+                $json['children'][] = $child->toJson();
         }
 
         return $json;
