@@ -97,7 +97,7 @@ abstract class FrankizMiniModule
         self::run();
     }
 
-    public static function run()
+    public static function run($page)
     {
         if (self::$oneShotName == '')
         {
@@ -139,6 +139,12 @@ abstract class FrankizMiniModule
                     $cls = $localDatas['name'];
                     $localDatas['object'] = new $cls();
                     self::$minimodules[$name] = $localDatas;
+
+                    // Load the css file with the minimodule's name
+                    try {
+                        $page->addCssLink('minimodules/' . $name . '.css');
+                    } catch (SkinFileNotFoundException $e) {
+                    }
 
                     self::$minimodules_layout[$minimodule['col']][$minimodule['row']] = $name;
                 }

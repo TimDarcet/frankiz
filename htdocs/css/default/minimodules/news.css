@@ -1,0 +1,53 @@
+/***************************************************************************
+ *  Copyright (C) 2009 Binet Réseau                                        *
+ *  http://www.polytechnique.fr/eleves/binets/reseau/                      *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
+
+/*******************************************************************************
+     2   News
+
+*******************************************************************************/
+
+#minimodule_news .body  {
+    padding: 0;
+}
+
+#news_list {
+    width: 100%;
+    max-height: 300px;
+    overflow: auto;
+}
+
+#news_list table {
+    border-collapse: collapse;
+}
+
+#news_list td {
+    padding-top: 1px;
+    border-top: 1px dashed #17758A;
+    width: 100%;
+    vertical-align: middle;
+}
+
+#news_list tr:first-child td {
+    border-top: none;
+}
+
+#news_list td:first-child {
+    width: auto;
+}

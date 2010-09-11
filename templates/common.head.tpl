@@ -56,6 +56,7 @@
     jstreeStyle.splice(jstreeStyle.length - 2, 2);
     $.jstree._themes = platal_baseurl + "css/" + jstreeStyle.join("/") + "/";
 
+    // Sandbox for minimodules
     {foreach from=$minimodules_js key=name item=js}
         minimodulesJs['{$name}'] = "{$js}";
     {/foreach}

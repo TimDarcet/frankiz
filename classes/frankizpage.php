@@ -19,6 +19,19 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+class SkinFileNotFoundException extends Exception
+{
+    protected $skin;
+    protected $file;
+
+    public function _construct($message, $skin, $file)
+    {
+        $this->skin = $skin;
+        $this->file = $file;
+        parent::__construct($message);
+    }
+}
+
 /**
  * Class for frankiz pages
  */
@@ -73,7 +86,7 @@ class FrankizPage extends PlPage
         }
 
         // We want to be warned if a template/css can't be loaded
-        throw new Exception('Impossible de trouver le fichier ' . $file);
+        throw new SkinFileNotFoundException("Can't load the file $file");
     }
 
     public static function getTplPath($tpl)
@@ -106,7 +119,7 @@ class FrankizPage extends PlPage
         $skin = $this->load_skin();
         $this->assign('skin', S::v('skin'));
 
-        FrankizMiniModule::run();
+        FrankizMiniModule::run($this);
         $this->assign('minimodules', FrankizMiniModule::get_minimodules());
         $this->assign('minimodules_layout', FrankizMiniModule::get_layout());
         $this->assign('minimodules_js', FrankizMiniModule::get_js());

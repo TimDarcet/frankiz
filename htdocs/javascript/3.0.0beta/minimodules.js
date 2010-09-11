@@ -27,8 +27,11 @@ function includeAndRun(name, path)
 {
     if ($.inArray(path, includedJs)==-1)
     {
-        $.getScript('javascript/3.0.0beta/'+path, function() {
-            if (eval(name).run) eval(name).run();
+        $.getScript('javascript/3.0.0beta/' + path, function() {
+            try {
+                eval(name).run();
+            } catch (e)
+            {};
         });
         includedJs.push(path);
     } else {
