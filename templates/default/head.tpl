@@ -21,7 +21,6 @@
 {**************************************************************************}
 
 <link rel="stylesheet" type="text/css" href="css/{"base.css"|rel}" media="all"/>
-<link rel="stylesheet" type="text/css" href="css/{"minimodules.css"|rel}" media="all"/>
 <link type="text/css" href="css/{"jquery-ui.css"|rel}" rel="stylesheet" />
         
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
