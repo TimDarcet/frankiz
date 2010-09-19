@@ -32,7 +32,7 @@ class TodoModule extends PlModule
         );
     }
 
-    function handler_ajax_todo_add(&$page)
+    function handler_ajax_todo_add($page)
     {
         $json = json_decode(Env::v('json'));
 
@@ -56,7 +56,7 @@ class TodoModule extends PlModule
         }
     }
 
-    function handler_ajax_todo_check(&$page)
+    function handler_ajax_todo_check($page)
     {
         $json = json_decode(Env::v('json'));
 
@@ -80,7 +80,7 @@ class TodoModule extends PlModule
         }
     }
 
-    function handler_ajax_todo_uncheck(&$page)
+    function handler_ajax_todo_uncheck($page)
     {
         $json = json_decode(Env::v('json'));
 
@@ -104,7 +104,7 @@ class TodoModule extends PlModule
         }
     }
 
-    function handler_ajax_todo_clear(&$page)
+    function handler_ajax_todo_clear($page)
     {
         XDB::execute('DELETE FROM todo
                             WHERE uid = {?} AND checked = 1',
