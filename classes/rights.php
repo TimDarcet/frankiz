@@ -24,7 +24,7 @@ class Rights
     // Types of inheritance for the rights
     const ASCENDING  = 'ascending';
     const DESCENDING = 'descending';
-    const NONE       = 'none';
+    const FIXED      = 'fixed';
 
     // Existing rights
     const PREZ   = 'prez';
@@ -33,26 +33,24 @@ class Rights
     const MEMBER = 'member';
     const FRIEND = 'friend';
 
-    public static function get()
-    {
-        $rights = array();
-        $reflectionRights = new ReflectionClass('Rights');
-        foreach ($reflectionRights->getConstants() as $right)
-            if ($right != self::ASCENDING && $right != self::DESCENDING && $right != self::NONE)
-               $rights[$right] = self::inheritance($right);
-
-        return $rights;
-    }
-
-    public static function inheritance($right)
+    public static function inheritances()
     {
         $inheritances = array(
-            self::PREZ   => self::DESCENDING,
-            self::ADMIN  => self::DESCENDING,
-            self::MEMBER => self::ASCENDING,
+            self::DESCENDING => array(self::PREZ, self::ADMIN),
+            self::ASCENDING  => array(self::MEMBER),
+            self::FIXED      => array(self::WEB, self::FRIEND)
         );
-        
-        return (isset($inheritances[$right])) ? $inheritances[$right] : self::NONE;
+
+        return $inheritances;
+    }
+
+    public static function inheritance($searched_right)
+    {
+        $inheritances = self::inheritances();
+        foreach ($inheritances as $inheritance => $rights)
+            foreach ($rights as $right)
+                if ($right == $searched_right)
+                    return $inheritance;
     }
 }
 
