@@ -382,27 +382,20 @@ class Group extends Node
 
     public function toJson()
     {
-        $json = array("data"  => array(
-                                        "title" => $this->label()
-                                      ),
-                      "attr"  => array(
-                                        "gid"   => $this->gid(),
-                                        "l"     => $this->L(),
-                                        "name"  => $this->name(),
-                                        "title" => $this->name(),
-                                        "label" => $this->label()
-                                      )
-                       );
+        $json = array("id"    => $this->gid(),
+                      "L"     => $this->L(),
+                      "name"  => $this->name(),
+                      "label" => $this->label());
 
         if ($this->hasChildren())
-        {
-            $json['state'] = (empty($this->children)) ? "closed" : "open";
-
-            $children = $this->sortedChildren();
-            $json['children'] = array();
-            foreach($children as $child)
-                $json['children'][] = $child->toJson();
-        }
+            if (empty($this->children)) {
+                $json['children'] = true;
+            } else {
+                $children = $this->sortedChildren();
+                $json['children'] = array();
+                foreach($children as $child)
+                    $json['children'][] = $child->toJson();
+            }
 
         return $json;
     }
