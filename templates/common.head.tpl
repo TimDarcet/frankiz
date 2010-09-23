@@ -46,6 +46,8 @@
 <script type="text/javascript" src="javascript/3.0.0beta/groups.js"></script>
 
 <script type="text/javascript" src="javascript/3.0.0beta/jquery.jstree.js"></script>
+<script type="text/javascript" src="javascript/3.0.0beta/jquery.hashchange.js"></script>
+<script type="text/javascript" src="javascript/3.0.0beta/ape/apeClientJS.js"></script>
 
 {include file='../core/templates/plpage.header.tpl'}
 

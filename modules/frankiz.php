@@ -62,13 +62,10 @@ class FrankizModule extends PlModule
         $layout = array();
         for($i = 1; $i <= 4; $i++)
         {
-            if (isset($json->{$i}))
-            {
-                foreach ($json->{$i} as $row => $name)
-                {
+            $col = "c" . $i;
+            if (isset($json->$col))
+                foreach ($json->$col as $row => $name)
                     $layout[] = '('.S::user()->id().', "'.$name.'", '.$i.', '.intval($row).')';
-                }
-            }
         }
 
         XDB::execute('INSERT INTO users_minimodules (uid, name, col, row)
@@ -145,7 +142,7 @@ class FrankizModule extends PlModule
         {
             $page->assign('module_name', $name);
 
-            FrankizMiniModule::oneShot($name);
+            FrankizMiniModule::oneShot($name, $page);
             $minimodules = FrankizMiniModule::get_minimodules();
 
             if (count($minimodules) == 1) {

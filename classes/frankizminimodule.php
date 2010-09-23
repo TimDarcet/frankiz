@@ -73,7 +73,7 @@ abstract class FrankizMiniModule
     /* static stuff */
     private static $minimodules = array();
     private static $minimodules_layout = array(self::MAIN_LEFT=>array(), self::MAIN_MIDDLE=>array(), self::MAIN_RIGHT=>array(), self::FLOAT_RIGHT=>array());
-    private static $cols;
+    private static $cols = array();
     private static $oneShotName = '';
 
     //stores the name of the module being executed
@@ -82,23 +82,22 @@ abstract class FrankizMiniModule
     /**
      * preload the list of minimodules
      */
-    public static function preload($_cols)
+    public static function preload($cols)
     {
-         if (is_array($_cols)) {
-            self::$cols = array_merge(self::$cols, $_cols);
-         } else {
-            self::$cols[] = $_cols;
-         }
+        self::$cols = array_merge(self::$cols, unflatten($cols));
     }
 
-    public static function oneShot($name)
+    public static function oneShot($name, $page)
     {
         self::$oneShotName = $name;
-        self::run();
+        self::run($page);
     }
 
     public static function run($page)
     {
+        if (empty(self::$cols))
+            return;
+
         if (self::$oneShotName == '')
         {
             if (S::logged())

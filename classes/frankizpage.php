@@ -41,7 +41,8 @@ class FrankizPage extends PlPage
     public function __construct()
     {
         parent::__construct();
-        FrankizMiniModule::preload(FrankizMiniModule::FLOAT_RIGHT);
+        if (!Env::has('solo'))
+            FrankizMiniModule::preload(FrankizMiniModule::FLOAT_RIGHT);
         // Set the default page
         $this->changeTpl('500.tpl');
     }
@@ -134,11 +135,17 @@ class FrankizPage extends PlPage
         $this->assign('casertConnected', IP::is_casert());
         $this->assign('logged', S::logged());
 
-        // TODO: Enable JSON loading of the module only
-        if (Env::has('solo'))
-            echo $this->raw();
-        else
+        // Enable JSON loading of the module only
+        if (Env::has('solo')) {
+            $this->jsonAssign('content', $this->raw());
+            $this->jsonAssign('title'  , $this->get_template_vars('title'));
+            $this->jsonAssign('pl_css' , $this->get_template_vars('pl_css'));
+            $this->jsonAssign('pl_js'  , $this->get_template_vars('pl_js'));
+            $this->jsonAssign('minimodules_js'  , $this->get_template_vars('minimodules_js'));
+            $this->jsonDisplay();
+        } else {
             $this->_run(self::getTplPath('frankiz.tpl'));
+        }
     }
 }
 

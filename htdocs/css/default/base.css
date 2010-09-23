@@ -71,7 +71,7 @@ a:hover, a:active {
     border: 1px solid black;
     background-color: white;
     opacity: .9;
-    z-index: 2;
+    z-index: 42;
 }
 
 #debug .fkz {
@@ -82,7 +82,7 @@ a:hover, a:active {
     border: 1px solid black;
     background-color: white;
     opacity: .9;
-    z-index: 2;
+    z-index: 42;
 }
 
 
@@ -168,7 +168,7 @@ a:hover, a:active {
     text-align: center;
     border: 1px #003757 solid;
     border-top: none;
-    z-index:20;
+    z-index:666;
 }
 
 #nav .subnav .bkg {
@@ -384,7 +384,7 @@ form {
     margin: 0;
 }
 
-input, .groups_picker > ul {
+input, textarea, .groups_picker > ul {
     font-weight: bold;
     border: 1px solid #002334;
     color: white;

@@ -3,25 +3,30 @@ var minimodulesJs = new Array();
 var includedJs = new Array();
 
 $(document).ready(function(){
+    minimodules();
+
+    for (name in minimodulesJs)
+        if (minimodulesJs[name] != '')
+            includeAndRun(name, minimodulesJs[name]);
+
+});
+
+function minimodules()
+{
     tempLayout = getLayout();
 
     if (logged) {
-	    $('.minimodules_zone').sortable({
-	         handle: '.head',
-	         tolerance: 'pointer',
-	         connectWith: '.minimodules_zone',
-	         opacity: 0.6,
-	         revert: false,
-	         activate: startSorting,
-	         stop: stopSorting
-	    });
+        $('.minimodules_zone').sortable({
+             handle: '.head',
+             tolerance: 'pointer',
+             connectWith: '.minimodules_zone',
+             opacity: 0.6,
+             revert: false,
+             activate: startSorting,
+             stop: stopSorting
+        });
     }
-
-    for (name in minimodulesJs) {
-        if (minimodulesJs[name] != '')
-            includeAndRun(name, minimodulesJs[name]);
-    }
-});
+}
 
 function includeAndRun(name, path)
 {
@@ -63,35 +68,35 @@ function stopSorting(event, ui)
 
 function cleanEmptyColumns()
 {
-	if ($('.minimodules_zone').size() == 4) {
-	    for (var i = 1; i <= 3; i++)
-	    {
-	        if ($('#column'+i).sortable('toArray').length == 0)
-	            $('#column'+i).parent().hide();
-	    }
-	}
-	
-	if ($('#column4').sortable('toArray').length == 0) {
-	    $('body').removeClass('enabledAside');
-	    $('body').addClass('disabledAside');
-	}
+    if ($('.minimodules_zone').size() == 4) {
+        for (var i = 1; i <= 3; i++)
+        {
+            if ($('#column'+i).sortable('toArray').length == 0)
+                $('#column'+i).parent().hide();
+        }
+    }
+
+    if ($('#column4').sortable('toArray').length == 0) {
+        $('body').removeClass('enabledAside');
+        $('body').addClass('disabledAside');
+    }
 }
 
 function getLayout()
 {
     if($('.minimodules_zone').size() == 4)
     {
-        var cols = {1: [], 2: [], 3: [], 4: []};
+        var cols = {"c1": [], "c2": [], "c3": [], "c4": []};
         var beginC = 1;
     } else {
-        var cols = {4: []};
+        var cols = {"c4": []};
         var beginC = 4;
     }
 
     for (var c = beginC; c <= 4; c++)
     {
         $('#column' + c + ' > li').each(function (i) {
-            cols[c][i] = $(this).attr('name');
+            cols["c" + c][i] = $(this).attr('name');
         });
     }
 
@@ -100,7 +105,11 @@ function getLayout()
 
 function saveLayout(layout)
 { 
-    request('minimodules/ajax/layout', layout, {}, false);
+    request({
+        "url" : "minimodules/ajax/layout"
+       ,"data": layout
+       ,"raw" : true
+    });
 }
 
 function addMinimodule(name, sender)
@@ -108,25 +117,33 @@ function addMinimodule(name, sender)
     sender.disabled = true;
     $('body').removeClass('disabledAside');
     $('body').addClass('enabledAside');
-    request('minimodules/ajax/add', {"name":name});
-    request('minimodules/ajax/get', {"name":name}, {"success": 
-        function (json) {
-            $('#column4').prepend(json.html);
-            $('#minimodule_'+name).hide();
-            $('#minimodule_'+name).show('slow', function() { 
-                sender.disabled = false;
-                if (json.js && json.js != '')
-                {
-                    includeAndRun(json.name, json.js);
-                }
-            });
-        }
+    request({
+        "url"  : "minimodules/ajax/add"
+       ,"data" : {"name" : name}
+    });
+    request({
+        "url"    : "minimodules/ajax/get"
+       ,"data"   : {"name" : name}
+       ,"success": function (json) 
+               {
+                $('#column4').prepend(json.html);
+                $('#minimodule_'+name).hide();
+                $('#minimodule_'+name).show('slow', function() {
+                    sender.disabled = false;
+                    if (json.js && json.js != '')
+                        includeAndRun(json.name, json.js);
+                });
+               }
     });
 }
 
 function removeMinimodule(name, sender)
 {
     sender.disabled = true;
-    request('minimodules/ajax/remove', {"name":name}, {"success": function(json) { sender.disabled = false; }});
+    request({
+        "url"     : "minimodules/ajax/remove"
+       ,"data"    : {"name":name}
+       ,"success" : function(json) { sender.disabled = false; }
+    });
     $('#minimodule_'+name).hide('slow', function() {this.parentNode.removeChild(this); cleanEmptyColumns();});
 }
