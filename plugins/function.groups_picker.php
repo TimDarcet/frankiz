@@ -40,7 +40,7 @@ function smarty_function_groups_picker($params, &$smarty)
     $behead     = (empty($params['behead']))     ? false                  : $params['behead'];
     $groups     = (empty($params['groups']))     ? unflatten($gI->root()) : Group::fromIds(unflatten($params['groups']));
 
-    $tree = new Tree($gI);
+    $tree = new Tree("Group");
 
     switch ($type) {
         case 'descending':
@@ -53,7 +53,7 @@ function smarty_function_groups_picker($params, &$smarty)
             $tree->fixed($groups);
     }
 
-    $tree->load(Group::BASE);
+    $tree->select(Group::BASE);
 
     if (!$behead) {
         $json = $tree->toJson($visibility);

@@ -39,7 +39,10 @@ abstract class Node
             $this->fillFromArray($datas);
     }
 
-    abstract public function treeInfo();
+    static public function treeInfo()
+    {
+        throw new Exception('Not implemented');
+    }
 
     public function fillFromArray(array $values)
     {
@@ -55,12 +58,28 @@ abstract class Node
 
     protected function hasChildren()
     {
-        return ($this->L() + 1 != $this->R());
+        return ($this->L != null) && ($this->L != null) &&($this->L + 1 != $this->R);
     }
 
     public function children()
     {
         return $this->children;
+    }
+
+    static protected function _sort($a, $b)
+    {
+        $a = intval($a->L());
+        $b = intval($b->L());
+        if ($a == $b)
+            return 0;
+        return ($a < $b) ? -1 : 1;
+    }
+
+    public function sortedChildren()
+    {
+        $sorted_children = $this->children;
+        usort($sorted_children, array('self', '_sort'));
+        return $sorted_children;
     }
 
     public function father()
@@ -174,26 +193,27 @@ abstract class Node
     *
     * @param $parent parent node
     */
-    public function remove()
+    public function delete()
     {
         if ($this->id == null)
             throw new Exception("This node doesn't exist");
 
-        $table = $this->treeInfo()->table();
-        XDB::execute('CALL '.$table.'_remove({?})', $this->id);
+        $table = static::treeInfo()->table();
+        XDB::execute('CALL '.$table.'_delete({?})', $this->id);
     }
 
     /**
-    * Create the node in the Db
-    * Require a stored procedure called {table}_addTo()
+    * Insert a node last in the Db
+    * Require a stored procedure called {table}_insert()
     * Example with a table called group :
-        CREATE PROCEDURE groups_addTo(IN parent_gid INT, OUT new_id INT)
+        CREATE PROCEDURE groups_insert(IN parent_gid INT, OUT new_id INT)
         BEGIN
             DECLARE parent_R INT DEFAULT NULL;
             DECLARE parent_depth INT DEFAULT NULL;
 
             START TRANSACTION;
                 SELECT R, depth INTO parent_R, parent_depth FROM groups WHERE gid = parent_gid;
+
                 IF ISNULL(parent_R) THEN
                     SET new_id = NULL;
                 ELSE
@@ -207,64 +227,63 @@ abstract class Node
     *
     * @param $parent parent node
     */
-    public function addTo(Node $parent)
+    public function insert(Node $parent)
     {
         if ($this->id != null)
             throw new Exception('This node already exists');
 
-        $table = $this->treeInfo()->table();
-        XDB::execute('CALL '.$table.'_addTo({?}, @new_id)', $parent->id());
+        $table = static::treeInfo()->table();
+        XDB::execute('CALL '.$table.'_insert({?}, @new_id)', $parent->id());
 
         $this->id = XDB::query('SELECT @new_id')->fetchOneCell();
     }
 
     /**
     * Move the node and its sub-tree in the Db
-    * Require a stored procedure called {table}_moveTo()
+    * Require a stored procedure called {table}_moveUnder()
     * Example with a table called group :
-        CREATE PROCEDURE groups_moveTo(IN g_gid INT, IN t_gid INT)
+        CREATE PROCEDURE groups_moveUnder(IN g_gid INT, IN p_gid INT)
         BEGIN
+            DECLARE g_ns ENUM('temp','group') DEFAULT NULL;
             DECLARE g_R INT DEFAULT NULL;
             DECLARE g_L INT DEFAULT NULL;
             DECLARE g_depth INT DEFAULT NULL;
-            DECLARE t_L INT DEFAULT NULL;
-            DECLARE t_depth INT DEFAULT NULL;
+            DECLARE p_R INT DEFAULT NULL;
+            DECLARE p_depth INT DEFAULT NULL;
             DECLARE delta INT DEFAULT NULL;
             DECLARE zone_min INT DEFAULT NULL;
             DECLARE zone_max INT DEFAULT NULL;
             DECLARE zone_sign INT DEFAULT NULL;
-            DECLARE init_shift INT DEFAULT NULL;
-            DECLARE end_shift INT DEFAULT NULL;
+            DECLARE shift INT DEFAULT NULL;
 
             START TRANSACTION;
-                SELECT R, L, depth INTO g_R, g_L, g_depth FROM groups WHERE gid = g_gid;
-                SELECT L, depth INTO t_L, t_depth FROM groups WHERE gid = t_gid;
+                SELECT ns, R, L, depth INTO g_ns, g_R, g_L, g_depth FROM groups WHERE gid = g_gid;
+                SELECT        L, depth INTO p_R, p_depth            FROM groups WHERE gid = p_gid;
 
-                IF !ISNULL(g_R) AND !ISNULL(t_L) THEN
-                    SET delta = g_R - g_L;
-                    SET zone_min  = LEAST(g_R, t_L);
-                    SET zone_max  = GREATEST(g_R, t_L);
-                    SET zone_sign = SIGN(g_R - t_L);
-                    SET init_shift = g_R + 1000;
-                    SET end_shift = init_shift + IF(zone_sign = 1, t_L - g_L + 1, t_L - g_R);
+                IF !ISNULL(g_R) AND !ISNULL(p_R) THEN
+                    SET delta = g_R - g_L + 1;
+                    SET zone_min  = LEAST(g_R, p_R);
+                    SET zone_max  = GREATEST(g_R, p_R);
+                    SET zone_sign = SIGN(g_R - p_R);
+                    SET shift = p_R - g_R + IF(zone_sign = 1, delta, 0);
 
-                    UPDATE groups SET R = R - init_shift, L = L - init_shift WHERE L >= g_L AND R <= g_R;
-                    UPDATE groups SET L = L + (zone_sign * (delta + 1)) WHERE L > zone_min AND L <= zone_max;
-                    UPDATE groups SET R = R + (zone_sign * (delta + 1)) WHERE R > zone_min AND R < zone_max;
-                    UPDATE groups SET R = R + end_shift, L = L + end_shift, depth = depth + (t_depth - g_depth + 1) WHERE L >= (g_L - init_shift) AND R <= (g_R - init_shift);
+                    UPDATE groups SET ns = 'temp' WHERE ns = g_ns AND L >= g_L AND R <= g_R;
+                    UPDATE groups SET L = L + (zone_sign * delta) WHERE ns = g_ns AND L >  zone_min AND L <= zone_max;
+                    UPDATE groups SET R = R + (zone_sign * delta) WHERE ns = g_ns AND R >= zone_min AND R <  zone_max;
+                    UPDATE groups SET R = R + shift, L = L + shift, depth = depth + (p_depth - g_depth + 1), ns = g_ns WHERE ns = 'temp';
                 END IF;
             COMMIT;
         END|
     *
     * @param $parent parent node
     */
-    public function moveTo(Node $parent)
+    public function moveUnder(Node $parent)
     {
         if ($this->id == null || $parent->id == null)
             throw new Exception("This node doesn't exist");
 
-        $table = $this->treeInfo()->table();
-        XDB::execute('CALL '.$table.'_moveTo({?}, {?})', $this->id(), $parent->id());
+        $table = static::treeInfo()->table();
+        XDB::execute('CALL '.$table.'_moveUnder({?}, {?})', $this->id(), $parent->id());
     }
 }
 
@@ -304,12 +323,7 @@ class Group extends Node
         parent::__construct($datas);
     }
 
-    public function treeInfo()
-    {
-        return GroupsTreeInfo::get();
-    }
-
-    static public function _treeInfo()
+    static public function treeInfo()
     {
         return GroupsTreeInfo::get();
     }
@@ -356,9 +370,9 @@ class Group extends Node
         return $groups;
     }
 
-    public function addTo(Node $parent)
+    public function insert(Node $parent)
     {
-        parent::addTo($parent);
+        parent::insert($parent);
 
         XDB::execute('UPDATE  groups
                          SET  name = {?}, label = {?}, description = {?}
@@ -373,6 +387,7 @@ class Group extends Node
                                       ),
                       "attr"  => array(
                                         "gid"   => $this->gid(),
+                                        "l"     => $this->L(),
                                         "name"  => $this->name(),
                                         "title" => $this->name(),
                                         "label" => $this->label()
@@ -382,8 +397,10 @@ class Group extends Node
         if ($this->hasChildren())
         {
             $json['state'] = (empty($this->children)) ? "closed" : "open";
+
+            $children = $this->sortedChildren();
             $json['children'] = array();
-            foreach($this->children as $child)
+            foreach($children as $child)
                 $json['children'][] = $child->toJson();
         }
 

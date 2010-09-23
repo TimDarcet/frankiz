@@ -19,7 +19,7 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-// Collection of Db-exsitent objects
+// Collection of Db-existent objects
 // Objects need to have an unique id accessible by id()
 class Collection
 {

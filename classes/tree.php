@@ -28,7 +28,7 @@ class Tree extends Collection
 
     public function __construct($collected_class)
     {
-        $this->treeInfo = $collected_class::_treeInfo();
+        $this->treeInfo = $collected_class::treeInfo();
         parent::__construct($collected_class);
     }
 

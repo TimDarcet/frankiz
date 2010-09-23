@@ -40,9 +40,10 @@ abstract class TreeInfo
     {
         $id = $this->idName();
         $ta = $this->table();
+        $ns = ($this->ns() != '') ? XDB::format(' AND ns = {?}', $this->ns()) : '';
         $res = XDB::query("SELECT  $id AS id, L, R, depth
                              FROM  $ta
-                            WHERE  (R - L + 1) / 2 = (SELECT COUNT(*) FROM $ta)");
+                            WHERE  (R - L + 1) / 2 = (SELECT COUNT(*) FROM $ta WHERE 1 $ns) $ns");
         return $this->node($res->fetchOneAssoc());
     }
 
@@ -58,6 +59,9 @@ abstract class TreeInfo
     abstract public function maxDepth();
     // name of the table containing the nodes
     abstract public function table();
+    // Namespace of the tree in the Db
+    // Can be empty if their is only one tree in the Db
+    abstract public function ns();
     // name of the column containing the nodes id
     abstract public function idName();
     // The node builder
@@ -78,6 +82,11 @@ class GroupsTreeInfo extends TreeInfo
     public function table()
     {
         return 'groups';
+    }
+
+    public function ns()
+    {
+        return '';
     }
 
     public function idName()
