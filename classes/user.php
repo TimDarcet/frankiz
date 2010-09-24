@@ -61,28 +61,22 @@ class User extends PlUser
     // Contains the iid of the current picture
     protected $photo = null;
 
-    /**
+    const SELECT_BASE  = 0x01;
+    const SELECT_SKIN  = 0x02;
+
+    /** TODO
      * Constructs the User object
      *
      * @param $login An user login.
      * @param $values List of known user properties.
      * @param $lazy If datas are missing, should the constructor fetch them in the database ?
      */
-    public function __construct($login, $values = array(), $lazy = false)
+    public function __construct($datas)
     {
-        $this->fillFromArray($values);
-
-        // If the user id was not part of the known values, determines it from
-        // the login.
-        if (!$this->id()) {
-            $this->uid = $this->getLogin($login);
-        }
-
-        if (!$lazy) {
-	        // Preloads main properties (assumes the loader will lazily get them
-	        // from variables already set in the object).
-	        $this->loadMainFields();
-        }
+        if (!is_array($datas))
+            $this->uid = $datas;
+        else
+            $this->fillFromArray($datas);
     }
 
     // Implementation of the login to user_id method.
@@ -139,16 +133,7 @@ class User extends PlUser
             return;
         }
 
-        global $globals;
-        $res = XDB::query("SELECT  a.hruid, a.perms, sk.name AS skin, a.state,
-                                   a.hash, a.original, a.photo, a.gender,
-                                   a.on_platal, a.email_format, a.bestalias,
-                                   CONCAT(a.firstname, ' ', a.lastname) AS full_name,
-                                   IF(a.nickname = '', a.firstname, a.nickname) AS display_name
-                             FROM  account AS a
-                        LEFT JOIN  skins AS sk ON (a.skin = sk.skin_id)
-                            WHERE  a.uid = {?}", $this->id());
-        $this->fillFromArray($res->fetchOneAssoc());
+        $this->select(User::SELECT_BASE | User::SELECT_SKIN);
     }
 
     // Specialization of the fillFromArray method, to implement hacks to enable
@@ -157,31 +142,16 @@ class User extends PlUser
     {
         // We also need to convert the gender (usually named "femme"), and the
         // email format parameter (valued "texte" instead of "text").
-        if (isset($values['gender']) && ($values['gender'] == 'man' || $values['gender'] == 'woman')) {
+        if (isset($values['gender']) && ($values['gender'] == 'man' || $values['gender'] == 'woman'))
             $values['gender'] = (bool) ($values['gender'] == 'woman');
-        }
+
+        if (!isset($values['full_name']) && isset($values['firstname']) && isset($values['lastname']))
+            $values['full_name'] = $values['firstname'] . ' ' . $values['lastname'];
+
+        if (!isset($values['display_name']) && isset($values['nickname']) && isset($values['firstname']))
+            $values['display_name'] = (empty($values['nickname'])) ? $values['firstname'] : $values['nickname'];
+
         parent::fillFromArray($values);
-    }
-
-    public static function getBulkUsersWithUIDs(array $UIDs)
-    {
-        $users = Array();
-
-        if (count($UIDs) > 0)
-        {
-            $iter = XDB::iterator("SELECT  a.uid, a.hruid, a.perms, sk.name AS skin, a.state,
-                                           a.hash, a.original, a.photo, a.gender,
-                                           a.on_platal, a.email_format, a.bestalias,
-                                           CONCAT(a.firstname, ' ', a.lastname) AS full_name,
-                                           IF(a.nickname = '', a.firstname, a.nickname) AS display_name
-                                     FROM  account AS a
-                                LEFT JOIN  skins AS sk ON (a.skin = sk.skin_id)
-                                    WHERE  a.uid IN {?}", $UIDs);
-            while ($datas = $iter->next())
-                $users[$datas['uid']] = new User($datas['uid'], $datas, true);
-        }
-
-        return $users;
     }
 
     // Specialization of the buildPerms method
@@ -219,7 +189,12 @@ class User extends PlUser
     */
     public function bestImage()
     {
-        return ($this->photo != 0) ? $this->photo : $this->original;
+        if ($this->photo != 0)
+            return $this->photo;
+        if ($this->original != 0)
+            return $this->original;
+
+        return ($this->isFemale()) ? -1 : 0;
     }
 
     /**
@@ -449,6 +424,70 @@ class User extends PlUser
             return new AnonymousUser();
         else
             return parent::getSilentWithValues($login, $values);
+    }
+
+    public static function getWithValues($login, $values, $callback = false)
+    {
+        if (!$callback) {
+            $callback = array('User', '_default_user_callback');
+        }
+
+        try {
+            $u = new User($values['uid']);
+            return $u->select(User::SELECT_BASE | User::SELECT_SKIN);
+        } catch (UserNotFoundException $e) {
+            return call_user_func($callback, $login, $e->results);
+        }
+    }
+
+    public function select($fields)
+    {
+        self::batchSelect(array($this), $fields);
+        return $this;
+    }
+
+    public static function toIds(array $users)
+    {
+        $result = array();
+        foreach ($users as $n)
+            if ($n instanceof User)
+                $result[] = $n->id();
+            else
+                $result[] = $n;
+        return $result;
+    }
+
+    public static function batchSelect(array $users, $fields)
+    {
+        if (count($users) < 1)
+            return;
+
+        $joints = array();
+        $columns = array();
+        if ($fields & self::SELECT_BASE) {
+            $columns['a'] = array('hruid', 'perms', 'state',
+                                   'hash', 'original', 'photo', 'gender',
+                                   'on_platal', 'email_format', 'bestalias',
+                                   'firstname', 'lastname', 'nickname');
+        }
+
+        if ($fields & self::SELECT_SKIN) {
+            $columns['sk'] = array('name AS skin');
+            $joints['sk'] = PlSqlJoin::left('skins', '$ME.skin_id = a.skin');
+        }
+
+        $sql_columns = array();
+        foreach($columns as $table => $cols)
+            $sql_columns[] = implode(', ', array_map(function($value) use($table) { return $table . '.' . $value; }, $cols));
+
+        $res = XDB::query('SELECT  a.uid, ' . implode(', ', $sql_columns) . '
+                             FROM  account AS a
+                             ' . PlSqlJoin::formatJoins($joints, array()) . '
+                            WHERE  a.uid IN {?}', self::toIds($users));
+        $ids_datas = $res->fetchAllAssoc('uid');
+
+        foreach ($users as $user)
+            $user->fillFromArray($ids_datas[$user->id()]);
     }
 }
 

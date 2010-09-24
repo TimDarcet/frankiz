@@ -39,6 +39,11 @@ class Collection
         return $json;
     }
 
+    public function toArray()
+    {
+        return $this->collected;
+    }
+
     public function select($fields)
     {
         $c_class = $this->c_class;

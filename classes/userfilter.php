@@ -63,7 +63,7 @@ class UFC_Hruid implements UserFilterCondition
 // }}}
 
 // {{{ class UFC_Ip
-/** Filters users based on one of their last IPs
+/** Filters users based on their IPs
  * @param $ip IP from which connection are checked
  */
 class UFC_Ip implements UserFilterCondition
@@ -78,7 +78,8 @@ class UFC_Ip implements UserFilterCondition
     public function buildCondition(PlFilter &$uf)
     {
         $sub = $uf->addIpFilter();
-        return XDB::format($sub . '.ip LIKE {?}', $ip);
+        $right = XDB::formatWildcards(XDB::WILDCARD_CONTAINS, $this->ip);
+        return $sub . '.ip ' . $right;
     }
 }
 // }}}
@@ -190,16 +191,39 @@ class UFC_Name implements UserFilterCondition
         $right = XDB::formatWildcards($this->mode, $this->text);
 
         $conds = array();
-        if (($this->type & self::LASTNAME) == $this->type)
+        if ($this->type & self::LASTNAME)
             $conds[] = 'a.lastname' . $right;
 
-        if (($this->type & self::FIRSTNAME) == $this->type)
+        if ($this->type & self::FIRSTNAME)
             $conds[] = 'a.firstname' . $right;
 
-        if (($this->type & self::NICKNAME) == $this->type)
+        if ($this->type & self::NICKNAME)
             $conds[] = 'a.nickname' . $right;
 
         return $cond = implode(' OR ', $conds);
+    }
+}
+// }}}
+
+// {{{ class UFC_Bestalias
+/** Filters users based on their mail adresse
+ * @param $mail Mail adresse
+ */
+class UFC_Bestalias implements UserFilterCondition
+{
+    private $val;
+
+    public function __construct($val)
+    {
+        if (!is_array($val)) {
+            $val = array($val);
+        }
+        $this->val = $val;
+    }
+
+    public function buildCondition(PlFilter &$uf)
+    {
+        return XDB::format('a.bestalias IN {?}', $this->val);
     }
 }
 // }}}
@@ -277,57 +301,46 @@ class UFC_Sex implements UserFilterCondition
 // {{{ class UFC_Group
 /** Filters users based on group membership
  * @param $group Group whose members we are selecting
- * @param $type Level of membership (Cluster::LOBBY, Cluster::MEMBER, ...)
+ * @param $right Level of membership (Rights::FRIEND, Rights::MEMBER, ...)
  */
 class UFC_Group implements UserFilterCondition
 {
-    private $group;
-    private $type;
+    private $gids;
+    private $right;
 
-    public function __construct($group, $type = Cluster::LOBBY)
+    public function __construct($gs, $right = Rights::MEMBER)
     {
-        $this->group = intval($group);
-        $this->type = $type;
+        $this->right = $right;
+        $this->gids  = Group::toIds(unflatten($gs));
     }
 
     public function buildCondition(PlFilter &$uf)
     {
-        // Check for members at least "sympathisants"
-        if ($this->type == Cluster::LOBBY) {
-            $sub = $uf->addGroupFilter();
-            return $sub . '.gid = ' . $this->group;
+        $inheritance = Rights::inheritance($this->right);
+        $sub = $uf->addGroupFilter();
+        $gro = uniqid();
+        $cur = uniqid();
 
-        // Check for active members
-        } else if ($this->type == Cluster::MEMBER) {
-            return 'EXISTS ( 
-            SELECT * FROM user_clusters AS sub_uc 
-            INNER JOIN clusters AS sub_c ON sub_c.cid = sub_uc.cid 
-            WHERE sub_uc.uid = a.uid AND sub_c.type != ' . Cluster::LOBBY . ' AND sub_c.gid = ' . $this->group . ' )';
+        if ($inheritance == Rights::FIXED)
+            return XDB::format($sub . '.gid IN {?}', $this->gids);
 
-        // Check for writers
-        } else if ($this->type == Cluster::MEMBER) {
-            return 'EXISTS ( 
-                SELECT * FROM user_clusters AS sub_uc 
-                INNER JOIN clusters AS sub_c ON sub_c.cid = sub_uc.cid 
-                WHERE sub_uc.uid = a.uid AND (sub_c.type == ' . Cluster::WRITER . ' OR sub_c.type == ' . Cluster::ADMIN . ') AND sub_c.gid = ' . $this->group . ' )';
-
-        // Check for admins
-        } else if ($this->type == Cluster::ADMIN) {
-            return 'EXISTS ( 
-                SELECT * FROM user_clusters AS sub_uc 
-                INNER JOIN clusters AS sub_c ON sub_c.cid = sub_uc.cid 
-                WHERE sub_uc.uid = a.uid AND sub_c.type == ' . Cluster::ADMIN . ' AND sub_c.gid = ' . $this->group . ' )';
-        }
-
+        if ($inheritance == Rights::ASCENDING)
+            return XDB::format($sub . '.gid IN (
+                                            SELECT  '.$gro.'.gid
+                                              FROM  groups AS '.$gro.'
+                                        INNER JOIN  groups AS '.$cur.' ON '.$cur.'.gid IN {?}
+                                             WHERE  '.$gro.'.L >= '.$cur.'.L AND '.$gro.'.R <= '.$cur.'.R
+                                               )
+                                AND FIND_IN_SET({?}, '.$sub.'.rights)', $this->gids, $this->right);
     }
 }
 // }}}
 
-// {{{ class UFC_Casert
-/** Filters users based on group membership
+// {{{ class UFC_Room
+/** Filters users based on their room'sid
  * @param $val Room's Id
  */
-class UFC_Casert implements UserFilterCondition
+class UFC_Room implements UserFilterCondition
 {
     private $val;
 
@@ -339,7 +352,8 @@ class UFC_Casert implements UserFilterCondition
     public function buildCondition(PlFilter &$uf)
     {
         $sub = $uf->addRoomFilter();
-        return XDB::format($sub . '.owner_id = {?}', $this->val);
+        $right = XDB::formatWildcards(XDB::WILDCARD_CONTAINS, $this->val);
+        return $sub . '.rid ' . $right;
     }
 }
 // }}}
@@ -362,7 +376,7 @@ class UFC_Cellphone implements UserFilterCondition
 // }}}
 
 // {{{ class UFC_Casertphone
-class UFC_Casertphone implements UserFilterCondition
+class UFC_Roomphone implements UserFilterCondition
 {
     private $number;
 
@@ -373,7 +387,9 @@ class UFC_Casertphone implements UserFilterCondition
 
     public function buildCondition(PlFilter &$uf)
     {
-        return XDB::format('a.cellphone = {?}', $this->number);
+        $sub = $uf->addRoomFilter();
+        $right = XDB::formatWildcards(XDB::WILDCARD_CONTAINS, $this->number);
+        return $sub . '.phone ' . $right;
     }
 }
 // }}}
@@ -619,7 +635,7 @@ class UserFilter extends PlFilter
 
     public function getUID($pos = 0)
     {
-        $uids = $this->getUIDList(null, new PlFilter(1, $pos));
+        $uids = $this->getUIDList(null, new PlLimit(1, $pos));
         if (count($uids) == 0) {
             return null;
         } else {
@@ -629,7 +645,8 @@ class UserFilter extends PlFilter
 
     public function getUsers($limit = null)
     {
-        return User::getBulkUsersWithUIDs($this->getUIDs($limit));
+        $c = new Collection('User');
+        return $c->add($this->getUIDs($limit));
     }
 
     public function getUser($pos = 0)
@@ -638,7 +655,7 @@ class UserFilter extends PlFilter
         if ($uid == null) {
             return null;
         } else {
-            return User::getWithUID($uid);
+            return new User($uid);
         }
     }
 
@@ -661,6 +678,14 @@ class UserFilter extends PlFilter
         } else {
             return $this->lastcount;
         }
+    }
+
+    public function hasGroups()
+    {
+    }
+
+    public function getGroups() 
+    {
     }
 
     public function setCondition(PlFilterCondition &$cond)
@@ -698,16 +723,17 @@ class UserFilter extends PlFilter
     
     public function addIpFilter()
     {
-        addIpFilter();
+        $this->with_room = true;
         $this->with_ip = true;
-        return 'ri';
+        return 'tips';
     }
     
     protected function roomJoins()
     {
         $joins = array();
         if ($this->with_room) {
-            $joins['r'] = PlSqlJoin::left('rooms_owners', '$ME.owner_id = a.uid AND $ME.owner_type = "user"');
+            $joins['ro'] = PlSqlJoin::inner('rooms_owners', '$ME.owner_id = a.uid AND $ME.owner_type = "user"');
+            $joins['r']  = PlSqlJoin::left('rooms', '$ME.rid = ro.rid');
         }
         return $joins;
     }
@@ -715,9 +741,9 @@ class UserFilter extends PlFilter
     protected function ipJoins()
     {
         $joins = array();
-        if ($this->with_ip) {
-            $joins['ri'] = PlSqlJoin::left('rooms_ip', '$ME.rid = r.uid');
-        }
+        if ($this->with_ip)
+            $joins['tips'] = PlSqlJoin::inner('ips', '$ME.rid = r.rid');
+
         return $joins;
     }
 
@@ -742,39 +768,24 @@ class UserFilter extends PlFilter
 
     /** GROUPS and CLUSTERS
      */
-    private $with_groups = false;
-    private $with_clusters = true;
+    private $with_groups = array();
 
     public function addGroupFilter()
     {
-        $this->with_groups = true;
-        return 'ug';
-    }
-
-    public function addClusterFilter()
-    {
-        $this->with_clusters = true;
-        return 'uc';
+        $table_uid = 'ug_' . uniqid();
+        $this->with_groups[$table_uid] = true;
+        return $table_uid;
     }
 
     protected function groupJoins()
     {
         $joins = array();
-        if ($this->with_groups) {
-            $joins['ug'] = PlSqlJoin::inner('users_groups', '$ME.uid = a.uid');
-        }
+        foreach ($this->with_groups as $table_uid => $bool)
+            if ($bool)
+                $joins[$table_uid] = PlSqlJoin::inner('users_groups', '$ME.uid = a.uid');
+
         return $joins;
     }
-
-    protected function clusterJoins()
-    {
-        $joins = array();
-        if ($this->with_groups) {
-            $joins['uc'] = PlSqlJoin::inner('users_clusters', '$ME.uid = a.uid');
-        }
-        return $joins;
-    }
-
 
     /** PHONE
      */

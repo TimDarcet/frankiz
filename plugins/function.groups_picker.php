@@ -53,7 +53,7 @@ function smarty_function_groups_picker($params, &$smarty)
             $tree->fixed($groups);
     }
 
-    $tree->select(Group::BASE);
+    $tree->select(Group::SELECT_BASE);
 
     if (!$behead) {
         $json = $tree->toJson($visibility);
