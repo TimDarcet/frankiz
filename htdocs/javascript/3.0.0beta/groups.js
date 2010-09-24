@@ -14,7 +14,7 @@ function jsonGroupToJstreeData(raw)
             child.state = "closed";
         } else if (raw[c].children) {
             child.state = "open";
-            child.children = buildData(raw[c].children);
+            child.children = jsonGroupToJstreeData(raw[c].children);
         }
         children.push(child);
     }
