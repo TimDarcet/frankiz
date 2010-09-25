@@ -49,11 +49,11 @@ core:
 ## conf
 ##
 
-conf: spool/templates_c spool/mails_c classes/frankizglobals.php htdocs/.htaccess spool/conf spool/tmp
+conf: spool/templates_c spool/mails_c classes/frankizglobals.php htdocs/.htaccess spool/conf spool/tmp spool/sessions
 
-spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp:
+spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/sessions:
 	mkdir -p $@
-	chmod o+w $@
+	chmod ug+w $@
 
 htdocs/.htaccess: htdocs/.htaccess.in Makefile
 	@REWRITE_BASE="/~$$(id -un)"; \
