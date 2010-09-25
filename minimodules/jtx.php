@@ -21,18 +21,30 @@
 
 class JtxMiniModule extends FrankizMiniModule
 {
-
-    public function __construct()
+    public function auth()
     {
-	    if (IP::is_internal(IP::get()))
-        {
-            $this->tpl = "minimodules/jtx/internal.tpl";
-        }
+        if (IP::is_internal())
+            return AUTH_PUBLIC;
         else 
-        {
-            $this->tpl = "minimodules/jtx/external.tpl";
-        }
-        $this->titre = "Video du jour";
+            return AUTH_COOKIE;
+    }
+
+    public function tpl()
+    {
+        if (IP::is_internal())
+            return 'minimodules/jtx/internal.tpl';
+        else 
+            return 'minimodules/jtx/external.tpl';
+    }
+
+    public function title()
+    {
+        return 'Video du jour';
+    }
+
+    public function run()
+    {
+
     }
 
 }

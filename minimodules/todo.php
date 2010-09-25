@@ -21,11 +21,37 @@
 
 class TodoMiniModule extends FrankizMiniModule
 {
-    const auth  = AUTH_COOKIE;
-    const perms = 'user';
-    const js    = 'minimodules/todo.js';
+    public function auth()
+    {
+        return AUTH_COOKIE;
+    }
 
-    public function __construct()
+    public function perms()
+    {
+        return 'user';
+    }
+
+    public function js()
+    {
+        return 'minimodules/todo.js';
+    }
+
+    public function css()
+    {
+        return 'minimodules/todo.css';
+    }
+
+    public function tpl()
+    {
+        return 'minimodules/todo/todo.tpl';
+    }
+
+    public function title()
+    {
+        return 'To-Do';
+    }
+
+    public function run()
     {
         $res=XDB::query('SELECT todo_id, sent, checked, tobedone
                            FROM todo
@@ -35,8 +61,6 @@ class TodoMiniModule extends FrankizMiniModule
         $array_todo = $res->fetchAllAssoc();
 
         $this->assign('list', $array_todo);
-        $this->tpl = "minimodules/todo/todo.tpl";
-        $this->titre = "To-Do";
     }
 }
 

@@ -19,37 +19,16 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class IkMiniModule extends FrankizMiniModule
+class ChatMiniModule extends FrankizMiniModule
 {
-    public function auth()
-    {
-        if (IP::is_internal())
-            return AUTH_PUBLIC;
-        else 
-            return AUTH_COOKIE;
-    }
+    const auth  = AUTH_COOKIE;
+    const perms = 'user';
 
-    public function css()
+    public function __construct()
     {
-        return 'minimodules/ik.css';
+        $this->tpl = "minimodules/chat/chat.tpl";
+        $this->titre = "Chat";
     }
-
-    public function tpl()
-    {
-        return 'minimodules/ik/last_ik.tpl';
-    }
-
-    public function title()
-    {
-        return 'IK électronique';
-    }
-
-    public function run()
-    {
-        $res = XDB::query("SELECT * FROM ik ORDER BY date DESC", $id)->fetchOneRow();
-        $this->assign('ik', $res);
-    }
-
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

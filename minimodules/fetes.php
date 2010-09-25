@@ -21,20 +21,28 @@
 
 class FetesMiniModule extends FrankizMiniModule
 {
-        public function __construct()
-        {
-                $today = date('d');
-                $month = date('m');
-                $res = XDB::query("
-                        SELECT name
-                        FROM days
-                        WHERE day=$today AND month=$month
-                        ");
-                $fetes = $res->fetchColumn(0);
-                $this->assign("fetes", $fetes);
-                $this->tpl = "minimodules/fetes/fetes.tpl";
-                $this->titre = "Fêtes du jour";
-        }
+    public function tpl()
+    {
+        return "minimodules/fetes/fetes.tpl";
+    }
+
+    public function title()
+    {
+        return "Fêtes du jour";
+    }
+
+    public function __construct()
+    {
+        $today = date('d');
+        $month = date('m');
+        $res = XDB::query("
+                SELECT name
+                FROM days
+                WHERE day=$today AND month=$month
+                ");
+        $fetes = $res->fetchColumn(0);
+        $this->assign("fetes", $fetes);
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

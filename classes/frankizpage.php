@@ -24,11 +24,31 @@ class SkinFileNotFoundException extends Exception
     protected $skin;
     protected $file;
 
-    public function _construct($message, $skin, $file)
+    public function __construct($skin, $file)
     {
-        $this->skin = $skin;
-        $this->file = $file;
-        parent::__construct($message);
+        $this->skin = unflatten($skin);
+        $this->file = unflatten($file);
+    }
+
+    public static function merge($exceptions)
+    {
+        $exceptions = unflatten($exceptions);
+
+        $skins = array();
+        $files = array();
+        foreach($exceptions as $e) {
+            $skins = array_merge($skins, $e->skin);
+            $files = array_merge($files, $e->file);
+        }
+
+        return new SkinFileNotFoundException($skins, $files);
+    }
+
+    public function __toString()
+    {
+        return 'SkinFileNotFoundException' . "\n" .
+                implode(', ', $this->skin) . "\n" .
+                implode(', ', $this->file);
     }
 }
 
@@ -41,8 +61,6 @@ class FrankizPage extends PlPage
     public function __construct()
     {
         parent::__construct();
-        if (!Env::has('solo'))
-            FrankizMiniModule::preload(FrankizMiniModule::FLOAT_RIGHT);
         // Set the default page
         $this->changeTpl('500.tpl');
     }
@@ -51,7 +69,6 @@ class FrankizPage extends PlPage
     {
         global $globals;
         if(!S::has('skin') || S::v('skin') == ""){
-            //TODO : do only if we are serving the webpage, not the RSS or a webservice/minipage
             if (Cookie::has('skin')) {
                 $skin = Cookie::v('skin');
             } else {
@@ -87,7 +104,7 @@ class FrankizPage extends PlPage
         }
 
         // We want to be warned if a template/css can't be loaded
-        throw new SkinFileNotFoundException("Can't load the file $file");
+        throw new SkinFileNotFoundException(S::v('skin', $globals->skin), $file);
     }
 
     public static function getTplPath($tpl)
@@ -112,7 +129,16 @@ class FrankizPage extends PlPage
 
     public function addCssLink($css)
     {
-        parent::addCssLink(self::getCssPath($css));
+        $csss = unflatten($css);
+        $exceptions = array();
+        foreach ($csss as $css)
+            try {
+            parent::addCssLink(self::getCssPath($css));
+            } catch (SkinFileNotFoundException $e) {
+                $exceptions[] = $e;
+            }
+
+        return SkinFileNotFoundException::merge($exceptions);
     }
 
     public function run()
@@ -120,10 +146,10 @@ class FrankizPage extends PlPage
         $skin = $this->load_skin();
         $this->assign('skin', S::v('skin'));
 
-        FrankizMiniModule::run($this);
-        $this->assign('minimodules', FrankizMiniModule::get_minimodules());
-        $this->assign('minimodules_layout', FrankizMiniModule::get_layout());
-        $this->assign('minimodules_js', FrankizMiniModule::get_js());
+        if (!Env::has('solo') && !Env::has('json'))
+            $this->assign('MiniModules_COL_FLOAT', FrankizMiniModule::get(S::user()->minimodules(FrankizMiniModule::COL_FLOAT)));
+
+        $this->addCssLink(FrankizMiniModule::batchCss());
 
         if (S::logged())
         {
@@ -132,7 +158,6 @@ class FrankizPage extends PlPage
             //$this->assign('free_layout' , $groups_layout[Group::FREE]);
         }
 
-        $this->assign('casertConnected', IP::is_casert());
         $this->assign('logged', S::logged());
 
         // Enable JSON loading of the module only
@@ -141,7 +166,6 @@ class FrankizPage extends PlPage
             $this->jsonAssign('title'  , $this->get_template_vars('title'));
             $this->jsonAssign('pl_css' , $this->get_template_vars('pl_css'));
             $this->jsonAssign('pl_js'  , $this->get_template_vars('pl_js'));
-            $this->jsonAssign('minimodules_js'  , $this->get_template_vars('minimodules_js'));
             $this->jsonDisplay();
         } else {
             $this->_run(self::getTplPath('frankiz.tpl'));

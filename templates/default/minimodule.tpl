@@ -20,18 +20,17 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if isset($minimodules.$module_name|smarty:nodefaults)}
-
-<li name="{$module_name}" class="minimodule" id="minimodule_{$module_name}">
-        <div class="head">
-            <span id="{$module_name}_logo"></span>
-            {$minimodules.$module_name->get_titre()}
-        </div>
-        <div class="body">
-            {include file=$minimodules.$module_name->get_template() minimodule=$minimodules.$module_name->get_params()}
-        </div>
+<li name="{$minimodule->name()}" class="minimodule" id="minimodule_{$minimodule->name()}">
+    <div class="head">
+        <span id="{$minimodule->name()}_logo"></span>
+        {$minimodule->title()}
+    </div>
+    <div class="body">
+        {include file=$minimodule->tpl()|rel minimodule=$minimodule->tplVars()}
+    </div>
 </li>
-
+{if ($minimodule->js())}
+    <script>includeAndRun("{$minimodule->name()}", "{$minimodule->js()}")</script>
 {/if}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

@@ -21,30 +21,36 @@
 
 class AnniversairesMiniModule extends FrankizMiniModule
 {
+    public function tpl()
+    {
+        return 'minimodules/anniversaires/anniversaires.tpl';
+    }
 
-        public function __construct()
-        {
-                $today= date('Y-m-d');
-                $res = XDB::query("SELECT  a.firstname, a.lastname, s.promo
-                                     FROM  account AS a
-                               INNER JOIN  studies AS s ON  a.uid=s.uid
-                                    WHERE  a.next_birthday=CURDATE() AND a.on_platal=1
-                                           AND s.formation_id=1
-                                 ORDER BY  s.promo");
-                $raw_annivs = $res->fetchAllAssoc();
-                $anniversaires = array();
-                foreach ($raw_annivs as $anniv) {
-                    $promo = $anniv['promo'];
-                    if (!array_key_exists($promo, $anniversaires)) {
-                        $anniversaires[$promo] = array();
-                    }
-                    $anniversaires[$promo][] = $anniv;
-                }
-                $this->assign('anniversaires', $anniversaires);
-                $this->tpl = "minimodules/anniversaires/anniversaires.tpl";
-                $this->titre = "Joyeux anniversaire!";
+    public function title()
+    {
+        return 'Joyeux anniversaire!';
+    }
+
+    public function run()
+    {
+        $today= date('Y-m-d');
+        $res = XDB::query("SELECT  a.firstname, a.lastname, s.promo
+                             FROM  account AS a
+                       INNER JOIN  studies AS s ON  a.uid=s.uid
+                            WHERE  a.next_birthday=CURDATE() AND a.on_platal=1
+                                   AND s.formation_id=1
+                         ORDER BY  s.promo");
+        $raw_annivs = $res->fetchAllAssoc();
+        $anniversaires = array();
+        foreach ($raw_annivs as $anniv) {
+            $promo = $anniv['promo'];
+            if (!array_key_exists($promo, $anniversaires)) {
+                $anniversaires[$promo] = array();
+            }
+            $anniversaires[$promo][] = $anniv;
         }
-
+        $this->assign('anniversaires', $anniversaires);
+    }
 }
 
 

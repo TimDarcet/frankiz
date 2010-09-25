@@ -1,14 +1,9 @@
 var tempLayout;
-var minimodulesJs = new Array();
-var includedJs = new Array();
+var includedJs = [];
+var homeCols = ["COL_LEFT", "COL_MIDDLE", "COL_RIGHT"];
 
 $(document).ready(function(){
     minimodules();
-
-    for (name in minimodulesJs)
-        if (minimodulesJs[name] != '')
-            includeAndRun(name, minimodulesJs[name]);
-
 });
 
 function minimodules()
@@ -57,7 +52,7 @@ function stopSorting(event, ui)
 {
     $('.minimodules_zone').removeClass('sorting');
     cleanEmptyColumns();
-    
+
     var currentLayout = getLayout();
     if (tempLayout != currentLayout)
     {
@@ -68,15 +63,12 @@ function stopSorting(event, ui)
 
 function cleanEmptyColumns()
 {
-    if ($('.minimodules_zone').size() == 4) {
-        for (var i = 1; i <= 3; i++)
-        {
-            if ($('#column'+i).sortable('toArray').length == 0)
-                $('#column'+i).parent().hide();
-        }
-    }
+    if ($('.minimodules_zone').size() == 4)
+        for (var i in homeCols)
+            if ($('#' + homeCols[i]).sortable('toArray').length == 0)
+            	$('#' + homeCols[i]).parent().hide();
 
-    if ($('#column4').sortable('toArray').length == 0) {
+    if ($('#COL_FLOAT').sortable('toArray').length == 0) {
         $('body').removeClass('enabledAside');
         $('body').addClass('disabledAside');
     }
@@ -84,20 +76,19 @@ function cleanEmptyColumns()
 
 function getLayout()
 {
+	var cols = {"COL_FLOAT": []};
+    $('#COL_FLOAT > li').each(function (k) {
+        cols["COL_FLOAT"][k] = $(this).attr('name');
+    });
+
     if($('.minimodules_zone').size() == 4)
     {
-        var cols = {"c1": [], "c2": [], "c3": [], "c4": []};
-        var beginC = 1;
-    } else {
-        var cols = {"c4": []};
-        var beginC = 4;
-    }
-
-    for (var c = beginC; c <= 4; c++)
-    {
-        $('#column' + c + ' > li').each(function (i) {
-            cols["c" + c][i] = $(this).attr('name');
-        });
+	    for (var i in homeCols) {
+	    	cols[homeCols[i]] = new Array();
+	        $('#' + homeCols[i] + ' > li').each(function (k) {
+	            cols[homeCols[i]][k] = $(this).attr('name');
+	        });
+	    }
     }
 
     return JSON.stringify(cols);

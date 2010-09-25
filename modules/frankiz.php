@@ -36,7 +36,9 @@ class FrankizModule extends PlModule
 
     function handler_accueil($page)
     {
-        FrankizMiniModule::preload(array(FrankizMiniModule::MAIN_LEFT, FrankizMiniModule::MAIN_MIDDLE, FrankizMiniModule::MAIN_RIGHT));
+        $page->assign('MiniModules_COL_LEFT'  , FrankizMiniModule::get(S::user()->minimodules(FrankizMiniModule::COL_LEFT)));
+        $page->assign('MiniModules_COL_MIDDLE', FrankizMiniModule::get(S::user()->minimodules(FrankizMiniModule::COL_MIDDLE)));
+        $page->assign('MiniModules_COL_RIGHT' , FrankizMiniModule::get(S::user()->minimodules(FrankizMiniModule::COL_RIGHT)));
         $page->assign('title', 'Accueil');
         $page->changeTpl('frankiz/accueil.tpl');
     }
@@ -59,10 +61,10 @@ class FrankizModule extends PlModule
     {
         $json = json_decode(Env::v('json'));
 
+        $cols = array_keys(FrankizMiniModule::emptyLayout());
         $layout = array();
-        for($i = 1; $i <= 4; $i++)
+        foreach($cols as $col)
         {
-            $col = "c" . $i;
             if (isset($json->$col))
                 foreach ($json->$col as $row => $name)
                     $layout[] = '('.S::user()->id().', "'.$name.'", '.$i.', '.intval($row).')';

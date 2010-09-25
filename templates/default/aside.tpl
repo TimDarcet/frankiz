@@ -20,9 +20,9 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<ul id="column4" class="minimodules_zone">
-    {foreach from=$minimodules_layout[4] item=module}
-        {include file="default/minimodule.tpl" module_name=$module}
+<ul id="COL_FLOAT" class="minimodules_zone">
+    {foreach from=$MiniModules_COL_FLOAT item=minimodule}
+        {include file="minimodule.tpl"|rel minimodule=$minimodule}
     {/foreach}
 </ul>
 

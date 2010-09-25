@@ -19,15 +19,22 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class LienTolMiniModule extends FrankizMiniModule
+class LientolMiniModule extends FrankizMiniModule
 {
-
-    public function __construct()
+    public function tpl()
     {
-        $this->tpl = "minimodules/lien_tol/lien_tol.tpl";
-        $this->titre = "Tol";
+        return "minimodules/lien_tol/lien_tol.tpl";
     }
 
+    public function title()
+    {
+        return "Rechercher sur le Tol";
+    }
+
+    protected function run()
+    {
+
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

@@ -61,8 +61,12 @@ class User extends PlUser
     // Contains the iid of the current picture
     protected $photo = null;
 
-    const SELECT_BASE  = 0x01;
-    const SELECT_SKIN  = 0x02;
+    // Contains an array of minimodules
+    protected $minimodules = null;
+
+    const SELECT_BASE         = 0x01;
+    const SELECT_SKIN         = 0x02;
+    const SELECT_MINIMODULES  = 0x04;
 
     /** TODO
      * Constructs the User object
@@ -231,6 +235,11 @@ class User extends PlUser
             XDB::execute('UPDATE account SET hash = {?} WHERE uid = {?}', $this->hash, $this->id());
         }
         return $this->hash;
+    }
+
+    public function minimodules($col)
+    {
+        return $this->minimodules[$col];
     }
 
     public function groups(PlFlagSet $rights)
@@ -434,7 +443,7 @@ class User extends PlUser
 
         try {
             $u = new User($values['uid']);
-            return $u->select(User::SELECT_BASE | User::SELECT_SKIN);
+            return $u->select(User::SELECT_BASE | User::SELECT_SKIN | User::SELECT_MINIMODULES);
         } catch (UserNotFoundException $e) {
             return call_user_func($callback, $login, $e->results);
         }
@@ -457,11 +466,15 @@ class User extends PlUser
         return $result;
     }
 
-    public static function batchSelect(array $users, $fields)
+    public static function batchSelect(array $_users, $fields)
     {
-        if (count($users) < 1)
+        if (count($_users) < 1)
             return;
 
+        // Index the array
+        $users = array_combine(self::toIds($_users), $_users);
+
+        // Load datas where 1 User = 1 Line
         $joints = array();
         $columns = array();
         if ($fields & self::SELECT_BASE) {
@@ -476,18 +489,34 @@ class User extends PlUser
             $joints['sk'] = PlSqlJoin::left('skins', '$ME.skin_id = a.skin');
         }
 
-        $sql_columns = array();
-        foreach($columns as $table => $cols)
-            $sql_columns[] = implode(', ', array_map(function($value) use($table) { return $table . '.' . $value; }, $cols));
+        if (!empty($columns)) {
+            $sql_columns = array();
+            foreach($columns as $table => $cols)
+                $sql_columns[] = implode(', ', array_map(function($value) use($table) { return $table . '.' . $value; }, $cols));
 
-        $res = XDB::query('SELECT  a.uid, ' . implode(', ', $sql_columns) . '
-                             FROM  account AS a
-                             ' . PlSqlJoin::formatJoins($joints, array()) . '
-                            WHERE  a.uid IN {?}', self::toIds($users));
-        $ids_datas = $res->fetchAllAssoc('uid');
+            $iter = XDB::iterator('SELECT  a.uid, ' . implode(', ', $sql_columns) . '
+                                     FROM  account AS a
+                                           ' . PlSqlJoin::formatJoins($joints, array()) . '
+                                    WHERE  a.uid IN {?}', self::toIds($users));
 
-        foreach ($users as $user)
-            $user->fillFromArray($ids_datas[$user->id()]);
+            while ($array_datas = $iter->next())
+                $users[$array_datas['uid']]->fillFromArray($array_datas);
+        }
+
+        // Load minimodules
+        if ($fields & self::SELECT_MINIMODULES) {
+            $iter = XDB::iterator('SELECT uid, name, col, row
+                                     FROM users_minimodules
+                                    WHERE uid IN {?}', self::toIds($users));
+
+            while ($array_minimodule = $iter->next()) {
+                $u = $users[$array_minimodule['uid']];
+                if ($u->minimodules === null)
+                    $u->minimodules = FrankizMiniModule::emptyLayout();
+
+                $u->minimodules[$array_minimodule['col']][$array_minimodule['row']] = $array_minimodule;
+            }
+        }
     }
 }
 

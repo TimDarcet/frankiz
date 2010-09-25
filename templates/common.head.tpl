@@ -57,11 +57,6 @@
     jstreeStyle = jstreeStyle.split('/');
     jstreeStyle.splice(jstreeStyle.length - 2, 2);
     $.jstree._themes = platal_baseurl + "css/" + jstreeStyle.join("/") + "/";
-
-    // Sandbox for minimodules
-    {foreach from=$minimodules_js key=name item=js}
-        minimodulesJs['{$name}'] = "{$js}";
-    {/foreach}
 </script>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

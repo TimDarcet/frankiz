@@ -24,15 +24,27 @@
 <div class="accueil">
     <table>
         <tr>
-            {section name=i start=1 loop=4 step=1}
-            <td class="{if ($minimodules_layout[i]|@count) == 0}empty{else}full{/if}">
-                <ul id="column{$smarty.section.i.index}" class="minimodules_zone">
-                    {foreach from=$minimodules_layout[i] item=module}
-                        {include file="default/minimodule.tpl" module_name=$module}
+            <td class="{if ($MiniModules_COL_LEFT|@count) == 0}empty{else}full{/if}">
+                <ul id="COL_LEFT" class="minimodules_zone">
+                    {foreach from=$MiniModules_COL_LEFT item=minimodule}
+                        {include file="minimodule.tpl"|rel minimodule=$minimodule}
                     {/foreach}
                 </ul>
             </td>
-            {/section}
+            <td class="{if ($MiniModules_COL_MIDDLE|@count) == 0}empty{else}full{/if}">
+                <ul id="COL_MIDDLE" class="minimodules_zone">
+                    {foreach from=$MiniModules_COL_MIDDLE item=minimodule}
+                        {include file="minimodule.tpl"|rel minimodule=$minimodule}
+                    {/foreach}
+                </ul>
+            </td>
+            <td class="{if ($MiniModules_COL_RIGHT|@count) == 0}empty{else}full{/if}">
+                <ul id="COL_RIGHT" class="minimodules_zone">
+                    {foreach from=$MiniModules_COL_RIGHT item=minimodule}
+                        {include file="minimodule.tpl"|rel minimodule=$minimodule}
+                    {/foreach}
+                </ul>
+            </td>
         </tr>
     </table>
     <br class="clear" />

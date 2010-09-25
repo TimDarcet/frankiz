@@ -26,178 +26,122 @@
 
 abstract class FrankizMiniModule
 {
-    const MAIN_LEFT = 1;
-    const MAIN_MIDDLE = 2;
-    const MAIN_RIGHT = 3;
-    const FLOAT_RIGHT = 4;
+    const COL_LEFT   = 'COL_LEFT';
+    const COL_MIDDLE = 'COL_MIDDLE';
+    const COL_RIGHT  = 'COL_RIGHT';
+    const COL_FLOAT  = 'COL_FLOAT';
 
-    const auth  = AUTH_PUBLIC;
-    const perms = '';
-    const js    = '';
+    private $name    = null;
+    private $tplVars = array();
 
-    protected $tpl = null;
-    protected $header_tpl = null;
-    protected $titre = "Not Defined!";
+    private static $minimodules = array();
 
-    private $params = array();
-
-    public function get_params()
+    private function __construct($name)
     {
-        return $this->params;
+        $this->name = $name;
     }
 
-    /**
-     * Returns the title of the module
-     * This is different from the identifier.
-     * @return Title of the module
-     */
-    public function get_titre()
+    public function name()
     {
-        return $this->titre;
+        return $this->name;
     }
 
-    public function get_template()
+    public function tplVars()
     {
-        return FrankizPage::getTplPath($this->tpl);
+        return $this->tplVars;
     }
 
-    /**
-     * Assigne une variable pour la template du minimodule uniquement. Ces variables seront accessibles dans 
-     * $minimodule.var_name à l'intérieur des template.
-     */
     protected function assign($key, $value)
     {
-        $this->params[$key] = $value;
+        $this->tplVars[$key] = $value;
     }
 
-    /* static stuff */
-    private static $minimodules = array();
-    private static $minimodules_layout = array(self::MAIN_LEFT=>array(), self::MAIN_MIDDLE=>array(), self::MAIN_RIGHT=>array(), self::FLOAT_RIGHT=>array());
-    private static $cols = array();
-    private static $oneShotName = '';
+    // Must return the minimodule's template
+    abstract public function tpl();
 
-    //stores the name of the module being executed
-    private static $curr_name;
-
-    /**
-     * preload the list of minimodules
-     */
-    public static function preload($cols)
+    public function title()
     {
-        self::$cols = array_merge(self::$cols, unflatten($cols));
+        return '';
     }
 
-    public static function oneShot($name, $page)
+    public function auth()
     {
-        self::$oneShotName = $name;
-        self::run($page);
+        return AUTH_PUBLIC;
     }
 
-    public static function run($page)
+    public function perms()
     {
-        if (empty(self::$cols))
-            return;
-
-        if (self::$oneShotName == '')
-        {
-            if (S::logged())
-            {
-                $res = XDB::query('SELECT m.name name, um.col col, um.row row
-                                     FROM users_minimodules AS um
-                               INNER JOIN minimodules AS m
-                                       ON m.name = um.name
-                                    WHERE um.uid = {?} AND um.col IN '.XDB::formatArray(self::$cols).'
-                                    ORDER BY um.col, um.row',
-                                  S::user()->id());
-            } else {
-                $res = XDB::query('SELECT name, col, row
-                                     FROM minimodules
-                                    WHERE bydefault = 1 AND col IN '.XDB::formatArray(self::$cols).'
-                                    ORDER BY col, row');
-            }
-        }
-        else
-        {
-            $res = XDB::query('SELECT name, col, row
-                                 FROM minimodules
-                                WHERE name = {?}
-                                ORDER BY col, row',
-                              self::$oneShotName);
-        }
-        $minimodules_list = $res->fetchAllAssoc();
-
-        foreach($minimodules_list as $minimodule)
-        {
-            $name = $minimodule['name'];
-
-            if (!array_key_exists($name, self::$minimodules))
-            {
-                $localDatas = self::getlocalData($name);
-                if (Platal::session()->checkAuthAndPerms($localDatas['auth'], $localDatas['perms']))
-                {
-                    $cls = $localDatas['name'];
-                    $localDatas['object'] = new $cls();
-                    self::$minimodules[$name] = $localDatas;
-
-                    // Load the css file with the minimodule's name
-                    try {
-                        $page->addCssLink('minimodules/' . $name . '.css');
-                    } catch (SkinFileNotFoundException $e) {
-                    }
-
-                    self::$minimodules_layout[$minimodule['col']][$minimodule['row']] = $name;
-                }
-            }
-        }
+        return '';
     }
 
-    // Load datas contained in the Minimodule (auth, perms, js), but doesn't instanciate them
-    public static function getlocalData($name)
+    public function js()
+    {
+        return false;
+    }
+
+    public function css()
+    {
+        return '';
+    }
+
+    protected function run()
+    {
+
+    }
+
+    private function checkAuthAndPerms()
+    {
+        return Platal::session()->checkAuthAndPerms($this->auth(), $this->perms());
+    }
+
+    private static function instantiate($db_minimodule)
     {
         global $globals;
-        $cls=ucfirst($name)."MiniModule";
-        $path=$globals->spoolroot . "/minimodules/" . strtolower($name) . ".php";
+
+        $name = $db_minimodule['name'];
+        $cls = ucfirst($name) . 'MiniModule';
+        $path = $globals->spoolroot . '/minimodules/' . strtolower($name) . ".php";
         include_once $path;
 
-        $auth  = constant($cls.'::auth');
-        $perms = constant($cls.'::perms');
-        $js    = constant($cls.'::js');
-
-        return array(  'name' => $cls,
-                       'auth' => $auth,
-                      'perms' => $perms,
-                         'js' => $js);
+        return new $cls($name);
     }
 
-    /**
-     * Renvoie un tableau des descriptions des minimodules indexé par les
-     * identifiants des minimodules.
-     */
-    public static function get_minimodules()
+    public static function get(array $db_minimodules)
     {
-        $res=array();
-        foreach(self::$minimodules as $name => $data)
-        {
-            $res[$name] = $data['object'];
+        $minimodules = array();
+        foreach($db_minimodules as $db_minimodule) {
+            $m = self::instantiate($db_minimodule);
+            if ($m->checkAuthAndPerms()) {
+                self::$minimodules[$m->name] = $m;
+                $minimodules[$m->name] = $m;
+                $m->run();
+            }
         }
+        return $minimodules;
+    }
+
+    public static function batchJs()
+    {
+        $res = array();
+        foreach(self::$minimodules as $m)
+            $res[$m->name] = $m->js();
+
         return $res;
     }
 
-    public static function get_layout()
+    public static function batchCss()
     {
-        return self::$minimodules_layout;
-    }
+        $res = array();
+        foreach(self::$minimodules as $m)
+            $res[$m->name] = $m->css();
 
-    public static function get_js()
-    {
-        $res=array();
-        foreach(self::$minimodules as $name => $data)
-        {
-            $res[$name] = $data['js'];
-        }
         return $res;
     }
 
+    public static function emptyLayout()
+    {
+        return array(self::COL_LEFT => array(), self::COL_MIDDLE => array(), self::COL_RIGHT => array(), self::COL_FLOAT => array());
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

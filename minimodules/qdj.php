@@ -21,11 +21,37 @@
 
 class QdjMiniModule extends FrankizMiniModule
 {
-    const auth  = AUTH_COOKIE;
-    const perms = 'user';
-    const js    = 'minimodules/qdj.js';
+    public function auth()
+    {
+        return AUTH_COOKIE;
+    }
 
-    public function __construct()
+    public function perms()
+    {
+        return 'user';
+    }
+
+    public function js()
+    {
+        return 'minimodules/qdj.js';
+    }
+
+    public function css()
+    {
+        return 'minimodules/qdj.css';
+    }
+
+    public function tpl()
+    {
+        return 'minimodules/qdj/qdj.tpl';
+    }
+
+    public function title()
+    {
+        return 'Question du Jour';
+    }
+
+    public function run()
     {
         $res=XDB::query('SELECT qdj_id, date, question, answer1, answer2, count1, count2
                            FROM qdj
@@ -33,13 +59,11 @@ class QdjMiniModule extends FrankizMiniModule
                           LIMIT 1');
         $array_qdj = $res->fetchOneAssoc();
 
-        $this->assign('date', $array_qdj['date']);          // Limited support for browser with javascript disabled
+        // Limited support for browser with javascript disabled
+        $this->assign('date'    , $array_qdj['date']);
         $this->assign('question', $array_qdj['question']);
-        $this->assign('answer1', $array_qdj['answer1']);
-        $this->assign('answer2', $array_qdj['answer2']);
-
-        $this->tpl = "minimodules/qdj/qdj.tpl";
-        $this->titre = "QDJ";
+        $this->assign('answer1' , $array_qdj['answer1']);
+        $this->assign('answer2' , $array_qdj['answer2']);
     }
 }
 
