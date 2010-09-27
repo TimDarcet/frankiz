@@ -237,9 +237,83 @@ class User extends PlUser
         return $this->hash;
     }
 
-    public function minimodules($col)
+    public function minimodules($col = null)
     {
-        return $this->minimodules[$col];
+        if (empty($col))
+        {
+            $minimodules = array();
+            foreach ($this->minimodules as $rows)
+                foreach ($rows as $name)
+                        $minimodules[] = $name;
+            return $minimodules;
+        } else {
+            ksort($this->minimodules[$col]);
+            return $this->minimodules[$col];
+        }
+    }
+
+    /**
+    * Add a MiniModule to the user
+    * @param $m the minimodule to add
+    */
+    public function addMinimodule(FrankizMiniModule $m)
+    {
+        if (!$m->checkAuthAndPerms())
+            return false;
+
+        XDB::execute('INSERT INTO  users_minimodules
+                              SET  uid = {?}, name = {?}, col = "COL_FLOAT",
+                                   row = (SELECT COALESCE(MIN(um.row) - 1, -1)
+                                            FROM users_minimodules AS um WHERE um.uid = {?})
+          ON DUPLICATE KEY UPDATE  row = (SELECT COALESCE(MIN(um.row) - 1, -1)
+                                            FROM users_minimodules AS um WHERE um.uid = {?})',
+                                            $this->id(), $m->name(), $this->id(), $this->id());
+
+        if (!(XDB::affectedRows() > 0))
+            return false;
+
+        array_unshift($this->minimodules[FrankizMiniModule::COL_FLOAT], $m->name());
+        return true;
+    }
+
+    public function layoutMinimodules(array $layout)
+    {
+        $cols = array_keys(FrankizMiniModule::emptyLayout());
+
+        $sql = array();
+        foreach($cols as $col)
+            if (isset($layout[$col]))
+                foreach ($layout[$col] as $row => $name)
+                    $sql[] = XDB::format('({?}, {?}, {?}, {?})', S::user()->id(), $name, $col, $row);
+
+        XDB::execute('INSERT INTO  users_minimodules (uid, name, col, row)
+                           VALUES  '.implode(', ', $sql).'
+          ON DUPLICATE KEY UPDATE  col = VALUES(col), row = VALUES(row)');
+
+        if (!(XDB::affectedRows() > 0))
+            return false;
+
+        $this->select(self::SELECT_MINIMODULES);
+        return true;
+    }
+
+    public function removeMinimodule(FrankizMiniModule $m)
+    {
+        $rmName = $m->name();
+        XDB::execute('DELETE FROM users_minimodules WHERE uid = {?} AND name = {?}',
+                                                          $this->id(), $rmName);
+        if (XDB::affectedRows() > 0) {
+            $cols = array_keys(FrankizMiniModule::emptyLayout());
+            foreach ($cols as $col) {
+                $this->minimodules[$col] =
+                                 array_filter($this->minimodules[$col],
+                                              function($name) use($rmName) {
+                                                  return $name != $rmName;
+                                              });
+            }
+            return true;
+        }
+        return false;
     }
 
     public function groups(PlFlagSet $rights)
@@ -505,18 +579,18 @@ class User extends PlUser
 
         // Load minimodules
         if ($fields & self::SELECT_MINIMODULES) {
-            $iter = XDB::iterator('SELECT uid, name, col, row
-                                     FROM users_minimodules
-                                    WHERE uid IN {?}', self::toIds($users));
+            foreach ($users as $u)
+                $u->minimodules = FrankizMiniModule::emptyLayout();
 
-            while ($array_minimodule = $iter->next()) {
-                $u = $users[$array_minimodule['uid']];
-                if ($u->minimodules === null)
-                    $u->minimodules = FrankizMiniModule::emptyLayout();
+            $iter = XDB::iterator('SELECT  uid, name, col, row
+                                     FROM  users_minimodules
+                                    WHERE  uid IN {?}
+                                 ORDER BY  col, row', self::toIds($users));
 
-                $u->minimodules[$array_minimodule['col']][$array_minimodule['row']] = $array_minimodule;
-            }
+            while ($am = $iter->next())
+                array_push($users[$am['uid']]->minimodules[$am['col']], $am['name']);
         }
+
     }
 }
 

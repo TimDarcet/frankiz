@@ -97,7 +97,7 @@ function getLayout()
 function saveLayout(layout)
 { 
     request({
-        "url" : "minimodules/ajax/layout"
+        "url" : "profile/minimodules/ajax/layout"
        ,"data": layout
        ,"raw" : true
     });
@@ -106,25 +106,19 @@ function saveLayout(layout)
 function addMinimodule(name, sender)
 {
     sender.disabled = true;
-    $('body').removeClass('disabledAside');
-    $('body').addClass('enabledAside');
+    $('body').removeClass('disabledAside').addClass('enabledAside');
     request({
-        "url"  : "minimodules/ajax/add"
-       ,"data" : {"name" : name}
-    });
-    request({
-        "url"    : "minimodules/ajax/get"
+        "url"    : "profile/minimodules/ajax/add"
        ,"data"   : {"name" : name}
-       ,"success": function (json) 
-               {
-                $('#column4').prepend(json.html);
-                $('#minimodule_'+name).hide();
-                $('#minimodule_'+name).show('slow', function() {
-                    sender.disabled = false;
-                    if (json.js && json.js != '')
-                        includeAndRun(json.name, json.js);
-                });
-               }
+       ,"success": function (json) {
+                        if (json.css)
+                            $.getCSS("css/" + json.css);
+                        $('#COL_FLOAT').prepend(json.html);
+                        $('#minimodule_'+name).hide();
+                        $('#minimodule_'+name).show('slow', function() {
+                            sender.disabled = false;
+                        });
+	               }
     });
 }
 
@@ -132,9 +126,14 @@ function removeMinimodule(name, sender)
 {
     sender.disabled = true;
     request({
-        "url"     : "minimodules/ajax/remove"
+        "url"     : "profile/minimodules/ajax/remove"
        ,"data"    : {"name":name}
-       ,"success" : function(json) { sender.disabled = false; }
+       ,"success" : function(json) {
+                        sender.disabled = false;
+                        $('#minimodule_'+name).hide('slow', function() {
+                            this.parentNode.removeChild(this);
+                            cleanEmptyColumns();
+                        });
+					}
     });
-    $('#minimodule_'+name).hide('slow', function() {this.parentNode.removeChild(this); cleanEmptyColumns();});
 }

@@ -26,7 +26,7 @@
         {$minimodule->title()}
     </div>
     <div class="body">
-        {include file=$minimodule->tpl()|rel minimodule=$minimodule->tplVars()}
+        {include file=$minimodule->template()|rel minimodule=$minimodule->tplVars()}
     </div>
 </li>
 {if ($minimodule->js())}

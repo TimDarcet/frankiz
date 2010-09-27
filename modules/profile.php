@@ -27,30 +27,33 @@ class ProfileModule extends PLModule
 {
     public function handlers()
     {
-        return array('profile'                     => $this->make_hook('profile',            AUTH_COOKIE),
-                     'profile/fkz'                 => $this->make_hook('fkz',                AUTH_COOKIE),
-                     'profile/password'            => $this->make_hook('password',           AUTH_MDP),
-                     'profile/fkz/change_tol'      => $this->make_hook('fkz_change_tol',     AUTH_COOKIE),
-                     'profile/fkz/mod_binets'      => $this->make_hook('fkz_mod_binets',     AUTH_COOKIE),
-                     'profile/recovery'            => $this->make_hook('recovery',           AUTH_PUBLIC),
-                     'profile/reseau'              => $this->make_hook('reseau',             AUTH_MDP),
-                     'profile/reseau/demande_ip'   => $this->make_hook('demande_ip',         AUTH_COOKIE),
-                     'profile/skin'                => $this->make_hook('skin',               AUTH_PUBLIC),
-                     'profile/siteweb'             => $this->make_hook('siteweb',            AUTH_MDP),
-                     'profile/siteweb/download'    => $this->make_hook('siteweb_download',   AUTH_MDP),
-                     'profile/siteweb/upload'      => $this->make_hook('siteweb_upload',     AUTH_MDP),
-                     'profile/siteweb/demande_ext' => $this->make_hook('siteweb_ext',        AUTH_MDP),
-                     'profile/rss'                 => $this->make_hook('rss',                AUTH_COOKIE),
-                     'profile/rss/update'          => $this->make_hook('rss_update',         AUTH_COOKIE),
-                     'profile/rss/add'             => $this->make_hook('rss_add',            AUTH_COOKIE),
-                     'profile/liens_perso'         => $this->make_hook('liens_perso',        AUTH_COOKIE),
-                     'profile/liens_perso/add'     => $this->make_hook('liens_perso_add',    AUTH_COOKIE),
-                     'profile/liens_perso/del'     => $this->make_hook('liens_perso_del',    AUTH_COOKIE),
-                     'profile/licences'            => $this->make_hook('licences',           AUTH_MDP),
-                     'profile/licences/cluf'       => $this->make_hook('licences_CLUF',      AUTH_MDP),
-                     'profile/licences/raison'     => $this->make_hook('licences_raison',    AUTH_MDP),
-                     'profile/licences/final'      => $this->make_hook('licences_final',     AUTH_MDP),
-                     'profile/minimodules'         => $this->make_hook('layout',             AUTH_COOKIE),
+        return array('profile'                         => $this->make_hook('profile',                 AUTH_COOKIE),
+                     'profile/fkz'                     => $this->make_hook('fkz',                     AUTH_COOKIE),
+                     'profile/password'                => $this->make_hook('password',                AUTH_MDP),
+                     'profile/fkz/change_tol'          => $this->make_hook('fkz_change_tol',          AUTH_COOKIE),
+                     'profile/fkz/mod_binets'          => $this->make_hook('fkz_mod_binets',          AUTH_COOKIE),
+                     'profile/recovery'                => $this->make_hook('recovery',                AUTH_PUBLIC),
+                     'profile/reseau'                  => $this->make_hook('reseau',                  AUTH_MDP),
+                     'profile/reseau/demande_ip'       => $this->make_hook('demande_ip',              AUTH_COOKIE),
+                     'profile/skin'                    => $this->make_hook('skin',                    AUTH_PUBLIC),
+                     'profile/photo'                   => $this->make_hook('photo',                   AUTH_COOKIE),
+                     'profile/photo/small'             => $this->make_hook('photo_small',             AUTH_COOKIE),
+                     'profile/siteweb/upload'          => $this->make_hook('siteweb_upload',          AUTH_MDP),
+                     'profile/siteweb/demande_ext'     => $this->make_hook('siteweb_ext',             AUTH_MDP),
+                     'profile/rss'                     => $this->make_hook('rss',                     AUTH_COOKIE),
+                     'profile/rss/update'              => $this->make_hook('rss_update',              AUTH_COOKIE),
+                     'profile/rss/add'                 => $this->make_hook('rss_add',                 AUTH_COOKIE),
+                     'profile/liens_perso'             => $this->make_hook('liens_perso',             AUTH_COOKIE),
+                     'profile/liens_perso/add'         => $this->make_hook('liens_perso_add',         AUTH_COOKIE),
+                     'profile/liens_perso/del'         => $this->make_hook('liens_perso_del',         AUTH_COOKIE),
+                     'profile/licences'                => $this->make_hook('licences',                AUTH_MDP),
+                     'profile/licences/cluf'           => $this->make_hook('licences_CLUF',           AUTH_MDP),
+                     'profile/licences/raison'         => $this->make_hook('licences_raison',         AUTH_MDP),
+                     'profile/licences/final'          => $this->make_hook('licences_final',          AUTH_MDP),
+                     'profile/minimodules'             => $this->make_hook('minimodules',             AUTH_COOKIE),
+                     'profile/minimodules/ajax/layout' => $this->make_hook('ajax_minimodules_layout', AUTH_COOKIE),
+                     'profile/minimodules/ajax/add'    => $this->make_hook('ajax_minimodules_add',    AUTH_COOKIE),
+                     'profile/minimodules/ajax/remove' => $this->make_hook('ajax_minimodules_remove', AUTH_COOKIE)
                     );
     }
 
@@ -311,6 +314,22 @@ class ProfileModule extends PLModule
         $page->assign('skinsList', $skins);
         $page->assign('title', "Modification de l'apparence de Frankiz");
         $page->changeTpl("profile/skins.tpl");
+    }
+
+    function handler_photo($page, $hruid)
+    {
+        $uf = new UserFilter(new UFC_Hruid($hruid));
+        $user = $uf->getUser();
+        $photo = FrankizImage::get($user->bestImage())->send();
+        exit;
+    }
+
+    function handler_photo_small($page, $hruid)
+    {
+        $uf = new UserFilter(new UFC_Hruid($hruid));
+        $user = $uf->getUser();
+        $photo = FrankizImage::get($user->bestImage())->sendSmall();
+        exit;
     }
 
     function handler_reseau($page)
@@ -642,7 +661,7 @@ class ProfileModule extends PLModule
     }
 
     private function licences_logiciels(){
-        return array('visualstudio' => 'Visual Studio .NET','winxp' => 'Windows XP Professionnel','winvista' => 'Windows Vista Business','2k3serv' => 'Windows Serveur 2003','2k3access'=>'Access 2003','2k3onenote'=>'One Note	2003','2k3visiopro'=>'Visio Professionnel 2003','win2k'=>'Windows 2000 Professionnel');
+        return array('visualstudio' => 'Visual Studio .NET','winxp' => 'Windows XP Professionnel','winvista' => 'Windows Vista Business','2k3serv' => 'Windows Serveur 2003','2k3access'=>'Access 2003','2k3onenote'=>'One Note 2003','2k3visiopro'=>'Visio Professionnel 2003','win2k'=>'Windows 2000 Professionnel');
     }
 
     private function licences_admin(){
@@ -802,32 +821,76 @@ class ProfileModule extends PLModule
         }
     }
 
-    function handler_layout($page)
+    function handler_minimodules($page)
     {
-        $iter = XDB::iterator('SELECT um.uid uid, m.name name, m.label label, m.description description
-                                 FROM minimodules AS m
-                            LEFT JOIN users_minimodules AS um
-                                   ON (m.name = um.name AND um.uid = {?})
-                                GROUP BY m.name
-                                ORDER BY m.col, m.row',
-                                S::user()->id());
+        $iter = XDB::iterator('SELECT  m.name, m.label, m.description, COUNT(um.name) frequence
+                                 FROM  minimodules AS m
+                            LEFT JOIN  users_minimodules AS um ON m.name = um.name
+                             GROUP BY  m.name
+                             ORDER BY  frequence DESC');
 
-        $liste_minimodules = array();
+        $user_minimodules  = S::user()->minimodules();
+        $minimodules = array();
         while ($minimodule = $iter->next()) {
-            $localDatas = FrankizMiniModule::getlocalData($minimodule['name']);
-            if (Platal::session()->checkAuthAndPerms($localDatas['auth'], $localDatas['perms']))
+            $m = FrankizMiniModule::get($minimodule['name']);
+            if ($m->checkAuthAndPerms())
             {
-                $liste_minimodules[] = array('activated' => !is_null($minimodule['uid']),
-                                                  'name' => $minimodule['name'],
-                                                 'label' => $minimodule['label'],
-                                           'description' => $minimodule['description']);
+                $minimodules[] = array('activated' => in_array($minimodule['name'], $user_minimodules),
+                                       'frequence' => $minimodule['frequence'],
+                                            'name' => $minimodule['name'],
+                                           'label' => $minimodule['label'],
+                                     'description' => $minimodule['description']);
             }
         }
 
         $page->assign('title', 'Gestion des minimodules');
-        $page->assign('liste_minimodules', $liste_minimodules);
+        $page->assign('minimodules', $minimodules);
         $page->addCssLink('profile.css');
         $page->changeTpl('profile/minimodules.tpl');
+    }
+
+    function handler_ajax_minimodules_layout($page)
+    {
+        $json = json_decode(Env::v('json'));
+
+        $layout = FrankizMiniModule::emptyLayout();
+
+        foreach(array_keys($layout) as $col)
+            if (isset($json->$col))
+                $layout[$col] = $json->$col;
+
+        $page->jsonAssign();
+        if (!S::user()->layoutMinimodules($layout))
+            $page->jsonAssign('error', "Le réagencement des minimodules n'a pas pu se faire");
+    }
+
+    function handler_ajax_minimodules_add($page)
+    {
+        $json = json_decode(Env::v('json'));
+
+        $m = FrankizMiniModule::get($json->name);
+        $row = S::user()->addMinimodule($m);
+
+        if ($row === false) {
+            $page->jsonAssign('error', "Impossible d'activer le minimodule");
+        } else {
+            $page->jsonAssign('name', $m->name());
+            $page->jsonAssign('css' , FrankizPage::getCssPath($m->css()));
+            $page->assign('minimodule', $m);
+            $page->jsonAssign('html', $page->fetch(FrankizPage::getTplPath('minimodule.tpl')));
+        }
+    }
+
+    function handler_ajax_minimodules_remove($page)
+    {
+        $json = json_decode(Env::v('json'));
+
+        $m = FrankizMiniModule::get($json->name);
+        $success = S::user()->removeMinimodule($m);
+
+        $page->jsonAssign();
+        if (!$success)
+            $page->jsonAssign('error', "Impossible de désactiver le minimodule");
     }
 
 }

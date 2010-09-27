@@ -31,6 +31,8 @@ abstract class FrankizMiniModule
     const COL_RIGHT  = 'COL_RIGHT';
     const COL_FLOAT  = 'COL_FLOAT';
 
+    const ERROR_TPL = 'minimodules/error.tpl';
+
     private $name    = null;
     private $tplVars = array();
 
@@ -56,8 +58,16 @@ abstract class FrankizMiniModule
         $this->tplVars[$key] = $value;
     }
 
+    public function template()
+    {
+        if ($this->checkAuthAndPerms())
+            return $this->tpl();
+        else
+            return ERROR_TPL;
+    }
+
     // Must return the minimodule's template
-    abstract public function tpl();
+    abstract protected function tpl();
 
     public function title()
     {
@@ -81,24 +91,23 @@ abstract class FrankizMiniModule
 
     public function css()
     {
-        return '';
+        return false;
     }
 
-    protected function run()
+    public function run()
     {
 
     }
 
-    private function checkAuthAndPerms()
+    final function checkAuthAndPerms()
     {
         return Platal::session()->checkAuthAndPerms($this->auth(), $this->perms());
     }
 
-    private static function instantiate($db_minimodule)
+    private static function instantiate($name)
     {
         global $globals;
 
-        $name = $db_minimodule['name'];
         $cls = ucfirst($name) . 'MiniModule';
         $path = $globals->spoolroot . '/minimodules/' . strtolower($name) . ".php";
         include_once $path;
@@ -106,18 +115,19 @@ abstract class FrankizMiniModule
         return new $cls($name);
     }
 
-    public static function get(array $db_minimodules)
+    public static function get($names)
     {
+        $array_passed = is_array($names);
+        $names = unflatten($names);
         $minimodules = array();
-        foreach($db_minimodules as $db_minimodule) {
-            $m = self::instantiate($db_minimodule);
-            if ($m->checkAuthAndPerms()) {
-                self::$minimodules[$m->name] = $m;
-                $minimodules[$m->name] = $m;
+        foreach($names as $name) {
+            $m = self::instantiate($name);
+            self::$minimodules[$m->name] = $m;
+            $minimodules[$m->name] = $m;
+            if ($m->checkAuthAndPerms())
                 $m->run();
-            }
         }
-        return $minimodules;
+        return ($array_passed) ? $minimodules : flatten($minimodules);
     }
 
     public static function batchJs()
