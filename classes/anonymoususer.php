@@ -24,6 +24,7 @@ class AnonymousUser extends User
     public function __construct()
     {
         $this->uid = 0;
+        $this->minimodules = FrankizMiniModule::emptyLayout();
     }
 
     protected function loadGids()
