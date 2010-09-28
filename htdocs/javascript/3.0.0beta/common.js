@@ -27,7 +27,7 @@ $(document).ready(function(){
 function ajaxify(target)
 {
     target.find("a[href]").each(function(index){
-        if (!$(this).attr('nosolo') && $(this).attr("href") != 'exit')
+        if (!$(this).attr('nosolo'))
             $(this).attr("href", "#!/" + $(this).attr("href"));
             $(this).attr("nosolo", true);
     });
@@ -43,18 +43,17 @@ function ajaxify(target)
 
 function getSection(page)
 {
+    $("body").addClass("loading");
     request({  "url"    : platal_baseurl + page + "?solo"
               ,"success" : function(json)
                   {
+                    $("body").removeClass("loading");
                     $("#content").html(json.content);
                     $("#section .header").html(json.title);
                     for (i in json.pl_css)
                         $.getCSS("css/" + json.pl_css[i]);
                     for (i in json.pl_js)
                         $.getScript(json.pl_js[i]);
-                    for (name in json.minimodules_js)
-                        if (json.minimodules_js[name] != '')
-                            includeAndRun(name, json.minimodules_js[name]);
                     ajaxify($("#content"));
                     minimodules();
                 }
