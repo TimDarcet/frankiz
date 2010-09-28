@@ -31,7 +31,7 @@ class LientolMiniModule extends FrankizMiniModule
         return "Rechercher sur le Tol";
     }
 
-    protected function run()
+    public function run()
     {
 
     }

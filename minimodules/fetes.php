@@ -31,7 +31,7 @@ class FetesMiniModule extends FrankizMiniModule
         return "Fêtes du jour";
     }
 
-    public function __construct()
+    public function run()
     {
         $today = date('d');
         $month = date('m');

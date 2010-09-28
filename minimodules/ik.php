@@ -46,7 +46,7 @@ class IkMiniModule extends FrankizMiniModule
 
     public function run()
     {
-        $res = XDB::query("SELECT * FROM ik ORDER BY date DESC", $id)->fetchOneRow();
+        $res = XDB::query("SELECT * FROM ik ORDER BY date DESC")->fetchOneRow();
         $this->assign('ik', $res);
     }
 
