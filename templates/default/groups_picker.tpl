@@ -20,18 +20,18 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{groups_picker type=$type groups=$groups depth=$depth visibility=$visibility behead=$behead out_json="json"}
+{groups_picker type=$type groups=$groups depth=$depth behead=$behead out_json="json"}
 
 <div class="groups_picker" id="container_{$id}">
 
-<ul id="flat_{$id}">
-    <li style="list-style:none; opacity:0.5">Sélectionner</li>
-</ul>
+    <ul id="flat_{$id}">
+        <li style="list-style:none; opacity:0.5">Sélectionner</li>
+    </ul>
 
-<div id="tree_{$id}">
-</div>
+    <div id="tree_{$id}">
+    </div>
 
-<input type="text" id="{$id}" name="{$id}" value="" />
+    <input type="text" id="{$id}" name="{$id}" value="" />
 
 </div>
 

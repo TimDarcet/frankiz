@@ -21,7 +21,7 @@
 {**************************************************************************}
 
 
-{include file="groups_picker.tpl"|rel id="associations" from="associations" depth=2 visibility=1}
+{include file="groups_picker.tpl"|rel id="everything" groups=$associations type="descending" depth=1 behead=false check=0}
 
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

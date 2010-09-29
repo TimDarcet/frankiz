@@ -30,7 +30,7 @@ class AnonymousUser extends User
     protected function loadGids()
     {
         // By default, everybody is a member of the top-level group
-        $root = GroupsTreeInfo::get()->root();
+        $root = Group::root();
         $this->gids[$root->gid()] = new PlFlagSet(Rights::MEMBER);
 
         // If connecting from a local, find associated groups

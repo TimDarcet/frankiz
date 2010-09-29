@@ -22,47 +22,37 @@
 /**
 * return the code necessary to create a group-picker
 *
-* @param $type ascending or descending or fixed (default: fixed)
+* @param $type ascending, descending or fixed (default: fixed)
 * @param $groups groups from which the tree originates (default: main root)
 * @param $depth the depth to search for childrens or fathers
-* @param $visibility the depth to which the nodes are open
 * @param $behead boolean defining if the roots must be hidden or not (default: false)
 *
 * @param $out_json
 */
 function smarty_function_groups_picker($params, &$smarty)
 {
-    $gI = GroupsTreeInfo::get();
+    $type       = (empty($params['type']))       ? 'fixed'          : $params['type'];
+    $depth      = (empty($params['depth']))      ? Group::MAX_DEPTH : $params['depth'];
+    $behead     = (empty($params['behead']))     ? false            : $params['behead'];
+    $_groups    = (empty($params['groups']))     ? Group::root()    : $params['groups'];
 
-    $type       = (empty($params['type']))       ? 'fixed'                : $params['type'];
-    $visibility = (empty($params['visibility'])) ? $gI->maxDepth()        : $params['visibility'];
-    $depth      = (empty($params['depth']))      ? $gI->maxDepth()        : $params['depth'];
-    $behead     = (empty($params['behead']))     ? false                  : $params['behead'];
-    $groups     = (empty($params['groups']))     ? unflatten($gI->root()) : Group::fromIds(unflatten($params['groups']));
+    $groups = new Collection();
+    $groups->className('Group');
+    $groups->add($_groups);
 
-    $tree = new Tree("Group");
+    if ($type == 'descending')
+            $groups->select(array(Group::SELECT_CHILDREN => $depth));
+    else if ($type == 'ascending')
+            $groups->select(array(Group::SELECT_FATHERS => $depth));
 
-    switch ($type) {
-        case 'descending':
-            $tree->descending($groups, $depth);
-            break;
-        case 'ascending':
-            $tree->ascending($groups, $depth);
-            break;
-        default:
-            $tree->fixed($groups);
-    }
+    $roots = $groups->roots();
 
-    $tree->select(Group::SELECT_BASE);
+    if ($behead)
+        $roots = $roots->children();
 
-    if (!$behead) {
-        $json = $tree->toJson($visibility);
-    } else {
-        $visibility--;
-        $tree->behead();
-    }
+    $roots->select(Group::SELECT_BASE);
 
-    $smarty->assign($params['out_json'], json_encode($tree->toJson($visibility)));
+    $smarty->assign($params['out_json'], json_encode($roots->toJson()));
 }
 
 

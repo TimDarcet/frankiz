@@ -30,6 +30,11 @@ abstract class Node
     protected $children = array();
     protected $father = null;
 
+    const MAX_DEPTH = 1;
+
+    const SELECT_CHILDREN = 0x04;
+    const SELECT_FATHERS  = 0x08;
+
     public function __construct($datas)
     {
         if (!is_array($datas))
@@ -38,9 +43,24 @@ abstract class Node
             $this->fillFromArray($datas);
     }
 
-    static public function treeInfo()
+    static public function table()
     {
         throw new Exception('Not implemented');
+    }
+
+    static public function idName()
+    {
+        throw new Exception('Not implemented');
+    }
+
+    public static function root()
+    {
+        $id = static::idName();
+        $ta = static::table();
+        $res = XDB::query("SELECT  $id AS id, L, R, depth
+                             FROM  $ta
+                            WHERE  (R - L + 1) / 2 = (SELECT COUNT(*) FROM $ta)");
+        return new static($res->fetchOneAssoc());
     }
 
     public function fillFromArray(array $values)
@@ -62,7 +82,8 @@ abstract class Node
 
     public function children()
     {
-        return $this->children;
+        $c = new Collection();
+        return $c->add($this->children);;
     }
 
     static protected function _sort($a, $b)
@@ -140,7 +161,16 @@ abstract class Node
         return ($this->father === null) ? $this : $this->father->_root();
     }
 
-    static public function roots(array $nodes)
+    public static function batchChildren(array $nodes)
+    {
+        $children = array();
+        foreach ($nodes as $n)
+            $children = $children + $n->children;
+
+        return $children;
+    }
+
+    public static function batchRoots(array $nodes)
     {
         $roots = array();
         foreach ($nodes as $n) {
@@ -167,6 +197,83 @@ abstract class Node
         foreach ($ids as $id)
             $nodes[] = new Group($id);
         return $nodes;
+    }
+
+    public function select($fields)
+    {
+        static::batchSelect(array($this), $fields);
+        return $this;
+    }
+
+    protected function flattenedChildren()
+    {
+        $nodes = $this->children;
+        foreach ($this->children as $c)
+            $nodes = $nodes + $c->flattenedChildren();
+
+        return $nodes;
+    }
+
+    protected static function iterToNodes($iter, $nodes)
+    {
+        $fetched = array();
+        while ($node = $iter->next()) {
+            if (isset($nodes[$node['id']])) {
+                $fetched[$node['id']] = $nodes[$node['id']];
+                $fetched[$node['id']]->fillFromArray($node);
+            } else {
+                $fetched[$node['id']] = new static($node);
+            }
+        }
+        return $fetched;
+    }
+
+    public static function batchSelect(array $nodes, $fields)
+    {
+        $bits = 0;
+        if (is_array($fields))
+            foreach($fields as $bit => $args)
+                $bits |= $bit;
+        else
+            $bits = $fields;
+
+        // Index the array
+        $nodes = array_combine(self::toIds($nodes), $nodes);
+        $fetched = array();
+
+        if ($bits & self::SELECT_CHILDREN)
+        {
+            $depth = (isset($fields[self::SELECT_CHILDREN])) ? $fields[self::SELECT_CHILDREN] : 1;
+            $id = static::idName();
+            $ta = static::table();
+
+            $iter = XDB::iterator("SELECT  n.$id AS id, n.L, n.R, n.depth
+                                     FROM  $ta AS n
+                               INNER JOIN  $ta AS current ON current.$id IN {?}
+                                    WHERE       n.L >= current.L
+                                           AND  n.R <= current.R
+                                           AND  n.depth <= current.depth + {?}",
+                                           array_keys($nodes), $depth);
+            $fetched = $fetched + self::iterToNodes($iter, $nodes);
+        }
+
+        if ($bits & self::SELECT_FATHERS)
+        {
+            $depth = (isset($fields[self::SELECT_FATHERS])) ? $fields[self::SELECT_FATHERS] : 1;
+            $id = static::idName();
+            $ta = static::table();
+
+            $iter = XDB::iterator("SELECT  n.$id AS id, n.L, n.R, n.depth
+                                     FROM  $ta AS n
+                               INNER JOIN  $ta AS current ON current.$id IN {?}
+                                    WHERE       n.L <= current.L
+                                           AND  n.R >= current.R
+                                           AND  n.depth >= current.depth - {?}",
+                                           array_keys($nodes), $depth);
+            $fetched = $fetched + self::iterToNodes($iter, $nodes);
+        }
+
+        self::buildLinks($fetched);
     }
 
     /**
@@ -197,7 +304,7 @@ abstract class Node
         if ($this->id == null)
             throw new Exception("This node doesn't exist");
 
-        $table = static::treeInfo()->table();
+        $table = static::table();
         XDB::execute('CALL '.$table.'_delete({?})', $this->id);
     }
 
@@ -231,7 +338,7 @@ abstract class Node
         if ($this->id != null)
             throw new Exception('This node already exists');
 
-        $table = static::treeInfo()->table();
+        $table = static::table();
         XDB::execute('CALL '.$table.'_insert({?}, @new_id)', $parent->id());
 
         $this->id = XDB::query('SELECT @new_id')->fetchOneCell();
@@ -281,13 +388,15 @@ abstract class Node
         if ($this->id == null || $parent->id == null)
             throw new Exception("This node doesn't exist");
 
-        $table = static::treeInfo()->table();
+        $table = static::table();
         XDB::execute('CALL '.$table.'_moveUnder({?}, {?})', $this->id(), $parent->id());
     }
 }
 
 class Group extends Node
 {
+    const MAX_DEPTH = 666;
+
     const SELECT_BASE        = 0x01;
     const SELECT_DESCRIPTION = 0x02;
 
@@ -296,35 +405,53 @@ class Group extends Node
     protected $label = null;
     protected $description = null;
 
-    protected static function _batchSelect(array $nodes, $fields)
-    {
-        $cols = '';
-        if ($fields & self::SELECT_BASE)
-            $cols .= ', name, label';
-        if ($fields & self::SELECT_DESCRIPTION)
-            $cols .= ', description';
+    protected $root = null;
 
-        $res = XDB::query("SELECT  gid AS id $cols
-                             FROM  groups
-                            WHERE  gid IN {?}", Node::toIds($nodes));
-        return $res->fetchAllAssoc('id');
+    static public function table()
+    {
+        return 'groups';
+    }
+
+    static public function idName()
+    {
+        return 'gid';
     }
 
     public static function batchSelect(array $nodes, $fields)
     {
-        $ids_datas = self::_batchSelect($nodes, $fields);
-        foreach ($nodes as $node)
-            $node->fillFromArray($ids_datas[$node->id]);
+        $bits = 0;
+        if (is_array($fields))
+            foreach($fields as $bit => $args)
+                $bits |= $bit;
+        else
+            $bits = $fields;
+
+        parent::batchSelect($nodes, $fields);
+
+        $cols = '';
+        if ($bits & self::SELECT_BASE)
+            $cols .= ', name, label';
+        if ($bits & self::SELECT_DESCRIPTION)
+            $cols .= ', description';
+
+        if ($cols != '') {
+            $flattened = $nodes;
+            foreach ($nodes as $n)
+                $flattened = $flattened + $n->flattenedChildren();
+
+            $res = XDB::query("SELECT  gid AS id $cols
+                                 FROM  groups
+                                WHERE  gid IN {?}", array_keys($flattened));
+            $ids_datas = $res->fetchAllAssoc('id');
+
+            foreach ($flattened as $n)
+                $n->fillFromArray($ids_datas[$n->id]);
+        }
     }
 
     public function __construct($datas)
     {
         parent::__construct($datas);
-    }
-
-    static public function treeInfo()
-    {
-        return GroupsTreeInfo::get();
     }
 
     public function gid()
@@ -357,6 +484,19 @@ class Group extends Node
         return $this->description;
     }
 
+    public static function batchFrom(array $mixed)
+    {
+        $instances = array();
+        if (!empty($mixed)) {
+            $iter = XDB::iterator('SELECT  gid AS id, name
+                                     FROM  groups
+                                    WHERE  name IN {?}', $mixed);
+            while ($g = $iter->next())
+                $instances[$g['name']] = new self($g);
+        }
+        return $instances;
+    }
+
     public static function fromNames(array $names)
     {
         $iter = XDB::iterator("SELECT  gid AS id, name
@@ -367,6 +507,19 @@ class Group extends Node
             $groups[$node['name']] = new Group($node);
 
         return $groups;
+    }
+
+    public static function root()
+    {
+        global $globals;
+
+        if (self::$root === null)
+            if (isset($globals->root) && ($globals->root != ''))
+                self::$root = new self($globals->root);
+            else
+                self::$root = parent::root();
+
+        return self::$root;
     }
 
     public function insert(Node $parent)

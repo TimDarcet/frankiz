@@ -24,11 +24,38 @@
 class Collection
 {
     protected $collected = array();
-    protected $c_class   = null;
+    protected $className = null;
 
-    public function __construct($collected_class)
+    /* Feel free to do whatever you want with
+     * the constructor in the subclasses.
+     */
+    public function __construct()
     {
-        $this->c_class = $collected_class;
+    }
+
+    public function className($className = null)
+    {
+        if ($className != null)
+            $this->className = $className;
+        return $this->className;
+    }
+
+    public function __call($method, $arguments)
+    {
+        $className = $this->className;
+        $inferedMethod = 'batch' . ucfirst($method);
+        array_unshift($arguments, $this->collected);
+
+        if (method_exists($className, $inferedMethod)) {
+            $r = forward_static_call_array(array($className, $inferedMethod), $arguments);
+            if (!is_array($r))
+                return $r;
+
+            $c = new Collection($className);
+            return $c->add($r);
+        }
+
+        throw new Exception("The method $className::$inferedMethod doesn't exist");
     }
 
     public function toJson()
@@ -46,20 +73,39 @@ class Collection
 
     public function select($fields)
     {
-        $c_class = $this->c_class;
-        $c_class::batchSelect($this->collected, $fields);
+        $className = $this->className;
+        $className::batchSelect($this->collected, $fields);
         return $this;
+    }
+
+    public static function isId($mixed)
+    {
+        return (intval($mixed).'' === $mixed);
     }
 
     public function add($cs)
     {
-        $c_class = $this->c_class;
         $cs = unflatten($cs);
+
+        // If the class has'nt been specified yet
+        if (empty($this->className))
+            $this->className = get_class(current($cs));
+
+        $mixed = array();
+        $className = $this->className;
         foreach ($cs as $c)
-            if ($c instanceof $c_class)
+            if ($c instanceof $className)
                 $this->collected[$c->id()] = $c;
+            else if (self::isId($c))
+                $this->collected[$c] = new $className($c);
             else
-                $this->collected[$c] = new $c_class($c);
+                $mixed[] = $c;
+
+        if (!empty($mixed)) {
+            $instances = $className::batchFrom($mixed);
+            foreach ($instances as $c)
+                $this->collected[$c->id()] = $c;
+        }
 
         return $this;
     }
@@ -73,7 +119,7 @@ class Collection
     {
         $cs = unflatten($cs);
         foreach ($cs as $c)
-            if ($c instanceof $c_class)
+            if ($c instanceof $className)
                 unset($this->collected[$c->id()]);
             else
                 unset($this->collected[$c]);

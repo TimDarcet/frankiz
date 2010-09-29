@@ -36,6 +36,7 @@ class GroupsModule extends PLModule
 
     function handler_groups($page)
     {
+        $page->assign('associations', 'associations');
         $page->assign('title', "Groupes");
         $page->changeTpl('groups/groups.tpl');
     }
@@ -44,11 +45,11 @@ class GroupsModule extends PLModule
     {
         $json = json_decode(Env::v('json'));
 
-        $tree = new Tree("Group");
-        $tree->descending(array(new Group($json->{'gid'})), 1)->select(Group::SELECT_BASE)->behead();
+        $parent = new Group($json->gid);
+        $children = $parent->select(Group::SELECT_CHILDREN)->children()->select(Group::SELECT_BASE);
 
         $page->jsonAssign('success', true);
-        $page->jsonAssign('children', $tree->toJson(0));
+        $page->jsonAssign('children', $children->toJson());
     }
 
     function handler_ajax_moveunder($page)
