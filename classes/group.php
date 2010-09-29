@@ -405,7 +405,7 @@ class Group extends Node
     protected $label = null;
     protected $description = null;
 
-    protected $root = null;
+    static protected $root = null;
 
     static public function table()
     {
