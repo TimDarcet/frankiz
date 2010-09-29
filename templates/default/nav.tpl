@@ -48,7 +48,7 @@
                     <a {path_to_href_attribute path="login"} accesskey="l">Se connecter</a>
                 {/if}
                 {if $smarty.session.auth >= AUTH_COOKIE }
-                    <a {path_to_href_attribute path="exit"} accesskey="l">Se déconnecter de {$smarty.session.user->displayName() }</a>
+                    <a {path_to_href_attribute path="exit"} nosolo="true" accesskey="l">Se déconnecter de {$smarty.session.user->displayName() }</a>
                 {/if}
                 </div>
                 <table>
@@ -115,6 +115,7 @@
                 <table class="body">
                     <tr>
                         <td><a {path_to_href_attribute path="admin/tree"}>Arborescence</a></td>
+                        <td><a {path_to_href_attribute path="admin/images"}>Images</a></td>
                     </tr>
                 </table>
             </div>
