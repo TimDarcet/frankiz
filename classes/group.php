@@ -33,9 +33,8 @@ abstract class Node
     public function __construct($datas)
     {
         if (!is_array($datas))
-            $this->id =$datas;
-
-        if (is_array($datas))
+            $this->id = $datas;
+        else
             $this->fillFromArray($datas);
     }
 
@@ -289,8 +288,8 @@ abstract class Node
 
 class Group extends Node
 {
-    const BASE        = 0x01;
-    const DESCRIPTION = 0x02;
+    const SELECT_BASE        = 0x01;
+    const SELECT_DESCRIPTION = 0x02;
 
     protected $type = null;
     protected $name = null;
@@ -300,9 +299,9 @@ class Group extends Node
     protected static function _batchSelect(array $nodes, $fields)
     {
         $cols = '';
-        if ($fields & self::BASE)
+        if ($fields & self::SELECT_BASE)
             $cols .= ', name, label';
-        if ($fields & self::DESCRIPTION)
+        if ($fields & self::SELECT_DESCRIPTION)
             $cols .= ', description';
 
         $res = XDB::query("SELECT  gid AS id $cols
