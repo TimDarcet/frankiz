@@ -24,12 +24,13 @@ class GroupsModule extends PLModule
     public function handlers()
     {
         return array(
-            'groups'                 => $this->make_hook('groups',        AUTH_PUBLIC),
-            'groups/ajax/children'   => $this->make_hook('ajax_children', AUTH_PUBLIC),
-            'groups/ajax/move'       => $this->make_hook('ajax_move',     AUTH_COOKIE),
-            'groups/ajax/create'     => $this->make_hook('ajax_create',   AUTH_COOKIE),
-            'groups/ajax/rename'     => $this->make_hook('ajax_rename',   AUTH_COOKIE),
-            'groups/ajax/remove'     => $this->make_hook('ajax_remove',   AUTH_COOKIE)
+            'groups'                 => $this->make_hook('groups',          AUTH_PUBLIC),
+            'groups/ajax/children'   => $this->make_hook('ajax_children',   AUTH_PUBLIC),
+            'groups/ajax/moveunder'  => $this->make_hook('ajax_moveunder',  AUTH_COOKIE),
+            'groups/ajax/movebefore' => $this->make_hook('ajax_movebefore', AUTH_COOKIE),
+            'groups/ajax/insert'     => $this->make_hook('ajax_insert',     AUTH_COOKIE),
+            'groups/ajax/rename'     => $this->make_hook('ajax_rename',     AUTH_COOKIE),
+            'groups/ajax/delete'     => $this->make_hook('ajax_delete',     AUTH_COOKIE)
         );
     }
 
@@ -43,30 +44,46 @@ class GroupsModule extends PLModule
     {
         $json = json_decode(Env::v('json'));
 
-        $tree = new Tree(GroupsTreeInfo::get());
-        $tree->descending(array(new Group($json->{'gid'})), 1)->load(Group::BASE)->behead();
+        $tree = new Tree("Group");
+        $tree->descending(array(new Group($json->{'gid'})), 1)->select(Group::SELECT_BASE)->behead();
 
         $page->jsonAssign('success', true);
         $page->jsonAssign('children', $tree->toJson(0));
     }
 
-    function handler_ajax_move($page)
+    function handler_ajax_moveunder($page)
     {
         $json = json_decode(Env::v('json'));
 
-        $moved  = new Group($json->{'moved'});
-        $target = new Group($json->{'target'});
+        $group  = new Group($json->{'group'});
+        $parent = new Group($json->{'parent'});
 
         // TODO: check the rights
         $page->jsonAssign('success', true);
         try {
-            $moved->moveTo($target);
+            $group->moveUnder($parent);
         } catch(Exception $e) {
             $page->jsonAssign('success', false);
         }
     }
 
-    function handler_ajax_create($page)
+    function handler_ajax_movebefore($page)
+    {
+        $json = json_decode(Env::v('json'));
+
+        $group  = new Group($json->{'group'});
+        $sibling = new Group($json->{'sibling'});
+
+        // TODO: check the rights
+        $page->jsonAssign('success', true);
+        try {
+            $group->moveBefore($sibling);
+        } catch(Exception $e) {
+            $page->jsonAssign('success', false);
+        }
+    }
+
+    function handler_ajax_insert($page)
     {
         $json = json_decode(Env::v('json'));
 
@@ -75,14 +92,14 @@ class GroupsModule extends PLModule
         $name   = uniqid();
 
         $parent = new Group($parent);
-
         $new = new Group(array("name" => $name, "label" => $label));
 
         // TODO: check the rights
         $page->jsonAssign('success', true);
         try {
-            $new->addTo($parent);
-            $page->jsonAssign('group', $new->toJson());
+            $new->insert($parent);
+            $datas = array('group' => $new->toJson(), 'parent' => $parent->toJson());
+            $page->jsonAssign('ok', APE::send('groupInserted', $datas));
         } catch(Exception $e) {
             $page->jsonAssign('success', false);
         }
@@ -101,12 +118,14 @@ class GroupsModule extends PLModule
         $page->jsonAssign('success', true);
         try {
             $group->label($label);
+            $datas = array('group' => $group->toJson());
+            $page->jsonAssign('ok', APE::send('groupRenamed', $datas));
         } catch(Exception $e) {
             $page->jsonAssign('success', false);
         }
     }
 
-    function handler_ajax_remove($page)
+    function handler_ajax_delete($page)
     {
         $json = json_decode(Env::v('json'));
 
@@ -116,7 +135,9 @@ class GroupsModule extends PLModule
         // TODO: check the rights
         $page->jsonAssign('success', true);
         try {
-            $group->remove();
+            $group->delete();
+            $datas = array('group' => $group->toJson());
+            $page->jsonAssign('ok', APE::send('groupDeleted', $datas));
         } catch(Exception $e) {
             $page->jsonAssign('success', false);
         }
