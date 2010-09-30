@@ -27,17 +27,14 @@ $(document).ready(function(){
 function ajaxify(target)
 {
     target.find("a[href]").each(function(index){
-        if (!$(this).attr('nosolo'))
-            $(this).attr("href", "#!/" + $(this).attr("href"));
-            $(this).attr("nosolo", true);
-    });
+        var href = $(this).attr("href");
+        if (!$(this).attr('nosolo') && href != undefined)
+            if (href.indexOf(platal_baseurl) == 0)
+                $(this).attr("href", "#!/" + href.substr(platal_baseurl.length));
+            else if (href.indexOf('http://') != 0)
+                $(this).attr("href", "#!/" + $(this).attr("href"));
 
-    // TODO ?
-    target.find("form[action]").each(function(index){
-        //if ($(this).attr('nosolo') !== undefined) {
-        //    console.log($(this).attr('action').split('solo').join('nosolo'));
-        //    $(this).attr('action', $(this).attr('action').split('solo').join('nosolo'));
-        //}
+            $(this).attr("nosolo", true);
     });
 }
 
@@ -75,15 +72,15 @@ function showError(json) {
 function request(fields)
 {
     if (fields.success && fields.fail)
-        callback = function(json) { if (json.pl_errors || json.errors) { fields.fail(json); } else { fields.success(json); } };
+        callback = function(json) { if (json.pl_errors || json.errors || json.status) { fields.fail(json); } else { fields.success(json); } };
     else if (fields.success && fields.fail === false)
         callback = function(json) { fields.success(json); };
     else if (fields.success)
-        callback = function(json) { if (json.pl_errors || json.errors) { showError(json); } else { fields.success(json); } };
+        callback = function(json) { if (json.pl_errors || json.errors || json.status) { showError(json); } else { fields.success(json); } };
     else if (fields.fail)
-        callback = function(json) { if (json.pl_errors || json.errors) { fields.fail(json); } };
+        callback = function(json) { if (json.pl_errors || json.errors || json.status) { fields.fail(json); } };
     else
-        callback = function(json) { if (json.pl_errors || json.errors) { showError(json); }};
+        callback = function(json) { if (json.pl_errors || json.errors || json.status) { showError(json); }};
 
     var data = (fields.data) ? fields.data : {};
 
@@ -96,12 +93,9 @@ function request(fields)
           data: 'json=' + data,
           success: callback,
           error: function (xhr, textStatus, errorThrown) {
-                     if(xhr.status == 403)
-                     {
                          var json = $.parseJSON(xhr.responseText);
-                         json.status = 403;
+                         json.status = xhr.status;
                          callback(json);
-                     }
                  }
     });
 }
