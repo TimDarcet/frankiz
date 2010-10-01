@@ -50,7 +50,7 @@ class User extends PlUser
     protected $skin = null;
 
     // Array of the Gids and the rights associated
-    protected $gids = null;
+    protected $groups = null;
 
     // Contains the hash sent by mail to recover the password
     protected $hash = null;
@@ -67,6 +67,7 @@ class User extends PlUser
     const SELECT_BASE         = 0x01;
     const SELECT_SKIN         = 0x02;
     const SELECT_MINIMODULES  = 0x04;
+    const SELECT_GROUPS       = 0x08;
 
     /** TODO
      * Constructs the User object
@@ -316,77 +317,9 @@ class User extends PlUser
         return false;
     }
 
-    public function groups(PlFlagSet $rights)
+    public function groups($rights)
     {
-        // We load all the groups at once,
-        // but return only a restriction.
-        Group::get($this->gids());
-        return Group::get($this->gids($rights));
-    }
-
-    // TODO: Add the groups of the Local (factor with AnonymousUser)
-    protected function loadGids()
-    {
-        // Load the directly associated groups from the database
-        $iter = XDB::iterator('SELECT  gid, rights
-                                 FROM  users_groups
-                                WHERE  uid = {?}',
-                                $this->id());
-
-        while ($array_group = $iter->next())
-                $this->gids[$array_group['gid']] = new PlFlagSet($array_group['rights']);
-// TODO
-        // Load the undirect groups
-//        $rightsInheritances = Rights::get();
-
-//        $rightsGids = array();
-//        foreach ($rightsInheritances as $right => $inheritance)
-//            $rightsGids[$right] = array();
-//
-//        foreach ($this->gids as $gid => $rights)
-//            foreach($rightsInheritances as $right => $inheritance)
-//                if ($rights->hasFlag($right))
-//                    $rightsGids[$right][] = $gid;
-//
-//        foreach($rightsInheritances as $right => $inheritance)
-//            if ($inheritance == Rights::ASCENDING)
-//                $this->addGids(Group::batchFathersGids($rightsGids[$right], Group::maxDepth), $right);
-//            else if ($inheritance == Rights::ASCENDING)
-//                $this->addGids(Group::batchChildrenGids($rightsGids[$right], Group::maxDepth), $right);
-    }
-
-    protected function addGids($gids, $right)
-    {
-        foreach ($gids as $gid)
-            if (isset($this->gids[$gid]))
-                $this->gids[$gid]->addFlag($right);
-            else
-                $this->gids[$gid] = new PlFlagSet($right);
-    }
-
-    protected function gidsFilter($rights = null)
-    {
-        $results = array();
-        foreach ($this->gids as $gid => $flagSet)
-            if ($rights === null || $flagSet->hasFlagCombination($rights))
-                $results[] = $gid;
-
-        return $results;
-    }
-
-    /**
-    * Return the gids associated with the user
-    * This function is to be used for building queries
-    * involving the groups of the user
-    *
-    * @param $rights restrict the gids returned with the rights
-    */
-    public function gids($rights = null)
-    {
-        if ($this->gids === null)
-            $this->loadGids();
-
-        return $this->gidsFilter($rights);
+        return $this->groups[$rights];
     }
 
     public function addToGroup($gid, PlFlagSet $rights)
@@ -517,7 +450,7 @@ class User extends PlUser
 
         try {
             $u = new User($values['uid']);
-            return $u->select(User::SELECT_BASE | User::SELECT_SKIN | User::SELECT_MINIMODULES);
+            return $u->select(User::SELECT_BASE | User::SELECT_SKIN | User::SELECT_MINIMODULES | User::SELECT_GROUPS);
         } catch (UserNotFoundException $e) {
             return call_user_func($callback, $login, $e->results);
         }
@@ -571,7 +504,7 @@ class User extends PlUser
             $iter = XDB::iterator('SELECT  a.uid, ' . implode(', ', $sql_columns) . '
                                      FROM  account AS a
                                            ' . PlSqlJoin::formatJoins($joints, array()) . '
-                                    WHERE  a.uid IN {?}', self::toIds($users));
+                                    WHERE  a.uid IN {?}', array_keys($users));
 
             while ($array_datas = $iter->next())
                 $users[$array_datas['uid']]->fillFromArray($array_datas);
@@ -585,10 +518,65 @@ class User extends PlUser
             $iter = XDB::iterator('SELECT  uid, name, col, row
                                      FROM  users_minimodules
                                     WHERE  uid IN {?}
-                                 ORDER BY  col, row', self::toIds($users));
+                                 ORDER BY  col, row', array_keys($users));
 
             while ($am = $iter->next())
                 array_push($users[$am['uid']]->minimodules[$am['col']], $am['name']);
+        }
+
+        // Load groups
+        // TODO: enable selective loading (SUPER ain't needed for the TOL)
+        if ($fields & self::SELECT_GROUPS) {
+            foreach ($users as $u)
+                $u->groups = Rights::emptyLayout();
+
+            $iter = XDB::iterator('SELECT  ug.uid, ug.rights, g.gid id, g.L, g.R, g.depth
+                                     FROM  users_groups AS ug
+                               INNER JOIN  groups AS g ON g.gid = ug.gid
+                                    WHERE  ug.uid IN {?}', array_keys($users));
+
+            while ($agr = $iter->next()) {
+                $rights = new PlFlagSet($agr['rights']);
+                foreach($rights as $right)
+                    $users[$agr['uid']]->groups[$right]->add(new Group($agr));
+            }
+
+            $ascending  = Collection::fromClass('Group');
+            $descending = Collection::fromClass('Group');
+            $fixed      = Collection::fromClass('Group');
+            $rights = Rights::inheritance();
+            foreach ($users as $u)
+                foreach ($rights as $right => $inheritType)
+                    if ($inheritType == Rights::ASCENDING)
+                        $ascending->merge($u->groups[$right]);
+                    else if ($inheritType == Rights::DESCENDING)
+                        $descending->merge($u->groups[$right]);
+                    else
+                        $fixed->merge($u->groups[$right]);
+
+             $ascending->select(array(Group::SELECT_FATHERS  => Group::MAX_DEPTH));
+            $descending->select(array(Group::SELECT_CHILDREN => Group::MAX_DEPTH));
+
+            $ascending  =  $ascending->roots()->flatten();
+            $descending = $descending->roots()->flatten();
+
+            $groups = new Collection();
+            $groups->merge($ascending)->merge($descending)->merge($fixed);
+            $groups->buildLinks();
+
+            $groups = $groups->roots();
+            $groups->select(Group::SELECT_BASE);
+
+            foreach ($users as $u) {
+                foreach ($rights as $right => $inheritType) {
+                    if ($inheritType == Rights::ASCENDING) {
+                        $u->groups[$right] = $groups->fathersOf($u->groups[$right]);
+                    }else if ($inheritType == Rights::DESCENDING)
+                        $u->groups[$right] = $groups->childrenOf($u->groups[$right]);
+                    else
+                        $u->groups[$right] = $u->groups[$right]->buildLinks();
+                }
+            }
         }
 
     }

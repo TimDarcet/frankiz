@@ -28,29 +28,35 @@ class Rights
 
     // Existing rights
     const PREZ   = 'prez';
-    const WEB    = 'web' ;
+    const WEB    = 'web';
     const ADMIN  = 'admin';
+    const SUPER  = 'super';
     const MEMBER = 'member';
     const FRIEND = 'friend';
 
-    public static function inheritances()
-    {
-        $inheritances = array(
-            self::DESCENDING => array(self::PREZ, self::ADMIN),
-            self::ASCENDING  => array(self::MEMBER),
-            self::FIXED      => array(self::WEB, self::FRIEND)
-        );
+    static $rights =
+            array(
+                self::PREZ   => self::DESCENDING,
+                self::ADMIN  => self::DESCENDING,
+                self::SUPER  => self::DESCENDING,
+                self::MEMBER => self::ASCENDING,
+                self::WEB    => self::FIXED,
+                self::FRIEND => self::FIXED
+            );
 
-        return $inheritances;
+    public static function inheritance($right = null)
+    {
+        return ($right == null) ? self::$rights : self::$rights[$right];
     }
 
-    public static function inheritance($searched_right)
+    public static function emptyLayout()
     {
-        $inheritances = self::inheritances();
-        foreach ($inheritances as $inheritance => $rights)
-            foreach ($rights as $right)
-                if ($right == $searched_right)
-                    return $inheritance;
+        $emptyLayout = array();
+        $rights = array_keys(self::$rights);
+        foreach ($rights as $right)
+            $emptyLayout[$right] = Collection::fromClass('Group');
+
+        return $emptyLayout;
     }
 }
 

@@ -20,57 +20,20 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if #globals.debug#}
-<div id="debug">
-    <div class="platal">
-        <span id="debug_hook">
-            @HOOK@
-        </span>
+<div class="groups_shower" id="container_{$id}">
 
-        @@BACKTRACE@@
-        {literal}
-        <script>
-            $("#debug_hook .erreur").hide();
-
-            $(".backtrace .hide").hide();
-            $(".backtrace .hide").addClass("blah42");
-            $(".backtrace .hide").removeClass("hide");
-            $(".backtrace h1").click(function(){
-                $(".backtrace .blah42").toggle();
-            });
-        </script>
-        {/literal}
-    </div>
-
-    <div class="fkz">
-
-        <div style="font-weight:bold" onclick="$('#debug_rights').toggle()">Rights</div>
-        <div id="debug_rights" style="display: none">
-            MEMBER
-            {include file="groups_shower.tpl"|rel id="member"|cat:$user->id() json=$user->groups('member')|smarty:nodefaults}
-
-            ADMIN
-            {include file="groups_shower.tpl"|rel id="admin"|cat:$user->id() json=$user->groups('admin')|smarty:nodefaults}
-        </div>
-
-        <div style="font-weight:bold" onclick="$('#debug_debug').toggle()">{php}count(Debug::$postflush);{/php} Debug(s)</div>
-        <div id="debug_debug">
-            {php}
-            if (class_exists('Debug')) {
-                $debugs = Debug::$postflush;
-                foreach ($debugs as $debug) {
-                    $id = uniqid();
-                    echo '<pre onclick="$(\'#'. $id . '\').toggle()" >' . $debug['var'] . '</pre>';
-                    echo '<pre id="' . $id . '" style="display:none">' . $debug['trace'] . '</pre>';
-                    echo '<br />';
-                }
-            }
-            {/php}
-        </div>
+    <div id="tree_{$id}">
     </div>
 
 </div>
-{/if}
+
+<script>
+    {if $json instanceof Collection}
+        groups_shower("{$id}", {$json->toJson(true)|smarty:nodefaults});
+    {else}
+        groups_shower("{$id}", {$json|smarty:nodefaults});
+    {/if}
+</script>
+
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
-

@@ -1,4 +1,4 @@
-function jsonGroupToJstreeData(raw)
+function jsonGroupToJstreeData(raw, noajax)
 {
     var children = [];
     for (var c in raw) {
@@ -11,14 +11,39 @@ function jsonGroupToJstreeData(raw)
                              }
                     };
         if (raw[c].children === true) {
-            child.state = "closed";
+            if (!noajax)
+                child.state = "closed";
         } else if (raw[c].children) {
             child.state = "open";
-            child.children = jsonGroupToJstreeData(raw[c].children);
+            child.children = jsonGroupToJstreeData(raw[c].children, noajax);
         }
         children.push(child);
     }
     return children;
+}
+
+function groups_shower(id, data)
+{
+    // Principal blocks
+    var container  = $("#container_" + id);
+    var tree       = $("#tree_" + id);
+
+    var plugins = ["themes", "json_data", "sort"];
+
+    // We build the tree
+    tree.jstree({
+        "core" : {
+            "animation" : 100
+        },
+        "themes" : {
+            "theme" : "jstree"
+        },
+        "json_data" : {
+            "data" : jsonGroupToJstreeData(data, true)
+        },
+        "sort" : function (a, b) { return parseInt($(a).attr('l')) > parseInt($(b).attr('l')) ? 1 : -1; },
+        "plugins" : plugins
+    });
 }
 
 function groups_picker(id, data, check)
@@ -147,6 +172,7 @@ function groups_modifier(container, data, rootGid)
             var gids_array = [];
             for (var i in gids)
                 gids_array.push(chan + gids[i]);
+            gids_array = ["groups_43"];
             console.log(gids_array);
             client.core.join(gids_array);
         });

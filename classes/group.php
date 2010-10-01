@@ -43,6 +43,10 @@ abstract class Node
             $this->fillFromArray($datas);
     }
 
+    public function __clone() {
+        $this->unlink();
+    }
+
     static public function table()
     {
         throw new Exception('Not implemented');
@@ -127,6 +131,12 @@ abstract class Node
         return ($this->L() < $n->L()) && ($this->R() > $n->R()) && ($this->depth() + 1 == $n->depth());
     }
 
+    public function unlink()
+    {
+        $this->children = array();
+        $this->father = null;
+    }
+
     /**
     * Try to find and build the family links with the nodes passed as a paramater
     *
@@ -150,7 +160,7 @@ abstract class Node
     *
     * @param $toBeConsummed is an array of Nodes
     */
-    static public function buildLinks(array $toBeConsummed)
+    static public function batchBuildLinks(array $toBeConsummed)
     {
         while (($n = array_pop($toBeConsummed)) != null)
             $n->_buildLinks($toBeConsummed);
@@ -180,6 +190,68 @@ abstract class Node
         return $roots;
     }
 
+    protected function cloneIfFathersOf($nodes)
+    {
+        foreach ($nodes as $id => $n) {
+            if (($this->L() <= $n->L()) && ($this->R() >= $n->R())) {
+                $fathers = array($this->id() => clone $this);
+                foreach ($this->children as $c)
+                    $fathers = array_merge($fathers, $c->cloneIfFathersOf($nodes));
+                return $fathers;
+            }
+        }
+        return array();
+    }
+
+    public static function batchFathersOf(array $roots, $nodes)
+    {
+        $fathers = array();
+
+        foreach ($roots as $r)
+            $fathers = array_merge($fathers, $r->cloneIfFathersOf($nodes));
+
+        self::batchBuildLinks($fathers);
+        return self::batchRoots($fathers);
+    }
+
+    protected function cloneChildren()
+    {
+        $children = array($this->id() => clone $this);
+        foreach ($this->children as $c)
+            $children = array_merge($children, $c->cloneChildren());
+        return $children;
+    }
+
+    protected function isChildrenOf($nodes)
+    {
+        foreach ($nodes as $n)
+            if (($this->L() >= $n->L()) && ($this->R() <= $n->R()))
+                return true;
+        return false;
+    }
+
+    protected function cloneIfChildrenOf($nodes)
+    {
+        if ($this->isChildrenOf($nodes))
+            return $this->cloneChildren();
+
+        $children = array();
+        foreach ($this->children as $c)
+            $children = array_merge($children, $c->cloneIfChildrenOf($nodes));
+
+        return $children;
+    }
+
+    public static function batchChildrenOf(array $roots, $nodes)
+    {
+        $children = array();
+        foreach ($roots as $r)
+            $children = array_merge($children, $r->cloneIfChildrenOf($nodes));
+
+        self::batchBuildLinks($children);
+        return self::batchRoots($children);
+    }
+
     public static function toIds(array $nodes)
     {
         $result = array();
@@ -191,12 +263,13 @@ abstract class Node
         return $result;
     }
 
-    public static function fromIds(array $ids)
+    public function ids()
     {
-        $nodes = array();
-        foreach ($ids as $id)
-            $nodes[] = new Group($id);
-        return $nodes;
+        $ids = array($this->id());
+        foreach ($this->children as $c)
+            $ids = array_merge($ids, $c->ids());
+
+        return $ids;
     }
 
     public function select($fields)
@@ -205,13 +278,33 @@ abstract class Node
         return $this;
     }
 
-    protected function flattenedChildren()
+    public function isMe($other)
+    {
+       return $other->id() == $this->id();
+    }
+
+    protected function flatten()
     {
         $nodes = $this->children;
         foreach ($this->children as $c)
-            $nodes = $nodes + $c->flattenedChildren();
+            $nodes = $nodes + $c->flatten();
 
         return $nodes;
+    }
+
+    public static function batchFlatten(array $nodes, $unlink = true)
+    {
+        $flattened = array();
+        foreach ($nodes as $n) {
+            $flattened = $flattened + $n->flatten();
+            $flattened[$n->id()] = $n;
+        }
+
+        if ($unlink)
+            foreach ($flattened as $n)
+                $n->unlink();
+
+        return $flattened;
     }
 
     protected static function iterToNodes($iter, $nodes)
@@ -241,6 +334,7 @@ abstract class Node
         $nodes = array_combine(self::toIds($nodes), $nodes);
         $fetched = array();
 
+        // TODO : merge requests below
         if ($bits & self::SELECT_CHILDREN)
         {
             $depth = (isset($fields[self::SELECT_CHILDREN])) ? $fields[self::SELECT_CHILDREN] : 1;
@@ -252,7 +346,8 @@ abstract class Node
                                INNER JOIN  $ta AS current ON current.$id IN {?}
                                     WHERE       n.L >= current.L
                                            AND  n.R <= current.R
-                                           AND  n.depth <= current.depth + {?}",
+                                           AND  n.depth <= current.depth + {?}
+                                 GROUP BY  n.$id",
                                            array_keys($nodes), $depth);
             $fetched = $fetched + self::iterToNodes($iter, $nodes);
         }
@@ -268,12 +363,13 @@ abstract class Node
                                INNER JOIN  $ta AS current ON current.$id IN {?}
                                     WHERE       n.L <= current.L
                                            AND  n.R >= current.R
-                                           AND  n.depth >= current.depth - {?}",
+                                           AND  n.depth >= current.depth - {?}
+                                 GROUP BY  n.$id",
                                            array_keys($nodes), $depth);
             $fetched = $fetched + self::iterToNodes($iter, $nodes);
         }
 
-        self::buildLinks($fetched);
+        self::batchBuildLinks($fetched);
     }
 
     /**
@@ -419,6 +515,9 @@ class Group extends Node
 
     public static function batchSelect(array $nodes, $fields)
     {
+        if (empty($nodes))
+            return;
+
         $bits = 0;
         if (is_array($fields))
             foreach($fields as $bit => $args)
@@ -435,9 +534,7 @@ class Group extends Node
             $cols .= ', description';
 
         if ($cols != '') {
-            $flattened = $nodes;
-            foreach ($nodes as $n)
-                $flattened = $flattened + $n->flattenedChildren();
+            $flattened = self::batchFlatten($nodes, false);
 
             $res = XDB::query("SELECT  gid AS id $cols
                                  FROM  groups
@@ -494,6 +591,7 @@ class Group extends Node
             while ($g = $iter->next())
                 $instances[$g['name']] = new self($g);
         }
+        // THrow Exception if not possible to construct each instance
         return $instances;
     }
 
@@ -551,6 +649,7 @@ class Group extends Node
 
         return $json;
     }
+
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

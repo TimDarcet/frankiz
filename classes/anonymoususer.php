@@ -21,32 +21,12 @@
 
 class AnonymousUser extends User
 {
+
     public function __construct()
     {
         $this->uid = 0;
         $this->minimodules = FrankizMiniModule::emptyLayout();
-    }
-
-    protected function loadGids()
-    {
-        // By default, everybody is a member of the top-level group
-        $root = Group::root();
-        $this->gids[$root->gid()] = new PlFlagSet(Rights::MEMBER);
-
-        // If connecting from a local, find associated groups
-        if (IP::is_local())
-        {
-            $iter = XDB::iterator('SELECT  g.gid
-                                     FROM  ips
-                               INNER JOIN  rooms_owners AS ro
-                                       ON  ro.rid = ips.rid
-                               INNER JOIN  groups AS g
-                                       ON  g.gid = ro.owner_id
-                                    WHERE  ips.ip = {?}', IP::get());
-
-            while ($array_group = $iter->next())
-                $this->gids[$array_group['gid']] = new PlFlagSet(Rights::MEMBER);
-        }
+        $this->groups = Rights::emptyLayout();
     }
 
     public function loadMainFields()
@@ -59,6 +39,7 @@ class AnonymousUser extends User
     {
         return new PlFlagSet();
     }
+
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

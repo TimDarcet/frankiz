@@ -21,7 +21,7 @@
 
 // Collection of Db-existent objects
 // Objects need to have an unique id accessible by id()
-class Collection
+class Collection extends PlAbstractIterable
 {
     protected $collected = array();
     protected $className = null;
@@ -31,6 +31,13 @@ class Collection
      */
     public function __construct()
     {
+    }
+
+    public static function fromClass($className)
+    {
+        $c = new Collection();
+        $c->className($className);
+        return $c;
     }
 
     public function className($className = null)
@@ -52,23 +59,33 @@ class Collection
                 return $r;
 
             $c = new Collection($className);
-            return $c->add($r);
+            if (!empty($r))
+                $c->add($r);
+            return $c;
         }
 
         throw new Exception("The method $className::$inferedMethod doesn't exist");
     }
 
-    public function toJson()
+    public function toJson($stringify = false)
     {
         $json = array();
         foreach ($this->collected as $c)
             $json[] = $c->toJson();
-        return $json;
+
+        return ($stringify) ? json_encode($json) : $json;
     }
 
     public function toArray()
     {
         return $this->collected;
+    }
+
+    /** Build an iterator for this Collection.
+     */
+    public function iterate()
+    {
+        return PlIteratorUtils::fromArray($this->collected, 1, true);
     }
 
     public function select($fields)
@@ -78,16 +95,25 @@ class Collection
         return $this;
     }
 
+    public function ids()
+    {
+        $ids = array();
+        foreach ($this->collected as $c)
+            $ids = array_merge($ids, $c->ids());
+
+        return $ids;
+    }
+
     public static function isId($mixed)
     {
-        return (intval($mixed).'' === $mixed);
+        return (intval($mixed).'' == $mixed);
     }
 
     public function add($cs)
     {
         $cs = unflatten($cs);
 
-        // If the class has'nt been specified yet
+        // If the class hasn't been specified yet
         if (empty($this->className))
             $this->className = get_class(current($cs));
 
@@ -97,7 +123,8 @@ class Collection
             if ($c instanceof $className)
                 $this->collected[$c->id()] = $c;
             else if (self::isId($c))
-                $this->collected[$c] = new $className($c);
+                if (empty($this->collected[$c]))
+                    $this->collected[$c] = new $className($c);
             else
                 $mixed[] = $c;
 
@@ -106,6 +133,17 @@ class Collection
             foreach ($instances as $c)
                 $this->collected[$c->id()] = $c;
         }
+
+        return $this;
+    }
+
+    public function merge(Collection $collec)
+    {
+        if (empty($this->className))
+            $this->className = $collec->className();
+
+        foreach ($collec->collected as $id => $c)
+            $this->collected[$id] = $c;
 
         return $this;
     }
@@ -131,6 +169,7 @@ class Collection
     {
         return count($this->collected);
     }
+
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

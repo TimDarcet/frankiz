@@ -154,6 +154,8 @@ class FrankizPage extends PlPage
         $skin = $this->load_skin();
         $this->assign('skin', S::v('skin'));
 
+        $this->assign('user', S::user());
+
         if (!Env::has('json'))
             $this->assign('MiniModules_COL_FLOAT', FrankizMiniModule::get(S::user()->minimodules(FrankizMiniModule::COL_FLOAT)));
 
