@@ -110,9 +110,12 @@ abstract class FrankizMiniModule
 
         $cls = ucfirst($name) . 'MiniModule';
         $path = $globals->spoolroot . '/minimodules/' . strtolower($name) . ".php";
-        include_once $path;
-
-        return new $cls($name);
+        if (file_exists($path)) {
+            include_once $path;
+            return new $cls($name);
+        } else {
+            return false;
+        }
     }
 
     public static function get($names)
@@ -122,10 +125,12 @@ abstract class FrankizMiniModule
         $minimodules = array();
         foreach($names as $name) {
             $m = self::instantiate($name);
-            self::$minimodules[$m->name] = $m;
             $minimodules[$m->name] = $m;
-            if ($m->checkAuthAndPerms())
-                $m->run();
+            if ($m !== false) {
+                self::$minimodules[$m->name] = $m;
+                if ($m->checkAuthAndPerms())
+                    $m->run();
+            }
         }
         return ($array_passed) ? $minimodules : flatten($minimodules);
     }

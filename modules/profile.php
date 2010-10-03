@@ -833,7 +833,7 @@ class ProfileModule extends PLModule
         $minimodules = array();
         while ($minimodule = $iter->next()) {
             $m = FrankizMiniModule::get($minimodule['name']);
-            if ($m->checkAuthAndPerms())
+            if ($m!== false && $m->checkAuthAndPerms())
             {
                 $minimodules[] = array('activated' => in_array($minimodule['name'], $user_minimodules),
                                        'frequence' => $minimodule['frequence'],
