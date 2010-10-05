@@ -26,7 +26,7 @@
     </div>
     <div class="body">
         <form class="trombino" enctype="multipart/form-data" method="post" action="tol/">
-        <input type="hidden" name="mode" value="micro" />
+        <input type="hidden" name="mode" value="card" />
         <fieldset id="tol_infos" class="loading">
 
             <span class="empty">Pas de résultats</span>

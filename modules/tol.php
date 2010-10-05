@@ -19,7 +19,7 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class TrombinoModule extends PLModule
+class TolModule extends PLModule
 {
     function handlers()
     {
@@ -121,7 +121,7 @@ class TrombinoModule extends PLModule
         $page->assign('roots', $roots);
         $page->assign('title', 'Trombino On Line');
         $page->addCssLink('tol.css');
-        $page->changeTpl('trombino/tol.tpl');
+        $page->changeTpl('tol/tol.tpl');
     }
 
     function handler_tol_ajax($page)
@@ -135,7 +135,7 @@ class TrombinoModule extends PLModule
 
         if ($filter) {
             $uf = new UserFilter($filter);
-            if ($json->mode == 'micro')
+            if ($json->mode == 'card')
                 $users = $uf->getUsers(new PlLimit(20,0))->select(User::SELECT_BASE)->toArray();
             else
                 $users = $uf->getUsers(new PlLimit(50,0))->select(User::SELECT_BASE | User::SELECT_GROUPS);
@@ -143,10 +143,10 @@ class TrombinoModule extends PLModule
             $page->jsonAssign('total', $uf->getTotalCount());
             foreach($users as $k => $user) {
                 $page->assign('result', $user);
-                if ($json->mode == 'micro')
-                    $fiches[$user->id()] = $page->fetch(FrankizPage::getTplPath('trombino/microfiche.tpl'));
+                if ($json->mode == 'card')
+                    $fiches[$user->id()] = $page->fetch(FrankizPage::getTplPath('tol/card.tpl'));
                 else
-                    $fiches[$user->id()] = $page->fetch(FrankizPage::getTplPath('trombino/fiche.tpl'));
+                    $fiches[$user->id()] = $page->fetch(FrankizPage::getTplPath('tol/sheet.tpl'));
             }
         }
 

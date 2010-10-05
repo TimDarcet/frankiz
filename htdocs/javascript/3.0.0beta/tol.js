@@ -1,15 +1,15 @@
 var tol_busy = false;
 var tol_late = false;
-var mode = 'micro';
+var mode = 'card';
 
 $(document).ready(function(){
     $("#tol_searcher").submit(function() {
-        $('#tol_searcher input[name=mode]').val('fiche');
+        $('#tol_searcher input[name=mode]').val('sheet');
         return false;
     });
 
     $("#tol_searcher input[type=submit]").click(function() {
-        $('#tol_searcher input[name=mode]').val('fiche');
+        $('#tol_searcher input[name=mode]').val('sheet');
         $(this).keyup();
         return false;
     });
@@ -66,7 +66,7 @@ function search()
 
                 mode = json.mode;
                 tol_busy = false;
-                $('#tol_searcher input[name=mode]').val('micro');
+                $('#tol_searcher input[name=mode]').val('card');
                 if (tol_late) {
                     tol_late = false;
                     search();

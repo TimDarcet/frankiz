@@ -1,6 +1,6 @@
 {**************************************************************************}
 {*                                                                        *}
-{*  Copyright (C) 2009 Binet RÃ©seau                                       *}
+{*  Copyright (C) 2009 Binet Réseau                                       *}
 {*  http://www.polytechnique.fr/eleves/binets/reseau/                     *}
 {*                                                                        *}
 {*  This program is free software; you can redistribute it and/or modify  *}
@@ -20,9 +20,18 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<li>
-    {$result->displayName()}
-    <img src="data/tol/origin/small/{$result->login()}.jpg" />
-</li>
+<div class="trombino">
+    {include file="tol/search.tpl"|rel}
+
+    <ul id="tol_results">
+        {if isset($results|smarty:nodefaults)}
+            {foreach from=$results item=result}
+                {include file="tol/sheet.tpl"|rel result=$result}
+            {/foreach}
+        {/if}
+    </ul>
+</div>
+
+{js src="tol.js"}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
