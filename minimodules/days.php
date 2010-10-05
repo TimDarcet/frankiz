@@ -19,39 +19,35 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class JtxMiniModule extends FrankizMiniModule
+class DaysMiniModule extends FrankizMiniModule
 {
-    public function auth()
+    public function tpl()
     {
-        if (IP::is_internal())
-            return AUTH_PUBLIC;
-        else 
-            return AUTH_COOKIE;
+        return "minimodules/days/days.tpl";
     }
 
     public function css()
     {
-        return 'minimodules/jtx.css';
-    }
-
-    public function tpl()
-    {
-        if (IP::is_internal())
-            return 'minimodules/jtx/internal.tpl';
-        else 
-            return 'minimodules/jtx/external.tpl';
+        return "minimodules/days.css";
     }
 
     public function title()
     {
-        return 'Video du jour';
+        return "Fêtes du jour";
     }
 
     public function run()
     {
-
+        $today = date('d');
+        $month = date('m');
+        $res = XDB::query("
+                SELECT name
+                FROM days
+                WHERE day=$today AND month=$month
+                ");
+        $fetes = $res->fetchColumn(0);
+        $this->assign("fetes", $fetes);
     }
-
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

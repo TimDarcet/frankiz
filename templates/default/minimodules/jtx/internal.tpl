@@ -20,9 +20,9 @@
 {*                                                                        *}
 {**************************************************************************}
 
-
-<video src="data/jtx/minimodule_jtx.ogv" poster="data/jtx/minimodule_jtx.png" controls width="100%">
-     <p>Pour pouvoir profiter de cette vidéo, il faut installer un navigateur récent : Firefox ou chrome.</p>
+<video controls="controls" poster="data/jtx/cpr.png">
+    <source src="data/jtx/cpr.ogv" type="video/ogg" />
+    <p>Pour pouvoir profiter de cette vidéo, il faut installer un navigateur récent : Firefox ou chrome.</p>
 </video>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

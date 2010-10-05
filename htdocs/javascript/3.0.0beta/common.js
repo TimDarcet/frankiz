@@ -29,19 +29,25 @@ function ajaxify(target)
     target.find("a[href]").each(function(index){
         var href = $(this).attr("href");
         if (!$(this).attr('nosolo') && href != undefined)
+        {
             if (href.indexOf(platal_baseurl) == 0)
-                $(this).attr("href", "#!/" + href.substr(platal_baseurl.length));
+                $(this).attr("href", "#!" + href.substr(platal_baseurl.length));
             else if (href.indexOf('http://') != 0)
-                $(this).attr("href", "#!/" + $(this).attr("href"));
+                $(this).attr("href", "#!" + $(this).attr("href"));
 
             $(this).attr("nosolo", true);
+        }
     });
 }
 
 function getSection(page)
 {
     $("body").addClass("loading");
-    request({  "url"    : platal_baseurl + page + "?solo"
+    var delim = "?";
+    if (page.indexOf("?") >=0)
+        delim = "&";
+
+    request({  "url"    : platal_baseurl + page + delim + "solo"
               ,"success" : function(json)
                   {
                     $("body").removeClass("loading");

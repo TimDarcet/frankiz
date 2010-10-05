@@ -1,7 +1,6 @@
-<?php
 /***************************************************************************
- *  Copyright (C) 2009 Binet Réseau                                       *
- *  http://www.polytechnique.fr/eleves/binets/reseau/                     *
+ *  Copyright (C) 2009 Binet Réseau                                        *
+ *  http://www.polytechnique.fr/eleves/binets/reseau/                      *
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
  *  it under the terms of the GNU General Public License as published by   *
@@ -19,31 +18,6 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class FetesMiniModule extends FrankizMiniModule
-{
-    public function tpl()
-    {
-        return "minimodules/fetes/fetes.tpl";
-    }
-
-    public function title()
-    {
-        return "Fêtes du jour";
-    }
-
-    public function run()
-    {
-        $today = date('d');
-        $month = date('m');
-        $res = XDB::query("
-                SELECT name
-                FROM days
-                WHERE day=$today AND month=$month
-                ");
-        $fetes = $res->fetchColumn(0);
-        $this->assign("fetes", $fetes);
-    }
+#minimodule_jtx video {
+    width: 100%;
 }
-
-// vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
-?>
