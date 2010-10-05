@@ -18,25 +18,37 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-/*******************************************************************************
-     0   Styles par défauts
-
-*******************************************************************************/
-
-#tol_searcher {
-    position: relative;
-    float: right;
-
-    width: 200px;
-    height: auto;
-    background-color: #CAD7DC;
-    border: 1px #002334 solid;
+#tol_infos
+{
+    text-align: center;
+    font-weight: bold;
+    height: 21px;
 }
 
-#tol_searcher legend {
-    color: white;
-    background-color: #002334;
-    border: 1px #002334 solid;
+#tol_infos .empty, #tol_infos .notempty
+{
+    display: none;	
+}
+
+#tol_infos.loading
+{
+    background-image: url("../default/images/loading.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#tol_searcher {
+    position: absolute;
+    top: 12px;
+    width: 250px;
+    height: auto;
+    background-color: white;
+    border: 1px #003757 solid;
+    z-index: 10;
+}
+
+#tol_searcher input.empty {
+	background-color: red;
 }
 
 #tol_searcher ul {
@@ -48,6 +60,7 @@
 #tol_searcher fieldset {
 	border: 1px white solid;
 	margin-bottom: 2px;
+	background-color: #BDD5E3;
 }
 
 #tol_searcher li {
@@ -66,8 +79,16 @@
     float: right;
 }
 
-.trombino #tol_results {
-    padding: 0;
+#tol_send {
+    text-align: center;	
+}
+
+#tol_results {
+	position: relative;
+	left: 255px;
+	padding: 0;
+    padding-right: 255px;
+    z-index: 1;
 }
 
 .trombino .microfiche {
@@ -78,8 +99,8 @@
     margin: 3px;
     overflow: hidden;
     text-align: center;
-    border: 1px #002334 solid;
-    background-color: #CAD7DC;
+    background-color: #BDD5E3;
+    border: 1px #003757 solid;
 }
 
 .trombino .microfiche .img {
@@ -89,6 +110,51 @@
 }
 
 .trombino .microfiche .img img {
+	position:absolute;
+	bottom: 0;
+	left: 0;
     height: 150px;
-    max-width: 190px;
+    max-width: 100%;
+}
+
+.trombino .fiche {
+    display: block;
+    position: relative;
+    width: 100%;
+
+    margin: 3px;
+    overflow: hidden;
+    text-align: center;
+    background-color: #BDD5E3;
+    border: 1px #003757 solid;
+}
+
+.trombino .fiche .base {
+    width: 100%;
+    padding: 5px;
+}
+
+.trombino .fiche .base .img {
+	float: left;
+    position: relative;
+    top: 1px;
+    left: 1px;
+}
+
+.trombino .fiche .base .sports {
+    float: right;
+    width: 120px;
+    hegiht: 120px;
+}
+
+.trombino .fiche .base hr {
+    clear: both;
+    border: none;
+    border-top: 1px #002334 solid;
+}
+
+.trombino .fiche .more {
+	width: 100%;
+    text-align: left;
+    padding: 5px;
 }

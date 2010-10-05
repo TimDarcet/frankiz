@@ -20,40 +20,53 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<fieldset id="tol_searcher">
-    <legend>Rechercher sur le trombino</legend>
-    <form class="trombino" enctype="multipart/form-data" method="post" action="tol/">
-    <fieldset>
-    <ul>
-        <li><label>Prénom<input type="text" name="firstname" value="{$fields.firstname}" /></label></li>
-        <li><label>Nom<input type="text" name="lastname" value="{$fields.lastname}" /></label></li>
-        <li><label>Surnom<input type="text" name="nickname" value="{$fields.nickname}" /></label></li>
-        <li><label>Nationalite<input type="text" name="nation" value="" /></label></li>
-    </ul>
-    </fieldset>
-    <fieldset>
-    <ul>
-        <li><label>Ecole<input type="text" name="" value="" /></label></li>
-        <li><label>Promo<input type="text" name="" value="" /></label></li>
-    </ul>
-    </fieldset>
-    <fieldset>
-    <ul>
-        <li><label>Binet<input type="text" name="" value="" /></label></li>
-    </ul>
-    </fieldset>
-    <fieldset>
-    <ul>
-        <li><label>Casert<input type="text" name="" value="" /></label></li>
-        <li><label>Tel<input type="text" name="" value="" /></label></li>
-        <li><label>IP<input type="text" name="" value="" /></label></li>
-    </ul>
-    </fieldset>
-    <fieldset>
-        <input type="reset" name="effacer" value="RàZ" onClick="trueFormReset(this.form); return false;" />
-        <input type="submit" name="chercher" value="Chercher" />
-    </fieldset>
-    </form>
-</fieldset>
+<div class="minimodule" id="tol_searcher">
+    <div class="head">
+        Rechercher sur le trombino
+    </div>
+    <div class="body">
+        <form class="trombino" enctype="multipart/form-data" method="post" action="tol/">
+        <input type="hidden" name="mode" value="micro" />
+        <fieldset id="tol_infos" class="loading">
+
+            <span class="empty">Pas de résultats</span>
+            <span class="notempty" {if isset($total|smarty:nodefaults)}style="display: inline"{/if}><span class="count">{if isset($results|smarty:nodefaults)}{$results|@count}{/if}</span> / <span class="total">{if isset($total|smarty:nodefaults)}{$total}{/if}</span></span>
+        </fieldset>
+        <fieldset id="tol_names">
+        <ul>
+            <li><label>Prénom<input type="text" name="firstname" value="{$fields.firstname}" /></label></li>
+            <li><label>Nom<input type="text" name="lastname" value="{$fields.lastname}" /></label></li>
+            <li><label>Surnom<input type="text" name="nickname" value="{$fields.nickname}" /></label></li>
+            <li><label>Nationalités{include file="groups_picker.tpl"|rel id="nationalities" groups="nationalities" type="descending" depth=1 visibility=1 behead=true check=0}</label></li>
+        </ul>
+        </fieldset>
+        <fieldset id="tol_studies">
+        <ul>
+            <li><label>Études{include file="groups_picker.tpl"|rel id="studies" groups=$roots.studies->id() type="descending" depth=1 visibility=1 behead=true check=0}</label></li>
+        </ul>
+        </fieldset>
+        <fieldset id="tol_sports">
+        <ul>
+            <li><label>Sports{include file="groups_picker.tpl"|rel id="sports" groups=$roots.sports->id() type="descending" depth=1 visibility=1 behead=true check=0}</label></li>
+        </ul>
+        </fieldset>
+        <fieldset id="tol_groups">
+        <ul>
+            <li><label>Binet{include file="groups_picker.tpl"|rel id="associations" groups=$roots.associations->id() type="descending" depth=2 visibility=2 behead=true check=0}</label></li>
+        </ul>
+        </fieldset>
+        <fieldset id="tol_rooms">
+        <ul>
+            <li><label>Casert<input type="text" name="room" value="" /></label></li>
+            <li><label>Tel<input type="text" name="phone" value="" /></label></li>
+            <li><label>IP<input type="text" name="ip" value="" /></label></li>
+        </ul>
+        </fieldset>
+        <fieldset id="tol_send">
+            <input type="submit" name="chercher" value="Chercher" />
+        </fieldset>
+        </form>
+    </div>
+</div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

@@ -19,6 +19,10 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+class IdentifierNotFoundException extends Exception {
+
+}
+
 // Collection of Db-existent objects
 // Objects need to have an unique id accessible by id()
 class Collection extends PlAbstractIterable
@@ -76,9 +80,16 @@ class Collection extends PlAbstractIterable
         return ($stringify) ? json_encode($json) : $json;
     }
 
-    public function toArray()
+    public function toArray($indexedBy = null)
     {
-        return $this->collected;
+        if (empty($indexedBy))
+            return $this->collected;
+
+        $collec = array();
+        foreach ($this->collected as $c)
+            $collec[$c->$indexedBy()] = $c;
+
+        return $collec;
     }
 
     /** Build an iterator for this Collection.
@@ -104,11 +115,6 @@ class Collection extends PlAbstractIterable
         return $ids;
     }
 
-    public static function isId($mixed)
-    {
-        return (intval($mixed).'' == $mixed);
-    }
-
     public function add($cs)
     {
         $cs = unflatten($cs);
@@ -122,16 +128,19 @@ class Collection extends PlAbstractIterable
         foreach ($cs as $c)
             if ($c instanceof $className)
                 $this->collected[$c->id()] = $c;
-            else if (self::isId($c))
+            else if (isId($c)) {
                 if (empty($this->collected[$c]))
                     $this->collected[$c] = new $className($c);
-            else
+            } else
                 $mixed[] = $c;
 
         if (!empty($mixed)) {
-            $instances = $className::batchFrom($mixed);
-            foreach ($instances as $c)
-                $this->collected[$c->id()] = $c;
+            $collec = $className::batchFrom($mixed);
+            $this->merge($collec);
+
+            if (count($mixed) != $collec->count())
+                throw new IdentifierNotFoundException('Identifiers passed: ' . implode(',', $mixed) . "\n" .
+                                                      'Instances returned: ' . implode(',', array_keys($collec->toArray('name'))));
         }
 
         return $this;
@@ -148,9 +157,16 @@ class Collection extends PlAbstractIterable
         return $this;
     }
 
-    public function get($id)
+    public function get($mixed)
     {
-        return $this->collected[$id];
+        if (isId($mixed))
+            return $this->collected[$id];
+        else
+            foreach ($this->collected as $c)
+                if ($c->isMe($mixed))
+                    return $c;
+
+        return false;
     }
 
     public function remove($cs)

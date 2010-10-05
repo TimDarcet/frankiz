@@ -87,7 +87,7 @@ abstract class Node
     public function children()
     {
         $c = new Collection();
-        return $c->add($this->children);;
+        return $c->add($this->children);
     }
 
     static protected function _sort($a, $b)
@@ -171,6 +171,27 @@ abstract class Node
         return ($this->father === null) ? $this : $this->father->_root();
     }
 
+    public function leaves()
+    {
+        $leaves = new Collection();
+        if (empty($this->children))
+            return $leaves->add($this);
+
+        foreach ($this->children as $c)
+            $leaves->merge($c->leaves());
+
+        return $leaves;
+    }
+
+    public static function batchLeaves(array $nodes)
+    {
+        $leaves = new Collection();
+        foreach ($nodes as $n)
+            $leaves->merge($n->leaves());
+
+        return $leaves;
+    }
+
     public static function batchChildren(array $nodes)
     {
         $children = array();
@@ -182,11 +203,10 @@ abstract class Node
 
     public static function batchRoots(array $nodes)
     {
-        $roots = array();
-        foreach ($nodes as $n) {
-            $root = $n->_root();
-            $roots[$root->gid()] = $root;
-        }
+        $roots = new Collection();
+        foreach ($nodes as $n)
+            $roots->add($n->_root());
+
         return $roots;
     }
 
@@ -280,7 +300,12 @@ abstract class Node
 
     public function isMe($other)
     {
-       return $other->id() == $this->id();
+        if ($other instanceof $this)
+            return $other->id() == $this->id();
+        else if (isId($other))
+            return $other == $this->id();
+        else
+            return null;
     }
 
     protected function flatten()
@@ -583,28 +608,25 @@ class Group extends Node
 
     public static function batchFrom(array $mixed)
     {
-        $instances = array();
+        $collec = new Collection();
         if (!empty($mixed)) {
             $iter = XDB::iterator('SELECT  gid AS id, name
                                      FROM  groups
                                     WHERE  name IN {?}', $mixed);
             while ($g = $iter->next())
-                $instances[$g['name']] = new self($g);
+                $collec->add(new self($g));
         }
-        // THrow Exception if not possible to construct each instance
-        return $instances;
+
+        return $collec;
     }
 
-    public static function fromNames(array $names)
+    public function isMe($mixed)
     {
-        $iter = XDB::iterator("SELECT  gid AS id, name
-                                 FROM  groups
-                                WHERE  name IN {?}", $names);
-        $groups = array();
-        while ($node = $iter->next())
-            $groups[$node['name']] = new Group($node);
+        $isMe = parent::isMe($mixed);
+        if ($isMe !== null)
+            return $isMe;
 
-        return $groups;
+        return $mixed == $this->name();
     }
 
     public static function root()
@@ -630,7 +652,7 @@ class Group extends Node
                    $this->name(), $this->label(), $this->description(), $this->id);
     }
 
-    public function toJson()
+    public function toJson($stringify = false)
     {
         $json = array("id"    => $this->gid(),
                       "L"     => $this->L(),
@@ -647,7 +669,7 @@ class Group extends Node
                     $json['children'][] = $child->toJson();
             }
 
-        return $json;
+        return ($stringify) ? json_encode($json) : $json;
     }
 
 }

@@ -20,9 +20,36 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<li>
-    {$result->displayName()}
-    <img src="data/tol/origin/small/{$result->login()}.jpg" />
+{assign var='groups' value=$result->groups('member')}
+{if $groups->count() > 0}
+    {assign var='groups'       value=$groups->children()}
+
+    {assign var='associations' value=$groups->get('associations')}
+    {assign var='sports'       value=$groups->get('sports')}
+{/if}
+
+<li uid="{$result->id()}" class="fiche">
+    <div class="base">
+        <div class="img"><img src="profile/photo/small/{$result->login()}" /></div>
+        <div class="sports">
+            {if $sports|smarty:nodefaults}
+                {assign var='sports' value=$sports->leaves()}
+                {foreach from=$sports item=sport}
+                    {$sport->name()}
+                {/foreach}
+            {/if}
+        </div>
+        <div class="name">{$result->displayName()}</div>
+        <hr />
+    </div>
+    <div class="more">
+        <div class="associations">
+            {if $associations|smarty:nodefaults}
+            Binets:
+                {include file="groups_shower.tpl"|rel id="associations"|cat:$result->id() json=$associations->children()|smarty:nodefaults}
+            {/if}
+        </div>
+    </div>
 </li>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

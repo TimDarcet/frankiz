@@ -645,7 +645,8 @@ class UserFilter extends PlFilter
 
     public function getUsers($limit = null)
     {
-        $c = new Collection('User');
+        $c = new Collection();
+        $c->className('User');
         return $c->add($this->getUIDs($limit));
     }
 

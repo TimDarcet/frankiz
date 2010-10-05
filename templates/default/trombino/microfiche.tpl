@@ -22,7 +22,7 @@
 
 <li uid="{$result->id()}" class="microfiche">
     <div class="name">{$result->displayName()}</div>
-    <div class="img"><img src="data/tol/origin/small/{$result->login()}.jpg" /></div>
+    <div class="img"><img src="profile/photo/small/{$result->login()}" /></div>
 </li>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

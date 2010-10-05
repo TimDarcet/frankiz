@@ -549,32 +549,36 @@ class User extends PlUser
                 foreach ($rights as $right => $inheritType)
                     if ($inheritType == Rights::ASCENDING)
                         $ascending->merge($u->groups[$right]);
-                    else if ($inheritType == Rights::DESCENDING)
+                    elseif ($inheritType == Rights::DESCENDING)
                         $descending->merge($u->groups[$right]);
                     else
                         $fixed->merge($u->groups[$right]);
 
-             $ascending->select(array(Group::SELECT_FATHERS  => Group::MAX_DEPTH));
-            $descending->select(array(Group::SELECT_CHILDREN => Group::MAX_DEPTH));
+            $ascending  =  $ascending->select(array(Group::SELECT_FATHERS  => Group::MAX_DEPTH))->roots();
+            $descending = $descending->select(array(Group::SELECT_CHILDREN => Group::MAX_DEPTH))->roots();
 
-            $ascending  =  $ascending->roots()->flatten();
-            $descending = $descending->roots()->flatten();
+            if ($ascending->count() > 0)
+                $ascending  =  $ascending->flatten();
+            if ($descending->count() > 0)
+                $descending = $descending->flatten();
 
             $groups = new Collection();
             $groups->merge($ascending)->merge($descending)->merge($fixed);
             $groups->buildLinks();
 
             $groups = $groups->roots();
-            $groups->select(Group::SELECT_BASE);
+            if ($groups->count() > 0) {
+                $groups->select(Group::SELECT_BASE);
 
-            foreach ($users as $u) {
-                foreach ($rights as $right => $inheritType) {
-                    if ($inheritType == Rights::ASCENDING) {
-                        $u->groups[$right] = $groups->fathersOf($u->groups[$right]);
-                    }else if ($inheritType == Rights::DESCENDING)
-                        $u->groups[$right] = $groups->childrenOf($u->groups[$right]);
-                    else
-                        $u->groups[$right] = $u->groups[$right]->buildLinks();
+                foreach ($users as $u) {
+                    foreach ($rights as $right => $inheritType) {
+                        if ($inheritType == Rights::ASCENDING)
+                            $u->groups[$right] = $groups->fathersOf($u->groups[$right]);
+                        elseif ($inheritType == Rights::DESCENDING)
+                            $u->groups[$right] = $groups->childrenOf($u->groups[$right]);
+                        else
+                            $u->groups[$right] = $u->groups[$right]->buildLinks();
+                    }
                 }
             }
         }
