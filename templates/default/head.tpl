@@ -22,5 +22,18 @@
 
 <link rel="stylesheet" type="text/css" href="css/{"base.css"|rel}" media="all"/>
 <link type="text/css" href="css/{"jquery-ui.css"|rel}" rel="stylesheet" />
+<link type="text/css" href="css/{"fancybox/jquery.fancybox.css"|rel}" rel="stylesheet" />
+
+{js src="jquery-ui.js"}
+{js src="minimodules.js"}
+{js src="jquery.fancybox.js"}
+
+{literal}
+<script type="text/javascript">
+    $(document).ready(function(){
+        ajaxify($("body"));
+    });
+</script>
+{/literal}
         
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

@@ -9,33 +9,56 @@
    };
 })(jQuery);
 
+var currentPage = '';
 $(document).ready(function(){
     $.ajaxSetup({ cache: false });
 
+    var trima = new RegExp('^[/]+', 'g');
+    var trimb = new RegExp('[/]+$', 'g');
     $(window).hashchange(function(){
         var hash = location.hash;
-        var page = hash.slice(hash.indexOf("#!") + 2);
-        getSection(page);
+        var fakeSharp = hash.indexOf("#!");
+        var trueSharp = hash.indexOf("#", fakeSharp + 1);
+
+        if (trueSharp == -1)
+            var trueUrl = hash.slice(hash.indexOf("#!") + 2);
+        else
+            var trueUrl = hash.slice(hash.indexOf("#!") + 2, trueSharp);
+
+        trueUrl = trueUrl.replace(trima, '').replace(trimb, '');
+
+        if (currentPage != trueUrl)
+            getSection(trueUrl);
     });
 
     if (location.hash.indexOf("#!") >= 0)
         $(window).hashchange();
-
-    ajaxify($("body"));
 });
 
 function ajaxify(target)
 {
     target.find("a[href]").each(function(index){
-        var href = $(this).attr("href");
-        if (!$(this).attr('nosolo') && href != undefined)
-        {
-            if (href.indexOf(platal_baseurl) == 0)
-                $(this).attr("href", "#!" + href.substr(platal_baseurl.length));
-            else if (href.indexOf('http://') != 0)
-                $(this).attr("href", "#!" + $(this).attr("href"));
+        var _this = $(this);
+        var href  = $(this).attr("href");
 
-            $(this).attr("nosolo", true);
+        if (!_this.attr('nosolo') && href != undefined)
+        {
+            if (_this.children('img').length == 1 && jQuery.fn.fancyBox)
+            {
+                _this.fancybox({
+                    'overlayOpacity' :  0.5,
+                    'type'           : 'image'
+                });
+            }
+            else
+            {
+                if (href.indexOf(platal_baseurl) == 0)
+                    _this.attr("href", "#!/" + href.substr(platal_baseurl.length));
+                else if (href.indexOf('http://') != 0)
+                    _this.attr("href", "#!/" + href);
+            }
+
+            _this.attr("nosolo", true);
         }
     });
 }
@@ -50,6 +73,7 @@ function getSection(page)
     request({  "url"    : platal_baseurl + page + delim + "solo"
               ,"success" : function(json)
                   {
+                    currentPage = page;
                     $("body").removeClass("loading");
                     $("#content").html(json.content);
                     $("#section .header").html(json.title);

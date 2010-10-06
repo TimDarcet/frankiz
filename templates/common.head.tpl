@@ -39,7 +39,6 @@
 </script>
 
 {js src="jquery.js"}
-{js src="jquery-ui.js"}
 {js src="json2.js"}
 {js src="common.js"}
 {js src="groups.js"}
