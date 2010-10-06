@@ -148,7 +148,8 @@ abstract class FrankizMiniModule
     {
         $res = array();
         foreach(self::$minimodules as $m)
-            $res[$m->name] = $m->css();
+            if ($m->css())
+                $res[$m->name] = $m->css();
 
         return $res;
     }
