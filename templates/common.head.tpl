@@ -38,16 +38,15 @@
     var logged = {if $smarty.session.auth >= AUTH_COOKIE}true{else}false{/if};
 </script>
 
-<script type="text/javascript" src="javascript/3.0.0beta/jquery.js"></script>
-<script type="text/javascript" src="javascript/3.0.0beta/jquery-ui.js"></script>
-<script type="text/javascript" src="javascript/3.0.0beta/json2.js"></script>
-<script type="text/javascript" src="javascript/3.0.0beta/common.js"></script>
-<script type="text/javascript" src="javascript/3.0.0beta/minimodules.js"></script>
-<script type="text/javascript" src="javascript/3.0.0beta/groups.js"></script>
+{js src="jquery.js"}
+{js src="jquery-ui.js"}
+{js src="json2.js"}
+{js src="common.js"}
+{js src="groups.js"}
 
-<script type="text/javascript" src="javascript/3.0.0beta/jquery.jstree.js"></script>
-<script type="text/javascript" src="javascript/3.0.0beta/jquery.hashchange.js"></script>
-<script type="text/javascript" src="javascript/3.0.0beta/ape/apeClientJS.js"></script>
+{js src="jquery.jstree.js"}
+{js src="jquery.hashchange.js"}
+{js src="ape/apeClientJS.js"}
 
 {include file='../core/templates/plpage.header.tpl'}
 

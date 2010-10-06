@@ -269,6 +269,7 @@ body.enabledAside #content {
     padding: 0;
     clear: both;
     width: 22%;
+    z-index: 1024;
 }
 
 body.disabledAside > #aside {
