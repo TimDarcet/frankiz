@@ -28,7 +28,7 @@ function groups_shower(id, data)
     var container  = $("#container_" + id);
     var tree       = $("#tree_" + id);
 
-    var plugins = ["themes", "json_data", "sort"];
+    var plugins = ["themes", "json_data", "sort", "types"];
 
     // We build the tree
     tree.jstree({
@@ -40,6 +40,15 @@ function groups_shower(id, data)
         },
         "json_data" : {
             "data" : jsonGroupToJstreeData(data, true)
+        },
+        "types" : {
+            "types" : {
+                "default" : {
+                    "select_node" : function(n) {
+                        console.log($(n));
+                    }
+                }
+            }
         },
         "sort" : function (a, b) { return parseInt($(a).attr('l')) > parseInt($(b).attr('l')) ? 1 : -1; },
         "plugins" : plugins
@@ -74,10 +83,10 @@ function groups_picker(id, data, check)
             $.jstree._reference(tree).set_focus();
         });
         tree.mouseleave(function() {
-            $("body").mousedown(handler);
+            $(document).mouseup(handler);
         });
         tree.mouseenter(function() {
-            $("body").unbind("mousedown", handler);
+            $(document).unbind("mouseup", handler);
         });
     } else {
         flat.hide();
