@@ -733,7 +733,7 @@ class UserFilter extends PlFilter
     {
         $joins = array();
         if ($this->with_room) {
-            $joins['ro'] = PlSqlJoin::inner('rooms_owners', '$ME.owner_id = a.uid AND $ME.owner_type = "user"');
+            $joins['ro'] = PlSqlJoin::left('rooms_owners', '$ME.owner_id = a.uid AND $ME.owner_type = "user"');
             $joins['r']  = PlSqlJoin::left('rooms', '$ME.rid = ro.rid');
         }
         return $joins;
@@ -743,7 +743,7 @@ class UserFilter extends PlFilter
     {
         $joins = array();
         if ($this->with_ip)
-            $joins['tips'] = PlSqlJoin::inner('ips', '$ME.rid = r.rid');
+            $joins['tips'] = PlSqlJoin::left('ips', '$ME.rid = r.rid');
 
         return $joins;
     }

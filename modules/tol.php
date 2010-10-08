@@ -31,7 +31,7 @@ class TolModule extends PLModule
 
     function fillFields($json = false)
     {
-        $fields = array(     'name' => '',
+        $fields = array(     'free' => '',
                         'firstname' => '',
                          'lastname' => '',
                          'nickname' => '',
@@ -57,12 +57,22 @@ class TolModule extends PLModule
     {
         $conds = array();
 
-        if ($fields['name']) {
-            $pieces = explode(' ', $fields['name']);
-            foreach ($pieces as $piece)
-                $conds[] = new UFC_Name($piece, UFC_Name::LASTNAME|UFC_Name::FIRSTNAME|UFC_Name::NICKNAME, UFC_Name::CONTAINS);
+        if ($fields['free']) {
+            $pieces = explode(' ', $fields['free']);
+            foreach ($pieces as $piece) {
+                $freeconds = array();
+                $freeconds[] = new UFC_Name($piece, UFC_Name::LASTNAME|UFC_Name::FIRSTNAME|UFC_Name::NICKNAME, UFC_Name::CONTAINS);
+                $freeconds[] = new UFC_Room($piece);
+                // $freeconds[] = new UFC_Roomphone($piece);
+                $freeconds[] = new UFC_Ip($piece);
+                // $freeconds[] = new UFC_Formation($piece);
+                // $freeconds[] = new UFC_Bestalias($piece);
+                // $freeconds[] = new UFC_Birthday($piece);
+                // $freeconds[] = new UFC_Cellphone($piece);
+                $conds[] = new PFC_Or($freeconds);
+            }
         }
-
+        
         if ($fields['firstname'])
             $conds[] = new UFC_Name($fields['firstname'], UFC_Name::FIRSTNAME, UFC_Name::CONTAINS);
 
