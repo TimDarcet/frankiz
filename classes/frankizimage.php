@@ -19,7 +19,7 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class FrankizImage
+class FrankizImage extends Meta
 {
     const MAX_WIDTH  = 600;
     const MAX_HEIGHT = 600;
@@ -28,8 +28,6 @@ class FrankizImage
     const SMALL_HEIGHT = 100;
     const SMALL_QUALITY = 75;
 
-    // the id of the image in the DB
-    protected $id;
     // About the picture
     protected $comment;
 
@@ -50,19 +48,6 @@ class FrankizImage
     const SELECT_BASE  = 0x01;
     const SELECT_FULL  = 0x02;
     const SELECT_SMALL = 0x04;
-
-    public function __construct($datas = null)
-    {
-        if (!is_array($datas))
-            $this->id = $datas;
-        else
-            $this->fillFromArray($datas);
-    }
-
-    public function id()
-    {
-        return $this->id;
-    }
 
     public function comment()
     {
@@ -100,30 +85,6 @@ class FrankizImage
     public function lastseen()
     {
         return $this->lastseen;
-    }
-
-    public function fillFromArray(array $values)
-    {
-        foreach ($values as $key => $value)
-            if (property_exists($this, $key))
-                $this->$key = $value;
-    }
-
-    public static function toIds(array $images)
-    {
-        $result = array();
-        foreach ($images as $n)
-            if ($n instanceof FrankizImage)
-                $result[] = $n->id;
-            else
-                $result[] = $n;
-        return $result;
-    }
-
-    public function select($bits)
-    {
-        self::batchSelect(array($this), $bits);
-        return $this;
     }
 
     public static function batchSelect(array $images, $bits)
@@ -165,37 +126,10 @@ class FrankizImage
         if ($im->getImageHeight() > self::SMALL_HEIGHT)
             $im->thumbnailImage(null, self::SMALL_HEIGHT, false);
 
-        /*$im->setImageCompression(Imagick::COMPRESSION_JPEG);
-        Imagick::COMPRESSION_BZIP*/
         $im->setImageCompressionQuality(self::SMALL_QUALITY);
         $im->stripImage();
 
         return $im->getimageblob();
-
-//        $source = imagecreatefromstring($this->data);
-//
-//        $nx = $this->x;
-//        $ny = $this->y;
-//        if ($nx > self::SMALL_WIDTH) {
-//            $ny = intval($ny*self::SMALL_WIDTH/$nx);
-//            $nx = self::SMALL_WIDTH;
-//        }
-//        if ($ny > self::SMALL_HEIGHT) {
-//            $nx = intval($nx*self::SMALL_HEIGHT/$ny);
-//            $ny = self::SMALL_HEIGHT;
-//        }
-//
-//        $small = imagecreatetruecolor($nx, $ny);
-//        imagealphablending($small, false);
-//        imagesavealpha($small, true);
-//        imagecopyresampled($small, $source, 0, 0, 0, 0, $nx, $ny, $this->x, $this->y);
-//
-//        ob_start();
-//        if ($this->mime == "image/png")
-//            imagepng($small, null, round(abs((100 - self::SMALL_QUALITY) / 11.111111)));
-//        else
-//            imagejpeg($small, null, self::SMALL_QUALITY);
-//        return ob_get_clean();
     }
 
     public function insert()
@@ -208,7 +142,18 @@ class FrankizImage
                                    $this->small, $this->full, $this->comment);
         $this->iid = XDB::insertId();
     }
-    
+
+    public function update()
+    {
+        XDB::execute('UPDATE  images
+                         SET  mime = {?}, x = {?}, y = {?},
+                              seen = 0, lastseen = NOW(),
+                              small = {?}, full = {?}, comment = {?}
+                       WHERE  iid = {?}',
+                             $this->mime, $this->x, $this->y,
+                             $this->small, $this->full, $this->comment, $this->id());
+    }
+
     public function loadPdf($path, $page = 0)
     {
         $im = new Imagick($path . '[' . $page . ']');

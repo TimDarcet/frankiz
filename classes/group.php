@@ -19,10 +19,8 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-abstract class Node
+abstract class Node extends Meta
 {
-    protected $id = null;
-
     protected $L = null;
     protected $R = null;
     protected $depth = null;
@@ -34,14 +32,6 @@ abstract class Node
 
     const SELECT_CHILDREN = 0x04;
     const SELECT_FATHERS  = 0x08;
-
-    public function __construct($datas)
-    {
-        if (!is_array($datas))
-            $this->id = $datas;
-        else
-            $this->fillFromArray($datas);
-    }
 
     public function __clone() {
         $this->unlink();
@@ -65,18 +55,6 @@ abstract class Node
                              FROM  $ta
                             WHERE  (R - L + 1) / 2 = (SELECT COUNT(*) FROM $ta)");
         return new static($res->fetchOneAssoc());
-    }
-
-    public function fillFromArray(array $values)
-    {
-        foreach ($values as $key => $value)
-            if (property_exists($this, $key))
-                $this->$key = $value;
-    }
-
-    public function id()
-    {
-        return $this->id;
     }
 
     protected function hasChildren()
@@ -272,17 +250,6 @@ abstract class Node
         return self::batchRoots($children);
     }
 
-    public static function toIds(array $nodes)
-    {
-        $result = array();
-        foreach ($nodes as $n)
-            if ($n instanceof Node)
-                $result[] = $n->id;
-            else
-                $result[] = $n;
-        return $result;
-    }
-
     public function ids()
     {
         $ids = array($this->id());
@@ -290,22 +257,6 @@ abstract class Node
             $ids = array_merge($ids, $c->ids());
 
         return $ids;
-    }
-
-    public function select($fields)
-    {
-        static::batchSelect(array($this), $fields);
-        return $this;
-    }
-
-    public function isMe($other)
-    {
-        if ($other instanceof $this)
-            return $other->id() == $this->id();
-        else if (isId($other))
-            return $other == $this->id();
-        else
-            return null;
     }
 
     protected function flatten()
