@@ -69,12 +69,13 @@ class User extends PlUser
     const SELECT_MINIMODULES  = 0x04;
     const SELECT_GROUPS       = 0x08;
 
-    /** TODO
-     * Constructs the User object
+    const IMAGE_ORIGINAL      = 0x01;
+    const IMAGE_PHOTO         = 0x02;
+    const IMAGE_BEST          = 0x03;
+
+    /** Constructs the User object
      *
-     * @param $login An user login.
-     * @param $values List of known user properties.
-     * @param $lazy If datas are missing, should the constructor fetch them in the database ?
+     * @param $datas The User id or an array with User datas
      */
     public function __construct($datas)
     {
@@ -145,6 +146,16 @@ class User extends PlUser
     // lazy loading of user's main properties from the session.
     protected function fillFromArray(array $values)
     {
+        if (isset($values['original'])) {
+            $this->original = new FrankizImage($values['original']);
+            unset($values['original']);
+        }
+
+        if (isset($values['photo'])) {
+            $this->photo = new FrankizImage($values['photo']);
+            unset($values['photo']);
+        }
+
         // We also need to convert the gender (usually named "femme"), and the
         // email format parameter (valued "texte" instead of "text").
         if (isset($values['gender']) && ($values['gender'] == 'man' || $values['gender'] == 'woman'))
@@ -156,7 +167,9 @@ class User extends PlUser
         if (!isset($values['display_name']) && isset($values['nickname']) && isset($values['firstname']))
             $values['display_name'] = (empty($values['nickname'])) ? $values['firstname'] : $values['nickname'];
 
-        parent::fillFromArray($values);
+        foreach ($values as $key => $value)
+            if (property_exists($this, $key))
+                $this->$key = $value;
     }
 
     // Specialization of the buildPerms method
@@ -189,17 +202,14 @@ class User extends PlUser
         return XDB::fetchOneCell('SELECT  password FROM  account WHERE  uid = {?}', $this->id());
     }
 
-    /**
-    * Returns the original picture iid if their isn't better one
-    */
-    public function bestImage()
+    public function image($bits = self::IMAGE_BEST)
     {
-        if ($this->photo != 0)
+        if (($bits & self::IMAGE_PHOTO) && (!empty($this->photo)))
             return $this->photo;
-        if ($this->original != 0)
+        if (($bits & self::IMAGE_ORIGINAL) && (!empty($this->original)))
             return $this->original;
 
-        return ($this->isFemale()) ? -1 : 0;
+        return false;
     }
 
     /**

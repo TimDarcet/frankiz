@@ -25,12 +25,15 @@ class AdminModule extends PlModule
     function handlers()
     {
         return array(
-            'admin/su'      => $this->make_hook('su'  , AUTH_MDP, 'admin'),
-            'admin/tree'    => $this->make_hook('tree', AUTH_MDP, 'admin'),
+            'admin/su'      => $this->make_hook('su'    , AUTH_MDP, 'admin'),
+            'admin/tree'    => $this->make_hook('tree'  , AUTH_MDP, 'admin'),
+            'admin/images'  => $this->make_hook('images', AUTH_MDP, 'admin'),
+            'admin/image'   => $this->make_hook('image' , AUTH_MDP, 'admin'),
+            'admin/debug'   => $this->make_hook('debug' , AUTH_PUBLIC)
         );
     }
 
-    function handler_su(&$page, $uid=0)
+    function handler_su($page, $uid=0)
     {
         if (S::has('suid')) {
             $page->kill("Déjà en SUID !!!");
@@ -48,11 +51,50 @@ class AdminModule extends PlModule
         }
     }
 
-    function handler_tree(&$page)
+    function handler_tree($page)
     {
         $page->assign('title', 'Arbre des groupes');
-        $page->assign('tree', $tree);
         $page->changeTpl('admin/tree.tpl');
+    }
+
+    function handler_images($page)
+    {
+        if (Env::has('comment') && FrankizUpload::has('file'))
+        {
+            $fu = FrankizUpload::v('file');
+            $im = new FrankizImage(array('comment' => Env::v('comment')));
+            $im->loadUpload($fu)->insert();
+        }
+
+        $res = XDB::query('SELECT iid FROM images LIMIT 30');
+
+        $images = Collection::fromClass('FrankizImage');
+        $images->add($res->fetchColumn())->select(FrankizImage::SELECT_BASE);
+
+        $page->assign('title', 'Gestion des images');
+        $page->assign('images', $images);
+        $page->addCssLink('admin.css');
+        $page->changeTpl('admin/images.tpl');
+    }
+
+    function handler_image($page, $iid)
+    {
+        $image = new FrankizImage($iid);
+        if (Env::has('small'))
+            $image->select(FrankizImage::SELECT_SMALL);
+        else
+            $image->select(FrankizImage::SELECT_FULL);
+
+        $image->send();
+    }
+
+    function handler_debug($page)
+    {
+        global $globals;
+
+        $page->assign('title', 'Debug');
+        $page->changeTpl('debug.tpl');
+
     }
 }
 

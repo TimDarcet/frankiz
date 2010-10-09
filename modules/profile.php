@@ -319,17 +319,15 @@ class ProfileModule extends PLModule
     function handler_photo($page, $hruid)
     {
         $uf = new UserFilter(new UFC_Hruid($hruid));
-        $user = $uf->getUser();
-        $photo = FrankizImage::get($user->bestImage())->send();
-        exit;
+        $user = $uf->getUser()->select(User::SELECT_BASE);
+        $user->image()->select(FrankizImage::SELECT_FULL)->send();
     }
 
     function handler_photo_small($page, $hruid)
     {
         $uf = new UserFilter(new UFC_Hruid($hruid));
-        $user = $uf->getUser();
-        $photo = FrankizImage::get($user->bestImage())->sendSmall();
-        exit;
+        $user = $uf->getUser()->select(User::SELECT_BASE);
+        $user->image()->select(FrankizImage::SELECT_SMALL)->send();
     }
 
     function handler_reseau($page)
