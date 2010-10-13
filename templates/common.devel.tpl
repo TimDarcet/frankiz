@@ -31,13 +31,6 @@
         {literal}
         <script>
             $("#debug_hook .erreur").hide();
-
-            $(".backtrace .hide").hide();
-            $(".backtrace .hide").addClass("blah42");
-            $(".backtrace .hide").removeClass("hide");
-            $(".backtrace h1").click(function(){
-                $(".backtrace .blah42").toggle();
-            });
         </script>
         {/literal}
     </div>
