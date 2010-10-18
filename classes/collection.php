@@ -160,7 +160,7 @@ class Collection extends PlAbstractIterable
     public function get($mixed)
     {
         if (isId($mixed))
-            return $this->collected[$id];
+            return $this->collected[intval($mixed)];
         else
             foreach ($this->collected as $c)
                 if ($c->isMe($mixed))
