@@ -36,16 +36,6 @@
     </div>
 
     <div class="fkz">
-
-        <div style="font-weight:bold" onclick="$('#debug_rights').toggle()">Rights</div>
-        <div id="debug_rights" style="display: none">
-            MEMBER
-            {include file="groups_shower.tpl"|rel id="debug_member"|cat:$user->id() json=$user->groups('member')|smarty:nodefaults}
-
-            ADMIN
-            {include file="groups_shower.tpl"|rel id="debug_admin"|cat:$user->id() json=$user->groups('admin')|smarty:nodefaults}
-        </div>
-
         <div style="font-weight:bold" onclick="$('#debug_debug').toggle()">{php}count(Debug::$postflush);{/php} Debug(s)</div>
         <div id="debug_debug">
             {php}
