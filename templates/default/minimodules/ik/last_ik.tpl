@@ -21,12 +21,17 @@
 {**************************************************************************}
 
 <div id="ik_last">
-<a href="data/ik/{$minimodule.ik[1]}"><img src="data/ik/thumbnails/{$minimodule.ik[1]}.png" alt="IK de la semaine"/></a>
+    <p>
+        <a nosolo="nosolo" href="http://ik.frankiz.net/last.pdf">
+            <img src="http://ik.frankiz.net/last.jpg" alt="IK de la semaine"/>
+        </a>
+    </p>
 </div>
 
-</br>
+<hr />
+
 <div id="ik_archive">
-<a href="data/ik/">Archives de l'IK</a>
+    <a href="http://ik.frankiz.net/">Site de l'InfoKès</a>
 </div>
 
 
