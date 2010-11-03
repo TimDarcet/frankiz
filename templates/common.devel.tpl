@@ -22,38 +22,18 @@
 
 {if #globals.debug#}
 <div id="debug">
-    <div class="platal">
-        <span id="debug_hook">
-            @HOOK@
-        </span>
+    <span id="debug_hook">
+        @HOOK@
+    </span>
 
-        @@BACKTRACE@@
-        {literal}
-        <script>
-            $("#debug_hook .erreur").hide();
-        </script>
-        {/literal}
-    </div>
-
-    <div class="fkz">
-        <div style="font-weight:bold" onclick="$('#debug_debug').toggle()">{php}count(Debug::$postflush);{/php} Debug(s)</div>
-        <div id="debug_debug">
-            {php}
-            if (class_exists('Debug')) {
-                $debugs = Debug::$postflush;
-                foreach ($debugs as $debug) {
-                    $id = uniqid();
-                    echo '<pre onclick="$(\'#'. $id . '\').toggle()" >' . $debug['var'] . '</pre>';
-                    echo '<pre id="' . $id . '" style="display:none">' . $debug['trace'] . '</pre>';
-                    echo '<br />';
-                }
-            }
-            {/php}
-        </div>
-    </div>
-
+    @@BACKTRACE@@
+    {literal}
+    <script>
+        $("#debug_hook .erreur").hide();
+        $("#debug_hook br").hide();
+    </script>
+    {/literal}
 </div>
 {/if}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
-

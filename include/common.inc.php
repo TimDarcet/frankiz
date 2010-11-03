@@ -26,7 +26,10 @@ function __autoload($cls)
         if (substr($cls, 0, 4) == 'ufc_' || substr($cls, 0, 4) == 'ufo_') {
             __autoload('userfilter');
             return;
-        } else if (substr($cls, 0, 4) == 'pfc_' || substr($cls, 0, 4) == 'pfo_' || substr($cls, 0, 8) == 'plfilter') {
+        } else if (substr($cls, 0, 4) == 'gfc_' || substr($cls, 0, 4) == 'gfo_') {
+            __autoload('groupfilter');
+            return;
+        }else if (substr($cls, 0, 4) == 'pfc_' || substr($cls, 0, 4) == 'pfo_' || substr($cls, 0, 8) == 'plfilter') {
             __autoload('plfilter');
             return;
         }
@@ -69,7 +72,56 @@ function unflatten($var)
 
 function isId($mixed)
 {
-    return (intval($mixed).'' == $mixed);
+    return !is_object($mixed) && (intval($mixed).'' == $mixed);
+}
+
+function trace($mixed)
+{
+    function getBeautifiedArgument($arg)
+    {
+        if (is_int($arg) || is_double($arg))
+            return $arg;
+
+        if (is_string($arg)) {
+            if (mb_strlen($arg) > 15) {
+                return '"' . mb_substr($arg, 0, 15) . '"[..]';
+            }
+            return '"' . $arg . '"';
+        }
+
+        if (is_bool($arg))
+            return $arg ? "true" : "false";
+
+        if (is_array($arg))
+            return "array(" . count($arg) . ")";
+
+        if (is_object($arg))
+            return get_class($arg);
+
+        return gettype($arg);
+    }
+
+
+    if (!isset(PlBacktrace::$bt['Trace']))
+        new PlBacktrace('Trace');
+
+    ob_start();
+    var_dump($mixed);
+    $dump = ob_get_clean();
+
+    foreach (debug_backtrace() as $i => $trace) {
+        $file     = isset($trace["file"])     ? $trace["file"]     : "null";
+        $line     = isset($trace["line"])     ? $trace["line"]     : "null";
+        $class    = isset($trace["class"])    ? $trace["class"]    :  null;
+        $function = isset($trace["function"]) ? $trace["function"] : "null";
+        $type     = isset($trace["type"])     ? $trace["type"]     :  null;
+        $args     = isset($trace["args"])     ? implode(", ", array_map("getBeautifiedArgument", $trace["args"])) : null;
+        $output[] = sprintf("[%2s] %s:%s\n     %s%s%s(%s)",
+                    $i, $file, $line, $class, $type, $function, $args);
+    }
+    $output = array_slice($output, 1);
+
+    PlBacktrace::$bt['Trace']->newEvent($dump, 0, implode("\n\n", $output));
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

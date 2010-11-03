@@ -61,7 +61,7 @@ a:hover, a:active {
     clear: both;
 }
 
-#debug .platal {
+#debug {
     position: absolute;
     top: 36px;
     left: 8px;
@@ -72,17 +72,9 @@ a:hover, a:active {
     z-index: 42;
 }
 
-#debug .fkz {
-    position: absolute;
-    top: 36px;
-    right: 8px;
-    width: 45%;
-    border: 1px solid black;
-    background-color: white;
-    opacity: .9;
-    z-index: 42;
+#debug .backtrace h1 {
+    font-size: 10pt;
 }
-
 
 /*******************************************************************************
      1   Header
@@ -269,7 +261,7 @@ body.enabledAside #content {
     padding: 0;
     clear: both;
     width: 22%;
-    z-index: 1024;
+    z-index: 40;
 }
 
 body.disabledAside > #aside {
@@ -383,24 +375,20 @@ form {
     margin: 0;
 }
 
-input, textarea, .groups_picker > ul {
+input, textarea {
     font-weight: bold;
     border: 1px solid #002334;
     color: white;
     background-color: #003757;
 }
 
-.groups_picker > ul {
-    font-weight: normal;
-}
-
-input:hover, .groups_picker > ul:hover {
+input:hover {
     color: #003757;
     background-color: #FFBA00;
     border: 1px solid #FFBA00;
 }
 
-input:focus, .groups_picker > ul:focus {
+input:focus {
     color: white;
     border: 1px #FFBA00 solid;
     background-color: #003757;
