@@ -30,18 +30,12 @@ class Collection extends PlAbstractIterable
     protected $collected = array();
     protected $className = null;
 
-    /* Feel free to do whatever you want with
-     * the constructor in the subclasses.
-     */
-    public function __construct()
-    {
-    }
+    protected $order = null;
 
-    public static function fromClass($className)
+    public function __construct($className = null, $order = null)
     {
-        $c = new Collection();
-        $c->className($className);
-        return $c;
+        $this->className($className);
+        $this->order($order);
     }
 
     public function className($className = null)
@@ -49,6 +43,13 @@ class Collection extends PlAbstractIterable
         if ($className != null)
             $this->className = $className;
         return $this->className;
+    }
+
+    public function order($order = null)
+    {
+        if ($order != null)
+            $this->order = $order;
+        return $this->order;
     }
 
     public function __call($method, $arguments)
@@ -96,7 +97,19 @@ class Collection extends PlAbstractIterable
      */
     public function iterate()
     {
-        return PlIteratorUtils::fromArray($this->collected, 1, true);
+        $order = $this->order;
+        $iterator = PlIteratorUtils::fromArray($this->collected, 1, true);
+
+        if (empty($order))
+            return $iterator;
+
+        return PlIteratorUtils::sort($iterator, function($a, $b) use($order)
+                                                {
+                                                    $a = $a->$order();
+                                                    $b = $b->$order();
+                                                    if ($a == $b) return 0;
+                                                    return ($a < $b) ? 1 : -1;
+                                                });
     }
 
     public function select($fields)
@@ -161,6 +174,8 @@ class Collection extends PlAbstractIterable
     {
         if (isId($mixed))
             return $this->collected[intval($mixed)];
+        elseif ($mixed instanceof Meta)
+            return $this->collected[$mixed->id()];
         else
             foreach ($this->collected as $c)
                 if ($c->isMe($mixed))
@@ -186,6 +201,16 @@ class Collection extends PlAbstractIterable
         return count($this->collected);
     }
 
+    public function filter()
+    {
+        $args = func_get_args();
+
+        $filtered = new Collection($this->className);
+        if (is_callable($args[0]))
+        {
+           return $filtered->add(array_filter($this->collected, $args[0]));
+        }
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
