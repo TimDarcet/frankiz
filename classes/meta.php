@@ -31,7 +31,7 @@ abstract class Meta
             $this->fillFromArray($datas);
     }
 
-    public function fillFromArray($values)
+    public function fillFromArray(array $values)
     {
         if (empty($values))
             return;
