@@ -30,6 +30,7 @@
                 <tr>
                     <td><a {path_to_href_attribute path="accueil/annonces"}>Annonces</a></td>
                     <td><a {path_to_href_attribute path="accueil/activites"}>Activités</a></td>
+                    <td><a {path_to_href_attribute path="newspaper/ik"}>InfoKès</a></td>
                 </tr>
             </table>
         </div>
@@ -45,7 +46,7 @@
                     <span class="warning">ATTENTION, su en cours. Pour revenir à ta vraie identité, clique <a href="exit/">ici</a></span>
                 {/if}
                 {if $smarty.session.auth < AUTH_COOKIE }
-                    <a {path_to_href_attribute path="login"} accesskey="l">Se connecter</a>
+                    <a {path_to_href_attribute path="login"} nosolo="true" accesskey="l">Se connecter</a>
                 {/if}
                 {if $smarty.session.auth >= AUTH_COOKIE }
                     <a {path_to_href_attribute path="exit"} nosolo="true" accesskey="l">Se déconnecter de {$smarty.session.user->displayName() }</a>
@@ -71,14 +72,6 @@
     {if $smarty.session.auth >= AUTH_COOKIE }
         <td>
             <a {path_to_href_attribute path="groups"}>Binets</a>
-            <div class="subnav subnavwithoutjs">
-                <div class="bkg" />
-                <table class="body">
-                    <tr>
-                        <td><a {path_to_href_attribute path="groups/mongroupe"}>Mon Groupe 1</a></td>
-                    </tr>
-                </table>
-            </div>
         </td>
     {/if}
 
@@ -114,7 +107,7 @@
                 <div class="bkg" />
                 <table class="body">
                     <tr>
-                        <td><a {path_to_href_attribute path="admin/tree"}>Arborescence</a></td>
+                        <td><a {path_to_href_attribute path="admin/groups"}>Groupes</a></td>
                         <td><a {path_to_href_attribute path="admin/images"}>Images</a></td>
                     </tr>
                 </table>
