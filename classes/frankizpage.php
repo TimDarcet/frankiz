@@ -19,6 +19,8 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+require_once '../include/smartphone.inc.php';
+
 class SkinFileNotFoundException extends Exception
 {
     protected $skin;
@@ -68,6 +70,9 @@ class FrankizPage extends PlPage
     private function load_skin()
     {
         global $globals;
+        if (isSmartphone())
+            return $globals->smartphone_skin;
+
         if(!S::has('skin') || S::v('skin') == ""){
             if (Cookie::has('skin')) {
                 $skin = Cookie::v('skin');
@@ -163,9 +168,7 @@ class FrankizPage extends PlPage
 
         if (S::logged())
         {
-            //$groups_layout = S::v('groups_layout');
-            //$this->assign('clubs_layout', $groups_layout[Group::CLUB]);
-            //$this->assign('free_layout' , $groups_layout[Group::FREE]);
+            //TODO
         }
 
         $this->assign('logged', S::logged());
@@ -176,7 +179,7 @@ class FrankizPage extends PlPage
             $this->jsonAssign('title'  , $this->get_template_vars('title'));
             $this->jsonAssign('pl_css' , $this->get_template_vars('pl_css'));
             $this->jsonAssign('pl_js'  , $this->get_template_vars('pl_js'));
-            $this->jsonDisplay();
+            $this->runJSon();
         } else {
             $this->_run(self::getTplPath('frankiz.tpl'));
         }
