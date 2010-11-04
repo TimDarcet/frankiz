@@ -77,31 +77,6 @@ function isId($mixed)
 
 function trace($mixed)
 {
-    function getBeautifiedArgument($arg)
-    {
-        if (is_int($arg) || is_double($arg))
-            return $arg;
-
-        if (is_string($arg)) {
-            if (mb_strlen($arg) > 15) {
-                return '"' . mb_substr($arg, 0, 15) . '"[..]';
-            }
-            return '"' . $arg . '"';
-        }
-
-        if (is_bool($arg))
-            return $arg ? "true" : "false";
-
-        if (is_array($arg))
-            return "array(" . count($arg) . ")";
-
-        if (is_object($arg))
-            return get_class($arg);
-
-        return gettype($arg);
-    }
-
-
     if (!isset(PlBacktrace::$bt['Trace']))
         new PlBacktrace('Trace');
 
@@ -115,7 +90,32 @@ function trace($mixed)
         $class    = isset($trace["class"])    ? $trace["class"]    :  null;
         $function = isset($trace["function"]) ? $trace["function"] : "null";
         $type     = isset($trace["type"])     ? $trace["type"]     :  null;
-        $args     = isset($trace["args"])     ? implode(", ", array_map("getBeautifiedArgument", $trace["args"])) : null;
+        $args     = isset($trace["args"])     ?
+                        implode(", ", array_map(
+                            function($arg)
+                            {
+                                if (is_int($arg) || is_double($arg))
+                                    return $arg;
+
+                                if (is_string($arg)) {
+                                    if (mb_strlen($arg) > 15) {
+                                        return '"' . mb_substr($arg, 0, 15) . '"[..]';
+                                    }
+                                    return '"' . $arg . '"';
+                                }
+
+                                if (is_bool($arg))
+                                    return $arg ? "true" : "false";
+
+                                if (is_array($arg))
+                                    return "array(" . count($arg) . ")";
+
+                                if (is_object($arg))
+                                    return get_class($arg);
+
+                                return gettype($arg);
+                            }, $trace["args"])) : null;
+
         $output[] = sprintf("[%2s] %s:%s\n     %s%s%s(%s)",
                     $i, $file, $line, $class, $type, $function, $args);
     }
