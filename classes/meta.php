@@ -57,15 +57,20 @@ abstract class Meta
         throw new Exception("batchSelect isn't implemented");
     }
 
-    public static function toIds(array $nodes)
+    public static function toIds(array $objects)
     {
-        $result = array();
-        foreach ($nodes as $n)
-            if ($n instanceof static)
-                $result[] = $n->id;
+        $ids = array();
+        foreach ($objects as $o)
+            if ($o instanceof static)
+                $ids[] = $o->id;
             else
-                $result[] = $n;
-        return $result;
+                $ids[] = $o;
+        return $ids;
+    }
+
+    public static function toId($object)
+    {
+        return flatten(static::toIds(unflatten($object)));
     }
 
     public function isMe($other)

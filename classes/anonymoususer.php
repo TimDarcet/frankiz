@@ -26,7 +26,7 @@ class AnonymousUser extends User
     {
         $this->uid = 0;
         $this->minimodules = FrankizMiniModule::emptyLayout();
-        $this->groups = Rights::emptyLayout();
+        $this->groups = array();
     }
 
     public function loadMainFields()

@@ -19,13 +19,8 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class Rights
+class Rights extends PlFlagSet
 {
-    // Types of inheritance for the rights
-    const ASCENDING  = 'ascending';
-    const DESCENDING = 'descending';
-    const FIXED      = 'fixed';
-
     // Existing rights
     const PREZ   = 'prez';
     const WEB    = 'web';
@@ -34,29 +29,12 @@ class Rights
     const MEMBER = 'member';
     const FRIEND = 'friend';
 
-    static $rights =
-            array(
-                self::PREZ   => self::DESCENDING,
-                self::ADMIN  => self::DESCENDING,
-                self::SUPER  => self::DESCENDING,
-                self::MEMBER => self::ASCENDING,
-                self::WEB    => self::FIXED,
-                self::FRIEND => self::FIXED
-            );
-
-    public static function inheritance($right = null)
+    public function filter($filter)
     {
-        return ($right == null) ? self::$rights : self::$rights[$right];
-    }
+        if ($filter instanceof Rights)
+            $filter = $filter->flags();
 
-    public static function emptyLayout()
-    {
-        $emptyLayout = array();
-        $rights = array_keys(self::$rights);
-        foreach ($rights as $right)
-            $emptyLayout[$right] = Collection::fromClass('Group');
-
-        return $emptyLayout;
+        return $this->hasFlagCombination($filter);
     }
 }
 

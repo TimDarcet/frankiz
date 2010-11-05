@@ -35,22 +35,16 @@ class User extends PlUser
      * forlife       forlifeEmail()
      */
 
-    // TODO: try to write something like the Group class, where
-    // the queries are factorised and the Users are stored in a
-    // private field (careful : PlUser::get() already exists and
-    // it might be hard to redefin the constructor ...)
-
-    // boolean to specify if the user is present on the platal
-    protected $on_platal = null;
-
     // enum('active','pending','unregistered','disabled')
     protected $state = null;
 
     // The name of the user's prefered skin
     protected $skin = null;
 
-    // Array of the Gids and the rights associated
-    protected $groups = null;
+    // Collection of groups and their associated rights and comments
+    protected $groups   = null;
+    protected $rights   = null;
+    protected $comments = null;
 
     // Contains the hash sent by mail to recover the password
     protected $hash = null;
@@ -68,6 +62,7 @@ class User extends PlUser
     const SELECT_SKIN         = 0x02;
     const SELECT_MINIMODULES  = 0x04;
     const SELECT_GROUPS       = 0x08;
+    const SELECT_COMMENTS     = 0x20;
 
     const IMAGE_ORIGINAL      = 0x01;
     const IMAGE_PHOTO         = 0x02;
@@ -139,7 +134,8 @@ class User extends PlUser
             return;
         }
 
-        $this->select(User::SELECT_BASE | User::SELECT_SKIN);
+        $this->select(User::SELECT_BASE | User::SELECT_SKIN | User::SELECT_MINIMODULES);
+        $this->select(array(User::SELECT_GROUPS => Group::SELECT_BASE));
     }
 
     // Specialization of the fillFromArray method, to implement hacks to enable
@@ -317,29 +313,82 @@ class User extends PlUser
             $cols = array_keys(FrankizMiniModule::emptyLayout());
             foreach ($cols as $col) {
                 $this->minimodules[$col] =
-                                 array_filter($this->minimodules[$col],
-                                              function($name) use($rmName) {
-                                                  return $name != $rmName;
-                                              });
+                      array_filter($this->minimodules[$col],
+                                  function($name) use($rmName) {
+                                      return $name != $rmName;
+                                  });
             }
             return true;
         }
         return false;
     }
 
-    public function groups($rights)
+    public function rights($g)
     {
-        return $this->groups[$rights];
+        return $this->rights[$this->groups->get($g)->id()];
     }
 
-    public function addToGroup($gid, PlFlagSet $rights)
+    /**
+    * Returns or updates the comment binding an user to a group.
+    * The user *must* already be bound to the specified group
+    * @param $g the group
+    * @param $comments if specified, let the function set the comment
+    */
+    public function comments($g, $comments = null)
     {
-        // TODO
+        $gid = Group::toId($g);
+        if ($comments !== null)
+        {
+            XDB::execute('UPDATE  users_groups
+                             SET  comments = {?}
+                           WHERE  uid = {?} AND gid = {?} LIMIT 1',
+                         $comments, $this->id(), $gid);
+            if (isset($this->comments[$gid]))
+                $this->comments[$gid] = $comments;
+            return;
+        }
+        return $this->comments[$gid];
     }
 
-    public function removeFromGroup($gid)
+    /**
+    * Returns the groups of the user
+    * @param $ns returns only groups with this namespace
+    * @param $rights return only groups in which the user has those rights
+    */
+    public function groups($ns = null, $rights = null)
     {
-        // TODO
+        if (empty($ns))
+            return $this->groups;
+
+        return $this->groups->filter(function ($g) use($ns) {return $g->ns() == $ns;});
+    }
+
+    public function addToGroup($g, Rights $rights)
+    {
+        $gid = Group::toId($g);
+        XDB::execute('INSERT INTO  users_groups
+                              SET  uid = {?}, gid = {?}, rights = {?}, comments = ""
+          ON DUPLICATE KEY UPDATE  rights = CONCAT_WS(",", rights, {?})',
+                                   $this->id(), $gid, $rights->flags(), $rights->flags());
+    }
+
+    public function removeFromGroup($g, Rights $rights = null)
+    {
+        $gid = Group::toId($g);
+        if ($rights === null)
+        {
+            XDB::execute('DELETE FROM  users_groups
+                                WHERE  uid = {?} AND gid = {?}',
+                                         $this->id(), $gid);
+        } else {
+            XDB::execute('UPDATE  users_groups
+                             SET  rights = REPLACE(rights , {?}, "")
+                           WHERE  uid = {?} AND gid = {?}',
+                                  $this->id(), $gid);
+            XDB::execute('DELETE FROM  users_groups
+                                WHERE  uid = {?} AND gid = {?} AND ',
+                                         $this->id(), $gid);
+        }
     }
 
     // Return permission flags for a given permission level.
@@ -460,15 +509,17 @@ class User extends PlUser
 
         try {
             $u = new User($values['uid']);
-            return $u->select(User::SELECT_BASE | User::SELECT_SKIN | User::SELECT_MINIMODULES | User::SELECT_GROUPS);
+            $u->select(User::SELECT_BASE | User::SELECT_SKIN | User::SELECT_MINIMODULES);
+            return $u->select(array(User::SELECT_GROUPS => array("options" => Group::SELECT_BASE | Group::SELECT_FREQUENCY,
+                                                                      "ns" => Group::NS_BINET)));
         } catch (UserNotFoundException $e) {
             return call_user_func($callback, $login, $e->results);
         }
     }
 
-    public function select($fields)
+    public function select($options)
     {
-        self::batchSelect(array($this), $fields);
+        self::batchSelect(array($this), $options);
         return $this;
     }
 
@@ -483,25 +534,32 @@ class User extends PlUser
         return $result;
     }
 
-    public static function batchSelect(array $_users, $fields)
+    public static function batchSelect(array $users, $options)
     {
-        if (count($_users) < 1)
+        if (count($users) < 1)
             return;
 
+        $bits = 0;
+        if (is_array($options))
+            foreach($options as $bit => $args)
+                $bits |= $bit;
+        else
+            $bits = $options;
+
         // Index the array
-        $users = array_combine(self::toIds($_users), $_users);
+        $users = array_combine(self::toIds($users), $users);
 
         // Load datas where 1 User = 1 Line
         $joints = array();
         $columns = array();
-        if ($fields & self::SELECT_BASE) {
+        if ($bits & self::SELECT_BASE) {
             $columns['a'] = array('hruid', 'perms', 'state',
                                    'hash', 'original', 'photo', 'gender',
-                                   'on_platal', 'email_format', 'bestalias',
+                                   'email_format', 'bestalias',
                                    'firstname', 'lastname', 'nickname');
         }
 
-        if ($fields & self::SELECT_SKIN) {
+        if ($bits & self::SELECT_SKIN) {
             $columns['sk'] = array('name AS skin');
             $joints['sk'] = PlSqlJoin::left('skins', '$ME.skin_id = a.skin');
         }
@@ -521,7 +579,8 @@ class User extends PlUser
         }
 
         // Load minimodules
-        if ($fields & self::SELECT_MINIMODULES) {
+        if ($bits & self::SELECT_MINIMODULES)
+        {
             foreach ($users as $u)
                 $u->minimodules = FrankizMiniModule::emptyLayout();
 
@@ -535,62 +594,54 @@ class User extends PlUser
         }
 
         // Load groups
-        // TODO: enable selective loading (SUPER ain't needed for the TOL)
-        if ($fields & self::SELECT_GROUPS) {
-            foreach ($users as $u)
-                $u->groups = Rights::emptyLayout();
+        if ($bits & self::SELECT_GROUPS)
+        {
+            foreach ($users as $u) {
+                $u->groups = new Collection('Group');
+                $u->rights = array();
+            }
 
-            $iter = XDB::iterator('SELECT  ug.uid, ug.rights, g.gid id, g.L, g.R, g.depth
+            $select_comments = (isset($options[self::SELECT_GROUPS]) &&
+                                isset($options[self::SELECT_GROUPS]["comments"]) &&
+                                $options[self::SELECT_GROUPS]["comments"]) ? true : false;
+
+            $namespaces = (isset($options[self::SELECT_GROUPS]) &&
+                                isset($options[self::SELECT_GROUPS]["ns"]) &&
+                                $options[self::SELECT_GROUPS]["ns"]) ? $options[self::SELECT_GROUPS]["ns"] : Group::NS_BINET;
+
+            $comments = ($select_comments) ? ', ug.comments' : '';
+
+            $iter = XDB::iterRow('SELECT  ug.uid, ug.gid, ug.rights, g.ns' . $comments . '
                                      FROM  users_groups AS ug
                                INNER JOIN  groups AS g ON g.gid = ug.gid
-                                    WHERE  ug.uid IN {?}', array_keys($users));
+                                    WHERE  g.ns IN {?} AND ug.uid IN {?}',
+                                    unflatten($namespaces), array_keys($users));
 
-            while ($agr = $iter->next()) {
-                $rights = new PlFlagSet($agr['rights']);
-                foreach($rights as $right)
-                    $users[$agr['uid']]->groups[$right]->add(new Group($agr));
-            }
+            $groups = new Collection('Group');
+            while ($line = $iter->next())
+            {
+                if ($select_comments)
+                    list($uid, $gid, $rights, $ns, $comments) = $line;
+                else
+                    list($uid, $gid, $rights, $ns) = $line;
 
-            $ascending  = Collection::fromClass('Group');
-            $descending = Collection::fromClass('Group');
-            $fixed      = Collection::fromClass('Group');
-            $rights = Rights::inheritance();
-            foreach ($users as $u)
-                foreach ($rights as $right => $inheritType)
-                    if ($inheritType == Rights::ASCENDING)
-                        $ascending->merge($u->groups[$right]);
-                    elseif ($inheritType == Rights::DESCENDING)
-                        $descending->merge($u->groups[$right]);
-                    else
-                        $fixed->merge($u->groups[$right]);
-
-            $ascending  =  $ascending->select(array(Group::SELECT_FATHERS  => Group::MAX_DEPTH))->roots();
-            $descending = $descending->select(array(Group::SELECT_CHILDREN => Group::MAX_DEPTH))->roots();
-
-            if ($ascending->count() > 0)
-                $ascending  =  $ascending->flatten();
-            if ($descending->count() > 0)
-                $descending = $descending->flatten();
-
-            $groups = new Collection();
-            $groups->merge($ascending)->merge($descending)->merge($fixed);
-            $groups->buildLinks();
-
-            $groups = $groups->roots();
-            if ($groups->count() > 0) {
-                $groups->select(Group::SELECT_BASE);
-
-                foreach ($users as $u) {
-                    foreach ($rights as $right => $inheritType) {
-                        if ($inheritType == Rights::ASCENDING)
-                            $u->groups[$right] = $groups->fathersOf($u->groups[$right]);
-                        elseif ($inheritType == Rights::DESCENDING)
-                            $u->groups[$right] = $groups->childrenOf($u->groups[$right]);
-                        else
-                            $u->groups[$right] = $u->groups[$right]->buildLinks();
-                    }
+                $group = $groups->get($gid);
+                if ($group == false) {
+                    $group = new Group(array('id' => $gid, 'ns' => $ns));
+                    $groups->add($group);
                 }
+
+                $user = $users[$uid];
+                $user->groups->add($group);
+                $user->rights[$gid] = new Rights($rights);
+                if ($select_comments)
+                    $user->comments[$gid] = $comments;
             }
+
+            if (isset($options[self::SELECT_GROUPS]) &&
+                isset($options[self::SELECT_GROUPS]["options"]) &&
+                $options[self::SELECT_GROUPS]["options"])
+                $groups->select($options[self::SELECT_GROUPS]["options"]);
         }
 
     }
