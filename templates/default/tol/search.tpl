@@ -28,38 +28,37 @@
         <form class="trombino" enctype="multipart/form-data" method="post" action="tol/">
         <input type="hidden" name="mode" value="card" />
         <fieldset id="tol_infos" class="loading">
-
             <span class="empty">Pas de résultats</span>
             <span class="notempty" {if isset($total|smarty:nodefaults)}style="display: inline"{/if}><span class="count">{if isset($results|smarty:nodefaults)}{$results|@count}{/if}</span> / <span class="total">{if isset($total|smarty:nodefaults)}{$total}{/if}</span></span>
         </fieldset>
         <fieldset id="tol_names">
         <ul>
-            <li><label>Prénom<input type="text" name="firstname" value="{$fields.firstname}" /></label></li>
-            <li><label>Nom<input type="text" name="lastname" value="{$fields.lastname}" /></label></li>
-            <li><label>Surnom<input type="text" name="nickname" value="{$fields.nickname}" /></label></li>
-            <li><label>Nationalités{include file="groups_picker.tpl"|rel id="nationalities" groups="nationalities" type="descending" depth=1 visibility=1 behead=true check=0}</label></li>
+            <li><label>Prénom<input auto="auto" type="text" name="firstname" value="{$fields.firstname}" /></label></li>
+            <li><label>Nom<input auto="auto" type="text" name="lastname" value="{$fields.lastname}" /></label></li>
+            <li><label>Surnom<input auto="auto" type="text" name="nickname" value="{$fields.nickname}" /></label></li>
+            <li><label>Nationalités{include file="groups_picker.tpl"|rel id="nationalities" ns="nationality" check=-1}</label></li>
         </ul>
         </fieldset>
         <fieldset id="tol_studies">
         <ul>
-            <li><label>Études{include file="groups_picker.tpl"|rel id="studies" groups=$roots.studies->id() type="descending" depth=1 visibility=1 behead=true check=0}</label></li>
+            <li><label>Études{include file="groups_picker.tpl"|rel id="studies" ns="study" check=-1}</label></li>
         </ul>
         </fieldset>
         <fieldset id="tol_sports">
         <ul>
-            <li><label>Sports{include file="groups_picker.tpl"|rel id="sports" groups=$roots.sports->id() type="descending" depth=1 visibility=1 behead=true check=0}</label></li>
+            <li><label>Sports{include file="groups_picker.tpl"|rel id="sports" ns="sport" check=-1}</label></li>
         </ul>
         </fieldset>
-        <fieldset id="tol_groups">
+        <fieldset id="tol_binets">
         <ul>
-            <li><label>Binet{include file="groups_picker.tpl"|rel id="associations" groups=$roots.associations->id() type="descending" depth=2 visibility=2 behead=true check=0}</label></li>
+            <li><label>Binet{include file="groups_picker.tpl"|rel id="binets" ns="binet" check=-1}</label></li>
         </ul>
         </fieldset>
         <fieldset id="tol_rooms">
         <ul>
-            <li><label>Casert<input type="text" name="room" value="" /></label></li>
-            <li><label>Tel<input type="text" name="phone" value="" /></label></li>
-            <li><label>IP<input type="text" name="ip" value="" /></label></li>
+            <li><label>Casert<input auto="auto" type="text" name="room" value="" /></label></li>
+            <li><label>Tel<input auto="auto" type="text" name="phone" value="" /></label></li>
+            <li><label>IP<input auto="auto" type="text" name="ip" value="" /></label></li>
         </ul>
         </fieldset>
         <fieldset id="tol_send">

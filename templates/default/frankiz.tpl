@@ -26,7 +26,6 @@
     <head>
         {include file="common.head.tpl"}
         {include file="head.tpl"|rel}
-        {js src="minimodules.js"}
     </head>
 
     <body class="{if ($MiniModules_COL_FLOAT|@count) == 0}disabledAside{else}enabledAside{/if}">

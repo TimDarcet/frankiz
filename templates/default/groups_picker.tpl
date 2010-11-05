@@ -20,23 +20,26 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{groups_picker type=$type groups=$groups depth=$depth behead=$behead out_json="json"}
-
-<div class="groups_picker" id="container_{$id}">
-
-    <ul id="flat_{$id}">
-        <li style="list-style:none; opacity:0.5">Sélectionner</li>
-    </ul>
-
-    <div id="tree_{$id}">
+<div class="groups_picker" id="groups_picker_{$id}">
+    <div class="empty">
+        Sélectionner
     </div>
 
-    <input type="text" id="{$id}" name="{$id}" value="" />
+    <ul class="selected">
+    </ul>
 
+    <div class="searcher">
+        <input type="text" name="filter" value="" />
+    </div>
+
+    <ul class="list">
+    </ul>
+
+    <input auto="auto" type="text" id="{$id}" name="{$id}" value="" />
 </div>
 
 <script>
-    groups_picker("{$id}", {$json|smarty:nodefaults}, {$check|default:"-1"});
+    groups_picker("{$id}", "{$ns}", {$check|default:"-1"});
 </script>
 
 

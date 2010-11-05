@@ -22,7 +22,7 @@
 {
     text-align: center;
     font-weight: bold;
-    height: 21px;
+    height: 16px;
 }
 
 #tol_infos .empty, #tol_infos .notempty
@@ -30,11 +30,9 @@
     display: none;	
 }
 
-#tol_infos.loading
+#tol_infos.searching
 {
-    background-image: url("../default/images/loading.gif");
-    background-repeat: no-repeat;
-    background-position: center;
+    background-color: #004d79;
 }
 
 #tol_searcher {
@@ -157,4 +155,35 @@
 	width: 100%;
     text-align: left;
     padding: 5px;
+}
+
+.groups_picker {
+    border: 1px solid #002334;
+    color: white;
+    background-color: #003757;
+}
+
+.groups_picker .searcher input {
+    width: 90%;
+    margin-left: 5%;
+}
+
+.groups_picker.searching .searcher input {
+	background-color: #004d79;
+}
+
+.groups_picker.empty .empty {
+    display: block;
+}
+
+.groups_picker .empty {
+    display: none;
+}
+
+.groups_picker li {
+    cursor: hand;
+}
+
+.groups_picker .empty {
+    opacity:0.5
 }

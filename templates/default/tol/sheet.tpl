@@ -20,34 +20,31 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{assign var='groups' value=$result->groups('member')}
-{if $groups->count() > 0}
-    {assign var='groups'       value=$groups->children()}
-
-    {assign var='associations' value=$groups->get('associations')}
-    {assign var='sports'       value=$groups->get('sports')}
-{/if}
-
 <li uid="{$result->id()}" class="fiche">
     <div class="base">
-        <div class="img"><img src="profile/photo/small/{$result->login()}" /></div>
+        <div class="img"><a href="profile/photo/{$result->login()}"><img src="profile/photo/small/{$result->login()}" /></a></div>
         <div class="sports">
-            {if $sports|smarty:nodefaults}
-                {assign var='sports' value=$sports->leaves()}
-                {foreach from=$sports item=sport}
-                    {$sport->name()}
-                {/foreach}
-            {/if}
+            {foreach from=$result->groups('sport') item=group}
+                {$group->name()}
+            {/foreach}
         </div>
         <div class="name">{$result->displayName()}</div>
+        <div>
+
+
+        </div>
         <hr />
     </div>
     <div class="more">
         <div class="associations">
-            {if $associations|smarty:nodefaults}
             Binets:
-                {include file="groups_shower.tpl"|rel id="associations"|cat:$result->id() json=$associations->children()|smarty:nodefaults}
-            {/if}
+            <ul>
+                {assign var='binets' value=$result->groups('binet')}
+                {assign var='dev_null' value=$binets->order('frequency')}
+                {foreach from=$binets item='group'}
+                    <li>{$group->frequency()} {$group->label()} {$result->rights($group)} {$result->comments($group)}</li>
+                {/foreach}
+            </ul>
         </div>
     </div>
 </li>

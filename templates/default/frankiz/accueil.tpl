@@ -22,6 +22,14 @@
 
 
 <div class="accueil">
+    <div class="postit minimodule">
+        <div class="head">
+            Post-it
+        </div>
+        <div class="body">
+            TODO: implement the post-it
+        </div>
+    </div>
     <table>
         <tr>
             <td class="{if ($MiniModules_COL_LEFT|@count) == 0}empty{else}full{/if}">

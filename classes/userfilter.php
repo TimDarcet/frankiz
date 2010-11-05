@@ -34,8 +34,37 @@
  *     adequate joins. It must return the 'WHERE' condition to use
  *     with the filter.
  */
-interface UserFilterCondition extends PlFilterCondition
+abstract class UserFilterCondition implements PlFilterCondition
 {
+    public function export()
+    {
+        throw new Exception();
+    }
+}
+// }}}
+
+// {{{ class UFC_Uid
+/** Filters users based on their hruid
+ * @param $val Either an hruid, or a list of those
+ */
+class UFC_Uid extends UserFilterCondition
+{
+    private $uids;
+
+    public function __construct($us)
+    {
+        $this->uids = User::toIds(unflatten($gs));
+    }
+
+    public function buildCondition(PlFilter $uf)
+    {
+        return XDB::format('a.uid IN {?}', $this->uids);
+    }
+
+    public function export()
+    {
+        return array('type' => 'uid', 'uids' => $this->uids);
+    }
 }
 // }}}
 
@@ -43,7 +72,7 @@ interface UserFilterCondition extends PlFilterCondition
 /** Filters users based on their hruid
  * @param $val Either an hruid, or a list of those
  */
-class UFC_Hruid implements UserFilterCondition
+class UFC_Hruid extends UserFilterCondition
 {
     private $hruids;
 
@@ -55,7 +84,7 @@ class UFC_Hruid implements UserFilterCondition
         $this->hruids = $val;
     }
 
-    public function buildCondition(PlFilter &$uf)
+    public function buildCondition(PlFilter $uf)
     {
         return XDB::format('a.hruid IN {?}', $this->hruids);
     }
@@ -66,7 +95,7 @@ class UFC_Hruid implements UserFilterCondition
 /** Filters users based on their IPs
  * @param $ip IP from which connection are checked
  */
-class UFC_Ip implements UserFilterCondition
+class UFC_Ip extends UserFilterCondition
 {
     private $ip;
 
@@ -75,7 +104,7 @@ class UFC_Ip implements UserFilterCondition
         $this->ip = $ip;
     }
 
-    public function buildCondition(PlFilter &$uf)
+    public function buildCondition(PlFilter $uf)
     {
         $sub = $uf->addIpFilter();
         $right = XDB::formatWildcards(XDB::WILDCARD_CONTAINS, $this->ip);
@@ -85,7 +114,7 @@ class UFC_Ip implements UserFilterCondition
 // }}}
 
 // {{{ class UFC_Comment
-class UFC_Comment implements UserFilterCondition
+class UFC_Comment extends UserFilterCondition
 {
     private $text;
 
@@ -94,7 +123,7 @@ class UFC_Comment implements UserFilterCondition
         $this->text = $text;
     }
 
-    public function buildCondition(PlFilter &$uf)
+    public function buildCondition(PlFilter $uf)
     {
         return 'a.comment ' . XDB::formatWildcards(XDB::WILDCARD_CONTAINS, $this->text);
     }
@@ -107,52 +136,52 @@ class UFC_Comment implements UserFilterCondition
  * @param $promo Promotion on which the filter is based
  * @param $study Formation Id on which to restrict, 0 for "any formation"
  */
-class UFC_Promo implements UserFilterCondition
+class UFC_Promo extends UserFilterCondition
 {
     private $comparison;
     private $promo;
-    private $formation_id;
 
-    public function __construct($comparison, $promo, $formation_id)
+    public function __construct($promo, $comparison = '=')
     {
-        $this->formation_id = $formation_id;
-        $this->comparison = $comparison;
         $this->promo = $promo;
+        $this->comparison = $comparison;
     }
 
-    public function buildCondition(PlFilter &$uf)
+    public function buildCondition(PlFilter $uf)
     {
         $sub = $uf->addStudiesFilter();
+        return XDB::format("$sub.promo $this->comparison {?}", $this->promo);
+    }
 
-        $formation_cond = '';
-        if ($this->formation_id != 0)
-            $formation_cond = ' AND ' . $sub . '.formation_id = ' . $this->formation_id;
-
-        return '(' . $sub . '.promo ' . $this->comparison . ' ' . $this->promo . $formation_cond . ')';
+    public function export()
+    {
+        return array('type' => 'promo', 'comparison' => $this->comparison, 'promo' => $this->promo);
     }
 }
 // }}}
 
-// {{{ class UFC_Formation
-/** Filters users by formation
- * @param $val The formation to search (either ID or array of IDs)
+// {{{ class UFC_Study
+/** Filters users by studies
+ * @param $formation_id The id of the study
  */
-class UFC_Formation implements UserFilterCondition
+class UFC_Study extends UserFilterCondition
 {
-    private $val;
+    private $formation_ids = null;
 
-    public function __construct($val)
+    public function __construct($formation_ids)
     {
-        if (!is_array($val)) {
-            $val = array($val);
-        }
-        $this->val = $val;
+        $this->formation_ids = unflatten($formation_ids);
     }
 
-    public function buildCondition(PlFilter &$uf)
+    public function buildCondition(PlFilter $uf)
     {
         $sub = $uf->addStudiesFilter();
-        return XDB::format($sub . '.formation_id IN {?}', $this->val);
+        return XDB::format($sub . '.formation_id IN {?}', $this->formation_ids);
+    }
+
+    public function export()
+    {
+        return array('type' => 'study', 'formation_ids' => $this->formation_ids);
     }
 }
 // }}}
@@ -163,7 +192,7 @@ class UFC_Formation implements UserFilterCondition
  * @param $text Text on which to filter
  * @param $mode Flag indicating search type (prefix, suffix ...)
  */
-class UFC_Name implements UserFilterCondition
+class UFC_Name extends UserFilterCondition
 {
     // Modes
     const PREFIX   = XDB::WILDCARD_PREFIX;   // 0x001
@@ -186,7 +215,7 @@ class UFC_Name implements UserFilterCondition
         $this->mode = $mode;
     }
 
-    public function buildCondition(PlFilter &$uf)
+    public function buildCondition(PlFilter $uf)
     {
         $right = XDB::formatWildcards($this->mode, $this->text);
 
@@ -209,7 +238,7 @@ class UFC_Name implements UserFilterCondition
 /** Filters users based on their mail adresse
  * @param $mail Mail adresse
  */
-class UFC_Bestalias implements UserFilterCondition
+class UFC_Bestalias extends UserFilterCondition
 {
     private $val;
 
@@ -221,7 +250,7 @@ class UFC_Bestalias implements UserFilterCondition
         $this->val = $val;
     }
 
-    public function buildCondition(PlFilter &$uf)
+    public function buildCondition(PlFilter $uf)
     {
         return XDB::format('a.bestalias IN {?}', $this->val);
     }
@@ -232,7 +261,7 @@ class UFC_Bestalias implements UserFilterCondition
 /** Filters users based on their nationality
  * @param $val Nation's Id
  */
-class UFC_Nationality implements UserFilterCondition
+class UFC_Nationality extends UserFilterCondition
 {
     private $val;
 
@@ -244,7 +273,7 @@ class UFC_Nationality implements UserFilterCondition
         $this->val = $val;
     }
 
-    public function buildCondition(PlFilter &$uf)
+    public function buildCondition(PlFilter $uf)
     {
         return XDB::format('a.nation IN {?}', $this->val);
     }
@@ -256,7 +285,7 @@ class UFC_Nationality implements UserFilterCondition
  * @param $comparison Comparison operator
  * @param $date Date to which users next birthday date should be compared
  */
-class UFC_Birthday implements UserFilterCondition
+class UFC_Birthday extends UserFilterCondition
 {
     private $comparison;
     private $date;
@@ -267,7 +296,7 @@ class UFC_Birthday implements UserFilterCondition
         $this->date = $date;
     }
 
-    public function buildCondition(PlFilter &$uf)
+    public function buildCondition(PlFilter $uf)
     {
         return 'p.next_birthday ' . $this->comparison . XDB::format(' {?}', date('Y-m-d', $this->date));
     }
@@ -278,7 +307,7 @@ class UFC_Birthday implements UserFilterCondition
 /** Filters users based on sex
  * @param $sex One of User::GENDER_MALE or User::GENDER_FEMALE, for selecting users
  */
-class UFC_Sex implements UserFilterCondition
+class UFC_Sex extends UserFilterCondition
 {
     private $sex;
 
@@ -287,7 +316,7 @@ class UFC_Sex implements UserFilterCondition
         $this->sex = $sex;
     }
 
-    public function buildCondition(PlFilter &$uf)
+    public function buildCondition(PlFilter $uf)
     {
         if ($this->sex != User::GENDER_MALE && $this->sex != User::GENDER_FEMALE) {
             return self::COND_FALSE;
@@ -303,7 +332,7 @@ class UFC_Sex implements UserFilterCondition
  * @param $group Group whose members we are selecting
  * @param $right Level of membership (Rights::FRIEND, Rights::MEMBER, ...)
  */
-class UFC_Group implements UserFilterCondition
+class UFC_Group extends UserFilterCondition
 {
     private $gids;
     private $right;
@@ -314,24 +343,15 @@ class UFC_Group implements UserFilterCondition
         $this->gids  = Group::toIds(unflatten($gs));
     }
 
-    public function buildCondition(PlFilter &$uf)
+    public function buildCondition(PlFilter $uf)
     {
-        $inheritance = Rights::inheritance($this->right);
         $sub = $uf->addGroupFilter();
-        $gro = uniqid();
-        $cur = uniqid();
+        return XDB::format($sub . '.gid IN {?}', $this->gids);
+    }
 
-        if ($inheritance == Rights::FIXED)
-            return XDB::format($sub . '.gid IN {?}', $this->gids);
-
-        if ($inheritance == Rights::ASCENDING)
-            return XDB::format($sub . '.gid IN (
-                                            SELECT  '.$gro.'.gid
-                                              FROM  groups AS '.$gro.'
-                                        INNER JOIN  groups AS '.$cur.' ON '.$cur.'.gid IN {?}
-                                             WHERE  '.$gro.'.L >= '.$cur.'.L AND '.$gro.'.R <= '.$cur.'.R
-                                               )
-                                AND FIND_IN_SET({?}, '.$sub.'.rights)', $this->gids, $this->right);
+    public function export()
+    {
+        return array("type" => 'group', "children" => $this->gids);
     }
 }
 // }}}
@@ -340,7 +360,7 @@ class UFC_Group implements UserFilterCondition
 /** Filters users based on their room'sid
  * @param $val Room's Id
  */
-class UFC_Room implements UserFilterCondition
+class UFC_Room extends UserFilterCondition
 {
     private $val;
 
@@ -349,7 +369,7 @@ class UFC_Room implements UserFilterCondition
         $this->val = $val;
     }
 
-    public function buildCondition(PlFilter &$uf)
+    public function buildCondition(PlFilter $uf)
     {
         $sub = $uf->addRoomFilter();
         $right = XDB::formatWildcards(XDB::WILDCARD_CONTAINS, $this->val);
@@ -359,7 +379,7 @@ class UFC_Room implements UserFilterCondition
 // }}}
 
 // {{{ class UFC_Cellphone
-class UFC_Cellphone implements UserFilterCondition
+class UFC_Cellphone extends UserFilterCondition
 {
     private $number;
 
@@ -368,7 +388,7 @@ class UFC_Cellphone implements UserFilterCondition
         $this->number = $number;
     }
 
-    public function buildCondition(PlFilter &$uf)
+    public function buildCondition(PlFilter $uf)
     {
         return XDB::format('a.cellphone = {?}', $this->number);
     }
@@ -376,7 +396,7 @@ class UFC_Cellphone implements UserFilterCondition
 // }}}
 
 // {{{ class UFC_Casertphone
-class UFC_Roomphone implements UserFilterCondition
+class UFC_Roomphone extends UserFilterCondition
 {
     private $number;
 
@@ -385,7 +405,7 @@ class UFC_Roomphone implements UserFilterCondition
         $this->number = $number;
     }
 
-    public function buildCondition(PlFilter &$uf)
+    public function buildCondition(PlFilter $uf)
     {
         $sub = $uf->addRoomFilter();
         $right = XDB::formatWildcards(XDB::WILDCARD_CONTAINS, $this->number);
@@ -413,6 +433,11 @@ abstract class UserFilterOrder extends PlFilterOrder
      * @return The name of the field to use for ordering results
      */
 //    abstract protected function getSortTokens(UserFilter &$uf);
+
+    public function export()
+    {
+        throw new Exception();
+    }
 }
 // }}}
 
@@ -429,7 +454,7 @@ class UFO_Promo extends UserFilterOrder
         $this->grade = $grade;
     }
 
-    protected function getSortTokens(PlFilter &$uf)
+    protected function getSortTokens(PlFilter $uf)
     {
         $sub = $uf->addStudiesFilter();
         return $sub . '.promo';
@@ -456,7 +481,7 @@ class UFO_Name extends UserFilterOrder
         $this->type = $type;
     }
 
-    protected function getSortTokens(PlFilter &$uf)
+    protected function getSortTokens(PlFilter $uf)
     {
         if ($this->type == self::LASTNAME)
             return 'a.lastname';
@@ -475,7 +500,7 @@ class UFO_Name extends UserFilterOrder
  */
 class UFO_Birthday extends UserFilterOrder
 {
-    protected function getSortTokens(PlFilter &$uf)
+    protected function getSortTokens(PlFilter $uf)
     {
         return 'a.next_birthday';
     }
@@ -542,6 +567,8 @@ class UserFilter extends PlFilter
     private $orderby = null;
 
     private $lastcount = null;
+
+    private $export = null;
 
     public function __construct($cond = null, $sort = null)
     {
@@ -689,13 +716,13 @@ class UserFilter extends PlFilter
     {
     }
 
-    public function setCondition(PlFilterCondition &$cond)
+    public function setCondition(PlFilterCondition $cond)
     {
         $this->root =& $cond;
         $this->query = null;
     }
 
-    public function addSort(PlFilterOrder &$sort)
+    public function addSort(PlFilterOrder $sort)
     {
         $this->sort[] = $sort;
         $this->orderby = null;
@@ -767,7 +794,7 @@ class UserFilter extends PlFilter
         return $joins;
     }
 
-    /** GROUPS and CLUSTERS
+    /** GROUPS
      */
     private $with_groups = array();
 
@@ -810,6 +837,88 @@ class UserFilter extends PlFilter
 
     // Temporary
     public function filter(array $objects, $limit = null) {}
+
+    public function export()
+    {
+        if ($this->export !== null)
+            return $export;
+
+        $export = array('type' => 'user');
+        if (!empty($this->root))
+            $export['condition'] =  $this->root->export();
+        if (!empty($this->sort))
+            $export['sort'] =  $this->sort->export();
+        return $export;
+    }
+
+    public static function fromExport(array $export) {
+        $condition = null;
+        $sort = null;
+
+        if (!empty($export['condition']))
+            $condition = self::importCondition($export['condition']);
+        if (!empty($export['sort']))
+            $sort = self::importSort($export['sort']);
+
+        return new UserFilter($condition, $sort);
+    }
+
+    public static function importCondition($export)
+    {
+        $obj = null;
+        switch ($export['type']) {
+            case 'and':
+                $obj = new PFC_And();
+                break;
+
+            case 'study':
+                $obj = new UFC_Study($export['formation_ids']);
+                break;
+
+            case 'promo':
+                if (empty($export['comparison']))
+                    $obj = new UFC_Promo($export['promo']);
+                else
+                    $obj = new UFC_Promo($export['promo'], $export['comparison']);
+                break;
+        }
+
+        if ($obj == null)
+         throw new Exception("Object ".$export['type']." doesn't exist");
+
+        if ($obj instanceof PFC_OneChild)
+            $obj->setChild(self::importCondition($export['child']));
+        elseif ($obj instanceof PFC_NChildren)
+            foreach ($export['children'] as $child)
+                $obj->addChild(self::importCondition($child));
+
+        return $obj;
+    }
+
+    /* /!\ UserFilter's id isn't numeric, but a hash
+    */
+    public function id()
+    {
+        return md5(json_encode($this->export()));
+    }
+
+    public function insert()
+    {
+        XDB::execute('INSERT IGNORE  userfilters
+                                SET  ufid = {?}, userfilter = {?}',
+                                     $this->id(), json_encode($this->export()));
+        XDB::execute('DELETE FROM userfilters_dependencies WHERE ufid = {?}', $this->id());
+        
+
+    }
+
+    public function delete()
+    {
+        XDB::execute('DELETE FROM userfilters WHERE ufid = {?}', $this->id());
+        XDB::execute('DELETE FROM userfilters_dependencies WHERE ufid = {?}', $this->id());
+    }
+
+
 
 }
 // }}}

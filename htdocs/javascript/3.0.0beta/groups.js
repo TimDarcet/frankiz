@@ -55,107 +55,132 @@ function groups_shower(id, data)
     });
 }
 
-function groups_picker(id, data, check)
+function groups_picker(id, ns, check)
 {
     // Principal blocks
-    var container  = $("#container_" + id);
-    var tree       = $("#tree_" + id);
-    var flat       = $("#flat_" + id);
+    var container  = $("#groups_picker_" + id);
+    var selected   = container.children(".selected").first();
+    var list       = container.children(".list").first();
+    var searcher   = container.children(".searcher").first();
+    var filter     = searcher.children("[name=filter]").first();
     var input      = $("#" + id);
 
-    var flat_empty = flat.html();
+    var searching = false;
+    var newsearch = false;
+    var focus     = false;
+
+    container.addClass('empty');
+    var selected_empty = selected.html();
 
     // What blocks are to be hidden / shown
     input.hide();
+    searcher.hide();
+    list.hide();
     var handler = function() {
-        tree.slideUp(100);
-        flat.slideDown(100);
+        list.slideUp(100);
+        searcher.slideUp(100);
+        focus = false;
     };
-
-    var plugins = [ "themes", "json_data", "types", "sort"];
-    // If we are in the UI mode
-    if (check != -1) {
-        plugins.push("ui");
-        tree.hide();
-        container.click(function() {
-            flat.slideUp(100);
-            tree.slideDown(100);
-            $.jstree._reference(tree).set_focus();
-        });
-        tree.mouseleave(function() {
-            $(document).mouseup(handler);
-        });
-        tree.mouseenter(function() {
-            $(document).unbind("mouseup", handler);
-        });
-    } else {
-        flat.hide();
-    }
-
-    // We build the tree
-    tree.jstree({
-        "core" : {
-            "animation" : 100
-        },
-        "themes" : {
-            "theme" : "jstree"
-        },
-        "json_data" : {
-            "data" : jsonGroupToJstreeData(data),
-            "ajax" : {
-                "url" : function(n) {
-                        return platal_baseurl + 'groups/ajax/children/?json={"gid": ' + n.attr("gid") + '}';
-                    },
-                "success" : function (data) {
-                        return jsonGroupToJstreeData(data.children);
-                    }
-            }
-        },
-        "types" : {
-            "types" : {
-                "default" : {
-                    "select_node" : function(n) {
-                        var ref = $.jstree._reference(n);
-                        var children = ref._get_children(n);
-                        var childSelected = false;
-                        children.each(function() {
-                            if (ref.is_selected($(this))) {
-                                childSelected = true;
-                                return;
-                            }
-                        });
-                        return !childSelected;
-                    }
-                }
-            }
-        },
-        "ui" : {
-            "select_limit" : (check > 0) ? check : -1,
-            "select_multiple_modifier" : "on",
-            "disable_selecting_children" : true
-        },
-        "sort" : function (a, b) { return parseInt($(a).attr('l')) > parseInt($(b).attr('l')) ? 1 : -1; },
-        "plugins" : plugins
+    container.click(function() {
+        if (!focus) {
+            searcher.show();
+            filter.val('');
+            filter.focus();
+            focus = true;
+            search();
+        }
+    });
+    container.mouseleave(function() {
+      $(document).mouseup(handler);
+    });
+    container.mouseenter(function() {
+      $(document).unbind("mouseup", handler);
     });
 
-    // Catch the checked boxes to build a reminder (=flat) and the gids list (=input)
-    var update = function() {
-        flat.html("");
-        var checkeds = tree.jstree("get_selected");
+    var fillInput = function ()
+    {
+        var selecteds = selected.children('li');
+        if (selecteds.length > 0)
+            container.removeClass('empty');
+        else
+            container.addClass('empty');
+
         var gids = new Array();
-        checkeds.each(function(index) {
-            gids.push($(this).attr("gid"));
-            flat.append($('<li title="' + $(this).attr("name") + '">' + $(this).attr("label") + '</li>'));
+        selected.children('li').each(function() {
+            if ($(this).attr('gid'))
+                gids.push($(this).attr('gid'));
         });
-        input.val(gids.join(";"));
+
+        input.val(gids.join(';'));
         input.keyup();
-        if (flat.children("li").size() == 0) flat.html(flat_empty);
     };
-    tree.bind("select_node.jstree", update);
-    tree.bind("deselect_node.jstree", update);
+
+    // Search logic
+    var search = function ()
+    {
+        if (!searching)
+        {
+            newsearch = false;
+            searching = true;
+            container.addClass('searching');
+            request({
+                "url": 'groups/ajax/search'
+              ,"data": {"ns": ns, "token" : filter.val()}
+              ,"fail": false
+           ,"success": function(json) {
+                           list.empty();
+                           var groups = json.groups;
+                           groups.sort(function(a, b) {
+                               return (a.frequency < b.frequency) ? -1 : (a.frequency > b.frequency) ? 1 : 0;
+                            });
+                           var group;
+                           for (var i in groups)
+                           {
+                               group = json.groups[i];
+                               list.append('<li gid="' + group.id + '">' + group.label + '</li>');
+                           }
+
+                           list.children('li').click(function() {
+                               var gid = $(this).attr('gid');
+                               var alreadyExists = false;
+                               selected.children('li').each(function() {
+                                   if ($(this).attr('gid') == gid) {
+                                       alreadyExists = true;
+                                       return false;
+                                   }
+                               });
+                               if (!alreadyExists)
+                               {
+                                   var sel = $('<li gid="' + $(this).attr('gid') + '">' + $(this).html() + '</li>');
+                                   sel.appendTo(selected);
+                                   sel.click(function() {
+                                       if (focus) {
+                                           $(this).remove();
+                                           fillInput();
+                                       }
+                                   });
+                                   fillInput();
+                               }
+                           });
+
+                           list.slideDown(100);
+
+                           searching = false;
+                           container.removeClass('searching');
+                           if (newsearch)
+                               search();
+                       }
+            });
+        }
+    };
+
+    filter.keyup(function() {
+        newsearch = true;
+        search();
+    });
 }
 
-function groups_modifier(container, data, rootGid)
+function groups_modifier(container, data)
 {
     var tree = null;
 
@@ -169,7 +194,7 @@ function groups_modifier(container, data, rootGid)
             tree.set_type("static", $(this));
         });
 
-        var chan   = "groups_";
+        var chan   = "groups";
         var client = new APE.Client();
         client.load();
 
@@ -178,12 +203,13 @@ function groups_modifier(container, data, rootGid)
         });
 
         client.addEvent('ready', function() {
-            var gids_array = [];
-            for (var i in gids)
-                gids_array.push(chan + gids[i]);
-            gids_array = ["groups_43"];
-            console.log(gids_array);
-            client.core.join(gids_array);
+//            var gids_array = [];
+//            for (var i in gids)
+//                gids_array.push(chan + gids[i]);
+//            gids_array = ["groups_43"];
+//            console.log(gids_array);
+            console.log('ready');
+            client.core.join(chan);
         });
 
         client.onRaw(' ', function(params) {

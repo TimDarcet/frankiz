@@ -1,9 +1,10 @@
-var tol_busy = false;
-var tol_late = false;
+var searching = false;
+var newsearch = false;
 var mode = 'card';
 
 $(document).ready(function(){
-    $("#tol_searcher").submit(function() {
+    $("#tol_searcher form").submit(function() {
+        alert('plop');
         $('#tol_searcher input[name=mode]').val('sheet');
         return false;
     });
@@ -14,19 +15,19 @@ $(document).ready(function(){
         return false;
     });
 
-    $("#tol_infos").removeClass("loading");
-    $('#tol_searcher input').keyup(function() {
+    $("#tol_infos").removeClass("searching");
+    $('#tol_searcher input[auto]').keyup(function() {
         search();
     });
 });
 
 function search()
 {
-    if (tol_busy) {
-        tol_late = true;
-    } else {
-        $("#tol_infos").addClass("loading");
-        tol_busy = true;
+    if (!searching)
+    {
+        searching = true;
+        newsearch = false;
+        $("#tol_infos").addClass("searching");
 
         request({
             "url": 'tol/ajax'
@@ -64,15 +65,15 @@ function search()
                         $('#tol_results').append(json.results[uid]);
                 }
 
+                ajaxify($("#tol_results"));
+
                 mode = json.mode;
-                tol_busy = false;
                 $('#tol_searcher input[name=mode]').val('card');
-                if (tol_late) {
-                    tol_late = false;
+
+                searching = false;
+                $("#tol_infos").removeClass("searching");
+                if (newsearch)
                     search();
-                } else {
-                    $("#tol_infos").removeClass("loading");
-                }
             }});
     }
 }

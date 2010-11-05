@@ -38,7 +38,7 @@ class TolModule extends PLModule
                     'nationalities' => '',
                           'studies' => '',
                            'sports' => '',
-                     'associations' => '',
+                           'binets' => '',
                              'room' => '',
                             'phone' => '',
                                'ip' => '');
@@ -91,8 +91,8 @@ class TolModule extends PLModule
         if ($fields['sports'])
             $conds[] = new UFC_Group(explode(';', $fields['sports']), Rights::MEMBER);
 
-        if ($fields['associations'])
-            $conds[] = new UFC_Group(explode(';', $fields['associations']), Rights::MEMBER);
+        if ($fields['binets'])
+            $conds[] = new UFC_Group(explode(';', $fields['binets']), Rights::MEMBER);
 
         if ($fields['room'])
             $conds[] = new UFC_Room($fields['room']);
@@ -122,13 +122,7 @@ class TolModule extends PLModule
             $page->assign('total', $uf->getTotalCount());
         }
 
-        $roots = new Collection();
-        $roots->className('Group');
-        $roots->add(array('nationalities', 'studies', 'sports', 'associations'));
-        $roots = $roots->toArray('name');
-
         $page->assign('fields', $fields);
-        $page->assign('roots', $roots);
         $page->assign('title', 'Trombino On Line');
         $page->addCssLink('tol.css');
         $page->changeTpl('tol/tol.tpl');
@@ -146,9 +140,14 @@ class TolModule extends PLModule
         if ($filter) {
             $uf = new UserFilter($filter);
             if ($json->mode == 'card')
-                $users = $uf->getUsers(new PlLimit(20,0))->select(User::SELECT_BASE)->toArray();
+                $users = $uf->getUsers(new PlLimit(20,0))->select(User::SELECT_BASE);
             else
-                $users = $uf->getUsers(new PlLimit(50,0))->select(User::SELECT_BASE | User::SELECT_GROUPS);
+                $users = $uf->getUsers(new PlLimit(50,0))->select(
+                                            array(User::SELECT_BASE => false,
+                                                User::SELECT_GROUPS => array("comments" => true,
+                                                                                   "ns" => array(Group::NS_BINET, Group::NS_SPORT,
+                                                                                                 Group::NS_NATIONALITY, Group::NS_STUDY),
+                                                                              "options" => Group::SELECT_BASE | Group::SELECT_FREQUENCY)));
 
             $page->jsonAssign('total', $uf->getTotalCount());
             foreach($users as $k => $user) {
@@ -163,6 +162,8 @@ class TolModule extends PLModule
         $page->jsonAssign('mode', $json->mode);
         $page->jsonAssign('results', $fiches);
         $page->jsonAssign('success', true);
+
+        return PL_JSON;
     }
 }
 
