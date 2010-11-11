@@ -28,48 +28,48 @@ class LostandfoundModule extends PLModule
             );
     }
 
-    function handler_laf(&$page, $id = 0) 
+    function handler_laf($page, $id = 0) 
     {
-	    if (Env::has('obj_pong'))
+	    if (Env::has('trouve') && Env::has('obj'))
 	    {
 	        if (S::logged()) {
 	            XDB::execute("INSERT INTO   laf
                                   SET   uid = {?}, found = NOW(), description = {?}, context = {?}",
-                                  S::user()->id(), Env::t('obj_pong'), Env::t('desc_pong'));
+                                  S::user()->id(), Env::t('obj'), Env::t('desc'));
                 $page->assign('message', 'Pense à supprimer l\'objet une fois rendu à son propriétaire.');
         		require_once 'banana/hooks.inc.php';
-        		$body = 'L\'objet ' . Env::t('obj_pong') . ' a été retrouvé';
-        		if (Env::t('desc_pong') != '')
+        		$body = 'L\'objet ' . Env::t('obj') . ' a été retrouvé';
+        		if (Env::t('desc') != '')
         		{
-        			$body .= ' dans les circonstances suivantes : ' . Env::t('desc_pong');
+        			$body .= ' dans les circonstances suivantes : ' . Env::t('desc');
         		}
         		$body .= '.\n\n' . S::user()->displayName() . '\n\n\n'
         					. 'Ceci est un message automatique, merci de le signaler sur frankiz une fois l\'objet rendu.';
-       	 		send_message('br.pa', 'pong ' . Env::t('obj_pong'), $body);
+       	 		send_message('br.pa', 'pong ' . Env::t('obj'), $body);
 	        }
 	        else {
 	            $page->assign('not_logged', 'true');
 	        }
 	    }
 	    
-	    if (Env::has('obj_ping'))
+	    if (Env::has('perdu') && Env::has('obj'))
 	    {
 	    
 	        if (S::logged())
 	        {
 	            XDB::execute("INSERT INTO   laf
                                   SET   uid = {?}, lost = NOW(), description = {?}, context = {?}",
-                                  S::user()->id(), Env::t('obj_ping'), Env::t('desc_ping'));
+                                  S::user()->id(), Env::t('obj'), Env::t('desc'));
                 $page->assign('message', 'Pense à supprimer l\'objet dès que celui-ci est retrouvé.');
                 require_once 'banana/hooks.inc.php';
-        		$body = 'L\'objet ' . Env::t('obj_ping') . ' a été perdu';
-        		if (Env::t('desc_ping') != '')
+        		$body = 'L\'objet ' . Env::t('obj') . ' a été perdu';
+        		if (Env::t('desc') != '')
         		{
-        			$body .= ' dans les circonstances suivantes : ' . Env::t('desc_ping');
+        			$body .= ' dans les circonstances suivantes : ' . Env::t('desc');
         		}
         		$body .= '.\n\n' . S::user()->displayName() . '\n\n\n'
         					. 'Ceci est un message automatique, merci de le signaler sur frankiz une fois l\'objet retrouvé.';
-       	 		send_message('br.pa', 'ping ' . Env::t('obj_ping'), $body);
+       	 		send_message('br.pa', 'ping ' . Env::t('obj'), $body);
 	        }
 	        else
 	        {
@@ -146,7 +146,7 @@ class LostandfoundModule extends PLModule
         }
         else
         {
-            $res = XDB::query("SELECT * FROM laf WHERE ISNULL(found) ORDER BY lost DESC LIMIT 10");
+            $res = XDB::query("SELECT * FROM laf WHERE ISNULL(found) ORDER BY lost DESC LIMIT 20");
             $losts = $res->fetchAllRow();
         }
         
@@ -160,19 +160,21 @@ class LostandfoundModule extends PLModule
         }
         else
         {
-            $res = XDB::query("SELECT * FROM laf WHERE ISNULL(lost) ORDER BY found DESC LIMIT 10");
+            $res = XDB::query("SELECT * FROM laf WHERE ISNULL(lost) ORDER BY found DESC LIMIT 20");
             $founds = $res->fetchAllRow();
         }
         
         $page->addCssLink('laf.css');
+        $page->addCssLink('jquery-ui.css');
 
+        $page->assign('uid', s::user()->id());
         $page->assign('title', 'Objets Trouvés');
         $page->assign('losts', $losts);
         $page->assign('founds', $founds);
         $page->changeTpl('lostandfound/laf.tpl');
     }
     
-    function manage_pong(&$page, $id) {
+    function manage_pong($page, $id) {
         if (S::logged()) {
             $res = XDB::query("SELECT * FROM laf WHERE oid = {?}", $id)->fetchAllRow();
             $res = $res[0];
@@ -195,7 +197,7 @@ class LostandfoundModule extends PLModule
         }
     }
     
-function manage_ping(&$page, $id) {
+function manage_ping($page, $id) {
         if (S::logged()) {
             $res = XDB::query("SELECT * FROM laf WHERE oid = {?}", $id)->fetchAllRow();
             $res = $res[0];

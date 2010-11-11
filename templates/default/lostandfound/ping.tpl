@@ -20,32 +20,22 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<fieldset>
-    <legend>Objets perdus</legend>
-    <form enctype="multipart/form-data" method="post" action="laf/">
-        <label>Chercher : <input type="text" name="ping_obj" /></label>
-        <input type="submit" name="chercher_ping" value="Chercher" />
-    </form>
+<form enctype="multipart/form-data" method="post" action="laf/">
+    <label>Chercher : <input type="text" name="ping_obj" /></label>
+    <input type="submit" name="chercher_ping" value="Chercher" />
+</form>
     
-    {if isset($lost|smarty:nodefaults)}
-    <ul>
-    <table>
-    	<tr><th> Objet </th> <th> Circonstances </th> <th> Retrouvé </th> <th> Suppression de l'objet </th></tr>
-        {foreach from=$lost item=result}
-            <tr> <td> {$result[4]} </td> <td> {$result[5]} </td> <td> 
-    			<form enctype="multipart/form-data" method="post" action="laf/{$result[0]}">
-    				<input type="submit" name="ping" value="Trouvé !" />
-    			</form>
- 				</td> <td> 
-    			<form enctype="multipart/form-data" method="post" action="laf/{$result[0]}">
-    				<input type="submit" name="del_ping" value="Supprimer" />
-    			</form>
- 				</td>
-			</tr>
-        {/foreach}
-    </table>
-    </ul>
-    {/if}
-</fieldset>
-
+{if isset($lost|smarty:nodefaults)}
+    {foreach from=$lost item=result}
+	    <p class="prop_obj"><b>Objet :</b> {$result[4]} </p>
+	    <div class="prop_desc"><b>Circonstance :</b> {$result[5]}
+	    <form enctype="multipart/form-data" method="post" action="laf/{$result[0]}">
+	        <input type="submit" name="ping" value="Trouvé !" />
+	        {if $result[1]==$uid}
+	            <input type="submit" name="del_ping" value="Supprimer" />
+	        {/if}
+    	</form>
+	    </div>
+    {/foreach}
+{/if}	
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

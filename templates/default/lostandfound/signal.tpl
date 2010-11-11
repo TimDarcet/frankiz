@@ -20,13 +20,16 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<fieldset>
-    <legend>Signaler un objet perdu</legend>
-    <form enctype="multipart/form-data" method="post" action="laf/">
-        <label>Description : <input type="text" name="obj_ping" /></label>
-		<label>Circonstances : <input type="text" name="desc_ping" /></label>
-        <input type="submit" name="perdu" value="Perdu !" />
-    </form>
-</fieldset>
+<form enctype="multipart/form-data" method="post" action="laf/">
+    <table>
+    <tr><th>
+    	<label>Description :</th><th> <input type="text" name="obj" /></label> <br/>
+    </th></tr><tr><th>
+    	<label>Circonstances :</th><th> <input type="text" name="desc" /></label> <br/>
+    </th></tr>
+    </table>
+    <input type="submit" name="perdu" value="Perdu !" />
+    <input type="submit" name="trouve" value="Trouvé !" />
+</form>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

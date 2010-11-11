@@ -20,6 +20,8 @@
 {*                                                                        *}
 {**************************************************************************}
 
+{js src="laf.js"}
+
 <div class="lostandfound">
 	{if isset($message|smarty:nodefaults)}
 		<div> {$message} </div>
@@ -29,14 +31,33 @@
 		<div> Tu dois t'identifier pour pouvoir faire cette action </div>
 	{/if}
 
-    {include file="lostandfound/perdu.tpl"|rel}
+    <div class="section">
+        <div class="section_title">
+             Signaler
+        </div>
+        <div class="section_body">
+             {include file="lostandfound/signal.tpl"|rel}
+        </div>
+    </div>
+	
+	<div class="section">
+	    <div class="section_title">
+	        Objets perdus
+        </div>
+        <div class="section_body">
+            {include file="lostandfound/ping.tpl"|rel lost=$losts}
+        </div>
+    </div>
 
-    {include file="lostandfound/trouve.tpl"|rel}
+	<div class="section">
+        <div class="section_title" id="essai">
+	        Objets trouvés
+        </div>
+        <div class="section_body">
+    	    {include file="lostandfound/pong.tpl"|rel found=$founds}
+    	</div>
+	</div>
 
-    {include file="lostandfound/ping.tpl"|rel lost=$losts}
-    
-    {include file="lostandfound/pong.tpl"|rel found=$founds}
-    
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
