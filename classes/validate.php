@@ -196,22 +196,6 @@ class Validate extends meta
         Platal::page()->trigSuccess($msg);
     }    
 
-    /** automatic answers table for this type of validation */
-    public function answers()
-    {
-        static $answers_table;
-        if (!isset($answers_table[$this->type])) {
-            $r = XDB::query("SELECT id, title, answer FROM requests_answers WHERE category = {?} AND gid = {?}", $this->type, $this->gid);
-            $answers_table[$this->type] = $r->fetchAllAssoc();
-        }
-        return $answers_table[$this->type];
-    }
-
-    public function ruleText()
-    {
-        return str_replace('\'', '\\\'', $this->rules);
-    }
-
 }
 
 /* vim: set expandtab shiftwidth=4 tabstop=4 softtabstop=4 foldmethod=marker enc=utf-8: */

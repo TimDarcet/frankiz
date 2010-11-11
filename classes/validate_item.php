@@ -111,12 +111,12 @@ class Validate_News extends Validate_Item
     
     public function show()
     {
-        return 'validate/form.show.essai.tpl';
+        //return 'validate/form.show.essai.tpl';
     }
 
     public function editor()
     {
-        return 'validate/form.edit.essai.tpl';
+        //return 'validate/form.edit.essai.tpl';
     }
     
     // TO DO

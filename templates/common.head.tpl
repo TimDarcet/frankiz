@@ -24,7 +24,6 @@
 <title>Frankiz : {$title}</title>
 <base href="{$globals->baseurl}/" />
 
-<link rel="stylesheet" type="text/css" href="css/dev.css" />
 <link rel="alternate" type="application/rss+xml" title="Version RSS" href="rss_annonces.php" />
 <link rel="glossary" title="Vocabulaire" href="vocabulaire.php" />
 <link rel="help" title="Contact" href="contact.php"/>
