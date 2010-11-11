@@ -109,6 +109,7 @@
                     <tr>
                         <td><a {path_to_href_attribute path="admin/groups"}>Groupes</a></td>
                         <td><a {path_to_href_attribute path="admin/images"}>Images</a></td>
+                        <td><a {path_to_href_attribute path="admin/validate"}>Validations</a></td>
                     </tr>
                 </table>
             </div>

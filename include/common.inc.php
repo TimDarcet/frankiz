@@ -32,6 +32,12 @@ function __autoload($cls)
         }else if (substr($cls, 0, 4) == 'pfc_' || substr($cls, 0, 4) == 'pfo_' || substr($cls, 0, 8) == 'plfilter') {
             __autoload('plfilter');
             return;
+        }else if (substr($cls, 0, 4) == 'pfc_' || substr($cls, 0, 4) == 'pfo_' || substr($cls, 0, 8) == 'plfilter') {
+            __autoload('plfilter');
+            return;
+        }else if (substr($cls, 0, 9) == 'validate_') {
+            __autoload('validate_item');
+            return;
         }
         include "$cls.inc.php";
     }

@@ -25,11 +25,12 @@ class AdminModule extends PlModule
     function handlers()
     {
         return array(
-            'admin/su'      => $this->make_hook('su'    , AUTH_MDP, 'admin'),
-            'admin/tree'    => $this->make_hook('tree'  , AUTH_MDP, 'admin'),
-            'admin/images'  => $this->make_hook('images', AUTH_MDP, 'admin'),
-            'admin/image'   => $this->make_hook('image' , AUTH_MDP, 'admin'),
-            'admin/debug'   => $this->make_hook('debug' , AUTH_PUBLIC)
+            'admin/su'          => $this->make_hook('su'    , AUTH_MDP, 'admin'),
+            'admin/tree'        => $this->make_hook('tree'  , AUTH_MDP, 'admin'),
+            'admin/images'      => $this->make_hook('images', AUTH_MDP, 'admin'),
+            'admin/image'       => $this->make_hook('image' , AUTH_MDP, 'admin'),
+            'admin/validate'    => $this->make_hook('validate' , AUTH_MDP),
+            'admin/debug'       => $this->make_hook('debug' , AUTH_PUBLIC)
         );
     }
 
@@ -86,6 +87,35 @@ class AdminModule extends PlModule
             $image->select(FrankizImage::SELECT_FULL);
 
         $image->send();
+    }
+    
+
+    function handler_validate($page, $action = 'list', $id = null) 
+    {        
+        if(env::has('id'))
+        {
+            $el  = Validate::create_from_id(env::v('id'));
+            if (!is_null($el))
+            {
+                $el->select(SELECT_INFOS | SELECT_ITEM);
+                $el->handle_form();
+            }
+            else
+                $page->assign('msg', 'La validation a déjà été effectuée.');
+        }
+        
+        //must create the collection of items to validate
+        // for example
+        
+        $el  = new Validate(43);
+        $el->select(SELECT_INFOS | SELECT_ITEM);
+        $c = new Collection(Validate);
+        $c->add($el);
+        
+        $page->assign('val', $c);
+        $page->addJsLink('validate.js');
+        $page->addCssLink('validate.css');
+        $page->changeTpl('validate/validate.tpl');
     }
 
     function handler_debug($page)
