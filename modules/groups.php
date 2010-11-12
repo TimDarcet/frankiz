@@ -25,9 +25,7 @@ class GroupsModule extends PLModule
     {
         return array(
             'groups'                 => $this->make_hook('groups',          AUTH_PUBLIC),
-            'groups/ajax/children'   => $this->make_hook('ajax_children',   AUTH_PUBLIC),
-            'groups/ajax/moveunder'  => $this->make_hook('ajax_moveunder',  AUTH_COOKIE),
-            'groups/ajax/movebefore' => $this->make_hook('ajax_movebefore', AUTH_COOKIE),
+            'groups/ajax/search'     => $this->make_hook('ajax_search',     AUTH_PUBLIC),
             'groups/ajax/insert'     => $this->make_hook('ajax_insert',     AUTH_COOKIE),
             'groups/ajax/rename'     => $this->make_hook('ajax_rename',     AUTH_COOKIE),
             'groups/ajax/delete'     => $this->make_hook('ajax_delete',     AUTH_COOKIE)
@@ -36,52 +34,37 @@ class GroupsModule extends PLModule
 
     function handler_groups($page)
     {
-        $page->assign('associations', 'associations');
-        $page->assign('title', "Groupes");
+        $gf = new GroupFilter(null, new GFO_Frequency(true));
+        $gs = $gf->get(new PlLimit(20));
+        $gs->select(Group::SELECT_BASE | Group::SELECT_FREQUENCY);
+
+        $total = $gf->getTotalCount();
+
+        $page->assign('groups', $gs);
+        $page->assign('total', $total);
+        $page->assign('title', 'Groupes');
         $page->changeTpl('groups/groups.tpl');
     }
 
-    function handler_ajax_children($page)
+    function handler_ajax_search($page)
     {
         $json = json_decode(Env::v('json'));
 
-        $parent = new Group($json->gid);
-        $children = $parent->select(Group::SELECT_CHILDREN)->children()->select(Group::SELECT_BASE);
+        $conditions = new PFC_And(new GFC_Namespace($json->ns),
+                                  new PFC_OR(new GFC_Label($json->token, GFC_Label::CONTAINS),
+                                             new GFC_Name($json->token)));
+
+        $own = new GroupFilter(new PFC_And($conditions, new GFC_User(S::user()->id())), new GFO_Frequency(true));
+        $all = new GroupFilter($conditions, new GFO_Frequency(true));
+        $own = $own->get(new PlLimit(5));
+        $all = $all->get(new PlLimit(5));
+
+        $all->merge($own)->select(Group::SELECT_BASE | Group::SELECT_FREQUENCY);
 
         $page->jsonAssign('success', true);
-        $page->jsonAssign('children', $children->toJson());
-    }
+        $page->jsonAssign('groups', $all->toJson());
 
-    function handler_ajax_moveunder($page)
-    {
-        $json = json_decode(Env::v('json'));
-
-        $group  = new Group($json->{'group'});
-        $parent = new Group($json->{'parent'});
-
-        // TODO: check the rights
-        $page->jsonAssign('success', true);
-        try {
-            $group->moveUnder($parent);
-        } catch(Exception $e) {
-            $page->jsonAssign('success', false);
-        }
-    }
-
-    function handler_ajax_movebefore($page)
-    {
-        $json = json_decode(Env::v('json'));
-
-        $group  = new Group($json->{'group'});
-        $sibling = new Group($json->{'sibling'});
-
-        // TODO: check the rights
-        $page->jsonAssign('success', true);
-        try {
-            $group->moveBefore($sibling);
-        } catch(Exception $e) {
-            $page->jsonAssign('success', false);
-        }
+        return PL_JSON;
     }
 
     function handler_ajax_insert($page)

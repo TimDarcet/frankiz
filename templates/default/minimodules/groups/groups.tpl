@@ -27,8 +27,7 @@
         <th>Name</th>
         <th>Rights</th>
     </tr>
-    {assign var='dev_null' value=$minimodule.groups->order('frequency')}
-    {foreach from=$minimodule.groups item=group}
+    {foreach from=$minimodule.groups|order:'frequency' item=group}
         <tr>
             <td>{$group->ns()}</td>
             <td>{$group->frequency()}</td>

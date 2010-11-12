@@ -20,8 +20,20 @@
 {*                                                                        *}
 {**************************************************************************}
 
-
-{include file="groups_picker.tpl"|rel id="everything" groups=$associations type="descending" depth=1 behead=false check=0}
-
+{$groups->count()} / {$total}
+<table>
+    <tr>
+    	<th>Ns</th>
+        <th>%</th>
+        <th>Name</th>
+    </tr>
+    {foreach from=$groups|order:'frequency' item=group}
+	        <tr>
+	            <td>{$group->ns()}</td>
+	            <td>{$group->frequency()}</td>
+	            <td>{$group->name()}</td>
+	        </tr>
+    {/foreach}
+</table>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

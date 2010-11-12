@@ -31,11 +31,12 @@ class Collection extends PlAbstractIterable
     protected $className = null;
 
     protected $order = null;
+    protected $desc  = true;
 
-    public function __construct($className = null, $order = null)
+    public function __construct($className = null, $order = null, $desc = true)
     {
         $this->className($className);
-        $this->order($order);
+        $this->order($order, $desc);
     }
 
     public function className($className = null)
@@ -45,7 +46,7 @@ class Collection extends PlAbstractIterable
         return $this->className;
     }
 
-    public function order($order = null)
+    public function order($order = null, $desc = true)
     {
         if ($order != null)
             $this->order = $order;
@@ -103,12 +104,13 @@ class Collection extends PlAbstractIterable
         if (empty($order))
             return $iterator;
 
-        return PlIteratorUtils::sort($iterator, function($a, $b) use($order)
+        $desc = ($this->desc) ? 1 : -1;
+        return PlIteratorUtils::sort($iterator, function($a, $b) use($order, $desc)
                                                 {
                                                     $a = $a->$order();
                                                     $b = $b->$order();
                                                     if ($a == $b) return 0;
-                                                    return ($a < $b) ? 1 : -1;
+                                                    return ($a < $b) ? $desc : -$desc;
                                                 });
     }
 
