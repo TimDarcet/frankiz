@@ -12,6 +12,11 @@
 var currentPage = '';
 $(document).ready(function(){
     $.ajaxSetup({ cache: false });
+});
+
+function enableAjaxify()
+{
+    ajaxify($("body"));
 
     var trima = new RegExp('^[/]+', 'g');
     var trimb = new RegExp('[/]+$', 'g');
@@ -28,10 +33,9 @@ $(document).ready(function(){
         } else {
             trueUrl = hash.slice(hash.indexOf("#!") + 2, trueSharp);
             var trueAnchor = hash.slice(trueSharp + 1);
-            console.log(trueAnchor);
+
             scroller = function() {
                             var target = $('a[name=' + trueAnchor + ']');
-                            console.log(target);
                             if (target.length == 1) $.scrollTo(target);
                         };
         }
@@ -46,7 +50,7 @@ $(document).ready(function(){
 
     if (location.hash.indexOf("#!") >= 0)
         $(window).hashchange();
-});
+}
 
 function ajaxify(target)
 {

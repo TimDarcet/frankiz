@@ -31,7 +31,8 @@
 {literal}
 <script type="text/javascript">
     $(document).ready(function(){
-        ajaxify($("body"));
+        if ($('#debug').length == 0)
+            enableAjaxify();
     });
 </script>
 {/literal}
