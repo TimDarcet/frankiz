@@ -36,7 +36,7 @@ class GFC_Name extends GroupFilterCondition
         $this->name = unflatten($val);
     }
 
-    public function buildCondition(PlFilter &$uf)
+    public function buildCondition(PlFilter $uf)
     {
         return XDB::format('g.name IN {?}', $this->name);
     }
@@ -51,7 +51,7 @@ class GFC_Namespace extends GroupFilterCondition
         $this->ns = $ns;
     }
 
-    public function buildCondition(PlFilter &$uf)
+    public function buildCondition(PlFilter $uf)
     {
         return XDB::format('g.ns = {?}', $this->ns);
     }
@@ -73,7 +73,7 @@ class GFC_Label extends GroupFilterCondition
         $this->mode = $mode;
     }
 
-    public function buildCondition(PlFilter &$uf)
+    public function buildCondition(PlFilter $uf)
     {
         $right = XDB::formatWildcards($this->mode, $this->text);
 
@@ -92,7 +92,7 @@ class GFC_User extends GroupFilterCondition
         $this->uids  = User::toIds(unflatten($us));
     }
 
-    public function buildCondition(PlFilter &$uf)
+    public function buildCondition(PlFilter $uf)
     {
         $sub = $uf->addUserFilter();
         if ($this->right === null)
@@ -117,7 +117,7 @@ class GFO_Frequency extends GroupFilterOrder
         parent::__construct($desc);
     }
 
-    protected function getSortTokens(PlFilter &$gf)
+    protected function getSortTokens(PlFilter $gf)
     {
         $sub = $gf->addUserFilter();
         return "COUNT($sub.uid)";
@@ -132,7 +132,7 @@ class GFO_Name extends GroupFilterOrder
         parent::__construct($desc);
     }
 
-    protected function getSortTokens(PlFilter &$gf)
+    protected function getSortTokens(PlFilter $gf)
     {
         return 'g.name';
     }
@@ -210,7 +210,7 @@ class GroupFilter extends PlFilter
         }
     }
 
-    private function getGIDList($gids = null, PlLimit &$limit)
+    private function getGIDList($gids = null, PlLimit $limit)
     {
         $this->buildQuery();
         $lim = $limit->getSql();
@@ -285,13 +285,13 @@ class GroupFilter extends PlFilter
     {
     }
 
-    public function setCondition(PlFilterCondition &$cond)
+    public function setCondition(PlFilterCondition $cond)
     {
         $this->root = $cond;
         $this->query = null;
     }
 
-    public function addSort(PlFilterOrder &$sort)
+    public function addSort(PlFilterOrder $sort)
     {
         $this->sort[] = $sort;
         $this->orderby = null;
