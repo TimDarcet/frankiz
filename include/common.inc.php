@@ -25,8 +25,9 @@ function __autoload($cls)
         $cls = strtolower($cls);
 
         $filters = array('p' => 'plfilter',
-                         'u' => 'userfilter',
                          'g' => 'groupfilter',
+                         'n' => 'newsfilter',
+                         'u' => 'userfilter',
                          'v' => 'validatefilter');
 
         foreach ($filters as $key => $class)
