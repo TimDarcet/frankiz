@@ -210,7 +210,7 @@ class GroupFilter extends PlFilter
         }
     }
 
-    private function getGIDList($gids = null, PlLimit $limit)
+    private function getIDList($gids = null, PlLimit $limit)
     {
         $this->buildQuery();
         $lim = $limit->getSql();
@@ -235,36 +235,22 @@ class GroupFilter extends PlFilter
         }
     }
 
-    public function getGIDs($limit = null)
+    public function getIDs($limit = null)
     {
         $limit = self::defaultLimit($limit);
-        return $this->getGIDList(null, $limit);
-    }
-
-    public function getGID($pos = 0)
-    {
-        $gids = $this->getGIDList(null, new PlLimit(1, $pos));
-        if (count($gids) == 0) {
-            return null;
-        } else {
-            return $gids[0];
-        }
-    }
-
-    public function getGroup($pos = 0)
-    {
-        $uid = $this->getGID($pos);
-        if ($uid == null) {
-            return null;
-        } else {
-            return new User($uid);
-        }
+        return $this->getIDList(null, $limit);
     }
 
     public function get($limit = null)
     {
-        $c = new Collection('Group');
-        return $c->add($this->getGIDs($limit));
+        if ($limit === true)
+        {
+            $ids = $this->getIDList(null, new PlLimit(1));
+            return (count($ids) != 1) ? null : new Group(array_pop($ids));
+        } else {
+            $c = new Collection('Group');
+            return $c->add($this->getIDs($limit));
+        }
     }
 
     public function getTotalCount()
@@ -275,14 +261,6 @@ class GroupFilter extends PlFilter
         } else {
             return $this->lastcount;
         }
-    }
-
-    public function hasGroups()
-    {
-    }
-
-    public function getGroups() 
-    {
     }
 
     public function setCondition(PlFilterCondition $cond)
@@ -309,15 +287,27 @@ class GroupFilter extends PlFilter
     {
         $joins = array();
         if ($this->with_user) {
-            $joins['ug'] = PlSqlJoin::left('users_groups', '$ME.gid = g.gid AND FIND_IN_SET("member", $ME.rights)>0');
+            $joins['ug'] = PlSqlJoin::left('users_groups', '$ME.gid = g.gid');
         }
         return $joins;
     }
 
-    // Temporary
-    public function filter(array $objects, $limit = null) {}
+    // Not implemented
+    public function filter(array $objects, $limit = null) {
+        throw new Exception('Not implemented');
+    }
 
     public function export()
+    {
+        throw new Exception('Not implemented');
+    }
+
+    public function hasGroups()
+    {
+        throw new Exception('Not implemented');
+    }
+
+    public function getGroups()
     {
         throw new Exception('Not implemented');
     }
