@@ -23,51 +23,67 @@
 /** 
  * class to use for validations
  */
-class Validate extends meta
+class Validate extends Meta
 {
-    const SELECT_INFOS = 0x01;
+    const SELECT_BASE = 0x01;
     const SELECT_ITEM = 0x02;
-    
-    
+
     //user asking a validation
-    public $user;
+    protected $user;
     // group that should validate
-    public $gid;
-    public $type;
-    public $created;
+    protected $group;
+
+    protected $type;
+    protected $created;
 
     //item to validate : ItemValidate object
-    public $item;
-    
-    public static function batchSelect(array $val, $fields)
-    {
-        if (empty($val))
-            return;
+    protected $item;
 
-        $val = array_combine(self::toIds($val), $val);
-            
-        $request = 'SELECT id';
-        if ($fields & SELECT_INFOS)
-            $request .= ', user, gid, type, created';
-        if ($fields & SELECT_ITEM)
-            $request .= ', item';
-        
-        $iter = XDB::iterator($request .
-                        ' FROM  validate
-                         WHERE  id IN {?}',
-                         array_keys($val));
-                         
-        while ($array_datas = $iter->next())
-        {
-            $val[$array_datas['id']]->fillFromArray($array_datas);
-            if ($fields & SELECT_INFOS)
-                $val[$array_datas['id']]->user = unserialize($val[$array_datas['id']]->user);
-            if ($fields & SELECT_ITEM)
-                $val[$array_datas['id']]->item = unserialize($val[$array_datas['id']]->item);
-            
-        }
+    public function user()
+    {
+        return $this->user;
     }
-    
+
+    public function group()
+    {
+        return $this->group;
+    }
+
+    public function type()
+    {
+        return $this->type;
+    }
+
+    public function created()
+    {
+        return $this->created;
+    }
+
+    public function item()
+    {
+        return $this->item;
+    }
+
+    public function fillFromArray(array $values)
+    {
+        if (isset($values['uid'])) {
+            $this->user = new User($values['uid']);
+            unset($values['uid']);
+        }
+
+        if (isset($values['gid'])) {
+            $this->group = new Group($values['gid']);
+            unset($values['gid']);
+        }
+
+        if (isset($values['item'])) {
+            $this->item = unserialize($values['item']);
+            unset($values['item']);
+        }
+
+        parent::fillFromArray($values);
+    }
+
     /** 
      * to use to send the data for moderation
      * if $this->item->unique is true, then the database will be clean before
@@ -180,7 +196,7 @@ class Validate extends meta
 
         return false;
     }
-    
+
     protected function trigError($msg)
     {
         Platal::page()->trigError($msg);
@@ -194,8 +210,30 @@ class Validate extends meta
     protected function trigSuccess($msg)
     {
         Platal::page()->trigSuccess($msg);
-    }    
+    }
 
+    public static function batchSelect(array $val, $fields)
+    {
+        if (empty($val))
+            return;
+
+        $val = array_combine(self::toIds($val), $val);
+
+        $request = 'SELECT id';
+        if ($fields & self::SELECT_BASE)
+            $request .= ', uid, gid, type, created';
+        if ($fields & self::SELECT_ITEM)
+            $request .= ', item';
+
+        $iter = XDB::iterator($request .
+                        ' FROM  validate
+                         WHERE  id IN {?}',
+                         array_keys($val));
+
+        while ($array_datas = $iter->next())
+            $val[$array_datas['id']]->fillFromArray($array_datas);
+
+    }
 }
 
 /* vim: set expandtab shiftwidth=4 tabstop=4 softtabstop=4 foldmethod=marker enc=utf-8: */
