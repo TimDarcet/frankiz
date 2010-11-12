@@ -23,22 +23,25 @@ function __autoload($cls)
 {
     if (!pl_autoload($cls)) {
         $cls = strtolower($cls);
-        if (substr($cls, 0, 4) == 'ufc_' || substr($cls, 0, 4) == 'ufo_') {
-            __autoload('userfilter');
-            return;
-        } else if (substr($cls, 0, 4) == 'gfc_' || substr($cls, 0, 4) == 'gfo_') {
-            __autoload('groupfilter');
-            return;
-        }else if (substr($cls, 0, 4) == 'pfc_' || substr($cls, 0, 4) == 'pfo_' || substr($cls, 0, 8) == 'plfilter') {
-            __autoload('plfilter');
-            return;
-        }else if (substr($cls, 0, 4) == 'pfc_' || substr($cls, 0, 4) == 'pfo_' || substr($cls, 0, 8) == 'plfilter') {
-            __autoload('plfilter');
-            return;
-        }else if (substr($cls, 0, 9) == 'validate_') {
-            __autoload('validate_item');
+
+        $filters = array('p' => 'plfilter',
+                         'u' => 'userfilter',
+                         'g' => 'groupfilter',
+                         'v' => 'validatefilter');
+
+        foreach ($filters as $key => $class)
+        {
+            if (substr($cls, 0, 4) == $key . 'fc_' || substr($cls, 0, 4) == $key . 'fo_' || substr($cls, 0, strlen($class)) == $class) {
+                __autoload($class);
+                return;
+            }
+        }
+
+        if (substr($cls, -8) == 'validate' && $cls != 'validate') {
+            __autoload('itemvalidate');
             return;
         }
+
         include "$cls.inc.php";
     }
 }
