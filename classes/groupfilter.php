@@ -153,7 +153,7 @@ class GroupFilter extends PlFilter
                                 );
     private $root = null;
     private $sort = array();
-    public $query = null;
+    private $query = null;
     private $orderby = null;
 
     private $lastcount = null;
