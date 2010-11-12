@@ -44,7 +44,7 @@
 
 {js src="jquery.jstree.js"}
 {js src="jquery.hashchange.js"}
-{js src="ape/apeClientJS.js"}
+{js src="jquery.scrollto.js"}
 
 {include file='../core/templates/plpage.header.tpl'}
 

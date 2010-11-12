@@ -20,15 +20,28 @@ $(document).ready(function(){
         var fakeSharp = hash.indexOf("#!");
         var trueSharp = hash.indexOf("#", fakeSharp + 1);
 
+        var trueUrl;
+        var scroller = false;
         if (trueSharp == -1)
-            var trueUrl = hash.slice(hash.indexOf("#!") + 2);
-        else
-            var trueUrl = hash.slice(hash.indexOf("#!") + 2, trueSharp);
+        {
+            trueUrl = hash.slice(hash.indexOf("#!") + 2);
+        } else {
+            trueUrl = hash.slice(hash.indexOf("#!") + 2, trueSharp);
+            var trueAnchor = hash.slice(trueSharp + 1);
+            console.log(trueAnchor);
+            scroller = function() {
+                            var target = $('a[name=' + trueAnchor + ']');
+                            console.log(target);
+                            if (target.length == 1) $.scrollTo(target);
+                        };
+        }
 
         trueUrl = trueUrl.replace(trima, '').replace(trimb, '');
 
         if (currentPage != trueUrl)
-            getSection(trueUrl);
+            getSection(trueUrl, scroller);
+        else
+            scroller();
     });
 
     if (location.hash.indexOf("#!") >= 0)
@@ -63,7 +76,7 @@ function ajaxify(target)
     });
 }
 
-function getSection(page)
+function getSection(page, callback)
 {
     $("body").addClass("loading");
     var delim = "?";
@@ -83,6 +96,7 @@ function getSection(page)
                         $.getScript(json.pl_js[i]);
                     ajaxify($("#content"));
                     minimodules();
+                    if (callback) callback();
                 }
               ,"fail"  : false
     });
