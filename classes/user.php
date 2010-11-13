@@ -523,6 +523,11 @@ class User extends PlUser
         return $this;
     }
 
+    public static function toId(array $user)
+    {
+        return flatten(self::toIds(unflatten($user)));
+    }
+
     public static function toIds(array $users)
     {
         $result = array();
