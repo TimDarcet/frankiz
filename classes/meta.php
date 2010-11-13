@@ -52,11 +52,6 @@ abstract class Meta
         return $this;
     }
 
-    public static function batchSelect(array $metas, $fields)
-    {
-        throw new Exception("batchSelect isn't implemented");
-    }
-
     public static function toIds(array $objects)
     {
         $ids = array();
@@ -81,6 +76,53 @@ abstract class Meta
             return $other == $this->id();
         else
             return null;
+    }
+
+    public function delete()
+    {
+        if ($this->id == null)
+            throw new Exception("This " . get_class($this) . " doesn't appear to exist in the DB and therefore can't be deleted.");
+    }
+
+    protected static function optionsToBits($options)
+    {
+        $bits = 0;
+        if (is_array($options))
+            foreach($options as $bit => $args)
+                $bits |= $bit;
+        else
+            $bits = $options;
+        return $bits;
+    }
+
+    protected static function arrayToSqlCols($cols)
+    {
+        $sql_columns = array();
+        foreach($cols as $table => $vals)
+            $sql_columns[] = implode(', ', array_map(
+                                function($value) use($table) {
+                                    if ($table == -1)
+                                        return $value;
+                                    else
+                                        return $table . '.' . $value;
+                                }, $vals));
+
+        return implode(', ', $sql_columns);
+    }
+
+    public static function from($mixed)
+    {
+        return static::batchFrom(array($mixed))->first();
+    }
+
+    public static function batchFrom(array $mixed)
+    {
+        throw new Exception("batchFrom isn't implemented");
+    }
+
+    public static function batchSelect(array $metas, $fields)
+    {
+        throw new Exception("batchSelect isn't implemented");
     }
 }
 
