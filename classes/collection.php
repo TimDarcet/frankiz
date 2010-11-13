@@ -123,11 +123,7 @@ class Collection extends PlAbstractIterable
 
     public function ids()
     {
-        $ids = array();
-        foreach ($this->collected as $c)
-            $ids = array_merge($ids, $c->ids());
-
-        return $ids;
+        return array_keys($this->collected);
     }
 
     public function add($cs)
@@ -212,6 +208,11 @@ class Collection extends PlAbstractIterable
         {
            return $filtered->add(array_filter($this->collected, $args[0]));
         }
+    }
+
+    public function first()
+    {
+        return reset($this->collected);
     }
 }
 
