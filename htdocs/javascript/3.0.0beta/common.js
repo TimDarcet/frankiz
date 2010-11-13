@@ -168,3 +168,26 @@ $.fn.formToJSON = function()
 function key_exists(key, search) {
     return key in search;
 }
+
+function wiki(container)
+{
+    var wid      = container.attr('wid');
+    var display  = container.children("div").first();
+    var textarea = container.children("textarea").first();
+    console.log(wid);
+    display.click(function() {
+        display.slideUp(100);
+        textarea.slideDown(100);
+    });
+
+    var handler = function() {
+        textarea.slideUp(100);
+        display.slideDown(100);
+    };
+    container.mouseleave(function() {
+        $(document).mouseup(handler);
+    });
+    container.mouseenter(function() {
+        $(document).unbind("mouseup", handler);
+    });
+}
