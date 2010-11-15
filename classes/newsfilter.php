@@ -106,21 +106,34 @@ class NFC_Title extends NewsFilterCondition
 }
 
 /** Returns news that users are allowed to see
- * @param $us A User, a uid or an array
+ * @param $us     A User, a uid or an array
+ * @param $rights The rights the user must have in the targeted group (member by default)
  */
 class NFC_User extends NewsFilterCondition
 {
     private $uids;
+    private $rights;
 
-    public function __construct($us)
+    public function __construct($us, $rights = 'member')
     {
-        $this->uids  = User::toIds(unflatten($us));
+        $this->uids = User::toIds(unflatten($us));
+        $this->rights = $rights;
     }
 
     public function buildCondition(PlFilter $uf)
     {
         $sub = $uf->addUserFilter();
-        return XDB::format($sub . '.uid IN {?}', $this->uids);
+        return XDB::format("$sub.uid IN {?} AND FIND_IN_SET({?}, $sub.rights) > 0", $this->uids, $this->rights);
+    }
+}
+
+/** Returns news that are not out-of-date
+ */
+class NFC_Current extends NewsFilterCondition
+{
+    public function buildCondition(PlFilter $uf)
+    {
+        return 'NOW() BETWEEN n.begin AND n.end';
     }
 }
 
@@ -307,7 +320,7 @@ class NewsFilter extends PlFilter
     {
         $joins = array();
         if ($this->with_user) {
-            $joins['ug'] = PlSqlJoin::left('users_groups', '$ME.gid = n.gid AND FIND_IN_SET("member", $ME.rights)>0');
+            $joins['ug'] = PlSqlJoin::left('users_groups', '$ME.gid = n.gid');
         }
         return $joins;
     }
@@ -327,7 +340,7 @@ class NewsFilter extends PlFilter
         throw new Exception('Not implemented');
     }
 
-    public function getGroups() 
+    public function getGroups()
     {
         throw new Exception('Not implemented');
     }
