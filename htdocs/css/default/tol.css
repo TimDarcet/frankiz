@@ -156,34 +156,3 @@
     text-align: left;
     padding: 5px;
 }
-
-.groups_picker {
-    border: 1px solid #002334;
-    color: white;
-    background-color: #003757;
-}
-
-.groups_picker .searcher input {
-    width: 90%;
-    margin-left: 5%;
-}
-
-.groups_picker.searching .searcher input {
-	background-color: #004d79;
-}
-
-.groups_picker.empty .empty {
-    display: block;
-}
-
-.groups_picker .empty {
-    display: none;
-}
-
-.groups_picker li {
-    cursor: hand;
-}
-
-.groups_picker .empty {
-    opacity:0.5
-}
