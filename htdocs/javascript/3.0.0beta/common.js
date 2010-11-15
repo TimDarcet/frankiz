@@ -106,13 +106,6 @@ function getSection(page, callback)
     });
 }
 
-function trueFormReset(target)
-{
-    $.each($(target).find("input[type=text]"), function(index, value){
-        $(value).val("");
-       });
-}
-
 function showError(json) {
     console.log(json);
 };
@@ -169,25 +162,50 @@ function key_exists(key, search) {
     return key in search;
 }
 
-function wiki(container)
+var wiki_preview = {
+    "start" : function($textarea, $display) {
+        $textarea.keyup(function() {
+            $.ajax({
+                    type: 'POST',
+                     url: 'wiki_preview',
+                    data: 'text=' + $textarea.val(),
+                 success: function(data) { $display.html(data); },
+                dataType: 'text'
+              });
+        });
+    },
+
+    "stop" : function($textarea) {
+        $textarea.unbind('keyup');
+    }
+};
+
+function wikify(container)
 {
     var wid      = container.attr('wid');
     var display  = container.children("div").first();
     var textarea = container.children("textarea").first();
-    console.log(wid);
-    display.click(function() {
-        display.slideUp(100);
-        textarea.slideDown(100);
-    });
 
     var handler = function() {
-        textarea.slideUp(100);
-        display.slideDown(100);
+        request({  "url"    : 'wiki/ajax/update'
+                 , "data"   : {"wid": wid, "content": textarea.val()}
+                 ,"success" : function(json) {
+                     display.html(json.html);
+                     wiki_preview.stop(textarea);
+                     textarea.slideUp(100);
+                     $(document).unbind("dblclick", handler);
+                  }
+        });
     };
-    container.mouseleave(function() {
-        $(document).mouseup(handler);
-    });
-    container.mouseenter(function() {
-        $(document).unbind("mouseup", handler);
+
+    display.dblclick(function() {
+        textarea.slideDown(100);
+        container.mouseleave(function() {
+            $(document).dblclick(handler);
+        });
+        container.mouseenter(function() {
+            $(document).unbind("dblclick", handler);
+        });
+        wiki_preview.start(textarea, display);
     });
 }
