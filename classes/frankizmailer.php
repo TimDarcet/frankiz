@@ -23,14 +23,52 @@ require_once('../include/class.phpmailer.php');
 
 class FrankizMailer extends PHPMailer
 {
+    /*
+     * Use cases :
+     *
+     *  // Html mail, set in-line
+     *  $m = new FrankizMailer();
+     *  $m->addAddress('riton@melix.net');
+     *  $m->setFrom('robot@frankiz.net', 'Robot Frankiz');
+     *  $m->subject('This is an automated message');
+     *  $m->body("This mail is in HTML <br><br> I can use html tags !");
+     *  $m->send();
+     *  --------------
+     *
+     *  // Text mail, set in-line
+     *  $m = new FrankizMailer();
+     *  $m->body("This mail is in plain text \n\n I can't use html tags !");
+     *  $m->send(false); // Don't forget to send the mail in text mode
+     *  --------------
+     *
+     *  // Text mail, set in a template
+     *  $m = new FrankizMailer('mail.default.tpl');
+     *  $m->assign('body', 'This is a spam');
+     *  $m->send();
+     */
+
+
+    /* Important signatures of the parent Class
+     *
+     * addAddress($address, $name = '')
+     * addCC($address, $name = '')
+     * addBCC($address, $name = '')
+     * addReplyTo($address, $name = '')
+     * setFrom($address, $name = '',$auto=1)
+     *
+     */
+
     protected $tpl  = null;
     protected $page = null;
-    
+
+    /**
+    * @param $tpl Template to be used to generate the mail
+    */
     public function __construct($tpl = null)
     {
         global $globals;
 
-        $this->tpl  = $tpl;
+        $this->tpl = (empty($this->tpl)) ? 'mail.default.tpl' : $tpl;
         $this->page = new Smarty();
 
         $this->CharSet  = "UTF-8";
@@ -45,21 +83,60 @@ class FrankizMailer extends PHPMailer
         $this->assign('globals', $globals);
     }
 
+    /**
+    * Assign a variable in the chosen template
+    *
+    * @param $var
+    * @param $avalue
+    */
     public function assign($var, $value)
     {
         $this->page->assign($var, $value);
     }
-    
-    public function Send($html = true)
+
+    /**
+    * If you don't use a template, you can set here the content of the mail
+    *
+    * @param $content
+    */
+    public function body($content)
+    {
+        $this->assign('body', $content);
+    }
+
+    /**
+    * Set or Get the subject (ie. the title)
+    *
+    * @param $subject
+    */
+    public function subject($subject = null)
+    {
+        if ($subject !== null)
+            $this->Subject = $subject;
+
+        return $this->Subject;
+    }
+
+    /**
+    * Send the mail. Returns the sent content
+    *
+    * @param $html Boolean specifying if the mail should be send in html or not
+    */
+    public function send($html = true)
     {
         $this->page->assign('isHTML', $html);
 
-        if ($html)
-            $this->MsgHTML($this->page->fetch(FrankizPage::getTplPath($this->tpl)));
-        else
-            $this->Body = trim($this->page->fetch(FrankizPage::getTplPath($this->tpl)));
+        $tpl = FrankizPage::getTplPath($this->tpl);
+        $content = $this->page->fetch($tpl);
 
-        parent::Send();
+        if ($html)
+            $this->MsgHTML($content);
+        else
+            $this->Body = trim($content);
+
+        parent::send();
+
+        return $content;
     }
 }
 
