@@ -137,6 +137,23 @@ class NFC_Current extends NewsFilterCondition
     }
 }
 
+/** Returns news that are private
+ */
+class NFC_Private extends NewsFilterCondition
+{
+    private $priv;
+
+    public function __construct($priv = true)
+    {
+        $this->priv = $priv;
+    }
+
+    public function buildCondition(PlFilter $uf)
+    {
+        return 'n.priv = ' . (int) $this->priv;
+    }
+}
+
 abstract class NewsFilterOrder extends PlFilterOrder
 {
     public function export()
