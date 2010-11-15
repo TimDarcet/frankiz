@@ -33,12 +33,23 @@ class Collection extends PlAbstractIterable
     protected $order = null;
     protected $desc  = true;
 
+    /**
+    *
+    * @param $className The class name of the items
+    * @param $order     The item's method to be used to sort the Collection
+    * @param $desc      Boolean specifying if the sort is descending (default) or ascending
+    */
     public function __construct($className = null, $order = null, $desc = true)
     {
         $this->className($className);
         $this->order($order, $desc);
     }
 
+    /**
+    * Set or get the class of the items
+    *
+    * @param $className The class name
+    */
     public function className($className = null)
     {
         if ($className != null)
@@ -46,6 +57,12 @@ class Collection extends PlAbstractIterable
         return $this->className;
     }
 
+    /**
+    * Set or get the current order of the Collection
+    *
+    * @param $order The item's method to be used to sort the Collection
+    * @param $desc Boolean specifying if the sort is descending (default) or ascending
+    */
     public function order($order = null, $desc = true)
     {
         if ($order != null)
@@ -114,6 +131,11 @@ class Collection extends PlAbstractIterable
                                                 });
     }
 
+    /**
+    * Fetch datas from the database for each items of the Collection
+    *
+    * @param $fields Fields to be fetched by batchSelect()
+    */
     public function select($fields)
     {
         $className = $this->className;
@@ -121,11 +143,20 @@ class Collection extends PlAbstractIterable
         return $this;
     }
 
+    /**
+    * Returns an array containing the ids of the collection's items)
+    */
     public function ids()
     {
         return array_keys($this->collected);
     }
 
+    /**
+    * Add Items in the Collection.
+    * In order to pass an identifier, you must have specified the element's class
+    *
+    * @param $cs An Item, an id or any unique identifier supported by batchFrom()
+    */
     public function add($cs)
     {
         $cs = unflatten($cs);
@@ -157,6 +188,11 @@ class Collection extends PlAbstractIterable
         return $this;
     }
 
+    /**
+    * Merge another Collection with this one which is returned
+    *
+    * @param $collec Another Collection containing the same class of elements
+    */
     public function merge(Collection $collec)
     {
         if (empty($this->className))
@@ -168,6 +204,11 @@ class Collection extends PlAbstractIterable
         return $this;
     }
 
+    /**
+    * Get an item from the Collection
+    *
+    * @param $mixed An Item, an id or any unique identifier supported by isMe()
+    */
     public function get($mixed)
     {
         if (isId($mixed))
@@ -182,6 +223,11 @@ class Collection extends PlAbstractIterable
         return false;
     }
 
+    /**
+    * Remove items from the Collection
+    *
+    * @param $cs  An Item, an id or an array containing them
+    */
     public function remove($cs)
     {
         $cs = unflatten($cs);
@@ -194,11 +240,21 @@ class Collection extends PlAbstractIterable
         return $this;
     }
 
+    /**
+    * Number of items in the Collection
+    */
     public function count()
     {
         return count($this->collected);
     }
 
+    /**
+    * Returns an new Collection with the filtered items
+    * You can give a closure as an argument too
+    *
+    * @param $methodName  The name of the method to call on each item
+    * @param $value       Expected value to be returned by the method
+    */
     public function filter()
     {
         $args = func_get_args();
@@ -206,13 +262,42 @@ class Collection extends PlAbstractIterable
         $filtered = new Collection($this->className);
         if (is_callable($args[0]))
         {
-           return $filtered->add(array_filter($this->collected, $args[0]));
+            $callback = $args[0];
+            return $filtered->add(array_filter($this->collected, $callback));
+        } else {
+            $methodName = $args[0];
+            $val        = $args[1];
+            return $filtered->add(array_filter($this->collected, function ($i) use($val, $methodName) {return $i->$methodName() == $val;}));
         }
     }
 
+    /**
+    * Returns an array associating the possible values returned by
+    * $item->$methodName() with a Collection of the correspnding items
+    *
+    * @param $methodName    The name of the method to call on each item
+    */
+    public function split($methodName)
+    {
+        $split = array();
+        foreach ($this->collected as $c)
+        {
+            $key = $c->$methodName();
+            if (!isset($split[$key]))
+                $split[$key] = new Collection($this->className);
+
+            $split[$key]->add($c);
+        }
+        return $split;
+    }
+
+    /**
+    * Returns the first element of the Collection
+    */
     public function first()
     {
-        return reset($this->collected);
+        foreach ($this as $c)
+            return $c;
     }
 }
 
