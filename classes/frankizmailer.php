@@ -68,7 +68,7 @@ class FrankizMailer extends PHPMailer
     {
         global $globals;
 
-        $this->tpl = (empty($this->tpl)) ? 'mail.default.tpl' : $tpl;
+        $this->tpl = (empty($tpl)) ? 'mail.default.tpl' : $tpl;
         $this->page = new Smarty();
 
         $this->CharSet  = "UTF-8";
