@@ -30,7 +30,7 @@ abstract class ValidateFilterCondition implements PlFilterCondition
 /** Filters Validate based on the user asking for it
  * @param $user A User, a Uid or an array of it
  */
-class VFC_User extends ValidateFilterCondition
+class VFC_Asker extends ValidateFilterCondition
 {
     private $uids;
 
@@ -78,6 +78,26 @@ class VFC_Type extends ValidateFilterCondition
     public function buildCondition(PlFilter $uf)
     {
         return XDB::format('v.type IN {?}', $this->types);
+    }
+}
+
+/** Returns Validates that users are allowed to see because they
+ * are admin of the targeted groups
+ * @param $us     A User, a uid or an array
+ */
+class VFC_User extends NewsFilterCondition
+{
+    private $uids;
+
+    public function __construct($us)
+    {
+        $this->uids = User::toIds(unflatten($us));
+    }
+
+    public function buildCondition(PlFilter $uf)
+    {
+        $sub = $uf->addUserFilter();
+        return XDB::format("$sub.uid IN {?} AND FIND_IN_SET('admin', $sub.rights) > 0", $this->uids);
     }
 }
 
@@ -215,7 +235,7 @@ class ValidateFilter extends PlFilter
     {
         if (is_null($this->lastcount)) {
             $this->buildQuery();
-            return (int)XDB::fetchOneCell('SELECT COUNT(DISTINCT g.gid)' . $this->query);
+            return (int)XDB::fetchOneCell('SELECT COUNT(DISTINCT v.id)' . $this->query);
         } else {
             return $this->lastcount;
         }
@@ -231,6 +251,23 @@ class ValidateFilter extends PlFilter
     {
         $this->sort[] = $sort;
         $this->orderby = null;
+    }
+
+    private $with_user = false;
+
+    public function addUserFilter()
+    {
+        $this->with_user = true;
+        return 'ug';
+    }
+
+    protected function userJoins()
+    {
+        $joins = array();
+        if ($this->with_user) {
+            $joins['ug'] = PlSqlJoin::left('users_groups', '$ME.gid = v.gid');
+        }
+        return $joins;
     }
 
     // Not implemented
