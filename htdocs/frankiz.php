@@ -21,7 +21,7 @@
 
 require_once dirname(__FILE__).'/../include/frankiz.inc.php';
 
-$platal = new Frankiz('frankiz', 'admin', 'activites', 'annonces', 'profile', 'tol', 'groups', 'qdj', 'todo', 'lostandfound', 'forums');
+$platal = new Frankiz('frankiz', 'admin', 'reception', 'activites', 'profile', 'tol', 'groups', 'qdj', 'todo', 'lostandfound', 'forums', 'proposal');
 
 if (!($path = Env::v('n')) || ($path{0} < 'A' || $path{0} > 'Z')) {
     $platal->run();

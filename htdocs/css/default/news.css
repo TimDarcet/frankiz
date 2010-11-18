@@ -23,3 +23,54 @@
 
 *******************************************************************************/
 
+.news_select {
+    text-align: center;
+}
+
+.newstitles {
+    margin: 5px;
+    margin-bottom: 20px;
+}
+
+.newstitles .section {
+    border: 1px solid #002334;
+	margin-top: 20px;
+	margin-left: 40px;
+	margin-right: 40px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.newstitles .subsection {
+    margin-left: 40px;
+    margin-top: 10px;
+}
+
+.newstitles .newstitle {
+    margin-left: 60px;
+}
+
+.newstitles .right{
+    font-weight: bold;
+    float: right;
+}
+
+.newstitles a:link{
+    text-decoration: none;
+}
+
+.news {
+	margin: 5px;
+	margin-bottom: 20px;
+}
+
+.news legend {
+	width: 70%;
+	font-size: 20;
+	font-style: italic;
+}
+
+.news .infos {
+	font-weight: bold;
+	text-align: right;
+}

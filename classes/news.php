@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *  Copyright (C) 2009 Binet Réseau                                       *
+ *  Copyright (C) 2010 Binet Réseau                                       *
  *  http://www.polytechnique.fr/eleves/binets/reseau/                     *
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
@@ -13,18 +13,18 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
  *  GNU General Public License for more details.                           *
  *                                                                         *
- *  You should have received a copy of the GNU General Public License      *
  *  along with this program; if not, write to the Free Software            *
  *  Foundation, Inc.,                                                      *
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
 /*
- * uid : people who has written the news
- * gid : group where it is publicated
- * iid : image id
- * origin : group at the origin of the news
- * private : only people in the group can see the news
+ * user : people who has written the news
+ * group : group where it is publicated
+ * image : image to display
+ * origin : group at the origin of the news, may be null
+ * priv : only people in the group can see the news
+ * begin, end : dates
  */
 
 class News extends meta
@@ -32,18 +32,85 @@ class News extends meta
     const SELECT_HEAD = 0x01;
     const SELECT_BODY = 0x02;
     
-    public $uid;
-    public $gid;
-    public $iid;
-    public $origin;
-    public $title;
-    public $content;
-    public $begin;
-    public $end;
-    public $comment;
-    public $private;
-    public $important;
+    protected $user;
+    protected $group;
+    protected $image;
+    protected $origin = null;
+    protected $title;
+    protected $content;
+    protected $begin;
+    protected $end;
+    protected $comment;
+    protected $priv;
+    protected $important;
      
+    public function user()
+    {
+        return $this->user;
+    }
+
+    public function group()
+    {
+        return $this->group;
+    }
+
+    public function image(FrankizImage $fi = null)
+    {
+        if (is_null($fi))
+            return $this->image;
+        $this->image = $fi;
+    }
+
+    public function origin()
+    {
+        return $this->origin;
+    }
+
+    public function title(String $title = null)
+    {
+        if (is_null($title))
+            return $this->title;
+        $this->title = $title;
+    }
+
+    public function content(String $content = null)
+    {
+        if (is_null($content))
+            return $this->content;
+        $this->content = $content;
+    }
+
+    public function begin()
+    {
+        return $this->begin;
+    }
+
+    public function end(String $end = null)
+    {
+        if (is_null($end))
+            return $this->end;
+        $this->end = $end;
+    }
+
+    public function comment()
+    {
+        return $this->comment;
+    }
+
+    public function priv($priv = null)
+    {
+        if (is_null($priv))
+            return $this->priv;
+        $this->priv = $priv;
+    }
+
+    public function important($important = null)
+    {
+        if (is_null($important))
+            return $this->important;
+        $this->important = $important;
+    }
+    
     public function delete()
     {  
 	    if ($this->id == null)
@@ -53,8 +120,9 @@ class News extends meta
 
     public function replace()
     {
-        if (!$this->valid())
-            throw new Exception("This news is not valid.");
+        // TO DO
+        //if (!$this->valid())
+        //    throw new Exception("This news is not valid.");
         if (is_null($this->id))
             $this->insert();
         else 
@@ -64,24 +132,55 @@ class News extends meta
     public function update()
     {        
             XDB::execute('UPDATE  news
-                             SET  gid = {?}, uid = {?}, iid = {?}, origin = {?},
-                                  title = {?}, content = {?}, begin = {?}, end = {?},
-                                  comment = {?}, private = {?}, important = {?}
+                             SET  gid = {?}, uid = {?}, iid = {?}, oid = {?},
+                                  title = {?}, content = {?}, end = {?},
+                                  comment = {?}, priv = {?}, important = {?}
                            WHERE  id = {?}',
-            $this->gid, $this->uid, $this->iid, is_null($this->origin)?0:$this->origin, 
-            $this->title, $this->content, $this->begin, $this->end,
-            $this->comment, $this->private, $this->important, $this->id);
+            $this->group->id(), $this->user->id(), $this->image, is_null($this->origin)?null:$this->origin->id(), 
+            $this->title, $this->content, $this->end,
+            $this->comment, $this->priv, $this->important, $this->id);
     }
     
     public function insert()
     {
+        $this->begin = date("Y-m-d");
         XDB::execute('INSERT INTO  news
-                                  SET  gid = {?}, uid = {?}, iid = {?}, origin = {?},
-                                       title = {?}, content = {?}, begin = {?}, end = {?},
-                                       comment = {?}, private = {?}, important = {?}',
-            $this->gid, $this->uid, $this->iid, is_null($this->origin)?0:$this->origin, 
+                              SET  gid = {?}, uid = {?}, iid = {?}, oid = {?},
+                                   title = {?}, content = {?}, begin = {?}, end = {?},
+                                   comment = {?}, priv = {?}, important = {?}',
+            $this->group->id(), $this->user->id(), $this->image, is_null($this->origin)?null:$this->origin->id(),
             $this->title, $this->content, $this->begin, $this->end,
-            $this->comment, $this->private, $this->important);
+            $this->comment, $this->priv, $this->important);
+    }
+    
+    public function fillFromArray(array $values)
+    {
+        if (isset($values['uid'])) {
+            $this->user = new User($values['uid']);
+            $this->user->select(User::SELECT_BASE);
+            unset($values['uid']);
+        }
+
+        if (isset($values['gid'])) {
+            $this->group = new Group($values['gid']);
+            $this->group->select(Group::SELECT_BASE);
+            unset($values['gid']);
+        }
+        
+        if (isset($values['iid'])) {
+            /*$this->image = new FrankizImage($values['iid']);
+            $this->image->select(FrankizImage::SELECT_FULL);*/
+            $this->image = $values['iid'];
+            unset($values['iid']);
+        }
+    
+        if (isset($values['oid'])) {
+            $this->origin = new Group($values['oid']);
+            $this->origin->select(Group::SELECT_BASE);
+            unset($values['oid']);
+        }
+
+        parent::fillFromArray($values);
     }
     
     public static function batchSelect(array $news, $fields)
@@ -92,9 +191,9 @@ class News extends meta
         $news = array_combine(self::toIds($news), $news);
             
         $request = 'SELECT id';
-        if ($fields & SELECT_HEAD)
-            $request .= ', uid, gid, title, origin, begin, end, private, important';
-        if ($fields & SELECT_BODY)
+        if ($fields & self::SELECT_HEAD)
+            $request .= ', uid, gid, title, oid, begin, end, priv, important';
+        if ($fields & self::SELECT_BODY)
             $request .= ', content, iid, comment';
         
         $iter = XDB::iterator($request .
@@ -106,8 +205,16 @@ class News extends meta
             $news[$array_datas['id']]->fillFromArray($array_datas);
     }
     
-    public function valid() {
-    	return true;
+    public function order()
+    {
+        $d = date("Y-m-d");
+        if ($this->important)
+            return 'important';
+        if ($this->begin == $d)
+            return 'new';
+        if ($this->end == $d)
+            return 'old';
+        else return 'other';
     }
 
 }

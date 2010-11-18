@@ -133,7 +133,7 @@ class NFC_Current extends NewsFilterCondition
 {
     public function buildCondition(PlFilter $uf)
     {
-        return 'NOW() BETWEEN n.begin AND n.end';
+        return 'CAST(NOW() AS DATE) BETWEEN n.begin AND n.end';
     }
 }
 

@@ -28,7 +28,7 @@
             <div class="bkg" />
             <table class="body" style="height: 90px; font-size: 30px;">
                 <tr>
-                    <td><a {path_to_href_attribute path="accueil/annonces"}>Annonces</a></td>
+                    <td><a {path_to_href_attribute path="reception/news"}>Annonces</a></td>
                     <td><a {path_to_href_attribute path="accueil/activites"}>Activités</a></td>
                     <td><a {path_to_href_attribute path="newspaper/ik"}>InfoKès</a></td>
                 </tr>
@@ -85,13 +85,13 @@
                 Proposer :
                 <table>
                     <tr>
-                        <td><a {path_to_href_attribute path="proposition/annonce"}>une annonce</a></td>
-                        <td><a {path_to_href_attribute path="proposition/annonce"}>un événement</a></td>
+                        <td><a {path_to_href_attribute path="proposal/news"}>une annonce</a></td>
+                        <td><a {path_to_href_attribute path="proposal/activity"}>un événement</a></td>
                         <td><a {path_to_href_attribute path="proposition/annonce"}>une QDJ</a></td>
                     </tr>
                     <tr>
                         <td><a {path_to_href_attribute path="proposition/annonce"}>un sondage</a></td>
-                        <td><a {path_to_href_attribute path="proposition/annonce"}>un mail promo</a></td>
+                        <td><a {path_to_href_attribute path="proposal/mail"}>un mail de groupe</a></td>
                     </tr>
                 </table>
             </div>
