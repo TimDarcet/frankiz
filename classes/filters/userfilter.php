@@ -34,12 +34,8 @@
  *     adequate joins. It must return the 'WHERE' condition to use
  *     with the filter.
  */
-abstract class UserFilterCondition implements PlFilterCondition
+abstract class UserFilterCondition extends FrankizFilterCondition
 {
-    public function export()
-    {
-        throw new Exception();
-    }
 }
 // }}}
 
@@ -426,7 +422,7 @@ class UFC_Roomphone extends UserFilterCondition
  *     descending order).
  * The getSortTokens function is used to get actual ordering part of the query.
  */
-abstract class UserFilterOrder extends PlFilterOrder
+abstract class UserFilterOrder extends FrankizFilterOrder
 {
     /** This function must return the tokens to use for ordering
      * @param &$uf The UserFilter whose results must be ordered
@@ -553,189 +549,15 @@ class UFO_Birthday extends UserFilterOrder
  * The 'register_optional' function can be used to generate unique table aliases when
  * the same table has to be joined several times with different aliases.
  */
-class UserFilter extends PlFilter
+class UserFilter extends FrankizFilter
 {
-    protected $joinMethods = array();
+    protected $joinMetas = array('$UID' => 'a.uid');
 
-    protected $joinMetas = array(
-                                '$UID' => 'a.uid',
-                                );
-
-    private $root;
-    private $sort = array();
-    private $query = null;
-    private $orderby = null;
-
-    private $lastcount = null;
-
-    private $export = null;
-
-    public function __construct($cond = null, $sort = null)
+    protected function from()
     {
-        if (empty($this->joinMethods)) {
-            $class = new ReflectionClass('UserFilter');
-            foreach ($class->getMethods() as $method) {
-                $name = $method->getName();
-                if (substr($name, -5) == 'Joins' && $name != 'buildJoins') {
-                    $this->joinMethods[] = $name;
-                }
-            }
-        }
-        if (!is_null($cond)) {
-            if ($cond instanceof PlFilterCondition) {
-                $this->setCondition($cond);
-            }
-        }
-        if (!is_null($sort)) {
-            if ($sort instanceof UserFilterOrder) {
-                $this->addSort($sort);
-            } else if (is_array($sort)) {
-                foreach ($sort as $s) {
-                    $this->addSort($s);
-                }
-            }
-        }
-    }
-
-    private function buildQuery()
-    {
-        if (is_null($this->orderby)) {
-            $orders = array();
-            foreach ($this->sort as $sort) {
-                $orders = array_merge($orders, $sort->buildSort($this));
-            }
-            if (count($orders) == 0) {
-                $this->orderby = '';
-            } else {
-                $this->orderby = 'ORDER BY  ' . implode(', ', $orders);
-            }
-        }
-        if (is_null($this->query)) {
-            $where = $this->root->buildCondition($this);
-            $joins = $this->buildJoins();
-            $this->query = 'FROM  account AS a
-                               ' . $joins . '
-                           WHERE  (' . $where . ')';
-        }
-    }
-
-    private function getUIDList($uids = null, PlLimit &$limit)
-    {
-        $this->buildQuery();
-        $lim = $limit->getSql();
-        $cond = '';
-        if (!is_null($uids)) {
-            $cond = XDB::format(' AND a.uid IN {?}', $uids);
-        }
-        $fetched = XDB::fetchColumn('SELECT SQL_CALC_FOUND_ROWS  a.uid
-                                    ' . $this->query . $cond . '
-                                   GROUP BY  a.uid
-                                    ' . $this->orderby . '
-                                    ' . $lim);
-        $this->lastcount = (int)XDB::fetchOneCell('SELECT FOUND_ROWS()');
-        return $fetched;
-    }
-
-    private static function defaultLimit($limit) {
-        if ($limit == null) {
-            return new PlLimit();
-        } else {
-            return $limit;
-        }
-    }
-
-    /** Check that the user match the given rule.
-     */
-    public function checkUser(PlUser &$user)
-    {
-        $this->buildQuery();
-        $count = (int)XDB::fetchOneCell('SELECT  COUNT(*)
-                                        ' . $this->query . XDB::format(' AND a.uid = {?}', $user->id()));
-        return $count == 1;
-    }
-
-    public function getUIDs($limit = null)
-    {
-        $limit = self::defaultLimit($limit);
-        return $this->getUIDList(null, $limit);
-    }
-
-    public function getUID($pos = 0)
-    {
-        $uids = $this->getUIDList(null, new PlLimit(1, $pos));
-        if (count($uids) == 0) {
-            return null;
-        } else {
-            return $uids[0];
-        }
-    }
-
-    public function getUsers($limit = null)
-    {
-        $c = new Collection();
-        $c->className('User');
-        return $c->add($this->getUIDs($limit));
-    }
-
-    public function getUser($pos = 0)
-    {
-        $uid = $this->getUID($pos);
-        if ($uid == null) {
-            return null;
-        } else {
-            return new User($uid);
-        }
-    }
-
-    public function get($limit = null)
-    {
-        return $this->getUsers($limit);
-    }
-
-    public function getTotalCount()
-    {
-        if (is_null($this->lastcount)) {
-            $this->buildQuery();
-            if ($this->with_accounts) {
-                $field = 'a.uid';
-            } else {
-                $field = 'p.pid';
-            }
-            return (int)XDB::fetchOneCell('SELECT  COUNT(DISTINCT ' . $field . ')
-                                          ' . $this->query);
-        } else {
-            return $this->lastcount;
-        }
-    }
-
-    public function hasGroups()
-    {
-    }
-
-    public function getGroups() 
-    {
-    }
-
-    public function setCondition(PlFilterCondition $cond)
-    {
-        $this->root =& $cond;
-        $this->query = null;
-    }
-
-    public function addSort(PlFilterOrder $sort)
-    {
-        $this->sort[] = $sort;
-        $this->orderby = null;
-    }
-
-    static public function sortByName()
-    {
-        return array(new UFO_Name(Profile::LASTNAME), new UFO_Name(Profile::FIRSTNAME));
-    }
-
-    static public function sortByPromo()
-    {
-        return array(new UFO_Promo(), new UFO_Name(Profile::LASTNAME), new UFO_Name(Profile::FIRSTNAME));
+        return array('table' => 'account',
+                     'as'    => 'a',
+                     'id'    => 'uid');
     }
 
     /** ROOM (casert, ip, phone)
@@ -817,7 +639,6 @@ class UserFilter extends PlFilter
 
     /** PHONE
      */
-
     private $with_ptel = false;
 
     public function addPhoneFilter()
@@ -835,14 +656,12 @@ class UserFilter extends PlFilter
         return $joins;
     }
 
-    // Temporary
-    public function filter(array $objects, $limit = null) {}
 
+    /** 
+     * EXPORT & IMPORT
+     */
     public function export()
     {
-        if ($this->export !== null)
-            return $export;
-
         $export = array('type' => 'user');
         if (!empty($this->root))
             $export['condition'] =  $this->root->export();
@@ -908,8 +727,6 @@ class UserFilter extends PlFilter
                                 SET  ufid = {?}, userfilter = {?}',
                                      $this->id(), json_encode($this->export()));
         XDB::execute('DELETE FROM userfilters_dependencies WHERE ufid = {?}', $this->id());
-        
-
     }
 
     public function delete()
@@ -917,8 +734,6 @@ class UserFilter extends PlFilter
         XDB::execute('DELETE FROM userfilters WHERE ufid = {?}', $this->id());
         XDB::execute('DELETE FROM userfilters_dependencies WHERE ufid = {?}', $this->id());
     }
-
-
 
 }
 // }}}

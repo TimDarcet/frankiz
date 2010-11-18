@@ -19,7 +19,7 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-abstract class GroupFilterCondition implements PlFilterCondition
+abstract class FrankizFilterCondition implements PlFilterCondition
 {
     public function export()
     {
@@ -27,82 +27,7 @@ abstract class GroupFilterCondition implements PlFilterCondition
     }
 }
 
-class GFC_Name extends GroupFilterCondition
-{
-    private $name;
-
-    public function __construct($val)
-    {
-        $this->name = unflatten($val);
-    }
-
-    public function buildCondition(PlFilter $uf)
-    {
-        return XDB::format('g.name IN {?}', $this->name);
-    }
-}
-
-class GFC_Namespace extends GroupFilterCondition
-{
-    private $ns;
-
-    public function __construct($ns)
-    {
-        $this->ns = $ns;
-    }
-
-    public function buildCondition(PlFilter $uf)
-    {
-        return XDB::format('g.ns = {?}', $this->ns);
-    }
-}
-
-class GFC_Label extends GroupFilterCondition
-{
-    // Modes
-    const PREFIX   = XDB::WILDCARD_PREFIX;   // 0x001
-    const SUFFIX   = XDB::WILDCARD_SUFFIX;   // 0x002
-    const CONTAINS = XDB::WILDCARD_CONTAINS; // 0x003
-
-    private $text;
-    private $mode;
-
-    public function __construct($text, $mode)
-    {
-        $this->text = $text;
-        $this->mode = $mode;
-    }
-
-    public function buildCondition(PlFilter $uf)
-    {
-        $right = XDB::formatWildcards($this->mode, $this->text);
-
-        return 'g.label' . $right;
-    }
-}
-
-class GFC_User extends GroupFilterCondition
-{
-    private $uids;
-    private $right;
-
-    public function __construct($us, $right = null)
-    {
-        $this->right = $right;
-        $this->uids  = User::toIds(unflatten($us));
-    }
-
-    public function buildCondition(PlFilter $uf)
-    {
-        $sub = $uf->addUserFilter();
-        if ($this->right === null)
-            return XDB::format($sub . '.uid IN {?}', $this->uids);
-        else
-            return XDB::format("( $sub.uid IN {?} AND FIND_IN_SET({?}, $sub.rights) ", $this->uids, $this->right);
-    }
-}
-
-abstract class GroupFilterOrder extends PlFilterOrder
+abstract class FrankizFilterOrder extends PlFilterOrder
 {
     public function export()
     {
@@ -110,58 +35,34 @@ abstract class GroupFilterOrder extends PlFilterOrder
     } 
 }
 
-class GFO_Frequency extends GroupFilterOrder
-{
-    public function __construct($desc = false)
-    {
-        parent::__construct($desc);
-    }
-
-    protected function getSortTokens(PlFilter $gf)
-    {
-        $sub = $gf->addUserFilter();
-        return "COUNT($sub.uid)";
-    }
-}
-
-class GFO_Name extends GroupFilterOrder
-{
-
-    public function __construct($desc = false)
-    {
-        parent::__construct($desc);
-    }
-
-    protected function getSortTokens(PlFilter $gf)
-    {
-        return 'g.name';
-    }
-}
 
 /***********************************
   *********************************
-          GROUP FILTER CLASS
+          Frankiz FILTER CLASS
   *********************************
  ***********************************/
 
-class GroupFilter extends PlFilter
+abstract class FrankizFilter extends PlFilter
 {
     protected $joinMethods = array();
 
-    protected $joinMetas = array(
-                                '$GID' => 'g.gid',
-                                );
-    private $root = null;
-    private $sort = array();
-    private $query = null;
-    private $orderby = null;
+    protected $root = null;
+    protected $sort = array();
+    protected $query = null;
+    protected $orderby = null;
 
-    private $lastcount = null;
+    protected $lastcount = null;
+
+    protected function className() {
+        return substr(get_class($this), 0, -6);
+    }
+
+    abstract protected function from();
 
     public function __construct($cond = null, $sort = null)
     {
         if (empty($this->joinMethods)) {
-            $class = new ReflectionClass('GroupFilter');
+            $class = new ReflectionClass(get_class($this));
             foreach ($class->getMethods() as $method) {
                 $name = $method->getName();
                 if (substr($name, -5) == 'Joins' && $name != 'buildJoins') {
@@ -175,7 +76,7 @@ class GroupFilter extends PlFilter
             }
         }
         if (!is_null($sort)) {
-            if ($sort instanceof GroupFilterOrder) {
+            if ($sort instanceof PlFilterOrder) {
                 $this->addSort($sort);
             } else if (is_array($sort)) {
                 foreach ($sort as $s) {
@@ -185,7 +86,15 @@ class GroupFilter extends PlFilter
         }
     }
 
-    private function buildQuery()
+    protected static function defaultLimit($limit) {
+        if ($limit == null) {
+            return new PlLimit();
+        } else {
+            return $limit;
+        }
+    }
+
+    protected function buildQuery()
     {
         if (is_null($this->orderby)) {
             $orders = array();
@@ -198,41 +107,46 @@ class GroupFilter extends PlFilter
                 $this->orderby = 'ORDER BY  ' . implode(', ', $orders);
             }
         }
+
         if (is_null($this->query)) {
             if ($this->root === null)
                 $where = '1';
             else
                 $where = $this->root->buildCondition($this);
             $joins = $this->buildJoins();
-            $this->query = 'FROM  groups AS g
-                               ' . $joins . '
-                           WHERE  (' . $where . ')';
+
+            $from   = $this->from();
+            $table  = $from['table'];
+            $as     = $from['as'];
+
+            $this->query = "FROM  $table AS $as
+                                  $joins
+                           WHERE  ( $where )";
         }
     }
 
-    private function getIDList($gids = null, PlLimit $limit)
+    protected function getIDList($ids = null, PlLimit $limit)
     {
+        $from   = $this->from();
+        $as     = $from['as'];
+        $id     = $from['id'];
+
         $this->buildQuery();
         $lim = $limit->getSql();
         $cond = '';
-        if (!is_null($gids)) {
-            $cond = XDB::format(' AND g.gid IN {?}', $gids);
-        }
-        $fetched = XDB::fetchColumn('SELECT SQL_CALC_FOUND_ROWS  g.gid
-                                    ' . $this->query . $cond . '
-                                   GROUP BY  g.gid
-                                    ' . $this->orderby . '
-                                    ' . $lim);
-        $this->lastcount = (int)XDB::fetchOneCell('SELECT FOUND_ROWS()');
-        return $fetched;
-    }
 
-    private static function defaultLimit($limit) {
-        if ($limit == null) {
-            return new PlLimit();
-        } else {
-            return $limit;
-        }
+        if (!is_null($ids))
+            $cond = XDB::format(" AND $as.$id IN {?}", $ids);
+
+        $fetched = XDB::fetchColumn("SELECT  SQL_CALC_FOUND_ROWS $as.$id
+                                             $this->query
+                                             $cond
+                                   GROUP BY  $as.$id
+                                             $this->orderby
+                                             $lim");
+
+        $this->lastcount = (int) XDB::fetchOneCell('SELECT FOUND_ROWS()');
+        return $fetched;
     }
 
     public function getIDs($limit = null)
@@ -243,21 +157,26 @@ class GroupFilter extends PlFilter
 
     public function get($limit = null)
     {
+        $className = $this->className();
         if ($limit === true)
         {
             $ids = $this->getIDList(null, new PlLimit(1));
-            return (count($ids) != 1) ? null : new Group(array_pop($ids));
+            return (count($ids) != 1) ? null : new $className(array_pop($ids));
         } else {
-            $c = new Collection('Group');
+            $c = new Collection($className);
             return $c->add($this->getIDs($limit));
         }
     }
 
     public function getTotalCount()
     {
+        $from   = $this->from();
+        $as     = $from['as'];
+        $id     = $from['id'];
+
         if (is_null($this->lastcount)) {
             $this->buildQuery();
-            return (int)XDB::fetchOneCell('SELECT COUNT(DISTINCT g.gid)' . $this->query);
+            return (int) XDB::fetchOneCell("SELECT COUNT(DISTINCT $as.$id) $this->query");
         } else {
             return $this->lastcount;
         }
@@ -275,24 +194,8 @@ class GroupFilter extends PlFilter
         $this->orderby = null;
     }
 
-    private $with_user = false;
-
-    public function addUserFilter()
-    {
-        $this->with_user = true;
-        return 'ug';
-    }
-
-    protected function userJoins()
-    {
-        $joins = array();
-        if ($this->with_user) {
-            $joins['ug'] = PlSqlJoin::left('users_groups', '$ME.gid = g.gid');
-        }
-        return $joins;
-    }
-
     // Not implemented
+
     public function filter(array $objects, $limit = null) {
         throw new Exception('Not implemented');
     }

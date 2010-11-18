@@ -19,12 +19,8 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-abstract class NewsFilterCondition implements PlFilterCondition
+abstract class NewsFilterCondition extends FrankizFilterCondition
 {
-    public function export()
-    {
-        throw new Exception('Not implemented');
-    }
 }
 
 /** Filters news based on their writer
@@ -154,12 +150,8 @@ class NFC_Private extends NewsFilterCondition
     }
 }
 
-abstract class NewsFilterOrder extends PlFilterOrder
+abstract class NewsFilterOrder extends FrankizFilterOrder
 {
-    public function export()
-    {
-        throw new Exception('Not implemented');
-    } 
 }
 
 class GFO_Begin extends NewsFilterOrder
@@ -190,139 +182,17 @@ class GFO_End extends NewsFilterOrder
 
 /***********************************
   *********************************
-          GROUP FILTER CLASS
+          NEWS FILTER CLASS
   *********************************
  ***********************************/
 
-class NewsFilter extends PlFilter
+class NewsFilter extends FrankizFilter
 {
-    protected $joinMethods = array();
-
-    protected $joinMetas = array(
-                                '$ID' => 'n.id',
-                                );
-    private $root = null;
-    private $sort = array();
-    private $query = null;
-    private $orderby = null;
-
-    private $lastcount = null;
-
-    public function __construct($cond = null, $sort = null)
+    protected function from()
     {
-        if (empty($this->joinMethods)) {
-            $class = new ReflectionClass('GroupFilter');
-            foreach ($class->getMethods() as $method) {
-                $name = $method->getName();
-                if (substr($name, -5) == 'Joins' && $name != 'buildJoins') {
-                    $this->joinMethods[] = $name;
-                }
-            }
-        }
-        if (!is_null($cond)) {
-            if ($cond instanceof PlFilterCondition) {
-                $this->setCondition($cond);
-            }
-        }
-        if (!is_null($sort)) {
-            if ($sort instanceof GroupFilterOrder) {
-                $this->addSort($sort);
-            } else if (is_array($sort)) {
-                foreach ($sort as $s) {
-                    $this->addSort($s);
-                }
-            }
-        }
-    }
-
-    private function buildQuery()
-    {
-        if (is_null($this->orderby)) {
-            $orders = array();
-            foreach ($this->sort as $sort) {
-                $orders = array_merge($orders, $sort->buildSort($this));
-            }
-            if (count($orders) == 0) {
-                $this->orderby = '';
-            } else {
-                $this->orderby = 'ORDER BY  ' . implode(', ', $orders);
-            }
-        }
-        if (is_null($this->query)) {
-            if ($this->root === null)
-                $where = '1';
-            else
-                $where = $this->root->buildCondition($this);
-            $joins = $this->buildJoins();
-            $this->query = 'FROM  news AS n
-                               ' . $joins . '
-                           WHERE  (' . $where . ')';
-        }
-    }
-
-    private function getIDList($gids = null, PlLimit $limit)
-    {
-        $this->buildQuery();
-        $lim = $limit->getSql();
-        $cond = '';
-        if (!is_null($gids)) {
-            $cond = XDB::format(' AND n.id IN {?}', $gids);
-        }
-        $fetched = XDB::fetchColumn('SELECT SQL_CALC_FOUND_ROWS  n.id
-                                    ' . $this->query . $cond . '
-                                   GROUP BY  n.id
-                                    ' . $this->orderby . '
-                                    ' . $lim);
-        $this->lastcount = (int)XDB::fetchOneCell('SELECT FOUND_ROWS()');
-        return $fetched;
-    }
-
-    private static function defaultLimit($limit) {
-        if ($limit == null) {
-            return new PlLimit();
-        } else {
-            return $limit;
-        }
-    }
-
-    public function getIDs($limit = null)
-    {
-        $limit = self::defaultLimit($limit);
-        return $this->getIDList(null, $limit);
-    }
-
-    public function get($limit = null)
-    {
-        if ($limit === true)
-        {
-            $ids = $this->getIDList(null, new PlLimit(1));
-            return (count($ids) != 1) ? null : new News(array_pop($ids));
-        } else {
-            $c = new Collection('News');
-            return $c->add($this->getIDs($limit));
-        }
-    }
-
-    public function getTotalCount()
-    {
-        if (is_null($this->lastcount)) {
-            $this->buildQuery();
-            return (int)XDB::fetchOneCell('SELECT COUNT(DISTINCT n.id)' . $this->query);
-        } else {
-            return $this->lastcount;
-        }
-    }
-
-    public function setCondition(PlFilterCondition $cond)
-    {
-        $this->root = $cond;
-        $this->query = null;
-    }
-
-    public function addSort(PlFilterOrder $sort)
-    {
-        $this->sort[] = $sort;
-        $this->orderby = null;
+        return array('table' => 'news',
+                     'as'    => 'n',
+                     'id'    => 'id');
     }
 
     private $with_user = false;
@@ -341,27 +211,6 @@ class NewsFilter extends PlFilter
         }
         return $joins;
     }
-
-    // Not implemented
-    public function filter(array $objects, $limit = null) {
-        throw new Exception('Not implemented');
-    }
-
-    public function export()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    public function hasGroups()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    public function getGroups()
-    {
-        throw new Exception('Not implemented');
-    }
-
 }
 // }}}
 
