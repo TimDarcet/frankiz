@@ -74,12 +74,13 @@ class Wiki extends Meta
         return $this->comments;
     }
 
-    public function update($content, $writer)
+    public function update($content, $writer = null)
     {
+        $writer = ($writer === null) ? S::user()->id() : User::toId($writer);
         XDB::execute('INSERT INTO  wiki_version
                               SET  wid = {?}, wrote = NOW(), writer = {?}, content = {?},
                                    version = (SELECT (IFNULL(MAX(t.version), 0) + 1) FROM wiki_version AS t WHERE t.wid = {?})',
-                              $this->id, User::toId($writer), $content, $this->id);
+                              $this->id, $writer, $content, $this->id);
     }
 
     public function delete()
@@ -92,11 +93,13 @@ class Wiki extends Meta
     public function insert()
     {
         XDB::execute('INSERT INTO wiki SET name = {?}', $this->name);
+        $this->id = XDB::insertId();
     }
 
     public static function batchFrom(array $mixed)
     {
         $collec = new Collection();
+
         if (!empty($mixed)) {
             $iter = XDB::iterator('SELECT  wid AS id, name
                                      FROM  wiki
@@ -104,6 +107,9 @@ class Wiki extends Meta
             while ($g = $iter->next())
                 $collec->add(new self($g));
         }
+
+        if ($collec->count() != count($mixed))
+            throw new ItemNotFoundException('The identifier can\'t be associated to an object in the DB');
 
         return $collec;
     }

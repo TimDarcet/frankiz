@@ -489,5 +489,31 @@ input:focus {
 }
 
 .groups_picker .empty {
-    opacity:0.5
+    opacity: 0.5
+}
+
+/*******************************************************************************
+     9   Wiki zones
+
+*******************************************************************************/
+
+.wiki {
+	position: relative;
+    width: auto;
+    margin-bottom: 2px;
+    border: 1px solid #002334;
+    background-color: #BDD5E3;
+}
+
+.wiki .content {
+	position: relative;
+	min-height: 5px;
+	padding: 5px;
+}
+
+.wiki textarea {
+	position: relative;
+	width: 100%;
+	min-height: 50px;
+    display: none;
 }

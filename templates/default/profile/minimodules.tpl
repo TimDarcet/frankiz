@@ -22,7 +22,7 @@
 
 <div class="profil_minimodules">
     <p>
-        Les minimodules permettent d'afficher rapidement des informations fréquemment actualisées sur la page d'accueil ou dans la troisième colonne optionnelle. Il est possible de les déplacer en faisant glisser leur barre de titre. 
+        {include file="wiki.tpl"|rel name='profile/minimodules'}
     </p>
     <table>
         <tr>

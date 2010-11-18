@@ -24,9 +24,15 @@
  * @param $output  The name of the smarty variable containing the output
  */
 function smarty_function_wiki($params, &$smarty) {
-    $w = Wiki::from($params['name']);  
-    $w->select(Wiki::SELECT_VERSION);
+    // Create the wiki if it doesn't exist
+    try {
+        $w = Wiki::from($params['name']);
+    } catch (ItemNotFoundException $e) {
+        $w = new Wiki(array('name' => $params['name']));
+        $w->insert();
+    }
 
+    $w->select(Wiki::SELECT_VERSION);
     $smarty->assign($params['output'], $w);
 }
 

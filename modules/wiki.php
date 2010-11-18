@@ -19,13 +19,32 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-require_once dirname(__FILE__).'/../include/frankiz.inc.php';
+class WikiModule extends PlModule
+{
+    function handlers()
+    {
+        return array(
+            'wiki/ajax/update' => $this->make_hook('ajax_update', AUTH_COOKIE, 'admin'),
+        );
+    }
 
-$platal = new Frankiz('frankiz', 'admin', 'reception', 'activites', 'profile', 'tol', 'groups', 'qdj', 'todo', 'lostandfound', 'forums', 'proposal', 'wiki');
+    function handler_ajax_update($page)
+    {
+        $json = json_decode(Env::v('json'));
+        $wiki = new Wiki($json->wid);
 
-if (!($path = Env::v('n')) || ($path{0} < 'A' || $path{0} > 'Z')) {
-    $platal->run();
-    exit;
+        $page->jsonAssign('success', true);
+        try {
+            $wiki->update($json->content);
+            $html = $wiki->select(Wiki::SELECT_VERSION)->html();
+            $page->jsonAssign('html', $html);
+        } catch(Exception $e) {
+            $page->jsonAssign('success', false);
+        }
+
+        return PL_JSON;
+    }
+
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

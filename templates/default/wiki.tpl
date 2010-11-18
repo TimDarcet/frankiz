@@ -24,19 +24,17 @@
 {uniqid output='uniqid'}
 <div class="wiki" id="wiki_container_{$uniqid}" wid="{$wiki->id()}">
     <div class="content">
-        {$wiki->html()}
+        {$wiki->html()|smarty:nodefaults}
     </div>
 
     {if $logged && $smarty.session.user->checkPerms('admin')}
-    <textarea style="display:none">
-        {$wiki->content()}
-    </textarea>
+    <textarea>{$wiki->content()}</textarea>
     {/if}
 </div>
 
 {if $logged && $smarty.session.user->checkPerms('admin')}
 <script>
-    wiki($("#wiki_container_{$uniqid}"));
+    wikify($("#wiki_container_{$uniqid}"));
 </script>
 {/if}
 
