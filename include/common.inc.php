@@ -27,11 +27,13 @@ function __autoload($cls)
         // Handle PlFilter
         if (substr($cls, 0, 8) == 'plfilter' || substr($cls, 0, 4) == 'pfc_' || substr($cls, 0, 4) == 'pfo_') {
             pl_autoload('plfilter');
+            return;
         }
 
         // Handle FrankizFilter
         if (substr($cls, 0, 13) == 'frankizfilter') {
             pl_autoload('frankizfilter');
+            return;
         }
 
         // Handle the *Filter classes
