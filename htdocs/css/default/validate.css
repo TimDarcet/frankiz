@@ -19,43 +19,35 @@
  ***************************************************************************/
 
 /*******************************************************************************
-     0   Styles par défauts
+     0   General purposes for validations and proposals
 
 *******************************************************************************/
 
+.small {
+    font-size: 80%;
+}
 
-.validate {
+.msg_proposal {
+    font-size: 20px;
+    text-align: center;
     width: 100%;
     border: 1px solid #BDD5E3;
+    margin-bottom: 20px;
 }
 
-.validate table {
-    margin: 10px;
-	border-collapse: collapse;
-	width: 100%;
-	vertical-align: top;
-}
-
-
-.validate div {
-    clear: both;
+.info_proposal {
+    text-align: center;
     width: 100%;
-    border: 1;
+    margin-bottom: 10px;
 }
 
-.validate .left {
-    float: left;
-    padding-left: 5px;
-    width: 30%;
+.box_proposal {
+    width: 100%;
+    border: 1px solid #BDD5E3;
+    margin-bottom: 20px;
 }
 
-.validate .right {
-    float: right;
-    padding-left: 5px;
-    width: 68%;
-}
-
-.validate .title {
+.box_proposal .title {
     background-color: #BDD5E3;
     width: 100%;
     position: relative;
@@ -65,14 +57,39 @@
     text-align: center;
 }
 
+.box_proposal table {
+    margin: 10px;
+    border-collapse: collapse;
+    width: 100%;
+    vertical-align: top;
+}
+
+
+/*******************************************************************************
+     1   Validations
+
+*******************************************************************************/
+
+.validate div {
+    clear: both;
+    width: 100%;
+    border: 1;
+}
+
 .validate .subtitle {
-	margin-top: 10px;
+    border-top: 1px solid #BDD5E3;
+	margin-top: 5px;
+	padding-top: 5px;
     font-weight: bold;
     text-align: center; 
 }
 
 .validate .click {
     cursor: pointer;
+}
+
+.validate .text_validate {
+    width: 90%;
 }
 
 .validate textarea {
@@ -84,3 +101,35 @@
 .validate .section {
     margin-bottom: 10px;
 }
+
+
+/*******************************************************************************
+     2   Specific validations
+
+*******************************************************************************/
+
+
+.news_validate {
+    margin: 5px;
+    margin-bottom: 20px;
+}
+
+.news_validate fieldset {
+    width: 90%;
+}
+
+.news_validate legend {
+    width: 70%;
+    font-style: italic;
+}
+
+.news_validate .infos {
+    font-weight: bold;
+    text-align: right;
+}
+
+
+/*******************************************************************************
+     3   Proposals
+
+*******************************************************************************/

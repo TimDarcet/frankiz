@@ -19,17 +19,30 @@
 {*  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA               *}
 {*                                                                        *}
 {**************************************************************************}
-Bonjour,
 
-{$user|smarty:nodefaults} a demandé la validation d'une annonce : 
-{$title|smarty:nodefaults}
+{if $text == null}
+Ton mail vient d'être accepté... Il a été envoyé à tout le groupe.
+{$comm|smarty:nodefaults}
 
-Pour valider ou non cette demande va sur la page suivante : 
 
-http://frankiz.polytechnique.fr/admin/valid_annonces.php
-
+Merci de ta participation 
 
 Cordialement,
 Le Webmestre de Frankiz
+{else}
+Ton mail n'a pas été accepté pour la raison suivante :
+{$comm|smarty:nodefaults}
+
+
+Voici le mail que tu avais proposé :
+{$text|smarty:nodefaults}
+
+
+Désolé 
+
+Cordialement,
+Le Webmestre de Frankiz
+{/if}
+
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

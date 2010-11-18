@@ -20,101 +20,130 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{foreach from=$val item=valid}
-<div class="validate">
-<form enctype="multipart/form-data" method="post" action="admin/validate/">
-    <div class="title">
-        Validation de : {$valid->type}
+{if $msg}
+    <div class="msg_proposal">
+        {$msg}
     </div>
-    
-    <table>
-    <tr>
-        <td width=20%>
-            Demandeur :
-        </td>
-        <td>
-            {$valid->user->displayName()}
-        </td>
-    </tr>
-    
-    <tr>
-        <td>
-            Date de demande :
-        </td>
-        <td>
-            {$valid->created}
-        </td>
-    </tr>
-    </table>
-    
-    <div class="click subtitle">
-        Informations
+{/if}
+
+{if $val->count() == 0}
+
+    <div class="msg_proposal">
+        Il n'y a rien à valider
     </div>
-    <table class="hide show">
-        {include file=$valid->item->show()|rel}
-    </table>
+
+{else}
     
-    
-    {if $valid->item->editor()}
-        <div class="click subtitle">
-            Editer
+    {foreach from=$val item=valid}
+    <div class="validate box_proposal">
+    <form enctype="multipart/form-data" method="post" action="admin/validate/">
+        {assign var='user' value=$valid->user()}
+        {assign var='group' value=$valid->group()}
+        {assign var='item' value=$valid->item()}
+        {$item}
+        <div class="title">
+            Validation de : {$valid->type()}
         </div>
-        <table class="hide">
-            {include file=$valid->item->editor()|rel}
+        
+        <table>
+        <tr>
+            <td width=20%>
+                Demandeur :
+            </td>
+            <td>
+                {$user->displayName()}
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                Groupe destinataire :
+            </td>
+            <td>
+                {$group->label()}
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                Date de demande :
+            </td>
+            <td>
+                {$valid->created()}
+            </td>
+        </tr>
+        </table>
+        
+        <div class="click subtitle">
+            Informations
+        </div>
+        <table class="hide show">
+            {include file=$item->show()|rel}
+        </table>
+        
+        {if $item->editor()}
+            <div class="click subtitle">
+                Editer
+            </div>
+            <table class="hide">
+                {include file=$item->editor()|rel}
+                <tr>
+                    <td width=20%></td>
+                    <td>
+                        <input type="submit" name="edit"   value="Éditer" />
+                    </td>
+                </tr>
+            </table>
+        {/if}
+        
+        <div class="click subtitle">
+            Commentaires (entre administrateurs)
+        </div>
+        <table class="hide show">
+            {foreach from=$item->comments() item=c}
             <tr>
-                <td width=20%></td>
+                <td width=20%>
+                    {$c.name|smarty:nodefaults}
+                </td>
                 <td>
-                    <input type="submit" name="edit"   value="Éditer" />
+                    {$c.com|smarty:nodefaults}
+                </td>
+            </tr>
+            {/foreach}
+            <tr>
+                <td width=20%> </td>
+                <td>
+                    <div>
+                        <textarea name="comm" class="text_validate" > </textarea>
+                    </div>
+                    <input type="submit" name="add_comm" class="addcom_validate"  value="Ajouter un commentaire" />
                 </td>
             </tr>
         </table>
-    {/if}
-    
-    <div class="click subtitle">
-        Commentaires (entre administrateurs)
+        <table>
+            <tr>
+                <td width=20%>
+                    Réponse :
+                </td>
+                <td>
+                    <textarea name="ans"></textarea>
+                </td>
+            </tr>
+        
+            <tr>
+                <td> </td>
+                <td>
+                    <input type="text" name="val_id" style="display: none; " value="{$valid->id()}" />
+                    {if $item->refuse()} <input type="submit" name="refuse"   value="Refuser" /> {/if}
+                    <input type="submit" name="accept"   value="Valider" />
+                </td>
+            </tr>
+        </table>
+        
+    </form>
     </div>
-    <table class="hide">
-        {foreach from=$valid->item->comments item=c}
-        <tr>
-            <td width=20%>
-                {$c.name|smarty:nodefaults}
-            </td>
-            <td>
-                {$c.com|smarty:nodefaults}
-            </td>
-        </tr>
-        {/foreach}
-        <tr>
-            <td width=20%> </td>
-            <td>
-                <div>
-                    <textarea name="comm"></textarea>
-                </div>
-                <input type="submit" name="add_comm"   value="Ajouter un commentaire" />
-            </td>
-        </tr>
-    </table>
-    <table>
-        <tr>
-            <td width=20%>
-                Réponse :
-            </td>
-            <td>
-                <textarea name="ans"></textarea>
-            </td>
-        </tr>
+    {/foreach}
     
-        <tr>
-            <td> </td>
-            <td>
-                <input type="hidden" name="id"    value="{$valid->id()}" />
-                <input type="submit" name="refuse"   value="Refuser" />
-                <input type="submit" name="accept"   value="Valider" />
-            </td>
-        </tr>
-    </table>
-</form>
-</div>
-{/foreach}
+{/if}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

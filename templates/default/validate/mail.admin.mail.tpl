@@ -21,8 +21,8 @@
 {**************************************************************************}
 Bonjour,
 
-{$user|smarty:nodefaults} a demandé la validation d'une annonce : 
-{$title|smarty:nodefaults}
+{$user|smarty:nodefaults} a demandé la validation d'un mail : 
+{$subject|smarty:nodefaults}
 
 Pour valider ou non cette demande va sur la page suivante : 
 

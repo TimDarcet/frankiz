@@ -28,7 +28,8 @@ function __autoload($cls)
                          'g' => 'groupfilter',
                          'n' => 'newsfilter',
                          'u' => 'userfilter',
-                         'v' => 'validatefilter');
+                         'v' => 'validatefilter',
+                         'a' => 'activityfilter');
 
         foreach ($filters as $key => $class)
         {

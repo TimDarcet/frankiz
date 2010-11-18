@@ -68,15 +68,17 @@ class Validate extends Meta
     {
         if (isset($values['uid'])) {
             $this->user = new User($values['uid']);
+            $this->user->select(User::SELECT_BASE);
             unset($values['uid']);
         }
 
         if (isset($values['gid'])) {
             $this->group = new Group($values['gid']);
+            $this->group->select(Group::SELECT_BASE);
             unset($values['gid']);
         }
 
-        if (isset($values['item'])) {
+        if (isset($values['item']) && is_string($values['item'])) {
             $this->item = unserialize($values['item']);
             unset($values['item']);
         }
@@ -94,16 +96,16 @@ class Validate extends Meta
             return;
         $this->created = date("Y-m-d H:i:s");
         
-        if ($this->item->unique) {
+        if ($this->item->unique()) {
             XDB::execute('DELETE FROM  validate
-                                WHERE  user = {?} AND gid = {?} AND type = {?}',
-                         $this->user, $this->gid, $this->type);
+                                WHERE  uid = {?} AND gid = {?} AND type = {?}',
+                         $this->user->id(), $this->group->id(), $this->type);
         }
 
         XDB::execute('INSERT INTO  validate
-                              SET  user = {?}, gid = {?}, type = {?}, 
+                              SET  uid = {?}, gid = {?}, type = {?}, 
                                    item = {?}, created = {?}',
-                            $this->user, $this->gid, $this->type, 
+                            $this->user->id(), $this->group->id(), $this->type, 
                             $this->item, $this->created);
                            
         $this->id = XDB::insertId();
@@ -126,12 +128,10 @@ class Validate extends Meta
      */
     public function clean()
     {
-        if(!is_null($this->item))
-            return;
-        if ($this->unique) {
+        if ($this->item->unique()) {
             $success = XDB::execute('DELETE FROM  validate
-                                           WHERE  user = {?} AND gid = {?} AND type = {?}',
-                                    $this->user, $this->gid, $this->type);
+                                           WHERE  uid = {?} AND gid = {?} AND type = {?}',
+                                    $this->user->id(), $this->group->id(), $this->type);
         } else {
             $success =  XDB::execute('DELETE FROM  validate
                                             WHERE  id = {?}',
@@ -145,7 +145,7 @@ class Validate extends Meta
      */
     public function handle_form()
     {
-        if(!is_null($this->item))
+        if(is_null($this->item))
             return false;
 
         // edit informations
@@ -163,7 +163,7 @@ class Validate extends Meta
             if (!strlen(env::t('comm'))) {
                 return false;
             }
-            $this->item->comments[] = Array(S::user()->login(), env::v('comm'));
+            $this->item->add_comment(S::user()->displayName(), env::v('comm'));
             $this->item->sendmailcomment();
             
             $this->update();

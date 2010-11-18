@@ -1,6 +1,6 @@
 {**************************************************************************}
 {*                                                                        *}
-{*  Copyright (C) 2009 Binet Réseau                                       *}
+{*  Copyright (C) 2010 Binet Réseau                                       *}
 {*  http://www.polytechnique.fr/eleves/binets/reseau/                     *}
 {*                                                                        *}
 {*  This program is free software; you can redistribute it and/or modify  *}
@@ -20,8 +20,9 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if $isok}
+{if $text == null}
 Ton annonce vient d'être validée... Elle est dès à present visible.
+{$comm|smarty:nodefaults}
 
 
 Merci de ta participation 
@@ -31,6 +32,7 @@ Le Webmestre de Frankiz
 {else}
 Ton annonce n'a pas été validée pour la raison suivante :
 {$comm|smarty:nodefaults}
+
 
 Voici le texte que tu avais proposé :
 {$text|smarty:nodefaults}
