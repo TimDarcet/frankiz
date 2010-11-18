@@ -24,8 +24,24 @@ function __autoload($cls)
     if (!pl_autoload($cls)) {
         $cls = strtolower($cls);
 
-        $filters = array('p' => 'plfilter',
-                         'g' => 'groupfilter',
+        // Handle PlFilter
+        if (substr($cls, 0, 8) == 'plfilter' || substr($cls, 0, 4) == 'pfc_' || substr($cls, 0, 4) == 'pfo_') {
+            pl_autoload('plfilter');
+        }
+
+        // Handle FrankizFilter
+        if (substr($cls, 0, 13) == 'frankizfilter') {
+            pl_autoload('frankizfilter');
+        }
+
+        // Handle the *Filter classes
+        if (substr($cls, -6) == 'filter') {
+            pl_autoload($cls, array('classes/filters'));
+            return;
+        }
+
+        // Handle the *fc_* and *fo_*
+        $filters = array('g' => 'groupfilter',
                          'n' => 'newsfilter',
                          'u' => 'userfilter',
                          'v' => 'validatefilter',
@@ -33,17 +49,19 @@ function __autoload($cls)
 
         foreach ($filters as $key => $class)
         {
-            if (substr($cls, 0, 4) == $key . 'fc_' || substr($cls, 0, 4) == $key . 'fo_' || substr($cls, 0, strlen($class)) == $class) {
-                __autoload($class);
+            if (substr($cls, 0, 4) == $key . 'fc_' || substr($cls, 0, 4) == $key . 'fo_') {
+                pl_autoload($class, array('classes/filters'));
                 return;
             }
         }
 
+        // Handle the *Validate classes
         if (substr($cls, -8) == 'validate' && $cls != 'validate') {
             __autoload('itemvalidate');
             return;
         }
 
+        // Handle the rest
         include "$cls.inc.php";
     }
 }
