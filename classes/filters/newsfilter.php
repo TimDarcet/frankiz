@@ -188,7 +188,7 @@ class GFO_End extends NewsFilterOrder
 
 class NewsFilter extends FrankizFilter
 {
-    protected function from()
+    protected function schema()
     {
         return array('table' => 'news',
                      'as'    => 'n',

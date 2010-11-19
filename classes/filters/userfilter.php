@@ -553,7 +553,7 @@ class UserFilter extends FrankizFilter
 {
     protected $joinMetas = array('$UID' => 'a.uid');
 
-    protected function from()
+    protected function schema()
     {
         return array('table' => 'account',
                      'as'    => 'a',

@@ -122,7 +122,7 @@ class VFO_Created extends ValidateFilterOrder
 
 class ValidateFilter extends FrankizFilter
 {
-    protected function from()
+    protected function schema()
     {
         return array('table' => 'validate',
                      'as'    => 'v',

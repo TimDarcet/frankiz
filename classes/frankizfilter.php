@@ -57,7 +57,7 @@ abstract class FrankizFilter extends PlFilter
         return substr(get_class($this), 0, -6);
     }
 
-    abstract protected function from();
+    abstract protected function schema();
 
     public function __construct($cond = null, $sort = null)
     {
@@ -115,9 +115,9 @@ abstract class FrankizFilter extends PlFilter
                 $where = $this->root->buildCondition($this);
             $joins = $this->buildJoins();
 
-            $from   = $this->from();
-            $table  = $from['table'];
-            $as     = $from['as'];
+            $schema  = $this->schema();
+            $table  = $schema['table'];
+            $as     = $schema['as'];
 
             $this->query = "FROM  $table AS $as
                                   $joins
@@ -127,9 +127,9 @@ abstract class FrankizFilter extends PlFilter
 
     protected function getIDList($ids = null, PlLimit $limit)
     {
-        $from   = $this->from();
-        $as     = $from['as'];
-        $id     = $from['id'];
+        $schema = $this->schema();
+        $as     = $schema['as'];
+        $id     = $schema['id'];
 
         $this->buildQuery();
         $lim = $limit->getSql();
@@ -170,11 +170,11 @@ abstract class FrankizFilter extends PlFilter
 
     public function getTotalCount()
     {
-        $from   = $this->from();
-        $as     = $from['as'];
-        $id     = $from['id'];
-
         if (is_null($this->lastcount)) {
+            $schema = $this->schema();
+            $as     = $schema['as'];
+            $id     = $schema['id'];
+
             $this->buildQuery();
             return (int) XDB::fetchOneCell("SELECT COUNT(DISTINCT $as.$id) $this->query");
         } else {

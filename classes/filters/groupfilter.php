@@ -138,7 +138,7 @@ class GFO_Name extends GroupFilterOrder
 
 class GroupFilter extends FrankizFilter
 {
-    protected function from()
+    protected function schema()
     {
         return array('table' => 'groups',
                      'as'    => 'g',
