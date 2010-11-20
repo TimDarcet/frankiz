@@ -19,21 +19,68 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class User extends PlUser
+class User extends Meta
 {
-    /*Reminder of PlUser fields
-     * uid           id()
-     * hruid         login()              prenom.nom.x / prenom.nom.supop / ...
-     * bestalias     bestEmail()          preferred email address
-     * display_name  displayName()        Pseudo
-     * full_name     fullName()           Prenom Nom
-     * gender        isFemale()           GENDER_MALE | GENDER_FEMALE
-     * email_format  isEmailFormatHtml()  FORMAT_HTML | FORMAT_TEXT
-     * perms                              Serialized perm_flags
-     * perm_flags    checkPerms()         Flag combination describing user perms
-     * DON'T USE! NOT IMPLEMENTED IN FRANKIZ :
-     * forlife       forlifeEmail()
+    /*******************************************************************************
+         Constants
+
+    *******************************************************************************/
+
+    const GENDER_FEMALE = true;
+    const GENDER_MALE   = false;
+
+    const FORMAT_HTML = "html";
+    const FORMAT_TEXT = "text";
+
+    const SELECT_BASE         = 0x01;
+    const SELECT_SKIN         = 0x02;
+    const SELECT_MINIMODULES  = 0x04;
+    const SELECT_GROUPS       = 0x08;
+    const SELECT_COMMENTS     = 0x20;
+
+    const IMAGE_ORIGINAL      = 0x01;
+    const IMAGE_PHOTO         = 0x02;
+    const IMAGE_BEST          = 0x03;
+
+    const FIRST_NAME    = 1;
+    const LAST_NAME     = 2;
+    const NICK_NAME     = 4;
+    const ANY_NAME      = 7;
+
+    /*******************************************************************************
+         Properties
+
+    *******************************************************************************/
+
+    /**
+     * User data storage.
+     * By convention, null means the information hasn't been fetched yet, and
+     * false means the information is not available.
      */
+
+    // id is internal user ID (potentially numeric), whereas hruid is a
+    // "human readable" unique ID
+    protected $hruid = null;
+
+    // User main email aliases (forlife is the for-life email address, bestalias
+    // is user-chosen preferred email address, email might be any email available
+    // for the user).
+    protected $forlife = null;
+    protected $bestalias = null;
+    protected $email = null;
+
+    // Display name is user-chosen name to display (eg. in "Welcome
+    // <display name> !"), while full name is the official full name.
+    protected $display_name = null;
+    protected $full_name = null;
+
+    // Other important parameters used when sending emails.
+    protected $gender = null;  // Acceptable values are GENDER_MALE and GENDER_FEMALE
+    protected $email_format = null;  // Acceptable values are FORMAT_HTML and FORMAT_TEXT
+
+    // Permissions
+    public    $perms = null;  // TODO: getter & setter
+    protected $perm_flags = null;
 
     // enum('active','pending','unregistered','disabled')
     protected $state = null;
@@ -58,134 +105,59 @@ class User extends PlUser
     // Contains an array of minimodules
     protected $minimodules = null;
 
-    const SELECT_BASE         = 0x01;
-    const SELECT_SKIN         = 0x02;
-    const SELECT_MINIMODULES  = 0x04;
-    const SELECT_GROUPS       = 0x08;
-    const SELECT_COMMENTS     = 0x20;
 
-    const IMAGE_ORIGINAL      = 0x01;
-    const IMAGE_PHOTO         = 0x02;
-    const IMAGE_BEST          = 0x03;
+    /*******************************************************************************
+         Getters & Setters
 
-    /** Constructs the User object
-     *
-     * @param $datas The User id or an array with User datas
-     */
-    public function __construct($datas)
+    *******************************************************************************/
+
+    public function login()
     {
-        if (!is_array($datas))
-            $this->uid = $datas;
-        else
-            $this->fillFromArray($datas);
+        return $this->hruid;
     }
 
-    // Implementation of the login to user_id method.
-    protected function getLogin($login)
+    public function bestEmail()
     {
-        global $globals;
-        if (!$login) {
-            throw new UserNotFoundException();
+        if (!empty($this->bestalias)) {
+            return $this->bestalias;
         }
-
-        // If $data is an integer, fetches directly the result.
-        if (is_numeric($login)) {
-            $res = XDB::query("SELECT uid FROM account WHERE uid = {?}", $login);
-            if ($res->numRows()) {
-                return $res->fetchOneCell();
-            }
-
-            throw new UserNotFoundException();
-        }
-
-        // Checks whether $login is a valid hruid or not.
-        $res = XDB::query("SELECT uid FROM account WHERE hruid = {?}", $login);
-        if ($res->numRows()) {
-            return $res->fetchOneCell();
-        }
-
-        // From now, $login can only by an email alias.
-        $login = trim(strtolower($login));
-        if (strstr($login, '@') === false) {
-            throw new UserNotFoundException();
-        }
-
-        // Checks if $login is a valid alias on the main domains.
-        list($mbox, $fqdn) = explode('@', $login);
-        $res = XDB::query("SELECT  s.uid
-                             FROM  studies AS s
-                       INNER JOIN  formations AS f ON (f.formation_id = s.formation_id )
-                            WHERE  s.forlife = {?} AND f.domain = {?}", $mbox, $fqdn);
-        if ($res->numRows()) {
-            return $res->fetchOneCell();
-        }
-        throw new UserNotFoundException();
+        return $this->email;
     }
 
-    // Implementation of the data loader.
-    protected function loadMainFields()
+    public function forlifeEmail()
     {
-        if ($this->hruid !== null && $this->display_name !== null
-            && $this->full_name !== null && $this->gender !== null
-            && $this->on_platal !== null && $this->email_format !== null
-            && $this->perms !== null && $this->bestalias !== null
-            && $this->skin !== null && $this->state !== null
-            && $this->hash !== null) {
-            return;
+        if (!empty($this->forlife)) {
+            return $this->forlife;
         }
-
-        $this->select(User::SELECT_BASE | User::SELECT_SKIN | User::SELECT_MINIMODULES);
-        $this->select(array(User::SELECT_GROUPS => Group::SELECT_BASE));
+        return $this->email;
     }
 
-    // Specialization of the fillFromArray method, to implement hacks to enable
-    // lazy loading of user's main properties from the session.
-    protected function fillFromArray(array $values)
+    public function displayName()
     {
-        if (isset($values['original'])) {
-            $this->original = new FrankizImage($values['original']);
-            unset($values['original']);
-        }
-
-        if (isset($values['photo'])) {
-            $this->photo = new FrankizImage($values['photo']);
-            unset($values['photo']);
-        }
-
-        // We also need to convert the gender (usually named "femme"), and the
-        // email format parameter (valued "texte" instead of "text").
-        if (isset($values['gender']) && ($values['gender'] == 'man' || $values['gender'] == 'woman'))
-            $values['gender'] = (bool) ($values['gender'] == 'woman');
-
-        if (!isset($values['full_name']) && isset($values['firstname']) && isset($values['lastname']))
-            $values['full_name'] = $values['firstname'] . ' ' . $values['lastname'];
-
-        if (!isset($values['display_name']) && isset($values['nickname']) && isset($values['firstname']))
-            $values['display_name'] = (empty($values['nickname'])) ? $values['firstname'] : $values['nickname'];
-
-        foreach ($values as $key => $value)
-            if (property_exists($this, $key))
-                $this->$key = $value;
+        return $this->display_name;
     }
 
-    // Specialization of the buildPerms method
-    // This function build 'generic' permissions for the user.
-    protected function buildPerms()
+    public function fullName()
     {
-        if (!is_null($this->perm_flags)) {
-            return;
-        }
-        if ($this->perms === null) {
-             $this->loadMainFields();
-        }
-        $this->perm_flags = self::makePerms($this->perms);
+        return $this->full_name;
+    }
+
+    // Fallback value is GENDER_MALE.
+    public function isFemale()
+    {
+        return $this->gender == self::GENDER_FEMALE;
+    }
+
+    // Fallback value is FORMAT_TEXT.
+    public function isEmailFormatHtml()
+    {
+        return $this->email_format == self::FORMAT_HTML;
     }
 
     /**
     * Returns the password of the User
-    * If you specify an argument, it will update the User's password
     *
-    * @param $password password to be hashed and put in the database
+    * @param $password If specified, update the password in the database
     */
     public function password($password = null)
     {
@@ -210,7 +182,6 @@ class User extends PlUser
 
     /**
     * Returns the skin name of the User
-    * If you specify an argument, it will update the User's skin
     *
     * @param $skin name of the skin to associate with the User
     */
@@ -231,9 +202,8 @@ class User extends PlUser
 
     /**
     * Returns the hash sent by password to recover the password
-    * If you specify an argument, it will update the hash
     *
-    * @param $hash
+    * @param $hash If specified, update the Hash
     */
     public function hash($hash = null)
     {
@@ -243,6 +213,11 @@ class User extends PlUser
         }
         return $this->hash;
     }
+
+    /*******************************************************************************
+         Minimodules
+
+    *******************************************************************************/
 
     public function minimodules($col = null)
     {
@@ -323,10 +298,53 @@ class User extends PlUser
         return false;
     }
 
-    public function rights($g)
+    /*******************************************************************************
+         Permissions
+
+    *******************************************************************************/
+
+    public function checkPerms($perms)
     {
-        return $this->rights[$this->groups->get($g)->id()];
+        if (is_null($this->perm_flags)) {
+            $this->buildPerms();
+        }
+        if (is_null($this->perm_flags)) {
+            return false;
+        }
+        return $this->perm_flags->hasFlagCombination($perms);
     }
+
+    // Specialization of the buildPerms method
+    // This function build 'generic' permissions for the user.
+    protected function buildPerms()
+    {
+        if (!is_null($this->perm_flags)) {
+            return;
+        }
+        if ($this->perms === null) {
+             $this->select();
+        }
+        $this->perm_flags = self::makePerms($this->perms);
+    }
+
+    // Return permission flags for a given permission level.
+    public static function makePerms($perms)
+    {
+        $flags = new PlFlagSet();
+        if (is_null($flags) || $perms == 'disabled') {
+            return $flags;
+        }
+        $flags->addFlag(PERMS_USER);
+        if ($perms == 'admin') {
+            $flags->addFlag(PERMS_ADMIN);
+        }
+        return $flags;
+    }
+
+    /*******************************************************************************
+         Groups
+
+    *******************************************************************************/
 
     /**
     * Returns or updates the comment binding an user to a group.
@@ -360,7 +378,7 @@ class User extends PlUser
         if (empty($ns))
             return $this->groups;
 
-        return $this->groups->filter(function ($g) use($ns) {return $g->ns() == $ns;});
+        return $this->groups->filter('ns', $ns);
     }
 
     public function addToGroup($g, Rights $rights)
@@ -391,19 +409,15 @@ class User extends PlUser
         }
     }
 
-    // Return permission flags for a given permission level.
-    public static function makePerms($perms)
+    public function rights($g)
     {
-        $flags = new PlFlagSet();
-        if (is_null($flags) || $perms == 'disabled') {
-            return $flags;
-        }
-        $flags->addFlag(PERMS_USER);
-        if ($perms == 'admin') {
-            $flags->addFlag(PERMS_ADMIN);
-        }
-        return $flags;
+        return $this->rights[$this->groups->get($g)->id()];
     }
+
+    /*******************************************************************************
+         Miscellaneous
+
+    *******************************************************************************/
 
     // Implementation of the default user callback.
     public static function _default_user_callback($login, $results)
@@ -416,20 +430,27 @@ class User extends PlUser
         }
     }
 
-    // Implementation of the static email locality checker.
-    public static function isForeignEmailAddress($email)
+    public static function getSilentWithValues($login, $values)
     {
-        @list($user, $domain) = explode('@', $email);
-        if ($domain == "polytechnique.edu") {
-            return false;
-        }
-        return true;
+        if ($login == 0)
+            return new AnonymousUser();
+        else
+            return User::getWithValues($login, $values, array('User', '_silent_user_callback'));
     }
 
-    const FIRST_NAME    = 1;
-    const LAST_NAME     = 2;
-    const NICK_NAME     = 4;
-    const ANY_NAME      = 7;
+    public static function getWithValues($login, $values, $callback = false)
+    {
+        if (!$callback) {
+            $callback = array('User', '_default_user_callback');
+        }
+
+        try {
+            $u = new User($values['id']);
+            $u->select();
+        } catch (UserNotFoundException $e) {
+            return call_user_func($callback, $login, $e->results);
+        }
+    }
 
     public static function getNameVariants($name)
     {
@@ -493,94 +514,87 @@ class User extends PlUser
         return "";
     }
 
-    public static function getSilentWithValues($login, $values)
+    public function export()
     {
-        if ($login == 0)
-            return new AnonymousUser();
-        else
-            return parent::getSilentWithValues($login, $values);
+        $export = parent::export();
+
+        if ($this->display_name !== null)
+            $export['displayName'] = $this->displayName();
+
+        return $export;
     }
 
-    public static function getWithValues($login, $values, $callback = false)
+    /*******************************************************************************
+         Data fetcher
+             (batchFrom, batchSelect, fillFromArray, …)
+    *******************************************************************************/
+
+    public function fillFromArray(array $values)
     {
-        if (!$callback) {
-            $callback = array('User', '_default_user_callback');
+        if (isset($values['original'])) {
+            $this->original = new FrankizImage($values['original']);
+            unset($values['original']);
         }
 
-        try {
-            $u = new User($values['uid']);
-            $u->select(User::SELECT_BASE | User::SELECT_SKIN | User::SELECT_MINIMODULES);
-            return $u->select(array(User::SELECT_GROUPS => array("options" => Group::SELECT_BASE | Group::SELECT_FREQUENCY,
-                                                                      "ns" => Group::NS_BINET)));
-        } catch (UserNotFoundException $e) {
-            return call_user_func($callback, $login, $e->results);
+        if (isset($values['photo'])) {
+            $this->photo = new FrankizImage($values['photo']);
+            unset($values['photo']);
         }
+
+        if (isset($values['gender']) && ($values['gender'] == 'man' || $values['gender'] == 'woman')) {
+            $values['gender'] = (bool) ($values['gender'] == 'woman');
+            unset($values['gender']);
+        }
+
+        if (!isset($values['full_name']) && isset($values['firstname']) && isset($values['lastname'])) {
+            $values['full_name'] = $values['firstname'] . ' ' . $values['lastname'];
+        }
+
+        if (!isset($values['display_name']) && isset($values['nickname']) && isset($values['firstname'])) {
+            $values['display_name'] = (empty($values['nickname'])) ? $values['firstname'] : $values['nickname'];
+        }
+
+        parent::fillFromArray($values);
     }
 
-    public function select($options)
+    public static function batchSelect(array $users, $options = null)
     {
-        self::batchSelect(array($this), $options);
-        return $this;
-    }
-
-    public static function toId(array $user)
-    {
-        return flatten(self::toIds(unflatten($user)));
-    }
-
-    public static function toIds(array $users)
-    {
-        $result = array();
-        foreach ($users as $n)
-            if ($n instanceof User)
-                $result[] = $n->id();
-            else
-                $result[] = $n;
-        return $result;
-    }
-
-    public static function batchSelect(array $users, $options)
-    {
-        if (count($users) < 1)
+        if (empty($users))
             return;
 
-        $bits = 0;
-        if (is_array($options))
-            foreach($options as $bit => $args)
-                $bits |= $bit;
-        else
-            $bits = $options;
+        if (empty($options)) {
+            $bits = User::SELECT_BASE | User::SELECT_SKIN | User::SELECT_MINIMODULES | SELECT_GROUPS;
+            $options = array(User::SELECT_GROUPS => array("options" => Group::SELECT_BASE | Group::SELECT_FREQUENCY,
+                                                          "ns" => Group::NS_BINET));
+        } else {
+            $bits = self::optionsToBits($options);
+        }
 
-        // Index the array
         $users = array_combine(self::toIds($users), $users);
 
         // Load datas where 1 User = 1 Line
-        $joints = array();
-        $columns = array();
+        $joins = array();
+        $cols = array();
         if ($bits & self::SELECT_BASE) {
-            $columns['a'] = array('hruid', 'perms', 'state',
-                                   'hash', 'original', 'photo', 'gender',
-                                   'email_format', 'bestalias',
-                                   'firstname', 'lastname', 'nickname');
+            $cols['a'] = array('hruid', 'perms', 'state',
+                               'hash', 'original', 'photo', 'gender',
+                               'email_format', 'bestalias',
+                               'firstname', 'lastname', 'nickname');
         }
 
         if ($bits & self::SELECT_SKIN) {
-            $columns['sk'] = array('name AS skin');
-            $joints['sk'] = PlSqlJoin::left('skins', '$ME.skin_id = a.skin');
+            $cols['sk'] = array('name AS skin');
+            $joins['sk'] = PlSqlJoin::left('skins', '$ME.skin_id = a.skin');
         }
 
-        if (!empty($columns)) {
-            $sql_columns = array();
-            foreach($columns as $table => $cols)
-                $sql_columns[] = implode(', ', array_map(function($value) use($table) { return $table . '.' . $value; }, $cols));
-
-            $iter = XDB::iterator('SELECT  a.uid, ' . implode(', ', $sql_columns) . '
+        if (!empty($cols)) {
+            $iter = XDB::iterator('SELECT  a.uid AS id, ' . self::arrayToSqlCols($cols) . '
                                      FROM  account AS a
-                                           ' . PlSqlJoin::formatJoins($joints, array()) . '
+                                           ' . PlSqlJoin::formatJoins($joins, array()) . '
                                     WHERE  a.uid IN {?}', array_keys($users));
 
-            while ($array_datas = $iter->next())
-                $users[$array_datas['uid']]->fillFromArray($array_datas);
+            while ($datas = $iter->next())
+                $users[$datas['id']]->fillFromArray($datas);
         }
 
         // Load minimodules
@@ -589,13 +603,13 @@ class User extends PlUser
             foreach ($users as $u)
                 $u->minimodules = FrankizMiniModule::emptyLayout();
 
-            $iter = XDB::iterator('SELECT  uid, name, col, row
+            $iter = XDB::iterator('SELECT  uid AS id, name, col, row
                                      FROM  users_minimodules
                                     WHERE  uid IN {?}
                                  ORDER BY  col, row', array_keys($users));
 
             while ($am = $iter->next())
-                array_push($users[$am['uid']]->minimodules[$am['col']], $am['name']);
+                array_push($users[$am['id']]->minimodules[$am['col']], $am['name']);
         }
 
         // Load groups
