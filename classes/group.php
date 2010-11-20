@@ -35,7 +35,6 @@ class Group extends Meta
     const NS_SPORT       = 'sport';
     const NS_NATIONALITY = 'nationality';
 
-    protected $logic = null;
     protected $image = null;
     protected $ns    = null;
     protected $name  = null;
@@ -44,11 +43,6 @@ class Group extends Meta
 
     protected $users = array();
     protected $frequency = null;
-
-    public function logic()
-    {
-        return $this->logic;
-    }
 
     public function name()
     {
@@ -100,6 +94,58 @@ class Group extends Meta
         return $this->users;
     }
 
+    public function addUser($u, Rights $rights)
+    {
+        $uid = User::toId($u);
+
+        // IMPROVE: can be done in one request
+        foreach ($rights as $right)
+            XDB::execute('DELETE FROM groups_userfilters WHERE gid = {?} AND FIND_IN_SET({?}, rights)', $gid, $right);
+
+        XDB::execute('INSERT INTO  users_groups
+                              SET  uid = {?}, gid = {?}, rights = {?}, comments = ""
+          ON DUPLICATE KEY UPDATE  rights = CONCAT_WS(",", rights, {?})',
+                                   $uid, $this->id(), $rights->flags(), $rights->flags());
+    }
+
+    public function removeUser($u, Rights $rights = null)
+    {
+        $uid = User::toId($u);
+
+        if ($rights === null) {
+            XDB::execute('DELETE FROM  users_groups
+                                WHERE  uid = {?} AND gid = {?}',
+                                         $uid, $this->id());
+        } else {
+            XDB::execute('UPDATE  users_groups
+                             SET  rights = REPLACE(rights , {?}, "")
+                           WHERE  uid = {?} AND gid = {?}',
+                                  $uid, $this->id());
+            XDB::execute('DELETE FROM  users_groups
+                                WHERE  uid = {?} AND gid = {?} AND ',
+                                         $uid, $this->id());
+        }
+    }
+
+    public function userfilters(UserFilter $uf, Rights $rights)
+    {
+        $uf->insert();
+
+        if ($rights === null) {
+            XDB::execute('DELETE FROM  users_groups
+                                WHERE  uid = {?} AND gid = {?}',
+                                         $uid, $this->id());
+        } else {
+            XDB::execute('UPDATE  users_groups
+                             SET  rights = REPLACE(rights , {?}, "")
+                           WHERE  uid = {?} AND gid = {?}',
+                                  $uid, $this->id());
+            XDB::execute('DELETE FROM  users_groups
+                                WHERE  uid = {?} AND gid = {?} AND ',
+                                         $uid, $this->id());
+        }
+    }
+
     public function insert(Node $parent)
     {
         XDB::execute('UPDATE  groups
@@ -135,7 +181,7 @@ class Group extends Meta
         return $collec;
     }
 
-    public static function batchSelect(array $groups, $bits)
+    public static function batchSelect(array $groups, $bits = null)
     {
         if (empty($groups))
             return;
@@ -156,17 +202,7 @@ class Group extends Meta
         }
 
         if (!empty($cols)) {
-            $sql_columns = array();
-            foreach($cols as $table => $vals)
-                $sql_columns[] = implode(', ', array_map(
-                                    function($value) use($table) {
-                                        if ($table == -1)
-                                            return $value;
-                                        else
-                                            return $table . '.' . $value;
-                                    }, $vals));
-
-            $iter = XDB::iterator('SELECT  g.gid AS id, ' . implode(', ', $sql_columns) . '
+            $iter = XDB::iterator('SELECT  g.gid AS id, ' . self::arrayToSqlCols($cols) . '
                                      FROM  groups AS g
                                      ' . PlSqlJoin::formatJoins($joins, array()) . '
                                     WHERE  g.gid IN {?}

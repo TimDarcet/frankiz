@@ -87,7 +87,7 @@ class FrankizImage extends Meta
         return $this->lastseen;
     }
 
-    public static function batchSelect(array $images, $bits)
+    public static function batchSelect(array $images, $bits = null)
     {
         $ids = self::toIds($images);
 

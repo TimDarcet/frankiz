@@ -183,7 +183,7 @@ class News extends meta
         parent::fillFromArray($values);
     }
     
-    public static function batchSelect(array $news, $fields)
+    public static function batchSelect(array $news, $fields = null)
     {
         if (empty($news))
             return;

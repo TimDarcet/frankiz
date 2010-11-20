@@ -212,7 +212,7 @@ class Validate extends Meta
         Platal::page()->trigSuccess($msg);
     }
 
-    public static function batchSelect(array $val, $fields)
+    public static function batchSelect(array $val, $fields = null)
     {
         if (empty($val))
             return;

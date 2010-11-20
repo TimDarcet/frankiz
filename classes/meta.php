@@ -57,7 +57,7 @@ abstract class Meta
         return $this->id;
     }
 
-    public function select($fields)
+    public function select($fields = null)
     {
         static::batchSelect(array($this), $fields);
         return $this;
@@ -93,6 +93,13 @@ abstract class Meta
     {
         if ($this->id == null)
             throw new Exception("This " . get_class($this) . " doesn't appear to exist in the DB and therefore can't be deleted.");
+    }
+
+    public function export()
+    {
+        $export = array('id'    => $this->id(),
+                        'class' => get_class($this));
+        return $export;
     }
 
     protected static function optionsToBits($options)
@@ -155,7 +162,13 @@ abstract class Meta
         throw new Exception("batchFrom isn't implemented");
     }
 
-    public static function batchSelect(array $metas, $fields)
+    /**
+    * Fetch datas from the database
+    *
+    * @param $metas    An array containing the objects to fill
+    * @param $options  Options defining the datas to load
+    */
+    public static function batchSelect(array $metas, $options = null)
     {
         throw new Exception("batchSelect isn't implemented");
     }
