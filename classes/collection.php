@@ -205,16 +205,16 @@ class Collection extends PlAbstractIterable
     }
 
     /**
-    * Get an item from the Collection
+    * Gets an item from the Collection
     *
     * @param $mixed An Item, an id or any unique identifier supported by isMe()
     */
     public function get($mixed)
     {
         if (isId($mixed))
-            return $this->collected[intval($mixed)];
+            return empty($this->collected[intval($mixed)]) ? false : $this->collected[intval($mixed)];
         elseif ($mixed instanceof Meta)
-            return $this->collected[$mixed->id()];
+            return empty($this->collected[$mixed->id()]) ? false : $this->collected[$mixed->id()];
         else
             foreach ($this->collected as $c)
                 if ($c->isMe($mixed))
