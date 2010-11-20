@@ -65,8 +65,10 @@ class Collection extends PlAbstractIterable
     */
     public function order($order = null, $desc = true)
     {
-        if ($order != null)
+        if ($order != null) {
             $this->order = $order;
+            $this->desc  = $desc;
+        }
         return $this->order;
     }
 
@@ -116,6 +118,7 @@ class Collection extends PlAbstractIterable
     public function iterate()
     {
         $order = $this->order;
+
         $iterator = PlIteratorUtils::fromArray($this->collected, 1, true);
 
         if (empty($order))
@@ -134,12 +137,15 @@ class Collection extends PlAbstractIterable
     /**
     * Fetch datas from the database for each items of the Collection
     *
-    * @param $fields Fields to be fetched by batchSelect()
+    * @param $options Fields to be fetched by batchSelect()
     */
-    public function select($fields)
+    public function select($options = null)
     {
+        if ($this->count() == 0)
+            return $this;
+
         $className = $this->className;
-        $className::batchSelect($this->collected, $fields);
+        $className::batchSelect($this->collected, $options);
         return $this;
     }
 
@@ -149,6 +155,23 @@ class Collection extends PlAbstractIterable
     public function ids()
     {
         return array_keys($this->collected);
+    }
+
+    /**
+    * Add an item only if it doesn't already exist in the Collection
+    * Returns the added item
+    *
+    * @param $id The Id of the item
+    */
+    public function addget($id)
+    {
+        $id = intval($id);
+        if (!empty($this->collected[$id]))
+            return $this->collected[$id];
+
+        $className = $this->className;
+        $this->collected[$id] = new $className($id);
+        return $this->collected[$id];
     }
 
     /**
