@@ -22,8 +22,8 @@
 
 
 <ul>
-    {foreach from=$collection|order:'begin':false item=news}
-        <li class="news">
+    {foreach from=$collection|order:'begin' item=news}
+        <li class="news {if $news->hide()}hide{/if}" nid="{$news->id()}">
             <div class="infos">
                 <div class="groups">
                     {$news->writer()|user}
@@ -35,7 +35,12 @@
                     {$news->begin()}
                     ->
                     {$news->end()}
-                    Read ?
+                    <span class="switcher_show">
+                    Lire
+                    </span>
+                    <span class="switcher_hide">
+                    Cacher
+                    </span>
                 </div>
                 <div class="title">
                     {$news->title()}

@@ -24,8 +24,24 @@ class NewsModule extends PlModule
     public function handlers()
     {
         return array(
-            "news" => $this->make_hook("news", AUTH_PUBLIC),
+            "news"           => $this->make_hook("news"     , AUTH_PUBLIC),
+            "news/ajax/show" => $this->make_hook("ajax_show", AUTH_COOKIE),
+            "news/ajax/hide" => $this->make_hook("ajax_hide", AUTH_COOKIE),
         );
+    }
+
+    function handler_ajax_show($page, $id)
+    {
+        $news = new News($id);
+        $news->hide(false);
+        exit;
+    }
+
+    function handler_ajax_hide($page, $id)
+    {
+        $news = new News($id);
+        $news->hide(true);
+        exit;
     }
 
     function handler_news($page)

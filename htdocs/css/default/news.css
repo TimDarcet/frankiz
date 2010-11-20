@@ -31,6 +31,7 @@ li.news {
     background-color: #BDD5E3;
     border: 1px #002334 solid;
     border-top: none;
+    padding: 1px;
 }
 
 li.news:first-child {
@@ -47,6 +48,26 @@ li.news:first-child {
 
 .title {
     text-align: center;
+}
+
+.news.hide .content {
+    display: none;
+}
+
+.news .switcher_show {
+    display: none;
+}
+
+.news .switcher_hide {
+    display: inline;
+}
+
+.news.hide .switcher_show {
+    display: inline;
+}
+
+.news.hide .switcher_hide {
+    display: none;
 }
 
 .content {

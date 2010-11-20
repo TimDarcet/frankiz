@@ -32,6 +32,7 @@ class News extends meta
 {    
     const SELECT_BASE = 0x01;
     const SELECT_BODY = 0x02;
+    const SELECT_HIDE = 0x04;
 
     protected $writer  = null;
     protected $target  = null;
@@ -43,6 +44,7 @@ class News extends meta
     protected $end     = null;
     protected $comment = null;
     protected $priv    = null;
+    protected $hide    = null;
 
     public function writer()
     {
@@ -104,6 +106,19 @@ class News extends meta
         $this->priv = $priv;
     }
 
+    public function hide($hide = null)
+    {
+        if ($hide === true) {
+            XDB::execute('INSERT INTO news_hide SET uid = {?}, news = {?}, hide = NOW()', S::user()->id(), $this->id());
+            $this->hide = true;
+        }
+        if ($hide === false) {
+            XDB::execute('DELETE FROM news_hide WHERE uid = {?} AND news = {?}', S::user()->id(), $this->id());
+            $this->hide = false;
+        }
+        return $this->hide;
+    }
+
     public function delete()
     {  
 	    XDB::execute('DELETE FROM news WHERE id={?}', $this->id());
@@ -124,11 +139,11 @@ class News extends meta
     {        
         XDB::execute('UPDATE  news
                          SET  target = {?}, writer = {?}, iid = {?}, origin = {?},
-                              title = {?}, content = {?}, end = {?},
+                              title = {?}, content = {?}, begin = {?}, end = {?},
                               comment = {?}, priv = {?}
                        WHERE  id = {?}',
         $this->target->id(), $this->writer->id(), $this->image, is_null($this->origin)?null:$this->origin->id(),
-        $this->title, $this->content, $this->end,
+        $this->title, $this->content, $this->begin, $this->end,
         $this->comment, $this->priv, $this->id());
     }
 
@@ -145,7 +160,7 @@ class News extends meta
             return;
 
         if (empty($options)) {
-            $options = array(self::SELECT_BODY => null);
+            $options = array(self::SELECT_BODY => null, self::SELECT_HIDE => null);
             $options[self::SELECT_BASE] = array('writers' => User::SELECT_BASE,
                                                 'groups' => Group::SELECT_BASE);
         }
@@ -153,16 +168,26 @@ class News extends meta
         $bits = self::optionsToBits($options);
         $news = array_combine(self::toIds($news), $news);
 
-        $request = 'SELECT id';
-        if ($bits & self::SELECT_BASE)
-            $request .= ', writer, target, title, origin, begin, end, priv';
-        if ($bits & self::SELECT_BODY)
-            $request .= ', content, iid, comment';
+        $joins = array();
+        $cols = array('n' => array());
+        if ($bits & self::SELECT_BASE) {
+            $cols['n'] = array_merge($cols['n'], array('writer', 'target', 'title', 'origin', 'begin', 'end', 'priv'));
+        }
 
-        $iter = XDB::iterator($request .
-                        ' FROM news
-                         WHERE id IN {?}',
-                         array_keys($news));
+        if ($bits & self::SELECT_BODY) {
+            $cols['n'] = array_merge($cols['n'], array('content', 'iid', 'comment'));
+        }
+
+        if ($bits & self::SELECT_HIDE) {
+            $cols['nh']  = array('hide');
+            $joins['nh'] = PlSqlJoin::left('news_hide', '$ME.news = n.id AND $ME.uid = {?}', S::user()->id());
+        }
+
+        $iter = XDB::iterator('SELECT  n.id, ' . self::arrayToSqlCols($cols) . '
+                                 FROM  news AS n
+                                       ' . PlSqlJoin::formatJoins($joins, array()) . '
+                                WHERE  n.id IN {?}',
+                                  array_keys($news));
 
         $users  = new Collection('User');
         $groups = new Collection('Group');
@@ -173,6 +198,7 @@ class News extends meta
             $datas['target'] = $groups->addget($datas['target']);
             $datas['origin'] = $groups->addget($datas['origin']);
             $datas['image']  = $images->addget($datas['iid']); unset($datas['iid']);
+            if (!$datas['hide']) $datas['hide'] = false;
             $news[$datas['id']]->fillFromArray($datas);
         }
 
