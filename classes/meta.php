@@ -23,6 +23,10 @@ class ItemNotFoundException extends Exception
 {
 }
 
+class UndefinedIdException extends Exception
+{
+}
+
 abstract class Meta
 {
     protected $id = null;
@@ -47,6 +51,9 @@ abstract class Meta
 
     public function id()
     {
+        if ($this->id === null)
+            throw new UndefinedIdException();
+
         return $this->id;
     }
 
@@ -114,11 +121,35 @@ abstract class Meta
         return implode(', ', $sql_columns);
     }
 
-    public static function from($mixed)
+    /**
+    * Returns the object corresponding to the specified name
+    *
+    * @param $mixed              A unique identifier ot the object to retrieve
+    * @param $insertIfNotExists  Create the Object if the identifier doesn't exist ? (Use 'name' by default)
+    */
+    public static function from($mixed, $insertIfNotExists = false)
     {
-        return static::batchFrom(array($mixed))->first();
+        try {
+            $w = static::batchFrom(array($mixed))->first();
+        } catch (ItemNotFoundException $e) {
+            if ($insertIfNotExists) {
+                $w = new Wiki(array('name' => $mixed));
+                $w->insert();
+            } else {
+                throw $e;
+            }
+        }
+        return $w;
     }
 
+    /**
+    * Try to retrieve the id and return a collection of the corresponding objects
+    *  thanks to another unique identifier passed as argument
+    * If the function can't find an object for each identifier passed, it must throw
+    *  an ItemNotFoundException
+    *
+    * @param $mixed  An array containing a unique identifier (often it's a unique name)
+    */
     public static function batchFrom(array $mixed)
     {
         throw new Exception("batchFrom isn't implemented");
