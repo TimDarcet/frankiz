@@ -94,9 +94,9 @@ class FrankizSession extends PlSession
         if(!Cookie::has('uid') || !Cookie::has('hash')){
             return self::COOKIE_INCOMPLETE;
         }
-        $res = XDB::query('SELECT   uid, password
+        $res = XDB::query("SELECT   uid, password
                              FROM   account
-                            WHERE   uid = {?} AND state = \'active\'',
+                            WHERE   uid = {?} AND state = 'active'",
                         Cookie::i('uid'));
         if($res->numRows() == 1)
         {
@@ -125,7 +125,8 @@ class FrankizSession extends PlSession
             if(!S::logged()) {
                 S::set('auth', AUTH_COOKIE);
             }
-            return User::getSilentWithUID(S::i('cookie_uid'));
+            $user = new User(S::i('cookie_uid'));
+            return $user->select();
         }
 
         /*If we are here, we want AUTH_MDP
@@ -162,7 +163,8 @@ class FrankizSession extends PlSession
             S::set('auth', AUTH_MDP);
             S::kill('challenge');
         }
-        return User::getSilentWithUID($uid);
+        $user = new User($uid);
+        return $user->select();
     }
 
     /** Check whether a password is valid
