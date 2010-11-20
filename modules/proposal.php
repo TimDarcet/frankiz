@@ -30,7 +30,6 @@ class ProposalModule extends PlModule
             'proposal/mail'             => $this->make_hook('mail', AUTH_COOKIE),
         );
     }
-    
 
     function handler_news($page)
     {   
@@ -47,9 +46,9 @@ class ProposalModule extends PlModule
             $end = substr_replace($end, '-', 6, 0);
             $end = substr_replace($end, '-', 4, 0);
         }
-        
+
         $iid = 1; //To change as soon as Riton works
-        
+
         if (env::has('send'))
         {
             if($title == '' || $content == '' || $end == '' || $gid == '')
@@ -59,19 +58,18 @@ class ProposalModule extends PlModule
             else 
             {
                 $n = new News(array(
-                    'user'      => s::user(), 
-                    'gid'       => $gid,
+                    'writer'    => S::user(),
+                    'target'    => new Group($gid),
                     'iid'       => $iid,
-                    'origin'    => $origin,
+                    'origin'    => new Group($origin),
                     'title'     => $title,
                     'content'   => $content,
                     'end'       => $end,
                     'comment'   => $comment,
-                    'priv'      => $priv,
-                    'important' => $important));
+                    'priv'      => $priv));
                 $nv = new NewsValidate($n);
                 $v = new Validate(array(
-                    'user'  => s::user(),
+                    'user'  => S::user(),
                     'gid'   => $gid,
                     'item'  => $nv,
                     'type'  => 'news'));
@@ -79,13 +77,13 @@ class ProposalModule extends PlModule
                 $page->assign('envoye', true);
             }
         }
-        
+
         $page->assign('title_news', $title);
         $page->assign('content', $content);
         $page->assign('end', $end);
         $page->assign('comment', $comment);
         $page->assign('priv', $priv);
-        
+
         $page->assign('title', 'Proposer une annonce');
         $page->addCssLink('validate.css');
         $page->changeTpl('validate/prop.news.tpl');
@@ -184,4 +182,7 @@ class ProposalModule extends PlModule
         $page->addCssLink('validate.css');
         $page->changeTpl('validate/prop.mail.tpl');
     }
-}    
+}
+
+// vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
+?>

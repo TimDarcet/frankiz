@@ -19,42 +19,39 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class ReceptionModule extends PLModule
+class NewsModule extends PlModule
 {
-
     public function handlers()
     {
         return array(
-            "reception/news" => $this->make_hook("news", AUTH_PUBLIC),
+            "news" => $this->make_hook("news", AUTH_PUBLIC),
         );
     }
 
     function handler_news($page)
     {
-        
-        $nf1 = new NewsFilter(new PFC_And(new NFC_Current(),
-                                          new NFC_User(S::user())));
+        // News from the groups where you are member
+        $member_news = new NewsFilter(new PFC_And(new NFC_Current(),
+                                                  new NFC_User(S::user())));
 
-        $nf2 = new NewsFilter(new PFC_And(new NFC_Current(),
-                                          new PFC_And(new NFC_User(S::user(), 'friend'),
-                                                      new NFC_Private(false))));
+        // News from the groups where you are friend and that are public
+        $friend_news = new NewsFilter(new PFC_And(new NFC_Current(),
+                                                  new PFC_And(new NFC_User(S::user(), 'friend'),
+                                                              new NFC_Private(false))));
 
-        $news_array = array(
-            'member' => $nf1->get(),
-            'friend' => $nf2->get());
-        
-        foreach ($news_array as $key => $o)
-        {
-            $news_array[$key]->select(News::SELECT_HEAD | News::SELECT_BODY);
-            $news_array[$key] = $o->split('order');
-            ksort($news_array[$key]);
-        }
-        krsort($news_array);
+        $member_news = $member_news->get();
+        $friend_news = $friend_news->get();
 
-        $page->assign('news_array', $news_array);
-        $page->addJsLink('news.js');
+        // Temporary Collection to retrieve in one request all the datas
+        $all_news = new Collection('News');
+        $all_news = $all_news->merge($member_news)->merge($friend_news);
+        $all_news->select();
+
+        $page->assign('member_news', $member_news);
+        $page->assign('friend_news', $friend_news);
         $page->addCssLink('news.css');
-        $page->changeTpl('reception/news.tpl');
+        $page->assign('title', 'Annonces');
+        $page->changeTpl('news/news.tpl');
     }
 }
 

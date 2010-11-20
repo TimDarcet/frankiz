@@ -25,18 +25,18 @@ class FrankizModule extends PlModule
     function handlers()
     {
         return array(
-            'accueil'                  => $this->make_hook('accueil',                 AUTH_PUBLIC),
-            'exit'                     => $this->make_hook('exit',                    AUTH_PUBLIC)
+            'home'                  => $this->make_hook('home', AUTH_PUBLIC),
+            'exit'                  => $this->make_hook('exit', AUTH_PUBLIC)
         );
     }
 
-    function handler_accueil($page)
+    function handler_home($page)
     {
         $page->assign('MiniModules_COL_LEFT'  , FrankizMiniModule::get(S::user()->minimodules(FrankizMiniModule::COL_LEFT)));
         $page->assign('MiniModules_COL_MIDDLE', FrankizMiniModule::get(S::user()->minimodules(FrankizMiniModule::COL_MIDDLE)));
         $page->assign('MiniModules_COL_RIGHT' , FrankizMiniModule::get(S::user()->minimodules(FrankizMiniModule::COL_RIGHT)));
         $page->assign('title', 'Accueil');
-        $page->changeTpl('frankiz/accueil.tpl');
+        $page->changeTpl('frankiz/home.tpl');
     }
 
     function handler_exit($page, $level = null)

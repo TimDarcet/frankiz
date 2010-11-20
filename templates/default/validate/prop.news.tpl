@@ -30,7 +30,6 @@
 {else}
 
 <div class="info_proposal"> 
-    Pour que l'annonce soit marquée en important, il faut faire la demande en commentaire.<br /><br />
     Le texte de l'annonce utilise le format wiki décrit dans l'<a href="wiki_help">aide wiki</a><br/>
     Pour toute remarque particulière, envoyer un mail à <a href="mailto:web@frankiz.polytechnique.fr">web@frankiz</a> 
 </div>

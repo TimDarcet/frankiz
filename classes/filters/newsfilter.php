@@ -37,7 +37,7 @@ class NFC_Writer extends NewsFilterCondition
 
     public function buildCondition(PlFilter $uf)
     {
-        return XDB::format('n.id IN {?}', $this->uids);
+        return XDB::format('n.writer IN {?}', $this->uids);
     }
 }
 
@@ -62,7 +62,7 @@ class NFC_Origin extends NewsFilterCondition
 /** Filters news based on their target group
  * @param $gs A Group, a Gid or an array of it
  */
-class NFC_Group extends NewsFilterCondition
+class NFC_Target extends NewsFilterCondition
 {
     private $gids;
 
@@ -73,7 +73,7 @@ class NFC_Group extends NewsFilterCondition
 
     public function buildCondition(PlFilter $uf)
     {
-        return XDB::format('n.gid IN {?}', $this->gids);
+        return XDB::format('n.target IN {?}', $this->gids);
     }
 }
 
@@ -207,7 +207,7 @@ class NewsFilter extends FrankizFilter
     {
         $joins = array();
         if ($this->with_user) {
-            $joins['ug'] = PlSqlJoin::left('users_groups', '$ME.gid = n.gid');
+            $joins['ug'] = PlSqlJoin::left('users_groups', '$ME.gid = n.target');
         }
         return $joins;
     }

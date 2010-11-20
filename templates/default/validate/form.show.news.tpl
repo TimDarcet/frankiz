@@ -39,17 +39,6 @@
     </td>
 </tr>
 
-{if $news->important()} 
-    <tr>
-        <td width=20%>
-            Important :
-        </td>
-        <td>
-            oui
-        </td>
-    </tr> 
-{/if}
-
 <tr>
     <td width=20%>
         Dernier jour :
@@ -64,7 +53,7 @@
         Annonce :
     </td>
     <td>
-        {assign var='group' value=$news->group()}
+        {assign var='group' value=$news->target()}
         <div class="news_validate">
         <fieldset>  
             <legend>[{$group->label()}] {$news->title()}</legend>
@@ -77,8 +66,7 @@
                     {assign var='origin' value=$news->origin()}
                     Pour le groupe {$origin->label()},
                 {/if}
-                {assign var='user' value=$news->user()}
-                {$user->displayName()}
+                {$news->writer()|user}
             </div>
         </fieldset>
         </div>

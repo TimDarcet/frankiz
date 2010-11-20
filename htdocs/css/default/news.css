@@ -19,58 +19,46 @@
  ***************************************************************************/
 
 /*******************************************************************************
-     0   Styles par défauts
+     Module News
 
 *******************************************************************************/
 
-.news_select {
-    text-align: center;
+ul {
 }
 
-.newstitles {
-    margin: 5px;
-    margin-bottom: 20px;
+li.news {
+    list-style: none;
+    background-color: #BDD5E3;
+    border: 1px #002334 solid;
+    border-top: none;
 }
 
-.newstitles .section {
-    border: 1px solid #002334;
-	margin-top: 20px;
-	margin-left: 40px;
-	margin-right: 40px;
-    font-weight: bold;
-    text-align: center;
+li.news:first-child {
+    border-top: 1px #002334 solid;
 }
 
-.newstitles .subsection {
-    margin-left: 40px;
-    margin-top: 10px;
+.groups {
+    float: left;
 }
 
-.newstitles .newstitle {
-    margin-left: 60px;
-}
-
-.newstitles .right{
-    font-weight: bold;
+.date {
     float: right;
 }
 
-.newstitles a:link{
-    text-decoration: none;
+.title {
+    text-align: center;
 }
 
-.news {
+.content {
+	position: relative;
+	clear: both;
 	margin: 5px;
-	margin-bottom: 20px;
 }
 
-.news legend {
-	width: 70%;
-	font-size: 20;
-	font-style: italic;
+.content > div {
+    width: 100%;
+    border-top: 1px #002334 solid;
+    background-color: white;
 }
 
-.news .infos {
-	font-weight: bold;
-	text-align: right;
-}
+

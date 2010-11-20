@@ -32,27 +32,26 @@ class News extends meta
 {    
     const SELECT_BASE = 0x01;
     const SELECT_BODY = 0x02;
-    
-    protected $user;
-    protected $group;
-    protected $image;
-    protected $origin = null;
-    protected $title;
-    protected $content;
-    protected $begin;
-    protected $end;
-    protected $comment;
-    protected $priv;
-    protected $important;
-     
-    public function user()
+
+    protected $writer  = null;
+    protected $target  = null;
+    protected $image   = null;
+    protected $origin  = null;
+    protected $title   = null;
+    protected $content = null;
+    protected $begin   = null;
+    protected $end     = null;
+    protected $comment = null;
+    protected $priv    = null;
+
+    public function writer()
     {
-        return $this->user;
+        return $this->writer;
     }
 
-    public function group()
+    public function target()
     {
-        return $this->group;
+        return $this->target;
     }
 
     public function image(FrankizImage $fi = null)
@@ -105,18 +104,9 @@ class News extends meta
         $this->priv = $priv;
     }
 
-    public function important($important = null)
-    {
-        if (is_null($important))
-            return $this->important;
-        $this->important = $important;
-    }
-    
     public function delete()
     {  
-	    if ($this->id == null)
-	        throw new Exception("This news doesn't exist.");
-	    XDB::execute('DELETE FROM news WHERE id={?}', $this->id);
+	    XDB::execute('DELETE FROM news WHERE id={?}', $this->id());
     }
 
     public function replace()
@@ -129,85 +119,73 @@ class News extends meta
         else 
             $this->update();
     }
-    
+
     public function update()
     {        
-            XDB::execute('UPDATE  news
-                             SET  gid = {?}, uid = {?}, iid = {?}, oid = {?},
-                                  title = {?}, content = {?}, end = {?},
-                                  comment = {?}, priv = {?}, important = {?}
-                           WHERE  id = {?}',
-            $this->group->id(), $this->user->id(), $this->image, is_null($this->origin)?null:$this->origin->id(), 
-            $this->title, $this->content, $this->end,
-            $this->comment, $this->priv, $this->important, $this->id);
+        XDB::execute('UPDATE  news
+                         SET  target = {?}, writer = {?}, iid = {?}, origin = {?},
+                              title = {?}, content = {?}, end = {?},
+                              comment = {?}, priv = {?}
+                       WHERE  id = {?}',
+        $this->target->id(), $this->writer->id(), $this->image, is_null($this->origin)?null:$this->origin->id(),
+        $this->title, $this->content, $this->end,
+        $this->comment, $this->priv, $this->id());
     }
-    
+
     public function insert()
     {
-        $this->begin = date("Y-m-d");
-        XDB::execute('INSERT INTO  news
-                              SET  gid = {?}, uid = {?}, iid = {?}, oid = {?},
-                                   title = {?}, content = {?}, begin = {?}, end = {?},
-                                   comment = {?}, priv = {?}, important = {?}',
-            $this->group->id(), $this->user->id(), $this->image, is_null($this->origin)?null:$this->origin->id(),
-            $this->title, $this->content, $this->begin, $this->end,
-            $this->comment, $this->priv, $this->important);
-            
+        XDB::execute('INSERT INTO news SET id = NULL');
         $this->id = XDB::insertId();
+        $this->update();
     }
-    
-    public function fillFromArray(array $values)
-    {
-        if (isset($values['uid'])) {
-            $this->user = new User($values['uid']);
-            $this->user->select(User::SELECT_BASE);
-            unset($values['uid']);
-        }
 
-        if (isset($values['gid'])) {
-            $this->group = new Group($values['gid']);
-            $this->group->select(Group::SELECT_BASE);
-            unset($values['gid']);
-        }
-        
-        if (isset($values['iid'])) {
-            /*$this->image = new FrankizImage($values['iid']);
-            $this->image->select(FrankizImage::SELECT_FULL);*/
-            $this->image = $values['iid'];
-            unset($values['iid']);
-        }
-    
-        if (isset($values['oid'])) {
-            $this->origin = new Group($values['oid']);
-            $this->origin->select(Group::SELECT_BASE);
-            unset($values['oid']);
-        }
-
-        parent::fillFromArray($values);
-    }
-    
-    public static function batchSelect(array $news, $fields = null)
+    public static function batchSelect(array $news, $options = null)
     {
         if (empty($news))
             return;
 
+        if (empty($options)) {
+            $options = array(self::SELECT_BODY => null);
+            $options[self::SELECT_BASE] = array('writers' => User::SELECT_BASE,
+                                                'groups' => Group::SELECT_BASE);
+        }
+
+        $bits = self::optionsToBits($options);
         $news = array_combine(self::toIds($news), $news);
-            
+
         $request = 'SELECT id';
-        if ($fields & self::SELECT_BASE)
-            $request .= ', uid, gid, title, oid, begin, end, priv, important';
-        if ($fields & self::SELECT_BODY)
+        if ($bits & self::SELECT_BASE)
+            $request .= ', writer, target, title, origin, begin, end, priv';
+        if ($bits & self::SELECT_BODY)
             $request .= ', content, iid, comment';
-        
+
         $iter = XDB::iterator($request .
                         ' FROM news
                          WHERE id IN {?}',
                          array_keys($news));
-                         
-        while ($array_datas = $iter->next())
-            $news[$array_datas['id']]->fillFromArray($array_datas);
+
+        $users  = new Collection('User');
+        $groups = new Collection('Group');
+        $images = new Collection('FrankizImage');
+        while ($datas = $iter->next())
+        {
+            $datas['writer'] = $users->addget($datas['writer']);
+            $datas['target'] = $groups->addget($datas['target']);
+            $datas['origin'] = $groups->addget($datas['origin']);
+            $datas['image']  = $images->addget($datas['iid']); unset($datas['iid']);
+            $news[$datas['id']]->fillFromArray($datas);
+        }
+
+        if (!empty($options[self::SELECT_BASE]['writers']))
+            $users->select($options[self::SELECT_BASE]['writers']);
+
+        if (!empty($options[self::SELECT_BASE]['groups']))
+            $groups->select($options[self::SELECT_BASE]['groups']);
+
+        if (!empty($options[self::SELECT_BASE]['images']))
+            $groups->select($options[self::SELECT_BASE]['images']);
     }
-    
+
     public function order()
     {
         $d = date("Y-m-d");
@@ -217,7 +195,7 @@ class News extends meta
             return 'new';
         if ($this->end == $d)
             return 'old';
-        else return 'other';
+        return 'other';
     }
 
 }
