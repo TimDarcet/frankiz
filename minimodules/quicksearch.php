@@ -19,16 +19,16 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class LientolMiniModule extends FrankizMiniModule
+class QuickSearchMiniModule extends FrankizMiniModule
 {
     public function tpl()
     {
-        return "minimodules/lien_tol/lien_tol.tpl";
+        return "minimodules/quicksearch/quicksearch.tpl";
     }
 
     public function title()
     {
-        return "Rechercher sur le Tol";
+        return "Recherche rapide";
     }
 
     public function run()

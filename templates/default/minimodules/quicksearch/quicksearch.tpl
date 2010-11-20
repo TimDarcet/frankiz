@@ -20,18 +20,22 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if ip_internal()}
-{assign var=wikix_url value="http://frankiz.polytechnique.fr/eleves/wikix"}
-{else}
-{assign var=wikix_url value="http://www.polytechnique.fr/eleves/wikix"}
-{/if}
+<div class="formulaire">
+Trombino:
+    <form enctype="multipart/form-data" method="post" action="tol/">
+        <input type="text" name="free" value="" />
+        <input type="submit" name="ok" value="Chercher" />
+    </form>
+</div>
 
-<form enctype="multipart/form-data" method="post" id="lien_wiki_x" action="{$wikix_url}/Special:Search">
-  <div class="formulaire">
-    <input type="hidden" name="go" value="Consulter" />
-    <input type="text" id="lien_wiki_xsearch" name="search" value="" />
-    <input type="submit" name="ok" value="Chercher"/>
-  </div>
-</form>
+<div class="formulaire">
+Wikix:
+    <form enctype="multipart/form-data" method="post" action="http://wikix.polytechnique.org/eleves/wikix/Sp%C3%A9cial:Recherche">
+        <input name="go" value="Consulter" type="hidden">
+        <input name="search" value="" type="text">
+        <input name="ok" value="Chercher" type="submit">
+    </form>
+</div>
+
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

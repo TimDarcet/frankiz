@@ -23,7 +23,7 @@
 <table><tbody>
 <tr>
     <td>
-        <a {path_to_href_attribute path="accueil"} accesskey="a">Accueil</a>
+        <a {path_to_href_attribute path="home"} accesskey="h">Accueil</a>
         <div class="subnav subnavwithoutjs">
             <div class="bkg" />
             <table class="body" style="height: 90px; font-size: 30px;">

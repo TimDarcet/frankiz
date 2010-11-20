@@ -27,12 +27,12 @@
         <th>Name</th>
         <th>Rights</th>
     </tr>
-    {foreach from=$minimodule.groups|order:'frequency' item=group}
+    {foreach from=$minimodule.user->groups()|order:'frequency' item=group}
         <tr>
             <td>{$group->ns()}</td>
             <td>{$group->frequency()}</td>
             <td>{$group->name()}</td>
-            {assign var='rights' value=$user->rights($group)}
+            {assign var='rights' value=$minimodule.user->rights($group)}
             <td>{$rights->flags()}</td>
         </tr>
     {/foreach}
