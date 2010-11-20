@@ -19,59 +19,16 @@
 {*  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA               *}
 {*                                                                        *}
 {**************************************************************************}
+Bonjour,
 
-<tr>
-    <td>
-        Titre :
-    </td>
-    <td>
-        <input type='text' name='title' value="{$item->title()}" />
-    </td>
-</tr>
-    
-<tr>
-    <td>
-        Description :
-    </td>
-    <td>
-        <textarea name='description' rows=30 cols=50>{$item->description()}</textarea>
-    </td>
-</tr>
-            
-<tr>
-    <td>
-        Date :
-    </td>
-    <td>
-        <input type='text' name='date' value="{$item->date()}" />
-    </td>
-</tr>
-   
-<tr>
-    <td>
-        Heure de début :
-    </td>
-    <td>
-        <input type='text' name='begin' value="{$item->begin()}" />
-    </td>
-</tr>
-   
-<tr>
-    <td>
-        Heure de fin :
-    </td>
-    <td>
-        <input type='text' name='end' value="{$item->end()}" />
-    </td>
-</tr>
-            
-<tr>
-    <td>
-        Privé :
-    </td>
-    <td>
-        <input type="checkbox" name="priv" {if $item->priv()}checked="checked"{/if}/>
-    </td>
-</tr>
+{$user|smarty:nodefaults} a soumis une qdj.
+
+Pour valider ou non cette demande va sur la page suivante : 
+
+http://frankiz.polytechnique.fr/admin/validate
+
+
+Cordialement,
+Le Webmestre de Frankiz
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

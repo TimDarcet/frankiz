@@ -1,6 +1,6 @@
 {**************************************************************************}
 {*                                                                        *}
-{*  Copyright (C) 2010 Binet Réseau                                       *}
+{*  Copyright (C) 2009 Binet Réseau                                       *}
 {*  http://www.polytechnique.fr/eleves/binets/reseau/                     *}
 {*                                                                        *}
 {*  This program is free software; you can redistribute it and/or modify  *}
@@ -20,58 +20,23 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<tr>
-    <td>
-        Titre :
-    </td>
-    <td>
-        <input type='text' name='title' value="{$item->title()}" />
-    </td>
-</tr>
-    
-<tr>
-    <td>
-        Description :
-    </td>
-    <td>
-        <textarea name='description' rows=30 cols=50>{$item->description()}</textarea>
-    </td>
-</tr>
-            
-<tr>
-    <td>
-        Date :
-    </td>
-    <td>
-        <input type='text' name='date' value="{$item->date()}" />
-    </td>
-</tr>
-   
-<tr>
-    <td>
-        Heure de début :
-    </td>
-    <td>
-        <input type='text' name='begin' value="{$item->begin()}" />
-    </td>
-</tr>
-   
-<tr>
-    <td>
-        Heure de fin :
-    </td>
-    <td>
-        <input type='text' name='end' value="{$item->end()}" />
-    </td>
-</tr>
-            
-<tr>
-    <td>
-        Privé :
-    </td>
-    <td>
-        <input type="checkbox" name="priv" {if $item->priv()}checked="checked"{/if}/>
-    </td>
-</tr>
+<div class="title">
+    QDJ
+</div>
+<div class="qdj">
+    <div class="question">
+        {if $question} {$question} {else} {$item->question} {/if}
+    </div>
+    <table>
+    <tr class="answers">
+        <td class="answer1" width=50%>
+            {if $answer1} {$answer1} {else} {$item->answer1} {/if}
+        </td>
+        <td class="answer2">
+            {if $answer2} {$answer2} {else} {$item->answer2} {/if}
+        </td>
+    </tr>
+    </table>
+</div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

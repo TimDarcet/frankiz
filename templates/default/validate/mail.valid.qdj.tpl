@@ -20,58 +20,25 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<tr>
-    <td>
-        Titre :
-    </td>
-    <td>
-        <input type='text' name='title' value="{$item->title()}" />
-    </td>
-</tr>
-    
-<tr>
-    <td>
-        Description :
-    </td>
-    <td>
-        <textarea name='description' rows=30 cols=50>{$item->description()}</textarea>
-    </td>
-</tr>
-            
-<tr>
-    <td>
-        Date :
-    </td>
-    <td>
-        <input type='text' name='date' value="{$item->date()}" />
-    </td>
-</tr>
-   
-<tr>
-    <td>
-        Heure de début :
-    </td>
-    <td>
-        <input type='text' name='begin' value="{$item->begin()}" />
-    </td>
-</tr>
-   
-<tr>
-    <td>
-        Heure de fin :
-    </td>
-    <td>
-        <input type='text' name='end' value="{$item->end()}" />
-    </td>
-</tr>
-            
-<tr>
-    <td>
-        Privé :
-    </td>
-    <td>
-        <input type="checkbox" name="priv" {if $item->priv()}checked="checked"{/if}/>
-    </td>
-</tr>
+{if $isok}
+Ton qdj vient d'être acceptée... Elle va bientôt être programmée.
+{$comm|smarty:nodefaults}
+
+
+Merci de ta participation 
+
+Cordialement,
+Le QDJmestre
+{else}
+Ta qdj n'a pas été acceptée pour la raison suivante :
+{$comm|smarty:nodefaults}
+
+
+Désolé 
+
+Cordialement,
+Le QDJmestre
+{/if}
+
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

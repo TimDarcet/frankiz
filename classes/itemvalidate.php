@@ -29,7 +29,7 @@ abstract class ItemValidate
     protected $comments = array();
     
     // the validations rules : comments for admins
-    protected $rules = "Mieux vaut laisser une demande de validation à un autre admin que de valider une requête illégale ou que de refuser une demande légitime";
+    protected $rules = "Mieux vaut laisser une demande de validation à un autre admin que de valider une requête illégale ou que de refuser une demande légitime.";
 
     // if the request can be multiple
     protected $unique = false;
@@ -71,7 +71,7 @@ abstract class ItemValidate
     
     public function __construct()
     {
-        $this->user = s::user();
+        $this->user = S::user();
     }
     
     public function sendmailcomment() 
@@ -82,8 +82,8 @@ abstract class ItemValidate
         $mail = new FrankizMailer('validate/mail.comment.tpl');
         $mail->assign('type', $this->type);
         $mail->assign('user', $this->user->displayName());
-        if (env::has('comm'))
-            $mail->assign('comm', env::v('comm'));
+        if (Env::has('comm'))
+            $mail->assign('comm', Env::v('comm'));
             
         $mail->Subject = "Commentaires de validation {$this->type}";
         $mail->SetFrom($this->_mail_from_addr(), $this->_mail_from_disp());
@@ -136,6 +136,7 @@ abstract class ItemValidate
 
 class NewsValidate extends ItemValidate
 {
+    protected $rules = 'Une annonce ne doit pas être trop longue et respecter les règles typographiques.' ;
     protected $type = 'news';
     protected $news;
 
@@ -162,16 +163,16 @@ class NewsValidate extends ItemValidate
     
     public function handle_editor()
     {
-        $this->news->title(env::t('title', ''));
-        $this->news->content(env::t('content', ''));
-        $this->news->end(env::t('end', $this->news->end()));
+        $this->news->title(Env::t('title', ''));
+        $this->news->content(Env::t('content', ''));
+        $this->news->end(Env::t('end', $this->news->end()));
         if(substr($this->news->end(), 4, 1) != '-')
         {
             $this->news->end(substr_replace($this->news->end(), '-', 6, 0));
             $this->news->end(substr_replace($this->news->end(), '-', 4, 0));
         }
-        $this->news->priv(env::has('priv')?1:0);    
-        $this->news->important(env::has('important')?1:0);
+        $this->news->priv(Env::has('priv')?1:0);    
+        $this->news->important(Env::has('important')?1:0);
         return true;
     }
 
@@ -234,40 +235,40 @@ class NewsValidate extends ItemValidate
 
 class ActivityValidate extends ItemValidate
 {
+    protected $rules = 'Seule les activités ponctuelles doivent passer par la validation. Si ce n\'est pas le cas, il faut créer l\'activité régulière qui va bien.';
     protected $type = 'activity';
-    protected $group;
-    protected $image;
+    protected $writer;
+    protected $target;
     protected $title;
-    protected $desc;
+    protected $description;
     protected $date;
     protected $begin;
     protected $end;
-    protected $regular;
-    protected $number;
+    protected $priv;
 
-    public function __construct(Group $group, FrankizImage $image, String $title,
-        String $desc, String $date, String $begin, String $end, Integer $regular, Integer $number)
+    public function __construct(User $writer, Group $target, String $title,
+        String $desc, String $date, String $begin, String $end, Boolean $priv)
     {
-        $this->group = $group;
-        $this->image = $image;
+        $this->writer = $writer;
+        $this->target = $target;
         $this->title = $title;
-        $this->desc = $desc;
+        $this->description = $desc;
         $this->date = $date;
         $this->begin = $begin;
         $this->end = $end;
-        $this->regular = $regular;
-        $this->number = $number;
+        $this->priv = $priv;
+        
         parent::__construct();
     }
 
-    public function group()
+    public function writer()
     {
-        return $this->group;
+        return $this->writer;
     }
     
-    public function image()
+    public function target()
     {
-        return $this->image;
+        return $this->target;
     }
     
     public function title()
@@ -275,9 +276,9 @@ class ActivityValidate extends ItemValidate
         return $this->title;
     }
     
-    public function desc()
+    public function description()
     {
-        return $this->desc;
+        return $this->description;
     }
     
     public function date()
@@ -294,20 +295,10 @@ class ActivityValidate extends ItemValidate
     {
         return $this->end;
     }
-    
-    public function infos()
-    {
-        return $this->infos;
-    }
 
-    public function regular()
+    public function priv()
     {
-        return $this->regular;
-    }
-
-    public function number()
-    {
-        return $this->number;
+        return $this->priv;
     }
     
     public function show()
@@ -322,11 +313,12 @@ class ActivityValidate extends ItemValidate
     
     public function handle_editor()
     {
-        $this->title  = env::t('title', '');
-        $this->desc   = env::t('desc', '');
-        $this->date   = env::t('date', $this->date);
-        $this->begin  = env::t('begin', $this->begin);
-        $this->end    = env::t('end', $this->end);
+        $this->title        = Env::t('title', '');
+        $this->description  = Env::t('description', '');
+        $this->date         = Env::t('date', $this->date);
+        $this->begin        = Env::t('begin', $this->begin);
+        $this->end          = Env::t('end', $this->end);
+        $this->priv         = Env::has('priv');
     
         if(substr($this->date, 4, 1) != '-')
         {
@@ -334,8 +326,6 @@ class ActivityValidate extends ItemValidate
             $this->date = substr_replace($this->date, '-', 4, 0);
         }
         
-        $this->number   = env::i('number', 1);
-        $this->regular  = env::has('regular')?1:0;
         return true;
     }
 
@@ -387,37 +377,22 @@ class ActivityValidate extends ItemValidate
     
     public function commit()
     {
-        if(!$this->regular)
-        {
-            $this->number = 1;
-        }
-        for($i = 0; $i < max(1, min($this->number, 5)); $i++)
-        {
-            $time1 = date("Y-m-d H:i:s", mktime(
-                substr($this->begin, 0, 2),
-                substr($this->begin, 3, 2),
-                0,
-                substr($this->date, 5, 2),
-                substr($this->date, 8, 2) + $i * 7,
-                substr($this->date, 0, 4)));
-            $time2 = date("Y-m-d H:i:s", mktime(
-                substr($this->end, 0, 2),
-                substr($this->end, 3, 2),
-                0,
-                substr($this->date, 5, 2),
-                substr($this->date, 8, 2) + $i * 7,
-                substr($this->date, 0, 4)));
-            $a = new Activity(array(
-                'user'        => s::user(), 
-                'group'       => $this->group,
-                'image'       => $this->image,
-                'title'       => $this->title,
-                'description' => $this->desc,
-                'begin'       => $time1,
-                'end'         => $time2));
-            trace($a);
-            $a->replace();
-        }
+        $begin = $this->date . ' ' . $this->begin . ':00';
+        $end = $this->date . ' ' . $this->end . ':00';
+        $a = new Activity(array(
+                'target'        => $this->target->id(),
+                'title'         => $this->title,
+                'description'   => $this->description,
+                'days'          => '',
+                'priv'          => $this->priv));
+        $a->replace();
+        $ai = new ActivityInstance(array(
+                'aid'           => $a->id(),
+                'writer'        => $this->writer->id(),
+                'comment'       => '',
+                'begin'         => $begin,
+                'end'           => $end));
+        $ai->replace();
         return true;
     }
     
@@ -473,8 +448,8 @@ class MailValidate extends ItemValidate
     
     public function handle_editor()
     {
-        $this->subject = env::t('subject');
-        $this->body = env::t('body');
+        $this->subject = Env::t('subject');
+        $this->body = Env::t('body');
         return true;
     }
     
@@ -541,6 +516,110 @@ class MailValidate extends ItemValidate
         }
         return true;
     }    
+}
+
+
+class QDJValidate extends ItemValidate
+{
+    protected $type = 'qdj';
+    protected $question;
+    protected $answer1;
+    protected $answer2;
+
+    public function __construct(String $question, String $answer1, String $answer2)
+    {
+        $this->question  = $question;
+        $this->answer1   = $answer1;
+        $this->answer2   = $answer2;
+        parent::__construct();
+    }
+
+    public function question()
+    {
+        return $this->question;
+    }
+    
+    public function answer1()
+    {
+        return $this->answer1;
+    }
+    
+    public function answer2()
+    {
+        return $this->answer2;
+    }
+    
+    public function show()
+    {
+        return 'validate/form.show.qdj.tpl';
+    }
+
+    public function editor()
+    {
+        return 'validate/form.edit.qdj.tpl';
+    }
+    
+    public function handle_editor()
+    {
+        $this->question  = Env::t('question', '');
+        $this->answer1   = Env::t('answer1', '');
+        $this->answer2   = Env::t('answer2', '');
+        return true;
+    }
+
+    public function sendmailadmin()
+    {
+        if (is_null($this->user->bestEmail()))
+            $this->user->select(User::SELECT_BASE);
+        
+        $mail = new FrankizMailer('validate/mail.admin.qdj.tpl');
+        $mail->assign('user', $this->user->displayName());
+    
+        $mail->subject("[Frankiz] Validation d'une QDJ");
+        $mail->SetFrom($this->user->bestEmail(), $this->user->displayName());
+        $mail->AddAddress($this->_mail_from_addr(), $this->_mail_from_disp());
+        $mail->Send(false);
+    }
+    
+    public function sendmailfinal($isok)
+    {
+        if (is_null($this->user->bestEmail()))
+            $this->user->select(User::SELECT_BASE);
+
+        $mail = new FrankizMailer('validate/mail.valid.qdj.tpl');
+        $mail->assign('isok', $isok);
+        if (Env::has("ans"))
+            $mail->assign('comm', Env::v('ans'));
+    
+        if ($isok)
+            $mail->Subject = '[Frankiz] Ta QDJ a été acceptée';
+        else
+            $mail->Subject = '[Frankiz] Ta QDJ a été refusée';
+          
+        $mail->SetFrom($this->_mail_from_addr(), $this->_mail_from_disp());
+        $mail->AddAddress($this->user->bestEmail(), $this->user->displayName());
+        $mail->AddCC($this->_mail_from_addr(), $this->_mail_from_disp());
+        $mail->Send(false);
+    }    
+
+    public function _mail_from_disp()
+    {
+        return 'Le QDJmestre';
+    }
+     
+    public function _mail_from_addr()
+    {
+        return 'brice.gelineau@polytechnique.edu';
+    }
+    
+    public function commit()
+    {
+        XDB::execute('INSERT INTO  qdj
+                              SET  question = {?}, answer1 = {?}, answer2 = {?}',
+                    $this->question, $this->answer1, $this->answer2);
+        return true;
+    }
+    
 }
 
 /* vim: set expandtab shiftwidth=4 tabstop=4 softtabstop=4 foldmethod=marker enc=utf-8: */

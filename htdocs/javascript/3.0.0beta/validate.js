@@ -18,8 +18,32 @@ $(document).ready(function() {
 	});
 	
 	// For propositions
+	// news and mails
 	wiki_preview.start($('#text_proposal'), $('#preview_proposal'));
 
+	// activities
+	$("input[name='regular_activity_proposal']").change(function(){
+	    if ($("input[@name='regular_activity_proposal']:checked").val() == '0')
+	    {
+	    	$("#new_activity_proposal").show();
+	    	$("#old_activity_proposal").html('');
+	    	$("#old_activity_proposal").hide();
+	    }
+	    else 
+	    {
+	    	$("#new_activity_proposal").hide();
+	    	$("#old_activity_proposal").show();
+	    	$.ajax({
+                type: 'POST',
+                 url: 'proposal/activity/ajax',
+                data: 'aid=' + $("input[@name='regular_activity_proposal']:checked").val(),
+             success: function(data) { $("#old_activity_proposal").html(data); }
+          });
+	    }
+	});
+	
+	
+	
 	if ($('#regular_activity_proposal').attr('checked'))
 		$("#number_activity_proposal").show();
 	else
@@ -30,4 +54,10 @@ $(document).ready(function() {
 		else
 			$("#number_activity_proposal").hide();
 	});
+	
+	// qdj
+	wiki_preview.start($('#quest_qdj_proposal'), $('.question'));
+	wiki_preview.start($('#ans1_qdj_proposal'), $('.answer1'));
+	wiki_preview.start($('#ans2_qdj_proposal'), $('.answer2'));
+
 });

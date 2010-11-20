@@ -34,16 +34,7 @@
         Description :
     </td>
     <td>
-        {$item->desc()}
-    </td>
-</tr>
-            
-<tr>
-    <td>
-        Image :
-    </td>
-    <td>
-        A faire quand les classes de Riton seront pretes
+        {$item->description()}
     </td>
 </tr>
             
@@ -55,26 +46,6 @@
         {$item->date()}
     </td>
 </tr>
-            
-<tr>
-    <td>
-        Toutes les semaines :
-    </td>
-    <td>
-        {if $item->regular()}oui{else}non{/if}
-    </td>
-</tr>
-
-{if $item->regular()}            
-<tr>
-    <td>
-        Nombre de semaines :
-    </td>
-    <td>
-        {$item->number()}
-    </td>
-</tr>
-{/if}
    
 <tr>
     <td>
@@ -91,6 +62,15 @@
     </td>
     <td>
         {$item->end()}
+    </td>
+</tr>
+   
+<tr>
+    <td>
+        Privé :
+    </td>
+    <td>
+        {$item->priv()}
     </td>
 </tr>
 

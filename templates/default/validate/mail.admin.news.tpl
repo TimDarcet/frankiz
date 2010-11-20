@@ -26,7 +26,7 @@ Bonjour,
 
 Pour valider ou non cette demande va sur la page suivante : 
 
-http://frankiz.polytechnique.fr/admin/valid_annonces.php
+http://frankiz.polytechnique.fr/admin/validate
 
 
 Cordialement,

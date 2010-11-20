@@ -27,6 +27,14 @@
     font-size: 80%;
 }
 
+.click {
+    cursor: pointer;
+}
+
+.margin_right {
+	margin-right: 20px;
+}
+
 .msg_proposal {
     font-size: 20px;
     text-align: center;
@@ -64,6 +72,17 @@
     vertical-align: top;
 }
 
+.box_proposal .subtitle {
+    border-top: 1px solid #BDD5E3;
+    margin-top: 5px;
+    padding-top: 5px;
+    font-weight: bold;
+    text-align: center; 
+}
+
+.box_proposal .section {
+    margin-bottom: 10px;
+}
 
 /*******************************************************************************
      1   Validations
@@ -76,18 +95,6 @@
     border: 1;
 }
 
-.validate .subtitle {
-    border-top: 1px solid #BDD5E3;
-	margin-top: 5px;
-	padding-top: 5px;
-    font-weight: bold;
-    text-align: center; 
-}
-
-.validate .click {
-    cursor: pointer;
-}
-
 .validate .text_validate {
     width: 90%;
 }
@@ -96,10 +103,6 @@
     resize: auto;
     width: 90%;
     height: 80px;
-}
-
-.validate .section {
-    margin-bottom: 10px;
 }
 
 
@@ -133,3 +136,18 @@
      3   Proposals
 
 *******************************************************************************/
+
+.qdj {
+    font-size: 11pt;
+    text-align: center;
+    font-weight: bold;
+    text-align:center;
+}
+
+.qdj .answer2  {
+    color:#FFBB00;
+}
+
+.qdj .answer1  {
+    color:red;
+}

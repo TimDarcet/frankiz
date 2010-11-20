@@ -29,7 +29,7 @@ class AdminModule extends PlModule
             'admin/tree'        => $this->make_hook('tree'  , AUTH_MDP, 'admin'),
             'admin/images'      => $this->make_hook('images', AUTH_MDP, 'admin'),
             'admin/image'       => $this->make_hook('image' , AUTH_MDP, 'admin'),
-            'admin/validate'    => $this->make_hook('validate'),
+            'admin/validate'    => $this->make_hook('validate', AUTH_MDP),
             'admin/debug'       => $this->make_hook('debug' , AUTH_PUBLIC)
         );
     }
@@ -92,21 +92,22 @@ class AdminModule extends PlModule
 
     function handler_validate($page, $action = 'list', $id = null) 
     {   
-        $filter = new ValidateFilter(new VFC_User(s::user()));
+        $filter = new ValidateFilter(new VFC_User(S::user()));
 
         $collec = $filter->get();
         $collec->select(Validate::SELECT_BASE | Validate::SELECT_ITEM);
         
-        if(env::has('val_id'))
+        if(Env::has('val_id'))
         {
-            $el = $collec->get(env::v('val_id'));
-            if (!is_null($el))
-            {
-                if ($el->handle_form() && (env::has('accept') || env::has('refuse')))
-                    $collec->remove(env::v('val_id'));
-            }
-            else
+            $el = $collec->get(Env::v('val_id'));
+            if (!$el)
                 $page->assign('msg', 'La validation a déjà été effectuée.');
+            else
+            {
+                if ($el->handle_form() && (Env::has('accept') || Env::has('refuse')))
+                    $collec->remove(Env::v('val_id'));
+            }
+                
         }
         
         $page->assign('val', $collec);

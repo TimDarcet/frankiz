@@ -21,57 +21,30 @@
 {**************************************************************************}
 
 <tr>
-    <td>
-        Titre :
+    <td width=20%>
+        Question :
     </td>
     <td>
-        <input type='text' name='title' value="{$item->title()}" />
-    </td>
-</tr>
-    
-<tr>
-    <td>
-        Description :
-    </td>
-    <td>
-        <textarea name='description' rows=30 cols=50>{$item->description()}</textarea>
-    </td>
-</tr>
-            
-<tr>
-    <td>
-        Date :
-    </td>
-    <td>
-        <input type='text' name='date' value="{$item->date()}" />
-    </td>
-</tr>
-   
-<tr>
-    <td>
-        Heure de début :
-    </td>
-    <td>
-        <input type='text' name='begin' value="{$item->begin()}" />
-    </td>
-</tr>
-   
-<tr>
-    <td>
-        Heure de fin :
-    </td>
-    <td>
-        <input type='text' name='end' value="{$item->end()}" />
-    </td>
-</tr>
-            
-<tr>
-    <td>
-        Privé :
-    </td>
-    <td>
-        <input type="checkbox" name="priv" {if $item->priv()}checked="checked"{/if}/>
+        <input type="text" name="quest" value="{$item->question}"/>
     </td>
 </tr>
 
+<tr>
+    <td>
+        Réponse 1 :
+    </td>
+    <td>
+        <input type="text" name="ans1" value="{$item->answer1}"/>
+    </td>
+</tr>
+
+<tr>
+    <td>
+        Réponse 2 :
+    </td>
+    <td>
+        <input type="text" name="ans2" value="{$item->answer2}"/>
+    </td>
+</tr>
+            
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

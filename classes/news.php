@@ -13,6 +13,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
  *  GNU General Public License for more details.                           *
  *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
  *  along with this program; if not, write to the Free Software            *
  *  Foundation, Inc.,                                                      *
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
@@ -29,7 +30,7 @@
 
 class News extends meta
 {    
-    const SELECT_HEAD = 0x01;
+    const SELECT_BASE = 0x01;
     const SELECT_BODY = 0x02;
     
     protected $user;
@@ -151,6 +152,8 @@ class News extends meta
             $this->group->id(), $this->user->id(), $this->image, is_null($this->origin)?null:$this->origin->id(),
             $this->title, $this->content, $this->begin, $this->end,
             $this->comment, $this->priv, $this->important);
+            
+        $this->id = XDB::insertId();
     }
     
     public function fillFromArray(array $values)
@@ -191,7 +194,7 @@ class News extends meta
         $news = array_combine(self::toIds($news), $news);
             
         $request = 'SELECT id';
-        if ($fields & self::SELECT_HEAD)
+        if ($fields & self::SELECT_BASE)
             $request .= ', uid, gid, title, oid, begin, end, priv, important';
         if ($fields & self::SELECT_BODY)
             $request .= ', content, iid, comment';

@@ -149,68 +149,54 @@ class Validate extends Meta
             return false;
 
         // edit informations
-        if (env::has('edit')) {
+        if (Env::has('edit')) {
             if ($this->item->handle_editor()) {
                 $this->update();
-                $this->trigSuccess('Requête mise à jour');
+                Platal::page()->assign('msg', 'Requête mise à jour');
                 return true;
             }
             return false;
         }
 
         // add a comment
-        if (env::has('add_comm')) {
-            if (!strlen(env::t('comm'))) {
+        if (Env::has('add_comm')) {
+            if (!strlen(Env::t('comm'))) {
                 return false;
             }
-            $this->item->add_comment(S::user()->displayName(), env::v('comm'));
+            $this->item->add_comment(S::user()->displayName(), Env::v('comm'));
             $this->item->sendmailcomment();
             
             $this->update();
-            $this->trigSuccess('Commentaire ajouté');
+            Platal::page()->assign('msg', 'Commentaire ajouté');
             return true;
         }
 
-        if (env::has('accept')) {
+        if (Env::has('accept')) {
             if ($this->item->commit()) {
                 $this->item->sendmailfinal(true);
                 $this->clean();
-                $this->trigSuccess('Email de validation envoyé');
+                Platal::page()->assign('msg', 'Email de validation envoyé');
                 return true;
             } else {
-                $this->trigError('Erreur lors de la validation');
+                Platal::page()->assign('msg', 'Erreur lors de la validation');
                 return false;
             }
         }
 
-        if (env::has('refuse')) {
-            if (env::v('ans')) {
+        if (Env::has('refuse')) {
+            if (Env::v('ans')) {
                 $this->item->sendmailfinal(false);
                 $this->clean();
-                $this->trigSuccess('Email de refus envoyé');
+                Platal::page()->assign('msg', 'Email de refus envoyé');
                 return true;
             } else {
-                $this->trigError('Pas de motivation pour le refus !!!');
+                Platal::page()->assign('msg', 'Pas de motivation pour le refus !!!');
             }
         }
 
         return false;
     }
 
-    protected function trigError($msg)
-    {
-        Platal::page()->trigError($msg);
-    }
-
-    protected function trigWarning($msg)
-    {
-        Platal::page()->trigWarning($msg);
-    }
-
-    protected function trigSuccess($msg)
-    {
-        Platal::page()->trigSuccess($msg);
-    }
 
     public static function batchSelect(array $val, $fields = null)
     {

@@ -24,8 +24,8 @@
 
 {if isset($envoye|smarty:nodefaults)}
 
-    <div class="msg_proposal"> Merci d'avoir proposé une activité. <br />
-    Le responsable du groupe essayera de te la valider au plus tôt. </div>
+    <div class="msg_proposal"> Ton activité a été proposée. <br />
+    Le responsable du groupe essaiera de te la valider au plus vite</div>
 
 {else}
 
@@ -39,10 +39,62 @@
     </div>
 {/if}
 
-<form enctype="multipart/form-data" method="post" action="proposal/activity" id="form_mail_promo">
-    <div class="news_proposal box_proposal">
+
+<form enctype="multipart/form-data" method="post" action="proposal/activity">
+
+    <div class="box_proposal">
+        <div class="title click">
+           Activité Régulière
+        </div>
+        
+        <table class="hide show">
+            <tr>
+                <td width = 20%>
+                    Créer :
+                </td>
+                <td>
+                    <input type="submit" name="new_regular" value="Nouvelle activité"/>
+                </td>
+            </tr>
+            
+            <tr>
+                <td width = 20%>
+                    Changer :
+                </td>
+                <td>
+                    <input type="submit" name="modify_regular" value="Mofifier une activité"/>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    Sélectionner :
+                </td>
+                <td>
+                    <input type="radio" name="regular_activity_proposal" value="0" {if $choice_regular == 0}checked{/if}> Non
+                </td>
+            </tr>
+            
+            {foreach from=$regular_activities item=activity}
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="radio" name="regular_activity_proposal" value="{$activity->id()}" {if $choice_regular == $activity->id()}checked{/if}> {$activity->title()}
+                    </td>
+                </tr>
+            {/foreach}
+        </table>
+    </div>
+    
+    <div class="hide" id="old_activity_proposal">
+    </div>
+</form>
+
+
+<form enctype="multipart/form-data" method="post" action="proposal/activity">
+    <div class="box_proposal" id="new_activity_proposal">
         <div class="title">
-           Activité
+           Activité Ponctuelle
         </div>
         <table>
             <tr>
@@ -74,43 +126,10 @@
             
             <tr>
                 <td>
-                    Image :
-                </td>
-                <td>
-                    A faire quand les classes de Riton seront pretes
-                </td>
-            </tr>
-            
-            <tr>
-                <td>
                     Date :
                 </td>
                 <td>
-                    {valid_date name="date" value=$date to=7}
-                </td>
-            </tr>
-            
-            <tr>
-                <td>
-                    Toutes les semaines :
-                </td>
-                <td>
-                    <input type="checkbox" name="regular" id="regular_activity_proposal" {if $regular}checked="checked"{/if}/>
-                </td>
-            </tr>
-            
-            <tr id="number_activity_proposal">
-                <td>
-                    Combien de fois :
-                </td>
-                <td>
-                    <select name='number'>
-                        {section name=nbr start=1 loop=6}
-                            <option value={$smarty.section.nbr.index} {if $smarty.section.nbr.index==$number} SELECTED {/if}>
-                                {$smarty.section.nbr.index} semaines
-                            </option>
-                        {/section}
-                    </select>
+                    {valid_date name="date" value=$date to=14}
                 </td>
             </tr>
             
@@ -133,16 +152,24 @@
             </tr>
             
             <tr>
+                <td>
+                    Privé :
+                </td>
+                <td>
+                    <input type="checkbox" name="priv" {if $priv}checked="checked"{/if}/>
+                </td>
+            </tr>
+            
+            <tr>
                 <td></td>
                 <td>
-                    <input type="submit" name="send" value="Valider" onClick="return window.confirm('Voulez vous vraiment proposer cette activité ?')"/>
+                    <input type="submit" name="send_new" value="Valider" onClick="return window.confirm('Voulez vous vraiment proposer cette activité ?')"/>
                 </td>
             </tr>
         
         </table>
     </div>
 </form>
-
 {/if}
 
 

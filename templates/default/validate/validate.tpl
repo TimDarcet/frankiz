@@ -45,6 +45,13 @@
             Validation de : {$valid->type()}
         </div>
         
+        <div class="small">
+            {$item->rules()}
+        </div>
+        
+        <div class="subtitle">
+        </div>
+        
         <table>
         <tr>
             <td width=20%>

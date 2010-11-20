@@ -87,7 +87,7 @@
                     <tr>
                         <td><a {path_to_href_attribute path="proposal/news"}>une annonce</a></td>
                         <td><a {path_to_href_attribute path="proposal/activity"}>un événement</a></td>
-                        <td><a {path_to_href_attribute path="proposition/annonce"}>une QDJ</a></td>
+                        <td><a {path_to_href_attribute path="proposal/qdj"}>une QDJ</a></td>
                     </tr>
                     <tr>
                         <td><a {path_to_href_attribute path="proposition/annonce"}>un sondage</a></td>
