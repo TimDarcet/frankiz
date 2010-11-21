@@ -22,14 +22,16 @@
 
 
 <div class="accueil">
+    {if $postit_news}
     <div class="postit minimodule">
         <div class="head">
             Post-it
         </div>
         <div class="body">
-            TODO: implement the post-it
+            {$postit_news->content()|miniwiki|smarty:nodefaults}
         </div>
     </div>
+    {/if}
     <table>
         <tr>
             <td class="{if ($MiniModules_COL_LEFT|@count) == 0}empty{else}full{/if}">

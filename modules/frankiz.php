@@ -35,6 +35,13 @@ class FrankizModule extends PlModule
         $page->assign('MiniModules_COL_LEFT'  , FrankizMiniModule::get(S::user()->minimodules(FrankizMiniModule::COL_LEFT)));
         $page->assign('MiniModules_COL_MIDDLE', FrankizMiniModule::get(S::user()->minimodules(FrankizMiniModule::COL_MIDDLE)));
         $page->assign('MiniModules_COL_RIGHT' , FrankizMiniModule::get(S::user()->minimodules(FrankizMiniModule::COL_RIGHT)));
+
+        $postit = Group::from('postit');
+        // /!\ : Everybody can read the post-it, you don't have to be member of the group
+        $nf = new NewsFilter(new PFC_And(new NFC_Current(), new NFC_Target($postit)), new NFO_Begin(true));
+        $postit_news = $nf->get(true)->select();
+
+        $page->assign('postit_news', $postit_news);
         $page->assign('title', 'Accueil');
         $page->changeTpl('frankiz/home.tpl');
     }
