@@ -154,7 +154,7 @@ abstract class NewsFilterOrder extends FrankizFilterOrder
 {
 }
 
-class GFO_Begin extends NewsFilterOrder
+class NFO_Begin extends NewsFilterOrder
 {
     public function __construct($desc = false)
     {
@@ -167,7 +167,7 @@ class GFO_Begin extends NewsFilterOrder
     }
 }
 
-class GFO_End extends NewsFilterOrder
+class NFO_End extends NewsFilterOrder
 {
     public function __construct($desc = false)
     {
