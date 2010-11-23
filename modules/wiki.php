@@ -25,6 +25,8 @@ class WikiModule extends PlModule
     {
         return array(
             'wiki/ajax/update' => $this->make_hook('ajax_update', AUTH_COOKIE, 'admin'),
+            'wiki/ajax/get'    => $this->make_hook('ajax_get'   , AUTH_COOKIE, 'admin'),
+            'wiki/admin'       => $this->make_hook('admin'      , AUTH_COOKIE, 'admin'),
         );
     }
 
@@ -43,6 +45,48 @@ class WikiModule extends PlModule
         }
 
         return PL_JSON;
+    }
+
+    function handler_ajax_get($page)
+    {
+        $json = json_decode(Env::v('json'));
+
+        $wiki     = new Wiki($json->wid);
+        $versions = isset($json->versions) ? $json->versions : array('last');
+
+        try {
+            $wiki->select(array(Wiki::SELECT_VERSION => array('versions' => $versions, 'options' => User::SELECT_BASE)));
+            $page->jsonAssign('wiki', $wiki->export());
+        } catch(Exception $e) {
+            $page->jsonAssign('error', $e->getMessage());
+        }
+
+        return PL_JSON;
+    }
+
+    function handler_admin($page)
+    {
+        $mixed = func_get_args();
+        array_shift($mixed);
+        $mixed = implode('/', $mixed);
+
+        // Create the Wiki if it doesn't exist
+        if (isId($mixed))
+            $wiki = new Wiki($mixed);
+        else
+            $wiki = Wiki::from($mixed, true);
+
+        $wiki->select(Wiki::SELECT_BASE | Wiki::SELECT_COUNT);
+
+        $leftVersion = $wiki->count() - 1;
+
+        $wiki->select(array(Wiki::SELECT_VERSION => array('versions' => array('last', $leftVersion), 'options' => User::SELECT_BASE)));
+
+        $page->addCssLink('wiki.css');
+        $page->assign('title', 'Administration Wiki');
+        $page->assign('wiki', $wiki);
+        $page->assign('leftVersion', $leftVersion);
+        $page->changeTpl('wiki/admin.tpl');
     }
 
 }
