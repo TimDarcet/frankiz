@@ -27,9 +27,30 @@ class WikiModule extends PlModule
             'wiki/ajax/update' => $this->make_hook('ajax_update', AUTH_COOKIE, 'admin'),
             'wiki/ajax/get'    => $this->make_hook('ajax_get'   , AUTH_COOKIE, 'admin'),
             'wiki/admin'       => $this->make_hook('admin'      , AUTH_COOKIE, 'admin'),
+            'faq'              => $this->make_hook('show'       , AUTH_COOKIE),
         );
     }
-
+    
+    function handler_show($page, $id)
+    {
+//    	trace($id);
+//        trace(s::user()->checkPerms('admin'));
+    	$wiki = new Wiki($id);
+    	$wiki->select(Wiki::SELECT_VERSION);
+//    	if($id == 42)
+//    	{
+        $page->assign('title', 'sudo filsdepute');
+//    	}
+//        else 
+//        {
+//        $page-> assign('title',"FAQ, Article " + $id); //ça marche pas ce truc
+//        }
+        $page->assign('wiki', $wiki);
+//        $page->assign('leftVersion', $leftVersion);
+        $page->assign('admin', s::user()->checkPerms('admin'));
+        $page->changeTpl('wiki/faq.tpl');
+    }
+    
     function handler_ajax_update($page)
     {
         $json = json_decode(Env::v('json'));
