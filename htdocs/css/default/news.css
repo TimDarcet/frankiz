@@ -28,7 +28,6 @@ ul {
 
 li.news {
     list-style: none;
-    background-color: #BDD5E3;
     border: 1px #002334 solid;
     border-top: none;
     padding: 1px;
@@ -37,6 +36,76 @@ li.news {
 li.news:first-child {
     border-top: 1px #002334 solid;
 }
+
+/* 
+    Open/ Close
+*/
+
+.news.open .content {
+    display: block;
+}
+
+.news.close .content {
+    display: none;
+}
+
+.news.open .switcher_open {
+    display: none;
+}
+
+.news.open .switcher_close {
+    display: inline;
+}
+
+.news.close .switcher_open {
+    display: inline;
+}
+
+.news.close .switcher_close {
+    display: none;
+}
+
+/* 
+    Star / Unstar
+*/
+
+.news.star {
+    background-color: #FFFF00 !important;
+}
+
+.news.unstar {
+    background-color: #FFFFFF;
+}
+
+.news.star .switcher_star {
+    display: none;
+}
+
+.news.star .switcher_unstar {
+    display: inline;
+}
+
+.news.unstar .switcher_star {
+    display: inline;
+}
+
+.news.unstar .switcher_unstar {
+    display: none;
+}
+
+/* 
+    Read / Unread
+*/
+
+.news.read {
+    background-color: #BDD5E3;
+}
+
+.news.unread {
+    background-color: #FFFFFF;
+}
+
+
 
 .groups {
     float: left;
@@ -48,26 +117,6 @@ li.news:first-child {
 
 .title {
     text-align: center;
-}
-
-.news.hide .content {
-    display: none;
-}
-
-.news .switcher_show {
-    display: none;
-}
-
-.news .switcher_hide {
-    display: inline;
-}
-
-.news.hide .switcher_show {
-    display: inline;
-}
-
-.news.hide .switcher_hide {
-    display: none;
 }
 
 .content {

@@ -20,12 +20,21 @@
 {*                                                                        *}
 {**************************************************************************}
 
+<div class="open_all">
+    TODO: Déplier toutes les annonces non-lues
+</div>
 
 <ul>
     {foreach from=$collection|order:'begin' item=news}
-        <li class="news {if $news->hide()}hide{/if}" nid="{$news->id()}">
+        <li class="news close {if $news->read()}read{else}unread{/if} {if $news->star()}star{else}unstar{/if}" nid="{$news->id()}">
             <div class="infos">
                 <div class="groups">
+                    <span class="switcher_star">
+                    Star
+                    </span>
+                    <span class="switcher_unstar">
+                    Unstar
+                    </span>
                     {$news->writer()|user}
                     {$news->origin()|group}
                     ->
@@ -35,10 +44,10 @@
                     {$news->begin()}
                     ->
                     {$news->end()}
-                    <span class="switcher_show">
+                    <span class="switcher_open">
                     Lire
                     </span>
-                    <span class="switcher_hide">
+                    <span class="switcher_close">
                     Cacher
                     </span>
                 </div>

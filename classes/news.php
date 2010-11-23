@@ -30,9 +30,9 @@
 
 class News extends meta
 {    
-    const SELECT_BASE = 0x01;
-    const SELECT_BODY = 0x02;
-    const SELECT_HIDE = 0x04;
+    const SELECT_BASE  = 0x01;
+    const SELECT_BODY  = 0x02;
+    const SELECT_STATE = 0x04;
 
     protected $writer  = null;
     protected $target  = null;
@@ -44,7 +44,8 @@ class News extends meta
     protected $end     = null;
     protected $comment = null;
     protected $priv    = null;
-    protected $hide    = null;
+    protected $read    = null;
+    protected $star    = null;
 
     public function writer()
     {
@@ -106,17 +107,34 @@ class News extends meta
         $this->priv = $priv;
     }
 
-    public function hide($hide = null)
+    public function read($read = null)
     {
-        if ($hide === true) {
-            XDB::execute('INSERT INTO news_hide SET uid = {?}, news = {?}, hide = NOW()', S::user()->id(), $this->id());
-            $this->hide = true;
+        if ($read === true) {
+            XDB::execute('INSERT INTO  news_read
+                                  SET  uid = {?}, news = {?}, time = NOW()
+              ON DUPLICATE KEY UPDATE  time = NOW()', S::user()->id(), $this->id());
+            $this->read = true;
         }
-        if ($hide === false) {
-            XDB::execute('DELETE FROM news_hide WHERE uid = {?} AND news = {?}', S::user()->id(), $this->id());
-            $this->hide = false;
+        if ($read === false) {
+            XDB::execute('DELETE FROM news_read WHERE uid = {?} AND news = {?}', S::user()->id(), $this->id());
+            $this->read = false;
         }
-        return $this->hide;
+        return $this->read;
+    }
+
+    public function star($star = null)
+    {
+        if ($star === true) {
+            XDB::execute('INSERT INTO  news_star
+                                  SET  uid = {?}, news = {?}, time = NOW()
+              ON DUPLICATE KEY UPDATE  time = NOW()', S::user()->id(), $this->id());
+            $this->star = true;
+        }
+        if ($star === false) {
+            XDB::execute('DELETE FROM news_star WHERE uid = {?} AND news = {?}', S::user()->id(), $this->id());
+            $this->star = false;
+        }
+        return $this->star;
     }
 
     public function delete()
@@ -160,7 +178,7 @@ class News extends meta
             return;
 
         if (empty($options)) {
-            $options = array(self::SELECT_BODY => null, self::SELECT_HIDE => null);
+            $options = array(self::SELECT_BODY => null, self::SELECT_STATE => null);
             $options[self::SELECT_BASE] = array('writers' => User::SELECT_BASE,
                                                 'groups' => Group::SELECT_BASE);
         }
@@ -178,9 +196,11 @@ class News extends meta
             $cols['n'] = array_merge($cols['n'], array('content', 'iid', 'comment'));
         }
 
-        if ($bits & self::SELECT_HIDE) {
-            $cols['nh']  = array('hide');
-            $joins['nh'] = PlSqlJoin::left('news_hide', '$ME.news = n.id AND $ME.uid = {?}', S::user()->id());
+        if ($bits & self::SELECT_STATE) {
+            $cols['nr']  = array('time AS when_read');
+            $joins['nr'] = PlSqlJoin::left('news_read', '$ME.news = n.id AND $ME.uid = {?}', S::user()->id());
+            $cols['ns']  = array('time AS star');
+            $joins['ns'] = PlSqlJoin::left('news_star', '$ME.news = n.id AND $ME.uid = {?}', S::user()->id());
         }
 
         $iter = XDB::iterator('SELECT  n.id, ' . self::arrayToSqlCols($cols) . '
@@ -198,7 +218,8 @@ class News extends meta
             $datas['target'] = $groups->addget($datas['target']);
             $datas['origin'] = $groups->addget($datas['origin']);
             $datas['image']  = $images->addget($datas['iid']); unset($datas['iid']);
-            if (!$datas['hide']) $datas['hide'] = false;
+            $datas['read']  = ($datas['when_read'] === null) ? false : $datas['when_read']; unset($datas['when_read']);
+            $datas['star']  = ($datas['star'] === null) ? false : $datas['star'];
             $news[$datas['id']]->fillFromArray($datas);
         }
 
