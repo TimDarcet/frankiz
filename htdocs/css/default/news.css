@@ -49,22 +49,6 @@ li.news:first-child {
     display: none;
 }
 
-.news.open .switcher_open {
-    display: none;
-}
-
-.news.open .switcher_close {
-    display: inline;
-}
-
-.news.close .switcher_open {
-    display: inline;
-}
-
-.news.close .switcher_close {
-    display: none;
-}
-
 /* 
     Star / Unstar
 */
@@ -125,10 +109,15 @@ li.news:first-child {
 	margin: 5px;
 }
 
-.content > div {
+.content .body {
     width: 100%;
     border-top: 1px #002334 solid;
     background-color: white;
+}
+
+.content .writer {
+    width: 100%;
+    text-align: right;
 }
 
 

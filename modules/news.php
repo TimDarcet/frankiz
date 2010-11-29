@@ -30,9 +30,11 @@ class NewsModule extends PlModule
         );
     }
 
-    function handler_ajax_read($page, $id, $state)
+    function handler_ajax_read($page, $ids, $state)
     {
-        $news = new News($id);
+        $ids = explode(',', $ids);
+        $news = new Collection('News');
+        $news->add($ids);
         $news->read(($state == 1));
         exit;
     }

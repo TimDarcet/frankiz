@@ -21,7 +21,7 @@
 {**************************************************************************}
 
 <div class="open_all">
-    TODO: Déplier toutes les annonces non-lues
+    Ouvrir toutes les annonces non-lues
 </div>
 
 <ul>
@@ -35,7 +35,6 @@
                     <span class="switcher_unstar">
                     Unstar
                     </span>
-                    {$news->writer()|user}
                     {$news->origin()|group}
                     ->
                     {$news->target()|group}
@@ -44,20 +43,17 @@
                     {$news->begin()|datetime:'Y-m-d'}
                     ->
                     {$news->end()|datetime:'Y-m-d'}
-                    <span class="switcher_open">
-                    Lire
-                    </span>
-                    <span class="switcher_close">
-                    Cacher
-                    </span>
                 </div>
                 <div class="title">
                     {$news->title()}
                 </div>
             </div>
             <div class="content">
-                <div>
+                <div class="body">
                     {$news->content()|miniwiki|smarty:nodefaults}
+                </div>
+                <div class="writer">
+                    {$news->writer()|user}
                 </div>
             </div>
         </li>

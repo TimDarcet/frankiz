@@ -30,10 +30,19 @@
 
 class News extends meta
 {    
+    /*******************************************************************************
+         Constants
+
+    *******************************************************************************/
+
     const SELECT_BASE  = 0x01;
     const SELECT_BODY  = 0x02;
     const SELECT_STATE = 0x04;
 
+    /*******************************************************************************
+         Properties
+
+    *******************************************************************************/
     protected $writer  = null;
     protected $target  = null;
     protected $image   = null;
@@ -47,6 +56,10 @@ class News extends meta
     protected $read    = null;
     protected $star    = null;
 
+    /*******************************************************************************
+         Getters & Setters
+
+    *******************************************************************************/
     public function writer()
     {
         return $this->writer;
@@ -109,17 +122,34 @@ class News extends meta
 
     public function read($read = null)
     {
-        if ($read === true) {
-            XDB::execute('INSERT INTO  news_read
-                                  SET  uid = {?}, news = {?}, time = NOW()
-              ON DUPLICATE KEY UPDATE  time = NOW()', S::user()->id(), $this->id());
-            $this->read = true;
-        }
-        if ($read === false) {
-            XDB::execute('DELETE FROM news_read WHERE uid = {?} AND news = {?}', S::user()->id(), $this->id());
-            $this->read = false;
-        }
+       self::batchRead(array($this), $read);
+
+        if ($read !== null)
+            $this->read = $read;
+
         return $this->read;
+    }
+
+    public static function batchRead(array $news, $read = null)
+    {
+        if (empty($news) || $read === null)
+            return;
+
+        $ids = self::toIds($news);
+
+        if ($read === true) {
+            $values = array();
+            foreach ($ids as $id)
+                $values[] = XDB::format("({?}, {?}, NOW())", S::user()->id(), $id);
+
+            XDB::execute('INSERT INTO  news_read (uid, news, time)
+                               VALUES  ' . implode(',', $values) . '
+              ON DUPLICATE KEY UPDATE  time = NOW()');
+        }
+
+        if ($read === false) {
+            XDB::execute('DELETE FROM news_read WHERE uid = {?} AND news IN {?}', S::user()->id(), $ids);
+        }
     }
 
     public function star($star = null)
@@ -137,6 +167,11 @@ class News extends meta
         return $this->star;
     }
 
+    /*******************************************************************************
+         Data fetcher
+             (batchFrom, batchSelect, fillFromArray, …)
+    *******************************************************************************/
+
     public function delete()
     {  
 	    XDB::execute('DELETE FROM news WHERE id={?}', $this->id());
@@ -144,7 +179,7 @@ class News extends meta
 
     public function replace()
     {
-        // TO DO
+        // TODO
         //if (!$this->valid())
         //    throw new Exception("This news is not valid.");
         if (is_null($this->id))
@@ -233,18 +268,6 @@ class News extends meta
 
         if (!empty($options[self::SELECT_BASE]['images']))
             $groups->select($options[self::SELECT_BASE]['images']);
-    }
-
-    public function order()
-    {
-        $d = date("Y-m-d");
-        if ($this->important)
-            return 'important';
-        if ($this->begin == $d)
-            return 'new';
-        if ($this->end == $d)
-            return 'old';
-        return 'other';
     }
 
 }

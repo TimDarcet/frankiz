@@ -1,11 +1,30 @@
 $(document).ready(function() {
-	$('.news .switcher_open').click(function() {
-	    $(this).closest('.news').switchClass('close unread', 'open read', 100);
-	    var id = $(this).closest('.news').attr('nid');
-        $.get('news/ajax/read/' + id + '/1');
+	$('.news .title').click(function() {
+	    var news = $(this).closest('.news');
+	    if (news.hasClass('unread')) {
+	        var id = news.attr('nid');
+	        $.get('news/ajax/read/' + id + '/1');
+	    }
+
+	    if (news.hasClass('close')) {
+	        news.switchClass('close unread', 'open read', 100);
+	    } else {
+	        news.switchClass('open', 'close', 100);
+	    }
 	});
-    $('.news .switcher_close').click(function() {
-        $(this).closest('.news').switchClass('open', 'close', 100);
+
+    $('.open_all').click(function() {
+        var unread_news = $(this).siblings('ul').first().children('li.unread');
+
+        var ids = [];
+        unread_news.each(function() {
+            ids.push($(this).attr('nid'));
+            $(this).addClass('open read');
+            $(this).removeClass('close unread');
+        });
+
+        ids = ids.join(',');
+        $.get('news/ajax/read/' + ids + '/1');
     });
 
     $('.news .switcher_star').click(function() {
