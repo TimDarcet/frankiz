@@ -218,8 +218,10 @@ class News extends meta
             $datas['target'] = $groups->addget($datas['target']);
             $datas['origin'] = $groups->addget($datas['origin']);
             $datas['image']  = $images->addget($datas['iid']); unset($datas['iid']);
-            $datas['read']  = ($datas['when_read'] === null) ? false : $datas['when_read']; unset($datas['when_read']);
-            $datas['star']  = ($datas['star'] === null) ? false : $datas['star'];
+            $datas['begin']  = new FrankizDateTime($datas['begin']);
+            $datas['end']    = new FrankizDateTime($datas['end']);
+            $datas['read']   = ($datas['when_read'] === null) ? false : new FrankizDateTime($datas['when_read']); unset($datas['when_read']);
+            $datas['star']   = ($datas['star'] === null) ? false : new FrankizDateTime($datas['star']);
             $news[$datas['id']]->fillFromArray($datas);
         }
 

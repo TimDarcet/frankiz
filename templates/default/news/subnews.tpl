@@ -41,9 +41,9 @@
                     {$news->target()|group}
                 </div>
                 <div class="date">
-                    {$news->begin()}
+                    {$news->begin()|datetime:'Y-m-d'}
                     ->
-                    {$news->end()}
+                    {$news->end()|datetime:'Y-m-d'}
                     <span class="switcher_open">
                     Lire
                     </span>
