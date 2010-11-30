@@ -91,31 +91,31 @@ li.news:first-child {
 
 
 
-.groups {
+.news .groups {
     float: left;
 }
 
-.date {
+.news .date {
     float: right;
 }
 
-.title {
+.news .title {
     text-align: center;
 }
 
-.content {
+.news .content {
 	position: relative;
 	clear: both;
 	margin: 5px;
 }
 
-.content .body {
+.news .content .body {
     width: 100%;
     border-top: 1px #002334 solid;
     background-color: white;
 }
 
-.content .writer {
+.news .content .writer {
     width: 100%;
     text-align: right;
 }
