@@ -22,6 +22,7 @@
 class ActivityInstance extends meta
 {    
     const SELECT_BASE = 0x01;
+    const SELECT_PARTICIPANTS = 0x02;
     
     protected $aid;
     protected $writer;
@@ -32,7 +33,8 @@ class ActivityInstance extends meta
     protected $begin;
     protected $end;
     protected $priv;
-    
+
+    protected $participants;
     protected $regular;
      
 
@@ -82,14 +84,102 @@ class ActivityInstance extends meta
         $this->end = $end;
     }
 
+    public function date()
+    {
+        return substr($this->begin, 0, 10);
+    }
+
+    public function hour_begin()
+    {
+        return substr($this->begin,11, 5);
+    }
+
+    public function hour_end()
+    {
+        return substr($this->end,11, 5);
+    }
+
     public function priv()
     {
         return $this->priv;
+    }
+
+    public function participants()
+    {
+        return $this->participants;
     }
     
     public function regular()
     {
         return $this->regular;
+    }
+    
+    // may be an array or a single element, id or User
+    public function add_participants($p)
+    {
+        $users = unflatten($p);
+        $values = array();
+        foreach ($users as $user)
+        {
+            if ($user instanceof User)
+                $values[] = '(' . $this->id. ',' . $user->id() . ')';
+            else if (isId($user))
+                $values[] = '(' . $this->id. ',' . $user . ')';
+        }
+        if (!empty($values))
+        {
+            $values = implode(',', $values);
+            XDB::execute('REPLACE INTO  activities_participants
+                                VALUES  ' . $values);
+        }
+    }
+
+    // may be an array or a single element, id or User
+    public function delete_participants($p)
+    {
+        $users = unflatten($p);
+        $values = array();
+        foreach ($users as $user)
+        {
+            if ($user instanceof User)
+                $values[] = '(' . $this->id. ',' . $user->id() . ')';
+            else if (isId($user))
+                $values[] = '(' . $this->id. ',' . $user . ')';
+        }
+        if (!empty($values))
+        {
+            $values = '(' . implode(',', $values) .')';
+            XDB::execute('DELETE FROM  activities_participants
+                                WHERE  (id,participant) IN ' . $values);
+        }
+    }
+
+    public function for_json() {
+        $a = array();
+        $a['id'] = $this->id;
+        $a['aid'] = $this->aid;
+        $a['writer'] = array('displayName'  => $this->writer->displayName(),
+                             'id'           => $this->writer->id());
+        $a['target'] = array('name'         => $this->target->name(),
+                             'label'        => $this->target->label());
+        $a['title'] = $this->title;
+        $a['description'] = $this->description;
+        $a['comment'] = $this->comment;
+        $a['begin'] = date("m/d/Y H:i", strtotime($this->begin));
+        $a['end'] = date("m/d/Y H:i", strtotime($this->end));
+        $a['priv'] = $this->priv;
+        $a['participants'] = array();
+        foreach ($this->participants as $user)
+        {
+            $a['participants'][$user->id()] = array('displayName'  => $user->displayName(),
+                                                    'id'           => $user->id());
+            if($user->id() == s::user()->id())
+                $a['participate'] = true;
+        }
+        if (!isset( $a['participate']))
+            $a['participate'] = false;
+        $a['regular'] = $this->regular;
+        return $a;
     }
 
     public function delete()
@@ -114,7 +204,7 @@ class ActivityInstance extends meta
     {        
         XDB::execute('UPDATE  activities_instances
                          SET  aid = {?}, writer = {?}, comment = {?},
-                              begin = {?}, end = {?},
+                              begin = {?}, end = {?}
                        WHERE  id = {?}',
             $this->aid, $this->writer->id(), $this->comment,
             $this->begin, $this->end, $this->id);
@@ -132,7 +222,10 @@ class ActivityInstance extends meta
     }
     
     public function fillFromArray(array $values)
-    {        
+    {
+        if (!isset($values['participants']))
+            $this->participants = array();
+
         if (isset($values['days'])) {
             $this->regular = ($values['days'] != '');
             unset($values['days']);
@@ -148,32 +241,65 @@ class ActivityInstance extends meta
         if (isset($values['target']) && !($values['target'] instanceof Group)) 
         {
             $this->target = new Group($values['target']);
-            $this->target->select(Group::SELECT_BASE);
         }
     }
     
-    public static function batchSelect(array $activities, $fields)
+    public static function batchSelect(array $activities, $options = null)
     {
         if (empty($activities))
             return;
 
+
+        if (empty($options)) {
+            $options = array();
+            $options[self::SELECT_BASE] = array('groups' => Group::SELECT_BASE,
+                                                 'users' => User::SELECT_BASE);
+        }
+
+        $bits = self::optionsToBits($options);
+
         $activities = array_combine(self::toIds($activities), $activities);
             
         $request = 'SELECT ai.id';
-        if ($fields & self::SELECT_BASE)
+        if ($bits & self::SELECT_BASE)
             $request .= ', ai.aid, ai.writer, ai.comment, ai.begin, ai.end, a.target, a.title, a.description, a.priv, a.days';
-        
-        $iter = XDB::iterator($request .
+
+        $iter = XDB::iterator($request . 
                         ' FROM  activities_instances AS ai 
-                    INNER JOIN  activities AS a 
+                    INNER JOIN  activities AS a
                             ON  ai.aid = a.aid
                          WHERE  ai.id IN {?}',
                          array_keys($activities));
 
-        while ($array_datas = $iter->next())
-        {
-            $activities[$array_datas['id']]->fillFromArray($array_datas);
+
+        $groups = new Collection('Group');
+        $users = new Collection('User');
+
+        while ($datas = $iter->next()) {
+            $datas['writer'] = $users->addget($datas['writer']);
+            $datas['target'] = $groups->addget($datas['target']);
+            $activities[$datas['id']]->fillFromArray($datas);
         }
+
+
+        if ($bits & self::SELECT_PARTICIPANTS)
+        {
+            $iter = XDB::iterator('SELECT  id , participant
+                                      FROM  activities_participants
+                                     WHERE  id IN {?}', array_keys($activities));
+
+            while ($datas = $iter->next()) {
+                $activities[$datas['id']]->participants[] = $users->addget($datas['participant']);
+            }
+        }
+
+
+        if (!empty($options[self::SELECT_BASE]['groups']))
+            $groups->select($options[self::SELECT_BASE]['groups']);
+
+        if (!empty($options[self::SELECT_BASE]['users']))
+            $users->select($options[self::SELECT_BASE]['users']);
+
     }
 }
 

@@ -22,9 +22,9 @@
 class Activity extends meta
 {    
     const SELECT_BASE = 0x01;
-    const SELECT_TIME = 0x02;
     
     protected $target;
+    protected $origin;
     protected $title;
     protected $description;
     protected $days;
@@ -33,6 +33,11 @@ class Activity extends meta
     protected $priv;
 
     public function target()
+    {
+        return $this->target;
+    }
+
+    public function origin()
     {
         return $this->target;
     }
@@ -131,24 +136,24 @@ class Activity extends meta
     public function update()
     {        
         XDB::execute('UPDATE  activities
-                         SET  target = {?}, title = {?}, description = {?}, 
-                              days = {?}, default_begin = {?}, default_end = {?},
-                              priv = {?}
+                         SET  target = {?}, origin = {?}, title = {?},
+                              description = {?}, days = {?}, default_begin = {?},
+                              default_end = {?}, priv = {?}
                        WHERE  aid = {?}',
-            $this->target->id(), $this->title, $this->description, 
-            $this->days, $this->default_begin, $this->default_end,
-            $this->priv, $this->id);
+            $this->target->id(), $this->origin, $this->title,
+            $this->description, $this->days, $this->default_begin,
+            $this->default_end, $this->priv, $this->id);
     }
     
     public function insert()
     {
         XDB::execute('INSERT  activities
-                         SET  target = {?}, title = {?}, description = {?}, 
-                              days = {?}, default_begin = {?}, default_end = {?},
-                              priv = {?}',
-            $this->target->id(), $this->title, $this->description, 
-            $this->days, $this->default_begin, $this->default_end,
-            $this->priv);
+                         SET  target = {?}, origin = {?] title = {?},
+                              description = {?}, days = {?}, default_begin = {?},
+                              default_end = {?}, priv = {?}',
+            $this->target->id(), $this->origin, $this->title,
+            $this->description, $this->days, $this->default_begin,
+            $this->default_end, $this->priv);
             
         $this->id = XDB::insertId();
     }
@@ -166,30 +171,47 @@ class Activity extends meta
         if (isset($values['target']) && (!$values['target'] instanceof Group)) 
         {
             $this->target = new Group($values['target']);
-            $this->target->select(Group::SELECT_BASE);
+        }
+
+        if (isset($values['origin']) && (!$values['origin'] instanceof Group))
+        {
+            $this->target = new Group($values['origin']);
         }
     }
     
-    public static function batchSelect(array $activities, $fields)
+    public static function batchSelect(array $activities, $options = null)
     {
         if (empty($activities))
             return;
 
+        if (empty($options)) {
+            $options = array();
+            $options[self::SELECT_BASE] = array('groups' => Group::SELECT_BASE);
+        }
+
+        $bits = self::optionsToBits($options);
+
         $activities = array_combine(self::toIds($activities), $activities);
-            
-        $request = 'SELECT aid';
-        if ($fields & self::SELECT_BASE)
-            $request .= ', target, title, description, priv';
-        if ($fields & self::SELECT_TIME)
-            $request .= ', days, default_begin, default_end';
-        
+
+        $request = 'SELECT aid AS id';
+        if ($bits & self::SELECT_BASE)
+            $request .= ', target, origin, title, description, priv, days, default_begin, default_end';
+
         $iter = XDB::iterator($request .
                         ' FROM activities
                          WHERE aid IN {?}',
                          array_keys($activities));
-                         
-        while ($array_datas = $iter->next())
-            $activities[$array_datas['aid']]->fillFromArray($array_datas);
+
+        $groups = new Collection('Group');
+
+        while ($datas = $iter->next()) {
+            $datas['target'] = $groups->addget($datas['target']);
+            $datas['origin'] = $groups->addget($datas['origin']);
+            $activities[$datas['id']]->fillFromArray($datas);
+        }
+
+        if (!empty($options[self::SELECT_BASE]['groups']))
+            $groups->select($options[self::SELECT_BASE]['groups']);
     }
 }
 
