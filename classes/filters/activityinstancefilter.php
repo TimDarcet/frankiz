@@ -101,12 +101,51 @@ class AIFC_User extends ActivityInstanceFilterCondition
     }
 }
 
+/** Returns instances that are between two datetimes
+ */
+class AIFC_Period extends ActivityInstanceFilterCondition
+{
+    private $begin;
+    private $end;
+    private $strict;
+
+    public function __construct(FrankizDateTime $begin, FrankizDateTime $end, $strict = false)
+    {
+        $this->begin  = $begin;
+        $this->end    = $end;
+        $this->strict = $strict;
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        if ($this->strict)
+            return XDB::format('ai.end >= {?} AND ai.begin <= {?}',
+                            $this->begin->format(), $this->end->format());
+
+        return XDB::format('ai.begin >= {?} AND ai.end <= {?}',
+                        $this->begin->format(), $this->end->format());
+    }
+}
+
 /** Returns instances that are not out-of-date
  */
 class AIFC_Current extends ActivityInstanceFilterCondition
 {
+    const PRECISION_SECOND = 0x01;
+    const PRECISION_DAY    = 0x02;
+
+    private $precision;
+
+    public function __construct($precision = self::PRECISION_SECOND)
+    {
+        $this->precision = $precision;
+    }
+
     public function buildCondition(PlFilter $f)
     {
+        if ($this->precision & self::PRECISION_DAY)
+            return 'CURDATE() BETWEEN ai.begin AND ai.end';
+
         return 'NOW() BETWEEN ai.begin AND ai.end';
     }
 }

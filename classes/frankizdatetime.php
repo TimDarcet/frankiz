@@ -21,7 +21,10 @@
 
 class FrankizDateTime extends DateTime
 {
-
+    public function format($format = 'Y-m-d H:i:s')
+    {
+        return parent::format($format);
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
