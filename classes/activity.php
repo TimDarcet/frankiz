@@ -39,7 +39,7 @@ class Activity extends meta
 
     public function origin()
     {
-        return $this->target;
+        return $this->origin;
     }
 
     public function title(String $title = null)

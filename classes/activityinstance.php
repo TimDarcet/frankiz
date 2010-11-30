@@ -154,7 +154,7 @@ class ActivityInstance extends meta
         }
     }
 
-    public function for_json() {
+    public function export() {
         $a = array();
         $a['id'] = $this->id;
         $a['aid'] = $this->aid;
