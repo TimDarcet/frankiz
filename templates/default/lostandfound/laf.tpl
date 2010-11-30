@@ -44,8 +44,8 @@
 	    <div class="section_title">
 	        Objets perdus
         </div>
-        <div class="section_body">
-            {include file="lostandfound/ping.tpl"|rel lost=$losts}
+        <div class="section_body {if $query=='ping'}show{/if}">
+            {include file="lostandfound/ping.tpl"|rel lost=$lost}
         </div>
     </div>
 
@@ -53,8 +53,8 @@
         <div class="section_title" id="essai">
 	        Objets trouvés
         </div>
-        <div class="section_body">
-    	    {include file="lostandfound/pong.tpl"|rel found=$founds}
+        <div class="section_body {if $query=='pong'}show{/if}">
+    	    {include file="lostandfound/pong.tpl"|rel found=$found}
     	</div>
 	</div>
 

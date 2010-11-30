@@ -24,7 +24,7 @@ class LostandfoundModule extends PLModule
     function handlers()
     {
         return array(
-            'laf' => $this->make_hook('laf', 0)
+            'laf' => $this->make_hook('laf', AUTH_PUBLIC)
             );
     }
 
@@ -141,88 +141,87 @@ class LostandfoundModule extends PLModule
             $res = XDB::query("SELECT * FROM laf WHERE ISNULL(found) 
             				AND description " . XDB::formatWildcards(XDB::WILDCARD_CONTAINS, Env::t('ping_obj')) . "
             				OR context " . XDB::formatWildcards(XDB::WILDCARD_CONTAINS, Env::t('ping_obj')) . "
-            				ORDER BY lost DESC LIMIT 20");
-            $losts = $res->fetchAllRow();
+            				ORDER BY lost DESC LIMIT 30");
+            $lost = $res->fetchAllRow();
+            $page->assign('query', 'ping');
         }
         else
         {
-            $res = XDB::query("SELECT * FROM laf WHERE ISNULL(found) ORDER BY lost DESC LIMIT 20");
-            $losts = $res->fetchAllRow();
+            $res = XDB::query("SELECT * FROM laf WHERE ISNULL(found) ORDER BY lost DESC LIMIT 30");
+            $lost = $res->fetchAllRow();
         }
         
         if (Env::has('pong_obj'))
         {
-            $res = XDB::query("SELECT * FROM laf WHERE ISNULL(lost) 
-            				AND description " . XDB::formatWildcards(XDB::WILDCARD_CONTAINS, Env::t('pong_obj')) . "
-            				OR context " . XDB::formatWildcards(XDB::WILDCARD_CONTAINS, Env::t('ping_obj')) . "
-            				ORDER BY found DESC LIMIT 20");
-            $losts = $res->fetchAllRow();
+            $res = XDB::query("SELECT  *
+                                 FROM  laf
+                                WHERE  ISNULL(lost)
+            				      AND  description " . XDB::formatWildcards(XDB::WILDCARD_CONTAINS, Env::t('pong_obj')) . "
+            				       OR  context " . XDB::formatWildcards(XDB::WILDCARD_CONTAINS, Env::t('pong_obj')) . "
+            				 ORDER BY  found
+            			   DESC LIMIT  30");
+            $found = $res->fetchAllRow();
+            $page->assign('query', 'pong');
         }
         else
         {
-            $res = XDB::query("SELECT * FROM laf WHERE ISNULL(lost) ORDER BY found DESC LIMIT 20");
-            $founds = $res->fetchAllRow();
+            $res = XDB::query("SELECT * FROM laf WHERE ISNULL(lost) ORDER BY found DESC LIMIT 30");
+            $found = $res->fetchAllRow();
         }
         
         $page->addCssLink('laf.css');
-        $page->addCssLink('jquery-ui.css');
 
         $page->assign('uid', s::user()->id());
         $page->assign('title', 'Objets Trouvés');
-        $page->assign('losts', $losts);
-        $page->assign('founds', $founds);
+        $page->assign('lost', $lost);
+        $page->assign('found', $found);
         $page->changeTpl('lostandfound/laf.tpl');
     }
     
     function manage_pong($page, $id) {
         if (S::logged()) {
-            $res = XDB::query("SELECT * FROM laf WHERE oid = {?}", $id)->fetchAllRow();
-            $res = $res[0];
-            $us = S::user()->displayName();
-            $body = 'L\'objet : '.$res[4].' appartient à '.$us.' ('.S::user()->bestEmail().").\nPense à le supprimer de la liste des objets trouvés.\n\nLes webs.";
-            
-            $user = plUser::getWithUID($res[1]);
+            $res = XDB::query("SELECT uid, description FROM laf WHERE oid = {?}", $id)->fetchOneAssoc();
+
+            $user = new User($res['uid']);
+            $user->select(array(User::SELECT_BASE => array()));
             $message = 'Un message a été envoyé à '.$user->displayName().' ('.$user->bestEmail().') pour lui signaler que tu es le propriétaire de cet objet.';
             $page->assign('message', $message);
-        
-	        $mymail = new PlMailer();
-        	$mymail->setFrom(S::user()->bestEmail());
-	        $mymail->addTo($user->bestEmail());
-	        $mymail->setSubject('objet trouvé');
-    	    $mymail->setTxtBody($body);
-	        $mymail->send();
+
+	        $mail = new FrankizMailer("lostandfound/mail.tpl");
+            $mail->assign('object', $res);
+            $mail->assign('user', S::user());
+            $mail->assign('type', 'pong');
+        	$mail->SetFrom(S::user()->bestEmail(), S::user()->displayName());
+	        $mail->AddAddress($user->bestEmail(), $user->displayName());
+	        $mail->subject('[Frankiz] Objet trouvé');
+	        $mail->send(false);
         }
         else {
             $page->assign('not_logged', 'true');
         }
     }
     
-function manage_ping($page, $id) {
+    function manage_ping($page, $id) {
         if (S::logged()) {
-            $res = XDB::query("SELECT * FROM laf WHERE oid = {?}", $id)->fetchAllRow();
-            $res = $res[0];
-            $us = S::user()->displayName();
-            $body = 'Ton objet : '.$res[4].' a été retrouvé par '.$us.' ('.S::user()->bestEmail().")\n.Pense à le supprimer de la liste des objets perdus.\n\nLes webs.";
+            $res = XDB::query("SELECT uid, description FROM laf WHERE oid = {?}", $id)->fetchOneAssoc();
             
-            $user = plUser::getWithUID($res[1]);            
+            $user = new User($res['uid']);
+            $user->select(array(User::SELECT_BASE => array()));
             $message = 'Un message a été envoyé à '.$user->displayName().' ('.$user->bestEmail().') pour lui signaler que tu as retrouvé son objet.';
             $page->assign('message', $message);
-        
-	        $mymail = new PlMailer();
-    	    $mymail->setFrom(S::user()->bestEmail());
-    	    $mymail->addTo($user->bestEmail());
-	        $mymail->setSubject('objet perdu');
-	        $mymail->setTxtBody($body);
-    	    $mymail->send();
+
+	        $mail = new FrankizMailer("lostandfound/mail.tpl");
+            $mail->assign('object', $res);
+            $mail->assign('user', S::user());
+            $mail->assign('type', 'ping');
+        	$mail->SetFrom(S::user()->bestEmail(), S::user()->displayName());
+	        $mail->AddAddress($user->bestEmail(), $user->displayName());
+	        $mail->subject('[Frankiz] Objet perdu');
+	        $mail->send(false);
         }
         else {
             $page->assign('not_logged', 'true');
         }
-    }
-    
-    function adder_pong($obj_pong, $desc_pong)
-    {
-	            
     }
 }
 

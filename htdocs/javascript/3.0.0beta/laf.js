@@ -7,4 +7,5 @@ $(document).ready(function() {
 	$(".section_title").click(function() {
 		$(this).next(".section_body").slideToggle(150);
 	});
+    $('.show').show();
 });
