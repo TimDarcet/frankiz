@@ -43,15 +43,17 @@ function __autoload($cls)
         }
 
         // Handle the *fc_* and *fo_*
-        $filters = array('g' => 'groupfilter',
-                         'n' => 'newsfilter',
-                         'u' => 'userfilter',
-                         'v' => 'validatefilter',
-                         'a' => 'activityfilter');
+        $filters = array('g'  => 'groupfilter',
+                         'n'  => 'newsfilter',
+                         'u'  => 'userfilter',
+                         'v'  => 'validatefilter',
+                         'a'  => 'activityfilter',
+                         'ai' => 'activityinstancefilter');
 
         foreach ($filters as $key => $class)
         {
-            if (substr($cls, 0, 4) == $key . 'fc_' || substr($cls, 0, 4) == $key . 'fo_') {
+            $length = 3 + mb_strlen($key);
+            if (substr($cls, 0, $length) == $key . 'fc_' || substr($cls, 0, $length) == $key . 'fo_') {
                 pl_autoload($class, array('classes/filters'));
                 return;
             }
