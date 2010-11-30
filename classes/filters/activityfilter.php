@@ -105,7 +105,7 @@ class AFC_User extends ActivityFilterCondition
     }
 }
 
-/** Returns news that are private
+/** Returns activities that are private
  */
 class AFC_Private extends ActivityFilterCondition
 {
@@ -122,6 +122,24 @@ class AFC_Private extends ActivityFilterCondition
     }
 }
 
+/** Returns activities that are regular
+ */
+class AFC_Regular extends ActivityFilterCondition
+{
+    private $regular;
+
+    public function __construct($regular = true)
+    {
+        $this->regular = $regular;
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        $not = ($this->regular) ? 'NOT ' : '';
+        return "a.default_begin IS $not NULL";
+    }
+}
+
 abstract class NewsFilterOrder extends FrankizFilterOrder
 {
 }
@@ -129,7 +147,7 @@ abstract class NewsFilterOrder extends FrankizFilterOrder
 
 /***********************************
   *********************************
-          ACTIVITY FILTER CLASS
+       ACTIVITY FILTER CLASS
   *********************************
  ***********************************/
 
