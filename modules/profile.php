@@ -439,6 +439,7 @@ class ProfileModule extends PLModule
     {
         global $globals;
 
+        $page->addCssLink('profile.css');
         $page->changeTpl('profile/recovery.tpl');
         $page->assign('title', 'Nouveau mot de passe');
         
@@ -450,10 +451,15 @@ class ProfileModule extends PLModule
         {
             // TODO: Accept forlife too
             $uf = new UserFilter(new UFC_Bestalias(Env::v('mail')));
-            $user = $uf->getUser();
-
+            $user = $uf->get();
+            if ($user->count() != 1)
+            {
+                $page->assign('error', 'true');
+                return;
+            }
+            $user->select(array(User::SELECT_BASE => array()));
+            $user = $user->first();
             $page->assign('email', $user->bestEmail());
-
             $mail = new FrankizMailer('profile/recovery.mail.tpl');
 
             $hash = rand_url_id();
@@ -463,6 +469,7 @@ class ProfileModule extends PLModule
             $mail->assign('uid', $user->id());
             $mail->SetFrom('web@frankiz.polytechnique.fr', 'Les Webmestres de Frankiz');
             $mail->AddAddress($user->bestEmail(), $user->displayName());
+            $mail->subject('[Frankiz] Changement de mot de passe');
 
             $mail->Send($user->isEmailFormatHtml());
 
@@ -473,6 +480,7 @@ class ProfileModule extends PLModule
         if (Env::v('hash','') != '' && Env::v('uid','') != '')
         {
             $user = new User(Env::v('uid'));
+            $user->select(array(User::SELECT_BASE => array()));
             if (Env::v('hash') == $user->hash())
             {
                 // TODO: log the session opening
@@ -483,6 +491,7 @@ class ProfileModule extends PLModule
                 $mail->assign('new_password', $new);
                 $mail->SetFrom('web@frankiz.polytechnique.fr', 'Les Webmestres de Frankiz');
                 $mail->AddAddress($user->bestEmail(), $user->displayName());
+                $mail->subject('[Frankiz] Nouveau mot de passe');
     
                 $mail->Send($user->isEmailFormatHtml());
                 $page->assign('step', 'password');

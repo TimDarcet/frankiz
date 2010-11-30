@@ -35,7 +35,7 @@
   <div class='formulaire'>
     <div>
       <span class='gauche'>Identifiant:</span>
-      <span class='droite'>{$smarty.session.user->bestalias}</span>
+      <span class='droite'>{$smarty.session.user->login()}</span>
     </div>
     <div>
       <span class='gauche'>Mot de passe:</span>

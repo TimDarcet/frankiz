@@ -23,42 +23,51 @@
 {if $step == 'ask'}
 
     <form enctype='multipart/form-data' method='post' action='profile/recovery'>
-      <span class='note'>
-        Si tu souhaites créer ton compte Frankiz, ou si tu as perdu ton mot de passe, entre ton adresse e-mail 
-        donnée par ton écoleé (par exemple jean.dupont@polytechnique.edu) dans le champ ci-dessous. 
-        Tu recevras dans les minutes qui suivent un courriel te permettant d'aller changer ton mot de passe.
-      </span>
-      <div class='formulaire'>
-        <div>
-          <span class='gauche'>Adresse e-mail :</span>
-          <span class='droite'><input type='text' name='mail' value='' /></span>
-        </div>
-        <div>
-          <span class='boutons'>
-            <input type='submit' name='valider' value='Valider' />
-          </span>
-        </div>
-      </div>
+        {if $error != null}
+            <div class="error">
+                L'email donné est incorrect.
+            </div>
+        {/if}
+        <fieldset class="recovery">
+            Si tu souhaites créer ton compte Frankiz, ou si tu as perdu ton mot de passe, entre l'adresse e-mail
+            donnée par ton école (par exemple jean.dupont@polytechnique.edu) dans le champ ci-dessous. <br/>
+            Tu recevras dans les minutes qui suivent un courriel te permettant d'aller changer ton mot de passe.
+            <table>
+                <tr>
+                    <td width="40%" class="right">
+                        Adresse e-mail :
+                    </td>
+                    <td>
+                        <input type='text' name='mail' value='' />
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type='submit' name='valider' value='Valider' />
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
     </form>
-
 {elseif $step == 'mail'}
 
-    <span class="note">
-      Le mail a été envoyé avec succès à l'adresse {$email}. Il te permettra de te connecter une fois au site
-      web Frankiz pour changer ton mot de passe ou choisir ton mot de passe si tu n'en as pas encore défini un.
-    </span>
+    <div class="recovery note">
+        Le mail a été envoyé avec succès à l'adresse {$email}. Il te permettra de te connecter une fois au site
+        web Frankiz pour changer ton mot de passe ou choisir ton mot de passe si tu n'en as pas encore défini un.
+    </div>
 
 {elseif $step == 'expired'}
 
-    <span class="error">
+    <div class="error">
       Ce code d'ouverture de session par mail est expiré.
-    </span>
+    </div>
 
 {elseif $step == 'password'}
 
-    <span class="error">
-      Un nouveau mot de passe temporaire vous a été envoyé par mail.
-    </span>
+    <div class="recovery note">
+        Un nouveau mot de passe temporaire vous a été envoyé par mail.
+    </div>
 
 {/if}
 
