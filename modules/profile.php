@@ -451,14 +451,13 @@ class ProfileModule extends PLModule
         {
             // TODO: Accept forlife too
             $uf = new UserFilter(new UFC_Bestalias(Env::v('mail')));
-            $user = $uf->get();
-            if ($user->count() != 1)
-            {
+            $user = $uf->get(true);
+            if (!$user) {
                 $page->assign('error', 'true');
                 return;
             }
-            $user->select(array(User::SELECT_BASE => array()));
-            $user = $user->first();
+            $user->select(User::SELECT_BASE);
+
             $page->assign('email', $user->bestEmail());
             $mail = new FrankizMailer('profile/recovery.mail.tpl');
 

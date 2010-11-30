@@ -161,7 +161,7 @@ abstract class FrankizFilter extends PlFilter
         if ($limit === true)
         {
             $ids = $this->getIDList(null, new PlLimit(1));
-            return (count($ids) != 1) ? null : new $className(array_pop($ids));
+            return (count($ids) != 1) ? false : new $className(array_pop($ids));
         } else {
             $c = new Collection($className);
             return $c->add($this->getIDs($limit));
