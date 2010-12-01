@@ -86,17 +86,17 @@ class ActivityInstance extends meta
 
     public function date()
     {
-        return substr($this->begin, 0, 10);
+        return $this->begin->format("Y-m-d");
     }
 
     public function hour_begin()
     {
-        return substr($this->begin,11, 5);
+        return $this->begin->format("H:i");
     }
 
     public function hour_end()
     {
-        return substr($this->end,11, 5);
+        return $this->end->format("H:i");
     }
 
     public function priv()
@@ -165,8 +165,8 @@ class ActivityInstance extends meta
         $a['title'] = $this->title;
         $a['description'] = $this->description;
         $a['comment'] = $this->comment;
-        $a['begin'] = date("m/d/Y H:i", strtotime($this->begin));
-        $a['end'] = date("m/d/Y H:i", strtotime($this->end));
+        $a['begin'] = $this->begin->format("m/d/Y H:i");
+        $a['end'] = $this->end->format("m/d/Y H:i");
         $a['priv'] = $this->priv;
         $a['participants'] = array();
         foreach ($this->participants as $user)
@@ -207,7 +207,7 @@ class ActivityInstance extends meta
                               begin = {?}, end = {?}
                        WHERE  id = {?}',
             $this->aid, $this->writer->id(), $this->comment,
-            $this->begin, $this->end, $this->id);
+            $this->begin->format('Y-m-d H:i:s'), $this->end->format('Y-m-d H:i:s'), $this->id);
     }
     
     public function insert()
@@ -216,7 +216,7 @@ class ActivityInstance extends meta
                          SET  aid = {?}, writer = {?}, comment = {?},
                               begin = {?}, end = {?}',
             $this->aid, $this->writer->id(), $this->comment,
-            $this->begin, $this->end);
+            $this->begin->format('Y-m-d H:i:s'), $this->end->format('Y-m-d H:i:s'));
             
         $this->id = XDB::insertId();
     }
@@ -278,6 +278,8 @@ class ActivityInstance extends meta
         while ($datas = $iter->next()) {
             $datas['writer'] = $users->addget($datas['writer']);
             $datas['target'] = $groups->addget($datas['target']);
+            $datas['begin']  = new FrankizDateTime($datas['begin']);
+            $datas['end']    = new FrankizDateTime($datas['end']);
             $activities[$datas['id']]->fillFromArray($datas);
         }
 

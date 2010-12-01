@@ -1,0 +1,131 @@
+/***************************************************************************
+ *  Copyright (C) 2010 Binet Réseau                                        *
+ *  http://www.polytechnique.fr/eleves/binets/reseau/                      *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
+
+.small {
+    font-size: 80%;
+}
+
+#activities_list {
+    width: 50%;
+    display:inline-block;
+}
+
+#activities_list .day{
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#activities_list .date {
+    background-color: #BDD5E3;
+    font-size: 20px;
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
+}
+
+#activities_list .activities {
+    border-top: 1px solid #BDD5E3;
+    margin: 0px;
+    padding: 0px;
+}
+
+#activities_list .activity {
+    border-top: 1px solid #BDD5E3;
+    margin: 0px;
+    padding: 0px;
+    cursor: pointer;
+}
+
+#activity_show {
+    border: 1px solid #BDD5E3;
+    width: 48%;
+    float:right;
+}
+
+#activity_show .first {
+    background-color: #BDD5E3;
+    width: 100%;
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    font-size: 20px;
+    text-align: center;
+}
+
+#activity_show .date {
+    text-align: center;
+}
+
+#activity_show .time {
+    text-align: center;
+}
+
+#activity_show .msg {
+    margin-top: 10px;
+    text-align: center;
+}
+
+#activity_show .participate {
+    text-align: center;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#activity_show .description {
+    margin-bottom: 5px;
+}
+
+#activity_show .section {
+    margin-top: 10px;
+    padding-top: 10px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#activity_admin .section {
+    margin-bottom: 30px;
+}
+
+#activity_admin .title {
+    font-size: 120%;
+    margin-bottom: 10px;
+}
+
+#activity_show.timetable {
+    border: 1px solid #BDD5E3;
+    position: absolute;
+    display: block;
+    z-index:    999.99;
+    left: 20%;
+    top: 160px;
+    width: 40%;
+    background-color: #F4F4F8;
+}
+
+#activity_show .close_show{
+    float: right;
+    font-size: 80%;
+    cursor: pointer;
+}
+
+#activity_show .padd {
+    margin: 5px;
+}
