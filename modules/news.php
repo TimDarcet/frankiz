@@ -24,9 +24,12 @@ class NewsModule extends PlModule
     public function handlers()
     {
         return array(
-            "news"           => $this->make_hook("news"     , AUTH_PUBLIC),
-            "news/ajax/read" => $this->make_hook("ajax_read", AUTH_COOKIE),
-            "news/ajax/star" => $this->make_hook("ajax_star", AUTH_COOKIE),
+            "news"              => $this->make_hook("news"          , AUTH_PUBLIC),
+            "news/admin"        => $this->make_hook("admin"         , AUTH_MDP),
+            "news/ajax/read"    => $this->make_hook("ajax_read"     , AUTH_COOKIE),
+            "news/ajax/star"    => $this->make_hook("ajax_star"     , AUTH_COOKIE),
+            "news/ajax/admin"   => $this->make_hook("ajax_admin"    , AUTH_MDP),
+            "news/ajax/modify"  => $this->make_hook("ajax_modify"   , AUTH_MDP),
         );
     }
 
@@ -70,6 +73,92 @@ class NewsModule extends PlModule
         $page->addCssLink('news.css');
         $page->assign('title', 'Annonces');
         $page->changeTpl('news/news.tpl');
+    }
+
+    function handler_admin($page)
+    {
+        $c = new NewsFilter(new PFC_And(new NFC_Current(),
+                                        new NFC_User(S::user(), 'admin')));
+        $c = $c->get();
+        $c->select();
+
+        if (Env::has('admin_id'))
+        {
+            $id = Env::i('admin_id');
+	        $n = $c->get($id);
+	        if($n === false)
+            {
+                $page->assign('msg', 'Vous ne pouvez pas modifier cette activité.');
+            }
+            else
+            {
+	            if (Env::has('modify'))
+	            {
+                    try
+                    {
+                        $end = new FrankizDateTime(Env::t('end'));
+                        $n->title(Env::t('title'));
+                        $n->content(Env::t('content'));
+                        $n->end($end);
+                        $n->priv(Env::has('priv'));
+                        $n->replace();
+                        $page->assign('msg', 'L\'annonce a été modifiée.');
+                    }
+                    catch (Exception $e)
+                    {
+                        $page->assign('msg', 'La date n\'est pas correcte.');
+                    }
+	            }
+                if (Env::has('delete'))
+                {
+                    $n->delete();
+                    $page->assign('delete', true);
+                }
+                $page->assign('id', $id);
+	            $page->assign('news', $n);
+            }
+        }
+        $page->assign('all_news', $c);
+
+        $page->assign('title', 'Modifier les annonces en cours');
+        $page->addCssLink('validate.css');
+        $page->changeTpl('news/admin.tpl');
+    }
+
+    function handler_ajax_admin($page)
+    {
+        $json = json_decode(Env::v('json'));
+        $id = $json->id;
+        $n = new News($id);
+        $n->select();
+        $page->assign('news', $n);
+        $result = $page->fetch(FrankizPage::getTplPath('news/modify.tpl'));
+        $page->jsonAssign('success', true);
+        $page->jsonAssign('news', $result);
+        return PL_JSON;
+    }
+
+    function handler_ajax_modify($page, $type)
+    {
+        $json = json_decode(Env::v('json'));
+        $id = $json->admin_id;
+        $n = new News($id);
+        $n->select();
+        try
+        {
+            $end = new FrankizDateTime($json->end);
+            $n->title($json->title);
+            $n->content($json->content);
+            $n->end($end);
+            $n->priv($json->priv == 'on');
+            $n->replace();
+            $page->jsonAssign('success', true);
+        }
+        catch (Exception $e)
+        {
+            $page->jsonAssign('success', false);
+        }
+        return PL_JSON;
     }
 }
 
