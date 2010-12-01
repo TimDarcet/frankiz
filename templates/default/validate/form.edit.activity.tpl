@@ -43,7 +43,7 @@
         Date :
     </td>
     <td>
-        <input type='text' name='date' value="{$item->date()}" />
+        <input type='text' name='date' value="{$item->date()|datetime:'Y-m-d'}" />
     </td>
 </tr>
    

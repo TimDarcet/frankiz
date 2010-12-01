@@ -54,7 +54,7 @@
         Dernier jour :
     </td>
     <td>
-        <input type='text' name='end' value="{$news->end()}" />
+        <input type='text' name='end' value="{$news->end()|datetime:'Y-m-d H:i:s'}" />
     </td>
 </tr>
             

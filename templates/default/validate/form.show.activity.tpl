@@ -22,6 +22,15 @@
 
 <tr>
     <td width=20%>
+        Groupe d'origine :
+    </td>
+    <td>
+        {assign var='origin' value=$item->origin()}
+        {$origin|group}
+    </td>
+</tr>
+<tr>
+    <td width=20%>
         Titre :
     </td>
     <td>
@@ -43,7 +52,7 @@
         Date :
     </td>
     <td>
-        {$item->date()}
+        {$item->date()|datetime:'Y-m-d'}
     </td>
 </tr>
    

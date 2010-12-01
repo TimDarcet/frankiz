@@ -44,7 +44,7 @@
         Dernier jour :
     </td>
     <td>
-        {$news->end()}
+        {$news->end()|datetime:'Y-m-d'}
     </td>
 </tr>
 

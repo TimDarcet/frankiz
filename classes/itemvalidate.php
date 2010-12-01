@@ -165,11 +165,13 @@ class NewsValidate extends ItemValidate
     {
         $this->news->title(Env::t('title', ''));
         $this->news->content(Env::t('content', ''));
-        $this->news->end(Env::t('end', $this->news->end()));
-        if(substr($this->news->end(), 4, 1) != '-')
+        try
         {
-            $this->news->end(substr_replace($this->news->end(), '-', 6, 0));
-            $this->news->end(substr_replace($this->news->end(), '-', 4, 0));
+            $this->news->end(new FrankizDateTime(Env::t('end', $this->news->end())));
+        }
+        catch (Exception $e)
+        {
+            return false;
         }
         $this->news->priv(Env::has('priv')?1:0);    
         $this->news->important(Env::has('important')?1:0);
@@ -239,6 +241,7 @@ class ActivityValidate extends ItemValidate
     protected $type = 'activity';
     protected $writer;
     protected $target;
+    protected $origin;
     protected $title;
     protected $description;
     protected $date;
@@ -247,10 +250,12 @@ class ActivityValidate extends ItemValidate
     protected $priv;
 
     public function __construct(User $writer, Group $target, String $title,
-        String $desc, String $date, String $begin, String $end, Boolean $priv)
+        String $desc, FrankizDateTime $date, String $begin, String $end, Boolean $priv, $origin = null)
     {
         $this->writer = $writer;
         $this->target = $target;
+        if (!is_null($origin))
+            $this->origin = $origin;
         $this->title = $title;
         $this->description = $desc;
         $this->date = $date;
@@ -269,6 +274,11 @@ class ActivityValidate extends ItemValidate
     public function target()
     {
         return $this->target;
+    }
+
+    public function origin()
+    {
+        return $this->origin;
     }
     
     public function title()
@@ -315,16 +325,23 @@ class ActivityValidate extends ItemValidate
     {
         $this->title        = Env::t('title', '');
         $this->description  = Env::t('description', '');
-        $this->date         = Env::t('date', $this->date);
-        $this->begin        = Env::t('begin', $this->begin);
-        $this->end          = Env::t('end', $this->end);
-        $this->priv         = Env::has('priv');
-    
-        if(substr($this->date, 4, 1) != '-')
+        try
         {
-            $this->date = substr_replace($this->date, '-', 6, 0);
-            $this->date = substr_replace($this->date, '-', 4, 0);
+            $this->date = new FrankizDateTime(Env::t('date', $this->date));
         }
+        catch (Exception $e)
+        {
+            return false;
+        }
+        $default_begin = Env::t('begin', $this->begin);
+        $default_end = Env::t('end', $this->end);
+        if (!(preg_match( '`^\d{2}:\d{2}$`' , $default_begin) && strtotime($default_begin) !== false
+                        && preg_match( '`^\d{2}:\d{2}$`' , $default_end) && strtotime($default_end) !== false))
+            return false;
+        
+        $this->begin        = $default_begin;
+        $this->end          = $default_end;
+        $this->priv         = Env::has('priv');
         
         return true;
     }
@@ -377,10 +394,11 @@ class ActivityValidate extends ItemValidate
     
     public function commit()
     {
-        $begin = $this->date . ' ' . $this->begin . ':00';
-        $end = $this->date . ' ' . $this->end . ':00';
+        $begin = new FrankizDateTime($this->date->format('Y-m-d') . ' ' . $this->begin . ':00');
+        $end = new FrankizDatetime($this->date->format('Y-m-d') . ' ' . $this->end . ':00');
         $a = new Activity(array(
-                'target'        => $this->target->id(),
+                'target'        => $this->target,
+                'origin'        => $this->origin,
                 'title'         => $this->title,
                 'description'   => $this->description,
                 'days'          => '',

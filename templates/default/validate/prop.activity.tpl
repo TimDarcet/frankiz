@@ -71,7 +71,7 @@
                     Sélectionner :
                 </td>
                 <td>
-                    <input type="radio" name="regular_activity_proposal" value="0" {if $choice_regular == 0}checked{/if}> Non
+                    <input type="radio" name="regular_activity_proposal" value="0" {if $choice_regular == 0}checked{/if}> Activité ponctuelle
                 </td>
             </tr>
             
@@ -102,7 +102,16 @@
                     Destinataire :
                 </td>
                 <td>
-                    {include file="groups_picker.tpl"|rel id="group_activity_proposal" ns="binet" check=-1}
+                    {include file="groups_picker.tpl"|rel id="target_activity_proposal" ns="binet" check=-1}
+                </td>
+            </tr>
+
+            <tr>
+                <td width=20%>
+                    Groupe d'origine :
+                </td>
+                <td>
+                    {include file="groups_picker.tpl"|rel id="origin_activity_proposal" ns="binet" check=-1}
                 </td>
             </tr>
             
