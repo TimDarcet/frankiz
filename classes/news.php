@@ -189,19 +189,20 @@ class News extends meta
     }
 
     public function update()
-    {        
+    {
         XDB::execute('UPDATE  news
                          SET  target = {?}, writer = {?}, iid = {?}, origin = {?},
                               title = {?}, content = {?}, begin = {?}, end = {?},
                               comment = {?}, priv = {?}
                        WHERE  id = {?}',
         $this->target->id(), $this->writer->id(), $this->image, is_null($this->origin)?null:$this->origin->id(),
-        $this->title, $this->content, $this->begin, $this->end,
+        $this->title, $this->content, $this->begin->format('Y-m-d'), $this->end->format('Y-m-d'),
         $this->comment, $this->priv, $this->id());
     }
 
     public function insert()
     {
+        $this->begin = new FrankizDateTime();
         XDB::execute('INSERT INTO news SET id = NULL');
         $this->id = XDB::insertId();
         $this->update();
