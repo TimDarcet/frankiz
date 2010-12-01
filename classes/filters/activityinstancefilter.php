@@ -119,31 +119,80 @@ class AIFC_Period extends ActivityInstanceFilterCondition
     public function buildCondition(PlFilter $f)
     {
         if ($this->strict)
-            return XDB::format('ai.end >= {?} AND ai.begin <= {?}',
+            return XDB::format('ai.begin >= {?} AND ai.end <= {?}',
                             $this->begin->format(), $this->end->format());
 
-        return XDB::format('ai.begin >= {?} AND ai.end <= {?}',
+        return XDB::format('ai.end >= {?} AND ai.begin <= {?}',
                         $this->begin->format(), $this->end->format());
     }
 }
 
-/** Returns instances that are not out-of-date
+/** Returns instances that begin after (or before) a specified datetime
  */
-class AIFC_Current extends ActivityInstanceFilterCondition
+class AIFC_Begin extends ActivityInstanceFilterCondition
 {
-    const PRECISION_SECOND = 0x01;
-    const PRECISION_DAY    = 0x02;
+    const AFTER  = '>=';
+    const BEFORE = '<=';
+    const EGAL   = '=';
 
-    private $precision;
+    private $sign;
+    private $begin;
 
-    public function __construct($precision = self::PRECISION_SECOND)
+    public function __construct(FrankizDateTime $begin, $sign = self::AFTER)
     {
-        $this->precision = $precision;
+        $this->begin = $begin;
+        $this->sign  = $sign;
     }
 
     public function buildCondition(PlFilter $f)
     {
-        if ($this->precision & self::PRECISION_DAY)
+        return XDB::format('ai.begin ' . $this->sign . ' {?}', $this->begin->format());
+    }
+}
+
+/** Returns instances that end before (or after) a specified datetime
+ */
+class AIFC_End extends ActivityInstanceFilterCondition
+{
+    const AFTER  = '>=';
+    const BEFORE = '<=';
+    const EGAL   = '=';
+
+    private $sign;
+    private $end;
+
+    public function __construct(FrankizDateTime $end, $sign = self::BEFORE)
+    {
+        $this->end  = $end;
+        $this->sign = $sign;
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        return XDB::format('ai.end ' . $this->sign . ' {?}', $this->end->format());
+    }
+}
+
+/** Returns instances that are in progress with a specified accuracy
+ *
+ * To filter today's instances: new AIFC_Current(AIFC_Current::ACCURACY_DAY)
+ *
+ */
+class AIFC_Current extends ActivityInstanceFilterCondition
+{
+    const ACCURACY_SECOND = 0x01;
+    const ACCURACY_DAY    = 0x02;
+
+    private $accuracy;
+
+    public function __construct($accuracy = self::PRECISION_SECOND)
+    {
+        $this->accuracy = $accuracy;
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        if ($this->accuracy & self::ACCURACY_DAY)
             return 'CURDATE() BETWEEN ai.begin AND ai.end';
 
         return 'NOW() BETWEEN ai.begin AND ai.end';
