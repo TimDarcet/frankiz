@@ -29,7 +29,8 @@
             <table class="body" style="height: 90px; font-size: 30px;">
                 <tr>
                     <td><a {path_to_href_attribute path="news"}>Annonces</a></td>
-                    <td><a {path_to_href_attribute path="accueil/activites"}>Activités</a></td>
+                    <td><a {path_to_href_attribute path="activity"}>Activités</a></td>
+                    <td><a {path_to_href_attribute path="activity/timetable"}>Emploi du temps</a></td>
                     <td><a {path_to_href_attribute path="newspaper/ik"}>InfoKès</a></td>
                 </tr>
             </table>
@@ -110,6 +111,8 @@
                         <td><a {path_to_href_attribute path="admin/groups"}>Groupes</a></td>
                         <td><a {path_to_href_attribute path="admin/images"}>Images</a></td>
                         <td><a {path_to_href_attribute path="admin/validate"}>Validations</a></td>
+                        <td><a {path_to_href_attribute path="news/admin"}>Annonces</a></td>
+                        <td><a {path_to_href_attribute path="activity/admin"}>Activités</a></td>
                     </tr>
                 </table>
             </div>
