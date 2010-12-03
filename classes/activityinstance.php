@@ -27,6 +27,7 @@ class ActivityInstance extends meta
     protected $aid;
     protected $writer;
     protected $target;
+    protected $origin;
     protected $title;
     protected $description;
     protected $comment;
@@ -51,6 +52,11 @@ class ActivityInstance extends meta
     public function target()
     {
         return $this->target;
+    }
+
+    public function origin()
+    {
+        return $this->origin;
     }
 
     public function title()
@@ -262,7 +268,7 @@ class ActivityInstance extends meta
             
         $request = 'SELECT ai.id';
         if ($bits & self::SELECT_BASE)
-            $request .= ', ai.aid, ai.writer, ai.comment, ai.begin, ai.end, a.target, a.title, a.description, a.priv, a.days';
+            $request .= ', ai.aid, ai.writer, ai.comment, ai.begin, ai.end, a.target, a.origin, a.title, a.description, a.priv, a.days';
 
         $iter = XDB::iterator($request . 
                         ' FROM  activities_instances AS ai 

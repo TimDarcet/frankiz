@@ -26,6 +26,7 @@ class NewsModule extends PlModule
         return array(
             "news"              => $this->make_hook("news"          , AUTH_PUBLIC),
             "news/admin"        => $this->make_hook("admin"         , AUTH_MDP),
+            "news/rss"          => $this->make_hook("rss"           , AUTH_PUBLIC, "user", NO_HTTPS),
             "news/ajax/read"    => $this->make_hook("ajax_read"     , AUTH_COOKIE),
             "news/ajax/star"    => $this->make_hook("ajax_star"     , AUTH_COOKIE),
             "news/ajax/admin"   => $this->make_hook("ajax_admin"    , AUTH_MDP),
@@ -123,6 +124,12 @@ class NewsModule extends PlModule
         $page->assign('title', 'Modifier les annonces en cours');
         $page->addCssLink('validate.css');
         $page->changeTpl('news/admin.tpl');
+    }
+
+    function handler_rss($page, $user = null, $hash = null)
+    {
+        $feed = new NewsFeed();
+        return $feed->run($page, $user, $hash);
     }
 
     function handler_ajax_admin($page)

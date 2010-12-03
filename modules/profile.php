@@ -437,8 +437,6 @@ class ProfileModule extends PLModule
 
     public function handler_recovery($page)
     {
-        global $globals;
-
         $page->addCssLink('profile.css');
         $page->changeTpl('profile/recovery.tpl');
         $page->assign('title', 'Nouveau mot de passe');
@@ -610,7 +608,7 @@ class ProfileModule extends PLModule
         $this->handler_rss($page);
     }
 
-    public function handler_rss($page)
+    public function handler_rss_old($page)
     {
         global $DB_web;
 
@@ -640,6 +638,20 @@ class ProfileModule extends PLModule
         $page->changeTpl('profil/rss.tpl');
         $page->assign('title', "Gestion des flux rss");
         $page->assign('nodelete', $nodelete);
+    }
+
+    function handler_rss($page)
+    {
+        if (Env::v('act_rss') == 'Activer') {
+            $hash_rss = rand_url_id(16);
+            S::user()->hash_rss($hash_rss);
+            $page->assign('success', true);
+        }
+
+        $page->assign('user', S::user());
+        $page->assign('title', 'Flux RSS');
+        $page->addCssLink('profile.css');
+        $page->changeTpl('profile/filrss.tpl');
     }
 
     public function handler_liens_perso_add($page)

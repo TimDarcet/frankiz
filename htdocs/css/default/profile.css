@@ -46,6 +46,22 @@
     text-align: right;
 }
 
+.rss {
+    width: 100%;
+}
+
+.rss .feed {
+    background: url(images/feed.gif) no-repeat 1px 50%;
+    padding-left: 15px;
+    text-decoration: none;
+    
+}
+
+.rss .form {
+    width: 100%;
+    text-align: center;
+}
+
 .profil_minimodules table {
     width: 100%;
     border-collapse: collapse;

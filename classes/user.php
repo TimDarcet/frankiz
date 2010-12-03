@@ -96,6 +96,9 @@ class User extends Meta
     // Contains the hash sent by mail to recover the password
     protected $hash = null;
 
+    // Contains the hash to receive rss flow
+    protected $hash_rss = null;
+
     // Contains the iid of the original picture
     protected $original = null;
 
@@ -212,6 +215,20 @@ class User extends Meta
             XDB::execute('UPDATE account SET hash = {?} WHERE uid = {?}', $this->hash, $this->id());
         }
         return $this->hash;
+    }
+
+    /**
+    * Returns the hash_rss given to the user
+    *
+    * @param $hash_rss If specified, update the Hash
+    */
+    public function hash_rss($hash_rss = null)
+    {
+        if ($hash_rss != null) {
+            $this->hash_rss = $hash_rss;
+            XDB::execute('UPDATE account SET hash_rss = {?} WHERE uid = {?}', $this->hash_rss, $this->id());
+        }
+        return $this->hash_rss;
     }
 
     /*******************************************************************************
@@ -577,7 +594,7 @@ class User extends Meta
         $cols = array();
         if ($bits & self::SELECT_BASE) {
             $cols['a'] = array('hruid', 'perms', 'state',
-                               'hash', 'original', 'photo', 'gender',
+                               'hash', 'hash_rss', 'original', 'photo', 'gender',
                                'email_format', 'bestalias',
                                'firstname', 'lastname', 'nickname');
         }

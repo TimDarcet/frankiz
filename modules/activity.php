@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *  Copyright (C) 2009 Binet Réseau                                       *
+ *  Copyright (C) 2010 Binet Réseau                                       *
  *  http://www.polytechnique.fr/eleves/binets/reseau/                     *
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
@@ -26,6 +26,7 @@ class ActivityModule extends PLModule
         return array(
             'activity'                      => $this->make_hook('activity',             AUTH_PUBLIC),
             'activity/timetable'            => $this->make_hook('timetable',            AUTH_PUBLIC),
+            "activity/rss"                  => $this->make_hook("rss",                  AUTH_PUBLIC, "user", NO_HTTPS),
             'activity/admin'                => $this->make_hook('admin',                AUTH_MDP),
             'activity/modify'               => $this->make_hook('modify',               AUTH_MDP),
             'activity/regular/new'          => $this->make_hook('new_regular',          AUTH_MDP),
@@ -70,6 +71,13 @@ class ActivityModule extends PLModule
         $page->addCssLink('activity.css');
         $page->assign('title', 'Emploi du temps');
         $page->changeTpl('activity/timetable.tpl');
+    }
+
+
+    function handler_rss($page, $user = null, $hash = null)
+    {
+        $feed = new ActivityFeed();
+        return $feed->run($page, $user, $hash);
     }
 
     function handler_admin($page)
