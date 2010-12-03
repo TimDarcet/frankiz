@@ -59,9 +59,8 @@ function __autoload($cls)
             }
         }
 
-        // Handle the *Validate classes
-        if (substr($cls, -8) == 'validate' && $cls != 'validate') {
-            __autoload('itemvalidate');
+        if (substr($cls, -8) == 'validate') {
+            pl_autoload($cls, array('classes/validate'));
             return;
         }
 
