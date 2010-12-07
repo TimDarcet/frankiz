@@ -22,13 +22,11 @@
 class Group extends Meta
 {
     const SELECT_BASE        = 0x01;
-    const SELECT_LOGIC       = 0x02;
+    const SELECT_CASTES      = 0x02;
     const SELECT_DESCRIPTION = 0x04;
-    const SELECT_USERS       = 0x08;
-    const SELECT_FREQUENCY   = 0x10;
-    const SELECT_COMMENTS    = 0x20;
+    const SELECT_COMMENTS    = 0x08;
 
-    const NS_GENERATED   = 'generated';    // Generated on the fly when writing a news or a survey
+    const NS_USER        = 'user';         // User groups
     const NS_FREE        = 'free';         // Non-Validated group
     const NS_BINET       = 'binet';        // Validated group
     const NS_STUDY       = 'study';
@@ -39,10 +37,14 @@ class Group extends Meta
     protected $ns    = null;
     protected $name  = null;
     protected $label = null;
+
+    protected $enter = null; // If true, you become a member when you join the group
+    protected $leave = null; // If true, you can't leave a group
+    protected $visibility = null; // If true, the groups is invisible
+
     protected $description = null;
 
-    protected $users = array();
-    protected $frequency = null;
+    protected $castes = null;
 
     public function name()
     {
@@ -64,95 +66,49 @@ class Group extends Meta
         return $this->label;
     }
 
+    public function enter()
+    {
+        return $this->enter;
+    }
+
+    public function leave()
+    {
+        return $this->leave;
+    }
+
+    public function visibility()
+    {
+        return $this->visibility;
+    }
+
     public function description()
     {
         return $this->description;
     }
 
-    public function frequency()
+    public function caste(Rights $rights = null)
     {
-        return $this->frequency;
-    }
+        if ($rights === null)
+            return $this->castes;
 
-    public function fillFromArray(array $values)
-    {
-        if (isset($values['image'])) {
-            $this->image = new FrankizImage($values['image']);
-            unset($values['image']);
+        /* /!\ Don't forget to select Castes before you try to access them
+         * Because if this method doesn't find the wanted caste, it will create it
+         * and you will get an error from the DB
+        */
+
+        if ($this->castes === null)
+            $this->castes = new Collection('Caste');
+
+        // Find the caste corresponding to the specified $rights
+        $caste = $this->castes->filter('rights', $rights)->first();
+
+        if ($caste === false) {
+            $caste = new Caste(array('group' => $this, 'rights' => $rights));
+            $caste->insert();
+            $this->castes->add($caste);
         }
 
-        if (isset($values['logic'])) {
-            $this->logic = unserialize($values['logic']);
-            unset($values['logic']);
-        }
-
-        parent::fillFromArray($values);
-    }
-
-    public function users()
-    {
-        return $this->users;
-    }
-
-    public function addUser($u, Rights $rights)
-    {
-        $uid = User::toId($u);
-
-        // IMPROVE: can be done in one request
-        foreach ($rights as $right)
-            XDB::execute('DELETE FROM groups_userfilters WHERE gid = {?} AND FIND_IN_SET({?}, rights)', $gid, $right);
-
-        XDB::execute('INSERT INTO  users_groups
-                              SET  uid = {?}, gid = {?}, rights = {?}, comments = ""
-          ON DUPLICATE KEY UPDATE  rights = CONCAT_WS(",", rights, {?})',
-                                   $uid, $this->id(), $rights->flags(), $rights->flags());
-    }
-
-    public function removeUser($u, Rights $rights = null)
-    {
-        $uid = User::toId($u);
-
-        if ($rights === null) {
-            XDB::execute('DELETE FROM  users_groups
-                                WHERE  uid = {?} AND gid = {?}',
-                                         $uid, $this->id());
-        } else {
-            XDB::execute('UPDATE  users_groups
-                             SET  rights = REPLACE(rights , {?}, "")
-                           WHERE  uid = {?} AND gid = {?}',
-                                  $uid, $this->id());
-            XDB::execute('DELETE FROM  users_groups
-                                WHERE  uid = {?} AND gid = {?} AND ',
-                                         $uid, $this->id());
-        }
-    }
-
-    public function userfilters(UserFilter $uf, Rights $rights)
-    {
-        $uf->insert();
-
-        if ($rights === null) {
-            XDB::execute('DELETE FROM  users_groups
-                                WHERE  uid = {?} AND gid = {?}',
-                                         $uid, $this->id());
-        } else {
-            XDB::execute('UPDATE  users_groups
-                             SET  rights = REPLACE(rights , {?}, "")
-                           WHERE  uid = {?} AND gid = {?}',
-                                  $uid, $this->id());
-            XDB::execute('DELETE FROM  users_groups
-                                WHERE  uid = {?} AND gid = {?} AND ',
-                                         $uid, $this->id());
-        }
-    }
-
-    public function insert(Node $parent)
-    {
-        XDB::execute('UPDATE  groups
-                         SET  name = {?}, label = {?}, description = {?}
-                       WHERE  gid = {?}',
-                   $this->name(), $this->label(), $this->description(), $this->id);
-        $this->id = XDB::insertId();
+        return $caste;
     }
 
     public function toJson($stringify = false)
@@ -161,10 +117,18 @@ class Group extends Meta
                       "name"  => $this->name(),
                       "label" => $this->label());
 
-        if ($this->frequency !== null)
-            $json['frequency'] = $this->frequency;
-
         return ($stringify) ? json_encode($json) : $json;
+    }
+
+    /*******************************************************************************
+         Data fetcher
+             (batchFrom, batchSelect, fillFromArray, …)
+    *******************************************************************************/
+
+    public function insert()
+    {
+        XDB::execute('INSERT INTO groups SET gid = NULL');
+        $this->id = XDB::insertId();
     }
 
     public static function batchFrom(array $mixed)
@@ -181,25 +145,25 @@ class Group extends Meta
         return $collec;
     }
 
-    public static function batchSelect(array $groups, $bits = null)
+    public static function batchSelect(array $groups, $options = null)
     {
         if (empty($groups))
             return;
 
+        if (empty($options)) {
+            $options = array(self::SELECT_BASE => null);
+            $options[self::SELECT_CASTES] = Caste::SELECT_BASE;
+        }
+
+        $bits = self::optionsToBits($options);
         $groups = array_combine(self::toIds($groups), $groups);
 
         $joins = array();
         $cols = array();
         if ($bits & self::SELECT_BASE)
-            $cols['g']   = array('ns', 'name', 'label', 'image');
-        if ($bits & self::SELECT_LOGIC)
-            $cols['g'][] = 'logic';
+            $cols['g']   = array('ns', 'name', 'label', 'image', 'enter', 'leave', 'visibility');
         if ($bits & self::SELECT_DESCRIPTION)
             $cols['g'][] = 'description';
-        if ($bits & self::SELECT_FREQUENCY) {
-            $cols[-1]    = array('COUNT(ug.uid) AS frequency');
-            $joins['ug'] = PlSqlJoin::left('users_groups', '$ME.gid = g.gid');
-        }
 
         if (!empty($cols)) {
             $iter = XDB::iterator('SELECT  g.gid AS id, ' . self::arrayToSqlCols($cols) . '
@@ -208,23 +172,34 @@ class Group extends Meta
                                     WHERE  g.gid IN {?}
                                  GROUP BY  g.gid', self::toIds($groups));
 
-            while ($datas = $iter->next())
+            while ($datas = $iter->next()) {
+                if (isset($datas['name']))
+                    $datas['name'] = ($datas['name'] === null) ? false : $datas['name'];
+
                 $groups[$datas['id']]->fillFromArray($datas);
+            }
         }
 
-//        if ($bits & self::SELECT_USERS)
-//        {
-//            foreach($groups as $group)
-//                $group->users = new ACollection('User', 'Rights');
-//
-//            $iter = XDB::iterator("SELECT  gid, uid, rights
-//                                     FROM  users_groups
-//                                    WHERE  gid IN {?}", self::toIds($groups));
-//
-//            while ($datas = $iter->next())
-//                $groups[$datas['gid']]->users->add($datas['uid'], $datas['rights']);
-//
-//        }
+        if ($bits & self::SELECT_CASTES)
+        {
+            foreach($groups as $group)
+                $group->castes = new Collection('Caste');
+
+            $iter = XDB::iterRow("SELECT  cid, gid
+                                    FROM  castes
+                                   WHERE  gid IN {?}", self::toIds($groups));
+
+            $castes = new Collection('Caste');
+            while (list($cid, $gid) = $iter->next()) {
+                $caste = new Caste(array('id' => $cid, 'group' => $groups[$gid]));
+
+                $castes->add($caste);
+                $groups[$gid]->castes->add($caste);
+            }
+
+            if (!empty($options[self::SELECT_CASTES]))
+                $castes->select($options[self::SELECT_CASTES]);
+        }
     }
 }
 

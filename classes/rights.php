@@ -19,22 +19,36 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class Rights extends PlFlagSet
+class Rights
 {
-    // Existing rights
-    const PREZ   = 'prez';
-    const WEB    = 'web';
-    const ADMIN  = 'admin';
-    const SUPER  = 'super';
-    const MEMBER = 'member';
-    const FRIEND = 'friend';
+    protected $rights = null;
 
-    public function filter($filter)
+    public function __construct($rights = 'member')
     {
-        if ($filter instanceof Rights)
-            $filter = $filter->flags();
+        if (in_array($rights, self::rights()))
+            $this->rights = $rights;
+        else
+            throw new Exception("Rights $rights doesn't exist");
+    }
 
-        return $this->hasFlagCombination($filter);
+    public static function __callStatic($name, $arguments)
+    {
+        return new self(strtolower($name));
+    }
+
+    public static function rights()
+    {
+        return array('prez', 'web', 'admin', 'super', 'member', 'friend');
+    }
+
+    public function __toString()
+    {
+    	return $this->rights;
+    }
+
+    public function isMe(Rights $rights)
+    {
+        return $this->rights == $rights->rights;
     }
 }
 

@@ -325,29 +325,92 @@ class UFC_Sex extends UserFilterCondition
 
 // {{{ class UFC_Group
 /** Filters users based on group membership
- * @param $group Group whose members we are selecting
- * @param $right Level of membership (Rights::FRIEND, Rights::MEMBER, ...)
+ * The groups&rights are converted to castes when the filter is executed or exported
+ * @param $group Group
+ * @param $rights Rights level in the group
  */
 class UFC_Group extends UserFilterCondition
 {
-    private $gids;
-    private $right;
+    static protected $instances = array();
 
-    public function __construct($gs, $right = Rights::MEMBER)
+    protected $gids;
+    protected $rights;
+    protected $cids = null;
+
+    public function __construct($gs, $rights)
     {
-        $this->right = $right;
-        $this->gids  = Group::toIds(unflatten($gs));
+        $this->gids   = Group::toIds(unflatten($gs));
+        $this->rights = (string) (empty($rights)) ? Rights::member() : $rights;
+        self::$instances[] = $this;
     }
 
-    public function buildCondition(PlFilter $uf)
+    private function fetchCids()
     {
-        $sub = $uf->addGroupFilter();
-        return XDB::format($sub . '.gid IN {?}', $this->gids);
+        if ($this->cids === null)
+        {
+            $grouprights = array();
+            foreach (self::$instances as $instance) {
+                foreach ($instance->gids as $gid)
+                    $groupsrights[] = array('group' => $gid, 'rights' => $instance->rights);
+            }
+
+            $castes = Caste::batchFrom($groupsrights);
+
+            foreach (self::$instances as $instance) {
+                $gids   = $instance->gids;
+                $rights = $instance->rights;
+                $filtered = $castes->filter(
+                    function ($c) use($gids, $rights) {
+                        return (in_array($c->group()->id(), $gids)) && ($c->rights()->isMe($rights));
+                    }
+                );
+
+                $instance->cids = $filtered->ids();
+            }
+        }
+
+        return $this->cids;
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        $cids = $this->fetchCids();
+        if (!empty($cids)) {
+            $sub = $f->addCasteFilter();
+            return XDB::format($sub . '.cid IN {?}', $cids);
+        }
+        return '0';
     }
 
     public function export()
     {
-        return array("type" => 'group', "children" => $this->gids);
+        return array("type" => 'caste', "children" => $this->fetchCids());
+    }
+}
+// }}}
+
+// {{{ class UFC_Caste
+/** Filters users based on caste membership
+ * @param $caste Caste whose members we are selecting
+ */
+class UFC_Caste extends UserFilterCondition
+{
+    private $cids;
+
+    public function __construct($cs)
+    {
+        $this->cids  = Caste::toIds(unflatten($cs));
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        $sub = $f->addCasteFilter();
+        return XDB::format($sub . '.cid IN {?}', $this->cids);
+    }
+
+    public function export()
+    {
+        return array("type" => 'caste', "children" => $this->cids);
     }
 }
 // }}}
@@ -616,24 +679,22 @@ class UserFilter extends FrankizFilter
         return $joins;
     }
 
-    /** GROUPS
+    /** CASTES
      */
-    private $with_groups = array();
+    private $with_castes = array();
 
-    public function addGroupFilter()
+    public function addCasteFilter()
     {
-        $table_uid = 'ug_' . uniqid();
-        $this->with_groups[$table_uid] = true;
-        return $table_uid;
+        $this->with_castes = true;
+        return 'cu';
     }
 
-    protected function groupJoins()
+    protected function casteJoins()
     {
         $joins = array();
-        foreach ($this->with_groups as $table_uid => $bool)
-            if ($bool)
-                $joins[$table_uid] = PlSqlJoin::inner('users_groups', '$ME.uid = a.uid');
-
+        if ($this->with_castes) {
+            $joins['cu'] = PlSqlJoin::inner('castes_users', '$ME.uid = a.uid');
+        }
         return $joins;
     }
 
@@ -686,8 +747,20 @@ class UserFilter extends FrankizFilter
     {
         $obj = null;
         switch ($export['type']) {
+            case 'true':
+                $obj = new PFC_True();
+                break;
+
             case 'and':
                 $obj = new PFC_And();
+                break;
+
+            case 'or':
+                $obj = new PFC_Or();
+                break;
+
+            case 'not':
+                $obj = new PFC_Not();
                 break;
 
             case 'study':
@@ -714,27 +787,29 @@ class UserFilter extends FrankizFilter
         return $obj;
     }
 
-    /* /!\ UserFilter's id isn't numeric, but a hash
-    */
-    public function id()
+    public function dependencies($root = null)
     {
-        return md5(json_encode($this->export()));
-    }
+        if ($root === null)
+            $root = $this->root->export();
 
-    public function insert()
-    {
-        XDB::execute('INSERT IGNORE  userfilters
-                                SET  ufid = {?}, userfilter = {?}',
-                                     $this->id(), json_encode($this->export()));
-        XDB::execute('DELETE FROM userfilters_dependencies WHERE ufid = {?}', $this->id());
-    }
+        $castes = array();
 
-    public function delete()
-    {
-        XDB::execute('DELETE FROM userfilters WHERE ufid = {?}', $this->id());
-        XDB::execute('DELETE FROM userfilters_dependencies WHERE ufid = {?}', $this->id());
-    }
+        if ($root['type'] == 'and' || $root['type'] == 'or') {
+            foreach ($root['children'] as $child) {
+                $castes = array_merge($castes, $this->dependencies($child));
+            }
+        }
 
+        if ($root['type'] == 'not') {
+            $castes = array_merge($castes, $this->dependencies($root['child']));
+        }
+
+        if ($root['type'] == 'caste') {
+            $castes = array_merge($castes, $root['children']);
+        }
+
+        return array_unique($castes);
+    }
 }
 // }}}
 

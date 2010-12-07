@@ -19,152 +19,114 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-abstract class GroupFilterCondition extends FrankizFilterCondition
+abstract class CasteFilterCondition extends FrankizFilterCondition
 {
 }
 
-class GFC_Name extends GroupFilterCondition
+class CFC_Group extends CasteFilterCondition
 {
-    private $name;
+    private $gids;
+    private $rights = null;
 
-    public function __construct($val)
+    public function __construct($gs, $rights = null)
     {
-        $this->name = unflatten($val);
-    }
-
-    public function buildCondition(PlFilter $uf)
-    {
-        return XDB::format('g.name IN {?}', $this->name);
-    }
-}
-
-class GFC_Namespace extends GroupFilterCondition
-{
-    private $ns;
-
-    public function __construct($ns)
-    {
-        $this->ns = $ns;
-    }
-
-    public function buildCondition(PlFilter $uf)
-    {
-        return XDB::format('g.ns = {?}', $this->ns);
-    }
-}
-
-class GFC_Label extends GroupFilterCondition
-{
-    // Modes
-    const PREFIX   = XDB::WILDCARD_PREFIX;   // 0x001
-    const SUFFIX   = XDB::WILDCARD_SUFFIX;   // 0x002
-    const CONTAINS = XDB::WILDCARD_CONTAINS; // 0x003
-
-    private $text;
-    private $mode;
-
-    public function __construct($text, $mode)
-    {
-        $this->text = $text;
-        $this->mode = $mode;
-    }
-
-    public function buildCondition(PlFilter $uf)
-    {
-        $right = XDB::formatWildcards($this->mode, $this->text);
-
-        return 'g.label' . $right;
-    }
-}
-
-class GFC_User extends GroupFilterCondition
-{
-    private $uids;
-    private $rights;
-
-    public function __construct($us, $rights = null)
-    {
-        $this->uids  = User::toIds(unflatten($us));
-        $this->rights = (string) (empty($rights)) ? Rights::member() : $rights;
+        $this->gids   = Group::toIds(unflatten($gs));
+        $this->rights = (string) $rights;
     }
 
     public function buildCondition(PlFilter $f)
     {
-        $c = $f->addCasteFilter();
+        if (empty($this->rights))
+            return XDB::format('c.gid IN {?}', $this->gids);
+        else
+            return XDB::format('c.gid IN {?} AND c.rights = {?}', $this->gids, $this->rights);
+    }
+}
+
+class CFC_Rights extends CasteFilterCondition
+{
+    private $rights;
+
+    public function __construct($rights)
+    {
+        $this->rights = (string) $rights;
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        return XDB::format('c.rights = {?}', $this->rights);
+    }
+}
+
+class CFC_UserFilter extends CasteFilterCondition
+{
+    private $userfilter;
+
+    public function __construct($userfilter = true)
+    {
+        $this->userfilter = $userfilter;
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        $not = ($this->userfilter) ? 'NOT' : '';
+        return "c.userfilter IS $not NULL";
+    }
+}
+
+class CFC_User extends CasteFilterCondition
+{
+    private $uids;
+
+    public function __construct($us)
+    {
+        $this->uids  = User::toIds(unflatten($us));
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
         $u = $f->addUserFilter();
-        return XDB::format("( $u.uid IN {?} AND $c.rights = {?} )", $this->uids, $this->rights);
+        return XDB::format("$u.uid IN {?}", $this->uids);
     }
 }
 
-abstract class GroupFilterOrder extends FrankizFilterOrder
+abstract class CasteFilterOrder extends FrankizFilterOrder
 {
 }
 
-class GFO_Frequency extends GroupFilterOrder
+class CFO_Frequency extends CasteFilterOrder
 {
     public function __construct($desc = false)
     {
         parent::__construct($desc);
     }
 
-    protected function getSortTokens(PlFilter $gf)
+    protected function getSortTokens(PlFilter $f)
     {
-        $sub = $gf->addUserFilter();
+        $sub = $f->addUserFilter();
         return "COUNT($sub.uid)";
-    }
-}
-
-class GFO_Name extends GroupFilterOrder
-{
-
-    public function __construct($desc = false)
-    {
-        parent::__construct($desc);
-    }
-
-    protected function getSortTokens(PlFilter $gf)
-    {
-        return 'g.name';
     }
 }
 
 /***********************************
   *********************************
-          GROUP FILTER CLASS
+          CASTE FILTER CLASS
   *********************************
  ***********************************/
 
-class GroupFilter extends FrankizFilter
+class CasteFilter extends FrankizFilter
 {
     protected function schema()
     {
-        return array('table' => 'groups',
-                     'as'    => 'g',
-                     'id'    => 'gid');
-    }
-
-    protected $with_caste = false;
-
-    public function addCasteFilter()
-    {
-        $this->with_caste = true;
-        return 'c';
-    }
-
-    protected function casteJoins()
-    {
-        $joins = array();
-        if ($this->with_caste)
-            $joins['c']  = PlSqlJoin::left('castes', '$ME.gid = g.gid');
-
-        return $joins;
+        return array('table' => 'castes',
+                     'as'    => 'c',
+                     'id'    => 'cid');
     }
 
     protected $with_user = false;
 
     public function addUserFilter()
     {
-        $this->addCasteFilter();
         $this->with_user = true;
         return 'cu';
     }

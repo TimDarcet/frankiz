@@ -580,9 +580,9 @@ class User extends Meta
             return;
 
         if (empty($options)) {
-            $bits = User::SELECT_BASE | User::SELECT_SKIN | User::SELECT_MINIMODULES | SELECT_GROUPS;
-            $options = array(User::SELECT_GROUPS => array("options" => Group::SELECT_BASE | Group::SELECT_FREQUENCY,
-                                                          "ns" => Group::NS_BINET));
+            $bits = User::SELECT_BASE | User::SELECT_SKIN | User::SELECT_MINIMODULES;
+            /*$options = array(User::SELECT_GROUPS => array("options" => Group::SELECT_BASE,
+                                                               "ns" => Group::NS_BINET))*/
         } else {
             $bits = self::optionsToBits($options);
         }

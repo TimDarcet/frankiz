@@ -90,10 +90,11 @@ class VFC_User extends ValidateFilterCondition
         $this->uids = User::toIds(unflatten($us));
     }
 
-    public function buildCondition(PlFilter $uf)
+    public function buildCondition(PlFilter $f)
     {
-        $sub = $uf->addUserFilter();
-        return XDB::format("$sub.uid IN {?} AND FIND_IN_SET('admin', $sub.rights) > 0", $this->uids);
+        $c = $f->addCasteFilter();
+        $cu = $f->addUserFilter();
+        return XDB::format("$c.rights = {?} AND $cu.uid IN {?}", (string) Rights::admin(), $this->uids);
     }
 }
 
@@ -129,19 +130,36 @@ class ValidateFilter extends FrankizFilter
                      'id'    => 'id');
     }
 
+    private $with_caste = false;
+
+    public function addCasteFilter()
+    {
+        $this->with_caste = true;
+        return 'c';
+    }
+
+    protected function casteJoins()
+    {
+        $joins = array();
+        if ($this->with_caste) {
+            $joins['c'] = PlSqlJoin::left('castes', '$ME.gid = v.gid');
+        }
+        return $joins;
+    }
+
     private $with_user = false;
 
     public function addUserFilter()
     {
         $this->with_user = true;
-        return 'ug';
+        return 'cu';
     }
 
     protected function userJoins()
     {
         $joins = array();
         if ($this->with_user) {
-            $joins['ug'] = PlSqlJoin::left('users_groups', '$ME.gid = v.gid');
+            $joins['cu'] = PlSqlJoin::left('castes_users', '$ME.cid = c.cid');
         }
         return $joins;
     }

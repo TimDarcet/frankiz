@@ -110,16 +110,17 @@ class NFC_User extends NewsFilterCondition
     private $uids;
     private $rights;
 
-    public function __construct($us, $rights = 'member')
+    public function __construct($us, $rights)
     {
         $this->uids = User::toIds(unflatten($us));
-        $this->rights = $rights;
+        $this->rights = (string) (empty($rights)) ? Rights::member() : $rights;
     }
 
-    public function buildCondition(PlFilter $uf)
+    public function buildCondition(PlFilter $f)
     {
-        $sub = $uf->addUserFilter();
-        return XDB::format("$sub.uid IN {?} AND FIND_IN_SET({?}, $sub.rights) > 0", $this->uids, $this->rights);
+        $c = $f->addCasteFilter();
+        $cu = $f->addUserFilter();
+        return XDB::format("$c.rights = {?} AND $cu.uid IN {?}", (string) $this->rights, $this->uids);
     }
 }
 
@@ -195,19 +196,36 @@ class NewsFilter extends FrankizFilter
                      'id'    => 'id');
     }
 
+    private $with_caste = false;
+
+    public function addCasteFilter()
+    {
+        $this->with_caste = true;
+        return 'c';
+    }
+
+    protected function casteJoins()
+    {
+        $joins = array();
+        if ($this->with_caste) {
+            $joins['c'] = PlSqlJoin::left('castes', '$ME.gid = n.target');
+        }
+        return $joins;
+    }
+
     private $with_user = false;
 
     public function addUserFilter()
     {
         $this->with_user = true;
-        return 'ug';
+        return 'cu';
     }
 
     protected function userJoins()
     {
         $joins = array();
         if ($this->with_user) {
-            $joins['ug'] = PlSqlJoin::left('users_groups', '$ME.gid = n.target');
+            $joins['cu'] = PlSqlJoin::left('castes_users', '$ME.cid = c.cid');
         }
         return $joins;
     }
