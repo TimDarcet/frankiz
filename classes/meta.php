@@ -21,6 +21,15 @@
 
 class ItemNotFoundException extends Exception
 {
+    private $ids;
+
+    public function ids(array $ids = null)
+    {
+        if ($ids !== null)
+            $this->ids = $ids;
+
+        return $this->ids;
+    }
 }
 
 class UndefinedIdException extends Exception
