@@ -37,6 +37,7 @@ class Group extends Meta
     protected $ns    = null;
     protected $name  = null;
     protected $label = null;
+    protected $score = null;
 
     protected $enter = null; // If true, you become a member when you join the group
     protected $leave = null; // If true, you can't leave a group
@@ -64,6 +65,11 @@ class Group extends Meta
             XDB::execute('UPDATE groups SET label = {?} WHERE gid = {?}', $label, $this->id);
         }
         return $this->label;
+    }
+
+    public function score()
+    {
+        return $this->score;
     }
 
     public function enter()
@@ -161,7 +167,7 @@ class Group extends Meta
         $joins = array();
         $cols = array();
         if ($bits & self::SELECT_BASE)
-            $cols['g']   = array('ns', 'name', 'label', 'image', 'enter', 'leave', 'visibility');
+            $cols['g']   = array('ns', 'name', 'label', 'score', 'image', 'enter', 'leave', 'visibility');
         if ($bits & self::SELECT_DESCRIPTION)
             $cols['g'][] = 'description';
 
