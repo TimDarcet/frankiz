@@ -159,18 +159,26 @@ class Collection extends PlAbstractIterable
 
     /**
     * Add an item only if it doesn't already exist in the Collection
-    * Returns the added item
+    * Returns the added item or the one already existing
     *
-    * @param $id The Id of the item
+    * @param $mixed The Id of the item or the item itself
     */
-    public function addget($id)
+    public function addget($mixed)
     {
-        $id = intval($id);
-        if (!empty($this->collected[$id]))
-            return $this->collected[$id];
-
         $className = $this->className;
-        $this->collected[$id] = new $className($id);
+        if (isId($mixed)) {
+            $id = intval($mixed);
+            if (empty($this->collected[$id]))
+                $this->collected[$id] = new $className($id);
+        } else if ($mixed instanceof $className) {
+            $id = $mixed->id();
+            if (empty($this->collected[$id]))
+                $this->collected[$id] = $mixed;
+        }
+
+        if (!isset($id))
+            throw new Exception('The argument must be an Id or an Item with an id() method');
+
         return $this->collected[$id];
     }
 
@@ -319,6 +327,9 @@ class Collection extends PlAbstractIterable
     */
     public function first()
     {
+        if (empty($this->collected))
+            return false;
+
         foreach ($this as $c)
             return $c;
     }
