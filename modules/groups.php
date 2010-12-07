@@ -35,9 +35,9 @@ class GroupsModule extends PLModule
 
     function handler_groups($page)
     {
-        $gf = new GroupFilter(null, new GFO_Frequency(true));
+        $gf = new GroupFilter(null, new GFO_Score(true));
         $gs = $gf->get(new PlLimit(20));
-        $gs->select(Group::SELECT_BASE | Group::SELECT_FREQUENCY);
+        $gs->select(Group::SELECT_BASE);
 
         $total = $gf->getTotalCount();
 
@@ -133,14 +133,26 @@ class GroupsModule extends PLModule
 
     function handler_group($page, $group)
     {
-        $gf = new GroupFilter(new GFC_Name($group));
+        $filter = (isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
+        $gf = new GroupFilter($filter);
         $group = $gf->get(true);
-        if ($group)
-            $group->select(Group::SELECT_BASE | Group::SELECT_DESCRIPTION | Group::SELECT_USERS | Group::SELECT_FREQUENCY);
 
-        $page->assign('group', $group);
-        $page->assign('title', $group->label());
-        $page->changeTpl('groups/group.tpl');
+        if ($group)
+        {
+            $group->select(Group::SELECT_BASE | Group::SELECT_DESCRIPTION);
+            $group->select(array(Group::SELECT_CASTES =>
+                                 array(Caste::SELECT_BASE => null,
+                                       Caste::SELECT_USERS => User::SELECT_BASE)));
+            $page->assign('group', $group);
+
+            $page->assign('title', $group->label());
+            $page->changeTpl('groups/group.tpl');
+        }
+        else
+        {
+            $page->assign('title', "Ce groupe n'existe pas");
+            $page->changeTpl('groups/no_group.tpl');
+        }
     }
 }
 

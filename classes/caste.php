@@ -259,6 +259,9 @@ class Caste extends Meta
                 $user = $users->addget($datas['uid']);
                 $castes[$datas['cid']]->users->add($user);
             }
+
+            if (!empty($options[self::SELECT_USERS]))
+                $users->select($options[self::SELECT_USERS]);
         }
     }
 }

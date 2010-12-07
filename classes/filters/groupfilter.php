@@ -23,6 +23,21 @@ abstract class GroupFilterCondition extends FrankizFilterCondition
 {
 }
 
+class GFC_Id extends GroupFilterCondition
+{
+    private $gids;
+
+    public function __construct($gs)
+    {
+        $this->gids = Group::toIds(unflatten($gs));
+    }
+
+    public function buildCondition(PlFilter $uf)
+    {
+        return XDB::format('g.gid IN {?}', $this->gids);
+    }
+}
+
 class GFC_Name extends GroupFilterCondition
 {
     private $name;
@@ -100,7 +115,7 @@ abstract class GroupFilterOrder extends FrankizFilterOrder
 {
 }
 
-class GFO_Frequency extends GroupFilterOrder
+class GFO_Score extends GroupFilterOrder
 {
     public function __construct($desc = false)
     {
@@ -109,8 +124,7 @@ class GFO_Frequency extends GroupFilterOrder
 
     protected function getSortTokens(PlFilter $gf)
     {
-        $sub = $gf->addUserFilter();
-        return "COUNT($sub.uid)";
+        return "g.score";
     }
 }
 

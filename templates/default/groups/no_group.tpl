@@ -20,20 +20,8 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{$groups->count()} / {$total}
-<table>
-    <tr>
-    	<th>Ns</th>
-        <th>Score</th>
-        <th>Name</th>
-    </tr>
-    {foreach from=$groups|order:'score' item=group}
-	        <tr>
-	            <td>{$group->ns()}</td>
-	            <td>{$group->score()}</td>
-	            <td>{$group->name()}</td>
-	        </tr>
-    {/foreach}
-</table>
+
+Ce groupe n'existe pas
+
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

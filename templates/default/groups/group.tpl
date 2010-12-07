@@ -20,20 +20,28 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{$groups->count()} / {$total}
-<table>
-    <tr>
-    	<th>Ns</th>
-        <th>Score</th>
-        <th>Name</th>
-    </tr>
-    {foreach from=$groups|order:'score' item=group}
-	        <tr>
-	            <td>{$group->ns()}</td>
-	            <td>{$group->score()}</td>
-	            <td>{$group->name()}</td>
-	        </tr>
+{$group->id()}
+{$group->name()}
+{$group->label()}
+{$group->description()}
+
+<ul>
+{foreach from=$group->caste() item='caste'}
+    <li>
+    {$caste->id()}
+    {$caste->rights()}
+    <ul>
+    {foreach from=$caste->users() item='user'}
+        <li>
+        {$user->id()}
+        {$user->login()}
+        {$user->displayName()}
+        </li>
     {/foreach}
-</table>
+    </ul>
+    </li>
+{/foreach}
+</ul>
+
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
