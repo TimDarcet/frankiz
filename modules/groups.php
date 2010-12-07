@@ -28,7 +28,8 @@ class GroupsModule extends PLModule
             'groups/ajax/search'     => $this->make_hook('ajax_search',     AUTH_PUBLIC),
             'groups/ajax/insert'     => $this->make_hook('ajax_insert',     AUTH_COOKIE),
             'groups/ajax/rename'     => $this->make_hook('ajax_rename',     AUTH_COOKIE),
-            'groups/ajax/delete'     => $this->make_hook('ajax_delete',     AUTH_COOKIE)
+            'groups/ajax/delete'     => $this->make_hook('ajax_delete',     AUTH_COOKIE),
+            'group'                  => $this->make_hook('group',           AUTH_PUBLIC),
         );
     }
 
@@ -59,7 +60,7 @@ class GroupsModule extends PLModule
         $own = $own->get(new PlLimit(5));
         $all = $all->get(new PlLimit(5));
 
-        $all->merge($own)->select(Group::SELECT_BASE | Group::SELECT_FREQUENCY);
+        $all->merge($own)->select(Group::SELECT_BASE);
 
         $page->jsonAssign('success', true);
         $page->jsonAssign('groups', $all->toJson());
@@ -87,6 +88,7 @@ class GroupsModule extends PLModule
         } catch(Exception $e) {
             $page->jsonAssign('success', false);
         }
+        return PL_JSON;
     }
 
     function handler_ajax_rename($page)
@@ -107,6 +109,7 @@ class GroupsModule extends PLModule
         } catch(Exception $e) {
             $page->jsonAssign('success', false);
         }
+        return PL_JSON;
     }
 
     function handler_ajax_delete($page)
@@ -125,6 +128,19 @@ class GroupsModule extends PLModule
         } catch(Exception $e) {
             $page->jsonAssign('success', false);
         }
+        return PL_JSON;
+    }
+
+    function handler_group($page, $group)
+    {
+        $gf = new GroupFilter(new GFC_Name($group));
+        $group = $gf->get(true);
+        if ($group)
+            $group->select(Group::SELECT_BASE | Group::SELECT_DESCRIPTION | Group::SELECT_USERS | Group::SELECT_FREQUENCY);
+
+        $page->assign('group', $group);
+        $page->assign('title', $group->label());
+        $page->changeTpl('groups/group.tpl');
     }
 }
 
