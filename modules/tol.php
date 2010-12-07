@@ -83,16 +83,16 @@ class TolModule extends PLModule
             $conds[] = new UFC_Name($fields['nickname'], UFC_Name::NICKNAME, UFC_Name::CONTAINS);
 
         if ($fields['nationalities'])
-            $conds[] = new UFC_Group(explode(';', $fields['nationalities']), Rights::MEMBER);
+            $conds[] = new UFC_Group(explode(';', $fields['nationalities']));
 
         if ($fields['studies'])
-            $conds[] = new UFC_Group(explode(';', $fields['studies']), Rights::MEMBER);
+            $conds[] = new UFC_Group(explode(';', $fields['studies']));
 
         if ($fields['sports'])
-            $conds[] = new UFC_Group(explode(';', $fields['sports']), Rights::MEMBER);
+            $conds[] = new UFC_Group(explode(';', $fields['sports']));
 
         if ($fields['binets'])
-            $conds[] = new UFC_Group(explode(';', $fields['binets']), Rights::MEMBER);
+            $conds[] = new UFC_Group(explode(';', $fields['binets']));
 
         if ($fields['room'])
             $conds[] = new UFC_Room($fields['room']);
@@ -117,7 +117,7 @@ class TolModule extends PLModule
 
         if ($filter) {
             $uf = new UserFilter($filter);
-            $users = $uf->getUsers(new PlLimit(50,0))->select(User::SELECT_BASE | User::SELECT_GROUPS);
+            $users = $uf->get(new PlLimit(50,0))->select(User::SELECT_BASE | User::SELECT_GROUPS);
             $page->assign('results', $users);
             $page->assign('total', $uf->getTotalCount());
         }
@@ -140,9 +140,9 @@ class TolModule extends PLModule
         if ($filter) {
             $uf = new UserFilter($filter);
             if ($json->mode == 'card')
-                $users = $uf->getUsers(new PlLimit(20,0))->select(User::SELECT_BASE);
+                $users = $uf->get(new PlLimit(20,0))->select(User::SELECT_BASE);
             else
-                $users = $uf->getUsers(new PlLimit(50,0))->select(
+                $users = $uf->get(new PlLimit(50,0))->select(
                                             array(User::SELECT_BASE => false,
                                                 User::SELECT_GROUPS => array("comments" => true,
                                                                                    "ns" => array(Group::NS_BINET, Group::NS_SPORT,
