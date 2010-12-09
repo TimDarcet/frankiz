@@ -20,9 +20,25 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<span class="meteo">
-  {$minimodule.meteo.temperature}°C<br />
-  <img alt="meteo" src="data/meteo_icons/{$minimodule.meteo.ciel_icon}.gif" width="64" height="64" />
-</span>
+<div class="today">
+    {assign var='today' value=$minimodule.meteo->today()}
+        <img src="{$today->icon}" />
+    {$today->label}
+    {$today->temperature}° C
+</div>
+
+<div class="forecast">
+    <h5>Prévisions</h5>
+    <ul>
+    {foreach from=$minimodule.meteo item='forecast'}
+        <li>
+        <img src="{$forecast->icon}" />
+        {$forecast->label}
+        {$forecast->low}
+        {$forecast->high}
+        </li>
+    {/foreach}
+    </ul>
+</div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
