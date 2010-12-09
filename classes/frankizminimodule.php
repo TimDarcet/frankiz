@@ -36,6 +36,8 @@ abstract class FrankizMiniModule
     private $name    = null;
     private $tplVars = array();
 
+    private $error = null;
+
     private static $minimodules = array();
 
     private function __construct($name)
@@ -60,10 +62,10 @@ abstract class FrankizMiniModule
 
     public function template()
     {
-        if ($this->checkAuthAndPerms())
+        if ($this->checkAuthAndPerms() && $this->error === null)
             return $this->tpl();
         else
-            return ERROR_TPL;
+            return self::ERROR_TPL;
     }
 
     // Must return the minimodule's template
@@ -128,8 +130,13 @@ abstract class FrankizMiniModule
             $minimodules[$m->name] = $m;
             if ($m !== false) {
                 self::$minimodules[$m->name] = $m;
-                if ($m->checkAuthAndPerms())
-                    $m->run();
+                if ($m->checkAuthAndPerms()) {
+                    try {
+                        $m->run();
+                    } catch (Exception $e) {
+                        $m->error = $e;
+                    }
+                }
             }
         }
         return ($array_passed) ? $minimodules : flatten($minimodules);
