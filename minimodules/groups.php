@@ -53,7 +53,7 @@ class GroupsMiniModule extends FrankizMiniModule
 
     public function run()
     {
-        S::user()->select(array(User::SELECT_GROUPS => array("options" => Group::SELECT_BASE | Group::SELECT_FREQUENCY)));
+        S::user()->select(array(User::SELECT_GROUPS => array("options" => Group::SELECT_BASE)));
         $this->assign('user', S::user());
     }
 }

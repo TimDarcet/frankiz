@@ -120,7 +120,7 @@ abstract class FrankizMiniModule
         }
     }
 
-    public static function get($names)
+    public static function get($names, $run = true)
     {
         $array_passed = is_array($names);
         $names = unflatten($names);
@@ -130,7 +130,7 @@ abstract class FrankizMiniModule
             $minimodules[$m->name] = $m;
             if ($m !== false) {
                 self::$minimodules[$m->name] = $m;
-                if ($m->checkAuthAndPerms()) {
+                if ($m->checkAuthAndPerms() && $run) {
                     try {
                         $m->run();
                     } catch (Exception $e) {
