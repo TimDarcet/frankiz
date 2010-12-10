@@ -24,12 +24,15 @@ class GroupsModule extends PLModule
     public function handlers()
     {
         return array(
-            'groups'                 => $this->make_hook('groups',          AUTH_PUBLIC),
-            'groups/ajax/search'     => $this->make_hook('ajax_search',     AUTH_PUBLIC),
-            'groups/ajax/insert'     => $this->make_hook('ajax_insert',     AUTH_COOKIE),
-            'groups/ajax/rename'     => $this->make_hook('ajax_rename',     AUTH_COOKIE),
-            'groups/ajax/delete'     => $this->make_hook('ajax_delete',     AUTH_COOKIE),
-            'group'                  => $this->make_hook('group',           AUTH_PUBLIC),
+            'groups'                  => $this->make_hook('groups',            AUTH_PUBLIC),
+            'groups/ajax/search'      => $this->make_hook('ajax_search',       AUTH_PUBLIC),
+            'groups/ajax/insert'      => $this->make_hook('ajax_insert',       AUTH_COOKIE),
+            'groups/ajax/rename'      => $this->make_hook('ajax_rename',       AUTH_COOKIE),
+            'groups/ajax/delete'      => $this->make_hook('ajax_delete',       AUTH_COOKIE),
+            'groups/see'              => $this->make_hook('group_see',         AUTH_PUBLIC),
+            'groups/subscribe'        => $this->make_hook('group_subscribe',   AUTH_COOKIE),
+            'groups/unsubscribe'      => $this->make_hook('group_unsubscribe', AUTH_COOKIE),
+            'groups/insert'           => $this->make_hook('group_insert',      AUTH_COOKIE),
         );
     }
 
@@ -55,8 +58,8 @@ class GroupsModule extends PLModule
                                   new PFC_OR(new GFC_Label($json->token, GFC_Label::CONTAINS),
                                              new GFC_Name($json->token)));
 
-        $own = new GroupFilter(new PFC_And($conditions, new GFC_User(S::user()->id())), new GFO_Frequency(true));
-        $all = new GroupFilter($conditions, new GFO_Frequency(true));
+        $own = new GroupFilter(new PFC_And($conditions, new GFC_User(S::user()->id())), new GFO_Score(true));
+        $all = new GroupFilter($conditions, new GFO_Score(true));
         $own = $own->get(new PlLimit(5));
         $all = $all->get(new PlLimit(5));
 
@@ -68,70 +71,7 @@ class GroupsModule extends PLModule
         return PL_JSON;
     }
 
-    function handler_ajax_insert($page)
-    {
-        $json = json_decode(Env::v('json'));
-
-        $parent = $json->{'parent'};
-        $label  = $json->{'label'};
-        $name   = uniqid();
-
-        $parent = new Group($parent);
-        $new = new Group(array("name" => $name, "label" => $label));
-
-        // TODO: check the rights
-        $page->jsonAssign('success', true);
-        try {
-            $new->insert($parent);
-            $datas = array('group' => $new->toJson(), 'parent' => $parent->toJson());
-            $page->jsonAssign('ok', APE::send('groupInserted', $datas));
-        } catch(Exception $e) {
-            $page->jsonAssign('success', false);
-        }
-        return PL_JSON;
-    }
-
-    function handler_ajax_rename($page)
-    {
-        $json = json_decode(Env::v('json'));
-
-        $group = $json->{'group'};
-        $label = $json->{'label'};
-
-        $group = new Group($group);
-
-        // TODO: check the rights
-        $page->jsonAssign('success', true);
-        try {
-            $group->label($label);
-            $datas = array('group' => $group->toJson());
-            $page->jsonAssign('ok', APE::send('groupRenamed', $datas));
-        } catch(Exception $e) {
-            $page->jsonAssign('success', false);
-        }
-        return PL_JSON;
-    }
-
-    function handler_ajax_delete($page)
-    {
-        $json = json_decode(Env::v('json'));
-
-        $group = $json->{'group'};
-        $group = new Group($group);
-
-        // TODO: check the rights
-        $page->jsonAssign('success', true);
-        try {
-            $group->delete();
-            $datas = array('group' => $group->toJson());
-            $page->jsonAssign('ok', APE::send('groupDeleted', $datas));
-        } catch(Exception $e) {
-            $page->jsonAssign('success', false);
-        }
-        return PL_JSON;
-    }
-
-    function handler_group($page, $group)
+    function handler_group_see($page, $group)
     {
         $filter = (isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
         $gf = new GroupFilter($filter);
@@ -153,6 +93,62 @@ class GroupsModule extends PLModule
             $page->assign('title', "Ce groupe n'existe pas");
             $page->changeTpl('groups/no_group.tpl');
         }
+    }
+
+    function handler_group_subscribe($page, $group)
+    {
+        $filter = (isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
+        $gf = new GroupFilter($filter);
+        $group = $gf->get(true);
+
+        if ($group)
+        {
+            $group->select();
+
+            if ($group->enter())
+                $group->caste(Rights::member())->addUser(S::user());
+            else
+                $group->caste(Rights::friend())->addUser(S::user());
+
+            $page->assign('group', $group);
+            $page->assign('title', $group->label());
+            $page->changeTpl('groups/subscribe.tpl');
+        }
+        else
+        {
+            $page->assign('title', "Ce groupe n'existe pas");
+            $page->changeTpl('groups/no_group.tpl');
+        }
+    }
+
+    function handler_group_unsubscribe($page, $group)
+    {
+        $filter = (isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
+        $gf = new GroupFilter($filter);
+        $group = $gf->get(true);
+
+        if ($group)
+        {
+            $group->select();
+
+            // TODO: check the personn doesn't leave a group if it is the only admin !
+            if ($group->leave())
+                $group->removeUser(S::user());
+
+            $page->assign('group', $group);
+            $page->assign('title', $group->label());
+            $page->changeTpl('groups/unsubscribe.tpl');
+        }
+        else
+        {
+            $page->assign('title', "Ce groupe n'existe pas");
+            $page->changeTpl('groups/no_group.tpl');
+        }
+    }
+
+    function handler_group_insert($page)
+    {
+        //TODO
     }
 }
 

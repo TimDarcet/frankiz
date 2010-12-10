@@ -21,7 +21,8 @@
 
 
 function smarty_modifier_group($group) {
-    return '<a href="/group/' . $group->name() . '">' . $group->label() . '</a>';
+    $label = ($group->label()) ? $group->label() : '<Sans nom>';
+    return '<a href="groups/see/' . $group->bestId() . '">' . $label . '</a>';
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

@@ -20,37 +20,13 @@
 {*                                                                        *}
 {**************************************************************************}
 
+{if $group->leave()}
+    Vous n'êtes plus membre de {$group->label()}
+{else}
+    Vous ne pouvez pas quitter {$group->label()}
+{/if}
 
-<div>
-    {if $group->hasUser()}
-    <a href="groups/unsubscribe/{$group->id()}">Quitter le groupe</a>
-    {else}
-    <a href="groups/subscribe/{$group->id()}">Devenir {if $group->enter()}membre{else}sympathisant{/if}</a>
-    {/if}
-</div>
-
-{$group->id()}
-{$group->name()}
-{$group->label()}
-{$group->description()}
-
-<ul>
-{foreach from=$group->caste() item='caste'}
-    <li>
-    {$caste->id()}
-    {$caste->rights()}
-    <ul>
-    {foreach from=$caste->users() item='user'}
-        <li>
-        {$user->id()}
-        {$user->login()}
-        {$user->displayName()}
-        </li>
-    {/foreach}
-    </ul>
-    </li>
-{/foreach}
-</ul>
+<a href="groups/see/{$group->bestId()}">Retourner à la page du groupe</a>
 
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

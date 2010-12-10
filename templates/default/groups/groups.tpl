@@ -26,12 +26,14 @@
     	<th>Ns</th>
         <th>Score</th>
         <th>Name</th>
+        <th>Label</th>
     </tr>
     {foreach from=$groups|order:'score' item=group}
 	        <tr>
 	            <td>{$group->ns()}</td>
 	            <td>{$group->score()}</td>
 	            <td>{$group->name()}</td>
+	            <td>{$group|group}</td>
 	        </tr>
     {/foreach}
 </table>
