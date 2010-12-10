@@ -35,7 +35,7 @@ class User extends Meta
     const SELECT_BASE         = 0x01;
     const SELECT_SKIN         = 0x02;
     const SELECT_MINIMODULES  = 0x04;
-    const SELECT_GROUPS       = 0x08;
+    const SELECT_CASTES       = 0x08;
     const SELECT_COMMENTS     = 0x20;
 
     const IMAGE_ORIGINAL      = 0x01;
@@ -88,10 +88,9 @@ class User extends Meta
     // The name of the user's prefered skin
     protected $skin = null;
 
-    // Collection of groups and their associated rights and comments
-    protected $groups   = null;
-    protected $rights   = null;
-    protected $comments = null;
+    // Collection of castes
+    protected $castes   = null;
+    protected $comments = null; //TODO
 
     // Contains the hash sent by mail to recover the password
     protected $hash = null;
@@ -385,50 +384,9 @@ class User extends Meta
         return $this->comments[$gid];
     }
 
-    /**
-    * Returns the groups of the user
-    * @param $ns returns only groups with this namespace
-    * @param $rights return only groups in which the user has those rights
-    */
-    public function groups($ns = null, $rights = null)
+    public function castes()
     {
-        if (empty($ns))
-            return $this->groups;
-
-        return $this->groups->filter('ns', $ns);
-    }
-
-    public function addToGroup($g, Rights $rights)
-    {
-        $gid = Group::toId($g);
-        XDB::execute('INSERT INTO  users_groups
-                              SET  uid = {?}, gid = {?}, rights = {?}, comments = ""
-          ON DUPLICATE KEY UPDATE  rights = CONCAT_WS(",", rights, {?})',
-                                   $this->id(), $gid, $rights->flags(), $rights->flags());
-    }
-
-    public function removeFromGroup($g, Rights $rights = null)
-    {
-        $gid = Group::toId($g);
-        if ($rights === null)
-        {
-            XDB::execute('DELETE FROM  users_groups
-                                WHERE  uid = {?} AND gid = {?}',
-                                         $this->id(), $gid);
-        } else {
-            XDB::execute('UPDATE  users_groups
-                             SET  rights = REPLACE(rights , {?}, "")
-                           WHERE  uid = {?} AND gid = {?}',
-                                  $this->id(), $gid);
-            XDB::execute('DELETE FROM  users_groups
-                                WHERE  uid = {?} AND gid = {?} AND ',
-                                         $this->id(), $gid);
-        }
-    }
-
-    public function rights($g)
-    {
-        return $this->rights[$this->groups->get($g)->id()];
+        return $this->castes;
     }
 
     /*******************************************************************************
@@ -629,55 +587,25 @@ class User extends Meta
                 array_push($users[$am['id']]->minimodules[$am['col']], $am['name']);
         }
 
-        // Load groups
-        if ($bits & self::SELECT_GROUPS)
+        // Load castes
+        if ($bits & self::SELECT_CASTES)
         {
-            foreach ($users as $u) {
-                $u->groups = new Collection('Group');
-                $u->rights = array();
-            }
+            foreach ($users as $u)
+                $u->groups = new Collection('Caste');
 
-            $select_comments = (isset($options[self::SELECT_GROUPS]) &&
-                                isset($options[self::SELECT_GROUPS]["comments"]) &&
-                                $options[self::SELECT_GROUPS]["comments"]) ? true : false;
+            $iter = XDB::iterRow('SELECT  cu.uid, cu.cid
+                                    FROM  castes_users AS cu
+                                   WHERE  cu.uid IN {?}', array_keys($users));
 
-            $namespaces = (isset($options[self::SELECT_GROUPS]) &&
-                                isset($options[self::SELECT_GROUPS]["ns"]) &&
-                                $options[self::SELECT_GROUPS]["ns"]) ? $options[self::SELECT_GROUPS]["ns"] : Group::NS_BINET;
-
-            $comments = ($select_comments) ? ', ug.comments' : '';
-
-            $iter = XDB::iterRow('SELECT  ug.uid, ug.gid, ug.rights, g.ns' . $comments . '
-                                     FROM  users_groups AS ug
-                               INNER JOIN  groups AS g ON g.gid = ug.gid
-                                    WHERE  g.ns IN {?} AND ug.uid IN {?}',
-                                    unflatten($namespaces), array_keys($users));
-
-            $groups = new Collection('Group');
-            while ($line = $iter->next())
+            $castes = new Collection('Caste');
+            while (list($uid, $cid) = $iter->next())
             {
-                if ($select_comments)
-                    list($uid, $gid, $rights, $ns, $comments) = $line;
-                else
-                    list($uid, $gid, $rights, $ns) = $line;
-
-                $group = $groups->get($gid);
-                if ($group == false) {
-                    $group = new Group(array('id' => $gid, 'ns' => $ns));
-                    $groups->add($group);
-                }
-
-                $user = $users[$uid];
-                $user->groups->add($group);
-                $user->rights[$gid] = new Rights($rights);
-                if ($select_comments)
-                    $user->comments[$gid] = $comments;
+                $caste = $caste->addget($cid);
+                $users[$uid]->castes->add($caste);
             }
 
-            if (isset($options[self::SELECT_GROUPS]) &&
-                isset($options[self::SELECT_GROUPS]["options"]) &&
-                $options[self::SELECT_GROUPS]["options"])
-                $groups->select($options[self::SELECT_GROUPS]["options"]);
+            if (isset($options[self::SELECT_CASTES]))
+                $groups->select($options[self::SELECT_CASTES]);
         }
 
     }
