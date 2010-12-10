@@ -47,6 +47,14 @@ class Group extends Meta
 
     protected $castes = null;
 
+    public function bestId()
+    {
+        if (empty($this->name))
+            return $this->id();
+
+        return $this->name();
+    }
+
     public function name()
     {
         return $this->name;
@@ -115,6 +123,28 @@ class Group extends Meta
         }
 
         return $caste;
+    }
+
+    public function hasUser(User $user = null)
+    {
+        if ($user === null)
+            $user = S::user();
+
+        foreach ($this->castes as $caste) {
+            if ($caste->hasUser($user) != false)
+                return true;
+        }
+
+        return false;
+    }
+
+    public function removeUser(User $user = null)
+    {
+        if ($user === null)
+            $user = S::user();
+
+        foreach ($this->castes as $caste)
+            $caste->removeUser($user);
     }
 
     public function toJson($stringify = false)
