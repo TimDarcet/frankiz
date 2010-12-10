@@ -29,7 +29,7 @@ class Caste extends Meta
     protected $rights     = null;
     protected $userfilter = null;
 
-    protected $users = array();
+    protected $users = null;
     protected $frequency = null;
 
     public function group()
@@ -58,6 +58,14 @@ class Caste extends Meta
     public function users()
     {
         return $this->users;
+    }
+
+    public function hasUser(User $user = null)
+    {
+        if ($user === null)
+            $user = S::user();
+
+        return $this->users->get($user);
     }
 
     /**
