@@ -43,7 +43,7 @@ class TimeleftMiniModule extends FrankizMiniModule
 
     public function run()
     {
-        $future = new FrankizDateTime('2011-04-01');
+        $future = new FrankizDateTime('2011-02-26');
         $this->assign('future', $future);
     }
 }
