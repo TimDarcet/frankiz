@@ -19,6 +19,37 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+class InsufficientRightsException extends Exception
+{
+    private $group;
+    private $actual_rights;
+    private $needed_rights;
+
+    public function group($group = null)
+    {
+        if ($group !== null)
+            $this->group = $group;
+
+        return $this->group;
+    }
+
+    public function actualRights($rights = null)
+    {
+        if ($rights !== null)
+            $this->actual_rights = $rights;
+
+        return $this->actual_rights;
+    }
+
+    public function neededRights($rights = null)
+    {
+        if ($rights !== null)
+            $this->needed_rights = $rights;
+
+        return $this->needed_rights;
+    }
+}
+
 class Rights
 {
     protected $rights = null;
