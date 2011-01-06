@@ -29,7 +29,7 @@ class FrankizImage extends Meta
     const SMALL_QUALITY = 75;
 
     // About the picture
-    protected $comment;
+    protected $label;
 
     protected $size;
     protected $mime;
@@ -49,9 +49,9 @@ class FrankizImage extends Meta
     const SELECT_FULL  = 0x02;
     const SELECT_SMALL = 0x04;
 
-    public function comment()
+    public function label()
     {
-        return $this->comment;
+        return $this->label;
     }
 
     public function mime()
@@ -93,7 +93,7 @@ class FrankizImage extends Meta
 
         $cols = '';
         if ($bits & self::SELECT_BASE)
-            $cols .= ', mime, x, y, comment, seen, lastseen, OCTET_LENGTH(full) size';
+            $cols .= ', mime, x, y, label, seen, lastseen, OCTET_LENGTH(full) size';
         if ($bits & self::SELECT_FULL)
             $cols .= ', mime, full';
         if ($bits & self::SELECT_SMALL)
@@ -236,6 +236,12 @@ class FrankizImage extends Meta
     public function inlineSmall()
     {
         return self::data_uri($this->small, $this->smallMime());
+    }
+
+    public function html($bits = self::SELECT_SMALL)
+    {
+        $small = ($bits == self::SELECT_SMALL) ? '?small' : '';
+        return '<img src="image/' . $this->id() . $small . '" />';
     }
 }
 
