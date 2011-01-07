@@ -1,7 +1,6 @@
-<?php
 /***************************************************************************
- *  Copyright (C) 2009 Binet Réseau                                       *
- *  http://www.polytechnique.fr/eleves/binets/reseau/                     *
+ *  Copyright (C) 2009 Binet Réseau                                        *
+ *  http://www.polytechnique.fr/eleves/binets/reseau/                      *
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
  *  it under the terms of the GNU General Public License as published by   *
@@ -19,31 +18,36 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class MeteoMiniModule extends FrankizMiniModule
-{
-    private $meteo;
-
-    public function css()
-    {
-        return 'minimodules/meteo.css';
-    }
-
-    public function tpl()
-    {
-        return 'minimodules/meteo/meteo.tpl';
-    }
-
-    public function title()
-    {
-        return 'Météo platal';
-    }
-
-    public function run()
-    {
-        $meteo = GoogleWeather::get();
-        $this->assign("meteo", $meteo);
-    }
+#minimodule_meteo {
+    text-align: center;
 }
 
-// vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
-?>
+#minimodule_meteo .today {
+    float: left;
+    position: relative;
+    width: 30%;
+    margin-bottom: 3px;
+}
+
+#minimodule_meteo .today img {
+    width: 70%;
+}
+
+#minimodule_meteo .forecast {
+    display: inline-block;
+    position: relative;
+    width: 60%;
+}
+
+#minimodule_meteo ul {
+    padding: 0;
+    position: relative;
+}
+
+#minimodule_meteo li {
+    display: inline-block;
+    position: relative;
+    width: 45%;
+
+}
+

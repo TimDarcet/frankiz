@@ -19,29 +19,51 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class MeteoMiniModule extends FrankizMiniModule
+class API
 {
-    private $meteo;
+    private $url;
 
-    public function css()
+    private $response = null;
+    private $infos = null;
+
+    public function __construct($url)
     {
-        return 'minimodules/meteo.css';
+        $this->url = $url;
     }
 
-    public function tpl()
+    public function exec()
     {
-        return 'minimodules/meteo/meteo.tpl';
+        if ($this->response === null) {
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
+            curl_setopt($curl, CURLOPT_FORBID_REUSE, true);
+            curl_setopt($curl, CURLOPT_FRESH_CONNECT, true);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array("Pragma: no-cache"));
+            curl_setopt($curl, CURLOPT_PROXY, "http://129.104.247.2:8080"); // Kuzh
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_URL, $this->url);
+            $this->response = utf8_encode(curl_exec($curl));
+            $this->infos = curl_getinfo($curl);
+            curl_close($curl);
+        }
+
+        if (!isset(PlBacktrace::$bt['API']))
+            new PlBacktrace('API');
+
+        PlBacktrace::$bt['API']->newEvent($this->url, 0, 0);
     }
 
-    public function title()
+    public function response()
     {
-        return 'Météo platal';
+        $this->exec();
+        return $this->response;
     }
 
-    public function run()
+    public function infos()
     {
-        $meteo = GoogleWeather::get();
-        $this->assign("meteo", $meteo);
+        $this->exec();
+        return $this->infos;
     }
 }
 

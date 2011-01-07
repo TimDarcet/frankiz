@@ -21,6 +21,8 @@
 
 class WeatherConditions
 {
+    public $day;
+
     public $temperature;
     public $humidity;
 
@@ -36,33 +38,19 @@ abstract class Weather implements IteratorAggregate
     protected $today;
     protected $forecasts;
 
-    function getContent($url)
-    {     
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_TIMEOUT, 10);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
-        curl_setopt($curl, CURLOPT_FORBID_REUSE, true);
-        curl_setopt($curl, CURLOPT_FRESH_CONNECT, true);
-        curl_setopt($curl, CURLOPT_FORBID_REUSE, true);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array("Pragma: no-cache"));
-        curl_setopt($curl, CURLOPT_PROXY, "http://129.104.247.2:8080"); // Kuzh
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        $response = curl_exec($curl);
-        $infos = curl_getinfo($curl);
-        curl_close($curl);
-        if ($infos['http_code'] != 200)
-            throw new Exception('Curl error' . (string) $infos);
-            
-        return $response;
+    public static function get() {
+        if (!PlCache::hasGlobal('meteo'))
+            PlCache::setGlobal('meteo', new GoogleWeather(), 1800);
+
+        return PlCache::getGlobal('meteo');
     }
 
-    function today()
+    public function today()
     {
         return $this->today;
     }
 
-    function forecasts()
+    public function forecasts()
     {
         return $this->forecasts;
     }
@@ -80,13 +68,12 @@ class GoogleWeather extends Weather
         $prefix_images = 'http://www.google.com/';
         $url = 'http://www.google.com/ig/api?weather=' . urlencode($city_code) . '&hl=' . $lang;
 
-        $content = utf8_encode($this->getContent($url));
-        $xml = simplexml_load_string($content);
+        $api = new API($url);
+        $xml = simplexml_load_string($api->response());
 
         if(isset($xml->weather->problem_cause))
             throw new Exception($xml->weather->problem_cause);
 
-        $xml = simplexml_load_string($content);
         $this->today = new WeatherConditions();
         $this->today->label = (string) $xml->weather->current_conditions->condition->attributes()->data;
         $this->today->temperature = (string) $xml->weather->current_conditions->temp_c->attributes()->data;
@@ -99,6 +86,7 @@ class GoogleWeather extends Weather
             $forecast->low   = (string) $aforecast->low->attributes()->data;
             $forecast->high  = (string) $aforecast->high->attributes()->data;
             $forecast->icon  = $prefix_images . (string) $aforecast->icon->attributes()->data;
+            $forecast->day   = (string) $aforecast->day_of_week->attributes()->data;
             $this->forecasts[] = $forecast;
         }
     }
