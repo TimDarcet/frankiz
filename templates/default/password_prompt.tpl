@@ -50,7 +50,7 @@
                 </tr>
                 <tr>
                     <td colspan="2" class="remember">
-                        <input type="checkbox" {if $casertConnected}checked="checked"{/if} name="remember" id="remember" />
+                        <input type="checkbox" {if $smarty.session.auth >= AUTH_STUDENT}checked="checked"{/if} name="remember" id="remember" />
                 Se souvenir de moi (Cookie)
                     </td>
                 </tr>
