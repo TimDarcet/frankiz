@@ -166,7 +166,7 @@ class Collection extends PlAbstractIterable
     public function addget($mixed)
     {
         $className = $this->className;
-        if (isId($mixed)) {
+        if ($className::isId($mixed)) {
             $id = intval($mixed);
             if (empty($this->collected[$id]))
                 $this->collected[$id] = new $className($id);
@@ -201,7 +201,7 @@ class Collection extends PlAbstractIterable
         foreach ($cs as $c)
             if ($c instanceof $className)
                 $this->collected[$c->id()] = $c;
-            else if (isId($c)) {
+            else if ($className::isId($c)) {
                 if (empty($this->collected[$c]))
                     $this->collected[$c] = new $className($c);
             } else
@@ -242,7 +242,8 @@ class Collection extends PlAbstractIterable
     */
     public function get($mixed)
     {
-        if (isId($mixed))
+        $className = $this->className;
+        if ($className::isId($mixed))
             return empty($this->collected[intval($mixed)]) ? false : $this->collected[intval($mixed)];
         elseif ($mixed instanceof Meta)
             return empty($this->collected[$mixed->id()]) ? false : $this->collected[$mixed->id()];

@@ -48,7 +48,8 @@ function __autoload($cls)
                          'u'  => 'userfilter',
                          'v'  => 'validatefilter',
                          'a'  => 'activityfilter',
-                         'ai' => 'activityinstancefilter');
+                         'ai' => 'activityinstancefilter',
+                         'i'  => 'imagefilter');
 
         foreach ($filters as $key => $class)
         {
@@ -104,6 +105,7 @@ function unflatten($var)
 
 function isId($mixed)
 {
+    trace('DEPRECATED'); // TODO
     return !is_object($mixed) && (intval($mixed).'' == $mixed);
 }
 
