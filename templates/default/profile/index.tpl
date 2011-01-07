@@ -20,19 +20,14 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<h2><span>Changer mon profil sur le site</span></h2>
-<a class="lien" href="profil/fkz/">Modifier mon compte frankiz</a><br/>
-<a class="lien" href="profil/fkz/#mod_trombino">Modifier ma fiche trombino</a><br/>
-<a class="lien" href="profil/siteweb/">Modifier mon site perso</a><br/>
-		
-<h2><span>Changer l'apparence du site</span></h2>
-<a class="lien" href="profil/skin/">Changer de skin</a><br/>
-<a class="lien" href="profil/liens_perso/">Gérer mes liens perso</a><br/>
-<a class="lien" href="profil/rss/">Gérer mes annonces externes</a><br/>
+<a class="lien" href="profile/account">Modifier mon compte</a><br/>
 
-<h2><span>Changer mon profil sur le réseau</span></h2>
-<a class="lien" href="profil/reseau/">Gérer mes données réseau</a><br/>
-<a class="lien" href="profil/reseau/#mod_xnet_0">Modifier le mot de passe Xnet</a><br/>
-<a class="lien" href="profil/reseau/demande_ip">Demander une nouvelle adresse ip</a><br/>
+<a class="lien" href="profile/mails">Mes mails</a><br/>
+
+<a class="lien" href="profile/skin">Changer l'habillage</a><br/>
+
+<a class="lien" href="profile/minimodules">Gérer les minimodules</a><br/>
+
+<a class="lien" href="profile/network">Gérer mes données réseau</a><br/>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

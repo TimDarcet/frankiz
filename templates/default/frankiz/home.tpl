@@ -22,42 +22,46 @@
 
 
 <div class="accueil">
-    {if $postit_news}
-    <div class="postit minimodule">
-        <div class="head">
-            Post-it
+    {if $smarty.session.auth == AUTH_PUBLIC}
+        {include file="wiki.tpl"|rel name='home/public'}
+    {else}
+        {if $postit_news}
+        <div class="postit minimodule">
+            <div class="head">
+                Post-it
+            </div>
+            <div class="body">
+                {$postit_news->content()|miniwiki|smarty:nodefaults}
+            </div>
         </div>
-        <div class="body">
-            {$postit_news->content()|miniwiki|smarty:nodefaults}
-        </div>
-    </div>
+        {/if}
+        <table>
+            <tr>
+                <td class="{if ($MiniModules_COL_LEFT|@count) == 0}empty{else}full{/if}">
+                    <ul id="COL_LEFT" class="minimodules_zone">
+                        {foreach from=$MiniModules_COL_LEFT item=minimodule}
+                            {include file="minimodule.tpl"|rel minimodule=$minimodule}
+                        {/foreach}
+                    </ul>
+                </td>
+                <td class="{if ($MiniModules_COL_MIDDLE|@count) == 0}empty{else}full{/if}">
+                    <ul id="COL_MIDDLE" class="minimodules_zone">
+                        {foreach from=$MiniModules_COL_MIDDLE item=minimodule}
+                            {include file="minimodule.tpl"|rel minimodule=$minimodule}
+                        {/foreach}
+                    </ul>
+                </td>
+                <td class="{if ($MiniModules_COL_RIGHT|@count) == 0}empty{else}full{/if}">
+                    <ul id="COL_RIGHT" class="minimodules_zone">
+                        {foreach from=$MiniModules_COL_RIGHT item=minimodule}
+                            {include file="minimodule.tpl"|rel minimodule=$minimodule}
+                        {/foreach}
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <br class="clear" />
     {/if}
-    <table>
-        <tr>
-            <td class="{if ($MiniModules_COL_LEFT|@count) == 0}empty{else}full{/if}">
-                <ul id="COL_LEFT" class="minimodules_zone">
-                    {foreach from=$MiniModules_COL_LEFT item=minimodule}
-                        {include file="minimodule.tpl"|rel minimodule=$minimodule}
-                    {/foreach}
-                </ul>
-            </td>
-            <td class="{if ($MiniModules_COL_MIDDLE|@count) == 0}empty{else}full{/if}">
-                <ul id="COL_MIDDLE" class="minimodules_zone">
-                    {foreach from=$MiniModules_COL_MIDDLE item=minimodule}
-                        {include file="minimodule.tpl"|rel minimodule=$minimodule}
-                    {/foreach}
-                </ul>
-            </td>
-            <td class="{if ($MiniModules_COL_RIGHT|@count) == 0}empty{else}full{/if}">
-                <ul id="COL_RIGHT" class="minimodules_zone">
-                    {foreach from=$MiniModules_COL_RIGHT item=minimodule}
-                        {include file="minimodule.tpl"|rel minimodule=$minimodule}
-                    {/foreach}
-                </ul>
-            </td>
-        </tr>
-    </table>
-    <br class="clear" />
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

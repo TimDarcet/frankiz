@@ -19,21 +19,18 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-#require_once BASE_FRANKIZ."htdocs/include/minimodules.inc.php";
-#require_once BASE_FRANKIZ."htdocs/include/session.inc.php";
-#require_once BASE_FRANKIZ."htdocs/include/transferts.inc.php";
-
 class ProfileModule extends PLModule
 {
     public function handlers()
     {
         return array('profile'                         => $this->make_hook('profile',                 AUTH_COOKIE),
                      'profile/fkz'                     => $this->make_hook('fkz',                     AUTH_COOKIE),
+                     'profile/mails'                   => $this->make_hook('mails',                   AUTH_COOKIE),
                      'profile/password'                => $this->make_hook('password',                AUTH_MDP),
                      'profile/fkz/change_tol'          => $this->make_hook('fkz_change_tol',          AUTH_COOKIE),
                      'profile/fkz/mod_binets'          => $this->make_hook('fkz_mod_binets',          AUTH_COOKIE),
                      'profile/recovery'                => $this->make_hook('recovery',                AUTH_PUBLIC),
-                     'profile/reseau'                  => $this->make_hook('reseau',                  AUTH_MDP),
+                     'profile/network'                 => $this->make_hook('network',                 AUTH_COOKIE),
                      'profile/reseau/demande_ip'       => $this->make_hook('demande_ip',              AUTH_COOKIE),
                      'profile/skin'                    => $this->make_hook('skin',                    AUTH_PUBLIC),
                      'profile/photo'                   => $this->make_hook('photo',                   AUTH_COOKIE),
@@ -59,7 +56,7 @@ class ProfileModule extends PLModule
 
     public function handler_profile($page)
     {
-        $page->assign('title', "Modification des préférences");
+        $page->assign('title', "Mon compte");
         $page->changeTpl('profile/index.tpl');
     }
 
@@ -112,6 +109,41 @@ class ProfileModule extends PLModule
 
         $page->assign('title', "Modification du profil Frankiz");
         $page->changeTpl('profil/fkz.tpl');
+    }
+
+    public function handler_mails($page)
+    {
+        $user = 'henri.jouhaud.2008';
+
+        $payload = '';
+        $method = 'GET';
+        $resource = '/api/1/user/'. $user . '/isRegistered';
+        $timestamp = time();
+
+        $message = implode('#', array($method, $resource, $payload, $timestamp));
+        $token = 'a1z2e3';
+        $sig = hash_hmac('sha256', $message, $token);
+
+        $get = '?user=henri.jouhaud.2008&timestamp=' . $timestamp . '&sig=' . $sig;
+
+        $url = 'https://dev.m4x.org/~x2004zanotti' . $resource . $get;
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($curl, CURLOPT_FORBID_REUSE, true);
+        curl_setopt($curl, CURLOPT_FRESH_CONNECT, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array("Pragma: no-cache"));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        $response = curl_exec($curl);var_dump($response);
+        $infos = curl_getinfo($curl);var_dump($infos);
+        
+        exit;
+
+        $page->assign('title', 'Mes mails');
+        $page->changeTpl('profile/mails.tpl');
     }
 
     public function handler_password($page)
@@ -301,18 +333,24 @@ class ProfileModule extends PLModule
         {
             S::set('skin', Env::v('skin'));
             if (S::logged())
-                S::user()->skin($skin);
+                S::user()->skin(Env::v('skin'));
         }
 
-        $res = XDB::query('SELECT  s.skin_id, s.name, s.label, s.description, COUNT(a.skin) frequence
+        $res = XDB::query('SELECT  s.name, s.label, s.description, COUNT(a.skin) frequency
                              FROM  skins AS s
-                        LEFT JOIN  account AS a ON a.skin = s.skin_id
-                         GROUP BY  s.skin_id
-                         ORDER BY  frequence DESC');
+                        LEFT JOIN  account AS a ON a.skin = s.name
+                         GROUP BY  s.name
+                         ORDER BY  frequency DESC');
         $skins = $res->fetchAllAssoc();
 
+        $total = 0;
+        foreach ($skins as $skin)
+            $total += $skin['frequency'];
+
+        $page->assign('total', $total);
         $page->assign('skinsList', $skins);
-        $page->assign('title', "Modification de l'apparence de Frankiz");
+        $page->assign('title', "Modification de l'habillage");
+        $page->addCssLink('profile.css');
         $page->changeTpl("profile/skins.tpl");
     }
 
@@ -330,66 +368,11 @@ class ProfileModule extends PLModule
         $user->image()->select(FrankizImage::SELECT_SMALL)->send();
     }
 
-    function handler_reseau($page)
+    function handler_network($page)
     {
-        global $DB_admin, $DB_trombino, $DB_xnet;
-
-        $DB_admin->query("SELECT  ip.piece_id, ip.prise_id, ip.ip
-                            FROM  prises AS ip
-                   LEFT JOIN  trombino.eleves AS e USING(piece_id)
-                       WHERE  e.eleve_id='{$_SESSION['uid']}'
-                    ORDER BY  ip.type ASC");
-
-        //////
-        // On détermine si une IP de l'élève correspond à l'ordi depuis lequel il se connecte.
-        //
-        $id_ip = 0;
-        $ip = array();
-        $prise = array();
-        $match_ip = false;
-        while (list ($ksert, $prise[$id_ip], $ip[$id_ip]) = $DB_admin->next_row())
-        {
-            $match_ip = $match_ip || $ip[$id_ip] == $_SERVER['REMOTE_ADDR'];
-            $id_ip++;
-        }
-
-        //////
-        // Mise en place des variables Smarty
-        //
-        $page->changeTpl('profil/reseau.tpl');
-        $page->assign('title', "Modification du profil réseau");
-        $page->assign('xnet_mdp_changed', 0);
-        $page->assign('xnet_match_ip', $match_ip);
-        $page->assign('xnet_ip', array_slice($ip, 0, $id_ip));
-        $page->assign('xnet_ip_current', $_SERVER['REMOTE_ADDR']);
-        $page->assign('xnet_prise', $prise[0]);
-
-        //////
-        // Changement du mot de passe
-        //
-        if (empty($_POST['passwd']) && empty($_POST['passwd2']) || $_POST['passwd'] == '12345678' && $_POST['passwd2'] == '87654321')
-        {
-        }
-        else if ($_POST['passwd'] != $_POST['passwd2'])
-        {
-            $page->trig('Les deux mots de passes rentrés ne concordent pas');
-        }
-        else if (strlen($_POST['passwd']) < 6)
-        {
-            $page->trig('Ton nouveau mot de passe est trop court');
-        }
-        else if (!in_array($_POST['ip_xnet'], $ip))
-        {
-            $page->trig("Un problème de sécurité vient de survenir. Ton mot de passe n'a pas été changé.");
-        }
-        else
-        {
-            $pass = md5($_POST['passwd']."Vive le BR");
-            $DB_xnet->query("UPDATE  clients
-                                SET  password='$pass'
-                      WHERE  lastip='{$_POST['ip_xnet']}'");
-            $this->assign('xnet_mdp_changed', 1);
-        }
+        $page->assign('title', "Mes données réseau");
+        $page->addCssLink('profile.css');
+        $page->changeTpl("profile/network.tpl");
     }
 
     public function handler_demande_ip($page)
@@ -841,11 +824,11 @@ class ProfileModule extends PLModule
 
     function handler_minimodules($page)
     {
-        $iter = XDB::iterator('SELECT  m.name, m.label, m.description, COUNT(um.name) frequence
+        $iter = XDB::iterator('SELECT  m.name, m.label, m.description, COUNT(um.name) frequency
                                  FROM  minimodules AS m
                             LEFT JOIN  users_minimodules AS um ON m.name = um.name
                              GROUP BY  m.name
-                             ORDER BY  frequence DESC');
+                             ORDER BY  frequency DESC');
 
         $user_minimodules  = S::user()->minimodules();
         $minimodules = array();
@@ -854,14 +837,18 @@ class ProfileModule extends PLModule
             if ($m!== false && $m->checkAuthAndPerms())
             {
                 $minimodules[] = array('activated' => in_array($minimodule['name'], $user_minimodules),
-                                       'frequence' => $minimodule['frequence'],
+                                       'frequency' => $minimodule['frequency'],
                                             'name' => $minimodule['name'],
                                            'label' => $minimodule['label'],
                                      'description' => $minimodule['description']);
             }
         }
 
+        $totalf = new UserFilter(null);
+        $total = $totalf->getTotalCount();
+
         $page->assign('title', 'Gestion des minimodules');
+        $page->assign('total', $total);
         $page->assign('minimodules', $minimodules);
         $page->addCssLink('profile.css');
         $page->changeTpl('profile/minimodules.tpl');

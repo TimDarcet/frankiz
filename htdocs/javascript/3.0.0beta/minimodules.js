@@ -2,7 +2,7 @@ var tempLayout;
 var includedJs = [];
 var homeCols = ["COL_LEFT", "COL_MIDDLE", "COL_RIGHT"];
 
-$(document).ready(function(){
+$(function(){
     minimodules();
 });
 
@@ -103,9 +103,9 @@ function saveLayout(layout)
     });
 }
 
-function addMinimodule(name, sender)
+function addMinimodule(name, sender, box)
 {
-    sender.disabled = true;
+    sender.attr('disabled', 'disabled');
     $('body').removeClass('disabledAside').addClass('enabledAside');
     request({
         "url"    : "profile/minimodules/ajax/add"
@@ -116,20 +116,22 @@ function addMinimodule(name, sender)
                         $('#COL_FLOAT').prepend(json.html);
                         $('#minimodule_'+name).hide();
                         $('#minimodule_'+name).show('slow', function() {
-                            sender.disabled = false;
+                            sender.removeAttr('disabled');
+                            box.addClass('on');
                         });
 	               }
     });
 }
 
-function removeMinimodule(name, sender)
+function removeMinimodule(name, sender, box)
 {
-    sender.disabled = true;
+    sender.attr('disabled', 'disabled');
     request({
         "url"     : "profile/minimodules/ajax/remove"
        ,"data"    : {"name":name}
        ,"success" : function(json) {
-                        sender.disabled = false;
+                       sender.removeAttr('disabled');
+                       box.removeClass('on');
                         $('#minimodule_'+name).hide('slow', function() {
                             this.parentNode.removeChild(this);
                             cleanEmptyColumns();

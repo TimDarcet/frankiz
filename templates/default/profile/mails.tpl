@@ -8,7 +8,7 @@
 {*  the Free Software Foundation; either version 2 of the License, or     *}
 {*  (at your option) any later version.                                   *}
 {*                                                                        *}
-{*  This program is distributed in the hope tha0t it will be useful,       *}
+{*  This program is distributed in the hope that it will be useful,       *}
 {*  but WITHOUT ANY WARRANTY; without even the implied warranty of        *}
 {*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *}
 {*  GNU General Public License for more details.                          *}
@@ -20,32 +20,25 @@
 {*                                                                        *}
 {**************************************************************************}
 
+<p>
+    {include file="wiki.tpl"|rel name='profile/mails'}
+</p>
 
-{if $smarty.session.auth < AUTH_COOKIE}
-    <p class="where">
-    {if $smarty.session.auth >= AUTH_INTERNAL}
-            Vous consultez Frankiz depuis l'intérieur du campus, vous avez ainsi accès à certaines fonctionnalités du site.<br />
-            Pour avoir accès à l'ensemble du contenu: 
-    {else}
-            L'accès à ce site est restreint.<br />
-            Cliquez ici pour vous identifier: 
-    {/if}
-    </p>
-    <p class="connect">
-        <a {path_to_href_attribute path="login"} nosolo="true" accesskey="l">Se connecter</a>
-    </p>
-{/if}
+<h4>Compte Poly</h4>
+TODO: récupérer le login poly
+    Adresse en login@poly.polytechnique.fr
 
-{if $smarty.session.auth >= AUTH_COOKIE}
-    {assign var='face' value=$smarty.session.user->image()}
-    <img src="{$face->src()|smarty:nodefaults}" class="face" />
-    <div>
-        <p class="name">{$smarty.session.user->displayName()}</p>
-        <ul>
-            <li><a {path_to_href_attribute path="profile"} accesskey="c">Compte</a></li>
-            <li><a {path_to_href_attribute path="exit"} nosolo="true" accesskey="l">Se déconnecter</a></li>
-        </ul>
-    </div>
-{/if}
+<h4>Compte polytechnique.edu</h4>
+<ul>
+    <li>Adresse en prenom.nom@polytechnique.edu si pas d'homonyme</li>
+    <li>Adresse en prenom.nom.promo@polytechnique.edu à vie</li>
+</ul>
+
+<h4>Compte polytechnique.org</h4>
+TODO: récupérer les mails de x.org
+<ul>
+    <li>Adresse en prenom.nom@polytechnique.org si pas d'homonyme</li>
+    <li>Adresse en prenom.nom.promo@polytechnique.org à vie</li>
+</ul>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

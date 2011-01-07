@@ -20,42 +20,36 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="profil_minimodules">
-    <p>
-        {include file="wiki.tpl"|rel name='profile/minimodules'}
-    </p>
-    <table>
-        <tr>
-            <th>
-                ?
-            </th>
-            <th>
-                Frequence
-            </th>
-            <th>
-                Nom
-            </th>
-             <th>
-                Description
-            </th>
-        </tr>
-        {foreach from=$minimodules item=minimodule}
-        <tr>
-            <td>
-                <input name="{$minimodule.name}" type="checkbox" {if $minimodule.activated}checked="checked"{/if} onclick="{literal}if (!this.checked) {removeMinimodule(this.name, this);} else {addMinimodule(this.name, this);}{/literal}"/>
-            </td>
-            <td>            
-                {$minimodule.frequence}
-            </td>
-            <td>            
-                {$minimodule.label}
-            </td>
-            <td>            
-                {$minimodule.description}
-            </td>
-        </tr>
-        {/foreach}
-    </table>
-</div>
+<p>
+    {include file="wiki.tpl"|rel name='profile/minimodules'}
+</p>
+
+<ul class="objects">
+    {foreach from=$minimodules item=minimodule}
+    <li {if $minimodule.activated}class="on"{/if}>
+        <p class="frequency">Popularité: {math equation="100 * x / y" x=$minimodule.frequency y=$total format="%d"}%</p>
+        <p class="label">{$minimodule.label}</p>
+        <p class="description">{$minimodule.description}</p>
+        <div class="change">
+                <div class="checkbox"
+                     {if $minimodule.activated} checked="checked"{/if}
+                     onclick="
+                        var name = '{$minimodule.name}';
+                        {literal}
+                        if (!($(this).attr('disabled') == 'disabled')) {
+                            if ($(this).attr('checked') == 'checked') {
+                                $(this).removeAttr('checked');
+                                removeMinimodule(name, $(this), $(this).closest('li'));
+                            } else {
+                                $(this).attr('checked', 'checked');
+                                addMinimodule(name, $(this), $(this).closest('li'));
+                            }
+                        }
+                        {/literal}"
+                />
+        </div>
+    </li>
+    {/foreach}
+</ul>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

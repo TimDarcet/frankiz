@@ -71,3 +71,58 @@
 .profil_minimodules td, .profil_minimodules th {
     border: 1px black solid;
 }
+
+/*******************************************************************************
+     1   Skins
+
+*******************************************************************************/
+
+ul.objects {
+    padding: 0;
+    position: relative;
+}
+
+ul.objects li {
+    display: inline-block;
+    position: relative;
+    width: 30%;
+    margin-bottom: 8px;
+    border-radius: 10px 10px;
+    -moz-border-radius: 10px 10px;
+    background-color: #BDD5E3;
+    border: 1px #003757 solid;
+    vertical-align: top;
+    padding: 5px;
+    padding-bottom: 20px;
+    min-height: 150px;
+    min-width: 250px;
+}
+
+ul.objects li.on {
+    background-color: #FFBA00;
+    border: 1px red solid;
+}
+
+ul.objects li p {
+    margin: 0;
+}
+
+ul.objects li .frequency {
+    float: right;
+}
+
+ul.objects li .label {
+    font-size: 25px;
+    font-variant:small-caps;
+}
+
+ul.objects li .description {
+    margin-top: 5px;
+}
+
+
+ul.objects li .change {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+}

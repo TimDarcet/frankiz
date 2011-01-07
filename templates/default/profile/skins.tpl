@@ -20,29 +20,24 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<form enctype="multipart/form-data" method="post" action="profile/skin">
-        <table>
-            <tr>
-                <th></th>
-                <th>Frequence</th>
-                <th>Nom</th>
-                <th>Description</th>
-            </tr>
-            {foreach from=$skinsList item=someskin}
-                <tr>
-                    <td>
-                        <input type="radio" name="skin" value="{$someskin.name}" 
-                            {if $skin == $someskin.name} checked {/if} />
-                    </td>
-                    <td>{$someskin.frequence}</td>
-                    <td>{$someskin.label}</td>
-                    <td>{$someskin.description}</td>
-                </tr>
-            {/foreach}
-        </table>
-        <input type="submit" value="Changer de skin" />
-    </fieldset>
-</form>
-
+<ul class="objects">
+    {foreach from=$skinsList item=someskin}
+    <li {if $skin == $someskin.name}class="on"{/if}>
+        <p class="frequency">Popularité: {math equation="100 * x / y" x=$someskin.frequency y=$total format="%d"}%</p>
+        <p class="label">{$someskin.label}</p>
+        <p class="description">{$someskin.description}</p>
+        <div class="change">
+            {if $skin == $someskin.name}
+                Habillage actuel
+            {else}
+            <form enctype="multipart/form-data" method="post" action="profile/skin">
+                <input type="hidden" name="skin" value="{$someskin.name}" />
+                <input type="submit" value="Choisir cet habillage" />
+            </form>
+            {/if}
+        </div>
+    </li>
+    {/foreach}
+</ul>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
