@@ -33,6 +33,7 @@ class User extends Meta
     const FORMAT_TEXT = "text";
 
     const SELECT_BASE         = 0x01;
+    const SELECT_ROOMS        = 0x02;
     const SELECT_MINIMODULES  = 0x04;
     const SELECT_CASTES       = 0x08;
     const SELECT_COMMENTS     = 0x20;
@@ -100,15 +101,17 @@ class User extends Meta
     // Contains the hash to receive rss flow
     protected $hash_rss = null;
 
-    // Contains the iid of the original picture
+    // Contains the original picture
     protected $original = null;
 
-    // Contains the iid of the current picture
+    // Contains the current picture
     protected $photo = null;
 
     // Contains an array of minimodules
     protected $minimodules = null;
 
+    // Rooms
+    protected $rooms = null;
 
     /*******************************************************************************
          Getters & Setters
@@ -229,6 +232,14 @@ class User extends Meta
             XDB::execute('UPDATE account SET hash_rss = {?} WHERE uid = {?}', $this->hash_rss, $this->id());
         }
         return $this->hash_rss;
+    }
+
+    /**
+    * Returns the Collection of Rooms of the User
+    */
+    public function rooms()
+    {
+        return $this->rooms;
     }
 
     /*******************************************************************************
@@ -567,7 +578,7 @@ class User extends Meta
             return;
 
         if (empty($options)) {
-            $options = User::SELECT_BASE | User::SELECT_MINIMODULES | User::SELECT_CASTES;
+            $options = User::SELECT_BASE | User::SELECT_ROOMS | User::SELECT_MINIMODULES | User::SELECT_CASTES;
         }
 
         $bits = self::optionsToBits($options);
@@ -594,6 +605,21 @@ class User extends Meta
                 $datas['group'] = $groups->addget($datas['group']);
                 $users[$datas['id']]->fillFromArray($datas);
             }
+        }
+
+        // Load rooms
+        if ($bits & self::SELECT_ROOMS)
+        {
+            foreach ($users as $u)
+                $u->rooms = new Collection('Room');
+
+            $iter = XDB::iterRow('SELECT  owner_id AS id, rid
+                                     FROM  rooms_owners
+                                    WHERE  owner_type = "user" AND owner_id IN {?}',
+                                    array_keys($users));
+
+            while (list($uid, $rid) = $iter->next())
+                $users[$uid]->rooms->add($rid);
         }
 
         // Load minimodules

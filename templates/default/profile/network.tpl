@@ -21,7 +21,20 @@
 {**************************************************************************}
 
 <h2>Mes adresses IP</h2>
-TODO
+<ul>
+{foreach from=$rooms item=room}
+    <li>
+        {$room->id()}
+        <ul>
+        {foreach from=$room->ips() item=ip}
+            <li>
+            {$ip}
+            </li>
+        {/foreach}
+        </ul>
+    </li>
+{/foreach}
+</ul>
 
 <h2>Mon mot de passe qRezix</h2>
 TODO

@@ -370,6 +370,11 @@ class ProfileModule extends PLModule
 
     function handler_network($page)
     {
+        S::user()->select(User::SELECT_ROOMS);
+        $rooms = S::user()->rooms();
+        $rooms->select(Room::SELECT_IPS);
+        $page->assign('rooms', $rooms);
+
         $page->assign('title', "Mes données réseau");
         $page->addCssLink('profile.css');
         $page->changeTpl("profile/network.tpl");
