@@ -66,6 +66,11 @@ abstract class Meta
         return $this->id;
     }
 
+    public static function isId($mixed)
+    {
+        return !is_object($mixed) && (intval($mixed).'' == $mixed);
+    }
+
     public function select($fields = null)
     {
         static::batchSelect(array($this), $fields);
@@ -137,7 +142,7 @@ abstract class Meta
         return implode(', ', $sql_columns);
     }
 
-    /**
+    /** TODO: Put into wiki if only used there
     * Returns the object corresponding to the specified name
     *
     * @param $mixed              A unique identifier ot the object to retrieve
