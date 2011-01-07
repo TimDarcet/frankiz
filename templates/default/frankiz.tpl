@@ -30,11 +30,13 @@
 
     <body class="{if ($MiniModules_COL_FLOAT|@count) == 0}disabledAside{else}enabledAside{/if}">
         <div id="header">
-            {include file="header.tpl"|rel}
-        </div>
+            <div id="account">
+                {include file="account.tpl"|rel}
+            </div>
 
-        <div id="nav">
-            {include file="nav.tpl"|rel}
+            <div id="nav">
+                {include file="nav.tpl"|rel}
+            </div>
         </div>
 
         <div id="section">
