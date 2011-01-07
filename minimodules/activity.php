@@ -23,7 +23,7 @@ class ActivityMiniModule extends FrankizMiniModule
 {
     public function auth()
     {
-        return AUTH_INTERNE;
+        return AUTH_INTERNAL;
     }
 
     public function js()

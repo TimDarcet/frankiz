@@ -25,39 +25,36 @@
 // AUTH_PUBLIC = 0
 // AUTH_COOKIE = 5
 // AUTH_MDP = 10
-define('AUTH_INTERNE', 1);    //Connecting from inside
-define('AUTH_LOCAL'  , 2);    //Connecting from a binets or a bar d'étage
-define('AUTH_CASERT' , 3);    //Connecting from a student's room
+define('AUTH_INTERNAL', 1);    //Connecting from inside
+define('AUTH_PREMISE',  2);   //Connecting from a binets or a bar d'étage
+define('AUTH_STUDENT',  3);    //Connecting from a student's room
 
 class FrankizSession extends PlSession
 {
     const COOKIE_INCOMPLETE = -1;
-    const COOKIE_SUCCESS = 0;
+    const COOKIE_SUCCESS    = 0;
     const COOKIE_WRONG_HASH = 1;
-    const COOKIE_WRONG_UID = -2;
+    const COOKIE_WRONG_UID  = -2;
 
     public function __construct()
     {
         parent::__construct();
 
         // Try to set better auth than AUTH_PUBLIC depending on the origin of the IP
-        if(S::i('auth') < AUTH_INTERNE) {
-            switch(IP::origin())
-            {
-                case IP::LOCAL:
-                    $auth = AUTH_LOCAL;
+        if(S::i('auth') < AUTH_INTERNAL) {
+            $auth = S::i('auth');
+            switch(IP::origin()) {
+                case IP::STUDENT:
+                    $auth = AUTH_STUDENT;
                     break;
 
-                case IP::CASERT:
-                    $auth = AUTH_CASERT;
+                case IP::PREMISE:
+                    $auth = AUTH_PREMISE;
                     break;
 
-                case IP::AUTRES:
-                    $auth = AUTH_INTERNE;
+                case IP::INTERNAL:
+                    $auth = AUTH_INTERNAL;
                     break;
-
-                default:
-                    $auth = AUTH_PUBLIC;
             }
             S::set('auth', $auth);
         }
@@ -239,7 +236,7 @@ class FrankizSession extends PlSession
         }
 
         // Set session perms from User perms
-        $this->makePerms($user->perms, S::b('is_admin'));
+        $this->makePerms($user->perms(), S::b('is_admin'));
 
         /* Clean temp var 'cookie_uid' */
         S::kill('cookie_uid');

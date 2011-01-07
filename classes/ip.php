@@ -18,21 +18,20 @@
  *  Foundation, Inc.,                                                      *
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
-    
+
 class IP
 {
-    const EXTERNAL = 0;   // External IP
-    const AUTRES   = 1;   // Ni casert ni local => pits, salles infos ...
-    const CASERT   = 2;   // Student's rooms
-    const LOCAL    = 3;   // Binets et bars d'étage
+    const EXTERNAL = 'ip_external';  // External IP
+    const INTERNAL = 'ip_internal';  // Ni casert ni local => pits, salles infos ...
+    const STUDENT  = 'ip_student';   // Student's rooms
+    const PREMISE  = 'ip_premise';   // Binets et bars d'étage
 
     private static $originCache = array();
-    
+
     public static function get() {
         if (isset($_SERVER['REMOTE_ADDR'])) {
             $ip = $_SERVER['REMOTE_ADDR'];
         } else {
-            // CLI
             $ip = '127.0.0.1';
         }
 
@@ -40,13 +39,13 @@ class IP
             // C'est l'adresse du portail w3x
             if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
                 $listeIPs = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-                
+
                 // Le dernier de cette liste est celui ajoute par w3x, qui est un
                 // proxy fiable. Toute cette verification a pour objectif de ne pas
                 // permettre l'ip spoofing
                 // (trim : le séparateur entre les ips dans $headers['X-Forwarded-For'] est ', ')
                 $ipForwardee = trim(end($listeIPs));
-                
+
                 if (preg_match("/([0-9]{1,3}\.){3}[0-9]{1,3}/", $ipForwardee)) {
                     $ip = $ipForwardee;
                 }
@@ -55,43 +54,40 @@ class IP
 
         return $ip;
     }
-    
+
     public static function is_internal($ip = null)
     {
         $ip = ($ip == null) ? self::get() : $ip;
         return (self::origin($ip) > self::EXTERNAL);
     }
-    
+
     public static function is_casert($ip = null)
     {
         $ip = ($ip == null) ? self::get() : $ip;
         return (self::origin($ip) == self::CASERT);
     }
-    
+
     public static function is_local($ip = null)
     {
         $ip = ($ip == null) ? self::get() : $ip;
         return (self::origin($ip) == self::LOCAL);
     }
-    
+
     public static function is_autres($ip = null)
     {
         $ip = ($ip == null) ? self::get() : $ip;
         return (self::origin($ip) == self::AUTRES);
     }
-    
+
     // Where is the IP from ?
     public static function origin($ip = null)
     {
         $ip = ($ip == null) ? self::get() : $ip;
-        if (array_key_exists($ip, self::$originCache))
-        {
+        if (array_key_exists($ip, self::$originCache)) {
             return self::$originCache[$ip];
-        }
-        else
-        {
-            $origin = -1;
-            if($ip == '127.0.0.1' || (substr($ip, 0, 8) == '129.104.' && $ip != '129.104.30.4')) 
+        } else {
+            $origin = self::EXTERNAL;
+            if($ip == '127.0.0.1' || (substr($ip, 0, 8) == '129.104.' && $ip != '129.104.30.4' && $ip != '129.104.30.90'))
             {
                 $res=XDB::query('SELECT ro.owner_type
                                    FROM ips
@@ -99,25 +95,20 @@ class IP
                                      ON ro.rid = ips.rid
                                   WHERE ips.ip = {?}', $ip);
                 $cell = $res->fetchOneCell();
-                switch($cell)
-                {
+                switch($cell) {
                     case 'user':
-                        $origin = self::CASERT;
+                        $origin = self::STUDENT;
                         break;
-                        
+
                     case 'group':
-                        $origin = self::LOCAL;
+                        $origin = self::PREMISE;
                         break;
-                        
+
                     default:
-                        $origin = self::AUTRES;
+                        $origin = self::INTERNAL;
                 }
             } 
-            else
-            {
-                $origin = self::EXTERNAL;
-            }
-            
+
             self::$originCache[$ip] = $origin;
             return $origin;
         }

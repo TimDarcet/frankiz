@@ -33,7 +33,6 @@ class User extends Meta
     const FORMAT_TEXT = "text";
 
     const SELECT_BASE         = 0x01;
-    const SELECT_SKIN         = 0x02;
     const SELECT_MINIMODULES  = 0x04;
     const SELECT_CASTES       = 0x08;
     const SELECT_COMMENTS     = 0x20;
@@ -62,6 +61,9 @@ class User extends Meta
     // "human readable" unique ID
     protected $hruid = null;
 
+    // the NS_USER-type group owned by the user
+    protected $group = null;
+
     // User main email aliases (forlife is the for-life email address, bestalias
     // is user-chosen preferred email address, email might be any email available
     // for the user).
@@ -79,7 +81,7 @@ class User extends Meta
     protected $email_format = null;  // Acceptable values are FORMAT_HTML and FORMAT_TEXT
 
     // Permissions
-    public    $perms = null;  // TODO: getter & setter
+    protected $perms = null;
     protected $perm_flags = null;
 
     // enum('active','pending','unregistered','disabled')
@@ -189,14 +191,13 @@ class User extends Meta
     */
     public function skin($skin = null)
     {
-        if ($skin != null)
-        {
-            $res = XDB::query('SELECT skin_id FROM skins WHERE name = {?}', $skin);
+        if ($skin != null) {
+            $res = XDB::query('SELECT name FROM skins WHERE name = {?}', $skin);
 
             if ($res->numRows() != 1)
                 throw new Exception ("Cette skin n'existe pas et ne peut donc pas être choisie");
 
-            $this->skin = $res->fetchOneField();
+            $this->skin = $skin;
             XDB::execute('UPDATE account SET skin = {?} WHERE uid = {?}', $this->skin, $this->id());
         }
         return $this->skin;
@@ -319,6 +320,11 @@ class User extends Meta
 
     *******************************************************************************/
 
+    public function perms()
+    {
+        return $this->perms;
+    }
+
     public function checkPerms($perms)
     {
         if (is_null($this->perm_flags)) {
@@ -387,6 +393,11 @@ class User extends Meta
     public function castes()
     {
         return $this->castes;
+    }
+
+    public function group()
+    {
+        return $this->group;
     }
 
     /*******************************************************************************
@@ -504,6 +515,24 @@ class User extends Meta
              (batchFrom, batchSelect, fillFromArray, …)
     *******************************************************************************/
 
+    public function insert()
+    {
+        XDB::execute('INSERT INTO account SET uid = NULL');
+        $this->id = XDB::insertId();
+
+        $this->group = new Group();
+        $this->group->ns(Group::NS_USER);
+        $this->group->name('user_' . $this->id());
+        $this->group->enter(false);
+        $this->group->leave(false);
+        $this->group->visibility(false);
+        $this->group->label('Groupe personnel');
+
+        XDB::execute('UPDATE account SET group = {?} WHERE uid = {?}', $this->group->id(), $this->id());
+
+        $this->group->caste(Rights::admin())->addUser($this);
+    }
+
     public function fillFromArray(array $values)
     {
         if (isset($values['original'])) {
@@ -538,28 +567,20 @@ class User extends Meta
             return;
 
         if (empty($options)) {
-            $bits = User::SELECT_BASE | User::SELECT_SKIN | User::SELECT_MINIMODULES;
-            /*$options = array(User::SELECT_GROUPS => array("options" => Group::SELECT_BASE,
-                                                               "ns" => Group::NS_BINET))*/
-        } else {
-            $bits = self::optionsToBits($options);
+            $options = User::SELECT_BASE | User::SELECT_MINIMODULES | User::SELECT_CASTES;
         }
 
+        $bits = self::optionsToBits($options);
         $users = array_combine(self::toIds($users), $users);
 
         // Load datas where 1 User = 1 Line
         $joins = array();
         $cols = array();
         if ($bits & self::SELECT_BASE) {
-            $cols['a'] = array('hruid', 'perms', 'state',
+            $cols['a'] = array('hruid', 'perms', 'state', 'group',
                                'hash', 'hash_rss', 'original', 'photo', 'gender',
-                               'email_format', 'bestalias',
+                               'email_format', 'bestalias', 'skin',
                                'firstname', 'lastname', 'nickname');
-        }
-
-        if ($bits & self::SELECT_SKIN) {
-            $cols['sk'] = array('name AS skin');
-            $joins['sk'] = PlSqlJoin::left('skins', '$ME.skin_id = a.skin');
         }
 
         if (!empty($cols)) {
@@ -568,8 +589,11 @@ class User extends Meta
                                            ' . PlSqlJoin::formatJoins($joins, array()) . '
                                     WHERE  a.uid IN {?}', array_keys($users));
 
-            while ($datas = $iter->next())
+            $groups = new Collection('Group');
+            while ($datas = $iter->next()) {
+                $datas['group'] = $groups->addget($datas['group']);
                 $users[$datas['id']]->fillFromArray($datas);
+            }
         }
 
         // Load minimodules
@@ -591,7 +615,7 @@ class User extends Meta
         if ($bits & self::SELECT_CASTES)
         {
             foreach ($users as $u)
-                $u->groups = new Collection('Caste');
+                $u->castes = new Collection('Caste');
 
             $iter = XDB::iterRow('SELECT  cu.uid, cu.cid
                                     FROM  castes_users AS cu
@@ -600,12 +624,12 @@ class User extends Meta
             $castes = new Collection('Caste');
             while (list($uid, $cid) = $iter->next())
             {
-                $caste = $caste->addget($cid);
+                $caste = $castes->addget($cid);
                 $users[$uid]->castes->add($caste);
             }
 
             if (isset($options[self::SELECT_CASTES]))
-                $groups->select($options[self::SELECT_CASTES]);
+                $castes->select($options[self::SELECT_CASTES]);
         }
 
     }
