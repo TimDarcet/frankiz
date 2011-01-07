@@ -1,0 +1,153 @@
+/***************************************************************************
+ *  Copyright (C) 2009 Binet Réseau                                        *
+ *  http://www.polytechnique.fr/eleves/binets/reseau/                      *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
+
+#debug {
+  display: none;
+	background: red;
+}
+
+body {
+    font-family: 'Lucida Grande', sans-serif;
+    margin: 0;
+}
+
+a {
+  cursor: pointer;
+}
+
+#content {
+  margin: 0 20px;
+}
+
+/***************************************************************************
+#nav-bar
+****************************************************************************/
+
+#nav-bar {
+  background: #EEE;
+  padding: 3px;
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  font-weight: bold;
+}
+
+#nav-bar .nav-left, #nav-bar .nav-right {
+    background: #DDD;
+    text-decoration: none;
+    display: block;
+    line-height: 20px;
+    font-weight: normal;
+    color: black;
+
+    border: 1px solid #BBB;
+    margin: 4px;
+    padding: 3px 6px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+}
+
+#nav-bar .nav-left {
+  float: left;
+}
+
+#nav-bar .nav-right {
+  float: right;
+}
+
+/***************************************************************************
+#nav-menu
+****************************************************************************/
+#nav-menu {
+  position: absolute;
+  top: -100%;
+  bottom: 100%;
+  width: 100%;
+  left: 0;
+  opacity: 0.85;
+  list-style: none;
+  background: black;
+  margin: 0;
+  padding: 0;
+}
+
+#nav-menu a {
+  text-decoration: none;
+  color: white;
+  display: block;
+  padding: 8px 0 8px 10px;
+  border-bottom: 1px #333 solid;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/***************************************************************************
+#section
+****************************************************************************/
+
+#section div.header {
+    margin: 1em 0;
+    background: #DDD;
+    text-align: center;
+    font-weight: bold;
+    padding: 0.3em;
+}
+
+#section input {
+    border: 1px solid #BBB;
+    margin: 0.4em 0;
+    padding: 0.5em;
+    font-size: 1em;
+}
+
+/***************************************************************************
+#section Login form
+****************************************************************************/
+
+#section div.login {
+    font-size: 1em;
+}
+
+
+#section div.login div.label {
+    font-weight: bold;
+}
+
+#section div.login div.field {
+    margin-bottom: 1em;
+}
+
+#section div.login input.btn {
+    display: block;
+    width: 100%;
+    
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+}
+
+/***************************************************************************
+
+****************************************************************************/
+
+
+
+

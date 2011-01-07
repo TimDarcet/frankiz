@@ -1,0 +1,134 @@
+/***************************************************************************
+ *  Copyright (C) 2009 Binet Réseau                                        *
+ *  http://www.polytechnique.fr/eleves/binets/reseau/                      *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
+
+/*******************************************************************************
+     Module News
+
+*******************************************************************************/
+
+ul {
+}
+
+li.news {
+    list-style: none;
+    border: 1px #002334 solid;
+    border-top: none;
+    padding: 1px;
+}
+
+li.news:first-child {
+    border-top: 1px #002334 solid;
+}
+
+/* 
+    Open/ Close
+*/
+
+.news.open .content {
+    display: block;
+}
+
+.news.close .content {
+    display: none;
+}
+
+.news.open .switcher_open {
+    display: none;
+}
+
+.news.open .switcher_close {
+    display: inline;
+}
+
+.news.close .switcher_open {
+    display: inline;
+}
+
+.news.close .switcher_close {
+    display: none;
+}
+
+/* 
+    Star / Unstar
+*/
+
+.news.star {
+    background-color: #FFFF00 !important;
+}
+
+.news.unstar {
+    background-color: #FFFFFF;
+}
+
+.news.star .switcher_star {
+    display: none;
+}
+
+.news.star .switcher_unstar {
+    display: inline;
+}
+
+.news.unstar .switcher_star {
+    display: inline;
+}
+
+.news.unstar .switcher_unstar {
+    display: none;
+}
+
+/* 
+    Read / Unread
+*/
+
+.news.read {
+    background-color: #BDD5E3;
+}
+
+.news.unread {
+    background-color: #FFFFFF;
+}
+
+
+
+.groups {
+    float: left;
+}
+
+.date {
+    float: right;
+}
+
+.title {
+    text-align: center;
+}
+
+.content {
+	position: relative;
+	clear: both;
+	margin: 5px;
+}
+
+.content > div {
+    width: 100%;
+    border-top: 1px #002334 solid;
+    background-color: white;
+}
+
+
