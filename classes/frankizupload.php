@@ -21,50 +21,45 @@
 
 class FrankizUpload
 {
+    // Original filename
+    protected $name = null;
+    // Path to the temporary file on the server
     protected $path   = null;
-    protected $source = null;
 
-    public function __construct()
+    protected function __construct($name)
     {
+        $file =  $_FILES[$name];
+        $this->name = $file['name'];
+        $this->path = $file['tmp_name'];
+
+        $this->checkUploadErrors($file);
     }
 
-    public static function has($res)
+    /**
+    * Check if the form input exists
+    *
+    * @param $name  The name of the <input type="file"> tag
+    */
+    public static function has($name)
     {
-        return isset($_FILES[$res]) || file_exists($res);
+        return isset($_FILES[$name]);
     }
 
-    public static function v($res)
+    /**
+    * Retrieve the FrankizUpload instance linked to the sent file
+    *
+    * @param $name  The name of the <input type="file"> tag
+    */
+    public static function v($name)
     {
-        if (!self::has($res))
+        if (!self::has($name))
             return false;
 
-        $fu = new FrankizUpload();
-        if (isset($_FILES[$res]))
-            $fu->upload($_FILES[$res]);
-        else
-            $fu->download($res);
-
+        $fu = new FrankizUpload($name);
         return $fu;
     }
 
-    protected function download($url)
-    {
-        if (!$url || @parse_url($url) === false)
-            throw new Exception('Malformed URL given');
-            
-        //TODO : handle kuzh
-        if (size($url) > ini_get('upload_max_filesize'))
-            throw new Exception('File is to big (limit: ' . ini_get('upload_max_filesize') . ')');
-
-        $path = '/tmp/fkz_' + uniqid();
-        if (!file_put_contents($path, file_get_contents($url)))
-            throw new Exception('Unknow error');
-
-        $this->source = $url;
-        $this->path   = $path;
-    }
-
-    protected function upload(array &$file)
+    protected function checkUploadErrors(array &$file)
     {
         if (@$file['error']) {
             switch ($file['error']) {
@@ -80,9 +75,6 @@ class FrankizUpload
         }
         if (!is_uploaded_file($file['tmp_name']))
             throw new Exception('File is not an uploaded file');
-
-        $this->source = $file['name'];
-        $this->path   = $file['tmp_name'];
     }
 
     public function path()
@@ -90,14 +82,14 @@ class FrankizUpload
         return $this->path;
     }
 
-    public function source()
+    public function name()
     {
-        return $this->source;
+        return $this->name;
     }
 
     public function rm()
     {
-        @unlink($this->filename);
+        @unlink($this->path);
     }
 }
 
