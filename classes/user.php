@@ -416,37 +416,21 @@ class User extends Meta
 
     *******************************************************************************/
 
-    // Implementation of the default user callback.
-    public static function _default_user_callback($login, $results)
-    {
-        $result_count = count($results);
-        if ($result_count == 0 || !S::has_perms()) {
-            Platal::page()->trigError("Il n'y a pas d'utilisateur avec l'identifiant : $login");
-        } else {
-            Platal::page()->trigError("Il y a $result_count utilisateurs avec cet identifiant : " . join(', ', $results));
-        }
-    }
-
+    // Actually only called by S to get an anonymous user
     public static function getSilentWithValues($login, $values)
     {
-        if ($login == 0)
-            return new AnonymousUser();
-        else
-            return User::getWithValues($login, $values, array('User', '_silent_user_callback'));
-    }
+        if ($login == 0) {
+            // If the anonymous_user is already in session
+            if (S::has('anonymous_user'))
+                return S::v('anonymous_user');
 
-    public static function getWithValues($login, $values, $callback = false)
-    {
-        if (!$callback) {
-            $callback = array('User', '_default_user_callback');
-        }
-
-        try {
-            $u = new User($values['id']);
+            $u = new User(0);
             $u->select();
-        } catch (UserNotFoundException $e) {
-            return call_user_func($callback, $login, $e->results);
+            S::set('anonymous_user', $u);
+            return $u;
         }
+
+        throw new Exception('DEPRECATED call to getSilentWithValues()');
     }
 
     public static function getNameVariants($name)
