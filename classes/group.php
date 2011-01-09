@@ -39,9 +39,9 @@ class Group extends Meta
     protected $label = null;
     protected $score = null;
 
-    protected $enter = null; // If true, you become a member when you join the group
-    protected $leave = null; // If true, you can't leave a group
-    protected $visibility = null; // If true, the groups is invisible
+    protected $private  = null; // If false, you become a member when you join the group
+    protected $leavable = null; // If true, you can leave the group
+    protected $visible  = null; // If true, the groups is invisible
 
     protected $description = null;
 
@@ -55,13 +55,23 @@ class Group extends Meta
         return $this->name();
     }
 
-    public function name()
+    public function name($name = null)
     {
+        if ($name != null)
+        {
+            $this->name = $name;
+            XDB::execute('UPDATE groups SET name = {?} WHERE gid = {?}', $name, $this->id());
+        }
         return $this->name;
     }
 
-    public function ns()
+    public function ns($ns = null)
     {
+        if ($ns != null)
+        {
+            $this->ns = $ns;
+            XDB::execute('UPDATE groups SET ns = {?} WHERE gid = {?}', $ns, $this->id());
+        }
         return $this->ns;
     }
 
@@ -70,7 +80,7 @@ class Group extends Meta
         if ($label != null)
         {
             $this->label = $label;
-            XDB::execute('UPDATE groups SET label = {?} WHERE gid = {?}', $label, $this->id);
+            XDB::execute('UPDATE groups SET label = {?} WHERE gid = {?}', $label, $this->id());
         }
         return $this->label;
     }
@@ -80,19 +90,34 @@ class Group extends Meta
         return $this->score;
     }
 
-    public function enter()
+    public function priv($priv = null)
     {
-        return $this->enter;
+        if ($priv != null)
+        {
+            $this->priv = $priv;
+            XDB::execute('UPDATE groups SET priv = {?} WHERE gid = {?}', $this->priv, $this->id());
+        }
+        return $this->priv;
     }
 
-    public function leave()
+    public function leavable($leavable = null)
     {
-        return $this->leave;
+        if ($leavable != null)
+        {
+            $this->leavable = $leavable;
+            XDB::execute('UPDATE groups SET leavable = {?} WHERE gid = {?}', $leavable, $this->id());
+        }
+        return $this->leavable;
     }
 
-    public function visibility()
+    public function visible($visible = null)
     {
-        return $this->visibility;
+        if ($visible != null)
+        {
+            $this->visible = $visible;
+            XDB::execute('UPDATE groups SET visible = {?} WHERE gid = {?}', $visible, $this->id());
+        }
+        return $this->visible;
     }
 
     public function description()
@@ -197,7 +222,7 @@ class Group extends Meta
         $joins = array();
         $cols = array();
         if ($bits & self::SELECT_BASE)
-            $cols['g']   = array('ns', 'name', 'label', 'score', 'image', 'enter', 'leave', 'visibility');
+            $cols['g']   = array('ns', 'name', 'label', 'score', 'image', 'priv', 'leavable', 'visible');
         if ($bits & self::SELECT_DESCRIPTION)
             $cols['g'][] = 'description';
 

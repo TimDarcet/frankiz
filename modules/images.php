@@ -90,7 +90,7 @@ class ImagesModule extends PlModule
         $image->select(array(FrankizImage::SELECT_BASE => Group::SELECT_BASE));
 
         // If the group owning the image is not public
-        if (!$image->group()->enter()) {
+        if ($image->group()->priv()) {
             /* TODO: Temporary, would be better to use something like
              * S::user()->hasRightsInGroup(Rights::member(), $image->group())
              */
