@@ -308,6 +308,11 @@ class FrankizImage extends Meta
         XDB::execute('INSERT INTO images SET seen = 0, lastseen = NOW()');
         $this->id = XDB::insertId();
     }
+
+    public function delete()
+    {
+        XDB::execute('DELETE FROM images WHERE iid = {?}', $this->id());
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
