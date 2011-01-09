@@ -21,6 +21,11 @@
 
 class QuickSearchMiniModule extends FrankizMiniModule
 {
+    public function auth()
+    {
+        return AUTH_INTERNAL;
+    }
+
     public function tpl()
     {
         return "minimodules/quicksearch/quicksearch.tpl";

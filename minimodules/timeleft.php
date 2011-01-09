@@ -23,7 +23,7 @@ class TimeleftMiniModule extends FrankizMiniModule
 {
     public function auth()
     {
-        return AUTH_COOKIE;
+        return AUTH_PUBLIC;
     }
 
     public function perms()

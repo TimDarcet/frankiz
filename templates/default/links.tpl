@@ -32,6 +32,8 @@
 
 <a href="http://www.etudes.polytechnique.edu">DE</a> ·
 
+<a href="https://enex.polytechnique.fr/">ENEX</a> ·
+
 <a href="http://wikix.polytechnique.org">Wikix</a>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
