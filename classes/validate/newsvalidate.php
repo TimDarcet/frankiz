@@ -58,7 +58,6 @@ class NewsValidate extends ItemValidate
         {
             return false;
         }
-        $this->news->priv(Env::has('priv')?1:0);
         $this->news->important(Env::has('important')?1:0);
         return true;
     }

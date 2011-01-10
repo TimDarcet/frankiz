@@ -20,6 +20,10 @@
 {*                                                                        *}
 {**************************************************************************}
 
+<p>
+    <a href="proposal/news">Rédiger une annonce</a>
+</p>
+
 <div>
     <h3>Binets membres</h3>
     

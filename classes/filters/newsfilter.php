@@ -134,7 +134,7 @@ class NFC_Current extends NewsFilterCondition
     }
 }
 
-/** Returns news that are private
+/** Returns news that are in private groups
  */
 class NFC_Private extends NewsFilterCondition
 {
@@ -145,9 +145,10 @@ class NFC_Private extends NewsFilterCondition
         $this->priv = $priv;
     }
 
-    public function buildCondition(PlFilter $uf)
+    public function buildCondition(PlFilter $f)
     {
-        return 'n.priv = ' . (int) $this->priv;
+        $g = $f->addGroupFilter();
+        return $g.'.priv = ' . (int) $this->priv;
     }
 }
 
@@ -194,6 +195,23 @@ class NewsFilter extends FrankizFilter
         return array('table' => 'news',
                      'as'    => 'n',
                      'id'    => 'id');
+    }
+
+    private $with_group = false;
+
+    public function addGroupFilter()
+    {
+        $this->with_group = true;
+        return 'g';
+    }
+
+    protected function groupJoins()
+    {
+        $joins = array();
+        if ($this->with_caste) {
+            $joins['g'] = PlSqlJoin::left('groups', '$ME.gid = n.target');
+        }
+        return $joins;
     }
 
     private $with_caste = false;

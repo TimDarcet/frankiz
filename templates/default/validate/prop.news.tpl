@@ -109,15 +109,6 @@
                     {valid_date name="end" value=$end to=7}
                 </td>
             </tr>
-            
-            <tr>
-                <td>
-                    Privé :
-                </td>
-                <td>
-                    <input type="checkbox" name="priv" {if $priv}checked="checked"{/if}/>
-                </td>
-            </tr>
 
             <tr>
                 <td>

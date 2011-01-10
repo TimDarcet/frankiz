@@ -24,12 +24,11 @@
  * group : group where it is publicated
  * image : image to display
  * origin : group at the origin of the news, may be null
- * priv : only people in the group can see the news
  * begin, end : dates
  */
 
 class News extends meta
-{    
+{
     /*******************************************************************************
          Constants
 
@@ -43,6 +42,7 @@ class News extends meta
          Properties
 
     *******************************************************************************/
+
     protected $writer  = null;
     protected $target  = null;
     protected $image   = null;
@@ -52,7 +52,6 @@ class News extends meta
     protected $begin   = null;
     protected $end     = null;
     protected $comment = null;
-    protected $priv    = null;
     protected $read    = null;
     protected $star    = null;
 
@@ -60,6 +59,7 @@ class News extends meta
          Getters & Setters
 
     *******************************************************************************/
+
     public function writer()
     {
         return $this->writer;
@@ -111,13 +111,6 @@ class News extends meta
     public function comment()
     {
         return $this->comment;
-    }
-
-    public function priv($priv = null)
-    {
-        if (is_null($priv))
-            return $this->priv;
-        $this->priv = $priv;
     }
 
     public function read($read = null)
@@ -193,11 +186,11 @@ class News extends meta
         XDB::execute('UPDATE  news
                          SET  target = {?}, writer = {?}, iid = {?}, origin = {?},
                               title = {?}, content = {?}, begin = {?}, end = {?},
-                              comment = {?}, priv = {?}
+                              comment = {?}
                        WHERE  id = {?}',
         $this->target->id(), $this->writer->id(), $this->image, is_null($this->origin)?null:$this->origin->id(),
         $this->title, $this->content, $this->begin->format('Y-m-d'), $this->end->format('Y-m-d'),
-        $this->comment, $this->priv, $this->id());
+        $this->comment, $this->id());
     }
 
     public function insert()
@@ -225,7 +218,7 @@ class News extends meta
         $joins = array();
         $cols = array('n' => array());
         if ($bits & self::SELECT_BASE) {
-            $cols['n'] = array_merge($cols['n'], array('writer', 'target', 'title', 'origin', 'begin', 'end', 'priv'));
+            $cols['n'] = array_merge($cols['n'], array('writer', 'target', 'title', 'origin', 'begin', 'end'));
         }
 
         if ($bits & self::SELECT_BODY) {

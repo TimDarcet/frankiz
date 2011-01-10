@@ -32,15 +32,6 @@
 
 <tr>
     <td width=20%>
-        Privé :
-    </td>
-    <td>
-        {if $news->priv()} oui {else} non {/if}
-    </td>
-</tr>
-
-<tr>
-    <td width=20%>
         Dernier jour :
     </td>
     <td>

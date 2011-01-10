@@ -54,15 +54,15 @@ class NewsModule extends PlModule
     {
         // News from the groups where you are member
         $member_news = new NewsFilter(new PFC_And(new NFC_Current(),
-                                                  new NFC_User(S::user())));
+                                                  new NFC_User(S::user(), Rights::member())));
 
-        // News from the groups where you are friend and that are public
+        // News from the public groups where you are friend
         $friend_news = new NewsFilter(new PFC_And(new NFC_Current(),
-                                                  new PFC_And(new NFC_User(S::user(), 'friend'),
+                                                  new PFC_And(new NFC_User(S::user(), Rights::friend()),
                                                               new NFC_Private(false))));
 
         $member_news = $member_news->get();
-        $friend_news = $friend_news->get();
+        $friend_news = $friend_news->get()->remove($member_news);
 
         // Temporary Collection to retrieve in one request all the datas
         $all_news = new Collection('News');

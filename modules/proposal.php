@@ -42,7 +42,7 @@ class ProposalModule extends PlModule
         $comment    = Env::t('comment', '');
         $gid        = Env::i('group_news_proposal', '');
         if(Env::t('origin_news_proposal') != '') $origin = Env::i('origin');
-        $priv       = Env::has('priv')?1:0;
+
         if ($end != '')
         {
             $end = substr_replace($end, '-', 6, 0);
@@ -69,8 +69,7 @@ class ProposalModule extends PlModule
                         'title'     => $title,
                         'content'   => $content,
                         'end'       => $end_c,
-                        'comment'   => $comment,
-                        'priv'      => $priv));
+                        'comment'   => $comment));
                     $nv = new NewsValidate($n);
                     $v = new Validate(array(
                         'user'  => S::user(),
@@ -91,7 +90,6 @@ class ProposalModule extends PlModule
         $page->assign('content', $content);
         $page->assign('end', $end);
         $page->assign('comment', $comment);
-        $page->assign('priv', $priv);
 
         $page->assign('title', 'Proposer une annonce');
         $page->addCssLink('validate.css');

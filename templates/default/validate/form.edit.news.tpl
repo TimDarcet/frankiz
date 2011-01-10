@@ -57,15 +57,6 @@
         <input type='text' name='end' value="{$news->end()|datetime:'Y-m-d H:i:s'}" />
     </td>
 </tr>
-            
-<tr>
-    <td>
-        Privé :
-    </td>
-    <td>
-        <input type="checkbox" name="priv" {if $news->priv()}checked="checked"{/if}/>
-    </td>
-</tr>
 
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
