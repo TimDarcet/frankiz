@@ -26,13 +26,10 @@ class FrankizUpload
     // Path to the temporary file on the server
     protected $path   = null;
 
-    protected function __construct($name)
+    protected function __construct($path, $name = '')
     {
-        $file =  $_FILES[$name];
-        $this->name = $file['name'];
-        $this->path = $file['tmp_name'];
-
-        $this->checkUploadErrors($file);
+        $this->name = $name;
+        $this->path = $path;
     }
 
     /**
@@ -55,8 +52,19 @@ class FrankizUpload
         if (!self::has($name))
             return false;
 
-        $fu = new FrankizUpload($name);
+        $file = $_FILES[$name];
+        $name = $file['name'];
+        $path = $file['tmp_name'];
+
+        $this->checkUploadErrors($file);
+
+        $fu = new FrankizUpload($name, $path);
         return $fu;
+    }
+
+    public static function fromFile($path)
+    {
+        return new FrankizUpload($path, basename($path));
     }
 
     protected function checkUploadErrors(array &$file)
