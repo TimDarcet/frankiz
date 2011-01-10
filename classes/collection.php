@@ -262,7 +262,8 @@ class Collection extends PlAbstractIterable
     */
     public function remove($cs)
     {
-        $cs = unflatten($cs);
+        $className = $this->className;
+        $cs = ($cs instanceof Collection) ? $cs : unflatten($cs);
         foreach ($cs as $c)
             if ($c instanceof $className)
                 unset($this->collected[$c->id()]);
