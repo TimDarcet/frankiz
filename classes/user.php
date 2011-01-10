@@ -181,9 +181,41 @@ class User extends Meta
         return XDB::fetchOneCell('SELECT  password FROM  account WHERE  uid = {?}', $this->id());
     }
 
+    /**
+    * Original picture
+    *
+    * @param $original If specified, updates the picture in the database
+    */
+    public function original(FrankizImage $original = null)
+    {
+        if ($original != null)
+        {
+            $this->original = $original;
+            XDB::execute('UPDATE account SET original = {?} WHERE uid = {?}',
+                                                 $original->id(), $this->id());
+        }
+        return $this->original;
+    }
+
+    /**
+    * Current picture
+    *
+    * @param $photo If specified, updates the picture in the database
+    */
+    public function photo(FrankizImage $photo = null)
+    {
+        if ($photo != null)
+        {
+            $this->photo = $photo;
+            XDB::execute('UPDATE account SET photo = {?} WHERE uid = {?}',
+                                                 $photo->id(), $this->id());
+        }
+        return $this->photo;
+    }
+
     public function image($bits = self::IMAGE_BEST)
     {
-        if (($bits & self::IMAGE_PHOTO) && (!empty($this->photo)))
+        if (($bits & self::IMAGE_PHOTO) && (!empty($this->photo)) && ($this->photo->id() != 0))
             return $this->photo;
         if (($bits & self::IMAGE_ORIGINAL) && (!empty($this->original)))
             return $this->original;
