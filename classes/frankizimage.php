@@ -191,7 +191,7 @@ class FrankizImage extends Meta
     public function html($bits = self::SELECT_SMALL)
     {
         $small = ($bits == self::SELECT_SMALL) ? '?small' : '';
-        return '<img src="image/' . $this->id() . $small . '" />';
+        return '<a href="image/' . $this->id() . '"><img src="image/' . $this->id() . $small . '" /></a>';
     }
 
     /**
