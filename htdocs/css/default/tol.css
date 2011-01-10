@@ -73,6 +73,10 @@
 	width: 100%;
 }
 
+#tol_searcher .groups_picker {
+    width: 100%;
+}
+
 #tol_searcher input[type=reset] {
     float: right;
 }

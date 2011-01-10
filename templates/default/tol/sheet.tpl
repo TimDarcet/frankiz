@@ -22,11 +22,14 @@
 
 <li uid="{$result->id()}" class="fiche">
     <div class="base">
-        <div class="img"><a href="profile/photo/{$result->login()}"><img src="profile/photo/small/{$result->login()}" /></a></div>
+        <div class="img">
+            {assign var='img' value=$result->image()}
+            <a href="profile/photo/{$result->login()}">
+                <img src="{$img->src()}" />
+            </a>
+        </div>
         <div class="sports">
-            {foreach from=$result->groups('sport') item=group}
-                {$group->name()}
-            {/foreach}
+
         </div>
         <div class="name">{$result->displayName()}</div>
         <div>
@@ -39,10 +42,11 @@
         <div class="associations">
             Binets:
             <ul>
-                {assign var='binets' value=$result->groups('binet')}
-                {assign var='dev_null' value=$binets->order('frequency')}
-                {foreach from=$binets item='group'}
-                    <li>{$group->frequency()} {$group->label()} {$result->rights($group)} {$result->comments($group)}</li>
+                {assign var='castes' value=$result->castes()}
+                {assign var='groups' value=$castes->groups()}
+                
+                {foreach from=$groups|order:'score' item='group'}
+                    <li>{$group->score()} {$group->label()} {$result->rights($group)|rights} </li>
                 {/foreach}
             </ul>
         </div>

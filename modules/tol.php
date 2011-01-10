@@ -24,8 +24,8 @@ class TolModule extends PLModule
     function handlers()
     {
         return array(
-            'tol'       => $this->make_hook('tol'     , AUTH_COOKIE),   // TODO : set necessary perms
-            'tol/ajax'  => $this->make_hook('tol_ajax', AUTH_COOKIE)
+            'tol'       => $this->make_hook('tol'     , AUTH_INTERNAL),
+            'tol/ajax'  => $this->make_hook('tol_ajax', AUTH_INTERNAL)
             );
     }
 
@@ -109,15 +109,20 @@ class TolModule extends PLModule
             return false;
     }
 
+    function toSelect()
+    {
+        return array(User::SELECT_BASE => null, User::SELECT_ROOMS => null,
+                     User::SELECT_CASTES => array(Caste::SELECT_BASE => Group::SELECT_BASE));
+    }
+
     function handler_tol($page)
     {
         $fields = $this->fillFields();
-
         $filter = $this->buildFilter($fields);
 
         if ($filter) {
             $uf = new UserFilter($filter);
-            $users = $uf->get(new PlLimit(50,0))->select(User::SELECT_BASE | User::SELECT_GROUPS);
+            $users = $uf->get(new PlLimit(50,0))->select($this->toSelect());
             $page->assign('results', $users);
             $page->assign('total', $uf->getTotalCount());
         }
@@ -133,21 +138,15 @@ class TolModule extends PLModule
         $json = json_decode(Env::v('json'));
 
         $fields = $this->fillFields($json);
-
         $filter = $this->buildFilter($fields);
-        $fiches = array();
 
+        $fiches = array();
         if ($filter) {
             $uf = new UserFilter($filter);
             if ($json->mode == 'card')
                 $users = $uf->get(new PlLimit(20,0))->select(User::SELECT_BASE);
             else
-                $users = $uf->get(new PlLimit(50,0))->select(
-                                            array(User::SELECT_BASE => false,
-                                                User::SELECT_GROUPS => array("comments" => true,
-                                                                                   "ns" => array(Group::NS_BINET, Group::NS_SPORT,
-                                                                                                 Group::NS_NATIONALITY, Group::NS_STUDY),
-                                                                              "options" => Group::SELECT_BASE | Group::SELECT_FREQUENCY)));
+                $users = $uf->get(new PlLimit(50,0))->select($this->toSelect());
 
             $page->jsonAssign('total', $uf->getTotalCount());
             foreach($users as $k => $user) {
