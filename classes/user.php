@@ -37,6 +37,7 @@ class User extends Meta
     const SELECT_MINIMODULES  = 0x04;
     const SELECT_CASTES       = 0x08;
     const SELECT_COMMENTS     = 0x20;
+    const SELECT_POLY         = 0x40;
 
     const IMAGE_ORIGINAL      = 0x01;
     const IMAGE_PHOTO         = 0x02;
@@ -112,6 +113,9 @@ class User extends Meta
 
     // Rooms
     protected $rooms = null;
+
+    // Poly
+    protected $poly = null;
 
     /*******************************************************************************
          Getters & Setters
@@ -240,6 +244,14 @@ class User extends Meta
     public function rooms()
     {
         return $this->rooms;
+    }
+
+    /**
+    * Returns the poly login, an outdated login but the only one for X < 2005
+    */
+    public function poly()
+    {
+        return $this->poly;
     }
 
     /*******************************************************************************
@@ -599,6 +611,11 @@ class User extends Meta
                                'hash', 'hash_rss', 'original', 'photo', 'gender',
                                'email_format', 'bestalias', 'skin',
                                'firstname', 'lastname', 'nickname');
+        }
+
+        if ($bits & self::SELECT_POLY) {
+            $cols['p'] = array('poly');
+            $joins['p'] = PlSqlJoin::left('poly', '$ME.uid = p.uid');
         }
 
         if (!empty($cols)) {
