@@ -20,22 +20,30 @@
 {*                                                                        *}
 {**************************************************************************}
 
-Frankiz contient actuellement {$total} groupes.<br />
-En voici une sélection
+ADmin
 
-<div>
-    Les binets
-    {include file="groups/ns_groups.tpl"|rel groups=$binet user_groups=$user_binet}
-</div>
+{$group->id()}
+{$group->name()}
+{$group->label()}
+{$group->description()}
 
-<div>
-    Les études
-    {include file="groups/ns_groups.tpl"|rel groups=$study user_groups=$user_study}
-</div>
+<ul>
+{foreach from=$group->caste() item='caste'}
+    <li>
+    {$caste->id()}
+    {$caste->rights()}
+    <ul>
+    {foreach from=$caste->users() item='user'}
+        <li>
+        {$user->id()}
+        {$user->login()}
+        {$user->displayName()}
+        </li>
+    {/foreach}
+    </ul>
+    </li>
+{/foreach}
+</ul>
 
-<div>
-    Divers
-    {include file="groups/ns_groups.tpl"|rel groups=$free user_groups=$user_free}
-</div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

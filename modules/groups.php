@@ -30,6 +30,7 @@ class GroupsModule extends PLModule
             'groups/ajax/rename'      => $this->make_hook('ajax_rename',       AUTH_COOKIE),
             'groups/ajax/delete'      => $this->make_hook('ajax_delete',       AUTH_COOKIE),
             'groups/see'              => $this->make_hook('group_see',         AUTH_PUBLIC),
+            'groups/admin'            => $this->make_hook('group_admin',       AUTH_PUBLIC),
             'groups/subscribe'        => $this->make_hook('group_subscribe',   AUTH_COOKIE),
             'groups/unsubscribe'      => $this->make_hook('group_unsubscribe', AUTH_COOKIE),
             'groups/insert'           => $this->make_hook('group_insert',      AUTH_COOKIE),
@@ -38,13 +39,40 @@ class GroupsModule extends PLModule
 
     function handler_groups($page)
     {
-        $gf = new GroupFilter(null, new GFO_Score(true));
-        $gs = $gf->get(new PlLimit(20));
-        $gs->select(Group::SELECT_BASE);
+        $except = new PFC_True();
 
-        $total = $gf->getTotalCount();
+        // Fetch samples of other groups
+        $binet = new GroupFilter(new PFC_And(new GFC_Namespace(Group::NS_BINET), $except), new GFO_Score(true));
+        $binet = $binet->get(new PlLimit(5));
 
-        $page->assign('groups', $gs);
+        $study = new GroupFilter(new PFC_And(new GFC_Namespace(Group::NS_STUDY), $except), new GFO_Score(true));
+        $study = $study->get(new PlLimit(5));
+
+        $free = new GroupFilter(new PFC_And(new GFC_Namespace(Group::NS_FREE), $except), new GFO_Score(true));
+        $free = $free->get(new PlLimit(5));
+
+        // Load associated datas
+        $temp = new Collection('Group');
+        $temp->merge($binet)->merge($study)->merge($free);
+        $temp->select(Group::SELECT_BASE);
+
+        // Fetch the total count of groups
+        $allf = new GroupFilter(null);
+        $total = $allf->getTotalCount();
+
+        $user_binet = S::user()->castes()->groups()->filter('ns', Group::NS_BINET)->remove($binet);
+        $page->assign('binet', $binet);
+        $page->assign('user_binet', $user_binet);
+
+        $user_study = S::user()->castes()->groups()->filter('ns', Group::NS_STUDY)->remove($study);
+        $page->assign('study', $study);
+        $page->assign('user_study', $user_study);
+
+        $user_free = S::user()->castes()->groups()->filter('ns', Group::NS_FREE)->remove($free);
+        $page->assign('free', $free);
+        $page->assign('user_free', $user_free);
+
+        $page->assign('user', S::user());
         $page->assign('total', $total);
         $page->assign('title', 'Groupes');
         $page->changeTpl('groups/groups.tpl');
@@ -73,7 +101,7 @@ class GroupsModule extends PLModule
 
     function handler_group_see($page, $group)
     {
-        $filter = (isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
+        $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
         $gf = new GroupFilter($filter);
         $group = $gf->get(true);
 
@@ -87,6 +115,30 @@ class GroupsModule extends PLModule
 
             $page->assign('title', $group->label());
             $page->changeTpl('groups/group.tpl');
+        }
+        else
+        {
+            $page->assign('title', "Ce groupe n'existe pas");
+            $page->changeTpl('groups/no_group.tpl');
+        }
+    }
+
+    function handler_group_admin($page, $group)
+    {
+        $filter = (isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
+        $gf = new GroupFilter($filter);
+        $group = $gf->get(true);
+
+        if ($group)
+        {
+            $group->select(Group::SELECT_BASE | Group::SELECT_DESCRIPTION);
+            $group->select(array(Group::SELECT_CASTES =>
+                                 array(Caste::SELECT_BASE => null,
+                                       Caste::SELECT_USERS => User::SELECT_BASE)));
+            $page->assign('group', $group);
+
+            $page->assign('title', 'Administration de "' . $group->label() . '"');
+            $page->changeTpl('groups/admin.tpl');
         }
         else
         {

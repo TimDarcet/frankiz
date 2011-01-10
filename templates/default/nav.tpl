@@ -25,8 +25,8 @@
 <ul>
     {if $smarty.session.auth >= AUTH_INTERNAL}
     <li><a {path_to_href_attribute path="news"}>annonces</a></li>
-    <li><a {path_to_href_attribute path="activity"}>activités</a></li>
-    <li><a {path_to_href_attribute path="activity/timetable"}>emploi du temps</a></li>
+    <li><a {path_to_href_attribute path="activity"}>activités</a> / <a {path_to_href_attribute path="activity/timetable"}>edT</a></li>
+    <li><a {path_to_href_attribute path="groups"}>groupes & binets</a></li>
     <li><a {path_to_href_attribute path="tol"} accesskey="t">trombino</a></li>
     {/if}
     {if $smarty.session.auth >= AUTH_COOKIE}

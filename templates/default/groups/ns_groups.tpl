@@ -20,22 +20,29 @@
 {*                                                                        *}
 {**************************************************************************}
 
-Frankiz contient actuellement {$total} groupes.<br />
-En voici une sélection
-
-<div>
-    Les binets
-    {include file="groups/ns_groups.tpl"|rel groups=$binet user_groups=$user_binet}
-</div>
-
-<div>
-    Les études
-    {include file="groups/ns_groups.tpl"|rel groups=$study user_groups=$user_study}
-</div>
-
-<div>
-    Divers
-    {include file="groups/ns_groups.tpl"|rel groups=$free user_groups=$user_free}
-</div>
+<table>
+    <tr>
+        <th>Score</th>
+        <th>Name</th>
+        <th>Label</th>
+        <th>Rights</th>
+    </tr>
+    {foreach from=$groups|order:'score' item=group}
+        <tr>
+            <td>{$group->score()}</td>
+            <td>{$group->name()}</td>
+            <td>{$group|group}</td>
+            <td>{$user->rights($group)|@rights}</td>
+        </tr>
+    {/foreach}
+    {foreach from=$user_groups|order:'score' item=group}
+        <tr>
+            <td>{$group->score()}</td>
+            <td>{$group->name()}</td>
+            <td>{$group|group}</td>
+            <td>{$user->rights($group)|@rights}</td>
+        </tr>
+    {/foreach}
+</table>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
