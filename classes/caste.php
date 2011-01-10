@@ -37,6 +37,15 @@ class Caste extends Meta
         return $this->group;
     }
 
+    public static function batchGroups(array $castes)
+    {
+        $gs = new Collection('Group');
+        foreach ($castes as $c) {
+            $gs->add($c->group());
+        }
+        return $gs;
+    }
+
     public function rights()
     {
         return $this->rights;
@@ -249,8 +258,8 @@ class Caste extends Meta
                 $castes[$datas['id']]->fillFromArray($datas);
             }
 
-            if (!empty($options[self::SELECT_BASE]['groups']))
-                    $groups->select($options[self::SELECT_BASE]['groups']);
+            if (!empty($options[self::SELECT_BASE]))
+                    $groups->select($options[self::SELECT_BASE]);
         }
 
         if ($bits & self::SELECT_USERS)
