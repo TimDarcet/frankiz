@@ -91,13 +91,7 @@ class ImagesModule extends PlModule
 
         // If the group owning the image is not public
         if ($image->group()->priv()) {
-            /* TODO: Temporary, would be better to use something like
-             * S::user()->hasRightsInGroup(Rights::member(), $image->group())
-             */
-            $gf = new GroupFilter(new PFC_And(new GFC_Id($image->group()->id()),
-                                              new PFC_Or(new GFC_User(S::user(), Rights::member()),
-                                                         new GFC_User(S::user(), Rights::admin()))));
-            if($gf->get(true) === false) {
+            if(S::user()->hasRights($image->group(), Rights::member())) {
                 // TODO: show an 'invalid credential' picture instead
                 throw new Exception("You don't have the credential to view this image");
                 exit;

@@ -401,9 +401,30 @@ class User extends Meta
         return $this->comments[$gid];
     }
 
-    public function castes()
+    public function castes($mixed = null)
     {
         return $this->castes;
+    }
+
+    public function rights(Group $g)
+    {
+        $rights = array();
+        foreach ($this->castes as $c) {
+            if ($c->group()->isMe($g))
+                array_push($rights, $c->rights());
+        }
+        return $rights;
+    }
+
+    public function hasRights(Group $g, Rights $r)
+    {
+        foreach ($this->castes as $c) {
+            if ($c->group()->isMe($g))
+                if ($r->isMe($c->rights()))
+                    return true;
+        }
+
+        return false;
     }
 
     public function group()
@@ -561,11 +582,13 @@ class User extends Meta
         if (empty($users))
             return;
 
+        $bits = self::optionsToBits($options);
+
         if (empty($options)) {
-            $options = User::SELECT_BASE | User::SELECT_ROOMS | User::SELECT_MINIMODULES | User::SELECT_CASTES;
+            $bits = User::SELECT_BASE | User::SELECT_ROOMS | User::SELECT_MINIMODULES | User::SELECT_CASTES;
+            $options = array(User::SELECT_CASTES => Caste::SELECT_BASE);
         }
 
-        $bits = self::optionsToBits($options);
         $users = array_combine(self::toIds($users), $users);
 
         // Load datas where 1 User = 1 Line
