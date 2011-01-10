@@ -23,10 +23,7 @@ class IkMiniModule extends FrankizMiniModule
 {
     public function auth()
     {
-        if (IP::is_internal())
-            return AUTH_PUBLIC;
-        else 
-            return AUTH_COOKIE;
+        return AUTH_INTERNAL;
     }
 
     public function css()
