@@ -31,11 +31,6 @@ class GroupsMiniModule extends FrankizMiniModule
         return 'user';
     }
 
-    public function js()
-    {
-        return 'minimodules/groups.js';
-    }
-
     public function css()
     {
         return 'minimodules/groups.css';
@@ -53,7 +48,6 @@ class GroupsMiniModule extends FrankizMiniModule
 
     public function run()
     {
-        S::user()->select(array(User::SELECT_GROUPS => array("options" => Group::SELECT_BASE)));
         $this->assign('user', S::user());
     }
 }

@@ -19,9 +19,13 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-
 function smarty_modifier_rights($rights) {
-    return implode(',', $rights);
+    $rights = unflatten($rights);
+    $strings = array();
+    foreach ($rights as $right) {
+        $strings[] = (string) $right;
+    }
+    return implode(',', $strings);
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

@@ -586,7 +586,7 @@ class User extends Meta
 
         if (empty($options)) {
             $bits = User::SELECT_BASE | User::SELECT_ROOMS | User::SELECT_MINIMODULES | User::SELECT_CASTES;
-            $options = array(User::SELECT_CASTES => Caste::SELECT_BASE);
+            $options = array(User::SELECT_CASTES => array(Caste::SELECT_BASE => Group::SELECT_BASE));
         }
 
         $users = array_combine(self::toIds($users), $users);
