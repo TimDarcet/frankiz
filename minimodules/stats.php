@@ -19,36 +19,57 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-/*
-	Génération des données de statistiques des serveurs.
-	
-	Certaines données sont mise en statique pour exemple. Il serait bien de réécrir les scripts
-	qui récupère ces informations pour qu'ils enregistrent leurs données dans des fichiers directement
-	en XML, et non sous forme d'une suite de "0" et de "1".
-	
-	TODO : limiter à l'état des services (up/down), les pluparts des élèves s'en fout complètement
-	Par ailleurs, il faudra créer des pages de stats assez complètes pour les admins (avec les usages
-	de bande passante, de cpu). 
-	
-	$Id$
+class StatsMiniModule extends FrankizMiniModule
+{
+    public function auth()
+    {
+        return AUTH_INTERNAL;
+    }
 
-*/
-if(est_authentifie(AUTH_COOKIE)) { ?>
-	<module id="stats" titre="Statistiques">
-		<statistiques>
-			<service nom="web frankiz" stat="webalizer/" />
-			<service nom="web perso" stat="http://perso.frankiz.eleves.polytechnique.fr/webalizer/" />
-			<service nom="web binets" stat="http://binets.frankiz.eleves.polytechnique.fr/webalizer/" />
-			<service nom="web binets (old)" stat="http://gwennoz.polytechnique.fr/webalizer/" />
-			<service nom="news" stat="stats/news.php" />
-			<service nom="xnet" stat="stats/xnet.php" />
-		<?php if(file_exists(BASE_CACHE."uptime")) include BASE_CACHE."uptime"; ?>
-		<?php if(file_exists(BASE_CACHE."status")) include BASE_CACHE."status"; else echo "<serveur nom='status' etat='down'/>\n"?>
-		
-		</statistiques>
-	</module>
-<?php 
-} 
+    public function perms()
+    {
+        return 'admin';
+    }
+
+    public function tpl()
+    {
+        return 'minimodules/stats/stats.tpl';
+    }
+
+    public function title()
+    {
+        return 'Statistiques';
+    }
+
+    public function run()
+    {
+        // Total Users
+        $f = new UserFilter(null);
+        $users = $f->getTotalCount();
+        $this->assign('users', $users);
+
+        // Total Groups
+        $f = new GroupFilter(null);
+        $groups = $f->getTotalCount();
+        $this->assign('groups', $groups);
+
+        // Total Castes
+        $f = new CasteFilter(null);
+        $castes = $f->getTotalCount();
+        $this->assign('castes', $castes);
+
+        // Total News
+        $f = new NewsFilter(null);
+        $news = $f->getTotalCount();
+        $this->assign('news', $news);
+
+        // Total Images
+        $f = new ImageFilter(null);
+        $images = $f->getTotalCount();
+        $this->assign('images', $images);
+    }
+
+}
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
 ?>
