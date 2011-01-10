@@ -49,7 +49,7 @@ class UFC_Uid extends UserFilterCondition
 
     public function __construct($us)
     {
-        $this->uids = User::toIds(unflatten($gs));
+        $this->uids = User::toIds(unflatten($us));
     }
 
     public function buildCondition(PlFilter $uf)
@@ -765,6 +765,10 @@ class UserFilter extends FrankizFilter
 
             case 'study':
                 $obj = new UFC_Study($export['formation_ids']);
+                break;
+
+            case 'uid':
+                $obj = new UFC_Uid($export['uids']);
                 break;
 
             case 'promo':
