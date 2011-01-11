@@ -26,8 +26,8 @@ class User extends Meta
 
     *******************************************************************************/
 
-    const GENDER_FEMALE = true;
-    const GENDER_MALE   = false;
+    const GENDER_FEMALE = 'woman';
+    const GENDER_MALE   = 'man';
 
     const FORMAT_HTML = "html";
     const FORMAT_TEXT = "text";
@@ -75,8 +75,9 @@ class User extends Meta
 
     // Display name is user-chosen name to display (eg. in "Welcome
     // <display name> !"), while full name is the official full name.
-    protected $display_name = null;
-    protected $full_name = null;
+    protected $firstname = null;
+    protected $lastname  = null;
+    protected $nickname  = null;
 
     // Other important parameters used when sending emails.
     protected $gender = null;  // Acceptable values are GENDER_MALE and GENDER_FEMALE
@@ -114,6 +115,9 @@ class User extends Meta
     // Rooms
     protected $rooms = null;
 
+    protected $birthdate = null;
+    protected $cellphone = null;
+
     // Poly
     protected $poly = null;
 
@@ -122,8 +126,12 @@ class User extends Meta
 
     *******************************************************************************/
 
-    public function login()
+    public function login($login = null)
     {
+        if ($login != null) {
+            $this->hruid = $login;
+            XDB::execute('UPDATE account SET hruid = {?} WHERE uid = {?}', $login, $this->id());
+        }
         return $this->hruid;
     }
 
@@ -143,20 +151,51 @@ class User extends Meta
         return $this->email;
     }
 
+    public function firstname($firstname = null)
+    {
+        if ($firstname != null) {
+            $this->firstname = $firstname;
+            XDB::execute('UPDATE account SET firstname = {?} WHERE uid = {?}', $this->firstname, $this->id());
+        }
+        return $this->firstname;
+    }
+
+    public function lastname($lastname = null)
+    {
+        if ($lastname != null) {
+            $this->lastname = $lastname;
+            XDB::execute('UPDATE account SET lastname = {?} WHERE uid = {?}', $this->lastname, $this->id());
+        }
+        return $this->lastname;
+    }
+
+    public function nickname($nickname = null)
+    {
+        if ($nickname != null) {
+            $this->nickname = $nickname;
+            XDB::execute('UPDATE account SET nickname = {?} WHERE uid = {?}', $this->nickname, $this->id());
+        }
+        return $this->nickname;
+    }
+
     public function displayName()
     {
-        return $this->display_name;
+        return (empty($this->nickname)) ? $this->firstname : $this->nickname;
     }
 
     public function fullName()
     {
-        return $this->full_name;
+        return $this->firstname . ' ' . $this->lastname;
     }
 
-    // Fallback value is GENDER_MALE.
-    public function isFemale()
+    public function gender($gender = null)
     {
-        return $this->gender == self::GENDER_FEMALE;
+        if ($gender !== null)
+        {
+            $this->gender = $gender;
+            XDB::execute('UPDATE account SET gender = {?} WHERE uid = {?}', $gender, $this->id());
+        }
+        return $this->gender;
     }
 
     // Fallback value is FORMAT_TEXT.
@@ -170,11 +209,11 @@ class User extends Meta
     *
     * @param $password If specified, update the password in the database
     */
-    public function password($password = null)
+    public function password($password = null, $encrypt = true)
     {
         if ($password != null)
         {
-            $this->password = hash_encrypt($password);
+            $this->password = ($encrypt) ? hash_encrypt($password) : $password;
             XDB::execute('UPDATE account SET password = {?} WHERE uid = {?}',
                                                  $this->password, $this->id());
         }
@@ -278,12 +317,52 @@ class User extends Meta
         return $this->rooms;
     }
 
+    public function birthdate(FrankizDateTime $birthdate = null)
+    {
+        if ($birthdate != null) {
+            $this->birthdate = $birthdate;
+            XDB::execute('UPDATE account SET birthdate = {?} WHERE uid = {?}', $birthdate->format(), $this->id());
+        }
+        return $this->birthdate;
+    }
+
+    public function cellphone($cellphone = null)
+    {
+        if ($cellphone != null) {
+            $this->cellphone = $cellphone;
+            XDB::execute('UPDATE account SET cellphone = {?} WHERE uid = {?}', $cellphone, $this->id());
+        }
+        return $this->cellphone;
+    }
+
     /**
     * Returns the poly login, an outdated login but the only one for X < 2005
     */
     public function poly()
     {
         return $this->poly;
+    }
+
+    /*******************************************************************************
+         Studies
+
+    *******************************************************************************/
+
+    //TODO
+    public function addStudy($formation_id, $year_in, $year_out, $promo, $forlife)
+    {
+        XDB::execute('INSERT IGNORE INTO  studies
+                                     SET  uid = {?}, formation_id = {?},
+                                          year_in = {?}, year_out = {?},
+                                          promo = {?}, forlife = {?}',
+                                        $this->id(), $formation_id,
+                                        $year_in, $year_out,
+                                        $promo, $forlife);
+
+        if (!(XDB::affectedRows() > 0))
+            return false;
+
+        return true;
     }
 
     /*******************************************************************************
@@ -425,24 +504,23 @@ class User extends Meta
 
     /**
     * Returns or updates the comment binding an user to a group.
-    * The user *must* already be bound to the specified group
     * @param $g the group
     * @param $comments if specified, let the function set the comment
     */
-    public function comments($g, $comments = null)
+    public function comments(Group $g, $comments = null)
     {
-        $gid = Group::toId($g);
-        if ($comments !== null)
-        {
-            XDB::execute('UPDATE  users_groups
-                             SET  comments = {?}
-                           WHERE  uid = {?} AND gid = {?} LIMIT 1',
-                         $comments, $this->id(), $gid);
-            if (isset($this->comments[$gid]))
-                $this->comments[$gid] = $comments;
-            return;
+        if ($comments !== null) {
+            XDB::execute('INSERT INTO  users_comments
+                                  SET  uid = {?}, gid = {?}, comment = {?}
+              ON DUPLICATE KEY UPDATE  comment = {?}',
+                                     $this->id(), $g->id(), $comments, $comments);
+
+            if ($this->comments == null)
+                $this->comments = array();
+
+            $this->comments[$g->id()] = $comments;
         }
-        return $this->comments[$gid];
+        return $this->comments[$g->id()];
     }
 
     public function castes($mixed = null)
@@ -575,26 +653,39 @@ class User extends Meta
              (batchFrom, batchSelect, fillFromArray, …)
     *******************************************************************************/
 
-    public function insert()
+    public function insert($id = null)
     {
-        XDB::execute('INSERT INTO account SET uid = NULL');
-        $this->id = XDB::insertId();
+        if ($id == null) {
+            XDB::execute('INSERT INTO account SET uid = NULL');
+            $this->id = XDB::insertId();
+        } else {
+            XDB::execute('INSERT INTO account SET uid = {?}', $id);
+            $this->id = $id;
+        }
 
-        $this->group = new Group();
-        $this->group->ns(Group::NS_USER);
-        $this->group->name('user_' . $this->id());
-        $this->group->enter(false);
-        $this->group->leave(false);
-        $this->group->visibility(false);
-        $this->group->label('Groupe personnel');
+        $group = new Group();
+        $group->insert();
+        $group->ns(Group::NS_USER);
+        $group->name('user_' . $this->id());
+        $group->priv(true);
+        $group->leavable(false);
+        $group->visible(false);
+        $group->label('Groupe personnel');
 
-        XDB::execute('UPDATE account SET group = {?} WHERE uid = {?}', $this->group->id(), $this->id());
+        XDB::execute('UPDATE account SET gid = {?} WHERE uid = {?}', $group->id(), $this->id());
 
-        $this->group->caste(Rights::admin())->addUser($this);
+        $group->caste(Rights::admin())->addUser($this);
+        $group->caste(Rights::member())->addUser($this);
+
+        $this->group = $group;
     }
 
     public function fillFromArray(array $values)
     {
+        if (isset($values['birthdate'])) {
+            $values['birthdate'] = new FrankizDateTime($values['birthdate']);
+        }
+
         if (isset($values['original'])) {
             $this->original = new FrankizImage($values['original']);
             unset($values['original']);
@@ -603,19 +694,6 @@ class User extends Meta
         if (isset($values['photo'])) {
             $this->photo = new FrankizImage($values['photo']);
             unset($values['photo']);
-        }
-
-        if (isset($values['gender']) && ($values['gender'] == 'man' || $values['gender'] == 'woman')) {
-            $values['gender'] = (bool) ($values['gender'] == 'woman');
-            unset($values['gender']);
-        }
-
-        if (!isset($values['full_name']) && isset($values['firstname']) && isset($values['lastname'])) {
-            $values['full_name'] = $values['firstname'] . ' ' . $values['lastname'];
-        }
-
-        if (!isset($values['display_name']) && isset($values['nickname']) && isset($values['firstname'])) {
-            $values['display_name'] = (empty($values['nickname'])) ? $values['firstname'] : $values['nickname'];
         }
 
         parent::fillFromArray($values);
@@ -639,10 +717,10 @@ class User extends Meta
         $joins = array();
         $cols = array();
         if ($bits & self::SELECT_BASE) {
-            $cols['a'] = array('hruid', 'perms', 'state', 'group',
+            $cols['a'] = array('hruid', 'perms', 'state', 'gid',
                                'hash', 'hash_rss', 'original', 'photo', 'gender',
                                'email_format', 'bestalias', 'skin',
-                               'firstname', 'lastname', 'nickname');
+                               'firstname', 'lastname', 'nickname', 'birthdate');
         }
 
         if ($bits & self::SELECT_POLY) {
@@ -658,7 +736,7 @@ class User extends Meta
 
             $groups = new Collection('Group');
             while ($datas = $iter->next()) {
-                $datas['group'] = $groups->addget($datas['group']);
+                $datas['group'] = $groups->addget($datas['gid']);unset($datas['gid']);
                 $users[$datas['id']]->fillFromArray($datas);
             }
         }
