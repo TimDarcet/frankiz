@@ -1,6 +1,6 @@
 #!/usr/bin/php -q
 <?php
-ini_set("memory_limit","256M");
+ini_set("memory_limit","512M");
 
 /***************************************************************************
  *  Copyright (C) 2003-2010 Polytechnique.org                              *
@@ -86,7 +86,7 @@ $iter = XDB::iterator('SELECT  c.eleve_id, c.passwd,
                                SUBSTR(p.mail, 1, LENGTH(p.mail) - 18) AS hruid
                          FROM  frankiz2.compte_frankiz AS c
                    INNER JOIN  trombino.eleves AS e ON c.eleve_id = e.eleve_id
-                   INNER JOIN  frankiz2.poly_mailedu AS p ON (p.poly = e.login AND p.promo = e.promo)');
+                    LEFT JOIN  frankiz2.poly_mailedu AS p ON (p.poly = e.login AND p.promo = e.promo)');
 
 $users = $iter->total();
 $k = 0;
@@ -94,7 +94,6 @@ while ($datas = $iter->next()) {
     // Creating the User
     $u = new User();
     $u->insert($datas['eleve_id']);
-    $u->login($datas['hruid']);
     $u->password($datas['passwd'], false);
     $u->firstname(conv($datas['prenom']));
     $u->lastname(conv($datas['nom']));
@@ -102,9 +101,17 @@ while ($datas = $iter->next()) {
     $u->birthdate(new FrankizDateTime($datas['date_nais']));
     $u->gender(($datas['sexe'] == 1) ? User::GENDER_FEMALE : User::GENDER_MALE);
     $u->cellphone($datas['portable']);
+    $u->poly($datas['login']);
 
-    $u->addStudy(1, $datas['promo'], (int) $datas['promo'] + 4, $datas['promo'], $datas['hruid']);
-
+    if (!empty($datas['hruid'])) {
+        $login = $datas['hruid'];
+        $formation_id = 1;
+    } else {
+        $login = $datas['login'] . '.' . $datas['promo'];
+        $formation_id = 2;
+    }
+    $u->login($login);
+    $u->addStudy($formation_id, $datas['promo'], (int) $datas['promo'] + 4, $datas['promo'], $login);
 
     // Linking the User with his groups
     $g_iter = XDB::iterator("SELECT  m.binet_id, m.remarque
@@ -120,7 +127,7 @@ while ($datas = $iter->next()) {
     }
 
     $k++;
-    echo 'User ' . $k . '/' . $users . ' : ' . $u->id() . " - " . $datas['promo'] . " - " . $l . " groups - " . $u->fullName() . "\n";
+    echo 'User ' . $k . '/' . $users . ' : ' . $u->id() . " - " . $datas['promo'] . " - " . $l . " groups - " . $u->login() . "\n";
 }
 
 echo "-----------------------------------------------\n";
