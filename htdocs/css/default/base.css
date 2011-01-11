@@ -162,9 +162,9 @@ a:hover, a:active {
 #account .face {
     position: absolute;
     left: 6px;
-    top: 6px;
-    width: 90px;
-    height: 90px;
+    top: 4px;
+    width: 80px;
+    height: 105px;
     padding: 2px;
     border: 2px #002334 solid;
 }
