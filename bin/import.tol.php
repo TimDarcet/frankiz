@@ -1,4 +1,4 @@
-#!/usr/lib/php5.3/bin/php -q
+#!/usr/bin/php -q
 <?php
 /***************************************************************************
  *  Copyright (C) 2003-2010 Polytechnique.org                              *
@@ -31,13 +31,28 @@
  * - Load the original picture or the current photo ?
  * 
  * Example :
- * ./import.image.php '{"type":"user","condition":{"type":"uid","uids":[2]}}' . poly original
+ * ./import.tol.php '{"type":"user","condition":{"type":"uid","uids":[2]}}' . poly original
+ *
+ * Or :
+ *
+ * ./import.tol.php '{"type":"user","condition":{"type":"promo","comparison":"=","promo":2008}}' /home/2008/riton/dev/tol/2008 poly original
  * 
  */
 
 require 'connect.db.inc.php';
 
-$group = Group::from('tol');
+$gf = new GroupFilter(new GFC_Name('tol'));
+$group = $gf->get(true);
+if ($group == false) {
+    $group = new Group();
+    $group->insert();
+    $group->name('tol');
+    $group->label('trombino');
+    $group->external(0);
+    $group->priv(0);
+    $group->leavable(0);
+    $group->visible(0);
+}
 
 // Concerned users
 $uf = UserFilter::fromExport(json_decode($argv[1], true));
@@ -48,27 +63,40 @@ $field = $argv[3];
 // Update original or current picture ?
 $original = ($argv[4] == 'photo') ? false : true;
 
-$users = $uf->get()->select(User::SELECT_BASE | User::SELECT_POLY);
+$total = $uf->getTotalCount();
+$chunk = 5;
+$from = 0;
 
-foreach ($users as $u)
-{
-    $suffix = ($original) ? '_original' : '';
-    $path = $folder . '/' . $u->$field() . $suffix . '.jpg';
-    if (file_exists($path)) {
-        $upload = FrankizUpload::fromFile($path);
-        $i = new FrankizImage();
-        $i->insert();
-        $i->group($group);
-        $i->label($u->$field());
-        $i->image($upload);
-        if ($original)
-            $u->original($i);
-        else
-            $u->photo($i);
-        echo 'Ok: ' . $u->id() . ' - ' . $u->displayname() . ' - '. $path . "\n";
-    } else {
-        echo 'Error: ' . $u->id() . ' - ' . $u->displayname() . ' - '. $path . "\n";
+while (true) {
+    echo "Chunk from $from to " . ($from+$chunk) . "\n";
+
+    $users = $uf->get(new PlLimit($chunk, $from));
+    if ($users->count() == 0)
+        break;
+    $users->select(User::SELECT_BASE | User::SELECT_POLY);
+
+    foreach ($users as $u)
+    {
+        $suffix = ($original) ? '_original' : '';
+        $path = $folder . '/' . $u->$field() . $suffix . '.jpg';
+        if (file_exists($path)) {
+            $upload = FrankizUpload::fromFile($path);
+            $i = new FrankizImage();
+            $i->insert();
+            $i->group($group);
+            $i->label($u->$field());
+            $i->image($upload);
+            if ($original)
+                $u->original($i);
+            else
+                $u->photo($i);
+            echo 'Ok: ' . $u->id() . ' - ' . $u->displayname() . ' - '. $path . "\n";
+        } else {
+            echo 'Error: ' . $u->id() . ' - ' . $u->displayname() . ' - '. $path . "\n";
+        }
     }
+
+    $from += $chunk;
 }
 
 echo 'Fini' . "\n";
