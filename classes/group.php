@@ -30,6 +30,7 @@ class Group extends Meta
     const NS_FREE        = 'free';         // Non-Validated group
     const NS_BINET       = 'binet';        // Validated group
     const NS_STUDY       = 'study';
+    const NS_PROMO       = 'promo';
     const NS_SPORT       = 'sport';
     const NS_NATIONALITY = 'nationality';
 
@@ -284,13 +285,13 @@ class Group extends Meta
             foreach($groups as $group)
                 $group->castes = new Collection('Caste');
 
-            $iter = XDB::iterRow("SELECT  cid, gid
+            $iter = XDB::iterRow("SELECT  cid, gid, rights
                                     FROM  castes
                                    WHERE  gid IN {?}", self::toIds($groups));
 
             $castes = new Collection('Caste');
-            while (list($cid, $gid) = $iter->next()) {
-                $caste = new Caste(array('id' => $cid, 'group' => $groups[$gid]));
+            while (list($cid, $gid, $rights) = $iter->next()) {
+                $caste = new Caste(array('id' => $cid, 'group' => $groups[$gid], 'rights' => new Rights($rights)));
 
                 $castes->add($caste);
                 $groups[$gid]->castes->add($caste);
