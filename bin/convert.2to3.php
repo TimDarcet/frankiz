@@ -104,7 +104,8 @@ $iter = XDB::iterator('SELECT  c.eleve_id, c.passwd,
                                SUBSTR(p.mail, 1, LENGTH(p.mail) - 18) AS hruid
                          FROM  frankiz2.compte_frankiz AS c
                    INNER JOIN  trombino.eleves AS e ON c.eleve_id = e.eleve_id
-                    LEFT JOIN  frankiz2.poly_mailedu AS p ON (p.poly = e.login AND p.promo = e.promo)');
+                    LEFT JOIN  frankiz2.poly_mailedu AS p ON (p.poly = e.login AND p.promo = e.promo)
+                        WHERE  e.promo != 0000');
 
 $users = $iter->total();
 $k = 0;
