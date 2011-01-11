@@ -143,7 +143,7 @@ class Caste extends Meta
     public function compute()
     {
         if (empty($this->userfilter))
-            throw new Exception("This caste either doesn't have a UserFilter or it isn't loaded");
+            throw new Exception("This caste (" . $this->id() . ") either doesn't have a UserFilter or it isn't loaded");
 
         // First: flush the users
         XDB::execute('DELETE FROM castes_users WHERE cid = {?}', $this->id());
