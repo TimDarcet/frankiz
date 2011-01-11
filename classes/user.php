@@ -685,25 +685,6 @@ class User extends Meta
         $this->group = $group;
     }
 
-    public function fillFromArray(array $values)
-    {
-        if (isset($values['birthdate'])) {
-            $values['birthdate'] = new FrankizDateTime($values['birthdate']);
-        }
-
-        if (isset($values['original'])) {
-            $this->original = new FrankizImage($values['original']);
-            unset($values['original']);
-        }
-
-        if (isset($values['photo'])) {
-            $this->photo = new FrankizImage($values['photo']);
-            unset($values['photo']);
-        }
-
-        parent::fillFromArray($values);
-    }
-
     public static function batchSelect(array $users, $options = null)
     {
         if (empty($users))
@@ -741,7 +722,14 @@ class User extends Meta
 
             $groups = new Collection('Group');
             while ($datas = $iter->next()) {
-                $datas['group'] = $groups->addget($datas['gid']);unset($datas['gid']);
+                if ($bits & self::SELECT_BASE) {
+                    $datas['group'] = $groups->addget($datas['gid']);unset($datas['gid']);
+                    $datas['birthdate'] = new FrankizDateTime($datas['birthdate']);
+
+                    $datas['original']  = empty($datas['original']) ? new StaticImage($datas['gender'] . '.png')
+                                                                    : new FrankizImage($datas['original']);
+                    $datas['photo']     = empty($datas['photo']) ? null : new FrankizImage($datas['photo']);
+                }
                 $users[$datas['id']]->fillFromArray($datas);
             }
         }
