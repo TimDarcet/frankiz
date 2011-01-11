@@ -19,20 +19,8 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class FrankizImage extends Meta
+class FrankizImage extends Meta implements ImageInterface
 {
-    /*******************************************************************************
-         Constants
-
-    *******************************************************************************/
-
-    const MAX_WIDTH  = 800;
-    const MAX_HEIGHT = 600;
-
-    const SMALL_WIDTH = 140;
-    const SMALL_HEIGHT = 105;
-    const SMALL_QUALITY = 75;
-
     /*******************************************************************************
          Properties
 
@@ -62,10 +50,6 @@ class FrankizImage extends Meta
     protected $small = null;
     // The image
     protected $full = null;
-
-    const SELECT_BASE  = 0x01;
-    const SELECT_FULL  = 0x02;
-    const SELECT_SMALL = 0x04;
 
     /*******************************************************************************
          Getters & Setters
