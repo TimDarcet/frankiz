@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 11, 2011 at 06:03 PM
+-- Generation Time: Jan 11, 2011 at 07:31 PM
 -- Server version: 5.1.51
 -- PHP Version: 5.3.4-pl0-gentoo
 
@@ -16,7 +16,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `frankiz`
+-- Database: `dev_riton`
 --
 
 -- --------------------------------------------------------
@@ -40,4 +40,5 @@ CREATE TABLE IF NOT EXISTS `formations` (
 
 INSERT INTO `formations` (`formation_id`, `domain`, `title`, `abbrev`) VALUES
 (0, 'frankiz.net', 'Frankiz', 'fkz'),
-(1, 'polytechnique.edu', 'Polytechnique', 'x');
+(1, 'polytechnique.edu', 'Polytechnique', 'x'),
+(2, 'poly.polytechnique.fr', 'Poly', 'poly');
