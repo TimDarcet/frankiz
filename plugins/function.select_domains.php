@@ -22,8 +22,11 @@
 function smarty_function_select_domains($params, &$smarty) {
     $userdomain = User::getDomainFromCookie();
 
-    $res = XDB::iterRow("SELECT domain
-                           FROM formations");
+    $res = XDB::iterRow("SELECT  f.domain
+                           FROM  formations AS f
+                      LEFT JOIN  studies AS s ON s.formation_id = f.formation_id
+                       GROUP BY  f.formation_id
+                       ORDER BY  COUNT(f.formation_id) DESC");
     $sel = ' selected="selected"';
     $html = "";
     while (list($domain) = $res->next()) {
