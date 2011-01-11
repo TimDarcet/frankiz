@@ -338,8 +338,13 @@ class User extends Meta
     /**
     * Returns the poly login, an outdated login but the only one for X < 2005
     */
-    public function poly()
+    public function poly($poly = null)
     {
+        if ($poly != null) {
+            $this->poly = $poly;
+            XDB::execute('INSERT INTO poly SET uid = {?}, poly = {?}
+                          ON DUPLICATE KEY UPDATE poly = {?}', $this->id(), $poly, $poly);
+        }
         return $this->poly;
     }
 
@@ -724,8 +729,8 @@ class User extends Meta
         }
 
         if ($bits & self::SELECT_POLY) {
-            $cols['p'] = array('poly');
-            $joins['p'] = PlSqlJoin::left('poly', '$ME.uid = p.uid');
+            $cols['p']  = array('poly');
+            $joins['p'] = PlSqlJoin::left('poly', '$ME.uid = a.uid');
         }
 
         if (!empty($cols)) {
