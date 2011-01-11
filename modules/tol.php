@@ -36,6 +36,7 @@ class TolModule extends PLModule
                          'lastname' => '',
                          'nickname' => '',
                     'nationalities' => '',
+                            'promo' => '',
                           'studies' => '',
                            'sports' => '',
                            'binets' => '',
@@ -72,7 +73,7 @@ class TolModule extends PLModule
                 $conds[] = new PFC_Or($freeconds);
             }
         }
-        
+
         if ($fields['firstname'])
             $conds[] = new UFC_Name($fields['firstname'], UFC_Name::FIRSTNAME, UFC_Name::CONTAINS);
 
@@ -84,6 +85,9 @@ class TolModule extends PLModule
 
         if ($fields['nationalities'])
             $conds[] = new UFC_Group(explode(';', $fields['nationalities']));
+
+        if ($fields['promo'])
+            $conds[] = new UFC_Group(explode(';', $fields['promo']));
 
         if ($fields['studies'])
             $conds[] = new UFC_Group(explode(';', $fields['studies']));
@@ -111,7 +115,7 @@ class TolModule extends PLModule
 
     function toSelect()
     {
-        return array(User::SELECT_BASE => null, User::SELECT_ROOMS => null,
+        return array(User::SELECT_BASE => null, User::SELECT_ROOMS => null, User::SELECT_POLY =>null,
                      User::SELECT_CASTES => array(Caste::SELECT_BASE => Group::SELECT_BASE));
     }
 

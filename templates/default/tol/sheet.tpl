@@ -31,9 +31,8 @@
         <div class="sports">
 
         </div>
-        <div class="name">{$result->displayName()}</div>
+        <div class="name">{$result->firstname()} {$result->lastname()} - {$result->nickname()}</div>
         <div>
-
 
         </div>
         <hr />
@@ -46,7 +45,7 @@
                 {assign var='groups' value=$castes->groups()}
                 
                 {foreach from=$groups|order:'score' item='group'}
-                    <li>{$group->score()} {$group->label()} {$result->rights($group)|rights} </li>
+                    <li>{$group->score()} {$group->label()} {$result->rights($group)|@rights} </li>
                 {/foreach}
             </ul>
         </div>

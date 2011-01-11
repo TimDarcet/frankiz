@@ -21,7 +21,7 @@
 {**************************************************************************}
 
 <li uid="{$result->id()}" class="microfiche">
-    <div class="name">{$result->displayName()}</div>
+    <div class="name">{$result->firstname()} {$result->lastname()}</div>
     {assign var='img' value=$result->image()}
     <div class="img"><img src="{$img->src()}" /></div>
 </li>
