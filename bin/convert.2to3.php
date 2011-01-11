@@ -34,6 +34,15 @@ function conv($str) {
     return $str;
 }
 
+function conv_name($str)
+{
+    $str = strtolower(conv($str));
+    $str = str_replace(array('é', 'è', 'ë', 'ê'), 'e', $str);
+    $str = str_replace(array('à', 'ä', 'â'), 'a', $str);
+    $str = str_replace(array('î', 'ï'), 'i', $str);
+    return preg_replace("/[^a-z0-9_-]/", "", $str);
+}
+
 XDB::execute('DROP DATABASE ' . $globals->dbdb);
 echo 'DB droped ' . "\n";
 XDB::execute('CREATE DATABASE ' . $globals->dbdb . ' DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci');
@@ -63,6 +72,15 @@ while ($datas = $iter->next()) {
     $g = new Group();
     $g->insert($datas['binet_id']);
     $g->label(conv($datas['nom']));
+
+    $name = conv_name($datas['nom']);
+    $gf = new GroupFilter(new GFC_Name($name));
+    if (strlen($name) >= 2 && $gf->getTotalCount() == 0) {
+        $g->name($name);
+    } else {
+        $g->name('g_' . $g->id());
+    }
+
     $g->description(conv($datas['description']));
     $g->ns(Group::NS_FREE);
     $g->external($datas['exterieur']);
