@@ -159,9 +159,9 @@ class FrankizSession extends PlSession
         if (!is_null($uid)) {
             S::set('auth', AUTH_MDP);
             S::kill('challenge');
+            $user = new User($uid);
+            return $user->select();
         }
-        $user = new User($uid);
-        return $user->select();
     }
 
     /** Check whether a password is valid
@@ -173,17 +173,17 @@ class FrankizSession extends PlSession
             list($forlife, $domain) = explode('@', $login, 2);
             $res = XDB::query('SELECT   s.uid
                                  FROM   studies AS s
-                            LEFT JOIN   formations AS f on (f.formation_id = s.formation_id AND f.domain = {?})
+                            LEFT JOIN   formations AS f ON (f.formation_id = s.formation_id AND f.domain = {?})
                                 WHERE   s.forlife = {?}',
-                              $domain, $forlife);
+                                        $domain, $forlife);
             $login = $res->fetchOneCell();
             $login_type = 'uid';
         }
 
-        $res = XDB::query('SELECT   uid, password, hruid
+        $res = XDB::query("SELECT   uid, password, hruid
                              FROM   account
-                            WHERE   '.$login_type.' = {?}',
-                        $login);
+                            WHERE   $login_type = {?}",
+                                    $login);
         if(list($uid, $password, $hruid) = $res->fetchOneRow()) {
             if (hash_compare($password, $response)) {
                 if (!S::logged()) {
