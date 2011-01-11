@@ -39,9 +39,13 @@ class Group extends Meta
     protected $label = null;
     protected $score = null;
 
-    protected $private  = null; // If false, you become a member when you join the group
+    protected $external = null; // If true, you can access the group's page with AUTH_PUBLIC
+    protected $priv     = null; // If false, you become a member when you join the group
     protected $leavable = null; // If true, you can leave the group
     protected $visible  = null; // If true, the groups is invisible
+
+    protected $web  = null;
+    protected $mail = null;
 
     protected $description = null;
 
@@ -90,10 +94,18 @@ class Group extends Meta
         return $this->score;
     }
 
+    public function external($external = null)
+    {
+        if ($external != null) {
+            $this->external = $external;
+            XDB::execute('UPDATE groups SET external = {?} WHERE gid = {?}', $this->external, $this->id());
+        }
+        return $this->external;
+    }
+
     public function priv($priv = null)
     {
-        if ($priv != null)
-        {
+        if ($priv != null) {
             $this->priv = $priv;
             XDB::execute('UPDATE groups SET priv = {?} WHERE gid = {?}', $this->priv, $this->id());
         }
@@ -102,8 +114,7 @@ class Group extends Meta
 
     public function leavable($leavable = null)
     {
-        if ($leavable != null)
-        {
+        if ($leavable != null) {
             $this->leavable = $leavable;
             XDB::execute('UPDATE groups SET leavable = {?} WHERE gid = {?}', $leavable, $this->id());
         }
@@ -112,17 +123,38 @@ class Group extends Meta
 
     public function visible($visible = null)
     {
-        if ($visible != null)
-        {
+        if ($visible != null) {
             $this->visible = $visible;
             XDB::execute('UPDATE groups SET visible = {?} WHERE gid = {?}', $visible, $this->id());
         }
         return $this->visible;
     }
 
-    public function description()
+    public function description($description = null)
     {
+        if ($description != null) {
+            $this->description = $description;
+            XDB::execute('UPDATE groups SET description = {?} WHERE gid = {?}', $description, $this->id());
+        }
         return $this->description;
+    }
+
+    public function web($web = null)
+    {
+        if ($web != null) {
+            $this->web = $web;
+            XDB::execute('UPDATE groups SET web = {?} WHERE gid = {?}', $web, $this->id());
+        }
+        return $this->web;
+    }
+
+    public function mail($mail = null)
+    {
+        if ($mail != null) {
+            $this->mail = $mail;
+            XDB::execute('UPDATE groups SET mail = {?} WHERE gid = {?}', $mail, $this->id());
+        }
+        return $this->mail;
     }
 
     public function caste(Rights $rights = null)
@@ -186,10 +218,15 @@ class Group extends Meta
              (batchFrom, batchSelect, fillFromArray, …)
     *******************************************************************************/
 
-    public function insert()
+    public function insert($id = null)
     {
-        XDB::execute('INSERT INTO groups SET gid = NULL');
-        $this->id = XDB::insertId();
+        if ($id == null) {
+            XDB::execute('INSERT INTO groups SET gid = NULL');
+            $this->id = XDB::insertId();
+        } else {
+            XDB::execute('INSERT INTO groups SET gid = {?}', $id);
+            $this->id = $id;
+        }
     }
 
     public static function batchFrom(array $mixed)
@@ -222,9 +259,10 @@ class Group extends Meta
         $joins = array();
         $cols = array();
         if ($bits & self::SELECT_BASE)
-            $cols['g']   = array('ns', 'name', 'label', 'score', 'image', 'priv', 'leavable', 'visible');
+            $cols['g']   = array('ns', 'name', 'label', 'score', 'image',
+                                 'priv', 'leavable', 'visible', 'external');
         if ($bits & self::SELECT_DESCRIPTION)
-            $cols['g'][] = 'description';
+            $cols['g'] = array_merge($cols['g'], array('description', 'web', 'mail'));
 
         if (!empty($cols)) {
             $iter = XDB::iterator('SELECT  g.gid AS id, ' . self::arrayToSqlCols($cols) . '
