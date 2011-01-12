@@ -694,7 +694,8 @@ class User extends Meta
         $bits = self::optionsToBits($options);
 
         if (empty($options)) {
-            $bits = User::SELECT_BASE | User::SELECT_ROOMS | User::SELECT_MINIMODULES | User::SELECT_CASTES;
+            $bits = User::SELECT_BASE | User::SELECT_ROOMS | User::SELECT_MINIMODULES |
+                                        User::SELECT_CASTES | User::SELECT_POLY;
             $options = array(User::SELECT_CASTES => array(Caste::SELECT_BASE => Group::SELECT_BASE));
         }
 
