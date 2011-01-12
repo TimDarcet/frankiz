@@ -85,7 +85,7 @@ while (true) {
             $i->insert();
             $i->group($group);
             $i->label($u->$field());
-            $i->image($upload);
+            $i->image($upload, false);
             if ($original)
                 $u->original($i);
             else
