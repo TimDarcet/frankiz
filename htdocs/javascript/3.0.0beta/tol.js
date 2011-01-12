@@ -102,7 +102,7 @@ function search()
                 if (mode == 'card') {
                     $.each($("#tol_results > li .card .img a"), function(index, value) {
                         $(value).removeAttr('href');
-                        $(value).click(function() {
+                        $(value).closest('.card').click(function() {
                             var li  = $(this).closest('li[uid]');
                             var uid = li.attr('uid');
                             request({
@@ -114,6 +114,13 @@ function search()
                                         li.removeClass('card');
                                         li.addClass('sheet', 'fast');
                                         imageur();
+                                        li.children('.sheet').find('a, li').click(function(event) {
+                                            event.stopPropagation();
+                                        });
+                                        li.children('.sheet').click(function() {
+                                            li.removeClass('sheet');
+                                            li.addClass('card', 'fast');
+                                        });
                                        }
                             });
                         });
