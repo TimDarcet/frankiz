@@ -1,4 +1,4 @@
-#!/usr/bin/php5 -q
+#!/usr/bin/php -q
 <?php
 /***************************************************************************
  *  Copyright (C) 2003-2010 Polytechnique.org                              *
@@ -21,6 +21,10 @@
  ***************************************************************************/
 
 require '../connect.db.inc.php';
+
+XDB::execute('UPDATE  account
+                 SET  next_birthday = birthdate
+               WHERE  (birthdate != 0 AND birthdate IS NOT NULL AND next_birthday = 0)');
 
 $it = 0;
 do {
