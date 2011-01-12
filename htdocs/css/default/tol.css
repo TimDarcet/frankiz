@@ -46,19 +46,19 @@
 }
 
 #tol_searcher input.empty {
-	background-color: red;
+    background-color: red;
 }
 
 #tol_searcher ul {
-	margin: 0;
-	padding: 0;
-	text-indent: 0;
+    margin: 0;
+    padding: 0;
+    text-indent: 0;
 }
 
 #tol_searcher fieldset {
-	border: 1px white solid;
-	margin-bottom: 2px;
-	background-color: #BDD5E3;
+    border: 1px white solid;
+    margin-bottom: 2px;
+    background-color: #BDD5E3;
 }
 
 #tol_searcher li {
@@ -66,11 +66,11 @@
 }
 
 #tol_searcher label {
-	text-align: left;
+    text-align: left;
 }
 
 #tol_searcher label input {
-	width: 100%;
+    width: 100%;
 }
 
 #tol_searcher .groups_picker {
@@ -86,26 +86,45 @@
 }
 
 #tol_results {
-	position: relative;
-	left: 255px;
-	padding: 0;
+    position: relative;
+    left: 255px;
+    padding: 0;
     padding-right: 255px;
     z-index: 1;
 }
 
-.trombino .microfiche {
+.result {
     display: inline-block;
     position: relative;
     width: 160px;
-    height: 180px;
     margin: 3px;
     overflow: hidden;
-    text-align: center;
     background-color: #BDD5E3;
     border: 1px #003757 solid;
 }
 
-.trombino .microfiche .img {
+.result.card {
+    height: 180px;
+}
+
+.result.card .card{
+    display: block;
+}
+
+.result.sheet {
+    width: 100%;
+}
+
+.result.sheet .sheet{
+    display: block;
+}
+
+.result .card {
+    text-align: center;
+    display: none;
+}
+
+.result .card .img {
     position: absolute;
     bottom: 25px;
     width: 100%;
@@ -113,44 +132,25 @@
     text-align: center;
 }
 
-.trombino .fiche {
-    display: block;
-    position: relative;
-    width: 100%;
-
-    margin: 3px;
-    overflow: hidden;
-    text-align: center;
-    background-color: #BDD5E3;
-    border: 1px #003757 solid;
+.result .sheet {
+    text-align: left;
+    display: none;
 }
 
-.trombino .fiche .base {
-    width: 100%;
-    padding: 5px;
-}
-
-.trombino .fiche .base .img {
-	float: left;
-    position: relative;
-    top: 1px;
-    left: 1px;
-}
-
-.trombino .fiche .base .sports {
-    float: right;
-    width: 120px;
-    hegiht: 120px;
-}
-
-.trombino .fiche .base hr {
+.result .sheet hr {
     clear: both;
     border: none;
     border-top: 1px #002334 solid;
 }
 
-.trombino .fiche .more {
-	width: 100%;
-    text-align: left;
-    padding: 5px;
+#content .modal {
+    position: fixed;
+    display: none;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -100px;
+    background-color: #BDD5E3;
+    z-index: 666;
+    padding: 12px;
 }

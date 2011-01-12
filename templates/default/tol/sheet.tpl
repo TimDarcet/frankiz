@@ -20,34 +20,35 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<li uid="{$result->id()}" class="fiche">
-    <div class="base">
-        <div class="img">
-            {assign var='img' value=$result->image()}
-            {$img->html()}
-        </div>
-        <div class="sports">
-
-        </div>
-        <div class="name">{$result->firstname()} {$result->lastname()} - {$result->nickname()}</div>
-        <div>
-
-        </div>
-        <hr />
+<div class="base">
+    {assign var='photo' value=$result->photo()}
+    {assign var='original' value=$result->original()}
+    <div class="img" photo="{if $photo}{$photo->src(2)|smarty:nodefaults}{/if}"
+                     original="{if $original}{$original->src(2)|smarty:nodefaults}{/if}">
+        {assign var='img' value=$result->image()}
+        <a href="{$img->src(2)|smarty:nodefaults}"><img src="{$img->src()|smarty:nodefaults}" /></a>
     </div>
-    <div class="more">
-        <div class="associations">
-            Binets:
-            <ul>
-                {assign var='castes' value=$result->castes()}
-                {assign var='groups' value=$castes->groups()}
-                
-                {foreach from=$groups|order:'score' item='group'}
-                    <li>{$group->score()} {$group->label()} {$result->rights($group)|@rights} </li>
-                {/foreach}
-            </ul>
-        </div>
+    <div class="sports">
+
     </div>
-</li>
+    <div class="name">{$result->firstname()} {$result->lastname()} - {$result->nickname()}</div>
+    <div>
+
+    </div>
+    <hr />
+</div>
+<div class="more">
+    <div class="associations">
+        Binets:
+        <ul>
+            {assign var='castes' value=$result->castes()}
+            {assign var='groups' value=$castes->groups()}
+            
+            {foreach from=$groups|order:'score' item='group'}
+                <li>{$group->score()} {$group->label()} {$result->rights($group)|@rights} </li>
+            {/foreach}
+        </ul>
+    </div>
+</div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

@@ -20,10 +20,8 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<li uid="{$result->id()}" class="microfiche">
-    <div class="name">{$result->firstname()} {$result->lastname()}</div>
-    {assign var='img' value=$result->image()}
-    <div class="img"><img src="{$img->src()}" /></div>
-</li>
+<div class="name">{$result->firstname()} {$result->lastname()}</div>
+{assign var='img' value=$result->image()}
+<div class="img"><a href="tol/{$result->login()}"><img src="{$img->src()}" /></a></div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

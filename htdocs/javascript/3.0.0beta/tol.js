@@ -2,7 +2,7 @@ var searching = false;
 var newsearch = false;
 var mode = 'card';
 
-$(document).ready(function(){
+$(function(){
     $("#tol_searcher form").submit(function() {
         alert('plop');
         $('#tol_searcher input[name=mode]').val('sheet');
@@ -21,6 +21,9 @@ $(document).ready(function(){
     });
 });
 
+
+
+
 function search()
 {
     if (!searching)
@@ -30,7 +33,7 @@ function search()
         $("#tol_infos").addClass("searching");
 
         request({
-            "url": 'tol/ajax'
+            "url": 'tol/ajax/search'
           ,"data": $('#tol_searcher form').formToJSON()
           ,"fail": false
        ,"success": function(json) {
@@ -67,6 +70,59 @@ function search()
 
                 mode = json.mode;
                 $('#tol_searcher input[name=mode]').val('card');
+
+                function imageur() {
+                    $.each($("#tol_results > li .sheet .img a"), function(index, value) {
+                        $(value).removeAttr('href');
+                        $(value).click(function() {
+                            var photo = $(this).closest('[photo]').attr('photo');
+                            var original = $(this).closest('[original]').attr('original');
+                            var modal = $('#content .modal');
+
+                            var images = [];
+                            if (photo)
+                                images.push({'href' : photo});
+                            if (original)
+                                images.push({'href' : original});
+
+                            $.fancybox(images, {
+                                        'padding'       : 0,
+                                        'transitionIn'  : 'none',
+                                        'transitionOut' : 'none',
+                                        'type'          : 'image',
+                                        'changeFade'    : 0,
+                                        'cyclic'        : true,
+                                        'centerOnScroll': true,
+                                        'titleShow'     : false
+                                    });
+                        });
+                    });
+                }
+
+                if (mode == 'card') {
+                    $.each($("#tol_results > li .card .img a"), function(index, value) {
+                        $(value).removeAttr('href');
+                        $(value).click(function() {
+                            var li  = $(this).closest('li[uid]');
+                            var uid = li.attr('uid');
+                            request({
+                                "url": 'tol/ajax/sheet/' + uid
+                              ,"fail": false
+                           ,"success": function(json) {
+                                        mode = '';
+                                        li.children('.sheet').html(json.sheet);
+                                        li.removeClass('card');
+                                        li.addClass('sheet', 'fast');
+                                        imageur();
+                                       }
+                            });
+                        });
+                    });
+                }
+
+                if (mode != 'card') {
+                    imageur();
+                }
 
                 searching = false;
                 $("#tol_infos").removeClass("searching");

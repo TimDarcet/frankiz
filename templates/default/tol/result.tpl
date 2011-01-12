@@ -1,6 +1,6 @@
 {**************************************************************************}
 {*                                                                        *}
-{*  Copyright (C) 2009 Binet Réseau                                       *}
+{*  Copyright (C) 2009 Binet RÃ©seau                                       *}
 {*  http://www.polytechnique.fr/eleves/binets/reseau/                     *}
 {*                                                                        *}
 {*  This program is free software; you can redistribute it and/or modify  *}
@@ -20,12 +20,17 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if $original}
-<img src='tol/photo/img/{$promo}/{$login}/original' /><br />
-<a href='tol/photo/{$promo}/{$login}'>Photo actuelle</a>
-{else}
-<img src='tol/photo/img/{$promo}/{$login}' /><br />
-<a href='tol/photo/{$promo}/{$login}/original'>Photo originale</a>
-{/if}
+<li class="result{if $mode == 'card'} card{else} sheet{/if}" uid="{$result->id()}">
+    {if $mode == 'card'}
+        <div class="card">
+            {include file="tol/card.tpl"|rel result=$result}
+        </div>
+    {/if}
+    <div class="sheet">
+        {if $mode == 'sheet'}
+            {include file="tol/sheet.tpl"|rel result=$result}
+        {/if}
+    </div>
+</li>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

@@ -24,8 +24,9 @@ class TolModule extends PLModule
     function handlers()
     {
         return array(
-            'tol'       => $this->make_hook('tol'     , AUTH_INTERNAL),
-            'tol/ajax'  => $this->make_hook('tol_ajax', AUTH_INTERNAL)
+            'tol'             => $this->make_hook('tol'     ,        AUTH_INTERNAL),
+            'tol/ajax/search' => $this->make_hook('tol_ajax_search', AUTH_INTERNAL),
+            'tol/ajax/sheet'  => $this->make_hook('tol_ajax_sheet',  AUTH_INTERNAL)
             );
     }
 
@@ -137,7 +138,7 @@ class TolModule extends PLModule
         $page->changeTpl('tol/tol.tpl');
     }
 
-    function handler_tol_ajax($page)
+    function handler_tol_ajax_search($page)
     {
         $json = json_decode(Env::v('json'));
 
@@ -155,15 +156,36 @@ class TolModule extends PLModule
             $page->jsonAssign('total', $uf->getTotalCount());
             foreach($users as $k => $user) {
                 $page->assign('result', $user);
-                if ($json->mode == 'card')
-                    $fiches[$user->id()] = $page->fetch(FrankizPage::getTplPath('tol/card.tpl'));
-                else
-                    $fiches[$user->id()] = $page->fetch(FrankizPage::getTplPath('tol/sheet.tpl'));
+                if ($json->mode == 'card') {
+                    $page->assign('mode', 'card');
+                } else {
+                    $page->assign('mode', 'sheet');
+                }
+                $fiches[$user->id()] = $page->fetch(FrankizPage::getTplPath('tol/result.tpl'));
             }
         }
 
         $page->jsonAssign('mode', $json->mode);
         $page->jsonAssign('results', $fiches);
+        $page->jsonAssign('success', true);
+
+        return PL_JSON;
+    }
+
+    function handler_tol_ajax_sheet($page, $uid)
+    {
+        $f = new UserFilter(new UFC_Uid($uid));
+        $u = $f->get(true);
+        $page->assign('result', $u);
+
+        if ($u) {
+            $u->select($this->toSelect());
+        }
+
+        $page->assign('result', $u);
+        $sheet = $page->fetch(FrankizPage::getTplPath('tol/sheet.tpl'));
+
+        $page->jsonAssign('sheet', $sheet);
         $page->jsonAssign('success', true);
 
         return PL_JSON;
