@@ -33,6 +33,7 @@ class ProfileModule extends PLModule
                      'profile/network'                 => $this->make_hook('network',                 AUTH_COOKIE),
                      'profile/reseau/demande_ip'       => $this->make_hook('demande_ip',              AUTH_COOKIE),
                      'profile/skin'                    => $this->make_hook('skin',                    AUTH_PUBLIC),
+                     'profile/skin/unsmartphone'       => $this->make_hook('skin_unsmartphone',       AUTH_PUBLIC),
                      'profile/photo'                   => $this->make_hook('photo',                   AUTH_COOKIE),
                      'profile/photo/small'             => $this->make_hook('photo_small',             AUTH_COOKIE),
                      'profile/siteweb/upload'          => $this->make_hook('siteweb_upload',          AUTH_MDP),
@@ -139,7 +140,7 @@ class ProfileModule extends PLModule
         curl_setopt($curl, CURLOPT_URL, $url);
         $response = curl_exec($curl);var_dump($response);
         $infos = curl_getinfo($curl);var_dump($infos);
-        
+
         exit;
 
         $page->assign('title', 'Mes mails');
@@ -352,6 +353,13 @@ class ProfileModule extends PLModule
         $page->assign('title', "Modification de l'habillage");
         $page->addCssLink('profile.css');
         $page->changeTpl("profile/skins.tpl");
+    }
+
+    function handler_skin_unsmartphone($page, $url)
+    {
+        S::set('skin', S::user()->skin());
+        pl_redirect($url);
+        exit;
     }
 
     function handler_photo($page, $hruid)
