@@ -64,7 +64,7 @@ $field = $argv[3];
 $original = ($argv[4] == 'photo') ? false : true;
 
 $total = $uf->getTotalCount();
-$chunk = 5;
+$chunk = (empty($argv[5])) ? 100 : $argv[5];
 $from = 0;
 
 while (true) {
