@@ -65,8 +65,6 @@ function search()
                         $('#tol_results').append(json.results[uid]);
                 }
 
-                ajaxify($("#tol_results"));
-
                 mode = json.mode;
                 $('#tol_searcher input[name=mode]').val('card');
 

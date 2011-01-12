@@ -24,9 +24,7 @@
     <div class="base">
         <div class="img">
             {assign var='img' value=$result->image()}
-            <a href="profile/photo/{$result->login()}">
-                <img src="{$img->src()}" />
-            </a>
+            {$img->html()}
         </div>
         <div class="sports">
 
