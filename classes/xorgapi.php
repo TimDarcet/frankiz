@@ -19,53 +19,28 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class API
+class xorgAPI extends API
 {
-    private $url;
-
-    private $response = null;
-    private $infos = null;
-
-    public function __construct($url)
+    public static function isRegistered($forlife)
     {
-        $this->url = $url;
-    }
+        global $globals;
 
-    public function exec()
-    {
-        if ($this->response === null) {
-            $curl = curl_init();
-            curl_setopt($curl, CURLOPT_TIMEOUT, 10);
-            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
-            curl_setopt($curl, CURLOPT_FORBID_REUSE, true);
-            curl_setopt($curl, CURLOPT_FRESH_CONNECT, true);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array("Pragma: no-cache"));
-            curl_setopt($curl, CURLOPT_PROXY, "http://129.104.247.2:8080"); // Kuzh
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            // TODO: use certificates for https requests
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($curl, CURLOPT_URL, $this->url);
-            $this->response = utf8_encode(curl_exec($curl));
-            $this->infos = curl_getinfo($curl);
-            curl_close($curl);
-        }
+        $payload = '';
+        $method = 'GET';
+        $resource = '/api/1/user/'. $forlife . '/isRegistered';
+        $timestamp = time();
 
-        if (!isset(PlBacktrace::$bt['API']))
-            new PlBacktrace('API');
+        $message = implode('#', array($method, $resource, $payload, $timestamp));
+        $token = $globals->xorg->hash;
+        $sig = hash_hmac('sha256', $message, $token);
 
-        PlBacktrace::$bt['API']->newEvent($this->url, 0, 0);
-    }
+        $get = '?user=' . $globals->xorg->user . '&timestamp=' . $timestamp . '&sig=' . $sig;
 
-    public function response()
-    {
-        $this->exec();
-        return $this->response;
-    }
+        $url = $globals->xorg->url . $resource . $get;
 
-    public function infos()
-    {
-        $this->exec();
-        return $this->infos;
+        $a = new xorgAPI($url);
+        $json = json_decode($a->response());
+        return $json->isRegistered;
     }
 }
 
