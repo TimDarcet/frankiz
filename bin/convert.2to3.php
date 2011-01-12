@@ -52,7 +52,7 @@ echo 'DB created ' . "\n";
 echo "-----------------------------------------------\n";
 
 // Import "static" tables
-$tables = array('frankiz', 'formations', 'days', 'ips', 'minimodules', 'rooms', 'skins');
+$tables = array('frankiz', 'account', 'formations', 'days', 'ips', 'minimodules', 'rooms', 'skins');
 foreach ($tables as $table) {
     echo exec('mysql -h ' . $globals->dbhost . ' -u ' . $globals->dbuser .
               ' -p' . $globals->dbpwd . ' ' . $globals->dbdb . ' < sql/' . $table . '.sql');
