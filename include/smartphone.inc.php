@@ -23,7 +23,7 @@ function isSmartphone()
 {
     if (!isset($_SERVER["HTTP_USER_AGENT"]))
         return false;
-    
+
     $agents = array('Android',
                     'BlackBerry',
                     'iPhone',
