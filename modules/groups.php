@@ -125,7 +125,7 @@ class GroupsModule extends PLModule
 
     function handler_group_admin($page, $group)
     {
-        $filter = (isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
+        $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
         $gf = new GroupFilter($filter);
         $group = $gf->get(true);
 
@@ -149,7 +149,7 @@ class GroupsModule extends PLModule
 
     function handler_group_subscribe($page, $group)
     {
-        $filter = (isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
+        $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
         $gf = new GroupFilter($filter);
         $group = $gf->get(true);
 
@@ -157,10 +157,10 @@ class GroupsModule extends PLModule
         {
             $group->select();
 
-            if ($group->enter())
-                $group->caste(Rights::member())->addUser(S::user());
-            else
+            if ($group->priv())
                 $group->caste(Rights::friend())->addUser(S::user());
+            else
+                $group->caste(Rights::member())->addUser(S::user());
 
             $page->assign('group', $group);
             $page->assign('title', $group->label());
@@ -175,7 +175,7 @@ class GroupsModule extends PLModule
 
     function handler_group_unsubscribe($page, $group)
     {
-        $filter = (isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
+        $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
         $gf = new GroupFilter($filter);
         $group = $gf->get(true);
 
@@ -183,8 +183,8 @@ class GroupsModule extends PLModule
         {
             $group->select();
 
-            // TODO: check the personn doesn't leave a group if it is the only admin !
-            if ($group->leave())
+            // TODO: check the person doesn't leave the group if he is the only admin !
+            if ($group->leavable())
                 $group->removeUser(S::user());
 
             $page->assign('group', $group);

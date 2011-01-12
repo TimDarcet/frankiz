@@ -25,7 +25,7 @@
     {if $group->hasUser()}
     <a href="groups/unsubscribe/{$group->id()}">Quitter le groupe</a>
     {else}
-    <a href="groups/subscribe/{$group->id()}">Devenir {if $group->enter()}membre{else}sympathisant{/if}</a>
+    <a href="groups/subscribe/{$group->id()}">Devenir {if !$group->priv()}membre{else}sympathisant{/if}</a>
     {/if}
 </div>
 
@@ -33,6 +33,7 @@
 {$group->name()}
 {$group->label()}
 {$group->description()}
+Score: {$group->score()}
 
 <ul>
 {foreach from=$group->caste() item='caste'}

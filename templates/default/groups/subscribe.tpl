@@ -20,10 +20,10 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if $group->enter()}
-    Vous êtes membre de {$group->label()}
-{else}
+{if $group->priv()}
     Vous êtes sympathisant de {$group->label()}
+{else}
+    Vous êtes membre de {$group->label()}
 {/if}
 
 <a href="groups/see/{$group->bestId()}">Retourner à la page du groupe</a>

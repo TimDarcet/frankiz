@@ -20,7 +20,7 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if $group->leave()}
+{if $group->leavable()}
     Vous n'êtes plus membre de {$group->label()}
 {else}
     Vous ne pouvez pas quitter {$group->label()}
