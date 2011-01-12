@@ -48,12 +48,12 @@ class API
             $this->response = utf8_encode(curl_exec($curl));
             $this->infos = curl_getinfo($curl);
             curl_close($curl);
+
+            if (!isset(PlBacktrace::$bt['API']))
+                new PlBacktrace('API');
+
+            PlBacktrace::$bt['API']->newEvent($this->url, 0, 0);
         }
-
-        if (!isset(PlBacktrace::$bt['API']))
-            new PlBacktrace('API');
-
-        PlBacktrace::$bt['API']->newEvent($this->url, 0, 0);
     }
 
     public function response()
@@ -66,6 +66,12 @@ class API
     {
         $this->exec();
         return $this->infos;
+    }
+
+    public function http_code()
+    {
+        $this->exec();
+        return $this->infos['http_code'];
     }
 }
 
