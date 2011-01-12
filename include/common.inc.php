@@ -19,6 +19,8 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+require_once 'smartphone.inc.php';
+
 function __autoload($cls)
 {
     if (!pl_autoload($cls)) {
