@@ -725,6 +725,9 @@ class User extends Meta
             $groups = new Collection('Group');
             while ($datas = $iter->next()) {
                 if ($bits & self::SELECT_BASE) {
+                    $datas['firstname'] = ucwords(strtolower($datas['firstname']));
+                    $datas['lastname']  = ucwords(strtolower($datas['lastname']));
+
                     $datas['group'] = $groups->addget($datas['gid']);unset($datas['gid']);
                     $datas['birthdate'] = new FrankizDateTime($datas['birthdate']);
 
