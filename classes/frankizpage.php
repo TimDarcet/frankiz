@@ -70,20 +70,17 @@ class FrankizPage extends PlPage
     private function load_skin()
     {
         global $globals;
-        if (isSmartphone()) {
-            S::set('skin', $globals->smartphone_skin);
-        }
 
         if(!S::has('skin') || S::v('skin') == ""){
             if (Cookie::has('skin')) {
                 $skin = Cookie::v('skin');
             } else {
-                $skin = $globals->skin;
+                $skin = (isSmartphone()) ? $globals->smartphone_skin : $globals->skin;
             }
             S::set('skin', $skin);
         } else {
             $skin = S::v('skin');
-            if (S::v('auth')>= AUTH_COOKIE && Cookie::v('skin') != $skin){
+            if (S::v('auth') >= AUTH_COOKIE && Cookie::v('skin') != $skin){
                 Cookie::set('skin', $skin, 300);
             }
         }

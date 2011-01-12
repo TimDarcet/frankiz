@@ -227,7 +227,8 @@ class FrankizSession extends PlSession
 
         S::set('user', $user);
         S::set('uid' , $user->id());
-        S::set('skin', $user->skin());
+        if (!isSmartphone())
+            S::set('skin', $user->skin());
 
         if (!S::suid()) {
             if (Post::v('remember', 'false') == 'on') {
