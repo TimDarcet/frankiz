@@ -19,6 +19,10 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+class xorgUnkonwnUserException extends Exception
+{
+}
+
 class xorgAPI extends API
 {
     public static function isRegistered($forlife)
@@ -39,6 +43,12 @@ class xorgAPI extends API
         $url = $globals->xorg->url . $resource . $get;
 
         $a = new xorgAPI($url);
+        $a->exec();
+
+        if ($a->http_code() == 404) {
+            throw new xorgUnkonwnUserException("$forlife doesn't seem to exist");
+        }
+
         $json = json_decode($a->response());
         return $json->isRegistered;
     }
