@@ -613,11 +613,11 @@ class User extends Meta
                 return $res->fetchOneCell();
             }
         }
-        $res = XDB::query("SELECT s.forlife
-                             FROM studies AS s
-                        LEFT JOIN account AS a ON (a.main_formation = s.formation_id)
-                            WHERE a.uid = {?}",
-                            $uid);
+        $res = XDB::query("SELECT  s.forlife
+                             FROM  studies AS s
+                            WHERE  s.uid = {?}
+                         ORDER BY  s.promo ASC
+                            LIMIT  1", $uid);
         if ($res->numRows()) {
             return $res->fetchOneCell();
         }
@@ -631,11 +631,12 @@ class User extends Meta
         }
         if(Cookie::has('uid')) {
             $uid = Cookie::i('uid');
-            $res = XDB::query("SELECT f.domain
-                                 FROM formations AS f
-                            LEFT JOIN account AS a ON (a.main_formation = f.formation_id)
-                                WHERE a.uid = {?}",
-                                $uid);
+            $res = XDB::query("SELECT  f.domain
+                                 FROM  formations AS f
+                            LEFT JOIN  studies AS s ON (s.formation_id = f.formation_id)
+                                WHERE  s.uid = {?}
+                             ORDER BY  s.promo ASC
+                                LIMIT  1", $uid);
             if ($res->numRows()) {
                 return $res->fetchOneCell();
             }
