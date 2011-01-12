@@ -114,35 +114,11 @@ class ProfileModule extends PLModule
 
     public function handler_mails($page)
     {
-        $user = 'henri.jouhaud.2008';
+        // TODO: use the forlife corresponding to x.edu instead of the hruid
+        $forlife = S::user()->login();
 
-        $payload = '';
-        $method = 'GET';
-        $resource = '/api/1/user/'. $user . '/isRegistered';
-        $timestamp = time();
-
-        $message = implode('#', array($method, $resource, $payload, $timestamp));
-        $token = 'a1z2e3';
-        $sig = hash_hmac('sha256', $message, $token);
-
-        $get = '?user=henri.jouhaud.2008&timestamp=' . $timestamp . '&sig=' . $sig;
-
-        $url = 'https://dev.m4x.org/~x2004zanotti' . $resource . $get;
-
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_TIMEOUT, 10);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
-        curl_setopt($curl, CURLOPT_FORBID_REUSE, true);
-        curl_setopt($curl, CURLOPT_FRESH_CONNECT, true);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array("Pragma: no-cache"));
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        $response = curl_exec($curl);var_dump($response);
-        $infos = curl_getinfo($curl);var_dump($infos);
-
-        exit;
-
+        $page->assign('xorgRegistered', xorgAPI::isRegistered($forlife));
+        $page->assign('user', S::user());
         $page->assign('title', 'Mes mails');
         $page->changeTpl('profile/mails.tpl');
     }

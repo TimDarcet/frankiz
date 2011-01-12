@@ -20,25 +20,32 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<p>
-    {include file="wiki.tpl"|rel name='profile/mails'}
-</p>
 
 <h4>Compte Poly</h4>
-TODO: récupérer le login poly
-    Adresse en login@poly.polytechnique.fr
+    <p>
+        {include file="wiki.tpl"|rel name='profile/mails/poly'}
+        {if $user->poly()}
+            {$user->poly()}@poly.polytechnique.fr<br />
+            Gestion sur <a href="http://poly.polytechnique.fr/">poly.polytechnique.fr</a>
+        {else}
+            Ton adresse est inconnue.
+        {/if}
+    </p>
 
 <h4>Compte polytechnique.edu</h4>
-<ul>
-    <li>Adresse en prenom.nom@polytechnique.edu si pas d'homonyme</li>
-    <li>Adresse en prenom.nom.promo@polytechnique.edu à vie</li>
-</ul>
+    <p>
+        {include file="wiki.tpl"|rel name='profile/mails/edu'}
+        TODO
+    </p>
 
 <h4>Compte polytechnique.org</h4>
-TODO: récupérer les mails de x.org
-<ul>
-    <li>Adresse en prenom.nom@polytechnique.org si pas d'homonyme</li>
-    <li>Adresse en prenom.nom.promo@polytechnique.org à vie</li>
-</ul>
+    <p>
+        {include file="wiki.tpl"|rel name='profile/mails/org'}
+        {if $xorgRegistered}
+            Gestion sur <a href="https://www.polytechnique.org/emails">www.polytechnique.org/emails</a>
+        {else}
+            Tu n'as pas de compte sur <a href="http://www.polytechnique.org">www.polytechnique.org</a>
+        {/if}
+    </p>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
