@@ -64,8 +64,10 @@ foreach ($tables as $table) {
 echo "-----------------------------------------------\n";
 
 // Populating Groups
-$iter = XDB::iterator("SELECT  b.binet_id, b.nom, b.description, b.http, b.mail
-                         FROM  trombino.binets AS b");
+$iter = XDB::iterator("SELECT  b.binet_id, b.nom, b.description, b.http, b.mail, COUNT(m.binet_id) AS score
+                         FROM  trombino.binets AS b
+                    LEFT JOIN  trombino.membres AS m ON m.binet_id = b.binet_id
+                     GROUP BY  b.binet_id");
 
 $groups = $iter->total();
 $k = 0;
@@ -82,8 +84,13 @@ while ($datas = $iter->next()) {
         $g->name('g_' . $g->id());
     }
 
+    if ($datas['score'] > 99) {
+        $g->ns(Group::NS_BINET);
+    } else {
+        $g->ns(Group::NS_FREE);
+    }
+
     $g->description(conv($datas['description']));
-    $g->ns(Group::NS_FREE);
     $g->external(0);
     $g->priv(0);
     $g->leavable(1);
