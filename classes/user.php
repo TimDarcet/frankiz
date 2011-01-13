@@ -770,9 +770,9 @@ class User extends Meta
             foreach ($users as $u)
                 $u->rooms = new Collection('Room');
 
-            $iter = XDB::iterRow('SELECT  owner_id AS id, rid
-                                     FROM  rooms_owners
-                                    WHERE  owner_type = "user" AND owner_id IN {?}',
+            $iter = XDB::iterRow('SELECT  uid AS id, rid
+                                    FROM  rooms_users
+                                   WHERE  uid IN {?}',
                                     array_keys($users));
 
             while (list($uid, $rid) = $iter->next())
