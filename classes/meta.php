@@ -36,16 +36,29 @@ class UndefinedIdException extends Exception
 {
 }
 
+class NotAnIdException extends Exception
+{
+}
+
 abstract class Meta
 {
     protected $id = null;
 
     public function __construct($datas = null)
     {
-        if (!is_array($datas))
-            $this->id = $datas;
-        else
+        if ($datas == null) {
+            return null;
+        }
+
+        if (!is_array($datas)) {
+            if (static::isId($datas)) {
+                $this->id = $datas;
+            } else {
+                throw new NotAnIdException("$datas is not a correct Id for " . get_class($this));
+            }
+        } else {
             $this->fillFromArray($datas);
+        }
     }
 
     public function fillFromArray(array $values)
