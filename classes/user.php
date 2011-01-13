@@ -309,14 +309,6 @@ class User extends Meta
         return $this->hash_rss;
     }
 
-    /**
-    * Returns the Collection of Rooms of the User
-    */
-    public function rooms()
-    {
-        return $this->rooms;
-    }
-
     public function birthdate(FrankizDateTime $birthdate = null)
     {
         if ($birthdate != null) {
@@ -367,6 +359,39 @@ class User extends Meta
         if (!(XDB::affectedRows() > 0))
             return false;
 
+        return true;
+    }
+
+    /*******************************************************************************
+         Rooms
+
+    *******************************************************************************/
+
+    /**
+    * Returns the Collection of Rooms of the User
+    */
+    public function rooms()
+    {
+        return $this->rooms;
+    }
+
+    /**
+    * Add a Room to the user
+    * @param $r the room to add
+    */
+    public function addRoom(Room $r)
+    {
+        XDB::execute('INSERT IGNORE  rooms_users
+                                SET  rid = {?}, uid = {?}',
+                            $r->id(), $this->id());
+
+        if (!(XDB::affectedRows() > 0))
+            return false;
+
+        if (empty($this->rooms))
+            $this->rooms = new Collection('Room');
+
+        $this->rooms->add($r);
         return true;
     }
 
