@@ -36,10 +36,12 @@ function conv($str) {
 
 function conv_name($str)
 {
+    $str = str_replace(array('É'), 'e', $str);
     $str = strtolower(conv($str));
     $str = str_replace(array('é', 'è', 'ë', 'ê'), 'e', $str);
     $str = str_replace(array('à', 'ä', 'â'), 'a', $str);
     $str = str_replace(array('î', 'ï'), 'i', $str);
+    $str = str_replace(array('ç'), 'c', $str);
     return preg_replace("/[^a-z0-9_-]/", "", $str);
 }
 
@@ -96,6 +98,33 @@ while ($datas = $iter->next()) {
 
 echo "-----------------------------------------------\n";
 
+// Populating Nationalities
+$iter = XDB::iterator("SELECT  nation
+                         FROM  trombino.eleves
+                        WHERE  nation IS NOT NULL
+                     GROUP BY  nation");
+
+$nations = $iter->total();
+$k = 0;
+while ($datas = $iter->next()) {
+    $g = new Group();
+    $g->insert();
+    $g->label($datas['nation']);
+
+    $g->name('nation_' . conv_name($datas['nation']));
+
+    $g->ns(Group::NS_NATIONALITY);
+    $g->external(0);
+    $g->priv(0);
+    $g->leavable(0);
+    $g->visible(0);
+
+    $k++;
+    echo 'Nation ' . $k . '/' . $nations . ' : ' . $g->id() . " - " . $g->label() . "\n";
+}
+
+echo "-----------------------------------------------\n";
+
 // Populating accounts
 $iter = XDB::iterator('SELECT  c.eleve_id, c.passwd,
                                e.nom, e.prenom, e.surnom, e.instrument,
@@ -132,14 +161,22 @@ while ($datas = $iter->next()) {
     $u->login($login);
     $u->addStudy($formation_id, $datas['promo'], (int) $datas['promo'] + 4, $datas['promo'], $login);
 
+    // Linking with the nationality
+    if (!empty($datas['nation'])) {
+        $nf = new GroupFilter(new GFC_Name('nation_' . conv_name($datas['nation'])));
+        $n = $nf->get(true);
+        $n->select(Group::SELECT_CASTES);
+        $n->caste(Rights::member())->addUser($u);
+    }
+
     // Linking the User with his groups
     $g_iter = XDB::iterator("SELECT  m.binet_id, m.remarque
-                             FROM  trombino.membres AS m
-                            WHERE  m.eleve_id = {?}", $u->id());
+                               FROM  trombino.membres AS m
+                              WHERE  m.eleve_id = {?}", $u->id());
     $l = 0;
     while ($g_datas = $g_iter->next()) {
         $g = new Group($g_datas['binet_id']);
-        $g->select();
+        $g->select(Group::SELECT_CASTES);
         $g->caste(Rights::member())->addUser($u);
         $u->comments($g, conv($g_datas['remarque']));
         $l++;
