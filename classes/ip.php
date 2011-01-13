@@ -89,28 +89,32 @@ class IP
             $origin = self::EXTERNAL;
             if($ip == '127.0.0.1' || (substr($ip, 0, 8) == '129.104.' && $ip != '129.104.30.4' && $ip != '129.104.30.90'))
             {
-                $res=XDB::query('SELECT ro.owner_type
-                                   FROM ips
-                             INNER JOIN rooms_owners AS ro
-                                     ON ro.rid = ips.rid
-                                  WHERE ips.ip = {?}', $ip);
-                $cell = $res->fetchOneCell();
-                switch($cell) {
-                    case 'user':
-                        $origin = self::STUDENT;
-                        break;
-
-                    case 'group':
-                        $origin = self::PREMISE;
-                        break;
-
-                    default:
-                        $origin = self::INTERNAL;
+                $res = XDB::iterator('SELECT  rg.rid
+                                    FROM  ips
+                              INNER JOIN  rooms_groups AS rg ON rg.rid = ips.rid
+                                   WHERE  ips.ip = {?}
+                                   LIMIT  1', $ip);
+                if ($res->total() >= 1) {
+                    $origin = self::PREMISE;
+                    self::$originCache[$ip] = $origin;
+                    return $origin;
                 }
-            } 
 
-            self::$originCache[$ip] = $origin;
-            return $origin;
+                $res = XDB::iterator('SELECT  ru.rid
+                                    FROM  ips
+                              INNER JOIN  rooms_users AS ru ON ru.rid = ips.rid
+                                   WHERE  ips.ip = {?}
+                                   LIMIT  1', $ip);
+                if ($res->total() >= 1) {
+                    $origin = self::STUDENT;
+                    self::$originCache[$ip] = $origin;
+                    return $origin;
+                }
+
+                $origin = self::INTERNAL;
+                self::$originCache[$ip] = $origin;
+                return $origin;
+            }
         }
     }
 

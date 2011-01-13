@@ -503,31 +503,28 @@ CREATE TABLE IF NOT EXISTS `rooms_essai` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rooms_owners`
+-- Table structure for table `rooms_groups`
 --
 
-DROP TABLE IF EXISTS `rooms_owners`;
-CREATE TABLE IF NOT EXISTS `rooms_owners` (
+DROP TABLE IF EXISTS `rooms_groups`;
+CREATE TABLE IF NOT EXISTS `rooms_groups` (
   `rid` varchar(250) NOT NULL,
-  `owner_id` int(11) NOT NULL,
-  `owner_type` enum('group','user') NOT NULL,
-  UNIQUE KEY `rid` (`rid`)
+  `gid` int(11) NOT NULL,
+  UNIQUE KEY `gid` (`gid`,`rid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sections`
+-- Table structure for table `rooms_users`
 --
 
-DROP TABLE IF EXISTS `sections`;
-CREATE TABLE IF NOT EXISTS `sections` (
-  `section_id` int(1) NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) NOT NULL,
-  `ng` varchar(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
-  PRIMARY KEY (`section_id`),
-  KEY `section_id` (`section_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+DROP TABLE IF EXISTS `rooms_users`;
+CREATE TABLE IF NOT EXISTS `rooms_users` (
+  `rid` varchar(250) NOT NULL,
+  `uid` int(11) NOT NULL,
+  UNIQUE KEY `uid` (`uid`,`rid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
