@@ -40,5 +40,9 @@ CREATE TABLE IF NOT EXISTS `formations` (
 
 INSERT INTO `formations` (`formation_id`, `domain`, `title`, `abbrev`) VALUES
 (0, 'frankiz.net', 'Frankiz', 'fkz'),
-(1, 'polytechnique.edu', 'Polytechnique', 'x'),
-(2, 'poly.polytechnique.fr', 'Poly', 'poly');
+(1, 'polytechnique.edu', 'Polytechnicien', 'x'),
+(2, 'poly.polytechnique.fr', 'Anciens comptes', 'poly'),
+(3, 'polytechnique.edu', 'Master de l\'X', 'master'),
+(4, 'polytechnique.edu', 'Doctorants de l\'X', 'doc'),
+(5, 'polytechnique.edu', 'PEI', 'pei');
+;
