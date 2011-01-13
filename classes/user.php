@@ -198,6 +198,11 @@ class User extends Meta
         return $this->gender;
     }
 
+    public function isFemale()
+    {
+        return $this->gender() == self::GENDER_FEMALE;
+    }
+
     // Fallback value is FORMAT_TEXT.
     public function isEmailFormatHtml()
     {
