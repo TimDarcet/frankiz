@@ -41,6 +41,7 @@ class TolModule extends PLModule
                           'studies' => '',
                            'sports' => '',
                            'binets' => '',
+                             'frees' => '',
                              'room' => '',
                             'phone' => '',
                                'ip' => '',
@@ -66,12 +67,8 @@ class TolModule extends PLModule
                 $freeconds = array();
                 $freeconds[] = new UFC_Name($piece, UFC_Name::LASTNAME|UFC_Name::FIRSTNAME|UFC_Name::NICKNAME, UFC_Name::CONTAINS);
                 $freeconds[] = new UFC_Room($piece);
-                // $freeconds[] = new UFC_Roomphone($piece);
+                $freeconds[] = new UFC_Roomphone($piece);
                 $freeconds[] = new UFC_Ip($piece);
-                // $freeconds[] = new UFC_Formation($piece);
-                // $freeconds[] = new UFC_Bestalias($piece);
-                // $freeconds[] = new UFC_Birthday($piece);
-                // $freeconds[] = new UFC_Cellphone($piece);
                 $conds[] = new PFC_Or($freeconds);
             }
         }
@@ -85,21 +82,6 @@ class TolModule extends PLModule
         if ($fields['nickname'])
             $conds[] = new UFC_Name($fields['nickname'], UFC_Name::NICKNAME, UFC_Name::CONTAINS);
 
-        if ($fields['nationalities'])
-            $conds[] = new UFC_Group(explode(';', $fields['nationalities']));
-
-        if ($fields['promo'])
-            $conds[] = new UFC_Group(explode(';', $fields['promo']));
-
-        if ($fields['studies'])
-            $conds[] = new UFC_Group(explode(';', $fields['studies']));
-
-        if ($fields['sports'])
-            $conds[] = new UFC_Group(explode(';', $fields['sports']));
-
-        if ($fields['binets'])
-            $conds[] = new UFC_Group(explode(';', $fields['binets']));
-
         if ($fields['room'])
             $conds[] = new UFC_Room($fields['room']);
 
@@ -111,6 +93,15 @@ class TolModule extends PLModule
 
         if ($fields['gender'] == User::GENDER_FEMALE)
             $conds[] = new UFC_Gender(User::GENDER_FEMALE);
+
+        // Fields corresponding in fact to groups
+        $groups_fields = array('nationalities', 'promo', 'studies',
+                              'sports', 'binets', 'frees');
+        foreach ($groups_fields as $field) {
+            if ($fields[$field]) {
+                $conds[] = new UFC_Group(explode(';', $fields[$field]));
+            }
+        }
 
         if (count($conds) > 0)
             return new PFC_And($conds);

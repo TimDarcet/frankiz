@@ -59,6 +59,11 @@
             <li><label>Binet{include file="groups_picker.tpl"|rel id="binets" ns="binet" check=-1}</label></li>
         </ul>
         </fieldset>
+        <fieldset id="tol_groups">
+        <ul>
+            <li><label>Groupes{include file="groups_picker.tpl"|rel id="frees" ns="free" check=-1}</label></li>
+        </ul>
+        </fieldset>
         <fieldset id="tol_rooms">
         <ul>
             <li><label>Casert<input auto="auto" type="text" name="room" value="" /></label></li>
