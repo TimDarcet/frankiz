@@ -337,7 +337,7 @@ class UFC_Group extends UserFilterCondition
     protected $rights;
     protected $cids = null;
 
-    public function __construct($gs, $rights)
+    public function __construct($gs, $rights = null)
     {
         $this->gids   = Group::toIds(unflatten($gs));
         $this->rights = (string) (empty($rights)) ? Rights::member() : $rights;
@@ -681,19 +681,21 @@ class UserFilter extends FrankizFilter
 
     /** CASTES
      */
-    private $with_castes = array();
+    private $with_castes = 0;
 
     public function addCasteFilter()
     {
-        $this->with_castes = true;
-        return 'cu';
+        $this->with_castes++;
+        return 'cu' . $this->with_castes;
     }
 
     protected function casteJoins()
     {
         $joins = array();
-        if ($this->with_castes) {
-            $joins['cu'] = PlSqlJoin::inner('castes_users', '$ME.uid = a.uid');
+        if ($this->with_castes > 0) {
+            for ($i = 1; $i <= $this->with_castes; $i++) {
+                $joins['cu' . $i] = PlSqlJoin::inner('castes_users', '$ME.uid = a.uid');
+            }
         }
         return $joins;
     }
