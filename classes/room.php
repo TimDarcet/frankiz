@@ -30,7 +30,8 @@ class Room extends Meta
 
     public static function isId($mixed)
     {
-        return !is_object($mixed) && (preg_match('/^[A-Z]*[0-9]*[a-z]*$/', $mixed));
+        return !is_object($mixed) && ($mixed !== null) && ($mixed !== '')
+                                  && (preg_match('/^[A-Z]*[0-9]*[a-z]*$/', $mixed));
     }
 
     public function phone()
