@@ -26,7 +26,7 @@ class ImagesModule extends PlModule
         return array(
             'images'        => $this->make_hook('images', AUTH_COOKIE),
             'images/upload' => $this->make_hook('upload', AUTH_COOKIE),
-            'image'         => $this->make_hook('image',  AUTH_COOKIE),
+            'image'         => $this->make_hook('image',  AUTH_PUBLIC, ''),
         );
     }
 
@@ -88,6 +88,12 @@ class ImagesModule extends PlModule
     {
         $image = new FrankizImage($iid);
         $image->select(array(FrankizImage::SELECT_BASE => Group::SELECT_BASE));
+
+        if (S::i('auth') == AUTH_PUBLIC && !$image->group()->external()) {
+                // TODO: show an 'invalid credential' picture instead
+                throw new Exception("This group is not accessible from the outside");
+                exit;
+        }
 
         // If the group owning the image is not public
         if ($image->group()->priv()) {
