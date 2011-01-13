@@ -46,8 +46,8 @@ abstract class Meta
 
     public function __construct($datas = null)
     {
-        if ($datas == null) {
-            return null;
+        if ($datas === null) {
+            return;
         }
 
         if (!is_array($datas)) {
