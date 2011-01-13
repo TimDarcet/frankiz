@@ -45,7 +45,7 @@
             {assign var='groups' value=$castes->groups()}
             
             {foreach from=$groups|order:'score' item='group'}
-                <li>{$group->score()} {$group->label()} {$result->rights($group)|@rights} </li>
+                <li>{$group->score()} {$group->label()} {$result->rights($group)|@rights} {$result->comment($group)}</li>
             {/foreach}
         </ul>
     </div>

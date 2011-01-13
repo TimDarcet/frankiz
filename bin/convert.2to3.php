@@ -236,7 +236,7 @@ while ($datas = $iter->next()) {
         $g = new Group($g_datas['binet_id']);
         $g->select(Group::SELECT_CASTES);
         $g->caste(Rights::member())->addUser($u);
-        $u->comments($g, conv($g_datas['remarque']));
+        $u->comment($g, conv($g_datas['remarque']));
         $l++;
     }
 

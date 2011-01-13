@@ -116,7 +116,8 @@ class TolModule extends PLModule
 
     function toSelect()
     {
-        return array(User::SELECT_BASE => null, User::SELECT_ROOMS => null, User::SELECT_POLY =>null,
+        return array(User::SELECT_BASE => null, User::SELECT_ROOMS => null,
+                     User::SELECT_POLY => null, User::SELECT_COMMENTS => null,
                      User::SELECT_CASTES => array(Caste::SELECT_BASE => Group::SELECT_BASE));
     }
 

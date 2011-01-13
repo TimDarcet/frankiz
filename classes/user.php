@@ -537,7 +537,7 @@ class User extends Meta
     * @param $g the group
     * @param $comments if specified, let the function set the comment
     */
-    public function comments(Group $g, $comments = null)
+    public function comment(Group $g, $comments = null)
     {
         if ($comments !== null) {
             XDB::execute('INSERT INTO  users_comments
@@ -813,6 +813,23 @@ class User extends Meta
 
             if (isset($options[self::SELECT_CASTES]))
                 $castes->select($options[self::SELECT_CASTES]);
+        }
+
+        // Load comments
+        if ($bits & self::SELECT_COMMENTS)
+        {
+            foreach ($users as $u)
+                $u->comments = array();
+
+            $iter = XDB::iterRow('SELECT  uid, gid, comment
+                                    FROM  users_comments
+                                   WHERE  uid IN {?}', array_keys($users));
+
+            while (list($uid, $gid, $comment) = $iter->next())
+            {
+                $users[$uid]->comments[$gid] = $comment;
+            }
+
         }
 
     }
