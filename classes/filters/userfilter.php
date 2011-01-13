@@ -645,8 +645,8 @@ class UserFilter extends FrankizFilter
     {
         $joins = array();
         if ($this->with_room) {
-            $joins['ro'] = PlSqlJoin::left('rooms_owners', '$ME.owner_id = a.uid AND $ME.owner_type = "user"');
-            $joins['r']  = PlSqlJoin::left('rooms', '$ME.rid = ro.rid');
+            $joins['ru'] = PlSqlJoin::left('rooms_users', '$ME.uid = a.uid');
+            $joins['r']  = PlSqlJoin::left('rooms', '$ME.rid = ru.rid');
         }
         return $joins;
     }
