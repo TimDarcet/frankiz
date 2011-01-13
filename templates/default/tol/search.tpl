@@ -66,6 +66,13 @@
             <li><label>IP<input auto="auto" type="text" name="ip" value="" /></label></li>
         </ul>
         </fieldset>
+        {if !$user->isFemale()}
+        <fieldset id="tol_gender">
+        <ul>
+            <li><label>Fifilles<input auto="auto" type="checkbox" name="gender" value="woman"/></label></li>
+        </ul>
+        </fieldset>
+        {/if}
         <fieldset id="tol_send">
             <input type="submit" name="chercher" value="Chercher" />
         </fieldset>

@@ -43,7 +43,8 @@ class TolModule extends PLModule
                            'binets' => '',
                              'room' => '',
                             'phone' => '',
-                               'ip' => '');
+                               'ip' => '',
+                           'gender' => '');
 
         foreach(array_keys($fields) as $field) {
             if ($json)
@@ -108,6 +109,9 @@ class TolModule extends PLModule
         if ($fields['ip'])
             $conds[] = new UFC_Ip($fields['ip']);
 
+        if ($fields['gender'] == User::GENDER_FEMALE)
+            $conds[] = new UFC_Gender(User::GENDER_FEMALE);
+
         if (count($conds) > 0)
             return new PFC_And($conds);
         else
@@ -133,6 +137,7 @@ class TolModule extends PLModule
             $page->assign('total', $uf->getTotalCount());
         }
 
+        $page->assign('user', S::user());
         $page->assign('fields', $fields);
         $page->assign('title', 'Trombino On Line');
         $page->addCssLink('tol.css');

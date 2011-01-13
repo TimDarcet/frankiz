@@ -299,25 +299,25 @@ class UFC_Birthday extends UserFilterCondition
 }
 // }}}
 
-// {{{ class UFC_Sex
-/** Filters users based on sex
+// {{{ class UFC_Gender
+/** Filters users based on gender
  * @param $sex One of User::GENDER_MALE or User::GENDER_FEMALE, for selecting users
  */
-class UFC_Sex extends UserFilterCondition
+class UFC_Gender extends UserFilterCondition
 {
-    private $sex;
+    private $gender;
 
-    public function __construct($sex)
+    public function __construct($gender)
     {
-        $this->sex = $sex;
+        $this->gender = $gender;
     }
 
     public function buildCondition(PlFilter $uf)
     {
-        if ($this->sex != User::GENDER_MALE && $this->sex != User::GENDER_FEMALE) {
+        if ($this->gender != User::GENDER_MALE && $this->gender != User::GENDER_FEMALE) {
             return self::COND_FALSE;
         } else {
-            return XDB::format('a.sex = {?}', $this->sex == User::GENDER_FEMALE ? 'woman' : 'man');
+            return XDB::format('a.gender = {?}', $this->gender);
         }
     }
 }
