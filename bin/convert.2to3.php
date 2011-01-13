@@ -64,8 +64,7 @@ foreach ($tables as $table) {
 echo "-----------------------------------------------\n";
 
 // Populating Groups
-$iter = XDB::iterator("SELECT  b.binet_id, b.nom, b.description,
-                               b.exterieur, b.http, b.mail
+$iter = XDB::iterator("SELECT  b.binet_id, b.nom, b.description, b.http, b.mail
                          FROM  trombino.binets AS b");
 
 $groups = $iter->total();
@@ -85,7 +84,7 @@ while ($datas = $iter->next()) {
 
     $g->description(conv($datas['description']));
     $g->ns(Group::NS_FREE);
-    $g->external($datas['exterieur']);
+    $g->external(0);
     $g->priv(0);
     $g->leavable(1);
     $g->visible(1);
@@ -110,12 +109,10 @@ while ($datas = $iter->next()) {
     $g = new Group();
     $g->insert();
     $g->label($datas['nation']);
-
     $g->name('nation_' . conv_name($datas['nation']));
-
     $g->ns(Group::NS_NATIONALITY);
     $g->external(0);
-    $g->priv(0);
+    $g->priv(1);
     $g->leavable(0);
     $g->visible(0);
 
@@ -125,15 +122,39 @@ while ($datas = $iter->next()) {
 
 echo "-----------------------------------------------\n";
 
+// Populating Sports
+$iter = XDB::iterator("SELECT  nom
+                         FROM  trombino.sections");
+
+$sports = $iter->total();
+$k = 0;
+while ($datas = $iter->next()) {
+    $g = new Group();
+    $g->insert();
+    $g->label($datas['nom']);
+    $g->name('sport_' . conv_name($datas['nom']));
+    $g->ns(Group::NS_SPORT);
+    $g->external(0);
+    $g->priv(1);
+    $g->leavable(0);
+    $g->visible(0);
+
+    $k++;
+    echo 'Sport ' . $k . '/' . $sports . ' : ' . $g->id() . " - " . $g->label() . "\n";
+}
+
+echo "-----------------------------------------------\n";
+
 // Populating accounts
 $iter = XDB::iterator('SELECT  c.eleve_id, c.passwd,
                                e.nom, e.prenom, e.surnom, e.instrument,
-                               e.date_nais, e.sexe, e.piece_id, e.section_id,
+                               e.date_nais, e.sexe, e.piece_id, s.nom AS sport,
                                e.promo, e.login, e.mail, e.nation, e.programme, e.portable,
                                SUBSTR(p.mail, 1, LENGTH(p.mail) - 18) AS hruid
                          FROM  frankiz2.compte_frankiz AS c
-                   INNER JOIN  trombino.eleves AS e ON c.eleve_id = e.eleve_id
+                   INNER JOIN  trombino.eleves AS e       ON c.eleve_id = e.eleve_id
                     LEFT JOIN  frankiz2.poly_mailedu AS p ON (p.poly = e.login AND p.promo = e.promo)
+                    LEFT JOIN  trombino.sections AS s     ON s.section_id = e.section_id
                         WHERE  e.promo != 0000');
 
 $users = $iter->total();
@@ -151,9 +172,38 @@ while ($datas = $iter->next()) {
     $u->cellphone($datas['portable']);
     $u->poly($datas['login']);
 
+    // Linking with the room
+    $room = $datas['piece_id'];
+    if (!empty($room)) {
+        if (preg_match('/^[0-9]+[a-z]?$/', $room)) {
+            $room = 'X' . $room;
+        }
+        try {
+            $room = new Room($room);
+            $u->addRoom($room);
+        } catch (NotAnIdException $e) {
+            echo 'Error for room ' . $datas['piece_id'];
+        }
+    }
+
     if (!empty($datas['hruid'])) {
         $login = $datas['hruid'];
-        $formation_id = 1;
+        switch ($datas['programme']) {
+            case 1: // X
+            $formation_id = 1;
+            break;
+
+            case 4: // Doctorant
+            $formation_id = 4;
+            break;
+
+            case 5: // PEI
+            $formation_id = 5;
+            break;
+
+            default: // Master
+            $formation_id = 3;
+        }
     } else {
         $login = $datas['login'] . '.' . $datas['promo'];
         $formation_id = 2;
@@ -164,6 +214,14 @@ while ($datas = $iter->next()) {
     // Linking with the nationality
     if (!empty($datas['nation'])) {
         $nf = new GroupFilter(new GFC_Name('nation_' . conv_name($datas['nation'])));
+        $n = $nf->get(true);
+        $n->select(Group::SELECT_CASTES);
+        $n->caste(Rights::member())->addUser($u);
+    }
+
+    // Linking with the sport
+    if (!empty($datas['sport'])) {
+        $nf = new GroupFilter(new GFC_Name('sport_' . conv_name($datas['sport'])));
         $n = $nf->get(true);
         $n->select(Group::SELECT_CASTES);
         $n->caste(Rights::member())->addUser($u);
@@ -183,7 +241,8 @@ while ($datas = $iter->next()) {
     }
 
     $k++;
-    echo 'User ' . $k . '/' . $users . ' : ' . $u->id() . " - " . $datas['promo'] . " - " . $l . " groups - " . $u->login() . "\n";
+    echo 'User ' . $k . '/' . $users . ' : ' . $u->id() . ' - ' . $datas['promo'] . ' - '
+                                             . $l . " groups - " . $u->login() . "\n";
 }
 
 echo "-----------------------------------------------\n";

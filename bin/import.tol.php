@@ -84,7 +84,7 @@ while (true) {
             $i = new FrankizImage();
             $i->insert();
             $i->group($group);
-            $i->label($u->$field());
+            $i->label($u->firstname() . ' ' . $u->lastname());
             $i->image($upload, false);
             if ($original)
                 $u->original($i);
