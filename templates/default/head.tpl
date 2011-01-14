@@ -21,6 +21,7 @@
 {**************************************************************************}
 
 <link rel="stylesheet" type="text/css" href="css/{"base.css"|rel}" media="all"/>
+<link rel="stylesheet" type="text/css" href="css/universe.css" media="all"/>
 <link type="text/css" href="css/{"jquery-ui.css"|rel}" rel="stylesheet" />
 <link type="text/css" href="css/{"fancybox/jquery.fancybox.css"|rel}" rel="stylesheet" />
 

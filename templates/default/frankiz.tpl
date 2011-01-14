@@ -29,9 +29,7 @@
     </head>
 
     <body class="{if ($MiniModules_COL_FLOAT|@count) == 0}disabledAside{else}enabledAside{/if}">
-        <div id="links">
-            {include file="links.tpl"|rel}
-        </div>
+        {include file="universe.tpl"}
 
         <div id="header">
             <div id="account">
