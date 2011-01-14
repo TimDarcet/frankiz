@@ -57,6 +57,8 @@ class FrankizModule extends PlModule
 
     function handler_remote($page)
     {
+        global $globals;
+
         if (Env::has('timestamp') && Env::has('site') && Env::has('hash') && Env::has('request')) {
             $res = XDB::query('SELECT  id, privkey, rights
                                  FROM  remote
@@ -66,7 +68,7 @@ class FrankizModule extends PlModule
                 list($remote_id, $key, $rights) = $res->fetchOneRow();
 
                 $timestamp = Env::s('timestamp');
-                if (abs($timestamp - time()) < 1000) {
+                if (abs($timestamp - time()) < $globals->remote->lag) {
                     $site    = Env::s('site');
                     $request = Env::s('request');
 
