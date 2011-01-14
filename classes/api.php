@@ -22,13 +22,15 @@
 class API
 {
     private $url;
+    private $proxy;
 
     private $response = null;
     private $infos = null;
 
-    public function __construct($url)
+    public function __construct($url, $proxy = true)
     {
-        $this->url = $url;
+        $this->url   = $url;
+        $this->proxy = $proxy;
     }
 
     public function exec()
@@ -40,7 +42,10 @@ class API
             curl_setopt($curl, CURLOPT_FORBID_REUSE, true);
             curl_setopt($curl, CURLOPT_FRESH_CONNECT, true);
             curl_setopt($curl, CURLOPT_HTTPHEADER, array("Pragma: no-cache"));
-            curl_setopt($curl, CURLOPT_PROXY, "http://129.104.247.2:8080"); // Kuzh
+            if ($this->proxy) {
+                // DIE Kuzh, DIE !
+                curl_setopt($curl, CURLOPT_PROXY, "http://129.104.247.2:8080");
+            }
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             // TODO: use certificates for https requests
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
