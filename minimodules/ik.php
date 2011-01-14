@@ -43,7 +43,21 @@ class IkMiniModule extends FrankizMiniModule
 
     public function run()
     {
+        global $globals;
 
+        if (!PlCache::hasGlobal('ik')) {
+            $ikapi = new API('http://ik.frankiz.net/ajax/last', false);
+            $json  = json_decode($ikapi->response(), true);
+            $json = $json ['ik'];
+
+            $filename = $globals->spoolroot . '/htdocs/data/ik/' . $json['id'] . '.jpg';
+            file_put_contents($filename, base64_decode($json['base64']));
+            $ik = array('id' => $json['id'], 'title' => $json['title'], 'url' => $json['url']);
+
+            PlCache::setGlobal('ik', $ik, $globals->ik->refresh);
+        }
+
+        return $this->assign('ik', PlCache::getGlobal('ik'));
     }
 
 }

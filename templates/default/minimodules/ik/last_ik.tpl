@@ -22,8 +22,8 @@
 
 <div id="ik_last">
     <p>
-        <a nosolo="nosolo" href="http://ik.frankiz.net/last.pdf">
-            <img src="http://ik.frankiz.net/last.jpg" alt="IK de la semaine"/>
+        <a href="{$minimodule.ik.url}">
+            <img src="data/ik/{$minimodule.ik.id}.jpg" alt="IK de la semaine"/>
         </a>
     </p>
 </div>
