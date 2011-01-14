@@ -25,45 +25,6 @@ background : #BDD5E3
 border     : #002334
 color      : #003757
 *******************************************************************************/
- 
-/*******************************************************************************
-     -1   Links
-
-*******************************************************************************/
-
-#links a {
-    vertical-align: middle;
-}
-
-#links a:link, #links a:visited {
-    text-decoration: none;
-    color: #505050;
-}
-
-#links a:hover {
-    text-decoration: underline;
-    color: black;
-}
-
-#links a:active {
-    color: #CCCCCC;
-    background: #505050 ;
-}
-
-#links {
-    background: #CCCCCC;
-    color: #505050;
-    font-size: 10px;
-    height: 15px;
-    border: none;
-    padding: 0;
-    padding-left: 15px;
-    margin: 0;
-    background-image: url("../default/images/icone.png");
-    background-repeat: no-repeat;
-    background-position: left;
-    font-family: Verdana, Arial, Helvetica, sans-serif;
-}
 
 /*******************************************************************************
      0   Styles par défauts
