@@ -29,7 +29,7 @@ function smarty_function_select_domains($params, &$smarty) {
                        ORDER BY  COUNT(f.domain) DESC");
     $sel = ' selected="selected"';
     $html = "";
-    while (list($domain, $title) = $res->next()) {
+    while (list($domain) = $res->next()) {
         $isSelected = ($userdomain == $domain ? $sel : "");
         $html .= '<option value="' . $domain .'"' . $isSelected . '>' . $domain . '</option>' . "\n";
     }
