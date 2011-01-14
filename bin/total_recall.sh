@@ -10,3 +10,5 @@ do
 ./import.tol.php '{"type":"user","condition":{"type":"promo","comparison":"=","promo":'$i'}}' /home/2008/riton/dev/tol/$i poly original
 ./import.tol.php '{"type":"user","condition":{"type":"promo","comparison":"=","promo":'$i'}}' /home/2008/riton/dev/tol/$i poly photo
 done 
+cd unversionned
+./add.php

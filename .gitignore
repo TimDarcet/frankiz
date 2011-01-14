@@ -7,3 +7,4 @@ htdocs/.htaccess
 .project
 .settings/*
 htdocs/data/*
+bin/unversionned
