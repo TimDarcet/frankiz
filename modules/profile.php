@@ -117,7 +117,12 @@ class ProfileModule extends PLModule
         // TODO: use the forlife corresponding to x.edu instead of the hruid
         $forlife = S::user()->login();
 
-        $page->assign('xorgRegistered', xorgAPI::isRegistered($forlife));
+        try {
+            $xorgIsRegistered = xorgAPI::isRegistered($forlife);
+        } catch (xorgUnkonwnUserException $e) {
+            $xorgIsRegistered = null;
+        }
+        $page->assign('xorgRegistered', $xorgIsRegistered);
         $page->assign('user', S::user());
         $page->assign('title', 'Mes mails');
         $page->changeTpl('profile/mails.tpl');
