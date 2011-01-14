@@ -25,8 +25,10 @@ class FrankizModule extends PlModule
     function handlers()
     {
         return array(
-            'home'                  => $this->make_hook('home', AUTH_PUBLIC),
-            'exit'                  => $this->make_hook('exit', AUTH_PUBLIC)
+            'home'                  => $this->make_hook('home',           AUTH_PUBLIC),
+            'universe'              => $this->make_hook('universe',       AUTH_PUBLIC),
+            'remote'                => $this->make_hook('remote',         AUTH_COOKIE),
+            'exit'                  => $this->make_hook('exit',           AUTH_PUBLIC)
         );
     }
 
@@ -45,6 +47,68 @@ class FrankizModule extends PlModule
         $page->assign('postit_news', $postit_news);
         $page->assign('title', 'Accueil');
         $page->changeTpl('frankiz/home.tpl');
+    }
+
+    function handler_universe($page)
+    {
+        echo $page->fetch('universe.tpl');
+        exit;
+    }
+
+    function handler_remote($page)
+    {
+        if (Env::has('timestamp') && Env::has('site') && Env::has('hash') && Env::has('request')) {
+            $res = XDB::query('SELECT  id, privkey, rights
+                                 FROM  remote
+                                WHERE  site = {?}', Env::s('site'));
+
+            if ($res->numRows() == 1) {
+                list($remote_id, $key, $rights) = $res->fetchOneRow();
+
+                $timestamp = Env::s('timestamp');
+                if (abs($timestamp - time()) < 1000) {
+                    $site    = Env::s('site');
+                    $request = Env::s('request');
+
+                    if (md5($timestamp . $site . $key . $request) == Env::s('hash')) {
+                        $request = json_decode($request, true);
+                        $rights  = new PlFlagSet($rights);
+
+                        $response = array('uid' => S::user()->id());
+
+                        if ($rights->hasFlag('names')  && in_array('names', $request)) {
+                            $response['hruid']     = S::user()->login();
+                            $response['firstname'] = S::user()->firstname();
+                            $response['lastname']  = S::user()->lastname();
+                            $response['nickname']  = S::user()->nickname();
+                        }
+
+                        if ($rights->hasFlag('rights')  && in_array('rights', $request)) {
+                            $res = XDB::query('SELECT name FROM remote_groups WHERE remote_id = {?}', $remote_id);
+
+                            $gf = new GroupFilter(new GFC_Name($res->fetchColumn()));
+                            $gs = $gf->get();
+
+                            if ($gs->count() > 0) {
+                                $gs->select(Group::SELECT_BASE);
+
+                                $rights = array();
+                                foreach ($gs as $g) {
+                                    $rights[$g->name()] = array_map(function($r) { return (string) $r; }, S::user()->rights($g));
+                                }
+                                $response['rights'] = $rights;
+                            }
+                        }
+
+                        $response = json_encode($response);
+                        $location = Env::s('location');
+                        header('Location: ' . $site . '?location=' . $location . '&timestamp=' . $timestamp
+                               . '&response='  . $response
+                               . '&hash='      . md5($timestamp . $key . $response));
+                    }
+                }
+            }
+        }
     }
 
     function handler_exit($page, $level = null)
