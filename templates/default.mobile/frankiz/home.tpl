@@ -27,12 +27,7 @@
     {/if}
     
     {if $smarty.session.auth >= AUTH_COOKIE }
-        <div id="quick-tol">
-            <form enctype="multipart/form-data" method="post" action="tol/">
-                <input type="search" autocorrect="off" autocapitalize="off" placeholder="Quick TOL" name="free" / >
-            </form>
-        </div>
-
+        {include file="tol/quicksearch.tpl"|rel}
     {/if}
 </div>
 

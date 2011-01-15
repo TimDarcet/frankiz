@@ -47,6 +47,7 @@
                 {/foreach}
             </ul>
         </div>
+        <div style="clear:both"></div>
     </div>
 </div>
 

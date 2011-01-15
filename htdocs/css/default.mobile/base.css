@@ -44,7 +44,8 @@ body {
 div,
 input.submit,
 #nav-bar .nav-left,
-#nav-bar .nav-right {
+#nav-bar .nav-right,
+input.field {
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -56,6 +57,18 @@ img {
 
 a {
   cursor: pointer;
+}
+
+input.wide-field {
+    width: 100%;
+    border: none;
+    padding: 5px 0;
+    font-size: 140%;
+}
+
+div.wide-field-wrap {
+    border: 1px solid #BBB;
+    padding: 0 5px;
 }
 
 /***************************************************************************
@@ -140,12 +153,6 @@ a {
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
-}
-
-input {
-    text-size-adjust: 140%;
-    -webkit-text-size-adjust: 140%;
-    -moz-text-size-adjust: 140%;
 }
 
 input.submit {
