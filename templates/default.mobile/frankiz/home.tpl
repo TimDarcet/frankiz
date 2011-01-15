@@ -22,7 +22,18 @@
 
 
 <div class="accueil">
-  {include file="tol/tol.tpl"|rel}
+    {if $smarty.session.auth < AUTH_COOKIE }
+        Bienvenue sur Frankiz3 mobile.
+    {/if}
+    
+    {if $smarty.session.auth >= AUTH_COOKIE }
+        <div id="quick-tol">
+            <form enctype="multipart/form-data" method="post" action="tol/">
+                <input type="search" autocorrect="off" autocapitalize="off" placeholder="Quick TOL" name="free" / >
+            </form>
+        </div>
+
+    {/if}
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

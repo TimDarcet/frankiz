@@ -22,5 +22,6 @@
 
 <link rel="stylesheet" type="text/css" href="css/{"base.css"|rel}" media="all"/>
 <link type="text/css" href="css/{"jquery-ui.css"|rel}" rel="stylesheet" />
-<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+<link rel="apple-touch-icon" href="http://dev.frankiz.net/~qt/css/default.mobile/images/icone-iphone.png" />
+<meta name="viewport" content="width=device-width,user-scalable=no;" />
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

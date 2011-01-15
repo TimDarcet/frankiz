@@ -20,17 +20,53 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="trombino">
-    {include file="tol/search.tpl"|rel}
 
-    <ul id="tol_results">
-        {if isset($results|smarty:nodefaults)}
-            {foreach from=$results item=result}
-                {include file="tol/sheet.tpl"|rel result=$result}
-            {/foreach}
-        {/if}
-    </ul>
+
+<div class="trombino">
+    {if isset($results|smarty:nodefaults)}
+    <div id="tol_results">
+        {foreach from=$results item=result}
+        {include file="tol/sheet.tpl"|rel result=$result}
+        {/foreach}
+    </div>
+    {else}
+        {include file="tol/search.tpl"|rel}
+    {/if}
 </div>
+
+{literal}
+<script>
+jQuery(document).ready( function() {
+    $('#tol_results .more-button').click(function() {
+        var loader = $(this).next('.more').children('.loader');
+        $(loader).addClass('loading');
+        $(this).next('.more').toggle();
+        
+        var img = new Image();
+        
+        $(img)
+        .load( function() {
+            $(this).hide();
+
+            $(loader)
+            .removeClass('loading')
+            .append(this);
+
+            $(this).fadeIn();
+        })
+
+        .error( function() {
+            $(loader).text('No image found.');
+        })
+
+        .attr('src', $(loader).attr('src'));
+        return false;
+    })
+    .next('.more').hide();
+});
+</script>
+
+{/literal}
 
 {js src="tol.js"}
 

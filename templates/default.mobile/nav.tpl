@@ -22,7 +22,7 @@
 
 <div id="nav-bar">
     <a id="nav-open-menu" class="nav-left">Menu</a>
-    Frankiz3    
+    {$title}    
     {if $smarty.session.auth < AUTH_COOKIE }
         <a class="nav-right" {path_to_href_attribute path="login"}>Login</a>
     {/if}

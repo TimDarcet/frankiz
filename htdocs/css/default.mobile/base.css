@@ -18,9 +18,11 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+ /***************************************************************************
+     Layout
+ ****************************************************************************/
 #debug {
-  display: none;
-	background: red;
+    display: none;
 }
 
 body {
@@ -28,21 +30,42 @@ body {
     margin: 0;
 }
 
+#content {
+  margin: 0 10px;
+}
+
+#footer {
+    text-align: center;
+}
+
+/***************************************************************************
+    General
+****************************************************************************/
+div,
+input.submit,
+#nav-bar .nav-left,
+#nav-bar .nav-right {
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+}
+
+img {
+    border: none;
+}
+
 a {
   cursor: pointer;
 }
 
-#content {
-  margin: 0 20px;
-}
-
 /***************************************************************************
-#nav-bar
+    Navigation
 ****************************************************************************/
 
 #nav-bar {
   background: #EEE;
-  padding: 3px;
+  padding: 3px 10px;
+  margin-bottom: 10px;
   height: 35px;
   line-height: 35px;
   text-align: center;
@@ -58,11 +81,8 @@ a {
     color: black;
 
     border: 1px solid #BBB;
-    margin: 4px;
+    margin: 4px 0;
     padding: 3px 6px;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
 }
 
 #nav-bar .nav-left {
@@ -73,9 +93,6 @@ a {
   float: right;
 }
 
-/***************************************************************************
-#nav-menu
-****************************************************************************/
 #nav-menu {
   position: absolute;
   top: -100%;
@@ -100,26 +117,7 @@ a {
 }
 
 /***************************************************************************
-#section
-****************************************************************************/
-
-#section div.header {
-    margin: 1em 0;
-    background: #DDD;
-    text-align: center;
-    font-weight: bold;
-    padding: 0.3em;
-}
-
-#section input {
-    border: 1px solid #BBB;
-    margin: 0.4em 0;
-    padding: 0.5em;
-    font-size: 1em;
-}
-
-/***************************************************************************
-#section Login form
+    Formulaires
 ****************************************************************************/
 
 #section div.login {
@@ -144,9 +142,51 @@ a {
     -moz-border-radius: 3px;
 }
 
-/***************************************************************************
+input {
+    text-size-adjust: 140%;
+    -webkit-text-size-adjust: 140%;
+    -moz-text-size-adjust: 140%;
+}
 
+input.submit {
+    background: #DDD;
+    border: 1px solid #BBB;
+    padding: 3px 6px;
+    width: 100%;
+
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+
+/***************************************************************************
+ Errors
 ****************************************************************************/
+div.errors {
+    padding: 10px;
+    margin-bottom: 10px;
+
+    background: #d77694;
+    border: 1px solid #6a142e;
+}
+
+div.errors ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/***************************************************************************
+    TOL
+****************************************************************************/
+#tol_results li.fiche {
+    
+}
+
+
+
+
 
 
 

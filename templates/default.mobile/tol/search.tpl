@@ -39,6 +39,11 @@
             <li><label>Nationalités{include file="groups_picker.tpl"|rel id="nationalities" ns="nationality" check=-1}</label></li>
         </ul>
         </fieldset>
+        <fieldset id="tol_promo">
+        <ul>
+            <li><label>Promo{include file="groups_picker.tpl"|rel id="promo" ns="promo" check=-1}</label></li>
+        </ul>
+        </fieldset>
         <fieldset id="tol_studies">
         <ul>
             <li><label>Études{include file="groups_picker.tpl"|rel id="studies" ns="study" check=-1}</label></li>

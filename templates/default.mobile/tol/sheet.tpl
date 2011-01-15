@@ -19,34 +19,34 @@
 {*  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA               *}
 {*                                                                        *}
 {**************************************************************************}
+<div class="result">
+    {$result->firstname()} {$result->lastname()}
+    {if $result->nickname()}
+    ({$result->nickname()})
+    {/if}
+    {if $result->cellphone()}
+    <br />{$result->cellphone()}
+    {/if}
+    <br>
+    <a href="#" class="more-button">more</a>
 
-<li uid="{$result->id()}" class="fiche">
-    <div class="base">
-        <div class="img"><a href="profile/photo/{$result->login()}"><img src="profile/photo/small/{$result->login()}" /></a></div>
-        <div class="sports">
-            {foreach from=$result->groups('sport') item=group}
-                {$group->name()}
-            {/foreach}
-        </div>
-        <div class="name">{$result->displayName()}</div>
-        <div>
 
-
-        </div>
-        <hr />
-    </div>
     <div class="more">
+        {assign var='img' value=$result->image()}
+        <a class="loader" href="{$img->src(2)|smarty:nodefaults}" src="{$img->src()|smarty:nodefaults}">
+        </a>
         <div class="associations">
             Binets:
             <ul>
-                {assign var='binets' value=$result->groups('binet')}
-                {assign var='dev_null' value=$binets->order('frequency')}
-                {foreach from=$binets item='group'}
-                    <li>{$group->frequency()} {$group->label()} {$result->rights($group)} {$result->comments($group)}</li>
+                {assign var='castes' value=$result->castes()}
+                {assign var='groups' value=$castes->groups()}
+
+                {foreach from=$groups|order:'score' item='group'}
+                <li>{$group->label()}</li>
                 {/foreach}
             </ul>
         </div>
     </div>
-</li>
+</div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

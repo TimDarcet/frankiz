@@ -30,33 +30,21 @@
     
     <form enctype="multipart/form-data" method="post" nosolo action="{$globals->baseurl}/{$platal->pl_self()}">
         {xsrf_token_field}
-        <div class="label">Adresse e-mail</div>
 
-        <div class="field">
-            <input type="text" name="username" value="{get_forlife_from_cookie}" />
-            <br />
-            &#064;
-            <select name="domain">
-                {select_domains}
-            </select>
-        </div>
-        <div class="label">Mot de passe</div>
-        <div class="field">
-            <input type="password" name="password" value="" />
-        </div>
-        <div class="field">
-            <input type="checkbox" checked="checked" name="remember" id="remember" />
-            Se souvenir de moi
-        </div>
-        <input type="submit" name="start_connexion" value="Valider" class="btn"/>
+        <input type="text" autocorrect="off" autocapitalize="off" placeholder="login" name="username" value="{get_forlife_from_cookie}" />
+        <br>
+        &#64;
+        <select name="domain">
+            {select_domains}
+        </select>
+        <br>
+        <input type="password" autocorrect="off" autocapitalize="off" placeholder="mot de passe" name="password" value="" />
+        <br>
+        <input type="checkbox" {if $smarty.session.auth >= AUTH_STUDENT}checked="checked"{/if} name="remember" id="remember" />
+        Se souvenir de moi
+        <br>
+        <input type="submit" class="submit" value="Se connecter !">
     </form>
-    
-    {literal}
-        <script>
-        
-        </script>
-    {/literal}
-
 </div>
 
 {* vim:set et sw=4 sts=4 sws=4 enc=utf-8: *}
