@@ -20,9 +20,6 @@
 {*                                                                        *}
 {**************************************************************************}
 
-
-<div id="message" style="color:red"></div>
-
 <div class="trombino">
     {if isset($results|smarty:nodefaults)}
     <div id="tol_results">
@@ -38,7 +35,6 @@
 {literal}
 <script>
 jQuery(document).ready( function() {
-    
     $('#tol_results .more-button').click(function() {
         var loader = $(this).next('.more').children('.loader');
         $(this).next('.more').toggle('fast');
