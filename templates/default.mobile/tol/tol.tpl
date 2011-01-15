@@ -36,7 +36,7 @@
 <script>
 jQuery(document).ready( function() {
     $('#tol_results .more-button').click(function() {
-        var photo = $(this).next('.more').children('.photo');
+        var photo = $(this).siblings('.more').children('.photo');
         $(this).siblings('.more').toggle('fast');
         if ($(photo).is(':empty')) {
             $(photo).addClass('loading');

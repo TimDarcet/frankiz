@@ -30,6 +30,7 @@
             <br />{$result->cellphone()}
         {/if}
     </div>
+
     <div class="more">
         {assign var='img' value=$result->image()}
         <a class="photo" href="{$img->src(2)|smarty:nodefaults}" src="{$img->src()|smarty:nodefaults}"></a>
@@ -40,7 +41,7 @@
                 {assign var='groups' value=$castes->groups()}
 
                 {foreach from=$groups|order:'score' item='group'}
-                <li class="group-name">
+                <li>
                     <a href="groups/see/{$group->bestId()}">{$group->label()}</a>
                 </li>
                 {/foreach}

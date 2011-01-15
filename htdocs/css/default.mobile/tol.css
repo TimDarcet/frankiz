@@ -30,14 +30,22 @@
 
 #tol_results .photo {
     display: block;
-    background-position: center center;
+    background-position: righ center;
     float: right;
     width: 140px;
-    height: 105px;
+    height: 115px;
+}
+#tol_results .photo img {
+    float: right;
+    margin: 5px 0 5px 5px;
+
+    box-shadow: 0 0 5px #AAA;
+    -webkit-box-shadow: 0 0 5px #AAA;
+    -moz-box-shadow: 0 0 5px #AAA;
 }
 
 #tol_results .loading {
-    background: url(images/spinner.gif) no-repeat center center;
+    background: url(images/spinner.gif) no-repeat right center;
 }
 
 #tol_results .more-button {
@@ -72,8 +80,4 @@
     list-style: none;
     margin: 0;
     padding: 0;
-}
-
-#tol_results .group-name {
-    
 }
