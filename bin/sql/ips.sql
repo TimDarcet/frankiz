@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.7
+-- version 3.3.8.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 11, 2011 at 06:09 PM
+-- Generation Time: Jan 15, 2011 at 02:52 PM
 -- Server version: 5.1.51
--- PHP Version: 5.3.4-pl0-gentoo
+-- PHP Version: 5.3.5-pl0-gentoo
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -16,29 +16,30 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `frankiz`
+-- Database: 'frankiz'
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ips`
+-- Table structure for table 'ips'
 --
 
-DROP TABLE IF EXISTS `ips`;
-CREATE TABLE IF NOT EXISTS `ips` (
-  `ip` varchar(15) NOT NULL,
-  `plug` varchar(10) NOT NULL,
-  `rid` varchar(100) NOT NULL,
+DROP TABLE IF EXISTS ips;
+CREATE TABLE IF NOT EXISTS ips (
+  ip varchar(15) NOT NULL,
+  plug varchar(10) NOT NULL,
+  rid varchar(100) NOT NULL,
   `comment` varchar(200) NOT NULL,
-  UNIQUE KEY `ip` (`ip`)
+  UNIQUE KEY ip (ip),
+  KEY rid (rid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `ips`
+-- Dumping data for table 'ips'
 --
 
-INSERT INTO `ips` (`ip`, `plug`, `rid`, `comment`) VALUES
+INSERT INTO ips (ip, plug, rid, `comment`) VALUES
 ('129.104.203.51', 'M001', 'A4301', 'principale'),
 ('129.104.203.52', 'M002', 'A4302', 'principale'),
 ('129.104.203.53', 'M003', 'A4303', 'principale'),
@@ -1011,7 +1012,7 @@ INSERT INTO `ips` (`ip`, `plug`, `rid`, `comment`) VALUES
 ('129.104.205.17', '171002', 'X171002', 'principale'),
 ('129.104.205.18', '171003', 'X171003', 'principale'),
 ('129.104.205.19', '171004', 'X171004', 'principale');
-INSERT INTO `ips` (`ip`, `plug`, `rid`, `comment`) VALUES
+INSERT INTO ips (ip, plug, rid, `comment`) VALUES
 ('129.104.205.20', '171005', 'X171005', 'principale'),
 ('129.104.205.21', '171006', 'X171006', 'principale'),
 ('129.104.205.22', '171007', 'X171007', 'principale'),
