@@ -68,7 +68,10 @@ class TolModule extends PLModule
                 $freeconds[] = new UFC_Name($piece, UFC_Name::LASTNAME|UFC_Name::FIRSTNAME|UFC_Name::NICKNAME, UFC_Name::CONTAINS);
                 $freeconds[] = new UFC_Room($piece);
                 $freeconds[] = new UFC_Roomphone($piece);
-                $freeconds[] = new UFC_Ip($piece);
+                // Very simple regex to check if $piece might be a piece of an IP adress
+                if (preg_match('/[0-9.]*/', $piece)) {
+                    $freeconds[] = new UFC_Ip($piece);
+                }
                 $conds[] = new PFC_Or($freeconds);
             }
         }
