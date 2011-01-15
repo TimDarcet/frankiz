@@ -23,23 +23,22 @@
 <div class="login">
 
     {if $platal->pl_self() != 'login'}
-        <p>
-            Authentification nécessaire.
-        </p>
+        Authentification nécessaire.
     {/if}
     
     <form enctype="multipart/form-data" method="post" nosolo action="{$globals->baseurl}/{$platal->pl_self()}">
         {xsrf_token_field}
-
-        <input type="text" autocorrect="off" autocapitalize="off" placeholder="login" name="username" value="{get_forlife_from_cookie}" />
-        <br>
+        <div class="wide-field-wrap">
+            <input type="text" autocorrect="off" autocapitalize="off" placeholder="login" name="username" value="{get_forlife_from_cookie}" class="wide-field" />
+        </div>
         &#64;
         <select name="domain">
             {select_domains}
         </select>
         <br>
-        <input type="password" autocorrect="off" autocapitalize="off" placeholder="mot de passe" name="password" value="" />
-        <br>
+        <div class="wide-field-wrap">
+            <input type="password" autocorrect="off" autocapitalize="off" placeholder="mot de passe" name="password" value="" class="wide-field"/>
+        </div>
         <input type="checkbox" {if $smarty.session.auth >= AUTH_STUDENT}checked="checked"{/if} name="remember" id="remember" />
         Se souvenir de moi
         <br>

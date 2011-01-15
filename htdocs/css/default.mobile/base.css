@@ -59,11 +59,15 @@ a {
   cursor: pointer;
 }
 
+input {
+    font-size: 140%;
+}
+
 input.wide-field {
     width: 100%;
     border: none;
     padding: 5px 0;
-    font-size: 140%;
+    background: none;
 }
 
 div.wide-field-wrap {
@@ -129,6 +133,16 @@ div.wide-field-wrap {
   font-weight: bold;
 }
 
+#nav-menu input {
+    background: black;
+    color: white;
+
+}
+
+#nav-menu div.wide-field-wrap {
+    margin: 5px;
+}
+
 /***************************************************************************
     Formulaires
 ****************************************************************************/
@@ -166,7 +180,10 @@ input.submit {
     -moz-appearance: none;
 }
 
-
+div.login .wide-field-wrap,
+input.submit {
+    margin: 10px 0;
+}
 /***************************************************************************
  Errors
 ****************************************************************************/
@@ -183,16 +200,6 @@ div.errors ul {
     padding: 0;
     list-style: none;
 }
-
-/***************************************************************************
-    TOL
-****************************************************************************/
-#tol_results li.fiche {
-    
-}
-
-
-
 
 
 

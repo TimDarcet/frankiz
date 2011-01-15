@@ -23,8 +23,6 @@
 <div class="trombino">
     {if isset($results|smarty:nodefaults)}
     <div id="tol_results">
-        {include file="tol/quicksearch.tpl"|rel}
-        
         {foreach from=$results item=result}
         {include file="tol/sheet.tpl"|rel result=$result}
         {/foreach}
