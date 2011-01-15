@@ -33,8 +33,7 @@
 
     <div class="more">
         {assign var='img' value=$result->image()}
-        <a class="loader" href="{$img->src(2)|smarty:nodefaults}" src="{$img->src()|smarty:nodefaults}">
-        </a>
+        <a class="loader" href="{$img->src(2)|smarty:nodefaults}" src="{$img->src()|smarty:nodefaults}"></a>
         <div class="associations">
             Binets:
             <ul>

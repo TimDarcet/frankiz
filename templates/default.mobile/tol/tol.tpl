@@ -21,6 +21,7 @@
 {**************************************************************************}
 
 
+<div id="message" style="color:red"></div>
 
 <div class="trombino">
     {if isset($results|smarty:nodefaults)}
@@ -37,29 +38,32 @@
 {literal}
 <script>
 jQuery(document).ready( function() {
+    
     $('#tol_results .more-button').click(function() {
         var loader = $(this).next('.more').children('.loader');
-        $(loader).addClass('loading');
-        $(this).next('.more').toggle();
+        $(this).next('.more').toggle('fast');
+        if ($(loader).is(':empty')) {
+            $(loader).addClass('loading');
+
+            var img = new Image();
         
-        var img = new Image();
-        
-        $(img)
-        .load( function() {
-            $(this).hide();
+            $(img)
+            .load( function() {
+                $(this).hide();
 
-            $(loader)
-            .removeClass('loading')
-            .append(this);
+                $(loader)
+                .removeClass('loading')
+                .append(this);
 
-            $(this).fadeIn();
-        })
+                $(this).fadeIn();
+            })
 
-        .error( function() {
-            $(loader).text('No image found.');
-        })
+            .error( function() {
+                $(loader).text('No image found.');
+            })
 
-        .attr('src', $(loader).attr('src'));
+            .attr('src', $(loader).attr('src'));
+        }
         return false;
     })
     .next('.more').hide();
