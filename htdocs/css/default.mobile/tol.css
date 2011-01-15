@@ -28,13 +28,52 @@
     padding: 5px;
 }
 
-.loader {
+#tol_results .photo {
     display: block;
     background-position: center center;
-}
-
-.loading {
-    background: url(images/spinner.gif) no-repeat center center;
+    float: right;
     width: 140px;
     height: 105px;
+}
+
+#tol_results .loading {
+    background: url(images/spinner.gif) no-repeat center center;
+}
+
+#tol_results .more-button {
+    display: block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    background: #BBB;
+    font-family: "arial black";
+    float: right;
+    text-decoration: none;
+    color: black;
+    text-align: center;
+    margin-left: 5px;
+    
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+}
+
+#tol_results .result {
+    min-height: 30px;
+}
+
+#tol_results .result .infos {
+    background: #DDD;
+    min-height: 20px;
+    padding: 5px 10px;
+}
+
+#tol_results .group-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#tol_results .group-name {
+    
 }

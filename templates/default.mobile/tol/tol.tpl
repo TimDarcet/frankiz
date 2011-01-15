@@ -36,10 +36,10 @@
 <script>
 jQuery(document).ready( function() {
     $('#tol_results .more-button').click(function() {
-        var loader = $(this).next('.more').children('.loader');
-        $(this).next('.more').toggle('fast');
-        if ($(loader).is(':empty')) {
-            $(loader).addClass('loading');
+        var photo = $(this).next('.more').children('.photo');
+        $(this).siblings('.more').toggle('fast');
+        if ($(photo).is(':empty')) {
+            $(photo).addClass('loading');
 
             var img = new Image();
         
@@ -47,7 +47,7 @@ jQuery(document).ready( function() {
             .load( function() {
                 $(this).hide();
 
-                $(loader)
+                $(photo)
                 .removeClass('loading')
                 .append(this);
 
@@ -55,14 +55,14 @@ jQuery(document).ready( function() {
             })
 
             .error( function() {
-                $(loader).text('No image found.');
+                $(photo).text('No image found.');
             })
 
-            .attr('src', $(loader).attr('src'));
+            .attr('src', $(photo).attr('src'));
         }
         return false;
     })
-    .next('.more').hide();
+    .siblings('.more').hide();
 });
 </script>
 

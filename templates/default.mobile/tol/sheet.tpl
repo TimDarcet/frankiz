@@ -20,28 +20,29 @@
 {*                                                                        *}
 {**************************************************************************}
 <div class="result">
-    {$result->firstname()} {$result->lastname()}
-    {if $result->nickname()}
-    ({$result->nickname()})
-    {/if}
-    {if $result->cellphone()}
-    <br />{$result->cellphone()}
-    {/if}
-    <br>
-    <a href="#" class="more-button">more</a>
-
-
+    <a href="#" class="more-button">+</a>
+    <div class="infos">
+        {$result->firstname()} {$result->lastname()}
+        {if $result->nickname()}
+            ({$result->nickname()})
+        {/if}
+        {if $result->cellphone()}
+            <br />{$result->cellphone()}
+        {/if}
+    </div>
     <div class="more">
         {assign var='img' value=$result->image()}
-        <a class="loader" href="{$img->src(2)|smarty:nodefaults}" src="{$img->src()|smarty:nodefaults}"></a>
+        <a class="photo" href="{$img->src(2)|smarty:nodefaults}" src="{$img->src()|smarty:nodefaults}"></a>
         <div class="associations">
-            Binets:
-            <ul>
+            Groupes :
+            <ul class="group-list">
                 {assign var='castes' value=$result->castes()}
                 {assign var='groups' value=$castes->groups()}
 
                 {foreach from=$groups|order:'score' item='group'}
-                <li>{$group->label()}</li>
+                <li class="group-name">
+                    <a href="groups/see/{$group->bestId()}">{$group->label()}</a>
+                </li>
                 {/foreach}
             </ul>
         </div>
