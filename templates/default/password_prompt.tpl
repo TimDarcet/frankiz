@@ -28,7 +28,7 @@
     </p>
     {/if}
 
-    <form enctype="multipart/form-data" method="post" nosolo action="{$globals->baseurl}/{$platal->pl_self()}">
+    <form enctype="multipart/form-data" method="post" action="{$smarty.server.REQUEST_URI}">
     {xsrf_token_field}
         <fieldset>
             <table>
