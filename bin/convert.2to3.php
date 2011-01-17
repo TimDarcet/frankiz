@@ -245,6 +245,10 @@ while ($datas = $iter->next()) {
         $g->caste(Rights::member())->addUser($u);
         $u->comment($g, conv($g_datas['remarque']));
         $l++;
+
+        if ($g->id() == 1 && strlen(conv_name($u->nickname())) > 1) {
+            $u->addStudy(0, $datas['promo'], (int) $datas['promo'] + 4, $datas['promo'], conv_name($u->nickname()));
+        }
     }
 
     $k++;
