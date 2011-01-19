@@ -66,22 +66,20 @@ class User extends Meta
     // the NS_USER-type group owned by the user
     protected $group = null;
 
-    // User main email aliases (forlife is the for-life email address, bestalias
-    // is user-chosen preferred email address, email might be any email available
-    // for the user).
-    protected $forlife = null;
-    protected $bestalias = null;
-    protected $email = null;
+    // Studies
+    protected $studies = null;
 
-    // Display name is user-chosen name to display (eg. in "Welcome
-    // <display name> !"), while full name is the official full name.
+    // Mails
+    protected $email = null;
+    protected $email_format = null;  // Acceptable values are FORMAT_HTML and FORMAT_TEXT
+
+    // Names
     protected $firstname = null;
     protected $lastname  = null;
     protected $nickname  = null;
 
-    // Other important parameters used when sending emails.
+    // Gender
     protected $gender = null;  // Acceptable values are GENDER_MALE and GENDER_FEMALE
-    protected $email_format = null;  // Acceptable values are FORMAT_HTML and FORMAT_TEXT
 
     // Permissions
     protected $perms = null;
@@ -95,7 +93,7 @@ class User extends Meta
 
     // Collection of castes
     protected $castes   = null;
-    protected $comments = null; //TODO
+    protected $comments = null;
 
     // Contains the hash sent by mail to recover the password
     protected $hash = null;
@@ -115,6 +113,7 @@ class User extends Meta
     // Rooms
     protected $rooms = null;
 
+    // Miscellaneous
     protected $birthdate = null;
     protected $cellphone = null;
 
@@ -137,17 +136,6 @@ class User extends Meta
 
     public function bestEmail()
     {
-        if (!empty($this->bestalias)) {
-            return $this->bestalias;
-        }
-        return $this->email;
-    }
-
-    public function forlifeEmail()
-    {
-        if (!empty($this->forlife)) {
-            return $this->forlife;
-        }
         return $this->email;
     }
 
@@ -737,7 +725,7 @@ class User extends Meta
         if ($bits & self::SELECT_BASE) {
             $cols['a'] = array('hruid', 'perms', 'state', 'gid',
                                'hash', 'hash_rss', 'original', 'photo', 'gender',
-                               'email_format', 'bestalias', 'skin',
+                               'email_format', 'email', 'skin', 'cellphone',
                                'firstname', 'lastname', 'nickname', 'birthdate');
         }
 
@@ -780,8 +768,14 @@ class User extends Meta
                                    WHERE  uid IN {?}',
                                     array_keys($users));
 
-            while (list($uid, $rid) = $iter->next())
-                $users[$uid]->rooms->add($rid);
+            $rooms = new Collection('Room');
+            while (list($uid, $rid) = $iter->next()) {
+                $room = $rooms->addget($rid);
+                $users[$uid]->rooms->add($room);
+            }
+
+            if (isset($options[self::SELECT_ROOMS]))
+                $rooms->select($options[self::SELECT_ROOMS]);
         }
 
         // Load minimodules

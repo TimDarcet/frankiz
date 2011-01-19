@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 15, 2011 at 02:52 PM
+-- Generation Time: Jan 19, 2011 at 07:35 PM
 -- Server version: 5.1.51
 -- PHP Version: 5.3.5-pl0-gentoo
 
@@ -16,7 +16,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: 'frankiz'
+-- Database: 'dev'
 --
 
 -- --------------------------------------------------------
