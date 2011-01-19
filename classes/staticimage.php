@@ -21,6 +21,8 @@
 
 class StaticImage implements ImageInterface
 {
+    const BASE_PATH = '/htdocs/static/full/';
+    
     private $path = null;
     private $x    = null;
     private $y    = null;
@@ -29,10 +31,26 @@ class StaticImage implements ImageInterface
     public function StaticImage($path)
     {
         global $globals;
-        
-        $infos = getimagesize($globals->spoolroot . '/htdocs/static/' . $path);
 
-        $this->path = $path;
+        $basepath = $globals->spoolroot . self::BASE_PATH;
+
+        if (file_exists($basepath . $path)) {
+            $truepath = $path;
+        } else {
+            $parents = explode('/', $path);
+            while (count($parents) > 0) {
+                array_pop($parents);
+
+                if (file_exists($basepath . implode('/', $parents) . '/_.png')) {
+                    $truepath = implode('/', $parents) . '/_.png';
+                    break;
+                }
+            }
+        }
+
+        $infos = getimagesize($basepath . $truepath);
+
+        $this->path = $truepath;
         $this->mime = $infos['mime'];
         $this->x    = $infos[0];
         $this->y    = $infos[1];
@@ -59,27 +77,29 @@ class StaticImage implements ImageInterface
     }
 
     /**
-    * Return the html code to print the image
-    * Ex: {$image->html()|smarty:nodefaults}
-    *
-    * @param $bits  Size to use
-    */
-    public function html($bits = self::SELECT_SMALL)
-    {
-        $small = ($bits == self::SELECT_SMALL) ? '?small' : '';
-        return '<img src="static/' . $this->path() . '" />';
-    }
-
-    /**
     * Return the src attribute to put into the img tag
     *
     * @param $bits  Size to use
     */
     public function src($bits = self::SELECT_SMALL)
     {
-        $small = ($bits == self::SELECT_SMALL) ? '?small' : '';
-        return 'static/' . $this->path();
+        global $globals;
+
+        if ($bits & self::SELECT_MICRO) {
+            if (file_exists($globals->spoolroot . '/htdocs/static/micro/' . $this->path())) {
+                return 'static/micro/' . $this->path();
+            }
+        }
+
+        if ($bits & (self::SELECT_MICRO | self::SELECT_SMALL)) {
+            if (file_exists($globals->spoolroot . '/htdocs/static/small/' . $this->path())) {
+                return 'static/small/' . $this->path();
+            }
+        }
+
+        return 'static/full/' . $this->path();
     }
+
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
