@@ -22,49 +22,72 @@
 
 require '../bin/connect.db.inc.php';
 
-echo "Comparing actual DB '" . $globals->dbdb . "' with the last theoric DB \n";
 
-// Fetch the tables of the actual DB
+
+if (!empty($argv[1]) && !empty($argv[2])) {
+    $dba = $argv[1];
+    $dbb = $argv[2];
+    echo "Comparing DB '$dba' with '$dbb' \n";
+} else {
+    $dba = $globals->dbdb;
+    $dbb = 'compare';
+    // Clean up the temporary 'compare' database and populate it
+    try { XDB::execute('DROP DATABASE compare'); } catch (Exception $e) {}
+    XDB::execute('CREATE DATABASE compare DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci');
+    XDB::execute('USE compare');
+    $tables = glob("current/sql/*.sql");
+    foreach ($tables as $table) {
+        echo exec('mysql -h ' . $globals->dbhost . ' -u ' . $globals->dbuser .
+                  ' -p' . $globals->dbpwd . ' compare < ' . $table);
+    }
+    echo "Comparing acutal DB '$dba' with the theoritical one \n";
+}
+
+
+
+// Fetch the tables names from the DBs
+XDB::execute("USE $dba");
 $a_tables = XDB::query('SHOW TABLES');
 $a_tables = $a_tables->fetchColumn();
+XDB::execute("USE $dbb");
+$b_tables = XDB::query('SHOW TABLES');
+$b_tables = $b_tables->fetchColumn();
 
 
-// Clean up the temporary 'compare' database and populate it
-try { XDB::execute('DROP DATABASE compare'); } catch (Exception $e) {}
-XDB::execute('CREATE DATABASE compare DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci');
-XDB::execute('USE compare');
-$tables = glob("current/sql/*.sql");
-foreach ($tables as $table) {
-    echo exec('mysql -h ' . $globals->dbhost . ' -u ' . $globals->dbuser .
-              ' -p' . $globals->dbpwd . ' compare < ' . $table);
-}
 
-// Compare the actual and the theoric databases
-$t_tables = XDB::query('SHOW TABLES');
-$t_tables = $t_tables->fetchColumn();
-foreach ($t_tables as $table) {
-    echo 'Table ' . $table;
+// Compare the tables
+foreach ($b_tables as $table) {
+    echo "Table '$table' ";
+
     if (!in_array($table, $a_tables)) {
-        echo ' missing';
+        echo 'missing';
+    } else {
+
+        $theoric = XDB::query('DESCRIBE ' . $table)->fetchAllAssoc('Field');
+        $actual  = XDB::query('DESCRIBE ' . $globals->dbdb . '.' . $table)->fetchAllAssoc('Field');
+
+        foreach($theoric as $field => $infos) {
+            if (!array_key_exists($field, $actual)) {
+                echo '- "' . $field . '" missing' . "\n";
+            } else {
+                if ($infos['Type'] != $actual[$field]['Type'])
+                echo '- "' . $field . '" differs: ' . $infos['Type'] . ' VS ' . $actual[$field]['Type'] . "\n";
+            }
+        }
+
+        foreach($actual as $field => $infos) {
+            if (!array_key_exists($field, $theoric)) {
+                echo '- "' . $field . '" supernumerary' . "\n";
+            }
+        }
+
     }
+
     echo "\n";
-
-    $theoric = XDB::query('DESCRIBE ' . $table)->fetchAllAssoc('Field');
-    $actual  = XDB::query('DESCRIBE ' . $globals->dbdb . '.' . $table)->fetchAllAssoc('Field');
-
-    foreach($theoric as $field => $infos) {
-        if (!array_key_exists($field, $actual)) {
-            echo '- "' . $field . '" missing' . "\n";
-        } else {
-            if ($infos['Type'] != $actual[$field]['Type'])
-            echo '- "' . $field . '" differs: ' . $infos['Type'] . ' VS ' . $actual[$field]['Type'] . "\n";
-        }
-    }
-
-    foreach($actual as $field => $infos) {
-        if (!array_key_exists($field, $theoric)) {
-            echo '- "' . $field . '" supernumerary' . "\n";
-        }
-    }
 }
 
+foreach($a_tables as $table) {
+    if (!in_array($table, $b_tables)) {
+        echo "Table '$table' supernumerary \n";
+    }
+}
