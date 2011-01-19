@@ -36,17 +36,13 @@ class User extends Meta
     const SELECT_ROOMS        = 0x02;
     const SELECT_MINIMODULES  = 0x04;
     const SELECT_CASTES       = 0x08;
+    const SELECT_STUDIES      = 0x10;
     const SELECT_COMMENTS     = 0x20;
     const SELECT_POLY         = 0x40;
 
     const IMAGE_ORIGINAL      = 0x01;
     const IMAGE_PHOTO         = 0x02;
     const IMAGE_BEST          = 0x03;
-
-    const FIRST_NAME    = 1;
-    const LAST_NAME     = 2;
-    const NICK_NAME     = 4;
-    const ANY_NAME      = 7;
 
     /*******************************************************************************
          Properties
@@ -338,6 +334,17 @@ class User extends Meta
 
     *******************************************************************************/
 
+    public function studies($all = false)
+    {
+        if ($all) {
+            return $this->studies;
+        }
+
+        return array_filter($this->studies, function ($s) {
+            return ($s->formation()->id() > 0);
+        });
+    }
+
     //TODO
     public function addStudy($formation_id, $year_in, $year_out, $promo, $forlife)
     {
@@ -543,7 +550,7 @@ class User extends Meta
 
             $this->comments[$g->id()] = $comments;
         }
-        return $this->comments[$g->id()];
+        return empty($this->comments[$g->id()]) ? false : $this->comments[$g->id()];
     }
 
     public function castes($mixed = null)
@@ -597,21 +604,6 @@ class User extends Meta
         }
 
         throw new Exception('DEPRECATED call to getSilentWithValues()');
-    }
-
-    public static function getNameVariants($name)
-    {
-        $ret = array();
-        if($name & self::FIRST_NAME) {
-            $ret[] = self::FIRST_NAME;
-        }
-        if($name & self::LAST_NAME) {
-            $ret[] = self::LAST_NAME;
-        }
-        if($name & self::NICK_NAME) {
-            $ret[] = self::NICK_NAME;
-        }
-        return $ret;
     }
 
     // Tries to find the user forlife from data in cookies
@@ -804,14 +796,35 @@ class User extends Meta
                                    WHERE  cu.uid IN {?}', array_keys($users));
 
             $castes = new Collection('Caste');
-            while (list($uid, $cid) = $iter->next())
-            {
+            while (list($uid, $cid) = $iter->next()) {
                 $caste = $castes->addget($cid);
                 $users[$uid]->castes->add($caste);
             }
 
             if (isset($options[self::SELECT_CASTES]))
                 $castes->select($options[self::SELECT_CASTES]);
+        }
+
+        // Load Studies
+        if ($bits & self::SELECT_STUDIES)
+        {
+            foreach ($users as $u)
+                $u->studies = array();
+
+            $iter = XDB::iterator('SELECT  uid, formation_id, year_in, year_out, promo, forlife
+                                     FROM  studies
+                                    WHERE  uid IN {?}', array_keys($users));
+
+            $formations = new Collection('Formation');
+            while ($datas = $iter->next()) {
+                $formation_id = $datas['formation_id'];
+                $datas['formation'] = $formations->addget($formation_id); unset($datas['formation_id']);
+                $users[$datas['uid']]->studies[$formation_id] = new Study($datas);
+            }
+
+            if (isset($options[self::SELECT_STUDIES])) {
+                $formations->select($options[self::SELECT_STUDIES]);
+            }
         }
 
         // Load comments
@@ -824,8 +837,7 @@ class User extends Meta
                                     FROM  users_comments
                                    WHERE  uid IN {?}', array_keys($users));
 
-            while (list($uid, $gid, $comment) = $iter->next())
-            {
+            while (list($uid, $gid, $comment) = $iter->next()) {
                 $users[$uid]->comments[$gid] = $comment;
             }
 
