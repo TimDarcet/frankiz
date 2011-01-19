@@ -32,18 +32,17 @@
     {/if}
     </p>
     <p class="connect">
-        <a {path_to_href_attribute path="login"} nosolo="true" accesskey="l">Se connecter</a>
+        <a {path_to_href_attribute path="login"} accesskey="l">Se connecter</a>
     </p>
 {/if}
 
 {if $smarty.session.auth >= AUTH_COOKIE}
-    {assign var='face' value=$smarty.session.user->image()}
-    <img src="{$face->src()|smarty:nodefaults}" class="face" />
+    <img src="{$smarty.session.user->image()|image:'small'|smarty:nodefaults}" class="face" />
     <div>
         <p class="name">{$smarty.session.user->displayName()}</p>
         <ul>
             <li><a {path_to_href_attribute path="profile"} accesskey="c">Compte</a></li>
-            <li><a {path_to_href_attribute path="exit"} nosolo="true" accesskey="l">Se déconnecter</a></li>
+            <li><a {path_to_href_attribute path="exit"} accesskey="l">Se déconnecter</a></li>
         </ul>
     </div>
 {/if}
