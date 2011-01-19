@@ -26,7 +26,7 @@ ini_set("memory_limit","512M");
  * Convert fkz2 to fkz3
  */
 
-require 'connect.db.inc.php';
+require '../../bin/connect.db.inc.php';
 
 function conv($str) {
     $str = html_entity_decode($str, ENT_QUOTES);

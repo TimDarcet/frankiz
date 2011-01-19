@@ -7,4 +7,4 @@ htdocs/.htaccess
 .project
 .settings/*
 htdocs/data/*
-bin/unversionned
+upgrade/2.0.0_to_3.0.0/unversionned
