@@ -46,10 +46,10 @@ class FrankizImage extends Meta implements ImageInterface
     // The last time the full image was seen
     protected $lastseen;
 
-    // A miniature of the image (max: SMALL_WIDTH x SMALL_HEIGHT)
+    // Differents levels of miniatures to the original picture
+    protected $micro = null;
     protected $small = null;
-    // The image
-    protected $full = null;
+    protected $full  = null;
 
     /*******************************************************************************
          Getters & Setters
@@ -134,26 +134,40 @@ class FrankizImage extends Meta implements ImageInterface
 
     *******************************************************************************/
 
-    public function send($bits = self::SELECT_FULL)
+    public function send($bits = null)
     {
         global $globals;
 
-        if (($bits & self::SELECT_FULL) && (!empty($this->full))) {
+        if ($bits === null) {
+            if (!empty($this->full)) {
+                $bits = self::SELECT_FULL;
+            } elseif (!empty($this->small)) {
+                $bits = self::SELECT_SMALL;
+            } elseif (!empty($this->micro)) {
+                $bits = self::SELECT_MICRO;
+            }
+        }
+
+        if ($bits & self::SELECT_FULL) {
             XDB::execute('UPDATE images SET seen = seen + 1, lastseen = NOW() WHERE iid = {?}', $this->id());
             pl_cached_dynamic_content_headers($this->mime);
             echo $this->full;
             exit;
         }
 
-        if (!empty($this->small)) {
+        if ($bits & self::SELECT_SMALL) {
             pl_cached_dynamic_content_headers($this->smallMime());
             echo $this->small;
             exit;
         }
 
-        // Fallback image as specified in the configuration file
-        $fallback = new FrankizImage($globals->image);
-        $fallback->select($bits)->send($bits);
+        if ($bits & self::SELECT_MICRO) {
+            pl_cached_dynamic_content_headers($this->smallMime());
+            echo $this->micro;
+            exit;
+        }
+
+        throw new Exception("The image couldn't be / hasn't been fetched");
     }
 
     public function inline()
@@ -167,26 +181,20 @@ class FrankizImage extends Meta implements ImageInterface
     }
 
     /**
-    * Return the html code to print the image
-    * Ex: {$image->html()|smarty:nodefaults}
-    *
-    * @param $bits  Size to use
-    */
-    public function html($bits = self::SELECT_SMALL)
-    {
-        $small = ($bits == self::SELECT_SMALL) ? '?small' : '';
-        return '<a href="image/' . $this->id() . '"><img src="image/' . $this->id() . $small . '" /></a>';
-    }
-
-    /**
     * Return the src attribute to put into the img tag
     *
     * @param $bits  Size to use
     */
     public function src($bits = self::SELECT_SMALL)
     {
-        $small = ($bits == self::SELECT_SMALL) ? '?small' : '';
-        return 'image/' . $this->id() . $small;
+        $size = 'full';
+        if ($bits == self::SELECT_MICRO) {
+            $size = 'micro';
+        }
+        if ($bits == self::SELECT_SMALL) {
+            $size = 'small';
+        }
+        return "image/$size/" . $this->id();
     }
 
     /*******************************************************************************
@@ -194,9 +202,9 @@ class FrankizImage extends Meta implements ImageInterface
 
     *******************************************************************************/
 
-    protected function makeSmall($im = null)
+    protected function make($width, $height, $quality)
     {
-        if ($this->x <= self::SMALL_WIDTH && $this->y <= self::SMALL_HEIGHT)
+        if ($this->x <= $width && $this->y <= $height)
             return null;
 
         if (empty($im)) {
@@ -204,16 +212,26 @@ class FrankizImage extends Meta implements ImageInterface
             $im->readImageBlob($this->full);
         }
 
-        if ($im->getImageWidth() > self::SMALL_WIDTH)
-            $im->thumbnailImage(self::SMALL_WIDTH, null, false);
+        if ($im->getImageWidth() > $width)
+            $im->thumbnailImage($width, null, false);
 
-        if ($im->getImageHeight() > self::SMALL_HEIGHT)
-            $im->thumbnailImage(null, self::SMALL_HEIGHT, false);
+        if ($im->getImageHeight() > $height)
+            $im->thumbnailImage(null, $height, false);
 
-        $im->setImageCompressionQuality(self::SMALL_QUALITY);
+        $im->setImageCompressionQuality($quality);
         $im->stripImage();
 
         return $im->getimageblob();
+    }
+
+    protected function makeSmall()
+    {
+        return make(self::SMALL_WIDTH, self::SMALL_HEIGHT, self::SMALL_QUALITY);
+    }
+
+    protected function makeMicro()
+    {
+        return make(self::MICRO_WIDTH, self::MICRO_HEIGHT, self::MICRO_QUALITY);
     }
 
     /**
@@ -232,17 +250,19 @@ class FrankizImage extends Meta implements ImageInterface
         if ($this->x > self::MAX_WIDTH || $this->y > self::MAX_HEIGHT)
             throw new Exception('The picture is to big: ('.$this->x.'x'.$this->y.') > ('.self::MAX_WIDTH.'x'.self::MAX_HEIGHT.')');
 
-        $this->full = file_get_contents($fu->path());
+        $this->full  = file_get_contents($fu->path());
         $this->small = $this->makeSmall();
+        $this->micro = $this->makeMicro();
+
         if ($rm)
             $fu->rm();
 
         XDB::execute('UPDATE  images
-                         SET  full = {?}, small = {?},
+                         SET  full = {?}, small = {?}, micro = {?}
                               mime= {?}, x = {?}, y = {?}
                        WHERE  iid = {?}',
-                             $this->full, $this->small, $this->mime,
-                             $this->x, $this->y, $this->id());
+                             $this->full, $this->small, $this->micro,
+                             $this->mime, $this->x, $this->y, $this->id());
     }
 
     /*******************************************************************************
@@ -260,17 +280,22 @@ class FrankizImage extends Meta implements ImageInterface
         $images = array_combine(self::toIds($images), $images);
 
         $cols = '';
+        if ($bits & (self::SELECT_BASE | self::SELECT_FULL | self::SELECT_SMALL | self::SELECT_MICRO)) {
+            $cols .= ', gid, mime';
+        }
         if ($bits & self::SELECT_BASE)
-            $cols .= ', gid, mime, x, y, label, seen, lastseen, OCTET_LENGTH(full) size';
+            $cols .= ', x, y, label, seen, lastseen, OCTET_LENGTH(full) size';
         if ($bits & self::SELECT_FULL)
-            $cols .= ', gid, mime, full';
+            $cols .= ', full';
         if ($bits & self::SELECT_SMALL)
-            $cols .= ', gid, mime, IFNULL(small, full) AS small';
+            $cols .= ', IFNULL(small, full) AS small';
+        if ($bits & self::SELECT_MICRO)
+            $cols .= ', IFNULL(IFNULL(micro, small), full) AS micro';
 
         if ($cols != '') {
             $iter = XDB::iterator("SELECT  iid AS id $cols
-                                    FROM  images
-                                   WHERE  iid IN {?}", array_keys($images));
+                                     FROM  images AS i
+                                    WHERE  iid IN {?}", array_keys($images));
 
             $groups = new Collection('Group');
             while ($datas = $iter->next()) {
