@@ -167,7 +167,7 @@ class Collection extends PlAbstractIterable
     {
         $className = $this->className;
         if ($className::isId($mixed)) {
-            $id = intval($mixed);
+            $id = $mixed;
             if (empty($this->collected[$id]))
                 $this->collected[$id] = new $className($id);
         } else if ($mixed instanceof $className) {
@@ -244,7 +244,7 @@ class Collection extends PlAbstractIterable
     {
         $className = $this->className;
         if ($className::isId($mixed))
-            return empty($this->collected[intval($mixed)]) ? false : $this->collected[intval($mixed)];
+            return empty($this->collected[$mixed]) ? false : $this->collected[$mixed];
         elseif ($mixed instanceof Meta)
             return empty($this->collected[$mixed->id()]) ? false : $this->collected[$mixed->id()];
         else
