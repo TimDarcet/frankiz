@@ -59,20 +59,21 @@ class Room extends Meta
         if (empty($rooms))
             return;
 
-        if (empty($rooms)) {
+        if (empty($options)) {
             $options = self::SELECT_BASE;
         }
 
         $bits = self::optionsToBits($options);
         $rooms = array_combine(self::toIds($rooms), $rooms);
 
-        if (!empty($cols)) {
+        if ($bits & self::SELECT_BASE) {
             $iter = XDB::iterator('SELECT  rid AS id, phone, comment
                                      FROM  rooms
                                     WHERE  rid IN {?}', self::toIds($rooms));
 
-            while ($datas = $iter->next())
-                $castes[$datas['id']]->fillFromArray($datas);
+            while ($datas = $iter->next()) {
+                $rooms[$datas['id']]->fillFromArray($datas);
+            }
         }
 
         if ($bits & self::SELECT_IPS) {
@@ -84,7 +85,7 @@ class Room extends Meta
                                    WHERE  rid IN {?}", self::toIds($rooms));
 
             while (list($ip, $rid) = $iter->next())
-                array_push($rooms[$rid]->ips, $ip);
+                $rooms[$rid]->ips[] = $ip;
         }
     }
 }
