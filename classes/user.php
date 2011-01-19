@@ -241,14 +241,16 @@ class User extends Meta
         return $this->photo;
     }
 
-    public function image($bits = self::IMAGE_BEST)
+    public function image()
     {
-        if (($bits & self::IMAGE_PHOTO) && (!empty($this->photo)) && ($this->photo->id() != 0))
+        global $globals;
+
+        if ((!empty($this->photo)))
             return $this->photo;
-        if (($bits & self::IMAGE_ORIGINAL) && (!empty($this->original)))
+        if ((!empty($this->original)))
             return $this->original;
 
-        return false;
+        return new StaticImage(($this->isFemale()) ? $globals->images->woman : $globals->images->man);
     }
 
     /**
@@ -741,9 +743,8 @@ class User extends Meta
                     $datas['group'] = $groups->addget($datas['gid']);unset($datas['gid']);
                     $datas['birthdate'] = new FrankizDateTime($datas['birthdate']);
 
-                    $datas['original']  = empty($datas['original']) ? new StaticImage($datas['gender'] . '.png')
-                                                                    : new FrankizImage($datas['original']);
-                    $datas['photo']     = empty($datas['photo']) ? null : new FrankizImage($datas['photo']);
+                    $datas['original']  = empty($datas['original']) ? false : new FrankizImage($datas['original']);
+                    $datas['photo']     = empty($datas['photo']) ? false : new FrankizImage($datas['photo']);
                 }
                 $users[$datas['id']]->fillFromArray($datas);
             }
