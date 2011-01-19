@@ -29,13 +29,4 @@
 {js src="minimodules.js"}
 {js src="jquery.fancybox.js"}
 
-{literal}
-<script type="text/javascript">
-    $(document).ready(function(){
-        if ($('#debug').length == 0)
-            enableAjaxify();
-    });
-</script>
-{/literal}
-        
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
