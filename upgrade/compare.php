@@ -35,12 +35,12 @@ if (!empty($argv[1]) && !empty($argv[2])) {
     try { XDB::execute('DROP DATABASE compare'); } catch (Exception $e) {}
     XDB::execute('CREATE DATABASE compare DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci');
     XDB::execute('USE compare');
-    $tables = glob("current/sql/*.sql");
+    $tables = glob("2.0.0_to_3.0.0/sql/*.sql");
     foreach ($tables as $table) {
         echo exec('mysql -h ' . $globals->dbhost . ' -u ' . $globals->dbuser .
                   ' -p' . $globals->dbpwd . ' compare < ' . $table);
     }
-    echo "Comparing acutal DB '$dba' with the theoritical one \n";
+    echo "Comparing actual DB '$dba' with the theoritical one \n";
 }
 
 
