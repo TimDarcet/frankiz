@@ -84,7 +84,7 @@ class ImagesModule extends PlModule
         $page->changeTpl('images/upload.tpl');
     }
 
-    function handler_image($page, $iid = null)
+    function handler_image($page, $size, $iid = null)
     {
         $image = new FrankizImage($iid);
         $image->select(array(FrankizImage::SELECT_BASE => Group::SELECT_BASE));
@@ -104,11 +104,18 @@ class ImagesModule extends PlModule
             }
         }
 
-        if (Env::has('small'))
-            $image->select(FrankizImage::SELECT_SMALL);
-        else
-            $image->select(FrankizImage::SELECT_FULL);
+        $select = ImageInterface::SELECT_FULL;
+        switch ($size) {
+            case 'micro':
+                $select = ImageInterface::SELECT_MICRO;
+                break;
+                
+            case 'small':
+                $select = ImageInterface::SELECT_SMALL;
+                break;
+        }
 
+        $image->select($select);
         $image->send();
     }
 }
