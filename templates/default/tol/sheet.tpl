@@ -23,17 +23,49 @@
 <div class="base">
     {assign var='photo' value=$result->photo()}
     {assign var='original' value=$result->original()}
-    <div class="img" photo="{if $photo}{$photo->src(2)|smarty:nodefaults}{/if}"
-                     original="{if $original}{$original->src(2)|smarty:nodefaults}{/if}">
+    <div class="img" photo="{if $photo}{$photo|image:'small'|smarty:nodefaults}{/if}"
+                     original="{if $original}{$original|image:'small'|smarty:nodefaults}{/if}">
         {assign var='img' value=$result->image()}
-        <a href="{$img->src(2)|smarty:nodefaults}"><img src="{$img->src()|smarty:nodefaults}" /></a>
+        <a href="{$img|image:'small'|smarty:nodefaults}"><img src="{$img|image:'small'|smarty:nodefaults}" /></a>
     </div>
     <div class="sports">
 
     </div>
-    <div class="name">{$result->firstname()} {$result->lastname()} - {$result->nickname()}</div>
+    <div class="name">{$result->firstname()} {$result->lastname()} - {$result->nickname()} </div>
     <div>
-
+        {$result->cellphone()}
+    </div>
+    <div>
+        <ul>
+        {foreach from=$result->rooms() item='room'}
+            <li>
+            {$room->id()}
+            {$room->phone()}
+            <ul>
+            {foreach from=$room->ips() item='ip'}
+                <li>
+                {$ip}
+                </li>
+            {/foreach}
+            </ul>
+            </li>
+        {/foreach}
+        </ul>
+    </div>
+    <div>
+        <ul>
+        {foreach from=$result->studies() item='study'}
+            <li>
+            {$study->year_in()}
+            {$study->year_out()}
+            {$study->promo()}
+            {$study->forlife()}
+            {assign var='formation' value=$study->formation()}
+            {$formation->label()}
+            <img src="{$formation->image()|image:'micro'|smarty:nodefaults}" />
+            </li>
+        {/foreach}
+        </ul>
     </div>
     <hr />
 </div>

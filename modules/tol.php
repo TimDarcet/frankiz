@@ -114,8 +114,9 @@ class TolModule extends PLModule
 
     function toSelect()
     {
-        return array(User::SELECT_BASE => null, User::SELECT_ROOMS => null,
+        return array(User::SELECT_BASE => null, User::SELECT_ROOMS => Room::SELECT_BASE | Room::SELECT_IPS,
                      User::SELECT_POLY => null, User::SELECT_COMMENTS => null,
+                     User::SELECT_STUDIES => Formation::SELECT_BASE,
                      User::SELECT_CASTES => array(Caste::SELECT_BASE => Group::SELECT_BASE));
     }
 
@@ -128,6 +129,7 @@ class TolModule extends PLModule
             $uf = new UserFilter($filter);
             $users = $uf->get(new PlLimit(50,0))->select($this->toSelect());
             $page->assign('results', $users);
+            $page->assign('mode', 'sheet');
             $page->assign('total', $uf->getTotalCount());
         }
 
