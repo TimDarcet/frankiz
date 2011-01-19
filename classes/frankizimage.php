@@ -226,12 +226,12 @@ class FrankizImage extends Meta implements ImageInterface
 
     protected function makeSmall()
     {
-        return make(self::SMALL_WIDTH, self::SMALL_HEIGHT, self::SMALL_QUALITY);
+        return $this->make(self::SMALL_WIDTH, self::SMALL_HEIGHT, self::SMALL_QUALITY);
     }
 
     protected function makeMicro()
     {
-        return make(self::MICRO_WIDTH, self::MICRO_HEIGHT, self::MICRO_QUALITY);
+        return $this->make(self::MICRO_WIDTH, self::MICRO_HEIGHT, self::MICRO_QUALITY);
     }
 
     /**
@@ -258,7 +258,7 @@ class FrankizImage extends Meta implements ImageInterface
             $fu->rm();
 
         XDB::execute('UPDATE  images
-                         SET  full = {?}, small = {?}, micro = {?}
+                         SET  full = {?}, small = {?}, micro = {?},
                               mime= {?}, x = {?}, y = {?}
                        WHERE  iid = {?}',
                              $this->full, $this->small, $this->micro,
