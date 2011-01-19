@@ -60,6 +60,10 @@ class Formation extends Meta
         return $this->description;
     }
 
+    public function image() {
+        return new StaticImage('formations/' . $this->abbrev() . '.png');
+    }
+
     /*******************************************************************************
          Data fetcher
              (batchFrom, batchSelect, fillFromArray, …)
