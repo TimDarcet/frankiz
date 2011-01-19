@@ -110,7 +110,7 @@ abstract class Meta
     {
         if ($other instanceof $this)
             return $other->id() == $this->id();
-        else if (isId($other))
+        else if (static::isId($other))
             return $other == $this->id();
         else
             return null;

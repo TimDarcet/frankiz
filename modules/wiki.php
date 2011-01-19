@@ -92,7 +92,7 @@ class WikiModule extends PlModule
         $mixed = implode('/', $mixed);
 
         // Create the Wiki if it doesn't exist
-        if (isId($mixed))
+        if (Wiki::isId($mixed))
             $wiki = new Wiki($mixed);
         else
             $wiki = Wiki::from($mixed, true);
