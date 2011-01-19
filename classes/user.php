@@ -347,9 +347,9 @@ class User extends Meta
         });
     }
 
-    //TODO
-    public function addStudy($formation_id, $year_in, $year_out, $promo, $forlife)
+    public function addStudy($formation, $year_in, $year_out, $promo, $forlife)
     {
+        $formation_id = ($formation instanceof Formation) ? $formation->id() : $formation;
         XDB::execute('INSERT IGNORE INTO  studies
                                      SET  uid = {?}, formation_id = {?},
                                           year_in = {?}, year_out = {?},
