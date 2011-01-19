@@ -144,22 +144,6 @@ CREATE TABLE IF NOT EXISTS `castes_users` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `formations`
---
-
-DROP TABLE IF EXISTS `formations`;
-CREATE TABLE IF NOT EXISTS `formations` (
-  `formation_id` int(10) NOT NULL AUTO_INCREMENT,
-  `domain` varchar(255) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
-  `title` varchar(64) NOT NULL,
-  `abbrev` varchar(10) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
-  PRIMARY KEY (`formation_id`),
-  KEY `formation_id` (`formation_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `groups`
 --
 

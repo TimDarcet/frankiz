@@ -58,5 +58,5 @@ CREATE TABLE IF NOT EXISTS account (
 -- Dumping data for table `account`
 --
 
-INSERT INTO `account` (`uid`, `hruid`, `password`, `gid`, `perms`, `state`, `hash`, `hashstamp`, `hash_rss`, `email_format`, `skin`, `firstname`, `lastname`, `nickname`, `bestalias`, `gender`, `birthdate`, `next_birthday`, `cellphone`, `original`, `photo`, `comment`, `on_platal`) VALUES
+INSERT INTO `account` (`uid`, `hruid`, `password`, `gid`, `perms`, `state`, `hash`, `hashstamp`, `hash_rss`, `email_format`, `skin`, `firstname`, `lastname`, `nickname`, `email`, `gender`, `birthdate`, `next_birthday`, `cellphone`, `original`, `photo`, `comment`, `on_platal`) VALUES
 (0, 'anonymous', '', 0, 'none', 'disabled', '', '0000-00-00 00:00:00', '', 'text', 'default', '', '', '', '', 'woman', '0000-00-00', '0000-00-00', '', 0, 0, 'Anonymous User', 0);
