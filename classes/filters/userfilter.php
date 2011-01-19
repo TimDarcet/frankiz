@@ -164,9 +164,15 @@ class UFC_Study extends UserFilterCondition
 {
     private $formation_ids = null;
 
-    public function __construct($formation_ids)
+    public function __construct($formations)
     {
-        $this->formation_ids = unflatten($formation_ids);
+        if ($formations instanceof Collection) {
+            $this->formation_ids = $formations->ids();
+        } elseif ($formations instanceof Formation) {
+            $this->formation_ids = unflatten($formations->id());
+        } else {
+            $this->formation_ids = unflatten($formations);
+        }
     }
 
     public function buildCondition(PlFilter $uf)
