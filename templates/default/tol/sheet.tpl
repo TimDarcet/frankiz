@@ -20,18 +20,21 @@
 {*                                                                        *}
 {**************************************************************************}
 
+{assign var='castes' value=$result->castes()}
+{assign var='groups' value=$castes->groups()}
+
 <div class="base">
     {assign var='photo' value=$result->photo()}
     {assign var='original' value=$result->original()}
-    <div class="img" photo="{if $photo}{$photo|image:'small'|smarty:nodefaults}{/if}"
-                     original="{if $original}{$original|image:'small'|smarty:nodefaults}{/if}">
+    <div class="img" photo="{if $photo}{$photo|image:'full'|smarty:nodefaults}{/if}"
+                     original="{if $original}{$original|image:'full'|smarty:nodefaults}{/if}">
         {assign var='img' value=$result->image()}
-        <a href="{$img|image:'small'|smarty:nodefaults}"><img src="{$img|image:'small'|smarty:nodefaults}" /></a>
+        <a href="{$img|image:'full'|smarty:nodefaults}"><img src="{$img|image:'small'|smarty:nodefaults}" /></a>
     </div>
     <div class="sports">
 
     </div>
-    <div class="name">{$result->firstname()} {$result->lastname()} - {$result->nickname()} </div>
+    <div class="name">{$result->firstname()} {$result->lastname()} - {$result->nickname()} - {$result->birthdate()|datetime:"d/m/Y"}</div>
     <div>
         {$result->cellphone()}
     </div>
@@ -52,7 +55,7 @@
         {/foreach}
         </ul>
     </div>
-    <div>
+    <div class="studies">
         <ul>
         {foreach from=$result->studies() item='study'}
             <li>
@@ -67,17 +70,36 @@
         {/foreach}
         </ul>
     </div>
+    <div class="sports">
+        <ul>
+            {foreach from=$groups|filter:'ns':'sport'|order:'score' item='group'}
+                <li>{$group|group}</li>
+            {/foreach}
+        </ul>
+    </div>
+    <div class="nationality">
+        <ul>
+            {foreach from=$groups|filter:'ns':'nationality'|order:'score' item='group'}
+                <li>{$group|group}</li>
+            {/foreach}
+        </ul>
+    </div>
     <hr />
 </div>
 <div class="more">
-    <div class="associations">
+    <div class="binets">
         Binets:
         <ul>
-            {assign var='castes' value=$result->castes()}
-            {assign var='groups' value=$castes->groups()}
-            
-            {foreach from=$groups|order:'score' item='group'}
-                <li>{$group->score()} {$group->label()} {$result->rights($group)|@rights} {$result->comment($group)}</li>
+            {foreach from=$groups|filter:'ns':'binet'|order:'score' item='group'}
+                <li>{$result->rights($group)|@rights} {$group|group} {$result->comment($group)}</li>
+            {/foreach}
+        </ul>
+    </div>
+    <div class="free">
+        Groupes:
+        <ul>
+            {foreach from=$groups|filter:'ns':'free'|order:'score' item='group'}
+                <li>{$result->rights($group)|@rights} {$group|group} {$result->comment($group)}</li>
             {/foreach}
         </ul>
     </div>
