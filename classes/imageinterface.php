@@ -21,31 +21,47 @@
 
 interface ImageInterface
 {
+    /*******************************************************************************
+         Constants
+
+    *******************************************************************************/
+
+    // Maxs for the original picture
     const MAX_WIDTH  = 800;
     const MAX_HEIGHT = 600;
 
-    const SMALL_WIDTH = 140;
-    const SMALL_HEIGHT = 105;
+    // Sizes for the miniature
+    const SMALL_WIDTH   = 140;
+    const SMALL_HEIGHT  = 105;
     const SMALL_QUALITY = 75;
+
+    // Sizes for the stamp-size picture
+    const MICRO_WIDTH   = 35;
+    const MICRO_HEIGHT  = 35;
+    const MICRO_QUALITY = 75;
 
     const SELECT_BASE  = 0x01;
     const SELECT_FULL  = 0x02;
     const SELECT_SMALL = 0x04;
+    const SELECT_MICRO = 0x08;
 
+    /*******************************************************************************
+         Getters & Setters
+
+    *******************************************************************************/
+
+    /**
+    * Returns the width of the original picture
+    */
     public function x();
 
+    /**
+    * Returns the height of the original picture
+    */
     public function y();
 
     /**
-    * Return the html code to print the image
-    * Ex: {$image->html()|smarty:nodefaults}
-    *
-    * @param $bits  Size to use
-    */
-    public function html($bits = self::SELECT_SMALL);
-
-    /**
-    * Return the src attribute to put into the img tag
+    * Returns the src attribute to put into the img tag
     *
     * @param $bits  Size to use
     */
