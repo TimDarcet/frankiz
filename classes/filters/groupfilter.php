@@ -100,7 +100,7 @@ class GFC_User extends GroupFilterCondition
     public function __construct($us, $rights = null)
     {
         $this->uids  = User::toIds(unflatten($us));
-        $this->rights = (string) (empty($rights)) ? Rights::member() : $rights;
+        $this->rights = (string) ((empty($rights)) ? Rights::member() : $rights);
     }
 
     public function buildCondition(PlFilter $f)
