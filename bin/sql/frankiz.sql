@@ -22,41 +22,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `account`
---
-
-DROP TABLE IF EXISTS `account`;
-CREATE TABLE IF NOT EXISTS `account` (
-  `uid` int(10) NOT NULL AUTO_INCREMENT,
-  `hruid` varchar(255) CHARACTER SET ascii NOT NULL,
-  `password` varchar(120) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `gid` int(11) NOT NULL,
-  `perms` enum('admin','web','support','kes','none') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'none',
-  `state` enum('active','pending','unregistered','disabled') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `hash` varchar(34) CHARACTER SET ascii NOT NULL,
-  `hashstamp` datetime NOT NULL,
-  `hash_rss` varchar(34) CHARACTER SET ascii NOT NULL,
-  `email_format` enum('text','html') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'text',
-  `skin` varchar(40) NOT NULL,
-  `firstname` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `lastname` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `nickname` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `bestalias` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `gender` enum('man','woman') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `birthdate` date NOT NULL DEFAULT '0000-00-00',
-  `next_birthday` date NOT NULL DEFAULT '0000-00-00',
-  `cellphone` char(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
-  `original` int(11) NOT NULL DEFAULT '0',
-  `photo` int(11) NOT NULL DEFAULT '0',
-  `comment` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `on_platal` tinyint(1) NOT NULL,
-  PRIMARY KEY (`uid`),
-  UNIQUE KEY `hruid` (`hruid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10319 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `activities`
 --
 
@@ -174,19 +139,6 @@ CREATE TABLE IF NOT EXISTS `castes_users` (
   `cid` int(11) NOT NULL,
   `uid` int(11) NOT NULL,
   UNIQUE KEY `cid` (`cid`,`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `days`
---
-
-DROP TABLE IF EXISTS `days`;
-CREATE TABLE IF NOT EXISTS `days` (
-  `name` varchar(255) DEFAULT NULL,
-  `day` tinyint(4) DEFAULT NULL,
-  `month` tinyint(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

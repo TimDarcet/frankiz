@@ -28,7 +28,7 @@
 </div>
 <br />
 
-<form enctype='multipart/form-data' method='post' action='{$globals->baseurl}/{$platal->pl_self()}'>
+<form enctype='multipart/form-data' method='post' action='{$smarty.server.REQUEST_URI}'>
 {xsrf_token_field}
   <input type="hidden" name="username" value="{$smarty.session.uid}" />
   <h2><span>Connexion</span></h2>

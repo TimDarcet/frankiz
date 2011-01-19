@@ -28,6 +28,13 @@ class Frankiz extends Platal
             $page->changeTpl('password_prompt_logged.tpl');
         } else {
             $page->assign('title', 'Connexion');
+            $page->assign('remote_site', false);
+            if (Env::has('timestamp') && Env::has('site') && Env::has('hash') && Env::has('request')) {
+                $label = XDB::fetchOneCell('SELECT  label
+                                              FROM  remote
+                                             WHERE  site = {?}', Env::s('site'));
+                $page->assign('remote_site', $label);
+            }
             $page->changeTpl('password_prompt.tpl');
         }
         $page->assign_by_ref('platal', $this);

@@ -22,9 +22,13 @@
 
 <div class="login">
 
-    {if $platal->pl_self() != 'login'}
+    {if ($platal->pl_self() != 'login') && (!$remote_site)}
     <p>
         La page que tu as demandée (<strong>{$globals->baseurl}/{$platal->pl_self()}</strong>) nécessite une authentification.
+    </p>
+    {elseif $remote_site}
+    <p>
+        Le site partenaire <strong>{$remote_site}</strong> nécessite une authentification.
     </p>
     {/if}
 
