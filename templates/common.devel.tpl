@@ -20,7 +20,7 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if #globals.debug#}
+{if $globals->debug > 0}
 <div id="debug">
     <span id="debug_hook">
         @HOOK@
