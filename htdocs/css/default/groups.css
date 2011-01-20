@@ -51,9 +51,11 @@
     display: inline-block;
     width: 35px;
     text-align: center;
+    overflow: visible;
 }
 
 #content li.user img {
+    position: relative;
     height: 35px;
     max-width: 27px;
 }

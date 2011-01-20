@@ -42,14 +42,48 @@ function force_search() {
                             var u = users[rights][i];
                             var img = new Image();
                             $(img).hide();
-                            img.src = u.src;
+                            img.src = u.micro;
                             img.title = u.displayName;
                             img.uid = i;
                             $(img).load(function() {
+                                var _this = $(this);
                                 subul.append(
-                                        $('<li uid="' + u.id + '" class="user">')
-                                            .append($('<a href="tol?hruid=' + u.hruid +'">').append(this)));
-                                $(this).fadeIn();
+                                        $('<li uid="' + u.id + '" class="user">').append(this));
+                                _this.fadeIn();
+                                _this.mouseover(function() {
+                                    var temp = $('<div><a href="tol?hruid=' + u.hruid +'"><img style="height:100%" src="' + u.micro + '" /></a></div>');
+                                    $('body').append(temp);
+                                    temp.attr('title', u.displayName);
+                                    temp.css('margin', 0);
+                                    temp.css('padding', 0);
+                                    temp.css('height', $(this).height() + 5);
+                                    temp.css('width', '100%');
+                                    temp.css('position', 'absolute');
+                                    temp.css('vertical-align', 'middle');
+                                    temp.css({top: $(this).offset().top, left: $(this).offset().left});
+                                    temp.animate({
+                                        queue: true,
+                                        height: 105,
+                                        left: "+=-20",
+                                        top: "+=-52"
+                                      }, 500);
+                                    temp.animate({queue: true}, 1000, function() {
+                                        temp.animate({
+                                            height: _this.height(),
+                                            left: "+=+20",
+                                            top: "+=+52"
+                                          }, 500, function() {
+                                              $(this).remove();
+                                          });
+                                    });
+                                    var smallimg = new Image();
+                                    $(smallimg).hide();
+                                    smallimg.src = u.small;;
+                                    $(smallimg).css('width', '100%');
+                                    $(smallimg).load(function() {
+                                        temp.find('img').attr('src', this.src);
+                                    })
+                                });
                             });
                         })();
                     }

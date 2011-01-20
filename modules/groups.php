@@ -105,41 +105,42 @@ class GroupsModule extends PLModule
 
     function handler_group_see($page, $group)
     {
-        global $globals;
+        global $globals, $platal;
 
         $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
         $gf = new GroupFilter($filter);
         $group = $gf->get(true);
 
-        if ($group)
-        {
+        if ($group) {
             // Fetch the group
-            $group->select(Group::SELECT_BASE | Group::SELECT_DESCRIPTION);
-            $group->select(array(Group::SELECT_CASTES => Caste::SELECT_BASE));
+            $group->select(Group::SELECT_BASE);
             $page->assign('group', $group);
 
-            // Current promos ?
-            foreach (json_decode($globals->core->promos) as $promo) {
-                $groupes_names[] = 'promo_' . $promo;
+            if (S::i('auth') > AUTH_PUBLIC || $group->external()) {
+                $group->select(array(Group::SELECT_DESCRIPTION => null,
+                                     Group::SELECT_CASTES => Caste::SELECT_BASE));
+
+                // Current promos ?
+                foreach (json_decode($globals->core->promos) as $promo) {
+                    $groupes_names[] = 'promo_' . $promo;
+                }
+                $promos = new Collection('Group');
+                $promos->add($groupes_names)->select(Group::SELECT_BASE);
+                $page->assign('promos', $promos);
+
+                // Fetch the news
+                $nf = new NewsFilter(new PFC_And(new NFC_Origin($group),
+                                                 new PFC_Or(new NFC_User(S::user(), Rights::member()),
+                                                            new NFC_Private(false))
+                                                 ), new NFO_End(true));
+                $news = $nf->get()->select();
+                $page->assign('news', $news);
+                $page->assign('title', $group->label());
+                $page->changeTpl('groups/group.tpl');
+            } else {
+                $platal->force_login($page);
             }
-            $promos = new Collection('Group');
-            $promos->add($groupes_names)->select(Group::SELECT_BASE);
-            $page->assign('promos', $promos);
-
-            // Fetch the news
-            $nf = new NewsFilter(new PFC_And(new NFC_Origin($group),
-                                             new PFC_Or(new NFC_User(S::user(), Rights::member()),
-                                                        new NFC_Private(false))
-                                             ),
-                                             new NFO_End(true));
-            $news = $nf->get()->select();
-            $page->assign('news', $news);
-
-            $page->assign('title', $group->label());
-            $page->changeTpl('groups/group.tpl');
-        }
-        else
-        {
+        } else {
             $page->assign('title', "Ce groupe n'existe pas");
             $page->changeTpl('groups/no_group.tpl');
         }
@@ -168,14 +169,14 @@ class GroupsModule extends PLModule
             $uf = new UserFilter(new PFC_And(new UFC_Caste($group->caste(Rights::admin())), $filters));
             $admins = $uf->get()->select(User::SELECT_BASE);
             foreach ($admins as $user) {
-                $users['admin'][$user->id()] = $user->export(User::EXPORT_MICRO);
+                $users['admin'][$user->id()] = $user->export(User::EXPORT_MICRO | User::EXPORT_SMALL);
             }
 
             $uf = new UserFilter(new PFC_And(new UFC_Caste($group->caste(Rights::member())), $filters));
             $members = $uf->get()->select(User::SELECT_BASE);
             foreach ($members as $user) {
                 $page->assign('user', $user);
-                $users['member'][$user->id()] = $user->export(User::EXPORT_MICRO);
+                $users['member'][$user->id()] = $user->export(User::EXPORT_MICRO | User::EXPORT_SMALL);
             }
         }
 
