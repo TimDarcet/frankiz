@@ -45,6 +45,7 @@ class User extends Meta
     const IMAGE_BEST          = 0x03;
 
     const EXPORT_MICRO        = 0x01;
+    const EXPORT_SMALL        = 0x02;
 
     /*******************************************************************************
          Properties
@@ -689,7 +690,11 @@ class User extends Meta
 
         if ($bits & self::EXPORT_MICRO) {
             $export['displayName'] = $this->displayName();
-            $export['src'] = $this->image()->src(ImageInterface::SELECT_MICRO);
+            $export['micro'] = $this->image()->src(ImageInterface::SELECT_MICRO);
+        }
+        if ($bits & self::EXPORT_SMALL) {
+            $export['displayName'] = $this->displayName();
+            $export['small'] = $this->image()->src(ImageInterface::SELECT_SMALL);
         }
 
         return $export;
