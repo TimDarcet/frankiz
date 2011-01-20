@@ -97,7 +97,7 @@ class ImagesModule extends PlModule
 
         // If the group owning the image is not public
         if ($image->group()->priv()) {
-            if(S::user()->hasRights($image->group(), Rights::member())) {
+            if(!S::user()->hasRights($image->group(), Rights::member())) {
                 // TODO: show an 'invalid credential' picture instead
                 throw new Exception("You don't have the credential to view this image");
                 exit;
