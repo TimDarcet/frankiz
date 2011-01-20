@@ -14,7 +14,37 @@ $(function(){
     $('#tol_searcher input[auto]').keyup(function() {
         search();
     });
+
+    imageur();
 });
+
+function imageur() {
+    $.each($("#tol_results > li .sheet .img a"), function(index, value) {
+        $(value).removeAttr('href');
+        $(value).click(function() {
+            var photo = $(this).closest('[photo]').attr('photo');
+            var original = $(this).closest('[original]').attr('original');
+            var modal = $('#content .modal');
+
+            var images = [];
+            if (photo)
+                images.push({'href' : photo});
+            if (original)
+                images.push({'href' : original});
+
+            $.fancybox(images, {
+                        'padding'       : 0,
+                        'transitionIn'  : 'none',
+                        'transitionOut' : 'none',
+                        'type'          : 'image',
+                        'changeFade'    : 0,
+                        'cyclic'        : true,
+                        'centerOnScroll': true,
+                        'titleShow'     : false
+                    });
+        });
+    });
+}
 
 function force_search() {
     $("#tol_infos").addClass("searching");
@@ -56,34 +86,6 @@ function force_search() {
 
             mode = json.mode;
             $('#tol_searcher input[name=mode]').val('card');
-
-            function imageur() {
-                $.each($("#tol_results > li .sheet .img a"), function(index, value) {
-                    $(value).removeAttr('href');
-                    $(value).click(function() {
-                        var photo = $(this).closest('[photo]').attr('photo');
-                        var original = $(this).closest('[original]').attr('original');
-                        var modal = $('#content .modal');
-
-                        var images = [];
-                        if (photo)
-                            images.push({'href' : photo});
-                        if (original)
-                            images.push({'href' : original});
-
-                        $.fancybox(images, {
-                                    'padding'       : 0,
-                                    'transitionIn'  : 'none',
-                                    'transitionOut' : 'none',
-                                    'type'          : 'image',
-                                    'changeFade'    : 0,
-                                    'cyclic'        : true,
-                                    'centerOnScroll': true,
-                                    'titleShow'     : false
-                                });
-                    });
-                });
-            }
 
             if (mode == 'card') {
                 $.each($("#tol_results > li .card .img a"), function(index, value) {
