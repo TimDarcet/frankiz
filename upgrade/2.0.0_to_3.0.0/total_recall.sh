@@ -4,6 +4,7 @@
 
 cd ../../bin
 ./update.promos.php
+./update.studies.php
 
 cd cron
 ./update.scores.php
