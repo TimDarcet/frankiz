@@ -37,8 +37,6 @@ function force_search() {
                         }
                     });
 
-                    console.log(users[rights]);
-
                     for (var i in users[rights]) {
                         (function() {
                             var u = users[rights][i];
