@@ -87,8 +87,12 @@ class IP
             return self::$originCache[$ip];
         } else {
             $origin = self::EXTERNAL;
-            if($ip == '127.0.0.1' || (substr($ip, 0, 8) == '129.104.' && $ip != '129.104.30.4' && $ip != '129.104.30.90'))
+            if ($ip == '127.0.0.1' || (substr($ip, 0, 8) == '129.104.' && $ip != '129.104.30.4' && $ip != '129.104.30.90'))
             {
+                if($ip == '127.0.0.1') {
+                    return self::INTERNAL;
+                }
+
                 $res = XDB::iterator('SELECT  rg.rid
                                     FROM  ips
                               INNER JOIN  rooms_groups AS rg ON rg.rid = ips.rid
