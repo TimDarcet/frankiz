@@ -30,7 +30,7 @@ class GroupsModule extends PLModule
             'groups/ajax/rename'      => $this->make_hook('ajax_rename',       AUTH_COOKIE),
             'groups/ajax/delete'      => $this->make_hook('ajax_delete',       AUTH_COOKIE),
             'groups/see'              => $this->make_hook('group_see',         AUTH_PUBLIC),
-            'groups/ajax/users'       => $this->make_hook('group_ajax_users',  AUTH_INTERNAL),
+            'groups/ajax/users'       => $this->make_hook('group_ajax_users',  AUTH_INTERNAL, ''),
             'groups/admin'            => $this->make_hook('group_admin',       AUTH_PUBLIC),
             'groups/subscribe'        => $this->make_hook('group_subscribe',   AUTH_COOKIE),
             'groups/unsubscribe'      => $this->make_hook('group_unsubscribe', AUTH_COOKIE),
