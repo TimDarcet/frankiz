@@ -22,6 +22,10 @@
 
 <p>Frankiz contient actuellement {$total} groupes.</p>
 
+<p>
+    {include file="wiki.tpl"|rel name='groups'}
+</p>
+
 <div class="container">
     <div class="groups">
         <h2>Les binets</h2>
