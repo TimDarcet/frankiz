@@ -122,10 +122,9 @@ abstract class Meta
             throw new Exception("This " . get_class($this) . " doesn't appear to exist in the DB and therefore can't be deleted.");
     }
 
-    public function export()
+    public function export($bits = null)
     {
-        $export = array('id'    => $this->id(),
-                        'class' => get_class($this));
+        $export = array('id' => $this->id());
         return $export;
     }
 

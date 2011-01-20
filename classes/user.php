@@ -44,6 +44,8 @@ class User extends Meta
     const IMAGE_PHOTO         = 0x02;
     const IMAGE_BEST          = 0x03;
 
+    const EXPORT_MICRO        = 0x01;
+
     /*******************************************************************************
          Properties
 
@@ -680,12 +682,15 @@ class User extends Meta
         return "";
     }
 
-    public function export()
+    public function export($bits = null)
     {
         $export = parent::export();
+        $export['hruid'] = $this->login();
 
-        if ($this->display_name !== null)
+        if ($bits & self::EXPORT_MICRO) {
             $export['displayName'] = $this->displayName();
+            $export['src'] = $this->image()->src(ImageInterface::SELECT_MICRO);
+        }
 
         return $export;
     }
