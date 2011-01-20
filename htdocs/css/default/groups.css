@@ -1,0 +1,64 @@
+/***************************************************************************
+ *  Copyright (C) 2009 Binet Réseau                                        *
+ *  http://www.polytechnique.fr/eleves/binets/reseau/                      *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
+
+/*******************************************************************************
+     Module Groups
+
+*******************************************************************************/
+
+#content .top img {
+    float: left;
+    width: 300px;
+}
+
+#content .bottom {
+    position: relative;
+    min-height: 500px;
+    padding-top: 25px;
+    clear: both;
+}
+
+#content .users {
+    position: relative;
+    float: left;
+    width: 45%;
+    border:1px #003757 solid;
+}
+
+#content .users li {
+    list-style: none;
+}
+
+#content li.user {
+    position: relative;
+    display: inline-block;
+    width: 35px;
+    text-align: center;
+}
+
+#content li.user img {
+    height: 35px;
+    max-width: 27px;
+}
+
+#content .news {
+    position: relative;
+    width: 45%;
+}

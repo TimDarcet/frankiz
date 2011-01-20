@@ -30,7 +30,7 @@
     {foreach from=$groups|order:'score' item=group}
         <tr>
             <td>{$group->score()}</td>
-            <td>{$group->name()}</td>
+            <td><img src="{$group->image()|image:'micro'|smarty:nodefaults}" /> {$group->name()}</td>
             <td>{$group|group}</td>
             <td>{$user->rights($group)|@rights}</td>
         </tr>
@@ -38,7 +38,7 @@
     {foreach from=$user_groups|order:'score' item=group}
         <tr>
             <td>{$group->score()}</td>
-            <td>{$group->name()}</td>
+            <td><img src="{$group->image()|image:'micro'|smarty:nodefaults}" /> {$group->name()}</td>
             <td>{$group|group}</td>
             <td>{$user->rights($group)|@rights}</td>
         </tr>

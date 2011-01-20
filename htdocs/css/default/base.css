@@ -484,6 +484,13 @@ input:focus {
     background-color: #003757;
 }
 
+.groups_picker img {
+    width: 20px;
+    height: 20px;
+    vertical-align: bottom;
+    margin-right: 6px;
+}
+
 .groups_picker .searcher input {
     width: 90%;
     margin-left: 5%;
@@ -501,8 +508,14 @@ input:focus {
     display: none;
 }
 
+.groups_picker ul {
+    margin: 4px;
+    padding-left: 10px;
+}
+
 .groups_picker li {
-    cursor: hand;
+    cursor: pointer;
+    list-style: none;
 }
 
 .groups_picker .empty {

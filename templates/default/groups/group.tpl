@@ -21,37 +21,59 @@
 {**************************************************************************}
 
 
-<div>
-    {if $group->hasUser()}
-    <a href="groups/unsubscribe/{$group->id()}">Quitter le groupe</a>
-    {else}
-    <a href="groups/subscribe/{$group->id()}">Devenir {if !$group->priv()}membre{else}sympathisant{/if}</a>
-    {/if}
+<div style="display:none">
+{if $smarty.session.auth >= AUTH_COOKIE}
+    TODO
+        <a href="groups/unsubscribe/{$group->id()}">Quitter le groupe</a>
+        <a href="groups/subscribe/{$group->id()}">Devenir {if !$group->priv()}membre{else}sympathisant{/if}</a>
+{/if}
 </div>
 
-{$group->id()}
-{$group->name()}
-{$group->label()}
-{$group->description()}
-Score: {$group->score()}
+<div class="top">
+    <img src="{$group->image()|image:'full'|smarty:nodefaults}" />
+    <div class="www">{if $group->web()}<a href="{$group->web()}">{$group->web()}</a>{/if}</div>
+    <div class="mail">{if $group->mail()}{$group->mail()}{/if}</div>
+    <div class="description">{$group->description()|miniwiki}</div>
+</div>
 
-<ul>
-{foreach from=$group->caste() item='caste'}
-    <li>
-    {$caste->id()}
-    {$caste->rights()}
-    <ul>
-    {foreach from=$caste->users() item='user'}
-        <li>
-        {$user->id()}
-        {$user->login()}
-        {$user->displayName()}
-        </li>
-    {/foreach}
-    </ul>
-    </li>
-{/foreach}
-</ul>
+{if $smarty.session.auth >= AUTH_INTERNAL}
+    <div class="bottom">
+        <div class="users">
+            <div class="filters">
+                <form name="filters">
+                <input type="hidden" id="gid" name="gid" value="{$group->id()}" />
+                <label>Promo{include file="groups_picker.tpl"|rel id="promo" ns="promo" check=-1 already=$promos}</label>
+                </form>
+            </div>
 
+            <ul class="rights">
+                <li>
+                Administrateurs:
+                <ul class="admin">
+
+                </ul>
+                </li>
+                <li>
+                Membres:
+                <ul class="member">
+
+                </ul>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="news">
+            <ul>
+            {foreach from=$news item='new'}
+                <li>
+                    {$new->title()}
+                </li>
+            {/foreach}
+            </ul>
+        </div>
+    </div>
+
+    {js src="groups.js"}
+{/if}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

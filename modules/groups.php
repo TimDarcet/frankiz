@@ -30,6 +30,7 @@ class GroupsModule extends PLModule
             'groups/ajax/rename'      => $this->make_hook('ajax_rename',       AUTH_COOKIE),
             'groups/ajax/delete'      => $this->make_hook('ajax_delete',       AUTH_COOKIE),
             'groups/see'              => $this->make_hook('group_see',         AUTH_PUBLIC),
+            'groups/ajax/users'       => $this->make_hook('group_ajax_users',  AUTH_INTERNAL),
             'groups/admin'            => $this->make_hook('group_admin',       AUTH_PUBLIC),
             'groups/subscribe'        => $this->make_hook('group_subscribe',   AUTH_COOKIE),
             'groups/unsubscribe'      => $this->make_hook('group_unsubscribe', AUTH_COOKIE),
@@ -94,24 +95,42 @@ class GroupsModule extends PLModule
         $all->merge($own)->select(Group::SELECT_BASE);
 
         $page->jsonAssign('success', true);
-        $page->jsonAssign('groups', $all->toJson());
+        $page->jsonAssign('groups', $all->export());
 
         return PL_JSON;
     }
 
     function handler_group_see($page, $group)
     {
+        global $globals;
+
         $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
         $gf = new GroupFilter($filter);
         $group = $gf->get(true);
 
         if ($group)
         {
+            // Fetch the group
             $group->select(Group::SELECT_BASE | Group::SELECT_DESCRIPTION);
-            $group->select(array(Group::SELECT_CASTES =>
-                                 array(Caste::SELECT_BASE => null,
-                                       Caste::SELECT_USERS => User::SELECT_BASE)));
+            $group->select(array(Group::SELECT_CASTES => Caste::SELECT_BASE));
             $page->assign('group', $group);
+
+            // Current promos ?
+            foreach (json_decode($globals->core->promos) as $promo) {
+                $groupes_names[] = 'promo_' . $promo;
+            }
+            $promos = new Collection('Group');
+            $promos->add($groupes_names)->select(Group::SELECT_BASE);
+            $page->assign('promos', $promos);
+
+            // Fetch the news
+            $nf = new NewsFilter(new PFC_And(new NFC_Origin($group),
+                                             new PFC_Or(new NFC_User(S::user(), Rights::member()),
+                                                        new NFC_Private(false))
+                                             ),
+                                             new NFO_End(true));
+            $news = $nf->get()->select();
+            $page->assign('news', $news);
 
             $page->assign('title', $group->label());
             $page->changeTpl('groups/group.tpl');
@@ -121,6 +140,44 @@ class GroupsModule extends PLModule
             $page->assign('title', "Ce groupe n'existe pas");
             $page->changeTpl('groups/no_group.tpl');
         }
+        $page->addCssLink('groups.css');
+    }
+
+    function handler_group_ajax_users($page)
+    {
+        $json = json_decode(Env::v('json'));
+        $group = $json->gid;
+
+        $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
+        $gf = new GroupFilter($filter);
+        $group = $gf->get(true);
+
+        $users = false;
+        if ($group) {
+            $users = array('admin' => array(), 'member' => array());
+            $group->select(Group::SELECT_CASTES);
+
+            $filters = new PFC_True();
+            if (count($json->promo) > 0) {
+                $filters = new UFC_Group(explode(';', $json->promo));
+            }
+
+            $uf = new UserFilter(new PFC_And(new UFC_Caste($group->caste(Rights::admin())), $filters));
+            $admins = $uf->get()->select(User::SELECT_BASE);
+            foreach ($admins as $user) {
+                $users['admin'][$user->id()] = $user->export(User::EXPORT_MICRO);
+            }
+
+            $uf = new UserFilter(new PFC_And(new UFC_Caste($group->caste(Rights::member())), $filters));
+            $members = $uf->get()->select(User::SELECT_BASE);
+            foreach ($members as $user) {
+                $page->assign('user', $user);
+                $users['member'][$user->id()] = $user->export(User::EXPORT_MICRO);
+            }
+        }
+
+        $page->jsonAssign('users', $users);
+        return PL_JSON;
     }
 
     function handler_group_admin($page, $group)
