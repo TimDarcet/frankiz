@@ -277,14 +277,14 @@ class Group extends Meta
         $groups = array_combine(self::toIds($groups), $groups);
 
         $joins = array();
-        $cols = array();
+        $cols = array('g' => array());
         if ($bits & self::SELECT_BASE)
-            $cols['g']   = array('ns', 'name', 'label', 'score', 'image',
-                                 'priv', 'leavable', 'visible', 'external');
+            $cols['g'] = array_merge($cols['g'], array('ns', 'name', 'label', 'score', 'image',
+                                                       'priv', 'leavable', 'visible', 'external'));
         if ($bits & self::SELECT_DESCRIPTION)
             $cols['g'] = array_merge($cols['g'], array('description', 'web', 'mail'));
 
-        if (!empty($cols)) {
+        if (!empty($cols['g'])) {
             $iter = XDB::iterator('SELECT  g.gid AS id, ' . self::arrayToSqlCols($cols) . '
                                      FROM  groups AS g
                                      ' . PlSqlJoin::formatJoins($joins, array()) . '
