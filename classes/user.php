@@ -491,6 +491,30 @@ class User extends Meta
         return $this->perms;
     }
 
+    public function addPerm($perm)
+    {
+        XDB::execute("UPDATE  account
+                         SET  perms = CONCAT_WS(',', perms, {?})
+                       WHERE  uid = {?}",
+                              $perm, $this->id());
+        if (empty($this->perms)) {
+            $this->perms = new PlFlagSet();
+        }
+        $this->perms->addFlag($perm);
+    }
+
+    public function removePerm($perm)
+    {
+        XDB::execute("UPDATE  account
+                         SET  perms = REPLACE(perms, {?},'')
+                       WHERE  uid = {?}",
+                              $perm, $this->id());
+        if (empty($this->perms)) {
+            $this->perms = new PlFlagSet();
+        }
+        $this->perms->rmFlag($perm);
+    }
+
     public function checkPerms($perms)
     {
         if (is_null($this->perm_flags)) {
@@ -674,10 +698,10 @@ class User extends Meta
     public function insert($id = null)
     {
         if ($id == null) {
-            XDB::execute('INSERT INTO account SET uid = NULL');
+            XDB::execute('INSERT INTO account SET perms = "user"');
             $this->id = XDB::insertId();
         } else {
-            XDB::execute('INSERT INTO account SET uid = {?}', $id);
+            XDB::execute('INSERT INTO account SET uid = {?}, perms= "user"', $id);
             $this->id = $id;
         }
 
