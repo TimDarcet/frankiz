@@ -272,5 +272,58 @@ XDB::execute('INSERT INTO users_minimodules (SELECT uid, "timeleft", "COL_FLOAT"
 XDB::execute('INSERT INTO users_minimodules (SELECT uid, "todo",     "COL_FLOAT",  2 FROM account)');
 echo "default minimodules set \n";
 
+echo "-----------------------------------------------\n";
+
+$webmasters = new Group();
+$webmasters->insert();
+$webmasters->name('webmasters');
+$webmasters->label('Webmestres');
+$webmasters->external(0);
+$webmasters->priv(1);
+$webmasters->leavable(1);
+$webmasters->visible(1);
+
+
+$everybody = new Group();
+$everybody->insert();
+$everybody->name('everybody');
+$everybody->label('Tout le monde');
+$everybody->external(0);
+$everybody->priv(0);
+$everybody->leavable(0);
+$everybody->visible(0);
+// Admins(everybody) = Members(webmasters)
+$everybody->caste(Rights::admin())->userfilter(new UserFilter(new UFC_Group($webmasters, Rights::member())));
+// Members(everybody) = everybody except the anonymous user!
+$everybody->caste(Rights::member())->userfilter(new UserFilter(new PFC_Not(new UFC_Uid(0))));
+
+
+$public = new Group();
+$public->insert();
+$public->name('public');
+$public->label('Publique');
+$public->external(1);
+$public->priv(0);
+$public->leavable(0);
+$public->visible(0);
+// Admins(public) = Members(webmasters)
+$public->caste(Rights::admin())->userfilter(new UserFilter(new UFC_Group($webmasters, Rights::member())));
+// Members(public) = everybody !
+$public->caste(Rights::member())->userfilter(new UserFilter(new PFC_True()));
+
+
+$tol = new Group();
+$tol->insert();
+$tol->name('tol');
+$tol->label('trombino');
+$tol->external(0);
+$tol->priv(0);
+$tol->leavable(0);
+$tol->visible(0);
+// Admins(tol) = Members(webmasters)
+$tol->caste(Rights::admin())->userfilter(new UserFilter(new UFC_Group($webmasters, Rights::member())));
+
+echo "Added BR's Microcosmos \n";
+
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
 ?>

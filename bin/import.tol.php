@@ -43,16 +43,6 @@ require 'connect.db.inc.php';
 
 $gf = new GroupFilter(new GFC_Name('tol'));
 $group = $gf->get(true);
-if ($group == false) {
-    $group = new Group();
-    $group->insert();
-    $group->name('tol');
-    $group->label('trombino');
-    $group->external(0);
-    $group->priv(0);
-    $group->leavable(0);
-    $group->visible(0);
-}
 
 // Concerned users
 $uf = UserFilter::fromExport(json_decode($argv[1], true));
