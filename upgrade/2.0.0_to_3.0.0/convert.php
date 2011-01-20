@@ -153,7 +153,7 @@ while ($datas = $iter->next()) {
 echo "-----------------------------------------------\n";
 
 // Populating accounts
-$iter = XDB::iterator('SELECT  c.eleve_id, c.passwd,
+$iter = XDB::iterator('SELECT  c.eleve_id, c.perms, c.passwd,
                                e.nom, e.prenom, e.surnom, e.instrument,
                                e.date_nais, e.sexe, e.piece_id, s.nom AS sport,
                                e.promo, e.login, e.mail, e.nation, e.programme, e.portable,
@@ -232,6 +232,17 @@ while ($datas = $iter->next()) {
         $n = $nf->get(true);
         $n->select(Group::SELECT_CASTES);
         $n->caste(Rights::member())->addUser($u);
+    }
+
+    // Linking with groups where he has perms
+    $perms = explode(',', $datas['perms']);
+    foreach ($perms as $perm) {
+        $tokens = explode('_', $perm);
+        if ($tokens[0] == 'webmestre' || $tokens[0] == 'prez') {
+            $g = new Group($tokens[1]);
+            $g->select(Group::SELECT_CASTES);
+            $g->caste(Rights::admin())->addUser($u);
+        }
     }
 
     // Linking the User with his groups
