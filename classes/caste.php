@@ -127,7 +127,7 @@ class Caste extends Meta
                 if (!empty($castes)) {
                     $sql = array();
                     foreach ($castes as $caste)
-                        $sql[] = XDB::prepare('({?}, "caste", {?})', $this->id(), $caste);
+                        $sql[] = XDB::format('({?}, "caste", {?})', $this->id(), $caste);
 
                     XDB::execute('INSERT INTO castes_dependencies (cid, type, id)
                                     VALUES ' . implode(', ', $sql));
@@ -142,24 +142,26 @@ class Caste extends Meta
 
     public function compute()
     {
-        if (empty($this->userfilter))
-            throw new Exception("This caste (" . $this->id() . ") either doesn't have a UserFilter or it isn't loaded");
+        if ($this->userfilter === null) {
+            throw new Exception("The UserFilter (if it exists) of the caste (" . $this->id() . ") hasn't been fetched");
+        }
 
-        // First: flush the users
-        XDB::execute('DELETE FROM castes_users WHERE cid = {?}', $this->id());
+        if ($this->userfilter !== false) {
+            // First: flush the users
+            XDB::execute('DELETE FROM castes_users WHERE cid = {?}', $this->id());
 
-        // Second: search the users corresponding to the filter
-        $this->users = $this->userfilter->get();
+            // Second: search the users corresponding to the filter
+            $this->users = $this->userfilter->get();
 
-        // Third: repopulate the table with them
-        if ($this->users->count() > 0)
-        {
-	        $sql = array();
-	        foreach ($this->users as $user)
-	            $sql[] = XDB::format('({?}, {?})', $this->id(), $user->id());
+            // Third: repopulate the table with them
+            if ($this->users->count() > 0) {
+                $sql = array();
+                foreach ($this->users as $user)
+                    $sql[] = XDB::format('({?}, {?})', $this->id(), $user->id());
 
-	        XDB::execute('INSERT INTO castes_users (cid, uid)
-	                        VALUES ' . implode(', ', $sql));
+                XDB::execute('INSERT INTO castes_users (cid, uid)
+                                VALUES ' . implode(', ', $sql));
+            }
         }
 
         $this->bubble();
@@ -167,16 +169,16 @@ class Caste extends Meta
 
     public function bubble()
     {
-        $iter = XDB::iterator("SELECT  cid, type, id
-                                 FROM  castes_dependencies
-                                WHERE  cid = {?}", $this->id());
+        $iter = XDB::iterRow("SELECT  cid, type, id
+                                FROM  castes_dependencies
+                               WHERE  id = {?}", $this->id());
 
         $castes = new Collection('Caste');
         while (list($cid, $type, $id) = $iter->next()) {
+            echo $cid . "\n";
             // For the time-being, only type=caste is supported
-            if ($type == 'caste')
-            {
-            	$castes->add($id);
+            if ($type == 'caste') {
+                $castes->add($cid);
             }
         }
 
