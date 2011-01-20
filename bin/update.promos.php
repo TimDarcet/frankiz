@@ -26,8 +26,9 @@
 
 require 'connect.db.inc.php';
 
-$iter = XDB::iterator('SELECT promo FROM studies GROUP BY promo');
+$tol = Group::from('tol');
 
+$iter = XDB::iterator('SELECT promo FROM studies GROUP BY promo');
 while ($datas = $iter->next()) {
     $promo = $datas['promo'];
 
@@ -48,6 +49,22 @@ while ($datas = $iter->next()) {
         $g->ns(Group::NS_PROMO);
         $g->name('promo_' . $promo);
         $g->label($promo);
+
+        if ($promo % 2 == 0) {
+            $upload = FrankizUpload::fromFile('rouje.png');
+            $label = 'Chic à la rouje';
+        } else {
+            $upload = FrankizUpload::fromFile('jone.png');
+            $label = 'Chic à la jone';
+        }
+
+        $i = new FrankizImage();
+        $i->insert();
+        $i->group($tol);
+        $i->label($label);
+        $i->image($upload, false);
+
+        $g->image($i);
 
         echo $promo . " created\n";
     }
