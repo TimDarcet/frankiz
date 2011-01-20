@@ -90,6 +90,23 @@ class Group extends Meta
         return $this->label;
     }
 
+    public function image(FrankizImage $image = null)
+    {
+        global $globals;
+
+        if ($image != null) {
+            $this->image = $image;
+            XDB::execute('UPDATE groups SET image = {?} WHERE gid = {?}',
+                                              $image->id(), $this->id());
+        }
+
+        if (!empty($this->image)) {
+            return $this->image;
+        }
+
+        return new StaticImage($globals->images->group);
+    }
+
     public function score()
     {
         return $this->score;
@@ -205,11 +222,12 @@ class Group extends Meta
             $caste->removeUser($user);
     }
 
-    public function toJson($stringify = false)
+    public function export($stringify = false)
     {
         $json = array("id"    => $this->id(),
                       "name"  => $this->name(),
-                      "label" => $this->label());
+                      "label" => $this->label(),
+                      "src"   => $this->image()->src(ImageInterface::SELECT_MICRO));
 
         return ($stringify) ? json_encode($json) : $json;
     }
@@ -277,8 +295,10 @@ class Group extends Meta
                                  GROUP BY  g.gid', self::toIds($groups));
 
             while ($datas = $iter->next()) {
-                if (isset($datas['name']))
-                    $datas['name'] = ($datas['name'] === null) ? false : $datas['name'];
+                if ($bits & self::SELECT_BASE) {
+                    $datas['name']  = ($datas['name'] === null) ? false : $datas['name'];
+                    $datas['image'] = empty($datas['image']) ? false : new FrankizImage($datas['image']);
+                }
 
                 $groups[$datas['id']]->fillFromArray($datas);
             }

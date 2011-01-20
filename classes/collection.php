@@ -92,11 +92,11 @@ class Collection extends PlAbstractIterable
         throw new Exception("The method $className::$inferedMethod doesn't exist");
     }
 
-    public function toJson($stringify = false)
+    public function export($stringify = false)
     {
         $json = array();
         foreach ($this->collected as $c)
-            $json[] = $c->toJson();
+            $json[] = $c->export();
 
         return ($stringify) ? json_encode($json) : $json;
     }
