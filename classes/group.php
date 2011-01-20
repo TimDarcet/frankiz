@@ -62,8 +62,7 @@ class Group extends Meta
 
     public function name($name = null)
     {
-        if ($name != null)
-        {
+        if ($name != null) {
             $this->name = $name;
             XDB::execute('UPDATE groups SET name = {?} WHERE gid = {?}', $name, $this->id());
         }
@@ -72,8 +71,7 @@ class Group extends Meta
 
     public function ns($ns = null)
     {
-        if ($ns != null)
-        {
+        if ($ns !== null) {
             $this->ns = $ns;
             XDB::execute('UPDATE groups SET ns = {?} WHERE gid = {?}', $ns, $this->id());
         }
@@ -82,8 +80,7 @@ class Group extends Meta
 
     public function label($label = null)
     {
-        if ($label != null)
-        {
+        if ($label !== null) {
             $this->label = $label;
             XDB::execute('UPDATE groups SET label = {?} WHERE gid = {?}', $label, $this->id());
         }
@@ -114,7 +111,7 @@ class Group extends Meta
 
     public function external($external = null)
     {
-        if ($external != null) {
+        if ($external !== null) {
             $this->external = $external;
             XDB::execute('UPDATE groups SET external = {?} WHERE gid = {?}', $this->external, $this->id());
         }
@@ -123,7 +120,7 @@ class Group extends Meta
 
     public function priv($priv = null)
     {
-        if ($priv != null) {
+        if ($priv !== null) {
             $this->priv = $priv;
             XDB::execute('UPDATE groups SET priv = {?} WHERE gid = {?}', $this->priv, $this->id());
         }
@@ -132,7 +129,7 @@ class Group extends Meta
 
     public function leavable($leavable = null)
     {
-        if ($leavable != null) {
+        if ($leavable !== null) {
             $this->leavable = $leavable;
             XDB::execute('UPDATE groups SET leavable = {?} WHERE gid = {?}', $leavable, $this->id());
         }
@@ -141,7 +138,7 @@ class Group extends Meta
 
     public function visible($visible = null)
     {
-        if ($visible != null) {
+        if ($visible !== null) {
             $this->visible = $visible;
             XDB::execute('UPDATE groups SET visible = {?} WHERE gid = {?}', $visible, $this->id());
         }
@@ -150,7 +147,7 @@ class Group extends Meta
 
     public function description($description = null)
     {
-        if ($description != null) {
+        if ($description !== null) {
             $this->description = $description;
             XDB::execute('UPDATE groups SET description = {?} WHERE gid = {?}', $description, $this->id());
         }
