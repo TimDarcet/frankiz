@@ -21,24 +21,16 @@
 {**************************************************************************}
 
 <table>
-    <tr>
-        <th>Score</th>
-        <th>Name</th>
-        <th>Label</th>
-        <th>Rights</th>
-    </tr>
     {foreach from=$groups|order:'score' item=group}
         <tr>
-            <td>{$group->score()}</td>
-            <td><img src="{$group->image()|image:'micro'|smarty:nodefaults}" /> {$group->name()}</td>
+            <td><img src="{$group->image()|image:'micro'|smarty:nodefaults}" /></td>
             <td>{$group|group}</td>
             <td>{$user->rights($group)|@rights}</td>
         </tr>
     {/foreach}
     {foreach from=$user_groups|order:'score' item=group}
         <tr>
-            <td>{$group->score()}</td>
-            <td><img src="{$group->image()|image:'micro'|smarty:nodefaults}" /> {$group->name()}</td>
+            <td><img src="{$group->image()|image:'micro'|smarty:nodefaults}" /></td>
             <td>{$group|group}</td>
             <td>{$user->rights($group)|@rights}</td>
         </tr>

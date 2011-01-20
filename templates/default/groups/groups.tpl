@@ -20,22 +20,23 @@
 {*                                                                        *}
 {**************************************************************************}
 
-Frankiz contient actuellement {$total} groupes.<br />
-En voici une sélection
+<p>Frankiz contient actuellement {$total} groupes.</p>
 
-<div>
-    Les binets
-    {include file="groups/ns_groups.tpl"|rel groups=$binet user_groups=$user_binet}
-</div>
-
-<div>
-    Les études
-    {include file="groups/ns_groups.tpl"|rel groups=$study user_groups=$user_study}
-</div>
-
-<div>
-    Divers
-    {include file="groups/ns_groups.tpl"|rel groups=$free user_groups=$user_free}
+<div class="container">
+    <div class="groups">
+        <h2>Les binets</h2>
+        {include file="groups/ns_groups.tpl"|rel groups=$binet user_groups=$user_binet}
+    </div>
+    
+    <div class="groups">
+        <h2>Les études</h2>
+        {include file="groups/ns_groups.tpl"|rel groups=$study user_groups=$user_study}
+    </div>
+    
+    <div class="groups">
+        <h2>Divers</h2>
+        {include file="groups/ns_groups.tpl"|rel groups=$free user_groups=$user_free}
+    </div>
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

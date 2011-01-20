@@ -23,9 +23,9 @@ function smarty_modifier_rights($rights) {
     $rights = unflatten($rights);
     $strings = array();
     foreach ($rights as $right) {
-        $strings[] = (string) $right;
+        $strings[] = '<div title="' . (string) $right . '" class="rights ' . (string) $right . '"></div>';
     }
-    return implode(',', $strings);
+    return implode('', $strings);
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

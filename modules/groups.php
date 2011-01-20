@@ -42,15 +42,17 @@ class GroupsModule extends PLModule
     {
         $except = new PFC_True();
 
+        $max = 10;
+
         // Fetch samples of other groups
         $binet = new GroupFilter(new PFC_And(new GFC_Namespace(Group::NS_BINET), $except), new GFO_Score(true));
-        $binet = $binet->get(new PlLimit(5));
+        $binet = $binet->get(new PlLimit($max));
 
         $study = new GroupFilter(new PFC_And(new GFC_Namespace(Group::NS_STUDY), $except), new GFO_Score(true));
-        $study = $study->get(new PlLimit(5));
+        $study = $study->get(new PlLimit($max));
 
         $free = new GroupFilter(new PFC_And(new GFC_Namespace(Group::NS_FREE), $except), new GFO_Score(true));
-        $free = $free->get(new PlLimit(5));
+        $free = $free->get(new PlLimit($max));
 
         // Load associated datas
         $temp = new Collection('Group');
@@ -58,7 +60,7 @@ class GroupsModule extends PLModule
         $temp->select(Group::SELECT_BASE);
 
         // Fetch the total count of groups
-        $allf = new GroupFilter(null);
+        $allf = new GroupFilter(new GFC_Visible());
         $total = $allf->getTotalCount();
 
         $user_binet = S::user()->castes()->groups()->filter('ns', Group::NS_BINET)->remove($binet);
@@ -77,6 +79,7 @@ class GroupsModule extends PLModule
         $page->assign('total', $total);
         $page->assign('title', 'Groupes');
         $page->changeTpl('groups/groups.tpl');
+        $page->addCssLink('groups.css');
     }
 
     function handler_ajax_search($page)

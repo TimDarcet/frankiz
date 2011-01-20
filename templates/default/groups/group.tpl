@@ -33,7 +33,7 @@
     <img src="{$group->image()|image:'full'|smarty:nodefaults}" />
     <div class="www">{if $group->web()}<a href="{$group->web()}">{$group->web()}</a>{/if}</div>
     <div class="mail">{if $group->mail()}{$group->mail()}{/if}</div>
-    <div class="description">{$group->description()|miniwiki}</div>
+    <div class="description">{$group->description()|miniwiki|smarty:nodefaults}</div>
 </div>
 
 {if $smarty.session.auth >= AUTH_INTERNAL}
@@ -46,7 +46,7 @@
                 </form>
             </div>
 
-            <ul class="rights">
+            <ul>
                 <li>
                 Administrateurs:
                 <ul class="admin">
