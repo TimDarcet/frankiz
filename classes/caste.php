@@ -175,7 +175,6 @@ class Caste extends Meta
 
         $castes = new Collection('Caste');
         while (list($cid, $type, $id) = $iter->next()) {
-            echo $cid . "\n";
             // For the time-being, only type=caste is supported
             if ($type == 'caste') {
                 $castes->add($cid);
