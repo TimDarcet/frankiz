@@ -48,7 +48,9 @@ function force_search() {
                             img.title = u.displayName;
                             img.uid = i;
                             $(img).load(function() {
-                                subul.append($('<li uid="' + u.id + '" class="user">').append(this));
+                                subul.append(
+                                        $('<li uid="' + u.id + '" class="user">')
+                                            .append($('<a href="tol?hruid=' + u.hruid +'">').append(this)));
                                 $(this).fadeIn();
                             });
                         })();
