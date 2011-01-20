@@ -343,10 +343,10 @@ class UFC_Group extends UserFilterCondition
     protected $rights;
     protected $cids = null;
 
-    public function __construct($gs, $rights = null)
+    public function __construct($gs, Rights $rights = null)
     {
         $this->gids   = Group::toIds(unflatten($gs));
-        $this->rights = (string) (empty($rights)) ? Rights::member() : $rights;
+        $this->rights = (empty($rights)) ? Rights::member() : $rights;
         self::$instances[] = $this;
     }
 
@@ -777,6 +777,10 @@ class UserFilter extends FrankizFilter
 
             case 'uid':
                 $obj = new UFC_Uid($export['uids']);
+                break;
+
+            case 'caste':
+                $obj = new UFC_Caste($export['children']);
                 break;
 
             case 'promo':
