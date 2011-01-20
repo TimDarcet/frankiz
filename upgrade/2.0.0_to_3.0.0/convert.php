@@ -96,7 +96,9 @@ while ($datas = $iter->next()) {
     $g->leavable(1);
     $g->visible(1);
     $g->web($datas['http']);
-    $g->mail($datas['mail'] . '@eleves.polytechnique.fr');
+    if (!empty($datas['mail'])) {
+        $g->mail($datas['mail'] . '@eleves.polytechnique.fr');
+    }
 
     $k++;
     echo 'Group ' . $k . '/' . $groups . ' : ' . $g->id() . " - " . $g->label() . "\n";
