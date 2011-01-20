@@ -21,7 +21,7 @@
 
 
 function smarty_modifier_user($user) {
-    return '<a href="/profile/' . $user->login() . '">' . $user->displayName() . '</a>';
+    return '<a href="tol?hruid=' . $user->login() . '">' . $user->displayName() . '</a>';
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
