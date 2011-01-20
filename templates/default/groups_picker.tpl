@@ -26,6 +26,11 @@
     </div>
 
     <ul class="selected">
+        {if t($already)}
+            {foreach from=$already item='group'}
+                <li gid="{$group->id()}"><img src="{$group->image()|image:'micro'|smarty:nodefaults}" />{$group->label()}</li>
+            {/foreach}
+        {/if}
     </ul>
 
     <div class="searcher">
