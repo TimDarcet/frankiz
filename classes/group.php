@@ -222,12 +222,16 @@ class Group extends Meta
     public function insert($id = null)
     {
         if ($id == null) {
-            XDB::execute('INSERT INTO groups SET gid = NULL');
+            XDB::execute('INSERT INTO groups SET priv = 1');
             $this->id = XDB::insertId();
         } else {
-            XDB::execute('INSERT INTO groups SET gid = {?}', $id);
+            XDB::execute('INSERT INTO groups SET gid = {?}, priv = 1', $id);
             $this->id = $id;
         }
+
+        // Create the main castes
+        $this->caste(Rights::admin());
+        $this->caste(Rights::member());
     }
 
     public static function batchFrom(array $mixed)
