@@ -33,6 +33,7 @@ class TolModule extends PLModule
     function fillFields($json = false)
     {
         $fields = array(     'free' => '',
+                            'hruid' => '',
                         'firstname' => '',
                          'lastname' => '',
                          'nickname' => '',
@@ -75,6 +76,9 @@ class TolModule extends PLModule
                 $conds[] = new PFC_Or($freeconds);
             }
         }
+
+        if ($fields['hruid'])
+            $conds[] = new UFC_Hruid($fields['hruid']);
 
         if ($fields['firstname'])
             $conds[] = new UFC_Name($fields['firstname'], UFC_Name::FIRSTNAME, UFC_Name::CONTAINS);
