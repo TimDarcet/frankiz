@@ -68,6 +68,21 @@ class GFC_Namespace extends GroupFilterCondition
     }
 }
 
+class GFC_Visible extends GroupFilterCondition
+{
+    private $visible;
+
+    public function __construct($visible = true)
+    {
+        $this->visible = $visible;
+    }
+
+    public function buildCondition(PlFilter $uf)
+    {
+        return XDB::format('g.visible = {?}', $this->visible);
+    }
+}
+
 class GFC_Label extends GroupFilterCondition
 {
     // Modes
