@@ -162,7 +162,7 @@ $iter = XDB::iterator('SELECT  c.eleve_id, c.perms, c.passwd,
                    INNER JOIN  trombino.eleves AS e       ON c.eleve_id = e.eleve_id
                     LEFT JOIN  frankiz2.poly_mailedu AS p ON (p.poly = e.login AND p.promo = e.promo)
                     LEFT JOIN  trombino.sections AS s     ON s.section_id = e.section_id
-                        WHERE  e.promo != 0000');
+                        WHERE  e.promo >= {?}', $argv[1]);
 
 $users = $iter->total();
 $k = 0;
