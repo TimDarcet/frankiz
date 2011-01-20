@@ -40,7 +40,6 @@
 {js src="jquery.js"}
 {js src="json2.js"}
 {js src="common.js"}
-{js src="groups.js"}
 
 {js src="jquery.jstree.js"}
 {js src="jquery.hashchange.js"}
