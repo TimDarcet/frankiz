@@ -159,7 +159,7 @@ class Wiki extends Meta
         $this->id = XDB::insertId();
     }
 
-    public function export()
+    public function export($bits = null)
     {
         $export = parent::export();
 
