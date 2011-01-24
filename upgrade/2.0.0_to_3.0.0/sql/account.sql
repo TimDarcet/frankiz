@@ -3,26 +3,20 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 19, 2011 at 07:25 PM
+-- Generation Time: Jan 24, 2011 at 11:40 PM
 -- Server version: 5.1.51
 -- PHP Version: 5.3.5-pl0-gentoo
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
 --
--- Database: `dev`
+-- Database: 'dev'
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `account`
+-- Table structure for table 'account'
 --
 
 DROP TABLE IF EXISTS account;
@@ -31,7 +25,7 @@ CREATE TABLE IF NOT EXISTS account (
   hruid varchar(255) CHARACTER SET ascii NOT NULL,
   `password` varchar(120) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   gid int(11) NOT NULL,
-  perms enum('admin','web','support','kes','none') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'none',
+  perms set('admin','user','anonymous') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   state enum('active','pending','unregistered','disabled') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `hash` varchar(34) CHARACTER SET ascii NOT NULL,
   hashstamp datetime NOT NULL,
@@ -59,4 +53,4 @@ CREATE TABLE IF NOT EXISTS account (
 --
 
 INSERT INTO `account` (`uid`, `hruid`, `password`, `gid`, `perms`, `state`, `hash`, `hashstamp`, `hash_rss`, `email_format`, `skin`, `firstname`, `lastname`, `nickname`, `email`, `gender`, `birthdate`, `next_birthday`, `cellphone`, `original`, `photo`, `comment`, `on_platal`) VALUES
-(0, 'anonymous', '', 0, 'none', 'disabled', '', '0000-00-00 00:00:00', '', 'text', 'default', '', '', '', '', 'woman', '0000-00-00', '0000-00-00', '', 0, 0, 'Anonymous User', 0);
+(0, 'anonymous', '', 0, 'anonymous', 'disabled', '', '0000-00-00 00:00:00', '', 'text', 'default', '', '', '', '', 'woman', '0000-00-00', '0000-00-00', '', 0, 0, 'Anonymous User', 0);
