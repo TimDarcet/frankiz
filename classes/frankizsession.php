@@ -237,7 +237,7 @@ class FrankizSession extends PlSession
         }
 
         // Set session perms from User perms
-        $this->makePerms($user->perms(), S::b('is_admin'));
+        S::set('perms', $user->perms());
 
         /* Clean temp var 'cookie_uid' */
         S::kill('cookie_uid');
@@ -266,7 +266,7 @@ class FrankizSession extends PlSession
      */
     protected function makePerms($perm, $is_admin)
     {
-        S::set('perms', User::makePerms($perm, $is_admin));
+        throw new Exception('Deprecated');
     }
 
     public function loggedLevel()

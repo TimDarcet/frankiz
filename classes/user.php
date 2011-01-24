@@ -82,7 +82,6 @@ class User extends Meta
 
     // Permissions
     protected $perms = null;
-    protected $perm_flags = null;
 
     // enum('active','pending','unregistered','disabled')
     protected $state = null;
@@ -520,40 +519,10 @@ class User extends Meta
 
     public function checkPerms($perms)
     {
-        if (is_null($this->perm_flags)) {
-            $this->buildPerms();
+        if (is_null($this->perms)) {
+            throw new DataNotFetchedException('The perms have not been fetched');
         }
-        if (is_null($this->perm_flags)) {
-            return false;
-        }
-        return $this->perm_flags->hasFlagCombination($perms);
-    }
-
-    // Specialization of the buildPerms method
-    // This function build 'generic' permissions for the user.
-    protected function buildPerms()
-    {
-        if (!is_null($this->perm_flags)) {
-            return;
-        }
-        if ($this->perms === null) {
-             $this->select();
-        }
-        $this->perm_flags = self::makePerms($this->perms);
-    }
-
-    // Return permission flags for a given permission level.
-    public static function makePerms($perms)
-    {
-        $flags = new PlFlagSet();
-        if (is_null($flags) || $perms == 'disabled') {
-            return $flags;
-        }
-        $flags->addFlag(PERMS_USER);
-        if ($perms == 'admin') {
-            $flags->addFlag(PERMS_ADMIN);
-        }
-        return $flags;
+        return $this->perms->hasFlagCombination($perms);
     }
 
     /*******************************************************************************
@@ -774,6 +743,7 @@ class User extends Meta
                     $datas['firstname'] = ucwords(strtolower($datas['firstname']));
                     $datas['lastname']  = ucwords(strtolower($datas['lastname']));
 
+                    $datas['perms'] = new PlFlagSet($datas['perms']);
                     $datas['group'] = $groups->addget($datas['gid']);unset($datas['gid']);
                     $datas['birthdate'] = new FrankizDateTime($datas['birthdate']);
 
