@@ -40,6 +40,10 @@ class NotAnIdException extends Exception
 {
 }
 
+class DataNotFetchedException extends Exception
+{
+}
+
 abstract class Meta
 {
     protected $id = null;
