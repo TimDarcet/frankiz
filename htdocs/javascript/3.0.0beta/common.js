@@ -117,7 +117,7 @@ function wikify(container)
     });
 }
 
-function groups_picker(id, ns, check)
+function groups_picker(id, ns, check, order)
 {
     // Principal blocks
     var container  = $("#groups_picker_" + id);
@@ -197,7 +197,7 @@ function groups_picker(id, ns, check)
             container.addClass('searching');
             request({
                 "url": 'groups/ajax/search'
-              ,"data": {"ns": ns, "token" : filter.val()}
+              ,"data": {"ns": ns, "token" : filter.val(), "order" : order}
               ,"fail": false
            ,"success": function(json) {
                            list.empty();

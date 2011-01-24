@@ -42,7 +42,7 @@
             <div class="filters">
                 <form name="filters">
                 <input type="hidden" id="gid" name="gid" value="{$group->id()}" />
-                <label>Promo{include file="groups_picker.tpl"|rel id="promo" ns="promo" check=-1 already=$promos}</label>
+                <label>Promo{include file="groups_picker.tpl"|rel id="promo" ns="promo" check=-1 already=$promos order="name"}</label>
                 </form>
             </div>
 

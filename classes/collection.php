@@ -95,7 +95,7 @@ class Collection extends PlAbstractIterable
     public function export($stringify = false)
     {
         $json = array();
-        foreach ($this->collected as $c)
+        foreach ($this as $c)
             $json[] = $c->export();
 
         return ($stringify) ? json_encode($json) : $json;

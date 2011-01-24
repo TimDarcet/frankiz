@@ -90,12 +90,18 @@ class GroupsModule extends PLModule
                                   new PFC_OR(new GFC_Label($json->token, GFC_Label::CONTAINS),
                                              new GFC_Name($json->token)));
 
-        $own = new GroupFilter(new PFC_And($conditions, new GFC_User(S::user()->id())), new GFO_Score(true));
-        $all = new GroupFilter($conditions, new GFO_Score(true));
+        if ($json->order == 'name') {
+            $order = new GFO_Name(true);
+        } else {
+            $order = new GFO_Score(true);
+        }
+        $own = new GroupFilter(new PFC_And($conditions, new GFC_User(S::user()->id())), $order);
+        $all = new GroupFilter($conditions, $order);
         $own = $own->get(new PlLimit(5));
         $all = $all->get(new PlLimit(5));
 
         $all->merge($own)->select(Group::SELECT_BASE);
+        $all->order($json->order);
 
         $page->jsonAssign('success', true);
         $page->jsonAssign('groups', $all->export());
