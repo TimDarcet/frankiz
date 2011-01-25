@@ -65,7 +65,7 @@ abstract class Weather implements IteratorAggregate
 class GoogleWeather extends Weather
 {
     function __construct($city_code = 'Palaiseau', $lang= 'fr') {
-        $prefix_images = 'http://www.google.com/';
+        $prefix_images = 'https://www.google.com/';
         $url = 'http://www.google.com/ig/api?weather=' . urlencode($city_code) . '&hl=' . $lang;
 
         $api = new API($url);
