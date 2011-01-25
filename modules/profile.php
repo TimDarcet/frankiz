@@ -321,6 +321,7 @@ class ProfileModule extends PLModule
         $res = XDB::query('SELECT  s.name, s.label, s.description, COUNT(a.skin) frequency
                              FROM  skins AS s
                         LEFT JOIN  account AS a ON a.skin = s.name
+                            WHERE  s.visibility = 1
                          GROUP BY  s.name
                          ORDER BY  frequency DESC');
         $skins = $res->fetchAllAssoc();
