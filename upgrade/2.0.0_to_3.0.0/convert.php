@@ -296,6 +296,18 @@ $webmasters->priv(1);
 $webmasters->leavable(1);
 $webmasters->visible(1);
 
+$on_platal = new Group();
+$on_platal->insert();
+$on_platal->name('on_platal');
+$on_platal->label('Sur le platal');
+$on_platal->external(0);
+$on_platal->priv(0);
+$on_platal->leavable(0);
+$on_platal->visible(0);
+// Admins(on_platal) = Members(webmasters)
+$on_platal->caste(Rights::admin())->userfilter(new UserFilter(new UFC_Group($webmasters, Rights::member())));
+// Members(on_platal) = those on the platal !
+$on_platal->caste(Rights::member())->userfilter(new UserFilter(new PFC_Or(new UFC_Promo(2008), new UFC_Promo(2009))));
 
 $everybody = new Group();
 $everybody->insert();
