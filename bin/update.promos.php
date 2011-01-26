@@ -64,7 +64,7 @@ while ($datas = $iter->next()) {
         $i->insert();
         $i->group($tol);
         $i->label($label);
-        $i->image($upload, false);
+        $i->image($upload, ImageSizesSet::group(), false);
 
         $g->image($i);
 
