@@ -1,7 +1,6 @@
-<?php
 /***************************************************************************
- *  Copyright (C) 2009 Binet Réseau                                       *
- *  http://www.polytechnique.fr/eleves/binets/reseau/                     *
+ *  Copyright (C) 2009 Binet Réseau                                        *
+ *  http://www.polytechnique.fr/eleves/binets/reseau/                      *
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
  *  it under the terms of the GNU General Public License as published by   *
@@ -19,16 +18,15 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-require_once dirname(__FILE__).'/../include/frankiz.inc.php';
-
-$platal = new Frankiz('frankiz', 'admin', 'profile', 'tol', 'groups', 'wiki', 'images',
-                      'news', 'activity', 'surveys', 'lostandfound', 'forums', 'proposal',
-                      'qdj', 'todo');
-
-if (!($path = Env::v('n')) || ($path{0} < 'A' || $path{0} > 'Z')) {
-    $platal->run();
-    exit;
+#content div {
+    margin: 5px;
 }
 
-// vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
-?>
+#content .questions {
+    border: 1px black solid;
+}
+
+#content .answers {
+    border: none;
+    border-left: 2px grey solid;
+}
