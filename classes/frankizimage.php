@@ -32,7 +32,7 @@ class FrankizImage extends Meta implements ImageInterface
     // Size in Bytes
     protected $size;
 
-    // Size in pixels
+    // Sizes in pixels
     protected $x;
     protected $y;
 
@@ -202,60 +202,36 @@ class FrankizImage extends Meta implements ImageInterface
 
     *******************************************************************************/
 
-    protected function make($width, $height, $quality)
-    {
-        if ($this->x <= $width && $this->y <= $height)
-            return null;
-
-        if (empty($im)) {
-            $im = new Imagick();
-            $im->readImageBlob($this->full);
-        }
-
-        if ($im->getImageWidth() > $width)
-            $im->thumbnailImage($width, null, false);
-
-        if ($im->getImageHeight() > $height)
-            $im->thumbnailImage(null, $height, false);
-
-        $im->setImageCompressionQuality($quality);
-        $im->stripImage();
-
-        return $im->getimageblob();
-    }
-
-    protected function makeSmall()
-    {
-        return $this->make(self::SMALL_WIDTH, self::SMALL_HEIGHT, self::SMALL_QUALITY);
-    }
-
-    protected function makeMicro()
-    {
-        return $this->make(self::MICRO_WIDTH, self::MICRO_HEIGHT, self::MICRO_QUALITY);
-    }
-
     /**
     * Build the image from a FrankizUpload instance, stores it into the DB
     *
-    * @param $fu  Instance of FrankizUpload
-    * @param $rm  Should the temporary file be removed after ? (Default: yes)
+    * @param $fu      Instance of FrankizUpload
+    * @param $sizes   The set of sizes the image should be converted to
+    * @param $rm      Should the temporary file be removed after ? (Default: yes)
     */
-    public function image(FrankizUpload $fu, $rm = true)
+    public function image(FrankizUpload $fu, ImageSizesSet $sizes, $rm = true)
     {
         $infos = getimagesize($fu->path());
         $this->mime = $infos['mime'];
         $this->x    = $infos[0];
         $this->y    = $infos[1];
 
-        if ($this->x > self::MAX_WIDTH || $this->y > self::MAX_HEIGHT)
-            throw new Exception('The picture is to big: ('.$this->x.'x'.$this->y.') > ('.self::MAX_WIDTH.'x'.self::MAX_HEIGHT.')');
+        if ($this->x > self::MAX_WIDTH || $this->y > self::MAX_HEIGHT) {
+            $e = new ImageSizeException('The picture is to big: ('.$this->x.'x'.$this->y.') > ('.self::MAX_WIDTH.'x'.self::MAX_HEIGHT.')');
+            $e->size(new ImageSize($this->x, $this->y));
+            $e->allowed(new ImageSize(self::MAX_WIDTH, self::MAX_HEIGHT));
+            throw $e;
+        }
 
-        $this->full  = file_get_contents($fu->path());
-        $this->small = $this->makeSmall();
-        $this->micro = $this->makeMicro();
+        $images = $sizes->resize(file_get_contents($fu->path()));
 
-        if ($rm)
+        $this->full  = $images['full'];
+        $this->small = $images['small'];
+        $this->micro = $images['micro'];
+
+        if ($rm) {
             $fu->rm();
+        }
 
         XDB::execute('UPDATE  images
                          SET  full = {?}, small = {?}, micro = {?},

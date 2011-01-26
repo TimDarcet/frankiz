@@ -19,6 +19,109 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+class ImageSize
+{
+    public $x; // Width
+    public $y; // Height
+    public $q; // Quality
+
+    public function __construct($x, $y, $q = -1) {
+        $this->x = $x;
+        $this->y = $y;
+        $this->q = $q;
+    }
+
+    public function export() {
+        return array($this->x, $this->y, $this->q);
+    }
+
+    public static function fromExport($export) {
+        return new self($export[0], $export[1], $export[2]);
+    }
+}
+
+class ImageSizesSet
+{
+    const TOL   = 'tol';
+    const GROUP = 'group';
+
+    public $full;
+    public $small;
+    public $micro;
+
+    public function __construct($full, $small, $micro) {
+        $this->full  = $full;
+        $this->small = $small;
+        $this->micro = $micro;
+    }
+
+    protected static function fromExport($export) {
+        return new self(ImageSize::fromExport($export->full),
+                        ImageSize::fromExport($export->small),
+                        ImageSize::fromExport($export->micro));
+    }
+
+    public static function __callStatic($name, $arguments) {
+        global $globals;
+
+        $export = json_decode($globals->sizes->$name);
+        return self::fromExport($export);
+    }
+
+    private static function setResize(Imagick $im, ImageSize $size, $force = false) {
+        if (!$force && $im->getImageWidth()  <= $size->x
+                    && $im->getImageHeight() <= $size->y) {
+            return null;
+        }
+
+        if ($im->getImageWidth() > $size->x) {
+            $im->thumbnailImage($size->x, null, false);
+        }
+
+        if ($im->getImageHeight() > $size->y) {
+            $im->thumbnailImage(null, $size->y, false);
+        }
+
+        $im->setImageCompressionQuality($size->q);
+        $im->stripImage();
+
+        return $im->getImageBlob();
+    }
+
+    public function resize($blob_image) {
+        $im = new Imagick();
+        $im->readImageBlob($blob_image);
+
+        $images = array();
+
+        $images['full']  = self::setResize($im, $this->full, true);
+        $images['small'] = self::setResize($im, $this->small);
+        $images['micro'] = self::setResize($im, $this->micro);
+
+        return $images;
+    }
+}
+
+class ImageSizeException extends Exception
+{
+    private $size;
+    private $allowed;
+
+    public function size(ImageSize $size) {
+        if ($size !== null) {
+            $this->size = $size;
+        }
+        return $this->size;
+    }
+
+    public function allowed(ImageSize $allowed) {
+        if ($allowed !== null) {
+            $this->allowed = $allowed;
+        }
+        return $this->allowed;
+    }
+}
+
 interface ImageInterface
 {
     /*******************************************************************************
@@ -26,19 +129,8 @@ interface ImageInterface
 
     *******************************************************************************/
 
-    // Maxs for the original picture
-    const MAX_WIDTH  = 800;
-    const MAX_HEIGHT = 600;
-
-    // Sizes for the miniature
-    const SMALL_WIDTH   = 140;
-    const SMALL_HEIGHT  = 105;
-    const SMALL_QUALITY = 75;
-
-    // Sizes for the stamp-size picture
-    const MICRO_WIDTH   = 35;
-    const MICRO_HEIGHT  = 35;
-    const MICRO_QUALITY = 75;
+    const MAX_WIDTH  = 1024;
+    const MAX_HEIGHT = 1024;
 
     const SELECT_BASE  = 0x01;
     const SELECT_FULL  = 0x02;

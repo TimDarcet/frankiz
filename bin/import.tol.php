@@ -75,7 +75,7 @@ while (true) {
             $i->insert();
             $i->group($group);
             $i->label($u->firstname() . ' ' . $u->lastname());
-            $i->image($upload, false);
+            $i->image($upload, ImageSizesSet::tol() ,false);
             if ($original)
                 $u->original($i);
             else
