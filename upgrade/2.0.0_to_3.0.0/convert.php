@@ -306,8 +306,7 @@ $on_platal->leavable(0);
 $on_platal->visible(0);
 // Admins(on_platal) = Members(webmasters)
 $on_platal->caste(Rights::admin())->userfilter(new UserFilter(new UFC_Group($webmasters, Rights::member())));
-// Members(on_platal) = those on the platal !
-$on_platal->caste(Rights::member())->userfilter(new UserFilter(new PFC_Or(new UFC_Promo(2008), new UFC_Promo(2009))));
+// Members are imported in update.promos
 
 $everybody = new Group();
 $everybody->insert();

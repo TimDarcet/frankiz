@@ -26,6 +26,8 @@
 
 require 'connect.db.inc.php';
 
+echo 'Updating promos' . "\n";
+
 $tol = Group::from('tol');
 
 $iter = XDB::iterator('SELECT promo FROM studies GROUP BY promo');
@@ -38,7 +40,7 @@ while ($datas = $iter->next()) {
         $g->select(Group::SELECT_CASTES);
         $c = $g->caste(Rights::member());
         $c->select(Caste::SELECT_BASE)->compute();
-        echo $promo . '(' . $g->id() . ") updated\n";
+        echo $promo . '(' . $g->id() . ') updated: ' . $c->users()->count() . ' members' . "\n";
     } else {
         $f = new UserFilter(new UFC_Promo($promo));
 
@@ -70,7 +72,21 @@ while ($datas = $iter->next()) {
     }
 }
 
-echo 'Fini' . "\n";
+echo "-----------------------------------------------\n";
+
+echo 'Updating on_platal' . "\n";
+
+$on_platal = Group::from('on_platal');
+$on_platal->select();
+
+$filters = array();
+foreach (json_decode($globals->core->promos) as $promo) {
+    $filters[] = new UFC_Promo($promo);
+}
+$members = $on_platal->caste(Rights::member());
+$members->userfilter(new UserFilter(new PFC_Or($filters)));
+
+echo 'on_platal(' . $on_platal->id() . ') updated: ' . $members->users()->count() . ' members' . "\n";
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
 ?>
