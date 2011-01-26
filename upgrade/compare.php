@@ -56,42 +56,39 @@ $b_tables = $b_tables->fetchColumn();
 
 
 // Compare the tables
+$tables = array();
 foreach ($b_tables as $table) {
-    echo "Table '$table' ";
-
     if (!in_array($table, $a_tables)) {
-        echo "missing \n";
+        $tables[$table] = 'missing';
     } else {
-        echo "\n";
-
         $theoric = XDB::query('DESCRIBE ' . $table)->fetchAllAssoc('Field');
         $actual  = XDB::query('DESCRIBE ' . $globals->dbdb . '.' . $table)->fetchAllAssoc('Field');
 
         foreach($theoric as $field => $infos) {
             if (!array_key_exists($field, $actual)) {
-                echo "- '$field' " . $infos['Type'] . " \n";
+                $tables[$table][] = "- '$field' " . $infos['Type'] . "";
             } else {
                 if ($infos['Type'] != $actual[$field]['Type']) {
-                    echo "* '$field' " . $infos['Type'] . " differs from " . $actual[$field]['Type'] . " \n";
+                    $tables[$table][] = "* '$field' " . $infos['Type'] . " differs from " . $actual[$field]['Type'] . "";
                 }
                 if ($infos['Null'] != $actual[$field]['Null']) {
-                    echo "* '$field' " . $infos['Type'] . " differs for NULL \n";
+                    $tables[$table][] = "* '$field' " . $infos['Type'] . " differs for NULL";
                 }
                 if ($infos['Key'] != $actual[$field]['Key']) {
-                    echo "* '$field' " . $infos['Type'] . " differs for KEY \n";
+                    $tables[$table][] = "* '$field' " . $infos['Type'] . " differs for KEY";
                 }
                 if ($infos['Default'] != $actual[$field]['Default']) {
-                    echo "* '$field' " . $infos['Type'] . " differs for Default \n";
+                    $tables[$table][] = "* '$field' " . $infos['Type'] . " differs for Default";
                 }
                 if ($infos['Extra'] != $actual[$field]['Extra']) {
-                    echo "* '$field' " . $infos['Type'] . " differs for Extra \n";
+                    $tables[$table][] = "* '$field' " . $infos['Type'] . " differs for Extra";
                 }
             }
         }
 
         foreach($actual as $field => $infos) {
             if (!array_key_exists($field, $theoric)) {
-                echo "+ '$field' " . $infos['Type'] . " \n";
+                $tables[$table][] = "+ '$field' " . $infos['Type'];
             }
         }
 
@@ -100,6 +97,22 @@ foreach ($b_tables as $table) {
 
 foreach($a_tables as $table) {
     if (!in_array($table, $b_tables)) {
-        echo "Table '$table' supernumerary \n";
+        $tables[$table] = 'supernumerary';
     }
+}
+
+// Print the result :
+foreach ($tables as $name => $infos) {
+    if (!is_array($infos)) {
+        echo "Table $name is $infos \n";
+    } else {
+        echo "Table $name \n";
+        foreach ($infos as $info) {
+            echo $info . "\n";
+        }
+    }
+}
+
+if (empty($tables)) {
+    echo "Ok !";
 }
