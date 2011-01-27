@@ -859,9 +859,11 @@ class ProfileModule extends PLModule
             if (isset($json->$col))
                 $layout[$col] = $json->$col;
 
-        $page->jsonAssign();
-        if (!S::user()->layoutMinimodules($layout))
+        if (!S::user()->layoutMinimodules($layout)) {
             $page->jsonAssign('error', "Le réagencement des minimodules n'a pas pu se faire");
+        }
+
+        return PL_JSON;
     }
 
     function handler_ajax_minimodules_add($page)
@@ -879,6 +881,8 @@ class ProfileModule extends PLModule
             $page->assign('minimodule', $m);
             $page->jsonAssign('html', $page->fetch(FrankizPage::getTplPath('minimodule.tpl')));
         }
+
+        return PL_JSON;
     }
 
     function handler_ajax_minimodules_remove($page)
@@ -888,9 +892,11 @@ class ProfileModule extends PLModule
         $m = FrankizMiniModule::get($json->name);
         $success = S::user()->removeMinimodule($m);
 
-        $page->jsonAssign();
-        if (!$success)
+        if (!$success) {
             $page->jsonAssign('error', "Impossible de désactiver le minimodule");
+        }
+
+        return PL_JSON;
     }
 
 }

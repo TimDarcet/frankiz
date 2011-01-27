@@ -46,9 +46,3 @@ CREATE TABLE IF NOT EXISTS account (
   PRIMARY KEY (uid),
   UNIQUE KEY hruid (hruid)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `account`
---
-
-INSERT INTO `account` (`uid`, `hruid`, `password`, `gid`, `perms`, `state`, `hash`, `hashstamp`, `hash_rss`, `email_format`, `skin`, `firstname`, `lastname`, `nickname`, `email`, `gender`, `birthdate`, `next_birthday`, `cellphone`, `original`, `photo`, `comment`) VALUES(0, 'anonymous', '', 0, 'anonymous', 'disabled', '', '0000-00-00 00:00:00', '', 'text', 'default', '', '', '', '', 'woman', '0000-00-00', '0000-00-00', '', 0, 0, 'Anonymous User');

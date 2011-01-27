@@ -219,7 +219,7 @@ class User extends Meta
     public function original(FrankizImage $original = null)
     {
         if ($original != null)
-        {
+        {// TODO: remove the old one when updating
             $this->original = $original;
             XDB::execute('UPDATE account SET original = {?} WHERE uid = {?}',
                                                  $original->id(), $this->id());
@@ -235,7 +235,7 @@ class User extends Meta
     public function photo(FrankizImage $photo = null)
     {
         if ($photo != null)
-        {
+        {// TODO: remove the old one when updating
             $this->photo = $photo;
             XDB::execute('UPDATE account SET photo = {?} WHERE uid = {?}',
                                                  $photo->id(), $this->id());
@@ -590,12 +590,15 @@ class User extends Meta
     // Actually only called by S to get an anonymous user
     public static function getSilentWithValues($login, $values)
     {
+        global $globals;
+
         if ($login == 0) {
             // If the anonymous_user is already in session
             if (S::has('anonymous_user'))
                 return S::v('anonymous_user');
 
-            $u = new User(0);
+            $uid = (IP::is_internal()) ? $globals->anonymous->internal : $globals->anonymous->external;
+            $u = new User($uid);
             $u->select();
             S::set('anonymous_user', $u);
             return $u;

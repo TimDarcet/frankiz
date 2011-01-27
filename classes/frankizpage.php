@@ -142,32 +142,16 @@ class FrankizPage extends PlPage
         return SkinFileNotFoundException::merge($exceptions);
     }
 
-    public function jsonAssign($var = null, $value = null)
-    {
-        if (($var === null) && ($value === null))
-            parent::jsonAssign('_', '_');
-        else
-            parent::jsonAssign($var, $value);
-    }
-
     public function run()
     {
         $skin = $this->load_skin();
         $this->assign('skin', S::v('skin'));
-
         $this->assign('user', S::user());
+        $this->assign('logged', S::logged());
 
-        if (!Env::has('json'))
-            $this->assign('MiniModules_COL_FLOAT', FrankizMiniModule::get(S::user()->minimodules(FrankizMiniModule::COL_FLOAT)));
+        $this->assign('MiniModules_COL_FLOAT', FrankizMiniModule::get(S::user()->minimodules(FrankizMiniModule::COL_FLOAT)));
 
         $this->addCssLink(FrankizMiniModule::batchCss());
-
-        if (S::logged())
-        {
-            //TODO
-        }
-
-        $this->assign('logged', S::logged());
 
         // Enable JSON loading of the module only
         if (Env::has('solo')) {
