@@ -20,42 +20,54 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{$wiki->name()}
-{$wiki->comments()}
+<form enctype="multipart/form-data" method="post" action="wiki/admin/{$wiki->id()}">
+    <input type="hidden" name="wid" value="{$wiki->id()}" />
 
-<table>
-    <thead>
-        <tr>
-            <th>Version <input type="text" value="{$leftVersion}" /></th>
-            <th>Last {$wiki->count()}</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>{$wiki->writer($leftVersion)|user}</td>
-            <td>{$wiki->writer()|user}</td>
-        </tr>
-        <tr>
-            <td>{$wiki->wrote($leftVersion)|smarty:nodefaults}</td>
-            <td>{$wiki->wrote()|smarty:nodefaults}</td>
-        </tr>
-        <tr>
-            <td>{$wiki->html($leftVersion)|smarty:nodefaults}</td>
-            <td id="newcontentdisplay">{$wiki->html()|smarty:nodefaults}</td>
-        </tr>
-        <tr>
-            <td>
-                <textarea readonly="readonly">{$wiki->content($leftVersion)|smarty:nodefaults}</textarea>
-            </td>
-            <td>
-                <textarea id="newcontent">{$wiki->content()|smarty:nodefaults}</textarea>
-            </td>
-        </tr>
-    </tbody>
-</table>
+    {$wiki->comments()}
 
-<input type="submit" value="Ajouter la nouvelle version" />
+    <table>
+        <thead>
+            <tr>
+                <th>Version:
+                    <p id="versions">
+                        {section name=v start=1 loop=$wiki->count() step=1}
+                            <a version="{$smarty.section.v.index}">{$smarty.section.v.index}</a>
+                        {/section}
+                        <a version="{$wiki->count()}" class="on">{$wiki->count()}</a>
+                    </p>
+                </th>
+                <th>Nouvelle version</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td id="oldwriter">{$wiki->writer()|user}</td>
+                <td>{$smarty.session.user|user}</td>
+            </tr>
+            <tr>
+                <td id="oldwrote">{$wiki->wrote()|smarty:nodefaults}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td id="oldhtml">{$wiki->html()|smarty:nodefaults}</td>
+                <td id="newcontentdisplay">{$wiki->html()|smarty:nodefaults}</td>
+            </tr>
+            <tr>
+                <td id="oldcontent">
+                    <textarea readonly="readonly">{$wiki->content()|smarty:nodefaults}</textarea>
+                </td>
+                <td>
+                    <textarea name="newcontent" id="newcontent">{$wiki->content()|smarty:nodefaults}</textarea>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <input type="submit" value="Ajouter la nouvelle version" />
+</form>
 
 <script>wiki_preview.start($("#newcontent"), $("#newcontentdisplay"));</script>
+
+{js src="wiki.js"}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

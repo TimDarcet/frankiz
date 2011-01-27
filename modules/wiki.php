@@ -27,28 +27,28 @@ class WikiModule extends PlModule
             'wiki/ajax/update' => $this->make_hook('ajax_update', AUTH_COOKIE, 'admin'),
             'wiki/ajax/get'    => $this->make_hook('ajax_get'   , AUTH_COOKIE, 'admin'),
             'wiki/admin'       => $this->make_hook('admin'      , AUTH_COOKIE, 'admin'),
-            'faq'              => $this->make_hook('show'       , AUTH_COOKIE),
+            'wiki/see'         => $this->make_hook('see'        , AUTH_COOKIE),
         );
     }
     
-    function handler_show($page, $id)
+    function handler_see($page)
     {
-//    	trace($id);
-//        trace(s::user()->checkPerms('admin'));
-    	$wiki = new Wiki($id);
-    	$wiki->select(Wiki::SELECT_VERSION);
-//    	if($id == 42)
-//    	{
-        $page->assign('title', 'sudo filsdepute');
-//    	}
-//        else 
-//        {
-//        $page-> assign('title',"FAQ, Article " + $id); //ça marche pas ce truc
-//        }
+        $mixed = func_get_args();
+        array_shift($mixed);
+        $mixed = implode('/', $mixed);
+
+        if (Wiki::isId($mixed)) {
+            $wiki = new Wiki($mixed);
+        } else {
+            $wiki = Wiki::from($mixed);
+        }
+        $wiki->select(Wiki::SELECT_VERSION);
+
         $page->assign('wiki', $wiki);
-//        $page->assign('leftVersion', $leftVersion);
-        $page->assign('admin', s::user()->checkPerms('admin'));
-        $page->changeTpl('wiki/faq.tpl');
+        $page->assign('admin', S::user()->checkPerms('admin'));
+
+        $page->assign('title', 'FAQ: ' . $wiki->name());
+        $page->changeTpl('wiki/see.tpl');
     }
     
     function handler_ajax_update($page)
@@ -76,7 +76,8 @@ class WikiModule extends PlModule
         $versions = isset($json->versions) ? $json->versions : array('last');
 
         try {
-            $wiki->select(array(Wiki::SELECT_VERSION => array('versions' => $versions, 'options' => User::SELECT_BASE)));
+            $wiki->select(array(Wiki::SELECT_VERSION => array('versions' => $versions,
+                                                              'options' => User::SELECT_BASE)));
             $page->jsonAssign('wiki', $wiki->export());
         } catch(Exception $e) {
             $page->jsonAssign('error', $e->getMessage());
@@ -91,25 +92,40 @@ class WikiModule extends PlModule
         array_shift($mixed);
         $mixed = implode('/', $mixed);
 
-        // Create the Wiki if it doesn't exist
-        if (Wiki::isId($mixed))
-            $wiki = new Wiki($mixed);
-        else
-            $wiki = Wiki::from($mixed, true);
+        if (empty($mixed)) {
+            $res = XDB::query('SELECT wid FROM wiki');
+            $wikis = new Collection('Wiki');
+            $wikis->add($res->fetchColumn());
 
-        $wiki->select(Wiki::SELECT_BASE | Wiki::SELECT_COUNT);
+            $wikis->select(Wiki::SELECT_BASE | Wiki::SELECT_COUNT);
 
-        $leftVersion = $wiki->count() - 1;
+            $page->assign('wikis', $wikis);
 
-        $wiki->select(array(Wiki::SELECT_VERSION => array('versions' => array('last', $leftVersion), 'options' => User::SELECT_BASE)));
-
-        $page->addCssLink('wiki.css');
-        $page->assign('title', 'Administration Wiki');
-        $page->assign('wiki', $wiki);
-        $page->assign('leftVersion', $leftVersion);
-        $page->changeTpl('wiki/admin.tpl');
+            $page->addCssLink('wiki.css');
+            $page->assign('title', 'Admin Wiki');
+            $page->changeTpl('wiki/list.tpl');
+        } else {
+            if (Wiki::isId($mixed)) {
+                $wiki = new Wiki($mixed);
+            } else {
+                $wiki = Wiki::from($mixed, true); // Create the Wiki if it doesn't exist
+            }
+    
+            if (Env::has('newcontent')) {
+                $wiki->update(Env::s('newcontent'));
+            }
+    
+            $wiki->select(Wiki::SELECT_BASE | Wiki::SELECT_COUNT);
+            $wiki->select(array(Wiki::SELECT_VERSION => array('versions' => array('last'),
+                                                              'options' => User::SELECT_BASE)));
+    
+            $page->assign('wiki', $wiki);
+    
+            $page->addCssLink('wiki.css');
+            $page->assign('title', 'Admin Wiki: ' . $wiki->name());
+            $page->changeTpl('wiki/admin.tpl');
+        }
     }
-
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

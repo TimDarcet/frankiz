@@ -22,8 +22,8 @@
 
  {$wiki->html()|smarty:nodefaults}
 
-<form enctype="multipart/form-data" method="post" action="wiki/admin/{$wiki->id()}">
-    <input type="submit" name="send" value="Administrer cet article" />
-</form>
+{if $admin}
+    <a href="wiki/admin/{$wiki->id()}">Modifier le wiki</a>
+{/if}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

@@ -43,3 +43,12 @@
     width: 100%;
     height: 250px;
 }
+
+#content a.on {
+    color: red;
+}
+
+#versions {
+    margin: 0;
+    padding: 0;
+}
