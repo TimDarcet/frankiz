@@ -36,6 +36,9 @@ class API
     public function exec()
     {
         if ($this->response === null) {
+            if (!isset(PlBacktrace::$bt['API']))
+                new PlBacktrace('API');
+
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_TIMEOUT, 10);
             curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
@@ -50,14 +53,18 @@ class API
             // TODO: use certificates for https requests
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($curl, CURLOPT_URL, $this->url);
+
+            PlBacktrace::$bt['API']->start($this->url);
+
             $this->response = utf8_encode(curl_exec($curl));
             $this->infos = curl_getinfo($curl);
             curl_close($curl);
 
-            if (!isset(PlBacktrace::$bt['API']))
-                new PlBacktrace('API');
-
-            PlBacktrace::$bt['API']->newEvent($this->url, 0, 0);
+            $datas = array(array_intersect_key(
+                            $this->infos,
+                            array_flip(array("content_type", "http_code", "header_size",
+                                             "request_size", "redirect_count", "size_download"))));
+            PlBacktrace::$bt['API']->stop(substr_count($this->response, "\n"), null, $datas);
         }
     }
 
