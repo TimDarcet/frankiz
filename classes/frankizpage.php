@@ -62,6 +62,7 @@ class FrankizPage extends PlPage
     {
         parent::__construct();
         // Set the default page
+        $this->assign('title', 'Erreur');
         $this->changeTpl('500.tpl');
     }
     
