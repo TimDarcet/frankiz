@@ -1,15 +1,9 @@
+AddHandler application/x-httpd-php .xml
+
 RewriteEngine on
 RewriteBase @REWRITE_BASE@
 
-# Temporaire - en attendant le déplacement des répertoires
-RewriteRule ^data/ - [L]
-RewriteRule ^skins/ - [L]
-
-# Temporaire - en attendant que profil soit entierement migre
-#RewriteRule ^profil/$ frankiz.php?n=profil [L,QSA]
-#RewriteRule ^(profil/fkz.*)$ frankiz.php?n=$1 [L,QSA]
-
-RewriteRule ^$ frankiz.php?n=annonces [L,QSA]
+RewriteRule ^$ frankiz.php?n=home [L,QSA]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

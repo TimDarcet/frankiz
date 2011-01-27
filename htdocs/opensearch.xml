@@ -1,0 +1,15 @@
+<?php
+    require_once "../bin/connect.db.inc.php";
+    header("Content-Type: application/opensearchdescription+xml");
+?>
+<?xml version="1.0" encoding="UTF-8" ?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+    <ShortName>Trombino Frankiz</ShortName>
+    <Description>Recherche rapide dans le trombino de Frankiz</Description>
+    <Tags>frankiz polytechnique</Tags>
+    <Contact>root@frankiz.polytechnique.fr</Contact>
+    <Url type="text/html" template="<?php echo $globals->baseurl ?>/tol/?free={searchTerms}" />
+    <Language>fr_FR</Language>
+    <OutputEncoding>UTF-8</OutputEncoding>
+    <InputEncoding>UTF-8</InputEncoding>
+</OpenSearchDescription>

@@ -31,7 +31,7 @@
 <link rel="start" href="index.php"/>
 <link href="mailto:web@fkz" rev="made" />
 <link rel="shortcut icon" href="favicon.ico" />
-<link rel="search" type="application/opensearchdescription+xml" href="opensearch.xml.php" title="Trombino" />
+<link rel="search" type="application/opensearchdescription+xml" href="opensearch.xml" title="Trombino" /> 
 
 <script type="text/javascript">
     var logged = {if $smarty.session.auth >= AUTH_COOKIE}true{else}false{/if};
