@@ -6,10 +6,6 @@ cd ../../bin
 ./update.promos.php
 ./update.studies.php
 
-cd cron
-./update.scores.php
-./update.birthday.php
-
 cd ..
 for ((i = 2009; i >= $1; i -= 1))
 do
@@ -19,3 +15,7 @@ done
 
 cd ../upgrade/2.0.0_to_3.0.0/unversionned
 ./add.php
+
+cd ../../../bin/cron
+./update.scores.php
+./update.birthday.php
