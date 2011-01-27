@@ -75,7 +75,7 @@
         <td>{$image->x()}</td>
         <td>{$image->y()}</td>
         <td>{$image->size()|bytes_format}</td>
-        <td>{$image->comment()}</td>
+        <td>{$image->label()}</td>
     </tr>
 {/foreach}
 </table>

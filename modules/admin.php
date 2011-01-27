@@ -25,13 +25,21 @@ class AdminModule extends PlModule
     function handlers()
     {
         return array(
-            'admin/su'          => $this->make_hook('su'    , AUTH_MDP, 'admin'),
-            'admin/tree'        => $this->make_hook('tree'  , AUTH_MDP, 'admin'),
-            'admin/images'      => $this->make_hook('images', AUTH_MDP, 'admin'),
-            'admin/image'       => $this->make_hook('image' , AUTH_MDP, 'admin'),
-            'admin/validate'    => $this->make_hook('validate', AUTH_MDP),
-            'admin/debug'       => $this->make_hook('debug' , AUTH_PUBLIC)
+            'admin'             => $this->make_hook('admin'   , AUTH_COOKIE),
+            'admin/su'          => $this->make_hook('su'      , AUTH_MDP, 'admin'),
+            'admin/images'      => $this->make_hook('images'  , AUTH_MDP, 'admin'),
+            'admin/image'       => $this->make_hook('image'   , AUTH_MDP, 'admin'),
+            'admin/group'       => $this->make_hook('group'   , AUTH_MDP, 'admin'),
+            'admin/bubble'      => $this->make_hook('bubble'  , AUTH_MDP, 'admin'),
+            'admin/validate'    => $this->make_hook('validate', AUTH_COOKIE),
+            'admin/debug'       => $this->make_hook('debug'   , AUTH_PUBLIC)
         );
+    }
+
+    function handler_admin($page)
+    {
+        $page->assign('title', "Administration");
+        $page->changeTpl('admin/index.tpl');
     }
 
     function handler_su($page, $uid=0)
@@ -52,10 +60,23 @@ class AdminModule extends PlModule
         }
     }
 
-    function handler_tree($page)
+    function handler_group($page, $group)
     {
-        $page->assign('title', 'Arbre des groupes');
-        $page->changeTpl('admin/tree.tpl');
+        if (Group::isId($group)) {
+            $gf = new GroupFilter(new GFC_Id($group));
+        } else {
+            $gf = new GroupFilter(new GFC_Name($group));
+        }
+
+        $g = $gf->get(true);
+        if ($g) {
+            $g->select(array(Group::SELECT_BASE => null,
+                             Group::SELECT_CASTES => Caste::SELECT_BASE | Caste::SELECT_USERS));
+        }
+
+        $page->assign('title', "Administration du groupe");
+        $page->assign('group', $g);
+        $page->changeTpl('admin/group.tpl');
     }
 
     function handler_images($page)
@@ -88,7 +109,6 @@ class AdminModule extends PlModule
 
         $image->send();
     }
-    
 
     function handler_validate($page, $action = 'list', $id = null) 
     {   
@@ -96,7 +116,7 @@ class AdminModule extends PlModule
 
         $collec = $filter->get();
         $collec->select(Validate::SELECT_BASE | Validate::SELECT_ITEM);
-        
+
         if(Env::has('val_id'))
         {
             $el = $collec->get(Env::v('val_id'));
@@ -109,7 +129,7 @@ class AdminModule extends PlModule
             }
                 
         }
-        
+
         $page->assign('val', $collec);
         $page->addJsLink('validate.js');
         $page->addCssLink('validate.css');
@@ -122,7 +142,6 @@ class AdminModule extends PlModule
 
         $page->assign('title', 'Debug');
         $page->changeTpl('debug.tpl');
-
     }
 }
 
