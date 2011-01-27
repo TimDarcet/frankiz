@@ -54,7 +54,7 @@ class IkMiniModule extends FrankizMiniModule
             file_put_contents($filename, base64_decode($json['base64']));
             $ik = array('id' => $json['id'], 'title' => $json['title'], 'url' => $json['url']);
 
-            PlCache::setGlobal('ik', $ik, $globals->ik->refresh);
+            PlCache::setGlobal('ik', $ik, $globals->cache->ik);
         }
 
         return $this->assign('ik', PlCache::getGlobal('ik'));

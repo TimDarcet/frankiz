@@ -39,8 +39,10 @@ abstract class Weather implements IteratorAggregate
     protected $forecasts;
 
     public static function get() {
+        global $globals;
+
         if (!PlCache::hasGlobal('meteo'))
-            PlCache::setGlobal('meteo', new GoogleWeather(), 1800);
+            PlCache::setGlobal('meteo', new GoogleWeather(), $globals->cache->meteo);
 
         return PlCache::getGlobal('meteo');
     }
