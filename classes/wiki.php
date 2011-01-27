@@ -83,7 +83,7 @@ class Wiki extends Meta
     {
         if ($version == null)
             $version = $this->_highest();
-        return MiniWiki::WikiToHTML($this->versions[$version]['content']);
+        return MiniWiki::WikiToHTML($this->versions[$version]['content'], true);
     }
 
     /**
@@ -171,13 +171,29 @@ class Wiki extends Meta
                 $export['versions'][$key] = array('wrote'   => $version['wrote'],
                                                   'writer'  => $version['writer']->export(),
                                                   'content' => $version['content'],
-                                                  'html'    => MiniWiki::WikiToHTML($version['content']));
+                                                  'html'    => MiniWiki::WikiToHTML($version['content'], true));
             }
 
         if ($this->comments !== null)
             $export['comments'] = $this->comments;
 
         return $export;
+    }
+
+    public static function from($mixed, $insertIfNotExists = false)
+    {
+        try {
+            $w = static::batchFrom(array($mixed))->first();
+        } catch (ItemNotFoundException $e) {
+            if ($insertIfNotExists) {
+                $w = new Wiki(array('name' => $mixed));
+                $w->insert();
+                $w->update('');
+            } else {
+                throw $e;
+            }
+        }
+        return $w;
     }
 
     public static function batchFrom(array $mixed)
@@ -221,7 +237,8 @@ class Wiki extends Meta
             $iter = XDB::iterator('SELECT  w.wid AS id, ' . self::arrayToSqlCols($cols) . '
                                      FROM  wiki AS w
                                            ' . PlSqlJoin::formatJoins($joins, array()) . '
-                                    WHERE  w.wid IN {?}', array_keys($wikis));
+                                    WHERE  w.wid IN {?}
+                                 GROUP BY  w.wid', array_keys($wikis));
 
             while ($datas = $iter->next())
                 $wikis[$datas['id']]->fillFromArray($datas);
@@ -259,10 +276,7 @@ class Wiki extends Meta
 
             $writers = new Collection('User');
             while ($datas = $iter->next()) {
-                $writer = $writers->get($datas['writer']);
-                if ($writer === false)
-                     $writer = $writers->add($datas['writer'])->get($datas['writer']);
-
+                $writer = $writers->addget($datas['writer']);
                 $wikis[$datas['id']]->versions[$datas['version']] = array('wrote' => $datas['wrote'],
                                                                          'writer' => $writer,
                                                                         'content' => $datas['content']);
@@ -270,7 +284,6 @@ class Wiki extends Meta
 
             if (isset($opts['options']))
                 $writers->select($opts['options']);
-
         }
     }
 

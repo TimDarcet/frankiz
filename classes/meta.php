@@ -158,7 +158,7 @@ abstract class Meta
         return implode(', ', $sql_columns);
     }
 
-    /** TODO: Put into wiki if only used there
+    /**
     * Returns the object corresponding to the specified name
     *
     * @param $mixed              A unique identifier ot the object to retrieve
@@ -170,8 +170,7 @@ abstract class Meta
             $w = static::batchFrom(array($mixed))->first();
         } catch (ItemNotFoundException $e) {
             if ($insertIfNotExists) {
-                $w = new Wiki(array('name' => $mixed));
-                $w->insert();
+                throw new Exception('Feature not supported');
             } else {
                 throw $e;
             }
