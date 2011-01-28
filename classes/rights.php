@@ -69,7 +69,7 @@ class Rights
 
     public static function rights()
     {
-        return array('prez', 'web', 'admin', 'super', 'member', 'friend');
+        return array('super', 'admin', 'logic', 'member', 'friend', 'restricted', 'everybody');
     }
 
     public function __toString()

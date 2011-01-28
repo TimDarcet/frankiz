@@ -41,7 +41,6 @@ class Group extends Meta
     protected $score = null;
 
     protected $external = null; // If true, you can access the group's page with AUTH_PUBLIC
-    protected $priv     = null; // If false, you become a member when you join the group
     protected $leavable = null; // If true, you can leave the group
     protected $visible  = null; // If true, the groups is invisible
 
@@ -116,15 +115,6 @@ class Group extends Meta
             XDB::execute('UPDATE groups SET external = {?} WHERE gid = {?}', $this->external, $this->id());
         }
         return $this->external;
-    }
-
-    public function priv($priv = null)
-    {
-        if ($priv !== null) {
-            $this->priv = $priv;
-            XDB::execute('UPDATE groups SET priv = {?} WHERE gid = {?}', $this->priv, $this->id());
-        }
-        return $this->priv;
     }
 
     public function leavable($leavable = null)
@@ -237,16 +227,34 @@ class Group extends Meta
     public function insert($id = null)
     {
         if ($id == null) {
-            XDB::execute('INSERT INTO groups SET priv = 1');
+            XDB::execute('INSERT INTO groups SET gid = NULL');
             $this->id = XDB::insertId();
         } else {
-            XDB::execute('INSERT INTO groups SET gid = {?}, priv = 1', $id);
+            XDB::execute('INSERT INTO groups SET gid = {?}', $id);
             $this->id = $id;
         }
 
-        // Create the main castes
-        $this->caste(Rights::admin());
-        $this->caste(Rights::member());
+        /*
+         * Create the main castes
+         */
+        $admins  = $this->caste(Rights::admin());
+        $members = $this->caste(Rights::member());
+        $logics  = $this->caste(Rights::logic());
+        $friends = $this->caste(Rights::friend());
+
+        /*
+         * Create the 'restricted' caste
+         */
+        $restricted = new UserFilter(new UFC_Caste(array($admins, $members, $logic)));
+        $this->caste(Rights::restricted())->userfilter($restricted);
+
+        /*
+         * Create the 'everybody' caste
+         * It's better not to refer to the restricted caste, as we don't know in what
+         * order the bubbling is going to happen
+         */
+        $everybody = new UserFilter(new UFC_Caste(array($admins, $members, $logic, $friends)));
+        $this->caste(Rights::everybody())->userfilter($everybody);
     }
 
     public static function batchFrom(array $mixed)
@@ -280,7 +288,7 @@ class Group extends Meta
         $cols = array('g' => array());
         if ($bits & self::SELECT_BASE)
             $cols['g'] = array_merge($cols['g'], array('ns', 'name', 'label', 'score', 'image',
-                                                       'priv', 'leavable', 'visible', 'external'));
+                                                       'leavable', 'visible', 'external'));
         if ($bits & self::SELECT_DESCRIPTION)
             $cols['g'] = array_merge($cols['g'], array('description', 'web', 'mail'));
 
