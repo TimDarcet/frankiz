@@ -21,6 +21,16 @@
 
 class Frankiz extends Platal
 {
+    public function __construct()
+    {
+        global $globals;
+        call_user_func_array('parent::__construct', func_get_args());
+
+        if ($globals->debug) {
+            Less::make();
+        }
+    }
+
     public function force_login(PlPage &$page)
     {
         header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
