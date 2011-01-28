@@ -26,7 +26,7 @@ class NewsModule extends PlModule
         return array(
             "news"              => $this->make_hook("news"          , AUTH_PUBLIC),
             "news/admin"        => $this->make_hook("admin"         , AUTH_MDP),
-            "news/rss"          => $this->make_hook("rss"           , AUTH_PUBLIC, "user", NO_HTTPS),
+            "news/rss"          => $this->make_hook("rss"           , AUTH_PUBLIC, "user", NO_HTTPS), // TODO
             "news/ajax/read"    => $this->make_hook("ajax_read"     , AUTH_COOKIE),
             "news/ajax/star"    => $this->make_hook("ajax_star"     , AUTH_COOKIE),
             "news/ajax/admin"   => $this->make_hook("ajax_admin"    , AUTH_MDP),
@@ -52,17 +52,18 @@ class NewsModule extends PlModule
 
     function handler_news($page)
     {
-        // News from the groups where you are member
-        $member_news = new NewsFilter(new PFC_And(new NFC_Current(),
-                                                  new NFC_User(S::user(), Rights::member())));
+        $restricted = new NFC_Target(S::user()->castes(Rights::restricted()));
 
-        // News from the public groups where you are friend
+        // News from the castes of type restricted (ie groups where the user is member)
+        $member_news = new NewsFilter(new PFC_And(new NFC_Current(), $restricted));
+
+        // News from the castes of type everybody (ie groups where the user is friend)
         $friend_news = new NewsFilter(new PFC_And(new NFC_Current(),
-                                                  new PFC_And(new NFC_User(S::user(), Rights::friend()),
-                                                              new NFC_Private(false))));
+                                                  new PFC_Not($restricted),
+                                                  new NFC_Target(S::user()->castes(Rights::everybody()))));
 
         $member_news = $member_news->get();
-        $friend_news = $friend_news->get()->remove($member_news);
+        $friend_news = $friend_news->get();
 
         // Temporary Collection to retrieve in one request all the datas
         $all_news = new Collection('News');

@@ -209,7 +209,8 @@ class News extends meta
         if (empty($options)) {
             $options = array(self::SELECT_BODY => null, self::SELECT_STATE => null);
             $options[self::SELECT_BASE] = array('writers' => User::SELECT_BASE,
-                                                'groups' => Group::SELECT_BASE);
+                                                'origins' => Group::SELECT_BASE,
+                                                'targets' => Caste::SELECT_BASE);
         }
 
         $bits = self::optionsToBits($options);
@@ -238,14 +239,15 @@ class News extends meta
                                 WHERE  n.id IN {?}',
                                   array_keys($news));
 
-        $users  = new Collection('User');
-        $groups = new Collection('Group');
-        $images = new Collection('FrankizImage');
+        $users   = new Collection('User');
+        $origins = new Collection('Group');
+        $targets = new Collection('Caste');
+        $images  = new Collection('FrankizImage');
         while ($datas = $iter->next())
         {
             $datas['writer'] = $users->addget($datas['writer']);
-            $datas['target'] = $groups->addget($datas['target']);
-            $datas['origin'] = $groups->addget($datas['origin']);
+            $datas['target'] = $targets->addget($datas['target']);
+            $datas['origin'] = $origins->addget($datas['origin']);
             $datas['image']  = $images->addget($datas['iid']); unset($datas['iid']);
             $datas['begin']  = new FrankizDateTime($datas['begin']);
             $datas['end']    = new FrankizDateTime($datas['end']);
@@ -257,8 +259,11 @@ class News extends meta
         if (!empty($options[self::SELECT_BASE]['writers']))
             $users->select($options[self::SELECT_BASE]['writers']);
 
-        if (!empty($options[self::SELECT_BASE]['groups']))
-            $groups->select($options[self::SELECT_BASE]['groups']);
+        if (!empty($options[self::SELECT_BASE]['origins']))
+            $groups->select($options[self::SELECT_BASE]['origins']);
+
+        if (!empty($options[self::SELECT_BASE]['targets']))
+            $groups->select($options[self::SELECT_BASE]['targets']);
 
         if (!empty($options[self::SELECT_BASE]['images']))
             $groups->select($options[self::SELECT_BASE]['images']);

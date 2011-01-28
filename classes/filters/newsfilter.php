@@ -59,21 +59,21 @@ class NFC_Origin extends NewsFilterCondition
     }
 }
 
-/** Filters news based on their target group
- * @param $gs A Group, a Gid or an array of it
+/** Filters news based on their target caste
+ * @param $gs A Caste, a Cid or an array of it
  */
 class NFC_Target extends NewsFilterCondition
 {
-    private $gids;
+    private $cids;
 
-    public function __construct($gs)
+    public function __construct($cs)
     {
-        $this->gids = Group::toIds(unflatten($gs));
+        $this->cids = Group::toIds(unflatten($cs));
     }
 
-    public function buildCondition(PlFilter $uf)
+    public function buildCondition(PlFilter $f)
     {
-        return XDB::format('n.target IN {?}', $this->gids);
+        return XDB::format('n.target IN {?}', $this->cids);
     }
 }
 
@@ -101,29 +101,6 @@ class NFC_Title extends NewsFilterCondition
     }
 }
 
-/** Returns news that users are allowed to see
- * @param $us     A User, a uid or an array
- * @param $rights The rights the user must have in the targeted group (member by default)
- */
-class NFC_User extends NewsFilterCondition
-{
-    private $uids;
-    private $rights;
-
-    public function __construct($us, $rights)
-    {
-        $this->uids = User::toIds(unflatten($us));
-        $this->rights = (string) (empty($rights)) ? Rights::member() : $rights;
-    }
-
-    public function buildCondition(PlFilter $f)
-    {
-        $c = $f->addCasteFilter();
-        $cu = $f->addUserFilter();
-        return XDB::format("$c.rights = {?} AND $cu.uid IN {?}", (string) $this->rights, $this->uids);
-    }
-}
-
 /** Returns news that are not out-of-date
  */
 class NFC_Current extends NewsFilterCondition
@@ -131,24 +108,6 @@ class NFC_Current extends NewsFilterCondition
     public function buildCondition(PlFilter $uf)
     {
         return 'CAST(NOW() AS DATE) BETWEEN n.begin AND n.end';
-    }
-}
-
-/** Returns news that are in private groups
- */
-class NFC_Private extends NewsFilterCondition
-{
-    private $priv;
-
-    public function __construct($priv = true)
-    {
-        $this->priv = $priv;
-    }
-
-    public function buildCondition(PlFilter $f)
-    {
-        $g = $f->addGroupFilter();
-        return $g.'.priv = ' . (int) $this->priv;
     }
 }
 
