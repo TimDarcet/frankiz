@@ -277,7 +277,7 @@ echo "default skin set \n";
 XDB::execute('INSERT INTO users_minimodules
                           (SELECT uid, "days",         "COL_LEFT",   0 FROM account WHERE uid > 0)');
 XDB::execute('INSERT INTO users_minimodules
-                          (SELECT uid, "anniversaries","COL_LEFT",   1 FROM account WHERE uid > 0)');
+                          (SELECT uid, "birthday",     "COL_LEFT",   1 FROM account WHERE uid > 0)');
 XDB::execute('INSERT INTO users_minimodules
                           (SELECT uid, "ik",           "COL_LEFT",   2 FROM account WHERE uid > 0)');
 XDB::execute('INSERT INTO users_minimodules
