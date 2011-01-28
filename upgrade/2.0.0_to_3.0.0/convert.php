@@ -55,6 +55,7 @@ echo "-----------------------------------------------\n";
 
 // Import "static" tables
 $tables = glob("sql/*.sql");
+sort($tables);
 foreach ($tables as $table) {
     echo exec('mysql -h ' . $globals->dbhost . ' -u ' . $globals->dbuser .
               ' -p' . $globals->dbpwd . ' ' . $globals->dbdb . ' < ' . $table);

@@ -36,6 +36,7 @@ if (!empty($argv[1]) && !empty($argv[2])) {
     XDB::execute('CREATE DATABASE compare DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci');
     XDB::execute('USE compare');
     $tables = glob("2.0.0_to_3.0.0/sql/*.sql");
+    sort($tables);
     foreach ($tables as $table) {
         echo exec('mysql -h ' . $globals->dbhost . ' -u ' . $globals->dbuser .
                   ' -p' . $globals->dbpwd . ' compare < ' . $table);
@@ -114,5 +115,5 @@ foreach ($tables as $name => $infos) {
 }
 
 if (empty($tables)) {
-    echo "Ok !";
+    echo "Ok ! \n";
 }
