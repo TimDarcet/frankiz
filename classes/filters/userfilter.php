@@ -292,7 +292,7 @@ class UFC_Birthday extends UserFilterCondition
     private $comparison;
     private $date;
 
-    public function __construct($comparison = null, $date = null)
+    public function __construct($comparison = null, FrankizDateTime $date = null)
     {
         $this->comparison = $comparison;
         $this->date = $date;
@@ -300,7 +300,7 @@ class UFC_Birthday extends UserFilterCondition
 
     public function buildCondition(PlFilter $uf)
     {
-        return 'p.next_birthday ' . $this->comparison . XDB::format(' {?}', date('Y-m-d', $this->date));
+        return 'a.next_birthday ' . $this->comparison . XDB::format(' {?}', $this->date->format('Y-m-d'));
     }
 }
 // }}}
