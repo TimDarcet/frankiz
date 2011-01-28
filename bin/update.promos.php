@@ -28,8 +28,6 @@ require 'connect.db.inc.php';
 
 echo 'Updating promos' . "\n";
 
-$tol = Group::from('tol');
-
 $iter = XDB::iterator('SELECT promo FROM studies GROUP BY promo');
 while ($datas = $iter->next()) {
     $promo = $datas['promo'];
@@ -62,7 +60,7 @@ while ($datas = $iter->next()) {
 
         $i = new FrankizImage();
         $i->insert();
-        $i->group($tol);
+        $i->caste($g->caste(Rights::everybody()));
         $i->label($label);
         $i->image($upload, ImageSizesSet::group(), false);
 
@@ -76,8 +74,7 @@ echo "-----------------------------------------------\n";
 
 echo 'Updating on_platal' . "\n";
 
-$on_platal = Group::from('on_platal');
-$on_platal->select();
+$on_platal = Group::from('on_platal')->select();
 
 $filters = array();
 foreach (json_decode($globals->core->promos) as $promo) {

@@ -42,7 +42,8 @@
 require 'connect.db.inc.php';
 
 $gf = new GroupFilter(new GFC_Name('tol'));
-$group = $gf->get(true);
+$group = $gf->get(true)->select(Group::SELECT_CASTES);
+$tol_caste = $group->caste(Rights::everybody());
 
 // Concerned users
 $uf = UserFilter::fromExport(json_decode($argv[1], true));
@@ -67,21 +68,27 @@ while (true) {
 
     foreach ($users as $u)
     {
+        $works = false;
         $suffix = ($original) ? '_original' : '';
         $path = $folder . '/' . $u->$field() . $suffix . '.jpg';
         if (file_exists($path)) {
             $upload = FrankizUpload::fromFile($path);
-            $i = new FrankizImage();
-            $i->insert();
-            $i->group($group);
-            $i->label($u->firstname() . ' ' . $u->lastname());
-            $i->image($upload, ImageSizesSet::tol() ,false);
-            if ($original)
-                $u->original($i);
-            else
-                $u->photo($i);
-            echo 'Ok: ' . $u->id() . ' - ' . $u->displayname() . ' - '. $path . "\n";
-        } else {
+            if ($upload->size() > 0) {
+                $i = new FrankizImage();
+                $i->insert();
+                $i->caste($tol_caste);
+                $i->label($u->firstname() . ' ' . $u->lastname());
+                $i->image($upload, ImageSizesSet::tol() ,false);
+                if ($original) {
+                    $u->original($i);
+                } else {
+                    $u->photo($i);
+                }
+                $works = true;
+                echo 'Ok: ' . $u->id() . ' - ' . $u->displayname() . ' - '. $path . "\n";
+            }
+        }
+        if (!$works) {
             echo 'Error: ' . $u->id() . ' - ' . $u->displayname() . ' - '. $path . "\n";
         }
     }

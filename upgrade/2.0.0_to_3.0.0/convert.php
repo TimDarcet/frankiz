@@ -93,7 +93,6 @@ while ($datas = $iter->next()) {
 
     $g->description(conv($datas['description']));
     $g->external(0);
-    $g->priv(0);
     $g->leavable(1);
     $g->visible(1);
     $g->web($datas['http']);
@@ -122,7 +121,6 @@ while ($datas = $iter->next()) {
     $g->name('nation_' . conv_name($datas['nation']));
     $g->ns(Group::NS_NATIONALITY);
     $g->external(0);
-    $g->priv(1);
     $g->leavable(0);
     $g->visible(0);
 
@@ -145,7 +143,6 @@ while ($datas = $iter->next()) {
     $g->name('sport_' . conv_name($datas['nom']));
     $g->ns(Group::NS_SPORT);
     $g->external(0);
-    $g->priv(1);
     $g->leavable(0);
     $g->visible(0);
 
@@ -305,7 +302,6 @@ $webmasters->insert();
 $webmasters->name('webmasters');
 $webmasters->label('Webmestres');
 $webmasters->external(0);
-$webmasters->priv(1);
 $webmasters->leavable(1);
 $webmasters->visible(1);
 
@@ -314,9 +310,8 @@ $on_platal->insert();
 $on_platal->name('on_platal');
 $on_platal->label('Sur le platal');
 $on_platal->external(0);
-$on_platal->priv(0);
 $on_platal->leavable(0);
-$on_platal->visible(0);
+$on_platal->visible(1);
 // Admins(on_platal) = Members(webmasters)
 $on_platal->caste(Rights::admin())->userfilter(new UserFilter(new UFC_Group($webmasters, Rights::member())));
 // Members are imported in update.promos
@@ -326,9 +321,8 @@ $everybody->insert();
 $everybody->name('everybody');
 $everybody->label('Tout le monde');
 $everybody->external(0);
-$everybody->priv(0);
 $everybody->leavable(0);
-$everybody->visible(0);
+$everybody->visible(1);
 // Admins(everybody) = Members(webmasters)
 $everybody->caste(Rights::admin())->userfilter(new UserFilter(new UFC_Group($webmasters, Rights::member())));
 // Members(everybody) = everybody except the anonymous user!
@@ -340,9 +334,8 @@ $public->insert();
 $public->name('public');
 $public->label('Publique');
 $public->external(1);
-$public->priv(0);
 $public->leavable(0);
-$public->visible(0);
+$public->visible(1);
 // Admins(public) = Members(webmasters)
 $public->caste(Rights::admin())->userfilter(new UserFilter(new UFC_Group($webmasters, Rights::member())));
 // Members(public) = everybody !
@@ -354,7 +347,6 @@ $tol->insert();
 $tol->name('tol');
 $tol->label('trombino');
 $tol->external(0);
-$tol->priv(0);
 $tol->leavable(0);
 $tol->visible(0);
 // Admins(tol) = Members(webmasters)
