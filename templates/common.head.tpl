@@ -41,18 +41,6 @@
 {js src="json2.js"}
 {js src="common.js"}
 
-{js src="jquery.jstree.js"}
-{js src="jquery.hashchange.js"}
-{js src="jquery.scrollto.js"}
-
 {include file='../core/templates/plpage.header.tpl'}
-
-<script type="text/javascript">
-    // Where to load the jstree skin from ?
-    var jstreeStyle = "{'jstree/style.css'|rel}";
-    jstreeStyle = jstreeStyle.split('/');
-    jstreeStyle.splice(jstreeStyle.length - 2, 2);
-    $.jstree._themes = platal_baseurl + "css/" + jstreeStyle.join("/") + "/";
-</script>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
