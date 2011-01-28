@@ -71,14 +71,33 @@ function key_exists(key, search) {
 
 var wiki_preview = {
     "start" : function($textarea, $display) {
-        $textarea.keyup(function() {
+        var busy = false;
+        var newdata = false;
+
+        function get() {
+            busy = true;
             $.ajax({
-                    type: 'POST',
-                     url: 'wiki_preview',
-                    data: 'text=' + $textarea.val(),
-                 success: function(data) { $display.html(data); },
-                dataType: 'text'
-              });
+                type: 'POST',
+                 url: 'wiki_preview',
+                data: 'text=' + $textarea.val(),
+             success: function(data) {
+                          busy = false;
+                          $display.html(data);
+                          if (newdata) {
+                              newdata = false;
+                              get();
+                          }
+                      },
+            dataType: 'text'
+            });
+        }
+
+        $textarea.keyup(function() {
+            if (busy) {
+                newdata = true;
+            } else {
+                get();
+            }
         });
     },
 
