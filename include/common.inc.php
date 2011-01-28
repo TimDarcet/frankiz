@@ -23,6 +23,8 @@ require_once 'smartphone.inc.php';
 
 function __autoload($cls)
 {
+    global $globals;
+
     if (!pl_autoload($cls)) {
         $cls = strtolower($cls);
 
@@ -68,8 +70,8 @@ function __autoload($cls)
         }
 
         // Handle the rest
-        if (file_exists("../include/$cls.inc.php")) {
-            require_once "../include/$cls.inc.php";
+        if (file_exists($globals->spoolroot . "/include/$cls.inc.php")) {
+            require_once $globals->spoolroot . "/include/$cls.inc.php";
         } else {
             throw new Exception("Trying to include unavailable ressource: $cls");
         }
