@@ -68,7 +68,11 @@ function __autoload($cls)
         }
 
         // Handle the rest
-        include "$cls.inc.php";
+        if (file_exists("../include/$cls.inc.php")) {
+            require_once "../include/$cls.inc.php";
+        } else {
+            throw new Exception("Trying to include unavailable ressource: $cls");
+        }
     }
 }
 
