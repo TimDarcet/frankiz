@@ -245,7 +245,7 @@ class Group extends Meta
         /*
          * Create the 'restricted' caste
          */
-        $restricted = new UserFilter(new UFC_Caste(array($admins, $members, $logic)));
+        $restricted = new UserFilter(new UFC_Caste(array($admins, $members, $logics)));
         $this->caste(Rights::restricted())->userfilter($restricted);
 
         /*
@@ -253,7 +253,7 @@ class Group extends Meta
          * It's better not to refer to the restricted caste, as we don't know in what
          * order the bubbling is going to happen
          */
-        $everybody = new UserFilter(new UFC_Caste(array($admins, $members, $logic, $friends)));
+        $everybody = new UserFilter(new UFC_Caste(array($admins, $members, $logics, $friends)));
         $this->caste(Rights::everybody())->userfilter($everybody);
     }
 
