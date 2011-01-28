@@ -551,9 +551,12 @@ class User extends Meta
         return empty($this->comments[$g->id()]) ? false : $this->comments[$g->id()];
     }
 
-    public function castes($mixed = null)
+    public function castes(Rights $rights = null)
     {
-        return $this->castes;
+        if ($rights == null) {
+            return $this->castes;
+        }
+        $castes = $this->castes->filter('rights', $rights);
     }
 
     public function rights(Group $g)
