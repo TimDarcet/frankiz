@@ -691,7 +691,6 @@ class User extends Meta
         $group->insert();
         $group->ns(Group::NS_USER);
         $group->name('user_' . $this->id());
-        $group->priv(true);
         $group->leavable(false);
         $group->visible(false);
         $group->label('Groupe personnel');
