@@ -23,21 +23,21 @@ abstract class ImageFilterCondition extends FrankizFilterCondition
 {
 }
 
-class IFC_Group extends ImageFilterCondition
+class IFC_Caste extends ImageFilterCondition
 {
-    private $gids;
+    private $cids;
 
     public function __construct($gs)
     {
-        if ($gs instanceof Collection)
-            $this->gids = $gs->ids();
+        if ($cs instanceof Collection)
+            $this->cids = $cs->ids();
         else
-            $this->gids = Group::toIds(unflatten($gs));
+            $this->cids = Caste::toIds(unflatten($cs));
     }
 
-    public function buildCondition(PlFilter $uf)
+    public function buildCondition(PlFilter $f)
     {
-        return XDB::format('i.gid IN {?}', $this->gids);
+        return XDB::format('i.cid IN {?}', $this->cids);
     }
 }
 
