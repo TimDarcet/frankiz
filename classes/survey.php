@@ -60,9 +60,21 @@ abstract class SurveyQuestion extends Meta
 
     public abstract function submit($ssid, $answers);
 
-    protected abstract function decodeDatas($datas);
+    protected abstract function import($datas);
+
+    protected abstract function export();
 
     protected abstract function decodeAnswer($ssid, $answers);
+
+    public function insert($ssid) {
+        XDB::execute('INSERT INTO  surveys_questions
+                              SET  survey = {?}, rank = {?}, label = {?},
+                                   label = {?}, description = {?}, mandatory = {?},
+                                   type = {?}, datas = {?}',
+                                   $ssid, $this->rank, $this->label,
+                                   $this->label, $this->description, $this->mandatory,
+                                   $this->type, json_encode($this->export()));
+    }
 
     public static function batchSelect(array $questions, $options = null)
     {
@@ -112,8 +124,12 @@ class SurveyQuestionText extends SurveyQuestion
         return $this->text;
     }
 
-    protected function decodeDatas($datas) {
+    protected function import($datas) {
         $this->text = $datas->text;
+    }
+
+    protected function export() {
+        return array('text' => $this->text);
     }
 
     protected function decodeAnswer($ssid, $datas) {
@@ -160,9 +176,14 @@ class SurveyQuestionChoices extends SurveyQuestion
         return $counts;
     }
 
-    protected function decodeDatas($datas) {
+    protected function import($datas) {
         $this->choices = $datas->choices;
         $this->max = $datas->max;
+    }
+
+    protected function export() {
+        return array('choices' => $this->choices,
+                         'max' => $this->max);
     }
 
     protected function decodeAnswer($ssid, $datas) {
@@ -312,8 +333,16 @@ class Survey extends Meta
 
     public function insert()
     {
+        XDB::startTransaction();
+
         XDB::execute('INSERT INTO surveys SET writer = {?}', S::user()->id());
         $this->id = XDB::insertId();
+
+        foreach ($this->questions as $question) {
+            $question->insert($ssid);
+        }
+
+        XDB::commit();
     }
 
     public static function batchSelect(array $surveys, $options = null)
