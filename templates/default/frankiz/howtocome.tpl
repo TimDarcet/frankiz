@@ -20,21 +20,8 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<ul>
-    {if $smarty.session.auth < AUTH_INTERNAL}
-        <li><a href="home/contact">Contacter les élèves</a></li>
-        <li><a href="home/howtocome">Venir à l'X</a></li>
-        <li><a href="partnerships">Partenariats</a></li>
-    {/if}
-    {if $smarty.session.auth >= AUTH_INTERNAL}
-        <li><a href="http://www.polytechnique.edu">Site de l'École</a></li>
-        <li><a href="http://www.etudes.polytechnique.edu">Site de la DE</a></li>
-        <li><a href="http://enex.polytechnique.fr">ENEX</a></li>
-        <li><a href="http://www.polytechnique.fr/sites/orientation4a/pages_orientation/">Orientation 4eme année</a></li>
-    {/if}
-    {if $smarty.session.auth >= AUTH_COOKIE}
-
-    {/if}
-</ul>
+<p>
+    {include file="wiki.tpl"|rel name='home/howtocome'}
+</p>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

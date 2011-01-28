@@ -26,6 +26,8 @@ class FrankizModule extends PlModule
     {
         return array(
             'home'                  => $this->make_hook('home',           AUTH_PUBLIC),
+            'home/contact'          => $this->make_hook('contact',        AUTH_PUBLIC),
+            'home/howtocome'        => $this->make_hook('howtocome',      AUTH_PUBLIC),
             'universe'              => $this->make_hook('universe',       AUTH_PUBLIC),
             'remote'                => $this->make_hook('remote',         AUTH_COOKIE),
             'exit'                  => $this->make_hook('exit',           AUTH_PUBLIC)
@@ -47,6 +49,18 @@ class FrankizModule extends PlModule
         $page->assign('postit_news', $postit_news);
         $page->assign('title', 'Accueil');
         $page->changeTpl('frankiz/home.tpl');
+    }
+
+    function handler_contact($page)
+    {
+        $page->assign('title', 'Contact');
+        $page->changeTpl('frankiz/contact.tpl');
+    }
+
+    function handler_howtocome($page)
+    {
+        $page->assign('title', 'Comment venir ?');
+        $page->changeTpl('frankiz/howtocome.tpl');
     }
 
     function handler_universe($page)
