@@ -19,25 +19,28 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class LiensUtilesMiniModule extends FrankizMiniModule
+class LinksMiniModule extends FrankizMiniModule
 {
-	public function init()
-	{
-		FrankizMiniModule::register('liensUtiles', AUTH_PUBLIC);
-	}
-	
-	public function run()
-	{
-		$this->tpl = "minimodules/liens_utiles/liens_utiles.tpl";
-		$this->titre = "Liens Utiles";
-	}
+    public function auth()
+    {
+        return AUTH_PUBLIC;
+    }
 
-	public static function check_auth()
-	{
-		return true;
-	}
+    public function tpl()
+    {
+        return 'minimodules/links/links.tpl';
+    }
+
+    public function title()
+    {
+        return 'Liens utiles';
+    }
+
+    public function run()
+    {
+
+    }
+
 }
-FrankizMiniModule::register_module("liens_utiles", "LiensUtilesMiniModule", "Liens Utiles");
-
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
 ?>
