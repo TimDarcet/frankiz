@@ -17,14 +17,8 @@
  *  Foundation, Inc.,                                                      *
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
- 
-/*******************************************************************************
-Colors description:
 
-background : #BDD5E3
-border     : #002334
-color      : #003757
-*******************************************************************************/
+@import "lib.less";
 
 /*******************************************************************************
      0   Styles par défauts
@@ -48,7 +42,7 @@ img {
 
 a, a:link {
     text-decoration: underline;
-    color: #003757;
+    color: @color;
     font-variant: small-caps;
 }
 
@@ -106,7 +100,7 @@ a:hover, a:active {
     height: 120px;
     width: 300px;
     overflow: visible;
-    background-color: #BDD5E3;
+    background-color: @background;
     z-index: 10;
 }
 
@@ -127,7 +121,7 @@ a:hover, a:active {
     width: 80px;
     height: 105px;
     padding: 2px;
-    border: 2px #002334 solid;
+    border: 2px @border solid;
 }
 
 #account div {
@@ -175,7 +169,7 @@ a:hover, a:active {
     margin: 0;
     font-size: 1em;
     overflow: hidden;
-    background-color: #BDD5E3;
+    background-color: @background;
     z-index: 12;
 }
 
@@ -238,11 +232,11 @@ a:hover, a:active {
 
 #section > .header {
     text-align: center;
-    border-color: #003757;
+    border-color: @color;
     border-width: 0 1px 0 0;
-    color: #003757;
+    color: @color;
     font-size: 2em;
-    background-color: #BDD5E3;
+    background-color: @background;
     height: 36px;
     font-variant:small-caps;
 }
@@ -334,7 +328,7 @@ body.disabledAside > #aside {
 
 .sorting {
     background-color: #CAD7DC;
-    border: 1px #003757 dashed;
+    border: 1px @color dashed;
     min-width:30%;
 }
 
@@ -347,13 +341,13 @@ body.disabledAside > #aside {
 }
 
 .minimodule {
-    border: 1px solid #003757;
+    border: 1px solid @color;
     margin-bottom: 20px;
 }
 
 .minimodule>.head {
-    color: #003757;
-    background-color: #BDD5E3;
+    color: @color;
+    background-color: @background;
     padding: 2px;
     text-align : center;
     font-size: 11pt;
@@ -373,14 +367,14 @@ body.disabledAside > #aside {
 *******************************************************************************/
 
 fieldset {
-    background-color: #BDD5E3;
-    border: 1px #003757 solid;
+    background-color: @background;
+    border: 1px @color solid;
 }
 
 fieldset legend {
     color: white;
-    background-color: #003757;
-    border: 1px #003757 solid;
+    background-color: @color;
+    border: 1px @color solid;
 }
 
 form {
@@ -390,13 +384,13 @@ form {
 
 input, textarea {
     font-weight: bold;
-    border: 1px solid #002334;
+    border: 1px solid @border;
     color: white;
-    background-color: #003757;
+    background-color: @color;
 }
 
 input:hover {
-    color: #003757;
+    color: @color;
     background-color: #FFBA00;
     border: 1px red solid;
 }
@@ -404,7 +398,7 @@ input:hover {
 input:focus {
     color: white;
     border: 1px #FFBA00 solid;
-    background-color: #003757;
+    background-color: @color;
 }
 
 .checkbox  {
@@ -464,7 +458,7 @@ input:focus {
 	text-align: right;
 	margin-top: 25px;
 	padding-top: 25px;
-    border-top: 1px solid #003757;
+    border-top: 1px solid @color;
 }
 
 .login .forgot a {
@@ -479,9 +473,9 @@ input:focus {
 
 .groups_picker {
     width: 300px;
-    border: 1px solid #002334;
+    border: 1px solid @border;
     color: white;
-    background-color: #003757;
+    background-color: @color;
 }
 
 .groups_picker img {
@@ -531,8 +525,8 @@ input:focus {
 	position: relative;
     width: auto;
     margin-bottom: 2px;
-    border: 1px solid #002334;
-    background-color: #BDD5E3;
+    border: 1px solid @border;
+    background-color: @background;
 }
 
 .wiki .content {
