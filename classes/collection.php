@@ -300,7 +300,11 @@ class Collection extends PlAbstractIterable implements Countable
         } else {
             $methodName = $args[0];
             $val        = $args[1];
-            return $filtered->add(array_filter($this->collected, function ($i) use($val, $methodName) {return $i->$methodName() == $val;}));
+            if (is_object($val) && method_exists($val, 'isMe')) {
+                return $filtered->add(array_filter($this->collected, function ($i) use($val, $methodName) {return $val->isMe($i->$methodName());}));
+            } else {
+                return $filtered->add(array_filter($this->collected, function ($i) use($val, $methodName) {return $i->$methodName() == $val;}));
+            }
         }
     }
 
