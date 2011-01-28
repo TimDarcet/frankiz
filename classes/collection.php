@@ -25,7 +25,7 @@ class IdentifierNotFoundException extends Exception {
 
 // Collection of Db-existent objects
 // Objects need to have an unique id accessible by id()
-class Collection extends PlAbstractIterable
+class Collection extends PlAbstractIterable implements Countable
 {
     protected $collected = array();
     protected $className = null;
