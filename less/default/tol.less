@@ -18,139 +18,142 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-#tol_infos
-{
-    text-align: center;
-    font-weight: bold;
-    height: 16px;
-}
+@import "lib.less";
 
-#tol_infos .empty, #tol_infos .notempty
-{
-    display: none;	
-}
+#content {
+    #tol_infos {
+        text-align: center;
+        font-weight: bold;
+        height: 16px;
+    }
 
-#tol_infos.searching
-{
-    background-color: #004d79;
-}
+    #tol_infos {
+        .empty, .notempty {
+            display: none;
+        }
+    }
 
-#tol_searcher {
-    position: absolute;
-    top: 12px;
-    width: 250px;
-    height: auto;
-    background-color: white;
-    border: 1px #003757 solid;
-    z-index: 10;
-}
+    #tol_infos.searching {
+        background-color: @color;
+    }
 
-#tol_searcher input.empty {
-    background-color: red;
-}
+    #tol_searcher {
+        position: absolute;
+        top: 12px;
+        width: 250px;
+        height: auto;
+        background-color: white;
+        border: 1px @color solid;
+        z-index: 10;
+    }
 
-#tol_searcher ul {
-    margin: 0;
-    padding: 0;
-    text-indent: 0;
-}
+    #tol_searcher input.empty {
+        background-color: red;
+    }
 
-#tol_searcher fieldset {
-    border: 1px white solid;
-    margin-bottom: 2px;
-    background-color: #BDD5E3;
-}
+    #tol_searcher ul {
+        margin: 0;
+        padding: 0;
+        text-indent: 0;
+    }
 
-#tol_searcher li {
-    list-style: none;
-}
+    #tol_searcher fieldset {
+        border: 1px white solid;
+        margin-bottom: 2px;
+        background-color: @background;
+    }
 
-#tol_searcher label {
-    text-align: left;
-}
+    #tol_searcher li {
+        list-style: none;
+    }
 
-#tol_searcher label input {
-    width: 100%;
-}
+    #tol_searcher label {
+        text-align: left;
+    }
 
-#tol_searcher .groups_picker {
-    width: 100%;
-}
+    #tol_searcher label input {
+        width: 100%;
+    }
 
-#tol_searcher input[type=reset] {
-    float: right;
-}
+    #tol_searcher .groups_picker {
+        width: 100%;
+    }
 
-#tol_send {
-    text-align: center;	
-}
+    #tol_searcher input[type=reset] {
+        float: right;
+    }
 
-#tol_results {
-    position: relative;
-    left: 255px;
-    padding: 0;
-    padding-right: 255px;
-    z-index: 1;
-}
+    #tol_send {
+        text-align: center;
+    }
 
-.result {
-    display: inline-block;
-    position: relative;
-    width: 160px;
-    margin: 3px;
-    overflow: hidden;
-    background-color: #BDD5E3;
-    border: 1px #003757 solid;
-}
+    #tol_results {
+        position: relative;
+        left: 255px;
+        padding: 0;
+        padding-right: 255px;
+        z-index: 1;
+    }
 
-.result.card {
-    height: 180px;
-}
+    .result {
+        display: inline-block;
+        position: relative;
+        width: 160px;
+        margin: 3px;
+        overflow: hidden;
+        background-color: @background;
+        border: 1px #003757 solid;
+    }
 
-.result.card .card{
-    display: block;
-}
+    .result.card {
+        height: 180px;
+    }
 
-.result.sheet {
-    width: 100%;
-}
+    .result.card .card{
+        display: block;
+    }
 
-.result.sheet .sheet{
-    display: block;
-}
+    .result.sheet {
+        width: 100%;
+    }
 
-.result .card {
-    text-align: center;
-    display: none;
-}
+    .result.sheet .sheet{
+        display: block;
+    }
 
-.result .card .img {
-    position: absolute;
-    bottom: 25px;
-    width: 100%;
-    height: 105px;
-    text-align: center;
-}
+    .result .card {
+        text-align: center;
+        display: none;
+    }
 
-.result .sheet {
-    text-align: left;
-    display: none;
-}
+    .result .card .img {
+        position: absolute;
+        bottom: 25px;
+        width: 100%;
+        height: 105px;
+        text-align: center;
+    }
 
-.result .sheet hr {
-    clear: both;
-    border: none;
-    border-top: 1px #002334 solid;
-}
+    .result .sheet {
+        text-align: left;
+        display: none;
+    }
 
-#content .modal {
-    position: fixed;
-    display: none;
-    top: 50%;
-    left: 50%;
-    margin-top: -50px;
-    margin-left: -100px;
-    background-color: #BDD5E3;
-    z-index: 666;
-    padding: 12px;
+    .result .sheet hr {
+        clear: both;
+        border: none;
+        border-top: 1px @border solid;
+    }
+
+    .modal {
+        position: fixed;
+        display: none;
+        top: 50%;
+        left: 50%;
+        margin-top: -50px;
+        margin-left: -100px;
+        background-color: @background;
+        z-index: 666;
+        padding: 12px;
+    }
 }

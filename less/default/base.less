@@ -36,6 +36,10 @@ img {
     border: 0;
 }
 
+a img {
+    border: 0;
+}
+
 .warning {
     color: red;
 }
@@ -48,7 +52,7 @@ a, a:link {
 
 a:hover, a:active {
     text-decoration: none;
-    color: #D7B66E;
+    color: @hover;
 }
 
 .clear {
@@ -343,6 +347,7 @@ body.disabledAside > #aside {
 .minimodule {
     border: 1px solid @color;
     margin-bottom: 20px;
+    .border-radius;
 }
 
 .minimodule>.head {

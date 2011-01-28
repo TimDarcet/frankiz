@@ -21,3 +21,45 @@
 @background: #BDD5E3;
 @border    : #002334;
 @color     : #003757;
+@hover     : #D7B66E;
+
+.border-radius (@radius: 5px) {
+    border-radius: @radius;
+    -moz-border-radius: @radius;
+    -webkit-border-radius: @radius;
+}
+
+.rights {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border: 1px black solid;
+
+    &.super {
+        background-color: black;
+    }
+
+    &.admin {
+        background-color: red;
+    }
+
+    &.member {
+        background-color: blue;
+    }
+
+    &.logic {
+        background-color: LightBlue;
+    }
+
+    &.friend {
+        background-color: green;
+    }
+
+    &.restricted {
+        background-color: yellow;
+    }
+
+    &.everybody {
+        background-color: white;
+    }
+}
