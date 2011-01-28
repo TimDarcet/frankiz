@@ -38,8 +38,8 @@ class FrankizImage extends Meta implements ImageInterface
 
     protected $mime;
 
-    // The group which owns the image
-    protected $group;
+    // The caste which owns the image
+    protected $caste;
 
     // Number of times the full image was seen
     protected $seen;
@@ -76,14 +76,14 @@ class FrankizImage extends Meta implements ImageInterface
         return $this->description;
     }
 
-    public function group(Group $group = null)
+    public function caste(Caste $caste = null)
     {
-        if ($group != null) {
-            $this->group = $group;
-            XDB::execute('UPDATE images SET gid = {?} WHERE iid = {?}', $this->group->id(), $this->id());
+        if ($caste != null) {
+            $this->caste = $caste;
+            XDB::execute('UPDATE images SET cid = {?} WHERE iid = {?}', $this->caste->id(), $this->id());
         }
 
-        return $this->group;
+        return $this->caste;
     }
 
     public function mime()
@@ -257,7 +257,7 @@ class FrankizImage extends Meta implements ImageInterface
 
         $cols = '';
         if ($bits & (self::SELECT_BASE | self::SELECT_FULL | self::SELECT_SMALL | self::SELECT_MICRO)) {
-            $cols .= ', gid, mime';
+            $cols .= ', cid, mime';
         }
         if ($bits & self::SELECT_BASE)
             $cols .= ', x, y, label, seen, lastseen, OCTET_LENGTH(full) size';
@@ -273,14 +273,14 @@ class FrankizImage extends Meta implements ImageInterface
                                      FROM  images AS i
                                     WHERE  iid IN {?}", array_keys($images));
 
-            $groups = new Collection('Group');
+            $castes = new Collection('Caste');
             while ($datas = $iter->next()) {
-                $datas['group'] = $groups->addget($datas['gid']); unset($datas['gid']);
+                $datas['caste'] = $castes->addget($datas['cid']); unset($datas['cid']);
                 $images[$datas['id']]->fillFromArray($datas);
             }
 
             if (isset($options[self::SELECT_BASE]))
-                $groups->select($options[self::SELECT_BASE]);
+                $castes->select($options[self::SELECT_BASE]);
         }
     }
 
