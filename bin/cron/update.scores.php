@@ -22,7 +22,7 @@
 
 /*
  * This script updates the score field of the groups.
- * SCORE = | MEMBERS ∪ FRIENDS |
+ * SCORE = | EVERYBODY |
  */
 
 require '../connect.db.inc.php';
@@ -31,8 +31,8 @@ XDB::execute('UPDATE  groups AS g
                  SET  g.score = (SELECT  COUNT(cu.uid)
                                    FROM  castes_users AS cu
                              INNER JOIN  castes AS c ON c.cid = cu.cid
-                                  WHERE  c.gid = g.gid AND c.rights IN {?})',
-                              array((string) Rights::friend(), (string) Rights::member()));
+                                  WHERE  c.gid = g.gid AND c.rights = {?})',
+                                            (string) Rights::everybody());
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
 ?>
