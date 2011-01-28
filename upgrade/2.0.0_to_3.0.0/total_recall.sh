@@ -6,7 +6,6 @@ cd ../../bin
 ./update.promos.php
 ./update.studies.php
 
-cd ..
 for ((i = 2009; i >= $1; i -= 1))
 do
 ./import.tol.php '{"type":"user","condition":{"type":"promo","comparison":"=","promo":'$i'}}' /home/2008/riton/dev/tol/$i poly original
