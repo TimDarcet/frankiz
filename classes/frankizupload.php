@@ -95,6 +95,10 @@ class FrankizUpload
         return $this->name;
     }
 
+    public function size() {
+        return filesize($this->path);
+    }
+
     public function rm()
     {
         @unlink($this->path);
