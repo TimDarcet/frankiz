@@ -44,6 +44,7 @@ class ImageSizesSet
 {
     const TOL   = 'tol';
     const GROUP = 'group';
+    const NEWS  = 'news';
 
     public $full;
     public $small;
