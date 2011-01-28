@@ -19,11 +19,11 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class AnniversairesMiniModule extends FrankizMiniModule
+class AnniversariesMiniModule extends FrankizMiniModule
 {
     public function tpl()
     {
-        return 'minimodules/anniversaires/anniversaires.tpl';
+        return 'minimodules/anniversaries/anniversaries.tpl';
     }
 
     public function title()
