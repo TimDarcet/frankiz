@@ -136,9 +136,7 @@ class GroupsModule extends PLModule
 
                 // Fetch the news
                 $nf = new NewsFilter(new PFC_And(new NFC_Origin($group),
-                                                 new PFC_Or(new NFC_User(S::user(), Rights::member()),
-                                                            new NFC_Private(false))
-                                                 ), new NFO_End(true));
+                                                 new NFC_Target(S::user()->castes())), new NFO_End(true));
                 $news = $nf->get()->select();
                 $page->assign('news', $news);
                 $page->assign('title', $group->label());

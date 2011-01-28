@@ -32,12 +32,11 @@ class ImagesModule extends PlModule
 
     function handler_images($page)
     {
-        $gf = new GroupFilter(new GFC_User(S::user(), Rights::admin()));
-        $groups = $gf->get();
+        $castes = S::user()->castes();
 
-        $page->assign('groups', $groups);
-        if ($groups != false) {
-            $if = new ImageFilter(new IFC_Group($groups));
+        $page->assign('castes', $castes);
+        if ($castes != false) {
+            $if = new ImageFilter(new IFC_Caste($castes));
             $images = $if->get()->select(array(FrankizImage::SELECT_BASE => Group::SELECT_BASE));
             $page->assign('images', $images);
         }
@@ -61,6 +60,7 @@ class ImagesModule extends PlModule
                 throw new Exception("You don't have the credential to upload an image in this group");
             }
 
+            $group->select(Group::SELECT_CASTES);
             $upload = FrankizUpload::v('file');
 
             // Create and store an empty FrankizImage
@@ -68,7 +68,7 @@ class ImagesModule extends PlModule
             $i->insert();
 
             // Assign a group to it
-            $i->group($group);
+            $i->caste($group->caste(Rights::everybody()));
             // A label
             $i->label(Env::v('label', ''));
             // And a description
@@ -87,21 +87,21 @@ class ImagesModule extends PlModule
     function handler_image($page, $size, $iid = null)
     {
         $image = new FrankizImage($iid);
-        $image->select(array(FrankizImage::SELECT_BASE => Group::SELECT_BASE));
+        $image->select(array(FrankizImage::SELECT_BASE => Caste::SELECT_BASE));
+        $image->caste()->group()->select(Group::SELECT_BASE);
 
-        if (S::i('auth') == AUTH_PUBLIC && !$image->group()->external()) {
+        if (S::i('auth') == AUTH_PUBLIC && !$image->caste()->external()) {
                 // TODO: show an 'invalid credential' picture instead
-                throw new Exception("This group is not accessible from the outside");
+                throw new Exception("This image is not accessible from the outside");
                 exit;
         }
 
-        // If the group owning the image is not public
-        if ($image->group()->priv()) {
-            if(!S::user()->hasRights($image->group(), Rights::member())) {
+        // If the image isn't public & we are not member of the group
+        if (!$image->caste()->rights()->isMe(Rights::everybody())
+            && (!S::user()->hasRights($image->caste()->group(), Rights::member()))) {
                 // TODO: show an 'invalid credential' picture instead
                 throw new Exception("You don't have the credential to view this image");
                 exit;
-            }
         }
 
         $select = ImageInterface::SELECT_FULL;
