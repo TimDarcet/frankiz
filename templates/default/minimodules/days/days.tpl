@@ -21,8 +21,7 @@
 {**************************************************************************}
 
 {foreach from=$minimodule.fetes item=fete name=foo}
-    <a href="tol?firstname={$fete}">{$fete}</a>
-    {if !$smarty.foreach.foo.last}, {/if}
+    <a href="tol?firstname={$fete}">{$fete}</a>{if !$smarty.foreach.foo.last}, {/if}
 {/foreach}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

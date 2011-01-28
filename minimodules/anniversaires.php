@@ -33,23 +33,11 @@ class AnniversairesMiniModule extends FrankizMiniModule
 
     public function run()
     {
-        $today= date('Y-m-d');
-        $res = XDB::query("SELECT  a.firstname, a.lastname, s.promo
-                             FROM  account AS a
-                       INNER JOIN  studies AS s ON  a.uid=s.uid
-                            WHERE  a.next_birthday=CURDATE() AND a.on_platal=1
-                                   AND s.formation_id=1
-                         ORDER BY  s.promo");
-        $raw_annivs = $res->fetchAllAssoc();
-        $anniversaires = array();
-        foreach ($raw_annivs as $anniv) {
-            $promo = $anniv['promo'];
-            if (!array_key_exists($promo, $anniversaires)) {
-                $anniversaires[$promo] = array();
-            }
-            $anniversaires[$promo][] = $anniv;
-        }
-        $this->assign('anniversaires', $anniversaires);
+        $uf = new UserFilter(new PFC_And(new UFC_Birthday('=', new FrankizDateTime()),
+                                            new UFC_Group(Group::from('on_platal'), Rights::member())));
+        $us = $uf->get()->select(User::SELECT_BASE);
+
+        $this->assign('users', $us);
     }
 }
 
