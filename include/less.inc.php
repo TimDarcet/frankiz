@@ -68,7 +68,7 @@ class Less
         if (in_array($lib_less, $files)) {
             $lib_css = self::path_less_to_css($lib_less);
             $lib_css = substr($lib_css, 0, strlen($lib_css) - 4) . 'css';
-            if (filemtime($lib_css) < filemtime($lib_less)) {
+            if (file_exists($lib_css) && filemtime($lib_css) < filemtime($lib_less)) {
                 $force = true;
             }
         }
