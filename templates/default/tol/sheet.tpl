@@ -91,7 +91,7 @@
         Binets:
         <ul>
             {foreach from=$groups|filter:'ns':'binet'|order:'score' item='group'}
-                <li>{$result->rights($group)|@rights} {$group|group} {$result->comment($group)}</li>
+                <li>{$result->rights($group)|@rights} {$group|group} {$result->comments($group)}</li>
             {/foreach}
         </ul>
     </div>
@@ -99,7 +99,7 @@
         Groupes:
         <ul>
             {foreach from=$groups|filter:'ns':'free'|order:'score' item='group'}
-                <li>{$result->rights($group)|@rights} {$group|group} {$result->comment($group)}</li>
+                <li>{$result->rights($group)|@rights} {$group|group} {$result->comments($group)}</li>
             {/foreach}
         </ul>
     </div>
