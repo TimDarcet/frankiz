@@ -32,27 +32,29 @@ body {
     font-family: Arial, Verdana, Helvetica, sans-serif;
 }
 
-img {
-    border: 0;
-}
-
-a img {
-    border: 0;
-}
-
 .warning {
     color: red;
 }
 
-a, a:link {
+a {
     text-decoration: underline;
     color: @color;
     font-variant: small-caps;
-}
 
-a:hover, a:active {
-    text-decoration: none;
-    color: @hover;
+    &:link, &:visited {
+        text-decoration: underline;
+        color: @color;
+        font-variant: small-caps;
+    }
+
+    &:hover, &:active {
+        text-decoration: none;
+        color: @hover;
+    }
+
+    img {
+        border: 0;
+    }
 }
 
 .clear {
@@ -68,10 +70,50 @@ a:hover, a:active {
     background-color: white;
     opacity: .9;
     z-index: 42;
+
+    .backtrace h1 {
+        font-size: 10pt;
+    }
 }
 
-#debug .backtrace h1 {
-    font-size: 10pt;
+/*******************************************************************************
+     0b   Rights
+
+*******************************************************************************/
+
+.rights {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border: 1px black solid;
+
+    &.super {
+        background-color: black;
+    }
+
+    &.admin {
+        background-color: red;
+    }
+
+    &.member {
+        background-color: blue;
+    }
+
+    &.logic {
+        background-color: LightBlue;
+    }
+
+    &.friend {
+        background-color: green;
+    }
+
+    &.restricted {
+        background-color: yellow;
+    }
+
+    &.everybody {
+        background-color: white;
+    }
 }
 
 /*******************************************************************************
@@ -106,63 +148,75 @@ a:hover, a:active {
     overflow: visible;
     background-color: @background;
     z-index: 10;
-}
 
-#account p {
-    margin: 0;
-    padding: 0;
-}
+    p {
+        margin: 0;
+        padding: 0;
+    }
 
-#account .connect {
-    margin-top: 4px;
-    font-size: 25px;
-}
+    .connect {
+        margin-top: 4px;
+        font-size: 25px;
+    }
 
-#account .face {
-    position: absolute;
-    left: 6px;
-    top: 4px;
-    width: 80px;
-    height: 105px;
-    padding: 2px;
-    border: 2px @border solid;
-}
+    .face {
+        position: absolute;
+        left: 6px;
+        top: 4px;
+        width: 80px;
+        height: 105px;
+        padding: 2px;
+        border: 2px @border solid;
+    }
 
-#account div {
-    position: absolute;
-    top: 0;
-    left: 110px;
-    width: 200px;
-    font-variant: small-caps;
-}
+    div {
+        position: absolute;
+        top: 0;
+        left: 110px;
+        width: 200px;
+        font-variant: small-caps;
+    }
 
-#account .name {
-    margin: 0;
-    margin-top: 5px;
-    font-size: 20px;
-    text-align: center;
-    font-weight: bold;
-}
+    .name {
+        margin: 0;
+        margin-top: 5px;
+        font-size: 20px;
+        text-align: center;
+        font-weight: bold;
+    }
 
-#account ul {
-    padding: 0;
-}
+    ul {
+        padding: 0;
+    }
 
-#account li {
-    list-style: none;
-    margin-bottom: 10px;
-    font-size: 21px;
-}
+    li {
+        list-style: none;
+        margin-bottom: 10px;
+        font-size: 21px;
+    }
 
-#account a {
-    text-decoration: none;
+    a {
+        text-decoration: none;
+    }
 }
 
 /*******************************************************************************
      2   Nav
 
 *******************************************************************************/
- 
+
+#header {
+    .logo .i {
+        color: #FFBA00;
+        font-size: 52px;
+        font-variant: normal;
+    }
+
+    .logo a:hover {
+        color: #FFBA00;
+    }
+}
+
 #nav {
     position: absolute;
     top: 0;
@@ -175,48 +229,37 @@ a:hover, a:active {
     overflow: hidden;
     background-color: @background;
     z-index: 12;
-}
 
-#nav a.logo {
-    display: block;
-    height: 50px;
-    width: 100%;
-    margin-top: -10px;
-    margin-bottom: 8px;
-    padding: 4px;
-    text-align: center;
-    font-size: 52px;
-    font-weight: bold;
-    text-decoration: none;
-    letter-spacing: 5px;
-}
+    a.logo {
+        display: block;
+        height: 50px;
+        width: 100%;
+        margin-top: -10px;
+        margin-bottom: 8px;
+        padding: 4px;
+        text-align: center;
+        font-size: 52px;
+        font-weight: bold;
+        text-decoration: none;
+        letter-spacing: 5px;
+    }
 
-#header .logo .i {
-    color: #FFBA00;
-    font-size: 52px;
-    font-variant: normal;
+    ul {
+        margin: 0;
+        padding: 0;
+        font-size: 28px;
+    }
 
-}
+    li {
+        list-style: none;
+        margin-bottom: 3px;
+        text-decoration: none;
+        text-transform: capitalize;
+    }
 
-#header .logo a:hover {
-    color: #FFBA00;
-}
-
-#nav ul {
-    margin: 0;
-    padding: 0;
-    font-size: 28px;
-}
-
-#nav li {
-    list-style: none;
-    margin-bottom: 3px;
-    text-decoration: none;
-    text-transform: capitalize;
-}
-
-#nav li a {
-    text-decoration: none;
+    li a {
+        text-decoration: none;
+    }
 }
 
 /*******************************************************************************
@@ -290,44 +333,30 @@ body.disabledAside > #aside {
 
 *******************************************************************************/
 
-#column{
-    vertical-align: top;
-    width: 24%;
-    padding-left: 2px;
-    padding: 0;
-    margin: 0;
-}
+.accueil {
+    table {
+        width: 100%;
+        border-collapse: separate;
+    }
 
-#column.full{
-    display: table-cell;
-}
+    td{
+        padding:2px;
+        vertical-align: top;
+    }
 
-#column.empty{
-    display: none;
-}
+    td.full {
+        display: table-cell;
+        width: 30%;
+    }
 
-.accueil table {
-    width: 100%;
-    border-collapse: separate;
-}
+    td.empty {
+        display: none;
+        width: 30%;
+    }
 
-.accueil td{
-    padding:2px;
-    vertical-align: top;
-}
-
-.accueil td.full {
-    display: table-cell;
-    width: 30%;
-}
-
-.accueil td.empty {
-    display: none;
-    width: 30%;
-}
-
-.accueil td ul.minimodules_zone {
-    width: 100%;
+    td ul.minimodules_zone {
+        width: 100%;
+    }
 }
 
 .sorting {
@@ -348,22 +377,25 @@ body.disabledAside > #aside {
     border: 1px solid @color;
     margin-bottom: 20px;
     .border-radius;
-}
 
-.minimodule>.head {
-    color: @color;
-    background-color: @background;
-    padding: 2px;
-    text-align : center;
-    font-size: 11pt;
-    font-style: italic;
-    font-weight: bold;
-}
+    > .head {
+        color: @color;
+        background-color: @background;
+        padding: 2px;
+        text-align : center;
+        font-size: 11pt;
+        font-style: italic;
+        font-weight: bold;
+        .border-radius;
+    }
 
-.minimodule>.body {
-    background: white;
-    padding: 2px;
-    border: none;
+    > .body {
+        position: relative;
+        background: white;
+        padding: 2px;
+        border: none;
+        .border-radius;
+    }
 }
 
 /*******************************************************************************
@@ -374,12 +406,12 @@ body.disabledAside > #aside {
 fieldset {
     background-color: @background;
     border: 1px @color solid;
-}
 
-fieldset legend {
-    color: white;
-    background-color: @color;
-    border: 1px @color solid;
+    legend {
+        color: white;
+        background-color: @color;
+        border: 1px @color solid;
+    }
 }
 
 form {
@@ -392,42 +424,69 @@ input, textarea {
     border: 1px solid @border;
     color: white;
     background-color: @color;
-}
+    padding: 3px 3px 3px 3px;
 
-input:hover {
+    .transition;
+    .border-radius;
+
+    &[pattern] {
+        background-repeat: no-repeat;
+        background-position: 379px 24px;
+        background-image: url('images/ico_validation.png');
+    }
+
+    &.error {
+        background-color: pink;
+        background-position: 379px 3px;
+        outline: none;
+    }
+
+    &.required {
+        background-position: 379px -29px;
+    }
+
+    &.valid {
+        background-position: 379px -61px;
+    }
+
+    &:required:valid {
+        background-position: 379px -61px;
+    }
+
+    &:hover {
     color: @color;
     background-color: #FFBA00;
     border: 1px red solid;
 }
 
-input:focus {
-    color: white;
-    border: 1px #FFBA00 solid;
-    background-color: @color;
+    &:focus {
+        color: white;
+        border: 1px #FFBA00 solid;
+        background-color: @color;
+    }
 }
 
-.checkbox  {
+.checkbox {
     width: 24px;
     height: 24px;
     background: url(../default/images/checkbox.png) no-repeat;
-}
 
-.checkbox:hover  {
-    background-position: 0 -24px;
-}
+    &:hover  {
+        background-position: 0 -24px;
+    }
 
-.checkbox[checked=checked]  {
-    background-position: 0 -48px;
-}
+    &[checked=checked]  {
+        background-position: 0 -48px;
+    }
 
-.checkbox[checked=checked]:hover  {
-    background-position: 0 -72px;
-}
+    &[checked=checked]:hover  {
+        background-position: 0 -72px;
+    }
 
-.checkbox[disabled=disabled]  {
-    background-color: black !important;
+    &[disabled=disabled]  {
+        background-color: black !important;
+    }
 }
-
 
 /*******************************************************************************
      7   Login / Logout
@@ -435,41 +494,40 @@ input:focus {
 *******************************************************************************/
 
 .login {
-	text-align: center;
-}
+    text-align: center;
 
-.login fieldset {
-	margin-left: 20%;
-    width: 60%;	
-}
+    fieldset {
+        margin-left: 20%;
+        width: 60%;	
+    }
 
-.login table {
-	display: inline-block;
-	text-align: left;
-    margin-top: 15px;
-    border-collapse: separate;
-}
+    table {
+        display: inline-block;
+        text-align: left;
+        margin-top: 15px;
+        border-collapse: separate;
+    }
 
-.login .remember {
-	text-align: left;
-}
+    .remember {
+        text-align: left;
+    }
 
-.login .send {
-	text-align: right;
-	padding-right: 20px;
-}
+    .send {
+        text-align: right;
+        padding-right: 20px;
+    }
 
-.login .forgot {
-	text-align: right;
-	margin-top: 25px;
-	padding-top: 25px;
-    border-top: 1px solid @color;
-}
+    .forgot {
+        text-align: right;
+        margin-top: 25px;
+        padding-top: 25px;
+        border-top: 1px solid @color;
+    }
 
-.login .forgot a {
-    display: inline;
+    .forgot a {
+        display: inline;
+    }
 }
-
 
 /*******************************************************************************
      8   Group picker
@@ -481,44 +539,44 @@ input:focus {
     border: 1px solid @border;
     color: white;
     background-color: @color;
-}
 
-.groups_picker img {
-    width: 20px;
-    height: 20px;
-    vertical-align: bottom;
-    margin-right: 6px;
-}
+    img {
+        width: 20px;
+        height: 20px;
+        vertical-align: bottom;
+        margin-right: 6px;
+    }
 
-.groups_picker .searcher input {
-    width: 90%;
-    margin-left: 5%;
-}
+    .searcher input {
+        width: 90%;
+        margin-left: 5%;
+    }
 
-.groups_picker.searching .searcher input {
-    background-color: #004d79;
-}
+    &.searching .searcher input {
+        background-color: #004d79;
+    }
 
-.groups_picker.empty .empty {
-    display: block;
-}
+    &.empty .empty {
+        display: block;
+    }
 
-.groups_picker .empty {
-    display: none;
-}
+    .empty {
+        display: none;
+    }
 
-.groups_picker ul {
-    margin: 4px;
-    padding-left: 10px;
-}
+    ul {
+        margin: 4px;
+        padding-left: 10px;
+    }
 
-.groups_picker li {
-    cursor: pointer;
-    list-style: none;
-}
+    li {
+        cursor: pointer;
+        list-style: none;
+    }
 
-.groups_picker .empty {
-    opacity: 0.5
+    .empty {
+        opacity: 0.5
+    }
 }
 
 /*******************************************************************************
@@ -527,22 +585,22 @@ input:focus {
 *******************************************************************************/
 
 .wiki {
-	position: relative;
+    position: relative;
     width: auto;
     margin-bottom: 2px;
     border: 1px solid @border;
     background-color: @background;
-}
 
-.wiki .content {
-	position: relative;
-	min-height: 5px;
-	padding: 5px;
-}
+    .content {
+        position: relative;
+        min-height: 5px;
+        padding: 5px;
+    }
 
-.wiki textarea {
-	position: relative;
-	width: 100%;
-	min-height: 50px;
-    display: none;
+    textarea {
+        position: relative;
+        width: 100%;
+        min-height: 50px;
+        display: none;
+    }
 }
