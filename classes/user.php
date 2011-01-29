@@ -119,6 +119,15 @@ class User extends Meta
     // Poly
     protected $poly = null;
 
+    public static function schema()
+    {
+        return array('table' => 'account',
+                        'as' => 'a',
+                        'id' => 'uid',
+                    'fields' => array('firstname', 'lastname', 'nickname',
+                                      'email_format', 'gender', 'comment', 'cellphone'));
+    }
+
     /*******************************************************************************
          Getters & Setters
 
@@ -142,33 +151,6 @@ class User extends Meta
         return $this->email;
     }
 
-    public function firstname($firstname = null)
-    {
-        if ($firstname != null) {
-            $this->firstname = $firstname;
-            XDB::execute('UPDATE account SET firstname = {?} WHERE uid = {?}', $this->firstname, $this->id());
-        }
-        return $this->firstname;
-    }
-
-    public function lastname($lastname = null)
-    {
-        if ($lastname != null) {
-            $this->lastname = $lastname;
-            XDB::execute('UPDATE account SET lastname = {?} WHERE uid = {?}', $this->lastname, $this->id());
-        }
-        return $this->lastname;
-    }
-
-    public function nickname($nickname = null)
-    {
-        if ($nickname != null) {
-            $this->nickname = $nickname;
-            XDB::execute('UPDATE account SET nickname = {?} WHERE uid = {?}', $this->nickname, $this->id());
-        }
-        return $this->nickname;
-    }
-
     public function displayName()
     {
         return (empty($this->nickname)) ? $this->firstname : $this->nickname;
@@ -177,29 +159,6 @@ class User extends Meta
     public function fullName()
     {
         return $this->firstname . ' ' . $this->lastname;
-    }
-
-    public function gender($gender = null)
-    {
-        if ($gender !== null) {
-            $this->gender = $gender;
-            XDB::execute('UPDATE account SET gender = {?} WHERE uid = {?}', $gender, $this->id());
-        }
-        return $this->gender;
-    }
-
-    /**
-    * Returns the wanted email_format of the User
-    *
-    * @param $format Either User::FORMAT_HTML or User::FORMAT-TEXT
-    */
-    public function email_format($format = null)
-    {
-        if ($format !== null) {
-            $this->format = $format;
-            XDB::execute('UPDATE account SET email_format = {?} WHERE uid = {?}', $format, $this->id());
-        }
-        return $this->email_format;
     }
 
     public function isFemale()
@@ -325,24 +284,6 @@ class User extends Meta
             XDB::execute('UPDATE account SET birthdate = {?} WHERE uid = {?}', $birthdate->format(), $this->id());
         }
         return $this->birthdate;
-    }
-
-    public function cellphone($cellphone = null)
-    {
-        if ($cellphone != null) {
-            $this->cellphone = $cellphone;
-            XDB::execute('UPDATE account SET cellphone = {?} WHERE uid = {?}', $cellphone, $this->id());
-        }
-        return $this->cellphone;
-    }
-
-    public function comment($comment = null)
-    {
-        if ($comment != null) {
-            $this->comment = $comment;
-            XDB::execute('UPDATE account SET comment = {?} WHERE uid = {?}', $comment, $this->id());
-        }
-        return $this->comment;
     }
 
     /**
