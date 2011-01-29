@@ -42,10 +42,12 @@ class Less
         }
     }
 
-    private static function make_less($less) {
+    private static function make_less($less, $force) {
+        global $globals;
+
         $css = self::path_less_to_css($less);
         $css = substr($css, 0, strlen($css) - 4) . 'css';
-        if (!file_exists($css) || filemtime($css) < filemtime($less)) {
+        if ($force || (!file_exists($css) || filemtime($css) < filemtime($less))) {
             if ($globals->debug & DEBUG_BT) {
                 PlBacktrace::$bt['Less']->start($less);
             }
@@ -60,6 +62,17 @@ class Less
 
     private static function work($root) {
         $files = glob($root . '/*');
+
+        $force = false;
+        $lib_less = $root . '/lib.less';
+        if (in_array($lib_less, $files)) {
+            $lib_css = self::path_less_to_css($lib_less);
+            $lib_css = substr($lib_css, 0, strlen($lib_css) - 4) . 'css';
+            if (filemtime($lib_css) < filemtime($lib_less)) {
+                $force = true;
+            }
+        }
+
         foreach($files as $file) {
             if (is_dir($file)) {
                 self::make_dir($file);
@@ -68,7 +81,7 @@ class Less
                 if (substr($file, -5) != '.less') {
                     self::make_file($file);
                 } else {
-                    self::make_less($file);
+                    self::make_less($file, $force);
                 }
             }
         }
