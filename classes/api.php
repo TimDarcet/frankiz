@@ -35,9 +35,13 @@ class API
 
     public function exec()
     {
+        global $globals;
+
         if ($this->response === null) {
-            if (!isset(PlBacktrace::$bt['API']))
-                new PlBacktrace('API');
+            if ($globals->debug & DEBUG_BT) {
+                if (!isset(PlBacktrace::$bt['API']))
+                    new PlBacktrace('API');
+            }
 
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_TIMEOUT, 10);
@@ -54,17 +58,21 @@ class API
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($curl, CURLOPT_URL, $this->url);
 
-            PlBacktrace::$bt['API']->start($this->url);
+            if ($globals->debug & DEBUG_BT) {
+                PlBacktrace::$bt['API']->start($this->url);
+            }
 
             $this->response = utf8_encode(curl_exec($curl));
             $this->infos = curl_getinfo($curl);
             curl_close($curl);
 
-            $datas = array(array_intersect_key(
-                            $this->infos,
-                            array_flip(array("content_type", "http_code", "header_size",
-                                             "request_size", "redirect_count", "size_download"))));
-            PlBacktrace::$bt['API']->stop(substr_count($this->response, "\n"), null, $datas);
+            if ($globals->debug & DEBUG_BT) {
+                $datas = array(array_intersect_key(
+                                $this->infos,
+                                array_flip(array("content_type", "http_code", "header_size",
+                                                 "request_size", "redirect_count", "size_download"))));
+                PlBacktrace::$bt['API']->stop(substr_count($this->response, "\n"), null, $datas);
+            }
         }
     }
 

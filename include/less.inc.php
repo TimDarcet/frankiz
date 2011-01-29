@@ -46,9 +46,15 @@ class Less
         $css = self::path_less_to_css($less);
         $css = substr($css, 0, strlen($css) - 4) . 'css';
         if (!file_exists($css) || filemtime($css) < filemtime($less)) {
-            PlBacktrace::$bt['Less']->start($less);
+            if ($globals->debug & DEBUG_BT) {
+                PlBacktrace::$bt['Less']->start($less);
+            }
+
             exec('lessc ' . escapeshellarg($less) . ' --compress > ' . escapeshellarg($css));
-            PlBacktrace::$bt['Less']->stop(0, null, array());
+
+            if ($globals->debug & DEBUG_BT) {
+                PlBacktrace::$bt['Less']->stop(0, null, array());
+            }
         }
     }
 
@@ -69,7 +75,12 @@ class Less
     }
 
     public static function make() {
-        new PlBacktrace('Less');
+        global $globals;
+
+        if ($globals->debug & DEBUG_BT) {
+            new PlBacktrace('Less');
+        }
+
         self::work(self::LESS_PATH);
     }
 }
