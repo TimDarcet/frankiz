@@ -114,6 +114,7 @@ class User extends Meta
     // Miscellaneous
     protected $birthdate = null;
     protected $cellphone = null;
+    protected $comment = null;
 
     // Poly
     protected $poly = null;
@@ -132,8 +133,13 @@ class User extends Meta
         return $this->hruid;
     }
 
-    public function bestEmail()
+    public function bestEmail($email)
     {
+        if ($email != null)
+        {
+            $this->email = $email;
+            XDB::execute('UPDATE account SET email = {?} WHERE uid = {?}', $this->email, $this->id());
+        }
         return $this->email;
     }
 
@@ -190,8 +196,13 @@ class User extends Meta
     }
 
     // Fallback value is FORMAT_TEXT.
-    public function isEmailFormatHtml()
+    public function isEmailFormatHtml($format = null)
     {
+        if ($format !== null)
+        {
+            $this->email_format = $format;
+            XDB::execute('UPDATE account SET email_format = {?} WHERE uid = {?}', $format, $this->id());
+        }
         return $this->email_format == self::FORMAT_HTML;
     }
 
@@ -318,6 +329,15 @@ class User extends Meta
             XDB::execute('UPDATE account SET cellphone = {?} WHERE uid = {?}', $cellphone, $this->id());
         }
         return $this->cellphone;
+    }
+
+    public function comment($comment = null)
+    {
+        if ($comment != null) {
+            $this->comment = $comment;
+            XDB::execute('UPDATE account SET comment = {?} WHERE uid = {?}', $comment, $this->id());
+        }
+        return $this->comment;
     }
 
     /**
@@ -535,7 +555,7 @@ class User extends Meta
     * @param $g the group
     * @param $comments if specified, let the function set the comment
     */
-    public function comment(Group $g, $comments = null)
+    public function comments(Group $g, $comments = null)
     {
         if ($comments !== null) {
             XDB::execute('INSERT INTO  users_comments
