@@ -167,8 +167,7 @@ class Caste extends Meta
         $this->bubble();
     }
 
-    public function bubble()
-    {
+    public function parents() {
         $iter = XDB::iterRow("SELECT  cid, type, id
                                 FROM  castes_dependencies
                                WHERE  id = {?}", $this->id());
@@ -181,9 +180,16 @@ class Caste extends Meta
             }
         }
 
-        $castes->select(Caste::SELECT_BASE);
-        foreach ($castes as $caste)
+        return $castes;
+    }
+
+    public function bubble()
+    {
+        $castes = $this->parents()->select(Caste::SELECT_BASE);
+
+        foreach ($castes as $caste) {
             $caste->compute();
+        }
     }
 
     /*******************************************************************************
@@ -227,7 +233,7 @@ class Caste extends Meta
             return;
 
         if (empty($options)) {
-            $options =self::SELECT_BASE;
+            $options = self::SELECT_BASE;
         }
 
         $bits = self::optionsToBits($options);
