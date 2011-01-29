@@ -1,6 +1,6 @@
 #!/usr/bin/php -q
 <?php
-ini_set("memory_limit","512M");
+ini_set("memory_limit","256M");
 
 /***************************************************************************
  *  Copyright (C) 2003-2010 Polytechnique.org                              *
@@ -24,9 +24,13 @@ ini_set("memory_limit","512M");
 
 /*
  * Convert fkz2 to fkz3
+ *
+ * Usage: ./convert 2005
+ * Will initiate the conversion for all promos >= 2005
  */
 
 require '../../bin/connect.db.inc.php';
+$globals->debug = 0;
 
 function conv($str) {
     $str = html_entity_decode($str, ENT_QUOTES);

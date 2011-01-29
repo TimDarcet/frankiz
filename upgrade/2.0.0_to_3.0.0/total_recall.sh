@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Usage ./total_recall 2005
+# Will initiate the conversion for all promos >= 2005
+
 ./convert.php $1
 
 cd ../../bin
