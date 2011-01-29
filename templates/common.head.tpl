@@ -40,6 +40,7 @@
 {js src="jquery.js"}
 {js src="json2.js"}
 {js src="common.js"}
+{js src="H5F.js"}
 
 {include file='../core/templates/plpage.header.tpl'}
 
