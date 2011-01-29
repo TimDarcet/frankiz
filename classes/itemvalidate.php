@@ -120,6 +120,14 @@ abstract class ItemValidate
     abstract public function commit();
 
     /**
+     * if there are datas to delete
+     */
+    public function delete()
+    {
+        return true;
+    }
+
+    /**
      *  name of the template that contains the form
      */
     abstract public function show();

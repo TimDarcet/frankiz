@@ -184,13 +184,16 @@ class Validate extends Meta
         }
 
         if (Env::has('refuse')) {
-            if (Env::v('ans')) {
+            if (!Env::v('ans')) {
+                Platal::page()->assign('msg', 'Pas de motivation pour le refus !!!');
+                return true;
+            } else if ($this->item->delete()) {
                 $this->item->sendmailfinal(false);
                 $this->clean();
                 Platal::page()->assign('msg', 'Email de refus envoyé');
-                return true;
             } else {
-                Platal::page()->assign('msg', 'Pas de motivation pour le refus !!!');
+                Platal::page()->assign('msg', 'Erreur lors de la suppression des données');
+                return false;
             }
         }
 
@@ -203,6 +206,8 @@ class Validate extends Meta
         if (empty($val))
             return;
 
+        if ($fields === null)
+            $fields = self::SELECT_BASE | self::SELECT_ITEM;
         $val = array_combine(self::toIds($val), $val);
 
         $request = 'SELECT id';
