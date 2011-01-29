@@ -133,10 +133,9 @@ class User extends Meta
         return $this->hruid;
     }
 
-    public function bestEmail($email)
+    public function bestEmail($email = null)
     {
-        if ($email != null)
-        {
+        if ($email != null) {
             $this->email = $email;
             XDB::execute('UPDATE account SET email = {?} WHERE uid = {?}', $this->email, $this->id());
         }
@@ -182,12 +181,25 @@ class User extends Meta
 
     public function gender($gender = null)
     {
-        if ($gender !== null)
-        {
+        if ($gender !== null) {
             $this->gender = $gender;
             XDB::execute('UPDATE account SET gender = {?} WHERE uid = {?}', $gender, $this->id());
         }
         return $this->gender;
+    }
+
+    /**
+    * Returns the wanted email_format of the User
+    *
+    * @param $format Either User::FORMAT_HTML or User::FORMAT-TEXT
+    */
+    public function email_format($format = null)
+    {
+        if ($format !== null) {
+            $this->format = $format;
+            XDB::execute('UPDATE account SET email_format = {?} WHERE uid = {?}', $format, $this->id());
+        }
+        return $this->email_format;
     }
 
     public function isFemale()
@@ -195,14 +207,8 @@ class User extends Meta
         return $this->gender() == self::GENDER_FEMALE;
     }
 
-    // Fallback value is FORMAT_TEXT.
-    public function isEmailFormatHtml($format = null)
+    public function isEmailFormatHtml()
     {
-        if ($format !== null)
-        {
-            $this->email_format = $format;
-            XDB::execute('UPDATE account SET email_format = {?} WHERE uid = {?}', $format, $this->id());
-        }
         return $this->email_format == self::FORMAT_HTML;
     }
 
@@ -213,8 +219,7 @@ class User extends Meta
     */
     public function password($password = null, $encrypt = true)
     {
-        if ($password != null)
-        {
+        if ($password != null) {
             $this->password = ($encrypt) ? hash_encrypt($password) : $password;
             XDB::execute('UPDATE account SET password = {?} WHERE uid = {?}',
                                                  $this->password, $this->id());

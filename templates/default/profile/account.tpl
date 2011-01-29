@@ -20,7 +20,7 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if $msg}
+{if t($msg)}
     {foreach from=$msg item=message}
         <div class="msg">
             {$message|smarty:nodefaults}
@@ -28,7 +28,7 @@
     {/foreach}
 {/if}
 
-{if $err}
+{if t($err)}
     {foreach from=$err item=error}
         <div class="error">
             {$error|smarty:nodefaults}
@@ -87,7 +87,11 @@
                     Kasert :
                 </td>
                 <td>
-                    {$user->rooms()}
+                    <ul>
+                    {foreach from=$user->rooms() item='room'}
+                        <li>{$room->id()}</li>
+                    {/foreach}
+                    </ul>
                 </td>
             </tr>
             <tr>

@@ -110,7 +110,7 @@ class ProfileModule extends PLModule
             S::user()->nickname(Env::t('nickname'));
             S::user()->bestEmail(Env::t('bestalias'));
             S::user()->cellphone(Env::t('cellphone'));
-            S::user()->isEmailFormatHtml((Env::t('format')=='text') ? User::FORMAT_TEXT : User::FORMAT_HTML);
+            S::user()->email_format((Env::t('format')=='text') ? User::FORMAT_TEXT : User::FORMAT_HTML);
             S::user()->comment(Env::t('comment'));
         }
 

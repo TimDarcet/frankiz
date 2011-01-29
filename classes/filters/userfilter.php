@@ -405,7 +405,7 @@ class UFC_Caste extends UserFilterCondition
 
     public function __construct($cs)
     {
-        $this->cids  = Caste::toIds(unflatten($cs));
+        $this->cids = Caste::toIds(unflatten($cs));
     }
 
     public function buildCondition(PlFilter $f)
