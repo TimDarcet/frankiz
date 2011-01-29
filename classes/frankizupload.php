@@ -39,7 +39,7 @@ class FrankizUpload
     */
     public static function has($name)
     {
-        return isset($_FILES[$name]);
+        return isset($_FILES[$name]) && $_FILES[$name]['error'] != UPLOAD_ERR_NO_FILE  ;
     }
 
     /**
@@ -56,9 +56,9 @@ class FrankizUpload
         $name = $file['name'];
         $path = $file['tmp_name'];
 
-        $this->checkUploadErrors($file);
+        self::checkUploadErrors($file);
 
-        $fu = new FrankizUpload($name, $path);
+        $fu = new FrankizUpload($path, $name);
         return $fu;
     }
 
@@ -67,7 +67,7 @@ class FrankizUpload
         return new FrankizUpload($path, basename($path));
     }
 
-    protected function checkUploadErrors(array &$file)
+    protected static function checkUploadErrors(array &$file)
     {
         if (@$file['error']) {
             switch ($file['error']) {
