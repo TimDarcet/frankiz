@@ -256,6 +256,19 @@ class Collection extends PlAbstractIterable implements Countable
     }
 
     /**
+    * Removes and returns an item from the Collection
+    */
+    public function pop()
+    {
+        foreach ($this as $c) {
+            unset($this->collected[$c->id()]);
+            return $c;
+        }
+
+        return false;
+    }
+
+    /**
     * Remove items from the Collection
     *
     * @param $cs  An Item, an id or an array containing them
