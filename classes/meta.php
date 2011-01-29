@@ -48,6 +48,47 @@ abstract class Meta
 {
     protected $id = null;
 
+    public static function schema()
+    {
+        throw new Exception("The Schema for " . get_class($this) . " is missing");
+    }
+
+    protected function _schema($data = null)
+    {
+        if (!method_exists($this, 'schema')) {
+            throw new Exception("No automatic fields in the Object");
+        }
+
+        $schema = static::schema();
+        if ($data !== null) {
+            return $schema[$data];
+        }
+        return $schema;
+    }
+
+    public function __call($method, $arguments)
+    {
+        if (!in_array($method, $this->_schema('fields'))) {
+            throw new Exception("This object doesn't have $method as automatic field");
+        }
+
+        if (!empty($arguments)) {
+            $table = $this->_schema('table');
+            $field = '`' . $method . '`';
+            $id    = $this->_schema('id');
+            XDB::execute("UPDATE  $table
+                             SET  $field = {?}
+                           WHERE  $id = {?}", $arguments[0], $this->id());
+            $this->$method = $arguments[0];
+        }
+
+        if ($this->$method === null) {
+            throw new DataNotFetchedException("$method has not been fetched");
+        }
+
+        return $this->$method;
+    }
+
     public function __construct($datas = null)
     {
         if ($datas === null) {
