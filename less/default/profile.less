@@ -18,10 +18,53 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+@import "lib.less";
+
 /*******************************************************************************
      0   Styles par défauts
 
 *******************************************************************************/
+
+.profile .form input,
+.profile .form textarea
+{
+    background-repeat: no-repeat;
+    background-position: 379px 24px;
+    display: inline-block;
+    width: 371px;
+    padding: 3px 26px 3px 3px;
+
+    .transition;
+    .border-radius;
+}
+
+.profile .form.val input
+{
+    background-image: url('images/ico_validation.png');
+}
+.profile .form select		{ width: 401px; padding: 3px; }
+.profile .form #postcode	{ padding: 3px; width: 400px; }
+
+
+/* Enhanced error styling */
+.profile input.error
+{
+	background-color: pink;
+	background-position: 379px 3px;
+	outline: none;
+}
+.profile input.required
+{
+	background-position: 379px -29px;
+}
+.profile input.valid
+{
+	background-position: 379px -61px;
+}
+.profile .form input:required:valid
+{
+	background-position: 379px -61px;
+}
 
 .error {
     color: red;
@@ -34,12 +77,58 @@
     width: 60%;
 }
 
-.recovery table {
+.profile table {
     width: 100%;
 }
 
-.recovery .right {
+.profile .right {
     text-align: right;
+}
+
+.profile .center {
+    text-align: center;
+}
+
+.account fieldset {
+	margin: 30px auto;
+    width: 80%;
+    .border-radius;
+}
+
+.account .right {
+    display: block;
+    margin: 0px 0px 0px 150px;
+    padding: 0 4px;
+    text-align: left;
+}
+
+.account .button {
+    float: none;
+    display: block;
+    width: 100px;
+    margin: 10px auto;
+}
+
+.account .title {
+    font-style: bold;
+    font-size: 120%;
+    margin-bottom: 15px;
+}
+
+.account .validation {
+    background: #fff;
+    color: red;
+    border: solid 1px red;
+    display: none;
+    font-size: 80%;
+    text-align: center;
+    padding: 4px;
+    width: 150px;
+    position: absolute;
+}
+
+input:focus:invalid + .validation {
+    display: block;
 }
 
 .recovery.note {

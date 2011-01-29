@@ -24,6 +24,7 @@ class ProfileModule extends PLModule
     public function handlers()
     {
         return array('profile'                         => $this->make_hook('profile',                 AUTH_COOKIE),
+                     'profile/account'                 => $this->make_hook('account',                 AUTH_MDP),
                      'profile/fkz'                     => $this->make_hook('fkz',                     AUTH_COOKIE),
                      'profile/mails'                   => $this->make_hook('mails',                   AUTH_COOKIE),
                      'profile/password'                => $this->make_hook('password',                AUTH_MDP),
@@ -59,6 +60,72 @@ class ProfileModule extends PLModule
     {
         $page->assign('title', "Mon compte");
         $page->changeTpl('profile/index.tpl');
+    }
+
+    public function handler_account($page)
+    {
+        S::user()->select(User::SELECT_BASE | User::SELECT_ROOMS);
+        if (Env::has('new_passwd'))
+        {
+            if (Env::v('new_passwd1') != Env::v('new_passwd2'))
+            {
+                $err[] = 'Les mots de passe donnés sont incohérents.';
+            }
+            else if(strlen(Env::v(new_passwd1)) < 6)
+            {
+                $msg[] = 'Le mot de passe est trop court.';
+            }
+            else
+            {
+                S::user()->password(Env::v('new_passwd1'));
+                $msg[] = 'Le mot de passe a été changé avec succès.';
+            }
+        }
+
+        if (Env::has('change_profile'))
+        {
+            if (FrankizUpload::has('image'))
+            {
+                try
+                {
+                    $image = new FrankizImage();
+                    $image->insert();
+                    $image->image(FrankizUpload::v('image'), ImageSizesSet::tol());
+                    $tv = new TolValidate($image);
+                    $v = new Validate(array(
+                        'user'  => S::user(),
+                        'gid'   => Group::from('tol')->id(),
+                        'item'  => $tv,
+                        'type'  => 'tol'));
+                    $v->insert();
+                    $page->assign('envoye', true);
+                    $msg[] = 'La demande de changement de photo tol a été prise en compte.
+                        Les tolmestres essaieront de te la valider au plus tôt.';
+                }
+                catch (Exception $e)
+                {
+                    $err[] = $e->getMessage();
+                }
+            }
+            S::user()->nickname(Env::t('nickname'));
+            S::user()->bestEmail(Env::t('bestalias'));
+            S::user()->cellphone(Env::t('cellphone'));
+            S::user()->isEmailFormatHtml((Env::t('format')=='text') ? User::FORMAT_TEXT : User::FORMAT_HTML);
+            S::user()->comment(Env::t('comment'));
+        }
+
+        if (isset($err))
+        {
+            $page->assign('err', $err);
+        }
+        if (isset($msg))
+        {
+            $page->assign('msg', $msg);
+        }
+        $page->assign('user', S::user());
+        $page->addCssLink('profile.css');
+        $page->assign('title', "Changement du profil");
+        $page->changeTpl('profile/account.tpl');
     }
 
     public function handler_fkz($page)

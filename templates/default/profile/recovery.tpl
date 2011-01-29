@@ -28,7 +28,7 @@
                 L'email donné est incorrect.
             </div>
         {/if}
-        <fieldset class="recovery">
+        <fieldset class="recovery profile">
             Si tu souhaites créer ton compte Frankiz, ou si tu as perdu ton mot de passe, entre l'adresse e-mail
             donnée par ton école (par exemple jean.dupont@polytechnique.edu) dans le champ ci-dessous. <br/>
             Tu recevras dans les minutes qui suivent un courriel te permettant d'aller changer ton mot de passe.

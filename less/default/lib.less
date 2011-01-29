@@ -29,6 +29,13 @@
     -webkit-border-radius: @radius;
 }
 
+.transition (@time : 500ms) {
+    -moz-transition: background-color @time ease;
+    -webkit-transition: background-color @time ease;
+    -o-transition: background-color @time ease;
+    transition: background-color @time ease;
+}
+
 .rights {
     position: relative;
     width: 10px;
