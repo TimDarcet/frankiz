@@ -694,7 +694,7 @@ class User extends Meta
             $cols['a'] = array('hruid', 'perms', 'state', 'gid',
                                'hash', 'hash_rss', 'original', 'photo', 'gender',
                                'email_format', 'email', 'skin', 'cellphone',
-                               'firstname', 'lastname', 'nickname', 'birthdate');
+                               'firstname', 'lastname', 'nickname', 'birthdate', 'comment');
         }
 
         if ($bits & self::SELECT_POLY) {

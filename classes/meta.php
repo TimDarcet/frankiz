@@ -50,7 +50,7 @@ abstract class Meta
 
     public static function schema()
     {
-        throw new Exception("The Schema for " . get_class($this) . " is missing");
+        throw new Exception("The Schema for " . get_called_class() . " is missing");
     }
 
     protected function _schema($data = null)

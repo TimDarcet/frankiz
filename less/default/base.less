@@ -429,28 +429,31 @@ input, textarea {
     .transition;
     .border-radius;
 
+    &[type=email],
+    &[type=url],
     &[pattern] {
         background-repeat: no-repeat;
-        background-position: 379px 24px;
+        background-position: 356px 24px;
         background-image: url('images/ico_validation.png');
+		padding: 3px 3px 3px 3px;
     }
 
     &.error {
         background-color: pink;
-        background-position: 379px 3px;
+        background-position: 356px 3px;
         outline: none;
     }
 
     &.required {
-        background-position: 379px -29px;
+        background-position: 356px -29px;
     }
 
     &.valid {
-        background-position: 379px -61px;
+        background-position: 356px -61px;
     }
 
     &:required:valid {
-        background-position: 379px -61px;
+        background-position: 356px -61px;
     }
 
     &:hover {
