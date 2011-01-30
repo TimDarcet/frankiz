@@ -175,8 +175,8 @@ while ($datas = $iter->next()) {
     $u = new User();
     $u->insert($datas['eleve_id']);
     $u->password($datas['passwd'], false);
-    $u->firstname(conv($datas['prenom']));
-    $u->lastname(conv($datas['nom']));
+    $u->firstname(ucwords(strtolower(conv($datas['prenom']))));
+    $u->lastname(ucwords(strtolower(conv($datas['nom']))));
     $u->nickname(conv($datas['surnom']));
     $u->birthdate(new FrankizDateTime($datas['date_nais']));
     $u->gender(($datas['sexe'] == 1) ? User::GENDER_FEMALE : User::GENDER_MALE);

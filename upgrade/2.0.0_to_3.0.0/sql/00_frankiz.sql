@@ -101,22 +101,6 @@ CREATE TABLE IF NOT EXISTS `brs_subs` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `castes`
---
-
-DROP TABLE IF EXISTS `castes`;
-CREATE TABLE IF NOT EXISTS `castes` (
-  `cid` int(11) NOT NULL AUTO_INCREMENT,
-  `gid` int(11) NOT NULL,
-  `rights` varchar(30) NOT NULL,
-  `userfilter` text,
-  PRIMARY KEY (`cid`),
-  UNIQUE KEY `gid_rights` (`gid`,`rights`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `castes_dependencies`
 --
 

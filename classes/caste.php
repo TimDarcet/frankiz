@@ -19,23 +19,72 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+class CasteSchema extends Schema
+{
+    public function className() {
+        return 'Caste';
+    }
+
+    public function table() {
+        return 'castes';
+    }
+
+    public function id() {
+        return 'cid';
+    }
+
+    public function tableAs() {
+        return 'c';
+    }
+
+    public function objects() {
+        return array('group' => 'Group',
+                    'rights' => 'Rights',
+                'userfilter' => 'UserFilter');
+    }
+
+    public function collections() {
+        return array('users' => 'User');
+    }
+}
+
+class CasteSelect extends Select
+{
+    public function className() {
+        return 'Caste';
+    }
+
+    public static function base($subs = null) {
+        return new CasteSelect(array('group', 'rights', 'userfilter'), $subs);
+    }
+
+    public static function group($subs = null) {
+        return new CasteSelect(array('group', 'rights'), array('group' => GroupSelect::base()));
+    }
+
+    public static function users($subs = null) {
+        return new CasteSelect(array('users'), $subs);
+    }
+
+    protected function handlers() {
+        return array('main' => array('group', 'rights', 'userfilter'),
+                    'users' => array('users'));
+    }
+
+    protected function handler_users(Collection $castes, $fields) {
+        $this->helper_collection($castes, array('id' => 'uid',
+                                             'table' => 'castes_users',
+                                             'field' => 'users'));
+    }
+}
+
 class Caste extends Meta
 {
-    const SELECT_BASE      = 0x01;
-    const SELECT_FREQUENCY = 0x02;
-    const SELECT_USERS     = 0x04;
-
     protected $group      = null;
     protected $rights     = null;
     protected $userfilter = null;
 
     protected $users = null;
-    protected $frequency = null;
-
-    public function group()
-    {
-        return $this->group;
-    }
 
     public static function batchGroups(array $castes)
     {
@@ -46,28 +95,10 @@ class Caste extends Meta
         return $gs;
     }
 
-    public function rights()
-    {
-        return $this->rights;
-    }
-
-    public function frequency()
-    {
-        return $this->frequency;
-    }
-
     /*******************************************************************************
          Users
 
     *******************************************************************************/
-
-    /**
-    * Returns the users belonging to the caste
-    */
-    public function users()
-    {
-        return $this->users;
-    }
 
     public function hasUser(User $user = null)
     {
@@ -211,82 +242,20 @@ class Caste extends Meta
         if (!empty($mixed)) {
             $sql = array();
             foreach ($mixed as $mix)
-                $sql[] = XDB::format('(gid = {?} AND rights = {?})', Group::toId($mix['group']), (string) $mix['rights']);
+                $sql[] = XDB::format('(`group` = {?} AND rights = {?})', Group::toId($mix['group']), (string) $mix['rights']);
 
-            $iter = XDB::iterRow('SELECT  cid, gid, rights
+            $iter = XDB::iterRow('SELECT  cid, `group`, rights
                                     FROM  castes
                                    WHERE  ' . implode(' OR ', $sql));
 
             $groups =  new Collection('Group');
-            while (list($cid, $gid, $rights) = $iter->next()) {
-                $group = $groups->addget($gid);
+            while (list($cid, $group, $rights) = $iter->next()) {
+                $group = $groups->addget($group);
                 $collec->add(new self(array('id' => $cid, 'group' => $group, 'rights' => new Rights($rights))));
             }
         }
 
         return $collec;
-    }
-
-    public static function batchSelect(array $castes, $options = null)
-    {
-        if (empty($castes))
-            return;
-
-        if (empty($options)) {
-            $options = self::SELECT_BASE;
-        }
-
-        $bits = self::optionsToBits($options);
-        $castes = array_combine(self::toIds($castes), $castes);
-
-        $joins = array();
-        $cols = array();
-        if ($bits & self::SELECT_BASE)
-            $cols['c']   = array('gid', 'rights', 'userfilter');
-        if ($bits & self::SELECT_FREQUENCY) {
-            $cols[-1]    = array('COUNT(cu.uid) AS frequency');
-            $joins['cu'] = PlSqlJoin::left('castes_users', '$ME.cid = c.cid');
-        }
-
-        if (!empty($cols)) {
-            $iter = XDB::iterator('SELECT  c.cid AS id, ' . self::arrayToSqlCols($cols) . '
-                                     FROM  castes AS c
-                                     ' . PlSqlJoin::formatJoins($joins, array()) . '
-                                    WHERE  c.cid IN {?}
-                                 GROUP BY  c.cid', self::toIds($castes));
-
-            $groups = new Collection('Group');
-            while ($datas = $iter->next()) {
-                $datas['rights'] = new Rights($datas['rights']);
-                $datas['group']  = $groups->addget($datas['gid']); unset($datas['gid']);
-                $datas['userfilter'] = ($datas['userfilter'] === null) ? false :
-                                         UserFilter::fromExport(json_decode($datas['userfilter'], true));
-
-                $castes[$datas['id']]->fillFromArray($datas);
-            }
-
-            if (!empty($options[self::SELECT_BASE]))
-                    $groups->select($options[self::SELECT_BASE]);
-        }
-
-        if ($bits & self::SELECT_USERS)
-        {
-            foreach($castes as $caste)
-                $caste->users = new Collection('User');
-
-            $iter = XDB::iterator("SELECT  cid, uid
-                                     FROM  castes_users
-                                    WHERE  cid IN {?}", self::toIds($castes));
-
-            $users = new Collection('User');
-            while ($datas = $iter->next()) {
-                $user = $users->addget($datas['uid']);
-                $castes[$datas['cid']]->users->add($user);
-            }
-
-            if (!empty($options[self::SELECT_USERS]))
-                $users->select($options[self::SELECT_USERS]);
-        }
     }
 }
 
