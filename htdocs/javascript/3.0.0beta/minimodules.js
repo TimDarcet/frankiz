@@ -66,9 +66,9 @@ function cleanEmptyColumns()
     if ($('.minimodules_zone').size() == 4)
         for (var i in homeCols)
             if ($('#' + homeCols[i]).sortable('toArray').length == 0)
-            	$('#' + homeCols[i]).parent().hide();
+                $('#' + homeCols[i]).parent().hide();
 
-    if ($('#COL_FLOAT').sortable('toArray').length == 0) {
+    if ($('#COL_FLOAT').children('li').length == 0) {
         $('body').removeClass('enabledAside');
         $('body').addClass('disabledAside');
     }
@@ -76,19 +76,19 @@ function cleanEmptyColumns()
 
 function getLayout()
 {
-	var cols = {"COL_FLOAT": []};
+    var cols = {"COL_FLOAT": []};
     $('#COL_FLOAT > li').each(function (k) {
         cols["COL_FLOAT"][k] = $(this).attr('name');
     });
 
     if($('.minimodules_zone').size() == 4)
     {
-	    for (var i in homeCols) {
-	    	cols[homeCols[i]] = new Array();
-	        $('#' + homeCols[i] + ' > li').each(function (k) {
-	            cols[homeCols[i]][k] = $(this).attr('name');
-	        });
-	    }
+        for (var i in homeCols) {
+            cols[homeCols[i]] = new Array();
+            $('#' + homeCols[i] + ' > li').each(function (k) {
+                cols[homeCols[i]][k] = $(this).attr('name');
+            });
+        }
     }
 
     return JSON.stringify(cols);
@@ -119,7 +119,7 @@ function addMinimodule(name, sender, box)
                             sender.removeAttr('disabled');
                             box.addClass('on');
                         });
-	               }
+       }
     });
 }
 
@@ -136,6 +136,6 @@ function removeMinimodule(name, sender, box)
                             this.parentNode.removeChild(this);
                             cleanEmptyColumns();
                         });
-					}
+                    }
     });
 }

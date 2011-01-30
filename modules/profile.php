@@ -917,13 +917,13 @@ class ProfileModule extends PLModule
 
     function handler_ajax_minimodules_layout($page)
     {
-        $json = json_decode(Env::v('json'));
-
         $layout = FrankizMiniModule::emptyLayout();
 
-        foreach(array_keys($layout) as $col)
-            if (isset($json->$col))
-                $layout[$col] = $json->$col;
+        foreach(array_keys($layout) as $col) {
+            if (Json::has($col)) {
+                $layout[$col] = Json::v($col);
+            }
+        }
 
         if (!S::user()->layoutMinimodules($layout)) {
             $page->jsonAssign('error', "Le réagencement des minimodules n'a pas pu se faire");
