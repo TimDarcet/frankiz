@@ -20,27 +20,15 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if $group}
 
-{$group->id()}
-{$group->name()}
-<ul>
-{foreach from=$group->caste() item='caste'}
+{foreach from=$castes item='caste'}
     <li>
     {$caste->id()}
-    {assign var='uf' value=$caste->userfilter()}
-    {if $uf}
-        {$uf->export()|@json_encode}
+    {if $caste->userfilter()}
+        {$caste->userfilter()|userfilter}
     {/if}
-    <ul>
-        {foreach from=$caste->users() item='user'}
-            {$user->id()}
-        {/foreach}
-    </ul>
     </li>
 {/foreach}
-</ul>
 
-{/if}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

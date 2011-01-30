@@ -20,20 +20,33 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if $globals->debug > 0}
-<div id="debug">
-    <span id="debug_hook">
-        @HOOK@ - <a href="debug/">$_SESSION</a>
-    </span>
+{literal}
+<style type="text/css">
+    #collapse_debug ul ul {
+        display: none;
+    }
+</style>
+{/literal}
 
-    @@BACKTRACE@@
-    {literal}
-    <script>
-        $("#debug_hook .erreur").hide();
-        $("#debug_hook br").hide();
-    </script>
-    {/literal}
-</div>
-{/if}
+<h3>Session</h3>
+<ul>
+{foreach from=$session key='k' item='s'}
+    <li>
+        <span onclick="$(this).siblings('div').toggle();">{$k}</span>
+        <div style="display:none" id="collapse_debug">{$s|smarty:nodefaults}</div>
+    </li>
+{/foreach}
+</ul>
+
+{literal}
+<script>
+    $(function() {
+        $("#collapse_debug").find('span').click(function() {
+            console.log(this);
+            $(this).siblings('ul').toggle();
+        });
+    });
+</script>
+{/literal}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

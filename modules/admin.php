@@ -32,7 +32,7 @@ class AdminModule extends PlModule
             'admin/group'       => $this->make_hook('group'   , AUTH_MDP, 'admin'),
             'admin/bubble'      => $this->make_hook('bubble'  , AUTH_MDP, 'admin'),
             'admin/validate'    => $this->make_hook('validate', AUTH_COOKIE),
-            'admin/debug'       => $this->make_hook('debug'   , AUTH_PUBLIC)
+            'debug'             => $this->make_hook('debug'   , AUTH_PUBLIC)
         );
     }
 
@@ -60,23 +60,24 @@ class AdminModule extends PlModule
         }
     }
 
-    function handler_group($page, $group)
+    function handler_bubble($page, $cid)
     {
-        if (Group::isId($group)) {
-            $gf = new GroupFilter(new GFC_Id($group));
-        } else {
-            $gf = new GroupFilter(new GFC_Name($group));
+        $c = new Caste($cid);
+        $c->select();
+
+        $tobeexplored = new Collection('Caste');
+        $tobeexplored->add($c);
+
+        $explored = new Collection('Caste');
+
+        while ($c = $tobeexplored->pop()) {
+            $explored->add($c);
+            $tobeexplored->merge($c->parents());
         }
 
-        $g = $gf->get(true);
-        if ($g) {
-            $g->select(array(Group::SELECT_BASE => null,
-                             Group::SELECT_CASTES => Caste::SELECT_BASE | Caste::SELECT_USERS));
-        }
-
-        $page->assign('title', "Administration du groupe");
-        $page->assign('group', $g);
-        $page->changeTpl('admin/group.tpl');
+        $page->assign('title', "Bubbles");
+        $page->assign('castes', $explored);
+        $page->changeTpl('admin/bubble.tpl');
     }
 
     function handler_images($page)
@@ -140,8 +141,27 @@ class AdminModule extends PlModule
     {
         global $globals;
 
+        if ($globals->debug & DEBUG_BT) {
+            $sessions = array();
+            foreach ($_SESSION as $key => $val) {
+                ob_start();
+                var_dump($val);
+                $str = ob_get_clean();
+
+                  $str = str_replace("\n", '', $str);
+                  $str = str_replace('{', '</span><ul><li><span>', $str);
+                  $str = str_replace('[', '</span></li><li><span>[', $str);
+                  $str = str_replace('}', '</li></span></ul>', $str);
+                  $str = preg_replace('/<span> *<\/span>/i', '', $str);
+                  $str = preg_replace('/<li> *<\/li>/i', '', $str);
+
+                $sessions[$key] = $str;
+            }
+            $page->assign('session', $sessions);
+        }
+
         $page->assign('title', 'Debug');
-        $page->changeTpl('debug.tpl');
+        $page->changeTpl('admin/debug.tpl');
     }
 }
 

@@ -21,10 +21,11 @@
 
 
 function smarty_modifier_debug($var, $flush = false) {
-    trace($var);
-
-    if ($flush)
-        print_r($var);
+    if ($flush) {
+        var_dump($var);
+    } else {
+        trace($var);
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
