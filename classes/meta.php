@@ -59,6 +59,10 @@ abstract class Meta
             $table = $schema->table();
             $field = '`' . $method . '`';
             $id    = $schema->id();
+            if (!$schema->isScalar($field)) {
+                // TODO
+                throw new Exception('Auto setter for objects is not supported yet');
+            }
             XDB::execute("UPDATE  $table
                              SET  $field = {?}
                            WHERE  $id = {?}", $arguments[0], $this->id());
