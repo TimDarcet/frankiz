@@ -123,7 +123,7 @@ class FrankizSession extends PlSession
                 S::set('auth', AUTH_COOKIE);
             }
             $user = new User(S::i('cookie_uid'));
-            return $user->select();
+            return $user->select(UserSelect::login());
         }
 
         /*If we are here, we want AUTH_MDP
@@ -160,7 +160,7 @@ class FrankizSession extends PlSession
             S::set('auth', AUTH_MDP);
             S::kill('challenge');
             $user = new User($uid);
-            return $user->select();
+            return $user->select(UserSelect::login());
         }
     }
 

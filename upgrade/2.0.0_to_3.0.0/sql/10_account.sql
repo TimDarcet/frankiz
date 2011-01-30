@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 24, 2011 at 11:40 PM
+-- Generation Time: Jan 30, 2011 at 12:45 PM
 -- Server version: 5.1.51
 -- PHP Version: 5.3.5-pl0-gentoo
 
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS account (
   uid int(10) NOT NULL AUTO_INCREMENT,
   hruid varchar(255) CHARACTER SET ascii NOT NULL,
   `password` varchar(120) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  gid int(11) NOT NULL,
+  `group` int(11) NOT NULL,
   perms set('admin','user','anonymous') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   state enum('active','pending','unregistered','disabled') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `hash` varchar(34) CHARACTER SET ascii NOT NULL,
@@ -40,9 +40,10 @@ CREATE TABLE IF NOT EXISTS account (
   birthdate date NOT NULL DEFAULT '0000-00-00',
   next_birthday date NOT NULL DEFAULT '0000-00-00',
   cellphone char(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
-  original int(11) NOT NULL DEFAULT '0',
-  photo int(11) NOT NULL DEFAULT '0',
+  original int(11) DEFAULT NULL,
+  photo int(11) DEFAULT NULL,
   `comment` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (uid),
   UNIQUE KEY hruid (hruid)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+

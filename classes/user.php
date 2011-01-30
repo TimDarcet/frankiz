@@ -19,6 +19,184 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+class UserSchema extends Schema
+{
+    public function className() {
+        return 'User';
+    }
+
+    public function table() {
+        return 'account';
+    }
+
+    public function id() {
+        return 'uid';
+    }
+
+    public function tableAs() {
+        return 'a';
+    }
+
+    public function scalars() {
+        return array('hruid', 'perms', 'state', 'group',
+                     'hash', 'hash_rss', 'original', 'photo', 'gender',
+                     'email_format', 'email', 'skin', 'cellphone',
+                     'firstname', 'lastname', 'nickname', 'birthdate', 'comment', 'poly');
+    }
+
+    public function objects() {
+        return array('perms' => 'PlFlagSet',
+                     'group' => 'Group',
+                  'original' => 'FrankizImage',
+                     'photo' => 'FrankizImage',
+                 'birthdate' => 'FrankizDateTime');
+    }
+
+    public function collections() {
+        return array('rooms' => 'Room',
+                    'castes' => 'Caste');
+    }
+}
+
+class UserSelect extends Select
+{
+    protected static $natives = array('hruid', 'perms', 'state', 'group',
+                               'hash', 'hash_rss', 'original', 'photo', 'gender',
+                               'email_format', 'email', 'skin', 'cellphone',
+                               'firstname', 'lastname', 'nickname', 'birthdate', 'comment');
+
+    public function className() {
+        return 'User';
+    }
+
+    protected function handlers() {
+        return array('main' => array_merge(self::$natives, array('poly')),
+                    'rooms' => array('rooms'),
+                   'castes' => array('castes'),
+              'minimodules' => array('minimodules'),
+                  'studies' => array('studies'),
+                 'comments' => array('comments'));
+    }
+
+    // Override default handler_main because fields in the DBhave different names with the class properties
+    protected function handler_main(Collection $users, array $fields) {
+        $joins = array();
+        $cols  = array();
+
+        $loc_fields = array_intersect($fields, self::$natives);
+        if (!empty($loc_fields)) {
+            $cols['a'] = $loc_fields;
+        }
+
+        if (in_array('poly', $fields)) {
+            $cols['p']  = array('poly');
+            $joins['p'] = PlSqlJoin::left('poly', '$ME.uid = a.uid');
+        }
+
+        $this->helper_main($users, $cols, $joins);
+    }
+
+    protected function handler_minimodules(Collection $users, $fields) {
+        $_users = array();
+        foreach ($users as $u) {
+            $_users[$u->id()] = FrankizMiniModule::emptyLayout();
+        }
+
+        $iter = XDB::iterRow('SELECT  uid AS id, name, col
+                                FROM  users_minimodules
+                               WHERE  uid IN {?}
+                            ORDER BY  col, row', $users->ids());
+
+        while (list($uid, $name, $col) = $iter->next()) {
+            array_push($_users[$uid][$col], $name);
+        }
+
+        foreach ($users as $u) {
+            $u->fillFromArray(array('minimodules' => $_users[$u->id()]));
+        }
+    }
+
+    protected function handler_studies(Collection $users, $fields) {
+        $_users = array();
+        foreach ($users as $u) {
+            $_users[$u->id()] = array();
+        }
+
+        $iter = XDB::iterator('SELECT  uid, formation_id, year_in, year_out, promo, forlife
+                                 FROM  studies
+                                WHERE  uid IN {?}', $users->ids());
+
+        $formations = new Collection('Formation');
+        while ($datas = $iter->next()) {
+            $formation_id = $datas['formation_id'];
+            $datas['formation'] = $formations->addget($formation_id); unset($datas['formation_id']);
+            $_users[$datas['uid']][$formation_id] = new Study($datas);
+        }
+
+        foreach ($users as $u) {
+            $u->fillFromArray(array('studies' => $_users[$u->id()]));
+        }
+
+        if (!empty($formations) && !empty($this->subs['studies'])) {
+            $formations->select($this->subs['studies']);
+        }
+    }
+
+    protected function handler_comments(Collection $users, $fields) {
+        $_users = array();
+        foreach ($users as $u) {
+            $_users[$u->id()] = array();
+        }
+
+        $iter = XDB::iterRow('SELECT  uid, gid, comment
+                                FROM  users_comments
+                               WHERE  uid IN {?}',  $users->ids());
+
+        while (list($uid, $gid, $comment) = $iter->next()) {
+            $_users[$uid][$gid] = $comment;
+        }
+
+        foreach ($users as $u) {
+            $u->fillFromArray(array('comments' => $_users[$u->id()]));
+        }
+    }
+
+    protected function handler_rooms(Collection $users, $fields) {
+        $this->helper_collection($users, array('id' => 'rid',
+                                            'table' => 'rooms_users',
+                                            'field' => 'rooms'));
+    }
+
+    protected function handler_castes(Collection $users, $fields) {
+        $this->helper_collection($users, array('id' => 'cid',
+                                            'table' => 'castes_users',
+                                            'field' => 'castes'));
+    }
+
+    public static function base() {
+        return new UserSelect(self::$natives);
+    }
+
+    public static function login() {
+        return new UserSelect(array_merge(self::$natives, array('rooms', 'minimodules', 'castes', 'poly')),
+                              array('castes' => CasteSelect::group()));
+    }
+
+    public static function tol() {
+        return new UserSelect(array_merge(self::$natives, array('rooms', 'castes', 'comments', 'studies')),
+                              array('castes' => CasteSelect::group(),
+                                     'rooms' => RoomSelect::all(),
+                                   'studies' => Formation::SELECT_BASE));
+    }
+
+    public static function minitol() {
+        return new UserSelect(array_merge(self::$natives, array('rooms', 'castes', 'comments', 'studies')),
+                              array('castes' => CasteSelect::group(),
+                                     'rooms' => RoomSelect::all(),
+                                   'studies' => Formation::SELECT_BASE));
+    }
+}
+
 class User extends Meta
 {
     /*******************************************************************************
@@ -31,14 +209,6 @@ class User extends Meta
 
     const FORMAT_HTML = "html";
     const FORMAT_TEXT = "text";
-
-    const SELECT_BASE         = 0x01;
-    const SELECT_ROOMS        = 0x02;
-    const SELECT_MINIMODULES  = 0x04;
-    const SELECT_CASTES       = 0x08;
-    const SELECT_STUDIES      = 0x10;
-    const SELECT_COMMENTS     = 0x20;
-    const SELECT_POLY         = 0x40;
 
     const IMAGE_ORIGINAL      = 0x01;
     const IMAGE_PHOTO         = 0x02;
@@ -118,15 +288,6 @@ class User extends Meta
 
     // Poly
     protected $poly = null;
-
-    public static function schema()
-    {
-        return array('table' => 'account',
-                        'as' => 'a',
-                        'id' => 'uid',
-                    'fields' => array('firstname', 'lastname', 'nickname',
-                                      'email_format', 'gender', 'comment', 'cellphone'));
-    }
 
     /*******************************************************************************
          Getters & Setters
@@ -338,14 +499,6 @@ class User extends Meta
     *******************************************************************************/
 
     /**
-    * Returns the Collection of Rooms of the User
-    */
-    public function rooms()
-    {
-        return $this->rooms;
-    }
-
-    /**
     * Add a Room to the user
     * @param $r the room to add
     */
@@ -454,11 +607,6 @@ class User extends Meta
 
     *******************************************************************************/
 
-    public function perms()
-    {
-        return $this->perms;
-    }
-
     public function addPerm($perm)
     {
         XDB::execute("UPDATE  account
@@ -546,11 +694,6 @@ class User extends Meta
         return false;
     }
 
-    public function group()
-    {
-        return $this->group;
-    }
-
     /*******************************************************************************
          Miscellaneous
 
@@ -568,7 +711,7 @@ class User extends Meta
 
             $uid = (IP::is_internal()) ? $globals->anonymous->internal : $globals->anonymous->external;
             $u = new User($uid);
-            $u->select();
+            $u->select(UserSelect::login());
             S::set('anonymous_user', $u);
             return $u;
         }
@@ -670,155 +813,6 @@ class User extends Meta
         $group->caste(Rights::member())->addUser($this);
 
         $this->group = $group;
-    }
-
-    public static function batchSelect(array $users, $options = null)
-    {
-        if (empty($users))
-            return;
-
-        $bits = self::optionsToBits($options);
-
-        if (empty($options)) {
-            $bits = User::SELECT_BASE | User::SELECT_ROOMS | User::SELECT_MINIMODULES |
-                                        User::SELECT_CASTES | User::SELECT_POLY;
-            $options = array(User::SELECT_CASTES => array(Caste::SELECT_BASE => Group::SELECT_BASE));
-        }
-
-        $users = array_combine(self::toIds($users), $users);
-
-        // Load datas where 1 User = 1 Line
-        $joins = array();
-        $cols = array();
-        if ($bits & self::SELECT_BASE) {
-            $cols['a'] = array('hruid', 'perms', 'state', 'gid',
-                               'hash', 'hash_rss', 'original', 'photo', 'gender',
-                               'email_format', 'email', 'skin', 'cellphone',
-                               'firstname', 'lastname', 'nickname', 'birthdate', 'comment');
-        }
-
-        if ($bits & self::SELECT_POLY) {
-            $cols['p']  = array('poly');
-            $joins['p'] = PlSqlJoin::left('poly', '$ME.uid = a.uid');
-        }
-
-        if (!empty($cols)) {
-            $iter = XDB::iterator('SELECT  a.uid AS id, ' . self::arrayToSqlCols($cols) . '
-                                     FROM  account AS a
-                                           ' . PlSqlJoin::formatJoins($joins, array()) . '
-                                    WHERE  a.uid IN {?}', array_keys($users));
-
-            $groups = new Collection('Group');
-            while ($datas = $iter->next()) {
-                if ($bits & self::SELECT_BASE) {
-                    $datas['firstname'] = ucwords(strtolower($datas['firstname']));
-                    $datas['lastname']  = ucwords(strtolower($datas['lastname']));
-
-                    $datas['perms'] = new PlFlagSet($datas['perms']);
-                    $datas['group'] = $groups->addget($datas['gid']);unset($datas['gid']);
-                    $datas['birthdate'] = new FrankizDateTime($datas['birthdate']);
-
-                    $datas['original']  = empty($datas['original']) ? false : new FrankizImage($datas['original']);
-                    $datas['photo']     = empty($datas['photo']) ? false : new FrankizImage($datas['photo']);
-                }
-                $users[$datas['id']]->fillFromArray($datas);
-            }
-        }
-
-        // Load rooms
-        if ($bits & self::SELECT_ROOMS)
-        {
-            foreach ($users as $u)
-                $u->rooms = new Collection('Room');
-
-            $iter = XDB::iterRow('SELECT  uid AS id, rid
-                                    FROM  rooms_users
-                                   WHERE  uid IN {?}',
-                                    array_keys($users));
-
-            $rooms = new Collection('Room');
-            while (list($uid, $rid) = $iter->next()) {
-                $room = $rooms->addget($rid);
-                $users[$uid]->rooms->add($room);
-            }
-
-            if (isset($options[self::SELECT_ROOMS]))
-                $rooms->select($options[self::SELECT_ROOMS]);
-        }
-
-        // Load minimodules
-        if ($bits & self::SELECT_MINIMODULES)
-        {
-            foreach ($users as $u)
-                $u->minimodules = FrankizMiniModule::emptyLayout();
-
-            $iter = XDB::iterator('SELECT  uid AS id, name, col, row
-                                     FROM  users_minimodules
-                                    WHERE  uid IN {?}
-                                 ORDER BY  col, row', array_keys($users));
-
-            while ($am = $iter->next())
-                array_push($users[$am['id']]->minimodules[$am['col']], $am['name']);
-        }
-
-        // Load castes
-        if ($bits & self::SELECT_CASTES)
-        {
-            foreach ($users as $u)
-                $u->castes = new Collection('Caste');
-
-            $iter = XDB::iterRow('SELECT  cu.uid, cu.cid
-                                    FROM  castes_users AS cu
-                                   WHERE  cu.uid IN {?}', array_keys($users));
-
-            $castes = new Collection('Caste');
-            while (list($uid, $cid) = $iter->next()) {
-                $caste = $castes->addget($cid);
-                $users[$uid]->castes->add($caste);
-            }
-
-            if (isset($options[self::SELECT_CASTES]))
-                $castes->select($options[self::SELECT_CASTES]);
-        }
-
-        // Load Studies
-        if ($bits & self::SELECT_STUDIES)
-        {
-            foreach ($users as $u)
-                $u->studies = array();
-
-            $iter = XDB::iterator('SELECT  uid, formation_id, year_in, year_out, promo, forlife
-                                     FROM  studies
-                                    WHERE  uid IN {?}', array_keys($users));
-
-            $formations = new Collection('Formation');
-            while ($datas = $iter->next()) {
-                $formation_id = $datas['formation_id'];
-                $datas['formation'] = $formations->addget($formation_id); unset($datas['formation_id']);
-                $users[$datas['uid']]->studies[$formation_id] = new Study($datas);
-            }
-
-            if (isset($options[self::SELECT_STUDIES])) {
-                $formations->select($options[self::SELECT_STUDIES]);
-            }
-        }
-
-        // Load comments
-        if ($bits & self::SELECT_COMMENTS)
-        {
-            foreach ($users as $u)
-                $u->comments = array();
-
-            $iter = XDB::iterRow('SELECT  uid, gid, comment
-                                    FROM  users_comments
-                                   WHERE  uid IN {?}', array_keys($users));
-
-            while (list($uid, $gid, $comment) = $iter->next()) {
-                $users[$uid]->comments[$gid] = $comment;
-            }
-
-        }
-
     }
 }
 
