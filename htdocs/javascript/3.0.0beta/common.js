@@ -38,7 +38,7 @@ function request(fields)
     $.ajax({
           url: fields.url,
           dataType: 'json',
-          data: 'json=' + data,
+          data: 'token=' + xsrf_token + '&json=' + data,
           success: callback,
           error: function (xhr, textStatus, errorThrown) {
                          var json = $.parseJSON(xhr.responseText);

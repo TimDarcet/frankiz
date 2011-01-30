@@ -35,6 +35,7 @@
 
 <script type="text/javascript">
     var logged = {if $smarty.session.auth >= AUTH_COOKIE}true{else}false{/if};
+    var xsrf_token = "{$smarty.session.xsrf_token}";
 </script>
 
 {js src="jquery.js"}
