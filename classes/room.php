@@ -19,11 +19,78 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+class RoomSchema extends Schema
+{
+    public function className() {
+        return 'Room';
+    }
+
+    public function table() {
+        return 'rooms';
+    }
+
+    public function id() {
+        return 'rid';
+    }
+
+    public function tableAs() {
+        return 'r';
+    }
+
+    public function scalars() {
+        return array('phone', 'comment');
+    }
+
+    public function objects() {
+        return array('ips' => 'Array');
+    }
+}
+
+class RoomSelect extends Select
+{
+    public function className() {
+        return 'Room';
+    }
+
+    public static function base($subs = null) {
+        return new RoomSelect(array('phone', 'comment'), $subs);
+    }
+
+    public static function ips($subs = null) {
+        return new RoomSelect(array('ips'), $subs);
+    }
+
+    public static function all($subs = null) {
+        return new RoomSelect(array('phone', 'comment', 'ips'), $subs);
+    }
+
+    protected function handlers() {
+        return array('main' => array('phone', 'comment'),
+                      'ips' => array('ips'));
+    }
+
+    protected function handler_ips(Collection $rooms, $fields) {
+        $_rooms = array();
+        foreach($rooms as $room) {
+            $_rooms[$room->id()] = array();
+        }
+
+        $iter = XDB::iterRow("SELECT  ip, rid
+                                FROM  ips
+                               WHERE  rid IN {?}", $rooms->ids());
+
+        while (list($ip, $rid) = $iter->next()) {
+            $_rooms[$rid][] = $ip;
+        }
+
+        foreach ($rooms as $room) {
+            $room->fillFromArray(array('ips' => $_rooms[$room->id()]));
+        }
+    }
+}
+
 class Room extends Meta
 {
-    const SELECT_BASE      = 0x01;
-    const SELECT_IPS       = 0x02;
-
     protected $phone    = null;
     protected $comment  = null;
     protected $ips      = null;
@@ -32,61 +99,6 @@ class Room extends Meta
     {
         return !is_object($mixed) && ($mixed !== null) && ($mixed !== '')
                                   && (preg_match('/^[A-Z]*[0-9]*[a-z]*$/', $mixed));
-    }
-
-    public function phone()
-    {
-        return $this->phone;
-    }
-
-    public function comment()
-    {
-        return $this->comment;
-    }
-
-    public function ips()
-    {
-        return $this->ips;
-    }
-
-    /*******************************************************************************
-         Data fetcher
-             (batchFrom, batchSelect, fillFromArray, …)
-    *******************************************************************************/
-
-    public static function batchSelect(array $rooms, $options = null)
-    {
-        if (empty($rooms))
-            return;
-
-        if (empty($options)) {
-            $options = self::SELECT_BASE;
-        }
-
-        $bits = self::optionsToBits($options);
-        $rooms = array_combine(self::toIds($rooms), $rooms);
-
-        if ($bits & self::SELECT_BASE) {
-            $iter = XDB::iterator('SELECT  rid AS id, phone, comment
-                                     FROM  rooms
-                                    WHERE  rid IN {?}', self::toIds($rooms));
-
-            while ($datas = $iter->next()) {
-                $rooms[$datas['id']]->fillFromArray($datas);
-            }
-        }
-
-        if ($bits & self::SELECT_IPS) {
-            foreach($rooms as $room)
-                $room->ips = array();
-
-            $iter = XDB::iterRow("SELECT  ip, rid
-                                    FROM  ips
-                                   WHERE  rid IN {?}", self::toIds($rooms));
-
-            while (list($ip, $rid) = $iter->next())
-                $rooms[$rid]->ips[] = $ip;
-        }
     }
 }
 
