@@ -141,33 +141,6 @@ class Group extends Meta
         return $this->name();
     }
 
-    public function name($name = null)
-    {
-        if ($name != null) {
-            $this->name = $name;
-            XDB::execute('UPDATE groups SET name = {?} WHERE gid = {?}', $name, $this->id());
-        }
-        return $this->name;
-    }
-
-    public function ns($ns = null)
-    {
-        if ($ns !== null) {
-            $this->ns = $ns;
-            XDB::execute('UPDATE groups SET ns = {?} WHERE gid = {?}', $ns, $this->id());
-        }
-        return $this->ns;
-    }
-
-    public function label($label = null)
-    {
-        if ($label !== null) {
-            $this->label = $label;
-            XDB::execute('UPDATE groups SET label = {?} WHERE gid = {?}', $label, $this->id());
-        }
-        return $this->label;
-    }
-
     public function image(FrankizImage $image = null)
     {
         global $globals;
@@ -183,65 +156,6 @@ class Group extends Meta
         }
 
         return new StaticImage($globals->images->group);
-    }
-
-    public function score()
-    {
-        return $this->score;
-    }
-
-    public function external($external = null)
-    {
-        if ($external !== null) {
-            $this->external = $external;
-            XDB::execute('UPDATE groups SET external = {?} WHERE gid = {?}', $this->external, $this->id());
-        }
-        return $this->external;
-    }
-
-    public function leavable($leavable = null)
-    {
-        if ($leavable !== null) {
-            $this->leavable = $leavable;
-            XDB::execute('UPDATE groups SET leavable = {?} WHERE gid = {?}', $leavable, $this->id());
-        }
-        return $this->leavable;
-    }
-
-    public function visible($visible = null)
-    {
-        if ($visible !== null) {
-            $this->visible = $visible;
-            XDB::execute('UPDATE groups SET visible = {?} WHERE gid = {?}', $visible, $this->id());
-        }
-        return $this->visible;
-    }
-
-    public function description($description = null)
-    {
-        if ($description !== null) {
-            $this->description = $description;
-            XDB::execute('UPDATE groups SET description = {?} WHERE gid = {?}', $description, $this->id());
-        }
-        return $this->description;
-    }
-
-    public function web($web = null)
-    {
-        if ($web != null) {
-            $this->web = $web;
-            XDB::execute('UPDATE groups SET web = {?} WHERE gid = {?}', $web, $this->id());
-        }
-        return $this->web;
-    }
-
-    public function mail($mail = null)
-    {
-        if ($mail != null) {
-            $this->mail = $mail;
-            XDB::execute('UPDATE groups SET mail = {?} WHERE gid = {?}', $mail, $this->id());
-        }
-        return $this->mail;
     }
 
     public function caste(Rights $rights = null)

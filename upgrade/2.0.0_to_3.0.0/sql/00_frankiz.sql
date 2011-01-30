@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `activities` (
   `default_end` time DEFAULT NULL,
   `priv` tinyint(1) NOT NULL,
   PRIMARY KEY (`aid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `activities_instances` (
   `begin` datetime NOT NULL,
   `end` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -96,7 +96,7 @@ DROP TABLE IF EXISTS `brs_subs`;
 CREATE TABLE IF NOT EXISTS `brs_subs` (
   `uid` int(11) NOT NULL,
   `forum` tinytext NOT NULL COMMENT 'name of the forum subscribed'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -140,21 +140,7 @@ CREATE TABLE IF NOT EXISTS `laf` (
   `description` tinytext NOT NULL,
   `context` tinytext NOT NULL,
   PRIMARY KEY (`oid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `minimodules`
---
-
-DROP TABLE IF EXISTS `minimodules`;
-CREATE TABLE IF NOT EXISTS `minimodules` (
-  `name` varchar(100) NOT NULL,
-  `label` varchar(200) DEFAULT NULL,
-  `description` text NOT NULL,
-  PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -175,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `news` (
   `end` date NOT NULL,
   `comment` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=46 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -230,7 +216,7 @@ CREATE TABLE IF NOT EXISTS `prises` (
   `piece_id` varchar(7) NOT NULL DEFAULT '',
   `ip` varchar(15) NOT NULL DEFAULT '',
   `type` enum('principale','secondaire') NOT NULL DEFAULT 'secondaire'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -263,7 +249,7 @@ CREATE TABLE IF NOT EXISTS `qdj` (
   `count2` int(10) unsigned NOT NULL DEFAULT '0',
   `writer` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1952 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -277,7 +263,7 @@ CREATE TABLE IF NOT EXISTS `qdj_scores` (
   `total` decimal(8,2) NOT NULL,
   `bonus` decimal(8,2) NOT NULL,
   PRIMARY KEY (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -294,7 +280,7 @@ CREATE TABLE IF NOT EXISTS `qdj_votes` (
   `rule` int(11) NOT NULL,
   PRIMARY KEY (`vote_id`),
   UNIQUE KEY `qdj` (`qdj`,`uid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -311,7 +297,7 @@ CREATE TABLE IF NOT EXISTS `requests` (
   `data` text NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
 -- --------------------------------------------------------
 
@@ -326,7 +312,7 @@ CREATE TABLE IF NOT EXISTS `requests_answers` (
   `title` varchar(50) NOT NULL,
   `answer` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -340,7 +326,7 @@ CREATE TABLE IF NOT EXISTS `rooms` (
   `phone` varchar(4) CHARACTER SET utf8 NOT NULL,
   `comment` varchar(200) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`rid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -357,7 +343,7 @@ CREATE TABLE IF NOT EXISTS `rooms_essai` (
   `coord_left` int(11) NOT NULL,
   `coord_top` int(11) NOT NULL,
   PRIMARY KEY (`rid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -384,21 +370,6 @@ CREATE TABLE IF NOT EXISTS `rooms_users` (
   `uid` int(11) NOT NULL,
   UNIQUE KEY `uid` (`uid`,`rid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `skins`
---
-
-DROP TABLE IF EXISTS `skins`;
-CREATE TABLE IF NOT EXISTS `skins` (
-  `name` varchar(40) CHARACTER SET utf8 NOT NULL,
-  `label` varchar(100) CHARACTER SET utf8 NOT NULL,
-  `description` tinytext CHARACTER SET utf8 NOT NULL,
-  `date` date NOT NULL,
-  PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Stores informations about CSS versions';
 
 -- --------------------------------------------------------
 
@@ -430,7 +401,7 @@ CREATE TABLE IF NOT EXISTS `todo` (
   `checked` tinyint(4) NOT NULL,
   `tobedone` varchar(255) NOT NULL,
   PRIMARY KEY (`todo_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=198 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -483,11 +454,11 @@ CREATE TABLE IF NOT EXISTS `users_comments` (
 DROP TABLE IF EXISTS `users_minimodules`;
 CREATE TABLE IF NOT EXISTS `users_minimodules` (
   `uid` int(11) NOT NULL,
-  `name` varchar(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(150) CHARACTER SET utf8 NOT NULL,
   `col` enum('COL_LEFT','COL_MIDDLE','COL_RIGHT','COL_FLOAT') NOT NULL DEFAULT 'COL_FLOAT',
   `row` tinyint(4) NOT NULL,
   UNIQUE KEY `uid` (`uid`,`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -504,7 +475,7 @@ CREATE TABLE IF NOT EXISTS `validate` (
   `item` text NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -515,10 +486,10 @@ CREATE TABLE IF NOT EXISTS `validate` (
 DROP TABLE IF EXISTS `wiki`;
 CREATE TABLE IF NOT EXISTS `wiki` (
   `wid` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-  `comments` text COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `comments` text NOT NULL,
   PRIMARY KEY (`wid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -532,5 +503,5 @@ CREATE TABLE IF NOT EXISTS `wiki_version` (
   `version` int(11) NOT NULL,
   `wrote` datetime NOT NULL,
   `writer` int(11) NOT NULL,
-  `content` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `content` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

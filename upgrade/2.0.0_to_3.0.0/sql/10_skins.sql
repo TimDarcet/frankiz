@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS skins (
   `date` date NOT NULL,
   visibility tinyint(1) NOT NULL,
   PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Stores informations about CSS versions';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table 'skins'
