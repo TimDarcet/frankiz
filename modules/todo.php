@@ -19,7 +19,6 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-/* contains all global stuff (exit, register, ...) */
 class TodoModule extends PlModule
 {
     function handlers()
@@ -34,89 +33,77 @@ class TodoModule extends PlModule
 
     function handler_ajax_todo_add($page)
     {
-        $json = json_decode(Env::v('json'));
+        S::assert_xsrf_token();
 
-        if (isset($json->{'tobedone'}))
-        {
-            XDB::execute('INSERT INTO todo
-                                  SET uid = {?}, sent = NOW(), checked = 0, tobedone = {?}',
-                        S::user()->id(),
-                        $json->{'tobedone'});
-            
+        if (Json::has('tobedone')) {
+            XDB::execute('INSERT INTO  todo
+                                  SET  uid = {?}, sent = NOW(), checked = 0, tobedone = {?}',
+                                       S::user()->id(), Json::s('tobedone'));
+
             if (XDB::affectedRows() > 0) {
-                $page->jsonAssign('success', true);
                 $page->jsonAssign('todo_id', XDB::insertId());
             } else {
-                $page->jsonAssign('success', false);
                 $page->jsonAssign('error', "Impossible d'ajouter une nouvelle tâche");
             }
         } else {
-            $page->jsonAssign('success', false);
             $page->jsonAssign('error', "Requête invalide");
         }
+
+        return PL_JSON;
     }
 
     function handler_ajax_todo_check($page)
     {
-        $json = json_decode(Env::v('json'));
+        S::assert_xsrf_token();
 
-        if (isset($json->{'todo_id'}))
-        {
-            XDB::execute('UPDATE todo
-                             SET checked = 1
-                           WHERE uid = {?} AND todo_id = {?}',
-                        S::user()->id(),
-                        $json->{'todo_id'});
+        if (Json::has('todo_id')) {
+            XDB::execute('UPDATE  todo
+                             SET  checked = 1
+                           WHERE  uid = {?} AND todo_id = {?}',
+                                  S::user()->id(), Json::i('todo_id'));
 
-            if (XDB::affectedRows() > 0) {
-                $page->jsonAssign('success', true);
-            } else {
-                $page->jsonAssign('success', false);
+            if (XDB::affectedRows() != 1) {
                 $page->jsonAssign('error', "Impossible de cocher la tâche");
             }
         } else {
-            $page->jsonAssign('success', false);
             $page->jsonAssign('error', "Requête invalide");
         }
+
+        return PL_JSON;
     }
 
     function handler_ajax_todo_uncheck($page)
     {
-        $json = json_decode(Env::v('json'));
+        S::assert_xsrf_token();
 
-        if (isset($json->{'todo_id'}))
-        {
-            XDB::execute('UPDATE todo
-                             SET checked = 0
-                           WHERE uid = {?} AND todo_id = {?}',
-                        S::user()->id(),
-                        $json->{'todo_id'});
+        if (Json::has('todo_id')) {
+            XDB::execute('UPDATE  todo
+                             SET  checked = 0
+                           WHERE  uid = {?} AND todo_id = {?}',
+                                  S::user()->id(), Json::i('todo_id'));
 
-            if (XDB::affectedRows() > 0) {
-                $page->jsonAssign('success', true);
-            } else {
-                $page->jsonAssign('success', false);
+            if (XDB::affectedRows() != 1) {
                 $page->jsonAssign('error', "Impossible de décocher la tâche");
             }
         } else {
-            $page->jsonAssign('success', false);
             $page->jsonAssign('error', "Requête invalide");
         }
+
+        return PL_JSON;
     }
 
     function handler_ajax_todo_clear($page)
     {
-        XDB::execute('DELETE FROM todo
-                            WHERE uid = {?} AND checked = 1',
-                    S::user()->id());
+        S::assert_xsrf_token();
+        XDB::execute('DELETE FROM  todo
+                            WHERE  uid = {?} AND checked = 1',
+                                   S::user()->id());
 
-        if (XDB::affectedRows() > 0) {
-            $page->jsonAssign('success', true);
-        } else {
-            $page->jsonAssign('success', false);
+        if (XDB::affectedRows() != 1) {
             $page->jsonAssign('error', "Impossible de nettoyer la liste des tâches");
         }
 
+        return PL_JSON;
     }
 }
 
