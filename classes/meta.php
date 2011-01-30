@@ -48,34 +48,17 @@ abstract class Meta
 {
     protected $id = null;
 
-    public static function schema()
-    {
-        throw new Exception("The Schema for " . get_called_class() . " is missing");
-    }
-
-    protected function _schema($data = null)
-    {
-        if (!method_exists($this, 'schema')) {
-            throw new Exception("No automatic fields in the Object");
-        }
-
-        $schema = static::schema();
-        if ($data !== null) {
-            return $schema[$data];
-        }
-        return $schema;
-    }
-
     public function __call($method, $arguments)
     {
-        if (!in_array($method, $this->_schema('fields'))) {
-            throw new Exception("This object doesn't have $method as automatic field");
+        $schema = Schema::get(get_class($this));
+        if (!$schema->has($method)) {
+            throw new Exception("This object doesn't have '$method' as automatic field");
         }
 
         if (!empty($arguments)) {
-            $table = $this->_schema('table');
+            $table = $schema->table();
             $field = '`' . $method . '`';
-            $id    = $this->_schema('id');
+            $id    = $schema->id();
             XDB::execute("UPDATE  $table
                              SET  $field = {?}
                            WHERE  $id = {?}", $arguments[0], $this->id());
@@ -99,7 +82,7 @@ abstract class Meta
             if (static::isId($datas)) {
                 $this->id = $datas;
             } else {
-                throw new NotAnIdException("$datas is not a correct Id for " . get_class($this));
+                throw new NotAnIdException("$datas is not a correct Id for $className");
             }
         } else {
             $this->fillFromArray($datas);
@@ -131,7 +114,12 @@ abstract class Meta
 
     public function select($fields = null)
     {
-        static::batchSelect(array($this), $fields);
+        if ($fields instanceof Select) {
+            $c = new Collection();
+            $fields->select($c->add($this));
+        } else {
+            static::batchSelect(array($this), $fields);
+        }
         return $this;
     }
 
@@ -191,9 +179,9 @@ abstract class Meta
             $sql_columns[] = implode(', ', array_map(
                                 function($value) use($table) {
                                     if ($table == -1)
-                                        return $value;
+                                        return "`$value`";
                                     else
-                                        return $table . '.' . $value;
+                                        return "`$table`.`$value`";
                                 }, $vals));
 
         return implode(', ', $sql_columns);
@@ -235,7 +223,7 @@ abstract class Meta
     /**
     * Fetch datas from the database
     *
-    * @param $metas    An array containing the objects to fill
+    * @param $metas    The objects to be filled
     * @param $options  Options defining the datas to load
     */
     public static function batchSelect(array $metas, $options = null)
