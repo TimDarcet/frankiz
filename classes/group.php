@@ -19,13 +19,88 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+class GroupSchema extends Schema
+{
+    public function className() {
+        return 'Group';
+    }
+
+    public function table() {
+        return 'groups';
+    }
+
+    public function id() {
+        return 'gid';
+    }
+
+    public function tableAs() {
+        return 'g';
+    }
+
+    public function scalars() {
+        return array('desription', 'external', 'label', 'leavable',
+                     'mail', 'name', 'ns', 'score', 'visible', 'web');
+    }
+
+    public function objects() {
+        return array('image' => 'FrankizImage');
+    }
+
+    public function collections() {
+        return array('castes' => 'Caste');
+    }
+}
+
+class GroupSelect extends Select
+{
+    public function className() {
+        return 'Group';
+    }
+
+    public static function base($subs = null) {
+        return new GroupSelect(array('ns', 'score', 'name', 'label'), $subs);
+    }
+
+    public static function users($subs = null) {
+        return new GroupSelect(array('users'), $subs);
+    }
+
+    protected function handlers() {
+        return array('main' => Schema::group()->scalars(),
+                   'castes' => array('castes'));
+    }
+
+    protected function handler_castes(Collection $groups, $fields) {
+        $_groups = array();
+        foreach ($groups as $g) {
+            $_groups[$g->id()] = new Collection('Caste');
+        }
+
+        $iter = XDB::iterRow('SELECT  cid, `group`, rights
+                                FROM  castes
+                               WHERE  gid IN {?}', $groups->ids());
+
+        $castes = new Collection('Caste');
+        while (list($cid, $group, $rights) = $iter->next()) {
+            $caste = new Caste(array('id' => $cid, 'group' => $groups[$group], 'rights' => new Rights($rights)));
+
+            $castes->add($caste);
+            $_groups[$gid]->add($caste);
+        }
+
+
+        foreach ($groups as $g) {
+            $g->fillFromArray(array('castes' => $_groups[$g->id()]));
+        }
+
+        if (!empty($castes) && !empty($this->subs['castes'])) {
+            $castes->select($this->subs['castes']);
+        }
+    }
+}
+
 class Group extends Meta
 {
-    const SELECT_BASE        = 0x01;
-    const SELECT_CASTES      = 0x02;
-    const SELECT_DESCRIPTION = 0x04;
-    const SELECT_COMMENTS    = 0x08;
-
     const NS_USER        = 'user';         // User groups
     const NS_FREE        = 'free';         // Non-Validated group
     const NS_BINET       = 'binet';        // Validated group
@@ -269,66 +344,6 @@ class Group extends Meta
         }
 
         return $collec;
-    }
-
-    public static function batchSelect(array $groups, $options = null)
-    {
-        if (empty($groups))
-            return;
-
-        if (empty($options)) {
-            $options = array(self::SELECT_BASE => null);
-            $options[self::SELECT_CASTES] = Caste::SELECT_BASE;
-        }
-
-        $bits = self::optionsToBits($options);
-        $groups = array_combine(self::toIds($groups), $groups);
-
-        $joins = array();
-        $cols = array('g' => array());
-        if ($bits & self::SELECT_BASE)
-            $cols['g'] = array_merge($cols['g'], array('ns', 'name', 'label', 'score', 'image',
-                                                       'leavable', 'visible', 'external'));
-        if ($bits & self::SELECT_DESCRIPTION)
-            $cols['g'] = array_merge($cols['g'], array('description', 'web', 'mail'));
-
-        if (!empty($cols['g'])) {
-            $iter = XDB::iterator('SELECT  g.gid AS id, ' . self::arrayToSqlCols($cols) . '
-                                     FROM  groups AS g
-                                     ' . PlSqlJoin::formatJoins($joins, array()) . '
-                                    WHERE  g.gid IN {?}
-                                 GROUP BY  g.gid', self::toIds($groups));
-
-            while ($datas = $iter->next()) {
-                if ($bits & self::SELECT_BASE) {
-                    $datas['name']  = ($datas['name'] === null) ? false : $datas['name'];
-                    $datas['image'] = empty($datas['image']) ? false : new FrankizImage($datas['image']);
-                }
-
-                $groups[$datas['id']]->fillFromArray($datas);
-            }
-        }
-
-        if ($bits & self::SELECT_CASTES)
-        {
-            foreach($groups as $group)
-                $group->castes = new Collection('Caste');
-
-            $iter = XDB::iterRow("SELECT  cid, gid, rights
-                                    FROM  castes
-                                   WHERE  gid IN {?}", self::toIds($groups));
-
-            $castes = new Collection('Caste');
-            while (list($cid, $gid, $rights) = $iter->next()) {
-                $caste = new Caste(array('id' => $cid, 'group' => $groups[$gid], 'rights' => new Rights($rights)));
-
-                $castes->add($caste);
-                $groups[$gid]->castes->add($caste);
-            }
-
-            if (!empty($options[self::SELECT_CASTES]))
-                $castes->select($options[self::SELECT_CASTES]);
-        }
     }
 }
 
