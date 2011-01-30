@@ -144,8 +144,12 @@ class Collection extends PlAbstractIterable implements Countable
         if ($this->count() == 0)
             return $this;
 
-        $className = $this->className;
-        $className::batchSelect($this->collected, $options);
+        if ($options instanceof Select) {
+            $options->select($this);
+        } else {
+            $className = $this->className;
+            $className::batchSelect($this->collected, $options);
+        }
         return $this;
     }
 
