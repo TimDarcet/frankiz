@@ -64,7 +64,7 @@ class ProfileModule extends PLModule
 
     public function handler_account($page)
     {
-        S::user()->select(User::SELECT_BASE | User::SELECT_ROOMS);
+        S::user()->select(UserSelect::login());
         if (Env::has('new_passwd'))
         {
             if (Env::v('new_passwd1') != Env::v('new_passwd2'))
@@ -427,9 +427,8 @@ class ProfileModule extends PLModule
 
     function handler_network($page)
     {
-        S::user()->select(User::SELECT_ROOMS);
         $rooms = S::user()->rooms();
-        $rooms->select(Room::SELECT_IPS);
+        $rooms->select(RoomSelect::ips());
         $page->assign('rooms', $rooms);
 
         $page->assign('title', "Mes données réseau");

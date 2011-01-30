@@ -87,8 +87,8 @@ class ImagesModule extends PlModule
     function handler_image($page, $size, $iid = null)
     {
         $image = new FrankizImage($iid);
-        $image->select(array(FrankizImage::SELECT_BASE => Caste::SELECT_BASE));
-        $image->caste()->group()->select(Group::SELECT_BASE);
+        $image->select(array(FrankizImage::SELECT_BASE => CasteSelect::base()));
+        $image->caste()->group()->select(GroupSelect::base());
 
         if (S::i('auth') == AUTH_PUBLIC && !$image->caste()->external()) {
                 // TODO: show an 'invalid credential' picture instead
