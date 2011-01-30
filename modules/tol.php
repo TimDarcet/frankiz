@@ -116,14 +116,6 @@ class TolModule extends PLModule
             return false;
     }
 
-    function toSelect()
-    {
-        return array(User::SELECT_BASE => null, User::SELECT_ROOMS => Room::SELECT_BASE | Room::SELECT_IPS,
-                     User::SELECT_POLY => null, User::SELECT_COMMENTS => null,
-                     User::SELECT_STUDIES => Formation::SELECT_BASE,
-                     User::SELECT_CASTES => array(Caste::SELECT_BASE => Group::SELECT_BASE));
-    }
-
     function handler_tol($page)
     {
         $fields = $this->fillFields();
@@ -131,7 +123,7 @@ class TolModule extends PLModule
 
         if ($filter) {
             $uf = new UserFilter($filter);
-            $users = $uf->get(new PlLimit(50,0))->select($this->toSelect());
+            $users = $uf->get(new PlLimit(50,0))->select(UserSelect::tol());
             $page->assign('results', $users);
             $page->assign('mode', 'sheet');
             $page->assign('total', $uf->getTotalCount());
@@ -154,10 +146,11 @@ class TolModule extends PLModule
         $fiches = array();
         if ($filter) {
             $uf = new UserFilter($filter);
-            if ($json->mode == 'card')
-                $users = $uf->get(new PlLimit(20,0))->select(User::SELECT_BASE);
-            else
-                $users = $uf->get(new PlLimit(50,0))->select($this->toSelect());
+            if ($json->mode == 'card') {
+                $users = $uf->get(new PlLimit(20,0))->select(UserSelect::base());
+            } else {
+                $users = $uf->get(new PlLimit(50,0))->select(UserSelect::tol());
+            }
 
             $page->jsonAssign('total', $uf->getTotalCount());
             foreach($users as $k => $user) {
@@ -185,7 +178,7 @@ class TolModule extends PLModule
         $page->assign('result', $u);
 
         if ($u) {
-            $u->select($this->toSelect());
+            $u->select(UserSelect::tol());
         }
 
         $page->assign('result', $u);
