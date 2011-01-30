@@ -35,7 +35,7 @@ class BirthdayMiniModule extends FrankizMiniModule
     {
         $uf = new UserFilter(new PFC_And(new UFC_Birthday('=', new FrankizDateTime()),
                                             new UFC_Group(Group::from('on_platal'), Rights::member())));
-        $us = $uf->get()->select(User::SELECT_BASE);
+        $us = $uf->get()->select(UserSelect::base());
 
         $this->assign('users', $us);
     }

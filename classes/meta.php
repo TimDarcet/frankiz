@@ -182,10 +182,11 @@ abstract class Meta
         foreach($cols as $table => $vals)
             $sql_columns[] = implode(', ', array_map(
                                 function($value) use($table) {
-                                    if ($table == -1)
-                                        return "`$value`";
-                                    else
+                                    if ($table == -1) {
+                                        return $value;
+                                    } else {
                                         return "`$table`.`$value`";
+                                    }
                                 }, $vals));
 
         return implode(', ', $sql_columns);

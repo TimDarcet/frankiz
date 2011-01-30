@@ -57,7 +57,7 @@ class GroupsModule extends PLModule
         // Load associated datas
         $temp = new Collection('Group');
         $temp->merge($binet)->merge($study)->merge($free);
-        $temp->select(Group::SELECT_BASE);
+        $temp->select(GroupSelect::base());
 
         // Fetch the total count of groups
         $allf = new GroupFilter(new GFC_Visible());
@@ -100,7 +100,7 @@ class GroupsModule extends PLModule
         $own = $own->get(new PlLimit(5));
         $all = $all->get(new PlLimit(5));
 
-        $all->merge($own)->select(Group::SELECT_BASE);
+        $all->merge($own)->select(GroupSelect::base());
         $all->order($json->order);
 
         $page->jsonAssign('success', true);
@@ -119,19 +119,18 @@ class GroupsModule extends PLModule
 
         if ($group) {
             // Fetch the group
-            $group->select(Group::SELECT_BASE);
+            $group->select(GroupSelect::base());
             $page->assign('group', $group);
 
             if (S::i('auth') > AUTH_PUBLIC || $group->external()) {
-                $group->select(array(Group::SELECT_DESCRIPTION => null,
-                                     Group::SELECT_CASTES => Caste::SELECT_BASE));
+                $group->select(GroupSelect::see());
 
                 // Current promos ?
                 foreach (json_decode($globals->core->promos) as $promo) {
                     $groupes_names[] = 'promo_' . $promo;
                 }
                 $promos = new Collection('Group');
-                $promos->add($groupes_names)->select(Group::SELECT_BASE);
+                $promos->add($groupes_names)->select(GroupSelect::base());
                 $page->assign('promos', $promos);
 
                 // Fetch the news
@@ -163,7 +162,7 @@ class GroupsModule extends PLModule
         $users = false;
         if ($group) {
             $users = array('admin' => array(), 'member' => array());
-            $group->select(Group::SELECT_CASTES);
+            $group->select(GroupSelect::castes());
 
             $filters = new PFC_True();
             if (count($json->promo) > 0) {
@@ -171,13 +170,13 @@ class GroupsModule extends PLModule
             }
 
             $uf = new UserFilter(new PFC_And(new UFC_Caste($group->caste(Rights::admin())), $filters));
-            $admins = $uf->get()->select(User::SELECT_BASE);
+            $admins = $uf->get()->select(UserSelect::base());
             foreach ($admins as $user) {
                 $users['admin'][$user->id()] = $user->export(User::EXPORT_MICRO | User::EXPORT_SMALL);
             }
 
             $uf = new UserFilter(new PFC_And(new UFC_Caste($group->caste(Rights::member())), $filters));
-            $members = $uf->get()->select(User::SELECT_BASE);
+            $members = $uf->get()->select(UserSelect::base());
             foreach ($members as $user) {
                 $page->assign('user', $user);
                 $users['member'][$user->id()] = $user->export(User::EXPORT_MICRO | User::EXPORT_SMALL);
@@ -194,12 +193,9 @@ class GroupsModule extends PLModule
         $gf = new GroupFilter($filter);
         $group = $gf->get(true);
 
-        if ($group)
+        if ($group && S::user()->hasRights($group, Rights::admin()))
         {
-            $group->select(Group::SELECT_BASE | Group::SELECT_DESCRIPTION);
-            $group->select(array(Group::SELECT_CASTES =>
-                                 array(Caste::SELECT_BASE => null,
-                                       Caste::SELECT_USERS => User::SELECT_BASE)));
+            $group->select(GroupSelect::see());
             $page->assign('group', $group);
 
             $page->assign('title', 'Administration de "' . $group->label() . '"');
@@ -207,7 +203,8 @@ class GroupsModule extends PLModule
         }
         else
         {
-            $page->assign('title', "Ce groupe n'existe pas");
+            //TODO
+            $page->assign('title', "Ce groupe n'existe pas ou vous n'en êtes pas administrateur");
             $page->changeTpl('groups/no_group.tpl');
         }
     }
@@ -220,7 +217,7 @@ class GroupsModule extends PLModule
 
         if ($group)
         {
-            $group->select();
+            $group->select(GroupSelect::castes());
 
             if ($group->priv())
                 $group->caste(Rights::friend())->addUser(S::user());
@@ -246,7 +243,7 @@ class GroupsModule extends PLModule
 
         if ($group)
         {
-            $group->select();
+            $group->select(GroupSelect::castes());
 
             // TODO: check the person doesn't leave the group if he is the only admin !
             if ($group->leavable())

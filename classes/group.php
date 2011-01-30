@@ -38,7 +38,7 @@ class GroupSchema extends Schema
     }
 
     public function scalars() {
-        return array('desription', 'external', 'label', 'leavable',
+        return array('description', 'external', 'label', 'leavable',
                      'mail', 'name', 'ns', 'score', 'visible', 'web');
     }
 
@@ -61,8 +61,13 @@ class GroupSelect extends Select
         return new GroupSelect(array('ns', 'score', 'name', 'label'), $subs);
     }
 
-    public static function users($subs = null) {
-        return new GroupSelect(array('users'), $subs);
+    public static function castes($subs = null) {
+        return new GroupSelect(array('castes'), $subs);
+    }
+
+    public static function see() {
+        return new GroupSelect(array('ns', 'score', 'name', 'label', 'description', 'castes'),
+                               array('castes' => CasteSelect::base()));
     }
 
     protected function handlers() {
@@ -78,14 +83,16 @@ class GroupSelect extends Select
 
         $iter = XDB::iterRow('SELECT  cid, `group`, rights
                                 FROM  castes
-                               WHERE  gid IN {?}', $groups->ids());
+                               WHERE  `group` IN {?}', $groups->ids());
 
         $castes = new Collection('Caste');
         while (list($cid, $group, $rights) = $iter->next()) {
-            $caste = new Caste(array('id' => $cid, 'group' => $groups[$group], 'rights' => new Rights($rights)));
+            $caste = new Caste(array('id' => $cid,
+                                  'group' => $groups->get($group),
+                                 'rights' => new Rights($rights)));
 
             $castes->add($caste);
-            $_groups[$gid]->add($caste);
+            $_groups[$group]->add($caste);
         }
 
 

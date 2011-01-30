@@ -28,6 +28,12 @@ function __autoload($cls)
     if (!pl_autoload($cls)) {
         $cls = strtolower($cls);
 
+        // handler the *Select
+        if (substr($cls, -6) == 'select') {
+            pl_autoload(substr($cls, 0, -6));
+            return;
+        }
+
         // Handle PlFilter
         if (substr($cls, 0, 8) == 'plfilter' || substr($cls, 0, 4) == 'pfc_' || substr($cls, 0, 4) == 'pfo_') {
             pl_autoload('plfilter');
