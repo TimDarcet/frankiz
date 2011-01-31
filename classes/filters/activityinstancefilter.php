@@ -60,22 +60,22 @@ class AIFC_Origin extends ActivityInstanceFilterCondition
     }
 }
 
-/** Filters instances based on the target group of the activity
- * @param $gs A Group, a Gid or an array of it
+/** Filters instances based on the target caste of the activity
+ * @param $gs A Caste, a cid or an array of it
  */
 class AIFC_Target extends ActivityInstanceFilterCondition
 {
-    private $gids;
+    private $cids;
 
-    public function __construct($gs)
+    public function __construct($cs)
     {
-        $this->gids = Group::toIds(unflatten($gs));
+        $this->cids = Caste::toIds(unflatten($cs));
     }
 
     public function buildCondition(PlFilter $f)
     {
         $sub = $f->addActivityFilter();
-        return XDB::format("$sub.target IN {?}", $this->gids);
+        return XDB::format("$sub.target IN {?}", $this->cids);
     }
 }
 
@@ -293,7 +293,7 @@ class ActivityInstanceFilter extends FrankizFilter
     {
         $joins = array();
         if ($this->with_caste) {
-            $joins['c'] = PlSqlJoin::left('castes', '$ME.gid = a.target');
+            $joins['c'] = PlSqlJoin::left('castes', '$ME.`group` = a.target');
         }
         return $joins;
     }

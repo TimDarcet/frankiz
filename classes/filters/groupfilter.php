@@ -184,7 +184,7 @@ class GroupFilter extends FrankizFilter
     {
         $joins = array();
         if ($this->with_caste)
-            $joins['c']  = PlSqlJoin::left('castes', '$ME.gid = g.gid');
+            $joins['c']  = PlSqlJoin::left('castes', '$ME.`group` = g.gid');
 
         return $joins;
     }

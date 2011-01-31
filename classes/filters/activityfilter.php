@@ -41,21 +41,21 @@ class AFC_Origin extends ActivityFilterCondition
     }
 }
 
-/** Filters activities based on their target group
- * @param $gs A Group, a Gid or an array of it
+/** Filters activities based on their target caste
+ * @param $gs A Caste, a Cid or an array of it
  */
 class AFC_Target extends ActivityFilterCondition
 {
-    private $gids;
+    private $cids;
 
-    public function __construct($gs)
+    public function __construct($cs)
     {
-        $this->gids = Group::toIds(unflatten($gs));
+        $this->cids = Caste::toIds(unflatten($cs));
     }
 
     public function buildCondition(PlFilter $f)
     {
-        return XDB::format('a.target IN {?}', $this->gids);
+        return XDB::format('a.target IN {?}', $this->cids);
     }
 }
 
