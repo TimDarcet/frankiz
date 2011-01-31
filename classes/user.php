@@ -78,7 +78,6 @@ class UserSelect extends Select
                  'comments' => array('comments'));
     }
 
-    // Override default handler_main because fields in the DBhave different names with the class properties
     protected function handler_main(Collection $users, array $fields) {
         $joins = array();
         $cols  = array();
@@ -175,6 +174,10 @@ class UserSelect extends Select
 
     public static function base() {
         return new UserSelect(self::$natives);
+    }
+
+    public static function minimodules() {
+        return new UserSelect(array('minimodules'));
     }
 
     public static function login() {
@@ -576,10 +579,11 @@ class User extends Meta
                            VALUES  '.implode(', ', $sql).'
           ON DUPLICATE KEY UPDATE  col = VALUES(col), row = VALUES(row)');
 
-        if (!(XDB::affectedRows() > 0))
+        if (!(XDB::affectedRows() > 0)) {
             return false;
+        }
 
-        $this->select(self::SELECT_MINIMODULES);
+        $this->select(UserSelect::minimodules());
         return true;
     }
 
