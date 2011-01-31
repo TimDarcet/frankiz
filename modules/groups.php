@@ -84,11 +84,9 @@ class GroupsModule extends PLModule
 
     function handler_ajax_search($page)
     {
-        $json = json_decode(Env::v('json'));
-
-        $conditions = new PFC_And(new GFC_Namespace($json->ns),
-                                  new PFC_OR(new GFC_Label($json->token, GFC_Label::CONTAINS),
-                                             new GFC_Name($json->token)));
+        $conditions = new PFC_And(new GFC_Namespace(Json::s('ns')),
+                                  new PFC_OR(new GFC_Label(Json::s('token'), GFC_Label::CONTAINS),
+                                             new GFC_Name(Json::s('token'))));
 
         if ($json->order == 'name') {
             $order = new GFO_Name(true);
@@ -152,8 +150,7 @@ class GroupsModule extends PLModule
 
     function handler_group_ajax_users($page)
     {
-        $json = json_decode(Env::v('json'));
-        $group = $json->gid;
+        $group = Json::i('gid');
 
         $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
         $gf = new GroupFilter($filter);
@@ -165,8 +162,8 @@ class GroupsModule extends PLModule
             $group->select(GroupSelect::castes());
 
             $filters = new PFC_True();
-            if (count($json->promo) > 0) {
-                $filters = new UFC_Group(explode(';', $json->promo));
+            if (count(Json::v('promo')) > 0) {
+                $filters = new UFC_Group(explode(';', Json::v('promo')));
             }
 
             $uf = new UserFilter(new PFC_And(new UFC_Caste($group->caste(Rights::admin())), $filters));
