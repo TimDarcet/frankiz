@@ -20,69 +20,59 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="minimodule" id="tol_searcher">
-    <div class="head">
-        Rechercher sur le trombino
-    </div>
-    <div class="body">
-        <form class="trombino" enctype="multipart/form-data" method="post" action="tol/">
+<div id="tol_searcher">
+    <form class="trombino" enctype="multipart/form-data" method="post" action="tol/">
         <input type="hidden" name="mode" value="card" />
-        <fieldset id="tol_infos" class="loading">
+
+        <div class="fields loading" id="tol_infos">
             <span class="empty">Pas de résultats</span>
             <span class="notempty" {if isset($total|smarty:nodefaults)}style="display: inline"{/if}><span class="count">{if isset($results|smarty:nodefaults)}{$results|@count}{/if}</span> / <span class="total">{if isset($total|smarty:nodefaults)}{$total}{/if}</span></span>
-        </fieldset>
-        <fieldset id="tol_names">
-        <ul>
-            <li><label>Prénom<input auto="auto" type="text" name="firstname" value="{$fields.firstname}" /></label></li>
-            <li><label>Nom<input auto="auto" type="text" name="lastname" value="{$fields.lastname}" /></label></li>
-            <li><label>Surnom<input auto="auto" type="text" name="nickname" value="{$fields.nickname}" /></label></li>
-            <li><label>Nationalités{include file="groups_picker.tpl"|rel id="nationalities" ns="nationality" check=-1}</label></li>
-        </ul>
-        </fieldset>
-        <fieldset id="tol_promo">
-        <ul>
-            <li><label>Promo{include file="groups_picker.tpl"|rel id="promo" ns="promo" check=-1}</label></li>
-        </ul>
-        </fieldset>
-        <fieldset id="tol_studies">
-        <ul>
-            <li><label>Études{include file="groups_picker.tpl"|rel id="studies" ns="study" check=-1}</label></li>
-        </ul>
-        </fieldset>
-        <fieldset id="tol_sports">
-        <ul>
-            <li><label>Sports{include file="groups_picker.tpl"|rel id="sports" ns="sport" check=-1}</label></li>
-        </ul>
-        </fieldset>
-        <fieldset id="tol_binets">
-        <ul>
-            <li><label>Binet{include file="groups_picker.tpl"|rel id="binets" ns="binet" check=-1}</label></li>
-        </ul>
-        </fieldset>
-        <fieldset id="tol_groups">
-        <ul>
-            <li><label>Groupes{include file="groups_picker.tpl"|rel id="frees" ns="free" check=-1}</label></li>
-        </ul>
-        </fieldset>
-        <fieldset id="tol_rooms">
-        <ul>
-            <li><label>Casert<input auto="auto" type="text" name="room" value="" /></label></li>
-            <li><label>Tel<input auto="auto" type="text" name="phone" value="" /></label></li>
-            <li><label>IP<input auto="auto" type="text" name="ip" value="" /></label></li>
-        </ul>
-        </fieldset>
+        </div>
+
+        <div class="fields" id="tol_names">
+            <ul>
+                <li><label>Prénom<input auto="auto" type="text" name="firstname" value="{$fields.firstname}" /></label></li>
+                <li><label>Nom<input auto="auto" type="text" name="lastname" value="{$fields.lastname}" /></label></li>
+                <li><label>Surnom<input auto="auto" type="text" name="nickname" value="{$fields.nickname}" /></label></li>
+                <li><label>Nationalités{include file="groups_picker.tpl"|rel id="nationalities" ns="nationality" check=-1}</label></li>
+            </ul>
+        </div>
+
+        <div class="fields" id="tol_promo">
+            <ul>
+                <li><label>Promo{include file="groups_picker.tpl"|rel id="promo" ns="promo" order="name" check=-1}</label></li>
+                <li><label>Études{include file="groups_picker.tpl"|rel id="studies" ns="study" check=-1}</label></li>
+                <li><label>Sports{include file="groups_picker.tpl"|rel id="sports" ns="sport" check=-1}</label></li>
+            </ul>
+        </div>
+
+        <div class="fields" id="tol_binets">
+            <ul>
+                <li><label>Binet{include file="groups_picker.tpl"|rel id="binets" ns="binet" check=-1}</label></li>
+                <li><label>Groupes{include file="groups_picker.tpl"|rel id="frees" ns="free" check=-1}</label></li>
+            </ul>
+        </div>
+
+        <div class="fields" id="tol_rooms">
+            <ul>
+                <li><label>Casert<input auto="auto" type="text" name="room" value="" /></label></li>
+                <li><label>Tel<input auto="auto" type="text" name="phone" value="" /></label></li>
+                <li><label>IP<input auto="auto" type="text" name="ip" value="" /></label></li>
+            </ul>
+        </div>
+
         {if !$user->isFemale()}
-        <fieldset id="tol_gender">
-        <ul>
-            <li><label>Fifilles<input auto="auto" type="checkbox" name="gender" value="woman"/></label></li>
-        </ul>
-        </fieldset>
+        <div class="fields"  id="tol_gender">
+            <ul>
+                <li><label>Fifilles<input auto="auto" type="checkbox" name="gender" value="woman"/></label></li>
+            </ul>
+        </div>
         {/if}
-        <fieldset id="tol_send">
+
+        <div class="fields" id="tol_send">
             <input type="submit" name="chercher" value="Chercher" />
-        </fieldset>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

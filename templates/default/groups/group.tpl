@@ -25,7 +25,7 @@
 {if $smarty.session.auth >= AUTH_COOKIE}
     TODO
         <a href="groups/unsubscribe/{$group->id()}">Quitter le groupe</a>
-        <a href="groups/subscribe/{$group->id()}">Devenir {if !$group->priv()}membre{else}sympathisant{/if}</a>
+        <a href="groups/subscribe/{$group->id()}">Devenir sympathisant</a>
 {/if}
 </div>
 

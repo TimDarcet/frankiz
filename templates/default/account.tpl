@@ -20,31 +20,11 @@
 {*                                                                        *}
 {**************************************************************************}
 
-
-{if $smarty.session.auth < AUTH_COOKIE}
-    <p class="where">
-    {if $smarty.session.auth >= AUTH_INTERNAL}
-            Vous consultez Frankiz depuis l'intérieur du campus, vous avez ainsi accès à certaines fonctionnalités du site.<br />
-            Pour avoir accès à l'ensemble du contenu: 
-    {else}
-            L'accès à ce site est restreint.<br />
-            Cliquez ici pour vous identifier: 
-    {/if}
-    </p>
-    <p class="connect">
-        <a {path_to_href_attribute path="login"} accesskey="l">Se connecter</a>
-    </p>
-{/if}
-
 {if $smarty.session.auth >= AUTH_COOKIE}
-    <img src="{$smarty.session.user->image()|image:'small'|smarty:nodefaults}" class="face" />
-    <div>
-        <p class="name">{$smarty.session.user->displayName()}</p>
-        <ul>
-            <li><a {path_to_href_attribute path="profile"} accesskey="c">Compte</a></li>
-            <li><a {path_to_href_attribute path="exit"} accesskey="l">Se déconnecter</a></li>
-        </ul>
-    </div>
+    <a {path_to_href_attribute path="profile"} accesskey="c">
+    <img src="{$smarty.session.user->image()|image:'small'|smarty:nodefaults}"
+         title="{$smarty.session.user->displayName()}" class="face" />
+    </a>
 {/if}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

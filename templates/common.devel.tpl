@@ -23,7 +23,7 @@
 {if $globals->debug > 0}
 <div id="debug">
     <span id="debug_hook">
-        @HOOK@ - <a href="debug/">$_SESSION</a>
+        @HOOK@ - <a href="debug/">$_SESSION</a> - <a onclick="$('#debug').hide()">Cacher</a>
     </span>
 
     @@BACKTRACE@@

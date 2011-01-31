@@ -32,6 +32,10 @@
         {include file="universe.tpl"}
 
         <div id="header">
+            <div id="logo">
+                <a href="home/"> </a>
+            </div>
+
             <div id="account">
                 {include file="account.tpl"|rel}
             </div>
@@ -41,7 +45,7 @@
             </div>
         </div>
 
-        <div id="section">
+        <div id="content">
             {include file="section.tpl"|rel}
         </div>
 

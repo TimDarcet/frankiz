@@ -20,30 +20,37 @@
 {*                                                                        *}
 {**************************************************************************}
 
-ADmin
-
-{$group->id()}
-{$group->name()}
 {$group->label()}
-{$group->description()}
 
-<ul>
-{foreach from=$group->caste() item='caste'}
-    <li>
-    {$caste->id()}
-    {$caste->rights()}
-    <ul>
-    {foreach from=$caste->users() item='user'}
-        <li>
-        {$user->id()}
-        {$user->login()}
-        {$user->displayName()}
-        </li>
-    {/foreach}
-    </ul>
-    </li>
-{/foreach}
-</ul>
+<div id="display">
+    {$group->description()|miniwiki:'title'|smarty:nodefaults}
+</div>
+<textarea id="textarea">
+    {$group->description()}
+</textarea>
 
+<script>
+    wiki_preview.start($("#textarea"), $("#display"));
+</script>
+
+<table>
+    <tr>
+        <td class="users">
+            {include file="users_picker.tpl"|rel id="users_picker" group=$group filters='["promo"]'}
+        </td>
+        <td>
+            <select name="caste" onchange="">
+            {foreach from=$group->caste() item='caste'}
+                <option value="{$caste->id()}">{$caste->rights()}</option>
+            {/foreach}
+            </select>
+            <div id="caste_users">
+
+            </div>
+        </td>
+    </tr>
+</table>
+
+{js src="groups.js"}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

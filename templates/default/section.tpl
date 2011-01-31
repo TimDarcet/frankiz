@@ -20,15 +20,10 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="header">
-    {$title}
-</div>
-<div id="content">
-    {if (isset($pl_no_errors|smarty:nodefaults) && !$pl_no_errors) || $pl_failure || $pl_errors}
-        {include file="common.errors.tpl"}
-    {/if}
+{if (isset($pl_no_errors|smarty:nodefaults) && !$pl_no_errors) || $pl_failure || $pl_errors}
+    {include file="common.errors.tpl"}
+{/if}
 
-    {include file=$pl_tpl}
-</div>
-        
+{include file=$pl_tpl}
+
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

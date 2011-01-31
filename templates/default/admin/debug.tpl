@@ -22,21 +22,31 @@
 
 {literal}
 <style type="text/css">
+    #content ul {
+        padding:-top: 0;
+    }
+
     #collapse_debug ul ul {
         display: none;
     }
 </style>
 {/literal}
 
-<h3>Session</h3>
-<ul>
-{foreach from=$session key='k' item='s'}
-    <li>
-        <span onclick="$(this).siblings('div').toggle();">{$k}</span>
-        <div style="display:none" id="collapse_debug">{$s|smarty:nodefaults}</div>
-    </li>
-{/foreach}
-</ul>
+<div class="module">
+    <div class="head">
+        Session
+    </div>
+    <div class="body">
+        <ul>
+        {foreach from=$session key='k' item='s'}
+            <li>
+                <span onclick="$(this).siblings('div').toggle();">{$k}</span>
+                <div style="display:none" id="collapse_debug">{$s|smarty:nodefaults}</div>
+            </li>
+        {/foreach}
+        </ul>
+    </div>
+</div>
 
 {literal}
 <script>

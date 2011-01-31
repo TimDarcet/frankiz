@@ -30,6 +30,10 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, Verdana, Helvetica, sans-serif;
+    background-image: url("../default/images/bkg.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment:fixed;
 }
 
 .warning {
@@ -86,6 +90,7 @@ a {
     width: 10px;
     height: 10px;
     border: 1px black solid;
+    display: inline-block;
 
     &.super {
         background-color: black;
@@ -128,9 +133,6 @@ a {
     top: 15px;
     left: 0;
     height: 200px;
-    background-image: url("../default/images/header.jpg");
-    background-repeat: no-repeat;
-    background-position: center;
 }
 
 /*******************************************************************************
@@ -140,63 +142,16 @@ a {
 
 #account {
     position: absolute;
-    left: 0;
-    bottom: -36px;
-    padding-left: 5px;
-    height: 120px;
-    width: 300px;
-    overflow: visible;
-    background-color: @background;
+    right: 5px;
+    top: 10px;
+    width: 220px;
+    height: 220px;
     z-index: 10;
-
-    p {
-        margin: 0;
-        padding: 0;
-    }
-
-    .connect {
-        margin-top: 4px;
-        font-size: 25px;
-    }
+    text-align: left;
 
     .face {
-        position: absolute;
-        left: 6px;
-        top: 4px;
-        width: 80px;
-        height: 105px;
-        padding: 2px;
-        border: 2px @border solid;
-    }
-
-    div {
-        position: absolute;
-        top: 0;
-        left: 110px;
-        width: 200px;
-        font-variant: small-caps;
-    }
-
-    .name {
-        margin: 0;
-        margin-top: 5px;
-        font-size: 20px;
-        text-align: center;
-        font-weight: bold;
-    }
-
-    ul {
-        padding: 0;
-    }
-
-    li {
-        list-style: none;
-        margin-bottom: 10px;
-        font-size: 21px;
-    }
-
-    a {
-        text-decoration: none;
+        width: 150px;
+        height: 180px;
     }
 }
 
@@ -206,48 +161,44 @@ a {
 *******************************************************************************/
 
 #header {
-    .logo .i {
-        color: #FFBA00;
-        font-size: 52px;
-        font-variant: normal;
-    }
 
-    .logo a:hover {
-        color: #FFBA00;
-    }
+}
+
+#logo {
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    width: 500px;
+    height: 130px;
+    background-image: url("../default/images/logo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#logo a {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    width: 500px;
+    height: 130px;
 }
 
 #nav {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 30px;
+    right: 230px;
     width: 250px;
     height: 230px;
     padding: 0;
     margin: 0;
-    font-size: 1em;
+    font-size: 1.2em;
     overflow: hidden;
-    background-color: @background;
-    z-index: 12;
-
-    a.logo {
-        display: block;
-        height: 50px;
-        width: 100%;
-        margin-top: -10px;
-        margin-bottom: 8px;
-        padding: 4px;
-        text-align: center;
-        font-size: 52px;
-        font-weight: bold;
-        text-decoration: none;
-        letter-spacing: 5px;
-    }
+    text-align: right;
 
     ul {
         margin: 0;
         padding: 0;
-        font-size: 28px;
     }
 
     li {
@@ -263,53 +214,57 @@ a {
 }
 
 /*******************************************************************************
-     3   Section
+     3   Content
 
 *******************************************************************************/
 
-#section {
+#content {
     position: absolute;
-    top: 215px;
-    left: 0;
+    top: 230px;
+    left: 15px;
     margin: 0;
     padding: 0;
-    clear: both;
     width: 100%;
-}
 
-#section > .header {
-    text-align: center;
-    border-color: @color;
-    border-width: 0 1px 0 0;
-    color: @color;
-    font-size: 2em;
-    background-color: @background;
-    height: 36px;
-    font-variant:small-caps;
-}
+    .module {
+        position: relative;
 
-#content {
-    position: relative;
-    padding: 10px;
-    border: 0;
-    padding-left: 12px;
-    background-color: white;
-}
+        .head {
+            position: relative;
+            background-color: @background;
+            .border-radius-top;
+            border:1px @color solid;
+            border-bottom: none;
+            font-size: 2em;
+            padding: 4px;
+            color: @color;
+        }
 
-body.enabledAside #content {
-    width: 75%;
+        .body {
+            position: relative;
+            background-image: url("../default/images/75p.png");
+            background-repeat: repeat;
+            .border-radius-bottom;
+            border:1px @color solid;
+            border-top: none;
+            padding: 4px;
+        }
+    }
 }
-
 
 /*******************************************************************************
      4   Aside
 
 *******************************************************************************/
 
+body.enabledAside #content {
+    width: 75%;
+}
+
 #aside {
     display: block;
     position: absolute;
-    top: 265px;
+    top: 234px;
     right: 5px;
     margin: 0;
     padding: 0;
@@ -334,28 +289,28 @@ body.disabledAside > #aside {
 *******************************************************************************/
 
 .accueil {
-    table {
+    > table {
         width: 100%;
         border-collapse: separate;
-    }
 
-    td{
-        padding:2px;
-        vertical-align: top;
-    }
+        td{
+            padding:5px;
+            vertical-align: top;
+        }
 
-    td.full {
-        display: table-cell;
-        width: 30%;
-    }
-
-    td.empty {
-        display: none;
-        width: 30%;
-    }
-
-    td ul.minimodules_zone {
-        width: 100%;
+        td.full {
+            display: table-cell;
+            width: 30%;
+        }
+    
+        td.empty {
+            display: none;
+            width: 30%;
+        }
+    
+        td ul.minimodules_zone {
+            width: 100%;
+        }
     }
 }
 
@@ -374,9 +329,7 @@ body.disabledAside > #aside {
 }
 
 .minimodule {
-    border: 1px solid @color;
     margin-bottom: 20px;
-    .border-radius;
 
     > .head {
         color: @color;
@@ -386,15 +339,19 @@ body.disabledAside > #aside {
         font-size: 11pt;
         font-style: italic;
         font-weight: bold;
-        .border-radius;
+        border: 1px @color solid;
+        border-bottom: none;
+        .border-radius-top;
     }
 
     > .body {
         position: relative;
-        background: white;
+        background-image: url("../default/images/75p.png");
+        background-repeat: repeat;
         padding: 2px;
-        border: none;
-        .border-radius;
+        border: 1px @color solid;
+        border-top: none;
+        .border-radius-bottom;
     }
 }
 
@@ -538,10 +495,15 @@ input, textarea {
 *******************************************************************************/
 
 .groups_picker {
-    width: 300px;
+    position: relative;
+    width: 100%;
     border: 1px solid @border;
     color: white;
     background-color: @color;
+    padding: 3px 3px 3px 3px;
+
+    .transition;
+    .border-radius;
 
     img {
         width: 20px;
@@ -590,8 +552,9 @@ input, textarea {
 .wiki {
     position: relative;
     width: auto;
-    margin-bottom: 2px;
-    border: 1px solid @border;
+    margin: 6px;
+    .border-radius;
+    border:1px @color solid;
     background-color: @background;
 
     .content {

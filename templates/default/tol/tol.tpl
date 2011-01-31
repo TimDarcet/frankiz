@@ -20,24 +20,15 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="trombino">
-    {include file="tol/search.tpl"|rel}
+{include file="tol/search.tpl"|rel}
 
-    <div class="modal">
-        <div class="img">
-        </div>
-        <div class="select">
-        </div>
-    </div>
-
-    <ul id="tol_results">
-        {if isset($results|smarty:nodefaults)}
-            {foreach from=$results item=result}
-                {include file="tol/result.tpl"|rel result=$result}
-            {/foreach}
-        {/if}
-    </ul>
-</div>
+<ul id="tol_results">
+    {if isset($results|smarty:nodefaults)}
+        {foreach from=$results item=result}
+            {include file="tol/result.tpl"|rel result=$result}
+        {/foreach}
+    {/if}
+</ul>
 
 {js src="tol.js"}
 

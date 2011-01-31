@@ -21,6 +21,52 @@
 @import "lib.less";
 
 #content {
+    #tol_searcher {
+        position: absolute;
+        top: 0;
+        width: 250px;
+
+        input.empty {
+            background-color: red;
+        }
+
+        .fields {
+            position: relative;
+            background-image: url("../default/images/75p.png");
+            background-repeat: repeat;
+            .border-radius;
+            border:1px @color solid;
+            padding: 10px;
+            margin-bottom: 5px;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            text-indent: 0;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        label {
+            text-align: left;
+        }
+
+        label input {
+            width: 100%;
+        }
+
+        .groups_picker {
+            width: 100%;
+        }
+
+        input[type=reset] {
+            float: right;
+        }
+    }
+
     #tol_infos {
         text-align: center;
         font-weight: bold;
@@ -37,62 +83,17 @@
         background-color: @color;
     }
 
-    #tol_searcher {
-        position: absolute;
-        top: 12px;
-        width: 250px;
-        height: auto;
-        background-color: white;
-        border: 1px @color solid;
-        z-index: 10;
-    }
-
-    #tol_searcher input.empty {
-        background-color: red;
-    }
-
-    #tol_searcher ul {
-        margin: 0;
-        padding: 0;
-        text-indent: 0;
-    }
-
-    #tol_searcher fieldset {
-        border: 1px white solid;
-        margin-bottom: 2px;
-        background-color: @background;
-    }
-
-    #tol_searcher li {
-        list-style: none;
-    }
-
-    #tol_searcher label {
-        text-align: left;
-    }
-
-    #tol_searcher label input {
-        width: 100%;
-    }
-
-    #tol_searcher .groups_picker {
-        width: 100%;
-    }
-
-    #tol_searcher input[type=reset] {
-        float: right;
-    }
-
     #tol_send {
         text-align: center;
     }
 
     #tol_results {
+        margin: 0;
         position: relative;
-        left: 255px;
+        left: 265px;
         padding: 0;
         padding-right: 255px;
-        z-index: 1;
+        text-align: center;
     }
 
     .result {
@@ -101,8 +102,11 @@
         width: 160px;
         margin: 3px;
         overflow: hidden;
-        background-color: @background;
-        border: 1px #003757 solid;
+        background-image: url("../default/images/75p.png");
+        background-repeat: repeat;
+        .border-radius;
+        border:1px @color solid;
+        vertical-align: bottom;
     }
 
     .result.card {
@@ -143,17 +147,5 @@
         clear: both;
         border: none;
         border-top: 1px @border solid;
-    }
-
-    .modal {
-        position: fixed;
-        display: none;
-        top: 50%;
-        left: 50%;
-        margin-top: -50px;
-        margin-left: -100px;
-        background-color: @background;
-        z-index: 666;
-        padding: 12px;
     }
 }

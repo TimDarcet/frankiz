@@ -20,8 +20,6 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<a class="logo" href="home">Frank<span class="i">i</span>z</a>
-
 <ul>
     {if $smarty.session.auth >= AUTH_INTERNAL}
     <li><a {path_to_href_attribute path="news"}>annonces</a></li>
@@ -31,6 +29,7 @@
     {/if}
     {if $smarty.session.auth >= AUTH_COOKIE}
     <li><a {path_to_href_attribute path="admin"} accesskey="g">administration</a><li>
+    <li><a {path_to_href_attribute path="exit"} accesskey="l">Se déconnecter</a></li>
     {/if}
 </ul>
 

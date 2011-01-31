@@ -29,6 +29,18 @@
     -webkit-border-radius: @radius;
 }
 
+.border-radius-bottom (@radius: 5px) {
+    border-radius: 0 0 @radius @radius;
+    -moz-border-radius: 0 0 @radius @radius;
+    -webkit-border-radius: 0 0 @radius @radius;
+}
+
+.border-radius-top (@radius: 5px) {
+    border-radius: @radius @radius 0 0;
+    -moz-border-radius: @radius @radius 0 0;
+    -webkit-border-radius: @radius @radius 0 0;
+}
+
 .transition (@time : 500ms) {
     -moz-transition: background-color @time ease;
     -webkit-transition: background-color @time ease;

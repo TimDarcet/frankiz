@@ -27,19 +27,25 @@
 </p>
 
 <div class="container">
-    <div class="groups">
-        <h2>Les binets</h2>
-        {include file="groups/ns_groups.tpl"|rel groups=$binet user_groups=$user_binet}
+    <div class="module">
+        <div class="head">Les binets</div>
+        <div class="body">
+            {include file="groups/ns_groups.tpl"|rel groups=$binet user_groups=$user_binet}
+        </div>
     </div>
-    
-    <div class="groups">
-        <h2>Les études</h2>
-        {include file="groups/ns_groups.tpl"|rel groups=$study user_groups=$user_study}
+
+    <div class="module">
+        <div class="head">Les études</div>
+        <div class="body">
+            {include file="groups/ns_groups.tpl"|rel groups=$study user_groups=$user_study}
+        </div>
     </div>
-    
-    <div class="groups">
-        <h2>Divers</h2>
-        {include file="groups/ns_groups.tpl"|rel groups=$free user_groups=$user_free}
+
+    <div class="module">
+        <div class="head">Divers</div>
+        <div class="body">
+            {include file="groups/ns_groups.tpl"|rel groups=$free user_groups=$user_free}
+        </div>
     </div>
 </div>
 
