@@ -84,23 +84,6 @@ function __autoload($cls)
     }
 }
 
-function format_phone_number($tel)
-{
-    $tel = trim($tel);
-
-    if (substr($tel, 0, 3) === '(0)')
-        $tel = '33' . $tel;
-
-    $tel = preg_replace('/\(0\)/',  '', $tel);
-    $tel = preg_replace('/[^0-9]/', '', $tel);
-    if (substr($tel, 0, 2) === '00') {
-        $tel = substr($tel, 2);
-    } else if(substr($tel, 0, 1) === '0') {
-        $tel = '33' . substr($tel, 1);
-    }
-    return $tel;
-}
-
 function flatten($var)
 {
     if (is_array($var) && count($var) <= 1)
@@ -115,12 +98,6 @@ function unflatten($var)
         return array($var);
     else
         return $var;
-}
-
-function isId($mixed)
-{
-    trace('DEPRECATED'); // TODO
-    return !is_object($mixed) && (intval($mixed).'' == $mixed);
 }
 
 function trace($mixed)
