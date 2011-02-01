@@ -40,8 +40,8 @@ class UserSchema extends Schema
     public function scalars() {
         return array('hruid', 'perms', 'state', 'group',
                      'hash', 'hash_rss', 'original', 'photo', 'gender',
-                     'email_format', 'email', 'skin', 'cellphone',
-                     'firstname', 'lastname', 'nickname', 'birthdate', 'comment', 'poly');
+                     'email_format', 'email', 'skin', 'birthdate',
+                     'firstname', 'lastname', 'nickname', 'comment', 'poly');
     }
 
     public function objects() {
@@ -49,7 +49,8 @@ class UserSchema extends Schema
                      'group' => 'Group',
                   'original' => 'FrankizImage',
                      'photo' => 'FrankizImage',
-                 'birthdate' => 'FrankizDateTime');
+                 'birthdate' => 'FrankizDateTime',
+                 'cellphone' => 'Phone');
     }
 
     public function collections() {
