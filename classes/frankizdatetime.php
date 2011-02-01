@@ -19,11 +19,21 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class FrankizDateTime extends DateTime
+class FrankizDateTime extends DateTime implements Formatable
 {
     public function format($format = 'Y-m-d H:i:s')
     {
         return parent::format($format);
+    }
+
+    public function toDb()
+    {
+        return $this->format('Y-m-d H:i:s');
+    }
+
+    public function __toString()
+    {
+        return $this->format('Y-m-d H:i:s');
     }
 }
 
