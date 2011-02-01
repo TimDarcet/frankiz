@@ -20,20 +20,25 @@
 {*                                                                        *}
 {**************************************************************************}
 
+Binets
+
 <table>
-    <tr>
-    	<th>Ns</th>
-        <th>%</th>
-        <th>Name</th>
-        <th>Rights</th>
-    </tr>
-    {assign var='castes' value=$minimodule.user->castes()}
-    {assign var='groups' value=$castes->groups()}
-    {foreach from=$groups|order:'score' item='group'}
+    {foreach from=$minimodule.binets|order:'score' item='group'}
         <tr>
-            <td>{$group->ns()}</td>
-            <td>{$group->score()}</td>
-            <td>{$group->name()}</td>
+            <td><img src="{$group->image()|image:'micro'|smarty:nodefaults}" /></td>
+            <td>{$group|group}</td>
+            <td>{$minimodule.user->rights($group)|@rights}</td>
+        </tr>
+    {/foreach}
+</table>
+
+Groupes
+
+<table>
+    {foreach from=$minimodule.frees|order:'score' item='group'}
+        <tr>
+            <td><img src="{$group->image()|image:'micro'|smarty:nodefaults}" /></td>
+            <td>{$group|group}</td>
             <td>{$minimodule.user->rights($group)|@rights}</td>
         </tr>
     {/foreach}

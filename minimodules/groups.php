@@ -48,6 +48,10 @@ class GroupsMiniModule extends FrankizMiniModule
 
     public function run()
     {
+        $binets = S::user()->castes()->groups()->filter('ns', Group::NS_BINET);
+        $frees = S::user()->castes()->groups()->filter('ns', Group::NS_FREE);
+        $this->assign('binets', $binets);
+        $this->assign('frees', $frees);
         $this->assign('user', S::user());
     }
 }
