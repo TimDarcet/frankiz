@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS minimodules (
 INSERT INTO minimodules (`name`, `label`, description) VALUES('activity', 'Activités du jour', '');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('birthday', 'Anniversaires', 'Les anniversaires 42');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('days', 'Fêtes', 'Les fêtes des saints (et des autres) blih');
+INSERT INTO minimodules (`name`, `label`, description) VALUES('debug', 'Debug', '');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('groups', 'Mes groupes', 'Liste de ses groupes');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('ik', 'IK de la semaine', '');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('jtx', 'Video du jour', 'La video du jour par le jtx');
