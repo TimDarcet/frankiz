@@ -30,6 +30,8 @@
     {if $smarty.session.auth >= AUTH_COOKIE}
     <li><a {path_to_href_attribute path="admin"} accesskey="g">administration</a><li>
     <li><a {path_to_href_attribute path="exit"} accesskey="l">Se déconnecter</a></li>
+    {else}
+    <li><a {path_to_href_attribute path="login"} accesskey="l">Se connecter</a></li>
     {/if}
 </ul>
 

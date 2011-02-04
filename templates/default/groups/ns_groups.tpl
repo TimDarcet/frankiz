@@ -23,14 +23,14 @@
 <table>
     {foreach from=$groups|order:'score' item=group}
         <tr>
-            <td><img src="{$group->image()|image:'micro'|smarty:nodefaults}" /></td>
+            <td><img src="{$group->image()|image:'micro':'group'|smarty:nodefaults}" /></td>
             <td>{$group|group}</td>
             <td>{$user->rights($group)|@rights}</td>
         </tr>
     {/foreach}
     {foreach from=$user_groups|order:'score' item=group}
         <tr>
-            <td><img src="{$group->image()|image:'micro'|smarty:nodefaults}" /></td>
+            <td><img src="{$group->image()|image:'micro':'group'|smarty:nodefaults}" /></td>
             <td>{$group|group}</td>
             <td>{$user->rights($group)|@rights}</td>
         </tr>
