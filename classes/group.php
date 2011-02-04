@@ -189,14 +189,20 @@ class Group extends Meta
             $caste->removeUser($user);
     }
 
-    public function export($stringify = false)
+    public function export($bits = null)
     {
+        global $globals;
+
+        $img = $this->image();
+        if (!$img) {
+            $img = new StaticImage($globals->images->group);
+        }
+
         $json = array("id"    => $this->id(),
                       "name"  => $this->name(),
                       "label" => $this->label(),
-                      "src"   => $this->image()->src(ImageInterface::SELECT_MICRO));
-
-        return ($stringify) ? json_encode($json) : $json;
+                      "src"   => $img->src('micro'));
+        return $json;
     }
 
     /*******************************************************************************
