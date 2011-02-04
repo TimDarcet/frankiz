@@ -62,6 +62,10 @@ class CasteSelect extends Select
         return new CasteSelect(array('group', 'rights'), array('group' => GroupSelect::base()));
     }
 
+    public static function bubble($subs = null) {
+        return new CasteSelect(array('userfilter'), $subs);
+    }
+
     public static function users($subs = null) {
         return new CasteSelect(array('users'), $subs);
     }
@@ -117,7 +121,7 @@ class Caste extends Meta
     {
         XDB::execute('INSERT IGNORE  castes_users
                                 SET  cid = {?}, uid = {?}',
-                            $this->id(), $user->id());
+                                     $this->id(), $user->id());
         $this->bubble();
     }
 
@@ -130,7 +134,7 @@ class Caste extends Meta
     {
         XDB::execute('DELETE FROM  castes_users
                             WHERE  cid = {?} AND uid = {?}',
-                                $this->id(), $user->id());
+                                   $this->id(), $user->id());
         $this->bubble();
     }
 
@@ -216,7 +220,7 @@ class Caste extends Meta
 
     public function bubble()
     {
-        $castes = $this->parents()->select(Caste::SELECT_BASE);
+        $castes = $this->parents()->select(CasteSelect::bubble());
 
         foreach ($castes as $caste) {
             $caste->compute();
@@ -230,7 +234,7 @@ class Caste extends Meta
 
     public function insert()
     {
-        XDB::execute('INSERT INTO castes SET gid = {?}, rights = {?}',
+        XDB::execute('INSERT INTO castes SET `group` = {?}, rights = {?}',
                             $this->group->id(), (string) $this->rights);
         $this->id = XDB::insertId();
     }
