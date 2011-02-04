@@ -1,23 +1,4 @@
--- phpMyAdmin SQL Dump
--- version 3.3.8.1
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Jan 28, 2011 at 01:41 PM
--- Server version: 5.1.51
--- PHP Version: 5.3.5-pl0-gentoo
-
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
---
--- Database: 'dev'
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table 'minimodules'
---
+SET NAMES 'utf8';
 
 DROP TABLE IF EXISTS minimodules;
 CREATE TABLE IF NOT EXISTS minimodules (
@@ -26,10 +7,6 @@ CREATE TABLE IF NOT EXISTS minimodules (
   description text NOT NULL,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table 'minimodules'
---
 
 INSERT INTO minimodules (`name`, `label`, description) VALUES('activity', 'Activités du jour', '');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('birthday', 'Anniversaires', 'Les anniversaires 42');
