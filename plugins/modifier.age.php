@@ -19,26 +19,28 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class FrankizDateTime extends DateTime implements Formatable
-{
-    public function format($format = 'Y-m-d H:i:s')
-    {
-        return parent::format($format);
-    }
 
-    public function toDb()
-    {
-        return $this->format('Y-m-d H:i:s');
-    }
+function smarty_modifier_age($datetime, $format = 'auto') {
+    $s = function($c) {
+        return ($c > 1) ? 's' : '';
+    };
 
-    public function __toString()
-    {
-        return $this->format('Y-m-d H:i:s');
-    }
-
-    public function age() {
-        $now = new self();
-        return $now->diff($this);
+    $age = $datetime->age();
+    if ($format == 'auto') {
+        if ($age->d > 0) {
+            return $age->format('%d jour' . $s($age->d));
+        }
+        if ($age->h > 0) {
+            return $age->format('%h heure' . $s($age->h));
+        }
+        if ($age->i > 0) {
+            return $age->format("%i'");
+        }
+        if ($age->s > 0) {
+            return $age->format("%s''");
+        }
+    } else {
+        return $age->format($format);
     }
 }
 
