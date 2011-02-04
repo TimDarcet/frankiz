@@ -61,6 +61,17 @@ abstract class FrankizFilter extends PlFilter
 
     public function __construct($cond = null, $sort = null)
     {
+        if (is_string($cond)) {
+            $export = json_decode($cond, true);
+
+            if (!empty($export['condition'])) {
+                $cond = static::importCondition($export['condition']);
+            }
+            if (!empty($export['sort'])) {
+                $sort = static::importSort($export['sort']);
+            }
+        }
+
         if (empty($this->joinMethods)) {
             $class = new ReflectionClass(get_class($this));
             foreach ($class->getMethods() as $method) {
@@ -73,6 +84,8 @@ abstract class FrankizFilter extends PlFilter
         if (!is_null($cond)) {
             if ($cond instanceof PlFilterCondition) {
                 $this->setCondition($cond);
+            } else {
+                throw new Exception("FrankizFilter's constructor only accept PlFilterCondition or a json string");
             }
         }
         if (!is_null($sort)) {
