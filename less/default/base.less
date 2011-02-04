@@ -36,6 +36,10 @@ body {
     background-attachment:fixed;
 }
 
+#body {
+    position: relative;
+}
+
 .warning {
     color: red;
 }
@@ -114,10 +118,12 @@ a {
 
     &.restricted {
         background-color: yellow;
+        display: none;
     }
 
     &.everybody {
         background-color: white;
+        display: none;
     }
 }
 
@@ -127,93 +133,88 @@ a {
 *******************************************************************************/
 
 #header {
-    position: absolute;
-    text-align: center;
+    position: relative;
     width: 100%;
-    top: 15px;
-    left: 0;
     height: 200px;
-}
 
-/*******************************************************************************
-     2   Nav
+    > .logo {
+        position: absolute;
+        top: 30px;
+        left: 40px;
+        width: 500px;
+        height: 130px;
+        background-image: url("../default/images/logo.png");
+        background-repeat: no-repeat;
+        background-position: center;
 
-*******************************************************************************/
-
-#account {
-    position: absolute;
-    right: 0;
-    top: 25px;
-    width: 215px;
-    height: 220px;
-    z-index: 10;
-    text-align: left;
-
-    .face {
-        max-width: 150px;
-        height: 160px;
+        a {
+            position: absolute;
+            display: block;
+            top: 0;
+            left: 0;
+            width: 500px;
+            height: 130px;
+            z-index: 10;
+        }
     }
-}
 
-#logo {
-    position: absolute;
-    top: 30px;
-    left: 40px;
-    width: 500px;
-    height: 130px;
-    background-image: url("../default/images/logo.png");
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-#logo a {
-    position: absolute;
-    display: block;
-    top: 0;
-    left: 0;
-    width: 500px;
-    height: 130px;
-}
-
-#quicksearch {
-    display: none; // TODO
-    position: absolute;
-    top: 100px;
-    left: 500px;
-    width: 300px;
-    height: 25px;
-
-    input {
-        width: 200px;
-    }
-}
-
-#nav {
-    position: absolute;
-    top: 30px;
-    right: 230px;
-    width: 250px;
-    height: 230px;
-    padding: 0;
-    margin: 0;
-    font-size: 1.2em;
-    overflow: hidden;
-    text-align: right;
-
-    ul {
-        margin: 0;
+    > .nav {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        width: 100%;
+        height: 230px;
         padding: 0;
+        margin: 0;
+        font-size: 1.2em;
+        text-align: right;
+
+        > .account {
+            position: relative;
+            top: -6px;
+            float: right;
+            width: 175px;
+            margin-left: 12px;
+            text-align: center;
+
+            img {
+                max-width: 150px;
+                height: 160px;
+            }
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+
+            li {
+                list-style: none;
+                margin-bottom: 3px;
+                text-decoration: none;
+                text-transform: capitalize;
+    
+                &.log {
+                    margin-top: 10px;
+                }
+    
+                a {
+                    text-decoration: none;
+                }
+            }
+        }
     }
 
-    li {
-        list-style: none;
-        margin-bottom: 3px;
-        text-decoration: none;
-        text-transform: capitalize;
-    }
+    > .quicksearch {
+        display: none; // TODO
+        position: absolute;
+        top: 100px;
+        left: 500px;
+        width: 300px;
+        height: 25px;
 
-    li a {
-        text-decoration: none;
+        input {
+            width: 200px;
+        }
     }
 }
 
@@ -231,17 +232,49 @@ a {
 
 *******************************************************************************/
 
+// body.enabledAside
+
+body.disabledAside #section {
+    width: 100%;
+}
+
 #content {
     position: absolute;
     top: 230px;
-    left: 15px;
+    left: 0;
     margin: 0;
     padding: 0;
     width: 100%;
+}
+
+#aside {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    width: 22%;
+    z-index: 40;
+
+    #column4 {
+        width: auto;
+        padding: 0;
+        margin: 0 5px 0 5px;
+    }
+}
+
+#section {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    width: 77%;
 
     .module {
         position: relative;
-        margin-bottom: 10px;
+        margin: 10px;
+        margin-top: 0;
 
         > .head {
             position: relative;
@@ -266,48 +299,20 @@ a {
 }
 
 /*******************************************************************************
-     4   Aside
-
-*******************************************************************************/
-
-body.enabledAside #content {
-    width: 75%;
-}
-
-#aside {
-    display: block;
-    position: absolute;
-    top: 234px;
-    right: 5px;
-    margin: 0;
-    padding: 0;
-    clear: both;
-    width: 22%;
-    z-index: 40;
-}
-
-body.disabledAside > #aside {
-    display: none;
-}
-
-#aside #column4 {
-    width: auto;
-    padding: 0;
-    margin: 0 5px 0 5px;
-}
-
-/*******************************************************************************
      5   Minimodules commons
 
 *******************************************************************************/
 
 .accueil {
     > table {
+        position: relative;
         width: 100%;
         border-collapse: separate;
+        top: -2px;
 
-        td{
-            padding:5px;
+        td {
+            padding: 5px;
+            padding-top: 0;
             vertical-align: top;
         }
 

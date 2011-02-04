@@ -118,16 +118,29 @@ class TolModule extends PLModule
 
     function handler_tol($page)
     {
+        global $globals;
+
         $fields = $this->fillFields();
         $filter = $this->buildFilter($fields);
 
         if ($filter) {
             $uf = new UserFilter($filter);
             $users = $uf->get(new PlLimit(50,0))->select(UserSelect::tol());
+            if (Env::has('quicksearch') && $users->count() == 0) {
+                header('Location: http://wikix.polytechnique.org/eleves/wikix/Sp%C3%A9cial:Recherche?search=' . Env::t('free'));
+                exit;
+            }
             $page->assign('results', $users);
             $page->assign('mode', 'sheet');
             $page->assign('total', $uf->getTotalCount());
         }
+
+        foreach (json_decode($globals->core->promos) as $promo) {
+            $groupes_names[] = 'promo_' . $promo;
+        }
+        $promos = new Collection('Group');
+        $promos->add($groupes_names)->select(GroupSelect::base());
+        $page->assign('promos', $promos);
 
         $page->assign('user', S::user());
         $page->assign('fields', $fields);

@@ -78,10 +78,10 @@ function force_search() {
                 $("#tol_results").html('');
 
             // On ajoute les éventuels nouveaux résultats
-            for (var uid in json.results)
-            {
-                if ($("#tol_results > li[uid='" + uid + "']").length == 0)
+            for (var uid in json.results) {
+                if ($("#tol_results > li[uid='" + uid + "']").length == 0) {
                     $('#tol_results').append(json.results[uid]);
+                }
             }
 
             mode = json.mode;
@@ -100,14 +100,14 @@ function force_search() {
                                     mode = '';
                                     li.children('.sheet').html(json.sheet);
                                     li.removeClass('card');
-                                    li.addClass('sheet', 'fast');
+                                    li.addClass('sheet');
                                     imageur();
                                     li.children('.sheet').find('a, li').click(function(event) {
                                         event.stopPropagation();
                                     });
                                     li.children('.sheet').click(function() {
                                         li.removeClass('sheet');
-                                        li.addClass('card', 'fast');
+                                        li.addClass('card');
                                     });
                                    }
                         });

@@ -24,30 +24,46 @@
 {assign var='groups' value=$castes->groups()}
 
 <div class="base">
+
     {assign var='photo' value=$result->photo()}
     {assign var='original' value=$result->original()}
     <div class="img" photo="{if $photo}{$photo|image:'full'|smarty:nodefaults}{/if}"
                      original="{if $original}{$original|image:'full'|smarty:nodefaults}{/if}">
         {assign var='img' value=$result->image()}
-        <a href="{$img|image:'full'|smarty:nodefaults}"><img src="{$img|image:'small'|smarty:nodefaults}" /></a>
+        <a href="{$img|image:'full'|smarty:nodefaults}"><img src="{$img|image:'big'|smarty:nodefaults}" /></a>
     </div>
-    <div class="sports">
 
+    <div class="name">{$result->firstname()} {$result->lastname()}</div>
+
+    <div class="nickname">{$result->nickname()}</div>
+
+    <div class="birthdate">{$result->birthdate()|datetime:"d/m/Y"}</div>
+
+    <div class="sports">
+        <ul>
+            {foreach from=$groups|filter:'ns':'sport'|order:'score' item='group'}
+                <li><img src="{$group->image()|image:'small':'sport'}" title="{$group->label()}" /></li>
+            {/foreach}
+        </ul>
     </div>
-    <div class="name">{$result->firstname()} {$result->lastname()} - {$result->nickname()} - {$result->birthdate()|datetime:"d/m/Y"}</div>
-    <div>
-        {$result->cellphone()}
-    </div>
-    <div>
+
+    {if $result->cellphone()}
+        <div class="cellphone">
+            Portable: {$result->cellphone()}
+        </div>
+    {/if}
+
+    <div class="caserts">
+        Casert:
         <ul>
         {foreach from=$result->rooms() item='room'}
             <li>
             {$room->id()}
             {$room->phone()}
-            <ul>
+            <ul class="ips">
             {foreach from=$room->ips() item='ip'}
                 <li>
-                {$ip}
+                    {$ip}
                 </li>
             {/foreach}
             </ul>
@@ -55,29 +71,21 @@
         {/foreach}
         </ul>
     </div>
+
     <div class="studies">
         <ul>
         {foreach from=$result->studies() item='study'}
-            <li>
-            {$study->year_in()}
-            {$study->year_out()}
-            {$study->promo()}
-            {$study->forlife()}
-            {assign var='formation' value=$study->formation()}
-            {$formation->label()}
-            <img src="{$formation->image()|image:'micro'|smarty:nodefaults}" />
+            <li class="{if $study->promo() % 2 == 0}rouje{else}jone{/if}">
+                {assign var='formation' value=$study->formation()}
+                <img title="{$formation->label()}" src="{$formation->image()|image:'micro'|smarty:nodefaults}" />
+                <span title="{$study->forlife()}">{$study->promo()}<span/>
             </li>
         {/foreach}
         </ul>
     </div>
-    <div class="sports">
-        <ul>
-            {foreach from=$groups|filter:'ns':'sport'|order:'score' item='group'}
-                <li>{$group|group}</li>
-            {/foreach}
-        </ul>
-    </div>
+
     <div class="nationality">
+        Nationalité:
         <ul>
             {foreach from=$groups|filter:'ns':'nationality'|order:'score' item='group'}
                 <li>{$group|group}</li>
@@ -86,23 +94,42 @@
     </div>
     <hr />
 </div>
+
 <div class="more">
-    <div class="binets">
-        Binets:
-        <ul>
-            {foreach from=$groups|filter:'ns':'binet'|order:'score' item='group'}
-                <li>{$result->rights($group)|@rights} {$group|group} {$result->comments($group)}</li>
-            {/foreach}
-        </ul>
-    </div>
-    <div class="free">
-        Groupes:
-        <ul>
-            {foreach from=$groups|filter:'ns':'free'|order:'score' item='group'}
-                <li>{$result->rights($group)|@rights} {$group|group} {$result->comments($group)}</li>
-            {/foreach}
-        </ul>
-    </div>
+    {if count($groups|filter:'ns':'binet') > 0}
+        <div class="binets">
+            Binets:
+            <ul>
+                {foreach from=$groups|filter:'ns':'binet'|order:'score' item='group'}
+                    <li>
+                        <img src="{$group->image()|image:'micro':'group'}" />
+                        <span>
+                            {$result->rights($group)|@rights}
+                            {$group|group}
+                            <span class="comments">{$result->comments($group)}</span>
+                        </span>
+                    </li>
+                {/foreach}
+            </ul>
+        </div>
+    {/if}
+    {if count($groups|filter:'ns':'free') > 0}
+        <div class="free">
+            Groupes:
+            <ul>
+                {foreach from=$groups|filter:'ns':'free'|order:'score' item='group'}
+                    <li>
+                        <img src="{$group->image()|image:'micro':'group'}" />
+                        <span>
+                            {$result->rights($group)|@rights}
+                            {$group|group}
+                            <span class="comments">{$result->comments($group)}</span>
+                        </span>
+                    </li>
+                {/foreach}
+            </ul>
+        </div>
+    {/if}
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

@@ -23,6 +23,7 @@
 #content {
     #tol_searcher {
         position: absolute;
+        left: 5px;
         top: 0;
         width: 250px;
 
@@ -91,8 +92,9 @@
         margin: 0;
         position: relative;
         left: 265px;
+        top: -4px;
         padding: 0;
-        padding-right: 255px;
+        padding-right: 270px;
         text-align: center;
     }
 
@@ -113,16 +115,97 @@
         height: 180px;
     }
 
-    .result.card .card{
+    .result.card .card {
         display: block;
     }
 
     .result.sheet {
+        position: relative;
         width: 100%;
     }
 
-    .result.sheet .sheet{
+    .result.sheet .sheet {
         display: block;
+        margin-right: 25px;
+        font-size: 13px;
+
+        .base {
+            position: relative;
+            .img {
+                float: left;
+            }
+
+            .name {
+                text-align: center;
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+            .nickname {
+                text-align: center;
+                font-size: 16px;
+            }
+
+            .studies {
+                position: absolute;
+                top: 2px;
+                right: 2px;
+                li {
+                    list-style: none;
+                    position: relative;
+                    width: 40px;
+                    font-weight: bold;
+                    &.rouje {
+                        color: red;
+                    }
+                    &.jone {
+                        color: yellow;
+                    }
+                }
+            }
+
+            .caserts {
+                li {
+                    text-indent: 10px;
+                }
+                .ips {
+                    display: none;
+                }
+            }
+
+            .sports {
+                position: absolute;
+                bottom: 5px;
+                right: 5px;
+                li {
+                    list-style: none;
+                }
+            }
+
+            .nationality {
+                ul {
+                    display: inline;
+                    li {
+                        list-style: none;
+                        display: inline;
+                    }
+                }
+            }
+        }
+
+        .more {
+            li {
+                position: relative;
+                list-style: none;
+                > span {
+                    position: absolute;
+                    left: 40px; 
+                    .comments {
+                        font-style:italic;
+                    }
+                }
+            }
+        }
     }
 
     .result .card {
