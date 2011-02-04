@@ -675,7 +675,7 @@ class User extends Meta
         if ($rights == null) {
             return $this->castes;
         }
-        $castes = $this->castes->filter('rights', $rights);
+        return $this->castes->filter('rights', $rights);
     }
 
     public function rights(Group $g)
@@ -812,7 +812,7 @@ class User extends Meta
         $group->visible(false);
         $group->label('Groupe personnel');
 
-        XDB::execute('UPDATE account SET gid = {?} WHERE uid = {?}', $group->id(), $this->id());
+        XDB::execute('UPDATE account SET `group` = {?} WHERE uid = {?}', $group->id(), $this->id());
 
         $group->caste(Rights::admin())->addUser($this);
         $group->caste(Rights::member())->addUser($this);
