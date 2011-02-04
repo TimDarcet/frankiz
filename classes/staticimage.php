@@ -21,8 +21,8 @@
 
 class StaticImage implements ImageInterface
 {
-    const BASE_PATH = '/htdocs/static/full/';
-    
+    const BASE_PATH = '/htdocs/static/0/';
+
     private $path = null;
     private $x    = null;
     private $y    = null;
@@ -81,23 +81,20 @@ class StaticImage implements ImageInterface
     *
     * @param $bits  Size to use
     */
-    public function src($bits = self::SELECT_SMALL)
+    public function src($size)
     {
         global $globals;
 
-        if ($bits & self::SELECT_MICRO) {
-            if (file_exists($globals->spoolroot . '/htdocs/static/micro/' . $this->path())) {
-                return 'static/micro/' . $this->path();
+        $order = ImageSizesSet::sizeToOrder($size);
+
+        while ($order >= 0) {
+            if (file_exists($globals->spoolroot . '/htdocs/static/' . $order .'/' . $this->path())) {
+                return 'static/' . $order . '/' . $this->path();
             }
+            $order--;
         }
 
-        if ($bits & (self::SELECT_MICRO | self::SELECT_SMALL)) {
-            if (file_exists($globals->spoolroot . '/htdocs/static/small/' . $this->path())) {
-                return 'static/small/' . $this->path();
-            }
-        }
-
-        return 'static/full/' . $this->path();
+        throw new Exception('No such image');
     }
 
 }

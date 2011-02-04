@@ -19,6 +19,51 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+class Image {
+    private static $mimes =
+        array(0 => 'image/jpeg',
+              1 => 'image/png',
+              2 => 'image/gif');
+
+    public $data;
+    public $mime;
+    public $x;
+    public $y;
+
+    public function __construct($datas = array()) {
+        foreach ($datas as $k => $v) {
+            $this->$k = $v;
+        }
+    }
+
+    public function mimeType() {
+        return self::$mimes[$ths->mime];
+    }
+
+    public static function mimeToCode($mime) {
+        return array_search($mime, self::$mimes);
+    }
+
+    public static function fromImagick(Imagick $im) {
+        $i = new Image();
+        $i->data = $im->getImageBlob();
+        $i->mime = self::mimeToCode($im->getImageMimeType());
+        $i->x = $im->getImageWidth();
+        $i->y = $im->getImageHeight();
+        return $i;
+    }
+
+    public function send() {
+        pl_cached_dynamic_content_headers($this->mime);
+        echo $this->data;
+        exit;
+    }
+
+    public function size() {
+        return strlen($this->data);
+    }
+}
+
 class ImageSize
 {
     public $x; // Width
@@ -42,31 +87,29 @@ class ImageSize
 
 class ImageSizesSet
 {
-    const TOL   = 'tol';
-    const GROUP = 'group';
-    const NEWS  = 'news';
+    public static $sizes = null;
+    public static $order = null;
 
-    public $full;
-    public $small;
-    public $micro;
-
-    public function __construct($full, $small, $micro) {
-        $this->full  = $full;
-        $this->small = $small;
-        $this->micro = $micro;
-    }
-
-    protected static function fromExport($export) {
-        return new self(ImageSize::fromExport($export->full),
-                        ImageSize::fromExport($export->small),
-                        ImageSize::fromExport($export->micro));
-    }
-
-    public static function __callStatic($name, $arguments) {
+    protected static function loadConf() {
         global $globals;
 
-        $export = json_decode($globals->sizes->$name);
-        return self::fromExport($export);
+        if (self::$sizes == null) {
+            self::$sizes = array();
+            self::$order = json_decode($globals->sizes->order);
+            foreach (self::$order as $size) {
+                self::$sizes[$size] = ImageSize::fromExport(json_decode($globals->sizes->$size));
+            }
+        }
+    }
+
+    public static function sizeToOrder($size) {
+        self::loadConf();
+
+        $order = array_search($size, self::$order);
+        if ($order === false) {
+            throw new Exception("This size ($size) of image doesn't exist");
+        }
+        return $order;
     }
 
     private static function setResize(Imagick $im, ImageSize $size, $force = false) {
@@ -75,29 +118,30 @@ class ImageSizesSet
             return null;
         }
 
-        if ($im->getImageWidth() > $size->x) {
-            $im->thumbnailImage($size->x, null, false);
-        }
-
-        if ($im->getImageHeight() > $size->y) {
-            $im->thumbnailImage(null, $size->y, false);
-        }
-
+        $im->thumbnailImage($size->x, $size->y, true);
         $im->setImageCompressionQuality($size->q);
-        $im->stripImage();
+        //$im->stripImage(); Usefull ?
 
-        return $im->getImageBlob();
+        return Image::fromImagick($im);
     }
 
-    public function resize($blob_image) {
+    public static function resize($blob_image) {
+        self::loadConf();
+
         $im = new Imagick();
         $im->readImageBlob($blob_image);
 
         $images = array();
 
-        $images['full']  = self::setResize($im, $this->full, true);
-        $images['small'] = self::setResize($im, $this->small);
-        $images['micro'] = self::setResize($im, $this->micro);
+        $first = true;
+        foreach (self::$sizes as $size => $imsize) {
+            $image = self::setResize($im, $imsize, $first);
+
+            if ($image !== null) {
+                $images[$size] = $image;
+            }
+            $first = false;
+        }
 
         return $images;
     }
@@ -125,40 +169,15 @@ class ImageSizeException extends Exception
 
 interface ImageInterface
 {
-    /*******************************************************************************
-         Constants
-
-    *******************************************************************************/
-
     const MAX_WIDTH  = 1024;
     const MAX_HEIGHT = 1024;
-
-    const SELECT_BASE  = 0x01;
-    const SELECT_FULL  = 0x02;
-    const SELECT_SMALL = 0x04;
-    const SELECT_MICRO = 0x08;
-
-    /*******************************************************************************
-         Getters & Setters
-
-    *******************************************************************************/
-
-    /**
-    * Returns the width of the original picture
-    */
-    public function x();
-
-    /**
-    * Returns the height of the original picture
-    */
-    public function y();
 
     /**
     * Returns the src attribute to put into the img tag
     *
     * @param $bits  Size to use
     */
-    public function src($bits = self::SELECT_SMALL);
+    public function src($size);
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

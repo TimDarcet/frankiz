@@ -20,18 +20,13 @@
  ***************************************************************************/
 
 
-function smarty_modifier_image(ImageInterface $image, $size = null) {
-    $select = ImageInterface::SELECT_FULL;
-    switch ($size) {
-        case 'micro':
-            $select = ImageInterface::SELECT_MICRO;
-            break;
+function smarty_modifier_image($image, $size, $fallback = 'default') {
+    global $globals;
 
-        case 'small':
-            $select = ImageInterface::SELECT_SMALL;
-            break;
+    if (!$image) {
+        $image = new StaticImage($globals->images->$fallback);
     }
-    return $image->src($select);
+    return $image->src($size);
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

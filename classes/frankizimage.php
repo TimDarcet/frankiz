@@ -19,165 +19,124 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+class FrankizImageSchema extends Schema
+{
+    public function className() {
+        return 'FrankizImage';
+    }
+
+    public function table() {
+        return 'images';
+    }
+
+    public function id() {
+        return 'iid';
+    }
+
+    public function tableAs() {
+        return 'i';
+    }
+
+    public function scalars() {
+        return array('label', 'seen', 'lastseen');
+    }
+
+    public function objects() {
+        return array('caste' => 'Caste');
+    }
+}
+
+class FrankizImageSelect extends Select
+{
+    public function className() {
+        return 'FrankizImage';
+    }
+
+    public static function base() {
+        return new self(array('label', 'seen', 'lastseen'));
+    }
+
+    public static function caste() {
+        return new self(array('caste'), array('caste' => CasteSelect::base()));
+    }
+
+    public static function image($size) {
+        return new self(array('images'), $size);
+    }
+
+    protected function handlers() {
+        return array('main' => array('label', 'seen', 'lastseen', 'caste'),
+                   'images' => array('images'));
+    }
+
+    protected function handler_images(Collection $frankizimages, $size) {
+        $_frankizimages = array();
+        foreach($frankizimages as $frankizimage) {
+            $_frankizimages[$frankizimage->id()] = array();
+        }
+
+        $iter = XDB::iterRow("SELECT  iid, size, x, y, data
+                                FROM  images_sizes
+                               WHERE  size IN {?} AND iid IN {?}",
+                                      $fields, $frankizimages->ids());
+
+        while ($datas = $iter->next()) {
+            $_frankizimages[$datas['iid']][$datas['size']] = new Image($datas);
+        }
+
+        foreach ($frankizimages as $frankizimage) {
+            $frankizimage->fillFromArray(array('images' => $_frankizimages[$frankizimage->id()]));
+        }
+    }
+}
+
 class FrankizImage extends Meta implements ImageInterface
 {
-    /*******************************************************************************
-         Properties
-
-    *******************************************************************************/
-
-    protected $label;
-    protected $description;
-
-    // Size in Bytes
-    protected $size;
-
-    // Sizes in pixels
-    protected $x;
-    protected $y;
-
-    protected $mime;
+    protected $label = null;
 
     // The caste which owns the image
-    protected $caste;
+    protected $caste = null;
 
     // Number of times the full image was seen
-    protected $seen;
+    protected $seen = null;
     // The last time the full image was seen
-    protected $lastseen;
+    protected $lastseen = null;
 
-    // Differents levels of miniatures to the original picture
-    protected $micro = null;
-    protected $small = null;
-    protected $full  = null;
-
-    /*******************************************************************************
-         Getters & Setters
-
-    *******************************************************************************/
-
-    public function label($label = null)
-    {
-        if ($label != null) {
-            $this->label = $label;
-            XDB::execute('UPDATE images SET label = {?} WHERE iid = {?}', $this->label, $this->id());
-        }
-
-        return $this->label;
-    }
-
-    public function description($description = null)
-    {
-        if ($description != null) {
-            $this->description = $description;
-            XDB::execute('UPDATE images SET description = {?} WHERE iid = {?}', $this->description, $this->id());
-        }
-
-        return $this->description;
-    }
-
-    public function caste(Caste $caste = null)
-    {
-        if ($caste != null) {
-            $this->caste = $caste;
-            XDB::execute('UPDATE images SET cid = {?} WHERE iid = {?}', $this->caste->id(), $this->id());
-        }
-
-        return $this->caste;
-    }
-
-    public function mime()
-    {
-        return $this->mime;
-    }
-
-    protected function smallMime()
-    {
-        return ($this->mime == 'image/png') ? 'image/png' : 'image/jpeg';
-    }
-
-    protected static function data_uri($content, $mime)
-    {
-        return 'data:' . $mime . ';base64,' . base64_encode($content);
-    }
-
-    public function x()
-    {
-        return $this->x;
-    }
-
-    public function y()
-    {
-        return $this->y;
-    }
+    // Differents levels of sizes
+    protected $images = null;
 
     public function size()
     {
-        if (!empty($this->size))
-            return $this->size;
-
-        return strlen($this->full);
+        return reset($this->images->size());
     }
 
-    public function seen()
-    {
-        return $this->seen;
-    }
-
-    public function lastseen()
-    {
-        return $this->lastseen;
-    }
-
-    /*******************************************************************************
-         Show the image
-
-    *******************************************************************************/
-
-    public function send($bits = null)
+    /*
+     * /!\ send() is independant of the data fetcher !
+     * If fetches the data best fiting to the asked $size.
+     */
+    public function send($size)
     {
         global $globals;
 
-        if ($bits === null) {
-            if (!empty($this->full)) {
-                $bits = self::SELECT_FULL;
-            } elseif (!empty($this->small)) {
-                $bits = self::SELECT_SMALL;
-            } elseif (!empty($this->micro)) {
-                $bits = self::SELECT_MICRO;
-            }
-        }
+        $size_order = ImageSizesSet::sizeToOrder($size);
 
-        if ($bits & self::SELECT_FULL) {
+        // Update the counter if we are sending the 'full' image
+        if ($size_order === 0) {
             XDB::execute('UPDATE images SET seen = seen + 1, lastseen = NOW() WHERE iid = {?}', $this->id());
-            pl_cached_dynamic_content_headers($this->mime);
-            echo $this->full;
-            exit;
         }
 
-        if ($bits & self::SELECT_SMALL) {
-            pl_cached_dynamic_content_headers($this->smallMime());
-            echo $this->small;
-            exit;
+        $res = XDB::query("SELECT  mime, data
+                             FROM  images_sizes
+                            WHERE  size <= {?} AND iid = {?}
+                         ORDER BY  size DESC
+                            LIMIT  1", $size_order, $this->id());
+
+        if ($res->numRows() != 1) {
+            throw new Exception("The image (" . $this->id() . ") couldn't be fetched in size < $size");
         }
 
-        if ($bits & self::SELECT_MICRO) {
-            pl_cached_dynamic_content_headers($this->smallMime());
-            echo $this->micro;
-            exit;
-        }
-
-        throw new Exception("The image couldn't be / hasn't been fetched");
-    }
-
-    public function inline()
-    {
-        return self::data_uri($this->full, $this->mime);
-    }
-
-    public function inlineSmall()
-    {
-        return self::data_uri($this->small, $this->smallMime());
+        $image = new Image($res->fetchOneAssoc());
+        $image->send();
     }
 
     /**
@@ -185,31 +144,18 @@ class FrankizImage extends Meta implements ImageInterface
     *
     * @param $bits  Size to use
     */
-    public function src($bits = self::SELECT_SMALL)
+    public function src($size)
     {
-        $size = 'full';
-        if ($bits == self::SELECT_MICRO) {
-            $size = 'micro';
-        }
-        if ($bits == self::SELECT_SMALL) {
-            $size = 'small';
-        }
         return "image/$size/" . $this->id();
     }
-
-    /*******************************************************************************
-         Build the image
-
-    *******************************************************************************/
 
     /**
     * Build the image from a FrankizUpload instance, stores it into the DB
     *
     * @param $fu      Instance of FrankizUpload
-    * @param $sizes   The set of sizes the image should be converted to
     * @param $rm      Should the temporary file be removed after ? (Default: yes)
     */
-    public function image(FrankizUpload $fu, ImageSizesSet $sizes, $rm = true)
+    public function image(FrankizUpload $fu, $rm = true)
     {
         $infos = getimagesize($fu->path());
         $this->mime = $infos['mime'];
@@ -223,71 +169,22 @@ class FrankizImage extends Meta implements ImageInterface
             throw $e;
         }
 
-        $images = $sizes->resize(file_get_contents($fu->path()));
-
-        $this->full  = $images['full'];
-        $this->small = $images['small'];
-        $this->micro = $images['micro'];
+        $this->images = ImageSizesSet::resize(file_get_contents($fu->path()));
 
         if ($rm) {
             $fu->rm();
         }
 
-        XDB::execute('UPDATE  images
-                         SET  full = {?}, small = {?}, micro = {?},
-                              mime= {?}, x = {?}, y = {?}
-                       WHERE  iid = {?}',
-                             $this->full, $this->small, $this->micro,
-                             $this->mime, $this->x, $this->y, $this->id());
-    }
-
-    /*******************************************************************************
-         Data fetcher
-             (batchFrom, batchSelect, fillFromArray, …)
-    *******************************************************************************/
-
-    public static function batchSelect(array $images, $options = null)
-    {
-        if (empty($options)) {
-            $options = self::SELECT_BASE;
-        }
-
-        $bits = self::optionsToBits($options);
-        $images = array_combine(self::toIds($images), $images);
-
-        $cols = '';
-        if ($bits & (self::SELECT_BASE | self::SELECT_FULL | self::SELECT_SMALL | self::SELECT_MICRO)) {
-            $cols .= ', cid, mime';
-        }
-        if ($bits & self::SELECT_BASE)
-            $cols .= ', x, y, label, seen, lastseen, OCTET_LENGTH(full) size';
-        if ($bits & self::SELECT_FULL)
-            $cols .= ', full';
-        if ($bits & self::SELECT_SMALL)
-            $cols .= ', IFNULL(small, full) AS small';
-        if ($bits & self::SELECT_MICRO)
-            $cols .= ', IFNULL(IFNULL(micro, small), full) AS micro';
-
-        if ($cols != '') {
-            $iter = XDB::iterator("SELECT  iid AS id $cols
-                                     FROM  images AS i
-                                    WHERE  iid IN {?}", array_keys($images));
-
-            $castes = new Collection('Caste');
-            while ($datas = $iter->next()) {
-                $datas['caste'] = $castes->addget($datas['cid']); unset($datas['cid']);
-                $images[$datas['id']]->fillFromArray($datas);
-            }
-
-            if (isset($options[self::SELECT_BASE]))
-                $castes->select($options[self::SELECT_BASE]);
+        foreach ($this->images as $size => $image) {
+            $size_order = ImageSizesSet::sizeToOrder($size);
+            XDB::execute('INSERT INTO  images_sizes
+                                  SET  iid = {?}, size = {?}, mime = {?}, x = {?}, y = {?}, data = {?}
+              ON DUPLICATE KEY UPDATE  mime = {?}, x = {?}, y = {?}, data = {?}',
+                                       $this->id(), $size_order, $image->mime, $image->x, $image->y, $image->data,
+                                       $image->mime, $image->x, $image->y, $image->data);
         }
     }
 
-    /**
-    * Insert an empty image
-    *
-    */
     public function insert()
     {
         XDB::execute('INSERT INTO images SET seen = 0, lastseen = NOW()');
