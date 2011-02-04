@@ -87,7 +87,7 @@ abstract class Select
         }
 
         if (!empty($tobefetched)) {
-            throw new Exception("Some fields (" . implode(', ', $tobefetched) . ") couldn't be fetched");
+            throw new Exception("Some fields (" . implode(', ', $tobefetched) . ") couldn't be fetched in class " . $this->className());
         }
     }
 
@@ -130,7 +130,7 @@ abstract class Select
                     $class = $this->schema->objectType($key);
                     $datas[$key] = new $class($value);
                 }
-                if (array_key_exists($key, $collections)) {
+                if (array_key_exists($key, $collections) && $value !== null) {
                     $datas[$key] = $collections[$key]->addget($value);
                 }
                 if ($value === null) {
