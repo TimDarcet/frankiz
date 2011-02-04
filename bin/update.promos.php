@@ -35,9 +35,9 @@ while ($datas = $iter->next()) {
     $gf = new GroupFilter(new GFC_Name('promo_' . $promo));
     $g = $gf->get(true);
     if ($g instanceof Group) {
-        $g->select(Group::SELECT_CASTES);
+        $g->select(GroupSelect::castes());
         $c = $g->caste(Rights::member());
-        $c->select(Caste::SELECT_BASE)->compute();
+        $c->select(CasteSelect::base())->compute();
         echo $promo . '(' . $g->id() . ') updated: ' . $c->users()->count() . ' members' . "\n";
     } else {
         $f = new UserFilter(new UFC_Promo($promo));
@@ -62,7 +62,7 @@ while ($datas = $iter->next()) {
         $i->insert();
         $i->caste($g->caste(Rights::everybody()));
         $i->label($label);
-        $i->image($upload, ImageSizesSet::group(), false);
+        $i->image($upload, false);
 
         $g->image($i);
 
@@ -74,7 +74,7 @@ echo "-----------------------------------------------\n";
 
 echo 'Updating on_platal' . "\n";
 
-$on_platal = Group::from('on_platal')->select();
+$on_platal = Group::from('on_platal')->select(GroupSelect::castes());
 
 $filters = array();
 foreach (json_decode($globals->core->promos) as $promo) {

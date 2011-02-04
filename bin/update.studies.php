@@ -34,9 +34,9 @@ while (list($formation_id, $abbrev, $label) = $iter->next()) {
     $gf = new GroupFilter(new GFC_Name($name));
     $g = $gf->get(true);
     if ($g instanceof Group) {
-        $g->select(Group::SELECT_CASTES);
+        $g->select(GroupSelect::castes());
         $c = $g->caste(Rights::member());
-        $c->select(Caste::SELECT_BASE)->compute();
+        $c->select(CasteSelect::base())->compute();
         echo $label . ' (' . $g->id() . ") updated\n";
     } else {
         $f = new UserFilter(new UFC_Study(new Formation($formation_id)));
