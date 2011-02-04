@@ -89,7 +89,7 @@ while ($datas = $iter->next()) {
         $g->name('g_' . $g->id());
     }
 
-    if ($datas['score'] > 99) {
+    if ($datas['score'] > 25) {
         $g->ns(Group::NS_BINET);
     } else {
         $g->ns(Group::NS_FREE);
@@ -99,7 +99,9 @@ while ($datas = $iter->next()) {
     $g->external(0);
     $g->leavable(1);
     $g->visible(1);
-    $g->web($datas['http']);
+    if (!empty($datas['http'])) {
+        $g->web($datas['http']);
+    }
     if (!empty($datas['mail'])) {
         $g->mail($datas['mail'] . '@eleves.polytechnique.fr');
     }
@@ -171,6 +173,7 @@ $iter = XDB::iterator('SELECT  c.eleve_id, c.perms, c.passwd,
 $users = $iter->total();
 $k = 0;
 while ($datas = $iter->next()) {
+    $t = microtime(true);
     // Creating the User
     $u = new User();
     $u->insert($datas['eleve_id']);
@@ -180,7 +183,7 @@ while ($datas = $iter->next()) {
     $u->nickname(conv($datas['surnom']));
     $u->birthdate(new FrankizDateTime($datas['date_nais']));
     $u->gender(($datas['sexe'] == 1) ? User::GENDER_FEMALE : User::GENDER_MALE);
-    $u->cellphone($datas['portable']);
+    $u->cellphone(new Phone($datas['portable']));
     $u->poly($datas['login']);
 
     // Linking with the room
@@ -226,7 +229,7 @@ while ($datas = $iter->next()) {
     if (!empty($datas['nation'])) {
         $nf = new GroupFilter(new GFC_Name('nation_' . conv_name($datas['nation'])));
         $n = $nf->get(true);
-        $n->select(Group::SELECT_CASTES);
+        $n->select(GroupSelect::castes());
         $n->caste(Rights::member())->addUser($u);
     }
 
@@ -234,7 +237,7 @@ while ($datas = $iter->next()) {
     if (!empty($datas['sport'])) {
         $nf = new GroupFilter(new GFC_Name('sport_' . conv_name($datas['sport'])));
         $n = $nf->get(true);
-        $n->select(Group::SELECT_CASTES);
+        $n->select(GroupSelect::castes());
         $n->caste(Rights::member())->addUser($u);
     }
 
@@ -244,7 +247,7 @@ while ($datas = $iter->next()) {
         $tokens = explode('_', $perm);
         if ($tokens[0] == 'webmestre' || $tokens[0] == 'prez') {
             $g = new Group($tokens[1]);
-            $g->select(Group::SELECT_CASTES);
+            $g->select(GroupSelect::castes());
             $g->caste(Rights::admin())->addUser($u);
         }
     }
@@ -254,21 +257,24 @@ while ($datas = $iter->next()) {
                                FROM  trombino.membres AS m
                               WHERE  m.eleve_id = {?}", $u->id());
     $l = 0;
+    $groups = new Collection('Group');
     while ($g_datas = $g_iter->next()) {
         $g = new Group($g_datas['binet_id']);
-        $g->select(Group::SELECT_CASTES);
-        $g->caste(Rights::member())->addUser($u);
+        $groups->add($g);
         $u->comments($g, conv($g_datas['remarque']));
-        $l++;
 
         if ($g->id() == 1 && strlen(conv_name($u->nickname())) > 1) {
             $u->addStudy(0, $datas['promo'], (int) $datas['promo'] + 4, $datas['promo'], conv_name($u->nickname()));
         }
     }
+    $groups->select(GroupSelect::castes());
+    foreach ($groups as $g) {
+        $g->caste(Rights::member())->addUser($u);
+    }
 
     $k++;
     echo 'User ' . $k . '/' . $users . ' : ' . $u->id() . ' - ' . $datas['promo'] . ' - '
-                                             . $l . " groups - " . $u->login() . "\n";
+                                             . $groups->count() . " groups - " . $u->login() . '   ' . (microtime(true) - $t) . "\n";
 }
 
 echo "-----------------------------------------------\n";
