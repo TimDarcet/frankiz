@@ -1,24 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 3.3.8.1
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Jan 28, 2011 at 10:25 PM
--- Server version: 5.1.51
--- PHP Version: 5.3.5-pl0-gentoo
-
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
---
--- Database: 'dev'
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table 'groups'
---
-
 DROP TABLE IF EXISTS groups;
 CREATE TABLE IF NOT EXISTS groups (
   gid int(11) NOT NULL AUTO_INCREMENT,
@@ -27,7 +6,7 @@ CREATE TABLE IF NOT EXISTS groups (
   external tinyint(1) NOT NULL,
   leavable tinyint(1) NOT NULL,
   visible tinyint(1) NOT NULL,
-  image int(11) NOT NULL,
+  image int(11) DEFAULT NULL,
   label varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   score int(11) NOT NULL,
   description text COLLATE utf8_unicode_ci NOT NULL,
