@@ -47,6 +47,7 @@ class DataNotFetchedException extends Exception
 abstract class Meta
 {
     protected $id = null;
+    protected $_autocommit = true; //TODO
 
     public function __call($method, $arguments)
     {
@@ -57,12 +58,12 @@ abstract class Meta
 
         if (!empty($arguments)) {
             $table = $schema->table();
-            $field = '`' . $method . '`';
+            $field = $method;
             $id    = $schema->id();
 
             if ($schema->isScalar($field)) {
                 XDB::execute("UPDATE  $table
-                                 SET  $field = {?}
+                                 SET  `$field` = {?}
                                WHERE  $id = {?}", $arguments[0], $this->id());
             } else if ($schema->isObject($field)) {
                 $objectType = $schema->objectType($field);
@@ -78,7 +79,7 @@ abstract class Meta
                 }
 
                 XDB::execute("UPDATE  $table
-                                 SET  $field = {?}
+                                 SET  `$field` = {?}
                                WHERE  $id = {?}", $data, $this->id());
             } else {
                 throw new Exception('Auto setter for Collections is not supported yet');
@@ -251,7 +252,7 @@ abstract class Meta
     */
     public static function batchSelect(array $metas, $options = null)
     {
-        throw new Exception("batchSelect isn't implemented");
+        throw new Exception("batchSelect isn't implemented in " . get_called_class());
     }
 }
 
