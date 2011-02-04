@@ -136,32 +136,23 @@ a {
 }
 
 /*******************************************************************************
-     1bis   Account
+     2   Nav
 
 *******************************************************************************/
 
 #account {
     position: absolute;
-    right: 5px;
-    top: 10px;
-    width: 220px;
+    right: 0;
+    top: 25px;
+    width: 215px;
     height: 220px;
     z-index: 10;
     text-align: left;
 
     .face {
-        width: 150px;
-        height: 180px;
+        max-width: 150px;
+        height: 160px;
     }
-}
-
-/*******************************************************************************
-     2   Nav
-
-*******************************************************************************/
-
-#header {
-
 }
 
 #logo {
@@ -182,6 +173,19 @@ a {
     left: 0;
     width: 500px;
     height: 130px;
+}
+
+#quicksearch {
+    display: none; // TODO
+    position: absolute;
+    top: 100px;
+    left: 500px;
+    width: 300px;
+    height: 25px;
+
+    input {
+        width: 200px;
+    }
 }
 
 #nav {
@@ -213,6 +217,15 @@ a {
     }
 }
 
+#smartphone {
+    position: absolute;
+    top: 15px;
+    height: 20px;
+    .alphabackground;
+
+    width: 250px;
+}
+
 /*******************************************************************************
      3   Content
 
@@ -228,8 +241,9 @@ a {
 
     .module {
         position: relative;
+        margin-bottom: 10px;
 
-        .head {
+        > .head {
             position: relative;
             background-color: @background;
             .border-radius-top;
@@ -240,10 +254,9 @@ a {
             color: @color;
         }
 
-        .body {
+        > .body {
             position: relative;
-            background-image: url("../default/images/75p.png");
-            background-repeat: repeat;
+            .alphabackground;
             .border-radius-bottom;
             border:1px @color solid;
             border-top: none;
@@ -346,8 +359,7 @@ body.disabledAside > #aside {
 
     > .body {
         position: relative;
-        background-image: url("../default/images/75p.png");
-        background-repeat: repeat;
+        .alphabackground;
         padding: 2px;
         border: 1px @color solid;
         border-top: none;
@@ -496,7 +508,7 @@ input, textarea {
 
 .groups_picker {
     position: relative;
-    width: 100%;
+    width: auto;
     border: 1px solid @border;
     color: white;
     background-color: @color;
@@ -513,7 +525,7 @@ input, textarea {
     }
 
     .searcher input {
-        width: 90%;
+        width: auto;
         margin-left: 5%;
     }
 

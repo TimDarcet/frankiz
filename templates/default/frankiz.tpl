@@ -43,6 +43,15 @@
             <div id="nav">
                 {include file="nav.tpl"|rel}
             </div>
+
+            <div id="quicksearch">
+                <form enctype="multipart/form-data" method="post" action="tol/">
+                    <input type="hidden" name="quicksearch" value="quicksearch" />
+                    <label>Recherche rapide
+                    <input type="text" name="free" value="" />
+                    </label>
+                </form>
+            </div>
         </div>
 
         <div id="content">
@@ -53,9 +62,11 @@
             {include file="aside.tpl"|rel}
         </div>
 
-        <div id="footer">
-            {include file="footer.tpl"|rel}
-        </div>
+        {smartphone}
+            <div id="smartphone">
+                <a href="profile/skin/resmartphone">Revenir au site SmartPhone</a>
+            </div>
+        {/smartphone}
 
         {include file=common.devel.tpl}
     </body>

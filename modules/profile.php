@@ -35,6 +35,7 @@ class ProfileModule extends PLModule
                      'profile/reseau/demande_ip'       => $this->make_hook('demande_ip',              AUTH_COOKIE),
                      'profile/skin'                    => $this->make_hook('skin',                    AUTH_PUBLIC),
                      'profile/skin/unsmartphone'       => $this->make_hook('skin_unsmartphone',       AUTH_PUBLIC),
+                     'profile/skin/resmartphone'       => $this->make_hook('skin_resmartphone',       AUTH_PUBLIC),
                      'profile/photo'                   => $this->make_hook('photo',                   AUTH_COOKIE),
                      'profile/photo/small'             => $this->make_hook('photo_small',             AUTH_COOKIE),
                      'profile/siteweb/upload'          => $this->make_hook('siteweb_upload',          AUTH_MDP),
@@ -407,6 +408,15 @@ class ProfileModule extends PLModule
     function handler_skin_unsmartphone($page, $url)
     {
         S::set('skin', S::user()->skin());
+        pl_redirect($url);
+        exit;
+    }
+
+    function handler_skin_resmartphone($page, $url)
+    {
+        global $globals;
+
+        S::set('skin', $globals->smartphone_skin);
         pl_redirect($url);
         exit;
     }
