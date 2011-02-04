@@ -40,9 +40,10 @@
  */
 
 require 'connect.db.inc.php';
+$globals->debug = 0;
 
 $gf = new GroupFilter(new GFC_Name('tol'));
-$group = $gf->get(true)->select(Group::SELECT_CASTES);
+$group = $gf->get(true)->select(GroupSelect::castes());
 $tol_caste = $group->caste(Rights::everybody());
 
 // Concerned users
@@ -62,9 +63,10 @@ while (true) {
     echo "Chunk from $from to " . ($from+$chunk) . "\n";
 
     $users = $uf->get(new PlLimit($chunk, $from));
-    if ($users->count() == 0)
+    if ($users->count() == 0) {
         break;
-    $users->select(User::SELECT_BASE | User::SELECT_POLY);
+    }
+    $users->select(new UserSelect(array('firstname', 'lastname', 'nickname', $field)));
 
     foreach ($users as $u)
     {
@@ -78,7 +80,7 @@ while (true) {
                 $i->insert();
                 $i->caste($tol_caste);
                 $i->label($u->firstname() . ' ' . $u->lastname());
-                $i->image($upload, ImageSizesSet::tol() ,false);
+                $i->image($upload, false);
                 if ($original) {
                     $u->original($i);
                 } else {
