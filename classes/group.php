@@ -58,7 +58,7 @@ class GroupSelect extends Select
     }
 
     public static function base($subs = null) {
-        return new GroupSelect(array('ns', 'score', 'name', 'label'), $subs);
+        return new GroupSelect(array('ns', 'score', 'name', 'label', 'image'), $subs);
     }
 
     public static function castes($subs = null) {
@@ -67,12 +67,12 @@ class GroupSelect extends Select
 
     public static function see() {
         return new GroupSelect(array('ns', 'score', 'name', 'label', 'description',
-                                     'web', 'mail', 'visible', 'castes'),
+                                      'image', 'web', 'mail', 'visible', 'castes'),
                                array('castes' => CasteSelect::base()));
     }
 
     protected function handlers() {
-        return array('main' => Schema::group()->scalars(),
+        return array('main' => array_merge(Schema::group()->scalars(), array('image')),
                    'castes' => array('castes'));
     }
 
@@ -140,23 +140,6 @@ class Group extends Meta
             return $this->id();
 
         return $this->name();
-    }
-
-    public function image(FrankizImage $image = null)
-    {
-        global $globals;
-
-        if ($image != null) {
-            $this->image = $image;
-            XDB::execute('UPDATE groups SET image = {?} WHERE gid = {?}',
-                                              $image->id(), $this->id());
-        }
-
-        if (!empty($this->image)) {
-            return $this->image;
-        }
-
-        return new StaticImage($globals->images->group);
     }
 
     public function caste(Rights $rights = null)
