@@ -43,7 +43,7 @@ class AdminModule extends PlModule
         $page->assign('admin_groups', $admin_groups);
 
         $validate_filter = new ValidateFilter(new VFC_Group($admin_groups));
-        $validates = $validate_filter->get()->select(Validate::SELECT_BASE);
+        $validates = $validate_filter->get()->select(ValidateSelect::quick());
         $validates = $validates->split('group');
         $page->assign('validates', $validates);
 
@@ -121,12 +121,15 @@ class AdminModule extends PlModule
         $image->send();
     }
 
-    function handler_validate($page, $action = 'list', $id = null) 
-    {   
-        $filter = new ValidateFilter(new VFC_User(S::user()));
+    function handler_validate($page, $gid = null)
+    {
+        $group = new Group($gid);
+        if (!S::user()->hasRights($group, Rights::admin())) {
+            throw new Exception("You don't have the credential to validate requets in this group");
+        }
 
-        $collec = $filter->get();
-        $collec->select(Validate::SELECT_BASE | Validate::SELECT_ITEM);
+        $filter = new ValidateFilter(new VFC_Group($group));
+        $collec = $filter->get()->select(ValidateSelect::validate());
 
         if(Env::has('val_id'))
         {
@@ -138,12 +141,12 @@ class AdminModule extends PlModule
                 if ($el->handle_form() && (Env::has('accept') || Env::has('refuse')))
                     $collec->remove(Env::v('val_id'));
             }
-                
         }
 
         $page->assign('val', $collec);
         $page->addJsLink('validate.js');
         $page->addCssLink('validate.css');
+        $page->assign('title', "Validations des requêtes");
         $page->changeTpl('validate/validate.tpl');
     }
 
