@@ -240,6 +240,26 @@ class Collection extends PlAbstractIterable implements Countable
     }
 
     /**
+    * Return this collection minus the elements of the passed collection
+    *
+    * @param $collec Another Collection containing the same class of elements
+    */
+    public function diff(Collection $collec)
+    {
+        if (empty($this->className)) {
+            $this->className = $collec->className();
+        }
+
+        foreach ($collec->collected as $id => $c) {
+            if ($this->get($id)) {
+                $this->remove($id);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
     * Gets an item from the Collection
     *
     * @param $mixed An Item, an id or any unique identifier supported by isMe()
@@ -337,8 +357,12 @@ class Collection extends PlAbstractIterable implements Countable
         foreach ($this->collected as $c)
         {
             $key = $c->$methodName();
-            if (!isset($split[$key]))
+            if ($key instanceof Meta) {
+                $key = $key->id();
+            }
+            if (!isset($split[$key])) {
                 $split[$key] = new Collection($this->className);
+            }
 
             $split[$key]->add($c);
         }
