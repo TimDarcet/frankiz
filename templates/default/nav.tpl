@@ -20,18 +20,27 @@
 {*                                                                        *}
 {**************************************************************************}
 
+{if $smarty.session.auth >= AUTH_COOKIE}
+    <div class="account">
+        <a href="admin">
+        <img src="{$smarty.session.user->image()|image:'big'|smarty:nodefaults}"
+             title="{$smarty.session.user->displayName()}" />
+        </a>
+    </div>
+{/if}
+
 <ul>
     {if $smarty.session.auth >= AUTH_INTERNAL}
-    <li><a {path_to_href_attribute path="news"}>annonces</a></li>
-    <li><a {path_to_href_attribute path="activity"}>activités</a> / <a {path_to_href_attribute path="activity/timetable"}>edT</a></li>
-    <li><a {path_to_href_attribute path="groups"}>groupes & binets</a></li>
-    <li><a {path_to_href_attribute path="tol"} accesskey="t">trombino</a></li>
+        <li><a {path_to_href_attribute path="news"}>annonces</a></li>
+        <li><a {path_to_href_attribute path="activity"}>activités</a> / <a {path_to_href_attribute path="activity/timetable"}>edT</a></li>
+        <li><a {path_to_href_attribute path="groups"}>groupes & binets</a></li>
+        <li><a {path_to_href_attribute path="tol"} accesskey="t">trombino</a></li>
     {/if}
     {if $smarty.session.auth >= AUTH_COOKIE}
-    <li><a {path_to_href_attribute path="admin"} accesskey="g">administration</a><li>
-    <li><a {path_to_href_attribute path="exit"} accesskey="l">Se déconnecter</a></li>
+        <li><a {path_to_href_attribute path="admin"} accesskey="g">administration</a><li>
+        <li><a {path_to_href_attribute path="exit"} accesskey="l">Se déconnecter</a></li>
     {else}
-    <li><a {path_to_href_attribute path="login"} accesskey="l">Se connecter</a></li>
+        <li class="log"><a {path_to_href_attribute path="login"} accesskey="l">Se connecter</a></li>
     {/if}
 </ul>
 

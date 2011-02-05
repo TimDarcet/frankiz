@@ -38,7 +38,17 @@ class AdminModule extends PlModule
 
     function handler_admin($page)
     {
+        $admin_groups = S::user()->castes(Rights::admin())->groups();
+        $admin_groups->diff($admin_groups->filter('ns', Group::NS_USER));
+        $page->assign('admin_groups', $admin_groups);
+
+        $validate_filter = new ValidateFilter(new VFC_Group($admin_groups));
+        $validates = $validate_filter->get()->select(Validate::SELECT_BASE);
+        $validates = $validates->split('group');
+        $page->assign('validates', $validates);
+
         $page->assign('title', "Administration");
+        $page->addCssLink('admin.css');
         $page->changeTpl('admin/index.tpl');
     }
 

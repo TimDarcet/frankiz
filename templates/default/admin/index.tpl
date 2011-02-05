@@ -20,8 +20,54 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<a class="lien" href="admin/validate">Validations</a><br/>
+<div class="threecols">
+    <div class="module">
+        <div class="head">Compte</div>
+        <div class="body">
+            <ul>
+                <li><a href="profile/account">Modifier mon compte</a></li>
+                <li><a href="profile/mails">Mes mails</a></li>
+                <li><a href="profile/skin">Changer l'habillage</a></li>
+                <li><a href="profile/minimodules">Gérer les minimodules</a></li>
+                <li><a href="profile/network">Gérer mes données réseau</a></li>
+            </ul>
+            {if $smarty.session.user->checkPerms('admin')}
+                <ul>
+                    <li><a href="wiki/admin">Administrer les wikis</a></li>
+                </ul>
+            {/if}
+        </div>
+    </div>
 
-<a class="lien" href="wiki/admin">Administrer les wikis</a><br/>
+    <div class="module">
+        <div class="head">Contribuer</div>
+        <div class="body">
+                <li><a href="proposal/news">Annonce</a></li>
+                <li><a href="proposal/activity">Activité</a></li>
+                <li><a href="proposal/survey">Sondage</a></li>
+                <li><a href="proposal/mail">Mail promo</a></li>
+                <li><a href="proposal/qdj">Question Du Jour</a></li>
+        </div>
+    </div>
+
+    <div class="module">
+        <div class="head">Groupes & Binets</div>
+        <div class="body">
+            {foreach from=$admin_groups|order:'score' item='group'}
+            <div>
+                <img src="{$group->image()|image:'micro':'group'}" />
+                {$group|group}
+                <a href="groups/admin/{$group->id()}">Administrer</a>
+                {assign var='id' value=$group->id()}
+                {if t($validates.$id)}
+                    <a href="admin/validate/{$group->id()}">{$validates.$id|@count}Validations</a>
+                {/if}
+            </div>
+            {/foreach}
+        </div>
+    </div>
+
+</div>
+
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

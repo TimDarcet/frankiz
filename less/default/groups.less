@@ -18,15 +18,32 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-/*******************************************************************************
-     Module Groups
-
-*******************************************************************************/
+@import "lib.less";
 
 #content {
-    .top img {
-        float: left;
-        width: 300px;
+    .top {
+        width: auto;
+        position: relative;
+        padding: 10px;
+        padding-top: 0;
+        > div {
+            position: relative;
+            padding: 10px;
+            .alphabackground;
+            .border-radius;
+            > div {
+                position: relative;
+                img {
+                    float: left;
+                    width: 300px;
+                }
+                .label {
+                    text-align: center;
+                    font-weight: bold;
+                    font-size: 20px;
+                }
+            }
+        }
     }
 
     .bottom {
@@ -38,9 +55,12 @@
 
     .users {
         position: relative;
+        left: 15px;
+        .alphabackground;
+        .border-radius;
+        position: relative;
         float: left;
         width: 45%;
-        border:1px #003757 solid;
     }
 
     .users li {
@@ -65,21 +85,5 @@
     .news {
         position: relative;
         width: 45%;
-    }
-
-    .container {
-        text-align: center;
-
-        .module {
-            position: relative;
-            display: inline-block;
-            width: 32%;
-            margin: 6px;
-            vertical-align: top;
-
-            table {
-                width: 100%;
-            }
-        }
     }
 }
