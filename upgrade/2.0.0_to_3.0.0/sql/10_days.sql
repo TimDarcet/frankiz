@@ -1,40 +1,11 @@
--- phpMyAdmin SQL Dump
--- version 3.3.7
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Jan 11, 2011 at 06:08 PM
--- Server version: 5.1.51
--- PHP Version: 5.3.4-pl0-gentoo
-
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Database: `frankiz`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `days`
---
-
-DROP TABLE IF EXISTS `days`;
-CREATE TABLE IF NOT EXISTS `days` (
+DROP TABLE IF EXISTS days;
+CREATE TABLE IF NOT EXISTS days (
   `name` varchar(255) DEFAULT NULL,
   `day` tinyint(4) DEFAULT NULL,
-  `month` tinyint(4) DEFAULT NULL
+  `month` tinyint(4) DEFAULT NULL,
+  KEY `day` (`day`),
+  KEY `month` (`month`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `days`
---
 
 INSERT INTO `days` (`name`, `day`, `month`) VALUES
 ('Juste', 14, 10),
