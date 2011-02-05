@@ -62,9 +62,9 @@ class WikiModule extends PlModule
             $content = trim($json->content);
             if ($content != $wiki->content()) {
                 $wiki->update($content);
-                $html = $wiki->select(Wiki::SELECT_VERSION)->html();
+                $wiki->select(Wiki::SELECT_VERSION);
             }
-            $page->jsonAssign('html', $html);
+            $page->jsonAssign('html', $wiki->html());
         } catch(Exception $e) {
             $page->jsonAssign('success', false);
         }
