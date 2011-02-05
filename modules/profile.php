@@ -23,8 +23,7 @@ class ProfileModule extends PLModule
 {
     public function handlers()
     {
-        return array('profile'                         => $this->make_hook('profile',                 AUTH_COOKIE),
-                     'profile/account'                 => $this->make_hook('account',                 AUTH_MDP),
+        return array('profile/account'                 => $this->make_hook('account',                 AUTH_MDP),
                      'profile/fkz'                     => $this->make_hook('fkz',                     AUTH_COOKIE),
                      'profile/mails'                   => $this->make_hook('mails',                   AUTH_COOKIE),
                      'profile/password'                => $this->make_hook('password',                AUTH_MDP),
@@ -57,12 +56,6 @@ class ProfileModule extends PLModule
                     );
     }
 
-    public function handler_profile($page)
-    {
-        $page->assign('title', "Mon compte");
-        $page->changeTpl('profile/index.tpl');
-    }
-
     public function handler_account($page)
     {
         S::user()->select(UserSelect::login());
@@ -91,7 +84,7 @@ class ProfileModule extends PLModule
                 {
                     $image = new FrankizImage();
                     $image->insert();
-                    $image->image(FrankizUpload::v('image'), ImageSizesSet::tol());
+                    $image->image(FrankizUpload::v('image'));
                     $tv = new TolValidate($image);
                     $v = new Validate(array(
                         'user'  => S::user(),
@@ -110,7 +103,7 @@ class ProfileModule extends PLModule
             }
             S::user()->nickname(Env::t('nickname'));
             S::user()->bestEmail(Env::t('bestalias'));
-            S::user()->cellphone(Env::t('cellphone'));
+            S::user()->cellphone(new Phone(Env::t('cellphone')));
             S::user()->email_format((Env::t('format')=='text') ? User::FORMAT_TEXT : User::FORMAT_HTML);
             S::user()->comment(Env::t('comment'));
         }
