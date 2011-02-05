@@ -68,7 +68,7 @@ class LinkSelect extends Select
     }
 }
 
-class Link extends meta
+class Link extends Meta
 {
     protected $link;
     protected $label;
@@ -79,10 +79,9 @@ class Link extends meta
     protected $rank;
 
     // @param $rm_prev If the previous image must ba deleted
-    public function image(FrankizImage $image, $rm_prev = true) 
+    public function image(FrankizImage $image = null, $rm_prev = true) 
     {
-        if ($image != null)
-        {
+        if ($image != null) {
             if ($rm_prev && $this->image != false)
                 $this->image->delete();
             $this->image = $image;
@@ -108,7 +107,9 @@ class Link extends meta
     // @param $rm_img If the image must be deleted
     public function delete($rm_img = true)
     {
-        $this->image->delete();
+        if ($rm_img) {
+            $this->image->delete();
+        }
         parent::delete();
     }
 
@@ -117,19 +118,15 @@ class Link extends meta
     {
         if ($ns === false) {
             $res = XDB::query('SELECT  id
-                                 FROM  links')->fetchColumn();
-        }
-        else {
+                                 FROM  links');
+        } else {
             $res = XDB::query('SELECT  id
                                  FROM  links
-                                WHERE  ns = {?}', $ns)->fetchColumn();
+                                WHERE  ns = {?}', $ns);
         }
 
         $collec = new Collection('Link');
-        foreach($res as $id)
-        {
-            $collec->add($id);
-        }
+        $collec->add($res->fetchColumn());
 
         return $collec;
     }
