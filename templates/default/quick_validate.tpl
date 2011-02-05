@@ -20,10 +20,10 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if ( t($quick_validate) && $quick_validate|@count > 0) || (t($quick_requests) && $quick_requests|@count > 0)}
+{if $quick_validate|@count > 0 || $quick_requests|@count > 0}
     <div id="quick_validate">
         <div>
-        {if t($quick_validate) && $quick_validate|@count > 0}
+        {if $quick_validate|@count > 0}
             <div class="validate">
                 À valider:
                 <ul>
@@ -43,7 +43,7 @@
                 </ul>
             </div>
         {/if}
-        {if t($quick_requests) && $quick_requests|@count > 0}
+        {if $quick_requests|@count > 0}
             <div class="requests">
                 En attente:
                 <ul>
