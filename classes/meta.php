@@ -105,7 +105,7 @@ abstract class Meta
             if (static::isId($datas)) {
                 $this->id = $datas;
             } else {
-                throw new NotAnIdException("$datas is not a correct Id for $className");
+                throw new NotAnIdException("$datas is not a correct Id for "  .get_class($this));
             }
         } else {
             $this->fillFromArray($datas);
