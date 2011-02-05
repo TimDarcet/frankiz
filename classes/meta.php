@@ -174,8 +174,12 @@ abstract class Meta
 
     public function delete()
     {
-        if ($this->id == null)
-            throw new Exception("This " . get_class($this) . " doesn't appear to exist in the DB and therefore can't be deleted.");
+        $schema = Schema::get(get_class($this));
+
+        $table = $schema->table();
+        $id    = $schema->id();
+
+        XDB::execute("DELETE FROM $table WHERE $id = {?}", $this->id());
     }
 
     public function export($bits = null)
