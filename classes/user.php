@@ -779,11 +779,11 @@ class User extends Meta
 
         if ($bits & self::EXPORT_MICRO) {
             $export['displayName'] = $this->displayName();
-            $export['micro'] = $this->image()->src(ImageInterface::SELECT_MICRO);
+            $export['micro'] = $this->image()->src('micro');
         }
         if ($bits & self::EXPORT_SMALL) {
             $export['displayName'] = $this->displayName();
-            $export['small'] = $this->image()->src(ImageInterface::SELECT_SMALL);
+            $export['small'] = $this->image()->src('small');
         }
 
         return $export;
