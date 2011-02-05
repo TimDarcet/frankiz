@@ -87,36 +87,24 @@ class ImagesModule extends PlModule
     function handler_image($page, $size, $iid = null)
     {
         $image = new FrankizImage($iid);
-        $image->select(array(FrankizImage::SELECT_BASE => CasteSelect::base()));
-        $image->caste()->group()->select(GroupSelect::base());
+        $image->select(FrankizImageSelect::caste());
 
-        if (S::i('auth') == AUTH_PUBLIC && !$image->caste()->external()) {
-                // TODO: show an 'invalid credential' picture instead
-                throw new Exception("This image is not accessible from the outside");
-                exit;
+        /*
+         * If the user is not logged-in and outside of the campus,
+         * he *must* be member of the specified caste.
+         */
+        if (S::i('auth') == AUTH_PUBLIC && !S::user()->castes()->get($image->caste())) {
+            throw new Exception("This image is not accessible from the outside");
+            exit;
         }
 
-        // If the image isn't public & we are not member of the group
-        if (!$image->caste()->rights()->isMe(Rights::everybody())
-            && (!S::user()->hasRights($image->caste()->group(), Rights::member()))) {
-                // TODO: show an 'invalid credential' picture instead
-                throw new Exception("You don't have the credential to view this image");
-                exit;
+        if (!$image->caste()->rights()->isMe(Rights::everybody()) && !S::user()->castes()->get($image->caste())) {
+            // TODO: show an 'invalid credential' picture instead
+            throw new Exception("You don't have the credential to view this image");
+            exit;
         }
 
-        $select = ImageInterface::SELECT_FULL;
-        switch ($size) {
-            case 'micro':
-                $select = ImageInterface::SELECT_MICRO;
-                break;
-                
-            case 'small':
-                $select = ImageInterface::SELECT_SMALL;
-                break;
-        }
-
-        $image->select($select);
-        $image->send();
+        $image->send($size);
     }
 }
 
