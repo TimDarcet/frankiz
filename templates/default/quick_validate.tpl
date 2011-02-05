@@ -20,18 +20,40 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if t($quick_validate) && $quick_validate|@count > 0}
+{if ( t($quick_validate) && $quick_validate|@count > 0) || (t($quick_requests) && $quick_requests|@count > 0)}
     <div id="quick_validate">
-        <ul>
-            {foreach from=$quick_validate item='validates'}
-                {assign var='first' value=$validates->first()}
-                {assign var='grp' value=$first->group()}
-                {assign var='castes' value=$smarty.session.user->castes()}
-                {assign var='groups' value=$castes->groups()}
-                {assign var='group' value=$groups->get($grp)}
-                <li>{$group->label()} : <a href="admin/validate/{$group->id()}">{$validates->count()} requêtes</a></li>
-            {/foreach}
-        </ul>
+        <div>
+        {if t($quick_validate) && $quick_validate|@count > 0}
+            <div class="validate">
+                À valider:
+                <ul>
+                    {foreach from=$quick_validate item='validates'}
+                        {assign var='first' value=$validates->first()}
+                        {assign var='grp' value=$first->group()}
+                        {assign var='castes' value=$smarty.session.user->castes()}
+                        {assign var='groups' value=$castes->groups()}
+                        {assign var='group' value=$groups->get($grp)}
+                        <li>
+                            Groupe {$group->label()} :
+                            <a href="admin/validate/{$group->id()}">
+                                {$validates->count()} requête{if $validates->count() > 1}s{/if}
+                            </a>
+                        </li>
+                    {/foreach}
+                </ul>
+            </div>
+        {/if}
+        {if t($quick_requests) && $quick_requests|@count > 0}
+            <div class="requests">
+                En attente:
+                <ul>
+                    {foreach from=$quick_requests item='validate'}
+                        <li>Requête de type "{$validate->type()}" depuis {$validate->created()|age}</li>
+                    {/foreach}
+                </ul>
+            </div>
+        {/if}
+        </div>
     </div>
 {/if}
 
