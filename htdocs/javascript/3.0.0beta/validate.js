@@ -1,5 +1,9 @@
-$(document).ready(function() {
-	
+$(function() {
+
+    $("li.validate > .title").click(function() {
+        $(this).siblings(".more").toggle();
+    });
+
 	// For validations
 	$(".hide").hide();
 	$(".click").click(function() {

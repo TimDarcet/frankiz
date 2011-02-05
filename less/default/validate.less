@@ -18,21 +18,15 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+@import "lib.less";
+
 /*******************************************************************************
      0   General purposes for validations and proposals
 
 *******************************************************************************/
 
-.small {
-    font-size: 80%;
-}
-
-.click {
-    cursor: pointer;
-}
-
 .margin_right {
-	margin-right: 20px;
+    margin-right: 20px;
 }
 
 .msg_proposal {
@@ -89,20 +83,32 @@
 
 *******************************************************************************/
 
-.validate div {
-    clear: both;
-    width: 100%;
-    border: 1;
-}
-
-.validate .text_validate {
-    width: 90%;
-}
-
-.validate textarea {
-    resize: auto;
-    width: 90%;
-    height: 80px;
+ul {
+    padding-left: 20px;
+    padding-right: 20px;
+    li.validate {
+        .alphabackground;
+        list-style: none;
+        .title {
+            cursor: pointer;
+        }
+        .more {
+            display: none;
+            .rules {
+                font-size: 12px;
+            }
+        }
+    }
+    
+    .validate .text_validate {
+        width: 90%;
+    }
+    
+    .validate textarea {
+        resize: auto;
+        width: 90%;
+        height: 80px;
+    }
 }
 
 

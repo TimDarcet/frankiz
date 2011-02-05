@@ -19,17 +19,17 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-/* contains all admin stuff */
 class ProposalModule extends PlModule
 {
     function handlers()
     {
         return array(
-            'proposal/news'             => $this->make_hook('news', AUTH_COOKIE),
-            'proposal/activity'         => $this->make_hook('activity', AUTH_COOKIE),
+            'proposal/news'             => $this->make_hook('news',          AUTH_COOKIE),
+            'proposal/activity'         => $this->make_hook('activity',      AUTH_COOKIE),
             'proposal/activity/ajax'    => $this->make_hook('activity_ajax', AUTH_COOKIE),
-            'proposal/mail'             => $this->make_hook('mail', AUTH_COOKIE),
-            'proposal/qdj'              => $this->make_hook('qdj', AUTH_COOKIE),
+            'proposal/mail'             => $this->make_hook('mail',          AUTH_COOKIE),
+            'proposal/qdj'              => $this->make_hook('qdj',           AUTH_COOKIE),
+            'proposal/survey'           => $this->make_hook('survey',        AUTH_COOKIE),
         );
     }
 
@@ -302,4 +302,47 @@ class ProposalModule extends PlModule
         $page->assign('title', 'Proposition d\'une qdj');
         $page->changeTpl('validate/prop.qdj.tpl');
     }
-}    
+
+    function handler_survey($page)
+    {
+        if (Env::has('send')) {
+            if($title == '' || $content == '' || $end == '' || $gid == '')
+            {
+                $page->assign('msg', 'Il manque des informations pour créer l\'annonce.');
+            }
+            else 
+            {
+                try
+                {
+                    $end_c = new FrankizDateTime($end);
+                    $n = new News(array(
+                        'writer'    => S::user(),
+                        'target'    => new Group($gid),
+                        'iid'       => $iid,
+                        'origin'    => new Group($origin),
+                        'title'     => $title,
+                        'content'   => $content,
+                        'end'       => $end_c,
+                        'comment'   => $comment));
+                    $nv = new NewsValidate($n);
+                    $v = new Validate(array(
+                        'user'  => S::user(),
+                        'gid'   => $gid,
+                        'item'  => $nv,
+                        'type'  => 'news'));
+                    $v->insert();
+                    $page->assign('envoye', true);
+                }
+                catch (Exception $e)
+                {
+                    $page->assign('msg', 'La date n\'est pas valide.');
+                }
+            }
+        }
+
+        $page->assign('title', 'Créer un sondage');
+        $page->addCssLink('validate.css');
+        //$page->addCssLink('surveys.css');
+        $page->changeTpl('validate/prop.survey.tpl');
+    }
+}

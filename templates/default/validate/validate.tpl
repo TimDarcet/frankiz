@@ -33,122 +33,99 @@
     </div>
 
 {else}
-    
+    <ul>
     {foreach from=$val item=valid}
-    <div class="validate box_proposal">
-    <form enctype="multipart/form-data" method="post" action="admin/validate/">
-        {assign var='writer' value=$valid->writer()}
-        {assign var='group' value=$valid->group()}
-        {assign var='item' value=$valid->item()}
+        <li class="validate box_proposal">
+            {assign var='writer' value=$valid->writer()}
+            {assign var='group' value=$valid->group()}
+            {assign var='item' value=$valid->item()}
 
-        <div class="title">
-            Validation de : {$valid->type()}
-        </div>
-
-        <div class="small">
-            {include file="wiki.tpl"|rel name='validate/rules/'|cat:$valid->type()}
-        </div>
-
-        <div class="subtitle">
-        </div>
-
-        <table>
-            <tr>
-                <td width=20%>
-                    Demandeur :
-                </td>
-                <td>
-                    {$writer->displayName()}
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    Groupe destinataire :
-                </td>
-                <td>
-                    {$group->label()}
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    Date de demande :
-                </td>
-                <td>
-                    {$valid->created()}
-                </td>
-            </tr>
-        </table>
-
-        <div class="click subtitle">
-            Informations
-        </div>
-        <table class="hide show">
-            {include file=$item->show()|rel}
-        </table>
-
-        {if $item->editor()}
-            <div class="click subtitle">
-                Editer
+            <div class="title">
+                Requête de type "{$valid->label()}" en attente depuis {$valid->created()|age}
             </div>
-            <table class="hide">
-                {include file=$item->editor()|rel}
-                <tr>
-                    <td width=20%></td>
-                    <td>
-                        <input type="submit" name="edit"   value="Éditer" />
-                    </td>
-                </tr>
-            </table>
-        {/if}
 
-        <div class="click subtitle">
-            Commentaires (entre administrateurs)
-        </div>
-        <table class="hide show">
-            {foreach from=$item->comments() item=c}
-            <tr>
-                <td width=20%>
-                    {$c.name|smarty:nodefaults}
-                </td>
-                <td>
-                    {$c.com|smarty:nodefaults}
-                </td>
-            </tr>
-            {/foreach}
-            <tr>
-                <td width=20%> </td>
-                <td>
-                    <div>
-                        <textarea name="comm" class="text_validate" > </textarea>
+            <div class="more">
+            <form enctype="multipart/form-data" method="post" action="admin/validate/">
+                <div class="rules">
+                    {include file="wiki.tpl"|rel name='validate/rules/'|cat:$valid->type()}
+                </div>
+
+                <ul>
+                    <li>Demandeur: {$writer->displayName()}</li>
+                    <li>Groupe destinataire: {$group->label()}</li>
+                    <li>Date de demande: {$valid->created()}</li>
+                </ul>
+
+                <div class="subtitle">
+                    Informations
+                </div>
+                <table class="hide show">
+                    {include file=$item->show()|rel}
+                </table>
+
+                {if $item->editor()}
+                    <div class="subtitle">
+                        Editer
                     </div>
-                    <input type="submit" name="add_comm" class="addcom_validate"  value="Ajouter un commentaire" />
-                </td>
-            </tr>
-        </table>
-        <table>
-            <tr>
-                <td width=20%>
-                    Réponse :
-                </td>
-                <td>
-                    <textarea name="ans"></textarea>
-                </td>
-            </tr>
+                    <table class="hide">
+                        {include file=$item->editor()|rel}
+                        <tr>
+                            <td width=20%></td>
+                            <td>
+                                <input type="submit" name="edit"   value="Éditer" />
+                            </td>
+                        </tr>
+                    </table>
+                {/if}
 
-            <tr>
-                <td> </td>
-                <td>
-                    <input type="text" name="val_id" style="display: none; " value="{$valid->id()}" />
-                    {if $item->refuse()} <input type="submit" name="refuse"   value="Refuser" /> {/if}
-                    <input type="submit" name="accept"   value="Valider" />
-                </td>
-            </tr>
-        </table>
+                <div class="subtitle">
+                    Commentaires (entre administrateurs)
+                </div>
+                <table class="hide show">
+                    {foreach from=$item->comments() item=c}
+                    <tr>
+                        <td width=20%>
+                            {$c.name|smarty:nodefaults}
+                        </td>
+                        <td>
+                            {$c.com|smarty:nodefaults}
+                        </td>
+                    </tr>
+                    {/foreach}
+                    <tr>
+                        <td width=20%> </td>
+                        <td>
+                            <div>
+                                <textarea name="comm" class="text_validate" > </textarea>
+                            </div>
+                            <input type="submit" name="add_comm" class="addcom_validate"  value="Ajouter un commentaire" />
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td width=20%>
+                            Réponse :
+                        </td>
+                        <td>
+                            <textarea name="ans"></textarea>
+                        </td>
+                    </tr>
 
-    </form>
-    </div>
+                    <tr>
+                        <td> </td>
+                        <td>
+                            <input type="text" name="val_id" style="display: none; " value="{$valid->id()}" />
+                            {if $item->refuse()} <input type="submit" name="refuse"   value="Refuser" /> {/if}
+                            <input type="submit" name="accept"   value="Valider" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            </div>
+
+        </li>
+    </ul>
     {/foreach}
 
 {/if}
