@@ -167,6 +167,10 @@ class FrankizPage extends PlPage
             $quick_validate = $validates->split('group');
             $this->assign('quick_validate', $quick_validate);
 
+            $request_filter = new ValidateFilter(new VFC_Writer(S::user()));
+            $requests = $request_filter->get()->select(ValidateSelect::quick());
+            $this->assign('quick_requests', $requests);
+
             $this->_run(self::getTplPath('frankiz.tpl'));
         }
     }
