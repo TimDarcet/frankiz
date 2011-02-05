@@ -82,8 +82,11 @@ class ProfileModule extends PLModule
             {
                 try
                 {
+                    $group = Group::from('tol');
                     $image = new FrankizImage();
                     $image->insert();
+                    $image->label(S::user()->fullName());
+                    $image->caste($group->caste('everybody'));
                     $image->image(FrankizUpload::v('image'));
                     $tv = new TolValidate($image);
                     $v = new Validate(array(
