@@ -463,23 +463,6 @@ CREATE TABLE IF NOT EXISTS `users_minimodules` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `validate`
---
-
-DROP TABLE IF EXISTS `validate`;
-CREATE TABLE IF NOT EXISTS `validate` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uid` int(11) NOT NULL,
-  `gid` int(11) NOT NULL,
-  `type` tinytext NOT NULL,
-  `item` text NOT NULL,
-  `created` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `wiki`
 --
 

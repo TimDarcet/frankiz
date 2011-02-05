@@ -163,7 +163,7 @@ class FrankizPage extends PlPage
             $this->runJSon();
         } else {
             $validate_filter = new ValidateFilter(new VFC_User(S::user()));
-            $validates = $validate_filter->get()->select(Validate::SELECT_BASE);
+            $validates = $validate_filter->get()->select(ValidateSelect::quick());
             $quick_validate = $validates->split('group');
             $this->assign('quick_validate', $quick_validate);
 

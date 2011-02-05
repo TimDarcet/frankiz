@@ -26,30 +26,27 @@
     <td width=20%>
         Image d'origine :
     </td>
+    <td width=20%>
+        Image actuelle :
+    </td>
+    <td width=20%>
+        Nouvelle image :
+    </td>
+</tr>
+
+<tr>
     <td>
         {if $user->original()}
-            <img src="{$user->original()|image:'full'|smarty:nodefaults}" class="face" />
+            <img src="{$user->original()|image:'big'|smarty:nodefaults}" class="face" />
         {else}
             pas d'image d'origine
         {/if}
     </td>
-</tr>
-
-<tr>
-    <td width=20%>
-        Image actuelle :
+    <td>
+        <img src="{$user->image()|image:'big'|smarty:nodefaults}" class="face" />
     </td>
     <td>
-        <img src="{$user->image()|image:'full'|smarty:nodefaults}" class="face" />
-    </td>
-</tr>
-
-<tr>
-    <td width=20%>
-        Nouvelle image :
-    </td>
-    <td>
-        <img src="{$image|image:'full'|smarty:nodefaults}" class="face" />
+        <img src="{$image|image:'big'|smarty:nodefaults}" class="face" />
     </td>
 </tr>
 

@@ -36,7 +36,7 @@ class TolValidate extends ItemValidate
     public function image()
     {
         $img = new FrankizImage($this->image);
-        $img->select(FrankizImage::SELECT_BASE);
+        $img->select(FrankizImageSelect::base());
         return $img;
     }
 
@@ -53,7 +53,7 @@ class TolValidate extends ItemValidate
     public function sendmailadmin()
     {
         if (is_null($this->user->bestEmail()))
-            $this->user->select(User::SELECT_BASE);
+            $this->user->select(UserSelect::base());
 
         $mail = new FrankizMailer('validate/mail.admin.tol.tpl');
         $mail->assign('user', $this->user->displayName());
@@ -67,7 +67,7 @@ class TolValidate extends ItemValidate
     public function sendmailfinal($isok)
     {
         if (is_null($this->user->bestEmail()))
-            $this->user->select(User::SELECT_BASE);
+            $this->user->select(UserSelect::base());
 
         $mail = new FrankizMailer('validate/mail.valid.tol.tpl');
         if (Env::has("ans"))

@@ -20,7 +20,7 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if $msg}
+{if t($msg) && $msg}
     <div class="msg_proposal">
         {$msg}
     </div>
@@ -40,54 +40,54 @@
         {assign var='user' value=$valid->user()}
         {assign var='group' value=$valid->group()}
         {assign var='item' value=$valid->item()}
-        {$item}
+
         <div class="title">
             Validation de : {$valid->type()}
         </div>
-        
+
         <div class="small">
             {$item->rules()}
         </div>
-        
+
         <div class="subtitle">
         </div>
-        
+
         <table>
-        <tr>
-            <td width=20%>
-                Demandeur :
-            </td>
-            <td>
-                {$user->displayName()}
-            </td>
-        </tr>
-        
-        <tr>
-            <td>
-                Groupe destinataire :
-            </td>
-            <td>
-                {$group->label()}
-            </td>
-        </tr>
-        
-        <tr>
-            <td>
-                Date de demande :
-            </td>
-            <td>
-                {$valid->created()}
-            </td>
-        </tr>
+            <tr>
+                <td width=20%>
+                    Demandeur :
+                </td>
+                <td>
+                    {$user->displayName()}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Groupe destinataire :
+                </td>
+                <td>
+                    {$group->label()}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Date de demande :
+                </td>
+                <td>
+                    {$valid->created()}
+                </td>
+            </tr>
         </table>
-        
+
         <div class="click subtitle">
             Informations
         </div>
         <table class="hide show">
             {include file=$item->show()|rel}
         </table>
-        
+
         {if $item->editor()}
             <div class="click subtitle">
                 Editer
@@ -102,7 +102,7 @@
                 </tr>
             </table>
         {/if}
-        
+
         <div class="click subtitle">
             Commentaires (entre administrateurs)
         </div>
@@ -136,7 +136,7 @@
                     <textarea name="ans"></textarea>
                 </td>
             </tr>
-        
+
             <tr>
                 <td> </td>
                 <td>
@@ -146,11 +146,11 @@
                 </td>
             </tr>
         </table>
-        
+
     </form>
     </div>
     {/foreach}
-    
+
 {/if}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

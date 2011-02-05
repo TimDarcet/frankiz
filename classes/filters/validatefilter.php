@@ -37,7 +37,7 @@ class VFC_Asker extends ValidateFilterCondition
 
     public function buildCondition(PlFilter $uf)
     {
-        return XDB::format('v.uid IN {?}', $this->uids);
+        return XDB::format('v.user IN {?}', $this->uids);
     }
 }
 
@@ -50,12 +50,19 @@ class VFC_Group extends ValidateFilterCondition
 
     public function __construct($gs)
     {
-        $this->gids = Group::toIds(unflatten($gs));
+        if ($gs instanceof Collection) {
+            if ($gs->className() != 'Group') {
+                throw new Exception('VFC_Group constructor takes a Collection<Group>');
+            }
+            $this->gids = $gs->ids();
+        } else {
+            $this->gids = Group::toIds(unflatten($gs));
+        }
     }
 
     public function buildCondition(PlFilter $uf)
     {
-        return XDB::format('v.gid IN {?}', $this->gids);
+        return XDB::format('v.`group` IN {?}', $this->gids);
     }
 }
 
@@ -142,7 +149,7 @@ class ValidateFilter extends FrankizFilter
     {
         $joins = array();
         if ($this->with_caste) {
-            $joins['c'] = PlSqlJoin::left('castes', '$ME.gid = v.gid');
+            $joins['c'] = PlSqlJoin::left('castes', '$ME.`group` = v.`group`');
         }
         return $joins;
     }

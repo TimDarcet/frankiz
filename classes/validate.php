@@ -19,71 +19,96 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+class ValidateSchema extends Schema
+{
+    public function className() {
+        return 'Validate';
+    }
 
-/** 
- * class to use for validations
- */
+    public function table() {
+        return 'validate';
+    }
+
+    public function id() {
+        return 'id';
+    }
+
+    public function tableAs() {
+        return 'v';
+    }
+
+    public function scalars() {
+        return array('type');
+    }
+
+    public function objects() {
+        return array('user' => 'User',
+                    'group' => 'Group',
+                  'created' => 'FrankizDateTime');
+    }
+}
+
+class ValidateSelect extends Select
+{
+    public function className() {
+        return 'Validate';
+    }
+
+    public static function quick() {
+        return new self(array('group'));
+    }
+
+    public static function base($subs = null) {
+        return new self(array('user', 'type', 'group', 'created'),
+                        array('user' => UserSelect::base(), 'group' => GroupSelect::base()));
+    }
+
+    public static function validate($subs = null) {
+        
+        return new self(array('user', 'type', 'group', 'created', 'item'),
+                        array('user' => UserSelect::base(), 'group' => GroupSelect::base()));
+    }
+
+    protected function handlers() {
+        return array('main' => array('user', 'type', 'group', 'created'),
+                     'item' => array('item'));
+    }
+
+    protected function handler_item(Collection $validates, $fields) {
+        $_validates = array();
+        foreach($_validates as $validate) {
+            $_validates[$validate->id()] = array();
+        }
+
+        $iter = XDB::iterRow("SELECT  id, item
+                                FROM  validate
+                               WHERE  id IN {?}", $validates->ids());
+
+        while (list($id, $item) = $iter->next()) {
+            $_validates[$id] = unserialize($item);
+        }
+
+        foreach ($validates as $validate) {
+            $validate->fillFromArray(array('item' => $_validates[$validate->id()]));
+        }
+    }
+}
+
 class Validate extends Meta
 {
-    const SELECT_BASE = 0x01;
-    const SELECT_ITEM = 0x02;
+    protected $user  = null; //user asking for the validation
+    protected $group = null; // group that should validate
 
-    //user asking a validation
-    protected $user;
-    // group that should validate
-    protected $group;
+    protected $type    = null;
+    protected $created = null;
 
-    protected $type;
-    protected $created;
+    // Item to validate : ItemValidate object
+    protected $item = null;
 
-    //item to validate : ItemValidate object
-    protected $item;
-
-    public function user()
-    {
-        return $this->user;
-    }
-
-    public function group()
-    {
-        return $this->group;
-    }
-
-    public function type()
-    {
-        return $this->type;
-    }
-
-    public function created()
-    {
-        return $this->created;
-    }
-
+    // Item doesn't have an auto getter
     public function item()
     {
         return $this->item;
-    }
-
-    public function fillFromArray(array $values)
-    {
-        if (isset($values['uid'])) {
-            $this->user = new User($values['uid']);
-            $this->user->select(User::SELECT_BASE);
-            unset($values['uid']);
-        }
-
-        if (isset($values['gid'])) {
-            $this->group = new Group($values['gid']);
-            $this->group->select(Group::SELECT_BASE);
-            unset($values['gid']);
-        }
-
-        if (isset($values['item']) && is_string($values['item'])) {
-            $this->item = unserialize($values['item']);
-            unset($values['item']);
-        }
-
-        parent::fillFromArray($values);
     }
 
     /** 
@@ -94,22 +119,21 @@ class Validate extends Meta
     {
         if(is_null($this->item))
             return;
-        $this->created = date("Y-m-d H:i:s");
-        
+
         if ($this->item->unique()) {
             XDB::execute('DELETE FROM  validate
-                                WHERE  uid = {?} AND gid = {?} AND type = {?}',
+                                WHERE  user = {?} AND `group` = {?} AND type = {?}',
                          $this->user->id(), $this->group->id(), $this->type);
         }
 
         XDB::execute('INSERT INTO  validate
-                              SET  uid = {?}, gid = {?}, type = {?}, 
-                                   item = {?}, created = {?}',
+                              SET  user = {?}, `group` = {?}, type = {?}, 
+                                   item = {?}, created = NOW()',
                             $this->user->id(), $this->group->id(), $this->type, 
-                            $this->item, $this->created);
-                           
+                            $this->item);
+
         $this->id = XDB::insertId();
-        
+
         $this->item->sendmailadmin();
     }
 
@@ -130,7 +154,7 @@ class Validate extends Meta
     {
         if ($this->item->unique()) {
             $success = XDB::execute('DELETE FROM  validate
-                                           WHERE  uid = {?} AND gid = {?} AND type = {?}',
+                                           WHERE  user = {?} AND `group` = {?} AND type = {?}',
                                     $this->user->id(), $this->group->id(), $this->type);
         } else {
             $success =  XDB::execute('DELETE FROM  validate
@@ -198,32 +222,6 @@ class Validate extends Meta
         }
 
         return false;
-    }
-
-
-    public static function batchSelect(array $val, $fields = null)
-    {
-        if (empty($val))
-            return;
-
-        if ($fields === null)
-            $fields = self::SELECT_BASE | self::SELECT_ITEM;
-        $val = array_combine(self::toIds($val), $val);
-
-        $request = 'SELECT id';
-        if ($fields & self::SELECT_BASE)
-            $request .= ', uid, gid, type, created';
-        if ($fields & self::SELECT_ITEM)
-            $request .= ', item';
-
-        $iter = XDB::iterator($request .
-                        ' FROM  validate
-                         WHERE  id IN {?}',
-                         array_keys($val));
-
-        while ($array_datas = $iter->next())
-            $val[$array_datas['id']]->fillFromArray($array_datas);
-
     }
 }
 
