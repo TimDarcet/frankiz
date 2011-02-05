@@ -21,11 +21,14 @@
 
 class TolValidate extends ItemValidate
 {
-    protected $rules = 'La nouvelle image doit être reconnaissable (lunettes de soleil déconseillées).';
     protected $type = 'tol';
     protected $image;
 
     protected $unique = true;
+
+    public static function label() {
+        return 'Changement de photo';
+    }
 
     public function __construct(FrankizImage $image)
     {

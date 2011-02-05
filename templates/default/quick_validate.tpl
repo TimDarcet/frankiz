@@ -48,7 +48,7 @@
                 En attente:
                 <ul>
                     {foreach from=$quick_requests item='validate'}
-                        <li>Requête de type "{$validate->type()}" depuis {$validate->created()|age}</li>
+                        <li>Requête de type "{$validate->label()}" depuis {$validate->created()|age}</li>
                     {/foreach}
                 </ul>
             </div>

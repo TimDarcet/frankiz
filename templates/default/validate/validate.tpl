@@ -46,7 +46,7 @@
         </div>
 
         <div class="small">
-            {$item->rules()}
+            {include file="wiki.tpl"|rel name='validate/rules/'|cat:$valid->type()}
         </div>
 
         <div class="subtitle">

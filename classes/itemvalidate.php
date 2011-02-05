@@ -27,53 +27,49 @@ abstract class ItemValidate
 {
     //comments on the validation : each entry is an array including the name of the admin and the comment
     protected $comments = array();
-    
-    // the validations rules : comments for admins
-    protected $rules = "Mieux vaut laisser une demande de validation à un autre admin que de valider une requête illégale ou que de refuser une demande légitime.";
 
     // if the request can be multiple
     protected $unique = false;
     // enable the refuse button
     protected $refuse = true;
-    
+
     protected $user;
     protected $type;
-    
+
+    public static function label() {
+        return 'Inconnue';
+    }
+
     public function user()
     {
         return $this->user;
     }
-    
+
     public function type()
     {
         return $this->type;
     }
-    
+
     public function comments()
     {
         return $this->comments;
     }
-    
+
     public function unique()
     {
         return $this->unique;
     }
-    
+
     public function refuse()
     {
         return $this->refuse;
     }
 
-    public function rules()
-    {
-        return $this->rules;
-    }
-    
     public function __construct()
     {
         $this->user = S::user();
     }
-    
+
     public function sendmailcomment() 
     {
         if (is_null($this->user->displayName()))
@@ -90,12 +86,11 @@ abstract class ItemValidate
         $mail->AddAddress($this->_mail_from_addr(), $this->_mail_from_disp());
         $mail->Send(false);
     }
-    
+
     public function add_comment(String $name, String $comment)
     {
         $this->comments[] = array('name'=>$name, 'com'=>$comment);
     }
-
 
     /*
      * to send emails

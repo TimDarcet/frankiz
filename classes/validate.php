@@ -111,6 +111,11 @@ class Validate extends Meta
         return $this->item;
     }
 
+    public function label() {
+        $className = $this->type().'Validate';
+        return $className::label();
+    }
+
     /** 
      * to use to send the data for moderation
      * if $this->item->unique is true, then the database will be clean before
