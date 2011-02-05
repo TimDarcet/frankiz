@@ -132,6 +132,25 @@ a {
 
 *******************************************************************************/
 
+#quick_validate {
+    position: absolute;
+    top: 0;
+    > ul {
+        margin: 0;
+        padding: 0;
+        position: relative;
+        width: 350px;
+        .alphabackground;
+        .border-radius-bottom;
+        border:1px @color solid;
+        border-top: none;
+        text-align: center;
+        li {
+            list-style: none;
+        }
+    }
+}
+
 #header {
     position: relative;
     width: 100%;
@@ -294,6 +313,23 @@ body.disabledAside #section {
             border:1px @color solid;
             border-top: none;
             padding: 4px;
+        }
+    }
+}
+
+.threecols {
+    text-align: center;
+
+    .module {
+        position: relative;
+        display: inline-block;
+        width: 30%;
+        margin: 6px;
+        margin-top: 0;
+        vertical-align: top;
+
+        table {
+            width: 100%;
         }
     }
 }

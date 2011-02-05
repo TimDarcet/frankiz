@@ -31,42 +31,43 @@
     <body class="{if ($MiniModules_COL_FLOAT|@count) == 0}disabledAside{else}enabledAside{/if}">
         {include file="universe.tpl"}
 
-        <div id="header">
-            <div id="logo">
-                <a href="home/"> </a>
+        <div id="body">
+            <div id="header">
+                {include file="quick_validate.tpl"|rel}
+
+                <div class="logo">
+                    <a href="home/"> </a>
+                </div>
+
+                <div class="nav">
+                    {include file="nav.tpl"|rel}
+                </div>
+
+                <div class="quicksearch">
+                    <form enctype="multipart/form-data" method="post" action="tol/">
+                        <input type="hidden" name="quicksearch" value="quicksearch" />
+                        <label>Recherche rapide
+                        <input type="text" name="free" value="" />
+                        </label>
+                    </form>
+                </div>
             </div>
 
-            <div id="account">
-                {include file="account.tpl"|rel}
+            <div id="content">
+                <div id="section">
+                    {include file="section.tpl"|rel}
+                </div>
+                <div id="aside">
+                    {include file="aside.tpl"|rel}
+                </div>
             </div>
 
-            <div id="nav">
-                {include file="nav.tpl"|rel}
-            </div>
-
-            <div id="quicksearch">
-                <form enctype="multipart/form-data" method="post" action="tol/">
-                    <input type="hidden" name="quicksearch" value="quicksearch" />
-                    <label>Recherche rapide
-                    <input type="text" name="free" value="" />
-                    </label>
-                </form>
-            </div>
+            {smartphone}
+                <div id="smartphone">
+                    <a href="profile/skin/resmartphone">Revenir au site SmartPhone</a>
+                </div>
+            {/smartphone}
         </div>
-
-        <div id="content">
-            {include file="section.tpl"|rel}
-        </div>
-
-        <div id="aside">
-            {include file="aside.tpl"|rel}
-        </div>
-
-        {smartphone}
-            <div id="smartphone">
-                <a href="profile/skin/resmartphone">Revenir au site SmartPhone</a>
-            </div>
-        {/smartphone}
 
         {include file=common.devel.tpl}
     </body>

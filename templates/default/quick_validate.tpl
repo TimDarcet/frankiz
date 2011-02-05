@@ -20,11 +20,20 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if $smarty.session.auth >= AUTH_COOKIE}
-    <a {path_to_href_attribute path="profile"} accesskey="c">
-    <img src="{$smarty.session.user->image()|image:'small'|smarty:nodefaults}"
-         title="{$smarty.session.user->displayName()}" class="face" />
-    </a>
+{if t($quick_validate) && $quick_validate|@count > 0}
+    <div id="quick_validate">
+        <ul>
+            {foreach from=$quick_validate item='validates'}
+                {assign var='first' value=$validates->first()}
+                {assign var='grp' value=$first->group()}
+                {assign var='castes' value=$smarty.session.user->castes()}
+                {assign var='groups' value=$castes->groups()}
+                {assign var='group' value=$groups->get($grp)}
+                <li>{$group->label()} : <a href="admin/validate/{$group->id()}">{$validates->count()} requêtes</a></li>
+            {/foreach}
+        </ul>
+    </div>
 {/if}
+
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
