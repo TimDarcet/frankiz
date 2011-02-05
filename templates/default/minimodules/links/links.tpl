@@ -1,6 +1,6 @@
 {**************************************************************************}
 {*                                                                        *}
-{*  Copyright (C) 2009 Binet Réseau                                       *}
+{*  Copyright (C) 2010 Binet Réseau                                       *}
 {*  http://www.polytechnique.fr/eleves/binets/reseau/                     *}
 {*                                                                        *}
 {*  This program is free software; you can redistribute it and/or modify  *}
@@ -21,20 +21,10 @@
 {**************************************************************************}
 
 <ul>
-    {if $smarty.session.auth < AUTH_INTERNAL}
-        <li><a href="home/contact">Contacter les élèves</a></li>
-        <li><a href="home/howtocome">Venir à l'X</a></li>
-        <li><a href="partnerships">Partenariats</a></li>
-    {/if}
-    {if $smarty.session.auth >= AUTH_INTERNAL}
-        <li><a href="http://www.polytechnique.edu">Site de l'École</a></li>
-        <li><a href="http://www.etudes.polytechnique.edu">Site de la DE</a></li>
-        <li><a href="http://enex.polytechnique.fr">ENEX</a></li>
-        <li><a href="http://www.polytechnique.fr/sites/orientation4a/pages_orientation/">Orientation 4eme année</a></li>
-    {/if}
-    {if $smarty.session.auth >= AUTH_COOKIE}
-
-    {/if}
+    <li><a href="links/partners">Partenariats</a></li>
+    {foreach from=$minimodule.links|order:'rank':false item=link}
+        <li><a href="{$link->link()}">{$link->label()}</a></li>
+    {/foreach}
 </ul>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

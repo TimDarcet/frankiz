@@ -38,7 +38,10 @@ class LinksMiniModule extends FrankizMiniModule
 
     public function run()
     {
-
+        $collec = Link::all('usefuls');
+        $collec->select(LinkSelect::all());
+        
+        $this->assign('links', $collec);
     }
 
 }
