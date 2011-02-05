@@ -58,8 +58,12 @@ class WikiModule extends PlModule
 
         $page->jsonAssign('success', true);
         try {
-            $wiki->update($json->content);
-            $html = $wiki->select(Wiki::SELECT_VERSION)->html();
+            $wiki->select(Wiki::SELECT_VERSION);
+            $content = trim($json->content);
+            if ($content != $wiki->content()) {
+                $wiki->update($content);
+                $html = $wiki->select(Wiki::SELECT_VERSION)->html();
+            }
             $page->jsonAssign('html', $html);
         } catch(Exception $e) {
             $page->jsonAssign('success', false);
@@ -77,7 +81,7 @@ class WikiModule extends PlModule
 
         try {
             $wiki->select(array(Wiki::SELECT_VERSION => array('versions' => $versions,
-                                                              'options' => User::SELECT_BASE)));
+                                                              'options' => UserSelect::base())));
             $page->jsonAssign('wiki', $wiki->export());
         } catch(Exception $e) {
             $page->jsonAssign('error', $e->getMessage());
@@ -117,7 +121,7 @@ class WikiModule extends PlModule
     
             $wiki->select(Wiki::SELECT_BASE | Wiki::SELECT_COUNT);
             $wiki->select(array(Wiki::SELECT_VERSION => array('versions' => array('last'),
-                                                              'options' => User::SELECT_BASE)));
+                                                              'options' => UserSelect::base())));
     
             $page->assign('wiki', $wiki);
     
