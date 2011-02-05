@@ -20,21 +20,15 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<p>
-    <a href="proposal/news">Rédiger une annonce</a>
-</p>
-
-<div>
-    <h3>Binets membres</h3>
-    
-    {include file="news/subnews.tpl"|rel collection=$member_news}
+<div class="module">
+    <div class="head">
+        Annonces
+    </div>
+    <div class="body">
+        {include file="news/subnews.tpl"|rel collection=$news}
+    </div>
 </div>
 
-<div class="newstitles">
-    <h3>Binets amis</h3>
-    
-    {include file="news/subnews.tpl"|rel collection=$friend_news}
-</div>
 
 {js src="news.js"}
 

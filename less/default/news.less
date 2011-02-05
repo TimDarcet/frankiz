@@ -23,18 +23,64 @@
 
 *******************************************************************************/
 
-ul {
-}
-
-li.news {
+.news {
+    position: relative;
     list-style: none;
     border: 1px #002334 solid;
     border-top: none;
     padding: 1px;
-}
 
-li.news:first-child {
-    border-top: 1px #002334 solid;
+    &:first-child {
+        border-top: 1px #002334 solid;
+    }
+
+    .infos {
+        text-align: center;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            padding: 0;
+
+            .star_switcher {
+                position: relative;
+                width: 35px;
+            }
+            .origin {
+                position: relative;
+                width: 50px;
+            }
+            .star_switcher {
+                position: relative;
+            }
+            .date {
+                position: relative;
+                width: 50px;
+            }
+        }
+    }
+
+    .content {
+        position: relative;
+        clear: both;
+        margin: 5px;
+        display: none;
+        text-align: left;
+
+        .body {
+            border-top: 1px #002334 solid;
+            background-color: white;
+            padding: 5px;
+
+            .image {
+                float: left;
+            }
+        }
+
+        .writer {
+            width: 100%;
+            text-align: right;
+        }
+    }
 }
 
 /* 
@@ -49,18 +95,23 @@ li.news:first-child {
     display: none;
 }
 
-/* 
-    Star / Unstar
-*/
-
-.news.star {
-    background-color: #FFFF00 !important;
+.star_switcher {
+    background-repeat: no-repeat;
+    background-position: center;
+    &:hover {
+        background-image: url("../default/images/star_hover.png")!important;
+    }
 }
 
-.news.unstar {
-    background-color: #FFFFFF;
+.news.star .star_switcher {
+    background-image: url("../default/images/star_on.png");
 }
 
+.news.unstar .star_switcher {
+    background-image: url("../default/images/star_off.png");
+}
+
+/*
 .news.star .switcher_star {
     display: none;
 }
@@ -76,7 +127,7 @@ li.news:first-child {
 .news.unstar .switcher_unstar {
     display: none;
 }
-
+*/
 /* 
     Read / Unread
 */
@@ -88,36 +139,4 @@ li.news:first-child {
 .news.unread {
     background-color: #FFFFFF;
 }
-
-
-
-.news .groups {
-    float: left;
-}
-
-.news .date {
-    float: right;
-}
-
-.news .title {
-    text-align: center;
-}
-
-.news .content {
-	position: relative;
-	clear: both;
-	margin: 5px;
-}
-
-.news .content .body {
-    width: 100%;
-    border-top: 1px #002334 solid;
-    background-color: white;
-}
-
-.news .content .writer {
-    width: 100%;
-    text-align: right;
-}
-
 

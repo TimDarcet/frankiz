@@ -27,17 +27,18 @@ $(document).ready(function() {
         $.get('news/ajax/read/' + ids + '/1');
     });
 
-    $('.news .switcher_star').click(function() {
-        $(this).closest('.news').switchClass('unstar', 'star', 100);
-        var id = $(this).closest('.news').attr('nid');
-        $.get('news/ajax/star/' + id + '/1');
+    $('.news .star_switcher').click(function() {
+        var news = $(this).closest('.news');
+        if (news.hasClass('unstar')) {
+            news.switchClass('unstar', 'star', 100);
+            var id = $(this).closest('.news').attr('nid');
+            $.get('news/ajax/star/' + id + '/1');
+        } else {
+            news.switchClass('star', 'unstar', 100);
+            var id = $(this).closest('.news').attr('nid');
+            $.get('news/ajax/star/' + id + '/0');
+        }
     });
-    $('.news .switcher_unstar').click(function() {
-        $(this).closest('.news').switchClass('star', 'unstar', 100);
-        var id = $(this).closest('.news').attr('nid');
-        $.get('news/ajax/star/' + id + '/0');
-    });
-
 
     // for news/admin
     $('.hide').hide();

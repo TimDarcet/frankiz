@@ -52,26 +52,17 @@ class NewsModule extends PlModule
 
     function handler_news($page)
     {
+        $target_castes = new Collection();
+        $target_castes->merge(S::user()->castes(Rights::restricted()));
+        $target_castes->merge(S::user()->castes(Rights::everybody()));
+
         $restricted = new NFC_Target(S::user()->castes(Rights::restricted()));
 
-        // News from the castes of type restricted (ie groups where the user is member)
-        $member_news = new NewsFilter(new PFC_And(new NFC_Current(), $restricted));
+        $nf = new NewsFilter(new PFC_And(new NFC_Current(),
+                                         new NFC_Target($target_castes)));
+        $news = $nf->get()->select(NewsSelect::news());
 
-        // News from the castes of type everybody (ie groups where the user is friend)
-        $friend_news = new NewsFilter(new PFC_And(new NFC_Current(),
-                                                  new PFC_Not($restricted),
-                                                  new NFC_Target(S::user()->castes(Rights::everybody()))));
-
-        $member_news = $member_news->get();
-        $friend_news = $friend_news->get();
-
-        // Temporary Collection to retrieve in one request all the datas
-        $all_news = new Collection('News');
-        $all_news = $all_news->merge($member_news)->merge($friend_news);
-        $all_news->select();
-
-        $page->assign('member_news', $member_news);
-        $page->assign('friend_news', $friend_news);
+        $page->assign('news', $news);
         $page->addCssLink('news.css');
         $page->assign('title', 'Annonces');
         $page->changeTpl('news/news.tpl');

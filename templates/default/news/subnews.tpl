@@ -28,29 +28,38 @@
     {foreach from=$collection|order:'begin' item=news}
         <li class="news close {if $news->read()}read{else}unread{/if} {if $news->star()}star{else}unstar{/if}" nid="{$news->id()}">
             <div class="infos">
-                <div class="groups">
-                    <span class="switcher_star">
-                    Star
-                    </span>
-                    <span class="switcher_unstar">
-                    Unstar
-                    </span>
-                    {$news->origin()|group}
-                    ->
-                    {$news->target()|group}
-                </div>
-                <div class="date">
-                    {$news->begin()|datetime:'Y-m-d'}
-                    ->
-                    {$news->end()|datetime:'Y-m-d'}
-                </div>
-                <div class="title">
-                    {$news->title()}
-                </div>
+                <table><tr>
+                    <td class="star_switcher">
+                    </td>
+                    <td class="origin">
+                        {if $news->origin()}
+                            {assign var='origin' value=$news->origin()}
+                            <a href="groups/see/{$origin->name()}">
+                            <img src="{$origin->image()|image:'micro'|smarty:nodefaults}" 
+                                 title="{$origin->label()}"/>
+                            </a>
+                        {else}
+                            {assign var='writer' value=$news->writer()}
+                            <a href="tol/?hruid={$writer->login()}">
+                            <img src="{$writer->image()|image:'micro'|smarty:nodefaults}" 
+                                 title="{$writer->displayName()}"/>
+                            </a>
+                        {/if}
+                    </td>
+                    <td class="title">
+                        {$news->title()}
+                    </td>
+                    <td class="date">
+                        {$news->begin()|age}
+                    </td>
+                </tr></table>
             </div>
             <div class="content">
                 <div class="body">
-                    {$news->content()|miniwiki|smarty:nodefaults}
+                    {if $news->image()}
+                        <img class="image" src="{$news->image()|image:'small'|smarty:nodefaults}" />
+                    {/if}
+                    {$news->content()|miniwiki:'title'|smarty:nodefaults}
                 </div>
                 <div class="writer">
                     {$news->writer()|user}
