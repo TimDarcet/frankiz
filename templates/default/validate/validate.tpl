@@ -37,7 +37,7 @@
     {foreach from=$val item=valid}
     <div class="validate box_proposal">
     <form enctype="multipart/form-data" method="post" action="admin/validate/">
-        {assign var='user' value=$valid->user()}
+        {assign var='writer' value=$valid->writer()}
         {assign var='group' value=$valid->group()}
         {assign var='item' value=$valid->item()}
 
@@ -58,7 +58,7 @@
                     Demandeur :
                 </td>
                 <td>
-                    {$user->displayName()}
+                    {$writer->displayName()}
                 </td>
             </tr>
 

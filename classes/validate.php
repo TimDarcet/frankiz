@@ -42,9 +42,9 @@ class ValidateSchema extends Schema
     }
 
     public function objects() {
-        return array('user' => 'User',
-                    'group' => 'Group',
-                  'created' => 'FrankizDateTime');
+        return array('writer' => 'User',
+                      'group' => 'Group',
+                    'created' => 'FrankizDateTime');
     }
 }
 
@@ -55,22 +55,22 @@ class ValidateSelect extends Select
     }
 
     public static function quick() {
-        return new self(array('group'));
+        return new self(array('group', 'type', 'created'));
     }
 
     public static function base($subs = null) {
-        return new self(array('user', 'type', 'group', 'created'),
-                        array('user' => UserSelect::base(), 'group' => GroupSelect::base()));
+        return new self(array('writer', 'type', 'group', 'created'),
+                        array('writer' => UserSelect::base(), 'group' => GroupSelect::base()));
     }
 
     public static function validate($subs = null) {
         
-        return new self(array('user', 'type', 'group', 'created', 'item'),
-                        array('user' => UserSelect::base(), 'group' => GroupSelect::base()));
+        return new self(array('writer', 'type', 'group', 'created', 'item'),
+                        array('writer' => UserSelect::base(), 'group' => GroupSelect::base()));
     }
 
     protected function handlers() {
-        return array('main' => array('user', 'type', 'group', 'created'),
+        return array('main' => array('writer', 'type', 'group', 'created'),
                      'item' => array('item'));
     }
 
@@ -96,8 +96,8 @@ class ValidateSelect extends Select
 
 class Validate extends Meta
 {
-    protected $user  = null; //user asking for the validation
-    protected $group = null; // group that should validate
+    protected $writer = null; //user asking for the validation
+    protected $group  = null; // group that should validate
 
     protected $type    = null;
     protected $created = null;
