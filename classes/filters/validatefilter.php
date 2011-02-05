@@ -105,6 +105,21 @@ class VFC_User extends ValidateFilterCondition
     }
 }
 
+class VFC_Writer extends ValidateFilterCondition
+{
+    private $uids;
+
+    public function __construct($us)
+    {
+        $this->uids = User::toIds(unflatten($us));
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        return XDB::format('v.writer IN {?}', $this->uids);
+    }
+}
+
 abstract class ValidateFilterOrder extends FrankizFilterOrder
 {
 }
