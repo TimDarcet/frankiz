@@ -67,7 +67,9 @@
                     <tr>
                         <td width="20%">
                             {if $link->image()}
-                                <a href="{$link->link()}"> {$link->image()|image:'full'|smarty:nodefaults} </a>
+                                <a href="{$link->link()}">
+                                    <img src='{$link->image()|image:'small'|smarty:nodefaults}' alt="Logo">
+                                </a>
                             {/if}
 
                         </td>
