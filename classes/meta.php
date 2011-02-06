@@ -62,28 +62,27 @@ abstract class Meta
             $id    = $schema->id();
 
             if ($schema->isScalar($field)) {
-                XDB::execute("UPDATE  $table
-                                 SET  `$field` = {?}
-                               WHERE  $id = {?}", $arguments[0], $this->id());
+                $data = ($arguments[0] === false) ? null : $arguments[0];
             } else if ($schema->isObject($field)) {
                 $objectType = $schema->objectType($field);
 
                 $reflection = new ReflectionClass($objectType);
 
                 if ($reflection->isSubclassOf('Meta')) {
-                    $data = $arguments[0]->id();
+                    $data = ($arguments[0] === false) ? null : $arguments[0]->id();
                 } else if ($reflection->implementsInterface('Formatable')) {
-                    $data = $arguments[0]->toDb();
+                    $data = ($arguments[0] === false) ? null : $arguments[0]->toDb();
                 } else {
                     throw new Exception('Unsupported object passed to the setter');
                 }
 
-                XDB::execute("UPDATE  $table
-                                 SET  `$field` = {?}
-                               WHERE  $id = {?}", $data, $this->id());
             } else {
                 throw new Exception('Auto setter for Collections is not supported yet');
             }
+
+            XDB::execute("UPDATE  $table
+                             SET  `$field` = {?}
+                           WHERE  $id = {?}", $data, $this->id());
 
             $this->$method = $arguments[0];
         }
