@@ -162,10 +162,13 @@ class FrankizPage extends PlPage
             $this->jsonAssign('pl_js'  , $this->get_template_vars('pl_js'));
             $this->runJSon();
         } else {
-            $validate_filter = new ValidateFilter(new VFC_User(S::user()));
-            $validates = $validate_filter->get()->select(ValidateSelect::quick());
-            $quick_validate = $validates->split('group');
-            $this->assign('quick_validate', $quick_validate);
+            $this->assign('quick_validate', array());
+            if (S::user()->castes(Rights::admin())->count() > 0) {
+                $validate_filter = new ValidateFilter(new VFC_User(S::user()));
+                $validates = $validate_filter->get()->select(ValidateSelect::quick());
+                $quick_validate = $validates->split('group');
+                $this->assign('quick_validate', $quick_validate);
+            }
 
             $request_filter = new ValidateFilter(new VFC_Writer(S::user()));
             $requests = $request_filter->get()->select(ValidateSelect::quick());

@@ -42,10 +42,13 @@ class AdminModule extends PlModule
         $admin_groups->diff($admin_groups->filter('ns', Group::NS_USER));
         $page->assign('admin_groups', $admin_groups);
 
-        $validate_filter = new ValidateFilter(new VFC_Group($admin_groups));
-        $validates = $validate_filter->get()->select(ValidateSelect::quick());
-        $validates = $validates->split('group');
-        $page->assign('validates', $validates);
+        $page->assign('validates', array());
+        if ($admin_groups->count() > 0) {
+            $validate_filter = new ValidateFilter(new VFC_Group($admin_groups));
+            $validates = $validate_filter->get()->select(ValidateSelect::quick());
+            $validates = $validates->split('group');
+            $page->assign('validates', $validates);
+        }
 
         $page->assign('title', "Administration");
         $page->addCssLink('admin.css');
