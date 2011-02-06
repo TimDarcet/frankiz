@@ -276,7 +276,7 @@ class ActivityInstanceFilter extends FrankizFilter
     {
         $joins = array();
         if ($this->with_activity) {
-            $joins['a'] = PlSqlJoin::inner('activities', '$ME.id = ai.aid');
+            $joins['a'] = PlSqlJoin::inner('activities', '$ME.aid = ai.activity');
         }
         return $joins;
     }
