@@ -9,7 +9,9 @@ var qdj = {
     "vote" : function(votefor) {
         if (reversedId == 0)
         {
-            request('qdj/ajax/vote/', {"vote": votefor}, {"success": qdj.load});
+            request({ 'url': 'qdj/ajax/vote/'
+                    ,'data': {"vote": votefor}
+                 ,'success': qdj.load});
         }
     },
 
