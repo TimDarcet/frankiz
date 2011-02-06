@@ -160,6 +160,7 @@ class FrankizSession extends PlSession
             S::set('auth', AUTH_MDP);
             S::kill('challenge');
             $user = new User($uid);
+            S::logger($uid)->log('auth_ok');
             return $user->select(UserSelect::login());
         }
     }
@@ -191,6 +192,7 @@ class FrankizSession extends PlSession
                 } else {
                     Platal::page()->trigError('Mot de passe invalide');
                 }
+                S::logger($uid)->log('auth_fail', 'bad password');
                 return null;
             }
             return $uid;
@@ -234,6 +236,9 @@ class FrankizSession extends PlSession
             if (Post::v('remember', 'false') == 'on') {
                 $this->setAccessCookie(false);
             }
+            S::logger()->saveLastSession();
+        } else {
+            S::logger()->log("suid_start", S::v('hruid') . ' by ' . S::suid('hruid'));
         }
 
         // Set session perms from User perms

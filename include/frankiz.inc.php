@@ -22,6 +22,7 @@
 define('PL_GLOBALS_CLASS', 'FrankizGlobals');
 define('PL_SESSION_CLASS', 'FrankizSession');
 define('PL_PAGE_CLASS', 'FrankizPage');
+define('PL_LOGGER_CLASS', 'FrankizLogger');
 
 require_once dirname(dirname(__FILE__)) . '/core/include/platal.inc.php';
 require_once 'security.inc.php';
