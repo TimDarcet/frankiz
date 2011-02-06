@@ -91,7 +91,7 @@ class AIFC_User extends ActivityInstanceFilterCondition
     public function __construct($us, $rights)
     {
         $this->uids = User::toIds(unflatten($us));
-        $this->rights = (string) (empty($rights)) ? Rights::member() : $rights;
+        $this->rights = (empty($rights)) ? Rights::member() : $rights;
     }
 
     public function buildCondition(PlFilter $f)
@@ -293,7 +293,7 @@ class ActivityInstanceFilter extends FrankizFilter
     {
         $joins = array();
         if ($this->with_caste) {
-            $joins['c'] = PlSqlJoin::left('castes', '$ME.`group` = a.target');
+            $joins['c'] = PlSqlJoin::left('castes', '$ME.cid = a.target');
         }
         return $joins;
     }
