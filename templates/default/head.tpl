@@ -26,6 +26,8 @@
 <link type="text/css" href="css/{"fancybox/jquery.fancybox.css"|rel}" rel="stylesheet" />
 
 {js src="jquery-ui.js"}
+{js src="jquery-ui-timepicker-addon.js"}
+{js src="localization.js"}
 {js src="minimodules.js"}
 {js src="jquery.fancybox.js"}
 
