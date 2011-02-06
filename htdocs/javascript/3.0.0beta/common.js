@@ -1,4 +1,4 @@
-(function($){
+$(function(){
    $.getCSS = function(url, media){
       $(document.createElement('link') ).attr({
           href: url,
@@ -7,10 +7,32 @@
           rel: 'stylesheet'
       }).appendTo('head');
    };
-})(jQuery);
 
-$(document).ready(function(){
     $.ajaxSetup({ cache: false });
+
+    $(".wiki_textarea .wiki_slider").click(function() {
+        //TODO
+    });
+
+    $(".target_picker select, .target_picker input[type=checkbox]").change(function() {
+        var target_picker = $(this).closest('.target_picker');
+        var selected = target_picker.find("option:selected");
+        var checkbox = target_picker.find("input[type=checkbox]");
+        if (selected.closest('optgroup').attr("name") == "fkz") {
+            checkbox.closest('label').hide();
+            target_picker.find('.comments').html(selected.attr("description") + "<br />" +
+                                                  "Nécessite une validation de la part des Webmestres");
+        } else {
+            checkbox.closest('label').show();
+            if (checkbox.attr("checked")) {
+                target_picker.find('.comments').html("Sera visible par tout le monde et les membres du groupe " +
+                                                      selected.text() + " seront mis au courant");
+            } else {
+                target_picker.find('.comments').html("Sera visible uniquement par les membres du groupe " + selected.text());
+            }
+        }
+    });
+    $(".target_picker select, .target_picker input").change();
 });
 
 function showError(json) {
@@ -103,6 +125,21 @@ var wiki_preview = {
 
     "stop" : function($textarea) {
         $textarea.unbind('keyup');
+    },
+
+    "help" : function($help_zone) {
+        if ($.trim($help_zone.html())) {
+            $help_zone.toggle();
+        } else {
+            $help_zone.show();
+            $.ajax({
+                 url: 'embedded/raw/wiki_help',
+             success: function(data) {
+                          $help_zone.html(data);
+                      },
+            dataType: 'text'
+            });
+        }
     }
 };
 

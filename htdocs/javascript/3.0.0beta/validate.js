@@ -20,10 +20,6 @@ $(function() {
 		else
 			$(".text_validate").height(80);
 	});
-	
-	// For propositions
-	// news and mails
-	wiki_preview.start($('#text_proposal'), $('#preview_proposal'));
 
 	// activities
 	$("input[name='regular_activity_proposal']").change(function(){
