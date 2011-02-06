@@ -38,8 +38,16 @@ class MailValidate extends ItemValidate
         $this->nowiki = $nowiki;
     }
 
-    public function group()
+    public function objects() {
+        return Array('user' => 'User', 'group' => Group);
+    }
+
+    public function group(Group $group = null)
     {
+        if ($group != null)
+        {
+            $this->group = $group;
+        }
         return $this->group;
     }
 
@@ -120,7 +128,7 @@ class MailValidate extends ItemValidate
 
     public function _mail_from_addr()
     {
-        return 'brice.gelineau@polytechnique.edu';
+        return ($this->group->mail() === false)?'web@frankiz.polytechnique.fr':$this->group->mail();
     }
 
     public function commit()

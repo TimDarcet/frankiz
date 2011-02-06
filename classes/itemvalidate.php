@@ -36,12 +36,30 @@ abstract class ItemValidate
     protected $user;
     protected $type;
 
+    // returns an array with the attributes to construct as objects when retrieving from database
+    // works only for meta object
+    // must be name => class
+    public function objects() {
+        return Array('user' => 'User');
+    }
+
+    // Prepares the item to be inserted in a Db
+    // WARNING : this destroys the objects
+    public function toDb(){
+        foreach ($this->objects() as $name => $object) {
+            $this->$name = $this->$name->id();
+        }
+    }
+
     public static function label() {
         return 'Inconnue';
     }
 
-    public function user()
+    public function user(User $user = null)
     {
+        if ($user !== null) {
+            $this->user = $user;
+        }
         return $this->user;
     }
 

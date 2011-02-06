@@ -76,7 +76,7 @@ class ValidateSelect extends Select
 
     protected function handler_item(Collection $validates, $fields) {
         $_validates = array();
-        foreach($_validates as $validate) {
+        foreach($validates as $validate) {
             $_validates[$validate->id()] = array();
         }
 
@@ -84,8 +84,29 @@ class ValidateSelect extends Select
                                 FROM  validate
                                WHERE  id IN {?}", $validates->ids());
 
+
         while (list($id, $item) = $iter->next()) {
             $_validates[$id] = unserialize($item);
+        }
+
+        $classes = Array();
+        foreach ($_validates as $validate) {
+            $classes = array_merge($classes, $validate->objects());
+        }
+
+        foreach ($classes as $key => $object) {
+            $collections[$key] = new Collection($object);
+        }
+
+        foreach ($_validates as $validate) {
+            foreach ($validate->objects() as $name => $object) {
+                $validate->$name($collections[$name]->addget($validate->$name()));
+            }
+        }
+
+        foreach ($classes as $name => $class) {
+            $select = $class . 'Select';
+            $collections[$name]->select($select::base());
         }
 
         foreach ($validates as $validate) {
@@ -118,7 +139,7 @@ class Validate extends Meta
 
     /** 
      * to use to send the data for moderation
-     * if $this->item->unique is true, then the database will be clean before
+     * if $this->item->unique is true, then the database will be cleaned before
      */
     public function insert()
     {
@@ -127,15 +148,17 @@ class Validate extends Meta
 
         if ($this->item->unique()) {
             XDB::execute('DELETE FROM  validate
-                                WHERE  user = {?} AND `group` = {?} AND type = {?}',
-                         $this->user->id(), $this->group->id(), $this->type);
+                                WHERE  writer = {?} AND `group` = {?} AND type = {?}',
+                         $this->writer->id(), $this->group->id(), $this->type);
         }
 
+        $item = clone $this->item;
+        $item->toDb();
         XDB::execute('INSERT INTO  validate
-                              SET  user = {?}, `group` = {?}, type = {?}, 
+                              SET  writer = {?}, `group` = {?}, type = {?}, 
                                    item = {?}, created = NOW()',
-                            $this->user->id(), $this->group->id(), $this->type, 
-                            $this->item);
+                            $this->writer->id(), $this->group->id(), $this->type, 
+                            $item);
 
         $this->id = XDB::insertId();
 
@@ -159,8 +182,8 @@ class Validate extends Meta
     {
         if ($this->item->unique()) {
             $success = XDB::execute('DELETE FROM  validate
-                                           WHERE  user = {?} AND `group` = {?} AND type = {?}',
-                                    $this->user->id(), $this->group->id(), $this->type);
+                                           WHERE  writer = {?} AND `group` = {?} AND type = {?}',
+                                    $this->writer->id(), $this->group->id(), $this->type);
         } else {
             $success =  XDB::execute('DELETE FROM  validate
                                             WHERE  id = {?}',
@@ -215,11 +238,12 @@ class Validate extends Meta
         if (Env::has('refuse')) {
             if (!Env::v('ans')) {
                 Platal::page()->assign('msg', 'Pas de motivation pour le refus !!!');
-                return true;
+                return false;
             } else if ($this->item->delete()) {
                 $this->item->sendmailfinal(false);
                 $this->clean();
                 Platal::page()->assign('msg', 'Email de refus envoyé');
+                return true;
             } else {
                 Platal::page()->assign('msg', 'Erreur lors de la suppression des données');
                 return false;

@@ -26,21 +26,27 @@ class TolValidate extends ItemValidate
 
     protected $unique = true;
 
+    public function objects() {
+        return Array('user' => 'User', 'image' => 'FrankizImage');
+    }
+
     public static function label() {
         return 'Changement de photo';
     }
 
     public function __construct(FrankizImage $image)
     {
-        $this->image = $image->id();
+        $this->image = $image;
         parent::__construct();
     }
 
-    public function image()
+    public function image(FrankizImage $image = null)
     {
-        $img = new FrankizImage($this->image);
-        $img->select(FrankizImageSelect::base());
-        return $img;
+        if ($image != null)
+        {
+            $this->image = $image;
+        }
+        return $this->image;
     }
 
     public function show()
@@ -96,20 +102,18 @@ class TolValidate extends ItemValidate
 
     public function _mail_from_addr()
     {
-        return 'brice.gelineau@polytechnique.edu';
+        return 'web@polytechnique.edu';
     }
 
     public function commit()
     {
-        $img = new FrankizImage($this->image);
-        $this->user->photo($img);
+        $this->user->photo($this->image);
         return true;
     }
 
     public function delete()
     {
-        $img = new FrankizImage($this->image);
-        $img->delete();
+        $this->image->delete();
         return true;
     }
 

@@ -143,6 +143,7 @@ class AdminModule extends PlModule
             }
         }
 
+        $page->assign('gid', $gid);
         $page->assign('val', $collec);
         $page->addJsLink('validate.js');
         $page->addCssLink('validate.css');

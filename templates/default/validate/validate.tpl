@@ -45,7 +45,7 @@
             </div>
 
             <div class="more">
-            <form enctype="multipart/form-data" method="post" action="admin/validate/">
+            <form enctype="multipart/form-data" method="post" action="admin/validate/{$gid}">
                 <div class="rules">
                     {include file="wiki.tpl"|rel name='validate/rules/'|cat:$valid->type()}
                 </div>
