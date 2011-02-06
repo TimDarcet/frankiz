@@ -42,7 +42,7 @@ abstract class Select
     abstract public function className();
     abstract protected function handlers();
 
-    public function __construct($fields, $subs = null)
+    public function __construct(array $fields, $subs = null)
     {
         $this->fields = $fields;
         $this->subs = $subs;

@@ -51,7 +51,8 @@ abstract class Meta
 
     public function __call($method, $arguments)
     {
-        $schema = Schema::get(get_class($this));
+        $className = get_class($this);
+        $schema = Schema::get($className);
         if (!$schema->has($method)) {
             throw new Exception("This object doesn't have '$method' as automatic field");
         }
@@ -88,7 +89,7 @@ abstract class Meta
         }
 
         if ($this->$method === null) {
-            throw new DataNotFetchedException("$method has not been fetched");
+            throw new DataNotFetchedException("$method has not been fetched in $className(" . $this->id() . ")");
         }
 
         return $this->$method;
