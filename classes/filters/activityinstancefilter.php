@@ -60,6 +60,26 @@ class AIFC_Origin extends ActivityInstanceFilterCondition
     }
 }
 
+/** Retrieves instances where the target is owned by the specified groups
+ * @param $gs Collection of Groups
+ */
+class AIFC_TargetGroup extends ActivityInstanceFilterCondition
+{
+    private $cids;
+
+    public function __construct(Collection $groups)
+    {
+        $cf = new CasteFilter(new PFC_And(new CFC_Holder(), new CFC_Group($groups)));
+        $this->cids = $cf->get()->ids();
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        $sub = $f->addActivityFilter();
+        return XDB::format("$sub.target IN {?}", $this->cids);
+    }
+}
+
 /** Filters instances based on the target caste of the activity
  * @param $gs A Caste, a cid or an array of it
  */
@@ -69,7 +89,14 @@ class AIFC_Target extends ActivityInstanceFilterCondition
 
     public function __construct($cs)
     {
-        $this->cids = Caste::toIds(unflatten($cs));
+        if ($cs instanceof Collection) {
+            if ($cs->className() != 'Caste') {
+                throw new Exception('AIFC_Target constructor takes a Collection<Caste>');
+            }
+            $this->cids = $cs->ids();
+        } else {
+            $this->cids = Caste::toIds(unflatten($cs));
+        }
     }
 
     public function buildCondition(PlFilter $f)
@@ -81,7 +108,7 @@ class AIFC_Target extends ActivityInstanceFilterCondition
 
 /** Returns instances for which the users are linked to the target group
  * @param $us     A User, a uid or an array
- * @param $rights The rights the user must have in the targeted group (member by default)
+ * @param $rights The rights the user must have in the targeted group (everybody by default)
  */
 class AIFC_User extends ActivityInstanceFilterCondition
 {
@@ -91,7 +118,7 @@ class AIFC_User extends ActivityInstanceFilterCondition
     public function __construct($us, $rights)
     {
         $this->uids = User::toIds(unflatten($us));
-        $this->rights = (empty($rights)) ? Rights::member() : $rights;
+        $this->rights = (empty($rights)) ? Rights::everybody() : $rights;
     }
 
     public function buildCondition(PlFilter $f)
