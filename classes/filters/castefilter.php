@@ -30,16 +30,34 @@ class CFC_Group extends CasteFilterCondition
 
     public function __construct($gs, $rights = null)
     {
-        $this->gids   = Group::toIds(unflatten($gs));
+        if ($gs instanceof Collection) {
+            if ($gs->className() != 'Group') {
+                throw new Exception('VFC_Group constructor takes a Collection<Group>');
+            }
+            $this->gids = $gs->ids();
+        } else {
+            $this->gids = Group::toIds(unflatten($gs));
+        }
         $this->rights = (string) $rights;
     }
 
     public function buildCondition(PlFilter $f)
     {
-        if (empty($this->rights))
-            return XDB::format('c.gid IN {?}', $this->gids);
-        else
-            return XDB::format('c.gid IN {?} AND c.rights = {?}', $this->gids, $this->rights);
+        if (empty($this->rights)) {
+            return XDB::format('c.`group` IN {?}', $this->gids);
+        } else {
+            return XDB::format('c.`group` IN {?} AND c.rights = {?}', $this->gids, $this->rights);
+        }
+    }
+}
+
+/** Retrieves castes that can hold datas (ie. everybody & restricted castes)
+ */
+class CFC_Holder extends CasteFilterCondition
+{
+    public function buildCondition(PlFilter $f)
+    {
+        return XDB::format('c.rights IN ({?}, {?})', (string) Rights::everybody(), (string) Rights::restricted());
     }
 }
 
