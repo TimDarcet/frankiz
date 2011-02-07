@@ -311,6 +311,17 @@ function groups_picker(id, ns, check, order)
     });
 }
 
+function uploader($uploader, id) {
+    $uploader.children('iframe').load(function() {
+        var iid = $(this).contents().find('input[name=iid]').val();
+        if (iid) {
+            $uploader.append($('<input type="hidden" name="' + id + '" value="' + iid + '" />'));
+        } else {
+            $uploader.children('input').remove();
+        }
+    })
+}
+
 Nix = {
     map: null,
     convert: function(a) {

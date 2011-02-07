@@ -20,17 +20,11 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<form enctype="multipart/form-data" method="post" accept-charset="UTF-8" action="{$smarty.server.REQUEST_URI}">
-    {if $image}
-        <input type="hidden" name="iid" value="{$image->id()}" />
-        <input type="hidden" name="secret" value="{$secret}" />
-        <img src="{$image|image:'micro'}" />
-        Image envoyée
-        <input type="submit" name="delete" value="Changer d'iamge" />
-    {else}
-        <label><input type="file" name="file" /></label>
-        <input type="submit" name="send" value="Envoyer l'image" />
-    {/if}
-</form>
+<div class="uploader" id="uploader_{$id}">
+    <iframe src="images/upload"></iframe>
+</div>
+<script>
+    uploader($("#uploader_{$id}"), "{$id}");
+</script>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

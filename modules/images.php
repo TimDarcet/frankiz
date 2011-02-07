@@ -48,40 +48,34 @@ class ImagesModule extends PlModule
 
     function handler_upload($page)
     {
-        $gf = new GroupFilter(new GFC_User(S::user(), Rights::admin()));
-        $groups = $gf->get()->select(Group::SELECT_BASE);
-        $page->assign('groups', $groups);
+        $page->assign('image', false);
+        if (FrankizUpload::has('file')) {
+            $g = Group::from('temp')->select(GroupSelect::castes());
+            $temp = $g->caste(Rights::everybody());
 
-        if (FrankizUpload::has('file'))
-        {
-            $group = new Group(Env::v('group'));
-
-            if($groups->get($group) === false) {
-                throw new Exception("You don't have the credential to upload an image in this group");
-            }
-
-            $group->select(Group::SELECT_CASTES);
             $upload = FrankizUpload::v('file');
 
-            // Create and store an empty FrankizImage
+            $secret = uniqid();
+
             $i = new FrankizImage();
             $i->insert();
-
-            // Assign a group to it
-            $i->caste($group->caste(Rights::everybody()));
-            // A label
-            $i->label(Env::v('label', ''));
-            // And a description
-            $i->description(Env::v('description', ''));
-            // Don't forget to stores the actual image…
+            $i->caste($temp);
+            $i->label($secret);
             $i->image($upload);
 
-            $page->assign('last_upload', $i);
+            $page->assign('image', $i);
+            $page->assign('secret', $secret);
+        }
+        if (Env::has('delete')) {
+            $image = new FrankizImage(Env::i('iid'));
+            $image->select(FrankizImageSelect::base());
+
+            if ($image->label() == Env::s('secret')) {
+                $image->delete();
+            }
         }
 
-        $page->addCssLink('images.css');
-        $page->assign('title', 'Envoyer une image');
-        $page->changeTpl('images/upload.tpl');
+        $page->changeTpl('images/upload.tpl', SIMPLE);
     }
 
     function handler_image($page, $size, $iid = null)
