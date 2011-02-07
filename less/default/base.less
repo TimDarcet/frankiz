@@ -36,6 +36,10 @@ body {
     background-attachment:fixed;
 }
 
+body.simple {
+    background: none;
+}
+
 #body {
     position: relative;
 }
@@ -91,21 +95,22 @@ a {
 
 .rights {
     position: relative;
-    width: 10px;
-    height: 10px;
-    border: 1px black solid;
+    width: 14px;
+    height: 14px;
     display: inline-block;
+    background-repeat: no-repeat;
+    background-position: center;
 
     &.super {
         background-color: black;
     }
 
     &.admin {
-        background-color: red;
+        background-image: url("../default/images/rights_admin.png");
     }
 
     &.member {
-        background-color: blue;
+        background-image: url("../default/images/rights_member.png");
     }
 
     &.logic {
@@ -113,7 +118,7 @@ a {
     }
 
     &.friend {
-        background-color: green;
+        background-image: url("../default/images/rights_friend.png");
     }
 
     &.restricted {
@@ -670,3 +675,9 @@ input, textarea, select {
 .ui-timepicker-div dl dt{ height: 25px; }
 .ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
 .ui-timepicker-div td { font-size: 90%; }
+
+.uploader iframe {
+    border: none;
+    height: 50px;
+    width: 80%;
+}
