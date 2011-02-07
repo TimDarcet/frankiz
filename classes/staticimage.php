@@ -97,6 +97,17 @@ class StaticImage implements ImageInterface
         throw new Exception('No such image');
     }
 
+    public function send($size)
+    {
+        global $globals;
+
+        $path = $globals->spoolroot . '/htdocs/' . $this->src($size);
+        $infos = getimagesize($path);
+
+        $image = new Image(array('data' => file_get_contents($path),
+                                 'x' => $infos[0], 'y' => $infos[1], 'mime' => $infos['mime']));
+        $image->send();
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
