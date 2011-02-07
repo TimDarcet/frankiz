@@ -80,25 +80,18 @@ class ImagesModule extends PlModule
 
     function handler_image($page, $size, $iid = null)
     {
+        global $globals;
+
         $image = new FrankizImage($iid);
         $image->select(FrankizImageSelect::caste());
 
-        /*
-         * If the user is not logged-in and outside of the campus,
-         * he *must* be member of the specified caste.
-         */
-        if (S::i('auth') == AUTH_PUBLIC && !S::user()->castes()->get($image->caste())) {
-            throw new Exception("This image is not accessible from the outside");
-            exit;
+        if (!S::user()->canSee($image->caste())) {
+            $image->send($size);
+        } else {
+            header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
+            $img = new StaticImage($globals->images->forbidden);
+            $img->send($size);
         }
-
-        if (!$image->caste()->rights()->isMe(Rights::everybody()) && !S::user()->castes()->get($image->caste())) {
-            // TODO: show an 'invalid credential' picture instead
-            throw new Exception("You don't have the credential to view this image");
-            exit;
-        }
-
-        $image->send($size);
     }
 }
 
