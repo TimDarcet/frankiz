@@ -85,7 +85,7 @@ class ImagesModule extends PlModule
         $image = new FrankizImage($iid);
         $image->select(FrankizImageSelect::caste());
 
-        if (!S::user()->canSee($image->caste())) {
+        if (S::user()->canSee($image->caste())) {
             $image->send($size);
         } else {
             header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
