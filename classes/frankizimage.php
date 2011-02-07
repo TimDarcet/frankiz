@@ -194,6 +194,7 @@ class FrankizImage extends Meta implements ImageInterface
     public function delete()
     {
         XDB::execute('DELETE FROM images WHERE iid = {?}', $this->id());
+        XDB::execute('DELETE FROM images_sizes WHERE iid = {?}', $this->id());
     }
 }
 
