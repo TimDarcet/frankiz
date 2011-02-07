@@ -28,7 +28,9 @@
         {include file="head.tpl"|rel}
     </head>
 
+    {if !$simple}
     <body class="{if ($MiniModules_COL_FLOAT|@count) == 0}disabledAside{else}enabledAside{/if}">
+
         {include file="universe.tpl"}
 
         <div id="body">
@@ -70,6 +72,11 @@
         </div>
 
         {include file=common.devel.tpl}
+    {else}
+    <body class="simple">
+        {include file="section.tpl"|rel}
+    {/if}
+
     </body>
 </html>
 
