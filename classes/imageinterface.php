@@ -37,7 +37,7 @@ class Image {
     }
 
     public function mimeType() {
-        return self::$mimes[$ths->mime];
+        return self::$mimes[$this->mime];
     }
 
     public static function mimeToCode($mime) {
@@ -54,7 +54,7 @@ class Image {
     }
 
     public function send() {
-        pl_cached_dynamic_content_headers($this->mime);
+        pl_cached_dynamic_content_headers($this->mimeType());
         echo $this->data;
         exit;
     }
@@ -178,6 +178,8 @@ interface ImageInterface
     * @param $bits  Size to use
     */
     public function src($size);
+
+    public function send($size);
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
