@@ -47,10 +47,11 @@ class FrankizUpload
     *
     * @param $name  The name of the <input type="file"> tag
     */
-    public static function v($name)
+    public static function v($name, $default = null)
     {
-        if (!self::has($name))
-            return false;
+        if (!self::has($name)) {
+            return $default;
+        }
 
         $file = $_FILES[$name];
         $name = $file['name'];
