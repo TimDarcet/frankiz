@@ -26,11 +26,11 @@ CREATE TABLE IF NOT EXISTS log_events (
 -- --------------------------------------------------------
 
 --
--- Table structure for table 'log_last_session'
+-- Table structure for table 'log_last_sessions'
 --
 
-DROP TABLE IF EXISTS log_last_session;
-CREATE TABLE IF NOT EXISTS log_last_session (
+DROP TABLE IF EXISTS log_last_sessions;
+CREATE TABLE IF NOT EXISTS log_last_sessions (
   uid int(11) NOT NULL,
   id int(11) NOT NULL,
   PRIMARY KEY (uid)
