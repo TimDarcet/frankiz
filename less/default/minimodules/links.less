@@ -1,7 +1,6 @@
-<?php
 /***************************************************************************
- *  Copyright (C) 2009 Binet Réseau                                       *
- *  http://www.polytechnique.fr/eleves/binets/reseau/                     *
+ *  Copyright (C) 2009 Binet Réseau                                        *
+ *  http://www.polytechnique.fr/eleves/binets/reseau/                      *
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
  *  it under the terms of the GNU General Public License as published by   *
@@ -19,36 +18,11 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class LinksMiniModule extends FrankizMiniModule
-{
-    public function auth()
-    {
-        return AUTH_PUBLIC;
-    }
+/*******************************************************************************
+     Links
 
-    public function css()
-    {
-        return 'minimodules/links.css';
-    }
+*******************************************************************************/
 
-    public function tpl()
-    {
-        return 'minimodules/links/links.tpl';
-    }
-
-    public function title()
-    {
-        return 'Liens utiles';
-    }
-
-    public function run()
-    {
-        $collec = Link::all('usefuls');
-        $collec->select(LinkSelect::all());
-        
-        $this->assign('links', $collec);
-    }
-
+#minimodule_links li {
+    list-style: none;
 }
-// vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
-?>
