@@ -19,7 +19,8 @@ DROP TABLE IF EXISTS log_events;
 CREATE TABLE IF NOT EXISTS log_events (
   `session` int(11) NOT NULL,
   `action` int(11) NOT NULL,
-  `data` text NOT NULL
+  stamps timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data` text
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -52,5 +53,6 @@ CREATE TABLE IF NOT EXISTS log_sessions (
   browser tinytext NOT NULL,
   suid int(11) DEFAULT NULL,
   flags set('proxy') NOT NULL,
+  `start` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
