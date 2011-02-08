@@ -29,7 +29,6 @@
     font-size: 20px;
     text-align: center;
     width: 100%;
-    border: 1px solid #BDD5E3;
     margin-bottom: 20px;
 }
 
@@ -40,12 +39,12 @@
 }
 
 #content {
-    .body > table {
+    table {
         position: relative;
         width: 95%;
 
         >tbody>tr>td:first-child {
-            width: 200px;
+            width: 20%;
         }
 
         td {
@@ -76,6 +75,12 @@ ul {
             display: none;
             .rules {
                 font-size: 12px;
+            }
+
+            .click {
+                text-align: center;
+                font-weight: bold;
+                cursor: pointer;
             }
         }
     }
@@ -123,17 +128,22 @@ ul {
 
 *******************************************************************************/
 
-.qdj {
+.qdj table {
+    width: 100%;
+}
+
+.qdj .question  {
     font-size: 11pt;
     text-align: center;
     font-weight: bold;
-    text-align:center;
-}
-
-.qdj .answer2  {
-    color:#FFBB00;
 }
 
 .qdj .answer1  {
+    text-align: center;
+    color:#FFBB00;
+}
+
+.qdj .answer2  {
+    text-align: center;
     color:red;
 }
