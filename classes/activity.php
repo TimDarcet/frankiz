@@ -75,7 +75,11 @@ class Activity extends meta
     protected $days;
     protected $default_begin;
     protected $default_end;
-    
+
+    public function target_group() {
+        return $this->target->group();
+    }
+
     public function is_regular()
     {
         if (is_null($this->days))
@@ -87,7 +91,7 @@ class Activity extends meta
     {
         if (!$this->is_regular())
             return false;
-        $a = split(',', $this->days);
+        $a = explode(',', $this->days);
         $dates = array();
         foreach($a as $e)
         {
@@ -100,16 +104,26 @@ class Activity extends meta
         }
         return $dates;
     }
+
+    public function include_day($day)
+    {
+        $a = explode(',', $this->days);
+        foreach ($a as $e) {
+            if ($e == $day)
+                return true;
+        }
+        return false;
+    }
     
     public function insert()
     {
         XDB::execute('INSERT  activities
-                         SET  target = {?}, origin = {?] title = {?},
+                         SET  target = {?}, origin = {?}, title = {?},
                               description = {?}, days = {?}, default_begin = {?},
-                              default_end = {?}, priv = {?}',
+                              default_end = {?}',
             $this->target->id(), $this->origin, $this->title,
             $this->description, $this->days, $this->default_begin,
-            $this->default_end, $this->priv);
+            $this->default_end);
             
         $this->id = XDB::insertId();
     }

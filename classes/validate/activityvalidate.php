@@ -28,128 +28,104 @@ class ActivityValidate extends ItemValidate
     protected $origin;
     protected $title;
     protected $description;
-    protected $date;
     protected $begin;
     protected $end;
-    protected $priv;
 
-    public function __construct(User $writer, Group $target, String $title,
-        String $desc, FrankizDateTime $date, String $begin, String $end, Boolean $priv, $origin = null)
-    {
+    public function __construct(User $writer, Caste $target, $title, $desc, $begin, $end, $origin = false) {
         $this->writer = $writer;
         $this->target = $target;
         if (!is_null($origin))
             $this->origin = $origin;
         $this->title = $title;
         $this->description = $desc;
-        $this->date = $date;
         $this->begin = $begin;
         $this->end = $end;
-        $this->priv = $priv;
 
         parent::__construct();
     }
 
-    public function writer()
-    {
+    public function objects() {
+        return array('user' => 'User',
+                   'writer' => 'User',
+                   'target' => 'Caste',
+                   'origin' => 'Group');
+    }
+
+    public function writer(User $writer = null) {
+        if ($writer !== null) {
+            $this->writer = $writer;
+        }
         return $this->writer;
     }
 
-    public function target()
-    {
+    public function target(Caste $g = null) {
+        if($g !== null) {
+            $this->target = $g;
+        }
         return $this->target;
     }
 
-    public function origin()
-    {
+    public function origin(Group $g = null) {
+        if($g !== null) {
+            $this->origin = $g;
+        }
         return $this->origin;
     }
 
-    public function title()
-    {
+    public function title() {
         return $this->title;
     }
 
-    public function description()
-    {
+    public function description() {
         return $this->description;
     }
 
-    public function date()
-    {
-        return $this->date;
-    }
-
-    public function begin()
-    {
+    public function begin() {
         return $this->begin;
     }
 
-    public function end()
-    {
+    public function end() {
         return $this->end;
     }
 
-    public function priv()
-    {
-        return $this->priv;
+    public static function label() {
+        return 'Validation d\'activité';
     }
 
-    public function show()
-    {
+    public function show() {
         return 'validate/form.show.activity.tpl';
     }
 
-    public function editor()
-    {
+    public function editor() {
         return 'validate/form.edit.activity.tpl';
     }
 
-    public function handle_editor()
-    {
+    public function handle_editor() {
         $this->title        = Env::t('title', '');
         $this->description  = Env::t('description', '');
-        try
-        {
-            $this->date = new FrankizDateTime(Env::t('date', $this->date));
+        try {
+            $this->begin = new FrankizDateTime(Env::t('begin', $this->begin));
+            $this->end = new FrankizDateTime(Env::t('end', $this->end));
         }
-        catch (Exception $e)
-        {
+        catch (Exception $e) {
             return false;
         }
-        $default_begin = Env::t('begin', $this->begin);
-        $default_end = Env::t('end', $this->end);
-        if (!(preg_match( '`^\d{2}:\d{2}$`' , $default_begin) && strtotime($default_begin) !== false
-                        && preg_match( '`^\d{2}:\d{2}$`' , $default_end) && strtotime($default_end) !== false))
-            return false;
-
-        $this->begin        = $default_begin;
-        $this->end          = $default_end;
-        $this->priv         = Env::has('priv');
 
         return true;
     }
 
-    public function sendmailadmin()
-    {
-        if (is_null($this->user->bestEmail()))
-            $this->user->select(User::SELECT_BASE);
-
+    public function sendmailadmin() {
         $mail = new FrankizMailer('validate/mail.admin.activity.tpl');
         $mail->assign('user', $this->user->displayName());
         $mail->assign('title', $this->title);
 
         $mail->subject("[Frankiz] Validation d'une activité");
-        $mail->SetFrom($this->user->bestEmail(), $this->user->displayName());
+        $mail->SetFrom($this->writer->bestEmail(), $this->writer->displayName());
         $mail->AddAddress($this->_mail_from_addr(), $this->_mail_from_disp());
         $mail->Send(false);
     }
 
-    public function sendmailfinal($isok)
-    {
-        if (is_null($this->user->bestEmail()))
-            $this->user->select(User::SELECT_BASE);
-
+    public function sendmailfinal($isok) {
         $mail = new FrankizMailer('validate/mail.valid.activity.tpl');
         $mail->assign('isok', $isok);
         if (Env::has("ans"))
@@ -161,40 +137,36 @@ class ActivityValidate extends ItemValidate
             $mail->Subject = '[Frankiz] Ton activité a été refusée';
 
         $mail->SetFrom($this->_mail_from_addr(), $this->_mail_from_disp());
-        $mail->AddAddress($this->user->bestEmail(), $this->user->displayName());
+        $mail->AddAddress($this->writer->bestEmail(), $this->writer->displayName());
         $mail->AddCC($this->_mail_from_addr(), $this->_mail_from_disp());
         $mail->Send(false);
     }
 
-    public function _mail_from_disp()
-    {
+    public function _mail_from_disp() {
         return 'Les webmestres';
     }
 
-    public function _mail_from_addr()
-    {
-        return 'brice.gelineau@polytechnique.edu';
+    public function _mail_from_addr() {
+        $this->target->group()->select(GroupSelect::see());
+        return ($this->target->group()->mail() === false || $this->target->group()->mail() === '')
+                ?'web@frankiz.polytechnique.fr':$this->target->group()->mail();
     }
 
-    public function commit()
-    {
-        $begin = new FrankizDateTime($this->date->format('Y-m-d') . ' ' . $this->begin . ':00');
-        $end = new FrankizDatetime($this->date->format('Y-m-d') . ' ' . $this->end . ':00');
+    public function commit() {
         $a = new Activity(array(
                 'target'        => $this->target,
                 'origin'        => $this->origin,
                 'title'         => $this->title,
                 'description'   => $this->description,
-                'days'          => '',
-                'priv'          => $this->priv));
-        $a->replace();
+                'days'          => ''));
+        $a->insert();
         $ai = new ActivityInstance(array(
-                'aid'           => $a->id(),
-                'writer'        => $this->writer->id(),
+                'activity'      => $a,
+                'writer'        => $this->writer,
                 'comment'       => '',
-                'begin'         => $begin,
-                'end'           => $end));
-        $ai->replace();
+                'begin'         => $this->begin,
+                'end'           => $this->end));
+        $ai->insert();
         return true;
     }
 

@@ -88,7 +88,6 @@ class ActivityInstanceSelect extends Select
                                 FROM  activities_participants
                                WHERE  id IN {?}', $activities->ids());
 
-        trace($fields);
         $users = new Collection('User');
         $part = array();
 
@@ -117,6 +116,11 @@ class ActivityInstance extends meta
     public function target()
     {
         return $this->activity->target();
+    }
+
+    public function target_group()
+    {
+        return $this->activity->target_group();
     }
 
     public function origin()
@@ -171,7 +175,7 @@ class ActivityInstance extends meta
         {
             if ($user instanceof User)
                 $values[] = '(' . $this->id. ',' . $user->id() . ')';
-            else if (isId($user))
+            else if (self::isId($user))
                 $values[] = '(' . $this->id. ',' . $user . ')';
         }
         if (!empty($values))
@@ -191,7 +195,7 @@ class ActivityInstance extends meta
         {
             if ($user instanceof User)
                 $values[] = '(' . $this->id. ',' . $user->id() . ')';
-            else if (isId($user))
+            else if (self::isId($user))
                 $values[] = '(' . $this->id. ',' . $user . ')';
         }
         if (!empty($values))
@@ -207,8 +211,8 @@ class ActivityInstance extends meta
         $a['aid'] = $this->activity->id();
         $a['writer'] = array('displayName'  => $this->writer->displayName(),
                              'id'           => $this->writer->id());
-        $a['target'] = array('name'         => $this->activity->target()->name(),
-                             'label'        => $this->activity->target()->label());
+        $a['target'] = array('name'         => $this->activity->target_group()->name(),
+                             'label'        => $this->activity->target_group()->label());
         $a['title'] = $this->activity->title();
         $a['description'] = $this->activity->description();
         $a['comment'] = $this->comment;
@@ -231,8 +235,8 @@ class ActivityInstance extends meta
     public function insert()
     {
         XDB::execute('INSERT INTO  activities_instances
-                         SET  aid = {?}, writer = {?}, comment = {?},
-                              begin = {?}, end = {?}',
+                              SET  activity = {?}, writer = {?}, comment = {?},
+                                   begin = {?}, end = {?}',
             $this->activity->id(), $this->writer->id(), $this->comment,
             $this->begin->toDb(), $this->end->toDb());
             
