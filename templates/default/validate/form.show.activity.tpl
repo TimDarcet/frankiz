@@ -20,17 +20,20 @@
 {*                                                                        *}
 {**************************************************************************}
 
+{if $origin}
+    <tr>
+        <td>
+            Groupe d'origine :
+        </td>
+        <td>
+            {assign var='origin' value=$item->origin()}
+            {$origin|group}
+        </td>
+    </tr>
+{/if}
+
 <tr>
-    <td width=20%>
-        Groupe d'origine :
-    </td>
     <td>
-        {assign var='origin' value=$item->origin()}
-        {$origin|group}
-    </td>
-</tr>
-<tr>
-    <td width=20%>
         Titre :
     </td>
     <td>
@@ -52,34 +55,7 @@
         Date :
     </td>
     <td>
-        {$item->date()|datetime:'Y-m-d'}
-    </td>
-</tr>
-   
-<tr>
-    <td>
-        Heure de début :
-    </td>
-    <td>
-        {$item->begin()}
-    </td>
-</tr>
-   
-<tr>
-    <td>
-        Heure de fin :
-    </td>
-    <td>
-        {$item->end()}
-    </td>
-</tr>
-   
-<tr>
-    <td>
-        Privé :
-    </td>
-    <td>
-        {$item->priv()}
+        de {$item->begin()|datetime:'Y-m-d H:m'} à {$item->end()|datetime:'Y-m-d H:m'}
     </td>
 </tr>
 

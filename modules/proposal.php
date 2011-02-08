@@ -60,24 +60,35 @@ class ProposalModule extends PlModule
             {
                 try
                 {
-                    $end_c = new FrankizDateTime($end);
-                    $n = new News(array(
-                        'writer'    => S::user(),
-                        'target'    => new Group($gid),
-                        'iid'       => $iid,
-                        'origin'    => new Group($origin),
-                        'title'     => $title,
-                        'content'   => $content,
-                        'end'       => $end_c,
-                        'comment'   => $comment));
-                    $nv = new NewsValidate($n);
-                    $v = new Validate(array(
-                        'user'  => S::user(),
-                        'gid'   => $gid,
-                        'item'  => $nv,
-                        'type'  => 'news'));
-                    $v->insert();
-                    $page->assign('envoye', true);
+                    $image = new FrankizImage();
+                    $image->insert();
+                    $image->image(FrankizUpload::v('image'));
+                    if ($image->x() <= 400 && $image->y() <= 300 && $image->size() < 256000)
+                    {
+                        $end_c = new FrankizDateTime($end);
+                        $n = new News(array(
+                            'writer'    => S::user(),
+                            'target'    => new Group($gid),
+                            'iid'       => $image->id(),
+                            'origin'    => new Group($origin),
+                            'title'     => $title,
+                            'content'   => $content,
+                            'end'       => $end_c,
+                            'comment'   => $comment));
+                        $nv = new NewsValidate($n);
+                        $v = new Validate(array(
+                            'user'  => S::user(),
+                            'gid'   => $gid,
+                            'item'  => $nv,
+                            'type'  => 'news'));
+                        $v->insert();
+                        $page->assign('envoye', true);
+                    }
+                    else
+                    {
+                        $image->delete();
+                        $page->assign('msg', 'La date n\'est pas valide.');
+                    }
                 }
                 catch (Exception $e)
                 {
@@ -101,47 +112,54 @@ class ProposalModule extends PlModule
     {   
         $title      = Env::t('title', '');
         $desc       = Env::t('desc', '');
-        $date       = Env::t('date', '');
-        $begin      = Env::t('begin', '00:00');
-        $end        = Env::t('end', '00:00');
-        $target     = Env::i('target_activity_proposal', '');
-        if(Env::t('origin_activity_proposal') != '') $origin = Env::i('origin');
-        $origin     = Env::i('group_activity_proposal', '');
-        $priv       = Env::has('priv');
-        
-        $c = new Collection('Activity');
-        $c->add(1);
-        $c->add(2);
-        $c->select(Activity::SELECT_BASE);
-        
-        if ($date != '')
-        {
-            $date = substr_replace($date, '-', 6, 0);
-            $date = substr_replace($date, '-', 4, 0);
-        }
+        $target     = Env::i('target_group_activity', '');
+        $caste      = (Env::has('target_everybody_activity'))?'everybody':'restricted';
+        $origin = (Env::t('origin_activity_proposal') != 'none')?Env::i('origin_activity_proposal', ''):false;
+
+        $activities = new ActivityFilter(new PFC_And(new AFC_TargetGroup(S::user()->castes(Rights::admin())->groups()),
+                                                     new AFC_Regular(true)));
+        $activities = $activities->get();
+        $activities->select(ActivitySelect::base());
         
         if (Env::has('send_new'))
         {
-            if($title == '' || $date == '' || $begin == '00:00' || $end == '00:00' 
-                || $target == '')
+            if($title == '' || $target == '')
             {
-                $page->assign('msg', 'Il manque des informations pour créer l\'activité. 
-                    Attention les heures ne peuvent pas rester à 00:00.');
+                $page->assign('msg', 'Il manque des informations pour créer l\'activité.');
             }
             else 
             {
                 try
                 {
-                    $date_c = new FrankizDateTime($date);
-                    $av = new ActivityValidate(s::user(), new Group($target), $title,
-                        $desc, $date_c, $begin, $end, $priv, is_null($origin)?null:new Group($origin));
+                    $target = new Group($target);
+                    $target->select(GroupSelect::castes());
+                    foreach (S::user()->rights($target) as $r) {
+                        if ($r->isMe(new Rights('admin')))
+                            $admin = true;
+                    }
+                    $begin = new FrankizDateTime(Env::t('begin'));
+                    $end = new FrankizDateTime(Env::t('end'));
+                    $av = new ActivityValidate(s::user(), $target->caste(new Rights($caste)), $title,
+                        $desc, $begin, $end, is_null($origin)?false:new Group($origin));
                     $v = new Validate(array(
-                        'user'  => S::user(),
-                        'gid'   => $target,
-                        'item'  => $av,
-                        'type'  => 'activity'));
-                    $v->insert();
-                    $page->assign('envoye', true);
+                        'writer'    => S::user(),
+                        'group'     => $target,
+                        'item'      => $av,
+                        'type'      => 'activity'));
+                    if (!$admin) {
+                        $v->insert();
+                        $page->assign('envoye', true);
+                    }
+                    else {
+                        Env::set('comm', 'Validation automatique');
+                        if ($v->commit()) {
+                        $page->assign('valide', true);
+                        }
+                        else {
+                            $page->assign('valide', true);
+                        }
+                    }
+
                 }
                 catch (Exception $e)
                 {
@@ -152,8 +170,11 @@ class ProposalModule extends PlModule
         
         if (Env::has('send_reg'))
         {
+            $begin = Env::t('begin');
+            $end = Env::t('end');
+            $date = Env::t('other_date');
             $aid = Env::i('regular_activity_proposal', '');
-            $a = $c->get($aid);
+            $a = $activities->get($aid);
             if(!$a)
             {
                 $page->assign('msg', 'Tu n\'as pas le droit de créer de nouvelles instances de cette activité.');
@@ -170,12 +191,12 @@ class ProposalModule extends PlModule
                                 $begin_c = new FrankizDateTime($dat . ' ' . $begin . ':00');
                                 $end_c = new FrankizDateTime($dat . ' ' . $end . ':00');
                                 $av = new ActivityInstance(array(
-                                'aid'       => $aid,
+                                'activity'  => $a,
                                 'writer'    => S::user(),
                                 'begin'     => $begin_c,
                                 'end'       => $end_c,
                                 'comment'   => Env::t('comment', '')));
-                                $av->replace();
+                                $av->insert();
                             }
                             catch (Exception $e)
                             {
@@ -189,12 +210,12 @@ class ProposalModule extends PlModule
                         $begin_c = new FrankizDateTime($date . ' ' . $begin . ':00');
                         $end_c = new FrankizDateTime($date . ' ' . $end . ':00');
                         $av = new ActivityInstance(array(
-                        'aid'       => $aid,
+                        'activity'  => $a,
                         'writer'    => S::user(),
                         'begin'     => $begin_c,
                         'end'       => $end_c,
                         'comment'   => Env::t('comment', '')));
-                        $av->replace();
+                        $av->insert();
                     }
                     catch (Exception $e)
                     {
@@ -214,12 +235,8 @@ class ProposalModule extends PlModule
         
         $page->assign('title_activity', $title);
         $page->assign('desc', $desc);
-        $page->assign('date', $date);
-        $page->assign('begin', $begin);
-        $page->assign('end', $end);
-        $page->assign('priv', $priv);
         
-        $page->assign('regular_activities', $c);
+        $page->assign('regular_activities', $activities);
         $page->assign('title', 'Proposer une activité');
         $page->addCssLink('validate.css');
         $page->changeTpl('validate/prop.activity.tpl');
@@ -229,7 +246,7 @@ class ProposalModule extends PlModule
     {   
         $aid = Env::i('aid', '');
         $a = new Activity($aid);
-        $a->select(Activity::SELECT_BASE);
+        $a->select(ActivitySelect::base());
         $page->assign('days', $a->next_dates(5));
         $page->assign('activity', $a);
         $page->changeTpl('validate/prop.activity.ajax.tpl', NO_SKIN);

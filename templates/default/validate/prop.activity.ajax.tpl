@@ -19,95 +19,113 @@
 {*  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA               *}
 {*                                                                        *}
 {**************************************************************************}
-<div class="box_proposal">
-    <div class="title">
+<div class="module">
+    <div class="head">
        Création de nouvelles instances
     </div>
-    
-    <table>
-        {foreach from=$days item=next_dates key=weekday}
+
+    <div class="body">
+        <table>
+            {foreach from=$days item=next_dates key=weekday}
+                <tr>
+                    <td width=20%>
+                        {if $weekday == Monday}Lundi :
+                        {elseif $weekday == Tuesday}Mardi :
+                        {elseif $weekday == Wednesday}Mercredi :
+                        {elseif $weekday == Thursday}Jeudi :
+                        {elseif $weekday == Friday}Vendredi :
+                        {elseif $weekday == Saturday}Samedi :
+                        {elseif $weekday == Sunday}Dimanche :
+                        {/if}
+                    </td>
+                    <td>
+                        {foreach from=$next_dates item=day}
+                            <span class="margin_right">
+                                <input type="checkbox" name="{$day}_regular_proposal"/>
+                                {$day}
+                            </span>
+                        {/foreach}
+                    </td>
+                </tr>
+            {/foreach}
+
             <tr>
                 <td width=20%>
-                    {if $weekday == Monday}Lundi :
-                    {elseif $weekday == Tuesday}Mardi :
-                    {elseif $weekday == Wednesday}Mercredi :
-                    {elseif $weekday == Thursday}Jeudi :
-                    {elseif $weekday == Friday}Vendredi :
-                    {elseif $weekday == Saturday}Samedi :
-                    {elseif $weekday == Sunday}Dimanche :
-                    {/if}
+                    autre :
                 </td>
                 <td>
-                    {foreach from=$next_dates item=day}
-                        <span class="margin_right">
-                            <input type="checkbox" name="{$day}_regular_proposal"/>
-                            {$day}
-                        </span>
-                    {/foreach}
+                    <input type="checkbox" name="other_regular_proposal"/>
+                    <input type="text" name="other_date" id="other_date"
+                          required {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2}$).*"{/literal}/>
+                    <script>{literal}
+                    $(function() {
+                        $("#other_date").datepicker({minDate: new Date(), maxDate: "+1M", dateFormat: 'yy-mm-dd'});
+                    });
+                    {/literal}</script>
                 </td>
             </tr>
-        {/foreach}
-    
-        <tr>
-            <td width=20%>
-                autre :
-            </td>
-            <td>
-                <input type="checkbox" name="other_regular_proposal"/>
-                {valid_date name="date" value=$date to=15}
-            </td>
-        </tr>
-        
-        <tr>
-            <td></td>
-            <td>
-                <input type="submit" name="send_reg" value="Valider" onClick="return window.confirm('Voulez vous vraiment proposer cette activité ?')"/>
-            </td>
-        </tr>
-    </table>
+
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" name="send_reg" value="Valider" onClick="return window.confirm('Voulez vous vraiment proposer cette activité ?')"/>
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>
 
-<div class="box_proposal">
-    <div class="title">
+<div class="module"">
+    <div class="head">
        Informations utilisées
     </div>
-    
-    <table>
-        <tr>
-            <td width=20%>
-                Heure de début :
-            </td>
-            <td>
-                <input type='text' name='begin' value="{$activity->default_begin()}"/>
-            </td>
-        </tr>
-        
-        <tr>
-            <td>
-                Heure de fin :
-            </td>
-            <td>
-                <input type='text' name='end' value="{$activity->default_end()}" />
-            </td>
-        </tr>
-    
-        <tr>
-            <td>
-                Commentaire :
-            </td>
-            <td>
-                <textarea name='comment' rows=7 cols=50></textarea>
-            </td>
-        </tr>
-        
-        <tr>
-            <td></td>
-            <td>
-                <input type="submit" name="send_reg" value="Valider" onClick="return window.confirm('Voulez vous vraiment proposer cette activité ?')"/>
-            </td>
-        </tr>
-    </table>
-    
+
+    <div class="body">
+        <table>
+            <tr>
+                <td width=20%>
+                    Durée
+                </td>
+                <td>
+                    de <input type="text" name="begin" id="begin"
+                              required {literal}pattern="(?=^[0-9]{2}:[0-9]{2}$).*"{/literal}/>
+                    à  <input type="text" name="end" id="end"
+                              required {literal}pattern="(?=^[0-9]{2}:[0-9]{2}$).*"{/literal}/>
+                    <script>{literal}
+                        $(function() {
+                            var begin = new Date();
+                            begin.setHours({/literal}{$activity->default_begin()|substr:0:2}{literal});
+                            begin.setMinutes({/literal}{$activity->default_begin()|substr:3:2}{literal});
+                            $("#begin").timepicker({defaultDate: end});
+                            $("#begin").timepicker('setDate', begin);
+                            var end = new Date();
+                            end.setHours({/literal}{$activity->default_end()|substr:0:2}{literal});
+                            end.setMinutes({/literal}{$activity->default_end()|substr:3:2}{literal});
+                            $("#end").timepicker({defaultDate: end});
+                            $("#end").timepicker('setDate', end);
+                        });
+                    {/literal}</script>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Commentaire :
+                </td>
+                <td>
+                    <textarea name='comment' placeholder="Commentaire particulier (en plus de la description)"
+                        rows=7 cols=50></textarea>
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" name="send_reg" value="Valider" onClick="return window.confirm('Voulez vous vraiment proposer cette activité ?')"/>
+                </td>
+            </tr>
+        </table>
+    </div>    
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

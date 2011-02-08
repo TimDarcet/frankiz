@@ -20,6 +20,18 @@ $(function() {
 		else
 			$(".text_validate").height(80);
 	});
+	
+	// For propositions
+	// mails
+	$("#no_preview").click(function() {
+		if ($(this).attr('checked')) {
+            wiki_preview.stop($('#text_proposal'));
+			$("#preview_proposal").html('Tu as choisi de ne pas formatter ton texte. L\'aperçu est donc désactivé.');
+        }
+		else
+			wiki_preview.start($('#text_proposal'), $('#preview_proposal'));
+	});
+	wiki_preview.start($('#text_proposal'), $('#preview_proposal'));
 
 	// activities
 	$("input[name='regular_activity_proposal']").change(function(){

@@ -43,34 +43,8 @@
         Date :
     </td>
     <td>
-        <input type='text' name='date' value="{$item->date()|datetime:'Y-m-d'}" />
-    </td>
-</tr>
-   
-<tr>
-    <td>
-        Heure de début :
-    </td>
-    <td>
-        <input type='text' name='begin' value="{$item->begin()}" />
-    </td>
-</tr>
-   
-<tr>
-    <td>
-        Heure de fin :
-    </td>
-    <td>
-        <input type='text' name='end' value="{$item->end()}" />
-    </td>
-</tr>
-            
-<tr>
-    <td>
-        Privé :
-    </td>
-    <td>
-        <input type="checkbox" name="priv" {if $item->priv()}checked="checked"{/if}/>
+        de <input type='text' name='begin' value="{$item->begin()|datetime:'Y-m-d H:m:00'}" />
+        à <input type='text' name='end' value="{$item->end()|datetime:'Y-m-d H:m:00'}" />
     </td>
 </tr>
 

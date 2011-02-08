@@ -35,7 +35,7 @@
 {else}
     <ul>
     {foreach from=$val item=valid}
-        <li class="validate box_proposal">
+        <li class="validate">
             {assign var='writer' value=$valid->writer()}
             {assign var='group' value=$valid->group()}
             {assign var='item' value=$valid->item()}
@@ -56,7 +56,7 @@
                     <li>Date de demande: {$valid->created()}</li>
                 </ul>
 
-                <div class="subtitle">
+                <div class="click">
                     Informations
                 </div>
                 <table class="hide show">
@@ -64,7 +64,7 @@
                 </table>
 
                 {if $item->editor()}
-                    <div class="subtitle">
+                    <div class="click">
                         Editer
                     </div>
                     <table class="hide">
@@ -78,7 +78,7 @@
                     </table>
                 {/if}
 
-                <div class="subtitle">
+                <div class="click">
                     Commentaires (entre administrateurs)
                 </div>
                 <table class="hide show">
@@ -96,7 +96,7 @@
                         <td width=20%> </td>
                         <td>
                             <div>
-                                <textarea name="comm" class="text_validate" > </textarea>
+                                <textarea name="comm" class="text_validate" ></textarea>
                             </div>
                             <input type="submit" name="add_comm" class="addcom_validate"  value="Ajouter un commentaire" />
                         </td>
