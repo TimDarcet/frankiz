@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS images (
   label varchar(200) DEFAULT NULL,
   seen int(11) NOT NULL,
   lastseen datetime NOT NULL,
+  created timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (iid)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 

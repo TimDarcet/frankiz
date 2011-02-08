@@ -37,7 +37,7 @@ class IFC_Caste extends ImageFilterCondition
 
     public function buildCondition(PlFilter $f)
     {
-        return XDB::format('i.cid IN {?}', $this->cids);
+        return XDB::format('i.caste IN {?}', $this->cids);
     }
 }
 
@@ -55,6 +55,19 @@ class IFO_Seen extends ImageFilterOrder
     protected function getSortTokens(PlFilter $gf)
     {
         return "i.seen";
+    }
+}
+
+class IFO_Created extends ImageFilterOrder
+{
+    public function __construct($desc = false)
+    {
+        parent::__construct($desc);
+    }
+
+    protected function getSortTokens(PlFilter $gf)
+    {
+        return "i.created";
     }
 }
 

@@ -38,11 +38,13 @@ class FrankizImageSchema extends Schema
     }
 
     public function scalars() {
-        return array('label', 'seen', 'lastseen');
+        return array('label', 'seen');
     }
 
     public function objects() {
-        return array('caste' => 'Caste');
+        return array('caste' => 'Caste',
+                  'lastseen' => 'FrankizDateTime',
+                   'created' => 'FrankizDateTime');
     }
 }
 
@@ -53,7 +55,7 @@ class FrankizImageSelect extends Select
     }
 
     public static function base() {
-        return new self(array('label', 'seen', 'lastseen'));
+        return new self(array('label', 'seen', 'lastseen', 'created'));
     }
 
     public static function caste() {
@@ -65,7 +67,7 @@ class FrankizImageSelect extends Select
     }
 
     protected function handlers() {
-        return array('main' => array('label', 'seen', 'lastseen', 'caste'),
+        return array('main' => array('label', 'seen', 'lastseen', 'created', 'caste'),
                    'images' => array('images'));
     }
 
@@ -101,6 +103,8 @@ class FrankizImage extends Meta implements ImageInterface
     protected $seen = null;
     // The last time the full image was seen
     protected $lastseen = null;
+    // When the image has been uploaded
+    protected $created = null;
 
     // Differents levels of sizes
     protected $images = null;
