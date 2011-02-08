@@ -315,6 +315,7 @@ $webmasters->external(0);
 $webmasters->leavable(1);
 $webmasters->visible(1);
 
+
 $on_platal = new Group();
 $on_platal->insert();
 $on_platal->name('on_platal');
@@ -325,6 +326,7 @@ $on_platal->visible(1);
 // Admins(on_platal) = Members(webmasters)
 $on_platal->caste(Rights::admin())->userfilter(new UserFilter(new UFC_Group($webmasters, Rights::member())));
 // Members are imported in update.promos
+
 
 $everybody = new Group();
 $everybody->insert();
@@ -360,6 +362,17 @@ $tol->external(0);
 $tol->leavable(0);
 $tol->visible(0);
 // Admins(tol) = Members(webmasters)
+$tol->caste(Rights::admin())->userfilter(new UserFilter(new UFC_Group($webmasters, Rights::member())));
+
+
+$temp = new Group();
+$temp->insert();
+$temp->name('temp');
+$temp->label('Temporary');
+$temp->external(0);
+$temp->leavable(0);
+$temp->visible(0);
+// Admins(temp) = Members(webmasters)
 $tol->caste(Rights::admin())->userfilter(new UserFilter(new UFC_Group($webmasters, Rights::member())));
 
 echo "Added BR's Microcosmos \n";
