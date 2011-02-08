@@ -22,23 +22,18 @@
 
 <table>
     <tr>
-        <th>Iid</th>
-        <th></th>
-        <th>Uploadé</th>
-        <th>Vue pour la dernière fois</th>
-        <th>Vue</th>
-        <th>Label</th>
+        <th>Heure</th>
+        <th>Action</th>
+        <th>Données complémentaires</th>
     </tr>
-    {foreach from=$images item=image}
+    {foreach from=$events item='event'}
         <tr>
-            <td>{$image->id()}</td>
-            <td><a href="image/full/{$image->id()}"><img src="{$image|image:'micro'}" /></a></td>
-            <td>{$image->created()|datetime}</td>
-            <td>{$image->lastseen()|datetime}</td>
-            <td>{$image->seen()}</td>
-            <td>{$image->label()}</td>
+            <td>{$event.stamps|date_format:'%x %X'}</td>
+            <td>{$event.action}</td>
+            <td>{$event.data}</td>
         </tr>
     {/foreach}
 </table>
+
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

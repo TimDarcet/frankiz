@@ -22,23 +22,30 @@
 
 <table>
     <tr>
-        <th>Iid</th>
-        <th></th>
-        <th>Uploadé</th>
-        <th>Vue pour la dernière fois</th>
-        <th>Vue</th>
-        <th>Label</th>
+        <th>Session</th>
+        <th>User</th>
+        <th>IP</th>
+        <th>Host</th>
+        <th>Forward IP</th>
+        <th>Forward Host</th>
+        <th>Browser</th>
+        <th>Suid</th>
+        <th>Flags</th>
     </tr>
-    {foreach from=$images item=image}
+    {foreach from=$sessions key='sid' item='session'}
         <tr>
-            <td>{$image->id()}</td>
-            <td><a href="image/full/{$image->id()}"><img src="{$image|image:'micro'}" /></a></td>
-            <td>{$image->created()|datetime}</td>
-            <td>{$image->lastseen()|datetime}</td>
-            <td>{$image->seen()}</td>
-            <td>{$image->label()}</td>
+            <td><a href="admin/logs/events/{$sid}">{$session.start|datetime}</a></td>
+            <td>{$session.user|user}</td>
+            <td>{$session.ip}</td>
+            <td>{$session.host}</td>
+            <td>{$session.forward_ip}</td>
+            <td>{$session.forward_host}</td>
+            <td>{$session.browser}</td>
+            <td>{$session.suid}</td>
+            <td>{$session.flags}</td>
         </tr>
     {/foreach}
 </table>
+
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

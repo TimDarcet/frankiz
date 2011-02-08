@@ -25,14 +25,16 @@ class AdminModule extends PlModule
     function handlers()
     {
         return array(
-            'admin'             => $this->make_hook('admin'   , AUTH_COOKIE),
-            'admin/su'          => $this->make_hook('su'      , AUTH_MDP, 'admin'),
-            'admin/images'      => $this->make_hook('images'  , AUTH_MDP, 'admin'),
-            'admin/image'       => $this->make_hook('image'   , AUTH_MDP, 'admin'),
-            'admin/group'       => $this->make_hook('group'   , AUTH_MDP, 'admin'),
-            'admin/bubble'      => $this->make_hook('bubble'  , AUTH_MDP, 'admin'),
-            'admin/validate'    => $this->make_hook('validate', AUTH_COOKIE),
-            'debug'             => $this->make_hook('debug'   , AUTH_PUBLIC)
+            'admin'               => $this->make_hook('admin'        , AUTH_COOKIE),
+            'admin/su'            => $this->make_hook('su'           , AUTH_MDP, 'admin'),
+            'admin/images'        => $this->make_hook('images'       , AUTH_MDP, 'admin'),
+            'admin/image'         => $this->make_hook('image'        , AUTH_MDP, 'admin'),
+            'admin/group'         => $this->make_hook('group'        , AUTH_MDP, 'admin'),
+            'admin/bubble'        => $this->make_hook('bubble'       , AUTH_MDP, 'admin'),
+            'admin/logs/sessions' => $this->make_hook('logs_sessions', AUTH_COOKIE, 'admin'),
+            'admin/logs/events'   => $this->make_hook('logs_events'  , AUTH_COOKIE, 'admin'),
+            'admin/validate'      => $this->make_hook('validate'     , AUTH_COOKIE),
+            'debug'               => $this->make_hook('debug'        , AUTH_PUBLIC)
         );
     }
 
@@ -56,7 +58,7 @@ class AdminModule extends PlModule
     }
 
     function handler_su($page, $uid=0)
-    {
+    {// TODO: everything
         if (S::has('suid')) {
             $page->kill("Déjà en SUID !!!");
         }
@@ -71,6 +73,47 @@ class AdminModule extends PlModule
                 pl_redirect('');
             }
         }
+    }
+
+    function handler_logs_sessions($page)
+    {
+        $iter = XDB::iterator('SELECT  id, uid, host, ip, forward_ip, forward_host,
+                                       browser, suid, flags, start
+                                 FROM  log_sessions
+                             ORDER BY  start DESC
+                                LIMIT  50');
+
+        $sessions = array();
+        $users = new Collection('User');
+        while ($session = $iter->next()) {
+            $user = $users->addget($session['uid']);
+
+            $sessions[$session['id']] =
+                array('user' => $user,
+                     'host' => $session['host'], 'ip' => uint_to_ip($session['ip']),
+                     'forward_host' => $session['forward_host'],'forward_ip' => uint_to_ip($session['forward_ip']),
+                     'browser' => $session['browser'], 'suid' => $session['suid'],
+                     'flags' => $session['flags'], 'start' => new FrankizDateTime($session['start']));
+        }
+        $users->select(UserSelect::base());
+
+        $page->assign('title', "Logs des sessions");
+        $page->assign('sessions', $sessions);
+        $page->changeTpl('admin/logs_sessions.tpl');
+    }
+
+    function handler_logs_events($page, $session)
+    {
+        $res = XDB::query('SELECT  la.text AS action, le.stamps, le.data
+                             FROM  log_events AS le
+                        LEFT JOIN  log_actions AS la ON la.id = le.action
+                            WHERE  le.session = {?}
+                         ORDER BY  le.stamps DESC
+                            LIMIT  50', $session);
+
+        $page->assign('title', "Logs des événements de la session");
+        $page->assign('events', $res->fetchAllAssoc());
+        $page->changeTpl('admin/logs_events.tpl');
     }
 
     function handler_bubble($page, $cid)
@@ -95,19 +138,14 @@ class AdminModule extends PlModule
 
     function handler_images($page)
     {
-        if (Env::has('comment') && FrankizUpload::has('file'))
-        {
-            $fu = FrankizUpload::v('file');
-            $im = new FrankizImage(array('comment' => Env::v('comment')));
-            $im->loadUpload($fu)->insert();
-        }
+        $temp = Group::from('temp');
+        $temp->select(GroupSelect::castes());
+        $everybody_temp = $temp->caste(Rights::everybody());
+        $if = new ImageFilter(new IFC_Caste($everybody_temp), new IFO_Created());
 
-        $res = XDB::query('SELECT iid FROM images LIMIT 30');
+        $images = $if->get(new PlLimit(50))->select(FrankizImageSelect::base());
 
-        $images = Collection::fromClass('FrankizImage');
-        $images->add($res->fetchColumn())->select(FrankizImage::SELECT_BASE);
-
-        $page->assign('title', 'Gestion des images');
+        $page->assign('title', 'Images du groupe temporaire');
         $page->assign('images', $images);
         $page->addCssLink('admin.css');
         $page->changeTpl('admin/images.tpl');
