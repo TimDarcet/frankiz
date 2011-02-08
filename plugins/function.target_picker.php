@@ -35,6 +35,7 @@ function smarty_function_target_picker($params, &$smarty) {
 
     $smarty->assign($params['user_groups'], $gs);
     $smarty->assign($params['fkz_groups'], $fkz);
+    $smarty->assign($params['own_group'], S::user()->group());
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

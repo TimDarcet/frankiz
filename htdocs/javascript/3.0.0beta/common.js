@@ -18,17 +18,21 @@ $(function(){
         var target_picker = $(this).closest('.target_picker');
         var selected = target_picker.find("option:selected");
         var checkbox = target_picker.find("input[type=checkbox]");
+        checkbox.closest('label').hide();
         if (selected.closest('optgroup').attr("name") == "fkz") {
-            checkbox.closest('label').hide();
             target_picker.find('.comments').html(selected.attr("description") + "<br />" +
                                                   "Nécessite une validation de la part des Webmestres");
         } else {
-            checkbox.closest('label').show();
-            if (checkbox.attr("checked")) {
-                target_picker.find('.comments').html("Sera visible par tout le monde et les membres du groupe " +
-                                                      selected.text() + " seront mis au courant");
+            if (selected.attr('own_group')) {
+                target_picker.find('.comments').html(selected.attr("description"));
             } else {
-                target_picker.find('.comments').html("Sera visible uniquement par les membres du groupe " + selected.text());
+                checkbox.closest('label').show();
+                if (checkbox.attr("checked")) {
+                    target_picker.find('.comments').html("Sera visible par tout le monde et les membres du groupe " +
+                                                          selected.text() + " seront mis au courant");
+                } else {
+                    target_picker.find('.comments').html("Sera visible uniquement par les membres du groupe " + selected.text());
+                }
             }
         }
     });
