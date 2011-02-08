@@ -22,12 +22,14 @@
 class TolValidate extends ItemValidate
 {
     protected $type = 'tol';
+
+    protected $user;
     protected $image;
 
     protected $unique = true;
 
     public function objects() {
-        return Array('user' => 'User', 'image' => 'FrankizImage');
+        return Array('user' => userSelect::base(), 'image' => FrankizImageSelect::base());
     }
 
     public static function label() {

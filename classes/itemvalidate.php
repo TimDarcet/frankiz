@@ -33,14 +33,13 @@ abstract class ItemValidate
     // enable the refuse button
     protected $refuse = true;
 
-    protected $user;
     protected $type;
 
     // returns an array with the attributes to construct as objects when retrieving from database
     // works only for meta object
     // must be name => class
     public function objects() {
-        return Array('user' => UserSelect::base());
+        return array();
     }
 
     public function __call($method, $arguments)
