@@ -21,19 +21,35 @@
 
 class NewsValidate extends ItemValidate
 {
-    protected $rules = 'Une annonce ne doit pas être trop longue et respecter les règles typographiques.' ;
     protected $type = 'news';
-    protected $news;
 
-    public function __construct(News $news)
+    protected $writer;
+    protected $target;
+    protected $image;
+    protected $origin;
+    protected $title;
+    protected $content;
+    protected $begin;
+    protected $end;
+    protected $comment;
+
+    public function __construct($datas)
     {
-        $this->news = $news;
+        foreach ($datas as $key => $val) {
+            if (property_exists($this, $key)) {
+                $this->$key = $val;
+            }
+        }
         parent::__construct();
     }
 
-    public function news()
-    {
-        return $this->news;
+    public function objects() {
+        return Array('writer' => UserSelect::base(), 'target' => CasteSelect::group(),
+                     'image' => FrankizImageSelect::base(), 'origin' => GroupSelect::base());
+    }
+
+    public static function label() {
+        return 'Annonce';
     }
 
     public function show()
@@ -65,11 +81,11 @@ class NewsValidate extends ItemValidate
     public function sendmailadmin()
     {
         if (is_null($this->user->bestEmail()))
-            $this->user->select(User::SELECT_BASE);
+            $this->user->select(UserSelect::base());
 
         $mail = new FrankizMailer('validate/mail.admin.news.tpl');
         $mail->assign('user', $this->user->displayName());
-        $mail->assign('title', $this->news->title());
+        $mail->assign('title', $this->title);
 
         $mail->subject("[Frankiz] Validation d'une annonce");
         $mail->SetFrom($this->user->bestEmail(), $this->user->displayName());
