@@ -37,10 +37,9 @@ class ActivityFeed extends FrankizFeed
 
         $activities = new ActivityInstanceFilter(
             new PFC_Or (new PFC_And(new AIFC_END(new FrankizDateTime(), AIFC_End::AFTER),
-                                    new AIFC_User(S::user()))),
+                                    new AIFC_User(S::user(), 'restricted')),
                         new PFC_And(new AIFC_END(new FrankizDateTime(), AIFC_End::AFTER),
-                                    new PFC_And(new AIFC_User(S::user(), 'friend'),
-                                                new AIFC_Private(false))));
+                                    new AIFC_User(S::user(), 'everybody'))));
 
         $activities = $activities->get();
         $activities->select();
@@ -49,11 +48,11 @@ class ActivityFeed extends FrankizFeed
         {
             $e = array();
             $e['id'] = $item->id();
-            $e['title'] = '[' . $item->target()->label() . '] ' . $item->title();
+            $e['title'] = '[' . $item->target_group()->label() . '] ' . $item->title();
             $e['activity'] = $item;
             $e['publication'] = $item->begin()->format();
             $auth = (is_null($item->origin()))?:'[' . $item->origin() . '] ';
-            $e['author'] = $auth .$item->writer()->displayName();
+            $e['author'] = $auth . $item->writer()->displayName();
             $e['link'] = $globals->baseurl . '/activity';
             $data[] = $e;
         }

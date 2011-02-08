@@ -41,6 +41,25 @@ class AFC_Origin extends ActivityFilterCondition
     }
 }
 
+/** Retrieves instances where the target is owned by the specified groups
+ * @param $gs Collection of Groups
+ */
+class AFC_TargetGroup extends ActivityFilterCondition
+{
+    private $cids;
+
+    public function __construct(Collection $groups)
+    {
+        $cf = new CasteFilter(new PFC_And(new CFC_Holder(), new CFC_Group($groups)));
+        $this->cids = $cf->get()->ids();
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        return XDB::format("a.target IN {?}", $this->cids);
+    }
+}
+
 /** Filters activities based on their target caste
  * @param $gs A Caste, a Cid or an array of it
  */
@@ -173,7 +192,7 @@ class ActivityFilter extends FrankizFilter
     {
         $joins = array();
         if ($this->with_caste) {
-            $joins['c'] = PlSqlJoin::left('castes', '$ME.gid = a.target');
+            $joins['c'] = PlSqlJoin::left('castes', '$ME.cid = a.target');
         }
         return $joins;
     }
