@@ -18,3 +18,13 @@ CREATE TABLE IF NOT EXISTS castes_dependencies (
   KEY id (id),
   KEY cid_2 (cid)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS castes_users;
+CREATE TABLE IF NOT EXISTS castes_users (
+  cid int(11) NOT NULL,
+  uid int(11) NOT NULL,
+  UNIQUE KEY cid (cid,uid),
+  KEY uid (uid),
+  KEY cid_2 (cid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

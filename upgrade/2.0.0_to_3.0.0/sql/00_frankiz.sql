@@ -101,19 +101,6 @@ CREATE TABLE IF NOT EXISTS `brs_subs` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `castes_users`
---
-
-DROP TABLE IF EXISTS `castes_users`;
-CREATE TABLE IF NOT EXISTS `castes_users` (
-  `cid` int(11) NOT NULL,
-  `uid` int(11) NOT NULL,
-  UNIQUE KEY `cid` (`cid`,`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `laf`
 --
 
