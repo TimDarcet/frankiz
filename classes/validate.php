@@ -75,43 +75,41 @@ class ValidateSelect extends Select
     }
 
     protected function handler_item(Collection $validates, $fields) {
-        $_validates = array();
+        $items = array();
         foreach($validates as $validate) {
-            $_validates[$validate->id()] = array();
+            $items[$validate->id()] = array();
         }
 
         $iter = XDB::iterRow("SELECT  id, item
                                 FROM  validate
                                WHERE  id IN {?}", $validates->ids());
 
-
         while (list($id, $item) = $iter->next()) {
-            $_validates[$id] = unserialize($item);
+            $items[$id] = unserialize($item);
         }
 
-        $classes = Array();
-        foreach ($_validates as $validate) {
-            $classes = array_merge($classes, $validate->objects());
-        }
+        $selects = array();
+        $collections = array();
+        foreach ($items as $item) {
+            foreach ($item->objects() as $field => $select) {
+                $hash = $select->hash();
+                $selects[$hash] = $select;
+                if (empty($collections[$hash])) {
+                    $collections[$hash] = new Collection($select->className());
+                }
 
-        foreach ($classes as $key => $object) {
-            $collections[$key] = new Collection($object);
-        }
-
-        foreach ($_validates as $validate) {
-            foreach ($validate->objects() as $name => $object) {
-                if ($validate->$name() != false)
-                    $validate->$name($collections[$name]->addget($validate->$name()));
+                if ($item->$field() != false) {
+                    $item->$field($collections[$hash]->addget($item->$field()));
+                }
             }
         }
 
-        foreach ($classes as $name => $class) {
-            $select = $class . 'Select';
-            $collections[$name]->select($select::base());
+        foreach ($collections as $hash => $collection) {
+            $collection->select($selects[$hash]);
         }
 
         foreach ($validates as $validate) {
-            $validate->fillFromArray(array('item' => $_validates[$validate->id()]));
+            $validate->fillFromArray(array('item' => $items[$validate->id()]));
         }
     }
 }

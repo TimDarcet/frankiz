@@ -40,7 +40,20 @@ abstract class ItemValidate
     // works only for meta object
     // must be name => class
     public function objects() {
-        return Array('user' => 'User');
+        return Array('user' => UserSelect::base());
+    }
+
+    public function __call($method, $arguments)
+    {
+        if (!property_exists($this, $method)) {
+            throw new Exception("$method is not a property of " . get_class($this));
+        }
+
+        if (!empty($arguments)) {
+            $this->$method = $arguments[0];
+        }
+
+        return $this->$method;
     }
 
     // Prepares the item to be inserted in a Db
