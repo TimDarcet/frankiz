@@ -65,6 +65,14 @@ abstract class Select
         return implode(', ', $sql_columns);
     }
 
+    public function hash() {
+        $str = implode($this->fields);
+        if (!empty($this->subs)) {
+            $str .= serialize($this->subs);
+        }
+        return md5($str);
+    }
+
     public function select($metas) {
         if (empty($metas))
             return;
