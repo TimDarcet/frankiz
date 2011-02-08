@@ -47,7 +47,8 @@ abstract class ItemValidate
     // WARNING : this destroys the objects
     public function toDb(){
         foreach ($this->objects() as $name => $object) {
-            $this->$name = $this->$name->id();
+            if ($this->$name != false)
+                $this->$name = $this->$name->id();
         }
     }
 
@@ -89,23 +90,20 @@ abstract class ItemValidate
     }
 
     public function sendmailcomment() 
-    {
-        if (is_null($this->user->displayName()))
-            $this->user->select(User::SELECT_BASE);
-    
+    {    
         $mail = new FrankizMailer('validate/mail.comment.tpl');
         $mail->assign('type', $this->type);
         $mail->assign('user', $this->user->displayName());
         if (Env::has('comm'))
             $mail->assign('comm', Env::v('comm'));
             
-        $mail->Subject = "Commentaires de validation {$this->type}";
+        $mail->Subject = "Commentaires de validation de type \"{$this->label()}\"";
         $mail->SetFrom($this->_mail_from_addr(), $this->_mail_from_disp());
         $mail->AddAddress($this->_mail_from_addr(), $this->_mail_from_disp());
         $mail->Send(false);
     }
 
-    public function add_comment(String $name, String $comment)
+    public function add_comment($name, $comment)
     {
         $this->comments[] = array('name'=>$name, 'com'=>$comment);
     }

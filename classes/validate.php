@@ -100,7 +100,8 @@ class ValidateSelect extends Select
 
         foreach ($_validates as $validate) {
             foreach ($validate->objects() as $name => $object) {
-                $validate->$name($collections[$name]->addget($validate->$name()));
+                if ($validate->$name() != false)
+                    $validate->$name($collections[$name]->addget($validate->$name()));
             }
         }
 
@@ -192,6 +193,17 @@ class Validate extends Meta
         return $success;
     }
 
+    public function commit() {
+        if ($this->item->commit()) {
+            $this->item->sendmailfinal(true);
+            $this->clean();
+            return true;
+        } else {
+
+            return false;
+        }
+    }
+
     /** 
      * to validate a form
      */
@@ -224,12 +236,11 @@ class Validate extends Meta
         }
 
         if (Env::has('accept')) {
-            if ($this->item->commit()) {
-                $this->item->sendmailfinal(true);
-                $this->clean();
+            if ($this->commit()) {
                 Platal::page()->assign('msg', 'Email de validation envoyé');
                 return true;
-            } else {
+            }
+            else {
                 Platal::page()->assign('msg', 'Erreur lors de la validation');
                 return false;
             }
