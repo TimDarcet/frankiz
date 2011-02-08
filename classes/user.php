@@ -313,6 +313,15 @@ class User extends Meta
             $this->email = $email;
             XDB::execute('UPDATE account SET email = {?} WHERE uid = {?}', $this->email, $this->id());
         }
+
+        if ($this->email == '') {
+            $res = XDB::fetchOneRow("SELECT  s.forlife, f.domain
+                                       FROM  studies AS s
+                                 INNER JOIN  formations AS f
+                                         ON  s.formation_id = f.formation_id
+                                      WHERE  s.uid = {?} ", $this->id);
+            return $res[0] . '@' . $res[1];
+        }
         return $this->email;
     }
 
