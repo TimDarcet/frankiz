@@ -92,7 +92,7 @@ class Link extends Meta
         return $this->image;
     }
 
-    public function insert($type)
+    public function insert($type = '')
     {
         XDB::execute('INSERT INTO  links
                               SET  id = NULL');

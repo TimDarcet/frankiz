@@ -172,20 +172,15 @@ abstract class Meta
             return null;
     }
 
-    public function insert($id = null)
+    public function insert()
     {
         $schema = Schema::get(get_class($this));
 
         $table  = $schema->table();
-        $idName = $schema->id();
+        $id = $schema->id();
 
-        if ($id == null) {
-            XDB::execute("INSERT INTO $table SET `$idName` = NULL");
-            $this->id = XDB::insertId();
-        } else {
-            XDB::execute("INSERT INTO $table SET `$idName` = {?}", $id);
-            $this->id = $id;
-        }
+        XDB::execute("INSERT INTO $table SET `$id` = NULL");
+        $this->id = XDB::insertId();
     }
 
     public function delete()
