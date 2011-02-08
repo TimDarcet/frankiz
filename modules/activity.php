@@ -46,13 +46,12 @@ class ActivityModule extends PLModule
     {
         $activities = new ActivityInstanceFilter(
             new PFC_Or (new PFC_And(new AIFC_END(new FrankizDateTime(), AIFC_End::AFTER),
-                                    new AIFC_User(S::user()))),
+                                    new AIFC_User(S::user(), 'restricted')),
                         new PFC_And(new AIFC_END(new FrankizDateTime(), AIFC_End::AFTER),
-                                    new PFC_And(new AIFC_User(S::user(), 'friend'),
-                                                new AIFC_Private(false))));
+                                    new AIFC_User(S::user(), 'everybody'))));
 
         $c = $activities->get();
-        $c->select();
+        $c->select(ActivityInstanceSelect::base());
         $c->order('hour_begin');
 
         $split = $c->split('date');
@@ -89,10 +88,10 @@ class ActivityModule extends PLModule
 
     function handler_modify($page)
     {
-        $activities = new ActivityInstanceFilter(new PFC_And(new AIFC_END(new FrankizDateTime(), AIFC_End::AFTER),
-                                                 new AIFC_User(S::user(), 'admin')));
+        $activities = new ActivityInstanceFilter(new AIFC_TargetGroup(S::user()->castes(Rights::admin())->groups()));
         $c = $activities->get();
-        $c->select();
+        $c->select(ActivityInstanceSelect::base());
+        trace($c);
 
         if (Env::has('admin_id'))
         {
@@ -116,20 +115,16 @@ class ActivityModule extends PLModule
                             $a->comment(Env::t('comment'));
                             $a->begin($begin);
                             $a->end($end);
-                            $a->replace();
                             $page->assign('msg', 'L\'activité a été modifiée.');
                         }
                         else
                         {
                             $a->begin($begin);
                             $a->end($end);
-                            $a->replace();
 
-                            $a1 = new Activity($a->aid());
-                            $a1->select();
+                            $a1 = $a->activity();
                             $a1->title(Env::t('title', $a1->title()));
                             $a1->description(Env::t('description', $a1->description()));
-                            $a1->priv(Env::has('priv'));
                             $a1->replace();
                             $page->assign('msg', 'L\'activité a été modifiée.');
                         }
@@ -147,7 +142,7 @@ class ActivityModule extends PLModule
                     }
                     else
                     {
-                        $a1 = new Activity($a->aid());
+                        $a1 = $a->activity();
                         $a1->delete();
                         $a->delete();
                     }
@@ -160,7 +155,7 @@ class ActivityModule extends PLModule
         $page->assign('activities', $c);
 
         $page->assign('title', 'Modifier les activités en cours');
-        $page->addCssLink('validate.css');
+        $page->addCssLink('activity.css');
         $page->changeTpl('activity/modify.tpl');
     }
 
@@ -170,9 +165,9 @@ class ActivityModule extends PLModule
         $description    = Env::t('description', '');
         $default_begin  = Env::t('begin', '00:00');
         $default_end    = Env::t('end', '00:00');
-        $target         = Env::i('group_activity_proposal', '');
         $days           = Env::v('days');
-        $priv           = Env::has('priv');
+        $target     = Env::i('target_group_activity', '');
+        $caste      = (Env::has('target_everybody_activity'))?'everybody':'restricted';
         
         if (Env::has('send'))
         {
@@ -187,17 +182,17 @@ class ActivityModule extends PLModule
             else 
             {
                 $days = implode(',', $days);
-                trace($days);
+                $target = new Group($target);
+                $target->select(GroupSelect::castes());
                 $a = new Activity(array(
-                    'target'        => $target,
+                    'target'        => $target->caste(new Rights($caste)),
                     'origin'        => $target,
                     'title'         => $title,
                     'description'   => $description,
                     'days'          => $days,
                     'default_begin' => $default_begin,
-                    'default_end'   => $default_end,
-                    'priv'          => $priv));
-                $a->replace();
+                    'default_end'   => $default_end));
+                $a->insert();
                 $page->assign('envoye', true);
             }
         }
@@ -210,22 +205,23 @@ class ActivityModule extends PLModule
         $page->assign('priv', $priv);
         
         $page->assign('title', 'Créer une activité régulière');
-        $page->addCssLink('validate.css');
         $page->changeTpl('activity/new_regular_activity.tpl');
     }
     
 
-    function handler_modify_regular($page)
+    function handler_modify_regular($page, $aid = false)
     {
-        $activities = new ActivityFilter(new PFC_And(new AFC_User(S::user(), 'admin'),
+        $activities = new ActivityFilter(new PFC_And(new AFC_TargetGroup(S::user()->castes(Rights::admin())->groups()),
                                                      new AFC_Regular(true)));
         $c = $activities->get();
-        $c->select();
-        trace($c);
-        
-        if (Env::has('aid'))
-        {
+        $c->select(ActivitySelect::base());
+
+        if (Env::has('aid')) {
             $aid = Env::i('aid');
+        }
+
+        if ($aid)
+        {
 	        $a = $c->get($aid);
 	        if($a === false)
             {
@@ -235,16 +231,14 @@ class ActivityModule extends PLModule
             {
 	            if (Env::has('modify'))
 	            {
-                    if (preg_match( '`^\d{2}:\d{2}:\d{2}$`' , Env::t('begin')) && strtotime(Env::t('begin')) !== false
-                        && preg_match( '`^\d{2}:\d{2}:\d{2}$`' , Env::t('end')) && strtotime(Env::t('end')) !== false)
+                    if (preg_match( '`^\d{2}:\d{2}$`' , Env::t('begin')) && strtotime(Env::t('begin')) !== false
+                        && preg_match( '`^\d{2}:\d{2}$`' , Env::t('end')) && strtotime(Env::t('end')) !== false)
                     {
                         $a->title(Env::t('title', $a->title()));
                         $a->description(Env::t('description', $a->description()));
                         $a->days(implode(',', Env::v('days', $a->days())));
-                        $a->default_begin(Env::t('begin'));
-                        $a->default_end(Env::t('end'));
-                        $a->priv(Env::has('priv'));
-                        $a->replace();
+                        $a->default_begin(Env::t('begin') . ':00');
+                        $a->default_end(Env::t('end') . ':00');
                         $page->assign('msg', 'L\'activité a été modifiée.');
                     }
                     else
@@ -256,14 +250,10 @@ class ActivityModule extends PLModule
 	            $page->assign('activity', $a);
             }
         }
-        else
-        {
-            $page->assign('activities', $c);
-        }
 
+        $page->assign('activities', $c);
 
         $page->assign('title', 'Modifier une activité régulière');
-        $page->addCssLink('validate.css');
         $page->changeTpl('activity/modify_regular.tpl');
     }
 
@@ -271,12 +261,11 @@ class ActivityModule extends PLModule
     {
         $activities = new ActivityInstanceFilter(
             new PFC_Or (new PFC_And(new AIFC_END(new FrankizDateTime(), AIFC_End::AFTER),
-                                    new AIFC_User(S::user()))),
+                                    new AIFC_User(S::user(), 'restricted')),
                         new PFC_And(new AIFC_END(new FrankizDateTime(), AIFC_End::AFTER),
-                                    new PFC_And(new AIFC_User(S::user(), 'friend'),
-                                                new AIFC_Private(false))));
+                                    new AIFC_User(S::user(), 'everybody'))));
         $c = $activities->get();
-        $c->select();
+        $c->select(ActivityInstanceSelect::all());
         
         if (Env::has('participants_id'))
         {
@@ -316,7 +305,7 @@ class ActivityModule extends PLModule
 
 
         $page->assign('title', 'Participants à une activité');
-        $page->addCssLink('validate.css');
+        $page->addCssLink('activity.css');
         $page->changeTpl('activity/participants.tpl');
     }
 
@@ -350,14 +339,13 @@ class ActivityModule extends PLModule
             date_add($date_n, date_interval_create_from_date_string('1 day'));
             $date_n->setTime(0,0);
             $activities = new ActivityInstanceFilter(
-                new PFC_And(new PFC_Or (new AIFC_User(S::user()),
-                                        new PFC_And(new AIFC_User(S::user(), 'friend'),
-                                                    new AIFC_Private(false))),
+                new PFC_And(new PFC_Or (new AIFC_User(S::user(), 'restricted'),
+                                        new AIFC_User(S::user(), 'everybody')),
                             new AIFC_Period($date, $date_n)));
 
             $c = $activities->get();
             
-            $c->select();
+            $c->select(ActivityInstanceSelect::all());
             $c->order('hour_begin', false);
             $result = array();
             foreach($c as $a)
@@ -376,11 +364,7 @@ class ActivityModule extends PLModule
             {
                 $c->add($id);
             }
-            $options = array();
-            $options[ActivityInstance::SELECT_BASE] = array('groups' => Group::SELECT_BASE,
-                                                             'users' => User::SELECT_BASE);
-            $options[ActivityInstance::SELECT_PARTICIPANTS] = array();
-            $c->select($options);
+            $c->select(ActivityInstanceSelect::all());
             foreach ($c as $a)
             {
                 $activities[$a->id()] = $a->export();
@@ -398,10 +382,7 @@ class ActivityModule extends PLModule
         if (isset($json->admin))
         {
             $a = new ActivityInstance($id);
-            $options = array();
-            $options[ActivityInstance::SELECT_BASE] = array('groups' => Group::SELECT_BASE,
-                                                         'users' => User::SELECT_BASE);
-            $a->select($options);
+            $a->select(ActivityInstanceSelect::base());
             $page->assign('activity', $a);
             if ($a !== false && $a->regular())
                 $result = $page->fetch(FrankizPage::getTplPath('activity/modify_instance_regular.tpl'));
@@ -413,7 +394,7 @@ class ActivityModule extends PLModule
         elseif (isset($json->regular))
         {
             $a = new Activity($id);
-            $a->select();
+            $a->select(ActivitySelect::base());
             $page->assign('activity', $a);
             $result = $page->fetch(FrankizPage::getTplPath('activity/modify_regular_activity.tpl'));
             $page->jsonAssign('success', true);
@@ -422,11 +403,7 @@ class ActivityModule extends PLModule
         elseif(isset($json->participants))
         {
             $a = new ActivityInstance($id);
-            $options = array();
-            $options[ActivityInstance::SELECT_BASE] = array('groups' => Group::SELECT_BASE,
-                                                 'users' => User::SELECT_BASE);
-            $options[ActivityInstance::SELECT_PARTICIPANTS] = array();
-            $a->select($options);
+            $a->select(ActivityInstanceSelect::all());
             $page->assign('activity', $a);
             $page->assign('user', s::user());
             $result = $page->fetch(FrankizPage::getTplPath('activity/participants_activity.tpl'));
@@ -463,13 +440,12 @@ class ActivityModule extends PLModule
         $date = new FrankizDateTime(date('Y-m-d H:i:s', $st));
         $date_n = new FrankizDateTime(date('Y-m-d H:i:s', $et));
         $activities = new ActivityInstanceFilter(
-            new PFC_And(new PFC_Or (new AIFC_User(S::user()),
-                                    new PFC_And(new AIFC_User(S::user(), 'friend'),
-                                                new AIFC_Private(false))),
+            new PFC_And(new PFC_Or (new AIFC_User(S::user(), 'restricted'),
+                                    new AIFC_User(S::user(), 'everybody')),
                         new AIFC_Period($date, $date_n)));
 
         $c = $activities->get();
-        $c->select();
+        $c->select(ActivityInstanceSelect::all());
 
         $page->jsonAssign('issort', true);
         $page->jsonAssign('start', date("m/d/Y H:i", $st));
@@ -488,7 +464,7 @@ class ActivityModule extends PLModule
                 0, //more than one day event
                 //$row->InstanceType,
                 $e->regular(),//Recurring event,
-                ($e->aid() % 15) - 1,
+                ($e->activity()->id() % 15) - 1,
                 0, //editable
                 $e->description(),
                 ''
@@ -505,7 +481,7 @@ class ActivityModule extends PLModule
         {
             $id = $json->admin_id;
             $ai = new ActivityInstance($id);
-            $ai->select();
+            $ai->select(ActivityInstanceSelect::base());
             try
             {
                 $begin = new FrankizDateTime($json->begin);
@@ -523,12 +499,9 @@ class ActivityModule extends PLModule
                     $ai->end($end);
                     $ai->replace();
 
-                    $a = new Activity($ai->aid());
-                    $a->select();
+                    $a = $ai->activity();
                     $a->title($json->title);
                     $a->description($json->description);
-                    $a->priv($json->priv == 'on');
-                    $a->replace();
                 }
                 $page->jsonAssign('success', true);
             }
@@ -541,7 +514,7 @@ class ActivityModule extends PLModule
         {
             $id = $json->aid;
             $a = new Activity($id);
-            $a->select();
+            $a->select(ActivitySelect::base());
             if (preg_match( '`^\d{2}:\d{2}:\d{2}$`' , $json->begin) && strtotime($json->begin) !== false
                 && preg_match( '`^\d{2}:\d{2}:\d{2}$`' , $json->end) && strtotime($json->end) !== false)
             {
@@ -552,8 +525,6 @@ class ActivityModule extends PLModule
                 $a->days(implode(',', $days));
                 $a->default_begin($json->begin);
                 $a->default_end($json->end);
-                $a->priv($json->priv == 'on');
-                $a->replace();
                 $page->jsonAssign('success', true);
             }
             else

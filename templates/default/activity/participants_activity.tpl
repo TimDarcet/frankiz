@@ -21,55 +21,56 @@
 {**************************************************************************}
 
 
-<div class="title">
+<div class="head">
    Activité : {$activity->title()}
 </div>
 
-<table>
-    <tr>
-        <td width=20%>
-            Participants :
-        </td>
-        <td>
-            {$activity->participants()|@count}
-        </td>
-    </tr>
-    {foreach from=$activity->participants() item=participant}
-        <tr>
-            <td>
-                Nom :
-            </td>
-            <td>
-                {$participant->displayName()}
-            </td>
-        </tr>
-    {/foreach}
-</table>
-
-{assign var='writer' value=$activity->writer()}
-{if $writer->id() == $user->id()}
-    <div class="subtitle">
-       Envoyer un mail aux inscrits
-    </div>
+<div class="body">
     <table>
         <tr>
             <td width=20%>
-                Contenu :
+                Participants :
             </td>
             <td>
-                <textarea name="mail_body" rows=7 cols=50></textarea>
+                {$activity->participants()|@count}
             </td>
         </tr>
         <tr>
-            <td width=20%>
-                Envoyer :
+            <td>
+                Noms :
             </td>
             <td>
-                <input type="submit" name="mail" value="Valider"/>
+                {foreach from=$activity->participants() item=participant}
+                    {$participant|user} <br />
+                {/foreach}
             </td>
         </tr>
     </table>
-{/if}
 
+    {assign var='writer' value=$activity->writer()}
+    {if $writer->id() == $user->id()}
+        <div class="subtitle">
+           Envoyer un mail aux inscrits
+        </div>
+        <table>
+            <tr>
+                <td width=20%>
+                    Contenu :
+                </td>
+                <td>
+                    <textarea name="mail_body" rows=7 cols=50></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td width=20%>
+                    Envoyer :
+                </td>
+                <td>
+                    <input type="submit" name="mail" value="Envoyer"/>
+                </td>
+            </tr>
+        </table>
+    {/if}
+</div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

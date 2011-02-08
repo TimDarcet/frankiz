@@ -22,51 +22,53 @@
 
 {js src="activities.js"}
 
-<div class="info_proposal">
+<div class="info">
     Pour toute remarque particulière, envoyer un mail à <a href="mailto:web@frankiz.polytechnique.fr">web@frankiz</a><br />
     Toutes les modifications sont automatiquement prises en compte.
 </div>
 
-<div class="msg_proposal hide">
+<div class="msg hide">
     {$msg}
 </div>
 
 {if $delete}
-    <div class="msg_proposal">
+    <div class="msg">
         L'activité a été supprimée.
     </div>
 
 {else}
     <form enctype="multipart/form-data" method="post" action="activity/modify" id="activity_modify">
-        <div class="box_proposal">
-            <div class="title">
+        <div class="module">
+            <div class="head">
                Sélectionner l'activité à modifier
             </div>
 
-            <table>
-                {foreach from=$activities item=act}
-                    <tr>
-                        <td width=20%></td>
+            <div class="body">
+                <table>
+                    {foreach from=$activities item=act}
+                        <tr>
+                            <td width=20%></td>
+                            <td>
+                                <input type="radio" name="admin_id" value="{$act->id()}" {if $id == $act->id()}checked{/if}>
+                                    {$act->title()} le {$act->date()|date_format} de {$act->hour_begin()} à {$act->hour_end()}
+                            </td>
+                        </tr>
+                    {/foreach}
+
+                    <tr class="hide">
                         <td>
-                            <input type="radio" name="admin_id" value="{$act->id()}" {if $id == $act->id()}checked{/if}>
-                                {$act->title()} le {$act->date()} de {$act->hour_begin()} à {$act->hour_end()}
+                            Sélectionner :
+                        </td>
+                        <td>
+                            <input type="submit" name="send" value="Valider"/>
                         </td>
                     </tr>
-                {/foreach}
-
-                <tr class="hide">
-                    <td>
-                        Sélectionner :
-                    </td>
-                    <td>
-                        <input type="submit" name="send" value="Valider"/>
-                    </td>
-                </tr>
-            </table>
+                </table>
+            </div>
         </div>
 
 
-        <div class="box_proposal" id="activity_show">
+        <div class="module" id="modify_show">
             {if $activity != null}
                 {if $activity->regular()}
                     {include file="activity/modify_instance_regular.tpl"|rel}

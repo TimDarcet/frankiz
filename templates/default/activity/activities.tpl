@@ -22,61 +22,68 @@
 
 {js src="activities.js"}
 
-<div id="activities_list" >
-    {foreach from=$activities item=activities_day key=date}
-        <div class="day">
-            <div class="date">
-                {*Hack because strtotime and date_formate do not consider timestamps the same way*}
-                {math equation="s + 3600" s=$date|strtotime assign=date_new}
-                {$date_new|date_format}
+<div class="module activities" id="activities">
+    <div class="head">
+        Activités
+    </div>
+    <div class="body" id="activities_list">
+        {foreach from=$activities item=activities_day key=date}
+            <div class="day">
+                <div class="date">
+                    {*Hack because strtotime and date_formate do not consider timestamps the same way*}
+                    {math equation="s + 3600" s=$date|strtotime assign=date_new}
+                    {$date_new|date_format}
+                </div>
+                <div class="activities_day">
+                    {foreach from=$activities_day item=activity key=id}
+                        {$activities_day|order:'hour_begin':false}
+                        {assign var='target' value=$activity->target_group()}
+                        <div class="activity" aid="{$activity->id()}">
+                            {$activity->hour_begin()} à {$activity->hour_end()} : [{$target|group}] <b>{$activity->title()}</b>
+                        </div>
+                    {/foreach}
+                </div>
             </div>
-            <div class="activities">
-                {foreach from=$activities_day item=activity key=id}
-                    {$activities_day|order:'hour_begin':false}
-                    {assign var='target' value=$activity->target()}
-                    <div class="activity" aid="{$activity->id()}">
-                        {$activity->hour_begin()} à {$activity->hour_end()} : [{$target|group}] <b>{$activity->title()}</b>
-                    </div>
-                {/foreach}
-            </div>
-        </div>
-    {/foreach}
+        {/foreach}
+    </div>
 </div>
 
-<div id="activity_show" style="display:none;">
-    <div class="first">
+<div class="module" id="activity_show" style="display:none;">
+    <div class="head">
         [<span class="target">
         </span>]
         <span class="title">
         </span>
     </div>
-    <div class="date">
-    </div>
-    <div class="time">
-        de
-        <span class="hour_begin">
-        </span>
-        à
-        <span class="hour_end">
-        </span>
-    </div>
-    <div class="msg">
-    </div>
-    <div class="participate">
-    </div>
-    <div class="section">
-        Description :
-    </div>
-    <div class="description">
-    </div>
-    <div class="comment">
-    </div>
-    <div class="section participants_list">
-        Participants :
-        <span class="number">
-        </span>
-    </div>
-    <div class="participants">
+    <div class="body">
+        <div class="date">
+        </div>
+        <div class="time">
+            de
+            <span class="hour_begin">
+            </span>
+            à
+            <span class="hour_end">
+            </span>
+        </div>
+        <div class="msg">
+        </div>
+        <div class="participate">
+        </div>
+        <div class="section">
+            Description :
+        </div>
+        <div class="description">
+        </div>
+        <div class="comment">
+        </div>
+        <div class="section participants_list">
+            Participants :
+            <span class="number">
+            </span>
+        </div>
+        <div class="participants">
+        </div>
     </div>
 </div>
 

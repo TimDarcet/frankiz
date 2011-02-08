@@ -22,110 +22,106 @@
     font-size: 80%;
 }
 
-#activities_list {
-    width: 50%;
+.info {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+/* hack to override #section .module in base.less */
+#section .module#activities {
+    width: 49%;
     display:inline-block;
+    margin-right: 0;
+
+    .day{
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .date {
+        background-color: #BDD5E3;
+        font-size: 20px;
+        text-align: center;
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .activities_day {
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .activity {
+        border-top: 1px solid #BDD5E3;
+        margin: 0px;
+        padding: 0px;
+        cursor: pointer;
+    }
 }
 
-#activities_list .day{
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-#activities_list .date {
-    background-color: #BDD5E3;
-    font-size: 20px;
-    text-align: center;
-    margin: 0px;
-    padding: 0px;
-}
-
-#activities_list .activities {
-    border-top: 1px solid #BDD5E3;
-    margin: 0px;
-    padding: 0px;
-}
-
-#activities_list .activity {
-    border-top: 1px solid #BDD5E3;
-    margin: 0px;
-    padding: 0px;
-    cursor: pointer;
-}
-
-#activity_show {
-    border: 1px solid #BDD5E3;
-    width: 48%;
+#section .module#activity_show {
+    margin-left: 0;
+    width: 47%;
     float:right;
-}
 
-#activity_show .first {
-    background-color: #BDD5E3;
-    width: 100%;
-    position: relative;
-    margin: 0px;
-    padding: 0px;
-    font-size: 20px;
-    text-align: center;
-}
+    .date {
+        text-align: center;
+    }
 
-#activity_show .date {
-    text-align: center;
-}
+    .time {
+        text-align: center;
+    }
 
-#activity_show .time {
-    text-align: center;
-}
+    .msg {
+        margin-top: 10px;
+        text-align: center;
+    }
 
-#activity_show .msg {
-    margin-top: 10px;
-    text-align: center;
-}
+    .participate {
+        text-align: center;
+        cursor: pointer;
+        margin-top: 10px;
+    }
 
-#activity_show .participate {
-    text-align: center;
-    cursor: pointer;
-    margin-top: 10px;
-}
+    .description {
+        margin-bottom: 5px;
+    }
 
-#activity_show .description {
-    margin-bottom: 5px;
-}
-
-#activity_show .section {
+    .section {
     margin-top: 10px;
     padding-top: 10px;
     margin-bottom: 5px;
     font-weight: bold;
     text-align: center;
+    }
 }
 
-#activity_admin .section {
-    margin-bottom: 30px;
+#participants_show {
+    .subtitle{
+        font-weight: bold;
+        text-align: center;
+    }
 }
 
-#activity_admin .title {
-    font-size: 120%;
-    margin-bottom: 10px;
+#section {
+    table {
+        width: 100%;
+    }
 }
 
-#activity_show.timetable {
-    border: 1px solid #BDD5E3;
+#section #activity_show.timetable {
     position: absolute;
     display: block;
     z-index:    999.99;
     left: 20%;
     top: 160px;
     width: 40%;
-    background-color: #F4F4F8;
 }
 
 #activity_show .close_show{
     float: right;
     font-size: 80%;
     cursor: pointer;
-}
-
-#activity_show .padd {
-    margin: 5px;
 }

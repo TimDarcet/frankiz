@@ -2,25 +2,25 @@ $(document).ready(function() {
     $('.hide').hide();
     if ($("#activity_show").html() == '\n')
         $("#activity_show").hide();
-    
-	$("input[name='admin_id']").change(function(){
+   
+    $("input[name='admin_id']").change(function(){
         request({ "url": 'activity/ajax/admin'
                 ,"data": {'id': $("input[@name='admin_id']:checked").val(), 'admin': true}
              ,"success": function(json) {
-                    $("#activity_show").html(json.activity);
-                    $("#activity_modify #activity_show").focusout(function(){
+                    $("#modify_show").html(json.activity);
+                    $("#activity_modify #modify_show").focusout(function(){
                         change('instance');
                     });
-                    $("#activity_modify #activity_show").change(function(){
+                    $("#activity_modify #modify_show").change(function(){
                         has_changed = true;
                     });
                     $('.hide').hide();
              }
         });
-        $("#activity_show").show();
-	});
+        $("#modify_show").show();
+    });
     
-	$("input[name='aid']").change(function(){
+    $("input[name='aid']").change(function(){
         request({ "url": 'activity/ajax/admin/'
                 ,"data": {'id': $("input[@name='aid']:checked").val(), 'regular': true}
              ,"success": function(json) {
@@ -35,17 +35,17 @@ $(document).ready(function() {
              }
         });
         $("#activity_show").show();
-	});
+    });
 
-	$("input[name='participants_id']").change(function(){
+    $("input[name='participants_id']").change(function(){
         request({ "url": 'activity/ajax/admin/'
                 ,"data": {'id': $("input[@name='participants_id']:checked").val(), 'participants': true}
              ,"success": function(json) {
-                    $("#activity_show").html(json.activity);
+                    $("#participants_show").html(json.activity);
              }
         });
-        $("#activity_show").show();
-	});
+        $("#participants_show").show();
+    });
 
     $('#activities_list .day .activity').hover(function(){
         load(new Array($(this).attr('aid')), true);
@@ -93,32 +93,32 @@ function load(ids, all)
 
 function show(id)
 {
-    $("#activity_show .msg").html('');
-    $("#activity_show .msg").hide();
-    $("#activity_show .first .target").html(results[id].target.label);
-    $("#activity_show .first .title").html(results[id].title);
+    $("#activity_show .body .msg").html('');
+    $("#activity_show .body .msg").hide();
+    $("#activity_show .head .target").html(results[id].target.label);
+    $("#activity_show .head .title").html(results[id].title);
 
     if (!results[id].participate)
     {
         var html = '<a onclick="present(' + id + ');">S\'inscrire</a>';
-        $("#activity_show .participate").html(html);
+        $("#activity_show .body .participate").html(html);
     }
     else
     {
         var html = '<a onclick="out(' + id + ');">Se désinscrire</a>';
-        $("#activity_show .participate").html(html);
+        $("#activity_show .body .participate").html(html);
     }
 
-    $("#activity_show .description").html(results[id].description);
-    $("#activity_show .comment").html(results[id].comment);
-    $("#activity_show .date").html(results[id].begin.toLocaleDateString() + ' :');
-    $("#activity_show .time .hour_begin").html(results[id].begin.toLocaleTimeString());
-    $("#activity_show .time .hour_end").html(results[id].end.toLocaleTimeString());
+    $("#activity_show .body .description").html(results[id].description);
+    $("#activity_show .body .comment").html(results[id].comment);
+    $("#activity_show .body .date").html(results[id].begin.toLocaleDateString() + ' :');
+    $("#activity_show .body .time .hour_begin").html(results[id].begin.toLocaleTimeString());
+    $("#activity_show .body .time .hour_end").html(results[id].end.toLocaleTimeString());
 
-    $("#activity_show .participants_list .number").html(results[id].participants.length);
-    $("#activity_show .participants").html('');
+    $("#activity_show .body .participants_list .number").html(results[id].participants.length);
+    $("#activity_show .body .participants").html('');
     $.each(results[id].participants, function(index, value) {
-        $("#activity_show .participants").append('<div class="participant">' + value.displayName + '</div>');
+        $("#activity_show .body .participants").append('<div class="participant">' + value.displayName + '</div>');
     });
     $("#activity_show").show();
 }

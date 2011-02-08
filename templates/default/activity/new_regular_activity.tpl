@@ -28,10 +28,6 @@
 
 {else}
 
-<div class="info_proposal"> 
-    Pour toute remarque particulière, envoyer un mail à <a href="mailto:web@frankiz.polytechnique.fr">web@frankiz</a> 
-</div>
-
 {if $msg}
     <div class="msg_proposal"> 
         {$msg}
@@ -40,89 +36,82 @@
 
 
 <form enctype="multipart/form-data" method="post" action="activity/regular/new">
-    <div class="box_proposal">
-        <div class="title">
-           Activité
+    <div class="module">
+        <div class="head">
+           Nouvelle activité régulière
         </div>
-        
-        <table>
-            <tr>
-                <td width=20%>
-                    Destinataire :
-                </td>
-                <td>
-                    {include file="groups_picker.tpl"|rel id="group_activity_proposal" ns="binet" check=-1}
-                </td>
-            </tr>
-            
-            <tr>
-                <td>
-                    Titre :
-                </td>
-                <td>
-                    <input type='text' name='title' value="{$title_activity}" />
-                </td>
-            </tr>
-    
-            <tr>
-                <td>
-                    Description :
-                </td>
-                <td>
-                    <textarea name='description' id="text_proposal" rows=7 cols=50>{$description}</textarea>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>
-                    Privé :
-                </td>
-                <td>
-                    <input type="checkbox" name="priv" {if $priv}checked="checked"{/if}/>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>
-                    Jours : 
-                </td>
-                <td>
-                    <label><input type="checkbox" name="days[]" value="Monday"/> Lundi <br/></label>
-                    <label><input type="checkbox" name="days[]" value="Tuesday"/> Mardi <br/></label>
-                    <label><input type="checkbox" name="days[]" value="Wednesday"/> Mercredi <br/></label>
-                    <label><input type="checkbox" name="days[]" value="Thursday"/> Jeudi <br/></label>
-                    <label><input type="checkbox" name="days[]" value="Friday"/> Vendredi <br/></label>
-                    <label><input type="checkbox" name="days[]" value="Saturday"/> Samedi <br/></label>
-                    <label><input type="checkbox" name="days[]" value="Sunday"/> Dimanche</label>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>
-                    Heure de début :
-                </td>
-                <td>
-                    <input type='text' name='begin' value="{$begin}" />
-                </td>
-            </tr>
-            
-            <tr>
-                <td>
-                    Heure de fin :
-                </td>
-                <td>
-                    <input type='text' name='end' value="{$end}" />
-                </td>
-            </tr>
-            
-            <tr>
-                <td></td>
-                <td>
-                    <input type="submit" name="send" value="Valider" onClick="return window.confirm('Voulez vous vraiment proposer cette activité ?')"/>
-                </td>
-            </tr>
-        
-        </table>
+
+        <div class="body">
+            <table>
+                <tr>
+                    <td width=20%>
+                        Pour :
+                    </td>
+                    <td>
+                        {include file="target_picker.tpl"|rel id="activity"}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Titre :
+                    </td>
+                    <td>
+                        <input type='text' name='title' placeholder="Nom de l'activité" value="{$title_activity}" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Description :
+                    </td>
+                    <td>
+                        <textarea name='description' id="text_proposal"
+                            placeholder="Description" rows=7 cols=50>{$description}</textarea>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Jours :
+                    </td>
+                    <td>
+                        <label><input type="checkbox" name="days[]" value="Monday"/> Lundi <br/></label>
+                        <label><input type="checkbox" name="days[]" value="Tuesday"/> Mardi <br/></label>
+                        <label><input type="checkbox" name="days[]" value="Wednesday"/> Mercredi <br/></label>
+                        <label><input type="checkbox" name="days[]" value="Thursday"/> Jeudi <br/></label>
+                        <label><input type="checkbox" name="days[]" value="Friday"/> Vendredi <br/></label>
+                        <label><input type="checkbox" name="days[]" value="Saturday"/> Samedi <br/></label>
+                        <label><input type="checkbox" name="days[]" value="Sunday"/> Dimanche</label>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td width=20%>
+                        Horaires
+                    </td>
+                    <td>
+                        de <input type="text" name="begin" id="begin"
+                                  required {literal}pattern="(?=^[0-9]{2}:[0-9]{2}$).*"{/literal}/>
+                        à  <input type="text" name="end" id="end"
+                                  required {literal}pattern="(?=^[0-9]{2}:[0-9]{2}$).*"{/literal}/>
+                        <script>{literal}
+                            $(function() {
+                                $("#begin").timepicker({});
+                                $("#end").timepicker({});
+                            });
+                        {/literal}</script>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" name="send" value="Valider" onClick="return window.confirm('Voulez vous vraiment créer cette activité ?')"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </form>
 {/if}

@@ -22,10 +22,6 @@
 
 {js src="activities.js"}
 
-<div class="info_proposal">
-    Pour toute remarque particulière, envoyer un mail à <a href="mailto:web@frankiz.polytechnique.fr">web@frankiz</a>
-</div>
-
 {if $msg}
     <div class="msg_proposal">
         {$msg}
@@ -33,36 +29,38 @@
 {/if}
 
 <form enctype="multipart/form-data" method="post" action="activity/participants">
-    <div class="box_proposal">
-        <div class="title">
+    <div class="module">
+        <div class="head">
            Sélectionner l'activité
         </div>
 
-        <table>
-            {$activities|order:'begin':false}
-            {foreach from=$activities item=act}
-                <tr>
-                    <td width=20%></td>
+        <div class="body">
+            <table>
+                {$activities|order:'begin':false}
+                {foreach from=$activities item=act}
+                    <tr>
+                        <td width=20%></td>
+                        <td>
+                            <input type="radio" name="participants_id" value="{$act->id()}" {if $id == $act->id()}checked{/if}>
+                                {$act->title()} le {$act->date()} de {$act->hour_begin()} à {$act->hour_end()}
+                        </td>
+                    </tr>
+                {/foreach}
+
+                <tr class="hide">
                     <td>
-                        <input type="radio" name="participants_id" value="{$act->id()}" {if $id == $act->id()}checked{/if}>
-                            {$act->title()} le {$act->date()} de {$act->hour_begin()} à {$act->hour_end()}
+                        Sélectionner :
+                    </td>
+                    <td>
+                        <input type="submit" name="send" value="Valider"/>
                     </td>
                 </tr>
-            {/foreach}
-
-            <tr class="hide">
-                <td>
-                    Sélectionner :
-                </td>
-                <td>
-                    <input type="submit" name="send" value="Valider"/>
-                </td>
-            </tr>
-        </table>
+            </table>
+        </div>
     </div>
 
 
-    <div class="box_proposal" id="activity_show">
+    <div class="module" id="participants_show">
         {if $activity != null}
             {include file="activity/participants_activity.tpl"|rel}
         {/if}

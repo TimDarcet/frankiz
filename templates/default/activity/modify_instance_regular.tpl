@@ -20,74 +20,65 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="title">
+<div class="head">
    Activité Régulière
 </div>
 
-<table>
-    <tr>
-        <td width=20%>
-            Titre :
-        </td>
-        <td>
-            {$activity->title()}
-        </td>
-    </tr>
+<div class="body">
+    <table>
+        <tr>
+            <td width=20%>
+                Titre :
+            </td>
+            <td>
+                {$activity->title()}
+            </td>
+        </tr>
 
-    <tr>
-        <td>
-            Description :
-        </td>
-        <td>
-            {$activity->description()}
-        </td>
-    </tr>
+        <tr>
+            <td>
+                Description :
+            </td>
+            <td>
+                {$activity->description()}
+            </td>
+        </tr>
 
-    <tr>
-        <td>
-            Commentaire :
-        </td>
-        <td>
-            <textarea name='comment' id="text_proposal" rows=7 cols=50>{$activity->comment()}</textarea>
-        </td>
-    </tr>
+        <tr>
+            <td>
+                Commentaire :
+            </td>
+            <td>
+                <textarea name='comment' id="text_proposal" rows=7 cols=50>{$activity->comment()}</textarea>
+            </td>
+        </tr>
 
-    <tr>
-        <td>
-            Début :
-        </td>
-        <td>
-            <input type='text' name='begin' value="{$activity->begin()|datetime:'Y-m-d H:i:s'}" />
-        </td>
-    </tr>
+        <tr>
+            <td>
+                Début :
+            </td>
+            <td>
+                <input type='text' name='begin' value="{$activity->begin()|datetime:'Y-m-d H:i:s'}" />
+            </td>
+        </tr>
 
-    <tr>
-        <td>
-            Fin :
-        </td>
-        <td>
-            <input type='text' name='end' value="{$activity->end()|datetime:'Y-m-d H:i:s'}" />
-        </td>
-    </tr>
+        <tr>
+            <td>
+                Fin :
+            </td>
+            <td>
+                <input type='text' name='end' value="{$activity->end()|datetime:'Y-m-d H:i:s'}" />
+            </td>
+        </tr>
 
-    <tr>
-        <td>
-            Privé :
-        </td>
-        <td>
-            {if $activity->priv()}oui{else}non{/if}
-        </td>
-    </tr>
-
-    <tr>
-        <td></td>
-        <td>
-            <input type="submit" name="modify" value="Modifier" class="hide"/>
-            <input type="submit" name="delete" value="Supprimer"/>
-        </td>
-    </tr>
-
-</table>
-
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" name="modify" value="Modifier" class="hide"/>
+                <input type="submit" name="delete" value="Supprimer"/>
+            </td>
+        </tr>
+    </table>
+</div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

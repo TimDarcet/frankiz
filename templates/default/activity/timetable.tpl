@@ -142,8 +142,8 @@
 
 </div>
 
-<div id="activity_show" class="timetable">
-    <div class="first">
+<div id="activity_show" class="module timetable">
+    <div class="head">
         [<span class="target">
         </span>]
         <span class="title">
@@ -152,7 +152,7 @@
         [X]
         </span>
     </div>
-    <div class="padd">
+    <div class="padd body">
         <div class="date">
         </div>
         <div class="time">

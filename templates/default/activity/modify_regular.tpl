@@ -22,48 +22,44 @@
 
 {js src="activities.js"}
 
-<div class="info_proposal"> 
-    Pour toute remarque particulière, envoyer un mail à <a href="mailto:web@frankiz.polytechnique.fr">web@frankiz</a> <br />
-    Toutes les modifications sont automatiquement prises en compte.
-</div>
-
 <div class="msg_proposal hide"> 
     {$msg}
 </div>
 
 <form enctype="multipart/form-data" method="post" action="activity/regular/modify" id="activity_modify">
-    <div class="box_proposal">
-        <div class="title">
+    <div class="module">
+        <div class="head">
            Sélectionner l'activité à modifier
         </div>
 
-        <table>
-            {foreach from=$activities item=act}
-                <tr>
-                    <td width=20%></td>
+        <div class="body">
+            <table>
+                {foreach from=$activities item=act}
+                    <tr>
+                        <td width=20%></td>
+                        <td>
+                            <input type="radio" name="aid" value="{$act->id()}" {if $aid == $act->id()}checked{/if}> {$act->title()}
+                        </td>
+                    </tr>
+                {/foreach}
+
+                <tr class="hide">
                     <td>
-                        <input type="radio" name="aid" value="{$act->id()}" {if $aid == $act->id()}checked{/if}> {$act->title()}
+                        Modifier :
+                    </td>
+                    <td>
+                        <input type="submit" name="send" value="Valider"/>
                     </td>
                 </tr>
-            {/foreach}
-
-            <tr class="hide">
-                <td>
-                    Modifier :
-                </td>
-                <td>
-                    <input type="submit" name="send" value="Valider"/>
-                </td>
-            </tr>
-        </table>
-    </div>
-
-    <div class="box_proposal" id="activity_show">
-        {if $activity != null}
-            {include file="activity/modify_regular_activity.tpl"|rel}
-        {/if}
+            </table>
+        </div>
     </div>
 </form>
 
+<div class="module" id="activity_show">
+    {if $activity != null}
+        {include file="activity/modify_regular_activity.tpl"|rel}
+    {/if}
+</div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
