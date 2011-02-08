@@ -2,7 +2,7 @@ $(document).ready(function() {
            var view="week";          
 
             $('#activity_show').hide();
-            $('#activity_show .first .close_show').click(function() {
+            $('#activity_show .close_show').click(function() {
                 $('#activity_show').hide();
             });
             $('#activity_show .msg').hide();
@@ -25,7 +25,7 @@ $(document).ready(function() {
             var $dv = $("#calhead");
             var _MH = document.documentElement.clientHeight;
             var dvH = $dv.height() + 2;
-            op.height = _MH - dvH - 210;
+            op.height = Math.max(_MH - dvH - 210, 400);
             //op.height = 600;
             op.eventItems =[];
 
