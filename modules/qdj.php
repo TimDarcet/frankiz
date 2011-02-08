@@ -25,16 +25,104 @@ class QDJModule extends PLModule
     public function handlers()
     {
         return array(
-            'qdj'           => $this->make_hook('qdj', AUTH_COOKIE),
-            'qdj/ajax/get'  => $this->make_hook('ajax_get', AUTH_COOKIE, '', NO_AUTH),
-            'qdj/ajax/vote' => $this->make_hook('ajax_vote', AUTH_COOKIE, '', NO_AUTH),
+            'qdj'               => $this->make_hook('qdj',          AUTH_INTERNAL),
+            'qdj/admin'         => $this->make_hook('admin',        AUTH_MDP),
+            'qdj/historic'      => $this->make_hook('historic',     AUTH_INTERNAL),
+            'qdj/ajax/ranking'  => $this->make_hook('ajax_ranking', AUTH_INTERNAL),
+            'qdj/ajax/modify'   => $this->make_hook('ajax_modify',  AUTH_MDP),
+            'qdj/ajax/get'      => $this->make_hook('ajax_get',     AUTH_COOKIE),
+            'qdj/ajax/vote'     => $this->make_hook('ajax_vote',    AUTH_COOKIE),
         );
     }
 
     public function handler_qdj($page)
     {
+        $int = QDJ::interval();
+        $date_min = mktime(1,0,0,floor(($int['date_min']->format('n') -1) / 2) * 2 + 1, 1, $int['date_min']->format('Y'));
+        $date_max = mktime(1,0,0,floor(($int['date_max']->format('n') +1) / 2) * 2 + 1, 1, $int['date_max']->format('Y'));
+        $date = $date_min;
+        $begin_dates = array();
+        $end_dates = array();
+        while ($date < $date_max)
+        {
+            $begin_dates[] = $date;
+            $date = strtotime('+2 months', $date);
+            $end_dates[] = strtotime('-1 day', $date);
+        }
+
+        $page->assign('results', $this->fetch_scores($begin_dates, $end_dates, Env::t('period', count($begin_dates)-1)));
+        $page->assign('end_date', $end_dates);
+        $page->assign('begin_date', $begin_dates);
+        $page->addCssLink('visualize.css');
+        $page->addCssLink('qdj.css');
         $page->assign('title', "Classement QDJ");
         $page->changeTpl('qdj/qdj.tpl');
+    }
+
+    public function handler_admin($page)
+    {
+        $qdjs = QDJ::waiting();
+        $qdjs->select(QDJSelect::all());
+
+        $np = new Collection('QDJ');
+        $p = new Collection('QDJ');
+        foreach ($qdjs as $e)
+        {
+            if ($e->date() == false)
+            {
+                trace($e);
+                $np->add($e);
+                trace($np);
+            }
+            else
+                $p->add($e);
+        }
+        $p->order('date', false);
+        trace($np);
+
+        $page->assign('not_planned', $np);
+        $page->assign('planned', $p);
+        $page->addCssLink('qdj.css');
+        $page->assign('title', "Planification des QDJ");
+        $page->changeTpl('qdj/admin.tpl');
+    }
+
+
+    public function handler_historic($page)
+    {
+        $qdjs = QDJ::all();
+
+        $page->assign('qdjs', $qdjs);
+        $page->addCssLink('qdj.css');
+        $page->assign('title', "Historique des QDJ");
+        $page->changeTpl('qdj/historic.tpl');
+    }
+
+    function handler_ajax_modify($page)
+    {
+        $json = json_decode(Env::v('json'));
+        $qdj = new QDJ($json->id);
+        $date = $json->date;
+        if ($date == '')
+        {
+            $qdj->date(false);
+            $page->jsonAssign('success', true);
+            $page->jsonAssign('null', true);
+        }
+        else
+        {
+            try
+            {
+                $qdj->date(new FrankizDateTime($date));
+                $page->jsonAssign('success', true);
+                $page->jsonAssign('null', true);
+            }
+            catch (Exception $e)
+            {
+                $page->jsonAssign('success', false);
+            }
+        }
+        return PL_JSON;
     }
 
     public function handler_ajax_get($page)
@@ -42,38 +130,20 @@ class QDJModule extends PLModule
         $json = json_decode(Env::v('json'));
 
         $daysShift = intval($json->{'daysShift'});
-        $res=XDB::query('SELECT qdj_id, date, question, answer1, answer2, count1, count2
-                           FROM qdj
-                          ORDER BY date DESC
-                          LIMIT {?}, 1', $daysShift);
-        $array_qdj = $res->fetchOneAssoc();
+        $qdj = QDJ::last($daysShift);
+        $array_qdj = $qdj->export();
 
-        if ($daysShift == 0)
+        if ($qdj->date()->format('Y-m-d') == date('Y-m-d'))
         {
-            $resv=XDB::query('SELECT qv.rank
-                                FROM qdj_votes AS qv
-                               WHERE qv.qdj_id = {?} AND qv.uid = {?}
-                               LIMIT 1',
-                                $array_qdj['qdj_id'],
-                                S::user()->id()
-                            );
-            $voted = $resv->numRows();
+            $voted = $qdj->hasVoted(S::user()->id());
         } else {
-            $voted = 1;
-        }
-
-        if ($voted == 1)
-        {
             $voted = true;
-        } else {
-            $array_qdj['count1'] = -1;
-            $array_qdj['count2'] = -1;
-            $voted = false;
         }
 
         $page->jsonAssign('success', true);
         $page->jsonAssign('voted', $voted);
         $page->jsonAssign('qdj', $array_qdj);
+        return PL_JSON;
     }
 
     public function handler_ajax_vote($page)
@@ -81,116 +151,63 @@ class QDJModule extends PLModule
         $json = json_decode(Env::v('json'));
 
         $vote = intval($json->{'vote'});
-        // Get the id of the last QDJ
-        $res=XDB::query('SELECT qdj_id
-                           FROM qdj
-                       ORDER BY date DESC
-                          LIMIT 1');
-        $qdj_id = $res->fetchOneCell();
+        $qdj = QDJ::last(0);
 
-        // Already voted ?
-        $res=XDB::query('SELECT vote_id
-                           FROM qdj_votes
-                          WHERE qdj_id = {?} AND uid = {?}
-                          LIMIT 1',
-                            $qdj_id,
-                            S::user()->id()
-                        );
-        $already_voted = ($res->fetchOneCell() == 1) ? true : false;
+        $already_voted = $qdj->hasVoted(S::user()->id());
 
         if (!$already_voted)
         {
-            // Let's vote
-            XDB::execute('INSERT INTO qdj_votes
-                                  SET qdj_id = {?},
-                                         uid = {?},
-                                        rank = 0,
-                                        rule = "null"',
-                            $qdj_id,
-                            S::user()->id()
-                        );
-            $vote_id = XDB::insertID();
-
-            // Get the rank
-            $res=XDB::query('SELECT COUNT(*)
-                               FROM qdj_votes
-                              WHERE qdj_id = {?} AND vote_id <= {?}',
-                                $qdj_id,
-                                $vote_id
-                            );
-            $rank = $res->fetchOneCell();
-
-            $rule = null;
-            $points = 0;
-            switch($rank)
-            {
-                case 1:
-                    $rule = '1';
-                    $points = 5;
-                break;
-
-                case 2:
-                    $rule = '2';
-                    $points = 2;
-                break;
-
-                case 3:
-                    $rule = '3';
-                    $points = 1;
-                break;
-
-                case 13:
-                    $rule = '13';
-                    $points = -13;
-                break;
-
-                case 42:
-                    $rule = '42';
-                    $points = 4.2;
-                break;
-
-                case 69:
-                    $rule = '69';
-                    $points = 6.9;
-                break;
-
-                case 314:
-                    $rule = '314';
-                    $points = 3.14;
-                break;
-
-                case substr(IP::get(), -3):
-                    $rule = 'ip';
-                    $points = 3;
-                break;
-            }
-
-            XDB::execute('UPDATE qdj_votes
-                             SET rank = {?},
-                                 rule = {?}
-                           WHERE vote_id = {?}',
-                            $rank,
-                            $rule,
-                            $vote_id
-                        );
-
-            if ($vote == 1) {
-                XDB::execute('UPDATE qdj SET count1 = count1+1 WHERE qdj_id={?}',$qdj_id);
-            } else {
-                XDB::execute('UPDATE qdj SET count2 = count2+1 WHERE qdj_id={?}',$qdj_id);
-            }
-
-            XDB::execute('INSERT INTO qdj_scores
-                                  SET uid = {?}, total = {?}, bonus = 0
-              ON DUPLICATE KEY UPDATE total = total+{?}',
-                        S::user()->id(),
-                        $points,
-                        $points
-                        );
+            $qdj->vote($vote);
         } else {
             $page->jsonAssign('error', 'Tu as déjà voté');
         }
         $page->jsonAssign('success', !$already_voted);
+        return PL_JSON;
+    }
+
+    function handler_ajax_ranking($page)
+    {
+        $json = json_decode(Env::v('json'));
+        $period = $json->period;
+        $int = QDJ::interval();
+        $date_min = mktime(1,0,0,floor(($int['date_min']->format('n') -1) / 2) * 2 + 1, 1, $int['date_min']->format('Y'));
+        $date_max = mktime(1,0,0,floor(($int['date_max']->format('n') +1) / 2) * 2 + 1, 1, $int['date_max']->format('Y'));
+        $date = $date_min;
+        $begin_dates = array();
+        $end_dates = array();
+        while ($date < $date_max)
+        {
+            $begin_dates[] = $date;
+            $date = strtotime('+2 months', $date);
+            $end_dates[] = strtotime('-1 day', $date);
+        }
+
+        $page->assign('results', $this->fetch_scores($begin_dates, $end_dates, $period));
+        $result = $page->fetch(FrankizPage::getTplPath('qdj/ranking.tpl'));
+        $page->jsonAssign('success', true);
+        $page->jsonAssign('result', $result);
+        return PL_JSON;
+    }
+
+    function fetch_scores($begin_date, $end_date, $period)
+    {
+        if ($period === 'now')
+        {
+            $show_min = $begin_date[count($begin_date)-1];
+            $show_max = $end_date[count($end_date)-1];
+        }
+        else if ($period === 'all')
+        {
+            $show_min = $begin_date[0];
+            $show_max = $end_date[count($end_date)-1];
+        }
+        else
+        {
+            $show_min = $begin_date[$period];
+            $show_max = $end_date[$period];
+        }
+
+        return QDJ::points(new FrankizDateTime(date('Y-m-d', $show_min)), new FrankizDateTime(date('Y-m-d', $show_max)));
     }
 }
 

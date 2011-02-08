@@ -20,9 +20,6 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="title">
-    QDJ
-</div>
 <div class="qdj">
     <div class="question">
         {if $question} {$question} {else} {$item->question} {/if}

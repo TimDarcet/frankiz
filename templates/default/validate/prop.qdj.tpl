@@ -41,49 +41,56 @@
         </div>
     {/if}
     
-    <div class="box_proposal">
-        {include file="validate/form.show.qdj.tpl"|rel}
+    <div class="module">
+        <div class="head">
+            Aperçu
+        </div>
+        <div class="body">
+            {include file="validate/form.show.qdj.tpl"|rel}
+        </div>
     </div>
     
-    <div class="box_proposal">
-        <div class="title">
+    <div class="module">
+        <div class="head">
            QDJ
         </div>
-        <table>
-            <tr>
-                <td width=20%>
-                    Question :
-                </td>
-                <td>
-                    <input type="text" name="quest" value="{$question}" id="quest_qdj_proposal"/>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>
-                    Réponse 1 :
-                </td>
-                <td>
-                    <input type="text" name="ans1" value="{$answer1}" id="ans1_qdj_proposal"/>
-                </td>
-            </tr>
-    
-            <tr>
-                <td>
-                    Réponse 2 :
-                </td>
-                <td>
-                    <input type="text" name="ans2" value="{$answer2}" id="ans2_qdj_proposal"/>
-                </td>
-            </tr>
-    
-            <tr>
-                <td></td>
-                <td>
-                    <input type="submit" name="send" value="Envoyer" onClick="return window.confirm('Voulez vous vraiment proposer cette QDJ ?')"/>
-                </td>
-            </tr>
-        </table>
+        <div class="body">
+            <table>
+                <tr>
+                    <td width=20%>
+                        Question :
+                    </td>
+                    <td>
+                        <input type="text" name="quest" value="{$question}" id="quest_qdj_proposal"/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Réponse 1 :
+                    </td>
+                    <td>
+                        <input type="text" name="ans1" value="{$answer1}" id="ans1_qdj_proposal"/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Réponse 2 :
+                    </td>
+                    <td>
+                        <input type="text" name="ans2" value="{$answer2}" id="ans2_qdj_proposal"/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" name="send" value="Envoyer" onClick="return window.confirm('Voulez vous vraiment proposer cette QDJ ?')"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </form>
 
