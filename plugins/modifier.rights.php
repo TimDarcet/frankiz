@@ -23,7 +23,21 @@ function smarty_modifier_rights($rights) {
     $rights = unflatten($rights);
     $strings = array();
     foreach ($rights as $right) {
-        $strings[] = '<div title="' . (string) $right . '" class="rights ' . (string) $right . '"></div>';
+        $label = (string) $right;
+        switch ((string) $right) {
+            case 'admin':
+                $label = 'Administrateur';
+            break;
+
+            case 'member':
+                $label = 'Membre';
+            break;
+
+            case 'friend':
+                $label = 'Sympathisant';
+            break;
+        }
+        $strings[] = '<div title="' . $label . '" class="rights ' . (string) $right . '"></div>';
     }
     return implode('', $strings);
 }
