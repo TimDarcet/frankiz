@@ -27,12 +27,13 @@ class IFC_Caste extends ImageFilterCondition
 {
     private $cids;
 
-    public function __construct($gs)
+    public function __construct($cs)
     {
-        if ($cs instanceof Collection)
+        if ($cs instanceof Collection) {
             $this->cids = $cs->ids();
-        else
+        } else {
             $this->cids = Caste::toIds(unflatten($cs));
+        }
     }
 
     public function buildCondition(PlFilter $f)
