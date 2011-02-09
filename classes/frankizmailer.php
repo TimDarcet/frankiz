@@ -68,6 +68,11 @@ class FrankizMailer extends PHPMailer
     {
         global $globals;
 
+        if ($globals->debug & DEBUG_BT) {
+            if (!isset(PlBacktrace::$bt['Mails']))
+                new PlBacktrace('Mails');
+        }
+
         $this->tpl = (empty($tpl)) ? 'mail.default.tpl' : $tpl;
         $this->page = new Smarty();
 
@@ -81,6 +86,26 @@ class FrankizMailer extends PHPMailer
         $this->page->config_dir    = $globals->spoolroot . "/configs/";
         array_unshift($this->page->plugins_dir, $globals->spoolroot."/plugins/");
         $this->assign('globals', $globals);
+    }
+
+    public function addAddress($address, $name = '')
+    {
+        global $globals;
+
+        if ($globals->debug > 0 && !empty($globals->mails->admin)) {
+            return parent::addAddress($globals->mails->admin, $name);
+        }
+        return parent::addAddress($address, $name);
+    }
+
+    public function addCC($address, $name = '')
+    {
+        global $globals;
+
+        if ($globals->debug > 0 && !empty($globals->mails->admin)) {
+            return parent::AddCC($globals->mails->admin, $name);
+        }
+        return $this->AddCC($address, $name);
     }
 
     /**
@@ -124,17 +149,29 @@ class FrankizMailer extends PHPMailer
     */
     public function send($html = true)
     {
+        global $globals;
+
         $this->page->assign('isHTML', $html);
 
         $tpl = FrankizPage::getTplPath($this->tpl);
         $content = $this->page->fetch($tpl);
 
-        if ($html)
+        if ($html) {
             $this->MsgHTML($content);
-        else
+        } else {
             $this->Body = trim($content);
+        }
+
+        if ($globals->debug & DEBUG_BT) {
+            PlBacktrace::$bt['Mails']->start($this->Subject);
+        }
 
         parent::send();
+
+        if ($globals->debug & DEBUG_BT) {
+            $datas = array(array('from' => $this->From, 'body' => $this->Body, 'AltBody' => $this->AltBody));
+            PlBacktrace::$bt['Mails']->stop(round(strlen($this->Body) / 64), null, $datas);
+        }
 
         return $content;
     }
