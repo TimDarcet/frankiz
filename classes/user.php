@@ -181,8 +181,12 @@ class UserSelect extends Select
         return new UserSelect(array('minimodules'));
     }
 
+    public static function castes() {
+        return new UserSelect(array('castes'), array('castes' => CasteSelect::group()));
+    }
+
     public static function login() {
-        return new UserSelect(array_merge(self::$natives, array('rooms', 'minimodules', 'castes', 'poly')),
+        return new UserSelect(array_merge(self::$natives, array('rooms', 'minimodules', 'castes', 'poly', 'comments')),
                               array('castes' => CasteSelect::group()));
     }
 
@@ -697,12 +701,17 @@ class User extends Meta
         return $rights;
     }
 
-    public function hasRights(Group $g, Rights $r)
+    public function hasRights(Group $g, Rights $r = null)
     {
         foreach ($this->castes as $c) {
-            if ($c->group()->isMe($g))
-                if ($r->isMe($c->rights()))
+            if ($c->group()->isMe($g)) {
+                if ($r === null) {
                     return true;
+                }
+                if ($r->isMe($c->rights())) {
+                    return true;
+                }
+            }
         }
 
         return false;
@@ -845,7 +854,6 @@ class User extends Meta
         XDB::execute('UPDATE account SET `group` = {?} WHERE uid = {?}', $group->id(), $this->id());
 
         $group->caste(Rights::admin())->addUser($this);
-        $group->caste(Rights::member())->addUser($this);
 
         $this->group = $group;
     }
