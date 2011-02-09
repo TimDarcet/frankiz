@@ -92,13 +92,18 @@ class Collection extends PlAbstractIterable implements Countable
         throw new Exception("The method $className::$inferedMethod doesn't exist");
     }
 
-    public function export($stringify = false)
+    public function export($bits = null, $assoc = false)
     {
         $json = array();
-        foreach ($this as $c)
-            $json[] = $c->export();
+        foreach ($this as $c) {
+            if ($assoc) {
+                $json[$c->id()] = $c->export($bits);
+            } else {
+                $json[] = $c->export($bits);
+            }
+        }
 
-        return ($stringify) ? json_encode($json) : $json;
+        return $json;
     }
 
     public function toArray($indexedBy = null)
@@ -235,6 +240,29 @@ class Collection extends PlAbstractIterable implements Countable
 
         foreach ($collec->collected as $id => $c)
             $this->collected[$id] = $c;
+
+        return $this;
+    }
+
+    /**
+    * Merge the elemens of the collections in a new collection
+    * and replace if necessary elements from the source collections
+    * so that they are not to differents instances with the same id
+    *
+    * @param $collecs Array of Collections
+    */
+    public function safeMerge(array $collecs)
+    {
+        foreach($collecs as $collec) {
+            foreach ($collec->collected as $id => $c) {
+                if ($this->get($id)) {
+                    $collec->remove($id);
+                    $collec->add($this->get($id));
+                } else {
+                    $this->add($c);
+                }
+            }
+        }
 
         return $this;
     }
