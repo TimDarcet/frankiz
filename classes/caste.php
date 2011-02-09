@@ -132,6 +132,9 @@ class Caste extends Meta
     */
     public function removeUser(User $user)
     {
+        if ($this->userfilter()) {
+            throw new Exception("This caste is defined by a UserFilter, you can't remove a user");
+        }
         XDB::execute('DELETE FROM  castes_users
                             WHERE  cid = {?} AND uid = {?}',
                                    $this->id(), $user->id());

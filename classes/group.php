@@ -65,6 +65,11 @@ class GroupSelect extends Select
         return new GroupSelect(array('castes'), $subs);
     }
 
+    public static function subscribe() {
+        return new GroupSelect(array('ns', 'name', 'visible', 'castes', 'leavable'),
+                               array('castes' => CasteSelect::bubble()));
+    }
+
     public static function see() {
         return new GroupSelect(array('ns', 'score', 'name', 'label', 'description',
                                      'image', 'web', 'mail', 'visible', 'castes', 'leavable'),
@@ -95,7 +100,6 @@ class GroupSelect extends Select
             $castes->add($caste);
             $_groups[$group]->add($caste);
         }
-
 
         foreach ($groups as $g) {
             $g->fillFromArray(array('castes' => $_groups[$g->id()]));
@@ -180,13 +184,13 @@ class Group extends Meta
         return false;
     }
 
-    public function removeUser(User $user = null)
+    public function removeUser(User $user)
     {
-        if ($user === null)
-            $user = S::user();
-
-        foreach ($this->castes as $caste)
-            $caste->removeUser($user);
+        foreach ($this->castes as $caste) {
+            if (!$caste->userfilter()) {
+                $caste->removeUser($user);
+            }
+        }
     }
 
     public function export($bits = null)
