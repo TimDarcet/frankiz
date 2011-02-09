@@ -20,24 +20,22 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if $text == null}
+{if $isOk == null}
 Ta photo tol vient d'être validée... Elle remplace dès à present visible.
-Si tu as l'impression que ta photo n'a pas changé, n'oublie pas de recharger le cache de ton navigateur (Ctrl+F5 en général).
+Il te faudra peut-être rouvrir ton navigateur pour qu'il prenne en compte le changement.
 
 {$comm|smarty:nodefaults}
 
 
 Cordialement,
-Le Webmestre de Frankiz
+Les Webmestres de Frankiz
 {else}
 Ta photo tol n'a pas été validée pour la raison suivante :
 {$comm|smarty:nodefaults}
 
 
-Désolé 
-
 Cordialement,
-Le Webmestre de Frankiz
+Les Webmestres de Frankiz
 {/if}
 
 

@@ -84,10 +84,11 @@ class TolValidate extends ItemValidate
         if (Env::has("ans"))
             $mail->assign('comm', Env::v('ans'));
 
-        if ($isok)
+        $mail->assign('isOk', $isok);
+
+        if ($isok) {
             $mail->Subject = '[Frankiz] Ta photo tol a été validée';
-        else
-        {
+        } else {
             $mail->Subject = '[Frankiz] Ta photo tol a été refusée';
         }
 
@@ -104,7 +105,9 @@ class TolValidate extends ItemValidate
 
     public function _mail_from_addr()
     {
-        return 'web@polytechnique.edu';
+        global $globals;
+
+        return $globals->mails->web;
     }
 
     public function commit()
