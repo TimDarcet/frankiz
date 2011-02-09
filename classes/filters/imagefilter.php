@@ -23,6 +23,25 @@ abstract class ImageFilterCondition extends FrankizFilterCondition
 {
 }
 
+class IFC_Id extends ImageFilterCondition
+{
+    private $ids;
+
+    public function __construct($metas)
+    {
+        if ($metas instanceof Collection) {
+            $this->ids = $metas->ids();
+        } else {
+            $this->ids = FrankizImage::toIds(unflatten($metas));
+        }
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        return XDB::format('i.iid IN {?}', $this->ids);
+    }
+}
+
 class IFC_Caste extends ImageFilterCondition
 {
     private $cids;
@@ -41,6 +60,18 @@ class IFC_Caste extends ImageFilterCondition
         return XDB::format('i.caste IN {?}', $this->cids);
     }
 }
+
+class IFC_Temp extends ImageFilterCondition
+{
+    public function buildCondition(PlFilter $f)
+    {
+        $g = Group::from('temp')->select(GroupSelect::castes());
+        $temp = $g->caste(Rights::everybody());
+
+        return XDB::format('i.caste = {?}', $temp->id());
+    }
+}
+
 
 abstract class ImageFilterOrder extends FrankizFilterOrder
 {
