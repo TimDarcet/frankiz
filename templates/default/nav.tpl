@@ -22,7 +22,7 @@
 
 {if $smarty.session.auth >= AUTH_COOKIE}
     <div class="account">
-        <a href="admin">
+        <a href="tol?hruid={$smarty.session.user->login()}">
         <img src="{$smarty.session.user->image()|image:'big'|smarty:nodefaults}"
              title="{$smarty.session.user->displayName()}" />
         </a>
