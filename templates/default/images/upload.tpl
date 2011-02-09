@@ -24,12 +24,17 @@
     {if $image}
         <input type="hidden" name="iid" value="{$image->id()}" />
         <input type="hidden" name="secret" value="{$secret}" />
-        <img src="{$image|image:'micro'}" />
+        <a target="_blank" href="{$image|image:'full'}" title="Cliquer pour voir l'image en grande taille">
+            <img src="{$image|image:'micro'}" />
+        </a>
         Image envoyée
-        <input type="submit" name="delete" value="Changer d'iamge" />
+        <input type="submit" name="delete" value="Changer l'image" />
     {else}
         <label><input type="file" name="file" /></label>
         <input type="submit" name="send" value="Envoyer l'image" />
+        {if $toobig}
+            <br /><span class="warning">L'image envoyée dépasse la taille maximale autorisée (1024 * 1024)</span>
+        {/if}
     {/if}
 </form>
 

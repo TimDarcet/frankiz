@@ -49,6 +49,7 @@ class ImagesModule extends PlModule
     function handler_upload($page)
     {
         $page->assign('image', false);
+        $page->assign('toobig', false);
         if (FrankizUpload::has('file')) {
             $g = Group::from('temp')->select(GroupSelect::castes());
             $temp = $g->caste(Rights::everybody());
@@ -57,14 +58,18 @@ class ImagesModule extends PlModule
 
             $secret = uniqid();
 
-            $i = new FrankizImage();
-            $i->insert();
-            $i->caste($temp);
-            $i->label($secret);
-            $i->image($upload);
+            try {
+                $i = new FrankizImage();
+                $i->insert();
+                $i->caste($temp);
+                $i->label($secret);
+                $i->image($upload);
 
-            $page->assign('image', $i);
-            $page->assign('secret', $secret);
+                $page->assign('image', $i);
+                $page->assign('secret', $secret);
+            } catch (ImageSizeException $e) {
+                $page->assign('toobig', true);
+            }
         }
         if (Env::has('delete')) {
             $image = new FrankizImage(Env::i('iid'));
