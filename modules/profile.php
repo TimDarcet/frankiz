@@ -58,52 +58,45 @@ class ProfileModule extends PLModule
 
     public function handler_account($page)
     {
+        $err = array();
+        $msg = array();
+
         S::user()->select(UserSelect::login());
-        if (Env::has('new_passwd'))
-        {
-            if (Env::v('new_passwd1') != Env::v('new_passwd2'))
-            {
+        if (Env::has('new_passwd')) {
+            if (Env::s('new_passwd1') != Env::s('new_passwd2')) {
                 $err[] = 'Les mots de passe donnés sont incohérents.';
-            }
-            else if(strlen(Env::v(new_passwd1)) < 6)
-            {
+            } else if(strlen(Env::s('new_passwd1')) < 6) {
                 $msg[] = 'Le mot de passe est trop court.';
-            }
-            else
-            {
-                S::user()->password(Env::v('new_passwd1'));
+            } else {
+                S::user()->password(Env::s('new_passwd1'));
                 $msg[] = 'Le mot de passe a été changé avec succès.';
             }
         }
 
-        if (Env::has('change_profile'))
-        {
-            if (FrankizUpload::has('image'))
-            {
-                try
-                {
-                    $group = Group::from('tol');
-                    $image = new FrankizImage();
-                    $image->insert();
-                    $image->label(S::user()->fullName());
-                    $image->caste($group->caste('everybody'));
-                    $image->image(FrankizUpload::v('image'));
-                    $tv = new TolValidate($image);
-                    $v = new Validate(array(
-                        'user'  => S::user(),
-                        'gid'   => Group::from('tol')->id(),
-                        'item'  => $tv,
-                        'type'  => 'tol'));
-                    $v->insert();
-                    $page->assign('envoye', true);
-                    $msg[] = 'La demande de changement de photo tol a été prise en compte.
-                        Les tolmestres essaieront de te la valider au plus tôt.';
+        if (Env::has('change_profile')) {
+
+            if (Env::has('image')) {
+                $group = Group::from('tol')->select(GroupSelect::castes());
+
+                $image = new ImageFilter(new PFC_And(new IFC_Id(Env::i('image')), new IFC_Temp()));
+                $image = $image->get(true);
+                if (!$image) {
+                    throw new Exception("This image doesn't exist anymore");
                 }
-                catch (Exception $e)
-                {
-                    $err[] = $e->getMessage();
-                }
+                $image->select(FrankizImageSelect::caste());
+                $image->label(S::user()->fullName());
+                $image->caste($group->caste(Rights::everybody()));
+                $tv = new TolValidate($image);
+                $v = new Validate(array(
+                    'writer' => S::user(),
+                    'group'  => $group,
+                    'item'   => $tv,
+                    'type'   => 'tol'));
+                $v->insert();
+                $msg[] = 'La demande de changement de photo tol a été prise en compte.
+                    Les tolmestres essaieront de te la valider au plus tôt.';
             }
+
             S::user()->nickname(Env::t('nickname'));
             S::user()->bestEmail(Env::t('bestalias'));
             S::user()->cellphone(new Phone(Env::t('cellphone')));
@@ -111,12 +104,10 @@ class ProfileModule extends PLModule
             S::user()->comment(Env::t('comment'));
         }
 
-        if (isset($err))
-        {
+        if (!empty($err)) {
             $page->assign('err', $err);
         }
-        if (isset($msg))
-        {
+        if (!empty($msg)) {
             $page->assign('msg', $msg);
         }
         $page->assign('user', S::user());
