@@ -23,7 +23,7 @@
 <div class="origin_picker" id="origin_picker_{$id}">
     {origin_picker out='origins'}
     <select id={$id} name={$id} >
-        <option value="none" selected="selected">En mon nom propre</option>
+        <option value="false" selected="selected">En mon nom propre</option>
         {foreach from=$origins item='group'}
             <option value="{$group->id()}">{$group->label()}</option>
         {/foreach}
