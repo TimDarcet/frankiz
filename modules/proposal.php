@@ -33,74 +33,82 @@ class ProposalModule extends PlModule
         );
     }
 
+    static function target_picker_to_caste_group($id) {
+        $target_rights = Rights::restricted();
+        if (Env::has('target_everybody_' . $id)) {
+            $target_rights = Rights::everybody();
+        }
+        if (S::user()->group()->id() == Env::i('target_group_' . $id)) {
+            $target_rights = Rights::restricted();
+        }
+        $target_group  = new Group(Env::i('target_group_' . $id));
+        $target_filter = new CasteFilter(new PFC_And(new CFC_Group($target_group),
+                                                     new CFC_Rights($target_rights)));
+        return array($target_filter->get(true), $target_group);
+    }
+
     function handler_news($page)
-    {   
-        
-        $title      = Env::t('title', '');
-        $content    = Env::t('content', '');
-        $end        = Env::t('end', '');
-        $comment    = Env::t('comment', '');
-        $gid        = Env::i('group_news_proposal', '');
-        if(Env::t('origin_news_proposal') != '') $origin = Env::i('origin');
-
-        if ($end != '')
-        {
-            $end = substr_replace($end, '-', 6, 0);
-            $end = substr_replace($end, '-', 4, 0);
-        }
-
-        $iid = 1; //To change as soon as Riton works
-        if (Env::has('send'))
-        {
-            if($title == '' || $content == '' || $end == '' || $gid == '')
-            {
-                $page->assign('msg', 'Il manque des informations pour créer l\'annonce.');
-            }
-            else 
-            {
-                try
-                {
-                    $image = new FrankizImage();
-                    $image->insert();
-                    $image->image(FrankizUpload::v('image'));
-                    if ($image->x() <= 400 && $image->y() <= 300 && $image->size() < 256000)
-                    {
-                        $end_c = new FrankizDateTime($end);
-                        $n = new News(array(
-                            'writer'    => S::user(),
-                            'target'    => new Group($gid),
-                            'iid'       => $image->id(),
-                            'origin'    => new Group($origin),
-                            'title'     => $title,
-                            'content'   => $content,
-                            'end'       => $end_c,
-                            'comment'   => $comment));
-                        $nv = new NewsValidate($n);
-                        $v = new Validate(array(
-                            'user'  => S::user(),
-                            'gid'   => $gid,
-                            'item'  => $nv,
-                            'type'  => 'news'));
-                        $v->insert();
-                        $page->assign('envoye', true);
-                    }
-                    else
-                    {
-                        $image->delete();
-                        $page->assign('msg', 'La date n\'est pas valide.');
+    {
+        if (Env::has('send')) {
+            try {
+                $required_fields = array('origin_news_proposal', 'target_group_news',
+                                        'title', 'news_content', 'begin', 'end');
+                foreach ($required_fields as $field) {
+                    if (Env::v($field, '') == '') {
+                        throw new Exception("Missing field ($field)");
                     }
                 }
-                catch (Exception $e)
-                {
-                    $page->assign('msg', 'La date n\'est pas valide.');
+
+                // Origin & Target
+                if (Env::t('origin_news_proposal') == 'false') {
+                    $origin = false;
+                } else {
+                    $origin = new Group(Env::i('origin_news_proposal'));
                 }
+                list($target, $target_group) = self::target_picker_to_caste_group('news');
+
+                // Content
+                $title   = Env::t('title');
+                $image   = (Env::has('image')) ? new FrankizImage(Env::i('image')) : false;
+                $content = Env::t('news_content');
+
+                // Dates
+                $begin = new FrankizDateTime(Env::t('begin'));
+                $end   = new FrankizDateTime(Env::t('end'));
+
+                // Meta data
+                $comment = Env::t('comment', '');
+
+
+                // Check credentials for origin
+                if (!$origin && !S::user()->hasRights($origin, Rights::admin())) {
+                    throw new Exception("Invalid credentials for origin Group");
+                }
+
+                // TODO: directly insert if having the rights
+                // TODO: build objects
+                $nv = new NewsValidate(array(
+                    'writer'    => S::user(),
+                    'target'    => $target,
+                    'image'     => $image,
+                    'origin'    => $origin,
+                    'title'     => $title,
+                    'content'   => $content,
+                    'begin'     => $begin,
+                    'end'       => $end,
+                    'comment'   => $comment));
+                $v = new Validate(array(
+                    'writer'  => S::user(),
+                    'group'   => $target_group,
+                    'item'    => $nv,
+                    'type'    => 'news'));
+                $v->insert();
+                $page->assign('envoye', true);
+            } catch (Exception $e) {
+                throw $e;
+                $page->assign('msg', "Il manque des informations pour créer l'annonce.");
             }
         }
-
-        $page->assign('title_news', $title);
-        $page->assign('content', $content);
-        $page->assign('end', $end);
-        $page->assign('comment', $comment);
 
         $page->assign('title', 'Proposer une annonce');
         $page->addCssLink('validate.css');

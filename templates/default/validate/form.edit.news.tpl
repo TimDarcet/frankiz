@@ -20,14 +20,12 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{assign var='news' value=$item->news()}
-
 <tr>
     <td>
         Titre :
     </td>
     <td>
-        <input type='text' name='title' value="{$news->title()}" />
+        <input type='text' name='title' value="{$item->title()}" />
     </td>
 </tr>
     
@@ -36,7 +34,7 @@
         Contenu :
     </td>
     <td>
-        <textarea name='content' id="text_proposal" rows=30 cols=50>{$news->content()}</textarea>
+        <textarea name='content' id="text_proposal" rows=30 cols=50>{$item->content()}</textarea>
     </td>
 </tr>
             
@@ -54,7 +52,7 @@
         Dernier jour :
     </td>
     <td>
-        <input type='text' name='end' value="{$news->end()|datetime:'Y-m-d H:i:s'}" />
+        <input type='text' name='end' value="{$item->end()|datetime:'Y-m-d H:i:s'}" />
     </td>
 </tr>
 

@@ -19,14 +19,13 @@
 {*  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA               *}
 {*                                                                        *}
 {**************************************************************************}
-{assign var='news' value=$item->news()}
 
 <tr>
     <td width=20%>
         Commentaire :
     </td>
     <td>
-        {$news->comment()}
+        {$item->comment()}
     </td>
 </tr>
 
@@ -35,7 +34,7 @@
         Dernier jour :
     </td>
     <td>
-        {$news->end()|datetime:'Y-m-d'}
+        {$item->end()|datetime:'Y-m-d'}
     </td>
 </tr>
 
@@ -44,20 +43,20 @@
         Annonce :
     </td>
     <td>
-        {assign var='group' value=$news->target()}
+        {assign var='caste' value=$item->target()}
         <div class="news_validate">
-        <fieldset>  
-            <legend>[{$group->label()}] {$news->title()}</legend>
+        <fieldset>
+            {assign var='target_group' value=$caste->group()}
+            <legend>[{$target_group|group}] {$item->title()}</legend>
             <div class="body">
-                {assign var='image' value=$news->image()}
-                {$news->content()|miniwiki|smarty:nodefaults}
+                {assign var='image' value=$item->image()}
+                {$item->content()|miniwiki|smarty:nodefaults}
             </div>
             <div class="infos">
-                {if !is_null($news->origin())}
-                    {assign var='origin' value=$news->origin()}
-                    Pour le groupe {$origin->label()},
+                {if !$item->origin()}
+                    Pour le groupe {$item->origin()|group},
                 {/if}
-                {$news->writer()|user}
+                {$item->writer()|user}
             </div>
         </fieldset>
         </div>

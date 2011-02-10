@@ -68,7 +68,11 @@ class NFC_Target extends NewsFilterCondition
 
     public function __construct($cs)
     {
-        $this->cids = Group::toIds(unflatten($cs));
+        if ($cs instanceof Collection) {
+            $this->cids = $cs->ids();
+        } else {
+            $this->cids = Caste::toIds(unflatten($cs));
+        }
     }
 
     public function buildCondition(PlFilter $f)
@@ -107,7 +111,7 @@ class NFC_Current extends NewsFilterCondition
 {
     public function buildCondition(PlFilter $uf)
     {
-        return 'CAST(NOW() AS DATE) BETWEEN n.begin AND n.end';
+        return 'NOW() BETWEEN n.begin AND n.end';
     }
 }
 

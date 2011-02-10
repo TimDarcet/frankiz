@@ -44,7 +44,7 @@ class NewsValidate extends ItemValidate
     }
 
     public function objects() {
-        return Array('writer' => UserSelect::base(), 'target' => CasteSelect::group(),
+        return Array('writer' => UserSelect::base(), 'target' => CasteSelect::validate(),
                      'image' => FrankizImageSelect::base(), 'origin' => GroupSelect::base());
     }
 
@@ -64,71 +64,77 @@ class NewsValidate extends ItemValidate
 
     public function handle_editor()
     {
-        $this->news->title(Env::t('title', ''));
-        $this->news->content(Env::t('content', ''));
-        try
-        {
-            $this->news->end(new FrankizDateTime(Env::t('end', $this->news->end())));
-        }
-        catch (Exception $e)
-        {
-            return false;
-        }
-        $this->news->important(Env::has('important')?1:0);
+        //TODO $this->news->title(Env::t('title', ''));
+
         return true;
     }
 
     public function sendmailadmin()
     {
-        if (is_null($this->user->bestEmail()))
-            $this->user->select(UserSelect::base());
+        if ($this->writer->bestEmail() === null)
+            $this->writer->select(UserSelect::base());
 
         $mail = new FrankizMailer('validate/mail.admin.news.tpl');
-        $mail->assign('user', $this->user->displayName());
+        $mail->assign('user', $this->writer->displayName());
         $mail->assign('title', $this->title);
 
         $mail->subject("[Frankiz] Validation d'une annonce");
-        $mail->SetFrom($this->user->bestEmail(), $this->user->displayName());
+        $mail->SetFrom($this->writer->bestEmail(), $this->writer->displayName());
         $mail->AddAddress($this->_mail_from_addr(), $this->_mail_from_disp());
         $mail->Send(false);
     }
 
     public function sendmailfinal($isok)
     {
-        if (is_null($this->user->bestEmail()))
-            $this->user->select(User::SELECT_BASE);
+        if ($this->writer->bestEmail() === null)
+            $this->writer->select(UserSelect::base());
 
         $mail = new FrankizMailer('validate/mail.valid.news.tpl');
-        if (Env::has("ans"))
+        if (Env::has("ans")) {
             $mail->assign('comm', Env::v('ans'));
-
-        if ($isok)
-            $mail->Subject = '[Frankiz] Ton annonce a été validée';
-        else
-        {
-            $mail->Subject = '[Frankiz] Ton annonce a été refusée';
-            $mail->assign('text', $this->news->content());
         }
 
-        $mail->SetFrom($this->_mail_from_addr(), $this->_mail_from_disp());
-        $mail->AddAddress($this->user->bestEmail(), $this->user->displayName());
-        $mail->AddCC($this->_mail_from_addr(), $this->_mail_from_disp());
-        $mail->Send(false);
+        $mail->assign('text', false);
+        $mail->assign('group_label', $this->target->group()->label());
+
+        if ($isok) {
+            $mail->Subject = '[Frankiz] Ton annonce a été validée';
+        } else {
+            $mail->Subject = '[Frankiz] Ton annonce a été refusée';
+            $mail->assign('text', $this->content());
+        }
+
+        $mail->setFrom($this->_mail_from_addr(), $this->_mail_from_disp());
+        $mail->addAddress($this->writer->bestEmail(), $this->writer->displayName());
+        $mail->addCC($this->_mail_from_addr(), $this->_mail_from_disp());
+        $mail->send(false);
     }
 
     public function _mail_from_disp()
     {
-        return 'Les webmestres';
+        return 'Frankiz / "' . $this->target->group()->label() . '"';
     }
 
     public function _mail_from_addr()
     {
-        return 'brice.gelineau@polytechnique.edu';
+        $this->target->group();
+        return ($this->target->group()->mail() === false || $this->target->group()->mail() === '')
+                ?'web@frankiz.polytechnique.fr':$this->target->group()->mail();
     }
 
     public function commit()
     {
-        $this->news->replace();
+        $n = new News();
+        $n->insert();
+        $n->writer($this->writer);
+        $n->target($this->target);
+        $n->image($this->image);
+        $n->origin($this->origin);
+        $n->title($this->title);
+        $n->content($this->content);
+        $n->begin($this->begin);
+        $n->end($this->end);
+        $n->comment($this->comment);
         return true;
     }
 

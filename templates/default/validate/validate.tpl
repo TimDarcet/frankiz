@@ -125,8 +125,8 @@
             </div>
 
         </li>
-    </ul>
     {/foreach}
+    </ul>
 
 {/if}
 
