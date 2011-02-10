@@ -20,7 +20,32 @@
 
 @import "lib.less";
 
-#content {
+#section {
+    .threecols {
+        .filter {
+            
+        }
+        ul {
+            padding: 0;
+        }
+        li {
+            position: relative;
+            min-height: 35px;
+            list-style: none;
+            text-align: left;
+            .meta {
+                float: left;
+                position: relative;
+                min-width: 70px;
+                text-align: right;
+                margin-right: 3px;
+                img {
+                    float: left;
+                }
+            }
+        }
+    }
+
     .top {
         width: auto;
         position: relative;
@@ -35,7 +60,6 @@
                 position: relative;
                 img {
                     float: left;
-                    width: 300px;
                 }
                 .label {
                     text-align: center;
@@ -51,39 +75,87 @@
         min-height: 500px;
         padding-top: 25px;
         clear: both;
+        width: 100%;
     }
 
-    .users {
+    .users, .datas {
         position: relative;
-        left: 15px;
-        .alphabackground;
-        .border-radius;
-        position: relative;
-        float: left;
-        width: 45%;
+        width: 50%;
+        padding: 12px;
+        vertical-align: top;
+
+        > div {
+            position: relative;
+            padding: 5px;
+            width: 100%;
+            margin-bottom: 6px;
+            .alphabackground;
+            .border-radius;
+        }
     }
 
-    .users li {
-        list-style: none;
+    .me {
+        .comments input {
+            width: 90%;
+        }
     }
 
-    li.user {
-        position: relative;
-        display: inline-block;
-        width: 35px;
-        text-align: center;
-        overflow: visible;
-        margin-right: 15px;
+    .tol {
+        text-align: right;
     }
 
-    li.user img {
-        position: relative;
-        height: 35px;
-        max-width: 27px;
+    ul.rights_users {
+        padding: 0;
+        ul {
+            padding-left: 10px;
+        }
+        li {
+            list-style: none;
+            position: relative;
+            text-align: left;
+            overflow: visible;
+            min-height: 35px;
+            margin-bottom: 2px;
+            .img {
+                float: left;
+                width: 35px;
+                height: 35px;
+                text-align: right;
+                img {
+                    max-height: 35px;
+                    max-width: 35px;
+                }
+            }
+            .comments {
+                margin-left: 2px;
+                font-size: 12px;
+                font-style: italic;
+            }
+        }
     }
 
-    .news {
-        position: relative;
-        width: 45%;
+    .admin_general {
+        table {
+            width: 70%;
+        }
+        td {
+            padding-bottom: 16px;
+        }
+        .description {
+            width: 95%;
+            height: 100px;
+        }
+        .uploader {
+            display: inline;
+        }
+    }
+
+    .admin_users {
+        table {
+            width: 100%;
+        }
+        td:first-child {
+            width: 50%;
+        }
     }
 }

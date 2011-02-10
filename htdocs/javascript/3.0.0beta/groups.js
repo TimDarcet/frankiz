@@ -13,6 +13,22 @@ $(function(){
     });
 
     search();
+
+    $("input[name=comments]").change(function() {
+        var $this = $(this);
+        var gid = $this.siblings("input[name=gid]").val();
+        request({"url" : "groups/ajax/comment"
+               ,"data" : {"gid": gid, "comments": $this.val()}
+            ,"success" : function(json) {
+                             if (json.uid) {
+                                 $this.addClass("success");
+                                 $("li[uid=" + json.uid + "] .comments").html($this.val());
+                             } else {
+                                 $this.addClass("error");
+                             }
+                         }
+        });
+    });
 });
 
 function force_search() {
@@ -21,7 +37,7 @@ function force_search() {
       ,"data": $('#content form[name=filters]').formToJSON()
       ,"fail": false
    ,"success": function(json) {
-            var ul = $("#content .users > ul");
+            var ul = $("#section .members > ul");
 
             var users = json.users;
 
@@ -37,56 +53,16 @@ function force_search() {
                         }
                     });
 
+                    var html = new Array();
                     for (var i in users[rights]) {
-                        (function() {
-                            var u = users[rights][i];
-                            var img = new Image();
-                            $(img).hide();
-                            img.src = u.micro;
-                            img.title = u.displayName;
-                            img.uid = i;
-                            $(img).load(function() {
-                                var _this = $(this);
-                                subul.append(
-                                        $('<li uid="' + u.id + '" class="user">').append(this));
-                                _this.fadeIn();
-                                _this.mouseover(function() {
-                                    var temp = $('<div><a href="tol?hruid=' + u.hruid +'"><img style="height:100%" src="' + u.micro + '" /></a></div>');
-                                    $('body').append(temp);
-                                    temp.attr('title', u.displayName);
-                                    temp.css('margin', 0);
-                                    temp.css('padding', 0);
-                                    temp.css('height', $(this).height() + 5);
-                                    temp.css('width', '100%');
-                                    temp.css('position', 'absolute');
-                                    temp.css('vertical-align', 'middle');
-                                    temp.css({top: $(this).offset().top, left: $(this).offset().left});
-                                    temp.animate({
-                                        queue: true,
-                                        height: 105,
-                                        left: "+=-20",
-                                        top: "+=-52"
-                                      }, 500);
-                                    temp.animate({queue: true}, 1000, function() {
-                                        temp.animate({
-                                            height: _this.height(),
-                                            left: "+=+20",
-                                            top: "+=+52"
-                                          }, 500, function() {
-                                              $(this).remove();
-                                          });
-                                    });
-                                    var smallimg = new Image();
-                                    $(smallimg).hide();
-                                    smallimg.src = u.small;;
-                                    $(smallimg).css('width', '100%');
-                                    $(smallimg).load(function() {
-                                        temp.find('img').attr('src', this.src);
-                                    })
-                                });
-                            });
-                        })();
+                        var u = users[rights][i];
+
+                        var img = '<span title="' + u.displayName + '" class="img"><img style="display:none" onload="$(this).fadeIn()" src="' + u.micro + '" /></span>';
+                        var comments = '<span class="comments">' + ((u.comments) ? u.comments : u.displayName) + '</span>';
+                        html.push('<li uid="' + i + '"><a href="tol/?hruid=' + u.hruid + '">' + img + '</a>' + comments + '</li>');
                     }
+
+                    subul.append(html.join(''));
                 })();
             }
 

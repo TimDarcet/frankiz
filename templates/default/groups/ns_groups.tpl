@@ -20,21 +20,13 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<table>
+<ul>
     {foreach from=$groups|order:'score' item=group}
-        <tr>
-            <td><img src="{$group->image()|image:'micro':'group'|smarty:nodefaults}" /></td>
-            <td>{$group|group}</td>
-            <td>{$user->rights($group)|@rights}</td>
-        </tr>
+        {include file="groups/line.tpl"|rel}
     {/foreach}
     {foreach from=$user_groups|order:'score' item=group}
-        <tr>
-            <td><img src="{$group->image()|image:'micro':'group'|smarty:nodefaults}" /></td>
-            <td>{$group|group}</td>
-            <td>{$user->rights($group)|@rights}</td>
-        </tr>
+        {include file="groups/line.tpl"|rel}
     {/foreach}
-</table>
+</ul>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

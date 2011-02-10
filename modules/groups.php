@@ -35,6 +35,7 @@ class GroupsModule extends PLModule
             'groups/subscribe'        => $this->make_hook('group_subscribe',   AUTH_COOKIE),
             'groups/unsubscribe'      => $this->make_hook('group_unsubscribe', AUTH_COOKIE),
             'groups/insert'           => $this->make_hook('group_insert',      AUTH_COOKIE),
+            'groups/ajax/comment'     => $this->make_hook('ajax_comment',      AUTH_COOKIE),
         );
     }
 
@@ -109,7 +110,7 @@ class GroupsModule extends PLModule
 
     function handler_group_see($page, $group)
     {
-        global $globals, $platal;
+        global $globals;
 
         $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
         $gf = new GroupFilter($filter);
@@ -131,11 +132,15 @@ class GroupsModule extends PLModule
                 $promos->add($groupes_names)->select(GroupSelect::base());
                 $page->assign('promos', $promos);
 
+                // Relation between the user & the group
+                $page->assign('user', S::user());
+
                 // Fetch the news
-                $nf = new NewsFilter(new PFC_And(new NFC_Origin($group),
+                /*$nf = new NewsFilter(new PFC_And(new NFC_Origin($group),
                                                  new NFC_Target(S::user()->castes())), new NFO_End(true));
                 $news = $nf->get()->select();
-                $page->assign('news', $news);
+                $page->assign('news', $news);*/
+                $page->assign('news', array());
                 $page->assign('title', $group->label());
                 $page->changeTpl('groups/group.tpl');
             } else {
@@ -158,25 +163,50 @@ class GroupsModule extends PLModule
 
         $users = false;
         if ($group) {
-            $users = array('admin' => array(), 'member' => array());
-            $group->select(GroupSelect::castes());
+            $users = array();
 
-            $filters = new PFC_True();
-            if (count(Json::v('promo')) > 0) {
+            if (strlen(Json::t('promo')) > 0) {
+                $group->select(GroupSelect::castes());
+
                 $filters = new UFC_Group(explode(';', Json::v('promo')));
-            }
 
-            $uf = new UserFilter(new PFC_And(new UFC_Caste($group->caste(Rights::admin())), $filters));
-            $admins = $uf->get()->select(UserSelect::base());
-            foreach ($admins as $user) {
-                $users['admin'][$user->id()] = $user->export(User::EXPORT_MICRO | User::EXPORT_SMALL);
-            }
+                $uf = new UserFilter(new PFC_And(new UFC_Caste($group->caste(Rights::admin())), $filters));
+                $admins = $uf->get();
 
-            $uf = new UserFilter(new PFC_And(new UFC_Caste($group->caste(Rights::member())), $filters));
-            $members = $uf->get()->select(UserSelect::base());
-            foreach ($members as $user) {
-                $page->assign('user', $user);
-                $users['member'][$user->id()] = $user->export(User::EXPORT_MICRO | User::EXPORT_SMALL);
+                $uf = new UserFilter(new PFC_And(new UFC_Caste(array($group->caste(Rights::member()), $group->caste(Rights::logic()))), $filters));
+                $members = $uf->get();
+
+                $uf = new UserFilter(new PFC_And(new UFC_Caste($group->caste(Rights::friend())), $filters));
+                $friends = $uf->get();
+
+                $all = new Collection('User');
+                $all->safeMerge(array($admins, $members, $friends));
+                $all->select(UserSelect::base());
+
+                $admins_export = $admins->export(User::EXPORT_MICRO, true);
+                $members_export = $members->export(User::EXPORT_MICRO, true);
+                $friends_export = $friends->export(User::EXPORT_MICRO, true);
+
+                $iter = XDB::iterRow('SELECT  uid, comment
+                                        FROM  users_comments
+                                       WHERE  gid = {?} AND uid IN {?}',
+                                              $group->id(), $all->ids());
+
+                while (list($uid, $comment) = $iter->next()) {
+                    if ($admins_export[$uid]) {
+                        $admins_export[$uid]['comments'] = $comment;
+                    }
+                    if ($members_export[$uid]) {
+                        $members_export[$uid]['comments'] = $comment;
+                    }
+                    if ($friends_export[$uid]) {
+                        $friends_export[$uid]['comments'] = $comment;
+                    }
+                }
+
+                $users['admin'] = $admins_export;
+                $users['member'] = $members_export;
+                $users['friend'] = $friends_export;
             }
         }
 
@@ -190,17 +220,38 @@ class GroupsModule extends PLModule
         $gf = new GroupFilter($filter);
         $group = $gf->get(true);
 
-        if ($group && S::user()->hasRights($group, Rights::admin()))
-        {
+        if ($group && S::user()->hasRights($group, Rights::admin())) {
             $group->select(GroupSelect::see());
             $page->assign('group', $group);
 
+            if (Env::has('name') && S::user()->perms->hasFlag('admin')) {
+                $group->name(Env::t('name'));
+            }
+
+            if (Env::has('label')) {
+                $group->label(Env::t('label'));
+            }
+
+            if (Env::has('description')) {
+                $group->description(Env::s('description'));
+            }
+
+            if (Env::has('image')) {
+                $image = new ImageFilter(new PFC_And(new IFC_Id(Env::i('image')), new IFC_Temp()));
+                $image = $image->get(true);
+                if (!$image) {
+                    throw new Exception("This image doesn't exist anymore");
+                }
+                $image->select(FrankizImageSelect::caste());
+                $image->label($group->label());
+                $image->caste($group->caste(Rights::everybody()));
+                $group->image($image);
+            }
+
             $page->assign('title', 'Administration de "' . $group->label() . '"');
+            $page->addCssLink('groups.css');
             $page->changeTpl('groups/admin.tpl');
-        }
-        else
-        {
-            //TODO
+        } else {
             $page->assign('title', "Ce groupe n'existe pas ou vous n'en êtes pas administrateur");
             $page->changeTpl('groups/no_group.tpl');
         }
@@ -208,25 +259,21 @@ class GroupsModule extends PLModule
 
     function handler_group_subscribe($page, $group)
     {
+        S::assert_xsrf_token();
+
         $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
         $gf = new GroupFilter($filter);
         $group = $gf->get(true);
 
-        if ($group)
-        {
-            $group->select(GroupSelect::castes());
+        if ($group) {
+            $group->select(GroupSelect::subscribe());
 
-            if ($group->priv())
-                $group->caste(Rights::friend())->addUser(S::user());
-            else
-                $group->caste(Rights::member())->addUser(S::user());
+            $group->caste(Rights::friend())->addUser(S::user());
+            S::user()->select(UserSelect::castes());
 
-            $page->assign('group', $group);
-            $page->assign('title', $group->label());
-            $page->changeTpl('groups/subscribe.tpl');
-        }
-        else
-        {
+            pl_redirect('groups/see/' . $group->name());
+            exit;
+        } else {
             $page->assign('title', "Ce groupe n'existe pas");
             $page->changeTpl('groups/no_group.tpl');
         }
@@ -234,27 +281,43 @@ class GroupsModule extends PLModule
 
     function handler_group_unsubscribe($page, $group)
     {
+        S::assert_xsrf_token();
+
         $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
         $gf = new GroupFilter($filter);
         $group = $gf->get(true);
 
-        if ($group)
-        {
-            $group->select(GroupSelect::castes());
+        if ($group) {
+            $group->select(GroupSelect::subscribe());
 
-            // TODO: check the person doesn't leave the group if he is the only admin !
-            if ($group->leavable())
+            if ($group->leavable()) {
                 $group->removeUser(S::user());
+                S::user()->select(UserSelect::castes());
+            }
 
-            $page->assign('group', $group);
-            $page->assign('title', $group->label());
-            $page->changeTpl('groups/unsubscribe.tpl');
-        }
-        else
-        {
+            pl_redirect('groups/see/' . $group->name());
+            exit;
+        } else {
             $page->assign('title', "Ce groupe n'existe pas");
             $page->changeTpl('groups/no_group.tpl');
         }
+    }
+
+    function handler_ajax_comment($page)
+    {
+        S::assert_xsrf_token();
+
+        $gf = new GroupFilter(new GFC_Id(Json::i('gid')));
+        $g = $gf->get(true);
+        if ($g) {
+            $comments = Json::t('comments');
+            S::user()->comments($g, $comments);
+            $page->jsonAssign('uid', S::user()->id());
+        } else {
+            $page->jsonAssign('error', "Ce groupe n'existe pas");
+        }
+
+        return PL_JSON;
     }
 
     function handler_group_insert($page)

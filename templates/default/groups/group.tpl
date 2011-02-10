@@ -20,58 +20,88 @@
 {*                                                                        *}
 {**************************************************************************}
 
-
-<div style="display:none">
-{if $smarty.session.auth >= AUTH_COOKIE}
-    TODO
-        <a href="groups/unsubscribe/{$group->id()}">Quitter le groupe</a>
-        <a href="groups/subscribe/{$group->id()}">Devenir sympathisant</a>
-{/if}
-</div>
-
 <div class="top">
-    <img src="{$group->image()|image:'full'|smarty:nodefaults}" />
-    <div class="www">{if $group->web()}<a href="{$group->web()}">{$group->web()}</a>{/if}</div>
-    <div class="mail">{if $group->mail()}{$group->mail()}{/if}</div>
-    <div class="description">{$group->description()|miniwiki|smarty:nodefaults}</div>
+    <div>
+        <div>
+            <img src="{$group->image()|image:'big'|smarty:nodefaults}" />
+            <div class="label">{$group->label()}</div>
+            {if $group->web()}
+                <div class="web">Web: <a href="{$group->web()}">{$group->web()}</a></div>
+            {/if}
+            {if $group->mail()}
+                <div class="mail">Mail: {$group->mail()}</div>
+            {/if}
+            <div class="description">{$group->description()|miniwiki|smarty:nodefaults}</div>
+            <br class="clear" />
+        </div>
+    </div>
 </div>
 
 {if $smarty.session.auth >= AUTH_INTERNAL}
-    <div class="bottom">
-        <div class="users">
-            <div class="filters">
-                <form name="filters">
-                <input type="hidden" id="gid" name="gid" value="{$group->id()}" />
-                <label>Promo{include file="groups_picker.tpl"|rel id="promo" ns="promo" check=-1 already=$promos order="name"}</label>
-                </form>
+    <table class="bottom"><tr>
+        <td class="users">
+            <div class="me">
+            {if $smarty.session.auth >= AUTH_COOKIE}
+                {if $user->hasRights($group)}
+                    <div class="comments">
+                        <label>Commentaire<br />
+                        <input type="hidden" name="gid" value="{$group->id()}" />
+                        <input type="text" name="comments" value="{$user->comments($group)}" />
+                    </label>
+                    </div>
+                    <div>
+                    {if $group->leavable()}
+                        <a onclick="return confirm('Certain ?');" href="groups/unsubscribe/{$group->id()}?token={xsrf_token}">Quitter le groupe</a>
+                    {/if}
+                    </div>
+                {else}
+                    <a onclick="return confirm('Certain ?');" href="groups/subscribe/{$group->id()}?token={xsrf_token}">Rejoindre le groupe</a>
+                {/if}
+            {/if}
             </div>
 
-            <ul>
-                <li>
-                Administrateurs:
-                <ul class="admin">
+            <div class="members">
+                <div class="tol">
+                    <a href="tol?binets={$group->id()}">Voir dans le TOL</a>
+                </div>
+
+                <div class="filters">
+                    <form name="filters">
+                    <input type="hidden" id="gid" name="gid" value="{$group->id()}" />
+                    <label>Filtrer sur la promo{include file="groups_picker.tpl"|rel id="promo" ns="promo" check=-1 already=$promos order="name"}</label>
+                    </form>
+                </div>
+
+                <ul class="rights_users">
+                    <li>
+                        <span class="rights admin"></span>Administrateurs:
+                        <ul class="admin">
+                        </ul>
+                    </li>
+
+                    <li>
+                        <span class="rights member"></span>Membres:
+                        <ul class="member">
+                        </ul>
+                    </li>
+
+                    <li>
+                        <span class="rights friend"></span>Sympathisants:
+                        <ul class="friend">
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </td>
+
+        <td class="datas">
+            <div class="news">
+                <ul>
 
                 </ul>
-                </li>
-                <li>
-                Membres:
-                <ul class="member">
-
-                </ul>
-                </li>
-            </ul>
-        </div>
-        
-        <div class="news">
-            <ul>
-            {foreach from=$news item='new'}
-                <li>
-                    {$new->title()}
-                </li>
-            {/foreach}
-            </ul>
-        </div>
-    </div>
+            </div>
+        </td>
+    </tr></table>
 
     {js src="groups.js"}
 {/if}
