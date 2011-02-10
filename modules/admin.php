@@ -196,6 +196,10 @@ class AdminModule extends PlModule
     {
         global $globals;
 
+        if (Env::has("reload")) {
+            S::user()->select(UserSelect::login());
+        }
+
         if ($globals->debug & DEBUG_BT) {
             $sessions = array();
             foreach ($_SESSION as $key => $val) {
