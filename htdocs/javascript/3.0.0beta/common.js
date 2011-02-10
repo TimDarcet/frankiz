@@ -37,6 +37,28 @@ $(function(){
         }
     });
     $(".target_picker select, .target_picker input").change();
+
+    $(".helper").click(function() {
+        var $this = $(this);
+
+        if ($this.closest(".head").siblings(".help").length > 0) {
+            $this.closest(".head").siblings(".help").slideUp(function() { $(this).remove(); });
+        } else {
+            $this.addClass("loading");
+            var target = $this.attr("target");
+            var $help = $('<div class="help"></div>');
+            $this.closest(".head").after($help);
+            $.ajax({
+                 url: 'wiki/ajax/see/' + target,
+             success: function(data) {
+                        $help.html(data);
+                        $help.slideDown();
+                        $this.removeClass("loading");
+                    },
+            dataType: 'text'
+            });
+        }
+    });
 });
 
 function showError(json) {
@@ -62,6 +84,7 @@ function request(fields)
         data = JSON.stringify(data);
 
     $.ajax({
+          type: 'POST',
           url: fields.url,
           dataType: 'json',
           data: 'token=' + xsrf_token + '&json=' + data,

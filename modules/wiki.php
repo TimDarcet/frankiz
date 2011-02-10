@@ -26,11 +26,12 @@ class WikiModule extends PlModule
         return array(
             'wiki/ajax/update' => $this->make_hook('ajax_update', AUTH_COOKIE, 'admin'),
             'wiki/ajax/get'    => $this->make_hook('ajax_get'   , AUTH_COOKIE, 'admin'),
+            'wiki/ajax/see'    => $this->make_hook('ajax_see'   , AUTH_COOKIE, 'admin'),
             'wiki/admin'       => $this->make_hook('admin'      , AUTH_COOKIE, 'admin'),
             'wiki/see'         => $this->make_hook('see'        , AUTH_COOKIE),
         );
     }
-    
+
     function handler_see($page)
     {
         $mixed = func_get_args();
@@ -50,7 +51,7 @@ class WikiModule extends PlModule
         $page->assign('title', 'FAQ: ' . $wiki->name());
         $page->changeTpl('wiki/see.tpl');
     }
-    
+
     function handler_ajax_update($page)
     {
         $json = json_decode(Env::v('json'));
@@ -88,6 +89,32 @@ class WikiModule extends PlModule
         }
 
         return PL_JSON;
+    }
+
+    function handler_ajax_see($page)
+    {
+        $mixed = func_get_args();
+        array_shift($mixed);
+        $mixed = implode('/', $mixed);
+
+        try {
+            if (Wiki::isId($mixed)) {
+                $wiki = new Wiki($mixed);
+            } else {
+                $wiki = Wiki::from($mixed);
+            }
+
+            $wiki->select(Wiki::SELECT_VERSION);
+
+            echo $wiki->html();
+        } catch(Exception $e) {
+        }
+
+        if (S::user()->perms()->hasFlag('admin')) {
+            echo '<a class="edit" href="wiki/admin/' . $mixed . '" >Modifier</a>';
+        }
+
+        exit;
     }
 
     function handler_admin($page)

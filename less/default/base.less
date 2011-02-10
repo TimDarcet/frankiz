@@ -260,6 +260,7 @@ a {
     width: 250px;
 }
 
+
 /*******************************************************************************
      3   Content
 
@@ -318,6 +319,37 @@ body.disabledAside #section {
             font-size: 2em;
             padding: 4px;
             color: @color;
+
+            .helper {
+                position: relative;
+                float: right;
+                width: 30px;
+                height: 30px;
+                background-image: url("../default/images/help.png");
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+        }
+
+        > .help {
+            position: relative;
+            background-color: white;
+            border:1px @color solid;
+            border-bottom: none;
+            border-top: none;
+            padding: 4px;
+            display: none;
+            .edit {
+                display: block;
+                position: relative;
+                padding-left: 40px;
+                width: 16px;
+                height: 16px;
+                color: red;
+                background-image: url("../default/images/icons/edit.png");
+                background-repeat: no-repeat;
+                background-position: center;
+            }
         }
 
         > .body {
@@ -459,7 +491,7 @@ input, textarea, select {
         background-repeat: no-repeat;
         background-position: 356px 24px;
         background-image: url('images/ico_validation.png');
-		padding: 3px 3px 3px 3px;
+        padding: 3px 3px 3px 3px;
     }
 
     &.error {
@@ -474,6 +506,10 @@ input, textarea, select {
 
     &.valid {
         background-position: 356px -61px;
+    }
+
+    &.success {
+        background-color: green;
     }
 
     &:required:valid {
@@ -650,9 +686,8 @@ input, textarea, select {
     position: relative;
     width: auto;
     margin: 6px;
-    .border-radius;
     border:1px @color solid;
-    background-color: @background;
+    background-color: white;
 
     .content {
         position: relative;
