@@ -654,6 +654,9 @@ class User extends Meta
         if (is_null($this->perms)) {
             throw new DataNotFetchedException('The perms have not been fetched');
         }
+        if (empty($perms)) {
+            return true;
+        }
         return $this->perms->hasFlagCombination($perms);
     }
 
