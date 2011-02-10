@@ -20,9 +20,9 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="threecols">
+<div class="threecols index">
     <div class="module">
-        <div class="head">Compte</div>
+        <div class="head">Compte<span class="helper" target="admin/index/account" /></div>
         <div class="body">
             <ul>
                 <li><a href="profile/account">Modifier mon compte</a></li>
@@ -40,30 +40,38 @@
     </div>
 
     <div class="module">
-        <div class="head">Contribuer</div>
+        <div class="head">Contribuer<span class="helper" target="admin/index/proposal" /></div>
         <div class="body">
+            <ul>
                 <li><a href="proposal/news">Annonce</a></li>
                 <li><a href="proposal/activity">Activité</a></li>
                 <li><a href="proposal/survey">Sondage</a></li>
                 <li><a href="proposal/mail">Mail promo</a></li>
                 <li><a href="proposal/qdj">Question Du Jour</a></li>
+            </ul>
         </div>
     </div>
 
     <div class="module">
-        <div class="head">Groupes & Binets</div>
+        <div class="head">Groupes & Binets<span class="helper" target="admin/index/groups" /></div>
         <div class="body">
+            <ul>
             {foreach from=$admin_groups|order:'score' item='group'}
-            <div>
-                <img src="{$group->image()|image:'micro':'group'}" />
-                {$group|group}
-                <a href="groups/admin/{$group->id()}">Administrer</a>
-                {assign var='id' value=$group->id()}
-                {if t($validates.$id)}
-                    <a href="admin/validate/{$group->id()}">{$validates.$id|@count}Validations</a>
-                {/if}
-            </div>
+                <li class="group">
+                    <img src="{$group->image()|image:'micro':'group'}" />
+                    <div>
+                        <div class="label">{$group|group}</div>
+                        <div class="admin"><a href="groups/admin/{$group->id()}">Administrer</a></div>
+                        {assign var='id' value=$group->id()}
+                        {if t($validates.$id)}
+                            <div class="valid">
+                                <a href="admin/validate/{$group->id()}">{$validates.$id|@count} requêtes</a>
+                            </div>
+                        {/if}
+                    </div>
+                </li>
             {/foreach}
+            </ul>
         </div>
     </div>
 

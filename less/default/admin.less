@@ -18,56 +18,85 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-li {
-    list-style: none;
-}
+#section  {
+    .index {
+        ul {
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            margin-bottom: 5px;
+            list-style: none;
+        }
+        .group {
+            border: 1px grey solid;
+            padding: 5px;
+            img {
+                float: left;
+            }
+            .label {
+                font-size: 18px;
+                font-weight: bold;
+                a {
+                    text-decoration: none !important;
+                }
+            }
+            .admin {
+                font-size: 14px;
+            }
+            .valid {
+                font-size: 14px;
+            }
+        }
+    }
 
-#images {
-    position: relative;
-    left: 5px;
-    border: 2px solid black;
-    border-collapse: collapse;
-}
+    #images {
+        position: relative;
+        left: 5px;
+        border: 2px solid black;
+        border-collapse: collapse;
+    }
 
-#images td{
-    border: 1px solid black;
-}
+    #images td{
+        border: 1px solid black;
+    }
 
-#options {
-	float: left;
-	width: 250px;
-}
+    #options {
+        float: left;
+        width: 250px;
+    }
 
-.slide_form {
-    height: auto;
-    background-color: white;
-    border: 1px #003757 solid;
-}
+    .slide_form {
+        height: auto;
+        background-color: white;
+        border: 1px #003757 solid;
+    }
 
-.slide_form ul {
-	margin: 0;
-	padding: 0;
-	text-indent: 0;
-}
+    .slide_form ul {
+        margin: 0;
+        padding: 0;
+        text-indent: 0;
+    }
 
-.slide_form fieldset {
-	border: 1px white solid;
-	margin-bottom: 2px;
-	background-color: #BDD5E3;
-}
+    .slide_form fieldset {
+        border: 1px white solid;
+        margin-bottom: 2px;
+        background-color: #BDD5E3;
+    }
 
-.slide_form li {
-    list-style: none;
-}
+    .slide_form li {
+        list-style: none;
+    }
 
-.slide_form label {
-	text-align: left;
-}
+    .slide_form label {
+        text-align: left;
+    }
 
-.slide_form label input, textarea {
-	width: 100%;
-}
+    .slide_form label input, textarea {
+        width: 100%;
+    }
 
-.slide_form .submit {
-    text-align: center;	
+    .slide_form .submit {
+        text-align: center;
+    }
 }
