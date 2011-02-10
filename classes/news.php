@@ -86,7 +86,7 @@ class NewsSelect extends Select
 
         $iter = XDB::iterRow("SELECT  uid, news, time
                                 FROM  news_read
-                               WHERE  news IN {?}", $news->ids());
+                               WHERE  news IN {?} AND uid = {?}", $news->ids(), S::user()->id());
 
         while (list($uid, $nid, $time) = $iter->next()) {
             $news->get($nid)->fillFromArray(array('read' => new FrankizDateTime($time)));
@@ -100,7 +100,7 @@ class NewsSelect extends Select
 
         $iter = XDB::iterRow("SELECT  uid, news, time
                                 FROM  news_star
-                               WHERE  news IN {?}", $news->ids());
+                               WHERE  news IN {?} AND uid = {?}", $news->ids(), S::user()->id());
 
         while (list($uid, $nid, $time) = $iter->next()) {
             $news->get($nid)->fillFromArray(array('star' => new FrankizDateTime($time)));
@@ -185,46 +185,6 @@ class News extends meta
         return $this->star;
     }
 
-    /*******************************************************************************
-         Data fetcher
-             (batchFrom, batchSelect, fillFromArray, …)
-    *******************************************************************************/
-
-    public function delete()
-    {
-        XDB::execute('DELETE FROM news WHERE id={?}', $this->id());
-    }
-
-    public function replace()
-    {
-        // TODO
-        //if (!$this->valid())
-        //    throw new Exception("This news is not valid.");
-        if (is_null($this->id))
-            $this->insert();
-        else 
-            $this->update();
-    }
-
-    public function update()
-    {
-        XDB::execute('UPDATE  news
-                         SET  target = {?}, writer = {?}, image = {?}, origin = {?},
-                              title = {?}, content = {?}, begin = {?}, end = {?},
-                              comment = {?}
-                       WHERE  id = {?}',
-        $this->target->id(), $this->writer->id(), $this->image, ($this->origin === false) ? null : $this->origin->id(),
-        $this->title, $this->content, $this->begin->toDb(), $this->end->toDb(),
-        $this->comment, $this->id());
-    }
-
-    public function insert()
-    {
-        $this->begin = new FrankizDateTime();
-        XDB::execute('INSERT INTO news SET id = NULL');
-        $this->id = XDB::insertId();
-        $this->update();
-    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
