@@ -106,7 +106,7 @@ class FrankizModule extends PlModule
                             $gs = $gf->get();
 
                             if ($gs->count() > 0) {
-                                $gs->select(Group::SELECT_BASE);
+                                $gs->select(GroupSelect::base());
 
                                 $rights = array();
                                 foreach ($gs as $g) {
