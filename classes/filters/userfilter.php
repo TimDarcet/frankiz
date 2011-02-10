@@ -516,7 +516,6 @@ class UFO_Promo extends UserFilterOrder
     public function __construct($desc = false)
     {
         parent::__construct($desc);
-        $this->grade = $grade;
     }
 
     protected function getSortTokens(PlFilter $uf)
