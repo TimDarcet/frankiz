@@ -51,7 +51,7 @@ core:
 
 conf: spool/templates_c spool/mails_c classes/frankizglobals.php htdocs/.htaccess spool/conf spool/tmp spool/sessions
 
-spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/sessions:
+spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/sessions htdocs/css:
 	mkdir -p $@
 	chmod ug+w $@
 
