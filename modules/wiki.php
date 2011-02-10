@@ -28,7 +28,7 @@ class WikiModule extends PlModule
             'wiki/ajax/get'    => $this->make_hook('ajax_get'   , AUTH_COOKIE, 'admin'),
             'wiki/ajax/see'    => $this->make_hook('ajax_see'   , AUTH_COOKIE, 'admin'),
             'wiki/admin'       => $this->make_hook('admin'      , AUTH_COOKIE, 'admin'),
-            'wiki/see'         => $this->make_hook('see'        , AUTH_COOKIE),
+            'wiki/see'         => $this->make_hook('see'        , AUTH_PUBLIC),
         );
     }
 
