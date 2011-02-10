@@ -20,84 +20,85 @@
 
 @import "lib.less";
 
-#content {
-    #tol_searcher {
-        position: absolute;
-        left: 5px;
-        top: 0;
-        width: 250px;
 
-        input.empty {
-            background-color: red;
-        }
+#tol_searcher {
+    position: absolute;
+    left: 5px;
+    top: 0;
+    width: 250px;
 
-        .fields {
-            position: relative;
-            background-image: url("../default/images/75p.png");
-            background-repeat: repeat;
-            .border-radius;
-            border:1px @color solid;
-            padding: 10px;
-            margin-bottom: 5px;
-        }
-
-        ul {
-            margin: 0;
-            padding: 0;
-            text-indent: 0;
-        }
-
-        li {
-            list-style: none;
-        }
-
-        label {
-            text-align: left;
-        }
-
-        label input {
-            width: 100%;
-        }
-
-        .groups_picker {
-            width: 100%;
-        }
-
-        input[type=reset] {
-            float: right;
-        }
+    input.empty {
+        background-color: red;
     }
 
-    #tol_infos {
-        text-align: center;
-        font-weight: bold;
-        height: 16px;
-    }
-
-    #tol_infos {
-        .empty, .notempty {
-            display: none;
-        }
-    }
-
-    #tol_infos.searching {
-        background-color: @color;
-    }
-
-    #tol_send {
-        text-align: center;
-    }
-
-    #tol_results {
-        margin: 0;
+    .fields {
         position: relative;
-        left: 265px;
-        top: -4px;
-        padding: 0;
-        padding-right: 270px;
-        text-align: center;
+        background-image: url("../default/images/75p.png");
+        background-repeat: repeat;
+        .border-radius;
+        border:1px @color solid;
+        padding: 10px;
+        margin-bottom: 5px;
     }
 
+    ul {
+        margin: 0;
+        padding: 0;
+        text-indent: 0;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    label {
+        text-align: left;
+    }
+
+    label input {
+        width: 100%;
+    }
+
+    .groups_picker {
+        width: 100%;
+    }
+
+    input[type=reset] {
+        float: right;
+    }
+}
+
+#tol_infos {
+    text-align: center;
+    font-weight: bold;
+    height: 16px;
+}
+
+#tol_infos {
+    .empty, .notempty {
+        display: none;
+    }
+}
+
+#tol_infos.searching {
+    background-color: @color;
+}
+
+#tol_send {
+    text-align: center;
+}
+
+#tol_results {
+    margin: 0;
+    position: relative;
+    left: 265px;
+    top: -4px;
+    padding: 0;
+    padding-right: 270px;
+    text-align: center;
+}
+
+#section {
     .result {
         display: inline-block;
         position: relative;
@@ -126,13 +127,14 @@
 
     .result.sheet .sheet {
         display: block;
-        margin-right: 25px;
         font-size: 13px;
 
         .base {
             position: relative;
+
             .img {
                 float: left;
+                min-height: 200px;
             }
 
             .name {
@@ -146,31 +148,11 @@
                 font-size: 16px;
             }
 
-            .studies {
-                position: absolute;
-                top: 2px;
-                right: 2px;
-                li {
-                    list-style: none;
-                    position: relative;
-                    width: 40px;
-                    font-weight: bold;
-                    &.rouje {
-                        color: red;
-                    }
-                    &.jone {
-                        color: yellow;
-                    }
-                }
+            .birthdate {
             }
 
-            .caserts {
-                li {
-                    text-indent: 10px;
-                }
-                .ips {
-                    display: none;
-                }
+            .cellphone {
+                margin-top: 8px;
             }
 
             .sports {
@@ -182,24 +164,69 @@
                 }
             }
 
+            .caserts {
+                margin-top: 8px;
+                li {
+                    text-indent: 10px;
+                    list-style: none;
+                }
+                .ips {
+                    display: none;
+                }
+            }
+
             .nationality {
+                margin-top: 8px;
                 ul {
                     display: inline;
+                    padding: 0;
                     li {
                         list-style: none;
                         display: inline;
                     }
                 }
             }
+
+            .studies {
+                position: absolute;
+                top: 2px;
+                right: 2px;
+                li {
+                    list-style: none;
+                    position: relative;
+                    width: 40px;
+                    font-weight: bold;
+                    &.rouje {
+                        color: red;
+                        span {
+                            background-color: white;
+                            padding: 2px;
+                            .border-radius;
+                        }
+                    }
+                    &.jone {
+                        color: yellow;
+                        span {
+                            background-color: grey;
+                            padding: 2px;
+                            .border-radius;
+                        }
+                    }
+                }
+            }
         }
 
         .more {
+            position: relative;
+            top: -5px;
+            margin-bottom: 10px;
+
             li {
                 position: relative;
                 list-style: none;
                 > span {
                     position: absolute;
-                    left: 40px; 
+                    left: 40px;
                     .comments {
                         font-style:italic;
                     }

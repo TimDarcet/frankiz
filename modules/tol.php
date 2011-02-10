@@ -124,7 +124,7 @@ class TolModule extends PLModule
         $filter = $this->buildFilter($fields);
 
         if ($filter) {
-            $uf = new UserFilter($filter);
+            $uf = new UserFilter($filter, array(new UFO_Promo(true), new UFO_Name(UFO_Name::LASTNAME)));
             $users = $uf->get(new PlLimit(50,0))->select(UserSelect::tol());
             if (Env::has('quicksearch') && $users->count() == 0) {
                 header('Location: http://wikix.polytechnique.org/eleves/wikix/Sp%C3%A9cial:Recherche?search=' . Env::t('free'));
@@ -158,7 +158,7 @@ class TolModule extends PLModule
 
         $fiches = array();
         if ($filter) {
-            $uf = new UserFilter($filter);
+            $uf = new UserFilter($filter, array(new UFO_Promo(true), new UFO_Name(UFO_Name::LASTNAME)));
             if ($json->mode == 'card') {
                 $users = $uf->get(new PlLimit(20,0))->select(UserSelect::base());
             } else {

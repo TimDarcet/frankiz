@@ -37,12 +37,14 @@
 
     <div class="nickname">{$result->nickname()}</div>
 
-    <div class="birthdate">{$result->birthdate()|datetime:"d/m/Y"}</div>
+    <div class="birthdate">
+        {$result->birthdate()|datetime:"d/m/Y"} ({$result->birthdate()|age})
+    </div>
 
     <div class="sports">
         <ul>
             {foreach from=$groups|filter:'ns':'sport'|order:'score' item='group'}
-                <li><img src="{$group->image()|image:'small':'sport'}" title="{$group->label()}" /></li>
+                <li><img src="{$group->image()|image:'small'}" title="{$group->label()}" /></li>
             {/foreach}
         </ul>
     </div>
@@ -59,7 +61,7 @@
         {foreach from=$result->rooms() item='room'}
             <li>
             {$room->id()}
-            {$room->phone()}
+            {if $room->phone()}(Tel: {$room->phone()}){/if}
             <ul class="ips">
             {foreach from=$room->ips() item='ip'}
                 <li>
@@ -78,7 +80,7 @@
             <li class="{if $study->promo() % 2 == 0}rouje{else}jone{/if}">
                 {assign var='formation' value=$study->formation()}
                 <img title="{$formation->label()}" src="{$formation->image()|image:'micro'|smarty:nodefaults}" />
-                <span title="{$study->forlife()}">{$study->promo()}<span/>
+                <span title="{$study->year_in()} ->{$study->year_out()}">{$study->promo()}</span>
             </li>
         {/foreach}
         </ul>
@@ -94,7 +96,6 @@
     </div>
     <hr />
 </div>
-
 <div class="more">
     {if count($groups|filter:'ns':'binet') > 0}
         <div class="binets">
