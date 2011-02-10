@@ -20,31 +20,38 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<h1>Page sécurisée</h1>
+<div class="module login">
+    <div class="head">
+        Page sécurisée
+     </div>
+     <div class="body">
+        <div class="comments">
+            La page que tu as demandée est classée comme sensible.<br />
+            Il est nécessaire de taper ton mot de passe pour y accéder,
+            même avec l'accès permanent activé.
+        </div>
+        <br />
 
-<div>
-  La page que tu as demandée est classée comme sensible. Il est nécessaire de taper ton mot de passe
-  pour y accéder, même avec l'accès permanent activé.
+        <form enctype='multipart/form-data' method='post' action='{$smarty.server.REQUEST_URI}'>
+            {xsrf_token_field}
+            <input type="hidden" name="username" value="{$smarty.session.uid}" />
+            <table>
+                <tr>
+                  <td>Connecté en tant que:</td>
+                  <td>{$smarty.session.user->displayName()}</td>
+                </tr>
+                <tr>
+                  <td>Mot de passe:</td>
+                  <td><input type='password' name='password' value='' /></td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="send">
+                        <input type="submit" name="start_connexion" value="Connexion" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
 </div>
-<br />
-
-<form enctype='multipart/form-data' method='post' action='{$smarty.server.REQUEST_URI}'>
-{xsrf_token_field}
-  <input type="hidden" name="username" value="{$smarty.session.uid}" />
-  <h2><span>Connexion</span></h2>
-  <div class='formulaire'>
-    <div>
-      <span class='gauche'>Identifiant:</span>
-      <span class='droite'>{$smarty.session.user->login()}</span>
-    </div>
-    <div>
-      <span class='gauche'>Mot de passe:</span>
-      <span class='droite'><input type='password' name='password' value='' /></span>
-    </div>
-    <div>
-      <span class='boutons'><input type='submit' name='start_connexion' value='Connexion' /></span>
-    </div>
-  </div>
-</form>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

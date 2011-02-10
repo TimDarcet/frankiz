@@ -20,7 +20,12 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="login">
+<div class="module login">
+    <div class="head">
+        Se connecter
+        <span class="helper" target="login/" />
+     </div>
+     <div class="body">
 
     {if ($platal->pl_self() != 'login') && (!$remote_site)}
     <p>
@@ -34,7 +39,6 @@
 
     <form enctype="multipart/form-data" method="post" action="{$smarty.server.REQUEST_URI}">
     {xsrf_token_field}
-        <fieldset>
             <table>
                 <tr>
                     <td><label for="username">Identifiant:</label></td>
@@ -68,7 +72,6 @@
             <p class="forgot">
               Si tu as oublié ton mot de passe ou que tu n'as pas encore de compte, <a href="profile/recovery">clique ici</a>.
             </p>
-        </fieldset>
     </form>
 
     {literal}
@@ -85,5 +88,5 @@
     {/literal}
 
 </div>
-
+</div>
 {* vim:set et sw=4 sts=4 sws=4 enc=utf-8: *}

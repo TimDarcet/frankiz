@@ -547,7 +547,7 @@ input, textarea, select {
     }
 
     &[disabled=disabled]  {
-        background-color: black !important;
+        background-position: 0 -96px;
     }
 }
 
@@ -558,10 +558,10 @@ input, textarea, select {
 
 .login {
     text-align: center;
+    width: auto;
 
-    fieldset {
-        margin-left: 20%;
-        width: 60%;	
+    .comments {
+        text-align: left;
     }
 
     table {
@@ -711,8 +711,13 @@ input, textarea, select {
 .ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
 .ui-timepicker-div td { font-size: 90%; }
 
-.uploader iframe {
-    border: none;
-    height: 50px;
-    width: 80%;
+.uploader {
+    width: 400px;
+    iframe {
+        background-color: white;
+        border: 1px @color solid;
+        padding: 2px;
+        height: 56px;
+        width: 400px;
+    }
 }
