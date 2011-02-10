@@ -70,6 +70,10 @@ class GroupSelect extends Select
                                array('castes' => CasteSelect::bubble()));
     }
 
+    public static function validate() {
+        return new GroupSelect(array('ns', 'name', 'label', 'mail'));
+    }
+
     public static function see() {
         return new GroupSelect(array('ns', 'score', 'name', 'label', 'description',
                                      'image', 'web', 'mail', 'visible', 'castes', 'leavable'),

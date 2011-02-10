@@ -58,8 +58,12 @@ class CasteSelect extends Select
         return new CasteSelect(array('group', 'rights', 'userfilter'), $subs);
     }
 
-    public static function group($subs = null) {
+    public static function group() {
         return new CasteSelect(array('group', 'rights'), array('group' => GroupSelect::base()));
+    }
+
+    public static function validate() {
+        return new CasteSelect(array('group', 'rights'), array('group' => GroupSelect::validate()));
     }
 
     public static function bubble($subs = null) {

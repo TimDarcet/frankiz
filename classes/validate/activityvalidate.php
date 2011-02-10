@@ -21,8 +21,8 @@
 
 class ActivityValidate extends ItemValidate
 {
-    protected $rules = 'Seule les activités ponctuelles doivent passer par la validation. Si ce n\'est pas le cas, il faut créer l\'activité régulière qui va bien.';
     protected $type = 'activity';
+
     protected $writer;
     protected $target;
     protected $origin;
@@ -45,10 +45,10 @@ class ActivityValidate extends ItemValidate
     }
 
     public function objects() {
-        return array('user' => 'User',
-                   'writer' => 'User',
-                   'target' => 'Caste',
-                   'origin' => 'Group');
+        return array('user' => UserSelect::base(),
+                   'writer' => UserSelect::base(),
+                   'target' => CasteSelect::validate(),
+                   'origin' => GroupSelect::base());
     }
 
     public function writer(User $writer = null) {
@@ -147,7 +147,7 @@ class ActivityValidate extends ItemValidate
     }
 
     public function _mail_from_addr() {
-        $this->target->group()->select(GroupSelect::see());
+        $this->target->group();
         return ($this->target->group()->mail() === false || $this->target->group()->mail() === '')
                 ?'web@frankiz.polytechnique.fr':$this->target->group()->mail();
     }
