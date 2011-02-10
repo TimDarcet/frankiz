@@ -23,7 +23,7 @@ class StatsMiniModule extends FrankizMiniModule
 {
     public function auth()
     {
-        return AUTH_INTERNAL;
+        return AUTH_COOKIE;
     }
 
     public function perms()

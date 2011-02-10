@@ -23,14 +23,14 @@ class DebugMiniModule extends FrankizMiniModule
 {
     public function auth()
     {
-        return AUTH_PUBLIC;
+        return AUTH_COOKIE;
     }
 
     public function perms()
     {
         global $globals;
 
-        if ($globals->debug & DEBUG_BT) {
+        if ($globals->debug > 0) {
             return '';
         } else {
             return 'admin';
