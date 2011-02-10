@@ -27,9 +27,9 @@
 <ul class="objects">
     {foreach from=$minimodules item=minimodule}
     <li {if $minimodule.activated}class="on"{/if}>
-        <p class="frequency">Popularité: {math equation="100 * x / y" x=$minimodule.frequency y=$total format="%d"}%</p>
         <p class="label">{$minimodule.label}</p>
         <p class="description">{$minimodule.description}</p>
+        <p class="frequency">Popularité: {math equation="100 * x / y" x=$minimodule.frequency y=$total format="%d"}%</p>
         <div class="change">
                 <div class="checkbox"
                      {if $minimodule.activated} checked="checked"{/if}
