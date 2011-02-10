@@ -27,6 +27,12 @@ function smarty_modifier_age($datetime, $format = 'auto') {
 
     $age = $datetime->age();
     if ($format == 'auto') {
+        if ($age->y > 0) {
+            return $age->format('%y an' . $s($age->y));
+        }
+        if ($age->m > 0) {
+            return $age->format('%m mois');
+        }
         if ($age->d > 0) {
             return $age->format('%d jour' . $s($age->d));
         }
