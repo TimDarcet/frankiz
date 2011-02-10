@@ -20,47 +20,37 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<h2>Mes adresses IP</h2>
-<ul>
-{foreach from=$rooms item=room}
-    <li>
-        {$room->id()}
+<div class="module">
+    <div class="head">
+        Mes adresses IP
+    </div>
+    <div class="body">
+        {include file="wiki.tpl"|rel name='profile/network/ip'}
         <ul>
-        {foreach from=$room->ips() item=ip}
+        {foreach from=$rooms item=room}
             <li>
-            {$ip}
+                {$room->id()}
+                <ul>
+                {foreach from=$room->ips() item=ip}
+                    <li>
+                    {$ip}
+                    </li>
+                {/foreach}
+                </ul>
             </li>
         {/foreach}
         </ul>
-    </li>
-{/foreach}
-</ul>
+    </div>
+</div>
 
-<h2>Mon mot de passe qRezix</h2>
-TODO
-{*
-    {foreach from=$xnet_ip item=ip}
-    <form enctype='multipart/form-data' method='post' action='profil/net'>
-      <h2>Modification du mot de passe Xnet <span class='adresse_ip'>({$ip})</span></h2>
-      <div class='formulaire'>
-        <input type='hidden' name='ip_xnet' value='{$ip}' />
-        <div>
-          <span class='droite'><span class='note'>Ton mot de passe doit contenir au moins 6 caractères</span></span>
-        </div>
-        <div>
-          <span class='gauche'>Mot de passe:</span>
-          <span class='droite'><input type='password' name='passwd' value='12345678' /></span>
-        </div>
-        <div>
-          <span class='gauche'>Retapez le:</span>
-          <span class='droite'><input type='password' name='passwd2' value='12345678' /></span>
-        </div>
-        <div>
-          <span class='boutons'><input type='submit' name='changer_mdp_xnet' value='Changer' /></span>
-        </div>
-      </div>
-    </form>
-    {/foreach}
-*}
+<div class="module">
+    <div class="head">
+        Mon mot de passe qRezix
+    </div>
+    <div class="body">
+        {include file="wiki.tpl"|rel name='profile/network/qrezix'}
+    </div>
+</div>
+
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

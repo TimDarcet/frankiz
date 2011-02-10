@@ -20,32 +20,43 @@
 {*                                                                        *}
 {**************************************************************************}
 
-
-<h4>Compte Poly</h4>
-    <p>
+<div class="module">
+    <div class="head">
+        Compte Poly
+    </div>
+    <div class="body">
         {include file="wiki.tpl"|rel name='profile/mails/poly'}
         {if $user->poly()}
-            {$user->poly()}@poly.polytechnique.fr<br />
-            Gestion sur <a href="http://poly.polytechnique.fr/">poly.polytechnique.fr</a>
+            Tu disposes de l'adresse {$user->poly()}@poly.polytechnique.fr <br />
+            Sa gestion se fait sur <a href="http://poly.polytechnique.fr/">poly.polytechnique.fr</a>
         {else}
-            Ton adresse est inconnue.
+            Ton adresse poly est inconnue.
         {/if}
-    </p>
+    </div>
+</div>
 
-<h4>Compte polytechnique.edu</h4>
-    <p>
+<div class="module">
+    <div class="head">
+        Compte polytechnique.edu
+    </div>
+    <div class="body">
         {include file="wiki.tpl"|rel name='profile/mails/edu'}
         TODO
-    </p>
+    </div>
+</div>
 
-<h4>Compte polytechnique.org</h4>
-    <p>
+<div class="module">
+    <div class="head">
+        Compte polytechnique.org
+    </div>
+    <div class="body">
         {include file="wiki.tpl"|rel name='profile/mails/org'}
         {if $xorgRegistered}
             Gestion sur <a href="https://www.polytechnique.org/emails">www.polytechnique.org/emails</a>
         {else}
             Tu n'as pas de compte sur <a href="http://www.polytechnique.org">www.polytechnique.org</a>
         {/if}
-    </p>
+    </div>
+</div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

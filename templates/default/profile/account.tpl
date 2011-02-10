@@ -40,6 +40,7 @@
     <div class="module password">
         <div class="head">
             Changement du mot de passe
+            <span class="helper" target="profile/account/password" />
         </div>
         <div class="body">
             <table>
@@ -74,6 +75,7 @@
     <div class="module profile">
         <div class="head">
             Changement de la fiche trombino
+            <span class="helper" target="profile/account/trombino" />
         </div>
         <div class="body">
             <table>
