@@ -22,26 +22,29 @@
 
 #section {
     .threecols {
-        .filter {
-            
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
-        ul {
+        td {
             padding: 0;
-        }
-        li {
-            position: relative;
-            min-height: 35px;
-            list-style: none;
-            text-align: left;
-            .meta {
-                float: left;
-                position: relative;
-                min-width: 70px;
+            vertical-align: middle;
+            height: 35px;
+    
+            &.img {
+                padding-left: 4px;
+                width: 35px;
+                text-align: center;
+            }
+    
+            &.therights {
+                width: 35px;
                 text-align: right;
-                margin-right: 3px;
-                img {
-                    float: left;
-                }
+            }
+    
+            &.group {
+                padding-left: 4px;
+                text-align: left;
             }
         }
     }

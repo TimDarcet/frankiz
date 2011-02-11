@@ -49,11 +49,11 @@ var groups = function(ns, $input) {
             "url": 'groups/ajax/search'
           ,"data": {"ns": ns, "piece": $input.val(), "html": true}
        ,"success": function(json) {
-                var ul = $("#section ul." + ns);
+                var ul = $("#section tbody." + ns);
 
                 var groups = json.groups;
 
-                $.each(ul.children("li"), function(index, value) {
+                $.each(ul.children("tr"), function(index, value) {
                     if (key_exists($(value).attr("gid"), groups)) {
                         delete groups[$(value).attr("gid")];
                     } else {

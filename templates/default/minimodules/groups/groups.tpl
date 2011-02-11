@@ -20,28 +20,32 @@
 {*                                                                        *}
 {**************************************************************************}
 
-Binets
+{if $minimodule.binets|@count > 0}
+<h4>Binets</h4>
 
 <table>
     {foreach from=$minimodule.binets|order:'score' item='group'}
         <tr>
-            <td><img src="{$group->image()|image:'micro'|smarty:nodefaults}" /></td>
-            <td>{$group|group}</td>
-            <td>{$minimodule.user->rights($group)|@rights}</td>
+            <td class="img"><img src="{$group->image()|image:'micro':'group'|smarty:nodefaults}" /></td>
+            <td class="therights">{$minimodule.user->rights($group)|@rights}</td>
+            <td class="group">{$group|group}</td>
         </tr>
     {/foreach}
 </table>
+{/if}
 
-Groupes
-
-<table>
-    {foreach from=$minimodule.frees|order:'score' item='group'}
-        <tr>
-            <td><img src="{$group->image()|image:'micro'|smarty:nodefaults}" /></td>
-            <td>{$group|group}</td>
-            <td>{$minimodule.user->rights($group)|@rights}</td>
-        </tr>
-    {/foreach}
-</table>
+{if $minimodule.frees|@count > 0}
+    <h4>Groupes</h4>
+    
+    <table>
+        {foreach from=$minimodule.frees|order:'score' item='group'}
+            <tr>
+                <td class="img"><img src="{$group->image()|image:'micro':'group'|smarty:nodefaults}" /></td>
+                <td class="therights">{$minimodule.user->rights($group)|@rights}</td>
+                <td class="group">{$group|group}</td>
+            </tr>
+        {/foreach}
+    </table>
+{/if}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

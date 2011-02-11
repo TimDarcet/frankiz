@@ -20,14 +20,10 @@
 {*                                                                        *}
 {**************************************************************************}
 
-
-<li gid={$group->id()}>
-    <span class="meta">
-        <img src="{$group->image()|image:'micro':'group'|smarty:nodefaults}" />
-        {$user->rights($group)|@rights}
-    </span>
-    <span class="group">{$group|group}</span>
-</li>
-
+<tr gid={$group->id()}>
+    <td class="img"><img src="{$group->image()|image:'micro':'group'|smarty:nodefaults}" /></td>
+    <td class="therights">{$user->rights($group)|@rights}</td>
+    <td class="group">{$group|group}</td>
+</tr>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

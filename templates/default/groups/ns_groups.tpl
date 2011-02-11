@@ -23,13 +23,13 @@
 <div class="filter">
     <input type="text" name="filter_{$ns}" value="" />
 </div>
-<ul class="{$ns}">
+<table><tbody class="{$ns}">
     {foreach from=$groups|order:'score' item=group}
         {include file="groups/line.tpl"|rel}
     {/foreach}
     {foreach from=$user_groups|order:'score' item=group}
         {include file="groups/line.tpl"|rel}
     {/foreach}
-</ul>
+</tbody></table>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

@@ -42,9 +42,10 @@ class GroupsModule extends PLModule
 
     function handler_groups($page)
     {
+        global $globals;
         $except = new PFC_True();
 
-        $max = 10;
+        $max = $globals->groups->limit;
 
         // Fetch samples of other groups
         $binet = new GroupFilter(new PFC_And(new GFC_Namespace(Group::NS_BINET), $except), new GFO_Score(true));
@@ -100,8 +101,17 @@ class GroupsModule extends PLModule
         }
         $own = new GroupFilter(new PFC_And($conditions, new GFC_User(S::user()->id())), $order);
         $all = new GroupFilter($conditions, $order);
-        $own = $own->get(new PlLimit($globals->groups->all_limit));
-        $all = $all->get(new PlLimit($globals->groups->own_limit));
+        
+        if (Json::b('html')) {
+            // Groups Module
+            $own = $own->get();
+            $all = $all->get(new PlLimit($globals->groups->limit));
+        } else {
+            // group_picker
+            $own = $own->get(new PlLimit($globals->groups->all_limit));
+            $all = $all->get(new PlLimit($globals->groups->own_limit));
+        }
+
 
         $all->merge($own)->select(GroupSelect::base());
         $all->order(Json::s('order'), $desc);
@@ -270,7 +280,7 @@ class GroupsModule extends PLModule
             $group->select(GroupSelect::see());
             $page->assign('group', $group);
 
-            if (Env::has('name') && S::user()->perms->hasFlag('admin')) {
+            if (Env::has('name') && S::user()->perms()->hasFlag('admin')) {
                 $group->name(Env::t('name'));
             }
 
