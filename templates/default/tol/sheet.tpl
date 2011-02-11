@@ -33,7 +33,7 @@
         <a href="{$img|image:'full'|smarty:nodefaults}"><img src="{$img|image:'big'|smarty:nodefaults}" /></a>
     </div>
 
-    <div class="name">{$result->firstname()} {$result->lastname()}</div>
+    <div class="name">{$result->fullName()}</div>
 
     <div class="nickname">{$result->nickname()}</div>
 
@@ -103,9 +103,11 @@
             <ul>
                 {foreach from=$groups|filter:'ns':'binet'|order:'score' item='group'}
                     <li>
-                        <img src="{$group->image()|image:'micro':'group'}" />
-                        <span>
+                        <span class="meta">
+                            <img src="{$group->image()|image:'micro':'group'}" />
                             {$result->rights($group)|@rights}
+                        </span>
+                        <span>
                             {$group|group}
                             <span class="comments">{$result->comments($group)}</span>
                         </span>
@@ -120,9 +122,11 @@
             <ul>
                 {foreach from=$groups|filter:'ns':'free'|order:'score' item='group'}
                     <li>
-                        <img src="{$group->image()|image:'micro':'group'}" />
-                        <span>
+                        <span class="meta">
+                            <img src="{$group->image()|image:'micro':'group'}" />
                             {$result->rights($group)|@rights}
+                        </span>
+                        <span>
                             {$group|group}
                             <span class="comments">{$result->comments($group)}</span>
                         </span>

@@ -221,15 +221,26 @@
             top: -5px;
             margin-bottom: 10px;
 
+            ul {
+                padding-left: 5px;
+            }
             li {
                 position: relative;
                 list-style: none;
-                > span {
-                    position: absolute;
-                    left: 40px;
-                    .comments {
-                        font-style:italic;
+                min-height: 25px;
+                .meta {
+                    float: left;
+                    position: relative;
+                    min-width: 70px;
+                    text-align: right;
+                    margin-right: 3px;
+                    img {
+                        float: left;
+                        max-height: 24px;
                     }
+                }
+                .comments {
+                    font-style:italic;
                 }
             }
         }
