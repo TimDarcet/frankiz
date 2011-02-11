@@ -11,8 +11,10 @@ $(function(){
     });
 
     $("#tol_infos").removeClass("searching");
-    $('#tol_searcher input[auto]').keyup(function() {
-        search();
+    $('#tol_searcher input[auto]').keyup(function(event) {
+        if (event.keyCode != '13') {
+            search();
+        }
     });
 
     imageur();
