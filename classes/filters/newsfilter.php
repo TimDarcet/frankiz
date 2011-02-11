@@ -115,6 +115,28 @@ class NFC_Current extends NewsFilterCondition
     }
 }
 
+/** Returns news that the users are allowed to see
+ * (ie the user is in the group or the news is public)
+ * @param $us     A User, a uid or an array
+ */
+class NFC_CanBeSeen extends NewsFilterCondition
+{
+    private $uids;
+
+    public function __construct($us)
+    {
+        $this->uids = User::toIds(unflatten($us));
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        $c = $f->addCasteFilter();
+        $cu = $f->addUserFilter();
+        return XDB::format("$c.rights = {?} OR ($c.rights = {?} AND $cu.uid IN {?})",
+                        (string) Rights::everybody(), (string) Rights::restricted(), $this->uids);
+    }
+}
+
 abstract class NewsFilterOrder extends FrankizFilterOrder
 {
 }
@@ -160,23 +182,6 @@ class NewsFilter extends FrankizFilter
                      'id'    => 'id');
     }
 
-    private $with_group = false;
-
-    public function addGroupFilter()
-    {
-        $this->with_group = true;
-        return 'g';
-    }
-
-    protected function groupJoins()
-    {
-        $joins = array();
-        if ($this->with_caste) {
-            $joins['g'] = PlSqlJoin::left('groups', '$ME.gid = n.target');
-        }
-        return $joins;
-    }
-
     private $with_caste = false;
 
     public function addCasteFilter()
@@ -189,7 +194,7 @@ class NewsFilter extends FrankizFilter
     {
         $joins = array();
         if ($this->with_caste) {
-            $joins['c'] = PlSqlJoin::left('castes', '$ME.gid = n.target');
+            $joins['c'] = PlSqlJoin::inner('castes', '$ME.cid = n.target');
         }
         return $joins;
     }
@@ -206,7 +211,7 @@ class NewsFilter extends FrankizFilter
     {
         $joins = array();
         if ($this->with_user) {
-            $joins['cu'] = PlSqlJoin::left('castes_users', '$ME.cid = c.cid');
+            $joins['cu'] = PlSqlJoin::inner('castes_users', '$ME.cid = c.cid');
         }
         return $joins;
     }
