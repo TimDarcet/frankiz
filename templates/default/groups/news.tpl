@@ -20,14 +20,22 @@
 {*                                                                        *}
 {**************************************************************************}
 
-
-<li gid={$group->id()}>
-    <span class="meta">
-        <img src="{$group->image()|image:'micro':'group'|smarty:nodefaults}" />
-        {$user->rights($group)|@rights}
-    </span>
-    <span class="group">{$group|group}</span>
-</li>
-
+<tr>
+    <td class="star_switcher">
+    </td>
+    <td class="origin">
+        {assign var='writer' value=$news->writer()}
+        <a href="tol/?hruid={$writer->login()}">
+        <img src="{$writer->image()|image:'micro'|smarty:nodefaults}"
+             title="{$writer->displayName()}"/>
+        </a>
+    </td>
+    <td class="title">
+        {$news->title()}
+    </td>
+    <td class="date">
+        {$news->begin()|age}
+    </td>
+</tr>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

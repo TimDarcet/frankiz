@@ -23,6 +23,7 @@
 <div class="top">
     <div>
         <div>
+            <input type="hidden" id="gid" name="gid" value="{$group->id()}" />
             <img src="{$group->image()|image:'big'|smarty:nodefaults}" />
             <div class="label">{$group->label()}</div>
             {if $group->web()}
@@ -45,7 +46,6 @@
                 {if $user->hasRights($group)}
                     <div class="comments">
                         <label>Commentaire<br />
-                        <input type="hidden" name="gid" value="{$group->id()}" />
                         <input type="text" name="comments" value="{$user->comments($group)}" />
                     </label>
                     </div>
@@ -67,7 +67,7 @@
 
                 <div class="filters">
                     <form name="filters">
-                    <input type="hidden" id="gid" name="gid" value="{$group->id()}" />
+                    <input type="hidden" name="gid" value="{$group->id()}" />
                     <label>Filtrer sur la promo{include file="groups_picker.tpl"|rel id="promo" ns="promo" check=-1 already=$promos order="name"}</label>
                     </form>
                 </div>
@@ -96,14 +96,22 @@
 
         <td class="datas">
             <div class="news">
-                <ul>
+                <table>
 
-                </ul>
+                </table>
             </div>
         </td>
     </tr></table>
 
     {js src="groups.js"}
+    {literal}
+    <script>
+        $(function() {
+            users.search();
+            news.search();
+        });
+    </script>
+    {/literal}
 {/if}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

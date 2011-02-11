@@ -20,7 +20,10 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<ul>
+<div class="filter">
+    <input type="text" name="filter_{$ns}" value="" />
+</div>
+<ul class="{$ns}">
     {foreach from=$groups|order:'score' item=group}
         {include file="groups/line.tpl"|rel}
     {/foreach}

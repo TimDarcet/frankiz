@@ -31,6 +31,7 @@ class GroupsModule extends PLModule
             'groups/ajax/delete'      => $this->make_hook('ajax_delete',       AUTH_COOKIE),
             'groups/see'              => $this->make_hook('group_see',         AUTH_PUBLIC),
             'groups/ajax/users'       => $this->make_hook('group_ajax_users',  AUTH_INTERNAL, ''),
+            'groups/ajax/news'        => $this->make_hook('group_ajax_news',   AUTH_PUBLIC, ''),
             'groups/admin'            => $this->make_hook('group_admin',       AUTH_PUBLIC),
             'groups/subscribe'        => $this->make_hook('group_subscribe',   AUTH_COOKIE),
             'groups/unsubscribe'      => $this->make_hook('group_unsubscribe', AUTH_COOKIE),
@@ -85,25 +86,43 @@ class GroupsModule extends PLModule
 
     function handler_ajax_search($page)
     {
-        $conditions = new PFC_And(new GFC_Namespace(Json::s('ns')),
-                                  new PFC_OR(new GFC_Label(Json::s('token'), GFC_Label::CONTAINS),
-                                             new GFC_Name(Json::s('token'))));
+        global $globals;
 
-        if ($json->order == 'name') {
-            $order = new GFO_Name(true);
+        $conditions = new PFC_And(new GFC_Namespace(Json::s('ns')),
+                                  new PFC_OR(new GFC_Label(Json::s('piece'), GFC_Label::CONTAINS),
+                                             new GFC_Name(Json::s('piece'))));
+
+        $desc = Json::b('desc', true);
+        if (Json::s('order') == 'name') {
+            $order = new GFO_Name($desc);
         } else {
-            $order = new GFO_Score(true);
+            $order = new GFO_Score($desc);
         }
         $own = new GroupFilter(new PFC_And($conditions, new GFC_User(S::user()->id())), $order);
         $all = new GroupFilter($conditions, $order);
-        $own = $own->get(new PlLimit(5));
-        $all = $all->get(new PlLimit(5));
+        $own = $own->get(new PlLimit($globals->groups->all_limit));
+        $all = $all->get(new PlLimit($globals->groups->own_limit));
 
         $all->merge($own)->select(GroupSelect::base());
-        $all->order($json->order);
+        $all->order(Json::s('order'), $desc);
 
-        $page->jsonAssign('success', true);
-        $page->jsonAssign('groups', $all->export());
+        if (Json::b('html')) {
+            $export = array();
+
+            $page->assign('user', S::user());
+            foreach ($all as $g) {
+                $page->assign('group', $g);
+                $export[$g->id()] = $page->fetch(FrankizPage::getTplPath('groups/line.tpl'));
+            }
+        } else {
+            $export = $all->export(null, true);
+
+            foreach ($all as $g) {
+                $export[$g->id()]['rights'] = S::user()->rights($g, true);
+            }
+        }
+
+        $page->jsonAssign('groups', $export);
 
         return PL_JSON;
     }
@@ -174,7 +193,7 @@ class GroupsModule extends PLModule
                 $admins = $uf->get();
 
                 $uf = new UserFilter(new PFC_And(new UFC_Caste(array($group->caste(Rights::member()), $group->caste(Rights::logic()))), $filters));
-                $members = $uf->get();
+                $members = $uf->get(new PlLimit(50));
 
                 $uf = new UserFilter(new PFC_And(new UFC_Caste($group->caste(Rights::friend())), $filters));
                 $friends = $uf->get();
@@ -211,6 +230,33 @@ class GroupsModule extends PLModule
         }
 
         $page->jsonAssign('users', $users);
+        return PL_JSON;
+    }
+
+    function handler_group_ajax_news($page, $group)
+    {
+        $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
+        $gf = new GroupFilter($filter);
+        $group = $gf->get(true);
+
+        $news = false;
+        if ($group) {
+            $news = array();
+
+            $group->select(GroupSelect::castes());
+
+            $filters = new UFC_Group(explode(';', Json::v('promo')));
+
+            $nf = new NewsFilter(new PFC_And(new NFC_Origin($group), new NFC_CanBeSeen(S::user())));
+            $ns = $nf->get(new PlLimit(10))->select(NewsSelect::head());
+
+            foreach($ns as $nid => $n) {
+                $page->assign('news', $n);
+                $news[$nid] = $page->fetch(FrankizPage::getTplPath('groups/news.tpl'));
+            }
+        }
+
+        $page->jsonAssign('news', $news);
         return PL_JSON;
     }
 

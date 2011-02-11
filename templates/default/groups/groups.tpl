@@ -24,32 +24,25 @@
     <div class="module">
         <div class="head">Les binets<span class="helper" target="groups/binet" /></div>
         <div class="body">
-            <div class="filter">
-                <input type="text" name="filter" value="" />
-            </div>
-            {include file="groups/ns_groups.tpl"|rel groups=$binet user_groups=$user_binet}
+            {include file="groups/ns_groups.tpl"|rel ns="binet" groups=$binet user_groups=$user_binet}
         </div>
     </div>
 
     <div class="module">
         <div class="head">Les études<span class="helper" target="groups/study" /></div>
         <div class="body">
-            <div class="filter">
-                <input type="text" name="filter" value="" />
-            </div>
-            {include file="groups/ns_groups.tpl"|rel groups=$study user_groups=$user_study}
+            {include file="groups/ns_groups.tpl"|rel ns="study" groups=$study user_groups=$user_study}
         </div>
     </div>
 
     <div class="module">
         <div class="head">Divers<span class="helper" target="groups/free" /></div>
         <div class="body">
-            <div class="filter">
-                <input type="text" name="filter" value="" />
-            </div>
-            {include file="groups/ns_groups.tpl"|rel groups=$free user_groups=$user_free}
+            {include file="groups/ns_groups.tpl"|rel ns="free" groups=$free user_groups=$user_free}
         </div>
     </div>
 </div>
+
+{js src="groups.js"}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
