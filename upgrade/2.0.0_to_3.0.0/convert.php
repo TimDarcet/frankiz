@@ -89,7 +89,7 @@ while ($datas = $iter->next()) {
         $g->name('g_' . $g->id());
     }
 
-    if ($datas['score'] > 25) {
+    if ($datas['score'] > 5) {
         $g->ns(Group::NS_BINET);
     } else {
         $g->ns(Group::NS_FREE);
