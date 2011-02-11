@@ -66,6 +66,12 @@ class NewsSelect extends Select
         return new NewsSelect(array('title', 'origin', 'target'), $subs);
     }
 
+    public static function head($subs = null) {
+        return new NewsSelect(array('title', 'origin', 'target', 'writer', 'begin', 'end'),
+                              array('origin' => GroupSelect::base(),
+                                    'writer' => UserSelect::base()));
+    }
+
     public static function news() {
         return new NewsSelect(array_merge(self::$natives, array('read', 'star')),
                               array('writer' => UserSelect::base(),
@@ -184,7 +190,6 @@ class News extends meta
         }
         return $this->star;
     }
-
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
