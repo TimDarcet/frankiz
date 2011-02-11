@@ -44,7 +44,7 @@
 </div>
 
 <script>
-    groups_picker("{$id}", "{$ns}", {$check|default:"-1"}, "{if t($order)}{$order}{else}score{/if}");
+    groups_picker("{$id}", "{$ns}", {$check|default:"-1"}, "{if t($order)}{$order}{else}score{/if}", {if t($desc)}{$desc}{else}true{/if});
 </script>
 
 
