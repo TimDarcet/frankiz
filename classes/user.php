@@ -694,12 +694,17 @@ class User extends Meta
         return $this->castes->filter('rights', $rights);
     }
 
-    public function rights(Group $g)
+    public function rights(Group $g, $string = false)
     {
         $rights = array();
         foreach ($this->castes as $c) {
-            if ($c->group()->isMe($g))
-                array_push($rights, $c->rights());
+            if ($c->group()->isMe($g)) {
+                if ($string) {
+                    array_push($rights, (string) $c->rights());
+                } else {
+                    array_push($rights, $c->rights());
+                }
+            }
         }
         return $rights;
     }
