@@ -200,7 +200,7 @@ function wikify(container)
     });
 }
 
-function groups_picker(id, ns, check, order)
+function groups_picker(id, ns, check, order, desc)
 {
     // Principal blocks
     var container  = $("#groups_picker_" + id);
@@ -280,14 +280,11 @@ function groups_picker(id, ns, check, order)
             container.addClass('searching');
             request({
                 "url": 'groups/ajax/search'
-              ,"data": {"ns": ns, "token" : filter.val(), "order" : order}
+              ,"data": {"ns": ns, "piece": filter.val(), "order": order, "desc": desc}
               ,"fail": false
            ,"success": function(json) {
                            list.empty();
                            var groups = json.groups;
-                           groups.sort(function(a, b) {
-                               return (a.frequency < b.frequency) ? -1 : (a.frequency > b.frequency) ? 1 : 0;
-                            });
                            var group;
                            for (var i in groups)
                            {
