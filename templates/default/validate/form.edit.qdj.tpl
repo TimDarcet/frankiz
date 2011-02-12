@@ -25,7 +25,7 @@
         Question :
     </td>
     <td>
-        <input type="text" name="quest" value="{$item->question}"/>
+        <input type="text" name="quest" value="{$item->question()}"/>
     </td>
 </tr>
 
@@ -34,7 +34,7 @@
         Réponse 1 :
     </td>
     <td>
-        <input type="text" name="ans1" value="{$item->answer1}"/>
+        <input type="text" name="ans1" value="{$item->answer1()}"/>
     </td>
 </tr>
 
@@ -43,7 +43,7 @@
         Réponse 2 :
     </td>
     <td>
-        <input type="text" name="ans2" value="{$item->answer2}"/>
+        <input type="text" name="ans2" value="{$item->answer2()}"/>
     </td>
 </tr>
             

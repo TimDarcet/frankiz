@@ -25,13 +25,22 @@ class QDJValidate extends ItemValidate
     protected $question;
     protected $answer1;
     protected $answer2;
+    protected $writer;
 
     public function __construct(String $question, String $answer1, String $answer2)
     {
         $this->question  = $question;
         $this->answer1   = $answer1;
         $this->answer2   = $answer2;
-        parent::__construct();
+        $this->writer = S::user();
+    }
+    
+    public function objects() {
+        return Array('writer' => UserSelect::base());
+    }
+
+    public static function label() {
+        return 'Validation d\'une QDJ';
     }
 
     public function question()
@@ -69,23 +78,17 @@ class QDJValidate extends ItemValidate
 
     public function sendmailadmin()
     {
-        if (is_null($this->user->bestEmail()))
-            $this->user->select(User::SELECT_BASE);
-
         $mail = new FrankizMailer('validate/mail.admin.qdj.tpl');
-        $mail->assign('user', $this->user->displayName());
+        $mail->assign('user', $this->writer->displayName());
 
         $mail->subject("[Frankiz] Validation d'une QDJ");
-        $mail->SetFrom($this->user->bestEmail(), $this->user->displayName());
+        $mail->SetFrom($this->writer->bestEmail(), $this->writer->displayName());
         $mail->AddAddress($this->_mail_from_addr(), $this->_mail_from_disp());
         $mail->Send(false);
     }
 
     public function sendmailfinal($isok)
     {
-        if (is_null($this->user->bestEmail()))
-            $this->user->select(User::SELECT_BASE);
-
         $mail = new FrankizMailer('validate/mail.valid.qdj.tpl');
         $mail->assign('isok', $isok);
         if (Env::has("ans"))
@@ -97,7 +100,7 @@ class QDJValidate extends ItemValidate
             $mail->Subject = '[Frankiz] Ta QDJ a été refusée';
 
         $mail->SetFrom($this->_mail_from_addr(), $this->_mail_from_disp());
-        $mail->AddAddress($this->user->bestEmail(), $this->user->displayName());
+        $mail->AddAddress($this->writer->bestEmail(), $this->writer->displayName());
         $mail->AddCC($this->_mail_from_addr(), $this->_mail_from_disp());
         $mail->Send(false);
     }
@@ -109,14 +112,16 @@ class QDJValidate extends ItemValidate
 
     public function _mail_from_addr()
     {
-        return 'brice.gelineau@polytechnique.edu';
+        return 'qdj@frankiz.polytechnique.fr';
     }
 
     public function commit()
     {
-        XDB::execute('INSERT INTO  qdj
-                              SET  question = {?}, answer1 = {?}, answer2 = {?}',
-                    $this->question, $this->answer1, $this->answer2);
+        $qdj = new QDJ(array('question' => $this->question,
+                              'answer1' => $this->answer1,
+                              'answer2' => $this->answer2,
+                               'writer' => $this->writer));
+        $qdj->insert();
         return true;
     }
 

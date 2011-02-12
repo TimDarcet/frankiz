@@ -21,7 +21,7 @@
 {**************************************************************************}
 
 {if $isok}
-Ton qdj vient d'être acceptée... Elle va bientôt être programmée.
+Ta qdj vient d'être acceptée... Elle va bientôt être programmée.
 {$comm|smarty:nodefaults}
 
 

@@ -20,20 +20,25 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="qdj">
-    <div class="question">
-        {if $question} {$question} {else} {$item->question} {/if}
-    </div>
-    <table>
-    <tr class="answers">
-        <td class="answer1" width=50%>
-            {if $answer1} {$answer1} {else} {$item->answer1} {/if}
-        </td>
-        <td class="answer2">
-            {if $answer2} {$answer2} {else} {$item->answer2} {/if}
-        </td>
-    </tr>
-    </table>
-</div>
+<tr>
+    <td></td>
+    <td>
+        <div class="qdj">
+            <div class="question">
+                {$item->question()}
+            </div>
+            <table>
+            <tr class="answers">
+                <td class="answer1" width=50%>
+                    {$item->answer1()}
+                </td>
+                <td class="answer2">
+                    {$item->answer2()}
+                </td>
+            </tr>
+            </table>
+        </div>
+    </td>
+</tr>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

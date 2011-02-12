@@ -45,8 +45,14 @@
         <div class="head">
             Aperçu
         </div>
-        <div class="body">
-            {include file="validate/form.show.qdj.tpl"|rel}
+        <div class="body qdj">
+            <div class="question"></div>
+            <table>
+            <tr class="answers">
+                <td class="answer1" width=50%></td>
+                <td class="answer2"></td>
+            </tr>
+            </table>
         </div>
     </div>
     

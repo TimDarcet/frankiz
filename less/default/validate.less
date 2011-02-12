@@ -128,22 +128,28 @@ ul {
 
 *******************************************************************************/
 
-.qdj table {
-    width: 100%;
-}
+#content .qdj {
+    .question  {
+        font-size: 11pt;
+        text-align: center;
+        font-weight: bold;
+    }
 
-.qdj .question  {
-    font-size: 11pt;
-    text-align: center;
-    font-weight: bold;
-}
+    table {
+        width: 100%;
 
-.qdj .answer1  {
-    text-align: center;
-    color:#FFBB00;
-}
+        >tbody>tr>td {
+            width: 50%;
+        }
 
-.qdj .answer2  {
-    text-align: center;
-    color:red;
+        .answer1  {
+            text-align: center;
+            color:#FFBB00;
+        }
+
+        .answer2  {
+            text-align: center;
+            color:red;
+        }
+    }
 }
