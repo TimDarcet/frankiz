@@ -373,9 +373,20 @@ $temp->external(0);
 $temp->leavable(0);
 $temp->visible(0);
 // Admins(temp) = Members(webmasters)
-$tol->caste(Rights::admin())->userfilter(new UserFilter(new UFC_Group($webmasters, Rights::member())));
+$temp->caste(Rights::admin())->userfilter(new UserFilter(new UFC_Group($webmasters, Rights::member())));
 
-echo "Added BR's Microcosmos \n";
+$g = new Group();
+$g->insert();
+$g->name('qdj');
+$g->ns(Group::NS_FREE);
+$g->label('Question Du Jour');
+$g->external(0);
+$g->leavable(0);
+$g->visible(1);
+// Admins(qdj) = Members(webmasters) the time of the conversion
+$g->caste(Rights::admin())->userfilter(new UserFilter(new UFC_Group($webmasters, Rights::member())));
+
+echo "Added Fkz Microcosmos \n";
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
 ?>
