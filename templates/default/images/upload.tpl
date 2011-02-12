@@ -35,6 +35,16 @@
         {if $toobig}
             <br /><span class="warning">L'image envoyée dépasse la taille maximale autorisée (1024 * 1024)</span>
         {/if}
+
+        <script>
+            {literal}
+                var $f = $("input[type=file]");
+                $("input[type=submit]").hide();
+                $f.change(function() {
+                    $("form").submit();
+                });
+            {/literal}
+        </script>
     {/if}
 </form>
 
