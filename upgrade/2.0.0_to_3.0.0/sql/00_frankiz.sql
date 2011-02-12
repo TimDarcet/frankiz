@@ -195,21 +195,6 @@ CREATE TABLE IF NOT EXISTS `rooms_users` (
   UNIQUE KEY `uid` (`uid`,`rid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `studies`
---
-
-DROP TABLE IF EXISTS `studies`;
-CREATE TABLE IF NOT EXISTS `studies` (
-  `uid` int(10) NOT NULL,
-  `formation_id` int(10) NOT NULL,
-  `year_in` year(4) NOT NULL,
-  `year_out` year(4) NOT NULL,
-  `promo` year(4) NOT NULL,
-  `forlife` varchar(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
