@@ -24,7 +24,7 @@
  * CONDITIONS
  ******************/
 
-// {{{ interface UserFilterCondition
+
 /** This interface describe objects which filter users based
  *      on various parameters.
  * The parameters of the filter must be given to the constructor.
@@ -37,9 +37,7 @@
 abstract class UserFilterCondition extends FrankizFilterCondition
 {
 }
-// }}}
 
-// {{{ class UFC_Uid
 /** Filters users based on their hruid
  * @param $val Either an hruid, or a list of those
  */
@@ -62,9 +60,7 @@ class UFC_Uid extends UserFilterCondition
         return array('type' => 'uid', 'uids' => $this->uids);
     }
 }
-// }}}
 
-// {{{ class UFC_Hruid
 /** Filters users based on their hruid
  * @param $val Either an hruid, or a list of those
  */
@@ -85,9 +81,7 @@ class UFC_Hruid extends UserFilterCondition
         return XDB::format('a.hruid IN {?}', $this->hruids);
     }
 }
-// }}}
 
-// {{{ class UFC_Ip
 /** Filters users based on their IPs
  * @param $ip IP from which connection are checked
  */
@@ -107,9 +101,7 @@ class UFC_Ip extends UserFilterCondition
         return $sub . '.ip ' . $right;
     }
 }
-// }}}
 
-// {{{ class UFC_Comment
 class UFC_Comment extends UserFilterCondition
 {
     private $text;
@@ -124,9 +116,7 @@ class UFC_Comment extends UserFilterCondition
         return 'a.comment ' . XDB::formatWildcards(XDB::WILDCARD_CONTAINS, $this->text);
     }
 }
-// }}}
 
-// {{{ class UFC_Promo
 /** Filters users based on promotion
  * @param $comparison Comparison operator (>, =, ...)
  * @param $promo Promotion on which the filter is based
@@ -154,9 +144,7 @@ class UFC_Promo extends UserFilterCondition
         return array('type' => 'promo', 'comparison' => $this->comparison, 'promo' => $this->promo);
     }
 }
-// }}}
 
-// {{{ class UFC_Study
 /** Filters users by studies
  * @param $formation_id The id of the study
  */
@@ -186,9 +174,7 @@ class UFC_Study extends UserFilterCondition
         return array('type' => 'study', 'formation_ids' => $this->formation_ids);
     }
 }
-// }}}
 
-// {{{ class UFC_Name
 /** Filters users based on name(s)
  * @param $type Type of name field on which filtering is done (firstname, lastname, both, ...)
  * @param $text Text on which to filter
@@ -234,9 +220,7 @@ class UFC_Name extends UserFilterCondition
         return $cond = implode(' OR ', $conds);
     }
 }
-// }}}
 
-// {{{ class UFC_Bestalias
 /** Filters users based on their mail adresse
  * @param $mail Mail adresse
  */
@@ -257,9 +241,7 @@ class UFC_Bestalias extends UserFilterCondition
         return XDB::format('a.bestalias IN {?}', $this->val);
     }
 }
-// }}}
 
-// {{{ class UFC_Nationality
 /** Filters users based on their nationality
  * @param $val Nation's Id
  */
@@ -280,9 +262,7 @@ class UFC_Nationality extends UserFilterCondition
         return XDB::format('a.nation IN {?}', $this->val);
     }
 }
-// }}}
 
-// {{{ class UFC_Birthday
 /** Filters users based on next birthday date
  * @param $comparison Comparison operator
  * @param $date Date to which users next birthday date should be compared
@@ -303,9 +283,7 @@ class UFC_Birthday extends UserFilterCondition
         return 'a.next_birthday ' . $this->comparison . XDB::format(' {?}', $this->date->format('Y-m-d'));
     }
 }
-// }}}
 
-// {{{ class UFC_Gender
 /** Filters users based on gender
  * @param $sex One of User::GENDER_MALE or User::GENDER_FEMALE, for selecting users
  */
@@ -327,9 +305,7 @@ class UFC_Gender extends UserFilterCondition
         }
     }
 }
-// }}}
 
-// {{{ class UFC_Group
 /** Filters users based on group membership
  * The groups&rights are converted to castes when the filter is executed or exported
  * @param $group Group
@@ -393,9 +369,7 @@ class UFC_Group extends UserFilterCondition
         return array("type" => 'caste', "children" => $this->fetchCids());
     }
 }
-// }}}
 
-// {{{ class UFC_Caste
 /** Filters users based on caste membership
  * @param $caste Caste whose members we are selecting
  */
@@ -419,9 +393,7 @@ class UFC_Caste extends UserFilterCondition
         return array("type" => 'caste', "children" => $this->cids);
     }
 }
-// }}}
 
-// {{{ class UFC_Room
 /** Filters users based on their room'sid
  * @param $val Room's Id
  */
@@ -441,9 +413,7 @@ class UFC_Room extends UserFilterCondition
         return $sub . '.rid ' . $right;
     }
 }
-// }}}
 
-// {{{ class UFC_Cellphone
 class UFC_Cellphone extends UserFilterCondition
 {
     private $number;
@@ -458,9 +428,7 @@ class UFC_Cellphone extends UserFilterCondition
         return XDB::format('a.cellphone = {?}', $this->number);
     }
 }
-// }}}
 
-// {{{ class UFC_Casertphone
 class UFC_Roomphone extends UserFilterCondition
 {
     private $number;
@@ -477,8 +445,10 @@ class UFC_Roomphone extends UserFilterCondition
         return $sub . '.phone ' . $right;
     }
 }
-// }}}
 
+/** Filters users based on participation in an activity
+ * @param $ais ActivityInstances whose participants we are selecting
+ */
 class UFC_ActivityInstance extends UserFilterCondition
 {
     private $aids;
@@ -506,7 +476,6 @@ class UFC_ActivityInstance extends UserFilterCondition
  * ORDERS
  ******************/
 
-// {{{ class UserFilterOrder
 /** Base class for ordering results of a query.
  * Parameters for the ordering must be given to the constructor ($desc for a
  *     descending order).
@@ -525,9 +494,7 @@ abstract class UserFilterOrder extends FrankizFilterOrder
         throw new Exception();
     }
 }
-// }}}
 
-// {{{ class UFO_Promo
 /** Orders users by promotion
  * @param $grade Formation whose promotion users should be sorted by (restricts results to users of that formation)
  * @param $desc Whether sort is descending
@@ -545,9 +512,7 @@ class UFO_Promo extends UserFilterOrder
         return $sub . '.promo';
     }
 }
-// }}}
 
-// {{{ class UFO_Name
 /** Sorts users by name
  * @param $type Type of name on which to sort (firstname...)
  * @param $desc If sort order should be descending
@@ -578,9 +543,7 @@ class UFO_Name extends UserFilterOrder
             return 'a.nickname';
     }
 }
-// }}}
 
-// {{{ class UFO_Birthday
 /** Sorts users based on next birthday date
  */
 class UFO_Birthday extends UserFilterOrder
@@ -590,7 +553,6 @@ class UFO_Birthday extends UserFilterOrder
         return 'a.next_birthday';
     }
 }
-// }}}
 
 /***********************************
   *********************************
@@ -598,7 +560,6 @@ class UFO_Birthday extends UserFilterOrder
   *********************************
  ***********************************/
 
-// {{{ class UserFilter
 /** This class provides a convenient and centralized way of filtering users.
  *
  * Usage:
@@ -871,7 +832,6 @@ class UserFilter extends FrankizFilter
         return array_unique($castes);
     }
 }
-// }}}
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
 ?>
