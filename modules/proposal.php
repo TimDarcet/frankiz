@@ -79,14 +79,12 @@ class ProposalModule extends PlModule
                 // Meta data
                 $comment = Env::t('comment', '');
 
-
                 // Check credentials for origin
-                if (!$origin && !S::user()->hasRights($origin, Rights::admin())) {
+                if ($origin !== false && !S::user()->hasRights($origin, Rights::admin())) {
                     throw new Exception("Invalid credentials for origin Group");
                 }
 
-                // TODO: directly insert if having the rights
-                // TODO: build objects
+                $target->select(CasteSelect::validate());                
                 $nv = new NewsValidate(array(
                     'writer'    => S::user(),
                     'target'    => $target,
@@ -122,7 +120,11 @@ class ProposalModule extends PlModule
         $desc       = Env::t('desc', '');
         $target     = Env::i('target_group_activity', '');
         $caste      = (Env::has('target_everybody_activity'))?'everybody':'restricted';
-        $origin = (Env::t('origin_activity_proposal') != 'none')?Env::i('origin_activity_proposal', ''):false;
+        if (Env::t('origin_news_proposal') == 'false') {
+            $origin = false;
+        } else {
+            $origin = new Group(Env::i('origin_news_proposal'));
+        }
 
         $activities = new ActivityFilter(new PFC_And(new AFC_TargetGroup(S::user()->castes(Rights::admin())->groups()),
                                                      new AFC_Regular(true)));
@@ -141,20 +143,22 @@ class ProposalModule extends PlModule
                 {
                     $target = new Group($target);
                     $target->select(GroupSelect::castes());
-                    foreach (S::user()->rights($target) as $r) {
-                        if ($r->isMe(new Rights('admin')))
-                            $admin = true;
-                    }
+                    
                     $begin = new FrankizDateTime(Env::t('begin'));
                     $end = new FrankizDateTime(Env::t('end'));
+
+                    if ($origin !== false && !S::user()->hasRights($origin, Rights::admin())) {
+                        throw new Exception("Invalid credentials for origin Group");
+                    }
+                    
                     $av = new ActivityValidate(s::user(), $target->caste(new Rights($caste)), $title,
-                        $desc, $begin, $end, is_null($origin)?false:new Group($origin));
+                        $desc, $begin, $end, $origin);
                     $v = new Validate(array(
                         'writer'    => S::user(),
                         'group'     => $target,
                         'item'      => $av,
                         'type'      => 'activity'));
-                    if (!$admin) {
+                    if (S::user()->hasRights($target, Rights::admin())) {
                         $v->insert();
                         $page->assign('envoye', true);
                     }
@@ -314,10 +318,10 @@ class ProposalModule extends PlModule
             {
                 $qv = new QDJValidate($question, $answer1, $answer2);
                 $v = new Validate(array(
-                    'user'  => S::user(),
-                    'gid'   => Group::from('qdj'),
-                    'item'  => $qv,
-                    'type'  => 'qdj'));
+                    'writer'    => S::user(),
+                    'group'     => Group::from('qdj'),
+                    'item'      => $qv,
+                    'type'      => 'qdj'));
                 $v->insert();
                 $page->assign('envoye', true);
             }
