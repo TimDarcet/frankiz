@@ -60,6 +60,9 @@ class FrankizMailer extends PHPMailer
 
     protected $tpl  = null;
     protected $page = null;
+    
+    protected $To;
+    protected $Cc;
 
     /**
     * @param $tpl Template to be used to generate the mail
@@ -106,6 +109,16 @@ class FrankizMailer extends PHPMailer
             return parent::AddCC($globals->mails->admin, $name);
         }
         return $this->AddCC($address, $name);
+    }
+    
+    public function toUserFilter(UserFilter $uf) 
+    {
+        $this->To = $uf;
+    }
+    
+    public function addCcUserFilter(UserFilter $uf) 
+    {
+        $this->Cc = $uf;
     }
 
     /**
@@ -174,6 +187,21 @@ class FrankizMailer extends PHPMailer
         }
 
         return $content;
+    }
+    
+    public function sendLater($html = true) 
+    {
+        global $globals;
+
+        $this->page->assign('isHTML', $html);
+
+        $tpl = FrankizPage::getTplPath($this->tpl);
+        $content = $this->page->fetch($tpl);
+        XDB::execute('INSERT INTO  mails
+                              SET  target = {?}, writer = {?}, writername = {?}, cc = {?}, title = {?}, body = {?}, ishtml = {?}',
+                              json_encode($this->To->export()), $this->From, $this->FromName, 
+                              (is_null($this->Cc))?'':json_encode($this->Cc->export()),
+                              $this->Subject, trim($content), $html);
     }
 }
 
