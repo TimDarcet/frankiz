@@ -35,7 +35,7 @@ class licensesModule extends PLModule
     {
         $page->changeTpl('licenses/licenses.tpl');
         $page->assign('title', "Les licences");
-        $softwares = $this->get_softwares();
+        $softwares = License::getSoftwares();
         $page->assign('softwares', $softwares);
 
         // list owned licenses
@@ -43,20 +43,18 @@ class licensesModule extends PLModule
         $page->assign('owned_licenses', $licenses);
         
         // list pending requests
-        //TODO
         $page->assign('requests', $requests);
     }
 
     public function handler_licenses_CLUF($page)
     {
-
         $softwares = License::getSoftwares();
 
         //User asked for a license, let's print the user's contract
         if(Post::has('refus') || !Post::has('software') || !in_array(Post::s('software'), array_keys($softwares))) {
             $this->handler_licenses_final($page);
         } else {
-            $page->changeTpl('profil/licenses_CLUF.tpl');
+            $page->changeTpl('licenses/licenses_CLUF.tpl');
             $page->assign('title', "Demande de licence pour {$softwares[Post::s('software')]} : Contrat utilisateur");
             $page->assign('software', Post::s('software'));
             $page->assign('software_name', $softwares[Post::s('software')]);
@@ -73,7 +71,7 @@ class licensesModule extends PLModule
             if(S::user()->hasRights(Group::from('on_platal'), Rights::member())) {
                 $this->handler_licences_final($page, true);
             } else {
-                $page->changeTpl('profil/licenses_reason.tpl');
+                $page->changeTpl('licenses/licenses_reason.tpl');
                 $page->assign('title', "Demande de license pour {$softwares[Post::v('software')]} : reason");
                 $page->assign('software', Post::v('software'));
                 $page->assign('software_name', $softwares[Post::v('software')]);
@@ -84,7 +82,7 @@ class licensesModule extends PLModule
 
     public function handler_licenses_final($page, $no_reason=false)
     {
-        $softwares=$this->get_softwares();
+        $softwares = License::getSoftwares();
         
         if(Post::has('refus') || (!$no_reason && (!Post::has('reason') || Post::v('reason')=="")) || !Post::has('software') || !in_array(Post::v('software'), array_keys($softwares))){
             $this->handler_licenses($page);
