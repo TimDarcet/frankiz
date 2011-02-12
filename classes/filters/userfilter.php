@@ -479,6 +479,27 @@ class UFC_Roomphone extends UserFilterCondition
 }
 // }}}
 
+class UFC_ActivityInstance extends UserFilterCondition
+{
+    private $aids;
+    
+    public function __construct($ais)
+    {
+        $this->aids = ActivityInstance::toIds(unflatten($ais));
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        $sub = $f->addActivityInstanceFilter();
+        return XDB::format($sub . '.id IN {?}', $this->aids);
+    }
+
+    public function export()
+    {
+        return array("type" => 'activityInstance', "children" => $this->aids);
+    }
+}
+
 
 
 /******************
@@ -724,6 +745,26 @@ class UserFilter extends FrankizFilter
         return $joins;
     }
 
+    /** ACTIVITY INSTANCES
+     */
+    private $with_activityinstances = 0;
+
+    public function addActivityInstanceFilter()
+    {
+        $this->with_activityinstances++;
+        return 'ai' . $this->with_activityinstances;
+    }
+
+    protected function activityInstanceJoins()
+    {
+        $joins = array();
+        if ($this->with_activityinstances > 0) {
+            for ($i = 1; $i <= $this->with_activityinstances; $i++) {
+                $joins['ai' . $i] = PlSqlJoin::inner('activities_participants', '$ME.participant = a.uid');
+            }
+        }
+        return $joins;
+    }
 
     /** 
      * EXPORT & IMPORT
@@ -787,6 +828,10 @@ class UserFilter extends FrankizFilter
                     $obj = new UFC_Promo($export['promo']);
                 else
                     $obj = new UFC_Promo($export['promo'], $export['comparison']);
+                break;
+
+            case 'activityInstance':
+                $obj = new UFC_ActivityInstance($export['children']);
                 break;
         }
 
