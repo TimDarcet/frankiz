@@ -44,7 +44,7 @@
 
     <div class="module">
         <div class="head click">
-           Type d'activité
+           Type d'activité <span class="helper" target="proposal/activity" />
         </div>
         <div class="body hide show">
             <table>
@@ -103,7 +103,7 @@
                         Visible par:
                     </td>
                     <td>
-                        {include file="target_picker.tpl"|rel id="activity"}
+                        {include file="target_picker.tpl"|rel id="activity" group_perso=true only_admin=false}
                     </td>
                 </tr>
 
