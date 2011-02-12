@@ -76,6 +76,16 @@ class QDJ extends Meta
     protected $date     = null;
     protected $writer   = null;
 
+    public function insert()
+    {
+        XDB::execute('INSERT  qdj
+                         SET  question = {?}, answer1 = {?}, answer2 = {?},
+                              count1 = 0, count2 = 0, writer = {?}',
+            $this->question, $this->answer1, $this->answer2,
+            $this->writer->id());
+
+        $this->id = XDB::insertId();
+    }
 
     //percentages of answers 1 or 2
     public function percentage1() {
