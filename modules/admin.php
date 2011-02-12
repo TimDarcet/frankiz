@@ -57,21 +57,25 @@ class AdminModule extends PlModule
         $page->changeTpl('admin/index.tpl');
     }
 
-    function handler_su($page, $uid=0)
-    {// TODO: everything
+    function handler_su($page, $uid=-2)
+    {
         if (S::has('suid')) {
             $page->kill("Déjà en SUID !!!");
         }
-        $res = XDB::query("SELECT eleve_id
-                             FROM compte_frankiz
-                            WHERE eleve_id = {?}", $uid);
-        if($res->numRows() == 1){
-            if(!Platal::session()->startSUID($uid)) {
+        
+        $user = new UserFilter(new UFC_Uid($uid));
+        $user = $user->get(true);
+        
+        if($user !== false){
+            $user->select(UserSelect::login());
+            if(!Platal::session()->startSUID($user)) {
                 $page->trigError('Impossible d\'effectuer un SUID sur ' . $uid);
             } else {
-                $page->kill("SU ok");
-                pl_redirect('');
+                pl_redirect('home');
             }
+        } 
+        else {
+            throw new Exception("Impossible de faire un SUID sur " . $uid);
         }
     }
 
@@ -162,7 +166,7 @@ class AdminModule extends PlModule
         $image->send();
     }
 
-    function handler_validate($page, $gid = null)
+    function handler_validate($page, $gid = null, $vid = null)
     {
         $group = new Group($gid);
         if (!S::user()->hasRights($group, Rights::admin())) {
@@ -183,7 +187,10 @@ class AdminModule extends PlModule
                     $collec->remove(Env::v('val_id'));
             }
         }
-
+        
+        
+        $page->assign('validation', (is_null($vid))?0:$vid);
+            
         $page->assign('gid', $gid);
         $page->assign('val', $collec);
         $page->addJsLink('validate.js');
