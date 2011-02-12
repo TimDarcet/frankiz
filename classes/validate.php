@@ -226,7 +226,7 @@ class Validate extends Meta
                 return false;
             }
             $this->item->add_comment(S::user()->displayName(), Env::v('comm'));
-            $this->item->sendmailcomment();
+            $this->item->sendmailcomment($this->writer);
             
             $this->update();
             Platal::page()->assign('msg', 'Commentaire ajouté');

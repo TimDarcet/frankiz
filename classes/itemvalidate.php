@@ -68,14 +68,6 @@ abstract class ItemValidate
         return 'Inconnue';
     }
 
-    public function user(User $user = null)
-    {
-        if ($user !== null) {
-            $this->user = $user;
-        }
-        return $this->user;
-    }
-
     public function type()
     {
         return $this->type;
@@ -96,16 +88,11 @@ abstract class ItemValidate
         return $this->refuse;
     }
 
-    public function __construct()
-    {
-        $this->user = S::user();
-    }
-
-    public function sendmailcomment() 
+    public function sendmailcomment($user) 
     {    
         $mail = new FrankizMailer('validate/mail.comment.tpl');
         $mail->assign('type', $this->type);
-        $mail->assign('user', $this->user->displayName());
+        $mail->assign('user', $user->displayName());
         if (Env::has('comm'))
             $mail->assign('comm', Env::v('comm'));
             
