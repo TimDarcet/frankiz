@@ -22,33 +22,39 @@
 class MailValidate extends ItemValidate
 {
     protected $type = 'mail';
-    protected $group;
+    protected $writer;
+    protected $target;
     protected $subject;
     protected $body;
     protected $nowiki;
 
-    public function __construct(Group $group, String $subject, String $body, $nowiki)
+    public function __construct(Caste $target, $subject, $body, $nowiki)
     {
-
-        parent::__construct();
-
-        $this->group = $group;
+        $this->writer = S::user();
+        $this->target = $target;
         $this->subject = $subject;
         $this->body = $body;
         $this->nowiki = $nowiki;
     }
 
     public function objects() {
-        return Array('user' => 'User', 'group' => Group);
+        return Array('writer' => UserSelect::base(), 'target' => CasteSelect::validate());
+    }
+    
+    public function writer(User $writer = null) {
+        if ($writer != null) {
+            $this->writer = $writer;
+        }
+        return $this->writer;
     }
 
-    public function group(Group $group = null)
+    public function target(Caste $target = null)
     {
-        if ($group != null)
+        if ($target != null)
         {
-            $this->group = $group;
+            $this->target = $target;
         }
-        return $this->group;
+        return $this->target;
     }
 
     public function subject()
@@ -84,10 +90,6 @@ class MailValidate extends ItemValidate
 
     public function sendmailadmin()
     {
-        print_r($this->user);
-        if (is_null($this->user->bestEmail()))
-            $this->user->select(User::SELECT_BASE);
-
         $mail = new FrankizMailer('validate/mail.admin.mail.tpl');
         $mail->assign('user', $this->user->displayName());
         $mail->assign('subject', $this->subject);
@@ -100,9 +102,6 @@ class MailValidate extends ItemValidate
 
     public function sendmailfinal($isok)
     {
-        if (is_null($this->user->bestEmail()))
-            $this->user->select(User::SELECT_BASE);
-
         $mail = new FrankizMailer('validate/mail.valid.mail.tpl');
         if (Env::has("ans"))
             $mail->assign('comm', Env::v('ans'));
@@ -128,21 +127,19 @@ class MailValidate extends ItemValidate
 
     public function _mail_from_addr()
     {
-        return ($this->group->mail() === false)?'web@frankiz.polytechnique.fr':$this->group->mail();
+        $this->target->group();
+        return ($this->target->group()->mail() === false || $this->target->group()->mail() === '')
+                ?'web@frankiz.polytechnique.fr':$this->target->group()->mail();
     }
 
     public function commit()
     {
-        $this->group->select(Group::SELECT_USER);
-        foreach($this->group->users() as $user)
-        {
-            $mail = new FrankizMailer();
-            $mail->subject('[Mail groupé] ' . $this->subject);
-            $mail->body($this->body);
-            $mail->setFrom($this->user->bestEmail(), $this->user->displayName());
-            $mail->AddAddress($user, $user->displayName());
-            $mail->send($this->nowiki);
-        }
+        $mail = new FrankizMailer();
+        $mail->subject('[Mail groupé] ' . $this->subject);
+        $mail->body($this->body);
+        $mail->setFrom($this->writer->bestEmail(), $this->writer->displayName());
+        $mail->ToUserFilter(new UserFilter(new UFC_Caste($this->target->id())));
+        $mail->sendLater($this->nowiki);
         return true;
     }
 }
