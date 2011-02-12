@@ -67,7 +67,7 @@
                 $(function() {
                     var limit = new Date('{/literal}{$activity->begin()|datetime:'m/d/Y H:i'}{literal}');
                     var begin = new Date('{/literal}{$activity->begin()|datetime:'m/d/Y H:i'}{literal}');
-                    var end = new Date('{/literal}{$activity->end()|datetime}{literal}');
+                    var end = new Date('{/literal}{$activity->end()|datetime:'m/d/Y H:i'}{literal}');
                     $("#begin").datetimepicker({minDate: new Date(), defaultDate: begin});
                     $("#begin").datetimepicker('setDate', begin);
                     $("#end").datetimepicker({ minDate: new Date(), defaultDate: end});

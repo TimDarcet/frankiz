@@ -380,24 +380,6 @@ div.hover.bbit-tool-close
     padding-bottom:2px;
     cursor:default;
 }
-.t1 {
-    font-size:1px;
-    height:1px;
-    line-height:1px;
-    margin:0 2px;
-    overflow:hidden
-}
-.t2 {
-    font-size:1px;
-    height:1px;
-    line-height:1px;
-    margin:0 1px;
-    overflow:hidden
-}
-.chromeColor {
-    background:#BDD5E3;
-    border-color:#BDD5E3
-}
 .tg-timedevents {
     background-color:#fff;
     table-layout:fixed;

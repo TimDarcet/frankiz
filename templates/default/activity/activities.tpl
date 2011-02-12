@@ -24,7 +24,7 @@
 
 <div class="module activities" id="activities">
     <div class="head">
-        Activités <span class="helper" target="activities" />
+        Activités <span class="helper" target="activities"> </span>
     </div>
     <div class="body" id="activities_list">
         {foreach from=$activities item=activities_day key=date}

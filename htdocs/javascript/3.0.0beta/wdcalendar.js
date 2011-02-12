@@ -25,7 +25,7 @@ $(document).ready(function() {
             var $dv = $("#calhead");
             var _MH = document.documentElement.clientHeight;
             var dvH = $dv.height() + 2;
-            op.height = Math.max(_MH - dvH - 210, 400);
+            op.height = Math.max(_MH - dvH - 320, 400);
             //op.height = 600;
             op.eventItems =[];
 
