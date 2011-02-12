@@ -34,31 +34,51 @@
         Dernier jour :
     </td>
     <td>
-        {$item->end()|datetime:'Y-m-d'}
+        {$item->end()|datetime:'Y-m-d H:i'}
     </td>
 </tr>
 
 <tr>
-    <td width=20%>
+    <td>
         Annonce :
     </td>
-    <td>
-        {assign var='caste' value=$item->target()}
-        <div class="news_validate">
-        <fieldset>
-            {assign var='target_group' value=$caste->group()}
-            <legend>[{$target_group|group}] {$item->title()}</legend>
+    <td class="news">
+        <div class="infos">
+            <table><tr>
+                <td class="star"></td>
+                <td class="origin">
+                    {if $item->origin()}
+                        {assign var='origin' value=$item->origin()}
+                        <a href="groups/see/{$origin->name()}">
+                        <img src="{$origin->image()|image:'micro'|smarty:nodefaults}" 
+                             title="{$origin->label()}"/>
+                        </a>
+                    {else}
+                        {assign var='writer' value=$item->writer()}
+                        <a href="tol/?hruid={$writer->login()}">
+                        <img src="{$writer->image()|image:'micro'|smarty:nodefaults}" 
+                             title="{$writer->displayName()}"/>
+                        </a>
+                    {/if}
+                </td>
+                <td class="title">
+                    {$item->title()}
+                </td>
+                <td class="date">
+                    {$item->begin()|age}
+                </td>
+            </tr></table>
+        </div>
+        <div class="content">
             <div class="body">
-                {assign var='image' value=$item->image()}
-                {$item->content()|miniwiki|smarty:nodefaults}
-            </div>
-            <div class="infos">
-                {if !$item->origin()}
-                    Pour le groupe {$item->origin()|group},
+                {if $item->image()}
+                    <img class="image" src="{$item->image()|image:'small'|smarty:nodefaults}" />
                 {/if}
+                {$item->content()|miniwiki:'title'|smarty:nodefaults}
+            </div>
+            <div class="writer">
                 {$item->writer()|user}
             </div>
-        </fieldset>
         </div>
     </td>
 </tr>

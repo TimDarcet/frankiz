@@ -68,6 +68,7 @@ ul {
     li.validate {
         .alphabackground;
         list-style: none;
+        margin-bottom: 10px;
         .title {
             cursor: pointer;
         }
@@ -103,23 +104,55 @@ ul {
 *******************************************************************************/
 
 
-.news_validate {
-    margin: 5px;
-    margin-bottom: 20px;
-}
+.news {
+    background-color: #BDD5E3;
+    .infos {
+        text-align: center;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            padding: 0;
+            
+            .star {
+                position: relative;
+                width: 35px;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-image: url("../default/images/star_off.png");
+            }
 
-.news_validate fieldset {
-    width: 90%;
-}
+            .origin {
+                position: relative;
+                width: 50px;
+            }
+            .date {
+                position: relative;
+                width: 50px;
+            }
+        }
+    }
 
-.news_validate legend {
-    width: 70%;
-    font-style: italic;
-}
+    .content {
+        position: relative;
+        clear: both;
+        margin: 5px;
+        text-align: left;
 
-.news_validate .infos {
-    font-weight: bold;
-    text-align: right;
+        .body {
+            border-top: 1px #002334 solid;
+            background-color: white;
+            padding: 5px;
+
+            .image {
+                float: left;
+            }
+        }
+
+        .writer {
+            width: 100%;
+            text-align: right;
+        }
+    }
 }
 
 

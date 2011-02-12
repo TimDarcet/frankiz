@@ -40,7 +40,6 @@ class NewsValidate extends ItemValidate
                 $this->$key = $val;
             }
         }
-        parent::__construct();
     }
 
     public function objects() {
@@ -64,7 +63,12 @@ class NewsValidate extends ItemValidate
 
     public function handle_editor()
     {
-        //TODO $this->news->title(Env::t('title', ''));
+        $this->title = Env::t('title', '');
+        $this->content = Env::t('news_content', '');
+        $this->begin = new FrankizDateTime(Env::t('begin'));
+        $this->end = new FrankizDateTime(Env::t('end'));
+        if (Env::has('image'))
+            $this->image   = new FrankizImage(Env::i('image'));
 
         return true;
     }
@@ -117,7 +121,6 @@ class NewsValidate extends ItemValidate
 
     public function _mail_from_addr()
     {
-        $this->target->group();
         return ($this->target->group()->mail() === false || $this->target->group()->mail() === '')
                 ?'web@frankiz.polytechnique.fr':$this->target->group()->mail();
     }
