@@ -91,11 +91,11 @@ class MailValidate extends ItemValidate
     public function sendmailadmin()
     {
         $mail = new FrankizMailer('validate/mail.admin.mail.tpl');
-        $mail->assign('user', $this->user->displayName());
+        $mail->assign('user', $this->writer->displayName());
         $mail->assign('subject', $this->subject);
 
         $mail->Subject = "[Frankiz] Validation d'un mail";
-        $mail->SetFrom($this->user->bestEmail(), $this->user->displayName());
+        $mail->SetFrom($this->writer->bestEmail(), $this->writer->displayName());
         $mail->AddAddress($this->_mail_from_addr(), $this->_mail_from_disp());
         $mail->Send(false);
     }
@@ -115,7 +115,7 @@ class MailValidate extends ItemValidate
         }
 
         $mail->SetFrom($this->_mail_from_addr(), $this->_mail_from_disp());
-        $mail->AddAddress($this->user->bestEmail(), $this->user->displayName());
+        $mail->AddAddress($this->writer->bestEmail(), $this->writer->displayName());
         $mail->AddCC($this->_mail_from_addr(), $this->_mail_from_disp());
         $mail->Send(false);
     }

@@ -91,6 +91,7 @@ abstract class ItemValidate
     public function sendmailcomment($user) 
     {    
         $mail = new FrankizMailer('validate/mail.comment.tpl');
+        $mail->assign('admin', S::user());
         $mail->assign('type', $this->type);
         $mail->assign('user', $user->displayName());
         if (Env::has('comm'))

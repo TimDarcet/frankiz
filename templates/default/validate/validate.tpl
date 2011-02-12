@@ -44,7 +44,7 @@
                 Requête de type "{$valid->label()}" en attente depuis {$valid->created()|age}
             </div>
 
-            <div class="more">
+            <div class="more {if $valid->id() == $validation}show{/if}">
             <form enctype="multipart/form-data" method="post" action="admin/validate/{$gid}">
                 <div class="rules">
                     {include file="wiki.tpl"|rel name='validate/rules/'|cat:$valid->type()}

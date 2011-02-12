@@ -116,7 +116,7 @@ class ActivityValidate extends ItemValidate
 
     public function sendmailadmin() {
         $mail = new FrankizMailer('validate/mail.admin.activity.tpl');
-        $mail->assign('user', $this->user->displayName());
+        $mail->assign('user', $this->writer->displayName());
         $mail->assign('title', $this->title);
 
         $mail->subject("[Frankiz] Validation d'une activité");
@@ -147,7 +147,6 @@ class ActivityValidate extends ItemValidate
     }
 
     public function _mail_from_addr() {
-        $this->target->group();
         return ($this->target->group()->mail() === false || $this->target->group()->mail() === '')
                 ?'web@frankiz.polytechnique.fr':$this->target->group()->mail();
     }

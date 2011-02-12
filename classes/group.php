@@ -71,7 +71,7 @@ class GroupSelect extends Select
     }
 
     public static function validate() {
-        return new GroupSelect(array('ns', 'name', 'label', 'mail'));
+        return new GroupSelect(array('ns', 'name', 'label', 'mail', 'castes'), array('castes' => CasteSelect::base()));
     }
 
     public static function see() {
