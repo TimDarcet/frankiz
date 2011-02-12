@@ -24,22 +24,34 @@
 
 <div class="module activities" id="activities">
     <div class="head">
-        Activités
+        Activités <span class="helper" target="activities" />
     </div>
     <div class="body" id="activities_list">
         {foreach from=$activities item=activities_day key=date}
             <div class="day">
                 <div class="date">
-                    {*Hack because strtotime and date_formate do not consider timestamps the same way*}
-                    {math equation="s + 3600" s=$date|strtotime assign=date_new}
-                    {$date_new|date_format}
+                    {$date|date_format}
                 </div>
                 <div class="activities_day">
                     {foreach from=$activities_day item=activity key=id}
                         {$activities_day|order:'hour_begin':false}
-                        {assign var='target' value=$activity->target_group()}
-                        <div class="activity" aid="{$activity->id()}">
-                            {$activity->hour_begin()} à {$activity->hour_end()} : [{$target|group}] <b>{$activity->title()}</b>
+                        <div class="activity {if $activity->participate()}star{else}unstar{/if}" aid="{$activity->id()}">
+                            {$activity->hour_begin()} à {$activity->hour_end()} :
+                            {if $activity->origin()}
+                                {assign var='origin' value=$activity->origin()}
+                                <a href="groups/see/{$origin->name()}">
+                                    <img src="{$origin->image()|image:'micro'|smarty:nodefaults}" 
+                                        title="{$origin->label()}""/>
+                                </a>
+                            {else}
+                                {assign var='writer' value=$activity->writer()}
+                                <a href="tol/?hruid={$writer->login()}">
+                                <img src="{$writer->image()|image:'micro'|smarty:nodefaults}" 
+                                     title="{$writer->displayName()}"/>
+                                </a>
+                            {/if} 
+                            <b>{$activity->title()}</b> 
+                            <span class="star_switcher" onclick="switch_participate({$activity->id()})">&emsp;</span>
                         </div>
                     {/foreach}
                 </div>
@@ -50,8 +62,8 @@
 
 <div class="module" id="activity_show" style="display:none;">
     <div class="head">
-        [<span class="target">
-        </span>]
+        <span class="origin">
+        </span>
         <span class="title">
         </span>
     </div>

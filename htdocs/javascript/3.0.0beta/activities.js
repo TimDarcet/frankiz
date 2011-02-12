@@ -95,7 +95,26 @@ function show(id)
 {
     $("#activity_show .body .msg").html('');
     $("#activity_show .body .msg").hide();
-    $("#activity_show .head .target").html(results[id].target.label);
+    if (typeof results[id].origin != "undefined") {
+        if (typeof results[id].origin.image != "undefined")
+            $("#activity_show .head .origin").html(
+                '<a href="groups/see/' + results[id].origin.name + '">' + 
+                    '<img src="' + results[id].origin.image + '" title="' + results[id].origin.label + '">' +
+                '</a>');
+        else 
+            $("#activity_show .head .origin").html(
+                '<a href="groups/see/' + results[id].origin.name + '">' + 
+                    '[' + results[id].origin.label + ']' +
+                '</a>');
+    }
+    else {
+        $("#activity_show .head .origin").html(
+            '<a href="tol/?hruid=' + results[id].writer.login + '">' +
+                '<img src="' + results[id].writer.photo + '" title="' + results[id].writer.displayName + '">' +
+            '</a>');
+    }
+    
+    //$("#activity_show .head .target").html(results[id].target.label);
     $("#activity_show .head .title").html(results[id].title);
 
     if (!results[id].participate)
@@ -115,7 +134,7 @@ function show(id)
     $("#activity_show .body .time .hour_begin").html(results[id].begin.toLocaleTimeString());
     $("#activity_show .body .time .hour_end").html(results[id].end.toLocaleTimeString());
 
-    $("#activity_show .body .participants_list .number").html(results[id].participants.length);
+    $("#activity_show .body .participants_list .number").html(count(results[id].participants));
     $("#activity_show .body .participants").html('');
     $.each(results[id].participants, function(index, value) {
         $("#activity_show .body .participants").append('<div class="participant">' + value.displayName + '</div>');
@@ -126,8 +145,12 @@ function show(id)
 function present(id) {
     request({ "url": 'activity/participants/add/' + id
          ,"success": function(json) {
+                if (results[id].participants instanceof Array) {
+                    results[id].participants = {};
+                }
                 results[id].participants[json.participant.id] = json.participant;
                 results[id].participate = true;
+                $("[aid='" + id + "']").switchClass('unstar', 'star', 100);
                 show(id);
                 $("#activity_show .msg").show();
                 $("#activity_show .msg").html('Tu as été rajouté à l\'activité.');
@@ -139,10 +162,18 @@ function out(id) {
          ,"success": function(json) {
                 delete results[id].participants[json.participant.id];
                 results[id].participate = false;
+                $("[aid='" + id + "']").switchClass('star', 'unstar', 100);
                 show(id);
                 $("#activity_show .msg").show();
                 $("#activity_show .msg").html('Tu as été enlevé à l\'activité.');
         }});
+}
+
+function switch_participate(id) {
+    if ($("[aid='" + id + "']").hasClass('star'))
+        out(id);
+    else
+        present(id);
 }
 
 var results = new Array();
@@ -174,3 +205,12 @@ function change(type)
 }
 
 var has_changed = false;
+
+function count(obj)
+{
+    var c = 0, key;
+    for (key in obj) {
+        c++;
+    }
+    return c;
+}

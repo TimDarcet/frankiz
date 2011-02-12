@@ -29,7 +29,7 @@
 <form enctype="multipart/form-data" method="post" action="activity/regular/modify" id="activity_modify">
     <div class="module">
         <div class="head">
-           Sélectionner l'activité à modifier
+           Sélectionner l'activité à modifier <span class="helper" target="activity/regular/modify" />
         </div>
 
         <div class="body">

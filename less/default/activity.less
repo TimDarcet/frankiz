@@ -33,6 +33,10 @@
     width: 49%;
     display:inline-block;
     margin-right: 0;
+    
+    a {
+        text-decoration: none;
+    }
 
     .day{
         width: 100%;
@@ -57,14 +61,37 @@
         border-top: 1px solid #BDD5E3;
         margin: 0px;
         padding: 0px;
+    }
+    
+    .star_switcher {
+        float: right;
+        width: 35px;
+        background-repeat: no-repeat;
+        background-position: center;
         cursor: pointer;
     }
+    
+    img {
+        height: 16px;
+    }
+}
+
+.activity.star .star_switcher {
+    background-image: url("../default/images/star_small.png");
+}
+
+.activity.unstar .star_switcher {
+    background-image: url("../default/images/star_faded_small.png");
 }
 
 #section .module#activity_show {
     margin-left: 0;
     width: 47%;
     float:right;
+    
+    a {
+        text-decoration: none;
+    }
 
     .date {
         text-align: center;

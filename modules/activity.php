@@ -51,7 +51,7 @@ class ActivityModule extends PLModule
                                     new AIFC_User(S::user(), 'everybody'))));
 
         $c = $activities->get();
-        $c->select(ActivityInstanceSelect::base());
+        $c->select(ActivityInstanceSelect::all());
         $c->order('hour_begin');
 
         $split = $c->split('date');
@@ -91,7 +91,6 @@ class ActivityModule extends PLModule
         $activities = new ActivityInstanceFilter(new AIFC_TargetGroup(S::user()->castes(Rights::admin())->groups()));
         $c = $activities->get();
         $c->select(ActivityInstanceSelect::base());
-        trace($c);
 
         if (Env::has('admin_id'))
         {
@@ -273,7 +272,7 @@ class ActivityModule extends PLModule
 	        $a = $c->get($id);
 	        if($a === false)
             {
-                $page->assign('msg', 'Vous ne pouvez pas modifier cette activité.');
+                $page->assign('msg', 'Vous ne pouvez pas voir cette activité.');
             }
             else
             {
@@ -281,21 +280,16 @@ class ActivityModule extends PLModule
                 {
                     if (Env::t('mail_body') != '' && s::user()->id() == $a->writer()->id())
                     {
-                        foreach($a->participants() as $u)
-                        {
-                            $mail = new FrankizMailer();
-                            $mail->subject('[Mail groupé] Activité ' . $a->title() . ' du ' . $a->date() . ' à ' . $a->hour_begin());
-                            $mail->body(Env::t('mail_body'));
-                            $mail->setFrom(S::user()->bestEmail(), S::user()->displayName());
-                            $mail->AddAddress($u->bestEmail(), $u->displayName());
-                            $mail->send(false);
-                        }
+                        $mail = new FrankizMailer();
+                        $mail->subject('[Mail groupé] Activité ' . $a->title() . ' du ' . $a->date() . ' à ' . $a->hour_begin());
+                        $mail->body(Env::t('mail_body'));
+                        $mail->setFrom(S::user()->bestEmail(), S::user()->displayName());
+                        $mail->toUserFilter(new UserFilter(new UFC_ActivityInstance($a->id())));
+                        $mail->sendLater(false);
                     }
                     else
                         $page->assign('msg', 'Votre mail n\'est pas rempli.');
                 }
-                $options[ActivityInstance::SELECT_PARTICIPANTS] = array();
-                $a->select($options);
                 $page->assign('user', s::user());
                 $page->assign('id', $id);
 	            $page->assign('activity', $a);
@@ -491,13 +485,11 @@ class ActivityModule extends PLModule
                     $ai->comment($json->comment);
                     $ai->begin($begin);
                     $ai->end($end);
-                    $ai->replace();
                 }
                 else
                 {
                     $ai->begin($begin);
                     $ai->end($end);
-                    $ai->replace();
 
                     $a = $ai->activity();
                     $a->title($json->title);

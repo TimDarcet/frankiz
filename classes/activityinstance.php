@@ -59,8 +59,6 @@ class ActivityInstanceSelect extends Select
     public static function base($subs = null) {
         return new ActivityInstanceSelect(self::$natives,
                               array('writer' => UserSelect::base(),
-                                    'target' => CasteSelect::group(),
-                                    'origin' => GroupSelect::base(),
                                   'activity' => ActivitySelect::base()));
     }
 
@@ -72,8 +70,6 @@ class ActivityInstanceSelect extends Select
     public static function all($subs = null) {
         return new ActivityInstanceSelect(array_merge(self::$natives, array('participants')),
                               array('writer' => UserSelect::base(),
-                                    'target' => CasteSelect::group(),
-                                    'origin' => GroupSelect::base(),
                                   'activity' => ActivitySelect::base(),
                               'participants' => UserSelect::base()));
     }
@@ -161,6 +157,17 @@ class ActivityInstance extends meta
         return $this->participants;
     }
     
+    public function participate()
+    {
+        if (is_null($this->participants))
+            return false;
+        foreach ($this->participants as $user) {
+            if($user->id() == s::user()->id())
+                return true;
+        }
+        return false;
+    }
+    
     public function regular()
     {
         return ($this->activity->days() != '');
@@ -171,15 +178,13 @@ class ActivityInstance extends meta
     {
         $users = unflatten($p);
         $values = array();
-        foreach ($users as $user)
-        {
+        foreach ($users as $user) {
             if ($user instanceof User)
                 $values[] = '(' . $this->id. ',' . $user->id() . ')';
             else if (self::isId($user))
                 $values[] = '(' . $this->id. ',' . $user . ')';
         }
-        if (!empty($values))
-        {
+        if (!empty($values)) {
             $values = implode(',', $values);
             XDB::execute('REPLACE INTO  activities_participants
                                 VALUES  ' . $values);
@@ -191,36 +196,42 @@ class ActivityInstance extends meta
     {
         $users = unflatten($p);
         $values = array();
-        foreach ($users as $user)
-        {
+        foreach ($users as $user) {
             if ($user instanceof User)
                 $values[] = '(' . $this->id. ',' . $user->id() . ')';
             else if (self::isId($user))
                 $values[] = '(' . $this->id. ',' . $user . ')';
         }
-        if (!empty($values))
-        {
+        if (!empty($values)) {
             $values = '(' . implode(',', $values) .')';
             XDB::execute('DELETE FROM  activities_participants
                                 WHERE  (id,participant) IN ' . $values);
         }
     }
 
-    public function export($bits = null) {
+    public function export($bits = null) 
+    {
         $a = parent::export($bits);
         $a['aid'] = $this->activity->id();
         $a['writer'] = array('displayName'  => $this->writer->displayName(),
-                             'id'           => $this->writer->id());
+                             'id'           => $this->writer->id(),
+                             'login'        => $this->writer->login(),
+                             'photo'        => $this->writer->photo()->src('micro'));
         $a['target'] = array('name'         => $this->activity->target_group()->name(),
                              'label'        => $this->activity->target_group()->label());
+        if ($this->activity->origin() != false) {
+            $a['origin'] = array('name'         => $this->activity->origin()->name(),
+                                 'label'        => $this->activity->origin()->label());
+            if ($this->activity->origin()->image() != false)
+                $a['origin']['image'] = $this->activity->origin()->image()->src('micro');
+        }
         $a['title'] = $this->activity->title();
         $a['description'] = $this->activity->description();
         $a['comment'] = $this->comment;
         $a['begin'] = $this->begin->format("m/d/Y H:i");
         $a['end'] = $this->end->format("m/d/Y H:i");
         $a['participants'] = array();
-        foreach ($this->participants as $user)
-        {
+        foreach ($this->participants as $user) {
             $a['participants'][$user->id()] = array('displayName'  => $user->displayName(),
                                                     'id'           => $user->id());
             if($user->id() == s::user()->id())

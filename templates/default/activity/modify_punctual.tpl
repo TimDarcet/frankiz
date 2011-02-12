@@ -47,19 +47,24 @@
 
         <tr>
             <td>
-                Début :
+                Date
             </td>
             <td>
-                <input type='text' name='begin' value="{$activity->begin()|datetime:'Y-m-d H:i:s'}" />
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                Fin :
-            </td>
-            <td>
-                <input type='text' name='end' value="{$activity->end()|datetime:'Y-m-d H:i:s'}" />
+                du <input type="text" name="begin" id="begin" value=""
+                    required {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$).*"{/literal}/>
+                à  <input type="text" name="end" id="end" value=""
+                    required {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$).*"{/literal}/>
+                {assign}
+                <script>{literal}
+                $(function() {
+                    var begin = new Date('{/literal}{$activity->begin()|datetime:'m/d/Y H:i'}{literal}');
+                    var end = new Date('{/literal}{$activity->end()|datetime:'m/d/Y H:i'}{literal}');
+                    $("#begin").datetimepicker({minDate: new Date(), defaultDate: begin});
+                    $("#begin").datetimepicker('setDate', begin);
+                    $("#end").datetimepicker({ minDate: new Date(), defaultDate: end});
+                    $("#end").datetimepicker('setDate', end);
+                });
+                {/literal}</script>
             </td>
         </tr>
 

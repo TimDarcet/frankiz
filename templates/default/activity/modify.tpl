@@ -22,11 +22,6 @@
 
 {js src="activities.js"}
 
-<div class="info">
-    Pour toute remarque particulière, envoyer un mail à <a href="mailto:web@frankiz.polytechnique.fr">web@frankiz</a><br />
-    Toutes les modifications sont automatiquement prises en compte.
-</div>
-
 <div class="msg hide">
     {$msg}
 </div>
@@ -40,7 +35,7 @@
     <form enctype="multipart/form-data" method="post" action="activity/modify" id="activity_modify">
         <div class="module">
             <div class="head">
-               Sélectionner l'activité à modifier
+               Sélectionner l'activité à modifier <span class="helper" target="activity/modify" />
             </div>
 
             <div class="body">

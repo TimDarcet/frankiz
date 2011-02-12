@@ -38,7 +38,7 @@
 <form enctype="multipart/form-data" method="post" action="activity/regular/new">
     <div class="module">
         <div class="head">
-           Nouvelle activité régulière
+           Nouvelle activité régulière <span class="helper" target="activity/regular/new" />
         </div>
 
         <div class="body">
@@ -48,7 +48,7 @@
                         Pour :
                     </td>
                     <td>
-                        {include file="target_picker.tpl"|rel id="activity"}
+                        {include file="target_picker.tpl"|rel id="activity" group_perso=true only_admin=true}
                     </td>
                 </tr>
 
