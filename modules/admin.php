@@ -57,15 +57,19 @@ class AdminModule extends PlModule
         $page->changeTpl('admin/index.tpl');
     }
 
-    function handler_su($page, $uid=-2)
+    function handler_su($page, $uid = null)
     {
         if (S::has('suid')) {
             $page->kill("Déjà en SUID !!!");
         }
-        
+
+        if ($uid === null) {
+            throw new Exception("You forgot to pass the uid you want to impersonate");
+        }
+
         $user = new UserFilter(new UFC_Uid($uid));
         $user = $user->get(true);
-        
+
         if($user !== false){
             $user->select(UserSelect::login());
             if(!Platal::session()->startSUID($user)) {
@@ -73,7 +77,7 @@ class AdminModule extends PlModule
             } else {
                 pl_redirect('home');
             }
-        } 
+        }
         else {
             throw new Exception("Impossible de faire un SUID sur " . $uid);
         }
