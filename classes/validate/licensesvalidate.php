@@ -60,12 +60,12 @@ class LicensesValidate extends ItemValidate
 
     public function show()
     {
-        return 'validate/form.show.license.tpl';
+        return 'validate/form.show.licenses.tpl';
     }
 
     public function editor()
     {
-        return 'validate/form.edit.license.tpl';
+        return 'validate/form.edit.licenses.tpl';
     }
 
     public function handle_editor()
@@ -79,7 +79,7 @@ class LicensesValidate extends ItemValidate
         if (is_null($this->writer->bestEmail()))
             $this->writer->select(User::SELECT_BASE);
 
-        $mail = new FrankizMailer('validate/mail.admin.license.tpl');
+        $mail = new FrankizMailer('validate/mail.admin.licenses.tpl');
         $mail->assign('user', $this->writer->displayName());
         $mail->assign('software_name', $this->softwareName());
 
@@ -94,7 +94,7 @@ class LicensesValidate extends ItemValidate
         if (is_null($this->writer->bestEmail()))
             $this->writer->select(User::SELECT_BASE);
 
-        $mail = new FrankizMailer('validate/mail.valid.license.tpl');
+        $mail = new FrankizMailer('validate/mail.valid.licenses.tpl');
         $mail->assign('isok', $isok);
         $mail->assign('software_name', $this->softwareName());
         if (Env::has("ans"))

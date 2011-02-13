@@ -1,6 +1,6 @@
 {**************************************************************************}
 {*                                                                        *}
-{*  Copyright (C) 2010 Binet Réseau                                       *}
+{*  Copyright (C) 2009 Binet RÃ©seau                                       *}
 {*  http://www.polytechnique.fr/eleves/binets/reseau/                     *}
 {*                                                                        *}
 {*  This program is free software; you can redistribute it and/or modify  *}
@@ -20,20 +20,24 @@
 {*                                                                        *}
 {**************************************************************************}
 
-
-Voici {if count($keys) == 1}ta clé{/if}{if count($keys) > 1}tes clés{/if} de licence pour {$software_name} :
-
-{foreach from=keys item=key}
----------------------------------------
-{$key}
----------------------------------------
-{/foreach}
-
-Tu peux télécharger {$software_name} suf ftp://enez/
-
-{$comm|smarty:nodefaults}
-
-Cordialement,
-Le BR
+<tr>
+    <td></td>
+    <td>
+        <table>
+            <tr>
+                <td>
+                    {$item->user()->fullName()}
+                </td>
+                <td>
+                    {$item->softwareName()}
+                </td>
+                <td>
+                    {$item->reason()}
+                </td>
+            </tr>
+            </table>
+        </div>
+    </td>
+</tr>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

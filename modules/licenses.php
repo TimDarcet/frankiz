@@ -85,7 +85,7 @@ class licensesModule extends PLModule
         $softwares = License::getSoftwares();
         $keys = array();
         
-        if(Post::has('disagree') || (!$no_reason && (!Post::has('reason') || Post::v('reason')=="")) || !Post::has('software') || !in_array(Post::v('software'), array_keys($softwares))){
+        if(Post::has('disagree') || (!$no_reason && !Post::has('resend') && (!Post::has('reason') || Post::v('reason')=="")) || !Post::has('software') || !in_array(Post::v('software'), array_keys($softwares))){
             $this->handler_licenses($page);
         } else {
             $page->changeTpl('licenses/licenses_final.tpl');

@@ -128,9 +128,9 @@ class License extends Meta
         if($uid != null){
             $this->uid = $uid;
             $this->user = null;
-            XDB::request("UPDATE  msdna_keys
-                             SET  uid = {?}
-                           WHERE  id = {?}", $uid, $this->id());
+            XDB::query("UPDATE  msdnaa_keys
+                           SET  uid = {?}
+                         WHERE  id = {?}", $uid, $this->id());
         }
         return $this->uid;
     }
@@ -163,7 +163,10 @@ class License extends Meta
     
     public function give($user)
     {
-        $this->uid($user->id());
+        if(!$this->admin())
+        {
+            $this->uid($user->id());
+        }
         if (is_null($this->user()->bestEmail())){
             $this->user()->select(User::SELECT_BASE);
         }
@@ -175,10 +178,10 @@ class License extends Meta
         if($user == null){
             $user = S::user();
         }
-        
-        $mail = new FrankizMailer('licenses/license_key.mail.tpl');
-        $mail->assign('software_name', $this->softwareName());
+
+        $mail = new FrankizMailer('licenses/licenses_key.mail.tpl');
         $mail->assign('keys', $keys);
+        $mail->assign('multiple', count($keys) > 1);
         $mail->assign('pub_domain', in_array(Post::v('software'), License::getDomainSoftwares()));
         
         $mail->Subject = '[Frankiz] Ta licence MSDNAA';
@@ -204,7 +207,7 @@ class License extends Meta
             $req[] = XDB::format($key . ' = {?}', $value);
         }
         $keys = XDB::query('SELECT * FROM msdnaa_keys WHERE ' . implode(' AND ', $req))->fetchAllAssoc();
-        foreach($keys as $key)
+        foreach($keys as $key => $value)
         {
             $keys[$key] = new License($keys[$key]);
         }
@@ -217,7 +220,7 @@ class License extends Meta
     
     public static function adminKey($software){
         $keys = self::fetch(array('software' => $software, 'admin' => true));
-        if(count($keys) == 1) {
+        if(count($keys) >= 1) {
             return array_pop($keys);
         }
         return false;
