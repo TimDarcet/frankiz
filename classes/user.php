@@ -203,6 +203,11 @@ class UserSelect extends Select
                                      'rooms' => RoomSelect::all(),
                                    'studies' => Formation::SELECT_BASE));
     }
+
+    public static function birthday() {
+        return new UserSelect(array_merge(self::$natives, array('studies')),
+                              array('studies' => Formation::SELECT_BASE));
+    }
 }
 
 class User extends Meta

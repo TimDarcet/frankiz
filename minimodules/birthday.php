@@ -26,6 +26,11 @@ class BirthdayMiniModule extends FrankizMiniModule
         return 'minimodules/birthday/birthday.tpl';
     }
 
+    public function css()
+    {
+        return 'minimodules/birthday.css';
+    }
+
     public function title()
     {
         return 'Joyeux anniversaire!';
@@ -34,10 +39,18 @@ class BirthdayMiniModule extends FrankizMiniModule
     public function run()
     {
         $uf = new UserFilter(new PFC_And(new UFC_Birthday('=', new FrankizDateTime()),
-                                            new UFC_Group(Group::from('on_platal'), Rights::member())));
-        $us = $uf->get()->select(UserSelect::base());
+                                            new UFC_OnPlatal()));
+        $us = $uf->get();
+        $us->select(UserSelect::birthday());
+        
+        $users = array();
+        foreach ($us as $u) {
+            $study = $u->studies();
+            $first = array_shift($study);
+            $users[$first->formation()->label()][$first->promo()][] = $u;
+        }
 
-        $this->assign('users', $us);
+        $this->assign('users', $users);
     }
 }
 

@@ -20,8 +20,20 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{foreach from=$minimodule.users item=user name=loop}
-    {$user|user}{if !$smarty.foreach.loop.last}, {/if}
+{foreach from=$minimodule.users key=formation item=promos}
+    <div class="birthday_formation">
+        <div class="formation">
+            {$formation} :
+        </div>
+        {foreach from=$promos key=promo item=users}
+            <div class="birthday_promo">
+                {$promo} :
+                {foreach from=$users item=user name=loop}
+                    {$user|user}{if !$smarty.foreach.loop.last}, {/if}
+                {/foreach}
+            </div>
+        {/foreach}
+    </div>
 {/foreach}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
