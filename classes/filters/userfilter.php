@@ -175,6 +175,17 @@ class UFC_Study extends UserFilterCondition
     }
 }
 
+/** Filters users on platal
+ */
+class UFC_OnPlatal extends UserFilterCondition
+{
+    public function buildCondition(PlFilter $uf)
+    {
+        $sub = $uf->addOnPlatalFilter();
+        return XDB::format("$sub.on_platal = true");
+    }
+}
+
 /** Filters users based on name(s)
  * @param $type Type of name field on which filtering is done (firstname, lastname, both, ...)
  * @param $text Text on which to filter
@@ -662,6 +673,26 @@ class UserFilter extends FrankizFilter
         $joins = array();
         if ($this->with_studies) {
             $joins['s'] = PlSqlJoin::inner('studies', '$ME.uid = a.uid');
+        }
+        return $joins;
+    }
+
+    /** ON PLATAL
+     */
+    private $with_onplatal = false;
+
+    public function addOnPlatalFilter()
+    {
+        $this->addStudiesFilter();
+        $this->with_onplatal = true;
+        return 'p';
+    }
+
+    protected function onPlatalJoins()
+    {
+        $joins = array();
+        if ($this->with_onplatal) {
+            $joins['p'] = PlSqlJoin::inner('promos', 's.formation_id = p.formation AND s.promo = p.promo');
         }
         return $joins;
     }
