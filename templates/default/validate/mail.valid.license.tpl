@@ -1,6 +1,6 @@
 {**************************************************************************}
 {*                                                                        *}
-{*  Copyright (C) 2009 Binet Réseau                                       *}
+{*  Copyright (C) 2010 Binet Réseau                                       *}
 {*  http://www.polytechnique.fr/eleves/binets/reseau/                     *}
 {*                                                                        *}
 {*  This program is free software; you can redistribute it and/or modify  *}
@@ -20,12 +20,25 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if !$direct}
-    <p>Ta demande de clé a bien été prise en compte. La réponse te sera transmise par courriel.</p>
+{if $isok}
+Ta licence pour {$software_name} t'a été accordée.
+
+Tu recevras ta clé par courriel dans quelques instants.
+
+{$comm|smarty:nodefaults}
+
+Cordialement,
+Le BR
+{else}
+Ta licence pour {$software_name} ne t'a pas été accordée pour la raison suivante :
+{$comm|smarty:nodefaults}
+
+
+Désolé 
+
+Cordialement,
+Le BR
 {/if}
 
-{if $direct}
-    <p>Ta clé t'a été envoyée par courriel.</p>
-{/if}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

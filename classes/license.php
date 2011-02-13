@@ -97,9 +97,25 @@ class License extends Meta
                     );
     }
     
+    public static function getRareSoftwares()
+    {
+        return array("2k3serv", "2k3access", "2k3onenote", "2k3visiopro");
+    }
+    
+    public static function getDomainSoftwares()
+    {
+        return array("winxp", "winvista", "win2k");
+    }
+    
     public function software()
     {
         return $this->software;
+    }
+    
+    public function softwareName()
+    {
+        $s = self::getSoftwares();
+        return $s[$this->software];
     }
 
     public function key()
@@ -107,8 +123,15 @@ class License extends Meta
         return $this->key;
     }
     
-    public function uid()
+    public function uid($uid = null)
     {
+        if($uid != null){
+            $this->uid = $uid;
+            $this->user = null;
+            XDB::request("UPDATE  msdna_keys
+                             SET  uid = {?}
+                           WHERE  id = {?}", $uid, $this->id());
+        }
         return $this->uid;
     }
     
@@ -137,7 +160,35 @@ class License extends Meta
     {
         return $this->admin;
     }
+    
+    public function give($user)
+    {
+        $this->uid($user->id());
+        if (is_null($this->user()->bestEmail())){
+            $this->user()->select(User::SELECT_BASE);
+        }
+        self::send(array($this), $user);
+    }
 
+    public static function send($keys, $user = null)
+    {
+        if($user == null){
+            $user = S::user();
+        }
+        
+        $mail = new FrankizMailer('licenses/license_key.mail.tpl');
+        $mail->assign('software_name', $this->softwareName());
+        $mail->assign('keys', $keys);
+        $mail->assign('pub_domain', in_array(Post::v('software'), License::getDomainSoftwares()));
+        
+        $mail->Subject = '[Frankiz] Ta licence MSDNAA';
+
+        $mail->SetFrom('msdnaa-licences@frankiz.polytechnique.fr', 'admin@windows');
+        $mail->AddAddress($user->bestEmail(), $user->displayName());
+        $mail->AddCC('msdnaa-licences@frankiz.polytechnique.fr', 'admin@windows');
+        $mail->Send(false);
+    }
+    
     /*******************************************************************************
          Data fetcher
              (batchFrom, batchSelect, fillFromArray, …)
@@ -164,6 +215,21 @@ class License extends Meta
         return self::fetch(array('uid', S::user()->id()));
     }
     
+    public static function adminKey($software){
+        $keys = self::fetch(array('software' => $software, 'admin' => true));
+        if(count($keys) == 1) {
+            return array_pop($keys);
+        }
+        return false;
+    }
+    
+    public static function givenKeys($software, $uid){
+        $keys = self::fetch(array('software' => $software, 'uid' => $uid));
+        if(count($keys) >= 1) {
+            return $keys;
+        }
+        return false;
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

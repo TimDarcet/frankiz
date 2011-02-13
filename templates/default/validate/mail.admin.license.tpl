@@ -1,6 +1,6 @@
 {**************************************************************************}
 {*                                                                        *}
-{*  Copyright (C) 2009 Binet Réseau                                       *}
+{*  Copyright (C) 2010 Binet Réseau                                       *}
 {*  http://www.polytechnique.fr/eleves/binets/reseau/                     *}
 {*                                                                        *}
 {*  This program is free software; you can redistribute it and/or modify  *}
@@ -19,13 +19,16 @@
 {*  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA               *}
 {*                                                                        *}
 {**************************************************************************}
+Bonjour,
 
-{if !$direct}
-    <p>Ta demande de clé a bien été prise en compte. La réponse te sera transmise par courriel.</p>
-{/if}
+{$user|smarty:nodefaults} a demandé une licence pour {$software_name}.
 
-{if $direct}
-    <p>Ta clé t'a été envoyée par courriel.</p>
-{/if}
+Pour valider ou non cette demande va sur la page suivante : 
+
+http://frankiz.polytechnique.fr/admin/validate
+
+
+Cordialement,
+Le Webmestre de Frankiz
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

@@ -34,16 +34,13 @@ class licensesModule extends PLModule
     public function handler_licenses($page)
     {
         $page->changeTpl('licenses/licenses.tpl');
-        $page->assign('title', "Les licences");
+        $page->assign('title', "Demande de license MSDNAA");
         $softwares = License::getSoftwares();
         $page->assign('softwares', $softwares);
 
         // list owned licenses
-        $licences = License::fetchCurrentUser();
+        $licenses = License::fetchCurrentUser();
         $page->assign('owned_licenses', $licenses);
-        
-        // list pending requests
-        $page->assign('requests', $requests);
     }
 
     public function handler_licenses_CLUF($page)
@@ -51,8 +48,8 @@ class licensesModule extends PLModule
         $softwares = License::getSoftwares();
 
         //User asked for a license, let's print the user's contract
-        if(Post::has('refus') || !Post::has('software') || !in_array(Post::s('software'), array_keys($softwares))) {
-            $this->handler_licenses_final($page);
+        if(Post::has('disagree') || !Post::has('software') || !in_array(Post::s('software'), array_keys($softwares))) {
+            $this->handler_licenses($page);
         } else {
             $page->changeTpl('licenses/licenses_CLUF.tpl');
             $page->assign('title', "Demande de licence pour {$softwares[Post::s('software')]} : Contrat utilisateur");
@@ -65,17 +62,20 @@ class licensesModule extends PLModule
     {
         $softwares = License::getSoftwares();
 
-        if(Post::has('refus') || !Post::has('accord') || !Post::has('software') || !in_array(Post::s('software'), array_keys($softwares))) {
+        if(Post::has('disagree') || !Post::has('agree') || !Post::has('software') || !in_array(Post::s('software'), array_keys($softwares))) {
             $this->handler_licenses($page);
         } else {
-            if(S::user()->hasRights(Group::from('on_platal'), Rights::member())) {
-                $this->handler_licences_final($page, true);
+            $already_has = License::givenKeys(Post::s('software'), S::user()->id());
+            $software_rare = in_array(Post::v('software'), License::getRareSoftwares());
+            if(S::user()->hasRights(Group::from('on_platal'), Rights::member()) && !$already_has && !$software_rare) {
+                $this->handler_licenses_final($page, true);
             } else {
                 $page->changeTpl('licenses/licenses_reason.tpl');
-                $page->assign('title', "Demande de license pour {$softwares[Post::v('software')]} : reason");
+                $page->assign('title', "Demande de licence pour {$softwares[Post::v('software')]} : raison");
                 $page->assign('software', Post::v('software'));
                 $page->assign('software_name', $softwares[Post::v('software')]);
-                $page->assign('software_rare', in_array(Post::v('software'), array("2k3serv", "2k3access", "2k3onenote", "2k3visiopro")));
+                $page->assign('software_rare', $software_rare);
+                $page->assign('already_has', $already_has);
             }
         }
     }
@@ -83,79 +83,35 @@ class licensesModule extends PLModule
     public function handler_licenses_final($page, $no_reason=false)
     {
         $softwares = License::getSoftwares();
+        $keys = array();
         
-        if(Post::has('refus') || (!$no_reason && (!Post::has('reason') || Post::v('reason')=="")) || !Post::has('software') || !in_array(Post::v('software'), array_keys($softwares))){
+        if(Post::has('disagree') || (!$no_reason && (!Post::has('reason') || Post::v('reason')=="")) || !Post::has('software') || !in_array(Post::v('software'), array_keys($softwares))){
             $this->handler_licenses($page);
         } else {
-            $page->changeTpl('profil/licenses_final.tpl');
-            $page->assign('title', "Les licenses");
-            
-            $admin = XDB::query('SELECT key FROM msdnaa_keys WHERE software = {?} AND admin = 1 LIMIT 1', Post::s('software'));
-            if($admin->numRows == 0){
-                // On regarde s'il y a déjà une clé ou  une demande en attente pour le software en question
-                $given = XDB::query("SELECT key FROM msdnaa_keys WHERE uid={?} AND given = 1 LIMIT 1");
-                $already_has=($given->numRows() > 0);
-                if($already_has) {
-                    $key = $given->fetchOneCell();
-                }
-
-                $pending = XDB::query("SELECT 0 FROM msdnaa_requests WHERE uid={?} AND software={?}", S::user()->id(), Post::s('software'));
-                $already_asked=($pending->numRows() > 0);
-            } else {
-                $already_has = false;
-                $already_asked = false;
-                $key = $admin->fetchOneCell();
-            }
-
-            $page->assign('already_asked', $already_asked);
-            $page->assign('already_has', $already_has);
+            $page->changeTpl('licenses/licenses_final.tpl');
+            $page->assign('title', "Demande de licence pour {$softwares[Post::v('software')]}");
             $page->assign('software', Post::s('software'));
-            $page->assign('software_name', $softwares[Post::s('software')]);
-
-            $softwares_domain = array("winxp", "winvista", "win2k");
-
-            $email = S::user()->bestEmail();
-
-            if(isset($cle)){
-                $mail = new PlMailer('profil/licenses_cle.mail.tpl');
-                $mail->assign('nom', S::v('nom'));
-                $mail->assign('prenom', S::v('prenom'));
-                $mail->assign('cle', $cle);
-                $mail->assign('pub_domaine', in_array(Post::v('software'), $softwares_domain));
-                $mail->assign('software_name', $softwares[Post::v('software')]);
-                $mail->addTo($email);
-                $mail->send();
-
-                $mail=new PlMailer('profil/licenses_cle_admin.mail.tpl');
-                $mail->assign('nom', S::v('nom'));
-                                $mail->assign('prenom', S::v('prenom'));
-                $mail->assign('promo', S::v('promo'));
-                $mail->assign('cle', $cle);
-                $mail->assign('software_name', $softwares[Post::v('software')]);
-                $mail->setFrom($email);
-                $mail->send();
+            $page->assign('software_name', $softwares[Post::s('software')]);  
+            
+            if($key = License::adminKey(Post::s('software')))
+            {
+                $key->give(S::user());
+                $page->assign('direct', true);
+            } 
+            elseif(Post::has('resend'))
+            {
+                License::send(License::givenKeys(Post::s('software'), S::user()->id()));
+                $page->assign('direct', true);
             } else {
-    /*          $mail = new PlMailer('profil/licenses_nocle.mail.tpl');
-                $mail->assign('nom', S::v('nom'));
-                $mail->assign('prenom', S::v('prenom'));
-                $mail->assign('pub_domaine', in_array(Post::v('software'), $softwares_domaine));
-                $mail->assign('software_name', $softwares[Post::v('software']));
-                $mail->addTo($mail);
-                $mail->send();
-    */
-                $mail=new PlMailer('profil/licenses_nocle_admin.mail.tpl');
-                $mail->assign('nom', S::v('nom'));
-                $mail->assign('prenom', S::v('prenom'));
-                $mail->assign('promo', S::v('promo'));
-                $mail->assign('software_name', $softwares[Post::v('software')]);
-                $mail->setFrom($email);
-                $mail->send();
-
-                //Insertion dans la DB
-                XDB::query("INSERT INTO msdnaa_requests SET reason={?}, software={?}, uid={?}", Post::v('reason'), Post::v('software'), S::user()->id());
-
+                $lv = new LicensesValidate(Post::s('software'), Post::s('reason'));
+                $v = new Validate(array(
+                    'writer'    => S::user(),
+                    'group'     => Group::from('licenses'),
+                    'item'      => $lv,
+                    'type'      => 'licenses'));
+                $v->insert();
+                $page->assign('direct', false);
             }
-
         }
     }
 
