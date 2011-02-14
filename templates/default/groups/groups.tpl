@@ -22,21 +22,21 @@
 
 <div class="threecols">
     <div class="module">
-        <div class="head">Les binets<span class="helper" target="groups/binet" /></div>
+        <div class="head"><span class="helper" target="groups/binet"></span>Les binets</div>
         <div class="body">
             {include file="groups/ns_groups.tpl"|rel ns="binet" groups=$binet user_groups=$user_binet}
         </div>
     </div>
 
     <div class="module">
-        <div class="head">Les études<span class="helper" target="groups/study" /></div>
+        <div class="head"><span class="helper" target="groups/study"></span>Les études</div>
         <div class="body">
             {include file="groups/ns_groups.tpl"|rel ns="study" groups=$study user_groups=$user_study}
         </div>
     </div>
 
     <div class="module">
-        <div class="head">Divers<span class="helper" target="groups/free" /></div>
+        <div class="head"><span class="helper" target="groups/free"></span>Divers</div>
         <div class="body">
             {include file="groups/ns_groups.tpl"|rel ns="free" groups=$free user_groups=$user_free}
         </div>

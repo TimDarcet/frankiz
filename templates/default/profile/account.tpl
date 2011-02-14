@@ -39,8 +39,8 @@
 <form enctype="multipart/form-data" method="post" action="profile/account" class="profile">
     <div class="module password">
         <div class="head">
+            <span class="helper" target="profile/account/password"></span>
             Changement du mot de passe
-            <span class="helper" target="profile/account/password" />
         </div>
         <div class="body">
             <table>
@@ -74,8 +74,8 @@
 
     <div class="module profile">
         <div class="head">
+            <span class="helper" target="profile/account/trombino"></span>
             Changement de la fiche trombino
-            <span class="helper" target="profile/account/trombino" />
         </div>
         <div class="body">
             <table>

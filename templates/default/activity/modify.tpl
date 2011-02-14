@@ -35,7 +35,8 @@
     <form enctype="multipart/form-data" method="post" action="activity/modify" id="activity_modify">
         <div class="module">
             <div class="head">
-               Sélectionner l'activité à modifier <span class="helper" target="activity/modify" />
+                <span class="helper" target="activity/modify"> </span>
+                Sélectionner l'activité à modifier
             </div>
 
             <div class="body">

@@ -22,7 +22,7 @@
 
 <div class="threecols index">
     <div class="module">
-        <div class="head">Compte<span class="helper" target="admin/index/account" /></div>
+        <div class="head"><span class="helper" target="admin/index/account"> </span>Compte</div>
         <div class="body">
             <ul>
                 <li><a href="profile/account">Modifier mon compte</a></li>
@@ -40,7 +40,7 @@
     </div>
 
     <div class="module">
-        <div class="head">Contribuer<span class="helper" target="admin/index/proposal" /></div>
+        <div class="head"><span class="helper" target="admin/index/proposal"></span>Contribuer</div>
         <div class="body">
             <ul>
                 <li><a href="proposal/news">Annonce</a></li>
@@ -53,7 +53,7 @@
     </div>
 
     <div class="module">
-        <div class="head">Groupes & Binets<span class="helper" target="admin/index/groups" /></div>
+        <div class="head"><span class="helper" target="admin/index/groups"></span>Groupes & Binets</div>
         <div class="body">
             <ul>
             {foreach from=$admin_groups|order:'score' item='group'}

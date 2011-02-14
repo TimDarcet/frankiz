@@ -31,7 +31,8 @@
 <form enctype="multipart/form-data" method="post" action="activity/participants">
     <div class="module">
         <div class="head">
-           Sélectionner l'activité <span class="helper" target="activity/participants" />
+            <span class="helper" target="activity/participants"> </span>
+            Sélectionner l'activité
         </div>
 
         <div class="body">

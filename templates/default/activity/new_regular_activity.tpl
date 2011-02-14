@@ -38,7 +38,8 @@
 <form enctype="multipart/form-data" method="post" action="activity/regular/new">
     <div class="module">
         <div class="head">
-           Nouvelle activité régulière <span class="helper" target="activity/regular/new" />
+            <span class="helper" target="activity/regular/new"> </span>
+            Nouvelle activité régulière
         </div>
 
         <div class="body">

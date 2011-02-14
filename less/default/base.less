@@ -18,6 +18,8 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+/* all the zoom:1; *display:inline; correspond to a hack for IE7. */
+
 @import "lib.less";
 
 /*******************************************************************************
@@ -100,6 +102,9 @@ a {
     display: inline-block;
     background-repeat: no-repeat;
     background-position: center;
+
+    zoom:1;
+    *display: inline;
 
     &.super {
         background-color: black;
@@ -297,6 +302,9 @@ body.disabledAside #section {
     width: 22%;
     z-index: 40;
 
+    zoom: 1;
+    *display: inline;
+
     #column4 {
         width: auto;
         padding: 0;
@@ -309,6 +317,9 @@ body.disabledAside #section {
     vertical-align: top;
     position: relative;
     width: 77%;
+
+    zoom: 1;
+    *display: inline;
 
     .module {
         position: relative;
@@ -378,6 +389,9 @@ body.disabledAside #section {
         margin: 6px;
         margin-top: 0;
         vertical-align: top;
+        
+        zoom: 1;
+        *display: inline;
 
         table {
             width: 100%;
@@ -534,6 +548,11 @@ input, textarea, select {
     }
 }
 
+input[type="checkbox"], input[type="radio"]{
+    background: transparent;
+    border: 0;
+}
+
 .checkbox {
     width: 24px;
     height: 24px;
@@ -574,6 +593,9 @@ input, textarea, select {
         text-align: left;
         margin-top: 15px;
         border-collapse: separate;
+
+        zoom: 1;
+        *display: inline;
     }
 
     .remember {

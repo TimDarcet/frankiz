@@ -22,8 +22,8 @@
 
 <div class="module admin_general">
     <div class="head">
+        <span class="helper" target="groups/admin/general"> </span>
         {$group->label()} en bref
-        <span class="helper" target="groups/admin/general" />
      </div>
      <div class="body">
         <form enctype="multipart/form-data" method="post" action="{$smarty.server.REQUEST_URI}">
@@ -82,8 +82,8 @@
 
 <div class="module admin_users">
     <div class="head">
+        <span class="helper" target="groups/admin/users"> </span>
         Membres de {$group->label()}
-        <span class="helper" target="groups/admin/users" />
      </div>
      <div class="body">
         <table>

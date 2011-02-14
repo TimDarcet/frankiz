@@ -28,8 +28,8 @@
     <div>
         {foreach from=$minimodule.activities item=activity}
             <div class="title">
-                {$activity->title()}
                  <a href="activity/participant/add/{$activity->id()}" class="right">+1</a>
+                {$activity->title()}
             </div>
             <div class="body">
                 Heures : de {$activity->hour_begin()} à {$activity->hour_end()}

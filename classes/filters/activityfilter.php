@@ -160,7 +160,7 @@ class AFC_Regular extends ActivityFilterCondition
     }
 }
 
-abstract class NewsFilterOrder extends FrankizFilterOrder
+abstract class ActivityFilterOrder extends FrankizFilterOrder
 {
 }
 
