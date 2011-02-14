@@ -192,11 +192,10 @@ while ($datas = $iter->next()) {
         if (preg_match('/^[0-9]+[a-z]?$/', $room)) {
             $room = 'X' . $room;
         }
-        try {
-            $room = new Room($room);
+        if ($room = Room::from($room)) {
             $u->addRoom($room);
-        } catch (NotAnIdException $e) {
-            echo 'Error for room ' . $datas['piece_id'];
+        } else {
+            echo 'Error for room ' . $datas['piece_id'] . "\n";
         }
     }
 

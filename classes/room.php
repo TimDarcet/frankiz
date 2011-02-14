@@ -100,6 +100,20 @@ class Room extends Meta
         return !is_object($mixed) && ($mixed !== null) && ($mixed !== '')
                                   && (preg_match('/^[A-Z]*[0-9]*[a-z]*$/', $mixed));
     }
+
+    public static function batchFrom(array $mixed)
+    {
+        $collec = new Collection();
+        if (!empty($mixed)) {
+            $iter = XDB::iterator('SELECT  rid AS id
+                                     FROM  rooms
+                                    WHERE  rid IN {?}', $mixed);
+            while ($r = $iter->next())
+                $collec->add(new self($r));
+        }
+
+        return $collec;
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
