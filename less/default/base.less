@@ -32,7 +32,7 @@ body {
     font-family: Arial, Verdana, Helvetica, sans-serif;
     background-image: url("../default/images/bkg.jpg");
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: center center;
     background-attachment:fixed;
 }
 
@@ -168,52 +168,71 @@ a {
 #header {
     position: relative;
     width: 100%;
-    height: 200px;
-
-    > .logo {
-        position: absolute;
-        top: 5px;
-        left: 40px;
-        width: 200px;
-        height: 200px;
-        background-image: url("../default/images/logo.png");
-        background-repeat: no-repeat;
-        background-position: center;
-
-        a {
-            position: absolute;
-            display: block;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10;
-        }
-    }
+    height: 100px;
 
     > .nav {
         position: absolute;
-        top: 30px;
-        right: 30px;
+        top: 0;
+        left: 0;
         width: 100%;
-        height: 230px;
+        height: 100%;
         padding: 0;
         margin: 0;
-        font-size: 1.2em;
-        text-align: right;
 
-        > .account {
-            position: relative;
-            top: -6px;
-            float: right;
-            width: 175px;
-            margin-left: 12px;
+        table {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        tbody {
+            margin: 0;
+            padding: 0;
+        }
+
+        td {
+            vertical-align: center;
+            text-align: right;
+            font-size: 1.2em;
+        }
+
+        td.logo {
+            width: 130px;
             text-align: center;
+            div {
+                position: relative;
+                height: 90px;
+                background-image: url("../default/images/logo.png");
+                background-repeat: no-repeat;
+                background-position: center;
+
+                a {
+                    position: absolute;
+                    display: block;
+                    top: 0;
+                    left: 0;
+                    height: 100%;
+                    width: 100%;
+                    z-index: 10;
+                }
+            }
+        }
+
+        td.account {
+            width: 110px;
+            text-align: center;
+            &.empty {
+                display: none;
+            }
 
             img {
-                max-width: 150px;
-                height: 160px;
+                max-width: 90px;
+                height: 90px;
             }
+        }
+
+        td.links {
+            padding-right: 20px;
         }
 
         ul {
@@ -221,32 +240,22 @@ a {
             padding: 0;
 
             li {
+                display: inline;
                 list-style: none;
                 margin-bottom: 3px;
+                text-align: right;
                 text-decoration: none;
                 text-transform: capitalize;
-    
+                margin-left: 2%;
+
                 &.log {
                     margin-top: 10px;
                 }
-    
+
                 a {
                     text-decoration: none;
                 }
             }
-        }
-    }
-
-    > .quicksearch {
-        display: none; // TODO
-        position: absolute;
-        top: 100px;
-        left: 500px;
-        width: 300px;
-        height: 25px;
-
-        input {
-            width: 200px;
         }
     }
 }
@@ -274,7 +283,7 @@ body.disabledAside #section {
 
 #content {
     position: absolute;
-    top: 230px;
+    top: 100px;
     left: 0;
     margin: 0;
     padding: 0;

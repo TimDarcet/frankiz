@@ -103,7 +103,7 @@
         </td>
     </tr></table>
 
-    {js src="groups.js"}
+    {js src="group_see.js"}
     {literal}
     <script>
         $(function() {
