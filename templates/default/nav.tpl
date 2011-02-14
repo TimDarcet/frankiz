@@ -20,29 +20,45 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if $smarty.session.auth >= AUTH_COOKIE}
-    <div class="account">
-        <a href="tol?hruid={$smarty.session.user->login()}">
-        <img src="{$smarty.session.user->image()|image:'big'|smarty:nodefaults}"
-             title="{$smarty.session.user->displayName()}" />
-        </a>
-    </div>
-{/if}
+<table>
+    <tr>
+        <td class="logo">
+            <div>
+                <a href="home/"> </a>
+            </div>
+        </td>
 
-<ul>
-    {if $smarty.session.auth >= AUTH_INTERNAL}
-        <li><a {path_to_href_attribute path="news"}>annonces</a></li>
-        <li><a {path_to_href_attribute path="activity"}>activités</a> / <a {path_to_href_attribute path="activity/timetable"}>edT</a></li>
-        <li><a {path_to_href_attribute path="groups"}>groupes & binets</a></li>
-        <li><a {path_to_href_attribute path="tol"} accesskey="t">trombino</a></li>
-    {/if}
-    {if $smarty.session.auth >= AUTH_COOKIE}
-        <li><a {path_to_href_attribute path="admin"} accesskey="g">administration</a><li>
-        <li><a {path_to_href_attribute path="exit"} accesskey="l">Se déconnecter</a></li>
-    {else}
-        <li class="log"><a {path_to_href_attribute path="login"} accesskey="l">Se connecter</a></li>
-    {/if}
-</ul>
+        <td class="links">
+            <ul>
+                {if $smarty.session.auth >= AUTH_INTERNAL}
+                    <li><a {path_to_href_attribute path="news"}>annonces</a></li>
+                    <li><a {path_to_href_attribute path="activity"}>activités</a> / <a {path_to_href_attribute path="activity/timetable"}>edT</a></li>
+                    <li><a {path_to_href_attribute path="groups"}>groupes & binets</a></li>
+                    <li><a {path_to_href_attribute path="tol"} accesskey="t">trombino</a></li>
+                {/if}
+                {if $smarty.session.auth >= AUTH_COOKIE}
+                    <li><a {path_to_href_attribute path="admin"} accesskey="g">administration</a></li>
+                {/if}
+            </ul>
+            <ul>
+                {if $smarty.session.auth >= AUTH_COOKIE}
+                    <li><a {path_to_href_attribute path="exit"} accesskey="l">Se déconnecter</a></li>
+                {else}
+                    <li class="log"><a {path_to_href_attribute path="login"} accesskey="l">Se connecter</a></li>
+                {/if}
+            </ul>
+        </td>
+
+        <td class="account {if $smarty.session.auth < AUTH_COOKIE}empty{/if}">
+            {if $smarty.session.auth >= AUTH_COOKIE}
+                <a href="tol?hruid={$smarty.session.user->login()}">
+                <img src="{$smarty.session.user->image()|image:'small'|smarty:nodefaults}"
+                     title="{$smarty.session.user->displayName()}" />
+                </a>
+            {/if}
+        </td>
+    </tr>
+</table>
 
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

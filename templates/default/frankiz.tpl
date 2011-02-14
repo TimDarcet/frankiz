@@ -37,21 +37,8 @@
             <div id="header">
                 {include file="quick_validate.tpl"|rel}
 
-                <div class="logo">
-                    <a href="home/"> </a>
-                </div>
-
                 <div class="nav">
                     {include file="nav.tpl"|rel}
-                </div>
-
-                <div class="quicksearch">
-                    <form enctype="multipart/form-data" method="post" action="tol/">
-                        <input type="hidden" name="quicksearch" value="quicksearch" />
-                        <label>Recherche rapide
-                        <input type="text" name="free" value="" />
-                        </label>
-                    </form>
                 </div>
             </div>
 
