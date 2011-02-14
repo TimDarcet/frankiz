@@ -40,11 +40,16 @@
                     <li><a {path_to_href_attribute path="admin"} accesskey="g">administration</a></li>
                 {/if}
             </ul>
-            <ul>
+            <ul class="log">
+                {smartphone}
+                    <li>
+                        <a href="profile/skin/resmartphone">Site Smartphone</a>
+                    </li>
+                {/smartphone}
                 {if $smarty.session.auth >= AUTH_COOKIE}
                     <li><a {path_to_href_attribute path="exit"} accesskey="l">Se déconnecter</a></li>
                 {else}
-                    <li class="log"><a {path_to_href_attribute path="login"} accesskey="l">Se connecter</a></li>
+                    <li><a {path_to_href_attribute path="login"} accesskey="l">Se connecter</a></li>
                 {/if}
             </ul>
         </td>

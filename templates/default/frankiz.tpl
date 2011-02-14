@@ -50,12 +50,6 @@
                     {include file="aside.tpl"|rel}
                 </div>
             </div>
-
-            {smartphone}
-                <div id="smartphone">
-                    <a href="profile/skin/resmartphone">Revenir au site SmartPhone</a>
-                </div>
-            {/smartphone}
         </div>
 
         {include file=common.devel.tpl}

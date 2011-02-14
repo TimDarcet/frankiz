@@ -110,11 +110,11 @@ a {
     }
 
     &.member {
-        background-image: url("../default/images/rights_member.png");
+        display: none;
     }
 
     &.logic {
-        background-color: LightBlue;
+        display: none;
     }
 
     &.friend {
@@ -122,12 +122,10 @@ a {
     }
 
     &.restricted {
-        background-color: yellow;
-        display: none;
+        background-image: url("../default/images/rights_member.png");
     }
 
     &.everybody {
-        background-color: white;
         display: none;
     }
 }
@@ -193,7 +191,6 @@ a {
         td {
             vertical-align: center;
             text-align: right;
-            font-size: 1.2em;
         }
 
         td.logo {
@@ -239,6 +236,17 @@ a {
             margin: 0;
             padding: 0;
 
+            &.log {
+                margin-top: 10px;
+                a {
+                    color: red;
+                    &:hover, &:active {
+                        text-decoration: none;
+                        color: @hover;
+                    }
+                }
+            }
+
             li {
                 display: inline;
                 list-style: none;
@@ -247,10 +255,7 @@ a {
                 text-decoration: none;
                 text-transform: capitalize;
                 margin-left: 2%;
-
-                &.log {
-                    margin-top: 10px;
-                }
+                font-size: 1.4em;
 
                 a {
                     text-decoration: none;
@@ -258,15 +263,6 @@ a {
             }
         }
     }
-}
-
-#smartphone {
-    position: absolute;
-    top: 15px;
-    height: 20px;
-    .alphabackground;
-
-    width: 250px;
 }
 
 
