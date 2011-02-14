@@ -35,11 +35,7 @@
 
         <div id="body">
             <div id="header">
-                {include file="quick_validate.tpl"|rel}
-
-                <div class="nav">
-                    {include file="nav.tpl"|rel}
-                </div>
+                {include file="nav.tpl"|rel}
             </div>
 
             <div id="content">

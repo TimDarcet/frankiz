@@ -29,10 +29,22 @@
     @@BACKTRACE@@
     {literal}
     <script>
-        $("#debug_hook .erreur").hide();
-        $("#debug_hook br").hide();
+        $(function() {
+            $('#debug').offset({left: $.cookie('debug_x'), top: $.cookie('debug_y')});
+
+            $("#debug_hook .erreur").hide();
+            $("#debug_hook br").hide();
+            $("#debug").draggable({
+                stop: function() {
+                    var pos = $('#debug').offset();
+                    $.cookie('debug_x', pos.left, {path: '/'});
+                    $.cookie('debug_y', pos.top, {path: '/'});
+                }
+            });
+        });
     </script>
     {/literal}
+    {js src="jquery.cookie.js"}
 </div>
 {/if}
 

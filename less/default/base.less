@@ -26,6 +26,7 @@
      0   Styles par défauts
          [ balises sans attributs ou classes sans contexte ]
 *******************************************************************************/
+
 body {
     position: relative;
     background-color: #ffffff;
@@ -76,10 +77,11 @@ a {
 }
 
 #debug {
-    position: absolute;
-    top: 20px;
-    left: 25%;
-    width: 45%;
+    position: fixed;
+    cursor: pointer;
+    top: 50px;
+    left: 50px;
+    width: 50%;
     border: 1px solid black;
     background-color: white;
     opacity: .9;
@@ -141,29 +143,26 @@ a {
 *******************************************************************************/
 
 #quick_validate {
-    position: absolute;
-    top: 0;
+    vertical-align: top;
     > div {
-        z-index: 42;
+        position: relative;
+        top: -3px;
         font-size: 14px;
         position: relative;
         width: 350px;
+        text-align: left;
         .alphabackground;
-        .border-radius-bottom-right;
+        .border-radius-bottom;
         border: 1px @color solid;
         border-top: none;
-        border-left: none;
         .requests {
             border-top: 1px @color solid;
         }
         ul {
             text-align: center;
-            margin: 0;
-            padding: 0;
-            font-size: 12px;
-            li {
-                list-style: none;
-            }
+        }
+        li {
+            font-size: 12px !important;
         }
     }
 }
@@ -173,98 +172,88 @@ a {
     width: 100%;
     height: 100px;
 
-    > .nav {
-        position: absolute;
-        top: 0;
-        left: 0;
+    table {
         width: 100%;
-        height: 100%;
-        padding: 0;
         margin: 0;
+        padding: 0;
+    }
 
-        table {
-            width: 100%;
-            margin: 0;
-            padding: 0;
-        }
+    tbody {
+        margin: 0;
+        padding: 0;
+    }
 
-        tbody {
-            margin: 0;
-            padding: 0;
-        }
+    td {
+        vertical-align: center;
+        text-align: right;
+    }
 
-        td {
-            vertical-align: center;
-            text-align: right;
-        }
+    td.logo {
+        width: 130px;
+        text-align: center;
+        div {
+            position: relative;
+            height: 90px;
+            background-image: url("../default/images/logo.png");
+            background-repeat: no-repeat;
+            background-position: center;
 
-        td.logo {
-            width: 130px;
-            text-align: center;
-            div {
-                position: relative;
-                height: 90px;
-                background-image: url("../default/images/logo.png");
-                background-repeat: no-repeat;
-                background-position: center;
-
-                a {
-                    position: absolute;
-                    display: block;
-                    top: 0;
-                    left: 0;
-                    height: 100%;
-                    width: 100%;
-                    z-index: 10;
-                }
+            a {
+                position: absolute;
+                display: block;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                z-index: 10;
             }
         }
+    }
 
-        td.account {
-            width: 110px;
-            text-align: center;
-            &.empty {
-                display: none;
-            }
-
-            img {
-                max-width: 90px;
-                height: 90px;
-            }
+    td.account {
+        width: 110px;
+        text-align: center;
+        &.empty {
+            display: none;
         }
 
-        td.links {
-            padding-right: 20px;
+        img {
+            max-width: 90px;
+            height: 90px;
         }
+    }
 
-        ul {
-            margin: 0;
-            padding: 0;
+    td.links {
+        padding-right: 20px;
+    }
 
-            &.log {
-                margin-top: 10px;
-                a {
-                    color: red;
-                    &:hover, &:active {
-                        text-decoration: none;
-                        color: @hover;
-                    }
-                }
-            }
+    ul {
+        margin: 0;
+        padding: 0;
 
-            li {
-                display: inline;
-                list-style: none;
-                margin-bottom: 3px;
-                text-align: right;
-                text-decoration: none;
-                text-transform: capitalize;
-                margin-left: 2%;
-                font-size: 1.4em;
-
-                a {
+        &.log {
+            margin-top: 10px;
+            a {
+                color: red;
+                &:hover, &:active {
                     text-decoration: none;
+                    color: @hover;
                 }
+            }
+        }
+
+        li {
+            display: inline;
+            list-style: none;
+            margin-bottom: 3px;
+            text-align: right;
+            text-decoration: none;
+            text-transform: capitalize;
+            margin-left: 2%;
+            font-size: 1.4em;
+
+            a {
+                text-decoration: none;
             }
         }
     }

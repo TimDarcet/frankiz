@@ -28,11 +28,18 @@
             </div>
         </td>
 
+    {if $quick_validate|@count > 0 || $quick_requests|@count > 0}
+        <td id="quick_validate">
+            {include file="quick_validate.tpl"|rel}
+        </td>
+    {/if}
+
         <td class="links">
             <ul>
                 {if $smarty.session.auth >= AUTH_INTERNAL}
                     <li><a {path_to_href_attribute path="news"}>annonces</a></li>
-                    <li><a {path_to_href_attribute path="activity"}>activités</a> / <a {path_to_href_attribute path="activity/timetable"}>edT</a></li>
+                    <li><a {path_to_href_attribute path="activity"}>activités</a></li>
+                    <li><a title="Emploi du Temps" {path_to_href_attribute path="activity/timetable"}>edT</a></li>
                     <li><a {path_to_href_attribute path="groups"}>groupes & binets</a></li>
                     <li><a {path_to_href_attribute path="tol"} accesskey="t">trombino</a></li>
                 {/if}
