@@ -150,29 +150,32 @@ class Group extends Meta
         return $this->name();
     }
 
+    public function addCaste(Rights $rights)
+    {
+        if ($this->castes === null)
+            $this->castes = new Collection('Caste');
+
+        $caste = new Caste(array('group' => $this, 'rights' => $rights));
+        $caste->insert();
+        $this->castes->add($caste);
+
+        return $caste;
+    }
+
     public function caste(Rights $rights = null)
     {
         if ($rights === null)
             return $this->castes;
 
-        /* /!\ Don't forget to select Castes before you try to access them
-         * Because if this method doesn't find the wanted caste, it will create it
-         * and you will get an error from the DB
+        /*
+         * /!\ Don't forget to select Castes before you try to access them
         */
 
         if ($this->castes === null)
-            $this->castes = new Collection('Caste');
+            throw new DataNotFetchedException("The castes of the Group " + $this->id() + " have not been fetched");
 
         // Find the caste corresponding to the specified $rights
-        $caste = $this->castes->filter('rights', $rights)->first();
-
-        if ($caste === false) {
-            $caste = new Caste(array('group' => $this, 'rights' => $rights));
-            $caste->insert();
-            $this->castes->add($caste);
-        }
-
-        return $caste;
+        return $this->castes->filter('rights', $rights)->first();
     }
 
     public function hasUser(User $user = null)
@@ -215,10 +218,10 @@ class Group extends Meta
 
     /*******************************************************************************
          Data fetcher
-             (batchFrom, batchSelect, fillFromArray, …)
+
     *******************************************************************************/
 
-    public function insert($id = null)
+    public function insert($id = null, $type = 'all')
     {
         if ($id == null) {
             XDB::execute('INSERT INTO groups SET gid = NULL');
@@ -229,26 +232,32 @@ class Group extends Meta
         }
 
         /*
-         * Create the main castes
+         * Create the castes
          */
-        $admins  = $this->caste(Rights::admin());
-        $members = $this->caste(Rights::member());
-        $logics  = $this->caste(Rights::logic());
-        $friends = $this->caste(Rights::friend());
+        if ($type == 'user') {
+            // A user group only needs an admin caste & a restricted caste.
+            $this->addCaste(Rights::admin());
+            $this->addCaste(Rights::restricted());
+        } else {
+            $admins  = $this->addCaste(Rights::admin());
+            $members = $this->addCaste(Rights::member());
+            $logics  = $this->addCaste(Rights::logic());
+            $friends = $this->addCaste(Rights::friend());
 
-        /*
-         * Create the 'restricted' caste
-         */
-        $restricted = new UserFilter(new UFC_Caste(array($admins, $members, $logics)));
-        $this->caste(Rights::restricted())->userfilter($restricted);
+            /*
+             * Create the 'restricted' caste
+             */
+            $restricted = new UserFilter(new UFC_Caste(array($admins, $members, $logics)));
+            $this->addCaste(Rights::restricted())->userfilter($restricted);
 
-        /*
-         * Create the 'everybody' caste
-         * It's better not to refer to the restricted caste, as we don't know in what
-         * order the bubbling is going to happen
-         */
-        $everybody = new UserFilter(new UFC_Caste(array($admins, $members, $logics, $friends)));
-        $this->caste(Rights::everybody())->userfilter($everybody);
+            /*
+             * Create the 'everybody' caste
+             * It's better not to refer to the restricted caste, as we don't know in what
+             * order the bubbling is going to happen
+             */
+            $everybody = new UserFilter(new UFC_Caste(array($admins, $members, $logics, $friends)));
+            $this->addCaste(Rights::everybody())->userfilter($everybody);
+        }
     }
 
     public static function batchFrom(array $mixed)
