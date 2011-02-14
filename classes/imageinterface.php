@@ -113,9 +113,12 @@ class ImageSizesSet
     }
 
     private static function setResize(Imagick $im, ImageSize $size, $force = false) {
-        if (!$force && $im->getImageWidth()  <= $size->x
-                    && $im->getImageHeight() <= $size->y) {
-            return null;
+        if ($im->getImageWidth() <= $size->x && $im->getImageHeight() <= $size->y) {
+            if ($force) {
+                return Image::fromImagick($im);
+            } else {
+                return null;
+            }
         }
 
         $im->thumbnailImage($size->x, $size->y, true);
