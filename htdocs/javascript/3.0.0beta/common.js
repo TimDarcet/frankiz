@@ -76,6 +76,10 @@ function showError(json) {
 
 function request(fields)
 {
+    if (!fields.url) {
+        fields = {"url": fields};
+    }
+
     if (fields.success && fields.fail)
         callback = function(json) { if (json.pl_errors || json.errors || json.status) { fields.fail(json); } else { fields.success(json); } };
     else if (fields.success && fields.fail === false)
