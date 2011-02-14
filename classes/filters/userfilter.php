@@ -117,6 +117,34 @@ class UFC_Comment extends UserFilterCondition
     }
 }
 
+/** Filters users based on promotion 
+ * @param $comparison Comparison operator (>, =, ...) 
+ * @param $promo Promotion on which the filter is based 
+ * @param $study Formation Id on which to restrict, 0 for "any formation" 
+ */ 
+class UFC_Promo extends UserFilterCondition 
+{ 
+    private $comparison; 
+    private $promo; 
+
+    public function __construct($promo, $comparison = '=') 
+    { 
+        $this->promo = $promo; 
+        $this->comparison = $comparison; 
+    } 
+
+    public function buildCondition(PlFilter $uf) 
+    { 
+        $sub = $uf->addStudiesFilter(); 
+        return XDB::format("$sub.promo $this->comparison {?}", $this->promo); 
+    } 
+
+    public function export() 
+    { 
+        return array('type' => 'promo', 'comparison' => $this->comparison, 'promo' => $this->promo); 
+    } 
+} 
+
 /** Filters users by studies
  * @param $formation_id The id of the study
  */
@@ -144,17 +172,6 @@ class UFC_Study extends UserFilterCondition
     public function export()
     {
         return array('type' => 'study', 'formation_ids' => $this->formation_ids);
-    }
-}
-
-/** Filters users on platal
- */
-class UFC_OnPlatal extends UserFilterCondition
-{
-    public function buildCondition(PlFilter $uf)
-    {
-        $sub = $uf->addOnPlatalFilter();
-        return XDB::format("$sub.on_platal = true");
     }
 }
 
