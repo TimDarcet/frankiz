@@ -12,7 +12,7 @@ $(function(){
 
     $('body').css('background-position', '50% 45%');
     $(document).scroll(function() {
-        $('body').css('background-position', '50% ' + Math.round($(this).scrollTop() / ($(this).height() - $(window).height()) * 10) +'%');
+        $('body').css('background-position', '50% ' + (45 + Math.round($(this).scrollTop() / ($(this).height() - $(window).height()) * 10)) +'%');
     });
 
     $(".wiki_textarea .wiki_slider").click(function() {
