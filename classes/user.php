@@ -660,6 +660,16 @@ class User extends Meta
         return $this->perms->hasFlagCombination($perms);
     }
 
+    public function isWeb() {
+        static $web = null;
+
+        if ($web === null) {
+            $web = Group::from('webmasters');
+        }
+
+        return ($this->hasRights($web, Rights::member()));
+    }
+
     /*******************************************************************************
          Groups
 
@@ -838,7 +848,7 @@ class User extends Meta
 
     /*******************************************************************************
          Data fetcher
-             (batchFrom, batchSelect, fillFromArray, …)
+
     *******************************************************************************/
 
     public function insert($id = null)
@@ -852,16 +862,17 @@ class User extends Meta
         }
 
         $group = new Group();
-        $group->insert();
+        $group->insert(null, 'user');
         $group->ns(Group::NS_USER);
         $group->name('user_' . $this->id());
         $group->leavable(false);
         $group->visible(false);
-        $group->label('Groupe personnel');
+        $group->label('Groupe personnel de ' . $this->fullName());
 
         XDB::execute('UPDATE account SET `group` = {?} WHERE uid = {?}', $group->id(), $this->id());
 
         $group->caste(Rights::admin())->addUser($this);
+        $group->caste(Rights::restricted())->addUser($this);
 
         $this->group = $group;
     }
