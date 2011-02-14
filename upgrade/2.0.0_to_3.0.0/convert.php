@@ -257,24 +257,38 @@ while ($datas = $iter->next()) {
                                FROM  trombino.membres AS m
                               WHERE  m.eleve_id = {?}", $u->id());
     $l = 0;
-    $groups = new Collection('Group');
+    $groups_member = new Collection('Group');
+    $groups_friend = new Collection('Group');
     while ($g_datas = $g_iter->next()) {
         $g = new Group($g_datas['binet_id']);
-        $groups->add($g);
+        if (preg_match('/ympath?isant/', $g_datas['remarque'])) {
+            $groups_friend->add($g);
+        } else {
+            $groups_member->add($g);
+        }
         $u->comments($g, conv($g_datas['remarque']));
 
         if ($g->id() == 1 && strlen(conv_name($u->nickname())) > 1) {
             $u->addStudy(0, $datas['promo'], (int) $datas['promo'] + 4, $datas['promo'], conv_name($u->nickname()));
         }
     }
-    $groups->select(GroupSelect::castes());
-    foreach ($groups as $g) {
+
+    $temp = new Collection('Group');
+    $temp->safeMerge(array($groups_member, $groups_friend));
+    $temp->select(GroupSelect::castes());
+    foreach ($groups_member as $g) {
         $g->caste(Rights::member())->addUser($u);
+    }
+    foreach ($groups_friend as $g) {
+        $g->caste(Rights::friend())->addUser($u);
     }
 
     $k++;
-    echo 'User ' . $k . '/' . $users . ' : ' . $u->id() . ' - ' . $datas['promo'] . ' - '
-                                             . $groups->count() . " groups - " . $u->login() . '   ' . (microtime(true) - $t) . "\n";
+    echo 'User ' . str_pad($k, 4, '0', STR_PAD_LEFT) . '/' . $users . ' : '
+         . str_pad($u->id(), 5, '0', STR_PAD_LEFT) . ' - ' . $datas['promo'] . ' - '
+         . str_pad($groups_member->count(), 2, '0', STR_PAD_LEFT) . " members - "
+         . str_pad($groups_friend->count(), 2, '0', STR_PAD_LEFT) . " friends - "
+         . substr(microtime(true) - $t, 0, 5) . '   ' . $u->login() . "\n";
 }
 
 echo "-----------------------------------------------\n";
