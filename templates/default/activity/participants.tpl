@@ -29,6 +29,7 @@
 {/if}
 
 <form enctype="multipart/form-data" method="post" action="activity/participants">
+    {xsrf_token_field}
     <div class="module">
         <div class="head">
             <span class="helper" target="activity/participants"> </span>

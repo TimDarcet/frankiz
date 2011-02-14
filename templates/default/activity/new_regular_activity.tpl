@@ -36,6 +36,7 @@
 
 
 <form enctype="multipart/form-data" method="post" action="activity/regular/new">
+    {xsrf_token_field}
     <div class="module">
         <div class="head">
             <span class="helper" target="activity/regular/new"> </span>

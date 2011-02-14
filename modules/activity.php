@@ -35,7 +35,7 @@ class ActivityModule extends PLModule
             'activity/participants/add'     => $this->make_hook('participants_add',     AUTH_COOKIE),
             'activity/participants/del'     => $this->make_hook('participants_del',     AUTH_COOKIE),
             'activity/ajax/get'             => $this->make_hook('ajax_get',             AUTH_INTERNAL),
-            'activity/ajax/timetable'       => $this->make_hook('ajax_timetable',       AUTH_INTERNAL),
+            'activity/ajax/timetable'       => $this->make_hook('ajax_timetable',       AUTH_PUBLIC),
             'activity/ajax/admin'           => $this->make_hook('ajax_admin',           AUTH_MDP),
             'activity/ajax/modify'          => $this->make_hook('ajax_modify',          AUTH_MDP),
         );
@@ -86,70 +86,82 @@ class ActivityModule extends PLModule
         $page->changeTpl('activity/admin.tpl');
     }
 
-    function handler_modify($page)
+    function handler_modify($page, $id = false)
     {
-        $activities = new ActivityInstanceFilter(new AIFC_TargetGroup(S::user()->castes(Rights::admin())->groups()));
+        $date = new FrankizDateTime();
+        $date->sub(new DateInterval('P1D'));
+        $activities = new ActivityInstanceFilter(
+                            new PFC_AND(new AIFC_TargetGroup(S::user()->castes(Rights::admin())->groups()),
+                                        new AIFC_END($date, AIFC_End::AFTER)));
         $c = $activities->get();
         $c->select(ActivityInstanceSelect::base());
 
-        if (Env::has('admin_id'))
+        if (Env::has('admin_id')) {
+            $id = Env::i('admin_id');
+        }
+
+        if ($id !== false)
         {
             $id = Env::i('admin_id');
 	        $a = $c->get($id);
-	        if($a === false)
-            {
-                $page->assign('msg', 'Vous ne pouvez pas modifier cette activité.');
+            
+	        if($a === false) {
+                throw new Exception("Invalid credentials");
             }
-            else
-            {
-	            if (Env::has('modify'))
-	            {
-                    try
-                    {
-                        $begin = new FrankizDateTime(Env::t('begin'));
-                        $end = new FrankizDateTime(Env::t('end'));
-                        if ($a->regular())
-                        {
 
-                            $a->comment(Env::t('comment'));
-                            $a->begin($begin);
-                            $a->end($end);
-                            $page->assign('msg', 'L\'activité a été modifiée.');
-                        }
-                        else
-                        {
-                            $a->begin($begin);
-                            $a->end($end);
-
-                            $a1 = $a->activity();
-                            $a1->title(Env::t('title', $a1->title()));
-                            $a1->description(Env::t('description', $a1->description()));
-                            $a1->replace();
-                            $page->assign('msg', 'L\'activité a été modifiée.');
-                        }
-                    }
-                    catch (Exception $e)
-                    {
-                        $page->assign('msg', 'Les dates données sont incorrectes.');
-                    }
-	            }
-                if (Env::has('delete'))
+	        if (Env::has('modify'))
+	        {
+                S::assert_xsrf_token();
+                
+                try
                 {
+                    $begin = new FrankizDateTime(Env::t('begin'));
+                    $end = new FrankizDateTime(Env::t('end'));
                     if ($a->regular())
                     {
-                        $a->delete();
+
+                        $a->comment(Env::t('comment'));
+                        $a->begin($begin);
+                        $a->end($end);
+                        $page->assign('msg', 'L\'activité a été modifiée.');
                     }
                     else
                     {
+                        $a->begin($begin);
+                        $a->end($end);
+
                         $a1 = $a->activity();
-                        $a1->delete();
-                        $a->delete();
+                        $a1->title(Env::t('title', $a1->title()));
+                        $a1->description(Env::t('description', $a1->description()));
+                        $a1->replace();
+                        $page->assign('msg', 'L\'activité a été modifiée.');
                     }
-                    $page->assign('delete', true);
                 }
-                $page->assign('id', $id);
-	            $page->assign('activity', $a);
+                catch (Exception $e)
+                {
+                    $page->assign('msg', 'Les dates données sont incorrectes.');
+                }
+	        }
+            
+            if (Env::has('delete'))
+            {
+                S::assert_xsrf_token();
+                
+                $c->remove($a);
+                if ($a->regular())
+                {
+                    $a->delete();
+                }
+                else
+                {
+                    $a1 = $a->activity();
+                    $a1->delete();
+                    $a->delete();
+                }
+                $page->assign('delete', true);
             }
+            $page->assign('id', $id);
+	        $page->assign('activity', $a);
         }
         $page->assign('activities', $c);
 
@@ -165,11 +177,13 @@ class ActivityModule extends PLModule
         $default_begin  = Env::t('begin', '00:00');
         $default_end    = Env::t('end', '00:00');
         $days           = Env::v('days');
-        $target     = Env::i('target_group_activity', '');
-        $caste      = (Env::has('target_everybody_activity'))?'everybody':'restricted';
+        $target         = Env::i('target_group_activity', '');
+        $caste          = (Env::has('target_everybody_activity'))?'everybody':'restricted';
         
         if (Env::has('send'))
         {
+            S::assert_xsrf_token();
+            
             if($title == '' || is_null($days) || $default_begin == '00:00' || 
                 $default_end == '00:00' || $target == '' ||
                 !(preg_match( '`^\d{2}:\d{2}$`' , $default_begin) && strtotime($default_begin) !== false
@@ -183,6 +197,11 @@ class ActivityModule extends PLModule
                 $days = implode(',', $days);
                 $target = new Group($target);
                 $target->select(GroupSelect::castes());
+                
+                if (!S::user()->hasRights($target, Rights::admin())) {
+                    throw new Exception("Invalid credentials");
+                }
+                
                 $a = new Activity(array(
                     'target'        => $target->caste(new Rights($caste)),
                     'origin'        => $target,
@@ -222,32 +241,29 @@ class ActivityModule extends PLModule
         if ($aid)
         {
 	        $a = $c->get($aid);
-	        if($a === false)
-            {
-                $page->assign('msg', 'Vous ne pouvez pas modifier cette activité.');
+            
+            if ($a === false) {
+                throw new Exception("Invalid credentials");
             }
-            else
-            {
-	            if (Env::has('modify'))
-	            {
-                    if (preg_match( '`^\d{2}:\d{2}$`' , Env::t('begin')) && strtotime(Env::t('begin')) !== false
-                        && preg_match( '`^\d{2}:\d{2}$`' , Env::t('end')) && strtotime(Env::t('end')) !== false)
-                    {
-                        $a->title(Env::t('title', $a->title()));
-                        $a->description(Env::t('description', $a->description()));
-                        $a->days(implode(',', Env::v('days', $a->days())));
-                        $a->default_begin(Env::t('begin') . ':00');
-                        $a->default_end(Env::t('end') . ':00');
-                        $page->assign('msg', 'L\'activité a été modifiée.');
-                    }
-                    else
-                    {
-                        $page->assign('msg', 'Les dates données sont incorrectes.');
-                    }
-	            }
-                $page->assign('aid', $aid);
-	            $page->assign('activity', $a);
-            }
+            
+	        if (Env::has('modify')) {
+                S::assert_xsrf_token();
+
+                if (preg_match( '`^\d{2}:\d{2}$`' , Env::t('begin')) && strtotime(Env::t('begin')) !== false
+                    && preg_match( '`^\d{2}:\d{2}$`' , Env::t('end')) && strtotime(Env::t('end')) !== false) {
+                    $a->title(Env::t('title', $a->title()));
+                    $a->description(Env::t('description', $a->description()));
+                    $a->days(implode(',', Env::v('days', $a->days())));
+                    $a->default_begin(Env::t('begin') . ':00');
+                    $a->default_end(Env::t('end') . ':00');
+                    $page->assign('msg', 'L\'activité a été modifiée.');
+                }
+                else {
+                    $page->assign('msg', 'Les dates données sont incorrectes.');
+                }
+	        }
+            $page->assign('aid', $aid);
+	        $page->assign('activity', $a);
         }
 
         $page->assign('activities', $c);
@@ -270,33 +286,30 @@ class ActivityModule extends PLModule
         {
             $id = Env::i('participants_id');
 	        $a = $c->get($id);
-	        if($a === false)
-            {
-                $page->assign('msg', 'Vous ne pouvez pas voir cette activité.');
+            
+            if ($a === false) {
+                throw new Exception("Invalid credentials");
             }
-            else
-            {
-                if (Env::has('mail'))
-                {
-                    if (Env::t('mail_body') != '' && s::user()->id() == $a->writer()->id())
-                    {
-                        $mail = new FrankizMailer();
-                        $mail->subject('[Mail groupé] Activité ' . $a->title() . ' du ' . $a->date() . ' à ' . $a->hour_begin());
-                        $mail->body(Env::t('mail_body'));
-                        $mail->setFrom(S::user()->bestEmail(), S::user()->displayName());
-                        $mail->toUserFilter(new UserFilter(new UFC_ActivityInstance($a->id())));
-                        $mail->sendLater(false);
-                    }
-                    else
-                        $page->assign('msg', 'Votre mail n\'est pas rempli.');
+            
+            if (Env::has('mail')) {
+                S::assert_xsrf_token();
+                
+                if (Env::t('mail_body') != '' && s::user()->id() == $a->writer()->id()) {
+                    $mail = new FrankizMailer();
+                    $mail->subject('[Mail groupé] Activité ' . $a->title() . ' du ' . $a->date() . ' à ' . $a->hour_begin());
+                    $mail->body(Env::t('mail_body'));
+                    $mail->setFrom(S::user()->bestEmail(), S::user()->displayName());
+                    $mail->toUserFilter(new UserFilter(new UFC_ActivityInstance($a->id())));
+                    $mail->sendLater(false);
                 }
-                $page->assign('user', s::user());
-                $page->assign('id', $id);
-	            $page->assign('activity', $a);
+                else
+                    $page->assign('msg', 'Votre mail n\'est pas rempli.');
             }
+            $page->assign('user', s::user());
+            $page->assign('id', $id);
+	        $page->assign('activity', $a);
         }
         $page->assign('activities', $c);
-
 
         $page->assign('title', 'Participants à une activité');
         $page->addCssLink('activity.css');
@@ -306,6 +319,13 @@ class ActivityModule extends PLModule
     function handler_participants_add($page, $id)
     {
         $a = new ActivityInstance($id);
+        $a->select(ActivityInstanceSelect::base());
+
+        if (!$a->target()->hasUser(S::user())) {
+            throw new Exception("Invalid credentials");
+        }
+        S::assert_xsrf_token();
+
         $a->add_participants(S::user()->id());
         $page->jsonAssign('participant', array('displayName' => s::user()->displayName(),
                                                         'id' => s::user()->id()));
@@ -317,6 +337,12 @@ class ActivityModule extends PLModule
     {
         $a = new ActivityInstance($id);
         $a->delete_participants(S::user()->id());
+        
+        if (!$a->target()->hasUser(S::user())) {
+            throw new Exception("Invalid credentials");
+        }
+        S::assert_xsrf_token();
+        
         $page->jsonAssign('participant', array('id' => s::user()->id()));
         $page->jsonAssign('success', true);
         return PL_JSON;
@@ -332,35 +358,43 @@ class ActivityModule extends PLModule
             $date_n = new FrankizDateTime($json->date);
             date_add($date_n, date_interval_create_from_date_string('1 day'));
             $date_n->setTime(0,0);
+            
             $activities = new ActivityInstanceFilter(
                 new PFC_And(new PFC_Or (new AIFC_User(S::user(), 'restricted'),
                                         new AIFC_User(S::user(), 'everybody')),
                             new AIFC_Period($date, $date_n)));
 
             $c = $activities->get();
-            
             $c->select(ActivityInstanceSelect::all());
             $c->order('hour_begin', false);
             $result = array();
+
             foreach($c as $a)
             {
                 $page->assign('activity', $a);
                 $result[] = $page->fetch(FrankizPage::getTplPath('minimodules/activity/single.tpl'));
             }
+
             $page->jsonAssign('success', true);
             $page->jsonAssign('activities', $result);
         }
+
         else if (isset($json->ids))
         {
             $c = new Collection('ActivityInstance');
-            $activities = array();
             foreach ($json->ids as $id)
             {
                 $c->add($id);
             }
             $c->select(ActivityInstanceSelect::all());
+            
+            $activities = array();
             foreach ($c as $a)
             {
+                if (!$a->target()->hasUser(S::user())) {
+                    throw new Exception("Invalid credentials");
+                }
+                
                 $activities[$a->id()] = $a->export();
             }
             $page->jsonAssign('success', true);
@@ -377,11 +411,17 @@ class ActivityModule extends PLModule
         {
             $a = new ActivityInstance($id);
             $a->select(ActivityInstanceSelect::base());
+            
+            if (!S::user()->hasRights($a->target()->group(), Rights::admin())) {
+                throw new Exception("Invalid credentials");
+            }
+            
             $page->assign('activity', $a);
-            if ($a !== false && $a->regular())
+            if ($a->regular())
                 $result = $page->fetch(FrankizPage::getTplPath('activity/modify_instance_regular.tpl'));
             else
                 $result = $page->fetch(FrankizPage::getTplPath('activity/modify_punctual.tpl'));
+                
             $page->jsonAssign('success', true);
             $page->jsonAssign('activity', $result);
         }
@@ -389,8 +429,14 @@ class ActivityModule extends PLModule
         {
             $a = new Activity($id);
             $a->select(ActivitySelect::base());
+            
+            if (!S::user()->hasRights($a->target()->group(), Rights::admin())) {
+                throw new Exception("Invalid credentials");
+            }
+            
             $page->assign('activity', $a);
             $result = $page->fetch(FrankizPage::getTplPath('activity/modify_regular_activity.tpl'));
+            
             $page->jsonAssign('success', true);
             $page->jsonAssign('activity', $result);
         }
@@ -398,9 +444,15 @@ class ActivityModule extends PLModule
         {
             $a = new ActivityInstance($id);
             $a->select(ActivityInstanceSelect::all());
+            
+            if (!$a->target()->hasUser(S::user())) {
+                throw new Exception("Invalid credentials");
+            }
+            
             $page->assign('activity', $a);
             $page->assign('user', s::user());
             $result = $page->fetch(FrankizPage::getTplPath('activity/participants_activity.tpl'));
+            
             $page->jsonAssign('success', true);
             $page->jsonAssign('activity', $result);
         }
@@ -476,10 +528,17 @@ class ActivityModule extends PLModule
             $id = $json->admin_id;
             $ai = new ActivityInstance($id);
             $ai->select(ActivityInstanceSelect::base());
+
+            if (!S::user()->hasRights($ai->target()->group(), Rights::admin())) {
+                throw new Exception("Invalid credentials");
+            }
+            S::assert_xsrf_token();
+
             try
             {
                 $begin = new FrankizDateTime($json->begin);
                 $end = new FrankizDateTime($json->end);
+                
                 if ($ai->regular())
                 {
                     $ai->comment($json->comment);
@@ -495,6 +554,7 @@ class ActivityModule extends PLModule
                     $a->title($json->title);
                     $a->description($json->description);
                 }
+                
                 $page->jsonAssign('success', true);
             }
             catch (Exception $e)
@@ -507,6 +567,12 @@ class ActivityModule extends PLModule
             $id = $json->aid;
             $a = new Activity($id);
             $a->select(ActivitySelect::base());
+            
+            if (!S::user()->hasRights($a->target()->group(), Rights::admin())) {
+                throw new Exception("Invalid credentials");
+            }
+            S::assert_xsrf_token();
+            
             if (preg_match( '`^\d{2}:\d{2}:\d{2}$`' , $json->begin) && strtotime($json->begin) !== false
                 && preg_match( '`^\d{2}:\d{2}:\d{2}$`' , $json->end) && strtotime($json->end) !== false)
             {
