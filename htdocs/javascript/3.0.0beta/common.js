@@ -10,14 +10,10 @@ $(function(){
 
     $.ajaxSetup({ cache: false });
 
-    // Enable moving background only for Chrome, other browsers are just to slow…
-    var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
-    if (is_chrome) {
-        $('body').css('background-position', '50% 0%');
-        $(document).scroll(function() {
-            $('body').css('background-position', '50% ' + Math.round($(this).scrollTop() / ($(this).height() - $(window).height()) * 100) +'%');
-        });
-    }
+    $('body').css('background-position', '50% 45%');
+    $(document).scroll(function() {
+        $('body').css('background-position', '50% ' + Math.round($(this).scrollTop() / ($(this).height() - $(window).height()) * 10) +'%');
+    });
 
     $(".wiki_textarea .wiki_slider").click(function() {
         //TODO
