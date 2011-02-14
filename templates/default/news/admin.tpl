@@ -22,12 +22,7 @@
 
 {js src="news.js"}
 
-<div class="info_proposal">
-    Pour toute remarque particulière, envoyer un mail à <a href="mailto:web@frankiz.polytechnique.fr">web@frankiz</a> <br />
-    Toutes les modifications sont automatiquement prises en compte.
-</div>
-
-<div class="msg_proposal hide">
+<div class="msg_proposal">
     {$msg}
 </div>
 
@@ -38,34 +33,37 @@
 
 {else}
     <form enctype="multipart/form-data" method="post" action="news/admin" id="news_admin">
-        <div class="box_proposal">
-            <div class="title">
+        {xsrf_token_field}
+        <div class="module">
+            <div class="head">
                Sélectionner l'annonce à modifier
             </div>
 
-            <table>
-                {foreach from=$all_news item=n}
-                    <tr>
-                        <td width=20%></td>
+            <div class="body">
+                <table>
+                    {foreach from=$all_news item=n}
+                        <tr>
+                            <td width=20%></td>
+                            <td>
+                                <input type="radio" name="admin_id" value="{$n->id()}" {if $id == $n->id()}checked{/if}> {$n->title()}
+                            </td>
+                        </tr>
+                    {/foreach}
+
+                    <tr class="hide">
                         <td>
-                            <input type="radio" name="admin_id" value="{$n->id()}" {if $id == $n->id()}checked{/if}> {$n->title()}
+                            Sélectionner :
+                        </td>
+                        <td>
+                            <input type="submit" name="send" value="Valider"/>
                         </td>
                     </tr>
-                {/foreach}
-
-                <tr class="hide">
-                    <td>
-                        Sélectionner :
-                    </td>
-                    <td>
-                        <input type="submit" name="send" value="Valider"/>
-                    </td>
-                </tr>
-            </table>
+                </table>
+            </div>
         </div>
 
 
-        <div class="box_proposal" id="news_show">
+        <div class="module" id="news_show">
             {if $news != null}
                 {include file="news/modify.tpl"|rel}
             {/if}

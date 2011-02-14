@@ -21,64 +21,61 @@
 {**************************************************************************}
 
 
-<div class="title">
+<div class="head">
    Annonce
 </div>
 
-<table>
-    <tr>
-        <td>
-            Titre :
-        </td>
-        <td>
-            <input type='text' name='title' value="{$news->title()}" />
-        </td>
-    </tr>
+<div class="body">
+    <table>
+        <tr>
+            <td>
+                Titre :
+            </td>
+            <td>
+                <input type='text' required name='title' value="{$news->title()}" placeholder="Titre de l'annonce" />
+            </td>
+        </tr>
 
-    <tr>
-        <td>
-            Contenu :
-        </td>
-        <td>
-            <textarea name='content' id="text_proposal" rows=30 cols=50>{$news->content()}</textarea>
-        </td>
-    </tr>
+        <tr>
+            <td>
+                Image :
+            </td>
+            <td>
+                {include file="uploader.tpl"|rel id="image"}
+            </td>
+        </tr>
 
-    <tr>
-        <td>
-            Image :
-        </td>
-        <td>
-            A faire quand les classes de Riton seront pretes
-        </td>
-    </tr>
+        <tr>
+            <td>
+                Corps :
+            </td>
+            <td>
+                {include file="wiki_textarea.tpl"|rel id="news_content" already=$news->content() placeholder="Corps de l'annonce" }
+            </td>
+        </tr>
 
-    <tr>
-        <td>
-            Dernier jour :
-        </td>
-        <td>
-            <input type='text' name='end' value="{$news->end()|datetime:'Y-m-d'}" />
-        </td>
-    </tr>
-
-    <tr>
-        <td>
-            Privé :
-        </td>
-        <td>
-            <input type="checkbox" name="priv" {if $news->priv()}checked="checked"{/if}/>
-        </td>
-    </tr>
-
-    <tr>
-        <td></td>
-        <td>
-            <input type="submit" name="modify" value="Modifier" class="hide"/>
-            <input type="submit" name="delete" value="Supprimer"/>
-        </td>
-    </tr>
-</table>
-
+        <tr>
+            <td>
+                Visible
+            </td>
+            <td>
+                de <input type="text" name="begin" id="begin" value=""
+                          required {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$).*"{/literal}/>
+                à  <input type="text" name="end" id="end" value=""
+                          required {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$).*"{/literal}/>
+                <script>{literal}
+                $(function() {
+                    var begin = new Date('{/literal}{$news->begin()|datetime:'m/d/Y H:i'}{literal}');
+                    var end = new Date('{/literal}{$news->end()|datetime:'m/d/Y H:i'}{literal}');
+                    $("#begin").datetimepicker({maxDate: "+7D", defaultDate: begin});
+                    $("#begin").datetimepicker('setDate', begin);
+                    $("#end").datetimepicker({maxDate: "+14D", defaultDate: end});
+                    $("#end").datetimepicker('setDate', end);
+                });
+                {/literal}</script>
+            </td>
+        </tr>
+    </table>
+</div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

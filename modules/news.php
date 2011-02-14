@@ -70,49 +70,59 @@ class NewsModule extends PlModule
         $page->changeTpl('news/news.tpl');
     }
 
-    function handler_admin($page)
+    function handler_admin($page, $nid = false)
     {
-        $c = new NewsFilter(new PFC_And(new NFC_Current(),
-                                        new NFC_User(S::user(), 'admin')));
-        $c = $c->get();
-        $c->select();
+        $date = new FrankizDateTime();
+        $date->sub(new DateInterval('P1D'));
+        $c = new NewsFilter(new PFC_And(new NFC_END($date, NFC_End::AFTER),
+                                        new NFC_TargetGroup(S::user()->castes(Rights::admin())->groups())));
+        $c = $c->get()->select(NewsSelect::news());
 
-        if (Env::has('admin_id'))
+        if (Env::has('admin_id')) {
+            $nid = Env::i('admin_id');
+        }
+
+        if ($nid !== false)
         {
             $id = Env::i('admin_id');
-	        $n = $c->get($id);
-	        if($n === false)
-            {
-                $page->assign('msg', 'Vous ne pouvez pas modifier cette activité.');
+	        $n = $c->get($nid);
+            
+	        if($n === false) {
+                throw new Exception("Invalid credentials or the page has been open too long.");
             }
-            else
-            {
-	            if (Env::has('modify'))
-	            {
-                    try
-                    {
-                        $end = new FrankizDateTime(Env::t('end'));
-                        $n->title(Env::t('title'));
-                        $n->content(Env::t('content'));
-                        $n->end($end);
-                        $n->priv(Env::has('priv'));
-                        $n->replace();
-                        $page->assign('msg', 'L\'annonce a été modifiée.');
-                    }
-                    catch (Exception $e)
-                    {
-                        $page->assign('msg', 'La date n\'est pas correcte.');
-                    }
-	            }
-                if (Env::has('delete'))
+
+	        if (Env::has('modify'))
+	        {
+                S::assert_xsrf_token();
+                
+                try
                 {
-                    $n->delete();
-                    $page->assign('delete', true);
+                    $end = new FrankizDateTime(Env::t('end'));
+                    $n->title(Env::t('title'));
+                    $n->content(Env::t('content'));
+                    $n->end($end);
+                    $n->priv(Env::has('priv'));
+                    $n->replace();
+                    $page->assign('msg', 'L\'annonce a été modifiée.');
                 }
-                $page->assign('id', $id);
-	            $page->assign('news', $n);
+                catch (Exception $e)
+                {
+                    $page->assign('msg', 'La date n\'est pas correcte.');
+                }
+	        }
+            
+            if (Env::has('delete'))
+            {
+                S::assert_xsrf_token();
+                
+                $c->remove($n);
+                $n->delete();
+                $page->assign('delete', true);
             }
+            $page->assign('id', $nid);
+	        $page->assign('news', $n);
         }
+        
         $page->assign('all_news', $c);
 
         $page->assign('title', 'Modifier les annonces en cours');
@@ -131,7 +141,13 @@ class NewsModule extends PlModule
         $json = json_decode(Env::v('json'));
         $id = $json->id;
         $n = new News($id);
-        $n->select();
+        $n->select(NewsSelect::news());
+        
+        if (!S::user()->hasRights($n->target()->group(), Rights::admin())) {
+            throw new Exception("Invalid credentials");
+        }
+        S::assert_xsrf_token();
+        
         $page->assign('news', $n);
         $result = $page->fetch(FrankizPage::getTplPath('news/modify.tpl'));
         $page->jsonAssign('success', true);
@@ -144,20 +160,33 @@ class NewsModule extends PlModule
         $json = json_decode(Env::v('json'));
         $id = $json->admin_id;
         $n = new News($id);
-        $n->select();
+        $n->select(NewsSelect::news());
+        
+        if (!S::user()->hasRights($n->target()->group(), Rights::admin())) {
+            throw new Exception("Invalid credentials");
+        }
+        S::assert_xsrf_token();
+        
+        $page->jsonAssign('err', S::v('xsrf_token'));
+        $page->jsonAssign('err', Env::v('token'));
+        
+        
         try
         {
+            $begin = new FrankizDateTime($json->begin);
             $end = new FrankizDateTime($json->end);
             $n->title($json->title);
-            $n->content($json->content);
+            $n->content($json->news_content);
+            $n->begin($begin);
             $n->end($end);
-            $n->priv($json->priv == 'on');
-            $n->replace();
+            if (Env::has('image'))
+                $n->image(new FrankizImage(Env::i('image')));
             $page->jsonAssign('success', true);
         }
         catch (Exception $e)
         {
             $page->jsonAssign('success', false);
+            $page->jsonAssign('error', $e->getMessage());
         }
         return PL_JSON;
     }

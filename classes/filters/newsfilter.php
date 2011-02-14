@@ -59,6 +59,25 @@ class NFC_Origin extends NewsFilterCondition
     }
 }
 
+/** Retrieves instances where the target is owned by the specified groups
+ * @param $gs Collection of Groups
+ */
+class NFC_TargetGroup extends NewsFilterCondition
+{
+    private $cids;
+
+    public function __construct(Collection $groups)
+    {
+        $cf = new CasteFilter(new PFC_And(new CFC_Holder(), new CFC_Group($groups)));
+        $this->cids = $cf->get()->ids();
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        return XDB::format("n.target IN {?}", $this->cids);
+    }
+}
+
 /** Filters news based on their target caste
  * @param $gs A Caste, a Cid or an array of it
  */
@@ -102,6 +121,29 @@ class NFC_Title extends NewsFilterCondition
         $right = XDB::formatWildcards($this->mode, $this->text);
 
         return 'n.title' . $right;
+    }
+}
+
+/** Returns news that end before (or after) a specified datetime
+ */
+class NFC_End extends NewsFilterCondition
+{
+    const AFTER  = '>=';
+    const BEFORE = '<=';
+    const EGAL   = '=';
+
+    private $sign;
+    private $end;
+
+    public function __construct(FrankizDateTime $end, $sign = self::AFTER)
+    {
+        $this->end  = $end;
+        $this->sign = $sign;
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        return XDB::format('n.end ' . $this->sign . ' {?}', $this->end->format());
     }
 }
 
