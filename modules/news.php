@@ -36,6 +36,7 @@ class NewsModule extends PlModule
 
     function handler_ajax_read($page, $ids, $state)
     {
+        S::assert_xsrf_token();
         $ids = explode(',', $ids);
         $news = new Collection('News');
         $news->add($ids);
@@ -45,6 +46,7 @@ class NewsModule extends PlModule
 
     function handler_ajax_star($page, $id, $state)
     {
+        S::assert_xsrf_token();
         $news = new News($id);
         $news->star(($state == 1));
         exit;

@@ -1,17 +1,17 @@
 $(document).ready(function() {
-	$('.news .title').click(function() {
-	    var news = $(this).closest('.news');
-	    if (news.hasClass('unread')) {
-	        var id = news.attr('nid');
-	        $.get('news/ajax/read/' + id + '/1');
-	    }
+    $('.news .title').click(function() {
+        var news = $(this).closest('.news');
+        if (news.hasClass('unread')) {
+            var id = news.attr('nid');
+            request('news/ajax/read/' + id + '/1');
+        }
 
-	    if (news.hasClass('close')) {
-	        news.switchClass('close unread', 'open read', 100);
-	    } else {
-	        news.switchClass('open', 'close', 100);
-	    }
-	});
+        if (news.hasClass('close')) {
+            news.switchClass('close unread', 'open read', 100);
+        } else {
+            news.switchClass('open', 'close', 100);
+        }
+    });
 
     $('.open_all').click(function() {
         var unread_news = $(this).siblings('ul').first().children('li.unread');
@@ -24,7 +24,7 @@ $(document).ready(function() {
         });
 
         ids = ids.join(',');
-        $.get('news/ajax/read/' + ids + '/1');
+        request('news/ajax/read/' + ids + '/1');
     });
 
     $('.news .star_switcher').click(function() {
@@ -32,11 +32,11 @@ $(document).ready(function() {
         if (news.hasClass('unstar')) {
             news.switchClass('unstar', 'star', 100);
             var id = $(this).closest('.news').attr('nid');
-            $.get('news/ajax/star/' + id + '/1');
+            request('news/ajax/star/' + id + '/1');
         } else {
             news.switchClass('star', 'unstar', 100);
             var id = $(this).closest('.news').attr('nid');
-            $.get('news/ajax/star/' + id + '/0');
+            request('news/ajax/star/' + id + '/0');
         }
     });
 
@@ -44,7 +44,7 @@ $(document).ready(function() {
     $('.hide').hide();
     if ($("#news_show").html() == '\n')
         $("#news_show").hide();
-	$("#news_admin input[name='admin_id']").change(function(){
+    $("#news_admin input[name='admin_id']").change(function(){
         request({ "url": 'news/ajax/admin'
                 ,"data": {'id': $("input[@name='admin_id']:checked").val()}
              ,"success": function(json) {
@@ -59,7 +59,7 @@ $(document).ready(function() {
              }
         });
         $("#news_show").show();
-	});
+    });
 
 });
 
