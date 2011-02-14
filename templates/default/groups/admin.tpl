@@ -28,8 +28,7 @@
      <div class="body">
         <form enctype="multipart/form-data" method="post" action="{$smarty.server.REQUEST_URI}">
         <table>
-            {assign var='perms' value=$smarty.session.user->perms()}
-            {if $perms->hasFlag('admin')}
+            {if $smarty.session.user->checkPerms('admin')}
                 <tr>
                     <td>Nom "unix":</td>
                     <td>
@@ -39,6 +38,18 @@
                             Tu n'as pas envie de toucher à ce champ !<br />
                             (Et tu ne devrais pas avoir de droit d'admin sur le site)
                         </div>
+                    </td>
+                </tr>
+            {/if}
+            {if $smarty.session.user->isWeb()}
+                <tr>
+                    <td>Namespace:</td>
+                    <td>
+                        <select name="ns">
+                            {foreach from=$nss item='ns'}
+                                <option value="{$ns}" {if $group->ns() == $ns}selected="selected"{/if}>{$ns}</option>
+                            {/foreach}
+                        </select>
                     </td>
                 </tr>
             {/if}
@@ -77,18 +88,26 @@
      <div class="body">
         <table>
             <tr>
-                <td class="users">
-                    {*include file="users_picker.tpl"|rel id="users_picker" group=$group filters='["promo"]'*}
+                <td>
+                    <form name="filters">
+                    <input type="hidden" name="gid" value="{$group->id()}" />
+                    <label>Filtrer sur la promo{include file="groups_picker.tpl"|rel id="promo" ns="promo" check=-1 already=$promos order="name"}</label>
+                    </form>
                 </td>
                 <td>
-                    <select name="caste" onchange="">
+                    <select id="caste">
                     {foreach from=$group->caste() item='caste'}
                         <option value="{$caste->id()}">{$caste->rights()}</option>
                     {/foreach}
                     </select>
-                    <div id="caste_users">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    
+                </td>
+                <td>
 
-                    </div>
                 </td>
             </tr>
         </table>

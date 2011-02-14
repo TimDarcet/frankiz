@@ -276,7 +276,7 @@ class GroupsModule extends PLModule
         $gf = new GroupFilter($filter);
         $group = $gf->get(true);
 
-        if ($group && S::user()->hasRights($group, Rights::admin())) {
+        if ($group && (S::user()->hasRights($group, Rights::admin()) || S::user()->isWeb())) {
             $group->select(GroupSelect::see());
             $page->assign('group', $group);
 
@@ -302,6 +302,14 @@ class GroupsModule extends PLModule
                 $image->label($group->label());
                 $image->caste($group->caste(Rights::everybody()));
                 $group->image($image);
+            }
+
+            if (S::user()->isWeb()) {
+                $nss = XDB::fetchColumn('SELECT ns FROM groups GROUP BY ns');
+                $page->assign('nss', $nss);
+                if (Env::has('ns')) {
+                    $group->ns(Env::t('ns'));
+                }
             }
 
             $page->assign('title', 'Administration de "' . $group->label() . '"');
