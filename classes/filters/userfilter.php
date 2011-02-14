@@ -117,34 +117,6 @@ class UFC_Comment extends UserFilterCondition
     }
 }
 
-/** Filters users based on promotion
- * @param $comparison Comparison operator (>, =, ...)
- * @param $promo Promotion on which the filter is based
- * @param $study Formation Id on which to restrict, 0 for "any formation"
- */
-class UFC_Promo extends UserFilterCondition
-{
-    private $comparison;
-    private $promo;
-
-    public function __construct($promo, $comparison = '=')
-    {
-        $this->promo = $promo;
-        $this->comparison = $comparison;
-    }
-
-    public function buildCondition(PlFilter $uf)
-    {
-        $sub = $uf->addStudiesFilter();
-        return XDB::format("$sub.promo $this->comparison {?}", $this->promo);
-    }
-
-    public function export()
-    {
-        return array('type' => 'promo', 'comparison' => $this->comparison, 'promo' => $this->promo);
-    }
-}
-
 /** Filters users by studies
  * @param $formation_id The id of the study
  */
@@ -673,26 +645,6 @@ class UserFilter extends FrankizFilter
         $joins = array();
         if ($this->with_studies) {
             $joins['s'] = PlSqlJoin::inner('studies', '$ME.uid = a.uid');
-        }
-        return $joins;
-    }
-
-    /** ON PLATAL
-     */
-    private $with_onplatal = false;
-
-    public function addOnPlatalFilter()
-    {
-        $this->addStudiesFilter();
-        $this->with_onplatal = true;
-        return 'p';
-    }
-
-    protected function onPlatalJoins()
-    {
-        $joins = array();
-        if ($this->with_onplatal) {
-            $joins['p'] = PlSqlJoin::inner('promos', 's.formation_id = p.formation AND s.promo = p.promo');
         }
         return $joins;
     }
