@@ -399,18 +399,33 @@ class UFC_Caste extends UserFilterCondition
  */
 class UFC_Room extends UserFilterCondition
 {
-    private $val;
+    private $rooms;
+    private $exact;
 
-    public function __construct($val)
+    public function __construct($rooms, $exact = false)
     {
-        $this->val = $val;
+        $this->rooms  = Room::toIds(unflatten($rooms));
+        $this->exact = $exact;
     }
 
     public function buildCondition(PlFilter $uf)
     {
         $sub = $uf->addRoomFilter();
-        $right = XDB::formatWildcards(XDB::WILDCARD_CONTAINS, $this->val);
-        return $sub . '.rid ' . $right;
+        if ($this->exact) {
+            return XDB::format("$sub.rid IN {?}", $this->rooms);
+        }
+        else {
+            if (count($this->rooms) == 0) {
+                return false;
+            } else if (count($this->rooms) == 1) {
+                return $sub . '.rid ' . XDB::formatWildcards(XDB::WILDCARD_CONTAINS, $this->rooms[0]);
+            } else {
+                foreach ($this->rooms as $room) {
+                    $temp[] = $sub . '.rid ' . XDB::formatWildcards(XDB::WILDCARD_CONTAINS, $room);
+                }
+                return '(' . implode(') ' . 'OR' . ' (', $temp) . ')';
+            }
+        }
     }
 }
 

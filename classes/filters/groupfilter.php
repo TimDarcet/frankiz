@@ -126,6 +126,41 @@ class GFC_User extends GroupFilterCondition
     }
 }
 
+/** Filters groups based on their room's id
+ * @param $rooms a collection of Rooms
+ */
+class GFC_Room extends GroupFilterCondition
+{
+    private $rooms;
+    private $exact;
+
+    public function __construct($rooms, $exact = false)
+    {
+        $this->rooms  = Room::toIds(unflatten($rooms));
+        $this->exact = $exact;
+    }
+
+    public function buildCondition(PlFilter $uf)
+    {
+        $sub = $uf->addRoomFilter();
+        if ($this->exact) {
+            return XDB::format("$sub.rid IN {?}", $this->rooms);
+        }
+        else {
+            if (count($this->rooms) == 0) {
+                return false;
+            } else if (count($this->rooms) == 1) {
+                return $sub . '.rid ' . XDB::formatWildcards(XDB::WILDCARD_CONTAINS, $this->rooms[0]);
+            } else {
+                foreach ($this->rooms as $room) {
+                    $temp[] = $sub . '.rid ' . XDB::formatWildcards(XDB::WILDCARD_CONTAINS, $room);
+                }
+                return '(' . implode(') ' . 'OR' . ' (', $temp) . ')';
+            }
+        }
+    }
+}
+
 abstract class GroupFilterOrder extends FrankizFilterOrder
 {
 }
@@ -204,6 +239,27 @@ class GroupFilter extends FrankizFilter
         if ($this->with_user)
             $joins['cu'] = PlSqlJoin::left('castes_users', '$ME.cid = c.cid');
 
+        return $joins;
+    }
+    
+
+    /** ROOM
+     */
+    private $with_room = false;
+    
+    public function addRoomFilter()
+    {
+        $this->with_room = true;
+        return 'r';
+    }
+    
+    protected function roomJoins()
+    {
+        $joins = array();
+        if ($this->with_room) {
+            $joins['rg'] = PlSqlJoin::left('rooms_groups', '$ME.gid = g.gid');
+            $joins['r']  = PlSqlJoin::left('rooms', '$ME.rid = rg.rid');
+        }
         return $joins;
     }
 
