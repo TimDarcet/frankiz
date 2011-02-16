@@ -80,7 +80,7 @@
                         <span class="rights admin"></span>
                         <span class="total"></span>
                          administrateur<span class="plural">s</span>
-                         <span class="pages"></span>
+                        <span class="page"></span>
                         <ul class="admin">
                         </ul>
                     </li>
@@ -89,7 +89,7 @@
                         <span class="rights restricted"></span>
                         <span class="total"></span>
                          membre<span class="plural">s</span>
-                         <span class="page"></span>
+                        <span class="page"></span>
                         <ul class="member">
                         </ul>
                     </li>
@@ -98,7 +98,7 @@
                         <span class="rights friend"></span>
                         <span class="total"></span>
                          sympathisant<span class="plural">s</span>
-                         <span class="pages"></span>
+                        <span class="page"></span>
                         <ul class="friend">
                         </ul>
                     </li>
