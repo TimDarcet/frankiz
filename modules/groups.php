@@ -185,6 +185,7 @@ class GroupsModule extends PLModule
     function handler_group_ajax_users($page)
     {
         $group = Json::i('gid');
+        $limit = 25;
 
         $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
         $gf = new GroupFilter($filter);
@@ -197,16 +198,21 @@ class GroupsModule extends PLModule
             if (strlen(Json::t('promo')) > 0) {
                 $group->select(GroupSelect::castes());
 
+                $order = new UFO_Name(UFO_Name::LASTNAME);
+
                 $filters = new UFC_Group(explode(';', Json::v('promo')));
 
-                $uf = new UserFilter(new PFC_And(new UFC_Caste($group->caste(Rights::admin())), $filters));
-                $admins = $uf->get();
+                $uf = new UserFilter(new PFC_And(new UFC_Caste($group->caste(Rights::admin())), $filters), $order);
+                $admins = $uf->get(new PlLimit($limit, (Json::i('admin_page', 1) - 1) * $limit));
+                $admins_total = $uf->getTotalCount();
 
-                $uf = new UserFilter(new PFC_And(new UFC_Caste(array($group->caste(Rights::member()), $group->caste(Rights::logic()))), $filters));
-                $members = $uf->get(new PlLimit(50));
+                $uf = new UserFilter(new PFC_And(new UFC_Caste(array($group->caste(Rights::member()), $group->caste(Rights::logic()))), $filters), $order);
+                $members = $uf->get(new PlLimit($limit, (Json::i('member_page', 1) - 1) * $limit));
+                $members_total = $uf->getTotalCount();
 
-                $uf = new UserFilter(new PFC_And(new UFC_Caste($group->caste(Rights::friend())), $filters));
-                $friends = $uf->get();
+                $uf = new UserFilter(new PFC_And(new UFC_Caste($group->caste(Rights::friend())), $filters), $order);
+                $friends = $uf->get(new PlLimit($limit, (Json::i('friend_page', 1) - 1) * $limit));
+                $friends_total = $uf->getTotalCount();
 
                 $all = new Collection('User');
                 $all->safeMerge(array($admins, $members, $friends));
@@ -233,12 +239,13 @@ class GroupsModule extends PLModule
                     }
                 }
 
-                $users['admin'] = $admins_export;
-                $users['member'] = $members_export;
-                $users['friend'] = $friends_export;
+                $users['admin'] = array('total' => $admins_total, 'users' => $admins_export);
+                $users['member'] = array('total' => $members_total, 'users' => $members_export);
+                $users['friend'] = array('total' => $friends_total, 'users' => $friends_export);
             }
         }
 
+        $page->jsonAssign('limit', $limit);
         $page->jsonAssign('users', $users);
         return PL_JSON;
     }

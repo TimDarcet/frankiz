@@ -33,6 +33,10 @@ function smarty_modifier_rights($rights) {
                 $label = 'Membre';
             break;
 
+            case 'restricted':
+                $label = 'Membre';
+            break;
+
             case 'friend':
                 $label = 'Sympathisant';
             break;

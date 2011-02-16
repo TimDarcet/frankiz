@@ -69,24 +69,36 @@
                     <form name="filters">
                     <input type="hidden" name="gid" value="{$group->id()}" />
                     <label>Filtrer sur la promo{include file="groups_picker.tpl"|rel id="promo" ns="promo" check=-1 already=$promos order="name"}</label>
+                    <input type="hidden" name="admin_page" value="1" />
+                    <input type="hidden" name="member_page" value="1" />
+                    <input type="hidden" name="friend_page" value="1" />
                     </form>
                 </div>
 
                 <ul class="rights_users">
                     <li>
-                        <span class="rights admin"></span>Administrateurs:
+                        <span class="rights admin"></span>
+                        <span class="total"></span>
+                         administrateur<span class="plural">s</span>
+                         <span class="pages"></span>
                         <ul class="admin">
                         </ul>
                     </li>
 
                     <li>
-                        <span class="rights member"></span>Membres:
+                        <span class="rights restricted"></span>
+                        <span class="total"></span>
+                         membre<span class="plural">s</span>
+                         <span class="page"></span>
                         <ul class="member">
                         </ul>
                     </li>
 
                     <li>
-                        <span class="rights friend"></span>Sympathisants:
+                        <span class="rights friend"></span>
+                        <span class="total"></span>
+                         sympathisant<span class="plural">s</span>
+                         <span class="pages"></span>
                         <ul class="friend">
                         </ul>
                     </li>
