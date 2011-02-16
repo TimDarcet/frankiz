@@ -1,3 +1,6 @@
+SET NAMES 'utf8';
+
+
 DROP TABLE IF EXISTS days;
 CREATE TABLE IF NOT EXISTS days (
   `name` varchar(255) DEFAULT NULL,
