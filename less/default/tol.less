@@ -71,7 +71,20 @@
 #tol_infos {
     text-align: center;
     font-weight: bold;
-    height: 16px;
+    min-height: 16px;
+    
+    .page {
+        font-weight: normal;
+        
+            a {
+            cursor: pointer;
+            text-decoration: none;
+            
+            &.selected {
+                font-weight: bold;
+            }
+        }
+    }
 }
 
 #tol_infos {

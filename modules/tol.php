@@ -158,11 +158,11 @@ class TolModule extends PLModule
 
         $fiches = array();
         if ($filter) {
-            $uf = new UserFilter($filter, array(new UFO_Promo(true), new UFO_Name(UFO_Name::LASTNAME)));
+            $uf = new UserFilter($filter, array(new UFO_Promo(false), new UFO_Name(UFO_Name::LASTNAME)));
             if ($json->mode == 'card') {
-                $users = $uf->get(new PlLimit(20,0))->select(UserSelect::base());
+                $users = $uf->get(new PlLimit(20,(JSON::i('page', 1) - 1) * 20))->select(UserSelect::base());
             } else {
-                $users = $uf->get(new PlLimit(50,0))->select(UserSelect::tol());
+                $users = $uf->get(new PlLimit(50,(JSON::i('page', 1) - 1) * 50))->select(UserSelect::tol());
             }
 
             $page->jsonAssign('total', $uf->getTotalCount());

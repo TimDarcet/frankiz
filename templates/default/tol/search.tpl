@@ -23,10 +23,12 @@
 <div id="tol_searcher">
     <form class="trombino" enctype="multipart/form-data" method="post" action="tol/">
         <input type="hidden" name="mode" value="card" />
+        <input type="hidden" name="page" value="1" />
 
         <div class="fields loading" id="tol_infos">
             <span class="empty">Pas de résultats</span>
             <span class="notempty" {if isset($total|smarty:nodefaults)}style="display: inline"{/if}><span class="count">{if isset($results|smarty:nodefaults)}{$results|@count}{/if}</span> / <span class="total">{if isset($total|smarty:nodefaults)}{$total}{/if}</span></span>
+            <div class="notempty page"></div>
         </div>
 
         <div class="fields" id="tol_names">
