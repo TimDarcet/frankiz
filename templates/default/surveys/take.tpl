@@ -23,7 +23,7 @@
 
 {$survey->title()}
 
-<form class="trombino" enctype="multipart/form-data" method="post" action="surveys/submit/{$survey->id()}">
+<form enctype="multipart/form-data" method="post" action="surveys/submit/{$survey->id()}">
 <ul>
     {foreach from=$survey->questions() item='question'}
     <li>

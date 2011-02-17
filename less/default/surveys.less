@@ -18,15 +18,88 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-#content div {
-    margin: 5px;
+@import "lib.less";
+
+#section {
+    .question {
+        position: relative;
+        padding: 5px;
+        margin: 5px;
+        background-color: @background;
+        border-bottom: 1px @border solid;
+        .nb {
+            width: 30px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            color: @color;
+        }
+        .rm {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            padding-right: 15px;
+            height: 12px;
+            cursor: pointer;
+            color: red;
+            text-align: right;
+            background-image: url("../default/images/icons/item.delete.gif");
+            background-repeat: no-repeat;
+            background-position: right;
+        }
+        input.label {
+            width: 80%;
+        }
+        textarea {
+            width: 80%;
+            height: 110px;
+        }
+        .choices {
+            list-style-type: lower-latin;
+            li {
+                margin-bottom: 4px;
+            }
+            input[type=text] {
+                width: 350px;
+            }
+        }
+        .add_choice {
+            background: url("../default/images/icons/add.png") no-repeat center;
+            margin: 2px;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            border: none;
+        }
+        .rm_choice {
+            background: url("../default/images/icons/delete.png") no-repeat center;
+            margin: 2px;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            border: none;
+        }
+        td:first-child {
+            width: 130px;
+        }
+        &.pair table {
+            border-left: 25px yellow solid;
+        }
+        &.impair table {
+            border-left: 25px red solid;
+        }
+    }
+
+    .questions {
+        border: 1px black solid;
+    }
+
+    .answers {
+        border: none;
+        border-left: 2px grey solid;
+    }
 }
 
-#content .questions {
-    border: 1px black solid;
-}
-
-#content .answers {
-    border: none;
-    border-left: 2px grey solid;
+#questions_sources {
+    display: none;
 }
