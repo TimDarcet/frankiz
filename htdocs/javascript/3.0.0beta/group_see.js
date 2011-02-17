@@ -60,7 +60,7 @@ var users = function() {
 
                         // Pages
                         if (users[rights].total > limit) {
-                            var pages = '(Pages: ';
+                            var pages = '(Pages : ';
                             for(var i = 1; i <= Math.ceil(users[rights].total / limit); i++) {
                                 var onclick = "$('input[name=" + rights + "_page]').val($(this).html()); users.search();";
                                 var selected = ($('input[name=' + rights + '_page]').val() == i) ? 'class="selected"' : '';

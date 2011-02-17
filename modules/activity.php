@@ -321,7 +321,8 @@ class ActivityModule extends PLModule
         $a = new ActivityInstance($id);
         $a->select(ActivityInstanceSelect::base());
 
-        if (!$a->target()->hasUser(S::user())) {
+        if (!S::user()->hasRights($a->target()->group(), 
+                                  ($a->target()->rights())?Rights::restricted():Rights::everybody())) {
             throw new Exception("Invalid credentials");
         }
         S::assert_xsrf_token();
@@ -336,13 +337,15 @@ class ActivityModule extends PLModule
     function handler_participants_del($page, $id)
     {
         $a = new ActivityInstance($id);
-        $a->delete_participants(S::user()->id());
-        
-        if (!$a->target()->hasUser(S::user())) {
+        $a->select(ActivityInstanceSelect::base());
+
+        if (!S::user()->hasRights($a->target()->group(), 
+                                  ($a->target()->rights())?Rights::restricted():Rights::everybody())) {
             throw new Exception("Invalid credentials");
         }
         S::assert_xsrf_token();
         
+        $a->delete_participants(S::user()->id());
         $page->jsonAssign('participant', array('id' => s::user()->id()));
         $page->jsonAssign('success', true);
         return PL_JSON;
@@ -391,7 +394,8 @@ class ActivityModule extends PLModule
             $activities = array();
             foreach ($c as $a)
             {
-                if (!$a->target()->hasUser(S::user())) {
+                if (!S::user()->hasRights($a->target()->group(), 
+                                          ($a->target()->rights())?Rights::restricted():Rights::everybody())) {
                     throw new Exception("Invalid credentials");
                 }
                 
@@ -444,8 +448,9 @@ class ActivityModule extends PLModule
         {
             $a = new ActivityInstance($id);
             $a->select(ActivityInstanceSelect::all());
-            
-            if (!$a->target()->hasUser(S::user())) {
+
+            if (!S::user()->hasRights($a->target()->group(), 
+                                      ($a->target()->rights())?Rights::restricted():Rights::everybody())) {
                 throw new Exception("Invalid credentials");
             }
             
