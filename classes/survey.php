@@ -96,7 +96,7 @@ abstract class SurveyQuestion extends Meta
                                      FROM  surveys_questions
                                     WHERE  qid IN {?}
                                  GROUP BY  qid', self::toIds($questions));
-    
+
             while ($datas = $iter->next()) {
                 $questions[$datas['id']]->decodeDatas(json_decode($datas['datas']));unset($datas['datas']);
                 $questions[$datas['id']]->fillFromArray($datas);
@@ -205,12 +205,91 @@ class SurveyQuestionChoices extends SurveyQuestion
     }
 }
 
+class SurveySchema extends Schema
+{
+    public function className() {
+        return 'Survey';
+    }
+
+    public function table() {
+        return 'surveys';
+    }
+
+    public function id() {
+        return 'sid';
+    }
+
+    public function tableAs() {
+        return 's';
+    }
+
+    public function scalars() {
+        return array('title', 'description', 'anonymous');
+    }
+
+    public function objects() {
+        return array('writer' => 'User',
+                     'origin' => 'Group',
+                     'target' => 'Caste',
+                      'begin' => 'FrankizDateTime',
+                        'end' => 'FrankizDateTime');
+    }
+
+    public function collections() {
+        return array('questions' => 'SurveyQuestion');
+    }
+}
+
+class SurveySelect extends Select
+{
+    public static $natives = array('title', 'description', 'anonymous', 'writer',
+                                     'origin', 'target', 'begin', 'end');
+    
+    public function className() {
+        return 'Survey';
+    }
+
+    public static function base($subs = null) {
+        return new CasteSelect(array('group', 'rights', 'userfilter'), $subs);
+    }
+
+    protected function handlers() {
+        return array('main' => array('title', 'description', 'anonymous', 'writer',
+                                     'origin', 'target', 'begin', 'end'),
+                'questions' => array('questions'));
+    }
+
+    protected function handler_questions(Collection $surveys, array $fields) {
+        $_surveys = array();
+        foreach ($surveys as $s) {
+            $_surveys[$s->id()] = new Collection('SurveyQuestion');
+            $_surveys[$s->id()]->order('rank', false);
+        }
+
+        $iter = XDB::iterRow("SELECT  qid, survey, type
+                                FROM  surveys_questions
+                               WHERE  survey IN {?}", $surveys->ids());
+
+        $questions = new Collection('SurveyQuestion');
+        while (list($qid, $sid, $type) = $iter->next()) {
+            $className = 'SurveyQuestion' . $type;
+            $question = new $className($qid);
+            $questions->add($question);
+            $_surveys[$sid]->add($question);
+        }
+
+        foreach ($surveys as $s) {
+            $s->fillFromArray(array('questions' => $_surveys[$s->id()]));
+        }
+
+        if (!empty($questions) && !empty($this->subs['questions'])) {
+            $questions->select($this->subs['questions']);
+        }
+    }
+}
+
 class Survey extends Meta
 {
-    const SELECT_BASE        = 0x01;
-    const SELECT_DESCRIPTION = 0x02;
-    const SELECT_DATAS       = 0x04;
-
     protected $writer      = null;
     protected $origin      = null;
     protected $target      = null;
@@ -220,56 +299,11 @@ class Survey extends Meta
     protected $end         = null;
     protected $anonymous   = null;
 
-    protected $ssid        = null;
+    protected $ssid        = null; //TODO
 
     protected $questions   = null;
 
-    public function writer()
-    {
-        return $this->writer;
-    }
-
-    public function origin()
-    {
-        return $this->origin;
-    }
-
-    public function target()
-    {
-        return $this->target;
-    }
-
-    public function title()
-    {
-        return $this->title;
-    }
-
-    public function description()
-    {
-        return $this->description;
-    }
-
-    public function begin()
-    {
-        return $this->begin;
-    }
-
-    public function end()
-    {
-        return $this->end;
-    }
-
-    public function anonymous()
-    {
-        return $this->anonymous;
-    }
-
-    public function questions()
-    {
-        return $this->questions;
-    }
-
-    public function alreadyTaken() {
+    public function alreadyTaken() { //TODO
         if ($this->ssid === null) {
             throw new DataNotFetchedException("Survey's datas haven't been fetched");
         }
@@ -343,77 +377,6 @@ class Survey extends Meta
         }
 
         XDB::commit();
-    }
-
-    public static function batchSelect(array $surveys, $options = null)
-    {
-        if (empty($surveys))
-            return;
-
-        if (empty($options)) {
-            $options =self::SELECT_BASE;
-        }
-
-        $bits = self::optionsToBits($options);
-        $surveys = array_combine(self::toIds($surveys), $surveys);
-
-        $joins = array();
-        $cols = array();
-        if ($bits & self::SELECT_BASE) {
-            $cols['s']   = array('writer', 'origin', 'target', 'title');
-            $joins['ss'] = PlSqlJoin::left('surveys_sessions', '$ME.sid = s.sid AND $ME.uid = {?}', S::user()->id());
-            $cols['ss']  = array('ssid');
-        }
-        if ($bits & self::SELECT_DESCRIPTION) {
-            $cols['s'] = array_merge($cols['s'], array('description', 'begin', 'end', 'anonymous'));
-        }
-
-        if (!empty($cols)) {
-            $iter = XDB::iterator('SELECT  s.sid AS id, ' . self::arrayToSqlCols($cols) . '
-                                     FROM  surveys AS s
-                                     ' . PlSqlJoin::formatJoins($joins, array()) . '
-                                    WHERE  s.sid IN {?}
-                                 GROUP BY  s.sid', self::toIds($surveys));
-
-            $groups = new Collection('Group');
-            $users  = new Collection('User');
-            while ($datas = $iter->next()) {
-                if ($bits & self::SELECT_BASE) {
-                    $datas['writer'] = $groups->addget($datas['writer']);
-    
-                    $datas['origin'] = $groups->addget($datas['origin']);
-                    $datas['target'] = $groups->addget($datas['target']);
-                }
-
-                $surveys[$datas['id']]->fillFromArray($datas);
-            }
-
-            if (!empty($options[self::SELECT_BASE]))
-                    $groups->select($options[self::SELECT_BASE]);
-        }
-
-        if ($bits & self::SELECT_DATAS)
-        {
-            foreach($surveys as $survey) {
-                $survey->questions = new Collection('SurveyQuestion');
-                $survey->questions->order('rank', false);
-            }
-
-            $iter = XDB::iterRow("SELECT  qid, survey, type
-                                    FROM  surveys_questions
-                                   WHERE  survey IN {?}", self::toIds($surveys));
-
-            $questions = new Collection('SurveyQuestion');
-            while (list($qid, $sid, $type) = $iter->next()) {
-                $className = 'SurveyQuestion' . $type;
-                $question = new $className($qid);
-                $questions->add($question);
-                $surveys[$sid]->questions->add($question);
-            }
-
-            if (!empty($options[self::SELECT_DATAS]))
-                $questions->select($options[self::SELECT_DATAS]);
-        }
     }
 }
 
