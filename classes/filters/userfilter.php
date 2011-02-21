@@ -221,24 +221,26 @@ class UFC_Name extends UserFilterCondition
     }
 }
 
-/** Filters users based on their mail adresse
- * @param $mail Mail adresse
+/** Filters users based on their forlives
+ * @param $forlife
+ * @param $domain
  */
-class UFC_Bestalias extends UserFilterCondition
+class UFC_Forlife extends UserFilterCondition
 {
-    private $val;
+    private $forlife;
+    private $domain;
 
-    public function __construct($val)
+    public function __construct($forlife, $domain)
     {
-        if (!is_array($val)) {
-            $val = array($val);
-        }
-        $this->val = $val;
+        $this->forlife = $forlife;
+        $this->domain = $domain;
     }
 
     public function buildCondition(PlFilter $uf)
     {
-        return XDB::format('a.bestalias IN {?}', $this->val);
+        $s = $uf->addStudiesFilter();
+        $f = $uf->addFormationsFilter();
+        return XDB::format("$s.forlife = {?} AND $f.domain = {?}", $this->forlife, $this->domain);
     }
 }
 
@@ -681,6 +683,24 @@ class UserFilter extends FrankizFilter
         return $joins;
     }
 
+    private $with_formations = false;
+
+    public function addFormationsFilter()
+    {
+        $this->with_formations = true;
+        $this->addStudiesFilter();
+        return 'f';
+    }
+
+    protected function formationsJoins()
+    {
+        $joins = array();
+        if ($this->with_formations) {
+            $joins['f'] = PlSqlJoin::inner('formations', '$ME.formation_id = s.formation_id');
+        }
+        return $joins;
+    }
+
     /** CASTES
      */
     private $with_castes = 0;
@@ -698,25 +718,6 @@ class UserFilter extends FrankizFilter
             for ($i = 1; $i <= $this->with_castes; $i++) {
                 $joins['cu' . $i] = PlSqlJoin::inner('castes_users', '$ME.uid = a.uid');
             }
-        }
-        return $joins;
-    }
-
-    /** PHONE
-     */
-    private $with_ptel = false;
-
-    public function addPhoneFilter()
-    {
-        $this->with_ptel = true;
-        return 'ptel';
-    }
-
-    protected function phoneJoins()
-    {
-        $joins = array();
-        if ($this->with_ptel) {
-            $joins['ptel'] = PlSqlJoin::left('profile_phones', '$ME.pid = $PID');
         }
         return $joins;
     }
