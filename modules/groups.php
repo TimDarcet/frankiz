@@ -47,6 +47,9 @@ class GroupsModule extends PLModule
 
         $max = $globals->groups->limit;
 
+        // Re-fetch user's groups
+        S::user()->select(UserSelect::castes());
+
         // Fetch samples of other groups
         $binet = new GroupFilter(new PFC_And(new GFC_Namespace(Group::NS_BINET), $except), new GFO_Score(true));
         $binet = $binet->get(new PlLimit($max));
