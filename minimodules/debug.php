@@ -49,6 +49,31 @@ class DebugMiniModule extends FrankizMiniModule
 
     public function run()
     {
+        // Total Users
+        $f = new UserFilter(null);
+        $users = $f->getTotalCount();
+        $this->assign('users', $users);
+
+        // Total Groups
+        $f = new GroupFilter(null);
+        $groups = $f->getTotalCount();
+        $this->assign('groups', $groups);
+
+        // Total Castes
+        $f = new CasteFilter(null);
+        $castes = $f->getTotalCount();
+        $this->assign('castes', $castes);
+
+        // Total News
+        $f = new NewsFilter(null);
+        $news = $f->getTotalCount();
+        $this->assign('news', $news);
+
+        // Total Images
+        $f = new ImageFilter(null);
+        $images = $f->getTotalCount();
+        $this->assign('images', $images);
+
         $this->assign('user', S::user());
     }
 }

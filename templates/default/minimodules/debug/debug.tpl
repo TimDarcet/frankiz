@@ -21,6 +21,32 @@
 {**************************************************************************}
 
 <div>
+    <table>
+        <tr>
+            <th>Entité</th>
+            <th>Occurences</th>
+        </tr>
+        <tr>
+            <td>Users</td>
+            <td>{$minimodule.users}</td>
+        </tr>
+        <tr>
+            <td>Groups</td>
+            <td>{$minimodule.groups}</td>
+        </tr>
+        <tr>
+            <td>Castes</td>
+            <td>{$minimodule.castes}</td>
+        </tr>
+        <tr>
+            <td>News</td>
+            <td>{$minimodule.news}</td>
+        </tr>
+        <tr>
+            <td>Images</td>
+            <td>{$minimodule.images}</td>
+        </tr>
+    </table>
     <a onclick="$(this).siblings('table').toggle()">Groupes</a>
     <table style="display: none">
         <tr>
