@@ -112,57 +112,6 @@ class ProfileModule extends PLModule
         $page->changeTpl('profile/account.tpl');
     }
 
-    public function handler_fkz($page)
-    {
-        global $DB_trombino;
-
-        $DB_trombino->query("SELECT eleves.nom, prenom, surnom, login, promo,
-                        mail, piece_id, sections.nom as section, cie, commentaire
-                               FROM eleves
-                      LEFT JOIN sections USING(section_id)
-                      WHERE eleve_id = {$_SESSION['uid']}");
-        list ($nom, $prenom, $surnom, $login, $promo, $mail, $casert, $section, $cie, $commentaire)
-            = $DB_trombino->next_row();
-
-        $page->assign('profil_fkz_nom', $nom);
-        $page->assign('profil_fkz_prenom', $prenom);
-        $page->assign('profil_fkz_surnom', $surnom);
-        $page->assign('profil_fkz_loginpoly', $login);
-        $page->assign('profil_fkz_promo', $promo);
-        $page->assign('profil_fkz_email', $mail ? $mail : "$login@poly.polytechnique.fr");
-        $page->assign('profil_fkz_casert', $casert);
-        $page->assign('profil_fkz_section', $section);
-        $page->assign('profil_fkz_compagnie', $cie);
-        $page->assign('profil_fkz_comment', $commentaire);
-
-        $DB_trombino->query("SELECT binet_id, binets.nom, membres.remarque
-                               FROM binets
-                  LEFT JOIN membres USING(binet_id)
-                      WHERE membres.eleve_id = {$_SESSION['uid']}");
-        $binets = array();
-        while (list($id, $nom, $commentaire) = $DB_trombino->next_row())
-        {
-            $binets[] = array('id' => $id,
-                              'nom' => $nom,
-                      'commentaire' => $commentaire);
-        }
-        $page->assign('profil_fkz_binets', $binets);
-
-        $DB_trombino->query("SELECT binet_id, nom
-                               FROM binets
-                   ORDER BY nom ASC");
-        $binets_tous = array();
-        while (list($id, $nom) = $DB_trombino->next_row())
-        {
-            $binets[] = array('id' => $id,
-                      'nom' => $nom);
-        }
-        $page->assign('profil_fkz_binets_tous', $binets);
-
-        $page->assign('title', "Modification du profil Frankiz");
-        $page->changeTpl('profil/fkz.tpl');
-    }
-
     public function handler_mails($page)
     {
         // TODO: use the forlife corresponding to x.edu instead of the hruid
@@ -194,171 +143,6 @@ class ProfileModule extends PLModule
         $page->changeTpl('profile/password.tpl');
     }
 
-    public static function handler_fkz_change_tol($page)
-    {
-        global $DB_trombino;
-
-        if (strlen($_POST['surnom']) < 2 && !empty($_POST['surnom']))
-        {
-            $page->append("profil_tol_results",
-                      array('type' => 'erreur',
-                            'text' => "Le surnom choisi est trop court."));
-            $erreur = true;
-        }
-        if (strlen($_POST['surnom']) > 32)
-        {
-            $page->append("profil_tol_results",
-                      array('type' => 'erreur',
-                            'text' => "Le surnom choisi est trop long."));
-            $erreur = true;
-        }
-        if(!ereg("^[a-zA-Z0-9_+.-]+@[a-zA-Z0-9.-]+$",$_POST['email']) && !empty($_POST['email']))
-        {
-            $page->append("profil_tol_results",
-                      array('type' => 'erreur',
-                            'text' => "Email non valide."));
-            $erreur = true;
-        }
-
-        if (!$erreur)
-        {
-            if ($_POST['email'] == "$login@poly" || $_POST['email'] == "$login@poly.polytechnique.fr")
-                $mail = "NULL";
-            else
-                $mail = "'{$_POST['email']}'";
-
-            $DB_trombino->query("UPDATE eleves
-                                    SET surnom = '{$_POST['surnom']}', mail = $mail
-                          WHERE eleve_id='{$_SESSION['uid']}'");
-
-            $page->append("profil_tol_results",
-                      array('type' => 'commentaire',
-                            'text' => "L'email et le surnom ont été modifiés."));
-        }
-
-        if ($_FILE['file']['tmp_name'] != '')
-        {
-            $original_size = getimagesize($_FILES['file']['tmp_name']);
-            if ($original_size && $original_size[0] <= 300 && $original_size[1] <= 400)
-            {
-                if (file_exists($filename))
-                {
-                    $page->append("profil_tol_results",
-                              array('type' => 'warning',
-                                    'text' => "Tu avais déja demandé une modification de photo, seule la demande que tu viens de poster sera prise en compte."));
-                }
-                else
-                {
-                    $page->append("profil_tol_results",
-                              array('type' => 'commentaire',
-                                    'text' => "Ta demande de changement de photo a été prise en compte et sera validée dans les meilleurs délais."));
-                    $contenu = "$nom $prenom ($promo) a demandé la modification de son image trombino <br><br>".
-                        "Pour valider ou non cette demande va sur la page suivante : <br>".
-                        "<div align='center'><a href='".BASE_URL."admin/valid_trombi.php'>".
-                        BASE_URL."admin/valid_trombi.php</a></div><br><br>".
-                        "Cordialement,<br>".
-                        "Le Tolmestre<br>";
-
-                    couriel (TROMBINOMEN_ID,
-                             "[Frankiz] Modification de l'image trombi de $nom $prenom",
-                         $contenu,
-                         $_SESSION['uid']);
-                }
-                move_uploaded_file($_FILES['file']['tmp_name'], $filename) ;
-            }
-            else
-            {
-                $page->append("profil_tol_results",
-                              array('type' => 'erreur',
-                                'text' => "Ton image n'est pas au bon format, ou est trop grande."));
-            }
-        }
-
-        $this->handler_fkz($page);
-    }
-
-    public function handler_fkz_mod_binets($page)
-    {
-        if (isset($_POST['mod_binet']))
-            $this->handler_fkz_change_binet($page);
-        if (isset($_POST['suppr_binet']))
-            $this->handler_fkz_suppr_binet($page);
-        if (isset($_POST['add_binet']))
-            $this->handler_fkz_ajout_binet($page);
-
-        $this->handler_fkz($page);
-    }
-
-    private function handler_fkz_change_binet($page)
-    {
-        global $DB_trombino;
-
-        foreach ($_POST['commentaire'] as $key => $val)
-        {
-            $DB_trombino->query("UPDATE membres
-                                    SET remarque = '$val'
-                              WHERE eleve_id = '{$_SESSION['uid']}' AND binet_id = '$key'");
-        }
-        $DB_trombino->query("UPDATE eleves
-                                SET commentaire = '{$_POST['perso']}'
-                      WHERE eleve_id='{$_SESSION['uid']}'");
-
-        $page->append("profil_tol_results",
-                  array('type' => 'commentaire',
-                        'text' => "Modification de la partie binets effectuée avec succès."));
-
-    }
-
-    private function handler_fkz_suppr_binet($page)
-    {
-        global $DB_trombino;
-
-        $count = 0;
-        if (isset($_POST['elements']))
-        {
-            $ids = "";
-            foreach ($_POST['elements'] as $id => $on) {
-                if ($on == 'on')
-                    $ids .= (empty($ids) ? "" : ",") . "'$id'";
-                $count++;
-            }
-        }
-
-        if ($count>=1)
-        {
-            $DB_trombino->query("DELETE FROM membres
-                                       WHERE binet_id IN ($ids) AND eleve_id='{$_SESSION['uid']}'");
-            $page->append('fkz_tol_results',
-                          array('type' => 'commentaire',
-                            'text' => "Suppression de $count binet(s)"));
-        }
-        else
-        {
-            $page->append('fkz_tol_results',
-                      array('type' => 'commentaire',
-                            'text' => "Aucun binet n'est sélectionné. Aucun binet n'a donc été supprimé de la liste de tes binets."));
-        }
-    }
-
-    private function handler_fkz_ajout_binet($page)
-    {
-        global $DB_trombino;
-
-        if ($_POST['liste_binet'] != 'default')
-        {
-            $DB_trombino->query("REPLACE INTO membres
-                                          SET eleve_id='{$_SESSION['uid']}',binet_id='{$_POST['liste_binet']}'");
-            $page->append('fkz_tol_results',
-                      array('type' => 'commentaire',
-                            'text' => 'Binet correctement ajouté'));
-        }
-        else
-        {
-            $page->append('fkz_tol_results',
-                      array('type' => 'warning',
-                            'text' => "Aucun binet sélectionné. Aucun binet n'a donc été ajouté à la liste de tes binets."));
-        }
-    }
 
     function handler_skin($page)
     {
@@ -429,51 +213,10 @@ class ProfileModule extends PLModule
         $page->changeTpl("profile/network.tpl");
     }
 
-    public function handler_demande_ip($page)
-    {
-        global $DB_valid;
-
-        //////
-        // Vérification que l'utilisateur n'a pas déja une demande en attente
-        //
-        $DB_valid->query("SELECT 0 FROM valid_ip WHERE eleve_id = '{$_SESSION['uid']}'");
-        $demande_en_cours = ($DB_valid->num_rows() > 0);
-
-        //////
-        // Mise en place des variables Smarty
-        //
-        $page->changeTpl('profil/demande_ip.tpl');
-        $page->assign('title', "Demande de nouvelle adresse IP");
-        $page->assign('demande_en_cours', $demande_en_cours);
-        $page->assign('nouvelle_demande', 0);
-
-        //////
-        // Traitement d'une demande éventuelle
-        //
-        if (!empty($_POST['demander']) && !$demande_en_cours)
-        {
-            $DB_valid->query("INSERT  valid_ip
-                                 SET  type = '{$_POST['type']}',
-                              raison = '{$_POST['raison']}',
-                          eleve_id = '{$_SESSION['uid']}'");
-
-            if ($_POST['type'] == 1)
-                $raison = "J'ai installé un 2ème ordinateur dans mon casert et je souhaite avoir une nouvelle adresse IP pour cette machine.";
-            else
-                $raison = $_POST['raison'];
-
-            $mail = new PlMailer('profil/demande_ip.mail.tpl');
-            $mail->assign('nom', $_SESSION['nom']);
-            $mail->assign('prenom', $_SESSION['prenom']);
-            $mail->assign('raison', $raison);
-            $mail->send();
-
-            $page->assign('nouvelle_demande', 1);
-        }
-    }
-
     public function handler_recovery($page)
     {
+        global $globals;
+
         $page->addCssLink('profile.css');
         $page->changeTpl('profile/recovery.tpl');
         $page->assign('title', 'Nouveau mot de passe');
@@ -482,18 +225,19 @@ class ProfileModule extends PLModule
         $page->assign('step', 'ask');
 
         // Step 2 : Send the recovery mail
-        if (Env::v('mail','') != '')
+        if (Env::t('mail','') != '')
         {
             // TODO: Accept forlife too
-            $uf = new UserFilter(new UFC_Bestalias(Env::v('mail')));
+            list($forlife, $domain) = explode('@', Env::t('mail'), 2);
+            $uf = new UserFilter(new UFC_Forlife($forlife, $domain));
             $user = $uf->get(true);
             if (!$user) {
                 $page->assign('error', 'true');
                 return;
             }
-            $user->select(User::SELECT_BASE);
+            $user->select(UserSelect::base());
 
-            $page->assign('email', $user->bestEmail());
+            $page->assign('email', Env::t('mail'));
             $mail = new FrankizMailer('profile/recovery.mail.tpl');
 
             $hash = rand_url_id();
@@ -501,7 +245,7 @@ class ProfileModule extends PLModule
 
             $mail->assign('hash', $hash);
             $mail->assign('uid', $user->id());
-            $mail->SetFrom('web@frankiz.polytechnique.fr', 'Les Webmestres de Frankiz');
+            $mail->SetFrom($globals->mails->web, 'Les Webmestres de Frankiz');
             $mail->AddAddress($user->bestEmail(), $user->displayName());
             $mail->subject('[Frankiz] Changement de mot de passe');
 
@@ -514,7 +258,7 @@ class ProfileModule extends PLModule
         if (Env::v('hash','') != '' && Env::v('uid','') != '')
         {
             $user = new User(Env::v('uid'));
-            $user->select(array(User::SELECT_BASE => array()));
+            $user->select(UserSelect::base());
             if (Env::v('hash') == $user->hash())
             {
                 // TODO: log the session opening
@@ -523,158 +267,16 @@ class ProfileModule extends PLModule
                 $user->hash('');
                 $user->password($new);
                 $mail->assign('new_password', $new);
-                $mail->SetFrom('web@frankiz.polytechnique.fr', 'Les Webmestres de Frankiz');
+                $mail->SetFrom($globals->mails->web, 'Les Webmestres de Frankiz');
                 $mail->AddAddress($user->bestEmail(), $user->displayName());
                 $mail->subject('[Frankiz] Nouveau mot de passe');
-    
+
                 $mail->Send($user->isEmailFormatHtml());
                 $page->assign('step', 'password');
             } else {
                 $page->assign('step', 'expired');
             }
         }
-    }
-
-    public function handler_siteweb($page)
-    {
-        $page->changeTpl('profil/siteweb.tpl');
-        $page->assign('title', "Gestion du site web personnel");
-    }
-
-    public function handler_siteweb_upload($page)
-    {
-        $page->changeTpl('profil/siteweb.tpl');
-        $page->assign('title', 'Upload de site web');
-
-        if (!isset($_FILES['file']) || !$_FILES['file']['name'])
-            return;
-
-        $chemin = BASE_PAGESPERSOS."{$_SESSION['loginpoly']}-{$_SESSION['promo']}";
-        deldir($chemin, WEBPERSO_USER);
-
-        $filename = "/tmp/{$_SESSION['loginpoly']}-{$_SESSION['promo']}-{$_FILES['file']['name']}";
-        move_uploaded_file($_FILES['file']['tmp_name'], $filename);
-        chmod($filename, 0640);
-        chgrp($filename, WEBPERSO_GROUP);
-        unzip($filename, $chemin, true, WEBPERSO_USER);
-
-        $page->assign('siteweb_updated', 1);
-    }
-
-    public function handler_siteweb_download($page)
-    {
-        global $platal, $globals;
-
-        $download_type = $platal->argv[1];
-        $chemin = "{$globals->paths->pagespersos}/{$_SESSION['loginpoly']}-{$_SESSION['promo']}";
-
-        if (is_dir($chemin))
-        {
-            download($chemin, $download_type, "siteweb-{$_SESSION['loginpoly']}-{$_SESSION['promo']}");
-            return PL_NOT_FOUND; // Peut mieux faire...
-        }
-        else
-            $page->trig("Il n'y a aucun fichier sur ton site web");
-
-        $page->changeTpl('profil/siteweb.tpl');
-        $page->assign('title', "Echec du téléchargement");
-    }
-
-    public function handler_siteweb_ext($page)
-    {
-        global $DB_valid, $DB_web;
-
-        $page->changeTpl('profil/siteweb.tpl');
-        $page->assign('title', "Demande d'acces extérieur");
-
-        $DB_valid->query("SELECT id FROM valid_pageperso WHERE eleve_id='{$_SESSION['uid']}'");
-        if ($DB_valid->num_rows() > 0)
-        {
-            $page->trig("Tu as déja demandé que ton site soit accessible depuis l'extérieur. Ta demande sera validée dans les meilleurs délais.");
-            return;
-        }
-
-        $DB_web->query("SELECT site_id FROM sites_eleves WHERE eleve_id='{$_SESSION['uid']}'");
-        if ($DB_valid->num_rows() > 0)
-        {
-            $page->trig("Ton site est déja accessible depuis l'extérieur.");
-            return;
-        }
-
-        $DB_valid->query("INSERT INTO valid_pageperso SET eleve_id='{$_SESSION['uid']}'");
-
-        $mail = new PlMailer('profil/siteweb_ext.mail.tpl');
-        $mail->assign('nom', $_SESSION['nom']);
-        $mail->assign('prenom', $_SESSION['prenom']);
-        $mail->send();
-
-        $page->assign('demande_ext', 1);
-    }
-
-    public function handler_rss_update($page)
-    {
-        for ($i = 0; $i < $_REQUEST['nbr_rss']; $i++)
-        {
-            if (!isset($_REQUEST["rss_lien_$i"]))
-                break;
-
-            $rss_lien = $_REQUEST["rss_lien_$i"];
-
-            $_SESSION['liens_rss'][$rss_lien]['module'] = !empty($_REQUEST["rss_module_$i"]);
-            $_SESSION['liens_rss'][$rss_lien]['sommaire'] = !empty($_REQUEST["rss_sommaire_$i"]);
-            $_SESSION['liens_rss'][$rss_lien]['complet'] = !empty($_REQUEST["rss_complet_$i"]);
-
-            if (!empty($_REQUEST["rss_del_$i"]))
-                unset ($_SESSION['liens_rss'][$rss_lien]);
-        }
-        FrankizSession::save_liens_rss();
-
-        $page->assign('rss_update', 1);
-        $this->handler_rss($page);
-    }
-
-    public function handler_rss_add($page)
-    {
-        $_SESSION['liens_rss'][$_REQUEST['rss_lien_add']] = array('description' => $_REQUEST['rss_lien_add'],
-                                      'module'      => 0,
-                                      'sommaire'    => 0,
-                                      'complet'     => 0);
-        FrankizSession::save_liens_rss();
-
-        $page->assign('rss_add', 1);
-        $this->handler_rss($page);
-    }
-
-    public function handler_rss_old($page)
-    {
-        global $DB_web;
-
-        $DB_web->query("SELECT  url, description
-                  FROM  liens_rss");
-
-        $nodelete = array();
-        while (list($url, $description) = $DB_web->next_row())
-        {
-            $nodelete[$url] = 1;
-
-            if (!is_array($_SESSION['liens_rss'][$url]))
-                $_SESSION['liens_rss'][$url] = array();
-
-            if (!isset($_SESSION['liens_rss'][$url]['module']))
-                $_SESSION['liens_rss'][$url]['module'] = 0;
-
-            if (!isset($_SESSION['liens_rss'][$url]['sommaire']))
-                $_SESSION['liens_rss'][$url]['sommaire'] = 0;
-
-            if (!isset($_SESSION['liens_rss'][$url]['complet']))
-                $_SESSION['liens_rss'][$url]['complet'] = 0;
-
-            $_SESSION['liens_rss'][$url]['description'] = $description;
-        }
-
-        $page->changeTpl('profil/rss.tpl');
-        $page->assign('title', "Gestion des flux rss");
-        $page->assign('nodelete', $nodelete);
     }
 
     function handler_rss($page)
@@ -689,30 +291,6 @@ class ProfileModule extends PLModule
         $page->assign('title', 'Flux RSS');
         $page->addCssLink('profile.css');
         $page->changeTpl('profile/filrss.tpl');
-    }
-
-    public function handler_liens_perso_add($page)
-    {
-        $page->changeTpl('profil/liens_perso.tpl');
-        $page->assign('title', "Ajout d'un lien perso");
-
-        $_SESSION['liens_perso'][$_REQUEST['lien_perso']] = $_REQUEST['lien_perso'];
-        FrankizSession::save_liens_perso();
-    }
-
-    public function handler_liens_perso_del($page)
-    {
-        $page->changeTpl('profil/liens_perso.tpl');
-        $page->assign('title', "Suppression d'un lien perso");
-
-        unset($_SESSION['liens_perso'][$_REQUEST['lien_perso']]);
-        FrankizSession::save_liens_perso();
-    }
-
-    public function handler_liens_perso($page)
-    {
-        $page->changeTpl('profil/liens_perso.tpl');
-        $page->assign('title', "Gestion des liens persos");
     }
 
     function handler_minimodules($page)
