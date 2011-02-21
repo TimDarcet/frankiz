@@ -104,13 +104,10 @@ class QDJ extends Meta
 
     // @param $id Id of the user
     public function hasVoted($id) {
-        $res=XDB::query('SELECT  vote_id
-                           FROM  qdj_votes
-                          WHERE  qdj = {?} AND uid = {?} AND rule != 10',
-                            $this->id(),
-                            $id
-                        )->fetchAllRow();
-        trace($res);
+        $res = XDB::query('SELECT  vote_id
+                             FROM  qdj_votes
+                            WHERE  qdj = {?} AND uid = {?} AND rule != 10',
+                                   $this->id(), $id)->fetchAllRow();
         return count($res) >= 1;
     }
 
@@ -303,7 +300,6 @@ class QDJ extends Meta
                          ORDER BY  total DESC',
                 $begin->toDb(), $end->toDb())->fetchAllAssoc();
 
-        
         $users = new collection('User');
 
         foreach ($res as $key => $e)

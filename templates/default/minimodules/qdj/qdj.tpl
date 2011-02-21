@@ -23,12 +23,11 @@
 <div class="navigation">
     <span class="before"><a onclick="qdj.backward();"><-</a></span>
     <span class="after"><a onclick="qdj.forward();">-></a></span>
-    <span class="date">{$minimodule.qdj}</span>
+    <span class="date"></span>
 </div>
 
 <div class="qdj">
     <div class="question"></div>
-    
     <table>
         <tr class="answers">
             <td class="case1">
@@ -48,7 +47,7 @@
         </tr>
     </table>
 </div>
-    
+
 <div class="toModule">
     <a href="qdj">Classement QDJ</a>
 </div>

@@ -23,94 +23,98 @@
 
 *******************************************************************************/
 
-#minimodule_qdj .navigation  {
-    height:25px;
-    border:1px solid black;
-    margin-bottom:2px;
-    text-align: center;
-}
+#minimodule_qdj {
 
-#minimodule_qdj .navigation .before  {
-    float: left;
-}
+    a {
+        cursor: pointer;
+    }
 
-#minimodule_qdj .navigation .after  {
-    float: right;
-}
+    .navigation {
+        height:25px;
+        border:1px solid black;
+        margin-bottom:2px;
+        text-align: center;
+        .before  {
+            float: left;
+        }
 
-#minimodule_qdj .qdj  {
-    border:1px solid black;
-    margin-bottom:2px;
-    padding-bottom:2px;
-}
+        .after  {
+            float: right;
+        }
+    }
 
-#minimodule_qdj .question  {
-    font-size: 11pt;
-    text-align: center;
-    font-weight: bold;
-}
+    .qdj {
+        border:1px solid black;
+        margin-bottom:2px;
+        padding-bottom:2px;
+    }
 
-#minimodule_qdj .jone  {
-    color:#FFBB00;
-}
+    .question  {
+        font-size: 11pt;
+        text-align: center;
+        font-weight: bold;
+    }
 
-#minimodule_qdj .rouje  {
-    color:red;
-}
+    .jone  {
+        color:#FFBB00;
+    }
 
-#minimodule_qdj .jone  .count {
+    .rouje  {
+        color:red;
+    }
+
+    .jone .count {
     background:#FFBB00;
 }
 
-#minimodule_qdj .rouje  .count{
+    .rouje .count{
     background:red;
 }
 
-#minimodule_qdj table  {
-    width: 100%;
-    border-collapse: collapse;
-}
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-#minimodule_qdj table td  {
-    width: 50%;
-    text-align:center;
-}
+    td  {
+        width: 50%;
+        text-align:center;
+    }
 
-#minimodule_qdj table tr.answers td  {
-    font-size: 10pt;
-    font-weight: bold;
-}
+    tr.answers td  {
+        font-size: 10pt;
+        font-weight: bold;
+    }
 
-#minimodule_qdj table tr.counts  {
-    display: none;
-}
+    tr.counts  {
+        display: none;
+        td {
+            vertical-align: top;
+            font-size: 10pt;
+            font-weight: bold;
+            color: white;
+            text-align: left;
+            .count  {
+                position: relative;
+                left: 34%;
+                width: 34%;
+                color: white;
+                text-align: center;
+            }
+        }
+    }
 
-#minimodule_qdj table tr.counts td  {
-    vertical-align: top;
-    font-size: 10pt;
-    font-weight: bold;
-    color: white;
-    text-align: left;
-}
+    .voters {
+        margin-top: 2px;
+        font-size: 9pt;
+        text-align: left;
+        display: none;
+    }
 
-#minimodule_qdj table tr.counts td .count  {
-    position: relative;
-    left: 34%;
-    width: 34%;
-    color: white;
-    text-align: center;
-}
-
-#minimodule_qdj .voters {
-    margin-top: 2px;
-    font-size: 9pt;
-    text-align: left;
-    display: none;
-}
-
-#minimodule_qdj .toModule {
-    margin-top:2px;
-    border: 1px solid black;
-    font-size: 9pt;
-    text-align: center;
+    .toModule {
+        margin-top:2px;
+        border: 1px solid black;
+        font-size: 9pt;
+        text-align: center;
+    }
 }
