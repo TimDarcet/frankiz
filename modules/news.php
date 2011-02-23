@@ -139,61 +139,6 @@ class NewsModule extends PlModule
         $feed = new NewsFeed();
         return $feed->run($page, $user, $hash);
     }
-
-    function handler_ajax_admin($page)
-    {
-        $json = json_decode(Env::v('json'));
-        $id = $json->id;
-        $n = new News($id);
-        $n->select(NewsSelect::news());
-        
-        if (!S::user()->hasRights($n->target()->group(), Rights::admin())) {
-            throw new Exception("Invalid credentials");
-        }
-        S::assert_xsrf_token();
-        
-        $page->assign('news', $n);
-        $result = $page->fetch(FrankizPage::getTplPath('news/modify.tpl'));
-        $page->jsonAssign('success', true);
-        $page->jsonAssign('news', $result);
-        return PL_JSON;
-    }
-
-    function handler_ajax_modify($page, $type)
-    {
-        $json = json_decode(Env::v('json'));
-        $id = $json->admin_id;
-        $n = new News($id);
-        $n->select(NewsSelect::news());
-        
-        if (!S::user()->hasRights($n->target()->group(), Rights::admin())) {
-            throw new Exception("Invalid credentials");
-        }
-        S::assert_xsrf_token();
-        
-        $page->jsonAssign('err', S::v('xsrf_token'));
-        $page->jsonAssign('err', Env::v('token'));
-        
-        
-        try
-        {
-            $begin = new FrankizDateTime($json->begin);
-            $end = new FrankizDateTime($json->end);
-            $n->title($json->title);
-            $n->content($json->news_content);
-            $n->begin($begin);
-            $n->end($end);
-            if (Env::has('image'))
-                $n->image(new FrankizImage(Env::i('image')));
-            $page->jsonAssign('success', true);
-        }
-        catch (Exception $e)
-        {
-            $page->jsonAssign('success', false);
-            $page->jsonAssign('error', $e->getMessage());
-        }
-        return PL_JSON;
-    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
