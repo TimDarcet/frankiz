@@ -1,7 +1,7 @@
 $(function(){
     $("#tol_searcher form").submit(function(event) {
         $('#tol_searcher input[name=mode]').val('sheet');
-        users().search();
+        users.search();
         event.stopPropagation();
         return false;
     });
@@ -9,11 +9,11 @@ $(function(){
     $("#tol_infos").removeClass("searching");
     $('#tol_searcher input[auto]').keyup(function(event) {
         if (event.keyCode != '13') {
-            users().search();
+            users.search();
         }
     });
 
-    users().imageur();
+    users.imageur();
 });
 
 var users = function() {
@@ -139,11 +139,12 @@ var users = function() {
                 searching = false;
                 $("#tol_infos").removeClass("searching");
                 if (newsearch)
-                    search();
+                    _search();
             }});
     };
 
     function _search() {
+        console.log('plop');
         if (!searching) {
             searching = true;
             newsearch = false;
@@ -161,4 +162,4 @@ var users = function() {
             _imageur();
         }
     };
-}
+}();
