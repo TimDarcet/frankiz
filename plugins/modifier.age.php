@@ -26,24 +26,25 @@ function smarty_modifier_age($datetime, $format = 'auto') {
     };
 
     $age = $datetime->age();
+    $inv = ($age->invert) ? '- ' : '';
     if ($format == 'auto') {
         if ($age->y > 0) {
-            return $age->format('%y an' . $s($age->y));
+            return $inv . $age->format('%y an' . $s($age->y));
         }
         if ($age->m > 0) {
-            return $age->format('%m mois');
+            return $inv . $age->format('%m mois');
         }
         if ($age->d > 0) {
-            return $age->format('%d jour' . $s($age->d));
+            return $inv . $age->format('%d jour' . $s($age->d));
         }
         if ($age->h > 0) {
-            return $age->format('%h heure' . $s($age->h));
+            return $inv . $age->format('%h heure' . $s($age->h));
         }
         if ($age->i > 0) {
-            return $age->format("%i'");
+            return $inv . $age->format("%i'");
         }
         if ($age->s > 0) {
-            return $age->format("%s''");
+            return $inv . $age->format("%s''");
         }
     } else {
         return $age->format($format);

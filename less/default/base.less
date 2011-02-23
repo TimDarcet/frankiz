@@ -759,3 +759,22 @@ input[type="checkbox"], input[type="radio"]{
         width: 400px;
     }
 }
+
+.star_switcher {
+    width: 32px;
+    height: 30px;
+    background-image: url("../default/images/star.png");
+    background-repeat: no-repeat;
+    &:hover {
+        background-position: center -30px !important;
+    }
+}
+
+.star .star_switcher {
+    background-position: center -60px;
+}
+
+.unstar .star_switcher {
+    background-position: center 0px;
+}
+

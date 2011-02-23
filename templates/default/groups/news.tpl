@@ -20,18 +20,14 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<tr>
-    <td class="star_switcher">
-    </td>
+{assign var='begin' value=$news->begin()}
+{assign var='age' value=$begin->age()}
+<tr class="{if $news->read()}read{else}unread{/if} {if $news->star()}star{else}unstar{/if} {if $age->invert}tocome{/if}">
     <td class="origin">
-        {assign var='writer' value=$news->writer()}
-        <a href="tol/?hruid={$writer->login()}">
-        <img src="{$writer->image()|image:'micro'|smarty:nodefaults}"
-             title="{$writer->displayName()}"/>
-        </a>
+        {$news->writer()|user}
     </td>
-    <td class="title">
-        {$news->title()}
+    <td class="title" {if $age->invert}title="Cette annonce n'apparait qu'aux administrateurs car sa date de parution est future"{/if}>
+        <a href="news/see/{$news->id()}">{$news->title()}</a>
     </td>
     <td class="date">
         {$news->begin()|age}

@@ -21,9 +21,9 @@
 {**************************************************************************}
 
 <tr gid={$group->id()}>
-    <td class="img"><img src="{$group->image()|image:'micro':'group'|smarty:nodefaults}" /></td>
+    <td class="img">{$group|group}</td>
     <td class="therights">{$user->rights($group)|@rights}</td>
-    <td class="group">{$group|group}</td>
+    <td class="group">{$group|group:'text'}</td>
 </tr>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

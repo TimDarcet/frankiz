@@ -267,7 +267,15 @@ class GroupsModule extends PLModule
 
             $filters = new UFC_Group(explode(';', Json::v('promo')));
 
-            $nf = new NewsFilter(new PFC_And(new NFC_Origin($group), new NFC_CanBeSeen(S::user())));
+            $onlybefore = new NFC_Begin(new FrankizDateTime(), NFC_Begin::BEFORE);
+            if (S::user()->hasRights($group, Rights::admin()) || S::user()->isWeb()) {
+                $onlybefore = new PFC_True();
+            }
+
+            $nf = new NewsFilter(new PFC_And(new NFC_Origin($group),
+                                             new NFC_CanBeSeen(S::user()),
+                                             $onlybefore),
+                                 new NFO_Begin(true));
             $ns = $nf->get(new PlLimit(10))->select(NewsSelect::head());
 
             foreach($ns as $nid => $n) {

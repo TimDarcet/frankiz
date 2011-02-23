@@ -145,6 +145,34 @@
         }
     }
 
+    .news {
+        tr {
+            &.star {
+                background-color: yellow !important;
+            }
+            &.unread {
+                background-color: white;
+            }
+            &.read {
+                background-color: @background;
+            }
+            &.tocome {
+                background-color: red;
+            }
+        }
+        td {
+            &.origin {
+                width: 35px;
+            }
+            &.title {
+                width: 100%;
+            }
+            &.data {
+                width: 100%;
+            }
+        }
+    }
+
     .admin_general {
         table {
             width: 70%;
