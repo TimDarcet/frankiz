@@ -80,40 +80,45 @@
     </div>
 </div>
 
-<div class="module admin_users">
+<div class="module">
     <div class="head">
         <span class="helper" target="groups/admin/users"> </span>
         Membres de {$group->label()}
      </div>
-     <div class="body">
-        <table>
-            <tr>
-                <td>
-                    <form name="filters">
-                    <input type="hidden" name="gid" value="{$group->id()}" />
-                    <label>Filtrer sur la promo{include file="groups_picker.tpl"|rel id="promo" ns="promo" check=-1 already=$promos order="name"}</label>
-                    </form>
-                </td>
-                <td>
-                    <select id="caste">
-                    {foreach from=$group->caste() item='caste'}
-                        <option value="{$caste->id()}">{$caste->rights()}</option>
-                    {/foreach}
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    
-                </td>
-                <td>
+     <div class="body admin_users">
+        <div class="filters">
+            Filtres:
+            <form name="filters">
+                <input type="hidden" id="gid" name="gid" value="{$group->id()}" />
+                <input type="hidden" name="page" value="1" />
+                <table>
+                    <tr>
+                        <td><label>Promo</label></td>
+                        <td>{include file="groups_picker.tpl"|rel id="promo" ns="promo" check=-1 already=$promos order="name"}</td>
+                    </tr>
+                    <tr>
+                        <td><label>Droits</label></td>
+                        <td><select name="rights">
+                            <option value="everybody">Tous</option>
+                            <option value="admin">Administrateurs</option>
+                            <option value="member">Membres</option>
+                            <option value="friend">Sympathisants</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <td><label>Nom</label></td>
+                        <td><input type="text" name="name" value="" /></td>
+                    </tr>
+                </table>
+            </form>
+            <div class="pages"></div>
+        </div>
+        <table class="list">
 
-                </td>
-            </tr>
         </table>
     </div>
 </div>
 
-{js src="groups.js"}
+{js src="group_admin.js"}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

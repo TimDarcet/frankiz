@@ -32,8 +32,8 @@ var users = function() {
 
     function force_search() {
         request({
-            "url": 'groups/ajax/users/' + $('#content form[name=filters]').val()
-          ,"data": $('#content form[name=filters]').formToJSON()
+            "url": 'groups/ajax/users/'
+          ,"data": $('#section form[name=filters]').formToJSON()
           ,"fail": false
        ,"success": function(json) {
                 var ul = $("#section .members > ul");
@@ -85,7 +85,7 @@ var users = function() {
 
                             var img = '<span title="' + u.displayName + '" class="img"><img style="display:none" onload="$(this).fadeIn()" src="' + u.micro + '" /></span>';
                             var comments = '<span class="comments">' + ((u.comments) ? u.comments : u.displayName) + '</span>';
-                            html.push('<li uid="' + i + '"><a href="tol/?hruid=' + u.hruid + '">' + img + '</a>' + comments + '</li>');
+                            html.push('<li uid="' + i + '"><a href="tol/see/' + u.hruid + '">' + img + '</a>' + comments + '</li>');
                         }
 
                         subul.append(html.join(''));
@@ -126,7 +126,7 @@ var news = function() {
 
                 var html = [];
                 for (var nid in news) {
-                    html.push(news);
+                    html.push(news[nid]);
                 }
 
                 var ul = $("#section .news > table");

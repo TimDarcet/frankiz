@@ -24,19 +24,30 @@ class GroupsModule extends PLModule
     public function handlers()
     {
         return array(
+            // Listing of the groups
             'groups'                  => $this->make_hook('groups',            AUTH_PUBLIC),
             'groups/ajax/search'      => $this->make_hook('ajax_search',       AUTH_PUBLIC),
             'groups/ajax/insert'      => $this->make_hook('ajax_insert',       AUTH_COOKIE),
             'groups/ajax/rename'      => $this->make_hook('ajax_rename',       AUTH_COOKIE),
             'groups/ajax/delete'      => $this->make_hook('ajax_delete',       AUTH_COOKIE),
+
+            // Page of a single group
             'groups/see'              => $this->make_hook('group_see',         AUTH_PUBLIC),
             'groups/ajax/users'       => $this->make_hook('group_ajax_users',  AUTH_INTERNAL, ''),
-            'groups/ajax/news'        => $this->make_hook('group_ajax_news',   AUTH_PUBLIC, ''),
-            'groups/admin'            => $this->make_hook('group_admin',       AUTH_PUBLIC),
+            'groups/ajax/news'        => $this->make_hook('group_ajax_news',   AUTH_PUBLIC),
             'groups/subscribe'        => $this->make_hook('group_subscribe',   AUTH_COOKIE),
             'groups/unsubscribe'      => $this->make_hook('group_unsubscribe', AUTH_COOKIE),
-            'groups/insert'           => $this->make_hook('group_insert',      AUTH_COOKIE),
+
+            // Admin page of a group
+            'groups/admin'            => $this->make_hook('group_admin',             AUTH_COOKIE),
+            'groups/ajax/admin/users' => $this->make_hook('group_ajax_admin_users',  AUTH_COOKIE),
+            'groups/ajax/admin/rights'=> $this->make_hook('group_ajax_admin_rights', AUTH_COOKIE),
+
+            // Common handler
             'groups/ajax/comment'     => $this->make_hook('ajax_comment',      AUTH_COOKIE),
+
+            // Admin stuffs
+            'groups/insert'           => $this->make_hook('group_insert',      AUTH_MDP),
         );
     }
 
@@ -167,12 +178,6 @@ class GroupsModule extends PLModule
                 // Relation between the user & the group
                 $page->assign('user', S::user());
 
-                // Fetch the news
-                /*$nf = new NewsFilter(new PFC_And(new NFC_Origin($group),
-                                                 new NFC_Target(S::user()->castes())), new NFO_End(true));
-                $news = $nf->get()->select();
-                $page->assign('news', $news);*/
-                $page->assign('news', array());
                 $page->assign('title', $group->label());
                 $page->changeTpl('groups/group.tpl');
             } else {
@@ -294,7 +299,7 @@ class GroupsModule extends PLModule
         $gf = new GroupFilter($filter);
         $group = $gf->get(true);
 
-        if ($group && (S::user()->hasRights($group, Rights::admin()) || S::user()->isWeb())) {
+        if ($group && (S::user()->hasRights($group, Rights::admin()) || S::user()->isAdmin())) {
             $group->select(GroupSelect::see());
             $page->assign('group', $group);
 
@@ -330,6 +335,9 @@ class GroupsModule extends PLModule
                 }
             }
 
+            $promos = S::user()->castes()->groups()->filter('ns', Group::NS_PROMO);
+            $page->assign('promos', $promos);
+
             $page->assign('title', 'Administration de "' . $group->label() . '"');
             $page->addCssLink('groups.css');
             $page->changeTpl('groups/admin.tpl');
@@ -337,6 +345,111 @@ class GroupsModule extends PLModule
             $page->assign('title', "Ce groupe n'existe pas ou vous n'en êtes pas administrateur");
             $page->changeTpl('groups/no_group.tpl');
         }
+    }
+
+    function handler_group_ajax_admin_users($page)
+    {
+        $group = Json::i('gid');
+        $limit = 10;
+
+        $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
+        $gf = new GroupFilter($filter);
+        $group = $gf->get(true);
+
+        $total = 0;
+        $users = false;
+        if ($group) {
+            $users = array();
+
+            $order = new UFO_Name(UFO_Name::LASTNAME);
+
+            $filters = array();
+            $rights = Rights::everybody();
+            if (Json::s('rights', '') != '') {
+                $rights = new Rights(Json::s('rights'));
+            }
+            $filters[] = new UFC_Group($group, $rights);
+            if (Json::t('promo', '') != '') {
+                $filters[] = new UFC_Group(explode(';', Json::v('promo')));
+            }
+            if (Json::t('name', '') != '') {
+                $filters[] = new UFC_Name(Json::t('name'), UFC_Name::LASTNAME|UFC_Name::FIRSTNAME|UFC_Name::NICKNAME, UFC_Name::CONTAINS);
+            }
+
+            $uf = new UserFilter(new PFC_And($filters), $order);
+            $users = $uf->get(new PlLimit($limit, (Json::i('page', 1) - 1) * $limit));
+            $total = $uf->getTotalCount();
+
+            $users->select(UserSelect::base());
+
+            /*
+             * Fetching rights
+             */
+            $users_rights = $group->selectRights($users);
+
+            /*
+             * Fetching comments
+             */
+            $users_comments = array();
+            $iter = XDB::iterRow('SELECT  uid, comment
+                                    FROM  users_comments
+                                   WHERE  gid = {?} AND uid IN {?}',
+                                          $group->id(), $users->ids());
+
+            while (list($uid, $comment) = $iter->next()) {
+                $users_comments[$uid] = $comment;
+            }
+
+            /*
+             * Exporting
+             */
+            $export = array();
+            $page->assign('defaultrights', array(Rights::admin(), Rights::member(), Rights::friend()));
+            foreach ($users as $uid => $u) {
+                $page->assign('user', $u);
+                $page->assign('rights', (empty($users_rights[$uid])) ? array() : $users_rights[$uid]);
+                $page->assign('comment', (empty($users_comments[$uid])) ? "" : $users_comments[$uid]);
+
+                $export[$uid] = $page->filteredFetch(FrankizPage::getTplPath('groups/admin_user.tpl'));
+            }
+        }
+
+        $page->jsonAssign('limit', $limit);
+        $page->jsonAssign('total', $total);
+        $page->jsonAssign('users', $export);
+        return PL_JSON;
+    }
+
+    function handler_group_ajax_admin_rights($page)
+    {
+        S::assert_xsrf_token();
+
+        $group = Json::i('gid');
+        $gf = new GroupFilter((Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group));
+        $group = $gf->get(true);
+
+        $uf = new UserFilter(new UFC_Uid(Json::i('uid')));
+        $user = $uf->get(true);
+
+        if ($group && $user) {
+            if (S::user()->isMe($user) && !S::user()->isAdmin()) {
+                $page->jsonAssign('msg', 'On ne peut pas changer ses propres droits');
+            } else if (S::user()->hasRights($group, Rights::admin()) || S::user()->isAdmin()) {
+                $group->select(GroupSelect::subscribe());
+                $caste = $group->caste(new Rights(Json::s('rights')));
+                if ($caste->userfilter()) {
+                    $page->jsonAssign('msg', 'Ce droit est défini de manière logique.');
+                } else {
+                    if (Json::b('add')) {
+                        $caste->addUser($user);
+                    } else {
+                        $caste->removeUser($user);
+                    }
+                }
+            }
+        }
+
+        return PL_JSON;
     }
 
     function handler_group_subscribe($page, $group)
@@ -392,9 +505,13 @@ class GroupsModule extends PLModule
         $gf = new GroupFilter(new GFC_Id(Json::i('gid')));
         $g = $gf->get(true);
         if ($g) {
-            $comments = Json::t('comments');
-            S::user()->comments($g, $comments);
-            $page->jsonAssign('uid', S::user()->id());
+            $user = (Json::has('uid')) ? new User(Json::i('uid')) : S::user();
+
+            if ($user->isMe(S::user()) || S::user()->hasRights($g, Rights::admin())) {
+                $comments = Json::t('comments');
+                $user->comments($g, $comments);
+                $page->jsonAssign('uid', $user->id());
+            }
         } else {
             $page->jsonAssign('error', "Ce groupe n'existe pas");
         }

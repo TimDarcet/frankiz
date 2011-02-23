@@ -190,11 +190,37 @@
     }
 
     .admin_users {
+        min-height: 500px;
         table {
             width: 100%;
         }
-        td:first-child {
-            width: 50%;
+        form table {
+            width: 400px;
+        }
+        td {
+            position: relative;
+            &.therights {
+                width: 50px;
+            }
+            &.img {
+                width: 35px;
+            }
+            &.user {
+                width: 220px;
+            }
+            &.comment {
+                
+            }
+        }
+        input[name=comment] {
+            width: 95%;
+        }
+        .pages a {
+            cursor: pointer;
+            &.selected {
+                font-weight: bold;
+                text-decoration: none;
+            }
         }
     }
 }
