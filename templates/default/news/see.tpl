@@ -22,7 +22,9 @@
 
 <div class="module">
     <div class="head">
-        Annonce: {$news->title()}
+        {assign var='target' value=$news->target()}
+        {assign var='targetGroup' value=$target->group()}
+        Annonce: <span title="Visible par '{$targetGroup->label()}'">{$news->title()}</span>
     </div>
     <div class="body see {if $news->read()}read{else}unread{/if} {if $news->star()}star{else}unstar{/if}"
          nid="{$news->id()}">

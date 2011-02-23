@@ -40,7 +40,9 @@
                             {$news->writer()|user}
                         {/if}
                     </td>
-                    <td class="title">
+                    {assign var='target' value=$news->target()}
+                    {assign var='targetGroup' value=$target->group()}
+                    <td class="title" title="Visible par '{$targetGroup->label()}'">
                         <a href="news/see/{$news->id()}"><div>{$news->title()}</div></a>
                     </td>
                     <td class="date">
