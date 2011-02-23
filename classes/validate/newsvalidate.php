@@ -63,12 +63,21 @@ class NewsValidate extends ItemValidate
 
     public function handle_editor()
     {
-        $this->title = Env::t('title', '');
+        $this->title   = Env::t('title', '');
         $this->content = Env::t('news_content', '');
-        $this->begin = new FrankizDateTime(Env::t('begin'));
-        $this->end = new FrankizDateTime(Env::t('end'));
-        if (Env::has('image'))
-            $this->image   = new FrankizImage(Env::i('image'));
+        $this->begin   = new FrankizDateTime(Env::t('begin'));
+        $this->end     = new FrankizDateTime(Env::t('end'));
+        if (Env::has('image')) {
+            $image = new ImageFilter(new PFC_And(new IFC_Id(Env::i('image')), new IFC_Temp()));
+            $image = $image->get(true);
+            if (!$image) {
+                throw new Exception("This image doesn't exist anymore");
+            }
+            $image->select(FrankizImageSelect::caste());
+            $image->label($news->title());
+            $image->caste($news->target());
+            $news->image($image);
+        }
 
         return true;
     }
