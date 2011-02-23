@@ -159,7 +159,6 @@ class TolModule extends PLModule
             $user->select(UserSelect::tol());
         }
 
-        trace($user);
         $page->assign('result', $user);
         $page->assign('mode', 'sheet');
 

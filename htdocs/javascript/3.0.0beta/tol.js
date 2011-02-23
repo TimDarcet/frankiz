@@ -144,7 +144,6 @@ var users = function() {
     };
 
     function _search() {
-        console.log('plop');
         if (!searching) {
             searching = true;
             newsearch = false;
