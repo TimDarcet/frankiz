@@ -666,7 +666,8 @@ class User extends Meta
         return $this->perms->hasFlagCombination($perms);
     }
 
-    public function isWeb() {
+    public function isWeb()
+    {
         static $web = null;
 
         if ($web === null) {
@@ -674,6 +675,11 @@ class User extends Meta
         }
 
         return ($this->hasRights($web, Rights::member()));
+    }
+
+    public function isAdmin()
+    {
+        return ($this->perms()->hasFlag('admin'));
     }
 
     /*******************************************************************************
