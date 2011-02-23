@@ -70,10 +70,12 @@ abstract class Meta
                 $reflection = new ReflectionClass($objectType);
 
                 if ($reflection->isSubclassOf('Meta')) {
-                    if ($arguments[0] instanceof Meta) {
-                        $data = ($arguments[0] === false) ? null : $arguments[0]->id();
+                    if ($arguments[0] === false) {
+                        $data = null;
+                    } else if ($arguments[0] instanceof Meta) {
+                        $data = $arguments[0]->id();
                     } else {
-                        throw new Exception('The object ' . $arguments[0] . 'is not of class Meta');
+                        throw new Exception('The object ' . var_dump($arguments[0]) . 'is not of class Meta');
                     }
                 } else if ($reflection->implementsInterface('Formatable')) {
                     $data = ($arguments[0] === false) ? null : $arguments[0]->toDb();
