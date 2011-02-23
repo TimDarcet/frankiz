@@ -166,10 +166,10 @@ class FrankizImage extends Meta implements ImageInterface
         $this->x    = $infos[0];
         $this->y    = $infos[1];
 
-        if ($this->x > self::MAX_WIDTH || $this->y > self::MAX_HEIGHT) {
-            $e = new ImageSizeException('The picture is to big: ('.$this->x.'x'.$this->y.') > ('.self::MAX_WIDTH.'x'.self::MAX_HEIGHT.')');
+        if ($this->x > ImageSize::MAX_WIDTH() || $this->y > ImageSize::MAX_HEIGHT()) {
+            $e = new ImageSizeException('The picture is to big: ('.$this->x.'x'.$this->y.') > ('.ImageSize::MAX_WIDTH().'x'.ImageSize::MAX_HEIGHT().')');
             $e->size(new ImageSize($this->x, $this->y));
-            $e->allowed(new ImageSize(self::MAX_WIDTH, self::MAX_HEIGHT));
+            $e->allowed(self::MAX());
             throw $e;
         }
 

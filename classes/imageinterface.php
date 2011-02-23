@@ -83,6 +83,26 @@ class ImageSize
     public static function fromExport($export) {
         return new self($export[0], $export[1], $export[2]);
     }
+
+    private static $_MAX_SIZE = null;
+
+    public final static function MAX() {
+        global $globals;
+
+        if (self::$_MAX_SIZE === null) {
+            self::$_MAX_SIZE = ImageSize::fromExport(json_decode($globals->sizes->max));
+        }
+
+        return self::$_MAX_SIZE;
+    }
+    
+    public final static function MAX_WIDTH() {
+        return self::MAX()->x;
+    }
+
+    public final static function MAX_HEIGHT() {
+        return self::MAX()->y;
+    }
 }
 
 class ImageSizesSet
@@ -172,9 +192,6 @@ class ImageSizeException extends Exception
 
 interface ImageInterface
 {
-    const MAX_WIDTH  = 1024;
-    const MAX_HEIGHT = 1024;
-
     /**
     * Returns the src attribute to put into the img tag
     *
