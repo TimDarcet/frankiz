@@ -20,9 +20,24 @@
  ***************************************************************************/
 
 
-function smarty_modifier_group($group) {
-    $label = ($group->label()) ? $group->label() : '<Sans nom>';
-    return '<a href="groups/see/' . $group->bestId() . '">' . $label . '</a>';
+function smarty_modifier_group($group, $type = 'micro') {
+    global $globals;
+
+    $str = '<a href="groups/see/' . $group->name() . '" title="' . $group->label() . '">';
+
+    if ($type == 'micro' || $type == 'both') {
+        $image = $group->image();
+        if (!$image) {
+            $image = new StaticImage($globals->images->group);
+        }
+        $str .= '<img src="' . $image->src('micro') . '" />';
+    }
+    if ($type == 'text' || $type == 'both') {
+        $str .= $group->label();
+    }
+
+    $str .= '</a>';
+    return $str;
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

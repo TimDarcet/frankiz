@@ -20,8 +20,17 @@
  ***************************************************************************/
 
 
-function smarty_modifier_user($user) {
-    return '<a href="tol?hruid=' . $user->login() . '" title="' . $user->fullName() . '">' . $user->displayName() . '</a>';
+function smarty_modifier_user($user, $type = 'micro') {
+    $str = '<a href="tol/see/' . $user->login() . '" title="' . $user->fullName() . '">';
+
+    if ($type == 'micro') {
+        $str .= '<img src="' . $user->image()->src('micro') . '" />';
+    } else {
+        $str .= $user->displayName();
+    }
+
+    $str .= '</a>';
+    return $str;
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
