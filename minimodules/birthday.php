@@ -43,14 +43,17 @@ class BirthdayMiniModule extends FrankizMiniModule
                                          new UFC_Group($on_platal)));
         $us = $uf->get();
         $us->select(UserSelect::birthday());
-        
+
+        $formations = array();
         $users = array();
         foreach ($us as $u) {
             $study = $u->studies();
             $first = array_shift($study);
-            $users[$first->formation()->label()][$first->promo()][] = $u;
+            $formations[$first->formation()->abbrev()] = $first->formation();
+            $users[$first->formation()->abbrev()][$first->promo()][] = $u;
         }
-
+        
+        $this->assign('formations', $formations);
         $this->assign('users', $users);
     }
 }

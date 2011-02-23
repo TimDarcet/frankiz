@@ -20,20 +20,31 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{foreach from=$minimodule.users key=formation item=promos}
-    <div class="birthday_formation">
-        <div class="formation">
-            {$formation} :
-        </div>
-        {foreach from=$promos key=promo item=users}
-            <div class="birthday_promo">
-                {$promo} :
+{foreach from=$minimodule.users key='form' item='promos'}
+    {assign var='formation' value=$minimodule.formations.$form}
+    <table>
+    {foreach from=$promos key='promo' item='users'}
+        <tr>
+            <td class="study">
+                <div>
+                    <img src="{$formation->image()|image:'micro'}" />
+                    <span class="promo {if $promo % 2 == 0}rouje{else}jone{/if}">{$promo}</span>
+                </div>
+            </td>
+            <td>
                 {foreach from=$users item=user name=loop}
-                    {$user|user}{if !$smarty.foreach.loop.last}, {/if}
+                    {$user|user}
                 {/foreach}
-            </div>
-        {/foreach}
-    </div>
+            </td>
+        </tr>
+    {/foreach}
+    </table>
 {/foreach}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
+
+{*            <li class="{if $study->promo() % 2 == 0}rouje{else}jone{/if}">
+                {assign var='formation' value=$study->formation()}
+                <img title="{$formation->label()}" src="{$formation->image()|image:'micro'|smarty:nodefaults}" />
+                <span title="{$study->year_in()} ->{$study->year_out()}">{$study->promo()}</span>
+            </li> *}
