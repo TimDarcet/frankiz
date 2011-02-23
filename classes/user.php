@@ -205,7 +205,8 @@ class UserSelect extends Select
     }
 
     public static function birthday() {
-        return new UserSelect(array_merge(self::$natives, array('studies')),
+        return new UserSelect(array('hruid', 'original', 'photo', 'gender',
+                                    'firstname', 'lastname', 'nickname', 'studies'),
                               array('studies' => Formation::SELECT_BASE));
     }
 }
@@ -742,7 +743,7 @@ class User extends Meta
 
     /**
     * Returns true if the user is allowed to see the content of the caste
-    * taking into account the lelve of AUTH
+    * taking into account the level of AUTH
     * @param $caste the rights of the caste must be already fetched
     */
     public function canSee(Caste $caste)
