@@ -18,125 +18,173 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-/*******************************************************************************
-     Module News
+@import "lib.less";
 
-*******************************************************************************/
+#section {
 
-.news {
-    position: relative;
-    list-style: none;
-    border: 1px #002334 solid;
-    border-top: none;
-    padding: 1px;
-
-    &:first-child {
-        border-top: 1px #002334 solid;
-    }
-
-    .infos {
-        text-align: center;
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            padding: 0;
-
-            .star_switcher {
-                position: relative;
-                width: 35px;
+    // Handler news/see
+    .see {
+        .content {
+            border-bottom: 1px @border solid;
+            padding: 15px;
+            .img {
+                border: 1px black solid;
+                margin-right: 15px;
+                margin-bottom: 15px;
+                float: left;
+                background-color: white;
             }
-            .origin {
-                position: relative;
-                width: 50px;
-            }
-            .star_switcher {
-                position: relative;
-            }
-            .date {
-                position: relative;
-                width: 50px;
-            }
+
         }
-    }
-
-    .content {
-        position: relative;
-        clear: both;
-        margin: 5px;
-        display: none;
-        text-align: left;
-
-        .body {
-            border-top: 1px #002334 solid;
-            background-color: white;
-            padding: 5px;
-
-            .image {
+        .meta {
+            padding-top: 5px;
+            .star_switcher {
                 float: left;
             }
-        }
-
-        .writer {
-            width: 100%;
-            text-align: right;
+            .infos {
+                text-align: right;
+            }
         }
     }
-}
 
-/* 
-    Open/ Close
-*/
+    // Handler news/ with all the news
+    .list {
+        ul {
+            padding: 0;
+        }
+        li.news {
+            position: relative;
+            list-style: none;
+            border: 1px @border solid;
+            border-top: none;
+            padding: 1px;
 
-.news.open .content {
-    display: block;
-}
+            &:first-child {
+                border-top: 1px @border solid;
+            }
 
-.news.close .content {
-    display: none;
-}
+            td:first-child {
+                width: 32px;
+            }
 
-.star_switcher {
-    background-repeat: no-repeat;
-    background-position: center;
-    &:hover {
-        background-image: url("../default/images/star_hover.png")!important;
+            .infos {
+                text-align: center;
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    padding: 0;
+
+                    .star_switcher {
+                        position: relative;
+                    }
+                    .origin {
+                        position: relative;
+                        width: 50px;
+                    }
+                    .date {
+                        position: relative;
+                        width: 50px;
+                    }
+                    .title {
+                        position: relative;
+                        height: 100%;
+                        vertical-align: middle;
+                        a {
+                            display: block;
+                            width: 100%;
+                            text-decoration: none;
+                            position: relative;
+                            div {
+                                line-height: 100%;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .content {
+                position: relative;
+                clear: both;
+                padding: 15px;
+                text-align: left;
+                border-bottom: 2px @border solid;
+                background-color: white;
+
+                .body {
+                    padding: 5px;
+
+                    .image {
+                        float: left;
+                    }
+                }
+
+                .admin {
+                    position: absolute;
+                    bottom: 2px;
+                    left: 5px;
+                    a {
+                        color: red;
+                        text-decoration: none;
+                    }
+                }
+
+                .writer {
+                    width: 100%;
+                    text-align: right;
+                }
+            }
+        }
     }
-}
 
-.news.star .star_switcher {
-    background-image: url("../default/images/star_on.png");
-}
+    /* 
+        Open/ Close
+    */
 
-.news.unstar .star_switcher {
-    background-image: url("../default/images/star_off.png");
-}
+    .news.open .content {
+        display: block;
+    }
 
-/*
-.news.star .switcher_star {
-    display: none;
-}
+    .news.close .content {
+        display: none;
+    }
 
-.news.star .switcher_unstar {
-    display: inline;
-}
+    .star_switcher {
+        width: 32px;
+        height: 30px;
+        background-image: url("../default/images/star.png");
+        background-repeat: no-repeat;
+        &:hover {
+            background-position: center -30px !important;
+        }
+    }
 
-.news.unstar .switcher_star {
-    display: inline;
-}
+    .star .star_switcher {
+        background-position: center -60px;
+    }
 
-.news.unstar .switcher_unstar {
-    display: none;
-}
-*/
-/* 
-    Read / Unread
-*/
+    .unstar .star_switcher {
+        background-position: center 0px;
+    }
 
-.news.read {
-    background-color: #BDD5E3;
-}
+    /* 
+        Star / Unstar
+    */
 
-.news.unread {
-    background-color: #FFFFFF;
+    .news.star {
+        background-color: yellow !important;
+    }
+
+    /* 
+        Read / Unread
+    */
+
+    .news.read {
+        background-color: @background;
+    }
+
+    .news.unread {
+        background-color: white;
+    }
+
 }
 

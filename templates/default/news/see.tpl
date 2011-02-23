@@ -22,13 +22,50 @@
 
 <div class="module">
     <div class="head">
-        Annonces
+        Annonce: {$news->title()}
     </div>
-    <div class="body list">
-        {include file="news/subnews.tpl"|rel collection=$news}
+    <div class="body see {if $news->read()}read{else}unread{/if} {if $news->star()}star{else}unstar{/if}"
+         nid="{$news->id()}">
+
+        <div class="content">
+            {if $news->image()}
+                <div class="img">
+                    <img src="{$news->image()|image:'small'|smarty:nodefaults}" />
+                </div>
+            {/if}
+            {$news->content()|miniwiki:'title'|smarty:nodefaults}
+            <br class="clear">
+        </div>
+
+        <div class="meta">
+            <div class="star_switcher" title="Suivre l'annonce"></div>
+            <div class="infos">
+                Rédigée par 
+
+                {assign var='writer' value=$news->writer()}
+                <a href="tol/?hruid={$writer->login()}">
+                <img src="{$writer->image()|image:'micro'|smarty:nodefaults}" 
+                     title="{$writer->displayName()}"/>
+                </a>
+
+                {if $news->origin()}
+                au nom de 
+                    {assign var='origin' value=$news->origin()}
+                    <a href="groups/see/{$origin->name()}">
+                    <img src="{$origin->image()|image:'micro'|smarty:nodefaults}" 
+                         title="{$origin->label()}"/>
+                    </a>
+                {/if}
+
+                le 
+                {$news->begin()|datetime:'d/m/y'}
+                à
+                {$news->begin()|datetime:'h:i'}
+            </div>
+        </div>
+
     </div>
 </div>
-
 
 {js src="news.js"}
 

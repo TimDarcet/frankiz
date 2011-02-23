@@ -26,28 +26,22 @@
 
 <ul>
     {foreach from=$collection|order:'begin' item=news}
-        <li class="news close {if $news->read()}read{else}unread{/if} {if $news->star()}star{else}unstar{/if}" nid="{$news->id()}">
+        <li class="news close {if $news->read()}read{else}unread{/if} {if $news->star()}star{else}unstar{/if}"
+            nid="{$news->id()}">
             <div class="infos">
                 <table><tr>
-                    <td class="star_switcher">
+                    <td>
+                        <div class="star_switcher" title="Suivre l'annonce"></div>
                     </td>
                     <td class="origin">
                         {if $news->origin()}
-                            {assign var='origin' value=$news->origin()}
-                            <a href="groups/see/{$origin->name()}">
-                            <img src="{$origin->image()|image:'micro'|smarty:nodefaults}" 
-                                 title="{$origin->label()}"/>
-                            </a>
+                            {$news->origin()|group}
                         {else}
-                            {assign var='writer' value=$news->writer()}
-                            <a href="tol/?hruid={$writer->login()}">
-                            <img src="{$writer->image()|image:'micro'|smarty:nodefaults}" 
-                                 title="{$writer->displayName()}"/>
-                            </a>
+                            {$news->writer()|user}
                         {/if}
                     </td>
                     <td class="title">
-                        {$news->title()}
+                        <a href="news/see/{$news->id()}"><div>{$news->title()}</div></a>
                     </td>
                     <td class="date">
                         {$news->begin()|age}
@@ -60,9 +54,15 @@
                         <img class="image" src="{$news->image()|image:'small'|smarty:nodefaults}" />
                     {/if}
                     {$news->content()|miniwiki:'title'|smarty:nodefaults}
+                    <br class="clear" />
                 </div>
+                {canEdit target=$news->target()}
+                    <div class="admin">
+                        <a href="news/admin/{$news->id()}"><div class="edit"></div>Modifier</a>
+                    </div>
+                {/canEdit}
                 <div class="writer">
-                    {$news->writer()|user}
+                    Rédigée par {$news->writer()|user}
                 </div>
             </div>
         </li>
