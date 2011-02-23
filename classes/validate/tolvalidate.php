@@ -36,10 +36,10 @@ class TolValidate extends ItemValidate
         return 'Changement de photo';
     }
 
-    public function __construct(FrankizImage $image)
+    public function __construct(FrankizImage $image, User $user)
     {
         $this->image = $image;
-        parent::__construct();
+        $this->user = $user;
     }
 
     public function image(FrankizImage $image = null)
@@ -69,7 +69,7 @@ class TolValidate extends ItemValidate
         $mail = new FrankizMailer('validate/mail.admin.tol.tpl');
         $mail->assign('user', $this->user->displayName());
 
-        $mail->subject("[Frankiz] Validation d'une annonce");
+        $mail->subject("[Frankiz] Validation d'une photo tol");
         $mail->SetFrom($this->user->bestEmail(), $this->user->displayName());
         $mail->AddAddress($this->_mail_from_addr(), $this->_mail_from_disp());
         $mail->Send(false);

@@ -82,7 +82,7 @@ class ProfileModule extends PLModule
                 $image->select(FrankizImageSelect::caste());
                 $image->label(S::user()->fullName());
                 $image->caste($group->caste(Rights::everybody()));
-                $tv = new TolValidate($image);
+                $tv = new TolValidate($image, S::user());
                 $v = new Validate(array(
                     'writer' => S::user(),
                     'group'  => $group,
