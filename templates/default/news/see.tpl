@@ -39,6 +39,11 @@
 
         <div class="meta">
             <div class="star_switcher" title="Suivre l'annonce"></div>
+            {canEdit target=$news->target()}
+                <div class="admin">
+                    <a href="news/admin/{$news->id()}"><div class="edit"></div>Modifier</a>
+                </div>
+            {/canEdit}
             <div class="infos">
                 Rédigée par 
 

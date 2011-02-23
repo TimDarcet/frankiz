@@ -24,8 +24,8 @@ class TolModule extends PLModule
     function handlers()
     {
         return array(
-            'tol'             => $this->make_hook('tol'     ,        AUTH_INTERNAL, ''),
-            'tol/see'         => $this->make_hook('see'     ,        AUTH_INTERNAL, ''),
+            'tol'             => $this->make_hook('tol',             AUTH_INTERNAL, ''),
+            'tol/see'         => $this->make_hook('see',             AUTH_INTERNAL, ''),
             'tol/ajax/search' => $this->make_hook('tol_ajax_search', AUTH_INTERNAL, ''),
             'tol/ajax/sheet'  => $this->make_hook('tol_ajax_sheet',  AUTH_INTERNAL, '')
             );

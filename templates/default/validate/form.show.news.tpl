@@ -45,20 +45,11 @@
     <td class="news">
         <div class="infos">
             <table><tr>
-                <td class="star"></td>
                 <td class="origin">
                     {if $item->origin()}
-                        {assign var='origin' value=$item->origin()}
-                        <a href="groups/see/{$origin->name()}">
-                        <img src="{$origin->image()|image:'micro'|smarty:nodefaults}" 
-                             title="{$origin->label()}"/>
-                        </a>
+                        {$item->origin()|group}
                     {else}
-                        {assign var='writer' value=$item->writer()}
-                        <a href="tol/?hruid={$writer->login()}">
-                        <img src="{$writer->image()|image:'micro'|smarty:nodefaults}" 
-                             title="{$writer->displayName()}"/>
-                        </a>
+                        {$item->writer()|user}
                     {/if}
                 </td>
                 <td class="title">
