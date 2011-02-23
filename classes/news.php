@@ -67,7 +67,7 @@ class NewsSelect extends Select
     }
 
     public static function head($subs = null) {
-        return new NewsSelect(array('title', 'origin', 'target', 'writer', 'begin', 'end'),
+        return new NewsSelect(array('title', 'origin', 'target', 'writer', 'begin', 'end', 'read', 'star'),
                               array('origin' => GroupSelect::base(),
                                     'writer' => UserSelect::base()));
     }
@@ -189,6 +189,14 @@ class News extends meta
             $this->star = false;
         }
         return $this->star;
+    }
+
+    public function delete()
+    {
+        XDB::execute('DELETE FROM news WHERE id = {?}', $this->id());
+        XDB::execute('DELETE FROM news_read WHERE news = {?}', $this->id());
+        XDB::execute('DELETE FROM news_star WHERE news = {?}', $this->id());
+        $this->image()->delete();
     }
 }
 
