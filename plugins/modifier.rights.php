@@ -19,12 +19,22 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-function smarty_modifier_rights($rights) {
+function smarty_modifier_rights($rights, $defaults = null, $hoverable = false) {
     $rights = unflatten($rights);
-    $strings = array();
+    if ($defaults === null) {
+        $defaults = $rights;
+    }
+
+    $keys = array();
     foreach ($rights as $right) {
-        $label = (string) $right;
-        switch ((string) $right) {
+        $keys[(string) $right] = true;
+    }
+
+    $strings = array();
+    foreach ($defaults as $right) {
+        $key = (string) $right;
+        $label = $key;
+        switch ($key) {
             case 'admin':
                 $label = 'Administrateur';
             break;
@@ -33,15 +43,13 @@ function smarty_modifier_rights($rights) {
                 $label = 'Membre';
             break;
 
-            case 'restricted':
-                $label = 'Membre';
-            break;
-
             case 'friend':
                 $label = 'Sympathisant';
             break;
         }
-        $strings[] = '<div title="' . $label . '" class="rights ' . (string) $right . '"></div>';
+        $has = ($keys[$key]) ? 'on' : 'off';
+        $hoverable = ($hoverable) ? 'hoverable' : '';
+        $strings[] = '<div title="' . $label . '" class="rights ' . $key . ' '. $has . ' ' . $hoverable .'"></div>';
     }
     return implode('', $strings);
 }

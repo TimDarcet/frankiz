@@ -106,7 +106,8 @@ a {
     height: 16px;
     display: inline-block;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: center 0;
+    
 
     zoom:1;
     *display: inline;
@@ -120,7 +121,7 @@ a {
     }
 
     &.member {
-        display: none;
+        background-image: url("../default/images/rights_member.png");
     }
 
     &.logic {
@@ -132,11 +133,18 @@ a {
     }
 
     &.restricted {
-        background-image: url("../default/images/rights_member.png");
+        display: none;
     }
 
     &.everybody {
         display: none;
+    }
+
+    &.hoverable:hover {
+        background-position: center -16px !important;
+    }
+    &.off {
+        background-position: center -32px;
     }
 }
 
@@ -797,3 +805,7 @@ table.bicol {
     background-position: center 0px;
 }
 
+.modifier_user img {
+    max-width: 35px;
+    max-height: 35px;
+}
