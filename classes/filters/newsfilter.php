@@ -23,6 +23,21 @@ abstract class NewsFilterCondition extends FrankizFilterCondition
 {
 }
 
+class NFC_Id extends NewsFilterCondition
+{
+    private $ids;
+
+    public function __construct($ns)
+    {
+        $this->ids = News::toIds(unflatten($ns));
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        return XDB::format('n.id IN {?}', $this->ids);
+    }
+}
+
 /** Filters news based on their writer
  * @param $us A User, a Uid or an array of it
  */
@@ -35,7 +50,7 @@ class NFC_Writer extends NewsFilterCondition
         $this->uids = User::toIds(unflatten($us));
     }
 
-    public function buildCondition(PlFilter $uf)
+    public function buildCondition(PlFilter $f)
     {
         return XDB::format('n.writer IN {?}', $this->uids);
     }
@@ -53,9 +68,45 @@ class NFC_Origin extends NewsFilterCondition
         $this->gids = Group::toIds(unflatten($gs));
     }
 
-    public function buildCondition(PlFilter $uf)
+    public function buildCondition(PlFilter $f)
     {
         return XDB::format('n.origin IN {?}', $this->gids);
+    }
+}
+
+/** Filters news if they have been read by the user
+ * @param $user User
+ */
+class NFC_Read extends NewsFilterCondition
+{
+    private $uid;
+
+    public function __construct($user)
+    {
+        $this->uid = $user->id();
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        return XDB::format('EXISTS(SELECT * FROM news_read WHERE news = n.id AND uid = {?})', $this->uid);
+    }
+}
+
+/** Filters news if they have been starred by the user
+ * @param $user User
+ */
+class NFC_Star extends NewsFilterCondition
+{
+    private $uid;
+
+    public function __construct($user)
+    {
+        $this->uid = $user->id();
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        return XDB::format('EXISTS(SELECT * FROM news_star WHERE news = n.id AND uid = {?})', $this->uid);
     }
 }
 
