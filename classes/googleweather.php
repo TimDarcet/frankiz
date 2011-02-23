@@ -59,8 +59,7 @@ abstract class Weather implements IteratorAggregate
 
     public function getIterator()
     {
-        $arrayobject = new ArrayObject($this->forecasts);
-        return $arrayobject->getIterator();
+        return new ArrayIterator($this->forecasts);
     }
 }
 
