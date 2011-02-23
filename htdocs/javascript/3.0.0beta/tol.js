@@ -20,10 +20,9 @@ var users = function() {
     var searching = false;
     var newsearch = false;
     var mode = 'card';
-    
+
     function _imageur() {
-        $.each($("#tol_results > li .sheet .img a"), function(index, value) {
-            $(value).removeAttr('href');
+        $.each($("#section .result .sheet .img a"), function(index, value) {
             $(value).click(function() {
                 var photo = $(this).closest('[photo]').attr('photo');
                 var original = $(this).closest('[original]').attr('original');
@@ -45,6 +44,8 @@ var users = function() {
                             'centerOnScroll': true,
                             'titleShow'     : false
                         });
+
+                return false;
             });
         });
     };
@@ -151,7 +152,7 @@ var users = function() {
             newsearch = true;
         }
     };
-    
+
     return {
         search: function () {
             _search();
