@@ -47,19 +47,11 @@
             <div class="infos">
                 Rédigée par 
 
-                {assign var='writer' value=$news->writer()}
-                <a href="tol/?hruid={$writer->login()}">
-                <img src="{$writer->image()|image:'micro'|smarty:nodefaults}" 
-                     title="{$writer->displayName()}"/>
-                </a>
+                {$news->writer()|user}
 
                 {if $news->origin()}
                 au nom de 
-                    {assign var='origin' value=$news->origin()}
-                    <a href="groups/see/{$origin->name()}">
-                    <img src="{$origin->image()|image:'micro'|smarty:nodefaults}" 
-                         title="{$origin->label()}"/>
-                    </a>
+                    {$news->origin()|group}
                 {/if}
 
                 le 
