@@ -1,5 +1,8 @@
-$(document).ready(function() {
-    $('.news .title').click(function() {
+$(function() {
+    $('.news .title a').each(function() {
+        $(this).height($(this).closest('td').height());
+    });
+    $('.news .title a').click(function() {
         var news = $(this).closest('.news');
         if (news.hasClass('unread')) {
             var id = news.attr('nid');
@@ -11,6 +14,8 @@ $(document).ready(function() {
         } else {
             news.switchClass('open', 'close', 100);
         }
+
+        return false;
     });
 
     $('.open_all').click(function() {
@@ -23,44 +28,24 @@ $(document).ready(function() {
             $(this).removeClass('close unread');
         });
 
-        ids = ids.join(',');
-        request('news/ajax/read/' + ids + '/1');
-    });
-
-    $('.news .star_switcher').click(function() {
-        var news = $(this).closest('.news');
-        if (news.hasClass('unstar')) {
-            news.switchClass('unstar', 'star', 100);
-            var id = $(this).closest('.news').attr('nid');
-            request('news/ajax/star/' + id + '/1');
-        } else {
-            news.switchClass('star', 'unstar', 100);
-            var id = $(this).closest('.news').attr('nid');
-            request('news/ajax/star/' + id + '/0');
+        if (ids.length > 0) {
+            ids = ids.join(',');
+            request('news/ajax/read/' + ids + '/1');
         }
     });
 
-    // for news/admin
-    $('.hide').hide();
-    if ($("#news_show").html() == '\n')
-        $("#news_show").hide();
-    $("#news_admin input[name='admin_id']").change(function(){
-        request({ "url": 'news/ajax/admin'
-                ,"data": {'id': $("input[@name='admin_id']:checked").val()}
-             ,"success": function(json) {
-                    $("#news_show").html(json.news);
-                    $("#news_admin #news_show").focusout(function(){
-                        change();
-                    });
-                    $("#news_admin #news_show").change(function(){
-                        has_changed = true;
-                    });
-                    $('.hide').hide();
-             }
-        });
-        $("#news_show").show();
-    });
+    $('[nid] .star_switcher').click(function() {
+        var $news = $(this).closest('[nid]');
+        var nid = $news.attr('nid');
 
+        if ($news.hasClass('unstar')) {
+            $news.switchClass('unstar', 'star', 100);
+            request('news/ajax/star/' + nid + '/1');
+        } else {
+            $news.switchClass('star', 'unstar', 100);
+            request('news/ajax/star/' + nid + '/0');
+        }
+    });
 });
 
 var has_changed = false;

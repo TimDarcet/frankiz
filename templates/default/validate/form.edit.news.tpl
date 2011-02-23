@@ -62,9 +62,13 @@
             var begin = new Date('{/literal}{$item->begin()|datetime:'m/d/Y H:i'}{literal}');
             var end = new Date('{/literal}{$item->end()|datetime:'m/d/Y H:i'}{literal}');
             $("#begin").datetimepicker({minDate: new Date(), maxDate: "+7D", defaultDate: begin});
-            $("#begin").datetimepicker('setDate', begin);
-            $("#end").datetimepicker({ minDate: new Date(), maxDate: "+7D", defaultDate: end});
-            $("#end").datetimepicker('setDate', end);
+            if (!$("#begin").val()) {
+                $("#begin").datetimepicker('setDate', begin);
+            }
+            $("#end").datetimepicker({minDate: new Date(), maxDate: "+7D", defaultDate: end});
+            if (!$("#end").val()) {
+                $("#end").datetimepicker('setDate', end);
+            }
         });
         {/literal}</script>
     </td>

@@ -25,6 +25,7 @@ class NewsModule extends PlModule
     {
         return array(
             "news"              => $this->make_hook("news"          , AUTH_PUBLIC),
+            "news/see"          => $this->make_hook("see"           , AUTH_PUBLIC),
             "news/admin"        => $this->make_hook("admin"         , AUTH_MDP),
             "news/rss"          => $this->make_hook("rss"           , AUTH_PUBLIC, "user", NO_HTTPS), // TODO
             "news/ajax/read"    => $this->make_hook("ajax_read"     , AUTH_COOKIE),
@@ -41,7 +42,8 @@ class NewsModule extends PlModule
         $news = new Collection('News');
         $news->add($ids);
         $news->read(($state == 1));
-        exit;
+
+        return PL_JSON;
     }
 
     function handler_ajax_star($page, $id, $state)
@@ -49,7 +51,8 @@ class NewsModule extends PlModule
         S::assert_xsrf_token();
         $news = new News($id);
         $news->star(($state == 1));
-        exit;
+
+        return PL_JSON;
     }
 
     function handler_news($page)
@@ -58,74 +61,75 @@ class NewsModule extends PlModule
         $target_castes->merge(S::user()->castes(Rights::restricted()));
         $target_castes->merge(S::user()->castes(Rights::everybody()));
 
-        $restricted = new NFC_Target(S::user()->castes(Rights::restricted()));
-
         $nf = new NewsFilter(new PFC_And(new NFC_Current(),
                                          new NFC_Target($target_castes)));
         $news = $nf->get()->select(NewsSelect::news());
 
+        $page->assign('user', S::user());
         $page->assign('news', $news);
         $page->addCssLink('news.css');
         $page->assign('title', 'Annonces');
         $page->changeTpl('news/news.tpl');
     }
 
-    function handler_admin($page, $nid = false)
+    function handler_see($page, $id)
     {
-        $date = new FrankizDateTime();
-        $date->sub(new DateInterval('P1D'));
-        $c = new NewsFilter(new PFC_And(new NFC_END($date, NFC_End::AFTER),
-                                        new NFC_TargetGroup(S::user()->castes(Rights::admin())->groups())));
-        $c = $c->get()->select(NewsSelect::news());
+        $nf = new NewsFilter(new PFC_And(new NFC_Id($id),
+                                         new NFC_CanBeSeen(S::user())));
+        $news = $nf->get(true);
 
-        if (Env::has('admin_id')) {
-            $nid = Env::i('admin_id');
+        if ($news) {
+            $news->read(true);
+            $news->select(NewsSelect::news());
         }
 
-        if ($nid !== false)
-        {
-            $id = Env::i('admin_id');
-	        $n = $c->get($nid);
-            
-	        if($n === false) {
-                throw new Exception("Invalid credentials or the page has been open too long.");
+        $page->assign('news', $news);
+        $page->addCssLink('news.css');
+        $page->assign('title', 'Annonce: ' . $news->title());
+        $page->changeTpl('news/see.tpl');
+    }
+    
+
+    function handler_admin($page, $nid)
+    {
+        $nf = new NewsFilter(new PFC_And(new NFC_Id($nid),
+                                        new NFC_TargetGroup(S::user()->castes(Rights::admin())->groups())));
+        $news = $nf->get(true);
+
+        if ($news !== false) {
+            $news->select(NewsSelect::news());
+
+            if (Env::has('modify') || Env::has('delete')) {
+                S::assert_xsrf_token();
             }
 
-	        if (Env::has('modify'))
-	        {
-                S::assert_xsrf_token();
-                
-                try
-                {
-                    $end = new FrankizDateTime(Env::t('end'));
-                    $n->title(Env::t('title'));
-                    $n->content(Env::t('content'));
-                    $n->end($end);
-                    $n->priv(Env::has('priv'));
-                    $n->replace();
-                    $page->assign('msg', 'L\'annonce a été modifiée.');
+            if (Env::has('modify')) {
+                $news->title(Env::t('title'));
+                $news->content(Env::t('news_content'));
+                $news->begin(new FrankizDateTime(Env::t('begin')));
+                $news->end(new FrankizDateTime(Env::t('end')));
+                if (Env::has('image')) {
+                    $image = new ImageFilter(new PFC_And(new IFC_Id(Env::i('image')), new IFC_Temp()));
+                    $image = $image->get(true);
+                    if (!$image) {
+                        throw new Exception("This image doesn't exist anymore");
+                    }
+                    $image->select(FrankizImageSelect::caste());
+                    $image->label($news->title());
+                    $image->caste($news->target());
+                    $news->image($image);
                 }
-                catch (Exception $e)
-                {
-                    $page->assign('msg', 'La date n\'est pas correcte.');
-                }
-	        }
-            
-            if (Env::has('delete'))
-            {
-                S::assert_xsrf_token();
-                
-                $c->remove($n);
-                $n->delete();
+                $page->assign('msg', "L'annonce a été modifiée.");
+            }
+
+            if (Env::has('delete')) {
+                $news->delete();
                 $page->assign('delete', true);
             }
-            $page->assign('id', $nid);
-	        $page->assign('news', $n);
         }
-        
-        $page->assign('all_news', $c);
 
-        $page->assign('title', 'Modifier les annonces en cours');
+        $page->assign('news', $news);
+        $page->assign('title', "Modifier l'annonce");
         $page->addCssLink('validate.css');
         $page->changeTpl('news/admin.tpl');
     }

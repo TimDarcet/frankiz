@@ -20,56 +20,45 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{js src="news.js"}
+{if t($msg) && $msg}
+    <div class="msg_proposal">
+        {$msg}
+    </div>
+{/if}
 
-<div class="msg_proposal">
-    {$msg}
-</div>
-
-{if $delete}
+{if t($delete) && $delete}
     <div class="msg_proposal">
         L'annonce a été supprimée.
     </div>
+{/if}
 
-{else}
-    <form enctype="multipart/form-data" method="post" action="news/admin" id="news_admin">
-        {xsrf_token_field}
-        <div class="module">
-            <div class="head">
-               Sélectionner l'annonce à modifier
-            </div>
-
-            <div class="body">
+{if $news}
+    <div class="module">
+        <div class="head">
+            <span class="helper" target="news/admin"></span>
+           {$title}
+        </div>
+        <div class="body">
+            <form enctype="multipart/form-data" method="post" action="news/admin/{$news->id()}">
+                {xsrf_token_field}
                 <table>
-                    {foreach from=$all_news item=n}
-                        <tr>
-                            <td width=20%></td>
-                            <td>
-                                <input type="radio" name="admin_id" value="{$n->id()}" {if $id == $n->id()}checked{/if}> {$n->title()}
-                            </td>
-                        </tr>
-                    {/foreach}
-
-                    <tr class="hide">
+                    {include file="validate/form.edit.news.tpl"|rel item=$news}
+                    <tr>
                         <td>
-                            Sélectionner :
+                            <input type="submit" name="delete" value="Supprimer"
+                                   onclick="return window.confirm('Certain ?')" />
                         </td>
                         <td>
-                            <input type="submit" name="send" value="Valider"/>
+                            <input type="submit" name="modify" value="Modifier"
+                                   onclick="return window.confirm('Certain ?')" />
                         </td>
                     </tr>
                 </table>
-            </div>
+            </form>
         </div>
-
-
-        <div class="module" id="news_show">
-            {if $news != null}
-                {include file="news/modify.tpl"|rel}
-            {/if}
-        </div>
-    </form>
+    </div>
 {/if}
 
+{js src="news.js"}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

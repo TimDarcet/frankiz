@@ -38,12 +38,12 @@
     margin-bottom: 10px;
 }
 
-#content {
+#section {
     table {
         position: relative;
         width: 95%;
 
-        >tbody>tr>td:first-child {
+        td:first-child {
             width: 20%;
         }
 
@@ -55,6 +55,16 @@
     input.title {
         width: 75%;
     }
+
+    input[type=submit] {
+        float: right;
+    }
+
+    input[name=delete] {
+        color: red;
+        font-weight: bold;
+        float: none;
+    }
 }
 
 /*******************************************************************************
@@ -62,38 +72,40 @@
 
 *******************************************************************************/
 
-ul {
-    padding-left: 20px;
-    padding-right: 20px;
-    li.validate {
-        .alphabackground;
-        list-style: none;
-        margin-bottom: 10px;
-        .title {
-            cursor: pointer;
-        }
-        .more {
-            display: none;
-            .rules {
-                font-size: 12px;
-            }
-
-            .click {
-                text-align: center;
-                font-weight: bold;
+#section {
+    ul {
+        padding-left: 20px;
+        padding-right: 20px;
+        li.validate {
+            .alphabackground;
+            list-style: none;
+            margin-bottom: 10px;
+            .title {
                 cursor: pointer;
             }
+            .more {
+                display: none;
+                .rules {
+                    font-size: 12px;
+                }
+
+                .click {
+                    text-align: center;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+            }
         }
-    }
-    
-    .validate .text_validate {
-        width: 90%;
-    }
-    
-    .validate textarea {
-        resize: auto;
-        width: 90%;
-        height: 80px;
+
+        .validate .text_validate {
+            width: 90%;
+        }
+
+        .validate textarea {
+            resize: auto;
+            width: 90%;
+            height: 80px;
+        }
     }
 }
 
@@ -103,54 +115,55 @@ ul {
 
 *******************************************************************************/
 
+#section {
+    .news {
+        background-color: #BDD5E3;
+        .infos {
+            text-align: center;
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                padding: 0;
 
-.news {
-    background-color: #BDD5E3;
-    .infos {
-        text-align: center;
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            padding: 0;
-            
-            .star {
-                position: relative;
-                width: 35px;
-                background-repeat: no-repeat;
-                background-position: center;
-                background-image: url("../default/images/star_off.png");
-            }
+                .star {
+                    position: relative;
+                    width: 35px;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-image: url("../default/images/star_off.png");
+                }
 
-            .origin {
-                position: relative;
-                width: 50px;
-            }
-            .date {
-                position: relative;
-                width: 50px;
-            }
-        }
-    }
-
-    .content {
-        position: relative;
-        clear: both;
-        margin: 5px;
-        text-align: left;
-
-        .body {
-            border-top: 1px #002334 solid;
-            background-color: white;
-            padding: 5px;
-
-            .image {
-                float: left;
+                .origin {
+                    position: relative;
+                    width: 50px;
+                }
+                .date {
+                    position: relative;
+                    width: 50px;
+                }
             }
         }
 
-        .writer {
-            width: 100%;
-            text-align: right;
+        .content {
+            position: relative;
+            clear: both;
+            margin: 5px;
+            text-align: left;
+
+            .body {
+                border-top: 1px #002334 solid;
+                background-color: white;
+                padding: 5px;
+
+                .image {
+                    float: left;
+                }
+            }
+
+            .writer {
+                width: 100%;
+                text-align: right;
+            }
         }
     }
 }
@@ -161,7 +174,7 @@ ul {
 
 *******************************************************************************/
 
-#content .qdj {
+#section .qdj {
     .question  {
         font-size: 11pt;
         text-align: center;
@@ -171,7 +184,7 @@ ul {
     table {
         width: 100%;
 
-        >tbody>tr>td {
+        td {
             width: 50%;
         }
 
