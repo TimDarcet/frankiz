@@ -22,18 +22,16 @@
 
 <div class="threecols index">
     <div class="module">
-        <div class="head"><span class="helper" target="admin/index/account"> </span>Compte</div>
+        <div class="head"><span class="helper" target="admin/index/account"></span>Compte</div>
         <div class="body">
             <ul>
-                <li><a href="profile/account">Modifier mon compte</a></li>
-                <li><a href="profile/mails">Mes mails</a></li>
-                <li><a href="profile/skin">Changer l'habillage</a></li>
-                <li><a href="profile/minimodules">Gérer les minimodules</a></li>
-                <li><a href="profile/network">Gérer mes données réseau</a></li>
+                <li><a href="profile/account">Mon compte</a></li>
+                <li><a href="profile/minimodules">Mes minimodules</a></li>
+                <li><a href="profile/network">Mes données réseau</a></li>
             </ul>
             {if $smarty.session.user->checkPerms('admin')}
                 <ul>
-                    <li><a href="wiki/admin">Administrer les wikis</a></li>
+                    <li><a href="wiki/admin">Les zones wikis</a></li>
                 </ul>
             {/if}
         </div>
@@ -60,7 +58,7 @@
                 <li class="group">
                     <img src="{$group->image()|image:'micro':'group'}" />
                     <div>
-                        <div class="label">{$group|group}</div>
+                        <div class="label">{$group|group:'text'}</div>
                         <div class="admin"><a href="groups/admin/{$group->id()}">Administrer</a></div>
                         {assign var='id' value=$group->id()}
                         {if t($validates.$id)}
