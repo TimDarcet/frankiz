@@ -221,6 +221,27 @@ class Group extends Meta
 
     *******************************************************************************/
 
+    public function selectRights(Collection $users)
+    {
+        $rights = array();
+        if ($users->count() > 0) {
+            $iter = XDB::iterRow('SELECT  cu.uid, c.rights
+                                     FROM  castes AS c
+                               INNER JOIN  castes_users AS cu ON cu.cid = c.cid
+                               INNER JOIN  groups AS g ON g.gid = c.`group`
+                                    WHERE  g.gid = {?} AND cu.uid IN {?}',
+                                           $this->id(), $users->ids());
+            while (list($uid, $right) = $iter->next()) {
+                if (empty($rights[$uid])) {
+                    $rights[$uid] = array();
+                }
+                $rights[$uid][] = new Rights($right);
+            }
+        }
+
+        return $rights;
+    }
+
     public function insert($id = null, $type = 'all')
     {
         if ($id == null) {
