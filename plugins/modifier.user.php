@@ -21,7 +21,7 @@
 
 
 function smarty_modifier_user($user, $type = 'micro') {
-    $str = '<a href="tol/see/' . $user->login() . '" title="' . $user->fullName() . '">';
+    $str = '<a class="modifier_user" href="tol/see/' . $user->login() . '" title="' . $user->fullName() . '">';
 
     if ($type == 'micro') {
         $str .= '<img src="' . $user->image()->src('micro') . '" />';
