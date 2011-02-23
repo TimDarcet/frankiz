@@ -175,6 +175,29 @@ class NFC_Title extends NewsFilterCondition
     }
 }
 
+/** Returns news that begin before (or after) a specified datetime
+ */
+class NFC_Begin extends NewsFilterCondition
+{
+    const AFTER  = '>=';
+    const BEFORE = '<=';
+    const EGAL   = '=';
+
+    private $sign;
+    private $begin;
+
+    public function __construct(FrankizDateTime $begin, $sign = self::AFTER)
+    {
+        $this->begin  = $begin;
+        $this->sign = $sign;
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        return XDB::format('begin ' . $this->sign . ' {?}', $this->begin->toDb());
+    }
+}
+
 /** Returns news that end before (or after) a specified datetime
  */
 class NFC_End extends NewsFilterCondition
@@ -194,7 +217,7 @@ class NFC_End extends NewsFilterCondition
 
     public function buildCondition(PlFilter $f)
     {
-        return XDB::format('n.end ' . $this->sign . ' {?}', $this->end->format());
+        return XDB::format('n.end ' . $this->sign . ' {?}', $this->end->toDb());
     }
 }
 
@@ -304,7 +327,7 @@ class NewsFilter extends FrankizFilter
     {
         $joins = array();
         if ($this->with_user) {
-            $joins['cu'] = PlSqlJoin::inner('castes_users', '$ME.cid = c.cid');
+            $joins['cu'] = PlSqlJoin::left('castes_users', '$ME.cid = c.cid');
         }
         return $joins;
     }
