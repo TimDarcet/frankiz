@@ -1,24 +1,51 @@
 $(function(){
-   $.getCSS = function(url, media){
-      $(document.createElement('link') ).attr({
-          href: url,
-          media: media || 'screen',
-          type: 'text/css',
-          rel: 'stylesheet'
-      }).appendTo('head');
-   };
+    /*
+     * Plugin to dynamically load a .css file
+     */
+    $.getCSS = function(url, media){
+       $(document.createElement('link') ).attr({
+           href: url,
+           media: media || 'screen',
+           type: 'text/css',
+           rel: 'stylesheet'
+       }).appendTo('head');
+    };
 
+    /*
+     * Temporary ?
+     */
     $.ajaxSetup({ cache: false });
 
+    /*
+     * Moving the background when scrolling
+     * Might be a good idea to disable it when the browser isn't Chrome
+     */
     $('body').css('background-position', '50% 45%');
     $(document).scroll(function() {
         $('body').css('background-position', '50% ' + (45 + Math.round($(this).scrollTop() / ($(this).height() - $(window).height()) * 10)) +'%');
     });
 
-    $(".wiki_textarea .wiki_slider").click(function() {
-        //TODO
+    /*
+     * Manage the wiki_textarea components
+     */
+    $(".wiki_textarea").each(function() {
+        var $this = $(this);
+        wiki_preview.start($this.find("textarea"), $this.find(".wiki_preview"));
+    });
+    $(".wiki_textarea .down").click(function() {
+        var $textarea = $(this).closest(".wiki_textarea").find(".textarea");
+        console.log($textarea);
+        $textarea.height($textarea.height() + 25);
+    });
+    $(".wiki_textarea .help").click(function() {
+        // Using a Pop-Up, but their might be a better solution
+        window.open("wiki_help/notitle", "Syntaxe Wiki",
+        "scrollbars=1, status=0, height=500, width = 600, dependent=1, resizable=1");
     });
 
+    /*
+     * Manage the target_picker components
+     */
     $(".target_picker select, .target_picker input[type=checkbox]").change(function() {
         var target_picker = $(this).closest('.target_picker');
         var selected = target_picker.find("option:selected");
@@ -43,6 +70,9 @@ $(function(){
     });
     $(".target_picker select, .target_picker input").change();
 
+    /*
+     * Manage the helper components
+     */
     $(".helper").click(function() {
         var $this = $(this);
 
@@ -352,7 +382,7 @@ function uploader($uploader, id) {
         } else {
             $uploader.children('input').remove();
         }
-    })
+    });
 }
 
 Nix = {

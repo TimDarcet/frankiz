@@ -24,17 +24,15 @@
     <div class="wiki_preview">
         {$already|miniwiki|smarty:nodefaults}
     </div>
-    <table class="wiki_content"><tr>
-        <td>
+    <div class="wiki_form">
+        <div class="wiki_controls">
+            <div class="help" title="Afficher la syntaxe wiki"> </div>
+            <div class="down" title="Aggrandir la zone de texte"> </div>
+        </div>
+        <div class="textarea">
             <textarea name="{$id}" id="{$id}">{$already}</textarea>
-        </td>
-        <td class="wiki_slider"></td>
-        <td class="wiki_help"></td>
-    </tr></table>
-
-    <script type="text/javascript">
-        wiki_preview.start($("#{$id}"), $("#wiki_textarea_{$id} .wiki_preview"));
-    </script>
+        </div>
+    </div>
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
