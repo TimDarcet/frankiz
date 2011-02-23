@@ -196,7 +196,9 @@ class News extends meta
         XDB::execute('DELETE FROM news WHERE id = {?}', $this->id());
         XDB::execute('DELETE FROM news_read WHERE news = {?}', $this->id());
         XDB::execute('DELETE FROM news_star WHERE news = {?}', $this->id());
-        $this->image()->delete();
+        if ($this->image()) {
+            $this->image()->delete();
+        }
     }
 }
 
