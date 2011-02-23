@@ -10,15 +10,16 @@ CREATE TABLE IF NOT EXISTS minimodules (
 
 INSERT INTO minimodules (`name`, `label`, description) VALUES('activity', 'Activités du jour', '');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('birthday', 'Anniversaires', 'Les anniversaires 42');
-INSERT INTO minimodules (`name`, `label`, description) VALUES('days', 'Fêtes', 'Les fêtes des saints (et des autres) blih');
+INSERT INTO minimodules (`name`, `label`, description) VALUES('days', 'Fêtes', 'Les fêtes des saints (et des autres)');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('debug', 'Debug', '');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('groups', 'Mes groupes', 'Liste de ses groupes');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('ik', 'IK de la semaine', '');
-INSERT INTO minimodules (`name`, `label`, description) VALUES('jtx', 'Video du jour', 'La video du jour par le jtx');
+INSERT INTO minimodules (`name`, `label`, description) VALUES('jtx', 'Video', 'La video du jour par le jtx');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('links', 'Liens utiles', '');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('meteo', 'Météo', 'Météo du platal');
-INSERT INTO minimodules (`name`, `label`, description) VALUES('qdj', 'Question Du Jour', 'La question du jour permet blah blah blah');
+INSERT INTO minimodules (`name`, `label`, description) VALUES('qdj', 'Question Du Jour', 'Politique ou juste comique, réponds à la Question Du Jour');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('quicksearch', 'TOL', 'bluh');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('stats', 'Statistiques', 'Pour les admins');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('timeleft', 'Temps restant', '');
-INSERT INTO minimodules (`name`, `label`, description) VALUES('todo', 'To-Do', 'blah blah');
+INSERT INTO minimodules (`name`, `label`, description) VALUES('todo', 'To-Do', 'Une liste de choses à faire');
+INSERT INTO minimodules (`name`, `label`, description) VALUES('news', 'Annonces', 'D\'un seul coup d\'oeil les annonces non-lues ou suivies');
