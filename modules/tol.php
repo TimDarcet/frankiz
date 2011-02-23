@@ -119,8 +119,6 @@ class TolModule extends PLModule
 
     function handler_tol($page)
     {
-        global $globals;
-
         $fields = $this->fillFields();
         $filter = $this->buildFilter($fields);
 
@@ -136,11 +134,7 @@ class TolModule extends PLModule
             $page->assign('total', $uf->getTotalCount());
         }
 
-        foreach (json_decode($globals->core->promos) as $promo) {
-            $groupes_names[] = 'promo_' . $promo;
-        }
-        $promos = new Collection('Group');
-        $promos->add($groupes_names)->select(GroupSelect::base());
+        $promos = S::user()->castes()->groups()->filter('ns', Group::NS_PROMO);
         $page->assign('promos', $promos);
 
         $page->assign('user', S::user());

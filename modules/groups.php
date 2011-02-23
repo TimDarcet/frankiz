@@ -153,8 +153,6 @@ class GroupsModule extends PLModule
 
     function handler_group_see($page, $group)
     {
-        global $globals;
-
         $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
         $gf = new GroupFilter($filter);
         $group = $gf->get(true);
@@ -167,12 +165,7 @@ class GroupsModule extends PLModule
             if (S::i('auth') > AUTH_PUBLIC || $group->external()) {
                 $group->select(GroupSelect::see());
 
-                // Current promos ?
-                foreach (json_decode($globals->core->promos) as $promo) {
-                    $groupes_names[] = 'promo_' . $promo;
-                }
-                $promos = new Collection('Group');
-                $promos->add($groupes_names)->select(GroupSelect::base());
+                $promos = S::user()->castes()->groups()->filter('ns', Group::NS_PROMO);
                 $page->assign('promos', $promos);
 
                 // Relation between the user & the group
