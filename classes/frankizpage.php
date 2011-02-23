@@ -143,6 +143,41 @@ class FrankizPage extends PlPage
         return SkinFileNotFoundException::merge($exceptions);
     }
 
+    public function filteredFetch($skin, array& $infos = null)
+    {
+        global $globals, $platal;
+
+        $this->register_prefilter('trimwhitespace');
+        $this->register_prefilter('form_force_encodings');
+        $this->register_prefilter('wiki_include');
+        $this->register_prefilter('core_include');
+        $this->register_prefilter('if_rewrites');
+
+        $this->assign_by_ref('platal', $platal);
+        $this->assign_by_ref('globals', $globals);
+
+        $display = Env::s('display');
+
+        $this->register_modifier('escape_html', 'escape_html');
+        $this->default_modifiers = Array('@escape_html');
+
+        if (S::i('auth') <= AUTH_PUBLIC) {
+            $this->register_outputfilter('hide_emails');
+        }
+
+        if ($infos !== null) {
+            $START_SMARTY = microtime(true);
+        }
+
+        $result = $this->fetch($skin);
+
+        if ($infos !== null) {
+            $infos['time'] = microtime(true) - $START_SMARTY;
+        }
+
+        return $result;
+    }
+
     public function run()
     {
         $skin = $this->load_skin();
