@@ -245,9 +245,12 @@ while ($datas = $iter->next()) {
     foreach ($perms as $perm) {
         $tokens = explode('_', $perm);
         if ($tokens[0] == 'webmestre' || $tokens[0] == 'prez') {
-            $g = new Group($tokens[1]);
-            $g->select(GroupSelect::castes());
-            $g->caste(Rights::admin())->addUser($u);
+            $gf = new GroupFilter(new GFC_Id($tokens[1]));
+            $g = $gf->get(true);
+            if ($g) {
+                $g->select(GroupSelect::castes());
+                $g->caste(Rights::admin())->addUser($u);
+            }
         }
     }
 
