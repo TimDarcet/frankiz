@@ -21,30 +21,33 @@
 
 class NewsMiniModule extends FrankizMiniModule
 {
-
-    public function __construct()
+    public function tpl()
     {
-        // Fetch news ot the 24 last hours
-        $res=XDB::query('SELECT nc.cid cid,
-                                n.nid nid, n.uid uid, n.begin begin, n.end end, n.title title,
-                                a.uid uid, a.firstname firstname, a.lastname lastname, a.nickname nickname,
-                                g.name group_name
-                           FROM news_clusters AS nc
-                     INNER JOIN news AS n
-                             ON n.nid = nc.nid
-                     INNER JOIN account AS a
-                             ON a.uid = n.uid
-                      LEFT JOIN groups AS g
-                             ON g.gid = n.gid                             
-                          WHERE NOW() < n.end AND n.begin < NOW() < n.begin + 24*3600
-                            AND nc.cid IN ' . Cluster::inline(S::v('clusters')) . '
-                          GROUP BY nc.nid
-                          ORDER BY n.begin DESC');
-        $news = $res->fetchAllAssoc();
+        return 'minimodules/news/news.tpl';
+    }
+
+    public function css()
+    {
+        return 'minimodules/news.css';
+    }
+
+    public function title()
+    {
+        return 'Annonces non lues';
+    }
+
+    public function run()
+    {
+        $target_castes = new Collection();
+        $target_castes->merge(S::user()->castes(Rights::restricted()));
+        $target_castes->merge(S::user()->castes(Rights::everybody()));
+
+        $nf = new NewsFilter(new PFC_And(new NFC_Current(),
+                                         new PFC_Or(new PFC_Not(new NFC_Read(S::user())), new NFC_Star(S::user())),
+                                         new NFC_Target($target_castes)));
+        $news = $nf->get()->select(NewsSelect::head());
 
         $this->assign('news', $news);
-        $this->tpl = "minimodules/news/news.tpl";
-        $this->titre = "Nouvelles fraîches";
     }
 
 }

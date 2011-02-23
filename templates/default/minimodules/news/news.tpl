@@ -20,12 +20,18 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div id="news_list">
+<div>
     <table>
         {foreach from=$minimodule.news item=news}
-            <tr>
-                <td title="Envoyée par {if $news.nickname != ''}{$news.nickname}{else}{$news.firstname} {$news.lastname}{/if}" >{if $news.group_name != null}<img src="data/groups/mini/{$news.group_name}" />{/if}</td>
-                <td>{$news.title}</td>
+            <tr class="{if $news->star()}star{else}unstar{/if}">
+                <td>
+                    {if $news->origin()}
+                        {$news->origin()|group}
+                    {else}
+                        {$news->writer()|user}
+                    {/if}
+                </td>
+                <td><a href="news/see/{$news->id()}">{$news->title()}</a></td>
             </tr>
         {/foreach}
     </table>
