@@ -21,7 +21,7 @@
 {**************************************************************************}
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Frankiz : {$title}</title>
+<title>Frankiz{if $title}: {$title}{/if}</title>
 <base href="{$globals->baseurl}/" />
 
 <link rel="alternate" type="application/rss+xml" title="Version RSS" href="rss_annonces.php" />
