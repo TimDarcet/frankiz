@@ -77,10 +77,11 @@
     <div class="studies">
         <ul>
         {foreach from=$result->studies() item='study'}
-            <li class="{if $study->promo() % 2 == 0}rouje{else}jone{/if}">
+            <li>
                 {assign var='formation' value=$study->formation()}
                 <img title="{$formation->label()}" src="{$formation->image()|image:'micro'|smarty:nodefaults}" />
-                <span title="{$study->year_in()} ->{$study->year_out()}">{$study->promo()}</span>
+                <span class="promo {if $study->promo() % 2 == 0}rouje{else}jone{/if}"
+                      title="{$study->year_in()} ->{$study->year_out()}">{$study->promo()}</span>
             </li>
         {/foreach}
         </ul>
@@ -104,11 +105,11 @@
                 {foreach from=$groups|filter:'ns':'binet'|order:'score' item='group'}
                     <li>
                         <span class="meta">
-                            <img src="{$group->image()|image:'micro':'group'}" />
+                            {$group|group}
                             {$result->rights($group)|@rights}
                         </span>
                         <span>
-                            {$group|group}
+                            {$group|group:'text'}
                             <span class="comments">{$result->comments($group)}</span>
                         </span>
                     </li>
@@ -123,11 +124,11 @@
                 {foreach from=$groups|filter:'ns':'free'|order:'score' item='group'}
                     <li>
                         <span class="meta">
-                            <img src="{$group->image()|image:'micro':'group'}" />
+                            {$group|group}
                             {$result->rights($group)|@rights}
                         </span>
                         <span>
-                            {$group|group}
+                            {$group|group:'text'}
                             <span class="comments">{$result->comments($group)}</span>
                         </span>
                     </li>
