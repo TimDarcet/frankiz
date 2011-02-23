@@ -25,6 +25,7 @@ class TolModule extends PLModule
     {
         return array(
             'tol'             => $this->make_hook('tol'     ,        AUTH_INTERNAL, ''),
+            'tol/see'         => $this->make_hook('see'     ,        AUTH_INTERNAL, ''),
             'tol/ajax/search' => $this->make_hook('tol_ajax_search', AUTH_INTERNAL, ''),
             'tol/ajax/sheet'  => $this->make_hook('tol_ajax_sheet',  AUTH_INTERNAL, '')
             );
@@ -147,6 +148,24 @@ class TolModule extends PLModule
         $page->assign('title', 'Trombino On Line');
         $page->addCssLink('tol.css');
         $page->changeTpl('tol/tol.tpl');
+    }
+
+    function handler_see($page, $hruid)
+    {
+        $uf = new UserFilter(new UFC_Hruid($hruid));
+        $user = $uf->get(true);
+
+        if ($user) {
+            $user->select(UserSelect::tol());
+        }
+
+        trace($user);
+        $page->assign('result', $user);
+        $page->assign('mode', 'sheet');
+
+        $page->assign('title', 'Trombino On Line');
+        $page->addCssLink('tol.css');
+        $page->changeTpl('tol/see.tpl');
     }
 
     function handler_tol_ajax_search($page)
