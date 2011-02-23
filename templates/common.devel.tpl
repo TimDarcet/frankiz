@@ -27,14 +27,17 @@
     </span>
 
     @@BACKTRACE@@
+    {js src="jquery.cookie.js"}
     {literal}
     <script>
         $(function() {
-            $('#debug').offset({left: $.cookie('debug_x'), top: $.cookie('debug_y')});
-
             $("#debug_hook .erreur").hide();
             $("#debug_hook br").hide();
+
+            $('#debug').offset({left: $.cookie('debug_x'), top: $.cookie('debug_y')});
+
             $("#debug").draggable({
+              handle: $("#debug_hook"),
                 stop: function() {
                     var pos = $('#debug').offset();
                     $.cookie('debug_x', pos.left, {path: '/'});
@@ -44,7 +47,6 @@
         });
     </script>
     {/literal}
-    {js src="jquery.cookie.js"}
 </div>
 {/if}
 
