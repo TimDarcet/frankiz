@@ -318,6 +318,8 @@ class ActivityModule extends PLModule
 
     function handler_participants_add($page, $id)
     {
+        S::assert_xsrf_token();
+
         $a = new ActivityInstance($id);
         $a->select(ActivityInstanceSelect::base());
 
@@ -336,6 +338,8 @@ class ActivityModule extends PLModule
 
     function handler_participants_del($page, $id)
     {
+        S::assert_xsrf_token();
+
         $a = new ActivityInstance($id);
         $a->select(ActivityInstanceSelect::base());
 
