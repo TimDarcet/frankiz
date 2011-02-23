@@ -26,9 +26,9 @@
 <table>
     {foreach from=$minimodule.binets|order:'score' item='group'}
         <tr>
-            <td class="img"><img src="{$group->image()|image:'micro':'group'|smarty:nodefaults}" /></td>
+            <td class="img">{$group|group:'micro'}</td>
             <td class="therights">{$minimodule.user->rights($group)|@rights}</td>
-            <td class="group">{$group|group}</td>
+            <td class="group">{$group|group:'text'}</td>
         </tr>
     {/foreach}
 </table>
@@ -40,9 +40,9 @@
     <table>
         {foreach from=$minimodule.frees|order:'score' item='group'}
             <tr>
-                <td class="img"><img src="{$group->image()|image:'micro':'group'|smarty:nodefaults}" /></td>
-                <td class="therights">{$minimodule.user->rights($group)|@rights}</td>
-                <td class="group">{$group|group}</td>
+            <td class="img">{$group|group:'micro'}</td>
+            <td class="therights">{$minimodule.user->rights($group)|@rights}</td>
+            <td class="group">{$group|group:'text'}</td>
             </tr>
         {/foreach}
     </table>
