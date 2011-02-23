@@ -38,7 +38,7 @@ class FrankizDateTime extends DateTime implements Formatable
 
     public function age() {
         $now = new self();
-        return $now->diff($this);
+        return $this->diff($now);
     }
 }
 
