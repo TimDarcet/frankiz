@@ -25,7 +25,7 @@ class IdentifierNotFoundException extends Exception {
 
 // Collection of Db-existent objects
 // Objects need to have an unique id accessible by id()
-class Collection extends PlAbstractIterable implements Countable
+class Collection implements IteratorAggregate, Countable
 {
     protected $collected = array();
     protected $className = null;
@@ -120,23 +120,23 @@ class Collection extends PlAbstractIterable implements Countable
 
     /** Build an iterator for this Collection.
      */
-    public function iterate()
+    public function getIterator()
     {
         $order = $this->order;
 
-        $iterator = PlIteratorUtils::fromArray($this->collected, 1, true);
+        $iterator = new ArrayIterator($this->collected);
 
-        if (empty($order))
-            return $iterator;
-
-        $desc = ($this->desc) ? 1 : -1;
-        return PlIteratorUtils::sort($iterator, function($a, $b) use($order, $desc)
-                                                {
-                                                    $a = $a->$order();
-                                                    $b = $b->$order();
-                                                    if ($a == $b) return 0;
-                                                    return ($a < $b) ? $desc : -$desc;
-                                                });
+        if (!empty($order)) {
+            $desc = ($this->desc) ? 1 : -1;
+            $iterator->uasort(function($a, $b) use($order, $desc)
+                                {
+                                    $a = $a->$order();
+                                    $b = $b->$order();
+                                    if ($a == $b) return 0;
+                                    return ($a < $b) ? $desc : -$desc;
+                                });
+        }
+        return $iterator;
     }
 
     /**
