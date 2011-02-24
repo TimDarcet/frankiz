@@ -86,7 +86,7 @@
                     </li>
 
                     <li>
-                        <span class="rights restricted"></span>
+                        <span class="rights member"></span>
                         <span class="total"></span>
                          membre<span class="plural">s</span>
                         <span class="page"></span>
