@@ -20,8 +20,9 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<video controls="controls" poster="data/jtx/cpr.png">
-    <source src="data/jtx/cpr.ogv" type="video/ogg" />
+<video controls="controls" poster="http://jtx/vdj/vdj.png">
+    <source src="http://jtx/vdj/vdj.webm" type="video/webm" />
+    <source src="http://jtx/vdj/vdj.ogv" type="video/ogg" />
     <p>Pour pouvoir profiter de cette vidéo, il faut installer un navigateur récent : Firefox ou chrome.</p>
 </video>
 
