@@ -170,7 +170,7 @@ class TolModule extends PLModule
 
         $fiches = array();
         if ($filter) {
-            $uf = new UserFilter($filter, array(new UFO_Promo(false), new UFO_Name(UFO_Name::LASTNAME)));
+            $uf = new UserFilter($filter, array(new UFO_Promo(true), new UFO_Name(UFO_Name::LASTNAME)));
             if ($json->mode == 'card') {
                 $users = $uf->get(new PlLimit(20,(JSON::i('page', 1) - 1) * 20))->select(UserSelect::base());
             } else {
