@@ -26,8 +26,8 @@ class Phone implements Formatable
     public function __construct($data = null)
     {
         $data = trim($data);
-        $data = str_replace(array('.', ' '), '', $data);
-        if (!preg_match('/[0-9]*$/', $data)) {
+        $data = str_replace(array('.', ' ', '-'), '', $data);
+        if (!preg_match('/^\+?[0-9]*$/', $data)) {
             throw new Exception("This doesn't look like a phone number");
         }
         $this->phone = $data;
@@ -40,7 +40,12 @@ class Phone implements Formatable
 
     public function format()
     {
-        $duplets = str_split($this->phone, 2);
+        if ($this->phone[0] == '+') {
+            $duplets = str_split(substr($this->phone, 2), 2);
+            $duplets[0] = '+' . $this->phone[1] . $duplets[0];
+        } else {
+            $duplets = str_split($this->phone, 2);
+        }
         return implode(' ', $duplets);
     }
 
