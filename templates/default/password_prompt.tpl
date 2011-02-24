@@ -22,7 +22,7 @@
 
 <div class="module login">
     <div class="head">
-        <span class="helper" target="login/"> </span>
+        <span class="helper" target="login"> </span>
         Se connecter
      </div>
      <div class="body">
