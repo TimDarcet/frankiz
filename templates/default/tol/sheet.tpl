@@ -91,7 +91,7 @@
         Nationalité:
         <ul>
             {foreach from=$groups|filter:'ns':'nationality'|order:'score' item='group'}
-                <li>{$group|group}</li>
+                <li>{$group|group:'text'}</li>
             {/foreach}
         </ul>
     </div>
