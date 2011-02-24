@@ -95,20 +95,6 @@ CREATE TABLE IF NOT EXISTS `prises` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `promos_on_platal`
---
-
-DROP TABLE IF EXISTS `promos_on_platal`;
-CREATE TABLE IF NOT EXISTS `promos_on_platal` (
-  `formation_id` int(11) NOT NULL,
-  `promo` int(11) NOT NULL,
-  `on_platal` tinyint(1) NOT NULL,
-  UNIQUE KEY `formation_id` (`formation_id`,`promo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `requests`
 --
 
