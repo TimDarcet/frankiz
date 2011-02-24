@@ -88,15 +88,14 @@ class FrankizMailer extends PHPMailer
         $this->page->compile_dir   = $globals->spoolroot . "/spool/mails_c/";
         $this->page->config_dir    = $globals->spoolroot . "/configs/";
         array_unshift($this->page->plugins_dir, $globals->spoolroot."/plugins/");
-        $this->assign('globals', $globals);
     }
 
     public function addAddress($address, $name = '')
     {
         global $globals;
 
-        if ($globals->debug > 0 && !empty($globals->mails->admin)) {
-            return parent::addAddress($globals->mails->admin, $name);
+        if (!empty($globals->mails->debug)) {
+            return parent::addAddress($globals->mails->debug, $name . '(debug: ' . $address . ')');
         }
         return parent::addAddress($address, $name);
     }
@@ -105,10 +104,10 @@ class FrankizMailer extends PHPMailer
     {
         global $globals;
 
-        if ($globals->debug > 0 && !empty($globals->mails->admin)) {
-            return parent::AddCC($globals->mails->admin, $name);
+        if (!empty($globals->mails->debug)) {
+            return parent::AddCC($globals->mails->debug, $name . '(debug: ' . $address . ')');
         }
-        return $this->AddCC($address, $name);
+        return parent::AddCC($address, $name);
     }
     
     public function toUserFilter(UserFilter $uf) 
@@ -162,10 +161,12 @@ class FrankizMailer extends PHPMailer
     */
     public function send($html = true)
     {
-        global $globals;
+        global $globals, $platal;
 
         $this->page->assign('isHTML', $html);
 
+        $this->page->assign_by_ref('platal', $platal);
+        $this->page->assign_by_ref('globals', $globals);
         $tpl = FrankizPage::getTplPath($this->tpl);
         $content = $this->page->fetch($tpl);
 
