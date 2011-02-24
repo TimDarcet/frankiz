@@ -5,8 +5,8 @@ CREATE TABLE IF NOT EXISTS studies (
   year_in year(4) NOT NULL,
   year_out year(4) NOT NULL,
   promo year(4) NOT NULL,
-  forlife varchar(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
-  UNIQUE KEY forlife_formation (forlife, formation_id),
+  forlife varchar(64) NOT NULL,
+  UNIQUE KEY forlife_formation (forlife,formation_id),
   KEY forlife (forlife),
   KEY uid (uid)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
