@@ -183,7 +183,11 @@ while ($datas = $iter->next()) {
     $u->nickname(conv($datas['surnom']));
     $u->birthdate(new FrankizDateTime($datas['date_nais']));
     $u->gender(($datas['sexe'] == 1) ? User::GENDER_FEMALE : User::GENDER_MALE);
-    $u->cellphone(new Phone($datas['portable']));
+    try {
+        $u->cellphone(new Phone($datas['portable']));
+    } catch(Exception $e) {
+        echo 'Error for phone ' . $datas['portable'] . "\n";
+    }
     $u->poly($datas['login']);
 
     // Linking with the room
