@@ -43,8 +43,6 @@
             <ul>
                 <li><a href="proposal/news">Annonce</a></li>
                 <li><a href="proposal/activity">Activité</a></li>
-                <li><a href="proposal/survey">Sondage</a></li>
-                <li><a href="proposal/mail">Mail promo</a></li>
                 <li><a href="proposal/qdj">Question Du Jour</a></li>
             </ul>
         </div>
