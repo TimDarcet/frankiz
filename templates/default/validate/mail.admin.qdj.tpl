@@ -23,12 +23,12 @@ Bonjour,
 
 {$user|smarty:nodefaults} a soumis une qdj.
 
-Pour valider ou non cette demande va sur la page suivante : 
+Pour valider ou non cette demande, va sur la page suivante : 
 
-http://frankiz.polytechnique.fr/admin/validate
+{$globals->baseurl}/admin/validate/qdj
 
 
 Cordialement,
-Le Webmestre de Frankiz
+Les Webmestres de Frankiz
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

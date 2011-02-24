@@ -22,7 +22,7 @@
 
 <div class="wiki_textarea" id="wiki_textarea_{$id}">
     <div class="wiki_preview">
-        {$already|miniwiki|smarty:nodefaults}
+        {if t($already)}{$already|miniwiki|smarty:nodefaults}{/if}
     </div>
     <div class="wiki_form">
         <div class="wiki_controls">
@@ -30,7 +30,7 @@
             <div class="down" title="Aggrandir la zone de texte"> </div>
         </div>
         <div class="textarea">
-            <textarea name="{$id}" id="{$id}">{$already}</textarea>
+            <textarea name="{$id}" id="{$id}" {if t($placeholder)}placeholder="{$placeholder|smarty:nodefaults}"{/if}>{if t($already)}{$already}{/if}</textarea>
         </div>
     </div>
 </div>

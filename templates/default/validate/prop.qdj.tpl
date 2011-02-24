@@ -20,27 +20,20 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{js src="validate.js"}
-
 {if isset($envoye|smarty:nodefaults)}
 
     <div class="msg_proposal"> Merci d'avoir proposé une qdj. <br />
-    Le Qdjmestre va la prendre en compte. </div>
+    Le QDJmestre va la prendre en compte. </div>
 
 {else}
 
 <form enctype="multipart/form-data" method="post" action="proposal/qdj">
-
-    <div class="info_proposal"> 
-        Pour toute question, envoyer un mail à <a href="mailto:qdj@frankiz.polytechnique.fr">qdj@frankiz</a>
-    </div>
-    
-    {if $msg}
-        <div class="msg_proposal"> 
+    {if t($msg) && $msg}
+        <div class="msg_proposal">
             {$msg}
         </div>
     {/if}
-    
+
     <div class="module">
         <div class="head">
             Aperçu
@@ -55,10 +48,11 @@
             </table>
         </div>
     </div>
-    
+
     <div class="module">
         <div class="head">
-           QDJ
+            <span class="helper" target="proposal/qdj"></span>
+            QDJ
         </div>
         <div class="body">
             <table>
@@ -67,7 +61,7 @@
                         Question :
                     </td>
                     <td>
-                        <input type="text" name="quest" value="{$question}" id="quest_qdj_proposal"/>
+                        <input type="text" name="quest" value="" id="quest_qdj_proposal"/>
                     </td>
                 </tr>
 
@@ -76,7 +70,7 @@
                         Réponse 1 :
                     </td>
                     <td>
-                        <input type="text" name="ans1" value="{$answer1}" id="ans1_qdj_proposal"/>
+                        <input type="text" name="ans1" value="" id="ans1_qdj_proposal"/>
                     </td>
                 </tr>
 
@@ -85,7 +79,7 @@
                         Réponse 2 :
                     </td>
                     <td>
-                        <input type="text" name="ans2" value="{$answer2}" id="ans2_qdj_proposal"/>
+                        <input type="text" name="ans2" value="" id="ans2_qdj_proposal"/>
                     </td>
                 </tr>
 
@@ -100,7 +94,9 @@
     </div>
 </form>
 
+{js src="prop.qdj.js"}
+
 {/if}
-    
+
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

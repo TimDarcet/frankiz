@@ -197,7 +197,6 @@ class Validate extends Meta
             $this->clean();
             return true;
         } else {
-
             return false;
         }
     }

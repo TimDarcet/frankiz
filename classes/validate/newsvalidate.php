@@ -33,6 +33,8 @@ class NewsValidate extends ItemValidate
     protected $end;
     protected $comment;
 
+    protected $idIfValid;
+
     public function __construct($datas)
     {
         foreach ($datas as $key => $val) {
@@ -43,8 +45,10 @@ class NewsValidate extends ItemValidate
     }
 
     public function objects() {
-        return Array('writer' => UserSelect::base(), 'target' => CasteSelect::validate(),
-                     'image' => FrankizImageSelect::base(), 'origin' => GroupSelect::base());
+        return Array('writer' => UserSelect::base(),
+                     'target' => CasteSelect::validate(),
+                      'image' => FrankizImageSelect::base(),
+                     'origin' => GroupSelect::base());
     }
 
     public static function label() {
@@ -88,30 +92,31 @@ class NewsValidate extends ItemValidate
             $this->writer->select(UserSelect::base());
 
         $mail = new FrankizMailer('validate/mail.admin.news.tpl');
-        $mail->assign('user', $this->writer->displayName());
+        $mail->assign('user', $this->writer);
         $mail->assign('title', $this->title);
+        $mail->assign('targetGroup', $this->target->group());
 
         $mail->subject("[Frankiz] Validation d'une annonce");
-        $mail->SetFrom($this->writer->bestEmail(), $this->writer->displayName());
-        $mail->AddAddress($this->_mail_from_addr(), $this->_mail_from_disp());
-        $mail->Send(false);
+        $mail->setFrom($this->writer->bestEmail(), $this->writer->displayName());
+        $mail->addAddress($this->_mail_from_addr(), $this->_mail_from_disp());
+        $mail->send(false);
     }
 
-    public function sendmailfinal($isok)
+    public function sendmailfinal($valid)
     {
         if ($this->writer->bestEmail() === null)
             $this->writer->select(UserSelect::base());
 
         $mail = new FrankizMailer('validate/mail.valid.news.tpl');
-        if (Env::has("ans")) {
-            $mail->assign('comm', Env::v('ans'));
-        }
 
+        $mail->assign('valid', $valid);
+        $mail->assign('comm', Env::v('ans', ''));
         $mail->assign('text', false);
-        $mail->assign('group_label', $this->target->group()->label());
+        $mail->assign('targetGroup', $this->target->group());
 
-        if ($isok) {
+        if ($valid) {
             $mail->Subject = '[Frankiz] Ton annonce a été validée';
+            $mail->assign('idIfValid', $this->idIfValid);
         } else {
             $mail->Subject = '[Frankiz] Ton annonce a été refusée';
             $mail->assign('text', $this->content());
@@ -125,13 +130,22 @@ class NewsValidate extends ItemValidate
 
     public function _mail_from_disp()
     {
-        return 'Frankiz / "' . $this->target->group()->label() . '"';
+        return 'Frankiz - ' . $this->target->group()->label() . '';
     }
 
     public function _mail_from_addr()
     {
-        return ($this->target->group()->mail() === false || $this->target->group()->mail() === '')
-                ?'web@frankiz.polytechnique.fr':$this->target->group()->mail();
+        global $globals;
+
+        return $this->target->group()->name() .'@' . $globals->mails->group_suffix;
+    }
+
+    public function delete()
+    {
+        if ($this->image !== false) {
+            $this->image->delete();
+        }
+        return true;
     }
 
     public function commit()
@@ -147,6 +161,7 @@ class NewsValidate extends ItemValidate
         $n->begin($this->begin);
         $n->end($this->end);
         $n->comment($this->comment);
+        $this->idIfValid = $n->id();
         return true;
     }
 

@@ -22,13 +22,13 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 DROP TABLE IF EXISTS formations;
 CREATE TABLE IF NOT EXISTS formations (
   formation_id int(10) NOT NULL AUTO_INCREMENT,
-  domain varchar(255) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+  domain varchar(255) NOT NULL,
   label varchar(64) NOT NULL,
-  abbrev varchar(10) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+  abbrev varchar(10) NOT NULL,
   description text NOT NULL,
   PRIMARY KEY (formation_id),
-  KEY formation_id (formation_id)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+  KEY domain (domain)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table 'formations'

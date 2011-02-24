@@ -41,7 +41,7 @@ class JtxMiniModule extends FrankizMiniModule
 
     public function title()
     {
-        return 'Video du jour';
+        return 'Video du JTX';
     }
 
     public function run()

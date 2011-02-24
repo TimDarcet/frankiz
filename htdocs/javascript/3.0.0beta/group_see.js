@@ -1,11 +1,13 @@
 $(function(){
     $("#section form[name=filters]").submit(function(event) {
+        users.resetPage();
         users.search();
         event.stopPropagation();
         return false;
     });
 
     $('#section form[name=filters] input[auto]').keyup(function() {
+        users.resetPage();
         users.search();
     });
 
@@ -110,6 +112,12 @@ var users = function() {
     return {
         search: function () {
             _search();
+        },
+        resetPage: function () {
+            var rights = ['admin', 'member', 'friend'];
+            for(var r in rights){
+                $("input[name=" + rights[r] + "_page]").val(1);
+            }
         }
     };
 }();

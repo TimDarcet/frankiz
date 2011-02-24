@@ -172,16 +172,21 @@ class AdminModule extends PlModule
 
     function handler_validate($page, $gid = null, $vid = null)
     {
-        $group = new Group($gid);
+        $gf = new GroupFilter(new PFC_Or(new GFC_Id($gid), new GFC_Name($gid)));
+        $group = $gf->get(true);
+
+        if (!$group) {
+            throw new Exception("This Group (' . $gid . ') doesn't exist");
+        }
+
         if (!S::user()->hasRights($group, Rights::admin())) {
-            throw new Exception("You don't have the credential to validate requets in this group");
+            throw new Exception("You don't have the credential to validate request in this group");
         }
 
         $filter = new ValidateFilter(new VFC_Group($group));
         $collec = $filter->get()->select(ValidateSelect::validate());
 
-        if(Env::has('val_id'))
-        {
+        if(Env::has('val_id')) {
             $el = $collec->get(Env::v('val_id'));
             if (!$el)
                 $page->assign('msg', 'La validation a déjà été effectuée.');
@@ -191,14 +196,13 @@ class AdminModule extends PlModule
                     $collec->remove(Env::v('val_id'));
             }
         }
-        
-        
+
         $page->assign('validation', (is_null($vid))?0:$vid);
-            
+
         $page->assign('gid', $gid);
         $page->assign('val', $collec);
-        $page->addJsLink('validate.js');
         $page->addCssLink('validate.css');
+        $page->addCssLink('surveys.css');
         $page->assign('title', "Validations des requêtes");
         $page->changeTpl('validate/validate.tpl');
     }
