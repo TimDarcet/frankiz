@@ -27,14 +27,14 @@ class QDJValidate extends ItemValidate
     protected $answer2;
     protected $writer;
 
-    public function __construct(String $question, String $answer1, String $answer2)
+    public function __construct($question, $answer1, $answer2)
     {
-        $this->question  = $question;
-        $this->answer1   = $answer1;
-        $this->answer2   = $answer2;
-        $this->writer = S::user();
+        $this->question = $question;
+        $this->answer1  = $answer1;
+        $this->answer2  = $answer2;
+        $this->writer   = S::user();
     }
-    
+
     public function objects() {
         return Array('writer' => UserSelect::base());
     }
