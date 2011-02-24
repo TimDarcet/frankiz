@@ -23,14 +23,11 @@
 {js src="plugins/datepicker_lang_FR.js"}
 {js src="plugins/wdCalendar_lang_FR.js"}
 
-{*don't understand why I have to put it again but don't work otherwise*}
-{js src="jquery.js"}
 {js src="plugins/Common.js"}
 {js src="plugins/jquery.datepicker.js"}
 {js src="plugins/jquery.alert.js"}
 {js src="plugins/jquery.ifrmdailog.js"}
 {js src="plugins/jquery.calendar.js"}
-
 
 {js src="activities.js"}
 {js src="wdcalendar.js"}

@@ -1,168 +1,127 @@
-$(document).ready(function() {     
-           var view="week";          
+$(function() {
+    var view = "week";
 
-            $('#activity_show').hide();
-            $('#activity_show .close_show').click(function() {
-                $('#activity_show').hide();
-            });
-            $('#activity_show .msg').hide();
+    $('#activity_show').hide();
+    $('#activity_show .close_show').click(function() {
+        $('#activity_show').hide();
+    });
+    $('#activity_show .msg').hide();
 
+    var _MH = document.documentElement.clientHeight;
+    var dvH = $("#calhead").height() + 2;
 
-            var DATA_FEED_URL = "activity/ajax/";
-            var op = {
-                view: view,
-                theme:3,
-                showday: new Date(),
-                ViewCmdhandler:View,    
-                onWeekOrMonthToDay:wtd,
-                onBeforeRequestData: cal_beforerequest,
-                onAfterRequestData: cal_afterrequest,
-                onRequestDataError: cal_onerror, 
-                autoload:true,
-                readonly:true,
-                url: DATA_FEED_URL + "/timetable"
-            };
-            var $dv = $("#calhead");
-            var _MH = document.documentElement.clientHeight;
-            var dvH = $dv.height() + 2;
-            op.height = Math.max(_MH - dvH - 320, 400);
-            //op.height = 600;
-            op.eventItems =[];
+    var op = {
+        view: view,
+        theme: 3,
+        height: Math.max(_MH - dvH - 320, 400),
+        eventItems: [],
+        showday: new Date(),
+        ViewCmdhandler: View,
+        onWeekOrMonthToDay: wtd,
+        onBeforeRequestData: cal_beforerequest,
+        onAfterRequestData: cal_afterrequest,
+        onRequestDataError: cal_onerror,
+        autoload: true,
+        readonly: true,
+        url: "activity/ajax/timetable"
+    };
 
-            var p = $("#gridcontainer").bcalendar(op).BcalGetOp();
-            if (p && p.datestrshow) {
-                $("#txtdatetimeshow").text(p.datestrshow);
-            }
-            $("#caltoolbar").noSelect();
-            
-            $("#hdtxtshow").datepicker({ picker: "#txtdatetimeshow", showtarget: $("#txtdatetimeshow"),
-            onReturn:function(r){                          
-                            var p = $("#gridcontainer").gotoDate(r).BcalGetOp();
-                            if (p && p.datestrshow) {
-                                $("#txtdatetimeshow").text(p.datestrshow);
-                            }
-                     } 
-            });
-            function cal_beforerequest(type)
-            {
-                var t="Loading data...";
-                switch(type)
-                {
-                    case 1:
-                        t="Loading data...";
-                        break;
-                    case 2:                      
-                    case 3:  
-                    case 4:    
-                        t="The request is being processed ...";                                   
-                        break;
-                }
-                $("#errorpannel").hide();
-                $("#loadingpannel").html(t).show();    
-            }
-            function cal_afterrequest(type)
-            {
-                switch(type)
-                {
-                    case 1:
-                        $("#loadingpannel").hide();
-                        break;
-                    case 2:
-                    case 3:
-                    case 4:
-                        $("#loadingpannel").html("Success!");
-                        window.setTimeout(function(){ $("#loadingpannel").hide();},2000);
-                    break;
-                }              
-               
-            }
-            function cal_onerror(type,data)
-            {
-                $("#errorpannel").show();
-            }
+    var $container = $("#gridcontainer");
+    var p = $container.bcalendar(op).BcalGetOp();
 
-            function View(data)
-            {
-                $('#activity_show').show()
-                load(new Array(data[0]), true);
-            }
+    datestrshow();
+    $("#caltoolbar").noSelect();
 
-            function wtd(p)
-            {
-               if (p && p.datestrshow) {
-                    $("#txtdatetimeshow").text(p.datestrshow);
-                }
-                $("#caltoolbar div.fcurrent").each(function() {
-                    $(this).removeClass("fcurrent");
-                })
-                $("#showdaybtn").addClass("fcurrent");
-            }
-            //to show day view
-            $("#showdaybtn").click(function(e) {
-                //document.location.href="#day";
-                $("#caltoolbar div.fcurrent").each(function() {
-                    $(this).removeClass("fcurrent");
-                })
-                $(this).addClass("fcurrent");
-                var p = $("#gridcontainer").swtichView("day").BcalGetOp();
-                if (p && p.datestrshow) {
-                    $("#txtdatetimeshow").text(p.datestrshow);
-                }
-            });
-            //to show week view
-            $("#showweekbtn").click(function(e) {
-                //document.location.href="#week";
-                $("#caltoolbar div.fcurrent").each(function() {
-                    $(this).removeClass("fcurrent");
-                })
-                $(this).addClass("fcurrent");
-                var p = $("#gridcontainer").swtichView("week").BcalGetOp();
-                if (p && p.datestrshow) {
-                    $("#txtdatetimeshow").text(p.datestrshow);
-                }
+    $("#hdtxtshow").datepicker({ picker: "#txtdatetimeshow",
+                             showtarget: $("#txtdatetimeshow"),
+                               onReturn: datestrshow});
 
-            });
-            //to show month view
-            $("#showmonthbtn").click(function(e) {
-                //document.location.href="#month";
-                $("#caltoolbar div.fcurrent").each(function() {
-                    $(this).removeClass("fcurrent");
-                })
-                $(this).addClass("fcurrent");
-                var p = $("#gridcontainer").swtichView("month").BcalGetOp();
-                if (p && p.datestrshow) {
-                    $("#txtdatetimeshow").text(p.datestrshow);
-                }
-            });
-            
-            $("#showreflashbtn").click(function(e){
-                $("#gridcontainer").reload();
-            });
+    function cal_beforerequest(type) {
+        var t="Loading data...";
+        switch(type) {
+            case 1:
+                t="Loading data...";
+                break;
+            case 2:
+            case 3:
+            case 4:
+                t="The request is being processed ...";
+                break;
+        }
+        $("#errorpannel").hide();
+        $("#loadingpannel").html(t).show();
+    }
 
-            //go to today
-            $("#showtodaybtn").click(function(e) {
-                var p = $("#gridcontainer").gotoDate().BcalGetOp();
-                if (p && p.datestrshow) {
-                    $("#txtdatetimeshow").text(p.datestrshow);
-                }
+    function cal_afterrequest(type) {
+        switch(type) {
+            case 1:
+                $("#loadingpannel").hide();
+                break;
+            case 2:
+            case 3:
+            case 4:
+                $("#loadingpannel").html("Success!");
+                window.setTimeout(function(){ $("#loadingpannel").hide();},2000);
+            break;
+        }
+    }
 
+    function cal_onerror(type,data) {
+        $("#errorpannel").show();
+    }
 
-            });
-            //previous date range
-            $("#sfprevbtn").click(function(e) {
-                var p = $("#gridcontainer").previousRange().BcalGetOp();
-                if (p && p.datestrshow) {
-                    $("#txtdatetimeshow").text(p.datestrshow);
-                }
+    function View(data) {
+        $('#activity_show').show();
+        load([data[0]], true);
+    }
 
-            });
-            //next date range
-            $("#sfnextbtn").click(function(e) {
-                var p = $("#gridcontainer").nextRange().BcalGetOp();
-                if (p && p.datestrshow) {
-                    $("#txtdatetimeshow").text(p.datestrshow);
-                }
-            });
-            
-        });
+    function wtd(p) {
+        changeView("day");
+    }
+
+    function changeView(view) {
+        $("#caltoolbar div.fcurrent").removeClass("fcurrent");
+        $("#show" + view + "btn").addClass("fcurrent");
+        $container.swtichView(view);
+        datestrshow();
+    }
+
+    function datestrshow() {
+        if (p && p.datestrshow) {
+            $("#txtdatetimeshow").text(p.datestrshow);
+        }
+    }
+
+    //to show day view
+    $("#showdaybtn").click(function() { changeView("day"); });
+
+    //to show week view
+    $("#showweekbtn").click(function() { changeView("week"); });
+
+    //to show month view
+    $("#showmonthbtn").click(function(e) { changeView("month"); });
+
+    $("#showreflashbtn").click(function(e){
+        $container.reload();
+    });
+
+    //go to today
+    $("#showtodaybtn").click(function(e) {
+        $container.gotoDate();
+        datestrshow();
+    });
+
+    //previous date range
+    $("#sfprevbtn").click(function(e) {
+        $container.previousRange();
+        datestrshow();
+    });
+
+    //next date range
+    $("#sfnextbtn").click(function(e) {
+        $container.nextRange();
+        datestrshow();
+    });
+
+});
 
