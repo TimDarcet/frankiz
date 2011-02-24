@@ -9,7 +9,6 @@ INSERT INTO users_minimodules (uid, `name`, col, `row`) VALUES(0, 'ik', 'COL_LEF
 INSERT INTO users_minimodules (uid, `name`, col, `row`) VALUES(0, 'meteo', 'COL_MIDDLE', 0);
 INSERT INTO users_minimodules (uid, `name`, col, `row`) VALUES(0, 'jtx', 'COL_RIGHT', 1);
 INSERT INTO users_minimodules (uid, `name`, col, `row`) VALUES(0, 'quicksearch', 'COL_FLOAT', 0);
-INSERT INTO users_minimodules (uid, `name`, col, `row`) VALUES(0, 'timeleft', 'COL_FLOAT', 1);
 
 
 INSERT INTO users_minimodules (uid, `name`, col, `row`) VALUES(-1, 'days', 'COL_FLOAT', 0);
