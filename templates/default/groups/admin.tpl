@@ -60,13 +60,7 @@
             <tr>
                 <td>Description:</td>
                 <td>
-                    <div id="display">
-                        {$group->description()|miniwiki:'title'|smarty:nodefaults}
-                    </div>
-                    <textarea name="description" class="description" id="description">{$group->description()}</textarea>
-                    <script>
-                        wiki_preview.start($("#description"), $("#display"));
-                    </script>
+                    {include file="wiki_textarea.tpl"|rel id="description" already=$group->description()|smarty:nodefaults}
                 </td>
             </tr>
             <tr>
