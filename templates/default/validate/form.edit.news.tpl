@@ -44,7 +44,7 @@
         Corps :
     </td>
     <td>
-        {include file="wiki_textarea.tpl"|rel id="news_content" already=$item->content() placeholder="Corps de l'annonce" }
+        {include file="wiki_textarea.tpl"|rel id="news_content" already=$item->content()|smarty:nodefaults placeholder="Corps de l'annonce" }
     </td>
 </tr>
 
