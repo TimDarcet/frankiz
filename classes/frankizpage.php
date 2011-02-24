@@ -156,8 +156,6 @@ class FrankizPage extends PlPage
         $this->assign_by_ref('platal', $platal);
         $this->assign_by_ref('globals', $globals);
 
-        $display = Env::s('display');
-
         $this->register_modifier('escape_html', 'escape_html');
         $this->default_modifiers = Array('@escape_html');
 
