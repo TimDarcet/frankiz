@@ -20,7 +20,14 @@ $(function() {
 		else
 			$(".text_validate").height(80);
 	});
-	
+
+	$("input[type=submit][name=refuse]").click(function() {
+	    if (!$(this).closest("li.validate").find("textarea[name=ans]").val()) {
+	        alert("Il manque une raison au refus");
+	        return false;
+	    }
+	});
+
 	// For propositions
 	// mails
 	$("#no_preview").click(function() {
