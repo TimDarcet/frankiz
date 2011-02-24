@@ -323,8 +323,12 @@ class UFC_Group extends UserFilterCondition
 
     public function __construct($gs, Rights $rights = null)
     {
-        $this->gids   = Group::toIds(unflatten($gs));
-        $this->rights = (empty($rights)) ? Rights::member() : $rights;
+        if ($gs instanceof Collection) {
+            $this->gids = $gs->ids();
+        } else {
+            $this->gids = Group::toIds(unflatten($gs));
+        }
+        $this->rights = (empty($rights)) ? Rights::restricted() : $rights;
         self::$instances[] = $this;
     }
 
