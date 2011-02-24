@@ -40,7 +40,7 @@ class QDJValidate extends ItemValidate
     }
 
     public static function label() {
-        return 'Validation d\'une QDJ';
+        return "QDJ";
     }
 
     public function question()
@@ -82,27 +82,27 @@ class QDJValidate extends ItemValidate
         $mail->assign('user', $this->writer->displayName());
 
         $mail->subject("[Frankiz] Validation d'une QDJ");
-        $mail->SetFrom($this->writer->bestEmail(), $this->writer->displayName());
-        $mail->AddAddress($this->_mail_from_addr(), $this->_mail_from_disp());
-        $mail->Send(false);
+        $mail->setFrom($this->writer->bestEmail(), $this->writer->displayName());
+        $mail->addAddress($this->_mail_from_addr(), $this->_mail_from_disp());
+        $mail->send(false);
     }
 
-    public function sendmailfinal($isok)
+    public function sendmailfinal($valid)
     {
         $mail = new FrankizMailer('validate/mail.valid.qdj.tpl');
-        $mail->assign('isok', $isok);
-        if (Env::has("ans"))
-            $mail->assign('comm', Env::v('ans'));
 
-        if ($isok)
+        $mail->assign('valid', $valid);
+        $mail->assign('comm', Env::s('ans', ''));
+
+        if ($valid)
             $mail->Subject = '[Frankiz] Ta QDJ a été acceptée';
         else
             $mail->Subject = '[Frankiz] Ta QDJ a été refusée';
 
-        $mail->SetFrom($this->_mail_from_addr(), $this->_mail_from_disp());
-        $mail->AddAddress($this->writer->bestEmail(), $this->writer->displayName());
-        $mail->AddCC($this->_mail_from_addr(), $this->_mail_from_disp());
-        $mail->Send(false);
+        $mail->setFrom($this->_mail_from_addr(), $this->_mail_from_disp());
+        $mail->addAddress($this->writer->bestEmail(), $this->writer->displayName());
+        $mail->addCC($this->_mail_from_addr(), $this->_mail_from_disp());
+        $mail->send(false);
     }
 
     public function _mail_from_disp()
