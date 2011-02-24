@@ -20,6 +20,5 @@ INSERT INTO minimodules (`name`, `label`, description) VALUES('meteo', 'Météo'
 INSERT INTO minimodules (`name`, `label`, description) VALUES('qdj', 'Question Du Jour', 'Politique ou juste comique, réponds à la Question Du Jour');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('quicksearch', 'TOL', 'bluh');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('stats', 'Statistiques', 'Pour les admins');
-INSERT INTO minimodules (`name`, `label`, description) VALUES('timeleft', 'Temps restant', '');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('todo', 'To-Do', 'Une liste de choses à faire');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('news', 'Annonces', 'D\'un seul coup d\'oeil les annonces non-lues ou suivies');

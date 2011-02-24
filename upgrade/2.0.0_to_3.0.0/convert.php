@@ -308,14 +308,14 @@ XDB::execute('INSERT INTO users_minimodules
                           (SELECT uid, "meteo",        "COL_MIDDLE", 0 FROM account WHERE uid > 0)');
 XDB::execute('INSERT INTO users_minimodules
                           (SELECT uid, "jtx",          "COL_MIDDLE", 1 FROM account WHERE uid > 0)');
-/*XDB::execute('INSERT INTO users_minimodules
-                          (SELECT uid, "qdj",          "COL_RIGHT",  0 FROM account WHERE uid > 0)');*/
+XDB::execute('INSERT INTO users_minimodules
+                          (SELECT uid, "qdj",          "COL_RIGHT",  0 FROM account WHERE uid > 0)');
 XDB::execute('INSERT INTO users_minimodules
                           (SELECT uid, "groups",       "COL_RIGHT",  1 FROM account WHERE uid > 0)');
 XDB::execute('INSERT INTO users_minimodules
                           (SELECT uid, "quicksearch",  "COL_FLOAT",  0 FROM account WHERE uid > 0)');
 XDB::execute('INSERT INTO users_minimodules
-                          (SELECT uid, "timeleft",     "COL_FLOAT",  1 FROM account WHERE uid > 0)');
+                          (SELECT uid, "news",         "COL_FLOAT",  1 FROM account WHERE uid > 0)');
 XDB::execute('INSERT INTO users_minimodules
                           (SELECT uid, "todo",         "COL_FLOAT",  2 FROM account WHERE uid > 0)');
 
