@@ -38,9 +38,11 @@ class BirthdayMiniModule extends FrankizMiniModule
 
     public function run()
     {
-        $on_platal = Group::from('on_platal');
+        $promos = S::user()->castes()->groups()->filter('ns', Group::NS_PROMO);
+        $promos->add(Group::from('on_platal'));
+
         $uf = new UserFilter(new PFC_And(new UFC_Birthday('=', new FrankizDateTime()),
-                                         new UFC_Group($on_platal)));
+                                         new UFC_Group($promos)));
         $us = $uf->get();
         $us->select(UserSelect::birthday());
 

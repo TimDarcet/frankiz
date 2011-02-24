@@ -76,8 +76,10 @@ echo 'Updating on_platal' . "\n";
 
 $on_platal = Group::from('on_platal')->select(GroupSelect::castes());
 
+$iter = XDB::iterRow('SELECT promo FROM studies GROUP BY promo ORDER BY promo DESC LIMIT 2');
+
 $filters = array();
-foreach (json_decode($globals->core->promos) as $promo) {
+while (list($promo) = $iter->next()) {
     $filters[] = new UFC_Promo($promo);
 }
 $members = $on_platal->caste(Rights::member());
