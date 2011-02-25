@@ -136,6 +136,12 @@ class Validate extends Meta
         return $className::label();
     }
 
+    public function itemToDb() {
+        $item = clone $this->item;
+        $item->toDb();
+        return $item;
+    }
+
     /** 
      * to use to send the data for moderation
      * if $this->item->unique is true, then the database will be cleaned before
@@ -151,13 +157,11 @@ class Validate extends Meta
                          $this->writer->id(), $this->group->id(), $this->type);
         }
 
-        $item = clone $this->item;
-        $item->toDb();
         XDB::execute('INSERT INTO  validate
                               SET  writer = {?}, `group` = {?}, type = {?}, 
                                    item = {?}, created = NOW()',
                             $this->writer->id(), $this->group->id(), $this->type, 
-                            $item);
+                            $this->itemToDb());
 
         $this->id = XDB::insertId();
 
