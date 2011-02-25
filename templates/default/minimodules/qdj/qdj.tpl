@@ -20,29 +20,39 @@
 {*                                                                        *}
 {**************************************************************************}
 
+{assign var='qdj' value=$minimodule.qdj}
+
 <div class="navigation">
-    <span class="before"><a onclick="qdj.backward();"><-</a></span>
-    <span class="after"><a onclick="qdj.forward();">-></a></span>
-    <span class="date"></span>
+    <span class="before"><a onclick="qdj.backward();">&lt;-</a></span>
+    <span class="after"><a onclick="qdj.forward();">-&gt;</a></span>
+    <span class="date">{$qdj->date()|datetime:'Y-m-d'}</span>
 </div>
 
 <div class="qdj">
-    <div class="question"></div>
+    <div class="question">{$qdj->question()}</div>
     <table>
         <tr class="answers">
-            <td class="case1">
-                <a onclick="qdj.vote(1);"></a>
+            <td class="case1 jone">
+                <a onclick="qdj.vote(1);">{$qdj->answer1()}</a>
             </td>
-            <td class="case2">
-                <a onclick="qdj.vote(2);"></a>
+            <td class="case2 rouje">
+                <a onclick="qdj.vote(2);">{$qdj->answer2()}</a>
             </td>
         </tr>
-        <tr class="counts">
-            <td class="case1">
-                <div class="count"></div>
+        <tr class="counts" {if !$qdj->hasVoted()}style="display: none"{/if}>
+            <td class="case1 jone">
+                {if $qdj->hasVoted()}
+                    <div class="count" style="height: {$qdj->percentage1()}%">{$qdj->count1()}</div>
+                {else}
+                    <div class="count"></div>
+                {/if}
             </td>
-            <td class="case2">
-                <div class="count"></div>
+            <td class="case2 rouje">
+                {if $qdj->hasVoted()}
+                    <div class="count" style="height: {$qdj->percentage2()}%">{$qdj->count2()}</div>
+                {else}
+                    <div class="count"></div>
+                {/if}
             </td>
         </tr>
     </table>

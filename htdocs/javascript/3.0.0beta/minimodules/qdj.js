@@ -3,7 +3,7 @@ var reversedId = 0;
 
 var qdj = {
     "run" : function() {
-        this.load();
+        console.log(this);
     },
 
     "vote" : function(votefor) {
@@ -33,7 +33,6 @@ var qdj = {
                 ,"data": {"daysShift": reversedId}
              ,"success": function(json)
                         {
-                            qdj_id = json.qdj.qdj_id;
                             $("#minimodule_qdj .question").html(json.qdj.question);
                             $("#minimodule_qdj .date").html(json.qdj.date);
                             $("#minimodule_qdj .answers .case1 a").html(json.qdj.answer1);
@@ -43,8 +42,7 @@ var qdj = {
                             $("#minimodule_qdj .case1").removeClass('rouje');
                             $("#minimodule_qdj .case2").removeClass('jone');
                             $("#minimodule_qdj .case2").removeClass('rouje');
-                            if (qdj_id%2 == 0)
-                            {
+                            if (Math.random() > 0.5) {
                                 $("#minimodule_qdj .case1").addClass('jone');
                                 $("#minimodule_qdj .case2").addClass('rouje');
                             } else {
@@ -58,14 +56,12 @@ var qdj = {
                                 var count2 = parseInt(json.qdj.count2);
                                 var total = count1 + count2;
                                 $("#minimodule_qdj .counts").show();
-                                $("#minimodule_qdj .counts .case1 .count").height(count1/total*200);
-                                $("#minimodule_qdj .counts .case1 .count").html(count1);
-                                $("#minimodule_qdj .counts .case1 .count").hide();
-                                $("#minimodule_qdj .counts .case1 .count").slideDown('slow');
-                                $("#minimodule_qdj .counts .case2 .count").height(count2/total*200);
-                                $("#minimodule_qdj .counts .case2 .count").html(count2);
-                                $("#minimodule_qdj .counts .case2 .count").hide();
-                                $("#minimodule_qdj .counts .case2 .count").slideDown('slow');
+                                $case1 = $("#minimodule_qdj .counts .case1 .count");
+                                $case1.animate({height: count1/total * 100 + '%'}, 500);
+                                $case1.html(count1);
+                                $case2 = $("#minimodule_qdj .counts .case2 .count");
+                                $case2.animate({height: count2/total * 100 + '%'}, 500);
+                                $case2.html(count2);
                             } else {
                                 $("#minimodule_qdj .counts").hide();
                             }

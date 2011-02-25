@@ -23,14 +23,10 @@
 {js src="plugins/enhance.js"}
 {js src="plugins/excanvas.js"}
 {js src="plugins/visualize.jQuery.js"}
-{js src="qdj.js"}
-
-<p>
-    {include file="wiki.tpl"|rel name='qdjs'}
-</p>
 
 <div class="comment_qdj module">
     <div class="head">
+        <span class="helper" target="qdj"> </span>
         Classement QDJ
     </div>
     <div class="body">
