@@ -26,7 +26,8 @@ class Phone implements Formatable
     public function __construct($data = null)
     {
         $data = trim($data);
-        $data = str_replace(array('.', ' ', '-'), '', $data);
+        $data = str_replace(array('(0)'), '', $data);
+        $data = str_replace(array('.', ' ', '-', '(', ')'), '', $data);
         if (!preg_match('/^\+?[0-9]*$/', $data)) {
             throw new Exception("This doesn't look like a phone number");
         }
