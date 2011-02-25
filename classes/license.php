@@ -41,7 +41,7 @@ class LicenseSchema extends Schema
     }
 
     public function objects() {
-        return array('uid' => 'User');
+        return array('uid' => 'User', 'gid' => 'Group');
     }
 
     public function collections() {
@@ -75,6 +75,7 @@ class License extends Meta
     protected $software = null;
     protected $key = null;
     protected $uid = null;
+    protected $gid = null;
     protected $user = null;
     protected $comments = null;
     protected $admin = false;
@@ -93,7 +94,8 @@ class License extends Meta
                      '2k3access'    => 'Access 2003',
                      '2k3onenote'   => 'One Note 2003',
                      '2k3visiopro'  => 'Visio Professionnel 2003',
-                     'win2k'        => 'Windows 2000 Professionnel'
+                     'win2k'        => 'Windows 2000 Professionnel',
+                     'win7'         => 'Windows 7'
                     );
     }
     
@@ -107,8 +109,14 @@ class License extends Meta
         return array("winxp", "winvista", "win2k");
     }
     
-    public function software()
+    public function software($software = null)
     {
+        if($software != null){
+            $this->software = $software;
+            XDB::query("UPDATE  msdnaa_keys
+                           SET  software = {?}
+                         WHERE  id = {?}", $software, $this->id());
+        }
         return $this->software;
     }
     
@@ -118,8 +126,14 @@ class License extends Meta
         return $s[$this->software];
     }
 
-    public function key()
+    public function key($key = null)
     {
+        if($key != null){
+            $this->key = $key;
+            XDB::query("UPDATE  msdnaa_keys
+                           SET  `key` = {?}
+                         WHERE  id = {?}", $key, $this->id());
+        }
         return $this->key;
     }
     
@@ -146,19 +160,35 @@ class License extends Meta
     
     public function comments($comments = null)
     {
-        if($set != null)
-        {
-            XDB::request('UPDATE  msdnaa_keys 
-                             SET  comments = {?}
-                           WHERE  key = {?} AND software = {?} AND admin = 0', $comments);
+        if($comments != null){
             $this->comments = $comments;
+            XDB::query("UPDATE  msdnaa_keys
+                           SET  comments = {?}
+                         WHERE  id = {?}", $comments, $this->id());
         }
         return $this->comments;
     }
     
-    public function admin()
+    public function admin($admin = null)
     {
+        if($admin != null){
+            $this->admin = $admin;
+            XDB::query("UPDATE  msdnaa_keys
+                           SET  admin = {?}
+                         WHERE  id = {?}", $admin, $this->id());
+        }
         return $this->admin;
+    }
+    
+    public function gid($gid = null)
+    {
+        if($gid != null){
+            $this->gid = $gid;
+            XDB::query("UPDATE  msdnaa_keys
+                           SET  gid = {?}
+                         WHERE  id = {?}", $gid, $this->id());
+        }
+        return $this->gid;
     }
     
     public function give($user)
@@ -167,8 +197,8 @@ class License extends Meta
         {
             $this->uid($user->id());
         }
-        if (is_null($this->user()->bestEmail())){
-            $this->user()->select(User::SELECT_BASE);
+        if (is_null($user->bestEmail())){
+            $user->select(User::SELECT_BASE);
         }
         self::send(array($this), $user);
     }
@@ -204,7 +234,12 @@ class License extends Meta
         $req = array();
         foreach($conds as $key => $value)
         {
-            $req[] = XDB::format($key . ' = {?}', $value);
+            if($value != null) {
+                $req[] = XDB::format($key . ' = {?}', $value);
+            } else {
+                $req[] = XDB::format('ISNULL(' . $key . ')');
+            }
+            
         }
         $keys = XDB::query('SELECT * FROM msdnaa_keys WHERE ' . implode(' AND ', $req))->fetchAllAssoc();
         foreach($keys as $key => $value)
@@ -215,7 +250,7 @@ class License extends Meta
     }
     
     public static function fetchCurrentUser(){
-        return self::fetch(array('uid', S::user()->id()));
+        return self::fetch(array('uid' => S::user()->id(), 'gid' => null));
     }
     
     public static function adminKey($software){
@@ -227,7 +262,7 @@ class License extends Meta
     }
     
     public static function givenKeys($software, $uid){
-        $keys = self::fetch(array('software' => $software, 'uid' => $uid));
+        $keys = self::fetch(array('software' => $software, 'uid' => $uid, 'gid' => null));
         if(count($keys) >= 1) {
             return $keys;
         }
