@@ -406,6 +406,13 @@ $g->visible(1);
 // Admins(qdj) = Members(webmasters) the time of the conversion
 $g->caste(Rights::admin())->userfilter(new UserFilter(new UFC_Group($webmasters, Rights::member())));
 
+$g = new Group();
+$g->insert();
+$g->name('postit');
+$g->label('Post-It');
+// Admins(postit) = Members(webmasters) the time of the conversion
+$g->caste(Rights::admin())->userfilter(new UserFilter(new UFC_Group($webmasters, Rights::member())));
+
 echo "Added Fkz Microcosmos \n";
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

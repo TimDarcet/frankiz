@@ -42,9 +42,11 @@ class FrankizModule extends PlModule
 
         $postit = Group::from('postit');
         // /!\ : Everybody can read the post-it, you don't have to be member of the group
-        $nf = new NewsFilter(new PFC_And(new NFC_Current(), new NFC_Target($postit)), new NFO_Begin(true));
+        $nf = new NewsFilter(new PFC_And(new NFC_Current(), new NFC_TargetGroup($postit)), new NFO_Begin(true));
         $postit_news = $nf->get(true);
-        if ($postit_news) $postit_news->select();
+        if ($postit_news) {
+            $postit_news->select(NewsSelect::news());
+        }
 
         $page->assign('postit_news', $postit_news);
         $page->assign('title', 'Accueil');
