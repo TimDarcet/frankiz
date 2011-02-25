@@ -63,7 +63,7 @@
             </ul>
         </div>
 
-        {if !$user->isFemale()}
+        {if !$user->isFemale() && $user->isAdmin()}
         <div class="fields"  id="tol_gender">
             <ul>
                 <li><label>Fifilles<input auto="auto" type="checkbox" name="gender" value="woman"/></label></li>
