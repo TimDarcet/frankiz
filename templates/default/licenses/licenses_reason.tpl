@@ -19,7 +19,9 @@
 {*  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA               *}
 {*                                                                        *}
 {**************************************************************************}
-
+<div class="module">
+<div class="head">{$title}</div>
+<div class="body">
 {if $software_rare}
 <p>Nous ne disposons que d'un nombre de clés limité pour le logiciel que tu demandes. Il nous faut donc une raison valable pour t'attribuer une clé.</p>
 {/if}
@@ -42,5 +44,6 @@
     <input type="submit" name="final" value="Envoyer la demande" />
     <input type="submit" name="disagree" value="Tout annuler" />
 </form>
-
+</div>
+</div>
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
