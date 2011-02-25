@@ -61,27 +61,15 @@ class QDJModule extends PLModule
 
     public function handler_admin($page)
     {
+        if (!S::user()->hasRights(Group::from('qdj'), Rights::admin())) {
+            return PL_FORBIDDEN;
+        }
+
         $qdjs = QDJ::waiting();
         $qdjs->select(QDJSelect::all());
+        $qdjs->order('date', false);
 
-        $np = new Collection('QDJ');
-        $p = new Collection('QDJ');
-        foreach ($qdjs as $e)
-        {
-            if ($e->date() == false)
-            {
-                trace($e);
-                $np->add($e);
-                trace($np);
-            }
-            else
-                $p->add($e);
-        }
-        $p->order('date', false);
-        trace($np);
-
-        $page->assign('not_planned', $np);
-        $page->assign('planned', $p);
+        $page->assign('qdjs', $qdjs);
         $page->addCssLink('qdj.css');
         $page->assign('title', "Planification des QDJ");
         $page->changeTpl('qdj/admin.tpl');
@@ -100,42 +88,44 @@ class QDJModule extends PLModule
 
     function handler_ajax_modify($page)
     {
-        $json = json_decode(Env::v('json'));
-        $qdj = new QDJ($json->id);
-        $date = $json->date;
-        if ($date == '')
-        {
-            $qdj->date(false);
-            $page->jsonAssign('success', true);
-            $page->jsonAssign('null', true);
+        S::assert_xsrf_token();
+        if (!S::user()->hasRights(Group::from('qdj'), Rights::admin())) {
+            return PL_FORBIDDEN;
         }
-        else
-        {
-            try
-            {
-                $qdj->date(new FrankizDateTime($date));
+
+        $qdj = new QDJ(Json::i('id'));
+
+        $page->jsonAssign('success', false);
+        if (Json::has('date')) {
+            $date = Json::t('date');
+            if (!$date) {
+                $qdj->date(false);
                 $page->jsonAssign('success', true);
-                $page->jsonAssign('null', true);
+            } else {
+                try {
+                    $qdj->date(new FrankizDateTime($date));
+                    $page->jsonAssign('success', true);
+                } catch (Exception $e) {
+                }
             }
-            catch (Exception $e)
-            {
-                $page->jsonAssign('success', false);
+        } else if (Json::has('delete')) {
+            if (Json::b('delete')) {
+                $qdj->delete();
+                $page->jsonAssign('success', true);
             }
         }
+
         return PL_JSON;
     }
 
     public function handler_ajax_get($page)
     {
-        $json = json_decode(Env::v('json'));
-
-        $daysShift = intval($json->{'daysShift'});
-        $qdj = QDJ::last($daysShift);
+        $qdj = QDJ::last(Json::i('daysShift', 0));
         $array_qdj = $qdj->export();
 
         if ($qdj->date()->format('Y-m-d') == date('Y-m-d'))
         {
-            $voted = $qdj->hasVoted(S::user()->id());
+            $voted = $qdj->hasVoted();
         } else {
             $voted = true;
         }
