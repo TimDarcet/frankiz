@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS log_actions (
   id int(11) NOT NULL AUTO_INCREMENT,
   `text` tinytext NOT NULL,
   PRIMARY KEY (id)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS log_events (
   `action` int(11) NOT NULL,
   stamps timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `data` text
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS log_last_sessions (
   uid int(11) NOT NULL,
   id int(11) NOT NULL,
   PRIMARY KEY (uid)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -55,4 +55,16 @@ CREATE TABLE IF NOT EXISTS log_sessions (
   flags set('proxy') NOT NULL,
   `start` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+INSERT INTO log_actions (id, `text`) VALUES(1, 'suid_start');
+INSERT INTO log_actions (id, `text`) VALUES(2, 'auth_ok');
+INSERT INTO log_actions (id, `text`) VALUES(3, 'auth_fail');
+INSERT INTO log_actions (id, `text`) VALUES(10, 'groups/insert');
+INSERT INTO log_actions (id, `text`) VALUES(11, 'groups/admin');
+INSERT INTO log_actions (id, `text`) VALUES(12, 'groups/admin/rights');
+INSERT INTO log_actions (id, `text`) VALUES(13, 'admin/su');
+INSERT INTO log_actions (id, `text`) VALUES(14, 'admin/validate');
+
