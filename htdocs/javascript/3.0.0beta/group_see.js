@@ -137,8 +137,12 @@ var news = function() {
                     html.push(news[nid]);
                 }
 
-                var ul = $("#section .news > table");
-                ul.html(html.join(''));
+                var $list = $("#section .news > table");
+                if (html.length > 0) {
+                    $list.html(html.join(''));
+                } else {
+                    $list.html("<tr><td>Pas d'annonce de ce groupe</td></tr>");
+                }
 
                 searching = false;
                 if (newsearch)
