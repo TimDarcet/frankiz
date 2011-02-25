@@ -63,10 +63,13 @@ function stopSorting(event, ui)
 
 function cleanEmptyColumns()
 {
-    if ($('.minimodules_zone').size() == 4)
-        for (var i in homeCols)
-            if ($('#' + homeCols[i]).sortable('toArray').length == 0)
+    if ($('.minimodules_zone').size() == 4) {
+        for (var i in homeCols) {
+            if ($('#' + homeCols[i]).children('li').length == 0) {
                 $('#' + homeCols[i]).parent().hide();
+            }
+        }
+    }
 
     if ($('#COL_FLOAT').children('li').length == 0) {
         $('body').removeClass('enabledAside');
