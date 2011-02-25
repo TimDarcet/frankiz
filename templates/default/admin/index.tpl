@@ -32,6 +32,7 @@
             {if $smarty.session.user->checkPerms('admin')}
                 <ul>
                     <li><a href="wiki/admin">Les zones wikis</a></li>
+                    <li><a href="admin/logs/sessions">Log des sessions</a></li>
                 </ul>
             {/if}
         </div>
