@@ -1,5 +1,6 @@
 $(function(){
     $("#tol_searcher form").submit(function(event) {
+        $('input[name=page]').val(1);
         $('#tol_searcher input[name=mode]').val('sheet');
         users.search();
         event.stopPropagation();
@@ -8,6 +9,7 @@ $(function(){
 
     $("#tol_infos").removeClass("searching");
     $('#tol_searcher input[auto]').keyup(function(event) {
+        $('input[name=page]').val(1);
         if (event.keyCode != '13') {
             users.search();
         }
@@ -71,7 +73,7 @@ var users = function() {
                     if (json.total > 20) {
                         var pages = '(Pages : ';
                         for(var i = 1; i <= Math.ceil(json.total / ((json.mode == 'card')?20:50)); i++) {
-                            var onclick = "$('input[name=page]').val($(this).html()); users().search();";
+                            var onclick = "$('input[name=page]').val($(this).html()); users.search();";
                             var selected = ($('input[name=page]').val() == i) ? 'class="selected"' : '';
                             pages += ' <a ' + selected + ' onclick="' + onclick + '">' + i + '</a> ';
                         }
