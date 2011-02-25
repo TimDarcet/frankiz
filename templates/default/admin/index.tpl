@@ -70,6 +70,12 @@
                 </li>
             {/foreach}
             </ul>
+            {if $smarty.session.user->isWeb()}
+            <hr />
+                <div>
+                    <a href="groups/insert">Créer un groupe</a>
+                </div>
+            {/if}
         </div>
     </div>
 

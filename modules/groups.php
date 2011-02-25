@@ -515,7 +515,10 @@ class GroupsModule extends PLModule
 
     function handler_group_insert($page)
     {
-        //TODO
+        $group = new Group();
+        $group->insert();
+        $group->caste(Rights::admin())->addUser(S::user());
+        pl_redirect('groups/admin/' . $group->id());
     }
 }
 
