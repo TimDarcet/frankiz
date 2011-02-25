@@ -123,7 +123,7 @@ class LicensesValidate extends ItemValidate
 
     public function commit()
     {
-        $free_keys = License::fetch(array('software' => $this->software, 'uid' => null, 'admin' => false));
+        $free_keys = License::fetchFreeKeys($this->software);
         if(count($free_keys) == 0){
             return false;
         }

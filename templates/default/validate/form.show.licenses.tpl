@@ -34,6 +34,11 @@
                 <td>
                     {$item->reason()}
                 </td>
+                <td>
+                    {if count(License::fetchFreeKeys()) == 0}
+                        Plus de clés disponibles !
+                    {/if}
+                </td>
             </tr>
             </table>
         </div>

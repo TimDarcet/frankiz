@@ -268,6 +268,10 @@ class License extends Meta
         }
         return false;
     }
+    
+    public static function fetchFreeKeys($software){
+        self::fetch(array('software' => $software, 'uid' => null, 'gid' => null, 'admin' => false));
+    }        
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
