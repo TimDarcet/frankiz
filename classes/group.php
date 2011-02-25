@@ -245,10 +245,12 @@ class Group extends Meta
     public function insert($id = null, $type = 'all')
     {
         if ($id == null) {
-            XDB::execute('INSERT INTO groups SET gid = NULL');
+            $this->name = uniqid();
+            XDB::execute('INSERT INTO groups SET name = {?}', $this->name);
             $this->id = XDB::insertId();
         } else {
-            XDB::execute('INSERT INTO groups SET gid = {?}', $id);
+            $this->name = 'g_' . $id;
+            XDB::execute('INSERT INTO groups SET gid = {?}, name= {?}', $id, $this->name);
             $this->id = $id;
         }
 
@@ -290,6 +292,10 @@ class Group extends Meta
                                     WHERE  name IN {?}', $mixed);
             while ($g = $iter->next())
                 $collec->add(new self($g));
+        }
+
+        if (count($mixed) != $collec->count()) {
+            throw new ItemNotFoundException('Asking for ' . implode(', ', $mixed) . ' but only found ' . implode(', ', $collec->ids()));
         }
 
         return $collec;
