@@ -251,6 +251,8 @@ function groups_picker(id, ns, check, order, desc)
     var filter     = searcher.children("[name=filter]").first();
     var input      = $("#" + id);
 
+    container.addClass('collapsed');
+
     var searching = false;
     var newsearch = false;
     var focus     = false;
@@ -263,10 +265,12 @@ function groups_picker(id, ns, check, order, desc)
         list.slideUp(100);
         searcher.slideUp(100);
         focus = false;
+        container.switchClass('deployed', 'collapsed', 0);
     };
     container.click(function() {
         if (!focus) {
             searcher.show();
+            container.switchClass('collapsed', 'deployed', 0);
             filter.val('');
             filter.focus();
             focus = true;

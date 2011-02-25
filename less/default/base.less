@@ -550,10 +550,10 @@ input, textarea, select {
     }
 
     &:hover {
-    color: @color;
-    background-color: #FFBA00;
-    border: 1px red solid;
-}
+        color: @color;
+        background-color: #FFBA00;
+        border: 1px red solid;
+    }
 
     &:focus {
         color: white;
@@ -659,6 +659,11 @@ input[type="checkbox"], input[type="radio"]{
     .searcher input {
         width: auto;
         margin-left: 5%;
+    }
+
+    &.collapsed:hover {
+        color: @color;
+        background-color: #FFBA00;
     }
 
     &.searching .searcher input {
