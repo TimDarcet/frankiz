@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS msdnaa_keys (
   `key` varchar(30) NOT NULL,
   software varchar(15) NOT NULL,
   uid int(11) DEFAULT NULL,
+  gid int(11) DEFAULT NULL,
   admin tinyint(1) NOT NULL,
   comments tinytext,
   PRIMARY KEY (id)
