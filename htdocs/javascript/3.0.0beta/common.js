@@ -12,6 +12,19 @@ $(function(){
     };
 
     /*
+     * Plugin to get the attributes of a set of elements
+     */
+    $.fn.batchAttr = function(attr) {
+        var attrs = [];
+
+        this.each(function() {
+            attrs.push($(this).attr(attr));
+        });
+
+        return attrs;
+      };
+
+    /*
      * Temporary ?
      */
     $.ajaxSetup({ cache: false });
@@ -124,7 +137,7 @@ function request(fields)
     if (!fields.raw)
         data = JSON.stringify(data);
 
-    $.ajax({
+    return $.ajax({
           type: 'POST',
           url: fields.url,
           dataType: 'json',
