@@ -87,15 +87,18 @@ class License extends Meta
 
     static public function getSoftwares()
     {
-        return array('visualstudio' => 'Visual Studio .NET',
-                     'winxp'        => 'Windows XP Professionnel',
+        return array('win7'         => 'Windows 7'
                      'winvista'     => 'Windows Vista Business',
-                     '2k3serv'      => 'Windows Serveur 2003',
-                     '2k3access'    => 'Access 2003',
-                     '2k3onenote'   => 'One Note 2003',
-                     '2k3visiopro'  => 'Visio Professionnel 2003',
+                     'winxp'        => 'Windows XP Professionnel',
                      'win2k'        => 'Windows 2000 Professionnel',
-                     'win7'         => 'Windows 7'
+                     '2k3serv'      => 'Windows Serveur 2003',
+                     '2k8servR2'    => 'Windows Serveur 2008',
+                     '2k3access'    => 'Access 2003',
+                     '2k10onenote'  => 'One Note 2010',
+                     '2k3onenote'   => 'One Note 2003',
+                     '2k10visiopro' => 'Visio Professionnel 2010',
+                     '2k3visiopro'  => 'Visio Professionnel 2003',
+                     'visualstudio' => 'Visual Studio .NET'
                     );
     }
     
