@@ -20,6 +20,24 @@
 {*                                                                        *}
 {**************************************************************************}
 
+{if ($item->type_mail() == 'promo')}
+    <tr>
+        <td width=20%>
+            Promos :
+        </td>
+        <td>
+            {if $item->targets()}
+                {foreach from=$item->targets() item=promo}
+                    {assign value=$promo->group() var=promo_group}
+                    {$promo_group->label()}
+                {/foreach}
+            {else}
+                toutes
+            {/if}
+        </td>
+    </tr>
+{/if}
+
 <tr>
     <td width=20%>
         Titre :
@@ -41,5 +59,7 @@
         {/if}
     </td>
 </tr>
+
+
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

@@ -24,78 +24,73 @@
 
 {if isset($envoye|smarty:nodefaults)}
 
-    <div class="msg_proposal"> Merci d'avoir proposé un mail commun. 
+    <div class="msg_proposal"> Merci d'avoir proposé un mail. 
     Le responsable du groupe essayera de te le valider au plus tôt. </div>
 
 {else}
 
 <form enctype="multipart/form-data" method="post" action="proposal/mail/" id="form_mail_promo">
-
-    <div class="info_proposal"> 
-        Le texte du mail promo utilise le format wiki décrit dans l'<a href="wiki_help">aide wiki</a><br/>
-        Pour toute remarque particulière, envoyer un mail à <a href="mailto:web@frankiz.polytechnique.fr">web@frankiz</a>      
-        <div class="small">
-            <label><input type="checkbox" name="no_wiki" id="box_mail_proposal" value="1" {if $nowiki}checked="checked"{/if} onchange="update_mail();" />
-            coche cette case pour envoyer l'email en texte brut, sans formattage</label>
-        </div> 
-    </div>
-
     {if $msg}
         <div class="msg_proposal"> 
             {$msg}
         </div>
     {/if}
+        
+    <div class="module mail">
+        <div class="head">
+            <span class="helper" target="proposal/mail"></span>
+            Mail
+        </div>
+        <div class="body">
+            <table>
+                <tr>
+                    <td width=20%>
+                        Destinataire :
+                    </td>
+                    <td>
+		    	        <label>
+		    	            <input id="choice_promo" type="radio" name="type_mail_proposal" checked value="promo"> Mail à une promo
+		    	        </label><br />
+		    	        <label>
+		    	            <input id="choice_group" type="radio" name="type_mail_proposal" value="group"> Mail à un groupe
+		    	        </label><br />
+			            <div id="promo_proposal" class="type_proposal">
+			                {include file="groups_picker.tpl"|rel id="study_mail_proposal" ns="study"}
+                            {include file="groups_picker.tpl"|rel id="promo_mail_proposal" ns="promo"}
+			            </div>
+		                <div id="group_proposal" class="type_proposal">
+		                    {include file="target_picker.tpl"|rel id="mail" group_perso=false only_admin=false}
+                        </div>
+                    </td>
+                </tr>
 
-    <div class="box_proposal">
-        <div class="title">
-            Aperçu du corps de l'email
+                <tr>
+                    <td>
+                        Sujet :
+                    </td>
+                    <td>
+                        <input type='text' name='subject' value="{$subject}" placeholder="Sujet du mail"/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Mail :
+                    </td>
+                    <td>
+                         {include file="wiki_textarea.tpl"|rel id="mail_body" already=$smarty.request.content placeholder="Corps du mail" }
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" name="send" value="Envoyer" onClick="return window.confirm('Voulez vous vraiment envoyer ce mail ?')"/>
+                    </td>
+                </tr>
+
+            </table>
         </div>
-        <div id="preview_proposal">
-            {$body|miniwiki|smarty:nodefaults}
-        </div>
-    </div>
-        
-        
-    <div class="mail_proposal box_proposal">
-        <div class="title">
-           Mail
-        </div>
-        <table>
-            <tr>
-                <td width=20%>
-                    Destinataire :
-                </td>
-                <td>
-                    {include file="groups_picker.tpl"|rel id="group_mail_proposal" ns="study" check=-1}
-                </td>
-            </tr>
-            
-            <tr>
-                <td>
-                    Sujet :
-                </td>
-                <td>
-                    <input type='text' name='subject' value="{$subject}" />
-                </td>
-            </tr>
-    
-            <tr>
-                <td>
-                    Mail :
-                </td>
-                <td>
-                    <textarea name='body' id="text_proposal" rows=30 cols=50>{$body}</textarea>
-                </td>
-            </tr>
-            
-            <tr>
-                <td></td>
-                <td>
-                    <input type="submit" name="send" value="Envoyer" onClick="return window.confirm('Voulez vous vraiment envoyer ce mail ?')"/>
-                </td>
-            </tr>
-        
-        </table>
     </div>
 </form>
 {/if}

@@ -23,52 +23,34 @@ class MailValidate extends ItemValidate
 {
     protected $type = 'mail';
     protected $writer;
-    protected $target;
+    protected $type_mail;
+    protected $targets;
     protected $subject;
     protected $body;
     protected $nowiki;
+    protected $formation;
 
-    public function __construct(Caste $target, $subject, $body, $nowiki)
+    public function __construct($datas)
     {
-        $this->writer = S::user();
-        $this->target = $target;
-        $this->subject = $subject;
-        $this->body = $body;
-        $this->nowiki = $nowiki;
+        foreach ($datas as $key => $val) {
+            if (property_exists($this, $key)) {
+                $this->$key = $val;
+            }
+        }
     }
+
 
     public function objects() {
-        return Array('writer' => UserSelect::base(), 'target' => CasteSelect::validate());
-    }
-    
-    public function writer(User $writer = null) {
-        if ($writer != null) {
-            $this->writer = $writer;
-        }
-        return $this->writer;
+        return array('writer' => UserSelect::base(),
+                  'formation' => GroupSelect::base());
     }
 
-    public function target(Caste $target = null)
-    {
-        if ($target != null)
-        {
-            $this->target = $target;
-        }
-        return $this->target;
+    public function collections() {
+        return array('targets' => CasteSelect::validate());
     }
 
-    public function subject()
-    {
-        return $this->subject;
-    }
-
-    public function body()
-    {
-        return $this->body;
-    }
-    public function nowiki()
-    {
-        return $this->nowiki;
+    public static function label() {
+        return 'Courriel';
     }
 
     public function show()
@@ -84,15 +66,16 @@ class MailValidate extends ItemValidate
     public function handle_editor()
     {
         $this->subject = Env::t('subject');
-        $this->body = Env::t('body');
+        $this->body = Env::t('mail_body');
         return true;
     }
 
     public function sendmailadmin()
     {
         $mail = new FrankizMailer('validate/mail.admin.mail.tpl');
-        $mail->assign('user', $this->writer->displayName());
+        $mail->assign('user', $this->writer);
         $mail->assign('subject', $this->subject);
+        $mail->assign('targetGroup', $this->formation);
 
         $mail->Subject = "[Frankiz] Validation d'un mail";
         $mail->SetFrom($this->writer->bestEmail(), $this->writer->displayName());
@@ -103,8 +86,8 @@ class MailValidate extends ItemValidate
     public function sendmailfinal($isok)
     {
         $mail = new FrankizMailer('validate/mail.valid.mail.tpl');
-        if (Env::has("ans"))
-            $mail->assign('comm', Env::v('ans'));
+        $mail->assign('comm', Env::v('ans', ''));
+        $mail->assign('targetGroup', $this->formation);
 
         if ($isok)
             $mail->Subject = '[Frankiz] Ton mail a été accepté';
@@ -122,24 +105,44 @@ class MailValidate extends ItemValidate
 
     public function _mail_from_disp()
     {
-        return 'Les webmestres';
+        return 'Frankiz - ' . $this->formation->label() . '';
     }
 
     public function _mail_from_addr()
     {
-        $this->target->group();
-        return ($this->target->group()->mail() === false || $this->target->group()->mail() === '')
-                ?'web@frankiz.polytechnique.fr':$this->target->group()->mail();
+        global $globals;
+
+        return $this->formation->name() .'@' . $globals->mails->group_suffix;
     }
 
     public function commit()
     {
         $mail = new FrankizMailer();
-        $mail->subject('[Mail groupé] ' . $this->subject);
+        $mail->subject('[Mail ' . ($this->type_mail == 'promo')?'promo':$this->formation->label() . '] ' . $this->subject);
         $mail->body($this->body);
         $mail->setFrom($this->writer->bestEmail(), $this->writer->displayName());
-        $mail->ToUserFilter(new UserFilter(new UFC_Caste($this->target->id())));
-        $mail->sendLater($this->nowiki);
+        
+        if ($this->type_mail == 'promo' && !$this->targets) {
+            $uf = new UserFilter(
+                new PFC_AND(
+                    new UFC_Group($this->formation),
+                    new UFC_Group(Group::from('on_platal'))));
+        }
+        else if ($this->type_mail == 'promo') {
+            $uf = new UserFilter(
+                new PFC_AND(
+                    new UFC_Group($this->formation),
+                    new UFC_Caste($this->targets),
+                    new UFC_Group(Group::from('on_platal'))));
+        }
+        else {
+            $uf = new UserFilter(
+                new PFC_AND(
+                    new UFC_Caste($this->targets->first()),
+                    new UFC_Group(Group::from('on_platal'))));
+        }
+        $mail->ToUserFilter($uf);
+        $mail->sendLater(!$this->nowiki);
         return true;
     }
 }
