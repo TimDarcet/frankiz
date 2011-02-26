@@ -102,6 +102,23 @@ class ValidateSelect extends Select
                     $item->$field($collections[$hash]->addget($item->$field()));
                 }
             }
+
+
+            foreach ($item->collections() as $field => $select) {
+                $hash = $select->hash();
+                $selects[$hash] = $select;
+                if (empty($collections[$hash])) {
+                    $collections[$hash] = new Collection($select->className());
+                }
+
+                if ($item->$field() != false) {
+                    $temp = new Collection($select->className());
+                    foreach($item->$field() as $f) {
+                        $temp->add($collections[$hash]->addget($f));
+                    }
+                    $item->$field($temp);
+                }
+            }
         }
 
         foreach ($collections as $hash => $collection) {
