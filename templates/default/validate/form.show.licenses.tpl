@@ -26,20 +26,26 @@
         <table>
             <tr>
                 <td>
-                    {$item->user()->fullName()}
+                    Logiciel :
                 </td>
                 <td>
                     {$item->softwareName()}
                 </td>
+            <tr>
+                <td>
+                    Raison : 
+                </td>
                 <td>
                     {$item->reason()}
                 </td>
-                <td>
-                    {if count(License::fetchFreeKeys()) == 0}
-                        Plus de clés disponibles !
-                    {/if}
+            </tr>
+            {if !$item->canGetFreeKey()}
+            <tr>
+                <td colspan="2">
+                    <strong>Plus de clés disponibles !</strong>
                 </td>
             </tr>
+            {/if}
             </table>
         </div>
     </td>
