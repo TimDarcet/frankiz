@@ -27,7 +27,7 @@
         {$news->writer()|user}
     </td>
     <td class="title" {if $age->invert}title="Cette annonce n'apparait qu'aux administrateurs car sa date de parution est future"{/if}>
-        <a href="news/see/{$news->id()}">{$news->title()}</a>
+        <a href="news/{$news->id()}">{$news->title()}</a>
     </td>
     <td class="date">
         {$news->begin()|age}
