@@ -105,6 +105,7 @@ delete_dir:
 	[ ! -d spool/tmp ] || rm -rf spool/tmp
 	[ ! -d spool/sessions ] || rm -rf spool/sessions
 	[ ! -d htdocs/css ] || rm -rf htdocs/css
+	[ ! -d spool ] || rmdir --ignore-fail-on-non-empty spool
 
 distclean: delete_dir clean_files
 
