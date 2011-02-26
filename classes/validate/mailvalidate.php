@@ -118,7 +118,8 @@ class MailValidate extends ItemValidate
     public function commit()
     {
         $mail = new FrankizMailer();
-        $mail->subject('[Mail ' . ($this->type_mail == 'promo')?'promo':$this->formation->label() . '] ' . $this->subject);
+        $sub = ($this->type_mail == 'promo')?'promo':$this->formation->label();
+        $mail->subject('[Mail ' . $sub . '] ' . $this->subject);
         $mail->body($this->body);
         $mail->setFrom($this->writer->bestEmail(), $this->writer->displayName());
         
