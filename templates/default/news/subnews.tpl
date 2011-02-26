@@ -20,13 +20,11 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="open_all">
-    Ouvrir toutes les annonces non-lues
-</div>
-
 <ul>
     {foreach from=$collection|order:'begin' item=news}
-        <li class="news close {if $news->read()}read{else}unread{/if} {if $news->star()}star{else}unstar{/if}"
+        {assign var='begin' value=$news->begin()}
+        {assign var='age' value=$begin->age()}
+        <li class="news close {if $news->read()}read{else}unread{/if} {if $news->star()}star{else}unstar{/if} {if $age->invert}tocome{/if}"
             nid="{$news->id()}">
             <div class="infos">
                 <table><tr>

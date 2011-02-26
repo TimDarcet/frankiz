@@ -30,8 +30,6 @@ class NewsModule extends PlModule
             "news/rss"          => $this->make_hook("rss"           , AUTH_PUBLIC, "user", NO_HTTPS), // TODO
             "news/ajax/read"    => $this->make_hook("ajax_read"     , AUTH_COOKIE),
             "news/ajax/star"    => $this->make_hook("ajax_star"     , AUTH_COOKIE),
-            "news/ajax/admin"   => $this->make_hook("ajax_admin"    , AUTH_MDP),
-            "news/ajax/modify"  => $this->make_hook("ajax_modify"   , AUTH_MDP),
         );
     }
 
@@ -55,16 +53,23 @@ class NewsModule extends PlModule
         return PL_JSON;
     }
 
-    function handler_news($page)
+    function handler_news($page, $view = 'current')
     {
-        $target_castes = new Collection();
-        $target_castes->merge(S::user()->castes(Rights::restricted()));
-        $target_castes->merge(S::user()->castes(Rights::everybody()));
+        if ($view == 'mine') {
+            $nf = new NewsFilter(new NFC_Writer(S::user()), new NFO_Begin(true));
+        } else {
+            $target_castes = new Collection();
+            $target_castes->merge(S::user()->castes(Rights::restricted()));
+            $target_castes->merge(S::user()->castes(Rights::everybody()));
+    
+            $nf = new NewsFilter(new PFC_And(new NFC_Current(),
+                                             new NFC_Target($target_castes)),
+                                 new NFO_Begin(true));
+        }
 
-        $nf = new NewsFilter(new PFC_And(new NFC_Current(),
-                                         new NFC_Target($target_castes)));
         $news = $nf->get()->select(NewsSelect::news());
 
+        $page->assign('view', $view);
         $page->assign('user', S::user());
         $page->assign('news', $news);
         $page->addCssLink('news.css');

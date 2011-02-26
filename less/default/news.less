@@ -48,16 +48,71 @@
     }
 
     // Handler news/ with all the news
+
+    .options {
+        table {
+            width: 100%;
+        }
+        td {
+            padding-left: 15px;
+            padding-right: 15px;
+            width: 33%;
+        }
+        .option {
+            .alphabackground;
+            .border-radius;
+            height: 100px;
+            padding: 10px;
+        }
+        li {
+            position: relative;
+            list-style: none;
+            height: 20px;
+        }
+        .actions ul {
+            margin-top: 5px;
+        }
+        .actions li {
+            cursor: pointer;
+            
+        }
+        .codes ul {
+            margin-top: 5px;
+        }
+        .code {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border: 1px black solid;
+            left: -20px;
+            &.unread {
+                background-color: white;
+            }
+            &.read {
+                background-color: @background;
+            }
+            &.star {
+                background-color: yellow;
+            }
+            &.tocome {
+                background-color: red;
+            }
+        }
+    }
+
     .list {
+        padding-left: 15px;
+        padding-right: 10px;
         ul {
             padding: 0;
         }
         li.news {
+            .border-radius;
             position: relative;
             list-style: none;
             border: 1px @border solid;
-            border-top: none;
             padding: 1px;
+            margin-bottom: 5px;
 
             &:first-child {
                 border-top: 1px @border solid;
@@ -107,12 +162,11 @@
                 clear: both;
                 padding: 15px;
                 text-align: left;
-                border-bottom: 2px @border solid;
+                
                 background-color: white;
 
                 .body {
                     padding: 5px;
-
                     .image {
                         float: left;
                     }
@@ -166,6 +220,13 @@
 
     .news.unread {
         background-color: white;
+    }
+
+    /* 
+        To Come
+    */
+    .news.tocome {
+        background-color: red !important;
     }
 
 }
