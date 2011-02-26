@@ -121,7 +121,7 @@ class Activity extends meta
                          SET  target = {?}, origin = {?}, title = {?},
                               description = {?}, days = {?}, default_begin = {?},
                               default_end = {?}',
-            $this->target->id(), $this->origin, $this->title,
+            $this->target->id(), (!$this->origin)?null:$this->origin, $this->title,
             $this->description, $this->days, $this->default_begin,
             $this->default_end);
             

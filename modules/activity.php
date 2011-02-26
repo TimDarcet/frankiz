@@ -378,6 +378,7 @@ class ActivityModule extends PLModule
 
             foreach($c as $a)
             {
+                $page->assign('day', $date);
                 $page->assign('activity', $a);
                 $result[] = $page->fetch(FrankizPage::getTplPath('minimodules/activity/single.tpl'));
             }
@@ -516,7 +517,7 @@ class ActivityModule extends PLModule
                 $e->begin()->format("m/d/Y H:i"),
                 $e->end()->format("m/d/Y H:i"),
                 0,
-                0, //more than one day event
+                $e->begin()->format("m/d/Y") != $e->end()->format("m/d/Y"), //more than one day event
                 //$row->InstanceType,
                 $e->regular(),//Recurring event,
                 ($e->activity()->id() % 15) - 1,

@@ -54,16 +54,18 @@ class ActivityMiniModule extends FrankizMiniModule
         date_add($date_n, date_interval_create_from_date_string('1 day'));
         $date_n->setTime(0,0);
         $activities = new ActivityInstanceFilter(
-            new PFC_And(new PFC_Or (new AIFC_User(S::user()),
-                                    new PFC_And(new AIFC_User(S::user(), 'friend'),
-                                                new AIFC_Private(false))),
-                        new AIFC_Period($date, $date_n)));
+            new PFC_AND (
+                new PFC_Or (
+                    new AIFC_User(S::user(), 'restricted'),
+                    new AIFC_User(S::user(), 'everybody')),
+                new AIFC_Period($date, $date_n)));
 
         $c = $activities->get();
 
-        $c->select();
+        $c->select(ActivityInstanceSelect::base());
         $c->order('hour_begin', false);
 
+        $this->assign('day', new FrankizDateTime());
         $this->assign('date', date("Y-m-d"));
         $this->assign('activities', $c);
     }

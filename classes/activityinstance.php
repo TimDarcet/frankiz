@@ -139,14 +139,20 @@ class ActivityInstance extends meta
         return $this->begin->format("Y-m-d");
     }
 
-    public function hour_begin()
+    public function hour_begin($day = false)
     {
-        return $this->begin->format("H:i");
+        if ($day === false || ($day instanceof FrankizDateTime && $this->begin->format("Y-m-d") == $day->format("Y-m-d")))
+            return $this->begin->format("H:i");
+        else
+            return false;
     }
 
-    public function hour_end()
+    public function hour_end($day = false)
     {
-        return $this->end->format("H:i");
+        if ($day === false || ($day instanceof FrankizDateTime && $this->end->format("Y-m-d") == $day->format("Y-m-d")))
+            return $this->end->format("H:i");
+        else
+            return false;
     }
 
     public function participants($part = null)
