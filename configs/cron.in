@@ -1,10 +1,10 @@
 # crontab Frankiz3
 
 ## Update birthday
-1 0 * * * @USER@ @INSTALL_DIR@/bin/cron/update.birthday.php
+1 0 * * * @USER@ cd @INSTALL_DIR@/bin/cron/ && @INSTALL_DIR@/bin/cron/update.birthday.php
 
 ## Update scores
-0,30 * * * * @USER@ @INSTALL_DIR@/bin/cron/update.scores.php
+0,30 * * * * @USER@ cd @INSTALL_DIR@/bin/cron/ && @INSTALL_DIR@/bin/cron/update.scores.php
 
 ## Send mails
-0/5 * * * * @USER@ @INSTALL_DIR@/bin/cron/send_mail.php
+0/5 * * * * @USER@ cd @INSTALL_DIR@/bin/cron/ && @INSTALL_DIR@/bin/cron/send_mail.php
