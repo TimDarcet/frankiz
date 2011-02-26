@@ -51,7 +51,7 @@ core:
 ## dir
 ##
 
-dir: spool/templates_c spool/mails_c spool/conf spool/tmp spool/sessions
+dir: spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/sessions htdocs/css
 
 spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/sessions htdocs/css:
 	mkdir -p $@
@@ -76,11 +76,13 @@ configs/cron: configs/cron.in Makefile
 ##
 
 clean_dir: 
-	[ ! -d spool/templates_c ] || ( chmod 775 spool/templates_c;  rm -rf spool/templates_c/* )
+	[ ! -d spool/templates_c ] || ( chmod 775 spool/templates_c && rm -rf spool/templates_c/* )
 	[ ! -d spool/mails_c ] || ( chmod 775 spool/mails_c && rm -rf spool/mails_c/* )
+	[ ! -d spool/uploads ] || ( chmod 775 spool/uploads && rm -rf spool/uploads/* )
 	[ ! -d spool/conf ] || ( chmod 775 spool/conf && rm -rf spool/conf/* )
 	[ ! -d spool/tmp ] || ( chmod 775 spool/tmp && rm -rf spool/tmp/* )
 	[ ! -d spool/sessions ] || ( chmod 775 spool/sessions && rm -rf spool/sessions/* )
+	[ ! -d htdocs/css ] || ( chmod 775 htdocs/css && rm -rf htdocs/css/* )
 
 clean_files:
 	[ ! -f htdocs/.htaccess ] || rm htdocs/.htaccess
@@ -93,9 +95,11 @@ clean: clean_dir clean_files
 delete_dir: 
 	[ ! -d spool/templates_c ] || rm -rf spool/templates_c
 	[ ! -d spool/mails_c ] || rm -rf spool/mails_c
+	[ ! -d spool/uploads ] || rm -rf spool/uploads
 	[ ! -d spool/conf ] || rm -rf spool/conf
 	[ ! -d spool/tmp ] || rm -rf spool/tmp
 	[ ! -d spool/sessions ] || rm -rf spool/sessions
+	[ ! -d htdocs/css ] || rm -rf htdocs/css
 
 distclean: delete_dir clean_files
 
