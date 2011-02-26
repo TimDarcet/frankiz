@@ -385,7 +385,11 @@ class UFC_Caste extends UserFilterCondition
 
     public function __construct($cs)
     {
-        $this->cids = Caste::toIds(unflatten($cs));
+        if ($cs instanceof Collection) {
+            $this->cids = $cs->ids();
+        } else {
+            $this->cids = Caste::toIds(unflatten($cs));
+        }
     }
 
     public function buildCondition(PlFilter $f)
