@@ -58,7 +58,7 @@ spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/session
 ## conf
 ##
 
-conf: classes/frankizglobals.php htdocs/.htaccess
+conf: classes/frankizglobals.php htdocs/.htaccess configs/frankiz.conf
 
 htdocs/.htaccess: htdocs/.htaccess.in Makefile
 	@REWRITE_BASE="/~$$(id -un)"; \
@@ -79,6 +79,7 @@ clean_dir:
 clean_files:
 	[ ! -f htdocs/.htaccess ] || rm htdocs/.htaccess
 	[ ! -f classes/frankizglobals.php ] || rm classes/frankizglobals.php
+	[ ! -f configs/frankiz.conf ] || rm configs/frankiz.conf
 
 clean: clean_dir clean_files
 
