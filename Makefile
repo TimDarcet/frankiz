@@ -60,6 +60,31 @@ htdocs/.htaccess: htdocs/.htaccess.in Makefile
 	test "$$REWRITE_BASE" = "/~web" && REWRITE_BASE="/"; \
 	sed -e "s,@REWRITE_BASE@,$$REWRITE_BASE,g" $< > $@
 
+##
+## clean
+##
+
+clean_dir: 
+	[ ! -d spool/templates_c ] || ( chmod 775 spool/templates_c;  rm -rf spool/templates_c/* )
+	[ ! -d spool/mails_c ] || ( chmod 775 spool/mails_c && rm -rf spool/mails_c/* )
+	[ ! -d spool/conf ] || ( chmod 775 spool/conf && rm -rf spool/conf/* )
+	[ ! -d spool/tmp ] || ( chmod 775 spool/tmp && rm -rf spool/tmp/* )
+	[ ! -d spool/sessions ] || ( chmod 775 spool/sessions && rm -rf spool/sessions/* )
+
+clean_files:
+	[ ! -f htdocs/.htaccess ] || rm htdocs/.htaccess
+	[ ! -f classes/frankizglobals.php ] || rm classes/frankizglobals.php
+
+clean: clean_dir clean_files
+
+delete_dir: 
+	[ ! -d spool/templates_c ] || rm -rf spool/templates_c
+	[ ! -d spool/mails_c ] || rm -rf spool/mails_c
+	[ ! -d spool/conf ] || rm -rf spool/conf
+	[ ! -d spool/tmp ] || rm -rf spool/tmp
+	[ ! -d spool/sessions ] || rm -rf spool/sessions
+
+distclean: delete_dir clean_files
 
 ################################################################################
 
