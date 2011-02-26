@@ -21,24 +21,20 @@
 {**************************************************************************}
 
 {if $isok}
-Ton activité vient d'être validée... Elle est dès à present visible.
+Ton activité vient d'être validée. Elle est dès à present visible.
 {$comm|smarty:nodefaults}
 
 
-Merci de ta participation 
-
-Cordialement,
-Le Webmestre de Frankiz
+Merci de ta participation
 {else}
 Ton activité n'a pas été validée pour la raison suivante :
 {$comm|smarty:nodefaults}
 
 
-Désolé 
-
-Cordialement,
-Le Webmestre de Frankiz
+Désolé
 {/if}
 
+Cordialement,
+Les administrateurs du groupe "{$targetGroup->label()}"
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

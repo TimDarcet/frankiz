@@ -36,6 +36,7 @@ Voici le texte que tu avais proposé :
 {$text|smarty:nodefaults}
 
 
+Désolé
 {/if}
 
 Cordialement,

@@ -24,14 +24,17 @@
 
 {if isset($envoye|smarty:nodefaults)}
 
-    <div class="msg_proposal"> Ton activité a été proposée. <br />
-    Le responsable du groupe essaiera de te la valider au plus vite</div>
+    {if isset($auto|smarty:nodefaults)}
+        <div class="msg_proposal">
+            Ton activité a été automatiquement validée. Elle est dès à présent visible.
+        </div>
+
+    {else}
+        <div class="msg_proposal"> Ton activité a été proposée. <br />
+        Le responsable du groupe essaiera de te la valider au plus vite</div>
+    {/if}
 
 {else}
-
-<div class="info_proposal"> 
-    Pour toute remarque particulière, envoyer un mail à <a href="mailto:web@frankiz.polytechnique.fr">web@frankiz</a> 
-</div>
 
 {if $msg}
     <div class="msg_proposal"> 
@@ -44,7 +47,8 @@
 
     <div class="module">
         <div class="head click">
-           Type d'activité <span class="helper" target="proposal/activity" />
+            <span class="helper" target="proposal/activity"></span>
+            Type d'activité
         </div>
         <div class="body hide show">
             <table>
@@ -138,10 +142,8 @@
                         $(function() {
                             $("#begin").datetimepicker({minDate: new Date()});
                             $("#begin").datetimepicker('setDate', new Date());
-                            var end = new Date();
-                            end.setDate(end.getDate() + 1);
-                            $("#end").datetimepicker({ minDate: new Date(), defaultDate: end });
-                            $("#end").datetimepicker('setDate', end);
+                            $("#end").datetimepicker({ minDate: new Date(), defaultDate: new Date() });
+                            $("#end").datetimepicker('setDate', new Date());
                         });
                         {/literal}</script>
                     </td>

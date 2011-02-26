@@ -30,15 +30,10 @@ $(function() {
 
     // For propositions
     // mails
-    $("#no_preview").click(function() {
-        if ($(this).attr('checked')) {
-            wiki_preview.stop($('#text_proposal'));
-            $("#preview_proposal").html("Tu as choisi de ne pas formatter ton texte. L'aperçu est donc désactivé.");
-        }
-        else
-            wiki_preview.start($('#text_proposal'), $('#preview_proposal'));
+    $("input[name=type_mail_proposal]").click(function() {
+        $(".type_proposal").hide();
+        $("#" + $(this).attr('value') + "_proposal").show();
     });
-    wiki_preview.start($('#text_proposal'), $('#preview_proposal'));
 
     // activities
     $("input[name='regular_activity_proposal']").change(function(){
@@ -58,16 +53,5 @@ $(function() {
              success: function(data) { $("#old_activity_proposal").html(data); }
           });
         }
-    });
-
-    if ($('#regular_activity_proposal').attr('checked'))
-        $("#number_activity_proposal").show();
-    else
-        $("#number_activity_proposal").hide();
-    $("#regular_activity_proposal").click(function() {
-        if ($(this).attr('checked'))
-            $("#number_activity_proposal").show();
-        else
-            $("#number_activity_proposal").hide();
     });
 });

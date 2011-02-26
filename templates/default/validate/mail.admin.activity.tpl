@@ -21,15 +21,17 @@
 {**************************************************************************}
 Bonjour,
 
-{$user|smarty:nodefaults} a demandé la validation d'une activité : 
+{$user->displayname()|smarty:nodefaults} a demandé la validation d'une activité :
 {$title|smarty:nodefaults}
 
-Pour valider ou non cette demande va sur la page suivante : 
+Pour valider ou non cette demande va sur la page suivante :
 
-http://frankiz.polytechnique.fr/admin/validate
+{$globals->baseurl}/admin/validate/{$targetGroup->name()}
+
+Tu reçois ce mail, car tu es un administrateur du groupe "{$targetGroup->label()}"
 
 
 Cordialement,
-Le Webmestre de Frankiz
+Les Webmestres de Frankiz
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

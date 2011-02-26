@@ -25,7 +25,7 @@ class ActivityValidate extends ItemValidate
 
     protected $writer;
     protected $target;
-    protected $origin;
+    protected $origin = false;
     protected $title;
     protected $description;
     protected $begin;
@@ -40,56 +40,16 @@ class ActivityValidate extends ItemValidate
         $this->description = $desc;
         $this->begin = $begin;
         $this->end = $end;
-
-        parent::__construct();
     }
 
     public function objects() {
-        return array('user' => UserSelect::base(),
-                   'writer' => UserSelect::base(),
-                   'target' => CasteSelect::validate(),
-                   'origin' => GroupSelect::base());
-    }
-
-    public function writer(User $writer = null) {
-        if ($writer !== null) {
-            $this->writer = $writer;
-        }
-        return $this->writer;
-    }
-
-    public function target(Caste $g = null) {
-        if($g !== null) {
-            $this->target = $g;
-        }
-        return $this->target;
-    }
-
-    public function origin(Group $g = null) {
-        if($g !== null) {
-            $this->origin = $g;
-        }
-        return $this->origin;
-    }
-
-    public function title() {
-        return $this->title;
-    }
-
-    public function description() {
-        return $this->description;
-    }
-
-    public function begin() {
-        return $this->begin;
-    }
-
-    public function end() {
-        return $this->end;
+        return array('writer' => UserSelect::base(),
+                     'target' => CasteSelect::validate(),
+                     'origin' => GroupSelect::base());
     }
 
     public static function label() {
-        return 'Validation d\'activité';
+        return 'Activité';
     }
 
     public function show() {
@@ -115,9 +75,13 @@ class ActivityValidate extends ItemValidate
     }
 
     public function sendmailadmin() {
+        if ($this->writer->bestEmail() === null)
+            $this->writer->select(UserSelect::base());
+        
         $mail = new FrankizMailer('validate/mail.admin.activity.tpl');
-        $mail->assign('user', $this->writer->displayName());
+        $mail->assign('user', $this->writer);
         $mail->assign('title', $this->title);
+        $mail->assign('targetGroup', $this->target->group());
 
         $mail->subject("[Frankiz] Validation d'une activité");
         $mail->SetFrom($this->writer->bestEmail(), $this->writer->displayName());
@@ -126,10 +90,13 @@ class ActivityValidate extends ItemValidate
     }
 
     public function sendmailfinal($isok) {
+        if ($this->writer->bestEmail() === null)
+            $this->writer->select(UserSelect::base());
+
         $mail = new FrankizMailer('validate/mail.valid.activity.tpl');
         $mail->assign('isok', $isok);
-        if (Env::has("ans"))
-            $mail->assign('comm', Env::v('ans'));
+        $mail->assign('comm', Env::v('ans', ''));
+        $mail->assign('targetGroup', $this->target->group());
 
         if ($isok)
             $mail->Subject = '[Frankiz] Ton activité a été validée';
@@ -142,13 +109,16 @@ class ActivityValidate extends ItemValidate
         $mail->Send(false);
     }
 
-    public function _mail_from_disp() {
-        return 'Les webmestres';
+    public function _mail_from_disp()
+    {
+        return 'Frankiz - ' . $this->target->group()->label() . '';
     }
 
-    public function _mail_from_addr() {
-        return ($this->target->group()->mail() === false || $this->target->group()->mail() === '')
-                ?'web@frankiz.polytechnique.fr':$this->target->group()->mail();
+    public function _mail_from_addr()
+    {
+        global $globals;
+
+        return $this->target->group()->name() .'@' . $globals->mails->group_suffix;
     }
 
     public function commit() {
