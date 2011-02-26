@@ -32,6 +32,7 @@ class Less
         $css = self::path_less_to_css($less);
         if (!file_exists($css)) {
             mkdir($css);
+            chmod($css, 0770);
         }
     }
 
@@ -39,6 +40,7 @@ class Less
         $css = self::path_less_to_css($less);
         if (!file_exists($css) || filemtime($css) < filemtime($less)) {
             copy($less, $css);
+            chmod($css, 0770);
         }
     }
 
@@ -53,6 +55,7 @@ class Less
             }
 
             exec('lessc ' . escapeshellarg($less) . ' --compress > ' . escapeshellarg($css));
+            chmod($css, 0770);
 
             if ($globals->debug & DEBUG_BT) {
                 PlBacktrace::$bt['Less']->stop(0, null, array());

@@ -19,6 +19,18 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+class UploadSizeException extends Exception
+{
+    private $allowed;
+
+    public function allowed($allowed) {
+        if ($allowed !== null) {
+            $this->allowed = $allowed;
+        }
+        return $this->allowed;
+    }
+}
+
 class FrankizUpload
 {
     // Original filename
@@ -73,7 +85,9 @@ class FrankizUpload
         if (@$file['error']) {
             switch ($file['error']) {
                 case UPLOAD_ERR_INI_SIZE: case UPLOAD_ERR_FORM_SIZE:
-                    throw new Exception('File is to big (limit: ' . ini_get('upload_max_filesize') . ')');
+                    $e = new UploadSizeException('File is to big (limit: ' . ini_get('upload_max_filesize') . ')');
+                    $e->allowed(ini_get('upload_max_filesize'));
+                    throw $e;
                     break;
                 case UPLOAD_ERR_PARTIAL: case UPLOAD_ERR_NO_FILE:
                     throw new Exception('File not transmitted in integrality');

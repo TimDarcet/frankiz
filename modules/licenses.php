@@ -100,7 +100,10 @@ class licensesModule extends PLModule
             } 
             elseif(Post::has('resend'))
             {
-                License::send(License::givenKeys(Post::s('software'), S::user()->id()));
+                $l = License::fetch(array('id' => Post::i('id')));
+                if($l[0]->uid() == S::user()->id()){
+                    License::send($l);
+                } else { die("La license n'appartient pas à l'utilisateur courant");}
                 $page->assign('direct', true);
             } else {
                 $lv = new LicensesValidate(Post::s('software'), Post::s('reason'));

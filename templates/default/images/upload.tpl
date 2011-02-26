@@ -30,18 +30,33 @@
         Image envoyée
         <input type="submit" name="delete" value="Changer l'image" />
     {else}
-        <label><input type="file" name="file" /></label>
-        <input type="submit" name="send" value="Envoyer l'image" />
-        {if $toobig}
-            <br /><span class="warning">L'image envoyée dépasse la taille maximale autorisée (1024 * 1024)</span>
+        {if $exception}
+            <span class="warning" style="cursor:pointer">
+            {if $pixels}
+                {assign var='allowed' value=$exception->allowed()}
+                L'image envoyée dépasse la taille maximale autorisée ({$allowed->x} * {$allowed->y})
+            {elseif $bytes}
+                L'image envoyée dépasse la taille maximale autorisée ({$exception->allowed()})
+            {else}
+                Erreur inconnue ({$exception->getMessage()})
+            {/if}
+            </span>
         {/if}
+
+        <label><input type="file" name="file" {if $exception}style="display:none"{/if} /></label>
+        <span id="wait" style="display:none">Image en cours d'envoi…</span>
 
         <script>
             {literal}
                 var $f = $("input[type=file]");
-                $("input[type=submit]").hide();
                 $f.change(function() {
+                    $('input[type=file]').hide();
+                    $('#wait').show();
                     $("form").submit();
+                });
+                $('.warning').click(function() {
+                    $(this).hide();
+                    $('input[type=file]').show();
                 });
             {/literal}
         </script>

@@ -26,7 +26,7 @@ $(function(){
         }
     });
 
-    $("#tol_results").delegate("div.sheet a img", "click", function() {
+    $("#section").delegate("div.sheet a img", "click", function() {
         var photo = $(this).closest('[photo]').attr('photo');
         var original = $(this).closest('[original]').attr('original');
         var modal = $('#content .modal');
