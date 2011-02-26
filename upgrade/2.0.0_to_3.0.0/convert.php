@@ -74,6 +74,13 @@ XDB::execute('INSERT INTO  rooms (
                              FROM  trombino.pieces
               )');
 
+echo "-----------------------------------------------\n";
+
+// Import IPs
+XDB::execute('INSERT INTO  ips (
+                           SELECT  ip, prise_id, IF(piece_id REGEXP "^[A-Z]", piece_id, CONCAT("X", piece_id)), type
+                             FROM  admin.prises
+              )');
 
 echo "-----------------------------------------------\n";
 
