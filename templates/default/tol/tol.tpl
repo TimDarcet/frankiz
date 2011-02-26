@@ -22,6 +22,18 @@
 
 {include file="tol/search.tpl"|rel}
 
+<div class="loading" id="tol_infos">
+    <div>
+        <span class="empty">Utilise les filtres à gauche pour effectuer une recherche</span>
+        <span class="notempty" {if isset($total|smarty:nodefaults)}style="display: inline"{/if}>
+            <span class="count">{if isset($results|smarty:nodefaults)}{$results|@count}{/if}</span>
+            résultats affichés sur 
+            <span class="total">{if isset($total|smarty:nodefaults)}{$total}{/if}</span
+        </span>
+        <div class="notempty page"></div>
+    </div>
+</div>
+
 <ul id="tol_results">
     {if isset($results|smarty:nodefaults)}
         {foreach from=$results item=result}
