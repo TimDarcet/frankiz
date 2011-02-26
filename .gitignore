@@ -1,6 +1,7 @@
 platal/*
 spool/*
 classes/frankizglobals.php
+configs/cron
 configs/frankiz.conf
 htdocs/.htaccess
 .buildpath

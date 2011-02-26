@@ -20,6 +20,9 @@ define download
 wget $(DOWNLOAD_SRC) -O $@ -q || ($(RM) $@; exit 1)
 endef
 
+INSTALL_DIR := $(shell pwd)
+INSTALL_USER := frankiz
+
 ################################################################################
 # global targets
 
@@ -58,12 +61,15 @@ spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/session
 ## conf
 ##
 
-conf: classes/frankizglobals.php htdocs/.htaccess configs/frankiz.conf
+conf: classes/frankizglobals.php htdocs/.htaccess configs/frankiz.conf configs/cron
 
 htdocs/.htaccess: htdocs/.htaccess.in Makefile
 	@REWRITE_BASE="/~$$(id -un)"; \
 	test "$$REWRITE_BASE" = "/~web" && REWRITE_BASE="/"; \
 	sed -e "s,@REWRITE_BASE@,$$REWRITE_BASE,g" $< > $@
+
+configs/cron: configs/cron.in Makefile
+	sed -e "s,@INSTALL_DIR@,$(INSTALL_DIR),g;s,@USER@,$(INSTALL_USER),g" $< > $@
 
 ##
 ## clean
@@ -80,6 +86,7 @@ clean_files:
 	[ ! -f htdocs/.htaccess ] || rm htdocs/.htaccess
 	[ ! -f classes/frankizglobals.php ] || rm classes/frankizglobals.php
 	[ ! -f configs/frankiz.conf ] || rm configs/frankiz.conf
+	[ ! -f configs/cron ] || rm configs/cron
 
 clean: clean_dir clean_files
 
