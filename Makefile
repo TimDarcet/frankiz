@@ -25,7 +25,7 @@ endef
 
 all: build
 
-build: core conf
+build: core dir conf
 
 q:
 	@echo -e "Code statistics\n"
@@ -44,16 +44,21 @@ q:
 core:
 	[ -f core/Makefile ] || ( git submodule init && git submodule update )
 	make -C core all
+##
+## dir
+##
+
+dir: spool/templates_c spool/mails_c spool/conf spool/tmp spool/sessions
+
+spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/sessions htdocs/css:
+	mkdir -p $@
+	chmod ug+w $@
 
 ##
 ## conf
 ##
 
-conf: spool/templates_c spool/mails_c classes/frankizglobals.php htdocs/.htaccess spool/conf spool/tmp spool/sessions
-
-spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/sessions htdocs/css:
-	mkdir -p $@
-	chmod ug+w $@
+conf: classes/frankizglobals.php htdocs/.htaccess
 
 htdocs/.htaccess: htdocs/.htaccess.in Makefile
 	@REWRITE_BASE="/~$$(id -un)"; \
