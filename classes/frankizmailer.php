@@ -114,11 +114,6 @@ class FrankizMailer extends PHPMailer
     {
         $this->To = $uf;
     }
-    
-    public function addCcUserFilter(UserFilter $uf) 
-    {
-        $this->Cc = $uf;
-    }
 
     /**
     * Assign a variable in the chosen template
@@ -199,9 +194,8 @@ class FrankizMailer extends PHPMailer
         $tpl = FrankizPage::getTplPath($this->tpl);
         $content = $this->page->fetch($tpl);
         XDB::execute('INSERT INTO  mails
-                              SET  target = {?}, writer = {?}, writername = {?}, cc = {?}, title = {?}, body = {?}, ishtml = {?}',
+                              SET  target = {?}, writer = {?}, writername = {?}, title = {?}, body = {?}, ishtml = {?}',
                               json_encode($this->To->export()), $this->From, $this->FromName, 
-                              (is_null($this->Cc))?'':json_encode($this->Cc->export()),
                               $this->Subject, trim($content), $html);
     }
 }
