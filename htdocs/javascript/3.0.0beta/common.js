@@ -12,9 +12,38 @@ $(function(){
     };
 
     /*
+     * Plugin to get the attributes of a set of elements
+     */
+    $.fn.batchAttr = function(attr) {
+        var attrs = [];
+
+        this.each(function() {
+            attrs.push($(this).attr(attr));
+        });
+
+        return attrs;
+      };
+
+    /*
      * Temporary ?
      */
     $.ajaxSetup({ cache: false });
+
+    /*
+     * Display full-size images in a "FancyBox"
+     */
+    $('#section').delegate("a[fancy]", "click", function() {
+        $.fancybox([{'href' : $(this).attr('href')}], {
+            'padding'       : 0,
+            'transitionIn'  : 'none',
+            'transitionOut' : 'none',
+            'type'          : 'image',
+            'changeFade'    : 0,
+            'centerOnScroll': true,
+            'titleShow'     : false
+        });
+        return false;
+    });
 
     /*
      * Moving the background when scrolling (only in Chrome)
@@ -124,7 +153,7 @@ function request(fields)
     if (!fields.raw)
         data = JSON.stringify(data);
 
-    $.ajax({
+    return $.ajax({
           type: 'POST',
           url: fields.url,
           dataType: 'json',

@@ -188,7 +188,7 @@ a {
 #header {
     position: relative;
     width: 100%;
-    height: 100px;
+    min-height: 100px;
 
     table {
         width: 100%;
@@ -290,8 +290,7 @@ body.disabledAside #section {
 }
 
 #content {
-    position: absolute;
-    top: 100px;
+    position: relative;
     left: 0;
     margin: 0;
     padding: 0;
@@ -798,25 +797,6 @@ table.bicol {
         width: 400px;
     }
 }
-
-.star_switcher {
-    width: 32px;
-    height: 30px;
-    background-image: url("../default/images/star.png");
-    background-repeat: no-repeat;
-    &:hover {
-        background-position: center -30px !important;
-    }
-}
-
-.star .star_switcher {
-    background-position: center -60px;
-}
-
-.unstar .star_switcher {
-    background-position: center 0px;
-}
-
 .modifier_user img {
     max-width: 35px;
     max-height: 35px;

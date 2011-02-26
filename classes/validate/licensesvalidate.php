@@ -24,7 +24,7 @@ class LicensesValidate extends ItemValidate
     protected $type = 'licenses';
     protected $software;
     protected $reason;
-    protected $writer;
+    protected $writer = false;
 
     public function __construct($software, $reason)
     {
@@ -56,6 +56,15 @@ class LicensesValidate extends ItemValidate
     public function reason()
     {
         return $this->reason;
+    }
+    
+    public function writer()
+    {
+        return $this->writer;
+    }
+    
+    public function canGetFreeKey(){
+        return count(License::fetchFreeKeys($this->software())) > 0;
     }
 
     public function show()

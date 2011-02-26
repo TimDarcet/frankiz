@@ -68,6 +68,22 @@ foreach ($tables as $table) {
 
 echo "-----------------------------------------------\n";
 
+// Import rooms
+XDB::execute('INSERT INTO  rooms (
+                           SELECT  IF(piece_id REGEXP "^[A-Z]", piece_id, CONCAT("X", piece_id)), tel, comment
+                             FROM  trombino.pieces
+              )');
+
+echo "-----------------------------------------------\n";
+
+// Import IPs
+XDB::execute('INSERT INTO  ips (
+                           SELECT  ip, prise_id, IF(piece_id REGEXP "^[A-Z]", piece_id, CONCAT("X", piece_id)), type
+                             FROM  admin.prises
+              )');
+
+echo "-----------------------------------------------\n";
+
 // Populating Groups
 $iter = XDB::iterator("SELECT  b.binet_id, b.nom, b.description, b.http, b.mail, COUNT(m.binet_id) AS score
                          FROM  trombino.binets AS b

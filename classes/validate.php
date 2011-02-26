@@ -139,7 +139,7 @@ class Validate extends Meta
     public function itemToDb() {
         $item = clone $this->item;
         $item->toDb();
-        return $item;
+        return serialize($item);
     }
 
     /** 

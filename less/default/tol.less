@@ -33,8 +33,7 @@
 
     .fields {
         position: relative;
-        background-image: url("../default/images/75p.png");
-        background-repeat: repeat;
+        .alphabackground;
         .border-radius;
         border:1px @color solid;
         padding: 10px;
@@ -70,10 +69,25 @@
 }
 
 #tol_infos {
+    position: relative;
+    left: 262px;
+    padding: 0 280px 0 18px;
     text-align: center;
-    font-weight: bold;
-    min-height: 16px;
-    
+
+    .notempty {
+        display: none;
+    }
+
+    >div {
+        position: relative;
+        .border-radius;
+        .alphabackground;
+    }
+
+    &.searching >div {
+        background-color: @color;
+    }
+
     .page {
         font-weight: normal;
         
@@ -88,16 +102,6 @@
     }
 }
 
-#tol_infos {
-    .empty, .notempty {
-        display: none;
-    }
-}
-
-#tol_infos.searching {
-    background-color: @color;
-}
-
 #tol_send {
     text-align: center;
 }
@@ -105,9 +109,9 @@
 #tol_results {
     margin: 0;
     margin-left: -8px;
+    top: 8px;
     position: relative;
     left: 265px;
-    top: -4px;
     padding: 0;
     padding-right: 270px;
     text-align: center;
@@ -136,11 +140,41 @@
     }
 
     .result.card {
+        position: relative;
         height: 180px;
+        .card {
+            display: block;
+        }
     }
 
-    .result.card .card {
-        display: block;
+    div.card {
+        text-align: center;
+        display: none;
+        .loading {
+            display: none;
+            position: absolute;
+            .alphabackground;
+            z-index: 666;
+            width: 100%;
+            height: 100%;
+            > div {
+                position: absolute;
+                top: 50%;
+                width: 100%;
+                text-align: center;
+                margin-top: -20px;
+                height: 20px;
+            }
+        }
+        &.busy .loading {
+            display: block;
+        }
+        .img {
+            position: absolute;
+            bottom: 25px;
+            width: 100%;
+            height: 105px;
+        }
     }
 
     .result.sheet {
@@ -148,10 +182,10 @@
         width: 100%;
     }
 
-    .result.sheet .sheet {
-        display: block;
+    div.sheet {
+        display: none;
         font-size: 13px;
-
+        text-align: left;
         .base {
             position: relative;
 
@@ -238,6 +272,12 @@
             }
         }
 
+        hr {
+            clear: both;
+            border: none;
+            border-top: 1px @border solid;
+        }
+
         .more {
             position: relative;
             top: -5px;
@@ -268,27 +308,7 @@
         }
     }
 
-    .result .card {
-        text-align: center;
-        display: none;
-    }
-
-    .result .card .img {
-        position: absolute;
-        bottom: 25px;
-        width: 100%;
-        height: 105px;
-        text-align: center;
-    }
-
-    .result .sheet {
-        text-align: left;
-        display: none;
-    }
-
-    .result .sheet hr {
-        clear: both;
-        border: none;
-        border-top: 1px @border solid;
+    .result.sheet .sheet {
+        display: block;
     }
 }
