@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS users_minimodules (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO minimodules (`name`, `label`, description) VALUES('activity', 'Activités du jour', '');
-INSERT INTO minimodules (`name`, `label`, description) VALUES('birthday', 'Anniversaires', 'Les anniversaires 42');
+INSERT INTO minimodules (`name`, `label`, description) VALUES('birthday', 'Anniversaires', 'Parce que tout le monde peut jouer au Binet Niversaire');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('days', 'Fêtes', 'Les fêtes des saints (et des autres)');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('debug', 'Debug', '');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('groups', 'Mes groupes', 'Liste de ses groupes');
