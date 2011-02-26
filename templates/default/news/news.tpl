@@ -62,6 +62,9 @@
     {include file="news/subnews.tpl"|rel collection=$news}
 </div>
 
+<script>
+    window.location = String(window.location).replace(/\#.*$/, "") + "#news_{$selected_id}";
+</script>
 {js src="news.js"}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

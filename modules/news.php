@@ -25,7 +25,7 @@ class NewsModule extends PlModule
     {
         return array(
             "news"              => $this->make_hook("news"          , AUTH_PUBLIC),
-            "news/see"          => $this->make_hook("see"           , AUTH_PUBLIC),
+            "news/mine"         => $this->make_hook("news_mine"     , AUTH_PUBLIC),
             "news/admin"        => $this->make_hook("admin"         , AUTH_MDP),
             "news/rss"          => $this->make_hook("rss"           , AUTH_PUBLIC, "user", NO_HTTPS), // TODO
             "news/ajax/read"    => $this->make_hook("ajax_read"     , AUTH_COOKIE),
@@ -53,22 +53,45 @@ class NewsModule extends PlModule
         return PL_JSON;
     }
 
-    function handler_news($page, $view = 'current')
+    function handler_news($page, $id = false)
     {
-        if ($view == 'mine') {
-            $nf = new NewsFilter(new NFC_Writer(S::user()), new NFO_Begin(true));
-        } else {
-            $target_castes = new Collection();
-            $target_castes->merge(S::user()->castes(Rights::restricted()));
-            $target_castes->merge(S::user()->castes(Rights::everybody()));
-    
-            $nf = new NewsFilter(new PFC_And(new NFC_Current(),
-                                             new NFC_Target($target_castes)),
-                                 new NFO_Begin(true));
+        if ($id) {
+            $news = new News($id);
+            $news->read(true);
         }
 
-        $news = $nf->get()->select(NewsSelect::news());
+        $target_castes = new Collection();
+        $target_castes->merge(S::user()->castes(Rights::restricted()));
+        $target_castes->merge(S::user()->castes(Rights::everybody()));
 
+        $nf = new NewsFilter(new PFC_And(new NFC_Current(),
+                                         new NFC_Target($target_castes)),
+                             new NFO_Begin(true));
+
+        $news = $nf->get();
+
+        if (!$news->get($id)) {
+            $nf = new NewsFilter(new PFC_And(new NFC_Id($id), new NFC_CanBeSeen(S::user())));
+            $news->merge($nf->get());
+        }
+
+        $this->viewNews($page, $news, 'current', $id);
+    }
+
+    function handler_news_mine($page)
+    {
+        // You ust have written the news, but it has to be in a caste where you can see it too !
+        $nf = new NewsFilter(new PFC_And(new NFC_Writer(S::user()),
+                                         new NFC_CanBeSeen(S::user())),
+                             new NFO_Begin(true));
+
+        $this->viewNews($page, $nf->get(), 'mine');
+    }
+
+    function viewNews($page, $news, $view, $id = false) {
+        $news->select(NewsSelect::news());
+
+        $page->assign('selected_id', $id);
         $page->assign('view', $view);
         $page->assign('user', S::user());
         $page->assign('news', $news);
@@ -76,24 +99,6 @@ class NewsModule extends PlModule
         $page->assign('title', 'Annonces');
         $page->changeTpl('news/news.tpl');
     }
-
-    function handler_see($page, $id)
-    {
-        $nf = new NewsFilter(new PFC_And(new NFC_Id($id),
-                                         new NFC_CanBeSeen(S::user())));
-        $news = $nf->get(true);
-
-        if ($news) {
-            $news->read(true);
-            $news->select(NewsSelect::news());
-        }
-
-        $page->assign('news', $news);
-        $page->addCssLink('news.css');
-        $page->assign('title', 'Annonce: ' . $news->title());
-        $page->changeTpl('news/see.tpl');
-    }
-    
 
     function handler_admin($page, $nid)
     {
