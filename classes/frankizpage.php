@@ -100,7 +100,7 @@ class FrankizPage extends PlPage
         while (count($parents) > 0)
         {
             if (file_exists($globals->spoolroot. $folder . implode('.', $parents) . '/' . $file))
-                return $globals->spoolroot . $folder . implode('.', $parents) . '/' . $file;
+                return implode('.', $parents) . '/' . $file;
 
             array_pop($parents);
         }
