@@ -298,6 +298,10 @@ class GroupsModule extends PLModule
             $page->assign('group', $group);
 
             if (Env::has('name') && S::user()->perms()->hasFlag('admin')) {
+                S::logger()->log("groups/admin",
+                                 array("gid" => $group->id(),
+                                  "old_name" => $group->name(),
+                                  "new_name" => Env::t('name')));
                 $group->name(Env::t('name'));
             }
 
@@ -325,6 +329,10 @@ class GroupsModule extends PLModule
                 $nss = XDB::fetchColumn('SELECT ns FROM groups GROUP BY ns');
                 $page->assign('nss', $nss);
                 if (Env::has('ns')) {
+                    S::logger()->log("groups/admin",
+                                     array("gid" => $group->id(),
+                                        "old_ns" => $group->ns(),
+                                        "new_ns" => Env::t('ns')));
                     $group->ns(Env::t('ns'));
                 }
             }
@@ -430,10 +438,21 @@ class GroupsModule extends PLModule
                 $page->jsonAssign('msg', 'On ne peut pas changer ses propres droits');
             } else if (S::user()->hasRights($group, Rights::admin()) || S::user()->isAdmin()) {
                 $group->select(GroupSelect::subscribe());
-                $caste = $group->caste(new Rights(Json::s('rights')));
+                $rights = new Rights(Json::s('rights'));
+                $caste = $group->caste($rights);
                 if ($caste->userfilter()) {
                     $page->jsonAssign('msg', 'Ce droit est défini de manière logique.');
                 } else {
+
+                    // Log the event if involving admin rights
+                    if ($rights->isMe(Rights::admin())) {
+                        S::logger()->log('groups/admin/rights',
+                                         array('gid' => $group->id(),
+                                               'uid' => $user->id(),
+                                               'cid' => $caste->id(),
+                                               'add' => Json::b('add')));
+                    }
+
                     if (Json::b('add')) {
                         $caste->addUser($user);
                     } else {
@@ -515,7 +534,11 @@ class GroupsModule extends PLModule
 
     function handler_group_insert($page)
     {
-        //TODO
+        $group = new Group();
+        $group->insert();
+        $group->caste(Rights::admin())->addUser(S::user());
+        S::logger()->log("groups/insert", array('gid' => $group->id()));
+        pl_redirect('groups/admin/' . $group->id());
     }
 }
 

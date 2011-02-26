@@ -23,7 +23,7 @@
 <div>
 {if $quick_validate|@count > 0}
     <div class="validate">
-        À valider:
+        À valider :
         <ul>
             {foreach from=$quick_validate item='validates'}
                 {assign var='first' value=$validates->first()}
@@ -43,10 +43,10 @@
 {/if}
 {if $quick_requests|@count > 0}
     <div class="requests">
-        En attente:
+        Requêtes en attente :
         <ul>
             {foreach from=$quick_requests item='validate'}
-                <li>Requête de type "{$validate->label()}" depuis {$validate->created()|age}</li>
+                <li>{$validate->label()} depuis {$validate->created()|age}</li>
             {/foreach}
         </ul>
     </div>

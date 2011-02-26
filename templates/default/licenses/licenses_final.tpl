@@ -19,7 +19,9 @@
 {*  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA               *}
 {*                                                                        *}
 {**************************************************************************}
-
+<div class="module">
+<div class="head">{$title}</div>
+<div class="body">
 {if !$direct}
     <p>Ta demande de clé a bien été prise en compte. La réponse te sera transmise par courriel.</p>
 {/if}
@@ -27,5 +29,6 @@
 {if $direct}
     <p>Ta clé t'a été envoyée par courriel.</p>
 {/if}
-
+</div>
+</div>
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

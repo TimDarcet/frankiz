@@ -111,13 +111,13 @@ class NFC_Star extends NewsFilterCondition
 }
 
 /** Retrieves instances where the target is owned by the specified groups
- * @param $gs Collection of Groups
+ * @param $gs Groups
  */
 class NFC_TargetGroup extends NewsFilterCondition
 {
     private $cids;
 
-    public function __construct(Collection $groups)
+    public function __construct($groups)
     {
         $cf = new CasteFilter(new PFC_And(new CFC_Holder(), new CFC_Group($groups)));
         $this->cids = $cf->get()->ids();

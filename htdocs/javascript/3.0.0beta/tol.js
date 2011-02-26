@@ -1,54 +1,86 @@
 $(function(){
+    $("#tol_infos").removeClass("searching");
+
     $("#tol_searcher form").submit(function(event) {
+        $('input[name=page]').val(1);
         $('#tol_searcher input[name=mode]').val('sheet');
         users.search();
         event.stopPropagation();
         return false;
     });
 
-    $("#tol_infos").removeClass("searching");
     $('#tol_searcher input[auto]').keyup(function(event) {
+        $('input[name=page]').val(1);
         if (event.keyCode != '13') {
             users.search();
         }
     });
 
-    users.imageur();
+    $("body").click(function(e) {
+        if ($(e.target).attr('id') == 'tol_results' || $(e.target).attr('id') == 'content') {
+            if (users.mode() == 'card') {
+                var $lis = $("#tol_results li.result");
+                $lis.removeClass('sheet');
+                $lis.addClass('card');
+            }
+        }
+    });
+
+    $("#tol_results").delegate("div.sheet a img", "click", function() {
+        var photo = $(this).closest('[photo]').attr('photo');
+        var original = $(this).closest('[original]').attr('original');
+        var modal = $('#content .modal');
+
+        var images = [];
+        if (photo)
+            images.push({'href' : photo});
+        if (original)
+            images.push({'href' : original});
+
+        $.fancybox(images, {
+                    'padding'       : 0,
+                    'transitionIn'  : 'none',
+                    'transitionOut' : 'none',
+                    'type'          : 'image',
+                    'changeFade'    : 0,
+                    'cyclic'        : true,
+                    'centerOnScroll': true,
+                    'titleShow'     : false
+                });
+
+        return false;
+    });
+
+    $("#tol_results").delegate("div.card", "click", function() {
+        var $this = $(this);
+        var li  = $this.closest('li[uid]');
+        if (li.children('.sheet').children().length > 0) {
+            li.removeClass('card');
+            li.addClass('sheet');
+        } else {
+            var uid = li.attr('uid');
+            $this.addClass('busy');
+            request({
+                "url": 'tol/ajax/sheet/' + uid
+              ,"fail": false
+           ,"success": function(json) {
+                            mode = '';
+                            li.children('.sheet').html(json.sheet);
+                            li.removeClass('card');
+                            li.addClass('sheet');
+                            $this.removeClass('busy');
+                       }
+            });
+        }
+        return false;
+    });
+
 });
 
 var users = function() {
     var searching = false;
     var newsearch = false;
     var mode = 'card';
-
-    function _imageur() {
-        $.each($("#section .result .sheet .img a"), function(index, value) {
-            $(value).click(function() {
-                var photo = $(this).closest('[photo]').attr('photo');
-                var original = $(this).closest('[original]').attr('original');
-                var modal = $('#content .modal');
-
-                var images = [];
-                if (photo)
-                    images.push({'href' : photo});
-                if (original)
-                    images.push({'href' : original});
-
-                $.fancybox(images, {
-                            'padding'       : 0,
-                            'transitionIn'  : 'none',
-                            'transitionOut' : 'none',
-                            'type'          : 'image',
-                            'changeFade'    : 0,
-                            'cyclic'        : true,
-                            'centerOnScroll': true,
-                            'titleShow'     : false
-                        });
-
-                return false;
-            });
-        });
-    };
 
     function force_search() {
         $("#tol_infos").addClass("searching");
@@ -71,7 +103,7 @@ var users = function() {
                     if (json.total > 20) {
                         var pages = '(Pages : ';
                         for(var i = 1; i <= Math.ceil(json.total / ((json.mode == 'card')?20:50)); i++) {
-                            var onclick = "$('input[name=page]').val($(this).html()); users().search();";
+                            var onclick = "$('input[name=page]').val($(this).html()); users.search();";
                             var selected = ($('input[name=page]').val() == i) ? 'class="selected"' : '';
                             pages += ' <a ' + selected + ' onclick="' + onclick + '">' + i + '</a> ';
                         }
@@ -85,56 +117,30 @@ var users = function() {
                     $("#tol_infos .empty").show();
                 }
 
+                var results = json.results;
+
                 // On retire les résultats ayant disparus
-                if (json.mode == mode)
+                if (json.mode == mode) {
                     $.each($("#tol_results > li"), function(index, value) {
-                        if (!key_exists($(value).attr("uid"), json.results))
+                        if (key_exists($(value).attr("uid"), results)) {
+                            delete results[$(value).attr("uid")];
+                        } else {
                             $(value).remove();
+                        }
                     });
-                else
+                } else {
                     $("#tol_results").html('');
+                }
 
                 // On ajoute les éventuels nouveaux résultats
+                var html = [];
                 for (var uid in json.results) {
-                    if ($("#tol_results > li[uid='" + uid + "']").length == 0) {
-                        $('#tol_results').append(json.results[uid]);
-                    }
+                    html.push(json.results[uid]);
                 }
+                $('#tol_results').append(html.join(""));
 
                 mode = json.mode;
                 $('#tol_searcher input[name=mode]').val('card');
-
-                if (mode == 'card') {
-                    $.each($("#tol_results > li .card .img a"), function(index, value) {
-                        $(value).removeAttr('href');
-                        $(value).closest('.card').click(function() {
-                            var li  = $(this).closest('li[uid]');
-                            var uid = li.attr('uid');
-                            request({
-                                "url": 'tol/ajax/sheet/' + uid
-                              ,"fail": false
-                           ,"success": function(json) {
-                                        mode = '';
-                                        li.children('.sheet').html(json.sheet);
-                                        li.removeClass('card');
-                                        li.addClass('sheet');
-                                        _imageur();
-                                        li.children('.sheet').find('a, li').click(function(event) {
-                                            event.stopPropagation();
-                                        });
-                                        li.children('.sheet').click(function() {
-                                            li.removeClass('sheet');
-                                            li.addClass('card');
-                                        });
-                                       }
-                            });
-                        });
-                    });
-                }
-
-                if (mode != 'card') {
-                    _imageur();
-                }
 
                 searching = false;
                 $("#tol_infos").removeClass("searching");
@@ -157,8 +163,8 @@ var users = function() {
         search: function () {
             _search();
         },
-        imageur: function () {
-            _imageur();
+        mode: function() {
+            return mode;
         }
     };
 }();

@@ -32,7 +32,7 @@ class CFC_Group extends CasteFilterCondition
     {
         if ($gs instanceof Collection) {
             if ($gs->className() != 'Group') {
-                throw new Exception('VFC_Group constructor takes a Collection<Group>');
+                throw new Exception('CFC_Group constructor takes a Collection<Group>');
             }
             $this->gids = $gs->ids();
         } else {

@@ -45,6 +45,10 @@ while (list($formation_id, $abbrev, $label) = $iter->next()) {
         $g->insert();
         $c = $g->caste(Rights::member());
         $c->userfilter($f);
+        if ($abbrev == 'x') {
+            $c = $g->caste(Rights::admin());
+            $c->userfilter(new UserFilter(new UFC_Group(Group::from('kes'), Rights::admin())));
+        }
         $g->ns(Group::NS_STUDY);
         $g->name($name);
         $g->label($label);

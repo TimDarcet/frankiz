@@ -26,9 +26,10 @@
     <h2>Les licences suivantes t'ont déjà été attribuées :</h2>
     <ul>
         {foreach from=$owned_licenses item=licence}
-        <li>{$licence->softwareName()}
+        <li>
             <form action="licenses/final" method="POST">
-                <input type="hidden" name="software" value="{$software}" />
+                {$licence->softwareName()}
+                <input type="hidden" name="software" value="{$licence->software()}" />
                 <input type="submit" name="resend" value="Recevoir à nouveau ma clé" />
             </form>
         </li>

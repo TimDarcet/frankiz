@@ -78,9 +78,9 @@ class NewsValidate extends ItemValidate
                 throw new Exception("This image doesn't exist anymore");
             }
             $image->select(FrankizImageSelect::caste());
-            $image->label($news->title());
-            $image->caste($news->target());
-            $news->image($image);
+            $image->label($this->title);
+            $image->caste($this->target);
+            $this->image($image);
         }
 
         return true;

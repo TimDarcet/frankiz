@@ -102,23 +102,29 @@ class QDJ extends Meta
             return 0;
     }
 
-    // @param $id Id of the user
-    public function hasVoted($id) {
+    public function hasVoted() {
+        static $hasVoted = null;
+
+        if ($hasVoted !== null) {
+            return $hasVoted;
+        }
+
         $res = XDB::query('SELECT  vote_id
                              FROM  qdj_votes
                             WHERE  qdj = {?} AND uid = {?} AND rule != 10',
-                                   $this->id(), $id)->fetchAllRow();
-        return count($res) >= 1;
+                                   $this->id(), S::user()->id())->fetchAllRow();
+        $hasVoted = (count($res) >= 1);
+        return $hasVoted;
     }
 
     public function export($bits = null) {
         $array = parent::export();
         $array['question'] = $this->question;
-        $array['answer1'] = $this->answer1;
-        $array['answer2'] = $this->answer2;
-        $array['count1'] = $this->count1;
-        $array['count2'] = $this->count2;
-        $array['date'] = $this->date->format('Y-m-d');
+        $array['answer1']  = $this->answer1;
+        $array['answer2']  = $this->answer2;
+        $array['count1']   = $this->count1;
+        $array['count2']   = $this->count2;
+        $array['date']     = $this->date->format('Y-m-d');
         return $array;
     }
 
@@ -240,17 +246,13 @@ class QDJ extends Meta
 
     // Returns all the QDJ not passed
     public static function waiting() {
-        $res=XDB::query('SELECT  id
-                           FROM  qdj
-                          WHERE  ISNULL(date) OR date > NOW()')->fetchColumn();
+        $res = XDB::query('SELECT  id
+                             FROM  qdj
+                            WHERE  ISNULL(date) OR date > NOW()');
 
         $collec = new Collection('QDJ');
+        $collec->add($res->fetchColumn());
 
-        foreach ($res as $id)
-        {
-            $collec->add($id);
-        }
-        
         return $collec;
     }
 

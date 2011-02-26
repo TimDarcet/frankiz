@@ -30,7 +30,7 @@
     <div class="img" photo="{if $photo}{$photo|image:'full'|smarty:nodefaults}{/if}"
                      original="{if $original}{$original|image:'full'|smarty:nodefaults}{/if}">
         {assign var='img' value=$result->image()}
-        <a href="{$img|image:'full'|smarty:nodefaults}"><img src="{$img|image:'big'|smarty:nodefaults}" /></a>
+        <a ><img src="{$img|image:'big'|smarty:nodefaults}" /></a>
     </div>
 
     <div class="name">{$result->fullName()}</div>
@@ -91,7 +91,7 @@
         Nationalité:
         <ul>
             {foreach from=$groups|filter:'ns':'nationality'|order:'score' item='group'}
-                <li>{$group|group}</li>
+                <li>{$group|group:'text'}</li>
             {/foreach}
         </ul>
     </div>

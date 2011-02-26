@@ -37,8 +37,13 @@ abstract class ItemValidate
 
     // returns an array with the attributes to construct as objects when retrieving from database
     // works only for meta object
-    // must be name => class
+    // must be name => select
     public function objects() {
+        return array();
+    }
+
+    // same with collections
+    public function collections() {
         return array();
     }
 
@@ -61,6 +66,12 @@ abstract class ItemValidate
         foreach ($this->objects() as $name => $object) {
             if ($this->$name != false)
                 $this->$name = $this->$name->id();
+        }
+
+        foreach ($this->collections() as $name => $object) {
+            if ($this->$name != false) {
+                $this->$name = $this->$name->ids();
+            }
         }
     }
 

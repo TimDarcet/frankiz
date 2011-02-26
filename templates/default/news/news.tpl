@@ -20,16 +20,51 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="module">
-    <div class="head">
-        Annonces
-    </div>
-    <div class="body list">
-        {include file="news/subnews.tpl"|rel collection=$news}
-    </div>
+<div class="options">
+    <table><tr>
+        <td>
+            <div class="option actions">
+                Actions :
+                <ul>
+                    <li class="open_all_unread"><a>Ouvrir toutes les annonces non-lues</a></li>
+                    <li class="read_all"><a>Tout marquer comme lu</a></li>
+                    <li class="open_all"><a>Tout ouvrir</a></li>
+                    <li class="close_all"><a>Tout fermer</a></li>
+                </ul>
+            </div>
+        </td>
+        <td>
+            <div class="option display">
+                Vue :
+                <ul>
+                    <li><a href="news">Annonces courantes</a></li>
+                    <li><a href="news/mine">Les annonces que j'ai rédigées</a></li>
+                </ul>
+            </div>
+        </td>
+        <td>
+            <div class="option codes">
+                Code couleur :
+                <ul>
+                    <li><div class="code unread"></div>Non-lue</li>
+                    <li><div class="code read"></div>Lue</li>
+                    <li><div class="code star"></div>Suivie</li>
+                    {if $view == 'mine'}
+                        <li title="visibles seulement par les administrateurs avant leur publication"><div class="code tocome"></div>À venir</li>
+                    {/if}
+                </ul>
+            </div>
+        </td>
+    </tr></table>
 </div>
 
+<div class="list">
+    {include file="news/subnews.tpl"|rel collection=$news}
+</div>
 
+<script>
+    window.location = String(window.location).replace(/\#.*$/, "") + "#news_{$selected_id}";
+</script>
 {js src="news.js"}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

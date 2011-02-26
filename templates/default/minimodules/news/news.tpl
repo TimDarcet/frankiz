@@ -21,6 +21,7 @@
 {**************************************************************************}
 
 <div>
+{if $minimodule.news|@count > 0}
     <table>
         {foreach from=$minimodule.news item=news}
             <tr class="{if $news->star()}star{else}unstar{/if}">
@@ -31,10 +32,13 @@
                         {$news->writer()|user}
                     {/if}
                 </td>
-                <td><a href="news/see/{$news->id()}">{$news->title()}</a></td>
+                <td><a href="news/{$news->id()}">{$news->title()}</a></td>
             </tr>
         {/foreach}
     </table>
+{else}
+    <div class="empty">Rien de neuf !</div>
+{/if}
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

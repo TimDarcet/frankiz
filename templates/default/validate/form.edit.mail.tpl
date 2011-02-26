@@ -34,7 +34,7 @@
         Mail :
     </td>
     <td>
-        <textarea name='body' id="text_mail_proposal">{$item->body()}</textarea>
+        {include file="wiki_textarea.tpl"|rel id="mail_body" already=$item->body()|smarty:nodefaults placeholder="Corps du message" }
     </td>
 </tr>
 

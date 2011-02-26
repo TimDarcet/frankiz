@@ -32,6 +32,7 @@
             {if $smarty.session.user->checkPerms('admin')}
                 <ul>
                     <li><a href="wiki/admin">Les zones wikis</a></li>
+                    <li><a href="admin/logs/sessions">Log des sessions</a></li>
                 </ul>
             {/if}
         </div>
@@ -43,6 +44,7 @@
             <ul>
                 <li><a href="proposal/news">Annonce</a></li>
                 <li><a href="proposal/activity">Activité</a></li>
+                <li><a href="proposal/mail">Mail promo</a></li>
                 <li><a href="proposal/qdj">Question Du Jour</a></li>
             </ul>
         </div>
@@ -68,6 +70,12 @@
                 </li>
             {/foreach}
             </ul>
+            {if $smarty.session.user->isWeb()}
+            <hr />
+                <div>
+                    <a href="groups/insert">Créer un groupe</a>
+                </div>
+            {/if}
         </div>
     </div>
 

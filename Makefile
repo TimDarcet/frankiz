@@ -20,12 +20,15 @@ define download
 wget $(DOWNLOAD_SRC) -O $@ -q || ($(RM) $@; exit 1)
 endef
 
+INSTALL_DIR := $(shell pwd)
+INSTALL_USER := frankiz
+
 ################################################################################
 # global targets
 
 all: build
 
-build: core conf
+build: core dir conf
 
 q:
 	@echo -e "Code statistics\n"
@@ -42,26 +45,65 @@ q:
 ##
 
 core:
-	[ -d core ] || ( git submodule init && git submodule update )
+	[ -f core/Makefile ] || ( git submodule init && git submodule update )
 	make -C core all
+##
+## dir
+##
+
+dir: spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/sessions htdocs/css
+
+spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/sessions htdocs/css:
+	mkdir -p $@
+	chmod ug+w $@
 
 ##
 ## conf
 ##
 
-conf: spool/templates_c spool/mails_c classes/frankizglobals.php htdocs/.htaccess spool/conf spool/tmp spool/sessions
-
-spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/sessions htdocs/css:
-	mkdir -p $@
-	chmod ug+w $@
+conf: classes/frankizglobals.php htdocs/.htaccess configs/frankiz.conf configs/cron
 
 htdocs/.htaccess: htdocs/.htaccess.in Makefile
 	@REWRITE_BASE="/~$$(id -un)"; \
 	test "$$REWRITE_BASE" = "/~web" && REWRITE_BASE="/"; \
 	sed -e "s,@REWRITE_BASE@,$$REWRITE_BASE,g" $< > $@
 
+configs/cron: configs/cron.in Makefile
+	sed -e "s,@INSTALL_DIR@,$(INSTALL_DIR),g;s,@USER@,$(INSTALL_USER),g" $< > $@
+
+##
+## clean
+##
+
+clean_dir: 
+	[ ! -d spool/templates_c ] || ( chmod 775 spool/templates_c && rm -rf spool/templates_c/* )
+	[ ! -d spool/mails_c ] || ( chmod 775 spool/mails_c && rm -rf spool/mails_c/* )
+	[ ! -d spool/uploads ] || ( chmod 775 spool/uploads && rm -rf spool/uploads/* )
+	[ ! -d spool/conf ] || ( chmod 775 spool/conf && rm -rf spool/conf/* )
+	[ ! -d spool/tmp ] || ( chmod 775 spool/tmp && rm -rf spool/tmp/* )
+	[ ! -d spool/sessions ] || ( chmod 775 spool/sessions && rm -rf spool/sessions/* )
+	[ ! -d htdocs/css ] || ( chmod 775 htdocs/css && rm -rf htdocs/css/* )
+
+clean_files:
+	[ ! -f htdocs/.htaccess ] || rm htdocs/.htaccess
+	[ ! -f classes/frankizglobals.php ] || rm classes/frankizglobals.php
+	[ ! -f configs/frankiz.conf ] || rm configs/frankiz.conf
+	[ ! -f configs/cron ] || rm configs/cron
+
+clean: clean_dir clean_files
+
+delete_dir: 
+	[ ! -d spool/templates_c ] || rm -rf spool/templates_c
+	[ ! -d spool/mails_c ] || rm -rf spool/mails_c
+	[ ! -d spool/uploads ] || rm -rf spool/uploads
+	[ ! -d spool/conf ] || rm -rf spool/conf
+	[ ! -d spool/tmp ] || rm -rf spool/tmp
+	[ ! -d spool/sessions ] || rm -rf spool/sessions
+	[ ! -d htdocs/css ] || rm -rf htdocs/css
+
+distclean: delete_dir clean_files
 
 ################################################################################
 
-.PHONY: build dist clean http*
+.PHONY: build clean clean_dir clean_files conf core delete_dir dir distclean q http*
 

@@ -30,15 +30,35 @@
         </span>
     </div>
     <div class="body">
-        <div class="date">
+        <div class="one_day">
+            <div class="date">
+            </div>
+            <div class="time">
+                de
+                <span class="hour_begin">
+                </span>
+                à
+                <span class="hour_end">
+                </span>
+            </div>
         </div>
-        <div class="time">
-            de
-            <span class="hour_begin">
-            </span>
-            à
-            <span class="hour_end">
-            </span>
+        <div class="several_days">
+            <div class="begin">
+                du
+                <span class="date">
+                </span>
+                à
+                <span class="hour">
+                </span>
+            </div>
+            <div class="end">
+                au
+                <span class="date">
+                </span>
+                à
+                <span class="hour">
+                </span>
+            </div>
         </div>
         <div class="msg">
         </div>
@@ -77,7 +97,10 @@
                         {$activities_day|order:'hour_begin':false}
                         <div class="activity {if $activity->participate()}star{else}unstar{/if}" aid="{$activity->id()}">
                             <span class="star_switcher" onclick="switch_participate({$activity->id()})">&emsp;</span>
-                            {$activity->hour_begin()} à {$activity->hour_end()} :
+                            {$activity->hour_begin()} à {$activity->hour_end()}
+                            {if !$activity->hour_end($date)}
+                                ({$activity->end()|datetime:'d/m'})
+                            {/if} :
                             {if $activity->origin()}
                                 {assign var='origin' value=$activity->origin()}
                                 <a href="groups/see/{$origin->name()}">

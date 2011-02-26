@@ -8,6 +8,16 @@ CREATE TABLE IF NOT EXISTS minimodules (
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS users_minimodules;
+CREATE TABLE IF NOT EXISTS users_minimodules (
+  uid int(11) NOT NULL,
+  `name` varchar(150) NOT NULL,
+  col enum('COL_LEFT','COL_MIDDLE','COL_RIGHT','COL_FLOAT') NOT NULL DEFAULT 'COL_FLOAT',
+  `row` tinyint(4) NOT NULL,
+  UNIQUE KEY uid (uid,`name`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 INSERT INTO minimodules (`name`, `label`, description) VALUES('activity', 'Activités du jour', '');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('birthday', 'Anniversaires', 'Les anniversaires 42');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('days', 'Fêtes', 'Les fêtes des saints (et des autres)');

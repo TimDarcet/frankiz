@@ -243,21 +243,6 @@ CREATE TABLE IF NOT EXISTS `users_comments` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users_minimodules`
---
-
-DROP TABLE IF EXISTS `users_minimodules`;
-CREATE TABLE IF NOT EXISTS `users_minimodules` (
-  `uid` int(11) NOT NULL,
-  `name` varchar(150) CHARACTER SET utf8 NOT NULL,
-  `col` enum('COL_LEFT','COL_MIDDLE','COL_RIGHT','COL_FLOAT') NOT NULL DEFAULT 'COL_FLOAT',
-  `row` tinyint(4) NOT NULL,
-  UNIQUE KEY `uid` (`uid`,`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `wiki`
 --
 

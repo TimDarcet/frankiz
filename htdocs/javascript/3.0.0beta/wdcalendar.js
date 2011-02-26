@@ -13,7 +13,7 @@ $(function() {
     var op = {
         view: view,
         theme: 3,
-        height: Math.max(_MH - dvH - 320, 400),
+        height: Math.max(_MH - dvH - 220, 400),
         eventItems: [],
         showday: new Date(),
         ViewCmdhandler: View,

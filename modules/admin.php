@@ -28,7 +28,6 @@ class AdminModule extends PlModule
             'admin'               => $this->make_hook('admin'        , AUTH_COOKIE),
             'admin/su'            => $this->make_hook('su'           , AUTH_MDP, 'admin'),
             'admin/images'        => $this->make_hook('images'       , AUTH_MDP, 'admin'),
-            'admin/image'         => $this->make_hook('image'        , AUTH_MDP, 'admin'),
             'admin/group'         => $this->make_hook('group'        , AUTH_MDP, 'admin'),
             'admin/bubble'        => $this->make_hook('bubble'       , AUTH_MDP, 'admin'),
             'admin/logs/sessions' => $this->make_hook('logs_sessions', AUTH_COOKIE, 'admin'),
@@ -75,6 +74,7 @@ class AdminModule extends PlModule
             if(!Platal::session()->startSUID($user)) {
                 $page->trigError('Impossible d\'effectuer un SUID sur ' . $uid);
             } else {
+                S::logger()->log('admin/su', array('uid' => $user->id()));
                 pl_redirect('home');
             }
         }
@@ -159,17 +159,6 @@ class AdminModule extends PlModule
         $page->changeTpl('admin/images.tpl');
     }
 
-    function handler_image($page, $iid)
-    {
-        $image = new FrankizImage($iid);
-        if (Env::has('small'))
-            $image->select(FrankizImage::SELECT_SMALL);
-        else
-            $image->select(FrankizImage::SELECT_FULL);
-
-        $image->send();
-    }
-
     function handler_validate($page, $gid = null, $vid = null)
     {
         $gf = new GroupFilter(new PFC_Or(new GFC_Id($gid), new GFC_Name($gid)));
@@ -188,10 +177,18 @@ class AdminModule extends PlModule
 
         if(Env::has('val_id')) {
             $el = $collec->get(Env::v('val_id'));
-            if (!$el)
+            if (!$el) {
                 $page->assign('msg', 'La validation a déjà été effectuée.');
-            else
-            {
+            } else {
+                if (Env::has('accept') || Env::has('refuse')) {
+                    S::logger()->log('admin/validate',
+                                     array('type' => $el->type(),
+                                         'writer' => $el->writer()->id(),
+                                          'group' => $el->group()->id(),
+                                        'created' => $el->created()->toDb(),
+                                          'valid' => Env::has('accept'),
+                                           'item' => $el->itemToDb()));
+                }
                 if ($el->handle_form() && (Env::has('accept') || Env::has('refuse')))
                     $collec->remove(Env::v('val_id'));
             }

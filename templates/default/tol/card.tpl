@@ -20,8 +20,9 @@
 {*                                                                        *}
 {**************************************************************************}
 
+<div class="loading"><div>Chargement…</div></div>
 <div class="name">{$result->fullName()}</div>
 {assign var='img' value=$result->image()}
-<div class="img" title="{$result->displayName()}"><a href="tol/{$result->login()}"><img src="{$img|image:'small'|smarty:nodefaults}" /></a></div>
+<div class="img" title="{$result->displayName()}"><a href="tol/see/{$result->login()}"><img src="{$img|image:'small'|smarty:nodefaults}" /></a></div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

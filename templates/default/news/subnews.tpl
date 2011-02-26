@@ -20,13 +20,11 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="open_all">
-    Ouvrir toutes les annonces non-lues
-</div>
-
 <ul>
     {foreach from=$collection|order:'begin' item=news}
-        <li class="news close {if $news->read()}read{else}unread{/if} {if $news->star()}star{else}unstar{/if}"
+        {assign var='begin' value=$news->begin()}
+        {assign var='age' value=$begin->age()}
+        <li class="news {if $selected_id == $news->id()}open{else}close{/if} {if $news->read()}read{else}unread{/if} {if $news->star()}star{else}unstar{/if} {if $age->invert}tocome{/if}"
             nid="{$news->id()}">
             <div class="infos">
                 <table><tr>
@@ -43,7 +41,7 @@
                     {assign var='target' value=$news->target()}
                     {assign var='targetGroup' value=$target->group()}
                     <td class="title" title="Visible par '{$targetGroup->label()}'">
-                        <a href="news/see/{$news->id()}"><div>{$news->title()}</div></a>
+                        <a name="news_{$news->id()}" href="news/see/{$news->id()}"><div>{$news->title()}</div></a>
                     </td>
                     <td class="date">
                         {$news->begin()|age}
@@ -53,7 +51,7 @@
             <div class="content">
                 <div class="body">
                     {if $news->image()}
-                        <img class="image" src="{$news->image()|image:'small'|smarty:nodefaults}" />
+                        <a href="{$news->image()|image:'full'}" fancy="fancy"><img class="image" src="{$news->image()|image:'small'}" /></a>
                     {/if}
                     {$news->content()|miniwiki:'title'|smarty:nodefaults}
                     <br class="clear" />

@@ -188,7 +188,7 @@ a {
 #header {
     position: relative;
     width: 100%;
-    height: 100px;
+    min-height: 100px;
 
     table {
         width: 100%;
@@ -290,8 +290,7 @@ body.disabledAside #section {
 }
 
 #content {
-    position: absolute;
-    top: 100px;
+    position: relative;
     left: 0;
     margin: 0;
     padding: 0;
@@ -412,6 +411,11 @@ body.disabledAside #section {
      5   Minimodules commons
 
 *******************************************************************************/
+
+.minimodule.postit {
+    padding-left: 6px;
+    padding-right: 5px;
+}
 
 .accueil {
     > table {
@@ -545,10 +549,10 @@ input, textarea, select {
     }
 
     &:hover {
-    color: @color;
-    background-color: #FFBA00;
-    border: 1px red solid;
-}
+        color: @color;
+        background-color: #FFBA00;
+        border: 1px red solid;
+    }
 
     &:focus {
         color: white;
@@ -654,6 +658,11 @@ input[type="checkbox"], input[type="radio"]{
     .searcher input {
         width: auto;
         margin-left: 5%;
+    }
+
+    &.collapsed:hover {
+        color: @color;
+        background-color: #FFBA00;
     }
 
     &.searching .searcher input {
@@ -788,25 +797,6 @@ table.bicol {
         width: 400px;
     }
 }
-
-.star_switcher {
-    width: 32px;
-    height: 30px;
-    background-image: url("../default/images/star.png");
-    background-repeat: no-repeat;
-    &:hover {
-        background-position: center -30px !important;
-    }
-}
-
-.star .star_switcher {
-    background-position: center -60px;
-}
-
-.unstar .star_switcher {
-    background-position: center 0px;
-}
-
 .modifier_user img {
     max-width: 35px;
     max-height: 35px;

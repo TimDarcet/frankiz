@@ -20,14 +20,12 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{js src="qdj.js"}
-
 <div class="msg">
     Attention : toutes les modifications sont prises en compte. <br />
     Pour déplanifier une QDJ, il suffit de supprimer la date.
 </div>
 
-<div class="msg hide">
+<div class="msg_qdj">
 </div>
 
 <div class="module qdj">
@@ -38,50 +36,15 @@
         <div>
             Nous sommes le : {$smarty.now|date_format:"%Y-%m-%d"}
         </div>
-        <div>
-            Nb de QDJ planifiées : {$planned|@count}
-        </div>
-        <div>
-            Nb de QDJ non planifiées : {$not_planned|@count}
-        </div>
 
-        <div class="title">
-            Planifiées
-        </div>
         <table>
-            {foreach from=$planned item=qdj}
-                <tr>
+            {foreach from=$qdjs item=qdj}
+                <tr qdj_id="{$qdj->id()}">
                     <td width="30%">
-                        <form enctype="multipart/form-data" method="post" action="qdj/organize">
-                            <input type=text name="qdj" id="{$qdj->id()}"
-                                value="{$qdj->date()|datetime:'Y-m-d'}" placeholder='0000-00-00'/>
-                            <input type="text" name="id" value="{$qdj->id()}" style="display:none;">
-                            <input type=submit name="delete" value="Supprimer"/>
-                            <input type="submit" name="send" value="Valider la planification" class="hide">
-                        </form>
-                    </td>
-                    <td>
-                        <div class="box">
-                            {include file="qdj/preview.tpl"|rel}
-                        </div>
-                    </td>
-                </tr>
-            {/foreach}
-        </table>
-
-        <div class="title">
-            Non planifiées
-        </div>
-        <table class="qdj_table">
-            {foreach from=$not_planned item=qdj}
-                <tr>
-                    <td width="30%">
-                        <form enctype="multipart/form-data" method="post" action="qdj/organize">
-                            <input type=text name="qdj" id="{$qdj->id()}" placeholder='0000-00-00'/>
-                            <input type="text" name="id" value="{$qdj->id()}" style="display:none;">
-                            <input type=submit name="delete" value="Supprimer"/>
-                            <input type="submit" name="send" value="Valider la planification" class="hide">
-                        </form>
+                        <input type="text" class="date" name="qdj"
+                               value="{if $qdj->date()}{$qdj->date()|datetime:'Y-m-d'}{/if}"/><br />
+                        <input type="button" name="unplan" value="Déplanifier"/>
+                        <input type="button" name="delete" value="Supprimer"/>
                     </td>
                     <td>
                         <div class="box">
@@ -93,5 +56,7 @@
         </table>
     </div>
 </div>
+
+{js src="qdj_admin.js"}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

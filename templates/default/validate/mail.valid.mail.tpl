@@ -21,14 +21,11 @@
 {**************************************************************************}
 
 {if $text == null}
-Ton mail vient d'être accepté... Il a été envoyé à tout le groupe.
+Ton mail vient d'être accepté. Il a va bientôt être envoyé.
 {$comm|smarty:nodefaults}
 
 
-Merci de ta participation 
-
-Cordialement,
-Le Webmestre de Frankiz
+Merci de ta participation
 {else}
 Ton mail n'a pas été accepté pour la raison suivante :
 {$comm|smarty:nodefaults}
@@ -38,11 +35,10 @@ Voici le mail que tu avais proposé :
 {$text|smarty:nodefaults}
 
 
-Désolé 
-
-Cordialement,
-Le Webmestre de Frankiz
+Désolé
 {/if}
 
+Cordialement,
+Les administrateurs du groupe "{$targetGroup->label()}"
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

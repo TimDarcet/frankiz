@@ -7,7 +7,7 @@
 DROP TABLE IF EXISTS qdj;
 CREATE TABLE IF NOT EXISTS qdj (
   id int(10) NOT NULL AUTO_INCREMENT,
-  `date` date DEFAULT '0000-00-00',
+  `date` date DEFAULT NULL,
   question tinytext NOT NULL,
   answer1 tinytext NOT NULL,
   answer2 tinytext NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS qdj (
   count2 int(10) unsigned NOT NULL DEFAULT '0',
   writer int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (id)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -45,4 +45,4 @@ CREATE TABLE IF NOT EXISTS qdj_votes (
   rank smallint(6) NOT NULL,
   rule int(11) NOT NULL,
   PRIMARY KEY (vote_id)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;

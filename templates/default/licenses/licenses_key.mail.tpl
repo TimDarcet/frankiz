@@ -30,9 +30,7 @@ Voici {if !$multiple}ta clé{/if}{if $multiple}tes clés{/if} de licence{if !$mult
 
 -------------------------------------------------------------------------
 
-Tu peux télécharger {$software_name} suf ftp://enez/
-
-{$comm|smarty:nodefaults}
+Tu peux télécharger {$keys[0]->softwareName()} sur ftp://enez/
 
 Cordialement,
 Le BR

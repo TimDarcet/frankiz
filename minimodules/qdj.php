@@ -53,6 +53,7 @@ class QdjMiniModule extends FrankizMiniModule
 
     public function run()
     {
+        $this->assign('qdj', QDJ::last());
     }
 }
 

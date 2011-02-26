@@ -19,7 +19,9 @@
 {*  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA               *}
 {*                                                                        *}
 {**************************************************************************}
-
+<div class="module">
+<div class="head">{$title}</div>
+<div class="body">
 <h1>Contrat d'utilisation étudiant</h1>
 <p>En sa qualité de membre de MSDN® Academic Alliance (MSDNAA), l'établissement auquel vous êtes inscrit est autorisé
  à vous fournir des logiciels à utiliser sur votre ordinateur personnel. Vous devez respecter les instructions 
@@ -55,5 +57,6 @@
     <input name="agree" value="J'accepte" type="submit">
     <input name="disagree" value="Je refuse" onclick="return window.confirm('Tu refuses ta clé gratuite ?')" type="submit">
 </form>
-
+</div>
+</div>
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

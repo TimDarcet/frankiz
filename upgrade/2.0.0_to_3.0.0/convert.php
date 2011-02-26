@@ -68,6 +68,22 @@ foreach ($tables as $table) {
 
 echo "-----------------------------------------------\n";
 
+// Import rooms
+XDB::execute('INSERT INTO  rooms (
+                           SELECT  IF(piece_id REGEXP "^[A-Z]", piece_id, CONCAT("X", piece_id)), tel, comment
+                             FROM  trombino.pieces
+              )');
+
+echo "-----------------------------------------------\n";
+
+// Import IPs
+XDB::execute('INSERT INTO  ips (
+                           SELECT  ip, prise_id, IF(piece_id REGEXP "^[A-Z]", piece_id, CONCAT("X", piece_id)), type
+                             FROM  admin.prises
+              )');
+
+echo "-----------------------------------------------\n";
+
 // Populating Groups
 $iter = XDB::iterator("SELECT  b.binet_id, b.nom, b.description, b.http, b.mail, COUNT(m.binet_id) AS score
                          FROM  trombino.binets AS b
@@ -183,7 +199,11 @@ while ($datas = $iter->next()) {
     $u->nickname(conv($datas['surnom']));
     $u->birthdate(new FrankizDateTime($datas['date_nais']));
     $u->gender(($datas['sexe'] == 1) ? User::GENDER_FEMALE : User::GENDER_MALE);
-    $u->cellphone(new Phone($datas['portable']));
+    try {
+        $u->cellphone(new Phone($datas['portable']));
+    } catch(Exception $e) {
+        echo 'Error for phone ' . $datas['portable'] . "\n";
+    }
     $u->poly($datas['login']);
 
     // Linking with the room
@@ -400,6 +420,20 @@ $g->external(0);
 $g->leavable(0);
 $g->visible(1);
 // Admins(qdj) = Members(webmasters) the time of the conversion
+$g->caste(Rights::admin())->userfilter(new UserFilter(new UFC_Group($webmasters, Rights::member())));
+
+$g = new Group();
+$g->insert();
+$g->name('postit');
+$g->label('Post-It');
+// Admins(postit) = Members(webmasters) the time of the conversion
+$g->caste(Rights::admin())->userfilter(new UserFilter(new UFC_Group($webmasters, Rights::member())));
+
+$g = new Group();
+$g->insert();
+$g->name('licenses');
+$g->label('Licenses');
+// Admins(postit) = Members(webmasters) the time of the conversion
 $g->caste(Rights::admin())->userfilter(new UserFilter(new UFC_Group($webmasters, Rights::member())));
 
 echo "Added Fkz Microcosmos \n";

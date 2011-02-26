@@ -1,0 +1,7 @@
+# crontab Frankiz3
+
+## Update birthday
+1 0 * * * @USER@ @INSTALL_DIR@/bin/cron/update.birthday.php
+
+## Update scores
+0,30 * * * * @USER@ @INSTALL_DIR@/bin/cron/update.scores.php

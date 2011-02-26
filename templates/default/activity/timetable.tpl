@@ -130,15 +130,35 @@
         </span>
     </div>
     <div class="padd body">
-        <div class="date">
+        <div class="one_day">
+            <div class="date">
+            </div>
+            <div class="time">
+                de
+                <span class="hour_begin">
+                </span>
+                à
+                <span class="hour_end">
+                </span>
+            </div>
         </div>
-        <div class="time">
-            de
-            <span class="hour_begin">
-            </span>
-            à
-            <span class="hour_end">
-            </span>
+        <div class="several_days">
+            <div class="begin">
+                du
+                <span class="date">
+                </span>
+                à
+                <span class="hour">
+                </span>
+            </div>
+            <div class="end">
+                au
+                <span class="date">
+                </span>
+                à
+                <span class="hour">
+                </span>
+            </div>
         </div>
         <div class="msg">
         </div>
@@ -150,6 +170,13 @@
         <div class="description">
         </div>
         <div class="comment">
+        </div>
+        <div class="section participants_list">
+            Participants :
+            <span class="number">
+            </span>
+        </div>
+        <div class="participants">
         </div>
     </div>
 </div>

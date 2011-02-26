@@ -108,9 +108,12 @@ class FrankizLogger extends PlLogger
     public function log($action, $data = null)
     {
         if (isset($this->actions[$action])) {
-            XDB::execute("INSERT INTO  log_events
-                                  SET  session={?}, action={?}, data={?}",
-                         $this->session, $this->actions[$action], $data);
+            if (is_array($data)) {
+                $data = json_encode($data);
+            }
+            XDB::execute('INSERT INTO  log_events
+                                  SET  session = {?}, action = {?}, data = {?}',
+                                       $this->session, $this->actions[$action], $data);
         } else {
             trigger_error("PlLogger: unknown action, $action", E_USER_WARNING);
         }

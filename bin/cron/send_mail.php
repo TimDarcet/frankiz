@@ -1,6 +1,7 @@
+#!/usr/bin/php -q
 <?php
 /***************************************************************************
- *  Copyright (C) 2010 Binet Réseau                                       *
+ *  Copyright (C) 2011 Binet Réseau                                       *
  *  http://www.polytechnique.fr/eleves/binets/reseau/                     *
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
@@ -18,58 +19,50 @@
  *  Foundation, Inc.,                                                      *
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
+ 
+ /* This script send the mails waiting in the database */
 
-class ActivityMiniModule extends FrankizMiniModule
-{
-    public function auth()
-    {
-        return AUTH_INTERNAL;
-    }
+require '../connect.db.inc.php';
 
-    public function js()
-    {
-        return 'minimodules/activities.js';
-    }
+set_time_limit(0);
 
-    public function css()
-    {
-        return 'minimodules/activity.css';
-    }
+XDB::startTransaction();
+$res = XDB::query('SELECT  id, target, writer, writername, title, body, ishtml
+                     FROM  mails
+                    WHERE  IS NULL processed')->fetchAllRow();
 
-    public function tpl()
-    {
-        return 'minimodules/activity/activity.tpl';
-    }
+$ids = array();
 
-    public function title()
-    {
-        return 'Activités du jour';
-    }
-
-    public function run()
-    {
-        $date = new FrankizDateTime();
-        $date->setTime(0,0);
-        $date_n = new FrankizDateTime();
-        date_add($date_n, date_interval_create_from_date_string('1 day'));
-        $date_n->setTime(0,0);
-        $activities = new ActivityInstanceFilter(
-            new PFC_AND (
-                new PFC_Or (
-                    new AIFC_User(S::user(), 'restricted'),
-                    new AIFC_User(S::user(), 'everybody')),
-                new AIFC_Period($date, $date_n)));
-
-        $c = $activities->get();
-
-        $c->select(ActivityInstanceSelect::base());
-        $c->order('hour_begin', false);
-
-        $this->assign('day', new FrankizDateTime());
-        $this->assign('date', date("Y-m-d"));
-        $this->assign('activities', $c);
-    }
+if (count($res) == 0) {
+    exit;
 }
+
+foreach($res as $r) {
+    $ids[] = $r[0];
+} 
+
+XDB::execute('UPDATE  mails
+                 SET  processed = NOW()
+               WHERE  id IN {?}', $ids);
+XDB::commit();
+
+foreach($res as $r) {
+    $uf = new UserFilter($r[1]);
+    $users = $uf->get();
+    $users->select(UserSelect::base());
+    foreach($users as $user) {
+        $mail = new FrankizMailer();
+        $mail->addAddress($user->bestEmail(), $user->displayName());
+        $mail->SetFrom($r[2], $r[3]);
+        $mail->subject($r[4]);
+        $mail->body($r[5]);
+        $mail->send($r[6]);
+    }
+    XDB::execute('UPDATE  mails
+                     SET  done = NOW()
+                   WHERE  id = {?}', $r[0]);
+}
+
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
 ?>

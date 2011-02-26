@@ -130,9 +130,21 @@ function show(id)
 
     $("#activity_show .body .description").html(results[id].description);
     $("#activity_show .body .comment").html(results[id].comment);
-    $("#activity_show .body .date").html(results[id].begin.toLocaleDateString() + ' :');
-    $("#activity_show .body .time .hour_begin").html(results[id].begin.toLocaleTimeString());
-    $("#activity_show .body .time .hour_end").html(results[id].end.toLocaleTimeString());
+    if (results[id].begin.toLocaleDateString() == results[id].end.toLocaleDateString()) {
+        $("#activity_show .body .one_day").show();
+        $("#activity_show .body .several_days").hide();
+        $("#activity_show .body .one_day .date").html(results[id].begin.toLocaleDateString());
+        $("#activity_show .body .one_day .time .hour_begin").html(results[id].begin.toLocaleTimeString());
+        $("#activity_show .body .one_day .time .hour_end").html(results[id].end.toLocaleTimeString());
+    }
+    else {
+        $("#activity_show .body .one_day").hide();
+        $("#activity_show .body .several_days").show();
+        $("#activity_show .body .several_days .begin .date").html(results[id].begin.toLocaleDateString());
+        $("#activity_show .body .several_days .begin .hour").html(results[id].begin.toLocaleTimeString());
+        $("#activity_show .body .several_days .end .date").html(results[id].end.toLocaleDateString());
+        $("#activity_show .body .several_days .end .hour").html(results[id].end.toLocaleTimeString());
+    }
 
     $("#activity_show .body .participants_list .number").html(count(results[id].participants));
     $("#activity_show .body .participants").html('');

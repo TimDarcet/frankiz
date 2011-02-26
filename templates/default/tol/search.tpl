@@ -25,12 +25,6 @@
         <input type="hidden" name="mode" value="card" />
         <input type="hidden" name="page" value="1" />
 
-        <div class="fields loading" id="tol_infos">
-            <span class="empty">Pas de résultats</span>
-            <span class="notempty" {if isset($total|smarty:nodefaults)}style="display: inline"{/if}><span class="count">{if isset($results|smarty:nodefaults)}{$results|@count}{/if}</span> / <span class="total">{if isset($total|smarty:nodefaults)}{$total}{/if}</span></span>
-            <div class="notempty page"></div>
-        </div>
-
         <div class="fields" id="tol_names">
             <ul>
                 <li><label>Prénom<input auto="auto" type="text" name="firstname" value="{$fields.firstname}" /></label></li>
@@ -63,7 +57,7 @@
             </ul>
         </div>
 
-        {if !$user->isFemale()}
+        {if !$user->isFemale() && $user->isAdmin()}
         <div class="fields"  id="tol_gender">
             <ul>
                 <li><label>Fifilles<input auto="auto" type="checkbox" name="gender" value="woman"/></label></li>

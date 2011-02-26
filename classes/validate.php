@@ -102,6 +102,23 @@ class ValidateSelect extends Select
                     $item->$field($collections[$hash]->addget($item->$field()));
                 }
             }
+
+
+            foreach ($item->collections() as $field => $select) {
+                $hash = $select->hash();
+                $selects[$hash] = $select;
+                if (empty($collections[$hash])) {
+                    $collections[$hash] = new Collection($select->className());
+                }
+
+                if ($item->$field() != false) {
+                    $temp = new Collection($select->className());
+                    foreach($item->$field() as $f) {
+                        $temp->add($collections[$hash]->addget($f));
+                    }
+                    $item->$field($temp);
+                }
+            }
         }
 
         foreach ($collections as $hash => $collection) {
@@ -136,6 +153,12 @@ class Validate extends Meta
         return $className::label();
     }
 
+    public function itemToDb() {
+        $item = clone $this->item;
+        $item->toDb();
+        return serialize($item);
+    }
+
     /** 
      * to use to send the data for moderation
      * if $this->item->unique is true, then the database will be cleaned before
@@ -151,13 +174,11 @@ class Validate extends Meta
                          $this->writer->id(), $this->group->id(), $this->type);
         }
 
-        $item = clone $this->item;
-        $item->toDb();
         XDB::execute('INSERT INTO  validate
                               SET  writer = {?}, `group` = {?}, type = {?}, 
                                    item = {?}, created = NOW()',
                             $this->writer->id(), $this->group->id(), $this->type, 
-                            $item);
+                            $this->itemToDb());
 
         $this->id = XDB::insertId();
 

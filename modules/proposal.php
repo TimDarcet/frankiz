@@ -118,13 +118,6 @@ class ProposalModule extends PlModule
     {   
         $title      = Env::t('title', '');
         $desc       = Env::t('desc', '');
-        $target     = Env::i('target_group_activity', '');
-        $caste      = (Env::has('target_everybody_activity'))?'everybody':'restricted';
-        if (Env::t('origin_news_proposal') == 'false') {
-            $origin = false;
-        } else {
-            $origin = new Group(Env::i('origin_news_proposal'));
-        }
 
         $activities = new ActivityFilter(new PFC_And(new AFC_TargetGroup(S::user()->castes(Rights::admin())->groups()),
                                                      new AFC_Regular(true)));
@@ -133,50 +126,59 @@ class ProposalModule extends PlModule
         
         if (Env::has('send_new'))
         {
-            if($title == '' || $target == '')
-            {
-                $page->assign('msg', 'Il manque des informations pour créer l\'activité.');
+            $required_fields = array('origin_activity_proposal', 'target_group_activity',
+                                    'title', 'begin', 'end');
+            foreach ($required_fields as $field) {
+                if (Env::v($field, '') == '') {
+                    throw new Exception("Missing field ($field)");
+                }
             }
-            else 
-            {
-                try
-                {
-                    $target = new Group($target);
-                    $target->select(GroupSelect::castes());
-                    
-                    $begin = new FrankizDateTime(Env::t('begin'));
-                    $end = new FrankizDateTime(Env::t('end'));
 
-                    if ($origin !== false && !S::user()->hasRights($origin, Rights::admin())) {
-                        throw new Exception("Invalid credentials for origin Group");
-                    }
-                    
-                    $av = new ActivityValidate(s::user(), $target->caste(new Rights($caste)), $title,
-                        $desc, $begin, $end, $origin);
-                    $v = new Validate(array(
-                        'writer'    => S::user(),
-                        'group'     => $target,
-                        'item'      => $av,
-                        'type'      => 'activity'));
-                    if (S::user()->hasRights($target, Rights::admin())) {
-                        $v->insert();
-                        $page->assign('envoye', true);
+            try
+            {
+                // Origin & Target
+                if (Env::t('origin_activity_proposal') == 'false') {
+                    $origin = false;
+                } else {
+                    $origin = new Group(Env::i('origin_activity_proposal'));
+                }
+                list($target, $target_group) = self::target_picker_to_caste_group('activity');
+
+                $begin = new FrankizDateTime(Env::t('begin'));
+                $end = new FrankizDateTime(Env::t('end'));
+
+                if ($origin !== false && !S::user()->hasRights($origin, Rights::admin())) {
+                    throw new Exception("Invalid credentials for origin Group");
+                }
+
+                $target->select(CasteSelect::validate());
+
+                $av = new ActivityValidate(s::user(), $target, $title,
+                    $desc, $begin, $end, $origin);
+                $v = new Validate(array(
+                    'writer'    => S::user(),
+                    'group'     => $target_group,
+                    'item'      => $av,
+                    'type'      => 'activity'));
+                
+                if (!S::user()->hasRights($target_group, Rights::admin())) {
+                    $v->insert();
+                    $page->assign('envoye', true);
+                }
+                else {
+                    $page->assign('envoye', 'Validation automatique');
+                    if ($v->commit()) {
+                        $page->assign('valide', true);
                     }
                     else {
-                        Env::set('comm', 'Validation automatique');
-                        if ($v->commit()) {
-                        $page->assign('valide', true);
-                        }
-                        else {
-                            $page->assign('valide', true);
-                        }
+                        $page->assign('valide', false);
                     }
+                }
 
-                }
-                catch (Exception $e)
-                {
-                    $page->assign('msg', 'La date est incorrecte.');
-                }
+            }
+            catch (Exception $e)
+            {
+                $page->assign('msg', $e->getMessage() . 'La date est incorrecte.');
             }
         }
         
@@ -237,14 +239,7 @@ class ProposalModule extends PlModule
                 $page->assign('msg', 'Ton activité a été rajoutée.');
             }
         }
-        
-        if (Env::has('new_regular'))
-            pl_redirect('activity/regular/new');
-            
-        if (Env::has('modify_regular'))
-            pl_redirect('activity/regular/modify');
-            
-        
+
         $page->assign('title_activity', $title);
         $page->assign('desc', $desc);
         
@@ -267,30 +262,67 @@ class ProposalModule extends PlModule
     function handler_mail($page)
     {
         $subject    = Env::t('subject', '');
-        $body       = Env::t('body', '');
-        $no_wiki    = Env::has('no_wiki')?1:0;
+        $body       = Env::t('mail_body', '');
+        $no_wiki    = Env::has('no_wiki');
         
         if (Env::has('send'))
         {
-            if (Env::t('group_mail_proposal') == '')
-                $page->assign('msg', 'Tu n\'as pas donné de destinataire.');
-            elseif ($body == '' || $subject == '')
-                $page->assign('msg', 'Ton mail est incomplet : il manque le titre ou le message.');
-            else
-            {
-                $nv = new MailValidate(
-                    new Group(Env::t('group_mail_proposal')), 
-                    $subject, 
-                    $body, 
-                    $no_wiki);
-                $el = new Validate(array(
-                    'item'  =>$nv, 
-                    'gid'   =>Env::t('group_mail_proposal'), 
-                    'user'  =>S::user(), 
-                    'type'  =>'mail'));
-                $el->insert();
-                $page->assign('envoye', 1);
+            $required_fields = array('subject', 'mail_body');
+            foreach ($required_fields as $field) {
+                if (Env::v($field, '') == '') {
+                    throw new Exception("Missing field ($field)");
+                }
             }
+
+            if (Env::t('type_mail_proposal') == 'group') {
+                list($temp, $target_group) = self::target_picker_to_caste_group('mail');
+                $target = new Collection('Caste');
+                $target->add($temp);
+                $target_group->select(GroupSelect::validate());
+                $target_group = unflatten($target_group);
+                
+            }
+            else {
+                if (Env::t('study_mail_proposal') == '') {
+                    $target_group = new GroupFilter(new GFC_Namespace('study'));
+                }
+                else {
+                    $target_group = new GroupFilter(new UFC_Group(explode(';', Env::t('study_mail_proposal'))));
+                }
+                $target_group = $target_group->get();
+                $target_group->select(GroupSelect::validate());
+
+                if (Env::t('promo_mail_proposal') == '') {
+                    $target = false;
+                }
+                else {
+                    $target = new CasteFilter(
+                                    new PFC_AND(new CFC_Group(explode(';', Env::t('promo_mail_proposal'))), 
+                                                new CFC_Rights('restricted')));
+                    $target = $target->get();
+                    $target->select(GroupSelect::validate());
+                }
+                
+            }
+
+            foreach($target_group as $study) {
+                $nv = new MailValidate(array(
+                    'writer'    => S::user(),
+                    'type_mail' => Env::t('type_mail_proposal'),
+                    'targets'   => $target,
+                    'subject'   => $subject,
+                    'body'      => $body,
+                    'nowiki'    => $no_wiki,
+                    'formation' => $study));
+                $el = new Validate(array(
+                    'item'      => $nv,
+                    'group'     => $study,
+                    'writer'    => S::user(),
+                    'type'      => 'mail'));
+                $el->insert();
+            }
+            
+            $page->assign('envoye', true);
         }
         
         $page->assign('subject', $subject);
@@ -371,7 +403,7 @@ class ProposalModule extends PlModule
 
         $page->assign('title', 'Créer un sondage');
         $page->addCssLink('validate.css');
-        //$page->addCssLink('surveys.css');
+        $page->addCssLink('surveys.css');
         $page->changeTpl('validate/prop.survey.tpl');
     }
 }
