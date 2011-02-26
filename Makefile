@@ -101,5 +101,5 @@ distclean: delete_dir clean_files
 
 ################################################################################
 
-.PHONY: build dist clean http*
+.PHONY: build clean clean_dir clean_files conf core delete_dir dir distclean q http*
 
