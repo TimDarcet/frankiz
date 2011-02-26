@@ -29,7 +29,7 @@ set_time_limit(0);
 XDB::startTransaction();
 $res = XDB::query('SELECT  id, target, writer, writername, title, body, ishtml
                      FROM  mails
-                    WHERE  IS NULL processed')->fetchAllRow();
+                    WHERE  processed IS NULL')->fetchAllRow();
 
 $ids = array();
 
