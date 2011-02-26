@@ -38,7 +38,7 @@
     <div class="nickname">{$result->nickname()}</div>
 
     <div class="birthdate">
-        {$result->birthdate()|datetime:"d/m/Y"} ({$result->birthdate()|age})
+        <span>{$result->birthdate()|datetime:"d/m/Y"}</span> ({$result->birthdate()|age})
     </div>
 
     <div class="sports">
@@ -51,7 +51,7 @@
 
     {if $result->cellphone()}
         <div class="cellphone">
-            Portable: {$result->cellphone()}
+            Portable: <span>{$result->cellphone()}</span>
         </div>
     {/if}
 
@@ -60,8 +60,8 @@
         <ul>
         {foreach from=$result->rooms() item='room'}
             <li>
-            {$room->id()}
-            {if $room->phone()}(Tel: {$room->phone()}){/if}
+            <span>{$room->id()}</span>
+            {if $room->phone()}(Tel: <span>{$room->phone()}</span>){/if}
             <ul class="ips">
             {foreach from=$room->ips() item='ip'}
                 <li>
