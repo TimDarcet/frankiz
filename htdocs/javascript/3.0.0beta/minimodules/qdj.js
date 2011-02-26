@@ -3,7 +3,6 @@ var reversedId = 0;
 
 var qdj = {
     "run" : function() {
-        console.log(this);
     },
 
     "vote" : function(votefor) {
