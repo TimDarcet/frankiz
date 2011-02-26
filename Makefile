@@ -68,8 +68,13 @@ htdocs/.htaccess: htdocs/.htaccess.in Makefile
 	test "$$REWRITE_BASE" = "/~web" && REWRITE_BASE="/"; \
 	sed -e "s,@REWRITE_BASE@,$$REWRITE_BASE,g" $< > $@
 
-configs/cron: configs/cron.in Makefile
+configs/cron: configs/cron.in
+	[ ! -f configs/cron ] || ( echo "Need root privileges for \"sudo rm $@\"" && sudo rm $@)
 	sed -e "s,@INSTALL_DIR@,$(INSTALL_DIR),g;s,@USER@,$(INSTALL_USER),g" $< > $@
+	@echo "Need root privileges for \"sudo chown root:root $@\""
+	sudo chown root:root $@
+	@echo "Need root privileges for \"chmod 644 $@\""
+	sudo chmod 644 $@
 
 ##
 ## clean
@@ -100,6 +105,7 @@ delete_dir:
 	[ ! -d spool/tmp ] || rm -rf spool/tmp
 	[ ! -d spool/sessions ] || rm -rf spool/sessions
 	[ ! -d htdocs/css ] || rm -rf htdocs/css
+	[ ! -d spool ] || rmdir --ignore-fail-on-non-empty spool
 
 distclean: delete_dir clean_files
 

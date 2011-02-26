@@ -99,7 +99,7 @@ class FrankizPage extends PlPage
          */
         while (count($parents) > 0)
         {
-            if (file_exists($folder . implode('.', $parents) . '/' . $file))
+            if (file_exists($globals->spoolroot. $folder . implode('.', $parents) . '/' . $file))
                 return implode('.', $parents) . '/' . $file;
 
             array_pop($parents);
@@ -111,12 +111,12 @@ class FrankizPage extends PlPage
 
     public static function getTplPath($tpl)
     {
-        return self::bestSkin($tpl, '../templates/');
+        return self::bestSkin($tpl, '/templates/');
     }
 
     public static function getCssPath($css)
     {
-        return self::bestSkin($css, '../htdocs/css/');
+        return self::bestSkin($css, '/htdocs/css/');
     }
 
     public function changeTpl($tpl, $type = SKINNED)

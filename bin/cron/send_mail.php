@@ -22,6 +22,7 @@
  
  /* This script send the mails waiting in the database */
 
+require_once 'smarty/Smarty.class.php';
 require '../connect.db.inc.php';
 
 set_time_limit(0);

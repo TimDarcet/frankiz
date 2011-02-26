@@ -5,3 +5,6 @@
 
 ## Update scores
 0,30 * * * * @USER@ @INSTALL_DIR@/bin/cron/update.scores.php
+
+## Send mails
+0/5 * * * * @USER@ @INSTALL_DIR@/bin/cron/send_mail.php
