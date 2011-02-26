@@ -87,7 +87,7 @@ class License extends Meta
 
     static public function getSoftwares()
     {
-        return array('win7'         => 'Windows 7'
+        return array('win7'         => 'Windows 7',
                      'winvista'     => 'Windows Vista Business',
                      'winxp'        => 'Windows XP Professionnel',
                      'win2k'        => 'Windows 2000 Professionnel',
