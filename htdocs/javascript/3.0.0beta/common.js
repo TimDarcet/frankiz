@@ -30,6 +30,22 @@ $(function(){
     $.ajaxSetup({ cache: false });
 
     /*
+     * Display full-size images in a "FancyBox"
+     */
+    $('#section').delegate("a[fancy]", "click", function() {
+        $.fancybox([{'href' : $(this).attr('href')}], {
+            'padding'       : 0,
+            'transitionIn'  : 'none',
+            'transitionOut' : 'none',
+            'type'          : 'image',
+            'changeFade'    : 0,
+            'centerOnScroll': true,
+            'titleShow'     : false
+        });
+        return false;
+    });
+
+    /*
      * Moving the background when scrolling (only in Chrome)
      */
     var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
