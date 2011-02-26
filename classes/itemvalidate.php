@@ -70,11 +70,7 @@ abstract class ItemValidate
 
         foreach ($this->collections() as $name => $object) {
             if ($this->$name != false) {
-                $temp = array();
-                foreach($this->$name as $o) {
-                    $temp[] = $o->id();
-                }
-                $this->$name = $temp;
+                $this->$name = $this->$name->ids();
             }
         }
     }
