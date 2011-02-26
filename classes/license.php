@@ -234,7 +234,7 @@ class License extends Meta
         $req = array();
         foreach($conds as $key => $value)
         {
-            if($value != null) {
+            if(!is_null($value)) {
                 $req[] = XDB::format($key . ' = {?}', $value);
             } else {
                 $req[] = XDB::format('ISNULL(' . $key . ')');
@@ -270,7 +270,7 @@ class License extends Meta
     }
     
     public static function fetchFreeKeys($software){
-        self::fetch(array('software' => $software, 'uid' => null, 'gid' => null, 'admin' => false));
+        return self::fetch(array('software' => $software, 'uid' => null, 'gid' => null, 'admin' => false));
     }        
 }
 

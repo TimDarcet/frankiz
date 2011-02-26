@@ -28,6 +28,7 @@
                 <li><a href="profile/account">Mon compte</a></li>
                 <li><a href="profile/minimodules">Mes minimodules</a></li>
                 <li><a href="profile/network">Mes données réseau</a></li>
+                <li><a href="licenses">Licences MSDNAA</a></li>
             </ul>
             {if $smarty.session.user->checkPerms('admin')}
                 <ul>

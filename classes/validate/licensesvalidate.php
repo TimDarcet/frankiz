@@ -24,7 +24,7 @@ class LicensesValidate extends ItemValidate
     protected $type = 'licenses';
     protected $software;
     protected $reason;
-    protected $writer = false;
+    protected $writer;
 
     public function __construct($software, $reason)
     {
@@ -46,21 +46,6 @@ class LicensesValidate extends ItemValidate
     {
         $s =  License::getSoftwares();
         return $s[$this->software];
-    }
-
-    public function software()
-    {
-        return $this->software;
-    }
-
-    public function reason()
-    {
-        return $this->reason;
-    }
-    
-    public function writer()
-    {
-        return $this->writer;
     }
     
     public function canGetFreeKey(){
@@ -137,7 +122,7 @@ class LicensesValidate extends ItemValidate
             return false;
         }
         $key = array_pop($free_keys);
-        $key->uid($this->uid);
+        $key->give($this->writer());
         return true;
     }
 

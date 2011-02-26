@@ -22,24 +22,26 @@
 <div class="module">
 <div class="head">{$title}</div>
 <div class="body">
-    {if count($owned_licenses) != 0}
-    <h2>Les licences suivantes t'ont déjà été attribuées :</h2>
-    <ul>
-        {foreach from=$owned_licenses item=licence}
-        <li>
-            <form action="licenses/final" method="POST">
-                {$licence->softwareName()}
-                <input type="hidden" name="software" value="{$licence->software()}" />
-                <input type="submit" name="resend" value="Recevoir à nouveau ma clé" />
-            </form>
-        </li>
-        {/foreach}
-    </ul>
-    {/if}
-    <form action="licenses/cluf" method="POST">
-			<note>Dans le cadre de l'accord MSDNAA, chaque étudiant de polytechnique à le droit à une version de Windows XP Pro, une de Windows Vista Business ainsi qu'une de Windows Seven Professional gratuites, légales et attibuées à vie</note>
-			<note>Si tu as besoin d'une clé pour un logiciel téléchargé sur ftp://enez/, et qu'il n'est pas proposé dans la liste, envoi un mail aux <a href="mailto:msdnaa-licences@frankiz.polytechnique.fr">Admins Windows</a>.</note>
-			<p>Les licences disponibles</p>
+    
+			<p>Dans le cadre de l'accord MSDNAA, chaque étudiant de polytechnique à le droit à une version de Windows XP Pro, une de Windows Vista Business ainsi qu'une de Windows Seven Professional gratuites, légales et attibuées à vie</p>
+			<p>Si tu as besoin d'une clé pour un logiciel téléchargé sur ftp://enez/, et qu'il n'est pas proposé dans la liste, envoi un mail aux <a href="mailto:msdnaa-licences@frankiz.polytechnique.fr">Admins Windows</a>.</p>
+            {if count($owned_licenses) != 0}
+            <h3>Les licences suivantes t'ont déjà été attribuées :</h3>
+            <ul>
+                {foreach from=$owned_licenses item=licence}
+                <li>
+                    <form action="licenses/final" method="POST">
+                        {$licence->softwareName()}
+                        <input type="hidden" name="software" value="{$licence->software()}" />
+                        <input type="hidden" name="id" value="{$licence->id()}" />
+                        <input type="submit" name="resend" value="Recevoir à nouveau ma clé" />
+                    </form>
+                </li>
+                {/foreach}
+            </ul>
+            {/if}
+        <form action="licenses/cluf" method="POST">
+            <h3>Les licences disponibles</h3>
 			<select name="software">
             {foreach from=$softwares item=soft key=id}
                 <option value="{$id}">{$soft}</option>
