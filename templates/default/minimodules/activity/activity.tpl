@@ -40,7 +40,7 @@
 
     <div class="activities">
         {foreach from=$minimodule.activities item=activity}
-            {include file="minimodules/activity/single.tpl"|rel}
+            {include file="minimodules/activity/single.tpl"|rel day=$minimodule.day}
         {/foreach}
     </div>
 </div>

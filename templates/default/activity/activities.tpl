@@ -20,8 +20,6 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{js src="activities.js"}
-
 <div class="activity_right">
     <div class="top">
          <a href="proposal/activity">Proposer une activité</a>
@@ -114,8 +112,7 @@
                     {$date|date_format}
                 </div>
                 <div class="activities_day">
-                    {foreach from=$activities_day item=activity key=id}
-                        {$activities_day|order:'hour_begin':false}
+                    {foreach from=$activities_day|order:'hour_begin':false item='activity' key='id'}
                         <div class="activity {if $activity->participate()}star{else}unstar{/if}" aid="{$activity->id()}">
                             <span class="star_switcher" onclick="switch_participate({$activity->id()})">&emsp;</span>
                             {canEdit target=$activity->target()}
@@ -131,7 +128,7 @@
                             {if !$activity->hour_end($date)}
                                 ({$activity->end()|datetime:'d/m'})
                             {/if} :
-                            
+
                             {if $activity->origin()}
                                 {assign var='origin' value=$activity->origin()}
                                 <a href="groups/see/{$origin->name()}">
@@ -144,7 +141,7 @@
                                      title="{$writer->displayName()}"/>
                                 </a>
                             {/if}
-                            
+
                             <a href="activity/timetable/{$activity->id()}">
                                 <b> {$activity->title()} </b>
                             </a>
@@ -155,5 +152,7 @@
         {/foreach}
     </div>
 </div>
+
+{js src="activities.js"}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
