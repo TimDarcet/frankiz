@@ -23,15 +23,15 @@
 <div id="minimodule_activities">
     <div class="date">
         <span class="left">
-            <a onclick="activity.backward_week();"> << </a>
-            <a onclick="activity.backward_day();"> < </a>
+            <a onclick="activity.backward_week();"> &lt;&lt; </a>
+            <a onclick="activity.backward_day();"> &lt; </a>
         </span>
         <span class="act_date">
             {$minimodule.date}
         </span>
         <span class="right">
-            <a onclick="activity.forward_day();"> > </a>
-            <a onclick="activity.forward_week();"> >> </a>
+            <a onclick="activity.forward_day();"> &gt; </a>
+            <a onclick="activity.forward_week();"> &gt;&gt; </a>
         </span>
     </div>
 
