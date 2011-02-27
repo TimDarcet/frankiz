@@ -64,7 +64,7 @@
 
 <form enctype="multipart/form-data" method="post" action="proposal/activity">
     <div class="module activity_prop reg">
-        <div class="head click">
+        <div class="head">
             <span class="helper" target="proposal/activity"></span>
             Activité régulière
         </div>
@@ -146,6 +146,7 @@
                         à  <input type="text" name="end" id="end" value=""
                             required {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$).*"{/literal}/>
                         <script>{literal}
+                        $(function() {
                             var dates = $( "#begin, #end" ).datetimepicker({
                                 minDate: new Date(),
                                 maxDate: "+31D",
@@ -156,6 +157,7 @@
                             });
                             $("#begin").datetimepicker('setDate', new Date());
                             $("#end").datetimepicker('setDate', new Date());
+                        });
                         {/literal}</script>
                     </td>
                 </tr>
