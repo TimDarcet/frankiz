@@ -17,6 +17,6 @@ INSERT INTO links (id, image, link, `label`, description, `comment`, ns, rank) V
 INSERT INTO links (id, image, link, `label`, description, `comment`, ns, rank) VALUES(2, NULL, 'home/howtocome', 'Venir à l\'X', '', '', 'usefuls', 1);
 INSERT INTO links (id, image, link, `label`, description, `comment`, ns, rank) VALUES(3, NULL, 'links/partners', 'Partenariats', '', '', 'usefuls', 2);
 INSERT INTO links (id, image, link, `label`, description, `comment`, ns, rank) VALUES(4, NULL, 'http://www.polytechnique.edu', 'Site de l\'École', '', '', 'usefuls', 3);
-INSERT INTO links (id, image, link, `label`, description, `comment`, ns, rank) VALUES(5, NULL, 'ttp://www.etudes.polytechnique.edu', 'Site de la DE', '', '', 'usefuls', 4);
+INSERT INTO links (id, image, link, `label`, description, `comment`, ns, rank) VALUES(5, NULL, 'http://www.etudes.polytechnique.edu', 'Site de la DE', '', '', 'usefuls', 4);
 INSERT INTO links (id, image, link, `label`, description, `comment`, ns, rank) VALUES(6, NULL, 'http://enex.polytechnique.fr', 'ENEX', '', '', 'usefuls', 5);
 INSERT INTO links (id, image, link, `label`, description, `comment`, ns, rank) VALUES(7, NULL, 'http://www.polytechnique.fr/sites/orientation4a/pages_orientation/', 'Orientation 4eme année', '', '', 'usefuls', 6);
