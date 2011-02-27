@@ -21,9 +21,13 @@
 {**************************************************************************}
 
 
-<div class="title">
-    {$activity->title()}
-    <a onclick="activity.present({$activity->id()});" class="right"><span class="add_participant"></span></a>
+<div class="title {if $activity->participate()}present{else}away{/if}">
+    <a href="activity/timetable/{$activity->id()}">{$activity->title()}</a>
+    {if $activity->participate()}
+        <a onclick="activity.out({$activity->id()});" class="right"><span class="remove_participant"></span></a>
+    {else}
+        <a onclick="activity.present({$activity->id()});" class="right"><span class="add_participant"></span></a>
+    {/if}
 </div>
 <div class="body">
     {if ($activity->hour_begin($day) == false) && ($activity->hour_end($day) == false)}
