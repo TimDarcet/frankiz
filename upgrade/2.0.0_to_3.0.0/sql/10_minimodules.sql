@@ -24,7 +24,7 @@ INSERT INTO minimodules (`name`, `label`, description) VALUES('days', 'Fêtes', 
 INSERT INTO minimodules (`name`, `label`, description) VALUES('debug', 'Debug', '');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('groups', 'Binets & groupes', 'Liste de ses binets et de ses groupes');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('ik', 'IK de la semaine', 'Accès rapide à l\'InfoKès');
-INSERT INTO minimodules (`name`, `label`, description) VALUES('jtx', 'Video', 'Le JTX vous présente ses meilleurs vidéos');
+INSERT INTO minimodules (`name`, `label`, description) VALUES('jtx', 'Video', 'Le JTX vous présente ses meilleures vidéos');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('links', 'Liens utiles', 'Accès rapides aux sites utiles');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('meteo', 'Météo', 'Météo du platal (rarement bonne)');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('qdj', 'Question Du Jour', 'Politique ou juste comique, réponds à la Question Du Jour');
