@@ -91,7 +91,7 @@ class TolModule extends PLModule
             $conds[] = new UFC_Name($fields['nickname'], UFC_Name::NICKNAME, UFC_Name::CONTAINS);
 
         if ($fields['room'])
-            $conds[] = new UFC_Room($fields['room']);
+            $conds[] = new UFC_Room(str_replace(' ', '', $fields['room']));
 
         if ($fields['phone'])
             $conds[] = new UFC_Roomphone($fields['phone']);
