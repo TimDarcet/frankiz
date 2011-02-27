@@ -24,6 +24,8 @@
 {js src="plugins/excanvas.js"}
 {js src="plugins/visualize.jQuery.js"}
 
+{js src="qdj.js"}
+
 <div class="comment_qdj module">
     <div class="head">
         <span class="helper" target="qdj"> </span>

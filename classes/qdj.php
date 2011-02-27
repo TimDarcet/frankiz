@@ -131,17 +131,17 @@ class QDJ extends Meta
     // only works for the session's user because of the IP
     // @param : $answer Either 0 or 1
     public function vote($answer) {
+        XDB::startTransaction();
         XDB::execute('INSERT INTO  qdj_votes
                               SET  qdj = {?}, uid = {?}, rank = 0, rule = "null"',
                             $this->id(), S::user()->id());
         $vote = XDB::insertID();
 
         // Get the rank
-        $rank = XDB::query('SELECT  COUNT(*)
+        $rank = XDB::query('SELECT  COUNT(*)+1
                               FROM  qdj_votes
-                             WHERE  qdj = {?} AND vote_id <= {?}',
-                             $this->id(), $vote
-                        )->fetchOneCell();
+                             WHERE  qdj = {?} AND rank != 0',
+                             $this->id())->fetchOneCell();
 
         if ($rank == 1)
         {
@@ -192,6 +192,7 @@ class QDJ extends Meta
                          SET rank = {?}, rule = {?}
                        WHERE vote_id = {?}',
                         $rank, $rule, $vote);
+        XDB::commit();
 
         if ($answer == 1) {
             XDB::execute('UPDATE qdj SET count1 = count1+1 WHERE id={?}',$this->id());

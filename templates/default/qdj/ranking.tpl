@@ -35,81 +35,83 @@
     {foreach from=$results item=el}
         <tr>
             <td>
-                {$el.user|user}
+                {$el.user|user:'text'}
             </td>
             <td>
-                <table class="graph">
-                    <caption>Points</caption>
-                    <thead>
-                        <tr>
-                            <td></td>
-                            <th scope="col">
-                                1er
-                            </th>
-                            <th scope="col">
-                                2e
-                            </th>
-                            <th scope="col">
-                                3e
-                            </th>
-                            <th scope="col">
-                                13
-                            </th>
-                            <th scope="col">
-                                42
-                            </th>
-                            <th scope="col">
-                                69
-                            </th>
-                            <th scope="col">
-                                pi
-                            </th>
-                            <th scope="col">
-                                ip
-                            </th>
-                            <th scope="col">
-                                bonus
-                            </th>
-                            <th scope="col">
-                                qdj
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td width="40px">
-                                {$el.nb1}
-                            </td>
-                            <td width="40px">
-                                {$el.nb2}
-                            </td>
-                            <td width="40px">
-                                {$el.nb3}
-                            </td>
-                            <td width="40px">
-                                {$el.nb4}
-                            </td>
-                            <td width="40px">
-                                {$el.nb5}
-                            </td>
-                            <td width="40px">
-                                {$el.nb6}
-                            </td>
-                            <td width="40px">
-                                {$el.nb7}
-                            </td>
-                            <td width="40px">
-                                {$el.nb8}
-                            </td>
-                            <td width="40px">
-                                {$el.nb9}
-                            </td>
-                            <td width="40px">
-                                {$el.nb10}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="qdj_cell">
+                    <table class="graph">
+                        <caption>Points</caption>
+                        <thead>
+                            <tr>
+                                <td></td>
+                                <th scope="col">
+                                    1er
+                                </th>
+                                <th scope="col">
+                                    2e
+                                </th>
+                                <th scope="col">
+                                    3e
+                                </th>
+                                <th scope="col">
+                                    13
+                                </th>
+                                <th scope="col">
+                                    42
+                                </th>
+                                <th scope="col">
+                                    69
+                                </th>
+                                <th scope="col">
+                                    pi
+                                </th>
+                                <th scope="col">
+                                    ip
+                                </th>
+                                <th scope="col">
+                                    bonus
+                                </th>
+                                <th scope="col">
+                                    qdj
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td width="40px">
+                                    {$el.nb1}
+                                </td>
+                                <td width="40px">
+                                    {$el.nb2}
+                                </td>
+                                <td width="40px">
+                                    {$el.nb3}
+                                </td>
+                                <td width="40px">
+                                    {$el.nb4}
+                                </td>
+                                <td width="40px">
+                                    {$el.nb5}
+                                </td>
+                                <td width="40px">
+                                    {$el.nb6}
+                                </td>
+                                <td width="40px">
+                                    {$el.nb7}
+                                </td>
+                                <td width="40px">
+                                    {$el.nb8}
+                                </td>
+                                <td width="40px">
+                                    {$el.nb9}
+                                </td>
+                                <td width="40px">
+                                    {$el.nb10}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </td>
             <td>
                 {$el.total} ({$el.average}, {$el.deviation})
