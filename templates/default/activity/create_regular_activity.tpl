@@ -20,57 +20,23 @@
 {*                                                                        *}
 {**************************************************************************}
 
+{if isset($envoye|smarty:nodefaults)}
 
-<div class="head">
-   Activité : {$activity->title()}
-</div>
+    <div class="msg_proposal">
+        Ton activité a été créée. <br/>
+        Tu peux créer de nouvelles scéances <a href="proposal/activity">ici</a>.
+    </div>
 
-<div class="body">
-    <table>
-        <tr>
-            <td width=20%>
-                Participants :
-            </td>
-            <td>
-                {$activity->participants()|@count}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Noms :
-            </td>
-            <td>
-                {foreach from=$activity->participants() item=participant}
-                    {$participant|user} <br />
-                {/foreach}
-            </td>
-        </tr>
-    </table>
+{else}
 
-    {assign var='writer' value=$activity->writer()}
-    {if $writer->id() == $user->id()}
-        <div class="subtitle">
-           Envoyer un mail aux inscrits
+    {if isset($msg|smarty:nodefaults)}
+        <div class="msg_proposal">
+            {$msg}
         </div>
-        <table>
-            <tr>
-                <td width=20%>
-                    Contenu :
-                </td>
-                <td>
-                    <textarea name="mail_body" rows=7 cols=50></textarea>
-                </td>
-            </tr>
-            <tr>
-                <td width=20%>
-                    Envoyer :
-                </td>
-                <td>
-                    <input type="submit" name="mail" value="Envoyer"/>
-                </td>
-            </tr>
-        </table>
     {/if}
-</div>
+
+    {include file="activity/new_regular_activity.tpl"|rel}
+
+{/if}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

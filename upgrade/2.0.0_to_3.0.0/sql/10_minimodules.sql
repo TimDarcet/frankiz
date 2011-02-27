@@ -18,17 +18,16 @@ CREATE TABLE IF NOT EXISTS users_minimodules (
   KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO minimodules (`name`, `label`, description) VALUES('activity', 'Activités du jour', '');
+INSERT INTO minimodules (`name`, `label`, description) VALUES('activity', 'Activités du jour', 'Vue rapide sur les activités de la journée');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('birthday', 'Anniversaires', 'Parce que tout le monde peut jouer au Binet Niversaire');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('days', 'Fêtes', 'Les fêtes des saints (et des autres)');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('debug', 'Debug', '');
-INSERT INTO minimodules (`name`, `label`, description) VALUES('groups', 'Mes groupes', 'Liste de ses groupes');
-INSERT INTO minimodules (`name`, `label`, description) VALUES('ik', 'IK de la semaine', '');
-INSERT INTO minimodules (`name`, `label`, description) VALUES('jtx', 'Video', 'La video du jour par le jtx');
-INSERT INTO minimodules (`name`, `label`, description) VALUES('links', 'Liens utiles', '');
-INSERT INTO minimodules (`name`, `label`, description) VALUES('meteo', 'Météo', 'Météo du platal');
+INSERT INTO minimodules (`name`, `label`, description) VALUES('groups', 'Binets & groupes', 'Liste de ses binets et de ses groupes');
+INSERT INTO minimodules (`name`, `label`, description) VALUES('ik', 'IK de la semaine', 'Accès rapide à l\'InfoKès');
+INSERT INTO minimodules (`name`, `label`, description) VALUES('jtx', 'Video', 'Le JTX vous présente ses meilleurs vidéos');
+INSERT INTO minimodules (`name`, `label`, description) VALUES('links', 'Liens utiles', 'Accès rapides aux sites utiles');
+INSERT INTO minimodules (`name`, `label`, description) VALUES('meteo', 'Météo', 'Météo du platal (rarement bonne)');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('qdj', 'Question Du Jour', 'Politique ou juste comique, réponds à la Question Du Jour');
-INSERT INTO minimodules (`name`, `label`, description) VALUES('quicksearch', 'TOL', 'bluh');
-INSERT INTO minimodules (`name`, `label`, description) VALUES('stats', 'Statistiques', 'Pour les admins');
+INSERT INTO minimodules (`name`, `label`, description) VALUES('quicksearch', 'TOL', 'Rercherche rapide sur le tol ou le wikix');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('todo', 'To-Do', 'Une liste de choses à faire');
 INSERT INTO minimodules (`name`, `label`, description) VALUES('news', 'Annonces', 'D\'un seul coup d\'oeil les annonces non-lues ou suivies');

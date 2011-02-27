@@ -21,34 +21,6 @@
 @import "lib.less";
 
 #section {
-
-    // Handler news/see
-    .see {
-        .content {
-            border-bottom: 1px @border solid;
-            padding: 15px;
-            .img {
-                border: 1px black solid;
-                margin-right: 15px;
-                margin-bottom: 15px;
-                float: left;
-                background-color: white;
-            }
-
-        }
-        .meta {
-            padding-top: 5px;
-            .star_switcher {
-                float: left;
-            }
-            .infos {
-                text-align: right;
-            }
-        }
-    }
-
-    // Handler news/ with all the news
-
     .options {
         table {
             width: 100%;
@@ -62,34 +34,45 @@
         .option {
             .alphabackground;
             .border-radius;
-            min-height: 100px;
+            min-height: 80px;
             padding: 10px;
         }
         li {
             position: relative;
             list-style: none;
             min-height: 22px;
-            list-style: disc;
+            list-style: none;
         }
         .actions ul {
+            padding-left: 10px;
             margin-top: 5px;
+            margin-bottom: 0;
         }
         .actions li {
             cursor: pointer;
-            
+            margin-bottom: 4px;
+        }
+        .display ul {
+            padding: 0;
+        }
+        .display li {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .codes {
+            text-align: right;
         }
         .codes ul {
             margin-top: 5px;
-        }
-        .codes li {
-            list-style: none;
+            margin-right: 25px;
+            margin-bottom: 0;
         }
         .code {
             position: absolute;
             width: 15px;
             height: 15px;
             border: 1px black solid;
-            left: -20px;
+            right: -20px;
             &.unread {
                 background-color: white;
             }
@@ -97,7 +80,7 @@
                 background-color: @background;
             }
             &.star {
-                background-color: yellow;
+                background-color: @star;
             }
             &.tocome {
                 background-color: red;
@@ -140,6 +123,9 @@
                     .origin {
                         position: relative;
                         width: 50px;
+                        img {
+                            vertical-align: middle;
+                        }
                     }
                     .date {
                         position: relative;
@@ -230,7 +216,7 @@
     */
 
     .news.star {
-        background-color: yellow !important;
+        background-color: @star !important;
     }
 
     /* 

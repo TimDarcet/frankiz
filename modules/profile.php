@@ -24,27 +24,16 @@ class ProfileModule extends PLModule
     public function handlers()
     {
         return array('profile/account'                 => $this->make_hook('account',                 AUTH_MDP),
-                     'profile/fkz'                     => $this->make_hook('fkz',                     AUTH_COOKIE),
                      'profile/mails'                   => $this->make_hook('mails',                   AUTH_COOKIE),
                      'profile/password'                => $this->make_hook('password',                AUTH_MDP),
-                     'profile/fkz/change_tol'          => $this->make_hook('fkz_change_tol',          AUTH_COOKIE),
-                     'profile/fkz/mod_binets'          => $this->make_hook('fkz_mod_binets',          AUTH_COOKIE),
                      'profile/recovery'                => $this->make_hook('recovery',                AUTH_PUBLIC),
                      'profile/network'                 => $this->make_hook('network',                 AUTH_COOKIE),
-                     'profile/reseau/demande_ip'       => $this->make_hook('demande_ip',              AUTH_COOKIE),
                      'profile/skin'                    => $this->make_hook('skin',                    AUTH_PUBLIC),
                      'profile/skin/unsmartphone'       => $this->make_hook('skin_unsmartphone',       AUTH_PUBLIC),
                      'profile/skin/resmartphone'       => $this->make_hook('skin_resmartphone',       AUTH_PUBLIC),
-                     'profile/photo'                   => $this->make_hook('photo',                   AUTH_COOKIE),
-                     'profile/photo/small'             => $this->make_hook('photo_small',             AUTH_COOKIE),
-                     'profile/siteweb/upload'          => $this->make_hook('siteweb_upload',          AUTH_MDP),
-                     'profile/siteweb/demande_ext'     => $this->make_hook('siteweb_ext',             AUTH_MDP),
                      'profile/rss'                     => $this->make_hook('rss',                     AUTH_COOKIE),
                      'profile/rss/update'              => $this->make_hook('rss_update',              AUTH_COOKIE),
                      'profile/rss/add'                 => $this->make_hook('rss_add',                 AUTH_COOKIE),
-                     'profile/liens_perso'             => $this->make_hook('liens_perso',             AUTH_COOKIE),
-                     'profile/liens_perso/add'         => $this->make_hook('liens_perso_add',         AUTH_COOKIE),
-                     'profile/liens_perso/del'         => $this->make_hook('liens_perso_del',         AUTH_COOKIE),
                      'profile/minimodules'             => $this->make_hook('minimodules',             AUTH_COOKIE),
                      'profile/minimodules/ajax/layout' => $this->make_hook('ajax_minimodules_layout', AUTH_COOKIE),
                      'profile/minimodules/ajax/add'    => $this->make_hook('ajax_minimodules_add',    AUTH_COOKIE),
@@ -58,16 +47,6 @@ class ProfileModule extends PLModule
         $msg = array();
 
         S::user()->select(UserSelect::login());
-        if (Env::has('new_passwd')) {
-            if (Env::s('new_passwd1') != Env::s('new_passwd2')) {
-                $err[] = 'Les mots de passe donnés sont incohérents.';
-            } else if(strlen(Env::s('new_passwd1')) < 6) {
-                $msg[] = 'Le mot de passe est trop court.';
-            } else {
-                S::user()->password(Env::s('new_passwd1'));
-                $msg[] = 'Le mot de passe a été changé avec succès.';
-            }
-        }
 
         if (Env::has('change_profile')) {
 
@@ -94,10 +73,20 @@ class ProfileModule extends PLModule
             }
 
             S::user()->nickname(Env::t('nickname'));
-            S::user()->bestEmail(Env::t('bestalias'));
+            S::user()->email(Env::t('bestalias'));
             S::user()->cellphone(new Phone(Env::t('cellphone')));
             S::user()->email_format((Env::t('format')=='text') ? User::FORMAT_TEXT : User::FORMAT_HTML);
             S::user()->comment(Env::t('comment'));
+        }
+
+        if (Env::has('options')) {
+            $groups = new Collection('Group');
+            $gids = explode(';', Env::s('promo'));
+            if (count($gids) > 0) {
+                $groups->add($gids);
+            }
+            $groups->select(GroupSelect::base());
+            S::user()->defaultFilters($groups);
         }
 
         if (!empty($err)) {
@@ -130,15 +119,24 @@ class ProfileModule extends PLModule
 
     public function handler_password($page)
     {
-        $page->assign('recovery', Env::v('hash','') != '');
-        $page->assign('changed', false);
+        $err = array();
+        $msg = array();
 
-        if (Env::has('new_password'))
-        {
-            S::user()->password(Env::v('new_password'));
-            $page->assign('changed', true);
+        if (Env::has('new_passwd')) {
+            if (Env::s('new_passwd1') != Env::s('new_passwd2')) {
+                $err[] = 'Les mots de passe donnés sont incohérents.';
+            } else if(strlen(Env::s('new_passwd1')) < 6) {
+                $msg[] = 'Le mot de passe est trop court.';
+            } else {
+                S::user()->password(Env::s('new_passwd1'));
+                $msg[] = 'Le mot de passe a été changé avec succès.';
+            }
         }
 
+        $page->assign('err', $err);
+        $page->assign('msg', $msg);
+
+        $page->addCssLink('profile.css');
         $page->assign('title', 'Modification du mot de passe');
         $page->changeTpl('profile/password.tpl');
     }
@@ -186,20 +184,6 @@ class ProfileModule extends PLModule
         S::set('skin', $globals->smartphone_skin);
         pl_redirect($url);
         exit;
-    }
-
-    function handler_photo($page, $hruid)
-    {
-        $uf = new UserFilter(new UFC_Hruid($hruid));
-        $user = $uf->getUser()->select(User::SELECT_BASE);
-        $user->image()->select(FrankizImage::SELECT_FULL)->send();
-    }
-
-    function handler_photo_small($page, $hruid)
-    {
-        $uf = new UserFilter(new UFC_Hruid($hruid));
-        $user = $uf->getUser()->select(User::SELECT_BASE);
-        $user->image()->select(FrankizImage::SELECT_SMALL)->send();
     }
 
     function handler_network($page)

@@ -14,6 +14,17 @@ var activity = {
              $(".msg_act").html('Tu as été rajouté à l\'activité.');
              setTimeout(function() {$(".msg_act").hide();}, 3000);
             }});
+        this.load();
+    },
+
+    "out" : function(id) {
+        request({ "url": 'activity/participants/del/' + id
+             ,"success": function(json) {
+             $(".msg_act").show();
+             $(".msg_act").html('Tu as été enlevé à l\'activité.');
+             setTimeout(function() {$(".msg_act").hide();}, 3000);
+            }});
+        this.load();
     },
 
     "forward_day" : function() {

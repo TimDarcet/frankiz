@@ -94,11 +94,17 @@
                                   required {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$).*"{/literal}/>
                         <script>{literal}
                         $(function() {
-                            $("#begin").datetimepicker({minDate: new Date(), maxDate: "+7D" });
+                            var dates = $( "#begin, #end" ).datetimepicker({
+                                minDate: new Date(),
+                                maxDate: "+7D",
+                                onSelect: function( selectedDate ) {
+                                    var option = this.id == "begin" ? "minDate" : "maxDate";
+                                    dates.not( this ).datepicker( "option", option, selectedDate );
+                                }
+                            });
                             $("#begin").datetimepicker('setDate', new Date());
                             var end = new Date();
                             end.setDate(end.getDate() + 1);
-                            $("#end").datetimepicker({ minDate: new Date(), maxDate: "+7D", defaultDate: end });
                             $("#end").datetimepicker('setDate', end);
                         });
                         {/literal}</script>

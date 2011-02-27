@@ -21,7 +21,7 @@
 {**************************************************************************}
 
 <div class="head">
-   Activité Régulière
+   Instance d'activité régulière
 </div>
 
 <div class="body">
@@ -65,12 +65,17 @@
                 {assign}
                 <script>{literal}
                 $(function() {
-                    var limit = new Date('{/literal}{$activity->begin()|datetime:'m/d/Y H:i'}{literal}');
                     var begin = new Date('{/literal}{$activity->begin()|datetime:'m/d/Y H:i'}{literal}');
                     var end = new Date('{/literal}{$activity->end()|datetime:'m/d/Y H:i'}{literal}');
-                    $("#begin").datetimepicker({minDate: new Date(), defaultDate: begin});
+                    var dates = $( "#begin, #end" ).datetimepicker({
+                        minDate: new Date(),
+                        maxDate: "+31D",
+                        onSelect: function( selectedDate ) {
+                            var option = this.id == "begin" ? "minDate" : "maxDate";
+                            dates.not( this ).datepicker( "option", option, selectedDate );
+                        }
+                    });
                     $("#begin").datetimepicker('setDate', begin);
-                    $("#end").datetimepicker({ minDate: new Date(), defaultDate: end});
                     $("#end").datetimepicker('setDate', end);
                 });
                 {/literal}</script>
@@ -85,6 +90,10 @@
             </td>
         </tr>
     </table>
+
+    <div class="admin">
+        <a href="activity/regular/modify/{$activity->id()}"><span class="edit"></span>Modifier l'activité</a>
+    </div>
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

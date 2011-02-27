@@ -43,7 +43,7 @@ class GroupsMiniModule extends FrankizMiniModule
 
     public function title()
     {
-        return 'Mes groupes';
+        return 'Binets & groupes';
     }
 
     public function run()

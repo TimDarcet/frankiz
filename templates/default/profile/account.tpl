@@ -37,41 +37,6 @@
 {/if}
 
 <form enctype="multipart/form-data" method="post" action="profile/account" class="profile">
-    <div class="module password">
-        <div class="head">
-            <span class="helper" target="profile/account/password"></span>
-            Changement du mot de passe
-        </div>
-        <div class="body">
-            <table>
-                <tr>
-                    <td width="20%">
-                        Mot de passe :
-                    </td>
-                    <td class="form val">
-                        <input id="p1" type='password' name='new_passwd1' required {literal}pattern="(?=^.{6,}$).*"{/literal}
-                            title="Le mot de passe doit faire au moins 6 caractères."/>
-                        <div class="validation">
-                            minimum de 6 caractères.
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Retaper le mot de passe :
-                    </td>
-                    <td class="form val">
-                        <input type='password' name='new_passwd2' required {literal}pattern="(?=^.{6,}$).*"{/literal}
-                            title="Le mot de passe doit faire au moins 6 caractères."/>
-                    </td>
-                </tr>
-            </table>
-
-            <input type="submit" name="new_passwd" value="Enregistrer">
-        </div>
-    </div>
-
-
     <div class="module profile">
         <div class="head">
             <span class="helper" target="profile/account/trombino"></span>
@@ -154,7 +119,28 @@
                 </tr>
             </table>
 
-            <input type="submit" name="change_profile" value="Changer">
+            <input type="submit" name="change_profile" value="Enregistrer">
+        </div>
+    </div>
+
+    <div class="module options">
+        <div class="head">
+            <span class="helper" target="profile/account/options"></span>
+            Options diverses
+        </div>
+        <div class="body">
+            <table>
+                <tr>
+                    <td>
+                        Promos à afficher par défaut dans les filtres :
+                    </td>
+                    <td class="form val">
+                        {include file="groups_picker.tpl"|rel id="promo" ns="promo" order="name" already=$user->defaultFilters()|filter:'ns':'promo' check=-1}
+                    </td>
+                </tr>
+            </table>
+
+            <input type="submit" name="options" value="Enregistrer">
         </div>
     </div>
 </form>

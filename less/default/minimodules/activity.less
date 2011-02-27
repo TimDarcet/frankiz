@@ -18,43 +18,58 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+@import "../lib.less";
 
-#minimodule_activities .date {
-    text-align: center;
-}
+#minimodule_activities {
+    a {
+        font-variant: normal;
+        text-decoration: none;
+        cursor: pointer;
+    }
 
-#minimodule_activities .left {
-    float: left;
-}
+    .right {
+        float: right;
+    }
 
-#minimodule_activities .right {
-    float: right;
-}
+    .left {
+        float: left;
+    }
 
-#minimodule_activities .msg_act {
-    text-align: center;
-}
+    .msg_act {
+        text-align: center;
+    }
 
-#minimodule_activities .title {
-    background-color:#BDD5E3;
-    width: 100%;
-    position: relative;
-    margin: 0px;
-    padding: 0px;
-    font-weight: bold;
-    overflow: hidden;
-    text-align: center;
-}
+    .date {
+        text-align: center;
+    }
 
-#minimodule_activities .body {
-    width: 100%;
-    position: relative;
-    padding: 0px;
-    overflow: hidden;
-    text-align: center;
-}
+    .title {
+        &.away {
+            background-color: @background;
+        }
 
-#minimodule_activities a {
-    text-decoration: none;
-	cursor: pointer;
+        &.present {
+            background-color: @star;
+        }
+
+        width: 100%;
+        position: relative;
+        margin: 0px;
+        padding: 0px;
+        font-weight: bold;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .body {
+        width: 100%;
+        position: relative;
+        padding: 0px;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .add_participant, .remove_participant {
+        float: right;
+    }
 }

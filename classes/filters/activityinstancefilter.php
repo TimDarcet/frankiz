@@ -23,6 +23,21 @@ abstract class ActivityInstanceFilterCondition extends FrankizFilterCondition
 {
 }
 
+class AIFC_Id extends ActivityInstanceFilterCondition
+{
+    private $ids;
+
+    public function __construct($ns)
+    {
+        $this->ids = ActivityInstance::toIds(unflatten($ns));
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        return XDB::format('ai.id IN {?}', $this->ids);
+    }
+}
+
 /** Filters instances based on their writer
  * @param $us A User, a Uid or an array of it
  */

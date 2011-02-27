@@ -1,6 +1,6 @@
 {**************************************************************************}
 {*                                                                        *}
-{*  Copyright (C) 2009 Binet Réseau                                       *}
+{*  Copyright (C) 2010 Binet Réseau                                       *}
 {*  http://www.polytechnique.fr/eleves/binets/reseau/                     *}
 {*                                                                        *}
 {*  This program is free software; you can redistribute it and/or modify  *}
@@ -8,7 +8,7 @@
 {*  the Free Software Foundation; either version 2 of the License, or     *}
 {*  (at your option) any later version.                                   *}
 {*                                                                        *}
-{*  This program is distributed in the hope tha0t it will be useful,       *}
+{*  This program is distributed in the hope that it will be useful,       *}
 {*  but WITHOUT ANY WARRANTY; without even the implied warranty of        *}
 {*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *}
 {*  GNU General Public License for more details.                          *}
@@ -20,28 +20,19 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div id="universe">
-    <a href="http://www.polytechnique.edu/">L'&Eacute;cole</a> ·
+{if $valid}
+Ton sondage vient d'être validé...
+{$comm|smarty:nodefaults}
 
-    <a href="http://www.etudes.polytechnique.edu">DE</a> ·
 
-    <a href="https://enex.polytechnique.fr/">ENEX</a> | |
+{else}
+Ton sondage "{$title}" n'a pas été validée pour la raison suivante :
+{$comm|smarty:nodefaults}
 
-    <a href="http://www.fondationx.org/">FX</a> ·
 
-    <a href="http://www.polytechniciens.com/">AX</a> | |
+{/if}
 
-    <a href="https://www.polytechnique.org">Polytechnique.org</a> ·
-
-    <a href="http://www.polytechnique.net/login">Associations polytechniciennes</a> ·
-
-    <a href="http://wikix.polytechnique.org">Wikix</a> | |
-
-    <a href="http://www.frankiz.net">Frankiz</a> ·
-
-    <a href="http://br.frankiz.net">WikiBR</a> ·
-
-    <a href="http://ik.frankiz.net">InfoKès</a>
-</div>
+Cordialement,
+Les administrateurs du groupe "{$targetGroup->label()}"
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

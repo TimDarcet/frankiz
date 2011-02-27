@@ -20,10 +20,11 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<video controls="controls" poster="http://jtx/vdj/vdj.png">
+<video controls="controls" poster="http://jtx/vdj/vdj.png" preload="none">
     <source src="http://jtx/vdj/vdj.webm" type="video/webm" />
     <source src="http://jtx/vdj/vdj.ogv" type="video/ogg" />
-    <p>Pour pouvoir profiter de cette vidéo, il faut installer un navigateur récent : Firefox ou chrome.</p>
+    <param name="allowfullscreen" value="true">
+    <p>Pour pouvoir profiter de cette vidéo, il faut installer un navigateur récent : Firefox ou Chrome.</p>
 </video>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

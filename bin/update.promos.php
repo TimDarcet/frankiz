@@ -72,6 +72,19 @@ while ($datas = $iter->next()) {
 
 echo "-----------------------------------------------\n";
 
+XDB::execute("INSERT INTO users_defaultfilters
+                          (SELECT  cu.uid, CONCAT('[', g.gid, ']')
+                             FROM  castes_users AS cu
+                       INNER JOIN  castes AS c ON c.cid = cu.cid
+                       INNER JOIN  groups AS g ON g.gid = c.`group`
+                        LEFT JOIN  users_defaultfilters AS udf ON udf.uid = cu.uid
+                            WHERE  udf.uid IS NULL AND g.ns = 'promo'
+                         GROUP BY  cu.uid)");
+
+echo 'Updated defaultfilters' . "\n";
+
+echo "-----------------------------------------------\n";
+
 echo 'Updating on_platal' . "\n";
 
 $on_platal = Group::from('on_platal')->select(GroupSelect::castes());

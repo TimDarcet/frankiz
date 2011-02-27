@@ -358,16 +358,16 @@ function groups_picker(id, ns, check, order, desc)
               ,"fail": false
            ,"success": function(json) {
                            list.empty();
-                           var groups = json.groups;
-                           var group;
-                           for (var i in groups)
-                           {
-                               group = json.groups[i];
-                               list.append('<li gid="' + group.id + '">' +
+
+                           var html = [];
+                           for (var i in json.groups) {
+                               var group = json.groups[i];
+                               html.push('<li gid="' + group.id + '">' +
                                                '<img src="' + group.src + '" />' +
                                                group.label +
                                            '</li>');
                            }
+                           list.append(html.join(''));
 
                            list.children('li').click(function() {
                                var gid = $(this).attr('gid');
@@ -378,8 +378,7 @@ function groups_picker(id, ns, check, order, desc)
                                        return false;
                                    }
                                });
-                               if (!alreadyExists)
-                               {
+                               if (!alreadyExists) {
                                    var sel = $('<li gid="' + $(this).attr('gid') + '">' + $(this).html() + '</li>');
                                    sel.appendTo(selected);
                                    sel.click(function() {
@@ -444,4 +443,4 @@ Nix = {
     decode: function(a) {
                 document.write(Nix.convert(a));
             }
-}
+};

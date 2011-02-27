@@ -20,22 +20,51 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div id="minimodule_activities">
-    <div>
-        {$minimodule.date}
-    </div>
 
-    <div>
-        {foreach from=$minimodule.activities item=activity}
-            <div class="title">
-                 <a href="activity/participant/add/{$activity->id()}" class="right">+1</a>
-                {$activity->title()}
-            </div>
-            <div class="body">
-                Heures : de {$activity->hour_begin()} à {$activity->hour_end()}
-            </div>
-        {/foreach}
-    </div>
-</div>
+<tr>
+    <td>
+        Titre :
+    </td>
+    <td>
+        <input type='text' required name='title' value="{$item->title()}" placeholder="Titre de l'annonce" />
+    </td>
+</tr>
+
+<tr>
+    <td>
+        Questions :
+    </td>
+    <td>
+        <ul>
+            {include file="surveys/editor.tpl"|rel id="json_export"}
+        </ul>
+    </td>
+</tr>
+
+<tr>
+    <td>
+        Visible
+    </td>
+    <td>
+        de <input type="text" name="begin" id="begin" value=""
+                  required {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$).*"{/literal}/>
+        à  <input type="text" name="end" id="end" value=""
+                  required {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$).*"{/literal}/>
+        <script>{literal}
+        $(function() {
+            var begin = new Date('{/literal}{$item->begin()|datetime:'m/d/Y H:i'}{literal}');
+            var end = new Date('{/literal}{$item->end()|datetime:'m/d/Y H:i'}{literal}');
+            $("#begin").datetimepicker({minDate: new Date(), maxDate: "+7D", defaultDate: begin});
+            if (!$("#begin").val()) {
+                $("#begin").datetimepicker('setDate', begin);
+            }
+            $("#end").datetimepicker({minDate: new Date(), maxDate: "+7D", defaultDate: end});
+            if (!$("#end").val()) {
+                $("#end").datetimepicker('setDate', end);
+            }
+        });
+        {/literal}</script>
+    </td>
+</tr>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

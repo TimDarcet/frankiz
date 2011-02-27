@@ -137,7 +137,7 @@ ul.objects li {
 }
 
 ul.objects li.on {
-    background-color: #FFBA00;
+    background-color: @star;
     border: 1px red solid;
 }
 
@@ -166,4 +166,14 @@ ul.objects li .change {
     position: absolute;
     right: 4px;
     bottom: 4px;
+}
+
+.options {
+    td:first-child {
+        width: 20%;
+    }
+    .groups_picker {
+        width: 240px;
+        padding-right: 6px;
+    }
 }

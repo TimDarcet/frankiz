@@ -20,29 +20,52 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div id="minimodule_activities">
-    <div class="date">
-        <span class="left">
-            <a onclick="activity.backward_week();"> << </a>
-            <a onclick="activity.backward_day();"> < </a>
-        </span>
-        <span class="act_date">
-            {$minimodule.date}
-        </span>
-        <span class="right">
-            <a onclick="activity.forward_day();"> > </a>
-            <a onclick="activity.forward_week();"> >> </a>
-        </span>
-    </div>
+<tr>
+    <td width=20%>
+        Commentaire :
+    </td>
+    <td>
+        {$item->comment()}
+    </td>
+</tr>
 
-    <div class="msg_act" style="display:none;">
-    </div>
+<tr>
+    <td width=20%>
+        Dernier jour :
+    </td>
+    <td>
+        {$item->end()|datetime:'Y-m-d H:i'}
+    </td>
+</tr>
 
-    <div class="activities">
-        {foreach from=$minimodule.activities item=activity}
-            {include file="minimodules/activity/single.tpl"|rel day=$minimodule.day}
-        {/foreach}
-    </div>
-</div>
+<tr>
+    <td>
+        Sondage :
+    </td>
+    <td class="survey">
+        <div class="infos">
+            <table><tr>
+                <td class="origin">
+                    {if $item->origin()}
+                        {$item->origin()|group}
+                    {else}
+                        {$item->writer()|user}
+                    {/if}
+                </td>
+                <td class="title">
+                    {$item->title()}
+                </td>
+                <td class="date">
+                    {$item->begin()|age}
+                </td>
+            </tr></table>
+        </div>
+        <div class="content">
+            <div class="body">
+                {$item->json_export()}
+            </div>
+        </div>
+    </td>
+</tr>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

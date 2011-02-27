@@ -28,44 +28,60 @@
     </div>
 {/if}
 
-<form enctype="multipart/form-data" method="post" action="activity/participants">
+<form enctype="multipart/form-data" method="post" action="activity/participants/{$activity->id()}">
     {xsrf_token_field}
-    <div class="module">
+    <div class="module" id="participants_show">
         <div class="head">
-            <span class="helper" target="activity/participants"> </span>
-            Sélectionner l'activité
+           Activité : {$activity->title()}
         </div>
-
+        
         <div class="body">
             <table>
-                {$activities|order:'begin':false}
-                {foreach from=$activities item=act}
-                    <tr>
-                        <td width=20%></td>
-                        <td>
-                            <input type="radio" name="participants_id" value="{$act->id()}" {if $id == $act->id()}checked{/if}>
-                                {$act->title()} le {$act->date()} de {$act->hour_begin()} à {$act->hour_end()}
-                        </td>
-                    </tr>
-                {/foreach}
-
-                <tr class="hide">
-                    <td>
-                        Sélectionner :
+                <tr>
+                    <td width=20%>
+                        Participants :
                     </td>
                     <td>
-                        <input type="submit" name="send" value="Valider"/>
+                        {$activity->participants()|@count}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Personnes :
+                    </td>
+                    <td>
+                        {foreach from=$activity->participants() item=participant}
+                            {$participant|user} <br />
+                        {/foreach}
                     </td>
                 </tr>
             </table>
+
+            {assign var='writer' value=$activity->writer()}
+            {if $writer->id() == $user->id()}
+                <div class="subtitle">
+                   Envoyer un mail aux inscrits
+                </div>
+                <table>
+                    <tr>
+                        <td width=20%>
+                            Contenu :
+                        </td>
+                        <td>
+                            <textarea name="mail_body" rows=7 cols=50></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width=20%>
+                            Envoyer :
+                        </td>
+                        <td>
+                            <input type="submit" name="mail" value="Envoyer"/>
+                        </td>
+                    </tr>
+                </table>
+            {/if}
         </div>
-    </div>
-
-
-    <div class="module" id="participants_show">
-        {if $activity != null}
-            {include file="activity/participants_activity.tpl"|rel}
-        {/if}
     </div>
 </form>
 

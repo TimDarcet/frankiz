@@ -20,21 +20,6 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{js src="validate.js"}
-
-{if isset($envoye|smarty:nodefaults)}
-
-    <div class="msg_proposal"> Ta nouvelle activité régulière a été créée. </div>
-
-{else}
-
-{if $msg}
-    <div class="msg_proposal"> 
-        {$msg}
-    </div>
-{/if}
-
-
 <form enctype="multipart/form-data" method="post" action="activity/regular/new">
     {xsrf_token_field}
     <div class="module">
@@ -93,14 +78,14 @@
                         Horaires
                     </td>
                     <td>
-                        de <input type="text" name="begin" id="begin"
+                        de <input type="text" name="begin" id="begin_newreg"
                                   required {literal}pattern="(?=^[0-9]{2}:[0-9]{2}$).*"{/literal}/>
-                        à  <input type="text" name="end" id="end"
+                        à  <input type="text" name="end" id="end_newreg"
                                   required {literal}pattern="(?=^[0-9]{2}:[0-9]{2}$).*"{/literal}/>
                         <script>{literal}
                             $(function() {
-                                $("#begin").timepicker({});
-                                $("#end").timepicker({});
+                                $("#begin_newreg").timepicker({});
+                                $("#end_newreg").timepicker({});
                             });
                         {/literal}</script>
                     </td>
@@ -116,7 +101,5 @@
         </div>
     </div>
 </form>
-{/if}
-
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

@@ -62,7 +62,7 @@ class ActivityMiniModule extends FrankizMiniModule
 
         $c = $activities->get();
 
-        $c->select(ActivityInstanceSelect::base());
+        $c->select(ActivityInstanceSelect::all());
         $c->order('hour_begin', false);
 
         $this->assign('day', new FrankizDateTime());
