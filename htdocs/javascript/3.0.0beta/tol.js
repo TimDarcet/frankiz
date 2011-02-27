@@ -26,6 +26,15 @@ $(function(){
         }
     });
 
+    $("body").dblclick(function(e) {
+        var $li = $(e.target).closest('li.result.sheet');
+        if ($li.length == 1) {
+            $li.removeClass('sheet');
+            $li.addClass('card');
+        }
+    });
+
+
     $("#section").delegate("div.sheet a img", "click", function() {
         var photo = $(this).closest('[photo]').attr('photo');
         var original = $(this).closest('[original]').attr('original');
