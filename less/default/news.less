@@ -62,34 +62,45 @@
         .option {
             .alphabackground;
             .border-radius;
-            min-height: 100px;
+            min-height: 80px;
             padding: 10px;
         }
         li {
             position: relative;
             list-style: none;
             min-height: 22px;
-            list-style: disc;
+            list-style: none;
         }
         .actions ul {
+            padding-left: 10px;
             margin-top: 5px;
+            margin-bottom: 0;
         }
         .actions li {
             cursor: pointer;
-            
+            margin-bottom: 4px;
+        }
+        .display ul {
+            padding: 0;
+        }
+        .display li {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .codes {
+            text-align: right;
         }
         .codes ul {
             margin-top: 5px;
-        }
-        .codes li {
-            list-style: none;
+            margin-right: 25px;
+            margin-bottom: 0;
         }
         .code {
             position: absolute;
             width: 15px;
             height: 15px;
             border: 1px black solid;
-            left: -20px;
+            right: -20px;
             &.unread {
                 background-color: white;
             }
