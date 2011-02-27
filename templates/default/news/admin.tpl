@@ -46,11 +46,11 @@
                     <tr>
                         <td>
                             <input type="submit" name="delete" value="Supprimer"
-                                   onclick="return window.confirm('Certain ?')" />
+                                   onclick="return window.confirm(areyousure)" />
                         </td>
                         <td>
                             <input type="submit" name="modify" value="Modifier"
-                                   onclick="return window.confirm('Certain ?')" />
+                                   onclick="return window.confirm(areyousure)" />
                         </td>
                     </tr>
                 </table>

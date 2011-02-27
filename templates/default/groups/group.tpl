@@ -53,11 +53,11 @@
                     </div>
                     <div>
                     {if $group->leavable()}
-                        <a onclick="return confirm('Certain ?');" href="groups/unsubscribe/{$group->id()}?token={xsrf_token}">Quitter le groupe</a>
+                        <a onclick="return confirm(areyousure);" href="groups/unsubscribe/{$group->id()}?token={xsrf_token}">Quitter le groupe</a>
                     {/if}
                     </div>
                 {else}
-                    <a onclick="return confirm('Certain ?');" href="groups/subscribe/{$group->id()}?token={xsrf_token}">Rejoindre le groupe</a>
+                    <a onclick="return confirm(areyousure);" href="groups/subscribe/{$group->id()}?token={xsrf_token}">Rejoindre le groupe</a>
                 {/if}
             {/if}
             </div>
