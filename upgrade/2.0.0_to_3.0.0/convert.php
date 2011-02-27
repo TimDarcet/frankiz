@@ -199,7 +199,9 @@ while ($datas = $iter->next()) {
     $u->nickname(conv($datas['surnom']));
     $u->birthdate(new FrankizDateTime($datas['date_nais']));
     $u->gender(($datas['sexe'] == 1) ? User::GENDER_FEMALE : User::GENDER_MALE);
-    $u->mail($datas['mail']);
+    if (!empty($datas['mail'])) {
+        $u->email($datas['mail']);
+    }
     try {
         $u->cellphone(new Phone($datas['portable']));
     } catch(Exception $e) {
