@@ -76,7 +76,8 @@ class UserSelect extends Select
                    'castes' => array('castes'),
               'minimodules' => array('minimodules'),
                   'studies' => array('studies'),
-                 'comments' => array('comments'));
+                 'comments' => array('comments'),
+           'defaultfilters' => array('defaultfilters'));
     }
 
     protected function handler_main(Collection $users, array $fields) {
@@ -91,6 +92,11 @@ class UserSelect extends Select
         if (in_array('poly', $fields)) {
             $cols['p']  = array('poly');
             $joins['p'] = PlSqlJoin::left('poly', '$ME.uid = a.uid');
+        }
+
+        if (in_array('default_filters', $fields)) {
+            $cols['udf']  = array('default_filters');
+            $joins['udf'] = PlSqlJoin::left('users_defaultfilters', '$ME.uid = a.uid');
         }
 
         $this->helper_main($users, $cols, $joins);
@@ -142,6 +148,29 @@ class UserSelect extends Select
         }
     }
 
+    protected function handler_defaultfilters(Collection $users, $fields) {
+        foreach ($users as $u) {
+            $u->fillFromArray(array('defaultfilters' => new Collection('Group')));
+        }
+
+        $iter = XDB::iterRow('SELECT  uid AS id, defaultfilters
+                                FROM  users_defaultfilters
+                               WHERE  uid IN {?}', $users->ids());
+
+        $groups = new Collection('Group');
+        while (list($uid, $defaultfilters) = $iter->next()) {
+            $defaultfilters = json_decode($defaultfilters);
+            $defaultgroups = new Collection('Group');
+            $defaultgroups->add($defaultfilters);
+            $groups->safeMerge($defaultgroups);
+            $users->get($uid)->fillFromArray(array('defaultfilters' => $defaultgroups));
+        }
+
+        if (!empty($groups) && !empty($this->subs['defaultfilters'])) {
+            $groups->select($this->subs['defaultfilters']);
+        }
+    }
+
     protected function handler_comments(Collection $users, $fields) {
         $_users = array();
         foreach ($users as $u) {
@@ -186,8 +215,10 @@ class UserSelect extends Select
     }
 
     public static function login() {
-        return new UserSelect(array_merge(self::$natives, array('rooms', 'minimodules', 'castes', 'poly', 'comments')),
-                              array('castes' => CasteSelect::group()));
+        return new UserSelect(array_merge(self::$natives,
+                                          array('rooms', 'minimodules', 'castes', 'poly', 'comments', 'defaultfilters')),
+                              array('castes' => CasteSelect::group(),
+                            'defaultfilters' => GroupSelect::base()));
     }
 
     public static function tol() {
@@ -256,6 +287,8 @@ class User extends Meta
     protected $email = null;
     protected $email_format = null;  // Acceptable values are FORMAT_HTML and FORMAT_TEXT
 
+    protected $bestEmail = null;
+
     // Names
     protected $firstname = null;
     protected $lastname  = null;
@@ -303,6 +336,9 @@ class User extends Meta
     // Poly
     protected $poly = null;
 
+    // Default filters
+    protected $defaultfilters = null;
+
     /*******************************************************************************
          Getters & Setters
 
@@ -317,20 +353,25 @@ class User extends Meta
         return $this->hruid;
     }
 
-    public function bestEmail($email = null)
+    /**
+    * Tries to returns an email adresse of the user even if
+    * the emil field is empty.
+    *
+    * /!\ To set the 'email' field, use the email() setter
+    *
+    */
+    public function bestEmail()
     {
-        if ($email != null) {
-            $this->email = $email;
-            XDB::execute('UPDATE account SET email = {?} WHERE uid = {?}', $this->email, $this->id());
-        }
-
         if ($this->email == '') {
-            $res = XDB::fetchOneRow("SELECT  s.forlife, f.domain
-                                       FROM  studies AS s
-                                 INNER JOIN  formations AS f
-                                         ON  s.formation_id = f.formation_id
-                                      WHERE  s.uid = {?} ", $this->id);
-            return $res[0] . '@' . $res[1];
+            if (empty($this->bestEmail)) {
+                $res = XDB::fetchOneRow("SELECT  s.forlife, f.domain
+                                           FROM  studies AS s
+                                     INNER JOIN  formations AS f
+                                             ON  s.formation_id = f.formation_id
+                                          WHERE  s.uid = {?} ", $this->id);
+                $this->bestEmail = $res[0] . '@' . $res[1];
+            }
+            return $this->bestEmail;
         }
         return $this->email;
     }
@@ -481,6 +522,29 @@ class User extends Meta
                           ON DUPLICATE KEY UPDATE poly = {?}', $this->id(), $poly, $poly);
         }
         return $this->poly;
+    }
+
+    /**
+    * Getter & Setter for the groups to be displayed by default in the groups_pickers
+    * /!\ When you set a Collection, the groups must have been fetched.
+    */
+    public function defaultFilters(Collection $groups = null)
+    {
+        if ($groups !== null) {
+            if ($groups === false) {
+                XDB::execute('DELETE FROM  users_defaultfilters
+                                    WHERE  uid = {?}', $this->id());
+            } else {
+                $export = json_encode($groups->ids());
+                XDB::execute('INSERT INTO  users_defaultfilters
+                                      SET  uid = {?}, defaultfilters = {?}
+                  ON DUPLICATE KEY UPDATE  defaultfilters = {?}',
+                                           $this->id(), $export, $export);
+            }
+            $this->defaultfilters = $groups;
+        }
+
+        return $this->defaultfilters;
     }
 
     /*******************************************************************************
