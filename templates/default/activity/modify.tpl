@@ -22,11 +22,11 @@
 
 {js src="activities.js"}
 
-<div class="msg hide">
+<div class="msg">
     {$msg}
 </div>
 
-{if $delete}
+{if t($delete) && $delete}
     <div class="msg">
         L'activité a été supprimée.
     </div>

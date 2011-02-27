@@ -222,7 +222,7 @@ class ActivityInstance extends meta
         $a['writer'] = array('displayName'  => $this->writer->displayName(),
                              'id'           => $this->writer->id(),
                              'login'        => $this->writer->login(),
-                             'photo'        => $this->writer->photo()->src('micro'));
+                             'photo'        => $this->writer->image()->src('micro'));
         $a['target'] = array('name'         => $this->activity->target_group()->name(),
                              'label'        => $this->activity->target_group()->label());
         if ($this->activity->origin() != false) {

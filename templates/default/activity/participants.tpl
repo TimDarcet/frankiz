@@ -22,7 +22,7 @@
 
 {js src="activities.js"}
 
-{if $msg}
+{if t($msg) && $msg}
     <div class="msg_proposal">
         {$msg}
     </div>
