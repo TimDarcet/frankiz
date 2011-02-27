@@ -39,6 +39,8 @@
 
     <a href="http://www.frankiz.net">Frankiz</a> ·
 
+    <a href="http://br.frankiz.net">WikiBR</a> ·
+
     <a href="http://ik.frankiz.net">InfoKès</a>
 </div>
 
