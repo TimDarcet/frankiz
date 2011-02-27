@@ -1,6 +1,6 @@
 {**************************************************************************}
 {*                                                                        *}
-{*  Copyright (C) 2010 Binet Réseau                                       *}
+{*  Copyright (C) 2011 Binet RÃ©seau                                       *}
 {*  http://www.polytechnique.fr/eleves/binets/reseau/                     *}
 {*                                                                        *}
 {*  This program is free software; you can redistribute it and/or modify  *}
@@ -21,7 +21,7 @@
 {**************************************************************************}
 
 
-Voici {if !$multiple}ta clé{/if}{if $multiple}tes clés{/if} de licence{if !$multiple} pour {$keys[0]->softwareName()}{/if} :
+Voici {if !$multiple}ta clÃ©{/if}{if $multiple}tes clÃ©s{/if} de licence{if !$multiple} pour {$keys[0]->softwareName()}{/if} :
 
 -------------------------------------------------------------------------
 {foreach from=$keys item=k}
@@ -30,7 +30,7 @@ Voici {if !$multiple}ta clé{/if}{if $multiple}tes clés{/if} de licence{if !$mult
 
 -------------------------------------------------------------------------
 
-Tu peux télécharger {$keys[0]->softwareName()} sur ftp://enez/
+Tu peux tÃ©lÃ©charger {$keys[0]->softwareName()} sur ftp://enez/
 
 Cordialement,
 Le BR

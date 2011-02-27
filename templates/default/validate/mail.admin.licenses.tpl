@@ -25,7 +25,7 @@ Bonjour,
 
 Pour valider ou non cette demande va sur la page suivante : 
 
-http://frankiz.polytechnique.fr/admin/validate
+{$globals->baseurl}/admin/validate/licenses
 
 
 Cordialement,

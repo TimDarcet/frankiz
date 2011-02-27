@@ -26,19 +26,16 @@ Ta licence pour {$software_name} t'a été accordée.
 Tu recevras ta clé par courriel dans quelques instants.
 
 {$comm|smarty:nodefaults}
-
-Cordialement,
-Le BR
 {else}
 Ta licence pour {$software_name} ne t'a pas été accordée pour la raison suivante :
 {$comm|smarty:nodefaults}
 
 
-Désolé 
+Désolé
+{/if}
 
 Cordialement,
 Le BR
-{/if}
 
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
