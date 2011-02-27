@@ -21,19 +21,12 @@
 {**************************************************************************}
 
 <div class="formulaire">
-Trombino:
     <form enctype="multipart/form-data" method="post" action="tol/">
         <input type="text" name="free" value="" />
-        <input type="submit" name="ok" value="Chercher" />
-    </form>
-</div>
-
-<div class="formulaire">
-Wikix:
-    <form enctype="multipart/form-data" method="post" action="http://wikix.polytechnique.org/eleves/wikix/Sp%C3%A9cial:Recherche">
         <input name="go" value="Consulter" type="hidden">
-        <input name="search" value="" type="text">
-        <input name="ok" value="Chercher" type="submit">
+
+        <input name="search" value="TOL" type="submit">
+        <input name="ok" value="Wikix" type="submit" onclick="$(this).closest('form').attr('action', 'http://wikix.polytechnique.org/eleves/wikix/Sp%C3%A9cial:Recherche')">
     </form>
 </div>
 
