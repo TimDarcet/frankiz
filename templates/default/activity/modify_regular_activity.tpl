@@ -26,6 +26,7 @@
 
 <div class="body">
     <form enctype="multipart/form-data" method="post" action="activity/regular/modify/{$activity->id()}" id="activity_modify">
+        {xsrf_token_field}
         <table>
             <tr>
                 <td width=20%>

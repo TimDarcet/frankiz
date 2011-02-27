@@ -148,13 +148,7 @@
                         <script>{literal}
                         $(function() {
                             var dates = $( "#begin, #end" ).datetimepicker({
-                                minDate: new Date(),
-                                maxDate: "+31D",
-                                onSelect: function( selectedDate ) {
-                                    var option = this.id == "begin" ? "minDate" : "maxDate";
-                                    dates.not( this ).datepicker( "option", option, selectedDate );
-                                }
-                            });
+                                minDate: new Date(), maxDate: "+31D"});
                             $("#begin").datetimepicker('setDate', new Date());
                             $("#end").datetimepicker('setDate', new Date());
                         });

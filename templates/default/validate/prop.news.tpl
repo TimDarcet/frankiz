@@ -95,13 +95,7 @@
                         <script>{literal}
                         $(function() {
                             var dates = $( "#begin, #end" ).datetimepicker({
-                                minDate: new Date(),
-                                maxDate: "+7D",
-                                onSelect: function( selectedDate ) {
-                                    var option = this.id == "begin" ? "minDate" : "maxDate";
-                                    dates.not( this ).datepicker( "option", option, selectedDate );
-                                }
-                            });
+                                minDate: new Date(), maxDate: "+7D"});
                             $("#begin").datetimepicker('setDate', new Date());
                             var end = new Date();
                             end.setDate(end.getDate() + 1);
