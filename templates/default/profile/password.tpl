@@ -20,22 +20,55 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if $recovery}
-Cette session temporaire te permet de changer ton mot de passe.
+{if $msg}
+    {foreach from=$msg item=message}
+        <div class="msg">
+            {$message|smarty:nodefaults}
+        </div>
+    {/foreach}
 {/if}
 
-{if $changed}
-Le mot de passe a bien été changé
+{if $err}
+    {foreach from=$err item=error}
+        <div class="error">
+            {$error|smarty:nodefaults}
+        </div>
+    {/foreach}
 {/if}
 
-<form enctype="multipart/form-data" method="post" action="profile/password">
-    <div>
-        <label>Nouveau mot de passe :
-            <input type="password" name="new_password" value="" />
-        </label>
-    </div>
-    <div>
-        <input type="submit" name="valider" value="Valider" />
+<form enctype="multipart/form-data" method="post" action="profile/password" class="profile">
+    <div class="module password">
+        <div class="head">
+            <span class="helper" target="profile/password"></span>
+            Changement du mot de passe
+        </div>
+        <div class="body">
+            <table>
+                <tr>
+                    <td width="22%">
+                        Mot de passe&nbsp;:
+                    </td>
+                    <td class="form val">
+                        <input id="p1" type='password' name='new_passwd1' required {literal}pattern="(?=^.{6,}$).*"{/literal}
+                               autocomplete="off"  title="Le mot de passe doit faire au moins 6 caractères."/>
+                        <div class="validation">
+                            minimum de 6 caractères.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Retaper le mot de passe&nbsp;:
+                    </td>
+                    <td class="form val">
+                        <input type='password' name='new_passwd2' required {literal}pattern="(?=^.{6,}$).*"{/literal}
+                               autocomplete="off" title="Le mot de passe doit faire au moins 6 caractères."/>
+                    </td>
+                </tr>
+            </table>
+
+            <input type="submit" name="new_passwd" value="Enregistrer">
+        </div>
     </div>
 </form>
 
