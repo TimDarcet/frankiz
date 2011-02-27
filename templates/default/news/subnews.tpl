@@ -51,7 +51,7 @@
             <div class="content">
                 <div class="body">
                     {if $news->image()}
-                        <a href="{$news->image()|image:'full'}" fancy="fancy"><img class="image" src="{$news->image()|image:'small'}" /></a>
+                        <a href="{$news->image()|image:'full'}" fancy="fancy"><img class="image" src="{$news->image()|image:'big'}" /></a>
                     {/if}
                     {$news->content()|miniwiki:'title'|smarty:nodefaults}
                     <br class="clear" />
