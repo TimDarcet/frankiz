@@ -31,4 +31,16 @@
 {js src="minimodules.js"}
 {js src="jquery.fancybox.js"}
 
+<script>
+    {if $logged}
+        {if $smarty.session.user->isFemale()}
+            var areyousure = 'Certaine ?';
+        {else}
+            var areyousure = 'Certain ?';
+        {/if}
+    {else}
+        var areyousure = 'Certain ?';
+    {/if}
+</script>
+
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
