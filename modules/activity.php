@@ -112,37 +112,31 @@ class ActivityModule extends PLModule
 
         if ($id !== false)
         {
-	        $a = $c->get($id);
-            
-	        if($a === false) {
+            $a = $c->get($id);
+
+            if($a === false) {
                 throw new Exception("Invalid credentials");
             }
 
-	        if (Env::has('modify'))
-	        {
+            if (Env::has('modify')) {
                 S::assert_xsrf_token();
                 
                 try
                 {
                     $begin = new FrankizDateTime(Env::t('begin'));
                     $end = new FrankizDateTime(Env::t('end'));
-                    if ($a->regular())
-                    {
-
+                    if ($a->regular()) {
                         $a->comment(Env::t('comment'));
                         $a->begin($begin);
                         $a->end($end);
                         $page->assign('msg', 'L\'activité a été modifiée.');
-                    }
-                    else
-                    {
+                    } else {
                         $a->begin($begin);
                         $a->end($end);
 
                         $a1 = $a->activity();
                         $a1->title(Env::t('title', $a1->title()));
                         $a1->description(Env::t('description', $a1->description()));
-                        $a1->replace();
                         $page->assign('msg', 'L\'activité a été modifiée.');
                     }
                 }

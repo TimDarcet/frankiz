@@ -54,19 +54,11 @@
                     required {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$).*"{/literal}/>
                 à  <input type="text" name="end" id="end" value=""
                     required {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$).*"{/literal}/>
-                {assign}
                 <script>{literal}
                 $(function() {
                     var begin = new Date('{/literal}{$activity->begin()|datetime:'m/d/Y H:i'}{literal}');
                     var end = new Date('{/literal}{$activity->end()|datetime:'m/d/Y H:i'}{literal}');
-                    var dates = $( "#begin, #end" ).datetimepicker({
-                        minDate: new Date(),
-                        maxDate: "+31D",
-                        onSelect: function( selectedDate ) {
-                            var option = this.id == "begin" ? "minDate" : "maxDate";
-                            dates.not( this ).datepicker( "option", option, selectedDate );
-                        }
-                    });
+                    var dates = $("#begin, #end").datetimepicker({ minDate: begin, maxDate: "+31D"});
                     $("#begin").datetimepicker('setDate', begin);
                     $("#end").datetimepicker('setDate', end);
                 });
