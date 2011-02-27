@@ -249,10 +249,13 @@ class Collection implements IteratorAggregate, Countable
     * and replace if necessary elements from the source collections
     * so that they are not to differents instances with the same id
     *
-    * @param $collecs Array of Collections
+    * @param $collecs Collection or Array of Collections
     */
-    public function safeMerge(array $collecs)
+    public function safeMerge($collecs)
     {
+        if ($collecs instanceof Collection) {
+            $collecs = array($collecs);
+        }
         foreach($collecs as $collec) {
             foreach ($collec->collected as $id => $c) {
                 if ($this->get($id)) {
