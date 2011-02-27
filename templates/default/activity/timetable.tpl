@@ -127,13 +127,15 @@
 
 <div id="activity_show" class="module timetable">
     <div class="head">
-        <span class="origin">
-        </span>
-        <span class="title">
-        </span>
-        <span class="close_show">
+        <table><tr>
+        <td class="origin">
+        </td>
+        <td class="title">
+        </td>
+        <td class="close_show">
         [X]
-        </span>
+        </td>
+        </tr></table>
     </div>
     <div class="padd body">
         <div class="one_day">
