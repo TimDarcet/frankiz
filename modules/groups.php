@@ -115,7 +115,7 @@ class GroupsModule extends PLModule
         }
         $own = new GroupFilter(new PFC_And($conditions, new GFC_User(S::user()->id())), $order);
         $all = new GroupFilter($conditions, $order);
-        
+
         if (Json::b('html')) {
             // Groups Module
             $own = $own->get();
@@ -382,37 +382,39 @@ class GroupsModule extends PLModule
             $users = $uf->get(new PlLimit($limit, (Json::i('page', 1) - 1) * $limit));
             $total = $uf->getTotalCount();
 
-            $users->select(UserSelect::base());
-
-            /*
-             * Fetching rights
-             */
-            $users_rights = $group->selectRights($users);
-
-            /*
-             * Fetching comments
-             */
-            $users_comments = array();
-            $iter = XDB::iterRow('SELECT  uid, comment
-                                    FROM  users_comments
-                                   WHERE  gid = {?} AND uid IN {?}',
-                                          $group->id(), $users->ids());
-
-            while (list($uid, $comment) = $iter->next()) {
-                $users_comments[$uid] = $comment;
-            }
-
-            /*
-             * Exporting
-             */
             $export = array();
-            $page->assign('defaultrights', array(Rights::admin(), Rights::member(), Rights::friend()));
-            foreach ($users as $uid => $u) {
-                $page->assign('user', $u);
-                $page->assign('rights', (empty($users_rights[$uid])) ? array() : $users_rights[$uid]);
-                $page->assign('comment', (empty($users_comments[$uid])) ? "" : $users_comments[$uid]);
+            if ($users->count() > 0) {
+                $users->select(UserSelect::base());
 
-                $export[$uid] = $page->filteredFetch(FrankizPage::getTplPath('groups/admin_user.tpl'));
+                /*
+                 * Fetching rights
+                 */
+                $users_rights = $group->selectRights($users);
+
+                /*
+                 * Fetching comments
+                 */
+                $users_comments = array();
+                $iter = XDB::iterRow('SELECT  uid, comment
+                                        FROM  users_comments
+                                       WHERE  gid = {?} AND uid IN {?}',
+                                              $group->id(), $users->ids());
+
+                while (list($uid, $comment) = $iter->next()) {
+                    $users_comments[$uid] = $comment;
+                }
+
+                /*
+                 * Exporting
+                 */
+                $page->assign('defaultrights', array(Rights::admin(), Rights::member(), Rights::friend()));
+                foreach ($users as $uid => $u) {
+                    $page->assign('user', $u);
+                    $page->assign('rights', (empty($users_rights[$uid])) ? array() : $users_rights[$uid]);
+                    $page->assign('comment', (empty($users_comments[$uid])) ? "" : $users_comments[$uid]);
+
+                    $export[$uid] = $page->filteredFetch(FrankizPage::getTplPath('groups/admin_user.tpl'));
+                }
             }
         }
 

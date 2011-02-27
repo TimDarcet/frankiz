@@ -81,6 +81,7 @@ var users = function() {
 
                 if (users.length == 0) {
                     $table.empty();
+                    $("#section .admin_users .pages").empty();
                 }
 
                 // Pages
