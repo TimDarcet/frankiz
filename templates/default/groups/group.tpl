@@ -45,14 +45,17 @@
         <td class="users">
             <div class="me">
             {if $smarty.session.auth >= AUTH_COOKIE}
-                {if $user->hasRights($group)}
+                {if $user|hasRights:$group:'restricted'}
                     <div class="comments">
                         <label>Commentaire<br />
                         <input type="text" name="comments" value="{$user->comments($group)}" />
                     </label>
                     </div>
+
                     <div>
-                    {if $group->leavable()}
+                    {if $user|hasRights:$group:'admin'}
+                            <a href="groups/admin/{$group->name()}">Administrer le groupe</a>
+                    {else if $group->leavable()}
                         <a onclick="return confirm(areyousure);" href="groups/unsubscribe/{$group->id()}?token={xsrf_token}">Quitter le groupe</a>
                     {/if}
                     </div>
