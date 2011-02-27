@@ -320,25 +320,25 @@ XDB::execute('UPDATE account SET skin = "default"');
 echo "default skin set \n";
 
 XDB::execute('INSERT INTO users_minimodules
-                          (SELECT uid, "days",         "COL_LEFT",   0 FROM account WHERE uid > 0)');
+                          (SELECT uid, "birthday",     "COL_LEFT",   0 FROM account WHERE uid > 0)');
 XDB::execute('INSERT INTO users_minimodules
-                          (SELECT uid, "birthday",     "COL_LEFT",   1 FROM account WHERE uid > 0)');
+                          (SELECT uid, "days",         "COL_LEFT",   1 FROM account WHERE uid > 0)');
 XDB::execute('INSERT INTO users_minimodules
                           (SELECT uid, "ik",           "COL_LEFT",   2 FROM account WHERE uid > 0)');
 XDB::execute('INSERT INTO users_minimodules
-                          (SELECT uid, "meteo",        "COL_MIDDLE", 0 FROM account WHERE uid > 0)');
+                          (SELECT uid, "qdj",          "COL_MIDDLE", 0 FROM account WHERE uid > 0)');
 XDB::execute('INSERT INTO users_minimodules
                           (SELECT uid, "jtx",          "COL_MIDDLE", 1 FROM account WHERE uid > 0)');
 XDB::execute('INSERT INTO users_minimodules
-                          (SELECT uid, "qdj",          "COL_RIGHT",  0 FROM account WHERE uid > 0)');
-XDB::execute('INSERT INTO users_minimodules
-                          (SELECT uid, "groups",       "COL_RIGHT",  1 FROM account WHERE uid > 0)');
+                          (SELECT uid, "groups",       "COL_RIGHT",  0 FROM account WHERE uid > 0)');
 XDB::execute('INSERT INTO users_minimodules
                           (SELECT uid, "quicksearch",  "COL_FLOAT",  0 FROM account WHERE uid > 0)');
 XDB::execute('INSERT INTO users_minimodules
-                          (SELECT uid, "news",         "COL_FLOAT",  1 FROM account WHERE uid > 0)');
+                          (SELECT uid, "activity",     "COL_FLOAT",  1 FROM account WHERE uid > 0)');
 XDB::execute('INSERT INTO users_minimodules
-                          (SELECT uid, "todo",         "COL_FLOAT",  2 FROM account WHERE uid > 0)');
+                          (SELECT uid, "news",         "COL_FLOAT",  2 FROM account WHERE uid > 0)');
+XDB::execute('INSERT INTO users_minimodules
+                          (SELECT uid, "todo",         "COL_FLOAT",  3 FROM account WHERE uid > 0)');
 
 echo "default minimodules set \n";
 
