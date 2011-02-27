@@ -33,7 +33,7 @@ class NewsMiniModule extends FrankizMiniModule
 
     public function title()
     {
-        return 'Annonces non lues';
+        return 'Annonces';
     }
 
     public function run()
