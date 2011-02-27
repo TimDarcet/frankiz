@@ -29,6 +29,12 @@
 {js src="plugins/jquery.ifrmdailog.js"}
 {js src="plugins/jquery.calendar.js"}
 
+{if isset($date|smarty:nodefaults)}
+    <script>
+        var date_cal = new Date('{$date|datetime:'m/d/Y H:i'}');
+    </script>
+{/if}
+
 {js src="activities.js"}
 {js src="wdcalendar.js"}
 
@@ -178,7 +184,27 @@
         </div>
         <div class="participants">
         </div>
+        <div class="misc">
+            <div class="mail">
+                <a href=""><div class="mail_ico"></div>Mail</a>
+            </div>
+            <div class="participants_link">
+                <a href=""><div class="group"></div>Participants</a>
+            </div>
+            <div class="admin">
+                <a href=""><div class="edit"></div>Modifier</a>
+            </div>
+        </div>
     </div>
 </div>
+
+{if isset($id|smarty:nodefaults)}
+    <script>
+        $(function() {literal}{{/literal}
+            load([{$id}], true);
+            $('#activity_show').show();
+        {literal}}{/literal});
+    </script>
+{/if}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

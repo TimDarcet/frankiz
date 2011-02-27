@@ -15,7 +15,6 @@ $(function() {
         theme: 3,
         height: Math.max(_MH - dvH - 220, 400),
         eventItems: [],
-        showday: new Date(),
         ViewCmdhandler: View,
         onWeekOrMonthToDay: wtd,
         onBeforeRequestData: cal_beforerequest,
@@ -26,6 +25,10 @@ $(function() {
         url: "activity/ajax/timetable"
     };
 
+    if ( typeof( date_cal ) != "undefined" ) {
+        op.showday = date_cal;
+    }
+    
     var $container = $("#gridcontainer");
     var p = $container.bcalendar(op).BcalGetOp();
 

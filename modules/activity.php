@@ -31,7 +31,7 @@ class ActivityModule extends PLModule
             'activity/modify'               => $this->make_hook('modify',               AUTH_MDP),
             'activity/regular/new'          => $this->make_hook('new_regular',          AUTH_MDP),
             'activity/regular/modify'       => $this->make_hook('modify_regular',       AUTH_MDP),
-            'activity/participants'         => $this->make_hook('participants',         AUTH_MDP),
+            'activity/participants'         => $this->make_hook('participants',         AUTH_COOKIE),
             'activity/participants/add'     => $this->make_hook('participants_add',     AUTH_COOKIE),
             'activity/participants/del'     => $this->make_hook('participants_del',     AUTH_COOKIE),
             'activity/ajax/get'             => $this->make_hook('ajax_get',             AUTH_INTERNAL),
@@ -64,8 +64,20 @@ class ActivityModule extends PLModule
         $page->changeTpl('activity/activities.tpl');
     }
 
-    function handler_timetable($page)
+    function handler_timetable($page, $id = false)
     {
+        if ($id !== false) {
+            $act = new ActivityInstanceFilter(
+                new PFC_And(
+                    new AIFC_Id($id),
+                    new PFC_Or (
+                        new AIFC_User(S::user(), 'restricted'),
+                        new AIFC_User(S::user(), 'everybody'))));
+            $act = $act->get(true);
+            $act->select(ActivityInstanceSelect::base());
+            $page->assign('date', $act->begin());
+            $page->assign('id', $act->id());
+        }
         $page->addCssLink('wdcalendar.css');
         $page->addCssLink('activity.css');
         $page->assign('title', 'Emploi du temps');
@@ -96,13 +108,10 @@ class ActivityModule extends PLModule
         $c = $activities->get();
         $c->select(ActivityInstanceSelect::base());
 
-        if (Env::has('admin_id')) {
-            $id = Env::i('admin_id');
-        }
+        $id = Env::i('admin_id', $id);
 
         if ($id !== false)
         {
-            $id = Env::i('admin_id');
 	        $a = $c->get($id);
             
 	        if($a === false) {
@@ -179,7 +188,7 @@ class ActivityModule extends PLModule
         $days           = Env::v('days');
         $target         = Env::i('target_group_activity', '');
         $caste          = (Env::has('target_everybody_activity'))?'everybody':'restricted';
-        
+
         if (Env::has('send'))
         {
             S::assert_xsrf_token();
@@ -196,10 +205,14 @@ class ActivityModule extends PLModule
             {
                 $days = implode(',', $days);
                 $target = new Group($target);
-                $target->select(GroupSelect::castes());
+                $target->select(GroupSelect::validate());
                 
                 if (!S::user()->hasRights($target, Rights::admin())) {
                     throw new Exception("Invalid credentials");
+                }
+
+                if ($target->ns() == Group::NS_USER) {
+                    $caste = 'restricted';
                 }
                 
                 $a = new Activity(array(
@@ -220,10 +233,9 @@ class ActivityModule extends PLModule
         $page->assign('description', $description);
         $page->assign('begin', $default_begin);
         $page->assign('end', $default_end);
-        $page->assign('priv', $priv);
         
         $page->assign('title', 'Créer une activité régulière');
-        $page->changeTpl('activity/new_regular_activity.tpl');
+        $page->changeTpl('activity/create_regular_activity.tpl');
     }
     
 
@@ -272,44 +284,41 @@ class ActivityModule extends PLModule
         $page->changeTpl('activity/modify_regular.tpl');
     }
 
-    function handler_participants($page)
+    function handler_participants($page, $id)
     {
-        $activities = new ActivityInstanceFilter(
-            new PFC_Or (new PFC_And(new AIFC_END(new FrankizDateTime(), AIFC_End::AFTER),
-                                    new AIFC_User(S::user(), 'restricted')),
-                        new PFC_And(new AIFC_END(new FrankizDateTime(), AIFC_End::AFTER),
-                                    new AIFC_User(S::user(), 'everybody'))));
-        $c = $activities->get();
-        $c->select(ActivityInstanceSelect::all());
-        
-        if (Env::has('participants_id'))
-        {
-            $id = Env::i('participants_id');
-	        $a = $c->get($id);
-            
-            if ($a === false) {
-                throw new Exception("Invalid credentials");
-            }
-            
-            if (Env::has('mail')) {
-                S::assert_xsrf_token();
-                
-                if (Env::t('mail_body') != '' && s::user()->id() == $a->writer()->id()) {
-                    $mail = new FrankizMailer();
-                    $mail->subject('[Mail groupé] Activité ' . $a->title() . ' du ' . $a->date() . ' à ' . $a->hour_begin());
-                    $mail->body(Env::t('mail_body'));
-                    $mail->setFrom(S::user()->bestEmail(), S::user()->displayName());
-                    $mail->toUserFilter(new UserFilter(new UFC_ActivityInstance($a->id())));
-                    $mail->sendLater(false);
-                }
-                else
-                    $page->assign('msg', 'Votre mail n\'est pas rempli.');
-            }
-            $page->assign('user', s::user());
-            $page->assign('id', $id);
-	        $page->assign('activity', $a);
+        $act = new ActivityInstanceFilter(
+            new PFC_And(
+                new AIFC_Id($id),
+                new PFC_Or (
+                    new AIFC_User(S::user(), 'restricted'),
+                    new AIFC_User(S::user(), 'everybody'))));
+        $act = $act->get(true);
+
+        if ($act === false) {
+            throw new Exception("Invalid credentials");
         }
-        $page->assign('activities', $c);
+
+        $act->select(ActivityInstanceSelect::all());
+
+            
+        if (Env::has('mail')) {
+            S::assert_xsrf_token();
+
+            if (Env::t('mail_body') != '' && s::user()->id() == $act->writer()->id()) {
+                $mail = new FrankizMailer();
+                $mail->subject('[Mail groupé] Activité ' . $act->title() . ' du ' . $act->date() . ' à ' . $act->hour_begin());
+                $mail->body(Env::t('mail_body'));
+                $mail->setFrom(S::user()->bestEmail(), S::user()->displayName());
+                $mail->toUserFilter(new UserFilter(new UFC_ActivityInstance($act->id())));
+                $mail->sendLater(false);
+            }
+            else
+                $page->assign('msg', 'Votre mail n\'est pas rempli.');
+        }
+
+        $page->assign('user', s::user());
+        $page->assign('id', $id);
+        $page->assign('activity', $act);
 
         $page->assign('title', 'Participants à une activité');
         $page->addCssLink('activity.css');
@@ -445,23 +454,6 @@ class ActivityModule extends PLModule
             
             $page->assign('activity', $a);
             $result = $page->fetch(FrankizPage::getTplPath('activity/modify_regular_activity.tpl'));
-            
-            $page->jsonAssign('success', true);
-            $page->jsonAssign('activity', $result);
-        }
-        elseif(isset($json->participants))
-        {
-            $a = new ActivityInstance($id);
-            $a->select(ActivityInstanceSelect::all());
-
-            if (!S::user()->hasRights($a->target()->group(), 
-                                      ($a->target()->rights())?Rights::restricted():Rights::everybody())) {
-                throw new Exception("Invalid credentials");
-            }
-            
-            $page->assign('activity', $a);
-            $page->assign('user', s::user());
-            $result = $page->fetch(FrankizPage::getTplPath('activity/participants_activity.tpl'));
             
             $page->jsonAssign('success', true);
             $page->jsonAssign('activity', $result);

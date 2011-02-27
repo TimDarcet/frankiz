@@ -37,16 +37,6 @@ $(document).ready(function() {
         $("#activity_show").show();
     });
 
-    $("input[name='participants_id']").change(function(){
-        request({ "url": 'activity/ajax/admin/'
-                ,"data": {'id': $("input[@name='participants_id']:checked").val(), 'participants': true}
-             ,"success": function(json) {
-                    $("#participants_show").html(json.activity);
-             }
-        });
-        $("#participants_show").show();
-    });
-
     $('#activities_list .day .activity').hover(function(){
         load(new Array($(this).attr('aid')), true);
     })
@@ -119,17 +109,26 @@ function show(id)
 
     if (!results[id].participate)
     {
-        var html = '<a onclick="present(' + id + ');">S\'inscrire</a>';
-        $("#activity_show .body .participate").html(html);
+        //var html = '<a onclick="present(' + id + ');">S\'inscrire</a>';
+        //$("#activity_show .body .participate").html(html);
+        $("#activity_show .body .present a").unbind('click');
+        $("#activity_show .body .present a").click(function() {present(id);});
+        $("#activity_show .body .present").show();
+        $("#activity_show .body .out").hide();
     }
     else
     {
-        var html = '<a onclick="out(' + id + ');">Se désinscrire</a>';
-        $("#activity_show .body .participate").html(html);
+        //var html = '<a onclick="out(' + id + ');">Se désinscrire</a>';
+        //$("#activity_show .body .participate").html(html);
+        $("#activity_show .body .out a").unbind('click');
+        $("#activity_show .body .out a").click(function() {out(id);});
+        $("#activity_show .body .out").show();
+        $("#activity_show .body .present").hide();
     }
 
     $("#activity_show .body .description").html(results[id].description);
     $("#activity_show .body .comment").html(results[id].comment);
+
     if (results[id].begin.toLocaleDateString() == results[id].end.toLocaleDateString()) {
         $("#activity_show .body .one_day").show();
         $("#activity_show .body .several_days").hide();
@@ -151,6 +150,25 @@ function show(id)
     $.each(results[id].participants, function(index, value) {
         $("#activity_show .body .participants").append('<div class="participant">' + value.displayName + '</div>');
     });
+
+    if (results[id].isWriter) {
+        $("#activity_show .body .misc .mail a").attr('href', 'activity/participants/' + id);
+        $("#activity_show .body .misc .mail").show();
+        $("#activity_show .body .misc .participants_link").hide();
+    }
+    else {
+        $("#activity_show .body .misc .participants_link a").attr('href', 'activity/participants/' + id);
+        $("#activity_show .body .misc .participants_link").show();
+        $("#activity_show .body .misc .mail").hide();
+    }
+
+    if (results[id].canEdit) {
+        $("#activity_show .body .misc .admin a").attr('href', 'activity/modify/' + id);
+        $("#activity_show .body .misc .admin").show();
+    }
+    else {
+        $("#activity_show .body .admin").hide();
+    }
     $("#activity_show").show();
 }
 

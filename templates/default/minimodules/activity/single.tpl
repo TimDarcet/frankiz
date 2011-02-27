@@ -23,10 +23,18 @@
 
 <div class="title">
     {$activity->title()}
-    <a onclick="activity.present({$activity->id()});" class="right">+1</a>
+    <a onclick="activity.present({$activity->id()});" class="right"><span class="add_participant"></span></a>
 </div>
 <div class="body">
-    Heures : de {$activity->hour_begin()} à {$activity->hour_end()}
+    {if ($activity->hour_begin($day) == false) && ($activity->hour_end($day) == false)}
+        Toute la journée
+    {elseif $activity->hour_begin($day) == false}
+        Jusqu'à {$activity->hour_end()}
+    {elseif ($activity->hour_end($day) == false)}
+        A partir de {$activity->hour_begin()}
+    {else}
+        de {$activity->hour_begin()} à {$activity->hour_end()}
+    {/if}
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

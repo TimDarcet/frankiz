@@ -39,6 +39,7 @@
     
     a {
         text-decoration: none;
+        font-variant: normal;
     }
 
     .day{
@@ -105,10 +106,26 @@
         text-align: center;
     }
 
-    .participate {
+    .present, .out {
         text-align: center;
         cursor: pointer;
         margin-top: 10px;
+
+        .add_participant {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background-image: url("../default/images/icons/group_add.gif");
+            background-repeat: no-repeat;
+        }
+
+        .remove_participant {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background-image: url("../default/images/icons/group_delete.gif");
+            background-repeat: no-repeat;
+        }
     }
 
     .description {
@@ -116,11 +133,34 @@
     }
 
     .section {
-    margin-top: 10px;
-    padding-top: 10px;
-    margin-bottom: 5px;
-    font-weight: bold;
-    text-align: center;
+        margin-top: 10px;
+        padding-top: 10px;
+        margin-bottom: 5px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .misc {
+        text-align: right;
+
+        .mail {
+            display: inline-block;
+        }
+
+        .see_participants {
+            display: inline-block;
+
+            .group {
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                background-image: url("../default/images/icons/group.gif");
+                background-repeat: no-repeat;
+            }
+        }
+        .admin {
+            display: inline-block;
+        }
     }
 }
 
@@ -157,4 +197,18 @@
         font-size: 80%;
         cursor: pointer;
     }
+}
+
+#modify_show {
+    .admin {
+        text-align: right;
+    }
+}
+
+.mail_ico {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("../default/images/icons/email_edit.png");
+    background-repeat: no-repeat;
 }

@@ -39,7 +39,6 @@
     </div>
 
     <div class="activities">
-        {$minimodule.activities|order:'hour_begin':false}
         {foreach from=$minimodule.activities item=activity}
             {include file="minimodules/activity/single.tpl"|rel}
         {/foreach}

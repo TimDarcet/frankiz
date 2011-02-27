@@ -47,7 +47,8 @@
                             <td width=20%></td>
                             <td>
                                 <input type="radio" name="admin_id" value="{$act->id()}" {if $id == $act->id()}checked{/if}>
-                                    {$act->title()} le {$act->date()|date_format} de {$act->hour_begin()} à {$act->hour_end()}
+                                    {$act->title()} du {$act->date()|date_format} à {$act->hour_begin()}
+                                     au {$act->end()|date_format} à {$act->hour_end()}
                             </td>
                         </tr>
                     {/foreach}

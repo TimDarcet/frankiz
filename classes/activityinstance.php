@@ -246,6 +246,8 @@ class ActivityInstance extends meta
         if (!isset( $a['participate']))
             $a['participate'] = false;
         $a['regular'] = $this->regular();
+        $a['canEdit'] = S::user()->hasRights($this->activity->target()->group(), Rights::admin());
+        $a['isWriter'] = S::user()->id() == $this->writer->id();
         return $a;
     }
     
