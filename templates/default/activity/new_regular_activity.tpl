@@ -29,8 +29,8 @@
         </div>
 
         <div class="body">
-            <table>
-                <tr>
+            <table class="bicol">
+                <tr class="pair">
                     <td width=20%>
                         Pour :
                     </td>
@@ -48,7 +48,7 @@
                     </td>
                 </tr>
 
-                <tr>
+                <tr class="pair">
                     <td>
                         Description :
                     </td>
@@ -72,8 +72,8 @@
                         <label><input type="checkbox" name="days[]" value="Sunday"/> Dimanche</label>
                     </td>
                 </tr>
-                
-                <tr>
+
+                <tr class="pair">
                     <td width=20%>
                         Horaires
                     </td>

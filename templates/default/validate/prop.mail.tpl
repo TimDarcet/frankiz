@@ -42,8 +42,8 @@
             Mail
         </div>
         <div class="body">
-            <table>
-                <tr>
+            <table class="bicol">
+                <tr class="pair">
                     <td width=20%>
                         Destinataire :
                     </td>
@@ -73,7 +73,7 @@
                     </td>
                 </tr>
 
-                <tr>
+                <tr class="pair">
                     <td>
                         Mail :
                     </td>

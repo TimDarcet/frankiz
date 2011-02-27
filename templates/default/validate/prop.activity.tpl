@@ -99,8 +99,8 @@
            Activité Ponctuelle
         </div>
         <div class="body">
-            <table>
-                <tr>
+            <table class="bicol">
+                <tr class="pair">
                     <td width=20%>
                         Au nom de :
                     </td>
@@ -118,7 +118,7 @@
                     </td>
                 </tr>
 
-                <tr>
+                <tr class="pair">
                     <td>
                         Titre :
                     </td>
@@ -136,7 +136,7 @@
                     </td>
                 </tr>
 
-                <tr>
+                <tr class="pair">
                     <td>
                         Date
                     </td>
