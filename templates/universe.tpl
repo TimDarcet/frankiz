@@ -41,7 +41,9 @@
 
     <a href="http://br.frankiz.net">WikiBR</a> ·
 
-    <a href="http://ik.frankiz.net">InfoKès</a>
+    <a href="http://ik.frankiz.net">InfoKès</a> ·
+
+    <a href="http://x-ray">X-Ray</a>
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
