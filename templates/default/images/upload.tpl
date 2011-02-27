@@ -37,26 +37,31 @@
                 L'image envoyée dépasse la taille maximale autorisée ({$allowed->x} * {$allowed->y})
             {elseif $bytes}
                 L'image envoyée dépasse la taille maximale autorisée ({$exception->allowed()})
+            {elseif $format}
+                L'image diot être dans un des formats suivants : Jpg, Png, Gif
             {else}
                 Erreur inconnue ({$exception->getMessage()})
             {/if}
             </span>
         {/if}
 
-        <label><input type="file" name="file" {if $exception}style="display:none"{/if} /></label>
+        <label class="file" {if $exception}style="display:none"{/if}>
+            <input type="file" name="file" />
+            (Jpg, Png, Gif)
+        </label>
         <span id="wait" style="display:none">Image en cours d'envoi…</span>
 
         <script>
             {literal}
                 var $f = $("input[type=file]");
                 $f.change(function() {
-                    $('input[type=file]').hide();
+                    $('label.file').hide();
                     $('#wait').show();
                     $("form").submit();
                 });
                 $('.warning').click(function() {
                     $(this).hide();
-                    $('input[type=file]').show();
+                    $('label.file').show();
                 });
             {/literal}
         </script>

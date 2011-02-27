@@ -190,6 +190,10 @@ class ImageSizeException extends Exception
     }
 }
 
+class ImageFormatException extends Exception
+{
+}
+
 interface ImageInterface
 {
     /**

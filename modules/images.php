@@ -73,6 +73,8 @@ class ImagesModule extends PlModule
                     $page->assign('pixels', true);
                 } else if ($e instanceof UploadSizeException) {
                     $page->assign('bytes', true);
+                } else if ($e instanceof ImageFormatException) {
+                    $page->assign('format', true);
                 }
             }
         }
@@ -85,6 +87,7 @@ class ImagesModule extends PlModule
             }
         }
 
+        $page->addCssLink('upload.css');
         $page->changeTpl('images/upload.tpl', SIMPLE);
     }
 
