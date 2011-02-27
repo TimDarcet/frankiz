@@ -48,18 +48,18 @@
                         Destinataire :
                     </td>
                     <td>
-		    	        <label>
-		    	            <input id="choice_promo" type="radio" name="type_mail_proposal" checked value="promo"> Mail à une promo
-		    	        </label><br />
-		    	        <label>
-		    	            <input id="choice_group" type="radio" name="type_mail_proposal" value="group"> Mail à un groupe
-		    	        </label><br />
-			            <div id="promo_proposal" class="type_proposal">
-			                {include file="groups_picker.tpl"|rel id="study_mail_proposal" ns="study"}
-                            {include file="groups_picker.tpl"|rel id="promo_mail_proposal" ns="promo"}
-			            </div>
-		                <div id="group_proposal" class="type_proposal">
-		                    {include file="target_picker.tpl"|rel id="mail" group_perso=false only_admin=false}
+                        <label>
+                            <input id="choice_promo" type="radio" name="type_mail_proposal" checked value="promo"> Mail à une promo
+                        </label><br />
+                        <label>
+                            <input id="choice_group" type="radio" name="type_mail_proposal" value="group"> Mail à un groupe
+                        </label><br />
+                        <div id="promo_proposal" class="type_proposal">
+                            {include file="groups_picker.tpl"|rel id="study_mail_proposal" ns="study"}
+                            {include file="groups_picker.tpl"|rel id="promo_mail_proposal" ns="promo" order="name" already=$user->defaultFilters()|filter:'ns':'promo'}
+                        </div>
+                        <div id="group_proposal" class="type_proposal">
+                            {include file="target_picker.tpl"|rel id="mail" group_perso=false only_admin=false}
                         </div>
                     </td>
                 </tr>
