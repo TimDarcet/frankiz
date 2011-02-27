@@ -58,6 +58,7 @@ class ProfileModule extends PLModule
         $msg = array();
 
         S::user()->select(UserSelect::login());
+
         if (Env::has('new_passwd')) {
             if (Env::s('new_passwd1') != Env::s('new_passwd2')) {
                 $err[] = 'Les mots de passe donnés sont incohérents.';
@@ -94,10 +95,20 @@ class ProfileModule extends PLModule
             }
 
             S::user()->nickname(Env::t('nickname'));
-            S::user()->bestEmail(Env::t('bestalias'));
+            S::user()->email(Env::t('bestalias'));
             S::user()->cellphone(new Phone(Env::t('cellphone')));
             S::user()->email_format((Env::t('format')=='text') ? User::FORMAT_TEXT : User::FORMAT_HTML);
             S::user()->comment(Env::t('comment'));
+        }
+
+        if (Env::has('options')) {
+            $groups = new Collection('Group');
+            $gids = explode(';', Env::s('promo'));
+            if (count($gids) > 0) {
+                $groups->add($gids);
+            }
+            $groups->select(GroupSelect::base());
+            S::user()->defaultFilters($groups);
         }
 
         if (!empty($err)) {
