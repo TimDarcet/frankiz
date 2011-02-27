@@ -28,7 +28,7 @@
         <span class="notempty" {if isset($total|smarty:nodefaults)}style="display: inline"{/if}>
             <span class="count">{if isset($results|smarty:nodefaults)}{$results|@count}{/if}</span>
             résultats affichés sur 
-            <span class="total">{if isset($total|smarty:nodefaults)}{$total}{/if}</span
+            <span class="total">{if isset($total|smarty:nodefaults)}{$total}{/if}</span>
         </span>
         <div class="notempty page"></div>
     </div>

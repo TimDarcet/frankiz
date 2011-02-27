@@ -91,7 +91,7 @@ $(function(){
             } else {
                 checkbox.closest('label').show();
                 if (checkbox.attr("checked")) {
-                    target_picker.find('.comments').html("Sera visible par tout le monde et les membres du groupe " +
+                    target_picker.find('.comments').html("Sera visible par tout le monde et les membres & sympathisants du groupe " +
                                                           selected.text() + " seront mis au courant");
                 } else {
                     target_picker.find('.comments').html("Sera visible uniquement par les membres du groupe " + selected.text());

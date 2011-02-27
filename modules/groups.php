@@ -146,7 +146,7 @@ class GroupsModule extends PLModule
             }
         }
 
-        $page->jsonAssign('groups', $export);
+        $page->jsonAssign('groups', array_values($export));
 
         return PL_JSON;
     }

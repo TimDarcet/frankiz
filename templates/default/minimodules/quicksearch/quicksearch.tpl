@@ -25,8 +25,11 @@
         <input type="text" name="free" value="" />
         <input name="go" value="Consulter" type="hidden">
 
-        <input name="search" value="TOL" type="submit">
-        <input name="ok" value="Wikix" type="submit" onclick="$(this).closest('form').attr('action', 'http://wikix.polytechnique.org/eleves/wikix/Sp%C3%A9cial:Recherche')">
+        <div>
+            <input name="search" value="TOL" type="submit">
+            <input name="ok" value="Wikix" type="submit"
+                   onclick="$(this).closest('form').attr('action', 'http://wikix.polytechnique.org/eleves/wikix/Sp%C3%A9cial:Recherche')">
+        </div>
     </form>
 </div>
 
