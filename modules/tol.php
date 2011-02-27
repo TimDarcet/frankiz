@@ -134,9 +134,6 @@ class TolModule extends PLModule
             $page->assign('total', $uf->getTotalCount());
         }
 
-        $promos = S::user()->castes()->groups()->filter('ns', Group::NS_PROMO);
-        $page->assign('promos', $promos);
-
         $page->assign('user', S::user());
         $page->assign('fields', $fields);
         $page->assign('title', 'Trombino On Line');

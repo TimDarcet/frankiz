@@ -88,7 +88,7 @@
                 <table>
                     <tr>
                         <td><label>Promo</label></td>
-                        <td>{include file="groups_picker.tpl"|rel id="promo" ns="promo" check=-1 already=$promos order="name"}</td>
+                        <td>{include file="groups_picker.tpl"|rel id="promo" ns="promo" check=-1 already=$user->defaultFilters()|filter:'ns':'promo' order="name"}</td>
                     </tr>
                     <tr>
                         <td><label>Droits</label></td>
