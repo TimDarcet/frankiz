@@ -21,34 +21,6 @@
 @import "lib.less";
 
 #section {
-
-    // Handler news/see
-    .see {
-        .content {
-            border-bottom: 1px @border solid;
-            padding: 15px;
-            .img {
-                border: 1px black solid;
-                margin-right: 15px;
-                margin-bottom: 15px;
-                float: left;
-                background-color: white;
-            }
-
-        }
-        .meta {
-            padding-top: 5px;
-            .star_switcher {
-                float: left;
-            }
-            .infos {
-                text-align: right;
-            }
-        }
-    }
-
-    // Handler news/ with all the news
-
     .options {
         table {
             width: 100%;
@@ -151,6 +123,9 @@
                     .origin {
                         position: relative;
                         width: 50px;
+                        img {
+                            vertical-align: middle;
+                        }
                     }
                     .date {
                         position: relative;
