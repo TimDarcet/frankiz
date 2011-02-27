@@ -18,6 +18,8 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+@import "lib.less";
+
 .small {
     font-size: 80%;
 }
@@ -88,78 +90,76 @@
     background-image: url("../default/images/star_faded_small.png");
 }
 
-#section .module#activity_show {
+#section .activity_right{
     margin-left: 0;
     width: 47%;
     float: right;
-    
-    a {
-        text-decoration: none;
+
+    .top {
+        width: 90%;
+        text-align: center;
+        overflow: hidden;
+        background-image: url("../default/images/75p.png");
+        background-repeat: repeat;
+        .border-radius;
+        margin-right: 5%;
+        margin-left: 5%;
+        margin-bottom: 10px;
     }
 
-    .one_day, .several_days {
-        text-align: center;
-    }
-
-    .msg {
-        margin-top: 10px;
-        text-align: center;
-    }
-
-    .present, .out {
-        text-align: center;
-        cursor: pointer;
-        margin-top: 10px;
-
-        .add_participant {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            background-image: url("../default/images/icons/group_add.gif");
-            background-repeat: no-repeat;
+    .module#activity_show {
+        a {
+            text-decoration: none;
         }
 
-        .remove_participant {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            background-image: url("../default/images/icons/group_delete.gif");
-            background-repeat: no-repeat;
-        }
-    }
-
-    .description {
-        margin-bottom: 5px;
-    }
-
-    .section {
-        margin-top: 10px;
-        padding-top: 10px;
-        margin-bottom: 5px;
-        font-weight: bold;
-        text-align: center;
-    }
-
-    .misc {
-        text-align: right;
-
-        .mail {
-            display: inline-block;
+        .one_day, .several_days {
+            text-align: center;
         }
 
-        .see_participants {
-            display: inline-block;
+        .msg {
+            margin-top: 10px;
+            text-align: center;
+        }
 
-            .group {
+        .present, .out {
+            text-align: center;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .description {
+            margin-bottom: 5px;
+        }
+
+        .section {
+            margin-top: 10px;
+            padding-top: 10px;
+            margin-bottom: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .misc {
+            text-align: right;
+
+            .mail {
                 display: inline-block;
-                width: 16px;
-                height: 16px;
-                background-image: url("../default/images/icons/group.gif");
-                background-repeat: no-repeat;
             }
-        }
-        .admin {
-            display: inline-block;
+
+            .see_participants {
+                display: inline-block;
+
+                .group {
+                    display: inline-block;
+                    width: 16px;
+                    height: 16px;
+                    background-image: url("../default/images/icons/group.gif");
+                    background-repeat: no-repeat;
+                }
+            }
+            .admin {
+                display: inline-block;
+            }
         }
     }
 }

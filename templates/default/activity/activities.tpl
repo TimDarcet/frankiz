@@ -22,75 +22,81 @@
 
 {js src="activities.js"}
 
-<div class="module" id="activity_show" style="display:none;">
-    <div class="head">
-        <span class="origin">
-        </span>
-        <span class="title">
-        </span>
+<div class="activity_right">
+    <div class="top">
+         <a href="proposal/activity">Proposer une activité</a>
     </div>
-    <div class="body">
-        <div class="one_day">
-            <div class="date">
-            </div>
-            <div class="time">
-                de
-                <span class="hour_begin">
-                </span>
-                à
-                <span class="hour_end">
-                </span>
-            </div>
-        </div>
-        <div class="several_days">
-            <div class="begin">
-                du
-                <span class="date">
-                </span>
-                à
-                <span class="hour">
-                </span>
-            </div>
-            <div class="end">
-                au
-                <span class="date">
-                </span>
-                à
-                <span class="hour">
-                </span>
-            </div>
-        </div>
-        <div class="msg">
-        </div>
-        <div class="present">
-            <a onclick=""><span class="add_participant"></span>S'inscrire</a>
-        </div>
-        <div class="out">
-            <a onclick=""><span class="remove_participant"></span>Se désinscrire</a>
-        </div>
-        <div class="section">
-            Description :
-        </div>
-        <div class="description">
-        </div>
-        <div class="comment">
-        </div>
-        <div class="section participants_list">
-            Participants :
-            <span class="number">
+
+    <div class="module" id="activity_show" style="display:none;">
+        <div class="head">
+            <span class="origin">
+            </span>
+            <span class="title">
             </span>
         </div>
-        <div class="participants">
-        </div>
-        <div class="misc">
-            <div class="mail">
-                <a href=""><div class="mail_ico"></div>Mail</a>
+        <div class="body">
+            <div class="one_day">
+                <div class="date">
+                </div>
+                <div class="time">
+                    de
+                    <span class="hour_begin">
+                    </span>
+                    à
+                    <span class="hour_end">
+                    </span>
+                </div>
             </div>
-            <div class="participants_link">
-                <a href=""><div class="group"></div>Participants</a>
+            <div class="several_days">
+                <div class="begin">
+                    du
+                    <span class="date">
+                    </span>
+                    à
+                    <span class="hour">
+                    </span>
+                </div>
+                <div class="end">
+                    au
+                    <span class="date">
+                    </span>
+                    à
+                    <span class="hour">
+                    </span>
+                </div>
             </div>
-            <div class="admin">
-                <a href=""><div class="edit"></div>Modifier</a>
+            <div class="msg">
+            </div>
+            <div class="present">
+                <a onclick=""><span class="add_participant"></span>S'inscrire</a>
+            </div>
+            <div class="out">
+                <a onclick=""><span class="remove_participant"></span>Se désinscrire</a>
+            </div>
+            <div class="section">
+                Description :
+            </div>
+            <div class="description">
+            </div>
+            <div class="comment">
+            </div>
+            <div class="section participants_list">
+                Participants :
+                <span class="number">
+                </span>
+            </div>
+            <div class="participants">
+            </div>
+            <div class="misc">
+                <div class="mail">
+                    <a href=""><div class="mail_ico"></div>Mail</a>
+                </div>
+                <div class="participants_link">
+                    <a href=""><div class="group"></div>Participants</a>
+                </div>
+                <div class="admin">
+                    <a href=""><div class="edit"></div>Modifier</a>
+                </div>
             </div>
         </div>
     </div>
