@@ -798,12 +798,17 @@ input[type="checkbox"], input[type="radio"]{
 .simple {
     padding: 10px;
 }
-table.bicol {
+.simple table.bicol {
     border: 1px @color solid;
+}
+table.bicol {
     border-collapse: collapse;
     tr {
         &.pair {
             background-color: @background;
+            .wiki_textarea {
+                background-color: inherit;
+            }
         }
         &.impair {
             background-color: white;

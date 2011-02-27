@@ -37,10 +37,10 @@
            Rédaction d'une annonce
         </div>
         <div class="body">
-            <table>
-                <tr>
+            <table class="bicol">
+                <tr class="pair">
                     <td>
-                        J'écris au nom de:
+                        J'écris au nom de
                     </td>
                     <td>
                         {include file="origin_picker.tpl"|rel id="origin_news_proposal"}
@@ -49,37 +49,37 @@
 
                 <tr>
                     <td width=20%>
-                        Annonce visible par:
+                        Annonce visible par
                     </td>
                     <td>
                         {include file="target_picker.tpl"|rel id="news" group_perso=false only_admin=false}
                     </td>
                 </tr>
 
-                <tr>
+                <tr class="pair">
                     <td>
-                        Titre :
+                        Titre
                     </td>
                     <td>
-                        <input type='text' required name='title' value="{$smarty.request.title}" placeholder="Titre de l'annonce" />
+                        <input type='text' required name='title' value="" placeholder="Titre de l'annonce" />
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        Image :
+                        Image
                     </td>
                     <td>
                         {include file="uploader.tpl"|rel id="image"}
                     </td>
                 </tr>
 
-                <tr>
+                <tr class="pair">
                     <td>
-                        Corps :
+                        Corps
                     </td>
                     <td>
-                        {include file="wiki_textarea.tpl"|rel id="news_content" already=$smarty.request.content placeholder="Corps de l'annonce" }
+                        {include file="wiki_textarea.tpl"|rel id="news_content" placeholder="Corps de l'annonce" }
                     </td>
                 </tr>
 
@@ -105,22 +105,22 @@
                     </td>
                 </tr>
 
-                <tr>
+                <tr class="pair">
                     <td>
-                        Commentaire pour l'administrateur:
+                        Commentaire pour l'administrateur
                     </td>
                     <td>
-                        <textarea name="comment" rows=7 cols=50>{$smarty.request.comment}</textarea>
+                        <textarea name="comment" rows=7 cols=50></textarea>
                     </td>
                 </tr>
-                
+
                 <tr>
                     <td></td>
                     <td>
                         <input type="submit" name="send" value="Valider" onClick="return window.confirm('Voulez vous vraiment proposer cette annonce ?')"/>
                     </td>
                 </tr>
-            
+
             </table>
         </div>
     </div>
