@@ -31,7 +31,7 @@
                 Post-it
             </div>
             <div class="body">
-                {$postit_news->content()|miniwiki|smarty:nodefaults}
+                {$postit_news->content()|miniwiki:'title'|smarty:nodefaults}
             </div>
         </div>
         {/if}
