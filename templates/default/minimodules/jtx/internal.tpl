@@ -20,10 +20,22 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<video controls="controls" poster="http://jtx/vdj/vdj.png">
-    <source src="http://jtx/vdj/vdj.webm" type="video/webm" />
-    <source src="http://jtx/vdj/vdj.ogv" type="video/ogg" />
-    <p>Pour pouvoir profiter de cette vidéo, il faut installer un navigateur récent : Firefox ou chrome.</p>
-</video>
+<img src="http://jtx/vdj/vdj.png" />
+
+<script>
+    var video_path = "{$globals->video->url}";
+
+    {literal}
+    $("#minimodule_jtx img").click(function() {
+        $("#minimodule_jtx .body").html(
+        '<video controls="controls" autoplay="autoplay" poster="' + video_path + '/vdj.png">' +
+            '<source src="' + video_path + '/vdj.webm" type="video/webm" />' +
+            '<source src="' + video_path + '/vdj.ogv" type="video/ogg" />' +
+            '<p>Pour pouvoir profiter de cette vidéo, il faut installer un navigateur récent : Firefox ou chrome.</p>' +
+        '</video>');
+    });
+    {/literal}
+</script>
+
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
