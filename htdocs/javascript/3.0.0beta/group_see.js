@@ -85,9 +85,10 @@ var users = function() {
                         for (var i in users_list) {
                             var u = users_list[i];
 
-                            var img = '<span title="' + u.displayName + '" class="img"><img style="display:none" onload="$(this).fadeIn()" src="' + u.micro + '" /></span>';
-                            var comments = '<span class="comments">' + ((u.comments) ? u.comments : u.displayName) + '</span>';
-                            html.push('<li uid="' + i + '"><a href="tol/see/' + u.hruid + '">' + img + '</a>' + comments + '</li>');
+                            var img = '<div class="img"><a href="tol/see/' + u.hruid + '"><img style="display:none" onload="$(this).fadeIn()" src="' + u.micro + '" /></a></div>';
+                            var comments = '<div class="comments">' + u.comments + '</div>';
+                            var fullname = '<div class="name">' + u.fullName + '</div>';
+                            html.push('<li uid="' + i + '">' + img + '<div>' + fullname + comments + '</div></li>');
                         }
 
                         subul.append(html.join(''));
