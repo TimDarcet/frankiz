@@ -73,7 +73,8 @@
                 <div class="filters">
                     <form name="filters">
                     <input type="hidden" name="gid" value="{$group->id()}" />
-                    <label>Filtrer sur la promo{include file="groups_picker.tpl"|rel id="promo" ns="promo" check=-1 already=$user->defaultFilters()|filter:'ns':'promo' order="name"}</label>
+                    <label>Filtrer sur la promo</label>
+                    {include file="groups_picker.tpl"|rel id="promo" ns="promo" check=-1 already=$user->defaultFilters()|filter:'ns':'promo' order="name"}
                     <input type="hidden" name="admin_page" value="1" />
                     <input type="hidden" name="member_page" value="1" />
                     <input type="hidden" name="friend_page" value="1" />
