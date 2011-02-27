@@ -51,6 +51,15 @@
                 </div>
             </div>
             <div id="caltoolbar" class="ctoolbar">
+                <div class="new fbutton">
+                    <div>
+                        <a href="proposal/activity">
+                            <span class="new_element"></span>
+                            Nouvelle activité
+                        </a>
+                    </div>
+                </div>
+                
                 <div id="showtodaybtn" class="fbutton">
                     <div>
                         <span title='Click to back to today ' class="showtoday">
@@ -108,8 +117,6 @@
                         </span>
                     </div>
                 </div>
-                <div class="clear">
-                </div>
             </div>
         </div>
     </div>
@@ -133,7 +140,6 @@
         <td class="title">
         </td>
         <td class="close_show">
-        [X]
         </td>
         </tr></table>
     </div>

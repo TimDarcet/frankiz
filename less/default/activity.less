@@ -120,6 +120,11 @@
     .head {
         padding-left: 10px;
         padding-right: 10px;
+
+        .title {
+            font-size: 18px;
+            text-align: center;
+        }
     }
 
     .body {
@@ -195,9 +200,23 @@
 }
 
 #calendar.module {
-    .head .options {
+    .head {
+        .options {
         border-top: 1px solid #003757;
         font-size: 0.5em;
+        }
+
+        .new {
+            float: right;
+            a {
+                text-decoration: none;
+                font-variant: normal;
+
+                .new_element {
+                    margin-right: 4px;
+                }
+            }
+        }
     }
 }
 
@@ -208,19 +227,13 @@
     left: 15%;
     top: 160px;
     width: 60%;
-    .head {
-
-    }
-    .title {
-        font-size: 18px;
-        text-align: center;
-    }
-    .close_show {
-        font-size: 24px;
-    }
     .close_show{
+        display: inline-block;
+        background-image: url("../default/images/icons/close-cross.png");
+        background-repeat: no-repeat;
         float: right;
-        font-size: 80%;
+        height: 32px;
+        width: 32px;
         cursor: pointer;
     }
 }
@@ -244,7 +257,7 @@
     background-repeat: no-repeat;
 }
 
-#seection {
+#section {
     input[type=submit] {
         float: right;
     }
