@@ -22,42 +22,47 @@
 
 {js src="laf.js"}
 
-<div class="lostandfound">
-	{if isset($message|smarty:nodefaults)}
-		<div> {$message} </div>
-	{/if}
+{if isset($message|smarty:nodefaults)}
+    <div> {$message} </div>
+{/if}
 
-	{if isset($not_logged|smarty:nodefaults)}
-		<div> Tu dois t'identifier pour pouvoir faire cette action </div>
-	{/if}
+{if isset($not_logged|smarty:nodefaults)}
+    <div> Tu dois t'identifier pour pouvoir faire cette action </div>
+{/if}
 
-    <div class="section">
-        <div class="section_title">
-             Signaler
-        </div>
-        <div class="section_body">
-             {include file="lostandfound/signal.tpl"|rel}
-        </div>
-    </div>
-	
-	<div class="section">
-	    <div class="section_title">
-	        Objets perdus
-        </div>
-        <div class="section_body {if $query=='ping'}show{/if}">
-            {include file="lostandfound/ping.tpl"|rel lost=$lost}
-        </div>
+<div class="module lostandfound">
+    <div class="head">
+        Objets trouvés
     </div>
 
-	<div class="section">
-        <div class="section_title" id="essai">
-	        Objets trouvés
+    <div class="body">
+        <div class="section">
+            <div class="section_title">
+                 Signaler
+            </div>
+            <div class="section_body">
+                 {include file="lostandfound/signal.tpl"|rel}
+            </div>
         </div>
-        <div class="section_body {if $query=='pong'}show{/if}">
-    	    {include file="lostandfound/pong.tpl"|rel found=$found}
-    	</div>
-	</div>
+	    
+	    <div class="section">
+	        <div class="section_title">
+	            Objets perdus
+            </div>
+            <div class="section_body {if $query=='ping'}show{/if}">
+                {include file="lostandfound/ping.tpl"|rel lost=$lost}
+            </div>
+        </div>
 
+	    <div class="section">
+            <div class="section_title" id="essai">
+	            Objets trouvés
+            </div>
+            <div class="section_body {if $query=='pong'}show{/if}">
+    	        {include file="lostandfound/pong.tpl"|rel found=$found}
+    	    </div>
+	    </div>
+    </div>
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
