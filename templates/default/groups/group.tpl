@@ -24,7 +24,9 @@
     <div>
         <div>
             <input type="hidden" id="gid" name="gid" value="{$group->id()}" />
-            <img src="{$group->image()|image:'big'|smarty:nodefaults}" />
+            {if $group->image()}
+                <img src="{$group->image()|image:'big'}" />
+            {/if}
             <div class="label">{$group->label()}</div>
             {if $group->web()}
                 <div class="web">Web: <a href="{$group->web()}">{$group->web()}</a></div>
