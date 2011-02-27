@@ -68,13 +68,7 @@
                     var begin = new Date('{/literal}{$activity->begin()|datetime:'m/d/Y H:i'}{literal}');
                     var end = new Date('{/literal}{$activity->end()|datetime:'m/d/Y H:i'}{literal}');
                     var dates = $( "#begin, #end" ).datetimepicker({
-                        minDate: new Date(),
-                        maxDate: "+31D",
-                        onSelect: function( selectedDate ) {
-                            var option = this.id == "begin" ? "minDate" : "maxDate";
-                            dates.not( this ).datepicker( "option", option, selectedDate );
-                        }
-                    });
+                        minDate: new Date(), maxDate: "+31D"});
                     $("#begin").datetimepicker('setDate', begin);
                     $("#end").datetimepicker('setDate', end);
                 });
@@ -83,16 +77,18 @@
         </tr>
 
         <tr>
-            <td></td>
             <td>
-                <input type="submit" name="modify" value="Modifier" class="hide"/>
                 <input type="submit" name="delete" value="Supprimer"/>
+            </td>
+            <td>
+                <input type="submit" name="modify" value="Modifier"/>
             </td>
         </tr>
     </table>
 
     <div class="admin">
-        <a href="activity/regular/modify/{$activity->id()}"><span class="edit"></span>Modifier l'activité</a>
+        {assign var=act value=$activity->activity()}
+        <a href="activity/regular/modify/{$act->id()}"><span class="edit"></span>Modifier l'activité</a>
     </div>
 </div>
 

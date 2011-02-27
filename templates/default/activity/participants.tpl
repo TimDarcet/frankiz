@@ -51,7 +51,7 @@
                     </td>
                     <td>
                         {foreach from=$activity->participants() item=participant}
-                            {$participant|user} <br />
+                            {$participant|user}
                         {/foreach}
                     </td>
                 </tr>

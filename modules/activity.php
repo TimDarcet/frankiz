@@ -240,9 +240,7 @@ class ActivityModule extends PLModule
         $c = $activities->get();
         $c->select(ActivitySelect::base());
 
-        if (Env::has('aid')) {
-            $aid = Env::i('aid');
-        }
+        $aid = Env::i('aid', $aid);
 
         if ($aid)
         {
@@ -392,21 +390,17 @@ class ActivityModule extends PLModule
 
         else if (isset($json->ids))
         {
-            $c = new Collection('ActivityInstance');
-            foreach ($json->ids as $id)
-            {
-                $c->add($id);
-            }
-            $c->select(ActivityInstanceSelect::all());
+            $activities = new ActivityInstanceFilter(
+                new PFC_AND(new PFC_Or (new AIFC_User(S::user(), 'restricted'),
+                                        new AIFC_User(S::user(), 'everybody')),
+                            new AIFC_Id($json->ids)));
+            $act = $activities->get();
+
+            $act->select(ActivityInstanceSelect::all());
             
             $activities = array();
-            foreach ($c as $a)
+            foreach ($act as $a)
             {
-                if (!S::user()->hasRights($a->target()->group(), 
-                                          ($a->target()->rights())?Rights::restricted():Rights::everybody())) {
-                    throw new Exception("Invalid credentials");
-                }
-                
                 $activities[$a->id()] = $a->export();
             }
             $page->jsonAssign('success', true);

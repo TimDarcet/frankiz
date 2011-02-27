@@ -67,10 +67,11 @@
         </tr>
 
         <tr>
-            <td></td>
+            <td>
+                <input type="submit" name="delete" value="Supprimer"/>
+            </td>
             <td>
                 <input type="submit" name="modify" value="Modifier"/>
-                <input type="submit" name="delete" value="Supprimer"/>
             </td>
         </tr>
     </table>

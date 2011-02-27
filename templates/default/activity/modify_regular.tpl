@@ -27,7 +27,6 @@
 </div>
 
 <form enctype="multipart/form-data" method="post" action="activity/regular/modify" id="activity_modify">
-    {xsrf_token_field}
     <div class="module">
         <div class="head">
             <span class="helper" target="activity/regular/modify" ></span>

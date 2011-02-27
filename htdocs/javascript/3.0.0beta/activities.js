@@ -8,13 +8,6 @@ $(document).ready(function() {
                 ,"data": {'id': $("input[@name='admin_id']:checked").val(), 'admin': true}
              ,"success": function(json) {
                     $("#modify_show").html(json.activity);
-                    $("#activity_modify #modify_show").focusout(function(){
-                        change('instance');
-                    });
-                    $("#activity_modify #modify_show").change(function(){
-                        has_changed = true;
-                    });
-                    $('.hide').hide();
              }
         });
         $("#modify_show").show();
@@ -25,13 +18,6 @@ $(document).ready(function() {
                 ,"data": {'id': $("input[@name='aid']:checked").val(), 'regular': true}
              ,"success": function(json) {
                     $("#activity_show").html(json.activity);
-                    $("#activity_modify #activity_show").focusout(function(){
-                        change('regular');
-                    });
-                    $("#activity_modify #activity_show").change(function(){
-                        has_changed = true;
-                    });
-                    $('.hide').hide();
              }
         });
         $("#activity_show").show();
@@ -207,34 +193,6 @@ function switch_participate(id) {
 }
 
 var results = new Array();
-
-function change(type)
-{
-    if (has_changed)
-    {
-        has_changed = false;
-        request({ "url": 'activity/ajax/modify/' + type
-                ,"data": $('#activity_modify').formToJSON()
-             ,"failure":function(json) {
-                        $(".msg_proposal").html('La requete n\'a pas pu être envoyée.');
-                        $(".msg_proposal").show();
-                        setTimeout(function() {$(".msg_proposal").hide();}, 3000);
-             }
-             ,"success": function(json) {
-                        if (json.success)
-                            $(".msg_proposal").html('L\'activité a été modifiée avec succès. <br/> ' +
-                                    '<span class="small">Le choix de sélection ne se modifie pas, ' +
-                                    'rechargez la page pour qu\'il soit actualisé.</span>');
-                        else
-                            $(".msg_proposal").html('Les dates demandées ne sont pas valide.');
-                        $(".msg_proposal").toggle(150);
-                        setTimeout(function() {$(".msg_proposal").toggle(150);}, 3000);
-             }
-        });
-    }
-}
-
-var has_changed = false;
 
 function count(obj)
 {
