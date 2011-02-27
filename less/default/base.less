@@ -655,9 +655,12 @@ input[type="checkbox"], input[type="radio"]{
         margin-right: 6px;
     }
 
-    .searcher input {
-        width: auto;
-        margin-left: 5%;
+    .searcher {
+        margin-right: 20px;
+        input {
+            width: 90%;
+            margin-left: 5%;
+        }
     }
 
     &.collapsed:hover {
@@ -666,7 +669,6 @@ input[type="checkbox"], input[type="radio"]{
     }
 
     &.searching .searcher input {
-    //background-color: red;
         background-image: url("../default/images/busy.gif");
         background-repeat: no-repeat;
         background-position: 98% center;
