@@ -50,7 +50,7 @@
                     </td>
                     <td class="form val">
                         <input id="p1" type='password' name='new_passwd1' required {literal}pattern="(?=^.{6,}$).*"{/literal}
-                            title="Le mot de passe doit faire au moins 6 caractères."/>
+                               autocomplete="off"  title="Le mot de passe doit faire au moins 6 caractères."/>
                         <div class="validation">
                             minimum de 6 caractères.
                         </div>
@@ -62,7 +62,7 @@
                     </td>
                     <td class="form val">
                         <input type='password' name='new_passwd2' required {literal}pattern="(?=^.{6,}$).*"{/literal}
-                            title="Le mot de passe doit faire au moins 6 caractères."/>
+                               autocomplete="off" title="Le mot de passe doit faire au moins 6 caractères."/>
                     </td>
                 </tr>
             </table>
