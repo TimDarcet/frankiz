@@ -24,7 +24,6 @@
     <table><tr>
         <td>
             <div class="option actions">
-                Actions :
                 <ul>
                     <li class="open_all_unread"><a>Ouvrir toutes les annonces non-lues</a></li>
                     <li class="read_all"><a>Tout marquer comme lu</a></li>
@@ -35,16 +34,15 @@
         </td>
         <td>
             <div class="option display">
-                Vue :
                 <ul>
-                    <li><a href="news">Annonces courantes</a></li>
-                    <li><a href="news/mine">Les annonces que j'ai rédigées</a></li>
+                    <li><a href="news">Voir les annonces en cours</a></li>
+                    <li><a href="news/mine">Voir les annonces que j'ai rédigées</a></li>
+                    <li><a href="proposal/news">Rédiger une annonce</a></li>
                 </ul>
             </div>
         </td>
         <td>
             <div class="option codes">
-                Code couleur :
                 <ul>
                     <li><div class="code unread"></div>Non-lue</li>
                     <li><div class="code read"></div>Lue</li>
