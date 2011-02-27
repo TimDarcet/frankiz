@@ -21,7 +21,7 @@
 {**************************************************************************}
 <div class="module">
     <div class="head">
-       Création de nouvelles instances
+        Création de nouvelles instances
     </div>
 
     <div class="body">

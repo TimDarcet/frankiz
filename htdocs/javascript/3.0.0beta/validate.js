@@ -55,3 +55,8 @@ $(function() {
         }
     });
 });
+
+function activity_show(part) {
+    $(".activity_prop").hide();
+    $(".activity_prop." + part).show();
+}

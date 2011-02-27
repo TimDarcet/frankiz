@@ -43,31 +43,38 @@
 {/if}
 
 
-<form enctype="multipart/form-data" method="post" action="proposal/activity">
+<div class="module activity_prop choice">
+    <div class="head">
+        Type d'activité
+    </div>
+    <div class="body">
+        <ul>
+            <li>
+                <a onclick="activity_show('new_reg')">Nouvelle activité régulière</a>
+            </li>
+            <li>
+                <a onclick="activity_show('reg')">Nouvelle scéance d'une activité régulière</a>
+            </li>
+            <li>
+                <a onclick="activity_show('new')">Activité ponctuelle</a>
+            </li>
+        </ul>
+    </div>
+</div>
 
-    <div class="module">
+<form enctype="multipart/form-data" method="post" action="proposal/activity">
+    <div class="module activity_prop reg">
         <div class="head click">
             <span class="helper" target="proposal/activity"></span>
-            Type d'activité
+            Activité régulière
         </div>
-        <div class="body hide show">
+        <div class="body">
             <table>
-                <tr>
-                    <td width = 20%>
-                        Créer :
-                    </td>
-                    <td>
-                        <a href="activity/regular/new">Nouvelle activité régulière</a>
-                    </td>
-                </tr>
-
                 <tr>
                     <td>
                         Sélectionner :
                     </td>
                     <td>
-                        <input type="radio" name="regular_activity_proposal" value="0"
-                            {if $choice_regular == 0}checked{/if}> Activité ponctuelle<br/>
                         {foreach from=$regular_activities item=activity}
                             <input type="radio" name="regular_activity_proposal" value="{$activity->id()}" 
                                 {if $choice_regular == $activity->id()}checked{/if}>
@@ -81,13 +88,13 @@
         </div>
     </div>
     
-    <div class="hide" id="old_activity_proposal">
+    <div class="hide activity_prop" id="old_activity_proposal">
     </div>
 </form>
 
 
 <form enctype="multipart/form-data" method="post" action="proposal/activity">
-    <div class="module" id="new_activity_proposal">
+    <div class="module activity_prop new" id="new_activity_proposal">
         <div class="head">
            Activité Ponctuelle
         </div>
@@ -139,12 +146,16 @@
                         à  <input type="text" name="end" id="end" value=""
                             required {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$).*"{/literal}/>
                         <script>{literal}
-                        $(function() {
-                            $("#begin").datetimepicker({minDate: new Date()});
+                            var dates = $( "#begin, #end" ).datetimepicker({
+                                minDate: new Date(),
+                                maxDate: "+31D",
+                                onSelect: function( selectedDate ) {
+                                    var option = this.id == "begin" ? "minDate" : "maxDate";
+                                    dates.not( this ).datepicker( "option", option, selectedDate );
+                                }
+                            });
                             $("#begin").datetimepicker('setDate', new Date());
-                            $("#end").datetimepicker({ minDate: new Date(), defaultDate: new Date() });
                             $("#end").datetimepicker('setDate', new Date());
-                        });
                         {/literal}</script>
                     </td>
                 </tr>
@@ -159,6 +170,11 @@
         </div>
     </div>
 </form>
+
+<div class=" activity_prop new_reg">
+    {include file="activity/new_regular_activity.tpl"|rel}
+</div>
+
 {/if}
 
 
