@@ -35,7 +35,7 @@
 
     <div class="name">
         {$result->fullName()}
-        {if t($su) && $su}
+        {if $su}
             (<a class="warning" href="admin/su/{$result->id()}">su</a>)
          {/if}
     </div>

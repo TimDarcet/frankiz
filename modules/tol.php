@@ -176,6 +176,7 @@ class TolModule extends PLModule
                 $users = $uf->get(new PlLimit(50,(JSON::i('page', 1) - 1) * 50))->select(UserSelect::tol());
             }
 
+            $page->assign('su', S::user()->isAdmin());
             $page->jsonAssign('total', $uf->getTotalCount());
             foreach($users as $k => $user) {
                 $page->assign('result', $user);
