@@ -22,7 +22,7 @@
 {if $valid}
 Ton annonce vient d'être validée. Tu peux la consulter à cette adresse: 
 
-{$globals->baseurl}/news/see/{$idIfValid}
+{$globals->baseurl}/news/mine
 
 {$comm|smarty:nodefaults}
 
