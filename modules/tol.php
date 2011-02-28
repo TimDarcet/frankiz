@@ -136,6 +136,7 @@ class TolModule extends PLModule
 
         $page->assign('user', S::user());
         $page->assign('fields', $fields);
+        $page->assign('su', S::user()->isAdmin());
         $page->assign('title', 'Trombino On Line');
         $page->addCssLink('tol.css');
         $page->changeTpl('tol/tol.tpl');
@@ -203,6 +204,7 @@ class TolModule extends PLModule
             $u->select(UserSelect::tol());
         }
 
+        $page->assign('su', S::user()->isAdmin());
         $page->assign('result', $u);
         $sheet = $page->fetch(FrankizPage::getTplPath('tol/sheet.tpl'));
 
