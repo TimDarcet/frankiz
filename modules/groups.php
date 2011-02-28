@@ -225,20 +225,22 @@ class GroupsModule extends PLModule
             $members_export = $members->export(User::EXPORT_MICRO, true);
             $friends_export = $friends->export(User::EXPORT_MICRO, true);
 
-            $iter = XDB::iterRow('SELECT  uid, comment
-                                    FROM  users_comments
-                                   WHERE  gid = {?} AND uid IN {?}',
-                                          $group->id(), $all->ids());
+            if ($all->count() > 0) {
+                $iter = XDB::iterRow('SELECT  uid, comment
+                                        FROM  users_comments
+                                       WHERE  gid = {?} AND uid IN {?}',
+                                              $group->id(), $all->ids());
 
-            while (list($uid, $comment) = $iter->next()) {
-                if ($admins_export[$uid]) {
-                    $admins_export[$uid]['comments'] = $comment;
-                }
-                if ($members_export[$uid]) {
-                    $members_export[$uid]['comments'] = $comment;
-                }
-                if ($friends_export[$uid]) {
-                    $friends_export[$uid]['comments'] = $comment;
+                while (list($uid, $comment) = $iter->next()) {
+                    if ($admins_export[$uid]) {
+                        $admins_export[$uid]['comments'] = $comment;
+                    }
+                    if ($members_export[$uid]) {
+                        $members_export[$uid]['comments'] = $comment;
+                    }
+                    if ($friends_export[$uid]) {
+                        $friends_export[$uid]['comments'] = $comment;
+                    }
                 }
             }
 
