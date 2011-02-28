@@ -33,7 +33,12 @@
         <a ><img src="{$img|image:'big'|smarty:nodefaults}" /></a>
     </div>
 
-    <div class="name">{$result->fullName()}</div>
+    <div class="name">
+        {$result->fullName()}
+        {if t($su) && $su}
+            (<a class="warning" href="admin/su/{$result->id()}">su</a>)
+         {/if}
+    </div>
 
     <div class="nickname">{$result->nickname()}</div>
 
