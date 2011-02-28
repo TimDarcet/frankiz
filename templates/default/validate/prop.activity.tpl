@@ -147,8 +147,10 @@
                             required {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$).*"{/literal}/>
                         <script>{literal}
                         $(function() {
+                            limit_inf = new Date();
+                            limit_inf.setMinutes(0);
                             var dates = $( "#begin, #end" ).datetimepicker({
-                                minDate: new Date(), maxDate: "+31D"});
+                                minDate: limit_inf, maxDate: "+31D"});
                             $("#begin").datetimepicker('setDate', new Date());
                             $("#end").datetimepicker('setDate', new Date());
                         });

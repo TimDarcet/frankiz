@@ -43,8 +43,26 @@
         Date :
     </td>
     <td>
-        de <input type='text' name='begin' value="{$item->begin()|datetime:'Y-m-d H:m:00'}" />
-        à <input type='text' name='end' value="{$item->end()|datetime:'Y-m-d H:m:00'}" />
+        de <input type="text" name="begin" id="begin" value=""
+                  required {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$).*"{/literal}/>
+        à  <input type="text" name="end" id="end" value=""
+                  required {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$).*"{/literal}/>
+        <script>{literal}
+        $(function() {
+            limit_inf = new Date();
+            limit_inf.setMinutes(0);
+            var begin = new Date('{/literal}{$item->begin()|datetime:'m/d/Y H:i'}{literal}');
+            var end = new Date('{/literal}{$item->end()|datetime:'m/d/Y H:i'}{literal}');
+            $("#begin").datetimepicker({minDate: limit_inf, maxDate: "+7D", defaultDate: begin});
+            if (!$("#begin").val()) {
+                $("#begin").datetimepicker('setDate', begin);
+            }
+            $("#end").datetimepicker({minDate: limit_inf, maxDate: "+7D", defaultDate: end});
+            if (!$("#end").val()) {
+                $("#end").datetimepicker('setDate', end);
+            }
+        });
+        {/literal}</script>
     </td>
 </tr>
 
