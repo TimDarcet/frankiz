@@ -36,16 +36,18 @@ abstract class Select
 {
     protected $fields = null;
     protected $subs = null;
+    protected $callback = null;
 
     protected $schema = null;
 
     abstract public function className();
     abstract protected function handlers();
 
-    public function __construct(array $fields, $subs = null)
+    public function __construct(array $fields, $subs = null, $callback = null)
     {
         $this->fields = $fields;
         $this->subs = $subs;
+        $this->callback = $callback;
 
         $this->schema = Schema::get($this->className());
     }
@@ -96,6 +98,11 @@ abstract class Select
 
         if (!empty($tobefetched)) {
             throw new Exception("Some fields (" . implode(', ', $tobefetched) . ") couldn't be fetched in class " . $this->className());
+        }
+
+        if (is_callable($this->callback)) {
+            $cb = $this->callback;
+            $cb($metas);
         }
     }
 

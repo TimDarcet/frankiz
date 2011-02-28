@@ -27,9 +27,9 @@
      </div>
      <div class="body">
         <form enctype="multipart/form-data" method="post" action="{$smarty.server.REQUEST_URI}">
-        <table>
+        <table class="bicol">
             {if $smarty.session.user->checkPerms('admin')}
-                <tr>
+                <tr class="fkzadmin">
                     <td>Nom "unix":</td>
                     <td>
                         <input type="text" name="name" value="{$group->name()}" />
@@ -42,7 +42,7 @@
                 </tr>
             {/if}
             {if $smarty.session.user->isWeb()}
-                <tr>
+                <tr class="webmaster">
                     <td>Namespace:</td>
                     <td>
                         <select name="ns">
@@ -57,7 +57,7 @@
                 <td>Nom:</td>
                 <td><input type="text" name="label" value="{$group->label()}" /></td>
             </tr>
-            <tr>
+            <tr class="pair">
                 <td>Description:</td>
                 <td>
                     {include file="wiki_textarea.tpl"|rel id="description" already=$group->description()|smarty:nodefaults}

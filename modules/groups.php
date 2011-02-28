@@ -27,9 +27,6 @@ class GroupsModule extends PLModule
             // Listing of the groups
             'groups'                  => $this->make_hook('groups',            AUTH_PUBLIC),
             'groups/ajax/search'      => $this->make_hook('ajax_search',       AUTH_PUBLIC),
-            'groups/ajax/insert'      => $this->make_hook('ajax_insert',       AUTH_COOKIE),
-            'groups/ajax/rename'      => $this->make_hook('ajax_rename',       AUTH_COOKIE),
-            'groups/ajax/delete'      => $this->make_hook('ajax_delete',       AUTH_COOKIE),
 
             // Page of a single group
             'groups/see'              => $this->make_hook('group_see',         AUTH_PUBLIC),
@@ -44,10 +41,10 @@ class GroupsModule extends PLModule
             'groups/ajax/admin/rights'=> $this->make_hook('group_ajax_admin_rights', AUTH_COOKIE),
 
             // Common handler
-            'groups/ajax/comment'     => $this->make_hook('ajax_comment',      AUTH_COOKIE),
+            'groups/ajax/comment'     => $this->make_hook('ajax_comment', AUTH_COOKIE),
 
             // Admin stuffs
-            'groups/insert'           => $this->make_hook('group_insert',      AUTH_MDP),
+            'groups/insert'           => $this->make_hook('group_insert', AUTH_MDP),
         );
     }
 
@@ -295,7 +292,7 @@ class GroupsModule extends PLModule
         $gf = new GroupFilter($filter);
         $group = $gf->get(true);
 
-        if ($group && (S::user()->hasRights($group, Rights::admin()) || S::user()->isAdmin())) {
+        if ($group && (S::user()->hasRights($group, Rights::admin()) || S::user()->isWeb())) {
             $group->select(GroupSelect::see());
             $page->assign('group', $group);
 
@@ -440,7 +437,7 @@ class GroupsModule extends PLModule
         if ($group && $user) {
             if (S::user()->isMe($user) && !S::user()->isAdmin()) {
                 $page->jsonAssign('msg', 'On ne peut pas changer ses propres droits');
-            } else if (S::user()->hasRights($group, Rights::admin()) || S::user()->isAdmin()) {
+            } else if (S::user()->hasRights($group, Rights::admin()) || S::user()->isWeb()) {
                 $group->select(GroupSelect::subscribe());
                 $rights = new Rights(Json::s('rights'));
                 $caste = $group->caste($rights);
@@ -524,7 +521,7 @@ class GroupsModule extends PLModule
         if ($g) {
             $user = (Json::has('uid')) ? new User(Json::i('uid')) : S::user();
 
-            if ($user->isMe(S::user()) || S::user()->hasRights($g, Rights::admin())) {
+            if ($user->isMe(S::user()) || S::user()->hasRights($g, Rights::admin()) || S::user()->isWeb()) {
                 $comments = Json::t('comments');
                 $user->comments($g, $comments);
                 $page->jsonAssign('uid', $user->id());

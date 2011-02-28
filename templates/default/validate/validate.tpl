@@ -55,14 +55,14 @@
             <div class="more {if $valid->id() == $validation}show{/if}">
             <form enctype="multipart/form-data" method="post" action="admin/validate/{$group->id()}">
                 {if $smarty.session.user->isWeb()}
-                    <div class="rules">
-                        {include file="wiki.tpl"|rel name='validate/rules/'|cat:$valid->type()}
+                    <div>
+                        {include file="wiki.tpl"|rel name='validate/rules/'|cat:$valid->type() class="webmaster"}
                     </div>
                 {/if}
 
                 <div>
                     <span class="created">Date de demande: {$valid->created()}</span>
-                    Demande de {$user->fullName()}
+                    Demande de {$writer->fullName()}
                 </div>
 
                 <div class="click">

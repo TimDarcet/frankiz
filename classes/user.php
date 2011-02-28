@@ -215,10 +215,21 @@ class UserSelect extends Select
     }
 
     public static function login() {
+        $cb = function($users) {
+            $web = Group::from('webmasters');
+
+            foreach ($users as $u) {
+                if ($u->hasRights($web, Rights::member())) {
+                    $u->perms()->addFlag('web');
+                }
+            }
+        };
+
         return new UserSelect(array_merge(self::$natives,
                                           array('rooms', 'minimodules', 'castes', 'poly', 'comments', 'defaultfilters')),
                               array('castes' => CasteSelect::group(),
-                            'defaultfilters' => GroupSelect::base()));
+                            'defaultfilters' => GroupSelect::base()),
+                              $cb);
     }
 
     public static function tol() {
@@ -738,13 +749,7 @@ class User extends Meta
 
     public function isWeb()
     {
-        static $web = null;
-
-        if ($web === null) {
-            $web = Group::from('webmasters');
-        }
-
-        return ($this->hasRights($web, Rights::member()));
+        return ($this->perms()->hasFlag('web')) || ($this->perms()->hasFlag('admin'));
     }
 
     public function isAdmin()

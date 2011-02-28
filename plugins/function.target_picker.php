@@ -21,7 +21,7 @@
 
 function smarty_function_target_picker($params, &$smarty) {
     $fkz = new Collection('Group');
-    $fkz->add(array('everybody', 'on_platal', 'public'));
+    $fkz->add(array('everybody', 'public'));
     $fkz->select(new GroupSelect(array('description')));
 
     $gf = new GroupFilter(new PFC_And(new PFC_Not(new GFC_Namespace(Group::NS_USER)),

@@ -22,7 +22,7 @@
 
 {wiki name=$name output='wiki'}
 {uniqid output='uniqid'}
-<div class="wiki" id="wiki_container_{$uniqid}" wid="{$wiki->id()}">
+<div class="wiki{if t($class)} {$class}{/if}" id="wiki_container_{$uniqid}" wid="{$wiki->id()}">
     <div class="content">
         {$wiki->html()|smarty:nodefaults}
     </div>
