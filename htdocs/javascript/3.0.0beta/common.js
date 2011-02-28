@@ -157,7 +157,7 @@ function request(fields)
           type: 'POST',
           url: fields.url,
           dataType: 'json',
-          data: 'token=' + xsrf_token + '&json=' + data,
+          data: {token: xsrf_token, json: data},
           success: callback,
           error: function (xhr, textStatus, errorThrown) {
                          var json = $.parseJSON(xhr.responseText);
@@ -206,7 +206,7 @@ var wiki_preview = {
             $.ajax({
                 type: 'POST',
                  url: 'wiki_preview',
-                data: 'text=' + $textarea.val(),
+                data: { text: $textarea.val() },
              success: function(data) {
                           busy = false;
                           $display.html(data);
