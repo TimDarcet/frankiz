@@ -9,7 +9,7 @@ else
   IGNORE="/images_sizes/d"
 fi;
 
-DBLIST=`mysql -u $USER -p$PASSWORD frankiz <<< "show tables;" | sed -e "1d;$IGNORE" | tr "\n" " "`
+TBLIST=`mysql -u $USER -p$PASSWORD frankiz <<< "show tables;" | sed -e "1d;$IGNORE" | tr "\n" " "`
 
 [ -d /tmp/fkz3mysql/ ] || mkdir /tmp/fkz3mysql/
 
