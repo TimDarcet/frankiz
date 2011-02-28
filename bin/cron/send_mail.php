@@ -53,7 +53,7 @@ foreach($res as $r) {
     $users->select(UserSelect::base());
     foreach($users as $user) {
         $mail = new FrankizMailer();
-        $mail->addAddress($user->bestEmail(), $user->displayName());
+        $mail->addAddress($user->bestEmail(), $user->fullName());
         $mail->SetFrom($r[2], $r[3]);
         $mail->subject($r[4]);
         $mail->body($r[5]);
