@@ -85,6 +85,10 @@ var users = function() {
                         for (var i in users_list) {
                             var u = users_list[i];
 
+                            if (typeof(u.comments) == 'undefined') {
+                                u.comments = '';
+                            }
+
                             var img = '<div class="img"><a href="tol/see/' + u.hruid + '"><img style="display:none" onload="$(this).fadeIn()" src="' + u.micro + '" /></a></div>';
                             var comments = '<div class="comments">' + u.comments + '</div>';
                             var fullname = '<div class="name">' + u.fullName + '</div>';
