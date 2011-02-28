@@ -183,7 +183,7 @@ class FrankizSession extends PlSession
 
         $res = XDB::query("SELECT   uid, password, hruid
                              FROM   account
-                            WHERE   $login_type = {?}",
+                            WHERE   $login_type = {?} AND state = 'active'",
                                     $login);
         if(list($uid, $password, $hruid) = $res->fetchOneRow()) {
             if (hash_compare($password, $response)) {
