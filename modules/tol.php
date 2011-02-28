@@ -151,6 +151,7 @@ class TolModule extends PLModule
             $user->select(UserSelect::tol());
         }
 
+        $page->assign('su', S::user()->isAdmin());
         $page->assign('result', $user);
         $page->assign('mode', 'sheet');
 
