@@ -413,32 +413,38 @@ class User extends Meta
 
     /**
     * Original picture
+    * /!\ The field must have been fetched even to set a new picture !
     *
     * @param $original If specified, updates the picture in the database
     */
     public function original(FrankizImage $original = null)
     {
-        if ($original != null)
-        {// TODO: remove the old one when updating
+        if ($original != null) {
+            if ($this->original) {
+                $this->original->delete();
+            }
             $this->original = $original;
             XDB::execute('UPDATE account SET original = {?} WHERE uid = {?}',
-                                                 $original->id(), $this->id());
+                                             $original->id(), $this->id());
         }
         return $this->original;
     }
 
     /**
     * Current picture
+    * /!\ The field must have been fetched even to set a new picture !
     *
     * @param $photo If specified, updates the picture in the database
     */
     public function photo(FrankizImage $photo = null)
     {
-        if ($photo != null)
-        {// TODO: remove the old one when updating
+        if ($photo != null) {
+            if ($this->photo) {
+                $this->photo->delete();
+            }
             $this->photo = $photo;
             XDB::execute('UPDATE account SET photo = {?} WHERE uid = {?}',
-                                                 $photo->id(), $this->id());
+                                             $photo->id(), $this->id());
         }
         return $this->photo;
     }
