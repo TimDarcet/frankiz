@@ -90,7 +90,7 @@
                     <a href=""><div class="mail_ico"></div>Mail</a>
                 </div>
                 <div class="participants_link">
-                    <a href=""><div class="group"></div>Participants</a>
+                    <a href=""><div class="group_ico"></div>Participants</a>
                 </div>
                 <div class="admin">
                     <a href=""><div class="edit"></div>Modifier</a>

@@ -113,10 +113,11 @@
                     </tr>
 
                     <tr>
-                        <td> </td>
+                        <td>
+                            {if $item->refuse()} <input type="submit" name="delete"   value="Refuser" /> {/if}
+                        </td>
                         <td>
                             <input type="text" name="val_id" style="display: none; " value="{$valid->id()}" />
-                            {if $item->refuse()} <input type="submit" name="refuse"   value="Refuser" /> {/if}
                             <input type="submit" name="accept"   value="Valider" />
                         </td>
                     </tr>

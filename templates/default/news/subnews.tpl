@@ -41,7 +41,7 @@
                     {assign var='target' value=$news->target()}
                     {assign var='targetGroup' value=$target->group()}
                     <td class="title" title="Visible par '{$targetGroup->label()}'">
-                        <a name="news_{$news->id()}" href="news/see/{$news->id()}"><div>{$news->title()}</div></a>
+                        <a name="news_{$news->id()}" href="news/{$news->id()}"><div>{$news->title()}</div></a>
                     </td>
                     <td class="date">
                         {$news->begin()|age}
