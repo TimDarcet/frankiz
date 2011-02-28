@@ -54,7 +54,6 @@ class QdjMiniModule extends FrankizMiniModule
     public function run()
     {
         $qdj = QDJ::last();
-        $this->assign('group', Group::from('tol'));
         $this->assign('qdj', $qdj);
         $this->assign('votes', $qdj->last_votes());
     }

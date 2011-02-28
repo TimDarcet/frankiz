@@ -76,6 +76,16 @@ class QDJ extends Meta
     protected $date     = null;
     protected $writer   = null;
 
+    protected $voters   = null;
+
+    public function voters($part = null)
+    {
+        if ($part != null) {
+            $this->voters = $part;
+        }
+        return $this->voters;
+    }
+
     public function insert()
     {
         XDB::execute('INSERT  qdj
@@ -125,7 +135,34 @@ class QDJ extends Meta
         $array['count1']   = $this->count1;
         $array['count2']   = $this->count2;
         $array['date']     = $this->date->format('Y-m-d');
+        foreach ($this->voters as $key => $user) {
+            $a['voters'][$key] = array('displayName'  => $user->displayName(),
+                                       'id'           => $user->id());
+        }
         return $array;
+    }
+
+    public function last_votes() {
+        $db = XDB::iterator('SELECT  qdj, uid, rank
+                                FROM  qdj_votes
+                               WHERE  qdj = {?} AND rank != 0
+                            ORDER BY  rank DESC
+                               LIMIT  5', $this->id);
+
+        $users = new Collection('User');
+        $res = array();
+
+        while($datas = $db->next()) {
+            $res[] = array('user' => $users->addget($datas['uid']), 'rank' => $datas['rank']);
+        }
+
+        $users->select(UserSelect::base());
+
+        foreach ($res as $k => $r) {
+            $res[$k]['user'] = $r['user']->displayName();
+        }
+
+        return $res;
     }
 
     // only works for the session's user because of the IP
