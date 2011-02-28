@@ -7,4 +7,10 @@
 0,30 * * * * @USER@ cd @INSTALL_DIR@/bin/cron/ && @INSTALL_DIR@/bin/cron/update.scores.php
 
 ## Send mails
-0/5 * * * * @USER@ cd @INSTALL_DIR@/bin/cron/ && @INSTALL_DIR@/bin/cron/send_mail.php
+*/5 * * * * @USER@ cd @INSTALL_DIR@/bin/cron/ && @INSTALL_DIR@/bin/cron/send_mail.php
+
+## Backup db, without images
+0 */2 * * * @USER@ @INSTALL_DIR@/bin/cron/backup_mysql_db.sh
+
+## Backup full
+0 3 * * 0 @USER@ @INSTALL_DIR@/bin/cron/backup_mysql_db.sh
