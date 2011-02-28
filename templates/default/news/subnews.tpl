@@ -33,7 +33,12 @@
                     </td>
                     <td class="origin">
                         {if $news->origin()}
-                            {$news->origin()|group}
+                            {assign var='origin' value=$news->origin()}
+                            {if $origin->image()}
+                                {$origin|group}
+                            {else}
+                                {$origin|group:'text'}
+                            {/if}
                         {else}
                             {$news->writer()|user}
                         {/if}
