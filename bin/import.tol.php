@@ -76,22 +76,26 @@ while (true) {
         if (file_exists($path)) {
             $upload = FrankizUpload::fromFile($path);
             if ($upload->size() > 0) {
-                $i = new FrankizImage();
-                $i->insert();
-                $i->caste($tol_caste);
-                $i->label($u->firstname() . ' ' . $u->lastname());
-                $i->image($upload, false);
-                if ($original) {
-                    $u->original($i);
-                } else {
-                    $u->photo($i);
+                try {
+                    $i = new FrankizImage();
+                    $i->insert();
+                    $i->caste($tol_caste);
+                    $i->label($u->firstname() . ' ' . $u->lastname());
+                    $i->image($upload, false);
+                    if ($original) {
+                        $u->original($i);
+                    } else {
+                        $u->photo($i);
+                    }
+                    $works = true;
+                    echo 'Ok: ' . $u->id() . ' - ' . $u->displayname() . ' - '. $path . "\n";
+                } catch (Exception $e) {
+                    echo 'Error:' . $e->getMessage() . "\n";
                 }
-                $works = true;
-                echo 'Ok: ' . $u->id() . ' - ' . $u->displayname() . ' - '. $path . "\n";
             }
         }
         if (!$works) {
-            echo 'Error: ' . $u->id() . ' - ' . $u->displayname() . ' - '. $path . "\n";
+            echo 'Not done: ' . $u->id() . ' - ' . $u->displayname() . ' - '. $path . "\n";
         }
     }
 
