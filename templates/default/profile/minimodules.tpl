@@ -46,7 +46,7 @@
                             }
                         }
                         {/literal}"
-                />
+                ></div>
         </div>
     </li>
     {/foreach}
