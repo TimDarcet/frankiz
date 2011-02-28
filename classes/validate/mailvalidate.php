@@ -120,7 +120,12 @@ class MailValidate extends ItemValidate
         $mail = new FrankizMailer();
         $sub = ($this->type_mail == 'promo')?'promo':$this->formation->label();
         $mail->subject('[Mail ' . $sub . '] ' . $this->subject);
-        $mail->body($this->body);
+        if (!$this->nowiki) {
+            $mail->body(MiniWiki::wikiToHTML($this->body, false));
+        }
+        else {
+            $mail->body(MiniWiki::wikiToText($this->body, false, 0, 80));
+        }
         $mail->setFrom($this->writer->bestEmail(), $this->writer->displayName());
         
         if ($this->type_mail == 'promo' && !$this->targets) {
