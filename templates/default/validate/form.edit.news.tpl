@@ -61,7 +61,7 @@
         $(function() {
             var begin = new Date('{/literal}{$item->begin()|datetime:'m/d/Y H:i'}{literal}');
             var end = new Date('{/literal}{$item->end()|datetime:'m/d/Y H:i'}{literal}');
-            $("#begin").datetimepicker({minDate: new Date(), maxDate: "+7D", defaultDate: begin});
+            $("#begin").datetimepicker({minDate: begin, maxDate: "+7D", defaultDate: begin});
             if (!$("#begin").val()) {
                 $("#begin").datetimepicker('setDate', begin);
             }
