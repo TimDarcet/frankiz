@@ -181,7 +181,6 @@ CREATE TABLE IF NOT EXISTS `rooms_users` (
   UNIQUE KEY `uid` (`uid`,`rid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
 -- --------------------------------------------------------
 
 --
@@ -201,34 +200,6 @@ CREATE TABLE IF NOT EXISTS `todo` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `trombino_master`
---
-
-DROP TABLE IF EXISTS `trombino_master`;
-CREATE TABLE IF NOT EXISTS `trombino_master` (
-  `uid` int(10) NOT NULL,
-  `departement_id` int(10) NOT NULL,
-  `section_id` int(10) NOT NULL,
-  KEY `eleve_id` (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `trombino_x`
---
-
-DROP TABLE IF EXISTS `trombino_x`;
-CREATE TABLE IF NOT EXISTS `trombino_x` (
-  `uid` int(10) NOT NULL,
-  `section_id` int(10) NOT NULL,
-  `compagnie` int(10) NOT NULL,
-  KEY `eleve_id` (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `users_comments`
 --
 
@@ -240,31 +211,3 @@ CREATE TABLE IF NOT EXISTS `users_comments` (
   UNIQUE KEY `uid` (`uid`,`gid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `wiki`
---
-
-DROP TABLE IF EXISTS `wiki`;
-CREATE TABLE IF NOT EXISTS `wiki` (
-  `wid` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) NOT NULL,
-  `comments` text NOT NULL,
-  PRIMARY KEY (`wid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `wiki_version`
---
-
-DROP TABLE IF EXISTS `wiki_version`;
-CREATE TABLE IF NOT EXISTS `wiki_version` (
-  `wid` int(11) NOT NULL,
-  `version` int(11) NOT NULL,
-  `wrote` datetime NOT NULL,
-  `writer` int(11) NOT NULL,
-  `content` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;

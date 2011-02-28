@@ -20,7 +20,8 @@ CREATE TABLE IF NOT EXISTS log_events (
   `session` int(11) NOT NULL,
   `action` int(11) NOT NULL,
   stamps timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `data` text
+  `data` text,
+  KEY `session` (`session`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
