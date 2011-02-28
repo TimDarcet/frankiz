@@ -64,6 +64,11 @@ var qdj = {
                             } else {
                                 $("#minimodule_qdj .counts").hide();
                             }
+
+                            $("#minimodule_qdj .last_votes .votes_list").html('');
+                            $.each(json.votes, function(index, value) {
+                                $("#minimodule_qdj .last_votes .votes_list").append(value.rank + '. ' + value.user + '<br />');
+                            });
                         }
             });
     }

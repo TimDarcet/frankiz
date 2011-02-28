@@ -59,13 +59,15 @@
                   required {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$).*"{/literal}/>
         <script>{literal}
         $(function() {
+            limit_inf = new Date();
+            limit_inf.setMinutes(0);
             var begin = new Date('{/literal}{$item->begin()|datetime:'m/d/Y H:i'}{literal}');
             var end = new Date('{/literal}{$item->end()|datetime:'m/d/Y H:i'}{literal}');
-            $("#begin").datetimepicker({minDate: begin, maxDate: "+7D", defaultDate: begin});
+            $("#begin").datetimepicker({minDate: limit_inf, maxDate: "+7D", defaultDate: begin});
             if (!$("#begin").val()) {
                 $("#begin").datetimepicker('setDate', begin);
             }
-            $("#end").datetimepicker({minDate: new Date(), maxDate: "+7D", defaultDate: end});
+            $("#end").datetimepicker({minDate: limit_inf, maxDate: "+7D", defaultDate: end});
             if (!$("#end").val()) {
                 $("#end").datetimepicker('setDate', end);
             }

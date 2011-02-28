@@ -33,6 +33,11 @@
     </div>
     <div class="body">
 
+
+        {if $smarty.session.user->rights($group_tol, 'admin')}
+            <div class="admin"><a href="qdj/admin">Administrer les QDJ</a></div>
+        {/if}
+
         <form enctype="multipart/form-data" method="post" action="qdj" id="qdj_form">
             {assign var='end' value=$begin_date|@count}
             <select name="period">

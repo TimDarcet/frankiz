@@ -65,10 +65,12 @@
                 {assign}
                 <script>{literal}
                 $(function() {
+                    limit_inf = new Date();
+                    limit_inf.setMinutes(0);
                     var begin = new Date('{/literal}{$activity->begin()|datetime:'m/d/Y H:i'}{literal}');
                     var end = new Date('{/literal}{$activity->end()|datetime:'m/d/Y H:i'}{literal}');
                     var dates = $( "#begin, #end" ).datetimepicker({
-                        minDate: new Date(), maxDate: "+31D"});
+                        minDate: limit_inf, maxDate: "+31D"});
                     $("#begin").datetimepicker('setDate', begin);
                     $("#end").datetimepicker('setDate', end);
                 });

@@ -56,10 +56,30 @@
             </td>
         </tr>
     </table>
+
+    <table class="last_votes">
+        <tr>
+            <td>
+                Derniers votes :
+            </td>
+            <td class="votes_list">
+                {foreach from=$minimodule.votes item=vote}
+                    {$vote.rank}. {$vote.user} <br />
+                {/foreach}
+            </td>
+        </tr>
+    </table>
 </div>
 
 <div class="toModule">
-    <a href="qdj">Classement QDJ</a>
+    <table><tr>
+        <td>
+            <a href="qdj">Classement QDJ</a>
+        </td>
+        <td>
+            <a href="proposal/qdj">Proposer une QDJ</a>
+        </td>
+    </tr></table>
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

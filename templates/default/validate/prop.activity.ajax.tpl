@@ -59,7 +59,9 @@
                           required {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2}$).*"{/literal}/>
                     <script>{literal}
                     $(function() {
-                        $("#other_date").datepicker({minDate: new Date(), maxDate: "+1M", dateFormat: 'yy-mm-dd'});
+                        limit_inf = new Date();
+                        limit_inf.setMinutes(0);
+                        $("#other_date").datepicker({minDate: limit_inf, maxDate: "+1M", dateFormat: 'yy-mm-dd'});
                     });
                     {/literal}</script>
                 </td>
