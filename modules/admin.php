@@ -161,12 +161,16 @@ class AdminModule extends PlModule
 
     function handler_validate($page, $gid = null, $vid = null)
     {
+        $page->assign('msg', '');
+
         $gf = new GroupFilter(new PFC_Or(new GFC_Id($gid), new GFC_Name($gid)));
         $group = $gf->get(true);
 
         if (!$group) {
             throw new Exception("This Group (' . $gid . ') doesn't exist");
         }
+
+        $group->select(GroupSelect::base());
 
         if (!S::user()->hasRights($group, Rights::admin())) {
             throw new Exception("You don't have the credential to validate request in this group");
@@ -197,6 +201,7 @@ class AdminModule extends PlModule
         $page->assign('validation', (is_null($vid))?0:$vid);
 
         $page->assign('gid', $gid);
+        $page->assign('group', $group);
         $page->assign('val', $collec);
         $page->addCssLink('validate.css');
         $page->addCssLink('surveys.css');

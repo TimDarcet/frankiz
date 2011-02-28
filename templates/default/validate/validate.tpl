@@ -20,7 +20,11 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if t($msg) && $msg}
+<h1>Requêtes à destination de « {$group->label()} »</h1>
+
+{include file="wiki.tpl"|rel name='validate/help'}
+
+{if $msg}
     <div class="msg_proposal">
         {$msg}
     </div>
@@ -41,20 +45,24 @@
             {assign var='item' value=$valid->item()}
 
             <div class="title">
-                Requête de type "{$valid->label()}" en attente depuis {$valid->created()|age}
+                <table><tr>
+                    <td class="writer" title="Utilisateur à l'origine de la requête">{$writer|user}</td>
+                    <td class="type" title="Type de la requête">{$valid->label()}</td>
+                    <td class="age" title="Temps d'attente">{$valid->created()|age}</td>
+                </tr></table>
             </div>
 
             <div class="more {if $valid->id() == $validation}show{/if}">
-            <form enctype="multipart/form-data" method="post" action="admin/validate/{$gid}">
-                <div class="rules">
-                    {include file="wiki.tpl"|rel name='validate/rules/'|cat:$valid->type()}
-                </div>
+            <form enctype="multipart/form-data" method="post" action="admin/validate/{$group->id()}">
+                {if $smarty.session.user->isWeb() && 0}
+                    <div class="rules">
+                        {include file="wiki.tpl"|rel name='validate/rules/'|cat:$valid->type()}
+                    </div>
+                {/if}
 
-                <ul>
-                    <li>Demandeur: {$writer|user} {$writer|user:'text'}</li>
-                    <li>Groupe destinataire: {$group|group} {$group|group:'text'}</li>
-                    <li>Date de demande: {$valid->created()}</li>
-                </ul>
+                <div class="created">
+                    Date de demande: {$valid->created()}
+                </div>
 
                 <div class="click">
                     Informations
