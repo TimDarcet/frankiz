@@ -38,7 +38,7 @@
     <div class="nickname">{$result->nickname()}</div>
 
     <div class="birthdate">
-        <span>{$result->birthdate()|datetime:"d/m/Y"}</span> ({$result->birthdate()|age})
+        <span>{$result->birthdate()|datetime:"d/m/Y"} </span> {if !$result->isFemale()}({$result->birthdate()|age}){/if}
     </div>
 
     <div class="sports">
@@ -49,14 +49,20 @@
         </ul>
     </div>
 
+    {if $result->email()}
+        <div class="email">
+            Email&nbsp;: <span>{$result->bestEmail()}</span>
+        </div>
+    {/if}
+
     {if $result->cellphone()}
         <div class="cellphone">
-            Portable: <span>{$result->cellphone()}</span>
+            Portable&nbsp;: <span>{$result->cellphone()}</span>
         </div>
     {/if}
 
     <div class="caserts">
-        Casert:
+        Casert&nbsp;:
         <ul>
         {foreach from=$result->rooms() item='room'}
             <li>
