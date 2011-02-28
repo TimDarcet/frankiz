@@ -13,4 +13,4 @@
 0 */2 * * * @USER@ @INSTALL_DIR@/bin/cron/backup_mysql_db.sh
 
 ## Backup full
-0 3 * * 0 @USER@ @INSTALL_DIR@/bin/cron/backup_mysql_db.sh
+0 3 * * 0 @USER@ @INSTALL_DIR@/bin/cron/backup_mysql_db.sh all
