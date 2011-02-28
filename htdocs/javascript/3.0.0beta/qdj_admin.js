@@ -22,13 +22,13 @@ $(function() {
         modify($qdj.attr("qdj_id"), $(this).val());
     });
 
-    $("#section input[name=unplan]").change(function() {
+    $("#section input[name=unplan]").click(function() {
         $qdj = $(this).closest("[qdj_id]");
         $qdj.find("input.date").val('');
         modify($qdj.attr("qdj_id"), false);
     });
 
-    $("#section input[name=delete]").change(function() {
+    $("#section input[name=delete]").click(function() {
         $qdj = $(this).closest("[qdj_id]");
         request({ "url": 'qdj/ajax/modify'
             ,"data": {'id': $qdj.attr("qdj_id"), 'delete': true}
