@@ -68,6 +68,9 @@ class TolValidate extends ItemValidate
 
         $mail = new FrankizMailer('validate/mail.admin.tol.tpl');
         $mail->assign('user', $this->user->displayName());
+        $group = Group::from('tol');
+        $group->select(GroupSelect::base());
+        $mail->assign('targetGroup', $group);
 
         $mail->subject("[Frankiz] Validation d'une photo tol");
         $mail->SetFrom($this->user->bestEmail(), $this->user->displayName());
