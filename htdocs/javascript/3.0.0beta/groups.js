@@ -27,17 +27,12 @@ var groups = function(ns, $input) {
 
                 var groups = json.groups;
 
-                $.each(ul.children("tr"), function(index, value) {
-                    if (key_exists($(value).attr("gid"), groups)) {
-                        delete groups[$(value).attr("gid")];
-                    } else {
-                        $(value).remove();
-                    }
-                });
+                ul.empty();
 
-                var html = new Array();
-                for (var gid in groups) {
-                    html.push(groups[gid]);
+                var html = [];
+
+                for (var i in groups) {
+                    html.push(groups[i]);
                 }
 
                 ul.append(html.join(''));

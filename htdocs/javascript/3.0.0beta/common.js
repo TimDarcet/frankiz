@@ -188,6 +188,14 @@ function key_exists(key, search) {
     return key in search;
 }
 
+function in_array(needle, haystack) {
+    for (key in haystack) {
+        if (haystack[key] == needle) {
+            return true;
+        }
+    }
+}
+
 var wiki_preview = {
     "start" : function($textarea, $display) {
         var busy = false;
