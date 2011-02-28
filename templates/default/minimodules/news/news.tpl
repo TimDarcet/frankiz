@@ -25,14 +25,19 @@
     <table>
         {foreach from=$minimodule.news item=news}
             <tr class="{if $news->star()}star{else}unstar{/if}">
-                <td>
+                <td class="origin">
                     {if $news->origin()}
-                        {$news->origin()|group}
+                        {assign var='origin' value=$news->origin()}
+                        {if $origin->image()}
+                            {$origin|group}
+                        {else}
+                            {$origin|group:'text'}
+                        {/if}
                     {else}
                         {$news->writer()|user}
                     {/if}
                 </td>
-                <td><a href="news/{$news->id()}">{$news->title()}</a></td>
+                <td class="title"><a href="news/{$news->id()}">{$news->title()}</a></td>
             </tr>
         {/foreach}
     </table>
