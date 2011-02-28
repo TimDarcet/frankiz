@@ -21,7 +21,6 @@
 {**************************************************************************}
 
 <ul>
-    <li><a href="links/partners">Partenariats</a></li>
     {foreach from=$minimodule.links|order:'rank':false item=link}
         <li><a href="{$link->link()}">{$link->label()}</a></li>
     {/foreach}
