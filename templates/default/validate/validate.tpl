@@ -51,8 +51,8 @@
                 </div>
 
                 <ul>
-                    <li>Demandeur: {$writer->displayName()}</li>
-                    <li>Groupe destinataire: {$group->label()}</li>
+                    <li>Demandeur: {$writer|user} {$writer|user:'text'}</li>
+                    <li>Groupe destinataire: {$group|group} {$group|group:'text'}</li>
                     <li>Date de demande: {$valid->created()}</li>
                 </ul>
 
