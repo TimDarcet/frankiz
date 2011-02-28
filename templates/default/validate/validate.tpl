@@ -62,7 +62,7 @@
 
                 <div>
                     <span class="created">Date de demande: {$valid->created()}</span>
-                    Demande de {$user->fullName()}
+                    Demande de {$writer->fullName()}
                 </div>
 
                 <div class="click">
