@@ -53,6 +53,8 @@ class QDJModule extends PLModule
         $page->assign('results', $this->fetch_scores($begin_dates, $end_dates, Env::t('period', count($begin_dates)-1)));
         $page->assign('end_date', $end_dates);
         $page->assign('begin_date', $begin_dates);
+        $page->assign('group_tol', Group::from('tol'));
+
         $page->addCssLink('visualize.css');
         $page->addCssLink('qdj.css');
         $page->assign('title', "Classement QDJ");
@@ -121,6 +123,11 @@ class QDJModule extends PLModule
     public function handler_ajax_get($page)
     {
         $qdj = QDJ::last(Json::i('daysShift', 0));
+
+        if ($qdj === false) {
+            $page->jsonAssign('success', false);
+            return PL_JSON;
+        }
         $array_qdj = $qdj->export();
 
         if ($qdj->date()->format('Y-m-d') == date('Y-m-d'))
@@ -133,6 +140,7 @@ class QDJModule extends PLModule
         $page->jsonAssign('success', true);
         $page->jsonAssign('voted', $voted);
         $page->jsonAssign('qdj', $array_qdj);
+        $page->jsonAssign('votes', $qdj->last_votes());
         return PL_JSON;
     }
 
