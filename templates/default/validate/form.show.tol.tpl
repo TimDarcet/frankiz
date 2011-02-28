@@ -21,6 +21,7 @@
 {**************************************************************************}
 
 {assign var='image' value=$item->image()}
+{assign var='user' value=$item->user()}
 
 <tr>
     <td width=20%>

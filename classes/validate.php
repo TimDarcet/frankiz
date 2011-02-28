@@ -264,7 +264,7 @@ class Validate extends Meta
             }
         }
 
-        if (Env::has('refuse')) {
+        if (Env::has('delete')) {
             if (!Env::v('ans')) {
                 Platal::page()->assign('msg', 'Pas de motivation pour le refus !!!');
                 return false;

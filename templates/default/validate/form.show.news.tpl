@@ -39,6 +39,19 @@
 </tr>
 
 <tr>
+    <td width=20%>
+        Au nom de :
+    </td>
+    <td>
+        {if $item->origin()}
+            {$item->origin()|group:'text'}
+        {else}
+            personnel
+        {/if}
+    </td>
+</tr>
+
+<tr>
     <td>
         Annonce :
     </td>

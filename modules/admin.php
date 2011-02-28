@@ -180,7 +180,7 @@ class AdminModule extends PlModule
             if (!$el) {
                 $page->assign('msg', 'La validation a déjà été effectuée.');
             } else {
-                if (Env::has('accept') || Env::has('refuse')) {
+                if (Env::has('accept') || Env::has('delete')) {
                     S::logger()->log('admin/validate',
                                      array('type' => $el->type(),
                                          'writer' => $el->writer()->id(),
@@ -189,7 +189,7 @@ class AdminModule extends PlModule
                                           'valid' => Env::has('accept'),
                                            'item' => $el->itemToDb()));
                 }
-                if ($el->handle_form() && (Env::has('accept') || Env::has('refuse')))
+                if ($el->handle_form() && (Env::has('accept') || Env::has('delete')))
                     $collec->remove(Env::v('val_id'));
             }
         }

@@ -20,7 +20,7 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if $isOk == null}
+{if $isOk}
 Ta photo tol vient d'être validée... Elle remplace dès à present visible.
 Il te faudra peut-être rouvrir ton navigateur pour qu'il prenne en compte le changement.
 
