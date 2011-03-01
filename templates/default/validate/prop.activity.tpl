@@ -53,7 +53,7 @@
                 <a onclick="activity_show('new_reg')">Nouvelle activité régulière</a>
             </li>
             <li>
-                <a onclick="activity_show('reg')">Nouvelle scéance d'une activité régulière</a>
+                <a onclick="activity_show('reg')">Nouvelle séance d'une activité régulière</a>
             </li>
             <li>
                 <a onclick="activity_show('new')">Activité ponctuelle</a>
