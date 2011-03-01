@@ -18,15 +18,17 @@ $(function(){
 
     $("body").click(function(e) {
         if ($(e.target).attr('id') == 'tol_results' || $(e.target).attr('id') == 'content') {
-            if (users.mode() == 'card') {
-                var $lis = $("#tol_results li.result");
-                $lis.removeClass('sheet');
-                $lis.addClass('card');
-            }
+            var $lis = $("#tol_results li.result").each(function() {
+                var $li = $(this);
+                if ($li.children('div.card').length > 0) {
+                    $li.removeClass('sheet');
+                    $li.addClass('card');
+                }
+            })
         }
     });
 
-    $("body").dblclick(function(e) {
+    $("body").dblclick(function(e) {console.log('plop');
         var $li = $(e.target).closest('li.result.sheet');
         if ($li.children('div.card').length > 0) {
             if ($li.length == 1) {

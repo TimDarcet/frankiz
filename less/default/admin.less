@@ -25,14 +25,23 @@
             margin: 0;
         }
         li {
-            margin-bottom: 5px;
+            padding: 3px;
+            margin-bottom: 8px;
             list-style: none;
+            position: relative;
+            &.pair {
+                right: -4px;
+                text-align: left;
+            }
+            &.impair {
+                left: -4px;
+                text-align: right;
+            }
         }
         .group {
-            border: 1px grey solid;
             padding: 5px;
-            img {
-                float: left;
+            .img {
+                width: 45px;
             }
             .label {
                 font-size: 18px;
@@ -42,9 +51,6 @@
                 }
             }
             .admin {
-                font-size: 14px;
-            }
-            .valid {
                 font-size: 14px;
             }
         }

@@ -48,7 +48,7 @@ body.simple {
 }
 
 .warning {
-    color: red;
+    color: red !important;
 }
 
 a {
@@ -818,6 +818,16 @@ table.bicol {
             .wiki_textarea {
                 background-color: inherit;
             }
+        }
+        &.impair {
+            background-color: white;
+        }
+    }
+}
+ul.bicol {
+    li {
+        &.pair {
+            background-color: @light;
         }
         &.impair {
             background-color: white;
