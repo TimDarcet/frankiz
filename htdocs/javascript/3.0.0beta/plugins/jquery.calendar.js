@@ -2658,6 +2658,7 @@
                 dochange();
             },
             rf: function() {
+                option.eventItems = [];
                 populate();
             },
             gt: function(d) {
