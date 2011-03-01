@@ -54,20 +54,31 @@
     <div class="module">
         <div class="head"><span class="helper" target="admin/index/groups"></span>Groupes & Binets</div>
         <div class="body">
-            <ul>
-            {foreach from=$admin_groups|order:'score' item='group'}
-                <li class="group">
-                    <img src="{$group->image()|image:'micro':'group'}" />
-                    <div>
+            <ul class="bicol">
+            {foreach from=$admin_groups|order:'score' item='group' name='foo'}
+                <li class="group {if $smarty.foreach.foo.index % 2}pair{else}impair{/if}">
+                    <table><tr>
+                    {if $smarty.foreach.foo.index % 2}
+                        <td class="img">
+                            <img src="{$group->image()|image:'micro':'group'}" />
+                        </td>
+                    {/if}
+                    <td>
                         <div class="label">{$group|group:'text'}</div>
-                        <div class="admin"><a href="groups/admin/{$group->id()}">Administrer</a></div>
-                        {assign var='id' value=$group->id()}
-                        {if t($validates.$id)}
-                            <div class="valid">
-                                <a href="admin/validate/{$group->id()}">{$validates.$id|@count} requêtes</a>
-                            </div>
-                        {/if}
-                    </div>
+                        <div class="admin">
+                            <a href="groups/admin/{$group->id()}">Administrer</a>
+                            {assign var='id' value=$group->id()}
+                            {if t($validates.$id)}
+                                <a class="warning" href="admin/validate/{$group->id()}">{$validates.$id|@count} requêtes</a>
+                            {/if}
+                        </div>
+                    </td>
+                    {if !$smarty.foreach.foo.index % 2}
+                        <td class="img">
+                            <img src="{$group->image()|image:'micro':'group'}" />
+                        </td>
+                    {/if}
+                    </tr></table>
                 </li>
             {/foreach}
             </ul>
