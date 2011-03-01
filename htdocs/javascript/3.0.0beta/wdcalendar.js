@@ -19,8 +19,8 @@ $(function() {
         eventItems: [],
         ViewCmdhandler: View,
         onWeekOrMonthToDay: wtd,
-        onBeforeRequestData: cal_beforerequest,
-        onAfterRequestData: cal_afterrequest,
+        onBeforeRequestData: do_nothing,
+        onAfterRequestData: do_nothing,
         onRequestDataError: cal_onerror,
         autoload: true,
         readonly: true,
@@ -44,6 +44,10 @@ $(function() {
     $("#hdtxtshow").datepicker({ picker: "#txtdatetimeshow",
                              showtarget: $("#txtdatetimeshow"),
                                onReturn: datestrshow});
+
+    function do_nothing(type) {
+        
+    }
 
     function cal_beforerequest(type) {
         var t="Loading data...";

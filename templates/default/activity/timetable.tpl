@@ -119,7 +119,7 @@
                 <div class="right">
                     <div class="new fbutton">
                         <div onclick="change_view_cal('all')">
-                            <span class="new_element"></span>
+                            <span class="world"></span>
                             Toutes les activités
                         </div>
                     </div>
@@ -127,18 +127,18 @@
                     </div>
 
                     <div class="new fbutton">
-                        <div onclick="change_view_cal('participate')">
-                            <span class="new_element"></span>
-                            Mes activités
+                        <div onclick="change_view_cal('friends')">
+                            <span class="group_ico"></span>
+                            Mes groupes
                         </div>
                     </div>
                     <div class="btnseparator">
                     </div>
 
                     <div class="new fbutton">
-                        <div onclick="change_view_cal('friends')">
-                            <span class="new_element"></span>
-                            Mes groupes
+                        <div onclick="change_view_cal('participate')">
+                            <span class="alone"></span>
+                            Mes activités
                         </div>
                     </div>
                     <div class="btnseparator">
