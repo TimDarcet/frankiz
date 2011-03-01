@@ -80,7 +80,7 @@
                             {/if}
                         </div>
                     </td>
-                    {if !$smarty.foreach.foo.index % 2}
+                    {if $smarty.foreach.foo.index % 2 == 0}
                         <td class="img">
                             <img src="{$group->image()|image:'micro':'group'}" />
                         </td>
