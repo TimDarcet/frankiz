@@ -24,26 +24,21 @@ class ImagesModule extends PlModule
     function handlers()
     {
         return array(
-            'images'        => $this->make_hook('images', AUTH_COOKIE),
+            'images/gc'     => $this->make_hook('gc',     AUTH_MDP,    'admin'),
             'images/upload' => $this->make_hook('upload', AUTH_COOKIE),
             'image'         => $this->make_hook('image',  AUTH_PUBLIC, ''),
         );
     }
 
-    function handler_images($page)
+    function handler_gc($page)
     {
-        $castes = S::user()->castes();
+        $if = new ImageFilter(new PFC_And(new IFC_NoSize(), new IFC_Temp()));
+        $images = $if->get()->select(FrankizImageSelect::gc());
 
-        $page->assign('castes', $castes);
-        if ($castes != false) {
-            $if = new ImageFilter(new IFC_Caste($castes));
-            $images = $if->get()->select(array(FrankizImage::SELECT_BASE => Group::SELECT_BASE));
-            $page->assign('images', $images);
-        }
-
+        $page->assign('images', $images);
         $page->addCssLink('images.css');
-        $page->assign('title', 'Images');
-        $page->changeTpl('images/images.tpl');
+        $page->assign('title', 'Images GC');
+        $page->changeTpl('images/gc.tpl');
     }
 
     function handler_upload($page)
@@ -56,7 +51,7 @@ class ImagesModule extends PlModule
 
             try {
                 $upload = FrankizUpload::v('file');
-    
+
                 $secret = uniqid();
 
                 $i = new FrankizImage();
@@ -68,6 +63,13 @@ class ImagesModule extends PlModule
                 $page->assign('image', $i);
                 $page->assign('secret', $secret);
             } catch (Exception $e) {
+                try {
+                if ($i) {
+                    $i->delete();
+                }
+                } catch(Exception $eb) {
+                    $page->assign('exception', $eb);
+                }
                 $page->assign('exception', $e);
                 if ($e instanceof ImageSizeException) {
                     $page->assign('pixels', true);
