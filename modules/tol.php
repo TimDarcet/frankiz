@@ -25,6 +25,7 @@ class TolModule extends PLModule
     {
         return array(
             'tol'             => $this->make_hook('tol',             AUTH_INTERNAL, ''),
+            'tol/birthday'    => $this->make_hook('tol_birthday',    AUTH_INTERNAL, ''),
             'tol/see'         => $this->make_hook('see',             AUTH_INTERNAL, ''),
             'tol/ajax/search' => $this->make_hook('tol_ajax_search', AUTH_INTERNAL, ''),
             'tol/ajax/sheet'  => $this->make_hook('tol_ajax_sheet',  AUTH_INTERNAL, '')
@@ -115,6 +116,29 @@ class TolModule extends PLModule
             return new PFC_And($conds);
         else
             return false;
+    }
+
+    function handler_tol_birthday($page)
+    {
+        $on_platal = Group::from('on_platal');
+        $next_week = new FrankizDateTime();
+        $week = new DateInterval('P7D');
+        $next_week = $next_week->add($week);
+
+        $uf = new UserFilter(new PFC_And(new UFC_Group($on_platal, Rights::member()),
+                                         new UFC_Birthday('>=', new FrankizDateTime()),
+                                         new UFC_Birthday('<=', $next_week)),
+                             new UFO_Birthday());
+        $users = $uf->get()->select(UserSelect::tol());
+
+        header('Content-Type: text/html; charset=utf-8');
+        echo '<pre>';
+        foreach ($users as $u) {
+            $study = reset($u->studies());
+            echo $study->promo() . ',' . $u->birthdate()->format('d/m/Y') . ',' . $u->lastname() . ',' . $u->firstname() . "\n";
+        }
+        echo '</pre>';
+        exit;
     }
 
     function handler_tol($page)
