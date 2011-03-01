@@ -46,6 +46,7 @@
 
 <div class="module" id="calendar">
     <div class="head">
+        <span class="loading"></span>
         Calendrier des activités
         <div class="options">
             <div id="calhead" style="padding-left:1px;padding-right:1px;">

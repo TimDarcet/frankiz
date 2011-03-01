@@ -15,12 +15,12 @@ $(function() {
     wd_op = {
         view: view,
         theme: 3,
-        height: Math.max(_MH - dvH - 220, 400),
+        height: Math.max(_MH - dvH - 270, 400),
         eventItems: [],
         ViewCmdhandler: View,
         onWeekOrMonthToDay: wtd,
-        onBeforeRequestData: do_nothing,
-        onAfterRequestData: do_nothing,
+        onBeforeRequestData: loading,
+        onAfterRequestData: finished_loading,
         onRequestDataError: cal_onerror,
         autoload: true,
         readonly: true,
@@ -45,8 +45,12 @@ $(function() {
                              showtarget: $("#txtdatetimeshow"),
                                onReturn: datestrshow});
 
-    function do_nothing(type) {
-        
+    function loading(type) {
+        $(".loading").show();
+    }
+
+    function finished_loading(type) {
+        $(".loading").hide();
     }
 
     function cal_beforerequest(type) {
@@ -84,7 +88,6 @@ $(function() {
     }
 
     function View(data) {
-        $('#activity_show').show();
         load([data[0]], true);
     }
 
