@@ -69,6 +69,8 @@ class FrankizMailer extends PHPMailer
     {
         global $globals;
 
+        $this->CharSet = 'utf-8';
+
         if ($globals->debug & DEBUG_BT) {
             if (!isset(PlBacktrace::$bt['Mails']))
                 new PlBacktrace('Mails');
