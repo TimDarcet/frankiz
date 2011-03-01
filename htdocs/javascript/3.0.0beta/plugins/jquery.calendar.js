@@ -247,7 +247,7 @@
             eventDiv = $("<div id='gridEvent' style='display:none;'></div>").appendTo(document.body);
         }
         var gridcontainer = $(this);
-        option = $.extend(def, option);
+        option = $.extend(option, def, option);
         //no quickUpdateUrl, dragging disabled.
         if (option.quickUpdateUrl == null || option.quickUpdateUrl == "") {
             option.enableDrag = false;

@@ -1,3 +1,5 @@
+var wd_op = {};
+
 $(function() {
     var view = "week";
 
@@ -10,7 +12,7 @@ $(function() {
     var _MH = document.documentElement.clientHeight;
     var dvH = $("#calhead").height() + 2;
 
-    var op = {
+    wd_op = {
         view: view,
         theme: 3,
         height: Math.max(_MH - dvH - 220, 400),
@@ -26,11 +28,11 @@ $(function() {
     };
 
     if ( typeof( date_cal ) != "undefined" ) {
-        op.showday = date_cal;
+        wd_op.showday = date_cal;
     }
     
     var $container = $("#gridcontainer");
-    var p = $container.bcalendar(op).BcalGetOp();
+    var p = $container.bcalendar(wd_op).BcalGetOp();
 
     datestrshow();
     $("#caltoolbar").noSelect();
