@@ -185,7 +185,11 @@ class TolModule extends PLModule
                 } else {
                     $page->assign('mode', 'sheet');
                 }
-                $fiches[$user->id()] = $page->fetch(FrankizPage::getTplPath('tol/result.tpl'));
+                try {
+                    $fiches[$user->id()] = $page->filteredFetch(FrankizPage::getTplPath('tol/result.tpl'));
+                } catch (Exception $e) {
+                    XDB::execute('INSERT INTO tol_errors SET error = {?}', $user->id());
+                }
             }
         }
 
@@ -200,7 +204,6 @@ class TolModule extends PLModule
     {
         $f = new UserFilter(new UFC_Uid($uid));
         $u = $f->get(true);
-        $page->assign('result', $u);
 
         if ($u) {
             $u->select(UserSelect::tol());
@@ -208,7 +211,12 @@ class TolModule extends PLModule
 
         $page->assign('su', S::user()->isAdmin());
         $page->assign('result', $u);
-        $sheet = $page->fetch(FrankizPage::getTplPath('tol/sheet.tpl'));
+        try {
+            $sheet = $page->filteredFetch(FrankizPage::getTplPath('tol/sheet.tpl'));
+        } catch (Exception $e) {
+            $sheet = "La fiche de l'utilisateur comporte des erreurs";
+            XDB::execute('INSERT INTO tol_errors SET error = {?}', $u->id());
+        }
 
         $page->jsonAssign('sheet', $sheet);
         $page->jsonAssign('success', true);
