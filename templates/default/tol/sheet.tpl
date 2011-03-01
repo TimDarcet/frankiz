@@ -56,7 +56,7 @@
 
     {if $result->email()}
         <div class="email">
-            Email&nbsp;: <span>{$result->bestEmail()}</span>
+            Email&nbsp;: <a href="mailto:{$result->bestEmail()}">{$result->bestEmail()}</a>
         </div>
     {/if}
 
