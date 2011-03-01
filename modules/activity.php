@@ -294,7 +294,7 @@ class ActivityModule extends PLModule
     {
         $act = new ActivityInstanceFilter(
             new PFC_AND(new AIFC_CanBeSeen (S::user()),
-                        new AIFC_Id($$id)));
+                        new AIFC_Id($id)));
         $act = $act->get(true);
 
         if ($act === false) {
