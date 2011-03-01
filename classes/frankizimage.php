@@ -62,6 +62,11 @@ class FrankizImageSelect extends Select
         return new self(array('caste'), array('caste' => CasteSelect::base()));
     }
 
+    public static function gc() {
+        return new self(array('label', 'seen', 'lastseen', 'created', 'caste'),
+                        array('caste' => CasteSelect::group()));
+    }
+
     public static function image($size) {
         return new self(array('images'), $size);
     }

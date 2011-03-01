@@ -72,6 +72,16 @@ class IFC_Temp extends ImageFilterCondition
     }
 }
 
+class IFC_NoSize extends ImageFilterCondition
+{
+    public function buildCondition(PlFilter $f)
+    {
+        $i_s = $f->addSizeFilter();
+
+        return XDB::format($i_s . '.iid IS NULL');
+    }
+}
+
 
 abstract class ImageFilterOrder extends FrankizFilterOrder
 {
@@ -120,6 +130,23 @@ class ImageFilter extends FrankizFilter
 
     protected function className() {
         return 'FrankizImage';
+    }
+
+    private $with_size = false;
+
+    public function addSizeFilter()
+    {
+        $this->with_size = true;
+        return 'i_s';
+    }
+
+    protected function sizeJoins()
+    {
+        $joins = array();
+        if ($this->with_size) {
+            $joins['i_s'] = PlSqlJoin::left('images_sizes', '$ME.iid = i.iid');
+        }
+        return $joins;
     }
 }
 // }}}
