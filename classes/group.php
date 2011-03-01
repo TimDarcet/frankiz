@@ -123,6 +123,7 @@ class Group extends Meta
     const NS_STUDY       = 'study';
     const NS_PROMO       = 'promo';
     const NS_SPORT       = 'sport';
+    const NS_INSTRUMENT  = 'instrument';
     const NS_NATIONALITY = 'nationality';
 
     protected $image = null;
