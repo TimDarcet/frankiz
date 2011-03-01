@@ -22,7 +22,7 @@
 
 
 <div class="title {if $activity->participate()}present{else}away{/if}">
-    <a href="activity/timetable/{$activity->id()}">{$activity->title()}</a>
+    <a href="activity/timetable/friends/{$activity->id()}">{$activity->title()}</a>
     {if $activity->participate()}
         <a onclick="activity.out({$activity->id()});" class="right"><span class="remove_participant"></span></a>
     {else}

@@ -30,6 +30,10 @@ $(function() {
     if ( typeof( date_cal ) != "undefined" ) {
         wd_op.showday = date_cal;
     }
+
+    if ( typeof( url_cal ) != "undefined" ) {
+        wd_op.url = url_cal;
+    }
     
     var $container = $("#gridcontainer");
     var p = $container.bcalendar(wd_op).BcalGetOp();
@@ -127,6 +131,5 @@ $(function() {
         $container.nextRange();
         datestrshow();
     });
-
 });
 

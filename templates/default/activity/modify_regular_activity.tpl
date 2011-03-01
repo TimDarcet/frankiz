@@ -42,7 +42,7 @@
                     Description :
                 </td>
                 <td>
-                    <textarea name='description' id="text_proposal" rows=7 cols=50>{$activity->description()}</textarea>
+                    {include file="wiki_textarea.tpl"|rel id="activity_description" already=$activity->description()}
                 </td>
             </tr>
     

@@ -53,8 +53,8 @@
                         Description :
                     </td>
                     <td>
-                        <textarea name='description' id="text_proposal"
-                            placeholder="Description" rows=7 cols=50>{$description}</textarea>
+                        {include file="wiki_textarea.tpl"|rel id="activity_description" already=$description
+                                placeholder="Description" }
                     </td>
                 </tr>
 

@@ -22,7 +22,13 @@
 
 <div class="activity_right">
     <div class="top">
-         <a href="proposal/activity">Proposer une activité</a>
+         <div class="new_activity"><a href="proposal/activity">Proposer une activité</a> </div>
+
+         <a onclick="change_view('all')">Voir toutes les activités du site</a> <br />
+
+         <a onclick="change_view('participate')">Voir les activités auxquelles je participe</a> <br />
+
+         <a onclick="change_view('friends')">Voir les activités de mes groupes</a>
     </div>
 
     <div class="module" id="activity_show" style="display:none;">
@@ -106,50 +112,7 @@
         Activités 
     </div>
     <div class="body" id="activities_list">
-        {foreach from=$activities item=activities_day key=date}
-            <div class="day">
-                <div class="date">
-                    {$date|date_format}
-                </div>
-                <div class="activities_day">
-                    {foreach from=$activities_day|order:'hour_begin':false item='activity' key='id'}
-                        <div class="activity {if $activity->participate()}star{else}unstar{/if}" aid="{$activity->id()}">
-                            <span class="star_switcher" onclick="switch_participate({$activity->id()})">&emsp;</span>
-                            {canEdit target=$activity->target()}
-                                <a href="activity/modify/{$activity->id()}"><div class="edit"></div></a>
-                            {/canEdit}
-
-                            {assign var='writer' value=$activity->writer()}
-                            {if $writer->id() == $smarty.session.user->id()}
-                                <a href="activity/participants/{$activity->id()}"><div class="mail_ico"></div></a>
-                            {/if}
-
-                            {$activity->hour_begin()} à {$activity->hour_end()}
-                            {if !$activity->hour_end($date)}
-                                ({$activity->end()|datetime:'d/m'})
-                            {/if} :
-
-                            {if $activity->origin()}
-                                {assign var='origin' value=$activity->origin()}
-                                <a href="groups/see/{$origin->name()}">
-                                    <img src="{$origin->image()|image:'micro'|smarty:nodefaults}" 
-                                        title="{$origin->label()}""/>
-                                </a>
-                            {else}
-                                <a href="tol/?hruid={$writer->login()}">
-                                <img src="{$writer->image()|image:'micro'|smarty:nodefaults}" 
-                                     title="{$writer->displayName()}"/>
-                                </a>
-                            {/if}
-
-                            <a href="activity/timetable/{$activity->id()}">
-                                <b> {$activity->title()} </b>
-                            </a>
-                        </div>
-                    {/foreach}
-                </div>
-            </div>
-        {/foreach}
+        {include file='activity/activities_list.tpl'|rel activities=$activities}
     </div>
 </div>
 
