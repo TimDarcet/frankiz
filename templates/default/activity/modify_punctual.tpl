@@ -41,7 +41,7 @@
                 Description :
             </td>
             <td>
-                <textarea name='description' id="text_proposal" rows=7 cols=50>{$activity->description()}</textarea>
+                {include file="wiki_textarea.tpl"|rel id="activity_description" already=$activity->description()}
             </td>
         </tr>
 
@@ -60,7 +60,7 @@
                     limit_inf.setMinutes(0);
                     var begin = new Date('{/literal}{$activity->begin()|datetime:'m/d/Y H:i'}{literal}');
                     var end = new Date('{/literal}{$activity->end()|datetime:'m/d/Y H:i'}{literal}');
-                    var dates = $("#begin, #end").datetimepicker({ minDate:limit_inf, maxDate: "+31D"});
+                    var dates = $("#begin, #end").datetimepicker({ minDate:limit_inf, maxDate: "+1Y"});
                     $("#begin").datetimepicker('setDate', begin);
                     $("#end").datetimepicker('setDate', end);
                 });

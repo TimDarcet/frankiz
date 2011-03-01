@@ -132,7 +132,7 @@
                         Description :
                     </td>
                     <td>
-                        <textarea name='desc' id="text_proposal" placeholder="Description" rows=7 cols=50>{$desc}</textarea>
+                        {include file="wiki_textarea.tpl"|rel id="activity_description" already=$desc placeholder="Description" }
                     </td>
                 </tr>
 
@@ -150,7 +150,7 @@
                             limit_inf = new Date();
                             limit_inf.setMinutes(0);
                             var dates = $( "#begin, #end" ).datetimepicker({
-                                minDate: limit_inf, maxDate: "+31D"});
+                                minDate: limit_inf, maxDate: "+1Y"});
                             $("#begin").datetimepicker('setDate', new Date());
                             $("#end").datetimepicker('setDate', new Date());
                         });

@@ -23,16 +23,35 @@ $(document).ready(function() {
         $("#activity_show").show();
     });
 
-    $('#activities_list .day .activity').hover(function(){
+    $('#activities_list').delegate('.day .activity', 'hover', function(){
         load(new Array($(this).attr('aid')), true);
-    })
+    });
 
+    var temp = new Array()
+    $('#activities_list .day .activity').each(function(){
+        temp.push($(this).attr('aid'));
+    });
+    load(temp, false);
+});
+
+
+// To load the list of activities on the page activity
+
+function change_view(type)
+{
+    request({ "url": 'activity/ajax/get/'
+            ,"data": {'visibility': type, 'list': true}
+         ,"success": function(json) {
+                $("#activities_list").html(json.activities);
+         }
+    });
+    
     var temp = new Array()
     $('#activities_list .day .activity').each(function(){
         temp.push($(this).attr('aid'));
     })
     load(temp, false);
-});
+}
 
 function load(ids, all)
 {
@@ -133,9 +152,11 @@ function show(id)
 
     $("#activity_show .body .participants_list .number").html(count(results[id].participants));
     $("#activity_show .body .participants").html('');
+    var out = [];
     $.each(results[id].participants, function(index, value) {
-        $("#activity_show .body .participants").append('<div class="participant">' + value.displayName + '</div>');
+        out.push(value.displayName);
     });
+    $("#activity_show .body .participants").html(out.join(', '));
 
     if (results[id].isWriter) {
         $("#activity_show .body .misc .mail a").attr('href', 'activity/participants/' + id);
@@ -201,4 +222,9 @@ function count(obj)
         c++;
     }
     return c;
+}
+
+function change_view_cal(url) {
+    wd_op.url = 'activity/ajax/timetable/' + url;
+    $("#gridcontainer").reload();
 }

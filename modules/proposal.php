@@ -117,7 +117,7 @@ class ProposalModule extends PlModule
     function handler_activity($page)
     {   
         $title      = Env::t('title', '');
-        $desc       = Env::t('desc', '');
+        $desc       = Env::t('activity_description', '');
 
         $activities = new ActivityFilter(new PFC_And(new AFC_TargetGroup(S::user()->castes(Rights::admin())->groups()),
                                                      new AFC_Regular(true)));
@@ -209,7 +209,7 @@ class ProposalModule extends PlModule
                                 'writer'    => S::user(),
                                 'begin'     => $begin_c,
                                 'end'       => $end_c,
-                                'comment'   => Env::t('comment', '')));
+                                'comment'   => Env::t('activity_comment', '')));
                                 $av->insert();
                             }
                             catch (Exception $e)
@@ -228,7 +228,7 @@ class ProposalModule extends PlModule
                         'writer'    => S::user(),
                         'begin'     => $begin_c,
                         'end'       => $end_c,
-                        'comment'   => Env::t('comment', '')));
+                        'comment'   => Env::t('activity_comment', '')));
                         $av->insert();
                     }
                     catch (Exception $e)
