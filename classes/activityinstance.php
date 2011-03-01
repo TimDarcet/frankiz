@@ -231,11 +231,14 @@ class ActivityInstance extends meta
             if ($this->activity->origin()->image() != false)
                 $a['origin']['image'] = $this->activity->origin()->image()->src('micro');
         }
+
         $a['title'] = $this->activity->title();
-        $a['description'] = $this->activity->description();
-        $a['comment'] = $this->comment;
+        $a['description'] = MiniWiki::wikiToHTML($this->activity->description(), false);
+        $a['comment'] = MiniWiki::wikiToHTML($this->comment, false);
+
         $a['begin'] = $this->begin->format("m/d/Y H:i");
         $a['end'] = $this->end->format("m/d/Y H:i");
+
         $a['participants'] = array();
         foreach ($this->participants as $user) {
             $a['participants'][$user->id()] = array('displayName'  => $user->displayName(),
@@ -245,6 +248,7 @@ class ActivityInstance extends meta
         }
         if (!isset( $a['participate']))
             $a['participate'] = false;
+        
         $a['regular'] = $this->regular();
         $a['canEdit'] = S::user()->hasRights($this->activity->target()->group(), Rights::admin());
         $a['isWriter'] = S::user()->id() == $this->writer->id();

@@ -243,21 +243,45 @@ class AIFC_Current extends ActivityInstanceFilterCondition
     }
 }
 
-/** Returns instances of private activities
+/** Returns activities that the users are allowed to see
+ * (ie the user is in the group or the news is public)
+ * @param $us     A User, a uid or an array
  */
-class AIFC_Private extends ActivityInstanceFilterCondition
+class AIFC_CanBeSeen extends ActivityInstanceFilterCondition
 {
-    private $priv;
+    private $uids;
 
-    public function __construct($priv = true)
+    public function __construct($us)
     {
-        $this->priv = $priv;
+        $this->uids = User::toIds(unflatten($us));
     }
 
     public function buildCondition(PlFilter $f)
     {
-        $sub = $f->addActivityFilter();
-        return $sub.'.priv = ' . (int) $this->priv;
+        $f->addActivityFilter();
+        $c = $f->addCasteFilter();
+        $cu = $f->addUserFilter();
+        return XDB::format("$c.rights = {?} OR ($c.rights = {?} AND $cu.uid IN {?})",
+                        (string) Rights::everybody(), (string) Rights::restricted(), $this->uids);
+    }
+}
+
+/** Filters instances based on the fact that the given users participate
+ * @param $us A User, a Uid or an array of it
+ */
+class AIFC_Participants extends ActivityInstanceFilterCondition
+{
+    private $uids;
+
+    public function __construct($us)
+    {
+        $this->uids = User::toIds(unflatten($us));
+    }
+
+    public function buildCondition(PlFilter $f)
+    {
+        $p = $f->addParticipantsFilter();
+        return XDB::format("$p.participant IN {?}", $this->uids);
     }
 }
 
@@ -319,6 +343,23 @@ class ActivityInstanceFilter extends FrankizFilter
         $joins = array();
         if ($this->with_activity) {
             $joins['a'] = PlSqlJoin::inner('activities', '$ME.aid = ai.activity');
+        }
+        return $joins;
+    }
+
+    private $with_participants = false;
+
+    public function addParticipantsFilter()
+    {
+        $this->with_participants = true;
+        return 'ap';
+    }
+
+    protected function participantsJoins()
+    {
+        $joins = array();
+        if ($this->with_participants) {
+            $joins['ap'] = PlSqlJoin::inner('activities_participants', '$ME.id = ai.id');
         }
         return $joins;
     }

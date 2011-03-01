@@ -109,8 +109,7 @@ class TolValidate extends ItemValidate
     public function _mail_from_addr()
     {
         global $globals;
-
-        return $globals->mails->web;
+        return 'tol@' . $globals->mails->group_suffix;
     }
 
     public function commit()

@@ -76,16 +76,6 @@ class QDJ extends Meta
     protected $date     = null;
     protected $writer   = null;
 
-    protected $voters   = null;
-
-    public function voters($part = null)
-    {
-        if ($part != null) {
-            $this->voters = $part;
-        }
-        return $this->voters;
-    }
-
     public function insert()
     {
         XDB::execute('INSERT  qdj
@@ -135,10 +125,6 @@ class QDJ extends Meta
         $array['count1']   = $this->count1;
         $array['count2']   = $this->count2;
         $array['date']     = $this->date->format('Y-m-d');
-        foreach ($this->voters as $key => $user) {
-            $a['voters'][$key] = array('displayName'  => $user->displayName(),
-                                       'id'           => $user->id());
-        }
         return $array;
     }
 

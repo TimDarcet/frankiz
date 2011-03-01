@@ -1,3 +1,5 @@
+var wd_op = {};
+
 $(function() {
     var view = "week";
 
@@ -10,15 +12,15 @@ $(function() {
     var _MH = document.documentElement.clientHeight;
     var dvH = $("#calhead").height() + 2;
 
-    var op = {
+    wd_op = {
         view: view,
         theme: 3,
-        height: Math.max(_MH - dvH - 220, 400),
+        height: Math.max(_MH - dvH - 270, 400),
         eventItems: [],
         ViewCmdhandler: View,
         onWeekOrMonthToDay: wtd,
-        onBeforeRequestData: cal_beforerequest,
-        onAfterRequestData: cal_afterrequest,
+        onBeforeRequestData: loading,
+        onAfterRequestData: finished_loading,
         onRequestDataError: cal_onerror,
         autoload: true,
         readonly: true,
@@ -26,11 +28,15 @@ $(function() {
     };
 
     if ( typeof( date_cal ) != "undefined" ) {
-        op.showday = date_cal;
+        wd_op.showday = date_cal;
+    }
+
+    if ( typeof( url_cal ) != "undefined" ) {
+        wd_op.url = url_cal;
     }
     
     var $container = $("#gridcontainer");
-    var p = $container.bcalendar(op).BcalGetOp();
+    var p = $container.bcalendar(wd_op).BcalGetOp();
 
     datestrshow();
     $("#caltoolbar").noSelect();
@@ -38,6 +44,14 @@ $(function() {
     $("#hdtxtshow").datepicker({ picker: "#txtdatetimeshow",
                              showtarget: $("#txtdatetimeshow"),
                                onReturn: datestrshow});
+
+    function loading(type) {
+        $(".loading").show();
+    }
+
+    function finished_loading(type) {
+        $(".loading").hide();
+    }
 
     function cal_beforerequest(type) {
         var t="Loading data...";
@@ -74,7 +88,6 @@ $(function() {
     }
 
     function View(data) {
-        $('#activity_show').show();
         load([data[0]], true);
     }
 
@@ -125,6 +138,5 @@ $(function() {
         $container.nextRange();
         datestrshow();
     });
-
 });
 

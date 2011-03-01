@@ -61,7 +61,7 @@
                     $(function() {
                         limit_inf = new Date();
                         limit_inf.setMinutes(0);
-                        $("#other_date").datepicker({minDate: limit_inf, maxDate: "+1M", dateFormat: 'yy-mm-dd'});
+                        $("#other_date").datepicker({minDate: limit_inf, maxDate: "+1Y", dateFormat: 'yy-mm-dd'});
                     });
                     {/literal}</script>
                 </td>
@@ -115,8 +115,8 @@
                     Commentaire :
                 </td>
                 <td>
-                    <textarea name='comment' placeholder="Commentaire particulier (en plus de la description)"
-                        rows=7 cols=50></textarea>
+                    {include file="wiki_textarea.tpl"|rel id="activity_comment"
+                        placeholder="Commentaire particulier (en plus de la description)" }
                 </td>
             </tr>
 

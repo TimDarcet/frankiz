@@ -24,7 +24,7 @@
 
     <div class="msg_proposal">
         Ton activité a été créée. <br/>
-        Tu peux créer de nouvelles scéances <a href="proposal/activity">ici</a>.
+        Tu peux créer de nouvelles séances <a href="proposal/activity">ici</a>.
     </div>
 
 {else}

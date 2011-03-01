@@ -35,11 +35,18 @@
     </script>
 {/if}
 
+{if isset($visibility|smarty:nodefaults)}
+    <script>
+        var url_cal = 'activity/ajax/timetable/{$visibility}';
+    </script>
+{/if}
+
 {js src="activities.js"}
 {js src="wdcalendar.js"}
 
 <div class="module" id="calendar">
     <div class="head">
+        <span class="loading"></span>
         Calendrier des activités
         <div class="options">
             <div id="calhead" style="padding-left:1px;padding-right:1px;">
@@ -51,15 +58,6 @@
                 </div>
             </div>
             <div id="caltoolbar" class="ctoolbar">
-                <div class="new fbutton">
-                    <div>
-                        <a href="proposal/activity">
-                            <span class="new_element"></span>
-                            Nouvelle activité
-                        </a>
-                    </div>
-                </div>
-                
                 <div id="showtodaybtn" class="fbutton">
                     <div>
                         <span title='Click to back to today ' class="showtoday">
@@ -115,6 +113,45 @@
                         <span id="txtdatetimeshow">
                             Choisir une date
                         </span>
+                    </div>
+                </div>
+            </div>
+            <div class="ctoolbar">
+                <div class="right">
+                    <div class="new fbutton">
+                        <div onclick="change_view_cal('all')">
+                            <span class="world"></span>
+                            Toutes les activités
+                        </div>
+                    </div>
+                    <div class="btnseparator">
+                    </div>
+
+                    <div class="new fbutton">
+                        <div onclick="change_view_cal('friends')">
+                            <span class="group_ico"></span>
+                            Mes groupes
+                        </div>
+                    </div>
+                    <div class="btnseparator">
+                    </div>
+
+                    <div class="new fbutton">
+                        <div onclick="change_view_cal('participate')">
+                            <span class="alone"></span>
+                            Mes activités
+                        </div>
+                    </div>
+                    <div class="btnseparator">
+                    </div>
+
+                    <div class="new fbutton">
+                        <div>
+                            <a href="proposal/activity">
+                                <span class="new_element"></span>
+                                Nouvelle activité
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -176,7 +213,11 @@
         </div>
         <div class="msg">
         </div>
-        <div class="participate">
+        <div class="present">
+            <a onclick=""><span class="add_participant"></span>S'inscrire</a>
+        </div>
+        <div class="out">
+            <a onclick=""><span class="remove_participant"></span>Se désinscrire</a>
         </div>
         <div class="section">
             Description :
