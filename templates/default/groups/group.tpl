@@ -25,7 +25,7 @@
         <div>
             <input type="hidden" id="gid" name="gid" value="{$group->id()}" />
             {if $group->image()}
-                <img src="{$group->image()|image:'big'}" />
+                <a href="{$group->image()|image:'full'}" fancy="fancy"><img src="{$group->image()|image:'big'}" /></a>
             {/if}
             <div class="label">{$group->label()}</div>
             {if $group->web()}
