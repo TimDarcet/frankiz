@@ -217,7 +217,7 @@ class UFC_Name extends UserFilterCondition
         if ($this->type & self::NICKNAME)
             $conds[] = 'a.nickname' . $right;
 
-        return $cond = implode(' OR ', $conds);
+        return implode(' OR ', $conds);
     }
 }
 
@@ -450,7 +450,8 @@ class UFC_Cellphone extends UserFilterCondition
 
     public function buildCondition(PlFilter $uf)
     {
-        return XDB::format('a.cellphone = {?}', $this->number);
+        $right = XDB::formatWildcards(XDB::WILDCARD_CONTAINS, $this->number);
+        return 'a.cellphone' . $right;
     }
 }
 

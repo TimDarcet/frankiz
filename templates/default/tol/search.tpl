@@ -31,6 +31,7 @@
                 <li><label>Nom<input auto="auto" type="text" name="lastname" value="{$fields.lastname}" /></label></li>
                 <li><label>Surnom<input auto="auto" type="text" name="nickname" value="{$fields.nickname}" /></label></li>
                 <li><label>Nationalités{include file="groups_picker.tpl"|rel id="nationalities" ns="nationality" check=-1}</label></li>
+                <li><label>Portable<input auto="auto" type="text" name="cellphone" value="" /></label></li>
             </ul>
         </div>
 

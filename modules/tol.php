@@ -39,12 +39,13 @@ class TolModule extends PLModule
                         'firstname' => '',
                          'lastname' => '',
                          'nickname' => '',
+                        'cellphone' => '',
                     'nationalities' => '',
                             'promo' => '',
                           'studies' => '',
                            'sports' => '',
                            'binets' => '',
-                             'frees' => '',
+                            'frees' => '',
                              'room' => '',
                             'phone' => '',
                                'ip' => '',
@@ -90,6 +91,9 @@ class TolModule extends PLModule
 
         if ($fields['nickname'])
             $conds[] = new UFC_Name($fields['nickname'], UFC_Name::NICKNAME, UFC_Name::CONTAINS);
+
+        if ($fields['cellphone'])
+            $conds[] = new UFC_Cellphone(preg_replace('/[^0-9]/', '', $fields['cellphone']));
 
         if ($fields['room'])
             $conds[] = new UFC_Room(str_replace(' ', '', $fields['room']));
