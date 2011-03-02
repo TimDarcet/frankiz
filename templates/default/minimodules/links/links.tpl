@@ -22,7 +22,7 @@
 
 <ul>
     {foreach from=$minimodule.links|order:'rank':false item=link}
-        <li><a href="{$link->link()}">{$link->label()}</a></li>
+        <li><a href="{$link->link()}" target="_blank">{$link->label()}</a></li>
     {/foreach}
 </ul>
 

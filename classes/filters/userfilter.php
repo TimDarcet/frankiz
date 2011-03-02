@@ -102,6 +102,22 @@ class UFC_Ip extends UserFilterCondition
     }
 }
 
+class UFC_Poly extends UserFilterCondition
+{
+    private $poly;
+
+    public function __construct($poly)
+    {
+        $this->poly = $poly;
+    }
+
+    public function buildCondition(PlFilter $uf)
+    {
+        $sub = $uf->addPolyFilter();
+        return XDB::format($sub . '.poly = {?}', $this->poly);
+    }
+}
+
 class UFC_Comment extends UserFilterCondition
 {
     private $text;
@@ -706,6 +722,25 @@ class UserFilter extends FrankizFilter
         $joins = array();
         if ($this->with_formations) {
             $joins['f'] = PlSqlJoin::inner('formations', '$ME.formation_id = s.formation_id');
+        }
+        return $joins;
+    }
+
+    /** POLY
+     */
+    private $with_poly = false;
+
+    public function addPolyFilter()
+    {
+        $this->with_poly = true;
+        return 'p';
+    }
+
+    protected function polyJoins()
+    {
+        $joins = array();
+        if ($this->with_poly) {
+            $joins['p'] = PlSqlJoin::inner('poly', '$ME.uid = a.uid');
         }
         return $joins;
     }
