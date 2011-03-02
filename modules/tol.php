@@ -175,7 +175,11 @@ class TolModule extends PLModule
                 $already_groups->select(GroupSelect::base());
             }
 
-            $uf = new UserFilter(new PFC_And($filter, new UFC_Group(S::user()->defaultFilters())), array(new UFO_Promo(true), new UFO_Name(UFO_Name::LASTNAME)));
+            if (S::user()->defaultFilters()->count() > 0) {
+                $filter = new PFC_And($filter, new UFC_Group(S::user()->defaultFilters()));
+            }
+
+            $uf = new UserFilter($filter, array(new UFO_Promo(true), new UFO_Name(UFO_Name::LASTNAME)));
             $users = $uf->get(new PlLimit(50,0))->select(UserSelect::tol());
             $page->assign('results', $users);
             $page->assign('mode', 'sheet');
