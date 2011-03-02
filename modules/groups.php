@@ -312,6 +312,14 @@ class GroupsModule extends PLModule
                 $group->description(Env::s('description'));
             }
 
+            if (Env::has('web')) {
+                $group->web(Env::s('web'));
+            }
+
+            if (Env::has('mail')) {
+                $group->mail(Env::s('mail'));
+            }
+
             if (Env::has('image')) {
                 $image = new ImageFilter(new PFC_And(new IFC_Id(Env::i('image')), new IFC_Temp()));
                 $image = $image->get(true);

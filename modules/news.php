@@ -102,39 +102,39 @@ class NewsModule extends PlModule
 
     function handler_admin($page, $nid)
     {
-        $nf = new NewsFilter(new PFC_And(new NFC_Id($nid),
-                                        new NFC_TargetGroup(S::user()->castes(Rights::admin())->groups())));
+        $nf = new NewsFilter(new PFC_And(new NFC_Id($nid)));
         $news = $nf->get(true);
 
         if ($news !== false) {
             $news->select(NewsSelect::news());
-
-            if (Env::has('modify') || Env::has('delete')) {
-                S::assert_xsrf_token();
-            }
-
-            if (Env::has('modify')) {
-                $news->title(Env::t('title'));
-                $news->content(Env::t('news_content'));
-                $news->begin(new FrankizDateTime(Env::t('begin')));
-                $news->end(new FrankizDateTime(Env::t('end')));
-                if (Env::has('image')) {
-                    $image = new ImageFilter(new PFC_And(new IFC_Id(Env::i('image')), new IFC_Temp()));
-                    $image = $image->get(true);
-                    if (!$image) {
-                        throw new Exception("This image doesn't exist anymore");
-                    }
-                    $image->select(FrankizImageSelect::caste());
-                    $image->label($news->title());
-                    $image->caste($news->target());
-                    $news->image($image);
+            if (S::user()->hasRights($news->target()->group(), Rights::admin()) || S::user()->isWeb()) {
+                if (Env::has('modify') || Env::has('delete')) {
+                    S::assert_xsrf_token();
                 }
-                $page->assign('msg', "L'annonce a été modifiée.");
-            }
 
-            if (Env::has('delete')) {
-                $news->delete();
-                $page->assign('delete', true);
+                if (Env::has('modify')) {
+                    $news->title(Env::t('title'));
+                    $news->content(Env::t('news_content'));
+                    $news->begin(new FrankizDateTime(Env::t('begin')));
+                    $news->end(new FrankizDateTime(Env::t('end')));
+                    if (Env::has('image')) {
+                        $image = new ImageFilter(new PFC_And(new IFC_Id(Env::i('image')), new IFC_Temp()));
+                        $image = $image->get(true);
+                        if (!$image) {
+                            throw new Exception("This image doesn't exist anymore");
+                        }
+                        $image->select(FrankizImageSelect::caste());
+                        $image->label($news->title());
+                        $image->caste($news->target());
+                        $news->image($image);
+                    }
+                    $page->assign('msg', "L'annonce a été modifiée.");
+                }
+
+                if (Env::has('delete')) {
+                    $news->delete();
+                    $page->assign('delete', true);
+                }
             }
         }
 

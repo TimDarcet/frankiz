@@ -54,8 +54,16 @@
                 </tr>
             {/if}
             <tr>
-                <td>Nom:</td>
+                <td>Nom</td>
                 <td><input type="text" name="label" value="{$group->label()}" /></td>
+            </tr>
+            <tr class="pair">
+                <td>Site Web</td>
+                <td><input type="text" name="web" value="{$group->web()}" placeholder="http://" /></td>
+            </tr>
+            <tr>
+                <td>E-Mail</td>
+                <td><input type="text" name="mail" value="{$group->mail()}" /></td>
             </tr>
             <tr class="pair">
                 <td>Description:</td>

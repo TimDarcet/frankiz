@@ -1,8 +1,6 @@
 var wd_op = {};
 
 $(function() {
-    var view = "week";
-
     $('#activity_show').hide();
     $('#activity_show .close_show').click(function() {
         $('#activity_show').hide();
@@ -13,7 +11,7 @@ $(function() {
     var dvH = $("#calhead").height() + 2;
 
     wd_op = {
-        view: view,
+        view: wd_view,
         theme: 3,
         height: Math.max(_MH - dvH - 270, 400),
         eventItems: [],
