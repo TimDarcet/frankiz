@@ -20,6 +20,11 @@
 {*                                                                        *}
 {**************************************************************************}
 
+<script>
+    {assign var='timetable' value=$globals->timetable}
+    var wd_view = "{$timetable->view}";
+</script>
+
 {js src="plugins/datepicker_lang_FR.js"}
 {js src="plugins/wdCalendar_lang_FR.js"}
 
@@ -67,21 +72,21 @@
                 </div>
                 <div class="btnseparator">
                 </div>
-                <div id="showdaybtn" class="fbutton">
+                <div id="showdaybtn" class="fbutton{if $timetable->view == 'day'} fcurrent{/if}">
                     <div>
                         <span title='Day' class="showdayview">
                             Jour
                         </span>
                     </div>
                 </div>
-                <div  id="showweekbtn" class="fbutton fcurrent">
+                <div  id="showweekbtn" class="fbutton{if $timetable->view == 'week'} fcurrent{/if}">
                     <div>
                         <span title='Week' class="showweekview">
                             Semaine
                         </span>
                     </div>
                 </div>
-                <div  id="showmonthbtn" class="fbutton">
+                <div  id="showmonthbtn" class="fbutton{if $timetable->view == 'month'} fcurrent{/if}">
                     <div>
                         <span title='Month' class="showmonthview">
                             Mois
