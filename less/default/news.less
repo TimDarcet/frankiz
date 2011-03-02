@@ -116,35 +116,35 @@
                     width: 100%;
                     border-collapse: collapse;
                     padding: 0;
-
-                    .star_switcher {
-                        position: relative;
-                    }
-                    .origin {
-                        height: 38px;
-                        position: relative;
-                        width: 50px;
-                        font-size: 12px;
-                        img {
-                            vertical-align: middle;
-                        }
-                    }
-                    .date {
-                        position: relative;
-                        width: 50px;
-                    }
-                    .title {
-                        position: relative;
-                        height: 100%;
+                }
+                .star_switcher {
+                    position: relative;
+                }
+                .origin {
+                    height: 38px;
+                    position: relative;
+                    width: 50px;
+                    font-size: 12px;
+                    img {
                         vertical-align: middle;
-                        a {
-                            display: block;
-                            width: 100%;
-                            text-decoration: none;
-                            position: relative;
-                            div {
-                                line-height: 100%;
-                            }
+                    }
+                }
+                .date {
+                    position: relative;
+                    width: 50px;
+                }
+                .title {
+                    position: relative;
+                    vertical-align: middle;
+                    cursor: pointer;
+                    font-weight: bold;
+                    a {
+                        display: block;
+                        width: 100%;
+                        text-decoration: none;
+                        position: relative;
+                        div {
+                            line-height: 100%;
                         }
                     }
                 }
@@ -155,7 +155,6 @@
                 clear: both;
                 padding: 15px;
                 text-align: left;
-                
                 background-color: white;
 
                 .body {
@@ -171,7 +170,6 @@
                 }
 
                 .admin {
-                    position: absolute;
                     bottom: 2px;
                     left: 5px;
                     a {
@@ -180,9 +178,29 @@
                     }
                 }
 
-                .writer {
-                    width: 100%;
-                    text-align: right;
+                .under {
+                    margin-top: 20px;
+                    padding-top: 5px;
+                    border-top: 1px @border solid;
+                    table {
+                        font-size: 12px;
+                        width: 100%;
+                        text-align: left;
+                        .admin {
+                            width: 70px;
+                        }
+                        .target_rights {
+                            font-style: italic;
+                        }
+                        .writer {
+                            width: 100px;
+                            text-align: right;
+                            img {
+                                vertical-align: middle;
+                                margin-left: 5px;
+                            }
+                        }
+                    }
                 }
             }
         }
