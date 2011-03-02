@@ -38,8 +38,8 @@
         {if $item->image()}
             <div>
                 Actuellement :
-                <a fancy="fancy" href="{$news->image()|image:'full'}">
-                    <img src="{$news->image()|image:'small'}" />
+                <a fancy="fancy" href="{$item->image()|image:'full'}">
+                    <img src="{$item->image()|image:'small'}" />
                 </a>
             </div>
         {/if}
