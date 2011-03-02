@@ -1,8 +1,5 @@
 $(function() {
-    $('#section .news .title a').each(function() {
-        $(this).height($(this).closest('td').height());
-    });
-    $('#section .news .title a').click(function() {
+    $('#section .news .title').click(function() {
         var news = $(this).closest('.news');
         if (news.hasClass('unread')) {
             var id = news.attr('nid');

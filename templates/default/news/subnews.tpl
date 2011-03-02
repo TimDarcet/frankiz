@@ -24,6 +24,8 @@
     {foreach from=$collection|order:'begin' item=news}
         {assign var='begin' value=$news->begin()}
         {assign var='age' value=$begin->age()}
+        {assign var='target' value=$news->target()}
+        {assign var='targetGroup' value=$target->group()}
         <li class="news {if $selected_id == $news->id()}open{else}close{/if} {if $news->read()}read{else}unread{/if} {if $news->star()}star{else}unstar{/if} {if $age->invert}tocome{/if}"
             nid="{$news->id()}">
             <div class="infos">
@@ -43,10 +45,8 @@
                             {$news->writer()|user}
                         {/if}
                     </td>
-                    {assign var='target' value=$news->target()}
-                    {assign var='targetGroup' value=$target->group()}
-                    <td class="title" title="Visible par '{$targetGroup->label()}'">
-                        <a name="news_{$news->id()}" href="news/{$news->id()}"><div>{$news->title()}</div></a>
+                    <td class="title">
+                        <a name="news_{$news->id()}" href="news/{$news->id()}">{$news->title()}</a>
                     </td>
                     <td class="date">
                         {$news->begin()|age}
@@ -61,13 +61,31 @@
                     {$news->content()|miniwiki:'title'|smarty:nodefaults}
                     <br class="clear" />
                 </div>
-                {canEdit target=$news->target()}
-                    <div class="admin">
-                        <a href="news/admin/{$news->id()}"><div class="edit"></div>Modifier</a>
-                    </div>
-                {/canEdit}
-                <div class="writer">
-                    Rédigée par {$news->writer()|user}
+                <div class="under">
+                    <table><tr>
+                        {if !$user|hasRights:$targetGroup:'admin' || $user->isWeb()}
+                            <td class="admin{if !$user|hasRights:$targetGroup:'admin'} webmaster{/if}">
+                                <a href="news/admin/{$news->id()}"><div class="edit"></div>Modifier</a>
+                            </td>
+                        {/if}
+                        <td class="target">
+                            Visible par « {$targetGroup->label()} »
+                            <span class="target_rights">
+                                {if $target->isRights('restricted')}
+                                    (Restreint)
+                                {else}
+                                    (Public)
+                                {/if}
+                            </span>
+                            du <span title="{$news->begin()|datetime}">{$news->begin()|datetime:'d/m'}</span>
+                            {if $news->begin()|datetime:'d/m' != $news->end()|datetime:'d/m'}
+                                au <span title="{$news->end()|datetime}">{$news->end()|datetime:'d/m'}</span>
+                            {/if}
+                        </td>
+                        <td class="writer">
+                            {$news->writer()|user:'text'}{$news->writer()|user}
+                        </td>
+                    </tr></table>
                 </div>
             </div>
         </li>
