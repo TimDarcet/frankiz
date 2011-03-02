@@ -191,7 +191,12 @@ class News extends meta
         return $this->star;
     }
 
-    public function image(FrankizImage $image = null)
+    /**
+    * Image getter & setter
+    *
+    * @param $image A FrankizImage or false
+    */
+    public function image($image = null)
     {
         if ($image != null) {
             if ($this->image) {

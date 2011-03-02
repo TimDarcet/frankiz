@@ -49,7 +49,7 @@
                 Commentaire :
             </td>
             <td>
-                {include file="wiki_textarea.tpl"|rel id="activity_comment" already=$activity->comment()
+                {include file="wiki_textarea.tpl"|rel id="activity_comment" already=$activity->comment()|smarty:nodefaults
                         placeholder="Commentaire particulier (en plus de la description)" }
             </td>
         </tr>
