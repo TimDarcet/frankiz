@@ -61,7 +61,7 @@ class TolModule extends PLModule
         return $fields;
     }
 
-    function buildFilter($fields)
+    function buildFilter($fields, Collection $already_groups = null)
     {
         $conds = array();
 
@@ -112,7 +112,11 @@ class TolModule extends PLModule
                               'sports', 'binets', 'frees');
         foreach ($groups_fields as $field) {
             if ($fields[$field]) {
-                $conds[] = new UFC_Group(explode(';', $fields[$field]));
+                $gids = explode(';', $fields[$field]);
+                if ($already_groups !== null) {
+                    $already_groups->add($gids);
+                }
+                $conds[] = new UFC_Group($gids);
             }
         }
 
@@ -148,20 +152,22 @@ class TolModule extends PLModule
     function handler_tol($page)
     {
         $fields = $this->fillFields();
-        $filter = $this->buildFilter($fields);
+        $already_groups = new Collection('Group');
+        $filter = $this->buildFilter($fields, $already_groups);
 
         if ($filter) {
-            $uf = new UserFilter($filter, array(new UFO_Promo(true), new UFO_Name(UFO_Name::LASTNAME)));
-            $users = $uf->get(new PlLimit(50,0))->select(UserSelect::tol());
-            if (Env::has('quicksearch') && $users->count() == 0) {
-                header('Location: http://wikix.polytechnique.org/eleves/wikix/Sp%C3%A9cial:Recherche?search=' . Env::t('free'));
-                exit;
+            if ($already_groups->count() > 0) {
+                $already_groups->select(GroupSelect::base());
             }
+
+            $uf = new UserFilter(new PFC_And($filter, new UFC_Group(S::user()->defaultFilters())), array(new UFO_Promo(true), new UFO_Name(UFO_Name::LASTNAME)));
+            $users = $uf->get(new PlLimit(50,0))->select(UserSelect::tol());
             $page->assign('results', $users);
             $page->assign('mode', 'sheet');
             $page->assign('total', $uf->getTotalCount());
         }
 
+        $page->assign('already_groups', $already_groups);
         $page->assign('user', S::user());
         $page->assign('fields', $fields);
         $page->assign('su', S::user()->isAdmin());

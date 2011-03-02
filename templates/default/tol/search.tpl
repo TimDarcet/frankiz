@@ -45,8 +45,8 @@
 
         <div class="fields" id="tol_binets">
             <ul>
-                <li><label>Binets{include file="groups_picker.tpl"|rel id="binets" ns="binet" check=-1}</label></li>
-                <li><label>Groupes{include file="groups_picker.tpl"|rel id="frees" ns="free" check=-1}</label></li>
+                <li><label>Binets{include file="groups_picker.tpl"|rel id="binets" ns="binet" check=-1 already=$already_groups|filter:'ns':'binet'}</label></li>
+                <li><label>Groupes{include file="groups_picker.tpl"|rel id="frees" ns="free" check=-1 already=$already_groups|filter:'ns':'free'}</label></li>
             </ul>
         </div>
 
