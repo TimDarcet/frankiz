@@ -35,7 +35,7 @@
         Image :
     </td>
     <td>
-        {if $news->image()}
+        {if $item->image()}
             <div>
                 Actuellement :
                 <a fancy="fancy" href="{$news->image()|image:'full'}">
