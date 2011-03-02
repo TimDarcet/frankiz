@@ -34,10 +34,10 @@
         Description :
     </td>
     <td>
-        <textarea name='description' rows=30 cols=50>{$item->description()}</textarea>
+        {include file="wiki_textarea.tpl"|rel id="description" already=$item->description()|smarty:nodefaults}
     </td>
 </tr>
-            
+
 <tr>
     <td>
         Date :

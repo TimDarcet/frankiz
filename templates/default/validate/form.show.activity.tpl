@@ -46,7 +46,7 @@
         Description :
     </td>
     <td>
-        {$item->description()}
+        {$item->description()|miniwiki|smarty:nodefaults}
     </td>
 </tr>
             

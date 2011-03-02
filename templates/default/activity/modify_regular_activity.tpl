@@ -42,7 +42,7 @@
                     Description :
                 </td>
                 <td>
-                    {include file="wiki_textarea.tpl"|rel id="activity_description" already=$activity->description()}
+                    {include file="wiki_textarea.tpl"|rel id="activity_description" already=$activity->description()|smarty:nodefaults}
                 </td>
             </tr>
     
