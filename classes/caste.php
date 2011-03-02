@@ -234,6 +234,13 @@ class Caste extends Meta
         }
     }
 
+    public function isRights($rights) {
+        if (!$rights instanceof Rights) {
+            $rights = new Rights($rights);
+        }
+        return $this->rights->isMe($rights);
+    }
+
     /*******************************************************************************
          Data fetcher
              (batchFrom, batchSelect, fillFromArray, …)
