@@ -41,7 +41,7 @@
         <div class="body">
             <form enctype="multipart/form-data" method="post" action="news/admin/{$news->id()}">
                 {xsrf_token_field}
-                <table>
+                <table class="bicol">
                     {include file="validate/form.edit.news.tpl"|rel item=$news}
                     <tr>
                         <td>

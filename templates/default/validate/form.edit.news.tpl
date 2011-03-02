@@ -21,7 +21,7 @@
 {**************************************************************************}
 
 
-<tr>
+<tr class="pair">
     <td>
         Titre :
     </td>
@@ -35,11 +35,19 @@
         Image :
     </td>
     <td>
+        {if $news->image()}
+            <div>
+                Actuellement :
+                <a fancy="fancy" href="{$news->image()|image:'full'}">
+                    <img src="{$news->image()|image:'small'}" />
+                </a>
+            </div>
+        {/if}
         {include file="uploader.tpl"|rel id="image"}
     </td>
 </tr>
 
-<tr>
+<tr class="pair">
     <td>
         Corps :
     </td>
