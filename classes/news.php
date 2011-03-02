@@ -191,6 +191,19 @@ class News extends meta
         return $this->star;
     }
 
+    public function image(FrankizImage $image = null)
+    {
+        if ($image != null) {
+            if ($this->image) {
+                $this->image->delete();
+            }
+            $this->image = $image;
+            XDB::execute('UPDATE news SET image = {?} WHERE id = {?}',
+                                          $image->id(), $this->id());
+        }
+        return $this->image;
+    }
+
     public function delete()
     {
         XDB::execute('DELETE FROM news WHERE id = {?}', $this->id());
