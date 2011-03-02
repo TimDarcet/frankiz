@@ -26,6 +26,7 @@ class TolModule extends PLModule
         return array(
             'tol'             => $this->make_hook('tol',             AUTH_INTERNAL, ''),
             'tol/birthday'    => $this->make_hook('tol_birthday',    AUTH_INTERNAL, ''),
+            'tol/apv'         => $this->make_hook('tol_apv',         AUTH_INTERNAL, ''),
             'tol/see'         => $this->make_hook('see',             AUTH_INTERNAL, ''),
             'tol/ajax/search' => $this->make_hook('tol_ajax_search', AUTH_INTERNAL, ''),
             'tol/ajax/sheet'  => $this->make_hook('tol_ajax_sheet',  AUTH_INTERNAL, '')
@@ -146,6 +147,20 @@ class TolModule extends PLModule
             echo $study->promo() . ',' . $u->birthdate()->format('d/m/Y') . ',' . $u->lastname() . ',' . $u->firstname() . "\n";
         }
         echo '</pre>';
+        exit;
+    }
+
+    function handler_tol_apv($page, $poly)
+    {
+        $uf = new UserFilter(new UFC_Poly($poly));
+        $u = $uf->get(true);
+
+        header('Content-Type: text/html; charset=utf-8');
+        if ($u) {
+            $u->select(UserSelect::base());
+            echo $u->image()->src('full');
+        }
+
         exit;
     }
 
