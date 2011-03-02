@@ -63,8 +63,8 @@
                 </div>
                 <div class="under">
                     <table><tr>
-                        {if !$user|hasRights:$targetGroup:'admin' || $user->isWeb()}
-                            <td class="admin{if !$user|hasRights:$targetGroup:'admin'} webmaster{/if}">
+                        {if $user|hasRights:$targetGroup:'admin' || $user->isWeb()}
+                            <td class="admin{if !($user|hasRights:$targetGroup:'admin')} webmaster{/if}">
                                 <a href="news/admin/{$news->id()}"><div class="edit"></div>Modifier</a>
                             </td>
                         {/if}
