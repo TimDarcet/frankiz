@@ -50,6 +50,8 @@ class AdminModule extends PlModule
             $validates = $validates->split('group');
             $page->assign('validates', $validates);
         }
+        
+        $page->assign('licenses', Group::from('licenses'));
 
         $page->assign('title', "Administration");
         $page->addCssLink('admin.css');

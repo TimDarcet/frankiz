@@ -67,7 +67,7 @@ class licensesModule extends PLModule
         } else {
             $already_has = License::givenKeys(Post::s('software'), S::user()->id());
             $software_rare = in_array(Post::v('software'), License::getRareSoftwares());
-            if(S::user()->hasRights(Group::from('on_platal'), Rights::member()) && !$already_has && !$software_rare) {
+            if(S::user()->hasRights(Group::from('on_platal'), Rights::member()) && S::user()->hasRights(Group::from('formation_x'), Rights::member()) && !$already_has && !$software_rare) {
                 $this->handler_licenses_final($page, true);
             } else {
                 $page->changeTpl('licenses/licenses_reason.tpl');
