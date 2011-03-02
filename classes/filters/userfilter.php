@@ -352,7 +352,7 @@ class UFC_Group extends UserFilterCondition
     {
         if ($this->cids === null)
         {
-            $grouprights = array();
+            $groupsrights = array();
             foreach (self::$instances as $instance) {
                 foreach ($instance->gids as $gid)
                     $groupsrights[] = array('group' => $gid, 'rights' => $instance->rights);
