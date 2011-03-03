@@ -117,7 +117,7 @@ class LicensesValidate extends ItemValidate
 
     public function _mail_from_addr()
     {
-        return 'msdnaa-licences@frankiz.polytechnique.fr';
+        return 'licenses@binets.polytechnique.fr';
     }
 
     public function commit()
