@@ -43,7 +43,7 @@
     <div class="nickname">{$result->nickname()}</div>
 
     <div class="birthdate">
-        <span>{$result->birthdate()|datetime:"d/m/Y"} </span> {if !$result->isFemale()}({$result->birthdate()|age}){/if}
+        <span>{$result->birthdate()|datetime:"d/m/Y"} </span> ({$result->birthdate()|age})
     </div>
 
     <div class="sports">
