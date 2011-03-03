@@ -152,6 +152,7 @@ class Caste extends Meta
 
     /**
     * Gets or sets the userfilter defining the caste
+    * /!\ The userfilter must have been fetched before, even to set a new one.
     *
     * @param $userfilter  A UserFilter or false to unset it
     */
@@ -162,6 +163,9 @@ class Caste extends Meta
             if ($userfilter === false) {
                 XDB::execute('UPDATE castes SET userfilter = NULL WHERE cid = {?}', $this->id());
                 XDB::execute('DELETE FROM castes_dependencies WHERE cid = {?}', $this->id());
+                if ($this->userfilter() !== false) {
+                    XDB::execute('DELETE FROM castes_users WHERE cid = {?}', $this->id());
+                }
             } else {
                 XDB::execute('UPDATE castes SET userfilter = {?} WHERE cid = {?}',
                                          json_encode($userfilter->export()), $this->id());
