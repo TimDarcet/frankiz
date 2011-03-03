@@ -57,7 +57,7 @@ class IkMiniModule extends FrankizMiniModule
             PlCache::setGlobal('ik', $ik, $globals->cache->ik);
         }
 
-        return $this->assign('ik', PlCache::getGlobal('ik'));
+        $this->assign('ik', PlCache::getGlobal('ik'));
     }
 
 }
