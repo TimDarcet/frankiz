@@ -35,13 +35,16 @@
         <td>
             <div class="option display">
                 <ul>
-                    <li><a href="news">Voir les annonces en cours</a></li>
-                    <li><a href="news/mine">Voir les annonces que j'ai rédigées</a></li>
-                    <li><a href="proposal/news">Rédiger une annonce</a></li>
+                    <li><a href="news/new" {if $view == 'new'}class="current_view"{/if}>Annonces non-lues & suivies</a></li>
+                    <li><a href="news" {if $view == 'current'}class="current_view"{/if}>Annonces en cours</a></li>
+                    <li><a href="news/mine" {if $view == 'mine'}class="current_view"{/if}>Annonces que j'ai rédigées</a></li>
                 </ul>
             </div>
         </td>
         <td>
+            <div class="option new">
+                <a href="proposal/news"><span class="new_element"></span> Rédiger une annonce</a>
+            </div>
             <div class="option codes">
                 <ul>
                     <li><div class="code unread"></div>Non-lue</li>

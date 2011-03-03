@@ -22,6 +22,9 @@
 
 #section {
     .options {
+        a {
+            text-decoration: none;
+        }
         table {
             width: 100%;
         }
@@ -36,6 +39,11 @@
             .border-radius;
             min-height: 80px;
             padding: 10px;
+        }
+        .option.new {
+            margin-bottom: 5px;
+            min-height: 0;
+            text-align: center;
         }
         li {
             position: relative;
@@ -58,6 +66,11 @@
         .display li {
             text-align: center;
             margin-bottom: 5px;
+        }
+        .display a {
+            &.current_view {
+                font-weight: bold;
+            }
         }
         .codes {
             text-align: right;

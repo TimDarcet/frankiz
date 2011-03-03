@@ -38,13 +38,10 @@ class NewsMiniModule extends FrankizMiniModule
 
     public function run()
     {
-        $target_castes = new Collection();
-        $target_castes->merge(S::user()->castes(Rights::restricted()));
-        $target_castes->merge(S::user()->castes(Rights::everybody()));
-
-        $nf = new NewsFilter(new PFC_And(new NFC_Current(),
-                                         new PFC_Or(new PFC_Not(new NFC_Read(S::user())), new NFC_Star(S::user())),
-                                         new NFC_Target($target_castes)));
+        $nf = new NewsFilter(new PFC_And(new PFC_Or(new PFC_And(new NFC_Current(),
+                                                                new PFC_Not(new NFC_Read(S::user()))),
+                                                    new NFC_Star(S::user())),
+                                         new NFC_Target(S::user()->targetCastes())));
         $news = $nf->get()->select(NewsSelect::head());
 
         $this->assign('news', $news);
