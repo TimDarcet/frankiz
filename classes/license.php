@@ -225,6 +225,10 @@ class License extends Meta
         $mail->Send(false);
     }
     
+    public static function hasRights($user){
+        return $user->hasRights(Group::from('licenses'), Rights::restricted());
+    }
+    
     /*******************************************************************************
          Data fetcher
              (batchFrom, batchSelect, fillFromArray, …)
@@ -273,7 +277,7 @@ class License extends Meta
     }
     
     public static function fetchFreeKeys($software){
-        return self::fetch(array('software' => $software, 'uid' => null, 'gid' => null, 'admin' => false));
+        return self::fetch(array('software' => $software, 'uid' => null, 'gid' => null));
     }        
 }
 

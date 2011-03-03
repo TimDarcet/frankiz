@@ -30,9 +30,11 @@
             nid="{$news->id()}">
             <div class="infos">
                 <table><tr>
-                    <td>
-                        <div class="star_switcher" title="Suivre l'annonce"></div>
-                    </td>
+                    {if $logged}
+                        <td>
+                            <div class="star_switcher" title="Suivre l'annonce"></div>
+                        </td>
+                    {/if}
                     <td class="origin">
                         {if $news->origin()}
                             {assign var='origin' value=$news->origin()}

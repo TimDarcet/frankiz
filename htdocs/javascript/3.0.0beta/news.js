@@ -1,9 +1,12 @@
 $(function() {
     $('#section .news .title').click(function() {
         var news = $(this).closest('.news');
-        if (news.hasClass('unread')) {
-            var id = news.attr('nid');
-            request('news/ajax/read/' + id + '/1');
+
+        if (logged) {
+            if (news.hasClass('unread')) {
+                var id = news.attr('nid');
+                request('news/ajax/read/' + id + '/1');
+            }
         }
 
         if (news.hasClass('close')) {

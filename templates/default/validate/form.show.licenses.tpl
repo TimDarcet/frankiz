@@ -46,6 +46,13 @@
                 </td>
             </tr>
             {/if}
+            {if !$item->userHasRights()}
+            <tr>
+                <td colspan="2">
+                    <strong>L'utilisateur ne devrait normalement pas être autorisé à avoir une licence !</strong>
+                </td>
+            </tr>
+            {/if}
             </table>
         </div>
     </td>

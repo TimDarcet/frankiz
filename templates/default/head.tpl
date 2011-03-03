@@ -24,23 +24,12 @@
 <link rel="stylesheet" type="text/css" href="css/universe.css" media="all"/>
 <link type="text/css" href="css/{"jquery-ui.css"|rel}" rel="stylesheet" />
 <link type="text/css" href="css/{"fancybox/jquery.fancybox.css"|rel}" rel="stylesheet" />
+<link type="text/css" href="css/{"addition.css"|rel}" rel="stylesheet" />
 
 {js src="jquery-ui.js"}
 {js src="jquery-ui-timepicker-addon.js"}
 {js src="localization.js"}
 {js src="minimodules.js"}
 {js src="jquery.fancybox.js"}
-
-<script>
-    {if $logged}
-        {if $smarty.session.user->isFemale()}
-            var areyousure = 'Certaine ?';
-        {else}
-            var areyousure = 'Certain ?';
-        {/if}
-    {else}
-        var areyousure = 'Certain ?';
-    {/if}
-</script>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

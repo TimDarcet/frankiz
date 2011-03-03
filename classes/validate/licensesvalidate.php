@@ -51,6 +51,11 @@ class LicensesValidate extends ItemValidate
     public function canGetFreeKey(){
         return count(License::fetchFreeKeys($this->software())) > 0;
     }
+    
+    public function userHasRights(){
+        $this->writer->select(UserSelect::castes());
+        return License::hasRights($this->writer);
+    }
 
     public function show()
     {

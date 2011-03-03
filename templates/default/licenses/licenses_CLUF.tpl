@@ -23,35 +23,7 @@
 <div class="head">{$title}</div>
 <div class="body">
 <h1>Contrat d'utilisation étudiant</h1>
-<p>En sa qualité de membre de MSDN® Academic Alliance (MSDNAA), l'établissement auquel vous êtes inscrit est autorisé
- à vous fournir des logiciels à utiliser sur votre ordinateur personnel. Vous devez respecter les instructions 
- d'utilisation générales de MSDNAA citées ci-dessous, ainsi que les termes et conditions du Contrat de Licence
- Utilisateur final (CLUF) MSDN, l'Amendement du Contrat de Licence et les conditions imposées par votre établissement.</p>
-<p>L'administrateur du programme MSDNAA de votre établissement devra consigner toutes les données relatives à l'utilisation
- des élèves, fournir des données consolidées à Microsoft® sur demande et s'assurer que tous les utilisateurs, notamment les
- élèves, les enseignants et le personnel technique, respectent strictement toutes les conditions du programme.</p>
-<p>Par l'installation, la copie ou toute autre utilisation des logiciels, vous acceptez de vous conformer aux termes et
- conditions du CLUF et de l'Amendement du Contrat de Licence. Si vous refusez de vous y conformer, il vous est interdit
- d'installer, copier ou utiliser les logiciels.</p>
-<h3>Instructions relatives à l'installation</h3>
-<p>Pour pouvoir installer des logiciels sur votre ordinateur personnel, vous devez être inscrit à au moins un cours dispensé
- par l'établissement abonné.</p>
-<p>Votre établissement peut soit vous donner accès à un serveur de téléchargement, soit vous prêter une copie des logiciels
- de façon temporaire afin que l'installiez sur votre ordinateur personnel.</p>
-<p>Dans le cas de certains produits, une clé de produit vous sera remise pour installer les logiciels. Il est interdit de
- divulguer cette clé à un tiers.</p>
-<h3>Instructions relatives à l'utilisation</h3>
-<p>Vous n'avez pas le droit de donner à un tiers des copies des logiciels empruntés ou téléchargés. Les autres élèves
- autorisés doivent se procurer les logiciels conformément aux procédures définies par l'administrateur du programme
- MSDNAA.</p>
-<p>Vous pouvez utiliser les logiciels à des fins non lucratives, notamment à des fins d'enseignement, de recherche et/ou
- de conception, de développement et de test dans le cadre de projets pédagogiques personnels. Il est interdit d'utiliser
- les logiciels MSDNAA pour le développement de logiciels à but lucratif.</p>
-<p>Lorsque vous n'êtes plus inscrit à aucun cours dispensé par l'établissement abonné, vous ne pouvez plus vous procurer
- des logiciels MSDNAA. Toutefois, vous pouvez continuer à utiliser les produits précédemment installés sur votre ordinateur,
- à condition de vous conformer toujours aux instructions du programme MSDNAA.</p>
-<p>Si vous contrevenez aux termes et conditions stipulés dans le CLUF et l'Amendement du Contrat de Licence, l'administrateur
- du programme MSDNAA exigera la confirmation de la désinstallation des logiciels de votre ordinateur personnel.</p>
+{include file="wiki.tpl"|rel name='licenses/CLUF'}
 <form action="licenses/reason" method="POST"> 
     <input name="software" value="{$software}" type="hidden">
     <input name="agree" value="J'accepte" type="submit">

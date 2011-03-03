@@ -791,6 +791,17 @@ class User extends Meta
         return $this->castes->filter('rights', $rights);
     }
 
+    /*
+     * Returns only castes of type 'restricted' & 'everybody'
+     */
+    public function targetCastes()
+    {
+        $target_castes = new Collection();
+        $target_castes->merge($this->castes(Rights::restricted()));
+        $target_castes->merge($this->castes(Rights::everybody()));
+        return $target_castes;
+    }
+
     public function rights(Group $g, $string = false)
     {
         $rights = array();

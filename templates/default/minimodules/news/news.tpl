@@ -37,7 +37,7 @@
                         {$news->writer()|user}
                     {/if}
                 </td>
-                <td class="title"><a href="news/{$news->id()}">{$news->title()}</a></td>
+                <td class="title"><a href="news/new/{$news->id()}">{$news->title()}</a></td>
             </tr>
         {/foreach}
     </table>

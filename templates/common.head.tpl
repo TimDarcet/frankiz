@@ -36,6 +36,16 @@
 <script type="text/javascript">
     var logged = {if $smarty.session.auth >= AUTH_COOKIE}true{else}false{/if};
     var xsrf_token = "{xsrf_token}";
+
+    {if $logged}
+        {if $smarty.session.user->isFemale()}
+            var areyousure = 'Certaine ?';
+        {else}
+            var areyousure = 'Certain ?';
+        {/if}
+    {else}
+        var areyousure = 'Certain ?';
+    {/if}
 </script>
 
 {js src="jquery.js"}

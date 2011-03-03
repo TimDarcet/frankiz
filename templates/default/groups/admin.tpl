@@ -71,10 +71,12 @@
                     {include file="wiki_textarea.tpl"|rel id="description" already=$group->description()|smarty:nodefaults}
                 </td>
             </tr>
-            <tr>
-                <td>Image:</td>
-                <td><img src="{$group->image()|image:'small':'group'}" /> {include file="uploader.tpl"|rel id="image"}</td>
-            </tr>
+            {if $group->ns() != 'user'}
+                <tr>
+                    <td>Image:</td>
+                    <td><img src="{$group->image()|image:'small':'group'}" /> {include file="uploader.tpl"|rel id="image"}</td>
+                </tr>
+            {/if}
         </table>
 
         <input type="submit" name="update" value="Enregistrer">
