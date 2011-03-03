@@ -23,8 +23,7 @@
 <div class="head">{$title}</div>
 <div class="body">
     
-			<p>Dans le cadre de l'accord MSDNAA, chaque étudiant de polytechnique à le droit à une version de Windows XP Pro, une de Windows Vista Business ainsi qu'une de Windows Seven Professional gratuites, légales et attibuées à vie</p>
-			<p>Si tu as besoin d'une clé pour un logiciel téléchargé sur ftp://enez/, et qu'il n'est pas proposé dans la liste, envoi un mail aux <a href="mailto:msdnaa-licences@frankiz.polytechnique.fr">Admins Windows</a>.</p>
+			{include file="wiki.tpl"|rel name='licenses'}
             {if count($owned_licenses) != 0}
             <h3>Les licences suivantes t'ont déjà été attribuées :</h3>
             <ul>
