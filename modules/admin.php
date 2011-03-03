@@ -51,7 +51,7 @@ class AdminModule extends PlModule
             $page->assign('validates', $validates);
         }
         
-        $page->assign('licenses', Group::from('licenses'));
+        $page->assign('licensesDisplay', License::hasRights(S::user()));
 
         $page->assign('title', "Administration");
         $page->addCssLink('admin.css');

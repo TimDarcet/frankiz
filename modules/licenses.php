@@ -25,7 +25,7 @@ class licensesModule extends PLModule
     {
         return array('licenses'                => $this->make_hook('licenses',                AUTH_MDP),
                      'licenses/cluf'           => $this->make_hook('licenses_CLUF',           AUTH_MDP),
-                     'licenses/reason'          => $this->make_hook('licenses_reason',          AUTH_MDP),
+                     'licenses/reason'         => $this->make_hook('licenses_reason',         AUTH_MDP),
                      'licenses/final'          => $this->make_hook('licenses_final',          AUTH_MDP),
                     );
     }
@@ -67,7 +67,7 @@ class licensesModule extends PLModule
         } else {
             $already_has = License::givenKeys(Post::s('software'), S::user()->id());
             $software_rare = in_array(Post::v('software'), License::getRareSoftwares());
-            if(S::user()->hasRights(Group::from('on_platal'), Rights::member()) && S::user()->hasRights(Group::from('formation_x'), Rights::member()) && !$already_has && !$software_rare) {
+            if(License::hasRights(S::user()) && !$already_has && !$software_rare) {
                 $this->handler_licenses_final($page, true);
             } else {
                 $page->changeTpl('licenses/licenses_reason.tpl');
@@ -93,7 +93,7 @@ class licensesModule extends PLModule
             $page->assign('software', Post::s('software'));
             $page->assign('software_name', $softwares[Post::s('software')]);  
             
-            if($key = License::adminKey(Post::s('software')))
+            if($key = License::adminKey(Post::s('software')) && License::hasRights(S::user()))
             {
                 $key->give(S::user());
                 $page->assign('direct', true);
