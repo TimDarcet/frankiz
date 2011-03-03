@@ -93,7 +93,7 @@ class licensesModule extends PLModule
             $page->assign('software', Post::s('software'));
             $page->assign('software_name', $softwares[Post::s('software')]);  
             
-            if($key = License::adminKey(Post::s('software')) && License::hasRights(S::user()))
+            if(($key = License::adminKey(Post::s('software'))) && License::hasRights(S::user()))
             {
                 $key->give(S::user());
                 $page->assign('direct', true);
