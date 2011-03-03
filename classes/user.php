@@ -491,34 +491,6 @@ class User extends Meta
         return $this->skin;
     }
 
-    /**
-    * Returns the hash sent by password to recover the password
-    *
-    * @param $hash If specified, update the Hash
-    */
-    public function hash($hash = null)
-    {
-        if ($hash != null) {
-            $this->hash = $hash;
-            XDB::execute('UPDATE account SET hash = {?} WHERE uid = {?}', $this->hash, $this->id());
-        }
-        return $this->hash;
-    }
-
-    /**
-    * Returns the hash_rss given to the user
-    *
-    * @param $hash_rss If specified, update the Hash
-    */
-    public function hash_rss($hash_rss = null)
-    {
-        if ($hash_rss != null) {
-            $this->hash_rss = $hash_rss;
-            XDB::execute('UPDATE account SET hash_rss = {?} WHERE uid = {?}', $this->hash_rss, $this->id());
-        }
-        return $this->hash_rss;
-    }
-
     public function birthdate(FrankizDateTime $birthdate = null)
     {
         if ($birthdate != null) {
