@@ -24,7 +24,8 @@ class NewsModule extends PlModule
     public function handlers()
     {
         return array(
-            "news"              => $this->make_hook("news"          , AUTH_PUBLIC),
+            "news"              => $this->make_hook("news_new"      , AUTH_PUBLIC),
+            "news/current"      => $this->make_hook("news_current"  , AUTH_PUBLIC),
             "news/new"          => $this->make_hook("news_new"      , AUTH_PUBLIC),
             "news/mine"         => $this->make_hook("news_mine"     , AUTH_PUBLIC),
             "news/admin"        => $this->make_hook("admin"         , AUTH_MDP),
@@ -54,7 +55,7 @@ class NewsModule extends PlModule
         return PL_JSON;
     }
 
-    function handler_news($page, $id = false)
+    function handler_news_current($page, $id = false)
     {
         if ($id) {
             $news = new News($id);

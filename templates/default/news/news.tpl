@@ -37,7 +37,7 @@
                 <div class="option display">
                     <ul>
                         <li><a href="news/new" {if $view == 'new'}class="current_view"{/if}>Annonces non-lues & suivies</a></li>
-                        <li><a href="news" {if $view == 'current'}class="current_view"{/if}>Annonces en cours</a></li>
+                        <li><a href="news/current" {if $view == 'current'}class="current_view"{/if}>Annonces en cours</a></li>
                         <li><a href="news/mine" {if $view == 'mine'}class="current_view"{/if}>Annonces que j'ai rédigées</a></li>
                     </ul>
                 </div>
