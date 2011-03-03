@@ -28,9 +28,9 @@
      <div class="body">
         <form enctype="multipart/form-data" method="post" action="{$smarty.server.REQUEST_URI}">
         <table class="bicol">
-            {if $smarty.session.user->checkPerms('admin')}
+            {if $smarty.session.user->isAdmin()}
                 <tr class="fkzadmin">
-                    <td>Nom "unix":</td>
+                    <td>Nom "unix"</td>
                     <td>
                         <input type="text" name="name" value="{$group->name()}" />
                         <div class="warning">
@@ -43,13 +43,28 @@
             {/if}
             {if $smarty.session.user->isWeb()}
                 <tr class="webmaster">
-                    <td>Namespace:</td>
+                    <td>Namespace</td>
                     <td>
                         <select name="ns">
                             {foreach from=$nss item='ns'}
                                 <option value="{$ns}" {if $group->ns() == $ns}selected="selected"{/if}>{$ns}</option>
                             {/foreach}
                         </select>
+                    </td>
+                </tr>
+            {/if}
+            {if $smarty.session.user->isAdmin()}
+                <tr class="fkzadmin">
+                    <td>Castes</td>
+                    <td>
+                        <ul>
+                        {foreach from=$group->castes() item='caste'}
+                            <li>
+                                {$caste->rights()}&nbsp;: 
+                                {include file="userfilter.tpl"|rel userfilter=$caste->userfilter()}
+                            </li>
+                        {/foreach}
+                        </ul>
                     </td>
                 </tr>
             {/if}
@@ -66,14 +81,14 @@
                 <td><input type="text" name="mail" value="{$group->mail()}" /></td>
             </tr>
             <tr class="pair">
-                <td>Description:</td>
+                <td>Description</td>
                 <td>
                     {include file="wiki_textarea.tpl"|rel id="description" already=$group->description()|smarty:nodefaults}
                 </td>
             </tr>
             {if $group->ns() != 'user'}
                 <tr>
-                    <td>Image:</td>
+                    <td>Image</td>
                     <td><img src="{$group->image()|image:'small':'group'}" /> {include file="uploader.tpl"|rel id="image"}</td>
                 </tr>
             {/if}
