@@ -114,6 +114,9 @@ class TolValidate extends ItemValidate
 
     public function commit()
     {
+        if ($this->user->group()) {
+            $this->user->group()->image($this->image);
+        }
         $this->user->photo($this->image);
         return true;
     }
