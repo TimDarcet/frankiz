@@ -42,27 +42,36 @@
     <td>
         Date :
     </td>
-    <td>
-        de <input type="text" name="begin" id="begin" value=""
+    {uniqid output='uniqid'}
+    <td id="dates_{$uniqid}">
+        de <input type="text" name="begin" id="begin" value="" already="{$item->begin()|datetime:'m/d/Y H:i'}"
                   required {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$).*"{/literal}/>
-        à  <input type="text" name="end" id="end" value=""
+        à  <input type="text" name="end" id="end" value="" already="{$item->end()|datetime:'m/d/Y H:i'}"
                   required {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$).*"{/literal}/>
-        <script>{literal}
+        <script>
+        {literal}
         $(function() {
-            limit_inf = new Date();
+            {/literal}
+            var $begin = $("#dates_{$uniqid} [name=begin]");
+            var $end = $("#dates_{$uniqid} [name=end]");
+            {literal}
+
+            var begin = new Date($begin.attr("already"));
+            var end = new Date($end.attr("already"));
+
+            limit_inf = new Date(begin);
             limit_inf.setMinutes(0);
-            var begin = new Date('{/literal}{$item->begin()|datetime:'m/d/Y H:i'}{literal}');
-            var end = new Date('{/literal}{$item->end()|datetime:'m/d/Y H:i'}{literal}');
-            $("#begin").datetimepicker({minDate: limit_inf, maxDate: "+7D", defaultDate: begin});
-            if (!$("#begin").val()) {
-                $("#begin").datetimepicker('setDate', begin);
-            }
-            $("#end").datetimepicker({minDate: limit_inf, maxDate: "+7D", defaultDate: end});
-            if (!$("#end").val()) {
-                $("#end").datetimepicker('setDate', end);
-            }
+
+            limit_sup = new Date(end);
+            limit_sup.setMinutes(0);
+
+            $begin.datetimepicker({minDate: limit_inf, maxDate: "+1Y", defaultDate: begin});
+            $begin.datetimepicker('setDate', begin);
+            $end.datetimepicker({minDate: limit_sup, maxDate: "+1Y", defaultDate: end});
+            $end.datetimepicker('setDate', end);
         });
-        {/literal}</script>
+        {/literal}
+        </script>
     </td>
 </tr>
 
