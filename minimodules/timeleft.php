@@ -38,12 +38,12 @@ class TimeleftMiniModule extends FrankizMiniModule
 
     public function title()
     {
-        return 'TimeLeft';
+        return 'MasKès';
     }
 
     public function run()
     {
-        $future = new FrankizDateTime('2011-02-26');
+        $future = new FrankizDateTime('2011-03-08 23:00:00');
         $this->assign('future', $future);
     }
 }

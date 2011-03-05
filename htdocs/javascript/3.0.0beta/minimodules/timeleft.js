@@ -1,5 +1,6 @@
 var timeleft = {
     "update" : function(target, future) {
+        var timeoutRun;
         run = function() {
             var now = new Date();
             nowTime = now.getTime();
@@ -24,13 +25,13 @@ var timeleft = {
 
                 var days = (delta - hours) / 24;
 
-                target.html(days + ' jours, ' + hours + ':' + mins + ':' + secs + ':' + msecs);
+                target.html("J - " + days + "<br />" + hours + 'h ' + mins + 'min ' + secs + 's');
             } else {
                 target.html("0");
                 clearInterval(timeoutRun);
             }
         };
         run();
-        timeoutRun = setInterval(run, 42);
+        timeoutRun = setInterval(run, 1000);
     }
 };

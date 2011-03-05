@@ -20,14 +20,18 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="timeleft">
-
+<div class="timeleft" style="background:black">
+    <div class="background">
+        <img src="css/default/minimodules/timeleft/maskes.png" style="width:100%"/>
+    </div>
+    <div class="text" style="text-align:center;margin-top:2pxpx;z-index:666;width:100%;font-weight:bold;font-size:26px;color:white">
+    </div>
 </div>
 
 {js src="minimodules/timeleft.js"}
 
 <script>
-    timeleft.update($("#minimodule_timeleft .timeleft"), new Date("{$minimodule.future->format('Y-m-d')}"));
+    timeleft.update($("#minimodule_timeleft .text"), new Date("{$minimodule.future->toJS()}"));
 </script>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
