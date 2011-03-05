@@ -819,7 +819,7 @@ class User extends Meta
 
         // If we are here, it means we are outside or that the caste is restricted
         // In either case, in order to see the content, the user must be part of the caste
-        if (S::user()->castes()->get($image->caste()) != false) {
+        if (S::user()->castes()->get($caste) != false) {
             return true;
         }
 
