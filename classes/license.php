@@ -219,9 +219,9 @@ class License extends Meta
         
         $mail->Subject = '[Frankiz] Ta licence MSDNAA';
 
-        $mail->SetFrom('msdnaa-licences@frankiz.polytechnique.fr', 'admin@windows');
+        $mail->SetFrom('licenses@binets.polytechnique.fr', 'admin@windows');
         $mail->AddAddress($user->bestEmail(), $user->displayName());
-        $mail->AddCC('msdnaa-licences@frankiz.polytechnique.fr', 'admin@windows');
+        $mail->AddCC('licenses@binets.polytechnique.fr', 'admin@windows');
         $mail->Send(false);
     }
     
