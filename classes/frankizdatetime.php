@@ -31,6 +31,11 @@ class FrankizDateTime extends DateTime implements Formatable
         return $this->format('Y-m-d H:i:s');
     }
 
+    public function toJs()
+    {
+        return $this->format('Y/m/d H:i:s');
+    }
+
     public function __toString()
     {
         return $this->format('Y-m-d H:i:s');
