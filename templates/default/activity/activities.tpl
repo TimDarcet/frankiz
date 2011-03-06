@@ -22,13 +22,28 @@
 
 <div class="activity_right">
     <div class="top">
-         <div class="new_activity"><a href="proposal/activity">Proposer une activité</a> </div>
+        <a href="proposal/activity">
+            <span class="new_element"></span>
+                Proposer une activité
+            </a>
+    </div>
 
-         <a onclick="change_view('all')">Voir toutes les activités du site</a> <br />
 
-         <a onclick="change_view('participate')">Voir les activités auxquelles je participe</a> <br />
+    <div class="top">
+        <a onclick="change_view('participate')" class="{if $view == 'participate'}current{/if}">
+            <span class="alone"></span>
+            Activités auxquelles je participe
+        </a> <br />
 
-         <a onclick="change_view('friends')">Voir les activités de mes groupes</a>
+        <a onclick="change_view('friends')" class="{if $view == 'friend'}current{/if}">
+            <span class="group_ico"></span>
+            Activités de mes groupes
+        </a> <br />
+
+        <a onclick="change_view('all')" class="{if $view == 'all'}current{/if}">
+            <span class="world"></span>
+            Toutes les activités
+        </a>
     </div>
 
     <div class="module" id="activity_show" style="display:none;">

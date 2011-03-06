@@ -27,17 +27,17 @@ class ActivityModule extends PLModule
             'activity'                      => $this->make_hook('activity',             AUTH_PUBLIC),
             'activity/timetable'            => $this->make_hook('timetable',            AUTH_PUBLIC),
             "activity/rss"                  => $this->make_hook("rss",                  AUTH_PUBLIC, "user", NO_HTTPS),
-            'activity/admin'                => $this->make_hook('admin',                AUTH_MDP),
-            'activity/modify'               => $this->make_hook('modify',               AUTH_MDP),
-            'activity/regular/new'          => $this->make_hook('new_regular',          AUTH_MDP),
-            'activity/regular/modify'       => $this->make_hook('modify_regular',       AUTH_MDP),
+            'activity/admin'                => $this->make_hook('admin',                AUTH_COOKIE),
+            'activity/modify'               => $this->make_hook('modify',               AUTH_COOKIE),
+            'activity/regular/new'          => $this->make_hook('new_regular',          AUTH_COOKIE),
+            'activity/regular/modify'       => $this->make_hook('modify_regular',       AUTH_COOKIE),
             'activity/participants'         => $this->make_hook('participants',         AUTH_COOKIE),
             'activity/participants/add'     => $this->make_hook('participants_add',     AUTH_COOKIE),
             'activity/participants/del'     => $this->make_hook('participants_del',     AUTH_COOKIE),
             'activity/ajax/get'             => $this->make_hook('ajax_get',             AUTH_INTERNAL),
             'activity/ajax/timetable'       => $this->make_hook('ajax_timetable',       AUTH_PUBLIC),
-            'activity/ajax/admin'           => $this->make_hook('ajax_admin',           AUTH_MDP),
-            'activity/ajax/modify'          => $this->make_hook('ajax_modify',          AUTH_MDP),
+            'activity/ajax/admin'           => $this->make_hook('ajax_admin',           AUTH_COOKIE),
+            'activity/ajax/modify'          => $this->make_hook('ajax_modify',          AUTH_COOKIE),
         );
     }
 
@@ -71,7 +71,7 @@ class ActivityModule extends PLModule
 
         $page->assign('activities', $split);
 
-        $page->assign('visibility', $visibility);
+        $page->assign('view', $visibility);
         $page->assign('title', 'Activités');
         $page->addCssLink('activity.css');
         $page->changeTpl('activity/activities.tpl');
@@ -97,7 +97,6 @@ class ActivityModule extends PLModule
         $page->assign('title', 'Emploi du temps');
         $page->changeTpl('activity/timetable.tpl');
     }
-
 
     function handler_rss($page, $user = null, $hash = null)
     {
@@ -546,6 +545,7 @@ class ActivityModule extends PLModule
 
         $c = $activities->get();
         $c->select(ActivityInstanceSelect::all());
+        $c->order('hour_begin', false);
 
         $page->jsonAssign('issort', true);
         $page->jsonAssign('start', date("m/d/Y H:i", $st));

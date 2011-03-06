@@ -51,10 +51,7 @@
                                 title="{$origin->label()}""/>
                         </a>
                     {else}
-                        <a href="tol/?hruid={$writer->login()}">
-                        <img src="{$writer->image()|image:'micro'|smarty:nodefaults}"
-                             title="{$writer->displayName()}"/>
-                        </a>
+                        {$writer|user}
                     {/if}
 
                     <a href="activity/timetable/{$visibility}/{$activity->id()}">
