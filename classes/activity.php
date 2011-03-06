@@ -57,7 +57,7 @@ class ActivitySelect extends Select
 
     public static function base() {
         return new ActivitySelect(self::$natives,
-                              array('target' => CasteSelect::group(),
+                              array('target' => CasteSelect::validate(),
                                     'origin' => GroupSelect::base()));
     }
 

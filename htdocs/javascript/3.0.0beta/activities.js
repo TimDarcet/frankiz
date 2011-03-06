@@ -104,7 +104,7 @@ function show(id)
     }
     else {
         $("#activity_show .head .origin").html(
-            '<a href="tol/?hruid=' + results[id].writer.login + '">' +
+            '<a href="tol/see/' + results[id].writer.login + '">' +
                 '<img src="' + results[id].writer.photo + '" title="' + results[id].writer.displayName + '">' +
             '</a>');
     }
