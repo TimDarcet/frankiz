@@ -205,6 +205,7 @@ class FrankizPage extends PlPage
 
             $request_filter = new ValidateFilter(new VFC_Writer(S::user()));
             $requests = $request_filter->get()->select(ValidateSelect::quick());
+            $this->assign('self_url', pl_self());
             $this->assign('quick_requests', $requests);
 
             $this->_run(self::getTplPath('frankiz.tpl'));

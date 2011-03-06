@@ -114,6 +114,18 @@ abstract class ItemValidate
         $mail->Send(false);
     }
 
+    public function sendmailcancel($user) 
+    {
+        $mail = new FrankizMailer('validate/mail.cancel.tpl');
+        $mail->assign('type', $this->type);
+        $mail->assign('user', $user);
+
+        $mail->Subject = "Annulation de la demande de type \"{$this->label()}\"";
+        $mail->SetFrom($user->bestEmail(), $user->displayName());
+        $mail->AddAddress($this->_mail_from_addr(), $this->_mail_from_disp());
+        $mail->Send(false);
+    }
+
     public function add_comment($name, $comment)
     {
         $this->comments[] = array('name'=>$name, 'com'=>$comment);
@@ -159,7 +171,7 @@ abstract class ItemValidate
      */
     public function editor()
     {
-        return null;
+        return false;
     }
 }
 

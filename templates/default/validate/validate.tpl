@@ -65,53 +65,64 @@
                     Demande de {$writer->fullName()}
                 </div>
 
-                <div class="click">
-                    Informations
-                </div>
-                <table class="hide show">
-                    {include file=$item->show()|rel}
-                </table>
-
-                {if $item->editor()}
+                <div class="pair">
                     <div class="click">
-                        Editer
+                        Commentaires (entre administrateurs)
                     </div>
-                    <table class="hide">
-                        {include file=$item->editor()|rel}
+                    <table class="hide show">
+                        {foreach from=$item->comments() item=c}
                         <tr>
-                            <td width=20%></td>
+                            <td width=20%>
+                                {$c.name|smarty:nodefaults}
+                            </td>
                             <td>
-                                <input type="submit" name="edit"   value="Éditer" />
+                                {$c.com|smarty:nodefaults}
+                            </td>
+                        </tr>
+                        {/foreach}
+                        <tr>
+                            <td width=20%>
+                                Commentaire pour les administrateurs :
+                            </td>
+                            <td>
+                                <div>
+                                    <textarea name="comm" class="text_validate" ></textarea>
+                                </div>
+                                <input type="submit" name="add_comm" class="addcom_validate"  value="Ajouter un commentaire" />
                             </td>
                         </tr>
                     </table>
+                </div>
+
+                {if $item->show()}
+                    <div class="impair">
+                        <div class="click">
+                            Informations
+                        </div>
+                        <table class="hide show">
+                            {include file=$item->show()|rel}
+                        </table>
+                    </div>
                 {/if}
 
-                <div class="click">
-                    Commentaires (entre administrateurs)
-                </div>
-                <table class="hide show">
-                    {foreach from=$item->comments() item=c}
-                    <tr>
-                        <td width=20%>
-                            {$c.name|smarty:nodefaults}
-                        </td>
-                        <td>
-                            {$c.com|smarty:nodefaults}
-                        </td>
-                    </tr>
-                    {/foreach}
-                    <tr>
-                        <td width=20%> </td>
-                        <td>
-                            <div>
-                                <textarea name="comm" class="text_validate" ></textarea>
-                            </div>
-                            <input type="submit" name="add_comm" class="addcom_validate"  value="Ajouter un commentaire" />
-                        </td>
-                    </tr>
-                </table>
-                <table>
+                {if $item->editor()}
+                    <div class="pair">
+                        <div class="click">
+                            Editer
+                        </div>
+                        <table class="hide">
+                            {include file=$item->editor()|rel}
+                            <tr>
+                                <td width=20%></td>
+                                <td>
+                                    <input type="submit" name="edit"   value="Éditer" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                {/if}
+
+                <table class="{if $item->editor()}impair{elseif $item->show()}pair{else}impair{/if}">
                     <tr>
                         <td width=20%>
                             Réponse :

@@ -151,8 +151,8 @@
                             limit_inf.setMinutes(0);
                             var dates = $( "#begin, #end" ).datetimepicker({
                                 minDate: limit_inf, maxDate: "+1Y"});
-                            $("#begin").datetimepicker('setDate', new Date());
-                            $("#end").datetimepicker('setDate', new Date());
+                            $("#begin").datetimepicker('setDate', limit_inf);
+                            $("#end").datetimepicker('setDate', limit_inf);
                         });
                         {/literal}</script>
                     </td>

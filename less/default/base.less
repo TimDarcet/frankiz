@@ -187,6 +187,22 @@ a {
     background-repeat: no-repeat;
 }
 
+.rss {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("../default/images/feed.gif");
+    background-repeat: no-repeat;
+}
+
+.delete_element {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("../default/images/icons/item.delete.gif");
+    background-repeat: no-repeat;
+}
+
 /*******************************************************************************
      1   Header
 
@@ -213,6 +229,13 @@ a {
             display: list-item !important;
             text-align: center !important;
             text-transform: none !important;
+
+            .delete_element {
+                position: relative;
+                width: 12px;
+                height: 12px;
+                cursor: pointer;
+            }
         }
     }
 }

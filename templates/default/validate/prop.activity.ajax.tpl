@@ -98,7 +98,7 @@
                             var begin = new Date();
                             begin.setHours({/literal}{$activity->default_begin()|substr:0:2}{literal});
                             begin.setMinutes({/literal}{$activity->default_begin()|substr:3:2}{literal});
-                            $("#begin").timepicker({defaultDate: end});
+                            $("#begin").timepicker({defaultDate: begin});
                             $("#begin").timepicker('setDate', begin);
                             var end = new Date();
                             end.setHours({/literal}{$activity->default_end()|substr:0:2}{literal});

@@ -66,7 +66,7 @@ class GroupSelect extends Select
     }
 
     public static function subscribe() {
-        return new GroupSelect(array('ns', 'name', 'visible', 'castes', 'leavable'),
+        return new GroupSelect(array('ns', 'name', 'label', 'visible', 'castes', 'leavable'),
                                array('castes' => CasteSelect::bubble()));
     }
 

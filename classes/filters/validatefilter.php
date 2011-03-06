@@ -23,6 +23,24 @@ abstract class ValidateFilterCondition extends FrankizFilterCondition
 {
 }
 
+/** Filters Validate based on the id
+ * @param $ids A Validate, an id or an array of id
+ */
+class VFC_Id extends ValidateFilterCondition
+{
+    private $ids;
+
+    public function __construct($vs)
+    {
+        $this->ids = Validate::toIds(unflatten($vs));
+    }
+
+    public function buildCondition(PlFilter $uf)
+    {
+        return XDB::format('v.id IN {?}', $this->ids);
+    }
+}
+
 /** Filters Validate based on the user asking for it
  * @param $user A User, a Uid or an array of it
  */

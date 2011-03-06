@@ -55,7 +55,7 @@
         Date :
     </td>
     <td>
-        de {$item->begin()|datetime:'Y-m-d H:m'} à {$item->end()|datetime:'Y-m-d H:m'}
+        de {$item->begin()|datetime:'Y-m-d H:i'} à {$item->end()|datetime:'Y-m-d H:i'}
     </td>
 </tr>
 

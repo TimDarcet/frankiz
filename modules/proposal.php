@@ -24,6 +24,7 @@ class ProposalModule extends PlModule
     function handlers()
     {
         return array(
+            'proposal/remove'           => $this->make_hook('remove',        AUTH_MDP),
             'proposal/news'             => $this->make_hook('news',          AUTH_COOKIE),
             'proposal/activity'         => $this->make_hook('activity',      AUTH_COOKIE),
             'proposal/activity/ajax'    => $this->make_hook('activity_ajax', AUTH_COOKIE),
@@ -45,6 +46,35 @@ class ProposalModule extends PlModule
         $target_filter = new CasteFilter(new PFC_And(new CFC_Group($target_group),
                                                      new CFC_Rights($target_rights)));
         return array($target_filter->get(true), $target_group);
+    }
+
+    function handler_remove($page, $id)
+    {
+        S::assert_xsrf_token();
+
+        $val = new ValidateFilter(new VFC_Id($id));
+        $val = $val->get(true);
+
+        if ($val === false) {
+            throw new Exception("This item doesn't exist");
+        }
+        
+        $val->select(ValidateSelect::validate());
+
+        if ($val->writer()->id() != S::user()->id()) {
+            throw new Exception("Invalid crendentials");
+        }
+
+        S::logger()->log('proposal/remove',
+                         array('type' => $val->type(),
+                             'writer' => $val->writer()->id(),
+                              'group' => $val->group()->id(),
+                            'created' => $val->created()->toDb(),
+                               'item' => $val->itemToDb()));
+        $val->item()->sendmailcancel(S::user());
+        $val->clean();
+
+        pl_redirect(Env::v('url'));
     }
 
     function handler_news($page)

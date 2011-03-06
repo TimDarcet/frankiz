@@ -1,6 +1,6 @@
 {**************************************************************************}
 {*                                                                        *}
-{*  Copyright (C) 2009 Binet Réseau                                       *}
+{*  Copyright (C) 2010 Binet Réseau                                       *}
 {*  http://www.polytechnique.fr/eleves/binets/reseau/                     *}
 {*                                                                        *}
 {*  This program is free software; you can redistribute it and/or modify  *}
@@ -8,7 +8,7 @@
 {*  the Free Software Foundation; either version 2 of the License, or     *}
 {*  (at your option) any later version.                                   *}
 {*                                                                        *}
-{*  This program is distributed in the hope tha0t it will be useful,       *}
+{*  This program is distributed in the hope that it will be useful,       *}
 {*  but WITHOUT ANY WARRANTY; without even the implied warranty of        *}
 {*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *}
 {*  GNU General Public License for more details.                          *}
@@ -20,42 +20,20 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div>
-{if $quick_validate|@count > 0}
-    <div class="validate">
-        À valider :
-        <ul>
-            {foreach from=$quick_validate item='validates'}
-                {assign var='first' value=$validates->first()}
-                {assign var='grp' value=$first->group()}
-                {assign var='castes' value=$smarty.session.user->castes()}
-                {assign var='groups' value=$castes->groups()}
-                {assign var='group' value=$groups->get($grp)}
-                <li>
-                    Groupe {$group->label()} :
-                    <a href="admin/validate/{$group->id()}">
-                        {$validates->count()} requête{if $validates->count() > 1}s{/if}
-                    </a>
-                </li>
-            {/foreach}
-        </ul>
-    </div>
+{if $isOk}
+Ta demande de devenir membre du groupe {$targetGroup->label()} vient d'être acceptée.
+{if isset($comm|smarty:nodefaults)}
+
+{$comm|smarty:nodefaults}
 {/if}
-{if $quick_requests|@count > 0}
-    <div class="requests">
-        Requêtes en attente :
-        <ul>
-            {foreach from=$quick_requests item='validate'}
-                <li>{$validate->label()} depuis {$validate->created()|age}
-                    <a href="proposal/remove/{$validate->id()}?token={xsrf_token}&url={$self_url}" class="delete_element"
-                        onclick="return confirm(areyousure)">
-                    </a>
-                </li>
-            {/foreach}
-        </ul>
-    </div>
+{else}
+Ta demande de devenir membre du groupe {$targetGroup->label()} vient d'être refusée :
+{$comm|smarty:nodefaults}
 {/if}
-</div>
+
+
+Cordialement,
+Les administrateurs du groupe "{$targetGroup->label()}"
 
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
