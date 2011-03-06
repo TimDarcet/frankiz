@@ -54,16 +54,38 @@
 
                     <div>
                     {if $user|hasRights:$group:'admin'}
-                        <a href="groups/admin/{$group->name()}">Administrer le groupe</a>
-                    {else if $group->leavable()}
-                        <a onclick="return confirm(areyousure);" href="groups/unsubscribe/{$group->id()}?token={xsrf_token}">Quitter le groupe</a>
+                        <div>
+                            <span class="edit"></span>
+                            <a href="groups/admin/{$group->name()}">Administrer le groupe</a>
+                        </div>
+                    {elseif $group->leavable()}
+                        {if !$user|hasRights:$group:'restricted'}
+                            <div>
+                                <span class="rights member"></span>
+                                <a onclick="return confirm(areyousure);" href="groups/subscribe/{$group->id()}/member?token={xsrf_token}">Devenir membre</a>
+                            </div>
+                        {/if}
+                        <div>
+                            <span class="remove_participant"></span>
+                            <a onclick="return confirm(areyousure);" href="groups/unsubscribe/{$group->id()}?token={xsrf_token}">Quitter le groupe</a>
+                        </div>
                     {/if}
                     </div>
                 {else}
-                    <a onclick="return confirm(areyousure);" href="groups/subscribe/{$group->id()}?token={xsrf_token}">Rejoindre le groupe</a>
+                    <div>
+                        <span class="rights friend"></span>
+                        <a onclick="return confirm(areyousure);" href="groups/subscribe/{$group->id()}?token={xsrf_token}">Devenir sympathisant</a>
+                    </div>
+                    <div>
+                        <span class="rights member"></span>
+                        <a onclick="return confirm(areyousure);" href="groups/subscribe/{$group->id()}/member?token={xsrf_token}">Devenir membre</a>
+                    </div>
                 {/if}
                 {if $user->isWeb() && !$user|hasRights:$group:'admin'}
-                    <a class="webmaster" href="groups/admin/{$group->name()}">Administrer le groupe</a>
+                    <span class="webmaster" >
+                        <span class="edit"></span>
+                        <a href="groups/admin/{$group->name()}">Administrer le groupe</a>
+                    </span>
                 {/if}
             {/if}
             </div>

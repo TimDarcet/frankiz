@@ -53,8 +53,8 @@
                     </td>
                 </tr>
             {/if}
-            {if $smarty.session.user->isAdmin()}
-                <tr class="fkzadmin">
+            {if $smarty.session.user->isWeb()}
+                <tr class="webmaster">
                     <td>Castes</td>
                     <td>
                         <ul>

@@ -474,7 +474,7 @@ class GroupsModule extends PLModule
         return PL_JSON;
     }
 
-    function handler_group_subscribe($page, $group)
+    function handler_group_subscribe($page, $group, $right = 'friend')
     {
         S::assert_xsrf_token();
 
@@ -483,13 +483,28 @@ class GroupsModule extends PLModule
         $group = $gf->get(true);
 
         if ($group) {
-            $group->select(GroupSelect::subscribe());
+            if ($right == 'friend') {
+                $group->select(GroupSelect::subscribe());
 
-            $group->caste(Rights::friend())->addUser(S::user());
-            S::user()->select(UserSelect::castes());
+                $group->caste(Rights::friend())->addUser(S::user());
+                S::user()->select(UserSelect::castes());
 
-            pl_redirect('groups/see/' . $group->name());
-            exit;
+                pl_redirect('groups/see/' . $group->name());
+                exit;
+            }
+            elseif ($right == 'member') {
+                $group->select(GroupSelect::subscribe());
+
+                $iv = new MemberValidate(S::user(), $group);
+                $v = new Validate(array(
+                    'writer'  => S::user(),
+                    'group'   => $group,
+                    'item'    => $iv,
+                    'type'    => 'member'));
+                $v->insert();
+                $page->assign('title', "Demande de statut de membre");
+                $page->changeTpl('groups/member.tpl');
+            }
         } else {
             $page->assign('title', "Ce groupe n'existe pas");
             $page->changeTpl('groups/no_group.tpl');
