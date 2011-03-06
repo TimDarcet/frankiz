@@ -53,7 +53,7 @@ class QDJModule extends PLModule
         $page->assign('results', $this->fetch_scores($begin_dates, $end_dates, Env::t('period', count($begin_dates)-1)));
         $page->assign('end_date', $end_dates);
         $page->assign('begin_date', $begin_dates);
-        $page->assign('group_tol', Group::from('tol'));
+        $page->assign('group_qdj', Group::from('qdj'));
 
         $page->addCssLink('visualize.css');
         $page->addCssLink('qdj.css');

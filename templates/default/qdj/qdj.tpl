@@ -34,7 +34,7 @@
     <div class="body">
 
 
-        {if $smarty.session.user->rights($group_tol, 'admin')}
+        {if $smarty.session.user->rights($group_qdj, 'admin')}
             <div class="admin"><a href="qdj/admin">Administrer les QDJ</a></div>
         {/if}
 
