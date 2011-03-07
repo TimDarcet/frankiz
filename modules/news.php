@@ -24,7 +24,7 @@ class NewsModule extends PlModule
     public function handlers()
     {
         return array(
-            "news"              => $this->make_hook("news"      , AUTH_PUBLIC),
+            "news"              => $this->make_hook("news"          , AUTH_PUBLIC),
             "news/current"      => $this->make_hook("news_current"  , AUTH_PUBLIC),
             "news/new"          => $this->make_hook("news_new"      , AUTH_PUBLIC),
             "news/mine"         => $this->make_hook("news_mine"     , AUTH_PUBLIC),
@@ -86,7 +86,7 @@ class NewsModule extends PlModule
         }
 
         $nf = new NewsFilter(new PFC_And(new NFC_Current(),
-                                         new PFC_Not(new NFC_Read(S::user())),
+                                         new PFC_Or(new PFC_Not(new NFC_Read(S::user())), new NFC_Star(S::user())),
                                          new NFC_Target(S::user()->targetCastes())));
 
         $this->viewNews($page, $nf->get(), 'new', $id);
