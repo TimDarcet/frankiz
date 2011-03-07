@@ -122,27 +122,6 @@
             <input type="submit" name="change_profile" value="Enregistrer">
         </div>
     </div>
-
-    <div class="module options">
-        <div class="head">
-            <span class="helper" target="profile/account/options"></span>
-            Options diverses
-        </div>
-        <div class="body">
-            <table>
-                <tr>
-                    <td>
-                        Promos à afficher par défaut dans les filtres :
-                    </td>
-                    <td class="form val">
-                        {include file="groups_picker.tpl"|rel id="promo" ns="promo" order="name" already=$user->defaultFilters()|filter:'ns':'promo' check=-1}
-                    </td>
-                </tr>
-            </table>
-
-            <input type="submit" name="options" value="Enregistrer">
-        </div>
-    </div>
 </form>
 
 
