@@ -37,7 +37,7 @@
 
     <a href="http://wikix.polytechnique.org">Wikix</a> | |
 
-    <a href="http://www.frankiz.net">Frankiz</a> ·
+    <a href="https://www.frankiz.net">Frankiz</a> ·
 
     <a href="http://br.frankiz.net">WikiBR</a> ·
 
