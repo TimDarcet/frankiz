@@ -76,9 +76,9 @@
 
             var begin = new Date($begin.attr("already"));
             var end = new Date($end.attr("already"));
-            $begin.datetimepicker({minDate: begin, maxDate: "+7D", defaultDate: begin});
+            $begin.datetimepicker({minDate: Math.min(begin, new Date()), maxDate: "+7D", defaultDate: begin});
             $begin.datetimepicker('setDate', begin);
-            $end.datetimepicker({minDate: end, maxDate: "+7D", defaultDate: end});
+            $end.datetimepicker({minDate: begin, maxDate: "+7D", defaultDate: end});
             $end.datetimepicker('setDate', end);
         });
         {/literal}
