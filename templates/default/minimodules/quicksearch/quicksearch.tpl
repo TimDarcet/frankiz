@@ -24,11 +24,12 @@
     <form enctype="multipart/form-data" method="post" action="tol/">
         <input type="text" name="free" value="" />
         <input name="go" value="Consulter" type="hidden">
+        <input name="search" value="" type="hidden">
 
         <div>
-            <input name="search" value="TOL" type="submit">
+            <input name="tol" value="TOL" type="submit">
             <input name="ok" value="Wikix" type="submit"
-                   onclick="$(this).closest('form').attr('action', 'http://wikix.polytechnique.org/eleves/wikix/Sp%C3%A9cial:Recherche')">
+                   onclick="var $form = $(this).closest('form');$form.find('[name=search]').val($form.find('[name=free]').val());$form.attr('action', 'http://wikix.polytechnique.org/eleves/wikix/Sp%C3%A9cial:Recherche')">
         </div>
     </form>
 </div>
