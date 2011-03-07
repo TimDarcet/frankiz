@@ -85,9 +85,8 @@ class NewsModule extends PlModule
             $news->read(true);
         }
 
-        $nf = new NewsFilter(new PFC_And(new PFC_Or(new PFC_And(new NFC_Current(),
-                                                                new PFC_Not(new NFC_Read(S::user()))),
-                                                    new NFC_Star(S::user())),
+        $nf = new NewsFilter(new PFC_And(new NFC_Current(),
+                                         new PFC_Not(new NFC_Read(S::user())),
                                          new NFC_Target(S::user()->targetCastes())));
 
         $this->viewNews($page, $nf->get(), 'new', $id);

@@ -38,9 +38,8 @@ class NewsMiniModule extends FrankizMiniModule
 
     public function run()
     {
-        $nf = new NewsFilter(new PFC_And(new PFC_Or(new PFC_And(new NFC_Current(),
-                                                                new PFC_Not(new NFC_Read(S::user()))),
-                                                    new NFC_Star(S::user())),
+        $nf = new NewsFilter(new PFC_And(new NFC_Current(),
+                                         new PFC_Not(new NFC_Read(S::user())),
                                          new NFC_Target(S::user()->targetCastes())));
         $news = $nf->get()->select(NewsSelect::head());
 
