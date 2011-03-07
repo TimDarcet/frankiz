@@ -41,6 +41,8 @@
 
     <a href="http://br.frankiz.net">WikiBR</a> ·
 
+    <a href="http://br.frankiz.net/qrezix">qRezix</a> ·
+
     <a href="http://ik.frankiz.net">InfoKès</a> ·
 
     <a href="http://jtx">JTX</a> ·
