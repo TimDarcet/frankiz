@@ -27,9 +27,10 @@
             <ul class="bicol">
                 <li class="pair"><a href="profile/account">Mon profil</a></li>
                 <li class="impair"><a href="profile/password">Mot de passe</a></li>
-                <li class="pair"><a href="profile/minimodules">Mes minimodules</a></li>
-                <li class="impair"><a href="profile/network">Mes données réseau</a></li>
-                {if $licensesDisplay}<li class="pair"><a href="licenses">Licences MSDNAA</a></li>{/if}
+                <li class="pair"><a href="profile/defaultfilters">Filtre par défaut</a></li>
+                <li class="impair"><a href="profile/minimodules">Mes minimodules</a></li>
+                <li class="pair"><a href="profile/network">Mes données réseau</a></li>
+                {if $licensesDisplay}<li class="impair"><a href="licenses">Licences MSDNAA</a></li>{/if}
             </ul>
             {if $smarty.session.user->isWeb()}
                 <ul class="webmaster">

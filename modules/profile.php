@@ -24,6 +24,7 @@ class ProfileModule extends PLModule
     public function handlers()
     {
         return array('profile/account'                 => $this->make_hook('account',                 AUTH_MDP),
+                     'profile/defaultfilters'          => $this->make_hook('defaultfilters',          AUTH_COOKIE),
                      'profile/mails'                   => $this->make_hook('mails',                   AUTH_COOKIE),
                      'profile/password'                => $this->make_hook('password',                AUTH_MDP),
                      'profile/recovery'                => $this->make_hook('recovery',                AUTH_PUBLIC),
@@ -79,16 +80,6 @@ class ProfileModule extends PLModule
             S::user()->comment(Env::t('comment'));
         }
 
-        if (Env::has('options')) {
-            $groups = new Collection('Group');
-            $gids = explode(';', Env::s('promo'));
-            if (count($gids) > 0) {
-                $groups->add($gids);
-            }
-            $groups->select(GroupSelect::base());
-            S::user()->defaultFilters($groups);
-        }
-
         if (!empty($err)) {
             $page->assign('err', $err);
         }
@@ -99,6 +90,26 @@ class ProfileModule extends PLModule
         $page->addCssLink('profile.css');
         $page->assign('title', "Changement du profil");
         $page->changeTpl('profile/account.tpl');
+    }
+
+    public function handler_defaultfilters($page)
+    {
+        S::user()->select(UserSelect::login());
+
+        if (Env::has('options')) {
+            $groups = new Collection('Group');
+            $gids = explode(';', Env::s('promo'));
+            if (Env::t('promo', '') != '') {
+                $groups->add($gids);
+            }
+            $groups->select(GroupSelect::base());
+            S::user()->defaultFilters($groups);
+        }
+
+        $page->assign('user', S::user());
+        $page->addCssLink('profile.css');
+        $page->assign('title', "Filtre par défaut");
+        $page->changeTpl('profile/defaultfilters.tpl');
     }
 
     public function handler_mails($page)
