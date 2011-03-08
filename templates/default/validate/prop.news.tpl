@@ -34,7 +34,8 @@
 <form enctype="multipart/form-data" method="post" action="proposal/news" id="form_mail_promo">
     <div class="module news_proposal">
         <div class="head">
-           Rédaction d'une annonce
+            <span class="helper" target="proposal/news"> </span>
+            Rédaction d'une annonce
         </div>
         <div class="body">
             <table class="bicol">
