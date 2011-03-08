@@ -105,7 +105,7 @@
                         Au nom de :
                     </td>
                     <td>
-                        {include file="origin_picker.tpl"|rel id="origin_activity_proposal"}
+                        {include file="origin_picker.tpl"|rel id="origin_activity_proposal" not_only_admin=true}
                     </td>
                 </tr>
 

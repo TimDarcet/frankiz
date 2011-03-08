@@ -43,7 +43,7 @@
                         J'écris au nom de
                     </td>
                     <td>
-                        {include file="origin_picker.tpl"|rel id="origin_news_proposal"}
+                        {include file="origin_picker.tpl"|rel id="origin_news_proposal" not_only_admin=true}
                     </td>
                 </tr>
 

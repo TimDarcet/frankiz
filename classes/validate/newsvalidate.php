@@ -33,6 +33,9 @@ class NewsValidate extends ItemValidate
     protected $end;
     protected $comment;
 
+    // if the admin of the group origin must validate the news
+    protected $valid_origin = false;
+
     protected $idIfValid;
 
     public function __construct($datas)
@@ -92,11 +95,18 @@ class NewsValidate extends ItemValidate
             $this->writer->select(UserSelect::base());
 
         $mail = new FrankizMailer('validate/mail.admin.news.tpl');
+        $mail->assign('valid_origin', $this->valid_origin);
         $mail->assign('user', $this->writer);
         $mail->assign('title', $this->title);
         $mail->assign('targetGroup', $this->target->group());
 
-        $mail->subject("[Frankiz] Validation d'une annonce");
+        if ($this->valid_origin) {
+            $mail->assign('origin', $this->origin);
+            $mail->subject("[Frankiz] Validation d'un groupe d'origine");
+        }
+        else {
+            $mail->subject("[Frankiz] Validation d'une annonce");
+        }
         $mail->setFrom($this->writer->bestEmail(), $this->writer->displayName());
         $mail->addAddress($this->_mail_from_addr(), $this->_mail_from_disp());
         $mail->send(false);
@@ -109,14 +119,18 @@ class NewsValidate extends ItemValidate
 
         $mail = new FrankizMailer('validate/mail.valid.news.tpl');
 
+        $mail->assign('valid_origin', $this->valid_origin);
         $mail->assign('valid', $valid);
         $mail->assign('comm', Env::v('ans', ''));
         $mail->assign('text', false);
         $mail->assign('targetGroup', $this->target->group());
+        $mail->assign('origin', $this->origin);
 
-        if ($valid) {
+        if ($valid && !$this->valid_origin) {
             $mail->Subject = '[Frankiz] Ton annonce a été validée';
             $mail->assign('idIfValid', $this->idIfValid);
+        } elseif ($valid){
+            $mail->Subject = '[Frankiz] Le groupe d\'origine de ton annonce a été validé';
         } else {
             $mail->Subject = '[Frankiz] Ton annonce a été refusée';
             $mail->assign('text', $this->content());
@@ -130,14 +144,24 @@ class NewsValidate extends ItemValidate
 
     public function _mail_from_disp()
     {
-        return 'Frankiz - ' . $this->target->group()->label() . '';
+        if ($this->valid_origin) {
+            return 'Frankiz - ' . $this->origin->label() . '';
+        }
+        else {
+            return 'Frankiz - ' . $this->target->group()->label() . '';
+        }
     }
 
     public function _mail_from_addr()
     {
         global $globals;
 
-        return $this->target->group()->name() .'@' . $globals->mails->group_suffix;
+        if ($this->valid_origin) {
+            return $this->origin->name() .'@' . $globals->mails->group_suffix;
+        }
+        else {
+            return $this->target->group()->name() .'@' . $globals->mails->group_suffix;
+        }
     }
 
     public function delete()
@@ -150,18 +174,38 @@ class NewsValidate extends ItemValidate
 
     public function commit()
     {
-        $n = new News();
-        $n->insert();
-        $n->writer($this->writer);
-        $n->target($this->target);
-        $n->image($this->image);
-        $n->origin($this->origin);
-        $n->title($this->title);
-        $n->content($this->content);
-        $n->begin($this->begin);
-        $n->end($this->end);
-        $n->comment($this->comment);
-        $this->idIfValid = $n->id();
+        if ($this->valid_origin) {
+            $nv = new NewsValidate(array(
+                'writer'    => $this->writer,
+                'target'    => $this->target,
+                'image'     => $this->image,
+                'origin'    => $this->origin,
+                'title'     => $this->title,
+                'content'   => $this->content,
+                'begin'     => $this->begin,
+                'end'       => $this->end,
+                'comment'   => $this->comment));
+            $v = new Validate(array(
+                'writer'  => $this->writer,
+                'group'   => $this->target->group(),
+                'item'    => $nv,
+                'type'    => 'news'));
+            $v->insert();
+        }
+        else {
+            $n = new News();
+            $n->insert();
+            $n->writer($this->writer);
+            $n->target($this->target);
+            $n->image($this->image);
+            $n->origin($this->origin);
+            $n->title($this->title);
+            $n->content($this->content);
+            $n->begin($this->begin);
+            $n->end($this->end);
+            $n->comment($this->comment);
+            $this->idIfValid = $n->id();
+        }
         return true;
     }
 

@@ -94,6 +94,7 @@ class ProposalModule extends PlModule
                     $origin = false;
                 } else {
                     $origin = new Group(Env::i('origin_news_proposal'));
+                    $origin->select(GroupSelect::base());
                 }
                 list($target, $target_group) = self::target_picker_to_caste_group('news');
 
@@ -111,23 +112,32 @@ class ProposalModule extends PlModule
 
                 // Check credentials for origin
                 if ($origin !== false && !S::user()->hasRights($origin, Rights::admin())) {
-                    throw new Exception("Invalid credentials for origin Group");
+                    if (S::user()->hasRights($origin, Rights::restricted())) {
+                        $valid_origin = true;
+                    }
+                    else {
+                        throw new Exception("Invalid credentials for origin Group");
+                    }
+                }
+                else {
+                    $valid_origin = false;
                 }
 
                 $target->select(CasteSelect::validate());                
                 $nv = new NewsValidate(array(
-                    'writer'    => S::user(),
-                    'target'    => $target,
-                    'image'     => $image,
-                    'origin'    => $origin,
-                    'title'     => $title,
-                    'content'   => $content,
-                    'begin'     => $begin,
-                    'end'       => $end,
-                    'comment'   => $comment));
+                    'writer'        => S::user(),
+                    'target'        => $target,
+                    'image'         => $image,
+                    'origin'        => $origin,
+                    'title'         => $title,
+                    'content'       => $content,
+                    'begin'         => $begin,
+                    'end'           => $end,
+                    'comment'       => $comment,
+                    'valid_origin'  => $valid_origin));
                 $v = new Validate(array(
                     'writer'  => S::user(),
-                    'group'   => $target_group,
+                    'group'   => ($valid_origin)?$origin:$target_group,
                     'item'    => $nv,
                     'type'    => 'news'));
                 $v->insert();
@@ -178,33 +188,37 @@ class ProposalModule extends PlModule
                 $end = new FrankizDateTime(Env::t('end'));
 
                 if ($origin !== false && !S::user()->hasRights($origin, Rights::admin())) {
-                    throw new Exception("Invalid credentials for origin Group");
+                    if (S::user()->hasRights($origin, Rights::restricted())) {
+                        $valid_origin = true;
+                        $origin->select(GroupSelect::base());
+                    }
+                    else {
+                        throw new Exception("Invalid credentials for origin Group");
+                    }
+                }
+                else {
+                    $valid_origin = false;
                 }
 
                 $target->select(CasteSelect::validate());
 
-                $av = new ActivityValidate(s::user(), $target, $title,
-                    $desc, $begin, $end, $origin);
+                $av = new ActivityValidate(array(
+                    'writer'        => S::user(), 
+                    'target'        => $target,
+                    'title'         => $title,
+                    'description'   => $desc,
+                    'begin'         => $begin,
+                    'end'           => $end,
+                    'origin'        => $origin,
+                    'valid_origin'  => $valid_origin));
                 $v = new Validate(array(
                     'writer'    => S::user(),
-                    'group'     => $target_group,
+                    'group'     => ($valid_origin)?$origin:$target_group,
                     'item'      => $av,
                     'type'      => 'activity'));
-                
-                if (!S::user()->hasRights($target_group, Rights::admin())) {
-                    $v->insert();
-                    $page->assign('envoye', true);
-                }
-                else {
-                    $page->assign('envoye', 'Validation automatique');
-                    if ($v->commit()) {
-                        $page->assign('valide', true);
-                    }
-                    else {
-                        $page->assign('valide', false);
-                    }
-                }
 
+                $v->insert();
+                $page->assign('envoye', true);
             }
             catch (Exception $e)
             {

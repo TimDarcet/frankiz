@@ -21,7 +21,7 @@
 {**************************************************************************}
 Bonjour,
 
-{$user->displayname()|smarty:nodefaults} a demandé de devenir membre du groupe {$targetGroup->label()}.
+{$user->displayname()|smarty:nodefaults} a demandé à devenir membre du groupe {$targetGroup->label()}.
 
 Pour valider ou non cette demande va sur la page suivante : 
 

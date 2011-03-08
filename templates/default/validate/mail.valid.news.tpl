@@ -19,12 +19,21 @@
 {*  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA               *}
 {*                                                                        *}
 {**************************************************************************}
-{if $valid}
+{if $valid && $valid_origin}
+Le groupe d'origine de ton annonce vient d'être confirmé. L'annonce va désormais passer pour validation au groupe destinataire.
+Si tu veux accélérer le processus la prochaine fois, demande à être passé administrateur de ton groupe.
+{if $comm != ''}
+
+{$comm|smarty:nodefaults}
+{/if}
+{elseif $valid}
 Ton annonce vient d'être validée. Tu peux la consulter à cette adresse: 
 
 {$globals->baseurl}/news/mine
+{if $comm != ''}
 
 {$comm|smarty:nodefaults}
+{/if}
 
 
 {else}
@@ -40,6 +49,10 @@ Désolé
 {/if}
 
 Cordialement,
+{if $valid_origin}
+Les administrateurs du groupe "{$origin->label()}"
+{else}
 Les administrateurs du groupe "{$targetGroup->label()}"
+{/if}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

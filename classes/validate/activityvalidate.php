@@ -31,36 +31,41 @@ class ActivityValidate extends ItemValidate
     protected $begin;
     protected $end;
 
-    public function __construct(User $writer, Caste $target, $title, $desc, $begin, $end, $origin = false) {
-        $this->writer = $writer;
-        $this->target = $target;
-        if (!is_null($origin))
-            $this->origin = $origin;
-        $this->title = $title;
-        $this->description = $desc;
-        $this->begin = $begin;
-        $this->end = $end;
+    protected $valid_origin = false;
+
+    public function __construct($datas)
+    {
+        foreach ($datas as $key => $val) {
+            if (property_exists($this, $key)) {
+                $this->$key = $val;
+            }
+        }
     }
 
-    public function objects() {
+    public function objects()
+    {
         return array('writer' => UserSelect::base(),
                      'target' => CasteSelect::validate(),
                      'origin' => GroupSelect::base());
     }
 
-    public static function label() {
+    public static function label()
+    {
         return 'Activité';
     }
 
-    public function show() {
+    public function show()
+    {
         return 'validate/form.show.activity.tpl';
     }
 
-    public function editor() {
+    public function editor()
+    {
         return 'validate/form.edit.activity.tpl';
     }
 
-    public function handle_editor() {
+    public function handle_editor()
+    {
         $this->title        = Env::t('title', '');
         $this->description  = Env::t('description', '');
         try {
@@ -74,34 +79,49 @@ class ActivityValidate extends ItemValidate
         return true;
     }
 
-    public function sendmailadmin() {
+    public function sendmailadmin()
+    {
         if ($this->writer->bestEmail() === null)
             $this->writer->select(UserSelect::base());
         
         $mail = new FrankizMailer('validate/mail.admin.activity.tpl');
+        $mail->assign('valid_origin', $this->valid_origin);
         $mail->assign('user', $this->writer);
         $mail->assign('title', $this->title);
         $mail->assign('targetGroup', $this->target->group());
 
-        $mail->subject("[Frankiz] Validation d'une activité");
+        if ($this->valid_origin) {
+            $mail->assign('origin', $this->origin);
+            $mail->subject("[Frankiz] Validation d'un groupe d'origine");
+        }
+        else {
+            $mail->subject("[Frankiz] Validation d'une activité");
+        }
+
         $mail->SetFrom($this->writer->bestEmail(), $this->writer->displayName());
         $mail->AddAddress($this->_mail_from_addr(), $this->_mail_from_disp());
         $mail->Send(false);
     }
 
-    public function sendmailfinal($isok) {
+    public function sendmailfinal($isok)
+    {
         if ($this->writer->bestEmail() === null)
             $this->writer->select(UserSelect::base());
 
         $mail = new FrankizMailer('validate/mail.valid.activity.tpl');
         $mail->assign('isok', $isok);
+        $mail->assign('valid_origin', $this->valid_origin);
         $mail->assign('comm', Env::v('ans', ''));
         $mail->assign('targetGroup', $this->target->group());
+        $mail->assign('origin', $this->origin);
 
-        if ($isok)
+        if ($isok && !$this->valid_origin) {
             $mail->Subject = '[Frankiz] Ton activité a été validée';
-        else
+        } elseif ($isok){
+            $mail->Subject = '[Frankiz] Le groupe d\'origine de ton activité a été validé';
+        } else {
             $mail->Subject = '[Frankiz] Ton activité a été refusée';
+        }
 
         $mail->SetFrom($this->_mail_from_addr(), $this->_mail_from_disp());
         $mail->AddAddress($this->writer->bestEmail(), $this->writer->displayName());
@@ -111,31 +131,59 @@ class ActivityValidate extends ItemValidate
 
     public function _mail_from_disp()
     {
-        return 'Frankiz - ' . $this->target->group()->label() . '';
+        if ($this->valid_origin) {
+            return 'Frankiz - ' . $this->origin->label() . '';
+        }
+        else {
+            return 'Frankiz - ' . $this->target->group()->label() . '';
+        }
     }
 
     public function _mail_from_addr()
     {
         global $globals;
 
-        return $this->target->group()->name() .'@' . $globals->mails->group_suffix;
+        if ($this->valid_origin) {
+            return $this->origin->name() .'@' . $globals->mails->group_suffix;
+        }
+        else {
+            return $this->target->group()->name() .'@' . $globals->mails->group_suffix;
+        }
     }
 
     public function commit() {
-        $a = new Activity(array(
+        if ($this->valid_origin) {
+            $av = new ActivityValidate(array(
+                'writer'        => $this->writer,
                 'target'        => $this->target,
-                'origin'        => $this->origin,
                 'title'         => $this->title,
                 'description'   => $this->description,
-                'days'          => ''));
-        $a->insert();
-        $ai = new ActivityInstance(array(
-                'activity'      => $a,
-                'writer'        => $this->writer,
-                'comment'       => '',
                 'begin'         => $this->begin,
-                'end'           => $this->end));
-        $ai->insert();
+                'end'           => $this->end,
+                'origin'        => $this->origin));
+            $v = new Validate(array(
+                'writer'    => $this->writer,
+                'group'     => $this->target->group(),
+                'item'      => $av,
+                'type'      => 'activity'));
+            $v->insert();
+        }
+        else {
+            $a = new Activity(array(
+                    'target'        => $this->target,
+                    'origin'        => $this->origin,
+                    'title'         => $this->title,
+                    'description'   => $this->description,
+                    'days'          => ''));
+            $a->insert();
+            $ai = new ActivityInstance(array(
+                    'activity'      => $a,
+                    'writer'        => $this->writer,
+                    'comment'       => '',
+                    'begin'         => $this->begin,
+                    'end'           => $this->end));
+            $ai->insert();
+        }
         return true;
     }
 

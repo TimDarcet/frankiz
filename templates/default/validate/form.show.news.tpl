@@ -20,6 +20,18 @@
 {*                                                                        *}
 {**************************************************************************}
 
+{if $item->valid_origin()}
+<tr>
+    <td width=20%>
+        Commentaire :
+    </td>
+    <td>
+        {$item->writer()|user:'text'} a demandé à ce que son annonce soit au nom de ce groupe.
+        Une fois validée, cette annonce sera soumise à validation du groupe destinataire.
+    </td>
+</tr>
+{/if}
+
 <tr>
     <td width=20%>
         Commentaire :

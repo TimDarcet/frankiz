@@ -19,10 +19,20 @@
 {*  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA               *}
 {*                                                                        *}
 {**************************************************************************}
+{if $isok && $valid_origin}
+Le groupe d'origine de ton activité vient d'être confirmé. L'activité va désormais passer pour validation au groupe destinataire.
+Si tu veux accélérer le processus la prochaine fois, demande à être passé administrateur de ton groupe.
+{if $comm != ''}
 
-{if $isok}
-Ton activité vient d'être validée. Elle est dès à present visible.
 {$comm|smarty:nodefaults}
+{/if}
+
+{elseif $isok}
+Ton activité vient d'être validée. Elle est dès à present visible.
+{if $comm != ''}
+
+{$comm|smarty:nodefaults}
+{/if}
 
 
 Merci de ta participation
@@ -35,6 +45,10 @@ Désolé
 {/if}
 
 Cordialement,
+{if $valid_origin}
+Les administrateurs du groupe "{$origin->label()}"
+{else}
 Les administrateurs du groupe "{$targetGroup->label()}"
+{/if}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

@@ -41,8 +41,10 @@
                     <td>
                         {foreach from=$next_dates item=day}
                             <span class="margin_right">
-                                <input type="checkbox" name="{$day}_regular_proposal"/>
-                                {$day}
+                                <label>
+                                    <input type="checkbox" name="{$day}_regular_proposal"/>
+                                    {$day}
+                                </label>
                             </span>
                         {/foreach}
                     </td>

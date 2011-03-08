@@ -21,13 +21,13 @@
 {**************************************************************************}
 
 {if $isOk}
-Ta demande de devenir membre du groupe {$targetGroup->label()} vient d'être acceptée.
+Ta demande de membre du groupe {$targetGroup->label()} vient d'être acceptée.
 {if isset($comm|smarty:nodefaults)}
 
 {$comm|smarty:nodefaults}
 {/if}
 {else}
-Ta demande de devenir membre du groupe {$targetGroup->label()} vient d'être refusée :
+Ta demande de membre du groupe {$targetGroup->label()} vient d'être refusée :
 {$comm|smarty:nodefaults}
 {/if}
 

@@ -20,7 +20,17 @@
 {*                                                                        *}
 {**************************************************************************}
 Bonjour,
+{if $valid_origin}
+{$user->displayname()|smarty:nodefaults} a demandé à ce que son activité "{$title|smarty:nodefaults}" soit au nom du groupe :
+{$origin->label()}
 
+Pour valider ou non cette demande va sur la page suivante :
+
+{$globals->baseurl}/admin/validate/{$origin->name()}
+
+Tu reçois ce mail, car tu es un administrateur du groupe "{$origin->label()}".
+Si tu veux que cette personne puisse écrire directement des activités au nom du groupe ou qu'elle puisse créer des activités régulières pour ton groupe, donne lui les droits d'administrateur.
+{else}
 {$user->displayname()|smarty:nodefaults} a demandé la validation d'une activité :
 {$title|smarty:nodefaults}
 
@@ -29,6 +39,7 @@ Pour valider ou non cette demande va sur la page suivante :
 {$globals->baseurl}/admin/validate/{$targetGroup->name()}
 
 Tu reçois ce mail, car tu es un administrateur du groupe "{$targetGroup->label()}"
+{/if}
 
 
 Cordialement,

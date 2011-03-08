@@ -20,15 +20,26 @@
 {*                                                                        *}
 {**************************************************************************}
 Bonjour,
+{if $valid_origin}
+{$user->displayname()|smarty:nodefaults} a demandé à ce que son annonce "{$title|smarty:nodefaults}" soit au nom du groupe :
+{$origin->label()}
 
-{$user->displayname()|smarty:nodefaults} a demandé la validation d'une annonce : 
+Pour valider ou non cette demande va sur la page suivante :
+
+{$globals->baseurl}/admin/validate/{$origin->name()}
+
+Tu reçois ce mail, car tu es un administrateur du groupe "{$origin->label()}".
+Si tu veux que cette personne puisse écrire directement des annonces au nom du groupe, donne lui les droits d'administrateur.
+{else}
+{$user->displayname()|smarty:nodefaults} a demandé la validation d'une annonce :
 {$title|smarty:nodefaults}
 
-Pour valider ou non cette demande va sur la page suivante : 
+Pour valider ou non cette demande va sur la page suivante :
 
 {$globals->baseurl}/admin/validate/{$targetGroup->name()}
 
 Tu reçois ce mail, car tu es un administrateur du groupe "{$targetGroup->label()}"
+{/if}
 
 
 Cordialement,
