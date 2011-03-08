@@ -21,12 +21,21 @@
 {**************************************************************************}
 
 <div class="origin_picker" id="origin_picker_{$id}">
-    {origin_picker out='origins'}
+    {origin_picker out='origins' not_only_admin=$not_only_admin}
     <select id={$id} name={$id} >
         <option value="false" selected="selected">En mon nom propre</option>
-        {foreach from=$origins item='group'}
-            <option value="{$group->id()}">{$group->label()}</option>
-        {/foreach}
+        <optgroup label="Sans validation">
+            {foreach from=$origins item='group'}
+                <option value="{$group->id()}">{$group->label()}</option>
+            {/foreach}
+        </optgroup>
+        {if $not_only_admin}
+            <optgroup label="Avec validation">
+                {foreach from=$not_admin item='group'}
+                    <option value="{$group->id()}">{$group->label()}</option>
+                {/foreach}
+            </optgroup>
+        {/if}
     </select>
 </div>
 

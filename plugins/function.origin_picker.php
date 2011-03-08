@@ -23,7 +23,25 @@ function smarty_function_origin_picker($params, &$smarty) {
     $gf = new GroupFilter(new PFC_And(new PFC_Not(new GFC_Namespace(Group::NS_USER)),
                                       new GFC_User(S::user(), Rights::admin())),
                           new GFO_Score());
-    $gs = $gf->get()->select(GroupSelect::base());
+    $gs = $gf->get();
+
+    if ($params['not_only_admin']) {
+        $gfo = new GroupFilter(
+            new PFC_And(
+                new GFC_Namespace(array(Group::NS_BINET, Group::NS_FREE)),
+                new GFC_User(S::user(), Rights::restricted())),
+            new GFO_Score());
+        $gso = $gfo->get()->diff($gs);
+        
+        $temp = new Collection();
+        $temp->merge($gs)->merge($gso);
+        $temp->select(GroupSelect::base());
+
+        $smarty->assign('not_admin', $gso);
+    }
+    else {
+        $gs = $gf->get()->select(GroupSelect::base());
+    }
 
     $smarty->assign($params['out'], $gs);
 }
