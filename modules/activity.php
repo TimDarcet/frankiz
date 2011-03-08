@@ -27,6 +27,7 @@ class ActivityModule extends PLModule
             'activity'                      => $this->make_hook('activity',             AUTH_PUBLIC),
             'activity/timetable'            => $this->make_hook('timetable',            AUTH_PUBLIC),
             "activity/rss"                  => $this->make_hook("rss",                  AUTH_PUBLIC, "user", NO_HTTPS),
+            "activity/icalendar"            => $this->make_hook("icalendar",            AUTH_PUBLIC),
             'activity/admin'                => $this->make_hook('admin',                AUTH_COOKIE),
             'activity/modify'               => $this->make_hook('modify',               AUTH_COOKIE),
             'activity/regular/new'          => $this->make_hook('new_regular',          AUTH_COOKIE),
@@ -102,6 +103,40 @@ class ActivityModule extends PLModule
     {
         $feed = new ActivityFeed();
         return $feed->run($page, $user, $hash);
+    }
+
+    function handler_icalendar($page, $type = 'friends', $user = null, $hash = null)
+    {
+        $uf = new UserFilter(new UFC_Hruid($user));
+        $user = $uf->get(true);
+        if (!$user) {
+            return PL_FORBIDDEN;
+        }
+        $user->select(UserSelect::base());
+        if ($user->hash_rss() != $hash) {
+            return PL_FORBIDDEN;
+        }
+
+        if ($type == 'participate') {
+            $activities = new ActivityInstanceFilter(
+                new PFC_AND(new AIFC_Participants (S::user()),
+                            new AIFC_END(new FrankizDateTime(), AIFC_End::AFTER)));
+        }
+        else {
+            $activities = new ActivityInstanceFilter(
+                new PFC_Or (new PFC_And(new AIFC_END(new FrankizDateTime(), AIFC_End::AFTER),
+                                        new AIFC_User($user, 'restricted')),
+                            new PFC_And(new AIFC_END(new FrankizDateTime(), AIFC_End::AFTER),
+                                        new AIFC_User($user, 'everybody'))));
+        }
+
+        $c = $activities->get();
+        $c->select(ActivityInstanceSelect::all());
+
+        $page->assign('view', $type);
+        $page->assign('activities', $c);
+        $page->changeTpl('activity/icalendar.tpl', NO_SKIN);
+        pl_content_headers("text/calendar");
     }
 
     function handler_admin($page)

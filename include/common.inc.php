@@ -75,6 +75,11 @@ function __autoload($cls)
             return;
         }
 
+        if (substr($cls, -4) == 'feed') {
+            pl_autoload($cls, array('classes/feed'));
+            return;
+        }
+
         // Handle the rest
         if (file_exists($globals->spoolroot . "/include/$cls.inc.php")) {
             require_once $globals->spoolroot . "/include/$cls.inc.php";
