@@ -21,6 +21,9 @@
 {**************************************************************************}
 
 <div class="origin_picker" id="origin_picker_{$id}">
+    {if $not_only_admin}
+        {include file="wiki.tpl"|rel name='origin_picker'}
+    {/if}
     {origin_picker out='origins' not_only_admin=$not_only_admin}
     <select id={$id} name={$id} >
         <option value="false" selected="selected">En mon nom propre</option>

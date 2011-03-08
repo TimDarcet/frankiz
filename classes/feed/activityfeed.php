@@ -26,7 +26,7 @@ class ActivityFeed extends FrankizFeed
         global $globals;
         parent::__construct('Frankiz : Activités',
                             $globals->baseurl ,
-                            'Frankiz : le serveur des élèves de l\'École Polytechnique',
+                            'Frankiz : le serveur des élèves de l\'École polytechnique',
                             $globals->baseurl . '/css/' . FrankizPage::getCssPath('images/home_logo.png'),
                             FrankizPage::getTplPath('activity/rss.tpl'));
     }
@@ -37,9 +37,9 @@ class ActivityFeed extends FrankizFeed
 
         $activities = new ActivityInstanceFilter(
             new PFC_Or (new PFC_And(new AIFC_END(new FrankizDateTime(), AIFC_End::AFTER),
-                                    new AIFC_User(S::user(), 'restricted')),
+                                    new AIFC_User($user, 'restricted')),
                         new PFC_And(new AIFC_END(new FrankizDateTime(), AIFC_End::AFTER),
-                                    new AIFC_User(S::user(), 'everybody'))));
+                                    new AIFC_User($user, 'everybody'))));
 
         $activities = $activities->get();
         $activities->select(ActivityInstanceSelect::base());
@@ -51,7 +51,7 @@ class ActivityFeed extends FrankizFeed
             $e['title'] = '[' . $item->target_group()->label() . '] ' . $item->title();
             $e['activity'] = $item;
             $e['publication'] = $item->begin()->format();
-            $auth = ($item->origin()!=false)?:'[' . $item->origin() . '] ';
+            $auth = ($item->origin()!=false)?'[' . $item->origin() . '] ':'';
             $e['author'] = $auth . $item->writer()->displayName();
             $e['link'] = $globals->baseurl . '/activity';
             $data[] = $e;

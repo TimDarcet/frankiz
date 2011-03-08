@@ -41,13 +41,12 @@
         </div>
 
     {else}
-        {if $success}
-            <p>
-                Tes flux d'exportation sont activés
-            </p>
-        {/if}
-        
         <div class="body">
+            {if $success}
+                <p>
+                    Tes flux d'exportation sont activés
+                </p>
+            {/if}
             Voici les adresses des flux :
             <ul>
                 <li>

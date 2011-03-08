@@ -26,7 +26,7 @@ class NewsFeed extends FrankizFeed
         global $globals;
         parent::__construct('Frankiz : Annonces',
                             $globals->baseurl ,
-                            'Frankiz : le serveur des élèves de l\'École Polytechnique',
+                            'Frankiz : le serveur des élèves de l\'École polytechnique',
                             $globals->baseurl . '/css/' . FrankizPage::getCssPath('images/home_logo.png'),
                             FrankizPage::getTplPath('news/rss.tpl'));
     }
@@ -36,7 +36,7 @@ class NewsFeed extends FrankizFeed
         global $globals;
 
         $nf = new NewsFilter(new PFC_And(new NFC_Current(),
-                                         new NFC_Target(S::user()->targetCastes())),
+                                         new NFC_Target($user->targetCastes())),
                              new NFO_Begin(true));
 
         $all_news = $nf->get();

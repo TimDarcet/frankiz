@@ -37,7 +37,11 @@ Ton annonce vient d'être validée. Tu peux la consulter à cette adresse:
 
 
 {else}
+{if $valid_origin}
+L'administrateur du groupe au nom duquel tu voulais publier ton annonce l'a refusée pour la raison suivante :
+{else}
 Ton annonce n'a pas été validée pour la raison suivante :
+{/if}
 {$comm|smarty:nodefaults}
 
 

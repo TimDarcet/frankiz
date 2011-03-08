@@ -95,7 +95,7 @@ abstract class FrankizFeed implements PlIterator
         if (!$user) {
             return PL_FORBIDDEN;
         }
-        $user->select(UserSelect::base());
+        $user->select(UserSelect::feed());
         if ($user->hash_rss() != $token) {
             return PL_FORBIDDEN;
         }

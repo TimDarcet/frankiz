@@ -37,7 +37,11 @@ Ton activité vient d'être validée. Elle est dès à present visible.
 
 Merci de ta participation
 {else}
+{if $valid_origin}
+L'administrateur du groupe au nom duquel tu voulais publier ton activité l'a refusée pour la raison suivante :
+{else}
 Ton activité n'a pas été validée pour la raison suivante :
+{/if}
 {$comm|smarty:nodefaults}
 
 
