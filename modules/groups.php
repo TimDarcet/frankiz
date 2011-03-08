@@ -168,6 +168,7 @@ class GroupsModule extends PLModule
                 // Relation between the user & the group
                 $page->assign('user', S::user());
 
+                $page->assign('member_allowed', $group->caste(Rights::member())->userfilter());
                 $page->assign('title', $group->label());
                 $page->changeTpl('groups/group.tpl');
             } else {
@@ -494,6 +495,10 @@ class GroupsModule extends PLModule
             }
             elseif ($right == 'member') {
                 $group->select(GroupSelect::subscribe());
+
+                if ($group->caste(Rights::member())->userfilter()) {
+                    throw new Exception('You can\'t apply to this group');
+                }
 
                 $iv = new MemberValidate(S::user(), $group);
                 $v = new Validate(array(

@@ -59,12 +59,12 @@ class GFC_Namespace extends GroupFilterCondition
 
     public function __construct($ns)
     {
-        $this->ns = $ns;
+        $this->ns = unflatten($ns);
     }
 
     public function buildCondition(PlFilter $uf)
     {
-        return XDB::format('g.ns = {?}', $this->ns);
+        return XDB::format('g.ns IN {?}', $this->ns);
     }
 }
 
