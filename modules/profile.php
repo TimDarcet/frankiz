@@ -32,7 +32,7 @@ class ProfileModule extends PLModule
                      'profile/skin'                    => $this->make_hook('skin',                    AUTH_PUBLIC),
                      'profile/skin/unsmartphone'       => $this->make_hook('skin_unsmartphone',       AUTH_PUBLIC),
                      'profile/skin/resmartphone'       => $this->make_hook('skin_resmartphone',       AUTH_PUBLIC),
-                     'profile/rss'                     => $this->make_hook('rss',                     AUTH_COOKIE),
+                     'profile/feed'                    => $this->make_hook('feed',                    AUTH_COOKIE),
                      'profile/rss/update'              => $this->make_hook('rss_update',              AUTH_COOKIE),
                      'profile/rss/add'                 => $this->make_hook('rss_add',                 AUTH_COOKIE),
                      'profile/minimodules'             => $this->make_hook('minimodules',             AUTH_COOKIE),
@@ -274,18 +274,23 @@ class ProfileModule extends PLModule
         }
     }
 
-    function handler_rss($page)
+    function handler_feed($page)
     {
-        if (Env::v('act_rss') == 'Activer') {
+        if (Env::has('act_rss')) {
             $hash_rss = rand_url_id(16);
             S::user()->hash_rss($hash_rss);
             $page->assign('success', true);
         }
 
+        if (Env::has('des_rss')) {
+            S::user()->hash_rss('');
+            $page->assign('desactivated', true);
+        }
+
         $page->assign('user', S::user());
-        $page->assign('title', 'Flux RSS');
+        $page->assign('title', 'Flux');
         $page->addCssLink('profile.css');
-        $page->changeTpl('profile/filrss.tpl');
+        $page->changeTpl('profile/feed.tpl');
     }
 
     function handler_minimodules($page)

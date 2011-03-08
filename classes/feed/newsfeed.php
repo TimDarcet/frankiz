@@ -35,24 +35,21 @@ class NewsFeed extends FrankizFeed
     {
         global $globals;
 
-        $all_news = new NewsFilter(
-            new PFC_Or( new PFC_And(new NFC_Current(),
-                                    new NFC_User($user)),
-                        new PFC_And(new NFC_Current(),
-                                    new PFC_And(new NFC_User($user, 'friend'),
-                                                new NFC_Private(false)))));
+        $nf = new NewsFilter(new PFC_And(new NFC_Current(),
+                                         new NFC_Target(S::user()->targetCastes())),
+                             new NFO_Begin(true));
 
-        $all_news = $all_news->get();
-        $all_news->select();
+        $all_news = $nf->get();
+        $all_news->select(NewsSelect::news());
         $data = array();
         foreach ($all_news as $item)
         {
             $e = array();
             $e['id'] = $item->id();
-            $e['title'] = '[' . $item->target()->label() . '] ' . $item->title();
+            $e['title'] = '[' . $item->target()->group()->label() . '] ' . $item->title();
             $e['news'] = $item;
             $e['publication'] = $item->begin()->format();
-            $auth = (is_null($item->origin()))?:'[' . $item->origin() . '] ';
+            $auth = ($item->origin() != false)?'[' . $item->origin()->label() . '] ':'';
             $e['author'] = $auth .$item->writer()->displayName();
             $e['link'] = $globals->baseurl . '/news';
             $data[] = $e;

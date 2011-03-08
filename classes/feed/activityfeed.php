@@ -42,7 +42,7 @@ class ActivityFeed extends FrankizFeed
                                     new AIFC_User(S::user(), 'everybody'))));
 
         $activities = $activities->get();
-        $activities->select();
+        $activities->select(ActivityInstanceSelect::base());
         $data = array();
         foreach ($activities as $item)
         {
@@ -51,7 +51,7 @@ class ActivityFeed extends FrankizFeed
             $e['title'] = '[' . $item->target_group()->label() . '] ' . $item->title();
             $e['activity'] = $item;
             $e['publication'] = $item->begin()->format();
-            $auth = (is_null($item->origin()))?:'[' . $item->origin() . '] ';
+            $auth = ($item->origin()!=false)?:'[' . $item->origin() . '] ';
             $e['author'] = $auth . $item->writer()->displayName();
             $e['link'] = $globals->baseurl . '/activity';
             $data[] = $e;

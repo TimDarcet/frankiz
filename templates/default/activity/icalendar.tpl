@@ -19,48 +19,25 @@
 {*  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA               *}
 {*                                                                        *}
 {**************************************************************************}
-
-{if !$user->hash_rss()}
-
-    <div class="rss">
-        Tu viens de cliquer sur le lien d'activation des fils RSS.
-        Les fils RSS du site ne sont pas activés dans tes préférences. <br/>
-        <p>Tu peux le faire tout de suite en cliquant sur Activer.</p>
-
-        <form enctype='multipart/form-data' method='post' action='profile'>
-            <input type="submit" value="Retour" />
-            <input type="submit" name="act_rss" value="Activer" onclick="this.form.action='profile/rss'" />
-        </form>
-    </div>
-    
+BEGIN:VCALENDAR
+{display_ical name="prodid" value="-//activities-$view.frankiz.net//Plat-al//FR"}
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+{display_ical name="x-wr-calname" value="Calendrier Frankiz"}
+X-WR-TIMEZONE:Europe/Paris
+{foreach from=$activities item=activity}
+BEGIN:VEVENT
+UID:activity-{$view}-{$activity->id()}@frankiz.net
+DTSTART:{$activity->begin()|datetime:'Ymd'}T{$activity->begin()|datetime:'Hi00'}
+DTEND:{$activity->end()|datetime:'Ymd'}T{$activity->end()|datetime:'Hi00'}
+{display_ical name="summary" value=$activity->title()}
+{if $activity->participate()}
+STATUS:CONFIRMED
 {else}
-    {if $success}
-        <div class="msg">
-            Ton fil RSS est activé
-        </div>
-    {/if}
-    <div class="rss">
-        Voici les adresses du flux RSS :
-        <ul>
-            <li>
-                Annonces :
-                <a href="news/rss/{$user->login()}/{$user->hash_rss()}/rss.xml" class="feed">&nbsp;</a>
-            </li>
-            <li>
-                Activités :
-                <a href="activity/rss/{$user->login()}/{$user->hash_rss()}/rss.xml" class="feed">&nbsp;</a>
-            </li>
-        </ul>
-        <p>
-            Tu peux le désactiver en allant dans Préférences et en cliquant sur « désactiver les fils RSS ».
-        </p>
-        <p>
-            Attention : désactiver, puis réactiver le fil RSS en change l'adresse.
-        </p>
-        <p>
-            [<a href="profile">retour à la page du compte</a>]
-        </p>
-    </div>
+STATUS:TENTATIVE
 {/if}
-
-{* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
+{assign var=essai value=$activity->description()|miniwiki:'title':'text'|smarty:nodefaults}
+{display_ical name="description" value=$essai}
+END:VEVENT
+{/foreach}
+END:VCALENDAR{* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
