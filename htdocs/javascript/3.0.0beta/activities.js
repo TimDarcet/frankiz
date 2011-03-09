@@ -1,4 +1,17 @@
 $(document).ready(function() {
+    jQuery.fn.extend({
+        findPos : function() {
+            obj = jQuery(this).get(0);
+            var curtop = obj.offsetTop || 0;
+            while (obj = obj.offsetParent) {
+                curtop += obj.offsetTop
+            }
+            return curtop;
+        }
+    });
+
+    h = $('#activity_show').height();
+
     $('.hide').hide();
     if ($("#activity_show").html() == '\n')
         $("#activity_show").hide();
@@ -24,6 +37,7 @@ $(document).ready(function() {
     });
 
     $('#activities_list').delegate('.day .activity', 'hover', function(){
+        h_call = $(this).findPos();
         load(new Array($(this).attr('aid')), true);
     });
 
@@ -34,6 +48,8 @@ $(document).ready(function() {
     load(temp, false);
 });
 
+var h;
+var h_call;
 
 // To load the list of activities on the page activity
 
@@ -88,6 +104,9 @@ function load(ids, all)
 
 function show(id)
 {
+    if ($('#get_place').length != 0) {
+        $('#get_place').height(Math.max(0, h_call-h-100));
+    }
     $("#activity_show .body .msg").html('');
     $("#activity_show .body .msg").hide();
     if (typeof results[id].origin != "undefined") {

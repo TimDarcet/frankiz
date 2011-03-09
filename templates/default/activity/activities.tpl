@@ -21,7 +21,7 @@
 {**************************************************************************}
 
 <div class="activity_right">
-    <div class="top">
+    <div class="top" id="top_prop">
         <a href="proposal/activity">
             <span class="new_element"></span>
                 Proposer une activité
@@ -29,7 +29,7 @@
     </div>
 
 
-    <div class="top">
+    <div class="top" id="top_view">
         <a onclick="change_view('participate')" class="{if $view == 'participate'}current{/if}">
             <span class="alone"></span>
             Activités auxquelles je participe
@@ -45,6 +45,8 @@
             Toutes les activités
         </a>
     </div>
+
+    <div id="get_place"></div>
 
     <div class="module" id="activity_show" style="display:none;">
         <div class="head">

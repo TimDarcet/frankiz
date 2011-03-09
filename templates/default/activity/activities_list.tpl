@@ -54,7 +54,7 @@
                         {$writer|user}
                     {/if}
 
-                    <a href="activity/timetable/{$visibility}/{$activity->id()}">
+                    <a href="activity/timetable/{$view}/{$activity->id()}">
                         <b> {$activity->title()} </b>
                     </a>
                 </div>

@@ -214,6 +214,10 @@ class UserSelect extends Select
         return new UserSelect(array('castes'), array('castes' => CasteSelect::group()));
     }
 
+    public static function feed() {
+        return new UserSelect(array_merge(self::$natives, array('castes')), array('castes' => CasteSelect::group()));
+    }
+
     public static function login() {
         $cb = function($users) {
             $web = Group::from('webmasters');
