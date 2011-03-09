@@ -1039,7 +1039,7 @@
                         }
                         if (!bs && j == (sc - 1) && z[h] < y[h]) {
                             el++;
-                            $.extend(tempdata, { "axis": h, ch: "more", "abbr": dateFormat.call(cday[h], i18n.xgcalendar.dateformat.fulldayvalue), html: i18n.xgcalendar.others + (y[h] - z[h]) + i18n.xgcalendar.item, click: "javascript:alert('more event');" });
+                            $.extend(tempdata, { "axis": h, ch: "more", "abbr": dateFormat.call(cday[h], i18n.xgcalendar.dateformat.fulldayvalue), html: "+" + (y[h] - z[h]) + i18n.xgcalendar.item, click: "javascript:alert('more event');" });
                             tempCss.push("st-more st-moreul");
                             h++;
                         }
@@ -1063,7 +1063,7 @@
                     }
                     else {
                         if (j == (sc - 1) && z[h] < y[h] && y[h] > 0) {
-                            $.extend(tempdata, { "axis": h, ch: "more", "abbr": dateFormat.call(cday[h], i18n.xgcalendar.dateformat.fulldayvalue), html: i18n.xgcalendar.others + (y[h] - z[h]) + i18n.xgcalendar.item, click: "javascript:alert('more event');" });
+                            $.extend(tempdata, { "axis": h, ch: "more", "abbr": dateFormat.call(cday[h], i18n.xgcalendar.dateformat.fulldayvalue), html: "+" + (y[h] - z[h]) + i18n.xgcalendar.item, click: "javascript:alert('more event');" });
                             tempCss.push("st-more st-moreul");
                             h++;
                         }
