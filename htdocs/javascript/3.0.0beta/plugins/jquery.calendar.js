@@ -1632,6 +1632,7 @@
 
         function moreshow(mv) {
             var me = $(this);
+            console.log(me);
             var divIndex = mv.id.split('_')[1];
             var pdiv = $(mv);
             var offsetMe = me.position();
@@ -1642,11 +1643,11 @@
 
             var daystr = this.abbr;
             var arrdays = daystr.split('/');
-            var day = new Date(arrdays[0], parseInt(arrdays[1] - 1), arrdays[2]);
+            var day = new Date(daystr);
             var cc = $("#cal-month-cc");
             var ccontent = $("#cal-month-cc-content table tbody");
             var ctitle = $("#cal-month-cc-title");
-            ctitle.html(dateFormat.call(day, i18n.xgcalendar.dateformat.Md3) + " " + __WDAY[day.getDay()]);
+            ctitle.html(__WDAY[day.getDay()] + " " + dateFormat.call(day, i18n.xgcalendar.dateformat.Md3));
             ccontent.empty();
             //var c = tc()[2];
             var edata = $("#gridEvent").data("mvdata");
