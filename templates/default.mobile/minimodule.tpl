@@ -20,17 +20,4 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<li name="{$minimodule->name()}" class="minimodule" id="minimodule_{$minimodule->name()}">
-    <div class="head">
-        <span id="{$minimodule->name()}_logo"></span>
-        {$minimodule->title()}
-    </div>
-    <div class="body">
-        {include file=$minimodule->template()|rel minimodule=$minimodule->tplVars()}
-    </div>
-</li>
-{if ($minimodule->js())}
-    <script>includeAndRun("{$minimodule->name()}", "{$minimodule->js()}")</script>
-{/if}
-
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

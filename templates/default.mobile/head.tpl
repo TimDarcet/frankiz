@@ -24,4 +24,7 @@
 <link type="text/css" href="css/{"jquery-ui.css"|rel}" rel="stylesheet" />
 <link rel="apple-touch-icon" href="http://dev.frankiz.net/~qt/css/default.mobile/images/icone-iphone.png" />
 <meta name="viewport" content="width=device-width,user-scalable=no;" />
+
+{js src="jquery.fancybox.js"}
+
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

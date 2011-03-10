@@ -21,26 +21,29 @@
 {**************************************************************************}
 
 <div id="nav-bar">
-    <a id="nav-open-menu" class="nav-left">Menu</a>
+    <a class="nav-left" {path_to_href_attribute path="home"}>Home</a>
+    {*<a id="nav-open-menu" class="nav-left">Menu</a>*}
     {$title}    
     {if $smarty.session.auth < AUTH_COOKIE }
     <a class="nav-right" {path_to_href_attribute path="login"}>Login</a>
     {else}
-    <a class="nav-right" {path_to_href_attribute path="home"}>Home</a>
+    <a class="nav-right" {path_to_href_attribute path="exit"} nosolo="true">Logout</a>
     {/if}
-
-
 </div>
-
+{*
 <ul id="nav-menu">
     <li>{include file="tol/quicksearch.tpl"|rel}</li>
+    <li><a class="nav-right" {path_to_href_attribute path="home"}>Home</a>
     <li><a {path_to_href_attribute path="tol"}>TOL advanced</a></li>
-    <li><a {path_to_href_attribute path="news"}>News</a></li>
+    <li><a {path_to_href_attribute path="news"}>Annonces</a></li>
+    <li><a {path_to_href_attribute path="activity"}>Activités</a></li>
+    <li><a {path_to_href_attribute path="groups"}>Groupes & Binets</a></li>
+
     {if $smarty.session.auth >= AUTH_COOKIE }
     <li><a {path_to_href_attribute path="exit"} nosolo="true">Logout</a></li>
     {/if}
-
 </ul>
+*}
 
 {literal}
 <script>

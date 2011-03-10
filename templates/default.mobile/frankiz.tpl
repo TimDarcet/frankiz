@@ -28,7 +28,7 @@
   {include file="head.tpl"|rel}
 </head>
 
-<body class="{if ($MiniModules_COL_FLOAT|@count) == 0}disabledAside{else}enabledAside{/if}">
+<body>
 
   <div id="header">
     {include file="header.tpl"|rel}

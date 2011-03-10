@@ -19,36 +19,74 @@
 {*  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA               *}
 {*                                                                        *}
 {**************************************************************************}
-<div class="result">
+{assign var='castes' value=$result->castes()}
+{assign var='groups' value=$castes->groups()}
+{assign var='photo' value=$result->photo()}
+{assign var='original' value=$result->original()}
+
+<div class="result sheet">
     <a href="#" class="more-button">+</a>
     <div class="infos">
-        {$result->firstname()} {$result->lastname()}
+        {assign var='photo' value=$result->photo()}
+        {assign var='original' value=$result->original()}
+        <span class="img" photo="{if $photo}{$photo|image:'full'|smarty:nodefaults}{/if}"
+                         original="{if $original}{$original|image:'full'|smarty:nodefaults}{/if}">
+            {assign var='img' value=$result->image()}
+            <a ><img src="{$img|image:'micro'|smarty:nodefaults}" /></a>
+        </span>
+        
+        <b>{$result->firstname()} {$result->lastname()}</b>
         {if $result->nickname()}
-            ({$result->nickname()})
+        ({$result->nickname()})
         {/if}
+        <div style="clear:left"></div>
+        {foreach from=$result->rooms() item='room'}
+            {$room->id()}
+        {/foreach}
+        {foreach from=$groups|filter:'ns':'sport'|order:'score' item='group'}{$group->label()} {/foreach}
+        {foreach from=$result->studies() item='study'}{$study->promo()}{/foreach}
+        <br>
+        Tel&nbsp;:
+        {if $room->phone()}{$room->phone()}{/if}
         {if $result->cellphone()}
-            <br />{$result->cellphone()}
+        &nbsp;-&nbsp;{$result->cellphone()}
         {/if}
     </div>
 
     <div class="more">
-        {assign var='img' value=$result->image()}
-        <a class="photo" href="{$img->src(2)|smarty:nodefaults}" src="{$img->src()|smarty:nodefaults}"></a>
-        <div class="associations">
-            Groupes :
-            <ul class="group-list">
-                {assign var='castes' value=$result->castes()}
-                {assign var='groups' value=$castes->groups()}
-
-                {foreach from=$groups|order:'score' item='group'}
-                <li>
-                    <a href="groups/see/{$group->bestId()}">{$group->label()}</a>
+        {$result->birthdate()|age} ({$result->birthdate()|datetime:"d/m/Y"})
+        <br>
+        <a href="mailto:{$result->bestEmail()}">{$result->bestEmail()}</a>
+        <br>
+        {foreach from=$groups|filter:'ns':'nationality'|order:'score' item='group'}{$group|group:'text'}{/foreach}
+        
+        {if count($groups|filter:'ns':'binet') > 0}
+        <div class="binets">
+            <div class="title">Binets</div>
+            <ul>
+                {foreach from=$groups|filter:'ns':'binet'|order:'score' item='group'}
+                <li class="biglinks">
+                    {$group|group:'text'}<br><span class="comments">{$result->comments($group)}</span>
                 </li>
                 {/foreach}
             </ul>
         </div>
-        <div style="clear:both"></div>
+        {/if}
+        
+        {if count($groups|filter:'ns':'free') > 0}
+        <div class="free">
+            <div class="title">Groupes</div>
+            <ul>
+                {foreach from=$groups|filter:'ns':'free'|order:'score' item='group'}
+                <li class="biglinks">
+                    {$group|group:'text'} <span class="comments">{$result->comments($group)}</span>
+                </li>
+                {/foreach}
+            </ul>
+        </div>
+        {/if}
     </div>
+
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
