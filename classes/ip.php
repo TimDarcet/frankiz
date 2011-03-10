@@ -30,17 +30,17 @@ class IP
 
     public static function get() {
         global $globals;
-	
-	if (isset($_SERVER['REMOTE_ADDR'])) {
+
+    if (isset($_SERVER['REMOTE_ADDR'])) {
             $ip = $_SERVER['REMOTE_ADDR'];
         } else {
             $ip = '127.0.0.1';
         }
-       
+
         if ($ip === '129.104.201.51') {
             if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
                 $ipList = explode(', ', $_SERVER['HTTP_X_FORWARDED_FOR']);
-                
+
                 // This is w3c, a trusted reverse proxy
                 if (end($ipList) === '129.104.30.4') {
                     // This is a trusted remote reverse proxy
@@ -49,7 +49,7 @@ class IP
                     }
                 }
                 $forwardedIp = current($ipList);
-                
+
                 if (preg_match("/([0-9]{1,3}\.){3}[0-9]{1,3}/", $forwardedIp)) {
                     $ip = $forwardedIp;
                 }
