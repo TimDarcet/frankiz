@@ -1632,7 +1632,6 @@
 
         function moreshow(mv) {
             var me = $(this);
-            console.log(me);
             var divIndex = mv.id.split('_')[1];
             var pdiv = $(mv);
             var offsetMe = me.position();
