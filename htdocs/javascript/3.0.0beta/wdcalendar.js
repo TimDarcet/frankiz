@@ -1,11 +1,9 @@
 var wd_op = {};
 
 $(function() {
-    $('#activity_show').hide();
-    $('#activity_show .close_show').click(function() {
+    $('#activity_show .close_show').live('click', function() {
         $('#activity_show').hide();
     });
-    $('#activity_show .msg').hide();
 
     var _MH = document.documentElement.clientHeight;
     var dvH = $("#calhead").height() + 2;
@@ -137,4 +135,9 @@ $(function() {
         datestrshow();
     });
 });
+
+function change_view_cal(url) {
+    wd_op.url = 'activity/ajax/timetable/' + url;
+    $("#gridcontainer").reload();
+}
 

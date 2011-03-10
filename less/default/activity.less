@@ -39,8 +39,7 @@
 
 /* hack to override #section .module in base.less */
 #section .module#activities {
-    width: 49%;
-    display:inline-block;
+    width: 50%;
     margin-right: 0;
 
     *zoom: 1;
@@ -105,17 +104,16 @@
     background-image: url("../default/images/icons/group_add.gif");
 }
 
-#section .activity_right{
+#section .activity_right {
     margin-left: 0;
-    width: 47%;
+    width: 48%;
     float: right;
 
     .top {
         width: 85%;
         text-align: center;
         overflow: hidden;
-        background-image: url("../default/images/75p.png");
-        background-repeat: repeat;
+        .alphabackground;
         .border-radius;
         margin-right: 5%;
         margin-left: 5%;
@@ -134,7 +132,8 @@
     }
 }
 
-#section #activity_show {
+#activity_show {
+    display: none;
     .head {
         padding-left: 10px;
         padding-right: 10px;
@@ -238,12 +237,15 @@
     width: 90%;
     text-align: center;
     overflow: hidden;
-    background-image: url("../default/images/75p.png");
-    background-repeat: repeat;
+    .alphabackground;
     .border-radius;
     margin-right: 5%;
     margin-left: 5%;
     margin-bottom: 10px;
+}
+
+.close_show {
+    display: none;
 }
 
 #section #activity_show.timetable {
@@ -253,8 +255,8 @@
     left: 15%;
     top: 160px;
     width: 60%;
-    .close_show{
-        display: inline-block;
+    .close_show {
+        display: block;
         background-image: url("../default/images/icons/close-cross.png");
         background-repeat: no-repeat;
         float: right;
@@ -320,7 +322,7 @@
     input[type=submit] {
         float: right;
     }
-    
+
     input[name=delete] {
         color: red;
         font-weight: bold;

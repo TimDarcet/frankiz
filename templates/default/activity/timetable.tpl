@@ -175,82 +175,9 @@
 </div>
 
 <div id="activity_show" class="module timetable">
-    <div class="head">
-        <table><tr>
-        <td class="origin">
-        </td>
-        <td class="title">
-        </td>
-        <td class="close_show">
-        </td>
-        </tr></table>
-    </div>
-    <div class="padd body">
-        <div class="one_day">
-            <div class="date">
-            </div>
-            <div class="time">
-                de
-                <span class="hour_begin">
-                </span>
-                à
-                <span class="hour_end">
-                </span>
-            </div>
-        </div>
-        <div class="several_days">
-            <div class="begin">
-                du
-                <span class="date">
-                </span>
-                à
-                <span class="hour">
-                </span>
-            </div>
-            <div class="end">
-                au
-                <span class="date">
-                </span>
-                à
-                <span class="hour">
-                </span>
-            </div>
-        </div>
-        <div class="msg">
-        </div>
-        <div class="present">
-            <a onclick=""><span class="add_participant"></span>S'inscrire</a>
-        </div>
-        <div class="out">
-            <a onclick=""><span class="remove_participant"></span>Se désinscrire</a>
-        </div>
-        <div class="section">
-            Description :
-        </div>
-        <div class="description">
-        </div>
-        <div class="comment">
-        </div>
-        <div class="section participants_list">
-            Participants :
-            <span class="number">
-            </span>
-        </div>
-        <div class="participants">
-        </div>
-        <div class="misc">
-            <div class="mail">
-                <a href=""><div class="mail_ico"></div>Mail</a>
-            </div>
-            <div class="participants_link">
-                <a href=""><div class="group_ico"></div>Participants</a>
-            </div>
-            <div class="admin">
-                <a href=""><div class="edit"></div>Modifier</a>
-            </div>
-        </div>
-    </div>
 </div>
+
+{include file='activity/activity_template.tpl'|rel}
 
 {if isset($id|smarty:nodefaults)}
     <script>

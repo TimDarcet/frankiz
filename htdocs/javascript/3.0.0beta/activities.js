@@ -1,21 +1,6 @@
-$(document).ready(function() {
-    jQuery.fn.extend({
-        findPos : function() {
-            obj = jQuery(this).get(0);
-            var curtop = obj.offsetTop || 0;
-            while (obj = obj.offsetParent) {
-                curtop += obj.offsetTop
-            }
-            return curtop;
-        }
-    });
-
-    h = $('#activity_show').height();
-
+$(function() {
     $('.hide').hide();
-    if ($("#activity_show").html() == '\n')
-        $("#activity_show").hide();
-   
+
     $("input[name='admin_id']").change(function(){
         request({ "url": 'activity/ajax/admin'
                 ,"data": {'id': $("input[@name='admin_id']:checked").val(), 'admin': true}
@@ -25,7 +10,7 @@ $(document).ready(function() {
         });
         $("#modify_show").show();
     });
-    
+
     $("input[name='aid']").change(function(){
         request({ "url": 'activity/ajax/admin/'
                 ,"data": {'id': $("input[@name='aid']:checked").val(), 'regular': true}
@@ -36,23 +21,28 @@ $(document).ready(function() {
         $("#activity_show").show();
     });
 
-    $('#activities_list').delegate('.day .activity', 'hover', function(){
-        h_call = $(this).findPos();
-        load(new Array($(this).attr('aid')), true);
+    var $activity_show = $('#activity_show');
+    initial_top = $activity_show.position().top + 175;
+    $('#activities_list').delegate('.day .activity', 'hover', function() {
+        var top = Math.max(0, $(this).position().top - initial_top);
+        $("#activity_show").animate({top: top}, {queue: false});
+        load([ $(this).attr('aid') ], true);
     });
 
-    var temp = new Array()
+    $("#activity_show .body .present a").live('click', function() { present($(this).closest("[aid]").attr("aid")); });
+    $("#activity_show .body .out a").live('click', function() { out($(this).closest("[aid]").attr("aid")); });
+
+    var temp = [];
     $('#activities_list .day .activity').each(function(){
         temp.push($(this).attr('aid'));
     });
     load(temp, false);
 });
 
-var h;
-var h_call;
+var initial_top;
+var results = [];
 
 // To load the list of activities on the page activity
-
 function change_view(type)
 {
     request({ "url": 'activity/ajax/get/'
@@ -61,23 +51,23 @@ function change_view(type)
                 $("#activities_list").html(json.activities);
          }
     });
-    
-    var temp = new Array()
+
+    var temp = [];
     $('#activities_list .day .activity').each(function(){
         temp.push($(this).attr('aid'));
-    })
+    });
     load(temp, false);
 }
 
 function load(ids, all)
 {
-    var lo = new Array();
-    $.each(ids, function(index, id) {
-        if (!key_exists(id, results))
-        {
+    var lo = [];
+    for (var i in ids) {
+        var id = ids[i];
+        if (!key_exists(id, results)) {
             lo.push(id);
         }
-    });
+    }
 
     if (lo.length !== 0)
     {
@@ -104,97 +94,28 @@ function load(ids, all)
 
 function show(id)
 {
-    if ($('#get_place').length != 0) {
-        $('#get_place').height(Math.max(0, h_call-h-100));
-    }
-    $("#activity_show .body .msg").html('');
-    $("#activity_show .body .msg").hide();
-    if (typeof results[id].origin != "undefined") {
-        if (typeof results[id].origin.image != "undefined")
-            $("#activity_show .head .origin").html(
-                '<a href="groups/see/' + results[id].origin.name + '">' + 
-                    '<img src="' + results[id].origin.image + '" title="' + results[id].origin.label + '">' +
-                '</a>');
-        else 
-            $("#activity_show .head .origin").html(
-                '<a href="groups/see/' + results[id].origin.name + '">' + 
-                    '[' + results[id].origin.label + ']' +
-                '</a>');
-    }
-    else {
-        $("#activity_show .head .origin").html(
-            '<a href="tol/see/' + results[id].writer.login + '">' +
-                '<img src="' + results[id].writer.photo + '" title="' + results[id].writer.displayName + '">' +
-            '</a>');
-    }
-    
-    //$("#activity_show .head .target").html(results[id].target.label);
-    $("#activity_show .head .title").html(results[id].title);
+    var participants = [];
+    for (var i in results[id].participants) {
+        participants.push(results[id].participants[i].displayName);
+    };
 
-    if (!results[id].participate)
-    {
-        //var html = '<a onclick="present(' + id + ');">S\'inscrire</a>';
-        //$("#activity_show .body .participate").html(html);
-        $("#activity_show .body .present a").unbind('click');
-        $("#activity_show .body .present a").click(function() {present(id);});
-        $("#activity_show .body .present").show();
-        $("#activity_show .body .out").hide();
-    }
-    else
-    {
-        //var html = '<a onclick="out(' + id + ');">Se désinscrire</a>';
-        //$("#activity_show .body .participate").html(html);
-        $("#activity_show .body .out a").unbind('click');
-        $("#activity_show .body .out a").click(function() {out(id);});
-        $("#activity_show .body .out").show();
-        $("#activity_show .body .present").hide();
-    }
+    var assign = {};
+    assign.id     = id;
+    assign.origin = results[id].origin;
+    assign.title  = results[id].title;
+    assign.writer = results[id].writer;
+    assign.begin  = results[id].begin;
+    assign.end    = results[id].end;
+    assign.isWriter     = results[id].isWriter;
+    assign.canEdit      = results[id].canEdit;
+    assign.description  = results[id].description;
+    assign.comment      = results[id].comment;
+    assign.participate  = results[id].participate;
+    assign.participants = participants;
 
-    $("#activity_show .body .description").html(results[id].description);
-    $("#activity_show .body .comment").html(results[id].comment);
+    $("#activity_show").attr('aid', id);
+    $("#activity_show").html($("#activity_template").tmpl(assign));
 
-    if (results[id].begin.toLocaleDateString() == results[id].end.toLocaleDateString()) {
-        $("#activity_show .body .one_day").show();
-        $("#activity_show .body .several_days").hide();
-        $("#activity_show .body .one_day .date").html(results[id].begin.toLocaleDateString());
-        $("#activity_show .body .one_day .time .hour_begin").html(results[id].begin.toLocaleTimeString());
-        $("#activity_show .body .one_day .time .hour_end").html(results[id].end.toLocaleTimeString());
-    }
-    else {
-        $("#activity_show .body .one_day").hide();
-        $("#activity_show .body .several_days").show();
-        $("#activity_show .body .several_days .begin .date").html(results[id].begin.toLocaleDateString());
-        $("#activity_show .body .several_days .begin .hour").html(results[id].begin.toLocaleTimeString());
-        $("#activity_show .body .several_days .end .date").html(results[id].end.toLocaleDateString());
-        $("#activity_show .body .several_days .end .hour").html(results[id].end.toLocaleTimeString());
-    }
-
-    $("#activity_show .body .participants_list .number").html(count(results[id].participants));
-    $("#activity_show .body .participants").html('');
-    var out = [];
-    $.each(results[id].participants, function(index, value) {
-        out.push(value.displayName);
-    });
-    $("#activity_show .body .participants").html(out.join(', '));
-
-    if (results[id].isWriter) {
-        $("#activity_show .body .misc .mail a").attr('href', 'activity/participants/' + id);
-        $("#activity_show .body .misc .mail").show();
-        $("#activity_show .body .misc .participants_link").hide();
-    }
-    else {
-        $("#activity_show .body .misc .participants_link a").attr('href', 'activity/participants/' + id);
-        $("#activity_show .body .misc .participants_link").show();
-        $("#activity_show .body .misc .mail").hide();
-    }
-
-    if (results[id].canEdit) {
-        $("#activity_show .body .misc .admin a").attr('href', 'activity/modify/' + id);
-        $("#activity_show .body .misc .admin").show();
-    }
-    else {
-        $("#activity_show .body .admin").hide();
-    }
     $("#activity_show").show();
 }
 
@@ -232,18 +153,3 @@ function switch_participate(id) {
         present(id);
 }
 
-var results = new Array();
-
-function count(obj)
-{
-    var c = 0, key;
-    for (key in obj) {
-        c++;
-    }
-    return c;
-}
-
-function change_view_cal(url) {
-    wd_op.url = 'activity/ajax/timetable/' + url;
-    $("#gridcontainer").reload();
-}
