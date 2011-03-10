@@ -100,6 +100,8 @@ function show(id)
     };
 
     var assign = {};
+    assign.logged = logged;
+
     assign.id     = id;
     assign.origin = results[id].origin;
     assign.title  = results[id].title;

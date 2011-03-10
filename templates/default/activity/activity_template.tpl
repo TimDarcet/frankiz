@@ -86,14 +86,16 @@
         <div class="msg">
         </div>
 
-        {{if participate}}
-            <div class="out">
-                <a><span class="remove_participant"></span>Se désinscrire</a>
-            </div>
-        {{else}}
-            <div class="present">
-                <a><span class="add_participant"></span>S'inscrire</a>
-            </div>
+        {{if logged}}
+            {{if participate}}
+                <div class="out">
+                    <a><span class="remove_participant"></span>Se désinscrire</a>
+                </div>
+            {{else}}
+                <div class="present">
+                    <a><span class="add_participant"></span>S'inscrire</a>
+                </div>
+            {{/if}}
         {{/if}}
 
         <div class="section">

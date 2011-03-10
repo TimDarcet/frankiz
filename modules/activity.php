@@ -35,7 +35,7 @@ class ActivityModule extends PLModule
             'activity/participants'         => $this->make_hook('participants',         AUTH_COOKIE),
             'activity/participants/add'     => $this->make_hook('participants_add',     AUTH_COOKIE),
             'activity/participants/del'     => $this->make_hook('participants_del',     AUTH_COOKIE),
-            'activity/ajax/get'             => $this->make_hook('ajax_get',             AUTH_INTERNAL),
+            'activity/ajax/get'             => $this->make_hook('ajax_get',             AUTH_INTERNAL, ''),
             'activity/ajax/timetable'       => $this->make_hook('ajax_timetable',       AUTH_PUBLIC),
             'activity/ajax/admin'           => $this->make_hook('ajax_admin',           AUTH_COOKIE),
             'activity/ajax/modify'          => $this->make_hook('ajax_modify',          AUTH_COOKIE),

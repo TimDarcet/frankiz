@@ -35,7 +35,7 @@
                     {/canEdit}
 
                     {assign var='writer' value=$activity->writer()}
-                    {if $writer->id() == $smarty.session.user->id()}
+                    {if $smarty.session.user && $writer->id() == $smarty.session.user->id()}
                         <a href="activity/participants/{$activity->id()}"><div class="mail_ico"></div></a>
                     {/if}
 
