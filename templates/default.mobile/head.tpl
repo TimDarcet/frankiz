@@ -25,6 +25,11 @@
 <link rel="apple-touch-icon" href="http://dev.frankiz.net/~qt/css/default.mobile/images/icone-iphone.png" />
 <meta name="viewport" content="width=device-width,user-scalable=no;" />
 
+{js src="jquery-ui.js"}
+{js src="jquery-ui-timepicker-addon.js"}
+{js src="localization.js"}
+{js src="minimodules.js"}
 {js src="jquery.fancybox.js"}
+{js src="plugins/jquery.tmpl.js"}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

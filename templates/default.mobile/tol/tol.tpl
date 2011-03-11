@@ -36,36 +36,66 @@
 <script>
 jQuery(document).ready( function() {
     $('#tol_results .more-button').click(function() {
-        var photo = $(this).siblings('.more').children('.photo');
         $(this).siblings('.more').toggle('fast');
-        if ($(photo).is(':empty')) {
-            $(photo).addClass('loading');
-
-            var img = new Image();
-        
-            $(img)
-            .load( function() {
-                $(this).hide();
-
-                $(photo)
-                .removeClass('loading')
-                .append(this);
-
-                $(this).fadeIn();
-            })
-
-            .error( function() {
-                $(photo).text('No image found.');
-            })
-
-            .attr('src', $(photo).attr('src'));
-        }
         return false;
     })
     .siblings('.more').hide();
 });
-</script>
 
+
+jQuery(document).ready( function() {
+    $('#tol_results .show-photo').click(function() {
+        var showphoto = $(this);
+        var photo = $(this).children('.img');
+
+        $(photo).addClass('loading');
+        $(photo).attr('src', '');
+        var typephoto = $(photo).attr('type');
+        
+        
+        var urlphotobig = $(this).closest('[photobig]').attr('photobig');
+        var urlphotomicro = $(this).closest('[photomicro]').attr('photomicro');
+        var img = new Image();
+
+        $(img)
+        .load( function() {
+            $(this).hide();
+            $(this).addClass('img');
+            $(this).attr('style', '');
+            
+            if (typephoto == 'big') {
+                $(this).attr('type', 'micro');
+                
+            } else {
+                $(this).attr('type', 'big');
+            }
+            
+            
+            $(photo).remove();
+            $(showphoto).append(this);
+
+            
+        })
+
+        .error( function() {
+            $(photo).text('No image found.');
+        })
+        if (typephoto == 'big') {
+            $(img).attr('src', urlphotomicro);
+            var name = $(showphoto).siblings('.name');
+            $(showphoto).insertBefore($(name));
+        } else {
+            $(img).attr('src', urlphotobig);
+            var name = $(showphoto).siblings('.name');
+            $(showphoto).insertAfter($(name));
+        }
+        
+        
+        
+        return false;
+    })
+});
+</script>
 {/literal}
 
 {js src="tol.js"}

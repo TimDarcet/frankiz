@@ -28,17 +28,16 @@
     <a href="#" class="more-button">+</a>
     <div class="infos">
         {assign var='photo' value=$result->photo()}
-        {assign var='original' value=$result->original()}
-        <span class="img" photo="{if $photo}{$photo|image:'full'|smarty:nodefaults}{/if}"
-                         original="{if $original}{$original|image:'full'|smarty:nodefaults}{/if}">
-            {assign var='img' value=$result->image()}
-            <a ><img src="{$img|image:'micro'|smarty:nodefaults}" /></a>
-        </span>
-        
-        <b>{$result->firstname()} {$result->lastname()}</b>
+
+        {assign var='img' value=$result->image()}
+        <a class="show-photo" photobig="{if $photo}{$photo|image:'full'|smarty:nodefaults}{/if}" photomicro="{if $photo}{$photo|image:'micro'|smarty:nodefaults}{/if}"><img type="micro" class="img" src="{$img|image:'micro'|smarty:nodefaults}" /></a>
+
+        <span class="name"><b>{$result->firstname()} {$result->lastname()}</b>
         {if $result->nickname()}
         ({$result->nickname()})
         {/if}
+        </span>
+        
         <div style="clear:left"></div>
         {foreach from=$result->rooms() item='room'}
             {$room->id()}
