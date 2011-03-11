@@ -25,10 +25,10 @@ class QDJModule extends PLModule
     public function handlers()
     {
         return array(
-            'qdj'               => $this->make_hook('qdj',          AUTH_INTERNAL),
+            'qdj'               => $this->make_hook('qdj',          AUTH_INTERNAL, ''),
             'qdj/admin'         => $this->make_hook('admin',        AUTH_MDP),
-            'qdj/historic'      => $this->make_hook('historic',     AUTH_INTERNAL),
-            'qdj/ajax/ranking'  => $this->make_hook('ajax_ranking', AUTH_INTERNAL),
+            'qdj/historic'      => $this->make_hook('historic',     AUTH_INTERNAL, ''),
+            'qdj/ajax/ranking'  => $this->make_hook('ajax_ranking', AUTH_INTERNAL, ''),
             'qdj/ajax/modify'   => $this->make_hook('ajax_modify',  AUTH_MDP),
             'qdj/ajax/get'      => $this->make_hook('ajax_get',     AUTH_COOKIE),
             'qdj/ajax/vote'     => $this->make_hook('ajax_vote',    AUTH_COOKIE),
