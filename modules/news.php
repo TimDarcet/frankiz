@@ -29,7 +29,7 @@ class NewsModule extends PlModule
             "news/new"          => $this->make_hook("news_new"      , AUTH_PUBLIC),
             "news/mine"         => $this->make_hook("news_mine"     , AUTH_PUBLIC),
             "news/admin"        => $this->make_hook("admin"         , AUTH_MDP),
-            "news/rss"          => $this->make_hook("rss"           , AUTH_PUBLIC, "user", NO_HTTPS), // TODO
+            "news/rss"          => $this->make_hook("rss"           , AUTH_PUBLIC),
             "news/ajax/read"    => $this->make_hook("ajax_read"     , AUTH_COOKIE),
             "news/ajax/star"    => $this->make_hook("ajax_star"     , AUTH_COOKIE),
         );

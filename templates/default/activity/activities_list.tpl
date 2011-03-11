@@ -30,12 +30,17 @@
             {foreach from=$activities_day|order:'hour_begin':false item='activity' key='id'}
                 <div class="activity {if $activity->participate()}star{else}unstar{/if}" aid="{$activity->id()}">
                     <span class="star_switcher" onclick="switch_participate({$activity->id()})">&emsp;</span>
-                    {canEdit target=$activity->target()}
-                        <a href="activity/modify/{$activity->id()}"><div class="edit"></div></a>
-                    {/canEdit}
+
+                    {assign var='target' value=$activity->target()}
+                    {assign var='targetGroup' value=$target->group()}
+                    {if $user|hasRights:$targetGroup:'admin' || $user->isWeb()}
+                        <a href="activity/modify/{$activity->id()}" {if !($user|hasRights:$targetGroup:'admin')}class="webmaster"{/if}>
+                            <div class="edit"></div>
+                        </a>
+                    {/if}
 
                     {assign var='writer' value=$activity->writer()}
-                    {if $smarty.session.user && $writer->id() == $smarty.session.user->id()}
+                    {if $user && $writer->isMe($user)}
                         <a href="activity/participants/{$activity->id()}"><div class="mail_ico"></div></a>
                     {/if}
 
