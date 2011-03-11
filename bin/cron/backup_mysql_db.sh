@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source `echo $0 | sed -e "s/bin\/cron\/backup_/configs\//;s/\.\/cron\/backup_/..\/configs\//;s/\.\/backup_/..\/..\/configs\//"`
+source `/bin/echo $0 | /bin/sed -e "s/bin\/cron\/backup_/configs\//;s/\.\/cron\/backup_/..\/configs\//;s/\.\/backup_/..\/..\/configs\//"`
 
 if [ $1 ] && [ $1 = all ]
 then
@@ -9,15 +9,15 @@ else
   IGNORE="/images_sizes/d"
 fi;
 
-TBLIST=`mysql -u $USER -p$PASSWORD frankiz <<< "show tables;" | sed -e "1d;$IGNORE" | tr "\n" " "`
+TBLIST=`/usr/bin/mysql -u $MYSQL_USER -p$MYSQL_PASSWORD frankiz <<< "show tables;" | /bin/sed -e "1d;$IGNORE" | /bin/tr "\n" " "`
 
-[ -d /tmp/fkz3mysql/ ] || mkdir /tmp/fkz3mysql/
+[ -d /tmp/fkz3mysql/ ] || /bin/mkdir /tmp/fkz3mysql/
 
-mysqldump -u $USER -p$PASSWORD -r /tmp/fkz3mysql/dump-`date +%F-%R`.mysql frankiz $TBLIST
+/usr/bin/mysqldump -u $MYSQL_USER -p$MYSQL_PASSWORD -r /tmp/fkz3mysql/dump-`date +%F-%R`.mysql frankiz $TBLIST
 
 for i in /tmp/fkz3mysql/dump-*.mysql
 do
- [ -f $i ] && rsync -zu $i $RSYNC_REP > /dev/null && rm $i
+ [ -f $i ] && /usr/bin/rsync -zu $i $RSYNC_REP > /dev/null && rm $i
 done
 
-rmdir --ignore-fail-on-non-empty /tmp/fkz3mysql/
+/bin/rmdir --ignore-fail-on-non-empty /tmp/fkz3mysql/
