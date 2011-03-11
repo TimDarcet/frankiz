@@ -37,18 +37,19 @@
         ({$result->nickname()})
         {/if}
         </span>
-        
+
         <div style="clear:left"></div>
         {foreach from=$result->rooms() item='room'}
-            {$room->id()}
+            {$room->id()} {if $room->phone()}({$room->phone()}){/if}
         {/foreach}
+
         {foreach from=$groups|filter:'ns':'sport'|order:'score' item='group'}{$group->label()} {/foreach}
+
         {foreach from=$result->studies() item='study'}{$study->promo()}{/foreach}
-        <br>
-        Tel&nbsp;:
-        {if $room->phone()}{$room->phone()}{/if}
+
         {if $result->cellphone()}
-        &nbsp;-&nbsp;{$result->cellphone()}
+            <br />
+            Portable&nbsp;: {$result->cellphone()}
         {/if}
     </div>
 
