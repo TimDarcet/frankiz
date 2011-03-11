@@ -41,6 +41,7 @@ class FrankizGlobals extends PlGlobals
 
     /** default skin */
     public $skin;
+    public $smartphone_skin;
     public $register_skin;
 
     public $cookie_ns = "Fkz";
