@@ -22,13 +22,11 @@
 
 
 <div class="accueil">
-    {if $smarty.session.auth < AUTH_COOKIE }
-        Bienvenue sur Frankiz3 mobile.
-    {/if}
-    
     {if $smarty.session.auth >= AUTH_COOKIE }
         {include file="tol/quicksearch.tpl"|rel}
     {/if}
+    <br>
+    Bienvenue sur la version beta de Frankiz3 mobile. Pour le moment, tu peux y trouver seulement le Quick TOL mais d'autres fonctionnalités arriveront prochainement.
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
