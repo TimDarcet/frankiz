@@ -170,17 +170,28 @@ class TolModule extends PLModule
         $already_groups = new Collection('Group');
         $filter = $this->buildFilter($fields, $already_groups);
 
+        $page->assign('promoDefaultFilters', S::user()->defaultFilters()->filter('ns', Group::NS_PROMO));
+
         if ($filter) {
             if ($already_groups->count() > 0) {
                 $already_groups->select(GroupSelect::base());
             }
 
             if (S::user()->defaultFilters()->count() > 0) {
-                $filter = new PFC_And($filter, new UFC_Group(S::user()->defaultFilters()));
+                $filterWithDefaultFilters = new PFC_And($filter, new UFC_Group(S::user()->defaultFilters()));
             }
 
-            $uf = new UserFilter($filter, array(new UFO_Promo(true), new UFO_Name(UFO_Name::LASTNAME)));
-            $users = $uf->get(new PlLimit(50,0))->select(UserSelect::tol());
+            $order = array(new UFO_Promo(true), new UFO_Name(UFO_Name::LASTNAME));
+            $uf = new UserFilter($filterWithDefaultFilters, $order);
+
+            $users = $uf->get(new PlLimit(50,0));
+            if ($users->count() == 0) {
+                $uf = new UserFilter($filter, $order);
+                $users = $uf->get(new PlLimit(50,0));
+                $page->assign('promoDefaultFilters', null);
+            }
+
+            $users->select(UserSelect::tol());
             $page->assign('results', $users);
             $page->assign('mode', 'sheet');
             $page->assign('total', $uf->getTotalCount());

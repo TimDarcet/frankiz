@@ -37,7 +37,13 @@
 
         <div class="fields" id="tol_promo">
             <ul>
-                <li><label>Promo{include file="groups_picker.tpl"|rel id="promo" ns="promo" order="name" already=$user->defaultFilters()|filter:'ns':'promo' check=-1}</label></li>
+                <li><label>Promo
+                {if $promoDefaultFilters == null}
+                    {include file="groups_picker.tpl"|rel id="promo" ns="promo" order="name" check=-1}
+                {else}
+                    {include file="groups_picker.tpl"|rel id="promo" ns="promo" order="name" already=$promoDefaultFilters check=-1}
+                {/if}
+                </label></li>
                 <li><label>Études{include file="groups_picker.tpl"|rel id="studies" ns="study" check=-1}</label></li>
                 <li><label>Sports{include file="groups_picker.tpl"|rel id="sports" ns="sport" check=-1}</label></li>
             </ul>
