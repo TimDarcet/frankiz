@@ -34,16 +34,12 @@
 
 {literal}
 <script>
-jQuery(document).ready( function() {
+$(function() {
     $('#tol_results .more-button').click(function() {
         $(this).siblings('.more').toggle('fast');
         return false;
-    })
-    .siblings('.more').hide();
-});
+    });
 
-
-jQuery(document).ready( function() {
     $('#tol_results .show-photo').click(function() {
         var showphoto = $(this);
         var photo = $(this).children('.img');
@@ -51,8 +47,7 @@ jQuery(document).ready( function() {
         $(photo).addClass('loading');
         $(photo).attr('src', '');
         var typephoto = $(photo).attr('type');
-        
-        
+
         var urlphotobig = $(this).closest('[photobig]').attr('photobig');
         var urlphotomicro = $(this).closest('[photomicro]').attr('photomicro');
         var img = new Image();
@@ -62,19 +57,16 @@ jQuery(document).ready( function() {
             $(this).hide();
             $(this).addClass('img');
             $(this).attr('style', '');
-            
+
             if (typephoto == 'big') {
                 $(this).attr('type', 'micro');
                 
             } else {
                 $(this).attr('type', 'big');
             }
-            
-            
+
             $(photo).remove();
             $(showphoto).append(this);
-
-            
         })
 
         .error( function() {
@@ -89,9 +81,7 @@ jQuery(document).ready( function() {
             var name = $(showphoto).siblings('.name');
             $(showphoto).insertAfter($(name));
         }
-        
-        
-        
+
         return false;
     })
 });
