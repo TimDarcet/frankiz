@@ -209,6 +209,10 @@ class QDJ extends Meta
             case substr(IP::get(), -3):
                 $rule = '8';
             break;
+
+            case date('d')+date('m'):
+                $rule = '9';
+            break;
         }
 
         XDB::execute('UPDATE qdj_votes
@@ -320,6 +324,13 @@ class QDJ extends Meta
                                       ON  qv.qdj = q.id
                                    WHERE  qv.rule >0
                                      AND  q.date BETWEEN {?} AND {?}
+                                     AND  uid NOT IN (
+                                          SELECT  uid
+                                            FROM  groups AS g
+                                            JOIN  castes AS c ON g.gid = c.group
+                                            JOIN  castes_users AS cu ON cu.cid = c.cid
+                                           WHERE  g.name = "qdj" AND c.rights = "admin"
+                                           )
                                 GROUP BY  rule, uid
                                    ) AS aux
                          GROUP BY  uid

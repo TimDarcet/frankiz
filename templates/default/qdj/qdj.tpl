@@ -38,6 +38,8 @@
             <div class="admin"><a href="qdj/admin">Administrer les QDJ</a></div>
         {/if}
 
+        <div class="admin"><a href="qdj/historic">Historique des QDJ</a></div>
+
         <form enctype="multipart/form-data" method="post" action="qdj" id="qdj_form">
             {assign var='end' value=$begin_date|@count}
             <select name="period">
