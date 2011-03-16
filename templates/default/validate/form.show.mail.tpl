@@ -20,6 +20,19 @@
 {*                                                                        *}
 {**************************************************************************}
 
+<tr>
+    <td width=20%>
+        Au nom de :
+    </td>
+    <td>
+        {if $item->origin()}
+            {$item->origin()|group:'text'}
+        {else}
+            personnel
+        {/if}
+    </td>
+</tr>
+
 {if ($item->type_mail() == 'promo')}
     <tr>
         <td width=20%>

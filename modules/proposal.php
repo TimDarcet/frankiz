@@ -318,6 +318,16 @@ class ProposalModule extends PlModule
                 }
             }
 
+            if (Env::t('origin_mail_proposal') == 'false') {
+                $origin = false;
+            } else {
+                $origin = new Group(Env::i('origin_mail_proposal'));
+            }
+
+            if ($origin !== false && !S::user()->hasRights($origin, Rights::admin())) {
+                throw new Exception("Invalid credentials for origin Group");
+            }
+
             if (Env::t('type_mail_proposal') == 'group') {
                 list($temp, $target_group) = self::target_picker_to_caste_group('mail');
                 $target = new Collection('Caste');
@@ -353,6 +363,7 @@ class ProposalModule extends PlModule
                 $nv = new MailValidate(array(
                     'writer'    => S::user(),
                     'type_mail' => Env::t('type_mail_proposal'),
+                    'origin'    => $origin,
                     'targets'   => $target,
                     'subject'   => $subject,
                     'body'      => $body,

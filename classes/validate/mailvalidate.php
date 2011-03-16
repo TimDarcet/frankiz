@@ -24,6 +24,7 @@ class MailValidate extends ItemValidate
     protected $type = 'mail';
     protected $writer;
     protected $type_mail;
+    protected $origin;
     protected $targets;
     protected $subject;
     protected $body;
@@ -42,7 +43,8 @@ class MailValidate extends ItemValidate
 
     public function objects() {
         return array('writer' => UserSelect::base(),
-                  'formation' => GroupSelect::base());
+                  'formation' => GroupSelect::base(),
+                     'origin' => GroupSelect::base());
     }
 
     public function collections() {
@@ -120,13 +122,15 @@ class MailValidate extends ItemValidate
         $mail = new FrankizMailer();
         $sub = ($this->type_mail == 'promo')?'promo':$this->formation->label();
         $mail->subject('[Mail ' . $sub . '] ' . $this->subject);
-        if (!$this->nowiki) {
-            $mail->body(MiniWiki::wikiToHTML($this->body, false));
+
+        if ($this->origin) {
+            global $globals;
+            $mail->setFrom($this->origin->name() .'@' . $globals->mails->group_suffix,
+                    'Frankiz - ' . $this->origin->label() . '');
         }
         else {
-            $mail->body(MiniWiki::wikiToText($this->body, false, 0, 80));
+            $mail->setFrom($this->writer->bestEmail(), $this->writer->displayName());
         }
-        $mail->setFrom($this->writer->bestEmail(), $this->writer->displayName());
         
         if ($this->type_mail == 'promo' && !$this->targets) {
             $uf = new UserFilter(
@@ -147,6 +151,14 @@ class MailValidate extends ItemValidate
                     new UFC_Caste($this->targets->first()),
                     new UFC_Group(Group::from('on_platal'))));
         }
+        
+        if (!$this->nowiki) {
+            $mail->body(MiniWiki::wikiToHTML($this->body, false));
+        }
+        else {
+            $mail->body(MiniWiki::wikiToText($this->body, false, 0, 80));
+        }
+
         $mail->ToUserFilter($uf);
         $mail->sendLater(!$this->nowiki);
         return true;

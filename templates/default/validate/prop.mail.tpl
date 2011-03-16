@@ -44,6 +44,15 @@
         <div class="body">
             <table class="bicol">
                 <tr class="pair">
+                    <td>
+                        J'écris au nom de
+                    </td>
+                    <td>
+                        {include file="origin_picker.tpl"|rel id="origin_mail_proposal"}
+                    </td>
+                </tr>
+
+                <tr>
                     <td width=20%>
                         Destinataire :
                     </td>
@@ -69,7 +78,7 @@
                     </td>
                 </tr>
 
-                <tr>
+                <tr class="pair">
                     <td>
                         Sujet :
                     </td>
@@ -78,7 +87,7 @@
                     </td>
                 </tr>
 
-                <tr class="pair">
+                <tr>
                     <td>
                         Mail :
                     </td>
