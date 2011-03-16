@@ -177,6 +177,7 @@ class TolModule extends PLModule
                 $already_groups->select(GroupSelect::base());
             }
 
+            $filterWithDefaultFilters = $filter;
             if (S::user()->defaultFilters()->count() > 0) {
                 $filterWithDefaultFilters = new PFC_And($filter, new UFC_Group(S::user()->defaultFilters()));
             }
