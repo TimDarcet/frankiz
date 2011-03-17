@@ -26,6 +26,7 @@ class NewsValidate extends ItemValidate
     protected $writer;
     protected $target;
     protected $image;
+    // either a group on behalf of wich the news is posted or false
     protected $origin;
     protected $title;
     protected $content;
