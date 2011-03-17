@@ -112,6 +112,32 @@ class NewsValidate extends ItemValidate
         $mail->addAddress($this->_mail_from_addr(), $this->_mail_from_disp());
         $mail->send(false);
     }
+    
+    /** Sends the news items to the newsgroups via mail.
+     */
+    public function sendnewsgroupmail()
+    {
+        global $globals;
+
+        if ($this->target->group()->ns() == Group::NS_BINET) {
+            $mail = new FrankizMailer();
+
+            $suffix = $globals->mails->newsgroup_suffix;
+            if (!$suffix)
+                $suffix = 'news.eleves.polytechnique.fr';
+            $mail->addAddress('br.binet.' . $this->target->group()->name() . '@' . $suffix);
+
+            if ($this->origin)
+                $mail->setFrom($this->origin->name() .'@' . $globals->mails->group_suffix, $this->origin->label());
+            else
+                $mail->setFrom($this->writer->bestEmail(), $this->writer->displayName());
+
+            $mail->subject('[Frankiz] ' . $this->title);
+            $mail->body(MiniWiki::wikiToText($this->content, false, 0, 80));
+            $mail->send(false);
+        }
+        //But what else
+    }
 
     public function sendmailfinal($valid)
     {
@@ -206,6 +232,10 @@ class NewsValidate extends ItemValidate
             $n->end($this->end);
             $n->comment($this->comment);
             $this->idIfValid = $n->id();
+
+            if ($this->target->rights()->isMe(Rights::everybody())) {
+                $this->sendnewsgroupmail();
+            }
         }
         return true;
     }
