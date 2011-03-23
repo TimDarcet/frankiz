@@ -55,8 +55,10 @@ var activity = {
                     $.each(json.activities, function(index, value) {
                         $('#minimodule_activities .activities').append(value);
                     });
-                var month = date.getMonth() + 1;
-                    $('#minimodule_activities .act_date').html(date.getFullYear() + '-' + month + '-' + date.getDate());
+                    var month = date.getMonth() + 1;
+                    month = (month.toString().length == 1) ? '0' + month : month;
+                    var day = (date.getDate().toString().length == 1) ? '0' + date.getDate() : date.getDate();
+                    $('#minimodule_activities .act_date').html(date.getFullYear() + '-' + month + '-' + day);
             }});
     }
 };
