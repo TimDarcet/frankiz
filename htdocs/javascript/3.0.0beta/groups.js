@@ -1,5 +1,5 @@
 $(function(){
-    var nss = ['binet', 'study', 'free'];
+    var nss = ['binet', 'course', 'free'];
     for (var i in nss) {
         (function() {
             var ns = nss[i];

@@ -147,6 +147,25 @@
             </ul>
         </div>
     {/if}
+    {if count($groups|filter:'ns':'course') > 0}
+        <div class="free">
+            Cours:
+            <ul>
+                {foreach from=$groups|filter:'ns':'course'|order:'score' item='group'}
+                    <li>
+                        <span class="meta">
+                            {$group|group}
+                            {$result->rights($group)|@rights}
+                        </span>
+                        <span>
+                            {$group|group:'text'}
+                            <span class="comments">{$result->comments($group)}</span>
+                        </span>
+                    </li>
+                {/foreach}
+            </ul>
+        </div>
+    {/if}
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

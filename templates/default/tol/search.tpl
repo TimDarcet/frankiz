@@ -46,6 +46,7 @@
                 </label></li>
                 <li><label>Études{include file="groups_picker.tpl"|rel id="studies" ns="study" check=-1}</label></li>
                 <li><label>Sports{include file="groups_picker.tpl"|rel id="sports" ns="sport" check=-1}</label></li>
+                <li><label>Cours{include file="groups_picker.tpl"|rel id="courses" ns="course" check=-1}</label></li>
             </ul>
         </div>
 

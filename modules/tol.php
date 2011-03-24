@@ -45,6 +45,7 @@ class TolModule extends PLModule
                             'promo' => '',
                           'studies' => '',
                            'sports' => '',
+                          'courses' => '',
                            'binets' => '',
                             'frees' => '',
                              'room' => '',
@@ -109,8 +110,8 @@ class TolModule extends PLModule
             $conds[] = new UFC_Gender(User::GENDER_FEMALE);
 
         // Fields corresponding in fact to groups
-        $groups_fields = array('nationalities', 'promo', 'studies',
-                              'sports', 'binets', 'frees');
+        $groups_fields = array('nationalities', 'promo', 'studies', 'courses',
+                               'sports', 'binets', 'frees');
         foreach ($groups_fields as $field) {
             if ($fields[$field]) {
                 $gids = explode(';', $fields[$field]);

@@ -29,9 +29,9 @@
     </div>
 
     <div class="module">
-        <div class="head"><span class="helper" target="groups/study"></span>Les études</div>
+        <div class="head"><span class="helper" target="groups/course"></span>Les cours</div>
         <div class="body">
-            {include file="groups/ns_groups.tpl"|rel ns="study" groups=$study user_groups=$user_study}
+            {include file="groups/ns_groups.tpl"|rel ns="course" groups=$course user_groups=$user_course}
         </div>
     </div>
 

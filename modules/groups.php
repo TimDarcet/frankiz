@@ -62,15 +62,15 @@ class GroupsModule extends PLModule
         $binet = new GroupFilter(new PFC_And(new GFC_Namespace(Group::NS_BINET), $except), new GFO_Score(true));
         $binet = $binet->get(new PlLimit($max));
 
-        $study = new GroupFilter(new PFC_And(new GFC_Namespace(Group::NS_STUDY), $except), new GFO_Score(true));
-        $study = $study->get(new PlLimit($max));
+        $course = new GroupFilter(new PFC_And(new GFC_Namespace(Group::NS_COURSE), $except), new GFO_Score(true));
+        $course = $course->get(new PlLimit($max));
 
         $free = new GroupFilter(new PFC_And(new GFC_Namespace(Group::NS_FREE), $except), new GFO_Score(true));
         $free = $free->get(new PlLimit($max));
 
         // Load associated datas
         $temp = new Collection('Group');
-        $temp->merge($binet)->merge($study)->merge($free);
+        $temp->merge($binet)->merge($course)->merge($free);
         $temp->select(GroupSelect::base());
 
         // Fetch the total count of groups
@@ -81,9 +81,9 @@ class GroupsModule extends PLModule
         $page->assign('binet', $binet);
         $page->assign('user_binet', $user_binet);
 
-        $user_study = S::user()->castes()->groups()->filter('ns', Group::NS_STUDY)->remove($study);
-        $page->assign('study', $study);
-        $page->assign('user_study', $user_study);
+        $user_course = S::user()->castes()->groups()->filter('ns', Group::NS_COURSE)->remove($course);
+        $page->assign('course', $course);
+        $page->assign('user_course', $user_course);
 
         $user_free = S::user()->castes()->groups()->filter('ns', Group::NS_FREE)->remove($free);
         $page->assign('free', $free);
