@@ -45,6 +45,8 @@
 
     <a href="http://ik.frankiz.net">InfoKès</a> ·
 
+    <a href="http://else.polytechnique.org/">ELSE</a> ·
+
     <a href="http://jtx">JTX</a> ·
 
     <a href="http://x-ray">X-Ray</a>
