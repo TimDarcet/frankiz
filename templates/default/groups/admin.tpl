@@ -23,7 +23,7 @@
 <div class="module admin_general">
     <div class="head">
         <span class="helper" target="groups/admin/general"> </span>
-        {$group->label()} en bref
+        <a href="groups/see/{$group->name()}">{$group->label()}</a> en bref
      </div>
      <div class="body">
         <form enctype="multipart/form-data" method="post" action="{$smarty.server.REQUEST_URI}">
