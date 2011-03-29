@@ -36,6 +36,7 @@ class ProfileModule extends PLModule
                      'profile/feed'                    => $this->make_hook('feed',                    AUTH_COOKIE),
                      'profile/rss/update'              => $this->make_hook('rss_update',              AUTH_COOKIE),
                      'profile/rss/add'                 => $this->make_hook('rss_add',                 AUTH_COOKIE),
+		     'profile/ajax/hruid'              => $this->make_hook('ajax_hruid',              AUTH_COOKIE),
                      'profile/minimodules'             => $this->make_hook('minimodules',             AUTH_COOKIE),
                      'profile/minimodules/ajax/layout' => $this->make_hook('ajax_minimodules_layout', AUTH_COOKIE),
                      'profile/minimodules/ajax/add'    => $this->make_hook('ajax_minimodules_add',    AUTH_COOKIE),
@@ -468,6 +469,17 @@ class ProfileModule extends PLModule
         $page->changeTpl('profile/feed.tpl');
     }
 
+    function handler_ajax_hruid($page)
+    {
+        if (S::i('auth') < AUTH_COOKIE) {
+            $page->jsonAssign('error', "Utilisateur inconnu");
+        } else {
+            $page->jsonAssign('hruid', S::user()->login());
+        }
+
+        return PL_JSON;
+    }
+    
     function handler_minimodules($page)
     {
         $iter = XDB::iterator('SELECT  m.name, m.label, m.description, COUNT(um.name) frequency
