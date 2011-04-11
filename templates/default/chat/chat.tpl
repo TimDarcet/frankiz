@@ -32,6 +32,7 @@
 	<span style="display: none;">${sender.label}</span>
       {{/if}}
     </td>
+    <td>${time}</td>
     <td class="text">${text}</td>
   </tr>
 </script>
@@ -63,88 +64,135 @@
 
 <script type="text/javascript">
   window.jabber_hruid = "{$jabber_hruid}";
-  window.jabber_nick = "{$jabber_nick}";
+  window.jabber_connected = false;
   window.jabber_cookie = "{$jabber_cookie}";
   room_id = '{$jabber_room}';
   room = room_id + '@salons.chat.frankiz.net';
   
   {literal}
-  // nick -> src, callbacks when src is available
-  window.chat_avatar = {};
+  window.hruids = {}
 
-  function avatar(nick, callback){
-    if ( ! (nick in window.chat_avatar)) 
-      window.chat_avatar[nick]={};
-    if ('src' in window.chat_avatar[nick]) {
-      callback(window.chat_avatar[nick]['src']);
-    } else if ('callbacks' in window.chat_avatar[nick]) {
-      window.chat_avatar[nick]['callbacks'].push(callback);
-    } else {
-      window.chat_avatar[nick]['callbacks'] = [callback];
-    }
-  }
-  
-  function fetch_avatar(nick, hruid){
+  function avatar(nick, hruid, callback){
+    //console.log('avatar hruid'+hruid+' nick:'+nick)
+    
     $.ajax({
       url: 'chat/ajax/avatar',
-      //type:'POST',
       data:{'json': '{"hruid": "'+hruid+'"}'},
+      //cache: true,
       success: function(msg){
         msg = $.parseJSON(msg);
         window.msg = msg;
-        //console.log(msg);
-        if(!(nick in window.chat_avatar))
-          window.chat_avatar[nick]={};
-        window.chat_avatar[nick]['src'] = msg.src;
-        if('callbacks' in window.chat_avatar[nick]){
-          for(var i = 0; i<window.chat_avatar[nick]['callbacks'].length; i++){
-	    //bugged
-            //window.chat_avatar[nick]['callbacks'][i](msg.src);
-	    $('#room img[title='+nick+']').attr('src', msg.src)
-	  }
-	  delete(window.chat_avatar[nick]['callbacks'])
-	} 
+	callback(msg.src);
+        //$('#room img[hruid='+hruid+']').attr('src', msg.src)
       }
     });
+
+  }
+  
+  function join(pseudo) {
+    cb = function(){
+      Strophe._connectionPlugins['muc'].join(room,pseudo,message_handler,presence_handler,null);
+      window.jabber_nick = pseudo;
+      $('#join_button').attr('disabled','true');
+    }
+    if (window.jabber_connected) {
+      leave(cb);
+    } else {
+      cb();
+    }
   }
 
-  function join(pseudo) {
-    Strophe._connectionPlugins['muc'].join(room,pseudo,message_handler,presence_handler,null);
+  function leave(callback) {
+    cb = callback ? callback : null
+    Strophe._connectionPlugins['muc'].leave(room,window.jabber_nick,cb);
   }
 
   function post(message) {
     Strophe._connectionPlugins['muc'].message(room,null,message);
   }
   
-  function get(from, nick, message) {
-    a = $('#message_template').tmpl({sender: {image: "", label: nick}, text: message})
-    cb_g = function(){return function(src){$("img", a).attr('src', src)}}
+  //from : sender jid, possibly null
+  //nick : sender nick
+  //message: sent message
+  function get(from, nick, message, date) {
+    //console.log('get from:'+from+' nick:'+nick+' message:'+message)
+    if (from==null) {
+      console.log('Strange, got message from: ' + from + ' saying ' + message)
+      return
+    }
+    if (date) {
+      at = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+      if ( date.toLocaleDateString() != (new Date()).toLocaleDateString() ) {
+        at = "" + date.getDate()+'/'+(date.getMonth()<9?'0':'')+(date.getMonth()+1)+' ' + at
+      }
+    } else
+      at = ""
+    a = $('#message_template').tmpl({sender: {image: "", hruid: from, label: nick}, text: message, time: at})
+    cb_g = function(){var e = a; return function(src){$("img", e).attr('src', src)}}
     cb = cb_g();
-    avatar(nick, cb)
+    if(from)
+      avatar(nick, from, cb)
+    else
+      avatar(nick, null, cb)
     a.appendTo('#room');
   }
-
-  function message_handler(o) {
-    from = o.getAttribute('from').split('@')[0];
-    // from==room_id 
-    nick = o.getAttribute('from').split('@')[1].split('/');
-    if (nick.length == 2) {
-        // nick[0] == 'salons.chat.frankiz.net';
-        nick = nick[1];
-    } else {
-        nick = from;
-    }
-    message = o.textContent;
-    get(from, nick, message);
-    return true;
-  }
   
-  function presence_handler(o){
+  
+  function message_handler(o) {
+    //console.log('Message_handler')
+    //console.log(o)
     from = o.getAttribute("from")
     if (!from) {
       console.log("Huh!? no from!")
       return
     }
+    var roomjid, nick, name, service
+    t = from.split('/');
+    roomjid = t[0]
+    nick = t[1]
+    t = roomjid.split('@')
+    name = t[0]
+    service=t[1]
+    // name==room_id
+    // I expect only one
+    if ($('delay[from]', o).attr('from'))
+      from = $('delay[from]', o).attr('from').split('/')[0].split('@')[0]
+    else if (nick in window.hruids)
+      from = window.hruids[nick]
+    else
+      from = null
+
+    if ($('x[xmlns=jabber:x:delay]', o)) {
+      raw = $('x[xmlns=jabber:x:delay]', o).attr('stamp')
+      date = new Date($('x[xmlns=jabber:x:delay]', o).attr('stamp'))
+      if ( date == "Invalid Date" ) {
+        alt = raw.substring(0,4) + '-' + raw.substring(4,6) + '-' + raw.substring(6)
+        date = new Date(alt)
+      }
+    } else
+      date = null
+    
+    message = $('body', o).text()
+    get(from, nick, message, date)
+    return true;
+  }
+  
+  function presence_handler(o){
+    console.log('presence_handler')
+    console.log(o)
+    from = o.getAttribute("from")
+    if (!from) {
+      console.log("Huh!? no from!")
+      return
+    }
+
+    if ( $('error[code=409]', o).length > 0 ) {
+      window.jabber_nick += '_';
+      Strophe._connectionPlugins['muc'].changeNick(room, window.jabber_nick);
+      return;
+    }
+
+    var roomjid, nick, name, service
     nick = from.split('/')[1].split('@')[0]
     jid = $("item[jid]", o).attr("jid")
     if(!jid){
@@ -159,16 +207,19 @@
     }
     hruid = jid.split('/')[0].split('@')[0]
     console.log('Got '+nick+'('+hruid+')')
-    fetch_avatar(nick, hruid)
-  }
 
+    window.hruids[nick] = hruid
+    //fetch_avatar(nick, hruid)
+  }
+  
+  
   $("#join_button").click(function(){
      nickField = $("#nick_field");
      join(nickField.val());
-     fetch_avatar(nickField.val(), window.jabber_hruid);
+     //fetch_avatar(nickField.val(), window.jabber_hruid);
      return false;
   });
-
+  
   $("#post_button").click(function(){
       textField = $('#toPost');
       post(textField.val());
