@@ -28,8 +28,8 @@
   <tr class="message">
     <td class="sender">
       {{if sender}}
-        <img src="${sender.image}" title="${sender.label}" align="texttop">
-	${sender.label}
+        <img src="${sender.image}" title="${sender.label}" hruid="${sender.hruid}" align="texttop">
+	<span style="display: none;">${sender.label}</span>
       {{/if}}
     </td>
     <td class="text">${text}</td>
@@ -52,7 +52,7 @@
       <form >
         <textarea id="toPost" style="width: 99%"></textarea>
 	<input type="submit" id="join_button" value="rejoindre" style="display: inline;"></input>
-	<input type="text" id="nick_field" value="{$jabber_nick}" style="display: inline;"></input>
+	<input type="text" id="nick_field" value="{$jabber_nick}" style="display: inline; display: none"></input>
 	<input type="submit" id="post_button" value="poster" style="display: inline; float: right;"></input>
       </form >
     </div>
