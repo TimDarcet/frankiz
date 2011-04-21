@@ -20,6 +20,7 @@
 {*                                                                        *}
 {**************************************************************************}
 BEGIN:VCALENDAR
+VERSION:2.0
 {display_ical name="prodid" value="-//activities-$view.frankiz.net//Plat-al//FR"}
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
