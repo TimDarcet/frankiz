@@ -119,20 +119,20 @@ class ProfileModule extends PLModule
         }
         
         if (Env::has('add_room') && !$add) {
-            $r = new Room(Env::t('rid'));
-            if($r == null){
+            $r = Room::batchFrom(array(Env::t('rid')));
+            if($r->count() == 0){
                 $err[] = "La chambre entrée n'existe pas.";
             } else {
-                $user->addRoom($r);
+                $user->addRoom($r->pop());
             }
         }
         
         if (Env::has('del_room') && !$add) {
-            $r = new Room(Env::t('rid'));
-            if($r == null){
+            $r = Room::batchFrom(array(Env::t('rid')));
+            if($r->count() == 0){
                 $err[] = "La chambre entrée n'existe pas.";
             } else {
-                $user->removeRoom($r);
+                $user->removeRoom($r->pop());
             }
         }
         
