@@ -112,8 +112,6 @@ class ProfileModule extends PLModule
             
             if($user !== false){
                 $user->select(UserSelect::login());
-                $user->select(UserSelect::tol());
-                $user->select(UserSelect::birthday());
             }
             else {
                 throw new Exception("Impossible de charger les données de l'utilisateur " . $hruid);
@@ -134,7 +132,7 @@ class ProfileModule extends PLModule
             if($r == null){
                 $err[] = "La chambre entrée n'existe pas.";
             } else {
-                $user->delRoom($r);
+                $user->removeRoom($r);
             }
         }
         
@@ -147,7 +145,7 @@ class ProfileModule extends PLModule
         }
         
         if (Env::has('upd_study') && !$add) {
-                $user->updStudy(Env::t('formation_id'),Env::t('forlife'),Env::t('new_formation_id'),Env::t('year_in'),Env::t('year_out'),Env::t('promo'),Env::t('new_forlife'));
+                $user->updateStudy(Env::t('formation_id'),Env::t('forlife'),Env::t('year_in'),Env::t('year_out'),Env::t('promo'));
         }
         
         if (Env::has('add_study') && !$add) {
@@ -155,7 +153,7 @@ class ProfileModule extends PLModule
         }
         
         if (Env::has('del_study') && !$add) {
-                $user->delStudy(Env::t('formation_id'),Env::t('forlife'));
+                $user->removeStudy(Env::t('formation_id'),Env::t('forlife'));
         }
         
         if (Env::has('change_profile')) {
@@ -216,7 +214,6 @@ class ProfileModule extends PLModule
         }
         
         $page->assign('formations', XDB::query("SELECT formation_id, label FROM formations")->fetchAllAssoc());
-        print_r(XDB::query("SELECT formation_id, label FROM formations")->fetchAllAssoc());
         
         $page->assign('userEdit', $user);
         $page->addCssLink('profile.css');

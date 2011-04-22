@@ -88,7 +88,7 @@
                     </td>
                     <td class="form">
                         {assign var='b' value=$userEdit->birthdate()}
-                        <input type='text' name='birthdate' {if !$add}value="{$b->format("Y-m-d")}" {/if}/>
+                        <input type='text' name='birthdate' id='birthdate' {if !$add}value="{$b->format("Y-m-d")}" {/if}/>
                     </td>
                 </tr>
                 <tr>
@@ -209,11 +209,7 @@
                 <tr>
                     <td>
                         {assign var='formation' value=$study->formation()}
-                        <select  name="new_formation_id">
-                        {foreach from=$formations item='f'}
-                            <option value="{$f.formation_id}" {if $f.formation_id == $formation->id()}selected="selected"{/if}>{$f.label}</option>
-                        {/foreach}
-                        </select>
+                        {$formation->label()}
                     </td>
                     <td>
                         <input type="text" name="year_in" value="{$study->year_in()}" style="width:50px;" />
@@ -225,7 +221,7 @@
                         <input type="text" name="promo" value="{$study->promo()}" style="width:50px;" />
                     </td>
                     <td>
-                        <input type="text" name="new_forlife" value="{$study->forlife()}" />
+                        {$study->forlife()}
                     </td>
                     <td>
                         <input type="hidden" name="forlife" value="{$study->forlife()}" />

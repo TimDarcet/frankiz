@@ -230,7 +230,7 @@ class UserSelect extends Select
         };
 
         return new UserSelect(array_merge(self::$natives,
-                                          array('rooms', 'minimodules', 'castes', 'poly', 'comments', 'defaultfilters')),
+                                          array('rooms', 'minimodules', 'castes', 'poly', 'comments', 'defaultfilters', 'studies')),
                               array('castes' => CasteSelect::group(),
                             'defaultfilters' => GroupSelect::base()),
                               $cb);
@@ -579,20 +579,17 @@ class User extends Meta
         return true;
     }
     
-    public function updStudy($formation, $forlife, $new_formation, $new_year_in, $new_year_out, $new_promo, $new_forlife)
+    public function updateStudy($formation, $forlife, $new_year_in, $new_year_out, $new_promo)
     {
-        $new_formation_id = ($new_formation instanceof Formation) ? $new_formation->id() : $new_formation;
         $formation_id = ($formation instanceof Formation) ? $formation->id() : $formation;
         XDB::execute('UPDATE IGNORE  studies
-                                SET  formation_id = {?},
-                                     year_in = {?}, year_out = {?},
-                                     promo = {?}, forlife = {?}
+                                SET  year_in = {?}, year_out = {?},
+                                     promo = {?}
                               WHERE  formation_id = {?}
                                 AND  forlife = {?}
                                 AND  uid = {?}',
-                                  $new_formation_id,
                                   $new_year_in, $new_year_out,
-                                  $new_promo, $new_forlife,
+                                  $new_promo,
                                   $formation_id, $forlife, $this->id());
 
         if (!(XDB::affectedRows() > 0))
@@ -602,7 +599,7 @@ class User extends Meta
         return true;
     }
     
-    public function delStudy($formation, $forlife)
+    public function removeStudy($formation, $forlife)
     {
         $formation_id = ($formation instanceof Formation) ? $formation->id() : $formation;
         XDB::execute('DELETE FROM  studies
@@ -642,7 +639,7 @@ class User extends Meta
         return true;
     }
     
-    public function delRoom(Room $r)
+    public function removeRoom(Room $r)
     {
         XDB::execute('DELETE FROM  rooms_users
                             WHERE  rid = {?} AND uid = {?}
