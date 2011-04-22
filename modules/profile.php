@@ -93,7 +93,7 @@ class ProfileModule extends PLModule
         $page->changeTpl('profile/account.tpl');
     }
     
-        public function handler_admin_account($page, $hruid = null, $added = false)
+    public function handler_admin_account($page, $hruid = null, $added = false)
     {
         $err = array();
         $msg = array();
@@ -111,7 +111,7 @@ class ProfileModule extends PLModule
             $user = $user->get(true);
             
             if($user !== false){
-                $user->select(UserSelect::login());
+                $user->select(UserSelect::tol());
             }
             else {
                 throw new Exception("Impossible de charger les données de l'utilisateur " . $hruid);
