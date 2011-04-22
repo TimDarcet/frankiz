@@ -24,6 +24,7 @@ class ProfileModule extends PLModule
     public function handlers()
     {
         return array('profile/account'                 => $this->make_hook('account',                 AUTH_MDP),
+                     'profile/admin/account'           => $this->make_hook('admin_account',           AUTH_MDP, 'admin'),
                      'profile/defaultfilters'          => $this->make_hook('defaultfilters',          AUTH_COOKIE),
                      'profile/mails'                   => $this->make_hook('mails',                   AUTH_COOKIE),
                      'profile/password'                => $this->make_hook('password',                AUTH_MDP),
@@ -90,6 +91,142 @@ class ProfileModule extends PLModule
         $page->addCssLink('profile.css');
         $page->assign('title', "Changement du profil");
         $page->changeTpl('profile/account.tpl');
+    }
+    
+        public function handler_admin_account($page, $hruid = null, $added = false)
+    {
+        $err = array();
+        $msg = array();
+        $add = false;
+        
+        if($added){
+            $msg[] = "L'utilisateur a été ajouté avec succès";
+        }
+        
+        if ($hruid === null) {
+            $user = new User();
+            $add = true;
+        } else {
+            $user = new UserFilter(new UFC_Hruid($hruid));
+            $user = $user->get(true);
+            
+            if($user !== false){
+                $user->select(UserSelect::login());
+                $user->select(UserSelect::tol());
+                $user->select(UserSelect::birthday());
+            }
+            else {
+                throw new Exception("Impossible de charger les données de l'utilisateur " . $hruid);
+            }
+        }
+        
+        if (Env::has('add_room') && !$add) {
+            $r = new Room(Env::t('rid'));
+            if($r == null){
+                $err[] = "La chambre entrée n'existe pas.";
+            } else {
+                $user->addRoom($r);
+            }
+        }
+        
+        if (Env::has('del_room') && !$add) {
+            $r = new Room(Env::t('rid'));
+            if($r == null){
+                $err[] = "La chambre entrée n'existe pas.";
+            } else {
+                $user->delRoom($r);
+            }
+        }
+        
+        if (Env::has('add_perm') && !$add) {
+                $user->addPerm(Env::t('perm'));
+        }
+        
+        if (Env::has('del_perm') && !$add) {
+                $user->removePerm(Env::t('perm'));
+        }
+        
+        if (Env::has('upd_study') && !$add) {
+                $user->updStudy(Env::t('formation_id'),Env::t('forlife'),Env::t('new_formation_id'),Env::t('year_in'),Env::t('year_out'),Env::t('promo'),Env::t('new_forlife'));
+        }
+        
+        if (Env::has('add_study') && !$add) {
+                $user->addStudy(Env::t('formation_id'),Env::t('year_in'),Env::t('year_out'),Env::t('promo'),Env::t('forlife'));
+        }
+        
+        if (Env::has('del_study') && !$add) {
+                $user->delStudy(Env::t('formation_id'),Env::t('forlife'));
+        }
+        
+        if (Env::has('change_profile')) {
+            if($add){
+                if(!Env::has('hruid')) {
+                    throw new Exception("Vous devez spécifier un hrid.");
+                }
+                $user->insert();
+                $msg[] = "L'utilisateur a été ajouté.";
+            }
+            if (Env::has('image')) {
+                $group = Group::from('tol')->select(GroupSelect::castes());
+
+                $image = new ImageFilter(new PFC_And(new IFC_Id(Env::i('image')), new IFC_Temp()));
+                $image = $image->get(true);
+                if (!$image) {
+                    throw new Exception("This image doesn't exist anymore");
+                }
+                $image->select(FrankizImageSelect::caste());
+                $image->label(S::user()->fullName());
+                $image->caste($group->caste(Rights::everybody()));
+                $tv = new TolValidate($image, $user);
+                $v = new Validate(array(
+                    'writer' => S::user(),
+                    'group'  => $group,
+                    'item'   => $tv,
+                    'type'   => 'tol'));
+                $v->insert();
+                $msg[] = 'La demande de changement de photo tol a été prise en compte.
+                    Les tolmestres essaieront de te la valider au plus tôt.';
+            }
+            
+            if(Env::has('password')){
+                $user->password(Env::t('password'));
+            }
+            
+            $user->nickname(Env::t('nickname'));
+            $user->lastname(Env::t('lastname'));
+            $user->firstname(Env::t('firstname'));
+            $user->hruid(Env::t('hruid'));
+            $user->birthdate(new FrankizDateTime(Env::t('birthdate')));
+            $user->gender(Env::t('gender') == 'man' ? User::GENDER_MALE : User::GENDER_FEMALE);
+            $user->email(Env::t('bestalias'));
+            $user->cellphone(new Phone(Env::t('cellphone')));
+            $user->email_format((Env::t('format')=='text') ? User::FORMAT_TEXT : User::FORMAT_HTML);
+            $user->comment(Env::t('comment'));
+            
+            if($add){
+                pl_redirect('profile/admin/account/' . $user->hruid() . '/added');
+            }
+        }
+
+        if (!empty($err)) {
+            $page->assign('err', $err);
+        }
+        if (!empty($msg)) {
+            $page->assign('msg', $msg);
+        }
+        
+        $page->assign('formations', XDB::query("SELECT formation_id, label FROM formations")->fetchAllAssoc());
+        print_r(XDB::query("SELECT formation_id, label FROM formations")->fetchAllAssoc());
+        
+        $page->assign('userEdit', $user);
+        $page->addCssLink('profile.css');
+        $page->assign('add',$add);
+        $page->assign('title', "Changement du profil : " . $user->fullName());
+        if($add) {
+            $page->assign('title', "Création d'un utilisateur");
+        }
+        $page->assign('perms',array('admin'));
+        $page->changeTpl('profile/admin_account.tpl');
     }
 
     public function handler_defaultfilters($page)

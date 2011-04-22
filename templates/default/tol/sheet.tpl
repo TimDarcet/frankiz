@@ -36,7 +36,7 @@
     <div class="name">
         {$result->fullName()}
         {if $su}
-            (<a class="warning" href="admin/su/{$result->id()}">su</a>)
+            (<a class="warning" href="admin/su/{$result->id()}">su</a> | <a class="warning" href="profile/admin/account/{$result->hruid()}">administrer</a>)
          {/if}
     </div>
 

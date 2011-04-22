@@ -249,6 +249,11 @@ class UserSelect extends Select
                                      'rooms' => RoomSelect::all(),
                                    'studies' => Formation::SELECT_BASE));
     }
+    
+    public static function studies() {
+        return new UserSelect(array_merge(self::$natives, array('studies')),
+                              array('studies' => Formation::SELECT_BASE));
+    }
 
     public static function birthday() {
         return new UserSelect(array('hruid', 'original', 'photo', 'gender',
@@ -569,7 +574,46 @@ class User extends Meta
 
         if (!(XDB::affectedRows() > 0))
             return false;
+            
+        $this->select(UserSelect::studies());
+        return true;
+    }
+    
+    public function updStudy($formation, $forlife, $new_formation, $new_year_in, $new_year_out, $new_promo, $new_forlife)
+    {
+        $new_formation_id = ($new_formation instanceof Formation) ? $new_formation->id() : $new_formation;
+        $formation_id = ($formation instanceof Formation) ? $formation->id() : $formation;
+        XDB::execute('UPDATE IGNORE  studies
+                                SET  formation_id = {?},
+                                     year_in = {?}, year_out = {?},
+                                     promo = {?}, forlife = {?}
+                              WHERE  formation_id = {?}
+                                AND  forlife = {?}
+                                AND  uid = {?}',
+                                  $new_formation_id,
+                                  $new_year_in, $new_year_out,
+                                  $new_promo, $new_forlife,
+                                  $formation_id, $forlife, $this->id());
 
+        if (!(XDB::affectedRows() > 0))
+            return false;
+        
+        $this->select(UserSelect::studies());
+        return true;
+    }
+    
+    public function delStudy($formation, $forlife)
+    {
+        $formation_id = ($formation instanceof Formation) ? $formation->id() : $formation;
+        XDB::execute('DELETE FROM  studies
+                            WHERE  uid = {?} AND formation_id = {?}
+                              AND  forlife = {?}',
+                                 $this->id(), $formation_id, $forlife);
+
+        if (!(XDB::affectedRows() > 0))
+            return false;
+            
+        $this->select(UserSelect::studies());
         return true;
     }
 
@@ -595,6 +639,23 @@ class User extends Meta
             $this->rooms = new Collection('Room');
 
         $this->rooms->add($r);
+        return true;
+    }
+    
+    public function delRoom(Room $r)
+    {
+        XDB::execute('DELETE FROM  rooms_users
+                            WHERE  rid = {?} AND uid = {?}
+                            LIMIT  1',
+                            $r->id(), $this->id());
+
+        if (!(XDB::affectedRows() > 0))
+            return false;
+
+        if (empty($this->rooms))
+            $this->rooms = new Collection('Room');
+
+        $this->rooms->remove($r);
         return true;
     }
 

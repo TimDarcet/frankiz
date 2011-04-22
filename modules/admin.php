@@ -145,7 +145,7 @@ class AdminModule extends PlModule
         $page->assign('castes', $explored);
         $page->changeTpl('admin/bubble.tpl');
     }
-
+    
     function handler_images($page)
     {
         $temp = Group::from('temp');
