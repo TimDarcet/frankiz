@@ -21,7 +21,6 @@
 {**************************************************************************}
 
 {if !S::logged()}<p><a href="profile/recovery">Active ton compte Frankiz !</a></p>{/if}
-<p>Il est normal que ta date de naissance, ton numéro de casert et ta section sportive ne soient pas à jour ! Nous faisons notre possible pour récupérer ces données auprès de l'administration...</p>
-<p>Pour tout autre problème n'hésite pas à contacter <a href="mailto:frankiz@frankiz.polytechnique.fr">l'équipe Frankiz</a>.</p>
+{include file="wiki.tpl"|rel name='activate_account'}
 {if S::logged()}<p><a href="profile/minimodules">Supprimer ce mini module...</a></p>{/if}
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

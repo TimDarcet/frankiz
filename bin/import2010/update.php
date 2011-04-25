@@ -57,11 +57,11 @@ $us = $uf->get()->select(UserSelect::tol());
 
 XDB::execute('DELETE FROM users_minimodules WHERE uid = 0 AND col = "COL_FLOAT"');
 XDB::execute('INSERT INTO users_minimodules (uid,name,col,row) VALUES
-                          ({?}, "activate_account",  "COL_FLOAT",  0 )',$u->id());
+                          (0, "activate_account",  "COL_FLOAT",  0 )');
 XDB::execute('INSERT INTO users_minimodules (uid,name,col,row) VALUES
-                          ({?}, "quicksearch",       "COL_FLOAT",  1 )',$u->id());
+                          (0, "quicksearch",       "COL_FLOAT",  1 )');
 XDB::execute('INSERT INTO users_minimodules (uid,name,col,row) VALUES
-                          ({?}, "links",             "COL_FLOAT",  2 )',$u->id());
+                          (0, "links",             "COL_FLOAT",  2 )');
 
 $users = $us->count();
 $k = 0;
