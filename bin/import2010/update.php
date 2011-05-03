@@ -54,7 +54,11 @@ $tol_caste = $group->caste(Rights::everybody());
 $uf = new UserFilter(new PFC_And(new UFC_Study(new Formation(1)), new UFC_Promo(2010)));
 $us = $uf->get()->select(UserSelect::tol());
 
+            $nf = new GroupFilter(new GFC_Name('sport_judo'));
+            $n = $nf->get(true);
+            $n->select(GroupSelect::castes());
 
+/*
 XDB::execute('DELETE FROM users_minimodules WHERE uid = 0 AND col = "COL_FLOAT"');
 XDB::execute('INSERT INTO users_minimodules (uid,name,col,row) VALUES
                           (0, "activate_account",  "COL_FLOAT",  0 )');
@@ -62,6 +66,7 @@ XDB::execute('INSERT INTO users_minimodules (uid,name,col,row) VALUES
                           (0, "quicksearch",       "COL_FLOAT",  1 )');
 XDB::execute('INSERT INTO users_minimodules (uid,name,col,row) VALUES
                           (0, "links",             "COL_FLOAT",  2 )');
+*/
 
 $users = $us->count();
 $k = 0;
@@ -70,7 +75,7 @@ foreach($us as $u) {
     // Creating the User
 
 //    $u->birthdate(new FrankizDateTime($datas['date_nais']));
-
+    /*
     $u->skin('default');
     
     XDB::execute('DELETE FROM users_minimodules WHERE uid = {?}',$u->id());
@@ -99,7 +104,21 @@ foreach($us as $u) {
     XDB::execute('INSERT INTO users_minimodules (uid,name,col,row) VALUES
                               ({?}, "todo",         "COL_FLOAT",  4 )',$u->id());
                           
-                          
+    */
+    
+    
+    $iter = XDB::iterator('SELECT  compagnie, section, datedeN, bat, chambre
+                         FROM  dev.test_tol2k10
+                         WHERE email = {?}', $u->hruid() . '@polytechnique.edu');
+                         
+    $datas = array();
+    if($iter->total() == 1){
+        $datas = $iter->next();
+    }
+    else { echo "erreur : " . $u->hruid() . '\n';}
+    
+    $u->birthdate(new FrankizDateTime(DateTime::createFromFormat('d/m/Y',$datas['datedeN'])->format('Y-m-d')));
+    
 /*    try {
         $u->cellphone(new Phone($datas['portable']));
     } catch(Exception $e) {
@@ -108,27 +127,27 @@ foreach($us as $u) {
 //    $u->poly($datas['login']);
 
     // Linking with the room
-/*    $room = $datas['piece_id'];
+    $room = str_replace('.','',$datas['chambre']);
     if (!empty($room)) {
         if (preg_match('/^[0-9]+[a-z]?$/', $room)) {
-            $room = 'X' . $room;
+            $room = ($datas['bat'] == "Marié Bât D" ? 'D' :'X') . $room;
         }
         if ($room = Room::from($room)) {
             $u->addRoom($room);
         } else {
-            echo 'Error for room ' . $datas['piece_id'] . "\n";
+            echo 'Error for room ' . $datas['chambre'] . "\n";
         }
-    }*/
+    }
 
 
     // Linking with the sport
-/*    if (!empty($datas['sport'])) {
-        $nf = new GroupFilter(new GFC_Name('sport_' . conv_name($datas['sport'])));
+    if (!empty($datas['section'])) {
+        $nf = new GroupFilter(new GFC_Name('sport_' . conv_name($datas['section'])));
         $n = $nf->get(true);
         $n->select(GroupSelect::castes());
         $n->caste(Rights::member())->addUser($u);
     }
-*/
+
 
     //Photo
 /*    $works = false;
