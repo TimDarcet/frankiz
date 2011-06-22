@@ -17,7 +17,10 @@ class PixMiniModule extends FrankizMiniModule
 
     public function tpl()
     {
-        return 'minimodules/pix/pix.tpl';
+        if (IP::is_internal())
+            return 'minimodules/pix/internal.tpl';
+        else 
+            return 'minimodules/pix/external.tpl';
     }
 
     public function title()
