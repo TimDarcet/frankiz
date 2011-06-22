@@ -25,9 +25,9 @@
 <table>
     {foreach from=$minimodule.trains item='train'}
         <tr>
-            <td class="time">{$train->texte2}</td>
-            <td class="name">{$train->texte3}</td>
-            <td class="desc">{$train->texte1}</td>
+            <td class="time">{$train.time}</td>
+            <td class="name">{$train.name}</td>
+            <td class="desc">{$train.desc}</td>
         </tr>
     {/foreach}
 </table>
