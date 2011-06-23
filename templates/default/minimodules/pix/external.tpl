@@ -1,1 +1,1 @@
-Ce module est malheureusement inaccessible depuis l'extérieur du campus.
+Ce module est malheureusement inaccessible depuis l'extÃ©rieur du campus.
