@@ -173,11 +173,11 @@ class ProfileModule extends PLModule
                     throw new Exception("This image doesn't exist anymore");
                 }
                 $image->select(FrankizImageSelect::caste());
-                $image->label(S::user()->fullName());
+                $image->label($user()->fullName());
                 $image->caste($group->caste(Rights::everybody()));
                 $tv = new TolValidate($image, $user);
                 $v = new Validate(array(
-                    'writer' => S::user(),
+                    'writer' => $user,
                     'group'  => $group,
                     'item'   => $tv,
                     'type'   => 'tol'));

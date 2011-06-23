@@ -71,7 +71,7 @@
         <ul>
         {foreach from=$result->rooms() item='room'}
             <li>
-            <span>{$room->id()}</span>
+            <span>{$room->comment()} {$room->id()}</span>
             {if $room->phone()}(Tel: <span>{$room->phone()}</span>){/if}
             <ul class="ips">
             {foreach from=$room->ips() item='ip'}
@@ -99,7 +99,7 @@
     </div>
 
     <div class="nationality">
-        Nationalité:
+        Nationalité :
         <ul>
             {foreach from=$groups|filter:'ns':'nationality'|order:'score' item='group'}
                 <li>{$group|group:'text'}</li>
@@ -111,7 +111,7 @@
 <div class="more">
     {if count($groups|filter:'ns':'binet') > 0}
         <div class="binets">
-            Binets:
+            Binets :
             <ul>
                 {foreach from=$groups|filter:'ns':'binet'|order:'score' item='group'}
                     <li>

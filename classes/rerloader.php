@@ -28,7 +28,13 @@ class RerLoader
     
     private static function response($destination){
         $api = new API(self::$urls[$destination]);
-        return utf8_decode($api->response());
+        $response = simplexml_load_string(utf8_decode($api->response()))->schedules->schedule->liste->children();
+        $return = array();
+        foreach($response as $r){
+            if(preg_match('![0-9]{2}:[0-9]{2}!',(string) $r->texte2))
+                $return[] = array('name' => (string) $r->texte3, 'desc' => (string) $r->texte1, 'time' => (string) $r->texte2);
+        }
+        return $return;
     }
     
     public static function get($destination = 'toParis') {

@@ -30,7 +30,7 @@ Voici {if !$multiple}ta clé{/if}{if $multiple}tes clés{/if} de licence{if !$mu
 
 -------------------------------------------------------------------------
 
-Tu peux télécharger {$keys[0]->softwareName()} sur ftp://enez/
+Tu peux télécharger {$keys[0]->softwareName()} sur ftp://miroir/windows/msdnaa/
 
 Cordialement,
 Le BR

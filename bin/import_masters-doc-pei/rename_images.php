@@ -1,7 +1,8 @@
+#!/usr/bin/php -q
 <?php
 /***************************************************************************
- *  Copyright (C) 2009 Binet Réseau                                       *
- *  http://www.polytechnique.fr/eleves/binets/reseau/                     *
+ *  Copyright (C) 2003-2010 Polytechnique.org                              *
+ *  http://opensource.polytechnique.org/                                   *
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
  *  it under the terms of the GNU General Public License as published by   *
@@ -19,44 +20,20 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class RerMiniModule extends FrankizMiniModule
-{
-    public function auth()
-    {
-        return AUTH_COOKIE;
-    }
+/*
+ * Ce script a été utilisé pour standardiser les noms des photos données
+ * par l'administration pour la promotion 2010
+ * 
+ */
 
-    public function perms()
-    {
-        return 'user';
-    }
-
-    public function tpl()
-    {
-        return 'minimodules/rer/rer.tpl';
-    }
-    
-    public function css()
-    {
-        return 'minimodules/rer.css';
-    }
-    
-    public function title()
-    {
-        return 'Prochains RER';
-    }
-
-    public function run()
-    {
-<<<<<<< HEAD
-        if($xml = simplexml_load_string(RerLoader::get()))
-            $this->assign('trains',$xml->schedules->schedule->liste->children());
-=======
-        if($trains = RerLoader::get())
-            $this->assign('trains', $trains);
->>>>>>> master
-    }
+$dir = "photos/"; 
+$files = scandir($dir);
+foreach($files as $key => $value){
+$new=strtolower(preg_replace('/ /','-',preg_replace('/([A-Z ]*)\s?-\s?([A-Z ]*).*/','$2.$1',$value)));
+rename($dir.$value,$dir.$new.'_original.jpg'); 
+echo $new ."\n";
 }
+
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
 ?>
