@@ -48,13 +48,8 @@ class RerMiniModule extends FrankizMiniModule
 
     public function run()
     {
-<<<<<<< HEAD
-        if($xml = simplexml_load_string(RerLoader::get()))
-            $this->assign('trains',$xml->schedules->schedule->liste->children());
-=======
         if($trains = RerLoader::get())
             $this->assign('trains', $trains);
->>>>>>> master
     }
 }
 
