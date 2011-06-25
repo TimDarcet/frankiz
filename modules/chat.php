@@ -24,12 +24,12 @@ class ChatModule extends PlModule
     public function handlers()
     {
         return array(
-            "chat"              => $this->make_hook("chat"               , AUTH_COOKIE),
+            "chat"              => $this->make_hook("chat"               , AUTH_COOKIE, ''),
 	    "chat/ajax/avatar"  => $this->make_hook("chat_ajax_avatar"   , AUTH_COOKIE) 
         );
     }
 
-    function handler_chat($page, $group='br')
+    function handler_chat($page, $group='platal')
     {
         $page->assign('jabber_hruid', S::user()->login());
 	$page->assign('jabber_nick', S::user()->displayName());
