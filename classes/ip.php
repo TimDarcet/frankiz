@@ -44,7 +44,7 @@ class IP
                 // This is w3c, a trusted reverse proxy
                 if (end($ipList) === '129.104.30.4') {
                     // This is a trusted remote reverse proxy
-                    if (prev($ipList) === $globals->core->remoteproxy) {
+                    if (prev($ipList) === $globals->core->remoteproxy || in_array(prev($ipList), $globals->core->remoteproxy)) {
                         prev($ipList);
                     }
                 }
