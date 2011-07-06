@@ -124,6 +124,15 @@
                 </tr>
                 <tr>
                     <td>
+                        Skin :
+                    </td>
+                    <td class="form">
+                        <input type='text' name='skin' {if !$add}value="{$userEdit->skin()}"{/if} {if $add}value="default"{/if}
+                            />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         Format des mails :
                     </td>
                     <td>
@@ -287,10 +296,86 @@
             <form enctype="multipart/form-data" method="post" action="profile/admin/account/{$userEdit->hruid()}" class="profile">
                 <tr>
                     <td width="20%">
-                        <input type="test" name="rid" />
+                        <input type="text" name="rid" />
                     </td>
                     <td>                                
                         <input type="submit" name="add_room" value="Ajouter" />
+                    </td>
+                </tr>
+            </form>
+        </table>
+    </div>
+</div>
+
+<div class="module profile">
+    <div class="head">
+        <span class="helper" target="profile/admin/account/nationalities"></span>
+        Nationalités
+    </div>
+    <div class="body">
+        <table>
+        {foreach from=$user_nationalities item='nationality'}
+            <form enctype="multipart/form-data" method="post" action="profile/admin/account/{$userEdit->hruid()}" class="profile">
+                <tr>
+                    <td width="20%">
+                        <input type="hidden" name="name" value="{$nationality->name()}" />
+                        {$nationality->label()}
+                    </td>
+                    <td>                                
+                        <input type="submit" name="del_group" value="Supprimer" onclick="return confirm(areyousure);" />
+                    </td>
+                </tr>
+            </form>
+        {/foreach}
+            <form enctype="multipart/form-data" method="post" action="profile/admin/account/{$userEdit->hruid()}" class="profile">
+                <tr>
+                    <td width="20%">
+                        <select name="name">
+                            {foreach from=$nationalities item='nationality'}
+                                <option value="{$nationality->name()}">{$nationality->label()}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                    <td>                                
+                        <input type="submit" name="add_group" value="Ajouter" />
+                    </td>
+                </tr>
+            </form>
+        </table>
+    </div>
+</div>
+
+<div class="module profile">
+    <div class="head">
+        <span class="helper" target="profile/admin/account/sports"></span>
+        Sports
+    </div>
+    <div class="body">
+        <table>
+        {foreach from=$user_sports item='sport'}
+            <form enctype="multipart/form-data" method="post" action="profile/admin/account/{$userEdit->hruid()}" class="profile">
+                <tr>
+                    <td width="20%">
+                        <input type="hidden" name="name" value="{$sport->name()}" />
+                        {$sport->label()}
+                    </td>
+                    <td>                                
+                        <input type="submit" name="del_group" value="Supprimer" onclick="return confirm(areyousure);" />
+                    </td>
+                </tr>
+            </form>
+        {/foreach}
+            <form enctype="multipart/form-data" method="post" action="profile/admin/account/{$userEdit->hruid()}" class="profile">
+                <tr>
+                    <td width="20%">
+                        <select name="name">
+                            {foreach from=$sports item='sport'}
+                                <option value="{$sport->name()}">{$sport->label()}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                    <td>                                
+                        <input type="submit" name="add_group" value="Ajouter" />
                     </td>
                 </tr>
             </form>

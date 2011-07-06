@@ -156,6 +156,16 @@ class ProfileModule extends PLModule
                 $user->removeStudy(Env::t('formation_id'),Env::t('forlife'));
         }
         
+        if (Env::has('add_group') && !$add) {
+                $g = Group::from(Env::t('name'))->select(GroupSelect::castes());
+                $g->caste(Rights::member())->addUser($user);
+        }
+        
+        if (Env::has('del_group') && !$add) {
+                $g = Group::from(Env::t('name'))->select(GroupSelect::castes());
+                $g->caste(Rights::member())->removeUser($user);
+        }
+        
         if (Env::has('change_profile')) {
             if($add){
                 if(!Env::has('hruid')) {
@@ -173,7 +183,7 @@ class ProfileModule extends PLModule
                     throw new Exception("This image doesn't exist anymore");
                 }
                 $image->select(FrankizImageSelect::caste());
-                $image->label($user()->fullName());
+                $image->label($user->fullName());
                 $image->caste($group->caste(Rights::everybody()));
                 $tv = new TolValidate($image, $user);
                 $v = new Validate(array(
@@ -198,6 +208,7 @@ class ProfileModule extends PLModule
             $user->gender(Env::t('gender') == 'man' ? User::GENDER_MALE : User::GENDER_FEMALE);
             $user->email(Env::t('bestalias'));
             $user->cellphone(new Phone(Env::t('cellphone')));
+            $user->skin(Env::t('skin'));
             $user->email_format((Env::t('format')=='text') ? User::FORMAT_TEXT : User::FORMAT_HTML);
             $user->comment(Env::t('comment'));
             
@@ -214,6 +225,16 @@ class ProfileModule extends PLModule
         }
         
         $page->assign('formations', XDB::query("SELECT formation_id, label FROM formations")->fetchAllAssoc());
+        
+        $gfun = new GroupFilter(new PFC_And(new GFC_Namespace('nationality'), new GFC_User($user)));
+        $page->assign('user_nationalities',  $gfun->get()->select(GroupSelect::base())->toArray());
+        $gfn = new GroupFilter(new GFC_Namespace('nationality'));
+        $page->assign('nationalities',  $gfn->get()->select(GroupSelect::base())->toArray());
+        
+        $gfus = new GroupFilter(new PFC_And(new GFC_Namespace('sport'), new GFC_User($user)));
+        $page->assign('user_sports',  $gfus->get()->select(GroupSelect::base())->toArray());
+        $gfs = new GroupFilter(new GFC_Namespace('sport'));
+        $page->assign('sports',  $gfs->get()->select(GroupSelect::base())->toArray());
         
         $page->assign('userEdit', $user);
         $page->addCssLink('profile.css');
