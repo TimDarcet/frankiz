@@ -48,8 +48,9 @@ class RerMiniModule extends FrankizMiniModule
 
     public function run()
     {
-        if($trains = RerLoader::get())
-            $this->assign('trains', $trains);
+        if(!$trains = RerLoader::get())
+            $trains = array();
+        $this->assign('trains', $trains);
     }
 }
 
