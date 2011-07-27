@@ -55,7 +55,8 @@ dir: spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/se
 
 spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/sessions htdocs/css:
 	mkdir -p $@
-	chmod ug+w $@
+	chmod 775 $@
+	sudo chgrp apache $@
 
 ##
 ## conf
