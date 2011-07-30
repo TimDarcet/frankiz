@@ -56,6 +56,7 @@ dir: spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/se
 spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/sessions htdocs/css:
 	mkdir -p $@
 	chmod 775 $@
+	@echo "Need root privileges for \"sudo chgrp apache $@\"
 	sudo chgrp apache $@
 
 ##
@@ -76,6 +77,11 @@ configs/cron: configs/cron.in
 	sudo chown root:root $@
 	@echo "Need root privileges for \"chmod 644 $@\""
 	sudo chmod 644 $@
+
+configs/frankiz.conf:
+	chmod 640 $@
+	@echo "Need root privileges for \"sudo chgrp apache $@\"
+	sudo chgrp apache $@
 
 ##
 ## clean
