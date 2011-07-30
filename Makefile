@@ -21,12 +21,19 @@ wget $(DOWNLOAD_SRC) -O $@ -q || ($(RM) $@; exit 1)
 endef
 
 INSTALL_DIR := $(shell pwd)
-INSTALL_USER := frankiz
+INSTALL_USER := $(USER)
 
 ################################################################################
 # global targets
 
 all: build
+	@echo ""
+	@echo ""
+	@echo "+----------------------------------------------+"
+	@echo "| Version de dév installée, ajoutez le passwd  |"
+	@echo "| MySQL dans configs/frankiz.conf              |"
+	@echo "+----------------------------------------------+"
+	@echo ""
 
 build: core dir conf
 
@@ -78,11 +85,12 @@ configs/cron: configs/cron.in
 	@echo "Need root privileges for \"chmod 644 $@\""
 	sudo chmod 644 $@
 
-configs/frankiz.conf:
-	cp $@.in $@
-	chmod 640 $@
+configs/frankiz.conf: configs/frankiz.conf.in
+	[ -f $@ ] || sed -e "s,@USER@,$(INSTALL_USER),g" $< > $@
 	@echo "Need root privileges for \"sudo chgrp apache $@\""
 	sudo chgrp apache $@
+	@echo "Need root privileges for \"chmod 640 $@\""
+	sudo chmod 640 $@
 
 ##
 ## clean

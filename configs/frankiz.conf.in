@@ -1,25 +1,25 @@
 ; contains all variable config
 
-; {{{ [Core]
-
 [Core]
 
 debug      = 7
-dbdb       = "frankiz3"
-dbuser     = "web"
+dbdb       = "dev"
+dbuser     = "dev"
 dbhost     = "localhost"
-dbpwd      = "****"
+dbpwd      = "*********"
 
-sitename   = "Frankiz"
-baseurl = "/"
+;mode='r'
 
-admin_email = "web@frankiz"
+cookie_path= '/~@USER@/'
+cookie_ns  = '@USER@_';
 
-; }}}
-; {{{ [Paths]
+sitename   = "Frankiz - Version de dév - @USER@"
+baseurl    = "https://dev.frankiz.net/~@USER@/"
 
-[paths]
-pagespersos = "~user/public_html/frankiz_dev/webperso
 
-; }}}
+[Mails]
+
+admin      = "@USER@@eleves"
+web        = "@USER@@eleves"
+debug      = "@USER@@eleves"
 
