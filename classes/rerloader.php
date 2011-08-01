@@ -26,6 +26,11 @@ class RerLoader
         'toStRemy'  => "http://ratp-bridge.fabernovel.com/ratp.schedule?reseau=4&direction=55&station=836&%20H"
     );
     
+    private static function destination($dest){
+        $dest = str_replace("Charles-de-Gaulle", "CDG", $dest);
+        return strtoupper(substr($dest, 0, 10));
+    }
+    
     private static function response($destination){
         try{
             $api = new API(self::$urls[$destination]);
@@ -37,7 +42,7 @@ class RerLoader
             $return = array();
             foreach($response as $r){
                 if(preg_match('![0-9]{2}:[0-9]{2}!',(string) $r->texte2))
-                    $return[] = array('name' => (string) $r->texte3, 'desc' => (string) $r->texte1, 'time' => (string) $r->texte2);
+                    $return[] = array('name' => (string) $r->texte3, 'desc' => self::destination((string) $r->texte1), 'time' => (string) $r->texte2);
             }
             return $return;
         }

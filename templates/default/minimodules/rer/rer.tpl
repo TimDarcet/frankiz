@@ -21,16 +21,25 @@
 {**************************************************************************}
 
 {if $minimodule.trains|@count > 0}
-<h4>Prochains trains pour Paris</h4>
+<h3><img class="logo" src="css/default/images/rer_b.png" /> PROCHAINS TRAINS</h3>
+<div class="display">
+<h4 class="currentTime">{$minimodule.currentTime}</h4>
+<h4>Direction MITRY-CLAYE<br/>AEROPORT CH.DE GAULLE</h4>
 <table>
+    <tr>
+        <th class="name">Nom</th>
+        <th class="desc">Destination</th>
+        <th class="time">Heure de passage</th>
+    </tr>
     {foreach from=$minimodule.trains item='train'}
         <tr>
-            <td class="time">{$train.time}</td>
             <td class="name">{$train.name}</td>
             <td class="desc">{$train.desc}</td>
+            <td class="time">{$train.time}</td>
         </tr>
     {/foreach}
 </table>
+</div>
 {/if}
 
 {if $minimodule.trains|@count == 0}

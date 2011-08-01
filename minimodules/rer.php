@@ -51,6 +51,7 @@ class RerMiniModule extends FrankizMiniModule
         if(!$trains = RerLoader::get())
             $trains = array();
         $this->assign('trains', $trains);
+        $this->assign('currentTime', date("H:i"));
     }
 }
 
