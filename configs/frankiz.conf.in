@@ -2,24 +2,28 @@
 
 [Core]
 
-debug      = 7
-dbdb       = "dev"
-dbuser     = "dev"
+debug      = 0
+dbdb       = "frankiz"
+dbuser     = "frankiz"
 dbhost     = "localhost"
 dbpwd      = "*********"
 
 ;mode='r'
 
-cookie_path= '/~@USER@/'
-cookie_ns  = '@USER@_';
+cookie_path = '/'
+cookie_ns  = 'fkz_';
 
-sitename   = "Frankiz - Version de dév - @USER@"
-baseurl    = "https://dev.frankiz.net/~@USER@/"
+memcache   = "127.0.0.1"
 
+sitename   = "Frankiz"
+baseurl    = "https://www.frankiz.net/"
 
 [Mails]
 
-admin      = "@USER@@eleves"
-web        = "@USER@@eleves"
-debug      = "@USER@@eleves"
+admin = frankiz@binets.polytechnique.fr
+web   = webmasters@binets.polytechnique.fr
 
+
+[remote]
+
+lag    = 300
