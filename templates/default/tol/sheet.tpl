@@ -35,7 +35,7 @@
 
     <div class="name">
         {$result->fullName()}
-        {if $user->isWeb() || $user->isAdmin()}
+        {if $user->isWeb() or $user->isAdmin()}
 	    (
             {if $user->isAdmin()}
                 <a class="warning" href="admin/su/{$result->id()}">su</a> | 
