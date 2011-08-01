@@ -24,7 +24,7 @@ class ProfileModule extends PLModule
     public function handlers()
     {
         return array('profile/account'                 => $this->make_hook('account',                 AUTH_MDP),
-                     'profile/admin/account'           => $this->make_hook('admin_account',           AUTH_MDP, 'admin'),
+                     'profile/admin/account'           => $this->make_hook('admin_account',           AUTH_MDP, 'web'),
                      'profile/defaultfilters'          => $this->make_hook('defaultfilters',          AUTH_COOKIE),
                      'profile/mails'                   => $this->make_hook('mails',                   AUTH_COOKIE),
                      'profile/password'                => $this->make_hook('password',                AUTH_MDP),

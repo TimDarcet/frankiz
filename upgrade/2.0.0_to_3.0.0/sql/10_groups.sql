@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS groups (
   ns varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   external tinyint(1) NOT NULL,
-  leavable tinyint(1) NOT NULL,
+  leavable tinyint(1) NOT NULL DEFAULT 1,
   visible tinyint(1) NOT NULL,
   image int(11) DEFAULT NULL,
   label varchar(250) COLLATE utf8_unicode_ci NOT NULL,

@@ -35,9 +35,13 @@
 
     <div class="name">
         {$result->fullName()}
-        {if $su}
-            (<a class="warning" href="admin/su/{$result->id()}">su</a> | <a class="warning" href="profile/admin/account/{$result->hruid()}">administrer</a>)
-         {/if}
+        {if $user->isWeb() || $user->isAdmin()}
+	    (
+            {if $user->isAdmin()}
+                <a class="warning" href="admin/su/{$result->id()}">su</a> | 
+            {/if}
+	    <a class="warning" href="profile/admin/account/{$result->hruid()}">administrer</a>)
+	{/if}
     </div>
 
     <div class="nickname">{$result->nickname()}</div>

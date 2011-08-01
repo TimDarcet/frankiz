@@ -129,7 +129,7 @@ class MailValidate extends ItemValidate
                     'Frankiz - ' . $this->origin->label() . '');
         }
         else {
-            $mail->setFrom($this->writer->bestEmail(), $this->writer->displayName());
+            $mail->setFrom($this->writer->bestEmail(), $this->writer->fullName());
         }
         
         if ($this->type_mail == 'promo' && !$this->targets) {

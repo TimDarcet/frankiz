@@ -202,7 +202,6 @@ class TolModule extends PLModule
         $page->assign('already_groups', $already_groups);
         $page->assign('user', S::user());
         $page->assign('fields', $fields);
-        $page->assign('su', S::user()->isAdmin());
         $page->assign('title', 'Trombino On Line');
         $page->addCssLink('tol.css');
         $page->changeTpl('tol/tol.tpl');
