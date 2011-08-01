@@ -274,7 +274,7 @@ class TolModule extends PLModule
             $u->select(UserSelect::tol());
         }
 
-        $page->assign('su', S::user()->isAdmin());
+        $page->assign('user', S::user());
         $page->assign('result', $u);
         try {
             $sheet = $page->filteredFetch(FrankizPage::getTplPath('tol/sheet.tpl'));

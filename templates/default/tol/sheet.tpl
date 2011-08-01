@@ -36,12 +36,12 @@
     <div class="name">
         {$result->fullName()}
         {if $user->isWeb() or $user->isAdmin()}
-	    (
+            (
             {if $user->isAdmin()}
                 <a class="warning" href="admin/su/{$result->id()}">su</a> | 
             {/if}
-	    <a class="warning" href="profile/admin/account/{$result->hruid()}">administrer</a>)
-	{/if}
+            <a class="warning" href="profile/admin/account/{$result->hruid()}">administrer</a>)
+        {/if}
     </div>
 
     <div class="nickname">{$result->nickname()}</div>
