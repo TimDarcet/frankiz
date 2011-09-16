@@ -211,13 +211,18 @@ class ProposalModule extends PlModule
                     'end'           => $end,
                     'origin'        => $origin,
                     'valid_origin'  => $valid_origin));
-                $v = new Validate(array(
-                    'writer'    => S::user(),
-                    'group'     => ($valid_origin)?$origin:$target_group,
-                    'item'      => $av,
-                    'type'      => 'activity'));
 
-                $v->insert();
+                if($origin !== false || S::user()->group()->id() != $target->group()->id()) {
+                    $v = new Validate(array(
+                        'writer'    => S::user(),
+                        'group'     => ($valid_origin)?$origin:$target_group,
+                        'item'      => $av,
+                        'type'      => 'activity'));
+                    $v->insert();
+                } else {
+                    $av->commit();
+                    $page->assign('auto', true);
+                }
                 $page->assign('envoye', true);
             }
             catch (Exception $e)
