@@ -25,45 +25,47 @@ class ChatModule extends PlModule
     {
         return array(
             "chat"              => $this->make_hook("chat"               , AUTH_COOKIE, ''),
-	    "chat/ajax/avatar"  => $this->make_hook("chat_ajax_avatar"   , AUTH_COOKIE) 
+            "chat/avatar"       => $this->make_hook("chat_avatar"        , AUTH_COOKIE, ''),
         );
     }
 
+    // Adds value to the javascripts variables in the template
     function handler_chat($page, $group='platal')
     {
         $page->assign('jabber_hruid', S::user()->login());
-	$page->assign('jabber_nick', S::user()->displayName());
+        $page->assign('jabber_nick', S::user()->displayName());
         $page->assign('jabber_cookie', $_SERVER['HTTP_COOKIE']);
         if ($group)
-	    $page->assign('jabber_room', $group);
-	else
-	    $page->assign('jabber_room', 'br');
+            $page->assign('jabber_room', $group);
+        else
+            $page->assign('jabber_room', 'br');
         $page->changeTpl('chat/chat.tpl');
     }
 
-    function handler_chat_ajax_avatar($page)
+    function handler_chat_avatar($page, $hruid)
     {
-        $json = json_decode(Env::v('json'));
-	$page->jsonAssign('json',$json);
-        $hruid = $json->hruid;
+        global $globals;
 
-	$filter = new UFC_Hruid($hruid);
+        $filter = new UFC_Hruid($hruid);
         $uf = new UserFilter($filter);
         $user = $uf->get(true); //add boolean
-	if (! $user) {
-            $page->jsonAssign('error',"Inexistent user, or inconsistent database.");
-            return PL_JSON;
-	}
-        
-        $user->select(UserSelect::login());
-        $image = $user->image();
-        $src = $image->src("micro");
-        $page->jsonAssign('src', $src);
+        if (! $user) {
+            header($_SERVER['SERVER_PROTOCOL'] . '404 Not Found');
+            $image = new StaticImage($globals->images->man);
+            // for some reason mime isn't picked up: for valid images mime == null is enough to be displayed correctly
+            // for $globals->images->man neither 1 nor null does the trick
+        } else {
+            $user->select(UserSelect::login());
+            $image = $user->image();
+        }
 
-        return PL_JSON;
+        $image->send("micro");
+        exit;
     }
-    
+
+    // Rather than a method taking json input, it would make sense to use instead a method like chat/ajax/picture?hruid=jid.
+    // The outgoing payload need only be the picture itself. No question asked. Then the resolution need not be done is js.
 }
 
-// vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
+// vim:set et sw=4 sts=4 sws=4 foldmethod=marker:
 ?>

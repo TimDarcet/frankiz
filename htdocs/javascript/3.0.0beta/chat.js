@@ -16,7 +16,7 @@ function onConnect(status)
         $('#chatstatus').text('Pas connecté')
     } else if (status == Strophe.Status.CONNECTED) {
         $('#chatstatus').text('')
-	$('#chatbody form').show()
+        $('#chatbody form').show()
 
         connection.send($pres().tree());
 
@@ -26,42 +26,21 @@ function onConnect(status)
     }
 }
 
-window.avatars = {}
+// We count the number of clients for every hruid
 window.client_count = {}
+window.hruids = {}
+window.jabber_connected= false;
+window.localOffset = (new Date()).getTimezoneOffset()
 
-function avatar(nick, hruid, callback){
-    
-    if(hruid in window.avatars) {
-        if('src' in window.avatars[hruid])
-            callback(window.avatars[hruid]['src'])
-	else
-            window.avatars[hruid]['callbacks'].push(callback);
-    } else {
-        window.avatars[hruid]={'callbacks': [callback]}  //Not thread safe approach!
-        
-        $.ajax({
-            url: 'chat/ajax/avatar',
-            data:{'json': '{"hruid": "'+hruid+'"}'},
-            success: function(msg){
-                msg = $.parseJSON(msg);
-                window.avatars[hruid]['src'] = msg.src
-                for (var i = 0; i < window.avatars[hruid]['callbacks'].length; i++)
-                    if (window.avatars[hruid]['callbacks'][i] && $.isFunction(window.avatars[hruid]['callbacks'][i]))
-                        window.avatars[hruid]['callbacks'][i](msg.src);
-                
-                delete window.avatars[hruid]['callbacks'];
-                //$('#room img[hruid='+hruid+']').attr('src', msg.src)
-            }
-        });
-        
-    }
+function avatar(hruid){
+    return "chat/avatar/" + hruid;
 }
 
-function join(pseudo) {
+function join(nick) {
     cb = function(){
-        Strophe._connectionPlugins['muc'].join(room,pseudo,message_handler,presence_handler,null);
-        window.jabber_nick = pseudo;
-        window.hruids[pseudo] = window.jabber_hruid;
+        Strophe._connectionPlugins['muc'].join(room, nick, message_handler, presence_handler, null);
+        window.jabber_nick = nick;
+        window.hruids[nick] = window.jabber_hruid;
         $('#join_button').attr('disabled','true');
     }
     if (window.jabber_connected) {
@@ -79,8 +58,19 @@ function leave(callback) {
 function post(message) {
     Strophe._connectionPlugins['muc'].message(room,null,message);
 }
-  
-//from : sender jid, possibly null
+
+function updateView() {
+    $(".viewport").height(document.documentElement.clientHeight - 270)
+	h2N = function(txt) {
+        return Number(txt.substring(0, txt.length -2))
+	}
+    if(h2N($(".thumb")[0].style.top) + h2N($(".thumb")[0].style.height) > h2N($(".track")[0].style.height) - 5)
+        $("#chatbody").tinyscrollbar_update('bottom');
+    else
+        $("#chatbody").tinyscrollbar_update('relative');
+}
+
+//from : sender jid
 //nick : sender nick
 //message: sent message
 function get(from, nick, message, date) {
@@ -107,16 +97,21 @@ function get(from, nick, message, date) {
         }
     } else
         at = ""
-    a = $('#message_template').tmpl({sender: {image: "", hruid: from, label: nick}, text: message, time: at})
-    cb_g = function(){var e = a; return function(src){$("img", e).attr('src', src)}}
-    cb = cb_g();
-    if(from)
-        avatar(nick, from, cb)
-    else
-        avatar(nick, null, cb)
+    a = $('#message_template').tmpl({sender: {image: avatar(from), hruid: from, label: nick}, text: message, time: at})
+	prev_msg = $('.message img')
+	if (prev_msg.length > 0 && prev_msg.last().attr('hruid') == from) {
+        a.find("img").fadeTo(0, 0).attr('height', 0)
+    } else {
+        a.find('td:not(:first)').css('padding-top',  '18px')
+        if (from == window.jabber_hruid)
+            a.find("img").fadeTo(0, 0.2)
+    }
     a.appendTo('#chatroom');
+	updateView();
+	setTimeout("updateView()", 20)
 }
 
+// Tags a person a being there or not
 function isPresent(nick, hruid, so) {
     log('seen: '+nick+'('+hruid+') ? ' + so)
     if (so) {
@@ -125,11 +120,8 @@ function isPresent(nick, hruid, so) {
         else
             window.client_count[hruid] = 1
         if (window.client_count[hruid] == 1) {
-            a = $('#presence_template').tmpl({sender: {image: "", hruid: hruid, label: nick}})
-	    cb_g = function(){var e = a; return function(src){$("img", e).attr('src', src)}}
-            cb = cb_g();
-            avatar(nick, hruid, cb);
-	    a.appendTo('#chatpresence')
+            a = $('#presence_template').tmpl({sender: {image: avatar(hruid), hruid: hruid, label: nick}})
+            a.appendTo('#chatpresence')
         }
     } else {
         if (!(hruid in window.client_count) || window.client_count[hruid] <= 0) {
@@ -156,9 +148,8 @@ function message_handler(o) {
     t = roomjid.split('@')
     name = t[0]
     service=t[1]
-    // name==room_id
-    // I expect only one
-    if ($('delay[from]', o).attr('from'))
+    
+	if ($('delay[from]', o).attr('from'))
         from = $('delay[from]', o).attr('from').split('/')[0].split('@')[0]
     else if (nick in window.hruids)
         from = window.hruids[nick]
@@ -167,13 +158,15 @@ function message_handler(o) {
 
     if ($('x[xmlns=jabber:x:delay]', o)) {
         raw = $('x[xmlns=jabber:x:delay]', o).attr('stamp')
-        if(raw)
+        if(raw) {
             date = new Date($('x[xmlns=jabber:x:delay]', o).attr('stamp'))
-        else
+			date.setMinutes(date.getMinutes() - window.localOffset)
+         } else
             date = new Date()
         if ( date == "Invalid Date" ) {
             alt = raw.substring(0,4) + '-' + raw.substring(4,6) + '-' + raw.substring(6)
             date = new Date(alt)
+			date.setMinutes(date.getMinutes() - window.localOffset)
         }
     } else
         date = null
@@ -209,7 +202,6 @@ function presence_handler(o){
         if(!text)
             log('Humpf, no jid and no text.')
         else{
-            window.chat_avatar = {}
             alert(text)
         }
         return true;
@@ -229,11 +221,9 @@ function presence_handler(o){
 $("#join_button").click(function(){
      nickField = $("#nick_field");
      join(nickField.val());
-     //fetch_avatar(nickField.val(), window.jabber_hruid);
      return false;
 });
   
-//$("#post_button").click(function(){
 $('#toPost').keypress(function(event){
     if (event.which == '13') {
       textField = $('#toPost');
@@ -245,10 +235,9 @@ $('#toPost').keypress(function(event){
 
 
 $(document).ready(function () {
+    $(".viewport").height(document.documentElement.clientHeight - 270)
+    $("#chatbody").tinyscrollbar()
     connection = new Strophe.Connection(BOSH_SERVICE);
-    //Strophe.log = function (level, msg) { log('LOG [' + level + ']:' + msg); };
-    connection.connect(window.jabber_hruid+'@chat.frankiz.net',
-                       '{COOKIE}'+window.jabber_cookie,
-                       onConnect);
+    connection.connect(window.jabber_hruid+'@chat.frankiz.net', '{COOKIE}'+window.jabber_cookie, onConnect);
 });
 
