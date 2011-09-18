@@ -15,6 +15,7 @@ function onConnect(status)
     } else if (status == Strophe.Status.DISCONNECTED) {
         $('#chatstatus').text('Pas connecté')
     } else if (status == Strophe.Status.CONNECTED) {
+        $(window).bind('beforeunload', function() { leave() });
         $('#chatstatus').text('')
         $('#chatbody form').show()
 
