@@ -27,8 +27,9 @@ class RerLoader
     );
     
     private static function destination($dest){
+        $dest = str_replace("AEROPORT ", "", $dest); 
         $dest = str_replace("Charles-de-Gaulle", "CDG", $dest);
-        return strtoupper(substr($dest, 0, 10));
+        return strtoupper(substr($dest, 0, 8));
     }
     
     private static function response($destination){
