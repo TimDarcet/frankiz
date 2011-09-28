@@ -73,7 +73,7 @@ spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/session
 conf: classes/frankizglobals.php htdocs/.htaccess configs/frankiz.conf configs/cron
 
 htdocs/.htaccess: htdocs/.htaccess.in Makefile
-	@REWRITE_BASE="/~$$(id -un)"; \
+	@REWRITE_BASE="/~$(INSTALL_USER)"; \
 	test "$$REWRITE_BASE" = "/~web" && REWRITE_BASE="/"; \
 	sed -e "s,@REWRITE_BASE@,$$REWRITE_BASE,g" $< > $@
 
