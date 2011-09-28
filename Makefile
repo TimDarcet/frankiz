@@ -72,7 +72,7 @@ spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/session
 	mkdir -p $@
 	chmod 775 $@
 	@echo "Need root privileges for \"sudo chgrp apache $@\""
-	sudo chgrp apache $@
+	sudo -k chgrp apache $@
 
 ##
 ## conf
@@ -86,19 +86,19 @@ htdocs/.htaccess: htdocs/.htaccess.in Makefile
 	sed -e "s,@REWRITE_BASE@,$$REWRITE_BASE,g" $< > $@
 
 configs/cron: configs/cron.in
-	[ ! -f configs/cron ] || ( echo "Need root privileges for \"sudo rm $@\"" && sudo rm $@)
+	[ ! -f configs/cron ] || ( echo "Need root privileges for \"sudo rm $@\"" && sudo -k rm $@)
 	sed -e "s,@INSTALL_DIR@,$(INSTALL_DIR),g;s,@USER@,$(INSTALL_USER),g" $< > $@
 	@echo "Need root privileges for \"sudo chown root:root $@\""
-	sudo chown root:root $@
+	sudo -k chown root:root $@
 	@echo "Need root privileges for \"chmod 644 $@\""
-	sudo chmod 644 $@
+	sudo -k chmod 644 $@
 
 configs/frankiz.conf: configs/frankiz.conf.in
 	[ -f $@ ] || sed -e "s,@USER@,$(INSTALL_USER),g" $< > $@
 	@echo "Need root privileges for \"sudo chgrp apache $@\""
-	sudo chgrp apache $@
+	sudo -k chgrp apache $@
 	@echo "Need root privileges for \"chmod 640 $@\""
-	sudo chmod 640 $@
+	sudo -k chmod 640 $@
 
 ##
 ## clean
