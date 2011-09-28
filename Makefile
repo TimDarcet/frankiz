@@ -21,12 +21,22 @@ wget $(DOWNLOAD_SRC) -O $@ -q || ($(RM) $@; exit 1)
 endef
 
 INSTALL_DIR := $(shell pwd)
-INSTALL_USER := $(USER)
 
 ################################################################################
 # global targets
 
-all: build
+ifdef INSTALL_USER
+	BUILD_TARGET := build
+else
+	BUILD_TARGET := user_not_defined
+endif
+
+all: $(BUILD_TARGET)
+
+user_not_defined:
+	@echo "Error, \"INSTALL_USER\" MUST be speficied"
+
+build: core dir conf
 	@echo ""
 	@echo ""
 	@echo "+----------------------------------------------+"
@@ -34,8 +44,6 @@ all: build
 	@echo "| MySQL dans configs/frankiz.conf              |"
 	@echo "+----------------------------------------------+"
 	@echo ""
-
-build: core dir conf
 
 q:
 	@echo -e "Code statistics\n"
