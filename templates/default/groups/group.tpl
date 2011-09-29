@@ -40,6 +40,17 @@
     </div>
 </div>
 
+<div class="tools">
+    <div>
+        <div>
+            <h1>Outils</h1>
+            <ul>
+                <li><a href="chat/{$group->name()}">Salon de discussion</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
 {if $smarty.session.auth >= AUTH_INTERNAL}
     <table class="bottom"><tr>
         <td class="users">

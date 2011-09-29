@@ -52,7 +52,7 @@
   <div class="head">
     <span class="helper" target="chatroom">
     </span>
-    Salon de discussion (beta)
+    Salon de discussion {$jabber_room} (beta)
   </div>
   <div class="body" id="chatbody">
     <span id="chatstatus">Pas connecté</span>
