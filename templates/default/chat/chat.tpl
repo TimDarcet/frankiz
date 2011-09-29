@@ -52,7 +52,7 @@
   <div class="head">
     <span class="helper" target="chatroom">
     </span>
-    Salon de discussion
+    Salon de discussion (beta)
   </div>
   <div class="body" id="chatbody">
     <span id="chatstatus">Pas connecté</span>

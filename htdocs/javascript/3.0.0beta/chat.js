@@ -8,9 +8,9 @@ function log(o) {
 function onConnect(status)
 {
     if (status == Strophe.Status.CONNECTING) {
-        $('#chatstatus').text('Connection...')
+        $('#chatstatus').text('Connexion...')
     } else if (status == Strophe.Status.CONNFAIL) {
-        $('#chatstatus').text('Connection échouée')
+        $('#chatstatus').text('Connexion échouée')
     } else if (status == Strophe.Status.DISCONNECTING) {
     } else if (status == Strophe.Status.DISCONNECTED) {
         $('#chatstatus').text('Pas connecté')
