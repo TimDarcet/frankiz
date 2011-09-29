@@ -28,10 +28,31 @@ function smarty_function_target_picker($params, &$smarty) {
                                       new GFC_User(S::user(), Rights::admin())),
                           new GFO_Score());
     $gs = $gf->get()->diff($fkz);
+    
+    if ($params['even_only_friend']) {
+        $gfo = new GroupFilter(
+            new PFC_And(
+                new GFC_Namespace(array(Group::NS_BINET, Group::NS_FREE)),
+                new GFC_User(S::user(), Rights::everybody())),
+            new GFO_Score());
+        $gso = $gfo->get()->diff($gs)->diff($fkz);
+        
+        $temp = new Collection();
+        $temp->merge($gs)->merge($gso);
+        $temp->select(GroupSelect::base());
 
-    $temp = new Collection();
-    $temp->merge($gs)->merge($fkz);
-    $temp->select(GroupSelect::base());
+        $smarty->assign('only_friend', $gso);
+        
+        $temp = new Collection();
+        $temp->merge($gs)->merge($fkz)->merge($gso);
+        $temp->select(GroupSelect::base());
+    }
+    else
+    {
+        $temp = new Collection();
+        $temp->merge($gs)->merge($fkz);
+        $temp->select(GroupSelect::base());
+    }
 
     $smarty->assign($params['user_groups'], $gs);
     $smarty->assign($params['fkz_groups'], $fkz);
