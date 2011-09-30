@@ -52,5 +52,14 @@
     </div>
 </div>
 
+<div class="module">
+    <div class="head">
+        Ma DNS
+    </div>
+    <div class="body">
+        {include file="wiki.tpl"|rel name='profile/network/dns'}
+    </div>
+</div>
+
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
