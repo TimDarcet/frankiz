@@ -23,7 +23,7 @@ class RerMiniModule extends FrankizMiniModule
 {
     public function auth()
     {
-        return AUTH_COOKIE;
+        return AUTH_INTERNAL;
     }
 
     public function perms()
