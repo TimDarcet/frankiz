@@ -28,6 +28,7 @@ class FrankizModule extends PlModule
             'home'                  => $this->make_hook('home',           AUTH_PUBLIC),
             'home/contact'          => $this->make_hook('contact',        AUTH_PUBLIC),
             'home/howtocome'        => $this->make_hook('howtocome',      AUTH_PUBLIC),
+            'masters'               => $this->make_hook('masters',        AUTH_PUBLIC),
             'universe'              => $this->make_hook('universe',       AUTH_PUBLIC),
             'remote'                => $this->make_hook('remote',         AUTH_COOKIE),
             'exit'                  => $this->make_hook('exit',           AUTH_PUBLIC)
@@ -70,6 +71,12 @@ class FrankizModule extends PlModule
         echo $page->fetch('universe.tpl');
         exit;
     }
+    
+    function handler_masters($page)
+    {
+        $page->assign('title', 'Ouverture de compte master');
+        $page->changeTpl('frankiz/masters.tpl');
+    }
 
     function handler_remote($page)
     {
@@ -110,11 +117,26 @@ class FrankizModule extends PlModule
                             if ($gs->count() > 0) {
                                 $gs->select(GroupSelect::base());
 
-                                $rights = array();
+                                $r = array();
                                 foreach ($gs as $g) {
-                                    $rights[$g->name()] = array_map(function($r) { return (string) $r; }, S::user()->rights($g));
+                                    $r[$g->name()] = array_map(function($r) { return (string) $r; }, S::user()->rights($g));
                                 }
-                                $response['rights'] = $rights;
+                                $response['rights'] = $r;
+                            }
+                        }
+                        
+                        if ($rights->hasFlag('binets_admin')  && in_array('binets_admin', $request)) {
+                            $gf = new GroupFilter(new PFC_And(new GFC_User(S::user(), Rights::admin()), new GFC_Namespace('binet')));
+                            $gs = $gf->get();
+
+                            if ($gs->count() > 0) {
+                                $gs->select(GroupSelect::base());
+
+                                $r = array();
+                                foreach ($gs as $g) {
+                                    $r[$g->name()] = $g->label();
+                                }
+                                $response['binets_admin'] = $r;
                             }
                         }
 
