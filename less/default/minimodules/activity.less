@@ -45,14 +45,6 @@
     }
 
     .title {
-        &.away {
-            background-color: @background;
-        }
-
-        &.present {
-            background-color: @star;
-        }
-
         margin: 0px;
         padding: 0px 10px;
         font-weight: bold;
@@ -61,14 +53,27 @@
     }
 
     .body {
+        &.away {
+            background-color: @background;
+        }
+
+        &.present {
+            background-color: @star;
+        }
         width: 100%;
         position: relative;
         padding: 0px;
         overflow: hidden;
-        text-align: center;
+        text-align: right;
+        margin-bottom:1px;
     }
 
     .add_participant, .remove_participant {
         float: right;
+    }
+    
+    .when{
+        margin-right: 10px;
+        color: #000;
     }
 }

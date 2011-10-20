@@ -53,7 +53,7 @@
                         Annonce visible par
                     </td>
                     <td>
-                        {include file="target_picker.tpl"|rel id="news" group_perso=false only_admin=false}
+                        {include file="target_picker.tpl"|rel id="news" group_perso=false only_admin=false even_only_friend=true}
                     </td>
                 </tr>
 

@@ -22,7 +22,7 @@
 
 <div class="target_picker" id="origin_picker_{$id}">
     <div>
-        {target_picker user_groups='user_groups' fkz_groups='fkz_groups' own_group='own_group'}
+        {target_picker user_groups='user_groups' fkz_groups='fkz_groups' own_group='own_group' even_only_friend=$even_only_friend}
         <select id="{$id}" name="target_group_{$id}" >
             {if !t($only_admin) || !$only_admin}
             <optgroup name="fkz" label="Frankiz">
@@ -31,14 +31,26 @@
                 {/foreach}
             </optgroup>
             {/if}
-            <optgroup label="Mes groupes">
-                {if t($group_perso) && $group_perso}
-                    <option own_group="own_group" description="Ne sera visible que par moi" value="{$own_group->id()}">Juste moi</option>
-                {/if}
+            {if t($group_perso) && $group_perso}
+                <option own_group="own_group" description="Ne sera visible que par moi" value="{$own_group->id()}">Juste moi</option>
+            {/if}
+            {if $even_only_friend}
+                <optgroup label="Sans validation">
+            {/if}
+            {if !$even_only_friend}
+                <optgroup label="Mes groupes">
+            {/if}
                 {foreach from=$user_groups item='group'}
                     <option value="{$group->id()}">{$group->label()}</option>
                 {/foreach}
             </optgroup>
+            {if $even_only_friend}
+                <optgroup label="Avec validation">
+                    {foreach from=$only_friend item='group'}
+                        <option value="{$group->id()}">{$group->label()}</option>
+                    {/foreach}
+                </optgroup>
+            {/if}
         </select>
 
         <label><input type="checkbox" name="target_everybody_{$id}" checked="checked" />Public</label>

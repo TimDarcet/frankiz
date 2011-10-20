@@ -39,8 +39,10 @@ $formation = 5;
 $promo = 6;
 $year_in = 7;
 $year_out = 8;
-$gender = 9;
-$room_id = null;
+$gender = 11;
+$room_id = 9;
+$sport = 10;
+
 
 require dirname(__FILE__) . '/../connect.db.inc.php';
 $globals->debug = 0;
@@ -56,7 +58,8 @@ function conv_name($str)
     $str = str_replace(array('É'), 'e', $str);
     $str = strtolower(conv($str));
     $str = str_replace(array('é', 'è', 'ë', 'ê'), 'e', $str);
-    $str = str_replace(array('à', 'ä', 'â'), 'a', $str);
+    $str = str_replace(array('ü', 'û'), 'u', $str);
+    $str = str_replace(array('à', 'ä', 'â', 'á'), 'a', $str);
     $str = str_replace(array('î', 'ï'), 'i', $str);
     $str = str_replace(array('ç','Ç'), 'c', $str);
     return preg_replace("/[^a-z0-9_-]/", "", $str);
@@ -131,9 +134,14 @@ for ($datas = fgetcsv($fic, 1024, ','); !feof($fic); $datas = fgetcsv($fic, 1024
             }
         }
     }
-
-
-    $login = str_replace('@polytechnique.edu','',$datas[$email]);
+    
+    $login = "";
+    if(preg_match('!@institutoptique.fr!',$datas[$email]))
+        $login = str_replace('@institutoptique.fr','',$datas[$email]);
+    else
+        $login = str_replace('@polytechnique.edu','',$datas[$email]);
+    
+        
     switch ($datas[$formation]) {
         case "X": // X
         $formation_id = 1;
@@ -145,6 +153,10 @@ for ($datas = fgetcsv($fic, 1024, ','); !feof($fic); $datas = fgetcsv($fic, 1024
 
         case "PEI": // PEI
         $formation_id = 5;
+        break;
+        
+        case "Supop": // PEI
+        $formation_id = 6;
         break;
 
         default: // Master
@@ -168,16 +180,18 @@ for ($datas = fgetcsv($fic, 1024, ','); !feof($fic); $datas = fgetcsv($fic, 1024
     }
 
     // Linking with the sport
-/*    if (!empty($datas['sport'])) {
-        $nf = new GroupFilter(new GFC_Name('sport_' . conv_name($datas['sport'])));
+    if ($sport != null) {
+        $nf = new GroupFilter(new GFC_Name('sport_' . conv_name($datas[$sport])));
         $n = $nf->get(true);
-        $n->select(GroupSelect::castes());
-        $n->caste(Rights::member())->addUser($u);
+        if($n){
+            $n->select(GroupSelect::castes());
+            $n->caste(Rights::member())->addUser($u);
+        }
     }
-*/
+
 
     //Photo
-    $works = false;
+    /*$works = false;
     $suffix = '';
     $folder = $photos_folder;
     $original = true;
@@ -205,7 +219,7 @@ for ($datas = fgetcsv($fic, 1024, ','); !feof($fic); $datas = fgetcsv($fic, 1024
     if (!$works) {
         echo 'Not done: ' . $u->id() . ' - ' . $u->displayname() . ' - '. $path . "\n";
     }
-
+*/
     $k++;
     echo 'User ' . str_pad($k, 4, '0', STR_PAD_LEFT) . '/' . $users . ' : '
          . str_pad($u->id(), 5, '0', STR_PAD_LEFT) . ' - ' . $datas['promo'] . ' - '

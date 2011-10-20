@@ -21,23 +21,37 @@
 {**************************************************************************}
 
 
-<div class="title {if $activity->participate()}present{else}away{/if}">
-    <a href="activity/timetable/friends/{$activity->id()}">{$activity->title()}</a>
+<div class="body {if $activity->participate()}present{else}away{/if}">
+    <div class="left">
+    {if $activity->origin()}
+        {assign var='origin' value=$activity->origin()}
+        {if $origin->image()}
+            {$origin|group}
+        {else}
+            {$origin|group:'text'}
+        {/if}
+    {else}
+        {$activity->writer()|user}
+    {/if}
+    </div>
+    <div class="title">
+        <a href="activity/timetable/friends/{$activity->id()}">{$activity->title()}</a>
+    </div>
+    <span class="when">
+        {if ($activity->hour_begin($day) == false) && ($activity->hour_end($day) == false)}
+            Toute la journée
+        {elseif $activity->hour_begin($day) == false}
+            Jusqu'à {$activity->hour_end()}
+        {elseif ($activity->hour_end($day) == false)}
+            A partir de {$activity->hour_begin()}
+        {else}
+            de {$activity->hour_begin()} à {$activity->hour_end()}
+        {/if}
+    </span>
     {if $activity->participate()}
         <a onclick="activity.out({$activity->id()});" class="right"><span class="remove_participant"></span></a>
     {else}
         <a onclick="activity.present({$activity->id()});" class="right"><span class="add_participant"></span></a>
-    {/if}
-</div>
-<div class="body">
-    {if ($activity->hour_begin($day) == false) && ($activity->hour_end($day) == false)}
-        Toute la journée
-    {elseif $activity->hour_begin($day) == false}
-        Jusqu'à {$activity->hour_end()}
-    {elseif ($activity->hour_end($day) == false)}
-        A partir de {$activity->hour_begin()}
-    {else}
-        de {$activity->hour_begin()} à {$activity->hour_end()}
     {/if}
 </div>
 

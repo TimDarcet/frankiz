@@ -20,46 +20,8 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="module">
-    <div class="head">
-        Mes adresses IP
-    </div>
-    <div class="body">
-        {include file="wiki.tpl"|rel name='profile/network/ip'}
-        <ul>
-        {foreach from=$rooms item=room}
-            <li>
-                {$room->id()}
-                <ul>
-                {foreach from=$room->ips() item=ip}
-                    <li>
-                    {$ip}
-                    </li>
-                {/foreach}
-                </ul>
-            </li>
-        {/foreach}
-        </ul>
-    </div>
-</div>
-
-<div class="module">
-    <div class="head">
-        Mon mot de passe qRezix
-    </div>
-    <div class="body">
-        {include file="wiki.tpl"|rel name='profile/network/qrezix'}
-    </div>
-</div>
-
-<div class="module">
-    <div class="head">
-        Ma DNS
-    </div>
-    <div class="body">
-        {include file="wiki.tpl"|rel name='profile/network/dns'}
-    </div>
-</div>
-
+<p>
+    {include file="wiki.tpl"|rel name='masters'}
+</p>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

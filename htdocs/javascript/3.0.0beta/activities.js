@@ -21,10 +21,8 @@ $(function() {
         $("#activity_show").show();
     });
 
-    var $activity_show = $('#activity_show');
-    initial_top = $activity_show.position().top + 175;
     $('#activities_list').delegate('.day .activity', 'hover', function() {
-        var top = Math.max(0, $(this).position().top - initial_top);
+        var top = Math.max(0, $(this).position().top - 175);
         $("#activity_show").animate({top: top}, {queue: false});
         load([ $(this).attr('aid') ], true);
     });

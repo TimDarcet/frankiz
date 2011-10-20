@@ -21,12 +21,22 @@ wget $(DOWNLOAD_SRC) -O $@ -q || ($(RM) $@; exit 1)
 endef
 
 INSTALL_DIR := $(shell pwd)
-INSTALL_USER := $(USER)
 
 ################################################################################
 # global targets
 
-all: build
+ifdef INSTALL_USER
+	BUILD_TARGET := build
+else
+	BUILD_TARGET := user_not_defined
+endif
+
+all: $(BUILD_TARGET)
+
+user_not_defined:
+	@echo "Error, \"INSTALL_USER\" MUST be speficied"
+
+build: core dir conf
 	@echo ""
 	@echo ""
 	@echo "+----------------------------------------------+"
@@ -34,8 +44,6 @@ all: build
 	@echo "| MySQL dans configs/frankiz.conf              |"
 	@echo "+----------------------------------------------+"
 	@echo ""
-
-build: core dir conf
 
 q:
 	@echo -e "Code statistics\n"
@@ -64,7 +72,7 @@ spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/session
 	mkdir -p $@
 	chmod 775 $@
 	@echo "Need root privileges for \"sudo chgrp apache $@\""
-	sudo chgrp apache $@
+	sudo -k chgrp apache $@
 
 ##
 ## conf
@@ -78,19 +86,19 @@ htdocs/.htaccess: htdocs/.htaccess.in Makefile
 	sed -e "s,@REWRITE_BASE@,$$REWRITE_BASE,g" $< > $@
 
 configs/cron: configs/cron.in
-	[ ! -f configs/cron ] || ( echo "Need root privileges for \"sudo rm $@\"" && sudo rm $@)
+	[ ! -f configs/cron ] || ( echo "Need root privileges for \"sudo rm $@\"" && sudo -k rm $@)
 	sed -e "s,@INSTALL_DIR@,$(INSTALL_DIR),g;s,@USER@,$(INSTALL_USER),g" $< > $@
 	@echo "Need root privileges for \"sudo chown root:root $@\""
-	sudo chown root:root $@
+	sudo -k chown root:root $@
 	@echo "Need root privileges for \"chmod 644 $@\""
-	sudo chmod 644 $@
+	sudo -k chmod 644 $@
 
 configs/frankiz.conf: configs/frankiz.conf.in
 	[ -f $@ ] || sed -e "s,@USER@,$(INSTALL_USER),g" $< > $@
 	@echo "Need root privileges for \"sudo chgrp apache $@\""
-	sudo chgrp apache $@
+	sudo -k chgrp apache $@
 	@echo "Need root privileges for \"chmod 640 $@\""
-	sudo chmod 640 $@
+	sudo -k chmod 640 $@
 
 ##
 ## clean

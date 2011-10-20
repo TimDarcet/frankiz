@@ -32,16 +32,18 @@
                 <li class="pair"><a href="profile/network">Mes données réseau</a></li>
                 <li class="impair"><a href="profile/feed">Mes flux</a></li>
                 {if $licensesDisplay}<li class="pair"><a href="licenses">Licences MSDNAA</a></li>{/if}
-                {if $smarty.session.user->isAdmin()}<li class="{if $licensesDisplay}im{/if}pair"><a href="profile/admin/account">Créer un compte</a></li>{/if}
             </ul>
             {if $smarty.session.user->isWeb()}
                 <ul class="webmaster">
-                    <li class=""><a href="wiki/admin">Les zones wikis</a></li>
+                    <li class="{if $licensesDisplay}im{/if}pair"><a href="profile/admin/account">Créer un compte</a></li>
+                </ul>
+                <ul class="webmaster">
+                    <li class="{if !$licensesDisplay}im{/if}pair"><a href="wiki/admin">Les zones wikis</a></li>
                 </ul>
             {/if}
             {if $smarty.session.user->isAdmin()}
                 <ul class="fkzadmin">
-                    <li class=""><a href="admin/logs/sessions">Log des sessions</a></li>
+                    <li class="{if $licensesDisplay}im{/if}pair"><a href="admin/logs/sessions">Log des sessions</a></li>
                 </ul>
             {/if}
         </div>

@@ -40,6 +40,18 @@
     </div>
 </div>
 
+<div class="tools">
+    <div>
+        <div>
+            <h1>Outils</h1>
+            <ul>
+                <li><a href="chat/{$group->name()}">Salon de discussion</a></li>
+                <li><a href="https://www.polytechnique.fr/eleves/platalpad/{$group->name()}" target="_blank">Platalpad</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
 {if $smarty.session.auth >= AUTH_INTERNAL}
     <table class="bottom"><tr>
         <td class="users">

@@ -45,19 +45,24 @@
         </div>
         <div class="body">
             <table>
-                <tr class="fkzadmin">
-                    <td width="20%">
-                        Hruid :
-                    </td>
-                    <td class="form">
-                        <input type='text' name='hruid' {if !$add}value="{$userEdit->hruid()}" {/if}/>
-                        <div class="warning">
-                            /!\ Si tu ne sais pas ce que veut dire LDAP, PAM …<br />
-                            Tu n'as pas envie de toucher à ce champ !<br />
-                            (Et tu ne devrais pas avoir de droit d'admin sur le site)
-                        </div>
-                    </td>
-                </tr>
+                {if $smarty.session.user->isAdmin()}
+                    <tr class="fkzadmin">
+                        <td width="20%">
+                            Hruid :
+                        </td>
+                        <td class="form">
+                            <input type='text' name='hruid' 
+			           {if !$add}value="{$userEdit->hruid()}" {/if}
+			           {if $add}placeholder="Optionnel"{/if}
+		            />
+                            <div class="warning">
+                                /!\ Si tu ne sais pas ce que veut dire LDAP, PAM …<br />
+                                Tu n'as pas envie de toucher à ce champ !<br />
+                                (Et tu ne devrais pas avoir de droit d'admin sur le site)
+                            </div>
+                        </td>
+                    </tr>
+                {/if}
                 <tr>
                     <td>
                         Surnom :

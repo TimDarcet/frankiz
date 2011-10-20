@@ -58,7 +58,7 @@
                 <td>
                     <input type="checkbox" name="other_regular_proposal"/>
                     <input type="text" name="other_date" id="other_date"
-                          required {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2}$).*"{/literal}/>
+                          {literal}pattern="(?=^[0-9]{4}-[0-9]{2}-[0-9]{2}$).*"{/literal}/>
                     <script>{literal}
                     $(function() {
                         limit_inf = new Date();

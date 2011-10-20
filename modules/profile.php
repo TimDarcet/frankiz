@@ -36,6 +36,7 @@ class ProfileModule extends PLModule
                      'profile/feed'                    => $this->make_hook('feed',                    AUTH_COOKIE),
                      'profile/rss/update'              => $this->make_hook('rss_update',              AUTH_COOKIE),
                      'profile/rss/add'                 => $this->make_hook('rss_add',                 AUTH_COOKIE),
+		     'profile/ajax/hruid'              => $this->make_hook('ajax_hruid',              AUTH_COOKIE),
                      'profile/minimodules'             => $this->make_hook('minimodules',             AUTH_COOKIE),
                      'profile/minimodules/ajax/layout' => $this->make_hook('ajax_minimodules_layout', AUTH_COOKIE),
                      'profile/minimodules/ajax/add'    => $this->make_hook('ajax_minimodules_add',    AUTH_COOKIE),
@@ -168,10 +169,28 @@ class ProfileModule extends PLModule
         
         if (Env::has('change_profile')) {
             if($add){
-                if(!Env::has('hruid')) {
-                    throw new Exception("Vous devez spécifier un hrid.");
-                }
+                if (Env::blank('hruid')) {
+		    $hruid = Env::t('firstname') . '.' . Env::t('lastname');
+	            $hruid = strtolower($hruid);
+                    $already = new UserFilter(new UFC_Hruid($hruid));
+		    $nbr = 1;
+		    while ($already->getTotalCount() > 0) {
+		        $nbr++;
+		        $hruid = Env::t('firstname') . '.' . Env::t('lastname') . '.' . $nbr;
+			$hruid = strtolower($hruid);
+                        $already = new UserFilter(new UFC_Hruid($hruid));
+                    }
+                } else {
+		    $hruid = Env::t('hruid');
+                    $already = new UserFilter(new UFC_Hruid($hruid));
+		    if ($already->getTotalCount() > 0) {
+                        throw new Exception("Le hruid spécifié est déjà pris.");
+                    }
+		}
                 $user->insert();
+		if (Env::blank('hruid')) {
+		    $user->hruid($hruid);
+                }
                 $msg[] = "L'utilisateur a été ajouté.";
             }
             if (Env::has('image')) {
@@ -199,11 +218,13 @@ class ProfileModule extends PLModule
             if(Env::has('password')){
                 $user->password(Env::t('password'));
             }
-            
+            if(!Env::blank('hruid')){
+                $user->hruid(Env::t('hruid'));
+	    }
+
             $user->nickname(Env::t('nickname'));
             $user->lastname(Env::t('lastname'));
             $user->firstname(Env::t('firstname'));
-            $user->hruid(Env::t('hruid'));
             $user->birthdate(new FrankizDateTime(Env::t('birthdate')));
             $user->gender(Env::t('gender') == 'man' ? User::GENDER_MALE : User::GENDER_FEMALE);
             $user->email(Env::t('bestalias'));
@@ -448,6 +469,17 @@ class ProfileModule extends PLModule
         $page->changeTpl('profile/feed.tpl');
     }
 
+    function handler_ajax_hruid($page)
+    {
+        if (S::i('auth') < AUTH_COOKIE) {
+            $page->jsonAssign('error', "Utilisateur inconnu");
+        } else {
+            $page->jsonAssign('hruid', S::user()->login());
+        }
+
+        return PL_JSON;
+    }
+    
     function handler_minimodules($page)
     {
         $iter = XDB::iterator('SELECT  m.name, m.label, m.description, COUNT(um.name) frequency
