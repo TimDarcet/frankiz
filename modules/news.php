@@ -28,6 +28,7 @@ class NewsModule extends PlModule
             "news/current"      => $this->make_hook("news_current"  , AUTH_PUBLIC),
             "news/new"          => $this->make_hook("news_new"      , AUTH_PUBLIC),
             "news/mine"         => $this->make_hook("news_mine"     , AUTH_PUBLIC),
+            "news/other"        => $this->make_hook("news_other"    , AUTH_PUBLIC),
             "news/admin"        => $this->make_hook("admin"         , AUTH_MDP),
             "news/rss"          => $this->make_hook("rss"           , AUTH_PUBLIC),
             "news/ajax/read"    => $this->make_hook("ajax_read"     , AUTH_COOKIE),
@@ -100,6 +101,21 @@ class NewsModule extends PlModule
                              new NFO_Begin(true));
 
         $this->viewNews($page, $nf->get(), 'mine');
+    }
+
+    function handler_news_other($page, $id = false)
+    {
+        if ($id) {
+            $news = new News($id);
+            $news->read(true);
+        }
+
+        $nf = new NewsFilter(new PFC_And(new NFC_Current(),
+                                         new PFC_Or(new PFC_Not(new NFC_Read(S::user())), new NFC_Star(S::user())),
+                                         new PFC_Not(new NFC_Target(S::user()->targetCastes())),
+                                         new NFC_CanBeSeen(S::user())));
+
+        $this->viewNews($page, $nf->get(), 'new', $id);
     }
 
     function viewNews($page, $news, $view, $id = false) {

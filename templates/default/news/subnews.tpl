@@ -83,6 +83,11 @@
                             {if $news->begin()|datetime:'d/m' != $news->end()|datetime:'d/m'}
                                 au <span title="{$news->end()|datetime}">{$news->end()|datetime:'d/m'}</span>
                             {/if}
+                            {if (!($user->hasRights($targetGroup)))}
+                                <div><strong>Voir les annonces de « {$targetGroup->label()} » dans mon fil principal en </strong>
+                                <span class="rights friend"></span>
+                                <a onclick="return confirm(areyousure);" href="groups/subscribe/{$targetGroup->id()}?token={xsrf_token}">devenant sympathisant</a></div>
+                            {/if}
                         </td>
                         <td class="writer">
                             {$news->writer()|user:'text'}{$news->writer()|user}
