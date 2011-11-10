@@ -32,7 +32,7 @@ function smarty_function_target_picker($params, &$smarty) {
     if ($params['even_only_friend']) {
         $gfo = new GroupFilter(
             new PFC_And(
-                new GFC_Namespace(array(Group::NS_BINET, Group::NS_FREE)),
+                new GFC_Namespace(array(Group::NS_BINET, Group::NS_FREE, Group::NS_PROMO)),
                 new GFC_User(S::user(), Rights::everybody())),
             new GFO_Score());
         $gso = $gfo->get()->diff($gs)->diff($fkz);
