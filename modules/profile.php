@@ -137,11 +137,11 @@ class ProfileModule extends PLModule
             }
         }
         
-        if (Env::has('add_perm') && !$add) {
+        if (Env::has('add_perm') && !$add && S::user()->isAdmin()) {
                 $user->addPerm(Env::t('perm'));
         }
         
-        if (Env::has('del_perm') && !$add) {
+        if (Env::has('del_perm') && !$add && S::user()->isAdmin()) {
                 $user->removePerm(Env::t('perm'));
         }
         

@@ -177,12 +177,13 @@
 </form>
 
 {if !$add}
+{if $smarty.session.user->isAdmin()}
 <div class="module profile">
     <div class="head">
         <span class="helper" target="profile/admin/account/perms"></span>
         Permissions
     </div>
-    <div class="body">
+    <div class="body fkzadmin">
         <table>
         {foreach from=$perms item='perm'}
             <tr>
@@ -201,6 +202,7 @@
         </table>
     </div>
 </div>
+{/if}
 
 <div class="module profile">
     <div class="head">
