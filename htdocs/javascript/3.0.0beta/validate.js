@@ -14,11 +14,14 @@ $(function() {
     $(".addcom_validate").hide();
     $(".text_validate").height(15);
     $(".text_validate").click(function() {
-        $(".addcom_validate").slideToggle(150);
-        if ($(".text_validate").height() == 80)
-            $(".text_validate").height(15);
-        else
-            $(".text_validate").height(80);
+        if ($(this).val().length == 0)
+	{
+            $(this).parentsUntil("table").find(".addcom_validate").slideToggle(150);
+            if ($(this).height() > 15)
+                $(this).height(15);
+            else
+                $(this).height(80);
+	}
     });
 
     $("input[type=submit][name=refuse]").click(function() {
