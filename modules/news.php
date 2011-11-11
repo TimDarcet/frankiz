@@ -71,17 +71,22 @@ class NewsModule extends PlModule
             $news = new News($id);
             $news->read(true);
         }
-
-        $nf = new NewsFilter(new PFC_And(new NFC_Current(),
+        if (S::user()->isWeb())
+            $nf = new NewsFilter(new PFC_And(new NFC_End(new FrankizDateTime("now")),
                                          new NFC_Target(S::user()->targetCastes())),
                              new NFO_Begin(true));
+	else
+	    $nf = new NewsFilter(new PFC_And(new NFC_Current(),
+                                         new NFC_Target(S::user()->targetCastes())),
+                             new NFO_Begin(true));
+	
 
         $this->viewNews($page, $nf->get(), 'current', $id);
     }
 
     function handler_news_new($page, $id = false)
     {
-        if ($id) {
+        IF ($id) {
             $news = new News($id);
             $news->read(true);
         }

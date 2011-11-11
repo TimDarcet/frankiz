@@ -37,7 +37,7 @@
                 <div class="option display">
                     <ul>
                         <li><a href="news/new" {if $view == 'new'}class="current_view"{/if}>Non-lues & suivies</a></li>
-                        <li><a href="news/current" {if $view == 'current'}class="current_view"{/if}>En cours</a></li>
+                        <li><a href="news/current" {if $view == 'current'}class="current_view"{/if}>En cours{if $user->isWeb()} & à venir{/if}</a></li>
                         <li><a href="news/mine" {if $view == 'mine'}class="current_view"{/if}>Annonces que j'ai rédigées</a></li>
                         <li><a href="news/other" {if $view == 'other'}class="current_view"{/if}>Annonces des autres binets</a></li>
                     </ul>
@@ -52,7 +52,7 @@
                         <li><div class="code unread"></div>Non-lue</li>
                         <li><div class="code read"></div>Lue</li>
                         <li><div class="code star"></div>Suivie</li>
-                        {if $view == 'mine'}
+                        {if $view == 'mine' || ($view == 'current' && $user->isWeb())}
                             <li title="visibles seulement par les administrateurs avant leur publication"><div class="code tocome"></div>À venir</li>
                         {/if}
                     </ul>
