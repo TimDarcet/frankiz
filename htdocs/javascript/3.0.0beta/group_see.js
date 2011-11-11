@@ -69,9 +69,11 @@ var users = function() {
                                 pages += ' <a ' + selected + ' onclick="' + onclick + '">' + i + '</a> ';
                             }
                             pages += ")";
-
-                            subul.siblings('.page').html(pages);
                         }
+                        else {
+                            var pages = '';
+                        }
+                        subul.siblings('.page').html(pages);
 
                         $.each(subul.children("li"), function(index, value) {
                             if (key_exists($(value).attr("uid"), users_list)) {
