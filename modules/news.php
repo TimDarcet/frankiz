@@ -120,7 +120,7 @@ class NewsModule extends PlModule
                                          new PFC_Not(new NFC_Target(S::user()->targetCastes())),
                                          new NFC_CanBeSeen(S::user())));
 
-        $this->viewNews($page, $nf->get(), 'new', $id);
+        $this->viewNews($page, $nf->get(), 'other', $id);
     }
 
     function viewNews($page, $news, $view, $id = false) {
