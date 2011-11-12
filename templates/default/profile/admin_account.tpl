@@ -169,6 +169,16 @@
                         <input type="password" name="password" placeholder="Conserver l'ancien" />
                     </td>
                 </tr>
+                {if $add}
+                <tr>
+                    <td width="20%">
+                        <label for="addCommonMinimodules">Copier les minimodules :</label>
+                    </td>
+                    <td class="form">
+                        <input type='checkbox' name='addCommonMinimodules' id="addCommonMinimodules" checked="checked"/>
+                    </td>
+                </tr>
+                {/if}
             </table>
 
             <input type="submit" name="change_profile" value="Enregistrer" {if $add}onclick="return confirm(areyousure);"{/if} />

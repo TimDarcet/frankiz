@@ -234,6 +234,13 @@ class ProfileModule extends PLModule
             $user->comment(Env::t('comment'));
             
             if($add){
+                //Let's add common minimodules if requested (we copy them from anonymous.internal (uid 0) one's)
+                if(Env::has('addCommonMinimodules')) {
+                    XDB::execute("INSERT INTO  users_minimodules
+                                       SELECT  {?}, name, col, row
+                                         FROM  users_minimodules
+                                        WHERE  uid = 0", $user->id());
+                }
                 pl_redirect('profile/admin/account/' . $user->hruid() . '/added');
             }
         }
