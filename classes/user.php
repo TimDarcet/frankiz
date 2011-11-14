@@ -741,6 +741,24 @@ class User extends Meta
         return false;
     }
 
+    public function copyMinimodulesFromUser($other)
+    {
+        if($this->minimodules === null) { //Maybe the minimodules were not loaded ?
+            throw new Exception("Flawed use of User->copyMinimodulesFromUser : Minimodules are not loaded.");
+        }
+        //Let's check if there are some minimodules
+        foreach($this->minimodules as $colonne) {
+            if(!empty($colonne)) {
+               throw new Exception("FLawed use of User->copyMinimodulesFromUser : minimodules already defined.");
+            }
+        }
+
+        XDB::execute("INSERT INTO  users_minimodules
+                           SELECT  {?}, name, col, row
+                             FROM  users_minimodules
+                            WHERE  uid = {?}", $this->id(), (int) Meta::toId($other));
+    }
+
     /*******************************************************************************
          Permissions
 
