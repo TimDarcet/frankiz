@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Création d'un minimodule</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <h1>Création d'un minimodule</h1>
+
+    <p>Ce document sert de référence de base pour la création d'un minimodule.
+      Ici, le minimodule s'appelle 'test' et affiche le résultat d'un calcul
+      très compliqué.</p>
+
+    <h3>I. Fichier minimodules/test.php</h3>
+    <p>Ce fichier définit une classe qui dérive de FrankizMiniModule. Cette
+      classe définit le comportement du minimodule.</p>
+
+    <pre>
+&lt;?php
+class TestMiniModule extends FrankizMiniModule
+{
+    // Optional function
+    public function auth()
+    {
+        // You can also return AUTH_PUBLIC if you want.
+        return AUTH_INTERNAL;
+    }
+
+    public function tpl()
+    {
+        // You can use IP::is_internal() to know if you are on the Platal
+        return 'minimodules/test/test.tpl';
+    }
+    
+    public function css()
+    {
+        return 'minimodules/test.css';
+    }
+    
+    public function title()
+    {
+        return 'Titre de mon minimodule';
+    }
+
+    public function run()
+    {
+        // Do complicated things and assign Smarty variables
+        $this->assign('answer', (1+1)*21);
+    }
+}
+
+// vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
+?&gt;
+    </pre>
+
+    <h3>II. Fichier templates/default/minimodules/test/test.tpl</h3>
+    <pre>
+&lt;h3&gt;La réponse tant attendue est {$minimodule.answer}.&lt;/h3&gt;
+    </pre>
+
+    <h3>III. Fichier less/default/minimodules/test.less (CSS)</h3>
+    <pre>
+#minimodule_test {
+    h3 {
+        font-variant: small-caps;
+        text-align:center;
+    }
+}
+    </pre>
+
+    <h3>IV. Insertion SQL</h3>
+    <p>Il faut déclarer le minimodule dans la table minimodules de la base de
+      données pour que celui-ci apparaisse dans l'interface. La requête SQL
+      adéquat peut être exécutée via PhpMyAdmin ou en console MySQL.
+    </p>
+    <pre>
+INSERT INTO  minimodules
+        SET  name = 'test',
+             label = 'Nom du test', /* Nom de mon minimodule dans la liste */
+             description = 'Brève description du minimodule';
+    </pre>
+  </body>
+</html>
