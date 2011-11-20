@@ -162,7 +162,7 @@ class XRayMiniModule extends FrankizMiniModule
 
     public function css()
     {
-        return 'minimodules/xray.css';
+        return 'minimodules/xray_static.css';
     }
 
     public function tpl()
@@ -232,6 +232,7 @@ class XRayMiniModule extends FrankizMiniModule
         $this->assign('xray_calendar', PlCache::getGlobal('xray_calendar'));
         $this->assign('xray_podcast', PlCache::getGlobal('xray_podcast'));
         $this->assign('xray_nowplaying', PlCache::getGlobal('xray_nowplaying'));
+        
     }
 
 }

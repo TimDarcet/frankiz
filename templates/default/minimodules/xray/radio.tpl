@@ -20,16 +20,12 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="feed">
-    <a href="http://x-ray/blog/?feed=podcast"></a>
-</div>
 
-<div class="play"
-     title="Ecoute la radio !"
-     onclick="window.open('http://x-ray/player.php','player','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=623,height=270');">
-</div>
-
-<hr class="clear" />
+<a href="http://x-ray.eleves.polytechnique.fr/player.php"; id="xray_linklive" onclick="window.open('http://x-ray.eleves.polytechnique.fr/player.php','player','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=623,height=270');return false;">
+    <div>
+        <img src='http://x-ray.eleves.polytechnique.fr/live/xray-live.gif' alt="X-Ray en live"/>
+    </div>
+</a>
 
 <div>
     {if $minimodule.xray_nowplaying.cover}
@@ -42,11 +38,7 @@
     </div>
 </div>
 
-<hr class="clear" />
+<br class="clear" />
 
-<div>
-    <p>Dernier Podcast : <a href="{$minimodule.xray_podcast.url}">{$minimodule.xray_podcast.titre}</a></p>
-    <p>Description : {$minimodule.xray_podcast.description}</p>
-</div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
