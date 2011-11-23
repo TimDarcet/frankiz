@@ -1,0 +1,78 @@
+/***************************************************************************
+ *  Copyright (C) 2009 Binet Réseau                                        *
+ *  http://www.polytechnique.fr/eleves/binets/reseau/                      *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
+
+@import "../lib.less";
+
+#minimodule_xray {
+    a#xray_linklive{
+        display:block;
+        width:100%;
+        overflow:hidden;
+    }
+
+    /* pour que l'image soit tronquée lors de la réduction du minimodule */
+    a#xray_linklive div{
+        width:0px;
+        overflow:visible;
+    }
+
+    #xray_linksite{
+        text-align:center;
+        font-size: 10pt;
+        font-style: italic;
+    }
+
+    hr {
+        clear: both;
+    }
+    
+    .body {
+        color:#fff;
+        background: url('http://x-ray.eleves.polytechnique.fr/live/xray-live-background.gif') repeat;
+    }
+
+    .feed {
+        background-image: url("../../default/images/feed.gif");
+        background-repeat: no-repeat;
+        position: absolute;
+        right: 4px;
+        top: 4px;
+    }
+
+    .feed a {
+        display: block;
+        height: 16px;
+        width: 16px;
+    }
+
+    .play {
+        background-image: url("../../default/minimodules/xray/play_radio.png");
+        background-repeat: no-repeat;
+        cursor: pointer;
+        height: 22px;
+        position: relative;
+        width: 116px;
+    }
+
+    .cover {
+        float: left;
+        width: 33%;
+    }
+}
