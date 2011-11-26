@@ -1,0 +1,34 @@
+This is an example of how a website should implement remote authentication with Frankiz.
+- frankiz-login.inc.php : config & functions to interact with Frankiz
+- frankiz-auth.php : run frankiz_auth_ask() which asks an user to login
+- frankiz-site.php : where frankiz goes back
+
+In the database, insert into table 'remote' the following values :
+- site = your website's URI
+- privkey = a secret key between you and Frankiz
+- label = name of your website
+- rights = what you are allowed to ask, among :
+  * names : get names (HrUid = human-readable user ID, first, last, nick) of the logged user
+  * email
+  * rights : remote rights for some groups
+  * sport
+  * promo
+  * photo
+  * binets_admin
+
+For example, a query with names, email, sport, promo, photo may return
+something like this (in the example) :
+Array
+(
+    [uid] => 12465
+    [hruid] => nicolas.iooss
+    [firstname] => Nicolas
+    [lastname] => Iooss
+    [nickname] => Fishilico
+    [email] => nicolas.iooss@polytechnique.edu
+    [sport] => Natation
+    [promo] => 2010
+    [photo] => https://www.frankiz.net/image/full/14417
+    [location] => http://localhost/my-user-page
+)
+
