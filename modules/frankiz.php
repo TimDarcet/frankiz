@@ -71,7 +71,7 @@ class FrankizModule extends PlModule
         echo $page->fetch('universe.tpl');
         exit;
     }
-    
+
     function handler_masters($page)
     {
         $page->assign('title', 'Ouverture de compte master');
@@ -83,82 +83,86 @@ class FrankizModule extends PlModule
         global $globals;
 
         if (!(Env::has('timestamp') && Env::has('site') && Env::has('hash') && Env::has('request'))) {
-	    $page->trigError("Requête non valide");
-	    return;
-	}
+            $page->trigError("Requête non valide");
+            return;
+        }
         $res = XDB::query('SELECT  id, privkey, rights
                              FROM  remote
                             WHERE  site = {?}', Env::s('site'));
 
         if ($res->numRows() != 1) {
-	    $page->trigError("Ton site n'est pas renseigné dans la base de données");
-	    return;
-	}
+            $page->trigError("Ton site n'est pas renseigné dans la base de données");
+            return;
+        }
         list($remote_id, $key, $rights) = $res->fetchOneRow();
 
         $timestamp = Env::s('timestamp');
         if (abs($timestamp - time()) > $globals->remote->lag) {
-	    $page->trigError("Delai d'attente dépassé");
-	    return;
-	}
-        
-	$site    = Env::s('site');
-	$request = Env::s('request');
+            $page->trigError("Delai d'attente dépassé");
+            return;
+        }
 
-	if (md5($timestamp . $site . $key . $request) != Env::s('hash')) {
-	    $page->trigError("Erreur de validation de la requête d'authentification");
-	    return;
-	}
-                        
-	$request = json_decode($request, true);
+        $site    = Env::s('site');
+        $request = Env::s('request');
+
+        if (md5($timestamp . $site . $key . $request) != Env::s('hash')) {
+            $page->trigError("Erreur de validation de la requête d'authentification");
+            return;
+        }
+
+        $request = json_decode($request, true);
         $rights  = new PlFlagSet($rights);
 
         $response = array('uid' => S::user()->id());
 
-	if ($rights->hasFlag('names')  && in_array('names', $request)) {
-	    $response['hruid']     = S::user()->login();
-	    $response['firstname'] = S::user()->firstname();
-	    $response['lastname']  = S::user()->lastname();
-	    $response['nickname']  = S::user()->nickname();
-	}
+        if ($rights->hasFlag('names')  && in_array('names', $request)) {
+            $response['hruid']     = S::user()->login();
+            $response['firstname'] = S::user()->firstname();
+            $response['lastname']  = S::user()->lastname();
+            $response['nickname']  = S::user()->nickname();
+        }
 
-	if ($rights->hasFlag('rights')  && in_array('rights', $request)) {
-	    $res = XDB::query('SELECT name FROM remote_groups WHERE remote_id = {?}', $remote_id);
+        if ($rights->hasFlag('email')  && in_array('email', $request)) {
+            $response['email'] = S::user()->email();
+        }
 
-	    $gf = new GroupFilter(new GFC_Name($res->fetchColumn()));
-	    $gs = $gf->get();
+        if ($rights->hasFlag('rights')  && in_array('rights', $request)) {
+            $res = XDB::query('SELECT name FROM remote_groups WHERE remote_id = {?}', $remote_id);
 
-	    if ($gs->count() > 0) {
-		$gs->select(GroupSelect::base());
+            $gf = new GroupFilter(new GFC_Name($res->fetchColumn()));
+            $gs = $gf->get();
 
-		$r = array();
-		foreach ($gs as $g) {
-		    $r[$g->name()] = array_map(function($r) { return (string) $r; }, S::user()->rights($g));
-		}
-		$response['rights'] = $r;
-	    }
-	}
-                        
-	if ($rights->hasFlag('binets_admin')  && in_array('binets_admin', $request)) {
-	    $gf = new GroupFilter(new PFC_And(new GFC_User(S::user(), Rights::admin()), new GFC_Namespace('binet')));
-	    $gs = $gf->get();
+            if ($gs->count() > 0) {
+                $gs->select(GroupSelect::base());
 
-	    if ($gs->count() > 0) {
-		$gs->select(GroupSelect::base());
+                $r = array();
+                foreach ($gs as $g) {
+                    $r[$g->name()] = array_map(function($r) { return (string) $r; }, S::user()->rights($g));
+                }
+                $response['rights'] = $r;
+            }
+        }
 
-		$r = array();
-		foreach ($gs as $g) {
-		    $r[$g->name()] = $g->label();
-		}
-		$response['binets_admin'] = $r;
-	    }
-	}
+        if ($rights->hasFlag('binets_admin')  && in_array('binets_admin', $request)) {
+            $gf = new GroupFilter(new PFC_And(new GFC_User(S::user(), Rights::admin()), new GFC_Namespace('binet')));
+            $gs = $gf->get();
 
-	$response = json_encode($response);
-	$location = Env::s('location');
-	header('Location: ' . $site . '?location=' . $location . '&timestamp=' . $timestamp
-	       . '&response='  . $response
-	       . '&hash='      . md5($timestamp . $key . $response));
+            if ($gs->count() > 0) {
+                $gs->select(GroupSelect::base());
+
+                $r = array();
+                foreach ($gs as $g) {
+                    $r[$g->name()] = $g->label();
+                }
+                $response['binets_admin'] = $r;
+            }
+        }
+
+        $response = json_encode($response);
+        $location = Env::s('location');
+        header('Location: ' . $site . '?location=' . $location . '&timestamp=' . $timestamp
+           . '&response='  . $response
+           . '&hash='      . md5($timestamp . $key . $response));
     }
 
     function handler_exit($page, $level = null)
