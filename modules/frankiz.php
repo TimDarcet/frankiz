@@ -144,12 +144,17 @@ class FrankizModule extends PlModule
         }
 
         if ($rights->hasFlag('sport') && in_array('sport', $request)) {
-            $gf = new GroupFilter(new PFC_And(new GFC_Namespace('sport'), new GFC_User(S::user())));
-            $groups = $gf->get()->select(GroupSelect::base())->toArray();
-            if (count($groups) > 0) {
-                $group = array_pop($groups);
-                $response['sport'] = $group->label();
-            }
+            $groups = S::user()->castes()->groups();
+            $group = $groups->filter('ns', Group::NS_SPORT)->first();
+            $response['sport'] = $group->label();
+        }
+
+        if ($rights->hasFlag('promo') && in_array('promo', $request)) {
+            $groups = S::user()->castes()->groups()->filter('ns', Group::NS_PROMO);
+            $groups = $groups->remove(Group::from('on_platal'));
+            $group = $groups->first();
+            if ($group)
+                $response['promo'] = $group->label();
         }
 
         if ($rights->hasFlag('photo') && in_array('photo', $request)) {
