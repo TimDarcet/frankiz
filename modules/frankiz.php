@@ -115,18 +115,18 @@ class FrankizModule extends PlModule
 
         $response = array('uid' => S::user()->id());
 
-        if ($rights->hasFlag('names')  && in_array('names', $request)) {
+        if ($rights->hasFlag('names') && in_array('names', $request)) {
             $response['hruid']     = S::user()->login();
             $response['firstname'] = S::user()->firstname();
             $response['lastname']  = S::user()->lastname();
             $response['nickname']  = S::user()->nickname();
         }
 
-        if ($rights->hasFlag('email')  && in_array('email', $request)) {
+        if ($rights->hasFlag('email') && in_array('email', $request)) {
             $response['email'] = S::user()->email();
         }
 
-        if ($rights->hasFlag('rights')  && in_array('rights', $request)) {
+        if ($rights->hasFlag('rights') && in_array('rights', $request)) {
             $res = XDB::query('SELECT name FROM remote_groups WHERE remote_id = {?}', $remote_id);
 
             $gf = new GroupFilter(new GFC_Name($res->fetchColumn()));
@@ -143,7 +143,24 @@ class FrankizModule extends PlModule
             }
         }
 
-        if ($rights->hasFlag('binets_admin')  && in_array('binets_admin', $request)) {
+        if ($rights->hasFlag('sport') && in_array('sport', $request)) {
+            $gf = new GroupFilter(new PFC_And(new GFC_Namespace('sport'), new GFC_User(S::user())));
+            $groups = $gf->get()->select(GroupSelect::base())->toArray();
+            if (count($groups) > 0) {
+                $group = array_pop($groups);
+                $response['sport'] = $group->label();
+            }
+        }
+
+        if ($rights->hasFlag('photo') && in_array('photo', $request)) {
+            $img = S::user()->photo();
+            if ($img === false)
+                $img = S::user()->original();
+            if ($img !== false)
+                $response['photo'] = $globals->baseurl . '/' . $img->src('full');
+        }
+
+        if ($rights->hasFlag('binets_admin') && in_array('binets_admin', $request)) {
             $gf = new GroupFilter(new PFC_And(new GFC_User(S::user(), Rights::admin()), new GFC_Namespace('binet')));
             $gs = $gf->get();
 
