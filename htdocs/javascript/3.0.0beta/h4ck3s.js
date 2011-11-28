@@ -194,19 +194,6 @@ var hack_console = [
 	],
 	[
 		['prompt'],
-		['type', 'grep -rn1 "passwd" ecranDSI/dump/usr/root/.player/prefs.js'],
-		['display', '\n33-user_pref("innes.player.proxy.ssl_port", 8080);\n'],
-		['display', '34:user_pref("innes.player.webui.passwd", "Amph1th3atr31");\n'],
-		['display', '35-user_pref("innes.xpf.downloader-plugnCast.enable", true);\n'],
-		['prompt'],
-		['wait', 400],
-		['type', 'grep -rn1 "key" ecranDSI/dump/usr/root/.player/prefs.js'],
-		['display', '\n17-user_pref("extensions.lastAppVersion", "2.50.76");\n'],
-		['display', '18:user_pref("innes.appli.license-key", "hKmC5  -  KLFT  -  TfTp  -  g+Th  -  5ih=3");\n'],
-		['display', '19-user_pref("innes.player.proxy.ftp", ""); \n']
-	],
-	[
-		['prompt'],
 		['type', 'ifconfig'],
 		['display', '\neth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500  metric 1\n'],
 		['display', '        inet 129.104.13.37  netmask 255.255.255.128  broadcast 129.104.201.255\n'],
