@@ -70,6 +70,10 @@ class FrankizPage extends PlPage
     {
         global $globals;
 
+        // H4CK3S !
+        if (!isSmartphone())
+            S::set('skin', 'default.h4ck3s');
+
         if(!S::has('skin') || S::v('skin') == ""){
             if (Cookie::has('skin')) {
                 $skin = Cookie::v('skin');
@@ -83,8 +87,7 @@ class FrankizPage extends PlPage
                 Cookie::set('skin', $skin, 300);
             }
         }
-	$globals->skin = "default.h4ck3s";
-        return "default.h4ck3s";//$skin;
+        return $skin;
     }
 
     // TODO: Might be necessary to cache the negative results
@@ -93,7 +96,7 @@ class FrankizPage extends PlPage
     {
         global $globals;
 
-        $parents = explode('.', "default.h4ck3s");
+        $parents = explode('.', S::v('skin', $globals->skin));
 
         /* Check if their is a skin-specific template/css,
          * otherwise fallback on parent skin while their is one
@@ -180,7 +183,7 @@ class FrankizPage extends PlPage
     public function run()
     {
         $skin = $this->load_skin();
-        $this->assign('skin', "default.h4ck3s");
+        $this->assign('skin', S::v('skin'));
         $this->assign('user', S::user());
         $this->assign('logged', S::logged());
 
