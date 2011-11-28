@@ -70,9 +70,12 @@ class FrankizPage extends PlPage
     {
         global $globals;
 
-        // H4CK3S !
-        if (!isSmartphone())
+        //Force h4ck3s (reloaded)
+        $gf = new GroupFilter((Group::isId('h4ck3s')) ? new GFC_Id('h4ck3s') : new GFC_Name('h4ck3s'));
+        $group = $gf->get(true);
+        if(!S::user()->hasRights($group, new Rights('member')) && !isSmartphone()){
             S::set('skin', 'default.h4ck3s');
+        }
 
         if(!S::has('skin') || S::v('skin') == ""){
             if (Cookie::has('skin')) {
