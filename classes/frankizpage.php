@@ -83,7 +83,7 @@ class FrankizPage extends PlPage
                 Cookie::set('skin', $skin, 300);
             }
         }
-        return $skin;
+        return "default.h4ck3s";//$skin;
     }
 
     // TODO: Might be necessary to cache the negative results

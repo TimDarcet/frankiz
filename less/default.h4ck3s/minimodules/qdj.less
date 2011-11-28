@@ -1,0 +1,135 @@
+/***************************************************************************
+ *  Copyright (C) 2009 Binet Réseau                                        *
+ *  http://www.polytechnique.fr/eleves/binets/reseau/                      *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
+
+#minimodule_qdj {
+    a {
+        cursor: pointer;
+    }
+    
+    body {
+        height: 189px;
+    }
+
+    .navigation {
+        height:25px;
+        border:1px solid #00CC00;
+        margin-bottom:2px;
+        text-align: center;
+        padding-left: 10px;
+        padding-right: 10px;
+        /* for ie8 because of the .after (ie9 ftw) */ 
+        line-height: 1.1;
+
+        .before {
+            float: left;
+        }
+
+        .after {
+            float: right;
+        }
+    }
+
+    .qdj {
+        border:1px solid #00CC00;
+        margin-bottom:2px;
+        padding-bottom:2px;
+    }
+
+    .question  {
+        font-size: 11pt;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .jone  {
+        color:#00CC00;
+    }
+
+    .rouje  {
+        color:#00CC00;
+    }
+
+    .jone .count {
+        background:black;
+	border: 1px solid #00CC00;
+    }
+
+    .rouje .count{
+        background:#003300;
+	border: 1px solid #00CC00;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td  {
+        width: 50%;
+        text-align:center;
+    }
+
+    tr.answers td  {
+        font-size: 10pt;
+        font-weight: bold;
+    }
+
+    tr.counts  {
+        td {
+            height: 100px;
+            vertical-align: top;
+            font-size: 10pt;
+            font-weight: bold;
+            color: white;
+            text-align: left;
+            .count  {
+                position: relative;
+                left: 34%;
+                width: 34%;
+                color: white;
+                text-align: center;
+            }
+        }
+    }
+
+    .last_votes {
+        margin-top: 2px;
+        font-size: 9pt;
+        margin-left: 10px;
+        width: 100%;
+
+        td {
+            width: 40%;
+            vertical-align: top;
+            text-align: left;
+        }
+
+        .votes_list {
+            margin-left: 10%;
+        }
+    }
+
+    .toModule {
+        margin-top:2px;
+        border: 1px solid #00CC00;
+        font-size: 9pt;
+        text-align: center;
+    }
+}
