@@ -37,7 +37,6 @@
             <div id="header">
                 {include file="nav.tpl"|rel}
             </div>
-            <div id="banner_message">{include file="wiki.tpl"|rel name='banner_message'}</div>
             <div id="content">
                 <div id="section">
                     {include file="section.tpl"|rel}
