@@ -189,14 +189,19 @@ class XRayMiniModule extends FrankizMiniModule
             $json_calendar = json_decode($calendar_api->response(), true);
 
             // première émission
-            $i = 0;
-            while(substr($json_calendar['feed']['entry'][$i]['title']['$t'],0,1) != "_") $i++;
+            $feed = $json_calendar['feed']['entry'];
 
-            $name = substr($json_calendar['feed']['entry'][$i]['title']['$t'],1);
-            $start = new DateTime($json_calendar['feed']['entry'][$i]['gd$when'][0]['startTime']);
-            $start_string = date('H\h, l', $start->getTimestamp());//TODO
-
-            $next_show = $name . " à " . $start_string;
+            $next_show = "surprise !";
+            for ($i = 0; $i < count($feed); $i++) {
+                $entry = $feed[$i];
+                $title = $entry['title']['$t'];
+                if ($title{0} == '_') {
+                    $name = substr($title, 1);
+                    $start = new DateTime($entry['gd$when'][0]['startTime']);
+                    $next_show = $name . " à " . ($start->format('H\h, l'));
+                    break;
+                }
+            }
 
             $xray_calendar = array('emission' => $next_show);
             PlCache::setGlobal('xray_calendar', $xray_calendar, $globals->cache->xray_calendar);

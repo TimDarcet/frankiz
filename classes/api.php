@@ -51,7 +51,7 @@ class API
             curl_setopt($curl, CURLOPT_HTTPHEADER, array("Pragma: no-cache"));
             if ($this->proxy) {
                 // DIE Kuzh, DIE !
-                curl_setopt($curl, CURLOPT_PROXY, $globals->API->http_proxy);
+                curl_setopt($curl, CURLOPT_PROXY, $globals->api->http_proxy);
             }
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             // TODO: use certificates for https requests
