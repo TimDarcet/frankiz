@@ -198,7 +198,7 @@ class XRayMiniModule extends FrankizMiniModule
                 if ($title{0} == '_') {
                     $name = substr($title, 1);
                     $start = new DateTime($entry['gd$when'][0]['startTime']);
-                    $next_show = $name . " à " . ($start->format('H\h, l'));
+                    $next_show = $name . " à " . strftime('%Hh, %A', $start->getTimestamp());
                     break;
                 }
             }
