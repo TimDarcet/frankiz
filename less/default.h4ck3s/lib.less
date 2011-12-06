@@ -1,0 +1,75 @@
+/***************************************************************************
+ *  Copyright (C) 2009 Binet Réseau                                        *
+ *  http://www.polytechnique.fr/eleves/binets/reseau/                      *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
+
+@nicegreen : #00CC00;
+@darkgreen : #005500;
+@background: #000000;
+@light     : #003300;
+@border    : #002334;
+@color     : @nicegreen;
+@hover     : #D7B66E;
+@star      : #FFBA00;
+
+.h4ckbackground(){
+    background-image: url("../default.h4ck3s/images/bg-alpha-black.png");
+    background-repeat: repeat;
+}
+
+.greenbackground(){
+    background-image: url("../default.h4ck3s/images/bg-alpha-green.png");
+    background-repeat: repeat;
+}
+
+.alphabackground () {
+    //background-image: url("../default/images/75p.png");
+    //background-repeat: repeat;
+    background-color: black;
+}
+
+.border-radius (@radius: 0px) {
+    border-radius: @radius;
+    -moz-border-radius: @radius;
+    -webkit-border-radius: @radius;
+}
+
+.border-radius-bottom (@radius: 0px) {
+    border-radius: 0 0 @radius @radius;
+    -moz-border-radius: 0 0 @radius @radius;
+    -webkit-border-radius: 0 0 @radius @radius;
+}
+
+.border-radius-bottom-right (@radius: 0px) {
+    border-radius: 0 0 @radius 0;
+    -moz-border-radius: 0 0 @radius 0;
+    -webkit-border-radius: 0 0 @radius 0;
+}
+
+.border-radius-top (@radius: 0px) {
+    border-radius: @radius @radius 0 0;
+    -moz-border-radius: @radius @radius 0 0;
+    -webkit-border-radius: @radius @radius 0 0;
+}
+
+.transition (@time: 500ms) {
+    -moz-transition: background-color @time ease;
+    -webkit-transition: background-color @time ease;
+    -o-transition: background-color @time ease;
+    transition: background-color @time ease;
+}
