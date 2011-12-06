@@ -26,22 +26,22 @@
  * 
  */
  
-$file = "/home/2009/matthieu/import/data.csv";
+$file = "/home/2009/matthieu/data.csv";
 $photos_folder = "/home/2009/matthieu/import/photos";
 
 //index of data
-$lastname = 0;
-$firstname = 1;
-$nationality = 2;
-$birthdate = 3;
-$email = 4;
-$formation = 5;
-$promo = 6;
-$year_in = 7;
-$year_out = 8;
-$gender = 11;
-$room_id = 9;
-$sport = 10;
+$lastname = 7;
+$firstname = 6;
+$nationality = 8;
+$birthdate = 9;
+$email = 3;
+$formation = 11;
+$promo = 1;
+$year_in = 0;
+$year_out = 1;
+$gender = 10;
+$room_id = 13;
+$sport = null;
 
 
 require dirname(__FILE__) . '/../connect.db.inc.php';
@@ -91,26 +91,8 @@ for ($datas = fgetcsv($fic, 1024, ','); !feof($fic); $datas = fgetcsv($fic, 1024
     $u->skin('default');
     
     //setting default minimodules
-    XDB::execute('INSERT INTO users_minimodules (uid,name,col,row) VALUES
-                              ({?}, "birthday",     "COL_LEFT",   0 )',$u->id());
-    XDB::execute('INSERT INTO users_minimodules (uid,name,col,row) VALUES
-                              ({?}, "days",         "COL_LEFT",   1 )',$u->id());
-    XDB::execute('INSERT INTO users_minimodules (uid,name,col,row) VALUES
-                              ({?}, "ik",           "COL_LEFT",   2 )',$u->id());
-    XDB::execute('INSERT INTO users_minimodules (uid,name,col,row) VALUES
-                              ({?}, "qdj",          "COL_MIDDLE", 0 )',$u->id());
-    XDB::execute('INSERT INTO users_minimodules (uid,name,col,row) VALUES
-                              ({?}, "jtx",          "COL_MIDDLE", 1 )',$u->id());
-    XDB::execute('INSERT INTO users_minimodules (uid,name,col,row) VALUES
-                              ({?}, "groups",       "COL_RIGHT",  0 )',$u->id());
-    XDB::execute('INSERT INTO users_minimodules (uid,name,col,row) VALUES
-                              ({?}, "quicksearch",  "COL_FLOAT",  0 )',$u->id());
-    XDB::execute('INSERT INTO users_minimodules (uid,name,col,row) VALUES
-                              ({?}, "activity",     "COL_FLOAT",  1 )',$u->id());
-    XDB::execute('INSERT INTO users_minimodules (uid,name,col,row) VALUES
-                              ({?}, "news",         "COL_FLOAT",  2 )',$u->id());
-    XDB::execute('INSERT INTO users_minimodules (uid,name,col,row) VALUES
-                              ({?}, "todo",         "COL_FLOAT",  3 )',$u->id());
+    $u->select(UserSelect::minimodules());
+    $u->copyMinimodulesFromUser(11794);
                           
                           
 /*    try {
@@ -165,7 +147,7 @@ for ($datas = fgetcsv($fic, 1024, ','); !feof($fic); $datas = fgetcsv($fic, 1024
 
     $u->login($login);
     $u->hruid($login);
-    $u->addStudy($formation_id, ($year_in == null ? (int) $datas[$promo]: (int) $datas[$year_in]), ($year_out == null ? (int) $datas[$promo] + 4 : (int) $datas[$year_out]), $datas[$promo], $login);
+    $u->addStudy($formation_id, ($year_in === null ? (int) $datas[$promo]: (int) $datas[$year_in]), ($year_out === null ? (int) $datas[$promo] + 4 : (int) $datas[$year_out]), $datas[$promo], $login);
     // Linking with the nationality
     if($nationality != null){
         if (!empty($datas[$nationality])) {
