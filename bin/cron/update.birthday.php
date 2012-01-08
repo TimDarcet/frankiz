@@ -33,7 +33,7 @@ do {
                    WHERE  (next_birthday != 0 AND next_birthday IS NOT NULL AND next_birthday < CURDATE())');
     ++$it;
     $affected = XDB::affectedRows();
-    echo "Iteration $it => $affected changes\n";
+    // echo "Iteration $it => $affected changes\n";
 } while ($affected > 0);
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
