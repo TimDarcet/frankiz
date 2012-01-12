@@ -297,7 +297,7 @@ class GroupsModule extends PLModule
             $group->select(GroupSelect::see());
             $page->assign('group', $group);
 
-            if (Env::has('name') && S::user()->perms()->hasFlag('admin')) {
+            if (Env::has('name') && Env::t('name') != '' && S::user()->isAdmin()) {
                 S::logger()->log("groups/admin",
                                  array("gid" => $group->id(),
                                   "old_name" => $group->name(),
@@ -305,20 +305,20 @@ class GroupsModule extends PLModule
                 $group->name(Env::t('name'));
             }
 
+            if (Env::has('update') && S::user()->isAdmin()) {
+                $group->external(Env::has('external'));
+                $group->leavable(Env::has('leavable'));
+                $group->visible(Env::has('visible'));
+            }
+
             if (Env::has('label')) {
                 $group->label(Env::t('label'));
             }
 
-            if (Env::has('description')) {
-                $group->description(Env::s('description'));
-            }
-
-            if (Env::has('web')) {
-                $group->web(Env::s('web'));
-            }
-
-            if (Env::has('mail')) {
-                $group->mail(Env::s('mail'));
+            if (Env::has('update')) {
+                $group->description(Env::t('description'));
+                $group->web(Env::t('web'));
+                $group->mail(Env::t('mail'));
             }
 
             if (Env::has('image')) {

@@ -76,7 +76,7 @@ class GroupSelect extends Select
 
     public static function see() {
         return new GroupSelect(array('ns', 'score', 'name', 'label', 'description',
-                                     'image', 'web', 'mail', 'visible', 'castes', 'leavable'),
+                                     'image', 'web', 'mail', 'visible', 'castes', 'leavable','external'),
                                array('castes' => CasteSelect::base()));
     }
 

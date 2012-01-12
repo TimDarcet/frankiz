@@ -41,6 +41,30 @@
                     </td>
                 </tr>
             {/if}
+            {if $smarty.session.user->isAdmin()}
+                <tr class="fkzadmin">
+                    <td>Visible de l'extérieur</td>
+                    <td>
+                        <input type="checkbox" name="external" {if $group->external()}checked="checked"{/if} />
+                        Groupe visible sans authentification, même hors du plâtal. Ne pas cocher pour les 
+groupes sensibles !
+                    </td>
+                </tr>
+                <tr class="fkzadmin">
+                    <td>Quittable</td>
+                    <td>
+                        <input type="checkbox" name="leavable" {if $group->leavable()}checked="checked"{/if} />
+                        L'utilisateur peut passer de sympathisant à membre ou quitter le groupe.
+                    </td>
+                </tr>
+                <tr class="fkzadmin">
+                    <td>Visible sur la fiche TOL</td>
+                    <td>
+                        <input type="checkbox" name="visible" {if $group->visible()}checked="checked"{/if} />
+                        En cours d'implémentation : actuellement les groupes de namespace binet et free sont visibles.
+                    </td>
+                </tr>
+            {/if}
             {if $smarty.session.user->isWeb()}
                 <tr class="webmaster">
                     <td>Namespace</td>
