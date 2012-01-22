@@ -22,7 +22,7 @@
 
 <div class="formulaire">
     <form enctype="multipart/form-data" method="post" action="tol/">
-        <input type="text" name="free" value="{$smarty.request.free}" />
+        <input type="text" name="free" value="{if t($smarty.request.free)}{$smarty.request.free}{/if}" />
         <input name="go" value="Consulter" type="hidden">
         <input name="search" value="" type="hidden">
 
