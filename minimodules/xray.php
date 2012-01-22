@@ -183,15 +183,23 @@ class XRayMiniModule extends FrankizMiniModule
         // MAJ 1x/jour
         $gc = "http://www.google.com/calendar/feeds/binet.radio.xray%40gmail.com/public/full?alt=json&orderby=starttime&max-results=50&singleevents=true&sortorder=ascending&futureevents=true";
 
-        PlCache::invalidateGlobal('xray_calendar');
+        // Check if cache needs to be refreshed : if emission < now or if last check was 12h ago
+        if (PlCache::hasGlobal('xray_calendar')) {
+            $xray_calendar = PlCache::getGlobal('xray_calendar');
+            if (!isset($xray_calendar['time']) || !isset($xray_calendar['next_time'])
+             || (time() > min($xray_calendar['next_time'], $xray_calendar['time'] + 43200)))
+                PlCache::invalidateGlobal('xray_calendar');
+        }
         if (!PlCache::hasGlobal('xray_calendar')) {
             $calendar_api = new API($gc, true);
             $json_calendar = json_decode($calendar_api->response(), true);
 
-            // première émission
+            // First emission
             $feed = $json_calendar['feed']['entry'];
 
             $next_show = "surprise !";
+            // Update no-emission every minute
+            $next_time = time() + 60;
             for ($i = 0; $i < count($feed); $i++) {
                 $entry = $feed[$i];
                 $title = $entry['title']['$t'];
@@ -199,11 +207,12 @@ class XRayMiniModule extends FrankizMiniModule
                     $name = substr($title, 1);
                     $start = new DateTime($entry['gd$when'][0]['startTime']);
                     $next_show = $name . " à " . strftime('%Hh, %A', $start->getTimestamp());
+                    $next_time = $start->getTimestamp();
                     break;
                 }
             }
 
-            $xray_calendar = array('emission' => $next_show);
+            $xray_calendar = array('emission' => $next_show, 'next_time' => $next_time, 'time' => time());
             PlCache::setGlobal('xray_calendar', $xray_calendar, $globals->cache->xray_calendar);
         }
 
@@ -237,9 +246,7 @@ class XRayMiniModule extends FrankizMiniModule
         $this->assign('xray_calendar', PlCache::getGlobal('xray_calendar'));
         $this->assign('xray_podcast', PlCache::getGlobal('xray_podcast'));
         $this->assign('xray_nowplaying', PlCache::getGlobal('xray_nowplaying'));
-        
     }
-
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
