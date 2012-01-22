@@ -1,5 +1,7 @@
+##
+##  Makefile of Frankiz
+##
 
-# $Id: Makefile,v 1.5 2004/11/25 20:18:39 x99laine Exp $
 ################################################################################
 # definitions
 
@@ -10,40 +12,59 @@ VERSION = $(VERSNUM)$(VERSTAG)
 
 PKG_NAME = frankiz
 PKG_DIST = $(PKG_NAME)-$(VERSION)
-PKG_FILES = AUTHORS ChangeLog COPYING README Makefile
-PKG_DIRS = configs htdocs include install.d plugins po scripts templates upgrade
+PKG_FILES = AUTHORS ChangeLog INSTALL LICENSE Makefile
+PKG_DIRS = bin classes configs core doc htdocs include less minimodules modules plugins templates upgrade
 
 VCS_FILTER = ! -name .arch-ids ! -name CVS
 
-define download
-@echo "Downloading $@ from $(DOWNLOAD_SRC)"
-wget $(DOWNLOAD_SRC) -O $@ -q || ($(RM) $@; exit 1)
-endef
-
 INSTALL_DIR := $(shell pwd)
+
+ifdef INSTALL_USER
+	BUILD_TARGET := dev_build
+	REWRITE_BASE := /~$(INSTALL_USER)/
+	CONFIG_IN    := frankiz.conf.dev.in
+else
+	BUILD_TARGET := user_not_defined
+	INSTALL_USER := frankiz
+	REWRITE_BASE := /
+	CONFIG_IN    := frankiz.conf.prod.in
+endif
 
 ################################################################################
 # global targets
 
-ifdef INSTALL_USER
-	BUILD_TARGET := build
-else
-	BUILD_TARGET := user_not_defined
-endif
+all:
+	@echo "Use 'make prod' to make prod environment"
+	@! echo "or 'make INSTALL_USER=\$$USER dev to make dev environment"
 
-all: $(BUILD_TARGET)
+dev: $(BUILD_TARGET)
 
 user_not_defined:
-	@echo "Error, \"INSTALL_USER\" MUST be speficied"
+	@! echo "Error, \"INSTALL_USER\" MUST be speficied"
 
-build: core dir conf
-	@echo ""
-	@echo ""
-	@echo "+----------------------------------------------+"
-	@echo "| Version de dév installée, ajoutez le passwd  |"
-	@echo "| MySQL dans configs/frankiz.conf              |"
-	@echo "+----------------------------------------------+"
-	@echo ""
+dev_build: core dir conf
+	@echo ''
+	@echo ''
+	@echo '+--------------------------------------------------+'
+	@echo '| You installed the developer version              |'
+	@echo '| Now write MySQL password in configs/frankiz.conf |'
+	@echo '| and make sure your web server can write to       |'
+	@echo '|   spool/* and htdocs/css directories             |'
+	@echo '| Read INSTALL file for more information           |'
+	@echo '+--------------------------------------------------+'
+	@echo ''
+
+prod: core dir conf
+	@echo ''
+	@echo ''
+	@echo '+--------------------------------------------------+'
+	@echo '| You installed the production version             |'
+	@echo '| Now write MySQL password in configs/frankiz.conf |'
+	@echo '| and make sure your web server can write to       |'
+	@echo '|   spool/* and htdocs/css directories             |'
+	@echo '| Read INSTALL file for more information           |'
+	@echo '+--------------------------------------------------+'
+	@echo ''
 
 q:
 	@echo -e "Code statistics\n"
@@ -51,6 +72,13 @@ q:
 
 %: %.in Makefile ChangeLog
 	sed -e 's,@VERSION@,$(VERSION),g' $< > $@
+
+prod_update:
+	@git diff --quiet || ! echo "Your repo is not clean"
+	@[ "x`id -un`" = "x$(INSTALL_USER)" ] || ! echo "You need to be $(INSTALL_USER) to update"
+	git fetch
+	git merge origin/prod
+	cd $(INSTALL_DIR)/bin/ && php -f reset.skin.php
 
 ################################################################################
 # targets
@@ -62,6 +90,7 @@ q:
 core:
 	[ -f core/Makefile ] || ( git submodule init && git submodule update )
 	make -C core all
+
 ##
 ## dir
 ##
@@ -71,8 +100,6 @@ dir: spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/se
 spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/sessions htdocs/css:
 	mkdir -p $@
 	chmod 775 $@
-	@echo "Need root privileges for \"sudo chgrp apache $@\""
-	sudo -k chgrp apache $@
 
 ##
 ## conf
@@ -81,24 +108,15 @@ spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/session
 conf: classes/frankizglobals.php htdocs/.htaccess configs/frankiz.conf configs/cron
 
 htdocs/.htaccess: htdocs/.htaccess.in Makefile
-	@REWRITE_BASE="/~$(INSTALL_USER)"; \
-	test "$$REWRITE_BASE" = "/~web" && REWRITE_BASE="/"; \
-	sed -e "s,@REWRITE_BASE@,$$REWRITE_BASE,g" $< > $@
+	sed -e "s,@REWRITE_BASE@,$(REWRITE_BASE),g" $< > $@
 
-configs/cron: configs/cron.in
-	[ ! -f configs/cron ] || ( echo "Need root privileges for \"sudo rm $@\"" && sudo -k rm $@)
+configs/cron: configs/cron.in Makefile
 	sed -e "s,@INSTALL_DIR@,$(INSTALL_DIR),g;s,@USER@,$(INSTALL_USER),g" $< > $@
-	@echo "Need root privileges for \"sudo chown root:root $@\""
-	sudo -k chown root:root $@
-	@echo "Need root privileges for \"chmod 644 $@\""
-	sudo -k chmod 644 $@
 
-configs/frankiz.conf: configs/frankiz.conf.in
-	[ -f $@ ] || sed -e "s,@USER@,$(INSTALL_USER),g" $< > $@
-	@echo "Need root privileges for \"sudo chgrp apache $@\""
-	sudo -k chgrp apache $@
-	@echo "Need root privileges for \"chmod 640 $@\""
-	sudo -k chmod 640 $@
+configs/frankiz.conf: configs/$(CONFIG_IN) Makefile
+	@[ ! -f $@ ] || ! echo "$@ needs updating. Please remove this file and make again."
+	[ -f $@ ] || sed -e "s,@USER@,$(INSTALL_USER),g;s,@SITE_NAME@,$(SITE_NAME),g;s,@REWRITE_BASE@,$(REWRITE_BASE),g" $< > $@
+	chmod 640 $@
 
 ##
 ## clean
@@ -135,5 +153,5 @@ distclean: delete_dir clean_files
 
 ################################################################################
 
-.PHONY: build clean clean_dir clean_files conf core delete_dir dir distclean q http*
+.PHONY: all clean clean_dir clean_files conf core delete_dir dev dev_build dir distclean prod q prod_update user_not_defined
 

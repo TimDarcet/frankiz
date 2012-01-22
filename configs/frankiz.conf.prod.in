@@ -1,0 +1,29 @@
+; contains all variable config
+
+[Core]
+
+debug      = 0
+dbdb       = "frankiz"
+dbuser     = "frankiz"
+dbhost     = "localhost"
+dbpwd      = "*********"
+
+;mode='r'
+
+cookie_path = '/'
+cookie_ns  = 'fkz_';
+
+memcache   = "127.0.0.1"
+
+sitename   = "Frankiz"
+baseurl    = "https://www.frankiz.net/"
+
+[Mails]
+
+admin = frankiz@binets.polytechnique.fr
+web   = webmasters@binets.polytechnique.fr
+
+
+[remote]
+
+lag    = 300

@@ -1,0 +1,52 @@
+Here is a guideline to install Frankiz on your system.
+
+Before installing, you need :
+ - A web server with Mod-Rewrite, PHP and Mysql (eg. Apache or lighttpd)
+ - A working sendmail system (Postfix or other)
+ - A working cron system (vixie-cron for example)
+ - Smarty templates engine (dev-php/smarty on Gentoo)
+ - Memcache (dev-php/pecl-memcache and net-misc/memcached on Gentoo)
+ - Image Magick (dev-php5/pecl-imagick)
+ - Less (git clone https://github.com/cloudhead/less.js.git for example)
+
+Set up a production environment, in /home/web/frankiz :
+ - Create a user "frankiz", in group "apache", with home "/home/web/frankiz"
+   This user needs a shell to make CRON scripts work.
+    # mkdir "/home/web/frankiz"
+    # chown frankiz:apache "/home/web/frankiz"
+    # cd "/home/web/frankiz"
+ - Become "frankiz" user and copy files
+    # sudo -u frankiz -s
+    $ git clone "http://git.frankiz.net/frankiz" .
+    $ git checkout "http://git.frankiz.net/frankiz" .
+    $ git checkout origin/prod -b prod
+    $ git branch -D master
+    $ make prod
+ - Configure configs/frankiz.conf (set MySQL password)
+ - Set up right permissions
+    $ chown frankiz:apache "/home/web/frankiz" -R
+    $ chmod 0640 "configs/frankiz.conf"
+    $ chmod 0775 spool/* htdocs/css
+ - Set up CRON scripts
+    # cp /home/web/frankiz/configs/cron /etc/cron.d/frankiz
+    # chown root:root /etc/cron.d/frankiz && chmod 0640 /etc/cron.d/frankiz
+ - Configure aliases or virtual hosts on your webserver.
+   HTTP base directory is /home/web/frankiz/htdocs/
+
+Set up a development environment for user "devel", in /home/devel/frankiz
+ $ cd "/home/devel/"
+ $ git clone "ssh://devel@git.frankiz.net/frankiz"
+ $ make INSTALL_USER=devel dev
+ - Configure configs/frankiz.conf (set MySQL password)
+ - Set up right permissions
+    $ chown devel:apache "/home/devel/frankiz" -R
+    $ chmod 0640 "configs/frankiz.conf"
+    $ chmod 0775 spool/* htdocs/css
+
+Each you update your branch, you may run 'cd bin/ && php -f reset.skin.php' to
+update your cache.
+
+Note :
+If you do not use Apache, you have to translate the rewrite directives in
+htdocs/.htaccess to the right syntax of your webserver.
+
