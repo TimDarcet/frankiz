@@ -35,7 +35,7 @@ endif
 
 all:
 	@echo "Use 'make prod' to make prod environment"
-	@! echo "or 'make INSTALL_USER=\$$USER dev to make dev environment"
+	@! echo "or 'make INSTALL_USER=\$$USER dev' to make dev environment"
 
 dev: $(BUILD_TARGET)
 
@@ -134,7 +134,6 @@ clean_dir:
 clean_files:
 	[ ! -f htdocs/.htaccess ] || rm htdocs/.htaccess
 	[ ! -f classes/frankizglobals.php ] || rm classes/frankizglobals.php
-	[ ! -f configs/frankiz.conf ] || rm configs/frankiz.conf
 	[ ! -f configs/cron ] || rm configs/cron
 
 clean: clean_dir clean_files
@@ -150,6 +149,7 @@ delete_dir:
 	[ ! -d spool ] || rmdir --ignore-fail-on-non-empty spool
 
 distclean: delete_dir clean_files
+	[ ! -f configs/frankiz.conf ] || rm configs/frankiz.conf
 
 ################################################################################
 
