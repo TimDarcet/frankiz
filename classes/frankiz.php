@@ -31,7 +31,7 @@ class Frankiz extends Platal
         }
     }
 
-    public function force_login(PlPage &$page)
+    public function force_login(PlPage $page)
     {
         header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
         if (S::logged()) {
