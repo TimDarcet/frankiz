@@ -13,7 +13,7 @@ dbpwd      = "*********"
 cookie_path= '/~@USER@/'
 cookie_ns  = '@USER@_';
 
-memcache   = "127.0.0.42"
+memcache   = "127.0.0.1"
 
 sitename   = "Frankiz - Version de dév - @USER@"
 baseurl    = "https://dev.frankiz.net/~@USER@/"

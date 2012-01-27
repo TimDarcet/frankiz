@@ -49,7 +49,7 @@ dev_build: core dir conf
 	@echo '| You installed the developer version              |'
 	@echo '| Now write MySQL password in configs/frankiz.conf |'
 	@echo '| and make sure your web server can write to       |'
-	@echo '|   spool/* and htdocs/css directories             |'
+	@echo '|   spool/* and htdocs/css and htdocs/data/*       |'
 	@echo '| Read INSTALL file for more information           |'
 	@echo '+--------------------------------------------------+'
 	@echo ''
@@ -61,7 +61,7 @@ prod: core dir conf
 	@echo '| You installed the production version             |'
 	@echo '| Now write MySQL password in configs/frankiz.conf |'
 	@echo '| and make sure your web server can write to       |'
-	@echo '|   spool/* and htdocs/css directories             |'
+	@echo '|   spool/* and htdocs/css and htdocs/data/*       |'
 	@echo '| Read INSTALL file for more information           |'
 	@echo '+--------------------------------------------------+'
 	@echo ''
@@ -95,9 +95,9 @@ core:
 ## dir
 ##
 
-dir: spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/sessions htdocs/css
+dir: spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/sessions htdocs/css htdocs/data/ik
 
-spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/sessions htdocs/css:
+spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/sessions htdocs/css htdocs/data/ik:
 	mkdir -p $@
 	chmod 775 $@
 
@@ -130,6 +130,7 @@ clean_dir:
 	[ ! -d spool/tmp ] || ( chmod 775 spool/tmp && rm -rf spool/tmp/* )
 	[ ! -d spool/sessions ] || ( chmod 775 spool/sessions && rm -rf spool/sessions/* )
 	[ ! -d htdocs/css ] || ( chmod 775 htdocs/css && rm -rf htdocs/css/* )
+	[ ! -d htdocs/data/ik ] || ( chmod 775 htdocs/data/ik && rm -rf htdocs/data/ik/* )
 
 clean_files:
 	[ ! -f htdocs/.htaccess ] || rm htdocs/.htaccess
@@ -145,8 +146,10 @@ delete_dir:
 	[ ! -d spool/conf ] || rm -rf spool/conf
 	[ ! -d spool/tmp ] || rm -rf spool/tmp
 	[ ! -d spool/sessions ] || rm -rf spool/sessions
-	[ ! -d htdocs/css ] || rm -rf htdocs/css
 	[ ! -d spool ] || rmdir --ignore-fail-on-non-empty spool
+	[ ! -d htdocs/css ] || rm -rf htdocs/css
+	[ ! -d htdocs/data/ik ] || rm -rf htdocs/data/ik
+	[ ! -d htdocs/data ] || rmdir --ignore-fail-on-non-empty htdocs/data
 
 distclean: delete_dir clean_files
 	[ ! -f configs/frankiz.conf ] || rm configs/frankiz.conf
