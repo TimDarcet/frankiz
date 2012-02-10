@@ -46,7 +46,7 @@ class JtxMiniModule extends FrankizMiniModule
 
     public function run()
     {
-
+	$this->assign('params', '?'.date('Y-m-d'));
     }
 
 }
