@@ -10,6 +10,11 @@ class PixMiniModule extends FrankizMiniModule
         return AUTH_INTERNAL;
     }
 
+    public function js()
+    {
+        return 'minimodules/pix.js';
+    }
+
     public function css()
     {
         return 'minimodules/pix.css';
@@ -19,7 +24,7 @@ class PixMiniModule extends FrankizMiniModule
     {
         if (IP::is_internal())
             return 'minimodules/pix/internal.tpl';
-        else 
+        else
             return 'minimodules/pix/external.tpl';
     }
 
@@ -27,17 +32,23 @@ class PixMiniModule extends FrankizMiniModule
     {
         return 'piX : dernières photos postées';
     }
-    
+
     protected function loadFile($url){
         $api = new API($url, false);
-        $photos = simplexml_load_string($api->response());
+        $photos = simplexml_load_string(utf8_decode($api->response())); //charset fix
         $res = Array();
         foreach($photos as $photo){
-            $res[] = Array("link1" => "http://pix/photo/".$photo->id, "link2" => "http://pix/media/photo/thumb/".$photo->author->id."/".$photo->link, "title" => $photo->title." par ".$photo->author->name." ".$photo->author->surname);
+            $res[] = Array(
+                "urlPage" => "http://pix/photo/".$photo->id,
+                "imgThumb" => "http://pix/media/photo/thumb/".$photo->author->id."/".$photo->link,
+                "imgFull" => "http://pix/media/photo/view/".$photo->author->id."/".$photo->link,
+                "title" => htmlspecialchars($photo->title." par ".$photo->author->name." ".$photo->author->surname),
+                "text" => htmlspecialchars($photo->title." par ".$photo->author->name." ".$photo->author->surname)."<br/><a href='http://pix/photo/".$photo->id."'>voir dans piX</a>"
+            );
         }
         return $res;
     }
-    
+
     protected function getCachedArray() {
         global $globals;
 
@@ -50,7 +61,6 @@ class PixMiniModule extends FrankizMiniModule
 
     public function run()
     {
-        
         $this->assign('photos', $this->getCachedArray());
     }
 }
