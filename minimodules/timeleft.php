@@ -31,6 +31,11 @@ class TimeleftMiniModule extends FrankizMiniModule
         return 'user';
     }
 
+    public function js()
+    {
+        return 'minimodules/timeleft.js';
+    }
+
     public function tpl()
     {
         return 'minimodules/timeleft/timeleft.tpl';
@@ -43,7 +48,7 @@ class TimeleftMiniModule extends FrankizMiniModule
 
     public function run()
     {
-        $future = new FrankizDateTime('2011-03-08 23:00:00');
+        $future = new FrankizDateTime('2012-02-28 23:00:00');
         $this->assign('future', $future);
     }
 }

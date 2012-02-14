@@ -33,5 +33,8 @@ var timeleft = {
         };
         run();
         timeoutRun = setInterval(run, 1000);
+    },
+    "run" : function() {
+        timeleft.update($("#minimodule_timeleft .text"), timeleft_future);
     }
 };
