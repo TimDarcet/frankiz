@@ -46,7 +46,8 @@
         Requêtes en attente :
         <ul>
             {foreach from=$quick_requests item='validate'}
-                <li>{$validate->label()} depuis {$validate->created()|age}
+                {assign var='group' value=$validate->group()}
+                <li>{$group|group:'text'} : {$validate->label()} depuis {$validate->created()|age}
                     <a href="proposal/remove/{$validate->id()}?token={xsrf_token}&url={$self_url}" class="delete_element"
                         onclick="return confirm(areyousure)">
                     </a>

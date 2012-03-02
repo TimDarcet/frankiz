@@ -55,7 +55,7 @@ class ValidateSelect extends Select
     }
 
     public static function quick() {
-        return new self(array('group', 'type', 'created'));
+        return new self(array('group', 'type', 'created'), array('group' => GroupSelect::base()));
     }
 
     public static function base($subs = null) {
