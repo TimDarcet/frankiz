@@ -41,8 +41,6 @@
 
     <a href="http://br.frankiz.net">WikiBR</a> ·
 
-    <a href="http://br.frankiz.net/qrezix">qRezix</a> ·
-
     <a href="http://ik.frankiz.net">InfoKès</a> ·
 
     <a href="http://else.polytechnique.org/">ELSE</a> ·
@@ -51,7 +49,9 @@
 
     <a href="http://x-ray">X-Ray</a> ·
 
-    <a href="http://x-passion.polytechnique.org/">X-Passion</a>
+    <a href="http://x-passion.polytechnique.org/">X-Passion</a> ·
+	
+    <a href="http://dnsapp" title="Noms de domaine">DnsApp</a>
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
