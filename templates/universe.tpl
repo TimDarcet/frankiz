@@ -49,7 +49,9 @@
 
     <a href="http://jtx">JTX</a> ·
 
-    <a href="http://x-ray">X-Ray</a>
+    <a href="http://x-ray">X-Ray</a> ·
+
+    <a href="http://x-passion.polytechnique.org/">X-Passion</a>
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
