@@ -45,13 +45,15 @@
 
     <a href="http://else.polytechnique.org/">ELSE</a> ·
 
-    <a href="http://jtx">JTX</a> ·
-
-    <a href="http://x-ray">X-Ray</a> ·
-
-    <a href="http://x-passion.polytechnique.org/">X-Passion</a> ·
-	
-    <a href="http://dnsapp" title="Noms de domaine">DnsApp</a>
+    <a href="http://x-passion.polytechnique.org/">X-Passion</a>
+    {if IP::is_internal()}
+        ·
+        <a href="http://dnsapp" title="Noms de domaine">DnsApp</a>
+        ·
+        <a href="http://jtx">JTX</a>
+        ·
+        <a href="http://x-ray">X-Ray</a>
+    {/if}
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
