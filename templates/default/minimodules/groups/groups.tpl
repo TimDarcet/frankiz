@@ -28,7 +28,7 @@
         <tr>
             <td class="img">{$group|group:'micro'}</td>
             <td class="therights">{$minimodule.user->rights($group)|@rights}</td>
-            <td class="group">{$group|group:'text'}</td>
+            <td class="group">{$group|group:'textAndNewsNumber'}</td>
         </tr>
     {/foreach}
 </table>
@@ -36,13 +36,13 @@
 
 {if $minimodule.frees|@count > 0}
     <h4>Groupes</h4>
-    
+
     <table>
         {foreach from=$minimodule.frees|order:'score' item='group'}
             <tr>
-            <td class="img">{$group|group:'micro'}</td>
-            <td class="therights">{$minimodule.user->rights($group)|@rights}</td>
-            <td class="group">{$group|group:'text'}</td>
+                <td class="img">{$group|group:'micro'}</td>
+                <td class="therights">{$minimodule.user->rights($group)|@rights}</td>
+                <td class="group">{$group|group:'textAndNewsNumber'}</td>
             </tr>
         {/foreach}
     </table>

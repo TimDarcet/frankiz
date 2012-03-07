@@ -32,8 +32,22 @@ function smarty_modifier_group($group, $type = 'micro') {
         }
         $str .= '<img src="' . $image->src('micro') . '" />';
     }
-    if ($type == 'text' || $type == 'both') {
+    if ($type == 'text' || $type == 'both' || $type == 'textAndNewsNumber') {
         $str .= $group->label();
+    }
+    if ($type == 'textAndNewsNumber') {
+        $news = new NewsFilter(
+            new PFC_And(
+                new PFC_Not(new NFC_Read(S::user())),
+                new NFC_Current(),
+                new NFC_Target(S::user()->targetCastes()),
+                new NFC_Origin($group->id())
+            )
+        );
+        $n = $news->get()->count();
+        if ($n > 0) {
+            $str .= '<b> (' . $n . ')</b>';
+        }
     }
 
     $str .= '</a>';
