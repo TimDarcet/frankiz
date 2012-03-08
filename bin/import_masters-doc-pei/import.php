@@ -23,9 +23,9 @@
 /*
  * This script imports accounts from a SQL table
  * It's intended to be adaptated each time we have to create lots of accounts
- * 
+ *
  */
- 
+
 $file = "/home/2009/matthieu/data.csv";
 $photos_folder = "/home/2009/matthieu/import/photos";
 
@@ -89,12 +89,12 @@ for ($datas = fgetcsv($fic, 1024, ','); !feof($fic); $datas = fgetcsv($fic, 1024
         $u->email($datas[$email]);
     }
     $u->skin('default');
-    
+
     //setting default minimodules
     $u->select(UserSelect::minimodules());
     $u->copyMinimodulesFromUser(11794);
-                          
-                          
+
+
 /*    try {
         $u->cellphone(new Phone($datas['portable']));
     } catch(Exception $e) {
@@ -116,14 +116,14 @@ for ($datas = fgetcsv($fic, 1024, ','); !feof($fic); $datas = fgetcsv($fic, 1024
             }
         }
     }
-    
+
     $login = "";
     if(preg_match('!@institutoptique.fr!',$datas[$email]))
         $login = str_replace('@institutoptique.fr','',$datas[$email]);
     else
         $login = str_replace('@polytechnique.edu','',$datas[$email]);
-    
-        
+
+
     switch ($datas[$formation]) {
         case "X": // X
         $formation_id = 1;
@@ -136,13 +136,13 @@ for ($datas = fgetcsv($fic, 1024, ','); !feof($fic); $datas = fgetcsv($fic, 1024
         case "PEI": // PEI
         $formation_id = 5;
         break;
-        
-        case "Supop": // PEI
+
+        case "Supop": // Supop
         $formation_id = 6;
         break;
 
         default: // Master
-        $formation_id = 3; 
+        $formation_id = 3;
     }
 
     $u->login($login);
