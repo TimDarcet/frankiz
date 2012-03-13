@@ -62,6 +62,7 @@ class PixMiniModule extends FrankizMiniModule
     public function run()
     {
         $this->assign('photos', $this->getCachedArray());
+        $this->assign('nMontrees', 6);
     }
 }
 
