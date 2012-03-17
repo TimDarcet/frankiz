@@ -34,10 +34,12 @@
             <input name="tol" value="TOL" type="submit">
             <input name="ok" value="Wikix" type="submit"
                    onclick="var $form = $(this).closest('form');$form.find('[name=search]').val($form.find('[name=free]').val());$form.attr('action', 'http://wikix.polytechnique.org/eleves/wikix/Sp%C3%A9cial:Recherche')">
-            {if IP::is_internal()}
-                <input name="ok" value="Fruit" type="submit"
-                    onclick="var $form = $(this).closest('form');$form.find('[name=terms]').val($form.find('[name=free]').val());$form.attr('action', 'http://fruit/search.php');$form.attr('method', 'get')">
-            {/if}
+            {if $smarty.session.auth >= AUTH_COOKIE}
+			    {if IP::is_internal()}
+                    <input name="ok" value="Fruit" type="submit"
+                        onclick="var $form = $(this).closest('form');$form.find('[name=terms]').val($form.find('[name=free]').val());$form.attr('action', 'http://fruit/search.php');$form.attr('method', 'get')">
+                {/if}
+			{/if}
         </div>
     </form>
 </div>
