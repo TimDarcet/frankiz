@@ -75,11 +75,11 @@ class NewsModule extends PlModule
             $nf = new NewsFilter(new PFC_And(new NFC_End(new FrankizDateTime("now")),
                                          new NFC_Target(S::user()->targetCastes())),
                              new NFO_Begin(true));
-	else
-	    $nf = new NewsFilter(new PFC_And(new NFC_Current(),
+    else
+        $nf = new NewsFilter(new PFC_And(new NFC_Current(),
                                          new NFC_Target(S::user()->targetCastes())),
                              new NFO_Begin(true));
-	
+
 
         $this->viewNews($page, $nf->get(), 'current', $id);
     }
@@ -156,6 +156,7 @@ class NewsModule extends PlModule
                     $news->content(Env::t('news_content'));
                     $news->begin(new FrankizDateTime(Env::t('begin')));
                     $news->end(new FrankizDateTime(Env::t('end')));
+                    $news->removeReadFlags();
                     if (Env::has('image')) {
                         $image = new ImageFilter(new PFC_And(new IFC_Id(Env::i('image')), new IFC_Temp()));
                         $image = $image->get(true);

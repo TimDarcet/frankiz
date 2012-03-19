@@ -176,6 +176,11 @@ class News extends meta
         }
     }
 
+    public function removeReadFlags()
+    {
+        XDB::execute('DELETE FROM news_read WHERE news = {?}', $this->id());
+    }
+
     public function star($star = null)
     {
         if ($star === true) {
