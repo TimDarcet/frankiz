@@ -38,6 +38,7 @@
             Rédaction d'une annonce
         </div>
         <div class="body">
+            {include file="wiki.tpl"|rel name='proposal/news'}
             <table class="bicol">
                 <tr class="pair">
                     <td>
