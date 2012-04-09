@@ -10,4 +10,7 @@ htdocs/.htaccess
 .settings/*
 htdocs/data/*
 htdocs/css/*
+htdocs/ca-br.crt
+htdocs/*.mobileconfig
+htdocs/wpad.dat
 upgrade/2.0.0_to_3.0.0/unversionned
