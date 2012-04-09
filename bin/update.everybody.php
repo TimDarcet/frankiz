@@ -21,43 +21,29 @@
  ***************************************************************************/
 
 /*
- * This script creates and updates the studies
+ * This script creates and updates the groups corresponding to the promos
  */
 
 require 'connect.db.inc.php';
 
-$iter = XDB::iterRow('SELECT formation_id, abbrev, label FROM  formations');
+$gf = new GroupFilter(new GFC_Name('everybody'));
+$g = $gf->get(true);
+$g->select(GroupSelect::castes());
+$c = $g->caste(Rights::member());
+$c->select(CasteSelect::base())->compute();
+echo 'Groupe everybody mis à jour' . "\n";
 
-while (list($formation_id, $abbrev, $label) = $iter->next()) {
-    $name = 'formation_' . $abbrev;
+$gf = new GroupFilter(new GFC_Name('public'));
+$g = $gf->get(true);
+$g->select(GroupSelect::castes());
+$c = $g->caste(Rights::member());
+$c->select(CasteSelect::base())->compute();
+echo 'Groupe visibilité extérieure  mis à jour' . "\n";
 
-    $gf = new GroupFilter(new GFC_Name($name));
-    $g = $gf->get(true);
-    if ($g instanceof Group) {
-        $g->select(GroupSelect::castes());
-        $c = $g->caste(Rights::member());
-        $c->select(CasteSelect::base())->compute();
-        echo $label . ' (' . $g->id() . ") updated\n";
-    } else {
-        $f = new UserFilter(new UFC_Study(new Formation($formation_id)));
+$gf = new GroupFilter(new GFC_Name('licenses'));
+$g = $gf->get(true);
+$g->select(GroupSelect::castes());
+$c = $g->caste(Rights::member());
+$c->select(CasteSelect::base())->compute();
+echo 'Groupe licenses mis à jour' . "\n";
 
-        $g = new Group();
-        $g->insert();
-        $c = $g->caste(Rights::member());
-        $c->userfilter($f);
-        if ($abbrev == 'x') {
-            $c = $g->caste(Rights::admin());
-            $c->userfilter(new UserFilter(new UFC_Group(Group::from('kes'), Rights::admin())));
-        }
-        $g->ns(Group::NS_STUDY);
-        $g->name($name);
-        $g->label($label);
-
-        echo $label . " created\n";
-    }
-}
-
-echo 'Fini' . "\n";
-
-// vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
-?>
