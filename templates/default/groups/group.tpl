@@ -46,7 +46,7 @@
             <h1>Outils</h1>
             <ul>
                 <li><a href="chat/{$group->name()}">Salon de discussion</a></li>
-                <li><a href="https://www.polytechnique.fr/eleves/platalpad/{$group->name()}" target="_blank">Platalpad</a></li>
+                <li><a href="http://{$group->name()}.platalpad.binets.fr" target="_blank">Platalpad</a></li>
             </ul>
         </div>
     </div>
