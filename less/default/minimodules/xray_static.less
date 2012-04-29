@@ -21,58 +21,37 @@
 @import "../lib.less";
 
 #minimodule_xray {
-    a#xray_linklive{
+    a#xray_link{
         display:block;
         width:100%;
-        overflow:hidden;
+        background:url('http://x-ray/blog/wp-content/themes/destyle/img/logo.png') no-repeat right top;
+        background-size:100px;
+        font-family: 'Segoe UI','Arial Black', Gadget, sans-serif;
+        text-decoration:none;
+        color:black;
+        line-height:100%;
+        font-size:125%;
+    }
+    a#xray_link:hover{
+        background-size:90px;
+        background-color:rgba(255,255,255,0.5);
+        color:#A20400;
+    }
+    span#xray_titre{
+        text-transform:uppercase;
+        font-size:120%;
+        padding-left:4px;
+        padding-top:5px;
+    }
+    span#xray_artiste{
+        text-transform:uppercase;
+        font-weight:bold;
+        padding-left:4px;
+
+    }
+    span#xray_podcast{
+        padding-left:24px;
+        background:url('../images/icons/date.png') no-repeat 2px 7px;
     }
 
-    /* pour que l'image soit tronquée lors de la réduction du minimodule */
-    a#xray_linklive div{
-        width:0px;
-        overflow:visible;
-    }
-
-    #xray_linksite{
-        text-align:center;
-        font-size: 10pt;
-        font-style: italic;
-    }
-
-    hr {
-        clear: both;
-    }
-    
-    .body {
-        color:#fff;
-        background: url('http://x-ray.eleves.polytechnique.fr/live/xray-live-background.gif') repeat;
-    }
-
-    .feed {
-        background-image: url("../../default/images/feed.gif");
-        background-repeat: no-repeat;
-        position: absolute;
-        right: 4px;
-        top: 4px;
-    }
-
-    .feed a {
-        display: block;
-        height: 16px;
-        width: 16px;
-    }
-
-    .play {
-        background-image: url("../../default/minimodules/xray/play_radio.png");
-        background-repeat: no-repeat;
-        cursor: pointer;
-        height: 22px;
-        position: relative;
-        width: 116px;
-    }
-
-    .cover {
-        float: left;
-        width: 33%;
-    }
 }

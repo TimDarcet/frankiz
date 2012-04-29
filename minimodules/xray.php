@@ -216,6 +216,8 @@ class XRayMiniModule extends FrankizMiniModule
             PlCache::setGlobal('xray_calendar', $xray_calendar, $globals->cache->xray_calendar);
         }
 
+        /*
+
         // feed x-ray pour le dernier podcast
         // MAJ 1x/jour
         $podcasts_xml = "http://x-ray/blog/?feed=podcast";
@@ -229,6 +231,7 @@ class XRayMiniModule extends FrankizMiniModule
             $xray_podcast = array('titre' => utf8_decode($last_podcast['title']), 'url' => $last_podcast['link'], 'description' => utf8_decode($last_podcast['itunes:subtitle']));
             PlCache::setGlobal('xray_podcast', $xray_podcast, $globals->cache->xray_podcast);
         }
+        */
 
         // titre en cours
         // MAJ toutes les 2 mn
@@ -244,7 +247,7 @@ class XRayMiniModule extends FrankizMiniModule
         }
 
         $this->assign('xray_calendar', PlCache::getGlobal('xray_calendar'));
-        $this->assign('xray_podcast', PlCache::getGlobal('xray_podcast'));
+        //$this->assign('xray_podcast', PlCache::getGlobal('xray_podcast'));
         $this->assign('xray_nowplaying', PlCache::getGlobal('xray_nowplaying'));
     }
 }

@@ -20,26 +20,9 @@
 {*                                                                        *}
 {**************************************************************************}
 
-
-<a href="http://x-ray.eleves.polytechnique.fr/player.php" id="xray_linklive"
-  onclick="window.open('http://x-ray.eleves.polytechnique.fr/player.php','player','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=623,height=270');return false;">
-  <div>
-    <img src='http://x-ray.eleves.polytechnique.fr/live/xray-live.gif' alt="X-Ray en live"/>
-  </div>
+<a href="http://x-ray.eleves.polytechnique.fr/player.php" id="xray_link" onclick="window.open('http://x-ray.eleves.polytechnique.fr/player.php','player','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=623,height=270');return false;">
+    <span id="xray_titre">{$minimodule.xray_nowplaying.title}</span><br/>
+    <span id="xray_artiste">{$minimodule.xray_nowplaying.artist}</span><br/>
+    <br/><br/><br/>
+    <span id="xray_podcast">{$minimodule.xray_calendar.emission}</span>
 </a>
-
-<div>
-  {if $minimodule.xray_nowplaying.cover}
-    <img src="{$minimodule.xray_nowplaying.cover}" alt="{$minimodule.xray_nowplaying.album}" class="cover" />
-  {/if}
-  <div>
-    En ce moment à l'antenne : <br />
-    {$minimodule.xray_nowplaying.title} - {$minimodule.xray_nowplaying.artist} <br />
-    Prochaine émission : {$minimodule.xray_calendar.emission}
-  </div>
-</div>
-
-<br class="clear" />
-
-
-{* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
