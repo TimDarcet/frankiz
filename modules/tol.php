@@ -128,24 +128,40 @@ class TolModule extends PLModule
             return false;
     }
 
-    function handler_tol_birthday($page)
+    function handler_tol_birthday($page, $nice = 1)
     {
         $on_platal = Group::from('on_platal');
         $next_week = new FrankizDateTime();
         $week = new DateInterval('P7D');
         $next_week = $next_week->add($week);
+        
+        if($nice)
+            $order = array(new UFO_Promo(), new UFO_Birthday());
+        else
+            $order = new UFO_Birthday();
 
         $uf = new UserFilter(new PFC_And(new UFC_Group($on_platal, Rights::member()),
                                          new UFC_Birthday('>=', new FrankizDateTime()),
                                          new UFC_Birthday('<=', $next_week)),
-                             new UFO_Birthday());
+                             $order);
         $users = $uf->get()->select(UserSelect::tol());
-
+        
+        $old_promo = 0;
         header('Content-Type: text/html; charset=utf-8');
         echo '<pre>';
         foreach ($users as $u) {
             $study = reset($u->studies());
-            echo $study->promo() . ',' . $u->birthdate()->format('d/m/Y') . ',' . $u->lastname() . ',' . $u->firstname() . "\n";
+            $promo = $study->promo();
+
+            if($nice && $old_promo != $promo) {
+                if($old_promo != 0) echo "\n";
+                echo "Promotion ".$promo."\n";
+                $old_promo = $promo;
+            }
+            if($nice)
+                echo $u->birthdate()->format('d/m/Y') . ' ' . $u->firstname() . ' ' . $u->lastname() . "\n";
+            else
+                echo $promo . ',' . $u->birthdate()->format('d/m/Y') . ',' . $u->lastname() . ',' . $u->firstname() . "\n";
         }
         echo '</pre>';
         exit;
