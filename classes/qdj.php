@@ -206,7 +206,7 @@ class QDJ extends Meta
                 $rule = '7';
             break;
 
-            case substr(IP::get(), -3):
+            case substr(strrchr(IP::get(), '.'), 1):
                 $rule = '8';
             break;
 
