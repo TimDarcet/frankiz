@@ -84,9 +84,11 @@ class ActivityModule extends PLModule
                     new AIFC_Id($id),
                     new AIFC_CanBeSeen(S::user())));
             $act = $act->get(true);
-            $act->select(ActivityInstanceSelect::base());
-            $page->assign('date', $act->begin());
-            $page->assign('id', $act->id());
+            if ($act !== false) {
+                $act->select(ActivityInstanceSelect::base());
+                $page->assign('date', $act->begin());
+                $page->assign('id', $act->id());
+            }
         }
 
         $page->addCssLink('wdcalendar.css');
