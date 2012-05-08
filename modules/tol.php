@@ -134,7 +134,7 @@ class TolModule extends PLModule
         $next_week = new FrankizDateTime();
         $week = new DateInterval('P7D');
         $next_week = $next_week->add($week);
-        
+
         if($nice)
             $order = array(new UFO_Promo(), new UFO_Birthday());
         else
@@ -145,7 +145,7 @@ class TolModule extends PLModule
                                          new UFC_Birthday('<=', $next_week)),
                              $order);
         $users = $uf->get()->select(UserSelect::tol());
-        
+
         $old_promo = 0;
         header('Content-Type: text/html; charset=utf-8');
         echo '<pre>';
@@ -257,7 +257,7 @@ class TolModule extends PLModule
                 $users = $uf->get(new PlLimit(50,(JSON::i('page', 1) - 1) * 50))->select(UserSelect::tol());
             }
 
-            $page->assign('su', S::user()->isAdmin());
+            $page->assign('user', S::user());
             $page->jsonAssign('total', $uf->getTotalCount());
             foreach($users as $k => $user) {
                 $page->assign('result', $user);
