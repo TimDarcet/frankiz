@@ -21,7 +21,7 @@ baseurl    = "https://dev.frankiz.net/~@USER@/"
 
 [Mails]
 
-admin      = "@USER@@eleves"
-web        = "@USER@@eleves"
-debug      = "@USER@@eleves"
+admin      = "@USER@@eleves.polytechnique.fr"
+web        = "@USER@@eleves.polytechnique.fr"
+debug      = "@USER@@eleves.polytechnique.fr"
 
