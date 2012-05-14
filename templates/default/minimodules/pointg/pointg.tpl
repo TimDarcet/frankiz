@@ -23,13 +23,13 @@
 <div class="barInfo">
     <h3 class="navigation">
         <span class="left">
-        <a href="#" onclick="pointg.backward()"> &lt;-- </a>
+        <a href="#" onclick="pointg.backward();return false"> &lt;-- </a>
     </span>
         <span class="titre_fenetre">
         Classement des Bars
     </span>
     <span class="right">
-        <a href="#" onclick="pointg.forward()"> --&gt; </a>
+        <a href="#" onclick="pointg.forward();return false"> --&gt; </a>
     </span>
     </h3>
     {if $minimodule.bars|@count > 0}
@@ -62,13 +62,13 @@
 <div class="annonceInfo" style="display:none">
     <h3 class="navigation">
         <span class="left">
-        <a href="#" onclick="pointg.backward()"> &lt;-- </a>
+        <a href="#" onclick="pointg.backward();return false"> &lt;-- </a>
     </span>
         <span class="titre_fenetre">
         Annonces PG
     </span>
     <span class="right">
-        <a href="#" onclick="pointg.forward()"> --&gt; </a>
+        <a href="#" onclick="pointg.forward();return false"> --&gt; </a>
     </span>
     </h3>
     {if $minimodule.annonces_pointg|@count > 0}
@@ -78,7 +78,7 @@
     <table>
         <tr>
         <td class="numero_annonce">{$annonce.numero}</td>
-        <td class="titre_annonce"><a href="#" onclick="$('#contenu_annonce_{$annonce.numero}').slideToggle()">{$annonce.titre}</a></td>
+        <td class="titre_annonce"><a href="#" onclick="$('#contenu_annonce_{$annonce.numero}').slideToggle();return false">{$annonce.titre}</a></td>
     </tr>
     </table>
         <div class="contenu_annonce" id = 'contenu_annonce_{$annonce.numero}' style="display:none">
@@ -96,13 +96,13 @@
 <div class="edtInfo" style="display:none">
     <h3 class="navigation">
         <span class="left">
-        <a href="#" onclick="pointg.backward()"> &lt;-- </a>
+        <a href="#" onclick="pointg.backward();return false"> &lt;-- </a>
     </span>
         <span class="titre_fenetre">
         EDT des Créneaux Préventes
     </span>
     <span class="right">
-        <a href="#" onclick="pointg.forward()"> --&gt; </a>
+        <a href="#" onclick="pointg.forward();return false"> --&gt; </a>
     </span>
     </h3>
     {if $minimodule.preventes_pointg|@count >0}
