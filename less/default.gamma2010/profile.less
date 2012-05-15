@@ -1,0 +1,171 @@
+/***************************************************************************
+ *  Copyright (C) 2009 Binet Réseau                                        *
+ *  http://www.polytechnique.fr/eleves/binets/reseau/                      *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
+
+@import "lib.less";
+
+/*******************************************************************************
+     1. Account
+
+*******************************************************************************/
+
+.profile .form input,
+.profile .form textarea {
+    display: inline-block;
+    width: 371px;
+}
+
+.profile .form select {
+    width: 401px;
+    padding: 3px;
+}
+
+.error {
+    color: red;
+    text-align: center;
+    font-size: 20px;
+}
+
+.recovery {
+    margin-left: 20%;
+    width: 60%;
+}
+
+.profile table {
+    width: 100%;
+}
+
+.profile .right {
+    text-align: right;
+}
+
+.profile .center {
+    text-align: center;
+}
+
+.validation {
+    background: #fff;
+    color: red;
+    border: solid 1px red;
+    display: none;
+    font-size: 80%;
+    text-align: center;
+    padding: 4px;
+    width: 150px;
+    position: absolute;
+}
+
+input:focus:invalid + .validation {
+    display: block;
+}
+
+.recovery.note {
+    text-align: right;
+}
+
+.cal {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("images/icons/date.png");
+    background-repeat: no-repeat;
+}
+
+.profil_minimodules table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px black solid;
+}
+
+.profil_minimodules td, .profil_minimodules th {
+    border: 1px black solid;
+}
+
+/*******************************************************************************
+     2.   Minimodules & Skins
+
+*******************************************************************************/
+
+ul.objects {
+    padding: 10px;
+    text-align: center;
+    position: relative;
+}
+
+ul.objects li {
+    display: inline-block;
+    position: relative;
+    width: 30%;
+    margin-bottom: 8px;
+    border-radius: 10px 10px;
+    -moz-border-radius: 10px 10px;
+    background-color: @light;
+    border: 1px #003757 solid;
+    vertical-align: top;
+    padding: 5px;
+    padding-bottom: 20px;
+    min-height: 150px;
+    min-width: 250px;
+
+    *zoom: 1;
+    *display: inline;
+    *margin: 2px;
+}
+
+ul.objects li.on {
+    background-color: @unread;
+    border: 1px red solid;
+}
+
+ul.objects li p {
+    margin: 0;
+}
+
+ul.objects li .frequency {
+    position: absolute;
+    left: 4px;
+    bottom: 4px;
+}
+
+ul.objects li .label {
+    font-size: 25px;
+    font-variant:small-caps;
+}
+
+ul.objects li .description {
+    margin-top: 5px;
+    text-align: left;
+}
+
+
+ul.objects li .change {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+}
+
+.options {
+    td:first-child {
+        width: 20%;
+    }
+    .groups_picker {
+        width: 240px;
+        padding-right: 6px;
+    }
+}

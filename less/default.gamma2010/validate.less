@@ -1,0 +1,250 @@
+/***************************************************************************
+ *  Copyright (C) 2009 Binet Réseau                                        *
+ *  http://www.polytechnique.fr/eleves/binets/reseau/                      *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
+
+@import "lib.less";
+
+/*******************************************************************************
+     0   General purposes for validations and proposals
+
+*******************************************************************************/
+
+.msg_proposal {
+    font-size: 20px;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.info_proposal {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+#section {
+    table {
+        position: relative;
+        width: 100%;
+
+        td:first-child {
+            width: 20%;
+        }
+
+        td {
+            padding: 5px;
+            vertical-align: middle;
+            .groups_picker {
+                width: 250px;
+            }
+        }
+    }
+
+    input.title {
+        width: 75%;
+    }
+
+    input[type=submit] {
+        float: right;
+    }
+
+    input[name=delete] {
+        color: red;
+        font-weight: bold;
+        float: none;
+    }
+}
+
+/*******************************************************************************
+     1   Validations
+
+*******************************************************************************/
+
+#section {
+    ul {
+        padding-left: 20px;
+        padding-right: 20px;
+        li.validate {
+            padding: 2px;
+            .border-radius;
+            .alphabackground;
+            list-style: none;
+            margin-bottom: 10px;
+
+            .pair {
+                background-color: rbga(0,0,0,0.5);
+            }
+
+            .impair {
+                background-color:  rbga(0,0,0,0.5);
+            }
+
+            .title {
+                cursor: pointer;
+                text-align: center;
+                background-color: @light;
+                .writer {
+                    width: 50px;
+                }
+                .age {
+                    width: 80px;
+                    text-align: right;
+                }
+            }
+            .more {
+                .created {
+                    float: right;
+                }
+                display: none;
+                .rules {
+                    font-size: 12px;
+                }
+
+                .click {
+                    text-align: center;
+                    font-weight: bold;
+                    cursor: pointer;
+                    background-color : #470000;
+                }
+            }
+        }
+
+        .validate .text_validate {
+            width: 90%;
+        }
+
+        .validate textarea {
+            resize: auto;
+            width: 90%;
+            height: 80px;
+        }
+    }
+}
+
+
+/*******************************************************************************
+     2   Specific validations
+
+*******************************************************************************/
+
+#section {
+    .news {
+        background-color: @light;
+        .infos {
+            text-align: center;
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                padding: 0;
+
+                .star {
+                    position: relative;
+                    width: 35px;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-image: url("images/star_off.png");
+                }
+
+                .origin {
+                    position: relative;
+                    width: 50px;
+                }
+                .date {
+                    position: relative;
+                    width: 50px;
+                }
+            }
+        }
+
+        .content {
+            position: relative;
+            clear: both;
+            margin: 5px;
+            text-align: left;
+
+            .body {
+                border-top: 1px #002334 solid;
+                background-color: @color;
+                padding: 5px;
+
+                .image {
+                    float: left;
+                }
+            }
+
+            .writer {
+                width: 100%;
+                text-align: right;
+            }
+        }
+    }
+}
+
+
+/*******************************************************************************
+     3   Proposals
+
+*******************************************************************************/
+
+#section .qdj {
+    .question  {
+        font-size: 11pt;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    table {
+        width: 100%;
+
+        td {
+            width: 50%;
+        }
+
+        .answer1  {
+            text-align: center;
+            color:#FFBB00;
+        }
+
+        .answer2  {
+            text-align: center;
+            color:red;
+        }
+    }
+}
+
+#content .mail #group_proposal
+{
+    display: none;
+}
+
+#content .activity_prop {
+    display: none;
+
+    &.choice {
+        display: block;
+    }
+
+    ul {
+        margin-left: 100px;
+    }
+
+    a {
+        cursor: pointer;
+    }
+}
