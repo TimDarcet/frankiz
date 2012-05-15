@@ -100,7 +100,7 @@ class PointGMiniModule extends FrankizMiniModule
         global $globals;
 
         if(!PlCache::hasGlobal('bar_array'))
-            PlCache::setGlobal('bar_array', self::response(), 3600);
+            PlCache::setGlobal('bar_array', self::response(), 720);
 
         return PlCache::getGlobal('bar_array');
     }

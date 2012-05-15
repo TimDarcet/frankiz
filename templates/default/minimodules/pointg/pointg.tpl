@@ -39,13 +39,13 @@
             <tr>
                 <th class="classement">N°</th>
                 <th class="bars">Bars</th>
-                <th class="score">Score</th>
+                <th class="score">Score(à dévoiler)</th>
             </tr>
             {foreach from=$minimodule.bars item='bar'}
             <tr>
                 <td class="classement">{$bar.classement}</td>
                 <td class="bars">{$bar.bars}</td>
-            <td class="score">{$bar.score}</td>
+            <td class="score">***</td>
             </tr>
             {/foreach}
         </table>
@@ -106,7 +106,7 @@
     </span>
     </h3>
     {if $minimodule.preventes_pointg|@count >0}
-    <h4 class="question">Shotgunner les Préventes au hasard!</h4>
+    <h4 class="question">Shotgun <a href="http://www.pointgamma.com/moduleFKZ/edt.php" target=_blank>les Préventes</a> au hasard!</h4>
     <div class="display">
         <table>
             <tr>
@@ -125,9 +125,11 @@
     {if $minimodule.preventes_pointg|@count==0}
     <h4> Pas d'informations pour instant.</h4>
     {/if}
-    <h4 id="More" title="D'autres infos"><a href="http://www.pointgamma.com/moduleFKZ/edt.php" target=_blank>Pour savoir plus sur les préventes</a></h4>
+    <h4 class="inscription">Inscris toi sur <a href="mailto:prevente.pg2012@gmail.com">prevente.pg2012@gmail.com</a> sans attendre !</h4>
+    <h4 class="separation">--------------------------------------------------------------</h4>
+    <h4 class="shotgun">Shotgun ton créneau sécu <a href="https://docs.google.com/spreadsheet/ccc?key=0Ape0OeLRpaaJdHNtVUoxemxJcVpLcEc0OHlRNjgtR3c#gid=0" target=_blank>ici</a>!</h4>
 </div>
 
-<p class="info_fin">Pour plus d'information, veuillez consulter le site <a href="http://www.pointgamma.com" target=_blank>Point Gamma</a>.</p>
+<p class="info_fin">Binet Point Gamma</a>.</p>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
