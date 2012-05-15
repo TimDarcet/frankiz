@@ -58,7 +58,7 @@ class GroupSelect extends Select
     }
 
     public static function base($subs = null) {
-        return new GroupSelect(array('ns', 'score', 'name', 'label', 'image'), $subs);
+        return new GroupSelect(array('ns', 'score', 'name', 'label', 'image','external'), $subs);
     }
 
     public static function castes($subs = null) {

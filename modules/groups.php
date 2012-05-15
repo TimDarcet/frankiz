@@ -150,6 +150,7 @@ class GroupsModule extends PLModule
 
     function handler_group_see($page, $group)
     {
+        global $platal;
         $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
         $gf = new GroupFilter($filter);
         $group = $gf->get(true);
