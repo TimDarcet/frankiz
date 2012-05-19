@@ -156,7 +156,11 @@ class NewsModule extends PlModule
                     $news->content(Env::t('news_content'));
                     $news->begin(new FrankizDateTime(Env::t('begin')));
                     $news->end(new FrankizDateTime(Env::t('end')));
-                    $news->removeReadFlags();
+
+                    if (Env::has('reappear')) {
+                        $news->removeReadFlags();
+                    }
+
                     if (Env::has('image')) {
                         $image = new ImageFilter(new PFC_And(new IFC_Id(Env::i('image')), new IFC_Temp()));
                         $image = $image->get(true);
@@ -179,6 +183,7 @@ class NewsModule extends PlModule
         }
 
         $page->assign('news', $news);
+        $page->assign('isEdition', true);
         $page->assign('title', "Modifier l'annonce");
         $page->addCssLink('validate.css');
         $page->changeTpl('news/admin.tpl');

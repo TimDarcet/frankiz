@@ -86,4 +86,15 @@
     </td>
 </tr>
 
+{if $isEdition}
+<tr class="pair">
+    <td>
+        Edition
+    </td>
+    <td>
+       <input type="checkbox" name="reappear" id="reappear" /> <label for="reappear">Marquer l'annonce comme non lue</label>
+    </td>
+</tr>
+{/if}
+
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
