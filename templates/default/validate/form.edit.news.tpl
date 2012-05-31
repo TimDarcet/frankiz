@@ -86,7 +86,7 @@
     </td>
 </tr>
 
-{if $isEdition}
+{if t($isEdition)}
 <tr class="pair">
     <td>
         Edition

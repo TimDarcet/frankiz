@@ -21,7 +21,7 @@
  ***************************************************************************/
 /**
 /**
- * Activate timeleft inimodue for every user
+ * Force a skin to every user in groupe on_platal
  */
 
 require_once(dirname(__FILE__) . '/../connect.db.inc.php');
