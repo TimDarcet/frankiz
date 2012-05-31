@@ -28,7 +28,7 @@
             {foreach from=$quick_validate item='validates'}
                 {assign var='first' value=$validates->first()}
                 {assign var='grp' value=$first->group()}
-                {assign var='castes' value=$smarty.session.user->castes()}
+                {assign var='castes' value=$user->castes()}
                 {assign var='groups' value=$castes->groups()}
                 {assign var='group' value=$groups->get($grp)}
                 <li>

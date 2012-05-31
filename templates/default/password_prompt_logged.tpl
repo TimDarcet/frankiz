@@ -38,7 +38,7 @@
             <table>
                 <tr>
                   <td>Connecté en tant que:</td>
-                  <td>{$smarty.session.user->displayName()}</td>
+                  <td>{$user->displayName()}</td>
                 </tr>
                 <tr>
                   <td>Mot de passe:</td>

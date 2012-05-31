@@ -45,7 +45,7 @@
         </div>
         <div class="body">
             <table>
-                {if $smarty.session.user->isAdmin()}
+                {if $logged && $user->isAdmin()}
                     <tr class="fkzadmin">
                         <td width="20%">
                             Hruid :
@@ -187,7 +187,7 @@
 </form>
 
 {if !$add}
-{if $smarty.session.user->isAdmin()}
+{if $logged && $user->isAdmin()}
 <div class="module profile">
     <div class="head">
         <span class="helper" target="profile/admin/account/perms"></span>

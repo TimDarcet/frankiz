@@ -27,12 +27,12 @@
         {$wiki->html()|smarty:nodefaults}
     </div>
 
-    {if $logged && $smarty.session.user->isWeb()}
-    <textarea>{$wiki->content()}</textarea>
+    {if $logged && $user->isWeb()}
+        <textarea>{$wiki->content()}</textarea>
     {/if}
 </div>
 
-{if $logged && $smarty.session.user->isWeb()}
+{if $logged && $user->isWeb()}
 <script>
     wikify($("#wiki_container_{$uniqid}"));
 </script>

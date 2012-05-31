@@ -189,8 +189,9 @@ class FrankizPage extends PlPage
     {
         $skin = $this->load_skin();
         $this->assign('skin', S::v('skin'));
-        $this->assign('user', S::user());
-        $this->assign('logged', S::logged());
+        $user = S::user();
+        $this->assign('user', $user);
+        $this->assign('logged', !is_null($user) && S::logged());
 
         $this->assign('MiniModules_COL_FLOAT', FrankizMiniModule::get(S::user()->minimodules(FrankizMiniModule::COL_FLOAT)));
 

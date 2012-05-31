@@ -54,7 +54,7 @@
 
             <div class="more {if $valid->id() == $validation}show{/if}">
             <form enctype="multipart/form-data" method="post" action="admin/validate/{$group->id()}">
-                {if $smarty.session.user->isWeb()}
+                {if $logged && $user->isWeb()}
                     <div>
                         {include file="wiki.tpl"|rel name='validate/rules/'|cat:$valid->type() class="webmaster"}
                     </div>

@@ -63,9 +63,9 @@
 
         <td class="account {if $smarty.session.auth < AUTH_COOKIE}empty{/if}">
             {if $smarty.session.auth >= AUTH_COOKIE}
-                <a href="tol/see/{$smarty.session.user->login()}">
-                <img src="{$smarty.session.user->image()|image:'small'|smarty:nodefaults}"
-                     title="{$smarty.session.user->displayName()}" />
+                <a href="tol/see/{$user->login()}">
+                <img src="{$user->image()|image:'small'|smarty:nodefaults}"
+                     title="{$user->displayName()}" />
                 </a>
             {/if}
         </td>

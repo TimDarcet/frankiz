@@ -42,7 +42,7 @@
         <tbody>
             <tr>
                 <td id="oldwriter">{$wiki->writer()|user}</td>
-                <td>{$smarty.session.user|user}</td>
+                <td>{$user}</td>
             </tr>
             <tr>
                 <td id="oldwrote">{$wiki->wrote()|smarty:nodefaults}</td>

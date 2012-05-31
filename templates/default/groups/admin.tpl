@@ -28,7 +28,7 @@
      <div class="body">
         <form enctype="multipart/form-data" method="post" action="{$smarty.server.REQUEST_URI}">
         <table class="bicol">
-            {if $smarty.session.user->isAdmin()}
+            {if $user->isAdmin()}
                 <tr class="fkzadmin">
                     <td>Nom "unix"</td>
                     <td>
@@ -41,7 +41,7 @@
                     </td>
                 </tr>
             {/if}
-            {if $smarty.session.user->isAdmin()}
+            {if $user->isAdmin()}
                 <tr class="fkzadmin">
                     <td>Visible de l'extérieur</td>
                     <td>
@@ -65,7 +65,7 @@ groupes sensibles !
                     </td>
                 </tr>
             {/if}
-            {if $smarty.session.user->isWeb()}
+            {if $user->isWeb()}
                 <tr class="webmaster">
                     <td>Namespace</td>
                     <td>
@@ -77,7 +77,7 @@ groupes sensibles !
                     </td>
                 </tr>
             {/if}
-            {if $smarty.session.user->isWeb()}
+            {if $user->isWeb()}
                 <tr class="webmaster">
                     <td>Castes</td>
                     <td>

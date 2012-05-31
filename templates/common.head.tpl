@@ -38,7 +38,7 @@
     var xsrf_token = "{xsrf_token}";
 
     {if $logged}
-        {if $smarty.session.user->isFemale()}
+        {if $user->isFemale()}
             var areyousure = 'Certaine ?';
         {else}
             var areyousure = 'Certain ?';
