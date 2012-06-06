@@ -38,20 +38,19 @@
                     <ul>
                         <li><a href="news/new" {if $view == 'new'}class="current_view"{/if}>Non-lues & suivies</a></li>
                         <li><a href="news/current" {if $view == 'current'}class="current_view"{/if}>En cours{if $user->isWeb()} & à venir{/if}</a></li>
-                        <li><a href="news/mine" {if $view == 'mine'}class="current_view"{/if}>Annonces que j'ai rédigées</a></li>
                         <li><a href="news/other" {if $view == 'other'}class="current_view"{/if}>Annonces des autres binets</a></li>
                     </ul>
                 </div>
             </td>
             <td>
                 <div class="option new">
-                    <a href="proposal/news"><span class="new_element"></span> Rédiger une annonce</a>
+                    <a href="proposal/news"><span class="new_element"></span> Rédiger une annonce</a> - <a href="news/mine" {if $view == 'mine'}class="current_view"{/if}>Mes annonces</a>
                 </div>
                 <div class="option codes">
                     <ul>
-                        <li><div class="code unread"></div>Non-lue</li>
-                        <li><div class="code read"></div>Lue</li>
-                        <li><div class="code star"></div>Suivie</li>
+                        <li><div class="code unread"></div><a href="news/new" {if $view == 'new'}class="current_view"{/if}>Non-lue</a></li>
+                        <li><div class="code read"></div><a href="news/current" {if $view == 'current'}class="current_view"{/if}>Lue</a></li>
+                        <li><div class="code star"></div><a href="news/followed" {if $view == 'followed'}class="current_view"{/if}>Suivie</a></li>
                         {if $view == 'mine' || ($view == 'current' && $user->isWeb())}
                             <li title="visibles seulement par les administrateurs avant leur publication"><div class="code tocome"></div>À venir</li>
                         {/if}

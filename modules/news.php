@@ -27,6 +27,7 @@ class NewsModule extends PlModule
             "news"              => $this->make_hook("news"          , AUTH_PUBLIC),
             "news/current"      => $this->make_hook("news_current"  , AUTH_PUBLIC),
             "news/new"          => $this->make_hook("news_new"      , AUTH_PUBLIC),
+            "news/followed"     => $this->make_hook("news_followed" , AUTH_PUBLIC),
             "news/mine"         => $this->make_hook("news_mine"     , AUTH_PUBLIC),
             "news/other"        => $this->make_hook("news_other"    , AUTH_PUBLIC),
             "news/admin"        => $this->make_hook("admin"         , AUTH_MDP),
@@ -96,6 +97,18 @@ class NewsModule extends PlModule
                                          new NFC_Target(S::user()->targetCastes())));
 
         $this->viewNews($page, $nf->get(), 'new', $id);
+    }
+
+    function handler_news_followed($page)
+    {
+        $nf = new NewsFilter(new PFC_And(new NFC_Writer(S::user()),
+                                         new NFC_CanBeSeen(S::user())),
+                             new NFO_Begin(true));
+
+        $nf = new NewsFilter(new PFC_And(new NFC_Star(S::user()),
+                                         new NFC_Target(S::user()->targetCastes())));
+
+        $this->viewNews($page, $nf->get(), 'followed');
     }
 
     function handler_news_mine($page)
