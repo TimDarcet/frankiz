@@ -169,7 +169,8 @@ class GroupsModule extends PLModule
                 // Relation between the user & the group
                 $page->assign('user', S::user());
 
-                $page->assign('member_allowed', $group->caste(Rights::member())->userfilter());
+                if ($group->ns() != 'user')
+                    $page->assign('member_allowed', $group->caste(Rights::member())->userfilter());
                 $page->assign('title', $group->label());
                 $page->changeTpl('groups/group.tpl');
             } else {
