@@ -43,6 +43,7 @@
             Changement de la fiche trombino
         </div>
         <div class="body">
+            {include file="wiki.tpl"|rel name='profile/account/photoRules'}
             <table>
                 <tr>
                     <td width="20%">
