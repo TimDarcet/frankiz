@@ -33,7 +33,7 @@ class BirthdayMiniModule extends FrankizMiniModule
 
     public function title()
     {
-        return 'Joyeux anniversaire!';
+        return 'Joyeux anniversaire !';
     }
 
     public function run()
