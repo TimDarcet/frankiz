@@ -31,6 +31,11 @@ class GroupsMiniModule extends FrankizMiniModule
         return 'user';
     }
 
+    public function js()
+    {
+        return 'minimodules/groups.js';
+    }
+
     public function css()
     {
         return 'minimodules/groups.css';
@@ -50,6 +55,8 @@ class GroupsMiniModule extends FrankizMiniModule
     {
         $binets = S::user()->castes()->groups()->filter('ns', Group::NS_BINET);
         $frees = S::user()->castes()->groups()->filter('ns', Group::NS_FREE);
+        foreach ($binets as $g)
+            $g->select(GroupSelect::premises());
         $this->assign('binets', $binets);
         $this->assign('frees', $frees);
         $this->assign('user', S::user());

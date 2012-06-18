@@ -31,7 +31,7 @@ class IP
     public static function get() {
         global $globals;
 
-    if (isset($_SERVER['REMOTE_ADDR'])) {
+        if (isset($_SERVER['REMOTE_ADDR'])) {
             $ip = $_SERVER['REMOTE_ADDR'];
         } else {
             $ip = '127.0.0.1';
@@ -68,19 +68,19 @@ class IP
     public static function is_casert($ip = null)
     {
         $ip = ($ip == null) ? self::get() : $ip;
-        return (self::origin($ip) == self::CASERT);
+        return (self::origin($ip) == self::STUDENT);
     }
 
     public static function is_local($ip = null)
     {
         $ip = ($ip == null) ? self::get() : $ip;
-        return (self::origin($ip) == self::LOCAL);
+        return (self::origin($ip) == self::PREMISE);
     }
 
     public static function is_autres($ip = null)
     {
         $ip = ($ip == null) ? self::get() : $ip;
-        return (self::origin($ip) == self::AUTRES);
+        return (self::origin($ip) == self::EXTERNAL);
     }
 
     // Where is the IP from ?
@@ -90,7 +90,6 @@ class IP
         if (array_key_exists($ip, self::$originCache)) {
             return self::$originCache[$ip];
         } else {
-            $origin = self::EXTERNAL;
             if ($ip == '127.0.0.1' || (substr($ip, 0, 8) == '129.104.' && $ip != '129.104.30.4' && $ip != '129.104.30.90'))
             {
                 if($ip == '127.0.0.1') {
@@ -123,6 +122,9 @@ class IP
                 self::$originCache[$ip] = $origin;
                 return $origin;
             }
+            $origin = self::EXTERNAL;
+            self::$originCache[$ip] = $origin;
+            return $origin;
         }
     }
 

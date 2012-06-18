@@ -32,6 +32,7 @@ class GroupsModule extends PLModule
             'groups/see'              => $this->make_hook('group_see',         AUTH_PUBLIC),
             'groups/ajax/users'       => $this->make_hook('group_ajax_users',  AUTH_INTERNAL, ''),
             'groups/ajax/news'        => $this->make_hook('group_ajax_news',   AUTH_PUBLIC),
+            'groups/ajax/open'        => $this->make_hook('group_ajax_open',   AUTH_PUBLIC), // FIXME AUTH_something ?
             'groups/subscribe'        => $this->make_hook('group_subscribe',   AUTH_COOKIE),
             'groups/unsubscribe'      => $this->make_hook('group_unsubscribe', AUTH_COOKIE),
 
@@ -157,8 +158,9 @@ class GroupsModule extends PLModule
 
         if ($group) {
             // Fetch the group
-            $group->select(GroupSelect::base());
+            $group->select(GroupSelect::premises());
             $page->assign('group', $group);
+            $page->assign('roomMaster', S::user()->hasRights($group, Rights::admin()) || S::user()->isWeb() || in_array(IP::get(), $group->ips()));
 
             if (S::i('auth') > AUTH_PUBLIC || $group->external()) {
                 $group->select(GroupSelect::see());
@@ -289,6 +291,19 @@ class GroupsModule extends PLModule
         }
 
         $page->jsonAssign('news', $news);
+        return PL_JSON;
+    }
+
+    function handler_group_ajax_open($page, $gid, $rid, $state)
+    {
+        S::assert_xsrf_token();
+        $room = new Room($rid);
+        $gf = new GroupFilter(new GFC_Id($gid));
+        $group = $gf->get(true);
+        $group->select(GroupSelect::premises());
+        if ($group && (S::user()->hasRights($group, Rights::admin()) || S::user()->isWeb() || in_array(IP::get(), $group->ips())))
+            $room->door($gid, $state);
+
         return PL_JSON;
     }
 

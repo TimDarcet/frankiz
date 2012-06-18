@@ -35,6 +35,22 @@
                 <div class="mail">Mail: {$group->mail()}</div>
             {/if}
             <div class="description">{$group->description()|miniwiki|smarty:nodefaults}</div>
+            {assign var='premises' value=$group->premises()}
+            {if sizeof($premises) > 0}
+                <div class="locaux" gid="{$group->id()}">
+                    {if sizeof($premises) > 1}Locaux : {else}Local : {/if}
+                    {if sizeof($premises) > 1}<ul>{/if}
+                    {foreach from=$premises item='premise' key='rid'}
+                        {if sizeof($premises) > 1}<li>{/if}
+                        <div class="{if $premise.open}open{else}close{/if}" rid="{$rid}">
+                            <div class="traffic_light_switcher{if $roomMaster} room_master" title="{if $premise.open}Fermer{else}Ouvrir{/if} le local{/if}"></div>
+                            {$premise.label}
+                        </div>
+                        {if sizeof($premises) > 1}</li>{/if}
+                    {/foreach}
+                    {if sizeof($premises) > 1}</ul>{/if}
+                </div>
+            {/if}
             <br class="clear" />
         </div>
     </div>

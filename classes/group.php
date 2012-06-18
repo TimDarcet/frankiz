@@ -43,7 +43,7 @@ class GroupSchema extends Schema
     }
 
     public function objects() {
-        return array('image' => 'FrankizImage');
+        return array('image' => 'FrankizImage', 'premises' => 'Array', 'ips' => 'Array');
     }
 
     public function collections() {
@@ -58,7 +58,7 @@ class GroupSelect extends Select
     }
 
     public static function base($subs = null) {
-        return new GroupSelect(array('ns', 'score', 'name', 'label', 'image','external'), $subs);
+        return new GroupSelect(array('ns', 'score', 'name', 'label', 'image', 'external'), $subs);
     }
 
     public static function castes($subs = null) {
@@ -76,13 +76,20 @@ class GroupSelect extends Select
 
     public static function see() {
         return new GroupSelect(array('ns', 'score', 'name', 'label', 'description',
-                                     'image', 'web', 'mail', 'visible', 'castes', 'leavable','external'),
+                                     'image', 'web', 'mail', 'visible', 'castes', 'leavable','external',
+                                     'premises','ips'),
                                array('castes' => CasteSelect::base()));
     }
 
+    public static function premises($subs = null) {
+        return new GroupSelect(array('premises','ips'), $subs);
+    }
+
     protected function handlers() {
-        return array('main' => array_merge(Schema::group()->scalars(), array('image')),
-                   'castes' => array('castes'));
+        return array('main'   => array_merge(Schema::group()->scalars(), array('image')),
+                   'premises' => array('premises'),
+                   'ips'      => array('ips'),
+                   'castes'   => array('castes'));
     }
 
     protected function handler_castes(Collection $groups, $fields) {
@@ -111,6 +118,35 @@ class GroupSelect extends Select
 
         if (!empty($castes) && !empty($this->subs['castes'])) {
             $castes->select($this->subs['castes']);
+        }
+    }
+
+    protected function handler_premises(Collection $groups, $fields) {
+        foreach ($groups as $g) {
+            $rf = new RoomFilter(new RFC_Group($g->id()));
+            $rooms = $rf->get();
+            $rooms->select(RoomSelect::premise());
+            $premises = array();
+            foreach($rooms as $premise) {
+                $opens = $premise->open();
+                $premises[$premise->id()] = array('label' => $premise->comment(),
+                                        'phone' => $premise->phone(),
+                                        'open'  => $opens[$g->id()]);
+            }
+            $g->fillFromArray(array('premises' => $premises));
+        }
+    }
+
+    protected function handler_ips(Collection $groups, $fields) {
+        foreach ($groups as $g) {
+            $rf = new RoomFilter(new RFC_Group($g->id()));
+            $rooms = $rf->get();
+            $rooms->select(RoomSelect::premise());
+            $ips = array();
+            foreach($rooms as $premise) {
+                $ips = array_merge($ips, $premise->ips());
+            }
+            $g->fillFromArray(array('ips' => $ips));
         }
     }
 }
@@ -143,6 +179,9 @@ class Group extends Meta
     protected $description = null;
 
     protected $castes = null;
+
+    protected $premises = null;
+    protected $ips = null;
 
     public function bestId()
     {

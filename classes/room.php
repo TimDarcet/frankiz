@@ -42,7 +42,7 @@ class RoomSchema extends Schema
     }
 
     public function objects() {
-        return array('ips' => 'Array');
+        return array('ips' => 'Array', 'open' => 'Array');
     }
 }
 
@@ -60,13 +60,18 @@ class RoomSelect extends Select
         return new RoomSelect(array('ips'), $subs);
     }
 
+    public static function premise($subs = null) {
+        return new RoomSelect(array('phone', 'comment', 'ips', 'open'), $subs);
+    }
+
     public static function all($subs = null) {
         return new RoomSelect(array('phone', 'comment', 'ips'), $subs);
     }
 
     protected function handlers() {
         return array('main' => array('phone', 'comment'),
-                      'ips' => array('ips'));
+                      'ips' => array('ips'),
+                      'open' => array('open'));
     }
 
     protected function handler_ips(Collection $rooms, $fields) {
@@ -87,6 +92,25 @@ class RoomSelect extends Select
             $room->fillFromArray(array('ips' => $_rooms[$room->id()]));
         }
     }
+
+    protected function handler_open(Collection $rooms, $fields) {
+        $_rooms = array();
+        foreach($rooms as $room) {
+            $_rooms[$room->id()] = array();
+        }
+
+        $iter = XDB::iterRow("SELECT  open, rid, gid
+                                FROM  rooms_groups
+                               WHERE  rid IN {?}", $rooms->ids());
+
+        while (list($open, $rid, $gid) = $iter->next()) {
+            $_rooms[$rid][$gid] = $open;
+        }
+
+        foreach ($rooms as $room) {
+            $room->fillFromArray(array('open' => $_rooms[$room->id()]));
+        }
+    }
 }
 
 class Room extends Meta
@@ -94,6 +118,7 @@ class Room extends Meta
     protected $phone    = null;
     protected $comment  = null;
     protected $ips      = null;
+    protected $open     = null;
 
     public static function isId($mixed)
     {
@@ -114,6 +139,14 @@ class Room extends Meta
 
         return $collec;
     }
+
+    public function door($gid, $state)
+    {
+        XDB::execute('UPDATE rooms_groups SET open = {?} WHERE rid = {?} AND gid = {?}', $state, $this->id(), $gid);
+        $this->open = $state==1;
+        return $this->open;
+    }
+
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

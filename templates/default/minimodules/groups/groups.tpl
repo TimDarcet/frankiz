@@ -28,7 +28,7 @@
         <tr>
             <td class="img">{$group|group:'micro'}</td>
             <td class="therights">{$minimodule.user->rights($group)|@rights}</td>
-            <td class="group">{$group|group:'textAndNewsNumber'}</td>
+            <td class="group" gid="{$group->id()}">{$group|group:'textAndNewsNumber'} {$group|group:'premises'}</td>
         </tr>
     {/foreach}
 </table>
