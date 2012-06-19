@@ -39,7 +39,7 @@ class GroupSchema extends Schema
 
     public function scalars() {
         return array('description', 'external', 'label', 'leavable',
-                     'mail', 'name', 'ns', 'score', 'visible', 'web');
+                     'mail', 'name', 'ns', 'score', 'visible', 'web', 'wikix');
     }
 
     public function objects() {
@@ -76,7 +76,7 @@ class GroupSelect extends Select
 
     public static function see() {
         return new GroupSelect(array('ns', 'score', 'name', 'label', 'description',
-                                     'image', 'web', 'mail', 'visible', 'castes', 'leavable','external',
+                                     'image', 'wikix', 'web', 'mail', 'visible', 'castes', 'leavable','external',
                                      'premises','ips'),
                                array('castes' => CasteSelect::base()));
     }
@@ -174,6 +174,7 @@ class Group extends Meta
     protected $visible  = null; // If true, the groups is invisible
 
     protected $web  = null;
+    protected $wikix  = null;
     protected $mail = null;
 
     protected $description = null;

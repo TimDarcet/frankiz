@@ -101,17 +101,21 @@ groupes sensibles !
                 <td><input type="text" name="web" value="{$group->web()}" placeholder="http://" /></td>
             </tr>
             <tr>
+                <td>WikiX</td>
+                <td>http://wikix.polytechnique.org/ <input type="text" name="wikix" value="{$group->wikix()}" /></td>
+            </tr>
+            <tr class="pair">
                 <td>E-Mail</td>
                 <td><input type="text" name="mail" value="{$group->mail()}" /></td>
             </tr>
-            <tr class="pair">
+            <tr>
                 <td>Description</td>
                 <td>
                     {include file="wiki_textarea.tpl"|rel id="description" already=$group->description()|smarty:nodefaults}
                 </td>
             </tr>
             {if $group->ns() != 'user'}
-                <tr>
+                <tr class="pair">
                     <td>Image</td>
                     <td><img src="{$group->image()|image:'small':'group'}" /> {include file="uploader.tpl"|rel id="image"}</td>
                 </tr>

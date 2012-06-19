@@ -338,6 +338,7 @@ class GroupsModule extends PLModule
             if (Env::has('update')) {
                 $group->description(Env::t('description'));
                 $group->web(Env::t('web'));
+                $group->wikix(Env::t('wikix'));
                 $group->mail(Env::t('mail'));
             }
 

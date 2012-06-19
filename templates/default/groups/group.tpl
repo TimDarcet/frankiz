@@ -29,10 +29,13 @@
             {/if}
             <div class="label">{$group->label()}</div>
             {if $group->web()}
-                <div class="web">Web: <a href="{$group->web()}">{$group->web()}</a></div>
+                <div class="web">Web : <a href="{$group->web()}">{$group->web()}</a></div>
+            {/if}
+            {if $group->wikix()}
+                <div class="web">WikiX : <a href="http://wikix.polytechnique.org/{$group->wikix()}">{$group->wikix()}</a></div>
             {/if}
             {if $group->mail()}
-                <div class="mail">Mail: {$group->mail()}</div>
+                <div class="mail">Mail : {$group->mail()}</div>
             {/if}
             <div class="description">{$group->description()|miniwiki|smarty:nodefaults}</div>
             {assign var='premises' value=$group->premises()}
