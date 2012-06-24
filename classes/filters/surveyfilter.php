@@ -237,7 +237,9 @@ class SurveyFilter extends FrankizFilter
     {
         $joins = array();
         if ($this->with_user) {
-            $joins['cu'] = PlSqlJoin::left('castes_users', '$ME.cid = c.cid');
+            $joins['cu'] = PlSqlJoin::left('castes_users',
+                '$ME.cid = c.cid AND ($ME.visibility IN {?} OR $ME.uid = {?})',
+                S::user()->visibleGids(), S::user()->id());
         }
         return $joins;
     }

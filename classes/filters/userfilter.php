@@ -133,33 +133,33 @@ class UFC_Comment extends UserFilterCondition
     }
 }
 
-/** Filters users based on promotion 
- * @param $comparison Comparison operator (>, =, ...) 
- * @param $promo Promotion on which the filter is based 
- * @param $study Formation Id on which to restrict, 0 for "any formation" 
- */ 
-class UFC_Promo extends UserFilterCondition 
-{ 
-    private $comparison; 
-    private $promo; 
+/** Filters users based on promotion
+ * @param $comparison Comparison operator (>, =, ...)
+ * @param $promo Promotion on which the filter is based
+ * @param $study Formation Id on which to restrict, 0 for "any formation"
+ */
+class UFC_Promo extends UserFilterCondition
+{
+    private $comparison;
+    private $promo;
 
-    public function __construct($promo, $comparison = '=') 
-    { 
-        $this->promo = $promo; 
-        $this->comparison = $comparison; 
-    } 
+    public function __construct($promo, $comparison = '=')
+    {
+        $this->promo = $promo;
+        $this->comparison = $comparison;
+    }
 
-    public function buildCondition(PlFilter $uf) 
-    { 
-        $sub = $uf->addStudiesFilter(); 
-        return XDB::format("$sub.promo $this->comparison {?}", $this->promo); 
-    } 
+    public function buildCondition(PlFilter $uf)
+    {
+        $sub = $uf->addStudiesFilter();
+        return XDB::format("$sub.promo $this->comparison {?}", $this->promo);
+    }
 
-    public function export() 
-    { 
-        return array('type' => 'promo', 'comparison' => $this->comparison, 'promo' => $this->promo); 
-    } 
-} 
+    public function export()
+    {
+        return array('type' => 'promo', 'comparison' => $this->comparison, 'promo' => $this->promo);
+    }
+}
 
 /** Filters users by studies
  * @param $formation_id The id of the study
@@ -494,7 +494,7 @@ class UFC_Roomphone extends UserFilterCondition
 class UFC_ActivityInstance extends UserFilterCondition
 {
     private $aids;
-    
+
     public function __construct($ais)
     {
         $this->aids = ActivityInstance::toIds(unflatten($ais));
@@ -632,7 +632,7 @@ class UFO_Birthday extends UserFilterOrder
  * when referring to the joined table.
  *
  * For example, if data from profile_job must be available to filter results,
- * the UFC object will call $uf-addJobFilter(), which will set the 'with_pj' var and 
+ * the UFC object will call $uf-addJobFilter(), which will set the 'with_pj' var and
  * return 'pj', the short name to use when referring to profile_job; when building
  * the query, calling the jobJoins function will return an array containing a single
  * row:
@@ -656,20 +656,20 @@ class UserFilter extends FrankizFilter
      */
     private $with_room = false;
     private $with_ip = false;
-    
+
     public function addRoomFilter()
     {
         $this->with_room = true;
         return 'r';
     }
-    
+
     public function addIpFilter()
     {
         $this->with_room = true;
         $this->with_ip = true;
         return 'tips';
     }
-    
+
     protected function roomJoins()
     {
         $joins = array();
@@ -760,7 +760,9 @@ class UserFilter extends FrankizFilter
         $joins = array();
         if ($this->with_castes > 0) {
             for ($i = 1; $i <= $this->with_castes; $i++) {
-                $joins['cu' . $i] = PlSqlJoin::inner('castes_users', '$ME.uid = a.uid');
+                $joins['cu' . $i] = PlSqlJoin::inner('castes_users',
+                    '$ME.uid = a.uid AND ($ME.visibility IN {?} OR $ME.uid = {?})',
+                    S::user()->visibleGids(), S::user()->id());
             }
         }
         return $joins;
@@ -787,7 +789,7 @@ class UserFilter extends FrankizFilter
         return $joins;
     }
 
-    /** 
+    /**
      * EXPORT & IMPORT
      */
     public function export()

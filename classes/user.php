@@ -77,7 +77,8 @@ class UserSelect extends Select
               'minimodules' => array('minimodules'),
                   'studies' => array('studies'),
                  'comments' => array('comments'),
-           'defaultfilters' => array('defaultfilters'));
+           'defaultfilters' => array('defaultfilters'),
+             'cuvisibility' => array('cuvisibility'));
     }
 
     protected function handler_main(Collection $users, array $fields) {
@@ -135,7 +136,8 @@ class UserSelect extends Select
         $formations = new Collection('Formation');
         while ($datas = $iter->next()) {
             $formation_id = $datas['formation_id'];
-            $datas['formation'] = $formations->addget($formation_id); unset($datas['formation_id']);
+            $datas['formation'] = $formations->addget($formation_id);
+            unset($datas['formation_id']);
             $_users[$datas['uid']][$formation_id] = new Study($datas);
         }
 
@@ -197,9 +199,66 @@ class UserSelect extends Select
     }
 
     protected function handler_castes(Collection $users, $fields) {
-        $this->helper_collection($users, array('id' => 'cid',
-                                            'table' => 'castes_users',
-                                            'field' => 'castes'));
+        $_users = array();
+        foreach($users as $user) {
+            $_users[$user->id()] = new Collection('Caste');
+        }
+        // Bootstrap session
+        $newuid = S::i('newuid');
+        if (S::has('newuid') && in_array($newuid, $users->ids())) {
+            $iter = XDB::iterRow('SELECT  uid, cid
+                                    FROM  castes_users
+                                WHERE  uid IN {?}',
+                                $users->ids());
+        } else {
+            $iter = XDB::iterRow('SELECT  uid, cid
+                                    FROM  castes_users
+                                WHERE  uid IN {?} AND
+                                        (visibility IN {?} OR uid IN {?})',
+                                $users->ids(),
+                                S::user()->visibleGids(), array($newuid, S::user()->id()));
+        }
+
+        $linkeds = new Collection('Caste');
+        while (list($uid, $cid) = $iter->next()) {
+            $linked = $linkeds->addget($cid);
+            $_users[$uid]->add($linked);
+        }
+
+        foreach ($users as $user) {
+            $user->fillFromArray(array('castes' => $_users[$user->id()]));
+        }
+        if (!empty($this->subs['castes'])) {
+            $linkeds->select($this->subs['castes']);
+        }
+
+    }
+
+    /**
+     * Select a GID which identifies the visibility of a caste-user assocation
+     */
+    protected function handler_cuvisibility(Collection $users, $fields) {
+        $_users = array();
+        foreach ($users as $u) {
+            $_users[$u->id()] = array();
+        }
+        $viscoll = new Collection('Group');
+        $iter = XDB::iterRow('SELECT  uid, cid, visibility
+                                FROM  castes_users
+                               WHERE  uid IN {?}',
+                                      $users->ids());
+        while (list($uid, $cid, $vis) = $iter->next()) {
+            $_users[$uid][$cid] = $vis;
+            if ($vis != 0)
+                $viscoll->add($vis);
+        }
+        $viscoll->select(GroupSelect::base());
+        foreach ($users as $u) {
+            $cuarray = array_map(function ($gid) use($viscoll) {
+                    return ($gid == 0) ? null : $viscoll->get($gid);
+                }, $_users[$u->id()]);
+            $u->fillFromArray(array('cuvisibility' => $cuarray));
+        }
     }
 
     public static function base() {
@@ -229,15 +288,17 @@ class UserSelect extends Select
             }
         };
 
-        return new UserSelect(array_merge(self::$natives,
-                                          array('rooms', 'minimodules', 'castes', 'poly', 'comments', 'defaultfilters', 'studies')),
-                              array('castes' => CasteSelect::group(),
-                            'defaultfilters' => GroupSelect::base()),
-                              $cb);
+        return new UserSelect(
+            array_merge(self::$natives, array('rooms', 'minimodules', 'castes',
+                'poly', 'comments', 'defaultfilters', 'studies', 'cuvisibility')),
+            array('castes' => CasteSelect::group(),
+                'defaultfilters' => GroupSelect::base()),
+                $cb);
     }
 
     public static function tol() {
-        return new UserSelect(array_merge(self::$natives, array('rooms', 'castes', 'comments', 'studies')),
+        return new UserSelect(array_merge(self::$natives, array('rooms',
+                              'castes', 'comments', 'studies', 'cuvisibility')),
                               array('castes' => CasteSelect::group(),
                                      'rooms' => RoomSelect::all(),
                                    'studies' => Formation::SELECT_BASE));
@@ -249,7 +310,7 @@ class UserSelect extends Select
                                      'rooms' => RoomSelect::all(),
                                    'studies' => Formation::SELECT_BASE));
     }
-    
+
     public static function studies() {
         return new UserSelect(array_merge(self::$natives, array('studies')),
                               array('studies' => Formation::SELECT_BASE));
@@ -329,6 +390,7 @@ class User extends Meta
     // Collection of castes
     protected $castes   = null;
     protected $comments = null;
+    protected $cuvisibility = null;
 
     // Contains the hash sent by mail to recover the password
     protected $hash = null;
@@ -574,11 +636,11 @@ class User extends Meta
 
         if (!(XDB::affectedRows() > 0))
             return false;
-            
+
         $this->select(UserSelect::studies());
         return true;
     }
-    
+
     public function updateStudy($formation, $forlife, $new_year_in, $new_year_out, $new_promo)
     {
         $formation_id = ($formation instanceof Formation) ? $formation->id() : $formation;
@@ -594,11 +656,11 @@ class User extends Meta
 
         if (!(XDB::affectedRows() > 0))
             return false;
-        
+
         $this->select(UserSelect::studies());
         return true;
     }
-    
+
     public function removeStudy($formation, $forlife)
     {
         $formation_id = ($formation instanceof Formation) ? $formation->id() : $formation;
@@ -609,7 +671,7 @@ class User extends Meta
 
         if (!(XDB::affectedRows() > 0))
             return false;
-            
+
         $this->select(UserSelect::studies());
         return true;
     }
@@ -638,7 +700,7 @@ class User extends Meta
         $this->rooms->add($r);
         return true;
     }
-    
+
     public function removeRoom(Room $r)
     {
         XDB::execute('DELETE FROM  rooms_users
@@ -886,10 +948,10 @@ class User extends Meta
     }
 
     /**
-    * Returns true if the user is allowed to see the content of the caste
-    * taking into account the level of AUTH
-    * @param $caste the rights of the caste must be already fetched
-    */
+     * Returns true if the user is allowed to see the content of the caste
+     * taking into account the level of AUTH
+     * @param $caste the rights of the caste must be already fetched
+     */
     public function canSee(Caste $caste)
     {
         // If we are inside the platal & the caste is of type everybody
@@ -904,6 +966,175 @@ class User extends Meta
         }
 
         return false;
+    }
+
+    /**
+     * Get the group IDs an user is allowed to see
+     * @return array
+     */
+    public function visibleGids()
+    {
+        $gids = $this->castes(Rights::restricted())->groups()->ids();
+        // GID 0 in always visible
+        $gids[] = 0;
+        return $gids;
+    }
+
+    /**
+     * Tell wether a visibility is possible or not for the specified right of a caste
+     *
+     * Basic rules are:
+     *  - A friend (or "not a member nor an admin") can be seen by himself only
+     *  - A member must be seen by other members of the group
+     *  - An admin must be seen by other people
+     */
+    static private function rightsVisibilityIsPossible(Rights $rights, Group $visibility) {
+        if (is_null($visibility))
+            return true;
+        switch ($visibility->ns()) {
+            case 'user':
+                return !$rights->isMe('member') && !$rights->isMe('admin');
+            case 'binet':
+            case 'free':
+                return !$rights->isMe('admin');
+            case 'study':
+                return true;
+        }
+        return true;
+    }
+
+    /**
+     * Tell wether a visibility is possible or not for the specified group
+     * @param Group $group
+     * @param Group $visibility
+     * @return boolean
+     */
+    public function groupVisibilityIsPossible(Group $group, Group $visibility) {
+        foreach ($this->rights($group) as $rights) {
+            if (!self::rightsVisibilityIsPossible($rights, $visibility))
+                return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * List available visibilitities for an user, for the specified group
+     * @return an associative array $visigroup => Descriptive text
+     */
+    public function getAvailVisibilities(Group $group) {
+        $avail = array();
+        $rights = $this->rights($group);
+
+        // Retreive all visibilities
+        $allvisis = $this->castes()->groups();
+        foreach ($allvisis->filter('name', 'everybody') as $visi) {
+            $avail[$visi->id()] = $visi->label();
+        }
+        foreach ($allvisis->filter('ns', 'study') as $visi) {
+            $avail[$visi->id()] = $visi->label();
+        }
+        if (!in_array('admin', $rights)) {
+            $avail[$group->id()] = $group->label();
+            if (!in_array('member', $rights)) {
+                foreach ($allvisis->filter('ns', 'user') as $visi) {
+                    $avail[$visi->id()] = "Moi uniquement";
+                }
+            }
+        }
+        return $avail;
+    }
+
+    /**
+     * Get the visibility flag associated with a caste.
+     * This function only works for the session user.
+     * @return Group associated with the visibility
+     */
+    public function casteVisibility(Caste $caste, Group $visibility = null)
+    {
+        if (!$this->isMe(S::user()))
+            return null;
+        if ($visibility !== null && self::rightsVisibilityIsPossible($caste->rights(), $visibility)) {
+            XDB::execute('UPDATE  castes_users
+                             SET  visibility = {?}
+                           WHERE  uid = {?} AND cid = {?}',
+                    $visibility->id(), $this->id(), $caste->id());
+            if ($this->cuvisibility == null)
+                $this->cuvisibility = array();
+            $this->cuvisibility[$caste->id()] = $visibility;
+        }
+        return empty($this->cuvisibility[$caste->id()]) ? null : $this->cuvisibility[$caste->id()];
+    }
+
+    /**
+     * Get the visibility flag associated with a group.
+     * This function only works for the session user.
+     *
+     * @return: a collection on visibility
+     */
+    public function groupVisibility(Group $group, Group $visibility = null)
+    {
+        if (!$this->isMe(S::user()))
+            return null;
+
+        if ($visibility !== null) {
+            // Check visibility avaibility
+            if (!$this->groupVisibilityIsPossible($group, $visibility)) {
+                $visibility = null;
+            }
+        }
+        // Get the castes associated with the group
+        $castes = $this->castes->filter('group', $group);
+        $col = new Collection('Group');
+        foreach ($castes as $c) {
+            // Get each caste visibility
+            $cv = $this->casteVisibility($c, $visibility);
+            if ($cv !== null)
+                $col->add($cv);
+        }
+        return $col;
+    }
+
+    /**
+     * Get the information associated with a visibility
+     * Information is array($color, $text) where:
+     *   $color is the color of the flag
+     *   $text is a short descriptive text
+     */
+    static public function visibilityInfo(Group $visibility)
+    {
+        if ($visibility == null)
+            return array('green', "Tout le monde");
+        if ($visibility->name() == 'everybody')
+            return array('green', "Tout le monde");
+        switch ($visibility->ns()) {
+            case 'user':
+                return array('red', "Moi uniquement");
+            case 'study':
+                return array('blue', $visibility->label());
+            case 'free':
+            case 'binet':
+            default:
+                return array('orange', "Membres de " . $visibility->label());
+        }
+        return array('grey', "Inconnu");
+    }
+
+    /**
+     * Same as visibilityInfo, but for visibility collections
+     */
+    static public function visibilitiesColInfo(Collection $visibilities)
+    {
+        if ($visibilities->count() == 0) {
+                return array('green', "Tout le monde");
+        } elseif ($visibilities->count() == 1) {
+            return self::visibilityInfo($visibilities->first());
+        }
+        $textes = array();
+        foreach ($visibilities as $v) {
+            $textes[] = self::visibilityInfo($v);
+        }
+        return array('grey', implode(', ', $textes));
     }
 
     /*******************************************************************************
@@ -922,8 +1153,15 @@ class User extends Meta
                 return S::v('anonymous_user');
 
             $uid = (IP::is_internal()) ? $globals->anonymous->internal : $globals->anonymous->external;
-            $u = new User($uid);
-            $u->select(UserSelect::login());
+            S::set('newuid', $uid);
+            try {
+                $u = new User($uid);
+                $u->select(UserSelect::login());
+                S::kill('newuid');
+            } catch (Exception $e) {
+                S::kill('newuid');
+                throw $e;
+            }
             S::set('anonymous_user', $u);
             return $u;
         }

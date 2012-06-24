@@ -96,7 +96,7 @@ a {
 }
 
 .fkzadmin {
-    background-color:#FFB894 !important; 
+    background-color:#FFB894 !important;
     background-image:none !important;
 }
 .fkzadmin * {
@@ -205,6 +205,56 @@ a {
     height: 16px;
     background-image: url("../default/images/icons/item.delete.gif");
     background-repeat: no-repeat;
+}
+
+/*******************************************************************************
+     0c   Visibility flags
+
+*******************************************************************************/
+.visicontainer {
+    position: relative;
+    min-width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.visiflag {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: left 0;
+
+    zoom:1;
+
+    &.click {
+        cursor: pointer;
+    }
+
+    &.grey {
+        background-image: url("../default/images/icons/flag_grey.png");
+    }
+
+    &.green {
+        background-image: url("../default/images/icons/flag_green.png");
+    }
+
+    &.blue {
+        background-image: url("../default/images/icons/flag_blue.png");
+    }
+
+    &.orange {
+        background-image: url("../default/images/icons/flag_orange.png");
+    }
+
+    &.red {
+        background-image: url("../default/images/icons/flag_red.png");
+    }
+}
+
+.visiselect {
+    display: none;
 }
 
 /*******************************************************************************
@@ -456,7 +506,7 @@ body.disabledAside #section {
         margin: 6px;
         margin-top: 0;
         vertical-align: top;
-        
+
         zoom: 1;
         *display: inline;
 
@@ -496,12 +546,12 @@ body.disabledAside #section {
             display: table-cell;
             width: 30%;
         }
-    
+
         td.empty {
             display: none;
             width: 30%;
         }
-    
+
         td ul.minimodules_zone {
             width: 100%;
         }

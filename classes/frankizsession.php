@@ -134,7 +134,7 @@ class FrankizSession extends PlSession
         if(!Post::has('username') || !Post::has('password')) {
             return null;
         }
-        
+
         /* So we come from an authentication form */
         if (S::suid()) {
             $login = S::suid('uid');
@@ -159,9 +159,18 @@ class FrankizSession extends PlSession
         if (!is_null($uid)) {
             S::set('auth', AUTH_MDP);
             S::kill('challenge');
-            $user = new User($uid);
-            S::logger($uid)->log('auth_ok');
-            return $user->select(UserSelect::login());
+            // Register a temporary session UID to query well user information
+            S::set('newuid', $uid);
+            try {
+                $user = new User($uid);
+                S::logger($uid)->log('auth_ok');
+                $user->select(UserSelect::login());
+                S::kill('newuid');
+            } catch (Exception $e) {
+                S::kill('newuid');
+                throw $e;
+            }
+            return $user;
         }
     }
 

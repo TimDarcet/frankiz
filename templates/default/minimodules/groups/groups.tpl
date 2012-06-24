@@ -20,18 +20,20 @@
 {*                                                                        *}
 {**************************************************************************}
 
+{js src="visibilityflag.js"}
 {if $minimodule.binets|@count > 0}
-<h4>Binets</h4>
+    <h4>Binets</h4>
 
-<table>
-    {foreach from=$minimodule.binets|order:'score' item='group'}
-        <tr>
-            <td class="img">{$group|group:'micro'}</td>
-            <td class="therights">{$minimodule.user->rights($group)|@rights}</td>
-            <td class="group" gid="{$group->id()}">{$group|group:'textAndNewsNumber'} {$group|group:'premises'}</td>
-        </tr>
-    {/foreach}
-</table>
+    <table>
+        {foreach from=$minimodule.binets|order:'score' item='group'}
+            <tr>
+                <td class="img">{$group|group:'micro'}</td>
+                <td class="therights">{$minimodule.user->rights($group)|@rights}</td>
+                <td class="theflags">{grpvisibility user=$minimodule.user group=$group}</td>
+                <td class="group" gid="{$group->id()}">{$group|group:'textAndNewsNumber'} {$group|group:'premises'}</td>
+            </tr>
+        {/foreach}
+    </table>
 {/if}
 
 {if $minimodule.frees|@count > 0}
@@ -42,6 +44,7 @@
             <tr>
                 <td class="img">{$group|group:'micro'}</td>
                 <td class="therights">{$minimodule.user->rights($group)|@rights}</td>
+                <td class="theflags">{grpvisibility user=$minimodule.user group=$group}</td>
                 <td class="group">{$group|group:'textAndNewsNumber'}</td>
             </tr>
         {/foreach}

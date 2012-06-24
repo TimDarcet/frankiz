@@ -85,6 +85,11 @@ class GroupSelect extends Select
         return new GroupSelect(array('premises','ips'), $subs);
     }
 
+    public static function visibility() {
+        return new GroupSelect(array('ns', 'name', 'label', 'description', 'castes'),
+                               array('castes' => null));
+    }
+
     protected function handlers() {
         return array('main'   => array_merge(Schema::group()->scalars(), array('image')),
                    'premises' => array('premises'),
@@ -269,9 +274,11 @@ class Group extends Meta
         if ($users->count() > 0) {
             $iter = XDB::iterRow('SELECT  cu.uid, c.rights
                                      FROM  castes AS c
-                               INNER JOIN  castes_users AS cu ON cu.cid = c.cid
+                               INNER JOIN  castes_users AS cu ON (cu.cid = c.cid
+                                           OR (cu.visibility IN {?} OR cu.uid = {?}))
                                INNER JOIN  groups AS g ON g.gid = c.`group`
                                     WHERE  g.gid = {?} AND cu.uid IN {?}',
+                                           S::user()->visibleGids(), S::user()->id(),
                                            $this->id(), $users->ids());
             while (list($uid, $right) = $iter->next()) {
                 if (empty($rights[$uid])) {

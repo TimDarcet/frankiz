@@ -20,6 +20,7 @@
 {*                                                                        *}
 {**************************************************************************}
 
+{js src="visibilityflag.js"}
 {assign var='castes' value=$result->castes()}
 {assign var='groups' value=$castes->groups()}
 
@@ -38,7 +39,7 @@
         {if $user->isWeb() or $user->isAdmin()}
             (
             {if $user->isAdmin()}
-                <a class="warning" href="admin/su/{$result->id()}">su</a> | 
+                <a class="warning" href="admin/su/{$result->id()}">su</a> |
             {/if}
             <a class="warning" href="profile/admin/account/{$result->hruid()}">administrer</a>)
         {/if}
@@ -123,6 +124,11 @@
                             {$group|group}
                             {$result->rights($group)|@rights}
                         </span>
+                        {if $result->isMe($smarty.session.user)}
+                            <span>
+                                {grpvisibility user=$result group=$group}
+                            </span>
+                        {/if}
                         <span>
                             {$group|group:'text'}
                             <span class="comments">{$result->comments($group)}</span>
@@ -142,6 +148,11 @@
                             {$group|group}
                             {$result->rights($group)|@rights}
                         </span>
+                        {if $result->isMe($smarty.session.user)}
+                            <span>
+                                {grpvisibility user=$result group=$group}
+                            </span>
+                        {/if}
                         <span>
                             {$group|group:'text'}
                             <span class="comments">{$result->comments($group)}</span>
@@ -161,6 +172,11 @@
                             {$group|group}
                             {$result->rights($group)|@rights}
                         </span>
+                        {if $result->isMe($smarty.session.user)}
+                            <span>
+                                {grpvisibility user=$result group=$group}
+                            </span>
+                        {/if}
                         <span>
                             {$group|group:'text'}
                             <span class="comments">{$result->comments($group)}</span>

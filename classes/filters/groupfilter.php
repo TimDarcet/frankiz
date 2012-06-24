@@ -236,23 +236,26 @@ class GroupFilter extends FrankizFilter
     protected function userJoins()
     {
         $joins = array();
-        if ($this->with_user)
-            $joins['cu'] = PlSqlJoin::left('castes_users', '$ME.cid = c.cid');
+        if ($this->with_user) {
+            $joins['cu'] = PlSqlJoin::left('castes_users',
+                '$ME.cid = c.cid AND ($ME.visibility IN {?} OR $ME.uid = {?})',
+                S::user()->visibleGids(), S::user()->id());
+        }
 
         return $joins;
     }
-    
+
 
     /** ROOM
      */
     private $with_room = false;
-    
+
     public function addRoomFilter()
     {
         $this->with_room = true;
         return 'r';
     }
-    
+
     protected function roomJoins()
     {
         $joins = array();

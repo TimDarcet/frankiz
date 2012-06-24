@@ -24,12 +24,13 @@ class TolModule extends PLModule
     function handlers()
     {
         return array(
-            'tol'             => $this->make_hook('tol',             AUTH_INTERNAL, ''),
-            'tol/birthday'    => $this->make_hook('tol_birthday',    AUTH_INTERNAL, ''),
-            'tol/apv'         => $this->make_hook('tol_apv',         AUTH_INTERNAL, ''),
-            'tol/see'         => $this->make_hook('see',             AUTH_INTERNAL, ''),
-            'tol/ajax/search' => $this->make_hook('tol_ajax_search', AUTH_INTERNAL, ''),
-            'tol/ajax/sheet'  => $this->make_hook('tol_ajax_sheet',  AUTH_INTERNAL, '')
+            'tol'                 => $this->make_hook('tol',                 AUTH_INTERNAL, ''),
+            'tol/birthday'        => $this->make_hook('tol_birthday',        AUTH_INTERNAL, ''),
+            'tol/apv'             => $this->make_hook('tol_apv',             AUTH_INTERNAL, ''),
+            'tol/see'             => $this->make_hook('see',                 AUTH_INTERNAL, ''),
+            'tol/ajax/search'     => $this->make_hook('tol_ajax_search',     AUTH_INTERNAL, ''),
+            'tol/ajax/sheet'      => $this->make_hook('tol_ajax_sheet',      AUTH_INTERNAL, ''),
+            'tol/ajax/visibility' => $this->make_hook('tol_ajax_visibility', AUTH_INTERNAL, '')
             );
     }
 
@@ -303,6 +304,60 @@ class TolModule extends PLModule
         $page->jsonAssign('sheet', $sheet);
         $page->jsonAssign('success', true);
 
+        return PL_JSON;
+    }
+
+    function handler_tol_ajax_visibility($page, $usergroupid)
+    {
+        $matches = array();
+        // Retrieve UID and GID from path
+        if (!preg_match('/[a-zA-Z-_.]*([0-9]+)-([0-9]+)/', $usergroupid, $matches)) {
+            $page->jsonAssign('reason', 'Invalid ids');
+            return PL_JSON;
+        }
+
+        $uid = $matches[1];
+        $gid = $matches[2];
+
+        // Sanity checks
+        if (!S::user()->isMe($uid)) {
+            $page->jsonAssign('reason', 'Invalid user');
+            return PL_JSON;
+        }
+        $usergroups = S::user()->castes()->groups();
+        $group = $usergroups->get($gid)->select(GroupSelect::visibility());
+        if (!$group) {
+            $page->jsonAssign('reason', "Invalid group");
+            return PL_JSON;
+        }
+
+        // Get new visibility from json data
+        $json_data = json_decode(Env::v('json'));
+        $visibid = $json_data->visibility;
+        if (!$visibid) {
+            $page->jsonAssign('reason', "Invalid visibility group id");
+            return PL_JSON;
+        }
+        $visigroup = $usergroups->get($visibid);
+        if (!$visigroup) {
+            $page->jsonAssign('reason', "Invalid visibility group");
+            return PL_JSON;
+        }
+
+        // Check avaibility
+        if (!S::user()->groupVisibilityIsPossible($group, $visigroup)) {
+            $page->jsonAssign('reason', "Not available visibility");
+            return PL_JSON;
+        }
+
+        // Now make the read call
+        $colVisiGroup = S::user()->groupVisibility($group, $visigroup);
+        //$page->jsonAssign('usergroupid', json_encode(array($uid, $gid, $visigroup->label(), $group->label())));
+        $page->jsonAssign('usergroupid', $uid . '-' . $gid);
+        list($color, $title) = User::visibilitiesColInfo($colVisiGroup);
+        $page->jsonAssign('color', $color);
+        $page->jsonAssign('title', $title);
+        $page->jsonAssign('success', true);
         return PL_JSON;
     }
 }
