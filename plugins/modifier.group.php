@@ -36,15 +36,7 @@ function smarty_modifier_group($group, $type = 'micro') {
         $str .= $group->label();
     }
     if ($type == 'textAndNewsNumber') {
-        $news = new NewsFilter(
-            new PFC_And(
-                new PFC_Not(new NFC_Read(S::user())),
-                new NFC_Current(),
-                new NFC_Target(S::user()->targetCastes()),
-                new NFC_Origin($group->id())
-            )
-        );
-        $n = $news->get()->count();
+        $n = $group->nb_news();
         if ($n > 0) {
             $str .= '<b> (' . $n . ')</b>';
         }

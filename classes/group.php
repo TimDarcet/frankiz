@@ -47,7 +47,8 @@ class GroupSchema extends Schema
     }
 
     public function collections() {
-        return array('castes' => 'Caste');
+        return array('castes' => 'Caste',
+                     'rooms' => 'Room');
     }
 }
 
@@ -77,12 +78,18 @@ class GroupSelect extends Select
     public static function see() {
         return new GroupSelect(array('ns', 'score', 'name', 'label', 'description',
                                      'image', 'wikix', 'web', 'mail', 'visible', 'castes', 'leavable','external',
-                                     'premises','ips'),
-                               array('castes' => CasteSelect::base()));
+                                     'rooms', 'premises','ips'),
+                               array('castes' => CasteSelect::base(),
+                                     'rooms' => RoomSelect::premise()));
     }
 
-    public static function premises($subs = null) {
-        return new GroupSelect(array('premises','ips'), $subs);
+    public static function nb_news() {
+        return new GroupSelect(array('nb_news'));
+    }
+
+    public static function premises() {
+        return new GroupSelect( array('rooms', 'premises','ips'),
+                                array('rooms' => RoomSelect::premise()));
     }
 
     public static function visibility() {
@@ -91,10 +98,12 @@ class GroupSelect extends Select
     }
 
     protected function handlers() {
-        return array('main'   => array_merge(Schema::group()->scalars(), array('image')),
-                   'premises' => array('premises'),
-                   'ips'      => array('ips'),
-                   'castes'   => array('castes'));
+        return array('main'     => array_merge(Schema::group()->scalars(), array('image')),
+                     'rooms'    => array('rooms'),
+                     'premises' => array('premises'),
+                     'ips'      => array('ips'),
+                     'nb_news'     => array('nb_news'),
+                     'castes'   => array('castes'));
     }
 
     protected function handler_castes(Collection $groups, $fields) {
@@ -109,7 +118,7 @@ class GroupSelect extends Select
 
         $castes = new Collection('Caste');
         while (list($cid, $group, $rights) = $iter->next()) {
-            $caste = new Caste(array('id' => $cid,
+             $caste = new Caste(array('id' => $cid,
                                   'group' => $groups->get($group),
                                  'rights' => new Rights($rights)));
 
@@ -126,13 +135,16 @@ class GroupSelect extends Select
         }
     }
 
+    protected function handler_rooms(Collection $groups, $fields) {
+        $this->helper_collection($groups, array('id' => 'rid',
+                                                'table' => 'rooms_groups',
+                                                'field' => 'rooms'));
+    }
+
     protected function handler_premises(Collection $groups, $fields) {
-        foreach ($groups as $g) {
-            $rf = new RoomFilter(new RFC_Group($g->id()));
-            $rooms = $rf->get();
-            $rooms->select(RoomSelect::premise());
+        foreach($groups as $g) {
             $premises = array();
-            foreach($rooms as $premise) {
+            foreach($g->rooms() as $premise) {
                 $opens = $premise->open();
                 $premises[$premise->id()] = array('label' => $premise->comment(),
                                         'phone' => $premise->phone(),
@@ -144,14 +156,32 @@ class GroupSelect extends Select
 
     protected function handler_ips(Collection $groups, $fields) {
         foreach ($groups as $g) {
-            $rf = new RoomFilter(new RFC_Group($g->id()));
-            $rooms = $rf->get();
-            $rooms->select(RoomSelect::premise());
             $ips = array();
-            foreach($rooms as $premise) {
+            foreach($g->rooms() as $premise) {
                 $ips = array_merge($ips, $premise->ips());
             }
             $g->fillFromArray(array('ips' => $ips));
+        }
+    }
+
+    protected function handler_nb_news(Collection $groups, $fields) {
+        $nf = new NewsFilter(
+            new PFC_And(
+                new PFC_Not(new NFC_Read(S::user())),
+                new NFC_Current(),
+                new NFC_Target(S::user()->targetCastes())
+            )
+        );
+        $ids = $nf->getIDs();
+        if(empty($ids))
+            return;
+        $iter = XDB::iterRow('  SELECT origin AS gid, COUNT(id) AS n
+                        FROM news
+                        WHERE id IN {?} AND origin IN {?}
+                        GROUP BY origin', $nf->getIDs(), $groups->ids());
+        $_groups = array();
+        while (list($gid, $n) = $iter->next()) {
+            $groups->get($gid)->fillFromArray(array('nb_news' => $n));
         }
     }
 }
@@ -186,8 +216,11 @@ class Group extends Meta
 
     protected $castes = null;
 
+    protected $rooms = null;
     protected $premises = null;
     protected $ips = null;
+
+    protected $nb_news = null;
 
     public function bestId()
     {
@@ -207,6 +240,12 @@ class Group extends Meta
         $this->castes->add($caste);
 
         return $caste;
+    }
+
+    public function nb_news($nb_news = null) {
+        if($nb_news !== null)
+            $this->nb_news = $nb_news;
+        return $this->nb_news;
     }
 
     public function caste(Rights $rights = null)
