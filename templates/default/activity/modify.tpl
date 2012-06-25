@@ -22,9 +22,11 @@
 
 {js src="activities.js"}
 
+{if t($msg)}
 <div class="msg">
     {$msg}
 </div>
+{/if}
 
 {if t($delete) && $delete}
     <div class="msg">
