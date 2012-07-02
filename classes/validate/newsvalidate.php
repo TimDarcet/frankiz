@@ -233,9 +233,10 @@ class NewsValidate extends ItemValidate
             $n->comment($this->comment);
             $this->idIfValid = $n->id();
 
-            if ($this->target->rights()->isMe(Rights::everybody())) {
-                $this->sendnewsgroupmail();
-            }
+            // This code is used to post news on a newsgroup server
+            //if ($this->target->rights()->isMe(Rights::everybody())) {
+            //    $this->sendnewsgroupmail();
+            //}
         }
         return true;
     }
