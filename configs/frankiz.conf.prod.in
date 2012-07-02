@@ -22,8 +22,3 @@ baseurl    = "https://www.frankiz.net/"
 
 admin = frankiz@binets.polytechnique.fr
 web   = webmasters@binets.polytechnique.fr
-
-
-[remote]
-
-lag    = 300

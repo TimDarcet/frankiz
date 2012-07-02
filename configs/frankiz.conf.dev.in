@@ -18,10 +18,8 @@ memcache   = "127.0.0.1"
 sitename   = "Frankiz - Version de dév - @USER@"
 baseurl    = "https://dev.frankiz.net/~@USER@/"
 
-
 [Mails]
 
 admin      = "@USER@@eleves.polytechnique.fr"
 web        = "@USER@@eleves.polytechnique.fr"
 debug      = "@USER@@eleves.polytechnique.fr"
-
