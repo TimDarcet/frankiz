@@ -129,11 +129,11 @@ a {
     }
 
     &.admin {
-        background-image: url("images/rights_admin.png");
+        background-image: url("../default/images/rights_admin.png");
     }
 
     &.member {
-        background-image: url("images/rights_member.png");
+        background-image: url("../default/images/rights_member.png");
     }
 
     &.logic {
@@ -141,7 +141,7 @@ a {
     }
 
     &.friend {
-        background-image: url("images/rights_friend.png");
+        background-image: url("../default/images/rights_friend.png");
     }
 
     &.restricted {
@@ -164,7 +164,7 @@ a {
     display: inline-block;
     width: 16px;
     height: 16px;
-    background-image: url("images/icons/edit.png");
+    background-image: url("../defaut/images/icons/edit.png");
     background-repeat: no-repeat;
 }
 
@@ -172,7 +172,7 @@ a {
     display: inline-block;
     width: 16px;
     height: 16px;
-    background-image: url("images/icons/group_add.gif");
+    background-image: url("../default/images/icons/group_add.gif");
     background-repeat: no-repeat;
 }
 
@@ -180,7 +180,7 @@ a {
     display: inline-block;
     width: 16px;
     height: 16px;
-    background-image: url("images/icons/group_delete.gif");
+    background-image: url("../default/images/icons/group_delete.gif");
     background-repeat: no-repeat;
 }
 
@@ -188,7 +188,7 @@ a {
     display: inline-block;
     width: 16px;
     height: 16px;
-    background-image: url("images/icons/Item.Edit.gif");
+    background-image: url("../default/images/icons/Item.Edit.gif");
     background-repeat: no-repeat;
 }
 
@@ -196,7 +196,7 @@ a {
     display: inline-block;
     width: 16px;
     height: 16px;
-    background-image: url("images/feed.gif");
+    background-image: url("../default/images/feed.gif");
     background-repeat: no-repeat;
 }
 
@@ -204,12 +204,62 @@ a {
     display: inline-block;
     width: 16px;
     height: 16px;
-    background-image: url("images/icons/item.delete.gif");
+    background-image: url("../default/images/icons/item.delete.gif");
     background-repeat: no-repeat;
 }
 
 hr {
     border : inset @color2 1px;
+}
+
+/*******************************************************************************
+     0c   Visibility flags
+
+*******************************************************************************/
+.visicontainer {
+    position: relative;
+    min-width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.visiflag {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: left 0;
+
+    zoom:1;
+
+    &.click {
+        cursor: pointer;
+    }
+
+    &.grey {
+        background-image: url("../default/images/icons/flag_grey.png");
+    }
+
+    &.green {
+        background-image: url("../default/images/icons/flag_green.png");
+    }
+
+    &.blue {
+        background-image: url("../default/images/icons/flag_blue.png");
+    }
+
+    &.orange {
+        background-image: url("../default/images/icons/flag_orange.png");
+    }
+
+    &.red {
+        background-image: url("../default/images/icons/flag_red.png");
+    }
+}
+
+.visiselect {
+    display: none;
 }
 
 /*******************************************************************************
@@ -420,7 +470,7 @@ body.disabledAside #section {
                 float: right;
                 width: 30px;
                 height: 30px;
-                background-image: url("images/help.png");
+                background-image: url("../default/images/help.png");
                 background-repeat: no-repeat;
                 background-position: center;
                 cursor: pointer;
@@ -443,7 +493,7 @@ body.disabledAside #section {
                 width: 16px;
                 height: 16px;
                 color: red;
-                background-image: url("images/icons/edit.png");
+                background-image: url("../default/images/icons/edit.png");
                 background-repeat: no-repeat;
                 background-position: center;
             }
@@ -607,7 +657,7 @@ input, textarea, select {
     &[pattern] {
         background-repeat: no-repeat;
         background-position: 356px 24px;
-        background-image: url('images/ico_validation.png');
+        background-image: url('../default/images/ico_validation.png');
         padding: 3px 3px 3px 3px;
     }
 
@@ -654,7 +704,7 @@ input[type="checkbox"], input[type="radio"]{
 .checkbox {
     width: 24px;
     height: 24px;
-    background: url(images/checkbox.png) no-repeat;
+    background: url(../default/images/checkbox.png) no-repeat;
 
     &:hover  {
         background-position: 0 -24px;
@@ -754,7 +804,7 @@ input[type="checkbox"], input[type="radio"]{
     }
 
     &.searching .searcher input {
-        background-image: url("images/busy.gif");
+        background-image: url("../default/images/busy.gif");
         background-repeat: no-repeat;
         background-position: 98% center;
     }
@@ -815,7 +865,7 @@ input[type="checkbox"], input[type="radio"]{
             top: 50%;
             width: 16px;
             height: 16px;
-            background: url(images/icons/help.png) no-repeat;
+            background: url(../default/images/icons/help.png) no-repeat;
             cursor: pointer;
         }
         .down {
@@ -823,7 +873,7 @@ input[type="checkbox"], input[type="radio"]{
             bottom: 5px;
             width: 16px;
             height: 16px;
-            background: url(images/icons/arrow_down.png) no-repeat;
+            background: url(../default/images/icons/arrow_down.png) no-repeat;
             cursor: pointer;
         }
     }

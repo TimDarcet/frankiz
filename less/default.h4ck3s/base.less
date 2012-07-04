@@ -225,6 +225,56 @@ a {
 }
 
 /*******************************************************************************
+     0c   Visibility flags
+
+*******************************************************************************/
+.visicontainer {
+    position: relative;
+    min-width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.visiflag {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: left 0;
+
+    zoom:1;
+
+    &.click {
+        cursor: pointer;
+    }
+
+    &.grey {
+        background-image: url("../default/images/icons/flag_grey.png");
+    }
+
+    &.green {
+        background-image: url("../default/images/icons/flag_green.png");
+    }
+
+    &.blue {
+        background-image: url("../default/images/icons/flag_blue.png");
+    }
+
+    &.orange {
+        background-image: url("../default/images/icons/flag_orange.png");
+    }
+
+    &.red {
+        background-image: url("../default/images/icons/flag_red.png");
+    }
+}
+
+.visiselect {
+    display: none;
+}
+
+/*******************************************************************************
      1   Header
 
 *******************************************************************************/
