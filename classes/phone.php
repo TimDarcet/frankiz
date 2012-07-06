@@ -41,6 +41,8 @@ class Phone implements Formatable
 
     public function format()
     {
+        if(empty($this->phone))
+            return '';
         if ($this->phone[0] == '+') {
             $duplets = str_split(substr($this->phone, 2), 2);
             $duplets[0] = '+' . $this->phone[1] . $duplets[0];

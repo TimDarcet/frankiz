@@ -74,10 +74,13 @@ class TolModule extends PLModule
                 $freeconds = array();
                 $freeconds[] = new UFC_Name($piece, UFC_Name::LASTNAME|UFC_Name::FIRSTNAME|UFC_Name::NICKNAME, UFC_Name::CONTAINS);
                 $freeconds[] = new UFC_Room($piece);
-                $freeconds[] = new UFC_Roomphone($piece);
-                // Very simple regex to check if $piece might be a piece of an IP adress or a cellphone number
-                if (preg_match('/[0-9.]*/', $piece)) {
-                    $freeconds[] = new UFC_Cellphone(preg_replace('/[^0-9]/', '', $piece));
+                // Very simple regex to check if $piece might be a piece of a phone number
+                if (preg_match('/^[0-9]+$/', $piece)) {
+                    $freeconds[] = new UFC_Cellphone($piece);
+                    $freeconds[] = new UFC_Roomphone($piece);
+                }
+                // Other regex to check if this might be a piece of an IP address
+                if (preg_match('/^[0-9]{1,3}(\.[0-9]{1,3}){0,3}$/', $piece)) {
                     $freeconds[] = new UFC_Ip($piece);
                 }
                 $conds[] = new PFC_Or($freeconds);
