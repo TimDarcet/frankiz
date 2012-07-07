@@ -1132,7 +1132,8 @@ class User extends Meta
         }
         $textes = array();
         foreach ($visibilities as $v) {
-            $textes[] = self::visibilityInfo($v);
+            list($color, $text) = self::visibilityInfo($v);
+            $textes[] = $text;
         }
         return array('grey', implode(', ', $textes));
     }

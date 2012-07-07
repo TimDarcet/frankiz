@@ -328,11 +328,12 @@ class TolModule extends PLModule
             return PL_JSON;
         }
         $usergroups = S::user()->castes()->groups();
-        $group = $usergroups->get($gid)->select(GroupSelect::visibility());
+        $group = $usergroups->get($gid);
         if (!$group) {
             $page->jsonAssign('reason', "Invalid group");
             return PL_JSON;
         }
+        $group->select(GroupSelect::visibility());
 
         // Get new visibility from json data
         $json_data = json_decode(Env::v('json'));
