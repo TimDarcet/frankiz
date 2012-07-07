@@ -65,6 +65,8 @@ class Less
 
     private static function work($root) {
         $files = glob($root . '/*');
+        if ($files === false)
+            return;
 
         $force = false;
         $lib_less = $root . '/lib.less';
