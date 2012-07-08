@@ -20,7 +20,13 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
- /* This script check groups and castes integrity */
+/**
+ * This script checks groups and castes integrity
+ * Fixes are applied by CLI with php -a and include 'bin/connect.db.inc.php';
+ * For example, to fix caste userfilters, you may execute a line of PHP code like:
+ * $c = new Caste(12142); $c->userfilter('{"type":"user","condition":{"type":"caste","children":[12001,12002]}}');
+ * Use $c->userfilter(false) to remove a Userfilter
+ */
 
 require dirname(__FILE__) . '../../connect.db.inc.php';
 
@@ -161,6 +167,8 @@ foreach ($groups as $g) {
             // Webmasters are automatically admins of some groups
             test_userfilters($gtext, 'admin', $gc['admin'], $ufc_web);
         } elseif ($g->name() == 'formation_x') {
+            test_userfilters($gtext, 'admin', $gc['admin'], $ufc_kes);
+        } elseif ($g->name() == 'adherents-kes') {
             test_userfilters($gtext, 'admin', $gc['admin'], $ufc_kes);
         } elseif ($g->name() == 'shalom-ccx-amep') {
             test_userfilters($gtext, 'admin', $gc['admin'], $ufc_shalom_ccx_amep);
