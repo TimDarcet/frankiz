@@ -71,10 +71,42 @@
                     font-weight: bold;
                     font-size: 20px;
                 }
+                ul {
+                    display: inline;
+                    list-style: none;
+                }
+                li {
+                    position: relative;
+                    left: 30px;
+                }
+                .traffic_light_switcher {
+                    display: inline-block;
+                    width: 24px;
+                    height: 24px;
+                    vertical-align: middle;
+                    background-image: url("../default/images/lights.png");
+                    background-repeat: no-repeat;
+                    &.room_master {
+                        &.hover {
+                            background-position: center -24px !important;
+                        }
+                    }
+                }
+                .open {
+                    display: inline-block;
+                    .traffic_light_switcher {
+                        background-position: center 0px;
+                    }
+                }
+                .close {
+                    display: inline-block;
+                    .traffic_light_switcher {
+                        background-position: center -48px;
+                    }
+                }
             }
         }
     }
-    
     .tools {
         width: auto;
         position: relative;
@@ -267,5 +299,20 @@
     .msg {
         font-size: 20px;
         text-align: center;
+    }
+
+    .icon-external{
+        background: url("../default/images/icons/icon-external.png") 0 50% no-repeat transparent;
+        padding-left: 20px;
+    }
+
+    .icon-wikix{
+        background: url("../default/images/icons/icon-wikix.png") 0 50% no-repeat transparent;
+        padding-left: 20px;
+    }
+
+    .icon-mail{
+        background: url("../default/images/icons/icon-mail.gif") 0 50% no-repeat transparent;
+        padding-left: 20px;
     }
 }
