@@ -314,7 +314,7 @@ class Group extends Meta
             $iter = XDB::iterRow('SELECT  cu.uid, c.rights
                                      FROM  castes AS c
                                INNER JOIN  castes_users AS cu ON (cu.cid = c.cid
-                                           OR (cu.visibility IN {?} OR cu.uid = {?}))
+                                           AND (cu.visibility IN {?} OR cu.uid = {?}))
                                INNER JOIN  groups AS g ON g.gid = c.`group`
                                     WHERE  g.gid = {?} AND cu.uid IN {?}',
                                            S::user()->visibleGids(), S::user()->id(),
