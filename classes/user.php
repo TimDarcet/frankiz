@@ -1158,11 +1158,11 @@ class User extends Meta
             try {
                 $u = new User($uid);
                 $u->select(UserSelect::login());
-                S::kill('newuid');
             } catch (Exception $e) {
                 S::kill('newuid');
                 throw $e;
             }
+            S::kill('newuid');
             S::set('anonymous_user', $u);
             return $u;
         }

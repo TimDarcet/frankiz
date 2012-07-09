@@ -122,8 +122,17 @@ class FrankizSession extends PlSession
             if(!S::logged()) {
                 S::set('auth', AUTH_COOKIE);
             }
-            $user = new User(S::i('cookie_uid'));
-            return $user->select(UserSelect::login());
+            $uid = S::i('cookie_uid');
+            S::set('newuid', $uid);
+            try {
+                $u = new User($uid);
+                $u->select(UserSelect::login());
+            } catch (Exception $e) {
+                S::kill('newuid');
+                throw $e;
+            }
+            S::kill('newuid');
+            return $u;
         }
 
         /*If we are here, we want AUTH_MDP
@@ -167,9 +176,9 @@ class FrankizSession extends PlSession
                 $user->select(UserSelect::login());
                 S::kill('newuid');
             } catch (Exception $e) {
-                S::kill('newuid');
                 throw $e;
             }
+            S::kill('newuid');
             return $user;
         }
     }
