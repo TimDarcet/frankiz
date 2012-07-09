@@ -20,7 +20,6 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{js src="visibilityflag.js"}
 {assign var='castes' value=$result->castes()}
 {assign var='groups' value=$castes->groups()}
 

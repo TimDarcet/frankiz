@@ -20,7 +20,6 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{js src="visibilityflag.js"}
 {if $minimodule.binets|@count > 0}
     <h4>Binets</h4>
 
