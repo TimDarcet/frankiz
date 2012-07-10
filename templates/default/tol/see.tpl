@@ -21,6 +21,9 @@
 {**************************************************************************}
 
 <ul class="see">
+    {if $user->isMe($result)}
+        {include file="wiki.tpl"|rel name='profile/groups/visiflags'}
+    {/if}
     {include file="tol/result.tpl"|rel result=$result}
 </ul>
 
