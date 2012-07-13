@@ -24,7 +24,7 @@
  * This script creates and updates the groups corresponding to the promos
  */
 
-require 'connect.db.inc.php';
+require '../connect.db.inc.php';
 
 $gf = new GroupFilter(new GFC_Name('everybody'));
 $g = $gf->get(true);
@@ -38,7 +38,7 @@ $g = $gf->get(true);
 $g->select(GroupSelect::castes());
 $c = $g->caste(Rights::member());
 $c->select(CasteSelect::base())->compute();
-echo 'Groupe visibilité extérieure  mis à jour' . "\n";
+echo 'Groupe visibilité extérieure mis à jour' . "\n";
 
 $gf = new GroupFilter(new GFC_Name('licenses'));
 $g = $gf->get(true);

@@ -142,22 +142,32 @@ class UFC_Promo extends UserFilterCondition
 {
     private $comparison;
     private $promo;
+    private $formation_id;
 
-    public function __construct($promo, $comparison = '=')
+    public function __construct($promo, $comparison = '=', $formation_id = 0)
     {
         $this->promo = $promo;
         $this->comparison = $comparison;
+        $this->formation_id = $formation_id;
     }
 
     public function buildCondition(PlFilter $uf)
     {
         $sub = $uf->addStudiesFilter();
-        return XDB::format("$sub.promo $this->comparison {?}", $this->promo);
+        if ($this->formation_id > 0) {
+            return XDB::format("$sub.promo $this->comparison {?} AND $sub.formation_id = {?}",
+                $this->promo, $this->formation_id);
+        } else {
+            return XDB::format("$sub.promo $this->comparison {?}", $this->promo);
+        }
     }
 
     public function export()
     {
-        return array('type' => 'promo', 'comparison' => $this->comparison, 'promo' => $this->promo);
+        $export = array('type' => 'promo', 'comparison' => $this->comparison, 'promo' => $this->promo);
+        if ($this->formation_id > 0)
+            $export['formation_id'] = $this->formation_id;
+        return $export;
     }
 }
 
@@ -847,10 +857,9 @@ class UserFilter extends FrankizFilter
                 break;
 
             case 'promo':
-                if (empty($export['comparison']))
-                    $obj = new UFC_Promo($export['promo']);
-                else
-                    $obj = new UFC_Promo($export['promo'], $export['comparison']);
+                $obj = new UFC_Promo($export['promo'],
+                    empty($export['comparison']) ? '=' : $export['comparison'],
+                    empty($export['formation_id']) ? 0 : $export['formation_id']);
                 break;
 
             case 'activityInstance':

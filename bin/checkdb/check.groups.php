@@ -74,7 +74,7 @@ unset($on_platal);
 unset($formation_x);
 
 // Get formations
-$iter = XDB::iterRow("SELECT  formation_id, abbrev FROM  formations");
+$iter = XDB::iterRow("SELECT formation_id, abbrev FROM formations");
 $formations = array();
 while (list($fid, $fabbr) = $iter->next()) {
     $formations[$fabbr] = intval($fid);
@@ -192,15 +192,17 @@ foreach ($groups as $g) {
                 if ($gc['member']->userfilter()) {
                     $data = $gc['member']->userfilter()->export();
                     for ($i = 0; isset($data['condition']['children'][$i]['promo']); $i++) {
-                        array_push($promos, new UFC_Promo($data['condition']['children'][$i]['promo']));
+                        $p = $data['condition']['children'][$i]['promo'];
+                        array_push($promos, new UFC_Promo($p, '=', (string)$formations['x']));
                     }
                 }
                 test_userfilters($gtext, 'member', $gc['member'], new PFC_Or($promos));
-            } elseif (!preg_match('/^promo_([0-9]{4})$/', $g->name(), $matches)) {
+            } elseif (!preg_match('/^promo_([a-z]*)([0-9]{4})$/', $g->name(), $matches)) {
                 echo "Warning: promo group " . $gtext . " has an invalid name\n";
             } else {
+                $fid = ($matches[1] ? (string)$formations[$matches[1]] : 0);
                 test_userfilters($gtext, 'member', $gc['member'],
-                    new UFC_Promo($matches[1]));
+                    new UFC_Promo($matches[2], '=', $fid));
             }
         } elseif ($g->ns() == 'study' || $g->name() == 'formation_fkz') {
             $matches = array();
