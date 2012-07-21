@@ -45,15 +45,6 @@
 
 <div class="module">
     <div class="head">
-        Mon mot de passe qRezix
-    </div>
-    <div class="body">
-        {include file="wiki.tpl"|rel name='profile/network/qrezix'}
-    </div>
-</div>
-
-<div class="module">
-    <div class="head">
         Ma DNS
     </div>
     <div class="body">
