@@ -124,12 +124,7 @@ class WikiModule extends PlModule
         $mixed = implode('/', $mixed);
 
         if (empty($mixed)) {
-            $res = XDB::query('SELECT wid FROM wiki');
-            $wikis = new Collection('Wiki');
-            $wikis->add($res->fetchColumn());
-
-            $wikis->select(Wiki::SELECT_BASE | Wiki::SELECT_COUNT);
-
+            $wikis = Wiki::selectAll(Wiki::SELECT_BASE | Wiki::SELECT_COUNT);
             $page->assign('wikis', $wikis);
 
             $page->addCssLink('wiki.css');
@@ -141,17 +136,17 @@ class WikiModule extends PlModule
             } else {
                 $wiki = Wiki::from($mixed, true); // Create the Wiki if it doesn't exist
             }
-    
+
             if (Env::has('newcontent')) {
                 $wiki->update(Env::s('newcontent'));
             }
-    
+
             $wiki->select(Wiki::SELECT_BASE | Wiki::SELECT_COUNT);
             $wiki->select(array(Wiki::SELECT_VERSION => array('versions' => array('last'),
                                                               'options' => UserSelect::base())));
-    
+
             $page->assign('wiki', $wiki);
-    
+
             $page->addCssLink('wiki.css');
             $page->assign('title', 'Admin Wiki: ' . $wiki->name());
             $page->changeTpl('wiki/admin.tpl');

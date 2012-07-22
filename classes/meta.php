@@ -152,6 +152,19 @@ abstract class Meta
         return $this;
     }
 
+    /**
+     * Select all elements in the database
+     * @param $fields select() parameter
+     */
+    public static function selectAll($fields = null)
+    {
+        $schema = Schema::get(get_called_class());
+        $res = XDB::query('SELECT ' . $schema->id() . ' FROM ' . $schema->table());
+        $col = new Collection($schema->className());
+        $col->add($res->fetchColumn());
+        return $col->select($fields);
+    }
+
     public static function toIds(array $objects)
     {
         $ids = array();

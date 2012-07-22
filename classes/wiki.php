@@ -19,8 +19,36 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+class WikiSchema extends Schema
+{
+    public function className() {
+        return 'Wiki';
+    }
+
+    public function table() {
+        return 'wiki';
+    }
+
+    public function id() {
+        return 'wid';
+    }
+
+    public function tableAs() {
+        return 'wiki';
+    }
+
+    public function scalars() {
+        return array('name', 'comments');
+    }
+
+    public function objects() {
+        return array('versions' => 'Array');
+    }
+}
+
+
 class Wiki extends Meta
-{    
+{
     const SELECT_BASE    = 0x01;
     const SELECT_COUNT   = 0x02;
     const SELECT_VERSION = 0x04;
@@ -144,10 +172,10 @@ class Wiki extends Meta
     * Delete the Wiki and all its versions
     */
     public function delete()
-    {  
-	    parent::delete();
-	    XDB::execute('DELETE FROM wiki_version WHERE wid = {?}', $this->id());
-	    XDB::execute('DELETE FROM wiki WHERE wid = {?}', $this->id());
+    {
+        parent::delete();
+        XDB::execute('DELETE FROM wiki_version WHERE wid = {?}', $this->id());
+        XDB::execute('DELETE FROM wiki WHERE wid = {?}', $this->id());
     }
 
     /**
