@@ -46,6 +46,9 @@
                 <ul class="fkzadmin">
                     <li class="{if !$licensesDisplay}im{/if}pair"><a href="admin/logs/sessions">Log des sessions</a></li>
                 </ul>
+                <ul class="fkzadmin">
+                    <li class="{if $licensesDisplay}im{/if}pair"><a href="remote/admin">Authentification externe</a></li>
+                </ul>
             {/if}
         </div>
     </div>
