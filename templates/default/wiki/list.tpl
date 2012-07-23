@@ -20,7 +20,11 @@
 {*                                                                        *}
 {**************************************************************************}
 
-
+<div class="module">
+    <div class="head">
+        Administration Wiki
+    </div>
+    <div class="body">
 <p>
     <input type="text" id="newwiki" value="" />
     <input type="button" value="Créer un wiki" onclick="{literal}if ($('#newwiki').val()) document.location='wiki/admin/' + $('#newwiki').val();{/literal}" />
@@ -44,6 +48,7 @@
         {/foreach}
     </tbody>
 </table>
-
+    </div>
+</div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

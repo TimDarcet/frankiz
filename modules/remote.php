@@ -82,13 +82,15 @@ class RemoteModule extends PlModule
             foreach ($remote->group() as $g) {
                 $r[$g->name()] = array_map(function($r) { return (string) $r; }, S::user()->rights($g));
             }
-            $response['rights'] = $r;
+            if (!empty($r))
+                $response['rights'] = $r;
         }
 
         if ($remote->hasRight('sport') && in_array('sport', $request)) {
             $groups = S::user()->castes()->groups();
             $group = $groups->filter('ns', Group::NS_SPORT)->first();
-            $response['sport'] = $group->label();
+            if ($group)
+                $response['sport'] = $group->label();
         }
 
         if ($remote->hasRight('promo') && in_array('promo', $request)) {
@@ -118,7 +120,8 @@ class RemoteModule extends PlModule
                 foreach ($gs as $g) {
                     $r[$g->name()] = $g->label();
                 }
-                $response['binets_admin'] = $r;
+                if (!empty($r))
+                    $response['binets_admin'] = $r;
             }
         }
 

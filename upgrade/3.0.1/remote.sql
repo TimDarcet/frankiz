@@ -10,5 +10,5 @@ DROP TABLE IF EXISTS `remote_groups`;
 CREATE TABLE IF NOT EXISTS `remote_groups` (
   `remid` int(11) NOT NULL,
   `gid` int(11) NOT NULL,
-  KEY `remote_id` (`remote_id`)
+  KEY `remid` (`remid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

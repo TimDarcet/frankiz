@@ -21,7 +21,7 @@
 {**************************************************************************}
 
 <form enctype="multipart/form-data" method="post" action="remote/admin/{$remote->id()}" class="profile">
-    <div class="module profile">
+    <div class="module">
         <div class="head">
             Authentification externe
         </div>
@@ -46,6 +46,7 @@
                         {assign var='remrights' value=$remote->rights()}
                         <input type='text' name='rights' value="{$remrights->flags()}" /><br />
                         Valeurs autorisées : {$remoterights_available}
+                        {include file="wiki.tpl"|rel name='remote/rights'}
                     </td>
                 </tr>
                 <tr>

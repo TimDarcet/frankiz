@@ -20,6 +20,16 @@
 {*                                                                        *}
 {**************************************************************************}
 
+<div class="module">
+    <div class="head">
+        Administration de {$wiki->name()}
+    </div>
+    <div class="body">
+
+<p>
+    <a href="wiki/admin">Retour à la liste</a>
+</p>
+
 <form enctype="multipart/form-data" method="post" action="wiki/admin/{$wiki->id()}">
     <input type="hidden" name="wid" value="{$wiki->id()}" />
 
@@ -42,7 +52,7 @@
         <tbody>
             <tr>
                 <td id="oldwriter">{$wiki->writer()|user}</td>
-                <td>{$user}</td>
+                <td>{$user|user}</td>
             </tr>
             <tr>
                 <td id="oldwrote">{$wiki->wrote()|smarty:nodefaults}</td>
@@ -65,6 +75,8 @@
     
     <input type="submit" value="Ajouter la nouvelle version" />
 </form>
+    </div>
+</div>
 
 <script>wiki_preview.start($("#newcontent"), $("#newcontentdisplay"));</script>
 

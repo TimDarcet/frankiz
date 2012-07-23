@@ -20,7 +20,7 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<div class="module profile">
+<div class="module">
     <div class="head">
         Authentification externe
     </div>
