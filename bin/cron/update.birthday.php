@@ -20,7 +20,7 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-require '../connect.db.inc.php';
+require_once(dirname(__FILE__) . '/../connect.db.inc.php');
 
 XDB::execute('UPDATE  account
                  SET  next_birthday = birthdate

@@ -20,7 +20,7 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-require '../connect.db.inc.php';
+require_once(dirname(__FILE__) . '/../connect.db.inc.php');
 
 $execute_real = (!empty($_SERVER['argv'][1]) && $_SERVER['argv'][1] == 'real');
 

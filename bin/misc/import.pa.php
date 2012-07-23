@@ -20,7 +20,7 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-require '../connect.db.inc.php';
+require_once(dirname(__FILE__) . '/../connect.db.inc.php');
 
 $iter = XDB::iterRow('SELECT uid, pa FROM temp');
 while (list($uid, $paname) = $iter->next()) {

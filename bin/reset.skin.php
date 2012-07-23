@@ -25,7 +25,7 @@
  * the css & tpl files after a fetch
  */
 
-require 'connect.db.inc.php';
+require_once(dirname(__FILE__) . '/connect.db.inc.php');
 
 echo "Less to Css \n";
 

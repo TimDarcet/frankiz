@@ -25,7 +25,7 @@
  * SCORE = | EVERYBODY |
  */
 
-require '../connect.db.inc.php';
+require_once(dirname(__FILE__) . '/../connect.db.inc.php');
 
 XDB::execute('UPDATE  groups AS g
                  SET  g.score = (SELECT  COUNT(cu.uid)

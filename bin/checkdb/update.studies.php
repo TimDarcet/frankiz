@@ -24,7 +24,7 @@
  * This script creates and updates the studies
  */
 
-require '../connect.db.inc.php';
+require_once(dirname(__FILE__) . '/../connect.db.inc.php');
 
 /**
  * Update a group

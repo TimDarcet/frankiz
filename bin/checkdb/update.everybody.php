@@ -24,7 +24,7 @@
  * This script creates and updates the groups corresponding to the promos
  */
 
-require '../connect.db.inc.php';
+require_once(dirname(__FILE__) . '/../connect.db.inc.php');
 
 $gf = new GroupFilter(new GFC_Name('everybody'));
 $g = $gf->get(true);

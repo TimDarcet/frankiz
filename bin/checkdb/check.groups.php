@@ -28,7 +28,7 @@
  * Use $c->userfilter(false) to remove a Userfilter
  */
 
-require dirname(__FILE__) . '../../connect.db.inc.php';
+require_once(dirname(__FILE__) . '/../connect.db.inc.php');
 
 $gf = new GroupFilter();
 $groups = $gf->get()->select(GroupSelect::base());

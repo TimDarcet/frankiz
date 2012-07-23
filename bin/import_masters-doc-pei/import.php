@@ -44,7 +44,7 @@ $room_id = 13;
 $sport = null;
 
 
-require dirname(__FILE__) . '/../connect.db.inc.php';
+require_once(dirname(__FILE__) . '/../connect.db.inc.php');
 $globals->debug = 0;
 
 function conv($str) {
