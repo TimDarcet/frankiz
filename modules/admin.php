@@ -28,8 +28,6 @@ class AdminModule extends PlModule
             'admin'               => $this->make_hook('admin'        , AUTH_COOKIE),
             'admin/su'            => $this->make_hook('su'           , AUTH_MDP, 'admin'),
             'admin/images'        => $this->make_hook('images'       , AUTH_MDP, 'admin'),
-            'admin/group'         => $this->make_hook('group'        , AUTH_MDP, 'admin'),
-            'admin/bubble'        => $this->make_hook('bubble'       , AUTH_MDP, 'admin'),
             'admin/logs/sessions' => $this->make_hook('logs_sessions', AUTH_COOKIE, 'admin'),
             'admin/logs/events'   => $this->make_hook('logs_events'  , AUTH_COOKIE, 'admin'),
             'admin/validate'      => $this->make_hook('validate'     , AUTH_COOKIE),
@@ -50,7 +48,7 @@ class AdminModule extends PlModule
             $validates = $validates->split('group');
             $page->assign('validates', $validates);
         }
-        
+
         $page->assign('licensesDisplay', License::hasRights(S::user()));
 
         $page->assign('title', "Administration");
@@ -126,26 +124,6 @@ class AdminModule extends PlModule
         $page->changeTpl('admin/logs_events.tpl');
     }
 
-    function handler_bubble($page, $cid)
-    {
-        $c = new Caste($cid);
-        $c->select();
-
-        $tobeexplored = new Collection('Caste');
-        $tobeexplored->add($c);
-
-        $explored = new Collection('Caste');
-
-        while ($c = $tobeexplored->pop()) {
-            $explored->add($c);
-            $tobeexplored->merge($c->parents());
-        }
-
-        $page->assign('title', "Bubbles");
-        $page->assign('castes', $explored);
-        $page->changeTpl('admin/bubble.tpl');
-    }
-    
     function handler_images($page)
     {
         $temp = Group::from('temp');
