@@ -30,7 +30,6 @@ class FrankizModule extends PlModule
             'home/howtocome'        => $this->make_hook('howtocome',      AUTH_PUBLIC),
             'masters'               => $this->make_hook('masters',        AUTH_PUBLIC),
             'universe'              => $this->make_hook('universe',       AUTH_PUBLIC),
-            'remote'                => $this->make_hook('remote',         AUTH_COOKIE),
             'exit'                  => $this->make_hook('exit',           AUTH_PUBLIC)
         );
     }
