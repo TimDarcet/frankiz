@@ -92,12 +92,14 @@
     <div class="studies">
         <ul>
         {foreach from=$result->studies() item='study'}
+            {if $study->promo() != 0}
             <li>
                 {assign var='formation' value=$study->formation()}
                 <img title="{$formation->label()}" src="{$formation->image()|image:'micro'|smarty:nodefaults}" />
                 <span class="promo {if $study->promo() % 2 == 0}rouje{else}jone{/if}"
                       title="{$study->year_in()} ->{$study->year_out()}">{$study->promo()}</span>
             </li>
+            {/if}
         {/foreach}
         </ul>
     </div>

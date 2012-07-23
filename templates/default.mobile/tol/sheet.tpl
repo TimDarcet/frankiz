@@ -45,7 +45,11 @@
 
         {foreach from=$groups|filter:'ns':'sport'|order:'score' item='group'}{$group->label()} {/foreach}
 
-        {foreach from=$result->studies() item='study'}{$study->promo()}{/foreach}
+        {foreach from=$result->studies() item='study'}
+            {if $study->promo() != 0}
+                {$study->promo()}
+            {/if}
+        {/foreach}
 
         {if $result->cellphone()}
             <br />
