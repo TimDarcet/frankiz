@@ -24,14 +24,14 @@ class RemoteModule extends PlModule
     function handlers()
     {
         return array(
-            'remote'       => $this->make_hook('remote', AUTH_COOKIE),
+            'remote'       => $this->make_hook('remote', AUTH_PUBLIC),
             'remote/admin' => $this->make_hook('admin',  AUTH_MDP, 'admin')
         );
     }
 
     function handler_remote($page)
     {
-        global $globals;
+        global $globals, $platal;
 
         if (!(Env::has('timestamp') && Env::has('site') && Env::has('hash') && Env::has('request'))) {
             $page->trigError("Requête non valide");
@@ -63,38 +63,46 @@ class RemoteModule extends PlModule
         }
         $request = json_decode($request, true);
 
+        // Force login
+        $user = Platal::session()->doAuthWithoutStart(AUTH_COOKIE);
+        if (empty($user)) {
+            $page->assign('remote_site', $remote->label());
+            $platal->force_login($page);
+            return PL_FORBIDDEN;
+        }
+
         // Build response
-        $response = array('uid' => S::user()->id());
+        $response = array('uid' => $user->id());
 
         if ($remote->hasRight('names') && in_array('names', $request)) {
-            $response['hruid']     = S::user()->login();
-            $response['firstname'] = S::user()->firstname();
-            $response['lastname']  = S::user()->lastname();
-            $response['nickname']  = S::user()->nickname();
+            $response['hruid']     = $user->login();
+            $response['firstname'] = $user->firstname();
+            $response['lastname']  = $user->lastname();
+            $response['nickname']  = $user->nickname();
         }
 
         if ($remote->hasRight('email') && in_array('email', $request)) {
-            $response['email'] = S::user()->email();
+            $response['email'] = $user->email();
         }
 
         if ($remote->hasRight('rights') && in_array('rights', $request)) {
             $r = array();
             foreach ($remote->group() as $g) {
-                $r[$g->name()] = array_map(function($r) { return (string) $r; }, S::user()->rights($g));
+                $r[$g->name()] = array_map(function($r) { return (string) $r; }, $user->rights($g));
             }
             if (!empty($r))
                 $response['rights'] = $r;
         }
 
         if ($remote->hasRight('sport') && in_array('sport', $request)) {
-            $groups = S::user()->castes()->groups();
+            $groups = $user->castes()->groups();
             $group = $groups->filter('ns', Group::NS_SPORT)->first();
             if ($group)
                 $response['sport'] = $group->label();
         }
 
         if ($remote->hasRight('promo') && in_array('promo', $request)) {
-            $groups = S::user()->castes()->groups()->filter('ns', Group::NS_PROMO);
+            $groups = $user->castes()->groups()->filter('ns', Group::NS_PROMO);
             $groups = $groups->remove(Group::from('on_platal'));
             $group = $groups->first();
             if ($group)
@@ -102,15 +110,15 @@ class RemoteModule extends PlModule
         }
 
         if ($remote->hasRight('photo') && in_array('photo', $request)) {
-            $img = S::user()->photo();
+            $img = $user->photo();
             if ($img === false)
-                $img = S::user()->original();
+                $img = $user->original();
             if ($img !== false)
                 $response['photo'] = $globals->baseurl . '/' . $img->src('full');
         }
 
         if ($remote->hasRight('binets_admin') && in_array('binets_admin', $request)) {
-            $gf = new GroupFilter(new PFC_And(new GFC_User(S::user(), Rights::admin()), new GFC_Namespace('binet')));
+            $gf = new GroupFilter(new PFC_And(new GFC_User($user, Rights::admin()), new GFC_Namespace('binet')));
             $gs = $gf->get();
 
             if ($gs->count() > 0) {

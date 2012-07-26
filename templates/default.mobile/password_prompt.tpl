@@ -25,7 +25,7 @@
     {if $platal->pl_self() != 'login'}
         Authentification nécessaire.
     {/if}
-    
+
     <form enctype="multipart/form-data" method="post" nosolo action="{$globals->baseurl}/{$platal->pl_self()}">
         {xsrf_token_field}
         <div class="wide-field-wrap">
@@ -39,9 +39,11 @@
         <div class="wide-field-wrap">
             <input type="password" autocorrect="off" autocapitalize="off" placeholder="mot de passe" name="password" value="" class="wide-field"/>
         </div>
-        <input type="checkbox" {if $smarty.session.auth >= AUTH_STUDENT}checked="checked"{/if} name="remember" id="remember" />
-        Se souvenir de moi
-        <br>
+        {if !t($remote_site)}{* No cookie for remote auth *}
+            <input type="checkbox" {if $smarty.session.auth >= AUTH_STUDENT}checked="checked"{/if} name="remember" id="remember" />
+            Se souvenir de moi
+            <br>
+        {/if}
         <input type="submit" class="submit" value="Se connecter !">
     </form>
 </div>

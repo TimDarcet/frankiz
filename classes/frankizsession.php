@@ -183,6 +183,29 @@ class FrankizSession extends PlSession
         }
     }
 
+    /** Give an User object without opening any session if there are none
+     * @return User $user if a user is logged with the specified level, null otherwise.
+     */
+    public function doAuthWithoutStart($level)
+    {
+        // If a session is already opened, return the logged user
+        if ($this->checkAuth($level)) {
+            return S::user();
+        }
+        // Try to auth
+        $user = $this->doAuth($level);
+        if (is_null($user)) {
+            return null;
+        }
+        // Fail if current auth level is not $level
+        if (!$this->checkAuth($level)) {
+            $user = null;
+        }
+        // Auth succeded, but now destroy the sesion
+        $this->destroy();
+        return $user;
+    }
+
     /** Check whether a password is valid
      * login_type can be uid, alias (for an email alias), hruid
      */

@@ -27,13 +27,13 @@
      </div>
      <div class="body">
 
-    {if ($platal->pl_self() != 'login') && (!$remote_site)}
-    <p>
-        La page que tu as demandée (<strong>{$globals->baseurl}/{$platal->pl_self()}</strong>) nécessite une authentification.
-    </p>
-    {elseif $remote_site}
+    {if t($remote_site)}
     <p>
         Le site partenaire <strong>{$remote_site}</strong> nécessite une authentification.
+    </p>
+    {elseif $platal->pl_self() != 'login'}
+    <p>
+        La page que tu as demandée (<strong>{$globals->baseurl}/{$platal->pl_self()}</strong>) nécessite une authentification.
     </p>
     {/if}
 
@@ -56,13 +56,15 @@
                         <input type="password" name="password" value="" />
                     </td>
                 </tr>
+                {if !t($remote_site)}{* No cookie for remote auth *}
                 <tr>
                     <td colspan="2" class="remember">
                         <input type="checkbox" {if $smarty.session.auth >= AUTH_STUDENT}checked="checked"{/if} name="remember" id="remember" />
-                Se souvenir de moi (Cookie)
+                        Se souvenir de moi (Cookie)
                     </td>
                 </tr>
-               <tr>
+                {/if}
+                <tr>
                     <td colspan="2" class="send">
                         <input type="submit" name="start_connexion" value="Connexion" />
                     </td>
