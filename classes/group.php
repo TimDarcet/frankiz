@@ -197,6 +197,7 @@ class Group extends Meta
     const NS_INSTRUMENT  = 'instrument';
     const NS_COURSE      = 'course';
     const NS_NATIONALITY = 'nationality';
+    const NS_BDE         = 'bde';
 
     protected $image = null;
     protected $ns    = null;

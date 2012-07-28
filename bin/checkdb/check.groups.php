@@ -30,48 +30,30 @@
 
 require_once(dirname(__FILE__) . '/../connect.db.inc.php');
 
-$gf = new GroupFilter();
-$groups = $gf->get()->select(GroupSelect::base());
-$groups->select(GroupSelect::castes());
-$cf = new CasteFilter();
-$castes = $cf->get()->select(CasteSelect::base());
-echo "Checking " . $groups->count() . " groups and " . $castes->count() . " castes.\n";
 //$available_rights = Rights::rights();
 $available_rights = array('admin', 'logic', 'member', 'friend', 'restricted', 'everybody');
-unset($gf);
-unset($cf);
 
 // Get webmaster caste
-$webs = Group::from('webmasters')->select(GroupSelect::castes());
-$ufc_web = new UFC_Caste(intval($webs->caste(Rights::member())->id()));
-unset($webs);
+$ufc_web = new UFC_Group(Group::from('webmasters'), Rights::member());
 
 // Get kes admins
-$kes = Group::from('kes')->select(GroupSelect::castes());
-$ufc_kes = new UFC_Caste(intval($kes->caste(Rights::admin())->id()));
-unset($kes);
+$ufc_kes = new UFC_Group(Group::from('kes'), Rights::admin());
 
 // Shalom-CCX-AMEP
 $shccxamep_groups = new Collection();
 $shccxamep_groups->add(Group::from('shalom'));
 $shccxamep_groups->add(Group::from('ccx'));
 $shccxamep_groups->add(Group::from('amep'));
-$shccxamep_cf = new CasteFilter(new PFC_And(new CFC_Group($shccxamep_groups, Rights::admin())));
-$shccxamep_castes = $shccxamep_cf->get();
-$ufc_shalom_ccx_amep = new UFC_Caste(array_map('intval', $shccxamep_castes->ids()));
+$ufc_shalom_ccx_amep = new UFC_Group($shccxamep_groups, Rights::admin());
 unset($shccxamep_groups);
 unset($shccxamep_cf);
 unset($shccxamep_castes);
 
 // licenses members = on_platal and X
-$on_platal = Group::from('on_platal')->select(GroupSelect::castes());
-$formation_x = Group::from('formation_x')->select(GroupSelect::castes());
 $ufc_licenses = new PFC_And(array(
-    new UFC_Caste(intval($formation_x->caste(Rights::restricted())->id())),
-    new UFC_Caste(intval($on_platal->caste(Rights::restricted())->id()))
+    new UFC_Group(Group::from('formation_x'), Rights::restricted()),
+    new UFC_Group(Group::from('on_platal'), Rights::restricted())
 ));
-unset($on_platal);
-unset($formation_x);
 
 // Get formations
 $iter = XDB::iterRow("SELECT formation_id, abbrev FROM formations");
@@ -79,7 +61,7 @@ $formations = array();
 while (list($fid, $fabbr) = $iter->next()) {
     $formations[$fabbr] = intval($fid);
 }
-
+unset($iter);
 
 // Test wether the userfilter which is in the database is the expected one
 function test_userfilters($grouptext, $rights, $db_caste, $expected_condition = null)
@@ -108,13 +90,16 @@ function test_userfilters($grouptext, $rights, $db_caste, $expected_condition = 
     }
 }
 
-$used_castes = array();
-foreach ($groups as $g) {
+function check_group(Group $g)
+{
+    global $available_rights, $formations;
+    global $ufc_web, $ufc_kes, $ufc_shalom_ccx_amep, $ufc_licenses;
     $gtext = $g->id() . " (" . $g->name() . ")";
 
     // For each group, get castes in an array, indexed by rights
     $gc = array();
     $gcid = array();
+    $g->castes()->select(CasteSelect::base());
     foreach ($g->castes() as $c) {
         $cright = (string)($c->rights());
         if (!in_array($cright, $available_rights)) {
@@ -122,13 +107,12 @@ foreach ($groups as $g) {
             continue;
         }
         $gcid[$cright] = intval($c->id());
-        $gc[$cright] = $castes->get($c->id());
-        array_push($used_castes, $c->id());
+        $gc[$cright] = $c;
     }
 
     if (!count($gc)) {
         echo "Error: user group " . $gtext . " does not have any caste !\n";
-        continue;
+        return;
     }
 
     // Check userfilters
@@ -139,7 +123,7 @@ foreach ($groups as $g) {
         if (count($gc) != 2 || !isset($gc['admin']) || !isset($gc['restricted'])) {
             echo "Error: user group " . $gtext . " has invalid castes, "
                 . implode(', ', array_keys($gc)) . "\n";
-            continue;
+            return;
         }
         if ($gc['admin']->userfilter() != null) {
             echo "Warning: user group " . $gtext . " has an admin userfilter\n";
@@ -241,11 +225,43 @@ foreach ($groups as $g) {
             if (!preg_match('/^sport_[a-z]+$/', $g->name())) {
                 echo "Warning: sport group " . $gtext . " has an invalid name\n";
             }
+        } elseif ($g->ns() == 'bde') {
+            if ($g->name() != 'adherents-kes') {
+                echo "Warning: unknown BDE " . $gtext . "\n";
+            }
         } elseif (!in_array($g->ns(), array('study', 'promo', 'binet', 'free'))) {
             echo "Error: Unknown NS " . $g->ns() . " for group " . $gtext . "\n";
         }
     }
 }
+
+// Fetch groups
+$gf = new GroupFilter();
+$groups = $gf->get();
+$groups->select(GroupSelect::base());
+$groups->select(GroupSelect::castes());
+$groups = $groups->toArray();
+krsort($groups);
+unset($gf);
+
+// Remember used castes
+$used_castes = array();
+echo "Checking " . count($groups) . " groups\n";
+while (!empty($groups)) {
+    $g = array_pop($groups);
+    check_group($g);
+    foreach ($g->castes() as $c) {
+        array_push($used_castes, $c->id());
+    }
+    // Frees memory
+    unset($g);
+}
+
+// Fetch castes
+$cf = new CasteFilter();
+$castes = $cf->get();
+unset($cf);
+echo "There are " . $castes->count() . " castes.\n";
 
 // Unused castes
 $unused_castes = array_diff($castes->ids(), $used_castes);

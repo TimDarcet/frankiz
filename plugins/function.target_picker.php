@@ -20,29 +20,38 @@
  ***************************************************************************/
 
 function smarty_function_target_picker($params, &$smarty) {
+    // Get user groups
+    $everybody_groups = S::user()->castes(Rights::everybody())->groups();
+
+    // Get Frankiz special groups
     $fkz = new Collection('Group');
     $fkz->add(array('everybody', 'public'));
     $fkz->select(new GroupSelect(array('description')));
 
-    $gf = new GroupFilter(new PFC_And(new PFC_Not(new GFC_Namespace(Group::NS_USER)),
-                                      new GFC_User(S::user(), Rights::admin())),
-                          new GFO_Score());
-    $gs = $gf->get()->diff($fkz);
-    
+    // BDE, study and promo groups
+    $study_groups = $everybody_groups->filter('ns', Group::NS_BDE);
+    $study_groups->merge($everybody_groups->filter('ns', Group::NS_PROMO));
+    $study_groups->merge($everybody_groups->filter('ns', Group::NS_STUDY));
+
+    // Get all groups user is admin, without the user one
+    $gs = S::user()->castes(Rights::admin())->groups();
+    $gs->diff($fkz);
+    $gs->filter(function ($g) {return $g->ns() != Group::NS_USER;});
+
     if ($params['even_only_friend']) {
         $gfo = new GroupFilter(
             new PFC_And(
-                new GFC_Namespace(array(Group::NS_BINET, Group::NS_FREE, Group::NS_PROMO)),
+                new GFC_Namespace(array(Group::NS_BINET, Group::NS_FREE)),
                 new GFC_User(S::user(), Rights::everybody())),
             new GFO_Score());
         $gso = $gfo->get()->diff($gs)->diff($fkz);
-        
+
         $temp = new Collection();
         $temp->merge($gs)->merge($gso);
         $temp->select(GroupSelect::base());
 
         $smarty->assign('only_friend', $gso);
-        
+
         $temp = new Collection();
         $temp->merge($gs)->merge($fkz)->merge($gso);
         $temp->select(GroupSelect::base());
@@ -56,6 +65,7 @@ function smarty_function_target_picker($params, &$smarty) {
 
     $smarty->assign($params['user_groups'], $gs);
     $smarty->assign($params['fkz_groups'], $fkz);
+    $smarty->assign($params['study_groups'], $study_groups);
     $smarty->assign($params['own_group'], S::user()->group());
 }
 
