@@ -22,6 +22,8 @@
 abstract class Node
 {
     protected $id = null;
+    protected $root_id = null;
+    protected $content_id = null;
 
     protected $L = null;
     protected $R = null;
@@ -44,7 +46,7 @@ abstract class Node
     }
 
     public function __clone() {
-        $this->unlink();
+//        $this->unlink();
     }
 
     static public function table()
@@ -59,12 +61,13 @@ abstract class Node
 
     public static function root()
     {
-        $id = static::idName();
+/*        $id = static::idName();
         $ta = static::table();
         $res = XDB::query("SELECT  $id AS id, L, R, depth
                              FROM  $ta
                             WHERE  (R - L + 1) / 2 = (SELECT COUNT(*) FROM $ta)");
-        return new static($res->fetchOneAssoc());
+        return new static($res->fetchOneAssoc());*/
+        return $this->root_id;
     }
 
     public function fillFromArray(array $values)
@@ -78,7 +81,7 @@ abstract class Node
     {
         return $this->id;
     }
-
+/*
     protected function hasChildren()
     {
         return ($this->L != null) && ($this->L != null) &&($this->L + 1 != $this->R);
@@ -136,13 +139,13 @@ abstract class Node
         $this->children = array();
         $this->father = null;
     }
-
+ */
     /**
     * Try to find and build the family links with the nodes passed as a paramater
     *
     * @param $gs is an array of Nodes
     */
-    protected function _buildLinks(array $nodes)
+/*    protected function _buildLinks(array $nodes)
     {
         foreach ($nodes as $n) {
             if ($this->isFatherOf($n)) {
@@ -153,14 +156,14 @@ abstract class Node
                 $this->father = $n;
             }
         }
-    }
+    }*/
 
     /**
     * Try to find and build the family links within the nodes passed as a paramater
     *
     * @param $toBeConsummed is an array of Nodes
     */
-    static public function batchBuildLinks(array $toBeConsummed)
+    /*static public function batchBuildLinks(array $toBeConsummed)
     {
         while (($n = array_pop($toBeConsummed)) != null)
             $n->_buildLinks($toBeConsummed);
@@ -270,7 +273,7 @@ abstract class Node
 
         self::batchBuildLinks($children);
         return self::batchRoots($children);
-    }
+    }*/
 
     public static function toIds(array $nodes)
     {
