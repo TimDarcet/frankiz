@@ -133,17 +133,24 @@ class Remote extends Meta
         return $this->label;
     }
 
+    /**
+     * Synchronise $this->rights with the database
+     */
+    private function updateRights() {
+        // Check rights
+        $diff = array_diff($this->rights->export(), self::availableRights());
+        if (!empty($diff)) {
+            throw new Exception("Remote rights '" . implode("', '", $diff) . "' don't exist");
+        }
+        XDB::execute('UPDATE remote SET rights = {?} WHERE remid = {?}',
+            $this->rights->flags(), $this->id());
+    }
+
     public function rights(PlFlagSet $rights = null)
     {
         if ($rights != null) {
-            // Check rights
-            $diff = array_diff($rights->export(), self::availableRights());
-            if (!empty($diff)) {
-                throw new Exception("Remote rights '" . implode("', '", $diff) . "' don't exist");
-            }
-            XDB::execute('UPDATE remote SET rights = {?} WHERE remid = {?}',
-                $rights->flags(), $this->id());
             $this->rights = $rights;
+            $this->updateRights();
         }
         return $this->rights;
     }
@@ -158,11 +165,13 @@ class Remote extends Meta
         if (!in_array($right, self::availableRights()))
             throw new Exception("Remote rights $right doesn't exist");
         $this->rights->addFlag($right);
+        $this->updateRights();
     }
 
     public function removeRight($right)
     {
         $this->rights->removeFlag($right);
+        $this->updateRights();
     }
 
     public function groups(Collection $groups = null) {
