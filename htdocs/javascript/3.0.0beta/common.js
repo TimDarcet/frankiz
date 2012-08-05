@@ -193,6 +193,7 @@ function in_array(needle, haystack) {
             return true;
         }
     }
+    return false;
 }
 
 var wiki_preview = {

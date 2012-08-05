@@ -20,6 +20,10 @@
 {*                                                                        *}
 {**************************************************************************}
 
+{if !t($not_only_admin)}
+    {assign var=not_only_admin value=false}
+ {/if}
+
 <div class="origin_picker" id="origin_picker_{$id}">
     {if $not_only_admin}
         {include file="wiki.tpl"|rel name='origin_picker'}

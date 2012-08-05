@@ -20,6 +20,10 @@
 {*                                                                        *}
 {**************************************************************************}
 
+{if !t($check)}
+    {assign var=check value=-1}
+ {/if}
+
 <div class="groups_picker" id="groups_picker_{$id}">
     <div class="empty">
         Sélectionner

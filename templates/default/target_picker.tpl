@@ -20,6 +20,10 @@
 {*                                                                        *}
 {**************************************************************************}
 
+{if !t($even_only_friend)}
+    {assign var=even_only_friend value=false}
+ {/if}
+
 <div class="target_picker" id="origin_picker_{$id}">
     <div>
         {target_picker user_groups='user_groups' fkz_groups='fkz_groups' own_group='own_group' study_groups='study_groups' even_only_friend=$even_only_friend}

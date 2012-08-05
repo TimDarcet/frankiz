@@ -343,6 +343,7 @@ class ProposalModule extends PlModule
             }
             else {
                 if (Env::t('study_mail_proposal') == '') {
+                    // Disable this ?
                     $target_group = new GroupFilter(new GFC_Namespace('study'));
                 }
                 else {

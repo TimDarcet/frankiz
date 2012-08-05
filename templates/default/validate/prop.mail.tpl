@@ -30,7 +30,7 @@
 {else}
 
 <form enctype="multipart/form-data" method="post" action="proposal/mail/" id="form_mail_promo">
-    {if $msg}
+    {if t($msg)}
         <div class="msg_proposal"> 
             {$msg}
         </div>
@@ -92,7 +92,7 @@
                         Mail :
                     </td>
                     <td>
-                         {include file="wiki_textarea.tpl"|rel id="mail_body" already=$smarty.request.content placeholder="Corps du mail" }
+                         {include file="wiki_textarea.tpl"|rel id="mail_body" already=$body placeholder="Corps du mail" }
                     </td>
                 </tr>
 

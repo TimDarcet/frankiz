@@ -61,10 +61,10 @@ function create_promo_image(Group $g, $promo) {
         return;
 
     if ($promo % 2 == 0) {
-        $upload = FrankizUpload::fromFile('../images/rouje.png');
+        $upload = FrankizUpload::fromFile(dirname(__FILE__) . '/../images/rouje.png');
         $label = 'Chic à la rouje';
     } else {
-        $upload = FrankizUpload::fromFile('../images/jone.png');
+        $upload = FrankizUpload::fromFile(dirname(__FILE__) . '/../images/jone.png');
         $label = 'Chic à la jone';
     }
 
