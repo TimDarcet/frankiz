@@ -21,16 +21,16 @@
 
 /*
  * The *Select classes intend to make the data fetching for a Meta object shorter in lines.
- * 
+ *
  * You define "handlers" who handle specific fields, and depdending of the requestes fields to be fetched,
  * the handlers() method shall call the correct handler.
- * 
+ *
  * In order to factorize code, a default handler_main() is already present (but can be overriden)
  * and tries to fetch datas for the "main" table linked to the object in the corresponding *Schema.
- * 
+ *
  * You will find 2 helper_* metods, aiming to factorise code when fetching 1-line = 1-object datas
  * for helper_main() and when fetching a Collection of related object for helper_collection().
- * 
+ *
  */
 abstract class Select
 {
@@ -164,6 +164,17 @@ abstract class Select
         }
     }
 
+    /**
+     * Select a collection from the database into an object field
+     *
+     * $link describes the link in the database:
+     * * $link['id'] is the column name of the fetched meta
+     * * $link['table'] is the name of a table that contains at least $link['id'] and schema->id()
+     * * $link['field'] is the object field which will have the collection
+     *
+     * @param Collection $metas The objects to select
+     * @param array $link An array with id, table and field keys.
+     */
     protected function helper_collection(Collection $metas, array $link) {
         $l_className = $this->schema->collectionType($link['field']);
 
@@ -191,6 +202,36 @@ abstract class Select
 
         if (!empty($this->subs[$link['field']])) {
             $linkeds->select($this->subs[$link['field']]);
+        }
+    }
+
+    /**
+     * Select an FlagSet from the database into a field
+     *
+     * @param Collection $metas The objects to select
+     * @param string $field An FlagSet field
+     */
+    protected function helper_flagset(Collection $metas, $field) {
+        $_metas = array();
+        foreach($metas as $meta) {
+            $_metas[$meta->id()] = new PlFlagSet();
+        }
+
+        // Query database according to the schema
+        $id = $this->schema->id();
+        list($table, $column) = $this->schema->flagsetType($field);
+        $iter = XDB::iterRow("SELECT  $id, $column
+                                FROM  $table
+                               WHERE  $id IN {?}", $metas->ids());
+
+        // Put database result in a id => array(l_col) fashion
+        while (list($id, $value) = $iter->next()) {
+            $_metas[$id]->addFlag($value);
+        }
+
+        // Fill metas
+        foreach ($metas as $meta) {
+            $meta->fillFromArray(array($field => $_metas[$meta->id()]));
         }
     }
 }

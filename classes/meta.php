@@ -288,6 +288,59 @@ abstract class Meta
     {
         throw new Exception("batchSelect isn't implemented in " . get_called_class());
     }
+
+    /**
+     * Helper to add a value into a FlagSet which is in the database
+     *
+     * @param string $field Object field
+     * @param mixed $value the value to add
+     * @return true if something has been modified, false otherwise
+     */
+    protected function helper_flagsetAdd($field, $value) {
+        $className = get_class($this);
+        $schema = Schema::get($className);
+        $id = $schema->id();
+        list($table, $column) = $schema->flagsetType($field);
+        XDB::execute("INSERT IGNORE  $table
+                                SET  $id = {?}, $column = {?}",
+                     $this->id(), $value);
+
+        if (!(XDB::affectedRows() > 0))
+            return false;
+
+        if (empty($this->$field))
+            $this->$field = new PlFlagSet();
+
+        $this->$field->addFlag($value);
+        return true;
+    }
+
+    /**
+     * Helper to remove a value from a FlagSet which is in the database
+     *
+     * @param string $field Object field
+     * @param mixed $value the value to remove
+     * @return true if something has been modified, false otherwise
+     */
+    protected function helper_flagsetRemove($field, $value) {
+        $className = get_class($this);
+        $schema = Schema::get($className);
+        $id = $schema->id();
+        list($table, $column) = $schema->flagsetType($field);
+        XDB::execute("DELETE FROM  $table
+                            WHERE  $id = {?} AND $column = {?}
+                            LIMIT  1",
+                     $this->id(), $value);
+
+        if (!(XDB::affectedRows() > 0))
+            return false;
+
+        if (empty($this->$field))
+            $this->$field = new PlFlagSet();
+
+        $this->$field->rmFlag($value);
+        return true;
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

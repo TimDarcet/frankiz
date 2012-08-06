@@ -34,6 +34,12 @@ function __autoload($cls)
             return;
         }
 
+        // handler the *Schema
+        if (substr($cls, -6) == 'schema') {
+            pl_autoload(substr($cls, 0, -6));
+            return;
+        }
+
         // Handle PlFilter
         if (substr($cls, 0, 8) == 'plfilter' || substr($cls, 0, 4) == 'pfc_' || substr($cls, 0, 4) == 'pfo_') {
             pl_autoload('plfilter');
