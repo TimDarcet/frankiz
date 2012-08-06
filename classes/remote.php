@@ -33,6 +33,10 @@ class RemoteSchema extends Schema
         return 'remid';
     }
 
+    public function fromKey() {
+        return 'site';
+    }
+
     public function tableAs() {
         return 'rem';
     }
@@ -220,24 +224,6 @@ class Remote extends Meta
         parent::delete();
         XDB::execute('DELETE FROM remote_groups WHERE remid = {?}', $this->id());
         XDB::execute('DELETE FROM remote WHERE remid = {?}', $this->id());
-    }
-
-    public static function batchFrom(array $mixed)
-    {
-        $collec = new Collection();
-        if (!empty($mixed)) {
-            $iter = XDB::iterator('SELECT  remid AS id, site
-                                     FROM  remote
-                                    WHERE  site IN {?}', $mixed);
-            while ($r = $iter->next())
-                $collec->add(new self($r));
-        }
-
-        if (count($mixed) != $collec->count()) {
-            throw new ItemNotFoundException('Asking for ' . implode(', ', $mixed) . ' but only found ' . implode(', ', $collec->ids()));
-        }
-
-        return $collec;
     }
 }
 

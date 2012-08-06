@@ -33,6 +33,10 @@ class GroupSchema extends Schema
         return 'gid';
     }
 
+    public function fromKey() {
+        return 'name';
+    }
+
     public function tableAs() {
         return 'g';
     }
@@ -370,24 +374,6 @@ class Group extends Meta
             $everybody = new UserFilter(new UFC_Caste(array($admins, $members, $logics, $friends)));
             $this->addCaste(Rights::everybody())->userfilter($everybody);
         }
-    }
-
-    public static function batchFrom(array $mixed)
-    {
-        $collec = new Collection();
-        if (!empty($mixed)) {
-            $iter = XDB::iterator('SELECT  gid AS id, name
-                                     FROM  groups
-                                    WHERE  name IN {?}', $mixed);
-            while ($g = $iter->next())
-                $collec->add(new self($g));
-        }
-
-        if (count($mixed) != $collec->count()) {
-            throw new ItemNotFoundException('Asking for ' . implode(', ', $mixed) . ' but only found ' . implode(', ', $collec->ids()));
-        }
-
-        return $collec;
     }
 }
 

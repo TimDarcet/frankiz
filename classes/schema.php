@@ -52,6 +52,14 @@ abstract class Schema {
     abstract public function id();
 
     /**
+     *
+     * @return string|null A key to be used with batchFrom to retrieve data
+     */
+    public function fromKey() {
+        return null;
+    }
+
+    /**
      * @return array List of scalar fields
      */
     public function scalars() {

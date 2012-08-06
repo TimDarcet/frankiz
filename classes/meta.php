@@ -275,7 +275,27 @@ abstract class Meta
     */
     public static function batchFrom(array $mixed)
     {
-        throw new Exception("batchFrom isn't implemented");
+        // The schema may specify a key
+        $schema = Schema::get(get_called_class());
+        $className = $schema->className();
+        $key = $schema->fromKey();
+        if (empty($key))
+            throw new Exception("batchFrom isn't implemented");
+
+        $collec = new Collection();
+        if (!empty($mixed)) {
+            $iter = XDB::iterator('SELECT  ' . $schema->id() . ' AS id, ' . $key . '
+                                     FROM  ' . $schema->table() . '
+                                    WHERE  ' . $key . ' IN {?}', $mixed);
+            while ($data = $iter->next())
+                $collec->add(new $className($data));
+        }
+
+        if (count($mixed) != $collec->count())
+            throw new ItemNotFoundException('Asking for ' . implode(', ', $mixed) .
+                ' but only found ' . implode(', ', $collec->ids()));
+
+        return $collec;
     }
 
     /**

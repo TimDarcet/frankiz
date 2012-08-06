@@ -33,6 +33,10 @@ class FormationSchema extends Schema
         return 'formation_id';
     }
 
+    public function fromKey() {
+        return 'abbrev';
+    }
+
     public function tableAs() {
         return 'form';
     }

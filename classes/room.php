@@ -33,6 +33,13 @@ class RoomSchema extends Schema
         return 'rid';
     }
 
+    /**
+     * For rooms, the from key is the primary key
+     */
+    public function fromKey() {
+        return 'rid';
+    }
+
     public function tableAs() {
         return 'r';
     }
@@ -120,24 +127,15 @@ class Room extends Meta
     protected $ips      = null;
     protected $open     = null;
 
+    /**
+     * Allow ID matching ^[A-Z]*[0-9\/]*[a-z]*$
+     * @param mixed $mixed ID to test
+     * @return bool
+     */
     public static function isId($mixed)
     {
         return !is_object($mixed) && ($mixed !== null) && ($mixed !== '')
                                   && (preg_match('/^[A-Z]*[0-9\/]*[a-z]*$/', $mixed));
-    }
-
-    public static function batchFrom(array $mixed)
-    {
-        $collec = new Collection();
-        if (!empty($mixed)) {
-            $iter = XDB::iterator('SELECT  rid AS id
-                                     FROM  rooms
-                                    WHERE  rid IN {?}', $mixed);
-            while ($r = $iter->next())
-                $collec->add(new self($r));
-        }
-
-        return $collec;
     }
 
     public function door($gid, $state)

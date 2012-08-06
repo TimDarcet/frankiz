@@ -33,6 +33,10 @@ class WikiSchema extends Schema
         return 'wid';
     }
 
+    public function fromKey() {
+        return 'name';
+    }
+
     public function tableAs() {
         return 'wiki';
     }
@@ -222,24 +226,6 @@ class Wiki extends Meta
             }
         }
         return $w;
-    }
-
-    public static function batchFrom(array $mixed)
-    {
-        $collec = new Collection();
-
-        if (!empty($mixed)) {
-            $iter = XDB::iterator('SELECT  wid AS id, name
-                                     FROM  wiki
-                                    WHERE  name IN {?}', $mixed);
-            while ($g = $iter->next())
-                $collec->add(new self($g));
-        }
-
-        if ($collec->count() != count($mixed))
-            throw new ItemNotFoundException('The identifier can\'t be associated to an object in the DB');
-
-        return $collec;
     }
 
     public static function batchSelect(array $wikis, $options = null)
