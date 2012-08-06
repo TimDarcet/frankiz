@@ -301,25 +301,25 @@ class UserSelect extends Select
                               'castes', 'comments', 'studies', 'cuvisibility')),
                               array('castes' => CasteSelect::group(),
                                      'rooms' => RoomSelect::all(),
-                                   'studies' => Formation::SELECT_BASE));
+                                   'studies' => FormationSelect::base()));
     }
 
     public static function minitol() {
         return new UserSelect(array_merge(self::$natives, array('rooms', 'castes', 'comments', 'studies')),
                               array('castes' => CasteSelect::group(),
                                      'rooms' => RoomSelect::all(),
-                                   'studies' => Formation::SELECT_BASE));
+                                   'studies' => FormationSelect::base()));
     }
 
     public static function studies() {
         return new UserSelect(array_merge(self::$natives, array('studies')),
-                              array('studies' => Formation::SELECT_BASE));
+                              array('studies' => FormationSelect::base()));
     }
 
     public static function birthday() {
         return new UserSelect(array('hruid', 'original', 'photo', 'gender',
                                     'firstname', 'lastname', 'nickname', 'studies'),
-                              array('studies' => Formation::SELECT_BASE));
+                              array('studies' => FormationSelect::base()));
     }
 }
 

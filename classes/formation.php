@@ -19,16 +19,64 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+class FormationSchema extends Schema
+{
+    public function className() {
+        return 'Formation';
+    }
+
+    public function table() {
+        return 'formations';
+    }
+
+    public function id() {
+        return 'formation_id';
+    }
+
+    public function tableAs() {
+        return 'form';
+    }
+
+    public function scalars() {
+        return array('domain', 'label', 'abbrev', 'description');
+    }
+
+    public function flagsets() {
+        return array('platalyears' => array('formations_platal', 'year'));
+    }
+}
+
+class FormationSelect extends Select
+{
+    protected static $natives = array('domain', 'label', 'abbrev', 'description');
+
+    public function className() {
+        return 'Formation';
+    }
+
+    protected function handlers() {
+        return array('main' => self::$natives,
+              'platalyears' => array('platalyears'));
+    }
+
+    protected function handler_platalyears(Collection $formations, $fields) {
+        $this->helper_flagset($formations, 'platalyears');
+    }
+
+    public static function base($subs = null) {
+        return new FormationSelect(self::$natives, $subs);
+    }
+
+    /**
+     * Select platal years
+     */
+    public static function on_platal() {
+        return new FormationSelect(array_merge(self::$natives, array('platalyears')), null);
+    }
+}
+
 class Formation extends Meta
 {
-    /*******************************************************************************
-         Constants
-
-    *******************************************************************************/
-
-    const SELECT_BASE         = 0x01;
-    const SELECT_DESCRIPTION  = 0x02;
-
     /*******************************************************************************
          Properties
 
@@ -39,58 +87,26 @@ class Formation extends Meta
     protected $abbrev = null;
     protected $description = null;
 
+    // Platal years
+    protected $platalyears = null;
+
     /*******************************************************************************
          Getters & Setters
 
     *******************************************************************************/
 
-    public function domain() {
-        return $this->domain;
-    }
-
-    public function label() {
-        return $this->label;
-    }
-
-    public function abbrev() {
-        return $this->abbrev;
-    }
-
-    public function description() {
-        return $this->description;
-    }
-
     public function image() {
         return new StaticImage('formations/' . $this->abbrev() . '.png');
     }
 
-    /*******************************************************************************
-         Data fetcher
-             (batchFrom, batchSelect, fillFromArray, …)
-    *******************************************************************************/
-
-    public static function batchSelect(array $formations, $options = null)
-    {
-        if (empty($formations))
-            return;
-
-        if (empty($options)) {
-            $options = self::SELECT_BASE;
-        }
-
-        $bits = self::optionsToBits($options);
-        $formations = array_combine(self::toIds($formations), $formations);
-
-        if ($bits & self::SELECT_BASE) {
-            $iter = XDB::iterator('SELECT  formation_id AS id, domain, label, abbrev
-                                     FROM  formations
-                                    WHERE  formation_id IN {?}', self::toIds($formations));
-
-            while ($datas = $iter->next()) {
-                $formations[$datas['id']]->fillFromArray($datas);
-            }
-        }
+    public function addPlatalYear($year) {
+        return $this->helper_flagsetAdd('platalyears', $year);
     }
+
+    public function removePlatalYear($year) {
+        return $this->helper_flagsetRemove('platalyears', $year);
+    }
+
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
