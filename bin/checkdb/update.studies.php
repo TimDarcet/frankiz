@@ -78,14 +78,15 @@ function create_promo_image(Group $g, $promo) {
 }
 
 // Update formations
-$iter = XDB::iterRow('SELECT formation_id, abbrev, label FROM formations ORDER BY formation_id');
-while (list($formation_id, $abbrev, $label) = $iter->next()) {
+$formations = Formation::selectAll(FormationSelect::base());
+foreach ($formations as $form) {
     // Update group
-    $f = new UserFilter(new UFC_Study(new Formation($formation_id)));
-    $g = update_group('formation_' . $abbrev, $label, Group::NS_STUDY, $f);
+    $f = new UserFilter(new UFC_Study(new Formation($form->id())));
+    $g = update_group('formation_' . $form->abbrev(), $form->label(), Group::NS_STUDY, $f);
+    $g->description($form->description());
 
     // Admin caste
-    if ($abbrev == 'x') {
+    if ($form->abbrev() == 'x') {
         $c = $g->caste(Rights::admin());
         $c->select(CasteSelect::base());
         if (!$c->userfilter()) {
@@ -93,6 +94,7 @@ while (list($formation_id, $abbrev, $label) = $iter->next()) {
            $c->userfilter($uf_kes);
         }
     }
+
 }
 
 // Update promotions

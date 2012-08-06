@@ -46,8 +46,6 @@ $shccxamep_groups->add(Group::from('ccx'));
 $shccxamep_groups->add(Group::from('amep'));
 $ufc_shalom_ccx_amep = new UFC_Group($shccxamep_groups, Rights::admin());
 unset($shccxamep_groups);
-unset($shccxamep_cf);
-unset($shccxamep_castes);
 
 // licenses members = on_platal and X
 $ufc_licenses = new PFC_And(array(
@@ -56,12 +54,10 @@ $ufc_licenses = new PFC_And(array(
 ));
 
 // Get formations
-$iter = XDB::iterRow("SELECT formation_id, abbrev FROM formations");
 $formations = array();
-while (list($fid, $fabbr) = $iter->next()) {
-    $formations[$fabbr] = intval($fid);
+foreach (Formation::selectAll(FormationSelect::base()) as $form) {
+    $formations[$form->abbrev()] = intval($form->id());
 }
-unset($iter);
 
 // Test wether the userfilter which is in the database is the expected one
 function test_userfilters($grouptext, $rights, $db_caste, $expected_condition = null)
@@ -236,13 +232,9 @@ function check_group(Group $g)
 }
 
 // Fetch groups
-$gf = new GroupFilter();
-$groups = $gf->get();
-$groups->select(GroupSelect::base());
-$groups->select(GroupSelect::castes());
+$groups = Group::selectAll(GroupSelect::base())->select(GroupSelect::castes());
 $groups = $groups->toArray();
 krsort($groups);
-unset($gf);
 
 // Remember used castes
 $used_castes = array();
