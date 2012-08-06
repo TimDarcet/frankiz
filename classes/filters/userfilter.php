@@ -535,16 +535,6 @@ class UFC_ActivityInstance extends UserFilterCondition
  */
 abstract class UserFilterOrder extends FrankizFilterOrder
 {
-    /** This function must return the tokens to use for ordering
-     * @param &$uf The UserFilter whose results must be ordered
-     * @return The name of the field to use for ordering results
-     */
-//    abstract protected function getSortTokens(UserFilter &$uf);
-
-    public function export()
-    {
-        throw new Exception();
-    }
 }
 
 /** Orders users by promotion

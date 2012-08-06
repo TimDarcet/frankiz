@@ -154,16 +154,6 @@ class RFC_Phone extends RoomFilterCondition
  */
 abstract class RoomFilterOrder extends FrankizFilterOrder
 {
-    /** This function must return the tokens to use for ordering
-     * @param &$uf The RoomFilter whose results must be ordered
-     * @return The name of the field to use for ordering results
-     */
-//    abstract protected function getSortTokens(RoomFilter &$rf);
-
-    public function export()
-    {
-        throw new Exception();
-    }
 }
 
 /***********************************

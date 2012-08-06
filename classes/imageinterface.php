@@ -95,7 +95,7 @@ class ImageSize
 
         return self::$_MAX_SIZE;
     }
-    
+
     public final static function MAX_WIDTH() {
         return self::MAX()->x;
     }
@@ -197,12 +197,17 @@ class ImageFormatException extends Exception
 interface ImageInterface
 {
     /**
-    * Returns the src attribute to put into the img tag
-    *
-    * @param $bits  Size to use
-    */
+     * Returns the src attribute to put into the img tag
+     *
+     * @param $size Size to use
+     */
     public function src($size);
 
+    /**
+     * Send te image to the output
+     *
+     * @param string $size Size to use
+     */
     public function send($size);
 }
 

@@ -19,46 +19,47 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+/**
+ * Mail management class
+ *
+ * Use cases :
+ *
+ *  // Html mail, set in-line
+ *  $m = new FrankizMailer();
+ *  $m->addAddress('riton@melix.net');
+ *  $m->setFrom('robot@frankiz.net', 'Robot Frankiz');
+ *  $m->subject('This is an automated message');
+ *  $m->body("This mail is in HTML <br><br> I can use html tags !");
+ *  $m->send();
+ *  --------------
+ *
+ *  // Text mail, set in-line
+ *  $m = new FrankizMailer();
+ *  $m->body("This mail is in plain text \n\n I can't use html tags !");
+ *  $m->send(false); // Don't forget to send the mail in text mode
+ *  --------------
+ *
+ *  // Text mail, set in a template
+ *  $m = new FrankizMailer('mail.default.tpl');
+ *  $m->assign('body', 'This is a spam');
+ *  $m->send();
+ *
+ * ------------------------------
+ * Important signatures of the parent Class
+ *
+ * addAddress($address, $name = '')
+ * addCC($address, $name = '')
+ * addBCC($address, $name = '')
+ * addReplyTo($address, $name = '')
+ * setFrom($address, $name = '',$auto=1)
+ *
+ */
 class FrankizMailer extends PHPMailer
 {
-    /*
-     * Use cases :
-     *
-     *  // Html mail, set in-line
-     *  $m = new FrankizMailer();
-     *  $m->addAddress('riton@melix.net');
-     *  $m->setFrom('robot@frankiz.net', 'Robot Frankiz');
-     *  $m->subject('This is an automated message');
-     *  $m->body("This mail is in HTML <br><br> I can use html tags !");
-     *  $m->send();
-     *  --------------
-     *
-     *  // Text mail, set in-line
-     *  $m = new FrankizMailer();
-     *  $m->body("This mail is in plain text \n\n I can't use html tags !");
-     *  $m->send(false); // Don't forget to send the mail in text mode
-     *  --------------
-     *
-     *  // Text mail, set in a template
-     *  $m = new FrankizMailer('mail.default.tpl');
-     *  $m->assign('body', 'This is a spam');
-     *  $m->send();
-     */
-
-
-    /* Important signatures of the parent Class
-     *
-     * addAddress($address, $name = '')
-     * addCC($address, $name = '')
-     * addBCC($address, $name = '')
-     * addReplyTo($address, $name = '')
-     * setFrom($address, $name = '',$auto=1)
-     *
-     */
 
     protected $tpl  = null;
     protected $page = null;
-    
+
     protected $To;
     protected $Cc;
 
@@ -109,8 +110,8 @@ class FrankizMailer extends PHPMailer
         }
         return parent::AddCC($address, $name);
     }
-    
-    public function toUserFilter(UserFilter $uf) 
+
+    public function toUserFilter(UserFilter $uf)
     {
         $this->To = $uf;
     }
@@ -119,7 +120,7 @@ class FrankizMailer extends PHPMailer
     * Assign a variable in the chosen template
     *
     * @param $var
-    * @param $avalue
+    * @param $value
     */
     public function assign($var, $value)
     {
@@ -184,8 +185,8 @@ class FrankizMailer extends PHPMailer
 
         return $content;
     }
-    
-    public function sendLater($html = true) 
+
+    public function sendLater($html = true)
     {
         global $globals;
 
@@ -195,7 +196,7 @@ class FrankizMailer extends PHPMailer
         $content = $this->page->fetch($tpl);
         XDB::execute('INSERT INTO  mails
                               SET  target = {?}, writer = {?}, writername = {?}, title = {?}, body = {?}, ishtml = {?}',
-                              json_encode($this->To->export()), $this->From, $this->FromName, 
+                              json_encode($this->To->export()), $this->From, $this->FromName,
                               $this->Subject, trim($content), $html);
     }
 }

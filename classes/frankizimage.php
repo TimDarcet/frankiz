@@ -149,10 +149,11 @@ class FrankizImage extends Meta implements ImageInterface
     }
 
     /**
-    * Return the src attribute to put into the img tag
-    *
-    * @param $bits  Size to use
-    */
+     * Return the src attribute to put into the img tag
+     *
+     * @see ImageInterface::src
+     * @param string $size Size to use
+     */
     public function src($size)
     {
         return "image/$size/" . $this->id();

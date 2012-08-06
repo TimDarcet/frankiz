@@ -19,74 +19,91 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-/*
- * @class Schema
+/**
+ * @brief Database schema structure
  *
- * The *Schema classes serves two purposes :
+ * The *Schema classes serves two purposes:
  *
  * 1. Very simple description of the "main" table related with the object,
  *    in order to support automatic getters & setters for the "simple" fields
  *
- *2.  Describe of the type of the fields in a Meta object,
+ * 2. Describe of the type of the fields in a Meta object,
  *    in order for the Select class to know how to build fetched datas
  */
 abstract class Schema {
     /**
-     * @return string Meta class name
+     * Meta class name
+     *
+     * @return string
      */
     abstract public function className();
 
     /**
-     * @return string Database table name
+     * Database table name
+     *
+     * @return string
      */
     abstract public function table();
 
     /**
-     * @return string Table alias in SQL queries
+     * Table alias in SQL queries
+     *
+     * @return string
      */
     abstract public function tableAs();
 
     /**
-     * @return string Column ID in the database
+     * Column ID in the database
+     *
+     * @return string
      */
     abstract public function id();
 
     /**
+     * Key to be used with batchFrom to retrieve data
      *
-     * @return string|null A key to be used with batchFrom to retrieve data
+     * @return string|null
      */
     public function fromKey() {
         return null;
     }
 
     /**
-     * @return array List of scalar fields
+     * List of scalar fields
+     *
+     * @return array
      */
     public function scalars() {
         return array();
     }
 
     /**
-     * @return array List of object fields
+     * List of object fields
+     *
+     * @return array
      */
     public function objects() {
         return array();
     }
 
     /**
+     * List of array fields
+     *
      * Return for each FlagSet field an link array in the following format:
      * array($table, $column), where
      * * $table is the name of a table used  for the link
      * * $column is the column name
      *
-     * @return array List of array fields
+     * @return array
      */
     public function flagsets() {
         return array();
     }
 
     /**
-     * @return array List of collection fields
+     * List of collection fields
+     *
+     * @return array
      */
     public function collections() {
         return array();
@@ -94,6 +111,12 @@ abstract class Schema {
 
     protected static $schemas = array();
 
+    /**
+     * Get a Schema instance associated with a class
+     *
+     * @param string $className
+     * @return Schema A singleton instance of the Schema associated with $className
+     */
     public static function get($className) {
         if (empty(self::$schemas[$className])) {
             $schemaName = $className . 'Schema';
@@ -102,17 +125,25 @@ abstract class Schema {
         return self::$schemas[$className];
     }
 
+    /**
+     * Get a Schema instance by calling Schema::get($name)
+     *
+     * @see Schema::get
+     * @param string $name
+     * @param mixed $arguments
+     * @return Schema self::get($name)
+     */
     public static function __callStatic($name, $arguments)
     {
         return self::get($name);
     }
 
-    public function fields() {
-        $scalars = array_fill_keys($this->scalars(), true);
-        $objects = $this->objects();
-        return array_merge($scalars, $objects);
-    }
-
+    /**
+     * Test wether this Schem has a field
+     *
+     * @param string $field
+     * @return boolean
+     */
     public function has($field) {
         return $this->isScalar($field) ||
             $this->isObject($field) ||
@@ -120,6 +151,12 @@ abstract class Schema {
             $this->isCollection($field);
     }
 
+    /**
+     * Test wether $field is a scalar field of this schema
+     *
+     * @param type $field
+     * @return boolean
+     */
     public function isScalar($field) {
         if (in_array($field, $this->scalars())) {
             return true;
@@ -127,6 +164,12 @@ abstract class Schema {
         return false;
     }
 
+    /**
+     * Test wether $field is an object field of this schema
+     *
+     * @param type $field
+     * @return boolean
+     */
     public function isObject($field) {
         if (array_key_exists($field, $this->objects())) {
             return true;
@@ -134,6 +177,12 @@ abstract class Schema {
         return false;
     }
 
+    /**
+     * Test wether $field is a flagset field of this schema
+     *
+     * @param type $field
+     * @return boolean
+     */
     public function isFlagset($field) {
         if (array_key_exists($field, $this->flagsets())) {
             return true;
@@ -141,6 +190,11 @@ abstract class Schema {
         return false;
     }
 
+    /**
+     * Test wether $field is a collection field of this schema
+     * @param type $field
+     * @return boolean
+     */
     public function isCollection($field) {
         if (array_key_exists($field, $this->collections())) {
             return true;
@@ -148,6 +202,11 @@ abstract class Schema {
         return false;
     }
 
+    /**
+     * Give the object type of a field
+     * @param type $field
+     * @return string typeof($field)
+     */
     public function objectType($field) {
         $objects = $this->objects();
         if (empty($objects[$field])) {
@@ -156,6 +215,12 @@ abstract class Schema {
         return $objects[$field];
     }
 
+    /**
+     * Give the flagset type of a field
+     * @see Schema::flagsets()
+     * @param type $field
+     * @return array
+     */
     public function flagsetType($field) {
         $flagsets = $this->flagsets();
         if (empty($flagsets[$field])) {
@@ -164,6 +229,11 @@ abstract class Schema {
         return $flagsets[$field];
     }
 
+    /**
+     * Give the collection type of a field
+     * @param type $field
+     * @return string typeof($field item)
+     */
     public function collectionType($field) {
         $collections = $this->collections();
         if (empty($collections[$field])) {

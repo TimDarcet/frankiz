@@ -479,10 +479,12 @@ class User extends Meta
     }
 
     /**
-    * Returns the password of the User
-    *
-    * @param $password If specified, update the password in the database
-    */
+     * Returns the password of the User
+     *
+     * @param string $password If specified, update the password in the database
+     * @param boolean $encrypt Encrypt the password
+     * @return string database password hash
+     */
     public function password($password = null, $encrypt = true)
     {
         if ($password != null) {
