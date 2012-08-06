@@ -341,6 +341,28 @@ abstract class Meta
         $this->$field->rmFlag($value);
         return true;
     }
+
+    /**
+     * Helper to set values for a FlagSet
+     *
+     * @param string $field Object field
+     * @param PlFlagSet $values
+     * @return new value for PlFlagSet
+     */
+    protected function helper_flagsetSet($field, PlFlagSet $values = null) {
+        if (is_null($values))
+            return $this->$field;
+
+        foreach ($values as $v) {
+            if (!$this->$field->hasFlag($v))
+                $this->helper_flagsetAdd($field, $v);
+        }
+        foreach ($this->$field as $v) {
+            if (!$values->hasFlag($v))
+                $this->helper_flagsetRemove($field, $v);
+        }
+        return $this->$field;
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

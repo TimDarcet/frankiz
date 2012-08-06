@@ -78,7 +78,7 @@ function create_promo_image(Group $g, $promo) {
 }
 
 // Update formations
-$formations = Formation::selectAll(FormationSelect::base());
+$formations = Formation::selectAll(FormationSelect::base());/*
 foreach ($formations as $form) {
     // Update group
     $f = new UserFilter(new UFC_Study(new Formation($form->id())));
@@ -117,20 +117,40 @@ while (list($promo, $formation_id, $abbrev, $label) = $iter->next()) {
     $g = update_group('promo_' . $abbrev . $promo, $promo . ' ' . $label, Group::NS_PROMO, $f);
     create_promo_image($g, $promo);
 }
-
-// Update on_platal
-$formation_x = XDB::fetchOneCell('SELECT formation_id FROM formations WHERE abbrev = "x"');
-if (is_null($formation_x))
-    die("No X formation found\n");
-$iter = XDB::iterRow('SELECT  promo
-                        FROM  studies
-                       WHERE  formation_id = {?}
-                    GROUP BY  promo
-                    ORDER BY  promo DESC
-                       LIMIT  2', $formation_x);
+*/
+// Update on_platal, specifying the number of years a school remains on the platal
+$onplatal_numyears = array(
+    'x' => 2,
+    'poly' => 0,
+    'master' => 0,
+    'doc' => 0,
+    'pei' => 1,
+    'iogs' => 0,
+    'fkz' => 0
+);
+$formations->select(FormationSelect::on_platal());
+$formations->select(FormationSelect::promos());
 $filters = array();
-while (list($promo) = $iter->next()) {
-    $filters[] = new UFC_Promo($promo, '=', $formation_x);
+foreach ($formations as $f) {
+    if (!isset($onplatal_numyears[$f->abbrev()])) {
+        echo 'Warning: no numyears for ' . $f->label() . "\n";
+        continue;
+    }
+    $numyears = $onplatal_numyears[$f->abbrev()];
+    $promos = $f->promos();
+    $onplatal_promos = new PlFlagSet();
+    sort($promos);
+    while ($numyears > 0) {
+        $promo = array_pop($promos);
+        if (is_null($promo))
+            break;
+        $onplatal_promos->addFlag($promo);
+        $filters[] = new UFC_Promo($promo, '=', $f->id());
+        $numyears --;
+    }
+
+    // Update on_platal logic classes
+    $f->platalyears($onplatal_promos);
 }
 $f = new UserFilter(new PFC_Or($filters));
 update_group('on_platal', 'Sur le platal', Group::NS_PROMO, $f);

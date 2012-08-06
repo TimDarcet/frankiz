@@ -56,7 +56,32 @@ class FormationSelect extends Select
 
     protected function handlers() {
         return array('main' => self::$natives,
-              'platalyears' => array('platalyears'));
+              'platalyears' => array('platalyears'),
+                   'promos' => array('promos'));
+    }
+
+    protected function handler_promos(Collection $formations, $fields) {
+        $_formations = array();
+        foreach ($formations as $f) {
+            $_formations[$f->id()] = array();
+        }
+        $iter = XDB::iterRow('SELECT  formation_id AS id,
+                                      GROUP_CONCAT(DISTINCT promo ORDER BY promo SEPARATOR ",") AS p
+                                FROM  studies
+                               WHERE  formation_id IN {?}
+                            GROUP BY  formation_id',
+                                      $formations->ids());
+        while (list($id, $promos) = $iter->next()) {
+            $promos = explode(',', $promos);
+            foreach ($promos as &$p) {
+                $p = (integer)$p;
+            }
+            sort($promos);
+            $_formations[$id] = $promos;
+        }
+        foreach ($formations as $f) {
+            $f->fillFromArray(array('promos' => $_formations[$f->id()]));
+        }
     }
 
     protected function handler_platalyears(Collection $formations, $fields) {
@@ -68,10 +93,17 @@ class FormationSelect extends Select
     }
 
     /**
+     * Select available promos
+     */
+    public static function promos() {
+        return new FormationSelect(array('promos'), null);
+    }
+
+    /**
      * Select platal years
      */
     public static function on_platal() {
-        return new FormationSelect(array_merge(self::$natives, array('platalyears')), null);
+        return new FormationSelect(array('platalyears'), null);
     }
 }
 
@@ -87,6 +119,9 @@ class Formation extends Meta
     protected $abbrev = null;
     protected $description = null;
 
+    // Existing promos
+    protected $promos = null;
+
     // Platal years
     protected $platalyears = null;
 
@@ -99,6 +134,14 @@ class Formation extends Meta
         return new StaticImage('formations/' . $this->abbrev() . '.png');
     }
 
+    public function promos() {
+        return $this->promos;
+    }
+
+    public function platalyears(PlFlagSet $years = null) {
+        return $this->helper_flagsetSet('platalyears', $years);
+    }
+
     public function addPlatalYear($year) {
         return $this->helper_flagsetAdd('platalyears', $year);
     }
@@ -106,7 +149,6 @@ class Formation extends Meta
     public function removePlatalYear($year) {
         return $this->helper_flagsetRemove('platalyears', $year);
     }
-
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

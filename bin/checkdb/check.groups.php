@@ -172,8 +172,11 @@ function check_group(Group $g)
                 if ($gc['member']->userfilter()) {
                     $data = $gc['member']->userfilter()->export();
                     for ($i = 0; isset($data['condition']['children'][$i]['promo']); $i++) {
+                        // This only checks logic connectors
+                        // TODO: Check years
                         $p = $data['condition']['children'][$i]['promo'];
-                        array_push($promos, new UFC_Promo($p, '=', (string)$formations['x']));
+                        $f = $data['condition']['children'][$i]['formation_id'];
+                        array_push($promos, new UFC_Promo($p, '=', $f));
                     }
                 }
                 test_userfilters($gtext, 'member', $gc['member'], new PFC_Or($promos));
