@@ -107,7 +107,7 @@ abstract class Schema {
 
     public function has($field) {
         return $this->isScalar($field) ||
-            $this->isScalar($field) ||
+            $this->isObject($field) ||
             $this->isFlagset($field) ||
             $this->isCollection($field);
     }
