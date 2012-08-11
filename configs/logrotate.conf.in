@@ -1,0 +1,7 @@
+# Frankiz site-errors logrotate information
+@INSTALL_DIR@/spool/tmp/site_errors {
+    weekly
+    rotate 4
+    compress
+    missingok
+}

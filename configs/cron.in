@@ -9,6 +9,9 @@
 ## Send mails
 */5 * * * * @USER@ cd @INSTALL_DIR@/bin/cron/ && @INSTALL_DIR@/bin/cron/send_mail.php
 
+## Log rotate
+0 2 * * * @USER@ /usr/sbin/logrotate @INSTALL_DIR@/configs/logrotate.conf --state @INSTALL_DIR@/spool/tmp/logrotate.status
+
 ## Backup db, without images
 0 */2 * * * @USER@ @INSTALL_DIR@/bin/cron/backup_mysql_db.sh
 

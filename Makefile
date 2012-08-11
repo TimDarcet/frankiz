@@ -77,7 +77,7 @@ prod_update:
 	@git diff --quiet || ! echo "Your repo is not clean"
 	@[ "x`id -un`" = "x$(INSTALL_USER)" ] || ! echo "You need to be $(INSTALL_USER) to update"
 	git fetch
-	git merge origin/prod
+	git rebase origin/prod
 	cd $(INSTALL_DIR)/bin/ && php -f reset.skin.php
 
 ################################################################################
@@ -105,13 +105,16 @@ spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/session
 ## conf
 ##
 
-conf: classes/frankizglobals.php htdocs/.htaccess configs/frankiz.conf configs/cron
+conf: classes/frankizglobals.php htdocs/.htaccess configs/frankiz.conf configs/cron configs/logrotate.conf
 
 htdocs/.htaccess: htdocs/.htaccess.in Makefile
 	sed -e "s,@REWRITE_BASE@,$(REWRITE_BASE),g" $< > $@
 
 configs/cron: configs/cron.in Makefile
 	sed -e "s,@INSTALL_DIR@,$(INSTALL_DIR),g;s,@USER@,$(INSTALL_USER),g" $< > $@
+
+configs/logrotate.conf: configs/logrotate.conf.in Makefile
+	sed -e "s,@INSTALL_DIR@,$(INSTALL_DIR),g" $< > $@
 
 configs/frankiz.conf: configs/$(CONFIG_IN) Makefile
 	@[ ! -f $@ ] || ! echo "$@ needs updating. Please remove this file and make again."
