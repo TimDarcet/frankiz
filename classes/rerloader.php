@@ -36,14 +36,17 @@ class RerLoader
         try{
             $api = new API(self::$urls[$destination]);
             $xml = simplexml_load_string(utf8_decode($api->response()));
-            if($xml)
+            if($xml && isset($xml->schedules->schedule->liste))
                 $response = $xml->schedules->schedule->liste->children();
             else 
-                $reponse = array();
+                $response = array();
             $return = array();
             foreach($response as $r){
                 if(preg_match('![0-9]{2}:[0-9]{2}!',(string) $r->texte2))
-                    $return[] = array('name' => (string) $r->texte3, 'desc' => self::destination((string) $r->texte1), 'time' => (string) $r->texte2);
+                    $return[] = array(
+                        'name' => (string) $r->texte3,
+                        'desc' => self::destination((string) $r->texte1),
+                        'time' => (string) $r->texte2);
             }
             return $return;
         }

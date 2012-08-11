@@ -239,11 +239,13 @@ class XRayMiniModule extends FrankizMiniModule
 
         if (!PlCache::hasGlobal('xray_nowplaying')) {
             $nowplaying_api = new API($nowplaying_xml, false);
-            $nowplaying  = $this->xml2array($nowplaying_api->response());
-            $song = $nowplaying['info'];
+            $nowplaying = $this->xml2array($nowplaying_api->response());
+            if (isset($nowplaying['info'])) {
+                $song = $nowplaying['info'];
 
-            $xray_nowplaying = array('title' => $song['title'], 'artist' => $song['artist'], 'album' => $song['album'], 'cover' => $song['cover']);
-            PlCache::setGlobal('xray_nowplaying', $xray_nowplaying, $globals->cache->xray_nowplaying);
+                $xray_nowplaying = array('title' => $song['title'], 'artist' => $song['artist'], 'album' => $song['album'], 'cover' => $song['cover']);
+                PlCache::setGlobal('xray_nowplaying', $xray_nowplaying, $globals->cache->xray_nowplaying);
+            }
         }
 
         $this->assign('xray_calendar', PlCache::getGlobal('xray_calendar'));

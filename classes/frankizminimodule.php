@@ -122,6 +122,8 @@ abstract class FrankizMiniModule
 
     public static function get($names, $run = true)
     {
+        global $globals;
+
         $array_passed = is_array($names);
         $names = unflatten($names);
         $minimodules = array();
@@ -135,6 +137,13 @@ abstract class FrankizMiniModule
                         $m->run();
                     } catch (Exception $e) {
                         $m->error = $e;
+                        if ($globals->debug & DEBUG_BT) {
+                            if (!isset(PlBacktrace::$bt['Minimodule']))
+                                new PlBacktrace('Minimodule');
+                        }
+                        PlBacktrace::$bt['Minimodule']->newEvent($name, 0, $e->getMessage(),
+                            array(array('file' => $e->getFile(),
+                                        'line' => $e->getLine())));
                     }
                 }
             }
