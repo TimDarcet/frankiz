@@ -58,7 +58,7 @@ class ProposalModule extends PlModule
         if ($val === false) {
             throw new Exception("This item doesn't exist");
         }
-        
+
         $val->select(ValidateSelect::validate());
 
         if ($val->writer()->id() != S::user()->id()) {
@@ -123,7 +123,7 @@ class ProposalModule extends PlModule
                     $valid_origin = false;
                 }
 
-                $target->select(CasteSelect::validate());                
+                $target->select(CasteSelect::validate());
                 $nv = new NewsValidate(array(
                     'writer'        => S::user(),
                     'target'        => $target,
@@ -152,10 +152,10 @@ class ProposalModule extends PlModule
         $page->addCssLink('validate.css');
         $page->changeTpl('validate/prop.news.tpl');
     }
-    
+
 
     function handler_activity($page)
-    {   
+    {
         $title      = Env::t('title', '');
         $desc       = Env::t('activity_description', '');
 
@@ -163,7 +163,7 @@ class ProposalModule extends PlModule
                                                      new AFC_Regular(true)));
         $activities = $activities->get();
         $activities->select(ActivitySelect::base());
-        
+
         if (Env::has('send_new'))
         {
             $required_fields = array('origin_activity_proposal', 'target_group_activity',
@@ -203,7 +203,7 @@ class ProposalModule extends PlModule
                 $target->select(CasteSelect::validate());
 
                 $av = new ActivityValidate(array(
-                    'writer'        => S::user(), 
+                    'writer'        => S::user(),
                     'target'        => $target,
                     'title'         => $title,
                     'description'   => $desc,
@@ -230,7 +230,7 @@ class ProposalModule extends PlModule
                 $page->assign('msg', $e->getMessage() . 'La date est incorrecte.');
             }
         }
-        
+
         if (Env::has('send_reg'))
         {
             $begin = Env::t('begin');
@@ -242,13 +242,13 @@ class ProposalModule extends PlModule
             {
                 $page->assign('msg', 'Tu n\'as pas le droit de créer de nouvelles instances de cette activité.');
             }
-            else 
+            else
             {
                 $dates = $a->next_dates(5);
-		        foreach($dates as $temp)
-		            foreach($temp as $dat)
-		                if (Env::has($dat . '_regular_proposal'))
-		                {
+                foreach($dates as $temp)
+                    foreach($temp as $dat)
+                        if (Env::has($dat . '_regular_proposal'))
+                        {
                             try
                             {
                                 $begin_c = new FrankizDateTime($dat . ' ' . $begin . ':00');
@@ -265,7 +265,7 @@ class ProposalModule extends PlModule
                             {
                                 $page->assign('msg', 'Les dates sont fausses.');
                             }
-		                }
+                        }
                 if (Env::has('other_regular_proposal'))
                 {
                     try
@@ -291,15 +291,15 @@ class ProposalModule extends PlModule
 
         $page->assign('title_activity', $title);
         $page->assign('desc', $desc);
-        
+
         $page->assign('regular_activities', $activities);
         $page->assign('title', 'Proposer une activité');
         $page->addCssLink('validate.css');
         $page->changeTpl('validate/prop.activity.tpl');
     }
-    
+
     function handler_activity_ajax($page)
-    {   
+    {
         $aid = Env::i('aid', '');
         $a = new Activity($aid);
         $a->select(ActivitySelect::base());
@@ -307,107 +307,154 @@ class ProposalModule extends PlModule
         $page->assign('activity', $a);
         $page->changeTpl('validate/prop.activity.ajax.tpl', NO_SKIN);
     }
-    
+
     function handler_mail($page)
     {
-        $subject    = Env::t('subject', '');
-        $body       = Env::t('mail_body', '');
-        $no_wiki    = Env::has('no_wiki');
-        
-        if (Env::has('send'))
-        {
-            $required_fields = array('subject', 'mail_body');
-            foreach ($required_fields as $field) {
-                if (Env::v($field, '') == '') {
-                    throw new Exception("Missing field ($field)");
-                }
-            }
+        $subject = Env::t('subject', '');
+        $body    = Env::t('mail_body', '');
+        $no_wiki = Env::has('no_wiki');
 
-            if (Env::t('origin_mail_proposal') == 'false') {
-                $origin = false;
-            } else {
-                $origin = new Group(Env::i('origin_mail_proposal'));
-            }
+        // Retrieve the years on_platal of each formation
+        $formations = Formation::selectAll(FormationSelect::on_platal());
 
-            if ($origin !== false && !S::user()->hasRights($origin, Rights::admin())) {
-                throw new Exception("Invalid credentials for origin Group");
-            }
+        if (Env::has('send')) {
+            try {
+                $required_fields = array(
+                    'subject' => 'Il faut donner un sujet à ton mail',
+                    'mail_body' => 'Tu ne veux pas envoyer de mail vide à tous. Si ?');
+                foreach ($required_fields as $field => $msg) {
+                    if (Env::v($field, '') == '') {
+                        throw new Exception($msg);
+                    }
+                }
 
-            if (Env::t('type_mail_proposal') == 'group') {
-                list($temp, $target_group) = self::target_picker_to_caste_group('mail');
-                $target = new Collection('Caste');
-                $target->add($temp);
-                $target_group->select(GroupSelect::validate());
-                $target_group = unflatten($target_group);
-                
-            }
-            else {
-                if (Env::t('study_mail_proposal') == '') {
-                    // Disable this ?
-                    $target_group = new GroupFilter(new GFC_Namespace('study'));
+                if (Env::t('origin_mail_proposal') == 'false') {
+                    $origin = false;
+                } else {
+                    $origin = new Group(Env::i('origin_mail_proposal'));
                 }
-                else {
-                    $target_group = new GroupFilter(new UFC_Group(explode(';', Env::t('study_mail_proposal'))));
-                }
-                $target_group = $target_group->get();
-                $target_group->select(GroupSelect::validate());
 
-                if (Env::t('promo_mail_proposal') == '') {
-                    $target = false;
+                if ($origin !== false && !S::user()->hasRights($origin, Rights::admin())) {
+                    throw new Exception("Invalid credentials for origin Group");
                 }
-                else {
-                    $target = new CasteFilter(
-                                    new PFC_AND(new CFC_Group(explode(';', Env::t('promo_mail_proposal'))), 
-                                                new CFC_Rights('restricted')));
-                    $target = $target->get();
-                    $target->select(GroupSelect::validate());
-                }
-                
-            }
 
-            foreach($target_group as $study) {
-                $nv = new MailValidate(array(
-                    'writer'    => S::user(),
-                    'type_mail' => Env::t('type_mail_proposal'),
-                    'origin'    => $origin,
-                    'targets'   => $target,
-                    'subject'   => $subject,
-                    'body'      => $body,
-                    'nowiki'    => $no_wiki,
-                    'formation' => $study));
-                $el = new Validate(array(
-                    'item'      => $nv,
-                    'group'     => $study,
-                    'writer'    => S::user(),
-                    'type'      => 'mail'));
-                $el->insert();
+                if (Env::t('type_mail_proposal') == 'group') {
+                    // Mail to a group
+                    list($temp, $target_group) = self::target_picker_to_caste_group('mail');
+                    $target = new Collection('Caste');
+                    $target->add($temp);
+                    $target_group->select(GroupSelect::validate());
+
+                    $nv = new MailValidate(array(
+                        'writer'    => S::user(),
+                        'type_mail' => Env::t('type_mail_proposal'),
+                        'origin'    => $origin,
+                        'targets'   => $target,
+                        'subject'   => $subject,
+                        'body'      => $body,
+                        'nowiki'    => $no_wiki,
+                        'formation' => $target_group));
+                    $el = new Validate(array(
+                        'item'      => $nv,
+                        'group'     => $target_group,
+                        'writer'    => S::user(),
+                        'type'      => 'mail'));
+                    $el->insert();
+                } elseif (Env::t('type_mail_proposal') == 'promo') {
+                    // Target group is a Collection of formation groups, which validate requests
+                    $target_group = new Collection('Group');
+
+                    // Group promos by formation
+                    $promos = unflatten(Env::v('promos'));
+                    $promosByFormation = array();
+                    foreach ($promos as $formation_promo) {
+                        $formation_promo = trim($formation_promo);
+                        if (!$formation_promo) {
+                            continue;
+                        }
+                        if (!preg_match('/^([0-9]+)_([0-9]+)$/', $formation_promo, $matches)) {
+                            throw new Exception("Oops, mauvais format de destinataire.");
+                        }
+                        $formid = (integer)$matches[1];
+                        $promo = (integer)$matches[2];
+                        if (isset($promosByFormation[$formid]))
+                            $promosByFormation[$formid][] = $promo;
+                        else
+                            $promosByFormation[$formid] = array($promo);
+                    }
+
+                    if (empty($promosByFormation)) {
+                        throw new Exception("Il faut indiquer au moins un destinataire.");
+                    }
+
+                    foreach ($promosByFormation as $formid => $promos) {
+                        // Now, $promos are the list of promos of formation $formid
+                        $form = $formations->get($formid);
+
+                        // Study group are the people the mail is sent to, array of CasteFilterCondition
+                        $cfc_study_groups = array();
+                        foreach ($promos as $promo) {
+                            if (!$form->hasPlatalYear($promo)) {
+                                throw new Exception("Mauvaise promo " . $promo . " pour " . $form->label() . ".");
+                            }
+                            $cfc_study_groups[] = new CFC_Group(
+                                $form->getGroupForPromo($promo),
+                                Rights::restricted());
+                        }
+                        $target = new CasteFilter(new PFC_Or($cfc_study_groups));
+                        $target = $target->get();
+                        $target->select(CasteSelect::validate());
+
+                        // $target_group is the group which validates this email
+                        $target_group = $form->getGroup();
+                        $target_group->select(GroupSelect::validate());
+
+                        $nv = new MailValidate(array(
+                            'writer'    => S::user(),
+                            'type_mail' => Env::t('type_mail_proposal'),
+                            'origin'    => $origin,
+                            'targets'   => $target,
+                            'subject'   => $subject,
+                            'body'      => $body,
+                            'nowiki'    => $no_wiki,
+                            'formation' => $target_group));
+                        $el = new Validate(array(
+                            'item'      => $nv,
+                            'group'     => $target_group,
+                            'writer'    => S::user(),
+                            'type'      => 'mail'));
+                        $el->insert();
+                    }
+                }
+                $page->assign('envoye', true);
+            } catch (Exception $e) {
+                $page->trigError($e->getMessage());
             }
-            
-            $page->assign('envoye', true);
         }
-        
+
         $page->assign('subject', $subject);
         $page->assign('body', $body);
         $page->assign('nowiki', $no_wiki);
-        
+        $page->assign('formations', $formations);
+
         $page->assign('title', 'Envoi des mails');
         $page->addCssLink('validate.css');
         $page->changeTpl('validate/prop.mail.tpl');
-    }    
+    }
 
     function handler_qdj($page)
-    {   
+    {
         $question = Env::t('quest');
         $answer1 = Env::t('ans1');
         $answer2 = Env::t('ans2');
-        
-        if (Env::has('send')) 
+
+        if (Env::has('send'))
         {
             if($question == '' || $answer1 == '' || $answer2 == '')
             {
                 $page->assign('msg', 'Il manque des informations.');
             }
-            else 
+            else
             {
                 $qv = new QDJValidate($question, $answer1, $answer2);
                 $v = new Validate(array(
@@ -419,7 +466,7 @@ class ProposalModule extends PlModule
                 $page->assign('envoye', true);
             }
         }
-        
+
         $page->addCssLink('validate.css');
         $page->assign('title', 'Proposition d\'une qdj');
         $page->changeTpl('validate/prop.qdj.tpl');
@@ -432,7 +479,7 @@ class ProposalModule extends PlModule
             {
                 $page->assign('msg', 'Il manque des informations pour créer l\'annonce.');
             }
-            else 
+            else
             {
                 try
                 {

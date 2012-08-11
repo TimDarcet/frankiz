@@ -64,9 +64,16 @@
                             <input id="choice_group" type="radio" name="type_mail_proposal" value="group"> Mail à un groupe
                         </label><br />
                         <div id="promo_proposal" class="type_proposal">
-                            {assign var='castes' value=$user->castes()}
-                            {include file="groups_picker.tpl"|rel id="study_mail_proposal" ns="study" already=$castes->groups()|filter:'ns':'study'}
-                            {include file="groups_picker.tpl"|rel id="promo_mail_proposal" ns="promo" order="name" already=$user->defaultFilters()|filter:'ns':'promo'}
+                            <select name="promos[]" multiple="1">
+                                {foreach from=$formations item=form}
+                                    {foreach from=$form->platalyears() item=promo}
+                                        <option value="{$form->id()}_{$promo}">
+                                            {$form->label()} {$promo}
+                                        </option>
+                                    {/foreach}
+                                {/foreach}
+                            </select>
+                            (Tu peux sélectionner plusieurs promotions avec la touche Ctrl)
                         </div>
                         <div id="group_proposal" class="type_proposal">
                             {include file="target_picker.tpl"|rel id="mail" group_perso=false only_admin=false}

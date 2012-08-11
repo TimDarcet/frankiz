@@ -92,8 +92,8 @@ class FormationSelect extends Select
         $this->helper_flagset($formations, 'platalyears');
     }
 
-    public static function base($subs = null) {
-        return new FormationSelect(self::$natives, $subs);
+    public static function base() {
+        return new FormationSelect(self::$natives, null);
     }
 
     /**
@@ -107,7 +107,7 @@ class FormationSelect extends Select
      * Select platal years
      */
     public static function on_platal() {
-        return new FormationSelect(array('platalyears'), null);
+        return new FormationSelect(array_merge(self::$natives, array('platalyears')), null);
     }
 }
 
@@ -146,12 +146,33 @@ class Formation extends Meta
         return $this->helper_flagsetSet('platalyears', $years);
     }
 
+    public function hasPlatalYear($year) {
+        return $this->platalyears->hasFlag($year);
+    }
+
     public function addPlatalYear($year) {
         return $this->helper_flagsetAdd('platalyears', $year);
     }
 
     public function removePlatalYear($year) {
         return $this->helper_flagsetRemove('platalyears', $year);
+    }
+
+    /**
+     * Get associated group
+     * @return Group
+     */
+    public function getGroup() {
+        return Group::from('formation_' . $this->abbrev);
+    }
+
+    /**
+     * Get associated group for this formation and promo
+     * @param integer $promo
+     * @return Group
+     */
+    public function getGroupForPromo($promo) {
+        return Group::from('promo_' . $this->abbrev . sprintf('%04d', $promo));
     }
 }
 

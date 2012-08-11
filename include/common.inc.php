@@ -60,6 +60,7 @@ function __autoload($cls)
 
         // Handle the *fc_* and *fo_*
         $filters = array('g'  => 'groupfilter',
+                         'c'  => 'castefilter',
                          'n'  => 'newsfilter',
                          'u'  => 'userfilter',
                          'v'  => 'validatefilter',
