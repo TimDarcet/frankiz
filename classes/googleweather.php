@@ -71,25 +71,43 @@ class GoogleWeather extends Weather
 
         $api = new API($url);
         $xml = simplexml_load_string($api->response());
+        if ($xml === false)
+            throw new Exception("Unable to read Google Weather data");
 
         if(isset($xml->weather->problem_cause))
             throw new Exception($xml->weather->problem_cause);
 
-        $this->today = new WeatherConditions();
-        $this->today->label = (string) $xml->weather->current_conditions->condition->attributes()->data;
-        $this->today->temperature = (string) $xml->weather->current_conditions->temp_c->attributes()->data;
-        $this->today->icon = $prefix_images . (string) $xml->weather->current_conditions->icon->attributes()->data;
+        if (isset($xml->weather->current_conditions)) {
+            $current_conditions = $xml->weather->current_conditions;
+            $this->today = new WeatherConditions();
+            $this->today->label = (isset($current_conditions->condition) ? $this->getAttrData($current_conditions->condition) : null);
+            $this->today->temperature = (isset($current_conditions->temp_c) ? $this->getAttrData($current_conditions->temp_c) : null);
+            $icon = (isset($current_conditions->icon) ? $this->getAttrData($current_conditions->icon) : null);
+            $this->today->icon = ($icon ? $prefix_images . $icon : null);
+        } else {
+            $this->today = null;
+        }
 
         $this->forecasts = array();
         foreach($xml->weather->forecast_conditions as $aforecast) {
             $forecast = new WeatherConditions();
-            $forecast->label = (string) $aforecast->condition->attributes()->data;
-            $forecast->low   = (string) $aforecast->low->attributes()->data;
-            $forecast->high  = (string) $aforecast->high->attributes()->data;
-            $forecast->icon  = $prefix_images . (string) $aforecast->icon->attributes()->data;
-            $forecast->day   = (string) $aforecast->day_of_week->attributes()->data;
+            $forecast->label = (isset($aforecast->condition) ? $this->getAttrData($aforecast->condition) : null);
+            $forecast->low   = (isset($aforecast->low) ? $this->getAttrData($aforecast->low) : null);
+            $forecast->high  = (isset($aforecast->high) ? $this->getAttrData($aforecast->high) : null);
+            $icon = (isset($current_conditions->icon) ? $this->getAttrData($current_conditions->icon) : null);
+            $forecast->icon  = ($icon ? $prefix_images . $icon : null);
+            $forecast->day   = (isset($aforecast->day_of_week) ? $this->getAttrData($aforecast->day_of_week) : null);
             $this->forecasts[] = $forecast;
         }
+    }
+
+    private function getAttrData($xmlNode) {
+        if (!$xmlNode)
+            return null;
+        $attributes = $xmlNode->attributes();
+        if (!isset($attributes->data))
+            return null;
+        return (string) $attributes->data;
     }
 }
 
