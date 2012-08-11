@@ -18,7 +18,16 @@ memcache   = "127.0.0.1"
 sitename   = "Frankiz"
 baseurl    = "https://www.frankiz.net/"
 
+; https://www.polytechnique.fr/eleves is the W3X proxy to frankiz
+remoteproxy[] = 129.104.30.4
+remoteproxy[] = 129.104.201.51
+
+; diavaez and deiz
+remoteproxy[] = 37.59.124.221
+remoteproxy[] = 129.104.30.90
+
 [Mails]
 
 admin = frankiz@binets.polytechnique.fr
 web   = webmasters@binets.polytechnique.fr
+

@@ -34,7 +34,7 @@
             <input name="tol" value="TOL" type="submit">
             <input name="ok" value="Wikix" type="submit"
                    onclick="var $form = $(this).closest('form');$form.find('[name=search]').val($form.find('[name=free]').val());$form.attr('action', 'http://wikix.polytechnique.org/eleves/wikix/Sp%C3%A9cial:Recherche')">
-            {if $smarty.session.auth >= AUTH_COOKIE && IP::is_internal()}
+            {if $smarty.session.auth >= AUTH_COOKIE && $remip->has_x_student()}
               <input name="ok" value="Fruit" type="submit"
                    onclick="var $form = $(this).closest('form');$form.find('[name=terms]').val($form.find('[name=free]').val());$form.attr('action', 'http://fruit/search.php');$form.attr('method', 'get')">
             {/if}

@@ -46,7 +46,7 @@
     <a href="http://else.polytechnique.org/">ELSE</a> ·
 
     <a href="http://x-passion.polytechnique.org/">X-Passion</a>
-    {if IP::is_internal()}
+    {if $remip->has_x_student()}
         ·
         <a href="http://dnsapp" title="Noms de domaine">DnsApp</a>
         ·

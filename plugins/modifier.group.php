@@ -46,7 +46,7 @@ function smarty_modifier_group($group, $type = 'micro') {
 
     if ($type == 'premises') {
         $str = '';
-        $roomMaster = S::user()->hasRights($group, Rights::admin()) || S::user()->isWeb() || in_array(IP::get(), $group->ips());
+        $roomMaster = $group->isRoomMaster();
         foreach($group->premises() as $key=>$premise) {
             $str .= '<div class="' . ($premise['open'] ? 'open' : 'close') . '" rid="' . $key . '">
                             <div class="traffic_light_switcher' . ($roomMaster ? ' room_master' : '') . '" title="' . $premise['label'] . '"></div>

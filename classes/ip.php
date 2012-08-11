@@ -19,115 +19,168 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+/**
+ * Classify IP addresses into categories
+ */
 class IP
 {
-    const EXTERNAL = 'ip_external';  // External IP
-    const INTERNAL = 'ip_internal';  // Ni casert ni local => pits, salles infos ...
-    const STUDENT  = 'ip_student';   // Student's rooms
-    const PREMISE  = 'ip_premise';   // Binets et bars d'étage
+    const POLYTECHIQUE = 0x01; // IP from Polytechnique
+    const INTERNAL     = 0x02; // "internal" zone (no proxies & DMZ, pits, salles infos)
+    const STUDENT      = 0x04; // Student's room
+    const PREMISE      = 0x08; // Binets premise
 
-    private static $originCache = array();
+    // string IP address
+    private $ipAddr;
 
-    public static function get() {
+    // Origin of the IP address
+    private $origin;
+
+    public function __construct($ip) {
+        $this->ipAddr = $ip;
+        $this->origin = self::getOrigin($ip);
+    }
+
+    public function getAddr() {
+        return $this->ipAddr;
+    }
+
+    /**
+     * Get remote IP address, with reverse proxy support
+     * @return IP
+     */
+    public static function getInstance()
+    {
         global $globals;
+        static $ipObject = null;
 
-        if (isset($_SERVER['REMOTE_ADDR'])) {
-            $ip = $_SERVER['REMOTE_ADDR'];
-        } else {
-            $ip = '127.0.0.1';
-        }
+        // Cache
+        if (!is_null($ipObject))
+            return $ipObject;
 
-        if ($ip === '129.104.201.51') {
+        $ip = (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1');
+
+        // Resolve reverse proxy configuration
+        if (!empty($globals->core->remoteproxy)) {
+            $remote_proxies = unflatten($globals->core->remoteproxy);
+            $remote_proxies = array_map('trim', $remote_proxies);
             if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
                 $ipList = explode(', ', $_SERVER['HTTP_X_FORWARDED_FOR']);
-
-                // This is w3c, a trusted reverse proxy
-                if (end($ipList) === '129.104.30.4') {
-                    // This is a trusted remote reverse proxy
-                    if (prev($ipList) === $globals->core->remoteproxy || in_array(prev($ipList), $globals->core->remoteproxy)) {
-                        prev($ipList);
+                $ipList = array_map('trim', $ipList);
+                for ($ipTest = $ip; $ipTest; $ipTest = array_pop($ipList)) {
+                    if (!in_array($ipTest, $remote_proxies)) {
+                        $ip = $ipTest;
+                        break;
                     }
                 }
-                $forwardedIp = current($ipList);
-
-                if (preg_match("/([0-9]{1,3}\.){3}[0-9]{1,3}/", $forwardedIp)) {
-                    $ip = $forwardedIp;
-                }
             }
         }
 
-        return $ip;
+        // Set cache and return an IP object
+        return $ipObject = new IP($ip);
     }
 
-    public static function is_internal($ip = null)
-    {
-        $ip = ($ip == null) ? self::get() : $ip;
-        return (self::origin($ip) > self::EXTERNAL);
+    /**
+     * Return remote IP address
+     * @return string IP
+     */
+    public static function get() {
+        return self::getInstance()->getAddr();
     }
 
-    public static function is_casert($ip = null)
+    /**
+     * Get where the IP is from
+     * @param string $ip IP
+     * @return integer Binary combination of IP:: constants
+     *
+     * TODO: add global cache
+     */
+    public static function getOrigin($ip)
     {
-        $ip = ($ip == null) ? self::get() : $ip;
-        return (self::origin($ip) == self::STUDENT);
-    }
+        // Localhost
+        if ($ip == '127.0.0.1')
+            return self::INTERNAL;
 
-    public static function is_local($ip = null)
-    {
-        $ip = ($ip == null) ? self::get() : $ip;
-        return (self::origin($ip) == self::PREMISE);
-    }
+        // Not Polytechnique
+        if (substr($ip, 0, 8) == '129.104.') {
+            // Polytechnique
+            $origin = self::POLYTECHIQUE;
 
-    public static function is_autres($ip = null)
-    {
-        $ip = ($ip == null) ? self::get() : $ip;
-        return (self::origin($ip) == self::EXTERNAL);
-    }
-
-    // Where is the IP from ?
-    public static function origin($ip = null)
-    {
-        $ip = ($ip == null) ? self::get() : $ip;
-        if (array_key_exists($ip, self::$originCache)) {
-            return self::$originCache[$ip];
-        } else {
-            if ($ip == '127.0.0.1' || (substr($ip, 0, 8) == '129.104.' && $ip != '129.104.30.4' && $ip != '129.104.30.90'))
-            {
-                if($ip == '127.0.0.1') {
-                    return self::INTERNAL;
-                }
-
-                $res = XDB::iterator('SELECT  rg.rid
-                                    FROM  ips
-                              INNER JOIN  rooms_groups AS rg ON rg.rid = ips.rid
-                                   WHERE  ips.ip = {?}
-                                   LIMIT  1', $ip);
-                if ($res->total() >= 1) {
-                    $origin = self::PREMISE;
-                    self::$originCache[$ip] = $origin;
-                    return $origin;
-                }
-
-                $res = XDB::iterator('SELECT  ru.rid
-                                    FROM  ips
-                              INNER JOIN  rooms_users AS ru ON ru.rid = ips.rid
-                                   WHERE  ips.ip = {?}
-                                   LIMIT  1', $ip);
-                if ($res->total() >= 1) {
-                    $origin = self::STUDENT;
-                    self::$originCache[$ip] = $origin;
-                    return $origin;
-                }
-
-                $origin = self::INTERNAL;
-                self::$originCache[$ip] = $origin;
+            // Polytechnique's DMZ is external
+            if (substr($ip, 0, 11) == '129.104.30.' || substr($ip, 0, 12) == '129.104.247.')
                 return $origin;
-            }
-            $origin = self::EXTERNAL;
-            self::$originCache[$ip] = $origin;
+
+            $origin |= self::INTERNAL;
+            // Query database to know wether this IP is a premise (=room for a group)
+            // or a student room
+            list($is_student, $is_premise) = XDB::fetchOneRow(
+                'SELECT  EXISTS(SELECT  rid
+                                  FROM  rooms_users AS ru
+                                 WHERE  ru.rid = ips.rid
+                                ) AS stu,
+                         EXISTS(SELECT  rid
+                                  FROM  rooms_groups AS rg
+                                 WHERE  rg.rid = ips.rid
+                                ) AS pre
+                   FROM  ips
+                  WHERE  ips.ip = {?}
+                  LIMIT  1', $ip);
+
+            if ($is_student)
+                $origin |= self::STUDENT;
+            if ($is_premise)
+                $origin |= self::PREMISE;
+
             return $origin;
         }
+
+        // External IP
+        return 0;
     }
 
+    /**
+     * Test wether an IP is from X
+     * @return boolean
+     */
+    public function is_polytechnique()
+    {
+        return (boolean)($this->origin & self::POLYTECHIQUE);
+    }
+
+    /**
+     * Test wether an IP is X-internal
+     * @return boolean
+     */
+    public function is_x_internal()
+    {
+        return ($this->origin & self::POLYTECHIQUE) && ($this->origin & self::INTERNAL);
+    }
+
+    /**
+     * Test wether an IP is a student room
+     * @return boolean
+     */
+    public function is_student()
+    {
+        return (boolean)($this->origin & self::STUDENT);
+    }
+
+    /**
+     * Test wether an IP is a binet premise
+     * @return boolean
+     */
+    public function is_premise()
+    {
+        return (boolean)($this->origin & self::PREMISE);
+    }
+
+    /**
+     * Test wether this IP has acess to the X student IP zone
+     * @return boolean
+     */
+    public function has_x_student()
+    {
+        return $this->is_x_internal() && ($this->origin & (self::STUDENT|self::PREMISE));
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

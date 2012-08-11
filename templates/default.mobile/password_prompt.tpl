@@ -40,7 +40,7 @@
             <input type="password" autocorrect="off" autocapitalize="off" placeholder="mot de passe" name="password" value="" class="wide-field"/>
         </div>
         {if !t($remote_site)}{* No cookie for remote auth *}
-            <input type="checkbox" {if $smarty.session.auth >= AUTH_STUDENT}checked="checked"{/if} name="remember" id="remember" />
+            <input type="checkbox" {if $remip->is_student()}checked="checked"{/if} name="remember" id="remember" />
             Se souvenir de moi
             <br>
         {/if}

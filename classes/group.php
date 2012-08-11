@@ -307,6 +307,19 @@ class Group extends Meta
         return $json;
     }
 
+    /**
+     * Is the current user a room master ?
+     * @return boolean
+     */
+    public function isRoomMaster()
+    {
+        $user = S::user();
+        if (!$user)
+            return false;
+        return $user->isWeb() || $user->hasRights($group, Rights::admin()) ||
+            in_array(IP::get(), $group->ips());
+    }
+
     /*******************************************************************************
          Data fetcher
 

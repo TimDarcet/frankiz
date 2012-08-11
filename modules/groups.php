@@ -163,7 +163,7 @@ class GroupsModule extends PLModule
 
             if (S::i('auth') > AUTH_PUBLIC || $group->external()) {
                 $group->select(GroupSelect::see());
-                $page->assign('roomMaster', S::user()->hasRights($group, Rights::admin()) || S::user()->isWeb() || in_array(IP::get(), $group->ips()));
+                $page->assign('roomMaster', $group->isRoomMaster());
 
                 $promos = S::user()->castes()->groups()->filter('ns', Group::NS_PROMO);
                 $page->assign('promos', $promos);

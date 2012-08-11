@@ -33,9 +33,9 @@ class JtxMiniModule extends FrankizMiniModule
 
     public function tpl()
     {
-        if (IP::is_internal())
+        if (IP::getInstance()->has_x_student())
             return 'minimodules/jtx/internal.tpl';
-        else 
+        else
             return 'minimodules/jtx/external.tpl';
     }
 
@@ -46,7 +46,7 @@ class JtxMiniModule extends FrankizMiniModule
 
     public function run()
     {
-	$this->assign('params', '?'.date('Y-m-d'));
+        $this->assign('params', '?'.date('Y-m-d'));
     }
 
 }

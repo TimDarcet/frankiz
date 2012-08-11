@@ -25,9 +25,7 @@
 // AUTH_PUBLIC = 0
 // AUTH_COOKIE = 5
 // AUTH_MDP = 10
-define('AUTH_INTERNAL', 1);    //Connecting from inside
-define('AUTH_PREMISE',  2);   //Connecting from a binets or a bar d'étage
-define('AUTH_STUDENT',  3);    //Connecting from a student's room
+define('AUTH_INTERNAL', 1); //Connecting from inside
 
 class FrankizSession extends PlSession
 {
@@ -41,22 +39,8 @@ class FrankizSession extends PlSession
         parent::__construct();
 
         // Try to set better auth than AUTH_PUBLIC depending on the origin of the IP
-        if(S::i('auth') < AUTH_INTERNAL) {
-            $auth = S::i('auth');
-            switch(IP::origin()) {
-                case IP::STUDENT:
-                    $auth = AUTH_STUDENT;
-                    break;
-
-                case IP::PREMISE:
-                    $auth = AUTH_PREMISE;
-                    break;
-
-                case IP::INTERNAL:
-                    $auth = AUTH_INTERNAL;
-                    break;
-            }
-            S::set('auth', $auth);
+        if(S::i('auth') < AUTH_INTERNAL && IP::getInstance()->is_x_internal()) {
+            S::set('auth', AUTH_INTERNAL);
         }
     }
 

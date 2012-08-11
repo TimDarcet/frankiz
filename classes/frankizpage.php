@@ -65,7 +65,7 @@ class FrankizPage extends PlPage
         $this->assign('title', '');
         $this->changeTpl('500.tpl');
     }
-    
+
     private function load_skin()
     {
         global $globals;
@@ -192,6 +192,8 @@ class FrankizPage extends PlPage
         $user = S::user();
         $this->assign('user', $user);
         $this->assign('logged', !is_null($user) && S::logged());
+        // Remote IP
+        $this->assign('remip', IP::getInstance());
 
         $this->assign('MiniModules_COL_FLOAT', FrankizMiniModule::get(S::user()->minimodules(FrankizMiniModule::COL_FLOAT)));
 
