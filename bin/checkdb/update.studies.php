@@ -78,7 +78,7 @@ function create_promo_image(Group $g, $promo) {
 }
 
 // Update formations
-$formations = Formation::selectAll(FormationSelect::base());/*
+$formations = Formation::selectAll(FormationSelect::base());
 foreach ($formations as $form) {
     // Update group
     $f = new UserFilter(new UFC_Study(new Formation($form->id())));
@@ -117,7 +117,7 @@ while (list($promo, $formation_id, $abbrev, $label) = $iter->next()) {
     $g = update_group('promo_' . $abbrev . $promo, $promo . ' ' . $label, Group::NS_PROMO, $f);
     create_promo_image($g, $promo);
 }
-*/
+
 // Update on_platal, specifying the number of years a school remains on the platal
 $onplatal_numyears = array(
     'x' => 2,

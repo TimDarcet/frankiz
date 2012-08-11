@@ -20,7 +20,7 @@
 {*                                                                        *}
 {**************************************************************************}
 
-{if !t($text)}
+{if $text == null}
 Ton mail vient d'être accepté. Il a va bientôt être envoyé.
 {$comm|smarty:nodefaults}
 
