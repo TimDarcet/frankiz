@@ -28,6 +28,7 @@ class IP
     const INTERNAL     = 0x02; // "internal" zone (no proxies & DMZ, pits, salles infos)
     const STUDENT      = 0x04; // Student's room
     const PREMISE      = 0x08; // Binets premise
+    const HAS_STUDENT  = 0x10; // IP in a zone which has access to student zone
 
     // string IP address
     private $ipAddr;
@@ -105,11 +106,22 @@ class IP
             // Polytechnique
             $origin = self::POLYTECHIQUE;
 
+            // Read 3rd number
+            $digit4 = strpos($ip, '.', 9);
+            $ip3 = (int)substr($ip, 8, $digit4 - 8);
+            if (!$digit4 || !$ip3)
+                return $origin;
+
             // Polytechnique's DMZ is external
-            if (substr($ip, 0, 11) == '129.104.30.' || substr($ip, 0, 12) == '129.104.247.')
+            if ($ip3 == 30 || $ip3 == 247)
                 return $origin;
 
             $origin |= self::INTERNAL;
+
+            // 129.104.192.0/18 has access to student zone
+            if ($ip3 >= 192)
+                $origin |= self::HAS_STUDENT;
+
             // Query database to know wether this IP is a premise (=room for a group)
             // or a student room
             list($is_student, $is_premise) = XDB::fetchOneRow(
@@ -179,7 +191,7 @@ class IP
      */
     public function has_x_student()
     {
-        return $this->is_x_internal() && ($this->origin & (self::STUDENT|self::PREMISE));
+        return $this->is_x_internal() && ($this->origin & self::HAS_STUDENT);
     }
 }
 

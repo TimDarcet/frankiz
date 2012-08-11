@@ -316,8 +316,8 @@ class Group extends Meta
         $user = S::user();
         if (!$user)
             return false;
-        return $user->isWeb() || $user->hasRights($group, Rights::admin()) ||
-            in_array(IP::get(), $group->ips());
+        return $user->isWeb() || $user->hasRights($this, Rights::admin()) ||
+            in_array(IP::get(), $this->ips());
     }
 
     /*******************************************************************************
