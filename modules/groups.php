@@ -158,12 +158,12 @@ class GroupsModule extends PLModule
 
         if ($group) {
             // Fetch the group
-            $group->select(GroupSelect::premises());
+            $group->select(GroupSelect::base());
             $page->assign('group', $group);
-            $page->assign('roomMaster', S::user()->hasRights($group, Rights::admin()) || S::user()->isWeb() || in_array(IP::get(), $group->ips()));
 
             if (S::i('auth') > AUTH_PUBLIC || $group->external()) {
                 $group->select(GroupSelect::see());
+                $page->assign('roomMaster', S::user()->hasRights($group, Rights::admin()) || S::user()->isWeb() || in_array(IP::get(), $group->ips()));
 
                 $promos = S::user()->castes()->groups()->filter('ns', Group::NS_PROMO);
                 $page->assign('promos', $promos);
