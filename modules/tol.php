@@ -228,13 +228,20 @@ class TolModule extends PLModule
         $page->changeTpl('tol/tol.tpl');
     }
 
-    function handler_see($page, $hruid)
+    function handler_see($page, $hruid = null)
     {
+        $hruid = trim($hruid);
+        // By default, see current user
+        if (!$hruid && S::user()) {
+            $hruid = S::user()->hruid();
+        }
         $uf = new UserFilter(new UFC_Hruid($hruid));
         $user = $uf->get(true);
 
         if ($user) {
             $user->select(UserSelect::tol());
+        } else {
+            $page->trigError("L'utilisateur indiqué n'existe pas.");
         }
 
         $page->assign('su', S::user()->isAdmin());
