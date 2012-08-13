@@ -87,7 +87,7 @@ class RemoteModule extends PlModule
 
         if ($remote->hasRight('rights') && in_array('rights', $request)) {
             $r = array();
-            foreach ($remote->group() as $g) {
+            foreach ($remote->groups() as $g) {
                 $r[$g->name()] = array_map(function($r) { return (string) $r; }, $user->rights($g));
             }
             if (!empty($r))
