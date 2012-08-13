@@ -1,0 +1,3 @@
+# Disallow every bot
+User-agent: *
+Disallow: /

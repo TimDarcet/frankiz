@@ -33,7 +33,6 @@ Less::make();
 
 echo "Purging tpl's spool \n";
 
-exec('rm ../spool/templates_c/* -f')
-
+exec('rm ../spool/templates_c/* -f');
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
