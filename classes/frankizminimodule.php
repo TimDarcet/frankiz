@@ -140,10 +140,10 @@ abstract class FrankizMiniModule
                         if ($globals->debug & DEBUG_BT) {
                             if (!isset(PlBacktrace::$bt['Minimodule']))
                                 new PlBacktrace('Minimodule');
+                            PlBacktrace::$bt['Minimodule']->newEvent($name, 0, $e->getMessage(),
+                                array(array('file' => $e->getFile(),
+                                            'line' => $e->getLine())));
                         }
-                        PlBacktrace::$bt['Minimodule']->newEvent($name, 0, $e->getMessage(),
-                            array(array('file' => $e->getFile(),
-                                        'line' => $e->getLine())));
                     }
                 }
             }

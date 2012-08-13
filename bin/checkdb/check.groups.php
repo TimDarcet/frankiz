@@ -216,8 +216,8 @@ function check_group(Group $g)
                 echo "Warning: nationality group " . $gtext . " has an invalid name\n";
             }
         } elseif ($g->ns() == 'course') {
-            if (!preg_match('/^pa_[a-z0-9]+$/', $g->name())
-            && !preg_match('/^modal[a-z0-9-]+$/', $g->name())) {
+            if (!preg_match('/^pa_[a-z0-9-_]+$/', $g->name())
+            && !preg_match('/^modal[a-z0-9-_]+$/', $g->name())) {
                 echo "Warning: course group " . $gtext . " has an invalid name\n";
             }
         } elseif ($g->ns() == 'sport') {
