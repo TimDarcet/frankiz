@@ -62,4 +62,3 @@ function frankiz_auth_response()
     }
     return $response;
 }
-?>

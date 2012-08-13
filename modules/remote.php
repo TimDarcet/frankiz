@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *  Copyright (C) 2012 Binet Réseau                                        *
+ *  Copyright (C) 2004-2012 Binet Réseau                                   *
  *  http://br.binets.fr/                                                   *
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
@@ -197,4 +197,3 @@ class RemoteModule extends PlModule
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
-?>

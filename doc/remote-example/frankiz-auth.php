@@ -5,4 +5,3 @@
 require_once('frankiz-login.inc.php');
 
 frankiz_auth_ask();
-?>

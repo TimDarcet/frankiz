@@ -1,7 +1,7 @@
 <?php
 /***************************************************************************
- *  Copyright (C) 2012 Binet Réseau                                        *
- *  http://br.binets.fr/                      *
+ *  Copyright (C) 2004-2012 Binet Réseau                                   *
+ *  http://br.binets.fr/                                                   *
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
  *  it under the terms of the GNU General Public License as published by   *
@@ -228,4 +228,3 @@ class Remote extends Meta
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
-?>

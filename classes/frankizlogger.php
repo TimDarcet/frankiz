@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2003-2011 Polytechnique.org
+ *  Copyright (C) 2004-2012 Binet Réseau                                   *
  * http://opensource.polytechnique.org/
  *
  * This program is free software; you can redistribute it and/or modify
@@ -121,4 +121,3 @@ class FrankizLogger extends PlLogger
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
-?>

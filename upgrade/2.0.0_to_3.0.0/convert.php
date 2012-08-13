@@ -442,4 +442,3 @@ $g->caste(Rights::admin())->userfilter(new UserFilter(new UFC_Group($webmasters,
 echo "Added Fkz Microcosmos \n";
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
-?>

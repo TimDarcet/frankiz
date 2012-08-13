@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *  Copyright (C) 2010 Binet Photo                                       *
+ *  Copyright (C) 2004-2012 Binet Réseau                                   *
  ***************************************************************************/
 
 class PixMiniModule extends FrankizMiniModule
@@ -66,4 +66,3 @@ class PixMiniModule extends FrankizMiniModule
     }
 }
 
-?>

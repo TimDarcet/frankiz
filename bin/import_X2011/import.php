@@ -1,8 +1,8 @@
 #!/usr/bin/php -q
 <?php
 /***************************************************************************
- *  Copyright (C) 2003-2010 Polytechnique.org                              *
- *  http://opensource.polytechnique.org/                                   *
+ *  Copyright (C) 2004-2012 Binet Réseau                                   *
+ *  http://br.binets.fr/                                                   *
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
  *  it under the terms of the GNU General Public License as published by   *
@@ -231,4 +231,3 @@ for ($datas = fgetcsv($fic, 1024, ';'); !feof($fic); $datas = fgetcsv($fic, 1024
 
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
-?>

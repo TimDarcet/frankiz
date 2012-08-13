@@ -1,7 +1,7 @@
 #!/usr/bin/php -q
 <?php
 /***************************************************************************
- *  Copyright (C) 2012 Binet Réseau                                        *
+ *  Copyright (C) 2004-2012 Binet Réseau                                   *
  *  http://br.binets.fr/                                                   *
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
@@ -117,4 +117,3 @@ while ($filename = readdir($d)) {
     }
 //    print_r($known_methods);
 }
-?>

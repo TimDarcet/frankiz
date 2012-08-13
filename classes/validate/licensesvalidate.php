@@ -1,7 +1,7 @@
 <?php
 /***************************************************************************
- *  Copyright (C) 2010 Binet Réseau                                       *
- *  http://www.polytechnique.fr/eleves/binets/reseau/                     *
+ *  Copyright (C) 2004-2012 Binet Réseau                                   *
+ *  http://br.binets.fr/                                                   *
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
  *  it under the terms of the GNU General Public License as published by   *
@@ -134,4 +134,3 @@ class LicensesValidate extends ItemValidate
 }
 
 /* vim: set expandtab shiftwidth=4 tabstop=4 softtabstop=4 foldmethod=marker enc=utf-8: */
-?>
