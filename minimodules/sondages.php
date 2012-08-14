@@ -59,6 +59,21 @@ class SondagesMiniModule extends FrankizMiniModule
 		FrankizMiniModule::register('sondages', AUTH_PUBLIC);
 	}
 
+        public function tpl()
+        {
+            return 'minimodules/sondages/sondages.tpl';
+        }
+
+        public function title()
+        {
+            return 'Sondages';
+        }
+
+        public function auth()
+        {
+            return AUTH_COOKIE;
+        }
+
 	public function run()
 	{
 		global $page, $DB_web;
@@ -77,16 +92,7 @@ class SondagesMiniModule extends FrankizMiniModule
 		                  FROM sondage_question 
 				 WHERE TO_DAYS(perime) - TO_DAYS(NOW()) < -7 AND eleve_id = {$_SESSION['uid']}");*/
 		$this->assign("anciens_user", $this->get_sondages());
-
-		$this->tpl = "minimodules/sondages/sondages.tpl";
-		$this->titre = "Sondages";
-	}
-
-	public static function check_auth()
-	{
-		return est_authentifie(AUTH_COOKIE);
 	}
 }
-FrankizMiniModule::register_module("sondages", "SondagesMiniModule", "Sondages");
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

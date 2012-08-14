@@ -19,40 +19,34 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+require_once(dirname(__FILE__) . '/../../include/test.inc.php');
 
-if(est_authentifie(AUTH_COOKIE)) {
+/**
+ * Checks the files in modules/ directory
+ */
+class MiniModulesTest extends PHPUnit_Framework_TestCase
+{
+    public function getFiles()
+    {
+        global $globals;
+        $files = glob($globals->spoolroot . '/minimodules/*.php');
+         // Return an array of parameters
+        $data = array();
+        foreach ($files as $f) {
+            $data[] = array(substr(basename($f), 0, -4));
+        }
+        return $data;
+    }
 
-	echo "<module id=\"tour_kawa\" titre=\"Tour Kawa\">\n";
-	$tour_existe = false;
-	
-	// Génération des tours kawa
-	$jour = array("Aujourd'hui","Demain");
-	for ($i = 0; $i <= 1; $i++) {
-		$DB_web->query("SELECT sections.nom FROM kawa LEFT JOIN trombino.sections ON kawa.section_id=sections.section_id WHERE (date=\"".date("Y-m-d",time()+$i * 3600 *24)."\")");
-		list($groupe)=$DB_web->next_row();
-		
-		if(strcasecmp("personne", $groupe) != 0 && $groupe != "") {
-			// si c'est le premier tour kawa, on ouvre la liste
-			if(!$tour_existe) echo "<liste id=\"tour_kawa\" selectionnable=\"non\">\n";
-			
-			echo "<element id=\"$i\">";
-			echo "<colonne id=\"jour\">$jour[$i]</colonne>";
-			echo "<colonne id=\"kawa\">$groupe</colonne>";
-			echo "</element>\n";
-
-			$tour_existe = true;
-		}
-	}
-
-	if($tour_existe) {
-		// il y a eu des tours kawa : on ferme la liste
-		echo "</liste>\n";
-	} else {
-		// il n'y a pas de tour kawa prévu
-		echo "<p>Pas d'attribution de tour kawa.</p>\n";
-	}
-
-	echo "</module>\n";
+    /**
+     * @dataProvider getFiles
+     */
+    public function testMiniModules($mininame)
+    {
+        global $globals;
+        // Load minimodule
+        $mini = FrankizMiniModule::get($mininame, false);
+        $tplPath = $globals->spoolroot . '/templates/default/' . $mini->template();
+        $this->assertTrue(file_exists($tplPath), "Minimodule template does not exist");
+    }
 }
-
-// vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

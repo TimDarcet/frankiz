@@ -80,6 +80,9 @@ prod_update:
 	git rebase origin/prod
 	cd $(INSTALL_DIR)/bin/ && php -f reset.skin.php
 
+test:
+	phpunit tests
+
 ################################################################################
 # targets
 

@@ -19,15 +19,8 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-require_once BASE_LOCAL."/include/rss_func.inc.php";
-$liens = $_SESSION['rss'];
-if(is_array($liens)){
-	foreach($liens as $value => $mode){
-		if($mode == 'module'){
-			list($mode,$value) = explode("_",$value,2);
-			rss_xml($value,"sommaire");
-		}
-	}
-}
+require_once('frankiz.inc.php');
+spl_autoload_register('__autoload');
+new Frankiz();
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

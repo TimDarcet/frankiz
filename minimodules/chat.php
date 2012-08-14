@@ -21,13 +21,24 @@
 
 class ChatMiniModule extends FrankizMiniModule
 {
-    const auth  = AUTH_COOKIE;
-    const perms = 'user';
-
-    public function __construct()
+    protected function tpl()
     {
-        $this->tpl = "minimodules/chat/chat.tpl";
-        $this->titre = "Chat";
+        return 'minimodules/chat/chat.tpl';
+    }
+
+    public function title()
+    {
+        return 'Chat';
+    }
+
+    public function auth()
+    {
+        return AUTH_COOKIE;
+    }
+
+    public function perms()
+    {
+        return 'user';
     }
 }
 

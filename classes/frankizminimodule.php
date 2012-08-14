@@ -129,8 +129,8 @@ abstract class FrankizMiniModule
         $minimodules = array();
         foreach($names as $name) {
             $m = self::instantiate($name);
-            $minimodules[$m->name] = $m;
             if ($m !== false) {
+                $minimodules[$m->name] = $m;
                 self::$minimodules[$m->name] = $m;
                 if ($m->checkAuthAndPerms() && $run) {
                     try {
