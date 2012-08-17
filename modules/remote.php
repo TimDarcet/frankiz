@@ -104,9 +104,24 @@ class RemoteModule extends PlModule
         if ($remote->hasRight('promo') && in_array('promo', $request)) {
             $groups = $user->castes()->groups()->filter('ns', Group::NS_PROMO);
             $groups = $groups->remove(Group::from('on_platal'));
-            $group = $groups->first();
-            if ($group)
-                $response['promo'] = $group->label();
+            // Extract promos from group labels
+            // For backward compatibility, compute the minimal promo year
+            $promo = 0;
+            $promos = array();
+            foreach ($groups as $g) {
+                $matches = array();
+                if (preg_match('/^promo_([a-z_]+)([1-9][0-9]{3})$/', $g->name(), $matches)) {
+                    $promos[] = $matches[1] . $matches[2];
+                    $year = (integer)$matches[2];
+                    if (!$promo || $year < $promo) {
+                        $promo = $year;
+                    }
+                }
+            }
+            if ($promo) {
+                $response['promo'] = $promo;
+                $response['promos'] = $promos;
+            }
         }
 
         if ($remote->hasRight('photo') && in_array('photo', $request)) {
