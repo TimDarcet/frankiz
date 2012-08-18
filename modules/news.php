@@ -41,19 +41,23 @@ class NewsModule extends PlModule
     {
         S::assert_xsrf_token();
         $ids = explode(',', $ids);
-        $news = new Collection('News');
-        $news->add($ids);
-        $news->read(($state == 1));
-
+        try {
+            $news = new Collection('News');
+            $news->add($ids);
+            $news->read(($state == 1));
+        } catch (NotAnIdException $e) {
+        }
         return PL_JSON;
     }
 
     function handler_ajax_star($page, $id, $state)
     {
         S::assert_xsrf_token();
-        $news = new News($id);
-        $news->star(($state == 1));
-
+        try {
+            $news = new News($id);
+            $news->star(($state == 1));
+        } catch (NotAnIdException $e) {
+        }
         return PL_JSON;
     }
 
@@ -69,8 +73,12 @@ class NewsModule extends PlModule
     function handler_news_current($page, $id = false)
     {
         if ($id) {
-            $news = new News($id);
-            $news->read(true);
+            try {
+                $news = new News($id);
+                $news->read(true);
+            } catch (NotAnIdException $e) {
+                $id = false;
+            }
         }
         if (S::user()->isWeb())
             $nf = new NewsFilter(new PFC_And(new NFC_End(new FrankizDateTime("now")),
@@ -87,9 +95,13 @@ class NewsModule extends PlModule
 
     function handler_news_new($page, $id = false)
     {
-        IF ($id) {
-            $news = new News($id);
-            $news->read(true);
+        if ($id) {
+            try {
+                $news = new News($id);
+                $news->read(true);
+            } catch (NotAnIdException $e) {
+                $id = false;
+            }
         }
 
         $nf = new NewsFilter(new PFC_And(new NFC_Current(),
@@ -124,8 +136,12 @@ class NewsModule extends PlModule
     function handler_news_other($page, $id = false)
     {
         if ($id) {
-            $news = new News($id);
-            $news->read(true);
+            try {
+                $news = new News($id);
+                $news->read(true);
+            } catch (NotAnIdException $e) {
+                $id = false;
+            }
         }
 
         $nf = new NewsFilter(new PFC_And(new NFC_Current(),
