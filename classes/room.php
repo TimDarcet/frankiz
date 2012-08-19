@@ -45,11 +45,7 @@ class RoomSchema extends Schema
     }
 
     public function scalars() {
-        return array('phone', 'comment');
-    }
-
-    public function objects() {
-        return array('ips' => 'Array', 'open' => 'Array');
+        return array('phone', 'comment', 'open');
     }
 
     public function collections() {
@@ -80,57 +76,21 @@ class RoomSelect extends Select
     }
 
     protected function handlers() {
-        return array('main' => array('phone', 'comment'),
-                     'collections' => array('ips'),
-                     'open' => array('open'));
-    }
-
-    protected function handler_ips(Collection $rooms, $fields) {
-        // NO LONGER USED
-        $_rooms = array();
-        foreach($rooms as $room) {
-            $_rooms[$room->id()] = array();
-        }
-
-        $iter = XDB::iterRow("SELECT  ip, rid
-                                FROM  ips
-                               WHERE  rid IN {?}", $rooms->ids());
-
-        while (list($ip, $rid) = $iter->next()) {
-            $_rooms[$rid][] = $ip;
-        }
-
-        foreach ($rooms as $room) {
-            $room->fillFromArray(array('ips' => $_rooms[$room->id()]));
-        }
-    }
-
-    protected function handler_open(Collection $rooms, $fields) {
-        $_rooms = array();
-        foreach($rooms as $room) {
-            $_rooms[$room->id()] = array();
-        }
-
-        $iter = XDB::iterRow("SELECT  open, rid, gid
-                                FROM  rooms_groups
-                               WHERE  rid IN {?}", $rooms->ids());
-
-        while (list($open, $rid, $gid) = $iter->next()) {
-            $_rooms[$rid][$gid] = $open;
-        }
-
-        foreach ($rooms as $room) {
-            $room->fillFromArray(array('open' => $_rooms[$room->id()]));
-        }
+        return array('main' => array('phone', 'comment', 'open'),
+                    'collections' => array('ips'));
     }
 }
 
 class Room extends Meta
 {
-    protected $phone    = null;
-    protected $comment  = null;
-    protected $ips      = null;
-    protected $open     = null;
+    // string, phone number
+    protected $phone   = null;
+    // string, comment about the room
+    protected $comment = null;
+    // boolean, open state
+    protected $open    = null;
+    // Array(IP => "comment of IP")
+    protected $ips     = null;
 
     /**
      * Allow ID matching ^[A-Z]*[0-9\/]*[a-z]*$
@@ -139,17 +99,9 @@ class Room extends Meta
      */
     public static function isId($mixed)
     {
-        return !is_object($mixed) && ($mixed !== null) && ($mixed !== '')
-                                  && (preg_match('/^[A-Z]*[0-9\/]*[a-z]*$/', $mixed));
+        return !is_object($mixed) && !empty($mixed)
+            && (preg_match('/^[A-Z]*[0-9\/]*[a-z]*$/', $mixed));
     }
-
-    public function door($gid, $state)
-    {
-        XDB::execute('UPDATE rooms_groups SET open = {?} WHERE rid = {?} AND gid = {?}', $state, $this->id(), $gid);
-        $this->open = $state==1;
-        return $this->open;
-    }
-
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

@@ -294,15 +294,15 @@ class GroupsModule extends PLModule
         return PL_JSON;
     }
 
-    function handler_group_ajax_open($page, $gid, $rid, $state)
+    function handler_group_ajax_open($page, $gid, $rid, $state = null)
     {
         S::assert_xsrf_token();
         $room = new Room($rid);
         $gf = new GroupFilter(new GFC_Id($gid));
         $group = $gf->get(true);
         $group->select(GroupSelect::premises());
-        if ($group && $goup->isRoomMaster())
-            $room->door($gid, $state);
+        if ($group && $group->isRoomMaster())
+            $room->open($state);
 
         return PL_JSON;
     }

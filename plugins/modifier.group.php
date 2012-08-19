@@ -46,15 +46,14 @@ function smarty_modifier_group($group, $type = 'micro') {
 
     if ($type == 'premises') {
         $str = '';
-        $roomMaster = $group->isRoomMaster();
-        foreach($group->premises() as $key=>$premise) {
-            $str .= '<div class="' . ($premise['open'] ? 'open' : 'close') . '" rid="' . $key . '">
-                            <div class="traffic_light_switcher' . ($roomMaster ? ' room_master' : '') . '" title="' . $premise['label'] . '"></div>
-                     </div>
-                     ';
+        $roomMasterCss = ($group->isRoomMaster() ? ' room_master' : '');
+        foreach ($group->rooms() as $premise) {
+            $state = ($premise->open() ? 'open' : 'close');
+            $str .= '<div class="' . $state . '" rid="' . $premise->id() . '">' .
+                '<div class="traffic_light_switcher' . $roomMasterCss . '" title="' . $premise->comment() . '">' .
+                 '</div></div>' . PHP_EOL;
         }
     }
-
     return $str;
 }
 

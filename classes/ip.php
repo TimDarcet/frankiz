@@ -84,6 +84,14 @@ class Ip extends Meta
         return !is_object($mixed) && !empty($mixed)
             && (preg_match('/^[0-9a-f][0-9a-f.:]+$/', $mixed));
     }
+
+    /**
+     * Represent an IP address by its ID
+     */
+    public function __toString()
+    {
+        return $this->id();
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

@@ -47,7 +47,7 @@ class GroupSchema extends Schema
     }
 
     public function objects() {
-        return array('image' => 'FrankizImage', 'premises' => 'Array', 'ips' => 'Array');
+        return array('image' => 'FrankizImage');
     }
 
     public function collections() {
@@ -82,7 +82,7 @@ class GroupSelect extends Select
     public static function see() {
         return new GroupSelect(array('ns', 'score', 'name', 'label', 'description',
                                      'image', 'wikix', 'web', 'mail', 'visible', 'castes', 'leavable','external',
-                                     'rooms', 'premises','ips'),
+                                     'rooms'),
                                array('castes' => CasteSelect::base(),
                                      'rooms' => RoomSelect::premise()));
     }
@@ -92,8 +92,8 @@ class GroupSelect extends Select
     }
 
     public static function premises() {
-        return new GroupSelect( array('rooms', 'premises','ips'),
-                                array('rooms' => RoomSelect::premise()));
+        return new GroupSelect(array('rooms'),
+                               array('rooms' => RoomSelect::premise()));
     }
 
     public static function visibility() {
@@ -104,8 +104,6 @@ class GroupSelect extends Select
     protected function handlers() {
         return array('main'        => array_merge(Schema::group()->scalars(), array('image')),
                      'collections' => array('rooms'),
-                     'premises'    => array('premises'),
-                     'ips'         => array('ips'),
                      'nb_news'     => array('nb_news'),
                      'castes'      => array('castes'));
     }
@@ -136,35 +134,6 @@ class GroupSelect extends Select
 
         if (!empty($castes) && !empty($this->subs['castes'])) {
             $castes->select($this->subs['castes']);
-        }
-    }
-
-    protected function handler_rooms(Collection $groups, $fields) {
-        $this->helper_collection($groups, array('id' => 'room',
-                                                'table' => 'rooms_groups',
-                                                'field' => 'rooms'));
-    }
-
-    protected function handler_premises(Collection $groups, $fields) {
-        foreach($groups as $g) {
-            $premises = array();
-            foreach($g->rooms() as $premise) {
-                $opens = $premise->open();
-                $premises[$premise->id()] = array('label' => $premise->comment(),
-                                        'phone' => $premise->phone(),
-                                        'open'  => $opens[$g->id()]);
-            }
-            $g->fillFromArray(array('premises' => $premises));
-        }
-    }
-
-    protected function handler_ips(Collection $groups, $fields) {
-        foreach ($groups as $g) {
-            $ips = array();
-            foreach($g->rooms() as $premise) {
-                $ips = array_merge($ips, $premise->ips());
-            }
-            $g->fillFromArray(array('ips' => $ips));
         }
     }
 
@@ -222,8 +191,6 @@ class Group extends Meta
     protected $castes = null;
 
     protected $rooms = null;
-    protected $premises = null;
-    protected $ips = null;
 
     protected $nb_news = null;
 
@@ -317,7 +284,7 @@ class Group extends Meta
         if (!$user)
             return false;
         return $user->isWeb() || $user->hasRights($this, Rights::admin()) ||
-            in_array(IPAddress::get(), $this->ips());
+            $this->rooms()->ips()->has(IPAddress::get());
     }
 
     /*******************************************************************************
