@@ -88,9 +88,10 @@ class Collection implements IteratorAggregate, Countable
     {
         $className = $this->className;
         $inferedMethod = 'batch' . ucfirst($method);
-        array_unshift($arguments, $this->collected);
 
         if (method_exists($className, $inferedMethod)) {
+            // Call $className->batch$method($this->collected, ...)
+            array_unshift($arguments, $this->collected);
             $r = forward_static_call_array(array($className, $inferedMethod), $arguments);
             if (!is_array($r))
                 return $r;
@@ -101,6 +102,40 @@ class Collection implements IteratorAggregate, Countable
             return $c;
         }
 
+        // If there is no argument, build an array with values from $collected->$method
+        if (empty($arguments)) {
+            $values = array_map(
+                function ($mixed) use ($method) {
+                    return $mixed->$method();
+                }, $this->collected);
+
+            // Try magic things with the schema
+            $schema = Schema::get($className);
+            if ($schema->isScalar($method)) {
+                // Return an array of scalar values
+                return $values;
+            } elseif ($schema->isObject($method)) {
+                // Return a collection
+                return Collection::fromArray($values, $schema->objectType($method));
+            } elseif ($schema->isFlagset($method)) {
+                // Return a merged flagset
+                $fs = new PlFlagSet();
+                foreach ($values as $flags) {
+                    foreach ($flags as $flag) {
+                        $fs->addFlag($flag);
+                    }
+                }
+                return $fs;
+            } elseif ($schema->isCollection($method)) {
+                // Return a merged collection
+                $col = new Collection();
+                foreach ($values as $c) {
+                    $col->merge($c);
+                }
+                return $col;
+            }
+            throw new Exception("Unknown automatic field $method is schema for $className");
+        }
         throw new Exception("The method $className::$inferedMethod doesn't exist");
     }
 
@@ -320,6 +355,15 @@ class Collection implements IteratorAggregate, Countable
                     return $c;
 
         return false;
+    }
+
+    /**
+     * Tell wether there is this item in the collection
+     * @param $mixed An Item, an id or any unique identifier supported by isMe()
+     */
+    public function has($mixed)
+    {
+        return $this->get($mixed) === false;
     }
 
     /**
