@@ -105,8 +105,7 @@ class ActivityModule extends PLModule
 
     function handler_icalendar($page, $type = 'friends', $user = null, $hash = null)
     {
-        $uf = new UserFilter(new UFC_Hruid($user));
-        $user = $uf->get(true);
+        $user = User::from($user);
         if (!$user) {
             return PL_FORBIDDEN;
         }

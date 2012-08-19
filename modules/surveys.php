@@ -32,9 +32,7 @@ class SurveysModule extends PlModule
 
     function handler_take($page, $sid = null)
     {
-        $sf = new SurveyFilter(new SFC_Id($sid));
-        $survey = $sf->get(true);
-
+        $survey = SurveyFilter::fromId($sid, false);
         if ($survey) {
             $survey->select(Survey::SELECT_BASE | Survey::SELECT_DESCRIPTION);
             if ($survey->alreadyTaken()) {
@@ -54,9 +52,7 @@ class SurveysModule extends PlModule
 
     function handler_submit($page, $sid = null)
     {
-        $sf = new SurveyFilter(new SFC_Id($sid));
-        $survey = $sf->get(true);
-
+        $survey = SurveyFilter::fromId($sid, false);
         if ($survey) {
             $survey->select(array(Survey::SELECT_DATAS => SurveyQuestion::SELECT_BASE));
             $survey->submit();
@@ -71,13 +67,10 @@ class SurveysModule extends PlModule
 
     function handler_see($page, $sid = null)
     {
-        $sf = new SurveyFilter(new SFC_Id($sid));
-        $survey = $sf->get(true);
-
+        $survey = SurveyFilter::fromId($sid, false);
         if ($survey) {
             $survey->select(Survey::SELECT_BASE | Survey::SELECT_DESCRIPTION);
             $survey->select(array(Survey::SELECT_DATAS => SurveyQuestion::SELECT_BASE | SurveyQuestion::SELECT_ANSWERS));
-            
         } else {
             throw new Exception("This survey doesn't exist");
         }

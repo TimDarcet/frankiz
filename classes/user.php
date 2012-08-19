@@ -33,6 +33,10 @@ class UserSchema extends Schema
         return 'uid';
     }
 
+    public function fromKey() {
+        return 'hruid';
+    }
+
     public function tableAs() {
         return 'a';
     }

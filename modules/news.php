@@ -42,8 +42,7 @@ class NewsModule extends PlModule
         S::assert_xsrf_token();
         $ids = explode(',', $ids);
         try {
-            $news = new Collection('News');
-            $news->add($ids);
+            $news = Collection::fromArray($ids, 'News');
             $news->read(($state == 1));
         } catch (NotAnIdException $e) {
         }
@@ -168,11 +167,9 @@ class NewsModule extends PlModule
         $page->changeTpl('news/news.tpl');
     }
 
-    function handler_admin($page, $nid)
+    function handler_admin($page, $nid = false)
     {
-        $nf = new NewsFilter(new PFC_And(new NFC_Id($nid)));
-        $news = $nf->get(true);
-
+        $news = News::fromId($nid);
         if ($news !== false) {
             $news->select(NewsSelect::news());
             if (S::user()->hasRights($news->target()->group(), Rights::admin()) || S::user()->isWeb()) {

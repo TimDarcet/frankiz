@@ -48,15 +48,14 @@ class ProposalModule extends PlModule
         return array($target_filter->get(true), $target_group);
     }
 
-    function handler_remove($page, $id)
+    function handler_remove($page, $id = null)
     {
         S::assert_xsrf_token();
 
-        $val = new ValidateFilter(new VFC_Id($id));
-        $val = $val->get(true);
-
+        $val = ValidateFilter::fromId($id, false);
         if ($val === false) {
-            throw new Exception("This item doesn't exist");
+            $page->trigError("This item doesn't exist");
+            return;
         }
 
         $val->select(ValidateSelect::validate());
@@ -300,10 +299,11 @@ class ProposalModule extends PlModule
 
     function handler_activity_ajax($page)
     {
-        $aid = Env::i('aid', '');
-        $a = new Activity($aid);
-        $a->select(ActivitySelect::base());
-        $page->assign('days', $a->next_dates(5));
+        $a = Activity::fromId(Env::i('aid'), false);
+        if ($a) {
+            $a->select(ActivitySelect::base());
+            $page->assign('days', $a->next_dates(5));
+        }
         $page->assign('activity', $a);
         $page->changeTpl('validate/prop.activity.ajax.tpl', NO_SKIN);
     }

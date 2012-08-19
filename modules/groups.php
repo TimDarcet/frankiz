@@ -149,43 +149,42 @@ class GroupsModule extends PLModule
         return PL_JSON;
     }
 
-    function handler_group_see($page, $group)
+    function handler_group_see($page, $group = null)
     {
         global $platal;
-        $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
-        $gf = new GroupFilter($filter);
-        $group = $gf->get(true);
-
-        if ($group) {
-            // Fetch the group
-            $group->select(GroupSelect::base());
-            $page->assign('group', $group);
-
-            if (S::i('auth') > AUTH_PUBLIC || $group->external()) {
-                $group->select(GroupSelect::see());
-                $page->assign('roomMaster', $group->isRoomMaster());
-
-                $promos = S::user()->castes()->groups()->filter('ns', Group::NS_PROMO);
-                $page->assign('promos', $promos);
-
-                // Relation between the user & the group
-                $page->assign('user', S::user());
-
-                if ($group->ns() != 'user') {
-                    $caste = $group->caste(Rights::member());
-                    if (!is_null($caste))
-                        $page->assign('member_allowed', $caste->userfilter());
-                }
-                $page->assign('title', $group->label());
-                $page->changeTpl('groups/group.tpl');
-            } else {
-                $platal->force_login($page);
-            }
-        } else {
+        $page->addCssLink('groups.css');
+        $group = Group::fromId($group);
+        if (!$group) {
             $page->assign('title', "Ce groupe n'existe pas");
             $page->changeTpl('groups/no_group.tpl');
+            return;
         }
-        $page->addCssLink('groups.css');
+
+        // Fetch the group
+        $group->select(GroupSelect::base());
+        $page->assign('group', $group);
+
+        // Check rights
+        if (S::i('auth') <= AUTH_PUBLIC && !$group->external()) {
+            $platal->force_login($page);
+            return;
+        }
+        $group->select(GroupSelect::see());
+        $page->assign('roomMaster', $group->isRoomMaster());
+
+        $promos = S::user()->castes()->groups()->filter('ns', Group::NS_PROMO);
+        $page->assign('promos', $promos);
+
+        // Relation between the user & the group
+        $page->assign('user', S::user());
+
+        if ($group->ns() != 'user') {
+            $caste = $group->caste(Rights::member());
+            if (!is_null($caste))
+                $page->assign('member_allowed', $caste->userfilter());
+        }
+        $page->assign('title', $group->label());
+        $page->changeTpl('groups/group.tpl');
     }
 
     function handler_group_ajax_users($page)
@@ -193,9 +192,7 @@ class GroupsModule extends PLModule
         $group = Json::i('gid');
         $limit = 25;
 
-        $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
-        $gf = new GroupFilter($filter);
-        $group = $gf->get(true);
+        $group = Group::fromId($group);
 
         $users = false;
         if ($group) {
@@ -261,10 +258,7 @@ class GroupsModule extends PLModule
 
     function handler_group_ajax_news($page, $group)
     {
-        $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
-        $gf = new GroupFilter($filter);
-        $group = $gf->get(true);
-
+        $group = Group::fromId($group);
         $news = false;
         if ($group) {
             $news = array();
@@ -298,20 +292,19 @@ class GroupsModule extends PLModule
     {
         S::assert_xsrf_token();
         $room = new Room($rid);
-        $gf = new GroupFilter(new GFC_Id($gid));
-        $group = $gf->get(true);
-        $group->select(GroupSelect::premises());
-        if ($group && $group->isRoomMaster())
-            $room->open($state);
-
+        $group = Group::fromId($gid, false);
+        if ($group) {
+            $group->select(GroupSelect::premises());
+            if ($group->isRoomMaster()) {
+                $room->open($state);
+            }
+        }
         return PL_JSON;
     }
 
-    function handler_group_admin($page, $group)
+    function handler_group_admin($page, $group = null)
     {
-        $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
-        $gf = new GroupFilter($filter);
-        $group = $gf->get(true);
+        $group = Group::fromId($group);
 
         if ($group && (S::user()->hasRights($group, Rights::admin()) || S::user()->isWeb())) {
             $group->select(GroupSelect::see());
@@ -380,13 +373,8 @@ class GroupsModule extends PLModule
 
     function handler_group_ajax_admin_users($page)
     {
-        $group = Json::i('gid');
+        $group = Group::fromId(Json::i('gid'));
         $limit = 10;
-
-        $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
-        $gf = new GroupFilter($filter);
-        $group = $gf->get(true);
-
         $total = 0;
         $users = false;
         if ($group) {
@@ -457,13 +445,8 @@ class GroupsModule extends PLModule
     {
         S::assert_xsrf_token();
 
-        $group = Json::i('gid');
-        $gf = new GroupFilter((Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group));
-        $group = $gf->get(true);
-
-        $uf = new UserFilter(new UFC_Uid(Json::i('uid')));
-        $user = $uf->get(true);
-
+        $group = Group::fromId(Json::i('gid'));
+        $user = User::fromId(Json::i('uid'));
         if ($group && $user) {
             if (S::user()->isMe($user) && !S::user()->isAdmin()) {
                 $page->jsonAssign('msg', 'On ne peut pas changer ses propres droits');
@@ -500,40 +483,35 @@ class GroupsModule extends PLModule
     {
         S::assert_xsrf_token();
 
-        $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
-        $gf = new GroupFilter($filter);
-        $group = $gf->get(true);
-
-        if ($group) {
-            if ($right == 'friend') {
-                $group->select(GroupSelect::subscribe());
-
-                $group->caste(Rights::friend())->addUser(S::user());
-                S::user()->select(UserSelect::castes());
-
-                pl_redirect('groups/see/' . $group->name());
-                exit;
-            }
-            elseif ($right == 'member') {
-                $group->select(GroupSelect::subscribe());
-
-                if ($group->caste(Rights::member())->userfilter()) {
-                    throw new Exception('You can\'t apply to this group');
-                }
-
-                $iv = new MemberValidate(S::user(), $group);
-                $v = new Validate(array(
-                    'writer'  => S::user(),
-                    'group'   => $group,
-                    'item'    => $iv,
-                    'type'    => 'member'));
-                $v->insert();
-                $page->assign('title', "Demande de statut de membre");
-                $page->changeTpl('groups/member.tpl');
-            }
-        } else {
+        $group = Group::fromId($group);
+        if (!$group) {
             $page->assign('title', "Ce groupe n'existe pas");
             $page->changeTpl('groups/no_group.tpl');
+            return;
+        } elseif ($right == 'friend') {
+            $group->select(GroupSelect::subscribe());
+
+            $group->caste(Rights::friend())->addUser(S::user());
+            S::user()->select(UserSelect::castes());
+
+            pl_redirect('groups/see/' . $group->name());
+            exit;
+        } elseif ($right == 'member') {
+            $group->select(GroupSelect::subscribe());
+
+            if ($group->caste(Rights::member())->userfilter()) {
+                throw new Exception('You can\'t apply to this group');
+            }
+
+            $iv = new MemberValidate(S::user(), $group);
+            $v = new Validate(array(
+                'writer'  => S::user(),
+                'group'   => $group,
+                'item'    => $iv,
+                'type'    => 'member'));
+            $v->insert();
+            $page->assign('title', "Demande de statut de membre");
+            $page->changeTpl('groups/member.tpl');
         }
     }
 
@@ -541,32 +519,29 @@ class GroupsModule extends PLModule
     {
         S::assert_xsrf_token();
 
-        $filter = (Group::isId($group)) ? new GFC_Id($group) : new GFC_Name($group);
-        $gf = new GroupFilter($filter);
-        $group = $gf->get(true);
-
-        if ($group) {
-            $group->select(GroupSelect::subscribe());
-
-            if ($group->leavable()) {
-                $group->removeUser(S::user());
-                S::user()->select(UserSelect::castes());
-            }
-
-            pl_redirect('groups/see/' . $group->name());
-            exit;
-        } else {
+        $group = Group::fromId($group);
+        if (!$group) {
             $page->assign('title', "Ce groupe n'existe pas");
             $page->changeTpl('groups/no_group.tpl');
+            return;
         }
+
+        $group->select(GroupSelect::subscribe());
+
+        if ($group->leavable()) {
+            $group->removeUser(S::user());
+            S::user()->select(UserSelect::castes());
+        }
+
+        pl_redirect('groups/see/' . $group->name());
+        exit;
     }
 
     function handler_ajax_comment($page)
     {
         S::assert_xsrf_token();
 
-        $gf = new GroupFilter(new GFC_Id(Json::i('gid')));
-        $g = $gf->get(true);
+        $g = Group::fromId(Json::i('gid'));
         if ($g) {
             $user = (Json::has('uid')) ? new User(Json::i('uid')) : S::user();
 
