@@ -317,7 +317,7 @@ class Group extends Meta
         if (!$user)
             return false;
         return $user->isWeb() || $user->hasRights($this, Rights::admin()) ||
-            in_array(IP::get(), $this->ips());
+            in_array(IPAddress::get(), $this->ips());
     }
 
     /*******************************************************************************

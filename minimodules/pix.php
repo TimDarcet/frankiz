@@ -22,10 +22,9 @@ class PixMiniModule extends FrankizMiniModule
 
     public function tpl()
     {
-        if (IP::getInstance()->has_x_student())
-            return 'minimodules/pix/internal.tpl';
-        else
-            return 'minimodules/pix/external.tpl';
+        return IPAddress::getInstance()->has_x_student()
+            ? 'minimodules/pix/internal.tpl'
+            : 'minimodules/pix/external.tpl';
     }
 
     public function title()

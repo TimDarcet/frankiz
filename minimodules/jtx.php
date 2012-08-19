@@ -33,10 +33,9 @@ class JtxMiniModule extends FrankizMiniModule
 
     public function tpl()
     {
-        if (IP::getInstance()->has_x_student())
-            return 'minimodules/jtx/internal.tpl';
-        else
-            return 'minimodules/jtx/external.tpl';
+        return IPAddress::getInstance()->has_x_student()
+            ? 'minimodules/jtx/internal.tpl'
+            : 'minimodules/jtx/external.tpl';
     }
 
     public function title()

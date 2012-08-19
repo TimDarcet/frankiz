@@ -39,7 +39,7 @@ class FrankizSession extends PlSession
         parent::__construct();
 
         // Try to set better auth than AUTH_PUBLIC depending on the origin of the IP
-        if(S::i('auth') < AUTH_INTERNAL && IP::getInstance()->is_x_internal()) {
+        if(S::i('auth') < AUTH_INTERNAL && IPAddress::getInstance()->is_x_internal()) {
             S::set('auth', AUTH_INTERNAL);
         }
     }

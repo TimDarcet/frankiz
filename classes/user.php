@@ -1155,7 +1155,9 @@ class User extends Meta
             if (S::has('anonymous_user'))
                 return S::v('anonymous_user');
 
-            $uid = (IP::getInstance()->is_x_internal() ? $globals->anonymous->internal : $globals->anonymous->external);
+            $uid = (IPAddress::getInstance()->is_x_internal()
+                ? $globals->anonymous->internal
+                : $globals->anonymous->external);
             S::set('newuid', $uid);
             try {
                 $u = new User($uid);

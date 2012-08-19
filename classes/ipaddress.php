@@ -22,7 +22,7 @@
 /**
  * Classify IP addresses into categories
  */
-class IP
+class IPAddress
 {
     const POLYTECHIQUE = 0x01; // IP from Polytechnique
     const INTERNAL     = 0x02; // "internal" zone (no proxies & DMZ, pits, salles infos)
@@ -77,7 +77,7 @@ class IP
         }
 
         // Set cache and return an IP object
-        return $ipObject = new IP($ip);
+        return $ipObject = new IPAddress($ip);
     }
 
     /**
@@ -91,7 +91,7 @@ class IP
     /**
      * Get where the IP is from
      * @param string $ip IP
-     * @return integer Binary combination of IP:: constants
+     * @return integer Binary combination of IPAddress:: constants
      *
      * TODO: add global cache
      */

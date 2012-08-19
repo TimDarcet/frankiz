@@ -301,7 +301,7 @@ class GroupsModule extends PLModule
         $gf = new GroupFilter(new GFC_Id($gid));
         $group = $gf->get(true);
         $group->select(GroupSelect::premises());
-        if ($group && (S::user()->hasRights($group, Rights::admin()) || S::user()->isWeb() || in_array(IP::get(), $group->ips())))
+        if ($group && $goup->isRoomMaster())
             $room->door($gid, $state);
 
         return PL_JSON;

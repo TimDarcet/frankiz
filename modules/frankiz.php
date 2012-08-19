@@ -67,7 +67,7 @@ class FrankizModule extends PlModule
 
     function handler_universe($page)
     {
-        $page->assign('remip', IP::getInstance());
+        $page->assign('remip', IPAddress::getInstance());
         echo $page->fetch('universe.tpl');
         exit;
     }

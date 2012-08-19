@@ -193,7 +193,7 @@ class FrankizPage extends PlPage
         $this->assign('user', $user);
         $this->assign('logged', !is_null($user) && S::logged());
         // Remote IP
-        $this->assign('remip', IP::getInstance());
+        $this->assign('remip', IPAddress::getInstance());
 
         $this->assign('MiniModules_COL_FLOAT', FrankizMiniModule::get(S::user()->minimodules(FrankizMiniModule::COL_FLOAT)));
 
