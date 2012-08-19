@@ -52,21 +52,27 @@ abstract class Select
         $this->schema = Schema::get($this->className());
     }
 
-    protected static function arrayToSqlCols($cols)
+    /**
+     * Convert an array('table'=>array(columns)) to a sql columns list
+     * @param array $cols
+     * @return string comma-separated columns
+     */
+    protected static function arrayToSqlCols(array $cols)
     {
         $sql_columns = array();
-        foreach($cols as $table => $vals)
-            $sql_columns[] = implode(', ', array_map(
-                                function($value) use($table) {
-                                    if ($table == -1)
-                                        return $value;
-                                    else
-                                        return $table . '.' . $value;
-                                }, $vals));
-
+        foreach($cols as $table => $fields) {
+            foreach ($fields as $field) {
+                $sql_columns[] = (($table == -1) ? $field : ($table . '.' . $field));
+            }
+        }
         return implode(', ', $sql_columns);
     }
 
+    /**
+     * Build an unique hash for the select
+     * @deprecated
+     * @return type
+     */
     public function hash() {
         $str = implode($this->fields);
         if (!empty($this->subs)) {
@@ -75,14 +81,18 @@ abstract class Select
         return md5($str);
     }
 
+    /**
+     * Main entry point to select fields
+     * @param array|Collection $metas metaobjects to be selected
+     * @return Collection upated $metas
+     * @throws Exception if an error happened
+     */
     public function select($metas) {
         if (empty($metas))
             return;
 
         if (is_array($metas)) {
-            $c = new Collection();
-            $c->add($metas);
-            $metas = $c;
+            $metas = Collection::fromArray($metas);
         }
 
         $tobefetched = $this->fields;
@@ -97,15 +107,22 @@ abstract class Select
         }
 
         if (!empty($tobefetched)) {
-            throw new Exception("Some fields (" . implode(', ', $tobefetched) . ") couldn't be fetched in class " . $this->className());
+            throw new Exception("Some fields (" . implode(', ', $tobefetched) . ")"
+                . " couldn't be fetched in class " . $this->className());
         }
 
         if (is_callable($this->callback)) {
             $cb = $this->callback;
             $cb($metas);
         }
+        return $metas;
     }
 
+    /**
+     * Default handler for basic fields
+     * @param Collection $metas
+     * @param array $fields
+     */
     protected function handler_main(Collection $metas, array $fields) {
         $table = $this->schema->table();
         $as = $this->schema->tableAs();
@@ -113,6 +130,16 @@ abstract class Select
         $joins = array();
 
         $this->helper_main($metas, $cols, $joins);
+    }
+
+    protected function handler_collections(Collection $metas, array $fields) {
+        foreach ($fields as $field) {
+            if (!$this->schema->isCollection($field)) {
+                throw new Exception("Select collections on something not a collections");
+            }
+            // Call help for each field
+            $this->helper_collection($metas, $field);
+        }
     }
 
     protected function helper_main(Collection $metas, array $cols, array $joins) {
@@ -127,7 +154,9 @@ abstract class Select
         foreach ($cols as $fields) {
             foreach ($fields as $field) {
                 if ($this->schema->isCollection($field)) {
-                    $collections[$field] = new Collection($this->schema->collectionType($field));
+                    // TODO: is this code used ?
+                    //$collections[$field] = new Collection($this->schema->collectionType($field));
+                    throw new Exception("Oops, there is a main handler for collections now ?");
                 } elseif (!empty($this->subs) && array_key_exists($field, $this->subs)) {
                     $collections[$field] = new Collection($this->schema->objectType($field));
                 }
@@ -165,27 +194,21 @@ abstract class Select
     }
 
     /**
-     * Select a collection from the database into an object field
-     *
-     * $link describes the link in the database:
-     * * $link['id'] is the column name of the fetched meta
-     * * $link['table'] is the name of a table that contains at least $link['id'] and schema->id()
-     * * $link['field'] is the object field which will have the collection
+     * Select a collection from the database
      *
      * @param Collection $metas The objects to select
-     * @param array $link An array with id, table and field keys.
+     * @param string $field collection field
      */
-    protected function helper_collection(Collection $metas, array $link) {
-        $l_className = $this->schema->collectionType($link['field']);
+    protected function helper_collection(Collection $metas, $field) {
+        // Retrieve link attributes
+        list($l_className, $table, $l_id, $id) = $this->schema->collectionType($field);
 
         $_metas = array();
         foreach($metas as $meta) {
             $_metas[$meta->id()] = new Collection($l_className);
         }
 
-        $id = $this->schema->id();
-        $l_id = $link['id'];
-        $table = $link['table'];
+        // Get collection ids
         $iter = XDB::iterRow("SELECT  $id, $l_id
                                 FROM  $table
                                WHERE  $id IN {?}", $metas->ids());
@@ -196,12 +219,13 @@ abstract class Select
             $_metas[$id]->add($linked);
         }
 
+        // Update metas
         foreach ($metas as $meta) {
-            $meta->fillFromArray(array($link['field'] => $_metas[$meta->id()]));
+            $meta->fillFromArray(array($field => $_metas[$meta->id()]));
         }
 
-        if (!empty($this->subs[$link['field']])) {
-            $linkeds->select($this->subs[$link['field']]);
+        if (!empty($this->subs[$field])) {
+            $linkeds->select($this->subs[$field]);
         }
     }
 

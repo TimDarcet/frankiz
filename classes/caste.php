@@ -44,7 +44,7 @@ class CasteSchema extends Schema
     }
 
     public function collections() {
-        return array('users' => 'User');
+        return array('users' => array('User', 'castes_users', 'uid'));
     }
 }
 
@@ -76,13 +76,7 @@ class CasteSelect extends Select
 
     protected function handlers() {
         return array('main' => array('group', 'rights', 'userfilter'),
-                    'users' => array('users'));
-    }
-
-    protected function handler_users(Collection $castes, $fields) {
-        $this->helper_collection($castes, array('id' => 'uid',
-                                             'table' => 'castes_users',
-                                             'field' => 'users'));
+              'collections' => array('users'));
     }
 }
 

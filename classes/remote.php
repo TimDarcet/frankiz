@@ -50,7 +50,7 @@ class RemoteSchema extends Schema
     }
 
     public function collections() {
-        return array('groups' => 'Group');
+        return array('groups' => array('Group', 'remote_groups', 'groups'));
     }
 }
 
@@ -64,13 +64,7 @@ class RemoteSelect extends Select
 
     protected function handlers() {
         return array('main' => self::$natives,
-                   'groups' => array('groups'));
-    }
-
-    protected function handler_groups(Collection $remotes, $fields) {
-        $this->helper_collection($remotes, array('id' => 'gid',
-                                                 'table' => 'remote_groups',
-                                                 'field' => 'groups'));
+              'collections' => array('groups'));
     }
 
     public static function base($subs = null) {

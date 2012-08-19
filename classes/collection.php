@@ -46,6 +46,18 @@ class Collection implements IteratorAggregate, Countable
     }
 
     /**
+     * Build a collection from an array
+     * @param array $arr
+     * @param type $className
+     * @param type $order
+     * @param type $desc
+     */
+    public static function fromArray(array $arr, $className = null, $order = null, $desc = true) {
+        $c = new Collection($className, $order, $desc);
+        return $c->add($arr);
+    }
+
+    /**
     * Set or get the class of the items
     *
     * @param $className The class name

@@ -43,10 +43,6 @@ class LicenseSchema extends Schema
     public function objects() {
         return array('uid' => 'User', 'gid' => 'Group');
     }
-
-    public function collections() {
-        return array();
-    }
 }
 
 /*class LicenseSelect extends Select

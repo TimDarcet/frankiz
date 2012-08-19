@@ -51,6 +51,10 @@ class RoomSchema extends Schema
     public function objects() {
         return array('ips' => 'Array', 'open' => 'Array');
     }
+
+    public function collections() {
+        return array('ips' => array('Ip', 'ips', 'ip', 'room'));
+    }
 }
 
 class RoomSelect extends Select
@@ -77,11 +81,12 @@ class RoomSelect extends Select
 
     protected function handlers() {
         return array('main' => array('phone', 'comment'),
-                      'ips' => array('ips'),
-                      'open' => array('open'));
+                     'collections' => array('ips'),
+                     'open' => array('open'));
     }
 
     protected function handler_ips(Collection $rooms, $fields) {
+        // NO LONGER USED
         $_rooms = array();
         foreach($rooms as $room) {
             $_rooms[$room->id()] = array();

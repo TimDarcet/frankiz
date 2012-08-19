@@ -54,8 +54,8 @@ class UserSchema extends Schema
     }
 
     public function collections() {
-        return array('rooms' => 'Room',
-                    'castes' => 'Caste');
+        return array('rooms' => array('Room', 'rooms_users', 'rid'),
+                    'castes' => array('Caste', 'castes_users', 'cid'));
     }
 }
 
@@ -72,7 +72,7 @@ class UserSelect extends Select
 
     protected function handlers() {
         return array('main' => array_merge(self::$natives, array('poly')),
-                    'rooms' => array('rooms'),
+              'collections' => array('rooms'),
                    'castes' => array('castes'),
               'minimodules' => array('minimodules'),
                   'studies' => array('studies'),
@@ -190,12 +190,6 @@ class UserSelect extends Select
         foreach ($users as $u) {
             $u->fillFromArray(array('comments' => $_users[$u->id()]));
         }
-    }
-
-    protected function handler_rooms(Collection $users, $fields) {
-        $this->helper_collection($users, array('id' => 'rid',
-                                            'table' => 'rooms_users',
-                                            'field' => 'rooms'));
     }
 
     protected function handler_castes(Collection $users, $fields) {

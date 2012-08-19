@@ -89,7 +89,7 @@ abstract class Schema {
     /**
      * List of array fields
      *
-     * Return for each FlagSet field an link array in the following format:
+     * Return for each FlagSet field a link array in the following format:
      * array($table, $column), where
      * * $table is the name of a table used  for the link
      * * $column is the column name
@@ -102,6 +102,13 @@ abstract class Schema {
 
     /**
      * List of collection fields
+     *
+     * Return for each Collection field a link array in the following format:
+     * array($classname, $table, $column [, $myid]), where
+     * * $classname is the name of the meta class of the collected object
+     * * $table is the name of a table used  for the link
+     * * $column is the column name
+     * * $myid is the name of the column id which is used, default is self::id()
      *
      * @return array
      */
@@ -158,10 +165,7 @@ abstract class Schema {
      * @return boolean
      */
     public function isScalar($field) {
-        if (in_array($field, $this->scalars())) {
-            return true;
-        }
-        return false;
+        return in_array($field, $this->scalars());
     }
 
     /**
@@ -171,10 +175,7 @@ abstract class Schema {
      * @return boolean
      */
     public function isObject($field) {
-        if (array_key_exists($field, $this->objects())) {
-            return true;
-        }
-        return false;
+        return array_key_exists($field, $this->objects());
     }
 
     /**
@@ -184,10 +185,7 @@ abstract class Schema {
      * @return boolean
      */
     public function isFlagset($field) {
-        if (array_key_exists($field, $this->flagsets())) {
-            return true;
-        }
-        return false;
+        return array_key_exists($field, $this->flagsets());
     }
 
     /**
@@ -196,10 +194,7 @@ abstract class Schema {
      * @return boolean
      */
     public function isCollection($field) {
-        if (array_key_exists($field, $this->collections())) {
-            return true;
-        }
-        return false;
+        return array_key_exists($field, $this->collections());
     }
 
     /**
@@ -232,14 +227,26 @@ abstract class Schema {
     /**
      * Give the collection type of a field
      * @param type $field
-     * @return string typeof($field item)
+     * @return array
+     * @see collections()
      */
     public function collectionType($field) {
         $collections = $this->collections();
         if (empty($collections[$field])) {
             throw new Exception("$field is not a Collection");
         }
-        return $collections[$field];
+        $coltype = $collections[$field];
+        if (!is_array($coltype)) {
+            throw new Exception("$field has a bad collection schema");
+        }
+        if (count($coltype) == 3) {
+            // Add 4th field
+            $coltype[3] = $this->id();
+        }
+        if (count($coltype) != 4) {
+            throw new Exception("Invalid collection schema for $field");
+        }
+        return $coltype;
     }
 }
 

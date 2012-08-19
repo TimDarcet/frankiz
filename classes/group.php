@@ -51,8 +51,8 @@ class GroupSchema extends Schema
     }
 
     public function collections() {
-        return array('castes' => 'Caste',
-                     'rooms' => 'Room');
+        return array('castes' => array('Caste', 'castes', 'cid', 'group'),
+                     'rooms' => array('Room', 'rooms_groups', 'rid'));
     }
 }
 
@@ -102,12 +102,12 @@ class GroupSelect extends Select
     }
 
     protected function handlers() {
-        return array('main'     => array_merge(Schema::group()->scalars(), array('image')),
-                     'rooms'    => array('rooms'),
-                     'premises' => array('premises'),
-                     'ips'      => array('ips'),
+        return array('main'        => array_merge(Schema::group()->scalars(), array('image')),
+                     'collections' => array('rooms'),
+                     'premises'    => array('premises'),
+                     'ips'         => array('ips'),
                      'nb_news'     => array('nb_news'),
-                     'castes'   => array('castes'));
+                     'castes'      => array('castes'));
     }
 
     protected function handler_castes(Collection $groups, $fields) {
@@ -140,7 +140,7 @@ class GroupSelect extends Select
     }
 
     protected function handler_rooms(Collection $groups, $fields) {
-        $this->helper_collection($groups, array('id' => 'rid',
+        $this->helper_collection($groups, array('id' => 'room',
                                                 'table' => 'rooms_groups',
                                                 'field' => 'rooms'));
     }
