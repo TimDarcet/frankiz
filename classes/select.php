@@ -19,7 +19,7 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-/*
+/**
  * The *Select classes intend to make the data fetching for a Meta object shorter in lines.
  *
  * You define "handlers" who handle specific fields, and depdending of the requestes fields to be fetched,
