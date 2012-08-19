@@ -246,6 +246,48 @@ abstract class Meta
     }
 
     /**
+     * Get an object by its ID or with a secondary key
+     * @param mixed $id
+     * @param boolean $tryKey try the other key if $id is not an index
+     * @return false if nothing is found, a meta object otherwise
+     *
+     * Note: This method is to be called when there is only one expected object.
+     * For several objects, you should use FrankizFilter and Collection instead.
+     */
+    public static function fromId($id, $tryKey = true)
+    {
+        if (empty($id)) {
+            return false;
+        }
+        // If $id is not an ID, return from result
+        if (!static::isId($id)) {
+            if (!$tryKey) {
+                return false;
+            }
+            try {
+                return static::from($id);
+            } catch (ItemNotFoundException $e) {
+                return false;
+            }
+        }
+
+        // Get schema
+        $schema = Schema::get(get_called_class());
+        $className = $schema->className();
+        $id_col = $schema->id();
+        $key_col = $schema->fromKey();
+        $mysql_key = (($key_col && $key_col != $id_col)
+            ? XDB::format(' OR ' . $key_col . ' = {?}', $id)
+            : '');
+        $res = XDB::fetchOneRow('SELECT  ' . $id_col . ' AS id
+                                   FROM  ' . $schema->table() . '
+                                  WHERE  ' . $id_col . ' = {?}' .
+                                $mysql_key . '
+                                  LIMIT  1', $id);
+        return isset($res[0]) ? new $className($res[0]) : false;
+    }
+
+    /**
     * Returns the object corresponding to the specified name
     *
     * @param $mixed              A unique identifier ot the object to retrieve
@@ -287,14 +329,17 @@ abstract class Meta
             $iter = XDB::iterator('SELECT  ' . $schema->id() . ' AS id, ' . $key . '
                                      FROM  ' . $schema->table() . '
                                     WHERE  ' . $key . ' IN {?}', $mixed);
-            while ($data = $iter->next())
+            while ($data = $iter->next()) {
                 $collec->add(new $className($data));
+            }
+            if ($collec->count() == 0) {
+                throw new ItemNotFoundException('Nothing found for ' . implode(', ', $mixed));
+            }
+            if (count($mixed) != $collec->count()) {
+                throw new ItemNotFoundException('Asking for ' . implode(', ', $mixed) .
+                    ' but only found ' . implode(', ', $collec->ids()));
+            }
         }
-
-        if (count($mixed) != $collec->count())
-            throw new ItemNotFoundException('Asking for ' . implode(', ', $mixed) .
-                ' but only found ' . implode(', ', $collec->ids()));
-
         return $collec;
     }
 
