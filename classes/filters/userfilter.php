@@ -684,7 +684,7 @@ class UserFilter extends FrankizFilter
     {
         $joins = array();
         if ($this->with_ip)
-            $joins['tips'] = PlSqlJoin::left('ips', '$ME.rid = r.rid');
+            $joins['tips'] = PlSqlJoin::left('ips', '$ME.room = r.rid');
 
         return $joins;
     }
