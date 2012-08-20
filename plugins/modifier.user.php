@@ -23,9 +23,10 @@
 function smarty_modifier_user($user, $type = 'micro') {
     $str = '<a class="modifier_user" href="tol/see/' . $user->login() . '" title="' . $user->fullName() . '">';
 
-    if ($type == 'micro') {
+    if ($type == 'micro' || $type == 'both') {
         $str .= '<img src="' . $user->image()->src('micro') . '" />';
-    } else {
+    }
+    if ($type == 'text' || $type == 'both') {
         $str .= $user->displayName();
     }
 
