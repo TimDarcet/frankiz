@@ -44,21 +44,21 @@ abstract class Node
         else
             $this->fillFromArray($datas);
     }
-
+/*
     public function __clone() {
 //        $this->unlink();
     }
-
+*//*
     static public function table()
     {
         throw new Exception('Not implemented');
     }
-
+*//*
     static public function idName()
     {
         throw new Exception('Not implemented');
     }
-
+*/
     public static function root()
     {
 /*        $id = static::idName();
