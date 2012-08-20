@@ -81,11 +81,12 @@ class ImagesModule extends PlModule
             }
         }
         if (Env::has('delete')) {
-            $image = new FrankizImage(Env::i('iid'));
-            $image->select(FrankizImageSelect::base());
-
-            if ($image->label() == Env::s('secret')) {
-                $image->delete();
+            $image = FrankizImage::fromId(Env::i('iid'), false);
+            if ($image) {
+                $image->select(FrankizImageSelect::base());
+                if ($image->label() == Env::s('secret')) {
+                    $image->delete();
+                }
             }
         }
 
@@ -97,16 +98,16 @@ class ImagesModule extends PlModule
     {
         global $globals;
 
-        $image = new FrankizImage($iid);
-        $image->select(FrankizImageSelect::caste());
-        $user = S::user();
-        try {
+        $image = FrankizImage::fromId($iid, null);
+        if ($image) {
+            $image->select(FrankizImageSelect::caste());
+            $user = S::user();
             if ($user && $user->canSee($image->caste())) {
                 $image->send($size);
                 return;
             }
-        } catch (DataNotFetchedException $e) {
         }
+
         // Not found of error => HTTP 403
         header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
         $img = new StaticImage($globals->images->forbidden);
