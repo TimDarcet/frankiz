@@ -19,15 +19,35 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-require_once dirname(__FILE__).'/../include/frankiz.inc.php';
+class RoomsModule extends PlModule
+{
+    function handlers()
+    {
+        return array(
+            'rooms'     => $this->make_hook('rooms', AUTH_COOKIE),
+            'rooms/see' => $this->make_hook('room_see',  AUTH_COOKIE)
+        );
+    }
 
-$platal = new Frankiz('frankiz', 'admin', 'profile', 'tol', 'groups', 'wiki', 'images',
-                      'news', 'activity', 'surveys', 'lostandfound', 'proposal',
-                      'qdj', 'todo', 'links', 'licenses', 'chat', 'remote', 'rooms');
+    function handler_rooms($page)
+    {
+        $rf = new RoomFilter(new RFC_Prefix('BATACL'));
+        $rooms = $rf->get();
+        $rooms->select(RoomSelect::see(array('groups' => GroupSelect::base())));
+        $page->assign('rooms', $rooms);
+        $page->changeTpl('rooms/rooms.tpl');
+    }
 
-if (!($path = Env::v('n')) || ($path{0} < 'A' || $path{0} > 'Z')) {
-    $platal->run();
-    exit;
+    function handler_room_see($page, $rid = null)
+    {
+        $room = Room::fromId($rid);
+        if (!$room) {
+            $page->changeTpl('rooms/no_room.tpl');
+            return;
+        }
+        $room->select(RoomSelect::see());
+        $page->assign('room', $room);
+        $page->assign('title', $room->id());
+        $page->changeTpl('rooms/room.tpl');
+    }
 }
-
-// vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
