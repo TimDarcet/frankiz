@@ -50,7 +50,7 @@ class RemoteSchema extends Schema
     }
 
     public function collections() {
-        return array('groups' => array('Group', 'remote_groups', 'groups'));
+        return array('groups' => array('Group', 'remote_groups', 'gid'));
     }
 }
 
