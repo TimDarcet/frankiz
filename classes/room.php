@@ -49,7 +49,9 @@ class RoomSchema extends Schema
     }
 
     public function collections() {
-        return array('ips' => array('Ip', 'ips', 'ip', 'room'));
+        return array('ips' => array('Ip', 'ips', 'ip', 'room'),
+                     'users' => array('User', 'rooms_users', 'uid'),
+                     'groups' => array('Group', 'rooms_groups', 'gid'));
     }
 }
 
@@ -72,25 +74,36 @@ class RoomSelect extends Select
     }
 
     public static function all($subs = null) {
-        return new RoomSelect(array('phone', 'comment', 'ips'), $subs);
+        return new RoomSelect(array('phone', 'comment', 'open', 'ips', 'users', 'groups'), $subs);
     }
 
-    protected function handlers() {
+    public static function see() {
+        return self::all(array(
+            'ips' => IpSelect::base(),
+            'users' => UserSelect::base(),
+            'groups' => GroupSelect::base()));
+    }
+
+   protected function handlers() {
         return array('main' => array('phone', 'comment', 'open'),
-                    'collections' => array('ips'));
+                     'collections' => array('ips', 'users', 'groups'));
     }
 }
 
 class Room extends Meta
 {
     // string, phone number
-    protected $phone   = null;
+    protected $phone = null;
     // string, comment about the room
     protected $comment = null;
     // boolean, open state
-    protected $open    = null;
-    // Array(IP => "comment of IP")
-    protected $ips     = null;
+    protected $open = null;
+    // Collection of IPs
+    protected $ips = null;
+    // Collection of users
+    protected $users = null;
+    // Collection of groups
+    protected $groups = null;
 
     /**
      * Allow ID matching ^[A-Z]*[0-9\/]*[a-z]*$

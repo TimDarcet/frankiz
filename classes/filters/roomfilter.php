@@ -136,9 +136,24 @@ class RFC_Phone extends RoomFilterCondition
 
     public function buildCondition(PlFilter $rf)
     {
-        $sub = $rf->addRoomFilter();
         $right = XDB::formatWildcards(XDB::WILDCARD_CONTAINS, $this->number);
-        return $sub . '.phone ' . $right;
+        return 'r.phone ' . $right;
+    }
+}
+
+class RFC_Prefix extends RoomFilterCondition
+{
+    private $prefix;
+
+    public function __construct($prefix)
+    {
+        $this->prefix = $prefix;
+    }
+
+    public function buildCondition(PlFilter $rf)
+    {
+        $right = XDB::formatWildcards(XDB::WILDCARD_PREFIX, $this->prefix);
+        return 'r.rid ' . $right;
     }
 }
 
