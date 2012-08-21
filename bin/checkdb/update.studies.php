@@ -100,6 +100,7 @@ foreach ($formations as $form) {
 // Update promotions
 $iter = XDB::iterRow('SELECT promo FROM studies GROUP BY promo ORDER BY promo');
 while (list($promo) = $iter->next()) {
+    $promo = sprintf('%04d', $promo);
     $f = new UserFilter(new UFC_Promo($promo, '='));
     $g = update_group('promo_' . $promo, $promo, Group::NS_PROMO, $f);
     create_promo_image($g, $promo);
@@ -113,6 +114,7 @@ $iter = XDB::iterRow('SELECT  s.promo, s.formation_id, f.abbrev, f.label
                     GROUP BY  s.promo, s.formation_id
                     ORDER BY  s.promo, s.formation_id ASC');
 while (list($promo, $formation_id, $abbrev, $label) = $iter->next()) {
+    $promo = sprintf('%04d', $promo);
     $f = new UserFilter(new UFC_Promo($promo, '=', $formation_id));
     $g = update_group('promo_' . $abbrev . $promo, $promo . ' ' . $label, Group::NS_PROMO, $f);
     create_promo_image($g, $promo);
@@ -146,6 +148,7 @@ foreach ($formations as $f) {
         $promo = array_pop($promos);
         if (is_null($promo))
             break;
+        $promo = sprintf('%04d', $promo);
         $onplatal_promos->addFlag($promo);
         $filters[] = new UFC_Promo($promo, '=', $f->id());
         $numyears --;
