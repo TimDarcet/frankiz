@@ -9,7 +9,7 @@ CREATE TABLE forum_topic (
     root_id INT,
 #other
     title TINYTEXT CHARSET utf8 COLLATE utf8_general_ci
-);
+) DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS forum_nodes;
 CREATE TABLE forum_nodes (
@@ -22,7 +22,7 @@ CREATE TABLE forum_nodes (
     depth INT,
 
     content_id INT
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 #DROP INDEX forum_nodes_index_L;
 CREATE INDEX forum_nodes_index_L ON forum_nodes(L);
@@ -42,7 +42,7 @@ CREATE TABLE forum_content (
 
     last_modification_date TIMESTAMP, #automatically updated
     creation_date TIMESTAMP
-);
+) DEFAULT CHARSET=utf8;
 
 
 DELIMITER $$
