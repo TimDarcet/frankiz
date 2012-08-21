@@ -48,7 +48,7 @@
                         <div class="{if $premise->open()}open{else}close{/if}" rid="{$premise->id()}">
                             <div class="traffic_light_switcher{if $roomMaster} room_master"
                                 title="{if $premise->open()}Fermer{else}Ouvrir{/if} le local{/if}"></div>
-                            {$premise->comment()}
+                            {$premise|room:phone}
                         </div>
                         {if sizeof($premises) > 1}</li>{/if}
                     {/foreach}

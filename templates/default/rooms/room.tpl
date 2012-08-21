@@ -25,7 +25,7 @@
 <div class="threecols">
     <div class="module">
         <div class="head">
-            {$room->comment()} {$room->id()}
+            {$room|room}
         </div>
         <div class="body">
             <div class="phone">Téléphone : {$room->phone()}</div>

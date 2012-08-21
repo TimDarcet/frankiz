@@ -75,15 +75,14 @@
         <ul>
         {foreach from=$result->rooms() item='room'}
             <li>
-            <span>{$room->comment()} {$room->id()}</span>
-            {if $room->phone()}(Tel: <span>{$room->phone()}</span>){/if}
-            <ul class="ips">
-            {foreach from=$room->ips() item='ip'}
-                <li>
-                    {$ip}
-                </li>
-            {/foreach}
-            </ul>
+                {$room|room:phone}
+                <ul class="ips">
+                {foreach from=$room->ips() item='ip'}
+                    <li>
+                        {$ip}
+                    </li>
+                {/foreach}
+                </ul>
             </li>
         {/foreach}
         </ul>

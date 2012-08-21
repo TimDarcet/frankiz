@@ -33,7 +33,7 @@
                         {/foreach}
                     </td>
                     <td>
-                        <a href="rooms/see/{$room->id()}">{$room->id()}</a> {$room->comment()}
+                        <a href="rooms/see/{$room->id()}">{$room->id()}</a> {$room|room:phone}
                     </td>
                 </tr>
             {/foreach}
