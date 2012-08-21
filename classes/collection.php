@@ -39,8 +39,11 @@ class Collection implements IteratorAggregate, Countable
     * @param $order     The item's method to be used to sort the Collection
     * @param $desc      Boolean specifying if the sort is descending (default) or ascending
     */
-    public function __construct($className = null, $order = null, $desc = true)
+    public function __construct($className, $order = null, $desc = true)
     {
+        if (!$className) {
+            throw new Exception("Collection of void objects is too much magic. Sorry.");
+        }
         $this->className($className);
         $this->order($order, $desc);
     }
@@ -52,7 +55,8 @@ class Collection implements IteratorAggregate, Countable
      * @param type $order
      * @param type $desc
      */
-    public static function fromArray(array $arr, $className = null, $order = null, $desc = true) {
+    public static function fromArray(array $arr, $className, $order = null, $desc = true)
+    {
         $c = new Collection($className, $order, $desc);
         return $c->add($arr);
     }
@@ -64,7 +68,7 @@ class Collection implements IteratorAggregate, Countable
     */
     public function className($className = null)
     {
-        if ($className != null)
+        if ($className)
             $this->className = $className;
         return $this->className;
     }
@@ -128,7 +132,8 @@ class Collection implements IteratorAggregate, Countable
                 return $fs;
             } elseif ($schema->isCollection($method)) {
                 // Return a merged collection
-                $col = new Collection();
+                $coltype = $schema->collectionType($method);
+                $col = new Collection($coltype[0]);
                 foreach ($values as $c) {
                     $col->merge($c);
                 }
@@ -254,7 +259,7 @@ class Collection implements IteratorAggregate, Countable
 
         $mixed = array();
         $className = $this->className;
-        foreach ($cs as $c)
+        foreach ($cs as $c) {
             if ($c instanceof $className)
                 $this->collected[$c->id()] = $c;
             else if ($className::isId($c)) {
@@ -262,6 +267,7 @@ class Collection implements IteratorAggregate, Countable
                     $this->collected[$c] = new $className($c);
             } else
                 $mixed[] = $c;
+        }
 
         if (!empty($mixed)) {
             $collec = $className::batchFrom($mixed);

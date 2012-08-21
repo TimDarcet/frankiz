@@ -40,7 +40,7 @@ $ufc_web = new UFC_Group(Group::from('webmasters'), Rights::member());
 $ufc_kes = new UFC_Group(Group::from('kes'), Rights::admin());
 
 // Shalom-CCX-AMEP
-$shccxamep_groups = new Collection();
+$shccxamep_groups = new Collection('Group');
 $shccxamep_groups->add(Group::from('shalom'));
 $shccxamep_groups->add(Group::from('ccx'));
 $shccxamep_groups->add(Group::from('amep'));

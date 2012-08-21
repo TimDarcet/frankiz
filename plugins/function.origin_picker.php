@@ -32,15 +32,16 @@ function smarty_function_origin_picker($params, &$smarty) {
                 new GFC_User(S::user(), Rights::restricted())),
             new GFO_Score());
         $gso = $gfo->get()->diff($gs);
-        
-        $temp = new Collection();
+
+        // Select data
+        $temp = new Collection('Group');
         $temp->merge($gs)->merge($gso);
         $temp->select(GroupSelect::base());
 
         $smarty->assign('not_admin', $gso);
     }
     else {
-        $gs = $gf->get()->select(GroupSelect::base());
+        $gs = $gs->select(GroupSelect::base());
     }
 
     $smarty->assign($params['out'], $gs);

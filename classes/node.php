@@ -86,7 +86,7 @@ abstract class Node
 
     public function children()
     {
-        $c = new Collection();
+        $c = new Collection('Node');
         return $c->add($this->children);
     }
 
@@ -173,7 +173,7 @@ abstract class Node
 
     public function leaves()
     {
-        $leaves = new Collection();
+        $leaves = new Collection('Node');
         if (empty($this->children))
             return $leaves->add($this);
 
@@ -185,7 +185,7 @@ abstract class Node
 
     public static function batchLeaves(array $nodes)
     {
-        $leaves = new Collection();
+        $leaves = new Collection('Node');
         foreach ($nodes as $n)
             $leaves->merge($n->leaves());
 
@@ -203,7 +203,7 @@ abstract class Node
 
     public static function batchRoots(array $nodes)
     {
-        $roots = new Collection();
+        $roots = new Collection('Node');
         foreach ($nodes as $n)
             $roots->add($n->_root());
 

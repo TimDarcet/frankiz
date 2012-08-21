@@ -144,7 +144,7 @@ abstract class Meta
     public function select($fields = null)
     {
         if ($fields instanceof Select) {
-            $c = new Collection();
+            $c = new Collection(get_class($this));
             $fields->select($c->add($this));
         } else {
             static::batchSelect(array($this), $fields);
@@ -324,7 +324,7 @@ abstract class Meta
         if (empty($key))
             throw new Exception("batchFrom isn't implemented");
 
-        $collec = new Collection();
+        $collec = new Collection($className);
         if (!empty($mixed)) {
             $iter = XDB::iterator('SELECT  ' . $schema->id() . ' AS id, ' . $key . '
                                      FROM  ' . $schema->table() . '

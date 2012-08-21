@@ -38,6 +38,11 @@ function smarty_function_target_picker($params, &$smarty) {
     $gs->diff($fkz);
     $gs->filter(function ($g) {return $g->ns() != Group::NS_USER;});
 
+    // Collection of Group objects to be selected
+    $selected_groups = new Collection('Group');
+    $selected_groups->merge($gs)->merge($fkz);
+
+    $gso = false;
     if ($params['even_only_friend']) {
         $gfo = new GroupFilter(
             new PFC_And(
@@ -45,28 +50,15 @@ function smarty_function_target_picker($params, &$smarty) {
                 new GFC_User(S::user(), Rights::everybody())),
             new GFO_Score());
         $gso = $gfo->get()->diff($gs)->diff($fkz);
-
-        $temp = new Collection();
-        $temp->merge($gs)->merge($gso);
-        $temp->select(GroupSelect::base());
-
-        $smarty->assign('only_friend', $gso);
-
-        $temp = new Collection();
-        $temp->merge($gs)->merge($fkz)->merge($gso);
-        $temp->select(GroupSelect::base());
+        $selected_groups->merge($gso);
     }
-    else
-    {
-        $temp = new Collection();
-        $temp->merge($gs)->merge($fkz);
-        $temp->select(GroupSelect::base());
-    }
+    $selected_groups->select(GroupSelect::base());
 
     $smarty->assign($params['user_groups'], $gs);
     $smarty->assign($params['fkz_groups'], $fkz);
     $smarty->assign($params['study_groups'], $study_groups);
     $smarty->assign($params['own_group'], S::user()->group());
+    $smarty->assign('only_friend', $gso);
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

@@ -910,7 +910,7 @@ class User extends Meta
      */
     public function targetCastes()
     {
-        $target_castes = new Collection();
+        $target_castes = new Collection('Caste');
         $target_castes->merge($this->castes(Rights::restricted()));
         $target_castes->merge($this->castes(Rights::everybody()));
         return $target_castes;

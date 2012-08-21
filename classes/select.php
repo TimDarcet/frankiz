@@ -92,7 +92,7 @@ abstract class Select
             return;
 
         if (is_array($metas)) {
-            $metas = Collection::fromArray($metas);
+            $metas = Collection::fromArray($metas, $this->className());
         }
 
         $tobefetched = $this->fields;
