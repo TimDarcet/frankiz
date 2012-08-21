@@ -20,27 +20,33 @@
 {*                                                                        *}
 {**************************************************************************}
 
+{* Parameters (all defaults are false):
+ * * $only_admin : only show groups the user is admin
+ * * $group_perso : show user group
+ * * $even_only_friend : select also groups with which the user is only friend
+ * * $no_friendbox : disable "public" checkbox, for friend visibility
+ *}
 {if !t($even_only_friend)}
     {assign var=even_only_friend value=false}
- {/if}
+{/if}
 
 <div class="target_picker" id="origin_picker_{$id}">
     <div>
         {target_picker user_groups='user_groups' fkz_groups='fkz_groups' own_group='own_group' study_groups='study_groups' even_only_friend=$even_only_friend}
         <select id="{$id}" name="target_group_{$id}" >
-            {if !t($only_admin) || !$only_admin}
-            <optgroup name="fkz" label="Frankiz">
-                {foreach from=$fkz_groups item='group'}
-                    <option description="{$group->description()}" value="{$group->id()}">{$group->label()}</option>
-                {/foreach}
-            </optgroup>
-            <optgroup name="study" label="Études">
-                {foreach from=$study_groups item='group'}
-                    <option value="{$group->id()}">{$group->label()}</option>
-                {/foreach}
-            </optgroup>
+            {if !t($only_admin)}
+                <optgroup name="fkz" label="Frankiz">
+                    {foreach from=$fkz_groups item='group'}
+                        <option description="{$group->description()}" value="{$group->id()}">{$group->label()}</option>
+                    {/foreach}
+                </optgroup>
+                <optgroup name="study" label="Études">
+                    {foreach from=$study_groups item='group'}
+                        <option value="{$group->id()}">{$group->label()}</option>
+                    {/foreach}
+                </optgroup>
             {/if}
-            {if t($group_perso) && $group_perso}
+            {if t($group_perso)}
                 <option own_group="own_group" description="Ne sera visible que par moi" value="{$own_group->id()}">Juste moi</option>
             {/if}
             <optgroup label={if $even_only_friend}"Sans validation"{else}"Mes groupes"{/if}>
@@ -56,8 +62,9 @@
                 </optgroup>
             {/if}
         </select>
-
-        <label><input type="checkbox" name="target_everybody_{$id}" checked="checked" />Public</label>
+        {if !t($no_friendbox)}
+            <label><input type="checkbox" name="target_everybody_{$id}" checked="checked" />Public</label>
+        {/if}
     </div>
     <div class="comments">
 

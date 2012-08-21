@@ -33,14 +33,17 @@ function smarty_function_target_picker($params, &$smarty) {
     $study_groups->merge($everybody_groups->filter('ns', Group::NS_PROMO));
     $study_groups->merge($everybody_groups->filter('ns', Group::NS_STUDY));
 
-    // Get all groups user is admin, without the user one
+    // Get all groups user is admin
     $gs = S::user()->castes(Rights::admin())->groups();
     $gs->diff($fkz);
-    $gs->filter(function ($g) {return $g->ns() != Group::NS_USER;});
 
     // Collection of Group objects to be selected
     $selected_groups = new Collection('Group');
     $selected_groups->merge($gs)->merge($fkz);
+
+    // Remove the user group from other collections
+    $usergroup = S::user()->group();
+    $gs->remove($usergroup);
 
     $gso = false;
     if ($params['even_only_friend']) {
@@ -57,7 +60,7 @@ function smarty_function_target_picker($params, &$smarty) {
     $smarty->assign($params['user_groups'], $gs);
     $smarty->assign($params['fkz_groups'], $fkz);
     $smarty->assign($params['study_groups'], $study_groups);
-    $smarty->assign($params['own_group'], S::user()->group());
+    $smarty->assign($params['own_group'], $usergroup);
     $smarty->assign('only_friend', $gso);
 }
 

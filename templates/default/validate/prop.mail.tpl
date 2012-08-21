@@ -58,10 +58,12 @@
                     </td>
                     <td>
                         <label>
-                            <input id="choice_promo" type="radio" name="type_mail_proposal" checked value="promo"> Mail à une promo
+                            <input id="choice_promo" type="radio" name="type_mail_proposal" checked value="promo">
+                            Mail à une promo
                         </label><br />
                         <label>
-                            <input id="choice_group" type="radio" name="type_mail_proposal" value="group"> Mail à un groupe
+                            <input id="choice_group" type="radio" name="type_mail_proposal" value="group">
+                            Mail aux membres sur le plâtal d'un groupe
                         </label><br />
                         <div id="promo_proposal" class="type_proposal">
                             <select name="promos[]" multiple="1">
@@ -76,10 +78,9 @@
                             (Tu peux sélectionner plusieurs promotions avec la touche Ctrl)
                         </div>
                         <div id="group_proposal" class="type_proposal">
-                            {include file="target_picker.tpl"|rel id="mail" group_perso=false only_admin=false}
+                            {include file="target_picker.tpl"|rel id="mail" group_perso=false only_admin=true no_friendbox=true}
                             <script>
                                 $("#group_proposal .comments").hide();
-                                $("#group_proposal input[type=checkbox]").hide();
                             </script>
                         </div>
                     </td>
