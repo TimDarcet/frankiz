@@ -32,6 +32,7 @@ class ForumNode
     protected $content_id = null;
 
     private $table = 'forum_nodes';
+    private $content_table = 'forum_content';
 
     public function __construct($datas)
     {
@@ -82,17 +83,19 @@ class ForumNode
 
     public function getChildren()
     {
-        $res = XDB::query("SELECT id, L, R, depth, content_id
-                             FROM ".$this->table."
+        $res = XDB::query("SELECT c.id, c.L, c.R, c.depth, c.content_id, n.last_modification_date
+                             FROM ".$this->table." AS n
+                             LEFT JOIN ".$this->content_table." AS c ON c.node_id=n.id
                              WHERE root_id=".$this->root." AND L BETWEEN 1+".$this->L." AND ".$this->R);
         return $res->fetchAllAssoc();
     }
 
     public function getDescendants()
     {
-        $res = XDB::query("SELECT id, L, R, depth, content_id
+        $res = XDB::query("SELECT c.id, c.L, c.R, c.depth, c.content_id, n.last_modification_date
                              FROM ".$this->table."
-                             WHERE root_id=".$this->root." AND L BETWEEN 1+".$this->L." AND ".$this->R."AND depth=1+".$this->depth);
+                             LEFT JOIN ".$this->content_table." AS c ON c.node_id=n.id
+                             WHERE root_id=".$this->root." AND L BETWEEN 1+".$this->L." AND ".$this->R." AND depth=1+".$this->depth);
         return $res->fetchAllAssoc();
     }
 

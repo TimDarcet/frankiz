@@ -44,8 +44,8 @@ class ForumModule extends PLModule
         $node = new ForumNode($nodeId);
         $node->fillFromArray(array('topic' => $topicId));
 
-        $page->jsonAssign('ancestors', $node->getAncestors()->select(ForumNodeSelect::base()));
-        $page->jsonAssign('children', $node->getDescendants()->select(ForumNodeSelect::base()));
+        $page->jsonAssign('ancestors', $node->getAncestors());
+        $page->jsonAssign('children', $node->getDescendants());
     }
 
     function handler_ajax_contents($page)

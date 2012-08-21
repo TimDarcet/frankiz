@@ -59,7 +59,7 @@ class ForumContent extends Meta
         $collec = new Collection();
         if (!empty($nodeIds)) {
             $iter = XDB::iterator('SELECT title, message, creation_date, last_modifiation_date, node_id
-                                     FROM  groups
+                                     FROM  forum_content
                                     WHERE  node_id IN {?}', $nodeIds);
             while ($g = $iter->next())
                 $collec->add(new self($g));
