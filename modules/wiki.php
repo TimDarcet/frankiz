@@ -34,51 +34,46 @@ class WikiModule extends PlModule
 
     function handler_see($page)
     {
+        // Get a wikiid, which contains slashes (and so is exploded)
         $mixed = func_get_args();
         array_shift($mixed);
         $mixed = implode('/', $mixed);
-
-        if (Wiki::isId($mixed)) {
-            $wiki = new Wiki($mixed);
-        } else {
-            $wiki = Wiki::from($mixed);
+        $wiki = Wiki::fromId($mixed);
+        if ($wiki) {
+            $wiki->select(Wiki::SELECT_VERSION);
+            $page->assign('wiki', $wiki);
+            $page->assign('admin', S::user()->checkPerms('admin'));
+            $page->assign('title', 'FAQ: ' . $wiki->name());
         }
-        $wiki->select(Wiki::SELECT_VERSION);
-
-        $page->assign('wiki', $wiki);
-        $page->assign('admin', S::user()->checkPerms('admin'));
-
-        $page->assign('title', 'FAQ: ' . $wiki->name());
         $page->changeTpl('wiki/see.tpl');
     }
 
     function handler_ajax_update($page)
     {
-        $json = json_decode(Env::v('json'));
-        $wiki = new Wiki($json->wid);
-
-        $page->jsonAssign('success', true);
-        try {
+        $wiki = Wiki::fromId(Json::i('wid'));
+        if ($wiki) {
             $wiki->select(Wiki::SELECT_VERSION);
-            $content = trim($json->content);
+            $content = Json::t('content');
             if ($content != $wiki->content()) {
                 $wiki->update($content);
                 $wiki->select(Wiki::SELECT_VERSION);
             }
             $page->jsonAssign('html', $wiki->html());
-        } catch(Exception $e) {
+            $page->jsonAssign('success', true);
+        } else {
             $page->jsonAssign('success', false);
         }
-
         return PL_JSON;
     }
 
     function handler_ajax_get($page)
     {
-        $json = json_decode(Env::v('json'));
-
-        $wiki     = new Wiki($json->wid);
-        $versions = isset($json->versions) ? $json->versions : array('last');
+        $wiki = Wiki::fromId(Json::i('wid'));
+        $versions = Json::v('versions', array('last'));
+        if (!$wiki) {
+            $page->jsonAssign('error', "ID not found");
+            return PL_JSON;
+        }
 
         try {
             $wiki->select(array(Wiki::SELECT_VERSION => array('versions' => $versions,
@@ -87,7 +82,6 @@ class WikiModule extends PlModule
         } catch(Exception $e) {
             $page->jsonAssign('error', $e->getMessage());
         }
-
         return PL_JSON;
     }
 
@@ -96,29 +90,20 @@ class WikiModule extends PlModule
         $mixed = func_get_args();
         array_shift($mixed);
         $mixed = implode('/', $mixed);
-
-        try {
-            if (Wiki::isId($mixed)) {
-                $wiki = new Wiki($mixed);
-            } else {
-                $wiki = Wiki::from($mixed);
-            }
-
+        $wiki = Wiki::fromId($mixed);
+        if ($wiki) {
             $wiki->select(Wiki::SELECT_VERSION);
-
             echo $wiki->html();
-        } catch(Exception $e) {
         }
-
         if (S::user()->perms()->hasFlag('admin')) {
             echo '<a class="edit" href="wiki/admin/' . $mixed . '" >Modifier</a>';
         }
-
         exit;
     }
 
     function handler_admin($page)
     {
+        $page->addCssLink('wiki.css');
         $mixed = func_get_args();
         array_shift($mixed);
         $mixed = implode('/', $mixed);
@@ -126,8 +111,6 @@ class WikiModule extends PlModule
         if (empty($mixed)) {
             $wikis = Wiki::selectAll(Wiki::SELECT_BASE | Wiki::SELECT_COUNT);
             $page->assign('wikis', $wikis);
-
-            $page->addCssLink('wiki.css');
             $page->assign('title', 'Admin Wiki');
             $page->changeTpl('wiki/list.tpl');
         } else {
@@ -146,8 +129,6 @@ class WikiModule extends PlModule
                                                               'options' => UserSelect::base())));
 
             $page->assign('wiki', $wiki);
-
-            $page->addCssLink('wiki.css');
             $page->assign('title', 'Admin Wiki: ' . $wiki->name());
             $page->changeTpl('wiki/admin.tpl');
         }
