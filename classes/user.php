@@ -962,7 +962,7 @@ class User extends Meta
         }
 
         // Now, either the caste is of type everybody or the user must be part of the caste in order to see the content
-        if ($caste->rights()->isMe(Rights::everybody()) || S::user()->castes()->get($caste) != false) {
+        if ($caste->rights()->isMe(Rights::everybody()) || S::user()->castes()->has($caste)) {
             return true;
         }
 
