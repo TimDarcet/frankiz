@@ -30,7 +30,7 @@ class FrankizModule extends PlModule
             'home/howtocome'        => $this->make_hook('howtocome',      AUTH_PUBLIC),
             'masters'               => $this->make_hook('masters',        AUTH_PUBLIC),
             'universe'              => $this->make_hook('universe',       AUTH_PUBLIC),
-            'exit'                  => $this->make_hook('exit',           AUTH_COOKIE)
+            'exit'                  => $this->make_hook('exit',           AUTH_PUBLIC)
         );
     }
 
@@ -86,9 +86,10 @@ class FrankizModule extends PlModule
             Platal::session()->stopSUID();
             pl_redirect('/');
         }
-
+        if(S::logged()) {
         Platal::session()->destroy();
         http_redirect($globals->baseurl_http);
+        }
         $page->changeTpl('exit.tpl');
     }
 

@@ -20,8 +20,14 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<h1>
-    Déconnexion effectuée
-</h1>
+<div class="module">
+{if $smarty.session.logged}
+<div class="head">Message</div>
+<div class="body">Déconnexion effectuée.</div>
+{else}
+<div class="head warning">Erreur</div>
+<div class="body">Déconnexion impossible : Vous n'êtes pas connecté !</div>
+{/if}
+</div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
