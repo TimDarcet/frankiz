@@ -31,8 +31,8 @@ class GroupsModule extends PLModule
             // Page of a single group
             'groups/see'              => $this->make_hook('group_see',         AUTH_PUBLIC),
             'groups/ajax/users'       => $this->make_hook('group_ajax_users',  AUTH_INTERNAL, ''),
-            'groups/ajax/news'        => $this->make_hook('group_ajax_news',   AUTH_PUBLIC),
-            'groups/ajax/open'        => $this->make_hook('group_ajax_open',   AUTH_PUBLIC), // FIXME AUTH_something ?
+            'groups/ajax/news'        => $this->make_hook('group_ajax_news',   AUTH_INTERNAL, ''),
+            'groups/ajax/open'        => $this->make_hook('group_ajax_open',   AUTH_INTERNAL, ''),
             'groups/subscribe'        => $this->make_hook('group_subscribe',   AUTH_COOKIE),
             'groups/unsubscribe'      => $this->make_hook('group_unsubscribe', AUTH_COOKIE),
 
@@ -52,7 +52,10 @@ class GroupsModule extends PLModule
     function handler_groups($page)
     {
         global $globals;
-        $except = new PFC_True();
+        if(S::i('auth')>=AUTH_INTERNAL)
+            $restrict = new PFC_True();
+        else
+            $restrict = new GFC_External(true);
 
         $max = $globals->groups->limit;
 
@@ -60,23 +63,19 @@ class GroupsModule extends PLModule
         S::user()->select(UserSelect::castes());
 
         // Fetch samples of other groups
-        $binet = new GroupFilter(new PFC_And(new GFC_Namespace(Group::NS_BINET), $except), new GFO_Score(true));
+        $binet = new GroupFilter(new PFC_And(new GFC_Namespace(Group::NS_BINET), $restrict), new GFO_Score(true));
         $binet = $binet->get(new PlLimit($max));
 
-        $course = new GroupFilter(new PFC_And(new GFC_Namespace(Group::NS_COURSE), $except), new GFO_Score(true));
+        $course = new GroupFilter(new PFC_And(new GFC_Namespace(Group::NS_COURSE), $restrict), new GFO_Score(true));
         $course = $course->get(new PlLimit($max));
 
-        $free = new GroupFilter(new PFC_And(new GFC_Namespace(Group::NS_FREE), $except), new GFO_Score(true));
+        $free = new GroupFilter(new PFC_And(new GFC_Namespace(Group::NS_FREE), $restrict), new GFO_Score(true));
         $free = $free->get(new PlLimit($max));
 
         // Load associated datas
         $temp = new Collection('Group');
         $temp->merge($binet)->merge($course)->merge($free);
         $temp->select(GroupSelect::base());
-
-        // Fetch the total count of groups
-        $allf = new GroupFilter(new GFC_Visible());
-        $total = $allf->getTotalCount();
 
         $user_binet = S::user()->castes()->groups()->filter('ns', Group::NS_BINET)->remove($binet);
         $page->assign('binet', $binet);
@@ -91,7 +90,6 @@ class GroupsModule extends PLModule
         $page->assign('user_free', $user_free);
 
         $page->assign('user', S::user());
-        $page->assign('total', $total);
         $page->assign('title', 'Groupes');
         $page->changeTpl('groups/groups.tpl');
         $page->addCssLink('groups.css');
@@ -101,9 +99,14 @@ class GroupsModule extends PLModule
     {
         global $globals;
 
+        if(S::i('auth')>=AUTH_INTERNAL)
+            $restrict = new PFC_True();
+        else
+            $restrict = new GFC_External(true);
+
         $conditions = new PFC_And(new GFC_Namespace(Json::s('ns')),
                                   new PFC_OR(new GFC_Label(Json::s('piece'), GFC_Label::CONTAINS),
-                                             new GFC_Name(Json::s('piece'))));
+                                             new GFC_Name(Json::s('piece'))), $restrict);
 
         $desc = Json::b('desc', true);
         if (Json::s('order') == 'name') {

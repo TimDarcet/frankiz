@@ -83,6 +83,21 @@ class GFC_Visible extends GroupFilterCondition
     }
 }
 
+class GFC_External extends GroupFilterCondition
+{
+    private $external;
+
+    public function __construct($external = true)
+    {
+        $this->external = $external;
+    }
+
+    public function buildCondition(PlFilter $uf)
+    {
+        return XDB::format('g.external = {?}', $this->external);
+    }
+}
+
 class GFC_Label extends GroupFilterCondition
 {
     // Modes
