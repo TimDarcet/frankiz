@@ -954,14 +954,15 @@ class User extends Meta
      */
     public function canSee(Caste $caste)
     {
-        // If we are inside the platal & the caste is of type everybody
-        if (S::i('auth') >= AUTH_INTERNAL && $caste->rights()->isMe(Rights::everybody())) {
-            return true;
+        // If we are unauthentificated, outside the platal, and trying to sneak at a internal ressource
+        if(S::i('auth') < AUTH_INTERNAL) {
+            $caste->group()->select(GroupSelect::base());
+            if(! $caste->group()->external())
+                return false;
         }
 
-        // If we are here, it means we are outside or that the caste is restricted
-        // In either case, in order to see the content, the user must be part of the caste
-        if (S::user()->castes()->get($caste) != false) {
+        // Now, either the caste is of type everybody or the user must be part of the caste in order to see the content
+        if ($caste->rights()->isMe(Rights::everybody()) || S::user()->castes()->get($caste) != false) {
             return true;
         }
 
