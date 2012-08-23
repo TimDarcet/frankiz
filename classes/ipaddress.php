@@ -127,11 +127,11 @@ class IPAddress
             list($is_student, $is_premise) = XDB::fetchOneRow(
                 'SELECT  EXISTS(SELECT  rid
                                   FROM  rooms_users AS ru
-                                 WHERE  ru.rid = ips.rid
+                                 WHERE  ru.room = ips.rid
                                 ) AS stu,
                          EXISTS(SELECT  rid
                                   FROM  rooms_groups AS rg
-                                 WHERE  rg.rid = ips.rid
+                                 WHERE  rg.room = ips.rid
                                 ) AS pre
                    FROM  ips
                   WHERE  ips.ip = {?}

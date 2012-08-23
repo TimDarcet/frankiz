@@ -242,7 +242,7 @@ class RoomFilter extends FrankizFilter
         $joins = array();
         if ($this->with_ips > 0) {
             for ($i = 1; $i <= $this->with_ips; $i++) {
-                $joins['ip' . $i] = PlSqlJoin::inner('ips', '$ME.rid = r.rid');
+                $joins['ip' . $i] = PlSqlJoin::inner('ips', '$ME.room = r.rid');
             }
         }
 
