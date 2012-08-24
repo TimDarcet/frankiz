@@ -39,7 +39,7 @@
 
     <a href="https://www.frankiz.net">Frankiz</a> ·
 
-    <a href="http://br.frankiz.net">WikiBR</a> ·
+    <a href="https://br.binets.fr">WikiBR</a> ·
 
     <a href="http://ik.frankiz.net">InfoKès</a> ·
 
@@ -53,7 +53,9 @@
         <a href="http://jtx">JTX</a>
         ·
         <a href="http://x-ray">X-Ray</a>
-    {/if}
+    {/if} | |
+
+    <a href="http://dev.frankiz.net">Dév</a> ·
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
