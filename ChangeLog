@@ -1,7 +1,79 @@
 ================================================================================
-VERSION 3.0.0                                                         XX XX XXXX
+VERSION 3.0.1                                                         22 08 2012
 
-First stage of the development to Frankiz3
+New:
+
+    * Refactor promo mails to display only on_platal formations             -IOS
+    * Visibility flags for castes-user management                           -IOS
+    * Add open state for rooms belonging to groups                          -LAU
+    * Improve remote IP detection and management                            -IOS
+    * Add FlagSet field in meta objects                                     -IOS
+    * Some useful scripts                                               -CYP/IOS
+    * Offers the possibility to mark a news as non read after modification  -GUI
+    * Add a doxygen configuration file                                      -IOS
+    * Chatting system                                                       -PJ
+    * User experience improvement in news selection                         -LAU
+    * Course groups                                                         -BRI
+
+New skins:
+
+    * Aubade                                                            -YUY/QUA
+    * Point Gamma                                                           -YUY
+    * Cyber Attackès                                                        -KAN
+
+Minimodules:
+
+    * Xray                                                                  -OLI
+    * X-Live                                                                -YUA
+    * RER                                                                   -MAT
+    * PiX                                                               -MAT/OLI
+    * .GAMMA                                                                -YUA
+
+Bug:
+
+    * Prevent member searching when displaying a user group                 -LAU
+    * Fixed IP scoring for QdJ                                              -CYP
+    * Fixed number of pages for group users                                 -LAU
+    * Style bugfixing                                                       -YUY
+    and many, many more...
+
+================================================================================
+VERSION 3.0.0                                                         28 02 2011
+
+First stage of the development to Frankiz3            -MAT/RIT/BRI/FEA/PJ/QT/XEL
+
+New comparing to Frankiz 2:
+
+    * Database model with Schema/Meta/Select
+    * Collection class
+    * Users can be friend, member or admin of a group
+    * Use Less to generate CSS
+
+From Frankiz 2:
+
+    * Minimodules
+    * TOL (Trombi On Line)
+
+================================================================================
+ACRONYMS:
+
+    * ART: Arthur Darcet                       <arthur.darcet@polytechnique.org>
+    * BRI: Brice Gelineau                     <brice.gelineau@polytechnique.org>
+    * FEA: Vincent Brillault    (Fëandil)  <vincent.brillault@polytechnique.org>
+    * GUI: Guilhem Pujol                       <guilhem.pujol@polytechnique.org>
+    * IOS: Nicolas Iooss                       <nicolas.iooss@polytechnique.org>
+    * KAN: Corentin Wallez      (Kangz)      <corentin.wallez@polytechnique.org>
+    * LAU: Lauriane Aufrant                 <lauriane.aufrant@polytechnique.org>
+    * MAT: Matthieu Chareton               <matthieu.chareton@polytechnique.org>
+    * OLI: Olivier Charvin                   <olivier.charvin@polytechnique.org>
+    * PAD: Pierre-Alain Dupont           <pierre-alain.dupont@polytechnique.org>
+    * QUA: Simon Bouteille      (Quark)      <simon.bouteille@polytechnique.org>
+    * PJ : Pierre-Julien Bringer       <pierre-julien.bringer@polytechnique.org>
+    * QT : Quentin Pleple                     <quentin.pleple@polytechnique.org>
+    * RIT: Henri Jouhaud        (Riton)        <henri.jouhaud@polytechnique.org>
+    * XEL: Raphaël Barrois      (Xelnor)     <raphael.barrois@polytechnique.org>
+    * YUY: Julia Chatain        (Yuya)         <julia.chatain@polytechnique.org>
+    * YUA: Yuansi Chen                           <yuansi.chen@polytechnique.org>
 
 ================================================================================
 vim:et:ts=4:sw=4:tw=80:enc=utf-8:
