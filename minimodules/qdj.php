@@ -55,7 +55,8 @@ class QdjMiniModule extends FrankizMiniModule
     {
         $qdj = QDJ::last();
         $this->assign('qdj', $qdj);
-        $this->assign('votes', $qdj->last_votes());
+        $lasts_votes = ($qdj ? $qdj->last_votes() : array());
+        $this->assign('votes', $lasts_votes);
     }
 }
 
