@@ -52,7 +52,7 @@ class ProposalModule extends PlModule
     {
         S::assert_xsrf_token();
 
-        $val = ValidateFilter::fromId($id, false);
+        $val = Validate::fromId($id, false);
         if ($val === false) {
             $page->trigError("This item doesn't exist");
             return;

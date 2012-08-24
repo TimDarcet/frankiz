@@ -32,7 +32,7 @@ class SurveysModule extends PlModule
 
     function handler_take($page, $sid = null)
     {
-        $survey = SurveyFilter::fromId($sid, false);
+        $survey = Survey::fromId($sid, false);
         if ($survey) {
             $survey->select(Survey::SELECT_BASE | Survey::SELECT_DESCRIPTION);
             if ($survey->alreadyTaken()) {
@@ -52,7 +52,7 @@ class SurveysModule extends PlModule
 
     function handler_submit($page, $sid = null)
     {
-        $survey = SurveyFilter::fromId($sid, false);
+        $survey = Survey::fromId($sid, false);
         if ($survey) {
             $survey->select(array(Survey::SELECT_DATAS => SurveyQuestion::SELECT_BASE));
             $survey->submit();
@@ -67,7 +67,7 @@ class SurveysModule extends PlModule
 
     function handler_see($page, $sid = null)
     {
-        $survey = SurveyFilter::fromId($sid, false);
+        $survey = Survey::fromId($sid, false);
         if ($survey) {
             $survey->select(Survey::SELECT_BASE | Survey::SELECT_DESCRIPTION);
             $survey->select(array(Survey::SELECT_DATAS => SurveyQuestion::SELECT_BASE | SurveyQuestion::SELECT_ANSWERS));
