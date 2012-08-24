@@ -198,7 +198,7 @@ class Collection implements IteratorAggregate, Countable
     */
     public function select($options = null)
     {
-        if ($this->count() == 0)
+        if ($this->count() == 0 || is_null($options))
             return $this;
 
         if ($options instanceof Select) {

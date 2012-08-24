@@ -146,7 +146,7 @@ abstract class Meta
         if ($fields instanceof Select) {
             $c = new Collection(get_class($this));
             $fields->select($c->add($this));
-        } else {
+        } elseif (!is_null($fields)) {
             static::batchSelect(array($this), $fields);
         }
         return $this;
