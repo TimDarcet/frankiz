@@ -13,6 +13,7 @@ htdocs/data/*
 htdocs/css/*
 htdocs/ca-br.crt
 htdocs/doc/
+/htdocs/javascript/3.*
 htdocs/*.mobileconfig
 htdocs/wpad.dat
 upgrade/2.0.0_to_3.0.0/unversionned

@@ -42,7 +42,7 @@ dev: $(BUILD_TARGET)
 user_not_defined:
 	@! echo "Error, \"INSTALL_USER\" MUST be speficied"
 
-dev_build: core dir conf
+dev_build: core dir symlink conf
 	@echo ''
 	@echo ''
 	@echo '+--------------------------------------------------+'
@@ -54,7 +54,7 @@ dev_build: core dir conf
 	@echo '+--------------------------------------------------+'
 	@echo ''
 
-prod: core dir conf
+prod: core dir symlink conf
 	@echo ''
 	@echo ''
 	@echo '+--------------------------------------------------+'
@@ -103,6 +103,16 @@ dir: spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/se
 spool/templates_c spool/mails_c spool/uploads spool/conf spool/tmp spool/sessions htdocs/css htdocs/data/ik:
 	mkdir -p $@
 	chmod 775 $@
+
+##
+## Symlink
+##
+
+symlink: htdocs/javascript@VERSION
+
+# Version directory
+%@VERSION: % Makefile ChangeLog
+	cd $< && rm -f $(VERSION) && ln -sf . $(VERSION)
 
 ##
 ## conf
@@ -162,5 +172,5 @@ distclean: delete_dir clean_files
 
 ################################################################################
 
-.PHONY: all clean clean_dir clean_files conf core delete_dir dev dev_build dir distclean prod q prod_update user_not_defined
+.PHONY: all clean clean_dir clean_files conf core delete_dir dev dev_build dir distclean prod q prod_update symlink user_not_defined
 
