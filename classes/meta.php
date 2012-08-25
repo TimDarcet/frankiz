@@ -53,52 +53,73 @@ abstract class Meta
     {
         $className = get_class($this);
         $schema = Schema::get($className);
-        if (!$schema->has($method)) {
-            throw new Exception("This object doesn't have '$method' as automatic field");
-        }
+        if ($schema->has($method)) {
+            // Automatic field getter/setter
+            if (!empty($arguments)) {
+                $table = $schema->table();
+                $field = $method;
+                $id    = $schema->id();
 
-        if (!empty($arguments)) {
-            $table = $schema->table();
-            $field = $method;
-            $id    = $schema->id();
+                if ($schema->isScalar($field)) {
+                    $data = ($arguments[0] === false) ? null : $arguments[0];
+                } else if ($schema->isObject($field)) {
+                    $objectType = $schema->objectType($field);
 
-            if ($schema->isScalar($field)) {
-                $data = ($arguments[0] === false) ? null : $arguments[0];
-            } else if ($schema->isObject($field)) {
-                $objectType = $schema->objectType($field);
+                    $reflection = new ReflectionClass($objectType);
 
-                $reflection = new ReflectionClass($objectType);
-
-                if ($reflection->isSubclassOf('Meta')) {
-                    if ($arguments[0] === false) {
-                        $data = null;
-                    } else if ($arguments[0] instanceof Meta) {
-                        $data = $arguments[0]->id();
+                    if ($reflection->isSubclassOf('Meta')) {
+                        if ($arguments[0] === false) {
+                            $data = null;
+                        } else if ($arguments[0] instanceof Meta) {
+                            $data = $arguments[0]->id();
+                        } else {
+                            throw new Exception('The object ' . var_dump($arguments[0]) . 'is not of class Meta');
+                        }
+                    } else if ($reflection->implementsInterface('Formatable')) {
+                        $data = ($arguments[0] === false) ? null : $arguments[0]->toDb();
                     } else {
-                        throw new Exception('The object ' . var_dump($arguments[0]) . 'is not of class Meta');
+                        throw new Exception('Unsupported object passed to the setter');
                     }
-                } else if ($reflection->implementsInterface('Formatable')) {
-                    $data = ($arguments[0] === false) ? null : $arguments[0]->toDb();
+                } else if ($schema->isCollection($field)) {
+                    // Autosetter for collections
+                    return $this->helper_collectionSet($field, $arguments[0], $schema);
                 } else {
-                    throw new Exception('Unsupported object passed to the setter');
+                    throw new Exception("Auto setter for field $field is not supported yet");
                 }
 
-            } else {
-                throw new Exception('Auto setter for Collections is not supported yet');
+                XDB::execute("UPDATE  $table
+                                 SET  `$field` = {?}
+                               WHERE  $id = {?}", $data, $this->id());
+
+                $this->$method = $arguments[0];
             }
 
-            XDB::execute("UPDATE  $table
-                             SET  `$field` = {?}
-                           WHERE  $id = {?}", $data, $this->id());
+            if ($this->$method === null) {
+                throw new DataNotFetchedException("$method has not been fetched in $className(" . $this->id() . ")");
+            }
 
-            $this->$method = $arguments[0];
+            return $this->$method;
+        } elseif (starts_with($method, 'add')) {
+            // Add something, return true if the data was really added
+            $field = strtolower(substr($method, 3)) . 's';
+            if (!is_array($arguments) || count($arguments) != 1) {
+                throw new Exception('Wrong parameter count for auto-adder');
+            }
+            if ($schema->isCollection($field)) {
+                return $this->helper_collectionAdd($field, $arguments[0], $schema);
+            }
+        } elseif (starts_with($method, 'remove')) {
+            // Remove something, return true if the data was really removed
+            $field = strtolower(substr($method, 6)) . 's';
+            if (!is_array($arguments) || count($arguments) != 1) {
+                throw new Exception('Wrong parameter count for auto-adder');
+            }
+            if ($schema->isCollection($field)) {
+                return $this->helper_collectionRemove($field, $arguments[0], $schema);
+            }
         }
 
-        if ($this->$method === null) {
-            throw new DataNotFetchedException("$method has not been fetched in $className(" . $this->id() . ")");
-        }
-
-        return $this->$method;
+        throw new Exception("This object doesn't have '$method' as automatic field");
     }
 
     public function __construct($datas = null)
@@ -428,6 +449,106 @@ abstract class Meta
         }
         return $this->$field;
     }
+
+    /**
+     * Helper to add an item to a Collection which is in the database
+     *
+     * @param string $field Collection field
+     * @param Meta|null $value the value to add
+     * @param Schema|null $schema database schema of this metaobject
+     * @return true if something has been modified, false otherwise
+     */
+    protected function helper_collectionAdd($field, Meta $value = null, Schema $schema = null) {
+        if (!$value) {
+            // Nothing to add
+            return false;
+        }
+        if (!$schema) {
+            $className = get_class($this);
+            $schema = Schema::get($className);
+        }
+        list($l_className, $table, $l_id, $id) = $schema->collectionType($field);
+
+        XDB::execute("INSERT IGNORE INTO  `$table`
+                                     SET  `$l_id` = {?}, `$id` = {?}",
+                     $value->id(), $this->id());
+
+        if (XDB::affectedRows() <= 0) {
+            return false;
+        }
+        if (empty($this->$field)) {
+            $this->$field = new Collection($l_className);
+        }
+        $this->$field->add($value);
+        return true;
+    }
+
+    /**
+     * Helper to remove an item from a Collection which is in the database
+     *
+     * @param string $field Collection field
+     * @param Meta|null $value the value to remove
+     * @param Schema|null $schema database schema of this metaobject
+     * @return true if something has been modified, false otherwise
+     */
+    protected function helper_collectionRemove($field, Meta $value = null, Schema $schema = null) {
+        if (!$value) {
+            // Nothing to add
+            return false;
+        }
+        if (!$schema) {
+            $className = get_class($this);
+            $schema = Schema::get($className);
+        }
+        list($l_className, $table, $l_id, $id) = $schema->collectionType($field);
+
+        XDB::execute("DELETE FROM  `$table`
+                            WHERE  `$l_id` = {?} AND `$id` = {?}
+                            LIMIT  1",
+                     $value->id(), $this->id());
+
+        if (XDB::affectedRows() <= 0) {
+            return false;
+        }
+        if (!empty($this->$field)) {
+            $this->$field->remove($value);
+        }
+        return true;
+    }
+
+    /**
+     * Helper to set values for a Collection
+     *
+     * @param string $field Collection field
+     * @param Collection|null $values
+     * @param Schema|null $schema database schema of this metaobject
+     * @return new value for Collection
+     *
+     * If $values is null, this function does NOT reset anything and is a getter.
+     */
+    protected function helper_collectionSet($field, Collection $values = null) {
+        if (is_null($values)) {
+            return $this->$field;
+        }
+        if (!$schema) {
+            $className = get_class($this);
+            $schema = Schema::get($className);
+        }
+
+        $oldIds = $this->$field->ids();
+        $newIds = $values->ids();
+        // Remove no longer used items
+        foreach (array_diff($oldIds, $newIds) as $id) {
+            $this->helper_collectionRemove($field, $this->$field->get($id), $schema);
+        }
+        // Add new items
+        foreach (array_diff($newIds, $oldIds) as $id) {
+            $this->helper_collectionAdd($field, $values->get($id), $schema);
+        }
+        return $this->$field;
+    }
+
+
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
