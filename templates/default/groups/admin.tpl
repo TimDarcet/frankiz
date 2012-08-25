@@ -46,7 +46,7 @@
                     <td>Visible de l'extérieur</td>
                     <td>
                         <input type="checkbox" name="external" {if $group->external()}checked="checked"{/if} />
-                        Groupe visible sans authentification, même hors du plâtal. Ne pas cocher pour les 
+                        Groupe visible sans authentification, même hors du plâtal. Ne pas cocher pour les
 groupes sensibles !
                     </td>
                 </tr>
@@ -84,7 +84,7 @@ groupes sensibles !
                         <ul>
                         {foreach from=$group->castes() item='caste'}
                             <li>
-                                {$caste->rights()}&nbsp;: 
+                                {$caste->rights()}&nbsp;:
                                 {include file="userfilter.tpl"|rel userfilter=$caste->userfilter()}
                             </li>
                         {/foreach}
@@ -126,6 +126,42 @@ groupes sensibles !
         </form>
     </div>
 </div>
+
+{if $user->isWeb()}
+<div class="module">
+    <div class="head">
+        <span class="helper" target="groups/admin/rooms"></span>
+        Locaux
+    </div>
+    <div class="body">
+        <table>
+        {foreach from=$group->rooms() item='room'}
+            <form enctype="multipart/form-data" method="post" action="groups/admin/{$group->name()}">
+                <tr>
+                    <td width="20%">
+                        <input type="hidden" name="rid" value="{$room->id()}" />
+                        {$room->id()} ({$room|room})
+                    </td>
+                    <td>
+                        <input type="submit" name="del_room" value="Supprimer" onclick="return confirm(areyousure);" />
+                    </td>
+                </tr>
+            </form>
+        {/foreach}
+            <form enctype="multipart/form-data" method="post" action="groups/admin/{$group->name()}">
+                <tr>
+                    <td width="20%">
+                        <input type="text" name="rid" />
+                    </td>
+                    <td>
+                        <input type="submit" name="add_room" value="Ajouter" />
+                    </td>
+                </tr>
+            </form>
+        </table>
+    </div>
+</div>
+{/if}
 
 <div class="module">
     <div class="head">

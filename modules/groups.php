@@ -357,6 +357,25 @@ class GroupsModule extends PLModule
                                         "new_ns" => Env::t('ns')));
                     $group->ns(Env::t('ns'));
                 }
+
+                if (Env::has('add_room')) {
+                    $r = Room::fromId(Env::t('rid'), false);
+                    if($r) {
+                        $r->select(RoomSelect::base());
+                        $group->addRoom($r);
+                    } else {
+                        $err[] = "La chambre entrée n'existe pas.";
+                    }
+                }
+
+                if (Env::has('del_room')) {
+                    $r = Room::fromId(Env::t('rid'), false);
+                    if($r) {
+                        $group->removeRoom($r);
+                    } else {
+                        $err[] = "La chambre entrée n'existe pas.";
+                    }
+                }
             }
 
             $page->assign('title', 'Administration de "' . $group->label() . '"');

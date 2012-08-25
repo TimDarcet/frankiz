@@ -302,7 +302,7 @@
                 <tr>
                     <td width="20%">
                         <input type="hidden" name="rid" value="{$room->id()}" />
-                        {$room->id()} (Tel : {$room->phone()})
+                        {$room->id()} ({$room|room})
                     </td>
                     <td>                                
                         <input type="submit" name="del_room" value="Supprimer" onclick="return confirm(areyousure);" />
