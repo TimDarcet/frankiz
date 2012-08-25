@@ -104,33 +104,6 @@ class Remote extends Meta
 
     *******************************************************************************/
 
-    public function site($site = null)
-    {
-        if ($site != null) {
-            $this->site = $site;
-            XDB::execute('UPDATE remote SET site = {?} WHERE remid = {?}', $site, $this->id());
-        }
-        return $this->site;
-    }
-
-    public function privkey($privkey = null)
-    {
-        if ($privkey != null) {
-            $this->privkey = $privkey;
-            XDB::execute('UPDATE remote SET privkey = {?} WHERE remid = {?}', $privkey, $this->id());
-        }
-        return $this->privkey;
-    }
-
-    public function label($label = null)
-    {
-        if ($label != null) {
-            $this->label = $label;
-            XDB::execute('UPDATE remote SET label = {?} WHERE remid = {?}', $label, $this->id());
-        }
-        return $this->label;
-    }
-
     /**
      * Synchronise $this->rights with the database
      */
@@ -170,34 +143,6 @@ class Remote extends Meta
     {
         $this->rights->removeFlag($right);
         $this->updateRights();
-    }
-
-    public function groups(Collection $groups = null) {
-        if ($groups != null) {
-            $oldGids = $this->groups->ids();
-            $newGids = $groups->ids();
-            // Remove no longer used groups
-            foreach (array_diff($oldGids, $newGids) as $gid) {
-                $this->removeGroup($this->groups->get($gid));
-            }
-            // Add new groups
-            foreach (array_diff($newGids, $oldGids) as $gid) {
-                $this->addGroup($groups->get($gid));
-            }
-        }
-        return $this->groups;
-    }
-
-    public function addGroup(Group $group) {
-        XDB::execute('INSERT IGNORE INTO remote_groups SET remid={?}, gid={?}',
-            $this->id(), $group->id());
-        $this->groups->add($group);
-    }
-
-    public function removeGroup(Group $group) {
-        XDB::execute('DELETE FROM remote_groups WHERE remid={?} AND gid={?}',
-            $this->id(), $group->id());
-        $this->groups->remove($group);
     }
 
     /*******************************************************************************

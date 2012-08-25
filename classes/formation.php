@@ -142,22 +142,6 @@ class Formation extends Meta
         return $this->promos;
     }
 
-    public function platalyears(PlFlagSet $years = null) {
-        return $this->helper_flagsetSet('platalyears', $years);
-    }
-
-    public function hasPlatalYear($year) {
-        return $this->platalyears->hasFlag($year);
-    }
-
-    public function addPlatalYear($year) {
-        return $this->helper_flagsetAdd('platalyears', $year);
-    }
-
-    public function removePlatalYear($year) {
-        return $this->helper_flagsetRemove('platalyears', $year);
-    }
-
     /**
      * Get associated group
      * @return Group

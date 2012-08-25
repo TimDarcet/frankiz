@@ -426,11 +426,7 @@ class User extends Meta
 
     public function login($login = null)
     {
-        if ($login != null) {
-            $this->hruid = $login;
-            XDB::execute('UPDATE account SET hruid = {?} WHERE uid = {?}', $login, $this->id());
-        }
-        return $this->hruid;
+        return $this->hruid($login);
     }
 
     /**
@@ -673,48 +669,6 @@ class User extends Meta
             return false;
 
         $this->select(UserSelect::studies());
-        return true;
-    }
-
-    /*******************************************************************************
-         Rooms
-
-    *******************************************************************************/
-
-    /**
-    * Add a Room to the user
-    * @param $r the room to add
-    */
-    public function addRoom(Room $r)
-    {
-        XDB::execute('INSERT IGNORE  rooms_users
-                                SET  rid = {?}, uid = {?}',
-                            $r->id(), $this->id());
-
-        if (!(XDB::affectedRows() > 0))
-            return false;
-
-        if (empty($this->rooms))
-            $this->rooms = new Collection('Room');
-
-        $this->rooms->add($r);
-        return true;
-    }
-
-    public function removeRoom(Room $r)
-    {
-        XDB::execute('DELETE FROM  rooms_users
-                            WHERE  rid = {?} AND uid = {?}
-                            LIMIT  1',
-                            $r->id(), $this->id());
-
-        if (!(XDB::affectedRows() > 0))
-            return false;
-
-        if (empty($this->rooms))
-            $this->rooms = new Collection('Room');
-
-        $this->rooms->remove($r);
         return true;
     }
 
