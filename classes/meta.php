@@ -55,14 +55,14 @@ abstract class Meta
         $schema = Schema::get($className);
         if ($schema->has($method)) {
             // Automatic field getter/setter
-            if (!empty($arguments)) {
+            if (!empty($arguments) && !is_null($arguments[0])) {
                 $table = $schema->table();
                 $field = $method;
                 $id    = $schema->id();
 
                 if ($schema->isScalar($field)) {
                     $data = ($arguments[0] === false) ? null : $arguments[0];
-                } else if ($schema->isObject($field)) {
+                } elseif ($schema->isObject($field)) {
                     $objectType = $schema->objectType($field);
 
                     $reflection = new ReflectionClass($objectType);
@@ -70,7 +70,7 @@ abstract class Meta
                     if ($reflection->isSubclassOf('Meta')) {
                         if ($arguments[0] === false) {
                             $data = null;
-                        } else if ($arguments[0] instanceof Meta) {
+                        } elseif ($arguments[0] instanceof Meta) {
                             $data = $arguments[0]->id();
                         } else {
                             throw new Exception('The object ' . var_dump($arguments[0]) . 'is not of class Meta');
@@ -80,7 +80,10 @@ abstract class Meta
                     } else {
                         throw new Exception('Unsupported object passed to the setter');
                     }
-                } else if ($schema->isCollection($field)) {
+                } elseif ($schema->isFlagset($field)) {
+                    // Autosetter for flag sets
+                    return $this->helper_flagsetSet($field, $arguments[0], $schema);
+                } elseif ($schema->isCollection($field)) {
                     // Autosetter for collections
                     return $this->helper_collectionSet($field, $arguments[0], $schema);
                 } else {
@@ -105,7 +108,9 @@ abstract class Meta
             if (!is_array($arguments) || count($arguments) != 1) {
                 throw new Exception('Wrong parameter count for auto-adder');
             }
-            if ($schema->isCollection($field)) {
+            if ($schema->isFlagset($field)) {
+                return $this->helper_flagsetAdd($field, $arguments[0], $schema);
+            } elseif ($schema->isCollection($field)) {
                 return $this->helper_collectionAdd($field, $arguments[0], $schema);
             }
         } elseif (starts_with($method, 'remove')) {
@@ -114,8 +119,26 @@ abstract class Meta
             if (!is_array($arguments) || count($arguments) != 1) {
                 throw new Exception('Wrong parameter count for auto-adder');
             }
-            if ($schema->isCollection($field)) {
+            if ($schema->isFlagset($field)) {
+                return $this->helper_flagsetRemove($field, $arguments[0], $schema);
+            } elseif ($schema->isCollection($field)) {
                 return $this->helper_collectionRemove($field, $arguments[0], $schema);
+            }
+        } elseif (starts_with($method, 'has')) {
+            // Test if a set of objects has something
+            $field = strtolower(substr($method, 3)) . 's';
+            if (!is_array($arguments) || count($arguments) != 1) {
+                throw new Exception('Wrong parameter count for auto-has');
+            }
+            if (isset($this->$field)) {
+                if ($this->$field === null) {
+                    throw new DataNotFetchedException("$method has not been fetched in $className(" . $this->id() . ")");
+                }
+                if ($schema->isFlagset($field)) {
+                    return $this->$field->hasFlag($arguments[0]);
+                } elseif ($schema->isCollection($field)) {
+                    return $this->$field->has($arguments[0]);
+                }
             }
         }
 
@@ -378,17 +401,19 @@ abstract class Meta
     /**
      * Helper to add a value into a FlagSet which is in the database
      *
-     * @param string $field Object field
+     * @param string $field Flagset field
      * @param mixed $value the value to add
+     * @param Schema|null $schema database schema of this metaobject
      * @return true if something has been modified, false otherwise
      */
-    protected function helper_flagsetAdd($field, $value) {
-        $className = get_class($this);
-        $schema = Schema::get($className);
+    protected function helper_flagsetAdd($field, $value, Schema $schema = null) {
+        if (!$schema) {
+            $schema = Schema::get(get_class($this));
+        }
         $id = $schema->id();
         list($table, $column) = $schema->flagsetType($field);
-        XDB::execute("INSERT IGNORE  $table
-                                SET  $id = {?}, $column = {?}",
+        XDB::execute("INSERT IGNORE  `$table`
+                                SET  `$id` = {?}, `$column` = {?}",
                      $this->id(), $value);
 
         if (!(XDB::affectedRows() > 0))
@@ -404,17 +429,19 @@ abstract class Meta
     /**
      * Helper to remove a value from a FlagSet which is in the database
      *
-     * @param string $field Object field
+     * @param string $field Flagset field
      * @param mixed $value the value to remove
+     * @param Schema|null $schema database schema of this metaobject
      * @return true if something has been modified, false otherwise
      */
-    protected function helper_flagsetRemove($field, $value) {
-        $className = get_class($this);
-        $schema = Schema::get($className);
+    protected function helper_flagsetRemove($field, $value, Schema $schema = null) {
+        if (!$schema) {
+            $schema = Schema::get(get_class($this));
+        }
         $id = $schema->id();
         list($table, $column) = $schema->flagsetType($field);
-        XDB::execute("DELETE FROM  $table
-                            WHERE  $id = {?} AND $column = {?}
+        XDB::execute("DELETE FROM  `$table`
+                            WHERE  `$id` = {?} AND `$column` = {?}
                             LIMIT  1",
                      $this->id(), $value);
 
@@ -431,21 +458,26 @@ abstract class Meta
     /**
      * Helper to set values for a FlagSet
      *
-     * @param string $field Object field
+     * @param string $field Flagset field
      * @param PlFlagSet $values
+     * @param Schema|null $schema database schema of this metaobject
      * @return new value for PlFlagSet
      */
-    protected function helper_flagsetSet($field, PlFlagSet $values = null) {
-        if (is_null($values))
+    protected function helper_flagsetSet($field, PlFlagSet $values = null, Schema $schema = null) {
+        if (is_null($values)) {
             return $this->$field;
+        }
+        if (!$schema) {
+            $schema = Schema::get(get_class($this));
+        }
 
         foreach ($values as $v) {
             if (!$this->$field->hasFlag($v))
-                $this->helper_flagsetAdd($field, $v);
+                $this->helper_flagsetAdd($field, $v, $schema);
         }
         foreach ($this->$field as $v) {
             if (!$values->hasFlag($v))
-                $this->helper_flagsetRemove($field, $v);
+                $this->helper_flagsetRemove($field, $v, $schema);
         }
         return $this->$field;
     }
@@ -464,8 +496,7 @@ abstract class Meta
             return false;
         }
         if (!$schema) {
-            $className = get_class($this);
-            $schema = Schema::get($className);
+            $schema = Schema::get(get_class($this));
         }
         list($l_className, $table, $l_id, $id) = $schema->collectionType($field);
 
@@ -497,8 +528,7 @@ abstract class Meta
             return false;
         }
         if (!$schema) {
-            $className = get_class($this);
-            $schema = Schema::get($className);
+            $schema = Schema::get(get_class($this));
         }
         list($l_className, $table, $l_id, $id) = $schema->collectionType($field);
 
@@ -526,13 +556,12 @@ abstract class Meta
      *
      * If $values is null, this function does NOT reset anything and is a getter.
      */
-    protected function helper_collectionSet($field, Collection $values = null) {
+    protected function helper_collectionSet($field, Collection $values = null, Schema $schema = null) {
         if (is_null($values)) {
             return $this->$field;
         }
         if (!$schema) {
-            $className = get_class($this);
-            $schema = Schema::get($className);
+            $schema = Schema::get(get_class($this));
         }
 
         $oldIds = $this->$field->ids();
