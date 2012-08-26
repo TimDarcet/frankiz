@@ -369,7 +369,7 @@ class Collection implements IteratorAggregate, Countable
      */
     public function has($mixed)
     {
-        return $this->get($mixed) === false;
+        return $this->get($mixed) !== false;
     }
 
     /**

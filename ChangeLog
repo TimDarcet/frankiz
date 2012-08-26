@@ -1,6 +1,12 @@
 ================================================================================
 VERSION 3.0.2                                                         XX XX XXXX
 
+New:
+    * Add tests for Collection class                                        -IOS
+
+Bug:
+    * Fix wrong implementation of Collection::has                           -IOS
+
 ================================================================================
 VERSION 3.0.1                                                         22 08 2012
 
