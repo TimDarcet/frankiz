@@ -58,6 +58,12 @@ function __autoload($cls)
             return;
         }
 
+        // Handle the *FilterCondition classes, removing the Condition suffix
+        if (substr($cls, -15) == 'filtercondition') {
+            pl_autoload(substr($cls, 0, -9), array('classes/filters'));
+            return;
+        }
+
         // Handle the *fc_* and *fo_*
         $filters = array('g'  => 'groupfilter',
                          'c'  => 'castefilter',
@@ -66,7 +72,9 @@ function __autoload($cls)
                          'v'  => 'validatefilter',
                          'a'  => 'activityfilter',
                          'ai' => 'activityinstancefilter',
-                         'i'  => 'imagefilter');
+                         'i'  => 'imagefilter',
+                         'r'  => 'roomfilter',
+                         's'  => 'surveyfilter');
 
         foreach ($filters as $key => $class)
         {
@@ -84,6 +92,16 @@ function __autoload($cls)
 
         if (substr($cls, -4) == 'feed') {
             pl_autoload($cls, array('classes/feed'));
+            return;
+        }
+
+        // Special classes
+        if (starts_with($cls, 'surveyquestion')) {
+            pl_autoload('survey');
+            return;
+        }
+        if (starts_with($cls, 'weather')) {
+            pl_autoload('googleweather');
             return;
         }
 

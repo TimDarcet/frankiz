@@ -120,7 +120,7 @@ class SFC_User extends SurveyFilterCondition
 
 /** Filter those out-of-date
  */
-class NFC_Current extends SurveyFilterCondition
+class SFC_Current extends SurveyFilterCondition
 {
     public function buildCondition(PlFilter $uf)
     {

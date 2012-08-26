@@ -23,16 +23,24 @@ class Json
 {
     private static $json = null;
 
+    private static function _json()
+    {
+        if (is_null(self::$json)) {
+            self::$json = json_decode(Env::v('json'));
+        }
+        return self::$json;
+    }
+
     public static function _get($key, $default)
     {
-        self::$json = json_decode(Env::v('json'));
+        $json = self::_json();
         return isset(self::$json->$key) ? self::$json->$key : $default;
     }
 
     public static function has($key)
     {
-        self::$json = json_decode(Env::v('json'));
-        return isset(self::$json->$key);
+        $json = self::_json();
+        return isset($json->$key);
     }
 
     public static function v($key, $default = null)

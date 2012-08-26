@@ -62,8 +62,6 @@ abstract class SurveyQuestion extends Meta
 
     protected abstract function import($datas);
 
-    protected abstract function export();
-
     protected abstract function decodeAnswer($ssid, $answers);
 
     public function insert($ssid) {
@@ -108,7 +106,7 @@ abstract class SurveyQuestion extends Meta
                                     FROM  surveys_answers
                                    WHERE  qid IN {?}
                                 GROUP BY  qid', self::toIds($questions));
-    
+
             while (list($ssid, $qid, $datas) = $iter->next()) {
                 $questions[$qid]->decodeAnswer($ssid, json_decode($datas));
             }
@@ -128,7 +126,7 @@ class SurveyQuestionText extends SurveyQuestion
         $this->text = $datas->text;
     }
 
-    protected function export() {
+    public function export($bits = null) {
         return array('text' => $this->text);
     }
 
@@ -181,7 +179,7 @@ class SurveyQuestionChoices extends SurveyQuestion
         $this->max = $datas->max;
     }
 
-    protected function export() {
+    public function export($bits = null) {
         return array('choices' => $this->choices,
                          'max' => $this->max);
     }
@@ -244,7 +242,7 @@ class SurveySelect extends Select
 {
     public static $natives = array('title', 'description', 'anonymous', 'writer',
                                      'origin', 'target', 'begin', 'end');
-    
+
     public function className() {
         return 'Survey';
     }
