@@ -42,9 +42,9 @@ class NewsModule extends PlModule
         S::assert_xsrf_token();
         $ids = explode(',', $ids);
         try {
-            $news = Collection::fromArray($ids, 'News');
+            $news = News::batchFrom($ids);
             $news->read(($state == 1));
-        } catch (NotAnIdException $e) {
+        } catch (ItemNotFoundException $e) {
         }
         return PL_JSON;
     }
@@ -53,9 +53,9 @@ class NewsModule extends PlModule
     {
         S::assert_xsrf_token();
         try {
-            $news = new News($id);
+            $news = News::from($id);
             $news->star(($state == 1));
-        } catch (NotAnIdException $e) {
+        } catch (ItemNotFoundException $e) {
         }
         return PL_JSON;
     }
@@ -73,9 +73,9 @@ class NewsModule extends PlModule
     {
         if ($id) {
             try {
-                $news = new News($id);
+                $news = News::from($id);
                 $news->read(true);
-            } catch (NotAnIdException $e) {
+            } catch (ItemNotFoundException $e) {
                 $id = false;
             }
         }
@@ -96,9 +96,9 @@ class NewsModule extends PlModule
     {
         if ($id) {
             try {
-                $news = new News($id);
+                $news = News::from($id);
                 $news->read(true);
-            } catch (NotAnIdException $e) {
+            } catch (ItemNotFoundException $e) {
                 $id = false;
             }
         }
@@ -136,9 +136,9 @@ class NewsModule extends PlModule
     {
         if ($id) {
             try {
-                $news = new News($id);
+                $news = News::from($id);
                 $news->read(true);
-            } catch (NotAnIdException $e) {
+            } catch (ItemNotFoundException $e) {
                 $id = false;
             }
         }
@@ -180,9 +180,10 @@ class NewsModule extends PlModule
 
     function handler_admin($page, $nid = false)
     {
-        $news = News::fromId($nid);
-        if ($news !== false) {
+        try {
+            $news = News::from($nid);
             $news->select(NewsSelect::news());
+            $news->read(true);
             if (S::user()->hasRights($news->target()->group(), Rights::admin()) || S::user()->isWeb()) {
                 if (Env::has('modify') || Env::has('delete')) {
                     S::assert_xsrf_token();
@@ -217,6 +218,8 @@ class NewsModule extends PlModule
                     $page->assign('delete', true);
                 }
             }
+        } catch (ItemNotFoundException $e) {
+            $news = false;
         }
 
         $page->assign('news', $news);

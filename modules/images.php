@@ -98,20 +98,22 @@ class ImagesModule extends PlModule
     {
         global $globals;
 
-        $image = FrankizImage::fromId($iid, null);
-        if ($image) {
+        try {
+            $image = FrankizImage::from($iid);
             $image->select(FrankizImageSelect::caste());
             $user = S::user();
             if ($user && $user->canSee($image->caste())) {
                 $image->send($size);
-                return;
+                exit;
             }
+        } catch (ItemNotFoundException $e) {
         }
 
-        // Not found of error => HTTP 403
+        // Not found or error => HTTP 403
         header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
         $img = new StaticImage($globals->images->forbidden);
         $img->send($size);
+        exit;
     }
 }
 

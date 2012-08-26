@@ -33,7 +33,7 @@
                 {assign var='group' value=$groups->get($grp)}
                 <li>
                     Groupe {$group->label()} :
-                    <a href="admin/validate/{$group->id()}">
+                    <a href="admin/validate/{$group->name()}">
                         {$validates->count()} requête{if $validates->count() > 1}s{/if}
                     </a>
                 </li>

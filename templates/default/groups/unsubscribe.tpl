@@ -26,7 +26,7 @@
     Vous ne pouvez pas quitter {$group->label()}
 {/if}
 
-<a href="groups/see/{$group->bestId()}">Retourner à la page du groupe</a>
+<a href="groups/see/{$group->name()}">Retourner à la page du groupe</a>
 
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

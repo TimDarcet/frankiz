@@ -156,8 +156,9 @@ class GroupsModule extends PLModule
     {
         global $platal;
         $page->addCssLink('groups.css');
-        $group = Group::fromId($group);
-        if (!$group) {
+        try {
+            $group = Group::from($group);
+        } catch (ItemNotFoundException $e) {
             $page->assign('title', "Ce groupe n'existe pas");
             $page->changeTpl('groups/no_group.tpl');
             return;
@@ -498,13 +499,15 @@ class GroupsModule extends PLModule
     function handler_group_subscribe($page, $group, $right = 'friend')
     {
         S::assert_xsrf_token();
-
-        $group = Group::fromId($group);
-        if (!$group) {
+        try {
+            $group = Group::from($group);
+        } catch (ItemNotFoundException $e) {
             $page->assign('title', "Ce groupe n'existe pas");
             $page->changeTpl('groups/no_group.tpl');
             return;
-        } elseif ($right == 'friend') {
+        }
+
+        if ($right == 'friend') {
             $group->select(GroupSelect::subscribe());
 
             $group->caste(Rights::friend())->addUser(S::user());
@@ -534,9 +537,9 @@ class GroupsModule extends PLModule
     function handler_group_unsubscribe($page, $group)
     {
         S::assert_xsrf_token();
-
-        $group = Group::fromId($group);
-        if (!$group) {
+       try {
+            $group = Group::from($group);
+        } catch (ItemNotFoundException $e) {
             $page->assign('title', "Ce groupe n'existe pas");
             $page->changeTpl('groups/no_group.tpl');
             return;
@@ -579,7 +582,7 @@ class GroupsModule extends PLModule
         $group->insert();
         $group->caste(Rights::admin())->addUser(S::user());
         S::logger()->log("groups/insert", array('gid' => $group->id()));
-        pl_redirect('groups/admin/' . $group->id());
+        pl_redirect('groups/admin/' . $group->name());
     }
 }
 

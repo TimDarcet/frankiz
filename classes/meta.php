@@ -295,6 +295,8 @@ abstract class Meta
      * @param boolean $tryKey try the other key if $id is not an index
      * @return false if nothing is found, a meta object otherwise
      *
+     * @deprecated Please use from() for modules and IDs internally
+     *
      * Note: This method is to be called when there is only one expected object.
      * For several objects, you should use FrankizFilter and Collection instead.
      */
@@ -332,13 +334,18 @@ abstract class Meta
     }
 
     /**
-    * Returns the object corresponding to the specified name
-    *
-    * @param $mixed              A unique identifier ot the object to retrieve
-    * @param $insertIfNotExists  Create the Object if the identifier doesn't exist ? (Use 'name' by default)
-    */
+     * Returns the object corresponding to the specified name
+     *
+     * @param $mixed              A unique identifier ot the object to retrieve
+     * @param $insertIfNotExists  Create the Object if the identifier doesn't exist ? (Use 'name' by default)
+     * @return Meta an Meta object
+     * @throws ItemNotFoundException if this object does not exist
+     */
     public static function from($mixed, $insertIfNotExists = false)
     {
+        if (!$mixed) {
+            throw ItemNotFoundException('Empty index');
+        }
         try {
             $w = static::batchFrom(array($mixed))->first();
         } catch (ItemNotFoundException $e) {

@@ -194,14 +194,6 @@ class Group extends Meta
 
     protected $nb_news = null;
 
-    public function bestId()
-    {
-        if (empty($this->name))
-            return $this->id();
-
-        return $this->name();
-    }
-
     public function addCaste(Rights $rights)
     {
         if ($this->castes === null)

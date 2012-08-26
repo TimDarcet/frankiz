@@ -51,16 +51,16 @@ class ProposalModule extends PlModule
     {
         S::assert_xsrf_token();
 
-        $val = Validate::fromId($id, false);
-        if ($val === false) {
+        try {
+            $val = Validate::from($id);
+            $val->select(ValidateSelect::validate());
+
+            if ($val->writer()->id() != S::user()->id()) {
+                throw new Exception("Invalid crendentials");
+            }
+        } catch (ItemNotFoundException $e) {
             $page->trigError("This item doesn't exist");
             return;
-        }
-
-        $val->select(ValidateSelect::validate());
-
-        if ($val->writer()->id() != S::user()->id()) {
-            throw new Exception("Invalid crendentials");
         }
 
         S::logger()->log('proposal/remove',
@@ -298,10 +298,12 @@ class ProposalModule extends PlModule
 
     function handler_activity_ajax($page)
     {
-        $a = Activity::fromId(Env::i('aid'), false);
-        if ($a) {
+        try {
+            $a = Activity::from(Env::i('aid'));
             $a->select(ActivitySelect::base());
             $page->assign('days', $a->next_dates(5));
+        } catch (ItemNotFoundException $e) {
+            $a = null;
         }
         $page->assign('activity', $a);
         $page->changeTpl('validate/prop.activity.ajax.tpl', NO_SKIN);

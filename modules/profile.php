@@ -91,103 +91,109 @@ class ProfileModule extends PLModule
         $page->assign('title', "Changement du profil");
         $page->changeTpl('profile/account.tpl');
     }
-    
+
     public function handler_admin_account($page, $hruid = null, $added = false)
     {
         $err = array();
         $msg = array();
         $add = false;
-        
+
         if($added){
             $msg[] = "L'utilisateur a été ajouté avec succès";
         }
-        
+
         if ($hruid === null) {
             $user = new User();
             $add = true;
         } else {
-            $user = new UserFilter(new UFC_Hruid($hruid));
-            $user = $user->get(true);
-            
-            if($user !== false){
+            try {
+                $user = User::from($hruid);
                 $user->select(UserSelect::tol());
-            }
-            else {
+            } catch (ItemNotFoundException $e) {
                 throw new Exception("Impossible de charger les données de l'utilisateur " . $hruid);
             }
         }
-        
-        if (Env::has('add_room') && !$add) {
-            $r = Room::batchFrom(array(Env::t('rid')));
-            if($r->count() == 0){
-                $err[] = "La chambre entrée n'existe pas.";
-            } else {
-                $user->addRoom($r->pop());
+
+        if (!$add) {
+            if (Env::has('add_room')) {
+                try {
+                    $r = Room::from(Env::t('rid'))->select(RoomSelect::base());
+                    $user->addRoom($r);
+                } catch (ItemNotFoundException $e) {
+                    $err[] = "La chambre entrée n'existe pas.";
+                }
             }
-        }
-        
-        if (Env::has('del_room') && !$add) {
-            $r = Room::batchFrom(array(Env::t('rid')));
-            if($r->count() == 0){
-                $err[] = "La chambre entrée n'existe pas.";
-            } else {
-                $user->removeRoom($r->pop());
+
+            if (Env::has('del_room')) {
+                try {
+                    $user->removeRoom(Room::from(Env::t('rid')));
+                } catch (ItemNotFoundException $e) {
+                    $err[] = "La chambre entrée n'existe pas.";
+                }
             }
-        }
-        
-        if (Env::has('add_perm') && !$add && S::user()->isAdmin()) {
+
+            if (Env::has('add_perm') && S::user()->isAdmin()) {
                 $user->addPerm(Env::t('perm'));
-        }
-        
-        if (Env::has('del_perm') && !$add && S::user()->isAdmin()) {
+            }
+
+            if (Env::has('del_perm') && S::user()->isAdmin()) {
                 $user->removePerm(Env::t('perm'));
-        }
-        
-        if (Env::has('upd_study') && !$add) {
+            }
+
+            if (Env::has('upd_study')) {
                 $user->updateStudy(Env::t('formation_id'),Env::t('forlife'),Env::t('year_in'),Env::t('year_out'),Env::t('promo'));
-        }
-        
-        if (Env::has('add_study') && !$add) {
+            }
+
+            if (Env::has('add_study')) {
                 $user->addStudy(Env::t('formation_id'),Env::t('year_in'),Env::t('year_out'),Env::t('promo'),Env::t('forlife'));
-        }
-        
-        if (Env::has('del_study') && !$add) {
+            }
+
+            if (Env::has('del_study')) {
                 $user->removeStudy(Env::t('formation_id'),Env::t('forlife'));
+            }
+
+            if (Env::has('add_group')) {
+                try {
+                    $g = Group::from(Env::t('name'))->select(GroupSelect::castes());
+                    $g->caste(Rights::member())->addUser($user);
+                } catch (ItemNotFoundException $e) {
+                    $err[] = "Le groupe indiqué n'existe pas.";
+                }
+            }
+
+            if (Env::has('del_group')) {
+                try {
+                    $g = Group::from(Env::t('name'))->select(GroupSelect::castes());
+                    $g->caste(Rights::member())->removeUser($user);
+                } catch (ItemNotFoundException $e) {
+                    $err[] = "Le groupe indiqué n'existe pas.";
+                }
+            }
         }
-        
-        if (Env::has('add_group') && !$add) {
-                $g = Group::from(Env::t('name'))->select(GroupSelect::castes());
-                $g->caste(Rights::member())->addUser($user);
-        }
-        
-        if (Env::has('del_group') && !$add) {
-                $g = Group::from(Env::t('name'))->select(GroupSelect::castes());
-                $g->caste(Rights::member())->removeUser($user);
-        }
-        
+
         if (Env::has('change_profile')) {
             if($add){
                 if (Env::blank('hruid')) {
-		    $hruid = Env::t('firstname') . '.' . Env::t('lastname');
-	            $hruid = strtolower($hruid);
+                    $hruid = Env::t('firstname') . '.' . Env::t('lastname');
+                    $hruid = strtolower($hruid);
                     $already = new UserFilter(new UFC_Hruid($hruid));
-		    $nbr = 1;
-		    while ($already->getTotalCount() > 0) {
-		        $nbr++;
-		        $hruid = Env::t('firstname') . '.' . Env::t('lastname') . '.' . $nbr;
-			$hruid = strtolower($hruid);
+                    $nbr = 1;
+                    while ($already->getTotalCount() > 0) {
+                        $nbr++;
+                        $hruid = Env::t('firstname') . '.' . Env::t('lastname') . '.' . $nbr;
+                        $hruid = strtolower($hruid);
                         $already = new UserFilter(new UFC_Hruid($hruid));
                     }
                 } else {
-		    $hruid = Env::t('hruid');
+                    $hruid = Env::t('hruid');
                     $already = new UserFilter(new UFC_Hruid($hruid));
-		    if ($already->getTotalCount() > 0) {
+                    if ($already->getTotalCount() > 0) {
                         throw new Exception("Le hruid spécifié est déjà pris.");
                     }
-		}
+                }
                 $user->insert();
-		if (Env::blank('hruid')) {
-		    $user->hruid($hruid);
+                if (Env::blank('hruid')) {
+                    $user->hruid($hruid);
                 }
                 $msg[] = "L'utilisateur a été ajouté.";
             }
@@ -212,13 +218,13 @@ class ProfileModule extends PLModule
                 $msg[] = 'La demande de changement de photo tol a été prise en compte.
                     Les tolmestres essaieront de te la valider au plus tôt.';
             }
-            
+
             if(Env::has('password')){
                 $user->password(Env::t('password'));
             }
             if(!Env::blank('hruid')){
                 $user->hruid(Env::t('hruid'));
-	    }
+            }
 
             $user->nickname(Env::t('nickname'));
             $user->lastname(Env::t('lastname'));
@@ -230,7 +236,7 @@ class ProfileModule extends PLModule
             $user->skin(Env::t('skin'));
             $user->email_format((Env::t('format')=='text') ? User::FORMAT_TEXT : User::FORMAT_HTML);
             $user->comment(Env::t('comment'));
-            
+
             if($add){
                 //Let's add common minimodules if requested (we copy them from anonymous.internal (uid 0) one's)
                 if(Env::has('addCommonMinimodules')) {
@@ -247,19 +253,19 @@ class ProfileModule extends PLModule
         if (!empty($msg)) {
             $page->assign('msg', $msg);
         }
-        
+
         $page->assign('formations', XDB::query("SELECT formation_id, label FROM formations")->fetchAllAssoc());
-        
+
         $gfun = new GroupFilter(new PFC_And(new GFC_Namespace('nationality'), new GFC_User($user)));
         $page->assign('user_nationalities',  $gfun->get()->select(GroupSelect::base())->toArray());
         $gfn = new GroupFilter(new GFC_Namespace('nationality'));
         $page->assign('nationalities',  $gfn->get()->select(GroupSelect::base())->toArray());
-        
+
         $gfus = new GroupFilter(new PFC_And(new GFC_Namespace('sport'), new GFC_User($user)));
         $page->assign('user_sports',  $gfus->get()->select(GroupSelect::base())->toArray());
         $gfs = new GroupFilter(new GFC_Namespace('sport'));
         $page->assign('sports',  $gfs->get()->select(GroupSelect::base())->toArray());
-        
+
         $page->assign('userEdit', $user);
         $page->addCssLink('profile.css');
         $page->assign('add',$add);
@@ -394,7 +400,7 @@ class ProfileModule extends PLModule
         $page->addCssLink('profile.css');
         $page->changeTpl('profile/recovery.tpl');
         $page->assign('title', 'Nouveau mot de passe');
-        
+
         // Step 1 : Ask the email
         $page->assign('step', 'ask');
 
@@ -482,7 +488,7 @@ class ProfileModule extends PLModule
 
         return PL_JSON;
     }
-    
+
     function handler_minimodules($page)
     {
         $iter = XDB::iterator('SELECT  m.name, m.label, m.description, COUNT(um.name) frequency

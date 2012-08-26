@@ -86,7 +86,7 @@
                             <a href="groups/admin/{$group->id()}">Administrer</a>
                             {assign var='id' value=$group->id()}
                             {if t($validates.$id)}
-                                <a class="warning" href="admin/validate/{$group->id()}">{$validates.$id|@count} requêtes</a>
+                                <a class="warning" href="admin/validate/{$group->name()}">{$validates.$id|@count} requêtes</a>
                             {/if}
                         </div>
                     </td>

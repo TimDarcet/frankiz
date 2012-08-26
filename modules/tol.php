@@ -233,15 +233,17 @@ class TolModule extends PLModule
         $hruid = trim($hruid);
         // By default, see current user
         if (!$hruid && S::user()) {
-            $hruid = S::user()->hruid();
-        }
-        $uf = new UserFilter(new UFC_Hruid($hruid));
-        $user = $uf->get(true);
-
-        if ($user) {
+            $user = S::user();
             $user->select(UserSelect::tol());
+            $hruid = $user->hruid();
         } else {
-            $page->trigError("L'utilisateur indiqué n'existe pas.");
+            try {
+                $user = User::from($hruid);
+                $user->select(UserSelect::tol());
+            } catch (ItemNotFoundException $e) {
+                $page->trigError("L'utilisateur indiqué n'existe pas.");
+                $user = null;
+            }
         }
 
         $page->assign('su', S::user()->isAdmin());

@@ -48,14 +48,14 @@ class RoomsModule extends PlModule
 
     function handler_room_see($page, $rid = null)
     {
-        $room = Room::fromId($rid);
-        if (!$room) {
+        try {
+            $room = Room::from($rid);
+            $room->select(RoomSelect::see());
+            $page->assign('room', $room);
+            $page->assign('title', $room->id());
+            $page->changeTpl('rooms/room.tpl');
+        } catch (ItemNotFoundException $e) {
             $page->changeTpl('rooms/no_room.tpl');
-            return;
         }
-        $room->select(RoomSelect::see());
-        $page->assign('room', $room);
-        $page->assign('title', $room->id());
-        $page->changeTpl('rooms/room.tpl');
     }
 }

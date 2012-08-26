@@ -56,20 +56,14 @@ class AdminModule extends PlModule
         $page->changeTpl('admin/index.tpl');
     }
 
-    function handler_su($page, $uid = null)
+    function handler_su($page, $hruid = null)
     {
         if (S::has('suid')) {
             $page->kill("Déjà en SUID !!!");
         }
 
-        if ($uid === null) {
-            throw new Exception("You forgot to pass the uid you want to impersonate");
-        }
-
-        $user = new UserFilter(new UFC_Uid($uid));
-        $user = $user->get(true);
-
-        if($user !== false){
+        try {
+            $user = User::from($hruid);
             $user->select(UserSelect::login());
             if(!Platal::session()->startSUID($user)) {
                 $page->trigError('Impossible d\'effectuer un SUID sur ' . $uid);
@@ -77,9 +71,8 @@ class AdminModule extends PlModule
                 S::logger()->log('admin/su', array('uid' => $user->id()));
                 pl_redirect('home');
             }
-        }
-        else {
-            throw new Exception("Impossible de faire un SUID sur " . $uid);
+        } catch (ItemNotFoundException $e) {
+            throw new Exception("Impossible de faire un SUID sur " . $hruid);
         }
     }
 
@@ -139,17 +132,10 @@ class AdminModule extends PlModule
         $page->changeTpl('admin/images.tpl');
     }
 
-    function handler_validate($page, $gid = null, $vid = null)
+    function handler_validate($page, $group = null, $vid = null)
     {
         $page->assign('msg', '');
-
-        $gf = new GroupFilter(new PFC_Or(new GFC_Id($gid), new GFC_Name($gid)));
-        $group = $gf->get(true);
-
-        if (!$group) {
-            throw new Exception("This Group (' . $gid . ') doesn't exist");
-        }
-
+        $group = Group::from($group);
         $group->select(GroupSelect::base());
 
         if (!S::user()->hasRights($group, Rights::admin())) {

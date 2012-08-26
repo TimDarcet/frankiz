@@ -30,7 +30,7 @@ class ChatModule extends PlModule
     }
 
     // Adds value to the javascripts variables in the template
-    function handler_chat($page, $group='platal')
+    function handler_chat($page, $group='everybody')
     {
         $page->assign('jabber_hruid', S::user()->login());
         $page->assign('jabber_nick', S::user()->displayName());
@@ -42,23 +42,17 @@ class ChatModule extends PlModule
         $page->changeTpl('chat/chat.tpl');
     }
 
-    function handler_chat_avatar($page, $hruid)
+    function handler_chat_avatar($page, $hruid = null)
     {
         global $globals;
-
-        $filter = new UFC_Hruid($hruid);
-        $uf = new UserFilter($filter);
-        $user = $uf->get(true); //add boolean
-        if (! $user) {
-            header($_SERVER['SERVER_PROTOCOL'] . '404 Not Found');
-            $image = new StaticImage($globals->images->man);
-            // for some reason mime isn't picked up: for valid images mime == null is enough to be displayed correctly
-            // for $globals->images->man neither 1 nor null does the trick
-        } else {
+        try {
+            $user = User::from($hruid);
             $user->select(UserSelect::login());
             $image = $user->image();
+        } catch (ItemNotFoundException $e) {
+            header($_SERVER['SERVER_PROTOCOL'] . '404 Not Found');
+            $image = new StaticImage($globals->images->man);
         }
-
         $image->send("micro");
         exit;
     }

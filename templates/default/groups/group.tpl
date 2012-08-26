@@ -94,23 +94,23 @@
                         {if !$user|hasRights:$group:'restricted'}
                             <div>
                                 <span class="rights member"></span>
-                                <a onclick="return confirm(areyousure);" href="groups/subscribe/{$group->id()}/member?token={xsrf_token}">Devenir membre</a>
+                                <a onclick="return confirm(areyousure);" href="groups/subscribe/{$group->name()}/member?token={xsrf_token}">Devenir membre</a>
                             </div>
                         {/if}
                         <div>
                             <span class="remove_participant"></span>
-                            <a onclick="return confirm(areyousure);" href="groups/unsubscribe/{$group->id()}?token={xsrf_token}">Quitter le groupe</a>
+                            <a onclick="return confirm(areyousure);" href="groups/unsubscribe/{$group->name()}?token={xsrf_token}">Quitter le groupe</a>
                         </div>
                     {/if}
                     </div>
                 {else}
                     <div>
                         <span class="rights friend"></span>
-                        <a onclick="return confirm(areyousure);" href="groups/subscribe/{$group->id()}?token={xsrf_token}">Devenir sympathisant</a>
+                        <a onclick="return confirm(areyousure);" href="groups/subscribe/{$group->name()}?token={xsrf_token}">Devenir sympathisant</a>
                     </div>
                     <div>
                         <span class="rights member"></span>
-                        <a onclick="return confirm(areyousure);" href="groups/subscribe/{$group->id()}/member?token={xsrf_token}">Devenir membre</a>
+                        <a onclick="return confirm(areyousure);" href="groups/subscribe/{$group->name()}/member?token={xsrf_token}">Devenir membre</a>
                     </div>
                 {/if}
                 {if $user->isWeb() && !$user|hasRights:$group:'admin'}

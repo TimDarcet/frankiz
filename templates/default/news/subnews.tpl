@@ -88,7 +88,7 @@
                             {if ($logged && !($user->hasRights($targetGroup)))}
                                 <div><strong>Voir les annonces de « {$targetGroup->label()} » dans mon fil principal en </strong>
                                 <span class="rights friend"></span>
-                                <a onclick="return confirm(areyousure);" href="groups/subscribe/{$targetGroup->id()}?token={xsrf_token}">devenant sympathisant</a></div>
+                                <a onclick="return confirm(areyousure);" href="groups/subscribe/{$targetGroup->name()}?token={xsrf_token}">devenant sympathisant</a></div>
                             {/if}
                         </td>
                         {if $smarty.session.auth >= AUTH_INTERNAL}

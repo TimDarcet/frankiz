@@ -405,12 +405,10 @@ class ActivityModule extends PLModule
 
     function handler_ajax_get($page)
     {
-        $json = json_decode(Env::v('json'));
-        if (isset($json->date))
-        {
-            $date = new FrankizDateTime($json->date);
+        if (Json::has('date')) {
+            $date = new FrankizDateTime(Json::v('date'));
             $date->setTime(0,0);
-            $date_n = new FrankizDateTime($json->date);
+            $date_n = new FrankizDateTime(Json::v('date'));
             date_add($date_n, date_interval_create_from_date_string('1 day'));
             $date_n->setTime(0,0);
 
@@ -433,13 +431,10 @@ class ActivityModule extends PLModule
 
             $page->jsonAssign('success', true);
             $page->jsonAssign('activities', $result);
-        }
-
-        else if (isset($json->ids))
-        {
+        } else if (Json::has('ids')) {
             $activities = new ActivityInstanceFilter(
                 new PFC_AND(new AIFC_CanBeSeen (S::user()),
-                            new AIFC_Id($json->ids)));
+                            new AIFC_Id(Json::v('ids'))));
             $act = $activities->get();
 
             $act->select(ActivityInstanceSelect::all());
@@ -451,10 +446,7 @@ class ActivityModule extends PLModule
             }
             $page->jsonAssign('success', true);
             $page->jsonAssign('activities', $activities);
-        }
-
-        else if (JSON::has('list'))
-        {
+        } else if (Json::has('list')) {
             if (JSON::t('visibility') == 'all') {
                 $activities = new ActivityInstanceFilter(
                     new PFC_AND(new AIFC_CanBeSeen (S::user()),
@@ -492,11 +484,8 @@ class ActivityModule extends PLModule
 
     function handler_ajax_admin($page)
     {
-        $json = json_decode(Env::v('json'));
-        $id = $json->id;
-        if (isset($json->admin))
-        {
-            $a = new ActivityInstance($id);
+        if (Json::has('admin')) {
+            $a = ActivityInstance::from(Json::i('id'));
             $a->select(ActivityInstanceSelect::base());
 
             if (!S::user()->hasRights($a->target()->group(), Rights::admin())) {
@@ -511,10 +500,8 @@ class ActivityModule extends PLModule
 
             $page->jsonAssign('success', true);
             $page->jsonAssign('activity', $result);
-        }
-        elseif (isset($json->regular))
-        {
-            $a = new Activity($id);
+        } elseif (Json::has('regular')) {
+            $a = Activity::from(Json::i('id'));
             $a->select(ActivitySelect::base());
 
             if (!S::user()->hasRights($a->target()->group(), Rights::admin())) {
@@ -607,11 +594,9 @@ class ActivityModule extends PLModule
 
     function handler_ajax_modify($page, $type)
     {
-        $json = json_decode(Env::v('json'));
         if ($type == 'instance')
         {
-            $id = $json->admin_id;
-            $ai = new ActivityInstance($id);
+            $ai = ActivityInstance::from(Json::i('admin_id'));
             $ai->select(ActivityInstanceSelect::base());
 
             if (!S::user()->hasRights($ai->target()->group(), Rights::admin())) {
@@ -621,36 +606,28 @@ class ActivityModule extends PLModule
 
             try
             {
-                $begin = new FrankizDateTime($json->begin);
-                $end = new FrankizDateTime($json->end);
+                $begin = new FrankizDateTime(Json::v('begin'));
+                $end = new FrankizDateTime(Json::v('end'));
 
-                if ($ai->regular())
-                {
-                    $ai->comment($json->activity_comment);
+                if ($ai->regular()) {
+                    $ai->comment(Json::t('activity_comment'));
                     $ai->begin($begin);
                     $ai->end($end);
-                }
-                else
-                {
+                } else {
                     $ai->begin($begin);
                     $ai->end($end);
 
                     $a = $ai->activity();
-                    $a->title($json->title);
-                    $a->description($json->activity_description);
+                    $a->title(Json::t('title'));
+                    $a->description(Json::t('activity_description'));
                 }
 
                 $page->jsonAssign('success', true);
-            }
-            catch (Exception $e)
-            {
+            } catch (Exception $e) {
                 $page->jsonAssign('success', false);
             }
-        }
-        else if ($type == 'regular')
-        {
-            $id = $json->aid;
-            $a = new Activity($id);
+        } else if ($type == 'regular') {
+            $a = new Activity(Json::i('aid'));
             $a->select(ActivitySelect::base());
 
             if (!S::user()->hasRights($a->target()->group(), Rights::admin())) {
@@ -658,20 +635,22 @@ class ActivityModule extends PLModule
             }
             S::assert_xsrf_token();
 
-            if (preg_match( '`^\d{2}:\d{2}:\d{2}$`' , $json->begin) && strtotime($json->begin) !== false
-                && preg_match( '`^\d{2}:\d{2}:\d{2}$`' , $json->end) && strtotime($json->end) !== false)
+            $json_begin = Json::t('begin');
+            $json_end = Json::t('end');
+            if (preg_match( '`^\d{2}:\d{2}:\d{2}$`' , $json_begin)
+                && strtotime($json_begin) !== false
+                && preg_match( '`^\d{2}:\d{2}:\d{2}$`' , $json_end)
+                && strtotime($json_end) !== false)
             {
-                $a->title($json->title);
-                $a->description($json->activity_description);
-                $key = 'days[]';
-                $days = unflatten($json->$key);
+                $a->title(Json::t('title'));
+                $a->description(Json::t('activity_description'));
+                // FIXME: Is this correct ? (Iooss)
+                $days = unflatten(Json::v('days[]'));
                 $a->days(implode(',', $days));
-                $a->default_begin($json->begin);
-                $a->default_end($json->end);
+                $a->default_begin($json_begin);
+                $a->default_end($json_end);
                 $page->jsonAssign('success', true);
-            }
-            else
-            {
+            } else {
                 $page->jsonAssign('success', false);
             }
         }

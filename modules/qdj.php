@@ -95,7 +95,7 @@ class QDJModule extends PLModule
             return PL_FORBIDDEN;
         }
 
-        $qdj = new QDJ(Json::i('id'));
+        $qdj = QDJ::from(Json::i('id'));
 
         $page->jsonAssign('success', false);
         if (Json::has('date')) {
@@ -146,16 +146,10 @@ class QDJModule extends PLModule
 
     public function handler_ajax_vote($page)
     {
-        $json = json_decode(Env::v('json'));
-
-        $vote = intval($json->{'vote'});
         $qdj = QDJ::last(0);
-
         $already_voted = $qdj->hasVoted(S::user()->id());
-
-        if (!$already_voted)
-        {
-            $qdj->vote($vote);
+        if (!$already_voted) {
+            $qdj->vote(Json::i('vote'));
         } else {
             $page->jsonAssign('error', 'Tu as déjà voté');
         }
@@ -165,8 +159,7 @@ class QDJModule extends PLModule
 
     function handler_ajax_ranking($page)
     {
-        $json = json_decode(Env::v('json'));
-        $period = $json->period;
+        $period = Json::v('period');
         $int = QDJ::interval();
         $date_min = mktime(1,0,0,floor(($int['date_min']->format('n') -1) / 2) * 2 + 1, 1, $int['date_min']->format('Y'));
         $date_max = mktime(1,0,0,floor(($int['date_max']->format('n') +1) / 2) * 2 + 1, 1, $int['date_max']->format('Y'));
