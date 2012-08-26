@@ -64,7 +64,7 @@ BEGIN
        IF ISNULL(parent_root_id) THEN
             INSERT INTO forum_nodes SET L = 0, R = 1, box = LINESTRING(POINT(-1, 0), POINT(1, 1)), depth = 0, content_id = id_content;
             SELECT LAST_INSERT_ID() into new_id;
-            UPDATE forum_nodes SET root_id = @new_id WHERE id = new_id;
+            UPDATE forum_nodes SET root_id = new_id WHERE id = new_id;
         ELSE
             UPDATE forum_nodes SET box = LINESTRING(POINT(-1, L+2), POINT(1, R)), L = L + 2 WHERE L >= parent_R AND root_id = parent_root_id;
             UPDATE forum_nodes SET box = LINESTRING(POINT(-1, L), POINT(1, R+2)), R = R + 2 WHERE R >= parent_R AND root_id = parent_root_id;

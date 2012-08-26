@@ -18,7 +18,6 @@
  *  Foundation, Inc.,                                                      *
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
-
 class ForumModule extends PLModule
 {
     function handlers()
@@ -46,23 +45,52 @@ class ForumModule extends PLModule
 
         $page->jsonAssign('ancestors', $node->getAncestors());
         $page->jsonAssign('children', $node->getDescendants());
+
+        return PL_JSON;
     }
 
     function handler_ajax_contents($page)
     {
         $json = json_decode(Env::v('json'));
+        //$json = new ForumNode();
+        //$json->nodeIds = array(1, 2, 4);
 
-        if(!empty($json->nodeIds)) {
-            $contents = ForumContent::batchFrom($json->nodeIds);
-            $page->jsonAssign('contents', $contents);
+       if(!empty($json->nodeIds)) {
+
+            $collected = array();
+
+            foreach(ForumContent::batchFrom($json->nodeIds)->toArray() as $cid => $content)
+                $collected[$cid] = $content->toArray();
+
+            $page->jsonAssign('contents', $collected);
         }
+
+        return PL_JSON;
     }
 
     function handler_ajax_add($page)
     {
         $json = json_decode(Env::v('json'));
+        //$json = new ForumNode();
+        //$json->father = 0;
+        //$json->title = 'test';
+        //$json->content = 'Contenu de test'."\n".'Contenu de test';
+        if(isset($json->father, $json->title, $json->content)) {
+            $content = new ForumContent();
+            $content->insert();
+            $content->title((string)$json->title);
+            $content->message((string)$json->content);
 
-        ForumNode::insert($json->father, $json->title, $json->content);
+            $node = new ForumNode(array(
+                'parent_id' => (int)$json->father,
+                'content_id' => $content->id()
+                )
+            );
+
+            $node->insert();
+        }
+
+        return PL_JSON;
     }
 
     function handler_forum_ajax_remove($page, $nodeId)

@@ -34,10 +34,13 @@ class ForumNode
     private $table = 'forum_nodes';
     private $content_table = 'forum_content';
 
-    public function __construct($datas)
+    public function __construct($datas = null)
     {
-        if (!is_array($datas))
+        if($datas === null) return;
+        if (!is_array($datas)) {
             $this->id = $datas;
+            $this->load();
+        }
         else
             $this->fillFromArray($datas);
     }
@@ -54,9 +57,9 @@ class ForumNode
         return $this->id;
     }
 
-    public function root()
+    public function root_id()
     {
-        return $this->root;
+        return $this->root_id;
     }
 
     protected function L()
@@ -76,9 +79,12 @@ class ForumNode
 
     private function load()
     {
-         $res = XDB::query("SELECT L, R, depth
+         $res = XDB::query("SELECT L, R, depth, root_id
                              FROM ".$this->table."
                              WHERE id=".$this->id);
+
+         $fixMe = $res->fetchAllAssoc();
+         $this->fillFromArray($fixMe[0]);
     }
 
     public function getChildren()
@@ -86,16 +92,16 @@ class ForumNode
         $res = XDB::query("SELECT c.id, c.L, c.R, c.depth, c.content_id, n.last_modification_date
                              FROM ".$this->table." AS n
                              LEFT JOIN ".$this->content_table." AS c ON c.node_id=n.id
-                             WHERE root_id=".$this->root." AND L BETWEEN 1+".$this->L." AND ".$this->R);
+                             WHERE root_id=".$this->root_id." AND L BETWEEN 1+".$this->L." AND ".$this->R);
         return $res->fetchAllAssoc();
     }
 
     public function getDescendants()
     {
-        $res = XDB::query("SELECT c.id, c.L, c.R, c.depth, c.content_id, n.last_modification_date
-                             FROM ".$this->table."
+        $res = XDB::query("SELECT n.id, n.L, n.R, n.depth, n.content_id, c.last_modification_date
+                             FROM ".$this->table." as n
                              LEFT JOIN ".$this->content_table." AS c ON c.node_id=n.id
-                             WHERE root_id=".$this->root." AND L BETWEEN 1+".$this->L." AND ".$this->R." AND depth=1+".$this->depth);
+                             WHERE root_id=".$this->root_id." AND L BETWEEN 1+".$this->L." AND ".$this->R." AND depth=1+".$this->depth);
         return $res->fetchAllAssoc();
     }
 
@@ -103,14 +109,14 @@ class ForumNode
     {
         $res = XDB::query("SELECT nparents.id, nparents.L, nparents.R, nparents.depth, nparents.content_id
                              FROM ".$this->table." as n
-                             JOIN ".$this->table." as nparents ON MBRWithin(Point(0, n.L), ndparents.box)
+                             JOIN ".$this->table." as nparents ON MBRWithin(Point(0, n.L), nparents.box) AND n.root_id=nparents.root_id
                              WHERE n.id=".$this->id);
         return $res->fetchAllAssoc();
     }
 
-    public static function insert($parent, $content, $title)
+    public function insert()
     {
-        XDB::query("CALL forum_nodes_insert(".($this->parent_id ? $this->parent_id : "NULL").", ".$this->content_id.")");
+        XDB::query("CALL forum_nodes_insert(".($this->parent_id ? $this->parent_id : "NULL").", ".$this->content_id.", @unusedID)");
     }
 
     public function delete()

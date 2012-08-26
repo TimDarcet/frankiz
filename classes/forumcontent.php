@@ -52,21 +52,35 @@ class ForumContent extends Meta
     protected $creation_date;
     protected $last_modification_date;
 
+    public function toArray()
+    {
+        return array(
+            'id' => $this->id(),
+            'title' => $this->title,
+            'message' => $this->message,
+            'creation_date' => $this->creation_date,
+            'last_modification_date' => $this->last_modification_date,
+            'node_id' => $this->node_id
+        );
+    }
+
     public static function batchFrom(array $nodeIds)
     {
         $nodeIds = unflatten($nodeIds);
 
-        $collec = new Collection();
+        $collec = new Collection('ForumContent');
+
         if (!empty($nodeIds)) {
-            $iter = XDB::iterator('SELECT title, message, creation_date, last_modifiation_date, node_id
+            $iter = XDB::iterator('SELECT id, title, message, creation_date, last_modification_date, node_id
                                      FROM  forum_content
-                                    WHERE  node_id IN {?}', $nodeIds);
-            while ($g = $iter->next())
+                                    WHERE  id IN {?}', $nodeIds);
+            while ($g = $iter->next()) {
                 $collec->add(new self($g));
+            }
         }
 
-        if (count($mixed) != $collec->count()) {
-            throw new ItemNotFoundException('Asking for ' . implode(', ', $mixed) . ' but only found ' . implode(', ', $collec->ids()));
+        if (count($nodeIds) != $collec->count()) {
+            throw new ItemNotFoundException('Asking for ' . implode(', ', $nodeIds) . ' but only found ' . implode(', ', $collec->ids()));
         }
 
         return $collec;
