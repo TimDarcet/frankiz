@@ -62,10 +62,10 @@ abstract class Schema {
     /**
      * Key to be used with batchFrom to retrieve data
      *
-     * @return string|null
+     * @return string $this->id() by default
      */
     public function fromKey() {
-        return null;
+        return $this->id();
     }
 
     /**

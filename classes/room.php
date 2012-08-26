@@ -33,13 +33,6 @@ class RoomSchema extends Schema
         return 'rid';
     }
 
-    /**
-     * For rooms, the from key is the primary key
-     */
-    public function fromKey() {
-        return 'rid';
-    }
-
     public function tableAs() {
         return 'r';
     }
