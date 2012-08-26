@@ -33,10 +33,6 @@ class IpSchema extends Schema
         return 'ip';
     }
 
-    public function fromKey() {
-        return 'rid';
-    }
-
     public function tableAs() {
         return 'ip';
     }
