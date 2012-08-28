@@ -27,12 +27,16 @@
 
 require_once(dirname(__FILE__) . '/connect.db.inc.php');
 
-echo "Less to Css \n";
-
+echo "Compiling Less to Css \n";
 Less::make();
 
 echo "Purging tpl's spool \n";
-
-exec('rm ../spool/templates_c/* -f');
+$files = glob(dirname(__FILE__) . '/../spool/*_c/*.tpl.php');
+if ($files !== false) {
+    foreach ($files as $f) {
+        unlink($f);
+    }
+}
+//exec('rm "' . " -v');
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

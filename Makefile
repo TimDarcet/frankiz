@@ -73,15 +73,13 @@ q:
 %: %.in Makefile ChangeLog
 	sed -e 's,@VERSION@,$(VERSION),g' $< > $@
 
-prod_update:
-	@git diff --quiet || ! echo "Your repo is not clean"
+update: core dir symlink conf
+	@git diff --quiet || echo "Warning: your Git repo is not clean"
 	@[ "x`id -un`" = "x$(INSTALL_USER)" ] || ! echo "You need to be $(INSTALL_USER) to update"
-	git fetch
-	git rebase origin/prod
-	cd $(INSTALL_DIR)/bin/ && php -f reset.skin.php
+	@$(INSTALL_DIR)/bin/reset.skin.php
 
 test:
-	phpunit tests
+	phpunit --colors tests
 
 ################################################################################
 # targets
@@ -130,7 +128,7 @@ configs/logrotate.conf: configs/logrotate.conf.in Makefile
 	sed -e "s,@INSTALL_DIR@,$(INSTALL_DIR),g" $< > $@
 
 configs/frankiz.conf: configs/$(CONFIG_IN) Makefile
-	@[ ! -f $@ ] || ! echo "$@ needs updating. Please remove this file and make again."
+	@[ ! -f $@ ] || echo "WARNING: $@ needs updating. DON'T FORGET TO UPDATE YOUR CONFIGURATION."
 	[ -f $@ ] || sed -e "s,@USER@,$(INSTALL_USER),g;s,@SITE_NAME@,$(SITE_NAME),g;s,@REWRITE_BASE@,$(REWRITE_BASE),g" $< > $@
 	chmod 640 $@
 
@@ -172,5 +170,5 @@ distclean: delete_dir clean_files
 
 ################################################################################
 
-.PHONY: all clean clean_dir clean_files conf core delete_dir dev dev_build dir distclean prod q prod_update symlink user_not_defined
+.PHONY: all clean clean_dir clean_files conf core delete_dir dev dev_build dir distclean prod q symlink test update user_not_defined
 
