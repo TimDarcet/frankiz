@@ -73,8 +73,7 @@ function __autoload($cls)
                          'a'  => 'activityfilter',
                          'ai' => 'activityinstancefilter',
                          'i'  => 'imagefilter',
-                         'r'  => 'roomfilter',
-                         's'  => 'surveyfilter');
+                         'r'  => 'roomfilter');
 
         foreach ($filters as $key => $class)
         {
@@ -96,10 +95,6 @@ function __autoload($cls)
         }
 
         // Special classes
-        if (starts_with($cls, 'surveyquestion')) {
-            pl_autoload('survey');
-            return;
-        }
         if (starts_with($cls, 'weather')) {
             pl_autoload('googleweather');
             return;

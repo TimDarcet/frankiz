@@ -184,7 +184,6 @@ class AdminModule extends PlModule
         $page->assign('group', $group);
         $page->assign('val', $collec);
         $page->addCssLink('validate.css');
-        $page->addCssLink('surveys.css');
         $page->assign('title', "Validations des requêtes");
         $page->changeTpl('validate/validate.tpl');
     }

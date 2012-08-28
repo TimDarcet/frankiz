@@ -56,8 +56,7 @@ class ClassesTest extends PHPUnit_Framework_TestCase
                          'a'  => 'activityfilter',
                          'ai' => 'activityinstancefilter',
                          'i'  => 'imagefilter',
-                         'r'  => 'roomfilter',
-                         's'  => 'surveyfilter');
+                         'r'  => 'roomfilter');
 
         // Get all classes from file
         foreach (file($filename) as $line) {
@@ -114,9 +113,6 @@ class ClassesTest extends PHPUnit_Framework_TestCase
                             break;
                         case 'imageinterface':
                             $this->assertStringStartsWith('image', $classname);
-                            break;
-                        case 'survey':
-                            $this->assertStringStartsWith('surveyquestion', $classname);
                             break;
                         default:
                             $this->fail("Unknown class $classname");
