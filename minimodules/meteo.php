@@ -19,6 +19,9 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
+// Since 26 Aug 2012, Google Weather no longer serves a free API
+define('WEATHER_DOWN', true);
+
 class MeteoMiniModule extends FrankizMiniModule
 {
     private $meteo;
@@ -30,7 +33,7 @@ class MeteoMiniModule extends FrankizMiniModule
 
     public function tpl()
     {
-        return 'minimodules/meteo/meteo.tpl';
+        return 'minimodules/meteo/' . (WEATHER_DOWN ? 'down.tpl' : 'meteo.tpl');
     }
 
     public function title()
@@ -40,6 +43,22 @@ class MeteoMiniModule extends FrankizMiniModule
 
     public function run()
     {
+        if (WEATHER_DOWN) {
+            // Pick a random message
+            $messages = array(
+                "On est sur le plâtal, donc il pleut toute la semaine.",
+                "Après la pluie le beau temps, enfin sauf sur le plâtal : après la pluie le brouillard",
+                "Sors le nez de ton ordi et vois par toi-même, espèce de geek !",
+                "Les nuit sont belles actuellement. Il est temps de sortir dormir à la belle étoile !",
+                "Jusqu'à nouvel ordre, il pleut sur le plâtal",
+                "Aujourd'hui : même temps qu'hier",
+                "Soleil à Saclay mais orage à Palaiseau",
+                "Le niveau de radioactivité est bas aujourd'hui. La fin de la pluie pour la semaine prochaine ?",
+                "Le module météo est maintenant à la charge du binet Rue",
+            );
+            $this->assign("message", $messages[rand(0, count($messages)-1)]);
+            return;
+        }
         $meteo = GoogleWeather::get();
         $this->assign("meteo", $meteo);
     }
