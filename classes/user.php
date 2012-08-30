@@ -619,7 +619,7 @@ class User extends Meta
         }
 
         return array_filter($this->studies, function ($s) {
-            return ($s->formation()->id() > 0);
+            return ($s->formation()->id() > 0 && $s->promo() != 0);
         });
     }
 

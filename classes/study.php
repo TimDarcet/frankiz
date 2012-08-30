@@ -61,6 +61,13 @@ class Study
     public function forlife() {
         return $this->forlife;
     }
+
+    /**
+     * Get the associated promotion group name
+     */
+    public function groupName() {
+        return 'promo_' . $this->formation->abbrev() . $this->promo;
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
