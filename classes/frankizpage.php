@@ -22,23 +22,22 @@
 class SkinFileNotFoundException extends Exception
 {
     protected $skin;
-    protected $file;
+    protected $filepath;
 
-    public function __construct($skin, $file)
+    public function __construct($skin, $filepath)
     {
         $this->skin = unflatten($skin);
-        $this->file = unflatten($file);
+        $this->filepath = unflatten($filepath);
     }
 
     public static function merge($exceptions)
     {
         $exceptions = unflatten($exceptions);
-
         $skins = array();
-        $files = array();
+        $filepaths = array();
         foreach($exceptions as $e) {
             $skins = array_merge($skins, $e->skin);
-            $files = array_merge($files, $e->file);
+            $filepaths = array_merge($filepaths, $e->filepath);
         }
 
         return new SkinFileNotFoundException($skins, $files);
@@ -48,7 +47,7 @@ class SkinFileNotFoundException extends Exception
     {
         return 'SkinFileNotFoundException' . "\n" .
                 implode(', ', $this->skin) . "\n" .
-                implode(', ', $this->file);
+                implode(', ', $this->filepath);
     }
 }
 
@@ -142,14 +141,16 @@ class FrankizPage extends PlPage
     {
         $csss = unflatten($css);
         $exceptions = array();
-        foreach ($csss as $css)
+        foreach ($csss as $css) {
             try {
-            parent::addCssLink(self::getCssPath($css));
+                parent::addCssLink(self::getCssPath($css));
             } catch (SkinFileNotFoundException $e) {
                 $exceptions[] = $e;
             }
-
-        return SkinFileNotFoundException::merge($exceptions);
+        }
+        if (!empty($exceptions)) {
+            throw SkinFileNotFoundException::merge($exceptions);
+        }
     }
 
     public function filteredFetch($skin, array& $infos = null)
