@@ -27,7 +27,7 @@ class ActivityFeed extends FrankizFeed
         parent::__construct('Frankiz : Activités',
                             $globals->baseurl ,
                             'Frankiz : le serveur des élèves de l\'École polytechnique',
-                            $globals->baseurl . '/css/' . FrankizPage::getCssPath('images/home_logo.png'),
+                            $globals->baseurl . '/css/' . FrankizPage::getCssPath('images/logo.png'),
                             FrankizPage::getTplPath('activity/rss.tpl'));
     }
 
