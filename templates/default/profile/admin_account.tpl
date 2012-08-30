@@ -40,7 +40,7 @@
     <div class="module profile">
         <div class="head">
             <span class="helper" target="profile/admin/account"></span>
-            {if !$add}Fiche trombino{/if}
+            {if !$add}Fiche trombino de {$userEdit|user:text}{/if}
             {if $add}Ajout d'un utilisateur{/if}
         </div>
         <div class="body">
