@@ -4,7 +4,6 @@ classes/frankizglobals.php
 configs/cron
 configs/frankiz.conf
 configs/logrotate.conf
-configs/mysql_db.sh
 htdocs/.htaccess
 .buildpath
 .project
