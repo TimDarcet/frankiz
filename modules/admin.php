@@ -191,6 +191,8 @@ class AdminModule extends PlModule
     function handler_debug($page)
     {
         global $globals;
+        if (!$globals->debug)
+            return PL_FORBIDDEN;
 
         if (Env::has("reload")) {
             S::user()->select(UserSelect::login());

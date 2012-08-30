@@ -24,8 +24,8 @@ class ActivityModule extends PLModule
     function handlers()
     {
         return array(
-            'activity'                      => $this->make_hook('activity',             AUTH_PUBLIC),
-            'activity/timetable'            => $this->make_hook('timetable',            AUTH_PUBLIC),
+            'activity'                      => $this->make_hook('activity',             AUTH_INTERNAL),
+            'activity/timetable'            => $this->make_hook('timetable',            AUTH_INTERNAL),
             'activity/rss'                  => $this->make_hook('rss',                  AUTH_PUBLIC),
             'activity/icalendar'            => $this->make_hook('icalendar',            AUTH_PUBLIC),
             'activity/admin'                => $this->make_hook('admin',                AUTH_COOKIE),

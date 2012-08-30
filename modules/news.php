@@ -24,9 +24,9 @@ class NewsModule extends PlModule
     public function handlers()
     {
         return array(
-            "news"              => $this->make_hook("news"          , AUTH_PUBLIC),
-            "news/current"      => $this->make_hook("news_current"  , AUTH_PUBLIC),
-            "news/new"          => $this->make_hook("news_new"      , AUTH_PUBLIC),
+            "news"              => $this->make_hook("news"          , AUTH_INTERNAL),
+            "news/current"      => $this->make_hook("news_current"  , AUTH_INTERNAL),
+            "news/new"          => $this->make_hook("news_new"      , AUTH_INTERNAL),
             "news/followed"     => $this->make_hook("news_followed" , AUTH_COOKIE),
             "news/mine"         => $this->make_hook("news_mine"     , AUTH_COOKIE),
             "news/other"        => $this->make_hook("news_other"    , AUTH_INTERNAL),

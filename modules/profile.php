@@ -30,7 +30,7 @@ class ProfileModule extends PLModule
                      'profile/password'                => $this->make_hook('password',                AUTH_MDP),
                      'profile/recovery'                => $this->make_hook('recovery',                AUTH_PUBLIC),
                      'profile/network'                 => $this->make_hook('network',                 AUTH_COOKIE),
-                     'profile/skin'                    => $this->make_hook('skin',                    AUTH_PUBLIC),
+                     'profile/skin'                    => $this->make_hook('skin',                    AUTH_COOKIE),
                      'profile/skin/unsmartphone'       => $this->make_hook('skin_unsmartphone',       AUTH_PUBLIC),
                      'profile/skin/resmartphone'       => $this->make_hook('skin_resmartphone',       AUTH_PUBLIC),
                      'profile/feed'                    => $this->make_hook('feed',                    AUTH_COOKIE),
