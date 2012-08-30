@@ -6,6 +6,8 @@ New:
 
 Bug:
     * Fix wrong implementation of Collection::has                           -IOS
+    * Fix 0-promotion case handling in birthday minimodule                  -IOS
+    * Revoke public visibility of some pages                            -IOS/PAD
 
 ================================================================================
 VERSION 3.0.1                                                         22 08 2012
