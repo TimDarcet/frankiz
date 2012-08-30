@@ -175,9 +175,6 @@ class GroupsModule extends PLModule
         $group->select(GroupSelect::see());
         $page->assign('roomMaster', $group->isRoomMaster());
 
-        $promos = S::user()->castes()->groups()->filter('ns', Group::NS_PROMO);
-        $page->assign('promos', $promos);
-
         // Relation between the user & the group
         $page->assign('user', S::user());
 
@@ -361,9 +358,6 @@ class GroupsModule extends PLModule
                     $group->ns(Env::t('ns'));
                 }
             }
-
-            $promos = S::user()->castes()->groups()->filter('ns', Group::NS_PROMO);
-            $page->assign('promos', $promos);
 
             $page->assign('title', 'Administration de "' . $group->label() . '"');
             $page->addCssLink('groups.css');
