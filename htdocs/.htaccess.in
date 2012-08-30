@@ -6,7 +6,6 @@ RewriteBase @REWRITE_BASE@
 RewriteRule ^$ frankiz.php?n=home [L,QSA]
 
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ frankiz.php?n=$1 [L,QSA]
 
 # Caches the immutable resources for seven days. Generated files (images and JS
