@@ -95,8 +95,8 @@ function __autoload($cls)
         }
 
         // Special classes
-        if (starts_with($cls, 'weather')) {
-            pl_autoload('googleweather');
+        if (starts_with($cls, 'weather') || ends_with($cls, 'weather')) {
+            pl_autoload('weather');
             return;
         }
 

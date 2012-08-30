@@ -20,7 +20,8 @@
  ***************************************************************************/
 
 // Since 26 Aug 2012, Google Weather no longer serves a free API
-define('WEATHER_DOWN', true);
+// Since 30 Aug 2012, Frankiz uses Yahoo Weather API
+define('WEATHER_DOWN', false);
 
 class MeteoMiniModule extends FrankizMiniModule
 {
@@ -59,7 +60,7 @@ class MeteoMiniModule extends FrankizMiniModule
             $this->assign("message", $messages[rand(0, count($messages)-1)]);
             return;
         }
-        $meteo = GoogleWeather::get();
+        $meteo = YahooWeather::get();
         $this->assign("meteo", $meteo);
     }
 }
