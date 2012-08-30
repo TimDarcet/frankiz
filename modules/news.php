@@ -151,9 +151,20 @@ class NewsModule extends PlModule
     }
 
     function viewNews($page, $news, $view, $id = false) {
+        global $platal;
         if ($id !== false && !$news->get($id)) {
+            if(S::i('auth') < AUTH_INTERNAL) {
+                $nf = new NewsFilter(new PFC_And(new NFC_Id($id), new NFC_CanBeSeen(S::user()), new NFC_Target(S::user()->targetCastes())));
+                $selected = $nf->get();
+                if($selected->count())
+                    $news->merge($selected);
+                else
+                    $platal->force_login($page);
+            }
+            else {
             $nf = new NewsFilter(new PFC_And(new NFC_Id($id), new NFC_CanBeSeen(S::user())));
             $news->merge($nf->get());
+            }
         }
 
         $news->select(NewsSelect::news());

@@ -75,23 +75,27 @@
                             <span class="target_rights">
                                 {if $target->isRights('restricted')}
                                     (Restreint)
-                                {else}
+                                {elseif $target->isRights('everybody')}
                                     (Public)
+                                {else}
+                                    (Spécial)
                                 {/if}
                             </span>
                             du <span title="{$news->begin()|datetime}">{$news->begin()|datetime:'d/m'}</span>
                             {if $news->begin()|datetime:'d/m' != $news->end()|datetime:'d/m'}
                                 au <span title="{$news->end()|datetime}">{$news->end()|datetime:'d/m'}</span>
                             {/if}
-                            {if (!($user->hasRights($targetGroup)))}
+                            {if ($logged && !($user->hasRights($targetGroup)))}
                                 <div><strong>Voir les annonces de « {$targetGroup->label()} » dans mon fil principal en </strong>
                                 <span class="rights friend"></span>
                                 <a onclick="return confirm(areyousure);" href="groups/subscribe/{$targetGroup->id()}?token={xsrf_token}">devenant sympathisant</a></div>
                             {/if}
                         </td>
+                        {if $smarty.session.auth >= AUTH_INTERNAL}
                         <td class="writer">
                             {$news->writer()|user:'text'}{$news->writer()|user}
                         </td>
+                        {/if}
                     </tr></table>
                 </div>
             </div>
