@@ -52,31 +52,6 @@ function update_group($name, $label, $ns, Userfilter $filter) {
     return $g;
 }
 
-/**
- * Create an image for a promotion, for a group, if needed
- */
-function create_promo_image(Group $g, $promo) {
-    $g->select(GroupSelect::base());
-    if ($g->image())
-        return;
-
-    if ($promo % 2 == 0) {
-        $upload = FrankizUpload::fromFile(dirname(__FILE__) . '/../images/rouje.png');
-        $label = 'Chic à la rouje';
-    } else {
-        $upload = FrankizUpload::fromFile(dirname(__FILE__) . '/../images/jone.png');
-        $label = 'Chic à la jone';
-    }
-
-    $i = new FrankizImage();
-    $i->insert();
-    $i->caste($g->caste(Rights::everybody()));
-    $i->label($label);
-    $i->image($upload, false);
-
-    $g->image($i);
-}
-
 // Update formations
 $formations = Formation::selectAll(FormationSelect::base());
 foreach ($formations as $form) {
@@ -103,7 +78,6 @@ while (list($promo) = $iter->next()) {
     $promo = sprintf('%04d', $promo);
     $f = new UserFilter(new UFC_Promo($promo, '='));
     $g = update_group('promo_' . $promo, $promo, Group::NS_PROMO, $f);
-    create_promo_image($g, $promo);
 }
 
 // Update promotions by formation
@@ -117,7 +91,6 @@ while (list($promo, $formation_id, $abbrev, $label) = $iter->next()) {
     $promo = sprintf('%04d', $promo);
     $f = new UserFilter(new UFC_Promo($promo, '=', $formation_id));
     $g = update_group('promo_' . $abbrev . $promo, $promo . ' ' . $label, Group::NS_PROMO, $f);
-    create_promo_image($g, $promo);
 }
 
 // Update on_platal, specifying the number of years a school remains on the platal
@@ -127,7 +100,7 @@ $onplatal_numyears = array(
     'master' => 0,
     'doc' => 0,
     'pei' => 0,
-    'iogs' => 0,
+    'iogs' => 2,
     'fkz' => 0,
     'stcyr' => 0,
     'ensta' => 2
