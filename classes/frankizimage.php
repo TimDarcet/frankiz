@@ -203,7 +203,12 @@ class FrankizImage extends Meta implements ImageInterface
 
     public function insert()
     {
-        XDB::execute('INSERT INTO images SET seen = 0, lastseen = NOW()');
+        $g = Group::from('temp')->select(GroupSelect::castes());
+        $temp_caste = $g->caste(Rights::everybody());
+        XDB::execute('INSERT INTO  images
+                              SET  seen = 0, lastseen = NOW(),
+                                   caste = {?}',
+                     $temp_caste->id());
         $this->id = XDB::insertId();
     }
 
