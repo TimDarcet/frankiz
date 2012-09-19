@@ -28,10 +28,10 @@
 
 $dir = "photos/"; 
 $files = scandir($dir);
-foreach($files as $key => $value){
-$new=strtolower(preg_replace('/ /','-',preg_replace('/([A-Z ]*)\s?-\s?([A-Z ]*).*/','$2.$1',$value)));
-rename($dir.$value,$dir.$new.'_original.jpg'); 
-echo $new ."\n";
+foreach($files as $key => $value) {
+    $new=strtolower(preg_replace('/ /','-',preg_replace('/([A-Z ]*)\s?-\s?([A-Z ]*).*/','$2.$1',$value)));
+    rename($dir.$value,$dir.$new.'_original.jpg'); 
+    echo $new ."\n";
 }
 
 
