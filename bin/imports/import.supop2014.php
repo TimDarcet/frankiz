@@ -26,7 +26,7 @@
 
 require_once dirname(__FILE__) . '/create.account.inc.php';
 
-$f = fopen(dirname(__FILE__) . '/supop.csv', 'rb');
+$f = fopen(dirname(__FILE__) . '/supops.csv', 'rb') or die("No data file\n");
 $formation = Formation::from('iogs');
 $accounts_studies = array();
 
