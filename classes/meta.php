@@ -277,7 +277,7 @@ abstract class Meta
         $id_col = $schema->id();
         $key_col = $schema->fromKey();
         $mysql_key = (($key_col && $key_col != $id_col)
-            ? XDB::format(' OR ' . $key_col . ' = {?}', $id)
+            ? XDB::format(' OR ' . $key_col . ' = {?}', (string)$id)
             : '');
         $res = XDB::fetchOneRow('SELECT  ' . $id_col . ' AS id
                                    FROM  ' . $schema->table() . '
