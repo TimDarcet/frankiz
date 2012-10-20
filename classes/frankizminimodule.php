@@ -20,7 +20,7 @@
  ***************************************************************************/
 
 /**
- * Base class for Frankiz MiniModules (these are the small boxes displayed on the left and right column 
+ * Base class for Frankiz MiniModules (these are the small boxes displayed on the left and right column
  * of the website)
  */
 
@@ -147,8 +147,12 @@ abstract class FrankizMiniModule
                     }
                 }
             } else {
-                // Unable to instantiate a minimodule
-                $minimodules[$name] = false;
+                // Unable to instantiate a minimodule:
+                //    return false if only one minimodule was requested,
+                //    return an array without this one if a list was requested
+                if (!$array_passed) {
+                    return false;
+                }
             }
         }
         return ($array_passed) ? $minimodules : flatten($minimodules);
