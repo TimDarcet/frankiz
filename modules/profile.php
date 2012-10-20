@@ -543,7 +543,8 @@ class ProfileModule extends PLModule
             $page->jsonAssign('error', "Impossible d'activer le minimodule");
         } else {
             $page->jsonAssign('name', $m->name());
-            $page->jsonAssign('css' , FrankizPage::getCssPath($m->css()));
+            $css = $m->css();
+            $page->jsonAssign('css' , $css ? FrankizPage::getCssPath($css) : false);
             $page->assign('minimodule', $m);
             $page->jsonAssign('html', $page->fetch(FrankizPage::getTplPath('minimodule.tpl')));
         }
