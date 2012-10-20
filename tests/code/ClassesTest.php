@@ -108,8 +108,9 @@ class ClassesTest extends PHPUnit_Framework_TestCase
                         case 'frankizfilter':
                             $this->assertStringStartsWith($basename, $classname);
                             break;
-                        case 'googleweather':
-                            $this->assertStringStartsWith('weather', $classname);
+                        case 'weather':
+                            if (!ends_with($classname, 'weather'))
+                                $this->assertStringStartsWith('weather', $classname);
                             break;
                         case 'imageinterface':
                             $this->assertStringStartsWith('image', $classname);
