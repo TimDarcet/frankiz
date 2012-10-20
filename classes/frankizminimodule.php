@@ -146,6 +146,9 @@ abstract class FrankizMiniModule
                         }
                     }
                 }
+            } else {
+                // Unable to instantiate a minimodule
+                $minimodules[$name] = false;
             }
         }
         return ($array_passed) ? $minimodules : flatten($minimodules);
