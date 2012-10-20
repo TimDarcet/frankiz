@@ -58,12 +58,15 @@
     </div>
 
     <div class="more">
-        {$result->birthdate()|age} ({$result->birthdate()|datetime:"d/m/Y"})
+        {assign var='birthdate' value=$result->birthdate()}
+        {if $birthdate->isValid}
+            {$birthdate|age} ({$birthdate|datetime:"d/m/Y"})
+        {/if}
         <br>
         <a href="mailto:{$result->bestEmail()}">{$result->bestEmail()}</a>
         <br>
         {foreach from=$groups|filter:'ns':'nationality'|order:'score' item='group'}{$group|group:'text'}{/foreach}
-        
+
         {if count($groups|filter:'ns':'binet') > 0}
         <div class="binets">
             <div class="title">Binets</div>
@@ -76,7 +79,7 @@
             </ul>
         </div>
         {/if}
-        
+
         {if count($groups|filter:'ns':'free') > 0}
         <div class="free">
             <div class="title">Groupes</div>

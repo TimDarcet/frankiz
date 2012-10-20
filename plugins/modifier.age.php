@@ -21,6 +21,9 @@
 
 
 function smarty_modifier_age($datetime, $format = 'auto') {
+    if (!$datetime->isValid) {
+        return 'N/A age';
+    }
     $s = function($c) {
         return ($c > 1) ? 's' : '';
     };

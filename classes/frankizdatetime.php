@@ -21,19 +21,26 @@
 
 class FrankizDateTime extends DateTime implements Formatable
 {
+    public $isValid;
+
+    public function __construct($time = null, DateTimeZone $timezone = null) {
+        $this->isValid = !($time == '0000-00-00');
+        parent::__construct($time, $timezone);
+    }
+
     public function format($format = 'Y-m-d H:i:s')
     {
-        return parent::format($format);
+        return $this->isValid ? parent::format($format) : 'N/A';
     }
 
     public function toDb()
     {
-        return $this->format('Y-m-d H:i:s');
+        return $this->isValid ? $this->format('Y-m-d H:i:s') : '0000-00-00';
     }
 
     public function toJs()
     {
-        return $this->format('Y/m/d H:i:s');
+        return $this->isValid ? $this->format('Y/m/d H:i:s') : '0000/00/00 00:00:00';
     }
 
     public function __toString()

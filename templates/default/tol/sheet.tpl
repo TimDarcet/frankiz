@@ -25,6 +25,7 @@
 
 <div class="base">
 
+    {assign var='birthdate' value=$result->birthdate()}
     {assign var='photo' value=$result->photo()}
     {assign var='original' value=$result->original()}
     <div class="img" photo="{if $photo}{$photo|image:'full'|smarty:nodefaults}{/if}"
@@ -46,9 +47,11 @@
 
     <div class="nickname">{$result->nickname()}</div>
 
-    <div class="birthdate">
-        <span>{$result->birthdate()|datetime:"d/m/Y"} </span> ({$result->birthdate()|age})
-    </div>
+    {if $birthdate->isValid}
+        <div class="birthdate">
+            <span>{$birthdate|datetime:"d/m/Y"} </span> ({$birthdate|age})
+        </div>
+    {/if}
 
     <div class="sports">
         <ul>
