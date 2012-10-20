@@ -22,15 +22,7 @@
 
 function smarty_modifier_room($room, $type = '') {
     $rid = $room->id();
-    $comment = $room->comment();
-    if (!$comment) {
-        $comment = $rid;
-    } elseif (starts_with($rid, 'BATACL')) {
-        // Hide Bataclan room numbers in views, it appears in the URL
-    } else {
-        $comment .= ' ' . $rid;
-    }
-    $str = '<span><a href="rooms/see/' . $rid . '" title="' . $rid . '">' . $comment . "</a></span>";
+    $str = '<span><a href="rooms/see/' . $rid . '" title="' . $rid . '">' . (string)$room . "</a></span>";
 
     if ($type == 'phone') {
         // Print phone

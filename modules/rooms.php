@@ -32,9 +32,17 @@ class RoomsModule extends PlModule
     function handler_rooms($page)
     {
         $rf = new RoomFilter(new RFC_Prefix('BATACL'));
-        $rooms = $rf->get();
-        $rooms->select(RoomSelect::see(array('groups' => GroupSelect::base())));
-        $page->assign('rooms', $rooms);
+        $rooms_batacl = $rf->get();
+        $rooms_batacl->select(RoomSelect::see(array('groups' => GroupSelect::base())));
+
+        $rf = new RoomFilter(new RFC_Prefix('BINETS'));
+        $rooms_binets = $rf->get();
+        $rooms_binets->select(RoomSelect::see(array('groups' => GroupSelect::base())));
+
+        $page->assign('rooms', array(
+            'Bataclan' => $rooms_batacl,
+            'Binets' => $rooms_binets
+        ));
         $page->changeTpl('rooms/rooms.tpl');
     }
 

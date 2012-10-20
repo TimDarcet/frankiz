@@ -115,6 +115,24 @@ class Room extends Meta
         return !is_object($mixed) && !empty($mixed)
             && (preg_match('/^[A-Z]*[0-9\/]*[a-z]*$/', $mixed));
     }
+
+    /**
+     * Get a nice string, with room ID if it can be shown
+     * @return string
+     */
+    public function __toString()
+    {
+        $comment = $this->comment();
+        if (!$comment)
+            return $this->id();
+
+        // Some IDs are hidden for artistic reasons
+        $rid = $this->id();
+        if (starts_with($rid, 'BATACL') || starts_with($rid, 'BINETS'))
+            return $comment;
+        else
+            return $comment . ' ' . $rid;
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

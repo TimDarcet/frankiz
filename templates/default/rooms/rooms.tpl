@@ -20,23 +20,25 @@
 {**************************************************************************}
 
 <div class="module">
-    <div class="head">
-        Bataclan
-    </div>
-    <div class="body">
-        <table border="0">
-            {foreach from=$rooms item=room}
-                <tr class="rooms">
-                    <td>
-                        {foreach from=$room->groups() item=group}
-                            {$group|group}
-                        {/foreach}
-                    </td>
-                    <td>
-                        <a href="rooms/see/{$room->id()}">{$room->id()}</a> {$room|room:phone}
-                    </td>
-                </tr>
-            {/foreach}
-        </table>
-    </div>
+    {foreach from=$rooms item=rooms_list}
+        <div class="head">
+            Bataclan
+        </div>
+        <div class="body">
+            <table border="0">
+                {foreach from=$rooms_list item=room}
+                    <tr class="rooms">
+                        <td>
+                            {foreach from=$room->groups() item=group}
+                                {$group|group}
+                            {/foreach}
+                        </td>
+                        <td>
+                            <a href="rooms/see/{$room->id()}">{$room->id()}</a> {$room|room:phone}
+                        </td>
+                    </tr>
+                {/foreach}
+            </table>
+        </div>
+    {/foreach}
 </div>
