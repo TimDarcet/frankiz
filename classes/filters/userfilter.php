@@ -354,7 +354,7 @@ class UFC_Group extends UserFilterCondition
         } else {
             $this->gids = Group::toIds(unflatten($gs));
         }
-        $this->rights = (empty($rights)) ? Rights::restricted() : $rights;
+        $this->rights = (empty($rights)) ? Rights::member() : $rights;
         self::$instances[] = $this;
     }
 
