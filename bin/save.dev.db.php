@@ -27,7 +27,12 @@
 require_once(dirname(__FILE__) . '/connect.db.inc.php');
 
 // DELETE confidential data
-echo XDB::format('UPDATE account SET password={?};', '') . PHP_EOL;
+echo XDB::format('UPDATE account SET password="", hash="", hash_rss="";') . PHP_EOL;
+echo 'DELETE FROM log_events;' . PHP_EOL;
+echo 'DELETE FROM log_sessions;' . PHP_EOL;
+echo 'DELETE FROM log_last_sessions;' . PHP_EOL;
+echo 'DELETE FROM mails;' . PHP_EOL;
+echo 'DELETE FROM msdnaa_keys;' . PHP_EOL;
 echo 'DELETE FROM remote;' . PHP_EOL;
 echo 'DELETE FROM remote_groups;' . PHP_EOL;
 
