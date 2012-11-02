@@ -166,7 +166,6 @@ class AdminModule extends PlModule
 
         $page->assign('validation', (is_null($vid))?0:$vid);
         $page->assign('isEdition', false);
-        $page->assign('gid', $gid);
         $page->assign('group', $group);
         $page->assign('val', $collec);
         $page->addCssLink('validate.css');
