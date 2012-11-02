@@ -214,6 +214,23 @@ class News extends meta
         return $this->image;
     }
 
+    public function insert()
+    {
+        XDB::execute('INSERT  news
+                         SET  writer = {?}, target = {?},
+                              image = {?},
+                              origin = {?},
+                              title = {?}, content = {?},
+                              begin = {?}, end = {?}, comment = {?}',
+            $this->writer->id(), (!$this->target)?null:$this->target->id(),
+            (!$this->image)?null:$this->image->id(),
+            (!$this->origin)?null:$this->origin->id(),
+            $this->title, $this->content,
+            $this->begin, $this->end, $this->comment);
+
+        $this->id = XDB::insertId();
+    }
+
     public function delete()
     {
         XDB::execute('DELETE FROM news WHERE id = {?}', $this->id());

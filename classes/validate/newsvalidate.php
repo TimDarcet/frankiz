@@ -220,17 +220,17 @@ class NewsValidate extends ItemValidate
             $v->insert();
         }
         else {
-            $n = new News();
+            $n = new News(array(
+                    'writer'  => $this->writer,
+                    'target'  => $this->target,
+                    'image'   => $this->image,
+                    'origin'  => $this->origin,
+                    'title'   => $this->title,
+                    'content' => $this->content,
+                    'begin'   => $this->begin,
+                    'end'     => $this->end,
+                    'comment' => $this->comment));
             $n->insert();
-            $n->writer($this->writer);
-            $n->target($this->target);
-            $n->image($this->image);
-            $n->origin($this->origin);
-            $n->title($this->title);
-            $n->content($this->content);
-            $n->begin($this->begin);
-            $n->end($this->end);
-            $n->comment($this->comment);
             $this->idIfValid = $n->id();
 
             // This code is used to post news on a newsgroup server
