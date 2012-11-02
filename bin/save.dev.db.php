@@ -36,7 +36,8 @@ echo 'DELETE FROM msdnaa_keys;' . PHP_EOL;
 echo 'DELETE FROM remote;' . PHP_EOL;
 echo 'DELETE FROM remote_groups;' . PHP_EOL;
 
-// Get this data from bdd
+// Save some data from database
+// ... Passwords
 $iter = XDB::iterRow('SELECT  hruid, password
                         FROM  account
                        WHERE  password != {?}', '');
@@ -44,7 +45,15 @@ while (list($hruid, $password) = $iter->next()) {
     echo XDB::format('UPDATE account SET password = {?} WHERE hruid = {?};', $password, $hruid) . PHP_EOL;
 }
 
-// Save dev's remote sites
+// ... Admin states
+$iter = XDB::iterRow('SELECT  hruid, perms
+                        FROM  account
+                       WHERE  perms LIKE "%admin%"');
+while (list($hruid, $perms) = $iter->next()) {
+    echo XDB::format('UPDATE account SET perms = {?} WHERE hruid = {?};', $perms, $hruid) . PHP_EOL;
+}
+
+// ... Remote sites
 $remote_cols = array('site', 'privkey', 'label', 'rights');
 $remotes = Remote::selectAll(RemoteSelect::groups());
 foreach ($remotes as $r) {
