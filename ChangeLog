@@ -3,11 +3,26 @@ VERSION 3.0.2                                                         XX XX XXXX
 
 New:
     * Add tests for Collection class                                        -IOS
+    * Change favicon                                                        -IOS
+    * Introduce foreign keys and fix some insert() functions                -IOS
+    * Use Yahoo Weather API, since Google Weather is gone                   -IOS
+    * New import scripts, for Sup'Op (IOGS) and ENSTA                       -IOS
+    * Improve DB migration script to remove sensible data                   -IOS
+    * Room management for groups                                            -IOS
+    * Add more magic in Meta class (has, collection and from functions)     -IOS
+
+Remove:
+    * Remove MySQL backup system (now external)                             -IOS
+    * Remove survey module                                                  -IOS
+    * Drop ancient tables                                                   -IOS
 
 Bug:
     * Fix wrong implementation of Collection::has                           -IOS
     * Fix 0-promotion case handling in birthday minimodule                  -IOS
     * Revoke public visibility of some pages                            -IOS/PAD
+    * Fix fromID string-number comparaison                                  -GUI
+    * Hide 0000-00-00 birthday                                              -IOS
+    * Use membre caste instead of the restricted in TOL searches            -IOS
 
 ================================================================================
 VERSION 3.0.1                                                         22 08 2012
