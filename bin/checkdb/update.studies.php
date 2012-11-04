@@ -53,6 +53,7 @@ function update_group($name, $label, $ns, Userfilter $filter) {
 }
 
 // Update formations
+$ufc_web = new UFC_Group(Group::from('webmasters'), Rights::restricted());
 $formations = Formation::selectAll(FormationSelect::base());
 foreach ($formations as $form) {
     // Update group
@@ -61,17 +62,14 @@ foreach ($formations as $form) {
     $g->description($form->description());
 
     // Admin caste
-    if ($form->abbrev() == 'x') {
-        $c = $g->caste(Rights::admin());
-        $c->select(CasteSelect::base());
-        if (!$c->userfilter()) {
-           $uf_kes = new UserFilter(new UFC_Group(Group::from('kes'), Rights::admin()));
-           $c->userfilter($uf_kes);
-        }
+    $c = $g->caste(Rights::admin());
+    $c->select(CasteSelect::base());
+    if (!$c->userfilter()) {
+       $c->userfilter(new UserFilter(new PFC_And(array($ufc_web, new UFC_Group($g, Rights::member())))));
     }
 
 }
-
+/*
 // Update promotions
 $iter = XDB::iterRow('SELECT promo FROM studies GROUP BY promo ORDER BY promo');
 while (list($promo) = $iter->next()) {
@@ -79,7 +77,7 @@ while (list($promo) = $iter->next()) {
     $f = new UserFilter(new UFC_Promo($promo, '='));
     $g = update_group('promo_' . $promo, $promo, Group::NS_PROMO, $f);
 }
-
+*/
 // Update promotions by formation
 $iter = XDB::iterRow('SELECT  s.promo, s.formation_id, f.abbrev, f.label
                         FROM  studies AS s
@@ -91,19 +89,26 @@ while (list($promo, $formation_id, $abbrev, $label) = $iter->next()) {
     $promo = sprintf('%04d', $promo);
     $f = new UserFilter(new UFC_Promo($promo, '=', $formation_id));
     $g = update_group('promo_' . $abbrev . $promo, $promo . ' ' . $label, Group::NS_PROMO, $f);
+
+    //Admin caste
+    $c = $g->caste(Rights::admin());
+    $c->select(CasteSelect::base());
+    if (!$c->userfilter()) {
+       $c->userfilter(new UserFilter(new UFC_Group(Group::from('formation_' . $abbrev), Rights::admin())));
+    }
 }
 
 // Update on_platal, specifying the number of years a school remains on the platal
 $onplatal_numyears = array(
     'x' => 2,
     'poly' => 0,
-    'master' => 0,
+    'master' => 2,
     'doc' => 0,
     'pei' => 0,
     'iogs' => 2,
     'fkz' => 0,
     'stcyr' => 0,
-    'ensta' => 2
+    'ensta' => 3
 );
 $formations->select(FormationSelect::on_platal());
 $formations->select(FormationSelect::promos());

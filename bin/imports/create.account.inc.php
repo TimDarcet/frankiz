@@ -35,16 +35,22 @@ function conv($str)
     return $str;
 }
 
-function conv_name($str)
+function conv_noaccent($str)
 {
     $str = str_replace(array('É'), 'e', $str);
     $str = strtolower(conv($str));
     $str = str_replace(array('é', 'è', 'ë', 'ê'), 'e', $str);
     $str = str_replace(array('ü', 'û'), 'u', $str);
+    $str = str_replace(array('ô', 'ö', 'ò'), 'o', $str);
     $str = str_replace(array('à', 'ä', 'â', 'á'), 'a', $str);
     $str = str_replace(array('î', 'ï'), 'i', $str);
     $str = str_replace(array('ç','Ç'), 'c', $str);
-    return preg_replace("/[^a-z0-9_-]/", "", $str);
+    return $str;
+}
+
+function conv_name($str)
+{
+    return preg_replace("/[^a-z0-9_-]/", "", conv_noaccent($str));
 }
 
 /**
@@ -68,13 +74,19 @@ function conv_name($str)
  */
 function update_user(User $user, array $user_data)
 {
-    $hruid = strtolower($user_data['hruid']);
-    $firstname = ucwords(strtolower(conv($user_data['firstname'])));
-    $lastname = ucwords(strtolower(conv($user_data['lastname'])));
-    $email = strtolower($user_data['email']);
+    $hruid = conv_noaccent(mb_strtolower(($user_data['hruid']), 'UTF-8'));
+    $firstname = ucwords(mb_strtolower(conv($user_data['firstname']), 'UTF-8'));
+    $lastname = ucwords(mb_strtolower(conv($user_data['lastname']), 'UTF-8'));
+    $email = conv_noaccent(mb_strtolower($user_data['email'], 'UTF-8'));
 
     if (!$hruid || !$firstname || !$lastname || !$email) {
         echo "Some fields are missing for user " . $user->id() . ":\n";
+        print_r(array(
+            'hruid' => $hruid,
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'email' => $email
+        ));
         print_r($user_data);
         return false;
     }
