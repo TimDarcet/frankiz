@@ -499,6 +499,8 @@ class User extends Meta
     {
         if ($original != null) {
             if ($this->original) {
+                XDB::execute('UPDATE account SET original = NULL WHERE uid = {?}',
+                             $this->id());
                 $this->original->delete();
             }
             $this->original = $original;
@@ -518,6 +520,9 @@ class User extends Meta
     {
         if ($photo != null) {
             if ($this->photo) {
+                // Delete photo, respecting database constraints
+                XDB::execute('UPDATE account SET photo = NULL WHERE uid = {?}',
+                             $this->id());
                 $this->photo->delete();
             }
             $this->photo = $photo;
