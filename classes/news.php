@@ -226,7 +226,7 @@ class News extends meta
             (!$this->image)?null:$this->image->id(),
             (!$this->origin)?null:$this->origin->id(),
             $this->title, $this->content,
-            $this->begin, $this->end, $this->comment);
+            $this->begin->toDb(), $this->end->toDb(), $this->comment);
 
         $this->id = XDB::insertId();
     }
