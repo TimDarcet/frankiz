@@ -114,7 +114,12 @@ class ProfileModule extends PLModule
             }
         }
 
-        if (!$add) {
+        $canEdit = ($add || (!$user->isAdmin()) || S::admin());
+        if(!$canEdit) {
+            $err[] = "Vous ne pouvez pas modifier un compte administrateur.";
+        }
+
+        if ($canEdit && !$add) {
             if (Env::has('add_room')) {
                 try {
                     $r = Room::from(Env::t('rid'))->select(RoomSelect::base());
@@ -171,7 +176,7 @@ class ProfileModule extends PLModule
             }
         }
 
-        if (Env::has('change_profile')) {
+        if ($canEdit && Env::has('change_profile')) {
             if($add){
                 if (Env::blank('hruid')) {
                     $hruid = Env::t('firstname') . '.' . Env::t('lastname');
