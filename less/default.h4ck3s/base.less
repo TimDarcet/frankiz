@@ -578,7 +578,10 @@ body.disabledAside #section {
 
         td.full {
             display: table-cell;
-            width: 30%;
+            /* Opera badly manages tables in div.
+               Other browsers don't bother this line.
+            */
+            max-width: 1px;
         }
 
         td.empty {
