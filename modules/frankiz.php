@@ -87,8 +87,8 @@ class FrankizModule extends PlModule
             pl_redirect('/');
         }
         if(S::logged()) {
-        Platal::session()->destroy();
-        http_redirect($globals->baseurl_http);
+            Platal::session()->destroy();
+            http_redirect($globals->baseurl);
         }
         $page->changeTpl('exit.tpl');
     }
