@@ -84,7 +84,11 @@ class ImagesModule extends PlModule
             $image = FrankizImage::fromId(Env::i('iid'), false);
             if ($image) {
                 $image->select(FrankizImageSelect::base());
-                if ($image->label() == Env::s('secret')) {
+                $image->select(FrankizImageSelect::caste());
+                $group = $image->caste()->group();
+                $group->select(GroupSelect::base());
+                // Check caste and label
+                if ($group->name() == 'temp' && $image->label() == Env::s('secret')) {
                     $image->delete();
                 }
             }
