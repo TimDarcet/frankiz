@@ -102,7 +102,7 @@ class RemoteModule extends PlModule
         }
 
         if ($remote->hasRight('promo') && in_array('promo', $request)) {
-            $groups = $user->castes()->groups()->filter('ns', Group::NS_PROMO);
+            $groups = $user->castes(Rights::member())->groups()->filter('ns', Group::NS_PROMO);
             $groups = $groups->remove(Group::from('on_platal'));
             // Extract promos from group labels
             // For backward compatibility, compute the minimal promo year
