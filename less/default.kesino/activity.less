@@ -1,0 +1,332 @@
+/***************************************************************************
+ *  Copyright (C) 2004-2012 Binet Réseau                                   *
+ *  http://br.binets.fr/                                                   *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
+
+@import "lib.less";
+
+.small {
+    font-size: 80%;
+}
+
+.info {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.msg_proposal {
+    font-size: 20px;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* hack to override #section .module in base.less */
+#section .module#activities {
+    width: 50%;
+    margin-right: 0;
+
+    *zoom: 1;
+    *display: inline;
+
+    .head {
+        padding-left: 10px;
+        background-color: #2490af;
+    }
+
+    a {
+        text-decoration: none;
+        font-variant: normal;
+    }
+
+    .day{
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .date {
+        background-color: #155e73;
+        font-size: 20px;
+        text-align: center;
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .activities_day {
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .activity {
+        padding: 2px 10px;
+        border-top: 1px solid #2490af;
+        margin: 0px;
+    }
+
+    .star_switcher {
+        float: right;
+        width: 16px;
+        background-repeat: no-repeat;
+        background-position: center;
+        cursor: pointer;
+    }
+
+    img {
+        height: 16px;
+    }
+}
+
+.activity.star {
+    background-color: @star;
+
+}
+.activity.star .star_switcher {
+    background-image: url("../default/images/icons/group_delete.gif");
+}
+
+.activity.unstar .star_switcher {
+    background-image: url("../default/images/icons/group_add.gif");
+}
+
+#section .activity_right {
+    margin-left: 0;
+    width: 48%;
+    float: right;
+
+    .top {
+        width: 85%;
+        text-align: center;
+        overflow: hidden;
+        .alphabackground;
+        .border-radius;
+        margin-right: 5%;
+        margin-left: 5%;
+        margin-bottom: 10px;
+        padding: 5px;
+
+        a {
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .current {
+            font-weight: bold;
+        }
+
+    }
+}
+
+#activity_show {
+    display: none;
+    .head {
+        padding-left: 10px;
+        padding-right: 10px;
+
+        .title {
+            font-size: 18px;
+            text-align: center;
+        }
+    }
+
+    .body {
+        padding: 2px 10px 5px;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .one_day, .several_days {
+        text-align: center;
+    }
+
+    .msg {
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .present, .out {
+        text-align: center;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .description {
+        margin-bottom: 5px;
+    }
+
+    .section {
+        margin-top: 10px;
+        padding-top: 10px;
+        margin-bottom: 5px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .misc {
+        text-align: right;
+
+        .mail {
+            display: inline-block;
+        }
+
+        .participants_link {
+            display: inline-block;
+        }
+        .admin {
+            display: inline-block;
+        }
+    }
+}
+
+#participants_show {
+    .subtitle{
+        font-weight: bold;
+        text-align: center;
+    }
+}
+
+#section {
+    table {
+        width: 100%;
+    }
+}
+
+#calendar.module {
+    .head {
+        .options {
+        border-top: 1px solid #2490af;
+        font-size: 0.5em;
+        }
+
+        .right {
+            float: right;
+        }
+
+        .new {
+            a, a:hover {
+                text-decoration: none;
+                font-variant: normal;
+                color: @color;
+
+                .new_element {
+                    margin-right: 4px;
+                }
+            }
+        }
+    }
+}
+
+#section .timetable_top {
+    width: 90%;
+    text-align: center;
+    overflow: hidden;
+    .alphabackground;
+    .border-radius;
+    margin-right: 5%;
+    margin-left: 5%;
+    margin-bottom: 10px;
+}
+
+.close_show {
+    display: none;
+}
+
+#section #activity_show.timetable {
+    position: absolute;
+    display: block;
+    z-index: 999;
+    left: 15%;
+    top: 160px;
+    width: 60%;
+    .close_show {
+        display: block;
+        background-image: url("../default/images/icons/close-cross.png");
+        background-repeat: no-repeat;
+        float: right;
+        height: 32px;
+        width: 32px;
+        cursor: pointer;
+    }
+}
+
+#section #calendar .head {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#modify_show {
+    .admin {
+        text-align: right;
+    }
+}
+
+.mail_ico {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("../default/images/icons/email_edit.png");
+    background-repeat: no-repeat;
+}
+
+.group_ico {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("../default/images/icons/group.gif");
+    background-repeat: no-repeat;
+}
+
+.alone {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("../default/images/icons/user.png");
+    background-repeat: no-repeat;
+}
+
+.world {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("../default/images/icons/world.png");
+    background-repeat: no-repeat;
+}
+
+.loading {
+    float: right;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("../default/images/mini_loading.gif");
+    background-repeat: no-repeat;
+}
+
+#section {
+    input[type=submit] {
+        float: right;
+    }
+
+    input[name=delete] {
+        color: red;
+        font-weight: bold;
+        float: none;
+    }
+}
