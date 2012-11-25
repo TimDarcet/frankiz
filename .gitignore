@@ -17,3 +17,6 @@ htdocs/*.mobileconfig
 htdocs/wpad.dat
 upgrade/2.0.0_to_3.0.0/unversionned
 *.csv
+*~
+*.swp
+*.bak
