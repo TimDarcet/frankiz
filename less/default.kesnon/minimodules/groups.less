@@ -1,0 +1,91 @@
+/***************************************************************************
+ *  Copyright (C) 2004-2012 Binet Réseau                                   *
+ *  http://br.binets.fr/                                                   *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
+
+#minimodule_groups {
+    .body  {
+        padding: 0;
+    }
+
+    h4 {
+        margin: 0;
+        text-align: center;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td {
+        padding: 0;
+        vertical-align: middle;
+        height: 35px;
+
+        &.img {
+            padding-left: 4px;
+            width: 35px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        &.therights {
+            width: 35px;
+            text-align: right;
+            vertical-align: middle;
+        }
+
+        &.theflags {
+            width: 16px;
+            text-align: left;
+        }
+
+        &.group {
+            padding-left: 4px;
+            vertical-align: middle;
+
+                .traffic_light_switcher {
+                    display: inline-block;
+                    width: 24px;
+                    height: 24px;
+                    vertical-align: middle;
+                    background-image: url("../../default/images/lights.png");
+                    background-repeat: no-repeat;
+                    &.room_master {
+                        &.hover {
+                            background-position: center -24px !important;
+                        }
+                    }
+                }
+                .open {
+                    display: inline-block;
+                    .traffic_light_switcher {
+                        background-position: center 0px;
+                    }
+                }
+                .close {
+                    display: inline-block;
+                    .traffic_light_switcher {
+                        background-position: center -48px;
+                    }
+                }
+
+        }
+    }
+}
