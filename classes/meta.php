@@ -344,7 +344,7 @@ abstract class Meta
     public static function from($mixed, $insertIfNotExists = false)
     {
         if (!$mixed) {
-            throw ItemNotFoundException('Empty index');
+            throw new ItemNotFoundException('Empty index');
         }
         try {
             $w = static::batchFrom(array($mixed))->first();
