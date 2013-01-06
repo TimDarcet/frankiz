@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *  Copyright (C) 2004-2012 Binet Réseau                                   *
+ *  Copyright (C) 2004-2013 Binet Réseau                                   *
  ***************************************************************************/
 
 class PixMiniModule extends FrankizMiniModule

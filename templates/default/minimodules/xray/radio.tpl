@@ -1,7 +1,7 @@
 {**************************************************************************}
 {*                                                                        *}
-{*  Copyright (C) 2009 Binet Réseau / X-Ray                               *}
-{*  http://www.polytechnique.fr/eleves/binets/reseau/                     *}
+{*  Copyright (C) 2009-2013 Binet Réseau / X-Ray                          *}
+{*  http://br.binets.fr/                                                  *}
 {*                                                                        *}
 {*  This program is free software; you can redistribute it and/or modify  *}
 {*  it under the terms of the GNU General Public License as published by  *}
