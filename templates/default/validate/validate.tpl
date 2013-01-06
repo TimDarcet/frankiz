@@ -54,6 +54,7 @@
 
             <div class="more {if $valid->id() == $validation}show{/if}">
             <form enctype="multipart/form-data" method="post" action="admin/validate/{$group->name()}">
+                <input type="hidden" name="val_id" value="{$valid->id()}" />
                 {if $logged && $user->isWeb()}
                     <div>
                         {include file="wiki.tpl"|rel name='validate/rules/'|cat:$valid->type() class="webmaster"}
@@ -137,7 +138,6 @@
                             {if $item->refuse()} <input type="submit" name="delete"   value="Refuser" /> {/if}
                         </td>
                         <td>
-                            <input type="text" name="val_id" style="display: none; " value="{$valid->id()}" />
                             <input type="submit" name="accept"   value="Valider" />
                         </td>
                     </tr>
