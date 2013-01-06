@@ -71,6 +71,23 @@ class NewsValidate extends ItemValidate
 
     public function handle_editor()
     {
+        // Webmasters can change the target of a news
+        $user = S::user();
+        if ($user && $user->isWeb()) {
+            $target_rights = Rights::restricted();
+            if (Env::b('target_everybody_news')) {
+                $target_rights = Rights::everybody();
+            }
+            $target_group  = new Group(Env::i('target_group_news'));
+            $target_filter = new CasteFilter(new PFC_And(new CFC_Group($target_group),
+                                                         new CFC_Rights($target_rights)));
+            $target = $target_filter->get(true);
+            if (!$this->target->isMe($target)) {
+                $target->select(CasteSelect::validate());
+                $this->target = $target;
+            }
+        }
+        
         $this->title   = Env::t('title', '');
         $this->content = Env::t('news_content', '');
         $this->begin   = new FrankizDateTime(Env::t('begin'));

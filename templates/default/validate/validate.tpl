@@ -112,7 +112,7 @@
                             Editer
                         </div>
                         <table class="hide">
-                            {include file=$item->editor()|rel}
+                            {include file=$item->editor()|rel is_validation=true}
                             <tr>
                                 <td width=20%></td>
                                 <td>
