@@ -25,10 +25,8 @@
         <input type="text" name="free" value="{if t($smarty.request.free)}{$smarty.request.free}{/if}" />
         <input name="go" value="Consulter" type="hidden">
         <input name="search" value="" type="hidden">
-        <input name="terms" id="terms" value="" type="hidden">
-        <input type="hidden" name="submitted" id="submitted" value="1" />
-        <input type="hidden" name="method" id="method" value="name" />
-        <input type="hidden" name="page" id="page" value="1" />
+        <input type="hidden" name="search_line">
+        <input type="hidden" name="type" value="all">
 
         <div>
             <input name="tol" value="TOL" type="submit">
@@ -36,7 +34,7 @@
                    onclick="var $form = $(this).closest('form');$form.find('[name=search]').val($form.find('[name=free]').val());$form.attr('action', 'http://wikix.polytechnique.org/eleves/wikix/Sp%C3%A9cial:Recherche')">
             {if $smarty.session.auth >= AUTH_COOKIE && $remip->has_x_student()}
               <input name="ok" value="Fruit" type="submit"
-                   onclick="var $form = $(this).closest('form');$form.find('[name=terms]').val($form.find('[name=free]').val());$form.attr('action', 'http://fruit/search.php');$form.attr('method', 'get')">
+                   onclick="var $form = $(this).closest('form');$form.find('[name=search_line]').val($form.find('[name=free]').val());$form.attr('action', 'http://fruit/index.php');$form.attr('method', 'get')">
             {/if}
         </div>
     </form>
