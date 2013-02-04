@@ -53,6 +53,8 @@
         <a href="http://jtx">JTX</a>
         ·
         <a href="http://x-ray">X-Ray</a>
+	·
+	<a href="http://ratemyclass.bin">Rate My Class</a>
     {/if} | |
 
     <a href="http://dev.frankiz.net">Dév</a> ·
