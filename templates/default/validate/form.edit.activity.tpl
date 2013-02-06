@@ -47,7 +47,7 @@
             </optgroup>
         </select>
         <label>
-            <input type="checkbox" name="target_everybody_news" {if $item_target->rights() == 'everybody'}checked="checked"{/if} />
+            <input type="checkbox" name="target_everybody_activity" {if $item_target->rights() == 'everybody'}checked="checked"{/if} />
             Public (visible des sympathisants)
         </label>
         <p>
