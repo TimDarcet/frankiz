@@ -624,6 +624,22 @@ class User extends Meta
         });
     }
 
+    /**
+     * Get the study with the more recent promotion, or null
+     */
+    public function getBestStudy()
+    {
+        $best = null;
+        $best_year = 0;
+        foreach ($this->studies as $study) {
+            if ($study->year_out() > $best_year) {
+                $best_year = $study->year_out();
+                $best = $study;
+            }
+        }
+        return $best;
+    }
+
     public function addStudy($formation, $year_in, $year_out, $promo, $forlife)
     {
         $formation_id = ($formation instanceof Formation) ? $formation->id() : $formation;

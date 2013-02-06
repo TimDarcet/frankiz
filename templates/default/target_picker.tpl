@@ -30,6 +30,17 @@
     {assign var=even_only_friend value=false}
 {/if}
 
+{* Get default target *}
+{if $logged}
+    {assign var=user_best_study value=$user->getBestStudy()}
+    {if $user_best_study}
+        {assign var=user_best_study_group value=$user_best_study->studyGoupName()}
+    {/if}
+{/if}
+{if !t($user_best_study_group)}
+    {assign var=user_best_study_group value=false}
+{/if}
+
 <div class="target_picker" id="origin_picker_{$id}">
     <div>
         {target_picker user_groups='user_groups' fkz_groups='fkz_groups' own_group='own_group' study_groups='study_groups' even_only_friend=$even_only_friend}
@@ -42,7 +53,7 @@
                 </optgroup>
                 <optgroup name="study" label="Études">
                     {foreach from=$study_groups item='group'}
-                        <option value="{$group->id()}">{$group->label()}</option>
+                        <option value="{$group->id()}"{if $user_best_study_group == $group->name()} selected{/if}>{$group->label()}</option>
                     {/foreach}
                 </optgroup>
             {/if}

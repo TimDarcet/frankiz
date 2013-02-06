@@ -68,6 +68,13 @@ class Study
     public function groupName() {
         return 'promo_' . $this->formation->abbrev() . $this->promo;
     }
+
+    /**
+     * Get the associated promotion group name
+     */
+    public function studyGoupName() {
+        return 'formation_' . $this->formation->abbrev();
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
