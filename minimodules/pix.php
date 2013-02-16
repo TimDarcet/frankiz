@@ -36,7 +36,7 @@ class PixMiniModule extends FrankizMiniModule
         $api = new API($url, false);
         $photos = simplexml_load_string(utf8_decode($api->response())); //charset fix
         $res = Array();
-        if (empty($photos) || !is_array($photos))
+        if (empty($photos))
             return $res;
 
         foreach($photos as $photo){
