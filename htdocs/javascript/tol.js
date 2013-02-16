@@ -108,10 +108,12 @@ var users = function() {
 
                 if (counter > 0) {
                     $("#tol_infos .page").empty();
+                    $("#tol_infos_bottom .page").empty();
                     $("#tol_infos .empty").hide();
                     $("#tol_infos .count").html(counter);
                     $("#tol_infos .total").html(json.total);
                     $("#tol_infos .notempty").show();
+                    $("#tol_infos_bottom .notempty").show();
                     if (json.total > 20) {
                         var pages = '(Pages : ';
                         for(var i = 1; i <= Math.ceil(json.total / ((json.mode == 'card')?20:50)); i++) {
@@ -122,10 +124,12 @@ var users = function() {
                         pages += ")";
 
                         $("#tol_infos .page").html(pages);
+                        $("#tol_infos_bottom .page").html(pages);
                     }
                     $('input[name="page"]').val(1);
                 } else {
                     $("#tol_infos .notempty").hide();
+                    $("#tol_infos_bottom .notempty").hide();
                     $("#tol_infos .empty").show();
                 }
 

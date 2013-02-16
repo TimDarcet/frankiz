@@ -42,6 +42,11 @@
     {/if}
 </ul>
 
+<div class="loading" id="tol_infos_bottom">
+    <div>
+        <div class="notempty page"></div>
+    </div>
+</div>
 {js src="tol.js"}
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
