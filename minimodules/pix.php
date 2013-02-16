@@ -45,7 +45,7 @@ class PixMiniModule extends FrankizMiniModule
                 "imgThumb" => "http://pix/media/photo/thumb/".$photo->author->id."/".$photo->link,
                 "imgFull" => "http://pix/media/photo/view/".$photo->author->id."/".$photo->link,
                 "title" => htmlspecialchars($photo->title." par ".$photo->author->name." ".$photo->author->surname),
-                "text" => htmlspecialchars($photo->title." par ".$photo->author->name." ".$photo->author->surname)."<br/><a href='http://pix/photo/".$photo->id."'>voir dans piX</a>"
+                "text" => htmlspecialchars($photo->title." par ")."<a href='http://pix/auteur/".$photo->author->id."'>".htmlspecialchars($photo->author->name." ".$photo->author->surname)."</a><br/><a href='http://pix/photo/".$photo->id."'>voir dans piX</a>"
             );
         }
         return $res;
