@@ -117,7 +117,7 @@ var users = function() {
                     if (json.total > 20) {
                         var pages = '(Pages : ';
                         for(var i = 1; i <= Math.ceil(json.total / ((json.mode == 'card')?20:50)); i++) {
-                            var onclick = "$('input[name=page]').val($(this).html()); users.search();";
+                            var onclick = "$('input[name=page]').val($(this).html()); users.search();document.location.hash='tol_infos';";
                             var selected = ($('input[name=page]').val() == i) ? 'class="selected"' : '';
                             pages += ' <a ' + selected + ' onclick="' + onclick + '">' + i + '</a> ';
                         }
