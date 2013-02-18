@@ -252,6 +252,18 @@ class XRayMiniModule extends FrankizMiniModule
         //$this->assign('xray_podcast', PlCache::getGlobal('xray_podcast'));
         $this->assign('xray_nowplaying', PlCache::getGlobal('xray_nowplaying'));
     }
+
+    public function ajaxRefresh()
+    {
+        $this->run();
+        $xray_nowplaying = PlCache::getGlobal('xray_nowplaying');
+        $xray_calendar = PlCache::getGlobal('xray_calendar');
+        return array(
+            'xray_titre' => $xray_nowplaying['title'],
+            'xray_artiste' => $xray_nowplaying['artist'],
+            'xray_podcast' => $xray_calendar['emission']
+        );
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
