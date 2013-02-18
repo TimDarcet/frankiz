@@ -101,7 +101,8 @@ abstract class FrankizMiniModule
 
     }
 
-    // must return 'id' => 'innerHTML' of every element that must be refresh in the minimodule
+    // must return an array of 'id' => 'innerHTML' of every element that must be refresh in the minimodule
+    // if 'innerHTML' is returned, the whole minimodule innerHTML will be updated
     public function ajaxRefresh()
     {
         return array();

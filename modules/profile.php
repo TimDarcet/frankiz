@@ -613,13 +613,23 @@ class ProfileModule extends PLModule
         $user_minimodules  = S::user()->minimodules();
         $minimodules = array();
         $result = array();
-        while ($minimodule = $iter->next()) {
-            $m = FrankizMiniModule::get($minimodule['name'], false);
-            if ($m!== false && $m->checkAuthAndPerms() && in_array($minimodule['name'], $user_minimodules))
-            {
-                $result = array_merge($result,$m->ajaxRefresh());
-                $minimodules[$minimodule['name']] = $minimodule['label'];
+        
+        foreach($user_minimodules as $minimodule_name){
+            $m = FrankizMiniModule::get($minimodule_name);
+            
+            $ajaxRefresh = $m->ajaxRefresh();
+            if($ajaxRefresh == 'innerHTML'){
+                $page->assign('minimodule', $m);
+                $fetched = $page->filteredFetch(FrankizPage::getTplPath('minimodule.tpl'));
+                $fetched = str_replace(array("\r","\n"),'',trim($fetched));
+                $fetched = preg_replace('/.*<li[^>]*>(.*)<\/li[^>]*>.*/i', '$1', $fetched);
+                $ajaxRefresh = array(
+                    'minimodule_'.$m->name() => $fetched
+                );
             }
+            $result = array_merge($result, $ajaxRefresh);
+            $minimodules[$minimodule['name']] = $minimodule['label'];
+        
         }
         $page->jsonAssign('ajaxRefresh', $result);
 
