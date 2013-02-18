@@ -43,7 +43,7 @@ class QuickSearchMiniModule extends FrankizMiniModule
 
     public function run()
     {
-
+        $this->assign('has_x_student',IPAddress::getInstance()->has_x_student());
     }
 }
 
