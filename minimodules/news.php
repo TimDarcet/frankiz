@@ -46,6 +46,11 @@ class NewsMiniModule extends FrankizMiniModule
         $this->assign('news', $news);
     }
 
+    public function ajaxRefresh()
+    {
+        return 'innerHTML';
+    }
+
 }
 
 
