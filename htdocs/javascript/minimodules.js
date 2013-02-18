@@ -58,7 +58,7 @@ function minimodules()
         bodyDiv.appendChild(select);
         addDiv.appendChild(bodyDiv);
         
-        setInterval(refreshMinimodules, 120000);
+        setTimeout(getReadyToRefreshMinimodules, 120000);
     }
 }
 
@@ -239,3 +239,13 @@ function refreshMinimodules()
        }
     });
 }
+
+function getReadyToRefreshMinimodules()
+{
+    document.onmouseover = function(){
+                            document.onmouseover = null;
+                            refreshMinimodules();
+                            setTimeout(getReadyToRefreshMinimodules, 120000);
+                        };
+}
+
