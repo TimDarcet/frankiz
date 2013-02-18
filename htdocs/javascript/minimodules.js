@@ -20,6 +20,43 @@ function minimodules()
              activate: startSorting,
              stop: stopSorting
         });
+        
+        // Ajout "à la main" du menu de selection de rajout de minimodule
+        var addDiv = document.getElementById('add_minimodule');
+        
+        var headDiv = document.createElement('div');
+        headDiv.setAttribute('class','head');
+        addDiv.appendChild(headDiv);
+        
+        var bodyDiv = document.createElement('div');
+        bodyDiv.setAttribute('class','body');
+        
+        var select = document.createElement('select');
+        select.id = 'add_minimodule_select';
+        
+        var option = document.createElement('option');
+        option.innerHTML = "Ajouter un minimodule";
+        
+        select.appendChild(option);
+        
+        //lors de la selection d'un minimodule à ajouter
+        select.onchange = function(){
+                            var selectedOption = this.options[this.selectedIndex];
+                            if(selectedOption.value != ''){
+                                addMinimodule(selectedOption.value, null, null);
+                            }
+                            this.selectedIndex = 0;
+                        };
+        
+        //pour éviter un appel Ajax dès la chargement de la page, on attend que l'utilisateur survole le menu
+        select.onmouseover = function(){
+                            // on supprime cette action car le rafraichissement est appelé lors de l'ajout ou de la suppression d'un minimodule
+                            document.getElementById('add_minimodule_select').onmouseover = null;
+                            refreshMinimodulesList();
+                        };
+        
+        bodyDiv.appendChild(select);
+        addDiv.appendChild(bodyDiv);
     }
 }
 
@@ -50,12 +87,19 @@ function startSorting(event, ui)
 
 function stopSorting(event, ui)
 {
+    if($('#remove_minimodule_zone li').length != 0){
+        var mini = $('#remove_minimodule_zone li');
+        removeMinimodule(mini.attr("name"), null, null);
+        mini.remove();
+    }
     $('.minimodules_zone').removeClass('sorting');
     cleanEmptyColumns();
 
     var currentLayout = getLayout();
     if (tempLayout != currentLayout)
     {
+        
+        
         saveLayout(currentLayout);
         tempLayout = getLayout();
     }
@@ -63,7 +107,7 @@ function stopSorting(event, ui)
 
 function cleanEmptyColumns()
 {
-    if ($('.minimodules_zone').size() == 4) {
+    if ($('.minimodules_zone').size() == 5) {
         for (var i in homeCols) {
             if ($('#' + homeCols[i]).children('li').length == 0) {
                 $('#' + homeCols[i]).parent().hide();
@@ -84,7 +128,7 @@ function getLayout()
         cols["COL_FLOAT"][k] = $(this).attr('name');
     });
 
-    if($('.minimodules_zone').size() == 4)
+    if($('.minimodules_zone').size() == 5)
     {
         for (var i in homeCols) {
             cols[homeCols[i]] = new Array();
@@ -108,7 +152,10 @@ function saveLayout(layout)
 
 function addMinimodule(name, sender, box)
 {
-    sender.attr('disabled', 'disabled');
+    if(sender !== null)
+    {
+        sender.attr('disabled', 'disabled');
+    }
     $('body').removeClass('disabledAside').addClass('enabledAside');
     request({
         "url"    : "profile/minimodules/ajax/add"
@@ -119,26 +166,62 @@ function addMinimodule(name, sender, box)
                         $('#COL_FLOAT').prepend(json.html);
                         $('#minimodule_'+name).hide();
                         $('#minimodule_'+name).show('slow', function() {
-                            sender.removeAttr('disabled');
-                            box.addClass('on');
+                            if(sender !== null && box !== null)
+                            {
+                                sender.removeAttr('disabled');
+                                box.addClass('on');
+                            }
                         });
-       }
+                        refreshMinimodulesList();
+                    }
     });
 }
 
 function removeMinimodule(name, sender, box)
 {
-    sender.attr('disabled', 'disabled');
+    if(sender !== null)
+    {
+        sender.attr('disabled', 'disabled');
+    }
     request({
         "url"     : "profile/minimodules/ajax/remove"
        ,"data"    : {"name":name}
        ,"success" : function(json) {
-                       sender.removeAttr('disabled');
-                       box.removeClass('on');
+                        refreshMinimodulesList();
+                        if(sender !== null && box !== null)
+                        {
+                           sender.removeAttr('disabled');
+                           box.removeClass('on');
+                        }
                         $('#minimodule_'+name).hide('slow', function() {
                             this.parentNode.removeChild(this);
                             cleanEmptyColumns();
                         });
                     }
+    });
+}
+
+
+function refreshMinimodulesList()
+{
+    document.getElementById('add_minimodule_select').firstChild.innerHTML = 'Mise à jour en cours...';
+    request({
+        "url"    : "profile/minimodules/ajax/removed"
+       ,"success": function (json) {
+                        var options = document.getElementById('add_minimodule_select');
+                        
+                        var len = options.childNodes.length;
+                        while(len--> 1){
+                            options.removeChild(options.lastChild);
+                        }
+                        
+                        for(var minimodule in json.minimodules){
+                                option = document.createElement('option');
+                                option.value = minimodule;
+                                option.innerHTML = json.minimodules[minimodule];
+                                options.appendChild(option);
+                        }
+                        options.firstChild.innerHTML = 'Ajouter un minimodule';
+       }
     });
 }

@@ -23,7 +23,7 @@
 <table>
     <tr>
         <td class="logo">
-            <div>
+            <div class="minimodules_zone ui-sortable" id="remove_minimodule_zone">
                 <a href="home/"> </a>
             </div>
         </td>

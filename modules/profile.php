@@ -38,7 +38,8 @@ class ProfileModule extends PLModule
                      'profile/minimodules'             => $this->make_hook('minimodules',             AUTH_COOKIE),
                      'profile/minimodules/ajax/layout' => $this->make_hook('ajax_minimodules_layout', AUTH_COOKIE),
                      'profile/minimodules/ajax/add'    => $this->make_hook('ajax_minimodules_add',    AUTH_COOKIE),
-                     'profile/minimodules/ajax/remove' => $this->make_hook('ajax_minimodules_remove', AUTH_COOKIE)
+                     'profile/minimodules/ajax/remove' => $this->make_hook('ajax_minimodules_remove', AUTH_COOKIE),
+                     'profile/minimodules/ajax/removed' => $this->make_hook('ajax_minimodules_removed', AUTH_COOKIE)
                     );
     }
 
@@ -573,6 +574,28 @@ class ProfileModule extends PLModule
         if (!$success) {
             $page->jsonAssign('error', "Impossible de désactiver le minimodule");
         }
+
+        return PL_JSON;
+    }
+
+    function handler_ajax_minimodules_removed($page)
+    {
+        $iter = XDB::iterator('SELECT  m.name, m.label, m.description, COUNT(um.name) frequency
+                                 FROM  minimodules AS m
+                            LEFT JOIN  users_minimodules AS um ON m.name = um.name
+                             GROUP BY  m.name
+                             ORDER BY  frequency DESC');
+
+        $user_minimodules  = S::user()->minimodules();
+        $minimodules = array();
+        while ($minimodule = $iter->next()) {
+            $m = FrankizMiniModule::get($minimodule['name'], false);
+            if ($m!== false && $m->checkAuthAndPerms() && !in_array($minimodule['name'], $user_minimodules))
+            {
+                $minimodules[$minimodule['name']] = $minimodule['label'];
+            }
+        }
+        $page->jsonAssign('minimodules', $minimodules);
 
         return PL_JSON;
     }
