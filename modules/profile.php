@@ -39,7 +39,8 @@ class ProfileModule extends PLModule
                      'profile/minimodules/ajax/layout' => $this->make_hook('ajax_minimodules_layout', AUTH_COOKIE),
                      'profile/minimodules/ajax/add'    => $this->make_hook('ajax_minimodules_add',    AUTH_COOKIE),
                      'profile/minimodules/ajax/remove' => $this->make_hook('ajax_minimodules_remove', AUTH_COOKIE),
-                     'profile/minimodules/ajax/removed' => $this->make_hook('ajax_minimodules_removed', AUTH_COOKIE)
+                     'profile/minimodules/ajax/removed' => $this->make_hook('ajax_minimodules_removed', AUTH_COOKIE),
+                     'profile/minimodules/ajax/refresh' => $this->make_hook('ajax_minimodules_refresh', AUTH_COOKIE)
                     );
     }
 
@@ -600,6 +601,30 @@ class ProfileModule extends PLModule
         return PL_JSON;
     }
 
+    function handler_ajax_minimodules_refresh($page)
+    {
+        
+        $iter = XDB::iterator('SELECT  m.name, m.label, m.description, COUNT(um.name) frequency
+                                 FROM  minimodules AS m
+                            LEFT JOIN  users_minimodules AS um ON m.name = um.name
+                             GROUP BY  m.name
+                             ORDER BY  frequency DESC');
+
+        $user_minimodules  = S::user()->minimodules();
+        $minimodules = array();
+        $result = array();
+        while ($minimodule = $iter->next()) {
+            $m = FrankizMiniModule::get($minimodule['name'], false);
+            if ($m!== false && $m->checkAuthAndPerms() && in_array($minimodule['name'], $user_minimodules))
+            {
+                $result = array_merge($result,$m->ajaxRefresh());
+                $minimodules[$minimodule['name']] = $minimodule['label'];
+            }
+        }
+        $page->jsonAssign('ajaxRefresh', $result);
+
+        return PL_JSON;
+    }
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:

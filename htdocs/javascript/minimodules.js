@@ -57,6 +57,8 @@ function minimodules()
         
         bodyDiv.appendChild(select);
         addDiv.appendChild(bodyDiv);
+        
+        setInterval(refreshMinimodules, 120000);
     }
 }
 
@@ -222,6 +224,18 @@ function refreshMinimodulesList()
                                 options.appendChild(option);
                         }
                         options.firstChild.innerHTML = 'Ajouter un minimodule';
+       }
+    });
+}
+
+function refreshMinimodules()
+{
+    request({
+        "url"    : "profile/minimodules/ajax/refresh"
+       ,"success": function (json) {
+                        for(var minimodule in json.ajaxRefresh){
+                            document.getElementById(minimodule).innerHTML = json.ajaxRefresh[minimodule];
+                        }
        }
     });
 }

@@ -101,6 +101,12 @@ abstract class FrankizMiniModule
 
     }
 
+    // must return 'id' => 'innerHTML' of every element that must be refresh in the minimodule
+    public function ajaxRefresh()
+    {
+        return array();
+    }
+
     final function checkAuthAndPerms()
     {
         return Platal::session()->checkAuthAndPerms($this->auth(), $this->perms());
