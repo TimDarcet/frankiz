@@ -557,7 +557,7 @@ class ProfileModule extends PLModule
             $css = $m->css();
             $page->jsonAssign('css' , $css ? FrankizPage::getCssPath($css) : false);
             $page->assign('minimodule', $m);
-            $page->jsonAssign('html', $page->fetch(FrankizPage::getTplPath('minimodule.tpl')));
+            $page->jsonAssign('html', $page->filteredFetch(FrankizPage::getTplPath('minimodule.tpl')));
         }
 
         return PL_JSON;
