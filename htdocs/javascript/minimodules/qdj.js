@@ -73,3 +73,6 @@ var qdj = {
             });
     }
 };
+
+
+setInterval(qdj.load, 120000);
