@@ -1,6 +1,12 @@
 ================================================================================
 VERSION 3.0.3                                                         XX XX XXXX
-
+New:
+    * Ability to refresh minimodules via Ajax                               -OLI
+    * Implemented this for RER, News and XRay                               -OLI
+    * Added bottom pagination to the TOL                                    -OLI
+Bug:
+    * Fix wrong minimodules fetching when added via ajax                    -OLI
+    * Fix Pix minimodule not working                                        -OLI
 ================================================================================
 VERSION 3.0.2                                                         04 11 2012
 
