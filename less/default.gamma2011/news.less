@@ -1,0 +1,279 @@
+/***************************************************************************
+ *  Copyright (C) 2004-2012 Binet Réseau                                   *
+ *  http://br.binets.fr/                                                   *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
+
+@import "lib.less";
+
+#section {
+    .options {
+        a {
+            text-decoration: none;
+        }
+        table {
+            width: 100%;
+        }
+        td {
+            padding-left: 15px;
+            padding-right: 15px;
+            width: 33%;
+            vertical-align: bottom;
+        }
+        .option {
+            .alphabackground;
+            .border-radius;
+            min-height: 80px;
+            padding: 10px;
+        }
+        .option.new {
+            margin-bottom: 5px;
+            min-height: 0;
+            text-align: center;
+        }
+        li {
+            position: relative;
+            list-style: none;
+            min-height: 22px;
+            list-style: none;
+        }
+        .actions ul {
+            padding-left: 10px;
+            margin-top: 5px;
+            margin-bottom: 0;
+        }
+        .actions li {
+            cursor: pointer;
+            margin-bottom: 4px;
+        }
+        .display ul {
+            padding: 0;
+        }
+        .display li {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .display a {
+            &.current_view {
+                font-weight: bold;
+            }
+        }
+        .codes {
+            text-align: right;
+        }
+        .codes ul {
+            margin-top: 5px;
+            margin-right: 25px;
+            margin-bottom: 0;
+        }
+        .code {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border: 1px black solid;
+            right: -20px;
+            &.unread {
+                background-color: @unread;
+            }
+            &.read {
+                background-color: @background;
+            }
+            &.star {
+                background-color: @star;
+            }
+            &.tocome {
+                background-color: red;
+            }
+        }
+    }
+
+    .list {
+        padding-left: 15px;
+        padding-right: 10px;
+        ul {
+            padding: 0;
+        }
+        li.news {
+            .border-radius;
+            position: relative;
+            list-style: none;
+            border: 0px black solid;
+            padding: 1px;
+            margin-bottom: 5px;
+
+            &:first-child {
+                border-top: 0px @border solid;
+            }
+
+            td:first-child {
+                width: 32px;
+            }
+
+            .infos {
+                text-align: center;
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    padding: 0;
+                }
+                .star_switcher {
+                    position: relative;
+                }
+                .origin {
+                    height: 38px;
+                    position: relative;
+                    width: 50px;
+                    font-size: 12px;
+                    img {
+                        vertical-align: middle;
+                    }
+                }
+                .date {
+                    position: relative;
+                    width: 50px;
+                }
+                .title {
+                    position: relative;
+                    vertical-align: middle;
+                    cursor: pointer;
+                    font-weight: bold;
+                    a {
+                        display: block;
+                        width: 100%;
+                        text-decoration: none;
+                        position: relative;
+                        div {
+                            line-height: 100%;
+                        }
+                    }
+                }
+            }
+
+            .content {
+                position: relative;
+                clear: both;
+                padding: 15px;
+                text-align: left;
+                background-color:black;
+
+                .body {
+                    padding: 5px;
+                    .image {
+                        margin-right: 10px;
+                        float: left;
+                    }
+                    ul {
+                        position: relative;
+                        left: 15px;
+                    }
+                }
+
+                .admin {
+                    bottom: 2px;
+                    left: 5px;
+                    a {
+                        color: red;
+                        text-decoration: none;
+                    }
+                }
+
+                .under {
+                    margin-top: 20px;
+                    padding-top: 5px;
+                    border-top: 1px @border solid;
+                    table {
+                        font-size: 12px;
+                        width: 100%;
+                        text-align: left;
+                        .admin {
+                            width: 70px;
+                        }
+                        .target_rights {
+                            font-style: italic;
+                        }
+                        .writer {
+                            width: 100px;
+                            text-align: right;
+                            img {
+                                vertical-align: middle;
+                                margin-left: 5px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .star_switcher {
+        width: 32px;
+        height: 30px;
+        background-image: url("../default/images/star.png");
+        background-repeat: no-repeat;
+        &:hover {
+            background-position: center -30px !important;
+        }
+    }
+
+    .star .star_switcher {
+        background-position: center -60px;
+    }
+
+    .unstar .star_switcher {
+        background-position: center 0px;
+    }
+
+    /*
+        Open/ Close
+    */
+
+    .news.open .content {
+        display: block;
+    }
+
+    .news.close .content {
+        display: none;
+    }
+
+    /*
+        Star / Unstar
+    */
+
+    .news.star {
+        background-color: @star !important;
+    }
+
+    /*
+        Read / Unread
+    */
+
+    .news.read {
+        background-color: rgba(0,0,0,0.5);
+    }
+
+    .news.unread {
+        background-color: @unread;
+    }
+
+    /*
+        To Come
+    */
+    .news.tocome {
+        background-color: red !important;
+    }
+
+}

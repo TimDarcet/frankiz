@@ -1,0 +1,64 @@
+/***************************************************************************
+ *  Copyright (C) 2004-2012 Binet Réseau                                   *
+ *  http://br.binets.fr/                                                   *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
+
+@background: #FFFFFF;
+@light     : #2DEC2B;
+@border    : #000000;
+@color     : #000000;
+@color2 : #FFFFFF;
+@hover     : #ff005a;
+@star      : #ff005a;
+@unread : #00BED4;
+
+.alphabackground () {
+    background-image: url("images/75p.png");
+    background-repeat: repeat;
+}
+
+.border-radius (@radius: 5px) {
+    border-radius: @radius;
+    -moz-border-radius: @radius;
+    -webkit-border-radius: @radius;
+}
+
+.border-radius-bottom (@radius: 5px) {
+    border-radius: 0 0 @radius @radius;
+    -moz-border-radius: 0 0 @radius @radius;
+    -webkit-border-radius: 0 0 @radius @radius;
+}
+
+.border-radius-bottom-right (@radius: 5px) {
+    border-radius: 0 0 @radius 0;
+    -moz-border-radius: 0 0 @radius 0;
+    -webkit-border-radius: 0 0 @radius 0;
+}
+
+.border-radius-top (@radius: 5px) {
+    border-radius: @radius @radius 0 0;
+    -moz-border-radius: @radius @radius 0 0;
+    -webkit-border-radius: @radius @radius 0 0;
+}
+
+.transition (@time: 500ms) {
+    -moz-transition: background-color @time ease;
+    -webkit-transition: background-color @time ease;
+    -o-transition: background-color @time ease;
+    transition: background-color @time ease;
+}
