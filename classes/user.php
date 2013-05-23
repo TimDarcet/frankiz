@@ -152,6 +152,7 @@ class UserSelect extends Select
         if (!empty($formations) && !empty($this->subs['studies'])) {
             $formations->select($this->subs['studies']);
         }
+
     }
 
     protected function handler_defaultfilters(Collection $users, $fields) {
@@ -290,7 +291,8 @@ class UserSelect extends Select
             array_merge(self::$natives, array('rooms', 'minimodules', 'castes',
                 'poly', 'comments', 'defaultfilters', 'studies', 'cuvisibility')),
             array('castes' => CasteSelect::group(),
-                'defaultfilters' => GroupSelect::base()),
+                'defaultfilters' => GroupSelect::base(),
+                'studies' => FormationSelect::base()),
                 $cb);
     }
 
