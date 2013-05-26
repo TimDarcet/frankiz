@@ -59,7 +59,8 @@ class UserSchema extends Schema
 
     public function collections() {
         return array('rooms' => array('Room', 'rooms_users', 'rid'),
-                    'castes' => array('Caste', 'castes_users', 'cid'));
+                    'castes' => array('Caste', 'castes_users', 'cid'),
+                    'all_castes' => array('Caste', 'castes_users', 'cid'));
     }
 }
 
@@ -77,6 +78,7 @@ class UserSelect extends Select
     protected function handlers() {
         return array('main' => array_merge(self::$natives, array('poly')),
               'collections' => array('rooms'),
+               'all_castes' => array('all_castes'),
                    'castes' => array('castes'),
               'minimodules' => array('minimodules'),
                   'studies' => array('studies'),
@@ -197,6 +199,28 @@ class UserSelect extends Select
         }
     }
 
+    protected function handler_all_castes(Collection $users, $fields) {
+        $_users = array();
+        foreach($users as $user) {
+            $_users[$user->id()] = new Collection('Caste');
+        }
+        $newuid = S::i('newuid');
+            $iter = XDB::iterRow('SELECT  uid, cid
+                                    FROM  castes_users
+                                WHERE  uid IN {?}',
+                                $users->ids());
+
+        $linkeds = new Collection('Caste');
+        while (list($uid, $cid) = $iter->next()) {
+            $linked = $linkeds->addget($cid);
+            $_users[$uid]->add($linked);
+        }
+
+        foreach ($users as $user) {
+            $user->fillFromArray(array('all_castes' => $_users[$user->id()]));
+        }
+    }
+
     protected function handler_castes(Collection $users, $fields) {
         $_users = array();
         foreach($users as $user) {
@@ -210,11 +234,15 @@ class UserSelect extends Select
                                 WHERE  uid IN {?}',
                                 $users->ids());
         } else {
-            $iter = XDB::iterRow('SELECT  uid, cid
-                                    FROM  castes_users
-                                WHERE  uid IN {?} AND
-                                        (visibility IN {?} OR uid IN {?})',
-                                $users->ids(),
+            $iter = XDB::iterRow('SELECT  cu1.uid, cu1.cid
+                                    FROM  castes_users AS cu1
+                                    LEFT JOIN castes AS c1 ON c1.cid=cu1.cid
+                                    WHERE  uid IN {?} AND
+                                        ((SELECT MAX(visibility) FROM castes_users AS cu2
+                                        LEFT JOIN castes AS c2 ON c2.cid=cu2.cid
+                                        WHERE cu2.uid IN {?} AND c2.`group`=c1.`group` AND cu2.uid=cu1.uid)
+                                        IN {?} OR cu1.uid IN {?})',
+                                $users->ids(), $users->ids(),
                                 S::user()->visibleGids(), array($newuid, S::user()->id()));
         }
 
@@ -266,6 +294,10 @@ class UserSelect extends Select
 
     public static function minimodules() {
         return new UserSelect(array('minimodules'));
+    }
+
+    public static function all_castes() {
+        return new UserSelect(array('all_castes'), array('all_castes' => CasteSelect::group()));
     }
 
     public static function castes() {
@@ -389,6 +421,7 @@ class User extends Meta
 
     // Collection of castes
     protected $castes   = null;
+    protected $all_castes = null;
     protected $comments = null;
     protected $cuvisibility = null;
 
@@ -893,10 +926,11 @@ class User extends Meta
         return $target_castes;
     }
 
-    public function rights(Group $g, $string = false)
+    public function rights(Group $g, $string = false, $all_castes = false)
     {
+        $castes = $all_castes ? $this->all_castes : $this->castes;
         $rights = array();
-        foreach ($this->castes as $c) {
+        foreach ($castes as $c) {
             if ($c->group()->isMe($g)) {
                 if ($string) {
                     array_push($rights, (string) $c->rights());
@@ -1021,6 +1055,41 @@ class User extends Meta
             }
         }
         return $avail;
+    }
+
+    /**
+     * Determine the best new possible visibility group after the user has been added to
+     * a caste of $group.
+     * @param group : the group
+     * @param visibility_group : the former visibility.
+     * @return int : the new visibility group ID
+     */
+    public function bestNewVisibility(Group $group, Group $visibility_group) {
+        $avail = array();
+        $rights = $this->rights($group, $str = false, $all_castes = true);
+        $study_group_id = 0;
+
+        // Retreive all visibilities
+        $allvisis = $this->all_castes()->groups();
+        foreach ($allvisis->filter('name', 'everybody') as $visi) {
+            if($visi->isMe($visibility_group)) return $visibility_group->id();
+        }
+        foreach ($allvisis->filter('ns', 'study') as $visi) {
+            $study_group_id = $visi->id();
+            if($visi->isMe($visibility_group)) return $visibility_group->id();
+        }
+
+        if($visibility_group->isMe($group) && in_array('admin', $rights))
+            return $study_group_id;
+
+        foreach ($allvisis->filter('ns', 'user') as $visi) {
+            if($visibility_group->isMe($visi)) {
+                if(in_array('admin', $rights)) return $study_group_id;
+                if(in_array('member', $rights)) return $group->id();
+            }
+        }
+
+        return $visibility_group->id();
     }
 
     /**
