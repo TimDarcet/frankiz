@@ -68,6 +68,9 @@ class AdminModule extends PlModule
             if(!Platal::session()->startSUID($user)) {
                 $page->trigError('Impossible d\'effectuer un SUID sur ' . $uid);
             } else {
+                // Fix groups minimodules : only groups visible by the su-er were displayed on it after a su
+                S::user()->select(UserSelect::login());
+
                 S::logger()->log('admin/su', array('uid' => $user->id()));
                 pl_redirect('home');
             }
