@@ -441,8 +441,15 @@ class GroupsModule extends PLModule
                 /*
                  * Exporting
                  */
-                $page->assign('defaultrights', array(Rights::admin(), Rights::member(), Rights::friend()));
+                $visible_rights = array(Rights::admin(), Rights::member(), Rights::friend());
+                $page->assign('defaultrights', $visible_rights);
                 foreach ($users as $uid => $u) {
+                    $visible = false;
+                    foreach($visible_rights as $right)
+                        foreach($users_rights[$uid] as $right_user)
+                            if($right_user->isMe($right)) $visible = true;
+                    if(!$visible) continue;
+
                     $page->assign('user', $u);
                     $page->assign('rights', (empty($users_rights[$uid])) ? array() : $users_rights[$uid]);
                     $page->assign('comment', (empty($users_comments[$uid])) ? "" : $users_comments[$uid]);
