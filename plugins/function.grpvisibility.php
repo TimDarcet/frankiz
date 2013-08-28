@@ -35,7 +35,7 @@ function smarty_function_grpvisibility($params, &$smarty) {
             $flagoption = '<option value="' . $gid . '"';
             if ($visigroup != null && $visigroup->id() == $gid)
                 $flagoption .= ' selected';
-            $flagoption .= '>visible par ' . $title . '</option>';
+            $flagoption .= '>visible par ' . pl_entities($title) . '</option>';
             $flagoptions[] = $flagoption;
         }
         $flagselect = '<select class="visiselect" name="visibility-' .
@@ -46,7 +46,7 @@ function smarty_function_grpvisibility($params, &$smarty) {
     // Get color & title
     list($color, $title) = User::visibilitiesColInfo($grpcoll);
     return '<form class="visicontainer" id="visiflag-' . $user->id() . '-' . $group->id() . '">' .
-        '<div class="visiflag ' . $color . ' click" title="' . $title .'"></div>' .
+        '<div class="visiflag ' . $color . ' click" title="' . pl_entities($title) .'"></div>' .
         $flagselect . '</form>';
 }
 

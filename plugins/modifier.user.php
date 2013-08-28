@@ -21,13 +21,13 @@
 
 
 function smarty_modifier_user($user, $type = 'micro') {
-    $str = '<a class="modifier_user" href="tol/see/' . $user->login() . '" title="' . $user->fullName() . '">';
+    $str = '<a class="modifier_user" href="tol/see/' . pl_entities($user->login()) . '" title="' . pl_entities($user->fullName()) . '">';
 
     if ($type == 'micro' || $type == 'both') {
         $str .= '<img src="' . $user->image()->src('micro') . '" />';
     }
     if ($type == 'text' || $type == 'both') {
-        $str .= $user->displayName();
+        $str .= pl_entities($user->displayName());
     }
 
     $str .= '</a>';

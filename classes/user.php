@@ -1271,8 +1271,8 @@ class User extends Meta
     {
         $export = parent::export();
         $export['hruid'] = $this->login();
-        $export['displayName'] = $this->displayName();
-        $export['fullName'] = $this->fullName();
+        $export['displayName'] = pl_entities($this->displayName());
+        $export['fullName'] = pl_entities($this->fullName());
 
         if ($bits & self::EXPORT_MICRO) {
             $export['micro'] = $this->image()->src('micro');

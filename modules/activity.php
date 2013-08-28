@@ -375,7 +375,7 @@ class ActivityModule extends PLModule
         $a->select(ActivityInstanceSelect::base());
 
         $a->add_participants(S::user()->id());
-        $page->jsonAssign('participant', array('displayName' => s::user()->displayName(),
+        $page->jsonAssign('participant', array('displayName' => pl_entities(s::user()->displayName()),
                                                         'id' => s::user()->id()));
         $page->jsonAssign('success', true);
         return PL_JSON;

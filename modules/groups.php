@@ -236,13 +236,13 @@ class GroupsModule extends PLModule
 
                 while (list($uid, $comment) = $iter->next()) {
                     if ($admins_export[$uid]) {
-                        $admins_export[$uid]['comments'] = $comment;
+                        $admins_export[$uid]['comments'] = pl_entities($comment);
                     }
                     if ($members_export[$uid]) {
-                        $members_export[$uid]['comments'] = $comment;
+                        $members_export[$uid]['comments'] = pl_entities($comment);
                     }
                     if ($friends_export[$uid]) {
-                        $friends_export[$uid]['comments'] = $comment;
+                        $friends_export[$uid]['comments'] = pl_entities($comment);
                     }
                 }
             }

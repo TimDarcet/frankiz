@@ -22,13 +22,13 @@
 
 function smarty_modifier_room($room, $type = '') {
     $rid = $room->id();
-    $str = '<span><a href="rooms/see/' . $rid . '" title="' . $rid . '">' . (string)$room . "</a></span>";
+    $str = '<span><a href="rooms/see/' . $rid . '" title="' . $rid . '">' . pl_entities((string)$room) . "</a></span>";
 
     if ($type == 'phone') {
         // Print phone
         $phone = $room->phone();
         if ($phone) {
-            $str .= ' (Tel: <span>' . $phone . '</span>)';
+            $str .= ' (Tel: <span>' . pl_entities($phone) . '</span>)';
         }
     }
     return $str;

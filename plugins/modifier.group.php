@@ -23,7 +23,7 @@
 function smarty_modifier_group($group, $type = 'micro') {
     global $globals;
 
-    $str = '<a href="groups/see/' . $group->name() . '" title="' . $group->label() . '">';
+    $str = '<a href="groups/see/' . $group->name() . '" title="' . pl_entities($group->label()) . '">';
 
     if ($type == 'micro' || $type == 'both') {
         $image = $group->image();
@@ -33,7 +33,7 @@ function smarty_modifier_group($group, $type = 'micro') {
         $str .= '<img src="' . $image->src('micro') . '" />';
     }
     if ($type == 'text' || $type == 'both' || $type == 'textAndNewsNumber') {
-        $str .= $group->label();
+        $str .= pl_entities($group->label());
     }
     if ($type == 'textAndNewsNumber') {
         $n = $group->nb_news();
@@ -50,7 +50,7 @@ function smarty_modifier_group($group, $type = 'micro') {
         foreach ($group->rooms() as $premise) {
             $state = ($premise->open() ? 'open' : 'close');
             $str .= '<div class="' . $state . '" rid="' . $premise->id() . '">' .
-                '<div class="traffic_light_switcher' . $roomMasterCss . '" title="' . $premise->comment() . '">' .
+                '<div class="traffic_light_switcher' . $roomMasterCss . '" title="' . pl_entities($premise->comment()) . '">' .
                  '</div></div>' . PHP_EOL;
         }
     }
