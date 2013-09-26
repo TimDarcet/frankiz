@@ -25,7 +25,11 @@
 
     <a href="http://www.etudes.polytechnique.edu">DE</a> ·
 
-    <a href="https://enex.polytechnique.fr/">ENEX</a> | |
+    <a href="https://enex.polytechnique.fr/">ENEX</a>
+    {if $remip->has_x_student()}
+     · <a href="http://polytechnique.jobteaser.com/">Career Center</a>
+    {/if}
+    | |
 
     <a href="http://www.fondationx.org/">FX</a> ·
 
