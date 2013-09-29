@@ -22,11 +22,10 @@
 
 <video controls="controls" poster="http://jtx/vdj/vdj.png{$minimodule.params}" preload="none" id="jtx_vdj">
     <source src="http://jtx/vdj/vdj.webm{$minimodule.params}" type="video/webm" />
-    <source src="http://jtx/vdj/vdj.ogv{$minimodule.params}" type="video/ogg" />
     <param name="allowfullscreen" value="true">
     <p>Pour pouvoir profiter de cette vidéo, il faut installer un navigateur récent : Firefox ou Chrome.</p>
 </video>
 <div>
-    <a href="http://jtx/vdj/vdj.webm{$minimodule.params}" onclick="document.getElementById('jtx_vdj').pause();window.open(this.href,'Vdj','width='+screen.width+',height='+screen.height+',top=0,left=0'+',fullscreen=yes');return false;">Plein &eacute;cran</a>
+    <a href="http://jtx/">Site du JTX</a>
 </div>
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

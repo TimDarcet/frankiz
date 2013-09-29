@@ -20,6 +20,13 @@
 {*                                                                        *}
 {**************************************************************************}
 
-Ce module n'est disponible que de l'intérieur du platal
+<video controls="controls" poster="http://binet-jtx.com/vdj/vdj.png{$minimodule.params}" preload="none" id="jtx_vdj">
+    <source src="http://binet-jtx.com/vdj/vdj.webm{$minimodule.params}" type="video/webm" />
+    <param name="allowfullscreen" value="true">
+    <p>Pour pouvoir profiter de cette vidéo, il faut installer un navigateur récent : Firefox ou Chrome.</p>
+</video>
+<div>
+    <a href="http://binet-jtx.com/">Site du JTX</a>
+</div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
