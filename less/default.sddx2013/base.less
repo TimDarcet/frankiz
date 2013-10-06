@@ -1,0 +1,975 @@
+/***************************************************************************
+ *  Copyright (C) 2004-2013 Binet Réseau                                   *
+ *  http://br.binets.fr/                                                   *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
+
+/* all the zoom:1; *display:inline; correspond to a hack for IE7. */
+
+@import url("http://fonts.googleapis.com/css?family=Exo:400,700&subset=latin,latin-ext");
+@import url("http://fonts.googleapis.com/css?family=Open+Sans:600italic&subset=latin,latin-ext");
+
+@import "lib.less";
+
+/*******************************************************************************
+     0   Styles par défauts
+         [ balises sans attributs ou classes sans contexte ]
+*******************************************************************************/
+
+body {
+    position: relative;
+    background-color: @background;
+    margin: 0;
+    padding: 0;
+    font-family: Open Sans, Arial, Verdana, Helvetica, sans-serif;
+    background-image: url("./images/bkg1.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment:fixed;
+    /*background-size: 100%;*/
+}
+
+body.simple {
+    background: none;
+}
+
+#body {
+    position: relative;
+}
+
+.warning {
+    color: red !important;
+}
+
+a {
+    text-decoration: underline;
+    color: @color;
+    font-variant: small-caps;
+    outline: none;
+
+    &:link, &:visited {
+        text-decoration: underline;
+        color: @color;
+        font-variant: small-caps;
+        outline: none;
+    }
+
+    &:hover, &:active {
+        text-decoration: none;
+        color: @hover;
+        outline: none;
+    }
+
+    img {
+        border: 0;
+    }
+}
+
+.clear {
+    clear: both;
+}
+
+#debug {
+    position: absolute;
+    cursor: pointer;
+    top: 50px;
+    left: 50px;
+    width: 50%;
+    border: 1px solid black;
+    background-color: white;
+    opacity: .9;
+    z-index: 42;
+
+    .backtrace h1 {
+        font-size: 10pt;
+    }
+}
+
+.fkzadmin {
+    background-color: #FFB894 !important;
+}
+
+.webmaster {
+    background-color: #CCFF66 !important;
+}
+
+/*******************************************************************************
+     0b   Rights
+
+*******************************************************************************/
+
+.rights {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: center 0;
+
+    zoom:1;
+    *display: inline;
+
+    &.super {
+        background-color: black;
+    }
+
+    &.admin {
+        background-image: url("..default/images/rights_admin.png");
+    }
+
+    &.member {
+        background-image: url("..default/images/rights_member.png");
+    }
+
+    &.logic {
+        display: none;
+    }
+
+    &.friend {
+        background-image: url("../default/images/rights_friend.png");
+    }
+
+    &.restricted {
+        display: none;
+    }
+
+    &.everybody {
+        display: none;
+    }
+
+    &.hoverable:hover {
+        background-position: center -16px !important;
+    }
+    &.off {
+        background-position: center -32px;
+    }
+}
+
+.edit {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("../default/images/icons/edit.png");
+    background-repeat: no-repeat;
+}
+
+.add_element {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("../default/images/icons/add.png");
+    background-repeat: no-repeat;
+}
+
+.remove_element {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("../default/images/icons/delete.png");
+    background-repeat: no-repeat;
+}
+
+.add_participant {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("../default/images/icons/group_add.gif");
+    background-repeat: no-repeat;
+}
+
+.remove_participant {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("../default/images/icons/group_delete.gif");
+    background-repeat: no-repeat;
+}
+
+.new_element {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("../default/images/icons/Item.Edit.gif");
+    background-repeat: no-repeat;
+}
+
+.rss {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("../default/images/feed.gif");
+    background-repeat: no-repeat;
+}
+
+.delete_element {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("../default/images/icons/item.delete.gif");
+    background-repeat: no-repeat;
+}
+
+/*******************************************************************************
+     0c   Visibility flags
+
+*******************************************************************************/
+.visicontainer {
+    position: relative;
+    min-width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.visiflag {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: left 0;
+
+    zoom:1;
+
+    &.click {
+        cursor: pointer;
+    }
+
+    &.grey {
+        background-image: url("../default/images/icons/flag_grey.png");
+    }
+
+    &.green {
+        background-image: url("../default/images/icons/flag_green.png");
+    }
+
+    &.blue {
+        background-image: url("../default/images/icons/flag_blue.png");
+    }
+
+    &.orange {
+        background-image: url("../default/images/icons/flag_orange.png");
+    }
+
+    &.red {
+        background-image: url("../default/images/icons/flag_red.png");
+    }
+}
+
+.visiselect {
+    display: none;
+}
+
+/*******************************************************************************
+     1   Header
+
+*******************************************************************************/
+
+#header {
+
+    #quick_validate {
+        vertical-align: top;
+        > div {
+            position: relative;
+            top: -3px;
+            font-size: 14px;
+            position: relative;
+            width: 350px;
+            text-align: left;
+            .alphabackground;
+            .border-radius-bottom;
+            border: 1px @color solid;
+            border-top: none;
+            .requests {
+                border-top: 1px @color solid;
+            }
+            li {
+                font-size: 12px !important;
+                display: list-item !important;
+                text-align: center !important;
+                text-transform: none !important;
+                a {
+                    text-decoration: none;
+                    color: @color;
+                    &:hover, &:active {
+			   background : #fff;
+                        color: @hovertitle;
+                    }
+                }
+
+                .delete_element {
+                    position: relative;
+                    width: 12px;
+                    height: 12px;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+    position: relative;
+    width: 100%;
+    min-height: 100px;
+
+    table {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    tbody {
+        margin: 0;
+        padding: 0;
+    }
+
+    td {
+        vertical-align: center;
+        text-align: right;
+    }
+
+    td.logo {
+        width: 330px;
+        text-align: center;
+        div {
+            position: relative;
+            height: 130px;
+            background-image: url("./images/logo.png");
+            background-repeat: no-repeat;
+            background-position: center;
+
+            a {
+                position: absolute;
+                display: block;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                z-index: 10;
+            }
+        }
+    }
+
+    td.account {
+        width: 110px;
+        text-align: center;
+        &.empty {
+            display: none;
+        }
+
+        img {
+            max-width: 90px;
+            max-height: 90px;
+        }
+    }
+
+    td.links {
+        padding-right: 20px;
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+
+        &.log {
+            margin-top: 10px;
+            a {
+                color: red;
+                &:hover, &:active {
+                    text-decoration: none;
+                    color: @hovertitle;
+                    background: #fff;
+                }
+            }
+        }
+
+        li {
+            display: inline;
+            list-style: none;
+            margin-bottom: 3px;
+            text-align: right;
+            text-decoration: none;
+            text-transform: capitalize;
+            margin-left: 2%;
+            font-size: 1.4em;
+
+            a {
+                text-decoration: none;
+                color: @header;
+                &:hover, &:active {
+                    background-color: white;
+                    color: @hovertitle;
+                }
+            }
+        }
+    }
+}
+
+
+/*******************************************************************************
+     3   Content
+
+*******************************************************************************/
+
+// body.enabledAside
+
+body.disabledAside #section {
+    width: 100%;
+}
+
+#content {
+    position: relative;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+#aside {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    width: 22%;
+    z-index: 40;
+
+    zoom: 1;
+    *display: inline;
+
+    #column4 {
+        width: auto;
+        padding: 0;
+        margin: 0 5px 0 5px;
+    }
+}
+
+#section {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    width: 77%;
+
+    zoom: 1;
+    *display: inline;
+
+    .module {
+        position: relative;
+        margin: 10px;
+        margin-top: 0;
+
+        > .head {
+            position: relative;
+            background-color: @background;
+            .border-radius-top;
+            border:1px @color solid;
+            border-bottom: none;
+            font-family: Exo, sans-serif;
+            font-size: 2em;
+            padding: 4px;
+            color: @title;
+
+            .helper {
+                position: relative;
+                float: right;
+                width: 30px;
+                height: 30px;
+                background-image: url("../default/images/help.png");
+                background-repeat: no-repeat;
+                background-position: center;
+                cursor: pointer;
+            }
+        }
+
+        > .help {
+            position: relative;
+            background-color: white;
+            border:1px @color solid;
+            border-bottom: none;
+            border-top: none;
+            padding: 4px;
+            display: none;
+            text-align: left;
+            .edit {
+                display: block;
+                position: relative;
+                padding-left: 40px;
+                width: 16px;
+                height: 16px;
+                color: red;
+                background-image: url("../default/images/icons/edit.png");
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+        }
+
+        > .body {
+            position: relative;
+            .alphabackground;
+            .border-radius-bottom;
+            border:1px @color solid;
+            border-top: none;
+            padding: 4px;
+        }
+    }
+}
+
+.threecols {
+    text-align: center;
+
+    .module {
+        position: relative;
+        display: inline-block;
+        width: 30%;
+        margin: 6px;
+        margin-top: 0;
+        vertical-align: top;
+
+        zoom: 1;
+        *display: inline;
+
+        table {
+            width: 100%;
+        }
+    }
+}
+
+/*******************************************************************************
+     5   Minimodules commons
+
+*******************************************************************************/
+
+.minimodule.postit {
+    padding-left: 6px;
+    padding-right: 5px;
+    .body {
+        padding: 5px;
+    }
+}
+
+.accueil {
+    > table {
+        position: relative;
+        width: 100%;
+        border-collapse: separate;
+        top: -2px;
+
+        td {
+            padding: 5px;
+            padding-top: 0;
+            vertical-align: top;
+        }
+
+        td.full {
+            display: table-cell;
+            /* Opera badly manages tables in div.
+               Other browsers don't bother this line.
+            */
+            max-width: 1px;
+        }
+
+        td.empty {
+            display: none;
+            width: 30%;
+        }
+
+        td ul.minimodules_zone {
+            width: 100%;
+        }
+    }
+}
+
+.sorting {
+    background-color: @light;
+    border: 1px @color dashed;
+    min-width:30%;
+}
+
+.minimodules_zone {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    text-indent: 0;
+    min-height: 100px;
+}
+
+.minimodule {
+    margin-bottom: 20px;
+
+    > .head {
+        color: @title;
+        background-color: @background;
+        /*background-image: url("./images/fond1.png"), url("./images/fond2.png");
+        background-repeat: no-repeat;
+        background-position: left center, right center;
+        background-attachment: relative;*/
+        padding: 2px;
+        text-align : center;
+        font-size: 11pt;
+        font-style: italic;
+        font-weight: bold;
+        border: 1px @color solid;
+        border-bottom: none;
+        .border-radius-top;
+        cursor: pointer;
+    }
+
+    > .body {
+        position: relative;
+        .alphabackground;
+        padding: 2px;
+        border: 1px @color solid;
+        border-top: none;
+        .border-radius-bottom;
+    }
+}
+
+/*******************************************************************************
+     6   Formulaires
+
+*******************************************************************************/
+
+fieldset {
+    background-color: @background;
+    border: 1px @color solid;
+
+    legend {
+        color: white;
+        background-color: @color;
+        border: 1px @color solid;
+    }
+}
+
+form {
+    padding: 0;
+    margin: 0;
+}
+
+input, textarea, select {
+    font-weight: bold;
+    border: 1px solid @border;
+    color: white;
+    background-color: @color;
+    padding: 3px 3px 3px 3px;
+
+    .transition;
+    .border-radius;
+
+    &[type=email],
+    &[type=url],
+    &[pattern] {
+        background-repeat: no-repeat;
+        background-position: 356px 24px;
+        background-image: url('images/ico_validation.png');
+        padding: 3px 3px 3px 3px;
+    }
+
+    &.error {
+        background-color: pink;
+        background-position: 356px 3px;
+        outline: none;
+    }
+
+    &.required {
+        background-position: 356px -29px;
+    }
+
+    &.valid {
+        background-position: 356px -61px;
+    }
+
+    &.success {
+        background-color: green;
+    }
+
+    &:required:valid {
+        background-position: 356px -61px;
+    }
+
+    &:hover {
+        color: @color;
+        background-color: @hoverbutton;
+        border: 1px @star solid;
+    }
+
+    &:focus {
+        color: white;
+        border: 1px @star solid;
+        background-color: @color;
+    }
+}
+
+input[type="checkbox"], input[type="radio"]{
+    background: transparent;
+    border: 0;
+}
+
+.checkbox {
+    width: 24px;
+    height: 24px;
+    background: url(./images/checkbox.png) no-repeat;
+
+    &:hover  {
+        background-position: 0 -24px;
+    }
+
+    &[checked=checked]  {
+        background-position: 0 -48px;
+    }
+
+    &[checked=checked]:hover  {
+        background-position: 0 -72px;
+    }
+
+    &[disabled=disabled]  {
+        background-position: 0 -96px;
+    }
+}
+
+/*******************************************************************************
+     7   Login / Logout
+
+*******************************************************************************/
+
+.login {
+    text-align: center;
+    width: auto;
+
+    .comments {
+        text-align: left;
+    }
+
+    table {
+        display: inline-block;
+        text-align: left;
+        margin-top: 15px;
+        border-collapse: separate;
+
+        zoom: 1;
+        *display: inline;
+    }
+
+    .remember {
+        text-align: left;
+    }
+
+    .send {
+        text-align: right;
+        padding-right: 20px;
+    }
+
+    .forgot {
+        text-align: right;
+        margin-top: 25px;
+        padding-top: 25px;
+        border-top: 1px solid @color;
+    }
+
+    .forgot a {
+        display: inline;
+    }
+}
+
+/*******************************************************************************
+     8   Group picker
+
+*******************************************************************************/
+
+.groups_picker {
+    position: relative;
+    width: auto;
+    border: 1px solid @border;
+    color: white;
+    background-color: @color;
+    padding: 3px 3px 3px 3px;
+
+    .transition;
+    .border-radius;
+
+    img {
+        width: 20px;
+        height: 20px;
+        vertical-align: bottom;
+        margin-right: 6px;
+    }
+
+    .searcher {
+        margin-right: 20px;
+        input {
+            width: 90%;
+            margin-left: 5%;
+        }
+    }
+
+    &.collapsed:hover {
+        color: @color;
+        background-color: #FFBA00;
+    }
+
+    &.searching .searcher input {
+        background-image: url("../default/images/busy.gif");
+        background-repeat: no-repeat;
+        background-position: 98% center;
+    }
+
+    &.empty .empty {
+        display: block;
+    }
+
+    .empty {
+        display: none;
+    }
+
+    ul {
+        margin: 4px;
+        padding-left: 10px;
+    }
+
+    li {
+        cursor: pointer;
+        list-style: none;
+    }
+
+    .empty {
+        opacity: 0.5
+    }
+}
+
+/*******************************************************************************
+     9   Wiki zones
+
+*******************************************************************************/
+
+.wiki_textarea {
+    background-color: white;
+    .wiki_preview {
+    }
+    .wiki_form {
+        position: relative;
+        .textarea {
+            position: relative;
+            height: 150px;
+            padding: 0 35px 15px 5px;
+            z-index: 1;
+        }
+        textarea {
+            width: 100%;
+            height: 100%;
+        }
+        .wiki_controls {
+            width: 24px;
+            position: absolute;
+            right: 0;
+            height: 100%;
+            z-index: 10;
+        }
+        .help {
+            position: absolute;
+            top: 50%;
+            width: 16px;
+            height: 16px;
+            background: url(../default/images/icons/help.png) no-repeat;
+            cursor: pointer;
+        }
+        .down {
+            position: absolute;
+            bottom: 5px;
+            width: 16px;
+            height: 16px;
+            background: url(../default/images/icons/arrow_down.png) no-repeat;
+            cursor: pointer;
+        }
+    }
+}
+
+.wiki {
+    position: relative;
+    width: auto;
+    margin: 6px;
+    border:1px @color solid;
+    background-color: white;
+
+    .content {
+        position: relative;
+        min-height: 5px;
+        padding: 5px;
+    }
+
+    textarea {
+        position: relative;
+        width: 100%;
+        min-height: 50px;
+        display: none;
+    }
+}
+
+/*
+ *  Wiki_help page
+ */
+.simple {
+    padding: 10px;
+}
+.simple table.bicol {
+    border: 1px @color solid;
+}
+table.bicol {
+    border-collapse: collapse;
+    tr {
+        &.pair {
+            background-color: #dddd22;
+            .wiki_textarea {
+                background-color: inherit;
+            }
+        }
+        &.impair {
+            background-color:#99ff22;
+        }
+    }
+}
+ul.bicol {
+    li {
+        &.pair {
+            background-color: #dddd22;
+        }
+        &.impair {
+            background-color: #99ff22;
+        }
+    }
+}
+
+
+/* css for timepicker */
+.ui-timepicker-div .ui-widget-header{ margin-bottom: 8px; }
+.ui-timepicker-div dl{ text-align: left; }
+.ui-timepicker-div dl dt{ height: 25px; }
+.ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
+.ui-timepicker-div td { font-size: 90%; }
+
+.uploader {
+    width: 400px;
+    iframe {
+        background-color: white;
+        border: 1px @color solid;
+        padding: 2px;
+        height: 56px;
+        width: 400px;
+    }
+}
+
+.modifier_user img {
+    max-width: 35px;
+    max-height: 35px;
+}

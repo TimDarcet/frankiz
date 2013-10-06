@@ -1,0 +1,108 @@
+/***************************************************************************
+ *  Copyright (C) 2004-2013 Binet Réseau                                   *
+ *  http://br.binets.fr/                                                   *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
+
+#section  {
+    .index {
+        ul {
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            padding: 3px;
+            margin-bottom: 8px;
+            list-style: none;
+            position: relative;
+            &.pair {
+                right: -4px;
+                text-align: left;
+            }
+            &.impair {
+                left: -4px;
+                text-align: right;
+            }
+        }
+        .group {
+            padding: 5px;
+            .img {
+                width: 45px;
+            }
+            .label {
+                font-size: 18px;
+                font-weight: bold;
+                a {
+                    text-decoration: none !important;
+                }
+            }
+            .admin {
+                font-size: 14px;
+            }
+        }
+    }
+
+    #images {
+        position: relative;
+        left: 5px;
+        border: 2px solid black;
+        border-collapse: collapse;
+    }
+
+    #images td{
+        border: 1px solid black;
+    }
+
+    #options {
+        float: left;
+        width: 250px;
+    }
+
+    .slide_form {
+        height: auto;
+        background-color: white;
+        border: 1px #003757 solid;
+    }
+
+    .slide_form ul {
+        margin: 0;
+        padding: 0;
+        text-indent: 0;
+    }
+
+    .slide_form fieldset {
+        border: 1px white solid;
+        margin-bottom: 2px;
+        background-color: #BDD5E3;
+    }
+
+    .slide_form li {
+        list-style: none;
+    }
+
+    .slide_form label {
+        text-align: left;
+    }
+
+    .slide_form label input, textarea {
+        width: 100%;
+    }
+
+    .slide_form .submit {
+        text-align: center;
+    }
+}
