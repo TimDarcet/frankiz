@@ -675,6 +675,19 @@ class User extends Meta
         return $best;
     }
 
+    /**
+     * Check if user is or has been in a formation
+     */
+    public function isInFormation($id)
+    {
+        foreach ($this->studies as $study) {
+	    if ($study->formation()->id() == $id) {
+	        return true;
+	    }
+	}
+	return false;
+    }
+
     public function addStudy($formation, $year_in, $year_out, $promo, $forlife)
     {
         $formation_id = ($formation instanceof Formation) ? $formation->id() : $formation;
