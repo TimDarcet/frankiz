@@ -31,7 +31,7 @@
     {if !$simple}
     <body class="{if ($MiniModules_COL_FLOAT|@count) == 0}disabledAside{else}enabledAside{/if}">
 
-        {if $remip->is_x_internal()}
+        {if ($remip->is_x_internal() || $user->isInFormation(1))}
           {include file="universe.tpl"}
         {/if}
 
