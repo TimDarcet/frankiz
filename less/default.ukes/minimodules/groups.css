@@ -1,0 +1,9 @@
+#minimodule_groups .body{padding:0;}
+#minimodule_groups h4{margin:0;text-align:center;}
+#minimodule_groups table{width:100%;border-collapse:collapse;}
+#minimodule_groups td{padding:0;vertical-align:middle;height:35px;}#minimodule_groups td.img{padding-left:4px;width:35px;text-align:center;vertical-align:middle;}
+#minimodule_groups td.therights{width:35px;text-align:right;vertical-align:middle;}
+#minimodule_groups td.theflags{width:16px;text-align:left;}
+#minimodule_groups td.group{padding-left:4px;vertical-align:middle;}#minimodule_groups td.group .traffic_light_switcher{display:inline-block;width:24px;height:24px;vertical-align:middle;background-image:url("../../default/images/lights.png");background-repeat:no-repeat;}#minimodule_groups td.group .traffic_light_switcher.room_master.hover{background-position:center -24px !important;}
+#minimodule_groups td.group .open{display:inline-block;}#minimodule_groups td.group .open .traffic_light_switcher{background-position:center 0px;}
+#minimodule_groups td.group .close{display:inline-block;}#minimodule_groups td.group .close .traffic_light_switcher{background-position:center -48px;}

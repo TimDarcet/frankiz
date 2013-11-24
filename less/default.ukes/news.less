@@ -1,0 +1,296 @@
+/***************************************************************************
+ *  Copyright (C) 2004-2013 Binet Réseau                                   *
+ *  http://br.binets.fr/                                                   *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
+
+@import "lib.less";
+
+@hauteur: 20px;/*hauteur de l'image noeud.png divisée par 3*/
+@hauteur: -20px;/*son opposé*/
+
+#section {
+    .options {
+        a {
+            text-decoration: none;
+        }
+        table {
+            width: 100%;
+        }
+        td {
+            padding-left: 15px;
+            padding-right: 15px;
+            width: 33%;
+            vertical-align: bottom;
+        }
+        .option {
+            .alphabackground;
+            .border-radius;
+            min-height: 80px;
+            padding: 10px;
+        }
+        .option.new {
+            margin-bottom: 5px;
+            min-height: 0;
+            text-align: center;
+        }
+        li {
+            position: relative;
+            list-style: none;
+            min-height: 22px;
+            list-style: none;
+        }
+        .actions ul {
+            padding-left: 10px;
+            margin-top: 5px;
+            margin-bottom: 0;
+        }
+        .actions li {
+            cursor: pointer;
+            margin-bottom: 4px;
+        }
+        .display ul {
+            padding: 0;
+        }
+        .display li {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+    
+        .codes {
+            text-align: right;
+        }
+        .codes ul {
+            margin-top: 5px;
+            margin-right: 25px;
+            margin-bottom: 0;
+        }
+        .code {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border: 1px black solid;
+            right: -20px;
+            &.unread {
+                 background-image: url('./images/red.png');
+		background-repeat: repeat;            }
+            &.read {
+                background-image: url('./images/darkblue.png');
+		background-repeat: repeat;
+            }
+            &.star {
+                background-color: @star;
+            }
+            &.tocome {
+                background-color: red;
+            }
+        }
+    }
+
+    .list {
+        padding-left: 15px;
+        padding-right: 10px;
+        ul {
+            padding: 0;
+        }
+        li.news {
+            border-radius : 5px;
+            position: relative;
+            list-style: none;
+                       padding: 1px;
+            margin-bottom: 5px;
+
+         
+
+            td:first-child {
+                width: 32px;
+            }
+
+            .infos {
+                text-align: center;
+		background-image:url('./images/darkblue.png');
+		background-repeat:repeat;
+		
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    padding: 0;
+                }
+                .star_switcher {
+                    position: relative;
+                }
+                .origin {
+                    height: 38px;
+                    position: relative;
+                    width: 50px;
+                    font-size: 12px;
+                    img {
+                        vertical-align: middle;
+                    }
+                }
+                .date {
+                    position: relative;
+                    width: 50px;
+                }
+                .title {
+                    position: relative;
+                    vertical-align: middle;
+                    cursor: pointer;
+               
+                    a {
+                        display: block;
+                        width: 100%;
+                        text-decoration: none;
+                        position: relative;
+                        div {
+                            line-height: 100%;
+                        }
+                    }
+                }
+	     }
+
+            .content {
+                position: relative;
+                clear: both;
+                padding: 15px;
+                text-align: left;
+                background-image:url('./images/darkblue80.png');
+		background-repeat: repeat;
+
+                .body {
+                    padding: 5px;
+                    .image {
+                        margin-left: 10px;
+                        float: right;
+                    }
+                    ul {
+                        position: relative;
+                        left: 15px;
+                    }
+                }
+
+                .admin {
+                    bottom: 2px;
+                    left: 5px;
+                    a {
+                        color: red;
+                        text-decoration: none;
+                    }
+                }
+
+                .under {
+                    margin-top: 20px;
+                    padding-top: 5px;
+                    border-top: 2px white solid;
+                    table {
+                        font-size: 12px;
+                        width: 100%;
+                        text-align: left;
+                        .admin {
+                            width: 70px;
+                        }
+                        .target_rights {
+                            font-style: italic;
+                        }
+                        .writer {
+                            width: 100px;
+                            text-align: right;
+                            img {
+                                vertical-align: middle;
+                                margin-left: 5px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+	li.star{
+
+	.infos{
+background-image:url('./images/purple.png');
+background-repeat:repeat;
+a:hover{color:black;}
+	}
+
+}
+    }
+
+    .star_switcher {
+        width: 32px;
+        height: 30px;
+        background-image: url("./images/star1.png");
+        background-repeat: no-repeat;
+	background-size: 100% 100%;
+        &:hover {
+             background-image: url("./images/star2.png");
+        }
+    }
+
+    .star .star_switcher {
+         background-image: url("./images/star3.png");
+background-size: 100% 100%;
+
+    }
+
+    .unstar .star_switcher {
+        background-image: url("./images/star1.png");
+background-size: 100% auto;
+
+    }
+
+    /* 
+        Open/ Close
+    */
+
+    .news.open .content {
+        display: block;
+    }
+
+    .news.close .content {
+        display: none;
+    }
+
+    /* 
+        Star / Unstar
+    */
+
+#section .list li.news.star .infos {
+	background-image: url('./images/red.png');
+	background-repeat: repeat;
+}
+
+    /* 
+        Read / Unread
+    */
+
+    .news.read {
+        .alphabackground;
+    }
+
+    .news.unread {
+        background-image: url('./images/red.png');
+	background-repeat:repeat;
+    }
+
+    /* 
+        To Come
+    */
+    .news.tocome {
+        background-color: red !important;
+    }
+
+}

@@ -1,0 +1,10 @@
+#minimodule_activities a{font-variant:normal;text-decoration:none;cursor:pointer;}
+#minimodule_activities .right{float:right;}
+#minimodule_activities .left{float:left;}
+#minimodule_activities .msg_act{text-align:center;}
+#minimodule_activities .date{padding:0px 10px;text-align:center;}
+#minimodule_activities .title{margin:0px;padding:0px 10px;font-weight:bold;overflow:hidden;text-align:center;}
+#minimodule_activities .body{width:100%;position:relative;padding:0px;overflow:hidden;text-align:right;margin-bottom:1px;}#minimodule_activities .body.away{background-color:#bdd5e3;}
+#minimodule_activities .body.present{background-color:#ffba00;}
+#minimodule_activities .add_participant,#minimodule_activities .remove_participant{float:right;}
+#minimodule_activities .when{margin-right:10px;color:#000;}

@@ -1,0 +1,7 @@
+#minimodule_pix .body{padding:0;}
+#pix_archive a,#pix_archive a:link{font-size:10pt;font-style:italic;}
+ul#pix_last{width:100%;max-height:300px;overflow:auto;text-align:center;margin:0;padding:15px 0 0 0;}
+ul#pix_last li{margin:0;padding:0;display:inline;}
+ul#pix_last a{margin:0;padding:0;}
+ul#pix_last img{margin:1px;padding:0;width:90px;height:auto;}
+div#pix_archive{text-align:center;padding:5px 0 8px 0;}

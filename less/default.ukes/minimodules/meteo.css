@@ -1,0 +1,6 @@
+#minimodule_meteo{text-align:center;}
+#minimodule_meteo .today{display:inline-block;position:relative;width:30%;margin-bottom:3px;}
+#minimodule_meteo .today img{width:70%;}
+#minimodule_meteo .forecast{display:inline-block;position:relative;width:60%;}
+#minimodule_meteo ul{padding:0;position:relative;}
+#minimodule_meteo li{display:inline-block;position:relative;width:45%;}

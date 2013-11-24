@@ -1,0 +1,12 @@
+#minimodule_news>div{max-height:300px;overflow:auto;}
+#minimodule_news .empty{text-align:center;}
+#minimodule_news table{border-collapse:collapse;}
+#minimodule_news td{padding-top:1px;border-top:1px dashed #17758A;text-align:left;vertical-align:middle;font-size:13px;width:100%;height:35px;}
+#minimodule_news .origin{font-size:12px;}
+#minimodule_news .title{padding-left:4px;}
+#minimodule_news tr:first-child td{border-top:none;}
+#minimodule_news td:first-child{text-align:center;padding:0;width:35px;}
+#minimodule_news tr.unstar{background-color:white;}
+#minimodule_news tr.star{background-color:#ffba00;}
+#minimodule_news a{text-decoration:none;}
+#minimodule_news img{vertical-align:middle;}

@@ -1,0 +1,4 @@
+#minimodule_xray hr{clear:both;}
+#minimodule_xray .feed{position:absolute;right:4px;top:4px;background-image:url("../../default/images/feed.gif");background-repeat:no-repeat;}#minimodule_xray .feed a{display:block;width:16px;height:16px;}
+#minimodule_xray .play{position:relative;width:116px;height:22px;background-image:url("../../default/minimodules/xray/play_radio.png");background-repeat:no-repeat;cursor:pointer;}
+#minimodule_xray .cover{float:left;width:33%;}

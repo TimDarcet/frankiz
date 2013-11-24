@@ -1,0 +1,17 @@
+#minimodule_qdj a{cursor:pointer;}
+#minimodule_qdj body{height:189px;}
+#minimodule_qdj .navigation{height:25px;border-bottom:2px solid black;margin-bottom:2px;text-align:center;padding-left:10px;padding-right:10px;line-height:1.1;}#minimodule_qdj .navigation .before{float:left;}
+#minimodule_qdj .navigation .after{float:right;}
+#minimodule_qdj .qdj{border-bottom:2px solid black;margin-bottom:2px;padding-bottom:2px;}
+#minimodule_qdj .question{font-size:11pt;text-align:center;}
+#minimodule_qdj .jone{color:#FFBB00;}
+#minimodule_qdj .rouje{color:red;}
+#minimodule_qdj .jone .count{background:#FFBB00;}
+#minimodule_qdj .rouje .count{background:red;}
+#minimodule_qdj table{width:100%;border-collapse:collapse;}
+#minimodule_qdj td{width:50%;text-align:center;}
+#minimodule_qdj tr.answers td{font-size:10pt;}
+#minimodule_qdj tr.counts td{height:100px;vertical-align:top;font-size:10pt;color:white;text-align:left;}#minimodule_qdj tr.counts td .count{position:relative;left:34%;width:34%;color:white;text-align:center;}
+#minimodule_qdj .last_votes{margin-top:2px;font-size:9pt;margin-left:10px;width:100%;}#minimodule_qdj .last_votes td{width:40%;vertical-align:top;text-align:left;}
+#minimodule_qdj .last_votes .votes_list{margin-left:10%;}
+#minimodule_qdj .toModule{margin-top:2px;;font-size:9pt;text-align:center;}

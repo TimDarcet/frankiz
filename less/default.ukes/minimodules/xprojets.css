@@ -1,0 +1,8 @@
+#minimodule_xprojets .body{text-align:center;}
+#minimodule_xprojets a{color:black;font-style:italic;text-decoration:none;}
+#minimodule_xprojets a:hover{text-decoration:underline;}
+#minimodule_xprojets h3{font-size:14px;font-weight:bold;}
+#minimodule_xprojets td{background-repeat:no-repeat;font-size:14px;text-align:right;}
+#minimodule_xprojets table{width:210px;}
+#minimodule_xprojets .center{text-align:center;}
+#minimodule_xprojets #xprojets_texte{margin-left:5px;margin-right:5px;margin-top:5px;padding:2px;font-size:12px;border:1px solid #0066FF;background-color:#FFFFFF;}
