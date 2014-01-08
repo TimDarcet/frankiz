@@ -65,13 +65,13 @@
             </ul>
         </div>
 
-        {if !$user->isFemale() && $user->isAdmin()}
-        <div class="fields"  id="tol_gender">
-            <ul>
-                <li><label>Fifilles<input auto="auto" type="checkbox" name="gender" value="woman"/></label></li>
-            </ul>
-        </div>
-        {/if}
+{*        {if !$user->isFemale() && $user->isAdmin()} *}
+{*        <div class="fields"  id="tol_gender">       *}
+{*            <ul>                                    *}
+{*                <li><label>Fifilles<input auto="auto" type="checkbox" name="gender" value="woman"/></label></li> *}
+{*            </ul> *}
+{*        </div> *}
+{*        {/if} *}
 
         <div class="fields" id="tol_send">
             <input type="submit" name="chercher" value="Chercher" />
