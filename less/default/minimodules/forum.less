@@ -1,0 +1,127 @@
+/***************************************************************************
+ * Copyright (C) 2004-2012 Binet Réseau *
+ * http://br.binets.fr/ *
+ * *
+ * This program is free software; you can redistribute it and/or modify *
+ * it under the terms of the GNU General Public License as published by *
+ * the Free Software Foundation; either version 2 of the License, or *
+ * (at your option) any later version. *
+ * *
+ * This program is distributed in the hope that it will be useful, *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the *
+ * GNU General Public License for more details. *
+ * *
+ * You should have received a copy of the GNU General Public License *
+ * along with this program; if not, write to the Free Software *
+ * Foundation, Inc., *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA *
+ ***************************************************************************/
+#minimodule_forum {
+	.head {
+		min-width:260px;
+	}
+    .body  {
+        font-family: 'Open Sans',sans-serif;
+		font-size: 12px;
+		font-weight: 600;
+		min-width:260px;
+    }
+    a {
+		cursor: pointer;
+		color: rgb(102, 102, 102);
+		text-decoration: none;
+		padding: 0px;
+		font-size: 100%;
+		vertical-align: baseline;
+		background: none repeat scroll 0% 0% transparent;
+	}
+	.last-event {
+		border-bottom: 1px solid rgb(235, 235, 235);
+		margin: 0px 0px 0px;
+		clear: both;
+		display: block;
+		padding-top: 4px;
+		padding-bottom: 0px;
+		min-height: 40px;
+		width: 255px;
+	}
+	.title-offer {
+		font-size:11px;
+	}
+	.title-offer:hover {
+		color:#339900;
+	}
+	.company-logo img {
+		border:1px solid rgb(235, 235, 235);
+	}
+	.company-logo img:hover {
+		border:1px solid #339900;
+	}
+	.logo {
+		width:120px;
+	}
+	
+	.rolloverContainer {
+		overflow:hidden;
+		position:relative;
+		min-height:40px;
+		min-width:255px;
+	}
+	.rolloverContainer .rolloverFront {
+		height:100%;
+		width:100%;
+		overflow:hidden;
+		position:relative;    
+		transition : all 0.3s ease-in-out;
+		transform : translateY(0);
+		-moz-transition:all 0.3s ease-in-out;
+		-moz-transform:translateY(0);
+		-moz-transform:translateZ(0);
+		-webkit-transition : all 0.3s ease-in-out;
+		-webkit-transform: translateY(0);
+		-webkit-transform:translateZ(0);
+		-o-transition : all 0.3s ease-in-out;
+		-o-transform: translateY(0);
+		-o-transform: translateZ(0);
+		-ms-transition : all 0.3s ease-in-out;
+		-ms-transform: translateZ(0);
+		-ms-transform: translateY(0);
+	}
+	.rolloverContainer .rolloverBack {
+		height:100%;
+		width:100%;
+		position:absolute;
+		overflow:hidden;
+		top:0;
+		left:0;
+	
+		transform:translateY(100%);
+		transition : all 0.3s ease-in-out;
+		-moz-transform:translateY(100%);
+		-moz-transition : all 0.3s ease-in-out;
+		-webkit-transform:translateY(100%);
+		-webkit-transition : all 0.3s ease-in-out;
+		-o-transform:translateY(100%);
+		-o-transition : all 0.3s ease-in-out;
+		-ms-transform:translateY(100%);
+		-ms-transition : all 0.3s ease-in-out;
+	}
+	
+	.rolloverContainer:hover .rolloverFront{
+		transform:translateY(-100%);
+		-moz-transform: translateY(-100%);
+		-webkit-transform:translateY(-100%);
+		-o-transform:translateY(-100%);
+		-ms-transform:translateY(-100%);
+	}
+	
+	.rolloverContainer:hover .rolloverBack{
+		transform:translateY(0);
+		-moz-transform: translateY(0);    
+		-webkit-transform:translateY(0);
+		-webkit-transform:translateZ(0);
+		-ms-transform: translateY(0);    
+		-o-transform:translateY(0);
+	}
+}
