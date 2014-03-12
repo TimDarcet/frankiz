@@ -44,6 +44,8 @@ Ton activité n'a pas été validée pour la raison suivante :
 {/if}
 {$comm|smarty:nodefaults}
 
+Le texte que tu avais proposé est :
+{$text|smarty:nodefaults}
 
 Désolé
 {/if}
@@ -54,5 +56,7 @@ Les administrateurs du groupe "{$origin->label()}"
 {else}
 Les administrateurs du groupe "{$targetGroup->label()}"
 {/if}
+
+Ceci est un mail automatique, merci de ne pas y répondre. Pour toute question ou remarque, merci de contacter web@frankiz.net .
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}

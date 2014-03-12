@@ -59,4 +59,5 @@ Les administrateurs du groupe "{$origin->label()}"
 Les administrateurs du groupe "{$targetGroup->label()}"
 {/if}
 
+Ceci est un mail automatique, merci de ne pas y répondre. Pour toute question ou remarque, merci de contacter web@frankiz.net .
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
