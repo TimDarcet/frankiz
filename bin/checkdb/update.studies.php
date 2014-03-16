@@ -100,7 +100,7 @@ while (list($promo, $formation_id, $abbrev, $label) = $iter->next()) {
 
 // Update on_platal, specifying the number of years a school remains on the platal
 $onplatal_numyears = array(
-    'x' => 2,
+    'x' => 3,
     'poly' => 0,
     'master' => 2,
     'doc' => 0,
