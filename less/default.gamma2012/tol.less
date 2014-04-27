@@ -1,0 +1,330 @@
+/***************************************************************************
+ *  Copyright (C) 2004-2012 Binet Réseau                                   *
+ *  http://br.binets.fr/                                                   *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
+
+@import "lib.less";
+
+
+#tol_searcher {
+    position: absolute;
+    left: 5px;
+    top: 0;
+    width: 250px;
+
+    input.empty {
+        background-color: red;
+    }
+
+    .fields {
+        position: relative;
+        .alphabackground;
+        .border-radius;
+        border:1px white solid;
+        padding: 10px;
+        margin-bottom: 5px;
+        padding-right: 18px;
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+        text-indent: 0;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    label {
+        text-align: left;
+    }
+
+    label input {
+        width: 100%;
+    }
+
+    .groups_picker {
+        width: 100%;
+    }
+
+    input[type=reset] {
+        float: right;
+    }
+}
+
+#tol_infos {
+    position: relative;
+    margin-left: 265px;
+    margin-right: 5px;
+    text-align: center;
+
+    .notempty {
+        display: none;
+    }
+
+    >div {
+        position: relative;
+        .border-radius;
+        .alphabackground;
+    }
+
+    &.searching >div {
+        background-color: @color;
+    }
+
+    .page {
+        font-weight: normal;
+
+            a {
+            cursor: pointer;
+            text-decoration: none;
+
+            &.selected {
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+#tol_send {
+    text-align: center;
+}
+
+#tol_results {
+    margin: 0;
+    margin-right: 6px;
+    margin-left: 263px;
+    top: 8px;
+    position: relative;
+    padding: 0;
+    text-align: center;
+}
+
+#section {
+    .see {
+        margin: 0;
+        padding: 0 20px 0 20px;
+    }
+
+    .result {
+        display: inline-block;
+        position: relative;
+        width: 160px;
+        margin: 3px;
+        overflow: hidden;
+        background-image: url("images/75p.png");
+        background-repeat: repeat;
+        .border-radius;
+        border:1px white solid;
+        vertical-align: bottom;
+
+        *zoom: 1;
+        *display: inline;
+    }
+
+    .result.card {
+        position: relative;
+        height: 180px;
+        .card {
+            display: block;
+        }
+    }
+
+    div.card {
+        text-align: center;
+        display: none;
+        .loading {
+            display: none;
+            position: absolute;
+            .alphabackground;
+            z-index: 666;
+            width: 100%;
+            height: 100%;
+            > div {
+                position: absolute;
+                top: 50%;
+                width: 100%;
+                text-align: center;
+                margin-top: -20px;
+                height: 20px;
+            }
+        }
+        &.busy .loading {
+            display: block;
+        }
+        .img {
+            position: absolute;
+            bottom: 25px;
+            width: 100%;
+            height: 105px;
+        }
+    }
+
+    .result.sheet {
+        position: relative;
+        width: 100%;
+    }
+
+    div.sheet {
+        display: none;
+        font-size: 13px;
+        text-align: left;
+        .base {
+            position: relative;
+
+            .img {
+                float: left;
+                min-height: 200px;
+            }
+
+            .name {
+                text-align: center;
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+            .nickname {
+                text-align: center;
+                font-size: 16px;
+            }
+
+            .email {
+                margin-top: 8px;
+                a {
+                    text-decoration: none;
+                    font-variant: normal;
+                }
+            }
+
+            .birthdate {
+                span {
+                    font-weight: bold;
+                }
+            }
+
+            .cellphone {
+                span {
+                    font-weight: bold;
+                }
+                margin-top: 8px;
+            }
+
+            .sports {
+                position: absolute;
+                bottom: 5px;
+                right: 5px;
+                li {
+                    list-style: none;
+                }
+            }
+
+            .caserts {
+                span {
+                    font-weight: bold;
+                }
+                margin-top: 8px;
+                li {
+                    text-indent: 10px;
+                    list-style: none;
+                }
+                .ips {
+                    display: none;
+                }
+            }
+
+            .nationality {
+                margin-top: 8px;
+                ul {
+                    display: inline;
+                    padding: 0;
+                    li {
+                        list-style: none;
+                        display: inline;
+                    }
+                }
+            }
+
+            .studies {
+                position: absolute;
+                top: 2px;
+                right: 2px;
+                li {
+                    list-style: none;
+                    position: relative;
+                    width: 40px;
+                    font-weight: bold;
+                    .promo {
+                        position: absolute;
+                        top: 7px;
+                        left: 0;
+                        font-weight: bold;
+                        font-size: 16px;
+                        text-shadow: -1px 0 black, 0 1px black,
+                                      1px 0 black, 0 -1px black;
+                        &.rouje {
+                            color: red;
+                        }
+                        &.jone {
+                            color: yellow;
+                        }
+                    }
+                }
+            }
+        }
+
+        hr {
+            clear: both;
+            border: none;
+            border-top: 1px @border solid;
+        }
+
+        .more {
+            position: relative;
+            top: -5px;
+            margin-bottom: 10px;
+
+            ul {
+                padding-left: 5px;
+            }
+            li {
+                position: relative;
+                list-style: none;
+                min-height: 25px;
+                .meta {
+                    float: left;
+                    position: relative;
+                    min-width: 70px;
+                    text-align: right;
+                    margin-right: 3px;
+                    img {
+                        float: left;
+                        max-height: 24px;
+                    }
+                }
+                .comments {
+                    font-style:italic;
+                }
+            }
+        }
+    }
+
+    .result.sheet .sheet {
+        display: block;
+    }
+}

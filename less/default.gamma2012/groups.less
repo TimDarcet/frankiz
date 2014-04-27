@@ -1,0 +1,318 @@
+/***************************************************************************
+ *  Copyright (C) 2004-2012 Binet Réseau                                   *
+ *  http://br.binets.fr/                                                   *
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc.,                                                      *
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
+ ***************************************************************************/
+
+@import "lib.less";
+
+#section {
+    .threecols {
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            padding: 0;
+            vertical-align: middle;
+            height: 35px;
+
+            &.img {
+                padding-left: 4px;
+                width: 35px;
+                text-align: center;
+            }
+
+            &.therights {
+                width: 35px;
+                text-align: right;
+            }
+
+            &.group {
+                padding-left: 4px;
+                text-align: left;
+            }
+        }
+    }
+
+    .top {
+        width: auto;
+        position: relative;
+        padding: 10px;
+        padding-top: 0;
+        > div {
+            position: relative;
+            padding: 10px;
+            .alphabackground;
+            .border-radius;
+            border: 1px solid white;
+	    > div {
+                position: relative;
+                img {
+                    float: left;
+                    margin-right: 15px;
+                }
+                .label {
+                    text-align: center;
+                    font-weight: bold;
+                    font-size: 20px;
+                }
+                ul {
+                    display: inline;
+                    list-style: none;
+                }
+                li {
+                    position: relative;
+                    left: 30px;
+                }
+                .traffic_light_switcher {
+                    display: inline-block;
+                    width: 24px;
+                    height: 24px;
+                    vertical-align: middle;
+                    background-image: url("../default/images/lights.png");
+                    background-repeat: no-repeat;
+                    &.room_master {
+                        &.hover {
+                            background-position: center -24px !important;
+                        }
+                    }
+                }
+                .open {
+                    display: inline-block;
+                    .traffic_light_switcher {
+                        background-position: center 0px;
+                    }
+                }
+                .close {
+                    display: inline-block;
+                    .traffic_light_switcher {
+                        background-position: center -48px;
+                    }
+                }
+            }
+        }
+    }
+    .tools {
+        width: auto;
+        position: relative;
+        padding: 10px;
+        padding-top: 0;
+        > div {
+            position: relative;
+            padding: 10px;
+            .alphabackground;
+            .border-radius;
+	    border: 1px solid white;
+            > div {
+                position: relative;
+                > h1 {
+                    font-size: large;
+                    display: inline;
+                }
+                > ul {
+                    display: inline;
+                    list-style: none;
+                    > li {
+                        display: inline;
+                    }
+                }
+            }
+        }
+    }
+
+    .bottom {
+        position: relative;
+        min-height: 500px;
+        padding-top: 25px;
+        clear: both;
+        width: 100%;
+    }
+
+    .users, .datas {
+        position: relative;
+        width: 50%;
+        padding: 12px;
+        vertical-align: top;
+
+        > div {
+            position: relative;
+            padding: 5px;
+            width: 100%;
+            margin-bottom: 6px;
+            .alphabackground;
+            .border-radius;
+	    border: 1px solid white;
+        }
+    }
+
+    .me {
+        .comments input {
+            width: 90%;
+        }
+    }
+
+    .tol {
+        text-align: right;
+    }
+
+    .page a {
+        cursor: pointer;
+        text-decoration: none;
+        &.selected {
+            font-weight: bold;
+        }
+    }
+
+    .groups_picker {
+        width: 250px;
+    }
+
+    ul.rights_users {
+        padding: 0;
+        ul {
+            padding-left: 10px;
+        }
+        li {
+            list-style: none;
+            position: relative;
+            text-align: left;
+            overflow: visible;
+            min-height: 40px;
+            margin-bottom: 2px;
+            .img {
+                float: left;
+                width: 40px;
+                height: 40px;
+                text-align: right;
+                vertical-align: middle;
+                img {
+                    max-height: 35px;
+                    max-width: 35px;
+                    vertical-align: middle;
+                }
+            }
+            .name {
+                margin-left: 2px;
+            }
+            .comments {
+                margin-left: 6px;
+                font-size: 12px;
+                font-style: italic;
+            }
+        }
+    }
+
+    .news {
+        tr {
+            &.star {
+                background-color: @hover !important;
+            }
+            &.unread {
+                background-color: rgba(50, 50, 60, 0.5);
+            }
+            &.read {
+                background-color: black;
+            }
+            &.tocome {
+                background-color: #00AF3A;
+            }
+        }
+        td {
+            &.origin {
+                width: 35px;
+            }
+            &.title {
+                width: 100%;
+            }
+            &.data {
+                width: 100%;
+            }
+        }
+    }
+
+    .admin_general {
+        table {
+            width: 100%;
+        }
+        td {
+            padding: 5px;
+        }
+        .description {
+            width: 95%;
+            height: 100px;
+        }
+        .uploader {
+            display: inline;
+        }
+    }
+
+    .admin_users {
+        min-height: 500px;
+        table {
+            width: 100%;
+        }
+        form table {
+            width: 400px;
+        }
+        td {
+            position: relative;
+            &.therights {
+                width: 50px;
+            }
+            &.img {
+                width: 35px;
+            }
+            &.user {
+                width: 220px;
+            }
+            &.comment {
+
+            }
+        }
+        input[name=comment] {
+            width: 95%;
+        }
+        .pages a {
+            cursor: pointer;
+            &.selected {
+                font-weight: bold;
+                text-decoration: none;
+            }
+        }
+    }
+
+    .msg {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .icon-external{
+        background: url("../default/images/icons/icon-external.png") 0 50% no-repeat transparent;
+        padding-left: 20px;
+    }
+
+    .icon-wikix{
+        background: url("../default/images/icons/icon-wikix.png") 0 50% no-repeat transparent;
+        padding-left: 20px;
+    }
+
+    .icon-mail{
+        background: url("../default/images/icons/icon-mail.gif") 0 50% no-repeat transparent;
+        padding-left: 20px;
+    }
+}
