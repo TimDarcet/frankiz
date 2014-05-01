@@ -21,7 +21,7 @@
 {**************************************************************************}
 
 <video controls="controls" poster="http://cineclub.bin/cover.jpg{$minimodule.params}" preload="none" id="cineclub_trailer">
-    <source src="http://cineclub.bin/trailer.mp4{$minimodule.params}" type="video/mp4" />
+    <source src="http://cineclub.bin/trailer.mp4" type="video/mp4" />
     <param name="allowfullscreen" value="true">
     <p>Pour pouvoir profiter de cette vidéo, il faut installer un navigateur récent : Firefox ou Chrome.</p>
 </video>
