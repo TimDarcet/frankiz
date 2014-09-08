@@ -145,6 +145,12 @@ class IPAddress
             return $origin;
         }
 
+        //School administration uses 172.16/16
+        //Has access defined by POLYTECHNIQUE | INTERNAL
+        if (substr($ip, 0, 7) == '172.16.') {
+            return self::POLYTECHNIQUE | self::INTERNAL;
+        }
+
         // External IP
         return 0;
     }
