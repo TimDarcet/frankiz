@@ -52,6 +52,8 @@
     <a href="http://x-passion.polytechnique.org/">X-Passion</a>
     {if $remip->has_x_student()}
         ·
+        <a href="http://idees/">Id&eacute;es K&egrave;s &amp; CA</a>
+        ·
         <a href="http://dnsapp" title="Noms de domaine">DnsApp</a>
         ·
         <a href="http://jtx">JTX</a>
