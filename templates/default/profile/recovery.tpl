@@ -29,9 +29,9 @@
             </div>
         {/if}
         <fieldset class="recovery profile">
-            Si tu souhaites créer ton compte Frankiz, ou si tu as perdu ton mot de passe, entre l'adresse e-mail
+            Si tu te connectes pour la première fois à Frankiz, ou si tu as perdu ton mot de passe, entre l'adresse e-mail
             donnée par ton école (par exemple jean.dupont@polytechnique.edu) dans le champ ci-dessous. <br/>
-            Tu recevras dans les minutes qui suivent un courriel te permettant d'aller changer ton mot de passe.
+            Tu recevras dans les minutes qui suivent un courriel te permettant d'aller changer ton mot de passe.<br/>
             <table>
                 <tr>
                     <td width="40%" class="right">
@@ -48,6 +48,20 @@
                     </td>
                 </tr>
             </table>
+            Si tu n'as pas encore de compte et que tu es master ou doctorant sur le plateau, envoie un mail à 
+            <a href="mailto:web@frankiz.net">web@frankiz.net</a> avec les informations suivantes:
+            <ul>
+            <li>Ton nom et ton prénom</li>
+            <li>Ta date de naissance</li>
+            <li>Une photo d'identité en pièce jointe</li>
+            <li>L'adresse mail donnée par ton école</li>
+            <li>Ta nationalité</li>
+            <li>Ton numéro de chambre si tu habites sur le campus</li>
+            <li>Ton année d'arrivée et de départ si tu la connais</li>
+            <li>Ton accord pour transmettre les informations au Binet Réseau</li>
+            </ul>
+            Attention: merci de ne pas utiliser cette procédure si tu fais partie du cursus ingénieur classique, ton compte sera créé
+            automatiquement!
         </fieldset>
     </form>
 {elseif $step == 'mail'}
