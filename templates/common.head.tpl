@@ -30,7 +30,8 @@
 <link rel="index" href="index.php"/>
 <link rel="start" href="index.php"/>
 <link href="mailto:web@fkz" rev="made" />
-<link rel="shortcut icon" href="favicon.ico" />
+<link rel="icon" type="image/png" href="favicon.png" />
+<!--[if IE]><link rel="shortcut icon" type="image/x-icon" href="favicon.ico" /><![endif]-->
 <link rel="search" type="application/opensearchdescription+xml" href="opensearch.xml" title="Trombino" /> 
 
 <script type="text/javascript">
