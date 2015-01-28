@@ -140,6 +140,13 @@ class Caste extends Meta
         $this->bubble();
     }
 
+    public function addSimpleUser(User $user)
+    {
+        XDB::execute('INSERT IGNORE castes_users
+                        SET  cid = {?}, uid = {?}',
+                        $this->id(), $user->id());
+    }
+
     /**
     * Remove a User frome the caste
     *
