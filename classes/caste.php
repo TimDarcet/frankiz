@@ -142,9 +142,26 @@ class Caste extends Meta
 
     public function addSimpleUser(User $user)
     {
-        XDB::execute('INSERT IGNORE castes_users
-                        SET  cid = {?}, uid = {?}',
-                        $this->id(), $user->id());
+        XDB::execute('INSERT IGNORE  castes_users
+                                SET  cid = {?}, uid = {?}',
+                                     $this->id(), $user->id());
+
+        $result = XDB::query("SELECT MAX(cu.visibility) FROM castes_users AS cu
+        LEFT JOIN castes AS c ON c.cid=cu.cid
+        WHERE cu.uid={?} AND c.`group` = {?}",
+        $user->id(), $this->group->id());
+
+        $user->select(UserSelect::all_castes());
+        $user->all_castes()->select(CasteSelect::group());
+
+        $gid = $result->fetchOneCell();
+        $new_visibility = ($gid == 0) ? 0 : $user->bestNewVisibility($this->group(), Group::fromId($gid));
+
+        XDB::execute('UPDATE  castes_users AS cu
+                         SET  cu.visibility = {?}
+                       WHERE  cu.cid IN (SELECT c.cid FROM castes AS c WHERE c.`group`={?})
+                         AND  cu.uid={?}',
+                          $new_visibility, $this->group()->id(), $user->id());
     }
 
     /**
