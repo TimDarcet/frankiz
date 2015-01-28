@@ -117,10 +117,17 @@ class Caste extends Meta
     */
     public function addUser(User $user)
     {
-        XDB::execute('INSERT IGNORE  castes_users
-                                SET  cid = {?}, uid = {?}',
-                                     $this->id(), $user->id());
+        XDB::execute('INSERT IGNORE castes_users
+                        SET  cid = {?}, uid = {?}',
+                        $this->id(), $user->id());
         $this->bubble();
+    }
+
+    public function addSimpleUser(User $user)
+    {
+        XDB::execute('INSERT IGNORE castes_users
+                        SET  cid = {?}, uid = {?}',
+                        $this->id(), $user->id());
     }
 
     /**
