@@ -49,7 +49,7 @@
 
     <a href="http://else.polytechnique.org/">ELSE</a> ·
 
-    <a href="http://x-passion.polytechnique.org/">X-Passion</a>
+    <a href="http://x-passion.binets.fr/">X-Passion</a>
     {if $remip->has_x_student()}
         ·
         <a href="http://idees/">Id&eacute;es K&egrave;s &amp; CA</a>
