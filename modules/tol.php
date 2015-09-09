@@ -258,7 +258,9 @@ class TolModule extends PLModule
     function handler_tol_ajax_search($page)
     {
         $json = json_decode(Env::v('json'));
-
+        if (isset($json->gender)) {
+	    unset($json->gender);
+	}
         $fields = $this->fillFields($json);
         $filter = $this->buildFilter($fields);
 
