@@ -25,11 +25,9 @@
 
     <a href="http://www.etudes.polytechnique.edu">DE</a> ·
 
-    <a href="https://enex.polytechnique.fr/">ENEX</a>
-    {if $user->isInFormation(1)}
-     · <a href="http://polytechnique.jobteaser.com/">Career Center</a>
-    {/if}
-    | |
+    <a href="https://enex.polytechnique.fr/">ENEX</a> ·
+
+    <a href="http://polytechnique.jobteaser.com/">Career Center</a> | |
 
     <a href="http://www.fondationx.org/">FX</a> ·
 
