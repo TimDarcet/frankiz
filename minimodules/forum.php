@@ -48,7 +48,7 @@ class ForumMiniModule extends FrankizMiniModule
 
     public function run()
     {
-		$api = new API("http://polytechnique.jobteaser.com/fr/evenements.rss");
+		$api = new API("http://polytechnique.jobteaser.com/fr/evenements.rss?count=5&cs=a29f4e5bfb319892f8807142818cff35a24201c04d416818239d1dcac2d97d67");
         $xml = simplexml_load_string(utf8_decode($api->response()));
 		$i=1;
 		foreach ($xml->channel->item as $item){
