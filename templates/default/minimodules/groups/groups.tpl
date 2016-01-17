@@ -20,6 +20,10 @@
 {*                                                                        *}
 {**************************************************************************}
 
+<div style="text-align:center">
+    <small><i> Vous avez créé votre binet auprès de la <a href="/groups/see/kes">Kès</a> ? Vous pouvez le créer sur Frankiz par mail à <a href="mailto:web@frankiz.net">web@frankiz.net</a> ! </i></small><br/>
+</div>
+
 {if $minimodule.binets|@count > 0}
     <h4>Binets</h4>
 
