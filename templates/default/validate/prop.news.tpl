@@ -114,6 +114,7 @@
                         Commentaire pour l'administrateur
                     </td>
                     <td>
+			<i>Profite de ce champ pour donner aux administrateurs les informations dont ils pourraient avoir besoin et qu'ils ignorent peut-être, cela accélèrera le traitement de ta demande.</i><br>
                         <textarea name="comment" rows=7 cols=50></textarea>
                     </td>
                 </tr>
