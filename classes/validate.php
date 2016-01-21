@@ -245,7 +245,7 @@ class Validate extends Meta
             if (!strlen(Env::t('comm'))) {
                 return false;
             }
-            $this->item->add_comment(S::user()->displayName(), Env::v('comm'));
+            $this->item->add_comment(S::user()->commentatorName(), Env::v('comm'));
             $this->item->sendmailcomment($this->writer);
             
             $this->update();

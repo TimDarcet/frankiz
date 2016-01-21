@@ -23,7 +23,7 @@ Bonjour,
 
 Validation {$type} pour {$user}
 
-Au sujet de la validation {$type} pour {$user}, {$admin->displayName()} a ajouté le commentaire :
+Au sujet de la validation {$type} pour {$user}, {$admin->commentatorName()} a ajouté le commentaire :
 {$comm}
 
 

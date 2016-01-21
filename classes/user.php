@@ -492,6 +492,11 @@ class User extends Meta
         return (empty($this->nickname)) ? $this->firstname : $this->nickname;
     }
 
+    public function commentatorName()
+    {
+        return (empty($this->nickname)) ? $this->firstname : $this->nickname . ' (' . $this->firstname . ')';
+    }
+    
     public function fullName()
     {
         return $this->firstname . ' ' . $this->lastname;
