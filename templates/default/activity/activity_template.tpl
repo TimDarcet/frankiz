@@ -103,6 +103,7 @@
         </div>
         <div class="description">
             {{html description}}
+            {{html comment}}
         </div>
         <div class="comment">
         </div>
