@@ -54,6 +54,7 @@
                         Annonce visible par
                     </td>
                     <td>
+                        <i>Attention à bien choisir le groupe de visibilité: ton annonce est-elle destinée à tous les "Polytechniciens", seulement la promotion "2014 Polytechniciens", ou encore les personnes présentes "Sur le plâtal" y compris les non-polytechniciens ? Un bon choix accélère la validation :-)</i><br>
                         {include file="target_picker.tpl"|rel id="news" group_perso=false only_admin=false even_only_friend=true}
                     </td>
                 </tr>
