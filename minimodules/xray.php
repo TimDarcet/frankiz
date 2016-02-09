@@ -220,7 +220,7 @@ class XRayMiniModule extends FrankizMiniModule
 
         // feed x-ray pour le dernier podcast
         // MAJ 1x/jour
-        $podcasts_xml = "http://x-ray/blog/?feed=podcast";
+        $podcasts_xml = "http://x-ray.bin/blog/?feed=podcast";
 
         if (!PlCache::hasGlobal('xray_podcast')) {
             $podcast_api = new API($podcasts_xml, false);
@@ -235,7 +235,7 @@ class XRayMiniModule extends FrankizMiniModule
 
         // titre en cours
         // MAJ toutes les 2 mn
-        $nowplaying_xml = "http://x-ray/cache/info.xml";
+        $nowplaying_xml = "http://x-ray.bin/cache/info.xml";
 
         if (!PlCache::hasGlobal('xray_nowplaying')) {
             $nowplaying_api = new API($nowplaying_xml, false);

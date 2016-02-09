@@ -20,7 +20,7 @@
 {*                                                                        *}
 {**************************************************************************}
 
-<a href="http://x-ray.eleves.polytechnique.fr/player.php" id="xray_link" onclick="window.open('http://x-ray.eleves.polytechnique.fr/player.php','player','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=623,height=270');return false;">
+<a href="http://x-ray.bin/player.php" id="xray_link" onclick="window.open('http://x-ray.bin/player.php','player','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=623,height=270');return false;">
     <span id="xray_titre">{$minimodule.xray_nowplaying.title}</span><br/>
     <span id="xray_artiste">{$minimodule.xray_nowplaying.artist}</span><br/>
     <br/><br/><br/>
