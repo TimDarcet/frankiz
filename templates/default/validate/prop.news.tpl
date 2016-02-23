@@ -82,6 +82,7 @@
                         Corps
                     </td>
                     <td>
+                        <i>ATTENTION: Évite les caractères spéciaux (smileys, etc.) car ils ne sont pas pris en charge.</i>
                         {include file="wiki_textarea.tpl"|rel id="news_content" placeholder="Corps de l'annonce" }
                     </td>
                 </tr>

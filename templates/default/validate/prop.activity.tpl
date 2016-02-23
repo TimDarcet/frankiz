@@ -132,6 +132,7 @@
                         Description :
                     </td>
                     <td>
+                        <i>ATTENTION: Évite les caractères spéciaux (smileys, etc.) car ils ne sont pas pris en charge.</i>
                         {include file="wiki_textarea.tpl"|rel id="activity_description" already=$desc placeholder="Description" }
                     </td>
                 </tr>
