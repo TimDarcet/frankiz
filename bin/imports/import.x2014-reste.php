@@ -88,7 +88,11 @@ $fic = fopen($file, 'rb');
 $k = 0;
 
 for ($datas = fgetcsv($fic, 1024, ';'); !feof($fic); $datas = fgetcsv($fic, 1024, ';')) {
-    //print_r($datas);
+    if ($datas[$sport] != 'HANDBALL') {
+        continue;
+    }
+
+//print_r($datas);
     $emailFinal = $datas[$email];
     $login = str_replace('@polytechnique.edu','',$emailFinal);
     //echo preg_replace("`^([0-9]{1,2})/([0-9]{2})`", "$2/$1", trim($datas[$birthdate]));
