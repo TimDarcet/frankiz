@@ -87,7 +87,7 @@
                             </td>
                             <td>
                                 <div>
-                                    <textarea name="comm" class="text_validate" ></textarea>
+                                    <textarea name="comm" class="text_validate" placeholder="C'est ici qu'il faut mettre des remarques intelligentes ..."></textarea>
                                 </div>
                                 <input type="submit" name="add_comm" class="addcom_validate"  value="Ajouter un commentaire" />
                             </td>
