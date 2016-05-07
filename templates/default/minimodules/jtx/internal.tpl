@@ -21,7 +21,7 @@
 {**************************************************************************}
 
 <video controls="controls" poster="http://jtx/vdj/vdj.png{$minimodule.params}" preload="none" id="jtx_vdj">
-    <source src="http://jtx/vdj/vdj.webm{$minimodule.params}" type="video/webm" />
+    <source src="http://jtx/vdj/vdj.mp4{$minimodule.params}" type="video/mp4" />
     <param name="allowfullscreen" value="true">
     <p>Pour pouvoir profiter de cette vidéo, il faut installer un navigateur récent : Firefox ou Chrome.</p>
 </video>
