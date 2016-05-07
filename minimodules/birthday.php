@@ -55,9 +55,12 @@ class BirthdayMiniModule extends FrankizMiniModule
         $users = array();
         foreach ($us as $u) {
             $study = $u->studies();
-            $first = array_shift($study);
-            $formations[$first->formation()->abbrev()] = $first->formation();
-            $users[$first->formation()->abbrev()][$first->promo()][] = $u;
+            // HOTFIX by NTag
+            if (count($study) > 0) {
+                $first = array_shift($study);
+                $formations[$first->formation()->abbrev()] = $first->formation();
+                $users[$first->formation()->abbrev()][$first->promo()][] = $u;
+            }
         }
 
         $this->assign('formations', $formations);
