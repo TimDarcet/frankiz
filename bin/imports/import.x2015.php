@@ -26,24 +26,24 @@
  *
  */
 set_time_limit(0);
-$file = "/home/2014/varal7/X2015-EV2-part2.csv";
+$file = "/home/2014/varal7/x2015.csv";
 $photos_folder = "";
 
 //index of data
 $lastname = 1;
 $firstname = 2;
-$nationality = 4;
-$birthdate = 3;
-$email = 5;
+$nationality = 7;
+$birthdate = 5;
+$email = 6;
 //$formation = 11;
 //$promo = 5;
 //$year_in = 0;
 //$year_out = 1;
-$gender = 0;
-//$room_id = 9;
-//$sport = 7;
+$gender = 3;
+$room_id = 10;
+$sport = 8;
 //$photo_file = 8;
-
+$matricule = 0;
 
 require_once(dirname(__FILE__) . '/../connect.db.inc.php');
 $globals->debug = 0;
@@ -59,11 +59,13 @@ function conv_name($str)
     $str = str_replace(array('É'), 'e', $str);
     $str = strtolower(conv($str));
     $str = str_replace(array('é', 'è', 'ë', 'ê'), 'e', $str);
-    $str = str_replace(array('ü', 'û'), 'u', $str);
-    $str = str_replace(array('à', 'ä', 'â', 'á'), 'a', $str);
-    $str = str_replace(array('î', 'ï'), 'i', $str);
-    $str = str_replace(array('ç','Ç'), 'c', $str);
-    return preg_replace("/[^a-z0-9_-]/", "", $str);
+    $str = str_replace(array('ü', 'û'), 'u', $str); $str = str_replace(array('à', 'ä', 'â', 'á'), 'a', $str); $str = str_replace(array('î', 'ï'), 'i', $str); $str = str_replace(array('ç','Ç'), 'c', $str); return preg_replace("/[^a-z0-9_-]/", "", $str); } function conv_mail($str) { $str = utf8_encode(strtr(utf8_decode($str), utf8_decode('ÁÀÂÄÃÅÇÉÈÊËÍÏÎÌÑÓÒÔÖÕÚÙÛÜÝ'), 'AAAAAACEEEEEIIIINOOOOOUUUUY'));
+    $str = strtolower(conv($str)); $str = utf8_encode(strtr(utf8_decode($str), utf8_decode('áàâäãåçéèêëíìîïñóòôöõúùûüýÿ'), 'aaaaaaceeeeiiiinooooouuuuyy')); $str = strtolower($str);
+    $str = preg_replace("/[^a-z0-9]/", "-", $str);
+    $str = preg_replace("#\-+#", '-', $str);
+    $str = preg_replace("#^-#", '', $str);
+    $str = preg_replace("#-$#", '', $str);
+    return $str;
 }
 
 $gf = new GroupFilter(new GFC_Name('tol'));
@@ -74,25 +76,45 @@ $tol_caste = $group->caste(Rights::everybody());
 $fic = fopen($file, 'rb');
 $k = 0;
 
-for ($datas = fgetcsv($fic, 1024, ','); !feof($fic); $datas = fgetcsv($fic, 1024, ',')) {
+for ($datas = fgetcsv($fic, 1024, ';'); !feof($fic); $datas = fgetcsv($fic, 1024, ';')) {
+    
     print_r($datas);
-    echo preg_replace("`^([0-9]{1,2})/([0-9]{2})`", "$2/$1", trim($datas[$birthdate]));
-    exit();
+    //exit();
+
+    $login = str_replace('@polytechnique.edu','',$datas[$email]);
+
     $t = microtime(true);
+    
     // Creating the User
     $u = new User();
-    $u->insert();
+    // checking that the user doesn't already exist
+    $res = XDB::query('SELECT uid FROM account WHERE hruid = {?}', $login);
+    if ($res->numRows() == 0)
+    {   
+	$u -> insert();
+	$new = 1;
+    }
+    else
+    {   
+        $u = User::fromId($res->fetchOneCell());
+	$new = 0;
+    }
+    $u->login($login);
+    $u->hruid($login);
+
 //    $u->password($datas['passwd'], false);
     $u->firstname(ucwords(strtolower(conv($datas[$firstname]))));
     $u->lastname(ucwords(strtolower(conv($datas[$lastname]))));
 //    $u->nickname(conv($datas['surnom']));
-    $u->birthdate(new FrankizDateTime(trim($datas[$birthdate])));
+    //$u->birthdate(new FrankizDateTime(trim($datas[$birthdate])));
+    $u->birthdate(new FrankizDateTime(preg_replace("`^([0-9]{2})/([0-9]{2})`", "$2/$1", trim($datas[$birthdate]))));
     if($gender != null)
         $u->gender(($datas[$gender] == 'F') ? User::GENDER_FEMALE : User::GENDER_MALE);
-    if (!empty($datas[$email])) {
+        
+     if (!empty($datas[$email])) {
         $u->email($datas[$email]);
     }
-    $u->skin('default');
+
 
     if  ($new == 1)
     {
@@ -114,6 +136,7 @@ for ($datas = fgetcsv($fic, 1024, ','); !feof($fic); $datas = fgetcsv($fic, 1024
     if($room_id != null){
         $room = $datas[$room_id];
         if (!empty($room)) {
+            $room = str_replace(".", "", $room);
             if (preg_match('/^[0-9]+[a-z]?$/', $room)) {
                 $room = 'X' . $room;
             }
@@ -126,14 +149,11 @@ for ($datas = fgetcsv($fic, 1024, ','); !feof($fic); $datas = fgetcsv($fic, 1024
     }
 
     /*$login = "";
-    if(preg_match('!@institutoptique.fr!',$datas[$email]))
-        $login = str_replace('@institutoptique.fr','',$datas[$email]);
+    if(preg_match('!@institutoptique.fr!',$emailFinal))
+        $login = str_replace('@institutoptique.fr','',$emailFinal);
     else
-        $login = str_replace('@polytechnique.edu','',$datas[$email]);
-
-        $login = str_replace('@polytechnique.edu','',$datas[$email]);
+    $login = str_replace('@polytechnique.edu','',$emailFinal);
      */
-
     $formation_id = 1;
     
     /*
@@ -159,9 +179,6 @@ for ($datas = fgetcsv($fic, 1024, ','); !feof($fic); $datas = fgetcsv($fic, 1024
     }
     */
     // they are X2015
-    $u->login($login);
-    $u->hruid($login);
-    // (int) $datas[$promo] = 2012
     $u->addStudy($formation_id, ($year_in === null ? 2015 : (int) $datas[$year_in]), ($year_out === null ? 2015 + 4 : (int) $datas[$year_out]), 2015, $login);
     // Linking with the nationality
     if($nationality != null){
@@ -177,7 +194,7 @@ for ($datas = fgetcsv($fic, 1024, ','); !feof($fic); $datas = fgetcsv($fic, 1024
     }
 
     // Linking with the sport
-    /*
+    
     if ($sport != null) {
         $nf = new GroupFilter(new GFC_Name('sport_' . conv_name($datas[$sport])));
         $n = $nf->get(true);
@@ -185,10 +202,10 @@ for ($datas = fgetcsv($fic, 1024, ','); !feof($fic); $datas = fgetcsv($fic, 1024
             $n->select(GroupSelect::castes());
             $n->caste(Rights::member())->addUser($u);
         }
-    }*/
+    }
 
     //Adding the promo group
-        $nf = new GroupFilter(new GFC_Name('promo_' . conv_name(2015)));
+        $nf = new GroupFilter(new GFC_Name('promo_' . conv_name(2014)));
         $n = $nf->get(true);
         if($n){
             $n->select(GroupSelect::castes());
@@ -205,12 +222,12 @@ for ($datas = fgetcsv($fic, 1024, ','); !feof($fic); $datas = fgetcsv($fic, 1024
         }
 
     //Photo
-    /*
+    
     $works = false;
     $suffix = '';
-    $folder = $photos_folder;
+    $folder = '/home/2014/varal7/photos-2015';
     $original = true;
-    $path = $folder . '/' . $datas[$photo_file];
+    $path = $folder . '/' . $datas[$matricule] . '.jpg';
     if (file_exists($path)) {
         $upload = FrankizUpload::fromFile($path);
         if ($upload->size() > 0) {
@@ -233,13 +250,14 @@ for ($datas = fgetcsv($fic, 1024, ','); !feof($fic); $datas = fgetcsv($fic, 1024
     }
     if (!$works) {
         echo 'Not done: ' . $u->id() . ' - ' . $u->displayname() . ' - '. $path . "\n";
-    }*/
+    }
 
     $k++;
     echo 'User ' . str_pad($k, 4, '0', STR_PAD_LEFT) . '/xx : '
-         . str_pad($u->id(), 5, '0', STR_PAD_LEFT) . ' - 2015 - '
+         . str_pad($u->id(), 5, '0', STR_PAD_LEFT) . ' - 2014 - '
          . substr(microtime(true) - $t, 0, 5) . '   ' . $u->login() . "\n";
 }
+
 $nf = new GroupFilter(new GFC_Name('formation_x'));
 $n = $nf->get(true);
 if($n){

@@ -26,7 +26,7 @@
  *
  */
 set_time_limit(0);
-$file = "/home/2014/varal7/X2015-EV2-part2.csv";
+$file = "/home/2014/varal7/X2015-EV3.csv";
 $photos_folder = "";
 
 //index of data
@@ -43,6 +43,7 @@ $gender = 0;
 //$room_id = 9;
 //$sport = 7;
 //$photo_file = 8;
+$surnom = 6;
 
 
 require_once(dirname(__FILE__) . '/../connect.db.inc.php');
@@ -76,8 +77,8 @@ $k = 0;
 
 for ($datas = fgetcsv($fic, 1024, ','); !feof($fic); $datas = fgetcsv($fic, 1024, ',')) {
     print_r($datas);
-    echo preg_replace("`^([0-9]{1,2})/([0-9]{2})`", "$2/$1", trim($datas[$birthdate]));
-    exit();
+    //echo preg_replace("`^([0-9]{1,2})/([0-9]{2})`", "$2/$1", trim($datas[$birthdate]));
+    //exit();
     $t = microtime(true);
     // Creating the User
     $u = new User();
@@ -88,19 +89,15 @@ for ($datas = fgetcsv($fic, 1024, ','); !feof($fic); $datas = fgetcsv($fic, 1024
 //    $u->nickname(conv($datas['surnom']));
     $u->birthdate(new FrankizDateTime(trim($datas[$birthdate])));
     if($gender != null)
-        $u->gender(($datas[$gender] == 'F') ? User::GENDER_FEMALE : User::GENDER_MALE);
+        $u->gender(($datas[$gender] == 'Mlle') ? User::GENDER_FEMALE : User::GENDER_MALE);
     if (!empty($datas[$email])) {
         $u->email($datas[$email]);
     }
     $u->skin('default');
 
-    if  ($new == 1)
-    {
-    	//setting default minimodules
-    	$u->select(UserSelect::minimodules());
-    	$u->copyMinimodulesFromUser(0);
-    	$u->skin('default');
-    }
+    //setting default minimodules
+    $u->select(UserSelect::minimodules());
+    $u->copyMinimodulesFromUser(0);
 
 
 /*    try {
@@ -130,10 +127,8 @@ for ($datas = fgetcsv($fic, 1024, ','); !feof($fic); $datas = fgetcsv($fic, 1024
         $login = str_replace('@institutoptique.fr','',$datas[$email]);
     else
         $login = str_replace('@polytechnique.edu','',$datas[$email]);
-
+*/
         $login = str_replace('@polytechnique.edu','',$datas[$email]);
-     */
-
     $formation_id = 1;
     
     /*
