@@ -26,24 +26,24 @@
  *
  */
 set_time_limit(0);
-$file = "/home/2013/ntag/liste-x2014-fr.csv";
+$file = "/home/2013/ntag/liste-2014-reste-4.csv";
 $photos_folder = "";
 
 //index of data
-$lastname = 1;
-$firstname = 2;
-$nationality = 5;
-$birthdate = 3;
-//$email = 5;
+$lastname = 2;
+$firstname = 3;
+$nationality = 10;
+$birthdate = 8;
+$email = 11;
 //$formation = 11;
 //$promo = 5;
 //$year_in = 0;
 //$year_out = 1;
-$gender = 4;
-//$room_id = 9;
-//$sport = 7;
+$gender = 9;
+$room_id = 0;
+$sport = 4;
 //$photo_file = 8;
-$matricule = 0;
+$matricule = 5;
 
 require_once(dirname(__FILE__) . '/../connect.db.inc.php');
 $globals->debug = 0;
@@ -88,7 +88,8 @@ $k = 0;
 
 for ($datas = fgetcsv($fic, 1024, ';'); !feof($fic); $datas = fgetcsv($fic, 1024, ';')) {
     //print_r($datas);
-    $emailFinal = conv_mail($datas[$firstname]) . '.' . conv_mail($datas[$lastname]) . '@polytechnique.edu';
+    $emailFinal = $datas[$email];
+    //$emailFinal = conv_mail($datas[$firstname]) . '.' . conv_mail($datas[$lastname]) . '@polytechnique.edu';
     $login = str_replace('@polytechnique.edu','',$emailFinal);
     //echo preg_replace("`^([0-9]{1,2})/([0-9]{2})`", "$2/$1", trim($datas[$birthdate]));
     //exit();
@@ -107,6 +108,7 @@ for ($datas = fgetcsv($fic, 1024, ';'); !feof($fic); $datas = fgetcsv($fic, 1024
     {   
         $u = User::fromId($res->fetchOneCell());
 	$new = 0;
+	continue;
     }
 //    $u->password($datas['passwd'], false);
     $u->firstname(ucwords(strtolower(conv($datas[$firstname]))));
@@ -135,18 +137,15 @@ for ($datas = fgetcsv($fic, 1024, ';'); !feof($fic); $datas = fgetcsv($fic, 1024
 //    $u->poly($datas['login']);
 
     // Linking with the room
-    if($room_id != null){
-        $room = $datas[$room_id];
-        if (!empty($room)) {
-            $room = str_replace(".", "", $room);
-            if (preg_match('/^[0-9]+[a-z]?$/', $room)) {
-                $room = 'X' . $room;
-            }
-            if ($room = Room::from($room)) {
-                $u->addRoom($room);
-            } else {
-                echo 'Error for room ' . $datas[$room_id] . "\n";
-            }
+    $room = str_replace('.', '', $datas[$room_id]);
+    if (!empty($room)) {
+        if (preg_match('/^[0-9]+[a-z]?$/', $room)) {
+            $room = 'X' . $room;
+        }
+        if ($room = Room::from($room)) {
+            $u->addRoom($room);
+        } else {
+            echo 'Error for room ' . $datas[$room_id] . "\n";
         }
     }
 
@@ -199,7 +198,7 @@ for ($datas = fgetcsv($fic, 1024, ';'); !feof($fic); $datas = fgetcsv($fic, 1024
     }
 
     // Linking with the sport
-    /*
+    
     if ($sport != null) {
         $nf = new GroupFilter(new GFC_Name('sport_' . conv_name($datas[$sport])));
         $n = $nf->get(true);
@@ -207,8 +206,8 @@ for ($datas = fgetcsv($fic, 1024, ';'); !feof($fic); $datas = fgetcsv($fic, 1024
             $n->select(GroupSelect::castes());
             $n->caste(Rights::member())->addUser($u);
         }
-    }*/
-
+    }
+    
     //Adding the promo group
         $nf = new GroupFilter(new GFC_Name('promo_' . conv_name(2014)));
         $n = $nf->get(true);
@@ -230,9 +229,9 @@ for ($datas = fgetcsv($fic, 1024, ';'); !feof($fic); $datas = fgetcsv($fic, 1024
     
     $works = false;
     $suffix = '';
-    $folder = '/home/2013/ntag/photos-2014';
+    $folder = '/home/2013/ntag/photos';
     $original = true;
-    $path = $folder . '/' . $datas[$matricule] . '.jpg';
+    $path = $folder . '/' . $login . '.jpg';
     if (file_exists($path)) {
         $upload = FrankizUpload::fromFile($path);
         if ($upload->size() > 0) {
