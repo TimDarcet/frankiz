@@ -41,28 +41,30 @@ class IkMiniModule extends FrankizMiniModule
         return 'IK électronique';
     }
 
-    public function run()
+    public function run() // hotfix by neze. Until we solve the 'imagemagick' problem by updating php.
     {
         global $globals;
 
-        if (!PlCache::hasGlobal('ik')) {
+        //if (!PlCache::hasGlobal('ik')) {
             $ikapi = new API('http://ik.frankiz.net/ajax/last', false);
             $json = json_decode($ikapi->response(), true);
 
             if (isset($json['ik']['id']) && $json['ik']['id'] != '') {
                 $json = $json ['ik'];
 
-                $filename = $globals->spoolroot . '/htdocs/data/ik/' . $json['id'] . '.jpg';
-                file_put_contents($filename, base64_decode($json['base64']));
+        //        $filename = $globals->spoolroot . '/htdocs/data/ik/' . $json['id'] . '.jpg';
+        //        file_put_contents($filename, base64_decode($json['base64']));
                 $ik = array('id' => $json['id'], 'title' => $json['title'], 'url' => $json['url']);
 
-                PlCache::setGlobal('ik', $ik, $globals->cache->ik);
+        //        PlCache::setGlobal('ik', $ik, $globals->cache->ik);
             }
-        }
+        //}
 
-        $this->assign('ik', PlCache::getGlobal('ik'));
+        //$this->assign('ik', PlCache::getGlobal('ik'));
+        $this->assign('ik',$ik);
     }
 
 }
 
 // vim:set et sw=4 sts=4 sws=4 foldmethod=marker enc=utf-8:
+
