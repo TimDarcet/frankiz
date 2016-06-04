@@ -134,10 +134,10 @@
                     </tr>
 
                     <tr>
-                        <td>
-                            {if $item->refuse()} <input type="submit" name="delete"   value="Refuser" /> {/if}
+                        <td width="20%">
                         </td>
                         <td>
+                            {if $item->refuse()} <input type="submit" name="delete" value="Refuser" /> {/if}
                             <input type="submit" name="accept"   value="Valider" />
                         </td>
                     </tr>
