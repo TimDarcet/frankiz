@@ -126,6 +126,7 @@ class ProfileModule extends PLModule
                 try {
                     $r = Room::from(Env::t('rid'))->select(RoomSelect::base());
                     $user->addRoom($r);
+                    S::logger()->log("users/change",'admin of '.$hruid.' by '.S::user()->hruid().': added room '.Env::t('rid'));
                 } catch (ItemNotFoundException $e) {
                     $err[] = "La chambre entrée n'existe pas.";
                 }
@@ -134,6 +135,7 @@ class ProfileModule extends PLModule
             if (Env::has('del_room')) {
                 try {
                     $user->removeRoom(Room::from(Env::t('rid')));
+                    S::logger()->log("users/change",'admin of '.$hruid.' by '.S::user()->hruid().': removed room '.Env::t('rid'));
                 } catch (ItemNotFoundException $e) {
                     $err[] = "La chambre entrée n'existe pas.";
                 }
@@ -141,28 +143,34 @@ class ProfileModule extends PLModule
 
             if (Env::has('add_perm') && S::user()->isAdmin()) {
                 $user->addPerm(Env::t('perm'));
+                S::logger()->log("users/change",'admin of '.$hruid.' by '.S::user()->hruid().': added perm '.Env::t('perm'));
             }
 
             if (Env::has('del_perm') && S::user()->isAdmin()) {
                 $user->removePerm(Env::t('perm'));
+                S::logger()->log("users/change",'admin of '.$hruid.' by '.S::user()->hruid().': removed perm '.Env::t('perm'));
             }
 
             if (Env::has('upd_study')) {
                 $user->updateStudy(Env::t('formation_id'),Env::t('forlife'),Env::t('year_in'),Env::t('year_out'),Env::t('promo'));
+                S::logger()->log("users/change",'admin of '.$hruid.' by '.S::user()->hruid().': updated study '.Env::t('formation_id'));
             }
 
             if (Env::has('add_study')) {
                 $user->addStudy(Env::t('formation_id'),Env::t('year_in'),Env::t('year_out'),Env::t('promo'),Env::t('forlife'));
+                S::logger()->log("users/change",'admin of '.$hruid.' by '.S::user()->hruid().': added study '.Env::t('formation_id'));
             }
 
             if (Env::has('del_study')) {
                 $user->removeStudy(Env::t('formation_id'),Env::t('forlife'));
+                S::logger()->log("users/change",'admin of '.$hruid.' by '.S::user()->hruid().': removed study '.Env::t('formation_id'));
             }
 
             if (Env::has('add_group')) {
                 try {
                     $g = Group::from(Env::t('name'))->select(GroupSelect::castes());
                     $g->caste(Rights::member())->addUser($user);
+                    S::logger()->log("users/change",'admin of '.$hruid.' by '.S::user()->hruid().': added group '.Env::t('name'));
                 } catch (ItemNotFoundException $e) {
                     $err[] = "Le groupe indiqué n'existe pas.";
                 }
@@ -172,6 +180,7 @@ class ProfileModule extends PLModule
                 try {
                     $g = Group::from(Env::t('name'))->select(GroupSelect::castes());
                     $g->caste(Rights::member())->removeUser($user);
+                    S::logger()->log("users/change",'admin of '.$hruid.' by '.S::user()->hruid().': removed group '.Env::t('name'));
                 } catch (ItemNotFoundException $e) {
                     $err[] = "Le groupe indiqué n'existe pas.";
                 }
@@ -179,6 +188,9 @@ class ProfileModule extends PLModule
         }
 
         if ($canEdit && Env::has('change_profile')) {
+            if(!$add){
+                S::logger()->log("users/change",'admin of '.$hruid.' by '.S::user()->hruid());
+            }
             if($add){
                 if (Env::blank('hruid')) {
                     $hruid = Env::t('firstname') . '.' . Env::t('lastname');
