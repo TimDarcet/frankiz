@@ -36,13 +36,13 @@
             </ul>
             {if $user->isWeb()}
                 <ul class="webmaster">
-                    <li class="{if !$licensesDisplay}im{/if}pair"><a href="profile/admin/account">Créer un compte</a></li>
-                </ul>
-                <ul class="webmaster">
-                    <li class="{if $licensesDisplay}im{/if}pair"><a href="wiki/admin">Les zones wikis</a></li>
+                    <li class="{if !$licensesDisplay}im{/if}pair"><a href="wiki/admin">Les zones wikis</a></li>
                 </ul>
             {/if}
             {if $user->isAdmin()}
+                <ul class="fkzadmin">
+                    <li class="{if $licensesDisplay}im{/if}pair"><a href="profile/admin/account">Créer un compte</a></li>
+                </ul>
                 <ul class="fkzadmin">
                     <li class="{if !$licensesDisplay}im{/if}pair"><a href="admin/logs/sessions">Log des sessions</a></li>
                 </ul>
@@ -99,9 +99,9 @@
                 </li>
             {/foreach}
             </ul>
-            {if $user->isWeb()}
+            {if $user->isAdmin()}
             <hr />
-                <div>
+                <div class="fkzadmin">
                     <a href="groups/insert">Créer un groupe</a>
                 </div>
             {/if}
