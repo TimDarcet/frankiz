@@ -214,6 +214,7 @@
 </div>
 {/if}
 
+{if $user->isAdmin()}
 <div class="module profile">
     <div class="head">
         <span class="helper" target="profile/admin/account/studies"></span>
@@ -289,6 +290,7 @@
         </table>
     </div>
 </div>
+{/if}
 
 <div class="module profile">
     <div class="head">
@@ -298,18 +300,29 @@
     <div class="body">
         <table>
         {foreach from=$userEdit->rooms() item='room'}
+            {*{if $user->isAdmin()}*}
             <form enctype="multipart/form-data" method="post" action="profile/admin/account/{$userEdit->hruid()}" class="profile">
                 <tr>
                     <td width="20%">
                         <input type="hidden" name="rid" value="{$room->id()}" />
                         {$room->id()} ({$room|room})
                     </td>
-                    <td>                                
+                    <td>
                         <input type="submit" name="del_room" value="Supprimer" onclick="return confirm(areyousure);" />
                     </td>
                 </tr>
             </form>
+            {*{else}
+            <tr>
+                <td width="20%">
+                    {$room->id()} ({$room|room})
+                </td>
+                <td>
+                </td>
+            <tr>
+            {/if}*}
         {/foreach}
+        {*{if $user->isAdmin()}*}
             <form enctype="multipart/form-data" method="post" action="profile/admin/account/{$userEdit->hruid()}" class="profile">
                 <tr>
                     <td width="20%">
@@ -320,6 +333,7 @@
                     </td>
                 </tr>
             </form>
+        {*{/if}*}
         </table>
     </div>
 </div>
@@ -332,6 +346,7 @@
     <div class="body">
         <table>
         {foreach from=$user_nationalities item='nationality'}
+        {*{if $user->isAdmin()}*}
             <form enctype="multipart/form-data" method="post" action="profile/admin/account/{$userEdit->hruid()}" class="profile">
                 <tr>
                     <td width="20%">
@@ -343,7 +358,16 @@
                     </td>
                 </tr>
             </form>
+        {*{else}
+            <tr>
+                <td width="20%">
+                    {$nationality->label()}
+                </td>
+                <td></td>
+            </tr>
+        {/if}*}
         {/foreach}
+        {*{if $user->isAdmin()}*}
             <form enctype="multipart/form-data" method="post" action="profile/admin/account/{$userEdit->hruid()}" class="profile">
                 <tr>
                     <td width="20%">
@@ -358,6 +382,7 @@
                     </td>
                 </tr>
             </form>
+        {*{/if}*}
         </table>
     </div>
 </div>
@@ -370,6 +395,7 @@
     <div class="body">
         <table>
         {foreach from=$user_sports item='sport'}
+        {*{if $user->isAdmin()}*}
             <form enctype="multipart/form-data" method="post" action="profile/admin/account/{$userEdit->hruid()}" class="profile">
                 <tr>
                     <td width="20%">
@@ -381,7 +407,16 @@
                     </td>
                 </tr>
             </form>
+        {*{else}
+            <tr>
+                <td width="20%">
+                    {$sport->label()}
+                </td>
+                <td></td>
+            </tr>
+        {/if}*}
         {/foreach}
+        {*{if $user->isAdmin()}*}
             <form enctype="multipart/form-data" method="post" action="profile/admin/account/{$userEdit->hruid()}" class="profile">
                 <tr>
                     <td width="20%">
@@ -396,6 +431,7 @@
                     </td>
                 </tr>
             </form>
+        {*{/if}*}
         </table>
     </div>
 </div>
