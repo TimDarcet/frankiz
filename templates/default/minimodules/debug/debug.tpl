@@ -47,6 +47,7 @@
             <td>{$minimodule.images}</td>
         </tr>
     </table>
+    PHP {php} echo phpversion(); {/php} </br>
     <a onclick="$(this).siblings('table').toggle()">Groupes</a>
     <table style="display: none">
         <tr>
