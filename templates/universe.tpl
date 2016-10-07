@@ -41,7 +41,7 @@
 
     <a href="https://www.frankiz.net">Frankiz</a> ·
 
-    <a href="https://br.binets.fr">WikiBR</a> ·
+    <a href="https://br.binets.fr">BR</a> ·
 
     <a href="http://ik.frankiz.net">InfoKès</a> ·
 
