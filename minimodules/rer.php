@@ -19,42 +19,44 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                *
  ***************************************************************************/
 
-class RerLoader
+class RerMiniModule extends FrankizMiniModule
 {
-    static $urls = array(
-        'toParis'   => "http://ratp.varal7.fr/api.php?line=RB&station=Lozere&direction=A",
-        'toStRemy'  => "http://ratp.varal7.fr/api.php?line=RB&station=Lozere&direction=B"
-    );
-    
-    private static function response($destination){
-        try{
-            $api = new API(self::$urls[$destination]);
-            $json = json_decode(utf8_decode($api->response()));
-            if($json && isset($json->missions))
-                $missions = $json->missions;
-            else 
-                $response = array();
-            $return = array();
-            foreach($missions as $mission){
-                    $return[] = array(
-                      'name' => $mission->id,
-                      'desc' => $mission->stations[1]->name,
-                      'time' => $mission->stationsMessages);
-            }
-            return $return;
-        }
-        catch(Exception $e){
-            return array();
-        }
+    public function auth()
+    {
+        return AUTH_INTERNAL;
+    }
+
+    public function perms()
+    {
+        return 'user';
+    }
+
+    public function tpl()
+    {
+        return 'minimodules/rer/rer.tpl';
     }
     
-    public static function get($destination = 'toParis') {
-        global $globals;
+    public function css()
+    {
+        return 'minimodules/rer.css';
+    }
+    
+    public function title()
+    {
+        return 'Prochains RER';
+    }
 
-        if (!PlCache::hasGlobal('rer_' . $destination))
-            PlCache::setGlobal('rer_' . $destination, self::response($destination), $globals->cache->rer);
+    public function run()
+    {
+        if(!$trains = RerLoader::get())
+            $trains = array();
+        $this->assign('trains', $trains);
+        $this->assign('currentTime', date("H:i"));
+    }
 
-        return PlCache::getGlobal('rer_' . $destination);
+    public function ajaxRefresh()
+    {
+        return 'innerHTML';
     }
 }
 
