@@ -86,6 +86,7 @@
         <div class="msg">
         </div>
 
+<!--
         {{if logged}}
             {{if participate}}
                 <div class="out">
@@ -97,7 +98,7 @@
                 </div>
             {{/if}}
         {{/if}}
-
+-->
         <div class="section">
             Description :
         </div>
@@ -108,6 +109,7 @@
         <div class="comment">
         </div>
 
+<!--
         <div class="section participants_list">
             Participants :
             <span class="number">
@@ -117,8 +119,9 @@
         <div class="participants">
             ${participants.join(', ')}
         </div>
-
+-->
         <div class="misc">
+<!--
             {{if isWriter}}
                 <div class="mail">
                     <a href="activity/participants/${id}"><div class="mail_ico"></div>Mail</a>
@@ -128,6 +131,7 @@
                     <a href="activity/participants/${id}"><div class="group_ico"></div>Participants</a>
                 </div>
             {{/if}}
+-->
             {{if canEdit}}
                 <div class="admin">
                     <a href="activity/modify/${id}"><div class="edit"></div>Modifier</a>

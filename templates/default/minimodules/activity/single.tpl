@@ -48,11 +48,13 @@
             de {$activity->hour_begin()} à {$activity->hour_end()}
         {/if}
     </span>
+<!--
     {if $activity->participate()}
         <a onclick="activity.out({$activity->id()});" class="right"><span class="remove_participant"></span></a>
     {else}
         <a onclick="activity.present({$activity->id()});" class="right"><span class="add_participant"></span></a>
     {/if}
+-->
 </div>
 
 {* vim:set et sw=2 sts=2 sws=2 enc=utf-8: *}
