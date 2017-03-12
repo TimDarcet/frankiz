@@ -38,7 +38,7 @@ class QDJSchema extends Schema
     }
 
     public function scalars() {
-        return array('question', 'answer1', 'answer2', 'count1', 'count2');
+        return array('question', 'answer1', 'answer2', 'count1', 'count2'); 
     }
 
     public function objects() {
@@ -120,6 +120,7 @@ class QDJ extends Meta
     public function export($bits = null) {
         $array = parent::export();
         $array['question'] = $this->question;
+        $array['writer']   = $this->writer->fullName();
         $array['answer1']  = $this->answer1;
         $array['answer2']  = $this->answer2;
         $array['count1']   = $this->count1;
@@ -262,7 +263,9 @@ class QDJ extends Meta
                           LIMIT  1 OFFSET {?}', $shift)->fetchOneAssoc();
         if ($res !== null) {
             $res['date'] = new FrankizDateTime($res['date']);
+            $res['writer'] = intval($res['writer']); 
             $res['writer'] = new User($res['writer']);
+            $res['writer']->select(UserSelect::base());
             $qdj = new QDJ($res['id']);
             $qdj->fillFromArray($res);
         }

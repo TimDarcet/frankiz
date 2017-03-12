@@ -27,8 +27,9 @@
     <div class="body">
         {foreach from=$qdjs item=qdj}
             <div class="qdj_item">
+                {assign var='writer' value=$qdj->writer()} 
                 <div class="date">
-                    QDJ du {$qdj->date()|datetime:'Y-m-d'}
+                    QDJ du {$qdj->date()|datetime:'Y-m-d'} par {$writer->fullName()}
                 </div>
                 <div class="question">
                     {$qdj->question()}

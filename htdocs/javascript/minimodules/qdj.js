@@ -33,6 +33,7 @@ var qdj = {
              ,"success": function(json)
                         {
                             $("#minimodule_qdj .question").html(json.qdj.question);
+                            $("#minimodule_qdj .writer").html(json.qdj.writer);
                             $("#minimodule_qdj .date").html(json.qdj.date);
                             $("#minimodule_qdj .answers .case1 a").html(json.qdj.answer1);
                             $("#minimodule_qdj .answers .case2 a").html(json.qdj.answer2);

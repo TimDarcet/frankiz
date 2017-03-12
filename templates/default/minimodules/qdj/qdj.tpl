@@ -29,6 +29,8 @@
 </div>
 
 <div class="qdj">
+    {assign var='writer' value=$qdj->writer()} 
+    <div class="writerline">Par <span class="writer">{$writer->fullName()}</span></div>
     <div class="question">{$qdj->question()}</div>
     <table>
         <tr class="answers">

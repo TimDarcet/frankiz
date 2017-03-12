@@ -32,7 +32,7 @@ class QDJValidate extends ItemValidate
         $this->question = $question;
         $this->answer1  = $answer1;
         $this->answer2  = $answer2;
-        $this->writer   = S::user();
+        $this->writer   = S::user(); 
     }
 
     public function objects() {
