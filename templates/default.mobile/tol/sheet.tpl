@@ -53,7 +53,7 @@
 
         {if $result->cellphone()}
             <br />
-            Portable&nbsp;: {$result->cellphone()}
+            Portable&nbsp;: <a href="tel:{$result->cellphone()}">{$result->cellphone()}</a>
         {/if}
     </div>
 

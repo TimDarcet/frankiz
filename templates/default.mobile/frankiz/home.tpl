@@ -26,7 +26,6 @@
         {include file="tol/quicksearch.tpl"|rel}
     {/if}
     <br />
-    Bienvenue sur la version beta de Frankiz3 mobile. Pour le moment, tu peux y trouver seulement le Quick TOL mais d'autres fonctionnalités arriveront prochainement.
 
     <div class="unsmartphone">
         <a href="profile/skin/unsmartphone">Site complet</a>
