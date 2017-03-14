@@ -27,10 +27,11 @@ class API
     private $response = null;
     private $infos = null;
 
-    public function __construct($url, $proxy = true)
+    public function __construct($url, $proxy = true, $post_fields = "")
     {
         $this->url   = $url;
         $this->proxy = $proxy;
+	$this->post_fields = $post_fields;
     }
 
     public function exec()
@@ -49,6 +50,10 @@ class API
             curl_setopt($curl, CURLOPT_FORBID_REUSE, true);
             curl_setopt($curl, CURLOPT_FRESH_CONNECT, true);
             curl_setopt($curl, CURLOPT_HTTPHEADER, array("Pragma: no-cache"));
+	    if ($this->post_fields != "") {
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $this->post_fields);
+	    }
             if ($this->proxy) {
                 // DIE Kuzh, DIE !
                 curl_setopt($curl, CURLOPT_PROXY, $globals->api->http_proxy);
