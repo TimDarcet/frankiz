@@ -46,7 +46,7 @@ class IkMiniModule extends FrankizMiniModule
         global $globals;
 
         if (!PlCache::hasGlobal('ik')) {
-            $ikapi = new API('http://ik.frankiz.net/ajax/last', false);
+            $ikapi = new API('https://ik.frankiz.net/ajax/last', false);
             $json = json_decode($ikapi->response(), true);
 
             if (isset($json['ik']['id']) && $json['ik']['id'] != '') {
