@@ -152,7 +152,7 @@ class RemoteModule extends PlModule
         $response = json_encode($response);
         $location = Env::s('location');
         header('Location: ' . $site . '?location=' . $location . '&timestamp=' . $timestamp
-           . '&response='  . $response
+           . '&response='  . urlencode($response)
            . '&hash='      . md5($timestamp . $remote->privkey() . $response));
     }
 
