@@ -105,10 +105,10 @@ $onplatal_numyears = array(
     'master' => 2,
     'doc' => 0,
     'pei' => 0,
-    'iogs' => 2,
+    'iogs' => 0,
     'fkz' => 0,
     'stcyr' => 0,
-    'ensta' => 3
+    'ensta' => 0
 );
 $formations->select(FormationSelect::on_platal());
 $formations->select(FormationSelect::promos());
